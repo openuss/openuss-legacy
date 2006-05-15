@@ -2,7 +2,7 @@
 	<target name="compile">
 		<exec executable="mvn.bat">
 			<arg line="compile"/>
-		</exec>
+		</exec> 
 	</target>
 	<target name="install">
 		<exec executable="mvn.bat">
