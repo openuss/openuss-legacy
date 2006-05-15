@@ -1,0 +1,26 @@
+<project name="install-mising-files" default="install-all" basedir=".">
+	<target name="install-all">
+		<antcall target="jaybird"/>
+		<antcall target="jta"/>
+	</target>
+	<target name="jaybird">
+		<exec executable="mvn.bat">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./jaybird/jaybird-full-2.0.1.jar"/>
+			<arg value="-DgroupId=jaybird"/>
+			<arg value="-DartifactId=jaybird-full"/>
+			<arg value="-Dversion=2.0.1"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+	<target name="jta">
+		<exec executable="mvn.bat">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./javax.transaction/jta-1.0.1B.jar"/>
+			<arg value="-DgroupId=javax.transaction"/>
+			<arg value="-DartifactId=jtal"/>
+			<arg value="-Dversion=1.0.1B"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+</project>
