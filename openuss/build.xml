@@ -21,8 +21,8 @@
 	</target>
 	<target name="eclipse">
 		<exec executable="mvn.bat">
-			<arg line="eclipse:eclipse"/>
-			<arg line="-Declipse.downloadSources=true"/>
+			<arg line="eclipse:clean eclipse:eclipse"/>
+			<arg line="-DdownloadSources=true"/>
 		</exec>
 	</target>
 	<target name="copy-profiles">
