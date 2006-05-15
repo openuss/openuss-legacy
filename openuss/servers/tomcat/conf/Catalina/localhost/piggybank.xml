@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/piggybank">
+	<Resource name="jdbc/ejosa" type="javax.sql.DataSource"
+		password="masterkey" driverClassName="org.firebirdsql.jdbc.FBDriver"
+		maxIdle="2" maxWait="5000" username="SYSDBA"
+		url="jdbc:firebirdsql:ejosa" maxActive="4" />
+</Context>
