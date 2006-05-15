@@ -1,0 +1,33 @@
+<project name="openuss :: build" default="install" basedir=".">
+	<target name="compile">
+		<exec executable="mvn.bat">
+			<arg line="compile"/>
+		</exec>
+	</target>
+	<target name="install">
+		<exec executable="mvn.bat">
+			<arg line="-o install"/>
+		</exec>
+	</target>
+	<target name="clean">
+		<exec executable="mvn.bat">
+			<arg line="-o clean"/>
+		</exec>
+	</target>
+	<target name="site">
+		<exec executable="mvn.bat">
+			<arg line="site:site"/>
+		</exec>
+	</target>
+	<target name="eclipse">
+		<exec executable="mvn.bat">
+			<arg line="eclipse:eclipse"/>
+		</exec>
+	</target>
+	<target name="copy-profiles">
+		<copy todir="D:/development/programs/MagicDraw UML/profiles" flatten="true" verbose="true">
+			<fileset dir="D:/development/repository/maven-2.0/org/andromda/profiles/uml14" includes="**/*.xml.zip"/>
+		</copy>
+	</target>
+	
+</project>
