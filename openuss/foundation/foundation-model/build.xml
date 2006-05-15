@@ -1,0 +1,18 @@
+<project name="openuss :: foundation :: model :: build" default="compile" basedir=".">
+	<target name="compile">
+		<exec executable="mvn.bat">
+			<arg line="compile"/>
+		</exec>
+	</target>
+	<target name="andromda :: start-server">
+		<exec executable="mvn.bat">
+			<arg line="andromda:start-server"/>
+		</exec>
+	</target>
+	<target name="andromda :: stop-server">
+		<exec executable="mvn.bat">
+			<arg line="andromda:stop-server"/>
+		</exec>
+	</target>
+	
+</project>

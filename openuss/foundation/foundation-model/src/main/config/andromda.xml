@@ -1,0 +1,95 @@
+<andromda>
+    <properties>
+        <property name="modelValidation">${validation}</property>
+        <property name="cartridgeFilter">${filter}</property>
+    </properties>
+
+    <server>
+        <host>localhost</host>
+        <port>4446</port>
+    </server>
+    
+    <repositories>
+        <repository name="netBeansMDR">
+            <models>
+                <model>
+                    <uri>${model.uri}</uri>
+                    <moduleSearchLocations>
+                        <location patterns="**/*.xml.zip, **/*.uml2">${settings.localRepository}/org/andromda/profiles</location>
+                    </moduleSearchLocations>
+                </model>
+            </models>            
+        </repository>
+    </repositories>
+    
+    <namespaces>
+        <namespace name="default">
+            <properties>
+                <property name="languageMappingsUri">Java</property>
+                <property name="wrapperMappingsUri">JavaWrapper</property>
+                <property name="sqlMappingsUri">Firebird</property>
+                <property name="jdbcMappingsUri">JDBC</property>
+                <property name="maxSqlNameLength">30</property>
+                <property name="foreignKeySuffix">_FK</property>
+                <property name="hibernateVersion">3</property>
+                <property name="hibernateCacheProvider">org.hibernate.cache.OSCacheProvider</property>
+                <property name="hibernateQueryCacheFactory">org.hibernate.cache.StandardQueryCacheFactory</property>
+            </properties>
+        </namespace>
+        
+        <namespace name="spring">
+            <properties>
+            	<property name="dataSource">java:comp/env/jdbc/openuss</property>
+	          	<property name="username">sysdba</property> 
+                <property name="password">masterkey</property>
+                <property name="driver">org.firebirdsql.jdbc.FBDriver</property>
+                <property name="connectionUrl">jdbc:firebirdsql:localhost:openuss-revo</property>
+                <property name="daos">${core.generated.dir}</property>
+                <property name="dao-impls">${core.manual.dir}</property>
+                <property name="spring-configuration">${core.generated.dir}</property>
+                <property name="services">${core.generated.dir}</property>
+                <property name="service-impls">${core.manual.dir}</property>
+                <property name="service-interfaces">${api.generated.dir}</property>
+                <property name="hibernateDialect">org.hibernate.dialect.FirebirdDialect</property>
+                <property name="hibernateHbm2DDLAuto">create</property>
+                <property name="hibernateShowSql">true</property>
+                <!-- Bugfixing of AndroMDA for properly support of Hibernate 3 -->
+                <property name="sessionFactory">org.springframework.orm.hibernate3.LocalSessionFactoryBean</property>
+                <property name="localTransactionManager">org.springframework.orm.hibernate3.HibernateTransactionManager</property>
+                <property name="transactionManager">org.springframework.orm.hibernate3.HibernateTransactionManager</property>
+                <property name="acegiServiceSecurity">true</property>
+            </properties>
+        </namespace>
+        
+        <namespace name="hibernate">
+            <properties>
+                <property name="defaultHibernateGeneratorClass">sequence</property>
+                <property name="hibernateTypeMappingsUri">Hibernate</property>
+                <property name="entities">${api.generated.dir}</property>
+                <property name="entity-impls">${core.manual.dir}</property>   
+                <property name="entity-mappings">${core.generated.dir}</property>
+                <property name="user-types">${core.generated.dir}</property>
+            </properties>
+        </namespace>
+        
+        <namespace name="jsf">
+        	<properties>
+				<property name="applicationName">openuss</property>
+        		<property name="configuration">${web.generated.dir}</property>
+        		<property name="controllers">${web.generated.dir}</property>
+        		<property name="controller-impls">${web.manual.java.dir}</property>
+        		<property name="managed-beans">${web.generated.dir}</property>
+        		<property name="messages">${web.generated.dir}</property>
+        		<property name="views">${web.generated.dir}</property>
+        		<property name="forms">${web.generated.dir}</property>
+        		<property name="enableFaceletsDevelopmentSupport">true</property>
+        	</properties>
+        </namespace>
+        
+        <namespace name="java">
+            <properties>
+                <property name="exceptions">${core.generated.dir}</property>
+            </properties>
+        </namespace>
+    </namespaces>
+</andromda>

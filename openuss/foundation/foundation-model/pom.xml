@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.openuss.foundation</groupId>
+		<artifactId>openuss-foundation</artifactId>
+		<version>3.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.openuss.foundation</groupId>
+	<artifactId>foundation-model</artifactId>
+	<name>OpenUSS - Foundation - MODEL</name>
+	<packaging>pom</packaging>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>org.andromda.profiles.uml14</groupId>
+			<artifactId>andromda-profile</artifactId>
+			<type>xml.zip</type>
+		</dependency>
+		<dependency>
+			<groupId>org.andromda.cartridges</groupId>
+			<artifactId>andromda-spring-cartridge</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.andromda.cartridges</groupId>
+			<artifactId>andromda-hibernate-cartridge</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.andromda.cartridges</groupId>
+			<artifactId>andromda-jsf-cartridge</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.andromda.cartridges</groupId>
+			<artifactId>andromda-java-cartridge</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.andromda.translationlibraries</groupId>
+			<artifactId>andromda-ocl-validation-library</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.andromda.translationlibraries</groupId>
+			<artifactId>andromda-ocl-query-library</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>
+			${project.basedir}/src/main/uml
+		</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.andromda.maven.plugins</groupId>
+				<artifactId>andromda-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<configurationUri>
+						${pom.basedir}/src/main/config/andromda.xml
+					</configurationUri>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<properties>
+		<model.uri>
+			jar:file:${project.build.sourceDirectory}/foundation.xml.zip!/foundation.xml
+		</model.uri>
+		<filter></filter>
+		<validation>true</validation>
+		<conf.dir>${pom.basedir}/src/main/config</conf.dir>
+		<!-- cartridge output locations -->
+		<core.generated.dir>
+			${pom.basedir}/../foundation-core/target/src
+		</core.generated.dir>
+		<core.manual.dir>
+			${pom.basedir}/../foundation-core/src/main/java
+		</core.manual.dir>
+		<web.generated.dir>
+			${pom.basedir}/../foundation-web/target/src
+		</web.generated.dir>
+		<web.manual.java.dir>
+			${pom.basedir}/../foundation-web/src/main/java
+		</web.manual.java.dir>
+		<api.generated.dir>
+			${pom.basedir}/../foundation-api/target/src
+		</api.generated.dir>
+		<web.application.name>openuss</web.application.name>
+		<web.generated.dir>${pom.basedir}/../foundation-web/target/src</web.generated.dir>
+		<web.manual.java.dir>${pom.basedir}/../foundation-web/src/main/java</web.manual.java.dir>
+	</properties>
+</project>
