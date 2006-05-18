@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<mappings name="TestMerge">
+    <mapping>
+        <from><![CDATA[license-header java merge-point]]></from>
+        <to><![CDATA[OpenUSS - Open Source University Support System]]></to>
+    </mapping>
+    
+    <!-- GenerateTest Merge -->
+    <mapping>
+    	<from><![CDATA[<!-- namespace-propertyGroup merge-point -->]]></from>
+    	<to>
+<![CDATA[
+		<propertyGroup name="CustomOutlets">
+			<documentation>
+				Custom outlets
+			</documentation>
+			<property name="tests">
+				<documentation>Folder for test classes</documentation>
+			</property>
+		</propertyGroup>
+]]>    	
+    	</to>
+    </mapping>
+
+    <mapping>
+    	<from><![CDATA[<!-- cartridge-template merge-point -->]]></from>
+    	<to>
+<![CDATA[
+    <template
+        path="templates/spring/hibernate/SpringHibernateDaoTest.vsl"
+        outputPattern="$generatedFile"
+        outlet="tests"
+        overwrite="true">
+        <modelElements variable="entity">
+            <modelElement>
+                <type name="org.andromda.cartridges.spring.metafacades.SpringEntity"/>
+            </modelElement>
+        </modelElements>
+    </template>
+]]>    	
+    	</to>
+    </mapping>
+    
+
+    
+</mappings>

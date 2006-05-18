@@ -84,24 +84,31 @@
 		<filter></filter>
 		<validation>true</validation>
 		<conf.dir>${pom.basedir}/src/main/config</conf.dir>
+		<web.application.name>openuss</web.application.name>
 		<!-- cartridge output locations -->
+		<api.generated.dir>
+			${pom.basedir}/../foundation-api/target/src
+		</api.generated.dir>
 		<core.generated.dir>
 			${pom.basedir}/../foundation-core/target/src
 		</core.generated.dir>
 		<core.manual.dir>
 			${pom.basedir}/../foundation-core/src/main/java
 		</core.manual.dir>
+		<core.tests.manual.dir>
+			${pom.basedir}/../foundation-core/src/test/java
+		</core.tests.manual.dir>
 		<web.generated.dir>
 			${pom.basedir}/../foundation-web/target/src
 		</web.generated.dir>
-		<web.manual.java.dir>
+		<web.manual.dir>
 			${pom.basedir}/../foundation-web/src/main/java
-		</web.manual.java.dir>
-		<api.generated.dir>
-			${pom.basedir}/../foundation-api/target/src
-		</api.generated.dir>
-		<web.application.name>openuss</web.application.name>
-		<web.generated.dir>${pom.basedir}/../foundation-web/target/src</web.generated.dir>
-		<web.manual.java.dir>${pom.basedir}/../foundation-web/src/main/java</web.manual.java.dir>
+		</web.manual.dir>
+		<web.generated.dir>
+			${pom.basedir}/../foundation-web/target/src
+		</web.generated.dir>
+		<config.dir>
+			${pom.basedir}/src/main/config
+		</config.dir>
 	</properties>
 </project>

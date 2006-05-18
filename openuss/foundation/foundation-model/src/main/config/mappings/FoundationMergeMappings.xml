@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<mappings name="FoundationMerge">
+    <mapping>
+        <from><![CDATA[license-header java merge-point]]></from>
+        <to><![CDATA[OpenUSS - Open Source University Support System]]></to>
+    </mapping>
+</mappings>

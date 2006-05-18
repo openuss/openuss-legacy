@@ -1,4 +1,9 @@
-<project name="openuss :: foundation :: model :: build" default="compile" basedir=".">
+<project name="openuss :: foundation :: model :: build" default="generate-sources" basedir=".">
+	<target name="generate-sources">
+		<exec executable="mvn.bat">
+			<arg line="-o generate-sources"/>
+		</exec>
+	</target>
 	<target name="compile">
 		<exec executable="mvn.bat">
 			<arg line="compile"/>
