@@ -5,4 +5,10 @@
         <from><![CDATA[license-header java merge-point]]></from>
         <to><![CDATA[OpenUSS - Open Source University Support System]]></to>
     </mapping>
+    <mapping>
+        <from><![CDATA[<!-- applicationContext hibernateProperties merge-point -->]]></from>
+        <to><![CDATA[
+        <prop key="hibernate.current_session_context_class">jta</prop>
+        ]]></to>
+    </mapping>
 </mappings>
