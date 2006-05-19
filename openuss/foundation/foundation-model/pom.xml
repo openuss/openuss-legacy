@@ -98,6 +98,10 @@
 		<core.tests.manual.dir>
 			${pom.basedir}/../foundation-core/src/test/java
 		</core.tests.manual.dir>
+		<!-- @TODO: Need to be separated -->
+		<core.tests.generated.dir>
+			${pom.basedir}/../foundation-core/src/test/java
+		</core.tests.generated.dir>
 		<web.generated.dir>
 			${pom.basedir}/../foundation-web/target/src
 		</web.generated.dir>

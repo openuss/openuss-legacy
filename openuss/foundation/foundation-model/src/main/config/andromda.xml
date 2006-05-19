@@ -38,20 +38,25 @@
                 <property name="foreignKeySuffix">_FK</property>
 
                 <property name="hibernateVersion">3</property>
-                <property name="hibernateCacheProvider">org.hibernate.cache.OSCacheProvider</property>
-                <property name="hibernateQueryCacheFactory">org.hibernate.cache.StandardQueryCacheFactory</property>
+                <property name="hibernateCacheProvider">org.hibernate.cache.EhCacheProvider</property>
+
             </properties>
         </namespace>
         
         <namespace name="spring">
             <properties>
+                <property name="mergeMappingsUri">file:${config.dir}/mappings/CoreMergeMappings.xml</property>
+                
+                <property name="tests">${core.tests.generated.dir}</property>
+                <property name="test-impls">${core.tests.manual.dir}</property>
+
             	<!-- Spring Datasource Configuration -->
 
             	<property name="dataSource">java:comp/env/jdbc/openuss</property>
 	          	<property name="username">sysdba</property> 
                 <property name="password">masterkey</property>
                 <property name="driver">org.firebirdsql.jdbc.FBDriver</property>
-                <property name="connectionUrl">jdbc:firebirdsql:localhost:openuss-revo</property>
+                <property name="connectionUrl">jdbc:firebirdsql:localhost:openuss30</property>
 
                 <!-- Spring Outlets Configuration -->
 
@@ -71,15 +76,13 @@
                 <!-- Spring Configuration for proper support of hibernate 3.x -->
 
                 <property name="sessionFactory">org.springframework.orm.hibernate3.LocalSessionFactoryBean</property>
+				
                 <property name="localTransactionManager">org.springframework.orm.hibernate3.HibernateTransactionManager</property>
                 <property name="transactionManager">org.springframework.orm.hibernate3.HibernateTransactionManager</property>
 
                 <!-- Spring Security Configuration -->
-                <property name="acegiServiceSecurity">true</property>
+<!--                <property name="acegiServiceSecurity">false</property>-->
 
-                <property name="mergeMappingsUri">file:${config.dir}/mappings/TestMergeMappings.xml</property>
-                
-                <property name="tests">${core.tests.manual.dir}</property>
             </properties>
         </namespace>
         
@@ -95,19 +98,19 @@
             </properties>
         </namespace>
         
-        <namespace name="jsf">
-        	<properties>
-				<property name="applicationName">openuss</property>
-        		<property name="configuration">${web.generated.dir}</property>
-        		<property name="controllers">${web.generated.dir}</property>
-        		<property name="controller-impls">${web.manual.java.dir}</property>
-        		<property name="managed-beans">${web.generated.dir}</property>
-        		<property name="messages">${web.generated.dir}</property>
-        		<property name="views">${web.generated.dir}</property>
-        		<property name="forms">${web.generated.dir}</property>
-        		<property name="enableFaceletsDevelopmentSupport">true</property>
-        	</properties>
-        </namespace>
+<!--        <namespace name="jsf">-->
+<!--        	<properties>-->
+<!--				<property name="applicationName">openuss</property>-->
+<!--        		<property name="configuration">${web.generated.dir}</property>-->
+<!--        		<property name="controllers">${web.generated.dir}</property>-->
+<!--        		<property name="controller-impls">${web.manual.java.dir}</property>-->
+<!--        		<property name="managed-beans">${web.generated.dir}</property>-->
+<!--        		<property name="messages">${web.generated.dir}</property>-->
+<!--        		<property name="views">${web.generated.dir}</property>-->
+<!--        		<property name="forms">${web.generated.dir}</property>-->
+<!--        		<property name="enableFaceletsDevelopmentSupport">true</property>-->
+<!--        	</properties>-->
+<!--        </namespace>-->
         
         <namespace name="java">
             <properties>
