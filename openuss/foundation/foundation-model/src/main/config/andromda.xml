@@ -45,7 +45,7 @@
         
         <namespace name="spring">
             <properties>
-                <property name="mergeMappingsUri">file:${config.dir}/mappings/CoreMergeMappings.xml</property>
+                <property name="mergeMappingsUri">file:${config.dir}/mappings/TestMergeMappings.xml</property>
                 
                 <property name="tests">${core.tests.generated.dir}</property>
                 <property name="test-impls">${core.tests.manual.dir}</property>
