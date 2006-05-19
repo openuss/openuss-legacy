@@ -5,35 +5,40 @@
  */
 package org.openuss.foundation.lecture;
 
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
-
 
 /**
  * JUnit Test for Spring Hibernate FacultyDao class.
  * @see org.openuss.foundation.lecture.FacultyDao
  */
-public class FacultyDaoTest extends AbstractTransactionalDataSourceSpringContextTests {
+public class FacultyDaoTest extends FacultyDaoTestBase {
 	
-	private FacultyDao facultyDao;
+	public void testFacultyDaoCreate() {
+		Faculty faculty = createTestFaculty();
+		assertNull(faculty.getId());
+		facultyDao.create(faculty);
+		assertNotNull(faculty.getId());
+	}
 	
-	public FacultyDao getFacultyDao() {
-		return facultyDao;
+	public void testUniqueShortcut() {
+		Faculty faculty = createTestFaculty();
+		
+		assertNull(faculty.getId());
+		facultyDao.create(faculty);
+		assertNotNull(faculty.getId());
+		
+		Faculty faculty2 = createTestFaculty();
+		assertNull(faculty2.getId());
+		facultyDao.create(faculty2);
+		assertNotNull(faculty2.getId());
+		
 	}
 
-	public void setFacultyDao(FacultyDao facultyDao) {
-		this.facultyDao = facultyDao;
+	private Faculty createTestFaculty() {
+		Faculty faculty = new FacultyImpl();
+		faculty.setName("name");
+		faculty.setShortcut("shortcut");
+		faculty.setOwner("owner");
+		return faculty;
 	}
-
-	public void testFacultyDaoInjection() {
-		assertNotNull(facultyDao);
-	}
-
-	protected String[] getConfigLocations() {
-		return new String[] { 
-			"classpath*:applicationContext.xml",
-			"classpath*:applicationContext-localDataSource.xml",
-			"classpath*:applicationContext-beans.xml", 
-			"classpath*:beanRefFactory"};
-	}
-
+	
 }

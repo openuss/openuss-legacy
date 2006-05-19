@@ -5,35 +5,43 @@
  */
 package org.openuss.foundation.lecture;
 
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
-
 
 /**
  * JUnit Test for Spring Hibernate SubjectDao class.
  * @see org.openuss.foundation.lecture.SubjectDao
  */
-public class SubjectDaoTest extends AbstractTransactionalDataSourceSpringContextTests {
+public class SubjectDaoTest extends SubjectDaoTestBase {
 	
-	private SubjectDao subjectDao;
+	public FacultyDao facultyDao;
 	
-	public SubjectDao getSubjectDao() {
-		return subjectDao;
+	public void setFacultyDao(FacultyDao facultyDao) {
+		this.facultyDao = facultyDao;
 	}
-
-	public void setSubjectDao(SubjectDao subjectDao) {
-		this.subjectDao = subjectDao;
+	
+	public FacultyDao getFacultyDao() {
+		return facultyDao;
 	}
-
-	public void testSubjectDaoInjection() {
-		assertNotNull(subjectDao);
+	
+	public void testFacultyInjection() {
+		assertNotNull(facultyDao);
 	}
-
-	protected String[] getConfigLocations() {
-		return new String[] { 
-			"classpath*:applicationContext.xml",
-			"classpath*:applicationContext-localDataSource.xml",
-			"classpath*:applicationContext-beans.xml", 
-			"classpath*:beanRefFactory"};
+	
+	public void testSubjectDaoCreate() {
+		// create your faculty
+		Faculty faculty = new FacultyImpl();
+		faculty.setName("name");
+		faculty.setShortcut("shortcut");
+		faculty.setOwner("owner");
+		facultyDao.create(faculty);
+		assertNotNull(faculty.getId());
+		
+		// create a subject
+		Subject subject = new SubjectImpl();
+		subject.setFaculty(faculty);
+		subject.setName("subject");
+		subject.setShortcut("subject");
+		assertNull(subject.getId());
+		subjectDao.create(subject);
+		assertNotNull(subject.getId());
 	}
-
 }

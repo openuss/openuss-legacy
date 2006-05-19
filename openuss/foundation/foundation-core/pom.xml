@@ -62,13 +62,17 @@
 		</dependency>
 
 		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>jaybird</groupId>
 			<artifactId>jaybird-full</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>opensymphony</groupId>
-			<artifactId>oscache</artifactId>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
