@@ -6,13 +6,18 @@
 	</target>
 	<target name="install">
 		<exec executable="mvn.bat">
-			<arg line="-o install"/>
+			<arg line="-e install"/>
 		</exec>
 	</target>
-	<target name="clean">
+	<target name="clean-all">
 		<exec executable="mvn.bat">
 			<arg line="-o clean"/>
 		</exec>
+		<delete verbose="true" includeemptydirs="true">
+			<fileset dir=".">
+				<include name="**/andromda*.log"/>
+			</fileset>
+		</delete>
 	</target>
 	<target name="site">
 		<exec executable="mvn.bat">
