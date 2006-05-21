@@ -45,7 +45,10 @@
 		</url>
 	</scm>
 
+	<!-- Modules -->
+
 	<modules>
+		<module>framework</module>
 		<module>foundation</module>
 	</modules>
 
