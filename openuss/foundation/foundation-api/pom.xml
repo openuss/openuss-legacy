@@ -21,6 +21,11 @@
 			<artifactId>commons-beanutils</artifactId>
 			<version>1.7.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.openuss.framework</groupId>
+			<artifactId>framework-utilities</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
 	</dependencies>
 
 </project>

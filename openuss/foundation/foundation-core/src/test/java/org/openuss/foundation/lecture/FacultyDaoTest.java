@@ -5,6 +5,7 @@
  */
 package org.openuss.foundation.lecture;
 
+import org.springframework.dao.DataAccessException;
 
 /**
  * JUnit Test for Spring Hibernate FacultyDao class.
@@ -30,11 +31,20 @@ public class FacultyDaoTest extends FacultyDaoTestBase {
 		assertNull(faculty2.getId());
 		facultyDao.create(faculty2);
 		assertNotNull(faculty2.getId());
-		
+
+		try {
+			setComplete();
+			endTransaction();
+			fail();
+		} catch (DataAccessException e) {
+			// success - unique constraint  
+		}
 	}
 
 	private Faculty createTestFaculty() {
-		Faculty faculty = new FacultyImpl();
+//		String className = FacultyBase.Factory.class.getName();
+//		System.out.println(className);
+		Faculty faculty = Faculty.Factory.newInstance();
 		faculty.setName("name");
 		faculty.setShortcut("shortcut");
 		faculty.setOwner("owner");

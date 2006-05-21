@@ -71,7 +71,7 @@
 
                 <property name="hibernateDialect">org.hibernate.dialect.FirebirdDialect</property>
                 <property name="hibernateHbm2DDLAuto">create</property>
-                <property name="hibernateShowSql">true</property>
+                <property name="hibernateShowSql">false</property>
 
                 <!-- Spring Configuration for proper support of hibernate 3.x -->
 
@@ -88,10 +88,12 @@
         
         <namespace name="hibernate">
             <properties>
+                <property name="mergeMappingsUri">file:${config.dir}/mappings/HibernateMergeMappings.xml</property>
                 <property name="defaultHibernateGeneratorClass">sequence</property>
                 <property name="hibernateTypeMappingsUri">Hibernate</property>
-                <property name="entities">${api.generated.dir}</property>
+                <property name="entities">${core.generated.dir}</property>
                 <property name="entity-impls">${core.manual.dir}</property>   
+                <property name="entity-interfaces">${api.generated.dir}</property>
                 <property name="entity-mappings">${core.generated.dir}</property>
                 <property name="user-types">${core.generated.dir}</property>
 
