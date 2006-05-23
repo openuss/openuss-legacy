@@ -45,6 +45,7 @@
 		<module>foundation-model</module>
 		<module>foundation-api</module>
 		<module>foundation-core</module>
+		<module>foundation-web</module>
 	</modules>
 
 </project>
