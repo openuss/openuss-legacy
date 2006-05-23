@@ -23,4 +23,24 @@
 			<arg value="-Dpackaging=jar"/>
 		</exec>
 	</target>
+	<target name="tomahawk">
+		<exec executable="mvn.bat">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./myfaces/tomahawk-1.1.2.jar"/>
+			<arg value="-DgroupId=org.apache.myfaces.tomahawk"/>
+			<arg value="-DartifactId=tomahawk"/>
+			<arg value="-Dversion=1.1.2"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+	<target name="tomahawk-javadoc">
+		<exec executable="mvn.bat">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./myfaces/tomahawk-1.1.2.jar"/>
+			<arg value="-DgroupId=org.apache.myfaces.tomahawk"/>
+			<arg value="-DartifactId=tomahawk"/>
+			<arg value="-Dversion=1.1.2"/>
+			<arg value="-Dpackaging=javadoc"/>
+		</exec>
+	</target>
 </project>
