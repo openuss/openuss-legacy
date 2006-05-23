@@ -11,12 +11,12 @@
 	</target>
 	<target name="install">
 		<exec executable="mvn.bat">
-			<arg line="-e install"/>
+			<arg line="install"/>
 		</exec>
 	</target>
 	<target name="eclipse">
 		<exec executable="mvn.bat">
-			<arg line="eclipse:eclipse"/>
+			<arg line="eclipse:eclipse -DdownloadSources=true -Dwtpversion=1.0"/>
 		</exec>
 	</target>
 	<target name="tomcat start">
