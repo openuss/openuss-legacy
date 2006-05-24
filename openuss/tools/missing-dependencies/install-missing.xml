@@ -2,6 +2,8 @@
 	<target name="install-all">
 		<antcall target="jaybird"/>
 		<antcall target="jta"/>
+		<antcall target="tomahawk"/>
+		<antcall target="tomahawk-javadoc"/>
 	</target>
 	<target name="jaybird">
 		<exec executable="mvn.bat">
