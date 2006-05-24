@@ -1,4 +1,4 @@
-<project name="install-mising-files" default="install-all" basedir=".">
+<project name="openuss :: tools :: install-mising-files" default="install-all" basedir=".">
 	<target name="install-all">
 		<antcall target="jaybird"/>
 		<antcall target="jta"/>
@@ -20,7 +20,7 @@
 			<arg value="install:install-file"/>
 			<arg value="-Dfile=./javax.transaction/jta-1.0.1B.jar"/>
 			<arg value="-DgroupId=javax.transaction"/>
-			<arg value="-DartifactId=jtal"/>
+			<arg value="-DartifactId=jta"/>
 			<arg value="-Dversion=1.0.1B"/>
 			<arg value="-Dpackaging=jar"/>
 		</exec>
