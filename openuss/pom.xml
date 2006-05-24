@@ -138,14 +138,14 @@
 			<dependency>
 				<groupId>org.andromda.profiles.uml14</groupId>
 				<artifactId>andromda-profile</artifactId>
-				<version>3.2-RC1-SNAPSHOT</version>
+				<version>3.2-SNAPSHOT</version>
 				<type>xml.zip</type>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.andromda</groupId>
 				<artifactId>andromda-core</artifactId>
-				<version>3.2-RC1-SNAPSHOT</version>
+				<version>3.2-SNAPSHOT</version>
 				<exclusions>
 					<exclusion>
 						<groupId>xml-apis</groupId>
@@ -168,41 +168,41 @@
 			<dependency>
 				<groupId>org.andromda.translationlibraries</groupId>
 				<artifactId>andromda-ocl-translation-core</artifactId>
-				<version>3.2-RC1-SNAPSHOT</version>
+				<version>3.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.andromda.translationlibraries</groupId>
 				<artifactId>andromda-ocl-validation-library</artifactId>
-				<version>3.2-RC1-SNAPSHOT</version>
+				<version>3.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.andromda.cartridges</groupId>
 				<artifactId>andromda-spring-cartridge</artifactId>
-				<version>3.2-RC1-SNAPSHOT</version>
+				<version>3.2-SNAPSHOT</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.andromda.cartridges</groupId>
 				<artifactId>andromda-hibernate-cartridge</artifactId>
-				<version>3.2-RC1-SNAPSHOT</version>
+				<version>3.2-SNAPSHOT</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.andromda.cartridges</groupId>
 				<artifactId>andromda-jsf-cartridge</artifactId>
-				<version>3.2-RC1-SNAPSHOT</version>
+				<version>3.2-SNAPSHOT</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.andromda.cartridges</groupId>
 				<artifactId>andromda-java-cartridge</artifactId>
-				<version>3.2-RC1-SNAPSHOT</version>
+				<version>3.2-SNAPSHOT</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.andromda.translationlibraries</groupId>
 				<artifactId>andromda-ocl-query-library</artifactId>
-				<version>3.2-RC1-SNAPSHOT</version>
+				<version>3.2-SNAPSHOT</version>
 				<scope>runtime</scope>
 			</dependency>
 		</dependencies>
@@ -225,7 +225,7 @@
 					<artifactId>
 						andromda-multi-source-plugin
 					</artifactId>
-					<version>3.2-RC1-SNAPSHOT</version>
+					<version>3.2-SNAPSHOT</version>
 					<executions>
 						<execution>
 							<id>add-source</id>
@@ -243,12 +243,12 @@
 				<plugin>
 					<groupId>org.andromda.maven.plugins</groupId>
 					<artifactId>andromda-maven-plugin</artifactId>
-					<version>3.2-RC1-SNAPSHOT</version>
+					<version>3.2-SNAPSHOT</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>andromdapp-maven-plugin</artifactId>
-					<version>3.2-RC1-SNAPSHOT</version>
+					<version>3.2-SNAPSHOT</version>
 				</plugin>
 				<plugin>
 					<inherited>true</inherited>
@@ -366,20 +366,22 @@
 
 	<repositories>
 		<repository>
-			<id>andromda</id>
-			<name>AndroMDA Repository</name>
-			<url>http://team.andromda.org/maven2</url>
-		</repository>
-		<repository>
 			<id>ibiblio</id>
 			<name>ibiblio</name>
 			<url>http://repo1.ibilio.org/maven2</url>
+			<releases><enabled>true</enabled></releases>
+			<snapshots><enabled>true</enabled></snapshots>
+		</repository>
+		<repository>
+			<id>andromda</id>
+			<name>AndroMDA Repository</name>
+			<url>http://team.andromda.org/maven2</url>
+			<snapshots><enabled>true</enabled></snapshots>
 		</repository>
 		<repository>
 			<id>myfaces-apache</id>
 			<name>myfaces-apache</name>
-			<url>
-				http://myfaces.zones.apache.org/dist/maven-repository/
+			<url>http://myfaces.zones.apache.org/dist/maven-repository/
 			</url>
 		</repository>
 		<repository>
@@ -393,6 +395,7 @@
 			<id>andromda</id>
 			<name>AndroMDA Repository</name>
 			<url>http://team.andromda.org/maven2</url>
+			<snapshots><enabled>true</enabled></snapshots>
 		</pluginRepository>
 	</pluginRepositories>
 	<prerequisites>
