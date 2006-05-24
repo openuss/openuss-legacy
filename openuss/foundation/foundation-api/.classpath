@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="target/src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry sourcepath="M2_REPO/commons-logging/commons-logging/1.0.3/commons-logging-1.0.3-sources.jar" kind="var" path="M2_REPO/commons-logging/commons-logging/1.0.3/commons-logging-1.0.3.jar"/>
-	<classpathentry sourcepath="M2_REPO/junit/junit/3.8.2/junit-3.8.2-sources.jar" kind="var" path="M2_REPO/junit/junit/3.8.2/junit-3.8.2.jar"/>
-	<classpathentry sourcepath="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0-sources.jar" kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/framework-utilities"/>
-	<classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="src" path="target/src"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.0.3/commons-logging-1.0.3.jar"/>
+  <classpathentry kind="src" path="/framework-utilities"/>
+  <classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/3.8.2/junit-3.8.2.jar"/>
 </classpath>

@@ -1,7 +1,9 @@
 <projectDescription>
   <name>foundation-api</name>
   <comment/>
-  <projects/>
+  <projects>
+    <project>framework-utilities</project>
+  </projects>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>
