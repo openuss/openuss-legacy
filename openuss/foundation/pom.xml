@@ -21,26 +21,6 @@
 		<url>http://openuss.sourceforge.net</url>
 	</organization>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.andromda.maven.plugins</groupId>
-				<artifactId>andromda-multi-source-plugin</artifactId>
-			</plugin>
-		</plugins>
-		<resources>
-            <resource>
-                <directory>target/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-	</build>
-
 	<modules>
 		<module>foundation-model</module>
 		<module>foundation-api</module>

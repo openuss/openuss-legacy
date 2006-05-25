@@ -96,18 +96,23 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring</artifactId>
-				<version>[2.0-m1,)</version>
+				<version>2.0-m4</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-hibernate3</artifactId>
-				<version>[2.0-m1,)</version>
+				<version>2.0-m4</version>
 				<exclusions>
 					<exclusion>
 						<groupId>javax.persistence</groupId>
 						<artifactId>ejb</artifactId>
 					</exclusion>
 				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-mock</artifactId>
+				<version>2.0-m4</version>
 			</dependency>
 
 			<dependency>
@@ -122,11 +127,6 @@
 				<version>1.2</version>
 			</dependency>
 
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-mock</artifactId>
-				<version>[2.0-m1,)</version>
-			</dependency>
 
 			<dependency>
 				<groupId>log4j</groupId>
@@ -222,26 +222,6 @@
 			<plugins>
 				<plugin>
 					<groupId>org.andromda.maven.plugins</groupId>
-					<artifactId>
-						andromda-multi-source-plugin
-					</artifactId>
-					<version>3.2-SNAPSHOT</version>
-					<executions>
-						<execution>
-							<id>add-source</id>
-							<goals>
-								<goal>add-source</goal>
-							</goals>
-							<configuration>
-								<sourceDirectories>
-									<directory>target/src</directory>
-								</sourceDirectories>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.andromda.maven.plugins</groupId>
 					<artifactId>andromda-maven-plugin</artifactId>
 					<version>3.2-SNAPSHOT</version>
 				</plugin>
@@ -250,77 +230,46 @@
 					<artifactId>andromdapp-maven-plugin</artifactId>
 					<version>3.2-SNAPSHOT</version>
 				</plugin>
-				<plugin>
-					<inherited>true</inherited>
-					<groupId>org.codehaus.cargo</groupId>
-					<artifactId>cargo-maven2-plugin</artifactId>
-					<executions>
-						<execution>
-							<id>verify-deploy</id>
-							<phase>install</phase>
-							<goals>
-								<goal>deployer-deploy</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>clean-undeploy</id>
-							<phase>pre-clean</phase>
-							<goals>
-								<goal>deployer-undeploy</goal>
-							</goals>
-						</execution>
-					</executions>
-
-					<configuration>
-
-						<!-- Container Configuration -->
-						<container>
-							<containerId>tomcat5x</containerId>
-							<type>remote</type>
-						</container>
-
-						<!-- Configuration to use with the container -->
-						<configuration>
-							<type>runtime</type>
-							<properties>
-								<cargo.tomcat.manager.url>
-									http://localhost:8080/manager
-								</cargo.tomcat.manager.url>
-								<cargo.remote.username>
-									manager
-								</cargo.remote.username>
-								<cargo.remote.password>
-									manager
-								</cargo.remote.password>
-							</properties>
-						</configuration>
-
-						<!-- Deployer and Deployables configuration -->
-						<deployer>
-							<type>remote</type>
-							<deployables>
-								<deployable>
-									<groupId>${pom.groupId}</groupId>
-									<artifactId>
-										${pom.artifactId}
-									</artifactId>
-									<type>war</type>
-								</deployable>
-							</deployables>
-						</deployer>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>tomcat-maven-plugin</artifactId>
-					<configuration>
-						<mode>both</mode>
-					</configuration>
-					<version>1.0-SNAPSHOT</version>
-				</plugin>
 			</plugins>
+
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.andromda.maven.plugins</groupId>
+				<artifactId>andromda-multi-source-plugin</artifactId>
+				<version>3.2-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sourceDirectories>
+								<directory>target/src</directory>
+							</sourceDirectories>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<configuration>
+							<target></target>
+							<testSourceRoot>
+								${project.build.directory}/test-src
+							</testSourceRoot>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -330,6 +279,17 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+            <resource>
+                <directory>target/src</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
 	</build>
 
 	<reporting>
@@ -369,19 +329,26 @@
 			<id>ibiblio</id>
 			<name>ibiblio</name>
 			<url>http://repo1.ibilio.org/maven2</url>
-			<releases><enabled>true</enabled></releases>
-			<snapshots><enabled>true</enabled></snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>andromda</id>
 			<name>AndroMDA Repository</name>
 			<url>http://team.andromda.org/maven2</url>
-			<snapshots><enabled>true</enabled></snapshots>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>myfaces-apache</id>
 			<name>myfaces-apache</name>
-			<url>http://myfaces.zones.apache.org/dist/maven-repository/
+			<url>
+				http://myfaces.zones.apache.org/dist/maven-repository/
 			</url>
 		</repository>
 		<repository>
@@ -392,10 +359,23 @@
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
+			<id>ibiblio</id>
+			<name>ibiblio</name>
+			<url>http://repo1.ibilio.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
 			<id>andromda</id>
 			<name>AndroMDA Repository</name>
 			<url>http://team.andromda.org/maven2</url>
-			<snapshots><enabled>true</enabled></snapshots>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
 	<prerequisites>

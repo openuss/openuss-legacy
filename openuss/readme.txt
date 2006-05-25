@@ -17,7 +17,7 @@ url:	 	jdbc:firebirdsql:localhost:openuss30
 user: 		sysdba
 password:	masterkey
 
-
+The database schema will be created automatically by hibernate.
 
 Building:
 -----------
