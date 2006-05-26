@@ -11,7 +11,7 @@ Java SE 5 Update 6
 Ant 1.6.5
 Firebird 1.5.3
 
-Installed empty Firebird Database that is reachable with 
+Installed empty Firebird Database that is reachable at 
 
 url:	 	jdbc:firebirdsql:localhost:openuss30
 user: 		sysdba
@@ -31,3 +31,7 @@ mvn clean
 
 3. Building current source folder
 mvn install
+
+Maybe something maven doesn't work properly and cannot download arbitrary artifacts. 
+This may happen through network issues. Be insistent and try "mvn install" several times. 
+You will see the process will get each time a little bit farther.
