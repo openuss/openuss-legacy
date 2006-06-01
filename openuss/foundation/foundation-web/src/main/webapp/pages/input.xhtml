@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 	xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core">
+
+	<f:loadBundle basename="resources" var="msg"/>
+	
+	<ui:composition template="common.xhtml">
+		<ui:define name="body">
+			<form jsfc="h:form" id="welcome">
+				#{msg.firstName}
+				<input class="forminputsmall" jsfc="h:inputText" required="false" id="firstName" value="#{person.firstName}" />
+				<h:message id="firstNameError" showSummary="true" showDetail="false" style="color:ref; font-weight: bold;" for="firstName"/>
+				<br/>
+				#{msg.lastName}
+				<input class="forminputsmall" jsfc="h:inputText" required="true" id="lastName" value="#{person.name}" />
+				<h:message id="nameError" showSummary="true" showDetail="false" style="color:red; font-weight: bold;" for="lastName"/>
+				<br/>
+				<input class="forminputsmall" jsfc="h:commandButton" id="submit" action="greeting" value="#{msg.cmd}"/>
+			</form>
+		</ui:define>
+	</ui:composition>		
+</html>

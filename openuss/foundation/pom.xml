@@ -14,7 +14,7 @@
 	<artifactId>openuss-foundation</artifactId>
 	<name>OpenUSS - Foundation</name>
 	<packaging>pom</packaging>
-	<url>http://openuss.sf.net</url>
+	<url>http://openuss.sourceforge.net</url>
 
 	<organization>
 		<name>openuss</name>
@@ -25,7 +25,7 @@
 		<module>foundation-model</module>
 		<module>foundation-api</module>
 		<module>foundation-core</module>
-<!--		<module>foundation-web</module>-->
+		<module>foundation-web</module>
 	</modules>
 
 </project>

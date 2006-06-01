@@ -14,4 +14,10 @@
 			<arg line="install"/>
 		</exec>
 	</target>
+	<target name="eclipse">
+		<exec executable="mvn.bat">
+			<arg line="eclipse:clean eclipse:eclipse" />
+			<arg line="-DdownloadSources=true" />
+		</exec>
+	</target>
 </project>

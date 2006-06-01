@@ -2,8 +2,8 @@
   <name>foundation-core</name>
   <comment/>
   <projects>
-    <project>framework-utilities</project>
     <project>foundation-api</project>
+    <project>framework-utilities</project>
   </projects>
   <buildSpec>
     <buildCommand>
