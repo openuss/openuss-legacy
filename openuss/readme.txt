@@ -26,7 +26,7 @@ Building:
 -----------
 
 1. Install missing libraries.
-You call install needed libraries that currently cannot find in public repositories.
+You call install needed libraries that currently cannot be found in public repositories.
 To install these libraries run the install-missing ant script from {openuss}/tools/missing-dependencies} folder.
 
 2. Cleaning current source folder
@@ -35,6 +35,6 @@ mvn clean
 3. Building current source folder
 mvn install
 
-Maybe something maven doesn't work properly and cannot download arbitrary artifacts. 
+May be sometimes maven does not work properly and cannot download arbitrary artifacts. 
 This may happen through network issues. Be insistent and try "mvn install" several times. 
-You will see the process will get each time a little bit farther.
+You will see the process will get each time a little bit further.
