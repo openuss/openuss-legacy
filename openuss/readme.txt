@@ -19,6 +19,9 @@ password:	masterkey
 
 The database schema will be created automatically by hibernate.
 
+Be sure that the java command at your shell points to Java SE 5. 
+Check it by typing java -version into your shell.
+
 Building:
 -----------
 

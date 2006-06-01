@@ -114,6 +114,11 @@
 				<artifactId>spring-mock</artifactId>
 				<version>2.0-m4</version>
 			</dependency>
+			<dependency>
+				<groupId>org.acegisecurity</groupId>
+				<artifactId>acegi-security</artifactId>
+				<version>[1.0.0-RC2,)</version>
+			</dependency>
 
 			<dependency>
 				<groupId>jaybird</groupId>
@@ -326,7 +331,7 @@
 
 	<repositories>
 		<repository>
-			<id>ibiblio</id>
+			<id>central</id>
 			<name>ibiblio</name>
 			<url>http://www.ibiblio.org/maven2</url>
 			<releases>
@@ -335,6 +340,12 @@
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
+		</repository>
+		<repository>
+			<id>java.net</id>
+			<name>maven-repository.dev.java.net</name>
+			<url>https://maven-repository.dev.java.net/nonav/repository/</url>
+			<layout>legacy</layout>
 		</repository>
 		<repository>
 			<id>andromda</id>
