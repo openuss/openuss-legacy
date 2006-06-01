@@ -4,6 +4,8 @@
 		<antcall target="jta"/>
 		<antcall target="tomahawk"/>
 		<antcall target="tomahawk-javadoc"/>
+		<antcall target="el-api"/>
+		<antcall target="el-ri"/>
 	</target>
 	<target name="jaybird">
 		<exec executable="mvn.bat">
@@ -43,6 +45,26 @@
 			<arg value="-DartifactId=tomahawk"/>
 			<arg value="-Dversion=1.1.2"/>
 			<arg value="-Dpackaging=javadoc"/>
+		</exec>
+	</target>
+	<target name="el-api">
+		<exec executable="mvn.bat">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./javax.el/el-api.jar"/>
+			<arg value="-DgroupId=javax.el"/>
+			<arg value="-DartifactId=el-api"/>
+			<arg value="-Dversion=1.0"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+	<target name="el-ri">
+		<exec executable="mvn.bat">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./javax.el/el-ri.jar"/>
+			<arg value="-DgroupId=com.sun.el"/>
+			<arg value="-DartifactId=el-ri"/>
+			<arg value="-Dversion=1.0"/>
+			<arg value="-Dpackaging=jar"/>
 		</exec>
 	</target>
 </project>
