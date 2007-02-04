@@ -20,7 +20,7 @@ public class RepositoryFileImpl extends org.openuss.repository.RepositoryFileBas
 	 */
 	private static final long serialVersionUID = -3666297282956508661L;
 
-	private InputStream inputStream;
+	private transient InputStream inputStream;
 
 	/**
 	 * @see org.openuss.repository.File#getInputStream()

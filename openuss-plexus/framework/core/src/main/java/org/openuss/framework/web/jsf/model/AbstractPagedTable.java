@@ -171,7 +171,7 @@ public abstract class AbstractPagedTable<T> extends BaseBean{
 	 * Memento of the PagedTable representing its current internal state 
 	 * @author Ingo Dueppe
 	 */
-	private class PagedTableMemento implements Serializable {
+	private static class PagedTableMemento implements Serializable {
 
 		private static final long serialVersionUID = -4565453284559704002L;
 		

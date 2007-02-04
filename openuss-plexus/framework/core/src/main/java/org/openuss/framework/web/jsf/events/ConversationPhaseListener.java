@@ -26,7 +26,7 @@ public class ConversationPhaseListener implements PhaseListener {
 
 	private static final long serialVersionUID = 1050736639917655781L;
 	
-	private PageActionManager actionManager;
+	private transient PageActionManager actionManager;
 	
 
 	public void afterPhase(PhaseEvent event) {

@@ -33,8 +33,8 @@ public class AspirantsPage extends AbstractLecturePage {
 
 	private AspirantDataProvider data = new AspirantDataProvider();
 	
-	private transient Set<UserInfo> acceptAspirants = new HashSet<UserInfo>();
-	private transient Set<UserInfo> rejectAspirants = new HashSet<UserInfo>();
+	private Set<UserInfo> acceptAspirants = new HashSet<UserInfo>();
+	private Set<UserInfo> rejectAspirants = new HashSet<UserInfo>();
 	
 	public String save() {
 		for (UserInfo userInfo : acceptAspirants) {

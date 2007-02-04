@@ -236,7 +236,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	protected void handleSaveGroup(Group group) throws Exception {
 		String name = group.getName();
 		if (!name.startsWith(GROUP_PREFIX) && !name.startsWith(ROLE_PREFIX)) {
-			name = GROUP_PREFIX + name;
+			group.setName(GROUP_PREFIX + name);
 		}
 		
 		getGroupDao().update(group);
@@ -316,7 +316,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	@Override
 	protected void handleSetLoginTime(User user) throws Exception {
 		User u = getUserDao().load(user.getId());
-		if (user == null) {
+		if (u == null) {
 			logger.error("couldn't find user with id "+user.getId());
 			throw new SecurityServiceException("Couldn't find user with id "+user.getId());
 		}
