@@ -38,10 +38,10 @@ public class UserProfilePage extends BasePage{
 	private User user;
 	
 	@Property (value="#{securityService}")
-	transient private SecurityService securityService;
+	private SecurityService securityService;
 	
 	@Property(value = "#{uploadFileManager}")
-	transient private UploadFileManager uploadFileManager;
+	private UploadFileManager uploadFileManager;
 	
 	@Property(value = "#{navigator}")
 	private Navigator navigator;

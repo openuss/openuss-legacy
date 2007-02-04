@@ -40,11 +40,12 @@ public class LogFilter implements Filter {
 		if (securityContext != null && securityContext.getAuthentication() != null) {
 			logger.debug("--------> "+securityContext.getAuthentication().getName() );
 			GrantedAuthority[] authorities = securityContext.getAuthentication().getAuthorities();
-			String auth = "";
+			StringBuilder auth = new StringBuilder();
 			for (GrantedAuthority authority : authorities) {
-				auth += authority.getAuthority().toString()+ " | ";
+				auth.append(authority.getAuthority());
+				auth.append("|");
 			}
-			logger.debug("--------> "+auth);
+			logger.debug("--------> "+auth.toString());
 		} else {
 			logger.debug("--------> "+securityContext);
 		}

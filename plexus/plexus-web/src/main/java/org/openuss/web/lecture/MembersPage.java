@@ -50,7 +50,7 @@ public class MembersPage extends AbstractLecturePage {
 
 	private List facultyGroups;
 	
-	private transient Set<FacultyMember> changedMembers = new HashSet<FacultyMember>();
+	private  Set<FacultyMember> changedMembers = new HashSet<FacultyMember>();
 
 	private String username;
 

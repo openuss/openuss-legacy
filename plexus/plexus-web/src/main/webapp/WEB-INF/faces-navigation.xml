@@ -191,10 +191,12 @@
 	
 	<navigation-rule>
 		<from-view-id>/views/secured/*</from-view-id>
+		
 		<navigation-case>
 			<from-outcome>user_bookmarks</from-outcome>
 			<to-view-id>/views/sercured/user/profile.xhtml</to-view-id>
 		</navigation-case>
+		
 		<navigation-case>
 			<from-outcome>faculty_create</from-outcome>
 			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
@@ -203,6 +205,7 @@
 	
 	<navigation-rule>
 		<from-view-id>/views/secured/user/newPassword.xhtml</from-view-id>
+		
 		<navigation-case>
 			<from-outcome>success</from-outcome>
 			<to-view-id>/views/secured/desktop/desktop</to-view-id>

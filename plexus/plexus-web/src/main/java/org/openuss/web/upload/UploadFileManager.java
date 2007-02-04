@@ -29,7 +29,7 @@ public class UploadFileManager extends BaseBean{
 	private List<RepositoryFile> files;
 	
 	@Property (value="#{repositoryService}")
-	transient private RepositoryService repository;
+	private RepositoryService repository;
 	
 	public UploadFileManager() {
 		files = new ArrayList<RepositoryFile>();

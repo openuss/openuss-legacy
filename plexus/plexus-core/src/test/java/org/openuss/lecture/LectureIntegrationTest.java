@@ -171,8 +171,8 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		assertNull(lectureService.getEnrollment(enrollment.getId()));
 		
 		faculty = lectureService.getFaculty(faculty.getId());
-		period = lectureService.getPeriod(period.getId());
-		subject = lectureService.getSubject(subject.getId());
+		lectureService.getPeriod(period.getId());
+		lectureService.getSubject(subject.getId());
 		assertEquals(1, faculty.getEnrollments().size());
 		
 		// remove faculty

@@ -30,7 +30,7 @@ public class RepositoryServlet extends HttpServlet {
 
 	private static final Logger logger = Logger.getLogger(RepositoryServlet.class);
 	
-	private RepositoryService repository;
+	private transient RepositoryService repository;
 
 	@Override
 	public void init() throws ServletException {

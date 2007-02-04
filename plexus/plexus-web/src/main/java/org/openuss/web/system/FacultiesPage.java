@@ -39,7 +39,7 @@ public class FacultiesPage extends BasePage{
 	@Property (value="#{lectureService}")
 	private LectureService lectureService;
 	
-	private transient Set<FacultyDetails> changedFaculties = new HashSet<FacultyDetails>();
+	private Set<FacultyDetails> changedFaculties = new HashSet<FacultyDetails>();
 
 	private FacultyDataProvider provider = new FacultyDataProvider();
 
