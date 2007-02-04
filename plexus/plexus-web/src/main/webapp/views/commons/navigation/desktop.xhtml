@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+	<div id="navigation_box">
+		<h:form id="navigationDesktop">
+			<t:panelNavigation2 id="desktop" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator" >
+				<t:commandNavigation2 value="#{msg['desktop_navigation_header']}" action="desktop">
+					<s:authorize ifAllGranted="ROLE_USER">
+						<t:commandNavigation2 value="#{msg['desktop_command_userprofile']}" action="user_logindata" >
+							<t:commandNavigation2 action="user_logindata" activeOnViewIds="/views/secured/user/logindata.xhtml" >
+								<h:outputText value="#{msg['user_profile_login_header']}" />
+							</t:commandNavigation2>
+							<t:commandNavigation2 action="user_contactdata" activeOnViewIds="/views/secured/user/contactdata.xhtml">
+								<h:outputText value="#{msg['user_profile_contact_header']}" />
+							</t:commandNavigation2>
+							<t:commandNavigation2 action="user_preferences" activeOnViewIds="/views/secured/user/preferences.xhtml">
+								<h:outputText value="#{msg['user_profile_preferences_header']}" />
+							</t:commandNavigation2>
+							<t:commandNavigation2 action="user_profile" activeOnViewIds="/views/secured/user/profile.xhtml">
+								<h:outputText value="#{msg['user_profile_profile_header']}" />
+							</t:commandNavigation2>
+							<t:commandNavigation2 action="#{views$secured$user$profile.showProfile}" activeOnViewIds="/views/public/user/userprofile.xhtml"> 
+								<h:outputText value="#{msg['user_profile_command_preview']}" />
+							</t:commandNavigation2>
+						</t:commandNavigation2>
+						<t:commandNavigation2 value="#{msg['desktop_command_bookmarks']}" activeOnViewIds="/views/secured/desktop/desktop.xhtml" action="desktop"/>
+					</s:authorize>
+					<t:commandNavigation2 value="#{msg['welcome_search_faculty']}" action="search_faculties" activeOnViewIds="/views/public/faculty/faculties.xhtml"/>
+					<s:authorize ifAllGranted="ROLE_ASSISTANT">
+						<t:commandNavigation2 value="#{msg['desktop_command_faculty_create']}" action="faculty_create"/>
+					</s:authorize>
+				</t:commandNavigation2>
+			</t:panelNavigation2>	
+		</h:form>
+	</div>
+</ui:composition>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<document>
+
+    <properties>
+        <author email="isarsu[at]sourceforge[dot]net">Arne Sutor</author>
+        <title>License</title>
+    </properties>
+
+    <body>
+		<section name="License Policy">
+			<p>
+				Our license based on GPL (GNU General Public License).<br/>
+				For more information about Open Source Software, please refer this site: <a href="http://www.opensource.org/">www.opensource.org</a>.
+			</p>
+		</section>
+    </body>
+</document>

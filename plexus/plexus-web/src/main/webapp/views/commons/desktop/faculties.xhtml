@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+    <t:dataTable id="faculties" 
+		var="faculty"
+		value="#{desktop.faculties}"
+		styleClass="table"
+		binding="#{views$secured$desktop$desktop.facultyTable}"
+		headerClass="tableHeader"
+		footerClass="tableFooter"
+		rowClasses="odd, even"
+		columnClasses="links,commands,commands"
+		preserveDataModel="false"
+		preserveSort="false"
+		rows="5"
+		cellspacing="1">
+	  
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="#{msg.desktop_faculties_colheader_name}"/>
+			</f:facet>
+			<h:commandLink action="#{views$secured$desktop$desktop.showFaculty}" styleClass="command" title="#{faculty.ownername}">
+				<h:outputText value="#{faculty.name} (#{faculty.shortcut})"/>
+			</h:commandLink>
+		</h:column>
+		
+		<plexus:column header="#{msg.commands_header}">
+			<plexus:command
+				bean="#{views$secured$desktop$desktop}"
+				action="removeFaculty"
+				label="#{msg.desktop_faculties_command_remove}"
+				hint="#{msg.desktop_faculties_command_remove_hint}"
+				styleClass="button_unlink"/>
+		</plexus:column>
+		 
+	</t:dataTable>
+
+	<plexus:dataScroller for="faculties" pages="5"/>
+	
+	
+</ui:composition>

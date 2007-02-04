@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+    <bean id="mailEngine" class="org.openuss.framework.mail.MailEngine">
+        <property name="mailSender" ref="mailSender"/>
+        <property name="velocityEngine" ref="velocityEngine"/>
+        <property name="defaultFrom" value="no-reply@openuss.org"/>
+    </bean>
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="127.0.0.1"/>
+        <property name="username" value="no-reply@openuss-plexus.org"/>
+        <property name="password" value="plexus"/>
+    </bean>
+
+    <!-- Configure Velocity for sending e-mail -->
+    <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+        <property name="velocityProperties">
+            <props>
+                <prop key="resource.loader">class</prop>
+                <prop key="class.resource.loader.class">
+                    org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+                </prop>
+                <prop key="velocimacro.library"></prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage" singleton="false">
+        <property name="from" value="no-reply@openuss.org"/>
+    </bean>
+    
+    
+    <bean id="mimeMessage" class="javax.mail.internet.MimeMessage" singleton="false" factory-bean="mailSender" factory-method="createMimeMessage">
+    </bean>
+
+    <bean id="mimeMessageHelper" class="org.springframework.mail.javamail.MimeMessageHelper" singleton="false">
+    	<constructor-arg>
+    		<ref bean="mimeMessage"/>
+    	</constructor-arg>
+    </bean>
+    
+</beans>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      Security
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+    
+    <bean id="user" class="org.openuss.security.UserImpl"/>
+    <bean id="userContact" class="org.openuss.security.UserContactImpl"/>
+    <bean id="userPreferences" class="org.openuss.security.UserPreferencesImpl"/>
+    <bean id="userProfile" class="org.openuss.security.UserProfileImpl"/>
+
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      Lecture
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+
+	<bean id="faculty" class="org.openuss.lecture.FacultyImpl"/>
+	<bean id="subject" class="org.openuss.lecture.SubjectImpl" singleton="false"/>
+	<bean id="period" class="org.openuss.lecture.PeriodImpl" singleton="false"/>
+	<bean id="enrollment" class="org.openuss.lecture.EnrollmentImpl" singleton="false"/>
+
+
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      News
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+    <bean id="newsItem" class="org.openuss.news.NewsItemImpl"/>
+
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      Discussion
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+	<bean id="discussionAttachment" class="org.openuss.discussion.AttachmentImpl"/>
+	<bean id="discussion" class="org.openuss.discussion.DiscussionImpl"/>
+	<bean id="discussionWatch" class="org.openuss.discussion.DiscussionWatchImpl"/>
+	<bean id="discussionFormula" class="org.openuss.discussion.FormulaImpl"/>
+	<bean id="discussionForum" class="org.openuss.discussion.ForumImpl"/>
+	<bean id="discussionTopic" class="org.openuss.discussion.TopicImpl"/>
+	
+
+</beans>

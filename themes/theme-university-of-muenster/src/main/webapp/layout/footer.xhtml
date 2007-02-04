@@ -1,0 +1,77 @@
+<f:subview
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core">
+	  
+	  <div class="start">
+		<ul class="start_back">
+			<li>
+				<h:outputLink id="pagebackLink" value="javascript:history.back()">
+					<h:outputText value="${lang_main.footer_backward} "/>
+				</h:outputLink>
+			</li>
+		</ul>	  
+	  </div>
+	  
+	  <div class="end">
+			<ul class="none">
+				<li>
+					<h:outputLink id="pageupLink" value="#pageup" styleClass="linkup">
+						<h:graphicImage value="/images/sign_pageup.gif" 
+										alt=":: ${lang_main.footer_pageup}" 
+										title="${lang_main.footer_pageup}"/>
+						<h:outputText value="${lang_main.footer_pageup}"/>
+					</h:outputLink>
+				</li>
+				<li>
+				    <small>Debug: Ctrl+Shift+Q<ui:debug hotkey="Q" rendered="true"/></small>
+				</li>
+			</ul>
+	  </div>
+	  
+	  <div class="center">
+	        <div class="footer_bar H"></div>
+			<div class="footer_icons">
+				<form id="footerOptionForm"> 
+					<ul>
+						<li>
+							<h:outputText value="${lang_main.footer_thisPage}"></h:outputText>
+						</li>
+						<li>
+							<h:outputLink id="print" value="javascript:window.print()">
+								<h:graphicImage value="/images/sign_print.gif" 
+												alt=":: ${lang_main.footer_print}" 
+												title="${lang_main.footer_print}" 
+												height="11" 
+												width="13"/>
+							</h:outputLink> 
+						</li>
+						<li> 
+							<h:outputLink id="recommend" value="recommend">
+								<h:graphicImage value="/images/sign_empfehlen.gif" 
+												alt=":: ${lang_main.footer_recommend}" 
+												title="${lang_main.footer_recommend}" 
+												height="11" 
+												width="15"/>
+							</h:outputLink> 
+						</li>
+						<li> 
+							<h:outputLink id="comment" value="comment" target="_blank">
+								<h:graphicImage value="/images/sign_comment.gif" 
+												alt=":: ${lang_main.footer_comment}" 
+												title="${lang_main.footer_comment}" 
+												height="11" 
+												width="12"/>
+							</h:outputLink> 
+						</li>
+					</ul>
+				</form>
+			</div>
+			<div class="footer_copyright"><h:outputText value="(C) Copyright OpenUSS 2000 - 2006"/></div>
+			<div class="footer_service">
+				<h:outputLink id="emailServiceCenter" value="mailto:openuss@e-learning.uni-muenster.de">
+					<h:outputText value="Servicecenter E-Learning"/>
+				</h:outputLink>
+			</div>	  
+	 	</div>
+</f:subview>

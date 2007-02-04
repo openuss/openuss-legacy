@@ -1,0 +1,30 @@
+<project name="openuss :: framework :: core :: build" default="install" basedir=".">
+	<!-- 	In order to get this target under eclipse to work you need to define the variable
+			m2_repo which points to your maven2 repository -->
+	<target name="colver-view">
+		<java fork="true" classname="com.cenqua.clover.reporters.jfc.Viewer">
+			<arg line="-i target/clover/clover.db"/>
+			<classpath path="${m2_repo}/com/cenqua/clover/clover/1.3.12/clover-1.3.12.jar"/>
+		</java>
+	</target>
+	<target name="compile">
+		<exec executable="mvn.bat">
+			<arg line="install"/>
+		</exec>
+	</target>
+	<target name="clean">
+		<exec executable="mvn.bat">
+			<arg line="clean"/>
+		</exec>
+	</target>
+	<target name="install">
+		<exec executable="mvn.bat">
+			<arg line="install"/>
+		</exec>
+	</target>
+	<target name="eclipse">
+		<exec executable="mvn.bat">
+			<arg line="eclipse:eclipse"/>
+		</exec>
+	</target>	
+</project>

@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:include src="/views/commons/faculty/facultyInfo.xhtml" />
+	
+	<ui:include src="/views/commons/navigation/desktop.xhtml" />
+	<s:authorize ifAllGranted="ROLE_ASSISTANT">
+		<h:form id="facultyNavigationForm">
+			<t:panelNavigation2 id="faculty_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
+				<t:commandNavigation2 value="#{msg['faculty_navigation_header']}">
+					<t:commandNavigation2 action="faculty" activeOnViewIds="/views/secured/lecture/faculty.xhtml" >
+						<h:outputText value="#{msg['faculty_command_main']}" ></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="faculty_news" activeOnViewIds="/views/secured/lecture/news.xhtml">
+						<h:outputText value="#{msg['faculty_command_news']}" ></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="faculty_subjects" activeOnViewIds="/views/secured/lecture/subjects.xhtml">
+						<h:outputText value="#{msg['faculty_command_subjects']}" ></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="faculty_periods" activeOnViewIds="/views/secured/lecture/periods.xhtml,/views/secured/lecture/periodedit.xhtml,/views/secured/lecture/periodremove.xhtml">
+						<h:outputText value="#{msg['faculty_command_periods']}" ></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="faculty_data" activeOnViewIds="/views/secured/lecture/facultyoptions.xhtml">
+						<h:outputText value="#{msg['faculty_command_faculty']}" ></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 value="#{msg['faculty_command_authorisations']}" action="faculty_members">
+						<t:commandNavigation2 action="faculty_members" activeOnViewIds="/views/secured/lecture/auth/members.xhtml">
+							<h:outputText value="#{msg['faculty_command_members']}" ></h:outputText>
+						</t:commandNavigation2>
+						<t:commandNavigation2 action="faculty_aspirants" activeOnViewIds="/views/secured/lecture/auth/aspirants.xhtml">
+							<h:outputText value="#{msg['faculty_command_aspirants']}" ></h:outputText>
+						</t:commandNavigation2>
+					</t:commandNavigation2>
+				</t:commandNavigation2>
+			</t:panelNavigation2>	
+		</h:form>
+	</s:authorize> 
+	
+	
+	
+</ui:composition>

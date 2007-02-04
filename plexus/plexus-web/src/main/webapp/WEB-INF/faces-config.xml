@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN" "http://java.sun.com/dtd/web-facesconfig_1_0.dtd">
+<faces-config>
+	<lifecycle>
+		<!-- There is a problem with the datascroller - for details see the class comments -->
+		<phase-listener>
+			org.openuss.framework.web.jsf.events.ConversationPhaseListener
+		</phase-listener>
+		<phase-listener>
+			org.openuss.framework.web.jsf.events.PostRedirectGetPhaseListener
+		</phase-listener>
+		<phase-listener>
+			org.openuss.framework.web.jsf.events.DebugPhaseListener
+		</phase-listener>
+	</lifecycle>
+
+	<application>
+		<navigation-handler>
+			org.openuss.framework.web.jsf.application.RedirectNavigationHandler
+		</navigation-handler>
+		<view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
+		<locale-config>
+			<default-locale>en</default-locale>
+			<supported-locale>en</supported-locale>
+			<supported-locale>de</supported-locale>
+			<supported-locale>ru</supported-locale>
+		</locale-config>
+		<message-bundle>resources</message-bundle>
+	</application>
+
+	<render-kit>
+		<description>
+			Some replacements for the standard renderers
+		</description>
+		<renderer>
+			<description>
+				Replacement renderer for h:outputLabel
+			</description>
+			<component-family>javax.faces.Output</component-family>
+			<renderer-type>javax.faces.Label</renderer-type>
+			<renderer-class>
+				org.openuss.framework.web.jsf.renderer.LabelRenderer
+			</renderer-class>
+		</renderer>
+	</render-kit>
+
+	<converter>
+		<description>
+			Converts a NewsCategory object to a string representation
+			and vice versa
+		</description>
+		<display-name>NewsCategoryConverter</display-name>
+		<converter-id>NewsCategoryConverter</converter-id>
+		<converter-class>
+			org.openuss.web.news.NewsCategoryConverter
+		</converter-class>
+	</converter>
+	
+	<converter>
+		<description>Converts a FacultyGroup object to a string and vice versa</description>
+		<display-name>FacultyGroupConverter</display-name>
+		<converter-id>facultyGroupConverter</converter-id>
+		<converter-class>org.openuss.web.lecture.FacultyGroupConverter</converter-class>
+	</converter>
+
+	<validator>
+		<validator-id>org.openuss.web.lecture.validators.SubjectShortcutValidator</validator-id>
+		<validator-class>org.openuss.web.lecture.validators.SubjectShortcutValidator</validator-class>
+		<property>
+			<property-name>subject</property-name>
+			<property-class>org.openuss.lecture.Subject</property-class>
+		</property>
+	</validator>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - 
+	    S H A L E  -  C O N F I G U R A T I O N 
+	   - - - - - - - - - - - - - - - - - - - - - -->
+	
+	<managed-bean>
+		<managed-bean-name>org$apache$shale$view$EXCEPTION_HANDLER</managed-bean-name>
+		<managed-bean-class>org.openuss.web.application.DefaultExceptionHandler</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	
+	<component>
+    	<description>
+        	Extending the UIViewRoot to provide specialized exception
+        	handling needed for the Shale view controller to enforce the contracts
+        	of the callbacks.
+      	</description>
+      	<component-type>javax.faces.ViewRoot</component-type>
+      	<component-class>org.openuss.web.application.DefaultViewRoot</component-class>
+  	</component>
+	
+
+</faces-config>
+

@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- the following xmlns are for code complition only -->
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:x="http://myfaces.apache.org/extensions"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+<!-- Lines above that point will be ignored 														-->
+<!-- If you need specific namesspaces be sure that they will be included in the ui:composition tag 	-->
+<!-- or in the view class specified by the f:view tag 												-->	      
+	<ui:composition template="/views/layout/dialog.xhtml">
+		<ui:define name="content">
+		   	<h:form id="newsItemDetail"> 
+		   		<o:block label="Nachricht - #{newsItem.publisher.displayName}">
+					<h:outputText id="publisher" value="#{newsItem.title} - " styleClass="content_font_normal"/>
+					<h:outputText id="publishDate" value="#{newsItem.publishDate}" styleClass="content_font_normal">
+						<f:convertDateTime timeZone="visit.timezone" type="date" dateStyle="medium" timeStyle="medium"/>
+					</h:outputText>
+			    	<h:outputText id="newsText" value="#{newsItem.text}" escape="false" styleClass="content_font_normal"/>
+				  	<h:outputLink value="/openuss-plexus/files/#{newsItem.attachment.fileName}">
+				  		<f:param value="#{newsItem.attachment.id}" name="fileid" /> 
+				  		<h:graphicImage value="/images/filetypes/#{newsItem.attachment.extension}.gif"/>
+				  		#{sessionScope.newsItem.attachment.name} 
+				  	</h:outputLink>
+				</o:block>
+				<o:block>
+					<h:commandButton id="linkBack" action="view:backward" value="#{msg['newsitem_back']}" styleClass="button_back"/>
+				</o:block>
+	  		</h:form>
+	    </ui:define>
+	</ui:composition>
+<!-- Lines below that point will be ignored -->	
+</html>
