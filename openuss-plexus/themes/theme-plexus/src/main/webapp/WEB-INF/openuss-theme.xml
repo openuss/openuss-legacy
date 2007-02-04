@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<theme id="plexus" name="Plexus">
+	<images>/theme-plexus/images</images>
+	<layout>/layouts/default.xhtml</layout>
+	<dialog>/layouts/popupdialog.xhtml</dialog>
+	<stylesheet>/theme-plexus/css/plexus.css</stylesheet>
+</theme>

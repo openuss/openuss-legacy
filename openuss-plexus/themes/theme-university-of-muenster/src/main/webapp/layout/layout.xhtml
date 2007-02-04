@@ -1,0 +1,32 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
+	<ui:insert name="header">
+		<ui:include src="header.xhtml"/>
+	</ui:insert>
+	<div class="contentwrapper">
+		<div class="navigation">
+			<ui:insert name="navigation">
+				<ui:include src="navigation.xhtml"/>
+			</ui:insert>
+		</div>
+		<div class="crumbs">	
+			<ui:insert name="crumbs">
+				<ui:include src="crumbs.xhtml"/>
+			</ui:insert>
+		</div>
+			<div class="content">
+				<ui:insert name="content">
+					<ui:include src="content.xhtml"/>
+				</ui:insert>
+			</div>
+		</div>
+		<div class="sidebar">				
+			<ui:insert name="sidebar">
+				<ui:include src="sidebar.xhtml"/>
+			</ui:insert>
+		</div>
+		<div class="footer">
+			<ui:insert name="footer">
+				<ui:include src="footer.xhtml"/>
+			</ui:insert> 
+		</div>
+</f:subview>	

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.openuss.plexus</groupId>
+		<artifactId>plexus</artifactId>
+		<version>3.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.openuss.plexus</groupId>
+	<artifactId>plexus-web</artifactId>
+	<name>Plexus - Web</name>
+	<packaging>war</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.openuss.themes</groupId>
+			<artifactId>theme-core</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.openuss.framework</groupId>
+			<artifactId>framework-jsfcontrols</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.openuss.framework</groupId>
+			<artifactId>framework-core</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.openuss.framework</groupId>
+			<artifactId>framework-deployer</artifactId>
+			<version>${pom.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openuss.plexus</groupId>
+			<artifactId>plexus-core</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.myfaces.core</groupId>
+			<artifactId>myfaces-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.myfaces.core</groupId>
+			<artifactId>myfaces-impl</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.myfaces.tomahawk</groupId>
+			<artifactId>tomahawk</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.myfaces.tomahawk</groupId>
+			<artifactId>tomahawk-sandbox</artifactId>
+			<version>1.1.3</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.fckfaces</groupId>
+			<artifactId>fckfaces</artifactId>
+			<version>1.7.27</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.facelets</groupId>
+			<artifactId>jsf-facelets</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.el</groupId>
+			<artifactId>el-ri</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>jaybird</groupId>
+			<artifactId>jaybird-full</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+        <dependency>
+            <groupId>org.apache.shale</groupId>
+            <artifactId>shale-application</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+
+		<dependency>
+			<groupId>org.apache.shale</groupId>
+			<artifactId>shale-core</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+		
+        <dependency>
+            <groupId>org.apache.shale</groupId>
+            <artifactId>shale-dialog</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shale</groupId>
+            <artifactId>shale-dialog-scxml</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+
+		<dependency>
+			<groupId>org.apache.shale</groupId>
+			<artifactId>shale-remoting</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.shale</groupId>
+			<artifactId>shale-tiger</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.shale</groupId>
+			<artifactId>shale-spring</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-chain</groupId>
+			<artifactId>commons-chain</artifactId>
+			<version>1.1</version>
+			<exclusions>
+				<exclusion>
+                    <groupId>myfaces</groupId>
+                    <artifactId>myfaces-api</artifactId>
+				</exclusion>
+				<exclusion>
+                    <groupId>myfaces</groupId>
+                    <artifactId>myfaces-impl</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+        <dependency>
+           <groupId>commons-validator</groupId>
+           <artifactId>commons-validator</artifactId>
+           <version>1.3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        
+        <dependency>
+        	<groupId>javax.mail</groupId>
+        	<artifactId>mail</artifactId>
+        	<version>1.4</version>
+        </dependency>
+
+        <dependency>
+        	<groupId>javax.activation</groupId>
+        	<artifactId>activation</artifactId>
+        	<version>1.1</version>
+        </dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<wtpversion>1.0</wtpversion>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<reporting>
+		<plugins>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <reportSets>
+                	<reportSet>
+                		<reports>
+                			<report>dependencies</report>
+                			<report>dependency-convergence</report>
+                			<report>index</report>
+                		</reports>
+                	</reportSet>
+                </reportSets>
+            </plugin>             
+		</plugins>
+	</reporting>
+</project>

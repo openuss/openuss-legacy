@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<!-- ===================================================== 
+		FILTER CHAIN 
+		===================================================== -->
+	<bean id="securityFilterChainProxy"
+		class="org.acegisecurity.util.FilterChainProxy">
+		<property name="filterInvocationDefinitionSource">
+			<value>
+				CONVERT_URL_TO_LOWERCASE_BE_COMPARISON
+				PATTERN_TYPE_APACHE_ANT
+				/**=httpSessionContextIntegrationFilter, authenticationProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, exceptionTranslationFilter, filterInvocationInterceptor
+			</value>
+		</property>
+	</bean>
+
+	<!-- - - - - - - - - - - - - - - - - - - - 
+		Filter
+       - - - - - - - - - - - - - - - - - - - -->
+		
+	<bean id="logFilter" class="org.openuss.framework.web.LogFilter"/>	
+
+	<bean id="httpSessionContextIntegrationFilter"
+		class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
+	</bean>
+
+	<bean id="authenticationProcessingFilter"
+		class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
+		<property name="authenticationManager">
+			<ref bean="authenticationManager" />
+		</property>
+		<property name="defaultTargetUrl"><value>/views/public/login/login.faces</value></property>
+		<property name="authenticationFailureUrl">
+			<value>/views/public/login/login.faces?error=true</value>
+		</property>
+	</bean>
+
+	<bean id="contextHolderAwareRequestFilter"
+		class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter" />
+
+	<bean id="anonymousProcessingFilter"
+		class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
+		<property name="key">
+			<value>anonymous-key</value>
+		</property>
+		<property name="userAttribute">
+			<value>anonymousUser,ROLE_ANONYMOUS</value>
+		</property>
+	</bean>
+
+	<bean id="exceptionTranslationFilter"
+		class="org.acegisecurity.ui.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint">
+			<ref local="authenticationProcessingFilterEntryPoint" />
+		</property>
+	</bean>
+
+	<bean id="filterInvocationInterceptor"
+		class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+		<property name="authenticationManager">
+			<ref bean="authenticationManager" />
+		</property>
+		<property name="accessDecisionManager">
+			<ref local="httpRequestAccessDecisionManager" />
+		</property>
+		<!-- Note the order that entries are placed against the objectDefinitionSource is critical.
+			The FilterSecurityInterceptor will work from the top of the list down to the FIRST 
+			pattern that matches the request URL. Accordingly, you should place MOST SPECIFIC 
+			(ie a/b/c/d.*) expressions first, with LEAST SPECIFIC (ie a/.*) expressions last -->
+		<property name="objectDefinitionSource">
+			<value>
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				PATTERN_TYPE_APACHE_ANT 
+				/views/commons/**=ROLE_USER
+				/views/errors/**=ROLE_ANONYMOUS, ROLE_USER
+				/views/public/**=ROLE_ANONYMOUS, ROLE_USER
+				/views/welcome.faces*=ROLE_ANONYMOUS, ROLE_USER
+				/views/secured/admin/**=ROLE_ADMIN
+				/views/secured/desktop*=ROLE_USER
+				/views/secured/user/**=ROLE_USER
+				/views/secured/**=ROLE_ASSISTANT
+				/views/**=ROLE_ADMIN
+				/files/**=ROLE_USER
+			</value>
+		</property>
+	</bean>
+	
+	
+	<!-- ======================== AUTHENTICATION ======================= -->
+
+	<bean id="authenticationManager"
+		class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="daoAuthenticationProvider" />
+				<ref local="anonymousAuthenticationProvider" />
+				<ref local="rememberMeAuthenticationProvider"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="daoAuthenticationProvider"
+		class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+		<property name="userDetailsService">
+			<ref local="userDetailsService" />
+		</property>
+		<property name="userCache">
+			<ref local="userCache" />
+		</property>
+<!-- 
+ 		<property name="passwordEncoder">
+			<ref local="passwordEncoder" />
+		</property>
+ -->
+	</bean>
+
+	<bean id="userDetailsService"
+		class="org.openuss.security.acegi.UserDetailsServiceAdapter">
+		<property name="securityService">
+			<ref bean="securityService" />
+		</property>
+	</bean>
+
+	<!-- User Cache Configuration  -->
+	<bean id="userCache"
+		class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
+		<property name="cache">
+			<ref local="userCacheBackend" />
+		</property>
+	</bean>
+
+	<bean id="userCacheBackend"
+		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager" />
+		</property>
+		<property name="cacheName">
+			<value>userCache</value>
+		</property>
+	</bean>
+
+	<bean id="cacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" />
+
+	<bean id="passwordEncoder"
+		class="org.acegisecurity.providers.encoding.Md5PasswordEncoder" />
+
+
+	<bean id="anonymousAuthenticationProvider"
+		class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
+		<property name="key">
+			<value>anonymous-key</value>
+		</property>
+	</bean>
+
+	<bean id="authenticationProcessingFilterEntryPoint"
+		class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+		<property name="loginFormUrl">
+			<value>/views/public/login/login.faces</value>
+		</property>
+		<property name="forceHttps">
+			<value>false</value>
+		</property>
+	</bean>
+
+	<bean id="httpRequestAccessDecisionManager"
+		class="org.acegisecurity.vote.AffirmativeBased">
+		<property name="allowIfAllAbstainDecisions">
+			<value>false</value>
+		</property>
+		<property name="decisionVoters">
+			<list>
+				<ref bean="roleVoter" />
+			</list>
+		</property>
+	</bean>
+	<!-- An access decision voter that reads ROLE_* configuration settings -->
+	<bean id="roleVoter" class="org.acegisecurity.vote.RoleVoter" />
+
+
+	<!-- Automatically receives AuthenticationEvent messages -->
+	<bean id="loggerListener"
+		class="org.acegisecurity.event.authentication.LoggerListener" />
+		
+	<!-- ===================== REMEMBER ME ==================== -->
+    
+    <bean id="rememberMeProcessingFilter" class="org.acegisecurity.ui.rememberme.RememberMeProcessingFilter"> 
+        <property name="rememberMeServices" ref="rememberMeServices"/>
+        <property name="authenticationManager" ref="authenticationManager"/>
+    </bean>
+ 
+    <bean id="rememberMeServices" class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices"> 
+        <property name="userDetailsService" ref="userDetailsService"/>
+        <property name="key" value="openuss-plexus"/> 
+        <property name="parameter" value="loginForm:rememberMe"/>
+    </bean> 
+  
+    <bean id="rememberMeAuthenticationProvider" class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider"> 
+        <property name="key" value="openuss-plexus"/>
+    </bean>
+
+</beans>

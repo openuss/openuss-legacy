@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:plexus="ttp://www.openuss.org/plexus/jsf">
+      
+	<h:form id="subjectForm">
+		<o:block label="#{msg.subject_header}" styleClass="form_box">
+			<o:input entity="subject" property="name" required="true" maxlength="100"/>
+			<o:input entity="subject" property="shortcut" required="true" maxlength="30">
+				<f:validator validatorId="org.openuss.web.lecture.validators.SubjectShortcutValidator" />
+			</o:input>
+			<o:input entity="subject" property="description" maxlength="250" type="textarea"/>
+		</o:block> 
+		<o:block>
+			<h:commandButton id="saveSubject" action="#{views$secured$lecture$subjects.saveSubject}" value="#{msg.save}" styleClass="button_save"/>
+			<h:commandButton id="cancelSubject" action="#{views$secured$lecture$subjects.cancelSubject}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
+		</o:block>
+	</h:form>
+</ui:composition>

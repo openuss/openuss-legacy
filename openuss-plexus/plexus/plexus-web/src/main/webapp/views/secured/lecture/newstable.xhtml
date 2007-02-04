@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+    <t:dataTable id="newsitems" 
+		var="bean"
+		value="#{views$secured$lecture$news.newsItems}"
+		styleClass="table"
+		binding="#{views$secured$lecture$news.newsItemTable}"
+		headerClass="tableHeader"
+		footerClass="tableFooter"
+		rowClasses="odd, even"
+		columnClasses="maincolumn, column, column, column, commands , commands"
+		preserveDataModel="false"
+		preserveSort="false"
+		rows="10"
+		cellspacing="1">
+
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="#{msg.news_colheader_name}"/>
+			</f:facet>
+			<h:outputText value="#{bean.title}"/>
+		</h:column>
+		
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="#{msg.news_colheader_author}"/>
+			</f:facet>
+			<h:outputText value="#{bean.author}"/>
+		</h:column>
+
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="#{msg.news_colheader_publish}"/>
+			</f:facet>
+			<h:outputText id="publishDate" value="#{bean.publishDate}">
+				<f:convertDateTime type="both"/>
+			</h:outputText>
+		</h:column>
+		
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="#{msg.news_colheader_expire}"/>
+			</f:facet>
+			<h:outputText id="expireDate" value="#{bean.expireDate}">
+				<f:convertDateTime type="both"/>
+			</h:outputText>
+		</h:column>
+		
+		 
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="#{msg.news_colheader_attachment}"/>
+			</f:facet>
+			<h:outputLink value="/openuss-plexus/files/#{bean.attachment.fileName}" title="#{bean.attachment.fileName}" rendered="${!empty bean.attachment}">
+				<f:param value="#{bean.attachment.id}" name="fileid" /> 
+				<h:graphicImage value="/images/filetypes/#{bean.attachment.extension}.gif"/>
+			</h:outputLink>
+		</h:column>
+		
+		<plexus:column header="#{msg.commands_header}">		
+			<plexus:command 
+				bean="#{views$secured$lecture$news}"
+				action="editNewsItem"
+				label="#{msg.news_command_edit}"
+				hint="#{msg.news_command_edit_hint}"
+				styleClass="button_edit"/>
+			<plexus:command 
+				bean="#{views$secured$lecture$news}"
+				action="removeNewsItem"
+				label="#{msg.news_command_remove}"
+				hint="#{msg.news_command_remove_hint}"
+				styleClass="button_remove"/>
+		</plexus:column>
+
+	</t:dataTable>
+	<plexus:dataScroller for="newsitems" pages="5"/>
+</ui:composition>

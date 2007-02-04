@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<theme id="wwu" name="University of Muenster">
+	<images>/images</images>
+	<layout>/layout/layout.xhtml</layout>
+	<stylesheet>/theme-university-of-muenster/css/openuss-layout.css</stylesheet>
+</theme>
