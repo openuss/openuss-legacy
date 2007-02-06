@@ -34,13 +34,13 @@ p {
   font-size: 10pt;
 }
 
-span.userinfo {
+span.userinfo{
   font-size: 8pt;
-  color: #FFF;
+  color: #FFF !important;
 }
 
-span.userinfo a {
-  color: #FFF;
+span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:visited {
+  color: #FFF !important;
 }
 
 #left_block {
@@ -160,15 +160,25 @@ span.userinfo a {
   border: 1px solid #B4B4B4;
 }
 
-#left_block .button {
-  margin-left: 72px;
-  margin-top: 5px;
-  width: 80px;
-  height: 20px;
-  font-size: 8pt;
-  text-decoration: none; 
-  font-weight: bold;
-  border: 1px solid #222;
+#left_block input.button {
+	width: 121px;
+	height: 23px;
+	margin-top: 5px;
+	padding: 0;
+	background: transparent url(../img/button_120_normal.png) 0px 0px no-repeat;
+	border: 0;
+	font-color: #313131;
+	font-size: 8pt;
+  	text-decoration: none; 
+  	font-weight: bold;
+	overflow: hidden;
+	cursor: pointer;
+	cursor: hand; /* Handcursor für IE 5.x */
+	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschön */
+}
+
+#left_block input.button:hover{
+	background: transparent url(../img/button_120_hover.png) 0px 0px no-repeat;
 }
 
 #left_block .content_box ul{
@@ -363,7 +373,7 @@ span.userinfo a {
 	width: 17px;
 	height: 16px;
 	margin: 0;
-	padding: 16px 0 0 0;
+	padding: 17px 0 0 0;
 	background: transparent url(../img/search_submit.jpg) 0px 0px no-repeat;
 	border: 0;
 	color: #000;
@@ -675,7 +685,7 @@ ul#header_navigation a:hover{
   background-repeat: repeat-x;
 }
 
-p.header_font_normal {
+p.header_font_normal, span.header_font_normal {
   padding: 8px 0 0 10px;
   font-size: 10pt;
   text-decoration: none; font-weight: bold;
@@ -683,7 +693,7 @@ p.header_font_normal {
 }
 
 .content_normal {
-  padding: 0;
+  padding: 0 0 5px 0;
   border-style: dotted solid none solid;
   border-width: 1px;
   border-top-color: #505050;
@@ -692,7 +702,7 @@ p.header_font_normal {
 }
 
 .form_box .content_normal {
-  padding: 0;
+  padding: 0 0 5px 0;
   border-style: dotted solid none solid;
   border-width: 1px;
   background: #F4F4F4;
@@ -702,7 +712,7 @@ p.header_font_normal {
 }
 
 .empty_box .content_normal {
-  padding: 0 0 0 10px;
+  padding: 0;
   border-style: none solid none solid;
   border-width: 1px;
   background: #F4F4F4;
@@ -733,6 +743,7 @@ p.content_font_error {
 }
 
 .footer_normal_left_bg {
+	margin-top: 0;
   float: left;
   width: 8px;
   height: 7px;
@@ -757,7 +768,8 @@ p.content_font_error {
 }
 
 .footer_normal_right_bg {
-  float: right;
+	margin-top: 0;
+	float: right;
   width: 8px;
   height: 7px;
   background-image: url(../img/footer_right_bg.jpg);
@@ -781,6 +793,7 @@ p.content_font_error {
 }
 
 .footer_normal {
+  margin-top: 0;
   padding: 0;
   height: 7px;
   background-image: url(../img/footer_bg.jpg);
@@ -866,16 +879,66 @@ ul{
 
  
 td .button, td .button_unlink, td .button_link, td .button_edit, td .button_remove, td .button_profile {
-  padding:0;
-  margin-right: 5px;
-  font-size: 8pt;
-  text-decoration: none; 
-  font-weight: normal;
-  border: 1px solid #888;
+  	width: 81px;
+	height: 19px;
+	margin-right: 5px;
+	padding: 0;
+	background: transparent url(../img/button_100_normal.png) 0px 0px no-repeat;
+	border: 0;
+	font-color: #313131;
+	font-size: 8pt;
+  	text-decoration: none; 
+  	font-weight: normal;
+	overflow: hidden;
+	cursor: pointer;
+	cursor: hand; /* Handcursor für IE 5.x */
+	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschön */
 }
 
 td .button:hover,td .button_unlink:hover,  td .button_link:hover, td .button_edit:hover, td .button_remove:hover, td .button_profile:hover {
-  background-color: #eee;
+  	background: transparent url(../img/button_100_hover.png) 0px 0px no-repeat;
+}
+
+.button_add, .button_save, .button_cancel, .button_back, .button_continue {
+  	width: 121px;
+	height: 23px;
+	margin-left: 10px;
+	padding: 0;
+	background: transparent url(../img/button_120_normal.png) 0px 0px no-repeat;
+	border: 0;
+	font-color: #313131;
+	font-size: 8pt;
+  	text-decoration: none; 
+  	font-weight: bold;
+	overflow: hidden;
+	cursor: pointer;
+	cursor: hand; /* Handcursor für IE 5.x */
+	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschön */
+}
+
+.button_add:hover, .button_save:hover, .button_cancel:hover, .button_back:hover, .button_continue:hover {
+  	background: transparent url(../img/button_120_hover.png) 0px 0px no-repeat;
+}
+
+.button {
+  	width: 151px;
+	height: 23px;
+	margin-left: 10px;
+	padding: 0;
+	background: transparent url(../img/button_140_normal.png) 0px 0px no-repeat;
+	border: 0;
+	font-color: #313131;
+	font-size: 8pt;
+  	text-decoration: none; 
+  	font-weight: bold;
+	overflow: hidden;
+	cursor: pointer;
+	cursor: hand; /* Handcursor für IE 5.x */
+	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschön */
+}
+
+.button:hover {
+  	background: transparent url(../img/button_140_hover.png) 0px 0px no-repeat;
 }
 
 table {
@@ -890,6 +953,7 @@ th {
   text-align: left;
   font-size: 9pt;
   font-weight: bold;
+  color: #000;
   background: #DEDEDE;
 }
 
@@ -987,6 +1051,7 @@ span.table_data_info {
 td .pulldown_small {
   display: block;
   width: 100px;
+  margin-left: 2px !important;
   font-size: 9pt;
   text-decoration: none;
   color:#505050; 

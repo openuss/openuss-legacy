@@ -64,4 +64,6 @@ public class Constants {
 
 	public static final String SECURE_PASSWORD_CHANGE = "secure_password_change";
 
+	public static final String ENROLLMENT_MAIN = "enrollment_main";
+
 }

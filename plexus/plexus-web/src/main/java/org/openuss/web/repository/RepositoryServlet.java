@@ -23,7 +23,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  */
 public class RepositoryServlet extends HttpServlet {
 
-
 	private static final long serialVersionUID = 0L;
 
 	private static final int BUFFER_SIZE = 8192;
@@ -37,59 +36,60 @@ public class RepositoryServlet extends HttpServlet {
 		logger.info("Initialise OpenUSS-Plexus RepositoryServlet");
 		super.init(); 
 		
-		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		final WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 		repository = (RepositoryService) wac.getBean("repositoryService", RepositoryService.class);
 	}
 	
 	
 	@Override
-	protected void doHead(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RepositoryFile file = lookupFile(request);
-		if (file != null) {
-			sendFileHeader(response, file);
-		} else {
+	protected void doHead(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+		final RepositoryFile file = lookupFile(request);
+		if (file == null) {
 			sendFileNotFound(response);
+		} else {
+			sendFileHeader(response, file);
 		}
 	}
 
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RepositoryFile file = lookupFile(request);
-		if (file != null) {
+	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+		final RepositoryFile file = lookupFile(request);
+		if (file == null) {
+			sendFileNotFound(response);
+		} else {
 			sendFileHeader(response, file);
 			sendFileContent(response, file);
-		} else {
-			sendFileNotFound(response);
 		}
 	}
 
 
-	private void sendFileContent(HttpServletResponse response, RepositoryFile file) throws IOException {
+	private void sendFileContent(final HttpServletResponse response, final RepositoryFile file) throws IOException {
 		// send content
-		if (logger.isDebugEnabled())
+		if (logger.isDebugEnabled()) {
 			logger.debug("sending content of file "+file.getFileName()+" size "+file.getFileSize());
-		ServletOutputStream output = response.getOutputStream();
+		}
+		final ServletOutputStream output = response.getOutputStream();
 		drain(file.getInputStream(), output);
 		output.close();
 	}
 
-	private void sendFileHeader(HttpServletResponse response, RepositoryFile file) {
+	private void sendFileHeader(final HttpServletResponse response, final RepositoryFile file) {
 		// send header 
-		if (logger.isDebugEnabled())
+		if (logger.isDebugEnabled()) {
 			logger.debug("sending header of file "+file.getFileName()+" size "+file.getFileSize());
+		}
 		response.setContentType(file.getContentType());
 //		response.setContentType("application/octet-stream");
 		response.setContentLength(file.getFileSize());
 	}
 
-	private void sendFileNotFound(HttpServletResponse response) {
+	private void sendFileNotFound(final HttpServletResponse response) {
 		// TODO Show file not found error
-		return;
 	}
 
 	/**
@@ -97,8 +97,8 @@ public class RepositoryServlet extends HttpServlet {
 	 * @param request
 	 * @return RepositoryFile or Null
 	 */
-	private RepositoryFile lookupFile(HttpServletRequest request) {
-		String fileId = request.getParameter(Constants.REPOSITORY_FILE_ID);
+	private RepositoryFile lookupFile(final HttpServletRequest request) {
+		final String fileId = request.getParameter(Constants.REPOSITORY_FILE_ID);
 		// fetch file from repository
 		RepositoryFile file = RepositoryFile.Factory.newInstance();
 		file.setId(Long.parseLong(fileId));
@@ -115,9 +115,9 @@ public class RepositoryServlet extends HttpServlet {
 	 * @param output
 	 * @throws IOException
 	 */
-	private void drain(InputStream input, OutputStream output) throws IOException {
+	private void drain(final InputStream input, final OutputStream output) throws IOException {
 		int read = 0;
-		byte[] buffer = new byte[BUFFER_SIZE];
+		final byte[] buffer = new byte[BUFFER_SIZE];
 
 		while ((read = input.read(buffer, 0, BUFFER_SIZE)) != -1) {
 			output.write(buffer, 0, read);

@@ -44,7 +44,7 @@
 	<classpathentry kind="var" path="M2_REPO/org/apache/shale/shale-remoting/1.0.4/shale-remoting-1.0.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/antlr/antlr/2.7.2/antlr-2.7.2.jar" sourcepath="M2_REPO/antlr/antlr/2.7.2/antlr-2.7.2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-mock/2.0.1/spring-mock-2.0.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.3/acegi-security-1.0.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.3/acegi-security-1.0.3.jar" sourcepath="/M2_REPO/org/acegisecurity/acegi-security/1.0.3/acegi-security-1.0.3-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-core/2.0.1/spring-core-2.0.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.0.1B/jta-1.0.1B.jar"/>
 	<classpathentry kind="src" path="/framework-deployer"/>

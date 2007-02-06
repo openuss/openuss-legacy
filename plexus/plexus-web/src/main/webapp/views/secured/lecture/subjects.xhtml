@@ -27,9 +27,7 @@
 		</ui:define>
   		<ui:define name="content">
   			<h:form id="subjectsForm">
-  				<o:block label="#{msg['subject_subjectstable_header']}" styleClass="form_box">
-					<ui:include src="subjectstable.xhtml"/>
-				</o:block>
+				<ui:include src="subjectstable.xhtml"/>
 				<c:if test="#{empty sessionScope.subject}">
 					<o:block>
 						<h:commandButton 

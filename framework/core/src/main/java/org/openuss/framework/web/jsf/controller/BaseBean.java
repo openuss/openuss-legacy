@@ -28,7 +28,7 @@ public abstract class BaseBean {
 
 	public static final String jstlBundleParam = "javax.servlet.jsp.jstl.fmt.localizationContext";
 
-	private FacesContext facesContext;
+	transient private FacesContext facesContext;
 	
 	
 	/**

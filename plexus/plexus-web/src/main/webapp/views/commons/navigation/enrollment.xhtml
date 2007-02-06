@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:include src="/views/commons/navigation/faculty.xhtml" />
+	<s:authorize ifAllGranted="ROLE_USER">
+		<h:form id="facultyNavigationForm">
+			<t:panelNavigation2 id="enrollment_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
+				<t:commandNavigation2 value="#{msg['enrollment_navigation_header']}">
+					<t:commandNavigation2 action="enrollment_main" activeOnViewIds="/views/secured/enrollment/main.xhtml" >
+						<h:outputText value="#{msg['enrollment_command_main']}" ></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="enrollment_documents" activeOnViewIds="/views/secured/enrollment/documents.xhtml">
+						<h:outputText value="#{msg['enrollment_command_documents']}" ></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="enrollment_mailinglist" activeOnViewIds="/views/secured/enrollment/mailinglist.xhtml">
+						<h:outputText value="#{msg['enrollment_command_mailinglist']}" ></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="enrollment_discussion" activeOnViewIds="/views/secured/enrollment/discussion.xhtml">
+						<h:outputText value="#{msg['enrollment_command_discussion']}" ></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="enrollment_quiz" activeOnViewIds="/views/secured/enrollment/quiz.xhtml">
+						<h:outputText value="#{msg['enrollment_command_quiz']}" ></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="enrollment_chat" activeOnViewIds="/views/secured/enrollment/chat.xhtml">
+						<h:outputText value="#{msg['enrollment_command_chat']}" ></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="enrollment_wiki" activeOnViewIds="/views/secured/enrollment/wiki.xhtml">
+						<h:outputText value="#{msg['enrollment_command_wiki']}" ></h:outputText>
+					</t:commandNavigation2>
+					<s:acl domainObject="#{enrollment}" hasPermission="4,32">
+						<t:commandNavigation2 action="enrollment_options" activeOnViewIds="/views/secured/enrollment/options.xhtml">
+							<h:outputText value="#{msg['enrollment_command_options']}" ></h:outputText>
+						</t:commandNavigation2>
+					</s:acl>
+				</t:commandNavigation2>
+			</t:panelNavigation2>	
+		</h:form>
+	</s:authorize> 
+</ui:composition>

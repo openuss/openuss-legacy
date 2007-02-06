@@ -172,7 +172,8 @@ public class RegistrationServiceImpl extends org.openuss.security.registration.R
 
 	private boolean isExpired(ActivationCode ac) {
 		long createdAt = ac.getCreatedAt().getTime();
-		return (System.currentTimeMillis()-createdAt/60000) > 15;
+		long now = System.currentTimeMillis();
+		return ((now-createdAt)/60000) > 15;
 	}
 
 }

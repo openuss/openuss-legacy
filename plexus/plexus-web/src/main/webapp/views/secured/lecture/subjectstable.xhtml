@@ -8,27 +8,18 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:c="http://java.sun.com/jstl/core">
       
-    <t:dataTable id="subjects" 
-		var="bean"
-		value="#{subjectList.data}"
-		styleClass="table"
-		headerClass="tableHeader"
-		footerClass="tableFooter"
-		rowClasses="#{subjectList.rowClasses}"
-		columnClasses="links,commands"
-		preserveDataModel="false"
-		preserveSort="false"
-		rows="#{subjectList.rowsPerPage}" 
-		rowIndexVar="rowIndex"
-		first="#{subjectList.firstRowIndex}"> 
-	  
-		<h:column>
-			<f:facet name="header"> 
-				<h:outputText value="#{msg.subject_colheader_name}"/>
-			</f:facet>
+     <plexus:dataTable 
+     	id="subjects" 
+     	label="#{msg['subject_subjectstable_header']}" 
+     	value="views$secured$lecture$subjects.data" 
+     	var="bean" 
+     	rows="5">  
+  
+		<t:column>
+			<plexus:commandSortHeader columnName="name">#{msg.subject_colheader_name}</plexus:commandSortHeader> 
 			<b><h:outputText value="#{bean.name} (#{bean.shortcut})"/></b><br/>
 			<small><h:outputText value="#{bean.description}"/></small>
-		</h:column>
+		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">
 			
@@ -46,7 +37,6 @@
 				label="#{msg.subject_command_edit}"
 				hint="#{msg.subject_command_edit_hint}"
 				styleClass="button_edit">
-				<t:updateActionListener property="#{subjectList.selectedRowIndex}" value="#{rowIndex}"/>
 			</plexus:command>
 				
 			<plexus:command   
@@ -55,25 +45,9 @@
 				label="#{msg.subject_command_remove}"
 				hint="#{msg.subject_command_remove_hint}"
 				styleClass="button_remove">
-				<t:updateActionListener property="#{subjectList.selectedRowIndex}" value="#{rowIndex}"/>
 			</plexus:command>
 		</plexus:column>
-	</t:dataTable>
+	</plexus:dataTable>
 	
-	<t:dataScroller 
-		id="subjectsScroller" 
-		for="subjects" 
-		fastStep="5"
-		styleClass="paginator"
-		pageCountVar="subjectsPageCount" 
-		pageIndexVar="subjectsPageIndex"
-		paginator="true" 
-		paginatorMaxPages="5" 
-		paginatorTableClass="paginator"
-		paginatorActiveColumnClass="active"
-		renderFacetsIfSinglePage="false"
-		actionListener="#{subjectList.scrollerActionEvent}">
-		<plexus:dataScrollerFacets />
-	</t:dataScroller>
 	
 </ui:composition>

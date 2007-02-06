@@ -1,12 +1,15 @@
 package org.openuss.framework.web.jsf.model;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
 
 import javax.faces.component.UIData;
 import javax.faces.model.DataModel;
 
 import org.apache.log4j.Logger;
 import org.openuss.framework.web.jsf.controller.BaseBean;
+import org.springframework.beans.support.PropertyComparator;
 
 /**
  * Generic PagedTable 
@@ -36,7 +39,7 @@ public abstract class AbstractPagedTable<T> extends BaseBean{
 
 	public DataModel getData() {
 		// check whether or not data is available and it is not a preserved data model
-		if (data == null || !(data instanceof PagedDataModel<?>)) {
+		if (data == null || !(data instanceof PagedListDataModel<?>)) {
 			logger.debug("creating new LocalDataModel");
 			data = new LocalDataModel(state.rowsPerPage);
 		}
@@ -133,6 +136,11 @@ public abstract class AbstractPagedTable<T> extends BaseBean{
 
 
 	public int getFirstRow() {
+		// FIXME - Should check if the firstRow index greater then datasize
+		// This may only happen within the render-response phase.
+		// Maybe this class should be register its own phase listener
+		// LocalDataModel model = (LocalDataModel) getData();
+		// state.firstRow = model.checkFirstRow(state.firstRow);
 		return state.firstRow;
 	}
 
@@ -168,10 +176,20 @@ public abstract class AbstractPagedTable<T> extends BaseBean{
 	}
 	
 	/**
+	 * Default property sort method
+	 * @param periods
+	 */
+	protected void sort(List<T> list) {
+		if (getSortColumn() != null) {
+			Collections.sort(list, new PropertyComparator(getSortColumn(),true,isAscending()));
+		}
+	}
+
+	/**
 	 * Memento of the PagedTable representing its current internal state 
 	 * @author Ingo Dueppe
 	 */
-	private static class PagedTableMemento implements Serializable {
+	private class PagedTableMemento implements Serializable {
 
 		private static final long serialVersionUID = -4565453284559704002L;
 		

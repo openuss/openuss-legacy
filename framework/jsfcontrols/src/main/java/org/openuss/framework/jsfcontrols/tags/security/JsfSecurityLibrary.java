@@ -25,6 +25,7 @@ public class JsfSecurityLibrary extends AbstractTagLibrary {
         super(NAMESPACE);
         
         this.addTagHandler("authorize", AuthorizeHandler.class);
+        this.addTagHandler("acl", AclHandler.class);
         
         try {
             Method[] methods = JsfSecurityFunctions.class.getMethods();

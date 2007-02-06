@@ -26,17 +26,21 @@
 					<t:commandNavigation2 action="faculty_periods" activeOnViewIds="/views/secured/lecture/periods.xhtml,/views/secured/lecture/periodedit.xhtml,/views/secured/lecture/periodremove.xhtml">
 						<h:outputText value="#{msg['faculty_command_periods']}" ></h:outputText>
 					</t:commandNavigation2>
-					<t:commandNavigation2 action="faculty_data" activeOnViewIds="/views/secured/lecture/facultyoptions.xhtml">
-						<h:outputText value="#{msg['faculty_command_faculty']}" ></h:outputText>
-					</t:commandNavigation2>
-					<t:commandNavigation2 value="#{msg['faculty_command_authorisations']}" action="faculty_members">
-						<t:commandNavigation2 action="faculty_members" activeOnViewIds="/views/secured/lecture/auth/members.xhtml">
-							<h:outputText value="#{msg['faculty_command_members']}" ></h:outputText>
+					<s:acl domainObject="#{faculty}" hasPermission="4,32">
+						<t:commandNavigation2 action="faculty_data" activeOnViewIds="/views/secured/lecture/facultyoptions.xhtml">
+							<h:outputText value="#{msg['faculty_command_faculty']}" ></h:outputText>
 						</t:commandNavigation2>
-						<t:commandNavigation2 action="faculty_aspirants" activeOnViewIds="/views/secured/lecture/auth/aspirants.xhtml">
-							<h:outputText value="#{msg['faculty_command_aspirants']}" ></h:outputText>
+					</s:acl>
+					<s:acl domainObject="#{faculty}" hasPermission="4">
+						<t:commandNavigation2 value="#{msg['faculty_command_authorisations']}" action="faculty_members">
+							<t:commandNavigation2 action="faculty_members" activeOnViewIds="/views/secured/lecture/auth/members.xhtml">
+								<h:outputText value="#{msg['faculty_command_members']}" ></h:outputText>
+							</t:commandNavigation2>
+							<t:commandNavigation2 action="faculty_aspirants" activeOnViewIds="/views/secured/lecture/auth/aspirants.xhtml">
+								<h:outputText value="#{msg['faculty_command_aspirants']}" ></h:outputText>
+							</t:commandNavigation2>
 						</t:commandNavigation2>
-					</t:commandNavigation2>
+					</s:acl>
 				</t:commandNavigation2>
 			</t:panelNavigation2>	
 		</h:form>

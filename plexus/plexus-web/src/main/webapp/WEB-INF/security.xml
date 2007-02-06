@@ -200,5 +200,33 @@
     <bean id="rememberMeAuthenticationProvider" class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider"> 
         <property name="key" value="openuss-plexus"/>
     </bean>
+    
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      Access Control List Definitions
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<bean id="aclManager" class="org.acegisecurity.acl.AclProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="basicAclProvider"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="basicAclProvider" class="org.acegisecurity.acl.basic.BasicAclProvider">
+		<property name="basicAclDao">
+			<ref local="basicAclDao"/>
+		</property>
+		<property name="defaultAclObjectIdentityClass">
+			<value>
+				org.openuss.security.acegi.acl.EntityObjectIdentity
+			</value>
+		</property>
+	</bean>
+	
+	<bean id="basicAclDao" class="org.openuss.security.acegi.acl.PermissionAclDaoAdapter">
+		<property name="permissionDao"><ref bean="permissionDao"/></property>
+		<property name="objectIdentityDao"><ref bean="objectIdentityDao"/></property>
+	</bean>
 
 </beans>

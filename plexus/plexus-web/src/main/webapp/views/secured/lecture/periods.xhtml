@@ -26,9 +26,7 @@
 		</ui:define>
   		<ui:define name="content">
   			<h:form id="periodsForm">
-				<o:block label="#{msg.period_header}" styleClass="form_box">
-					<ui:include src="periodstable.xhtml"/>
-				</o:block>
+				<ui:include src="periodstable.xhtml"/>
 				<o:block>
 					<h:commandButton 
 					    id="addPeriod"
@@ -40,14 +38,12 @@
 			</h:form>
 
 			<f:subview id="enrollmentView" rendered="${!(empty sessionScope.period)}">
-				<o:block label="#{msg['enrollment_header']}" styleClass="form_box">
-					<h:outputFormat value="#{msg.enrollment_header}" styleClass="heading">
-						<f:param value="#{period.name}" />
-					</h:outputFormat>
-					<h:form id="periodForm">
-						<ui:include src="periodenrollmentstable.xhtml"/>
-					</h:form>
-				</o:block>
+				<h:outputFormat value="#{msg.enrollment_header}" styleClass="heading">
+					<f:param value="#{period.name}" />
+				</h:outputFormat>
+				<h:form id="periodForm">
+					<ui:include src="periodenrollmentstable.xhtml"/>
+				</h:form>
 				<o:block>
 					<h:form id="enrollmentForm">
 						<h:outputLabel value="#{msg['period_header_add_enrollment']}" for="subjectSelect" styleClass="field_label"/>

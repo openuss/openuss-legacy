@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><optimizeit-configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="D:/development/Borland/Optimizeit/OptimizeitEntSuite2006/config/oiconfig.xsd">
+	<snapshot-repository name="D:\development\Borland\Optimizeit\OptimizeitEntSuite2006\config\snapshotrep.oir"/>
+	<log-file enabled="true" name="optimizeit.log" severity="WARNING"/>
+	<profiler installPath="D:\development\Borland\Optimizeit\OptimizeitEntSuite2006" pauseAfterLaunch="false" pauseOnExit="false" showOptions="true" startAudit="true">
+		<connection vmName="Tomcat Server">
+                  <audit-port>
+                    <port-range begin="1470" end="1480"/>
+                  </audit-port>
+		</connection>
+		<filter path="W:\openuss-plexus\servers\tomcat\Tomcat.oif"/>
+		<metrics enabled="true">
+			<metric bufferSize="12H" bufferSizeType="time" enabled="true" name="Java Heap" period="PT2S"/>
+			<metric bufferSize="12H" bufferSizeType="time" enabled="true" name="Thread Count" period="PT2S"/>
+			<metric bufferSize="12H" bufferSizeType="time" enabled="true" name="Class Count" period="PT2S"/>
+			<metric bufferSize="12H" bufferSizeType="time" enabled="true" name="Garbage Collection Information" period="PT2S"/>
+		</metrics>
+		<auto-capture delay="PT30M" fileNameFormat="snapshot-{0,date,MM-dd-yyyy}_{0,date,HH-mm-ss-z}" initialDelay="PT10H" snapshotGeneration="false">
+			<cpu-information included="true"/>
+			<metrics-information included="true"/>
+		</auto-capture>
+		<auto-start-CPU enabled="false" time="clock" type="instrumentation">
+			<sampler-options period="50" precision="line"/>
+			<instrumentation-options precision="milli">
+				<instrumentation-filter enabled="true" limit="500"/>
+			</instrumentation-options>
+		</auto-start-CPU>
+		<memory-profiler enabled="true" reportCollectedObjects="true"/>
+		<unit-test-mode autoFilterJUnitClasses="true" enabled="false" reportMemory="true"/>
+	</profiler>
+	<thread-debugger installPath="D:\development\Borland\Optimizeit\OptimizeitEntSuite2006" pauseAfterLaunch="false" pauseOnExit="false">
+		<connection vmName="Tomcat Server">
+                  <audit-port>
+                     <port-range begin="1471" end="1481"/>
+                  </audit-port>
+		</connection>
+	</thread-debugger>
+	<code-coverage installPath="D:\development\Borland\Optimizeit\OptimizeitEntSuite2006" pauseAfterLaunch="false" pauseOnExit="false" snapshotOnExit="false">
+		<connection vmName="Tomcat Server">
+                  <audit-port>
+                     <port-range begin="1472" end="1482"/>
+                 </audit-port>
+		</connection>
+		<filter path="W:\openuss-plexus\servers\tomcat\Tomcat.oif"/>
+	</code-coverage>
+	<request-analyzer installPath="D:\development\Borland\Optimizeit\OptimizeitEntSuite2006" pauseAfterLaunch="false" pauseOnExit="false" showOptions="true">
+		<connection vmName="Tomcat Server">
+                  <audit-port>
+                     <port-range begin="1473" end="1483"/>
+                  </audit-port>
+		</connection>
+                <filter path="W:\openuss-plexus\servers\tomcat\Tomcat.oif"/>
+		<components>
+			<jdbc enabled="true" reportErrors="true" reportExceptions="true" reportSoftWarnings="false" reportWarnings="true"/>
+			<jndi enabled="true" reportExceptions="true"/>
+			<jsp enabled="true" reportExceptions="true"/>
+			<ejb enabled="true" reportExceptions="true">
+				<ejb-configuration path=""/>
+			</ejb>
+			<jms enabled="true" reportErrors="true" reportExceptions="true" reportSoftWarnings="false" reportWarnings="true"/>
+			<rmi enabled="true" reportExceptions="true"/>
+			<cci enabled="true" reportErrors="true" reportExceptions="true" reportSoftWarnings="false" reportWarnings="true"/>
+			<web-services enabled="true" reportExceptions="true"/>
+			<session enabled="true" errorSize="64KB" nonSerializable="true"/>
+		</components>
+		<metrics enabled="true">
+			<metric bufferSize="12H" bufferSizeType="time" enabled="true" name="Java Heap" period="PT2S"/>
+			<metric bufferSize="12H" bufferSizeType="time" enabled="true" name="Thread Count" period="PT2S"/>
+			<metric bufferSize="12H" bufferSizeType="time" enabled="true" name="Class Count" period="PT2S"/>
+		</metrics>
+		<auto-start-CPU enabled="false" time="clock" type="instrumentation">
+			<sampler-options period="50" precision="line"/>
+			<instrumentation-options precision="milli">
+				<instrumentation-filter enabled="true" limit="500"/>
+			</instrumentation-options>
+		</auto-start-CPU>
+	</request-analyzer>
+
+
+	<!-- *********************** SERVER TRACE ******************************** -->
+	<server-trace hibernate="false" ignoreTraining="false" installPath="c:\\STrace" pauseAfterLaunch="false" reportErrors="false" showOptions="true">
+		<connection vmName="Server VM">
+                  <audit-port>
+                    <port-range begin="1473" end="1483"/>
+                  </audit-port>
+                  <snmp agentPort="1789" trapPort="162"/>
+		</connection>
+		<filter path="c:\\weblogic_filter.oif"/>
+		<components>
+			<jdbc enabled="true" reportErrors="true" reportExceptions="true" reportSoftWarnings="true" reportWarnings="true" showOpenResourcesDuringHibernate="true"/>
+			<jndi enabled="false" reportExceptions="true"/>
+			<jsp enabled="false" reportExceptions="true"/>
+			<ejb enabled="false" reportExceptions="true">
+				<ejb-configuration path="c:\\ejb-configuration.st"/>
+			</ejb>
+			<jms enabled="false" reportErrors="true" reportExceptions="true" reportSoftWarnings="true" reportWarnings="true" showOpenResourcesDuringHibernate="true"/>
+			<rmi enabled="false" reportExceptions="true"/>
+			<cci enabled="false" reportErrors="true" reportExceptions="true" reportSoftWarnings="true" reportWarnings="true" showOpenResourcesDuringHibernate="true"/>
+			<web-services enabled="true" reportExceptions="true"/>
+			<session enabled="true" errorSize="64KB" nonSerializable="true"/>
+                        <vm-stitching enabled="true"/>
+		</components>
+		<metrics enabled="true">
+			<metric bufferSize="12H" bufferSizeType="time" enabled="true" name="Java Heap" period="PT10S"/>
+			<metric bufferSize="12H" bufferSizeType="time" enabled="true" name="Physical Memory" period="PT30S"/>
+			<metric bufferSize="12H" bufferSizeType="time" enabled="true" name="Virtual Memory" period="PT12S"/>
+			<metric bufferSize="12H" bufferSizeType="time" enabled="false" name="Paging File" period="PT10S"/>
+		</metrics>
+		<auto-start-CPU enabled="false" time="clock" type="instrumentation">
+			<sampler-options period="50" precision="line"/>
+			<instrumentation-options precision="milli">
+				<instrumentation-filter enabled="true" limit="500"/>
+			</instrumentation-options>
+		</auto-start-CPU>
+		<auto-capture counter="-1" delay="PT1H" fileNameFormat="snapshot-{0,date,MM-dd-yyyy}_{0,date,HH-mm-ss-z}" initialDelay="PT30M" resetMark="true" snapshotGeneration="true" xmlReportGeneration="true">
+			<cpu-information included="true"/>
+			<metrics-information included="true"/>
+			<comment>Applying load on the server</comment>
+		</auto-capture>
+	</server-trace>
+</optimizeit-configuration>

@@ -1,6 +1,5 @@
 package org.openuss.web.lecture;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,7 +16,6 @@ import org.openuss.lecture.LectureException;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
-import org.springframework.beans.support.PropertyComparator;
 
 /**
  * Aspirant page to manage user application for membership 
@@ -33,8 +31,8 @@ public class AspirantsPage extends AbstractLecturePage {
 
 	private AspirantDataProvider data = new AspirantDataProvider();
 	
-	private Set<UserInfo> acceptAspirants = new HashSet<UserInfo>();
-	private Set<UserInfo> rejectAspirants = new HashSet<UserInfo>();
+	private transient Set<UserInfo> acceptAspirants = new HashSet<UserInfo>();
+	private transient Set<UserInfo> rejectAspirants = new HashSet<UserInfo>();
 	
 	public String save() {
 		for (UserInfo userInfo : acceptAspirants) {
@@ -94,13 +92,6 @@ public class AspirantsPage extends AbstractLecturePage {
 			}
 			return page;
 		}
-
-		private void sort(List<UserInfo> aspirants) {
-			if (getSortColumn() != null) {
-				Collections.sort(aspirants, new PropertyComparator(getSortColumn(),true,isAscending()));
-			}
-		}
-		
 	}
 	
 	/* --------------------- properties --------------------------*/

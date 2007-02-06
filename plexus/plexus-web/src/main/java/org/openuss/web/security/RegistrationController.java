@@ -40,16 +40,16 @@ public class RegistrationController extends BaseBean {
 			.getLogger(RegistrationController.class);
 
 	@Property(value = "#{registrationService}")
-	private RegistrationService registrationService;
+	transient private RegistrationService registrationService;
 
 	@Property(value = "#{securityService}")
-	private SecurityService securityService;
+	transient private SecurityService securityService;
 
 	@Property(value = "#{mailEngine}")
-	private MailEngine mailEngine;
+	transient private MailEngine mailEngine;
 
 	@Property(value = "#{mimeMessageHelper}")
-	private MimeMessageHelper mimeMessageHelper;
+	transient private MimeMessageHelper mimeMessageHelper;
 
 	@Property(value = "#{registrationData}")
 	private RegistrationData registrationData;

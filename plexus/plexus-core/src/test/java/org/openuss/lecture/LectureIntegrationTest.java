@@ -171,9 +171,12 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		assertNull(lectureService.getEnrollment(enrollment.getId()));
 		
 		faculty = lectureService.getFaculty(faculty.getId());
-		lectureService.getPeriod(period.getId());
-		lectureService.getSubject(subject.getId());
+		period = lectureService.getPeriod(period.getId());
+		subject = lectureService.getSubject(subject.getId());
 		assertEquals(1, faculty.getEnrollments().size());
+		
+		assertNotNull("Couldn't find previous Period object.", period);
+		assertNotNull("Couldn't find previous Subject object.", subject);
 		
 		// remove faculty
 		lectureService.removeFaculty(faculty.getId());
