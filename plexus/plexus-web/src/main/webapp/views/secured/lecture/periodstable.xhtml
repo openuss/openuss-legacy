@@ -13,7 +13,7 @@
      	label="#{msg.period_header}"  
      	value="views$secured$lecture$periods.periodData" 
      	var="period" 
-     	rows="5"> 
+     	rows="5">  
 
 		<t:column>
 			<plexus:commandSortHeader columnName="name">#{msg.period_colheader_name}</plexus:commandSortHeader> 
@@ -36,7 +36,6 @@
 					value="/images/icons/inactive.gif" 
 					title="#{msg.period_command_inactive_hint}" 
 					alt="#{msg.period_command_inactive}"/>
-				<t:updateActionListener property="#{periodList.selectedRowIndex}" value="#{rowIndex}"/>
 			</h:commandLink>
 			<h:graphicImage 
 				value="/images/icons/active.gif" 
@@ -52,7 +51,6 @@
 				styleClass="button_edit"
 				label="#{msg.period_command_edit}"
 				hint="#{msg.period_command_edit_hint}">
-				<t:updateActionListener property="#{periodList.selectedRowIndex}" value="#{rowIndex}"/>
 			</plexus:command>
 			<plexus:command 
 				bean="#{views$secured$lecture$periods}"
@@ -60,7 +58,6 @@
 				styleClass="button_remove"
 				label="#{msg.period_command_remove}"
 				hint="#{msg.period_command_remove_hint}">
-				<t:updateActionListener property="#{periodList.selectedRowIndex}" value="#{rowIndex}"/>
 			</plexus:command>
 		</plexus:column>
 	</plexus:dataTable>
