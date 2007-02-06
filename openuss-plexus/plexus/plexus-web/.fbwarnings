@@ -1,0 +1,845 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="1.0.0" sequence="0" timestamp="-1" analysisTimestamp="1170559506437" release="">
+  <Project filename="&lt;&lt;unnamed project&gt;&gt;">
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\layout\ThemeManager.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\BasePage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\Constants.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\Visit.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\application\DefaultExceptionHandler.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\application\DefaultViewRoot.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\application\DelegateViewControllerMapper.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\application\PropertyViewControllerMapper.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\application\StartupServletContextListener.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\desktop\DesktopPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\error\ErrorViewController.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\facelets\ThemeAwareResourceResolver.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\AbstractEnrollmentPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\AbstractLecturePage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\AbstractPeriodPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\AspirantsPage$AspirantDataProvider.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\AspirantsPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\EnrollmentList.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\EnrollmentOptionsPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\EnrollmentRemovePage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\FacultiesPage$FacultyTable.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\FacultiesPage$NameComparator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\FacultiesPage$OwnerComparator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\FacultiesPage$ShortcutComparator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\FacultiesPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\FacultyGroupConverter.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\FacultyOptionsPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\FacultyPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\FacultyRegistrationController.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\MembersPage$1.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\MembersPage$2.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\MembersPage$MembersTable.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\MembersPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\NewsEditPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\NewsPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\PeriodEditPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\PeriodList.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\PeriodRemovePage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\PeriodsPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\SubjectList.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\SubjectRemovePage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\SubjectsPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\validators\EnrollmentShortcutValidator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\validators\FacultyShortcutValidator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\lecture\validators\SubjectShortcutValidator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\navigation\Navigator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\news\NewsCategoryConverter.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\news\NewsCategorySelectItems.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\news\NewsController.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\repository\RepositoryServlet.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\security\AuthenticationController.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\security\PasswordChangeAction.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\security\RegistrationController.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\security\RegistrationData.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\security\UserActivateAction.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\security\profile\UserProfilePage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\security\profile\ViewUserProfilePage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\security\validators\UsernameExistValidator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\security\validators\UsernameNotExistValidator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\system\FacultiesPage$FacultyDataProvider.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\system\FacultiesPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\system\GroupsPage$GroupTable.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\system\GroupsPage$LabelComparator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\system\GroupsPage$NameComparator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\system\GroupsPage$PasswordComparator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\system\GroupsPage$TypeComparator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\system\GroupsPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\system\PropertiesPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\system\PropertyList.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\system\UserBrowserPage$LocalDataModel.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\system\UserBrowserPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\upload\UploadFileManager.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\upload\UploadListener.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes\org\openuss\web\utils\MessageBox.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\layout\ThemeManager.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\BasePage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\Constants.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\Visit.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\application\DefaultExceptionHandler.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\application\DefaultViewRoot.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\application\DelegateViewControllerMapper.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\application\PropertyViewControllerMapper.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\application\StartupServletContextListener.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\desktop\DesktopPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\error\ErrorViewController.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\facelets\ThemeAwareResourceResolver.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\AbstractEnrollmentPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\AbstractLecturePage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\AbstractPeriodPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\AspirantsPage$1.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\AspirantsPage$AspirantDataProvider.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\AspirantsPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\EnrollmentList.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\EnrollmentOptionsPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\EnrollmentRemovePage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\FacultiesPage$1.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\FacultiesPage$FacultyTable.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\FacultiesPage$NameComparator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\FacultiesPage$OwnerComparator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\FacultiesPage$ShortcutComparator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\FacultiesPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\FacultyGroupConverter.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\FacultyOptionsPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\FacultyPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\FacultyRegistrationController.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\MembersPage$1.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\MembersPage$2.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\MembersPage$MembersTable.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\MembersPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\NewsEditPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\NewsPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\PeriodEditPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\PeriodList.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\PeriodRemovePage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\PeriodsPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\SubjectList.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\SubjectRemovePage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\SubjectsPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\validators\EnrollmentShortcutValidator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\validators\FacultyShortcutValidator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\lecture\validators\SubjectShortcutValidator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\navigation\Navigator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\news\NewsCategoryConverter.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\news\NewsCategorySelectItems.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\news\NewsController.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\repository\RepositoryServlet.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\security\AuthenticationController.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\security\PasswordChangeAction.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\security\RegistrationController.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\security\RegistrationData.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\security\UserActivateAction.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\security\profile\UserProfilePage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\security\profile\ViewUserProfilePage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\security\validators\UsernameExistValidator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\security\validators\UsernameNotExistValidator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\FacultiesPage$1.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\FacultiesPage$FacultyDataProvider.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\FacultiesPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\GroupsPage$1.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\GroupsPage$GroupTable.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\GroupsPage$LabelComparator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\GroupsPage$NameComparator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\GroupsPage$PasswordComparator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\GroupsPage$TypeComparator.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\GroupsPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\PropertiesPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\PropertyList.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\UserBrowserPage$1.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\UserBrowserPage$LocalDataModel.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\system\UserBrowserPage.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\upload\UploadFileManager.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\upload\UploadListener.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\plexus-web-3.0-SNAPSHOT\WEB-INF\classes\org\openuss\web\utils\MessageBox.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\test-classes\org\openuss\test\foundation\UserUIMock.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\test-classes\org\openuss\web\lecture\FacultyGroupConverterTest.class</Jar>
+    <Jar>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\test-classes\org\openuss\web\upload\UploadListenerTest.class</Jar>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\test-classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\target\classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\struts\struts\1.2.8\struts-1.2.8.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\aopalliance\aopalliance\1.0\aopalliance-1.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\javax\servlet\servlet-api\2.4\servlet-api-2.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\springframework\spring-jdbc\2.0.1\spring-jdbc-2.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\springframework\spring-remoting\2.0.1\spring-remoting-2.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\com\sun\el\el-ri\1.0\el-ri-1.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\logkit\logkit\1.0.1\logkit-1.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\log4j\log4j\1.2.13\log4j-1.2.13.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\apache\myfaces\core\myfaces-impl\1.1.5-SNAPSHOT\myfaces-impl-1.1.5-SNAPSHOT.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\asm\asm\1.5.3\asm-1.5.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-collections\commons-collections\3.1\commons-collections-3.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\junit\junit\3.8.2\junit-3.8.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\apache\shale\shale-spring\1.0.4\shale-spring-1.0.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\taglibs\standard\1.1.2\standard-1.1.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\apache\myfaces\tomahawk\tomahawk\1.1.5-SNAPSHOT\tomahawk-1.1.5-SNAPSHOT.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-validator\commons-validator\1.3.0\commons-validator-1.3.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\net\sf\ehcache\ehcache\1.2.3\ehcache-1.2.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\javax\servlet\jsp\jsp-api\2.1\jsp-api-2.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-codec\commons-codec\1.3\commons-codec-1.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-logging\commons-logging\1.1\commons-logging-1.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\velocity\velocity-dep\1.4\velocity-dep-1.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\springframework\spring\2.0.1\spring-2.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\fckfaces\fckfaces\1.7.27\fckfaces-1.7.27.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\cglib\cglib\2.1_3\cglib-2.1_3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\asm\asm-attrs\1.5.3\asm-attrs-1.5.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\easymock\easymockclassextension\2.2\easymockclassextension-2.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\javax\mail\mail\1.4\mail-1.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\velocity\velocity\1.4\velocity-1.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\springframework\spring-context\2.0.1\spring-context-2.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\com\sun\facelets\jsf-facelets\1.1.12\jsf-facelets-1.1.12.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\javax\portlet\portlet-api\1.0\portlet-api-1.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-el\commons-el\1.0\commons-el-1.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\jaybird\jaybird-full\2.0.1\jaybird-full-2.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\apache\shale\shale-remoting\1.0.4\shale-remoting-1.0.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\antlr\antlr\2.7.2\antlr-2.7.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\springframework\spring-mock\2.0.1\spring-mock-2.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\acegisecurity\acegi-security\1.0.3\acegi-security-1.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\springframework\spring-core\2.0.1\spring-core-2.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\javax\transaction\jta\1.0.1B\jta-1.0.1B.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\framework\deployer\target\test-classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\framework\deployer\target\classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\cglib\cglib-nodep\2.1_3\cglib-nodep-2.1_3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\easymock\easymock\2.2\easymock-2.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\springframework\spring-aop\2.0.1\spring-aop-2.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-chain\commons-chain\1.1\commons-chain-1.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-lang\commons-lang\2.1\commons-lang-2.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-beanutils\commons-beanutils\1.7.0\commons-beanutils-1.7.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\apache\myfaces\core\myfaces-api\1.1.5-SNAPSHOT\myfaces-api-1.1.5-SNAPSHOT.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\javax\servlet\jstl\1.1.0\jstl-1.1.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\avalon-framework\avalon-framework\4.1.3\avalon-framework-4.1.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\springframework\spring-hibernate3\2.0.1\spring-hibernate3-2.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\themes\theme-core\target\test-classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\themes\theme-core\target\classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\net\sf\ehcache\ehcache\1.2\ehcache-1.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-validator\commons-validator\1.1.4\commons-validator-1.1.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\springframework\spring-support\2.0.1\spring-support-2.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\antlr\antlr\2.7.6\antlr-2.7.6.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\apache\myfaces\core\myfaces-api\1.1.4\myfaces-api-1.1.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\oro\oro\2.0.8\oro-2.0.8.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-digester\commons-digester\1.6\commons-digester-1.6.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-fileupload\commons-fileupload\1.0\commons-fileupload-1.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\springframework\spring-web\2.0.1\spring-web-2.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\springframework\spring-dao\2.0.1\spring-dao-2.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\framework\utilities\target\classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\javax\el\el-api\1.0\el-api-1.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\framework\core\target\test-classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\framework\core\target\classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-collections\commons-collections\2.1.1\commons-collections-2.1.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\javax\activation\activation\1.1\activation-1.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\xalan\xalan\2.5.1\xalan-2.5.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\dom4j\dom4j\1.6.1\dom4j-1.6.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\jstl\jstl\1.2\jstl-1.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\hibernate\hibernate\3.2.1.ga\hibernate-3.2.1.ga.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\springframework\spring-beans\2.0.1\spring-beans-2.0.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\xml-apis\xml-apis\1.0.b2\xml-apis-1.0.b2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\apache\shale\shale-tiger\1.0.4\shale-tiger-1.0.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-api\target\classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-logging\commons-logging\1.0.3\commons-logging-1.0.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-core\target\test-classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-core\target\classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\javax\servlet\servlet-api\2.3\servlet-api-2.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\framework\tests\target\classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\migration\migration-core\target\test-classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\migration\migration-core\target\classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-logging\commons-logging\1.0.4\commons-logging-1.0.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\oro\oro\2.0.7\oro-2.0.7.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\openuss\foundation\foundation-api\3.0-SNAPSHOT\foundation-api-3.0-SNAPSHOT.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\framework\jsfcontrols\target\test-classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\workspaces\workspace-plexus-svn\openuss-plexus\framework\jsfcontrols\target\classes</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\apache\shale\shale-core\1.0.4\shale-core-1.0.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\apache\shale\shale-test\1.0.4\shale-test-1.0.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\apache\myfaces\tomahawk\tomahawk-sandbox\1.1.5-SNAPSHOT\tomahawk-sandbox-1.1.5-SNAPSHOT.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\apache\shale\shale-view\1.0.4\shale-view-1.0.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\org\apache\shale\shale-application\1.0.4\shale-application-1.0.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\development\repository\maven-2.0\commons-scxml\commons-scxml\0.6\commons-scxml-0.6.jar</AuxClasspathEntry>
+  </Project>
+  <BugInstance type="BC_UNCONFIRMED_CAST" priority="3" abbrev="BC" category="STYLE">
+    <Class classname="org.openuss.web.application.DefaultExceptionHandler">
+      <SourceLine classname="org.openuss.web.application.DefaultExceptionHandler" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="DefaultExceptionHandler.java" sourcepath="org/openuss/web/application/DefaultExceptionHandler.java"/>
+    </Class>
+    <Method classname="org.openuss.web.application.DefaultExceptionHandler" name="handleException" signature="(Ljava/lang/Exception;)V" isStatic="false">
+      <SourceLine classname="org.openuss.web.application.DefaultExceptionHandler" start="37" end="50" startBytecode="0" endBytecode="26" sourcefile="DefaultExceptionHandler.java" sourcepath="org/openuss/web/application/DefaultExceptionHandler.java"/>
+    </Method>
+    <Class classname="java.lang.Throwable">
+      <SourceLine classname="java.lang.Throwable" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Throwable.java" sourcepath="java/lang/Throwable.java"/>
+    </Class>
+    <Class classname="java.lang.Exception">
+      <SourceLine classname="java.lang.Exception" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Exception.java" sourcepath="java/lang/Exception.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.application.DefaultExceptionHandler" start="45" end="45" startBytecode="34" endBytecode="34" sourcefile="DefaultExceptionHandler.java" sourcepath="org/openuss/web/application/DefaultExceptionHandler.java"/>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.application.PropertyViewControllerMapper">
+      <SourceLine classname="org.openuss.web.application.PropertyViewControllerMapper" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PropertyViewControllerMapper.java" sourcepath="org/openuss/web/application/PropertyViewControllerMapper.java"/>
+    </Class>
+    <Field classname="org.openuss.web.application.PropertyViewControllerMapper" name="views" signature="Ljava/util/Properties;" isStatic="false">
+      <SourceLine classname="org.openuss.web.application.PropertyViewControllerMapper" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PropertyViewControllerMapper.java" sourcepath="org/openuss/web/application/PropertyViewControllerMapper.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.desktop.DesktopPage">
+      <SourceLine classname="org.openuss.web.desktop.DesktopPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="DesktopPage.java" sourcepath="org/openuss/web/desktop/DesktopPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.desktop.DesktopPage" name="desktopService" signature="Lorg/openuss/desktop/DesktopService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.desktop.DesktopPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="DesktopPage.java" sourcepath="org/openuss/web/desktop/DesktopPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.desktop.DesktopPage">
+      <SourceLine classname="org.openuss.web.desktop.DesktopPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="DesktopPage.java" sourcepath="org/openuss/web/desktop/DesktopPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.desktop.DesktopPage" name="enrollmentTable" signature="Ljavax/faces/component/UIData;" isStatic="false">
+      <SourceLine classname="org.openuss.web.desktop.DesktopPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="DesktopPage.java" sourcepath="org/openuss/web/desktop/DesktopPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.desktop.DesktopPage">
+      <SourceLine classname="org.openuss.web.desktop.DesktopPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="DesktopPage.java" sourcepath="org/openuss/web/desktop/DesktopPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.desktop.DesktopPage" name="facultyTable" signature="Ljavax/faces/component/UIData;" isStatic="false">
+      <SourceLine classname="org.openuss.web.desktop.DesktopPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="DesktopPage.java" sourcepath="org/openuss/web/desktop/DesktopPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.desktop.DesktopPage">
+      <SourceLine classname="org.openuss.web.desktop.DesktopPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="DesktopPage.java" sourcepath="org/openuss/web/desktop/DesktopPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.desktop.DesktopPage" name="subjectTable" signature="Ljavax/faces/component/UIData;" isStatic="false">
+      <SourceLine classname="org.openuss.web.desktop.DesktopPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="DesktopPage.java" sourcepath="org/openuss/web/desktop/DesktopPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="BC_UNCONFIRMED_CAST" priority="3" abbrev="BC" category="STYLE">
+    <Class classname="org.openuss.web.lecture.EnrollmentRemovePage">
+      <SourceLine classname="org.openuss.web.lecture.EnrollmentRemovePage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="EnrollmentRemovePage.java" sourcepath="org/openuss/web/lecture/EnrollmentRemovePage.java"/>
+    </Class>
+    <Method classname="org.openuss.web.lecture.EnrollmentRemovePage" name="validateRemoveConfirmation" signature="(Ljavax/faces/context/FacesContext;Ljavax/faces/component/UIComponent;Ljava/lang/Object;)V" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.EnrollmentRemovePage" start="55" end="60" startBytecode="0" endBytecode="19" sourcefile="EnrollmentRemovePage.java" sourcepath="org/openuss/web/lecture/EnrollmentRemovePage.java"/>
+    </Method>
+    <Class classname="javax.faces.component.UIComponent">
+      <SourceLine classname="javax.faces.component.UIComponent" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIComponent.java" sourcepath="javax/faces/component/UIComponent.java"/>
+    </Class>
+    <Class classname="javax.faces.component.UIInput">
+      <SourceLine classname="javax.faces.component.UIInput" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIInput.java" sourcepath="javax/faces/component/UIInput.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.lecture.EnrollmentRemovePage" start="57" end="57" startBytecode="15" endBytecode="15" sourcefile="EnrollmentRemovePage.java" sourcepath="org/openuss/web/lecture/EnrollmentRemovePage.java"/>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.lecture.FacultiesPage">
+      <SourceLine classname="org.openuss.web.lecture.FacultiesPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="FacultiesPage.java" sourcepath="org/openuss/web/lecture/FacultiesPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.lecture.FacultiesPage" name="desktopService" signature="Lorg/openuss/desktop/DesktopService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.FacultiesPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="FacultiesPage.java" sourcepath="org/openuss/web/lecture/FacultiesPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE" priority="2" abbrev="Se" category="STYLE">
+    <Class classname="org.openuss.web.lecture.FacultiesPage$NameComparator">
+      <SourceLine classname="org.openuss.web.lecture.FacultiesPage$NameComparator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="FacultiesPage.java" sourcepath="org/openuss/web/lecture/FacultiesPage.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.lecture.FacultiesPage$NameComparator" start="121" end="121" startBytecode="0" endBytecode="0" sourcefile="D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\lecture\FacultiesPage.java" sourcepath="org/openuss/web/lecture/D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\lecture\FacultiesPage.java"/>
+  </BugInstance>
+  <BugInstance type="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE" priority="2" abbrev="Se" category="STYLE">
+    <Class classname="org.openuss.web.lecture.FacultiesPage$OwnerComparator">
+      <SourceLine classname="org.openuss.web.lecture.FacultiesPage$OwnerComparator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="FacultiesPage.java" sourcepath="org/openuss/web/lecture/FacultiesPage.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.lecture.FacultiesPage$OwnerComparator" start="133" end="133" startBytecode="0" endBytecode="0" sourcefile="D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\lecture\FacultiesPage.java" sourcepath="org/openuss/web/lecture/D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\lecture\FacultiesPage.java"/>
+  </BugInstance>
+  <BugInstance type="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE" priority="2" abbrev="Se" category="STYLE">
+    <Class classname="org.openuss.web.lecture.FacultiesPage$ShortcutComparator">
+      <SourceLine classname="org.openuss.web.lecture.FacultiesPage$ShortcutComparator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="FacultiesPage.java" sourcepath="org/openuss/web/lecture/FacultiesPage.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.lecture.FacultiesPage$ShortcutComparator" start="143" end="143" startBytecode="0" endBytecode="0" sourcefile="D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\lecture\FacultiesPage.java" sourcepath="org/openuss/web/lecture/D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\lecture\FacultiesPage.java"/>
+  </BugInstance>
+  <BugInstance type="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" priority="3" abbrev="RCN" category="CORRECTNESS">
+    <Class classname="org.openuss.web.lecture.FacultyGroupConverter">
+      <SourceLine classname="org.openuss.web.lecture.FacultyGroupConverter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="FacultyGroupConverter.java" sourcepath="org/openuss/web/lecture/FacultyGroupConverter.java"/>
+    </Class>
+    <Method classname="org.openuss.web.lecture.FacultyGroupConverter" name="getAsString" signature="(Ljavax/faces/context/FacesContext;Ljavax/faces/component/UIComponent;Ljava/lang/Object;)Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.FacultyGroupConverter" start="31" end="39" startBytecode="0" endBytecode="29" sourcefile="FacultyGroupConverter.java" sourcepath="org/openuss/web/lecture/FacultyGroupConverter.java"/>
+    </Method>
+    <SourceLine classname="org.openuss.web.lecture.FacultyGroupConverter" start="33" end="33" startBytecode="15" endBytecode="15" sourcefile="FacultyGroupConverter.java" sourcepath="org/openuss/web/lecture/FacultyGroupConverter.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.lecture.FacultyPage">
+      <SourceLine classname="org.openuss.web.lecture.FacultyPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="FacultyPage.java" sourcepath="org/openuss/web/lecture/FacultyPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.lecture.FacultyPage" name="newsService" signature="Lorg/openuss/news/NewsService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.FacultyPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="FacultyPage.java" sourcepath="org/openuss/web/lecture/FacultyPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="NM_CONFUSING" priority="3" abbrev="Nm" category="CORRECTNESS">
+    <Class classname="org.openuss.web.lecture.MembersPage">
+      <SourceLine classname="org.openuss.web.lecture.MembersPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MembersPage.java" sourcepath="org/openuss/web/lecture/MembersPage.java"/>
+    </Class>
+    <Method classname="org.openuss.web.lecture.MembersPage" name="setUsername" signature="(Ljava/lang/String;)V" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.MembersPage" start="203" end="204" startBytecode="0" endBytecode="61" sourcefile="MembersPage.java" sourcepath="org/openuss/web/lecture/MembersPage.java"/>
+    </Method>
+    <Class classname="org.openuss.test.foundation.UserUIMock">
+      <SourceLine classname="org.openuss.test.foundation.UserUIMock" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UserUIMock.java" sourcepath="org/openuss/test/foundation/UserUIMock.java"/>
+    </Class>
+    <Method classname="org.openuss.test.foundation.UserUIMock" name="setUserName" signature="(Ljava/lang/String;)V" isStatic="false">
+      <SourceLine classname="org.openuss.test.foundation.UserUIMock" start="188" end="189" startBytecode="0" endBytecode="61" sourcefile="UserUIMock.java" sourcepath="org/openuss/test/foundation/UserUIMock.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.lecture.MembersPage">
+      <SourceLine classname="org.openuss.web.lecture.MembersPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MembersPage.java" sourcepath="org/openuss/web/lecture/MembersPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.lecture.MembersPage" name="securityService" signature="Lorg/openuss/security/SecurityService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.MembersPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MembersPage.java" sourcepath="org/openuss/web/lecture/MembersPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="SIC_INNER_SHOULD_BE_STATIC_ANON" priority="3" abbrev="SIC" category="PERFORMANCE">
+    <Class classname="org.openuss.web.lecture.MembersPage$1">
+      <SourceLine classname="org.openuss.web.lecture.MembersPage$1" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MembersPage.java" sourcepath="org/openuss/web/lecture/MembersPage.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE" priority="3" abbrev="Se" category="STYLE">
+    <Class classname="org.openuss.web.lecture.MembersPage$2">
+      <SourceLine classname="org.openuss.web.lecture.MembersPage$2" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MembersPage.java" sourcepath="org/openuss/web/lecture/MembersPage.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="SIC_INNER_SHOULD_BE_STATIC_ANON" priority="3" abbrev="SIC" category="PERFORMANCE">
+    <Class classname="org.openuss.web.lecture.MembersPage$2">
+      <SourceLine classname="org.openuss.web.lecture.MembersPage$2" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MembersPage.java" sourcepath="org/openuss/web/lecture/MembersPage.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.lecture.NewsEditPage">
+      <SourceLine classname="org.openuss.web.lecture.NewsEditPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsEditPage.java" sourcepath="org/openuss/web/lecture/NewsEditPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.lecture.NewsEditPage" name="newsItem" signature="Lorg/openuss/news/NewsItem;" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.NewsEditPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsEditPage.java" sourcepath="org/openuss/web/lecture/NewsEditPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.lecture.NewsEditPage">
+      <SourceLine classname="org.openuss.web.lecture.NewsEditPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsEditPage.java" sourcepath="org/openuss/web/lecture/NewsEditPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.lecture.NewsEditPage" name="newsService" signature="Lorg/openuss/news/NewsService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.NewsEditPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsEditPage.java" sourcepath="org/openuss/web/lecture/NewsEditPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.lecture.NewsEditPage">
+      <SourceLine classname="org.openuss.web.lecture.NewsEditPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsEditPage.java" sourcepath="org/openuss/web/lecture/NewsEditPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.lecture.NewsEditPage" name="uploadFileManager" signature="Lorg/openuss/web/upload/UploadFileManager;" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.NewsEditPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsEditPage.java" sourcepath="org/openuss/web/lecture/NewsEditPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.lecture.NewsPage">
+      <SourceLine classname="org.openuss.web.lecture.NewsPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsPage.java" sourcepath="org/openuss/web/lecture/NewsPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.lecture.NewsPage" name="newsItemTable" signature="Ljavax/faces/component/UIData;" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.NewsPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsPage.java" sourcepath="org/openuss/web/lecture/NewsPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.lecture.NewsPage">
+      <SourceLine classname="org.openuss.web.lecture.NewsPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsPage.java" sourcepath="org/openuss/web/lecture/NewsPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.lecture.NewsPage" name="newsService" signature="Lorg/openuss/news/NewsService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.NewsPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsPage.java" sourcepath="org/openuss/web/lecture/NewsPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="BC_UNCONFIRMED_CAST" priority="3" abbrev="BC" category="STYLE">
+    <Class classname="org.openuss.web.lecture.PeriodRemovePage">
+      <SourceLine classname="org.openuss.web.lecture.PeriodRemovePage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PeriodRemovePage.java" sourcepath="org/openuss/web/lecture/PeriodRemovePage.java"/>
+    </Class>
+    <Method classname="org.openuss.web.lecture.PeriodRemovePage" name="validateRemoveConfirmation" signature="(Ljavax/faces/context/FacesContext;Ljavax/faces/component/UIComponent;Ljava/lang/Object;)V" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.PeriodRemovePage" start="61" end="66" startBytecode="0" endBytecode="19" sourcefile="PeriodRemovePage.java" sourcepath="org/openuss/web/lecture/PeriodRemovePage.java"/>
+    </Method>
+    <Class classname="javax.faces.component.UIComponent">
+      <SourceLine classname="javax.faces.component.UIComponent" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIComponent.java" sourcepath="javax/faces/component/UIComponent.java"/>
+    </Class>
+    <Class classname="javax.faces.component.UIInput">
+      <SourceLine classname="javax.faces.component.UIInput" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIInput.java" sourcepath="javax/faces/component/UIInput.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.lecture.PeriodRemovePage" start="63" end="63" startBytecode="15" endBytecode="15" sourcefile="PeriodRemovePage.java" sourcepath="org/openuss/web/lecture/PeriodRemovePage.java"/>
+  </BugInstance>
+  <BugInstance type="BC_UNCONFIRMED_CAST" priority="3" abbrev="BC" category="STYLE">
+    <Class classname="org.openuss.web.lecture.PeriodsPage">
+      <SourceLine classname="org.openuss.web.lecture.PeriodsPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PeriodsPage.java" sourcepath="org/openuss/web/lecture/PeriodsPage.java"/>
+    </Class>
+    <Method classname="org.openuss.web.lecture.PeriodsPage" name="validateRemoveConfirmation" signature="(Ljavax/faces/context/FacesContext;Ljavax/faces/component/UIComponent;Ljava/lang/Object;)V" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.PeriodsPage" start="217" end="222" startBytecode="0" endBytecode="19" sourcefile="PeriodsPage.java" sourcepath="org/openuss/web/lecture/PeriodsPage.java"/>
+    </Method>
+    <Class classname="javax.faces.component.UIComponent">
+      <SourceLine classname="javax.faces.component.UIComponent" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIComponent.java" sourcepath="javax/faces/component/UIComponent.java"/>
+    </Class>
+    <Class classname="javax.faces.component.UIInput">
+      <SourceLine classname="javax.faces.component.UIInput" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIInput.java" sourcepath="javax/faces/component/UIInput.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.lecture.PeriodsPage" start="219" end="219" startBytecode="15" endBytecode="15" sourcefile="PeriodsPage.java" sourcepath="org/openuss/web/lecture/PeriodsPage.java"/>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.lecture.PeriodsPage">
+      <SourceLine classname="org.openuss.web.lecture.PeriodsPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PeriodsPage.java" sourcepath="org/openuss/web/lecture/PeriodsPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.lecture.PeriodsPage" name="enrollmentList" signature="Lorg/openuss/web/lecture/EnrollmentList;" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.PeriodsPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PeriodsPage.java" sourcepath="org/openuss/web/lecture/PeriodsPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.lecture.PeriodsPage">
+      <SourceLine classname="org.openuss.web.lecture.PeriodsPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PeriodsPage.java" sourcepath="org/openuss/web/lecture/PeriodsPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.lecture.PeriodsPage" name="periodList" signature="Lorg/openuss/web/lecture/PeriodList;" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.PeriodsPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PeriodsPage.java" sourcepath="org/openuss/web/lecture/PeriodsPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="BC_UNCONFIRMED_CAST" priority="3" abbrev="BC" category="STYLE">
+    <Class classname="org.openuss.web.lecture.SubjectRemovePage">
+      <SourceLine classname="org.openuss.web.lecture.SubjectRemovePage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="SubjectRemovePage.java" sourcepath="org/openuss/web/lecture/SubjectRemovePage.java"/>
+    </Class>
+    <Method classname="org.openuss.web.lecture.SubjectRemovePage" name="validateRemoveConfirmation" signature="(Ljavax/faces/context/FacesContext;Ljavax/faces/component/UIComponent;Ljava/lang/Object;)V" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.SubjectRemovePage" start="77" end="82" startBytecode="0" endBytecode="19" sourcefile="SubjectRemovePage.java" sourcepath="org/openuss/web/lecture/SubjectRemovePage.java"/>
+    </Method>
+    <Class classname="javax.faces.component.UIComponent">
+      <SourceLine classname="javax.faces.component.UIComponent" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIComponent.java" sourcepath="javax/faces/component/UIComponent.java"/>
+    </Class>
+    <Class classname="javax.faces.component.UIInput">
+      <SourceLine classname="javax.faces.component.UIInput" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIInput.java" sourcepath="javax/faces/component/UIInput.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.lecture.SubjectRemovePage" start="79" end="79" startBytecode="15" endBytecode="15" sourcefile="SubjectRemovePage.java" sourcepath="org/openuss/web/lecture/SubjectRemovePage.java"/>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.lecture.SubjectsPage">
+      <SourceLine classname="org.openuss.web.lecture.SubjectsPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="SubjectsPage.java" sourcepath="org/openuss/web/lecture/SubjectsPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.lecture.SubjectsPage" name="subjectList" signature="Lorg/openuss/web/lecture/SubjectList;" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.SubjectsPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="SubjectsPage.java" sourcepath="org/openuss/web/lecture/SubjectsPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="BC_UNCONFIRMED_CAST" priority="3" abbrev="BC" category="STYLE">
+    <Class classname="org.openuss.web.lecture.validators.EnrollmentShortcutValidator">
+      <SourceLine classname="org.openuss.web.lecture.validators.EnrollmentShortcutValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="EnrollmentShortcutValidator.java" sourcepath="org/openuss/web/lecture/validators/EnrollmentShortcutValidator.java"/>
+    </Class>
+    <Method classname="org.openuss.web.lecture.validators.EnrollmentShortcutValidator" name="validate" signature="(Ljavax/faces/context/FacesContext;Ljavax/faces/component/UIComponent;Ljava/lang/Object;)V" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.validators.EnrollmentShortcutValidator" start="32" end="47" startBytecode="0" endBytecode="48" sourcefile="EnrollmentShortcutValidator.java" sourcepath="org/openuss/web/lecture/validators/EnrollmentShortcutValidator.java"/>
+    </Method>
+    <Class classname="javax.faces.component.UIComponent">
+      <SourceLine classname="javax.faces.component.UIComponent" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIComponent.java" sourcepath="javax/faces/component/UIComponent.java"/>
+    </Class>
+    <Class classname="javax.faces.component.UIInput">
+      <SourceLine classname="javax.faces.component.UIInput" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIInput.java" sourcepath="javax/faces/component/UIInput.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.lecture.validators.EnrollmentShortcutValidator" start="39" end="39" startBytecode="47" endBytecode="47" sourcefile="EnrollmentShortcutValidator.java" sourcepath="org/openuss/web/lecture/validators/EnrollmentShortcutValidator.java"/>
+    <SourceLine classname="org.openuss.web.lecture.validators.EnrollmentShortcutValidator" start="45" end="45" startBytecode="97" endBytecode="97" sourcefile="EnrollmentShortcutValidator.java" sourcepath="org/openuss/web/lecture/validators/EnrollmentShortcutValidator.java"/>
+  </BugInstance>
+  <BugInstance type="BC_UNCONFIRMED_CAST" priority="3" abbrev="BC" category="STYLE">
+    <Class classname="org.openuss.web.lecture.validators.FacultyShortcutValidator">
+      <SourceLine classname="org.openuss.web.lecture.validators.FacultyShortcutValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="FacultyShortcutValidator.java" sourcepath="org/openuss/web/lecture/validators/FacultyShortcutValidator.java"/>
+    </Class>
+    <Method classname="org.openuss.web.lecture.validators.FacultyShortcutValidator" name="validate" signature="(Ljavax/faces/context/FacesContext;Ljavax/faces/component/UIComponent;Ljava/lang/Object;)V" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.validators.FacultyShortcutValidator" start="32" end="47" startBytecode="0" endBytecode="48" sourcefile="FacultyShortcutValidator.java" sourcepath="org/openuss/web/lecture/validators/FacultyShortcutValidator.java"/>
+    </Method>
+    <Class classname="javax.faces.component.UIComponent">
+      <SourceLine classname="javax.faces.component.UIComponent" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIComponent.java" sourcepath="javax/faces/component/UIComponent.java"/>
+    </Class>
+    <Class classname="javax.faces.component.UIInput">
+      <SourceLine classname="javax.faces.component.UIInput" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIInput.java" sourcepath="javax/faces/component/UIInput.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.lecture.validators.FacultyShortcutValidator" start="44" end="44" startBytecode="84" endBytecode="84" sourcefile="FacultyShortcutValidator.java" sourcepath="org/openuss/web/lecture/validators/FacultyShortcutValidator.java"/>
+    <SourceLine classname="org.openuss.web.lecture.validators.FacultyShortcutValidator" start="39" end="39" startBytecode="47" endBytecode="47" sourcefile="FacultyShortcutValidator.java" sourcepath="org/openuss/web/lecture/validators/FacultyShortcutValidator.java"/>
+  </BugInstance>
+  <BugInstance type="BC_UNCONFIRMED_CAST" priority="3" abbrev="BC" category="STYLE">
+    <Class classname="org.openuss.web.lecture.validators.SubjectShortcutValidator">
+      <SourceLine classname="org.openuss.web.lecture.validators.SubjectShortcutValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="SubjectShortcutValidator.java" sourcepath="org/openuss/web/lecture/validators/SubjectShortcutValidator.java"/>
+    </Class>
+    <Method classname="org.openuss.web.lecture.validators.SubjectShortcutValidator" name="validate" signature="(Ljavax/faces/context/FacesContext;Ljavax/faces/component/UIComponent;Ljava/lang/Object;)V" isStatic="false">
+      <SourceLine classname="org.openuss.web.lecture.validators.SubjectShortcutValidator" start="30" end="46" startBytecode="0" endBytecode="48" sourcefile="SubjectShortcutValidator.java" sourcepath="org/openuss/web/lecture/validators/SubjectShortcutValidator.java"/>
+    </Method>
+    <Class classname="javax.faces.component.UIComponent">
+      <SourceLine classname="javax.faces.component.UIComponent" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIComponent.java" sourcepath="javax/faces/component/UIComponent.java"/>
+    </Class>
+    <Class classname="javax.faces.component.UIInput">
+      <SourceLine classname="javax.faces.component.UIInput" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIInput.java" sourcepath="javax/faces/component/UIInput.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.lecture.validators.SubjectShortcutValidator" start="37" end="37" startBytecode="47" endBytecode="47" sourcefile="SubjectShortcutValidator.java" sourcepath="org/openuss/web/lecture/validators/SubjectShortcutValidator.java"/>
+    <SourceLine classname="org.openuss.web.lecture.validators.SubjectShortcutValidator" start="43" end="43" startBytecode="97" endBytecode="97" sourcefile="SubjectShortcutValidator.java" sourcepath="org/openuss/web/lecture/validators/SubjectShortcutValidator.java"/>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.news.NewsCategorySelectItems">
+      <SourceLine classname="org.openuss.web.news.NewsCategorySelectItems" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsCategorySelectItems.java" sourcepath="org/openuss/web/news/NewsCategorySelectItems.java"/>
+    </Class>
+    <Field classname="org.openuss.web.news.NewsCategorySelectItems" name="newsService" signature="Lorg/openuss/news/NewsService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.news.NewsCategorySelectItems" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsCategorySelectItems.java" sourcepath="org/openuss/web/news/NewsCategorySelectItems.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.news.NewsController">
+      <SourceLine classname="org.openuss.web.news.NewsController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsController.java" sourcepath="org/openuss/web/news/NewsController.java"/>
+    </Class>
+    <Field classname="org.openuss.web.news.NewsController" name="newsItem" signature="Lorg/openuss/news/NewsItem;" isStatic="false">
+      <SourceLine classname="org.openuss.web.news.NewsController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsController.java" sourcepath="org/openuss/web/news/NewsController.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.news.NewsController">
+      <SourceLine classname="org.openuss.web.news.NewsController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsController.java" sourcepath="org/openuss/web/news/NewsController.java"/>
+    </Class>
+    <Field classname="org.openuss.web.news.NewsController" name="newsService" signature="Lorg/openuss/news/NewsService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.news.NewsController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsController.java" sourcepath="org/openuss/web/news/NewsController.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.news.NewsController">
+      <SourceLine classname="org.openuss.web.news.NewsController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsController.java" sourcepath="org/openuss/web/news/NewsController.java"/>
+    </Class>
+    <Field classname="org.openuss.web.news.NewsController" name="newsTable" signature="Ljavax/faces/component/UIData;" isStatic="false">
+      <SourceLine classname="org.openuss.web.news.NewsController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NewsController.java" sourcepath="org/openuss/web/news/NewsController.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="SE_BAD_FIELD" priority="2" abbrev="Se" category="CORRECTNESS">
+    <Class classname="org.openuss.web.repository.RepositoryServlet">
+      <SourceLine classname="org.openuss.web.repository.RepositoryServlet" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="RepositoryServlet.java" sourcepath="org/openuss/web/repository/RepositoryServlet.java"/>
+    </Class>
+    <Field classname="org.openuss.web.repository.RepositoryServlet" name="repository" signature="Lorg/openuss/repository/RepositoryService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.repository.RepositoryServlet" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="RepositoryServlet.java" sourcepath="org/openuss/web/repository/RepositoryServlet.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.security.AuthenticationController">
+      <SourceLine classname="org.openuss.web.security.AuthenticationController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="AuthenticationController.java" sourcepath="org/openuss/web/security/AuthenticationController.java"/>
+    </Class>
+    <Field classname="org.openuss.web.security.AuthenticationController" name="rememberMeServices" signature="Lorg/acegisecurity/ui/rememberme/RememberMeServices;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.AuthenticationController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="AuthenticationController.java" sourcepath="org/openuss/web/security/AuthenticationController.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.security.AuthenticationController">
+      <SourceLine classname="org.openuss.web.security.AuthenticationController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="AuthenticationController.java" sourcepath="org/openuss/web/security/AuthenticationController.java"/>
+    </Class>
+    <Field classname="org.openuss.web.security.AuthenticationController" name="securityService" signature="Lorg/openuss/security/SecurityService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.AuthenticationController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="AuthenticationController.java" sourcepath="org/openuss/web/security/AuthenticationController.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.security.PasswordChangeAction">
+      <SourceLine classname="org.openuss.web.security.PasswordChangeAction" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PasswordChangeAction.java" sourcepath="org/openuss/web/security/PasswordChangeAction.java"/>
+    </Class>
+    <Field classname="org.openuss.web.security.PasswordChangeAction" name="registrationService" signature="Lorg/openuss/security/registration/RegistrationService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.PasswordChangeAction" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PasswordChangeAction.java" sourcepath="org/openuss/web/security/PasswordChangeAction.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.security.RegistrationController">
+      <SourceLine classname="org.openuss.web.security.RegistrationController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="RegistrationController.java" sourcepath="org/openuss/web/security/RegistrationController.java"/>
+    </Class>
+    <Field classname="org.openuss.web.security.RegistrationController" name="mailEngine" signature="Lorg/openuss/framework/mail/MailEngine;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.RegistrationController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="RegistrationController.java" sourcepath="org/openuss/web/security/RegistrationController.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.security.RegistrationController">
+      <SourceLine classname="org.openuss.web.security.RegistrationController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="RegistrationController.java" sourcepath="org/openuss/web/security/RegistrationController.java"/>
+    </Class>
+    <Field classname="org.openuss.web.security.RegistrationController" name="mimeMessageHelper" signature="Lorg/springframework/mail/javamail/MimeMessageHelper;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.RegistrationController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="RegistrationController.java" sourcepath="org/openuss/web/security/RegistrationController.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.security.RegistrationController">
+      <SourceLine classname="org.openuss.web.security.RegistrationController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="RegistrationController.java" sourcepath="org/openuss/web/security/RegistrationController.java"/>
+    </Class>
+    <Field classname="org.openuss.web.security.RegistrationController" name="registrationData" signature="Lorg/openuss/web/security/RegistrationData;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.RegistrationController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="RegistrationController.java" sourcepath="org/openuss/web/security/RegistrationController.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.security.RegistrationController">
+      <SourceLine classname="org.openuss.web.security.RegistrationController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="RegistrationController.java" sourcepath="org/openuss/web/security/RegistrationController.java"/>
+    </Class>
+    <Field classname="org.openuss.web.security.RegistrationController" name="registrationService" signature="Lorg/openuss/security/registration/RegistrationService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.RegistrationController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="RegistrationController.java" sourcepath="org/openuss/web/security/RegistrationController.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.security.RegistrationController">
+      <SourceLine classname="org.openuss.web.security.RegistrationController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="RegistrationController.java" sourcepath="org/openuss/web/security/RegistrationController.java"/>
+    </Class>
+    <Field classname="org.openuss.web.security.RegistrationController" name="securityService" signature="Lorg/openuss/security/SecurityService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.RegistrationController" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="RegistrationController.java" sourcepath="org/openuss/web/security/RegistrationController.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="BC_UNCONFIRMED_CAST" priority="3" abbrev="BC" category="STYLE">
+    <Class classname="org.openuss.web.security.RegistrationData">
+      <SourceLine classname="org.openuss.web.security.RegistrationData" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="RegistrationData.java" sourcepath="org/openuss/web/security/RegistrationData.java"/>
+    </Class>
+    <Method classname="org.openuss.web.security.RegistrationData" name="validateAcception" signature="(Ljavax/faces/context/FacesContext;Ljavax/faces/component/UIComponent;Ljava/lang/Object;)V" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.RegistrationData" start="60" end="65" startBytecode="0" endBytecode="19" sourcefile="RegistrationData.java" sourcepath="org/openuss/web/security/RegistrationData.java"/>
+    </Method>
+    <Class classname="javax.faces.component.UIComponent">
+      <SourceLine classname="javax.faces.component.UIComponent" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIComponent.java" sourcepath="javax/faces/component/UIComponent.java"/>
+    </Class>
+    <Class classname="javax.faces.component.UIInput">
+      <SourceLine classname="javax.faces.component.UIInput" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIInput.java" sourcepath="javax/faces/component/UIInput.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.security.RegistrationData" start="62" end="62" startBytecode="15" endBytecode="15" sourcefile="RegistrationData.java" sourcepath="org/openuss/web/security/RegistrationData.java"/>
+  </BugInstance>
+  <BugInstance type="NM_CONFUSING" priority="3" abbrev="Nm" category="CORRECTNESS">
+    <Class classname="org.openuss.web.security.RegistrationData">
+      <SourceLine classname="org.openuss.web.security.RegistrationData" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="RegistrationData.java" sourcepath="org/openuss/web/security/RegistrationData.java"/>
+    </Class>
+    <Method classname="org.openuss.web.security.RegistrationData" name="getUsername" signature="()Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.RegistrationData" start="84" end="84" startBytecode="0" endBytecode="46" sourcefile="RegistrationData.java" sourcepath="org/openuss/web/security/RegistrationData.java"/>
+    </Method>
+    <Class classname="org.openuss.test.foundation.UserUIMock">
+      <SourceLine classname="org.openuss.test.foundation.UserUIMock" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UserUIMock.java" sourcepath="org/openuss/test/foundation/UserUIMock.java"/>
+    </Class>
+    <Method classname="org.openuss.test.foundation.UserUIMock" name="getUserName" signature="()Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="org.openuss.test.foundation.UserUIMock" start="182" end="182" startBytecode="0" endBytecode="46" sourcefile="UserUIMock.java" sourcepath="org/openuss/test/foundation/UserUIMock.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.security.UserActivateAction">
+      <SourceLine classname="org.openuss.web.security.UserActivateAction" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UserActivateAction.java" sourcepath="org/openuss/web/security/UserActivateAction.java"/>
+    </Class>
+    <Field classname="org.openuss.web.security.UserActivateAction" name="registrationService" signature="Lorg/openuss/security/registration/RegistrationService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.UserActivateAction" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UserActivateAction.java" sourcepath="org/openuss/web/security/UserActivateAction.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.security.profile.UserProfilePage">
+      <SourceLine classname="org.openuss.web.security.profile.UserProfilePage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UserProfilePage.java" sourcepath="org/openuss/web/security/profile/UserProfilePage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.security.profile.UserProfilePage" name="navigator" signature="Lorg/openuss/web/navigation/Navigator;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.profile.UserProfilePage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UserProfilePage.java" sourcepath="org/openuss/web/security/profile/UserProfilePage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.security.profile.UserProfilePage">
+      <SourceLine classname="org.openuss.web.security.profile.UserProfilePage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UserProfilePage.java" sourcepath="org/openuss/web/security/profile/UserProfilePage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.security.profile.UserProfilePage" name="securityService" signature="Lorg/openuss/security/SecurityService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.profile.UserProfilePage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UserProfilePage.java" sourcepath="org/openuss/web/security/profile/UserProfilePage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.security.profile.UserProfilePage">
+      <SourceLine classname="org.openuss.web.security.profile.UserProfilePage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UserProfilePage.java" sourcepath="org/openuss/web/security/profile/UserProfilePage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.security.profile.UserProfilePage" name="uploadFileManager" signature="Lorg/openuss/web/upload/UploadFileManager;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.profile.UserProfilePage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UserProfilePage.java" sourcepath="org/openuss/web/security/profile/UserProfilePage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.security.profile.UserProfilePage">
+      <SourceLine classname="org.openuss.web.security.profile.UserProfilePage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UserProfilePage.java" sourcepath="org/openuss/web/security/profile/UserProfilePage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.security.profile.UserProfilePage" name="user" signature="Lorg/openuss/security/User;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.profile.UserProfilePage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UserProfilePage.java" sourcepath="org/openuss/web/security/profile/UserProfilePage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.security.profile.ViewUserProfilePage">
+      <SourceLine classname="org.openuss.web.security.profile.ViewUserProfilePage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ViewUserProfilePage.java" sourcepath="org/openuss/web/security/profile/ViewUserProfilePage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.security.profile.ViewUserProfilePage" name="securityService" signature="Lorg/openuss/security/SecurityService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.profile.ViewUserProfilePage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ViewUserProfilePage.java" sourcepath="org/openuss/web/security/profile/ViewUserProfilePage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="BC_UNCONFIRMED_CAST" priority="3" abbrev="BC" category="STYLE">
+    <Class classname="org.openuss.web.security.validators.UsernameExistValidator">
+      <SourceLine classname="org.openuss.web.security.validators.UsernameExistValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UsernameExistValidator.java" sourcepath="org/openuss/web/security/validators/UsernameExistValidator.java"/>
+    </Class>
+    <Method classname="org.openuss.web.security.validators.UsernameExistValidator" name="validate" signature="(Ljavax/faces/context/FacesContext;Ljavax/faces/component/UIComponent;Ljava/lang/Object;)V" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.validators.UsernameExistValidator" start="25" end="34" startBytecode="0" endBytecode="31" sourcefile="UsernameExistValidator.java" sourcepath="org/openuss/web/security/validators/UsernameExistValidator.java"/>
+    </Method>
+    <Class classname="javax.faces.component.UIComponent">
+      <SourceLine classname="javax.faces.component.UIComponent" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIComponent.java" sourcepath="javax/faces/component/UIComponent.java"/>
+    </Class>
+    <Class classname="javax.faces.component.UIInput">
+      <SourceLine classname="javax.faces.component.UIInput" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIInput.java" sourcepath="javax/faces/component/UIInput.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.security.validators.UsernameExistValidator" start="30" end="30" startBytecode="43" endBytecode="43" sourcefile="UsernameExistValidator.java" sourcepath="org/openuss/web/security/validators/UsernameExistValidator.java"/>
+  </BugInstance>
+  <BugInstance type="BC_UNCONFIRMED_CAST" priority="3" abbrev="BC" category="STYLE">
+    <Class classname="org.openuss.web.security.validators.UsernameNotExistValidator">
+      <SourceLine classname="org.openuss.web.security.validators.UsernameNotExistValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UsernameNotExistValidator.java" sourcepath="org/openuss/web/security/validators/UsernameNotExistValidator.java"/>
+    </Class>
+    <Method classname="org.openuss.web.security.validators.UsernameNotExistValidator" name="validate" signature="(Ljavax/faces/context/FacesContext;Ljavax/faces/component/UIComponent;Ljava/lang/Object;)V" isStatic="false">
+      <SourceLine classname="org.openuss.web.security.validators.UsernameNotExistValidator" start="27" end="38" startBytecode="0" endBytecode="36" sourcefile="UsernameNotExistValidator.java" sourcepath="org/openuss/web/security/validators/UsernameNotExistValidator.java"/>
+    </Method>
+    <Class classname="javax.faces.component.UIComponent">
+      <SourceLine classname="javax.faces.component.UIComponent" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIComponent.java" sourcepath="javax/faces/component/UIComponent.java"/>
+    </Class>
+    <Class classname="javax.faces.component.UIInput">
+      <SourceLine classname="javax.faces.component.UIInput" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIInput.java" sourcepath="javax/faces/component/UIInput.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.security.validators.UsernameNotExistValidator" start="34" end="34" startBytecode="55" endBytecode="55" sourcefile="UsernameNotExistValidator.java" sourcepath="org/openuss/web/security/validators/UsernameNotExistValidator.java"/>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.system.FacultiesPage">
+      <SourceLine classname="org.openuss.web.system.FacultiesPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="FacultiesPage.java" sourcepath="org/openuss/web/system/FacultiesPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.system.FacultiesPage" name="lectureService" signature="Lorg/openuss/lecture/LectureService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.system.FacultiesPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="FacultiesPage.java" sourcepath="org/openuss/web/system/FacultiesPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE" priority="2" abbrev="Se" category="STYLE">
+    <Class classname="org.openuss.web.system.GroupsPage$LabelComparator">
+      <SourceLine classname="org.openuss.web.system.GroupsPage$LabelComparator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="GroupsPage.java" sourcepath="org/openuss/web/system/GroupsPage.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.system.GroupsPage$LabelComparator" start="75" end="75" startBytecode="0" endBytecode="0" sourcefile="D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\system\GroupsPage.java" sourcepath="org/openuss/web/system/D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\system\GroupsPage.java"/>
+  </BugInstance>
+  <BugInstance type="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE" priority="2" abbrev="Se" category="STYLE">
+    <Class classname="org.openuss.web.system.GroupsPage$NameComparator">
+      <SourceLine classname="org.openuss.web.system.GroupsPage$NameComparator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="GroupsPage.java" sourcepath="org/openuss/web/system/GroupsPage.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.system.GroupsPage$NameComparator" start="65" end="65" startBytecode="0" endBytecode="0" sourcefile="D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\system\GroupsPage.java" sourcepath="org/openuss/web/system/D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\system\GroupsPage.java"/>
+  </BugInstance>
+  <BugInstance type="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE" priority="2" abbrev="Se" category="STYLE">
+    <Class classname="org.openuss.web.system.GroupsPage$PasswordComparator">
+      <SourceLine classname="org.openuss.web.system.GroupsPage$PasswordComparator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="GroupsPage.java" sourcepath="org/openuss/web/system/GroupsPage.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.system.GroupsPage$PasswordComparator" start="95" end="95" startBytecode="0" endBytecode="0" sourcefile="D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\system\GroupsPage.java" sourcepath="org/openuss/web/system/D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\system\GroupsPage.java"/>
+  </BugInstance>
+  <BugInstance type="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE" priority="2" abbrev="Se" category="STYLE">
+    <Class classname="org.openuss.web.system.GroupsPage$TypeComparator">
+      <SourceLine classname="org.openuss.web.system.GroupsPage$TypeComparator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="GroupsPage.java" sourcepath="org/openuss/web/system/GroupsPage.java"/>
+    </Class>
+    <SourceLine classname="org.openuss.web.system.GroupsPage$TypeComparator" start="85" end="85" startBytecode="0" endBytecode="0" sourcefile="D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\system\GroupsPage.java" sourcepath="org/openuss/web/system/D:\development\workspaces\workspace-plexus-svn\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\system\GroupsPage.java"/>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.system.PropertiesPage">
+      <SourceLine classname="org.openuss.web.system.PropertiesPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PropertiesPage.java" sourcepath="org/openuss/web/system/PropertiesPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.system.PropertiesPage" name="propertyList" signature="Lorg/openuss/web/system/PropertyList;" isStatic="false">
+      <SourceLine classname="org.openuss.web.system.PropertiesPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PropertiesPage.java" sourcepath="org/openuss/web/system/PropertiesPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.system.PropertiesPage">
+      <SourceLine classname="org.openuss.web.system.PropertiesPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PropertiesPage.java" sourcepath="org/openuss/web/system/PropertiesPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.system.PropertiesPage" name="systemService" signature="Lorg/openuss/system/SystemService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.system.PropertiesPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PropertiesPage.java" sourcepath="org/openuss/web/system/PropertiesPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.system.UserBrowserPage">
+      <SourceLine classname="org.openuss.web.system.UserBrowserPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UserBrowserPage.java" sourcepath="org/openuss/web/system/UserBrowserPage.java"/>
+    </Class>
+    <Field classname="org.openuss.web.system.UserBrowserPage" name="securityService" signature="Lorg/openuss/security/SecurityService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.system.UserBrowserPage" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UserBrowserPage.java" sourcepath="org/openuss/web/system/UserBrowserPage.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="org.openuss.web.upload.UploadFileManager">
+      <SourceLine classname="org.openuss.web.upload.UploadFileManager" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UploadFileManager.java" sourcepath="org/openuss/web/upload/UploadFileManager.java"/>
+    </Class>
+    <Field classname="org.openuss.web.upload.UploadFileManager" name="repository" signature="Lorg/openuss/repository/RepositoryService;" isStatic="false">
+      <SourceLine classname="org.openuss.web.upload.UploadFileManager" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UploadFileManager.java" sourcepath="org/openuss/web/upload/UploadFileManager.java"/>
+    </Field>
+  </BugInstance>
+  <Errors></Errors>
+  <FindBugsSummary timestamp="Sun, 4 Feb 2007 04:25:06 +0100" total_classes="0" total_bugs="0" total_size="0" num_packages="0" cpu_seconds="0.06" clock_seconds="0.08" peak_mbytes="298.60" gc_seconds="0.00"></FindBugsSummary>
+  <ClassFeatures></ClassFeatures>
+  <History></History>
+</BugCollection>

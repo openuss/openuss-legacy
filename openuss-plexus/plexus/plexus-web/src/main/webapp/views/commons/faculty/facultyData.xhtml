@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+	<o:input entity="faculty" property="name" maxlength="250" required="true"/>
+	<o:input entity="faculty" property="shortcut" maxlength="30" required="true">
+		<f:validator validatorId="facultyShortcutValidator"/>
+	</o:input>
+	<o:input entity="faculty" property="ownername" maxlength="100" required="true"/>
+	<o:input entity="faculty" property="email" maxlength="100" required="true">
+		<t:validateEmail/>
+	</o:input>
+	<o:input entity="faculty" property="address" maxlength="100"/>
+	<o:input entity="faculty" property="postcode" maxlength="50"/>
+	<o:input entity="faculty" property="city" maxlength="50"/>
+	<o:input entity="faculty" property="telephone" maxlength="50"/>
+	<o:input entity="faculty" property="telefax" maxlength="50"/>
+	<o:input entity="faculty" property="website" maxlength="200"/>
+	
+	<h:outputLabel value="#{msg.faculty_locale}" for="languageSelect" styleClass="field_label"/>
+	<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{faculty.locale}">
+	    <f:selectItems value="#{visit.supportedLocaleItems}"/>
+	</h:selectOneListbox>
+	
+	<h:outputLabel value="#{msg.faculty_theme}" for="themeSelect" styleClass="field_label"/>
+	<h:selectOneListbox id="themeSelect" size="1" value="#{faculty.theme}" styleClass="pulldown" >
+	    <f:selectItems value="#{applicationScope.themeManager.selectableThemes}"/>
+	</h:selectOneListbox>
+</ui:composition>

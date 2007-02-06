@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+    <t:dataTable id="subjects"  
+		var="subject"
+		value="#{desktop.subjects}"
+		styleClass="table"
+		binding="#{views$secured$desktop$desktop.subjectTable}"
+		headerClass="tableHeader"
+		footerClass="tableFooter"
+		rowClasses="odd, even"
+		columnClasses="links,commands"
+		preserveDataModel="false"
+		preserveSort="false"
+		rows="5"
+		cellspacing="1">
+	  
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="#{msg.desktop_subjects_colheader_name}"/>
+			</f:facet>
+			<h:commandLink action="#{views$secured$desktop$desktop.showSubject}" styleClass="command" title="#{subject.faculty.name}">
+				<h:outputText value="#{subject.name} (#{subject.shortcut})"/>
+			</h:commandLink>
+		</h:column>
+		
+		<plexus:column header="#{msg.commands_header}">
+			<plexus:command
+				bean="#{views$secured$desktop$desktop}"
+				action="removeSubject"
+				label="#{msg.desktop_subjects_command_remove}"
+				hint="#{msg.desktop_subjects_command_remove_hint}"
+				styleClass="button_link"/>
+		</plexus:column>
+	</t:dataTable>
+	
+	<plexus:dataScroller for="subjects" pages="5"/>
+	
+</ui:composition>

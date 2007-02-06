@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      D e f a u l t - D A O - M o c k s
+	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- NewsCategory Entity Proxy with inner NewsCategory Entity implementation -->
+    <bean id="legacyDao" class="org.openuss.framework.tests.EasyMockFactoryBean">
+        <property name="targetClass" value="org.openuss.migration.legacy.dao.LegacyDao"/>
+    </bean>
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      T e s t U t i l i t y  -  S t r u c t u r e
+	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
+	<bean id="defaultUser" class="org.openuss.security.UserImpl">
+		<property name="username" value="defaultuser"/>
+		<property name="password" value="defaultpassword"/>
+		<property name="email" value="defaultpassword"/>
+		<property name="enabled" value="true"/>
+		<property name="accountExpired" value="false"/>
+		<property name="credentialsExpired" value="true"/>
+		<property name="accountLocked" value="true"/>
+	</bean>
+	
+	<bean id="defaultFaculty" class="org.openuss.lecture.FacultyImpl">
+		<property name="name" value="facultyname"/>
+		<property name="shortcut" value="shortcut"/>
+		<property name="email" value="email"/>
+		<property name="ownername" value="ownername"/>
+		<property name="owner"><ref local="defaultUser"/></property>
+	</bean>
+	
+	<bean id="testUtility" class="org.openuss.TestUtility">
+		<property name="defaultUser"><ref local="defaultUser"/></property>
+		<property name="defaultFaculty"><ref local="defaultFaculty"/></property>
+		<property name="userDao"><ref bean="userDao"/></property>
+		<property name="groupDao"><ref bean="groupDao"/></property> 
+		<property name="facultyDao"><ref bean="facultyDao"/></property>
+	</bean>
+	
+	<bean id="lectureBuilder" class="org.openuss.lecture.LectureBuilder">
+		<property name="facultyDao"><ref bean="facultyDao"/></property>
+	</bean>
+    
+
+</beans>

@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+    <t:saveState value="#{periodList}" id="periodList"></t:saveState> 
+      
+    <t:dataTable id="periods" 
+		var="period"
+		value="#{periodList}"
+		styleClass="table"
+		headerClass="tableHeader"
+		footerClass="tableFooter"
+		rowClasses="#{periodList.rowClasses}"
+		columnClasses="links,commands,commands"
+		preserveDataModel="false"
+		preserveSort="false"
+		rows="#{periodList.rowsPerPage}" 
+		rowIndexVar="rowIndex">
+	  
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="#{msg.period_colheader_name}"/>
+			</f:facet>
+			<h:commandLink id="selectPeriod" action="#{views$secured$lecture$periods.selectPeriod}" styleClass="command" title="#{period.description}">
+				<t:updateActionListener property="#{periodList.selectedRowIndex}" value="#{rowIndex}"/>
+				<h:outputText value="#{period.name}"/>
+			</h:commandLink>
+		</h:column>
+		
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="#{msg.period_colheader_active}"/>
+			</f:facet> 
+			<h:commandLink 
+				rendered="#{!period.active}"
+				id="activePeriod" 
+				action="#{views$secured$lecture$periods.periodToActive}"  
+				styleClass="command" 
+				title="#{period.description}">
+				<h:graphicImage 
+					value="/images/icons/inactive.gif" 
+					title="#{msg.period_command_inactive_hint}" 
+					alt="#{msg.period_command_inactive}"/>
+				<t:updateActionListener property="#{periodList.selectedRowIndex}" value="#{rowIndex}"/>
+			</h:commandLink>
+			<h:graphicImage 
+				value="/images/icons/active.gif" 
+				title="#{msg.period_command_active_hint}" 
+				alt="#{msg.period_command_active}" 
+				rendered="#{period.active}"/>
+		</h:column>
+		
+		<plexus:column header="#{msg.commands_header}">
+			<plexus:command 
+				bean="#{views$secured$lecture$periods}"
+				action="editPeriod"
+				styleClass="button_edit"
+				label="#{msg.period_command_edit}"
+				hint="#{msg.period_command_edit_hint}">
+				<t:updateActionListener property="#{periodList.selectedRowIndex}" value="#{rowIndex}"/>
+			</plexus:command>
+			<plexus:command 
+				bean="#{views$secured$lecture$periods}"
+				action="confirmRemovePeriod"
+				styleClass="button_remove"
+				label="#{msg.period_command_remove}"
+				hint="#{msg.period_command_remove_hint}">
+				<t:updateActionListener property="#{periodList.selectedRowIndex}" value="#{rowIndex}"/>
+			</plexus:command>
+		</plexus:column>
+	</t:dataTable>
+	
+	<t:dataScroller 
+		id="periodsScroller" 
+		for="periods" 
+		fastStep="5"
+		styleClass="paginator"
+		pageCountVar="periodsPageCount" 
+		pageIndexVar="periodsPageIndex"
+		paginator="true" 
+		paginatorMaxPages="5" 
+		paginatorTableClass="paginator"
+		paginatorActiveColumnClass="active"
+		renderFacetsIfSinglePage="false"
+		actionListener="#{periodList.scrollerActionEvent}">
+		<plexus:dataScrollerFacets />
+	</t:dataScroller>
+	
+	
+</ui:composition>

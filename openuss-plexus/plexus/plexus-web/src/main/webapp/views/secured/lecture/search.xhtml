@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<f:loadBundle basename="resources" var="msg" />
+	<ui:composition template="/views/layout/layout.xhtml">
+  		<ui:define name="title"><h:outputText value="#{msg.facultySearch_title}"/></ui:define>
+  		<ui:define name="headMenu">
+			<ui:include src="/components/header/desktopMenu.xhtml" />
+		</ui:define>
+  		<ui:define name="navigation">  			
+			<ui:include src="/components/navigation/desktopNavigation.xhtml" />
+  		</ui:define>
+  		<ui:define name="content">
+ 			<h1>
+ 				<h:outputText value="#{msg.facultySearch_Headline}"/>
+ 			</h1>
+ 				<h:form id="facultySearchForm">
+ 			<p>
+  				<h:inputText value="#{msg.facultySearch_SearchString}"/>
+  				<h:commandButton value="#{msg.facultySearch_btnSearch}" styleClass="formButton" action="searchResultsFaculty"/>
+  			</p>
+			</h:form>
+			<h:form id="facultySelectForm">
+	  		<h:panelGrid 
+	  			columns="2"
+	  			headerClass="panelGridHeaderContent"
+	  			cellpadding="5px">
+		  		<f:facet name="header">
+		  			<h:outputText value="#{msg.facultySearch_facultyList_Heading}"/>
+   				</f:facet>
+   				<h:commandLink value="Lehrstuhl für Wirtschaftsinformatik und Controlling" action="show_faculty" styleClass="int"/>
+   				<h:commandLink value="#{msg.subscribe}" action="subscribe_faculty" styleClass="int"/>
+   				<h:commandLink value="Lehrstuhl für Wirtschaftsinformatik und Informationssysteme" action="show_faculty" styleClass="int"/>
+   				<h:commandLink value="#{msg.subscribe}" action="subscribe_faculty" styleClass="int"/>
+   				<h:commandLink value="Institut für Wirtschaftsinformatik" action="show_faculty" styleClass="int"/>
+   				<h:commandLink value="#{msg.subscribe}" action="subscribe_faculty" styleClass="int"/>
+	  		</h:panelGrid>
+	  		</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

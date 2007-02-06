@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+	  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:oc="http://www.openuss.org/jsf-core"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+    <t:saveState value="#{enrollmentList}" id="enrollmentList"/>
+      
+    <t:dataTable id="enrollments" 
+		var="enrollment"
+		value="#{enrollmentList}"
+		styleClass="table"
+		headerClass="tableHeader"
+		footerClass="tableFooter"
+		rowClasses="odd, even"
+		columnClasses="links, commands"
+		preserveDataModel="false"
+		preserveSort="false"
+		rows="#{enrollmentList.rowsPerPage}" 
+		rowIndexVar="rowIndex">
+	  
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="#{msg.enrollment_colheader_name}"/>
+			</f:facet>
+			<h:commandLink 
+				id="showEnrollment" 
+				action="#{views$secured$lecture$periods.showEnrollment}" 
+				styleClass="command" 
+				title="#{enrollment.subject.description}">
+				<h:outputText value="#{enrollment.subject.name} (#{enrollment.shortcut})"/>
+				<t:updateActionListener property="#{enrollmentList.selectedRowIndex}" value="#{rowIndex}"/>				
+			</h:commandLink>
+		</h:column>
+		
+		<plexus:column header="#{msg.commands_header}">		
+			<plexus:command  
+				bean="#{views$secured$lecture$periods}"
+				action="shortcutEnrollment"
+				label="#{msg.enrollment_command_shortcut}"
+				title="#{msg.enrollment_command_shortcut_hint}"
+				styleClass="button_link">
+				<t:updateActionListener property="#{enrollmentList.selectedRowIndex}" value="#{rowIndex}"/>				
+			</plexus:command>
+			<plexus:command 
+				bean="#{views$secured$lecture$periods}"
+				action="editEnrollment"
+				label="#{msg.enrollment_command_edit}"
+				title="#{msg.enrollment_command_edit_hint}"
+				styleClass="button_edit">
+				<t:updateActionListener property="#{enrollmentList.selectedRowIndex}" value="#{rowIndex}"/>				
+			</plexus:command>
+	
+			<plexus:command 
+				bean="#{views$secured$lecture$periods}"
+				action="confirmRemoveEnrollment"
+				label="#{msg.enrollment_command_remove}"
+				title="#{msg.enrollment_command_remove_hint}"
+				styleClass="button_remove">
+				<t:updateActionListener property="#{enrollmentList.selectedRowIndex}" value="#{rowIndex}"/>				
+			</plexus:command>
+		</plexus:column>
+		
+	</t:dataTable>
+		<t:dataScroller 
+			id="enrollmentsScroller" 
+			for="enrollments" 
+			fastStep="5"
+			styleClass="paginator"
+			pageCountVar="enrollmentsPageCount" 
+			pageIndexVar="enrollmentsPageIndex"
+			paginator="true" 
+			paginatorMaxPages="5" 
+			paginatorTableClass="paginator"
+			paginatorActiveColumnClass="active"
+			renderFacetsIfSinglePage="false"
+			actionListener="#{enrollmentList.scrollerActionEvent}">
+			<plexus:dataScrollerFacets />
+	</t:dataScroller>
+	
+</ui:composition>

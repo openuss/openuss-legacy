@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:outputLabel value="#{msg.user_preferences_locale}" for="languageSelect" styleClass="field_label"/>
+	<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{user.preferences.locale}">
+	    <f:selectItems value="#{visit.supportedLocaleItems}"/>
+	</h:selectOneListbox>
+	<h:outputLabel value="#{msg.user_preferences_theme}" for="themeSelect" styleClass="field_label"/>
+	<h:selectOneListbox id="themeSelect" size="1" value="#{user.preferences.theme}" styleClass="pulldown" >
+	    <f:selectItems value="#{applicationScope.themeManager.selectableThemes}"/>
+	</h:selectOneListbox>
+	<h:outputLabel value="#{msg.user_preferences_timezone}" for="themeSelect" styleClass="field_label"/>
+	<h:selectOneListbox id="timeZoneSelect" size="1" styleClass="pulldown" value="#{user.preferences.timezone}" >
+	    <f:selectItems value="#{visit.supportedTimeZoneItems}"/>
+	</h:selectOneListbox>
+	
+</ui:composition>

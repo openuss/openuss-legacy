@@ -1,0 +1,107 @@
+<!--
+##############################################################################################################	
+ This commponent is used to display available news.																
+ 																												
+ @see /news-api	for details how many items are shown 														
+ 				and from which point of time on.																
+
+##############################################################################################################
+ Author:	isarsu @see: http://sourceforge.net/users/isarsu/ 													
+ Created:	2006-06-21																							
+ Company:	E-Learning Competence Center 																		
+ 			University of Muenster																				
+############################################################################################################## 
+This composition shows a selection of available new items an displays it within a table tag.					
+ 													 	 														
+ It has the following parameters:  																				
+______________________________________________________________________________________________________________ 
+PROPERTY			TYPE		DEFAULT VALUE			REQUIRED	DESCRIPTION	 								
+______________________________________________________________________________________________________________ 
+headline			String		None						Yes		The display name to be shown as the 		
+ 																	header of the table
+outcome				String		home						No		The outcome, which should be used in order
+																	to point to the correct return view.  												
+headlineStyle		String 		typoHeadLine				No		The Style Class to be used to 				
+ 																	display the headline of the table			
+displayDateTime	String		date						No		Displays the published date of the			
+ 																	particullary news item depending on 		
+ 																	the type. Allowable types are:				
+ 																	"date", "time" and "both"					
+dateStyle			String		medium						No		Displays the published date of the			
+ 																	particullary news item depending on 		
+ 																	the style and the users locale. 			
+ 																	Possible types are: 			 			
+ 																	(in this example locale is en_US) 			
+ 																	"short": 	5/23/06							
+ 																	"medium": 	23-May-2006						
+ 																	"long": 	May 23, 2006					
+ 																	"full": 	Tuesday, May 23, 2006			
+timeStyle			String		medium						No		Displays the published time of the			
+ 																	particullary news item depending on 		
+ 																	the style and the users locale. 			
+ 																	Possible types are: 			 			
+ 																	(locale is en_US) 							
+ 																	"short": 	5:41 PM							
+																	"medium": 	5:41:05							
+																	"long": 	5:41:05 GMT -03:00 PM			
+ 																	"full": 	5:41:05 o' clock GMT -03:00 PM		
+linkStyle			String 		int							No		The Style Class to be used to 				
+ 																	display a link on this page					
+______________________________________________________________________________________________________________ 
+############################################################################################################## 
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:z="http://www.qualcomm.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:oc="http://www.openuss.org/jsf-core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+<!-- Lines above that point will be ignored 														-->
+<!-- If you need specific namesspaces be sure that they will be included in the ui:composition tag 	-->
+<!-- or in the view class specified by the f:view tag 												-->	    	
+		<f:loadBundle basename="resources" var="msg"/>
+	<ui:composition>
+		<c:if test="#{empty displayDateTime}">
+   			<c:set var="displayDateTime" value="date"/>
+   		</c:if>
+		<c:if test="#{empty outcome}">
+   			<c:set var="outcome" value="home"/>
+   		</c:if>
+		<c:if test="#{empty dateStyle}">
+   			<c:set var="dateStyle" value="medium"/>
+   		</c:if>
+		<c:if test="#{empty timeStyle}">
+   			<c:set var="timeStyle" value="medium"/>
+   		</c:if>
+		<c:if test="#{empty linkStyle}">
+   			<c:set var="linkStyle" value="int"/>
+   		</c:if>
+		<c:if test="#{!empty newsController.newsItems}">
+			<o:block label="${headline}">
+				<h:form id="newsTables">
+		   			<h:dataTable id="news" value="${value}" var="newsItem" binding="#{newsController.newsTable}" styleClass="news">
+	    				<h:column>
+	    					<h:outputText value="#{newsItem.publisher.displayName} - " styleClass="newsPublisher"/>
+	    					<h:outputText value="#{newsItem.publishDate}" styleClass="newsDate">
+	    						<oc:convertTimestamp timeZone="#{visit.timeZone}" type="${displayDateTime}" dateStyle="${dateStyle}" timeStyle="${timeStyle}"/>
+	    					</h:outputText>
+	    					<br/>
+		    				<h:outputText value="#{newsItem.title}" styleClass="newsTitle"/>
+	    					<br/>
+			    			<h:commandLink action="#{newsController.details}" styleClass="${linkStyle}">
+			    				<f:param value="#{outcome}" name="outcome"/>
+			    				<h:outputText value="#{msg.newsitem_detailLink}"/>
+							</h:commandLink>				
+	    				</h:column>
+	   				</h:dataTable>
+	   			</h:form>
+   			</o:block>
+		</c:if>
+	</ui:composition>
+<!-- Lines below that point will be ignored -->	
+</html>

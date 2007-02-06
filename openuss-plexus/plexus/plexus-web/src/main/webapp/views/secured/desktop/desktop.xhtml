@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"	  
+	  xmlns:t="http://myfaces.apache.org/tomahawk"
+  	  xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:foundation="http://www.openuss.org/foundation/jsf"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title><ui:insert name="title" /></title>
+	<link href="../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+	<link href="../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+
+<body>
+
+<!-- text above will be ignored -->
+<f:loadBundle basename="resources" var="msg" />
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputFormat value="#{msg.desktop_heading}">
+			<f:param value="#{user.contact.firstName} #{user.contact.lastName}" />
+		</h:outputFormat>
+	</ui:define>
+	<ui:define name="navigation"> 
+		<ui:include src="/views/commons/navigation/desktop.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+		<o:block>
+			<h:outputFormat value="#{msg.desktop_heading}">
+				<f:param value="#{user.contact.firstName} #{user.contact.lastName}" />
+			</h:outputFormat>
+		</o:block>
+		<h:form id="enrollmentsForm" rendered="${!empty desktop.enrollments}">
+			<o:block label="#{msg.desktop_enrollments_header}" styleClass="form_box">
+				<ui:include src="/views/commons/desktop/enrollments.xhtml" />
+			</o:block>
+		</h:form>
+		<h:form id="subjectsForm" rendered="${!empty desktop.subjects}">
+			<o:block label="#{msg.desktop_subjects_header}" styleClass="form_box">
+				<ui:include src="/views/commons/desktop/subjects.xhtml" />
+			</o:block>
+		</h:form>
+		<h:form id="facultiesForm" rendered="${!empty desktop.faculties}"> 
+			<o:block label="#{msg.desktop_faculties_header}" styleClass="form_box">
+				<ui:include src="/views/commons/desktop/faculties.xhtml" />
+			</o:block>
+		</h:form>
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
+</html>
+	

@@ -1,0 +1,41 @@
+<!-- Default Sidebar -->
+<div
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<p class="typoHeadBox"><h:outputText value="${lang_main.useFulLinks_Headline}"/></p>
+	<ul>
+		<li class="sidebar_listPoint">
+			<h:outputLink value="http://localhost:8080/openuss-plexus">
+				<h:outputText value="${lang_main.useFulLinks_L1}"/>
+			</h:outputLink>
+		</li>
+		<li class="sidebar_listPoint">
+			<h:outputLink value="http://localhost:8080/openuss-plexus">
+				<h:outputText value="${lang_main.useFulLinks_L2}"/>
+			</h:outputLink>
+		</li>
+		
+		<li class="sidebar_listPoint">
+			<h:outputLink value="http://localhost:8080/openuss-plexus">
+				<h:outputText value="${lang_main.useFulLinks_L3}"/>
+			</h:outputLink>
+		</li>
+	</ul>
+
+	<p class="typoHeadBox"><h:outputText value="${lang_main.topLinks_Headline}"/></p>
+	<ul>
+		<h:form id="topLinksForm">
+		<li class="sidebar_listPoint">
+			<h:commandLink value="${lang_main.topLinks_L1}" action="searchFaculties"/>
+		</li>
+		<li class="sidebar_listPoint">
+			<h:commandLink value="${lang_main.topLinks_L2}" action="searchCourses"/>					
+		</li>
+		<li class="sidebar_listPoint">
+			<h:commandLink value="${lang_main.topLinks_L3}" action="searchMembers"/>
+		</li>
+		</h:form>
+	</ul>
+</div>

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN" "http://java.sun.com/dtd/web-facesconfig_1_0.dtd">
+<faces-config>
+	
+	
+	<managed-bean>
+		<managed-bean-name>newsBean</managed-bean-name>
+		<managed-bean-class>org.openuss.web.lecture.NewsBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	
+	
+	<!-- DataTableModels -->
+
+<!-- 
+	<managed-bean>
+		<managed-bean-name>views$secured$lecture$periodstable</managed-bean-name>
+		<managed-bean-class>org.openuss.framework.jsfcontrols.datatables.DefaultDataTableModel</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>views$secured$lecture$subjectstable</managed-bean-name>
+		<managed-bean-class>org.openuss.framework.jsfcontrols.datatables.DefaultDataTableModel</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>views$secured$lecture$enrollmentstable</managed-bean-name>
+		<managed-bean-class>org.openuss.framework.jsfcontrols.datatables.DefaultDataTableModel</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+ -->	
+ 
+ 	<managed-bean>
+ 		<managed-bean-name>facultySecurity</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.FacultySecurity</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>facultyMember</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.FacultyMember</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>facultyGroup</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.FacultyGroup</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+ 	
+	
+</faces-config>
