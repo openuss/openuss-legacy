@@ -96,9 +96,9 @@ public class DesktopPage extends BasePage {
 	 */
 	public String showEnrollment() {
 		logger.debug("showEnrollment");
-		//TODO load enrollment and move forward
-		//TODO check security?
-		return Constants.SUCCESS;
+		Enrollment enrollment = (Enrollment) enrollmentTable.getRowData();
+		setSessionBean(Constants.ENROLLMENT, enrollment);
+		return Constants.ENROLLMENT_MAIN;
 	}
 	
 	/**

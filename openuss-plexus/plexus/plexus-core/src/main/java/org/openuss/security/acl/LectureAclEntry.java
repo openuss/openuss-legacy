@@ -1,5 +1,7 @@
 package org.openuss.security.acl;
 
+import org.apache.log4j.Logger;
+
 import org.acegisecurity.acl.basic.AbstractBasicAclEntry;
 
 /**
@@ -39,6 +41,10 @@ import org.acegisecurity.acl.basic.AbstractBasicAclEntry;
  * @author Ingo Dueppe
  */
 public class LectureAclEntry extends AbstractBasicAclEntry {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(LectureAclEntry.class);
 
 	private static final long serialVersionUID = -3990272388367808370L;
 
@@ -84,7 +90,7 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 
 	@Override
 	public int[] getValidPermissions() {
-		return validPermissions.clone();
+		return validPermissions;
 	}
 
 	/**
@@ -93,20 +99,30 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	@Override
 	public String printPermissionsBlock(int mask) {
 		StringBuffer sb = new StringBuffer();
-		sb.append((isPermitted(mask, GRANT)) ? "G" : "-");
-		sb.append((isPermitted(mask, CREATE)) ? "C" : "-");
-		sb.append((isPermitted(mask, READ)) ? "R" : "-");
-		sb.append((isPermitted(mask, UPDATE)) ? "U" : "-");
-		sb.append((isPermitted(mask, DELETE)) ? "D" : "-");
+		sb.append(((mask & OWN) == OWN) ? "O" : "-");
+		sb.append(((mask & GRANT) == GRANT) ? "G" : "-");
+		sb.append(((mask & CREATE) == CREATE) ? "C" : "-");
+		sb.append(((mask & READ) == READ) ? "R" : "-");
+		sb.append(((mask & UPDATE) == UPDATE) ? "U" : "-");
+		sb.append(((mask & DELETE) == DELETE) ? "D" : "-");
 		sb.append("|");
-		sb.append((isPermitted(mask, MANAGE_SUBJECTS)) ? "MS" : "--");
-		sb.append((isPermitted(mask, MANAGE_PERIODS)) ? "MP" : "--");
-		sb.append((isPermitted(mask, MANAGE_ENROLLMENTS)) ? "ME" : "--");
-		sb.append((isPermitted(mask, MANAGE_NEWS)) ? "MN" : "--");
+		sb.append(((mask & MANAGE_SUBJECTS) == MANAGE_SUBJECTS) ? "MS" : "--");
+		sb.append(((mask & MANAGE_PERIODS) == MANAGE_PERIODS) ? "MP" : "--");
+		sb.append(((mask & MANAGE_ENROLLMENTS) == MANAGE_ENROLLMENTS) ? "ME" : "--");
+		sb.append(((mask & MANAGE_NEWS) == MANAGE_NEWS) ? "MN" : "--");
 		sb.append("|");
-		sb.append((isPermitted(mask, GRANT)) ? "P" : "-");
-		sb.append((isPermitted(mask, GRANT)) ? "A" : "-");
+		sb.append(((mask & PARTICIPATE) == PARTICIPATE) ? "P" : "-");
+		sb.append(((mask & ASSIST) == ASSIST) ? "A" : "-");
 		return sb.toString();
 	}
 
+	@Override
+    protected boolean isPermitted(int maskToCheck, int permissionToCheck) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("mask = "+printPermissionsBlock(maskToCheck)+ " permission = " +printPermissionsBlock(permissionToCheck));
+			logger.debug("mask = "+Integer.toBinaryString(maskToCheck)+ " permission = "+Integer.toBinaryString(permissionToCheck));
+		}
+        return ((maskToCheck & permissionToCheck) == permissionToCheck);
+    }
+	
 }

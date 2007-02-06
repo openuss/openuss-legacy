@@ -236,7 +236,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	protected void handleSaveGroup(Group group) throws Exception {
 		String name = group.getName();
 		if (!name.startsWith(GROUP_PREFIX) && !name.startsWith(ROLE_PREFIX)) {
-			group.setName(GROUP_PREFIX + name);
+			group.setName( GROUP_PREFIX + name);
 		}
 		
 		getGroupDao().update(group);
@@ -248,7 +248,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		ObjectIdentity parentObjectIdentity = null;
 		if (parent != null) {
 			EntityObjectIdentity parentOI = new EntityObjectIdentity(parent);
-			parentObjectIdentity = getObjectIdentityDao().load(parentOI.getId());
+			parentObjectIdentity = getObjectIdentityDao().load(parentOI.getIdentifier());
 			
 			if (parentObjectIdentity == null) {
 				throw new SecurityServiceException("Object Identity to Object "+parent+" does not exist!");
@@ -260,7 +260,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		
 		// define ObjectIdentity entity
 		ObjectIdentity objectIdentity = ObjectIdentity.Factory.newInstance();
-		objectIdentity.setObjectIdentity(entityOI.getId());
+		objectIdentity.setObjectIdentity(entityOI.getIdentifier());
 		// These fields are not needed in openuss
 		//		objectIdentity.setObjectIdentityClass(entityOI.getClassname());
 		//		objectIdentity.setAclClass(entityOI.getClass().getName());
@@ -275,7 +275,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	protected void handleRemoveObjectIdentity(Object object) throws Exception {
 		// analyse object if it is an entity object with an id
 		EntityObjectIdentity entityOI = new EntityObjectIdentity(object);
-		ObjectIdentity oi = getObjectIdentityDao().findByObjectIdentifier(entityOI.getId());
+		ObjectIdentity oi = getObjectIdentityDao().findByObjectIdentifier(entityOI.getIdentifier());
 		getObjectIdentityDao().remove(oi);
 	}
 
@@ -284,7 +284,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	protected void handleSetPermissions(Authority authority, Object object, Integer mask) throws Exception {
 		// identify object
 		EntityObjectIdentity entityOI = new EntityObjectIdentity(object);
-		ObjectIdentity oi = getObjectIdentityDao().findByObjectIdentifier(entityOI.getId());
+		ObjectIdentity oi = getObjectIdentityDao().findByObjectIdentifier(entityOI.getIdentifier());
 		if (oi == null) {
 			throw new SecurityServiceException("ObjectIdentity doesn't exist for object "+object);
 		}
@@ -315,13 +315,13 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 
 	@Override
 	protected void handleSetLoginTime(User user) throws Exception {
-		User u = getUserDao().load(user.getId());
-		if (u == null) {
+		User usr = getUserDao().load(user.getId());
+		if (usr == null) {
 			logger.error("couldn't find user with id "+user.getId());
 			throw new SecurityServiceException("Couldn't find user with id "+user.getId());
 		}
-		u.setLastLogin(new Date());
-		getUserDao().update(u);
+		usr.setLastLogin(new Date());
+		getUserDao().update(usr);
 	}
 	
 }

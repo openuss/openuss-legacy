@@ -15,6 +15,8 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
+import org.openuss.framework.web.jsf.model.AbstractPagedTable;
+import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Enrollment;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.Period;
@@ -34,17 +36,15 @@ public class PeriodsPage extends AbstractLecturePage {
 
 	private static final Logger logger = Logger.getLogger(PeriodsPage.class);
 
-	@Property(value = "#{enrollmentList}")
-	private EnrollmentList enrollmentList;
-
+	private PeriodDataModel periodData = new PeriodDataModel();
+	
+	private EnrollmentDataModel enrollmentData = new EnrollmentDataModel();
+	
 	private Long subjectId;
 
 	@Property(value = "#{sessionScope.period}")
 	private Period period;
 	
-	@Property(value = "#{periodList}")
-	private PeriodList periodList;
-
 	@Prerender
 	@Override
 	public void prerender() throws LectureException {
@@ -53,7 +53,6 @@ public class PeriodsPage extends AbstractLecturePage {
 			// refresh period list
 			// TODO ask the lectureService instead of faculty and use value objects
 			List periods = faculty.getPeriods();
-			periodList.setData(periods);
 			
 			period = (Period) getSessionBean(Constants.PERIOD);
 			if (period != null) {
@@ -65,18 +64,12 @@ public class PeriodsPage extends AbstractLecturePage {
 			}
 		}
 		
-		periodList.setSelectedData(period);
-		
-		if (period != null) {
-			enrollmentList.setData(period.getEnrollments());
-		}		
 		setSessionBean(Constants.PERIOD, period);
 		
 		// check if subject should be removed TODO Why?
 		if (period == null) {
 			removeSessionBean(Constants.SUBJECT);
 		}
-		
 	}
 
 	/**
@@ -86,10 +79,11 @@ public class PeriodsPage extends AbstractLecturePage {
 	 * @throws LectureException 
 	 */
 	public String periodToActive() throws LectureException {
-		if (logger.isDebugEnabled())
-			logger.debug("change active period of line " + periodList.getSelectedRowIndex());
+		if (logger.isDebugEnabled()) {
+			logger.debug("change active period of line " + periodData.getRowIndex());
+		}
 		
-		Period period = periodList.getSelectedData();
+		Period period = periodData.getRowData();
 		lectureService.setActivePeriod(faculty.getId(), period);
 
 		return Constants.SUCCESS;
@@ -101,9 +95,10 @@ public class PeriodsPage extends AbstractLecturePage {
 	 * @return outcome
 	 */
 	public String selectPeriod() {
-		if (logger.isDebugEnabled())
-			logger.debug("select period of line " + periodList.getSelectedRowIndex());
-		Period period = periodList.getSelectedData();
+		if (logger.isDebugEnabled()) {
+			logger.debug("select period of line " + periodData.getRowIndex());
+		}
+		Period period = periodData.getRowData();
 		setSessionBean(Constants.PERIOD, period);
 
 		return Constants.SUCCESS;
@@ -126,7 +121,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	 * @return outcome
 	 */
 	public String editPeriod() {
-		Period period = periodList.getSelectedData();
+		Period period = periodData.getRowData();
 		setSessionBean(Constants.PERIOD, period);
 		return Constants.FACULTY_PERIOD;
 	}
@@ -138,7 +133,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	 * @return outcome
 	 */
 	public String confirmRemovePeriod() {
-		Period period = periodList.getSelectedData();
+		Period period = periodData.getRowData();
 		setSessionBean(Constants.PERIOD, period);
 		return Constants.FACULTY_PERIOD_REMOVE;
 	}
@@ -150,8 +145,9 @@ public class PeriodsPage extends AbstractLecturePage {
 	 * @throws LectureException
 	 */
 	public String removePeriod() throws LectureException {
-		if (logger.isDebugEnabled())
+		if (logger.isDebugEnabled()) {
 			logger.debug("Remove Period");
+		}
 		lectureService.removePeriod(period.getId());
 		removeSessionBean(Constants.PERIOD);
 		return Constants.FACULTY_PERIODS;
@@ -191,8 +187,9 @@ public class PeriodsPage extends AbstractLecturePage {
 	 * @return SelectItem List of Subjects
 	 */
 	public List<SelectItem> getSubjectSelectItems() {
-		if (logger.isDebugEnabled())
-			logger.debug("select period of line " + periodList.getSelectedRowIndex());
+		if (logger.isDebugEnabled()) {
+			logger.debug("select period of line " + periodData.getRowIndex());
+		}
 
 		List<SelectItem> items = new ArrayList();
 		for (Subject subject : faculty.getSubjects()) {
@@ -234,7 +231,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	}
 	
 	public String shortcutEnrollment() throws DesktopException {
-		Enrollment enrollment = enrollmentList.getSelectedData();
+		Enrollment enrollment = enrollmentData.getRowData();
 		desktopService.linkEnrollment(desktop, enrollment);
 		addMessage(i18n("message_enrollment_shortcut_created"));
 		return Constants.FACULTY_PERIODS; 
@@ -246,7 +243,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	 * @return
 	 */
 	public String confirmRemoveEnrollment() {
-		Enrollment enrollment = enrollmentList.getSelectedData();
+		Enrollment enrollment = enrollmentData.getRowData();
 		setSessionBean(Constants.ENROLLMENT, enrollment);
 		return Constants.FACULTY_ENROLLMENT_REMOVE;
 	}
@@ -257,11 +254,15 @@ public class PeriodsPage extends AbstractLecturePage {
 	 */
 	public String editEnrollment() {
 		logger.debug("edit enrollment");
-		Enrollment enrollment = enrollmentList.getSelectedData();
+		Enrollment enrollment = enrollmentData.getRowData();
 		setSessionBean(Constants.ENROLLMENT, enrollment);
 		return Constants.ENROLLMENT_OPTIONS;
 	}
 
+	/**
+	 * @deprecated
+	 * @return
+	 */
 	public List<Enrollment> getEnrollments() {
 		if (period != null && period.getEnrollments() != null && period.getEnrollments().size() > 0) {
 			return new ArrayList(period.getEnrollments());
@@ -270,37 +271,73 @@ public class PeriodsPage extends AbstractLecturePage {
 		}
 	}
 
+	/* ------------------ data models ------------------- */
+	
+	private class PeriodDataModel extends AbstractPagedTable<Period> {
+		private DataPage<Period> page;
+		
+		@Override
+		public DataPage<Period> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				List<Period> periods = new ArrayList(faculty.getPeriods());
+				sort(periods);
+				page = new DataPage<Period>(periods.size(),0,periods);
+			}
+			return page;
+		}
+		
+	}
+	
+	private class EnrollmentDataModel extends AbstractPagedTable<Enrollment> {
+		private DataPage<Enrollment> page;
+
+		@Override
+		public DataPage<Enrollment> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				List<Enrollment> enrollments = new ArrayList(); 
+				if (period != null) { 
+					enrollments.addAll(period.getEnrollments());
+				}
+				sort(enrollments);
+				page = new DataPage<Enrollment>(enrollments.size(),0,enrollments);
+			}
+			return page;
+		}
+		
+	}
+	
+	/* -------- properties ---------- */
+
+	public PeriodDataModel getPeriodData() {
+		return periodData;
+	}
+
+	public void setPeriodData(PeriodDataModel periodData) {
+		this.periodData = periodData;
+	}
+
+	public EnrollmentDataModel getEnrollmentData() {
+		return enrollmentData;
+	}
+
+	public void setEnrollmentData(EnrollmentDataModel enrollmentData) {
+		this.enrollmentData = enrollmentData;
+	}
+
 	public Long getSubjectId() {
 		return subjectId;
 	}
-
+	
 	public void setSubjectId(Long subjectID) {
 		this.subjectId = subjectID;
 	}
-
+	
 	public Period getPeriod() {
 		return period;
 	}
-
+	
 	public void setPeriod(Period period) {
 		logger.trace("setPeriod " + period);
 		this.period = period;
 	}
-
-	public PeriodList getPeriodList() {
-		return periodList;
-	}
-
-	public void setPeriodList(PeriodList periodList) {
-		this.periodList = periodList;
-	}
-
-	public EnrollmentList getEnrollmentList() {
-		return enrollmentList;
-	}
-
-	public void setEnrollmentList(EnrollmentList enrollmentList) {
-		this.enrollmentList = enrollmentList;
-	}
-
 }

@@ -37,7 +37,7 @@ public class NewsController extends BaseBean {
 	private static final Logger logger = Logger.getLogger(NewsController.class);
 	
 	@Property(value="#{newsService}")
-	private NewsService newsService;
+	transient private NewsService newsService;
 	
 	@Property(value="#{newsItem}")
 	private NewsItem newsItem;

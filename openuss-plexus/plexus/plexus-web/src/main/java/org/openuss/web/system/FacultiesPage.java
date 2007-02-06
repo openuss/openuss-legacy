@@ -1,8 +1,6 @@
 package org.openuss.web.system;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +20,6 @@ import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-import org.springframework.beans.support.PropertyComparator;
 
 /**
  * 
@@ -39,7 +36,7 @@ public class FacultiesPage extends BasePage{
 	@Property (value="#{lectureService}")
 	private LectureService lectureService;
 	
-	private Set<FacultyDetails> changedFaculties = new HashSet<FacultyDetails>();
+	private transient Set<FacultyDetails> changedFaculties = new HashSet<FacultyDetails>();
 
 	private FacultyDataProvider provider = new FacultyDataProvider();
 
@@ -86,23 +83,13 @@ public class FacultiesPage extends BasePage{
 		@Override
 		public DataPage<FacultyDetails> getDataPage(int startRow, int pageSize) {
 			if (page == null){
-				if (logger.isDebugEnabled()) {
-					logger.debug("fetch faculties ("+startRow+","+pageSize+")");
-				}
-				List faculties = new ArrayList(lectureService.getFaculties(false));
+				List<FacultyDetails> faculties = new ArrayList(lectureService.getFaculties(false));
 				sort(faculties);
 				page = new DataPage(faculties.size(), 0, faculties);
 			}
 			return page;
 		}
 
-		private void sort(List<FacultyDetails> faculties) {
-			if (getSortColumn() != null) {
-				logger.debug("faculties sorted by "+getSortColumn());
-				Comparator comp = new PropertyComparator(getSortColumn(), true, isAscending());
-				Collections.sort(faculties,comp);
-			}
-		}
 	}
 	
 	

@@ -10,34 +10,24 @@
       xmlns:oc="http://www.openuss.org/jsf-core"
       xmlns:c="http://java.sun.com/jstl/core">
       
-    <t:saveState value="#{enrollmentList}" id="enrollmentList"/>
       
-    <t:dataTable id="enrollments" 
-		var="enrollment"
-		value="#{enrollmentList}"
-		styleClass="table"
-		headerClass="tableHeader"
-		footerClass="tableFooter"
-		rowClasses="odd, even"
-		columnClasses="links, commands"
-		preserveDataModel="false"
-		preserveSort="false"
-		rows="#{enrollmentList.rowsPerPage}" 
-		rowIndexVar="rowIndex">
-	  
-		<h:column>
-			<f:facet name="header">
-				<h:outputText value="#{msg.enrollment_colheader_name}"/>
-			</f:facet>
+    <plexus:dataTable 
+     	id="enrollments" 
+     	label="#{msg['enrollment_header']}" 
+     	value="views$secured$lecture$periods.enrollmentData" 
+     	var="enrollment" 
+     	rows="5">       
+      
+		<t:column>
+			<plexus:commandSortHeader columnName="subject.name">#{msg.enrollment_colheader_name}</plexus:commandSortHeader>
 			<h:commandLink 
 				id="showEnrollment" 
 				action="#{views$secured$lecture$periods.showEnrollment}" 
 				styleClass="command" 
 				title="#{enrollment.subject.description}">
 				<h:outputText value="#{enrollment.subject.name} (#{enrollment.shortcut})"/>
-				<t:updateActionListener property="#{enrollmentList.selectedRowIndex}" value="#{rowIndex}"/>				
 			</h:commandLink>
-		</h:column>
+		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">		
 			<plexus:command  
@@ -46,7 +36,6 @@
 				label="#{msg.enrollment_command_shortcut}"
 				title="#{msg.enrollment_command_shortcut_hint}"
 				styleClass="button_link">
-				<t:updateActionListener property="#{enrollmentList.selectedRowIndex}" value="#{rowIndex}"/>				
 			</plexus:command>
 			<plexus:command 
 				bean="#{views$secured$lecture$periods}"
@@ -54,7 +43,6 @@
 				label="#{msg.enrollment_command_edit}"
 				title="#{msg.enrollment_command_edit_hint}"
 				styleClass="button_edit">
-				<t:updateActionListener property="#{enrollmentList.selectedRowIndex}" value="#{rowIndex}"/>				
 			</plexus:command>
 	
 			<plexus:command 
@@ -63,25 +51,9 @@
 				label="#{msg.enrollment_command_remove}"
 				title="#{msg.enrollment_command_remove_hint}"
 				styleClass="button_remove">
-				<t:updateActionListener property="#{enrollmentList.selectedRowIndex}" value="#{rowIndex}"/>				
 			</plexus:command>
 		</plexus:column>
 		
-	</t:dataTable>
-		<t:dataScroller 
-			id="enrollmentsScroller" 
-			for="enrollments" 
-			fastStep="5"
-			styleClass="paginator"
-			pageCountVar="enrollmentsPageCount" 
-			pageIndexVar="enrollmentsPageIndex"
-			paginator="true" 
-			paginatorMaxPages="5" 
-			paginatorTableClass="paginator"
-			paginatorActiveColumnClass="active"
-			renderFacetsIfSinglePage="false"
-			actionListener="#{enrollmentList.scrollerActionEvent}">
-			<plexus:dataScrollerFacets />
-	</t:dataScroller>
+	</plexus:dataTable>
 	
 </ui:composition>

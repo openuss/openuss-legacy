@@ -99,6 +99,12 @@
 			<from-outcome>secure_password_change</from-outcome>
 			<to-view-id>/views/secured/user/newPassword.xhtml</to-view-id>
 		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>enrollment_main</from-outcome>
+			<to-view-id>/views/secured/enrollment/main.xhtml?enrollmentId=#{enrollmentId}</to-view-id>
+		</navigation-case>
+		
 	</navigation-rule>
 	
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
@@ -180,7 +186,7 @@
     	<navigation-case>
     		<from-action>passwordChangeAction.loginUserByCode</from-action>
     		<from-outcome>failure</from-outcome>
-    		<to-view-id>/views/secured/user/requestPassword.xhtml</to-view-id>
+    		<to-view-id>/views/public/login/forgotPassword.xhtml</to-view-id>
     	</navigation-case>
     
     </navigation-rule>
@@ -191,12 +197,10 @@
 	
 	<navigation-rule>
 		<from-view-id>/views/secured/*</from-view-id>
-		
 		<navigation-case>
 			<from-outcome>user_bookmarks</from-outcome>
 			<to-view-id>/views/sercured/user/profile.xhtml</to-view-id>
 		</navigation-case>
-		
 		<navigation-case>
 			<from-outcome>faculty_create</from-outcome>
 			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
@@ -205,7 +209,6 @@
 	
 	<navigation-rule>
 		<from-view-id>/views/secured/user/newPassword.xhtml</from-view-id>
-		
 		<navigation-case>
 			<from-outcome>success</from-outcome>
 			<to-view-id>/views/secured/desktop/desktop</to-view-id>
@@ -301,13 +304,55 @@
 			<to-view-id>/views/secured/lecture/enrollmentremove.xhtml</to-view-id>
 		</navigation-case>
 		
-		<navigation-case>
-			<from-outcome>enrollment_options</from-outcome>
-			<to-view-id>/views/secured/lecture/enrollmentoptions.xhtml</to-view-id>
-		</navigation-case>
+		
 	</navigation-rule>
 	
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+       E n r o l l m e n t - P a g e
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->		
+		<navigation-rule>
+			<from-view-id>/views/secured/*</from-view-id>
+		
+			<navigation-case>
+				<from-outcome>enrollment</from-outcome>
+				<to-view-id>/views/public/news/newsDetail.xhtml</to-view-id>
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>enrollment_documents</from-outcome>
+				<to-view-id>/views/secured/enrollment/documents.xhtml</to-view-id>
+			</navigation-case>
 	
+			<navigation-case>
+				<from-outcome>enrollment_discussion</from-outcome>
+				<to-view-id>/views/secured/enrollment/discussion.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>enrollment_mailinglist</from-outcome>
+				<to-view-id>/views/secured/enrollment/mailinglist.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>enrollment_quiz</from-outcome>
+				<to-view-id>/views/secured/enrollment/quiz.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>enrollment_chat</from-outcome>
+				<to-view-id>/views/secured/enrollment/chat.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>enrollment_wiki</from-outcome>
+				<to-view-id>/views/secured/enrollment/wiki.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>enrollment_options</from-outcome>
+				<to-view-id>/views/secured/enrollment/options.xhtml</to-view-id>
+			</navigation-case>
+		</navigation-rule>
 	
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
        News  - P a g e

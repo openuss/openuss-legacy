@@ -1,5 +1,7 @@
 package org.openuss.framework.web.jsf.model;
 
+import org.apache.log4j.Logger;
+
 import javax.faces.model.DataModel;
 
 /**
@@ -23,6 +25,8 @@ import javax.faces.model.DataModel;
  *  
  */
 public abstract class PagedListDataModel<T> extends DataModel {
+
+	private static final Logger logger = Logger.getLogger(PagedListDataModel.class);
 
 	int pageSize;
 	int rowIndex;
@@ -179,4 +183,18 @@ public abstract class PagedListDataModel<T> extends DataModel {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
+	
+	public int checkFirstRow(int firstRow) {
+		if (getPage().getDatasetSize() - 1 < firstRow) {
+			firstRow = (getPage().getDatasetSize() / getPageSize() - 1) * getPageSize();
+			if (firstRow < 0) {
+				firstRow = 0;
+			}
+			if (logger.isDebugEnabled()) {
+				logger.debug("reducing firstRow to "+ firstRow+" to point on the last page!");
+			}
+		}
+		return firstRow;
+	}
+
 }

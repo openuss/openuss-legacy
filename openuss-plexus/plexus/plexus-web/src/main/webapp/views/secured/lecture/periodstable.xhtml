@@ -8,32 +8,21 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:c="http://java.sun.com/jstl/core">
       
-    <t:saveState value="#{periodList}" id="periodList"></t:saveState> 
-      
-    <t:dataTable id="periods" 
-		var="period"
-		value="#{periodList}"
-		styleClass="table"
-		headerClass="tableHeader"
-		footerClass="tableFooter"
-		rowClasses="#{periodList.rowClasses}"
-		columnClasses="links,commands,commands"
-		preserveDataModel="false"
-		preserveSort="false"
-		rows="#{periodList.rowsPerPage}" 
-		rowIndexVar="rowIndex">
-	  
-		<h:column>
-			<f:facet name="header">
-				<h:outputText value="#{msg.period_colheader_name}"/>
-			</f:facet>
-			<h:commandLink id="selectPeriod" action="#{views$secured$lecture$periods.selectPeriod}" styleClass="command" title="#{period.description}">
-				<t:updateActionListener property="#{periodList.selectedRowIndex}" value="#{rowIndex}"/>
+     <plexus:dataTable 
+     	id="periods" 
+     	label="#{msg.period_header}"  
+     	value="views$secured$lecture$periods.periodData" 
+     	var="period" 
+     	rows="5"> 
+
+		<t:column>
+			<plexus:commandSortHeader columnName="name">#{msg.period_colheader_name}</plexus:commandSortHeader> 
+			<t:commandLink id="selectPeriod" action="#{views$secured$lecture$periods.selectPeriod}" styleClass="command" title="#{period.description}">
 				<h:outputText value="#{period.name}"/>
-			</h:commandLink>
-		</h:column>
+			</t:commandLink>
+		</t:column>
 		
-		<h:column>
+		<t:column>
 			<f:facet name="header">
 				<h:outputText value="#{msg.period_colheader_active}"/>
 			</f:facet> 
@@ -54,7 +43,7 @@
 				title="#{msg.period_command_active_hint}" 
 				alt="#{msg.period_command_active}" 
 				rendered="#{period.active}"/>
-		</h:column>
+		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">
 			<plexus:command 
@@ -74,23 +63,5 @@
 				<t:updateActionListener property="#{periodList.selectedRowIndex}" value="#{rowIndex}"/>
 			</plexus:command>
 		</plexus:column>
-	</t:dataTable>
-	
-	<t:dataScroller 
-		id="periodsScroller" 
-		for="periods" 
-		fastStep="5"
-		styleClass="paginator"
-		pageCountVar="periodsPageCount" 
-		pageIndexVar="periodsPageIndex"
-		paginator="true" 
-		paginatorMaxPages="5" 
-		paginatorTableClass="paginator"
-		paginatorActiveColumnClass="active"
-		renderFacetsIfSinglePage="false"
-		actionListener="#{periodList.scrollerActionEvent}">
-		<plexus:dataScrollerFacets />
-	</t:dataScroller>
-	
-	
+	</plexus:dataTable>
 </ui:composition>

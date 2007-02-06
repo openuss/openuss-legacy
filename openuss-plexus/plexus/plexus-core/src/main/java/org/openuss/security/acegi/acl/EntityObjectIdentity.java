@@ -22,14 +22,12 @@ import org.springframework.util.Assert;
  * @author Ingo Dueppe
  */
 public class EntityObjectIdentity implements AclObjectIdentity {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(EntityObjectIdentity.class);
 
 	private static final long serialVersionUID = -4665214585721654008L;
 
-	private Long id;
+	private Long identifier;
 
 
 	/**
@@ -53,21 +51,21 @@ public class EntityObjectIdentity implements AclObjectIdentity {
 //					.getClass()) : (getPackageName(object.getClass().getName()) + "." + ClassUtils.getShortName(object
 //					.getClass()));
 	
-			Class clazz = object.getClass();
+			final Class clazz = object.getClass();
 			
 			if (object instanceof Long) {
-				id = (Long) object;
+				identifier = (Long) object;
 				return;
 			}
 			
 			if (object instanceof ObjectIdentity) {
-				id = ((ObjectIdentity) object).getId();
+				identifier = ((ObjectIdentity) object).getId();
 			}
 	
 			try {
-				Method method = clazz.getMethod("getId", new Class[] {});
-				Object result = method.invoke(object, new Object[] {});
-				this.id = (Long) result;
+				final Method method = clazz.getMethod("getId", new Class[] {});
+				final Object result = method.invoke(object, new Object[] {});
+				this.identifier = (Long) result;
 			} catch (ClassCastException ex) {
 				throw new IllegalArgumentException("Object of class '" + clazz
 						+ "' does not provide the required Integer getId() method: " + object);
@@ -90,44 +88,46 @@ public class EntityObjectIdentity implements AclObjectIdentity {
 //		return className.substring(0, lastDotIndex);
 //	}
 
-	public Long getId() {
-		return id;
+	public Long getIdentifier() {
+		return identifier;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdentifier(final Long identifier) {
+		this.identifier = identifier;
 	}
 
 	/**
 	 * <strong> Important for caching</strong> {@inheritDoc}
 	 */
+	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(1330891477, -1591801705).append(id).hashCode();
+		return new HashCodeBuilder(1330891477, -1591801705).append(identifier).hashCode();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean equals(Object object) {
+	@Override
+	public boolean equals(final Object object) {
 		if (!(object instanceof EntityObjectIdentity)) {
 			return false;
 		}
 		if (this == object) {
 			return true;
 		}
-		EntityObjectIdentity rhs = (EntityObjectIdentity) object;
-		return new EqualsBuilder().append(id, rhs.getId()).isEquals();
+		final EntityObjectIdentity rhs = (EntityObjectIdentity) object;
+		return new EqualsBuilder().append(identifier, rhs.getIdentifier()).isEquals();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append(this.getClass().getName()).append("[");
-		sb.append("Identity: ").append(this.id).append("]");
+		final StringBuilder stringBuffer = new StringBuilder();
+		stringBuffer.append(this.getClass().getName()).append('[');
+		stringBuffer.append("Identity: ").append(this.identifier).append(']');
 
-		return sb.toString();
+		return stringBuffer.toString();
 	}
 
 }

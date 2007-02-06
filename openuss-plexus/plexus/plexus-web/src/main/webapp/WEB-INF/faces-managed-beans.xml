@@ -37,6 +37,12 @@
  		<managed-bean-class>org.openuss.lecture.FacultySecurity</managed-bean-class>
  		<managed-bean-scope>request</managed-bean-scope>
  	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>accessType</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.AccessType</managed-bean-class>
+ 		<managed-bean-scope>application</managed-bean-scope>
+ 	</managed-bean>
  	
  	<managed-bean>
  		<managed-bean-name>facultyMember</managed-bean-name>
