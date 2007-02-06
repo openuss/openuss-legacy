@@ -23,12 +23,13 @@
 	<ui:composition template="/views/layout/dialog.xhtml">
   		<ui:define name="content">
  			<h:form id="reg5Form">
- 				<o:block>#{msg.user_registration4_Headline}</o:block>
+ 				<o:block><span class="header_font_normal">#{msg.user_registration4_Headline}</span></o:block>
  				<o:block label="#{msg.user_registration4_Subheading}" styleClass="form_box">
- 					<h:outputText value="#{msg.user_registration4_Text}" escape="false" styleClass="content_font_normal"/>
- 					&#160;
- 					<h:selectBooleanCheckbox id="assistantRole" value="#{registrationData.enableAssistantRole}" styleClass="checkbox"/>
+ 					<p class="content_font_normal">
+	 					<h:outputText value="#{msg.user_registration4_Text}" escape="false"/>
+ 					</p>
 					<h:outputLabel value="Erweiterte Funktionen für Dozenten/in aktivieren." for="assistantRole" styleClass="field_label"/>
+ 					<h:selectBooleanCheckbox id="assistantRole" value="#{registrationData.enableAssistantRole}" styleClass="checkbox"/>
 		  		</o:block>
 		  		 <o:block>
 					<h:commandButton value="${msg.forward}" action="step5" styleClass="button_continue"/>

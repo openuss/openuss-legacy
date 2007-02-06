@@ -10,7 +10,7 @@
 	<div id="navigation_box">
 		<h:form id="navigationDesktop">
 			<t:panelNavigation2 id="desktop" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator" >
-				<t:commandNavigation2 value="#{msg['desktop_navigation_header']}" action="desktop">
+				<t:commandNavigation2 value="#{msg['desktop_navigation_header']}">
 					<s:authorize ifAllGranted="ROLE_USER">
 						<t:commandNavigation2 value="#{msg['desktop_command_userprofile']}" action="user_logindata" >
 							<t:commandNavigation2 action="user_logindata" activeOnViewIds="/views/secured/user/logindata.xhtml" >

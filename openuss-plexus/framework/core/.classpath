@@ -48,7 +48,6 @@
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-dao/2.0.1/spring-dao-2.0.1.jar"/>
 	<classpathentry kind="src" path="/framework-utilities"/>
 	<classpathentry kind="var" path="M2_REPO/javax/el/el-api/1.0/el-api-1.0.jar"/>
-	<classpathentry kind="var" path="M2_REPO/xalan/xalan/2.5.1/xalan-2.5.1.jar" sourcepath="M2_REPO/xalan/xalan/2.5.1/xalan-2.5.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" sourcepath="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar" sourcepath="M2_REPO/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/jstl/jstl/1.2/jstl-1.2.jar" sourcepath="M2_REPO/jstl/jstl/1.2/jstl-1.2-sources.jar"/>
