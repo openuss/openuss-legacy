@@ -125,4 +125,96 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
         return ((maskToCheck & permissionToCheck) == permissionToCheck);
     }
 	
+	/* ---------- getters for static constants to accessed by el expressions ------- */
+
+	public int getASSIST() {
+		return ASSIST;
+	}
+
+	public int getCREATE() {
+		return CREATE;
+	}
+
+	public int getCRU() {
+		return CRU;
+	}
+
+	public int getCRUD() {
+		return CRUD;
+	}
+
+	public int getDELETE() {
+		return DELETE;
+	}
+
+	public int getFACULTY_ADMINISTRATION() {
+		return FACULTY_ADMINISTRATION;
+	}
+
+	public int getFACULTY_ASSIST() {
+		return FACULTY_ASSIST;
+	}
+
+	public int getFACULTY_OWN() {
+		return FACULTY_OWN;
+	}
+
+	public int getFACULTY_TUTOR() {
+		return FACULTY_TUTOR;
+	}
+
+	public int getGCRUD() {
+		return GCRUD;
+	}
+
+	public int getGRANT() {
+		return GRANT;
+	}
+
+	public int getMANAGE_ENROLLMENTS() {
+		return MANAGE_ENROLLMENTS;
+	}
+
+	public int getMANAGE_NEWS() {
+		return MANAGE_NEWS;
+	}
+
+	public int getMANAGE_PERIODS() {
+		return MANAGE_PERIODS;
+	}
+
+	public int getMANAGE_SUBJECTS() {
+		return MANAGE_SUBJECTS;
+	}
+
+	public int getNOTHING() {
+		return NOTHING;
+	}
+
+	public int getOGCRUD() {
+		return OGCRUD;
+	}
+
+	public int getOWN() {
+		return OWN;
+	}
+
+	public int getPARTICIPATE() {
+		return PARTICIPATE;
+	}
+
+	public int getREAD() {
+		return READ;
+	}
+
+	public int getRU() {
+		return RU;
+	}
+
+	public int getUPDATE() {
+		return UPDATE;
+	}
+	
+	
+	
 }
