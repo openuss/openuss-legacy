@@ -4,11 +4,11 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.acegisecurity.acl.basic.AclObjectIdentity;
 import org.acegisecurity.acl.basic.BasicAclEntry;
-import org.acegisecurity.acl.basic.SimpleAclEntry;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.Permission;
 
@@ -126,10 +126,7 @@ public class AclPermissionAdapter implements BasicAclEntry {
 	 * {@inheritDoc}
 	 */
 	public boolean isPermitted(int permissionToCheck) {
-		//FIXME The AclEntry implementation should be inject by dependency injection
-		
-//		LectureAclEntry aclEntry = new LectureAclEntry();
-		SimpleAclEntry aclEntry = new SimpleAclEntry();
+		LectureAclEntry aclEntry = new LectureAclEntry();
 		aclEntry.setMask(this.getMask());
 		return aclEntry.isPermitted(permissionToCheck);
 	}

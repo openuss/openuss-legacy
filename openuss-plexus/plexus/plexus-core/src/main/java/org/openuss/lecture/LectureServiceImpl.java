@@ -26,6 +26,8 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 
 	private static final Logger logger = Logger.getLogger(LectureServiceImpl.class);
 
+	public LectureServiceImpl() {}
+
 	@Override
 	protected Collection handleGetFaculties(boolean enabledOnly) throws Exception {
 		if (enabledOnly)
@@ -248,13 +250,15 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		Faculty faculty = period.getFaculty();
 
 		// check active period settings
-		if (faculty != null && period.equals(faculty.getActivePeriod())) {
-			faculty.setActivePeriod(null);
-			persist(faculty);
-		}
+		if (faculty != null) {
+			if (period.equals(faculty.getActivePeriod())) {
+				faculty.setActivePeriod(null);
+				persist(faculty);
+			}
 
-		// remove period from faculty
-		faculty.remove(period);
+			// remove period from faculty
+			faculty.remove(period);
+		}
 
 		// delete period
 		getPeriodDao().remove(period);

@@ -39,7 +39,7 @@ public class LectureFactory {
 	public static Enrollment createEnrollment() {
 		Enrollment enrollment = Enrollment.Factory.newInstance();
 		enrollment.setShortcut(unique("enrollment-shortcut"));
-		enrollment.setAccessType(1);
+		enrollment.setAccessType(AccessType.CLOSED);
 		return enrollment;
 	}
 	

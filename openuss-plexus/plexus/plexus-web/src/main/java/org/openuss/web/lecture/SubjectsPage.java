@@ -1,12 +1,16 @@
 package org.openuss.web.lecture;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
+import org.openuss.framework.web.jsf.model.AbstractPagedTable;
+import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.Subject;
 import org.openuss.web.Constants;
@@ -22,14 +26,11 @@ public class SubjectsPage extends AbstractLecturePage {
 
 	private static final long serialVersionUID = 4667557973921766455L;
 
-	@Property(value="#{subjectList}")
-	private SubjectList subjectList;
+	private LocalDataModel data = new LocalDataModel();
 	
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
-		subjectList.setData(faculty.getSubjects());
-		subjectList.setSelectedData(subject);
 	}
 
 	/**
@@ -39,7 +40,7 @@ public class SubjectsPage extends AbstractLecturePage {
 	 * @throws LectureException 
 	 */
 	public String editSubject() throws LectureException {
-		subject = subjectList.getSelectedData();
+		subject = data.getRowData();
 		if (subject == null) {
 			return Constants.FAILURE;
 		}
@@ -68,7 +69,7 @@ public class SubjectsPage extends AbstractLecturePage {
 	}
 
 	public String shortcutSubject() {
-		subject = subjectList.getSelectedData();
+		subject = data.getRowData();;
 		try {
 			desktopService.linkSubject(desktop, subject);
 			addMessage(i18n("desktop_command_add_subject_succeed"));
@@ -87,7 +88,7 @@ public class SubjectsPage extends AbstractLecturePage {
 	 * @return outcome
 	 */
 	public String confirmRemoveSubject() {
-		subject = subjectList.getSelectedData();
+		subject = data.getRowData();;
 		setSessionBean(Constants.SUBJECT, subject);
 		return Constants.FACULTY_SUBJECT_REMOVE;
 	}
@@ -117,20 +118,30 @@ public class SubjectsPage extends AbstractLecturePage {
 	 */
 	public String cancelSubject() {
 		logger.debug("cancelSubject()");
-		subjectList.setSelectedRowIndex(SubjectList.NO_ROW_SELECTED);
-		subject = null;
 		removeSessionBean(Constants.SUBJECT);
 		return Constants.SUCCESS;
 	}
 
-	/** -------- properties -------------- */
-	
-	public SubjectList getSubjectList() {
-		return subjectList;
+	private class LocalDataModel extends AbstractPagedTable<Subject> {
+		private DataPage<Subject> page;
+
+		@Override
+		public DataPage<Subject> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				List<Subject> subjects = new ArrayList(faculty.getSubjects());
+				sort(subjects);
+				page = new DataPage<Subject>(subjects.size(),0,subjects);
+			}
+			return page;
+		}
+
 	}
 
-	public void setSubjectList(SubjectList subjectList) {
-		this.subjectList = subjectList;
+	public LocalDataModel getData() {
+		return data;
 	}
-	
+
+	public void setData(LocalDataModel data) {
+		this.data = data;
+	}	
 }

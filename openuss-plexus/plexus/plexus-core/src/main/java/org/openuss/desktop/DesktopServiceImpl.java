@@ -5,6 +5,8 @@
  */
 package org.openuss.desktop;
 
+import org.apache.log4j.Logger;
+
 import java.util.Collection;
 
 import org.openuss.lecture.Enrollment;
@@ -18,9 +20,11 @@ import org.openuss.security.User;
  * @author Ingo Dueppe
  */
 public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
+
+	private static final Logger logger = Logger.getLogger(DesktopServiceImpl.class);
 	
 	@Override
-	protected Desktop handleCreateDesktop(User user) throws Exception {
+	protected Desktop handleCreateDesktop(final User user) throws Exception {
 		Desktop desktop = new DesktopImpl();
 		desktop.setUser(user);
 		getDesktopDao().create(desktop);
@@ -35,7 +39,15 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 
 	@Override
 	protected Desktop handleGetDesktopByUser(User user) throws Exception {
-		return getDesktopDao().findByUser(user);
+		Desktop desktop = getDesktopDao().findByUser(user);
+		if (desktop == null) {
+			// create new desktop
+			if (logger.isDebugEnabled()) {
+				logger.debug("desktop doesn't exist for user, create new one");
+			}
+			desktop = createDesktop(user);
+		}
+		return desktop;
 	}
 
 	@Override

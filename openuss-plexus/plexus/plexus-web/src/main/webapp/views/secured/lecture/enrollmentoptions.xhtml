@@ -32,29 +32,25 @@
 	  					<f:param value="#{enrollment.subject.name}" />
 	  					<f:param value="#{enrollment.period.name}" />
 	  				</h:outputFormat>
-					&#160;
 					<o:input entity="enrollment" property="shortcut" maxlength="30" required="true">
 				 		<f:validator validatorId="enrollmentShortcutValidator"/>
 					</o:input>
-					&#160;
-					<h:outputText value="#{msg.enrollment_options_access_headline}" styleClass="heading"/>
-					<h:selectOneRadio id="accessType" 
+					<h:outputLabel for="accessType" value="#{msg.enrollment_options_access_headline}" styleClass="field_label"/>
+					<h:selectOneMenu id="accessType" 
 						layout="pageDirection" 
 						value="#{enrollment.accessType}" 
 						valueChangeListener="#{views$secured$lecture$enrollmentoptions.processAccessTypeChanged}" 
 						onchange="this.form.submit();"
-						immediate="true">
-						<f:selectItem itemValue="0" itemLabel="#{msg.enrollment_options_access_open}"/>
-						<f:selectItem itemValue="1" itemLabel="#{msg.enrollment_options_access_closed}"/>
-						<f:selectItem itemValue="2" itemLabel="#{msg.enrollment_options_access_password}" /> 
-					</h:selectOneRadio>
-					&#160;
-					<c:if test="#{enrollment.accessType == 2}">
+						immediate="true" 
+						styleClass="pulldown">
+						<f:converter converterId="accessTypeConverter" />
+						<f:selectItems value="#{views$secured$lecture$enrollmentoptions.accessTypes}"/>
+					</h:selectOneMenu>
+					<h:message for="accessType" styleClass="field_error"/>
+					<c:if test="#{enrollment.accessType.value == 2}">
 		 				<o:input entity="enrollment" property="password"/>
-						&#160;
 	 				</c:if>
 					<h:outputText value="#{msg.enrollment_options_features_headline}" styleClass="heading"/>
-					&#160;
 					<o:input entity="enrollment" property="documents"/>
 					<o:input entity="enrollment" property="discussion"/>
 					<o:input entity="enrollment" property="mailinglist"/>
@@ -62,19 +58,17 @@
 					<o:input entity="enrollment" property="chat"/>
 					<o:input entity="enrollment" property="braincontest"/>
 					<o:input entity="enrollment" property="freestylelearning"/>
-					&#160;
-					<h:panelGroup>
-						<h:commandButton 
-							value="${msg.save}" 
-							action="#{views$secured$lecture$enrollmentoptions.saveOptions}" 
-							styleClass="button"/>&#160;
-						<h:commandButton 
-							value="${msg.cancel}" 
-							action="#{views$secured$lecture$enrollmentoptions.cancelOptions}" 
-							immediate="true" 
-							styleClass="button"/>
-					</h:panelGroup>	 
-					&#160;				
+				</o:block>
+				<o:block>
+					<h:commandButton 
+						value="${msg.save}" 
+						action="#{views$secured$lecture$enrollmentoptions.saveOptions}" 
+						styleClass="button"/>
+					<h:commandButton 
+						value="${msg.cancel}" 
+						action="#{views$secured$lecture$enrollmentoptions.cancelOptions}" 
+						immediate="true" 
+						styleClass="button"/>
 				</o:block>
 			</h:form>
   		</ui:define>
