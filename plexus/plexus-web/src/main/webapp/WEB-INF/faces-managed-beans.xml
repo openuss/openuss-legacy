@@ -4,6 +4,12 @@
 	
 	
 	<managed-bean>
+		<managed-bean-name>ACL</managed-bean-name>
+		<managed-bean-class>org.openuss.security.acl.LectureAclEntry</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
 		<managed-bean-name>newsBean</managed-bean-name>
 		<managed-bean-class>org.openuss.web.lecture.NewsBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
