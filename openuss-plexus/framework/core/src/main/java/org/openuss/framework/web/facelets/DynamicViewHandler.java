@@ -2,7 +2,6 @@ package org.openuss.framework.web.facelets;
 
 import javax.faces.application.ViewHandler;
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 
 import org.apache.commons.lang.StringUtils;
 import org.openuss.framework.web.jsf.util.ConversationUtil;
