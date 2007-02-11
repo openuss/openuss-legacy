@@ -139,7 +139,7 @@ public class MembersPage extends AbstractLecturePage {
 		FacultyMember member = members.getRowData();
 		User user = securityService.getUser(member.getId());
 		setSessionBean("showuser", user);
-		return Constants.USER_PROFILE_VIEW;
+		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 
 	/**

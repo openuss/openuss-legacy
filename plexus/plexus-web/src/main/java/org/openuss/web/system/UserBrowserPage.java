@@ -76,7 +76,7 @@ public class UserBrowserPage extends BasePage{
 		UserInfo userInfo = dataModel.getRowData();
 		User user = securityService.getUser(userInfo.getId());
 		setSessionBean("showuser", user);
-		return Constants.USER_PROFILE_VIEW;
+		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	
 	

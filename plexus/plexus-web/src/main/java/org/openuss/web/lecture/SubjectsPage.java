@@ -90,7 +90,7 @@ public class SubjectsPage extends AbstractLecturePage {
 	public String confirmRemoveSubject() {
 		subject = data.getRowData();;
 		setSessionBean(Constants.SUBJECT, subject);
-		return Constants.FACULTY_SUBJECT_REMOVE;
+		return Constants.FACULTY_SUBJECT_REMOVE_PAGE;
 	}
 
 	/**

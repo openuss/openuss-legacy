@@ -21,7 +21,7 @@ public class AbstractPeriodPage extends AbstractLecturePage {
 		super.prerender();
 		if (period == null) {
 			addMessage(i18n("message_error_no_period_selected"));
-			redirect(Constants.FACULTY_PERIODS);
+			redirect(Constants.FACULTY_PERIODS_PAGE);
 		}
 	}
 

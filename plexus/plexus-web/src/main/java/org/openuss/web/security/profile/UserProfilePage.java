@@ -113,8 +113,8 @@ public class UserProfilePage extends BasePage{
 	 */
 	public String showProfile() {
 		setSessionBean(Constants.SHOW_USER, user);
-		navigator.setLastView(Constants.USER_PROFILE);
-		return Constants.USER_PROFILE_VIEW;
+		navigator.setLastView(Constants.USER_PROFILE_PAGE);
+		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	
 	public void removeImage(ActionEvent event) {
@@ -123,7 +123,7 @@ public class UserProfilePage extends BasePage{
 		profile.setImage(null);
 		securityService.saveUserProfile(profile);
 		
-		setSessionBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW);
+		setSessionBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
 	}
 	
 	

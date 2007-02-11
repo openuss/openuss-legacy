@@ -73,7 +73,7 @@ public class NewsController extends BaseBean {
 	}
 	
 	public String cancel() {
-		return Constants.FACULTY_NEWS;
+		return Constants.FACULTY_NEWS_PAGE;
 	}
 	
 	
