@@ -77,7 +77,7 @@
 				/views/errors/**=ROLE_ANONYMOUS, ROLE_USER
 				/views/public/**=ROLE_ANONYMOUS, ROLE_USER
 				/views/welcome.faces*=ROLE_ANONYMOUS, ROLE_USER
-				/views/secured/admin/**=ROLE_ADMIN
+				/views/secured/system/**=ROLE_ADMIN
 				/views/secured/desktop*=ROLE_USER
 				/views/secured/user/**=ROLE_USER
 				/views/secured/**=ROLE_ASSISTANT
