@@ -8,6 +8,7 @@
       xmlns:news="http://www.openuss.org/news/jsf"
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:c="http://java.sun.com/jstl/core">
       
  	<head>
@@ -26,6 +27,7 @@
 			<ui:include src="/views/commons/navigation/faculty.xhtml" />
 		</ui:define>
   		<ui:define name="content">
+		  	<s:acl domainObject="#{faculty}" hasPermission="#{ACL.GRANT}" ifNot="error"/>
 			<h:form id="membersForm"> 
 				<ui:include src="aspirantstable.xhtml" />
 				<o:block>
