@@ -936,9 +936,10 @@ td .button:hover,td .button_unlink:hover,  td .button_link:hover, td .button_edi
 }
 
 table {
-  width: 100%;
   margin: 0;
   padding: 0;
+  width: 100%;
+  overflow: scroll;
 }
 
 th {
@@ -1030,7 +1031,7 @@ div.faculty_info span{
   padding-bottom: 0;
   padding-top:0;
 }
-
+	
 a.sort_header {
 	text-decoration: none;
 }
@@ -1050,5 +1051,29 @@ td .pulldown_small {
   text-decoration: none;
   color:#505050; 
   border: 1px solid #B4B4B4;
-  margin: 1px 0 3px 10px;
+  margin: 1px 0 3px 10px; 
+}
+
+
+td.col_commands_two {
+	width: 172px;
+}
+
+td.col_commands_three {
+	width: 258px;
+}
+
+td.col_min_left {
+	width: 5px;
+	text-align: left;
+}
+
+td.col_min_center {	
+	width: 5px;
+	text-align: center;
+}
+
+td.col_max_left {
+	width: auto;
+	text-align: left;
 }
