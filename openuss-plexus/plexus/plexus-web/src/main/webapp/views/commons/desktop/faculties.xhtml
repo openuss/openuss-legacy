@@ -22,6 +22,10 @@
 			<h:commandLink action="#{views$secured$desktop$desktop.showFaculty}" styleClass="command" title="#{facultyItem.ownername}">
 				<h:outputText value="#{facultyItem.name} (#{facultyItem.shortcut})"/>
 			</h:commandLink>
+			<h:outputLink value="#{facesContext.externalContext.requestContextPath}/views/secured/lecture/faculty.faces">
+				<f:param value="#{facultyItem.id}" name="faculty" />
+				<h:outputText value="#{facultyItem.name} (#{facultyItem.shortcut})"/>
+			</h:outputLink>
 		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">

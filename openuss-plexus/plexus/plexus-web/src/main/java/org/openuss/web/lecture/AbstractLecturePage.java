@@ -46,6 +46,8 @@ public abstract class AbstractLecturePage extends BasePage {
 		logger.debug("preprocess - refreshing faculty session object");
 		if (faculty != null) {
 			faculty = lectureService.getFaculty(faculty.getId());
+		} else {
+			faculty = (Faculty) getSessionBean(Constants.FACULTY);
 		}
 		setSessionBean(Constants.FACULTY, faculty);
 	}
@@ -53,6 +55,9 @@ public abstract class AbstractLecturePage extends BasePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		logger.debug("prerender - refreshing faculty session object");
+		if (faculty == null) {
+			faculty = (Faculty) getSessionBean(Constants.FACULTY);
+		} 
 		if (faculty == null) {
 			addError(i18n("message_error_no_faculty_selected"));
 			redirect(Constants.DESKTOP);
