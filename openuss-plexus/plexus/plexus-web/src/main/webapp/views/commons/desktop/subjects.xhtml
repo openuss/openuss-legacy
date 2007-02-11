@@ -7,28 +7,23 @@
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols">
       
-    <t:dataTable id="subjects"  
-		var="subject"
-		value="#{desktop.subjects}"
-		styleClass="table"
-		binding="#{views$secured$desktop$desktop.subjectTable}"
-		headerClass="tableHeader"
-		footerClass="tableFooter"
-		rowClasses="odd, even"
-		columnClasses="links,commands"
-		preserveDataModel="false"
-		preserveSort="false"
-		rows="5"
-		cellspacing="1">
+      
+      
+    <plexus:dataTable 
+    	id="subjects"  
+		var="subjectItem" 
+		value="views$secured$desktop$desktop.subjectsProvider"
+		label="#{msg.desktop_subjects_header}"
+		rows="5">
 	  
-		<h:column>
-			<f:facet name="header">
+		<t:column>
+			<plexus:commandSortHeader columnName="name">
 				<h:outputText value="#{msg.desktop_subjects_colheader_name}"/>
-			</f:facet>
-			<h:commandLink action="#{views$secured$desktop$desktop.showSubject}" styleClass="command" title="#{subject.faculty.name}">
-				<h:outputText value="#{subject.name} (#{subject.shortcut})"/>
+			</plexus:commandSortHeader>
+			<h:commandLink action="#{views$secured$desktop$desktop.showSubject}" styleClass="command" title="#{subjectItem.faculty.name}">
+				<h:outputText value="#{subjectItem.name} (#{subjectItem.shortcut})"/>
 			</h:commandLink>
-		</h:column>
+		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">
 			<plexus:command
@@ -38,8 +33,5 @@
 				hint="#{msg.desktop_subjects_command_remove_hint}"
 				styleClass="button_link"/>
 		</plexus:column>
-	</t:dataTable>
-	
-	<plexus:dataScroller for="subjects" pages="5"/>
-	
+	</plexus:dataTable>
 </ui:composition>

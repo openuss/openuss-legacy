@@ -7,29 +7,22 @@
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols">
       
-    <t:dataTable id="enrollments" 
-		var="enrollment"
-		value="#{desktop.enrollments}"
-		styleClass="table"
-		binding="#{views$secured$desktop$desktop.enrollmentTable}"
-		headerClass="tableHeader"
-		footerClass="tableFooter"
-		rowClasses="odd, even"
-		columnClasses="links,commands,commands"
-		preserveDataModel="false"
-		preserveSort="false"
-		rows="5"
-		cellspacing="1">
-	  
-		<h:column>
-			<f:facet name="header">
+      
+    <plexus:dataTable 
+    	id="enrollments" 
+    	label="#{msg.desktop_enrollments_header}"
+    	value="views$secured$desktop$desktop.enrollmentsProvider" 
+    	var="enrollmentItem" 
+    	rows="5">
+		<t:column>
+			<plexus:commandSortHeader columnName="subject.name">
 				<h:outputText value="#{msg.desktop_enrollments_colheader_name}"/>
-			</f:facet>
-			<h:commandLink action="#{views$secured$desktop$desktop.showEnrollment}" styleClass="command" title="#{enrollment.subject.description}">
-				<h:outputText value="#{enrollment.subject.name} - #{enrollment.period.name} (#{enrollment.shortcut})"/>
+			</plexus:commandSortHeader>
+			<h:commandLink action="#{views$secured$desktop$desktop.showEnrollment}" styleClass="command" title="#{enrollmentItem.subject.description}">
+				<h:outputText value="#{enrollmentItem.subject.name} - #{enrollmentItem.period.name} (#{enrollmentItem.shortcut})"/>
 			</h:commandLink>
-		</h:column>
-		
+		</t:column>
+		 
 		<plexus:column header="#{msg.commands_header}">
 			<plexus:command
 				bean="#{views$secured$desktop$desktop}"
@@ -38,13 +31,7 @@
 				hint="#{msg.desktop_enrollments_command_remove_hint}"
 				styleClass="button_unlink"/>
 		</plexus:column>
-	</t:dataTable>
+	</plexus:dataTable>
 		  
-	<plexus:dataScroller 
-		for="enrollments" 
-		pages="5" 
-		pageIndex="#{visit.enrollmentsPageIndex}"
-		pageCount="#{visit.enrollmentsPageCount}"/>
-
 	
 </ui:composition>

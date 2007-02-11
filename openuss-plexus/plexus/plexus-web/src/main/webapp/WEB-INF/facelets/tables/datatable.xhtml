@@ -13,7 +13,7 @@
 		<c:set var="type" value="odd, even"/>
 	</c:if> 
 	<c:if test="${empty columnClasses}">
-		<c:set var="columnClasses" value="links, commands"/>
+		<c:set var="columnClasses" value="col_max_left, col_min_left"/>
 	</c:if>
 	<c:if test="${empty rows}">
 		<c:set var="rows" value="10"/>
@@ -28,7 +28,7 @@
     <oc:setValueBinding var="ascending" bean="${value}" property="ascending"/>  
     <oc:setValueBinding var="firstRow" bean="${value}" property="firstRow"/>
     
-	<o:block styleClass="form_box" label="${label}">
+    <o:block label="${label}">
 		<t:dataTable id="${id}" 
 			value="${data}"
 			binding="#{binding}"

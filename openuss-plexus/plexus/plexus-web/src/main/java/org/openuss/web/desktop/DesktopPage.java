@@ -1,6 +1,7 @@
 package org.openuss.web.desktop;
 
-import javax.faces.component.UIData;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -11,6 +12,8 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopService;
+import org.openuss.framework.web.jsf.model.AbstractPagedTable;
+import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Enrollment;
 import org.openuss.lecture.Faculty;
 import org.openuss.lecture.Subject;
@@ -31,10 +34,6 @@ public class DesktopPage extends BasePage {
 
 	private static final long serialVersionUID = -3558991501240784974L;
 	
-	private UIData facultyTable;
-	private UIData enrollmentTable;
-	private UIData subjectTable;
-	
 	@Property(value="#{sessionScope.desktop}")
 	private Desktop desktop;
 	
@@ -43,6 +42,10 @@ public class DesktopPage extends BasePage {
 	
 	@Property(value="#{desktopService}")
 	private DesktopService desktopService;
+	
+	private EnrollmentDataProvider enrollmentsProvider = new EnrollmentDataProvider();
+	private SubjectDataProvider subjectsProvider = new SubjectDataProvider();
+	private FacultyDataProvider facultiesProvider = new FacultyDataProvider();
 
 	@Prerender
 	public void prerender() {
@@ -73,7 +76,7 @@ public class DesktopPage extends BasePage {
 	 */
 	public String showFaculty() {
 		logger.debug("showFaculty");
-		Faculty faculty = (Faculty) facultyTable.getRowData();
+		Faculty faculty = facultiesProvider.getRowData();
 		setSessionBean(Constants.FACULTY, faculty);
 		return Constants.FACULTY;
 	}
@@ -84,7 +87,7 @@ public class DesktopPage extends BasePage {
 	 */
 	public String removeFaculty() throws DesktopException {
 		logger.debug("remove faculty");
-		Faculty faculty = (Faculty) facultyTable.getRowData();
+		Faculty faculty = facultiesProvider.getRowData();
 		desktopService.unlinkFaculty(desktop, faculty);
 		addMessage(i18n("desktop_message_removed_faculty_succeed", faculty.getName()));
 		return Constants.DESKTOP;
@@ -96,9 +99,9 @@ public class DesktopPage extends BasePage {
 	 */
 	public String showEnrollment() {
 		logger.debug("showEnrollment");
-		Enrollment enrollment = (Enrollment) enrollmentTable.getRowData();
+		Enrollment enrollment = enrollmentsProvider.getRowData();
 		setSessionBean(Constants.ENROLLMENT, enrollment);
-		return Constants.ENROLLMENT_MAIN;
+		return Constants.ENROLLMENT_PAGE;
 	}
 	
 	/**
@@ -107,7 +110,7 @@ public class DesktopPage extends BasePage {
 	 */
 	public String removeEnrollment() {
 		logger.debug("remove enrollment");
-		Enrollment enrollment = (Enrollment) enrollmentTable.getRowData();
+		Enrollment enrollment = enrollmentsProvider.getRowData();
 		try {
 			desktopService.unlinkEnrollment(desktop, enrollment);
 			addMessage(i18n("desktop_mesage_removed_enrollment_succeed", enrollment.getShortcut()));
@@ -130,7 +133,7 @@ public class DesktopPage extends BasePage {
 	
 	public String removeSubject() {
 		logger.debug("remove subject");
-		Subject subject = (Subject) subjectTable.getRowData();
+		Subject subject = subjectsProvider.getRowData();
 		try {
 			desktopService.unlinkSubject(desktop, subject);
 			addMessage(i18n("desktop_message_removed_subject_succeed",subject.getName()));
@@ -140,30 +143,51 @@ public class DesktopPage extends BasePage {
 		}
 		return Constants.DESKTOP;
 	}
+	
+	/* ------------------ data models ------------------- */
+	private class EnrollmentDataProvider extends AbstractPagedTable<Enrollment> {
+		private DataPage<Enrollment> page;
 
-	public UIData getFacultyTable() {
-		return facultyTable;
+		@Override
+		public DataPage<Enrollment> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				List<Enrollment> enrollments = new ArrayList(desktop.getEnrollments());
+				sort(enrollments);
+				page = new DataPage<Enrollment>(enrollments.size(),0,enrollments);
+			}
+			return page;
+		}
 	}
 
-	public void setFacultyTable(UIData facultyTable) {
-		this.facultyTable = facultyTable;
+	private class SubjectDataProvider extends AbstractPagedTable<Subject> {
+		private DataPage<Subject> page;
+		
+		@Override
+		public DataPage<Subject> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				List<Subject> subjects = new ArrayList(desktop.getSubjects());
+				sort(subjects);
+				page = new DataPage<Subject>(subjects.size(),0,subjects);
+			}
+			return page;
+		}
 	}
 
-	public UIData getEnrollmentTable() {
-		return enrollmentTable;
+	private class FacultyDataProvider extends AbstractPagedTable<Faculty> {
+		private DataPage<Faculty> page;
+		
+		@Override
+		public DataPage<Faculty> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				List<Faculty> faculties = new ArrayList(desktop.getFaculties());
+				sort(faculties);
+				page = new DataPage<Faculty>(faculties.size(),0,faculties);
+			}
+			return page;
+		}
 	}
-
-	public void setEnrollmentTable(UIData enrollmentTable) {
-		this.enrollmentTable = enrollmentTable;
-	}
-
-	public UIData getSubjectTable() {
-		return subjectTable;
-	}
-
-	public void setSubjectTable(UIData subjectTable) {
-		this.subjectTable = subjectTable;
-	}
+	
+	
 
 	public Desktop getDesktop() {
 		return desktop;
@@ -187,5 +211,29 @@ public class DesktopPage extends BasePage {
 
 	public void setDesktopService(DesktopService desktopService) {
 		this.desktopService = desktopService;
+	}
+
+	public EnrollmentDataProvider getEnrollmentsProvider() {
+		return enrollmentsProvider;
+	}
+
+	public void setEnrollmentsProvider(EnrollmentDataProvider enrollmentsProvider) {
+		this.enrollmentsProvider = enrollmentsProvider;
+	}
+
+	public FacultyDataProvider getFacultiesProvider() {
+		return facultiesProvider;
+	}
+
+	public void setFacultiesProvider(FacultyDataProvider facultiesProvider) {
+		this.facultiesProvider = facultiesProvider;
+	}
+
+	public SubjectDataProvider getSubjectsProvider() {
+		return subjectsProvider;
+	}
+
+	public void setSubjectsProvider(SubjectDataProvider subjectsProvider) {
+		this.subjectsProvider = subjectsProvider;
 	}
 }
