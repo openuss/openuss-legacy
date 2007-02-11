@@ -52,7 +52,7 @@ public class NewsPage extends AbstractLecturePage {
 			newsItem.setPublisher(publisher);
 		}
 		setSessionBean(Constants.NEWSITEM, newsItem);
-		return Constants.FACULTY_NEWS_EDIT;
+		return Constants.FACULTY_NEWS_EDIT_PAGE;
 	}
 	
 	/**
@@ -63,7 +63,7 @@ public class NewsPage extends AbstractLecturePage {
 		logger.debug("edit news item");
 		NewsItem newsItem = (NewsItem) newsItemTable.getRowData();
 		setSessionBean(Constants.NEWSITEM, newsItem);
-		return Constants.FACULTY_NEWS_EDIT;
+		return Constants.FACULTY_NEWS_EDIT_PAGE;
 	}
 	
 	/**
@@ -75,7 +75,7 @@ public class NewsPage extends AbstractLecturePage {
 		NewsItem newsItem = (NewsItem) newsItemTable.getRowData();
 		newsService.deleteNewsItem(newsItem.getId());
 		addMessage(i18n("message_newsitem_removed_succeed"));
-		return Constants.FACULTY_NEWS;
+		return Constants.FACULTY_NEWS_PAGE;
 	}
 
 	public List<NewsItem> getNewsItems() {

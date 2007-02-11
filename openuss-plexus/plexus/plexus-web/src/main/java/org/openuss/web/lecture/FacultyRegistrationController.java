@@ -27,7 +27,7 @@ public class FacultyRegistrationController extends AbstractLecturePage{
 		logger.debug("start registration process");
 		faculty = Faculty.Factory.newInstance();
 		setSessionBean(Constants.FACULTY, faculty);
-		return Constants.FACULTY_REGISTRATION_STEP1;
+		return Constants.FACULTY_REGISTRATION_STEP1_PAGE;
 	}
 	
 	public String registrate() throws DesktopException, LectureException {

@@ -39,23 +39,23 @@ public class Constants {
 	public static final String DESKTOP = "desktop";
 	public static final String ENROLLMENT_OPTIONS = "enrollment_options";
 
-	public static final String FACULTY_MAIN = "show_faculty";
-	public static final String FACULTY_PERIOD = "faculty_period";
-	public static final String FACULTY_PERIODS = "faculty_periods";
-	public static final String FACULTY_PERIOD_REMOVE = "faculty_period_remove";
-	public static final String FACULTY_SUBJECTS = "faculty_subjects";
-	public static final String FACULTY_ENROLLMENT_REMOVE = "faculty_enrollment_remove";
-	public static final String FACULTY_SUBJECT_REMOVE = "faculty_subject_remove";
-	public static final String FACULTY_MEMBERS = "faculty_members";
-	public static final String FACULTY_NEWS = "faculty_news";
-	public static final String FACULTY_NEWS_EDIT = "faculty_news_edit";
+	public static final String FACULTY_PAGE = "faculty";
+	public static final String FACULTY_PERIOD_PAGE = "faculty_period";
+	public static final String FACULTY_PERIODS_PAGE = "faculty_periods";
+	public static final String FACULTY_PERIOD_REMOVE_PAGE = "faculty_period_remove";
+	public static final String FACULTY_SUBJECTS_PAGE = "faculty_subjects";
+	public static final String FACULTY_ENROLLMENT_REMOVE_PAGE = "faculty_enrollment_remove";
+	public static final String FACULTY_SUBJECT_REMOVE_PAGE = "faculty_subject_remove";
+	public static final String FACULTY_MEMBERS_PAGE = "faculty_members";
+	public static final String FACULTY_NEWS_PAGE = "faculty_news";
+	public static final String FACULTY_NEWS_EDIT_PAGE = "faculty_news_edit";
 
-	public static final String FACULTY_REGISTRATION_START = "faculty_registration_start";
-	public static final String FACULTY_REGISTRATION_STEP1 = "faculty_registration_step1";
-	public static final String FACULTY_REGISTRATION_STEP2 = "faculty_registration_step2";
+	public static final String FACULTY_REGISTRATION_START_PAGE = "faculty_registration_start";
+	public static final String FACULTY_REGISTRATION_STEP1_PAGE = "faculty_registration_step1";
+	public static final String FACULTY_REGISTRATION_STEP2_PAGE = "faculty_registration_step2";
 
-	public static final String USER_PROFILE = "user_profile";
-	public static final String USER_PROFILE_VIEW = "user_profile_view";
+	public static final String USER_PROFILE_PAGE = "user_profile";
+	public static final String USER_PROFILE_VIEW_PAGE = "user_profile_view";
 
 	public static final String SHOW_USER = "showuser";
 
@@ -64,6 +64,6 @@ public class Constants {
 
 	public static final String SECURE_PASSWORD_CHANGE = "secure_password_change";
 
-	public static final String ENROLLMENT_MAIN = "enrollment_main";
+	public static final String ENROLLMENT_PAGE = "enrollment_main";
 
 }

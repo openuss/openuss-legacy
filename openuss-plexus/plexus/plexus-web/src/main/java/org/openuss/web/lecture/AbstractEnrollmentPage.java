@@ -23,7 +23,7 @@ public class AbstractEnrollmentPage extends AbstractLecturePage {
 		super.prerender();
 		if (enrollment == null) {
 			addMessage(i18n("message_error_enrollment_page"));
-			redirect(Constants.FACULTY_PERIODS);
+			redirect(Constants.FACULTY_PERIODS_PAGE);
 		} 
 	}
 	

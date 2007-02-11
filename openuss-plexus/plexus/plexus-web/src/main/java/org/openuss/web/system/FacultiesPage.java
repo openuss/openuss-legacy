@@ -43,7 +43,7 @@ public class FacultiesPage extends BasePage{
 	public String selectFaculty() {
 		Faculty faculty = currentFaculty();
 		setSessionBean(Constants.FACULTY, faculty);
-		return Constants.FACULTY_MAIN;
+		return Constants.FACULTY_PAGE;
 	}
 	
 	private Faculty currentFaculty() {

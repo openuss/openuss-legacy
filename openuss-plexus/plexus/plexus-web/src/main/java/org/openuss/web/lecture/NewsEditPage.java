@@ -39,7 +39,7 @@ public class NewsEditPage extends AbstractLecturePage {
 	public void prerender() {
 		if (newsItem == null) {
 			logger.debug("news item not set");
-			redirect(Constants.FACULTY_NEWS);
+			redirect(Constants.FACULTY_NEWS_PAGE);
 		}
 		// fetch uploaded files also a validation error occurs 
 		fetchUploadedFile();
@@ -69,7 +69,7 @@ public class NewsEditPage extends AbstractLecturePage {
 		// validate expire date
 		if (newsItem.getExpireDate().getTime() <= newsItem.getPublishDate().getTime()) {
 			addError(i18n("news_error_expire_before_publish_date"));
-			return Constants.FACULTY_NEWS_EDIT;
+			return Constants.FACULTY_NEWS_EDIT_PAGE;
 		}
 
 		if (fetchUploadedFile()) {
@@ -84,7 +84,7 @@ public class NewsEditPage extends AbstractLecturePage {
 
 		newsService.saveNewsItem(newsItem);
 
-		return Constants.FACULTY_NEWS;
+		return Constants.FACULTY_NEWS_PAGE;
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class NewsEditPage extends AbstractLecturePage {
 			uploadFileManager.removeFile(attachment);
 			removeSessionBean(Constants.UPLOADED_FILE);
 		}
-		return Constants.FACULTY_NEWS_EDIT;
+		return Constants.FACULTY_NEWS_EDIT_PAGE;
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class NewsEditPage extends AbstractLecturePage {
 		logger.debug("cancel");
 		removeSessionBean(Constants.NEWSITEM);
 		removeSessionBean(Constants.UPLOADED_FILE);
-		return Constants.FACULTY_NEWS;
+		return Constants.FACULTY_NEWS_PAGE;
 	}
 
 	/* ----------------- properties ------------------*/

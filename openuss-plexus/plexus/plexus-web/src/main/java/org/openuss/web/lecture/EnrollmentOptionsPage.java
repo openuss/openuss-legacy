@@ -36,7 +36,7 @@ public class EnrollmentOptionsPage extends AbstractEnrollmentPage {
 	public String saveOptions() throws LectureException {
 		logger.trace("saving enrollment options");
 		lectureService.persist(enrollment);
-		return Constants.FACULTY_PERIODS;
+		return Constants.FACULTY_PERIODS_PAGE;
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class EnrollmentOptionsPage extends AbstractEnrollmentPage {
 	 */
 	public String cancelOptions() {
 		// nothing to do - enrollment will be automatically refreshed during prerender phase.
-		return Constants.FACULTY_PERIODS;
+		return Constants.FACULTY_PERIODS_PAGE;
 	}
 	
 	/**

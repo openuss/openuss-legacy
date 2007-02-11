@@ -42,7 +42,7 @@ public class EnrollmentRemovePage extends AbstractEnrollmentPage {
 		logger.trace("removing enrollment");
 		lectureService.removeEnrollment(enrollment.getId());
 		addMessage(i18n("faculty_enrollment_removed_succeed"));
-		return Constants.FACULTY_PERIODS;
+		return Constants.FACULTY_PERIODS_PAGE;
 	}
 	
 	/**

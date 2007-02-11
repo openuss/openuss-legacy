@@ -9,7 +9,13 @@
       xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:c="http://java.sun.com/jstl/core">
       
-	<plexus:dataTable id="faculties" label="#{msg.facultyList_header}" value="views$public$faculty$faculties.faculties" var="bean" rows="15">
+	<plexus:dataTable 
+		id="faculties" 
+		label="#{msg.facultyList_header}" 
+		value="views$public$faculty$faculties.faculties" 
+		var="bean" 
+		columnClasses="col_max_left, col_max_left, col_min_left, col_min_left"
+		rows="15">
 		<t:column>
 			<plexus:commandSortHeader columnName="name">
 				#{msg['faculty_name']}

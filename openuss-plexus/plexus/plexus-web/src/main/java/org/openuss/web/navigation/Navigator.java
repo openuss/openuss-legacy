@@ -59,7 +59,7 @@ public class Navigator extends BaseBean {
 
 		Period period = (Period) getSessionBean(Constants.PERIOD);
 		if (period != null) {
-			crumbs.add(new NavigationMenuItem("#{msg.faculty_command_periods}", Constants.FACULTY_PERIODS));
+			crumbs.add(new NavigationMenuItem("#{msg.faculty_command_periods}", Constants.FACULTY_PERIODS_PAGE));
 		}
 	
 		return crumbs;

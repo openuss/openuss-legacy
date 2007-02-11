@@ -63,7 +63,7 @@ public class AspirantsPage extends AbstractLecturePage {
 		User user = User.Factory.newInstance();
 		user.setId(userInfo.getId());
 		setSessionBean("showuser", user);
-		return Constants.USER_PROFILE_VIEW;
+		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	
 	public void changedAspirant(ValueChangeEvent event) throws LectureException {

@@ -31,7 +31,7 @@ public class PeriodEditPage extends AbstractPeriodPage {
 			lectureService.persist(period);
 			addMessage(i18n("message_save_period_succeed"));
 		}
-		return Constants.FACULTY_PERIODS;
+		return Constants.FACULTY_PERIODS_PAGE;
 	}
 
 }
