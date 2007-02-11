@@ -10,6 +10,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.acl.AclEntry;
@@ -36,16 +37,18 @@ public class AclHandler extends TagHandler {
 
 	private final TagAttribute domainObject;
 	private final TagAttribute hasPermission;
+	private final TagAttribute ifNot;
 
 	public AclHandler(final TagConfig config) {
 		super(config);
 
-		domainObject = getAttribute("domainObject");
-		hasPermission = getAttribute("hasPermission");
+		domainObject = getRequiredAttribute("domainObject");
+		hasPermission = getRequiredAttribute("hasPermission");
+		ifNot = getAttribute("ifNot");
+		
 	}
 
-	public void apply(FaceletContext ctx, UIComponent parent) throws IOException, FacesException, FaceletException,
-			ELException {
+	public void apply(FaceletContext ctx, UIComponent parent) throws IOException, FacesException, FaceletException,	ELException {
 		if ((null == hasPermission) || StringUtils.isBlank(hasPermission.getValue())) {
 			return; // skip entry
 		}
@@ -53,15 +56,7 @@ public class AclHandler extends TagHandler {
 		Object resolvedDomainObject = domainObject.getObject(ctx);
 		Object value = hasPermission.getObject(ctx);
 		
-		Integer[] requiredIntegers = new Integer[0];
-		if (value instanceof Integer) {
-			requiredIntegers = new Integer[]{(Integer) value};
-		} else if (value instanceof Long) {
-			requiredIntegers = new Integer[]{((Long)value).intValue()};
-		} else if (value instanceof String) {
-			requiredIntegers = parseIntegersString((String)value);
-		}
-
+		Integer[] requiredIntegers = requiredIntegers(value);
 
 		if (resolvedDomainObject == null) {
 			if (logger.isDebugEnabled()) {
@@ -73,18 +68,15 @@ public class AclHandler extends TagHandler {
 
 		if (SecurityContextHolder.getContext().getAuthentication() == null) {
 			if (logger.isDebugEnabled()) {
-				logger
-						.debug("SecurityContextHolder did not return a non-null Authentication object, so skipping tag body!");
+				logger.debug("SecurityContextHolder did not return a non-null Authentication object, so skipping tag body!");
 			}
 			return;
 		}
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
 		FacesContext facesContext = ctx.getFacesContext();
-
-		AclManager aclManager = (AclManager) facesContext.getApplication().createValueBinding("#{aclManager}")
-				.getValue(facesContext);
+		// get acl manager
+		AclManager aclManager = (AclManager) facesContext.getApplication().createValueBinding("#{aclManager}").getValue(facesContext);
 
 		AclEntry[] acls = aclManager.getAcls(resolvedDomainObject, auth);
 
@@ -94,6 +86,23 @@ public class AclHandler extends TagHandler {
 					+ aclManager.toString() + "'");
 		}
 
+		if (hasPermission(requiredIntegers, acls)) {
+			nextHandler.apply(ctx, parent);
+		} else if (ifNot != null && StringUtils.equals(ifNot.getValue(),"error")) {
+			HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+		} else {		
+			logger.debug("No permission, so skipping tag body");
+		}
+	}
+
+	/**
+	 * Checks if one of the acls entries has the required permissions.
+	 * 
+	 * @param requiredIntegers
+	 * @param acls
+	 */
+	private boolean hasPermission(Integer[] requiredIntegers, AclEntry[] acls) {
 		if ((acls != null) && acls.length > 0) {
 			// Locate processable AclEntrys
 			for (AclEntry aclEntry : acls) {
@@ -102,19 +111,32 @@ public class AclHandler extends TagHandler {
 					for (Integer required : requiredIntegers) {
 						if (processableAcl.isPermitted(required)) {
 							if (logger.isDebugEnabled()) {
-								logger.debug("Including tag body as found permission: " + requiredIntegers
-										+ " due to AclEntry: '" + processableAcl + "'");
-								nextHandler.apply(ctx, parent);
-								return;
+								logger.debug("Including tag body as found permission: " + requiredIntegers	+ " due to AclEntry: '" + processableAcl + "'");
 							}
+							return true;
 						}
 					}
 				}
 			}
 		}
-		if (logger.isDebugEnabled()) {
-			logger.debug("No permission, so skipping tag body");
+		return false;
+	}
+
+	/**
+	 * Determins from a input object the required integers
+	 * @param value
+	 * @return required integers
+	 */
+	private Integer[] requiredIntegers(Object value) {
+		Integer[] requiredIntegers = new Integer[0];
+		if (value instanceof Integer) {
+			requiredIntegers = new Integer[]{(Integer) value};
+		} else if (value instanceof Long) {
+			requiredIntegers = new Integer[]{((Long)value).intValue()};
+		} else if (value instanceof String) {
+			requiredIntegers = parseIntegersString((String)value);
 		}
+		return requiredIntegers;
 	}
 
 	/**
@@ -138,6 +160,12 @@ public class AclHandler extends TagHandler {
 		return isAuthorized;
 	}
 
+	/**
+	 * Parse Integer objects
+	 * @param integersString
+	 * @return
+	 * @throws NumberFormatException
+	 */
 	private Integer[] parseIntegersString(String integersString) throws NumberFormatException {
 		final Set integers = new HashSet();
 		final StringTokenizer tokenizer;
