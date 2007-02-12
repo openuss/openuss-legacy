@@ -7,6 +7,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:news="http://www.openuss.org/news/jsf"
       xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:s="http://www.openuss.org/jsf-security"      
       xmlns:o="http://www.openuss.org/jsfcontrols">
       
  	<head>
@@ -25,6 +26,7 @@
 			<ui:include src="/views/commons/navigation/faculty.xhtml" />
 		</ui:define>
   		<ui:define name="content">
+	  		<s:acl domainObject="#{faculty}" hasPermission="#{ACL.UPDATE}" ifNot="error"/>
   			<h:form> 
   				<o:block label="#{msg.news_header}" styleClass="form_box">
   					<ui:include src="newstable.xhtml"/>
