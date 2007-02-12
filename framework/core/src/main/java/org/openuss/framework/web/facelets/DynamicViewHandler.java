@@ -20,17 +20,29 @@ public class DynamicViewHandler extends FaceletViewHandler {
 
 	@Override
 	public String getActionURL(FacesContext context, String viewId) {
-		String url = viewId;
-		String parameters = getParameterString(url);
-		if (parameters.length() > 0 &&  isVBExpression(parameters)) {
-			parameters = ConversationUtil.interpolate(parameters);
+		String parameters = getParameterString(viewId);
+		if (parameters.length() > 0) {
+			String path = getPath(viewId);
+			if (isVBExpression(parameters)) {
+				// convert paramters
+				parameters = ConversationUtil.interpolate(parameters);
+			}
+			// generate action url
+			return super.getActionURL(context, path) + parameters;
 		}
-		// save parameters 
-		
-		return super.getActionURL(context, url) + parameters;
+		return super.getActionURL(context, viewId);
 		
 	}
 	
+	private String getPath(String url) {
+		String path = url;
+		int paramIndex = url.indexOf('?');
+		if (paramIndex > -1) {
+			path = url.substring(0, paramIndex);
+		}
+		return path;
+	}
+
 	private String getParameterString(String url) {
 		String parameters = "";
 		int paramIndex = url.indexOf('?');
