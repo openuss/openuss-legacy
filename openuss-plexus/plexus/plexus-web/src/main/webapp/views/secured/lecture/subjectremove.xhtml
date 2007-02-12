@@ -7,6 +7,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:news="http://www.openuss.org/news/jsf"
       xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:s="http://www.openuss.org/jsf-security"  
       xmlns:o="http://www.openuss.org/jsfcontrols">
       
  	<head>
@@ -20,6 +21,7 @@
 	<body>      
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/dialog.xhtml">
+		<s:acl domainObject="#{faculty}" hasPermission="#{ACL.MANAGE_SUBJECTS}" ifNot="error"/>
   		<ui:define name="title"><h:outputText value="#{msg.faculty_maintitle} - #{faculty.name}"/></ui:define>
   		<ui:define name="content"> 
 			<h:form id="removeSubjectForm">
