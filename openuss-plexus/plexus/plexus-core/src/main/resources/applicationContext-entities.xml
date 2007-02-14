@@ -38,5 +38,94 @@
 	<bean id="discussionForum" class="org.openuss.discussion.ForumImpl"/>
 	<bean id="discussionTopic" class="org.openuss.discussion.TopicImpl"/>
 	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			  Mail
+ 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+    <bean id="mailEngine" class="org.openuss.framework.mail.MailEngine">
+        <property name="mailSender" ref="mailSender"/>
+        <property name="velocityEngine" ref="velocityEngine"/>
+        <property name="defaultFrom" value="no-reply@openuss.org"/>
+    </bean>
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="127.0.0.1"/>
+        <property name="username" value="no-reply@openuss-plexus.org"/>
+        <property name="password" value="plexus"/>
+    </bean>
+    <!-- Configure Velocity for sending e-mail -->
+    <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+        <property name="velocityProperties">
+            <props>
+                <prop key="resource.loader">class</prop>
+                <prop key="class.resource.loader.class">
+                    org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+                </prop>
+                <prop key="velocimacro.library"></prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage" singleton="false">
+        <property name="from" value="no-reply@openuss.org"/>
+    </bean>    
+    <bean id="mimeMessage" class="javax.mail.internet.MimeMessage" singleton="false" factory-bean="mailSender" factory-method="createMimeMessage">
+    </bean>
+    <bean id="mimeMessageHelper" class="org.springframework.mail.javamail.MimeMessageHelper" singleton="false">
+    	<constructor-arg>
+    		<ref bean="mimeMessage"/>
+    	</constructor-arg>
+    </bean>
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
+        <property name="locations">
+            <list>
+                <value>openuss.properties</value>
+            </list>
+        </property>
+    </bean>
+    
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    				Quartz
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
+	<bean id="mailSendingQuartzBean" class="org.openuss.mail.MailSendingQuartzBean" singleton="true" >	
+		<property name="mailService"><ref bean="mailService"/></property>		
+		<property name="mimeMessageHelper"><ref bean="mimeMessageHelper"/></property>		
+		<property name="mailEngine"><ref bean="mailEngine"/></property>				
+	</bean>
+	<!-- not working Quartz config -->
+	<!-- 
+    <bean id="mailSendingJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="mailSendingQuartzBean"/>
+		<property name="targetMethod" value="send"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<bean id="mailRepeatTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="mailSendingJobDetail" ref="mailSendingJobDetail"/>
+		<property name="startDelay" value="10000"/>
+		<property name="repeatInterval" value="10000"/>
+	</bean>
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="mailRepeatTrigger"/>		
+			</list>
+		</property>
+	</bean>
+	 -->
+	 <!-- not Quartz but JDK Timer support, due to unresolved problems using Quartz -->
+	 <bean id="sendMail" class="org.springframework.scheduling.timer.MethodInvokingTimerTaskFactoryBean">
+		<property name="targetObject" ref="mailSendingQuartzBean"/>
+		<property name="targetMethod" value="send"/>
+	</bean>
+	 <bean id="scheduledTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+		<property name="delay" value="10000"/>
+		<property name="period" value="30000"/>
+		<property name="timerTask" ref="sendMail"/>
+	</bean>
+	<bean id="timerFactory" class="org.springframework.scheduling.timer.TimerFactoryBean">
+		<property name="scheduledTimerTasks">
+			<list>
+				<ref bean="scheduledTask"/>
+			</list>
+		</property>
+    </bean> 
 </beans>

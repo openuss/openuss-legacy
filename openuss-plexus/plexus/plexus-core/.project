@@ -4,6 +4,7 @@
   <projects>
     <project>plexus-api</project>
     <project>framework-tests</project>
+	<project>framework-core</project>
   </projects>
   <buildSpec>
     <buildCommand>
