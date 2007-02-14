@@ -10,6 +10,7 @@ import org.openuss.news.NewsTests;
 import org.openuss.repository.RepositoryTests;
 import org.openuss.security.SecurityTests;
 import org.openuss.system.SystemTests;
+import org.openuss.mail.MailTests;
 
 public class AllTests {
 
@@ -23,6 +24,7 @@ public class AllTests {
 		suite.addTest(DesktopTests.suite());
 		suite.addTest(LectureTests.suite());
 		suite.addTest(DiscussionTests.suite());
+		suite.addTest(MailTests.suite());
 		// $JUnit-END$
 		return suite;
 	}
