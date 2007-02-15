@@ -17,6 +17,7 @@
 			classpath*:applicationContext-legacy.xml,
 			classpath*:applicationContext-beans.xml,
 			classpath*:applicationContext-adapters.xml,
+			classpath*:applicationContext-jackrabbit.xml,
 			/WEB-INF/security.xml,
 			/WEB-INF/actions.xml,
 			/WEB-INF/openuss-context.xml,

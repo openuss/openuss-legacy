@@ -38,5 +38,11 @@
 	<bean id="discussionForum" class="org.openuss.discussion.ForumImpl"/>
 	<bean id="discussionTopic" class="org.openuss.discussion.TopicImpl"/>
 	
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      DocManagement
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+	<bean id="distributionService" class="org.openuss.docmanagement.DistributionServiceImpl"/>
+	<bean id="collaborationService" class="org.openuss.docmanagement.CollaborationServiceImpl"/>
+	<bean id="examinationService" class="org.openuss.docmanagement.ExaminationServiceImpl"/>
 
 </beans>

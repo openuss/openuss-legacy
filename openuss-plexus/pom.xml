@@ -280,6 +280,11 @@
            <name>Apache Snapshot Repository</name>
            <url>http://people.apache.org/repo/m2-snapshot-repository</url>
         </repository>
+        <repository>
+        	<id>maven-org</id>
+        	<name>maven-org</name>
+        	<url>http://repo1.maven.org/maven2</url>
+        </repository>
 <!--  
 		<repository>
         <releases>
@@ -712,6 +717,44 @@
 				<artifactId>velocity</artifactId>
 				<version>1.4</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>org.apache.jackrabbit</groupId>
+				<artifactId>jackrabbit</artifactId>				
+				<version>1.2.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springmodules</groupId>
+				<artifactId>spring-modules-jcr</artifactId>
+				<version>0.7</version>
+				<exclusions>
+					<exclusion>
+						<groupId>aparzev</groupId>
+						<artifactId>doka</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.apache.jackrabbit</groupId>
+						<artifactId>jackrabbit-jca</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>jeceira</groupId>
+						<artifactId>jeceira</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>jug</groupId>
+						<artifactId>jug-asl</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>jsr170</groupId>
+						<artifactId>jsr170</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>aparzev</groupId>
+						<artifactId>commons</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>			
+			
 		</dependencies>
 	</dependencyManagement>
 	<distributionManagement>
