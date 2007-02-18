@@ -19,10 +19,10 @@
 			<plexus:commandSortHeader columnName="name">
 				<h:outputText value="#{msg.desktop_faculties_colheader_name}"/>
 			</plexus:commandSortHeader>
-			<h:outputLink value="#{facesContext.externalContext.requestContextPath}/views/secured/lecture/faculty.faces" styleClass="command" title="#{facultyItem.ownername}">
+			<o:link value="/views/secured/lecture/faculty.faces" title="#{facultyItem.ownername}">
 				<f:param value="#{facultyItem.id}" name="faculty" />
 				<h:outputText value="#{facultyItem.name} (#{facultyItem.shortcut})"/>
-			</h:outputLink>
+			</o:link>
 		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">

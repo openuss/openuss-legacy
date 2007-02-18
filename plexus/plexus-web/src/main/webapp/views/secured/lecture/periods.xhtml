@@ -49,7 +49,7 @@
 				<o:block>
 					<h:form id="enrollmentForm">
 						<h:outputLabel value="#{msg['period_header_add_enrollment']}" for="subjectSelect" styleClass="field_label"/>
-					 	<h:selectOneListbox id="subjectSelect" size="1" styleClass="pulldown" value="#{views$secured$lecture$periods.subjectId}">
+					 	<h:selectOneListbox id="subjectSelect" size="1" styleClass="pulldown_inline" value="#{views$secured$lecture$periods.subjectId}">
 					    	<f:selectItems value="#{views$secured$lecture$periods.subjectSelectItems}"/>
 						</h:selectOneListbox>
 						<h:commandButton 

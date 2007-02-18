@@ -24,10 +24,10 @@
   		<ui:define name="content">
 			<h:form id="reg1Form"> 
 				<o:block label="#{msg.user_registration_headline}">
-					<p class="content_font_normal">
+					<div class="content_font_normal">
 						<h:outputText value="${msg.user_registrationMain_Subheading}" escape="false" />
 						<h:outputText value="${msg.user_registrationMain_Text}" escape="false" />
-					</p>
+					</div>
 				</o:block>
 				<o:block>
 					<h:commandButton value="${msg.forward}" action="step1" styleClass="button_continue" />

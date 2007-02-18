@@ -242,37 +242,37 @@
 
 		<navigation-case>
 			<from-outcome>faculty</from-outcome>
-			<to-view-id>/views/secured/lecture/faculty.xtml?faculty=#{faculty}</to-view-id>
+			<to-view-id>/views/secured/lecture/faculty.xtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>faculty_data</from-outcome>
-			<to-view-id>/views/secured/lecture/facultyoptions.xhtml?faculty=#{faculty}</to-view-id>
+			<to-view-id>/views/secured/lecture/facultyoptions.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>faculty_members</from-outcome>
-			<to-view-id>/views/secured/lecture/auth/members.xhtml?faculty=#{faculty}</to-view-id>
+			<to-view-id>/views/secured/lecture/auth/members.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
 			<from-outcome>faculty_aspirants</from-outcome>
-			<to-view-id>/views/secured/lecture/auth/aspirants.xhtml?faculty=#{faculty}</to-view-id>
+			<to-view-id>/views/secured/lecture/auth/aspirants.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
 			<from-outcome>faculty_news</from-outcome>
-			<to-view-id>/views/secured/lecture/news.xhtml?faculty=#{faculty}</to-view-id>
+			<to-view-id>/views/secured/lecture/news.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
 			<from-outcome>faculty_news_edit</from-outcome>
-			<to-view-id>/views/secured/lecture/newsedit.xhtml?faculty=#{faculty}</to-view-id>
+			<to-view-id>/views/secured/lecture/newsedit.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>faculty_subjects</from-outcome>
-			<to-view-id>/views/secured/lecture/subjects.xhtml?faculty=#{faculty}</to-view-id>
+			<to-view-id>/views/secured/lecture/subjects.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
@@ -282,7 +282,7 @@
 		
 		<navigation-case>
 			<from-outcome>faculty_periods</from-outcome>
-			<to-view-id>/views/secured/lecture/periods.xhtml?facultyId=#{faculty}</to-view-id>
+			<to-view-id>/views/secured/lecture/periods.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>

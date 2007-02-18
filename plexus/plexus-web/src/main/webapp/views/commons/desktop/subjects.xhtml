@@ -20,8 +20,11 @@
 			<plexus:commandSortHeader columnName="name">
 				<h:outputText value="#{msg.desktop_subjects_colheader_name}"/>
 			</plexus:commandSortHeader>
-			<h:commandLink action="#{views$secured$desktop$desktop.showSubject}" styleClass="command" title="#{subjectItem.faculty.name}">
+			<o:link value="/views/secured/lecture/subject.faces" title="#{subjectItem.faculty.name}">
+				<f:param value="#{subjectItem.id}" name="faculty" />
 				<h:outputText value="#{subjectItem.name} (#{subjectItem.shortcut})"/>
+			</o:link>
+			<h:commandLink action="#{views$secured$desktop$desktop.showSubject}" styleClass="command" title="#{subjectItem.faculty.name}">
 			</h:commandLink>
 		</t:column>
 		
