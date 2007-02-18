@@ -12,6 +12,11 @@
 			<arg line="install"/>
 		</exec>
 	</target>
+	<target name="clean offline">
+		<exec executable="mvn.bat">
+			<arg line="-o clean"/>
+		</exec>
+	</target>
 	<target name="clean">
 		<exec executable="mvn.bat">
 			<arg line="clean"/>
@@ -20,6 +25,11 @@
 	<target name="install">
 		<exec executable="mvn.bat">
 			<arg line="install"/>
+		</exec>
+	</target>
+	<target name="install offline">
+		<exec executable="mvn.bat">
+			<arg line="-o install"/>
 		</exec>
 	</target>
 	<target name="eclipse">
