@@ -22,6 +22,15 @@
 			<artifactId>tomahawk</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.shale</groupId>
+			<artifactId>shale-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shale</groupId>
+			<artifactId>shale-test</artifactId>
+			<scope>test</scope>			
+		</dependency>
+		<dependency>
 			<groupId>org.openuss.framework</groupId>
 			<artifactId>framework-utilities</artifactId>
 			<version>${pom.version}</version>
