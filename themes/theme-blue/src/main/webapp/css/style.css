@@ -365,7 +365,6 @@ span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:
 	cursor: pointer;
 	cursor: hand; /* Handcursor für IE 5.x */
 	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschön */
-
 }
 
 .button_search:hover, .button_search:active, .button_search:focus {
@@ -493,7 +492,7 @@ span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:
 }
 
 #center_block span{
-	color: #000000;
+	/* 	color: #000000; TODO does not work with field_error  */
 	font-size: 8pt;
 	text-decoration: none; font-weight: none;
 }
@@ -846,6 +845,10 @@ ul{
   text-decoration: none;
 }
 
+.requiredAsterix {
+	color: #b80000;
+}
+
 .form_submit {
   width: 100px;
   height: 23px;
@@ -1076,4 +1079,13 @@ td.col_min_center {
 td.col_max_left {
 	width: auto;
 	text-align: left;
+}
+
+.newsPublisher {
+	font-weight: bold;
+}
+
+.newsDate {
+	color: #f00;
+	font-weight: bold;
 }
