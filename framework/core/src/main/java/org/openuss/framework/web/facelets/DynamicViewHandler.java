@@ -4,6 +4,7 @@ import javax.faces.application.ViewHandler;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang.StringUtils;
+import org.openuss.framework.web.jsf.pages.Pages;
 import org.openuss.framework.web.jsf.util.ConversationUtil;
 
 import com.sun.facelets.FaceletViewHandler;
@@ -20,6 +21,7 @@ public class DynamicViewHandler extends FaceletViewHandler {
 
 	@Override
 	public String getActionURL(FacesContext context, String viewId) {
+		String url = super.getActionURL(context, viewId);
 		String parameters = getParameterString(viewId);
 		if (parameters.length() > 0) {
 			String path = getPath(viewId);
@@ -28,10 +30,9 @@ public class DynamicViewHandler extends FaceletViewHandler {
 				parameters = ConversationUtil.interpolate(parameters);
 			}
 			// generate action url
-			return super.getActionURL(context, path) + parameters;
+			url = super.getActionURL(context, path) + parameters;
 		}
-		return super.getActionURL(context, viewId);
-		
+		return Pages.instance().encodePageParameters(context, url, viewId);
 	}
 	
 	private String getPath(String url) {
