@@ -63,9 +63,8 @@
  	</managed-bean>
  	
  	<converter>
- 		<converter-for-class>org.openuss.lecture.Faculty</converter-for-class>
+ 		<converter-id>facultyConverter</converter-id>
  		<converter-class>org.openuss.web.lecture.converter.FacultyConverter</converter-class>
  	</converter>
  	
-	
 </faces-config>

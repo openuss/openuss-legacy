@@ -22,7 +22,7 @@ public abstract class AbstractLecturePage extends BasePage {
 
 	private static final Logger logger = Logger.getLogger(AbstractLecturePage.class);
 
-	@Property(value = "#{param.faculty}")
+	@Property(value = "#{faculty}")
 	protected Faculty faculty;
 	
 	@Property(value = "#{lectureService}")

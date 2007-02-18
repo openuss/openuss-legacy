@@ -28,6 +28,7 @@
 			<ui:include src="/views/commons/navigation/faculty.xhtml" />
 		</ui:define>
   		<ui:define name="content">
+	  		<s:acl domainObject="#{faculty}" hasPermission="#{ACL.MANAGE_SUBJECTS}" ifNot="error"/>
   			<h:form id="subjectsForm">
 				<ui:include src="subjectstable.xhtml"/>
 				<c:if test="#{empty sessionScope.subject}">
