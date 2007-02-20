@@ -52,5 +52,6 @@
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-mock/2.0.1/spring-mock-2.0.1.jar" sourcepath="/JAVALIBS/spring-framework-2.0.1/mock"/>
 	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.3/acegi-security-1.0.3.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/migration-core"/>
+	<classpathentry kind="var" path="M2_REPO/javax/jcr/jcr/1.0/jcr-1.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

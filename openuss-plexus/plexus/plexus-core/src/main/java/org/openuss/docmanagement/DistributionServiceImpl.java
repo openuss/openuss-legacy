@@ -5,6 +5,11 @@
  */
 package org.openuss.docmanagement;
 
+import javax.jcr.Repository;
+import javax.jcr.Session;
+import javax.jcr.SimpleCredentials;
+import javax.jcr.Node;
+
 /**
  * @see org.openuss.docmanagement.DistributionService
  */
@@ -12,6 +17,8 @@ public class DistributionServiceImpl
     extends org.openuss.docmanagement.DistributionServiceBase
 {
 
+	public Repository repository;
+	
     /**
      * @see org.openuss.docmanagement.DistributionService#addMainFolder(org.openuss.lecture.Enrollment)
      */
@@ -39,7 +46,13 @@ public class DistributionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected void handleAddFacultyFolder(org.openuss.lecture.Faculty faculty)
-        throw new java.lang.UnsupportedOperationException("org.openuss.docmanagement.DistributionService.handleAddFacultyFolder(org.openuss.lecture.Faculty faculty) Not implemented!");
+        Session session = repository.login(new SimpleCredentials(
+				"username", "password".toCharArray()));
+        Node root = session.getRootNode();
+        root.addNode("test");
+        session.save();
+        session.logout();
+        
     }
 
     /**
@@ -181,5 +194,13 @@ public class DistributionServiceImpl
         // @todo implement protected org.openuss.docmanagement.Folder handleGetFacultyFolder(org.openuss.lecture.Faculty faculty)
         return null;
     }
+
+	public Repository getRepository() {
+		return repository;
+	}
+
+	public void setRepository(Repository repository) {
+		this.repository = repository;
+	}
 
 }
