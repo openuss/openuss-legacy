@@ -1,6 +1,7 @@
 package org.openuss.framework.web.jsf.pages;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,6 +13,7 @@ public class Page {
 	private final String viewId;
 	
 	private List<Parameter> parameters = new ArrayList<Parameter>();
+	private List<SecurityConstraint> securityConstraints = new ArrayList<SecurityConstraint>();
 	
 	public Page(String viewId) {
 		this.viewId = viewId;
@@ -22,11 +24,19 @@ public class Page {
 	}
 	
 	public List<Parameter> getParameters() {
-		return parameters;
+		return  Collections.unmodifiableList(parameters);
 	}
 	
 	public void addParameter(Parameter parameter) {
 		parameters.add(parameter);
+	}
+	
+	public List<SecurityConstraint> getSecurityConstraints() {
+		return Collections.unmodifiableList(securityConstraints);
+	}
+	
+	public void addSecurityConstraint(SecurityConstraint securityConstraint) {
+		securityConstraints.add(securityConstraint);
 	}
 	
 }

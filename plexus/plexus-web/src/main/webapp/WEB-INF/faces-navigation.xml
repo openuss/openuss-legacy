@@ -52,7 +52,7 @@
 		
 		<navigation-case>
 			<from-outcome>faculty</from-outcome>
-			<to-view-id>/views/secured/lecture/faculty.xhtml?faculty=#{faculty}</to-view-id>
+			<to-view-id>/views/secured/lecture/faculty.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
