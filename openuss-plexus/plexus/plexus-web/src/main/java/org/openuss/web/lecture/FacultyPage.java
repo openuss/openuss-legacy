@@ -8,6 +8,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.lecture.LectureException;
 import org.openuss.news.NewsService;
+import org.openuss.web.Constants;
 
 /**
  * @author Ingo Dueppe
@@ -35,5 +36,9 @@ public class FacultyPage extends AbstractLecturePage {
 
 	public void setNewsService(NewsService newsService) {
 		this.newsService = newsService;
+	}
+	
+	public String showApplication() {
+		return Constants.DESKTOP;
 	}
 }

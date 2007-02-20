@@ -2,13 +2,12 @@ package org.openuss.framework.web.jsf.actions;
 
 import java.util.List;
 
-import javax.faces.application.Application;
-import javax.faces.application.NavigationHandler;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.openuss.framework.web.jsf.util.FacesUtils;
 
 /**
  * The PageActionManager process all associated PageActions.
@@ -51,9 +50,7 @@ public class PageActionManager {
 					final String outcome = action.perform(facesContext);
 
 					if (outcome != null) {
-						final Application application = facesContext.getApplication();
-						NavigationHandler navigationHandler = application.getNavigationHandler();
-						navigationHandler.handleNavigation(facesContext, action.getFromAction(), outcome);
+						FacesUtils.handleNavigationOutcome(action.getFromAction(), outcome);
 						break;
 					}
 				}

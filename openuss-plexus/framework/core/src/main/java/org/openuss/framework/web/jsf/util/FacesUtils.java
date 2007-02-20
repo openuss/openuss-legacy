@@ -1,5 +1,6 @@
 package org.openuss.framework.web.jsf.util;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -8,7 +9,10 @@ import javax.faces.FactoryFinder;
 import javax.faces.application.Application;
 import javax.faces.application.ApplicationFactory;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.NavigationHandler;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.webapp.UIComponentTag;
 import javax.servlet.ServletContext;
@@ -30,7 +34,7 @@ public class FacesUtils {
 	 * @return the servlet context
 	 */
 	public static ServletContext getServletContext() {
-		return (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+		return (ServletContext) getExternalContext().getContext();
 	}
 
 	/**
@@ -84,7 +88,7 @@ public class FacesUtils {
 	 * @deprecated
 	 */
 	public static Object getManagedBean(String beanName) {
-		Object o = createValueBinding(el(beanName)).getValue(FacesContext.getCurrentInstance());
+		Object o = createValueBinding(el(beanName)).getValue(getFacesContext());
 
 		return o;
 	}
@@ -96,7 +100,7 @@ public class FacesUtils {
 	 *            the bean name of the managed bean to be removed
 	 */
 	public static void resetManagedBean(String beanName) {
-		createValueBinding(el(beanName)).setValue(FacesContext.getCurrentInstance(), null);
+		createValueBinding(el(beanName)).setValue(getFacesContext(), null);
 	}
 
 	/**
@@ -109,7 +113,7 @@ public class FacesUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static void setManagedBeanInSession(String beanName, Object managedBean) {
-		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(beanName, managedBean);
+		getExternalContext().getSessionMap().put(beanName, managedBean);
 	}
 
 	/**
@@ -120,7 +124,7 @@ public class FacesUtils {
 	 * @return the parameter value
 	 */
 	public static String getRequestParameter(String name) {
-		return (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(name);
+		return (String) getExternalContext().getRequestParameterMap().get(name);
 	}
 
 	/**
@@ -142,7 +146,7 @@ public class FacesUtils {
 	 *            the information message
 	 */
 	public static void addInfoMessage(String clientId, String msg) {
-		FacesContext.getCurrentInstance().addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+		getFacesContext().addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
 	}
 
 	/**
@@ -164,7 +168,7 @@ public class FacesUtils {
 	 *            the error message
 	 */
 	public static void addErrorMessage(String clientId, String msg) {
-		FacesContext.getCurrentInstance().addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+		getFacesContext().addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
 	}
 
 	/**
@@ -204,21 +208,42 @@ public class FacesUtils {
 	public static ValueBinding createValueBinding(String expression) {
 		return getApplication().createValueBinding(expression);
 	}
-
+	
+	public static MethodBinding createMethodBinding(String expression) {
+		return getApplication().createMethodBinding(expression, null);
+	}
+	
 	public static HttpServletRequest getRequest() {
-		return (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		return (HttpServletRequest) getExternalContext().getRequest();
 	}
 
+	/**
+	 * @return FacesContext
+	 */
+	public static FacesContext getFacesContext() {
+		return FacesContext.getCurrentInstance();
+	}
+
+	/**
+	 * @return HttpServletResponse
+	 */
 	public static HttpServletResponse getResponse() {
-		return (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+		return (HttpServletResponse) getExternalContext().getResponse();
+	}
+
+	/**
+	 * @return ExternalContext
+	 */
+	public static ExternalContext getExternalContext() {
+		return getFacesContext().getExternalContext();
 	}
 
 	public static HttpSession getSession() {
-		return (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		return (HttpSession) getExternalContext().getSession(false);
 	}
 
 	private static Object getElValue(String el) {
-		return createValueBinding(el).getValue(FacesContext.getCurrentInstance());
+		return createValueBinding(el).getValue(getFacesContext());
 	}
 
 	/**
@@ -237,7 +262,7 @@ public class FacesUtils {
 	 *            scoped object
 	 */
 	public static void addToSessionContext(String key, Object value) {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+		FacesContext facesContext = getFacesContext();
 		facesContext.getApplication().createValueBinding(el("sessionScope." + key)).setValue(facesContext, value);
 	}
 
@@ -251,4 +276,50 @@ public class FacesUtils {
 		return (value != null && value instanceof String && ((String) value).startsWith("#{") && ((String) value)
 				.endsWith("}"));
 	}
+
+	/**
+	 * Call navigation handler to handle an navigation outcome. 
+	 * @param action jsf action expression
+	 * @param outcome outcome of an jsf action
+	 */
+	public static void handleNavigationOutcome(String action, final String outcome) {
+		final FacesContext facesContext = getFacesContext();
+		final Application application = facesContext.getApplication();
+		NavigationHandler navigationHandler = application.getNavigationHandler();
+		navigationHandler.handleNavigation(facesContext, action, outcome);
+	}
+
+	/**
+	 * Performs the action within the given faces context 
+	 * @param facesContext
+	 * @return null or the outcome string of the binded action method
+	 */
+	public static String perform(MethodBinding methodBinding) {
+		String outcome = null;
+		Object result = methodBinding.invoke(getFacesContext(), null);
+		if (result instanceof String) {
+			outcome = (String) result;
+		}
+		return outcome;
+	}
+
+	/**
+	 * Checks whether or not the string is a el expression.
+	 * @param expression
+	 * @return true if it is a el expression.
+	 */
+	public static boolean isExpressionStatement(String expression) {
+		return expression.indexOf("#{") > -1 || expression.indexOf("${)")> -1;
+	}
+
+	/**
+	 * Sends a error status code.
+	 * @see javax.servlet.http.HttpServletResponse.sendError(int)
+	 * @param statusCode
+	 */
+	public static void sendError(int statusCode) throws IOException {
+		HttpServletResponse response =(HttpServletResponse) getExternalContext().getResponse();
+		response.sendError(statusCode);
+	}
+
 }

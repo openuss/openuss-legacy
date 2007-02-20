@@ -1,7 +1,11 @@
 package org.openuss.framework.web.jsf.pages;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.shale.test.base.AbstractJsfTestCase;
+import org.apache.shale.test.mock.MockNavigationHandler;
+import org.openuss.framework.web.jsf.util.MockAclManager;
 
 /**
  * Test case for Pages class.
@@ -11,12 +15,16 @@ import org.apache.shale.test.base.AbstractJsfTestCase;
  */
 public class PagesTest extends AbstractJsfTestCase {
 
+	private static final String EL_ACL = "#{ACL}";
+	private static final String EL_ACL_MANAGER = "#{aclManager}";
+	private static final String EL_TEST_BEAN3 = "#{testBean3}";
 	private static final String EL_TEST_CONVERTER = "#{testConverter}";
 	private static final String EL_TEST_BEAN2 = "#{testBean2}";
 	private static final String EL_TEST_BEAN = "#{testBean}";
 	private static final String EL_TEST = "#{test}";
 	
 	private static final String TEST_PAGE_VIEW_ID = "/pages/test.xhtml";
+	private MockNavigationHandler navigationHandler;
 
 	public PagesTest() {
 		super("Test of org.openuss.framework.web.jsf.pages.Pages");
@@ -26,6 +34,9 @@ public class PagesTest extends AbstractJsfTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		registerManagedBeans();
+		
+		navigationHandler = new MockNavigationHandler();
+		application.setNavigationHandler(navigationHandler);
 	}
 
 	public void testGetPage() {
@@ -76,6 +87,17 @@ public class PagesTest extends AbstractJsfTestCase {
 		// check testBeam parameter of /WEB-INF/pages.xml
 		assertEquals(getTestBean(EL_TEST_BEAN2).getId().longValue(), 123456789L);
 	}
+	
+	public void testPerformSecurityConstraints() {
+		navigationHandler.addDestination("error", "view/error.xhtml");
+		facesContext.getViewRoot().setViewId("/enrollment/main.xhtml");
+		Pages.instance().performSecurityConstraints(facesContext);
+		assertEquals("view/error.xhtml", facesContext.getViewRoot().getViewId());
+
+		facesContext.getViewRoot().setViewId("/enrollment/nodeniedaction.xhtml");
+		Pages.instance().performSecurityConstraints(facesContext);
+		assertEquals(HttpServletResponse.SC_FORBIDDEN, response.getStatus());
+	}
 
 	public void testEncodePageParameters() {
 		String url = "http://localhost:8080/pages/test.faces";
@@ -83,6 +105,18 @@ public class PagesTest extends AbstractJsfTestCase {
 		
 		url = Pages.instance().encodePageParameters(facesContext, url, "/pages/test.xhtml");
 		assertEquals(url,"http://localhost:8080/pages/test.faces?testId=1&test=1&test2=2&test3=3");
+	}
+	
+	public void testSecurityConstraintParse() {
+		Page page = Pages.instance().getPage("/enrollment/main.xhtml");
+		assertNotNull(page);
+		assertEquals("Check viewId", "/enrollment/main.xhtml", page.getViewId());
+		assertEquals("SecurityConstraint count", 1,page.getSecurityConstraints().size());
+		
+		SecurityConstraint constraint = page.getSecurityConstraints().get(0);
+		assertEquals(EL_TEST_BEAN, constraint.getDomainObject().getExpressionString());
+		assertEquals("Permission", 5, constraint.getPermissions());
+		assertEquals(constraint.getOnDeniedAction().getExpressionString(), "#{testBean.accessDenied}");
 	}
 
 	private void registerBean(String expression, Object bean) {
@@ -98,10 +132,12 @@ public class PagesTest extends AbstractJsfTestCase {
 	}
 
 	private void registerManagedBeans() {
+		registerBean(EL_ACL, new Integer(5));
+		registerBean(EL_ACL_MANAGER, new MockAclManager());
 		registerBean(EL_TEST, new TestBean(1L));
 		registerBean(EL_TEST_BEAN, new TestBean(1L));
 		registerBean(EL_TEST_BEAN2, new TestBean(2L));
-		registerBean("#{testBean3}", new TestBean(3L));
+		registerBean(EL_TEST_BEAN3, new TestBean(3L));
 		registerBean(EL_TEST_CONVERTER, new TestBeanConverter());
 	}
 	

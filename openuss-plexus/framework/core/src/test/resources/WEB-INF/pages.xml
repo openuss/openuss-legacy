@@ -11,4 +11,10 @@
 	<page view-id="/at/*">
 		<parameter name="test3" value="#{testBean3}"/>
 	</page>
+	<page view-id="/enrollment/main.xhtml">
+		<securityConstraint domainObject="#{testBean}" permissions="#{ACL}" onDeniedAction="#{testBean.accessDenied}"/> 
+	</page>
+	<page view-id="/enrollment/nodeniedaction.xhtml">
+		<securityConstraint domainObject="#{testBean}" permissions="#{ACL}" /> 
+	</page>
 </pages>

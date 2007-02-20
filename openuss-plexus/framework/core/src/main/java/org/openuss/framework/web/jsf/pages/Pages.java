@@ -15,6 +15,7 @@ import javax.faces.application.ViewHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -114,6 +115,22 @@ public class Pages {
 					ValueBinding valueBinding = parameter.getValueBinding();
 					valueBinding.setValue(facesContext, value);
 				}
+			}
+		}
+	}
+	
+	/**
+	 * Check if all security constraints are fulfilled.
+	 * @param facesContext
+	 */
+	public void performSecurityConstraints(FacesContext facesContext) {
+		String viewId = facesContext.getViewRoot().getViewId();
+		if (logger.isDebugEnabled()) {
+			logger.debug("check security constraints of viewid "+viewId);
+		}
+		for (Page page: getPageStack(viewId)) {
+			for (SecurityConstraint constraint: page.getSecurityConstraints()) {
+				constraint.performConstraint();
 			}
 		}
 	}
@@ -283,6 +300,47 @@ public class Pages {
 		Page page = new Page(viewId);
 		pagesByViewId.put(viewId, page);
 
+		parseParameters(element, page);
+		parseSecurityConstraints(element, page);
+	}
+
+	private void parseSecurityConstraints(Element element, Page page) {
+		List<Element> elements = element.elements("securityConstraint");
+		for(Element constraintElement : elements) {
+			page.addSecurityConstraint(parseSecurityConstraint(constraintElement));
+		}
+	}
+
+	private SecurityConstraint parseSecurityConstraint(Element element) {
+		String domainObjectExpression = element.attributeValue("domainObject");
+		String permissionExpression = element.attributeValue("permissions");
+		String onDeniedActionExpression = element.attributeValue("onDeniedAction");
+		
+		if (StringUtils.isBlank(domainObjectExpression)) {
+			throw new IllegalArgumentException("DomainObject attribute must not be empty or null.");
+		}
+		
+		if (StringUtils.isBlank(permissionExpression)) {
+			throw new IllegalArgumentException("Permission attribute must not be empty or null.");
+		}
+		
+
+		SecurityConstraint securityConstraint = new SecurityConstraint();
+		securityConstraint.setDomainObject(FacesUtils.createValueBinding(domainObjectExpression));
+		ValueBinding permission = FacesUtils.createValueBinding(permissionExpression);
+		securityConstraint.setPermissions((Integer)permission.getValue(FacesContext.getCurrentInstance()));
+		if (StringUtils.isNotBlank(onDeniedActionExpression)) {
+			securityConstraint.setOnDeniedAction(FacesUtils.createMethodBinding(onDeniedActionExpression));
+		}
+		
+		return securityConstraint;
+	}
+
+	/**
+	 * qparam element page element
+	 * @param page object
+	 */
+	private void parseParameters(Element element, Page page) {
 		List<Element> elements = element.elements("parameter");
 		for (Element parameterElement : elements) {
 			page.addParameter(parseParameter(parameterElement));
@@ -290,7 +348,6 @@ public class Pages {
 	}
 
 	/**
-	 * 
 	 * @param parameter
 	 *            element
 	 * @return Parameter object
