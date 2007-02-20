@@ -39,4 +39,14 @@
 		factory-method="getRepository" depends-on="rmiServer">
 		<constructor-arg value="rmi://localhost:1099/jackrabbit" />
 	</bean>
+	
+	   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      DocManagement
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+	<bean id="distributionService" class="org.openuss.docmanagement.DistributionServiceImpl">
+		<property name="repository" ref="rmiClient"></property>
+	</bean>
+	<bean id="collaborationService" class="org.openuss.docmanagement.CollaborationServiceImpl"/>
+	<bean id="examinationService" class="org.openuss.docmanagement.ExaminationServiceImpl"/>
+	
 </beans>
