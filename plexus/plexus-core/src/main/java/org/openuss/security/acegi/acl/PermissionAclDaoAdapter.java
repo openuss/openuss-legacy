@@ -7,8 +7,8 @@ import org.acegisecurity.acl.basic.BasicAclDao;
 import org.acegisecurity.acl.basic.BasicAclEntry;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
-import org.openuss.security.Group;
-import org.openuss.security.GroupType;
+import org.openuss.security.Group; // FIXME PACKAGE CYCLE
+import org.openuss.security.GroupType; // FIXME PACKAGE CYCLE
 import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.ObjectIdentityDao;
 import org.openuss.security.acl.Permission;
@@ -61,7 +61,6 @@ public class PermissionAclDaoAdapter implements BasicAclDao {
 		permission.setId(identity.getId());
 		permission.setMask(0);
 		permission.setRecipient(Group.Factory.newInstance(RECIPIENT_USED_FOR_INHERITENCE_MARKER,GroupType.UNDEFINED));
-		
 		
 		return new AclPermissionAdapter(permission);
 	}

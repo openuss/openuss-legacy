@@ -8,6 +8,12 @@ import org.openuss.security.UserImpl;
 import org.openuss.security.SecurityService;
 import org.springframework.dao.DataAccessException;
 
+/**
+ * FIXME this class produce package cycle!  
+ * 
+ * @author Ingo Dueppe
+ *
+ */
 public class UserDetailsServiceAdapter implements UserDetailsService {
 
 	private SecurityService securityService;
