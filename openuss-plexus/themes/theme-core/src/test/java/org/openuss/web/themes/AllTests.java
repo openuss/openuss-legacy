@@ -6,7 +6,7 @@ import junit.framework.TestSuite;
 public class AllTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.openuss.foundation.lecture");
+		TestSuite suite = new TestSuite("Test for org.openuss.web.themes");
 		// $JUnit-BEGIN$
 		suite.addTestSuite(ThemeBeanTest.class);
 		suite.addTestSuite(ThemeHotDeployListenerTest.class);
