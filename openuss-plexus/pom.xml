@@ -344,7 +344,9 @@
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
 			<version>2.2</version>
+			<!-- 
 			<scope>test</scope>
+			 -->
 		</dependency>
 	    <dependency>
 			<groupId>org.easymock</groupId>
@@ -722,6 +724,12 @@
 				<groupId>org.apache.jackrabbit</groupId>
 				<artifactId>jackrabbit-core</artifactId>				
 				<version>1.2.1</version>
+				<exclusions>
+					<exclusion>
+						<groupId>easymock</groupId>
+						<artifactId>easymock</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.springmodules</groupId>
