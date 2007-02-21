@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.openuss.plexus</groupId>
 		<artifactId>plexus</artifactId>
-		<version>3.0-SNAPSHOT</version>
+		<version>3.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>plexus-core</artifactId>
 	<name>Plexus - Core</name>
@@ -104,6 +104,10 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-mock</artifactId>
+		</dependency>
+		<dependency>
+				<groupId>org.springmodules</groupId>
+				<artifactId>spring-modules-jcr</artifactId>
 		</dependency>		
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -142,6 +146,12 @@
             <artifactId>jcr</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+			<groupId>org.apache.jackrabbit</groupId>
+			<artifactId>jackrabbit-core</artifactId>				
+		</dependency>
+        
+        
 		
 	</dependencies>
 </project>

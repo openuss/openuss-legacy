@@ -6,8 +6,8 @@
 	<groupId>org.openuss</groupId>
 	<artifactId>openuss</artifactId>
 	<packaging>pom</packaging>
-	<name>Open University Support System - The Relaunch</name>
-	<version>3.0-SNAPSHOT</version>
+	<name>Open University Support System - DocRabbit</name>
+	<version>3.1-SNAPSHOT</version>
 	<description>OpenUSS Plexus is the relaunch of the well known E-Learning plattform OpenUSS.</description>
 	<url>http://teamopenuss.uni-muenster.de/</url>
 	<prerequisites>
@@ -720,7 +720,7 @@
 			
 			<dependency>
 				<groupId>org.apache.jackrabbit</groupId>
-				<artifactId>jackrabbit</artifactId>				
+				<artifactId>jackrabbit-core</artifactId>				
 				<version>1.2.1</version>
 			</dependency>
 			<dependency>
@@ -747,6 +747,10 @@
 					<exclusion>
 						<groupId>jsr170</groupId>
 						<artifactId>jsr170</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javax.jcr</groupId>
+						<artifactId>jcr</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>aparzev</groupId>
