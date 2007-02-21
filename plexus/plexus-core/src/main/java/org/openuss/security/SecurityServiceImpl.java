@@ -248,7 +248,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		ObjectIdentity parentObjectIdentity = null;
 		if (parent != null) {
 			EntityObjectIdentity parentOI = new EntityObjectIdentity(parent);
-			parentObjectIdentity = getObjectIdentityDao().load(parentOI.getIdentifier());
+			parentObjectIdentity = getObjectIdentityDao().findByObjectIdentifier(parentOI.getIdentifier());
 			
 			if (parentObjectIdentity == null) {
 				throw new SecurityServiceException("Object Identity to Object "+parent+" does not exist!");

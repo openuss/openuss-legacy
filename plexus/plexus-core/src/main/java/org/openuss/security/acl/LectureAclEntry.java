@@ -69,8 +69,8 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	public static final int ASSIST 				= 1 << 12;
 
 	// Default combinations of base permissions
-	public static final int FACULTY_TUTOR = ASSIST | READ;
-	public static final int FACULTY_ASSIST = CREATE | MANAGE_NEWS | MANAGE_SUBJECTS | MANAGE_PERIODS | MANAGE_ENROLLMENTS;
+	public static final int FACULTY_TUTOR = PARTICIPATE | ASSIST | READ;
+	public static final int FACULTY_ASSIST = CREATE | MANAGE_NEWS | MANAGE_SUBJECTS | MANAGE_PERIODS | MANAGE_ENROLLMENTS | FACULTY_TUTOR;
 	public static final int FACULTY_ADMINISTRATION = GRANT | UPDATE | DELETE | FACULTY_ASSIST;
 	public static final int FACULTY_OWN = DELETE | FACULTY_ADMINISTRATION;
 	

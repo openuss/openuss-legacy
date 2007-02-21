@@ -84,8 +84,8 @@ public class AcegiUtils {
 	 * @return
 	 */
 	public static AclEntry[] getAclEntries(Object domainObject) {
-		FacesContext facesContext = FacesUtils.getFacesContext();
-		AclManager aclManager = (AclManager) facesContext.getApplication().createValueBinding("#{aclManager}").getValue(facesContext);
+		AclManager aclManager = getAclManager();
+
 		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		AclEntry[] acls = aclManager.getAcls(domainObject, auth);
 	
@@ -96,4 +96,19 @@ public class AcegiUtils {
 		}
 		return acls;
 	}
+
+	private static AclManager _aclManager;
+	
+	public static AclManager getAclManager() {
+		if (_aclManager == null) {
+			FacesContext facesContext = FacesUtils.getFacesContext();
+			_aclManager = (AclManager) facesContext.getApplication().createValueBinding("#{aclManager}").getValue(facesContext);
+		}	
+		return _aclManager;
+	}
+	
+	public static void setAclManager(AclManager aclManager) {
+		_aclManager = aclManager;
+	}
+	
 }
