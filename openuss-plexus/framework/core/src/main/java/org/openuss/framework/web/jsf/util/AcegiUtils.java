@@ -1,4 +1,3 @@
-
 package org.openuss.framework.web.jsf.util;
 
 import java.util.HashSet;
