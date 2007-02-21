@@ -24,11 +24,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.openuss.foundation</groupId>
-			<artifactId>foundation-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate</artifactId>
 		</dependency>
