@@ -5,7 +5,13 @@
  */
 package org.openuss.security;
 
+import org.acegisecurity.acl.AclManager;
+import org.acegisecurity.context.SecurityContext;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.openuss.TestUtility;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
+import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * JUnit Test for Spring Hibernate SecurityService class.
@@ -18,6 +24,7 @@ import org.openuss.TestUtility;
 public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTestBase {
 	
 	private TestUtility testUtility;
+	private AclManager aclManager;
 	
 	public void testSaveLoadAndRemoveUser() {
 		User user = testUtility.createDefaultUser();
@@ -42,12 +49,71 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 		
 	}
 	
+	public void testAclGrants() {
+		User user = testUtility.createDefaultUser();
+		
+		Group group = securityService.createGroup(testUtility.unique("test-group"), "label", "password", GroupType.ADMINISTRATOR);
+		user = securityService.createUser(user);
+		securityService.addAuthorityToGroup(user, group);
+		Object parent = new TestBean(testUtility.unique(),"parent");
+		Object child = new TestBean(testUtility.unique(), "child");
+		securityService.createObjectIdentity(parent, null);
+		securityService.createObjectIdentity(child, parent);
+		securityService.setPermissions(group, parent, LectureAclEntry.ASSIST);
+		
+		final UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(user.getUsername(), "[Protected]", ((UserImpl)user).getAuthorities());
+		final SecurityContext securityContext = SecurityContextHolder.getContext();
+		securityContext.setAuthentication(authRequest);
+
+		AcegiUtils.setAclManager(aclManager);
+		assertTrue(AcegiUtils.hasPermission(child, new Integer[]{LectureAclEntry.ASSIST}));
+	}
+	
 	public TestUtility getTestUtility() {
 		return testUtility;
 	}
 	
 	public void setTestUtility(TestUtility testUtility) {
 		this.testUtility = testUtility;
+	}
+	
+
+	public AclManager getAclManager() {
+		return aclManager;
+	}
+
+	public void setAclManager(AclManager aclManager) {
+		this.aclManager = aclManager;
+	}
+
+	public class TestBean {
+		private Long id;
+		private String name;
+		
+		public TestBean(Long id, String name) {
+			this.id = id;
+			this.name = name;
+		}
+		
+		public Long getId() {
+			return id;
+		}
+		
+		public void setId(Long id) {
+			this.id = id;
+		}
+		
+		public String getName() {
+			return name;
+		}
+		
+		public void setName(String name) {
+			this.name = name;
+		}
+		
+		public String toString() {
+			return "TestBean@"+name+" id "+id;
+		}
 	}
 	
 }

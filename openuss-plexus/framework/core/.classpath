@@ -27,7 +27,7 @@
 	<classpathentry kind="var" path="M2_REPO/commons-validator/commons-validator/1.1.4/commons-validator-1.1.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/sun/facelets/jsf-facelets/1.1.12/jsf-facelets-1.1.12.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-mock/2.0.1/spring-mock-2.0.1.jar" sourcepath="/JAVALIBS/spring-framework-2.0.1/mock"/>
-	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.3/acegi-security-1.0.3.jar" sourcepath="/JAVALIBS/acegi-security"/>
+	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.3/acegi-security-1.0.3.jar" sourcepath="/M2_REPO/org/acegisecurity/acegi-security/1.0.3/acegi-security-1.0.3-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-remoting/2.0.1/spring-remoting-2.0.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-core/2.0.1/spring-core-2.0.1.jar" sourcepath="/JAVALIBS/spring-framework-2.0.1/src"/>
 	<classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.0.1B/jta-1.0.1B.jar"/>

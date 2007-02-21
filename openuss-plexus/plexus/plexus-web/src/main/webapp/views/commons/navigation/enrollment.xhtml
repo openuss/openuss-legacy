@@ -33,7 +33,7 @@
 					<t:commandNavigation2 action="enrollment_wiki" activeOnViewIds="/views/secured/enrollment/wiki.xhtml">
 						<h:outputText value="#{msg['enrollment_command_wiki']}" ></h:outputText>
 					</t:commandNavigation2>
-					<s:acl domainObject="#{enrollment}" hasPermission="4,32">
+					<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}">
 						<t:commandNavigation2 action="enrollment_options" activeOnViewIds="/views/secured/enrollment/options.xhtml">
 							<h:outputText value="#{msg['enrollment_command_options']}" ></h:outputText>
 						</t:commandNavigation2>

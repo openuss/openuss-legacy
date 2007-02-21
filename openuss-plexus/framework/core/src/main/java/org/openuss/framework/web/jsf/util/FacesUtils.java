@@ -199,8 +199,7 @@ public class FacesUtils {
 	}
 
 	private static Application getApplication() {
-		ApplicationFactory appFactory = (ApplicationFactory) FactoryFinder
-				.getFactory(FactoryFinder.APPLICATION_FACTORY);
+		ApplicationFactory appFactory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
 
 		return appFactory.getApplication();
 	}

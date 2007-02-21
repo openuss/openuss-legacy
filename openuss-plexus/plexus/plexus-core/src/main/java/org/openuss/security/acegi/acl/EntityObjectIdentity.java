@@ -46,32 +46,12 @@ public class EntityObjectIdentity implements AclObjectIdentity {
 		try {
 			Assert.notNull(object, "object cannot be null");
 			
-		
-//			this.classname = (getPackageName(object.getClass().getName()) == null) ? ClassUtils.getShortName(object
-//					.getClass()) : (getPackageName(object.getClass().getName()) + "." + ClassUtils.getShortName(object
-//					.getClass()));
-	
-			final Class clazz = object.getClass();
-			
 			if (object instanceof Long) {
 				identifier = (Long) object;
-				return;
-			}
-			
-			if (object instanceof ObjectIdentity) {
-				identifier = ((ObjectIdentity) object).getId();
-			}
-	
-			try {
-				final Method method = clazz.getMethod("getId", new Class[] {});
-				final Object result = method.invoke(object, new Object[] {});
-				this.identifier = (Long) result;
-			} catch (ClassCastException ex) {
-				throw new IllegalArgumentException("Object of class '" + clazz
-						+ "' does not provide the required Integer getId() method: " + object);
-			} catch (NoSuchMethodException nsme) {
-				throw new IllegalArgumentException("Object of class '" + clazz
-						+ "' does not provide the required Integer getId() method: " + object);
+			} else if (object instanceof ObjectIdentity) {
+				identifier = ((ObjectIdentity) object).getObjectIdentity();
+			} else {
+				identifier = obtainIdentityByGetIdMethod(object);
 			}
 		} catch (IllegalAccessException th) {
 			logger.error(th);
@@ -79,14 +59,20 @@ public class EntityObjectIdentity implements AclObjectIdentity {
 		}
 	}
 
-//	private String getPackageName(String className) {
-//		Assert.hasLength(className, "class name must not be empty");
-//		int lastDotIndex = className.lastIndexOf(".");
-//		if (lastDotIndex == -1) {
-//			return null;
-//		}
-//		return className.substring(0, lastDotIndex);
-//	}
+	private Long obtainIdentityByGetIdMethod(Object object) throws IllegalAccessException, InvocationTargetException {
+		final Class clazz = object.getClass();
+		try {
+			final Method method = clazz.getMethod("getId", new Class[] {});
+			final Object result = method.invoke(object, new Object[] {});
+			return (Long) result;
+		} catch (ClassCastException ex) {
+			throw new IllegalArgumentException("Object of class '" + clazz
+					+ "' does not provide the required Integer getId() method: " + object);
+		} catch (NoSuchMethodException nsme) {
+			throw new IllegalArgumentException("Object of class '" + clazz
+					+ "' does not provide the required Integer getId() method: " + object);
+		}
+	}
 
 	public Long getIdentifier() {
 		return identifier;

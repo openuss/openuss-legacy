@@ -84,7 +84,9 @@ public class AclHandler extends TagHandler {
 		if (AcegiUtils.hasPermission(resolvedDomainObject, requiredIntegers)) {
 			nextHandler.apply(faceletContext, parent);
 		} else {		
-			logger.debug("No permission to see the body!");
+			if (logger.isDebugEnabled()) {
+				logger.debug("No permission on "+resolvedDomainObject+"to see the body!");
+			}
 			permissionDenied(faceletContext);
 		}
 	}

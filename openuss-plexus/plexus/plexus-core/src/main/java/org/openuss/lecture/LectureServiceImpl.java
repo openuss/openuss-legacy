@@ -320,6 +320,8 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 
 		enrollment.setShortcut(shortcut);
 		persist(enrollment);
+		
+		getSecurityService().createObjectIdentity(enrollment, faculty);
 
 		return enrollment;
 	}
