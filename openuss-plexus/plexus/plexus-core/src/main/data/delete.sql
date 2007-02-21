@@ -17,6 +17,7 @@ delete from lecture_subject;
 delete from security_group2authority;
 delete from security_group;
 delete from security_permission;
+update security_object_identity set parent_fk = null;
 delete from security_object_identity;
 delete from security_activationcode;
 delete from security_user;
