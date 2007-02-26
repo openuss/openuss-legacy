@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<theme id="blue" name="blue">
+	<images>/theme-blue/img</images>
+	<layout>/layouts/standard.xhtml</layout>
+	<stylesheet>/theme-blue/css/style.css</stylesheet>
+</theme>
