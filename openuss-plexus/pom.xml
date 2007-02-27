@@ -786,6 +786,11 @@
 				<artifactId>jackrabbit-webdav</artifactId>
 				<version>1.2.1</version>
 			</dependency>
+			<dependency>
+            	<groupId>jsr170</groupId>
+	            <artifactId>jcr</artifactId>
+    	        <version>1.0</version>
+	        </dependency>
 		</dependencies>
 	</dependencyManagement>
 	<distributionManagement>

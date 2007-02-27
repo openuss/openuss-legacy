@@ -54,5 +54,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/migration-core"/>
 	<classpathentry sourcepath="/JCR Source" kind="var" path="M2_REPO/jsr170/jcr/1.0/jcr-1.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springmodules/spring-modules-jcr/0.7/spring-modules-jcr-0.7.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5-SNAPSHOT/tomahawk-1.1.5-SNAPSHOT.jar" sourcepath="/M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5-SNAPSHOT/tomahawk-1.1.5-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

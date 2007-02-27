@@ -6,10 +6,15 @@
 package org.openuss.docmanagement;
 
 
+import javax.jcr.NodeIterator;
 import javax.jcr.Repository;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 import javax.jcr.Node;
+import org.apache.log4j.Logger;
+
+import org.apache.myfaces.custom.tree2.TreeNode;
+import org.apache.myfaces.custom.tree2.TreeNodeBase;
 
 /**
  * @see org.openuss.docmanagement.DistributionService
@@ -18,6 +23,9 @@ public class DistributionServiceImpl
     extends org.openuss.docmanagement.DistributionServiceBase
 {
 
+	private static final Logger logger = Logger.getLogger(DistributionServiceImpl.class);
+
+	
 	public Repository repository;
 	
     /**
@@ -195,13 +203,74 @@ public class DistributionServiceImpl
         // @todo implement protected org.openuss.docmanagement.Folder handleGetFacultyFolder(org.openuss.lecture.Faculty faculty)
         return null;
     }
-
+    
 	public Repository getRepository() {
 		return repository;
 	}
 
 	public void setRepository(Repository repository) {
 		this.repository = repository;
+	}
+
+	@Override
+	protected TreeNode handleGetTreeData() throws Exception {
+		try {
+			Session session = repository.login(new SimpleCredentials(
+					"username", "password".toCharArray()));
+			Node root = session.getRootNode();
+
+			//JCRTreeNode treeData = traverse(root, session);
+			TreeNode treeData = traverse(root,session);
+			
+			session.save();
+			session.logout();
+
+			return treeData;
+		} catch (Exception e) {			
+			logger.error("Fehler in der getTreeData Methode!",e);
+		}
+
+		logger.error("Fehler in der getTreeData-Methode");
+		return null;
+	}
+
+	public TreeNode traverse(Node n, Session s) {
+		try {
+
+			if ((!n.getName().startsWith("jcr:"))) {
+
+				String name = n.getName();
+				if (name.equals("") || (name == null))
+					name = "root";
+
+				TreeNode tnb;
+				if (n.isNodeType("mix:referenceable")) {
+					tnb = new TreeNodeBase("node", name, !n.hasNodes());
+				} else {
+					n.addMixin("mix:referenceable");
+					s.save();
+					tnb = new TreeNodeBase("node", name, !n.hasNodes());
+				}
+
+				Node nn;
+				if (!n.hasNodes()) {
+					return tnb;
+				} else if (n.hasNodes()) {
+					for (NodeIterator i = n.getNodes(); i.hasNext();) {
+						nn = i.nextNode();
+						TreeNode temp = traverse(nn, s);
+						if (temp != null)
+							tnb.getChildren().add(temp);
+					}
+				}
+				return tnb;
+			}
+		} catch (Exception e) {
+			logger.error("Fehler in traverse-Methode",e);
+		}
+		// wird nur erreicht im fall des jcr:system Knotens
+		logger.error("jcr:system oder nullPointerError in traverse-Methode");
+		return null;
 	}
 
 }

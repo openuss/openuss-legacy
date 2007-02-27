@@ -5,9 +5,11 @@ import org.openuss.docmanagement.DistributionService;
 
 public class DistributionViewBacker{
 	public DistributionService distributionService;
+	
+	//public TreeNode treeData;
 
-	public TreeNode getTreeNode(){
-		return null;
+	public TreeNode getTreeData(){
+		return distributionService.getTreeData();		
 	}
 	
 	public DistributionService getDistributionService() {
