@@ -4,49 +4,22 @@
 <beans>
 
 	<!-- normal repository -->
-	<bean id="repository"
-		class="org.springmodules.jcr.jackrabbit.RepositoryFactoryBean">
-		<!-- normal factory beans params -->
-		<property name="configuration"
-			value="classpath:jackrabbit-repo.xml" />
-		<!-- use the target folder which will be cleaned  -->
-		<property name="homeDir" value="file:./target/repo" />
+	<bean id="repository" class="org.springmodules.jcr.jackrabbit.RepositoryFactoryBean">
+	<!-- normal factory beans params -->
+		<property name="configuration" value="classpath:jackrabbit-repo.xml"/>
+		<property name="homeDir" value="file:./target/repo"/>
 	</bean>
 
-	<!-- rmi server -->
-
-	<!-- use Spring's RMI classes to retrieve the RMI registry -->
-	<bean id="rmiRegistry"
-		class="org.springframework.remoting.rmi.RmiRegistryFactoryBean" />
-
-	<bean id="rmiServer"
-		class="org.springmodules.jcr.jackrabbit.RmiServerRepositoryFactoryBean">
-		<property name="repository" ref="repository" />
-		<property name="remoteAdapterFactory">
-			<bean
-				class="org.apache.jackrabbit.rmi.server.ServerAdapterFactory" />
-		</property>
-
-		<property name="registry" ref="rmiRegistry" />
-		<property name="rmiName" value="jackrabbit" />
-	</bean>
-
-	<!-- rmi client -->
-	<bean id="rmiClientFactory"
-		class="org.apache.jackrabbit.rmi.client.ClientRepositoryFactory" />
-
-	<bean id="rmiClient" factory-bean="rmiClientFactory"
-		factory-method="getRepository" depends-on="rmiServer">
-		<constructor-arg value="rmi://localhost:1099/jackrabbit" />
-	</bean>
-	
-	   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		      DocManagement
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
 	<bean id="distributionService" class="org.openuss.docmanagement.DistributionServiceImpl">
-		<property name="repository" ref="rmiClient"></property>
+		<property name="repository" ref="repository"></property>
 	</bean>
 	<bean id="collaborationService" class="org.openuss.docmanagement.CollaborationServiceImpl"/>
 	<bean id="examinationService" class="org.openuss.docmanagement.ExaminationServiceImpl"/>
+	<bean id="distributionViewBacker" class="org.openuss.web.docmanagement.DistributionViewBacker">
+		<property name="distributionService" ref="distributionService"></property>
+	</bean>
 	
 </beans>
