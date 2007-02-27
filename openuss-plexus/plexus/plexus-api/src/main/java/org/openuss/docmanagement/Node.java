@@ -1,37 +1,17 @@
 package org.openuss.docmanagement;
 
-public class Node{
-	
-	public String name;
-	
-	public int visibility;
-	
-	public String id;
+public interface Node {
 
-	public String getId() {
-		return id;
-	}
+	public abstract String getId();
 
-	public void setId(String id) {
-		this.id = id;
-	}
+	public abstract void setId(String id);
 
-	public String getName() {
-		return name;
-	}
+	public abstract String getName();
 
-	public void setName(String name) {
-		this.name = name;
-	}
+	public abstract void setName(String name);
 
-	public int getVisibility() {
-		return visibility;
-	}
+	public abstract int getVisibility();
 
-	public void setVisibility(int visibility) {
-		this.visibility = visibility;
-	}
-	
-	
-	
+	public abstract void setVisibility(int visibility);
+
 }

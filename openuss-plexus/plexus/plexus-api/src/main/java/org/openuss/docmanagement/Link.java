@@ -2,37 +2,18 @@ package org.openuss.docmanagement;
 
 import java.sql.Timestamp;
 
-public class Link{
-	
-	public Node target;
-	
-	public Timestamp distributionDate;
-	
-	public String message;
+public interface Link {
 
-	public Timestamp getDistributionDate() {
-		return distributionDate;
-	}
+	public abstract Timestamp getDistributionDate();
 
-	public void setDistributionDate(Timestamp distributionDate) {
-		this.distributionDate = distributionDate;
-	}
+	public abstract void setDistributionDate(Timestamp distributionDate);
 
-	public String getMessage() {
-		return message;
-	}
+	public abstract String getMessage();
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+	public abstract void setMessage(String message);
 
-	public Node getTarget() {
-		return target;
-	}
+	public abstract Node getTarget();
 
-	public void setTarget(Node target) {
-		this.target = target;
-	}
-		
-	
+	public abstract void setTarget(Node target);
+
 }

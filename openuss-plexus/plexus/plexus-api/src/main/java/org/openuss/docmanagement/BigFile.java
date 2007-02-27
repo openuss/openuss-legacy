@@ -2,15 +2,10 @@ package org.openuss.docmanagement;
 
 import java.io.InputStream;
 
-public class BigFile extends File{
-	
-	public InputStream file;
+public interface BigFile {
 
-	public InputStream getFile() {
-		return file;
-	}
+	public abstract InputStream getFile();
 
-	public void setFile(InputStream file) {
-		this.file = file;
-	}
+	public abstract void setFile(InputStream file);
+
 }

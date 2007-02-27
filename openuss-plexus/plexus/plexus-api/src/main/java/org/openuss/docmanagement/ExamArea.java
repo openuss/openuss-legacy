@@ -2,15 +2,10 @@ package org.openuss.docmanagement;
 
 import org.openuss.lecture.Enrollment;
 
-public class ExamArea extends Folder{
-	
-	public Enrollment enrollment;
+public interface ExamArea {
 
-	public Enrollment getEnrollment() {
-		return enrollment;
-	}
+	public abstract Enrollment getEnrollment();
 
-	public void setEnrollment(Enrollment enrollment) {
-		this.enrollment = enrollment;
-	}
+	public abstract void setEnrollment(Enrollment enrollment);
+
 }

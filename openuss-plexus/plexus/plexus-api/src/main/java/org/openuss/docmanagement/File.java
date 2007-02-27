@@ -2,69 +2,30 @@ package org.openuss.docmanagement;
 
 import java.sql.Timestamp;
 
+public interface File {
 
+	public abstract Timestamp getDistributionTime();
 
-public class File extends Node{
-	
-	public long size;
-	
-	public Timestamp lastModification;
-	
-	public int version;
-	
-	public String message;
-	
-	public Timestamp distributionTime;
-	
-	public File predecessor;
+	public abstract void setDistributionTime(Timestamp distributionTime);
 
-	public Timestamp getDistributionTime() {
-		return distributionTime;
-	}
+	public abstract Timestamp getLastModification();
 
-	public void setDistributionTime(Timestamp distributionTime) {
-		this.distributionTime = distributionTime;
-	}
+	public abstract void setLastModification(Timestamp lastModification);
 
-	public Timestamp getLastModification() {
-		return lastModification;
-	}
+	public abstract String getMessage();
 
-	public void setLastModification(Timestamp lastModification) {
-		this.lastModification = lastModification;
-	}
+	public abstract void setMessage(String message);
 
-	public String getMessage() {
-		return message;
-	}
+	public abstract long getSize();
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+	public abstract void setSize(long size);
 
-	public long getSize() {
-		return size;
-	}
+	public abstract int getVersion();
 
-	public void setSize(long size) {
-		this.size = size;
-	}
+	public abstract void setVersion(int version);
 
-	public int getVersion() {
-		return version;
-	}
+	public abstract File getPredecessor();
 
-	public void setVersion(int version) {
-		this.version = version;
-	}
+	public abstract void setPredecessor(File predecessor);
 
-	public File getPredecessor() {
-		return predecessor;
-	}
-
-	public void setPredecessor(File predecessor) {
-		this.predecessor = predecessor;
-	}
-	
-	
 }
