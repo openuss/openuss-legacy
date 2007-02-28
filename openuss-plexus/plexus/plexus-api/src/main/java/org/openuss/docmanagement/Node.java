@@ -14,4 +14,8 @@ public interface Node {
 
 	public abstract void setVisibility(int visibility);
 
+	public abstract String getMessage();
+
+	public abstract void setMessage(String message);
+	
 }

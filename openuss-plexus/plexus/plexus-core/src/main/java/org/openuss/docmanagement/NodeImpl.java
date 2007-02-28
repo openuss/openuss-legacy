@@ -7,6 +7,8 @@ public class NodeImpl implements Node{
 	public int visibility;
 	
 	public String id;
+	
+	public String message;
 
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.Node#getId()
@@ -48,6 +50,14 @@ public class NodeImpl implements Node{
 	 */
 	public void setVisibility(int visibility) {
 		this.visibility = visibility;
+	}
+
+	public String getMessage() {
+		return this.message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;		
 	}
 	
 	

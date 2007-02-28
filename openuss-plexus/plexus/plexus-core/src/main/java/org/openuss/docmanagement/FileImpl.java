@@ -12,12 +12,12 @@ public class FileImpl extends NodeImpl implements File{
 	
 	public int version;
 	
-	public String message;
-	
 	public Timestamp distributionTime;
 	
 	public File predecessor;
 
+	public String mimeType;
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.File#getDistributionTime()
 	 */
@@ -44,20 +44,6 @@ public class FileImpl extends NodeImpl implements File{
 	 */
 	public void setLastModification(Timestamp lastModification) {
 		this.lastModification = lastModification;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.File#getMessage()
-	 */
-	public String getMessage() {
-		return message;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.File#setMessage(java.lang.String)
-	 */
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 	/* (non-Javadoc)
@@ -94,6 +80,14 @@ public class FileImpl extends NodeImpl implements File{
 
 	public void setPredecessor(File predecessor) {
 		this.predecessor = predecessor;
+	}
+
+	public String getMimeType() {
+		return this.mimeType;
+	}
+
+	public void setMimeType(String mimeType) {
+		this.mimeType = mimeType;
 	}
 	
 	

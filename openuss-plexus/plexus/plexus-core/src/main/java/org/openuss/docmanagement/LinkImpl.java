@@ -8,8 +8,6 @@ public class LinkImpl extends NodeImpl implements Link{
 	
 	public Timestamp distributionDate;
 	
-	public String message;
-	
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.Link#getDistributionDate()
 	 */
@@ -22,20 +20,6 @@ public class LinkImpl extends NodeImpl implements Link{
 	 */
 	public void setDistributionDate(Timestamp distributionDate) {
 		this.distributionDate = distributionDate;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.Link#getMessage()
-	 */
-	public String getMessage() {
-		return message;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.Link#setMessage(java.lang.String)
-	 */
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 	/* (non-Javadoc)

@@ -12,10 +12,6 @@ public interface File extends Node{
 
 	public abstract void setLastModification(Timestamp lastModification);
 
-	public abstract String getMessage();
-
-	public abstract void setMessage(String message);
-
 	public abstract long getSize();
 
 	public abstract void setSize(long size);
@@ -27,5 +23,9 @@ public interface File extends Node{
 	public abstract File getPredecessor();
 
 	public abstract void setPredecessor(File predecessor);
+
+	public abstract String getMimeType();
+
+	public abstract void setMimeType(String mimeType);
 
 }
