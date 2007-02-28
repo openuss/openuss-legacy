@@ -2,14 +2,14 @@ package org.openuss.docmanagement;
 
 import java.sql.Timestamp;
 
-public class LinkImpl implements Link{
+public class LinkImpl extends NodeImpl implements Link{
 	
 	public Node target;
 	
 	public Timestamp distributionDate;
 	
 	public String message;
-
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.Link#getDistributionDate()
 	 */
@@ -51,6 +51,5 @@ public class LinkImpl implements Link{
 	public void setTarget(Node target) {
 		this.target = target;
 	}
-		
-	
+
 }

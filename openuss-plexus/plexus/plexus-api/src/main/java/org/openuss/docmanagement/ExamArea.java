@@ -2,7 +2,7 @@ package org.openuss.docmanagement;
 
 import org.openuss.lecture.Enrollment;
 
-public interface ExamArea {
+public interface ExamArea extends Folder{
 
 	public abstract Enrollment getEnrollment();
 

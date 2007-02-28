@@ -2,7 +2,7 @@ package org.openuss.docmanagement;
 
 import java.sql.Timestamp;
 
-public interface Link {
+public interface Link extends Node{
 
 	public abstract Timestamp getDistributionDate();
 

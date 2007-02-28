@@ -2,7 +2,7 @@ package org.openuss.docmanagement;
 
 import java.io.InputStream;
 
-public interface BigFile {
+public interface BigFile extends File {
 
 	public abstract InputStream getFile();
 

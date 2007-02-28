@@ -2,7 +2,7 @@ package org.openuss.docmanagement;
 
 import java.util.Collection;
 
-public interface Folder {
+public interface Folder extends Node {
 
 	public abstract Collection<Node> getSubnodes();
 
