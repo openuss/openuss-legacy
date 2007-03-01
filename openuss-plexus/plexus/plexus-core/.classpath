@@ -52,8 +52,9 @@
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-mock/2.0.1/spring-mock-2.0.1.jar" sourcepath="/JAVALIBS/spring-framework-2.0.1/mock"/>
 	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.3/acegi-security-1.0.3.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/migration-core"/>
-	<classpathentry sourcepath="/JCR Source" kind="var" path="M2_REPO/jsr170/jcr/1.0/jcr-1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/jsr170/jcr/1.0/jcr-1.0.jar" sourcepath="/JCR Source" />
 	<classpathentry kind="var" path="M2_REPO/org/springmodules/spring-modules-jcr/0.7/spring-modules-jcr-0.7.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/jackrabbit/jackrabbit-webdav/1.2.1/jackrabbit-webdav-1.2.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5-SNAPSHOT/tomahawk-1.1.5-SNAPSHOT.jar" sourcepath="/M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5-SNAPSHOT/tomahawk-1.1.5-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
