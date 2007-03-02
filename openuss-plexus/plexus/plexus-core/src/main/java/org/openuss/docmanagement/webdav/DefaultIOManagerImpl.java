@@ -25,8 +25,8 @@ public class DefaultIOManagerImpl implements IOManager {
 		ioHandlerList = new ArrayList<IOHandler>();
 	}
 
-	/**
-	 * @see org.openuss.docmanagement.webdav.IOManager#addIOHandler(IOHandler)
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.IOManager#addIOHandler(org.openuss.docmanagement.webdav.IOHandler)
 	 */
 	public void addIOHandler(IOHandler ioHandler) throws IllegalArgumentException {
 		// test parameters
@@ -42,8 +42,8 @@ public class DefaultIOManagerImpl implements IOManager {
 		}
 	}
 
-	/**
-	 * @see org.openuss.docmanagement.webdav.IOManager#exportContent(ExportContext, boolean)
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.IOManager#exportContent(org.openuss.docmanagement.webdav.ExportContext, boolean)
 	 */
 	public boolean exportContent(ExportContext context, boolean isCollection) throws IOException {
 		// internal variable for export status
@@ -72,8 +72,8 @@ public class DefaultIOManagerImpl implements IOManager {
 		return success;
 	}
 
-	/**
-	 * @see org.openuss.docmanagement.webdav.IOManager#exportContent(ExportContext, DavResource)
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.IOManager#exportContent(org.openuss.docmanagement.webdav.ExportContext, org.apache.jackrabbit.webdav.DavResource)
 	 */
 	public boolean exportContent(ExportContext context, DavResource resource) throws IOException {
 		// internal variable for export status
@@ -102,7 +102,7 @@ public class DefaultIOManagerImpl implements IOManager {
 		return success;
 	}
 
-	/**
+	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.IOManager#getIOHandlers()
 	 */
 	public IOHandler[] getIOHandlers() {
@@ -110,8 +110,8 @@ public class DefaultIOManagerImpl implements IOManager {
 		return (IOHandler[])ioHandlerList.toArray();
 	}
 
-	/**
-	 * @see org.openuss.docmanagement.webdav.IOManager#importContent(ImportContext, boolean)
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.IOManager#importContent(org.openuss.docmanagement.webdav.ImportContext, boolean)
 	 */
 	public boolean importContent(ImportContext context, boolean isCollection) throws IOException {
 		// internal variable for import status
@@ -140,8 +140,8 @@ public class DefaultIOManagerImpl implements IOManager {
 		return success;
 	}
 
-	/**
-	 * @see org.openuss.docmanagement.webdav.IOManager#importContent(ImportContext, DavResource)
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.IOManager#importContent(org.openuss.docmanagement.webdav.ImportContext, org.apache.jackrabbit.webdav.DavResource)
 	 */
 	public boolean importContent(ImportContext context, DavResource resource) throws IOException {
 		// internal variable for import status
