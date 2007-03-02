@@ -1314,6 +1314,7 @@ td.col_max_left label input{
 
 .jscalendar-DB-table-style td{
 	background: #E7E7E7;
+	padding: 1px 2px;
 }
 
 .jscalendar-DB-title-control-select-style {
