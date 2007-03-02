@@ -6,18 +6,28 @@
 package org.openuss.docmanagement;
 
 
+import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Vector;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.InvalidItemStateException;
 import javax.jcr.ItemExistsException;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.LoginException;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.Property;
+import javax.jcr.PropertyIterator;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 import javax.jcr.Node;
+import javax.jcr.UnsupportedRepositoryOperationException;
+import javax.jcr.ValueFormatException;
+import javax.jcr.Workspace;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
@@ -66,7 +76,7 @@ public class DistributionServiceImpl
 			
 			logout(session);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			// TODO check if exception have to be caught here, or in weblayer
 			logger.error(e);
 		}
     }
@@ -184,8 +194,13 @@ public class DistributionServiceImpl
     protected void handleCopyFile(org.openuss.docmanagement.File file, org.openuss.docmanagement.Folder targetFolder)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleCopyFile(org.openuss.docmanagement.File file, org.openuss.docmanagement.Folder targetFolder)
-        throw new java.lang.UnsupportedOperationException("org.openuss.docmanagement.DistributionService.handleCopyFile(org.openuss.docmanagement.File file, org.openuss.docmanagement.Folder targetFolder) Not implemented!");
+        Session session = login();
+        
+        Workspace ws = session.getWorkspace();        
+        //Items are given a new UUID automatically!
+        ws.copy(session.getNodeByUUID(file.getId()).getPath(), session.getNodeByUUID(targetFolder.getId()).getPath());    	
+        
+        logout(session);
     }
 
     /**
@@ -194,8 +209,27 @@ public class DistributionServiceImpl
     protected void handleAddSharedFile(org.openuss.docmanagement.BigFile file, org.openuss.lecture.Faculty faculty)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleAddSharedFile(org.openuss.docmanagement.BigFile file, org.openuss.lecture.Faculty faculty)
-        throw new java.lang.UnsupportedOperationException("org.openuss.docmanagement.DistributionService.handleAddSharedFile(org.openuss.docmanagement.BigFile file, org.openuss.lecture.Faculty faculty) Not implemented!");
+    	Session session = login();
+    	
+    	Node node = session.getRootNode();
+    	node = node.getNode(distribution+"/"+faculty.getId().toString());
+
+    	// nt:File Knoten
+		node.addNode(file.getName(), "nt:file");
+		node = node.getNode(file.getName()); 
+		node.addMixin("mix:referenceable");
+		// nt:resource Knoten, der die eigentlich Datei enthaelt
+		node.addNode("jcr:content", "nt:resource");
+		node = node.getNode("jcr:content");
+		node.addMixin("mix:referenceable");			
+		node.setProperty("message", file.getMessage());
+		node.setProperty("jcr:data", file.getFile());
+		node.setProperty("jcr:mimeType", file.getMimeType());	
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(file.getLastModification().getTime());
+		node.setProperty("jcr:lastModified", c); 
+		
+		logout(session);
     }
 
     /**
@@ -204,8 +238,13 @@ public class DistributionServiceImpl
     protected void handleDelNode(org.openuss.docmanagement.Node node)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleDelNode(org.openuss.docmanagement.Node node)
-        throw new java.lang.UnsupportedOperationException("org.openuss.docmanagement.DistributionService.handleDelNode(org.openuss.docmanagement.Node node) Not implemented!");
+    	Session session = login();
+    	
+    	Node n = session.getNodeByUUID(node.getId());
+    	//TODO what about linked nodes?
+    	n.remove();
+    	
+    	logout(session);
     }
 
     /**
@@ -213,20 +252,82 @@ public class DistributionServiceImpl
      */
     protected void handleDelSharedFile(org.openuss.docmanagement.File file, boolean delLinks)
         throws java.lang.Exception
-    {
-        // @todo implement protected void handleDelSharedFile(org.openuss.docmanagement.File file, boolean delLinks)
-        throw new java.lang.UnsupportedOperationException("org.openuss.docmanagement.DistributionService.handleDelSharedFile(org.openuss.docmanagement.File file, boolean delLinks) Not implemented!");
+    {	
+    	Session session = login();
+    	Node fileToDelete = session.getNodeByUUID(file.getId());
+    	PropertyIterator pi = fileToDelete.getReferences();    	
+    	if (delLinks){
+    		deleteLinks(pi);
+    	}else if (!delLinks){
+    		changeLinksToFiles(session, fileToDelete, pi);
+    	}
+    	
+    	logout(session);
     }
+
+	private void deleteLinks(PropertyIterator pi) throws VersionException, LockException, ConstraintViolationException, RepositoryException {
+		Property p;
+		while (pi.hasNext()){
+			p = pi.nextProperty(); 
+			p.remove();
+		}		
+	}
+
+	private void changeLinksToFiles(Session session, Node fileToDelete, PropertyIterator pi) throws ItemNotFoundException, AccessDeniedException, RepositoryException, VersionException, LockException, ConstraintViolationException, PathNotFoundException, ItemExistsException {
+		Property p;
+		Node link;
+		Node parent;
+		while(pi.hasNext()){
+			p = (Property) pi.nextProperty();
+			// Links are saved in a extra Node
+			link = p.getParent();
+			parent = link.getParent();
+			link.remove();
+			session.getWorkspace().copy(fileToDelete.getPath(), parent.getPath());
+			
+		}
+	}
 
     /**
      * @see org.openuss.docmanagement.DistributionService#getFiles(org.openuss.docmanagement.Folder)
      */
-    protected org.openuss.docmanagement.File handleGetFiles(org.openuss.docmanagement.Folder folder)
+    protected java.util.Collection handleGetFiles(org.openuss.docmanagement.Folder folder)
         throws java.lang.Exception
     {
-        // @todo implement protected org.openuss.docmanagement.File handleGetFiles(org.openuss.docmanagement.Folder folder)
-        return null;
+    	Session session = login();
+    	
+    	Collection<File> files = new Vector<File>();
+    	File fi;
+    	Node node = session.getNodeByUUID(folder.getId());
+    	Node file;
+    	NodeIterator ni = node.getNodes();
+    	
+    	while (ni.hasNext()){
+    		file = ni.nextNode();
+    		//TODO handle links
+    		if (file.isNodeType("nt:file")){
+    			// Make File Object
+    			fi = generateFile(file);
+    			files.add(fi);    			
+    		}	
+    	}    
+    	
+    	logout(session);    	
+    	return files;
     }
+
+	private File generateFile(Node file) throws UnsupportedRepositoryOperationException, RepositoryException, PathNotFoundException, ValueFormatException {
+		FileImpl fi = new FileImpl();
+		//TODO check if all properties are set
+		//TODO move values like "message" to a class of constants
+		fi.setId(file.getUUID());
+		fi.setName(file.getName());
+		file = file.getNode("jcr:content");
+		fi.setMessage(file.getProperty("message").getString());
+		fi.setMimeType(file.getProperty("jcr:mimeType").getString());
+		fi.setLastModification(new Timestamp(file.getProperty("jcr:lastModified").getDate().getTimeInMillis()));
+		return fi;
+	}
 
     /**
      * @see org.openuss.docmanagement.DistributionService#getFile(org.openuss.docmanagement.File)
@@ -234,17 +335,34 @@ public class DistributionServiceImpl
     protected org.openuss.docmanagement.BigFile handleGetFile(org.openuss.docmanagement.File file)
         throws java.lang.Exception
     {
-        // @todo implement protected org.openuss.docmanagement.BigFile handleGetFile(org.openuss.docmanagement.File file)
-        return null;
+        Session session = login();
+        
+        Node f = session.getNodeByUUID(file.getId());
+		BigFileImpl bfi;
+		bfi = new BigFileImpl();
+		//TODO check if all properties are set
+		//TODO move values like "message" to a class of constants
+		bfi.setId(f.getUUID());
+		bfi.setName(f.getName());
+		f = f.getNode("jcr:content");
+		bfi.setMessage(f.getProperty("message").getString());
+		bfi.setMimeType(f.getProperty("jcr:mimeType").getString());
+		bfi.setLastModification(new Timestamp(f.getProperty("jcr:lastModified").getDate().getTimeInMillis()));
+		//TODO check if temporary save of file is needed, or inputstream is sufficient
+		bfi.setFile(f.getProperty("jcr:data").getStream());
+		
+		logout(session);
+		return bfi;
     }
 
     /**
      * @see org.openuss.docmanagement.DistributionService#getSharedFiles(org.openuss.lecture.Faculty)
      */
-    protected org.openuss.docmanagement.File handleGetSharedFiles(org.openuss.lecture.Faculty faculty)
+    protected java.util.Collection handleGetSharedFiles(org.openuss.lecture.Faculty faculty)
         throws java.lang.Exception
     {
-        // @todo implement protected org.openuss.docmanagement.File handleGetSharedFiles(org.openuss.lecture.Faculty faculty)
+    	//TODO check if method is needed anymore
+    	// @todo implement protected org.openuss.docmanagement.File handleGetSharedFiles(org.openuss.lecture.Faculty faculty)
         return null;
     }
 
@@ -254,7 +372,8 @@ public class DistributionServiceImpl
     protected java.io.InputStream handleZipFiles(org.openuss.docmanagement.BigFile files)
         throws java.lang.Exception
     {
-        // @todo implement protected java.io.InputStream handleZipFiles(org.openuss.docmanagement.BigFile files)
+    	//TODO check if method is needed here, or done by servlet
+    	// @todo implement protected java.io.InputStream handleZipFiles(org.openuss.docmanagement.BigFile files)
         return null;
     }
 
@@ -264,8 +383,18 @@ public class DistributionServiceImpl
     protected org.openuss.docmanagement.Folder handleGetMainFolder(org.openuss.lecture.Enrollment enrollment)
         throws java.lang.Exception
     {
-        // @todo implement protected org.openuss.docmanagement.Folder handleGetMainFolder(org.openuss.lecture.Enrollment enrollment)
-        return null;
+    	Session session = login();
+    	Node main = session.getRootNode();
+    	main = main.getNode(distribution+"/"+enrollment.getId().toString());
+    	
+    	FolderImpl fi = new FolderImpl();
+    	fi.setId(enrollment.getId().toString());
+    	fi.setName("main");
+    	fi.setVisibility(DocVisibility.ALL);
+    	//TODO set subfolder
+    	
+    	logout(session);
+    	return fi;
     }
 
     /**
