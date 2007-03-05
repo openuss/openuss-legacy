@@ -2,10 +2,10 @@ package org.openuss.docmanagement;
 
 import java.util.Collection;
 
-public interface Folder extends Node {
+public interface Folder extends Resource {
 
-	public abstract Collection<Node> getSubnodes();
+	public abstract Collection<Resource> getSubnodes();
 
-	public abstract void setSubnodes(Collection<Node> subnodes);
+	public abstract void setSubnodes(Collection<Resource> subnodes);
 
 }
