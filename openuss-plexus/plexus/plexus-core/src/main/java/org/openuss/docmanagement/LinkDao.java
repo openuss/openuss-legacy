@@ -2,11 +2,17 @@ package org.openuss.docmanagement;
 
 import java.sql.Timestamp;
 
+import javax.jcr.Session;
+
 /**
  * @author David Ullrich
  * @version 0.5
  */
-public class LinkDao extends Resource implements Link {
+public class LinkDao extends ResourceDao implements Link {
+	public LinkDao(ResourceLocator locator, Session session) {
+		// TODO
+		super(locator, session);
+	}
 
 	public Timestamp getDistributionDate() {
 		// TODO Auto-generated method stub

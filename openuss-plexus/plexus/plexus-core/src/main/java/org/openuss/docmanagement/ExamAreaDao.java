@@ -2,6 +2,8 @@ package org.openuss.docmanagement;
 
 import java.util.Collection;
 
+import javax.jcr.Session;
+
 import org.openuss.lecture.Enrollment;
 
 /**
@@ -9,6 +11,10 @@ import org.openuss.lecture.Enrollment;
  * @version 0.5
  */
 public class ExamAreaDao extends FolderDao implements ExamArea {
+	public ExamAreaDao(ResourceLocator locator, Session session) {
+		// TODO
+		super(locator, session);
+	}
 
 	public Enrollment getEnrollment() {
 		// TODO Auto-generated method stub

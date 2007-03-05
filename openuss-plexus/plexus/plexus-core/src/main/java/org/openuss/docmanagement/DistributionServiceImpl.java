@@ -142,11 +142,11 @@ public class DistributionServiceImpl
     /**
      * @see org.openuss.docmanagement.DistributionService#setVisibility(org.openuss.docmanagement.Node, int)
      */
-    protected void handleSetVisibility(org.openuss.docmanagement.Node node, int visibility)
+    protected void handleSetVisibility(Resource resource, int visibility)
         throws java.lang.Exception
     {
         Session session = login();
-        Node n  = session.getNodeByUUID(node.getId());
+        Node n  = session.getNodeByUUID(resource.getId());
         n.setProperty("visibility", visibility);
         logout(session);
     }
@@ -235,12 +235,12 @@ public class DistributionServiceImpl
     /**
      * @see org.openuss.docmanagement.DistributionService#delNode(org.openuss.docmanagement.Node)
      */
-    protected void handleDelNode(org.openuss.docmanagement.Node node)
+    protected void handleDelResource(Resource resource)
         throws java.lang.Exception
     {
     	Session session = login();
     	
-    	Node n = session.getNodeByUUID(node.getId());
+    	Node n = session.getNodeByUUID(resource.getId());
     	//TODO what about linked nodes?
     	n.remove();
     	
@@ -291,7 +291,7 @@ public class DistributionServiceImpl
     /**
      * @see org.openuss.docmanagement.DistributionService#getFiles(org.openuss.docmanagement.Folder)
      */
-    protected java.util.Collection handleGetFiles(org.openuss.docmanagement.Folder folder)
+    protected File handleGetFiles(Folder folder)
         throws java.lang.Exception
     {
     	Session session = login();
@@ -313,7 +313,7 @@ public class DistributionServiceImpl
     	}    
     	
     	logout(session);    	
-    	return files;
+    	return null;
     }
 
 	private File generateFile(Node file) throws UnsupportedRepositoryOperationException, RepositoryException, PathNotFoundException, ValueFormatException {
@@ -358,7 +358,7 @@ public class DistributionServiceImpl
     /**
      * @see org.openuss.docmanagement.DistributionService#getSharedFiles(org.openuss.lecture.Faculty)
      */
-    protected java.util.Collection handleGetSharedFiles(org.openuss.lecture.Faculty faculty)
+    protected File handleGetSharedFiles(org.openuss.lecture.Faculty faculty)
         throws java.lang.Exception
     {
     	//TODO check if method is needed anymore

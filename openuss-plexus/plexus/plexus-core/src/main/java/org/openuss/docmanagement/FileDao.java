@@ -2,11 +2,17 @@ package org.openuss.docmanagement;
 
 import java.sql.Timestamp;
 
+import javax.jcr.Session;
+
 /**
  * @author David Ullrich
  * @version 0.5
  */
 public class FileDao extends ResourceDao implements File {
+	public FileDao(ResourceLocator locator, Session session) {
+		// TODO
+		super(locator, session);
+	}
 
 	public Timestamp getDistributionTime() {
 		// TODO Auto-generated method stub

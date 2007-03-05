@@ -9,53 +9,14 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.servlet.http.HttpServletResponse;
 
-import org.openuss.docmanagement.webdav.ExportContext;
-import org.openuss.docmanagement.webdav.IOManager;
+import org.openuss.docmanagement.ExportContext;
+import org.openuss.docmanagement.IOManager;
 
 /**
  * @author David Ullrich
  * @version 0.5
  */
 public class ResourceDao implements Resource {
-	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getMessage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int getVisibility() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public void setId(String id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setMessage(String message) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setName(String name) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setVisibility(int visibility) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	private IOManager ioManager;
 	private final ResourceLocator locator;
@@ -100,5 +61,45 @@ public class ResourceDao implements Resource {
 	
 	public void removeMember(Resource member) {
 		// TODO
+	}
+
+	public String getId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public String getMessage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public int getVisibility() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public void setId(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void setMessage(String message) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void setVisibility(int visibility) {
+		// TODO Auto-generated method stub
+		
 	}
 }

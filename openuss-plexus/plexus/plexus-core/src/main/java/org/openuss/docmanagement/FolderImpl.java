@@ -2,21 +2,21 @@ package org.openuss.docmanagement;
 
 import java.util.Collection;
 
-public class FolderImpl extends NodeImpl implements Folder{
+public class FolderImpl extends ResourceImpl implements Folder{
 	
-	public Collection<Node> subnodes;
+	public Collection<Resource> subnodes;
 
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.Folder#getSubnodes()
 	 */
-	public Collection<Node> getSubnodes() {
+	public Collection<Resource> getSubnodes() {
 		return subnodes;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.Folder#setSubnodes(java.util.Collection)
 	 */
-	public void setSubnodes(Collection<Node> subnodes) {
+	public void setSubnodes(Collection<Resource> subnodes) {
 		this.subnodes = subnodes;
 	}
 	

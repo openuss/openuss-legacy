@@ -2,7 +2,7 @@ package org.openuss.docmanagement;
 
 import org.openuss.lecture.Enrollment;
 
-public class WorkingPlaceImpl extends FolderImpl implements WorkingPlace{
+public class WorkingPlaceImpl extends FolderImpl implements WorkingPlace {
 	
 	public Enrollment enrollment;
 

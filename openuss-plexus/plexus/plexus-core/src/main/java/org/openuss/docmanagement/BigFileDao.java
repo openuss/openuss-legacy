@@ -3,7 +3,13 @@ package org.openuss.docmanagement;
 import java.io.InputStream;
 import java.sql.Timestamp;
 
+import javax.jcr.Session;
+
 public class BigFileDao extends FileDao implements BigFile {
+	public BigFileDao(ResourceLocator locator, Session session) {
+		// TODO
+		super(locator, session);
+	}
 
 	public InputStream getFile() {
 		// TODO Auto-generated method stub

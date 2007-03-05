@@ -37,7 +37,7 @@ public interface IOManager {
 	 * @param resource
 	 * @return
 	 */
-	public boolean exportContent(ExportContext context, Resource resource) throws IOException;
+	public boolean exportContent(ExportContext context, ResourceDao resource) throws IOException;
 	
 	/**
 	 * 
@@ -53,5 +53,5 @@ public interface IOManager {
 	 * @param resource
 	 * @return
 	 */
-	public boolean importContent(ImportContext context, Resource resource) throws IOException;
+	public boolean importContent(ImportContext context, ResourceDao resource) throws IOException;
 }

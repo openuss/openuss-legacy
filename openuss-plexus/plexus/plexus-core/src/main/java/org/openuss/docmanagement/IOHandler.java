@@ -25,7 +25,7 @@ public interface IOHandler {
 	 * @param resource
 	 * @return
 	 */
-	public boolean canExport(ExportContext context, Resource resource);
+	public boolean canExport(ExportContext context, ResourceDao resource);
 	
 	/**
 	 * 
@@ -41,7 +41,7 @@ public interface IOHandler {
 	 * @param resource
 	 * @return
 	 */
-	public boolean canImport(ImportContext context, Resource resource);
+	public boolean canImport(ImportContext context, ResourceDao resource);
 	
 	/**
 	 * 
@@ -59,7 +59,7 @@ public interface IOHandler {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean exportContent(ExportContext context, Resource resource) throws IOException;
+	public boolean exportContent(ExportContext context, ResourceDao resource) throws IOException;
 
 	/**
 	 * @param context
@@ -75,7 +75,7 @@ public interface IOHandler {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean importContent(ImportContext context, Resource resource) throws IOException;
+	public boolean importContent(ImportContext context, ResourceDao resource) throws IOException;
 
 	/**
 	 * @return
