@@ -2,7 +2,7 @@ package org.openuss.docmanagement;
 
 import java.io.InputStream;
 
-public class BigFileImpl extends FileImpl implements BigFile{
+public class BigFileImpl extends FileImpl implements BigFile {
 	
 	public InputStream file;
 

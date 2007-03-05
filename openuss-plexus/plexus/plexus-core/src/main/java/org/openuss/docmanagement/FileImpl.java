@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 
 
-public class FileImpl extends NodeImpl implements File{
+public class FileImpl extends ResourceImpl implements File{
 	
 	public long size;
 	
