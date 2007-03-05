@@ -1,6 +1,6 @@
 package org.openuss.docmanagement;
 
-public class NodeImpl implements Node{
+public class ResourceImpl implements Resource {
 	
 	public String name;
 	
