@@ -1,4 +1,4 @@
-package org.openuss.docmanagement.webdav;
+package org.openuss.docmanagement;
 
 /**
  * @author David Ullrich
@@ -23,7 +23,7 @@ public enum DavMethods {
 	UNSUBSCRIBE,
 	POLL,
 	SEARCH,
-	REPORT,
+	REPORT
 	//VERSION-CONTROL,
 	//CHECKIN,
 	//CHECKOUT,
