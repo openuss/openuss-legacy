@@ -12,9 +12,9 @@ public interface File extends Resource {
 
 	public abstract void setLastModification(Timestamp lastModification);
 
-	public abstract long getSize();
+	public abstract long getLength();
 
-	public abstract void setSize(long size);
+	public abstract void setLength(long length);
 
 	public abstract int getVersion();
 

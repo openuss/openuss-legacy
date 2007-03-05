@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 
 public class FileImpl extends ResourceImpl implements File{
 	
-	public long size;
+	public long length;
 	
 	public Timestamp lastModification;
 	
@@ -49,15 +49,15 @@ public class FileImpl extends ResourceImpl implements File{
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.File#getSize()
 	 */
-	public long getSize() {
-		return size;
+	public long getLength() {
+		return length;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.File#setSize(long)
 	 */
-	public void setSize(long size) {
-		this.size = size;
+	public void setLength(long length) {
+		this.length = length;
 	}
 
 	/* (non-Javadoc)
