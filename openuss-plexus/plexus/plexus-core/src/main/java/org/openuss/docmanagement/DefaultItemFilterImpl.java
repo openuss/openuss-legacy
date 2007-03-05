@@ -1,4 +1,4 @@
-package org.openuss.docmanagement.webdav;
+package org.openuss.docmanagement;
 
 import javax.jcr.Item;
 import javax.jcr.RepositoryException;

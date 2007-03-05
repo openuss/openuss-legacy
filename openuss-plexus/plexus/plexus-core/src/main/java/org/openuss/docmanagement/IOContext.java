@@ -1,4 +1,4 @@
-package org.openuss.docmanagement.webdav;
+package org.openuss.docmanagement;
 
 /**
  * @author David Ullrich
