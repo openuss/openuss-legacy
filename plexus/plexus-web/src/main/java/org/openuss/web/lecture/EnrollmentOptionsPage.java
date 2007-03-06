@@ -27,7 +27,6 @@ public class EnrollmentOptionsPage extends AbstractEnrollmentPage {
 
 	private static final long serialVersionUID = 8821048605517398410L;
 	
-	
 	/**
 	 * Save changes of the enrollment 
 	 * @return outcome
@@ -66,6 +65,5 @@ public class EnrollmentOptionsPage extends AbstractEnrollmentPage {
 		items.add(new SelectItem(AccessType.APPLICATION,i18n("enrollment_options_access_application")));
 		return items;
 	}
-	
-	
+
 }
