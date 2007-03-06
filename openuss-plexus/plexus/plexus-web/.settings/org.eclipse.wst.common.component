@@ -225,5 +225,9 @@
 	<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/openuss/framework/wtp-facelets-hack/3.0-SNAPSHOT/wtp-facelets-hack-3.0-SNAPSHOT.jar">
 		<dependency-type>uses</dependency-type>
 	</dependent-module>		
+	<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/quartz/quartz/1.5.2/quartz-1.5.2.jar">
+		<dependency-type>uses</dependency-type>
+	</dependent-module>		
+
 	</wb-module>
 </project-modules>

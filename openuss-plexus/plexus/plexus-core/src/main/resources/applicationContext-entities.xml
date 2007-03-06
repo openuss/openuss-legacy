@@ -86,22 +86,23 @@
     				Quartz
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	
-	<bean id="mailSendingQuartzBean" class="org.openuss.mail.MailSendingQuartzBean" singleton="true" >	
+	<bean id="mailSendingQuartzBean" class="org.openuss.mail.MailSendingQuartzBean" >	
 		<property name="mailService"><ref bean="mailService"/></property>		
 		<property name="mimeMessageHelper"><ref bean="mimeMessageHelper"/></property>		
 		<property name="mailEngine"><ref bean="mailEngine"/></property>				
 	</bean>
 	<!-- not working Quartz config -->
 	<!-- 
+	 -->
     <bean id="mailSendingJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="mailSendingQuartzBean"/>
 		<property name="targetMethod" value="send"/>
 		<property name="concurrent" value="false"/>
 	</bean>
 	<bean id="mailRepeatTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="mailSendingJobDetail" ref="mailSendingJobDetail"/>
+		<property name="jobDetail" ref="mailSendingJobDetail"/>
 		<property name="startDelay" value="10000"/>
-		<property name="repeatInterval" value="10000"/>
+		<property name="repeatInterval" value="30000"/>
 	</bean>
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
@@ -110,15 +111,14 @@
 			</list>
 		</property>
 	</bean>
-	 -->
-	 <!-- not Quartz but JDK Timer support, due to unresolved problems using Quartz -->
+	 <!-- not Quartz but JDK Timer support, due to unresolved problems using Quartz 
 	 <bean id="sendMail" class="org.springframework.scheduling.timer.MethodInvokingTimerTaskFactoryBean">
 		<property name="targetObject" ref="mailSendingQuartzBean"/>
 		<property name="targetMethod" value="send"/>
 	</bean>
 	 <bean id="scheduledTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
 		<property name="delay" value="10000"/>
-		<property name="period" value="30000"/>
+		<property name="period" value="300000"/>
 		<property name="timerTask" ref="sendMail"/>
 	</bean>
 	<bean id="timerFactory" class="org.springframework.scheduling.timer.TimerFactoryBean">
@@ -128,4 +128,5 @@
 			</list>
 		</property>
     </bean> 
+	 -->
 </beans>
