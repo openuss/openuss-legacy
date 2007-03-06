@@ -11,6 +11,7 @@ public class MailTests {
 		suite.addTestSuite(MailingJobDaoTest.class);
 		suite.addTestSuite(MailServiceIntegrationTest.class);
 		suite.addTestSuite(MailToSendDaoTest.class);
+		suite.addTestSuite(MailMessageDaoTest.class);
 		suite.addTestSuite(TemplateModelDaoTest.class);
 		//$JUnit-END$
 		return suite;
