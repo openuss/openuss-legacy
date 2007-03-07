@@ -27,7 +27,8 @@ public class MailServiceImpl
 		//adding mail to db
 		MailingJob mailingJob = new MailingJobImpl(); 
 		mailingJob.setSenderName("System");
-		mailingJob.setSendingTime(new Timestamp(System.currentTimeMillis()));		
+		mailingJob.setSendingTime(new Timestamp(System.currentTimeMillis()));
+		mailingJob.setStatus(MailingStatus.PLANNED);
 		getMailingJobDao().create(mailingJob);
 		
 		MailToSend mailToSend = new MailToSendImpl();
