@@ -48,7 +48,10 @@ public class EnrollmentPage extends AbstractEnrollmentPage {
 		enrollment.setId(new Long(42347));
 		enrollmentId = enrollment.getId();
 		
-		Faculty faculty = lectureService.getFaculty(new Long(8441));
+		faculty = Faculty.Factory.newInstance();
+		faculty.setId(new Long(8438));
+		faculty.setName("TestFaculty");
+		faculty.setShortcut("TF");
 		enrollment.setFaculty(faculty);
 		
 		ArrayList al = new ArrayList();

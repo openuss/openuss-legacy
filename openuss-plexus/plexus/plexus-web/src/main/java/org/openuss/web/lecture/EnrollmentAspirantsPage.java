@@ -3,7 +3,6 @@ package org.openuss.web.lecture;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.faces.event.ValueChangeEvent;
@@ -34,27 +33,6 @@ public class EnrollmentAspirantsPage extends AbstractEnrollmentPage {
 	private transient Set<UserInfo> rejectAspirants = new HashSet<UserInfo>();
 	
 	public String save() {
-		/*
-		for (UserInfo userInfo : acceptAspirants) {
-			try {
-				lectureService.acceptFacultyAspirant(userInfo.getId(), faculty.getId());
-				addMessage(i18n("faculty_add_member_to_faculty", userInfo.getUsername()));
-			} catch (LectureException e) {
-				logger.error(e);
-				addError(i18n(e.getMessage()));
-			}
-		}
-		
-		for (UserInfo userInfo : rejectAspirants) {
-			try {
-				lectureService.rejectFacultyAspirant(userInfo.getId(), faculty.getId());
-				addMessage(i18n("faculty_reject_aspirants",userInfo.getUsername()));
-			} catch (LectureException e) {
-				logger.error(e);
-				addError(i18n(e.getMessage()));
-			}
-		}
-		*/
 		return Constants.SUCCESS;
 	}
 	
@@ -67,16 +45,7 @@ public class EnrollmentAspirantsPage extends AbstractEnrollmentPage {
 	}
 	
 	public void changedAspirant(ValueChangeEvent event) throws LectureException {
-		UserInfo aspirant = data.getRowData();
-		if (logger.isDebugEnabled()) {
-			logger.debug("changed " + aspirant.getUsername() + " from " + event.getOldValue() + " to " + event.getNewValue());
-		}
-		
-		if ("accept".equals(event.getNewValue())) {
-			acceptAspirants.add(aspirant);
-		} else if ("reject".equals(event.getNewValue())) {
-			rejectAspirants.add(aspirant);
-		}
+		logger.debug("enrollment: changed aspirant");
 	}
 	
 	private class AspirantDataProvider extends AbstractPagedTable<UserInfo> {
@@ -85,12 +54,6 @@ public class EnrollmentAspirantsPage extends AbstractEnrollmentPage {
 		
 		@Override 
 		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
-			/*
-			if (page == null) {
-				List aspirants = lectureService.getFacultyAspirants(faculty.getId());
-				page = new DataPage<UserInfo>(aspirants.size(),0,aspirants);
-				sort(aspirants);
-			}*/
 			ArrayList<UserInfo> al = new ArrayList<UserInfo>();			
 			UserInfo ui1 = new UserInfo(new Long(1234), "cag", "Sebastian", "Roekens", "abc123", "plexus@openuss-plexus.com", true, false, false, new Date(System.currentTimeMillis()));
 			UserInfo ui2 = new UserInfo(new Long(12345), "dueppe", "Ingo", "Düppe", "12345", "plexus@openuss-plexus.com", true, true, false, new Date(System.currentTimeMillis()));

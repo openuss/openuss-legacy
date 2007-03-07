@@ -373,7 +373,16 @@
 				<from-outcome>enrollment_options_news</from-outcome>
 				<to-view-id>/views/secured/lecture/news.xhtml</to-view-id>				
 			</navigation-case>
-			
+
+			<navigation-case>
+				<from-outcome>mailinglist_newmail</from-outcome>
+				<to-view-id>/views/secured/enrollment/newmail.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>mailinglist_subscribers</from-outcome>
+				<to-view-id>/views/secured/enrollment/mailinglistsubscribers.xhtml</to-view-id>				
+			</navigation-case>			
 			
 		</navigation-rule>
 	

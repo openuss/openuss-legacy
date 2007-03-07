@@ -2,37 +2,111 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:t="http://myfaces.apache.org/tomahawk"
-      xmlns:o="http://www.openuss.org/jsfcontrols"
-      xmlns:plexus="http://www.openuss.org/plexus/jsf">
-      
- 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title><ui:insert name="title"/></title>
-		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
-		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
-		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
-	</head>
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:c="http://java.sun.com/jstl/core">
 
-	<body>      
-	<!-- text above will be ignored -->
-	<ui:composition template="/views/layout/layout.xhtml">
-  		<ui:define name="title">
-  			<h:outputText value="#{msg['enrollment_main_title']}"/>
-  		</ui:define>
-		<ui:define name="navigation">
-			<ui:include src="/views/commons/navigation/enrollment.xhtml" />
-		</ui:define>
-  		<ui:define name="content"> 
-  			<o:block label="#{enrollment.subject.name} (#{enrollment.shortcut})">
-  				#{enrollment.subject.description}
-  			</o:block>
-	  		<plexus:newsTable value="#{views$secured$enrollment$enrollment.currentNewsItems}" headline="${msg.news_header}"/>
-  		</ui:define>
-	</ui:composition>
-	<!-- text above will be ignored -->
-	</body>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputText value="#{msg['enrollment_main_title']}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="mailingListForm">
+			<o:block label="#{msg.mailinglist_status_header}">
+				<plexus:command bean="#{views$secured$enrollment$mailinglist}"
+					action="changeStatus"
+					label="#{msg['mailinglist_button_changestatus']}"
+					title="#{msg['mailinglist_button_changestatus']}"
+					styleClass="button_profile" />
+			</o:block>
+			<o:block label="#{msg.mailinglist_header}">
+
+				<plexus:dataTable id="mailinglist"
+					label="#{msg.faculty_members_subheading}"
+					value="views$secured$enrollment$mailinglist.data"
+					var="mail" rows="10">
+
+					<t:column>
+						<plexus:commandSortHeader columnName="mailTitle"> #{msg['mailinglist_mailtitle']} </plexus:commandSortHeader>
+						<h:outputText value="#{mail.mailTitle}" />
+					</t:column>
+
+					<t:column>
+						<plexus:commandSortHeader columnName="status"> #{msg['mailinglist_status']}</plexus:commandSortHeader>
+						<h:outputText value="#{mail.status}" />
+					</t:column>
+
+					<t:column>
+						<plexus:commandSortHeader columnName="sendingTime">#{msg['mailinglist_sendingtime']}</plexus:commandSortHeader>
+						<h:outputText value="#{mail.sendingTime}" />
+					</t:column>
+
+
+					<plexus:column header="#{msg.mailinglist_actions}">
+						<c:if test="#{mail.status == 1}">
+							<plexus:command bean="#{views$secured$enrollment$mailinglist}"
+								action="delete" label="#{msg['mailinglist_button_delete']}"
+								title="#{msg['mailinglist_button_delete_hint']}"
+								styleClass="button_profile" />			 				
+							<plexus:command bean="#{views$secured$enrollment$mailinglist}"
+								action="change" label="#{msg['mailinglist_button_change']}"
+								title="#{msg['mailinglist_button_change_hint']}"
+								styleClass="button_profile" />
+		 				</c:if>
+						
+						<c:if test="#{mail.status==2}">
+							<plexus:command bean="#{views$secured$enrollment$mailinglist}"
+								action="delete" label="#{msg['mailinglist_button_delete']}"
+								title="#{msg['mailinglist_button_delete_hint']}"
+								styleClass="button_profile" />			 				
+							<plexus:command bean="#{views$secured$enrollment$mailinglist}"
+								action="change" label="#{msg['mailinglist_button_change']}"
+								title="#{msg['mailinglist_button_change_hint']}"
+								styleClass="button_profile" />
+							<plexus:command bean="#{views$secured$enrollment$mailinglist}"
+								action="send" label="#{msg['mailinglist_button_send']}"
+								title="#{msg['mailinglist_button_send']}"
+								styleClass="button_profile" />
+						</c:if>
+
+						<c:if test="#{mail.status==4}">
+							<plexus:command bean="#{views$secured$enrollment$mailinglist}"
+								action="delete" label="#{msg['mailinglist_button_delete']}"
+								title="#{msg['mailinglist_button_delete_hint']}"
+								styleClass="button_profile" />			 										
+						</c:if>
+						
+					</plexus:column>
+
+				</plexus:dataTable>
+			</o:block>
+			<o:block>
+				<h:commandButton action="mailinglist_newmail"
+					value="#{msg['mailinglist_button_newmail']}" />
+			</o:block>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
 </html>
