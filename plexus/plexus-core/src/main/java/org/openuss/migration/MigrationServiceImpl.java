@@ -485,6 +485,8 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 		enrollment.setMailinglist(toBoolean(enrollment2.getMailinglist()));
 		enrollment.setFreestylelearning(toBoolean(enrollment2.getFslinstall()));
 		enrollment.setWiki(false);
+		// TODO insert description
+		enrollment.setDescription("");
 		return enrollment;
 	}
 	
