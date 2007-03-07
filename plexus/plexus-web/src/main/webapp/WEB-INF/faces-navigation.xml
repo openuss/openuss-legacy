@@ -354,7 +354,6 @@
 				<to-view-id>/views/secured/enrollment/enrollmentoptions.xhtml</to-view-id>				
 			</navigation-case>
 
-			
 			<navigation-case>
 				<from-outcome>enrollment_options_aspirants</from-outcome>
 				<to-view-id>/views/secured/enrollment/enrollmentaspirants.xhtml</to-view-id>				
@@ -363,6 +362,11 @@
 			<navigation-case>
 				<from-outcome>enrollment_options_members</from-outcome>
 				<to-view-id>/views/secured/enrollment/enrollmentparticipants.xhtml</to-view-id>				
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>enrollment_options_assistants</from-outcome>
+				<to-view-id>/views/secured/enrollment/enrollmentassistants.xhtml</to-view-id>				
 			</navigation-case>
 			
 			

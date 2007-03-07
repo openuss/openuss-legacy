@@ -19,7 +19,7 @@ import org.openuss.web.Constants;
  * @author Ingo Dueppe
  *
  */
-@Bean(name="views$secured$lecture$enrollmentoptions",scope=Scope.REQUEST)
+@Bean(name="views$secured$enrollment$enrollmentoptions",scope=Scope.REQUEST)
 @View
 public class EnrollmentOptionsPage extends AbstractEnrollmentPage {
 

@@ -41,12 +41,12 @@
 					<h:selectOneMenu id="accessType" 
 						layout="pageDirection" 
 						value="#{sessionScope.enrollment.accessType}" 
-						valueChangeListener="#{views$secured$lecture$enrollmentoptions.processAccessTypeChanged}" 
+						valueChangeListener="#{views$secured$enrollment$enrollmentoptions.processAccessTypeChanged}" 
 						onchange="this.form.submit();"
 						immediate="true" 
 						styleClass="pulldown">
 						<f:converter converterId="accessTypeConverter" />
-						<f:selectItems value="#{views$secured$lecture$enrollmentoptions.accessTypes}"/>
+						<f:selectItems value="#{views$secured$enrollment$enrollmentoptions.accessTypes}"/>
 					</h:selectOneMenu>
 					<h:message for="accessType" styleClass="field_error"/>
 					<c:if test="#{sessionScope.enrollment.accessType.value == 2}">
@@ -72,11 +72,11 @@
 				<o:block>
 					<h:commandButton 
 						value="${msg.save}" 
-						action="#{views$secured$lecture$enrollmentoptions.saveOptions}" 
+						action="#{views$secured$enrollment$enrollmentoptions.saveOptions}" 
 						styleClass="button"/>
 					<h:commandButton 
 						value="${msg.cancel}" 
-						action="#{views$secured$lecture$enrollmentoptions.cancelOptions}" 
+						action="#{views$secured$enrollment$enrollmentoptions.cancelOptions}" 
 						immediate="true" 
 						styleClass="button"/>
 				</o:block>
