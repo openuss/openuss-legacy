@@ -34,6 +34,7 @@ public class EnrollmentAspirantsPage extends AbstractEnrollmentPage {
 	private transient Set<UserInfo> rejectAspirants = new HashSet<UserInfo>();
 	
 	public String save() {
+		/*
 		for (UserInfo userInfo : acceptAspirants) {
 			try {
 				lectureService.acceptFacultyAspirant(userInfo.getId(), faculty.getId());
@@ -53,7 +54,7 @@ public class EnrollmentAspirantsPage extends AbstractEnrollmentPage {
 				addError(i18n(e.getMessage()));
 			}
 		}
-		
+		*/
 		return Constants.SUCCESS;
 	}
 	
