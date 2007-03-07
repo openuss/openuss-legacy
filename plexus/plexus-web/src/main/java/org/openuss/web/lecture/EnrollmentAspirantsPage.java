@@ -25,9 +25,8 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$lecture$enrollmentaspirants", scope = Scope.REQUEST)
 @View
-public class EnrollmentAspirantsPage extends AbstractLecturePage {
-	private static final Logger logger = Logger.getLogger(AspirantsPage.class);
-
+public class EnrollmentAspirantsPage extends AbstractEnrollmentPage {
+	private static final Logger logger = Logger.getLogger(EnrollmentAspirantsPage.class);
 	
 	private AspirantDataProvider data = new AspirantDataProvider();
 	
