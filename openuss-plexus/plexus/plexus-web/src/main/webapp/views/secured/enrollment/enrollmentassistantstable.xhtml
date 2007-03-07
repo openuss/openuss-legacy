@@ -8,53 +8,63 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:c="http://java.sun.com/jstl/core">
       
-    <plexus:dataTable id="enrollmentaspirants" label="#{msg.faculty_members_subheading}" value="views$secured$enrollment$enrollmentmembers.data" var="member" rows="10">  
+    <plexus:dataTable id="enrollmentassistants" label="#{msg.faculty_members_subheading}" value="views$secured$enrollment$enrollmentassistants.data" var="assistant" rows="10">  
       
 		<t:column>
 			<plexus:commandSortHeader columnName="username"> #{msg['user_username']} </plexus:commandSortHeader>
-			<h:outputText value="#{member.username}"/>
+			<h:outputText value="#{assistant.username}"/>
 		</t:column>
 		
 		<t:column>
 			<plexus:commandSortHeader columnName="firstname"> #{msg['user_contact_firstname']}</plexus:commandSortHeader>
-			<h:outputText value="#{member.firstName}"/>
+			<h:outputText value="#{assistant.firstName}"/>
 		</t:column>
 		 
 		<t:column>
 			<plexus:commandSortHeader columnName="lastname">#{msg['user_contact_lastname']}</plexus:commandSortHeader>
-			<h:outputText value="#{member.lastName}"/>
+			<h:outputText value="#{assistant.lastName}"/>
 		</t:column>
 
 		<t:column>
 			<plexus:commandSortHeader columnName="email">#{msg['user_email']}</plexus:commandSortHeader>
-			<h:outputText value="#{member.email}"/>
+			<h:outputText value="#{assistant.email}"/>
 		</t:column>
 		
 		<t:column>
 			<f:facet name="header">#{msg['commands_header']}</f:facet>
-			<h:selectOneMenu styleClass="pulldown_small" valueChangeListener="#{views$secured$enrollment$enrollmentmembers.changedMember}">
+			<h:selectOneMenu styleClass="pulldown_small" valueChangeListener="#{views$secured$enrollment$enrollmentassistants.changedAssistant}">
 				<f:selectItem itemValue="null" itemLabel=""/>
-				<f:selectItem itemValue="suspend" itemLabel="#{msg['enrollment_member_suspend']}"/>
-				<f:selectItem itemValue="readonly" itemLabel="#{msg['enrollment_member_readonly']}"/>
-				<f:selectItem itemValue="active" itemLabel="#{msg['enrollment_member_active']}"/>								
+				<f:selectItem itemValue="admin" itemLabel="#{msg['enrollment_assistants_admin']}"/>
+				<f:selectItem itemValue="assist" itemLabel="#{msg['enrollment_assistants_assist']}"/>
+				<f:selectItem itemValue="suspend" itemLabel="#{msg['enrollment_assistants_suspend']}"/>	
 			</h:selectOneMenu>
 		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">
 			<plexus:command 
-				bean="#{views$secured$enrollment$enrollmentmembers}"
+				bean="#{views$secured$enrollment$enrollmentassistants}"
 				action="showProfile"
 				label="#{msg['user_profile_command_show_profile']}"
 				title="#{msg['user_profile_command_show_profile_hint']}"
 				styleClass="button_profile" />
 			<plexus:command 
-				bean="#{views$secured$enrollment$enrollmentmembers}"
+				bean="#{views$secured$enrollment$enrollmentassistants}"
 				action="delete"
-				label="#{msg['enrollment_members_delete']}"
-				title="#{msg['enrollment_members_delete_hint']}"
+				label="#{msg['enrollment_assistants_delete']}"
+				title="#{msg['enrollment_assistants_delete_hint']}"
 				styleClass="button_remove" />
 		</plexus:column>
 		
 	</plexus:dataTable>      
-	
+	<o:block>
+		<h:selectOneMenu id="assistantSelectBox" value="#{views$secured$enrollment$enrollmentassistants.aspirant}">
+		   	<t:selectItems value="#{views$secured$enrollment$enrollmentassistants.aspirantList}" var="aspirant" itemLabel="#{aspirant.label}" itemValue="#{aspirant.value}"/>
+		</h:selectOneMenu>
+		<plexus:command 
+				bean="#{views$secured$enrollment$enrollmentassistants}"
+				action="addAspirant"
+				label="#{msg['enrollment_assistants_add']}"
+				title="#{msg['enrollment_assistants_add_hint']}"
+				styleClass="button_add" />
+	</o:block>
 </ui:composition>

@@ -23,7 +23,7 @@ import org.openuss.web.Constants;
  * Aspirant page to manage user application for membership 
  * 
  */
-@Bean(name = "views$secured$lecture$enrollmentaspirants", scope = Scope.REQUEST)
+@Bean(name = "views$secured$enrollment$enrollmentaspirants", scope = Scope.REQUEST)
 @View
 public class EnrollmentAspirantsPage extends AbstractEnrollmentPage {
 	private static final Logger logger = Logger.getLogger(EnrollmentAspirantsPage.class);
