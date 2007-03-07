@@ -21,7 +21,7 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$enrollment$main", scope = Scope.REQUEST)
 @View
-public class EnrollmentPage extends AbstractLecturePage {
+public class EnrollmentPage extends AbstractEnrollmentPage {
 
 	private static final long serialVersionUID = 1394531398550932611L;
 
@@ -40,7 +40,6 @@ public class EnrollmentPage extends AbstractLecturePage {
 		subject.setShortcut("TESTSHORT");
 		subject.setDescription("TestDescription");
 		
-		enrollment = Enrollment.Factory.newInstance();
 		enrollment.setAccessType(AccessType.OPEN);
 		enrollment.setDocuments(true);
 		enrollment.setDiscussion(true);
