@@ -25,9 +25,6 @@ public class EnrollmentPage extends AbstractEnrollmentPage {
 
 	private static final long serialVersionUID = 1394531398550932611L;
 
-	@Property(value = "#{sessionScope.enrollment}")
-	protected Enrollment enrollment;
-
 	@Property(value = "#{param.enrollmentId}")
 	protected Long enrollmentId;
 	
@@ -40,6 +37,7 @@ public class EnrollmentPage extends AbstractEnrollmentPage {
 		subject.setShortcut("TESTSHORT");
 		subject.setDescription("TestDescription");
 		
+		if (enrollment==null) enrollment = Enrollment.Factory.newInstance();		
 		enrollment.setAccessType(AccessType.OPEN);
 		enrollment.setDocuments(true);
 		enrollment.setDiscussion(true);
