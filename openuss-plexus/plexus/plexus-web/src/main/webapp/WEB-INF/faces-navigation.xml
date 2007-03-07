@@ -368,6 +368,11 @@
 				<from-outcome>enrollment_options_assistants</from-outcome>
 				<to-view-id>/views/secured/enrollment/enrollmentassistants.xhtml</to-view-id>				
 			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>enrollment_options_news</from-outcome>
+				<to-view-id>/views/secured/lecture/news.xhtml</to-view-id>				
+			</navigation-case>
 			
 			
 		</navigation-rule>
