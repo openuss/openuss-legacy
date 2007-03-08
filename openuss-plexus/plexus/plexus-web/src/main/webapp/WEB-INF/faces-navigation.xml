@@ -309,9 +309,10 @@
 		<navigation-rule>
 			<from-view-id>/views/secured/*</from-view-id>
 		
+			<!-- TODO move main to public or insert second public enrollment main -->
 			<navigation-case>
 				<from-outcome>enrollment</from-outcome>
-				<to-view-id>/views/public/secured/enrollment/main.xhtml</to-view-id>
+				<to-view-id>/views/secured/enrollment/main.xhtml</to-view-id>
 			</navigation-case>
 
 			<navigation-case>

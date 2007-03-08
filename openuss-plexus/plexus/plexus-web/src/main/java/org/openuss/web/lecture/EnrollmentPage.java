@@ -49,7 +49,8 @@ public class EnrollmentPage extends AbstractEnrollmentPage {
 		enrollmentId = enrollment.getId();
 		
 		faculty = Faculty.Factory.newInstance();
-		faculty.setId(new Long(8438));
+		// has to be set to an id that exists in db
+		faculty.setId(new Long(8441));
 		faculty.setName("TestFaculty");
 		faculty.setShortcut("TF");
 		enrollment.setFaculty(faculty);
