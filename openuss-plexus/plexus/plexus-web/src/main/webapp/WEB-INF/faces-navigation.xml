@@ -311,7 +311,7 @@
 		
 			<navigation-case>
 				<from-outcome>enrollment</from-outcome>
-				<to-view-id>/views/public/news/newsDetail.xhtml</to-view-id>
+				<to-view-id>/views/public/secured/enrollment/main.xhtml</to-view-id>
 			</navigation-case>
 
 			<navigation-case>
@@ -382,6 +382,26 @@
 			<navigation-case>
 				<from-outcome>mailinglist_subscribers</from-outcome>
 				<to-view-id>/views/secured/enrollment/mailinglistsubscribers.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>braincontest_main</from-outcome>
+				<to-view-id>/views/secured/enrollment/braincontestmain.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>braincontest_new</from-outcome>
+				<to-view-id>/views/secured/enrollment/braincontestnew.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>braincontest_solve</from-outcome>
+				<to-view-id>/views/secured/enrollment/braincontestsolve.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>braincontest_top</from-outcome>
+				<to-view-id>/views/secured/enrollment/braincontesttop.xhtml</to-view-id>				
 			</navigation-case>			
 			
 		</navigation-rule>

@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:plexus="http://www.openuss.org/plexus/jsf">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputText
+			value="#{msg.enrollment_main_title} - #{enrollment.shortcut}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+		<!-- removed ACL tags -->
+
+		<h:form id="brainContestTableFrom">
+			<plexus:dataTable id="brainContestTable"
+				label="#{msg.braincontest_main_header}"
+				value="views$secured$enrollment$braincontestmain.data"
+				var="braincontest" rows="10">
+
+
+				<t:column>
+					<plexus:commandSortHeader columnName="date">#{msg['braincontest_main_column_date']}</plexus:commandSortHeader>
+					<h:outputText value="#{braincontest.releaseDate}" />
+				</t:column>
+
+				<t:column>
+					<plexus:commandSortHeader columnName="title"> #{msg['braincontest_main_column_date']}</plexus:commandSortHeader>
+					<h:outputText value="#{braincontest.title}" />
+				</t:column>
+				
+				<t:column>
+					<plexus:commandSortHeader columnName="answers">#{msg['braincontest_main_column_answers']}</plexus:commandSortHeader>
+					<h:outputText value="#{braincontest.answerCount}" />
+				</t:column>
+
+				<plexus:column header="#{msg.braincontest_main_column_actions}">
+					<h:commandButton 
+				    	id="topList"
+						action="braincontest_top" 
+						value="#{msg.braincontest_main_button_top}" 
+						title="#{msg.braincontest_main_button_top}"
+						styleClass="button"/>
+					<h:commandButton 
+					    id="changeContest"
+						action="braincontest_new" 
+						value="#{msg.braincontest_new}" 
+						title="#{msg.braincontest_new}"
+						styleClass="button"/>
+					<plexus:command
+						bean="#{views$secured$enrollment$braincontestmain}"
+						action="remove"
+						label="#{msg['braincontest_main_button_remove']}"
+						title="#{msg['braincontest_main_button_remove']}"
+						styleClass="button" />
+				</plexus:column>
+
+			</plexus:dataTable>
+			<o:block>
+				<h:commandButton 
+				    id="addNewsItem"
+					action="braincontest_new" 
+					value="#{msg.braincontest_new}" 
+					title="#{msg.braincontest_new}"
+					styleClass="button"/>
+			</o:block>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+<!-- text above will be ignored -->
+
+</body>
+</html>
