@@ -331,6 +331,17 @@
 	    <load-on-startup>2</load-on-startup>
 	</servlet>
 -->	
+
+	<servlet>
+		<servlet-name>Webdav Servlet</servlet-name>
+		<servlet-class>org.openuss.web.docmanagement.webdav.WebDavServlet</servlet-class>
+		<init-param>
+			<param-name>resource-path-prefix</param-name>
+			<param-value>repository</param-value>
+		</init-param>
+		<load-on-startup>4</load-on-startup>
+	</servlet>
+	
 	<servlet-mapping>
 		<servlet-name>RepositoryServlet</servlet-name>
 		<url-pattern>/files/*</url-pattern>
@@ -352,6 +363,11 @@
 	    <url-pattern>/jenia4faces/*</url-pattern>
 	</servlet-mapping>
 -->	
+
+	<servlet-mapping>
+		<servlet-name>Webdav Servlet</servlet-name>
+		<url-pattern>/repository/*</url-pattern>
+	</servlet-mapping>
 	
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
