@@ -16,5 +16,10 @@ public class BrainContestImpl
      * The serial version UID of this class. Needed for serialization.
      */
     private static final long serialVersionUID = 5555579948326850568L;
+    
+    public String getAnswerCount(){
+    	//TODO implement me
+    	return "123/150";
+    }
 
 }
