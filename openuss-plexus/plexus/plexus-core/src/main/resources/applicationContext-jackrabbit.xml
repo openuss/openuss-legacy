@@ -21,5 +21,14 @@
 	<bean id="distributionViewBacker" class="org.openuss.web.docmanagement.DistributionViewBacker">
 		<property name="distributionService" ref="distributionService"></property>
 	</bean>
+
+
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      WebDAV
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+	
+	<bean id="sessionProvider" class="org.openuss.docmanagement.webdav.SessionProvider">
+		<property name="repository" ref="repository"></property>
+	</bean>
 	
 </beans>

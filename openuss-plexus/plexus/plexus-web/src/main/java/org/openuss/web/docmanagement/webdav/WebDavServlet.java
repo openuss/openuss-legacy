@@ -15,16 +15,21 @@ import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.apache.jackrabbit.webdav.io.InputContextImpl;
 import org.apache.jackrabbit.webdav.io.OutputContextImpl;
 import org.apache.log4j.Logger;
+import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
+import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.View;
 import org.openuss.docmanagement.ResourceConfiguration;
 import org.openuss.docmanagement.webdav.DavLocatorFactoryImpl;
 import org.openuss.docmanagement.webdav.DavService;
 import org.openuss.docmanagement.webdav.SessionProvider;
 
-
 /**
  * @author David Ullrich
  * @version 0.6
  */
+@Bean(name="webDavServlet", scope=Scope.REQUEST) //TODO request or session scope?
+@View
 public class WebDavServlet extends HttpServlet {
 	private final static Logger logger = Logger.getLogger(WebDavServlet.class);
 	
@@ -43,7 +48,10 @@ public class WebDavServlet extends HttpServlet {
 	
 	private ResourceConfiguration configuration;
 	private DavService davService;
+	
+	@Property(value = "#{sessionProvider}")	
 	private SessionProvider sessionProvider;
+	
 	private DavLocatorFactory locatorFactory;
 	
 	/* (non-Javadoc)
@@ -186,9 +194,6 @@ public class WebDavServlet extends HttpServlet {
 	 * @return
 	 */
 	public SessionProvider getSessionProvider() {
-		if (sessionProvider == null) {
-			sessionProvider = new SessionProvider();
-		}
 		return sessionProvider;
 	}
 	
@@ -215,5 +220,9 @@ public class WebDavServlet extends HttpServlet {
 		}
 		String hrefPrefix = request.getScheme() + "://" + request.getHeader("Host") + contextPath;
 		return getLocatorFactory().createResourceLocator(hrefPrefix, path);
+	}
+
+	public void setSessionProvider(SessionProvider sessionProvider) {
+		this.sessionProvider = sessionProvider;
 	}
 }

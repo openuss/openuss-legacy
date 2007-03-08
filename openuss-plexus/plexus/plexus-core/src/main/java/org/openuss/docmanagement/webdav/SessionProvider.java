@@ -25,7 +25,7 @@ public class SessionProvider {
 	
 	private final String REPOSITORY_USERNAME = "username";
 	private final String REPOSITORY_PASSWORD = "password";
-	transient private Repository repository;
+	private Repository repository;
 
 	/* (non-Javadoc)
 	 * @see org.apache.jackrabbit.webdav.DavSessionProvider#attachSession(org.apache.jackrabbit.webdav.WebdavRequest)
@@ -115,9 +115,6 @@ public class SessionProvider {
 	 * @return
 	 */
 	public Repository getRepository() {
-		if (repository == null) {
-			// TODO Referenz auf das Repository bekommen
-		}
 		return repository;
 	}
 	
