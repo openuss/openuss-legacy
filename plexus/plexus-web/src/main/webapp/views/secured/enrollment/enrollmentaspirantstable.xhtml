@@ -11,8 +11,8 @@
     <plexus:dataTable id="enrollmentaspirants" label="#{msg.faculty_members_subheading}" value="views$secured$enrollment$enrollmentaspirants.data" var="aspirant" rows="10">  
       
 		<t:column>
-			<plexus:commandSortHeader columnName="username"> #{msg['user_username']} </plexus:commandSortHeader>
-			<h:outputText value="#{aspirant.username}"/>
+			<plexus:commandSortHeader columnName="lastname">#{msg['user_contact_lastname']}</plexus:commandSortHeader>
+			<h:outputText value="#{aspirant.lastName}"/>
 		</t:column>
 		
 		<t:column>
@@ -21,17 +21,12 @@
 		</t:column>
 		 
 		<t:column>
-			<plexus:commandSortHeader columnName="lastname">#{msg['user_contact_lastname']}</plexus:commandSortHeader>
-			<h:outputText value="#{aspirant.lastName}"/>
-		</t:column>
-
-		<t:column>
-			<plexus:commandSortHeader columnName="email">#{msg['user_email']}</plexus:commandSortHeader>
-			<h:outputText value="#{aspirant.email}"/>
+			<plexus:commandSortHeader columnName="username"> #{msg['user_username']} </plexus:commandSortHeader>
+			<h:outputText value="#{aspirant.username}"/>
 		</t:column>
 		
 		<t:column>
-			<f:facet name="header">#{msg['commands_header']}</f:facet>
+			<f:facet name="header">#{msg['enrollment_aspirants_aspire']}</f:facet>
 			<h:selectOneMenu styleClass="pulldown_small" valueChangeListener="#{views$secured$enrollment$enrollmentaspirants.changedAspirant}">
 				<f:selectItem itemValue="null" itemLabel=""/>
 				<f:selectItem itemValue="accept" itemLabel="#{msg['faculty_aspirant_accept']}"/>
