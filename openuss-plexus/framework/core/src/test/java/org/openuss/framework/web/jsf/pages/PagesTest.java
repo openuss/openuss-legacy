@@ -104,7 +104,10 @@ public class PagesTest extends AbstractJsfTestCase {
 		registerManagedBeans();
 		
 		url = Pages.instance().encodePageParameters(facesContext, url, "/pages/test.xhtml");
-		assertEquals(url,"http://localhost:8080/pages/test.faces?testId=1&test=1&test2=2&test3=3");
+		assertTrue(url.contains("testId=1"));
+		assertTrue(url.contains("test=1"));
+		assertTrue(url.contains("test2=2"));
+		assertTrue(url.contains("test3=3"));
 	}
 	
 	public void testSecurityConstraintParse() {
