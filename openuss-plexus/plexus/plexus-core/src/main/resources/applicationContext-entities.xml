@@ -41,7 +41,7 @@
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			  Mail
  	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
+	<!-- Beans for Quartz sending -->
     <bean id="mailEngine" class="org.openuss.framework.mail.MailEngine">
         <property name="mailSender" ref="mailSender"/>
         <property name="velocityEngine" ref="velocityEngine"/>
@@ -82,6 +82,10 @@
         </property>
     </bean>
     
+    <!-- Beans for Mail initialize and editing  -->
+    <bean id="mailingMessage" class="org.openuss.mail.MailMessageImpl" />
+    <bean id="mailingJob" class="org.openuss.mail.MailingJobImpl" />
+    
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     				Quartz
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -111,22 +115,11 @@
 			</list>
 		</property>
 	</bean>
-	 <!-- not Quartz but JDK Timer support, due to unresolved problems using Quartz 
-	 <bean id="sendMail" class="org.springframework.scheduling.timer.MethodInvokingTimerTaskFactoryBean">
-		<property name="targetObject" ref="mailSendingQuartzBean"/>
-		<property name="targetMethod" value="send"/>
-	</bean>
-	 <bean id="scheduledTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
-		<property name="delay" value="10000"/>
-		<property name="period" value="300000"/>
-		<property name="timerTask" ref="sendMail"/>
-	</bean>
-	<bean id="timerFactory" class="org.springframework.scheduling.timer.TimerFactoryBean">
-		<property name="scheduledTimerTasks">
-			<list>
-				<ref bean="scheduledTask"/>
-			</list>
-		</property>
-    </bean> 
-	 -->
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    				BrainContest
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<bean id="brainContest" class="org.openuss.braincontest.BrainContestImpl"/>
+	<bean id="brainContestSolution" class="org.openuss.braincontest.SolutionImpl"/>
+	<bean id="brainContestAnswer" class="org.openuss.braincontest.AnswerImpl"/>
 </beans>

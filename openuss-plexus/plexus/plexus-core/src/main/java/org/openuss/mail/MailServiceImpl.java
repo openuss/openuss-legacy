@@ -29,6 +29,7 @@ public class MailServiceImpl
 		mailingJob.setSenderName("System");
 		mailingJob.setSendingTime(new Timestamp(System.currentTimeMillis()));
 		mailingJob.setStatus(MailingStatus.PLANNED);
+		mailingJob.setMailTitle(subject);
 		getMailingJobDao().create(mailingJob);
 		
 		MailToSend mailToSend = new MailToSendImpl();

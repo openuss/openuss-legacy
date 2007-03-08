@@ -35,12 +35,10 @@
 
 
 			<o:block label="#{msg.mailinglist_newmail_header}">
-				<h:outputText value="#{msg.mailingjob_newmail_mailtitle}"
-					styleClass="heading" />
 				<o:input entity="mailingJob" property="mailTitle" required="true">
 				</o:input>
 				<h:outputText value="#{msg.mailingjob_newmail_mailmessage}"
-					styleClass="heading" />
+					styleClass="field_label" />
 				<fck:editor value="#{mailingMessage.mailMessage}" id="textEditor"
 					toolbarSet="Basic" width="100%" height="200" />
 
