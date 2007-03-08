@@ -215,6 +215,11 @@
             <groupId>jsr170</groupId>
             <artifactId>jcr</artifactId>           
         </dependency>
+        
+        <dependency>
+        	<groupId>org.apache.jackrabbit</groupId>
+        	<artifactId>jackrabbit-webdav</artifactId>
+        </dependency>
 
 	</dependencies>
 
