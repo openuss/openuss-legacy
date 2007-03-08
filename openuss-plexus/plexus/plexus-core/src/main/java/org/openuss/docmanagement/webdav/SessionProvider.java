@@ -116,13 +116,7 @@ public class SessionProvider {
 	 */
 	public Repository getRepository() {
 		if (repository == null) {
-			try {
-				InitialContext context = new InitialContext();
-				Context environment = (Context) context.lookup("java:comp/env");
-				repository = (Repository) environment.lookup("jcr/repository");
-			} catch (Exception ex) {
-				
-			}
+			// TODO Referenz auf das Repository bekommen
 		}
 		return repository;
 	}
