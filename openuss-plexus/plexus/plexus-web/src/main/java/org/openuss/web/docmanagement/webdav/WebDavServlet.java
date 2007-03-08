@@ -3,6 +3,8 @@ package org.openuss.web.docmanagement.webdav;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,21 +17,19 @@ import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.apache.jackrabbit.webdav.io.InputContextImpl;
 import org.apache.jackrabbit.webdav.io.OutputContextImpl;
 import org.apache.log4j.Logger;
-import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
-import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.View;
 import org.openuss.docmanagement.ResourceConfiguration;
 import org.openuss.docmanagement.webdav.DavLocatorFactoryImpl;
 import org.openuss.docmanagement.webdav.DavService;
 import org.openuss.docmanagement.webdav.SessionProvider;
+import org.openuss.repository.RepositoryService;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  * @author David Ullrich
  * @version 0.6
  */
-@Bean(name="webDavServlet", scope=Scope.REQUEST) //TODO request or session scope?
-@View
+
 public class WebDavServlet extends HttpServlet {
 	private final static Logger logger = Logger.getLogger(WebDavServlet.class);
 	
@@ -49,7 +49,6 @@ public class WebDavServlet extends HttpServlet {
 	private ResourceConfiguration configuration;
 	private DavService davService;
 	
-	@Property(value = "#{sessionProvider}")	
 	private SessionProvider sessionProvider;
 	
 	private DavLocatorFactory locatorFactory;
@@ -61,6 +60,9 @@ public class WebDavServlet extends HttpServlet {
 		logger.debug("init started.");
 		
 		super.init();
+		//set sessionProvider
+		final WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		sessionProvider = (SessionProvider) wac.getBean("sessionProvider", SessionProvider.class);
 		
 		// read resource path prefix from configuration and store it in the context
 		resourcePathPrefix = getInitParameter(INIT_PARAMETER_RESOURCE_PATH_PREFIX);
