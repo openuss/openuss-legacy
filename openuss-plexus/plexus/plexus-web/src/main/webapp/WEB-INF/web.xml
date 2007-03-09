@@ -190,6 +190,11 @@
 		<filter-name>openSessionInViewFilter</filter-name>
 		<url-pattern>*.faces</url-pattern>
 	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<url-pattern>/repository/*</url-pattern>
+	</filter-mapping>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - -
 	   Shale Filter
