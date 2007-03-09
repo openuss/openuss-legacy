@@ -5,6 +5,8 @@
  */
 package org.openuss.braincontest;
 
+import org.openuss.TestUtility;
+
 
 /**
  * JUnit Test for Spring Hibernate AnswerDao class.
@@ -12,9 +14,20 @@ package org.openuss.braincontest;
  */
 public class AnswerDaoTest extends AnswerDaoTestBase {
 	
+	private TestUtility testUtility;
+	
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
+	}
+
 	public void testAnswerDaoCreate() {
 		Answer answer = new AnswerImpl();
 		answer.setAnswer(" ");
+		answer.setSolver(testUtility.createDefaultUserInDB());
 		assertNull(answer.getId());
 		answerDao.create(answer);
 		assertNotNull(answer.getId());
