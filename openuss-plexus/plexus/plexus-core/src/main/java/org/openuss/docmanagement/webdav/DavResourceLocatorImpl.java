@@ -1,88 +1,113 @@
 package org.openuss.docmanagement.webdav;
 
+import org.apache.commons.lang.NotImplementedException;
+import org.apache.jackrabbit.util.Text;
 import org.apache.jackrabbit.webdav.DavLocatorFactory;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
 
+/**
+ * @author David Ullrich
+ * @version 0.6
+ */
 public class DavResourceLocatorImpl implements DavResourceLocator {
+	private final String prefix;
+	private final String resourcePath;
+	private final String href;
+	private final DavLocatorFactory locatorFactory;
+	
+	public DavResourceLocatorImpl(String prefix, String resourcePath, DavLocatorFactory locatorFactory) {
+		this.prefix = prefix;
+		// remove trailing slash except for root item
+		if (resourcePath.endsWith("/") && (resourcePath.length() > 1)) {
+			resourcePath = resourcePath.substring(0, resourcePath.length() - 1);
+		}
+		this.resourcePath = resourcePath;
+		this.locatorFactory = locatorFactory;
+		
+		this.href = prefix + Text.escape(resourcePath);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getFactory()
 	 */
 	public DavLocatorFactory getFactory() {
-		// TODO Auto-generated method stub
-		return null;
+		return locatorFactory;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getHref(boolean)
 	 */
 	public String getHref(boolean isCollection) {
-		// TODO Auto-generated method stub
-		return null;
+		String suffix = "";
+		// append trailing slash for collections except for root
+		if (isCollection && !isRootLocation()) {
+			suffix = "/";
+		}
+		return href + suffix;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getPrefix()
 	 */
 	public String getPrefix() {
-		// TODO Auto-generated method stub
-		return null;
+		return prefix;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getRepositoryPath()
 	 */
 	public String getRepositoryPath() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO repository path not supported yet
+		throw new NotImplementedException("DavResourceLocatorImpl.getRepositoryPath() not supported yet.");
 	}
 
 	/* (non-Javadoc)
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getResourcePath()
 	 */
 	public String getResourcePath() {
-		// TODO Auto-generated method stub
-		return null;
+		return resourcePath;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getWorkspaceName()
 	 */
 	public String getWorkspaceName() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO workspaces not supported yet
+		throw new NotImplementedException("DavResourceLocatorImpl.getWorkspaceName() not supported yet.");
 	}
 
 	/* (non-Javadoc)
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getWorkspacePath()
 	 */
 	public String getWorkspacePath() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO workspaces not supported yet
+		throw new NotImplementedException("DavResourceLocatorImpl.getWorkspacePath() not supported yet.");
 	}
 
 	/* (non-Javadoc)
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#isRootLocation()
 	 */
 	public boolean isRootLocation() {
-		// TODO Auto-generated method stub
-		return false;
+		// test, if resource path is /
+		return "/".equals(getResourcePath());
 	}
 
 	/* (non-Javadoc)
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#isSameWorkspace(org.apache.jackrabbit.webdav.DavResourceLocator)
 	 */
 	public boolean isSameWorkspace(DavResourceLocator locator) {
-		// TODO Auto-generated method stub
-		return false;
+		// workspaces cannot be equal if parameter is null
+		if (locator == null) {
+			return false;
+		}
+		// delegate to other method
+		return isSameWorkspace(locator.getWorkspaceName());
 	}
 
 	/* (non-Javadoc)
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#isSameWorkspace(java.lang.String)
 	 */
 	public boolean isSameWorkspace(String workspaceName) {
-		// TODO Auto-generated method stub
-		return false;
+		return getWorkspaceName().equals(workspaceName);
 	}
-
 }
