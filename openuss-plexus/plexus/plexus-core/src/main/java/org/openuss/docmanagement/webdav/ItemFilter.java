@@ -8,8 +8,9 @@ import javax.jcr.Item;
  */
 public interface ItemFilter {
 	/**
-	 * @param item
-	 * @return
+	 * Returns true, if the given item should be filtered.
+	 * @param item The item to be tested.
+	 * @return true if given item should be filtered.
 	 */
 	public boolean isFilteredItem(Item item);
 }
