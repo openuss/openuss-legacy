@@ -337,7 +337,7 @@
 		<servlet-class>org.openuss.web.docmanagement.webdav.WebDavServlet</servlet-class>
 		<init-param>
 			<param-name>resource-path-prefix</param-name>
-			<param-value>repository</param-value>
+			<param-value>/repository</param-value>
 		</init-param>
 		<load-on-startup>4</load-on-startup>
 	</servlet>

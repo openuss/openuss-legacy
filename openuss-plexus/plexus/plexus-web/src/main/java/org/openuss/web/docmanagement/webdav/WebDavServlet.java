@@ -60,6 +60,7 @@ public class WebDavServlet extends HttpServlet {
 		logger.debug("init started.");
 		
 		super.init();
+		
 		//set sessionProvider
 		final WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 		sessionProvider = (SessionProvider) wac.getBean("sessionProvider", SessionProvider.class);
