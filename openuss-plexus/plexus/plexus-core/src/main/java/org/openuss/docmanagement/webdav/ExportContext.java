@@ -4,18 +4,29 @@ import java.io.OutputStream;
 
 import javax.jcr.Item;
 
+import org.apache.jackrabbit.webdav.io.OutputContext;
+
 /**
  * @author David Ullrich
  * @version 0.5
  */
 public class ExportContext implements IOContext {
+	private final Item exportRoot;
+	private final OutputContext context;
+	
+	public ExportContext(Item exportRoot, OutputContext context) {
+		this.exportRoot = exportRoot;
+		this.context = context;
+	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.IOContext#hasStream()
 	 */
 	public boolean hasStream() {
-		// TODO Auto-generated method stub
-		return false;
+		if (context == null) {
+			return false;
+		}
+		return context.hasStream();
 	}
 
 	/* (non-Javadoc)
@@ -38,8 +49,7 @@ public class ExportContext implements IOContext {
 	 * @return
 	 */
 	public Item getExportRoot() {
-		// TODO
-		return null;
+		return exportRoot;
 	}
 	
 	/**

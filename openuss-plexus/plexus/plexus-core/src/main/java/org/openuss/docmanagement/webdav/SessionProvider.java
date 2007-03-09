@@ -7,8 +7,6 @@ import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,15 +25,18 @@ public class SessionProvider {
 	private final String REPOSITORY_PASSWORD = "password";
 	private Repository repository;
 
-	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavSessionProvider#attachSession(org.apache.jackrabbit.webdav.WebdavRequest)
+	/**
+	 * @param request
+	 * @param davService
+	 * @return
+	 * @throws DavException
 	 */
 	public boolean attachSession(HttpServletRequest request, DavService davService) throws DavException {
 		try {
 			// retrieve user authentication information from request
 			Credentials userCredentials = getCredentials(request);
 			if (userCredentials == null) {
-				// user authentication to OpenUSS failed
+				// user authentication missing
 				throw new DavException(HttpServletResponse.SC_UNAUTHORIZED);
 			}
 
@@ -78,8 +79,8 @@ public class SessionProvider {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavSessionProvider#releaseSession(org.apache.jackrabbit.webdav.WebdavRequest)
+	/**
+	 * @param davService
 	 */
 	public void releaseSession(DavService davService) {
 		// retrieve Session from Service
@@ -115,9 +116,15 @@ public class SessionProvider {
 	 * @return
 	 */
 	public Repository getRepository() {
+		if (repository == null) {
+			
+		}
 		return repository;
 	}
 	
+	/**
+	 * @param repository
+	 */
 	public void setRepository(Repository repository) {
 		this.repository = repository;
 	}
