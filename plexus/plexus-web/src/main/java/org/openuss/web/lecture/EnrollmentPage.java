@@ -11,7 +11,6 @@ import org.openuss.lecture.AccessType;
 import org.openuss.lecture.Enrollment;
 import org.openuss.lecture.Faculty;
 import org.openuss.lecture.LectureException;
-import org.openuss.lecture.LectureService;
 import org.openuss.lecture.Subject;
 import org.openuss.web.Constants;
 
@@ -50,7 +49,7 @@ public class EnrollmentPage extends AbstractEnrollmentPage {
 		
 		faculty = Faculty.Factory.newInstance();
 		// has to be set to an id that exists in db
-		faculty.setId(new Long(8441));
+		faculty.setId(new Long(33627));
 		faculty.setName("TestFaculty");
 		faculty.setShortcut("TF");
 		enrollment.setFaculty(faculty);

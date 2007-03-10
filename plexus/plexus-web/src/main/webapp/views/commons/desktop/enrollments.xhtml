@@ -18,9 +18,10 @@
 			<plexus:commandSortHeader columnName="subject.name">
 				<h:outputText value="#{msg.desktop_enrollments_colheader_name}"/>
 			</plexus:commandSortHeader>
-			<h:commandLink action="#{views$secured$desktop$desktop.showEnrollment}" styleClass="command" title="#{enrollmentItem.subject.description}">
+			<o:link value="/views/secured/enrollment/main.faces" title="#{enrollmentItem.subject.description}">
+				<f:param value="#{enrollmentItem.id}" name="enrollment" />
 				<h:outputText value="#{enrollmentItem.subject.name} - #{enrollmentItem.period.name} (#{enrollmentItem.shortcut})"/>
-			</h:commandLink>
+			</o:link>
 		</t:column>
 		 
 		<plexus:column header="#{msg.commands_header}">

@@ -31,7 +31,9 @@
 	<ui:define name="content" styleClass="footer_normal">
 		<h:form id="enrollmentMainForm">
 			<o:block label="#{enrollment.subject.name} (#{enrollment.shortcut})">
-  				#{enrollment.subject.description}  				
+				<div class="content_font_normal">
+	  				#{enrollment.subject.description}  				
+	  			</div>
   				<h:outputText value="#{msg.enrollment_main_assistants}"
 					styleClass="field_label"></h:outputText>
 				<t:dataList id="String"
@@ -46,12 +48,13 @@
 				</t:dataList>
 			</o:block>
 
-			<o:block label="#{msg.enrollment_main_access}">
-				<h:outputText value="#{msg.enrollment_main_access_passtext}"></h:outputText>
-				<h:outputText value="#{msg.enrollment_main_access_password}"
-					styleClass="field_label"></h:outputText>
-				<h:inputSecret
-					value="#{views$secured$enrollment$enrollmentmain.password}"></h:inputSecret>
+			<o:block label="#{msg.enrollment_main_access}" styleClass="form_box">
+				<span class="content_font_normal"> 
+					<h:outputText value="#{msg.enrollment_main_access_passtext}"/>
+				</span>
+				<h:outputLabel for="enrollment_password" value="#{msg.enrollment_main_access_password}" styleClass="field_label"/>
+				<h:inputSecret id="enrollment_password" value="#{views$secured$enrollment$enrollmentmain.password}" styleClass="field"/>
+				<h:message for="enrollment_password" errorStyleClass="enrollment_password"/>
 			</o:block>
 			<o:block>
 				<plexus:command bean="#{views$secured$enrollment$enrollmentmain}"
@@ -60,7 +63,9 @@
 			</o:block>
 
 			<o:block label="#{msg.enrollment_main_access}">
-				<h:outputText value="#{msg.enrollment_main_access_applytext}"></h:outputText>
+				<p class="content_font_normal">
+					<h:outputText value="#{msg.enrollment_main_access_applytext}"></h:outputText>
+				</p>
 			</o:block>
 			<o:block>
 				<plexus:command bean="#{views$secured$enrollment$enrollmentmain}"
