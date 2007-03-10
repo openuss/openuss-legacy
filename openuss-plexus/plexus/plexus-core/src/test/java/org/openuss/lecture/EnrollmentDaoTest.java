@@ -5,7 +5,7 @@
  */
 package org.openuss.lecture;
 
-import org.openuss.security.SecurityTestUtils;
+import org.openuss.TestUtility;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
 import org.springframework.dao.DataAccessException;
@@ -17,6 +17,8 @@ import org.springframework.dao.DataAccessException;
  */
 public class EnrollmentDaoTest extends EnrollmentDaoTestBase {
 	
+	private TestUtility testUtility;
+
 	private FacultyDao facultyDao;
 	private SubjectDao subjectDao;
 	private PeriodDao periodDao;
@@ -162,7 +164,7 @@ public class EnrollmentDaoTest extends EnrollmentDaoTestBase {
 	}
 
 	private Faculty createFaculty() {
-		user = SecurityTestUtils.createDefaultUser();
+		user = testUtility.createDefaultUser();
 		userDao.create(user);
 				
 		Faculty faculty = Faculty.Factory.newInstance();
@@ -180,6 +182,14 @@ public class EnrollmentDaoTest extends EnrollmentDaoTestBase {
 
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
+	}
+
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
 	}
 	
 	
