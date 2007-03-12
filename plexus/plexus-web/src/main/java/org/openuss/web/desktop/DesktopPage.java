@@ -127,8 +127,9 @@ public class DesktopPage extends BasePage {
 	 */
 	public String showSubject() {
 		logger.debug("showSubject");
-		// TODO move to period select page
-		return Constants.SUCCESS;
+		Subject subject = subjectsProvider.getRowData();
+		setSessionBean(Constants.SUBJECT, subject);
+		return Constants.SUBJECT_ENROLLMENT_SELECTION_PAGE;
 	}
 	
 	public String removeSubject() {

@@ -69,4 +69,6 @@ public class Constants {
 
 	public static final String OUTCOME_BACKWARD = "view:backward";
 
+	public static final String SUBJECT_ENROLLMENT_SELECTION_PAGE = "subject_enrollment_selection";
+
 }

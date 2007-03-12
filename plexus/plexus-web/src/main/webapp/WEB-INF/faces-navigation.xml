@@ -155,6 +155,7 @@
     	</navigation-case>
     </navigation-rule>
 
+    
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
        A c t i o n s
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
@@ -190,7 +191,6 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
        D e s k t o p  - P a g es
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
-	
 	<navigation-rule>
 		<from-view-id>/views/secured/*</from-view-id>
 		<navigation-case>
@@ -211,6 +211,13 @@
 		</navigation-case>
 	</navigation-rule>
 	
+    <navigation-rule>
+    	<from-view-id>/views/secured/desktop/*</from-view-id>
+    	<navigation-case>
+    		<from-outcome>subject_enrollment_selection</from-outcome>
+    		<to-view-id>/views/secured/desktop/subjectenrollmenselection.xhtml</to-view-id>
+    	</navigation-case>
+    </navigation-rule>
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
        F a c u l t y  - R e g i s t r a t i o n 
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
