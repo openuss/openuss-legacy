@@ -12,19 +12,11 @@ import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.jackrabbit.webdav.DavException;
-import org.apache.jackrabbit.webdav.DavLocatorFactory;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
-import org.apache.jackrabbit.webdav.DavSession;
-import org.apache.jackrabbit.webdav.WebdavRequest;
 import org.apache.jackrabbit.webdav.io.InputContext;
 import org.apache.jackrabbit.webdav.io.OutputContext;
 import org.apache.log4j.Logger;
-import org.openuss.docmanagement.ResourceConfiguration;
-import org.openuss.docmanagement.ResourceDao;
-import org.openuss.docmanagement.ResourceFactory;
 
 /**
  * @author David Ullrich

@@ -1,4 +1,4 @@
-package org.openuss.docmanagement;
+package org.openuss.docmanagement.webdav;
 
 import java.net.URL;
 

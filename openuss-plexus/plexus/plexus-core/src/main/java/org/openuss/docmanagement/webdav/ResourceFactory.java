@@ -1,4 +1,4 @@
-package org.openuss.docmanagement;
+package org.openuss.docmanagement.webdav;
 
 import javax.jcr.Item;
 import javax.jcr.Node;
@@ -10,8 +10,8 @@ import org.apache.log4j.Logger;
 public class ResourceFactory {
 	private final Logger logger = Logger.getLogger(ResourceFactory.class);
 	
-	public ResourceDao createResource(Session session, String resourcePath) {
-		ResourceDao resource = null;
+	public DavResource createResource(Session session, String resourcePath) {
+		DavResource resource = null;
 		
 		// return null, if session or path is null or path is empty
 		if ((session == null) || (resourcePath == null) || (resourcePath.length() == 0)) {
@@ -28,11 +28,11 @@ public class ResourceFactory {
 			Node node = (Node)representedItem;
 			if (node.isNodeType("nt:file")) {
 				logger.debug("File found.");
-				resource = new FileDao(node);
+				resource = new DavResourceFile(node);
 			} else if (node.isNodeType("nt:folder")) {
 				logger.debug("Folder found.");
 				// TODO genauer differenzieren
-				resource = new FolderDao(node);
+				resource = new DavResourceFolder(node);
 			} else {
 				logger.debug("Unsupported node type found: " + node.getPrimaryNodeType().toString());
 			}
