@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.openuss.cartridges.uml2.hibernate
+Bundle-SymbolicName: org.openuss.cartridges.uml2.hibernate; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Localization: plugin
+Require-Bundle: org.openarchitectureware.core.check,
+ org.openarchitectureware.core.emftools,
+ org.openarchitectureware.core.xpand2

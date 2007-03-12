@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="generated/java/|main/java/" kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="lib/asm-attrs-1.5.3.jar"/>
+	<classpathentry kind="lib" path="lib/commons-beanutils-1.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/commons-cli-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections-2.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/jalopy-1.5-RC3.jar"/>
+	<classpathentry kind="lib" path="lib/jta-1.0.1B.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.9.jar"/>
+	<classpathentry kind="lib" path="lib/oaw-core-check-4.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/oaw-core-emftools-4.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/oaw-core-expressions-4.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/oaw-core-workflow-4.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/oaw-core-xpand2-4.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/oaw-uml2-adapter-4.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/oro-2.0.8.jar"/>
+	<classpathentry kind="lib" path="lib/saxpath-1.0-FCS.jar"/>
+	<classpathentry kind="lib" path="lib/xalan-2.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/xercesImpl-2.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/xml-apis-1.3.03.jar"/>
+	<classpathentry kind="lib" path="lib/cglib-2.1.3.jar"/>
+	<classpathentry kind="lib" path="lib/jaxen-core-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jaxen-jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore_2.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore.xmi_2.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.mapping.ecore2xml_2.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml_2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml.ecore.importer_2.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml.resources_2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/common-1.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/common-2.2.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
