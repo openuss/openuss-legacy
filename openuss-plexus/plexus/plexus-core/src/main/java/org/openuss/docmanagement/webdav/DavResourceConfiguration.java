@@ -11,7 +11,7 @@ import org.openuss.docmanagement.webdav.ItemFilter;
  * @author David Ullrich
  * @version 0.5
  */
-public class ResourceConfiguration {
+public class DavResourceConfiguration {
 	private IOManager ioManager;
 	private ItemFilter itemFilter;
 	

@@ -5,5 +5,8 @@ package org.openuss.docmanagement.webdav;
  * @version 0.5
  */
 public abstract class DavResource {
-
+	/**
+	 * @return
+	 */
+	public abstract boolean isCollection();
 }

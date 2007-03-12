@@ -7,8 +7,8 @@ import javax.jcr.Session;
 
 import org.apache.log4j.Logger;
 
-public class ResourceFactory {
-	private final Logger logger = Logger.getLogger(ResourceFactory.class);
+public class DavResourceFactory {
+	private final Logger logger = Logger.getLogger(DavResourceFactory.class);
 	
 	public DavResource createResource(Session session, String resourcePath) {
 		DavResource resource = null;
@@ -28,11 +28,11 @@ public class ResourceFactory {
 			Node node = (Node)representedItem;
 			if (node.isNodeType("nt:file")) {
 				logger.debug("File found.");
-				resource = new DavResourceFile(node);
+				// TODO
 			} else if (node.isNodeType("nt:folder")) {
 				logger.debug("Folder found.");
 				// TODO genauer differenzieren
-				resource = new DavResourceFolder(node);
+				// TODO
 			} else {
 				logger.debug("Unsupported node type found: " + node.getPrimaryNodeType().toString());
 			}

@@ -25,15 +25,15 @@ import org.apache.log4j.Logger;
 public class DavService {
 	private final Logger logger = Logger.getLogger(DavService.class);
 	
-	private final ResourceConfiguration configuration;
+	private final DavResourceConfiguration configuration;
 	private Session session;
-	private ResourceFactory resourceFactory;
+	private DavResourceFactory resourceFactory;
 	
 	/**
 	 * Constructor
 	 * @param configuration
 	 */
-	public DavService(ResourceConfiguration configuration) {
+	public DavService(DavResourceConfiguration configuration) {
 		this.configuration = configuration;
 	}
 	
@@ -114,9 +114,9 @@ public class DavService {
 	/**
 	 * @return
 	 */
-	public ResourceFactory getResourceFactory() {
+	public DavResourceFactory getResourceFactory() {
 		if (resourceFactory == null) {
-			resourceFactory = new ResourceFactory();
+			resourceFactory = new DavResourceFactory();
 		}
 		return resourceFactory;
 	}
