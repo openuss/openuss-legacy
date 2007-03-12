@@ -20,6 +20,7 @@ public class RepositoryFileDaoTest extends RepositoryFileDaoTestBase {
 		repositoryFile.setFileName(" ");
 		repositoryFile.setFileSize(100);
 		repositoryFile.setContentType(" ");
+		repositoryFile.setReleaseDate(new Timestamp(System.currentTimeMillis()));
 		repositoryFile.setCreated(new Timestamp(System.currentTimeMillis()));
 		repositoryFile.setModified(new Timestamp(System.currentTimeMillis()));
 		assertNull(repositoryFile.getId());
