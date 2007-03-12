@@ -1,13 +1,13 @@
-package org.openuss.framework.web.jsf.events;
-
-import org.apache.log4j.Logger;
+package org.openuss.framework.web.jsf.pages;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import javax.servlet.http.HttpServletRequest;
 
-import org.openuss.framework.web.jsf.pages.Pages;
+import org.apache.log4j.Logger;
+
 
 /**
  * This PhaseListener will inject page request parameters into the model after
@@ -22,9 +22,13 @@ public class PagePhaseListener implements PhaseListener {
 	
 	public void afterPhase(PhaseEvent event) {
 		FacesContext facesContext = event.getFacesContext();
-		if (facesContext.getViewRoot() != null) {
-			logger.debug("apply request parameter values...");
-			Pages.instance().applyRequestParameterValues(facesContext);
+		
+		final HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+		if (facesContext.getViewRoot() != null ) {
+			if ( "GET".equals(request.getMethod())) {
+				logger.debug("GET-Request: apply request parameter values...");
+				Pages.instance().applyRequestParameterValues(facesContext);
+			}
 			logger.debug("perform security constraints check...");
 			Pages.instance().performSecurityConstraints(facesContext);
 		}
