@@ -16,6 +16,7 @@ import org.openuss.lecture.LectureException;
 import org.openuss.mail.MailMessage;
 import org.openuss.mail.MailingJob;
 import org.openuss.web.Constants;
+import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 @Bean(name = "views$secured$enrollment$newmail", scope = Scope.REQUEST)
 @View

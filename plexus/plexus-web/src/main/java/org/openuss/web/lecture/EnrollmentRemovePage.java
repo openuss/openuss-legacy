@@ -11,6 +11,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
+import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 /**
  * Enrollment Edit Page Controller

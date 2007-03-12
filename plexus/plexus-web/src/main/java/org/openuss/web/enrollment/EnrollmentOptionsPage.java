@@ -1,4 +1,4 @@
-package org.openuss.web.lecture;
+package org.openuss.web.enrollment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class EnrollmentOptionsPage extends AbstractEnrollmentPage {
 	public String saveOptions() throws LectureException {
 		logger.trace("saving enrollment options");
 		lectureService.persist(enrollment);
-		return Constants.FACULTY_PERIODS_PAGE;
+		return Constants.ENROLLMENT_OPTIONS_PAGE;
 	}
 	
 	/**
@@ -45,7 +45,7 @@ public class EnrollmentOptionsPage extends AbstractEnrollmentPage {
 	 */
 	public String cancelOptions() {
 		// nothing to do - enrollment will be automatically refreshed during prerender phase.
-		return Constants.FACULTY_PERIODS_PAGE;
+		return Constants.ENROLLMENT_PAGE;
 	}
 	
 	/**

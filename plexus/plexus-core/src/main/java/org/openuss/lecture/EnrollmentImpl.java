@@ -5,9 +5,8 @@
 //
 package org.openuss.lecture;
 
-import org.apache.log4j.Logger;
-
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.event.SaveOrUpdateEvent;
 import org.hibernate.event.SaveOrUpdateEventListener;
@@ -15,11 +14,8 @@ import org.hibernate.event.SaveOrUpdateEventListener;
 /**
  * @see org.openuss.lecture.Enrollment
  */
-public class EnrollmentImpl extends org.openuss.lecture.EnrollmentBase implements org.openuss.lecture.Enrollment,
-		SaveOrUpdateEventListener {
-	/**
-	 * Logger for this class
-	 */
+public class EnrollmentImpl extends org.openuss.lecture.EnrollmentBase implements org.openuss.lecture.Enrollment,	SaveOrUpdateEventListener {
+
 	private static final Logger logger = Logger.getLogger(EnrollmentImpl.class);
 
 	/**
@@ -29,7 +25,6 @@ public class EnrollmentImpl extends org.openuss.lecture.EnrollmentBase implement
 
 	/**
 	 * Generates a guid shortcut on persisting if no shortcut is already set.
-	 * 
 	 */
 	private void generateShortcut() {
 		logger.debug("auto-generate shortcut for enrollment");

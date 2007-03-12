@@ -1,7 +1,9 @@
-package org.openuss.web.lecture; 
+package org.openuss.web.enrollment;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.faces.event.ValueChangeEvent;
 
@@ -16,29 +18,42 @@ import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
-@Bean(name = "views$secured$enrollment$enrollmentmembers", scope = Scope.REQUEST)
+/**
+ * Aspirant page to manage user application for membership 
+ * 
+ */
+@Bean(name = "views$secured$enrollment$enrollmentaspirants", scope = Scope.REQUEST)
 @View
-public class EnrollmentMembersPage extends AbstractEnrollmentPage{
-	private static final Logger logger = Logger.getLogger(EnrollmentMembersPage.class);
+public class EnrollmentAspirantsPage extends AbstractEnrollmentPage {
+	private static final Logger logger = Logger.getLogger(EnrollmentAspirantsPage.class);
 	
-	private MemberDataProvider data = new MemberDataProvider();
+	private AspirantDataProvider data = new AspirantDataProvider();
 	
-	public String save(){
-		logger.debug("Enrollment member page - saved");
+	private transient Set<UserInfo> acceptAspirants = new HashSet<UserInfo>();
+	private transient Set<UserInfo> rejectAspirants = new HashSet<UserInfo>();
+	
+	public String save() {
 		return Constants.SUCCESS;
 	}
 	
-	public void changedMember(ValueChangeEvent event) throws LectureException {
-		logger.debug("changed enrollment members");		
+	public String showProfile() {
+		UserInfo userInfo = data.getRowData();
+		User user = User.Factory.newInstance();
+		user.setId(userInfo.getId());
+		setSessionBean("showuser", user);
+		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
-
-
-	private class MemberDataProvider extends AbstractPagedTable<UserInfo> {
+	
+	public void changedAspirant(ValueChangeEvent event) throws LectureException {
+		logger.debug("enrollment: changed aspirant");
+	}
+	
+	private class AspirantDataProvider extends AbstractPagedTable<UserInfo> {
 
 		private DataPage<UserInfo> page; 
 		
 		@Override 
-		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {		
+		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 			ArrayList<UserInfo> al = new ArrayList<UserInfo>();			
 			UserInfo ui1 = new UserInfo(new Long(1234), "cag", "Sebastian", "Roekens", "abc123", "plexus@openuss-plexus.com", true, false, false, new Date(System.currentTimeMillis()));
 			UserInfo ui2 = new UserInfo(new Long(12345), "dueppe", "Ingo", "Düppe", "12345", "plexus@openuss-plexus.com", true, true, false, new Date(System.currentTimeMillis()));
@@ -48,27 +63,15 @@ public class EnrollmentMembersPage extends AbstractEnrollmentPage{
 			return page;
 		}
 	}
-
-	public String showProfile() {
-		UserInfo userInfo = data.getRowData();
-		User user = User.Factory.newInstance();
-		user.setId(userInfo.getId());
-		setSessionBean("showuser", user);
-		return Constants.USER_PROFILE_VIEW_PAGE;
-	}
 	
-	public String delete() {
-		logger.error("enrollment member deleted");
-		return Constants.SUCCESS;		
-	}
-	
-	public MemberDataProvider getData() {
+	/* --------------------- properties --------------------------*/
+	public AspirantDataProvider getData() {
 		return data;
 	}
-
-	public void setData(MemberDataProvider data) {
+	
+	public void setData(AspirantDataProvider data) {
 		this.data = data;
 	}
 	
-	
+
 }

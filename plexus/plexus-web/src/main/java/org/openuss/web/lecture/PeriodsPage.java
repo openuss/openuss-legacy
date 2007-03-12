@@ -256,7 +256,7 @@ public class PeriodsPage extends AbstractLecturePage {
 		logger.debug("edit enrollment");
 		Enrollment enrollment = enrollmentData.getRowData();
 		setSessionBean(Constants.ENROLLMENT, enrollment);
-		return Constants.ENROLLMENT_OPTIONS;
+		return Constants.ENROLLMENT_OPTIONS_PAGE;
 	}
 
 	/**

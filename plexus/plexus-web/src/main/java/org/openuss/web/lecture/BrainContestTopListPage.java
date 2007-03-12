@@ -10,6 +10,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.UserInfo;
+import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 @Bean(name = "views$secured$enrollment$braincontesttoplist", scope = Scope.REQUEST)
 @View

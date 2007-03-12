@@ -13,6 +13,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 
 
 import org.openuss.web.Constants;
+import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 @Bean(name = "views$secured$enrollment$braincontestmain", scope = Scope.REQUEST)
 @View

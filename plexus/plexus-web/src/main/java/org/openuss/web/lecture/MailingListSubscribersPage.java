@@ -12,6 +12,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
+import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 @Bean(name = "views$secured$enrollment$mailinglistsubscribers", scope = Scope.REQUEST)
 @View
