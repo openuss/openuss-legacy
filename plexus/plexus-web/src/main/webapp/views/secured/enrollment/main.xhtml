@@ -7,6 +7,9 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:oc="http://www.openuss.org/jsf-core"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:plexus="http://www.openuss.org/plexus/jsf">
 
 <head>
@@ -32,52 +35,64 @@
 		<h:form id="enrollmentMainForm">
 			<o:block label="#{enrollment.subject.name} (#{enrollment.shortcut})">
 				<div class="content_font_normal">
-	  				#{enrollment.subject.description}  				
-	  			</div>
-  				<h:outputText value="#{msg.enrollment_main_assistants}"
-					styleClass="field_label"></h:outputText>
-				<t:dataList id="String"
-	               styleClass="field_label"
-	               itemStyleClass="field_label"
-	               var="assistant"
-	               value="#{views$secured$enrollment$enrollmentmain.data}"
-	               layout="unorderedList"
-	               rowCountVar="rowCount"
-	               rowIndexVar="index">
-				    <h:outputText value="#{assistant.firstName} #{assistant.lastName}" styleClass="field_label"/>
+					<h:outputText value="#{enrollment.description}" escape="false"/>
+				</div>
+				<h:outputText value="#{msg.enrollment_main_assistants}" styleClass="field_label"/>
+				<t:dataList 
+					id="assistants"  
+					var="assistant"
+					value="#{views$secured$enrollment$main.data}"
+					layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
+					<h:outputText value="#{assistant.firstName} #{assistant.lastName}"/>
 				</t:dataList>
 			</o:block>
 
-			<o:block label="#{msg.enrollment_main_access}" styleClass="form_box">
-				<span class="content_font_normal"> 
-					<h:outputText value="#{msg.enrollment_main_access_passtext}"/>
-				</span>
-				<h:outputLabel for="enrollment_password" value="#{msg.enrollment_main_access_password}" styleClass="field_label"/>
-				<h:inputSecret id="enrollment_password" value="#{views$secured$enrollment$enrollmentmain.password}" styleClass="field"/>
-				<h:message for="enrollment_password" errorStyleClass="enrollment_password"/>
-			</o:block>
-			<o:block>
-				<plexus:command bean="#{views$secured$enrollment$enrollmentmain}"
-					action="applyWithPassword" label="#{msg['enrollment_main_access']}"
-					title="#{msg['enrollment_main_access']}" styleClass="button" />
-			</o:block>
+			<s:acl domainObject="#{enrollment}" hasNotPermission="#{ACL.READ}">
+				<!-- check if accesstype is AccessType.PASSWORD -->
+				<c:if test="#{enrollment.accessType.value == 2}">
+					<o:block label="#{msg.enrollment_main_access}"
+						styleClass="form_box">
+						<span class="content_font_normal"> <h:outputText
+							value="#{msg.enrollment_main_access_passtext}" /> </span>
+						<h:outputLabel for="enrollment_password"
+							value="#{msg.enrollment_main_access_password}"
+							styleClass="field_label" />
+						<h:inputSecret id="enrollment_password"
+							value="#{views$secured$enrollment$enrollmentmain.password}"
+							styleClass="field" />
+						<h:message for="enrollment_password"
+							errorStyleClass="enrollment_password" />
+					</o:block>
 
-			<o:block label="#{msg.enrollment_main_access}">
-				<p class="content_font_normal">
-					<h:outputText value="#{msg.enrollment_main_access_applytext}"></h:outputText>
-				</p>
-			</o:block>
-			<o:block>
-				<plexus:command bean="#{views$secured$enrollment$enrollmentmain}"
-					action="apply" label="#{msg['enrollment_main_access_applytext']}"
-					title="#{msg['enrollment_main_access_applytext']}"
-					styleClass="button" />
-			</o:block>
+					<o:block>
+						<plexus:command bean="#{views$secured$enrollment$enrollmentmain}"
+							action="applyWithPassword"
+							label="#{msg['enrollment_main_access']}"
+							title="#{msg['enrollment_main_access']}" styleClass="button" />
+					</o:block>
+				</c:if>
+
+				<!-- check if accesstype is AccessType.APPLICATION -->
+				<c:if test="#{enrollment.accessType.value == 3}">
+					<o:block label="#{msg.enrollment_main_access}">
+						<p class="content_font_normal"><h:outputText
+							value="#{msg.enrollment_main_access_applytext}"></h:outputText></p>
+					</o:block>
+					<o:block>
+						<plexus:command bean="#{views$secured$enrollment$enrollmentmain}"
+							action="apply" label="#{msg['enrollment_main_access_applytext']}"
+							title="#{msg['enrollment_main_access_applytext']}"
+							styleClass="button" />
+					</o:block>
+				</c:if>
+			</s:acl>
 
 		</h:form>
-		<plexus:newsTable
-			value="#{views$secured$enrollment$enrollment.currentNewsItems}"
-			headline="${msg.news_header}" />
+		<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.READ}">
+			<plexus:newsTable
+				value="#{views$secured$enrollment$enrollment.currentNewsItems}"
+				headline="${msg.news_header}" />
+		</s:acl>
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->

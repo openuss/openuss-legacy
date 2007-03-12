@@ -11,7 +11,8 @@
   	  xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:foundation="http://www.openuss.org/foundation/jsf"
       xmlns:news="http://www.openuss.org/news/jsf"
-      xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+      xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+      xmlns:shale="http://shale.apache.org/core">
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -40,13 +41,19 @@
 			</h:outputFormat>
 		</o:block>
 		<h:form id="enrollmentsForm" rendered="${!empty desktop.enrollments}">
+			<h:message for="enrollmentsToken" errorStyleClass="field_error"/>
 			<ui:include src="/views/commons/desktop/enrollments.xhtml" />
+			<shale:token id="enrollmentsToken"/>
 		</h:form>
 		<h:form id="subjectsForm" rendered="${!empty desktop.subjects}">
+			<h:message for="subjectsToken" errorStyleClass="field_error"/>
 			<ui:include src="/views/commons/desktop/subjects.xhtml" />
+			<shale:token id="subjectsToken"/>
 		</h:form>
 		<h:form id="facultiesForm" rendered="${!empty desktop.faculties}"> 
+			<h:message for="facultiesToken" errorStyleClass="field_error"/>
 			<ui:include src="/views/commons/desktop/faculties.xhtml" />
+			<shale:token id="facultiesToken"/>
 		</h:form>
 	</ui:define>
 </ui:composition>

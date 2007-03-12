@@ -67,4 +67,17 @@
  		<converter-class>org.openuss.web.lecture.converter.FacultyConverter</converter-class>
  	</converter>
  	
+ 	<!-- Managed Beans -->
+ 	<managed-bean>
+ 		<managed-bean-name>faculty</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.FacultyImpl</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>enrollment</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.EnrollmentImpl</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	
 </faces-config>
