@@ -8,6 +8,7 @@ package org.openuss.repository;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
 
 import org.openuss.TestUtility;
 
@@ -32,6 +33,9 @@ public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrati
 		file.setContentType("contentType");
 		file.setName("dummy");
 		file.setInputStream(stream);
+		file.setReleaseDate(new Timestamp(System.currentTimeMillis()));
+		file.setCreated(new Timestamp(System.currentTimeMillis()));
+		file.setModified(new Timestamp(System.currentTimeMillis()));
 		
 		repositoryService.saveFile(file);
 		
