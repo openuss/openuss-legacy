@@ -56,7 +56,7 @@ public class AuthorizeHandler extends TagHandler {
 	 * @param roleList
 	 * @return true if user is in all of the needed roles
 	 */
-	public boolean isAllGranted(String roleList, HttpServletRequest request) {
+	public boolean isAllGranted(final String roleList, final HttpServletRequest request) {
 		String[] roles = roleList.split(",");
 		boolean isAuthorized = false;
 		for (String role : roles) {

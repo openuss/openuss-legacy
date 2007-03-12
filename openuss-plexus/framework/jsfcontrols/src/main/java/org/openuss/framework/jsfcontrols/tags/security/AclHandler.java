@@ -19,6 +19,7 @@ import com.sun.facelets.FaceletContext;
 import com.sun.facelets.FaceletException;
 import com.sun.facelets.tag.TagAttribute;
 import com.sun.facelets.tag.TagConfig;
+import com.sun.facelets.tag.TagException;
 import com.sun.facelets.tag.TagHandler;
 
 /**
@@ -38,25 +39,42 @@ import com.sun.facelets.tag.TagHandler;
 public class AclHandler extends TagHandler {
 	private static final String ERROR = "error";
 
-	static final Logger logger = Logger.getLogger(AclHandler.class);
+	private static final Logger logger = Logger.getLogger(AclHandler.class);
 
 	private final TagAttribute domainObject;
-	private final TagAttribute hasPermission;
 	private final TagAttribute onErrorAction;
 	private final TagAttribute ifNot;
+	
+	private final TagAttribute permission;
+	
+	private final boolean reverted;
 
-	public AclHandler(final TagConfig config) {
+	public AclHandler(final TagConfig config) throws TagException {
 		super(config);
 
 		domainObject = getRequiredAttribute("domainObject");
-		hasPermission = getRequiredAttribute("hasPermission");
+		
+		if (getAttribute("hasPermission") == null) {
+			permission = getAttribute("hasNotPermission");
+			reverted = true;
+		} else {
+			permission = getAttribute("hasPermission");
+			reverted = false;
+		}
 		ifNot = getAttribute("ifNot");
 		onErrorAction = getAttribute("onErrorAction");
+		validatePermissionAttributes();
 		
 	}
 
+	private void validatePermissionAttributes() {
+		if (permission == null) {
+			throw new TagException(this.tag, "Need to define eather hasPermission or hasNotPermission");
+		} 
+	}
+
 	public void apply(final FaceletContext faceletContext, final UIComponent parent) throws IOException, FacesException, FaceletException,	ELException {
-		if ((null == hasPermission) || StringUtils.isBlank(hasPermission.getValue())) {
+		if (StringUtils.isBlank(permission.getValue())) {
 			return; // skip entry
 		}
 		
@@ -81,17 +99,33 @@ public class AclHandler extends TagHandler {
 		Object resolvedDomainObject = domainObject.getObject(faceletContext);
 		Integer[] requiredIntegers = requiredIntegers(faceletContext);
 
-		if (AcegiUtils.hasPermission(resolvedDomainObject, requiredIntegers)) {
+		if (considerReverted(AcegiUtils.hasPermission(resolvedDomainObject, requiredIntegers))) {
 			nextHandler.apply(faceletContext, parent);
 		} else {		
-			if (logger.isDebugEnabled()) {
-				logger.debug("No permission on "+resolvedDomainObject+"to see the body!");
-			}
+			logBodySkipped(resolvedDomainObject);
 			permissionDenied(faceletContext);
 		}
 	}
+
+	private void logBodySkipped(Object resolvedDomainObject) {
+		if (logger.isDebugEnabled()) {
+			if (reverted) {
+				logger.debug("Has permission on "+resolvedDomainObject+", due to reverted the body is skiped!");
+			} else {					
+				logger.debug("No permission on "+resolvedDomainObject+" to see the body!");
+			}
+		}
+	}
 	
-	private void permissionDenied(FaceletContext faceletContext) throws IOException {
+	private boolean considerReverted(final boolean value) {
+		if (reverted) {
+			return !value;
+		} else {
+			return value;
+		}
+	}
+	
+	private void permissionDenied(final FaceletContext faceletContext) throws IOException {
 		if (onErrorAction != null) {
 			performOnErrorAction(faceletContext);
 		} else if (ifNot != null && StringUtils.equals(ifNot.getValue(),ERROR)) {
@@ -99,7 +133,7 @@ public class AclHandler extends TagHandler {
 		} 
 	}
 
-	private void performOnErrorAction(FaceletContext faceletContext) {
+	private void performOnErrorAction(final FaceletContext faceletContext) {
 		String expression = onErrorAction.getValue();
 		if (FacesUtils.isExpressionStatement(expression) ) {
 			MethodBinding actionMethod = faceletContext.getFacesContext().getApplication().createMethodBinding(expression, null);
@@ -114,8 +148,8 @@ public class AclHandler extends TagHandler {
 	 * @param value
 	 * @return required integers
 	 */
-	private Integer[] requiredIntegers(FaceletContext faceletContext) {
-		Object value = hasPermission.getObject(faceletContext);
+	private Integer[] requiredIntegers(final FaceletContext faceletContext) {
+		final Object value = permission.getObject(faceletContext);
 		Integer[] requiredIntegers = new Integer[0];
 		if (value instanceof Integer) {
 			requiredIntegers = new Integer[]{(Integer) value};
@@ -126,14 +160,15 @@ public class AclHandler extends TagHandler {
 		}
 		return requiredIntegers;
 	}
+	
 
 	/**
 	 * Checks if the user is in all of the needed roles.
 	 * 
-	 * @param roleList
+	 * @param roleList 
 	 * @return true if user is in all of the needed roles
 	 */
-	public boolean isAllGranted(String roleList, HttpServletRequest request) {
+	public boolean isAllGranted(final String roleList, final HttpServletRequest request) {
 		String[] roles = roleList.split(",");
 		boolean isAuthorized = false;
 		for (String role : roles) {
