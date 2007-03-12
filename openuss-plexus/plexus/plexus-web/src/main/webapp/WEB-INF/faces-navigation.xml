@@ -323,11 +323,6 @@
 			</navigation-case>
 
 			<navigation-case>
-				<from-outcome>enrollment_documents</from-outcome>
-				<to-view-id>/views/secured/enrollment/documents.xhtml</to-view-id>
-			</navigation-case>
-	
-			<navigation-case>
 				<from-outcome>enrollment_discussion</from-outcome>
 				<to-view-id>/views/secured/enrollment/discussion.xhtml</to-view-id>
 			</navigation-case>
@@ -410,6 +405,26 @@
 			<navigation-case>
 				<from-outcome>braincontest_top</from-outcome>
 				<to-view-id>/views/secured/enrollment/braincontesttop.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>enrollment_documents</from-outcome>
+				<to-view-id>/views/secured/documents/documents.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>documents_new_file</from-outcome>
+				<to-view-id>/views/secured/documents/documentnew.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>documents_new_folder</from-outcome>
+				<to-view-id>/views/secured/documents/foldernew.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>documents_add_zip</from-outcome>
+				<to-view-id>/views/secured/documents/addzip.xhtml</to-view-id>				
 			</navigation-case>			
 			
 		</navigation-rule>

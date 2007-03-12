@@ -122,4 +122,11 @@
 	<bean id="brainContest" class="org.openuss.braincontest.BrainContestImpl"/>
 	<bean id="brainContestSolution" class="org.openuss.braincontest.SolutionImpl"/>
 	<bean id="brainContestAnswer" class="org.openuss.braincontest.AnswerImpl"/>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    				Documents
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<bean id="newDocument" class="org.openuss.repository.RepositoryFileImpl" />
+	<bean id="newFolder" class="org.openuss.documents.FolderImpl" />
+
 </beans>
