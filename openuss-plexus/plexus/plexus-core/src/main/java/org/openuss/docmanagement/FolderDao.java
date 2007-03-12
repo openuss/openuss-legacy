@@ -15,6 +15,9 @@ import org.apache.jackrabbit.webdav.io.OutputContext;
  * @version 0.5
  */
 public class FolderDao extends ResourceDao {
+	public FolderDao(Node representedNode) {
+		super(representedNode);
+	}
 
 	private Repository repository;
 	

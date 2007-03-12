@@ -63,6 +63,11 @@ public class DavService {
 		logger.debug("spool of resource '" + locator.getResourcePath() + "' requested.");
 		// TODO
 		
+		if (locator.isRootLocation()) {
+			// TODO abonnierte enrollments anfordern
+		} else {
+			// TODO ressource ausgeben
+		}
 		
 		// HACK
 		// Item aus Repository holen
@@ -92,7 +97,9 @@ public class DavService {
 					Node node;
 					while (nodeIterator.hasNext()) {
 						node = nodeIterator.nextNode();
-						writer.print("<li>" + node.getName() + "</li>");
+						if (!configuration.getItemFilter().isFilteredItem(node)) {
+							writer.print("<li>" + node.getName() + "</li>");
+						}
 					}
 				}
 				writer.print("</ul></body></html>");

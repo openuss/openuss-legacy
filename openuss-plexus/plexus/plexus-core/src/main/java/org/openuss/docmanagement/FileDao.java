@@ -1,5 +1,7 @@
 package org.openuss.docmanagement;
 
+import javax.jcr.Node;
+
 import java.util.Calendar;
 
 import javax.jcr.LoginException;
@@ -23,6 +25,10 @@ public class FileDao extends ResourceDao {
 	private Repository repository;
 	
 	public static Logger logger = Logger.getLogger(FileDao.class);
+
+	public FileDao(Node representedNode) {
+		super(representedNode);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.ResourceDao#isCollection()

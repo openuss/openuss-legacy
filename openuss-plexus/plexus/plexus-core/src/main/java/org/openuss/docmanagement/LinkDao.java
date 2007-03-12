@@ -1,5 +1,6 @@
 package org.openuss.docmanagement;
 
+import javax.jcr.Node;
 import javax.jcr.Repository;
 
 import org.apache.jackrabbit.webdav.io.OutputContext;
@@ -11,6 +12,10 @@ import org.apache.jackrabbit.webdav.io.OutputContext;
 public class LinkDao extends ResourceDao {
 	
 	private Repository repository;
+
+	public LinkDao(Node representedNode) {
+		super(representedNode);
+	}
 
 	@Override
 	public void spool(OutputContext context) {

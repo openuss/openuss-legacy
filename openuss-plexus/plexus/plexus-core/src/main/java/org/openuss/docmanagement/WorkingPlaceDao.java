@@ -1,5 +1,6 @@
 package org.openuss.docmanagement;
 
+import javax.jcr.Node;
 import javax.jcr.Repository;
 
 /**
@@ -7,6 +8,9 @@ import javax.jcr.Repository;
  * @version 0.5
  */
 public class WorkingPlaceDao extends FolderDao {
+	public WorkingPlaceDao(Node representedNode) {
+		super(representedNode);
+	}
 
 	private Repository repository;
 

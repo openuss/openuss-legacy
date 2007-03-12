@@ -1,5 +1,6 @@
 package org.openuss.docmanagement;
 
+import javax.jcr.Node;
 import javax.jcr.Repository;
 
 /**
@@ -10,6 +11,10 @@ public class ExamAreaDao extends FolderDao {
 	
 	private Repository repository;
 
+	public ExamAreaDao(Node representedNode) {
+		super(representedNode);
+	}
+
 	public Repository getRepository() {
 		return repository;
 	}
@@ -17,5 +22,4 @@ public class ExamAreaDao extends FolderDao {
 	public void setRepository(Repository repository) {
 		this.repository = repository;
 	}
-	
 }
