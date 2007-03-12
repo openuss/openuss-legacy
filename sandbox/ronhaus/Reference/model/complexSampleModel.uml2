@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Persistence_0="http:///Persistence_0_rA0J0MZfEdujP4oj1mqImA.profile.uml2" xmlns:uml="http://www.eclipse.org/uml2/1.0.0/UML" xsi:schemaLocation="http:///Persistence_0_rA0J0MZfEdujP4oj1mqImA.profile.uml2 Persistence.profile.uml2#_sGJchMZfEdujP4oj1mqImA" xmi:id="_sGJbp8ZfEdujP4oj1mqImA" name="Data" appliedProfile="_sGJbq8ZfEdujP4oj1mqImA _sGJbrsZfEdujP4oj1mqImA _sGJbscZfEdujP4oj1mqImA _sGJbtMZfEdujP4oj1mqImA _sGJbt8ZfEdujP4oj1mqImA">
+  <ownedComment xmi:id="_sGJbqMZfEdujP4oj1mqImA" body="Author:Ron Haus.&#xA;Created:27.02.07 13:08.&#xA;Title:.&#xA;Comment:.&#xA;" annotatedElement="_sGJbp8ZfEdujP4oj1mqImA"/>
+  <packageImport xmi:id="_sGJbqcZfEdujP4oj1mqImA">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_EfRZoK86EdieaYgxtVWN8Q"/>
+  </packageImport>
+  <packageImport xmi:id="_sGJbqsZfEdujP4oj1mqImA">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_RjmyoK86EdieaYgxtVWN8Q"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_sGJbq8ZfEdujP4oj1mqImA">
+    <eAnnotations xmi:id="_sGJbrMZfEdujP4oj1mqImA" source="attributes">
+      <details xmi:id="_sGJbrcZfEdujP4oj1mqImA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="Persistence.profile.uml2#_sGJcgMZfEdujP4oj1mqImA"/>
+    <importedProfile href="Persistence.profile.uml2#_sGJcgMZfEdujP4oj1mqImA"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_sGJbrsZfEdujP4oj1mqImA">
+    <eAnnotations xmi:id="_sGJbr8ZfEdujP4oj1mqImA" source="attributes">
+      <details xmi:id="_sGJbsMZfEdujP4oj1mqImA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="UML_Standard_Profile.UML_Standard_Profile.profile.uml2#_sFetTMZfEdujP4oj1mqImA"/>
+    <importedProfile href="UML_Standard_Profile.UML_Standard_Profile.profile.uml2#_sFetTMZfEdujP4oj1mqImA"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_sGJbscZfEdujP4oj1mqImA">
+    <eAnnotations xmi:id="_sGJbssZfEdujP4oj1mqImA" source="attributes">
+      <details xmi:id="_sGJbs8ZfEdujP4oj1mqImA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml2#_sFSekMZfEdujP4oj1mqImA"/>
+    <importedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml2#_sFSekMZfEdujP4oj1mqImA"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_sGJbtMZfEdujP4oj1mqImA">
+    <eAnnotations xmi:id="_sGJbtcZfEdujP4oj1mqImA" source="attributes">
+      <details xmi:id="_sGJbtsZfEdujP4oj1mqImA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="UML_Standard_Profile.Validation_Profile.profile.uml2#_sGDUOsZfEdujP4oj1mqImA"/>
+    <importedProfile href="UML_Standard_Profile.Validation_Profile.profile.uml2#_sGDUOsZfEdujP4oj1mqImA"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_sGJbt8ZfEdujP4oj1mqImA">
+    <eAnnotations xmi:id="_sGJbuMZfEdujP4oj1mqImA" source="attributes">
+      <details xmi:id="_sGJbucZfEdujP4oj1mqImA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml2#_sGJcu8ZfEdujP4oj1mqImA"/>
+    <importedProfile href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml2#_sGJcu8ZfEdujP4oj1mqImA"/>
+  </packageImport>
+  <ownedMember xmi:type="uml:Package" xmi:id="_sGJbusZfEdujP4oj1mqImA" name="UML Standard Profile">
+    <ownedComment xmi:id="_sGJbu8ZfEdujP4oj1mqImA" body="UML Standard Profile contains several popular stereotypes, tag definitions and constraints described in UML 1.4 and UML 2.0 Specifications." annotatedElement="_sGJbusZfEdujP4oj1mqImA"/>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Package" xmi:id="_sGJbvMZfEdujP4oj1mqImA" name="packageA">
+    <ownedMember xmi:type="uml:Package" xmi:id="_sGJbvcZfEdujP4oj1mqImA" name="packageB">
+      <ownedMember xmi:type="uml:Class" xmi:id="_sGJbvsZfEdujP4oj1mqImA" name="SimpleClass">
+        <eAnnotations xmi:id="_sGJbv8ZfEdujP4oj1mqImA" source="appliedStereotypes">
+          <contents xmi:type="Persistence_0:Persistence__Entity" xmi:id="_sGJbwMZfEdujP4oj1mqImA"/>
+        </eAnnotations>
+        <ownedAttribute xmi:id="_sGJbwcZfEdujP4oj1mqImA" name="attrib_key" visibility="private">
+          <eAnnotations xmi:id="_sGJbwsZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Identifier" xmi:id="_sGJbw8ZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJbxMZfEdujP4oj1mqImA" name="attrib_byte" visibility="private">
+          <eAnnotations xmi:id="_sGJbxcZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJbxsZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBfF4a86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJbx8ZfEdujP4oj1mqImA" name="attrib_short" visibility="private">
+          <eAnnotations xmi:id="_sGJbyMZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJbycZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIa86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJbysZfEdujP4oj1mqImA" name="attrib_int" visibility="private">
+          <eAnnotations xmi:id="_sGJby8ZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJbzMZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBlMg686EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJbzcZfEdujP4oj1mqImA" name="attrib_long" visibility="private">
+          <eAnnotations xmi:id="_sGJbzsZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJbz8ZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJb0MZfEdujP4oj1mqImA" name="attrib_double" visibility="private">
+          <eAnnotations xmi:id="_sGJb0cZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJb0sZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBlMga86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJb08ZfEdujP4oj1mqImA" name="attrib_bool" visibility="private">
+          <eAnnotations xmi:id="_sGJb1MZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJb1cZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXfBUK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJb1sZfEdujP4oj1mqImA" name="attrib_char" visibility="private">
+          <eAnnotations xmi:id="_sGJb18ZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJb2MZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBlMgK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJb2cZfEdujP4oj1mqImA" name="attrib_String" visibility="private">
+          <eAnnotations xmi:id="_sGJb2sZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJb28ZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJb3MZfEdujP4oj1mqImA" name="attrib_Integer" visibility="private">
+          <eAnnotations xmi:id="_sGJb3cZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJb3sZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8K86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJb38ZfEdujP4oj1mqImA" name="attrib_Boolean" visibility="private">
+          <eAnnotations xmi:id="_sGJb4MZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJb4cZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXfBUK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Class" xmi:id="_sGJb4sZfEdujP4oj1mqImA" name="DummyClass">
+        <ownedAttribute xmi:id="_sGJb48ZfEdujP4oj1mqImA" name="attrib1" visibility="private">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJb5MZfEdujP4oj1mqImA" name="attrib2" visibility="private">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Class" xmi:id="_sGJb5cZfEdujP4oj1mqImA" name="ClassOne1">
+        <eAnnotations xmi:id="_sGJb5sZfEdujP4oj1mqImA" source="appliedStereotypes">
+          <contents xmi:type="Persistence_0:Persistence__Entity" xmi:id="_sGJb58ZfEdujP4oj1mqImA"/>
+        </eAnnotations>
+        <ownedAttribute xmi:id="_sGJb6MZfEdujP4oj1mqImA" name="id" visibility="private">
+          <eAnnotations xmi:id="_sGJb6cZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Identifier" xmi:id="_sGJb6sZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJb68ZfEdujP4oj1mqImA" name="one" visibility="private" type="_sGJb7sZfEdujP4oj1mqImA" association="_sGJccsZfEdujP4oj1mqImA">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJb7MZfEdujP4oj1mqImA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sGJb7cZfEdujP4oj1mqImA"/>
+        </ownedAttribute>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Class" xmi:id="_sGJb7sZfEdujP4oj1mqImA" name="ClassOne2">
+        <eAnnotations xmi:id="_sGJb78ZfEdujP4oj1mqImA" source="appliedStereotypes">
+          <contents xmi:type="Persistence_0:Persistence__Entity" xmi:id="_sGJb8MZfEdujP4oj1mqImA"/>
+        </eAnnotations>
+        <ownedAttribute xmi:id="_sGJb8cZfEdujP4oj1mqImA" name="id" visibility="private">
+          <eAnnotations xmi:id="_sGJb8sZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Identifier" xmi:id="_sGJb88ZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJb9MZfEdujP4oj1mqImA" name="one1" visibility="private" type="_sGJb5cZfEdujP4oj1mqImA" association="_sGJccsZfEdujP4oj1mqImA">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJb9cZfEdujP4oj1mqImA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sGJb9sZfEdujP4oj1mqImA" value="1"/>
+        </ownedAttribute>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Class" xmi:id="_sGJb98ZfEdujP4oj1mqImA" name="ClassMany1">
+        <eAnnotations xmi:id="_sGJb-MZfEdujP4oj1mqImA" source="appliedStereotypes">
+          <contents xmi:type="Persistence_0:Persistence__Entity" xmi:id="_sGJb-cZfEdujP4oj1mqImA"/>
+        </eAnnotations>
+        <ownedAttribute xmi:id="_sGJb-sZfEdujP4oj1mqImA" name="id" visibility="private">
+          <eAnnotations xmi:id="_sGJb-8ZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Identifier" xmi:id="_sGJb_MZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJb_cZfEdujP4oj1mqImA" name="many" visibility="private" type="_sGJcAMZfEdujP4oj1mqImA" association="_sGJcc8ZfEdujP4oj1mqImA">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJb_sZfEdujP4oj1mqImA" value="-1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sGJb_8ZfEdujP4oj1mqImA"/>
+        </ownedAttribute>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Class" xmi:id="_sGJcAMZfEdujP4oj1mqImA" name="ClassMany2">
+        <eAnnotations xmi:id="_sGJcAcZfEdujP4oj1mqImA" source="appliedStereotypes">
+          <contents xmi:type="Persistence_0:Persistence__Entity" xmi:id="_sGJcAsZfEdujP4oj1mqImA"/>
+        </eAnnotations>
+        <ownedAttribute xmi:id="_sGJcA8ZfEdujP4oj1mqImA" name="id" visibility="private">
+          <eAnnotations xmi:id="_sGJcBMZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Identifier" xmi:id="_sGJcBcZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcBsZfEdujP4oj1mqImA" name="many1" visibility="private" type="_sGJb98ZfEdujP4oj1mqImA" association="_sGJcc8ZfEdujP4oj1mqImA">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJcB8ZfEdujP4oj1mqImA" value="-1"/>
+          <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJcCMZfEdujP4oj1mqImA" value="-1"/>
+        </ownedAttribute>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Class" xmi:id="_sGJcCcZfEdujP4oj1mqImA" name="ClassTarget">
+        <eAnnotations xmi:id="_sGJcCsZfEdujP4oj1mqImA" source="appliedStereotypes">
+          <contents xmi:type="Persistence_0:Persistence__Entity" xmi:id="_sGJcC8ZfEdujP4oj1mqImA"/>
+        </eAnnotations>
+        <ownedAttribute xmi:id="_sGJcDMZfEdujP4oj1mqImA" name="id" visibility="private">
+          <eAnnotations xmi:id="_sGJcDcZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Identifier" xmi:id="_sGJcDsZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Class" xmi:id="_sGJcD8ZfEdujP4oj1mqImA" name="ClassSource">
+        <eAnnotations xmi:id="_sGJcEMZfEdujP4oj1mqImA" source="appliedStereotypes">
+          <contents xmi:type="Persistence_0:Persistence__Entity" xmi:id="_sGJcEcZfEdujP4oj1mqImA"/>
+        </eAnnotations>
+        <ownedAttribute xmi:id="_sGJcEsZfEdujP4oj1mqImA" name="id" visibility="private">
+          <eAnnotations xmi:id="_sGJcE8ZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Identifier" xmi:id="_sGJcFMZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcFcZfEdujP4oj1mqImA" name="toTarget" visibility="private" type="_sGJcCcZfEdujP4oj1mqImA" association="_sGJcdMZfEdujP4oj1mqImA">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJcFsZfEdujP4oj1mqImA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sGJcF8ZfEdujP4oj1mqImA" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcGMZfEdujP4oj1mqImA" name="toManyTargets" visibility="private" type="_sGJcCcZfEdujP4oj1mqImA" association="_sGJceMZfEdujP4oj1mqImA">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJcGcZfEdujP4oj1mqImA" value="-1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sGJcGsZfEdujP4oj1mqImA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcG8ZfEdujP4oj1mqImA" name="ManyToMany" visibility="private" type="_sGJcCcZfEdujP4oj1mqImA" association="_sGJcfMZfEdujP4oj1mqImA">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJcHMZfEdujP4oj1mqImA" value="-1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sGJcHcZfEdujP4oj1mqImA"/>
+        </ownedAttribute>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Class" xmi:id="_sGJcHsZfEdujP4oj1mqImA" name="AggregatingClass">
+        <eAnnotations xmi:id="_sGJcH8ZfEdujP4oj1mqImA" source="appliedStereotypes">
+          <contents xmi:type="Persistence_0:Persistence__Entity" xmi:id="_sGJcIMZfEdujP4oj1mqImA"/>
+        </eAnnotations>
+        <ownedAttribute xmi:id="_sGJcIcZfEdujP4oj1mqImA" name="id" visibility="private">
+          <eAnnotations xmi:id="_sGJcIsZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Identifier" xmi:id="_sGJcI8ZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcJMZfEdujP4oj1mqImA" name="Part" visibility="private" type="_sGJcJ8ZfEdujP4oj1mqImA" association="_sGJccMZfEdujP4oj1mqImA" aggregation="shared">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJcJcZfEdujP4oj1mqImA" value="-1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sGJcJsZfEdujP4oj1mqImA"/>
+        </ownedAttribute>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Class" xmi:id="_sGJcJ8ZfEdujP4oj1mqImA" name="AggregatedClass">
+        <eAnnotations xmi:id="_sGJcKMZfEdujP4oj1mqImA" source="appliedStereotypes">
+          <contents xmi:type="Persistence_0:Persistence__Entity" xmi:id="_sGJcKcZfEdujP4oj1mqImA"/>
+        </eAnnotations>
+        <ownedAttribute xmi:id="_sGJcKsZfEdujP4oj1mqImA" name="id" visibility="private">
+          <eAnnotations xmi:id="_sGJcK8ZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Identifier" xmi:id="_sGJcLMZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcLcZfEdujP4oj1mqImA" name="Aggregating" visibility="private" type="_sGJcHsZfEdujP4oj1mqImA" association="_sGJccMZfEdujP4oj1mqImA">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJcLsZfEdujP4oj1mqImA" value="-1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sGJcL8ZfEdujP4oj1mqImA"/>
+        </ownedAttribute>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Class" xmi:id="_sGJcMMZfEdujP4oj1mqImA" name="CompositionHead">
+        <eAnnotations xmi:id="_sGJcMcZfEdujP4oj1mqImA" source="appliedStereotypes">
+          <contents xmi:type="Persistence_0:Persistence__Entity" xmi:id="_sGJcMsZfEdujP4oj1mqImA"/>
+        </eAnnotations>
+        <ownedAttribute xmi:id="_sGJcM8ZfEdujP4oj1mqImA" name="id" visibility="private">
+          <eAnnotations xmi:id="_sGJcNMZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Identifier" xmi:id="_sGJcNcZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcNsZfEdujP4oj1mqImA" name="Part" visibility="private" type="_sGJcOcZfEdujP4oj1mqImA" association="_sGJcccZfEdujP4oj1mqImA" aggregation="composite">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJcN8ZfEdujP4oj1mqImA" value="-1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sGJcOMZfEdujP4oj1mqImA"/>
+        </ownedAttribute>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Class" xmi:id="_sGJcOcZfEdujP4oj1mqImA" name="CompositionPart">
+        <eAnnotations xmi:id="_sGJcOsZfEdujP4oj1mqImA" source="appliedStereotypes">
+          <contents xmi:type="Persistence_0:Persistence__Entity" xmi:id="_sGJcO8ZfEdujP4oj1mqImA"/>
+        </eAnnotations>
+        <ownedAttribute xmi:id="_sGJcPMZfEdujP4oj1mqImA" name="id" visibility="private">
+          <eAnnotations xmi:id="_sGJcPcZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Identifier" xmi:id="_sGJcPsZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcP8ZfEdujP4oj1mqImA" name="Head" visibility="private" type="_sGJcMMZfEdujP4oj1mqImA" association="_sGJcccZfEdujP4oj1mqImA">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJcQMZfEdujP4oj1mqImA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sGJcQcZfEdujP4oj1mqImA" value="1"/>
+        </ownedAttribute>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Class" xmi:id="_sGJcQsZfEdujP4oj1mqImA" name="SupperClass">
+        <eAnnotations xmi:id="_sGJcQ8ZfEdujP4oj1mqImA" source="appliedStereotypes">
+          <contents xmi:type="Persistence_0:Persistence__Entity" xmi:id="_sGJcRMZfEdujP4oj1mqImA"/>
+        </eAnnotations>
+        <ownedAttribute xmi:id="_sGJcRcZfEdujP4oj1mqImA" name="attrib_key" visibility="private">
+          <eAnnotations xmi:id="_sGJcRsZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Identifier" xmi:id="_sGJcR8ZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcSMZfEdujP4oj1mqImA" name="attrib_bool" visibility="private">
+          <eAnnotations xmi:id="_sGJcScZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJcSsZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXfBUK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcS8ZfEdujP4oj1mqImA" name="attrib_Boolean" visibility="private">
+          <eAnnotations xmi:id="_sGJcTMZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJcTcZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXfBUK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcTsZfEdujP4oj1mqImA" name="attrib_byte" visibility="private">
+          <eAnnotations xmi:id="_sGJcT8ZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJcUMZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBfF4a86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcUcZfEdujP4oj1mqImA" name="attrib_char" visibility="private">
+          <eAnnotations xmi:id="_sGJcUsZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJcU8ZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBlMgK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcVMZfEdujP4oj1mqImA" name="attrib_double" visibility="private">
+          <eAnnotations xmi:id="_sGJcVcZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJcVsZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBlMga86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcV8ZfEdujP4oj1mqImA" name="attrib_int" visibility="private">
+          <eAnnotations xmi:id="_sGJcWMZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJcWcZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBlMg686EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcWsZfEdujP4oj1mqImA" name="attrib_Integer" visibility="private">
+          <eAnnotations xmi:id="_sGJcW8ZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJcXMZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8K86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcXcZfEdujP4oj1mqImA" name="attrib_long" visibility="private">
+          <eAnnotations xmi:id="_sGJcXsZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJcX8ZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcYMZfEdujP4oj1mqImA" name="attrib_short" visibility="private">
+          <eAnnotations xmi:id="_sGJcYcZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJcYsZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIa86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcY8ZfEdujP4oj1mqImA" name="attrib_String" visibility="private">
+          <eAnnotations xmi:id="_sGJcZMZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJcZcZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Class" xmi:id="_sGJcZsZfEdujP4oj1mqImA" name="SubClass">
+        <eAnnotations xmi:id="_sGJcZ8ZfEdujP4oj1mqImA" source="appliedStereotypes">
+          <contents xmi:type="Persistence_0:Persistence__Entity" xmi:id="_sGJcaMZfEdujP4oj1mqImA"/>
+        </eAnnotations>
+        <generalization xmi:id="_sGJcacZfEdujP4oj1mqImA" general="_sGJcQsZfEdujP4oj1mqImA"/>
+        <ownedAttribute xmi:id="_sGJcasZfEdujP4oj1mqImA" name="id" visibility="private">
+          <eAnnotations xmi:id="_sGJca8ZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Identifier" xmi:id="_sGJcbMZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBrTIK86EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_sGJcbcZfEdujP4oj1mqImA" name="attrib_Sub" visibility="private">
+          <eAnnotations xmi:id="_sGJcbsZfEdujP4oj1mqImA" source="appliedStereotypes">
+            <contents xmi:type="Persistence_0:Persistence__Field" xmi:id="_sGJcb8ZfEdujP4oj1mqImA"/>
+          </eAnnotations>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_TBlMg686EdieaYgxtVWN8Q"/>
+        </ownedAttribute>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Association" xmi:id="_sGJccMZfEdujP4oj1mqImA" memberEnd="_sGJcJMZfEdujP4oj1mqImA _sGJcLcZfEdujP4oj1mqImA"/>
+      <ownedMember xmi:type="uml:Association" xmi:id="_sGJcccZfEdujP4oj1mqImA" memberEnd="_sGJcNsZfEdujP4oj1mqImA _sGJcP8ZfEdujP4oj1mqImA"/>
+      <ownedMember xmi:type="uml:Association" xmi:id="_sGJccsZfEdujP4oj1mqImA" memberEnd="_sGJb9MZfEdujP4oj1mqImA _sGJb68ZfEdujP4oj1mqImA"/>
+      <ownedMember xmi:type="uml:Association" xmi:id="_sGJcc8ZfEdujP4oj1mqImA" memberEnd="_sGJb_cZfEdujP4oj1mqImA _sGJcBsZfEdujP4oj1mqImA"/>
+      <ownedMember xmi:type="uml:Association" xmi:id="_sGJcdMZfEdujP4oj1mqImA" memberEnd="_sGJcFcZfEdujP4oj1mqImA _sGJcdcZfEdujP4oj1mqImA">
+        <ownedEnd xmi:id="_sGJcdcZfEdujP4oj1mqImA" visibility="private" type="_sGJcD8ZfEdujP4oj1mqImA" association="_sGJcdMZfEdujP4oj1mqImA">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJcdsZfEdujP4oj1mqImA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sGJcd8ZfEdujP4oj1mqImA" value="1"/>
+        </ownedEnd>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Association" xmi:id="_sGJceMZfEdujP4oj1mqImA" memberEnd="_sGJcecZfEdujP4oj1mqImA _sGJcGMZfEdujP4oj1mqImA">
+        <ownedEnd xmi:id="_sGJcecZfEdujP4oj1mqImA" name="noName" visibility="private" type="_sGJcD8ZfEdujP4oj1mqImA" association="_sGJceMZfEdujP4oj1mqImA">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJcesZfEdujP4oj1mqImA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sGJce8ZfEdujP4oj1mqImA" value="1"/>
+        </ownedEnd>
+      </ownedMember>
+      <ownedMember xmi:type="uml:Association" xmi:id="_sGJcfMZfEdujP4oj1mqImA" memberEnd="_sGJcfcZfEdujP4oj1mqImA _sGJcG8ZfEdujP4oj1mqImA">
+        <ownedEnd xmi:id="_sGJcfcZfEdujP4oj1mqImA" visibility="private" type="_sGJcD8ZfEdujP4oj1mqImA" association="_sGJcfMZfEdujP4oj1mqImA">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sGJcfsZfEdujP4oj1mqImA" value="-1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sGJcf8ZfEdujP4oj1mqImA"/>
+        </ownedEnd>
+      </ownedMember>
+    </ownedMember>
+  </ownedMember>
+</uml:Model>

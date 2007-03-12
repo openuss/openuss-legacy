@@ -1,0 +1,10 @@
+alter table STUDENT drop constraint STUDENTIFKC;
+drop table ADDRESS;
+drop table PERSON;
+drop table STUDENT;
+drop generator GLOBAL_SEQUENCE;
+create table ADDRESS (ID numeric(18,0) not null, PLZ integer not null, primary key (ID));
+create table PERSON (ID integer not null, NAME varchar(255) not null, primary key (ID));
+create table STUDENT (ID integer not null, BIRTHDAY timestamp not null, ABI float not null, AGE integer not null, primary key (ID));
+alter table STUDENT add constraint STUDENTIFKC foreign key (ID) references PERSON;
+create generator GLOBAL_SEQUENCE;

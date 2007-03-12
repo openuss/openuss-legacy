@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Profile xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/1.0.0/UML" xmi:id="_POpJxaV3EduGb_Vch8IaCw" name="JavaBasic" appliedProfile="_POpJz6V3EduGb_Vch8IaCw _POpJ0qV3EduGb_Vch8IaCw _POpJ1aV3EduGb_Vch8IaCw _POpJ2KV3EduGb_Vch8IaCw" metamodelReference="_POpJzKV3EduGb_Vch8IaCw">
+  <eAnnotations xmi:id="_POpJxqV3EduGb_Vch8IaCw" source="attributes">
+    <details xmi:id="_POpJx6V3EduGb_Vch8IaCw" key="version" value="0"/>
+  </eAnnotations>
+  <eAnnotations xmi:id="_POpJyKV3EduGb_Vch8IaCw" source="ePackages">
+    <contents xmi:type="ecore:EPackage" xmi:id="_POpJyaV3EduGb_Vch8IaCw" name="JavaBasic_0" nsURI="http:///JavaBasic_0_O6NKUKV3EduGb_Vch8IaCw.profile.uml2" nsPrefix="JavaBasic_0">
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_POpJyqV3EduGb_Vch8IaCw" name="JavaBasic__Entity">
+        <eAnnotations xmi:id="_POpJy6V3EduGb_Vch8IaCw" source="stereotype" references="_POpJ26V3EduGb_Vch8IaCw"/>
+      </eClassifiers>
+    </contents>
+  </eAnnotations>
+  <packageImport xmi:id="_POpJzKV3EduGb_Vch8IaCw" visibility="private">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_METAMODELS/UML2.metamodel.uml2#_m8qbA686EdiEh75YJ_3n8g"/>
+  </packageImport>
+  <packageImport xmi:id="_POpJzaV3EduGb_Vch8IaCw">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_EfRZoK86EdieaYgxtVWN8Q"/>
+  </packageImport>
+  <packageImport xmi:id="_POpJzqV3EduGb_Vch8IaCw">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_RjmyoK86EdieaYgxtVWN8Q"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_POpJz6V3EduGb_Vch8IaCw">
+    <eAnnotations xmi:id="_POpJ0KV3EduGb_Vch8IaCw" source="attributes">
+      <details xmi:id="_POpJ0aV3EduGb_Vch8IaCw" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="UML_Standard_Profile.Validation_Profile.profile.uml2#_POhNp6V3EduGb_Vch8IaCw"/>
+    <importedProfile href="UML_Standard_Profile.Validation_Profile.profile.uml2#_POhNp6V3EduGb_Vch8IaCw"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_POpJ0qV3EduGb_Vch8IaCw">
+    <eAnnotations xmi:id="_POpJ06V3EduGb_Vch8IaCw" source="attributes">
+      <details xmi:id="_POpJ1KV3EduGb_Vch8IaCw" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml2#_POdjEaV3EduGb_Vch8IaCw"/>
+    <importedProfile href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml2#_POdjEaV3EduGb_Vch8IaCw"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_POpJ1aV3EduGb_Vch8IaCw">
+    <eAnnotations xmi:id="_POpJ1qV3EduGb_Vch8IaCw" source="attributes">
+      <details xmi:id="_POpJ16V3EduGb_Vch8IaCw" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="UML_Standard_Profile.UML_Standard_Profile.profile.uml2#_POpwUKV3EduGb_Vch8IaCw"/>
+    <importedProfile href="UML_Standard_Profile.UML_Standard_Profile.profile.uml2#_POpwUKV3EduGb_Vch8IaCw"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_POpJ2KV3EduGb_Vch8IaCw">
+    <eAnnotations xmi:id="_POpJ2aV3EduGb_Vch8IaCw" source="attributes">
+      <details xmi:id="_POpJ2qV3EduGb_Vch8IaCw" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml2#_POlfW6V3EduGb_Vch8IaCw"/>
+    <importedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml2#_POlfW6V3EduGb_Vch8IaCw"/>
+  </packageImport>
+  <ownedMember xmi:type="uml:Stereotype" xmi:id="_POpJ26V3EduGb_Vch8IaCw" name="Entity">
+    <ownedAttribute xmi:id="_POpJ3KV3EduGb_Vch8IaCw" name="base_Class" visibility="private" association="_POpJ3aV3EduGb_Vch8IaCw">
+      <type xmi:type="uml:Class" href="pathmap://UML2_METAMODELS/UML2.metamodel.uml2#_m88uxq86EdiEh75YJ_3n8g"/>
+    </ownedAttribute>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Extension" xmi:id="_POpJ3aV3EduGb_Vch8IaCw" memberEnd="_POpJ3qV3EduGb_Vch8IaCw _POpJ3KV3EduGb_Vch8IaCw">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_POpJ3qV3EduGb_Vch8IaCw" name="extension_" visibility="private" type="_POpJ26V3EduGb_Vch8IaCw" association="_POpJ3aV3EduGb_Vch8IaCw" aggregation="composite">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_POpJ36V3EduGb_Vch8IaCw" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_POpJ4KV3EduGb_Vch8IaCw"/>
+    </ownedEnd>
+  </ownedMember>
+</uml:Profile>
