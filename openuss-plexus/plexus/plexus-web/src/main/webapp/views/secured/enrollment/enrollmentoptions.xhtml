@@ -29,7 +29,7 @@
  		 
   		<ui:define name="content">
 			<h:form id="enrollmentOptionForm">
-	  			<o:block label="#{msg.enrollment_options_headline} - #{sessionScope.enrollment.subject.name} - #{sessionScope.enrollment.period.name}">
+	  			<o:block label="#{msg.enrollment_options_headline} - #{sessionScope.enrollment.subject.name} - #{sessionScope.enrollment.period.name}" styleClass="form_box">
 					<o:input entity="enrollment" property="shortcut" maxlength="30" required="true">
 				 		<f:validator validatorId="enrollmentShortcutValidator"/>
 					</o:input>
@@ -52,14 +52,16 @@
 					<h:outputText value="#{enrollment_description}" styleClass="field_label"/>					
 					<fck:editor value="#{sessionScope.enrollment.description}" id="textEditor" toolbarSet="Basic" width="100%" height="200" />	 				
 	 				
-					<h:outputText value="#{msg.enrollment_options_features_headline}" styleClass="field_label"/>
-					<o:input entity="enrollment" property="documents"/>
-					<o:input entity="enrollment" property="discussion"/>
-					<o:input entity="enrollment" property="mailinglist"/>
-					<o:input entity="enrollment" property="wiki"/>
-					<o:input entity="enrollment" property="chat"/>
-					<o:input entity="enrollment" property="braincontest"/>
-					<o:input entity="enrollment" property="freestylelearning"/>
+					<h:outputText value="#{msg.enrollment_options_features_headline}" styleClass="header_font_normal"/>
+					<div class="content_font_normal">
+						<o:input entity="enrollment" property="documents"/>
+						<o:input entity="enrollment" property="discussion"/>
+						<o:input entity="enrollment" property="mailinglist"/>
+						<o:input entity="enrollment" property="wiki"/>
+						<o:input entity="enrollment" property="chat"/>
+						<o:input entity="enrollment" property="braincontest"/>
+						<o:input entity="enrollment" property="freestylelearning"/>
+					</div>
 				</o:block>
 				<o:block>
 					<h:commandButton 

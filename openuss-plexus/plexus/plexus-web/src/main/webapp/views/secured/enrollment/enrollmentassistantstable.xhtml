@@ -56,15 +56,4 @@
 		</plexus:column>
 		
 	</plexus:dataTable>      
-	<o:block>
-		<h:selectOneMenu id="assistantSelectBox" value="#{views$secured$enrollment$enrollmentassistants.aspirant}">
-		   	<t:selectItems value="#{views$secured$enrollment$enrollmentassistants.aspirantList}" var="aspirant" itemLabel="#{aspirant.label}" itemValue="#{aspirant.value}"/>
-		</h:selectOneMenu>
-		<plexus:command 
-				bean="#{views$secured$enrollment$enrollmentassistants}"
-				action="addAspirant"
-				label="#{msg['enrollment_assistants_add']}"
-				title="#{msg['enrollment_assistants_add_hint']}"
-				styleClass="button_add" />
-	</o:block>
 </ui:composition>
