@@ -37,7 +37,6 @@ public class Constants {
 	public static final String FAILURE = "failure";
 	public static final String SUCCESS = "success";
 	public static final String DESKTOP = "desktop";
-	public static final String ENROLLMENT_OPTIONS = "enrollment_options";
 
 	public static final String FACULTY_PAGE = "faculty";
 	public static final String FACULTY_PERIOD_PAGE = "faculty_period";
@@ -64,6 +63,10 @@ public class Constants {
 
 	public static final String SECURE_PASSWORD_CHANGE = "secure_password_change";
 
+	// enrollment pages
 	public static final String ENROLLMENT_PAGE = "enrollment_main";
+	public static final String ENROLLMENT_OPTIONS_PAGE = "enrollment_options";
+
+	public static final String OUTCOME_BACKWARD = "view:backward";
 
 }

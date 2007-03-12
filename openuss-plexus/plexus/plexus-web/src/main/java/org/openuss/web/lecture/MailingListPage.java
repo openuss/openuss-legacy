@@ -13,6 +13,7 @@ import org.openuss.mail.MailingJob;
 import org.openuss.mail.MailingStatus;
 
 import org.openuss.web.Constants;
+import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 @Bean(name = "views$secured$enrollment$mailinglist", scope = Scope.REQUEST)
 @View

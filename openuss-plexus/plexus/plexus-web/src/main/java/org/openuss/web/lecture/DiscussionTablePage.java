@@ -9,6 +9,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.discussion.Forum;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 
 

@@ -12,6 +12,7 @@ import org.openuss.braincontest.BrainContest;
 import org.openuss.braincontest.Answer;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
+import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 @Bean(name = "views$secured$enrollment$braincontestsolve", scope = Scope.REQUEST)
 @View

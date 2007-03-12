@@ -10,6 +10,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.BrainContest;
 import org.openuss.braincontest.Solution;
 import org.openuss.web.Constants;
+import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 @Bean(name = "views$secured$enrollment$braincontestnew", scope = Scope.REQUEST)
 @View

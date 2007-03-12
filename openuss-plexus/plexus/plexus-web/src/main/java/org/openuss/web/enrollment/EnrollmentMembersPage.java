@@ -1,12 +1,9 @@
-package org.openuss.web.lecture; 
+package org.openuss.web.enrollment; 
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Vector;
 
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -14,32 +11,29 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.LectureException;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
-@Bean(name = "views$secured$enrollment$enrollmentassistants", scope = Scope.REQUEST)
+@Bean(name = "views$secured$enrollment$enrollmentmembers", scope = Scope.REQUEST)
 @View
-public class EnrollmentAssistantsPage extends AbstractEnrollmentPage{
-	private static final Logger logger = Logger.getLogger(EnrollmentAssistantsPage.class);
+public class EnrollmentMembersPage extends AbstractEnrollmentPage{
+	private static final Logger logger = Logger.getLogger(EnrollmentMembersPage.class);
 	
-	private AssistantsDataProvider data = new AssistantsDataProvider();
-	
-	private String aspirant;
-	
-	
+	private MemberDataProvider data = new MemberDataProvider();
 	
 	public String save(){
-		logger.debug("Enrollment assistants page - saved");
+		logger.debug("Enrollment member page - saved");
 		return Constants.SUCCESS;
 	}
 	
-	public void changedAssistant(ValueChangeEvent event){
-		logger.debug("changed enrollment assistants");		
+	public void changedMember(ValueChangeEvent event) throws LectureException {
+		logger.debug("changed enrollment members");		
 	}
 
 
-	private class AssistantsDataProvider extends AbstractPagedTable<UserInfo> {
+	private class MemberDataProvider extends AbstractPagedTable<UserInfo> {
 
 		private DataPage<UserInfo> page; 
 		
@@ -62,46 +56,21 @@ public class EnrollmentAssistantsPage extends AbstractEnrollmentPage{
 		setSessionBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
-		
+	
 	public String delete() {
-		logger.debug("enrollment member deleted");
+		logger.error("enrollment member deleted");
 		return Constants.SUCCESS;		
 	}
 	
-	public String addAspirant(){
-		logger.debug("enrollment assistant aspirant added");
-		return Constants.SUCCESS;
-	}
-
-	public Collection<SelectItem> getAspirantList(){
-		SelectItem si = new SelectItem();
-		SelectItem si2 = new SelectItem();
-		SelectItem si3 = new SelectItem();
-		si.setLabel("Sebastian Roekens (plexus@openuss-plexus.com");
-		si.setValue("cag");
-		si2.setLabel("Ingo Düpppe (plexus@openuss-plexus.com");
-		si2.setValue("dueppe");
-		si3.setLabel("Al Bundy (plexus@openuss-plexus.com");
-		si3.setValue("bundy");
-		Vector<SelectItem> v = new Vector<SelectItem>();
-		v.add(si); v.add(si2); v.add(si3);
-		return v;	
-	}
+	// ----------------------- PROPERTIES ---------------------------------
 	
-	public AssistantsDataProvider getData() {
+	public MemberDataProvider getData() {
 		return data;
 	}
 
-	public void setData(AssistantsDataProvider data) {
+	public void setData(MemberDataProvider data) {
 		this.data = data;
 	}
-
-	public String getAspirant() {
-		return aspirant;
-	}
-
-	public void setAspirant(String aspirant) {
-		this.aspirant = aspirant;
-	}
+	
 	
 }
