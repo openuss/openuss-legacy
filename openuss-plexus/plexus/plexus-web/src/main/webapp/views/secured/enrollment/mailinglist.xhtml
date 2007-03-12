@@ -51,7 +51,10 @@
 
 				<t:column>
 					<plexus:commandSortHeader columnName="status"> #{msg['mailinglist_status']}</plexus:commandSortHeader>
-					<h:outputText value="#{mail.status}" />
+					<h:outputText value="#{msg.mail_status_planned}" rendered="#{mail.status.value==1}"/>
+					<h:outputText value="#{msg.mail_status_draft}" rendered="#{mail.status.value==2}"/>
+					<h:outputText value="#{msg.mail_status_inqueue}" rendered="#{mail.status.value==3}"/>
+					<h:outputText value="#{msg.mail_status_send}" rendered="#{mail.status.value==4}"/>
 				</t:column>
 
 				<t:column>
@@ -59,40 +62,26 @@
 					<h:outputText value="#{mail.sendingTime}" />
 				</t:column>
 
+				
+
+
 
 				<plexus:column header="#{msg.mailinglist_actions}">
-					<c:if test="#{mail.status == 1}">
-						<plexus:command bean="#{views$secured$enrollment$mailinglist}"
-							action="delete" label="#{msg['mailinglist_button_delete']}"
-							title="#{msg['mailinglist_button_delete_hint']}"
-							styleClass="button_profile" />
-						<plexus:command bean="#{views$secured$enrollment$mailinglist}"
-							action="change" label="#{msg['mailinglist_button_change']}"
-							title="#{msg['mailinglist_button_change_hint']}"
-							styleClass="button_profile" />
-					</c:if>
-
-					<c:if test="#{mail.status==2}">
-						<plexus:command bean="#{views$secured$enrollment$mailinglist}"
-							action="delete" label="#{msg['mailinglist_button_delete']}"
-							title="#{msg['mailinglist_button_delete_hint']}"
-							styleClass="button_profile" />
-						<plexus:command bean="#{views$secured$enrollment$mailinglist}"
-							action="change" label="#{msg['mailinglist_button_change']}"
-							title="#{msg['mailinglist_button_change_hint']}"
-							styleClass="button_profile" />
-						<plexus:command bean="#{views$secured$enrollment$mailinglist}"
-							action="send" label="#{msg['mailinglist_button_send']}"
-							title="#{msg['mailinglist_button_send']}"
-							styleClass="button_profile" />
-					</c:if>
-
-					<c:if test="#{mail.status==4}">
-						<plexus:command bean="#{views$secured$enrollment$mailinglist}"
-							action="delete" label="#{msg['mailinglist_button_delete']}"
-							title="#{msg['mailinglist_button_delete_hint']}"
-							styleClass="button_profile" />
-					</c:if>
+					<plexus:command bean="#{views$secured$enrollment$mailinglist}"
+						action="delete" label="#{msg['mailinglist_button_delete']}"
+						title="#{msg['mailinglist_button_delete_hint']}"
+						styleClass="button_profile"
+						rendered="#{not (mail.status.value==3)}" />
+					<plexus:command bean="#{views$secured$enrollment$mailinglist}"
+						action="send" label="#{msg['mailinglist_button_send']}"
+						title="#{msg['mailinglist_button_send']}"
+						styleClass="button_profile"
+						rendered="#{mail.status.value==2}" />
+					<plexus:command bean="#{views$secured$enrollment$mailinglist}"
+						action="change" label="#{msg['mailinglist_button_change']}"
+						title="#{msg['mailinglist_button_change_hint']}"
+						styleClass="button_profile" 
+						rendered="#{(mail.status.value==2)||(mail.status.value==1)}"/>
 
 				</plexus:column>
 
