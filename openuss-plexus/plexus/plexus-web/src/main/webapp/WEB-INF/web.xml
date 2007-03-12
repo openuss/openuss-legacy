@@ -45,7 +45,7 @@
 
 	<context-param>
 		<param-name>facelets.LIBRARIES</param-name>
-		<param-value>/WEB-INF/taglibs/tomahawk.taglib.xml;/WEB-INF/taglibs/tomahawk-sandbox.taglib.xml;/WEB-INF/taglibs/plexus.taglib.xml</param-value>
+		<param-value>/WEB-INF/taglibs/shale.taglib.xml;/WEB-INF/taglibs/tomahawk.taglib.xml;/WEB-INF/taglibs/tomahawk-sandbox.taglib.xml;/WEB-INF/taglibs/plexus.taglib.xml</param-value>
 	</context-param>
 
 	<context-param>
