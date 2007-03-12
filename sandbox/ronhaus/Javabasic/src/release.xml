@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+	<properties>
+		<title>JavaBasic: Changelog</title>
+	</properties>
+	<body>
+		<release version="1.2.0-SNAPSHOT" date="January 2007" desc="Release Version of Fornax">
+			<author email="thorsten.kamann@googlemail.com">Thorsten Kamann</author>
+			<information>
+				Third version of the oAW JavaBeans Cartridge and can be found at Fornax-Platform. It's based on
+				the 4.1.1 release of the openArchitectureWare-Framework.
+			</information>
+		</release>
+		<release version="1.2.1" date="March 2007" desc="Initial OpenUSS Integrated Version">
+			<author email="ronhaus@arcor.de">Ron Haus</author>
+			<information>
+				This is the initial release of the OpenUSS Javabasic Cartridge for openArchitectureWare. It is adjusted to the needs
+				of OpenUSS 3.0.
+			</information>
+			<changelog>
+				Added the ability to handle the OpenUSS datatypes.
+				Removed the initialization of attributes with no default values.
+			</changelog>
+			<restrictions/>
+			<knownIssues/>
+			<dependency>
+				This release was created using the 4.1.1 release of the openArchitectureWare-Framework, Eclipse UML 2.0.1
+				and Eclipse EMF Ecore 2.2.1. It generates outputs conform to Hibernate 3.2.2.
+			</dependency>
+		</release>
+	</body>
+</document>
