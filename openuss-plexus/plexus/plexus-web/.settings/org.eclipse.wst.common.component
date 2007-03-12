@@ -238,6 +238,9 @@
 	<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/jackrabbit/jackrabbit-core/1.2.1/jackrabbit-core-1.2.1.jar">
 		<dependency-type>uses</dependency-type>
 	</dependent-module>		
+	<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/jackrabbit/jackrabbit-webdav/1.2.1/jackrabbit-webdav-1.2.1.jar">
+		<dependency-type>uses</dependency-type>
+	</dependent-module>		
 	<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/jackrabbit/jackrabbit-jcr-commons/1.2.1/jackrabbit-jcr-commons-1.2.1.jar">
 		<dependency-type>uses</dependency-type>
 	</dependent-module>		
@@ -251,9 +254,6 @@
 		<dependency-type>uses</dependency-type>
 	</dependent-module>		
 	<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/lucene/lucene-core/2.0.0/lucene-core-2.0.0.jar">
-		<dependency-type>uses</dependency-type>
-	</dependent-module>		
-	<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/jackrabbit/jackrabbit-webdav/1.2.1/jackrabbit-webdav-1.2.1.jar">
 		<dependency-type>uses</dependency-type>
 	</dependent-module>		
 

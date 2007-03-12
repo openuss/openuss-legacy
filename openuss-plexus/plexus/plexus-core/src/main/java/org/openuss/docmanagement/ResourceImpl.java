@@ -4,6 +4,8 @@ public class ResourceImpl implements Resource {
 	
 	public String name;
 	
+	public String path;
+	
 	public int visibility;
 	
 	public String id;
@@ -58,6 +60,14 @@ public class ResourceImpl implements Resource {
 
 	public void setMessage(String message) {
 		this.message = message;		
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path=path;
 	}
 	
 	

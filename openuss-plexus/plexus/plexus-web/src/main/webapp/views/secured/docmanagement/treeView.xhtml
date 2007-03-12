@@ -9,9 +9,9 @@
 	xmlns:s="http://www.openuss.org/jsf-security"
 	xmlns:c="http://java.sun.com/jstl/core">
 
-	<t:tree2 id="serverTree" value="#{distributionViewBacker.treeData}" var="node"
+	<t:tree2 id="serverTree" value="#{distributionViewBacker.tree2}" var="node"
 		varNodeToggler="t" preserveToggle="false" clientSideToggle="false">
-		<f:facet name="node">
+		<f:facet name="folder">
 			<h:panelGroup>
 				<h:commandLink immediate="true"
 					styleClass="#{t.nodeSelected ? 'standard_bold':'standard'}"

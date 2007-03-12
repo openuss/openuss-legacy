@@ -9,6 +9,10 @@ public interface Resource {
 	public abstract String getName();
 
 	public abstract void setName(String name);
+	
+	public abstract void setPath(String path);
+	
+	public abstract String getPath();
 
 	public abstract int getVisibility();
 

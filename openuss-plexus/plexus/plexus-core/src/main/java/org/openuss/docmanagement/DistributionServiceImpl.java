@@ -54,6 +54,8 @@ public class DistributionServiceImpl
 	
 	public Repository repository;
 	
+	public FolderDao folderDao; 
+	
     /**
      * @see org.openuss.docmanagement.DistributionService#addMainFolder(org.openuss.lecture.Enrollment)
      */
@@ -93,7 +95,7 @@ public class DistributionServiceImpl
     	node = node.getNode(newFolder.getName());    	
     	node.addMixin("mix:referenceable");
     	node.setProperty("message", newFolder.getMessage());
-    	node.setProperty("visibility", DocVisibility.ALL);
+    	node.setProperty("visibility", (DocRights.EDIT_ALL|DocRights.READ_ALL));
     	logout(session);
     	//TODO add subfolders
     }
@@ -383,17 +385,8 @@ public class DistributionServiceImpl
     protected org.openuss.docmanagement.Folder handleGetMainFolder(org.openuss.lecture.Enrollment enrollment)
         throws java.lang.Exception
     {
-    	Session session = login();
-    	Node main = session.getRootNode();
-    	main = main.getNode(distribution+"/"+enrollment.getId().toString());
-    	
-    	FolderImpl fi = new FolderImpl();
-    	fi.setId(enrollment.getId().toString());
-    	fi.setName("main");
-    	fi.setVisibility(DocVisibility.ALL);
-    	//TODO set subfolder
-    	
-    	logout(session);
+    	Folder fi; 
+    	fi = folderDao.getFolder("");
     	return fi;
     }
 
@@ -476,6 +469,20 @@ public class DistributionServiceImpl
 		return null;
 	}
 	
+	public void buildTestStructure() throws Exception{
+		Session session = login();
+		
+		Node root = session.getRootNode();
+		
+		Node dist = root.addNode("distribution");
+		Node n1 = dist.addNode("1");
+		Node n2 = dist.addNode("2");
+		Node n3 = dist.addNode("3");
+		Node n1a = n1.addNode("a");	
+		
+		logout(session);
+	}
+	
 
 	private Session login() throws LoginException, RepositoryException {
 		Session session = repository.login(new SimpleCredentials(
@@ -484,7 +491,11 @@ public class DistributionServiceImpl
 	}
 
 	private void logout(Session session) throws AccessDeniedException, ItemExistsException, ConstraintViolationException, InvalidItemStateException, VersionException, LockException, NoSuchNodeTypeException, RepositoryException {
-		session.save();
+		try{
+			session.save();
+		} catch (Exception e){
+			logger.error("Fehler:",e);
+		}
 		session.logout();
 	}
 
@@ -494,5 +505,13 @@ public class DistributionServiceImpl
 	
 	public void setRepository(Repository repository) {
 		this.repository = repository;
+	}
+
+	public FolderDao getFolderDao() {
+		return folderDao;
+	}
+
+	public void setFolderDao(FolderDao folderDao) {
+		this.folderDao = folderDao;
 	}
 }

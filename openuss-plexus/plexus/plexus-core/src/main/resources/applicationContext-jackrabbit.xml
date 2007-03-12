@@ -13,15 +13,31 @@
    	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		      DocManagement
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+	<bean id="folderDao" class="org.openuss.docmanagement.FolderDao" >
+		<property name="repository" ref="repository"></property>
+	</bean>
+	<bean id="workingPlaceDao" class="org.openuss.docmanagement.WorkingPlaceDao" >
+		<property name="repository" ref="repository"></property>
+	</bean>
+	<bean id="examAreaDao" class="org.openuss.docmanagement.ExamAreaDao" >
+		<property name="repository" ref="repository"></property>
+	</bean>
+	<bean id="fileDao" class="org.openuss.docmanagement.FileDao" >
+		<property name="repository" ref="repository"></property>
+	</bean>
+	<bean id="linkDao" class="org.openuss.docmanagement.LinkDao" >
+		<property name="repository" ref="repository"></property>
+	</bean>
+
 	<bean id="distributionService" class="org.openuss.docmanagement.DistributionServiceImpl">
 		<property name="repository" ref="repository"></property>
+		<property name="folderDao" ref="folderDao"></property>
 	</bean>
 	<bean id="collaborationService" class="org.openuss.docmanagement.CollaborationServiceImpl"/>
 	<bean id="examinationService" class="org.openuss.docmanagement.ExaminationServiceImpl"/>
 	<bean id="distributionViewBacker" class="org.openuss.web.docmanagement.DistributionViewBacker">
 		<property name="distributionService" ref="distributionService"></property>
 	</bean>
-
 
    	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		      WebDAV
