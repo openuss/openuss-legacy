@@ -11,8 +11,6 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 
-import org.openuss.docmanagement.ResourceDao;
-
 
 /**
  * Default implementation of interface IOHandler
@@ -65,7 +63,7 @@ public class DefaultIOHandlerImpl implements IOHandler {
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.IOHandler#canExport(org.openuss.docmanagement.webdav.ExportContext, org.apache.jackrabbit.webdav.DavResource)
 	 */
-	public boolean canExport(ExportContext context, ResourceDao resource) {
+	public boolean canExport(ExportContext context, DavResource resource) {
 		// export impossible, if resource is null
 		if (resource == null) {
 			return false;
@@ -94,7 +92,7 @@ public class DefaultIOHandlerImpl implements IOHandler {
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.IOHandler#canImport(org.openuss.docmanagement.webdav.ImportContext, org.apache.jackrabbit.webdav.DavResource)
 	 */
-	public boolean canImport(ImportContext context, ResourceDao resource) {
+	public boolean canImport(ImportContext context, DavResource resource) {
 		// import impossible, if resource is null
 		if (resource == null) {
 			return false;
@@ -148,7 +146,7 @@ public class DefaultIOHandlerImpl implements IOHandler {
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.IOHandler#exportContent(org.openuss.docmanagement.webdav.ExportContext, org.apache.jackrabbit.webdav.DavResource)
 	 */
-	public boolean exportContent(ExportContext context, ResourceDao resource) throws IOException {
+	public boolean exportContent(ExportContext context, DavResource resource) throws IOException {
 		// test, if export is possible
 		if (!canExport(context, resource)) {
 			throw new IOException();
@@ -211,7 +209,7 @@ public class DefaultIOHandlerImpl implements IOHandler {
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.IOHandler#importContent(org.openuss.docmanagement.webdav.ImportContext, org.apache.jackrabbit.webdav.DavResource)
 	 */
-	public boolean importContent(ImportContext context, ResourceDao resource) throws IOException {
+	public boolean importContent(ImportContext context, DavResource resource) throws IOException {
 		// test, if import is possible
 		if (!canImport(context, resource)) {
 			throw new IOException();

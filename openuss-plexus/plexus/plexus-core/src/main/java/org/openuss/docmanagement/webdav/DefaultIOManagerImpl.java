@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.openuss.docmanagement.ResourceDao;
-
-
 /**
  * Default implementation of interface IOManager
  * @author David Ullrich
@@ -75,7 +72,7 @@ public class DefaultIOManagerImpl implements IOManager {
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.IOManager#exportContent(org.openuss.docmanagement.webdav.ExportContext, org.apache.jackrabbit.webdav.DavResource)
 	 */
-	public boolean exportContent(ExportContext context, ResourceDao resource) throws IOException {
+	public boolean exportContent(ExportContext context, DavResource resource) throws IOException {
 		// internal variable for export status
 		boolean success = false;
 		
@@ -143,7 +140,7 @@ public class DefaultIOManagerImpl implements IOManager {
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.IOManager#importContent(org.openuss.docmanagement.webdav.ImportContext, org.apache.jackrabbit.webdav.DavResource)
 	 */
-	public boolean importContent(ImportContext context, ResourceDao resource) throws IOException {
+	public boolean importContent(ImportContext context, DavResource resource) throws IOException {
 		// internal variable for import status
 		boolean success = false;
 		

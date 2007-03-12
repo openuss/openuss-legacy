@@ -2,7 +2,6 @@ package org.openuss.docmanagement.webdav;
 
 import java.io.IOException;
 
-import org.openuss.docmanagement.ResourceDao;
 
 /**
  * 
@@ -37,7 +36,7 @@ public interface IOManager {
 	 * @param resource
 	 * @return
 	 */
-	public boolean exportContent(ExportContext context, ResourceDao resource) throws IOException;
+	public boolean exportContent(ExportContext context, DavResource resource) throws IOException;
 	
 	/**
 	 * 
@@ -53,5 +52,5 @@ public interface IOManager {
 	 * @param resource
 	 * @return
 	 */
-	public boolean importContent(ImportContext context, ResourceDao resource) throws IOException;
+	public boolean importContent(ImportContext context, DavResource resource) throws IOException;
 }

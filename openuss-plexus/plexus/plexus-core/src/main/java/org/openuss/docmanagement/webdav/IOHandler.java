@@ -2,8 +2,6 @@ package org.openuss.docmanagement.webdav;
 
 import java.io.IOException;
 
-import org.openuss.docmanagement.ResourceDao;
-
 /**
  * 
  * @author David Ullrich
@@ -25,7 +23,7 @@ public interface IOHandler {
 	 * @param resource
 	 * @return
 	 */
-	public boolean canExport(ExportContext context, ResourceDao resource);
+	public boolean canExport(ExportContext context, DavResource resource);
 	
 	/**
 	 * 
@@ -41,7 +39,7 @@ public interface IOHandler {
 	 * @param resource
 	 * @return
 	 */
-	public boolean canImport(ImportContext context, ResourceDao resource);
+	public boolean canImport(ImportContext context, DavResource resource);
 	
 	/**
 	 * 
@@ -59,7 +57,7 @@ public interface IOHandler {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean exportContent(ExportContext context, ResourceDao resource) throws IOException;
+	public boolean exportContent(ExportContext context, DavResource resource) throws IOException;
 
 	/**
 	 * @param context
@@ -75,7 +73,7 @@ public interface IOHandler {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean importContent(ImportContext context, ResourceDao resource) throws IOException;
+	public boolean importContent(ImportContext context, DavResource resource) throws IOException;
 
 	/**
 	 * @return
