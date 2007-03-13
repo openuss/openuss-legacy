@@ -5,101 +5,131 @@
  */
 package org.openuss.lecture;
 
+import org.openuss.security.User;
+import org.openuss.security.acl.LectureAclEntry;
+
 /**
  * @see org.openuss.lecture.EnrollmentService
  */
-public class EnrollmentServiceImpl
-    extends org.openuss.lecture.EnrollmentServiceBase
-{
+public class EnrollmentServiceImpl extends org.openuss.lecture.EnrollmentServiceBase {
 
-    /**
-     * @see org.openuss.lecture.EnrollmentService#getAssistants(java.lang.Long)
-     */
-    protected java.util.List handleGetAssistants(java.lang.Long enrollmentId)
-        throws java.lang.Exception
-    {
-        // @todo implement protected java.util.List handleGetAssistants(java.lang.Long enrollmentId)
-        return null;
-    }
+	/**
+	 * @see org.openuss.lecture.EnrollmentService#getAssistants(org.openuss.lecture.Enrollment)
+	 */
+	protected java.util.List handleGetAssistants(org.openuss.lecture.Enrollment enrollment) throws java.lang.Exception {
+		return getEnrollmentMemberDao().findByType(EnrollmentMemberDao.TRANSFORM_ENROLLMENTMEMBERINFO, enrollment,
+				EnrollmentMemberType.ASSISTANT);
+	}
 
-    /**
-     * @see org.openuss.lecture.EnrollmentService#getAspirants(java.lang.Long)
-     */
-    protected java.util.List handleGetAspirants(java.lang.Long enrollmentId)
-        throws java.lang.Exception
-    {
-        // @todo implement protected java.util.List handleGetAspirants(java.lang.Long enrollmentId)
-        return null;
-    }
+	/**
+	 * @see org.openuss.lecture.EnrollmentService#getAspirants(org.openuss.lecture.Enrollment)
+	 */
+	protected java.util.List handleGetAspirants(org.openuss.lecture.Enrollment enrollment) throws java.lang.Exception {
+		return getEnrollmentMemberDao().findByType(EnrollmentMemberDao.TRANSFORM_ENROLLMENTMEMBERINFO, enrollment,
+				EnrollmentMemberType.ASPIRANT);
+	}
 
-    /**
-     * @see org.openuss.lecture.EnrollmentService#getParticipants(java.lang.Long)
-     */
-    protected java.util.List handleGetParticipants(java.lang.Long enrollmentId)
-        throws java.lang.Exception
-    {
-        // @todo implement protected java.util.List handleGetParticipants(java.lang.Long enrollmentId)
-        return null;
-    }
+	/**
+	 * @see org.openuss.lecture.EnrollmentService#getParticipants(org.openuss.lecture.Enrollment)
+	 */
+	protected java.util.List handleGetParticipants(org.openuss.lecture.Enrollment enrollment)
+			throws java.lang.Exception {
+		return getEnrollmentMemberDao().findByType(EnrollmentMemberDao.TRANSFORM_ENROLLMENTMEMBERINFO, enrollment,
+				EnrollmentMemberType.PARTICIPANT);
+	}
 
-    /**
-     * @see org.openuss.lecture.EnrollmentService#addAssistant(java.lang.Long, java.lang.Long)
-     */
-    protected void handleAddAssistant(java.lang.Long enrollmentId, java.lang.Long userId)
-        throws java.lang.Exception
-    {
-        // @todo implement protected void handleAddAssistant(java.lang.Long enrollmentId, java.lang.Long userId)
-        throw new java.lang.UnsupportedOperationException("org.openuss.lecture.EnrollmentService.handleAddAssistant(java.lang.Long enrollmentId, java.lang.Long userId) Not implemented!");
-    }
+	/**
+	 * @see org.openuss.lecture.EnrollmentService#addAssistant(org.openuss.lecture.Enrollment,
+	 *      org.openuss.security.User)
+	 */
+	protected void handleAddAssistant(org.openuss.lecture.Enrollment enrollment, org.openuss.security.User user)
+			throws java.lang.Exception {
+		EnrollmentMember assistant = createEnrollmentMember(enrollment, user);
+		assistant.setMemberType(EnrollmentMemberType.ASSISTANT);
+		getEnrollmentMemberDao().create(assistant);
+	}
 
-    /**
-     * @see org.openuss.lecture.EnrollmentService#removeAssistant(java.lang.Long, java.lang.Long)
-     */
-    protected void handleRemoveAssistant(java.lang.Long enrollmentId, java.lang.Long userId)
-        throws java.lang.Exception
-    {
-        // @todo implement protected void handleRemoveAssistant(java.lang.Long enrollmentId, java.lang.Long userId)
-        throw new java.lang.UnsupportedOperationException("org.openuss.lecture.EnrollmentService.handleRemoveAssistant(java.lang.Long enrollmentId, java.lang.Long userId) Not implemented!");
-    }
+	/**
+	 * @see org.openuss.lecture.EnrollmentService#addAspirant(org.openuss.lecture.Enrollment,
+	 *      org.openuss.security.User)
+	 */
+	protected void handleAddAspirant(org.openuss.lecture.Enrollment enrollment, org.openuss.security.User user)
+			throws java.lang.Exception {
+		EnrollmentMember aspirant = createEnrollmentMember(enrollment, user);
+		aspirant.setMemberType(EnrollmentMemberType.ASPIRANT);
+		getEnrollmentMemberDao().create(aspirant);
+	}
 
-    /**
-     * @see org.openuss.lecture.EnrollmentService#addAspirant(java.lang.Long, java.lang.Long)
-     */
-    protected void handleAddAspirant(java.lang.Long enrollmentId, java.lang.Long userId)
-        throws java.lang.Exception
-    {
-        // @todo implement protected void handleAddAspirant(java.lang.Long enrollmentId, java.lang.Long userId)
-        throw new java.lang.UnsupportedOperationException("org.openuss.lecture.EnrollmentService.handleAddAspirant(java.lang.Long enrollmentId, java.lang.Long userId) Not implemented!");
-    }
+	private EnrollmentMember createEnrollmentMember(org.openuss.lecture.Enrollment enrollment,
+			org.openuss.security.User user) {
+		EnrollmentMember aspirant = EnrollmentMember.Factory.newInstance();
+		aspirant.setEnrollment(enrollment);
+		aspirant.setUser(user);
+		return aspirant;
+	}
 
-    /**
-     * @see org.openuss.lecture.EnrollmentService#removeAspirant(java.lang.Long, java.lang.Long)
-     */
-    protected void handleRemoveAspirant(java.lang.Long enrollmentId, java.lang.Long userId)
-        throws java.lang.Exception
-    {
-        // @todo implement protected void handleRemoveAspirant(java.lang.Long enrollmentId, java.lang.Long userId)
-        throw new java.lang.UnsupportedOperationException("org.openuss.lecture.EnrollmentService.handleRemoveAspirant(java.lang.Long enrollmentId, java.lang.Long userId) Not implemented!");
-    }
+	/**
+	 * @see org.openuss.lecture.EnrollmentService#addParticipant(org.openuss.lecture.Enrollment,
+	 *      org.openuss.security.User)
+	 */
+	protected void handleAddParticipant(org.openuss.lecture.Enrollment enrollment, org.openuss.security.User user)
+			throws java.lang.Exception {
+		EnrollmentMember participant = createEnrollmentMember(enrollment, user);
+		persistParticipantWithPermissions(participant);
+	}
 
-    /**
-     * @see org.openuss.lecture.EnrollmentService#addParticipant(java.lang.Long, java.lang.Long)
-     */
-    protected void handleAddParticipant(java.lang.Long enrollmentId, java.lang.Long userId)
-        throws java.lang.Exception
-    {
-        // @todo implement protected void handleAddParticipant(java.lang.Long enrollmentId, java.lang.Long userId)
-        throw new java.lang.UnsupportedOperationException("org.openuss.lecture.EnrollmentService.handleAddParticipant(java.lang.Long enrollmentId, java.lang.Long userId) Not implemented!");
-    }
+	@Override
+	protected void handleAcceptAspirant(Long memberId) throws Exception {
+		EnrollmentMember member = getEnrollmentMemberDao().load(memberId);
+		if (member.getMemberType() == EnrollmentMemberType.ASPIRANT) {
+			persistParticipantWithPermissions(member);
+		}
+	}
 
-    /**
-     * @see org.openuss.lecture.EnrollmentService#removeParticipant(java.lang.Long, java.lang.Long)
-     */
-    protected void handleRemoveParticipant(java.lang.Long enrollmentId, java.lang.Long userId)
-        throws java.lang.Exception
-    {
-        // @todo implement protected void handleRemoveParticipant(java.lang.Long enrollmentId, java.lang.Long userId)
-        throw new java.lang.UnsupportedOperationException("org.openuss.lecture.EnrollmentService.handleRemoveParticipant(java.lang.Long enrollmentId, java.lang.Long userId) Not implemented!");
-    }
+	private void persistParticipantWithPermissions(EnrollmentMember participant) {
+		participant.setMemberType(EnrollmentMemberType.PARTICIPANT);
+		getSecurityService().setPermissions(participant.getUser(), participant.getEnrollment(),
+				LectureAclEntry.ENROLLMENT_PARTICIPANT);
+
+		if (participant.getId() == null) {
+			getEnrollmentMemberDao().create(participant);
+		} else {
+			getEnrollmentMemberDao().update(participant);
+		}
+	}
+
+	@Override
+	protected void handleRemoveMember(Long memberId) throws Exception {
+		EnrollmentMember member = getEnrollmentMemberDao().load(memberId);
+		if (member != null) {
+			getSecurityService().removePermission(member.getUser(), member.getEnrollment());
+			getEnrollmentMemberDao().remove(member);
+		}
+	}
+
+	@Override
+	protected void handleApplyUser(Enrollment enrollment, User user) throws Exception {
+		Enrollment original = getEnrollmentDao().load(enrollment.getId());
+		if (original.getAccessType() == AccessType.APPLICATION) {
+			addAspirant(enrollment, user);
+		} else {
+			throw new EnrollmentServiceException("message_error_enrollment_accesstype_is_not_application");
+		}
+	}
+
+	@Override
+	protected void handleApplyUserByPassword(String password, Enrollment enrollment, User user) throws Exception {
+		Enrollment original = getEnrollmentDao().load(enrollment.getId());
+		if (original.getAccessType() == AccessType.PASSWORD && original.isPasswordCorrect(password)) {
+			addParticipant(enrollment, user);
+		} else {
+			throw new EnrollmentServiceException("message_error_password_is_not_correct");
+		}
+	}
+
+	@Override
+	protected void handleRejectAspirant(Long memberId) throws Exception {
+		removeMember(memberId);
+	}
 
 }

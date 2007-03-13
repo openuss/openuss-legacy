@@ -10,6 +10,8 @@ delete from lecture_faculty_member;
 update lecture_enrollment e set e.faculty_fk = null;
 update lecture_period e set e.faculty_fk = null;
 update lecture_subject e set e.faculty_fk = null;
+
+delete from enrollment_member;
 delete from lecture_faculty;
 delete from lecture_enrollment;
 delete from lecture_period;

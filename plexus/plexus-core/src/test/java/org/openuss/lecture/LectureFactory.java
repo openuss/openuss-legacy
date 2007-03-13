@@ -1,5 +1,7 @@
 package org.openuss.lecture;
 
+import org.openuss.TestUtility;
+
 /**
  * Factory to create lecture structures
  * @author Ingo Dueppe
@@ -43,8 +45,16 @@ public class LectureFactory {
 		return enrollment;
 	}
 	
+	
 	private static String unique(String name) {
-		return name+" - "+System.currentTimeMillis();
+		return name+" - "+unique();
 	}
+	
+	static long unique = System.currentTimeMillis()/2;
+	
+	private static synchronized long unique() {
+		return unique++;
+	}
+	
 
 }
