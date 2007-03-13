@@ -57,4 +57,9 @@ public class RepositoryFileImpl extends org.openuss.repository.RepositoryFileBas
 		return getCreated().before(new Date()) ;
 	}
 
+	@Override
+	public Date releaseDate() {
+		return getCreated();
+	}
+
 }

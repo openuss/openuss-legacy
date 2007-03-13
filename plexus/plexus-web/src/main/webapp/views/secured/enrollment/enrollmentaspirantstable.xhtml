@@ -8,7 +8,13 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:c="http://java.sun.com/jstl/core">
       
-    <plexus:dataTable id="enrollmentaspirants" label="#{msg.faculty_members_subheading}" value="views$secured$enrollment$enrollmentaspirants.data" var="aspirant" rows="10">  
+    <plexus:dataTable 
+    	id="enrollmentaspirants" 
+    	label="#{msg.faculty_members_subheading}" 
+    	value="views$secured$enrollment$enrollmentaspirants.data" 
+    	columnClasses="col_max_left"
+    	var="aspirant" 
+    	rows="10">  
       
 		<t:column>
 			<plexus:commandSortHeader columnName="lastname">#{msg['user_contact_lastname']}</plexus:commandSortHeader>
@@ -24,7 +30,13 @@
 			<plexus:commandSortHeader columnName="username"> #{msg['user_username']} </plexus:commandSortHeader>
 			<h:outputText value="#{aspirant.username}"/>
 		</t:column>
+
+		<t:column>
+			<plexus:commandSortHeader columnName="username"> #{msg['user_email']} </plexus:commandSortHeader>
+			<h:outputText value="#{aspirant.email}"/>
+		</t:column>
 		
+		<!-- 
 		<t:column>
 			<f:facet name="header">#{msg['enrollment_aspirants_aspire']}</f:facet>
 			<h:selectOneMenu styleClass="pulldown_small" valueChangeListener="#{views$secured$enrollment$enrollmentaspirants.changedAspirant}">
@@ -33,6 +45,7 @@
 				<f:selectItem itemValue="reject" itemLabel="#{msg['faculty_aspirant_reject']}"/>
 			</h:selectOneMenu>
 		</t:column>
+		 -->
 		
 		<plexus:column header="#{msg.commands_header}">
 			<plexus:command 
