@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+    <plexus:dataTable id="discussionsThreadTable" label="#{msg.discussion_main_header}" value="views$secured$discussion$discussionthread.data" var="threadentry" rows="10">
+      
+		<t:column>
+			<plexus:commandSortHeader columnName="author"> #{msg['discussion_thread_column_author']} </plexus:commandSortHeader>
+			<h:outputText value="#{threadentry.author.contact.firstName} #{threadentry.author.contact.lastName}"></h:outputText>			
+				<h:graphicImage styleClass="userphoto"
+					renderer="${not empty threadentry.author.profile.image}"
+					value="/files/#{threadentry.author.profile.image.fileName}?fileid=#{threadentry.author.profile.image.id}"
+					alt="#{threadentry.author.contact.firstName} #{threadentry.author.contact.lastName}"
+					title="#{threadentry.author.contact.firstName} #{threadentry.author.contact.lastName}"
+					rendered="#{not empty threadentry.author.profile.image}"/> 
+				<h:graphicImage 
+					styleClass="userphoto" 
+					value="/images/icons/no_pic.gif" 
+					width="80px" 
+					height="60px" 
+					alt="#{msg.user_profile_no_image}" 
+					title="#{msg.user_profile_no_image}"
+					rendered="#{empty threadentry.author.profile.image}"/>
+		</t:column>
+		<t:column>
+			<plexus:commandSortHeader columnName="message"> #{msg['discussion_thread_column_message']} </plexus:commandSortHeader>
+			<h:outputText value="#{threadentry.date} #{threadentry.title}"></h:outputText>
+			<h:outputText value="#{threadentry.message}"></h:outputText>			
+		</t:column>
+		
+	</plexus:dataTable>      
+</ui:composition>

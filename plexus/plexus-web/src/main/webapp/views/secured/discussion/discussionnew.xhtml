@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:plexus="http://www.openuss.org/plexus/jsf"      
+      xmlns:fck="http://www.fck-faces.org/fck-faces">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+		<ui:define name="navigation">
+			<ui:include src="/views/commons/navigation/enrollment.xhtml" />
+		</ui:define>
+ 		 
+  		<ui:define name="content">
+			<h:form id="newDiscussionEntryForm">
+	  			<o:block label="#{msg.discussionnew_entry}" styleClass="form_box">
+					<o:input entity="discussionNew" property="title" required="true"></o:input>
+					
+					<h:outputText value="#{msg.discussionnew_text}" styleClass="field_label"/>					
+					<fck:editor value="#{discussionNew.text}" id="textEditor" toolbarSet="Basic" width="100%" height="200" />	 				
+
+				<f:subview rendered="${!empty discussionNew.attachment}">
+					<h:outputLink value="/openuss-plexus/files/#{sessionScope.discussionNew.attachment.fileName}">
+						<f:param value="#{discussionNew.attachment.id}" name="fileid" />
+						<h:graphicImage	value="/images/filetypes/#{sessionScope.discussionNew.attachment.extension}.gif" />
+				  		#{sessionScope.discussionNew.attachment.name} 
+				  	</h:outputLink>
+			  		&#160;
+			  		<h:commandButton value="delete" action="#{discussionNew.removeAttachment}" immediate="true" styleClass="button_remove"/><br/><br/>
+		  		</f:subview> 
+						
+				<t:inputFileUpload id="attachment" storage="file" accept="*" immediate="true" styleClass="uploadField">
+					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
+				</t:inputFileUpload>
+				<h:message for="attachment" styleClass="field_error" showDetail="true" showSummary="false" />
+	 				
+				</o:block>
+				<o:block>
+					<plexus:command bean="#{discussionNew}"
+						action="send" label="#{msg['discussionnew_button_send']}"
+						title="#{msg['discussionnew_button_send']}"
+						styleClass="button" />				
+					<h:commandButton 
+						value="${msg.discussionnew_button_draft}" 
+						action="discussion_thread" 
+						immediate="true" 
+						styleClass="button"/>
+				</o:block>
+			</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>
