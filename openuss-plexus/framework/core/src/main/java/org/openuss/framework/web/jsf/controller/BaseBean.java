@@ -383,4 +383,8 @@ public abstract class BaseBean {
 		NavigationHandler navigation = getApplication().getNavigationHandler();
 		navigation.handleNavigation(getFacesContext(), null , outcome);
 	}
+
+	public boolean isPostBack() {
+		return "POST".equals(getRequest().getMethod());
+	}
 }

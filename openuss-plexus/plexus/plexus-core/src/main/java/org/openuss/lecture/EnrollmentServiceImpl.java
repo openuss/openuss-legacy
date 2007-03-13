@@ -132,4 +132,19 @@ public class EnrollmentServiceImpl extends org.openuss.lecture.EnrollmentService
 		removeMember(memberId);
 	}
 
+	@Override
+	protected Enrollment handleGetEnrollment(Enrollment enrollment) throws Exception {
+		if (enrollment == null) {
+			return null;
+		} else {
+			return getEnrollmentDao().load(enrollment.getId());
+		}
+	}
+
+	@Override
+	protected EnrollmentMemberInfo handleGetMemberInfo(Enrollment enrollment, User user) throws Exception {
+		return (EnrollmentMemberInfo) getEnrollmentMemberDao().findByUserAndEnrollment(
+				EnrollmentMemberDao.TRANSFORM_ENROLLMENTMEMBERINFO, user, enrollment);
+	}
+
 }
