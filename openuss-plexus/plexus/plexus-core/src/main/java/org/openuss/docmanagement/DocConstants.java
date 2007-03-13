@@ -8,10 +8,11 @@ public class DocConstants{
 	
 	public static final String WORKINGPLACE = "doc:workingplace";
 	
+	//NamespacePrefix
+	public static final String NAMESPACE_PREFIX = "doc";
+	public static final String NAMESPACE_URI = "http://www.openuss.org/doc";
+	
 	//Resource
-	public static final String PROPERTY_ID = "doc:id";
-	public static final String PROPERTY_NAME = "doc:name";	
-	public static final String PROPERTY_PATH = "doc:path";	
 	public static final String PROPERTY_VISIBILITY = "doc:visibility";
 	public static final String PROPERTY_MESSAGE = "doc:message";
 	

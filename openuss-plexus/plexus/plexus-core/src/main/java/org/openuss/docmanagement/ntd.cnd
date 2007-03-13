@@ -1,0 +1,9 @@
+<ns = 'http://www.jcp.org/jcr/nt/1.0'>
+[nt:docFolder] > nt:folder, mix:referencable
+- nt:docVisibility (long) mandatory
+- nt:docMessage (string) mandatory
+
+[nt:docFile] > nt:file, mix:referencable
+- nt:docVisibility (long) mandatory
+- nt:docMessage (string) mandatory
+- nt:docDistributionTime (date) mandatory

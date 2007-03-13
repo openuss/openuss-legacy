@@ -37,8 +37,8 @@
 	</bean>
 	<bean id="collaborationService" class="org.openuss.docmanagement.CollaborationServiceImpl"/>
 	<bean id="examinationService" class="org.openuss.docmanagement.ExaminationServiceImpl"/>
-	<bean id="distributionViewBacker" class="org.openuss.web.docmanagement.DistributionViewBacker">
-		<property name="distributionService" ref="distributionService"></property>
+	<bean id="repositoryStartup" class="org.openuss.docmanagement.RepositoryStartup" init-method="init">
+		<property name="repository" ref="repository"></property>
 	</bean>
 
    	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
