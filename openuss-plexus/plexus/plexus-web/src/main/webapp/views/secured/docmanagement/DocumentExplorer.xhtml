@@ -29,10 +29,9 @@
   			<h:form id="treeView">
 				<ui:include src="treeView.xhtml"/>
 			</h:form>
-  			<h:form id="treeView">
-				<ui:include src="treeView.xhtml"/>
-			</h:form>
-
+			<o:block>
+				<h:commandButton action="#{distributionViewBacker.addTestStructure}" value="Add TestStructure"></h:commandButton>
+			</o:block>
 		</ui:define>
 	</ui:composition>
 	<!-- text above will be ignored -->

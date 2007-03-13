@@ -4,13 +4,10 @@ import javax.jcr.Node;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import javax.jcr.LoginException;
-import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
+import javax.jcr.PropertyIterator;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -151,6 +148,46 @@ public class FileDao extends ResourceDao {
 		}
 	}
 
+	public void delFile(File file, boolean delLinks) throws Exception {
+		try {
+			Session session = login(repository);
+			Node node = session.getRootNode().getNode(file.getPath());
+			String areaType = getAreaType(node);
+			if (areaType == DocConstants.DISTRIBUTION) {
+				delDistributionFile(node, delLinks);
+			}
+			if (areaType == DocConstants.EXAMAREA) {
+			}
+			if (areaType == DocConstants.WORKINGPLACE) {
+			}
+
+			logout(session);
+		} catch (LoginException e) {
+			// should never happen (repository access through master account)
+			logger.error("Login error in FileDao", e);
+		} catch (RepositoryException e) {
+			logger.error("Repository Exception: ", e);
+		}
+	}
+
+	private void delDistributionFile(Node node, boolean delLinks){
+		if (delLinks){
+			try{
+				PropertyIterator pi = node.getReferences();
+				Node n;
+				while (pi.hasNext()){
+					n = pi.nextProperty().getNode();
+					n.remove();
+				}
+			} catch (RepositoryException e){
+				logger.error("Repository Exception: ", e);
+			}
+		} else if (!delLinks){
+			//TODO implement me
+		}
+		
+	}
+	
 	private String getAreaType(Node node) {
 		// TODO implement me
 		// possible methods: recursive, path analysing, ...?

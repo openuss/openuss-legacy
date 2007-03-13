@@ -1,5 +1,7 @@
 package org.openuss.docmanagement;
 
+import java.io.ByteArrayInputStream;
+import java.sql.Timestamp;
 import java.util.Vector;
 import java.util.Collection;
 
@@ -94,6 +96,7 @@ public class FolderDao extends ResourceDao {
 				node.addNode(folder.getName(), DocConstants.NT_FOLDER);
 				node = node.getNode(folder.getName());
 				node.addMixin(DocConstants.MIX_REFERENCEABLE); 
+				logger.debug(DocConstants.PROPERTY_MESSAGE+ "<-----------------------------------------------");
 				node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
 				node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());				
 				logout(session);
@@ -104,6 +107,23 @@ public class FolderDao extends ResourceDao {
 			logger.error("Login Exception: ", e);	
 		} catch (RepositoryException e) {
 			logger.error("Repository Exception: ", e);
+		}
+	}
+	
+	public void addTestStructure(){
+		FolderImpl folder1 = new FolderImpl("TestMessage", "test", "", null, DocRights.EDIT_ALL|DocRights.READ_ALL);
+		FolderImpl folder2 = new FolderImpl("Sebastian Roekens", "Folder 1", "test", null, DocRights.EDIT_ALL|DocRights.READ_ALL);
+		FolderImpl folder3 = new FolderImpl("Distribution", "Distribution", "test", null, DocRights.EDIT_ALL|DocRights.READ_ALL);
+		byte[] ba = {65,66,67};
+		ByteArrayInputStream bais = new ByteArrayInputStream(ba);
+		BigFileImpl bfi = new BigFileImpl(new Timestamp(System.currentTimeMillis()),new Timestamp(System.currentTimeMillis()), 3, "TestDatei", "pdf", "test.pdf", "test/Distribution", null, 1, DocRights.EDIT_ALL|DocRights.READ_ALL, bais);
+		try {
+			setFolder(folder1);
+			setFolder(folder2);
+			setFolder(folder3);
+			fileDao.setFile(bfi);
+		} catch (Exception e) {
+			logger.error(e);
 		}
 	}
 

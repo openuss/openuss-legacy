@@ -14,8 +14,6 @@ import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.version.VersionException;
 import javax.jcr.Node;
 
-import org.apache.jackrabbit.webdav.io.OutputContext;
-
 import org.openuss.docmanagement.RepositoryAccess;
 
 /**

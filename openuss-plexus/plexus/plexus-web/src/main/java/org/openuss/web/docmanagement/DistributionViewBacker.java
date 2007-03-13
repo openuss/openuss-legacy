@@ -5,9 +5,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.apache.myfaces.custom.tree2.TreeModel;
 import org.apache.myfaces.custom.tree2.TreeModelBase;
 import org.apache.myfaces.custom.tree2.TreeNodeBase;
+import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.managed.Property;
+import org.apache.shale.tiger.view.View;
 import org.openuss.docmanagement.DistributionService;
 import org.openuss.docmanagement.DistributionServiceImpl;
 import org.openuss.docmanagement.File;
@@ -16,9 +21,16 @@ import org.openuss.docmanagement.Folder;
 import org.openuss.docmanagement.Resource;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.web.Constants;
+
+@Bean(name="distributionViewBacker", scope=Scope.REQUEST)
+@View
 public class DistributionViewBacker{
-	
+
+	@Property(value="#{distributionService}")
 	public DistributionService distributionService;
+
+	private static final Logger logger = Logger.getLogger(DistributionViewBacker.class);
 	
 	FileDataProvider data = new FileDataProvider();
 
@@ -79,6 +91,15 @@ public class DistributionViewBacker{
 			page = new DataPage<File>(al.size(),0,al);
 			return page;
 		}
+	}
+	
+	public String addTestStructure(){
+		try{
+			((DistributionServiceImpl)distributionService).buildTestStructure();
+		} catch (Exception e){
+			logger.error(e);
+		}
+		return Constants.SUCCESS;
 	}
 	
 	

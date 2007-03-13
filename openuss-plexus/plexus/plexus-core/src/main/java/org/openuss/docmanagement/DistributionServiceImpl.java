@@ -92,15 +92,7 @@ public class DistributionServiceImpl
     protected void handleAddFolder(org.openuss.docmanagement.Folder targetFolder, org.openuss.docmanagement.Folder newFolder)
         throws java.lang.Exception
     {
-    	Session session = login();
-    	Node node = session.getNodeByUUID(targetFolder.getId());
-    	node.addNode(newFolder.getName(), "nt:folder");
-    	node = node.getNode(newFolder.getName());    	
-    	node.addMixin("mix:referenceable");
-    	node.setProperty("message", newFolder.getMessage());
-    	node.setProperty("visibility", (DocRights.EDIT_ALL|DocRights.READ_ALL));
-    	logout(session);
-    	//TODO add subfolders
+    	folderDao.setFolder(newFolder);
     }
 
     /**
@@ -109,26 +101,26 @@ public class DistributionServiceImpl
     protected void handleAddFacultyFolder(org.openuss.lecture.Faculty faculty)
         throws java.lang.Exception
     {
-        
-    	try {
-			Session session = login();
-			Node node = session.getRootNode();       
-			//if distribution folder does not exist create it
-			if (node.getNode(distribution)==null){
-				node.addNode(distribution);
-				node.addMixin("mix:referenceable");
-			}
-			//add faculty main folder to distribution part of repository
-			node = node.getNode(distribution);
-			node.addNode(faculty.getId().toString(), "nt:folder");
-			node = node.getNode(faculty.getId().toString());
-			node.addMixin("mix:referenceable");
-			
-			logout(session);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			logger.error(e);
+      try{ 
+    	//if distribution folder does not exist create it
+    	Folder folder;
+		try{
+			folder = folderDao.getFolder(DocConstants.DISTRIBUTION);
+		} catch (Exception e){
+			//distribution folder does not exist    			
+			FolderImpl dist = new FolderImpl("Distribution main directory", DocConstants.DISTRIBUTION, "", null, DocRights.READ_ALL|DocRights.EDIT_ALL);
+			folderDao.setFolder(dist);
 		}
+		folder = folderDao.getFolder(DocConstants.DISTRIBUTION);
+		
+		//add faculty main folder to distribution part of repository
+		FolderImpl enrollmentMain = new FolderImpl(faculty.getShortcut(), faculty.getId().toString(), folder.getPath(), null, DocRights.READ_ALL|DocRights.EDIT_ALL);
+		folderDao.setFolder(enrollmentMain);
+		
+	} catch (Exception e) {
+		// TODO check if exception have to be caught here, or in weblayer
+		logger.error(e);
+	}
         
     }
 
@@ -162,25 +154,7 @@ public class DistributionServiceImpl
     protected void handleAddFile(org.openuss.docmanagement.BigFile file, org.openuss.docmanagement.Folder folder)
         throws java.lang.Exception
     {
-    	Session session = login();
-    	Node node = session.getNodeByUUID(folder.getId());
-
-    	// nt:File Knoten
-		node.addNode(file.getName(), "nt:file");
-		node = node.getNode(file.getName()); 
-		node.addMixin("mix:referenceable");
-		// nt:resource Knoten, der die eigentlich Datei enthaelt
-		node.addNode("jcr:content", "nt:resource");
-		node = node.getNode("jcr:content");
-		node.addMixin("mix:referenceable");			
-		node.setProperty("message", file.getMessage());
-		node.setProperty("jcr:data", file.getFile());
-		node.setProperty("jcr:mimeType", file.getMimeType());	
-		Calendar c = Calendar.getInstance();
-		c.setTimeInMillis(file.getLastModification().getTime());
-		node.setProperty("jcr:lastModified", c); 
-		
-		logout(session);
+    	fileDao.setFile(file);
     }
 
     /**
@@ -199,13 +173,10 @@ public class DistributionServiceImpl
     protected void handleCopyFile(org.openuss.docmanagement.File file, org.openuss.docmanagement.Folder targetFolder)
         throws java.lang.Exception
     {
-        Session session = login();
-        
-        Workspace ws = session.getWorkspace();        
-        //Items are given a new UUID automatically!
-        ws.copy(session.getNodeByUUID(file.getId()).getPath(), session.getNodeByUUID(targetFolder.getId()).getPath());    	
-        
-        logout(session);
+    	//TODO think about moving method into fileDao to use workspace.copy()
+    	BigFile bf = fileDao.getFile(file);
+    	bf.setPath(targetFolder.getPath());
+    	fileDao.setFile(bf);
     }
 
     /**
@@ -214,27 +185,8 @@ public class DistributionServiceImpl
     protected void handleAddSharedFile(org.openuss.docmanagement.BigFile file, org.openuss.lecture.Faculty faculty)
         throws java.lang.Exception
     {
-    	Session session = login();
-    	
-    	Node node = session.getRootNode();
-    	node = node.getNode(distribution+"/"+faculty.getId().toString());
-
-    	// nt:File Knoten
-		node.addNode(file.getName(), "nt:file");
-		node = node.getNode(file.getName()); 
-		node.addMixin("mix:referenceable");
-		// nt:resource Knoten, der die eigentlich Datei enthaelt
-		node.addNode("jcr:content", "nt:resource");
-		node = node.getNode("jcr:content");
-		node.addMixin("mix:referenceable");			
-		node.setProperty("message", file.getMessage());
-		node.setProperty("jcr:data", file.getFile());
-		node.setProperty("jcr:mimeType", file.getMimeType());	
-		Calendar c = Calendar.getInstance();
-		c.setTimeInMillis(file.getLastModification().getTime());
-		node.setProperty("jcr:lastModified", c); 
-		
-		logout(session);
+    	file.setPath(folderDao.getFolder(DocConstants.DISTRIBUTION+"/"+faculty.getId().toString()).getPath());
+    	fileDao.setFile(file);
     }
 
     /**
@@ -388,6 +340,7 @@ public class DistributionServiceImpl
     protected org.openuss.docmanagement.Folder handleGetMainFolder(org.openuss.lecture.Enrollment enrollment)
         throws java.lang.Exception
     {
+    	//TODO change to enrollment folder
     	Folder fi; 
     	fi = folderDao.getFolder("");
     	return fi;
@@ -473,17 +426,7 @@ public class DistributionServiceImpl
 	}
 	
 	public void buildTestStructure() throws Exception{
-		Session session = login();
-		
-		Node root = session.getRootNode();
-		
-		Node dist = root.addNode("distribution");
-		Node n1 = dist.addNode("1");
-		Node n2 = dist.addNode("2");
-		Node n3 = dist.addNode("3");
-		Node n1a = n1.addNode("a");	
-		
-		logout(session);
+		folderDao.addTestStructure();		
 	}
 	
 
