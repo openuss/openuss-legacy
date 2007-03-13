@@ -33,7 +33,7 @@ public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrati
 		file.setContentType("contentType");
 		file.setName("dummy");
 		file.setInputStream(stream);
-		file.setReleaseDate(new Timestamp(System.currentTimeMillis()));
+//		file.setReleaseDate(new Timestamp(System.currentTimeMillis()));
 		file.setCreated(new Timestamp(System.currentTimeMillis()));
 		file.setModified(new Timestamp(System.currentTimeMillis()));
 		
