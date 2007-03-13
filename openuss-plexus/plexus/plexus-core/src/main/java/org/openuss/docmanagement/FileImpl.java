@@ -18,6 +18,23 @@ public class FileImpl extends ResourceImpl implements File{
 
 	public String mimeType;
 	
+	public FileImpl(){		
+	}
+	
+	public FileImpl(Timestamp distributionTime, String id, Timestamp lastModification, long length, String message, String mimeType, String name, String path, File predecessor, int version, int visibility){
+		this.setDistributionTime(distributionTime);
+		this.setId(id);
+		this.setLastModification(lastModification);
+		this.setLength(length);
+		this.setMessage(message);
+		this.setMimeType(mimeType);
+		this.setName(name);
+		this.setPath(path);
+		this.setPredecessor(predecessor);
+		this.setVersion(version);
+		this.setVisibility(visibility);
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.File#getDistributionTime()
 	 */

@@ -2,7 +2,10 @@ package org.openuss.docmanagement;
 
 import javax.jcr.Node;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Collection;
+
 
 import javax.jcr.LoginException;
 import javax.jcr.Node;
@@ -14,7 +17,6 @@ import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.apache.log4j.Logger;
 
-import org.apache.jackrabbit.webdav.io.OutputContext;
 
 /**
  * @author David Ullrich
@@ -26,25 +28,32 @@ public class FileDao extends ResourceDao {
 	
 	public static Logger logger = Logger.getLogger(FileDao.class);
 
-	public FileDao(Node representedNode) {
-		super(representedNode);
-	}
 
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.ResourceDao#isCollection()
-	 */
-	@Override
-	public boolean isCollection() {
-		return false;
-	}
+
 	
 	public BigFile getFile(File file){
 		Session session;
 		try {
 			session = login(repository);
 			Node node = session.getNodeByUUID(file.getId());
-			//fill FileObject
-			logout(session);		
+			FileImpl pred = new FileImpl();
+			
+			BigFileImpl fi = new BigFileImpl(
+					new Timestamp(node.getProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTime().getTime()), 
+					node.getUUID(),
+					new Timestamp(node.getProperty(DocConstants.PROPERTY_LASTMODIFICATION).getDate().getTime().getTime()), 
+					node.getProperty(DocConstants.PROPERTY_LENGTH).getLong(),
+					node.getProperty(DocConstants.PROPERTY_MESSAGE).getString(), 
+					node.getProperty(DocConstants.PROPERTY_MIMETYPE).getString(),
+					node.getName(),
+					node.getPath(), 
+					pred, 
+					1,
+					((int)node.getProperty(DocConstants.PROPERTY_VISIBILITY).getLong()),
+					node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_DATA).getStream()
+					);
+			logout(session);
+			return fi;
 		} catch (ConstraintViolationException e){
 			logger.error("ConstraintViolationException: ",e);
 		} catch (LoginException e) {
@@ -56,14 +65,7 @@ public class FileDao extends ResourceDao {
 		return null;		
 	}
 
-	public File getFileInfoByPath(String path){
-		return null;
-	}
 
-	public File getFileInfoById(String id){
-		return null;
-	}
-	
 	public void setFile(BigFile file) throws Exception{
 		try {
 			Session session = login(repository);
@@ -90,10 +92,11 @@ public class FileDao extends ResourceDao {
 		try{
 			Node test = node.getNode(file.getName());
 			//only reached if Node with same name exists
-			//TODO change to self-written exception
+			//TODO change to self-written exception			
 			throw new Exception("File already exists");
 		} catch (PathNotFoundException e){
 			//should occur!
+			//TODO use DocConstants
 	    	// nt:File Knoten
 			node.addNode(file.getName(), "nt:file");
 			node = node.getNode(file.getName()); 
@@ -120,11 +123,6 @@ public class FileDao extends ResourceDao {
 		return DocConstants.DISTRIBUTION;
 	}
 
-	@Override
-	public void spool(OutputContext context) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public Repository getRepository() {
 		return repository;

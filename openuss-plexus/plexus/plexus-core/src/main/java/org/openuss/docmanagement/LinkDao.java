@@ -13,24 +13,6 @@ public class LinkDao extends ResourceDao {
 	
 	private Repository repository;
 
-	public LinkDao(Node representedNode) {
-		super(representedNode);
-	}
-
-	@Override
-	public void spool(OutputContext context) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.ResourceDao#isCollection()
-	 */
-	@Override
-	public boolean isCollection() {
-		// TODO abhängig vom Ziel des Links
-		return false;
-	}
 
 	public Repository getRepository() {
 		return repository;

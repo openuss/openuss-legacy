@@ -23,11 +23,8 @@ import org.openuss.docmanagement.RepositoryAccess;
  * @version 0.5
  */
 public abstract class ResourceDao {
+
 	protected Node representedNode;
-	
-	public ResourceDao(Node representedNode) {
-		this.representedNode = representedNode;
-	}
 	
 	public Session login(Repository repository) throws LoginException, RepositoryException {
 		Session session = repository.login(new SimpleCredentials(
@@ -40,11 +37,5 @@ public abstract class ResourceDao {
 		session.logout();
 	}
 
-	public boolean exists() {
-		return (representedNode != null);
-	}
 
-	public abstract boolean isCollection();
-	
-	public abstract void spool(OutputContext context);
 }

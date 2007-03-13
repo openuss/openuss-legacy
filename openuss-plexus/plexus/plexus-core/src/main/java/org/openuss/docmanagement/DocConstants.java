@@ -25,4 +25,11 @@ public class DocConstants{
 
 	//Link
 	public static final String PROPERTY_TARGET = "doc:target";
+	
+	public static final String NT_FILE = "nt:file";
+	public static final String JCR_CONTENT = "jcr:content";
+	public static final String JCR_ENCODING = "jcr:encoding";
+	public static final String JCR_MIMETYPE = "jcr:mimeType";
+	public static final String JCR_DATA = "jcr:data";
+	public static final String JCR_LASTMODIFIED = "jcr:lastModified";
 }

@@ -15,9 +15,6 @@ import org.apache.jackrabbit.webdav.io.OutputContext;
  * @version 0.5
  */
 public class FolderDao extends ResourceDao {
-	public FolderDao(Node representedNode) {
-		super(representedNode);
-	}
 
 	private Repository repository;
 	
@@ -47,22 +44,6 @@ public class FolderDao extends ResourceDao {
 		return fi;
 	}
 	
-	
-	/* * (non-Javadoc)
-	@Override
-	public void spool(OutputContext context) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.ResourceDao#isCollection()
-	 */
-	@Override
-	public boolean isCollection() {
-		return true;
-	}
-
 	public Repository getRepository() {
 		return repository;
 	}
@@ -71,13 +52,5 @@ public class FolderDao extends ResourceDao {
 		this.repository = repository;
 	}
 
-
-	@Override
-	public void spool(OutputContext context) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
 	
 }

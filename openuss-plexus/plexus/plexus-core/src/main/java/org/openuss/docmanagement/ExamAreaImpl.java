@@ -6,6 +6,10 @@ public class ExamAreaImpl extends FolderImpl implements ExamArea{
 	
 	public Enrollment enrollment;
 
+	public ExamAreaImpl(){
+		super();
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.ExamArea#getEnrollment()
 	 */

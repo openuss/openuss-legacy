@@ -11,9 +11,6 @@ public class ExamAreaDao extends FolderDao {
 	
 	private Repository repository;
 
-	public ExamAreaDao(Node representedNode) {
-		super(representedNode);
-	}
 
 	public Repository getRepository() {
 		return repository;
