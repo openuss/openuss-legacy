@@ -323,5 +323,29 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		usr.setLastLogin(new Date());
 		getUserDao().update(usr);
 	}
+
+	@Override
+	protected Permission handleGetPermission(Authority authority, Object object) throws Exception {
+		// FIXME Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List handleGetPermissions(Authority authority) throws Exception {
+		// FIXME Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List handleGetPermissions(Object object) throws Exception {
+		// FIXME Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void handleRemovePermission(Authority authority, Object object) throws Exception {
+		// FIXME Auto-generated method stub
+		
+	}
 	
 }

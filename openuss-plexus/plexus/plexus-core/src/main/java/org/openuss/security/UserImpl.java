@@ -77,4 +77,24 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
+	@Override
+	public String getFirstName() {
+		if (getContact() == null) {
+			return null;
+		} else {
+			return getContact().getFirstName();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public String getLastName() {
+		if (getContact() == null) {
+			return null;
+		} else {
+			return getContact().getLastName();
+		}
+	}
+
 }

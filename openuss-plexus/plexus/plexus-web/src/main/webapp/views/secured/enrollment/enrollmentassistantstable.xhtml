@@ -8,7 +8,13 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:c="http://java.sun.com/jstl/core">
       
-    <plexus:dataTable id="enrollmentassistants" label="#{msg.faculty_members_subheading}" value="views$secured$enrollment$enrollmentassistants.data" var="assistant" rows="10">  
+    <plexus:dataTable 
+    	id="enrollmentassistants" 
+    	label="#{msg.faculty_members_subheading}" 
+    	value="views$secured$enrollment$enrollmentassistants.data" 
+    	columnClasses="col_max_left, col_max_left, col_max_left, col_commands_two"
+    	var="assistant" 
+    	rows="10">  
       
 		<t:column>
 			<plexus:commandSortHeader columnName="username"> #{msg['user_username']} </plexus:commandSortHeader>
@@ -30,6 +36,7 @@
 			<h:outputText value="#{assistant.email}"/>
 		</t:column>
 		
+		<!-- 
 		<t:column>
 			<f:facet name="header">#{msg['commands_header']}</f:facet>
 			<h:selectOneMenu styleClass="pulldown_small" valueChangeListener="#{views$secured$enrollment$enrollmentassistants.changedAssistant}">
@@ -39,6 +46,8 @@
 				<f:selectItem itemValue="suspend" itemLabel="#{msg['enrollment_assistants_suspend']}"/>	
 			</h:selectOneMenu>
 		</t:column>
+		 -->
+		
 		
 		<plexus:column header="#{msg.commands_header}">
 			<plexus:command 

@@ -8,7 +8,13 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:c="http://java.sun.com/jstl/core">
       
-    <plexus:dataTable id="enrollmentparticipants" label="#{msg.faculty_members_subheading}" value="views$secured$enrollment$enrollmentmembers.data" var="member" rows="10">  
+    <plexus:dataTable 
+    	id="enrollmentparticipants" 
+    	label="#{msg.faculty_members_subheading}" 
+    	value="views$secured$enrollment$enrollmentmembers.data" 
+   	 	columnClasses="col_max_left, col_max_left, col_max_left, col_commands_two"
+    	var="member" 
+    	rows="10">  
       
 		<t:column>
 			<plexus:commandSortHeader columnName="username"> #{msg['user_username']} </plexus:commandSortHeader>
@@ -29,7 +35,8 @@
 			<plexus:commandSortHeader columnName="email">#{msg['user_email']}</plexus:commandSortHeader>
 			<h:outputText value="#{member.email}"/>
 		</t:column>
-		
+
+		<!-- 
 		<t:column>
 			<f:facet name="header">#{msg['commands_header']}</f:facet>
 			<h:selectOneMenu styleClass="pulldown_small" valueChangeListener="#{views$secured$enrollment$enrollmentmembers.changedMember}">
@@ -39,6 +46,7 @@
 				<f:selectItem itemValue="active" itemLabel="#{msg['enrollment_member_active']}"/>								
 			</h:selectOneMenu>
 		</t:column>
+		 -->
 		
 		<plexus:column header="#{msg.commands_header}">
 			<plexus:command 
