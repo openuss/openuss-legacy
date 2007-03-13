@@ -45,4 +45,9 @@ public class EnrollmentImpl extends org.openuss.lecture.EnrollmentBase implement
 		}
 	}
 
+	@Override
+	public boolean isPasswordCorrect(String password) {
+		return StringUtils.equalsIgnoreCase(getPassword(), password);
+	}
+
 }

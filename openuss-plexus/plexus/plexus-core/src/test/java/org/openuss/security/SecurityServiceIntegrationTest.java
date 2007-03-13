@@ -12,6 +12,7 @@ import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.openuss.TestUtility;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.acl.LectureAclEntry;
+import org.openuss.security.acl.Permission;
 
 /**
  * JUnit Test for Spring Hibernate SecurityService class.
@@ -47,6 +48,27 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 		assertFalse(securityService.isValidUserName(null, user.getUsername()));
 		assertTrue(securityService.isValidUserName(user, user.getUsername()));
 		
+	}
+	
+	public void testGetPermission() {
+		User user = testUtility.createUserInDB();
+		TestBean bean = new TestBean(testUtility.unique(), "test get permission");
+		
+		securityService.createObjectIdentity(bean, null);
+		
+		securityService.setPermissions(user, bean, LectureAclEntry.FACULTY_OWN);
+
+		commit();
+		
+		Permission found = securityService.getPermissions(user, bean);
+		
+		assertNotNull(found);
+	}
+
+	private void commit() {
+		setComplete();
+		endTransaction();
+		startNewTransaction();
 	}
 	
 	public void testAclGrants() {

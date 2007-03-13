@@ -102,7 +102,7 @@ public class TestUtility {
 		User user = User.Factory.newInstance();
 		user.setUsername(unique("username"));
 		user.setPassword("password");
-		user.setEmail("email");
+		user.setEmail(unique("email"));
 		user.setEnabled(true);
 		user.setAccountExpired(true);
 		user.setCredentialsExpired(true);
