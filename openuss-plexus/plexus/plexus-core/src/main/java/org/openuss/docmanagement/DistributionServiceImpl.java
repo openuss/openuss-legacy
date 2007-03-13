@@ -56,6 +56,8 @@ public class DistributionServiceImpl
 	
 	public FolderDao folderDao; 
 	
+	public FileDao fileDao;
+	
     /**
      * @see org.openuss.docmanagement.DistributionService#addMainFolder(org.openuss.lecture.Enrollment)
      */
@@ -63,20 +65,21 @@ public class DistributionServiceImpl
         throws java.lang.Exception
     {
     	try {
-			Session session = login();
-			Node node = session.getRootNode();       
 			//if distribution folder does not exist create it
-			if (node.getNode(distribution)==null){
-				node.addNode(distribution);
-				node.addMixin("mix:referenceable");
-			}
-			//add faculty main folder to distribution part of repository
-			node = node.getNode(distribution);
-			node.addNode(enrollment.getId().toString(), "nt:folder");
-			node = node.getNode(enrollment.getId().toString());
-			node.addMixin("mix:referenceable");
+    		Folder folder;
+    		try{
+    			folder = folderDao.getFolder(DocConstants.DISTRIBUTION);
+    		} catch (Exception e){
+    			//distribution folder does not exist    			
+    			FolderImpl dist = new FolderImpl("Distribution main directory", DocConstants.DISTRIBUTION, "", null, DocRights.READ_ALL|DocRights.EDIT_ALL);
+    			folderDao.setFolder(dist);
+    		}
+    		folder = folderDao.getFolder(DocConstants.DISTRIBUTION);
+    		
+    		//add faculty main folder to distribution part of repository
+    		FolderImpl enrollmentMain = new FolderImpl(enrollment.getShortcut(), enrollment.getId().toString(), folder.getPath(), null, DocRights.READ_ALL|DocRights.EDIT_ALL);
+    		folderDao.setFolder(enrollmentMain);
 			
-			logout(session);
 		} catch (Exception e) {
 			// TODO check if exception have to be caught here, or in weblayer
 			logger.error(e);
@@ -513,5 +516,13 @@ public class DistributionServiceImpl
 
 	public void setFolderDao(FolderDao folderDao) {
 		this.folderDao = folderDao;
+	}
+
+	public FileDao getFileDao() {
+		return fileDao;
+	}
+
+	public void setFileDao(FileDao fileDao) {
+		this.fileDao = fileDao;
 	}
 }

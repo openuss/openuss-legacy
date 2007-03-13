@@ -7,6 +7,14 @@ public class FolderImpl extends ResourceImpl implements Folder{
 	public FolderImpl(){		
 	}
 	
+	public FolderImpl(String message, String name, String path, Collection<Resource> subnodes, int visibility){
+		this.setMessage(message);
+		this.setName(name);
+		this.setPath(path);
+		this.setSubnodes(subnodes);
+		this.setVisibility(visibility);
+	}
+
 	public FolderImpl(String id, String message, String name, String path, Collection<Resource> subnodes, int visibility){
 		this.setId(id);
 		this.setMessage(message);
