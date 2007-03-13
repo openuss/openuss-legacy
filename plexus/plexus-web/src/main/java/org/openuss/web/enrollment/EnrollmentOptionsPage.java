@@ -9,8 +9,11 @@ import javax.faces.model.SelectItem;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Preprocess;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.lecture.AccessType;
+import org.openuss.lecture.Enrollment;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
@@ -27,6 +30,35 @@ public class EnrollmentOptionsPage extends AbstractEnrollmentPage {
 
 	private static final long serialVersionUID = 8821048605517398410L;
 	
+/*	
+ 	@Preprocess
+	public void preprocess() {
+		if (enrollment != null) {
+			logger.debug("---------------> refreshing enrollment.");
+			enrollment = getLectureService().getEnrollment(enrollment.getId());
+			setSessionBean(Constants.ENROLLMENT, enrollment);
+		}
+	}
+*/
+	
+	@Prerender
+	@Override
+	public void prerender() throws LectureException {
+		if (enrollment == null) {
+			enrollment = (Enrollment) getSessionBean(Constants.ENROLLMENT);
+		}
+		if (enrollment == null) {
+			addMessage(i18n("message_error_enrollment_page"));
+			redirect(Constants.OUTCOME_BACKWARD);
+		} else {
+			if (!isPostBack()) {
+				logger.debug("------------------------- is not postback --------------- refreshing enrollment");
+				enrollment = enrollmentService.getEnrollment(enrollment);
+			}
+		}
+		setSessionBean(Constants.ENROLLMENT, enrollment);
+	}
+
 	/**
 	 * Save changes of the enrollment 
 	 * @return outcome
@@ -35,6 +67,7 @@ public class EnrollmentOptionsPage extends AbstractEnrollmentPage {
 	public String saveOptions() throws LectureException {
 		logger.trace("saving enrollment options");
 		lectureService.persist(enrollment);
+		addMessage(i18n("message_enrollment_options_saved"));
 		return Constants.ENROLLMENT_OPTIONS_PAGE;
 	}
 	

@@ -41,31 +41,37 @@
 				<t:dataList 
 					id="assistants"  
 					var="assistant"
-					value="#{views$secured$enrollment$main.data}"
+					value="#{views$secured$enrollment$main.assistants}"
 					layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
 					<h:outputText value="#{assistant.firstName} #{assistant.lastName}"/>
 				</t:dataList>
 			</o:block>
 
 			<s:acl domainObject="#{enrollment}" hasNotPermission="#{ACL.READ}">
+				<!-- check if accesstype is AccessType.CLOSED -->
+				<c:if test="#{enrollment.accessType.value == 1}">
+					<o:block label="#{msg.enrollment_main_access}" styleClass="form_box">
+						<h:outputText value="#{msg.enrollment_main_access_closed_text}" styleClass="content_font_normal"/>
+					</o:block>
+					
+				</c:if>
+			
 				<!-- check if accesstype is AccessType.PASSWORD -->
 				<c:if test="#{enrollment.accessType.value == 2}">
-					<o:block label="#{msg.enrollment_main_access}"
-						styleClass="form_box">
-						<span class="content_font_normal"> <h:outputText
-							value="#{msg.enrollment_main_access_passtext}" /> </span>
+					<o:block label="#{msg.enrollment_main_access}" styleClass="form_box">
+						<h:outputText value="#{msg.enrollment_main_access_passtext}" styleClass="content_font_normal"/> 
 						<h:outputLabel for="enrollment_password"
 							value="#{msg.enrollment_main_access_password}"
 							styleClass="field_label" />
 						<h:inputSecret id="enrollment_password"
-							value="#{views$secured$enrollment$enrollmentmain.password}"
+							value="#{views$secured$enrollment$main.password}"
 							styleClass="field" />
 						<h:message for="enrollment_password"
 							errorStyleClass="enrollment_password" />
 					</o:block>
 
 					<o:block>
-						<plexus:command bean="#{views$secured$enrollment$enrollmentmain}"
+						<plexus:command bean="#{views$secured$enrollment$main}"
 							action="applyWithPassword"
 							label="#{msg['enrollment_main_access']}"
 							title="#{msg['enrollment_main_access']}" styleClass="button" />
@@ -74,16 +80,26 @@
 
 				<!-- check if accesstype is AccessType.APPLICATION -->
 				<c:if test="#{enrollment.accessType.value == 3}">
-					<o:block label="#{msg.enrollment_main_access}">
-						<p class="content_font_normal"><h:outputText
-							value="#{msg.enrollment_main_access_applytext}"></h:outputText></p>
-					</o:block>
-					<o:block>
-						<plexus:command bean="#{views$secured$enrollment$enrollmentmain}"
-							action="apply" label="#{msg['enrollment_main_access_applytext']}"
-							title="#{msg['enrollment_main_access_applytext']}"
-							styleClass="button" />
-					</o:block>
+					<c:if test="#{views$secured$enrollment$main.aspirant}">
+						<o:block label="#{msg.enrollment_main_access}">
+							<p class="content_font_normal">
+								<h:outputText value="#{msg.enrollment_main_access_application_running}"/>
+							</p>
+						</o:block>
+					</c:if>
+					<c:if test="#{!views$secured$enrollment$main.aspirant}">
+						<o:block label="#{msg.enrollment_main_access}">
+							<p class="content_font_normal">
+								<h:outputText value="#{msg.enrollment_main_access_applytext}"/>
+							</p>
+						</o:block>
+						<o:block>
+							<plexus:command bean="#{views$secured$enrollment$main}"
+								action="apply" label="#{msg['enrollment_main_access_applytext']}"
+								title="#{msg['enrollment_main_access_applytext']}"
+								styleClass="button" />
+						</o:block>
+					</c:if>
 				</c:if>
 			</s:acl>
 

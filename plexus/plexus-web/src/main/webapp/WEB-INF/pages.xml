@@ -10,5 +10,11 @@
 	<page view-id="/views/secured/enrollment/*">
 		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
 	</page>
+
+	<page view-id="/views/secured/enrollment/enrollmentoptions*">
+		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.ASSIST}"/>
+		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
+	</page>
+
 	
 </pages>

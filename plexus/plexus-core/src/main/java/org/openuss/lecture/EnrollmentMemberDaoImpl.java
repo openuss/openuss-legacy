@@ -15,7 +15,6 @@ public class EnrollmentMemberDaoImpl extends org.openuss.lecture.EnrollmentMembe
 	 *      org.openuss.lecture.EnrollmentMemberInfo)
 	 */
 	public void toEnrollmentMemberInfo(EnrollmentMember sourceEntity, EnrollmentMemberInfo targetVO) {
-		// TODO Tell, don't ask!
 		targetVO.setId(sourceEntity.getId());
 		targetVO.setUserId(sourceEntity.getUser().getId());
 		targetVO.setEnrollmentId(sourceEntity.getEnrollment().getId());
@@ -23,6 +22,7 @@ public class EnrollmentMemberDaoImpl extends org.openuss.lecture.EnrollmentMembe
 		targetVO.setFirstName(sourceEntity.getUser().getFirstName());
 		targetVO.setLastName(sourceEntity.getUser().getLastName());
 		targetVO.setEmail(sourceEntity.getUser().getEmail());
+		targetVO.setMemberType(sourceEntity.getMemberType());
 	}
 
 	/**

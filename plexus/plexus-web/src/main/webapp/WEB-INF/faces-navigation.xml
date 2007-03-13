@@ -98,7 +98,7 @@
 
 		<navigation-case>
 			<from-outcome>enrollment_main</from-outcome>
-			<to-view-id>/views/secured/enrollment/main.xhtml?enrollmentId=#{enrollment.id}</to-view-id>
+			<to-view-id>/views/secured/enrollment/main.xhtml</to-view-id>
 		</navigation-case>
 		
 	</navigation-rule>
@@ -349,7 +349,7 @@
 	
 			<navigation-case>
 				<from-outcome>enrollment_options</from-outcome>
-				<to-view-id>/views/secured/enrollment/options.xhtml</to-view-id>
+				<to-view-id>/views/secured/enrollment/enrollmentoptions.xhtml</to-view-id>
 			</navigation-case>
 			
 			<navigation-case>

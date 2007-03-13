@@ -1,9 +1,9 @@
 package org.openuss.web.enrollment;
 
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.lecture.Enrollment;
+import org.openuss.lecture.EnrollmentService;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
@@ -22,6 +22,9 @@ public class AbstractEnrollmentPage extends BasePage {
 	@Property(value = "#{lectureService}")
 	protected LectureService lectureService;
 	
+	@Property(value = "#{enrollmentService}")
+	protected EnrollmentService enrollmentService;
+	
 	@Prerender
 	public void prerender() throws LectureException {
 		if (enrollment == null) {
@@ -31,7 +34,7 @@ public class AbstractEnrollmentPage extends BasePage {
 			addMessage(i18n("message_error_enrollment_page"));
 			redirect(Constants.OUTCOME_BACKWARD);
 		} else {
-			enrollment = getLectureService().getEnrollment(enrollment.getId());
+			enrollment = enrollmentService.getEnrollment(enrollment);
 		} 
 		setSessionBean(Constants.ENROLLMENT, enrollment);
 	}
@@ -50,6 +53,14 @@ public class AbstractEnrollmentPage extends BasePage {
 
 	public void setLectureService(LectureService lectureService) {
 		this.lectureService = lectureService;
+	}
+
+	public EnrollmentService getEnrollmentService() {
+		return enrollmentService;
+	}
+
+	public void setEnrollmentService(EnrollmentService enrollmentService) {
+		this.enrollmentService = enrollmentService;
 	}
 
 
