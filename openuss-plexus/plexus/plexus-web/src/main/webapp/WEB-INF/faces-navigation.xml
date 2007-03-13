@@ -324,7 +324,7 @@
 
 			<navigation-case>
 				<from-outcome>enrollment_discussion</from-outcome>
-				<to-view-id>/views/secured/enrollment/discussion.xhtml</to-view-id>
+				<to-view-id>/views/secured/discussion/discussions.xhtml</to-view-id>
 			</navigation-case>
 	
 			<navigation-case>
@@ -425,8 +425,17 @@
 			<navigation-case>
 				<from-outcome>documents_add_zip</from-outcome>
 				<to-view-id>/views/secured/documents/addzip.xhtml</to-view-id>				
-			</navigation-case>			
+			</navigation-case>		
 			
+			<navigation-case>
+				<from-outcome>discussion_new</from-outcome>
+				<to-view-id>/views/secured/discussion/discussionnew.xhtml</to-view-id>				
+			</navigation-case>		
+
+			<navigation-case>
+				<from-outcome>discussion_thread</from-outcome>
+				<to-view-id>/views/secured/discussion/discussionthread.xhtml</to-view-id>				
+			</navigation-case>					
 		</navigation-rule>
 	
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  

@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+    <plexus:dataTable id="discussionstable" label="#{msg.discussion_main_header}" value="views$secured$discussion$discussions.data" var="thread" rows="10">  
+      
+		<t:column>
+			<plexus:commandSortHeader columnName="viewed"> </plexus:commandSortHeader>
+			<h:outputText value="#{thread.viewed}"></h:outputText>
+		</t:column>
+		<t:column>
+			<plexus:commandSortHeader columnName="name"> #{msg['discussion_main_column_name']} </plexus:commandSortHeader>
+			<h:outputText value="#{thread.name}"></h:outputText>
+			
+		</t:column>
+		<t:column>
+			<plexus:commandSortHeader columnName="answers"> #{msg['discussion_main_column_answers']} </plexus:commandSortHeader>
+			<h:outputText value="#{thread.answers}"></h:outputText>
+		</t:column>
+		<t:column>
+			<plexus:commandSortHeader columnName="author"> #{msg['discussion_main_column_author']} </plexus:commandSortHeader>
+			<h:outputText value="#{thread.author}"></h:outputText>
+		</t:column>
+		<t:column>
+			<plexus:commandSortHeader columnName="clicks"> #{msg['discussion_main_column_clicks']} </plexus:commandSortHeader>
+			<h:outputText value="#{thread.clicks}"></h:outputText>
+		</t:column>
+		<t:column>
+			<plexus:commandSortHeader columnName="lastEntry"> #{msg['discussion_main_column_lastentry']} </plexus:commandSortHeader>
+			<h:outputText value="#{thread.lastEntryTime}"></h:outputText>
+			<h:outputText value="von #{thread.lastAuthor}"></h:outputText>			
+		</t:column>
+		
+		
+	</plexus:dataTable>      
+</ui:composition>
