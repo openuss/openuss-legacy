@@ -9,6 +9,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.lecture.EnrollmentApplicationException;
 import org.openuss.lecture.EnrollmentMemberInfo;
 import org.openuss.lecture.EnrollmentMemberType;
 import org.openuss.lecture.LectureException;
@@ -36,14 +37,14 @@ public class EnrollmentMainPage extends AbstractEnrollmentPage{
 	}
 	
 
-	public String applyWithPassword(){
+	public String applyWithPassword() throws EnrollmentApplicationException{
 		logger.debug("enrollment entry with password applied");
 		enrollmentService.applyUserByPassword(password, enrollment, user);
 		addMessage(i18n("message_enrollment_password_accepted"));
 		return Constants.SUCCESS;
 	}
 	
-	public String apply(){
+	public String apply() throws EnrollmentApplicationException{
 		logger.debug("enrollment entry applied");
 		enrollmentService.applyUser(enrollment, user);
 		addMessage(i18n("message_enrollment_send_application"));

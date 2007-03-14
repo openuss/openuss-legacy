@@ -320,19 +320,23 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 
 	@Override
 	protected void handleRemovePermission(Authority authority, Object object) throws Exception {
-		ObjectIdentity oi = getObjectIdentity(object);
-		Permission permission = getPermissionDao().findPermission(oi.getId(), authority.getId());
+		Permission permission = getPermissions(authority, object);
 		if (permission != null) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("removing permission for authority "+authority+" for "+object);
+			}
 			getPermissionDao().remove(permission);
+		} else {
+			logger.debug("Permission entity for authority "+authority+" for "+object+" not found!");
 		}
 	}
 
 	private ObjectIdentity getObjectIdentity(Object object) throws IllegalAccessException, InvocationTargetException {
-		ObjectIdentity oi = getObjectIdentityDao().findByObjectIdentifier(new EntityObjectIdentity(object).getIdentifier());
-		if (oi == null) {
+		ObjectIdentity objectIdentity = getObjectIdentityDao().findByObjectIdentifier(new EntityObjectIdentity(object).getIdentifier());
+		if (objectIdentity == null) {
 			throw new SecurityServiceException("ObjectIdentity doesn't exist for object "+object);
 		}
-		return oi;
+		return objectIdentity;
 	}
 
 	@Override

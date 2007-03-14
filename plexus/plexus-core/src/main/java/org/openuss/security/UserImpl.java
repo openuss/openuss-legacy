@@ -97,4 +97,13 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		}
 	}
 
+	@Override
+	public String getTitle() {
+		if (getContact() == null) {
+			return null;
+		} else {
+			return getContact().getTitle();			
+		}
+	}
+
 }

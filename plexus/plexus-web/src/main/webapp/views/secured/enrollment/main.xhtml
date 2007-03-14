@@ -32,7 +32,6 @@
 		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
 	</ui:define>
 	<ui:define name="content" styleClass="footer_normal">
-		<h:form id="enrollmentMainForm">
 			<o:block label="#{enrollment.subject.name} (#{enrollment.shortcut})">
 				<div class="content_font_normal">
 					<h:outputText value="#{enrollment.description}" escape="false"/>
@@ -58,24 +57,26 @@
 			
 				<!-- check if accesstype is AccessType.PASSWORD -->
 				<c:if test="#{enrollment.accessType.value == 2}">
-					<o:block label="#{msg.enrollment_main_access}" styleClass="form_box">
-						<h:outputText value="#{msg.enrollment_main_access_passtext}" styleClass="content_font_normal"/> 
-						<h:outputLabel for="enrollment_password"
-							value="#{msg.enrollment_main_access_password}"
-							styleClass="field_label" />
-						<h:inputSecret id="enrollment_password"
-							value="#{views$secured$enrollment$main.password}"
-							styleClass="field" />
-						<h:message for="enrollment_password"
-							errorStyleClass="enrollment_password" />
-					</o:block>
-
-					<o:block>
-						<plexus:command bean="#{views$secured$enrollment$main}"
-							action="applyWithPassword"
-							label="#{msg['enrollment_main_access']}"
-							title="#{msg['enrollment_main_access']}" styleClass="button" />
-					</o:block>
+					<h:form id="enrollment_main_apply_password_form">
+						<o:block label="#{msg.enrollment_main_access}" styleClass="form_box">
+							<h:outputText value="#{msg.enrollment_main_access_passtext}" styleClass="content_font_normal"/> 
+							<h:outputLabel for="enrollment_password"
+								value="#{msg.enrollment_main_access_password}"
+								styleClass="field_label" />
+							<h:inputSecret id="enrollment_password"
+								value="#{views$secured$enrollment$main.password}"
+								styleClass="field" />
+							<h:message for="enrollment_password"
+								errorStyleClass="enrollment_password" />
+						</o:block>
+	
+						<o:block>
+							<plexus:command bean="#{views$secured$enrollment$main}"
+								action="applyWithPassword"
+								label="#{msg['enrollment_main_access']}"
+								title="#{msg['enrollment_main_access']}" styleClass="button" />
+						</o:block>
+					</h:form>
 				</c:if>
 
 				<!-- check if accesstype is AccessType.APPLICATION -->
@@ -88,22 +89,24 @@
 						</o:block>
 					</c:if>
 					<c:if test="#{!views$secured$enrollment$main.aspirant}">
-						<o:block label="#{msg.enrollment_main_access}">
-							<p class="content_font_normal">
-								<h:outputText value="#{msg.enrollment_main_access_applytext}"/>
-							</p>
-						</o:block>
-						<o:block>
-							<plexus:command bean="#{views$secured$enrollment$main}"
-								action="apply" label="#{msg['enrollment_main_access_applytext']}"
-								title="#{msg['enrollment_main_access_applytext']}"
-								styleClass="button" />
-						</o:block>
+						<h:form id="enrollment_main_apply_form">
+							<o:block label="#{msg.enrollment_main_access}">
+								<p class="content_font_normal">
+									<h:outputText value="#{msg.enrollment_main_access_applytext}"/>
+								</p>
+							</o:block>
+							<o:block>
+								<plexus:command bean="#{views$secured$enrollment$main}"
+									action="apply" 
+									label="#{msg['enrollment_main_access_applytext']}"
+									title="#{msg['enrollment_main_access_applytext']}"
+									styleClass="button" />
+							</o:block>
+						</h:form>
 					</c:if>
 				</c:if>
 			</s:acl>
 
-		</h:form>
 		<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.READ}">
 			<plexus:newsTable
 				value="#{views$secured$enrollment$enrollment.currentNewsItems}"

@@ -32,7 +32,12 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="adminUsersForm" >
-		   <plexus:dataTable id="users" label="#{msg['admin_users_heading']}" value="views$secured$system$userbrowser.dataModel" var="bean" rows="30"
+		   <plexus:dataTable 
+		   		id="users" 
+		   		label="#{msg['admin_users_heading']}" 
+		   		value="views$secured$system$userbrowser.dataModel" 
+		   		var="bean" 
+		   		rows="20"
 				columnClasses="links, links, links, links, commands, commands, commands, commands, links, commands">
 				<t:column>
 					<f:facet name="header"> 

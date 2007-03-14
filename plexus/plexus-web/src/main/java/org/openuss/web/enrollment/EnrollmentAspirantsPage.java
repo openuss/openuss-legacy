@@ -1,8 +1,7 @@
 package org.openuss.web.enrollment;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.faces.event.ValueChangeEvent;
@@ -13,9 +12,10 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.EnrollmentMemberInfo;
+import org.openuss.lecture.EnrollmentServiceException;
 import org.openuss.lecture.LectureException;
 import org.openuss.security.User;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -29,37 +29,73 @@ public class EnrollmentAspirantsPage extends AbstractEnrollmentPage {
 	
 	private AspirantDataProvider data = new AspirantDataProvider();
 	
-	private transient Set<UserInfo> acceptAspirants = new HashSet<UserInfo>();
-	private transient Set<UserInfo> rejectAspirants = new HashSet<UserInfo>();
+	private transient Set<EnrollmentMemberInfo> acceptAspirants = new HashSet<EnrollmentMemberInfo>();
+	private transient Set<EnrollmentMemberInfo> rejectAspirants = new HashSet<EnrollmentMemberInfo>();
 	
 	public String save() {
+		acceptAspirants();
+		rejectAspirants();
+		
 		return Constants.SUCCESS;
+	}
+
+	private void rejectAspirants() {
+		for (EnrollmentMemberInfo aspirants: rejectAspirants) {
+			try {
+				enrollmentService.rejectAspirant(aspirants.getId());
+				addMessage(i18n("enrollment_aspirant_reject", aspirants.getUsername()));
+			} catch (EnrollmentServiceException e) {
+				logger.error(e);
+				addError(i18n(e.getMessage()));
+			}
+		}
+	}
+
+	private void acceptAspirants() {
+		for (EnrollmentMemberInfo aspirants: acceptAspirants) {
+			try {
+				enrollmentService.acceptAspirant(aspirants.getId());
+				addMessage(i18n("enrollment_aspirant_accepted", aspirants.getUsername()));
+			} catch (EnrollmentServiceException e) {
+				logger.error(e);
+				addError(i18n(e.getMessage()));
+			}
+		}
 	}
 	
 	public String showProfile() {
-		UserInfo userInfo = data.getRowData();
+		EnrollmentMemberInfo aspirant = data.getRowData();
 		User user = User.Factory.newInstance();
-		user.setId(userInfo.getId());
+		user.setId(aspirant.getUserId());
 		setSessionBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	
 	public void changedAspirant(ValueChangeEvent event) throws LectureException {
 		logger.debug("enrollment: changed aspirant");
+		EnrollmentMemberInfo aspirant = data.getRowData();
+		if (logger.isDebugEnabled()) {
+			logger.debug("changed "+aspirant.getUsername()+ " from " + event.getOldValue() + " to " + event.getNewValue());
+		}
+		
+		if ("accept".equals(event.getNewValue())) {
+			acceptAspirants.add(aspirant);
+		} else if ("reject".equals(event.getNewValue())) {
+			rejectAspirants.add(aspirant);
+		}
 	}
 	
-	private class AspirantDataProvider extends AbstractPagedTable<UserInfo> {
+	private class AspirantDataProvider extends AbstractPagedTable<EnrollmentMemberInfo> {
 
-		private DataPage<UserInfo> page; 
+		private DataPage<EnrollmentMemberInfo> page; 
 		
 		@Override 
-		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
-			ArrayList<UserInfo> al = new ArrayList<UserInfo>();			
-			UserInfo ui1 = new UserInfo(new Long(1234), "cag", "Sebastian", "Roekens", "abc123", "plexus@openuss-plexus.com", true, false, false, new Date(System.currentTimeMillis()));
-			UserInfo ui2 = new UserInfo(new Long(12345), "dueppe", "Ingo", "Düppe", "12345", "plexus@openuss-plexus.com", true, true, false, new Date(System.currentTimeMillis()));
-			UserInfo ui3 = new UserInfo(new Long(1111), "bundy", "Al", "Bundy", "dumpfbacke", "plexus@openuss-plexus.com", true, false, true, new Date(System.currentTimeMillis()));
-			al.add(ui1); al.add(ui2); al.add(ui3);
-			page = new DataPage<UserInfo>(al.size(),0,al);
+		public DataPage<EnrollmentMemberInfo> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				List aspirants = enrollmentService.getAspirants(enrollment);
+				page = new DataPage<EnrollmentMemberInfo>(aspirants.size(),0,aspirants);
+				sort(aspirants);
+			}
 			return page;
 		}
 	}
