@@ -36,6 +36,8 @@ public class DistributionViewBacker{
 	private static final Logger logger = Logger.getLogger(DistributionViewBacker.class);
 	
 	FileDataProvider data = new FileDataProvider();
+	
+	public String path;
 
 	public TreeModel getTree(){
 		DistributionServiceImpl dsi =  (DistributionServiceImpl) distributionService;
@@ -52,19 +54,34 @@ public class DistributionViewBacker{
 	
 	private TreeNodeBase folder2TreeNodeBase(Folder folder){
 		TreeNodeBase tn = new TreeNodeBase("folder", folder.getName(), folder.getId(), (folder.getSubnodes()==null));
-		Folder f;
+		Folder subFolder = null;
+		File subFile = null;
 		if (folder.getSubnodes()!=null){
 			Collection<Resource> v = folder.getSubnodes();
 			Iterator i = v.iterator();
 			while (i.hasNext()){
-				//TODO test what instance i.next() is of
-				f = (Folder) i.next();
-				tn.getChildren().add(folder2TreeNodeBase(f));
+				Object o = i.next();
+				//TODO add links
+				subFolder = null; subFile = null; 
+				if (o instanceof Folder) {
+					subFolder = (Folder) o;					
+				}
+				if (o instanceof File) {
+					subFile = (File) o;					
+				}
+				if (subFolder!=null) tn.getChildren().add(folder2TreeNodeBase(subFolder));
+				if (subFile!=null) tn.getChildren().add(file2TreeNodeBase(subFile));
+
 			}
 		}
 		return tn;		
 	}
 	
+	private Object file2TreeNodeBase(File subFile) {
+		TreeNodeBase tn = new TreeNodeBase("file", subFile.getName(), subFile.getId(), true);
+		return null;
+	}
+
 	public TreeModel getTree2(){
 		TreeNodeBase root = new TreeNodeBase("folder", "root", "0" , false);
 		TreeNodeBase tn1 = new TreeNodeBase("folder", "Test123", "1" , true);
@@ -123,5 +140,13 @@ public class DistributionViewBacker{
 
 	public void setData(FileDataProvider data) {
 		this.data = data;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 }

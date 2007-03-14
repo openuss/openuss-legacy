@@ -409,6 +409,51 @@
 		</navigation-case>
 
 	</navigation-rule>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+       DocManagement
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->		
+	<navigation-rule>
+		<!-- Distribution -->
+		<from-view-id>/views/secured/*</from-view-id>
+		
+		<navigation-case>
+			<from-outcome>docmanagement_documentexplorer</from-outcome>
+			<to-view-id>/views/public/docmanagement/DocumentExplorer.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>docmanagement_changedocument</from-outcome>
+			<to-view-id>/views/public/docmanagement/ChangeDocument.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>docmanagement_copyfoldertofolder</from-outcome>
+			<to-view-id>/views/public/docmanagement/CopyFolderToFolder.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>docmanagement_editfolder</from-outcome>
+			<to-view-id>/views/public/docmanagement/EditFolder.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>docmanagement_frominstituttofolder</from-outcome>
+			<to-view-id>/views/public/docmanagement/FromInstitutToFolder.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>docmanagement_newdocumenttofolder</from-outcome>
+			<to-view-id>/views/public/docmanagement/NewDocumentToFolder.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>docmanagement_newdocumenttoinstitut</from-outcome>
+			<to-view-id>/views/public/docmanagement/NewDocumentToInstitut.xhtml</to-view-id>
+		</navigation-case>
+
+	</navigation-rule>
+
 	
 </faces-config>
 
