@@ -22,7 +22,10 @@
 				Added the ability to handle the OpenUSS datatypes.
 				Removed the initialization of attributes with no default values.
 			</changelog>
-			<restrictions/>
+			<restrictions>
+				Typed collections are not supported.
+				Configuration of class names for Interfaces, Abstract and Impl classes is not supported.
+			</restrictions>
 			<knownIssues/>
 			<dependency>
 				This release was created using the 4.1.1 release of the openArchitectureWare-Framework, Eclipse UML 2.0.1

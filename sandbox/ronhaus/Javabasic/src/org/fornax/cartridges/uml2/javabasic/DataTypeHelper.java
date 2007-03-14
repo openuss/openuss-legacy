@@ -14,10 +14,12 @@ import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.Type;
 
 /**
- * @author Thorsten Kamann <thorsten.kamann@googlemail.com>
- * changed by Ron Haus (removed DefaultValues)
+ * @author Thorsten Kamann <thorsten.kamann@googlemail.com> changed by Ron Haus
+ *         (removed DefaultValues)
  */
 public class DataTypeHelper {
+	private static EMap ptd = null;
+
 	private static EMap td = null;
 
 	public static String getDataTypeName(Type type, String spec) {
@@ -63,6 +65,39 @@ public class DataTypeHelper {
 			}
 		}
 		return tv;
+	}
+
+	/**
+	 * @param type
+	 *            The type the default value to calculate for
+	 * @return The default value of the given type
+	 */
+	public static String getDefaultValue(Type type) {
+		String value = "null";
+
+		if (getPrimitiveTypeDefaults().containsKey(type.getName().toLowerCase())) {
+			value = (String) getPrimitiveTypeDefaults().get(type.getName().toLowerCase());
+		}
+		return value;
+	}
+
+	/**
+	 * Creates the <code>EMap</code> with the defaults for all PrimitiveTypes.
+	 * 
+	 * @return The <code>EMap</code> with the defaults
+	 */
+	private static EMap getPrimitiveTypeDefaults() {
+		if (ptd == null) {
+			ptd = new BasicEMap();
+			ptd.put("int", "0");
+			ptd.put("short", "0");
+			ptd.put("double", "0");
+			ptd.put("long", "0");
+			ptd.put("boolean", "false");
+			ptd.put("byte", new Byte("0").byteValue() + "");
+			ptd.put("char", new String("' '"));
+		}
+		return ptd;
 	}
 
 	private static EMap getTypeDefaults() {

@@ -26,6 +26,12 @@ String DefaultValue(uml::Property property):
 			default : "="+property.defaultValue.stringValue()	
 	};
 	
+/**
+*	Returns the default value for the given <code>uml::Type</code>
+*	@param type The <code>uml::Type</code> the default value to return
+*/
+String DefaultValue(uml::Type type):
+	JAVA org.fornax.cartridges.uml2.javabasic.DataTypeHelper.getDefaultValue(org.eclipse.uml2.uml.Type);
 
 Object TaggedValue(uml::Classifier classifier, String stereoTypeName, String name, String type):
 	JAVA org.fornax.cartridges.uml2.javabasic.DataTypeHelper.getTaggedValue(org.eclipse.uml2.uml.Classifier,
