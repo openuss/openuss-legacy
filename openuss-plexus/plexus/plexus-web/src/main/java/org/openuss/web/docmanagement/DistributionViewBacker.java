@@ -18,7 +18,10 @@ import org.openuss.docmanagement.DistributionServiceImpl;
 import org.openuss.docmanagement.File;
 import org.openuss.docmanagement.FileImpl;
 import org.openuss.docmanagement.Folder;
+import org.openuss.docmanagement.FolderImpl;
+import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.Resource;
+import org.openuss.docmanagement.ResourceAlreadyExistsException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
@@ -36,11 +39,14 @@ public class DistributionViewBacker{
 
 	public TreeModel getTree(){
 		DistributionServiceImpl dsi =  (DistributionServiceImpl) distributionService;
-		try{
-			dsi.buildTestStructure();
-		} catch (Exception e){			
+		Folder folder = new FolderImpl();
+		try {
+			folder = distributionService.getMainFolder(null);
+		} catch (PathNotFoundException e) {
+			logger.error("Path not found");
+		} catch (ResourceAlreadyExistsException e) {
+			logger.error("Resource already exists");
 		}
-		Folder folder = distributionService.getMainFolder(null);
 		return new TreeModelBase(folder2TreeNodeBase(folder));		
 	}
 	

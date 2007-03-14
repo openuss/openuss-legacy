@@ -95,7 +95,6 @@ public class FolderDao extends ResourceDao {
 				//should occur
 				node.addNode(folder.getName(), DocConstants.NT_FOLDER);
 				node = node.getNode(folder.getName());
-				node.addMixin(DocConstants.MIX_REFERENCEABLE); 
 				logger.debug(DocConstants.PROPERTY_MESSAGE+ "<-----------------------------------------------");
 				node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
 				node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());				

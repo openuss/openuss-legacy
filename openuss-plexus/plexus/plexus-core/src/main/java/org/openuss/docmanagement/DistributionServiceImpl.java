@@ -9,6 +9,7 @@ package org.openuss.docmanagement;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
 import javax.jcr.AccessDeniedException;
@@ -89,7 +90,7 @@ public class DistributionServiceImpl
     /**
      * @see org.openuss.docmanagement.DistributionService#addFolder(org.openuss.docmanagement.Folder)
      */
-    protected void handleAddFolder(org.openuss.docmanagement.Folder targetFolder, org.openuss.docmanagement.Folder newFolder)
+    protected void handleAddFolder(org.openuss.docmanagement.Folder newFolder)
         throws java.lang.Exception
     {
     	folderDao.setFolder(newFolder);
@@ -151,7 +152,7 @@ public class DistributionServiceImpl
     /**
      * @see org.openuss.docmanagement.DistributionService#addFile(org.openuss.docmanagement.BigFile, org.openuss.docmanagement.Folder)
      */
-    protected void handleAddFile(org.openuss.docmanagement.BigFile file, org.openuss.docmanagement.Folder folder)
+    protected void handleAddFile(org.openuss.docmanagement.BigFile file)
         throws java.lang.Exception
     {
     	fileDao.setFile(file);
@@ -160,7 +161,7 @@ public class DistributionServiceImpl
     /**
      * @see org.openuss.docmanagement.DistributionService#addLink(org.openuss.docmanagement.Link, org.openuss.docmanagement.Folder)
      */
-    protected void handleAddLink(org.openuss.docmanagement.Link link, org.openuss.docmanagement.Folder targetFolder)
+    protected void handleAddLink(org.openuss.docmanagement.Link link)
         throws java.lang.Exception
     {
         // @todo implement protected void handleAddLink(org.openuss.docmanagement.Link link, org.openuss.docmanagement.Folder targetFolder)
@@ -248,7 +249,7 @@ public class DistributionServiceImpl
     /**
      * @see org.openuss.docmanagement.DistributionService#getFiles(org.openuss.docmanagement.Folder)
      */
-    protected File handleGetFiles(Folder folder)
+    protected List handleGetFiles(Folder folder)
         throws java.lang.Exception
     {
     	Session session = login();
@@ -315,7 +316,7 @@ public class DistributionServiceImpl
     /**
      * @see org.openuss.docmanagement.DistributionService#getSharedFiles(org.openuss.lecture.Faculty)
      */
-    protected File handleGetSharedFiles(org.openuss.lecture.Faculty faculty)
+    protected List handleGetSharedFiles(org.openuss.lecture.Faculty faculty)
         throws java.lang.Exception
     {
     	//TODO check if method is needed anymore
@@ -341,8 +342,9 @@ public class DistributionServiceImpl
         throws java.lang.Exception
     {
     	//TODO change to enrollment folder
-    	Folder fi; 
-    	fi = folderDao.getFolder("");
+    	Folder fi = new FolderImpl(); 
+    	if (enrollment==null) fi = folderDao.getFolder("test");
+    	else if (enrollment!=null) fi = folderDao.getFolder(DocConstants.DISTRIBUTION+"/"+enrollment.getId().toString());
     	return fi;
     }
 
@@ -365,26 +367,6 @@ public class DistributionServiceImpl
         return folder;
     }
     
-
-	@Override
-	protected TreeNode handleGetTreeData() throws Exception {
-		try {
-			Session session = login();
-			Node root = session.getRootNode();
-
-			TreeNode treeData = traverse(root,session);
-			
-			logout(session);
-
-			return treeData;
-		} catch (Exception e) {			
-			logger.error("Fehler in der getTreeData Methode!",e);
-		}
-
-		logger.error("Fehler in der getTreeData-Methode");
-		return null;
-	}
-
 
 	private TreeNode traverse(Node n, Session s) {
 		try {

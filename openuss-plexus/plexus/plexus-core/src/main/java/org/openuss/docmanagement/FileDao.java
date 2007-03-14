@@ -131,13 +131,10 @@ public class FileDao extends ResourceDao {
 			node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
 			node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
 					.getVisibility());
-			node.addMixin(DocConstants.MIX_REFERENCEABLE);
 
 			// nt:resource Knoten, der die eigentlich Datei enthaelt
 			node.addNode(DocConstants.JCR_CONTENT, DocConstants.NT_RESOURCE);
 			node = node.getNode(DocConstants.JCR_CONTENT);
-			node.addMixin(DocConstants.MIX_REFERENCEABLE); // perhaps not
-															// needed
 			node.setProperty(DocConstants.JCR_DATA, file.getFile());
 			node.setProperty(DocConstants.JCR_MIMETYPE, file.getMimeType());
 			c.setTimeInMillis(file.getLastModification().getTime());
