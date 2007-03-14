@@ -1,9 +1,11 @@
-<ns = 'http://www.jcp.org/jcr/nt/1.0'>
-[nt:docFolder] > nt:folder, mix:referencable
-- nt:docVisibility (long) mandatory
-- nt:docMessage (string) mandatory
+<doc = 'http://www.openuss.org/doc'>
+<nt = 'http://www.jcp.org/jcr/nt/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+[doc:folder] > nt:folder, mix:referenceable
+- doc:visibility (long) mandatory
+- doc:message (string) mandatory
 
-[nt:docFile] > nt:file, mix:referencable
-- nt:docVisibility (long) mandatory
-- nt:docMessage (string) mandatory
-- nt:docDistributionTime (date) mandatory
+[doc:file] > nt:file, mix:referenceable
+- doc:visibility (long) mandatory
+- doc:message (string) mandatory
+- doc:distributionTime (date) mandatory
