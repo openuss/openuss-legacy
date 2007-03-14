@@ -34,7 +34,7 @@
 					<o:input entity="discussionNew" property="title" required="true"></o:input>
 					
 					<h:outputText value="#{msg.discussionnew_text}" styleClass="field_label"/>					
-					<fck:editor value="#{discussionNew.text}" id="textEditor" toolbarSet="Basic" width="100%" height="200" />	 				
+					<fck:editor value="#{discussionNew.text}" id="textEditor" toolbarSet="Discussion" width="100%" height="200" />	 				
 
 				<f:subview rendered="${!empty discussionNew.attachment}">
 					<h:outputLink value="/openuss-plexus/files/#{sessionScope.discussionNew.attachment.fileName}">

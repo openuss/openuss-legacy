@@ -21,6 +21,7 @@ public class EnrollmentMemberDaoImpl extends org.openuss.lecture.EnrollmentMembe
 		targetVO.setUsername(sourceEntity.getUser().getUsername());
 		targetVO.setFirstName(sourceEntity.getUser().getFirstName());
 		targetVO.setLastName(sourceEntity.getUser().getLastName());
+		targetVO.setTitle(sourceEntity.getUser().getTitle());
 		targetVO.setEmail(sourceEntity.getUser().getEmail());
 		targetVO.setMemberType(sourceEntity.getMemberType());
 	}
