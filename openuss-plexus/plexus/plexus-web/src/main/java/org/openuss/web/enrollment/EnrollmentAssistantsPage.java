@@ -1,91 +1,135 @@
-package org.openuss.web.enrollment; 
+package org.openuss.web.enrollment;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-import java.util.Vector;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.EnrollmentMemberInfo;
+import org.openuss.lecture.FacultyMember;
+import org.openuss.lecture.FacultySecurity;
 import org.openuss.security.User;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$enrollment$enrollmentassistants", scope = Scope.REQUEST)
 @View
-public class EnrollmentAssistantsPage extends AbstractEnrollmentPage{
+public class EnrollmentAssistantsPage extends AbstractEnrollmentPage {
 	private static final Logger logger = Logger.getLogger(EnrollmentAssistantsPage.class);
-	
+
 	private AssistantsDataProvider data = new AssistantsDataProvider();
-	
-	private String aspirant;
-	
-	public String save(){
-		logger.debug("Enrollment assistants page - saved");
-		return Constants.SUCCESS;
-	}
-	
-	public void changedAssistant(ValueChangeEvent event){
-		logger.debug("changed enrollment assistants");		
-	}
 
+	private Long userId;
 
-	private class AssistantsDataProvider extends AbstractPagedTable<UserInfo> {
+	List<EnrollmentMemberInfo> assistants;
+	Set<Long> assistantsUserIds;
+	List<SelectItem> facultyMembers;
+	
+	private DataPage<EnrollmentMemberInfo> page;
 
-		private DataPage<UserInfo> page; 
+	private class AssistantsDataProvider extends AbstractPagedTable<EnrollmentMemberInfo> {
 		
-		@Override 
-		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {		
-			ArrayList<UserInfo> al = new ArrayList<UserInfo>();			
-			UserInfo ui1 = new UserInfo(new Long(1234), "cag", "Sebastian", "Roekens", "abc123", "plexus@openuss-plexus.com", true, false, false, new Date(System.currentTimeMillis()));
-			UserInfo ui2 = new UserInfo(new Long(12345), "dueppe", "Ingo", "Düppe", "12345", "plexus@openuss-plexus.com", true, true, false, new Date(System.currentTimeMillis()));
-			UserInfo ui3 = new UserInfo(new Long(1111), "bundy", "Al", "Bundy", "dumpfbacke", "plexus@openuss-plexus.com", true, false, true, new Date(System.currentTimeMillis()));
-			al.add(ui1); al.add(ui2); al.add(ui3);
-			page = new DataPage<UserInfo>(al.size(),0,al);
+		@Override
+		public DataPage<EnrollmentMemberInfo> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				logger.debug("fetching enrollment assistant list");
+				List<EnrollmentMemberInfo> assistants = getAssistants();
+				page = new DataPage<EnrollmentMemberInfo>(assistants.size(), 0, assistants);
+			}
 			return page;
 		}
 	}
 
+	private List<EnrollmentMemberInfo> getAssistants() {
+		if (assistants == null) {
+			assistants = enrollmentService.getAssistants(enrollment);
+		}
+		return assistants;
+	}
+
+	private Set<Long> getAssistantsUserIdMap() {
+		if (assistantsUserIds == null) {
+			assistantsUserIds = new HashSet<Long>();
+			for (EnrollmentMemberInfo assistant : getAssistants()) {
+				assistantsUserIds.add(assistant.getUserId());
+			}
+		}
+		return assistantsUserIds;
+	}
+
 	public String showProfile() {
-		UserInfo userInfo = data.getRowData();
+		EnrollmentMemberInfo memberInfo = data.getRowData();
 		User user = User.Factory.newInstance();
-		user.setId(userInfo.getId());
+		user.setId(memberInfo.getUserId());
 		setSessionBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
-		
+
 	public String delete() {
 		logger.debug("enrollment member deleted");
-		return Constants.SUCCESS;		
-	}
-	
-	public String addAspirant(){
-		logger.debug("enrollment assistant aspirant added");
+		EnrollmentMemberInfo assistant = data.getRowData();
+		enrollmentService.removeMember(assistant.getId());
+		addMessage(i18n("message_enrollment_removed_assistant"), assistant.getUsername());
+		resetCachedData();
 		return Constants.SUCCESS;
 	}
 
-	public Collection<SelectItem> getAspirantList(){
-		SelectItem si = new SelectItem();
-		SelectItem si2 = new SelectItem();
-		SelectItem si3 = new SelectItem();
-		si.setLabel("Sebastian Roekens (plexus@openuss-plexus.com");
-		si.setValue("cag");
-		si2.setLabel("Ingo Düpppe (plexus@openuss-plexus.com");
-		si2.setValue("dueppe");
-		si3.setLabel("Al Bundy (plexus@openuss-plexus.com");
-		si3.setValue("bundy");
-		Vector<SelectItem> v = new Vector<SelectItem>();
-		v.add(si); v.add(si2); v.add(si3);
-		return v;	
+	public String addAssistant() {
+		logger.debug("enrollment assistant aspirant added");
+		User user = User.Factory.newInstance();
+		user.setId(userId);
+		enrollmentService.addAssistant(enrollment, user);
+		addMessage(i18n("message_enrollment_add_assistant"));
+		resetCachedData();
+		return Constants.SUCCESS;
 	}
-	
+
+	private void resetCachedData() {
+		assistants = null;
+		facultyMembers = null;
+		assistantsUserIds = null;
+		page = null;
+	}
+
+	public Collection<SelectItem> getFacultyMemberList() {
+		if (facultyMembers == null) {
+			FacultySecurity facultySecurity = lectureService.getFacultySecurity(enrollment.getFaculty().getId());
+			List<FacultyMember> members = facultySecurity.getMembers();
+			final Set<Long> userIds = getAssistantsUserIdMap();
+			CollectionUtils.filter(members, new Predicate() {
+				public boolean evaluate(Object object) {
+					FacultyMember member = (FacultyMember) object;
+					return !userIds.contains(member.getId());
+				}
+			});
+			facultyMembers = new ArrayList<SelectItem>();
+			for(FacultyMember member : members) {
+				facultyMembers.add(new SelectItem(member.getId(), member.getFirstName()+ " "+member.getLastName() + "("+member.getUsername()+")"));
+			}
+		}
+		return facultyMembers;
+	}
+
+	public String save() {
+		logger.debug("Enrollment assistants page - saved");
+		return Constants.SUCCESS;
+	}
+
+	public void changedAssistant(ValueChangeEvent event) {
+		logger.debug("changed enrollment assistants");
+	}
+
 	public AssistantsDataProvider getData() {
 		return data;
 	}
@@ -94,12 +138,12 @@ public class EnrollmentAssistantsPage extends AbstractEnrollmentPage{
 		this.data = data;
 	}
 
-	public String getAspirant() {
-		return aspirant;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setAspirant(String aspirant) {
-		this.aspirant = aspirant;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
-	
+
 }

@@ -11,7 +11,7 @@
     <plexus:dataTable 
     	id="enrollmentparticipants" 
     	label="#{msg.faculty_members_subheading}" 
-    	value="views$secured$enrollment$enrollmentmembers.data" 
+    	value="views$secured$enrollment$enrollmentparticipants.data" 
    	 	columnClasses="col_max_left, col_max_left, col_max_left, col_commands_two"
     	var="member" 
     	rows="10">  
@@ -50,13 +50,13 @@
 		
 		<plexus:column header="#{msg.commands_header}">
 			<plexus:command 
-				bean="#{views$secured$enrollment$enrollmentmembers}"
+				bean="#{views$secured$enrollment$enrollmentparticipants}"
 				action="showProfile"
 				label="#{msg['user_profile_command_show_profile']}"
 				title="#{msg['user_profile_command_show_profile_hint']}"
 				styleClass="button_profile" />
 			<plexus:command 
-				bean="#{views$secured$enrollment$enrollmentmembers}"
+				bean="#{views$secured$enrollment$enrollmentparticipants}"
 				action="delete"
 				label="#{msg['enrollment_members_delete']}"
 				title="#{msg['enrollment_members_delete_hint']}"

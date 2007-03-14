@@ -62,6 +62,8 @@ public class EnrollmentServiceImpl extends org.openuss.lecture.EnrollmentService
 
 	private EnrollmentMember createEnrollmentMember(org.openuss.lecture.Enrollment enrollment,
 			org.openuss.security.User user) {
+		enrollment = getEnrollmentDao().load(enrollment.getId());
+		user = getSecurityService().getUser(user.getId());
 		EnrollmentMember aspirant = EnrollmentMember.Factory.newInstance();
 		aspirant.setEnrollment(enrollment);
 		aspirant.setUser(user);
@@ -109,21 +111,21 @@ public class EnrollmentServiceImpl extends org.openuss.lecture.EnrollmentService
 
 	@Override
 	protected void handleApplyUser(Enrollment enrollment, User user) throws Exception {
-		Enrollment original = getEnrollmentDao().load(enrollment.getId());
-		if (original.getAccessType() == AccessType.APPLICATION) {
-			addAspirant(enrollment, user);
+		Enrollment originalEnrollment = getEnrollmentDao().load(enrollment.getId());
+		if (originalEnrollment.getAccessType() == AccessType.APPLICATION) {
+			addAspirant(originalEnrollment, user);
 		} else {
-			throw new EnrollmentServiceException("message_error_enrollment_accesstype_is_not_application");
+			throw new EnrollmentApplicationException("message_error_enrollment_accesstype_is_not_application");
 		}
 	}
 
 	@Override
 	protected void handleApplyUserByPassword(String password, Enrollment enrollment, User user) throws Exception {
-		Enrollment original = getEnrollmentDao().load(enrollment.getId());
-		if (original.getAccessType() == AccessType.PASSWORD && original.isPasswordCorrect(password)) {
-			addParticipant(enrollment, user);
+		Enrollment originalEnrollment = getEnrollmentDao().load(enrollment.getId());
+		if (originalEnrollment.getAccessType() == AccessType.PASSWORD && originalEnrollment.isPasswordCorrect(password)) {
+			addParticipant(originalEnrollment, user);
 		} else {
-			throw new EnrollmentServiceException("message_error_password_is_not_correct");
+			throw new EnrollmentApplicationException("message_error_password_is_not_correct");
 		}
 	}
 

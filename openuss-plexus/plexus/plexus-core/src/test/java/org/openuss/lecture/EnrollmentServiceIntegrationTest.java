@@ -33,7 +33,11 @@ public class EnrollmentServiceIntegrationTest extends EnrollmentServiceIntegrati
 		User user = testUtility.createUserInDB();
 		Enrollment enrollment = lectureBuilder.getEnrollment();
 
-		enrollmentService.applyUser(enrollment, user);
+		try {
+			enrollmentService.applyUser(enrollment, user);
+		} catch (EnrollmentApplicationException e) {
+			fail(e.getMessage());
+		}
 	
 		List<EnrollmentMemberInfo> aspirants = enrollmentService.getAspirants(enrollment);
 		assertEquals(1, aspirants.size());
@@ -63,7 +67,11 @@ public class EnrollmentServiceIntegrationTest extends EnrollmentServiceIntegrati
 		User user = testUtility.createUserInDB();
 		Enrollment enrollment = lectureBuilder.getEnrollment();
 		
-		enrollmentService.applyUser(enrollment, user);
+		try {
+			enrollmentService.applyUser(enrollment, user);
+		} catch (EnrollmentApplicationException e) {
+			fail(e.getMessage());
+		}
 		
 		List<EnrollmentMemberInfo> aspirants = enrollmentService.getAspirants(enrollment);
 		assertEquals(1, aspirants.size());

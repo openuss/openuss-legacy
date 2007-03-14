@@ -32,21 +32,19 @@
 		  	
 			<h:form id="assistantsForm"> 
 				<ui:include src="enrollmentassistantstable.xhtml" />
-				<o:block>
-					<h:selectOneMenu id="assistantSelectBox" value="#{views$secured$enrollment$enrollmentassistants.aspirant}" styleClass="pulldown_inline">
-					   	<t:selectItems value="#{views$secured$enrollment$enrollmentassistants.aspirantList}" var="aspirant" itemLabel="#{aspirant.label}" itemValue="#{aspirant.value}"/>
-					</h:selectOneMenu>
-					<plexus:command 
-							bean="#{views$secured$enrollment$enrollmentassistants}"
-							action="addAspirant"
-							label="#{msg['enrollment_assistants_add']}"
-							title="#{msg['enrollment_assistants_add_hint']}"
-							styleClass="button_add" />
-				</o:block>				
-				<o:block>
-					<h:commandButton value="${msg.save}" title="#{msg.save_hint}" action="#{views$secured$enrollment$enrollmentassistants.save}" styleClass="button_save"/>
-					<h:commandButton value="${msg.reset}" title="#{msg.reset_hint}" action="enrollment_options_members" styleClass="button_cancel" immediate="true"/>
-				</o:block>
+				<c:if test="#{not empty views$secured$enrollment$enrollmentassistants.facultyMemberList}">
+					<o:block>
+						<h:selectOneMenu id="assistantSelectBox" value="#{views$secured$enrollment$enrollmentassistants.userId}" styleClass="pulldown_inline">
+						   	<f:selectItems value="#{views$secured$enrollment$enrollmentassistants.facultyMemberList}"/>
+						</h:selectOneMenu>
+						<plexus:command 
+								bean="#{views$secured$enrollment$enrollmentassistants}"
+								action="addAssistant"
+								label="#{msg['enrollment_assistants_add']}"
+								title="#{msg['enrollment_assistants_add_hint']}"
+								styleClass="button_add" />
+					</o:block>	
+				</c:if>
 	  		</h:form>
   		</ui:define>
 	</ui:composition>
