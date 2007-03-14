@@ -5,9 +5,13 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
       xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:o="http://www.openuss.org/jsfcontrols"
-      xmlns:plexus="http://www.openuss.org/plexus/jsf">
+	  xmlns:plexus="http://www.openuss.org/plexus/jsf"      
+      xmlns:fck="http://www.fck-faces.org/fck-faces">
       
  	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -20,17 +24,23 @@
 	<body>      
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
-  		<ui:define name="title">
-  			<h:outputText value="#{msg['enrollment_main_title']}"/>
-  		</ui:define>
 		<ui:define name="navigation">
 			<ui:include src="/views/commons/navigation/enrollment.xhtml" />
 		</ui:define>
-  		<ui:define name="content"> 
-  			<o:block label="#{enrollment.subject.name} (#{enrollment.shortcut})">
-  				#{enrollment.subject.description}
-  			</o:block>
-	  		<plexus:newsTable value="#{views$secured$enrollment$enrollment.currentNewsItems}" headline="${msg.news_header}"/>
+ 		 
+  		<ui:define name="content">
+			<h:form id="mainWikiForm">
+				<o:block label="#{msg.wiki_main_header}">
+					<h:outputText value="#{views$secured$wiki$wikimain.wikiPage.text}"></h:outputText>
+				</o:block>					
+				<o:block>
+					<h:commandButton 
+						value="${msg.wiki_main_button_edit}" 
+						action="wiki_edit" 
+						immediate="true" 
+						styleClass="button"/>
+				</o:block>
+			</h:form>
   		</ui:define>
 	</ui:composition>
 	<!-- text above will be ignored -->
