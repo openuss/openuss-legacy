@@ -25,25 +25,30 @@ public class MailServiceImpl
 	protected void handleSendMails(String subject, String templateName, Map model, String eMail) throws Exception {
 		logger.debug("MailService sendMails started");	
 		//adding mail to db
+		//save mailingJob
 		MailingJob mailingJob = new MailingJobImpl(); 
 		mailingJob.setSenderName("System");
 		mailingJob.setSendingTime(new Timestamp(System.currentTimeMillis()));
 		mailingJob.setStatus(MailingStatus.PLANNED);
 		mailingJob.setMailTitle(subject);
 		getMailingJobDao().create(mailingJob);
-		
+		//save used template
+		Template template = new TemplateImpl();
+		template.setTemplate(templateName);
+		getTemplateDao().create(template);
+		//save template model
+		TemplateModel templateModel = new TemplateModelImpl();
+		convertMapToTemplateModels(model, template);		
+		//save MailToSend		
 		MailToSend mailToSend = new MailToSendImpl();
 		mailToSend.setEmail(eMail);
-		mailToSend.setSubject(subject);
-		mailToSend.setTemplate(templateName);
+		mailToSend.setSubject(subject);		
 		mailToSend.setJob(mailingJob);
-		getMailToSendDao().create(mailToSend);
-
-		convertMapToTemplateModels(model, mailToSend);		
-		
+		mailToSend.setMailBody(template);
+		getMailToSendDao().create(mailToSend);		
 	}
 
-	private void convertMapToTemplateModels(Map model, MailToSend mailToSend) {
+	private void convertMapToTemplateModels(Map model, Template template) {
 		TemplateModel templateModel;		
 		Set keySet = model.keySet();		
 		Iterator i = keySet.iterator();
@@ -54,7 +59,7 @@ public class MailServiceImpl
 			key = (String)i.next();
 			templateModel.setModelName(key); 
 			templateModel.setModelValue((String) model.get(key));
-			templateModel.setMail(mailToSend);
+			templateModel.setTemplate(template);
 			getTemplateModelDao().create(templateModel);		
 		}
 		
@@ -77,19 +82,15 @@ public class MailServiceImpl
 		return getMailToSendDao().findByJob(mailingJobId);
 	}
 
-	@Override
-	protected List handleGetTemplateModulsByMailToSend(Long mailToSendId) throws Exception {
-		return getTemplateModelDao().findByMail(mailToSendId);
-	}
 
 	@Override
-	protected void handleDeleteMailToSend(Long id) throws Exception {
-		List l = getTemplateModelDao().findByMail(id);
-		Iterator i = l.iterator();
-		while (i.hasNext()){
-			getTemplateModelDao().remove(((TemplateModel)i.next()).getId());
-		}
-		getMailToSendDao().remove(id);
+	protected void handleDeleteMailToSend(Long id) throws Exception {		
+		MailToSend mts = getMailToSendDao().load(id);
+		Template template = handleGetTemplateByMailToSend(mts);
+		Long tId = template.getId();
+		//handleDeleteTemplate(handleGetTemplateByMailToSend(getMailToSendDao().load(id)).getId());
+		getMailToSendDao().remove(id);		
+		handleDeleteTemplate(tId);
 	}
 
 	@Override
@@ -100,6 +101,26 @@ public class MailServiceImpl
 			handleDeleteMailToSend(((MailToSend)i.next()).getId());			
 		}
 		getMailingJobDao().remove(id);
+	}
+
+	@Override
+	protected void handleDeleteTemplate(Long id) throws Exception {
+		List l = handleGetTemplateModelsByTemplate(id);
+		Iterator i = l.iterator();
+		while (i.hasNext()){
+			getTemplateModelDao().remove(((TemplateModel)i.next()).getId());
+		}
+		getTemplateDao().remove(id);
+	}
+
+	@Override
+	protected Template handleGetTemplateByMailToSend(MailToSend mailToSend) throws Exception {		
+		return getTemplateDao().findById(mailToSend.getMailBody().getId());
+	}
+
+	@Override
+	protected List handleGetTemplateModelsByTemplate(Long templateId) throws Exception {
+		return getTemplateModelDao().findByTemplate(templateId);
 	}
 
 	

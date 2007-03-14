@@ -31,7 +31,7 @@ public class MailSendingQuartzBean{
 			while(mailIterator.hasNext()){
 				mts = (MailToSend)mailIterator.next();
 				sendMail(mts);
-				mailService.deleteMailToSend(mts.getId());
+				mailService.deleteMailToSend(mts.getId()); //only needed, if mailingjobs are splitted
 			}
 			// deletion of mailingJobs only if no more mailsToSend -> due to possible splitting of jobs in future
 			if (mailService.getMailsToSendByMailingJob(mj.getJobId()).size()==0) mailService.deleteMailingJob(mj.getJobId());
@@ -42,7 +42,9 @@ public class MailSendingQuartzBean{
 	private void sendMail(MailToSend mts) throws MessagingException{
 		mimeMessageHelper.setTo(mts.getEmail());					
 		mimeMessageHelper.setSubject(mts.getSubject());					
-		List modelList = mailService.getTemplateModulsByMailToSend(mts.getId());
+		Template template = mailService.getTemplateByMailToSend(mts);		
+		
+		List modelList = mailService.getTemplateModelsByTemplate(template.getId());
 			
 		Iterator i = modelList.iterator();
 		Map map = new HashMap();
@@ -51,7 +53,7 @@ public class MailSendingQuartzBean{
 			tm = (TemplateModel)i.next();
 			map.put(tm.getModelName(), tm.getModelValue());
 		}
-		mailEngine.sendMessage(mimeMessageHelper.getMimeMessage(), mts.getTemplate(), map);		
+		mailEngine.sendMessage(mimeMessageHelper.getMimeMessage(), template.getTemplate(), map);		
 	}
 	
 	public MailEngine getMailEngine() {
