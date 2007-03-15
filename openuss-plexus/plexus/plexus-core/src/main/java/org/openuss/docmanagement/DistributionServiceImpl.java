@@ -410,6 +410,10 @@ public class DistributionServiceImpl
 	public void buildTestStructure() throws Exception{
 		folderDao.addTestStructure();		
 	}
+
+	public void clearRepository() throws Exception{
+		folderDao.clearRepository();		
+	}
 	
 
 	private Session login() throws LoginException, RepositoryException {

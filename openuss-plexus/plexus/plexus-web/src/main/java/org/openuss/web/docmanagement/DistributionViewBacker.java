@@ -40,7 +40,6 @@ public class DistributionViewBacker{
 	public String path;
 
 	public TreeModel getTree(){
-		DistributionServiceImpl dsi =  (DistributionServiceImpl) distributionService;
 		Folder folder = new FolderImpl();
 		try {
 			folder = distributionService.getMainFolder(null);
@@ -77,9 +76,9 @@ public class DistributionViewBacker{
 		return tn;		
 	}
 	
-	private Object file2TreeNodeBase(File subFile) {
+	private TreeNodeBase file2TreeNodeBase(File subFile) {
 		TreeNodeBase tn = new TreeNodeBase("file", subFile.getName(), subFile.getId(), true);
-		return null;
+		return tn;
 	}
 
 	public TreeModel getTree2(){
@@ -119,6 +118,15 @@ public class DistributionViewBacker{
 	public String addTestStructure(){
 		try{
 			((DistributionServiceImpl)distributionService).buildTestStructure();
+		} catch (Exception e){
+			logger.error(e);
+		}
+		return Constants.SUCCESS;
+	}
+
+	public String clearRepository(){
+		try{
+			((DistributionServiceImpl)distributionService).clearRepository();
 		} catch (Exception e){
 			logger.error(e);
 		}

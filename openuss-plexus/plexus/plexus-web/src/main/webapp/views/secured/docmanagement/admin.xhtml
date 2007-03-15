@@ -27,7 +27,10 @@
  		
   		<ui:define name="content">
   			<h:form id="treeView">
-				<ui:include src="treeView.xhtml"/>
+				<o:block>
+					<h:commandButton action="#{distributionViewBacker.addTestStructure}" value="Add TestStructure"></h:commandButton>
+					<h:commandButton action="#{distributionViewBacker.clearRepository}" value="Clear Repository"></h:commandButton>					
+				</o:block>
 			</h:form>
 		</ui:define>
 	</ui:composition>

@@ -24,5 +24,18 @@
 				</h:commandLink>
 			</h:panelGroup>
 		</f:facet>
+		<f:facet name="file">
+			<h:panelGroup>
+				<h:commandLink immediate="true"
+					styleClass="#{t.nodeSelected ? 'standard_bold':'standard'}"
+					actionListener="#{t.setNodeSelected}">
+					<t:graphicImage value="/images/folder-open.png"
+						rendered="#{t.nodeExpanded}" border="0" />
+					<t:graphicImage value="/images/folder-open.png"
+						rendered="#{!t.nodeExpanded}" border="0" />
+					<h:outputText value="#{node.description}" styleClass="nodeFolder" />
+				</h:commandLink>
+			</h:panelGroup>
+		</f:facet>
 	</t:tree2>
 </ui:composition>

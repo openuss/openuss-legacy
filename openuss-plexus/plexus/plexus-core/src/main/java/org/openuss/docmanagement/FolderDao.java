@@ -51,6 +51,7 @@ public class FolderDao extends ResourceDao {
 			NodeIterator ni = node.getNodes();
 			Node n;
 			String newPath = "";
+			String filePath;
 			while (ni.hasNext()) {
 				n = ni.nextNode();
 				if (!n.getName().startsWith("jcr:")) {
@@ -62,7 +63,10 @@ public class FolderDao extends ResourceDao {
 						v.add(getFolder(newPath));
 					}
 					if (n.isNodeType(DocConstants.NT_FILE)) {
-						v.add(fileDao.getFile(n.getPath()));
+						filePath = n.getPath();						
+						if (filePath.startsWith("/")) filePath = filePath.substring(1);
+						logger.debug("Path to file: "+ filePath);
+						v.add(fileDao.getFile(filePath));
 					}
 					// TODO add links
 				}
@@ -89,19 +93,17 @@ public class FolderDao extends ResourceDao {
 			Node node = session.getRootNode();
 			if (folder.getPath()!="") node = node.getNode(folder.getPath());
 			try{
-				node.getNode(folder.getName());
+				node = node.getNode(folder.getName());
+				throw new Exception ("Folder already exists");
 			}
 			catch (PathNotFoundException e){
 				//should occur
 				node.addNode(folder.getName(), DocConstants.NT_FOLDER);
 				node = node.getNode(folder.getName());
-				logger.debug(DocConstants.PROPERTY_MESSAGE+ "<-----------------------------------------------");
 				node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
 				node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());				
 				logout(session);
-			}
-			throw new Exception ("Folder already exists");
-				
+			}							
 		} catch (LoginException e) {
 			logger.error("Login Exception: ", e);	
 		} catch (RepositoryException e) {
@@ -124,6 +126,23 @@ public class FolderDao extends ResourceDao {
 		} catch (Exception e) {
 			logger.error(e);
 		}
+	}
+	
+	public void clearRepository(){
+		try{
+			Session session = login(repository);
+			Node node  = session.getRootNode();
+			NodeIterator ni = node.getNodes();
+			Node delMe;
+			while (ni.hasNext()){
+				delMe = ni.nextNode();
+				if (!((delMe.getName().startsWith("jcr:")||delMe.getName().startsWith("rep:")))) delMe.remove();
+			}
+			logout(session);
+		} catch (Exception e){
+			logger.error("Exception: ", e);
+		}
+		
 	}
 
 	public Repository getRepository() {
