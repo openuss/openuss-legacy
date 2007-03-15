@@ -86,6 +86,7 @@ public class EnrollmentServiceImpl extends org.openuss.lecture.EnrollmentService
 		if (member.getMemberType() == EnrollmentMemberType.ASPIRANT) {
 			persistParticipantWithPermissions(member);
 		}
+		// TODO send email to accepted user
 	}
 
 	private void persistParticipantWithPermissions(EnrollmentMember participant) {
@@ -113,6 +114,7 @@ public class EnrollmentServiceImpl extends org.openuss.lecture.EnrollmentService
 	protected void handleApplyUser(Enrollment enrollment, User user) throws Exception {
 		Enrollment originalEnrollment = getEnrollmentDao().load(enrollment.getId());
 		if (originalEnrollment.getAccessType() == AccessType.APPLICATION) {
+			// TODO send email to all assistants
 			addAspirant(originalEnrollment, user);
 		} else {
 			throw new EnrollmentApplicationException("message_error_enrollment_accesstype_is_not_application");
@@ -131,6 +133,7 @@ public class EnrollmentServiceImpl extends org.openuss.lecture.EnrollmentService
 
 	@Override
 	protected void handleRejectAspirant(Long memberId) throws Exception {
+		// TODO send email to rejected user
 		removeMember(memberId);
 	}
 
