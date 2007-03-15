@@ -26,7 +26,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
 
-@Bean(name="distributionViewBacker", scope=Scope.REQUEST)
+@Bean(name="distributionViewBacker", scope=Scope.SESSION)
 @View
 public class DistributionViewBacker{
 
@@ -38,8 +38,11 @@ public class DistributionViewBacker{
 	FileDataProvider data = new FileDataProvider();
 	
 	public String path;
+	
+	public TreeModel treeModel;
 
 	public TreeModel getTree(){
+		//TODO cache treeModel to prevent loading model 5 times a pageload
 		Folder folder = new FolderImpl();
 		try {
 			folder = distributionService.getMainFolder(null);
@@ -48,11 +51,12 @@ public class DistributionViewBacker{
 		} catch (ResourceAlreadyExistsException e) {
 			logger.error("Resource already exists");
 		}
-		return new TreeModelBase(folder2TreeNodeBase(folder));		
+		this.treeModel = new TreeModelBase(folder2TreeNodeBase(folder));  
+		return 	this.treeModel;
 	}
 	
 	private TreeNodeBase folder2TreeNodeBase(Folder folder){
-		TreeNodeBase tn = new TreeNodeBase("folder", folder.getName(), folder.getId(), (folder.getSubnodes()==null));
+		TreeNodeBase tn = new TreeNodeBase("folder", folder.getName(), folder.getPath(), (folder.getSubnodes()==null));
 		Folder subFolder = null;
 		File subFile = null;
 		if (folder.getSubnodes()!=null){
@@ -77,21 +81,8 @@ public class DistributionViewBacker{
 	}
 	
 	private TreeNodeBase file2TreeNodeBase(File subFile) {
-		TreeNodeBase tn = new TreeNodeBase("file", subFile.getName(), subFile.getId(), true);
+		TreeNodeBase tn = new TreeNodeBase("file", subFile.getName(), subFile.getPath(), true);
 		return tn;
-	}
-
-	public TreeModel getTree2(){
-		TreeNodeBase root = new TreeNodeBase("folder", "root", "0" , false);
-		TreeNodeBase tn1 = new TreeNodeBase("folder", "Test123", "1" , true);
-		TreeNodeBase tn2 = new TreeNodeBase("folder", "Sebastian", "2", false);
-		TreeNodeBase tn2a = new TreeNodeBase("folder", "Roekens", "4", true);
-		TreeNodeBase tn3 = new TreeNodeBase("folder", "Blubb", "3", true);
-		tn2.getChildren().add(tn2a);
-		root.getChildren().add(tn1);
-		root.getChildren().add(tn2);
-		root.getChildren().add(tn3);		
-		return new TreeModelBase(root);
 	}
 
 	private class FileDataProvider extends AbstractPagedTable<File> {
@@ -155,6 +146,8 @@ public class DistributionViewBacker{
 	}
 
 	public void setPath(String path) {
+		this.path = treeModel.getNodeById(path).getIdentifier();
+		logger.debug("Path is now: "+this.path);
 		this.path = path;
 	}
 }

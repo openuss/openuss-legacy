@@ -16,6 +16,7 @@
 				<h:commandLink immediate="true"
 					styleClass="#{t.nodeSelected ? 'standard_bold':'standard'}"
 					actionListener="#{t.setNodeSelected}">
+					<f:actionListener type="org.openuss.web.docmanagement.Navigator" />
 					<t:graphicImage value="/images/folder-open.png"
 						rendered="#{t.nodeExpanded}" border="0" />
 					<t:graphicImage value="/images/folder-open.png"
