@@ -52,6 +52,9 @@ public class DistributionViewBacker{
 	
 	//current TreeModel displayed by tree2 component
 	public TreeModel treeModel;
+	
+	//type of current selected item
+	public int type;
 
 	public TreeModel getTree(){
 		//TODO cache treeModel to prevent loading model 5 times a pageload
@@ -139,7 +142,7 @@ public class DistributionViewBacker{
 	
 	public String changeFolder(){
 		try {
-			folderController.setFolder(distributionService.getFolder(treeModel.getNodeById(this.facesPath).getIdentifier()));
+			folderController.setFolder(distributionService.getFolder(treeModel.getNodeById(this.facesPath).getIdentifier().substring(1)));
 		} catch (PathNotFoundException e) {
 			logger.error("Path not found: ", e);
 		} catch (ResourceAlreadyExistsException e) {
@@ -157,7 +160,7 @@ public class DistributionViewBacker{
 	
 	public String changeFile(){
 		try {			
-			fileController.setFile(distributionService.getFile(treeModel.getNodeById(this.facesPath).getIdentifier()));
+			fileController.setFile(distributionService.getFile(treeModel.getNodeById(this.facesPath).getIdentifier().substring(1)));
 		} catch (PathNotFoundException e) {
 			logger.error("Path not found: ", e);
 		} catch (ResourceAlreadyExistsException e) {
@@ -203,6 +206,9 @@ public class DistributionViewBacker{
 
 	public void setFacesPath(String facesPath) {
 		this.path = treeModel.getNodeById(facesPath).getIdentifier();
+		this.type = 0;
+		if (treeModel.getNodeById(facesPath).getType().equals("folder")) this.type=1;
+		if (treeModel.getNodeById(facesPath).getType().equals("file")) this.type=2;		
 		logger.debug("Path is now: "+this.path);
 		this.facesPath = facesPath;
 	}
@@ -221,5 +227,13 @@ public class DistributionViewBacker{
 
 	public void setFolderController(FolderController folderController) {
 		this.folderController = folderController;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 }

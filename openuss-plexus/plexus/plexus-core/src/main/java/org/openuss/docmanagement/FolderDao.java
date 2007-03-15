@@ -36,7 +36,7 @@ public class FolderDao extends ResourceDao {
 				try{
 					node = node.getNode(path);
 				} catch (PathNotFoundException e){
-					throw new Exception("Path not found");
+					throw new org.openuss.docmanagement.PathNotFoundException("Path not found");
 				}
 			if (!node.isNodeType(DocConstants.NT_FOLDER))
 				throw new Exception("not a folder");
@@ -87,11 +87,12 @@ public class FolderDao extends ResourceDao {
 	}
 
 	public void setFolder(Folder folder) throws Exception {
-		// setting of whole structure possible?
-		try {		
+		try {			
 			Session session = login(repository);
 			Node node = session.getRootNode();
-			if (folder.getPath()!="") node = node.getNode(folder.getPath());
+			String path = folder.getPath();
+			if (path.startsWith("/")) path = path.substring(1);
+			if (path!="") node = node.getNode(path);
 			try{
 				node = node.getNode(folder.getName());
 				throw new Exception ("Folder already exists");
@@ -109,6 +110,18 @@ public class FolderDao extends ResourceDao {
 		} catch (RepositoryException e) {
 			logger.error("Repository Exception: ", e);
 		}
+	}
+	
+	public void changeFolder(Folder folder) throws LoginException, RepositoryException{
+		Session session = login(repository);
+		Node node = session.getRootNode();
+		if (folder.getPath()!="") node = node.getNode(folder.getPath().substring(1));
+		node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
+		node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());
+		session.save();
+		//if nodename has changed, move node
+		if (!node.getPath().equals(node.getParent().getPath() + "/" + folder.getName())) session.move(node.getPath(), node.getParent().getPath() + "/" + folder.getName());
+		logout(session);
 	}
 	
 	public void addTestStructure(){

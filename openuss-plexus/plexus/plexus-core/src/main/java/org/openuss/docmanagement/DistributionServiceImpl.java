@@ -129,12 +129,11 @@ public class DistributionServiceImpl
     /**
      * @see org.openuss.docmanagement.DistributionService#changeFolder(org.openuss.docmanagement.Folder, java.lang.String, int)
      */
-    protected void handleChangeFolder(org.openuss.docmanagement.Folder folder, java.lang.String name, int visibility)
+    protected void handleChangeFolder(org.openuss.docmanagement.Folder folder, boolean old)
         throws java.lang.Exception
     {
-    	//TODO add message to model and method
-    	//@todo implement protected void handleChangeFolder(org.openuss.docmanagement.Folder folder, java.lang.String name, int visibility)
-        throw new java.lang.UnsupportedOperationException("org.openuss.docmanagement.DistributionService.handleChangeFolder(org.openuss.docmanagement.Folder folder, java.lang.String name, int visibility) Not implemented!");
+    	if (old) folderDao.changeFolder(folder);
+    	else if (!old) folderDao.setFolder(folder);    	
     }
 
     /**
@@ -193,7 +192,7 @@ public class DistributionServiceImpl
     /**
      * @see org.openuss.docmanagement.DistributionService#delNode(org.openuss.docmanagement.Node)
      */
-    protected void handleDelResource(Resource resource)
+    protected void handleDelResource(Resource resource, boolean delLinks)
         throws java.lang.Exception
     {
     	Session session = login();
@@ -464,4 +463,12 @@ public class DistributionServiceImpl
 	protected Folder handleGetFolder(String path) throws Exception {
 		return folderDao.getFolder(path);
 	}
+
+	@Override
+	protected void handleChangeFile(File file, boolean old) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 }
