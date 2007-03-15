@@ -27,6 +27,7 @@ public class DocConstants{
 	public static final String NT_FOLDER = "doc:folder";
 	public static final String NT_RESOURCE = "nt:resource";
 	public static final String JCR_CONTENT = "jcr:content";
+	public static final String JCR_CREATED = "jcr:created";
 	public static final String JCR_ENCODING = "jcr:encoding";
 	public static final String JCR_MIMETYPE = "jcr:mimeType";
 	public static final String JCR_DATA = "jcr:data";
