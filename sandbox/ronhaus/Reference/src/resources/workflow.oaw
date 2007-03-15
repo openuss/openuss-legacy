@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="windows-1252"?>
 <workflow>
     <property file="workflow.properties"/>
+    <property file="dataSource.properties"/>
     <property file="hibernateCartridge.properties"/>
+    <property file="springCartridge.properties"/>
 
 	<bean class="org.openarchitectureware.uml2.Setup" standardUML2Setup="true"/>
 	
@@ -41,11 +43,12 @@
 		
 		<fileEncoding value="ISO-8859-1"/>
 		
+		<globalVarDef name="connectiondriver_class" value="${dataSource.connection.driver_class}"/>
+		<globalVarDef name="connection_url" value="${dataSource.connection.url}"/>
+		<globalVarDef name="connection_user" value="${dataSource.connection.user}"/>
+		<globalVarDef name="connection_password" value="${dataSource.connection.password}"/>
+		
 		<globalVarDef name="sessionFactory" value="${hibernate.sessionFactory}"/>
-		<globalVarDef name="connectiondriver_class" value="${hibernate.connection.driver_class}"/>
-		<globalVarDef name="connection_url" value="${hibernate.connection.url}"/>
-		<globalVarDef name="connection_user" value="${hibernate.connection.user}"/>
-		<globalVarDef name="connection_password" value="${hibernate.connection.password}"/>
 		<globalVarDef name="connectionPool_size" value="${hibernate.connectionPool_size}"/>
 		<globalVarDef name="dialect" value="${hibernate.dialect}"/>
 		<globalVarDef name="current_session_context_class" value="${hibernate.current_session_context_class}"/>
@@ -53,6 +56,10 @@
 		<globalVarDef name="show_sql" value="${hibernate.show_sql}"/>
 		<globalVarDef name="hbm2ddlAuto" value="${hibernate.hbm2ddlAuto}"/>
 		<globalVarDef name="javaFile_suffix" value="${hibernate.javaFile_suffix}"/>
+		
+		
+		<globalVarDef name="spring_Persistence" value="${spring.Persistence}"/>
+		<globalVarDef name="spring_OR_Mapper" value="${spring.OR_Mapper}"/>
 		
 		<expand value="${expandExpression}"/>
 		

@@ -45,5 +45,6 @@
 	<classpathentry kind="lib" path="lib/oaw.emftools_4.1.2.v20070314.jar"/>
 	<classpathentry kind="lib" path="lib/oaw.uml2.adapter_4.1.2.v20070314.jar"/>
 	<classpathentry kind="lib" path="lib/oaw.uml2.adapter.plugin_4.1.2.v20070314.jar"/>
+	<classpathentry kind="lib" path="lib/spring-cartridge.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,5 +1,5 @@
 «IMPORT uml»
-«IMPORT Persistence»
+«IMPORT BusinessApps»
 
 
 «REM»Zentraler Einstieg ins Model«ENDREM»
@@ -15,5 +15,8 @@
 	«EXPAND org::openuss::cartridges::uml2::hibernate::templates::Mapping::Start FOREACH eAllContents.typeSelect(Entity)»	
 	«REM»Erzeugen der HibernateConfig«ENDREM»
 	«EXPAND org::openuss::cartridges::uml2::hibernate::templates::HibernateConfig::Start»
+	
+	«REM»Erzeugen des Spring ApplicationContext«ENDREM»
+	«EXPAND org::openuss::cartridges::uml2::spring::templates::ApplicationContext::Start»
 	
 «ENDDEFINE»
