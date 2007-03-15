@@ -11,9 +11,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
-import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopException;
-import org.openuss.desktop.DesktopService;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Faculty;
@@ -40,12 +38,6 @@ public class FacultiesPage extends BasePage{
 	
 	@Property(value = "#{lectureService}")
 	private LectureService lectureService;
-	
-	@Property(value = "#{desktopService}")
-	private DesktopService desktopService;
-	
-	@Property(value = "#{desktop}")
-	private Desktop desktop;
 	
 	/**
 	 * Store the selected faculty into session scope and go to faculty main page.
@@ -148,22 +140,6 @@ public class FacultiesPage extends BasePage{
 				return f2.getShortcut().compareToIgnoreCase(f1.getShortcut());
 			}
 		}
-	}
-
-	public DesktopService getDesktopService() {
-		return desktopService;
-	}
-
-	public void setDesktopService(DesktopService desktopService) {
-		this.desktopService = desktopService;
-	}
-
-	public Desktop getDesktop() {
-		return desktop;
-	}
-
-	public void setDesktop(Desktop desktop) {
-		this.desktop = desktop;
 	}
 
 	

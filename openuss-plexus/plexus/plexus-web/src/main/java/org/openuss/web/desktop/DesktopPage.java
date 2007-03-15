@@ -5,19 +5,15 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopException;
-import org.openuss.desktop.DesktopService;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Enrollment;
 import org.openuss.lecture.Faculty;
 import org.openuss.lecture.Subject;
-import org.openuss.security.User;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -33,15 +29,6 @@ public class DesktopPage extends BasePage {
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
 
 	private static final long serialVersionUID = -3558991501240784974L;
-	
-	@Property(value="#{sessionScope.desktop}")
-	private Desktop desktop;
-	
-	@Property(value="#{sessionScope.user}")
-	private User user;
-	
-	@Property(value="#{desktopService}")
-	private DesktopService desktopService;
 	
 	private EnrollmentDataProvider enrollmentsProvider = new EnrollmentDataProvider();
 	private SubjectDataProvider subjectsProvider = new SubjectDataProvider();
@@ -60,6 +47,7 @@ public class DesktopPage extends BasePage {
 					logger.error("No desktop found for user " + user.getUsername() + ". Create new one.");
 					desktop = desktopService.getDesktopByUser(user);
 				} else {
+					logger.debug("refreshing desktop data");
 					desktop = desktopService.getDesktop(desktop);
 				}
 				setSessionBean(Constants.DESKTOP, desktop);
@@ -189,30 +177,6 @@ public class DesktopPage extends BasePage {
 	}
 	
 	
-
-	public Desktop getDesktop() {
-		return desktop;
-	}
-
-	public void setDesktop(Desktop desktop) {
-		this.desktop = desktop;
-	}
-
-	public User getUser() {
-		return user;
-	}
-	
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public DesktopService getDesktopService() {
-		return desktopService;
-	}
-
-	public void setDesktopService(DesktopService desktopService) {
-		this.desktopService = desktopService;
-	}
 
 	public EnrollmentDataProvider getEnrollmentsProvider() {
 		return enrollmentsProvider;

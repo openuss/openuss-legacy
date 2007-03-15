@@ -232,7 +232,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	
 	public String shortcutEnrollment() throws DesktopException {
 		Enrollment enrollment = enrollmentData.getRowData();
-		desktopService.linkEnrollment(desktop, enrollment);
+		getDesktopService().linkEnrollment(getDesktop(), enrollment);
 		addMessage(i18n("message_enrollment_shortcut_created"));
 		return Constants.FACULTY_PERIODS_PAGE; 
 	}
@@ -303,7 +303,6 @@ public class PeriodsPage extends AbstractLecturePage {
 			}
 			return page;
 		}
-		
 	}
 	
 	/* -------- properties ---------- */

@@ -27,36 +27,39 @@
 			<ui:include src="/views/commons/navigation/faculty.xhtml" />
 		</ui:define>
   		<ui:define name="content"> 
-			<o:block>
 				<h:form id="facultyMainForm" rendered="${!empty faculty.activePeriod}">
-					 <t:dataTable id="enrollments" 
-							var="enrollment"
-							value="#{faculty.activePeriod.enrollments}"
-							styleClass="table"
-							headerClass="tableHeader"
-							footerClass="tableFooter"
-							rowClasses="odd, even"
-							columnClasses="links, commands"
-							preserveDataModel="false"
-							preserveSort="false"
-							rows="10"
-							cellspacing="1">
-						  
-							<h:column>
-						  		<f:facet name="header">
-						  			<h:outputFormat value="#{msg.faculty_main_active_enrollments_header}">
-						  				<f:param value="#{faculty.activePeriod.name}"/>
-						  			</h:outputFormat>
-				   				</f:facet> 
-								<o:link value="/views/secured/enrollment/main.faces" title="#{enrollment.subject.description}">
-									<f:param value="#{enrollment.id}" name="enrollment" />
-									<h:outputText value="#{enrollment.subject.name} (#{enrollment.shortcut})"/>
-								</o:link>
-							</h:column>
-					 </t:dataTable>
-					<plexus:dataScroller for="enrollments" pages="5"/>
+				    <plexus:dataTable 
+				     	id="enrollments" 
+				     	var="enrollment" 
+				     	label="#{period.name}" 
+				     	value="views$secured$lecture$faculty.enrollmentData" 
+				     	columnClasses="col_max_left, col_commands_two"
+						styleClass="tabel"
+				     	rows="10">       
+				      
+						<t:column>
+							<plexus:commandSortHeader columnName="subject.name">
+								<h:outputFormat value="#{msg.faculty_main_active_enrollments_header}">
+						  			<f:param value="#{faculty.activePeriod.name}"/>
+						  		</h:outputFormat>
+							</plexus:commandSortHeader>
+							<o:link value="/views/secured/enrollment/main.faces" title="#{enrollment.subject.description}">
+								<f:param value="#{enrollment.id}" name="enrollment" />
+								<h:outputText value="#{enrollment.subject.name} (#{enrollment.shortcut})"/>
+							</o:link>
+						</t:column>
+						
+						<plexus:column header="#{msg.commands_header}">		
+							<plexus:command  
+								bean="#{views$secured$lecture$faculty}"
+								action="shortcutEnrollment"
+								label="#{msg.enrollment_command_shortcut}"
+								title="#{msg.enrollment_command_shortcut_hint}"
+								styleClass="button_link">
+							</plexus:command>
+						</plexus:column>
+					</plexus:dataTable>
 				</h:form>
-			</o:block>
 			<br/>
 	  		<plexus:newsTable value="#{views$secured$lecture$faculty.currentNewsItems}" headline="${msg.news_header}"/>
   		</ui:define>

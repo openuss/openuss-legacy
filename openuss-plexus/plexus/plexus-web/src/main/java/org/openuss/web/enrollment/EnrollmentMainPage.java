@@ -3,9 +3,13 @@ package org.openuss.web.enrollment;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -13,7 +17,6 @@ import org.openuss.lecture.EnrollmentApplicationException;
 import org.openuss.lecture.EnrollmentMemberInfo;
 import org.openuss.lecture.EnrollmentMemberType;
 import org.openuss.lecture.LectureException;
-import org.openuss.security.User;
 import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$enrollment$main", scope = Scope.REQUEST)
@@ -26,9 +29,6 @@ public class EnrollmentMainPage extends AbstractEnrollmentPage{
 
 	private List<EnrollmentMemberInfo> assistants = new ArrayList<EnrollmentMemberInfo>();
 	
-	@Property(value="#{user}")
-	private User user;
-	
 	@Override
 	@Prerender
 	public void prerender() throws LectureException {
@@ -37,6 +37,14 @@ public class EnrollmentMainPage extends AbstractEnrollmentPage{
 	}
 	
 
+	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {
+		String password = (String) value;
+		if (!StringUtils.equalsIgnoreCase(password, enrollment.getPassword())) {
+			((UIInput) toValidate).setValid(false);
+			addError(toValidate.getClientId(context), i18n("message_error_password_is_not_correct"), null);
+		}
+	}
+	
 	public String applyWithPassword() throws EnrollmentApplicationException{
 		logger.debug("enrollment entry with password applied");
 		enrollmentService.applyUserByPassword(password, enrollment, user);
@@ -66,14 +74,6 @@ public class EnrollmentMainPage extends AbstractEnrollmentPage{
 
 	public List<EnrollmentMemberInfo> getAssistants() {
 		return assistants;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 

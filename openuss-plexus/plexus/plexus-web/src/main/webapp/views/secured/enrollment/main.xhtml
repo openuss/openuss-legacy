@@ -65,9 +65,9 @@
 								styleClass="field_label" />
 							<h:inputSecret id="enrollment_password"
 								value="#{views$secured$enrollment$main.password}"
-								styleClass="field" />
-							<h:message for="enrollment_password"
-								errorStyleClass="enrollment_password" />
+								styleClass="field" validator="#{views$secured$enrollment$main.validatePassword}" required="true">
+							</h:inputSecret> 
+							<h:message for="enrollment_password" styleClass="field_error" showDetail="true" showSummary="false"/>
 						</o:block>
 	
 						<o:block>

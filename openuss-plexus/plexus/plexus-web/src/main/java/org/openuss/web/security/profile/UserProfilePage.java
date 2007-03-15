@@ -11,7 +11,6 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.repository.RepositoryFile;
 import org.openuss.security.SecurityService;
-import org.openuss.security.User;
 import org.openuss.security.UserContact;
 import org.openuss.security.UserPreferences;
 import org.openuss.security.UserProfile;
@@ -33,9 +32,6 @@ public class UserProfilePage extends BasePage{
 	private static final Logger logger = Logger.getLogger(UserProfilePage.class);
 
 	private static final long serialVersionUID = 1L;
-	
-	@Property (value="#{user}")
-	private User user;
 	
 	@Property (value="#{securityService}")
 	transient private SecurityService securityService;
@@ -127,14 +123,6 @@ public class UserProfilePage extends BasePage{
 	}
 	
 	
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public SecurityService getSecurityService() {
 		return securityService;
 	}

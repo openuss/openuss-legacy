@@ -8,7 +8,6 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.security.SecurityService;
-import org.openuss.security.User;
 import org.openuss.web.BasePage;
 
 
@@ -22,9 +21,6 @@ public class ViewUserProfilePage extends BasePage{
 	private static final Logger logger = Logger.getLogger(ViewUserProfilePage.class);
 
 	private static final long serialVersionUID = -91320323156133863L;
-	
-	@Property(value="#{sessionScope.showuser}")
-	private User user;
 	
 	@Property(value="#{securityService}")
 	private SecurityService securityService;
@@ -44,14 +40,6 @@ public class ViewUserProfilePage extends BasePage{
 
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 }
