@@ -4,8 +4,8 @@ import java.util.Collection;
 
 public interface Folder extends Resource {
 
-	public abstract Collection<Resource> getSubnodes();
+	public Collection<Resource> getSubnodes();
 
-	public abstract void setSubnodes(Collection<Resource> subnodes);
+	public void setSubnodes(Collection<Resource> subnodes);
 
 }

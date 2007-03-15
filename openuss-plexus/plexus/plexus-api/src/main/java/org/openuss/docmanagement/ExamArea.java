@@ -4,8 +4,8 @@ import org.openuss.lecture.Enrollment;
 
 public interface ExamArea extends Folder{
 
-	public abstract Enrollment getEnrollment();
+	public Enrollment getEnrollment();
 
-	public abstract void setEnrollment(Enrollment enrollment);
+	public void setEnrollment(Enrollment enrollment);
 
 }

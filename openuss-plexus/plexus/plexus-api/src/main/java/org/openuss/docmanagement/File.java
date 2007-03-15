@@ -4,28 +4,28 @@ import java.sql.Timestamp;
 
 public interface File extends Resource {
 
-	public abstract Timestamp getDistributionTime();
+	public Timestamp getDistributionTime();
 
-	public abstract void setDistributionTime(Timestamp distributionTime);
+	public void setDistributionTime(Timestamp distributionTime);
 
-	public abstract Timestamp getLastModification();
+	public Timestamp getLastModification();
 
-	public abstract void setLastModification(Timestamp lastModification);
+	public void setLastModification(Timestamp lastModification);
 
-	public abstract long getLength();
+	public long getLength();
 
-	public abstract void setLength(long length);
+	public void setLength(long length);
 
-	public abstract int getVersion();
+	public int getVersion();
 
-	public abstract void setVersion(int version);
+	public void setVersion(int version);
 
-	public abstract File getPredecessor();
+	public File getPredecessor();
 
-	public abstract void setPredecessor(File predecessor);
+	public void setPredecessor(File predecessor);
 
-	public abstract String getMimeType();
+	public String getMimeType();
 
-	public abstract void setMimeType(String mimeType);
+	public void setMimeType(String mimeType);
 
 }

@@ -4,8 +4,8 @@ import java.io.InputStream;
 
 public interface BigFile extends File {
 
-	public abstract InputStream getFile();
+	public InputStream getFile();
 
-	public abstract void setFile(InputStream file);
+	public void setFile(InputStream file);
 
 }

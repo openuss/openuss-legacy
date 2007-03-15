@@ -2,24 +2,24 @@ package org.openuss.docmanagement;
 
 public interface Resource {
 
-	public abstract String getId();
+	public String getId();
 
-	public abstract void setId(String id);
+	public void setId(String id);
 
-	public abstract String getName();
+	public String getName();
 
-	public abstract void setName(String name);
+	public void setName(String name);
 	
-	public abstract void setPath(String path);
+	public void setPath(String path);
 	
-	public abstract String getPath();
+	public String getPath();
 
-	public abstract int getVisibility();
+	public int getVisibility();
 
-	public abstract void setVisibility(int visibility);
+	public void setVisibility(int visibility);
 
-	public abstract String getMessage();
+	public String getMessage();
 
-	public abstract void setMessage(String message);
+	public void setMessage(String message);
 	
 }

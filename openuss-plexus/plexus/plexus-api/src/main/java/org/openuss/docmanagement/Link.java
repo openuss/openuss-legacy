@@ -4,12 +4,12 @@ import java.sql.Timestamp;
 
 public interface Link extends Resource{
 
-	public abstract Timestamp getDistributionDate();
+	public Timestamp getDistributionDate();
 
-	public abstract void setDistributionDate(Timestamp distributionDate);
+	public void setDistributionDate(Timestamp distributionDate);
 
-	public abstract Resource getTarget();
+	public Resource getTarget();
 
-	public abstract void setTarget(Resource target);
+	public void setTarget(Resource target);
 
 }
