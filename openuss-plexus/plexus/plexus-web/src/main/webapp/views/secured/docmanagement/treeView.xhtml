@@ -14,14 +14,14 @@
 		<f:facet name="folder">
 			<h:panelGroup>
 				<h:commandLink immediate="true"
-					styleClass="#{t.nodeSelected ? 'standard_bold':'standard'}"
 					actionListener="#{t.setNodeSelected}">
 					<f:actionListener type="org.openuss.web.docmanagement.Navigator" />
 					<t:graphicImage value="/images/folder-open.png"
 						rendered="#{t.nodeExpanded}" border="0" />
 					<t:graphicImage value="/images/folder-open.png"
 						rendered="#{!t.nodeExpanded}" border="0" />
-					<h:outputText value="#{node.description}" styleClass="nodeFolder" />
+					<h:outputText value="#{node.description}" rendered="#{t.nodeSelected}" styleClass="header_font_normal"/>
+					<h:outputText value="#{node.description}" rendered="#{not t.nodeSelected}" styleClass="content_font_normal"/>					
 				</h:commandLink>
 			</h:panelGroup>
 		</f:facet>
@@ -34,7 +34,8 @@
 						rendered="#{t.nodeExpanded}" border="0" />
 					<t:graphicImage value="/images/folder-open.png"
 						rendered="#{!t.nodeExpanded}" border="0" />
-					<h:outputText value="#{node.description}" styleClass="nodeFolder" />
+					<h:outputText value="#{node.description}" rendered="#{t.nodeSelected}" styleClass="header_font_normal"/>
+					<h:outputText value="#{node.description}" rendered="#{not t.nodeSelected}" styleClass="content_font_normal"/>					
 				</h:commandLink>
 			</h:panelGroup>
 		</f:facet>

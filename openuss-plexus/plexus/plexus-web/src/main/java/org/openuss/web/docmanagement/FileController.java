@@ -8,7 +8,7 @@ import org.openuss.docmanagement.DistributionService;
 import org.openuss.docmanagement.File;
 import org.openuss.docmanagement.FileImpl;
 
-@Bean(name="fileController", scope=Scope.REQUEST)
+@Bean(name="fileController", scope=Scope.SESSION)
 @View
 public class FileController{
 	

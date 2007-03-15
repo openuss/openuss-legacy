@@ -27,7 +27,15 @@
  		
   		<ui:define name="content">
   			<h:form id="treeView">
-				<ui:include src="treeView.xhtml"/>
+				<o:block>
+					<ui:include src="treeView.xhtml"/>
+				</o:block>
+				<o:block>
+					<h:commandButton action="#{distributionViewBacker.changeFolder}" value="#{msg.doc_dist_button_changefolder}" />
+					<h:commandButton action="#{distributionViewBacker.newFolder}" value="#{msg.doc_dist_button_newfolder}" />
+					<h:commandButton action="#{distributionViewBacker.changeFile}" value="#{msg.doc_dist_button_changefile}" />
+					<h:commandButton action="#{distributionViewBacker.newFile}" value="#{msg.doc_dist_button_newfile}" />										
+				</o:block>
 			</h:form>
 		</ui:define>
 	</ui:composition>

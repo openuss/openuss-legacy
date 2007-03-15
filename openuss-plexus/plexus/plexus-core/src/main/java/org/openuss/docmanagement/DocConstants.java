@@ -32,4 +32,8 @@ public class DocConstants{
 	public static final String JCR_DATA = "jcr:data";
 	public static final String JCR_LASTMODIFIED = "jcr:lastModified";
 
+	// navigation cases
+	public static final String NEWDOCUMENTTOFOLDER = "docmanagement_newdocumenttofolder";
+	public static final String EDITFOLDER = "docmanagement_editfolder";
+	public static final String DOCUMENTEXPLORER = "docmanagement_documentexplorer";
 }

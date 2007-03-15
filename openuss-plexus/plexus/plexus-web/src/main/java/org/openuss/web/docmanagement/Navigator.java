@@ -30,6 +30,7 @@ public class Navigator implements ActionListener {
 		clientId = clientId.substring(clientId.indexOf("serverTree")+11, clientId.lastIndexOf(":"));		
 		logger.debug("Cleaned compontent path: " + clientId);
 		DistributionViewBacker distributionViewBacker = (DistributionViewBacker) getObjectFromContext("#{distributionViewBacker}");
+		distributionViewBacker.setFacesPath(clientId);
 		distributionViewBacker.setPath(clientId);
 		
 		

@@ -454,4 +454,14 @@ public class DistributionServiceImpl
 	public void setFileDao(FileDao fileDao) {
 		this.fileDao = fileDao;
 	}
+
+	@Override
+	protected File handleGetFile(String path) throws Exception {
+		return fileDao.getFile(path);
+	}
+
+	@Override
+	protected Folder handleGetFolder(String path) throws Exception {
+		return folderDao.getFolder(path);
+	}
 }

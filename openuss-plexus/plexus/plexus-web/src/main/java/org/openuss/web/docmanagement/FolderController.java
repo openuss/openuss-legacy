@@ -8,7 +8,7 @@ import org.openuss.docmanagement.DistributionService;
 import org.openuss.docmanagement.Folder;
 import org.openuss.docmanagement.FolderImpl;
 
-@Bean(name="folderController", scope=Scope.REQUEST)
+@Bean(name="folderController", scope=Scope.SESSION)
 @View
 public class FolderController{
 	

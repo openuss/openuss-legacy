@@ -24,7 +24,7 @@ import org.openuss.docmanagement.Resource;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.web.Constants;
+import org.openuss.docmanagement.DocConstants;
 
 @Bean(name="distributionViewBacker", scope=Scope.SESSION)
 @View
@@ -33,12 +33,24 @@ public class DistributionViewBacker{
 	@Property(value="#{distributionService}")
 	public DistributionService distributionService;
 
+	@Property(value="#{fileController}")
+	public FileController fileController;
+	
+	@Property(value="#{folderController}")
+	public FolderController folderController;
+
 	private static final Logger logger = Logger.getLogger(DistributionViewBacker.class);
 	
+	//inner class needed later by dataTable component
 	FileDataProvider data = new FileDataProvider();
 	
+	//path of current selected item in treeModel
+	public String facesPath;
+	
+	//path of current selected item in repository
 	public String path;
 	
+	//current TreeModel displayed by tree2 component
 	public TreeModel treeModel;
 
 	public TreeModel getTree(){
@@ -112,7 +124,7 @@ public class DistributionViewBacker{
 		} catch (Exception e){
 			logger.error(e);
 		}
-		return Constants.SUCCESS;
+		return DocConstants.DOCUMENTEXPLORER;
 	}
 
 	public String clearRepository(){
@@ -121,9 +133,45 @@ public class DistributionViewBacker{
 		} catch (Exception e){
 			logger.error(e);
 		}
-		return Constants.SUCCESS;
+		return DocConstants.DOCUMENTEXPLORER;
 	}
 	
+	
+	public String changeFolder(){
+		try {
+			folderController.setFolder(distributionService.getFolder(treeModel.getNodeById(this.facesPath).getIdentifier()));
+		} catch (PathNotFoundException e) {
+			logger.error("Path not found: ", e);
+		} catch (ResourceAlreadyExistsException e) {
+			logger.error("Rsource already exists: ", e);		
+		}
+		return DocConstants.EDITFOLDER;
+	}
+	
+	public String newFolder(){
+		Folder folder = new FolderImpl();
+		folder.setPath(this.path.substring(1));
+		folderController.setFolder(folder);
+		return DocConstants.EDITFOLDER;
+	}
+	
+	public String changeFile(){
+		try {			
+			fileController.setFile(distributionService.getFile(treeModel.getNodeById(this.facesPath).getIdentifier()));
+		} catch (PathNotFoundException e) {
+			logger.error("Path not found: ", e);
+		} catch (ResourceAlreadyExistsException e) {
+			logger.error("Rsource already exists: ", e);		
+		}		
+		return DocConstants.NEWDOCUMENTTOFOLDER;
+	}
+	
+	public String newFile(){
+		File file = new FileImpl();
+		file.setPath(this.path.substring(1));
+		fileController.setFile(file);
+		return DocConstants.NEWDOCUMENTTOFOLDER;	
+	}
 	
 	public DistributionService getDistributionService() {
 		return distributionService;
@@ -146,8 +194,32 @@ public class DistributionViewBacker{
 	}
 
 	public void setPath(String path) {
-		this.path = treeModel.getNodeById(path).getIdentifier();
-		logger.debug("Path is now: "+this.path);
 		this.path = path;
+	}
+
+	public String getFacesPath() {
+		return facesPath;
+	}
+
+	public void setFacesPath(String facesPath) {
+		this.path = treeModel.getNodeById(facesPath).getIdentifier();
+		logger.debug("Path is now: "+this.path);
+		this.facesPath = facesPath;
+	}
+
+	public FileController getFileController() {
+		return fileController;
+	}
+
+	public void setFileController(FileController fileController) {
+		this.fileController = fileController;
+	}
+
+	public FolderController getFolderController() {
+		return folderController;
+	}
+
+	public void setFolderController(FolderController folderController) {
+		this.folderController = folderController;
 	}
 }
