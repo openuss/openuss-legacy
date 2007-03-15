@@ -18,9 +18,6 @@
 		<metaModel id="profile1" class="org.openarchitectureware.uml2.profile.ProfileMetaModel">
 			<profile value="${profile1.file}"/>
 		</metaModel>		
-		<metaModel id="profile2" class="org.openarchitectureware.uml2.profile.ProfileMetaModel">
-			<profile value="${profile2.file}"/>
-		</metaModel>
 		
 		<checkFile value="org::openuss::cartridges::uml2::hibernate::checks::Constraints"/>
 		
@@ -36,9 +33,6 @@
 		<metaModel class="org.openarchitectureware.uml2.UML2MetaModel"/>		
 		<metaModel id="profile1" class="org.openarchitectureware.uml2.profile.ProfileMetaModel">
 			<profile value="${profile1.file}"/>
-		</metaModel>		
-		<metaModel id="profile2" class="org.openarchitectureware.uml2.profile.ProfileMetaModel">
-			<profile value="${profile2.file}"/>
 		</metaModel>
 		
 		<fileEncoding value="ISO-8859-1"/>
