@@ -24,7 +24,7 @@ public class AbstractEnrollmentPage extends BasePage {
 	
 	@Property(value = "#{enrollmentService}")
 	protected EnrollmentService enrollmentService;
-	
+
 	@Prerender
 	public void prerender() throws LectureException {
 		if (enrollment == null) {
@@ -37,6 +37,7 @@ public class AbstractEnrollmentPage extends BasePage {
 			enrollment = enrollmentService.getEnrollment(enrollment);
 		} 
 		setSessionBean(Constants.ENROLLMENT, enrollment);
+		setSessionBean(Constants.FACULTY, enrollment.getFaculty());
 	}
 	
 	public Enrollment getEnrollment() {
