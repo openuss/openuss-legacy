@@ -65,26 +65,22 @@ public class NewsEditPage extends AbstractLecturePage {
 	 */
 	public String save() {
 		logger.debug("save");
-		
-		// validate expire date
-		if (newsItem.getExpireDate().getTime() <= newsItem.getPublishDate().getTime()) {
+		if (!newsItem.isValidExpireDate()) {
 			addError(i18n("news_error_expire_before_publish_date"));
 			return Constants.FACULTY_NEWS_EDIT_PAGE;
 		}
-
 		if (fetchUploadedFile()) {
 			// a new file was uploaded so remove it from upload manager to avoid that it will be deleted
 			uploadFileManager.unregisterFile(newsItem.getAttachment());
 		}
-		
-		// get author
-		User user = (User) getSessionBean(Constants.USER);
-		String author = user.getContact().getFirstName() + " " + user.getContact().getLastName();
-		newsItem.setAuthor(author);
-
+		newsItem.setAuthor(getAuthorName());
 		newsService.saveNewsItem(newsItem);
-
 		return Constants.FACULTY_NEWS_PAGE;
+	}
+
+	private String getAuthorName() {
+		User user = (User) getSessionBean(Constants.USER);
+		return user.getFirstName() + " " + user.getLastName();
 	}
 
 	/**
