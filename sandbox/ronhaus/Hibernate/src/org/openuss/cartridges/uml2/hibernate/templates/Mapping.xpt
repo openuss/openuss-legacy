@@ -1,5 +1,5 @@
 «IMPORT uml»
-«IMPORT Persistence»
+«IMPORT BusinessApps»
 
 «EXTENSION org::openuss::cartridges::uml2::hibernate::extensions::Naming»
 «EXTENSION org::openuss::cartridges::uml2::hibernate::extensions::Hibernate»
@@ -16,7 +16,7 @@ alle Entities. Die Datein werden im gleiche Verzeichnis wie die Java-Klassen ges
 		<!--Attention: Generated code! Do not modify by hand!-->
 
 		<hibernate-mapping>
-			<class name="«fqn()»«GLOBALVAR javaFile_suffix»" table="«tableName(this)»">
+			<class name="«className(this)»" table="«tableName(this)»">
     			«EXPAND attrib»
     			«EXPAND special»
  			</class>
@@ -42,7 +42,7 @@ alle Entities. Die Datein werden im gleiche Verzeichnis wie die Java-Klassen ges
 «ENDDEFINE»
 
 «DEFINE specialClass FOR Entity»
-	<joined-subclass name="«fqn()»«GLOBALVAR javaFile_suffix»" table="«tableName(this)»">
+	<joined-subclass name="«className(this)»" table="«tableName(this)»">
 		<key column="«superClassIDColumnName(this)»" foreign-key="«tableName(this)»IFKC"/>
 		«EXPAND attrib»
 	</joined-subclass>

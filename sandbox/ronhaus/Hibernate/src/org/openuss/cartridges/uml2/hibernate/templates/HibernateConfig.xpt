@@ -1,5 +1,5 @@
 «IMPORT uml»
-«IMPORT Persistence»
+«IMPORT BusinessApps»
 
 «EXTENSION org::openuss::cartridges::uml2::hibernate::extensions::Naming»
 

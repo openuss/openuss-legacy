@@ -1,5 +1,5 @@
-import Persistence;
 import uml;
+import BusinessApps;
 
 extension org::openuss::cartridges::uml2::hibernate::extensions::Naming;
 
@@ -7,6 +7,9 @@ extension org::openuss::cartridges::uml2::hibernate::extensions::Naming;
 	Funktion für die einfachen Eigenschaften der Klassen.
 	Achtung: Auch die Default-Werte von Hibernate und dem Meta-Model beachten!
 */
+String className(Class e):
+	((String)GLOBALVAR javaImplementationPrefix)+fqn(e)+((String)GLOBALVAR javaImplementationSuffix);
+
 String tableName(Entity e):
 	e.tableName=="" ? e.name.toUpperCase() : e.tableName;
 
@@ -77,7 +80,7 @@ String oppColumnName(Property p):
 String oppClassName(Property p):
 	Field.isInstance(p) && ((Field)p).associatedClassName!="" ?
 	((Field)p).associatedClassName :
-	fqn(p.type)+GLOBALVAR javaFile_suffix;
+	((String)GLOBALVAR javaImplementationPrefix)+fqn(p.type)+((String)GLOBALVAR javaImplementationSuffix);
 
 boolean isInverse(Property p):
 	p.isMultivalued() && p.isNavigable() &&  p.association.memberEnd.reject(a | a == p).get(0).isNavigable()?

@@ -1,5 +1,5 @@
 import uml;
-import Persistence;
+import BusinessApps;
 
 extension org::openuss::cartridges::uml2::hibernate::extensions::Naming;
 
