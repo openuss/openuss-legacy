@@ -5,6 +5,7 @@
 	</configExtensions>
 	<configs>
 		<config>src/test/resources/testSecurity.xml</config>
+		<config>target/src/applicationContext.xml</config>
 	</configs>
 	<configSets>
 	</configSets>

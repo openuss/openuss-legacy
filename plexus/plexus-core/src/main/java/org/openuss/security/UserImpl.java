@@ -106,4 +106,9 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		}
 	}
 
+	@Override
+	public String getName() {
+		return getUsername();
+	}
+
 }

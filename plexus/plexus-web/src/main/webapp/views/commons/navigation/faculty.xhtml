@@ -10,7 +10,7 @@
 	<ui:include src="/views/commons/faculty/facultyInfo.xhtml" />
 	
 	<ui:include src="/views/commons/navigation/desktop.xhtml" />
-	<s:authorize ifAllGranted="ROLE_ASSISTANT">
+	<s:acl domainObject="#{faculty}" hasPermission="#{ACL.FACULTY_TUTOR}">
 		<h:form id="facultyNavigationForm">
 			<t:panelNavigation2 id="faculty_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
 				<t:commandNavigation2 value="#{msg['faculty_navigation_header']}">
@@ -50,7 +50,7 @@
 				</t:commandNavigation2>
 			</t:panelNavigation2>	
 		</h:form>
-	</s:authorize> 
+	</s:acl> 
 	
 	
 	

@@ -8,7 +8,12 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:c="http://java.sun.com/jstl/core">
       
-    <plexus:dataTable id="documentstable" label="#{msg.documents_main_header}" value="views$secured$documents$documents.data" var="doc" rows="10">  
+    <plexus:dataTable 
+    	id="documentstable" 
+    	label="#{msg.documents_main_header}" 
+    	value="views$secured$documents$documents.data" 
+    	var="doc" 
+    	rows="10">  
       
 		<t:column>
 			<plexus:commandSortHeader columnName="mark"> #{msg['documents_main_column_mark']} </plexus:commandSortHeader>
@@ -46,7 +51,7 @@
 				action="documents_new_file" 
 				value="#{msg.documents_main_button_change}" 
 				title="#{msg.documents_main_button_change}"
-				styleClass="button"/>
+				styleClass="button_edit"/>
 		</plexus:column>
 		
 	</plexus:dataTable>      

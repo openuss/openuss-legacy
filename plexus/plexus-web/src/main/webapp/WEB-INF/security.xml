@@ -77,10 +77,9 @@
 				/views/errors/**=ROLE_ANONYMOUS, ROLE_USER
 				/views/public/**=ROLE_ANONYMOUS, ROLE_USER
 				/views/welcome.faces*=ROLE_ANONYMOUS, ROLE_USER
+				/views/secured/lecture/faculty.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ASSISTANT, ROLE_ADMIN
 				/views/secured/system/**=ROLE_ADMIN
-				/views/secured/desktop*=ROLE_USER
-				/views/secured/user/**=ROLE_USER
-				/views/secured/**=ROLE_ASSISTANT
+				/views/secured/**=ROLE_USER, ROLE_ASSISTANT
 				/views/**=ROLE_ADMIN
 				/files/**=ROLE_USER
 			</value>
@@ -107,7 +106,7 @@
 			<ref local="userDetailsService" />
 		</property>
 		<property name="userCache">
-			<ref local="userCache" />
+			<ref bean="userCache" />
 		</property>
 <!-- 
  		<property name="passwordEncoder">
@@ -122,30 +121,6 @@
 			<ref bean="securityService" />
 		</property>
 	</bean>
-
-	<!-- User Cache Configuration  -->
-	<bean id="userCache"
-		class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
-		<property name="cache">
-			<ref local="userCacheBackend" />
-		</property>
-	</bean>
-
-	<bean id="userCacheBackend"
-		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
-		<property name="cacheManager">
-			<ref local="cacheManager" />
-		</property>
-		<property name="cacheName">
-			<value>userCache</value>
-		</property>
-	</bean>
-
-	<bean id="cacheManager"
-		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" />
-
-	<bean id="passwordEncoder"
-		class="org.acegisecurity.providers.encoding.Md5PasswordEncoder" />
 
 
 	<bean id="anonymousAuthenticationProvider"
