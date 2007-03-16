@@ -786,8 +786,7 @@ p.header_font_normal, span.header_font_normal {
 .content_normal .userimage .userphoto{
 	border: 0;
 	float: left;
-	margin-top: 10px;
-	margin-left: 10px;
+	margin: 10px;
 }
 
 .content_normal .usercontact{
@@ -809,7 +808,7 @@ p.header_font_normal, span.header_font_normal {
 .content_normal .usercontact ul {
   list-style-type: none;
   padding: 0;
-  margin: 0;
+  margin-top: 10px;
 }
 
 .content_normal .usercontact ul li {
