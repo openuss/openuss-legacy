@@ -119,14 +119,43 @@
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     				BrainContest
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<bean id="brainContest" class="org.openuss.braincontest.BrainContestImpl"/>
-	<bean id="brainContestSolution" class="org.openuss.braincontest.SolutionImpl"/>
-	<bean id="brainContestAnswer" class="org.openuss.braincontest.AnswerImpl"/>
+	<bean id="brainContest" class="org.openuss.braincontest.BrainContestImpl" singleton="false"/>
+	<bean id="brainContestSolution" class="org.openuss.braincontest.SolutionImpl"  singleton="false"/>
+	<bean id="brainContestAnswer" class="org.openuss.braincontest.AnswerImpl"  singleton="false"/>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     				Documents
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<bean id="newDocument" class="org.openuss.repository.RepositoryFileImpl" />
-	<bean id="newFolder" class="org.openuss.documents.FolderImpl" />
+	<bean id="newDocument" class="org.openuss.repository.RepositoryFileImpl"  singleton="false"/>
+	<bean id="newFolder" class="org.openuss.documents.FolderImpl"  singleton="false"/>
+	
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    				User Cache Configuration
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- User Cache Configuration  -->
+	<bean id="userCache"
+		class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
+		<property name="cache">
+			<ref local="userCacheBackend" />
+		</property>
+	</bean>
+	
+	<bean id="userCacheBackend"
+		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager" />
+		</property>
+		<property name="cacheName">
+			<value>userCache</value>
+		</property>
+	</bean>
+
+	<bean id="cacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" />
+
+	<bean id="passwordEncoder"
+		class="org.acegisecurity.providers.encoding.Md5PasswordEncoder" />
+
+	
 
 </beans>

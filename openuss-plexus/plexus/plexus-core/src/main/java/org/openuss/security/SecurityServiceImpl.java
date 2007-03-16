@@ -62,7 +62,6 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		if (StringUtils.isBlank(user.getEmail())) {
 			throw new SecurityServiceException("Email must be defined");
 		}
-		
 		if (user.getProfile() == null) {
 			user.setProfile(UserProfile.Factory.newInstance());
 		}
@@ -152,6 +151,15 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		authority.addGroup(group);
 		group.addMember(authority);
 		groupDao.update(group);
+		
+		removeAuthorityFromUserCache(authority);
+	}
+
+	private void removeAuthorityFromUserCache(Authority authority) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("removing authority "+authority.getName()+" from cache!");
+		}
+		getUserCache().removeUserFromCache(authority.getName());
 	}
 
 	@Override
@@ -178,6 +186,8 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		group.removeMember(authority);
 		
 		groupDao.update(group);
+		
+		removeAuthorityFromUserCache(authority);
 	}
 
 	@Override
@@ -292,6 +302,8 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 			permission.setMask(mask);
 			getPermissionDao().update(permission);
 		}
+		
+		removeAuthorityFromUserCache(authority);
 	}
 
 	@Override

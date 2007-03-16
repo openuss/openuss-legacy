@@ -5,6 +5,8 @@
 //
 package org.openuss.lecture;
 
+import java.util.List;
+
 
 
 /**
@@ -45,6 +47,15 @@ public class FacultyImpl extends org.openuss.lecture.FacultyBase implements org.
 	@Override
 	public void remove(Period period) {
 		getPeriods().remove(period);
+	}
+
+	@Override
+	public List getActiveEnrollments() {
+		if (getActivePeriod() == null) {
+			return null;
+		} else {
+			return getActivePeriod().getEnrollments();
+		}
 	}
 
 }

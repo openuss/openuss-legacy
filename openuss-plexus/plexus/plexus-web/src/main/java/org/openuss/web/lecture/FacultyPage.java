@@ -37,7 +37,7 @@ public class FacultyPage extends AbstractLecturePage {
 			if (page == null) {
 				List<Enrollment> enrollments = new ArrayList(); 
 				if (faculty != null) { 
-					enrollments.addAll(faculty.getActivePeriod().getEnrollments());
+					enrollments.addAll(faculty.getActiveEnrollments());
 				}
 				sort(enrollments);
 				page = new DataPage<Enrollment>(enrollments.size(),0,enrollments);

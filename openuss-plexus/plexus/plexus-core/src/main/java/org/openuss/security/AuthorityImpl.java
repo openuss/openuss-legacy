@@ -60,4 +60,9 @@ public class AuthorityImpl extends AuthorityBase implements Authority {
 		return authorities;
 	}
 
+	@Override
+	public String getName() {
+		return null;
+	}
+
 }
