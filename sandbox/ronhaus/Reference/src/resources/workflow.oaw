@@ -8,59 +8,41 @@
 	<bean class="org.openarchitectureware.uml2.Setup" standardUML2Setup="true"/>
 	
 	<component class="org.openarchitectureware.emf.XmiReader">
-		<modelFile value="${model.file}"/>
+		<modelFile value="${modelfile}"/>
 		<outputSlot value="model"/>
-	</component>
-
-	<component class="org.openarchitectureware.check.CheckComponent">
-		<metaModel class="org.openarchitectureware.type.emf.EmfMetaModel" metaModelPackage="org.eclipse.emf.ecore.EcorePackage"/>
-		<metaModel class="org.openarchitectureware.uml2.UML2MetaModel"/>		
-		<metaModel id="profile1" class="org.openarchitectureware.uml2.profile.ProfileMetaModel">
-			<profile value="${profile1.file}"/>
-		</metaModel>		
-		
-		<checkFile value="org::openuss::cartridges::uml2::hibernate::checks::Constraints"/>
-		
-		<emfAllChildrenSlot value="model"/>
 	</component>
 
     <component id="dirCleaner" class="org.openarchitectureware.workflow.common.DirectoryCleaner">
 		<directories value="${outlet.src.dir}"/>
 	</component>
 
-	<component id="generator" class="oaw.xpand2.Generator" skipOnErrors="true">
-		<metaModel class="org.openarchitectureware.type.emf.EmfMetaModel" metaModelPackage="org.eclipse.emf.ecore.EcorePackage"/>		
-		<metaModel class="org.openarchitectureware.uml2.UML2MetaModel"/>		
-		<metaModel id="profile1" class="org.openarchitectureware.uml2.profile.ProfileMetaModel">
-			<profile value="${profile1.file}"/>
-		</metaModel>
+	<cartridge file="org/openuss/cartridges/uml2/hibernate/hibernate.oaw" inheritAll="true">
+   		
+   		<outlet.src.dir value="${outlet.src.dir}"/>
+	    <outlet.src.once.dir value="${outlet.src.once.dir}"/>
+	   	
+	   	<modelfile value="${modelfile}"/>
+		<expandExpression value="org::openuss::cartridges::uml2::hibernate::Root::Root FOR model"/>
+	
+		<connectiondriver_class value="${dataSource.connection.driver_class}"/>
+		<connection_url value="${dataSource.connection.url}"/>
+		<connection_user value="${dataSource.connection.user}"/>
+		<connection_password value="${dataSource.connection.password}"/>
 		
-		<fileEncoding value="ISO-8859-1"/>
-		
-		<globalVarDef name="connectiondriver_class" value="${dataSource.connection.driver_class}"/>
-		<globalVarDef name="connection_url" value="${dataSource.connection.url}"/>
-		<globalVarDef name="connection_user" value="${dataSource.connection.user}"/>
-		<globalVarDef name="connection_password" value="${dataSource.connection.password}"/>
-		
-		<globalVarDef name="sessionFactory" value="${hibernate.sessionFactory}"/>
-		<globalVarDef name="connectionPool_size" value="${hibernate.connectionPool_size}"/>
-		<globalVarDef name="dialect" value="${hibernate.dialect}"/>
-		<globalVarDef name="current_session_context_class" value="${hibernate.current_session_context_class}"/>
-		<globalVarDef name="cacheProvider_class" value="${hibernate.cacheProvider_class}"/>
-		<globalVarDef name="show_sql" value="${hibernate.show_sql}"/>
-		<globalVarDef name="hbm2ddlAuto" value="${hibernate.hbm2ddlAuto}"/>
-		<globalVarDef name="javaFile_suffix" value="${hibernate.javaFile_suffix}"/>
-		
-		
-		<globalVarDef name="spring_Persistence" value="${spring.Persistence}"/>
-		<globalVarDef name="spring_OR_Mapper" value="${spring.OR_Mapper}"/>
-		
-		<expand value="${expandExpression}"/>
-		
-		<outlet path="${outlet.src.dir}"/>
-	   	<outlet name="outletSrcOnceDir" path="${outlet.src.once.dir}" overwrite="false"/>
-
-   		<beautifier class="org.openarchitectureware.xpand2.output.JavaBeautifier"/>
-   		<beautifier class="org.openarchitectureware.xpand2.output.XmlBeautifier" fileExtensions=".xml"/>
-	</component>
+		<javaInterfacePrefix value="${hibernate.java.interface.prefix}"/>
+		<javaInterfaceSuffix value="${hibernate.java.interface.suffix}"/>
+		<javaAbstractPrefix value="${hibernate.java.abstract.prefix}"/>
+		<javaAbstractSuffix value="${hibernate.java.abstract.suffix}"/>
+		<javaImplementationPrefix value="${hibernate.java.implementation.prefix}"/>
+		<javaImplementationSuffix value="${hibernate.java.implementation.suffix}"/>		
+		<sessionFactory value="${hibernate.sessionFactory}"/>
+		<connectionPool_size value="${hibernate.connectionPool_size}"/>
+		<dialect value="${hibernate.dialect}"/>
+		<current_session_context_class value="${hibernate.current_session_context_class}"/>
+		<cacheProvider_class value="${hibernate.cacheProvider_class}"/>
+		<show_sql value="${hibernate.show_sql}"/>
+		<hbm2ddlAuto value="${hibernate.hbm2ddlAuto}"/>
+	
+	</cartridge>
+	
 </workflow>
