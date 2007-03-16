@@ -7,7 +7,7 @@
 	<bean id="mm_ecore" class="org.openarchitectureware.type.emf.EmfMetaModel">
 		<metaModelPackage value="org.eclipse.emf.ecore.EcorePackage"/>
 	</bean>
-	<bean id="mm_hibernate_profile" class="org.openarchitectureware.uml2.profile.ProfileMetaModel">
+	<bean id="mm_business_profile" class="org.openarchitectureware.uml2.profile.ProfileMetaModel">
 		<profile value="${profilefile}"/>
 	</bean>
 	
@@ -15,16 +15,16 @@
 	<component class="org.openarchitectureware.check.CheckComponent">
 		<metaModel idRef="mm_uml2"/>	
 		<metaModel idRef="mm_ecore"/>
-		<metaModel idRef="mm_hibernate_profile"/>		
+		<metaModel idRef="mm_business_profile"/>		
 		<checkFile value="org::openuss::cartridges::uml2::hibernate::checks::Constraints"/>		
 		<emfAllChildrenSlot value="model"/>
 	</component>
 
 	<!--The Generator component.-->
-	<component id="generatorHibernate" class="oaw.xpand2.Generator" skipOnErrors="true">
+	<component id="generatorHibernate" class="org.openarchitectureware.xpand2.Generator" skipOnErrors="true">
 		<metaModel idRef="mm_uml2"/>	
 		<metaModel idRef="mm_ecore"/>
-		<metaModel idRef="mm_hibernate_profile"/>
+		<metaModel idRef="mm_business_profile"/>
 		
 		<fileEncoding value="ISO-8859-1"/>
 		
