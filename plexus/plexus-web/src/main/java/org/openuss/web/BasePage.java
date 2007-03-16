@@ -32,7 +32,8 @@ public abstract class BasePage extends BaseBean {
 	 */
 	@Preprocess
 	public void preprocess() throws Exception {
-		if (desktop == null) {
+		// FIXME Tell, don't ask user.isExisting() <-- user.getId() == null 
+		if (desktop == null && user != null && user.getId() != null) {
 			logger.debug("preprocess - getting desktop session object");
 			desktop = desktopService.getDesktopByUser(user);
 			setSessionBean(Constants.DESKTOP, desktop);
