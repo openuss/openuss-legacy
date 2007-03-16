@@ -34,3 +34,14 @@ List AllAssociations(uml::Classifier classifier):
 
 List AllDependencies(uml::Classifier classifier):
 	JAVA org.fornax.cartridges.uml2.javabasic.Helper.getAllDependencies(org.eclipse.uml2.uml.Classifier);
+	
+	
+	
+String interfaceClassName(uml::NamedElement classifier):
+	 ((String)GLOBALVAR javaInterfacePrefix)+classifier.name+((String)GLOBALVAR javaInterfaceSuffix);
+	 
+String abstractClassName(uml::Classifier classifier):
+	 ((String)GLOBALVAR javaAbstractPrefix)+classifier.name+((String)GLOBALVAR javaAbstractSuffix); 
+	 
+String implClassName(uml::Classifier classifier):
+	 ((String)GLOBALVAR javaImplementationPrefix)+classifier.name+((String)GLOBALVAR javaImplementationSuffix); 

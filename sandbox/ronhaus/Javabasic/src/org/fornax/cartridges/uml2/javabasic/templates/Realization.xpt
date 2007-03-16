@@ -20,7 +20,7 @@
 	«IF !interfaceRealization.isEmpty»
 	extends
 	«FOREACH interfaceRealization AS ir SEPARATOR ","»
-		«ir.supplier.get(0).name»
+		«interfaceClassName(ir.supplier.get(0))»
 	«ENDFOREACH»
 	«ENDIF»
 «ENDDEFINE»

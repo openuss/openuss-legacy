@@ -20,7 +20,7 @@
 «DEFINE staticAttribute FOR uml::Classifier»
 	«FOREACH attribute.typeSelect(uml::Property).select(a|a.isStatic) AS attr»
 		«EXPAND Documentation::documentation FOR attr»
-		public static «typeName(attr)» «attr.name.toUpperCase()» «DefaultValue(attr)»;
+		public static «typeName(attr)» «attr.name.toUpperCase()»;
 	«ENDFOREACH»
 «ENDDEFINE»
 

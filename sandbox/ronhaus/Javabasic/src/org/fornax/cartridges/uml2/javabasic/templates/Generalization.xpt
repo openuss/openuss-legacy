@@ -25,7 +25,7 @@
 */
 «DEFINE generalizationEntityInterface FOR uml::Class»
 	«IF !generalization.isEmpty»
-	extends «((uml::Generalization) generalization.get(0)).general.name»
+	extends «interfaceClassName(((uml::Generalization) generalization.get(0)).general)»
 	«ENDIF»
 «ENDDEFINE»
 
