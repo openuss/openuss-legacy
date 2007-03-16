@@ -606,30 +606,34 @@ ul.navigation li ul li ul li.active_item a:hover{
   position: absolute;
   margin: 0;
   padding: 0;
-  top: 52px; left: 200px; right: 190px; bottom: 0;
+  top: 49px; left: 200px; right: 190px; bottom: 0;
   height: 20px;
   width: 600px;
 }
 
-ul#header_navigation {
-  margin: 0; padding: 0;
-  text-align: left;
-  height: 20px;
+ul#header_navigation, ul#header_navigation ul {
+	float: left;
+	height: 20px;
+	list-style: none;
+	line-height: 13px;
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 8pt;
+	padding: 0;
+	margin: 0;
 }
 
 ul#header_navigation li {
-  list-style: none;
-  display: inline;
-  margin: 0;
-  padding: 3px 5px 4px 5px;
-  height: 20px;
+	float: left;
+	padding: 3px 5px 4px 5px;
 }
 
 ul#header_navigation a{
-  font-size: 8pt;
-  color: #E1FFA5;
+  display: block;
+  color: #FFFFFF;
+  padding: 3px 5px 4px 5px;
+  text-decoration: none;
   padding: 0;
-  height: 20px;
   text-decoration: none; font-weight: bold; text-transform: uppercase;
 }
 
@@ -646,6 +650,9 @@ ul#header_navigation span {
 
 ul#header_navigation a:hover{
   color: #5E8511;
+}
+
+ul#header_navigation li:hover{
   background: #D4ECA5;
 }
 
