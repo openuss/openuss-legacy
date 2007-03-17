@@ -5,6 +5,7 @@
 //
 package org.openuss.lecture;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -52,7 +53,7 @@ public class FacultyImpl extends org.openuss.lecture.FacultyBase implements org.
 	@Override
 	public List getActiveEnrollments() {
 		if (getActivePeriod() == null) {
-			return null;
+			return new ArrayList();
 		} else {
 			return getActivePeriod().getEnrollments();
 		}
