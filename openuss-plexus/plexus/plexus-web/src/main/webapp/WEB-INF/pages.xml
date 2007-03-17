@@ -11,10 +11,15 @@
 		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
 	</page>
 
-	<page view-id="/views/secured/enrollment/enrollmentoptions*">
+	<page view-id="/views/secured/enrollment/enrollment*">
 		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.ASSIST}"/>
 		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
 	</page>
 
+	<page view-id="/views/secured/documents/*">
+		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.READ}"/>
+		<parameter name="folder" value="#{folder.id}" converterId="javax.faces.Long"/>
+		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
+	</page>
 	
 </pages>

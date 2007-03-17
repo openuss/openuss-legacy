@@ -5,6 +5,8 @@
  */
 package org.openuss.braincontest;
 
+import java.util.Date;
+
 import org.openuss.TestUtility;
 
 
@@ -26,7 +28,7 @@ public class AnswerDaoTest extends AnswerDaoTestBase {
 
 	public void testAnswerDaoCreate() {
 		Answer answer = new AnswerImpl();
-		answer.setAnswer(" ");
+		answer.setAnsweredAt(new Date());
 		answer.setSolver(testUtility.createDefaultUserInDB());
 		assertNull(answer.getId());
 		answerDao.create(answer);

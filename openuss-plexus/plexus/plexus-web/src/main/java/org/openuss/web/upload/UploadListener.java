@@ -30,15 +30,9 @@ public class UploadListener extends BaseBean implements ValueChangeListener {
 	public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
 		logger.debug("file uploaded");
 		UploadedFile uploadedFile = (UploadedFile) event.getNewValue();
-
 		if (uploadedFile != null) {
-			logger.debug("file name " + uploadedFile.getName());
-			logger.debug("file type " + uploadedFile.getContentType());
-			logger.debug("file size " + uploadedFile.getSize());
-
-			logger.debug("source " + event.getSource());
-			logger.debug("component " + event.getComponent());
-			
+			logFileInfo(uploadedFile);
+			logValueChangeEvent(event);
 			try {
 				saveUploadedFile(uploadedFile);
 			} catch (IOException e) {
@@ -47,17 +41,22 @@ public class UploadListener extends BaseBean implements ValueChangeListener {
 		}
 	}
 
+	private void logValueChangeEvent(ValueChangeEvent event) {
+		logger.debug("source " + event.getSource());
+		logger.debug("component " + event.getComponent());
+	}
+
+	private void logFileInfo(UploadedFile uploadedFile) {
+		logger.debug("file name " + uploadedFile.getName());
+		logger.debug("file type " + uploadedFile.getContentType());
+		logger.debug("file size " + uploadedFile.getSize());
+	}
+
 	public void saveUploadedFile(UploadedFile uploadedFile) throws IOException {
 		RepositoryService repository = (RepositoryService) getBean("repositoryService");
 		RepositoryFile file = RepositoryFile.Factory.newInstance();
 		
-		String fileName = extractFileName(uploadedFile.getName());
-		
-		file.setName(fileName);
-		file.setFileName(fileName);
-		file.setContentType(uploadedFile.getContentType());
-		file.setFileSize((int)uploadedFile.getSize());
-		file.setInputStream(uploadedFile.getInputStream());
+		copyProperties(file, uploadedFile);
 		
 		repository.saveFile(file);
 		UploadFileManager fileManager = (UploadFileManager) getBean("uploadFileManager");
@@ -65,6 +64,16 @@ public class UploadListener extends BaseBean implements ValueChangeListener {
 		
 		// store last uploaded file reference in session
 		setSessionBean(Constants.UPLOADED_FILE, file);
+	}
+
+	private void copyProperties(RepositoryFile toFile, UploadedFile fromFile) throws IOException {
+		String fileName = extractFileName(fromFile.getName());
+		
+		toFile.setName(fileName);
+		toFile.setFileName(fileName);
+		toFile.setContentType(fromFile.getContentType());
+		toFile.setFileSize((int)fromFile.getSize());
+		toFile.setInputStream(fromFile.getInputStream());
 	}
 
 	public String extractFileName(String fileName) {

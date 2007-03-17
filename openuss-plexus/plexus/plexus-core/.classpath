@@ -58,5 +58,6 @@
 	<classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1/activation-1.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/migration-core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/framework-core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/framework-utilities"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -14,7 +14,6 @@ public class FolderDaoTest extends FolderDaoTestBase {
 	
 	public void testFolderDaoCreate() {
 		Folder folder = new FolderImpl();
-		folder.setName(" ");
 		assertNull(folder.getId());
 		folderDao.create(folder);
 		assertNotNull(folder.getId());

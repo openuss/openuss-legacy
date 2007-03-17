@@ -56,6 +56,11 @@
 	      <artifactId>framework-core</artifactId>
 	      <version>${pom.version}</version>
 	    </dependency>
+	    <dependency>
+    	  <groupId>org.openuss.framework</groupId>
+	      <artifactId>framework-utilities</artifactId>
+	      <version>${pom.version}</version>
+	    </dependency>
 		<dependency>
 			<groupId>org.openuss.plexus</groupId>
 			<artifactId>plexus-api</artifactId>

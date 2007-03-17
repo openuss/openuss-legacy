@@ -17,4 +17,10 @@ public class AnswerImpl
      */
     private static final long serialVersionUID = 7262142421589870756L;
 
+	@Override
+	public String getDisplayName() {
+		// FIXME - TDA - move to user
+		return getSolver().getTitle()+" "+getSolver().getFirstName()+" "+getSolver().getLastName();
+	}
+
 }
