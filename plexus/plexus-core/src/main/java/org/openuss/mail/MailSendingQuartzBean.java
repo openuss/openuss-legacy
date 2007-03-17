@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import org.apache.log4j.Logger;
 import org.openuss.framework.mail.MailEngine;
+import org.openuss.security.SecurityService;
+import org.openuss.security.UserImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class MailSendingQuartzBean{
@@ -16,6 +18,8 @@ public class MailSendingQuartzBean{
 	private MailEngine mailEngine;
 	private MailService mailService;
 	private MimeMessageHelper mimeMessageHelper;
+	
+	private SecurityService securityService;
 	
 	public void send() throws MessagingException{
 		ArrayList<MailingJob> jobs = (ArrayList<MailingJob>) mailService.getJobs();		
@@ -53,7 +57,17 @@ public class MailSendingQuartzBean{
 			tm = (TemplateModel)i.next();
 			map.put(tm.getModelName(), tm.getModelValue());
 		}
-		mailEngine.sendMessage(mimeMessageHelper.getMimeMessage(), template.getTemplate(), map);		
+		String locale = "";
+		try{
+			UserImpl recipient = (UserImpl) securityService.getUserByEmail(mts.getEmail());
+			//TODO check how else to get the user-locale instead of using getPreferences
+			locale = recipient.getPreferences().getLocale();
+		}
+		catch (Exception e){
+			// fails, because emailadresses are not unique in testing db
+			locale = "de";
+		}
+		mailEngine.sendMessage(mimeMessageHelper.getMimeMessage(), template.getTemplate(), map, locale);		
 	}
 	
 	public MailEngine getMailEngine() {
@@ -78,5 +92,13 @@ public class MailSendingQuartzBean{
 
 	public void setMailService(MailService mailService) {
 		this.mailService = mailService;
+	}
+
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
 	}
 }

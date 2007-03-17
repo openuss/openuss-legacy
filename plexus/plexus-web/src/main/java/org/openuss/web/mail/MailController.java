@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import java.util.Locale;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.security.User;
+import org.openuss.security.UserImpl;
 import org.openuss.mail.MailService;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -20,8 +21,8 @@ public class MailController extends BaseBean{
 	private static final Logger logger = Logger.getLogger(MailController.class);
 	
 	public void sendMails(String subject, User user, String templateName, Map model) throws Exception {
-		//TODO convert user-local to Local?
-		ResourceBundle resourceBundle = ResourceBundle.getBundle(getBundleName(), Locale.GERMAN);		
+		UserImpl ui = (UserImpl) user;
+		ResourceBundle resourceBundle = ResourceBundle.getBundle(getBundleName(), new Locale (ui.getPreferences().getLocale()));		
 		String localSubject="";
 		try {
 			localSubject = resourceBundle.getString(subject);			

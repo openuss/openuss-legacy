@@ -94,10 +94,8 @@
 		<property name="mailService"><ref bean="mailService"/></property>		
 		<property name="mimeMessageHelper"><ref bean="mimeMessageHelper"/></property>		
 		<property name="mailEngine"><ref bean="mailEngine"/></property>				
-	</bean>
-	<!-- not working Quartz config -->
-	<!-- 
-	 -->
+		<property name="securityService"><ref bean="securityService"/></property>				
+	</bean>	
     <bean id="mailSendingJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="mailSendingQuartzBean"/>
 		<property name="targetMethod" value="send"/>
