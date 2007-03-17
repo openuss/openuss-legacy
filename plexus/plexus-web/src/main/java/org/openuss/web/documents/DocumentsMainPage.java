@@ -1,16 +1,19 @@
 package org.openuss.web.documents; 
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
+import org.openuss.documents.DocumentService;
+import org.openuss.documents.Folder;
+import org.openuss.documents.FolderEntryInfo;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.web.enrollment.AbstractEnrollmentPage;
 import org.openuss.web.Constants;
+import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 @Bean(name = "views$secured$documents$documents", scope = Scope.REQUEST)
 @View
@@ -19,21 +22,22 @@ public class DocumentsMainPage extends AbstractEnrollmentPage{
 	
 	private DocumentDataProvider data = new DocumentDataProvider();
 	
-	//needed
-	private String path;
+	@Property(value="#{documentService}")
+	private DocumentService documentService;
+	
+	@Property(value="#{sessionScope.folder}")
+	private Folder currentFolder;
+	
+	private class DocumentDataProvider extends AbstractPagedTable<FolderEntryInfo> {
 
-	private class DocumentDataProvider extends AbstractPagedTable<DocumentTableEntry> {
-
-		private DataPage<DocumentTableEntry> page; 
+		private DataPage<FolderEntryInfo> page; 
 		
 		@Override 
-		public DataPage<DocumentTableEntry> getDataPage(int startRow, int pageSize) {		
-			ArrayList<DocumentTableEntry> al = new ArrayList<DocumentTableEntry>();			
-			DocumentTableEntry dte1 = new DocumentTableEntry("Digitale Goodies", "folder", "", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), false);
-			DocumentTableEntry dte2 = new DocumentTableEntry("Normative Entscheidungstheorie.pdf", "pdf", "20 kb", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), true);
-			DocumentTableEntry dte3 = new DocumentTableEntry("picture.jpg", "jpg", "175 kb", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), false);
-			al.add(dte1); al.add(dte2); al.add(dte3);
-			page = new DataPage<DocumentTableEntry>(al.size(),0,al);
+		public DataPage<FolderEntryInfo> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				List<FolderEntryInfo> entries = documentService.getFolderEntries(enrollment, currentFolder);
+				page = new DataPage<FolderEntryInfo>(entries.size(),0,entries);
+			}
 			return page;
 		}
 	}
@@ -62,8 +66,20 @@ public class DocumentsMainPage extends AbstractEnrollmentPage{
 		return "> KLR > Veranstaltung > Folien";
 	}
 
-	public void setPath(String path) {
-		this.path = path;
+	public DocumentService getDocumentService() {
+		return documentService;
+	}
+
+	public Folder getCurrentFolder() {
+		return currentFolder;
+	}
+
+	public void setCurrentFolder(Folder currentFolder) {
+		this.currentFolder = currentFolder;
+	}
+
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
 	}
 
 	

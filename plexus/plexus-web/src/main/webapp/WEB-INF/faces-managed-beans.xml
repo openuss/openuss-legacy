@@ -79,5 +79,5 @@
  		<managed-bean-class>org.openuss.lecture.EnrollmentImpl</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
- 	
+
 </faces-config>

@@ -124,6 +124,9 @@
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     				Documents
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+ 	<bean id="folder" class="org.openuss.documents.FolderImpl"  singleton="false"/>
+	<bean id="fileEntry" class="org.openuss.documents.FileEntryImpl" singleton="false"/>
+	 
 	<bean id="newDocument" class="org.openuss.repository.RepositoryFileImpl"  singleton="false"/>
 	<bean id="newFolder" class="org.openuss.documents.FolderImpl"  singleton="false"/>
 	

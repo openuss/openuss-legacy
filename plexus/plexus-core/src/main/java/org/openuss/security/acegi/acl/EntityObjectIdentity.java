@@ -1,12 +1,12 @@
 package org.openuss.security.acegi.acl;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import org.acegisecurity.acl.basic.AclObjectIdentity;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.log4j.Logger;
+import org.openuss.framework.utilities.DomainObjectUtility;
 import org.openuss.security.acl.ObjectIdentity;
 import org.springframework.util.Assert;
 
@@ -45,32 +45,18 @@ public class EntityObjectIdentity implements AclObjectIdentity {
 	public EntityObjectIdentity(Object object) throws IllegalAccessException, InvocationTargetException {
 		try {
 			Assert.notNull(object, "object cannot be null");
-			
-			if (object instanceof Long) {
-				identifier = (Long) object;
-			} else if (object instanceof ObjectIdentity) {
-				identifier = ((ObjectIdentity) object).getObjectIdentity();
-			} else {
-				identifier = obtainIdentityByGetIdMethod(object);
-			}
+			identifier = identifierFromObject(object);
 		} catch (IllegalAccessException th) {
 			logger.error(th);
 			throw th;
 		}
 	}
 
-	private Long obtainIdentityByGetIdMethod(Object object) throws IllegalAccessException, InvocationTargetException {
-		final Class clazz = object.getClass();
-		try {
-			final Method method = clazz.getMethod("getId", new Class[] {});
-			final Object result = method.invoke(object, new Object[] {});
-			return (Long) result;
-		} catch (ClassCastException ex) {
-			throw new IllegalArgumentException("Object of class '" + clazz
-					+ "' does not provide the required Integer getId() method: " + object);
-		} catch (NoSuchMethodException nsme) {
-			throw new IllegalArgumentException("Object of class '" + clazz
-					+ "' does not provide the required Integer getId() method: " + object);
+	private Long identifierFromObject(Object object) throws IllegalAccessException, InvocationTargetException {
+		if (object instanceof ObjectIdentity) {
+			return ((ObjectIdentity) object).getObjectIdentity();
+		} else {
+			return DomainObjectUtility.identifierFromObject(object);
 		}
 	}
 
