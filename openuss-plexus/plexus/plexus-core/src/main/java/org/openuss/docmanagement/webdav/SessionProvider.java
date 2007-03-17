@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import javax.jcr.Credentials;
 import javax.jcr.LoginException;
-import javax.jcr.NoSuchWorkspaceException;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -17,13 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.AuthenticationManager;
-import org.acegisecurity.BadCredentialsException;
-import org.acegisecurity.DisabledException;
-import org.acegisecurity.LockedException;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-import org.acegisecurity.ui.WebAuthenticationDetails;
 import org.apache.jackrabbit.util.Base64;
-import org.apache.jackrabbit.webdav.DavConstants;
 import org.apache.jackrabbit.webdav.DavException;
 import org.apache.jackrabbit.webdav.DavServletResponse;
 import org.apache.log4j.Logger;
@@ -62,7 +56,7 @@ public class SessionProvider {
 			authentication = getAuthenticationManager().authenticate(authenticationToken);
 			logger.debug("Authentication successful: " + (authentication != null));
 
-			// TODO authentication object verwenden
+			// TODO authentication object verwenden, um später die Liste der abonnierten Enrollments abfragen zu können
 
 			// establish session with repository
 			Credentials repositoryCredentials = new SimpleCredentials(REPOSITORY_USERNAME, REPOSITORY_PASSWORD.toCharArray());
@@ -173,6 +167,7 @@ public class SessionProvider {
 	}
 	
 	/**
+	 * Getter for repository
 	 * @return
 	 */
 	public Repository getRepository() {
@@ -180,13 +175,15 @@ public class SessionProvider {
 	}
 	
 	/**
-	 * @param repository
+	 * Setter for repository
+	 * @param repository The repository to set
 	 */
 	public void setRepository(Repository repository) {
 		this.repository = repository;
 	}
 
 	/**
+	 * Getter for authentication manager
 	 * @return the authenticationManager
 	 */
 	public AuthenticationManager getAuthenticationManager() {
@@ -194,7 +191,8 @@ public class SessionProvider {
 	}
 
 	/**
-	 * @param authenticationManager the authenticationManager to set
+	 * Setter for authentication manager
+	 * @param authenticationManager The authenticationManager to set
 	 */
 	public void setAuthenticationManager(AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;

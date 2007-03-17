@@ -2,8 +2,6 @@ package org.openuss.docmanagement.webdav;
 
 import java.io.OutputStream;
 
-import javax.jcr.Item;
-
 import org.apache.jackrabbit.webdav.io.OutputContext;
 
 /**
@@ -11,11 +9,9 @@ import org.apache.jackrabbit.webdav.io.OutputContext;
  * @version 0.5
  */
 public class ExportContext implements IOContext {
-	private final Item exportRoot;
 	private final OutputContext context;
 	
-	public ExportContext(Item exportRoot, OutputContext context) {
-		this.exportRoot = exportRoot;
+	public ExportContext(OutputContext context) {
 		this.context = context;
 	}
 
@@ -43,13 +39,6 @@ public class ExportContext implements IOContext {
 	public boolean isCompleted() {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	/**
-	 * @return
-	 */
-	public Item getExportRoot() {
-		return exportRoot;
 	}
 	
 	/**

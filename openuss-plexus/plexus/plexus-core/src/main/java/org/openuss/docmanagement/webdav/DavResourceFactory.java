@@ -2,40 +2,34 @@ package org.openuss.docmanagement.webdav;
 
 import javax.jcr.Item;
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.apache.log4j.Logger;
 
 public class DavResourceFactory {
 	private final Logger logger = Logger.getLogger(DavResourceFactory.class);
 	
-	public DavResource createResource(Session session, String resourcePath) {
+	public DavResourceFactory() {
+		// HACK
+	}
+	
+	public DavResource createResource(Session session, DavResourceLocator locator) {
 		DavResource resource = null;
 		
-		// return null, if session or path is null or path is empty
-		if ((session == null) || (resourcePath == null) || (resourcePath.length() == 0)) {
-			return null;
-		}
-		
 		try {
-			Item representedItem = session.getItem(resourcePath);
-			// return null, if item is null or not a node
-			if ((representedItem == null) || !representedItem.isNode()) {
-				return null;
-			}
+			Item representedItem = session.getItem(locator.getRepositoryPath());
 			
-			Node node = (Node)representedItem;
-			if (node.isNodeType("nt:file")) {
-				logger.debug("File found.");
-				// TODO
-			} else if (node.isNodeType("nt:folder")) {
-				logger.debug("Folder found.");
-				// TODO genauer differenzieren
-				// TODO
+			if ((representedItem != null) && (representedItem.isNode())) {
+				resource = new DavResourceCollection((Node)representedItem);
 			} else {
-				logger.debug("Unsupported node type found: " + node.getPrimaryNodeType().toString());
+				resource = new DavResourceCollection(null);
 			}
+		} catch (PathNotFoundException ex) {
+			logger.debug("Path not found exception occurred.");
+			logger.debug("Exception: " + ex.getMessage());
 		} catch (RepositoryException ex) {
 			logger.debug("Repository exception occurred.");
 			logger.debug("Exception: " + ex.getMessage());

@@ -7,7 +7,7 @@ import org.apache.jackrabbit.webdav.DavResourceLocator;
 
 /**
  * @author David Ullrich
- * @version 0.6
+ * @version 0.65
  */
 public class DavResourceLocatorImpl implements DavResourceLocator {
 	private final String prefix;
@@ -57,8 +57,8 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getRepositoryPath()
 	 */
 	public String getRepositoryPath() {
-		// TODO repository path not supported yet
-		throw new NotImplementedException("DavResourceLocatorImpl.getRepositoryPath() not supported yet.");
+		// no mapping between resource path and storage in repository
+		return resourcePath;
 	}
 
 	/* (non-Javadoc)

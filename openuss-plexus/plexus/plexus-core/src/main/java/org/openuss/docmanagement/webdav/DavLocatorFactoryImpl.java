@@ -6,7 +6,7 @@ import org.apache.jackrabbit.webdav.DavResourceLocator;
 
 /**
  * @author David Ullrich
- * @version 0.5
+ * @version 0.6
  */
 public class DavLocatorFactoryImpl implements DavLocatorFactory {
 	private final String resourcePathPrefix;

@@ -1,10 +1,17 @@
 package org.openuss.docmanagement.webdav;
 
+import java.io.IOException;
+
+import javax.jcr.Node;
+
 /**
  * @author David Ullrich
  * @version 0.5
  */
 public class DavResourceCollection extends DavResource {
+	public DavResourceCollection(Node representedNode) {
+		super(representedNode);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResource#isCollection()
@@ -12,5 +19,29 @@ public class DavResourceCollection extends DavResource {
 	@Override
 	public boolean isCollection() {
 		return true;
+	}
+
+	@Override
+	public void exportContent(ExportContext context) throws IOException {
+		if (!canExport(context)) {
+			// TODO exception message
+			throw new IOException();
+		}
+		
+		// TODO
+		
+		context.informCompleted(true);
+	}
+
+	@Override
+	public void importContent(ImportContext context) throws IOException {
+		if (!canImport(context)) {
+			// TODO exception message
+			throw new IOException();
+		}
+		
+		// TODO
+		
+		context.informCompleted(true);
 	}
 }

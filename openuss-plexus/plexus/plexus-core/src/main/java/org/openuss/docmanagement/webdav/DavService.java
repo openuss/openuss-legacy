@@ -1,22 +1,19 @@
 package org.openuss.docmanagement.webdav;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.Date;
-
-import javax.jcr.Item;
-import javax.jcr.Node;
-import javax.jcr.NodeIterator;
-import javax.jcr.Property;
-import javax.jcr.PropertyIterator;
-import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.apache.jackrabbit.webdav.DavConstants;
+import org.apache.jackrabbit.webdav.DavException;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.apache.jackrabbit.webdav.io.InputContext;
 import org.apache.jackrabbit.webdav.io.OutputContext;
 import org.apache.log4j.Logger;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.Namespace;
+import org.dom4j.QName;
 
 /**
  * @author David Ullrich
@@ -52,54 +49,15 @@ public class DavService {
 	 * @throws IOException
 	 */
 	public void spoolResource(OutputContext context, DavResourceLocator locator, boolean withContent) throws IOException {
-		logger.debug("spool of resource '" + locator.getResourcePath() + "' requested.");
-		// TODO
-		
-		if (locator.isRootLocation()) {
-			// TODO abonnierte enrollments anfordern
-		} else {
-			// TODO ressource ausgeben
+		// check parameters
+		if ((context == null) || (locator == null)) {
+			throw new IOException();
 		}
 		
-		// HACK
-		// Item aus Repository holen
-		try {
-			Item item = session.getItem(locator.getResourcePath());
-
-			context.setContentType("text/html");
-			context.setModificationTime(new Date().getTime());
-			context.setETag("");
-
-			if (context.hasStream()) {
-				PrintWriter writer = new PrintWriter(new OutputStreamWriter(context.getOutputStream(), "utf8"));
-				writer.print("<html><head><title>OpenUSS WebDav</title></head><body>");
-				writer.print("<h1>Spool of resource: " + locator.getResourcePath() + "</h1>");
-				writer.print("<h2>Properties:</h2><ul>");
-				if ((item != null) && item.isNode()) {
-					PropertyIterator propertyIterator = ((Node)item).getProperties();
-					Property property;
-					while (propertyIterator.hasNext()) {
-						property = propertyIterator.nextProperty();
-						writer.print("<li>" + property.getName() + "</li>");
-					}
-
-					writer.print("</ul><h2>Subnodes:</h2><ul>");
-
-					NodeIterator nodeIterator = ((Node)item).getNodes();
-					Node node;
-					while (nodeIterator.hasNext()) {
-						node = nodeIterator.nextNode();
-						if (!configuration.getItemFilter().isFilteredItem(node)) {
-							writer.print("<li>" + node.getName() + "</li>");
-						}
-					}
-				}
-				writer.print("</ul></body></html>");
-				writer.close();
-			}
-		} catch (RepositoryException ex) {
-			logger.debug("Repository exception occurred.");
-			logger.debug("Exception: " + ex.getMessage());
+		if (locator.isRootLocation()) {
+			// TODO abonnierte enrollments anfordern und Startsicht ausgeben
+		} else {
+			// TODO ressource ausgeben
 		}
 	}
 	
@@ -108,7 +66,79 @@ public class DavService {
 	 * @param locator
 	 */
 	public void addMember(InputContext context, DavResourceLocator locator) throws IOException {
-		// TODO importContext anlegen
+		// check parameters
+		if ((context == null) || (locator == null)) {
+			throw new IOException();
+		}
+		
+		// TODO
+	}
+	
+	public MultiStatus getProperties(Document requestDocument, DavResourceLocator locator, int depth) throws DavException {
+		// TODO korrekt implementieren
+		DavResource resource = getResourceFactory().createResource(getSession(), locator);
+		if (!resource.exists()) {
+			throw new DavException(HttpStatus.SC_NOT_FOUND);
+		}
+		
+		MultiStatus multistatus = new MultiStatus();
+
+		// TODO entscheiden, ob es in der Verantwortung der DavResource liegt ...
+		MultiStatusResponse response = new MultiStatusResponse(locator.getHref(resource.isCollection()), null);
+		response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_DISPLAYNAME, resource.getDisplayName());
+//		response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_CREATIONDATE, resource.getCreationDate());
+		if (resource.isCollection()) {
+			QName collectionName = DocumentHelper.createQName(DavConstants.XML_COLLECTION, new Namespace("D", "DAV:"));
+			Element collectionElement = DocumentHelper.createElement(collectionName);
+			response.addProperty(HttpStatus.SC_OK, null, DavConstants.PROPERTY_RESOURCETYPE, collectionElement);
+		} else {
+			response.addProperty(HttpStatus.SC_OK, null, DavConstants.PROPERTY_RESOURCETYPE, "");
+		}
+		multistatus.addResponse(response);
+		
+		return multistatus;
+	}
+	
+	// TODO setProperties
+	
+	public void createCollection(DavResourceLocator locator) throws IOException {
+		// TODO
+		logger.debug("Collection should be created: " + locator.getResourcePath());
+		
+		// HACK
+		throw new IOException("Creation of collection not allowed.");
+	}
+	
+	/**
+	 * @param source
+	 * @param target
+	 * @throws IOException
+	 */
+	public void copyResource(DavResourceLocator source, DavResourceLocator target) throws IOException {
+		// TODO
+		// HACK
+		throw new IOException("Copy not implemented.");
+	}
+	
+	/**
+	 * @param source
+	 * @param target
+	 * @throws IOException
+	 */
+	public void moveResource(DavResourceLocator source, DavResourceLocator target) throws IOException {
+		// TODO
+		// HACK
+		throw new IOException("Copy not implemented.");
+	}
+	
+	/**
+	 * @param locator
+	 * @throws IOException
+	 */
+	public void deleteResource(DavResourceLocator locator) throws IOException {
+		// TODO
+		// HACK
+		throw new IOException("Copy not implemented.");
 	}
 	
 	/**

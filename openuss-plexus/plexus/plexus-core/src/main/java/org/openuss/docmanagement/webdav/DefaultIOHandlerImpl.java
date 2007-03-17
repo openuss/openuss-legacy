@@ -11,6 +11,8 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 
+import org.openuss.docmanagement.DocConstants;
+
 
 /**
  * Default implementation of interface IOHandler
@@ -25,39 +27,39 @@ public class DefaultIOHandlerImpl implements IOHandler {
 	 * @see org.openuss.docmanagement.webdav.IOHandler#canExport(org.openuss.docmanagement.webdav.ExportContext, boolean)
 	 */
 	public boolean canExport(ExportContext context, boolean isCollection) {
-		// export impossible, if context null or already completed
-		if (context == null || context.isCompleted()) {
-			return false;
-		}
-		
-		// get the root item for the export operation
-		Item rootItem = context.getExportRoot();
-		
-		// export impossible, if root item null
-		if (rootItem == null) {
-			return false;
-		}
-		
-		// a representation of a file has to have a child node of type jcr:content
-		if (!isCollection) {
-			// only nodes can have child nodes -> test, if it is a node
-			if (rootItem.isNode()) {
-				try {
-					Node node = (Node)rootItem;
-					// test, if child node of required type exists
-					// TODO in Konstante auslagern
-					return node.hasNode("jcr:content");
-				} catch (RepositoryException ex) {
-					// hasNode throwed an exception -> do nothing
-				}
-			}
-			
-			// root item is no node or exception occurred -> export impossible
-			return false;
-		}
-		
-		// a collection can be exported
-		return true;
+//		// export impossible, if context null or already completed
+//		if (context == null || context.isCompleted()) {
+//			return false;
+//		}
+//		
+//		// get the root item for the export operation
+//		Item rootItem = context.getExportRoot();
+//		
+//		// export impossible, if root item null
+//		if (rootItem == null) {
+//			return false;
+//		}
+//		
+//		// a representation of a file has to have a child node of type jcr:content
+//		if (!isCollection) {
+//			// only nodes can have child nodes -> test, if it is a node
+//			if (rootItem.isNode()) {
+//				try {
+//					Node node = (Node)rootItem;
+//					// test, if child node of required type exists
+//					return node.hasNode(DocConstants.JCR_CONTENT);
+//				} catch (RepositoryException ex) {
+//					// hasNode throwed an exception -> do nothing
+//				}
+//			}
+//			
+//			// root item is no node or exception occurred -> export impossible
+//			return false;
+//		}
+//		
+//		// a collection can be exported
+//		return true;
+		return false;
 	}
 
 	/* (non-Javadoc)
@@ -77,16 +79,17 @@ public class DefaultIOHandlerImpl implements IOHandler {
 	 * @see org.openuss.docmanagement.webdav.IOHandler#canImport(org.openuss.docmanagement.webdav.ImportContext, boolean)
 	 */
 	public boolean canImport(ImportContext context, boolean isCollection) {
-		// export impossible, if context null or already completed
-		if (context == null || context.isCompleted()) {
-			return false;
-		}
-		
-		// get the root item for the import operation
-		Item rootItem = context.getImportRoot();
-		
-		// import possible, if the root item exists and is a node and the context has a system id
-		return (rootItem != null) && rootItem.isNode() && (context.getSystemId() != null);
+//		// export impossible, if context null or already completed
+//		if (context == null || context.isCompleted()) {
+//			return false;
+//		}
+//		
+//		// get the root item for the import operation
+//		Item rootItem = context.getImportRoot();
+//		
+//		// import possible, if the root item exists and is a node and the context has a system id
+//		return (rootItem != null) && rootItem.isNode() && (context.getSystemId() != null);
+		return false;
 	}
 
 	/* (non-Javadoc)
@@ -106,41 +109,41 @@ public class DefaultIOHandlerImpl implements IOHandler {
 	 * @see org.openuss.docmanagement.webdav.IOHandler#exportContent(org.openuss.docmanagement.webdav.ExportContext, boolean)
 	 */
 	public boolean exportContent(ExportContext context, boolean isCollection) throws IOException {
-		if (!canExport(context, isCollection)) {
-			throw new IOException();
-		}
-		
-		try {
-			// get node for export root; context is checked in canExport
-			Node node = (Node)context.getExportRoot();
-			
-			// export the actual content of the file, if not a collection
-			if (!isCollection) {
-				// TODO in Konstante auslagern
-				// get child node of type jcr:content; existence checked in canExport
-				node = node.getNode("jcr:content");
-			}
-			
-			// export properties
-			exportProperties(context, isCollection, node);
-			
-			// export content, if context has a stream
-			if (context.hasStream()) {
-				if (isCollection) {
-					// node is a collection -> export collection entries
-					exportCollectionEntries(context, node);
-				} else {
-					// node is a file -> export actual data
-					exportData(context, node);
-				}
-			}
-			
-			// everything is exported
-			return true;
-		} catch (RepositoryException ex) {
-			// throw IOException for RepositoryException
-			throw new IOException(ex.getMessage());
-		}
+//		if (!canExport(context, isCollection)) {
+//			throw new IOException();
+//		}
+//		
+//		try {
+//			// get node for export root; context is checked in canExport
+//			Node node = (Node)context.getExportRoot();
+//			
+//			// export the actual content of the file, if not a collection
+//			if (!isCollection) {
+//				// get child node of type jcr:content; existence checked in canExport
+//				node = node.getNode(DocConstants.JCR_CONTENT);
+//			}
+//			
+//			// export properties
+//			exportProperties(context, isCollection, node);
+//			
+//			// export content, if context has a stream
+//			if (context.hasStream()) {
+//				if (isCollection) {
+//					// node is a collection -> export collection entries
+//					exportCollectionEntries(context, node);
+//				} else {
+//					// node is a file -> export actual data
+//					exportData(context, node);
+//				}
+//			}
+//			
+//			// everything is exported
+//			return true;
+//		} catch (RepositoryException ex) {
+//			// throw IOException for RepositoryException
+//			throw new IOException(ex.getMessage());
+//		}
+		return false;
 	}
 
 	/* (non-Javadoc)
@@ -176,34 +179,35 @@ public class DefaultIOHandlerImpl implements IOHandler {
 	 * @see org.openuss.docmanagement.webdav.IOHandler#importContent(org.openuss.docmanagement.webdav.ImportContext, boolean)
 	 */
 	public boolean importContent(ImportContext context, boolean isCollection) throws IOException {
-		// variable for import status
-		boolean success = false;
-		
-		try {
-			// get node for import operation
-			Node node = getContentNode(context, isCollection);
-			// import data first, then properties
-			success = importData(context, isCollection, node) && importProperties(context, isCollection, node); 
-		} catch (RepositoryException ex) {
-			// mark import as unsuccessful
-			success = false;
-			// throw IOException for RepositoryException
-			throw new IOException(ex.getMessage());
-		} finally {
-			// check, if import was successful
-			if (!success) {
-				// import failed -> rollback
-				try {
-					context.getImportRoot().refresh(false);
-				} catch (RepositoryException ex) {
-					// throw IOException for RepositoryException
-					throw new IOException(ex.getMessage());
-				}
-			}
-		}
-		
-		// return status of import operation
-		return success;
+//		// variable for import status
+//		boolean success = false;
+//		
+//		try {
+//			// get node for import operation
+//			Node node = getContentNode(context, isCollection);
+//			// import data first, then properties
+//			success = importData(context, isCollection, node) && importProperties(context, isCollection, node); 
+//		} catch (RepositoryException ex) {
+//			// mark import as unsuccessful
+//			success = false;
+//			// throw IOException for RepositoryException
+//			throw new IOException(ex.getMessage());
+//		} finally {
+//			// check, if import was successful
+//			if (!success) {
+//				// import failed -> rollback
+//				try {
+//					context.getImportRoot().refresh(false);
+//				} catch (RepositoryException ex) {
+//					// throw IOException for RepositoryException
+//					throw new IOException(ex.getMessage());
+//				}
+//			}
+//		}
+//		
+//		// return status of import operation
+//		return success;
+		return false;
 	}
 
 	/* (non-Javadoc)
@@ -238,20 +242,18 @@ public class DefaultIOHandlerImpl implements IOHandler {
 		try {
 			// set creation time property of export context
 			// the property jcr:created can be found on the export root; navigate up for files
-			// TODO in Konstante auslagern
 			// test, if not a collection, node has a parent and the property is set in the repository 
-			if (!isCollection && (node.getDepth() > 0) && node.getParent().hasProperty("jcr:created")) {
+			if (!isCollection && (node.getDepth() > 0) && node.getParent().hasProperty(DocConstants.JCR_CREATED)) {
 				// export value to context
-				context.setCreationTime(node.getParent().getProperty("jcr:created").getValue().getLong());
+				context.setCreationTime(node.getParent().getProperty(DocConstants.JCR_CREATED).getValue().getLong());
 			}
 
 			// set content length property of export context
 			long length = -1;
-			// TODO in Konstante auslagern
 			// test, if node contains data
-			if (node.hasProperty("jcr:data")) {
+			if (node.hasProperty(DocConstants.JCR_DATA)) {
 				// get length of data and export value to context
-				Property property = node.getProperty("jcr:data");
+				Property property = node.getProperty(DocConstants.JCR_DATA);
 				length = property.getLength();
 				context.setContentLength(length);
 			}
@@ -259,14 +261,13 @@ public class DefaultIOHandlerImpl implements IOHandler {
 			// set content type property of export context
 			String mimeType = null;
 			String encoding = null;
-			// TODO in Konstante auslagern
 			// test, if property jcr:mimetype is set in repository
-			if (node.hasProperty("jcr:mimetype")) {
-				mimeType = node.getProperty("jcr:mimetype").getString();
+			if (node.hasProperty(DocConstants.JCR_MIMETYPE)) {
+				mimeType = node.getProperty(DocConstants.JCR_MIMETYPE).getString();
 			}
 			// test, if property jcr:encoding is set in repository
-			if (node.hasProperty("jcr:encoding")) {
-				encoding = node.getProperty("jcr:encoding").getString();
+			if (node.hasProperty(DocConstants.JCR_ENCODING)) {
+				encoding = node.getProperty(DocConstants.JCR_ENCODING).getString();
 				// test, if encoding has a valid value; null IS a valid value
 				if ((encoding != null) && (encoding.length() == 0)) {
 					encoding = null;
@@ -277,10 +278,9 @@ public class DefaultIOHandlerImpl implements IOHandler {
 			
 			// set modification time property of export context
 			long modificationTime = -1;
-			// TODO in Konstante auslagern
 			// test, if property is set in repository; in case of doubt: current system time
-			if (node.hasProperty("jcr:lastmodified")) {
-				modificationTime = node.getProperty("jcr:lastmodified").getLong();
+			if (node.hasProperty(DocConstants.JCR_LASTMODIFIED)) {
+				modificationTime = node.getProperty(DocConstants.JCR_LASTMODIFIED).getLong();
 				context.setModificationTime(modificationTime);
 			} else {
 				context.setModificationTime(System.currentTimeMillis());
@@ -303,12 +303,11 @@ public class DefaultIOHandlerImpl implements IOHandler {
 	 * @throws RepositoryException
 	 */
 	private void exportData(ExportContext context, Node node) throws IOException {
-		// TODO in Konstante auslagern
 		try {
 			// test, if node contains data. if not -> do nothing
-			if (node.hasProperty("jcr:data")) {
+			if (node.hasProperty(DocConstants.JCR_DATA)) {
 				// node contains data -> copy to output stream of context
-				Property property = node.getProperty("jcr:data");
+				Property property = node.getProperty(DocConstants.JCR_DATA);
 				InputStream inStream = property.getStream();
 				OutputStream outStream = context.getOutputStream();
 				try {
@@ -337,6 +336,7 @@ public class DefaultIOHandlerImpl implements IOHandler {
 	 */
 	private void exportCollectionEntries(ExportContext context, Node node) throws IOException {
 		// TODO Inhalt der Collection ausgeben -> als Webseite formatieren ?
+		// TODO wenn root-Node, dann abonnierte.. hier?
 	}
 
 	/**
@@ -373,7 +373,7 @@ public class DefaultIOHandlerImpl implements IOHandler {
 				// TODO bei Versionierung Knoten aus- und einchecken
 
 				// store data in property jcr:data
-				node.setProperty("jcr:data", inStream);
+				node.setProperty(DocConstants.JCR_DATA, inStream);
 			} finally {
 				// close input stream
 				inStream.close();
@@ -389,17 +389,16 @@ public class DefaultIOHandlerImpl implements IOHandler {
 	 * @return
 	 */
 	private boolean importProperties(ImportContext context, boolean isCollection, Node node) {
-		// TODO in Konstanten auslagern
 		// TODO MIME-Type in Abhängigkeit vom Objekttyp setzen
 		try {
 			// if mimetype of context is null -> remove the property
-			node.setProperty("jcr:mimetype", context.getMimeType());
+			node.setProperty(DocConstants.JCR_MIMETYPE, context.getMimeType());
 		} catch (RepositoryException ex) {
 			// ignore
 		}
 		try {
 			// if encoding of context is null -> remove the property
-			node.setProperty("jcr:encoding", context.getEncoding());
+			node.setProperty(DocConstants.JCR_ENCODING, context.getEncoding());
 		} catch (RepositoryException ex) {
 			// ignore
 		}
@@ -411,7 +410,7 @@ public class DefaultIOHandlerImpl implements IOHandler {
 			} else {
 				modificationTime.setTime(new Date());
 			}
-			node.setProperty("jcr:lastmodified", modificationTime);
+			node.setProperty(DocConstants.JCR_LASTMODIFIED, modificationTime);
 		} catch (RepositoryException ex) {
 			// ignore
 		}
