@@ -1,5 +1,8 @@
 package org.openuss.web.docmanagement;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
@@ -13,8 +16,6 @@ import org.openuss.docmanagement.BigFileImpl;
 import org.openuss.docmanagement.DistributionService;
 import org.openuss.docmanagement.DocConstants;
 import org.openuss.docmanagement.DocRights;
-import org.openuss.docmanagement.File;
-import org.openuss.docmanagement.FileImpl;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
 
@@ -35,6 +36,8 @@ public class FileController{
 	
 	public boolean old;
 	
+	public java.util.Date distributionTime;
+	
 
 	public String save(){
 		//visibility is only 0, if folder is a new folder
@@ -46,6 +49,7 @@ public class FileController{
 			DistributionViewBacker dvb = (DistributionViewBacker)valueBinding.getValue(facesContext);
 			file.setPath(dvb.getPath());
 		}
+		file.setDistributionTime(new Timestamp(distributionTime.getTime()));
 		if (visibleForAll) file.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ALL);
 		else if (!visibleForAll) file.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
 		try {
@@ -89,5 +93,13 @@ public class FileController{
 	
 	public void setOld(boolean old) {
 		this.old = old;
+	}
+
+	public java.util.Date getDistributionTime() {
+		return distributionTime;
+	}
+
+	public void setDistributionTime(java.util.Date distributionTime) {
+		this.distributionTime = distributionTime;
 	}
 }

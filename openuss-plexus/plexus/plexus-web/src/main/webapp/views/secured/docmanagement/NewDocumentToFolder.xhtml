@@ -31,30 +31,27 @@
 		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
 	</ui:define>
 	<ui:define name="content">
-		<h:form id="newDocumentToFolderForm">
+		<h:form id="newDocumentToFolderForm" enctype="multipart/form-data">
 		
 			<o:block label="#{msg.doc_addfile_header}">
 				<o:input entity="fileController.file" property="name" required="true">
 				</o:input>
 				<o:input entity="fileController.file" property="message" required="true">
 				</o:input>
-				
 				<h:outputLabel value="#{msg.doc_addfile_file}" for="document"	styleClass="field_label" />
-				<t:inputFileUpload id="document" storage="file" accept="*" immediate="true" styleClass="uploadField">					
+				<t:inputFileUpload id="document" storage="file" immediate="true" styleClass="uploadField">					
 					<f:valueChangeListener type="org.openuss.web.docmanagement.FileUploadListener" />
 				</t:inputFileUpload>
 				<h:message for="document" styleClass="field_error" showDetail="true" showSummary="false" />
 
-				<o:input entity="fileController.file" property="distributionTime" required="true" />
-				<br/>
+			<t:inputDate id="distributionTime" popupCalendar="true" value="#{fileController.distributionTime}" type="full" ampm="false">
+			</t:inputDate>
+
 				<o:input entity="fileController" property="visibleForAll" required="true" />				
 			</o:block>
-
 			<o:block>
-				<plexus:command bean="#{fileController}"
-					action="save" label="#{msg['doc_addfile_button_save']}"
-					title="#{msg['doc_addfile_button_save']}"
-					styleClass="button" />
+				<h:commandButton action="#{fileController.save}"
+					value="#{msg['doc_addfile_button_save']}" styleClass="button"/>				
 				<h:commandButton action="docmanagement_documentexplorer"
 					value="#{msg['doc_addfile_button_cancel']}" styleClass="button"/>	
 			</o:block>

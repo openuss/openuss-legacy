@@ -66,7 +66,7 @@ public class FileDao extends ResourceDao {
 			BigFileImpl fi = new BigFileImpl(new Timestamp(node.getProperty(
 					DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTime()
 					.getTime()), node.getUUID(), new Timestamp(node.getNode(
-					DocConstants.NT_RESOURCE).getProperty(
+					DocConstants.JCR_CONTENT).getProperty(
 					DocConstants.JCR_LASTMODIFIED).getDate().getTime()
 					.getTime()), 0, node.getProperty(
 					DocConstants.PROPERTY_MESSAGE).getString(), node.getNode(
@@ -74,7 +74,7 @@ public class FileDao extends ResourceDao {
 					DocConstants.JCR_MIMETYPE).getString(), node.getName(),
 					node.getPath(), pred, 1, ((int) node.getProperty(
 							DocConstants.PROPERTY_VISIBILITY).getLong()), node
-							.getNode(DocConstants.NT_RESOURCE).getNode(
+							.getNode(
 									DocConstants.JCR_CONTENT).getProperty(
 									DocConstants.JCR_DATA).getStream());
 			logout(session);
@@ -93,7 +93,9 @@ public class FileDao extends ResourceDao {
 	public void setFile(BigFile file) throws Exception {
 		try {
 			Session session = login(repository);
-			Node node = session.getRootNode().getNode(file.getPath());
+			String path = file.getPath();
+			if (path.startsWith("/")) path = path.substring(1);
+			Node node = session.getRootNode().getNode(path);
 			String areaType = getAreaType(node);
 			if (areaType == DocConstants.DISTRIBUTION) {
 				setDistributionFile(node, file);
