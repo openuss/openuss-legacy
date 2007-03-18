@@ -107,5 +107,9 @@ public class FileImpl extends ResourceImpl implements File{
 		this.mimeType = mimeType;
 	}
 	
+	public String getExtension(){
+		return name.substring(name.lastIndexOf(".")+1);
+	}
+	
 	
 }

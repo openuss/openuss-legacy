@@ -1,5 +1,7 @@
 package org.openuss.docmanagement;
 
+import java.sql.Timestamp;
+
 public interface Resource {
 
 	public String getId();
@@ -21,5 +23,9 @@ public interface Resource {
 	public String getMessage();
 
 	public void setMessage(String message);
+	
+	public Timestamp getCreated();
+	
+	public void setCreated(Timestamp created);
 	
 }

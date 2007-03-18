@@ -1,5 +1,7 @@
 package org.openuss.docmanagement;
 
+import java.sql.Timestamp;
+
 public class ResourceImpl implements Resource {
 	
 	public String name;
@@ -11,6 +13,8 @@ public class ResourceImpl implements Resource {
 	public String id;
 	
 	public String message;
+	
+	public Timestamp created;
 
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.Node#getId()
@@ -68,6 +72,14 @@ public class ResourceImpl implements Resource {
 
 	public void setPath(String path) {
 		this.path=path;
+	}
+
+	public Timestamp getCreated() {
+		return created;
+	}
+
+	public void setCreated(Timestamp created) {
+		this.created = created;
 	}
 	
 	

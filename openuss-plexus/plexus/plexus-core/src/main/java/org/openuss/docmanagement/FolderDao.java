@@ -46,7 +46,7 @@ public class FolderDao extends ResourceDao {
 					node.getPath(), null, // TODO add subnodes
 					(int) node.getProperty(DocConstants.PROPERTY_VISIBILITY)
 							.getLong());
-
+			fi.setCreated(new Timestamp(node.getProperty(DocConstants.JCR_CREATED).getDate().getTime().getTime()));
 			Vector<Resource> v = new Vector<Resource>();
 			NodeIterator ni = node.getNodes();
 			Node n;

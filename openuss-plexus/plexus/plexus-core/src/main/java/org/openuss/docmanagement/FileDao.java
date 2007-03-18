@@ -46,6 +46,7 @@ public class FileDao extends ResourceDao {
 					DocConstants.JCR_MIMETYPE).getString(), node.getName(),
 					node.getPath(), null, 1, ((int) node.getProperty(
 							DocConstants.PROPERTY_VISIBILITY).getLong()));
+			file.setCreated(new Timestamp(node.getProperty(DocConstants.JCR_CREATED).getDate().getTime().getTime()));
 			logout(session);
 			return file;
 		} catch (LoginException e) {
@@ -77,6 +78,7 @@ public class FileDao extends ResourceDao {
 							.getNode(
 									DocConstants.JCR_CONTENT).getProperty(
 									DocConstants.JCR_DATA).getStream());
+			fi.setCreated(new Timestamp(node.getProperty(DocConstants.JCR_CREATED).getDate().getTime().getTime()));
 			logout(session);
 			return fi;
 		} catch (ConstraintViolationException e) {

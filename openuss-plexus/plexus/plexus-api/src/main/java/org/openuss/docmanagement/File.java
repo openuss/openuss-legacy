@@ -27,5 +27,7 @@ public interface File extends Resource {
 	public String getMimeType();
 
 	public void setMimeType(String mimeType);
+	
+	public String getExtension();
 
 }

@@ -8,6 +8,7 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 import org.apache.myfaces.custom.tree2.TreeModel;
 import org.apache.myfaces.custom.tree2.TreeModelBase;
+import org.apache.myfaces.custom.tree2.TreeNode;
 import org.apache.myfaces.custom.tree2.TreeNodeBase;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -42,10 +43,7 @@ public class DistributionViewBacker{
 	public FolderController folderController;
 
 	private static final Logger logger = Logger.getLogger(DistributionViewBacker.class);
-	
-	//inner class needed later by dataTable component
-	FileDataProvider data = new FileDataProvider();
-	
+
 	//path of current selected item in treeModel
 	public String facesPath;
 	
@@ -54,10 +52,10 @@ public class DistributionViewBacker{
 	
 	//current TreeModel displayed by tree2 component
 	public TreeModel treeModel;
-	
+
 	//type of current selected item
 	public int type;
-
+	
 	public TreeModel getTree(){
 		//TODO cache treeModel to prevent loading model 5 times a pageload
 		Folder folder = new FolderImpl();
@@ -102,27 +100,8 @@ public class DistributionViewBacker{
 		return tn;
 	}
 
-	private class FileDataProvider extends AbstractPagedTable<File> {
-
-		private DataPage<File> page; 
-		
-		@Override 
-		public DataPage<File> getDataPage(int startRow, int pageSize) {		
-			ArrayList<File> al = new ArrayList<File>();			
-			File f1 = new FileImpl();
-			f1.setName("TestFolder");
-			f1.setDistributionTime(new Timestamp(System.currentTimeMillis()));
-			File f2 = new FileImpl();
-			f2.setName("TestFolder 2");
-			f2.setDistributionTime(new Timestamp(System.currentTimeMillis()));
-			File f3 = new FileImpl();
-			f3.setName("TestFolder 3");
-			f3.setDistributionTime(new Timestamp(System.currentTimeMillis()));
-			page = new DataPage<File>(al.size(),0,al);
-			return page;
-		}
-	}
 	
+
 	public String addTestStructure(){
 		try{
 			((DistributionServiceImpl)distributionService).buildTestStructure();
@@ -195,15 +174,38 @@ public class DistributionViewBacker{
 		this.distributionService = distributionService;
 	}
 
-	public FileDataProvider getData() {
-		return data;
+	public ArrayList getData() {
+		logger.debug("generating file table entries ");
+		ArrayList<File> al = new ArrayList<File>();
+		if (path!=null){
+			Folder folder = new FolderImpl();
+			String path = this.path;
+			if (path.startsWith("/")) path = path.substring(1);
+			try {
+				folder = distributionService.getFolder(path);
+			} catch (PathNotFoundException e) {
+				logger.error("PathNotFound, e");
+			} catch (ResourceAlreadyExistsException e) {
+				logger.error("", e);
+			}
+			Collection subnodes = folder.getSubnodes();
+			//check if folder has subnodes
+			if (subnodes!=null){
+				Iterator nodeIterator = subnodes.iterator();
+				while (nodeIterator.hasNext()){
+					Resource r = (Resource) nodeIterator.next();
+					if (r instanceof File) {
+						al.add((File)r);					
+					}
+				}
+			}
+		}
+		logger.debug("file table entries generated");
+		return al;
+
 	}
 
-	public void setData(FileDataProvider data) {
-		this.data = data;
-	}
-
-	public String getPath() {
+	public String getPath() {		
 		return path;
 	}
 
@@ -246,5 +248,8 @@ public class DistributionViewBacker{
 
 	public void setType(int type) {
 		this.type = type;
-	}
+	}	
 }
+
+	
+	

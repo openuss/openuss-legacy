@@ -9,14 +9,19 @@
 	xmlns:s="http://www.openuss.org/jsf-security"
 	xmlns:c="http://java.sun.com/jstl/core">
 
-	<t:dataTable id="contentDataTable" var="element"
+	<t:dataTable id="filesDataTable" var="file"
 		value="#{distributionViewBacker.data}">
-
 		<t:column>
-			<h:outputText value="#{element.name}" />			
+			<h:outputText value="#{file.name}" />			
 		</t:column>
 		<t:column>
-			<h:outputText value="#{element.distributionTime}" />
+			<h:outputText value="#{file.extension}" />			
+		</t:column>
+		<t:column>
+			<h:outputText value="#{file.length}" />			
+		</t:column>
+		<t:column>
+			<h:outputText value="#{file.lastModification}" />			
 		</t:column>
 	</t:dataTable>
 </ui:composition>
