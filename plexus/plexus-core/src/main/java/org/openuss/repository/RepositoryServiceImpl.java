@@ -5,9 +5,6 @@
  */
 package org.openuss.repository;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,16 +12,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.Timestamp;
+import java.util.Date;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * @author Ingo Dueppe
  * @see org.openuss.repository.RepositoryService
  */
 public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServiceBase {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(RepositoryServiceImpl.class);
 	
 	private String path;
@@ -38,13 +37,14 @@ public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServ
 	 * @see org.openuss.repository.RepositoryService#removeFile(org.openuss.repository.RepositoryFile)
 	 */
 	protected void handleRemoveFile(RepositoryFile file) throws java.lang.Exception {
-		if (StringUtils.isBlank(path))
-			throw new IllegalStateException("RepositryLocations is not configured!");
+		Validate.notEmpty(path, "RepositoryLocation is not configured!");
+		String fileName = toFileName(file);
+		if (logger.isDebugEnabled()) {
+			logger.debug("removing file "+fileName+" from repository.");
+		}
 		
 		getRepositoryFileDao().remove(file);
-		String fileName = toFileName(file);
-		if (logger.isDebugEnabled())
-			logger.debug("remove file "+fileName+" from repository.");
+
 		File f = new File(fileName);
 		if (f.exists()) {
 			boolean success = f.delete();
@@ -59,29 +59,36 @@ public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServ
 	 * @see org.openuss.repository.RepositoryService#getFile(org.openuss.repository.RepositoryFile)
 	 */
 	protected RepositoryFile handleGetFile(RepositoryFile file) throws java.lang.Exception {
-		if (StringUtils.isBlank(path))
-			throw new IllegalStateException("RepistoryLocations is not configured!");
-		file = getRepositoryFileDao().load(file.getId());
-		if (logger.isDebugEnabled())
-			logger.debug("load file "+file.getFileName());
-		if (file != null) {
-			String fileName = toFileName(file);
-			file.setInputStream(new FileInputStream(fileName));
+		Validate.notEmpty(path, "RepositoryLocation is not configured!");
+		Validate.notNull(file, "Parameter file is mandatory!");
+		Validate.notNull(file.getId(), "Parameter file.getId() must not be null.");
+		
+		RepositoryFile repositoryFile = getRepositoryFileDao().load(file.getId());
+		if (repositoryFile == null) {
+			if (logger.isDebugEnabled()) {
+				logger.error("file with id "+file.getId()+" not found!");
+			}
+		} else {
+			if (logger.isDebugEnabled()) {
+				logger.debug("loading file "+repositoryFile.getFileName());
+			}
+			String fileName = toFileName(repositoryFile);
+			repositoryFile.setInputStream(new FileInputStream(fileName));
 		}
-		return file;
+		return repositoryFile;
 	}
 
 	/**
 	 * @see org.openuss.repository.RepositoryService#getSaveFile(org.openuss.repository.RepositoryFile)
 	 */
 	public void handleSaveFile(RepositoryFile file) throws java.lang.Exception {
-		if (StringUtils.isBlank(path))
-			throw new IllegalStateException("RepistoryLocations is not configured!");
+		Validate.notEmpty(path, "RepositoryLocation is not configured!");
+
 		final RepositoryFileDao fileDao = getRepositoryFileDao();
 		
-		file.setModified(new Timestamp(System.currentTimeMillis()));
+		file.setModified(new Date());
 		if (file.getId() == null) {
-			file.setCreated(new Timestamp(System.currentTimeMillis()));
+			file.setCreated(new Date());
 			fileDao.create(file);
 		} else {
 			fileDao.update(file);

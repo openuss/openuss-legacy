@@ -12,6 +12,7 @@ import org.openuss.security.GroupDao;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
+import org.openuss.security.UserImpl;
 
 /**
  * Test Utility to generate default database structures
@@ -92,11 +93,13 @@ public class TestUtility {
 		userDao.create(user);
 		groupDao.update(group);
 
-		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username,
-				"password");
+		final UsernamePasswordAuthenticationToken authentication;
+		authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), "[Protected]", ((UserImpl) user).getAuthorities());
+
+		
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		return user;
-	}
+	} 
 	
 	public User createDefaultUser() {
 		User user = User.Factory.newInstance();

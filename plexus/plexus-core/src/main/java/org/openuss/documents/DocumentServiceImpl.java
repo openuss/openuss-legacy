@@ -5,6 +5,8 @@
  */
 package org.openuss.documents;
 
+import org.apache.log4j.Logger;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -18,6 +20,8 @@ import org.openuss.framework.utilities.DomainObjectUtility;
  */
 public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBase {
 
+	private static final Logger logger = Logger.getLogger(DocumentServiceImpl.class);
+
 	@Override
 	protected void handleAddFileEntry(FileEntry file, Folder parent) throws Exception {
 		Validate.notNull(file, "Parameter file must not be null!");
@@ -26,7 +30,38 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		parent = getFolderDao().load(parent.getId());
 		parent.addFolderEntry(file);
 		
+		persistFileEntry(file);
+		
 		getFolderDao().update(parent);
+	}
+
+	private void persistFileEntry(FileEntry file) {
+		Validate.notNull(file, "Parameter file must not be null!");
+		Validate.notNull(file.getParent(), "Parameter file must have a parent folder!");
+		if (logger.isDebugEnabled()) {
+			logger.debug("saving file entry "+file.getName());
+		}
+		getRepositoryService().saveFile(file.getRepositoryFile());
+		
+		if (file.getId() == null) {
+			getFileEntryDao().create(file);
+		} else {
+			getFileEntryDao().update(file);
+		}
+	}
+
+	
+	private void persistFolder(Folder folder) {
+		Validate.notNull(folder, "Parameter folder must not be null!");
+		Validate.notNull(folder, "Parameter folder must have a parent folder!");
+		if (logger.isDebugEnabled()) {
+			logger.debug("persisting folder "+folder.getName());
+		}
+		if (folder.getId() == null) {
+			getFolderDao().create(folder);
+		} else {
+			getFolderDao().update(folder);
+		}
 	}
 
 	@Override
@@ -37,7 +72,8 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		parent = getFolderDao().load(parent.getId());
 		parent.addFolderEntry(folder);
 		
-		getFolderDao().create(folder);
+		persistFolder(folder);
+		
 		getFolderDao().update(parent);
 	}
 
@@ -69,16 +105,45 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	@Override
-	protected void handleRemoveFileEntry(FolderEntryInfo folderEntry) throws Exception {
-		getFolderEntryDao().remove(folderEntry.getId());
+	protected void handleRemoveFolderEntry(FolderEntryInfo folderEntryInfo) throws Exception {
+		Validate.notNull(folderEntryInfo, "Parameter folderEntryInfo must not be null.");
+		Validate.notNull(folderEntryInfo.getId(), "Parameter folderEntryInfo must contain an id.");
+		
+		FolderEntry folderEntry = getFolderEntryDao().load(folderEntryInfo.getId());
+		removeFolderEntry(folderEntry);
+	}
+
+	@Override
+	protected void handleRemoveFolderEntry(FolderEntry folderEntry) throws Exception {
+		if (folderEntry instanceof FileEntry) {
+			getFolderEntryDao().remove(folderEntry.getId());
+			if (folderEntry instanceof FileEntry) {
+				FileEntry fileEntry = (FileEntry) folderEntry;
+				getRepositoryService().removeFile(fileEntry.getRepositoryFile());
+			}
+		} else if (folderEntry instanceof Folder) {
+			Folder folder = (Folder) folderEntry;
+			for (FolderEntry entry: folder.getEntries()) {
+				removeFolderEntry(entry);
+			}
+			getFolderEntryDao().remove(folder);
+		}
 	}
 
 	@Override
 	protected void handleSaveFolderEntry(FolderEntry folderEntry) throws Exception {
 		Validate.notNull(folderEntry, "Parameter folderEntry must not be null!");
 		Validate.notNull(folderEntry.getId(), "Parameter folderEntry must be an persisted entity with a valid identifier!");
-		getFolderEntryDao().update(folderEntry);
+		
+		if (folderEntry instanceof FileEntry) {
+			persistFileEntry((FileEntry) folderEntry);
+		} else if (folderEntry instanceof Folder) {
+			persistFolder((Folder) folderEntry);
+		} else {
+			throw new DocumentServiceException("Unkown folder entry type!");
+		}
 	}
+	
 
 	@Override
 	protected List handleGetFolderEntries(Object domainObject, Folder folder) throws Exception {
@@ -96,7 +161,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	@Override
-	protected Folder handleGetFolder(Object domainObject, FolderEntryInfo folderEntry) throws Exception {
+	protected Folder handleGetFolder(Object domainObject, FolderEntry folderEntry) throws IllegalAccessException, InvocationTargetException {
 		if (folderEntry == null) {
 			return getRootFolderForDomainObject(domainObject);
 		} else {

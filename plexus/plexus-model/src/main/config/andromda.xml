@@ -85,7 +85,7 @@
                 <!-- Spring Hibernate Configuraiton  -->
 
                 <property name="hibernateDialect">org.hibernate.dialect.FirebirdDialect</property>
-                <property name="hibernateHbm2DDLAuto">update</property>
+                <property name="hibernateHbm2DDLAuto">auto</property>
                 <property name="hibernateShowSql">false</property>
                 <property name="parameterRequiredCheck">false</property>
                 
