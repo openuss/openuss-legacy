@@ -136,19 +136,19 @@ public class RegistrationServiceImpl extends org.openuss.security.registration.R
 
 	@Override
 	protected User handleLoginUserByActivationCode(String activationCode) throws Exception {
-		ActivationCode aC = getActivationCodeDao().findByCode(activationCode);
-		if (aC==null){
+		ActivationCode code = getActivationCodeDao().findByCode(activationCode);
+		if (code==null){
 			logger.debug("Could not find activation code: " + activationCode);
 			throw new RegistrationCodeNotFoundException("Could not find activation code: " + activationCode);
 		}
 
-		if (isExpired(aC)){
+		if (isExpired(code)){
 			logger.debug("Activation code expired!");
 			throw new RegistrationCodeExpiredException("activation code expired!" + activationCode);
 		}
-		loginUser(aC.getUser());
-		getActivationCodeDao().remove(aC);
-		return aC.getUser();
+		loginUser(code.getUser());
+		getActivationCodeDao().remove(code);
+		return code.getUser();
 		
 	}
 

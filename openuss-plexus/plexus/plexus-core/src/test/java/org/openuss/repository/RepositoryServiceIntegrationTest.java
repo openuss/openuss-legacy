@@ -33,7 +33,6 @@ public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrati
 		file.setContentType("contentType");
 		file.setName("dummy");
 		file.setInputStream(stream);
-//		file.setReleaseDate(new Timestamp(System.currentTimeMillis()));
 		file.setCreated(new Timestamp(System.currentTimeMillis()));
 		file.setModified(new Timestamp(System.currentTimeMillis()));
 		
@@ -57,6 +56,7 @@ public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrati
 		assertEquals(str, str2);
 		
 		repositoryService.removeFile(nfile);
+		assertNull(repositoryService.getFile(nfile));
 	}
 
 	private String getFileContentAsString(RepositoryFile nfile) {

@@ -46,4 +46,14 @@ public class FileEntryImpl extends org.openuss.documents.FileEntryBase implement
 	public Integer getSize() {
 		return (getRepositoryFile() == null) ? null : getRepositoryFile().getFileSize();
 	}
+
+	@Override
+	public boolean isReleased() {
+		return new Date().after(getCreated());
+	}
+
+	@Override
+	public Date releaseDate() {
+		return getCreated();
+	}
 }

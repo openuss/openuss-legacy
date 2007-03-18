@@ -5,6 +5,7 @@ import junit.framework.TestSuite;
 
 import org.openuss.desktop.DesktopTests;
 import org.openuss.discussion.DiscussionTests;
+import org.openuss.documents.DocumentTests;
 import org.openuss.lecture.LectureTests;
 import org.openuss.news.NewsTests;
 import org.openuss.repository.RepositoryTests;
@@ -25,6 +26,7 @@ public class AllTests {
 		suite.addTest(LectureTests.suite());
 		suite.addTest(DiscussionTests.suite());
 		suite.addTest(MailTests.suite());
+		suite.addTest(DocumentTests.suite());
 		// $JUnit-END$
 		return suite;
 	}
