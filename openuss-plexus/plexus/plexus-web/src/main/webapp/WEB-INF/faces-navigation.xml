@@ -90,6 +90,7 @@
 			<to-view-id>/views/secured/system/properties.xhtml</to-view-id>
 		</navigation-case>
 		
+	
 		<navigation-case>
 			<from-outcome>show_faculty</from-outcome>
 			<to-view-id>/views/secured/lecture/faculty.xhtml</to-view-id>
@@ -102,7 +103,7 @@
 
 		<navigation-case>
 			<from-outcome>enrollment_main</from-outcome>
-			<to-view-id>/views/secured/enrollment/main.xhtml?enrollmentId=#{enrollmentId}</to-view-id>
+			<to-view-id>/views/secured/enrollment/main.xhtml</to-view-id>
 		</navigation-case>
 		
 	</navigation-rule>
@@ -159,6 +160,7 @@
     	</navigation-case>
     </navigation-rule>
 
+    
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
        A c t i o n s
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
@@ -194,7 +196,6 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
        D e s k t o p  - P a g es
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
-	
 	<navigation-rule>
 		<from-view-id>/views/secured/*</from-view-id>
 		<navigation-case>
@@ -215,6 +216,13 @@
 		</navigation-case>
 	</navigation-rule>
 	
+    <navigation-rule>
+    	<from-view-id>/views/secured/desktop/*</from-view-id>
+    	<navigation-case>
+    		<from-outcome>subject_enrollment_selection</from-outcome>
+    		<to-view-id>/views/secured/desktop/subjectenrollmenselection.xhtml</to-view-id>
+    	</navigation-case>
+    </navigation-rule>
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
        F a c u l t y  - R e g i s t r a t i o n 
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
@@ -313,9 +321,10 @@
 		<navigation-rule>
 			<from-view-id>/views/secured/*</from-view-id>
 		
+			<!-- TODO move main to public or insert second public enrollment main -->
 			<navigation-case>
 				<from-outcome>enrollment</from-outcome>
-				<to-view-id>/views/public/news/newsDetail.xhtml</to-view-id>
+				<to-view-id>/views/secured/enrollment/main.xhtml</to-view-id>
 			</navigation-case>
 
 			<navigation-case>
@@ -325,7 +334,7 @@
 	
 			<navigation-case>
 				<from-outcome>enrollment_discussion</from-outcome>
-				<to-view-id>/views/secured/enrollment/discussion.xhtml</to-view-id>
+				<to-view-id>/views/secured/discussion/discussions.xhtml</to-view-id>
 			</navigation-case>
 	
 			<navigation-case>
@@ -345,13 +354,104 @@
 	
 			<navigation-case>
 				<from-outcome>enrollment_wiki</from-outcome>
-				<to-view-id>/views/secured/enrollment/wiki.xhtml</to-view-id>
+				<to-view-id>/views/secured/wiki/wikimain.xhtml</to-view-id>
 			</navigation-case>
 	
 			<navigation-case>
 				<from-outcome>enrollment_options</from-outcome>
-				<to-view-id>/views/secured/enrollment/options.xhtml</to-view-id>
+				<to-view-id>/views/secured/enrollment/enrollmentoptions.xhtml</to-view-id>
 			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>enrollment_options_config</from-outcome>
+				<to-view-id>/views/secured/enrollment/enrollmentoptions.xhtml</to-view-id>				
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>enrollment_options_aspirants</from-outcome>
+				<to-view-id>/views/secured/enrollment/enrollmentaspirants.xhtml</to-view-id>				
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>enrollment_options_members</from-outcome>
+				<to-view-id>/views/secured/enrollment/enrollmentparticipants.xhtml</to-view-id>				
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>enrollment_options_assistants</from-outcome>
+				<to-view-id>/views/secured/enrollment/enrollmentassistants.xhtml</to-view-id>
+     		</navigation-case>
+
+			<navigation-case>
+				<from-outcome>enrollment_options_news</from-outcome>
+				<to-view-id>/views/secured/lecture/news.xhtml</to-view-id>				
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>mailinglist_newmail</from-outcome>
+				<to-view-id>/views/secured/enrollment/newmail.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>mailinglist_subscribers</from-outcome>
+				<to-view-id>/views/secured/enrollment/mailinglistsubscribers.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>braincontest_main</from-outcome>
+				<to-view-id>/views/secured/enrollment/braincontestmain.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>braincontest_new</from-outcome>
+				<to-view-id>/views/secured/enrollment/braincontestnew.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>braincontest_solve</from-outcome>
+				<to-view-id>/views/secured/enrollment/braincontestsolve.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>braincontest_top</from-outcome>
+				<to-view-id>/views/secured/enrollment/braincontesttop.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>enrollment_documents</from-outcome>
+				<to-view-id>/views/secured/documents/documents.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>documents_new_file</from-outcome>
+				<to-view-id>/views/secured/documents/documentnew.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>documents_new_folder</from-outcome>
+				<to-view-id>/views/secured/documents/foldernew.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>documents_add_zip</from-outcome>
+				<to-view-id>/views/secured/documents/addzip.xhtml</to-view-id>				
+			</navigation-case>		
+			
+			<navigation-case>
+				<from-outcome>discussion_new</from-outcome>
+				<to-view-id>/views/secured/discussion/discussionnew.xhtml</to-view-id>				
+			</navigation-case>		
+
+			<navigation-case>
+				<from-outcome>discussion_thread</from-outcome>
+				<to-view-id>/views/secured/discussion/discussionthread.xhtml</to-view-id>				
+			</navigation-case>					
+
+			<navigation-case>
+				<from-outcome>wiki_edit</from-outcome>
+				<to-view-id>/views/secured/wiki/wikiedit.xhtml</to-view-id>				
+			</navigation-case>					
+
 		</navigation-rule>
 	
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  

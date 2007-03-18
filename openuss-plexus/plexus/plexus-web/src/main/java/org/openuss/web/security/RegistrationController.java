@@ -13,15 +13,14 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Session;
 import org.apache.shale.tiger.view.View;
-import org.openuss.framework.mail.MailEngine;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.security.User;
 import org.openuss.security.SecurityService;
 import org.openuss.security.registration.RegistrationException;
 import org.openuss.security.registration.RegistrationService;
 import org.openuss.web.Constants;
+import org.openuss.web.mail.MailController;
 import org.openuss.web.utils.MessageBox;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
 
 /**
@@ -45,11 +44,8 @@ public class RegistrationController extends BaseBean {
 	@Property(value = "#{securityService}")
 	transient private SecurityService securityService;
 
-	@Property(value = "#{mailEngine}")
-	transient private MailEngine mailEngine;
-
-	@Property(value = "#{mimeMessageHelper}")
-	transient private MimeMessageHelper mimeMessageHelper;
+	@Property(value = "#{mailController}")
+	transient private MailController mailController;
 
 	@Property(value = "#{registrationData}")
 	private RegistrationData registrationData;
@@ -109,12 +105,11 @@ public class RegistrationController extends BaseBean {
 			Map parameters = new HashMap();
 			parameters.put("username", user.getUsername());
 			parameters.put("link", link);
-
-			mimeMessageHelper.setTo(user.getEmail());
-			mimeMessageHelper.setSubject(i18n("user_email_verification_subject"));
-			mailEngine.sendMessage(mimeMessageHelper.getMimeMessage(), "verification", parameters, user.getPreferences().getLocale());
-		} catch (MessagingException e) {
-			logger.error(e);
+			
+			mailController.sendMails("user_email_verification_subject", user, "verification", parameters);
+			
+		} catch (Exception e) {
+			logger.error("Error: ", e);
 		}
 	}
 
@@ -152,19 +147,17 @@ public class RegistrationController extends BaseBean {
 	 * @param verificationCode
 	 * @throws MessagingException 
 	 */
-	private void sendForgottenPasswordEmail(String user, String email, String verificationCode) throws MessagingException {
+	private void sendForgottenPasswordEmail(User user, String verificationCode) throws Exception {
 			String link = "/actions/public/user/password/change.faces?code=" + verificationCode;
 
 			final HttpServletRequest request = getRequest();
 			link = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + link;
 
 			Map parameters = new HashMap();
-			parameters.put("username", user);
+			parameters.put("username", user.getUsername());
 			parameters.put("link", link);
 
-			mimeMessageHelper.setTo(email);
-			mimeMessageHelper.setSubject(i18n("user_password_requestMail_subject"));
-			mailEngine.sendMessage(mimeMessageHelper.getMimeMessage(), "verification", parameters, "de");
+			mailController.sendMails("user_password_requestMail_subject", user, "verification", parameters);
 	}
 
 	/**
@@ -174,7 +167,7 @@ public class RegistrationController extends BaseBean {
 	 * @throws RegistrationException 
 	 * @throws MessagingException 
 	 */
-	public String forgotPassword() throws RegistrationException, MessagingException {	
+	public String forgotPassword() throws RegistrationException, Exception {	
 		if (registrationService == null)
 			throw new IllegalStateException(
 					"RegistrationController isn't connected to a RegistrationService. Check if the property is properly initialized within managed beans configuration.");
@@ -189,7 +182,7 @@ public class RegistrationController extends BaseBean {
 		}
 		String verificationCode = registrationService.generateActivationCode(user);
 
-		sendForgottenPasswordEmail(username, user.getEmail(), verificationCode);
+		sendForgottenPasswordEmail(user, verificationCode);
 		showPasswordMailConfirmation(user);
 
 		return Constants.SUCCESS;
@@ -210,22 +203,6 @@ public class RegistrationController extends BaseBean {
 
 	public void setRegistrationService(RegistrationService registrationService) {
 		this.registrationService = registrationService;
-	}
-
-	public MailEngine getMailEngine() {
-		return mailEngine;
-	}
-
-	public void setMailEngine(MailEngine mailEngine) {
-		this.mailEngine = mailEngine;
-	}
-
-	public MimeMessageHelper getMimeMessageHelper() {
-		return mimeMessageHelper;
-	}
-
-	public void setMimeMessageHelper(MimeMessageHelper mimeMessageHelper) {
-		this.mimeMessageHelper = mimeMessageHelper;
 	}
 
 	public String getUsername() {
@@ -258,6 +235,14 @@ public class RegistrationController extends BaseBean {
 
 	public void setUserToken(String userToken) {
 		this.userToken = userToken;
+	}
+
+	public MailController getMailController() {
+		return mailController;
+	}
+
+	public void setMailController(MailController mailController) {
+		this.mailController = mailController;
 	}
 
 }

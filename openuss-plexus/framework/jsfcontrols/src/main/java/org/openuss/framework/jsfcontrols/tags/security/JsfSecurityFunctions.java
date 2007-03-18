@@ -47,9 +47,9 @@ public class JsfSecurityFunctions {
 	 * @return HttpServletRequest
 	 */
 	private static HttpServletRequest getRequest() {
-		if (httpServletRequest != null)// convenience for unit testing
-			return httpServletRequest; 
-		return (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		if (httpServletRequest == null)
+			httpServletRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		return httpServletRequest; 
 	}
 	
 	private static HttpServletRequest httpServletRequest; // convenience field for unit testing

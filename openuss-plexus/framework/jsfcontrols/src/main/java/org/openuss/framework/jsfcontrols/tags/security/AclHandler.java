@@ -1,129 +1,174 @@
 package org.openuss.framework.jsfcontrols.tags.security;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.StringTokenizer;
 
 import javax.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+import javax.faces.el.MethodBinding;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.acl.AclEntry;
-import org.acegisecurity.acl.AclManager;
-import org.acegisecurity.acl.basic.BasicAclEntry;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
+import org.openuss.framework.web.jsf.util.FacesUtils;
 
 import com.sun.facelets.FaceletContext;
 import com.sun.facelets.FaceletException;
 import com.sun.facelets.tag.TagAttribute;
 import com.sun.facelets.tag.TagConfig;
+import com.sun.facelets.tag.TagException;
 import com.sun.facelets.tag.TagHandler;
 
 /**
  * Facelets Tag to check acegi acl permissions
  * 
+ * The tag has the following attributes:
+ * <ul>
+ * 	<li><code>domainObject</code> - defines the domain object on which the current authority must have permissions on.</li>
+ *  <li><code>hasPermission</code> - defines the permission bit mask the authority must have.</li>
+ *  <li><code>onErrorAction</code> - jsf action method binding to define an action that is performed if permission is denied</li>
+ *  <li><code>ifNot="error"</code> - if is set the tag sends a 403 forbidden access error if permission is denied</li>
+ * </ul>
+ * 
  * @author Ingo Dueppe
  * 
  */
 public class AclHandler extends TagHandler {
+	private static final String ERROR = "error";
+
 	private static final Logger logger = Logger.getLogger(AclHandler.class);
 
 	private final TagAttribute domainObject;
-	private final TagAttribute hasPermission;
+	private final TagAttribute onErrorAction;
+	private final TagAttribute ifNot;
+	
+	private final TagAttribute permission;
+	
+	private final boolean reverted;
 
-	public AclHandler(final TagConfig config) {
+	public AclHandler(final TagConfig config) throws TagException {
 		super(config);
 
-		domainObject = getAttribute("domainObject");
-		hasPermission = getAttribute("hasPermission");
+		domainObject = getRequiredAttribute("domainObject");
+		
+		if (getAttribute("hasPermission") == null) {
+			permission = getAttribute("hasNotPermission");
+			reverted = true;
+		} else {
+			permission = getAttribute("hasPermission");
+			reverted = false;
+		}
+		ifNot = getAttribute("ifNot");
+		onErrorAction = getAttribute("onErrorAction");
+		validatePermissionAttributes();
+		
 	}
 
-	public void apply(FaceletContext ctx, UIComponent parent) throws IOException, FacesException, FaceletException,
-			ELException {
-		if ((null == hasPermission) || StringUtils.isBlank(hasPermission.getValue())) {
+	private void validatePermissionAttributes() {
+		if (permission == null) {
+			throw new TagException(this.tag, "Need to define eather hasPermission or hasNotPermission");
+		} 
+	}
+
+	public void apply(final FaceletContext faceletContext, final UIComponent parent) throws IOException, FacesException, FaceletException,	ELException {
+		if (StringUtils.isBlank(permission.getValue())) {
 			return; // skip entry
 		}
-
-		Object resolvedDomainObject = domainObject.getObject(ctx);
-		Object value = hasPermission.getObject(ctx);
 		
+		if (SecurityContextHolder.getContext().getAuthentication() == null) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("SecurityContextHolder did not return a non-null Authentication object, so skipping tag body!");
+			}
+			return; // skip enty
+		}
+
+		if (domainObject.getObject(faceletContext) == null) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("domainObject resolved to null, so including tag body");
+			}
+			nextHandler.apply(faceletContext, parent);
+			return; // apply entry
+		}
+		checkACLs(faceletContext, parent);
+	}
+
+	private void checkACLs(final FaceletContext faceletContext, final UIComponent parent) throws IOException {
+		Object resolvedDomainObject = domainObject.getObject(faceletContext);
+		Integer[] requiredIntegers = requiredIntegers(faceletContext);
+
+		if (considerReverted(AcegiUtils.hasPermission(resolvedDomainObject, requiredIntegers))) {
+			nextHandler.apply(faceletContext, parent);
+		} else {		
+			logBodySkipped(resolvedDomainObject);
+			permissionDenied(faceletContext);
+		}
+	}
+
+	private void logBodySkipped(Object resolvedDomainObject) {
+		if (logger.isDebugEnabled()) {
+			if (reverted) {
+				logger.debug("Has permission on "+resolvedDomainObject+", due to reverted the body is skiped!");
+			} else {					
+				logger.debug("No permission on "+resolvedDomainObject+" to see the body!");
+			}
+		}
+	}
+	
+	private boolean considerReverted(final boolean value) {
+		if (reverted) {
+			return !value;
+		} else {
+			return value;
+		}
+	}
+	
+	private void permissionDenied(final FaceletContext faceletContext) throws IOException {
+		if (onErrorAction != null) {
+			performOnErrorAction(faceletContext);
+		} else if (ifNot != null && StringUtils.equals(ifNot.getValue(),ERROR)) {
+			FacesUtils.sendError(HttpServletResponse.SC_FORBIDDEN);
+		} 
+	}
+
+	private void performOnErrorAction(final FaceletContext faceletContext) {
+		String expression = onErrorAction.getValue();
+		if (FacesUtils.isExpressionStatement(expression) ) {
+			MethodBinding actionMethod = faceletContext.getFacesContext().getApplication().createMethodBinding(expression, null);
+			FacesUtils.handleNavigationOutcome(expression, FacesUtils.perform(actionMethod));
+		} else {
+			FacesUtils.handleNavigationOutcome(null, expression);
+		}
+	}
+
+	/**
+	 * Determins from a input object the required integers
+	 * @param value
+	 * @return required integers
+	 */
+	private Integer[] requiredIntegers(final FaceletContext faceletContext) {
+		final Object value = permission.getObject(faceletContext);
 		Integer[] requiredIntegers = new Integer[0];
 		if (value instanceof Integer) {
 			requiredIntegers = new Integer[]{(Integer) value};
 		} else if (value instanceof Long) {
 			requiredIntegers = new Integer[]{((Long)value).intValue()};
 		} else if (value instanceof String) {
-			requiredIntegers = parseIntegersString((String)value);
+			requiredIntegers = AcegiUtils.parseIntegersString((String)value);
 		}
-
-
-		if (resolvedDomainObject == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("domainObject resolved to null, so including tag body");
-				nextHandler.apply(ctx, parent);
-				return;
-			}
-		}
-
-		if (SecurityContextHolder.getContext().getAuthentication() == null) {
-			if (logger.isDebugEnabled()) {
-				logger
-						.debug("SecurityContextHolder did not return a non-null Authentication object, so skipping tag body!");
-			}
-			return;
-		}
-
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-		FacesContext facesContext = ctx.getFacesContext();
-
-		AclManager aclManager = (AclManager) facesContext.getApplication().createValueBinding("#{aclManager}")
-				.getValue(facesContext);
-
-		AclEntry[] acls = aclManager.getAcls(resolvedDomainObject, auth);
-
-		if (logger.isDebugEnabled()) {
-			logger.debug("Authentication: '" + auth + "' has: " + ((acls == null) ? 0 : acls.length)
-					+ " AclEntrys for domain object: '" + resolvedDomainObject + "' from AclManager: ' "
-					+ aclManager.toString() + "'");
-		}
-
-		if ((acls != null) && acls.length > 0) {
-			// Locate processable AclEntrys
-			for (AclEntry aclEntry : acls) {
-				if (aclEntry instanceof BasicAclEntry) {
-					BasicAclEntry processableAcl = (BasicAclEntry) aclEntry;
-					for (Integer required : requiredIntegers) {
-						if (processableAcl.isPermitted(required)) {
-							if (logger.isDebugEnabled()) {
-								logger.debug("Including tag body as found permission: " + requiredIntegers
-										+ " due to AclEntry: '" + processableAcl + "'");
-								nextHandler.apply(ctx, parent);
-								return;
-							}
-						}
-					}
-				}
-			}
-		}
-		if (logger.isDebugEnabled()) {
-			logger.debug("No permission, so skipping tag body");
-		}
+		return requiredIntegers;
 	}
+	
 
 	/**
 	 * Checks if the user is in all of the needed roles.
 	 * 
-	 * @param roleList
+	 * @param roleList 
 	 * @return true if user is in all of the needed roles
 	 */
-	public boolean isAllGranted(String roleList, HttpServletRequest request) {
+	public boolean isAllGranted(final String roleList, final HttpServletRequest request) {
 		String[] roles = roleList.split(",");
 		boolean isAuthorized = false;
 		for (String role : roles) {
@@ -136,19 +181,6 @@ public class AclHandler extends TagHandler {
 
 		}
 		return isAuthorized;
-	}
-
-	private Integer[] parseIntegersString(String integersString) throws NumberFormatException {
-		final Set integers = new HashSet();
-		final StringTokenizer tokenizer;
-		tokenizer = new StringTokenizer(integersString, ",", false);
-
-		while (tokenizer.hasMoreTokens()) {
-			String integer = tokenizer.nextToken();
-			integers.add(new Integer(integer));
-		}
-
-		return (Integer[]) integers.toArray(new Integer[] {});
 	}
 
 }

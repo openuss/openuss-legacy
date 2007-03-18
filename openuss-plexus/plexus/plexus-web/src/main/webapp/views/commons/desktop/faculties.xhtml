@@ -7,28 +7,23 @@
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols">
       
-    <t:dataTable id="faculties" 
-		var="faculty"
-		value="#{desktop.faculties}"
-		styleClass="table"
-		binding="#{views$secured$desktop$desktop.facultyTable}"
-		headerClass="tableHeader"
-		footerClass="tableFooter"
-		rowClasses="odd, even"
-		columnClasses="links,commands,commands"
-		preserveDataModel="false"
-		preserveSort="false"
-		rows="5"
-		cellspacing="1">
+      
+    <plexus:dataTable 
+    	id="faculties"
+    	label="#{msg.desktop_faculties_header}" 
+		var="facultyItem"
+		value="views$secured$desktop$desktop.facultiesProvider"
+		rows="5">
 	  
-		<h:column>
-			<f:facet name="header">
+		<t:column>
+			<plexus:commandSortHeader columnName="name">
 				<h:outputText value="#{msg.desktop_faculties_colheader_name}"/>
-			</f:facet>
-			<h:commandLink action="#{views$secured$desktop$desktop.showFaculty}" styleClass="command" title="#{faculty.ownername}">
-				<h:outputText value="#{faculty.name} (#{faculty.shortcut})"/>
-			</h:commandLink>
-		</h:column>
+			</plexus:commandSortHeader>
+			<o:link value="/views/secured/lecture/faculty.faces" title="#{facultyItem.ownername}">
+				<f:param value="#{facultyItem.id}" name="faculty" />
+				<h:outputText value="#{facultyItem.name} (#{facultyItem.shortcut})"/>
+			</o:link>
+		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">
 			<plexus:command
@@ -39,9 +34,6 @@
 				styleClass="button_unlink"/>
 		</plexus:column>
 		 
-	</t:dataTable>
+	</plexus:dataTable>
 
-	<plexus:dataScroller for="faculties" pages="5"/>
-	
-	
 </ui:composition>

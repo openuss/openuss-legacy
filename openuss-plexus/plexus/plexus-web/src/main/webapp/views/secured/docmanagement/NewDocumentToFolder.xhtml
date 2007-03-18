@@ -38,8 +38,16 @@
 				</o:input>
 				<o:input entity="fileController.file" property="message" required="true">
 				</o:input>
+				
+				<h:outputLabel value="#{msg.doc_addfile_file}" for="document"	styleClass="field_label" />
+				<t:inputFileUpload id="document" storage="file" accept="*" immediate="true" styleClass="uploadField">					
+					<f:valueChangeListener type="org.openuss.web.docmanagement.FileUploadListener" />
+				</t:inputFileUpload>
+				<h:message for="document" styleClass="field_error" showDetail="true" showSummary="false" />
 
 				<o:input entity="fileController.file" property="distributionTime" required="true" />
+				<br/>
+				<o:input entity="fileController" property="visibleForAll" required="true" />				
 			</o:block>
 
 			<o:block>

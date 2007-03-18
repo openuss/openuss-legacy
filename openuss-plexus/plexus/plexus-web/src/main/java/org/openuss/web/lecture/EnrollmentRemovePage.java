@@ -11,6 +11,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
+import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 /**
  * Enrollment Edit Page Controller
@@ -42,7 +43,7 @@ public class EnrollmentRemovePage extends AbstractEnrollmentPage {
 		logger.trace("removing enrollment");
 		lectureService.removeEnrollment(enrollment.getId());
 		addMessage(i18n("faculty_enrollment_removed_succeed"));
-		return Constants.FACULTY_PERIODS;
+		return Constants.FACULTY_PERIODS_PAGE;
 	}
 	
 	/**

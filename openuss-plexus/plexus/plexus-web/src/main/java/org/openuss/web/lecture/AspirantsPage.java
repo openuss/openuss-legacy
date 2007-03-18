@@ -35,16 +35,13 @@ public class AspirantsPage extends AbstractLecturePage {
 	private transient Set<UserInfo> rejectAspirants = new HashSet<UserInfo>();
 	
 	public String save() {
-		for (UserInfo userInfo : acceptAspirants) {
-			try {
-				lectureService.acceptFacultyAspirant(userInfo.getId(), faculty.getId());
-				addMessage(i18n("faculty_add_member_to_faculty", userInfo.getUsername()));
-			} catch (LectureException e) {
-				logger.error(e);
-				addError(i18n(e.getMessage()));
-			}
-		}
+		acceptAspirants();
+		rejectAspirants();
 		
+		return Constants.SUCCESS;
+	}
+
+	private void rejectAspirants() {
 		for (UserInfo userInfo : rejectAspirants) {
 			try {
 				lectureService.rejectFacultyAspirant(userInfo.getId(), faculty.getId());
@@ -54,8 +51,18 @@ public class AspirantsPage extends AbstractLecturePage {
 				addError(i18n(e.getMessage()));
 			}
 		}
-		
-		return Constants.SUCCESS;
+	}
+
+	private void acceptAspirants() {
+		for (UserInfo userInfo : acceptAspirants) {
+			try {
+				lectureService.acceptFacultyAspirant(userInfo.getId(), faculty.getId());
+				addMessage(i18n("faculty_add_member_to_faculty", userInfo.getUsername()));
+			} catch (LectureException e) {
+				logger.error(e);
+				addError(i18n(e.getMessage()));
+			}
+		}
 	}
 	
 	public String showProfile() {
@@ -63,7 +70,7 @@ public class AspirantsPage extends AbstractLecturePage {
 		User user = User.Factory.newInstance();
 		user.setId(userInfo.getId());
 		setSessionBean("showuser", user);
-		return Constants.USER_PROFILE_VIEW;
+		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	
 	public void changedAspirant(ValueChangeEvent event) throws LectureException {

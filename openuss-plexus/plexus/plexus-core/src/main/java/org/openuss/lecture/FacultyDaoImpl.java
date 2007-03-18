@@ -99,8 +99,8 @@ public class FacultyDaoImpl extends org.openuss.lecture.FacultyDaoBase {
 	private void toFacultyMember(User user, FacultyMember member, Faculty faculty) {
 		member.setId(user.getId());
 		member.setUsername(user.getUsername());
-		member.setFirstName(user.getContact().getFirstName());
-		member.setLastName(user.getContact().getLastName());
+		member.setFirstName(user.getFirstName());
+		member.setLastName(user.getLastName());
 		if (faculty != null) {
 			member.setOwner((faculty.getOwner().equals(user)));
 		}

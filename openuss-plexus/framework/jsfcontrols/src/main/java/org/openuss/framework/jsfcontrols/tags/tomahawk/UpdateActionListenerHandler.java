@@ -46,6 +46,7 @@ import com.sun.facelets.FaceletContext;
 import com.sun.facelets.FaceletException;
 import com.sun.facelets.tag.TagAttribute;
 import com.sun.facelets.tag.TagConfig;
+import com.sun.facelets.tag.TagException;
 import com.sun.facelets.tag.TagHandler;
 import com.sun.facelets.tag.jsf.ComponentConfig;
 
@@ -90,7 +91,12 @@ public class UpdateActionListenerHandler
 		throws IOException, FacesException, FaceletException, ELException
 	{
 		logger.debug("Apply called. Component: " + parent);
-		ActionSource actionSource = (ActionSource)parent;
+		ActionSource actionSource = null;
+		if (parent instanceof ActionSource) {
+			actionSource = (ActionSource) parent;
+		} else {
+			throw new TagException(this.tag, "parent component is not an action source component!");
+		}
 		
 		if (sourceHasProperty(actionSource))
 			return;

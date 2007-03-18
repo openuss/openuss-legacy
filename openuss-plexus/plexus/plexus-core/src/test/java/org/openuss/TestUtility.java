@@ -30,7 +30,7 @@ public class TestUtility {
 
 	private Faculty defaultFaculty;
 	
-	private static int count = 0;
+	private static long uniqueId = System.currentTimeMillis();
 
 	public User createDefaultUserInDB() {
 		defaultUser.setUsername(unique("username"));
@@ -102,7 +102,7 @@ public class TestUtility {
 		User user = User.Factory.newInstance();
 		user.setUsername(unique("username"));
 		user.setPassword("password");
-		user.setEmail("email");
+		user.setEmail(unique("email"));
 		user.setEnabled(true);
 		user.setAccountExpired(true);
 		user.setCredentialsExpired(true);
@@ -110,11 +110,14 @@ public class TestUtility {
 		return user;
 	}
 
-	private String unique(String str) {
+	public long unique() {
 		synchronized (TestUtility.class) {
-			count++;
-			return str + "-" + count + "-" + System.currentTimeMillis();
+			return ++uniqueId;
 		}
+	}
+	
+	public String unique(String str) {
+		return str + "-" + unique();
 	}
 
 	public UserDao getUserDao() {

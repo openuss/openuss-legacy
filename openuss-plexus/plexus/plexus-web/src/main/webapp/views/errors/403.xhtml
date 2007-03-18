@@ -22,15 +22,16 @@
 		<f:loadBundle basename="resources" var="msg"/>
   		<ui:define name="title">#{msg.welcome_headline}</ui:define>
   		<ui:define name="content">
-	  		<o:block label="#{msg.error_page_not_found_heading}" styleClass="error_box">
-	  			<h1><h:outputText value="#{msg.error_access_denied_heading}" styleClass="heading" escape="false"/></h1>
-  				<h:outputText value="#{msg.error_access_denied_details}" escape="false"/>
-  				  <h:form id="form403">
-  					<h:outputLink value="mailto:#{msg.support_email}">#{msg.support_email_label}</h:outputLink>
-  					<br/>
-	  				<h:commandLink value="#{msg.home}" action="home" styleClass="int"/>
-  				</h:form>
-  			</o:block>
+			  <h:form id="form403">
+		  		<o:block label="#{msg.error_access_denied_heading}" styleClass="error_box">
+		  			<p class="content_font_normal">
+		  				<h:outputText value="#{msg.error_access_denied_details}" escape="false"/>
+		  			</p>
+  				</o:block>
+		  			<o:block>
+	  					<h:commandButton value="#{msg.home}" action="home" styleClass="button"/>
+	  				</o:block>  				
+				</h:form>
   		</ui:define>
 	</ui:composition>
 	<!-- text above will be ignored -->

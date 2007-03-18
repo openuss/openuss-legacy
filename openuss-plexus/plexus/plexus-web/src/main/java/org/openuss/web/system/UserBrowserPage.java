@@ -76,7 +76,7 @@ public class UserBrowserPage extends BasePage{
 		UserInfo userInfo = dataModel.getRowData();
 		User user = securityService.getUser(userInfo.getId());
 		setSessionBean("showuser", user);
-		return Constants.USER_PROFILE_VIEW;
+		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	
 	
@@ -93,7 +93,12 @@ public class UserBrowserPage extends BasePage{
 			List<UserInfo> users = securityService.getUsers(criteria);
 			logger.debug("got "+users.size()+" users");
 			// FIXME - total size should be fetched from database instead of guessing
-			int size = 1600;
+			int size = 0;
+			if (users.size() < criteria.getMaximumResultSize()) {
+				size = criteria.getFirstResult() + users.size();
+			} else {
+				size = 1600;
+			}
 			dataPage = new DataPage<UserInfo>(size,startRow,users);
 		}
 		return dataPage;

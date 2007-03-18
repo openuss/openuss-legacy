@@ -32,7 +32,12 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="adminUsersForm" >
-		   <plexus:dataTable id="users" label="#{msg['admin_users_heading']}" value="views$secured$system$userbrowser.dataModel" var="bean" rows="30"
+		   <plexus:dataTable 
+		   		id="users" 
+		   		label="#{msg['admin_users_heading']}" 
+		   		value="views$secured$system$userbrowser.dataModel" 
+		   		var="bean" 
+		   		rows="20"
 				columnClasses="links, links, links, links, commands, commands, commands, commands, links, commands">
 				<t:column>
 					<f:facet name="header"> 
@@ -89,7 +94,7 @@
 					</h:outputText>
 				</t:column>			
 				<t:column>
-					<h:commandButton value="profile" action="#{views$secured$system$userbrowser.showProfile}" styleClass="button"/>
+					<h:commandButton value="profile" action="#{views$secured$system$userbrowser.showProfile}" styleClass="button_profile"/>
 				</t:column>
 			</plexus:dataTable>
 			<o:block>

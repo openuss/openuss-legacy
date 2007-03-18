@@ -29,7 +29,14 @@
  		 
   		<ui:define name="content">
   			<h:form id="facultiesForm">
-				<plexus:dataTable id="faculties" label="#{msg.facultyList_header}" value="views$secured$system$faculties.provider" var="bean" rows="15">
+				<plexus:dataTable 
+					id="faculties" 
+					label="#{msg.facultyList_header}" 
+					value="views$secured$system$faculties.provider" 
+					var="bean" 
+					rows="15"
+			   		columnClasses="col_min_center, col_min_left, col_max_left, col_max_left, col_min_left, col_min_left, col_min_left">
+
 					<t:column>
 						<f:facet name="header">
 							#{msg['faculty_enabled']}

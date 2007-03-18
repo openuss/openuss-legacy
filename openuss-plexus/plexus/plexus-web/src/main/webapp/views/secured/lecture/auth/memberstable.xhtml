@@ -8,7 +8,13 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:c="http://java.sun.com/jstl/core">
       
-    <plexus:dataTable id="members" label="#{msg.faculty_members_subheading}" value="views$secured$lecture$auth$members.members" var="bean" rows="10">  
+    <plexus:dataTable 
+    	id="members" 
+    	label="#{msg.faculty_members_subheading}" 
+    	value="views$secured$lecture$auth$members.members" 
+    	columnClasses="col_min_left, col_min_left, col_min_left, col_max_left, col_commands_two"
+    	var="bean" 
+    	rows="10">  
       
 		<t:column>
 			<plexus:commandSortHeader columnName="username">

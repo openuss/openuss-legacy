@@ -1,0 +1,20 @@
+<pages>
+	<page view-id="/views/secured/lecture/*">
+		<parameter name="faculty" value="#{faculty.id}" converterId="javax.faces.Long"/>
+	</page>
+	<page view-id="/views/secured/lecture/period*">
+		<securityConstraint domainObject="#{faculty}" permissions="#{ACL.MANAGE_PERIODS}"/> 
+		<parameter name="period" value="#{period.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/enrollment/*">
+		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
+	</page>
+
+	<page view-id="/views/secured/enrollment/enrollmentoptions*">
+		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.ASSIST}"/>
+		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
+	</page>
+
+	
+</pages>

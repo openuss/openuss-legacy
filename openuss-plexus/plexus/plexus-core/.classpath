@@ -50,7 +50,12 @@
 	<classpathentry kind="var" path="M2_REPO/jaybird/jaybird-full/2.1.1/jaybird-full-2.1.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/2.0.1/spring-beans-2.0.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-mock/2.0.1/spring-mock-2.0.1.jar" sourcepath="/JAVALIBS/spring-framework-2.0.1/mock"/>
-	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.3/acegi-security-1.0.3.jar" sourcepath="/JAVA_SRC/acegi-security-1.0.3-src.zip"/>
+	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.3/acegi-security-1.0.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/velocity/velocity/1.4/velocity-1.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/velocity/velocity-dep/1.4/velocity-dep-1.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/quartz/quartz/1.5.2/quartz-1.5.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4/mail-1.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1/activation-1.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/migration-core"/>
 	<classpathentry kind="var" path="M2_REPO/jsr170/jcr/1.0/jcr-1.0.jar" sourcepath="/M2_REPO/jsr170/jcr/1.0/jcr-1.0-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springmodules/spring-modules-jcr/0.7/spring-modules-jcr-0.7.jar"/>
@@ -59,5 +64,6 @@
 	<classpathentry kind="var" path="M2_REPO/org/apache/jackrabbit/jackrabbit-jcr-commons/1.2.1/jackrabbit-jcr-commons-1.2.1.jar" sourcepath="/M2_REPO/org/apache/jackrabbit/jackrabbit-1.2.1-src.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/jackrabbit/jackrabbit-core/1.2.1/jackrabbit-core-1.2.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/jackrabbit/jackrabbit-api/1.2.1/jackrabbit-api-1.2.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/framework-core"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

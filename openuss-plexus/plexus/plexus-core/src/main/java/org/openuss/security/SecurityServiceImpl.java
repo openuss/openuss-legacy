@@ -5,6 +5,7 @@
  */
 package org.openuss.security;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -248,7 +249,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		ObjectIdentity parentObjectIdentity = null;
 		if (parent != null) {
 			EntityObjectIdentity parentOI = new EntityObjectIdentity(parent);
-			parentObjectIdentity = getObjectIdentityDao().load(parentOI.getIdentifier());
+			parentObjectIdentity = getObjectIdentityDao().findByObjectIdentifier(parentOI.getIdentifier());
 			
 			if (parentObjectIdentity == null) {
 				throw new SecurityServiceException("Object Identity to Object "+parent+" does not exist!");
@@ -273,21 +274,14 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 
 	@Override
 	protected void handleRemoveObjectIdentity(Object object) throws Exception {
-		// analyse object if it is an entity object with an id
-		EntityObjectIdentity entityOI = new EntityObjectIdentity(object);
-		ObjectIdentity oi = getObjectIdentityDao().findByObjectIdentifier(entityOI.getIdentifier());
+		ObjectIdentity oi = getObjectIdentity(object);
 		getObjectIdentityDao().remove(oi);
 	}
 
 
 	@Override
 	protected void handleSetPermissions(Authority authority, Object object, Integer mask) throws Exception {
-		// identify object
-		EntityObjectIdentity entityOI = new EntityObjectIdentity(object);
-		ObjectIdentity oi = getObjectIdentityDao().findByObjectIdentifier(entityOI.getIdentifier());
-		if (oi == null) {
-			throw new SecurityServiceException("ObjectIdentity doesn't exist for object "+object);
-		}
+		ObjectIdentity oi = getObjectIdentity(object);
 
 		Permission permission = getPermissionDao().findPermission(oi.getId(), authority.getId());
 		if (permission == null) {
@@ -323,5 +317,33 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		usr.setLastLogin(new Date());
 		getUserDao().update(usr);
 	}
-	
+
+	@Override
+	protected void handleRemovePermission(Authority authority, Object object) throws Exception {
+		Permission permission = getPermissions(authority, object);
+		if (permission != null) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("removing permission for authority "+authority+" for "+object);
+			}
+			getPermissionDao().remove(permission);
+		} else {
+			logger.debug("Permission entity for authority "+authority+" for "+object+" not found!");
+		}
+	}
+
+	private ObjectIdentity getObjectIdentity(Object object) throws IllegalAccessException, InvocationTargetException {
+		ObjectIdentity objectIdentity = getObjectIdentityDao().findByObjectIdentifier(new EntityObjectIdentity(object).getIdentifier());
+		if (objectIdentity == null) {
+			throw new SecurityServiceException("ObjectIdentity doesn't exist for object "+object);
+		}
+		return objectIdentity;
+	}
+
+	@Override
+	protected Permission handleGetPermissions(Authority authority, Object object) throws Exception {
+		ObjectIdentity oi = getObjectIdentity(object);
+		return getPermissionDao().findPermission(oi.getObjectIdentity(), authority.getId());
+	}
+
+
 }

@@ -146,6 +146,7 @@ public class MailEngine {
     	}
    		sendMessage(message, templateName, model);
     }
+    
 
 	public VelocityEngine getVelocityEngine() {
 		return velocityEngine;

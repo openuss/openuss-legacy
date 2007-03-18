@@ -47,6 +47,45 @@ FCKConfig.ToolbarSets["News"] = [
 	['Table','Smiley','SpecialChar','UniversalKey']
 ] ;
 
+FCKConfig.ToolbarSets["Wiki"] = [
+	['FitWindow','Preview'],
+	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
+	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+	'/',
+	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
+	['OrderedList','UnorderedList','-','Outdent','Indent'],
+	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
+	['Link','Unlink','Anchor'],
+	['TextColor','BGColor'],
+	['Table','Smiley','SpecialChar','UniversalKey']
+] ;
+
+FCKConfig.ToolbarSets["Description"] = [
+	['FitWindow','Preview'],
+	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
+	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+	'/',
+	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
+	['OrderedList','UnorderedList','-','Outdent','Indent'],
+	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
+	['Link','Unlink','Anchor'],
+	['TextColor','BGColor'],
+	['Table','Smiley','SpecialChar','UniversalKey']
+] ;
+
+FCKConfig.ToolbarSets["Discussion"] = [
+	['FitWindow','Preview'],
+	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
+	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+	'/',
+	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
+	['OrderedList','UnorderedList','-','Outdent','Indent'],
+	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
+	['Link','Unlink','Anchor'],
+	['TextColor','BGColor'],
+	['Table','Smiley','SpecialChar','UniversalKey']
+] ;
+
 FCKConfig.ToolbarSets["Portrait"] = [
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['Undo','Redo','-'],

@@ -13,6 +13,8 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.View;
+import org.openuss.docmanagement.BigFile;
+import org.openuss.docmanagement.BigFileImpl;
 import org.openuss.docmanagement.DistributionService;
 import org.openuss.docmanagement.DistributionServiceImpl;
 import org.openuss.docmanagement.File;
@@ -159,8 +161,14 @@ public class DistributionViewBacker{
 	}
 	
 	public String changeFile(){
-		try {			
-			fileController.setFile(distributionService.getFile(treeModel.getNodeById(this.facesPath).getIdentifier().substring(1)));
+		try {
+			String path = treeModel.getNodeById(this.facesPath).getIdentifier();
+			if (path.startsWith("/")) path = path.substring(1);
+			File file = distributionService.getFile(path);
+			BigFile bigFile = distributionService.getFile(file);
+			fileController.setFile(bigFile);
+			//fileController.setFile(distributionService.getFile(distributionService.getFile(treeModel.getNodeById(this.facesPath).getIdentifier().substring(1))));
+			fileController.setOld(true);
 		} catch (PathNotFoundException e) {
 			logger.error("Path not found: ", e);
 		} catch (ResourceAlreadyExistsException e) {
@@ -170,9 +178,12 @@ public class DistributionViewBacker{
 	}
 	
 	public String newFile(){
-		File file = new FileImpl();
-		file.setPath(this.path.substring(1));
-		fileController.setFile(file);
+		BigFile bf = new BigFileImpl();
+		String path = this.path;
+		if (path.startsWith("/")) path = path.substring(1);
+		bf.setPath(path);
+		fileController.setFile(bf);
+		fileController.setOld(false);
 		return DocConstants.NEWDOCUMENTTOFOLDER;	
 	}
 	

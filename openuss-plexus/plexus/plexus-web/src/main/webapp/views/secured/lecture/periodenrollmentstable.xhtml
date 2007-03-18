@@ -13,20 +13,18 @@
       
     <plexus:dataTable 
      	id="enrollments" 
-     	label="#{msg['enrollment_header']}" 
+     	label="#{period.name}" 
      	value="views$secured$lecture$periods.enrollmentData" 
      	var="enrollment" 
+     	columnClasses="col_max_left, col_commands_two"
      	rows="5">       
       
 		<t:column>
 			<plexus:commandSortHeader columnName="subject.name">#{msg.enrollment_colheader_name}</plexus:commandSortHeader>
-			<h:commandLink 
-				id="showEnrollment" 
-				action="#{views$secured$lecture$periods.showEnrollment}" 
-				styleClass="command" 
-				title="#{enrollment.subject.description}">
+			<o:link value="/views/secured/enrollment/main.faces" title="#{enrollment.subject.description}">
+				<f:param value="#{enrollment.id}" name="enrollment" />
 				<h:outputText value="#{enrollment.subject.name} (#{enrollment.shortcut})"/>
-			</h:commandLink>
+			</o:link>
 		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">		
@@ -36,13 +34,6 @@
 				label="#{msg.enrollment_command_shortcut}"
 				title="#{msg.enrollment_command_shortcut_hint}"
 				styleClass="button_link">
-			</plexus:command>
-			<plexus:command 
-				bean="#{views$secured$lecture$periods}"
-				action="editEnrollment"
-				label="#{msg.enrollment_command_edit}"
-				title="#{msg.enrollment_command_edit_hint}"
-				styleClass="button_edit">
 			</plexus:command>
 	
 			<plexus:command 

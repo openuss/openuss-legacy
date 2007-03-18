@@ -51,6 +51,11 @@
 	</build>
 
 	<dependencies>
+	    <dependency>
+    	  <groupId>org.openuss.framework</groupId>
+	      <artifactId>framework-core</artifactId>
+	      <version>${pom.version}</version>
+	    </dependency>
 		<dependency>
 			<groupId>org.openuss.plexus</groupId>
 			<artifactId>plexus-api</artifactId>
@@ -141,7 +146,25 @@
 			<version>${pom.version}</version>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
+    	<dependency>
+   			<groupId>quartz</groupId>
+   			<artifactId>quartz</artifactId>
+   		</dependency>   
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>velocity</groupId>
+			<artifactId>velocity</artifactId>
+		</dependency>
+ 		<dependency>
             <groupId>jsr170</groupId>
             <artifactId>jcr</artifactId>           
         </dependency>
@@ -164,6 +187,6 @@
 		<dependency>
 			<groupId>org.apache.jackrabbit</groupId>
 			<artifactId>jackrabbit-jcr-commons</artifactId>
-		</dependency>
+		</dependency>		
 	</dependencies>
 </project>

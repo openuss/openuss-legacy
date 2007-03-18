@@ -120,7 +120,6 @@ public class FileDao extends ResourceDao {
 			throw new Exception("File already exists");
 		} catch (PathNotFoundException e) {
 			// should occur!
-			// TODO use DocConstants
 
 			// nt:File Knoten
 			node.addNode(file.getName(), DocConstants.NT_FILE);
@@ -143,6 +142,33 @@ public class FileDao extends ResourceDao {
 		} catch (RepositoryException e) {
 			logger.error("RepositoryException: ", e);
 		}
+	}
+	
+	public void changeFile(BigFile file) throws LoginException, RepositoryException{
+		Session session = login(repository);
+		Node node = session.getRootNode();
+		String path =file.getPath();
+		if (path.startsWith("/")) path = path.substring(1);
+		if (path!="") node = node.getNode(path);
+		//TODO set new Properties
+
+		// nt:File Knoten
+		node.setProperty(DocConstants.PROPERTY_MESSAGE, file.getMessage());
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(file.getDistributionTime().getTime());
+		node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
+		node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
+				.getVisibility());
+
+		// nt:resource Knoten, der die eigentlich Datei enthaelt
+		node = node.getNode(DocConstants.JCR_CONTENT);
+		c.setTimeInMillis(file.getLastModification().getTime());
+		node.setProperty(DocConstants.JCR_LASTMODIFIED, c);
+		
+		session.save();
+		//if nodename has changed, move node
+		if (!node.getPath().equals(node.getParent().getPath() + "/" + file.getName())) session.move(node.getPath(), node.getParent().getPath() + "/" + file.getName());
+		logout(session);		
 	}
 
 	public void delFile(File file, boolean delLinks) throws Exception {

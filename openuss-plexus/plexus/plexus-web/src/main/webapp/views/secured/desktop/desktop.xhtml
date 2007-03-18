@@ -40,19 +40,13 @@
 			</h:outputFormat>
 		</o:block>
 		<h:form id="enrollmentsForm" rendered="${!empty desktop.enrollments}">
-			<o:block label="#{msg.desktop_enrollments_header}" styleClass="form_box">
-				<ui:include src="/views/commons/desktop/enrollments.xhtml" />
-			</o:block>
+			<ui:include src="/views/commons/desktop/enrollments.xhtml" />
 		</h:form>
 		<h:form id="subjectsForm" rendered="${!empty desktop.subjects}">
-			<o:block label="#{msg.desktop_subjects_header}" styleClass="form_box">
-				<ui:include src="/views/commons/desktop/subjects.xhtml" />
-			</o:block>
+			<ui:include src="/views/commons/desktop/subjects.xhtml" />
 		</h:form>
 		<h:form id="facultiesForm" rendered="${!empty desktop.faculties}"> 
-			<o:block label="#{msg.desktop_faculties_header}" styleClass="form_box">
-				<ui:include src="/views/commons/desktop/faculties.xhtml" />
-			</o:block>
+			<ui:include src="/views/commons/desktop/faculties.xhtml" />
 		</h:form>
 	</ui:define>
 </ui:composition>

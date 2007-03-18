@@ -43,7 +43,7 @@
 			<oc:strAttribute name="lastRowIndexVar" value="${for}LastRowIndex" />
 			<oc:strAttribute name="pageCountVar" value="${for}PageCount" />
 			<oc:strAttribute name="pageIndexVar" value="${for}PageIndex" />
-           <h:outputFormat value="Daten von {2} bis {3} von insgesamt {0}. Seite {4} von {5}" styleClass="table_data_info" >
+           <h:outputFormat value="${infoText}" styleClass="table_data_info" > 
                <f:param value="#{oc:toVB(for,'RowsCount')}" />
                <f:param value="#{oc:toVB(for,'DisplayedRowsCountVar')}" />
                <f:param value="#{oc:toVB(for,'FirstRowIndex')}" />

@@ -22,6 +22,10 @@
     </tag>
 	
 	<tag>
+		<tag-name>link</tag-name>
+		<source>../facelets/link.xhtml</source>
+	</tag>		
+	<tag>
 		<tag-name>field</tag-name>
 		<source>../facelets/field.xhtml</source>
 	</tag>		

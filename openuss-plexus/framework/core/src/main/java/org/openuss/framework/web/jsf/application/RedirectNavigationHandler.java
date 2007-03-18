@@ -118,8 +118,8 @@ public class RedirectNavigationHandler extends NavigationHandler {
 		logger.debug("Perform redirect to view " + viewId);
 		final ExternalContext externalContext = facesContext.getExternalContext();
 		externalContext.getSessionMap().put(PostRedirectGetPhaseListener.POST_REDIRECT_GET_KEY,	viewId);
-		// FIXME request parameter must be stored on server side to be sure that the url not is getting to long
 		ConversationUtil.redirect(facesContext, viewId, null);
+//  	This is no solution request parameter must be stored on server side to be sure that the url not is getting to long
 //		ConversationUtil.redirect(facesContext, viewId, externalContext.getRequestParameterMap());
 		facesContext.responseComplete();
 	}

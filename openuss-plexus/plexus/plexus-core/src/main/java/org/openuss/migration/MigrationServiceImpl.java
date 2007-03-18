@@ -477,7 +477,10 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 	
 	private Enrollment enrollment2ToEnrollment(Enrollment2 enrollment2) {
 		Enrollment enrollment = Enrollment.Factory.newInstance();
+		// TODO check if the shortcut can be generated from the faculty and subject name instead of the previous guid
 		enrollment.setShortcut(enrollment2.getId());
+		enrollment.setDescription(enrollment2.getSubject().getRemark());
+
 		enrollment.setBraincontest(toBoolean(enrollment2.getQuiz()));
 		enrollment.setChat(toBoolean(enrollment2.getChat()));
 		enrollment.setDiscussion(toBoolean(enrollment2.getDiscussion()));

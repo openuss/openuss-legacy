@@ -52,7 +52,7 @@ public class SubjectRemovePage extends AbstractLecturePage {
 		lectureService.removeSubject(subject.getId());
 		addMessage(i18n("faculty_message_remove_subject_succeed"));
 		removeSessionBean(Constants.SUBJECT);
-		return Constants.FACULTY_SUBJECTS;
+		return Constants.FACULTY_SUBJECTS_PAGE;
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class SubjectRemovePage extends AbstractLecturePage {
 	 */
 	public String cancelSubject() {
 		removeSessionBean(Constants.SUBJECT);
-		return Constants.FACULTY_SUBJECTS;
+		return Constants.FACULTY_SUBJECTS_PAGE;
 	}
 
 	/**

@@ -1,7 +1,7 @@
 <project name="openuss :: deploy" default="deploy" basedir=".">
 	
 	<property name="tomcat" value="servers/tomcat"/>
-	<property name="version" value="3.0-SNAPSHOT"/>
+	<property name="version" value="3.1-SNAPSHOT"/>
 		
 	
 	<target name="undeploy">

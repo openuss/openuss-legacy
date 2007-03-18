@@ -6,6 +6,7 @@
 package org.openuss.security.acl;
 
 import org.openuss.TestUtility;
+import org.openuss.security.User;
 
 
 /**
@@ -20,22 +21,52 @@ public class PermissionDaoTest extends PermissionDaoTestBase {
 	
 
 	public void testPermissionDaoCreate() {
-		ObjectIdentity objectIdentity = ObjectIdentity.Factory.newInstance();
-		objectIdentity.setObjectIdentity(4711L);
-		objectIdentity.setParent(null);
-		assertNull(objectIdentity.getId());
-		objectIdentityDao.create(objectIdentity);
-		assertNotNull(objectIdentity.getId());
+		User user = testUtility.createUserInDB();
+		ObjectIdentity objectIdentity = createAndTestObjectIdentityInDB();
+		createAndTestPermission(user, objectIdentity);
+	}
+
+	public void testFindPermission() {
+		User user = testUtility.createUserInDB();
+		ObjectIdentity objectIdentity = createAndTestObjectIdentityInDB();
+		Permission permission = createAndTestPermission(user, objectIdentity);
 		
+		commit();
+		
+		Permission found = permissionDao.findPermission(objectIdentity.getObjectIdentity(), user.getId());
+		assertNotNull(found);
+		assertEquals(permission, found);
+		assertEquals(objectIdentity, permission.getAclObjectIdentity());
+	}
+
+	private void commit() {
+		setComplete();
+		endTransaction();
+		startNewTransaction();
+	}
+
+	private Permission createAndTestPermission(User user, ObjectIdentity objectIdentity) {
 		Permission permission = Permission.Factory.newInstance();
 		permission.setMask(2);
-		permission.setRecipient(testUtility.createDefaultUserInDB());
+		permission.setRecipient(user);
 		permission.setAclObjectIdentity(objectIdentity);
 		objectIdentity.addPermission(permission);
 		assertNull(permission.getId());
 		permissionDao.create(permission);
 		assertNotNull(permission.getId());
+		return permission;
 	}
+
+	private ObjectIdentity createAndTestObjectIdentityInDB() {
+		ObjectIdentity objectIdentity = ObjectIdentity.Factory.newInstance();
+		objectIdentity.setObjectIdentity(testUtility.unique());
+		objectIdentity.setParent(null);
+		assertNull(objectIdentity.getId());
+		objectIdentityDao.create(objectIdentity);
+		assertNotNull(objectIdentity.getId());
+		return objectIdentity;
+	}
+	
 
 	public ObjectIdentityDao getObjectIdentityDao() {
 		return objectIdentityDao;

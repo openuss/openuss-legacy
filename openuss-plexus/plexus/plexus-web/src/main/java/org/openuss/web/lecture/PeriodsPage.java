@@ -111,7 +111,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	public String addPeriod() {
 		Period period = Period.Factory.newInstance();
 		setSessionBean(Constants.PERIOD, period);
-		return Constants.FACULTY_PERIOD;
+		return Constants.FACULTY_PERIOD_PAGE;
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	public String editPeriod() {
 		Period period = periodData.getRowData();
 		setSessionBean(Constants.PERIOD, period);
-		return Constants.FACULTY_PERIOD;
+		return Constants.FACULTY_PERIOD_PAGE;
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	public String confirmRemovePeriod() {
 		Period period = periodData.getRowData();
 		setSessionBean(Constants.PERIOD, period);
-		return Constants.FACULTY_PERIOD_REMOVE;
+		return Constants.FACULTY_PERIOD_REMOVE_PAGE;
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class PeriodsPage extends AbstractLecturePage {
 		}
 		lectureService.removePeriod(period.getId());
 		removeSessionBean(Constants.PERIOD);
-		return Constants.FACULTY_PERIODS;
+		return Constants.FACULTY_PERIODS_PAGE;
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class PeriodsPage extends AbstractLecturePage {
 			lectureService.persist(period);
 		}
 			
-		return Constants.FACULTY_PERIODS;
+		return Constants.FACULTY_PERIODS_PAGE;
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	public String createPeriod() {
 		Period period = Period.Factory.newInstance();
 		setSessionBean(Constants.PERIOD, period);
-		return Constants.FACULTY_PERIOD;
+		return Constants.FACULTY_PERIOD_PAGE;
 	}
 
 	/**
@@ -232,9 +232,9 @@ public class PeriodsPage extends AbstractLecturePage {
 	
 	public String shortcutEnrollment() throws DesktopException {
 		Enrollment enrollment = enrollmentData.getRowData();
-		desktopService.linkEnrollment(desktop, enrollment);
+		getDesktopService().linkEnrollment(getDesktop(), enrollment);
 		addMessage(i18n("message_enrollment_shortcut_created"));
-		return Constants.FACULTY_PERIODS; 
+		return Constants.FACULTY_PERIODS_PAGE; 
 	}
 
 	/**
@@ -245,7 +245,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	public String confirmRemoveEnrollment() {
 		Enrollment enrollment = enrollmentData.getRowData();
 		setSessionBean(Constants.ENROLLMENT, enrollment);
-		return Constants.FACULTY_ENROLLMENT_REMOVE;
+		return Constants.FACULTY_ENROLLMENT_REMOVE_PAGE;
 	}
 
 	/**
@@ -256,7 +256,7 @@ public class PeriodsPage extends AbstractLecturePage {
 		logger.debug("edit enrollment");
 		Enrollment enrollment = enrollmentData.getRowData();
 		setSessionBean(Constants.ENROLLMENT, enrollment);
-		return Constants.ENROLLMENT_OPTIONS;
+		return Constants.ENROLLMENT_OPTIONS_PAGE;
 	}
 
 	/**
@@ -303,7 +303,6 @@ public class PeriodsPage extends AbstractLecturePage {
 			}
 			return page;
 		}
-		
 	}
 	
 	/* -------- properties ---------- */

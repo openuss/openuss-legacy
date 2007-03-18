@@ -12,13 +12,16 @@
 		<phase-listener>
 			org.openuss.framework.web.jsf.events.DebugPhaseListener
 		</phase-listener>
+		<phase-listener>
+			org.openuss.framework.web.jsf.pages.PagePhaseListener
+		</phase-listener>
 	</lifecycle>
 
 	<application>
 		<navigation-handler>
 			org.openuss.framework.web.jsf.application.RedirectNavigationHandler
 		</navigation-handler>
-		<view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
+		<view-handler>org.openuss.framework.web.facelets.DynamicViewHandler</view-handler>
 		<locale-config>
 			<default-locale>en</default-locale>
 			<supported-locale>en</supported-locale>

@@ -23,10 +23,10 @@ import org.apache.log4j.Logger;
  * 
  */
 public class ConversationUtil {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(ConversationUtil.class);
+	
+	private static ConverterHelper converterHelper = new ConverterHelper();
 
 	public static final String FACES_MESSAGES_SESSION_KEY = "org.openuss.framework.web.jsf.events.RedirectPhaseListener.SaveGlobalFacesMessages";
 
@@ -104,8 +104,9 @@ public class ConversationUtil {
 					String expression = "#{" + tokens.nextToken() + "}";
 					try {
 						Object value = context.getApplication().createValueBinding(expression).getValue(context);
-						if (value != null)
-							builder.append(value);
+						if (value != null) {
+							builder.append(converterHelper.asString(context, value.getClass(), value));
+						}
 					} catch (Exception e) {
 						logger.warn("exception interpolating string: " + string, e);
 					}
@@ -124,7 +125,7 @@ public class ConversationUtil {
 		}
 		return builder.toString();
 	}
-
+	
 	/**
 	 * Appends to the given url the parameter key value pairs
 	 * 

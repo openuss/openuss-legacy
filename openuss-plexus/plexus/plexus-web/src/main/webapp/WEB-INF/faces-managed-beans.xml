@@ -4,6 +4,12 @@
 	
 	
 	<managed-bean>
+		<managed-bean-name>ACL</managed-bean-name>
+		<managed-bean-class>org.openuss.security.acl.LectureAclEntry</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
 		<managed-bean-name>newsBean</managed-bean-name>
 		<managed-bean-class>org.openuss.web.lecture.NewsBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
@@ -56,5 +62,22 @@
  		<managed-bean-scope>request</managed-bean-scope>
  	</managed-bean>
  	
-	
+ 	<converter>
+ 		<converter-id>facultyConverter</converter-id>
+ 		<converter-class>org.openuss.web.lecture.converter.FacultyConverter</converter-class>
+ 	</converter>
+ 	
+ 	<!-- Managed Beans -->
+ 	<managed-bean>
+ 		<managed-bean-name>faculty</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.FacultyImpl</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>enrollment</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.EnrollmentImpl</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	
 </faces-config>

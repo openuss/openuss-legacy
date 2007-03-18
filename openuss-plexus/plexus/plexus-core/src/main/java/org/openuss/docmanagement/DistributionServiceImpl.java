@@ -251,40 +251,9 @@ public class DistributionServiceImpl
     protected List handleGetFiles(Folder folder)
         throws java.lang.Exception
     {
-    	Session session = login();
-    	
-    	Collection<File> files = new Vector<File>();
-    	File fi;
-    	Node node = session.getNodeByUUID(folder.getId());
-    	Node file;
-    	NodeIterator ni = node.getNodes();
-    	
-    	while (ni.hasNext()){
-    		file = ni.nextNode();
-    		//TODO handle links
-    		if (file.isNodeType("nt:file")){
-    			// Make File Object
-    			fi = generateFile(file);
-    			files.add(fi);    			
-    		}	
-    	}    
-    	
-    	logout(session);    	
     	return null;
     }
 
-	private File generateFile(Node file) throws UnsupportedRepositoryOperationException, RepositoryException, PathNotFoundException, ValueFormatException {
-		FileImpl fi = new FileImpl();
-		//TODO check if all properties are set
-		//TODO move values like "message" to a class of constants
-		fi.setId(file.getUUID());
-		fi.setName(file.getName());
-		file = file.getNode("jcr:content");
-		fi.setMessage(file.getProperty("message").getString());
-		fi.setMimeType(file.getProperty("jcr:mimeType").getString());
-		fi.setLastModification(new Timestamp(file.getProperty("jcr:lastModified").getDate().getTimeInMillis()));
-		return fi;
-	}
 
     /**
      * @see org.openuss.docmanagement.DistributionService#getFile(org.openuss.docmanagement.File)
@@ -292,24 +261,7 @@ public class DistributionServiceImpl
     protected org.openuss.docmanagement.BigFile handleGetFile(org.openuss.docmanagement.File file)
         throws java.lang.Exception
     {
-        Session session = login();
-        
-        Node f = session.getNodeByUUID(file.getId());
-		BigFileImpl bfi;
-		bfi = new BigFileImpl();
-		//TODO check if all properties are set
-		//TODO move values like "message" to a class of constants
-		bfi.setId(f.getUUID());
-		bfi.setName(f.getName());
-		f = f.getNode("jcr:content");
-		bfi.setMessage(f.getProperty("message").getString());
-		bfi.setMimeType(f.getProperty("jcr:mimeType").getString());
-		bfi.setLastModification(new Timestamp(f.getProperty("jcr:lastModified").getDate().getTimeInMillis()));
-		//TODO check if temporary save of file is needed, or inputstream is sufficient
-		bfi.setFile(f.getProperty("jcr:data").getStream());
-		
-		logout(session);
-		return bfi;
+		return fileDao.getFile(file);
     }
 
     /**
@@ -465,9 +417,9 @@ public class DistributionServiceImpl
 	}
 
 	@Override
-	protected void handleChangeFile(File file, boolean old) throws Exception {
-		// TODO Auto-generated method stub
-		
+	protected void handleChangeFile(BigFile file, boolean old) throws Exception {
+    	if (old) fileDao.changeFile(file);
+    	else if (!old) fileDao.setFile(file);    	
 	}
 
 

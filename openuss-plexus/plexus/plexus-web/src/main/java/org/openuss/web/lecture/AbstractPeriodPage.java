@@ -12,7 +12,7 @@ import org.openuss.web.Constants;
 public class AbstractPeriodPage extends AbstractLecturePage {
 
 	private static final long serialVersionUID = -6389099727200151245L;
-	@Property(value = "#{sessionScope.period}")
+	@Property(value = "#{period}")
 	protected Period period;
 
 	@Prerender
@@ -21,7 +21,17 @@ public class AbstractPeriodPage extends AbstractLecturePage {
 		super.prerender();
 		if (period == null) {
 			addMessage(i18n("message_error_no_period_selected"));
-			redirect(Constants.FACULTY_PERIODS);
+			redirect(Constants.FACULTY_PERIODS_PAGE);
+		} else if (period.getId() != null) {
+			period = lectureService.getPeriod(period.getId());
+			// check security constraint 
+			// TODO acegi should check this method if user is allow to read or update the period
+			if (!faculty.getPeriods().contains(period)) {
+				period = null;
+				addMessage(i18n("message_error_period_does_not_belong_to_selected_faculty"));
+				redirect(Constants.FACULTY_PERIODS_PAGE);
+			}
+			setBean("period",period);
 		}
 	}
 

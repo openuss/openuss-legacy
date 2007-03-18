@@ -6,6 +6,7 @@
 package org.openuss.repository;
 
 import java.io.InputStream;
+import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -50,4 +51,15 @@ public class RepositoryFileImpl extends org.openuss.repository.RepositoryFileBas
 		}
 		return extension;
 	}
+
+	@Override
+	public boolean isReleased() {
+		return getCreated().before(new Date()) ;
+	}
+
+	@Override
+	public Date releaseDate() {
+		return getCreated();
+	}
+
 }

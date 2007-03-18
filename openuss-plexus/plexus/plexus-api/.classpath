@@ -13,5 +13,4 @@
   <classpathentry kind="var" path="M2_REPO/org/easymock/easymockclassextension/2.2/easymockclassextension-2.2.jar" sourcepath="M2_REPO/org/easymock/easymockclassextension/2.2/easymockclassextension-2.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/easymock/easymock/2.2/easymock-2.2.jar" sourcepath="M2_REPO/org/easymock/easymock/2.2/easymock-2.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar" sourcepath="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5-SNAPSHOT/tomahawk-1.1.5-SNAPSHOT.jar" sourcepath="/M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5-SNAPSHOT/tomahawk-1.1.5-SNAPSHOT-sources.jar"/>  
 </classpath>
