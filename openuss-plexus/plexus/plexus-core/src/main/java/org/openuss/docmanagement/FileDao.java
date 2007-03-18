@@ -152,9 +152,8 @@ public class FileDao extends ResourceDao {
 		String path =file.getPath();
 		if (path.startsWith("/")) path = path.substring(1);
 		if (path!="") node = node.getNode(path);
-		//TODO set new Properties
 
-		// nt:File Knoten
+		// nt:File
 		node.setProperty(DocConstants.PROPERTY_MESSAGE, file.getMessage());
 		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(file.getDistributionTime().getTime());
@@ -162,13 +161,14 @@ public class FileDao extends ResourceDao {
 		node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
 				.getVisibility());
 
-		// nt:resource Knoten, der die eigentlich Datei enthaelt
+		// nt:resource
 		node = node.getNode(DocConstants.JCR_CONTENT);
 		c.setTimeInMillis(file.getLastModification().getTime());
 		node.setProperty(DocConstants.JCR_LASTMODIFIED, c);
 		
 		session.save();
 		//if nodename has changed, move node
+		node = node.getParent();
 		if (!node.getPath().equals(node.getParent().getPath() + "/" + file.getName())) session.move(node.getPath(), node.getParent().getPath() + "/" + file.getName());
 		logout(session);		
 	}
@@ -214,8 +214,17 @@ public class FileDao extends ResourceDao {
 	}
 	
 	private String getAreaType(Node node) {
-		// TODO implement me
-		// possible methods: recursive, path analysing, ...?
+		String path = "";
+		try {
+			path = node.getPath();
+		} catch (RepositoryException e) {
+			logger.error("Repository Exception: ", e);
+		}
+		if (path.startsWith("/")) path = path.substring(1);
+		if (path.startsWith(DocConstants.DISTRIBUTION))	return DocConstants.DISTRIBUTION;
+		if (path.startsWith(DocConstants.EXAMAREA))	return DocConstants.EXAMAREA;
+		if (path.startsWith(DocConstants.WORKINGPLACE))	return DocConstants.WORKINGPLACE;
+		//return null;
 		return DocConstants.DISTRIBUTION;
 	}
 

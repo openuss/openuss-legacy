@@ -5,19 +5,12 @@
  */
 package org.openuss.docmanagement;
 
-
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
-
 import javax.jcr.AccessDeniedException;
 import javax.jcr.InvalidItemStateException;
 import javax.jcr.ItemExistsException;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.LoginException;
-import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
@@ -26,9 +19,6 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 import javax.jcr.Node;
-import javax.jcr.UnsupportedRepositoryOperationException;
-import javax.jcr.ValueFormatException;
-import javax.jcr.Workspace;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
@@ -36,8 +26,6 @@ import javax.jcr.version.VersionException;
 
 import org.apache.log4j.Logger;
 
-import org.apache.myfaces.custom.tree2.TreeNode;
-import org.apache.myfaces.custom.tree2.TreeNodeBase;
 
 /**
  * @see org.openuss.docmanagement.DistributionService
@@ -319,45 +307,6 @@ public class DistributionServiceImpl
     }
     
 
-	private TreeNode traverse(Node n, Session s) {
-		try {
-
-			if ((!n.getName().startsWith("jcr:"))) {
-
-				String name = n.getName();
-				if (name.equals("") || (name == null))
-					name = "root";
-
-				TreeNode tnb;
-				if (n.isNodeType("mix:referenceable")) {
-					tnb = new TreeNodeBase("node", name, !n.hasNodes());
-				} else {
-					n.addMixin("mix:referenceable");
-					s.save();
-					tnb = new TreeNodeBase("node", name, !n.hasNodes());
-				}
-
-				Node nn;
-				if (!n.hasNodes()) {
-					return tnb;
-				} else if (n.hasNodes()) {
-					for (NodeIterator i = n.getNodes(); i.hasNext();) {
-						nn = i.nextNode();
-						TreeNode temp = traverse(nn, s);
-						if (temp != null)
-							tnb.getChildren().add(temp);
-					}
-				}
-				return tnb;
-			}
-		} catch (Exception e) {
-			logger.error("Fehler in traverse-Methode",e);
-		}
-		// wird nur erreicht im fall des jcr:system Knotens
-		logger.error("jcr:system oder nullPointerError in traverse-Methode");
-		return null;
-	}
-	
 	public void buildTestStructure() throws Exception{
 		folderDao.addTestStructure();		
 	}
