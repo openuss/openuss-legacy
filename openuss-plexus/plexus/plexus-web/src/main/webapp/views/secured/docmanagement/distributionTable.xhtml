@@ -12,7 +12,7 @@
 	<t:dataTable id="filesDataTable" var="file"
 		value="#{distributionViewBacker.data}">
 		<t:column>
-			<h:outputText value="#{file.name}" />			
+			<h:outputText value="#{file.name}"/>
 		</t:column>
 		<t:column>
 			<h:outputText value="#{file.extension}" />			
@@ -22,6 +22,11 @@
 		</t:column>
 		<t:column>
 			<h:outputText value="#{file.lastModification}" />			
+		</t:column>
+		<t:column>
+			<h:commandButton action="#{distributionViewBacker.changeFile}" value="#{msg.doc_dist_button_changefile}">
+				<f:actionListener type="org.openuss.web.docmanagement.FileChangeActionListener" />
+			</h:commandButton>
 		</t:column>
 	</t:dataTable>
 </ui:composition>

@@ -37,7 +37,7 @@ public class FolderController{
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			ValueBinding valueBinding = facesContext.getApplication().createValueBinding("#{distributionViewBacker}");
 			DistributionViewBacker dvb = (DistributionViewBacker)valueBinding.getValue(facesContext);
-			folder.setPath(dvb.getPath());
+			folder.setPath(dvb.getFolderPath());
 		}
 		if (visibleForAll) folder.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ALL);
 		else if (!visibleForAll) folder.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);

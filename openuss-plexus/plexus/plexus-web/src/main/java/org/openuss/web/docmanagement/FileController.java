@@ -47,7 +47,7 @@ public class FileController{
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			ValueBinding valueBinding = facesContext.getApplication().createValueBinding("#{distributionViewBacker}");
 			DistributionViewBacker dvb = (DistributionViewBacker)valueBinding.getValue(facesContext);
-			file.setPath(dvb.getPath());
+			file.setPath(dvb.getFolderPath());
 		}
 		file.setDistributionTime(new Timestamp(distributionTime.getTime()));
 		if (visibleForAll) file.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ALL);

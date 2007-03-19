@@ -10,27 +10,12 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<t:tree2 id="serverTree" value="#{distributionViewBacker.tree}" var="node"
-		varNodeToggler="t" preserveToggle="false" clientSideToggle="false">
+		varNodeToggler="t" preserveToggle="false" clientSideToggle="true">
 		<f:facet name="folder">
 			<h:panelGroup>
 				<h:commandLink immediate="true"
 					actionListener="#{t.setNodeSelected}">
-					<f:actionListener type="org.openuss.web.docmanagement.Navigator" />
-					<t:graphicImage value="/images/folder-open.png"
-						rendered="#{t.nodeExpanded}" border="0" />
-					<t:graphicImage value="/images/folder-open.png"
-						rendered="#{!t.nodeExpanded}" border="0" />
-					<h:outputText value="#{node.description}" rendered="#{t.nodeSelected}" styleClass="header_font_normal"/>
-					<h:outputText value="#{node.description}" rendered="#{not t.nodeSelected}" styleClass="content_font_normal"/>					
-				</h:commandLink>
-			</h:panelGroup>
-		</f:facet>
-		<f:facet name="file">
-			<h:panelGroup>
-				<h:commandLink immediate="true"
-					styleClass="#{t.nodeSelected ? 'standard_bold':'standard'}"
-					actionListener="#{t.setNodeSelected}">
-					<f:actionListener type="org.openuss.web.docmanagement.Navigator" />
+					<f:actionListener type="org.openuss.web.docmanagement.FolderNavigator" />
 					<t:graphicImage value="/images/folder-open.png"
 						rendered="#{t.nodeExpanded}" border="0" />
 					<t:graphicImage value="/images/folder-open.png"

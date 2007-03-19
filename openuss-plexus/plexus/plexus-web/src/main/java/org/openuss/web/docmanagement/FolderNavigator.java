@@ -9,11 +9,11 @@ import org.openuss.web.docmanagement.DistributionViewBacker;
 
 import org.apache.log4j.Logger;
 
-public class Navigator implements ActionListener {
-	private static final Logger logger = Logger.getLogger(Navigator.class);
+public class FolderNavigator implements ActionListener {
+	private static final Logger logger = Logger.getLogger(FolderNavigator.class);
 
-	public Navigator() {
-		logger.info("Navigator <init>");
+	public FolderNavigator() {
+		logger.info("FolderNavigator <init>");
 	}
 	
 	private Object getObjectFromContext(String expression) {
@@ -30,6 +30,6 @@ public class Navigator implements ActionListener {
 		clientId = clientId.substring(clientId.indexOf("serverTree")+11, clientId.lastIndexOf(":"));		
 		logger.debug("Cleaned compontent path: " + clientId);
 		DistributionViewBacker distributionViewBacker = (DistributionViewBacker) getObjectFromContext("#{distributionViewBacker}");
-		distributionViewBacker.setFacesPath(clientId);	
+		distributionViewBacker.setFolderFacesPath(clientId);	
 	}
 }

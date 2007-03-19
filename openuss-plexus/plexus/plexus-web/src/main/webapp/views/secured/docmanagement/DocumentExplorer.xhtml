@@ -28,12 +28,12 @@
   			<h:form id="treeView">
 				<table id="mainDistributionTable">
 					<tr style="width: 100%;">
-						<td id="treeViewArea" rowspan="2">
+						<td id="treeViewArea" rowspan="2" style="width: 40%; vertical-align: top; overflow: scroll; max-width: 40%;">
 							<o:block>
 								<ui:include src="treeView.xhtml"/>
 							</o:block>
 						</td>
-						<td id="tableViewArea">
+						<td id="tableViewArea" style="vertical-align: top; width: 60%;">
 							<o:block>
 								<ui:include src="distributionTable.xhtml"/>
 							</o:block>
@@ -41,10 +41,9 @@
 					</tr>
 				</table>
 				<o:block>
-					<h:commandButton action="#{distributionViewBacker.changeFolder}" value="#{msg.doc_dist_button_changefolder}" rendered="#{distributionViewBacker.type == 1}"/>
-					<h:commandButton action="#{distributionViewBacker.newFolder}" value="#{msg.doc_dist_button_newfolder}" rendered="#{distributionViewBacker.type == 1}" />
-					<h:commandButton action="#{distributionViewBacker.changeFile}" value="#{msg.doc_dist_button_changefile}" rendered="#{distributionViewBacker.type == 2}"/>
-					<h:commandButton action="#{distributionViewBacker.newFile}" value="#{msg.doc_dist_button_newfile}" rendered="#{distributionViewBacker.type == 1}"/>										
+					<h:commandButton action="#{distributionViewBacker.changeFolder}" value="#{msg.doc_dist_button_changefolder}" rendered="#{not empty distributionViewBacker.folderPath}"/>
+					<h:commandButton action="#{distributionViewBacker.newFolder}" value="#{msg.doc_dist_button_newfolder}" rendered="#{not empty distributionViewBacker.folderPath}" />
+					<h:commandButton action="#{distributionViewBacker.newFile}" value="#{msg.doc_dist_button_newfile}" rendered="#{not empty distributionViewBacker.folderPath}"/>
 				</o:block>
 			</h:form>
 		</ui:define>
