@@ -6,9 +6,11 @@
 	  xmlns:t="http://myfaces.apache.org/tomahawk"
 	  xmlns:s="http://www.openuss.org/jsf-security"
 	  xmlns:plexus="http://www.openuss.org/plexus/jsf"> 
-	<ui:include src="/views/commons/controls/languageSelection.xhtml"/>
-	<ui:include src="/views/commons/controls/themeSelection.xhtml"/>
-	<!-- Login Component -->
-	<plexus:loginPortlet/>	
-	<!-- Main Menu -->
+	  <s:authorize ifNotGranted="ROLE_USER">
+			<ui:include src="/views/commons/controls/languageSelection.xhtml"/>
+			<ui:include src="/views/commons/controls/themeSelection.xhtml"/>
+			<!-- Login Component -->
+			<plexus:loginPortlet/>	
+			<!-- Main Menu -->
+	  </s:authorize>
 </ui:composition>

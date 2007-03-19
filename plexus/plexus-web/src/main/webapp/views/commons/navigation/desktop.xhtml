@@ -8,6 +8,7 @@
     xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:plexus="http://www.openuss.org/plexus/jsf">
 	<div id="navigation_box">
+	    <ui:include src="/views/commons/navigation/default.xhtml" />
 		<s:authorize ifAllGranted="ROLE_USER">
 			<h:form id="navigationDesktop">
 				<t:panelNavigation2 id="desktop" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator" >
