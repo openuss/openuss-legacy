@@ -37,7 +37,12 @@ public class DocConstants{
 	public static final String NEWDOCUMENTTOFOLDER = "docmanagement_newdocumenttofolder";
 	public static final String EDITFOLDER = "docmanagement_editfolder";
 	public static final String DOCUMENTEXPLORER = "docmanagement_documentexplorer";
+	public static final String DELETE = "docmanagement_delete";
 	
 	//mimetype zip
 	public static final String MIMETYPE_ZIP = "application/zip";
+	
+	//delete linked files?
+	public static final String DELETE_LINKS = "delete";
+	public static final String REPLACE_LINKS = "copy";
 }

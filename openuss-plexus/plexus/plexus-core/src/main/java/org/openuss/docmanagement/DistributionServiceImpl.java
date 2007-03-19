@@ -180,58 +180,21 @@ public class DistributionServiceImpl
     /**
      * @see org.openuss.docmanagement.DistributionService#delNode(org.openuss.docmanagement.Node)
      */
-    protected void handleDelResource(Resource resource, boolean delLinks)
+    protected void handleDelFile(org.openuss.docmanagement.File file, boolean delLinks)
         throws java.lang.Exception
     {
-    	Session session = login();
-    	
-    	Node n = session.getNodeByUUID(resource.getId());
-    	//TODO what about linked nodes?
-    	n.remove();
-    	
-    	logout(session);
+    	fileDao.delFile(file, delLinks);
     }
 
     /**
      * @see org.openuss.docmanagement.DistributionService#delSharedFile(org.openuss.docmanagement.File, boolean)
      */
-    protected void handleDelSharedFile(org.openuss.docmanagement.File file, boolean delLinks)
+    protected void handleDelFolder(org.openuss.docmanagement.Folder folder, boolean delLinks)
         throws java.lang.Exception
     {	
-    	Session session = login();
-    	Node fileToDelete = session.getNodeByUUID(file.getId());
-    	PropertyIterator pi = fileToDelete.getReferences();    	
-    	if (delLinks){
-    		deleteLinks(pi);
-    	}else if (!delLinks){
-    		changeLinksToFiles(session, fileToDelete, pi);
-    	}
-    	
-    	logout(session);
+
     }
 
-	private void deleteLinks(PropertyIterator pi) throws VersionException, LockException, ConstraintViolationException, RepositoryException {
-		Property p;
-		while (pi.hasNext()){
-			p = pi.nextProperty(); 
-			p.remove();
-		}		
-	}
-
-	private void changeLinksToFiles(Session session, Node fileToDelete, PropertyIterator pi) throws ItemNotFoundException, AccessDeniedException, RepositoryException, VersionException, LockException, ConstraintViolationException, PathNotFoundException, ItemExistsException {
-		Property p;
-		Node link;
-		Node parent;
-		while(pi.hasNext()){
-			p = (Property) pi.nextProperty();
-			// Links are saved in a extra Node
-			link = p.getParent();
-			parent = link.getParent();
-			link.remove();
-			session.getWorkspace().copy(fileToDelete.getPath(), parent.getPath());
-			
-		}
-	}
 
     /**
      * @see org.openuss.docmanagement.DistributionService#getFiles(org.openuss.docmanagement.Folder)

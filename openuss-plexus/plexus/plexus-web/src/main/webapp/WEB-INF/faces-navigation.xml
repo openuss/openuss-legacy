@@ -523,11 +523,6 @@
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>docmanagement_changedocument</from-outcome>
-			<to-view-id>/views/secured/docmanagement/ChangeDocument.xhtml</to-view-id>
-		</navigation-case>
-
-		<navigation-case>
 			<from-outcome>docmanagement_copyfoldertofolder</from-outcome>
 			<to-view-id>/views/secured/docmanagement/CopyFolderToFolder.xhtml</to-view-id>
 		</navigation-case>
@@ -551,6 +546,12 @@
 			<from-outcome>docmanagement_newdocumenttoinstitut</from-outcome>
 			<to-view-id>/views/secured/docmanagement/NewDocumentToInstitut.xhtml</to-view-id>
 		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>docmanagement_delete</from-outcome>
+			<to-view-id>/views/secured/docmanagement/Delete.xhtml</to-view-id>
+		</navigation-case>
+
 
 	</navigation-rule>
 

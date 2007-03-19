@@ -178,7 +178,9 @@ public class FileDao extends ResourceDao {
 	public void delFile(File file, boolean delLinks) throws Exception {
 		try {
 			Session session = login(repository);
-			Node node = session.getRootNode().getNode(file.getPath());
+			String path = file.getPath();
+			if (path.startsWith("/")) path = path.substring(1);
+			Node node = session.getRootNode().getNode(path);
 			String areaType = getAreaType(node);
 			if (areaType == DocConstants.DISTRIBUTION) {
 				delDistributionFile(node, delLinks);
@@ -206,11 +208,32 @@ public class FileDao extends ResourceDao {
 					n = pi.nextProperty().getNode();
 					n.remove();
 				}
+				node.remove();
 			} catch (RepositoryException e){
 				logger.error("Repository Exception: ", e);
 			}
 		} else if (!delLinks){
-			//TODO implement me
+			try{				
+				PropertyIterator pi = node.getReferences();
+				Node n; Node parent; File f = new FileImpl(); 
+				try {
+					f = getFile(node.getPath());
+				} catch (Exception e1) {
+					logger.error("", e1);
+				}
+				while (pi.hasNext()){
+					n = pi.nextProperty().getNode();
+					parent = n.getParent();
+					n.remove();
+					try {
+						setDistributionFile(parent, getFile(f));
+					} catch (Exception e) {
+						logger.error("", e);
+					}
+				}
+			} catch (RepositoryException e){
+				logger.error("Repository Exception: ", e);
+			}
 		}
 		
 	}

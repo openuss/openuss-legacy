@@ -77,8 +77,12 @@ public class DistributionViewBacker{
 	 */
 	public ArrayList<FileTableEntry> data;
 
-	//type of current selected item
+	/**
+	 * String which saves what should happen when linked files are deleted
+	 */
+	public String deleteLinks;
 	
+		
 	/**
 	 * @return treeModel displayed by tree2 component
 	 */
@@ -309,6 +313,22 @@ public class DistributionViewBacker{
 		return DocConstants.DOCUMENTEXPLORER;
 	}
 	
+	private File fileTableEntry2File(FileTableEntry fte){
+		return new FileImpl(
+				fte.getDistributionTime(),
+				fte.getId(),
+				fte.getLastModification(),
+				fte.getLength(),
+				fte.getMessage(),
+				fte.getMimeType(),
+				fte.getName(),
+				fte.getPath(),
+				fte.getPredecessor(),
+				fte.getVersion(),
+				fte.getVisibility());
+	}
+		
+	
 	private BigFile fileTableEntry2BigFile(FileTableEntry fte){
 		File f = new FileImpl(
 				fte.getDistributionTime(),
@@ -378,6 +398,24 @@ public class DistributionViewBacker{
         }
         return DocConstants.DOCUMENTEXPLORER;
 	}
+	
+	public String confirmedDelete(){
+		Iterator i = this.data.iterator();
+		FileTableEntry fte;
+		while (i.hasNext()){
+			fte = (FileTableEntry)i.next();
+			if (fte.isChecked())
+				try {
+					distributionService.delFile(fileTableEntry2File(fte), deleteLinks.equals(DocConstants.DELETE_LINKS));
+				} catch (PathNotFoundException e) {
+					logger.error("Path not found: ",e);
+				} catch (ResourceAlreadyExistsException e) {
+					logger.error("Resource already exists: ",e);
+				}		
+		}	
+		
+		return DocConstants.DOCUMENTEXPLORER;
+	}
 
 	public FileController getFileController() {
 		return fileController;
@@ -426,6 +464,15 @@ public class DistributionViewBacker{
 
 	public void setFileFacesPath(String fileFacesPath) {
 		this.fileFacesPath = fileFacesPath;
+	}
+
+	public String getDeleteLinks() {
+		if (deleteLinks==null) return DocConstants.DELETE_LINKS;
+		return deleteLinks;
+	}
+
+	public void setDeleteLinks(String deleteLinks) {
+		this.deleteLinks = deleteLinks;
 	}
 }
 
