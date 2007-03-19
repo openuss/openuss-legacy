@@ -9,8 +9,6 @@ import org.apache.log4j.Logger;
  * Very simple implementation of ItemFilter {@link ItemFilter}.
  * Only Items in namespace jcr and rep are filtered.
  * 
- * TODO 0.9 extract namespaces to configuration file
- * TODO 1.0 successful unit tests
  * @author David Ullrich
  * @version 0.8
  */
@@ -34,8 +32,8 @@ public class DefaultItemFilterImpl implements ItemFilter {
 				return true;
 			}
 		} catch (RepositoryException ex) {
-			logger.debug("Repository exception occurred.");
-			logger.debug("Exception: " + ex.getMessage());
+			logger.error("Repository exception occurred.");
+			logger.error("Exception: " + ex.getMessage());
 			// ignore exception
 		}
 

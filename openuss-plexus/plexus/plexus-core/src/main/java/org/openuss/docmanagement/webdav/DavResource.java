@@ -3,12 +3,17 @@ package org.openuss.docmanagement.webdav;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.Property;
+import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
 
 import org.apache.jackrabbit.webdav.DavException;
+import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.openuss.docmanagement.DocConstants;
 
 /**
@@ -16,9 +21,13 @@ import org.openuss.docmanagement.DocConstants;
  * @version 0.5
  */
 public abstract class DavResource {
+	protected final DavResourceFactory factory;
+	protected final DavResourceLocator locator;
 	protected final Node representedNode;
 	
-	protected DavResource(Node representedNode) {
+	protected DavResource(DavResourceFactory factory, DavResourceLocator locator, Node representedNode) {
+		this.factory = factory;
+		this.locator = locator;
 		this.representedNode = representedNode;
 	}
 	
@@ -30,6 +39,14 @@ public abstract class DavResource {
 	 * @return
 	 */
 	public abstract boolean isCollection();
+	
+	public DavResourceFactory getFactory() {
+		return factory;
+	}
+	
+	public DavResourceLocator getLocator() {
+		return locator;
+	}
 	
 	/**
 	 * @param context
@@ -200,5 +217,67 @@ public abstract class DavResource {
 		} catch (RepositoryException ex) {
 			throw new DavException(HttpStatus.SC_SERVICE_UNAVAILABLE);
 		}
+	}
+	
+	public DavResource[] getMembers() throws DavException {
+		// TODO prüfen, ob der Fehler berechtigt ist
+		if (!exists()) {
+			throw new DavException(HttpStatus.SC_NOT_FOUND);
+		}
+		
+		List<DavResource> members = new ArrayList<DavResource>();
+		
+		try {
+			ItemFilter itemFilter = getFactory().getConfiguration().getItemFilter();
+			
+			if (locator.isRootLocation()) {
+				// TODO abonnierte Elemente anzeigen
+			} else {
+				// Kindknoten anzeigen
+				NodeIterator nodeIterator = representedNode.getNodes();
+				Node node;
+				DavResourceLocator locator;
+				while (nodeIterator.hasNext()) {
+					node = nodeIterator.nextNode();
+					if (!itemFilter.isFilteredItem(node)) {
+						locator = getLocator().getFactory().createResourceLocator(getLocator().getPrefix(), null, node.getPath());
+						members.add(getFactory().createResource(representedNode.getSession(), locator));
+					}
+				}
+			}
+		} catch (RepositoryException ex) {
+			// rethrow RepositoryException as DavException
+			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+		}
+		
+		return members.toArray(new DavResource[0]);
+	}
+	
+	public MultiStatusResponse getProperties(String[] properties) {
+		MultiStatusResponse response = new MultiStatusResponse(locator.getHref(isCollection()), null);
+		
+		if (properties.length == 0) {
+			// reply ALL properties
+		} else {
+			// reply only requested properties
+		}
+		
+		// HACK
+		try {
+			ItemFilter itemFilter = getFactory().getConfiguration().getItemFilter();
+
+			PropertyIterator propertyIterator = representedNode.getProperties();
+			Property property;
+			while (propertyIterator.hasNext()) {
+				property = propertyIterator.nextProperty();
+				if (!itemFilter.isFilteredItem(property)) {
+					response.addProperty(HttpStatus.SC_OK, property.getName(), property.getValue().getString());
+				}
+			}
+		} catch (RepositoryException ex) {
+			
+		}
+		
+		return response;
 	}
 }

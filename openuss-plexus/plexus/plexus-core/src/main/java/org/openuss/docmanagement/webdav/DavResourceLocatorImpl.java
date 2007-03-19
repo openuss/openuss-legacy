@@ -7,7 +7,7 @@ import org.apache.jackrabbit.webdav.DavResourceLocator;
 
 /**
  * @author David Ullrich
- * @version 0.65
+ * @version 0.7
  */
 public class DavResourceLocatorImpl implements DavResourceLocator {
 	private final String prefix;
@@ -17,14 +17,14 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	
 	public DavResourceLocatorImpl(String prefix, String resourcePath, DavLocatorFactory locatorFactory) {
 		this.prefix = prefix;
-		// remove trailing slash except for root item
+		// remove trailing slash except for root location
 		if (resourcePath.endsWith("/") && (resourcePath.length() > 1)) {
 			resourcePath = resourcePath.substring(0, resourcePath.length() - 1);
 		}
 		this.resourcePath = resourcePath;
 		this.locatorFactory = locatorFactory;
 		
-		this.href = prefix + Text.escape(resourcePath);
+		this.href = prefix + Text.escapePath(resourcePath);
 	}
 
 	/* (non-Javadoc)

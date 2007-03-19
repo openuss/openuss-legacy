@@ -4,13 +4,15 @@ import java.io.IOException;
 
 import javax.jcr.Node;
 
+import org.apache.jackrabbit.webdav.DavResourceLocator;
+
 /**
  * @author David Ullrich
  * @version 0.5
  */
 public class DavResourceCollection extends DavResource {
-	public DavResourceCollection(Node representedNode) {
-		super(representedNode);
+	public DavResourceCollection(DavResourceFactory factory, DavResourceLocator locator, Node representedNode) {
+		super(factory, locator, representedNode);
 	}
 
 	/* (non-Javadoc)

@@ -12,8 +12,10 @@ import org.apache.log4j.Logger;
 public class DavResourceFactory {
 	private final Logger logger = Logger.getLogger(DavResourceFactory.class);
 	
-	public DavResourceFactory() {
-		// HACK
+	private final DavResourceConfiguration configuration;
+	
+	public DavResourceFactory(DavResourceConfiguration configuration) {
+		this.configuration = configuration;
 	}
 	
 	public DavResource createResource(Session session, DavResourceLocator locator) {
@@ -23,9 +25,9 @@ public class DavResourceFactory {
 			Item representedItem = session.getItem(locator.getRepositoryPath());
 			
 			if ((representedItem != null) && (representedItem.isNode())) {
-				resource = new DavResourceCollection((Node)representedItem);
+				resource = new DavResourceCollection(this, locator, (Node)representedItem);
 			} else {
-				resource = new DavResourceCollection(null);
+				resource = new DavResourceCollection(this, locator, null);
 			}
 		} catch (PathNotFoundException ex) {
 			logger.debug("Path not found exception occurred.");
@@ -35,5 +37,9 @@ public class DavResourceFactory {
 			logger.debug("Exception: " + ex.getMessage());
 		}
 		return resource;
+	}
+	
+	public DavResourceConfiguration getConfiguration() {
+		return configuration;
 	}
 }
