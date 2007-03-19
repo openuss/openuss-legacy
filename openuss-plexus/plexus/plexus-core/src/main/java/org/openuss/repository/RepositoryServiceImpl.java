@@ -130,8 +130,8 @@ public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServ
 
 	@Override
 	protected void handleSetRepositoryLocation(String path) throws Exception {
-		if (StringUtils.isBlank(path))
-			throw new IllegalArgumentException("RepositoryLocation musst not be empty!");
+		Validate.notEmpty(path, "RepositoryLocation is not configured!");
+
 		logger.info("set repository path to "+path);
 		
 		this.path = path;

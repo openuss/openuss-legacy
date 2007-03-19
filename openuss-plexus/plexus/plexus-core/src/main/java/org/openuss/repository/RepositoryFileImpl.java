@@ -46,8 +46,9 @@ public class RepositoryFileImpl extends org.openuss.repository.RepositoryFileBas
 		String extension = "";
 		if (StringUtils.isNotBlank(fileName)) {
 			int index = getFileName().lastIndexOf(".");
-			if (index > -1)
+			if (index > -1) {
 				extension = fileName.substring(index+1);
+			}
 		}
 		return extension;
 	}
