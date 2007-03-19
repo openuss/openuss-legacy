@@ -20,23 +20,17 @@ public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrati
 	
 	private TestUtility testUtility;
 	
-	public void testRepositoryService() {
+	public void testRepositoryService() throws IOException {
 		testUtility.createSecureContext();
 		final String str = "This is the content of the file";
 		byte[] data = str.getBytes();
 		
-		InputStream stream = new ByteArrayInputStream(data);
+		String name = "dummy.dummy";
 		
-		RepositoryFile file = RepositoryFile.Factory.newInstance();
-		file.setFileName("dummy.dummy");
-		file.setFileSize(data.length);
-		file.setContentType("contentType");
-		file.setName("dummy");
-		file.setInputStream(stream);
-		file.setCreated(new Timestamp(System.currentTimeMillis()));
-		file.setModified(new Timestamp(System.currentTimeMillis()));
+		RepositoryFile file = createRepositoryFile(data, name);
 		
 		repositoryService.saveFile(file);
+		file.getInputStream().close();
 		
 		assertNotNull(file.getId());
 		
@@ -58,10 +52,23 @@ public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrati
 		repositoryService.removeFile(nfile);
 		assertNull(repositoryService.getFile(nfile));
 	}
+	
+	private RepositoryFile createRepositoryFile(byte[] data, String name) {
+		RepositoryFile file = RepositoryFile.Factory.newInstance();
+		InputStream stream = new ByteArrayInputStream(data);
+		file.setFileName(name);
+		file.setFileSize(data.length);
+		file.setContentType("contentType");
+		file.setName("dummy");
+		file.setInputStream(stream);
+		file.setCreated(new Timestamp(System.currentTimeMillis()));
+		file.setModified(new Timestamp(System.currentTimeMillis()));
+		return file;
+	}
 
 	private String getFileContentAsString(RepositoryFile nfile) {
 		InputStream s = nfile.getInputStream();
-		byte[] d2 = new byte[nfile.getFileSize()];
+		byte[] d2 = new byte[nfile.getFileSize().intValue()];
 		try {
 			s.read(d2);
 			s.close();

@@ -5,8 +5,16 @@
  */
 package org.openuss.documents;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Collection;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.openuss.TestUtility;
 import org.openuss.repository.RepositoryFile;
@@ -18,6 +26,8 @@ import org.openuss.repository.RepositoryService;
  */
 public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTestBase {
 	
+	private static final int DRAIN_BUFFER_SIZE = 1024;
+
 	private TestUtility testUtility;
 	
 	private RepositoryService repositoryService;
@@ -25,7 +35,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	private FolderEntryDao folderEntryDao;
 	
 
-	public void testFolderEntries() throws DocumentExcepion {
+	public void testFolderEntries() throws DocumentApplicationExcepion {
 		DomainObject domainObject = createDomainObject();
 		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, null);
 		assertNotNull(entries);
@@ -40,7 +50,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		Folder folder = createSubFolder();
 
 		assertNull(folder.getId());
-		documentService.addFolderEntry(folder, root);
+		documentService.createFolderEntry(folder, root);
 		assertNotNull(folder.getId());
 		assertEquals(root, folder.getParent());
 		
@@ -58,7 +68,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertEquals(0, entries.size());
 	}
 
-	public void testFolderPath() throws DocumentExcepion {
+	public void testFolderPath() throws DocumentApplicationExcepion {
 		DomainObject domainObject = createDomainObject();
 		Folder root = documentService.getFolder(domainObject, null);
 		
@@ -66,9 +76,9 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		Folder subFolder2 = createSubFolder();
 		Folder subFolder3 = createSubFolder();
 		
-		documentService.addFolderEntry(subFolder1, root);
-		documentService.addFolderEntry(subFolder2, subFolder1);
-		documentService.addFolderEntry(subFolder3, subFolder2);
+		documentService.createFolderEntry(subFolder1, root);
+		documentService.createFolderEntry(subFolder2, subFolder1);
+		documentService.createFolderEntry(subFolder3, subFolder2);
 		
 		commit();
 		
@@ -83,7 +93,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertEquals(subFolder3, folderPath.get(3));
 	}
 	
-	public void testFolderAddRemoving() throws DocumentExcepion {
+	public void testFolderAddRemoving() throws DocumentApplicationExcepion {
 		DomainObject domainObject = createDomainObject();
 		Folder root = documentService.getFolder(domainObject, null);
 		
@@ -92,10 +102,10 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		Folder subFolder3 = createSubFolder();
 		Folder subFolder4 = createSubFolder();
 		
-		documentService.addFolderEntry(subFolder1, root);
-		documentService.addFolderEntry(subFolder2, subFolder1);
-		documentService.addFolderEntry(subFolder3, subFolder2);
-		documentService.addFolderEntry(subFolder4, subFolder2);
+		documentService.createFolderEntry(subFolder1, root);
+		documentService.createFolderEntry(subFolder2, subFolder1);
+		documentService.createFolderEntry(subFolder3, subFolder2);
+		documentService.createFolderEntry(subFolder4, subFolder2);
 		
 		assertNotNull(subFolder1.getId());
 		assertNotNull(subFolder2.getId());
@@ -128,7 +138,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertNull(folderEntry);
 	}
 	
-	public void testFileEntry() throws DocumentExcepion {
+	public void testFileEntry() throws DocumentApplicationExcepion {
 		testUtility.createSecureContext();
 		DomainObject domainObject = createDomainObject();
 		Folder root = documentService.getFolder(domainObject, null);
@@ -139,7 +149,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		
 		
 		assertNull(fileEntry.getId());
-		documentService.addFileEntry(fileEntry, root);
+		documentService.createFileEntry(fileEntry, root);
 		assertNotNull(fileEntry.getId());
 		assertNotNull(repositoryFile.getId());
 		
@@ -159,7 +169,37 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		RepositoryFile repoFile = repositoryService.getFile(repositoryFile);
 		assertNull(repoFile);
 	}
-
+	
+	public void testCreateFolderEntriesFromZip() throws IOException {
+		testUtility.createSecureContext();
+		DomainObject domainObject = createDomainObject();
+		Folder root = documentService.getFolder(domainObject, null);
+		
+		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream("example.zip");
+		
+		documentService.createFolderEntryFromZip(input, root);
+		
+		root = documentService.getFolder(domainObject, null);
+		assertEquals(1, root.getEntries().size());
+		Folder subfolder = (Folder) root.getEntries().get(0);
+		assertEquals("subfolder",subfolder.getName());
+		assertEquals(1, subfolder.getEntries().size());
+		Folder library = (Folder) subfolder.getEntries().get(0);
+		assertEquals("library", library.getName());
+		assertEquals(2, library.getEntries().size());
+		
+		commit();
+		
+		Collection<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, null);
+		InputStream is = documentService.getZippedFolderEntries(entries);
+		
+		ZipInputStream zis = new ZipInputStream(is);
+		assertEquals("subfolder/library/acegi.pdf/acegi.pdf",zis.getNextEntry().getName());
+		assertEquals("subfolder/library/OpenUSS-Kurzanleitung.pdf/OpenUSS-Kurzanleitung.pdf", zis.getNextEntry().getName());
+		zis.close();
+		is.close();
+	}
+	
 	private RepositoryFile createRepositoryFile() {
 		RepositoryFile repositoryFile = RepositoryFile.Factory.newInstance();
 		byte[] data = "this is the content of the file".getBytes();

@@ -43,7 +43,7 @@ public class FileEntryImpl extends org.openuss.documents.FileEntryBase implement
 	}
 
 	@Override
-	public Integer getSize() {
+	public Integer getSize() { 
 		return (getRepositoryFile() == null) ? null : getRepositoryFile().getFileSize();
 	}
 
