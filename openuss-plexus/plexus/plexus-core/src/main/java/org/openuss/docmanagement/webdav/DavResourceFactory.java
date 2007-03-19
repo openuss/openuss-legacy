@@ -8,6 +8,7 @@ import javax.jcr.Session;
 
 import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.apache.log4j.Logger;
+import org.openuss.docmanagement.DocConstants;
 
 public class DavResourceFactory {
 	private final Logger logger = Logger.getLogger(DavResourceFactory.class);
@@ -22,12 +23,21 @@ public class DavResourceFactory {
 		DavResource resource = null;
 		
 		try {
-			Item representedItem = session.getItem(locator.getRepositoryPath());
-			
-			if ((representedItem != null) && (representedItem.isNode())) {
-				resource = new DavResourceCollection(this, locator, (Node)representedItem);
+			if (session.itemExists(locator.getRepositoryPath())) {
+				Item representedItem = session.getItem(locator.getRepositoryPath());
+
+				if (representedItem.isNode()) {
+					Node representedNode = (Node)representedItem;
+					if (representedNode.isNodeType(DocConstants.NT_FOLDER)) {
+						resource = new DavResourceCollection(this, session, locator, representedNode);
+					} else {
+						resource = new DavResourceFile(this, session, locator, representedNode);
+					}
+				}
+				
+				// TODO kein Node. Kann das vorkommen?
 			} else {
-				resource = new DavResourceCollection(this, locator, null);
+				resource = new DavResourceFile(this, session, locator, null);
 			}
 		} catch (PathNotFoundException ex) {
 			logger.debug("Path not found exception occurred.");

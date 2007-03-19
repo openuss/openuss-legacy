@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.jcr.Session;
 
+import org.apache.jackrabbit.util.Text;
 import org.apache.jackrabbit.webdav.DavConstants;
 import org.apache.jackrabbit.webdav.DavException;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
@@ -21,7 +22,7 @@ import org.dom4j.Element;
  * @version 0.5
  */
 public class DavService {
-	private final Logger logger = Logger.getLogger(DavService.class);
+//	private final Logger logger = Logger.getLogger(DavService.class);
 	
 	private final DavResourceConfiguration configuration;
 	private Session session;
@@ -46,37 +47,36 @@ public class DavService {
 	/**
 	 * @param context
 	 * @param locator
-	 * @param withContent
 	 * @throws IOException
 	 */
-	public void spoolResource(OutputContext context, DavResourceLocator locator, boolean withContent) throws IOException {
+	public void spoolResource(OutputContext context, DavResourceLocator locator) throws DavException {
 		// check parameters
 		if ((context == null) || (locator == null)) {
-			throw new IOException();
+			throw new DavException(HttpStatus.SC_BAD_REQUEST);
 		}
-		
-		if (locator.isRootLocation()) {
-			// TODO abonnierte enrollments anfordern und Startsicht ausgeben
-		} else {
-			// TODO ressource ausgeben
-		}
+
+		// create resource and export content
+		DavResource resource = getResourceFactory().createResource(session, locator);
+		resource.exportContent(new ExportContext(context));
 	}
 	
 	/**
 	 * @param context
 	 * @param locator
 	 */
-	public void addMember(InputContext context, DavResourceLocator locator) throws IOException {
+	public void addMember(InputContext context, DavResourceLocator locator) throws DavException {
 		// check parameters
 		if ((context == null) || (locator == null)) {
-			throw new IOException();
+			throw new DavException(HttpStatus.SC_BAD_REQUEST);
 		}
 		
-		// TODO
+		// create resource and import content
+		DavResource resource = getResourceFactory().createResource(session, locator);
+		resource.getCollection().addMember(resource, context);
 	}
 	
 	public MultiStatus getProperties(Document requestDocument, DavResourceLocator locator, int depth) throws DavException {
-		// TODO korrekt implementieren
+		// TODO kommentieren
 		DavResource resource = getResourceFactory().createResource(getSession(), locator);
 		if (!resource.exists()) {
 			throw new DavException(HttpStatus.SC_NOT_FOUND);
@@ -89,7 +89,7 @@ public class DavService {
 		return multistatus;
 	}
 	
-	private String[] getRequestedProperties(Document requestDocument) throws DavException {
+	private List<String> getRequestedProperties(Document requestDocument) throws DavException {
 		// TODO kommentieren, Fehlerprüfungen
 		List<String> propertyNames = new ArrayList<String>();
 		
@@ -111,7 +111,7 @@ public class DavService {
 				}
 			}
 		}
-		return propertyNames.toArray(new String[0]);
+		return propertyNames;
 	}
 	
 	private boolean isNamesOnlyRequest(Document requestDocument) throws DavException {
@@ -128,8 +128,8 @@ public class DavService {
 		return false;
 	}
 	
-	private void addResponse(MultiStatus multistatus, DavResource resource, String[] properties, boolean namesOnly, int depth) throws DavException {
-		multistatus.addResponse(resource.getProperties(properties));
+	private void addResponse(MultiStatus multistatus, DavResource resource, List<String> properties, boolean namesOnly, int depth) throws DavException {
+		multistatus.addResponse(resource.getProperties(properties, namesOnly));
 		
 		if (depth > 0) {
 			DavResource[] members = resource.getMembers();
@@ -147,8 +147,6 @@ public class DavService {
 	
 	public void createCollection(DavResourceLocator locator) throws IOException {
 		// TODO
-		logger.debug("Collection should be created: " + locator.getResourcePath());
-		
 		// HACK
 		throw new IOException("Creation of collection not allowed.");
 	}

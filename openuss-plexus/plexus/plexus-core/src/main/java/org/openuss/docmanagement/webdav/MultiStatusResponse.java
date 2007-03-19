@@ -21,7 +21,7 @@ public class MultiStatusResponse {
 	private int statusCode;
 	private boolean statusOnly;
 	
-	private final Namespace defaultNamespace = DocumentHelper.createNamespace("D", "DAV:"); 
+	private final static Namespace defaultNamespace = DocumentHelper.createNamespace("D", "DAV:"); 
 	
 	private final HashMap<Integer, Element> propstats;
 	
@@ -42,7 +42,7 @@ public class MultiStatusResponse {
 		propstats = new HashMap<Integer, Element>();
 	}
 	
-	public Namespace getDefaultNamespace() {
+	public static Namespace getDefaultNamespace() {
 		return defaultNamespace;
 	}
 	
@@ -61,7 +61,10 @@ public class MultiStatusResponse {
 		
 		QName propertyName = DocumentHelper.createQName(name, namespace);
 		Element propertyElement = DocumentHelper.createElement(propertyName);
-		propertyElement.addText(value);
+		
+		if (value != null) {
+			propertyElement.addText(value);
+		}
 		
 		addProperty(statusCode, propertyElement);
 	}

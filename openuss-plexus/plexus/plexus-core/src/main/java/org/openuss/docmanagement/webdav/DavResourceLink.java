@@ -3,7 +3,12 @@ package org.openuss.docmanagement.webdav;
 import java.io.IOException;
 
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 
+import org.apache.jackrabbit.JcrConstants;
+import org.apache.jackrabbit.webdav.DavException;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
 
 /**
@@ -11,8 +16,8 @@ import org.apache.jackrabbit.webdav.DavResourceLocator;
  * @version 0.5
  */
 public class DavResourceLink extends DavResource {
-	public DavResourceLink(DavResourceFactory factory, DavResourceLocator locator, Node representedNode) {
-		super(factory, locator, representedNode);
+	public DavResourceLink(DavResourceFactory factory, Session session, DavResourceLocator locator, Node representedNode) {
+		super(factory, session, locator, representedNode);
 	}
 	
 	/* (non-Javadoc)
@@ -25,10 +30,9 @@ public class DavResourceLink extends DavResource {
 	}
 
 	@Override
-	public void exportContent(ExportContext context) throws IOException {
+	public void exportContent(ExportContext context) throws DavException {
 		if (!canExport(context)) {
 			// TODO exception message
-			throw new IOException();
 		}
 		
 		// TODO
@@ -37,14 +41,21 @@ public class DavResourceLink extends DavResource {
 	}
 
 	@Override
-	public void importContent(ImportContext context) throws IOException {
+	public boolean importContent(ImportContext context) throws DavException {
 		if (!canImport(context)) {
 			// TODO exception message
-			throw new IOException();
 		}
 		
 		// TODO
 		
 		context.informCompleted(true);
+		
+		return false;
+	}
+
+	@Override
+	protected boolean importData(ImportContext context, Node node) throws IOException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

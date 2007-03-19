@@ -2,6 +2,7 @@ package org.openuss.docmanagement.webdav;
 
 import java.io.OutputStream;
 
+import org.apache.jackrabbit.webdav.DavConstants;
 import org.apache.jackrabbit.webdav.io.OutputContext;
 
 /**
@@ -45,22 +46,21 @@ public class ExportContext implements IOContext {
 	 * @return
 	 */
 	public OutputStream getOutputStream() {
-		// TODO
-		return null;
+		return context.getOutputStream();
 	}
 	
 	/**
 	 * @param contentLanguage
 	 */
 	public void setContentLanguage(String contentLanguage) {
-		// TODO
+		context.setContentLanguage(contentLanguage);
 	}
 	
 	/**
 	 * @param contentLength
 	 */
 	public void setContentLength(long contentLength) {
-		// TODO
+		context.setContentLength(contentLength);
 	}
 	
 	/**
@@ -68,7 +68,7 @@ public class ExportContext implements IOContext {
 	 * @param encoding
 	 */
 	public void setContentType(String mimeType, String encoding) {
-		// TODO
+//		context.setContentType(contentType);
 	}
 	
 	/**
@@ -82,21 +82,21 @@ public class ExportContext implements IOContext {
 	 * @param etag
 	 */
 	public void setETag(String etag) {
-		// TODO
+		context.setETag(etag);
 	}
 	
 	/**
 	 * @param modificationTime
 	 */
 	public void setModificationTime(long modificationTime) {
-		// TODO
+		context.setModificationTime(modificationTime);
 	}
 	
 	/**
 	 * @param propertyName
-	 * @param properyValue
+	 * @param propertyValue
 	 */
-	public void setProperty(Object propertyName, Object properyValue) {
-		// TODO
+	public void setProperty(Object propertyName, Object propertyValue) {
+		context.setProperty(propertyName.toString(), propertyValue.toString());
 	}
 }

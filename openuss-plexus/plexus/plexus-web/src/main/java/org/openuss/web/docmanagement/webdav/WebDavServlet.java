@@ -28,6 +28,7 @@ import org.dom4j.io.XMLWriter;
 import org.openuss.docmanagement.webdav.DavLocatorFactoryImpl;
 import org.openuss.docmanagement.webdav.DavResourceConfiguration;
 import org.openuss.docmanagement.webdav.DavService;
+import org.openuss.docmanagement.webdav.HttpStatus;
 import org.openuss.docmanagement.webdav.MultiStatus;
 import org.openuss.docmanagement.webdav.SessionProvider;
 import org.springframework.web.context.WebApplicationContext;
@@ -52,7 +53,6 @@ public class WebDavServlet extends HttpServlet {
 	
 	private static final String DAV_COMPLIANCE_CLASS = "1";
 	private static final String DAV_ALLOWED_METHODS = "OPTIONS, GET, HEAD, POST, DELETE, PUT, PROPFIND, PROPPATCH, MKCOL, COPY, MOVE";
-	private static final int SC_MULTI_STATUS = 207;
 	
 	private String resourcePathPrefix;
 	private String authenticateHeader;
@@ -171,12 +171,12 @@ public class WebDavServlet extends HttpServlet {
 				case DavMethods.DAV_HEAD:
 					// spool header of resource, no content
 					logger.debug("Method HEAD requested for resource " + locator.getResourcePath());
-					getDavService().spoolResource(new OutputContextImpl(response, null), locator, false);
+					getDavService().spoolResource(new OutputContextImpl(response, null), locator);
 					break;
 				case DavMethods.DAV_GET:
 					// spool entire resource
 					logger.debug("Method GET requested for resource " + locator.getResourcePath());
-					getDavService().spoolResource(new OutputContextImpl(response, response.getOutputStream()), locator, true);
+					getDavService().spoolResource(new OutputContextImpl(response, response.getOutputStream()), locator);
 					break;
 				case DavMethods.DAV_POST:
 				case DavMethods.DAV_PUT:
@@ -187,7 +187,7 @@ public class WebDavServlet extends HttpServlet {
 				case DavMethods.DAV_DELETE:
 					// delete resource
 					logger.debug("Method DELETE requested for resource " + locator.getResourcePath());
-					// TODO
+					getDavService().deleteResource(locator);
 					break;
 				case DavMethods.DAV_PROPFIND:
 					// fill properties from resource and send to client
@@ -208,7 +208,7 @@ public class WebDavServlet extends HttpServlet {
 				case DavMethods.DAV_COPY:
 					// copy resource to another collection
 					logger.debug("Method COPY requested for resource " + locator.getResourcePath() + ". Destination: " + getDestination(request));
-					// TODO
+					getDavService().copyResource(locator, getResourceLocator(request, getDestination(request)));
 					break;
 				case DavMethods.DAV_MOVE:
 					// move resource to another collection
@@ -224,7 +224,7 @@ public class WebDavServlet extends HttpServlet {
 			logger.error("Exception: " + ex.getMessage());
 			// rethrow IOException as DavException
 			// TODO StatusCode
-			throw new DavException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+			throw new DavException(HttpServletResponse.SC_NOT_FOUND, ex.getMessage());
 		}
 		
 		return true;
@@ -324,7 +324,7 @@ public class WebDavServlet extends HttpServlet {
 	 */
 	private void sendMultiStatus(MultiStatus multistatus, HttpServletResponse response) throws IOException {
 		// TODO kommentieren
-		response.setStatus(SC_MULTI_STATUS);
+		response.setStatus(HttpStatus.SC_MULTI_STATUS);
 		if (multistatus != null) {
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			Document responseDocument = DocumentHelper.createDocument();

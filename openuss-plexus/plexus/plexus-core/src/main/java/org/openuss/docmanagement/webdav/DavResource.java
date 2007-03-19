@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -11,10 +13,19 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 
+import org.apache.jackrabbit.JcrConstants;
+import org.apache.jackrabbit.util.Text;
+import org.apache.jackrabbit.webdav.DavConstants;
 import org.apache.jackrabbit.webdav.DavException;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
+import org.apache.jackrabbit.webdav.io.InputContext;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.QName;
 import org.openuss.docmanagement.DocConstants;
+import org.openuss.docmanagement.DocRights;
 
 /**
  * @author David Ullrich
@@ -23,10 +34,12 @@ import org.openuss.docmanagement.DocConstants;
 public abstract class DavResource {
 	protected final DavResourceFactory factory;
 	protected final DavResourceLocator locator;
-	protected final Node representedNode;
+	protected Node representedNode;
+	protected final Session session;
 	
-	protected DavResource(DavResourceFactory factory, DavResourceLocator locator, Node representedNode) {
+	protected DavResource(DavResourceFactory factory, Session session, DavResourceLocator locator, Node representedNode) {
 		this.factory = factory;
+		this.session = session;
 		this.locator = locator;
 		this.representedNode = representedNode;
 	}
@@ -46,6 +59,21 @@ public abstract class DavResource {
 	
 	public DavResourceLocator getLocator() {
 		return locator;
+	}
+	
+	public DavResourceCollection getCollection() {
+		DavResourceCollection parent = null;
+		
+		if (!locator.isRootLocation()) {
+			String parentPath = Text.getRelativeParent(getLocator().getRepositoryPath(), 1);
+			if (parentPath.length() == 0) {
+				parentPath = "/";
+			}
+			DavResourceLocator parentLocator = getLocator().getFactory().createResourceLocator(getLocator().getPrefix(), null, parentPath);
+			parent = (DavResourceCollection)getFactory().createResource(session, parentLocator);
+		}
+		
+		return parent;
 	}
 	
 	/**
@@ -89,13 +117,13 @@ public abstract class DavResource {
 	 * @param context
 	 * @throws IOException
 	 */
-	public abstract void exportContent(ExportContext context) throws IOException;
+	public abstract void exportContent(ExportContext context) throws DavException;
 	
 	/**
 	 * @param context
 	 * @throws IOException
 	 */
-	public abstract void importContent(ImportContext context) throws IOException;
+	public abstract boolean importContent(ImportContext context) throws DavException;
 	
 	protected void exportProperties(ExportContext context, Node node) throws IOException {
 		try {
@@ -104,17 +132,17 @@ public abstract class DavResource {
 			// test, if not a collection, node has a parent and the property is set in the repository
 			
 			// TODO überarbeiten
-			if (!isCollection() && (node.getDepth() > 0) && node.getParent().hasProperty(DocConstants.JCR_CREATED)) {
+			if (!isCollection() && (node.getDepth() > 0) && node.getParent().hasProperty(JcrConstants.JCR_CREATED)) {
 				// export value to context
-				context.setCreationTime(node.getParent().getProperty(DocConstants.JCR_CREATED).getValue().getLong());
+				context.setCreationTime(node.getParent().getProperty(JcrConstants.JCR_CREATED).getValue().getLong());
 			}
 
 			// set content length property of export context
 			long length = -1;
 			// test, if node contains data
-			if (node.hasProperty(DocConstants.JCR_DATA)) {
+			if (node.hasProperty(JcrConstants.JCR_DATA)) {
 				// get length of data and export value to context
-				Property property = node.getProperty(DocConstants.JCR_DATA);
+				Property property = node.getProperty(JcrConstants.JCR_DATA);
 				length = property.getLength();
 				context.setContentLength(length);
 			}
@@ -123,12 +151,12 @@ public abstract class DavResource {
 			String mimeType = null;
 			String encoding = null;
 			// test, if property jcr:mimetype is set in repository
-			if (node.hasProperty(DocConstants.JCR_MIMETYPE)) {
-				mimeType = node.getProperty(DocConstants.JCR_MIMETYPE).getString();
+			if (node.hasProperty(JcrConstants.JCR_MIMETYPE)) {
+				mimeType = node.getProperty(JcrConstants.JCR_MIMETYPE).getString();
 			}
 			// test, if property jcr:encoding is set in repository
-			if (node.hasProperty(DocConstants.JCR_ENCODING)) {
-				encoding = node.getProperty(DocConstants.JCR_ENCODING).getString();
+			if (node.hasProperty(JcrConstants.JCR_ENCODING)) {
+				encoding = node.getProperty(JcrConstants.JCR_ENCODING).getString();
 				// test, if encoding has a valid value; null IS a valid value
 				if ((encoding != null) && (encoding.length() == 0)) {
 					encoding = null;
@@ -140,8 +168,8 @@ public abstract class DavResource {
 			// set modification time property of export context
 			long modificationTime = -1;
 			// test, if property is set in repository; in case of doubt: current system time
-			if (node.hasProperty(DocConstants.JCR_LASTMODIFIED)) {
-				modificationTime = node.getProperty(DocConstants.JCR_LASTMODIFIED).getLong();
+			if (node.hasProperty(JcrConstants.JCR_LASTMODIFIED)) {
+				modificationTime = node.getProperty(JcrConstants.JCR_LASTMODIFIED).getLong();
 				context.setModificationTime(modificationTime);
 			} else {
 				context.setModificationTime(System.currentTimeMillis());
@@ -159,23 +187,29 @@ public abstract class DavResource {
 	
 	protected void exportData(ExportContext context, Node node) throws IOException {
 		try {
-			// test, if node contains data. if not -> do nothing
-			if (node.hasProperty(DocConstants.JCR_DATA)) {
-				// node contains data -> copy to output stream of context
-				Property property = node.getProperty(DocConstants.JCR_DATA);
-				InputStream inStream = property.getStream();
-				OutputStream outStream = context.getOutputStream();
-				try {
-					// TODO buffer-Größe in Konstante auslagern
-					byte[] buffer = new byte[8192];
-					int read;
-					// copy while input stream contains data
-					while ((read = inStream.read(buffer)) >= 0) {
-						outStream.write(buffer, 0, read);
+			Node contentNode;
+			
+			if (node.hasNode(JcrConstants.JCR_CONTENT)) {
+				contentNode = node.getNode(JcrConstants.JCR_CONTENT);
+
+				// test, if node contains data. if not -> do nothing
+				if (contentNode.hasProperty(JcrConstants.JCR_DATA)) {
+					// node contains data -> copy to output stream of context
+					Property property = contentNode.getProperty(JcrConstants.JCR_DATA);
+					InputStream inStream = property.getStream();
+					OutputStream outStream = context.getOutputStream();
+					try {
+						// TODO buffer-Größe in Konstante auslagern
+						byte[] buffer = new byte[8192];
+						int read;
+						// copy while input stream contains data
+						while ((read = inStream.read(buffer)) >= 0) {
+							outStream.write(buffer, 0, read);
+						}
+					} finally {
+						// close input stream
+						inStream.close();
 					}
-				} finally {
-					// close input stream
-					inStream.close();
 				}
 			}
 		} catch (RepositoryException ex) {
@@ -184,14 +218,55 @@ public abstract class DavResource {
 		}
 	}
 	
-	protected boolean importData(ImportContext context, Node node) throws IOException {
-		// TODO
-		return false;
-	}
+	protected abstract boolean importData(ImportContext context, Node node) throws IOException;
 	
 	protected boolean importProperties(ImportContext context, Node node) throws IOException {
-		// TODO
-		return false;
+		// TODO MIME-Type in Abhängigkeit vom Objekttyp setzen
+		try {
+			// if mimetype of context is null -> remove the property
+			node.setProperty(JcrConstants.JCR_MIMETYPE, context.getMimeType());
+		} catch (RepositoryException ex) {
+			// ignore
+		}
+		try {
+			// if encoding of context is null -> remove the property
+			node.setProperty(JcrConstants.JCR_ENCODING, context.getEncoding());
+		} catch (RepositoryException ex) {
+			// ignore
+		}
+		
+		// HACK
+		try {
+			node.getParent().setProperty(DocConstants.PROPERTY_VISIBILITY, (DocRights.READ_ALL|DocRights.EDIT_ASSIST));
+		} catch (RepositoryException ex) {
+			
+		}
+		try {
+//			Calendar calendar = Calendar.getInstance();
+//			calendar.setTimeInMillis(System.currentTimeMillis());
+			node.getParent().setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, Calendar.getInstance());
+		} catch (RepositoryException ex) {
+			
+		}
+		try {
+			node.getParent().setProperty(DocConstants.PROPERTY_MESSAGE, context.getSystemId());
+		} catch (RepositoryException ex) {
+			
+		}
+		
+		// TODO nochmal semantisch überprüfen
+		try {
+			Calendar modificationTime = Calendar.getInstance();
+			if (context.getModificationTime() != -1) {
+				modificationTime.setTimeInMillis(context.getModificationTime());
+			} else {
+				modificationTime.setTime(new Date());
+			}
+			node.setProperty(JcrConstants.JCR_LASTMODIFIED, modificationTime);
+		} catch (RepositoryException ex) {
+			// ignore
+		}
+		return true;
 	}
 	
 	public String getDisplayName() throws DavException {
@@ -230,9 +305,9 @@ public abstract class DavResource {
 		try {
 			ItemFilter itemFilter = getFactory().getConfiguration().getItemFilter();
 			
-			if (locator.isRootLocation()) {
-				// TODO abonnierte Elemente anzeigen
-			} else {
+//			if (locator.isRootLocation()) {
+//				// TODO abonnierte Elemente anzeigen
+//			} else {
 				// Kindknoten anzeigen
 				NodeIterator nodeIterator = representedNode.getNodes();
 				Node node;
@@ -244,7 +319,7 @@ public abstract class DavResource {
 						members.add(getFactory().createResource(representedNode.getSession(), locator));
 					}
 				}
-			}
+//			}
 		} catch (RepositoryException ex) {
 			// rethrow RepositoryException as DavException
 			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR);
@@ -253,31 +328,68 @@ public abstract class DavResource {
 		return members.toArray(new DavResource[0]);
 	}
 	
-	public MultiStatusResponse getProperties(String[] properties) {
+	public MultiStatusResponse getProperties(List<String> properties, boolean namesOnly) {
 		MultiStatusResponse response = new MultiStatusResponse(locator.getHref(isCollection()), null);
 		
-		if (properties.length == 0) {
-			// reply ALL properties
-		} else {
-			// reply only requested properties
-		}
+		boolean spoolAllProperties = (properties.size() == 0);
 		
-		// HACK
 		try {
-			ItemFilter itemFilter = getFactory().getConfiguration().getItemFilter();
-
-			PropertyIterator propertyIterator = representedNode.getProperties();
-			Property property;
-			while (propertyIterator.hasNext()) {
-				property = propertyIterator.nextProperty();
-				if (!itemFilter.isFilteredItem(property)) {
-					response.addProperty(HttpStatus.SC_OK, property.getName(), property.getValue().getString());
+			// creationdate
+			if (spoolAllProperties || properties.contains(DavConstants.PROPERTY_CREATIONDATE)) {
+				if (representedNode.hasProperty(JcrConstants.JCR_CREATED)) {
+					if (namesOnly) {
+						response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_CREATIONDATE, null);
+					} else {
+						response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_CREATIONDATE, representedNode.getProperty(JcrConstants.JCR_CREATED).getString());
+					}
 				}
 			}
+			
+			// displayname
+			if (spoolAllProperties || properties.contains(DavConstants.PROPERTY_DISPLAYNAME)) {
+				if (namesOnly) {
+					response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_DISPLAYNAME, null);
+				} else {
+					response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_DISPLAYNAME, representedNode.getName());
+				}
+			}
+			
+			// resourcetype
+			if (spoolAllProperties || properties.contains(DavConstants.PROPERTY_RESOURCETYPE)) {
+				if (namesOnly || !isCollection()) {
+					response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_RESOURCETYPE, null);
+				} else {
+					QName collectionName = DocumentHelper.createQName(DavConstants.XML_COLLECTION, MultiStatusResponse.getDefaultNamespace());
+					Element collectionElement = DocumentHelper.createElement(collectionName);
+					response.addProperty(HttpStatus.SC_OK, null, DavConstants.PROPERTY_RESOURCETYPE, collectionElement);
+				}
+			}
+			
+			// TODO weitere properties ausgeben
 		} catch (RepositoryException ex) {
 			
 		}
 		
 		return response;
+	}
+	
+	public void addMember(DavResource resource, InputContext context) throws DavException {
+		if (!exists()) {
+			throw new DavException(HttpStatus.SC_CONFLICT);
+		}
+		
+		// TODO filtern?
+		
+		ImportContext importContext = new ImportContext(context, Text.getName(resource.getLocator().getRepositoryPath()));
+		if (!resource.importContent(importContext)) {
+			throw new DavException(HttpStatus.SC_UNSUPPORTED_MEDIA_TYPE);
+		}
+		
+		try {
+			// HÄ?
+			representedNode.save();
+		} catch (RepositoryException ex) {
+			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+		}
 	}
 }

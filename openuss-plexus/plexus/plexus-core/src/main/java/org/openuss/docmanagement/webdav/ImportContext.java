@@ -2,17 +2,23 @@ package org.openuss.docmanagement.webdav;
 
 import java.io.InputStream;
 
+import org.apache.jackrabbit.webdav.DavConstants;
 import org.apache.jackrabbit.webdav.io.InputContext;
+import org.apache.log4j.Logger;
 
 /**
  * @author David Ullrich
  * @version 0.5
  */
 public class ImportContext implements IOContext {
-	private final InputContext context;
+	private final Logger logger = Logger.getLogger(ImportContext.class);
 	
-	public ImportContext(InputContext context) {
+	private final InputContext context;
+	private final String systemId;
+	
+	public ImportContext(InputContext context, String systemId) {
 		this.context = context;
+		this.systemId = systemId;
 	}
 
 	/* (non-Javadoc)
@@ -45,16 +51,14 @@ public class ImportContext implements IOContext {
 	 * @return
 	 */
 	public String getContentLanguage() {
-		// TODO
-		return null;
+		return context.getContentLanguage();
 	}
 	
 	/**
 	 * @return
 	 */
 	public long getContentLength() {
-		// TODO
-		return 0;
+		return context.getContentLength();
 	}
 
 	/**
@@ -69,24 +73,29 @@ public class ImportContext implements IOContext {
 	 * @return
 	 */
 	public InputStream getInputStream() {
-		// TODO
-		return null;
+		return context.getInputStream();
 	}
 
 	/**
 	 * @return
 	 */
 	public String getMimeType() {
-		// TODO
-		return null;
+		String contentType = context.getContentType();
+		if (contentType != null) {
+			String mimeType = contentType.split(";")[0];
+			logger.debug(mimeType);
+			return mimeType;
+		} else {
+			logger.debug("application/octet-stream");
+			return "application/octet-stream";
+		}
 	}
 
 	/**
 	 * @return
 	 */
 	public long getModificationTime() {
-		// TODO
-		return 0;
+		return context.getModificationTime();
 	}
 
 	/**
@@ -94,15 +103,13 @@ public class ImportContext implements IOContext {
 	 * @return
 	 */
 	public Object getProperty(Object propertyName) {
-		// TODO
-		return null;
+		return context.getProperty(propertyName.toString());
 	}
 
 	/**
 	 * @return
 	 */
 	public String getSystemId() {
-		// TODO
-		return null;
+		return systemId;
 	}
 }
