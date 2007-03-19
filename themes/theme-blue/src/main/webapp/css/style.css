@@ -1249,6 +1249,7 @@ td {
 
 div.faculty_info{
 	margin-bottom: 10px;
+	overflow: auto;
 }
 
 div.faculty_info span{
