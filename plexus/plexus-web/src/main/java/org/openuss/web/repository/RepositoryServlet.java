@@ -85,7 +85,7 @@ public class RepositoryServlet extends HttpServlet {
 		}
 		response.setContentType(file.getContentType());
 //		response.setContentType("application/octet-stream");
-		response.setContentLength(file.getFileSize());
+		response.setContentLength(file.getFileSize().intValue());
 	}
 
 	private void sendFileNotFound(final HttpServletResponse response) {

@@ -49,6 +49,16 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 		}
 		return true; // vaild
 	}
+	
+	@Override
+	public FolderEntry getFolderEntryByName(String name) {
+		for (FolderEntry entry : getEntries()) {
+			if (StringUtils.equalsIgnoreCase(name, entry.getName())) {
+				return entry;
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public void removeFolderEntry(FolderEntry entry) {

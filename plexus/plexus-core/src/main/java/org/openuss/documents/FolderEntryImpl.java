@@ -7,6 +7,8 @@ package org.openuss.documents;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @see org.openuss.documents.FolderEntry
  */
@@ -44,5 +46,29 @@ public class FolderEntryImpl extends org.openuss.documents.FolderEntryBase imple
 	@Override
 	public Integer getSize() {
 		return null;
+	}
+
+	@Override
+	public String getPath() {
+		if (getParent() == null) {
+			return "";
+		} else {
+			String path = getParent().getPath();
+			if (StringUtils.isNotBlank(path)) {
+				return getParent().getPath()+"/"+getName();
+			} else {
+				return getName();
+			}
+		}
+	}
+	
+	@Override
+	public String getAbsoluteName() {
+		String path = getPath();
+		if (StringUtils.isNotBlank(path)) {
+			return path + "/" + getName();
+		} else {
+			return getName();
+		}
 	}
 }

@@ -59,6 +59,8 @@ public class UploadListener extends BaseBean implements ValueChangeListener {
 		copyProperties(file, uploadedFile);
 		
 		repository.saveFile(file);
+		uploadedFile.getInputStream().close();
+		
 		UploadFileManager fileManager = (UploadFileManager) getBean("uploadFileManager");
 		fileManager.registerFile(file);
 		
