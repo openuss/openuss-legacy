@@ -56,7 +56,7 @@ public class DavService {
 		}
 
 		// create resource and export content
-		DavResource resource = getResourceFactory().createResource(session, locator);
+		DavResource resource = getResourceFactory().createResource(session, locator, false);
 		resource.exportContent(new ExportContext(context));
 	}
 	
@@ -71,13 +71,13 @@ public class DavService {
 		}
 		
 		// create resource and import content
-		DavResource resource = getResourceFactory().createResource(session, locator);
+		DavResource resource = getResourceFactory().createResource(session, locator, false);
 		resource.getCollection().addMember(resource, context);
 	}
 	
 	public MultiStatus getProperties(Document requestDocument, DavResourceLocator locator, int depth) throws DavException {
 		// TODO kommentieren
-		DavResource resource = getResourceFactory().createResource(getSession(), locator);
+		DavResource resource = getResourceFactory().createResource(getSession(), locator, false);
 		if (!resource.exists()) {
 			throw new DavException(HttpStatus.SC_NOT_FOUND);
 		}
@@ -145,10 +145,15 @@ public class DavService {
 	
 	// TODO setProperties
 	
-	public void createCollection(DavResourceLocator locator) throws IOException {
-		// TODO
-		// HACK
-		throw new IOException("Creation of collection not allowed.");
+	public void createCollection(DavResourceLocator locator) throws DavException {
+		// check parameters
+		if (locator == null) {
+			throw new DavException(HttpStatus.SC_BAD_REQUEST);
+		}
+		
+		// create resource and import content
+		DavResource resource = getResourceFactory().createResource(session, locator, true);
+		resource.getCollection().addMember(resource, null);
 	}
 	
 	/**

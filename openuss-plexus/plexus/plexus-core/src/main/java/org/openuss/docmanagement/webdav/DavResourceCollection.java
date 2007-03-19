@@ -1,12 +1,18 @@
 package org.openuss.docmanagement.webdav;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.apache.jackrabbit.JcrConstants;
 import org.apache.jackrabbit.webdav.DavException;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
+import org.openuss.docmanagement.DocConstants;
+import org.openuss.docmanagement.DocRights;
 
 /**
  * @author David Ullrich
@@ -52,16 +58,39 @@ public class DavResourceCollection extends DavResource {
 			// TODO exception message
 		}
 		
-		// TODO
+		try {
+			Node rootNode = session.getRootNode();
+			representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.NT_FOLDER);
+			
+			importProperties(null, representedNode);
+		} catch (RepositoryException ex) {
+			
+		} catch (IOException ex) {
+			
+		}
 		
-		context.informCompleted(true);
-		
-		return false;
+		return true;
 	}
 
 	@Override
 	protected boolean importData(ImportContext context, Node node) throws IOException {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	protected boolean importProperties(ImportContext context, Node node) throws IOException {
+		// HACK
+		try {
+			node.setProperty(DocConstants.PROPERTY_VISIBILITY, (DocRights.READ_ALL|DocRights.EDIT_ASSIST));
+		} catch (RepositoryException ex) {
+			
+		}
+		try {
+			node.setProperty(DocConstants.PROPERTY_MESSAGE, node.getName());
+		} catch (RepositoryException ex) {
+			
+		}
+		return true;
 	}
 }

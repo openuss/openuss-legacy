@@ -70,7 +70,7 @@ public abstract class DavResource {
 				parentPath = "/";
 			}
 			DavResourceLocator parentLocator = getLocator().getFactory().createResourceLocator(getLocator().getPrefix(), null, parentPath);
-			parent = (DavResourceCollection)getFactory().createResource(session, parentLocator);
+			parent = (DavResourceCollection)getFactory().createResource(session, parentLocator, true);
 		}
 		
 		return parent;
@@ -242,8 +242,6 @@ public abstract class DavResource {
 			
 		}
 		try {
-//			Calendar calendar = Calendar.getInstance();
-//			calendar.setTimeInMillis(System.currentTimeMillis());
 			node.getParent().setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, Calendar.getInstance());
 		} catch (RepositoryException ex) {
 			
@@ -316,7 +314,7 @@ public abstract class DavResource {
 					node = nodeIterator.nextNode();
 					if (!itemFilter.isFilteredItem(node)) {
 						locator = getLocator().getFactory().createResourceLocator(getLocator().getPrefix(), null, node.getPath());
-						members.add(getFactory().createResource(representedNode.getSession(), locator));
+						members.add(getFactory().createResource(representedNode.getSession(), locator, false));
 					}
 				}
 //			}
@@ -380,7 +378,12 @@ public abstract class DavResource {
 		
 		// TODO filtern?
 		
-		ImportContext importContext = new ImportContext(context, Text.getName(resource.getLocator().getRepositoryPath()));
+		ImportContext importContext = null;
+		
+		if (context != null) {
+			importContext = new ImportContext(context, Text.getName(resource.getLocator().getRepositoryPath()));
+		}
+
 		if (!resource.importContent(importContext)) {
 			throw new DavException(HttpStatus.SC_UNSUPPORTED_MEDIA_TYPE);
 		}

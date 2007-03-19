@@ -19,7 +19,7 @@ public class DavResourceFactory {
 		this.configuration = configuration;
 	}
 	
-	public DavResource createResource(Session session, DavResourceLocator locator) {
+	public DavResource createResource(Session session, DavResourceLocator locator, boolean isCollection) {
 		DavResource resource = null;
 		
 		try {
@@ -28,7 +28,8 @@ public class DavResourceFactory {
 
 				if (representedItem.isNode()) {
 					Node representedNode = (Node)representedItem;
-					if (representedNode.isNodeType(DocConstants.NT_FOLDER)) {
+					// HACK
+					if (locator.isRootLocation() || (representedNode.isNodeType(DocConstants.NT_FOLDER))) {
 						resource = new DavResourceCollection(this, session, locator, representedNode);
 					} else {
 						resource = new DavResourceFile(this, session, locator, representedNode);
@@ -37,7 +38,11 @@ public class DavResourceFactory {
 				
 				// TODO kein Node. Kann das vorkommen?
 			} else {
-				resource = new DavResourceFile(this, session, locator, null);
+				if (isCollection) {
+					resource = new DavResourceCollection(this, session, locator, null);
+				} else {
+					resource = new DavResourceFile(this, session, locator, null);
+				}
 			}
 		} catch (PathNotFoundException ex) {
 			logger.debug("Path not found exception occurred.");
