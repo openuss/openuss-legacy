@@ -117,10 +117,8 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	protected void handleRemoveFolderEntry(FolderEntry folderEntry) throws Exception {
 		if (folderEntry instanceof FileEntry) {
 			getFolderEntryDao().remove(folderEntry.getId());
-			if (folderEntry instanceof FileEntry) {
-				FileEntry fileEntry = (FileEntry) folderEntry;
-				getRepositoryService().removeFile(fileEntry.getRepositoryFile());
-			}
+			FileEntry fileEntry = (FileEntry) folderEntry;
+			getRepositoryService().removeFile(fileEntry.getRepositoryFile());
 		} else if (folderEntry instanceof Folder) {
 			Folder folder = (Folder) folderEntry;
 			for (FolderEntry entry: folder.getEntries()) {
