@@ -80,7 +80,7 @@ public class FileController{
 	}
 
 	public boolean isVisibleForAll() {
-		return visibleForAll;
+		return (file.getVisibility()&DocRights.READ_ALL)>0;
 	}
 
 	public void setVisibleForAll(boolean visibleForAll) {
@@ -95,8 +95,8 @@ public class FileController{
 		this.old = old;
 	}
 
-	public java.util.Date getDistributionTime() {
-		return distributionTime;
+	public java.util.Date getDistributionTime() {		
+		return file.getDistributionTime();
 	}
 
 	public void setDistributionTime(java.util.Date distributionTime) {

@@ -44,6 +44,7 @@
 					<h:commandButton action="#{distributionViewBacker.changeFolder}" value="#{msg.doc_dist_button_changefolder}" rendered="#{not empty distributionViewBacker.folderPath}"/>
 					<h:commandButton action="#{distributionViewBacker.newFolder}" value="#{msg.doc_dist_button_newfolder}" rendered="#{not empty distributionViewBacker.folderPath}" />
 					<h:commandButton action="#{distributionViewBacker.newFile}" value="#{msg.doc_dist_button_newfile}" rendered="#{not empty distributionViewBacker.folderPath}"/>
+					<h:commandButton action="#{distributionViewBacker.downloadSelected}" value="#{msg.doc_dist_button_downloadselected}" rendered="#{not empty distributionViewBacker.folderPath}"/>
 				</o:block>
 			</h:form>
 		</ui:define>

@@ -1,5 +1,8 @@
 package org.openuss.web.docmanagement;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -8,6 +11,7 @@ import java.util.List;
 import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.myfaces.custom.tree2.TreeModel;
@@ -22,6 +26,7 @@ import org.openuss.docmanagement.BigFileImpl;
 import org.openuss.docmanagement.DistributionService;
 import org.openuss.docmanagement.DistributionServiceImpl;
 import org.openuss.docmanagement.File;
+import org.openuss.docmanagement.FileImpl;
 import org.openuss.docmanagement.Folder;
 import org.openuss.docmanagement.FolderImpl;
 import org.openuss.docmanagement.PathNotFoundException;
@@ -70,7 +75,7 @@ public class DistributionViewBacker{
 	/**
 	 * list which contains the files displayed in curren folder
 	 */
-	public ArrayList<File> data;
+	public ArrayList<FileTableEntry> data;
 
 	//type of current selected item
 	
@@ -214,9 +219,9 @@ public class DistributionViewBacker{
 	/** 
 	 * @return ArrayList, which contains all files of current selected folder for display in dataTable
 	 */
-	public ArrayList<File> getData() {
-		logger.debug("generating file table entries ");
-		ArrayList<File> al = new ArrayList<File>();
+	public ArrayList<FileTableEntry> getData() {
+		logger.debug("generating file table entries ");		
+		ArrayList<FileTableEntry> al = new ArrayList<FileTableEntry>();
 		String path = getFolderPath();		
 		if (path!=null){
 			Folder folder = new FolderImpl();
@@ -229,13 +234,28 @@ public class DistributionViewBacker{
 				logger.error("", e);
 			}
 			Collection subnodes = folder.getSubnodes();
-			//check if folder has subnodes
+			File f;			
+			//check if folder has subnodes			
 			if (subnodes!=null){
 				Iterator nodeIterator = subnodes.iterator();
 				while (nodeIterator.hasNext()){
 					Resource r = (Resource) nodeIterator.next();
 					if (r instanceof File) {
-						al.add((File)r);					
+						FileTableEntry fte = new FileTableEntry();
+						f = (File) r;
+						fte.setCreated(f.getCreated());
+						fte.setDistributionTime(f.getDistributionTime());
+						fte.setId(f.getId());
+						fte.setLastModification(f.getLastModification());
+						fte.setLength(f.getLength());
+						fte.setMessage(f.getMessage());
+						fte.setMimeType(f.getMimeType());
+						fte.setName(f.getName());
+						fte.setPath(f.getPath());
+						fte.setPredecessor(f.getPredecessor());
+						fte.setVersion(f.getVersion());
+						fte.setVisibility(f.getVisibility());					
+						al.add((FileTableEntry)fte);					
 					}
 				}
 			}
@@ -246,6 +266,118 @@ public class DistributionViewBacker{
 
 	}
 
+	/**
+	 * Action methods to trigger download
+	 * @return 
+	 */
+	public String download(){
+		String path = this.data.get((new Integer(getFileFacesPath())).intValue()).getPath();
+		if (path.startsWith("/")) path = path.substring(1);
+		
+		BigFile bigFile = new BigFileImpl();
+		try {
+			File file = distributionService.getFile(path);
+			bigFile = distributionService.getFile(file);
+		} catch (PathNotFoundException e) {
+			logger.error("Path not found: ",e);
+		} catch (ResourceAlreadyExistsException e) {
+			logger.error("Resource already exists: ",e);
+		}		
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+	    HttpServletResponse response = 
+		         (HttpServletResponse) context.getExternalContext().getResponse();
+	    String filePath = null;
+	    int read = 0;
+	    byte[] bytes = new byte[1024];
+
+	    response.setContentType(bigFile.getMimeType());
+	    response.setHeader("Content-Disposition", "attachment;filename=\"" +
+		         bigFile.getName() + "\""); 
+	    OutputStream os = null;	      
+        try {
+			os = response.getOutputStream();        
+			while((read = bigFile.getFile().read(bytes)) != -1){
+			   os.write(bytes,0,read);
+			}
+			os.flush();
+			os.close();
+		} catch (IOException e) {
+			logger.error("IOException: ", e);
+		}
+        FacesContext.getCurrentInstance().responseComplete();
+		return DocConstants.DOCUMENTEXPLORER;
+	}
+	
+	private BigFile fileTableEntry2BigFile(FileTableEntry fte){
+		File f = new FileImpl(
+				fte.getDistributionTime(),
+				fte.getId(),
+				fte.getLastModification(),
+				fte.getLength(),
+				fte.getMessage(),
+				fte.getMimeType(),
+				fte.getName(),
+				fte.getPath(),
+				fte.getPredecessor(),
+				fte.getVersion(),
+				fte.getVisibility());
+		try {
+			return distributionService.getFile(f);
+		} catch (PathNotFoundException e) {
+			logger.error("Path not found: ",e);
+		} catch (ResourceAlreadyExistsException e) {
+			logger.error("Resource already exists: ",e);
+		}		
+		return null;
+	}
+	
+	public String downloadSelected(){
+		String zipName = getFolderPath().substring(getFolderPath().lastIndexOf("/")+1)+".zip";
+		ArrayList<BigFile> files = new ArrayList<BigFile>();
+		Iterator i = this.data.iterator();
+		FileTableEntry fte;
+		while (i.hasNext()){
+			fte = (FileTableEntry)i.next();
+			if (fte.isChecked()) files.add(fileTableEntry2BigFile(fte));
+		}	
+		InputStream in = ZipMe.zipMe(files.toArray(new BigFile[0]), zipName);
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+	    HttpServletResponse response = 
+		         (HttpServletResponse) context.getExternalContext().getResponse();
+	    String filePath = null;
+	    int read = 0;
+	    byte[] bytes = new byte[1024];
+	    response.setContentType(DocConstants.MIMETYPE_ZIP);	    
+	    response.setHeader("Content-Disposition", "attachment;filename=\"" +
+		         zipName + "\""); 
+	    OutputStream os = null;	      
+        try {
+			os = response.getOutputStream();        
+			while((read = in.read(bytes)) != -1){
+			   os.write(bytes,0,read);
+			}
+			os.flush();
+			os.close();
+		} catch (IOException e) {
+			logger.error("IOException: ", e);
+		}
+        FacesContext.getCurrentInstance().responseComplete();
+        
+        try {
+			in.close();
+		} catch (IOException e) {
+			logger.error("IOException: ",e);
+		}
+        //delete zipFile
+        boolean success = (new java.io.File(zipName)).delete();
+        if (!success) {
+            // deletion failed
+        	logger.error("temporary file could not be deleted!");
+        }
+        return DocConstants.DOCUMENTEXPLORER;
+	}
 
 	public FileController getFileController() {
 		return fileController;
