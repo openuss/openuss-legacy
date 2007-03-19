@@ -8,17 +8,20 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.View;
 import org.openuss.docmanagement.DistributionService;
+import org.openuss.docmanagement.DocManagementException;
 import org.openuss.docmanagement.DocRights;
 import org.openuss.docmanagement.Folder;
 import org.openuss.docmanagement.FolderImpl;
 import org.openuss.docmanagement.DocConstants;
+import org.openuss.docmanagement.NotAFileException;
+import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
 import org.apache.log4j.Logger;
 
 @Bean(name="folderController", scope=Scope.SESSION)
 @View
-public class FolderController{
+public class FolderController extends ExceptionHandler{
 	
 	public Folder folder;
 	
@@ -43,11 +46,17 @@ public class FolderController{
 		else if (!visibleForAll) folder.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
 		try {
 			distributionService.changeFolder(folder, old);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
-			logger.error("Path not found: ", e);
+			handlePathNotFoundException(e);
 		} catch (ResourceAlreadyExistsException e) {
-			logger.error("Resource already exists: ", e);
-		}
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}	
 		return DocConstants.DOCUMENTEXPLORER;
 	}
 	

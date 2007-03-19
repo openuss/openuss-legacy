@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -25,10 +26,13 @@ import org.openuss.docmanagement.BigFile;
 import org.openuss.docmanagement.BigFileImpl;
 import org.openuss.docmanagement.DistributionService;
 import org.openuss.docmanagement.DistributionServiceImpl;
+import org.openuss.docmanagement.DocManagementException;
 import org.openuss.docmanagement.File;
 import org.openuss.docmanagement.FileImpl;
 import org.openuss.docmanagement.Folder;
 import org.openuss.docmanagement.FolderImpl;
+import org.openuss.docmanagement.NotAFileException;
+import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.Resource;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
@@ -36,7 +40,7 @@ import org.openuss.docmanagement.DocConstants;
 
 @Bean(name="distributionViewBacker", scope=Scope.SESSION)
 @View
-public class DistributionViewBacker{
+public class DistributionViewBacker extends ExceptionHandler{
 
 	@Property(value="#{distributionService}")
 	public DistributionService distributionService;
@@ -89,14 +93,22 @@ public class DistributionViewBacker{
 	public TreeModel getTree(){
 		//TODO cache treeModel to prevent loading model 5 times a pageload
 		Folder folder = new FolderImpl();
+		//TODO change to getMainFolder(currentEnrollment.getId());
 		try {
-			//TODO change to getMainFolder(currentEnrollment.getId());
 			folder = distributionService.getMainFolder(null);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
-			logger.error("Path not found");
+			handlePathNotFoundException(e);
 		} catch (ResourceAlreadyExistsException e) {
-			logger.error("Resource already exists");
-		}
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}		
+
+
 		//change model only if model has changed
 		if (treeModel!=null){
 			if (!this.treeModel.equals(new TreeModelBase(folder2TreeNodeBase(folder))))this.treeModel = new TreeModelBase(folder2TreeNodeBase(folder));
@@ -159,15 +171,22 @@ public class DistributionViewBacker{
 	 * @return
 	 */
 	public String changeFolder(){
+		String path = getFolderPath();
+		if (path.startsWith("/")) path = path.substring(1);			
 		try {
-			String path = getFolderPath();
-			if (path.startsWith("/")) path = path.substring(1);			
 			folderController.setFolder(distributionService.getFolder(path));
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
-			logger.error("Path not found: ", e);
+			handlePathNotFoundException(e);
 		} catch (ResourceAlreadyExistsException e) {
-			logger.error("Rsource already exists: ", e);		
-		}
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}		
+
 		return DocConstants.EDITFOLDER;
 	}
 	
@@ -189,19 +208,26 @@ public class DistributionViewBacker{
 	 * @return
 	 */
 	public String changeFile(){
+		String path = this.data.get((new Integer(getFileFacesPath())).intValue()).getPath();
+		if (path.startsWith("/")) path = path.substring(1);
+		BigFile bigFile = new BigFileImpl();
 		try {
-			
-			String path = this.data.get((new Integer(getFileFacesPath())).intValue()).getPath();
-			if (path.startsWith("/")) path = path.substring(1);
 			File file = distributionService.getFile(path);
-			BigFile bigFile = distributionService.getFile(file);
-			fileController.setFile(bigFile);
-			fileController.setOld(true);
+			bigFile = distributionService.getFile(file);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
-			logger.error("Path not found: ", e);
+			handlePathNotFoundException(e);
 		} catch (ResourceAlreadyExistsException e) {
-			logger.error("Rsource already exists: ", e);		
-		}	
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}		
+
+		fileController.setFile(bigFile);
+		fileController.setOld(true);
 		return DocConstants.NEWDOCUMENTTOFOLDER;
 	}
 	
@@ -232,11 +258,18 @@ public class DistributionViewBacker{
 			if (path.startsWith("/")) path = path.substring(1);
 			try {
 				folder = distributionService.getFolder(path);
+			} catch (NotAFolderException e) {
+				handleNotAFolderException(e);
 			} catch (PathNotFoundException e) {
-				logger.error("PathNotFound, e");
+				handlePathNotFoundException(e);
 			} catch (ResourceAlreadyExistsException e) {
-				logger.error("", e);
-			}
+				handleResourceAlreadyExistsException(e);
+			} catch (NotAFileException e) {
+				handleNotAFileException(e);
+			} catch (DocManagementException e) {
+				handleDocManagementException(e);
+			}		
+
 			Collection subnodes = folder.getSubnodes();
 			File f;			
 			//check if folder has subnodes			
@@ -282,12 +315,19 @@ public class DistributionViewBacker{
 		try {
 			File file = distributionService.getFile(path);
 			bigFile = distributionService.getFile(file);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
-			logger.error("Path not found: ",e);
+			handlePathNotFoundException(e);
 		} catch (ResourceAlreadyExistsException e) {
-			logger.error("Resource already exists: ",e);
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
 		}		
-		
+
+	
 		FacesContext context = FacesContext.getCurrentInstance();
 	    HttpServletResponse response = 
 		         (HttpServletResponse) context.getExternalContext().getResponse();
@@ -313,6 +353,11 @@ public class DistributionViewBacker{
 		return DocConstants.DOCUMENTEXPLORER;
 	}
 	
+	/**
+	 * convenience method, which converts a FileTableEntry object into an File object
+	 * @param fte FileTableEntry
+	 * @return
+	 */
 	private File fileTableEntry2File(FileTableEntry fte){
 		return new FileImpl(
 				fte.getDistributionTime(),
@@ -329,6 +374,11 @@ public class DistributionViewBacker{
 	}
 		
 	
+	/**
+	 * convenience method, which converts a FileTableEntry object into an BigFile object
+	 * @param fte FileTableEntry
+	 * @return
+	 */
 	private BigFile fileTableEntry2BigFile(FileTableEntry fte){
 		File f = new FileImpl(
 				fte.getDistributionTime(),
@@ -344,14 +394,25 @@ public class DistributionViewBacker{
 				fte.getVisibility());
 		try {
 			return distributionService.getFile(f);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
-			logger.error("Path not found: ",e);
+			handlePathNotFoundException(e);
 		} catch (ResourceAlreadyExistsException e) {
-			logger.error("Resource already exists: ",e);
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
 		}		
 		return null;
 	}
 	
+	//TODO move to service method
+	/**
+	 * Action method which starts the download of selected files in one zip-file
+	 * @return
+	 */
 	public String downloadSelected(){
 		String zipName = getFolderPath().substring(getFolderPath().lastIndexOf("/")+1)+".zip";
 		ArrayList<BigFile> files = new ArrayList<BigFile>();
@@ -399,6 +460,10 @@ public class DistributionViewBacker{
         return DocConstants.DOCUMENTEXPLORER;
 	}
 	
+	/**
+	 * action method, which triggers the deletion of selected files
+	 * @return
+	 */
 	public String confirmedDelete(){
 		Iterator i = this.data.iterator();
 		FileTableEntry fte;
@@ -407,10 +472,16 @@ public class DistributionViewBacker{
 			if (fte.isChecked())
 				try {
 					distributionService.delFile(fileTableEntry2File(fte), deleteLinks.equals(DocConstants.DELETE_LINKS));
+				} catch (NotAFolderException e) {
+					handleNotAFolderException(e);
 				} catch (PathNotFoundException e) {
-					logger.error("Path not found: ",e);
+					handlePathNotFoundException(e);
 				} catch (ResourceAlreadyExistsException e) {
-					logger.error("Resource already exists: ",e);
+					handleResourceAlreadyExistsException(e);
+				} catch (NotAFileException e) {
+					handleNotAFileException(e);
+				} catch (DocManagementException e) {
+					handleDocManagementException(e);
 				}		
 		}	
 		
@@ -474,6 +545,8 @@ public class DistributionViewBacker{
 	public void setDeleteLinks(String deleteLinks) {
 		this.deleteLinks = deleteLinks;
 	}
+		
+
 }
 
 	

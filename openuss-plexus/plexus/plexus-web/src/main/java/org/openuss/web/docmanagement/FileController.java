@@ -15,7 +15,10 @@ import org.openuss.docmanagement.BigFile;
 import org.openuss.docmanagement.BigFileImpl;
 import org.openuss.docmanagement.DistributionService;
 import org.openuss.docmanagement.DocConstants;
+import org.openuss.docmanagement.DocManagementException;
 import org.openuss.docmanagement.DocRights;
+import org.openuss.docmanagement.NotAFileException;
+import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
 
@@ -23,7 +26,7 @@ import org.openuss.docmanagement.ResourceAlreadyExistsException;
 
 @Bean(name="fileController", scope=Scope.SESSION)
 @View
-public class FileController{
+public class FileController extends ExceptionHandler{
 	
 	@Property(value = "#{distributionService}")
 	DistributionService distributionService;
@@ -54,11 +57,17 @@ public class FileController{
 		else if (!visibleForAll) file.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
 		try {
 			distributionService.changeFile(file, old);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
-			logger.error("Path not found: ", e);
+			handlePathNotFoundException(e);
 		} catch (ResourceAlreadyExistsException e) {
-			logger.error("Resource already exists: ", e);
-		}
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}	
 		return DocConstants.DOCUMENTEXPLORER;
 	}
 

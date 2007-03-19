@@ -3,8 +3,10 @@ package org.openuss.docmanagement;
 import java.io.ByteArrayInputStream;
 import java.sql.Timestamp;
 import java.util.Vector;
-import java.util.Collection;
 
+import javax.jcr.AccessDeniedException;
+import javax.jcr.InvalidItemStateException;
+import javax.jcr.ItemExistsException;
 import javax.jcr.LoginException;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
@@ -12,6 +14,12 @@ import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Node;
+import javax.jcr.UnsupportedRepositoryOperationException;
+import javax.jcr.ValueFormatException;
+import javax.jcr.lock.LockException;
+import javax.jcr.nodetype.ConstraintViolationException;
+import javax.jcr.nodetype.NoSuchNodeTypeException;
+import javax.jcr.version.VersionException;
 
 import org.apache.log4j.Logger;
 
@@ -20,32 +28,44 @@ import org.apache.log4j.Logger;
  * @version 0.5
  */
 public class FolderDao extends ResourceDao {
-
+	
+	/**
+	 * repository object is injected by spring 
+	 */
 	private Repository repository;
 
 	public static Logger logger = Logger.getLogger(FolderDao.class);
 
+	/**
+	 * fileDao object is injected by spring
+	 */
 	private FileDao fileDao;
 
-	public Folder getFolder(String path) throws Exception {
+	/**
+	 * getFolder method which returns the folder object at given path
+	 * @param path
+	 * @return
+	 * @throws NotAFolderException
+	 * @throws LoginException
+	 * @throws RepositoryException
+	 * @throws NotAFileException 
+	 */
+	public Folder getFolder(String path) throws NotAFolderException, NotAFileException, DocManagementException{
 		FolderImpl fi;
 		try {
 			Session session = login(repository);
 			Node node = session.getRootNode();
 			if (!(path.length() == 0))
-				try{
-					node = node.getNode(path);
-				} catch (PathNotFoundException e){
-					throw new org.openuss.docmanagement.PathNotFoundException("Path not found");
-				}
+				node = node.getNode(path);
 			if (!node.isNodeType(DocConstants.NT_FOLDER))
-				throw new Exception("not a folder");
-
-			fi = new FolderImpl(node.getUUID(), node.getProperty(
-					DocConstants.PROPERTY_MESSAGE).getString(), node.getName(),
-					node.getPath(), null, // TODO add subnodes
-					(int) node.getProperty(DocConstants.PROPERTY_VISIBILITY)
-							.getLong());
+				throw new NotAFolderException("not a folder");
+			fi = new FolderImpl(
+					node.getUUID(),
+					node.getProperty(DocConstants.PROPERTY_MESSAGE).getString(),
+					node.getName(),
+					node.getPath(), 
+					null, 
+					(int) node.getProperty(DocConstants.PROPERTY_VISIBILITY).getLong());
 			fi.setCreated(new Timestamp(node.getProperty(DocConstants.JCR_CREATED).getDate().getTime().getTime()));
 			Vector<Resource> v = new Vector<Resource>();
 			NodeIterator ni = node.getNodes();
@@ -65,7 +85,6 @@ public class FolderDao extends ResourceDao {
 					if (n.isNodeType(DocConstants.NT_FILE)) {
 						filePath = n.getPath();						
 						if (filePath.startsWith("/")) filePath = filePath.substring(1);
-						logger.debug("Path to file: "+ filePath);
 						v.add(fileDao.getFile(filePath));
 					}
 					// TODO add links
@@ -75,43 +94,48 @@ public class FolderDao extends ResourceDao {
 				fi.setSubnodes(v);
 			// TODO differ between Folder, Files and Links
 			logout(session);
-			return fi;
-
 		} catch (LoginException e) {
-			logger.error("Login Exception: ", e);
+			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {
-			logger.error("Repository Exception: ", e);
+			throw new  DocManagementException("RepositoryException occured");
 		}
-
-		return null;
+		return fi;
 	}
 
-	public void setFolder(Folder folder) throws Exception {
-		try {			
-			Session session = login(repository);
-			Node node = session.getRootNode();
-			String path = folder.getPath();
-			if (path.startsWith("/")) path = path.substring(1);
-			if (path!="") node = node.getNode(path);
-			try{
-				node = node.getNode(folder.getName());
-				throw new Exception ("Folder already exists");
-			}
-			catch (PathNotFoundException e){
-				//should occur
-				node.addNode(folder.getName(), DocConstants.NT_FOLDER);
-				node = node.getNode(folder.getName());
-				node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
-				node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());				
-				logout(session);
-			}							
-		} catch (LoginException e) {
-			logger.error("Login Exception: ", e);	
-		} catch (RepositoryException e) {
-			logger.error("Repository Exception: ", e);
+	/**
+	 * setFolder method, which persists a folder represented by given folder object
+	 * @param folder
+	 * @throws LoginException
+	 * @throws RepositoryException
+	 * @throws ResourceAlreadyExistsException
+	 */
+	public void setFolder(Folder folder) throws LoginException, RepositoryException, ResourceAlreadyExistsException {
+		Session session = login(repository);
+		Node node = session.getRootNode();
+		String path = folder.getPath();
+		if (path.startsWith("/")) path = path.substring(1);
+		if (path!="") node = node.getNode(path);
+		try{
+			node = node.getNode(folder.getName());
+			throw new ResourceAlreadyExistsException ("Folder already exists");
 		}
+		catch (PathNotFoundException e){
+			//should occur
+			node.addNode(folder.getName(), DocConstants.NT_FOLDER);
+			node = node.getNode(folder.getName());
+			node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
+			node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());				
+			logout(session);
+		}							
+
 	}
 	
+	/**
+	 * Method changes the folder at give path in folder object to attributes of folder object
+	 * @param folder
+	 * @throws LoginException
+	 * @throws RepositoryException
+	 */
 	public void changeFolder(Folder folder) throws LoginException, RepositoryException{
 		Session session = login(repository);
 		Node node = session.getRootNode();
@@ -124,6 +148,7 @@ public class FolderDao extends ResourceDao {
 		logout(session);
 	}
 	
+	//TODO remove me
 	public void addTestStructure(){
 		FolderImpl folder1 = new FolderImpl("TestMessage", "test", "", null, DocRights.EDIT_ALL|DocRights.READ_ALL);
 		FolderImpl folder2 = new FolderImpl("Sebastian Roekens", "Folder 1", "test", null, DocRights.EDIT_ALL|DocRights.READ_ALL);

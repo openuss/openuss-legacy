@@ -52,27 +52,11 @@ public class DistributionServiceImpl
      */
     protected void handleAddMainFolder(org.openuss.lecture.Enrollment enrollment)
         throws java.lang.Exception
-    {
-    	try {
-			//if distribution folder does not exist create it
-    		Folder folder;
-    		try{
-    			folder = folderDao.getFolder(DocConstants.DISTRIBUTION);
-    		} catch (Exception e){
-    			//distribution folder does not exist    			
-    			FolderImpl dist = new FolderImpl("Distribution main directory", DocConstants.DISTRIBUTION, "", null, DocRights.READ_ALL|DocRights.EDIT_ALL);
-    			folderDao.setFolder(dist);
-    		}
-    		folder = folderDao.getFolder(DocConstants.DISTRIBUTION);
-    		
+    {  
+    		Folder folder = folderDao.getFolder(DocConstants.DISTRIBUTION);    		
     		//add faculty main folder to distribution part of repository
     		FolderImpl enrollmentMain = new FolderImpl(enrollment.getShortcut(), enrollment.getId().toString(), folder.getPath(), null, DocRights.READ_ALL|DocRights.EDIT_ALL);
-    		folderDao.setFolder(enrollmentMain);
-			
-		} catch (Exception e) {
-			// TODO check if exception have to be caught here, or in weblayer
-			logger.error(e);
-		}
+    		folderDao.setFolder(enrollmentMain);	
     }
 
     /**
