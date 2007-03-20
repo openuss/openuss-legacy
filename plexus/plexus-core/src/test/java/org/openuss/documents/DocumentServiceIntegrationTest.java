@@ -5,15 +5,11 @@
  */
 package org.openuss.documents;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.openuss.TestUtility;
@@ -26,8 +22,6 @@ import org.openuss.repository.RepositoryService;
  */
 public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTestBase {
 	
-	private static final int DRAIN_BUFFER_SIZE = 1024;
-
 	private TestUtility testUtility;
 	
 	private RepositoryService repositoryService;
