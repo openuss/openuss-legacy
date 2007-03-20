@@ -42,6 +42,7 @@ public class DocConstants{
 	public static final String FACULTY_EXPLORER = "docmanagement_facultyexplorer";
 	public static final String EDITFACULTYFOLDER = "docmanagement_editfacultyfolder";
 	public static final String NEWFACULTYDOCUMENT = "docmanagement_newfacultydocument";
+	public static final String FOLDERTOFOLDER = "docmanagement_foldertofolder";
 	
 	//mimetype zip
 	public static final String MIMETYPE_ZIP = "application/zip";

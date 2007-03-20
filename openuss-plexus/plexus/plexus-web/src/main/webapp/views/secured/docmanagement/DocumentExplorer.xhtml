@@ -22,7 +22,7 @@
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
   		<ui:define name="navigation"> 
-			<ui:include src="/views/commons/navigation/desktop.xhtml" />
+			<ui:include src="/views/commons/navigation/enrollment.xhtml" />
 		</ui:define> 		
   		<ui:define name="content">
   			<h:form id="treeView">
@@ -52,6 +52,7 @@
 				</o:block>
 				<o:block rendered="#{distributionViewBacker.folderTrash}">
 					<h:commandButton action="#{distributionViewBacker.clearTrash}" value="#{msg.doc_dist_button_cleartrash}"></h:commandButton>
+					<h:commandButton action="docmanagement_foldertofolder" value="#{msg.doc_dist_button_faculty}"></h:commandButton>
 				</o:block>
 			</h:form>
 		</ui:define>

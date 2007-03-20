@@ -523,8 +523,8 @@
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>docmanagement_copyfoldertofolder</from-outcome>
-			<to-view-id>/views/secured/docmanagement/CopyFolderToFolder.xhtml</to-view-id>
+			<from-outcome>docmanagement_foldertofolder</from-outcome>
+			<to-view-id>/views/secured/docmanagement/FolderToFolder.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
@@ -533,18 +533,8 @@
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>docmanagement_frominstituttofolder</from-outcome>
-			<to-view-id>/views/secured/docmanagement/FromInstitutToFolder.xhtml</to-view-id>
-		</navigation-case>
-
-		<navigation-case>
 			<from-outcome>docmanagement_newdocumenttofolder</from-outcome>
 			<to-view-id>/views/secured/docmanagement/NewDocumentToFolder.xhtml</to-view-id>
-		</navigation-case>
-
-		<navigation-case>
-			<from-outcome>docmanagement_newdocumenttoinstitut</from-outcome>
-			<to-view-id>/views/secured/docmanagement/NewDocumentToInstitut.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
