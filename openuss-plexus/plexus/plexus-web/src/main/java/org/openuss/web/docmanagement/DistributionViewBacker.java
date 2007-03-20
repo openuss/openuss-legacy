@@ -505,9 +505,30 @@ public class DistributionViewBacker extends ExceptionHandler{
 		return DocConstants.DOCUMENTEXPLORER;
 	}
 	
+	/**
+	 * Action method which empties the trash bin
+	 * @return
+	 */
 	public String clearTrash(){		
 		try {
 			distributionService.clearEnrollmentTrash(enrollment);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
+		} catch (PathNotFoundException e) {
+			handlePathNotFoundException(e);
+		} catch (ResourceAlreadyExistsException e) {
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}	
+		return DocConstants.DOCUMENTEXPLORER;
+	}
+	
+	public String deleteFolder(){
+		try {
+			distributionService.delFolder(distributionService.getFolder(this.folderPath), (this.deleteLinks.equals(DocConstants.DELETE_LINKS)));
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {

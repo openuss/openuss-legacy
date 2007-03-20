@@ -59,7 +59,7 @@ public class FolderDao extends ResourceDao {
 			Session session = login(repository);
 			Node node = session.getRootNode();
 			if (path==null) throw new NotAFolderException("resource at path: '' is not a folder");
-			if (path.length() == 0)
+			if (path.length() != 0)
 				if (path.startsWith("/"))path = path.substring(1);
 					try{
 						node = node.getNode(path);
@@ -247,6 +247,7 @@ public class FolderDao extends ResourceDao {
 			if (path.startsWith("/")) path = path.substring(1);
 			Node node = session.getRootNode().getNode(path);
 			node.remove();
+			logout(session);
 		} catch (javax.jcr.PathNotFoundException e) {
 			throw new PathNotFoundException("Path Not found");
 		} catch (RepositoryException e) {

@@ -159,7 +159,22 @@ public class DistributionServiceImpl
     protected void handleDelFolder(org.openuss.docmanagement.Folder folder, boolean delLinks)
         throws java.lang.Exception
     {	
+		if (folder.getSubnodes()!=null) {
+			Iterator i = folder.getSubnodes().iterator();
+			Resource r;
+			while (i.hasNext()) {
+				r = (Resource) i.next();
+				if (r instanceof File) {
+					fileDao.delFile((File) r, delLinks);
+				}
+				if (r instanceof Folder) {
+					handleDelFolder((Folder) r, delLinks);
+				}
+				//TODO add links
 
+			}
+		}    	
+		folderDao.remove(folder);
     }
 
 
@@ -312,16 +327,18 @@ public class DistributionServiceImpl
 	@Override
 	protected void handleClearEnrollmentTrash(Enrollment enrollment) throws Exception {
 		Folder f = getFolder(DocConstants.DISTRIBUTION+"/"+enrollment.getId().toString()+"/"+DocConstants.TRASH_NAME);
-		Iterator i = f.getSubnodes().iterator();
-		while (i.hasNext()){
-			Resource r = (Resource) i.next();
-			if (r instanceof File) {
-				fileDao.remove((File) r);				
+		if (f.getSubnodes()!=null) {
+			Iterator i = f.getSubnodes().iterator();
+			while (i.hasNext()) {
+				Resource r = (Resource) i.next();
+				if (r instanceof File) {
+					fileDao.remove((File) r);
+				}
+				if (r instanceof Folder) {
+					folderDao.remove((Folder) r);
+				}//TODO add links
 			}
-			if (r instanceof Folder) {
-				folderDao.remove((Folder) r);				
-			}//TODO add links
-		}
+		}		
 	}
 
 	@Override
