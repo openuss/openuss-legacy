@@ -2,7 +2,6 @@ package org.openuss.docmanagement.webdav;
 
 import java.net.URL;
 
-import org.openuss.docmanagement.webdav.DefaultIOManagerImpl;
 import org.openuss.docmanagement.webdav.DefaultItemFilterImpl;
 import org.openuss.docmanagement.webdav.IOManager;
 import org.openuss.docmanagement.webdav.ItemFilter;
