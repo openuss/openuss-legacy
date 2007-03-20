@@ -408,22 +408,48 @@ public class DistributionViewBacker extends ExceptionHandler{
 		return null;
 	}
 	
-	//TODO move to service method
+
+	
 	/**
 	 * Action method which starts the download of selected files in one zip-file
 	 * @return
 	 */
 	public String downloadSelected(){
 		String zipName = getFolderPath().substring(getFolderPath().lastIndexOf("/")+1)+".zip";
-		ArrayList<BigFile> files = new ArrayList<BigFile>();
-		Iterator i = this.data.iterator();
-		FileTableEntry fte;
-		while (i.hasNext()){
-			fte = (FileTableEntry)i.next();
-			if (fte.isChecked()) files.add(fileTableEntry2BigFile(fte));
-		}	
-		InputStream in = ZipMe.zipMe(files.toArray(new BigFile[0]), zipName);
-		
+		//get zipped file
+		InputStream in = getZipFile(zipName);	
+		if (in==null) handleDocManagementException(new DocManagementException("error zipping files"));
+		//trigger download of zipped file
+		triggerDownload(zipName, in);
+        
+		//delete zipFile
+        try {
+			in.close();
+		} catch (IOException e) {
+			handleDocManagementException(new DocManagementException("error deleting temporary file"));
+		}
+		try {
+			distributionService.delTempZip(zipName);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
+		} catch (PathNotFoundException e) {
+			handlePathNotFoundException(e);
+		} catch (ResourceAlreadyExistsException e) {
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}
+        return DocConstants.DOCUMENTEXPLORER;
+	}
+
+	/**
+	 * convenience method which trigger download of zipped files
+	 * @param zipName
+	 * @param in
+	 */
+	private void triggerDownload(String zipName, InputStream in) {
 		FacesContext context = FacesContext.getCurrentInstance();
 	    HttpServletResponse response = 
 		         (HttpServletResponse) context.getExternalContext().getResponse();
@@ -445,19 +471,37 @@ public class DistributionViewBacker extends ExceptionHandler{
 			logger.error("IOException: ", e);
 		}
         FacesContext.getCurrentInstance().responseComplete();
-        
-        try {
-			in.close();
-		} catch (IOException e) {
-			logger.error("IOException: ",e);
+	}
+
+	/**
+	 * convenience method, which zippes selected files to one zip file
+	 * @param zipName
+	 * @return
+	 */
+	private InputStream getZipFile(String zipName) {
+		ArrayList<BigFile> files = new ArrayList<BigFile>();
+		Iterator i = this.data.iterator();
+		FileTableEntry fte;
+		while (i.hasNext()){
+			fte = (FileTableEntry)i.next();
+			if (fte.isChecked()) files.add(fileTableEntry2BigFile(fte));
+		}	
+		InputStream in;
+		try {
+			in = distributionService.zipMe(files, zipName);
+			return in;
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
+		} catch (PathNotFoundException e) {
+			handlePathNotFoundException(e);
+		} catch (ResourceAlreadyExistsException e) {
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
 		}
-        //delete zipFile
-        boolean success = (new java.io.File(zipName)).delete();
-        if (!success) {
-            // deletion failed
-        	logger.error("temporary file could not be deleted!");
-        }
-        return DocConstants.DOCUMENTEXPLORER;
+		return null;
 	}
 	
 	/**

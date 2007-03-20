@@ -5,7 +5,16 @@
  */
 package org.openuss.docmanagement;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
 import javax.jcr.AccessDeniedException;
 import javax.jcr.InvalidItemStateException;
 import javax.jcr.ItemExistsException;
@@ -36,15 +45,14 @@ public class DistributionServiceImpl
 
 	private static final Logger logger = Logger.getLogger(DistributionServiceImpl.class);
 
-	private String username = "username";
-	private String password = "password";
-	
-	private final String distribution = "distribution";
-	
-	public Repository repository;
-	
+	/**
+	 * dao object to create and edit folders, is injected by spring
+	 */
 	public FolderDao folderDao; 
 	
+	/**
+	 * dao object to create and edit files, is injected by spring
+	 */
 	public FileDao fileDao;
 	
     /**
@@ -75,6 +83,7 @@ public class DistributionServiceImpl
         throws java.lang.Exception
     {
       try{ 
+    	//TODO rewrite me
     	//if distribution folder does not exist create it
     	Folder folder;
 		try{
@@ -91,8 +100,6 @@ public class DistributionServiceImpl
 		folderDao.setFolder(enrollmentMain);
 		
 	} catch (Exception e) {
-		// TODO check if exception have to be caught here, or in weblayer
-		logger.error(e);
 	}
         
     }
@@ -106,18 +113,6 @@ public class DistributionServiceImpl
     {
     	if (old) folderDao.changeFolder(folder);
     	else if (!old) folderDao.setFolder(folder);    	
-    }
-
-    /**
-     * @see org.openuss.docmanagement.DistributionService#setVisibility(org.openuss.docmanagement.Node, int)
-     */
-    protected void handleSetVisibility(Resource resource, int visibility)
-        throws java.lang.Exception
-    {
-        Session session = login();
-        Node n  = session.getNodeByUUID(resource.getId());
-        n.setProperty("visibility", visibility);
-        logout(session);
     }
 
     /**
@@ -211,17 +206,6 @@ public class DistributionServiceImpl
     }
 
     /**
-     * @see org.openuss.docmanagement.DistributionService#zipFiles(org.openuss.docmanagement.BigFile)
-     */
-    protected java.io.InputStream handleZipFiles(org.openuss.docmanagement.BigFile files)
-        throws java.lang.Exception
-    {
-    	//TODO check if method is needed here, or done by servlet
-    	// @todo implement protected java.io.InputStream handleZipFiles(org.openuss.docmanagement.BigFile files)
-        return null;
-    }
-
-    /**
      * @see org.openuss.docmanagement.DistributionService#getMainFolder(org.openuss.lecture.Enrollment)
      */
     protected org.openuss.docmanagement.Folder handleGetMainFolder(org.openuss.lecture.Enrollment enrollment)
@@ -240,16 +224,8 @@ public class DistributionServiceImpl
     protected org.openuss.docmanagement.Folder handleGetFacultyFolder(org.openuss.lecture.Faculty faculty)
         throws java.lang.Exception
     {
+    	//TODO implement me
     	FolderImpl folder = null;
-    	Session session = login();
-    	Node node = session.getRootNode();
-    	node = node.getNode(distribution+"/"+faculty.getId().toString());
-    	if (node == null) throw new Exception ("faculty main Folder does not exist yet!");
-    	folder = new FolderImpl();
-    	folder.setId(node.getUUID());
-    	folder.setName(faculty.getId().toString());
-    	//TODO add subnodes
-    	logout(session);    	
         return folder;
     }
     
@@ -260,30 +236,6 @@ public class DistributionServiceImpl
 
 	public void clearRepository() throws Exception{
 		folderDao.clearRepository();		
-	}
-	
-
-	private Session login() throws LoginException, RepositoryException {
-		Session session = repository.login(new SimpleCredentials(
-				username, password.toCharArray()));
-		return session;
-	}
-
-	private void logout(Session session) throws AccessDeniedException, ItemExistsException, ConstraintViolationException, InvalidItemStateException, VersionException, LockException, NoSuchNodeTypeException, RepositoryException {
-		try{
-			session.save();
-		} catch (Exception e){
-			logger.error("Fehler:",e);
-		}
-		session.logout();
-	}
-
-	public Repository getRepository() {
-		return repository;
-	}
-	
-	public void setRepository(Repository repository) {
-		this.repository = repository;
 	}
 
 	public FolderDao getFolderDao() {
@@ -317,6 +269,48 @@ public class DistributionServiceImpl
     	if (old) fileDao.changeFile(file);
     	else if (!old) fileDao.setFile(file);    	
 	}
+
+	@Override
+	protected void handleDelTempZip(String zipFileName) throws Exception {
+        boolean success = (new java.io.File(zipFileName)).delete();
+        if (!success) {
+        	//delete failed
+        	throw new DocManagementException("error deleting temporary file");
+        }
+	}
+
+	@Override
+	protected InputStream handleZipMe(List files, String zipFileName) throws Exception {
+		int read = 0;
+		InputStream in;
+		byte[] data = new byte[1024];
+		ZipOutputStream out;
+		BigFile bf;
+		try{
+			out = new ZipOutputStream(new FileOutputStream(zipFileName));
+			out.setMethod(ZipOutputStream.DEFLATED);
+			Iterator i = files.iterator();
+			
+			while(i.hasNext()) {
+				bf = (BigFile)i.next();
+				ZipEntry entry = new ZipEntry(bf.getName());
+				in = bf.getFile();			
+				out.putNextEntry(entry);
+				while((read = in.read(data, 0, 1024)) != -1)
+					out.write(data, 0, read);
+				out.closeEntry(); 
+				in.close();
+			}
+			out.close();
+			
+			return new FileInputStream(zipFileName);
+		}catch (FileNotFoundException e){
+			throw new DocManagementException(e.getMessage());
+		}catch (IOException e) {
+			throw new DocManagementException(e.getMessage());
+		}			
+	}
+
 
 
 }

@@ -31,7 +31,6 @@
 	</bean>
 
 	<bean id="distributionService" class="org.openuss.docmanagement.DistributionServiceImpl">
-		<property name="repository" ref="repository"></property>
 		<property name="folderDao" ref="folderDao"></property>
 		<property name="fileDao" ref="fileDao"></property>		
 	</bean>
