@@ -65,21 +65,19 @@ public class DavResourceCollection extends DavResource {
 			importProperties(null, representedNode);
 		} catch (RepositoryException ex) {
 			
-		} catch (IOException ex) {
-			
 		}
 		
 		return true;
 	}
 
 	@Override
-	protected boolean importData(ImportContext context, Node node) throws IOException {
+	protected boolean importData(ImportContext context, Node node) throws DavException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
-	protected boolean importProperties(ImportContext context, Node node) throws IOException {
+	protected boolean importProperties(ImportContext context, Node node) throws DavException {
 		// HACK
 		try {
 			node.setProperty(DocConstants.PROPERTY_VISIBILITY, (DocRights.READ_ALL|DocRights.EDIT_ASSIST));

@@ -17,6 +17,12 @@ import org.dom4j.QName;
  * @version 0.5
  */
 public class MultiStatus {
+	private final static Namespace defaultNamespace = DocumentHelper.createNamespace("D", "DAV:"); 
+	
+	public static Namespace getDefaultNamespace() {
+		return defaultNamespace;
+	}
+
 	private final List<MultiStatusResponse> responses;
 	private String description;
 	
@@ -40,8 +46,8 @@ public class MultiStatus {
 		responses.add(response);
 	}
 
-	public void toXml(Document document, Namespace namespace) {
-		QName rootName = DocumentHelper.createQName(DavConstants.XML_MULTISTATUS, namespace);
+	public void toXml(Document document) {
+		QName rootName = DocumentHelper.createQName(DavConstants.XML_MULTISTATUS, getDefaultNamespace());
 		Element rootElement = document.addElement(rootName);
 
 		// iterate over responses and append to rootElement
@@ -49,12 +55,12 @@ public class MultiStatus {
 		MultiStatusResponse response;
 		while (iterator.hasNext()) {
 			response = iterator.next();
-			response.toXml(rootElement, namespace);
+			response.toXml(rootElement);
 		}
 		
 		// append description, if set
 		if (description != null) {
-			QName descriptionName = DocumentHelper.createQName(DavConstants.XML_RESPONSEDESCRIPTION, namespace);
+			QName descriptionName = DocumentHelper.createQName(DavConstants.XML_RESPONSEDESCRIPTION, getDefaultNamespace());
 			Element descriptionElement = rootElement.addElement(descriptionName);
 			descriptionElement.addText(description);
 		}

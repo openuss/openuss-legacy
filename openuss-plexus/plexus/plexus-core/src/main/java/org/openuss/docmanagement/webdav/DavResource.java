@@ -11,7 +11,6 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Property;
-import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
@@ -29,7 +28,7 @@ import org.openuss.docmanagement.DocRights;
 
 /**
  * @author David Ullrich
- * @version 0.5
+ * @version 0.6
  */
 public abstract class DavResource {
 	protected final DavResourceFactory factory;
@@ -218,54 +217,9 @@ public abstract class DavResource {
 		}
 	}
 	
-	protected abstract boolean importData(ImportContext context, Node node) throws IOException;
+	protected abstract boolean importData(ImportContext context, Node node) throws DavException;
 	
-	protected boolean importProperties(ImportContext context, Node node) throws IOException {
-		// TODO MIME-Type in Abhängigkeit vom Objekttyp setzen
-		try {
-			// if mimetype of context is null -> remove the property
-			node.setProperty(JcrConstants.JCR_MIMETYPE, context.getMimeType());
-		} catch (RepositoryException ex) {
-			// ignore
-		}
-		try {
-			// if encoding of context is null -> remove the property
-			node.setProperty(JcrConstants.JCR_ENCODING, context.getEncoding());
-		} catch (RepositoryException ex) {
-			// ignore
-		}
-		
-		// HACK
-		try {
-			node.getParent().setProperty(DocConstants.PROPERTY_VISIBILITY, (DocRights.READ_ALL|DocRights.EDIT_ASSIST));
-		} catch (RepositoryException ex) {
-			
-		}
-		try {
-			node.getParent().setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, Calendar.getInstance());
-		} catch (RepositoryException ex) {
-			
-		}
-		try {
-			node.getParent().setProperty(DocConstants.PROPERTY_MESSAGE, context.getSystemId());
-		} catch (RepositoryException ex) {
-			
-		}
-		
-		// TODO nochmal semantisch überprüfen
-		try {
-			Calendar modificationTime = Calendar.getInstance();
-			if (context.getModificationTime() != -1) {
-				modificationTime.setTimeInMillis(context.getModificationTime());
-			} else {
-				modificationTime.setTime(new Date());
-			}
-			node.setProperty(JcrConstants.JCR_LASTMODIFIED, modificationTime);
-		} catch (RepositoryException ex) {
-			// ignore
-		}
-		return true;
-	}
+	protected abstract boolean importProperties(ImportContext context, Node node) throws DavException;
 	
 	public String getDisplayName() throws DavException {
 		if (!exists()) {
@@ -329,7 +283,7 @@ public abstract class DavResource {
 	public MultiStatusResponse getProperties(List<String> properties, boolean namesOnly) {
 		MultiStatusResponse response = new MultiStatusResponse(locator.getHref(isCollection()), null);
 		
-		boolean spoolAllProperties = (properties.size() == 0);
+		boolean spoolAllProperties = ((properties == null) || (properties.size() == 0));
 		
 		try {
 			// creationdate
@@ -357,7 +311,7 @@ public abstract class DavResource {
 				if (namesOnly || !isCollection()) {
 					response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_RESOURCETYPE, null);
 				} else {
-					QName collectionName = DocumentHelper.createQName(DavConstants.XML_COLLECTION, MultiStatusResponse.getDefaultNamespace());
+					QName collectionName = DocumentHelper.createQName(DavConstants.XML_COLLECTION, MultiStatus.getDefaultNamespace());
 					Element collectionElement = DocumentHelper.createElement(collectionName);
 					response.addProperty(HttpStatus.SC_OK, null, DavConstants.PROPERTY_RESOURCETYPE, collectionElement);
 				}

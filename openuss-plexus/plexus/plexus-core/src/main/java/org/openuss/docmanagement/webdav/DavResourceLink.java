@@ -16,6 +16,13 @@ import org.apache.jackrabbit.webdav.DavResourceLocator;
  * @version 0.5
  */
 public class DavResourceLink extends DavResource {
+	/**
+	 * Constructor.
+	 * @param factory
+	 * @param session
+	 * @param locator
+	 * @param representedNode
+	 */
 	public DavResourceLink(DavResourceFactory factory, Session session, DavResourceLocator locator, Node representedNode) {
 		super(factory, session, locator, representedNode);
 	}
@@ -29,6 +36,9 @@ public class DavResourceLink extends DavResource {
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#exportContent(org.openuss.docmanagement.webdav.ExportContext)
+	 */
 	@Override
 	public void exportContent(ExportContext context) throws DavException {
 		if (!canExport(context)) {
@@ -40,6 +50,9 @@ public class DavResourceLink extends DavResource {
 		context.informCompleted(true);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#importContent(org.openuss.docmanagement.webdav.ImportContext)
+	 */
 	@Override
 	public boolean importContent(ImportContext context) throws DavException {
 		if (!canImport(context)) {
@@ -53,8 +66,20 @@ public class DavResourceLink extends DavResource {
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#importData(org.openuss.docmanagement.webdav.ImportContext, javax.jcr.Node)
+	 */
 	@Override
-	protected boolean importData(ImportContext context, Node node) throws IOException {
+	protected boolean importData(ImportContext context, Node node) throws DavException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#importProperties(org.openuss.docmanagement.webdav.ImportContext, javax.jcr.Node)
+	 */
+	@Override
+	protected boolean importProperties(ImportContext context, Node node) throws DavException {
 		// TODO Auto-generated method stub
 		return false;
 	}

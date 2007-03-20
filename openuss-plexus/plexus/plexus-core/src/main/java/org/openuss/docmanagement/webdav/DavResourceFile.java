@@ -2,6 +2,8 @@ package org.openuss.docmanagement.webdav;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
@@ -12,6 +14,7 @@ import org.apache.jackrabbit.JcrConstants;
 import org.apache.jackrabbit.webdav.DavException;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.openuss.docmanagement.DocConstants;
+import org.openuss.docmanagement.DocRights;
 
 /**
  * @author David Ullrich
@@ -74,10 +77,6 @@ public class DavResourceFile extends DavResource {
 			success = false;
 			// TODO
 			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
-		} catch (IOException ex) {
-			success = false;
-			// TODO
-			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
 		} finally {
 			if (!success && (representedNode != null)) {
 				try {
@@ -95,7 +94,7 @@ public class DavResourceFile extends DavResource {
 	}
 
 	@Override
-	protected boolean importData(ImportContext context, Node node) throws IOException {
+	protected boolean importData(ImportContext context, Node node) throws DavException {
 		InputStream inputStream = context.getInputStream();
 		if (inputStream != null) {
 			try {
@@ -103,8 +102,60 @@ public class DavResourceFile extends DavResource {
 			} catch (RepositoryException ex) {
 				// TODO
 			} finally {
-				inputStream.close();
+				try {
+					inputStream.close();
+				} catch (IOException ex) {
+					
+				}
 			}
+		}
+		return true;
+	}
+	
+	@Override
+	protected boolean importProperties(ImportContext context, Node node) throws DavException {
+		// TODO MIME-Type in Abhängigkeit vom Objekttyp setzen
+		try {
+			// if mimetype of context is null -> remove the property
+			node.setProperty(JcrConstants.JCR_MIMETYPE, context.getMimeType());
+		} catch (RepositoryException ex) {
+			// ignore
+		}
+		try {
+			// if encoding of context is null -> remove the property
+			node.setProperty(JcrConstants.JCR_ENCODING, context.getEncoding());
+		} catch (RepositoryException ex) {
+			// ignore
+		}
+		
+		// HACK
+		try {
+			node.getParent().setProperty(DocConstants.PROPERTY_VISIBILITY, (DocRights.READ_ALL|DocRights.EDIT_ASSIST));
+		} catch (RepositoryException ex) {
+			
+		}
+		try {
+			node.getParent().setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, Calendar.getInstance());
+		} catch (RepositoryException ex) {
+			
+		}
+		try {
+			node.getParent().setProperty(DocConstants.PROPERTY_MESSAGE, context.getSystemId());
+		} catch (RepositoryException ex) {
+			
+		}
+		
+		// TODO nochmal semantisch überprüfen
+		try {
+			Calendar modificationTime = Calendar.getInstance();
+			if (context.getModificationTime() != -1) {
+				modificationTime.setTimeInMillis(context.getModificationTime());
+			} else {
+				modificationTime.setTime(new Date());
+			}
+			node.setProperty(JcrConstants.JCR_LASTMODIFIED, modificationTime);
+		} catch (RepositoryException ex) {
+			// ignore
 		}
 		return true;
 	}

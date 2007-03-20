@@ -20,9 +20,7 @@ public class MultiStatusResponse {
 	private String description;
 	private int statusCode;
 	private boolean statusOnly;
-	
-	private final static Namespace defaultNamespace = DocumentHelper.createNamespace("D", "DAV:"); 
-	
+		
 	private final HashMap<Integer, Element> propstats;
 	
 	public MultiStatusResponse(String href, String responseDescription) {
@@ -42,10 +40,6 @@ public class MultiStatusResponse {
 		propstats = new HashMap<Integer, Element>();
 	}
 	
-	public static Namespace getDefaultNamespace() {
-		return defaultNamespace;
-	}
-	
 	public String getHref() {
 		return href;
 	}
@@ -56,7 +50,7 @@ public class MultiStatusResponse {
 	
 	public void addProperty(int statusCode, Namespace namespace, String name, String value) {
 		if (namespace == null) {
-			namespace = getDefaultNamespace();
+			namespace = MultiStatus.getDefaultNamespace();
 		}
 		
 		QName propertyName = DocumentHelper.createQName(name, namespace);
@@ -71,7 +65,7 @@ public class MultiStatusResponse {
 	
 	public void addProperty(int statusCode, Namespace namespace, String name, Element innerElement) {
 		if (namespace == null) {
-			namespace = getDefaultNamespace();
+			namespace = MultiStatus.getDefaultNamespace();
 		}
 		
 		QName propertyName = DocumentHelper.createQName(name, namespace);
@@ -93,10 +87,10 @@ public class MultiStatusResponse {
 		Element propstatElement = propstats.get(statusInteger);
 		
 		if (propstatElement == null) {
-			QName propstatName = DocumentHelper.createQName(DavConstants.XML_PROPSTAT, getDefaultNamespace());
+			QName propstatName = DocumentHelper.createQName(DavConstants.XML_PROPSTAT, MultiStatus.getDefaultNamespace());
 			propstatElement = DocumentHelper.createElement(propstatName);
 			
-			QName propName = DocumentHelper.createQName(DavConstants.XML_PROP, getDefaultNamespace());
+			QName propName = DocumentHelper.createQName(DavConstants.XML_PROP, MultiStatus.getDefaultNamespace());
 			propstatElement.addElement(propName);
 			
 			propstats.put(statusInteger, propstatElement);
@@ -105,12 +99,12 @@ public class MultiStatusResponse {
 		return propstatElement.element(DavConstants.XML_PROP);
 	}
 	
-	public void toXml(Element element, Namespace namespace) {
-		QName rootName = DocumentHelper.createQName(DavConstants.XML_RESPONSE, namespace);
+	public void toXml(Element element) {
+		QName rootName = DocumentHelper.createQName(DavConstants.XML_RESPONSE, MultiStatus.getDefaultNamespace());
 		Element rootElement = element.addElement(rootName);
 		
 		// append href
-		QName hrefName = DocumentHelper.createQName(DavConstants.XML_HREF, namespace);
+		QName hrefName = DocumentHelper.createQName(DavConstants.XML_HREF, MultiStatus.getDefaultNamespace());
 		Element hrefElement = rootElement.addElement(hrefName);
 		hrefElement.addText(getHref());
 		
@@ -122,7 +116,7 @@ public class MultiStatusResponse {
 				statusInteger = iterator.next();
 				Element propstatElement = propstats.get(statusInteger);
 				// add status line
-				QName statusName = DocumentHelper.createQName(DavConstants.XML_STATUS, namespace);
+				QName statusName = DocumentHelper.createQName(DavConstants.XML_STATUS, MultiStatus.getDefaultNamespace());
 				Element statusElement = propstatElement.addElement(statusName);
 				statusElement.addText(HttpStatus.getStatusLine(statusInteger.intValue()));
 				// add to response element
@@ -130,14 +124,14 @@ public class MultiStatusResponse {
 			}
 		} else {
 			// TYPE_STATUS
-			QName statusName = DocumentHelper.createQName(DavConstants.XML_STATUS, namespace);
+			QName statusName = DocumentHelper.createQName(DavConstants.XML_STATUS, MultiStatus.getDefaultNamespace());
 			Element statusElement = rootElement.addElement(statusName);
 			statusElement.addText(HttpStatus.getStatusLine(statusCode));
 		}
 		
 		// append description, if set
 		if (description != null) {
-			QName descriptionName = DocumentHelper.createQName(DavConstants.XML_RESPONSEDESCRIPTION, namespace);
+			QName descriptionName = DocumentHelper.createQName(DavConstants.XML_RESPONSEDESCRIPTION, MultiStatus.getDefaultNamespace());
 			Element descriptionElement = rootElement.addElement(descriptionName);
 			descriptionElement.addText(description);
 		}

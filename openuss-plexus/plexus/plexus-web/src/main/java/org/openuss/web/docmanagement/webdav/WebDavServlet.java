@@ -22,7 +22,6 @@ import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
-import org.dom4j.Namespace;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.openuss.docmanagement.webdav.DavLocatorFactoryImpl;
@@ -35,8 +34,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
- * @author David Ullrich
- * @version 0.7
+ * @author David Ullrich <lechuck@uni-muenster.de>
+ * @version 0.8
  */
 public class WebDavServlet extends HttpServlet {
 	private final static Logger logger = Logger.getLogger(WebDavServlet.class);
@@ -106,7 +105,7 @@ public class WebDavServlet extends HttpServlet {
         	}
         }
         
-        logger.debug("init done.");
+        logger.debug("init() done.");
 	}
 	
 	/* (non-Javadoc)
@@ -135,13 +134,13 @@ public class WebDavServlet extends HttpServlet {
 		} catch (DavException ex) {
 			logger.error("DavException occured. ErrorCode: " + ex.getErrorCode());
 			logger.error("Exception: " + ex.getMessage());
-			// test, if user is unauthorized
-			if (ex.getErrorCode() == HttpServletResponse.SC_UNAUTHORIZED) {
+			// check status code, if user is unauthorized
+			if (ex.getErrorCode() == HttpStatus.SC_UNAUTHORIZED) {
 				// user unauthorized, request authentication
                 response.setHeader("WWW-Authenticate", getAuthenticateHeaderValue());
                 response.sendError(ex.getErrorCode(), ex.getStatusPhrase());
 			} else {
-				// undefined error, send error code and message
+				// any other error, send error code and message
 				response.sendError(ex.getErrorCode(), ex.getStatusPhrase());
 			}
 		} finally {
@@ -152,15 +151,17 @@ public class WebDavServlet extends HttpServlet {
 	}
 	
 	/**
-	 * @param request
-	 * @param response
-	 * @param locator
-	 * @param methodCode
-	 * @return
+	 * Executes requested method.
+	 * @param request Reference to the request of the servlet.
+	 * @param response Reference to the response of the servlet.
+	 * @param locator The locator identifying requested resource.
+	 * @param methodCode The method code identifying requested method.
+	 * @return True, if method code is known and method could be executed.
 	 * @throws DavException
 	 */
 	private boolean execute(HttpServletRequest request, HttpServletResponse response, DavResourceLocator locator, int methodCode) throws DavException {
 		// TODO support DAV_LOCK and DAV_UNLOCK for compliance level 2
+		// TODO Fehler werfen bei ungültigem Wert von depth
 		try {
 			switch (methodCode) {
 				case DavMethods.DAV_OPTIONS:
@@ -223,32 +224,35 @@ public class WebDavServlet extends HttpServlet {
 			logger.error("IOException occured.");
 			logger.error("Exception: " + ex.getMessage());
 			// rethrow IOException as DavException
-			// TODO StatusCode
-			throw new DavException(HttpServletResponse.SC_NOT_FOUND, ex.getMessage());
+			throw new DavException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 		
 		return true;
 	}
 	
 	/**
-	 * @param response
+	 * Handles method OPTIONS as demanded in RFC2518.
+	 * @param response Reference to the response of the servlet.
 	 */
 	private void publishOptions(HttpServletResponse response) {
-		// TODO kommentieren
+		// add required headers and send status code 200 (OK)
 		response.addHeader(DavConstants.HEADER_DAV, DAV_COMPLIANCE_CLASS);
 		response.addHeader("Allowed", DAV_ALLOWED_METHODS);
 		response.addHeader("MS-Author-Via", DavConstants.HEADER_DAV);
-		response.setStatus(HttpServletResponse.SC_OK);
+		response.setStatus(HttpStatus.SC_OK);
 	}
 	
 	/**
-	 * @param request
-	 * @return
+	 * Reads value of depth header as required for some methods. See RFC2518 for further details.
+	 * @param request Reference to the request of the servlet.
+	 * @return The value of the depth header.
 	 * @throws DavException
 	 */
 	private int getDepth(HttpServletRequest request) throws DavException {
-		// TODO kommentieren
+		// retrieve value for header from request
 		String depthHeaderValue = request.getHeader(DavConstants.HEADER_DEPTH);
+		
+		// empty header has to be interpreted as infinity, if depth header is expected
 		if ((depthHeaderValue == null) || (depthHeaderValue.length() == 0) || depthHeaderValue.equalsIgnoreCase(DavConstants.DEPTH_INFINITY_S)) {
 			return DavConstants.DEPTH_INFINITY;
 		} else if (depthHeaderValue.equals(DavConstants.DEPTH_0 + "")) {
@@ -256,7 +260,9 @@ public class WebDavServlet extends HttpServlet {
 		} else if (depthHeaderValue.equals(DavConstants.DEPTH_1 + "")) {
 			return DavConstants.DEPTH_1;
 		} else {
-			throw new DavException(HttpServletResponse.SC_BAD_REQUEST);
+			// invalid or not supported value for depth header found
+			logger.error("Depth header has an invalid value: " + depthHeaderValue);
+			throw new DavException(HttpServletResponse.SC_BAD_REQUEST, "Invalid value for depth header.");
 		}
 	}
 	
@@ -269,28 +275,33 @@ public class WebDavServlet extends HttpServlet {
 	}
 	
 	/**
-	 * @param request
-	 * @return
+	 * Parses the request body as a XML document.
+	 * @param request Reference to the request of the servlet.
+	 * @return The request body parsed as a XML document.
 	 * @throws DavException
 	 */
 	private Document getRequestDocument(HttpServletRequest request) throws DavException {
-		// TODO kommentieren
 		Document document = null;
 		
+		// return null, if request body is empty
 		if (request.getContentLength() == 0) {
 			return document;
 		}
 		
 		try {
+			// retrieve the input stream from request
 			InputStream inputStream = request.getInputStream();
 
 			if (inputStream != null) {
+				// create buffered stream and snoop for content, since client can send fragmented request
 				InputStream bufferedInputStream = new BufferedInputStream(inputStream);
 				bufferedInputStream.mark(1);
 				boolean hasContent = (bufferedInputStream.read() != -1);
 				bufferedInputStream.reset();
 				
+				// read content of request body as string, if present
 				if (hasContent) {
+					// read in 8k blocks until read operation reaches end of stream
 					StringBuilder content = new StringBuilder();
 					byte[] buffer = new byte[8192];
 					int readBytes = 0;
@@ -300,45 +311,55 @@ public class WebDavServlet extends HttpServlet {
 							content.append(new String(buffer, 0, readBytes));
 						}
 					} while (readBytes > 0);
+					
+					// try to parse content as XML document
 					document = DocumentHelper.parseText(content.toString());
-					logger.debug("Requestdocument: " + document.asXML());
+					logger.debug("Request document: " + document.asXML());
 				}
 			}
 		} catch (IOException ex) {
+			// error while operating with streams
 			logger.error("IO exception occurred.");
 			logger.error("Exception: " + ex.getMessage());
-			throw new DavException(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
+			throw new DavException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
 		} catch (DocumentException ex) {
+			// parsing failed, send 400 (Bad Request) to client
 			logger.error("Document exception occurred.");
 			logger.error("Exception: " + ex.getMessage());
-			throw new DavException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+			throw new DavException(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
 		}
 		
 		return document;		
 	}
 	
 	/**
-	 * @param multistatus
-	 * @param response
+	 * Send multi-status to client.
+	 * @param multistatus The multi-status to send.
+	 * @param response Reference to the response of the servlet.
 	 * @throws IOException
 	 */
 	private void sendMultiStatus(MultiStatus multistatus, HttpServletResponse response) throws IOException {
-		// TODO kommentieren
+		// set status of http-reply to 207 (multi-status)
 		response.setStatus(HttpStatus.SC_MULTI_STATUS);
+		
+		// send multi-status, if present
 		if (multistatus != null) {
+			// create output stream
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			
+			// create XML document and serialize multistatus
 			Document responseDocument = DocumentHelper.createDocument();
-			Namespace namespace = DocumentHelper.createNamespace("D", "DAV:");
-			multistatus.toXml(responseDocument, namespace);
+			multistatus.toXml(responseDocument);
 
+			// set output format and write document to output stream
 			OutputFormat outputFormat = new OutputFormat("", true, "UTF-8");
 			XMLWriter writer = new XMLWriter(outputStream, outputFormat);
 			writer.write(responseDocument);
 			writer.flush();
 
-			// HACK
-			logger.debug("Responsedocument: " + responseDocument.asXML());
+			logger.debug("Response document: " + responseDocument.asXML());
 
+			// convert document in stream to byte array and write to response
 			byte[] bytes = outputStream.toByteArray();
 			response.setContentType("text/xml; charset=UTF-8");
 			response.setContentLength(bytes.length);
@@ -347,14 +368,17 @@ public class WebDavServlet extends HttpServlet {
 	}
 
 	/**
-	 * @return
+	 * Getter for authenticate header value.
+	 * @see WebDavServlet#init()
+	 * @return The authenticate header value.
 	 */
 	public String getAuthenticateHeaderValue() {
 		return authenticateHeader;
 	}
 	
 	/**
-	 * @return
+	 * Getter for the {@link DavService}.
+	 * @return The DavService.
 	 */
 	public DavService getDavService() {
 		if (davService == null) {
@@ -364,14 +388,24 @@ public class WebDavServlet extends HttpServlet {
 	}
 	
 	/**
-	 * @return
+	 * Getter for the {@link SessionProvider}.
+	 * @return The SessionProvider.
 	 */
 	public SessionProvider getSessionProvider() {
 		return sessionProvider;
 	}
+
+	/**
+	 * Setter for the {@link SessionProvider}.
+	 * @param sessionProvider The session provider to set.
+	 */
+	public void setSessionProvider(SessionProvider sessionProvider) {
+		this.sessionProvider = sessionProvider;
+	}
 	
 	/**
-	 * @return
+	 * Getter for the {@link DavLocatorFactory}.
+	 * @return The DavLocatorFactory.
 	 */
 	public DavLocatorFactory getLocatorFactory() {
 		if (locatorFactory == null) {
@@ -381,33 +415,32 @@ public class WebDavServlet extends HttpServlet {
 	}
 	
 	/**
-	 * @param request
-	 * @return
+	 * Getter for a {@link DavResourceLocator} correspondig to the request URI.
+	 * @param request Reference to the request of the servlet.
+	 * @return The DavResourceLocator.
 	 */
 	private DavResourceLocator getResourceLocator(HttpServletRequest request) {
-		// TODO kommentieren
 		return getResourceLocator(request, request.getRequestURI());
 	}
 	
 	/**
-	 * @param request
-	 * @param path
-	 * @return
+	 * Getter for a {@link DavResourceLocator} correspondig to the given path.
+	 * @param request Reference to the request of the servlet.
+	 * @param path The given path.
+	 * @return The DavResourceLocator.
 	 */
 	private DavResourceLocator getResourceLocator(HttpServletRequest request, String path) {
-		// TODO kommentieren
+		// get context path from request
 		String contextPath = request.getContextPath();
+
+		// remove context path, if present in path
 		if (path.startsWith(contextPath)) {
 			path = path.substring(contextPath.length());
 		}
+		
+		// create href prefix from request
 		String hrefPrefix = request.getScheme() + "://" + request.getHeader("Host") + contextPath;
+		
 		return getLocatorFactory().createResourceLocator(hrefPrefix, path);
-	}
-
-	/**
-	 * @param sessionProvider The session provider to set.
-	 */
-	public void setSessionProvider(SessionProvider sessionProvider) {
-		this.sessionProvider = sessionProvider;
 	}
 }
