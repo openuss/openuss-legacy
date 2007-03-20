@@ -45,15 +45,14 @@ public class FileDao extends ResourceDao {
 		try {
 			session = login(repository);
 		Node node = session.getRootNode();
-		if (!(path == ""))
-			node = node.getNode(path);
+		if (path.startsWith("/")) path = path.substring(1);
+		node = node.getNode(path);
 		if (!node.isNodeType(DocConstants.DOC_FILE))
 			throw new NotAFileException("Not a file");
 		file = new FileImpl(new Timestamp(node.getProperty(
-				DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTime()
-				.getTime()), node.getUUID(), new Timestamp(node.getNode(
+				DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTimeInMillis()), node.getUUID(), new Timestamp(node.getNode(
 				DocConstants.JCR_CONTENT).getProperty(
-				DocConstants.JCR_LASTMODIFIED).getDate().getTime().getTime()),
+				DocConstants.JCR_LASTMODIFIED).getDate().getTimeInMillis()),
 				0, node.getProperty(DocConstants.PROPERTY_MESSAGE).getString(),
 				node.getNode(DocConstants.JCR_CONTENT).getProperty(
 						DocConstants.JCR_MIMETYPE).getString(), node.getName(),
@@ -93,7 +92,7 @@ public class FileDao extends ResourceDao {
 				DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTime()
 				.getTime()), node.getUUID(), new Timestamp(node.getNode(
 				DocConstants.JCR_CONTENT).getProperty(
-				DocConstants.JCR_LASTMODIFIED).getDate().getTime().getTime()),
+				DocConstants.JCR_LASTMODIFIED).getDate().getTimeInMillis()),
 				0, node.getProperty(DocConstants.PROPERTY_MESSAGE).getString(),
 				node.getNode(DocConstants.JCR_CONTENT).getProperty(
 						DocConstants.JCR_MIMETYPE).getString(), node.getName(),
@@ -158,39 +157,30 @@ public class FileDao extends ResourceDao {
 	 * @throws Exception
 	 */
 	private void setDistributionFile(Node node, BigFile file) throws ResourceAlreadyExistsException, DocManagementException{ 
-		try{
-			Node test = node.getNode(file.getName());
-			// only reached if Node with same name exists
-			// TODO change to self-written exception
-			throw new ResourceAlreadyExistsException("File already exists");
-		} catch (javax.jcr.PathNotFoundException e) {
-			// should occur!
-			try {
-				// nt:File Knoten
-				node.addNode(file.getName(), DocConstants.DOC_FILE);
-				node = node.getNode(file.getName());
-				node.setProperty(DocConstants.PROPERTY_MESSAGE, file.getMessage());
-				Calendar c = Calendar.getInstance();
-				c.setTimeInMillis(file.getDistributionTime().getTime());
-				node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
-				node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
-						.getVisibility());
-
+		try {
+			if (node.hasNode(file.getName())) throw new ResourceAlreadyExistsException("File already exists");
+			// nt:File Knoten
+			node.addNode(file.getName(), DocConstants.DOC_FILE);
+			node = node.getNode(file.getName());
+			node.setProperty(DocConstants.PROPERTY_MESSAGE, file.getMessage());
+			Calendar c = Calendar.getInstance();
+			c.setTimeInMillis(file.getDistributionTime().getTime());
+			node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
+			node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
+					.getVisibility());
 				// nt:resource Knoten, der die eigentlich Datei enthaelt
-				node.addNode(DocConstants.JCR_CONTENT, DocConstants.NT_RESOURCE);
-				node = node.getNode(DocConstants.JCR_CONTENT);
-				node.setProperty(DocConstants.JCR_DATA, file.getFile());
-				node.setProperty(DocConstants.JCR_MIMETYPE, file.getMimeType());
-				c.setTimeInMillis(file.getLastModification().getTime());
-				node.setProperty(DocConstants.JCR_LASTMODIFIED, c);
-			} catch (LoginException e1) {
-				throw new DocManagementException("LoginException occured");
-			} catch (RepositoryException e1) {
-				throw new  DocManagementException("RepositoryException occured");
-			}
-		} catch (RepositoryException e) {
+			node.addNode(DocConstants.JCR_CONTENT, DocConstants.NT_RESOURCE);
+			node = node.getNode(DocConstants.JCR_CONTENT);
+			node.setProperty(DocConstants.JCR_DATA, file.getFile());
+			node.setProperty(DocConstants.JCR_MIMETYPE, file.getMimeType());
+			c.setTimeInMillis(file.getLastModification().getTime());
+			node.setProperty(DocConstants.JCR_LASTMODIFIED, c);
+		} catch (LoginException e1) {
+			throw new DocManagementException("LoginException occured");
+		} catch (RepositoryException e1) {
 			throw new  DocManagementException("RepositoryException occured");
 		}
+		
 	}
 
 	/**
@@ -364,8 +354,7 @@ public class FileDao extends ResourceDao {
 				return DocConstants.EXAMAREA;
 			if (path.startsWith(DocConstants.WORKINGPLACE))
 				return DocConstants.WORKINGPLACE;
-			// return null;
-			return DocConstants.DISTRIBUTION;
+			return null;
 		} catch (RepositoryException e) {
 			throw new  DocManagementException("RepositoryException occured");
 		}

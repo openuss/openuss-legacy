@@ -21,12 +21,12 @@ public class DocConstants{
 	public static final String PROPERTY_LENGTH = "doc:length"; //TODO check if needed	
 
 	//Link
-	public static final String PROPERTY_TARGET = "doc:target";
+	public static final String PROPERTY_REFERENCE = "doc:reference";
 	
 	public static final String DOC_FILE = "doc:file";
 	public static final String DOC_FOLDER = "doc:folder";
 	public static final String NT_RESOURCE = "nt:resource";
-	public static final String DOC_LINK = "doc:link";
+	public static final String DOC_LINK = "doc:link";	
 	public static final String JCR_CONTENT = "jcr:content";
 	public static final String JCR_CREATED = "jcr:created";
 	public static final String JCR_ENCODING = "jcr:encoding";

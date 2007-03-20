@@ -2,26 +2,15 @@ package org.openuss.docmanagement;
 
 import java.io.ByteArrayInputStream;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
-
 import javax.jcr.LoginException;
 import javax.jcr.NodeIterator;
 import org.openuss.docmanagement.PathNotFoundException;
-
-import javax.jcr.AccessDeniedException;
-import javax.jcr.InvalidItemStateException;
-import javax.jcr.ItemExistsException;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Node;
-import javax.jcr.lock.LockException;
-import javax.jcr.nodetype.ConstraintViolationException;
-import javax.jcr.nodetype.NoSuchNodeTypeException;
-import javax.jcr.version.VersionException;
+
 
 import org.apache.log4j.Logger;
 
@@ -42,6 +31,12 @@ public class FolderDao extends ResourceDao {
 	 * fileDao object is injected by spring
 	 */
 	private FileDao fileDao;
+
+	/**
+	 * fileDao object is injected by spring
+	 */
+	private LinkDao linkDao;	
+	
 
 	/**
 	 * getFolder method which returns the folder object at given path
@@ -76,7 +71,7 @@ public class FolderDao extends ResourceDao {
 					node.getPath(), 
 					null, 
 					(int) node.getProperty(DocConstants.PROPERTY_VISIBILITY).getLong());
-			fi.setCreated(new Timestamp(node.getProperty(DocConstants.JCR_CREATED).getDate().getTime().getTime()));
+			fi.setCreated(new Timestamp(node.getProperty(DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
 			Vector<Resource> v = new Vector<Resource>();
 			NodeIterator ni = node.getNodes();
 			Node n;
@@ -97,12 +92,17 @@ public class FolderDao extends ResourceDao {
 						if (filePath.startsWith("/")) filePath = filePath.substring(1);
 						v.add(fileDao.getFile(filePath));
 					}
-					// TODO add links
+					if (n.isNodeType(DocConstants.DOC_LINK)) {
+						filePath = n.getPath();						
+						if (filePath.startsWith("/")) filePath = filePath.substring(1);
+						//if links to folders should be possible, differ here
+						v.add((File)linkDao.getLink(filePath).getTarget());
+					}
+					
 				}
 			}
 			if (v.size() > 0)
 				fi.setSubnodes(v);
-			// TODO differ between Folder, Files and Links
 			logout(session);
 		} catch (PathNotFoundException e){
 			throw e;
@@ -130,18 +130,13 @@ public class FolderDao extends ResourceDao {
 			String path = folder.getPath();
 			if (path.startsWith("/")) path = path.substring(1);
 			if (path!="") node = node.getNode(path);
-			try{
-				node = node.getNode(folder.getName());
-				throw new ResourceAlreadyExistsException ("Folder already exists");
-			}
-			catch (javax.jcr.PathNotFoundException e){
-				//should occur
-				node.addNode(folder.getName(), DocConstants.DOC_FOLDER);
-				node = node.getNode(folder.getName());
-				node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
-				node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());				
-				logout(session);
-			}
+			if (node.hasNode(folder.getName())) throw new ResourceAlreadyExistsException ("Folder already exists");
+			node.addNode(folder.getName(), DocConstants.DOC_FOLDER);
+			node = node.getNode(folder.getName());
+			node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
+			node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());				
+			logout(session);
+
 		} catch (ResourceAlreadyExistsException e){
 			throw e;
 		} catch (LoginException e) {
@@ -160,7 +155,6 @@ public class FolderDao extends ResourceDao {
 	 * @throws RepositoryException
 	 */
 	public void changeFolder(Folder folder) throws PathNotFoundException, DocManagementException  {
-		//TODO add path not found exception
 		try {
 			Session session = login(repository);
 			Node node = session.getRootNode();
@@ -220,8 +214,6 @@ public class FolderDao extends ResourceDao {
 	//TODO leave here?
 	public void buildMainRepositoryStructure(){
 		try{
-			Session session = login(repository);
-			Node root = session.getRootNode();
 			Folder dist = new FolderImpl("Main distribution folder", DocConstants.DISTRIBUTION, "", null, DocRights.READ_OWNER|DocRights.EDIT_OWNER);
 			Folder exam = new FolderImpl("Main exam area folder", DocConstants.EXAMAREA, "", null, DocRights.READ_OWNER|DocRights.EDIT_OWNER);
 			Folder wp = new FolderImpl("Main workingplace folder", DocConstants.WORKINGPLACE, "", null, DocRights.READ_OWNER|DocRights.EDIT_OWNER);
@@ -269,6 +261,14 @@ public class FolderDao extends ResourceDao {
 
 	public void setFileDao(FileDao fileDao) {
 		this.fileDao = fileDao;
+	}
+
+	public LinkDao getLinkDao() {
+		return linkDao;
+	}
+
+	public void setLinkDao(LinkDao linkDao) {
+		this.linkDao = linkDao;
 	}
 
 }

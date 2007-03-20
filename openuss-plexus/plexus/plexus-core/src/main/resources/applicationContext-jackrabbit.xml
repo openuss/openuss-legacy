@@ -16,6 +16,7 @@
 	<bean id="folderDao" class="org.openuss.docmanagement.FolderDao" >
 		<property name="repository" ref="repository"></property>
 		<property name="fileDao" ref="fileDao"></property>
+		<property name="linkDao" ref="linkDao"></property>
 	</bean>
 	<bean id="workingPlaceDao" class="org.openuss.docmanagement.WorkingPlaceDao" >
 		<property name="repository" ref="repository"></property>
@@ -28,11 +29,13 @@
 	</bean>
 	<bean id="linkDao" class="org.openuss.docmanagement.LinkDao" >
 		<property name="repository" ref="repository"></property>
+		<property name="fileDao" ref="fileDao"></property>
 	</bean>
 
 	<bean id="distributionService" class="org.openuss.docmanagement.DistributionServiceImpl">
 		<property name="folderDao" ref="folderDao"></property>
 		<property name="fileDao" ref="fileDao"></property>		
+		<property name="linkDao" ref="linkDao"></property>				
 	</bean>
 	<bean id="collaborationService" class="org.openuss.docmanagement.CollaborationServiceImpl"/>
 	<bean id="examinationService" class="org.openuss.docmanagement.ExaminationServiceImpl"/>

@@ -1,5 +1,6 @@
 package org.openuss.web.docmanagement;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -13,9 +14,12 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.docmanagement.DistributionService;
 import org.openuss.docmanagement.DocManagementException;
+import org.openuss.docmanagement.DocRights;
 import org.openuss.docmanagement.File;
 import org.openuss.docmanagement.Folder;
 import org.openuss.docmanagement.FolderImpl;
+import org.openuss.docmanagement.Link;
+import org.openuss.docmanagement.LinkImpl;
 import org.openuss.docmanagement.NotAFileException;
 import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
@@ -131,7 +135,6 @@ public class Folder2Folder extends ExceptionHandler{
 			Iterator i = v.iterator();
 			while (i.hasNext()){
 				Object o = i.next();
-				//TODO add links
 				subFolder = null; 
 				subFile = null;
 				if (o instanceof Folder) {
@@ -140,9 +143,13 @@ public class Folder2Folder extends ExceptionHandler{
 				if (o instanceof File) {
 					subFile= (File) o;					
 				}	
-				//TODO handle Links
+				if (o instanceof Link) {
+					//has to be differed, if links to folders are possible
+					subFile= (File)((Link) o).getTarget();					
+				}	
+
 				if (subFolder!=null) tn.getChildren().add(folder2TreeNodeBase(subFolder, includeFiles));
-				if (subFile!=null) tn.getChildren().add(new TreeNodeBase("file", subFile.getName(), subFile.getPath(), true));
+				if (includeFiles) if((subFile!=null)) tn.getChildren().add(new TreeNodeBase("file", subFile.getName(), subFile.getPath(), true));
 			}
 		}
 		return tn;		
@@ -153,6 +160,29 @@ public class Folder2Folder extends ExceptionHandler{
 	 * @return
 	 */
 	public String link(){
+		try {
+			File file = distributionService.getFile(this.sourcePath);
+			Folder folder = distributionService.getFolder(this.targetPath);
+			Link link = new LinkImpl(); 
+			link.setCreated(new Timestamp(System.currentTimeMillis()));
+			link.setDistributionDate(new Timestamp(System.currentTimeMillis()));
+			link.setMessage(file.getMessage());
+			link.setName(file.getName());
+			link.setPath(folder.getPath());
+			link.setTarget(file);
+			link.setVisibility(DocRights.READ_ALL|DocRights.EDIT_ASSIST);
+			distributionService.addLink(link);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
+		} catch (PathNotFoundException e) {
+			handlePathNotFoundException(e);
+		} catch (ResourceAlreadyExistsException e) {
+			handleResourceAlreadyExistsException(e);
+		}catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}				
 		return DocConstants.FOLDERTOFOLDER;
 	}
 
@@ -161,6 +191,21 @@ public class Folder2Folder extends ExceptionHandler{
 	 * @return
 	 */
 	public String copy(){
+		try {
+			File file = distributionService.getFile(this.sourcePath);
+			Folder folder = distributionService.getFolder(this.targetPath);
+			distributionService.copyFile(file, folder);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
+		} catch (PathNotFoundException e) {
+			handlePathNotFoundException(e);
+		} catch (ResourceAlreadyExistsException e) {
+			handleResourceAlreadyExistsException(e);
+		}catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}		
 		return DocConstants.FOLDERTOFOLDER;
 	}
 	
@@ -193,7 +238,7 @@ public class Folder2Folder extends ExceptionHandler{
 	}
 
 	public void setSourcePath(String sourcePath) {
-		this.sourcePath = sourcePath;
+		this.sourcePath = sourceTree.getNodeById(sourcePath).getIdentifier();
 	}
 
 	public String getTargetPath() {
@@ -201,6 +246,6 @@ public class Folder2Folder extends ExceptionHandler{
 	}
 
 	public void setTargetPath(String targetPath) {
-		this.targetPath = targetPath;
+		this.targetPath = targetTree.getNodeById(targetPath).getIdentifier();
 	}
 }

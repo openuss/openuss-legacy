@@ -128,7 +128,6 @@ public class FacultyViewBacker extends ExceptionHandler{
 			Iterator i = v.iterator();
 			while (i.hasNext()){
 				Object o = i.next();
-				//TODO add links
 				subFolder = null; 
 				if (o instanceof Folder) {
 					subFolder = (Folder) o;					

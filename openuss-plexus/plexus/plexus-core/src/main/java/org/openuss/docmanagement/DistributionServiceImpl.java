@@ -38,6 +38,13 @@ public class DistributionServiceImpl
 	 * dao object to create and edit files, is injected by spring
 	 */
 	public FileDao fileDao;
+
+	/**
+	 * dao object to create and edit files, is injected by spring
+	 */
+	public LinkDao linkDao;
+	
+	
 	
     /**
      * @see org.openuss.docmanagement.DistributionService#addMainFolder(org.openuss.lecture.Enrollment)
@@ -112,8 +119,7 @@ public class DistributionServiceImpl
     protected void handleAddLink(org.openuss.docmanagement.Link link)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleAddLink(org.openuss.docmanagement.Link link, org.openuss.docmanagement.Folder targetFolder)
-        throw new java.lang.UnsupportedOperationException("org.openuss.docmanagement.DistributionService.handleAddLink(org.openuss.docmanagement.Link link, org.openuss.docmanagement.Folder targetFolder) Not implemented!");
+    	linkDao.setLink(link);
     }
 
     /**
@@ -319,7 +325,10 @@ public class DistributionServiceImpl
 				}
 				if (r instanceof Folder) {
 					folderDao.remove((Folder) r);
-				}//TODO add links
+				}
+				if (r instanceof Link){
+					linkDao.remove((Link)r);
+				}
 			}
 		}		
 	}
@@ -336,9 +345,20 @@ public class DistributionServiceImpl
 				}
 				if (r instanceof Folder) {
 					folderDao.remove((Folder) r);				
-				}//TODO add links
+				}
+				if (r instanceof Link) {
+					linkDao.remove((Link) r);				
+				}
 			}
 		}
+	}
+
+	public LinkDao getLinkDao() {
+		return linkDao;
+	}
+
+	public void setLinkDao(LinkDao linkDao) {
+		this.linkDao = linkDao;
 	}	
 
 
