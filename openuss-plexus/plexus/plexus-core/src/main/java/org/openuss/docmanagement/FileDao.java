@@ -66,6 +66,8 @@ public class FileDao extends ResourceDao {
 				.getProperty(DocConstants.JCR_CREATED).getDate().getTime()
 				.getTime()));
 		logout(session);
+		} catch (NotAFileException e) {
+			throw e;
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {
@@ -266,6 +268,11 @@ public class FileDao extends ResourceDao {
 			if (areaType == DocConstants.WORKINGPLACE) {
 			}
 			logout(session);
+		
+		} catch (NotAFileException e) {
+			throw new DocManagementException("LoginException occured");
+		} catch (ResourceAlreadyExistsException e) {
+			throw new DocManagementException("LoginException occured");
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {

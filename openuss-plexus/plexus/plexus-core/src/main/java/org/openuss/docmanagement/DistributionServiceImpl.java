@@ -15,24 +15,6 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import javax.jcr.AccessDeniedException;
-import javax.jcr.InvalidItemStateException;
-import javax.jcr.ItemExistsException;
-import javax.jcr.ItemNotFoundException;
-import javax.jcr.LoginException;
-import javax.jcr.PathNotFoundException;
-import javax.jcr.Property;
-import javax.jcr.PropertyIterator;
-import javax.jcr.Repository;
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
-import javax.jcr.SimpleCredentials;
-import javax.jcr.Node;
-import javax.jcr.lock.LockException;
-import javax.jcr.nodetype.ConstraintViolationException;
-import javax.jcr.nodetype.NoSuchNodeTypeException;
-import javax.jcr.version.VersionException;
-
 import org.apache.log4j.Logger;
 
 
@@ -63,8 +45,12 @@ public class DistributionServiceImpl
     {  
     		Folder folder = folderDao.getFolder(DocConstants.DISTRIBUTION);    		
     		//add faculty main folder to distribution part of repository
-    		FolderImpl enrollmentMain = new FolderImpl(enrollment.getShortcut(), enrollment.getId().toString(), folder.getPath(), null, DocRights.READ_ALL|DocRights.EDIT_ALL);
-    		folderDao.setFolder(enrollmentMain);	
+    		Folder enrollmentMain = new FolderImpl(enrollment.getShortcut(), enrollment.getId().toString(), folder.getPath(), null, DocRights.READ_ALL|DocRights.EDIT_ALL);
+    		folderDao.setFolder(enrollmentMain);
+    		//set trashfolder
+    		String mainPath = DocConstants.DISTRIBUTION+"/"+enrollment.getId().toString();
+    		Folder trash = new FolderImpl(DocConstants.TRASH_NAME, DocConstants.TRASH_NAME, mainPath, null, DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
+    		folderDao.setFolder(trash);		
     }
 
     /**
@@ -211,10 +197,16 @@ public class DistributionServiceImpl
     protected org.openuss.docmanagement.Folder handleGetMainFolder(org.openuss.lecture.Enrollment enrollment)
         throws java.lang.Exception
     {
-    	//TODO change to enrollment folder
     	Folder fi = new FolderImpl(); 
-    	if (enrollment==null) fi = folderDao.getFolder("test");
-    	else if (enrollment!=null) fi = folderDao.getFolder(DocConstants.DISTRIBUTION+"/"+enrollment.getId().toString());
+    	if (enrollment==null) throw new DocManagementException("no enrollment selected");
+    	else if (enrollment!=null){
+    		try {
+				fi = folderDao.getFolder(DocConstants.DISTRIBUTION+"/"+enrollment.getId().toString());
+			} catch (PathNotFoundException e) {
+				handleAddMainFolder(enrollment);
+				return getMainFolder(enrollment);				
+			}
+    	}
     	return fi;
     }
 
@@ -229,9 +221,13 @@ public class DistributionServiceImpl
         return folder;
     }
     
-
+    //TODO remove me
 	public void buildTestStructure() throws Exception{
 		folderDao.addTestStructure();		
+	}
+	
+	public void buildMainRepositoryStructure(){
+		folderDao.buildMainRepositoryStructure();
 	}
 
 	public void clearRepository() throws Exception{

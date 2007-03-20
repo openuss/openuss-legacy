@@ -4,22 +4,14 @@ import java.io.ByteArrayInputStream;
 import java.sql.Timestamp;
 import java.util.Vector;
 
-import javax.jcr.AccessDeniedException;
-import javax.jcr.InvalidItemStateException;
-import javax.jcr.ItemExistsException;
 import javax.jcr.LoginException;
 import javax.jcr.NodeIterator;
-import javax.jcr.PathNotFoundException;
+import org.openuss.docmanagement.PathNotFoundException;
+
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Node;
-import javax.jcr.UnsupportedRepositoryOperationException;
-import javax.jcr.ValueFormatException;
-import javax.jcr.lock.LockException;
-import javax.jcr.nodetype.ConstraintViolationException;
-import javax.jcr.nodetype.NoSuchNodeTypeException;
-import javax.jcr.version.VersionException;
 
 import org.apache.log4j.Logger;
 
@@ -49,16 +41,24 @@ public class FolderDao extends ResourceDao {
 	 * @throws LoginException
 	 * @throws RepositoryException
 	 * @throws NotAFileException 
+	 * @throws  
 	 */
-	public Folder getFolder(String path) throws NotAFolderException, NotAFileException, DocManagementException{
+	public Folder getFolder(String path) throws PathNotFoundException, NotAFolderException, NotAFileException, DocManagementException{
 		FolderImpl fi;
 		try {
 			Session session = login(repository);
 			Node node = session.getRootNode();
-			if (!(path.length() == 0))
-				node = node.getNode(path);
+			if (path==null) throw new NotAFolderException("resource at path: '' is not a folder");
+			if (path.length() == 0)
+				if (path.startsWith("/"))path = path.substring(1);
+					try{
+						node = node.getNode(path);
+					}
+					catch (javax.jcr.PathNotFoundException e1){
+						throw new org.openuss.docmanagement.PathNotFoundException("folder does not exist");
+					}
 			if (!node.isNodeType(DocConstants.NT_FOLDER))
-				throw new NotAFolderException("not a folder");
+				throw new NotAFolderException("resource at path  '"+ path + "' is not a folder");
 			fi = new FolderImpl(
 					node.getUUID(),
 					node.getProperty(DocConstants.PROPERTY_MESSAGE).getString(),
@@ -94,6 +94,10 @@ public class FolderDao extends ResourceDao {
 				fi.setSubnodes(v);
 			// TODO differ between Folder, Files and Links
 			logout(session);
+		} catch (PathNotFoundException e){
+			throw e;
+		} catch (NotAFolderException e){
+			throw e;		
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {
@@ -109,43 +113,62 @@ public class FolderDao extends ResourceDao {
 	 * @throws RepositoryException
 	 * @throws ResourceAlreadyExistsException
 	 */
-	public void setFolder(Folder folder) throws LoginException, RepositoryException, ResourceAlreadyExistsException {
-		Session session = login(repository);
-		Node node = session.getRootNode();
-		String path = folder.getPath();
-		if (path.startsWith("/")) path = path.substring(1);
-		if (path!="") node = node.getNode(path);
-		try{
-			node = node.getNode(folder.getName());
-			throw new ResourceAlreadyExistsException ("Folder already exists");
-		}
-		catch (PathNotFoundException e){
-			//should occur
-			node.addNode(folder.getName(), DocConstants.NT_FOLDER);
-			node = node.getNode(folder.getName());
-			node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
-			node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());				
-			logout(session);
-		}							
+	public void setFolder(Folder folder) throws ResourceAlreadyExistsException ,DocManagementException{
+		try {
+			Session session = login(repository);
+			Node node = session.getRootNode();
+			String path = folder.getPath();
+			if (path.startsWith("/")) path = path.substring(1);
+			if (path!="") node = node.getNode(path);
+			try{
+				node = node.getNode(folder.getName());
+				throw new ResourceAlreadyExistsException ("Folder already exists");
+			}
+			catch (javax.jcr.PathNotFoundException e){
+				//should occur
+				node.addNode(folder.getName(), DocConstants.NT_FOLDER);
+				node = node.getNode(folder.getName());
+				node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
+				node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());				
+				logout(session);
+			}
+		} catch (ResourceAlreadyExistsException e){
+			throw e;
+		} catch (LoginException e) {
+			throw new DocManagementException("LoginException occured");
+		} catch (RepositoryException e) {
+			throw new  DocManagementException("RepositoryException occured");
+		}						
 
 	}
 	
 	/**
 	 * Method changes the folder at give path in folder object to attributes of folder object
 	 * @param folder
+	 * @throws PathNotFoundException, DocManagementException 
 	 * @throws LoginException
 	 * @throws RepositoryException
 	 */
-	public void changeFolder(Folder folder) throws LoginException, RepositoryException{
-		Session session = login(repository);
-		Node node = session.getRootNode();
-		if (folder.getPath()!="") node = node.getNode(folder.getPath().substring(1));
-		node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
-		node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());
-		session.save();
-		//if nodename has changed, move node
-		if (!node.getPath().equals(node.getParent().getPath() + "/" + folder.getName())) session.move(node.getPath(), node.getParent().getPath() + "/" + folder.getName());
-		logout(session);
+	public void changeFolder(Folder folder) throws PathNotFoundException, DocManagementException  {
+		//TODO add path not found exception
+		try {
+			Session session = login(repository);
+			Node node = session.getRootNode();
+			if (folder.getPath()!="") node = node.getNode(folder.getPath().substring(1));
+			node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
+			node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());
+			session.save();
+			//if nodename has changed, move node
+			if (!node.getPath().equals(node.getParent().getPath() + "/" + folder.getName())) session.move(node.getPath(), node.getParent().getPath() + "/" + folder.getName());
+			logout(session);
+		
+		} catch (javax.jcr.PathNotFoundException e) {
+			throw new PathNotFoundException("Path not found");		
+		} catch (LoginException e) {
+			throw new DocManagementException("LoginException occured");
+		} catch (RepositoryException e) {
+			throw new  DocManagementException("RepositoryException occured");
+		}
 	}
 	
 	//TODO remove me
@@ -165,7 +188,7 @@ public class FolderDao extends ResourceDao {
 			logger.error(e);
 		}
 	}
-	
+	//TODO remove me
 	public void clearRepository(){
 		try{
 			Session session = login(repository);
@@ -181,6 +204,21 @@ public class FolderDao extends ResourceDao {
 			logger.error("Exception: ", e);
 		}
 		
+	}
+	
+	public void buildMainRepositoryStructure(){
+		try{
+			Session session = login(repository);
+			Node root = session.getRootNode();
+			Folder dist = new FolderImpl("Main distribution folder", DocConstants.DISTRIBUTION, "", null, DocRights.READ_OWNER|DocRights.EDIT_OWNER);
+			Folder exam = new FolderImpl("Main exam area folder", DocConstants.EXAMAREA, "", null, DocRights.READ_OWNER|DocRights.EDIT_OWNER);
+			Folder wp = new FolderImpl("Main workingplace folder", DocConstants.WORKINGPLACE, "", null, DocRights.READ_OWNER|DocRights.EDIT_OWNER);
+			setFolder(dist);
+			setFolder(exam);
+			setFolder(wp);
+		} catch(Exception e){
+			logger.error("Exception: ", e);
+		}
 	}
 
 	public Repository getRepository() {

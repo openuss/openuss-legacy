@@ -45,4 +45,7 @@ public class DocConstants{
 	//delete linked files?
 	public static final String DELETE_LINKS = "delete";
 	public static final String REPLACE_LINKS = "copy";
+	
+	//folder name of trash
+	public static final String TRASH_NAME = "trash";
 }

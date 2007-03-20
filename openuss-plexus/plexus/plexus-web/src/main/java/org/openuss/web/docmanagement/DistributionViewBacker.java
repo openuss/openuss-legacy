@@ -6,12 +6,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
@@ -25,7 +21,6 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.docmanagement.BigFile;
 import org.openuss.docmanagement.BigFileImpl;
 import org.openuss.docmanagement.DistributionService;
-import org.openuss.docmanagement.DistributionServiceImpl;
 import org.openuss.docmanagement.DocManagementException;
 import org.openuss.docmanagement.File;
 import org.openuss.docmanagement.FileImpl;
@@ -37,6 +32,7 @@ import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.Resource;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
 import org.openuss.docmanagement.DocConstants;
+import org.openuss.lecture.Enrollment;
 
 @Bean(name="distributionViewBacker", scope=Scope.SESSION)
 @View
@@ -50,6 +46,9 @@ public class DistributionViewBacker extends ExceptionHandler{
 	
 	@Property(value="#{folderController}")
 	public FolderController folderController;
+
+	@Property(value="#{enrollment}")
+	public Enrollment enrollment;
 
 	private static final Logger logger = Logger.getLogger(DistributionViewBacker.class);
 
@@ -95,7 +94,7 @@ public class DistributionViewBacker extends ExceptionHandler{
 		Folder folder = new FolderImpl();
 		//TODO change to getMainFolder(currentEnrollment.getId());
 		try {
-			folder = distributionService.getMainFolder(null);
+			folder = distributionService.getMainFolder(enrollment);
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
@@ -140,31 +139,6 @@ public class DistributionViewBacker extends ExceptionHandler{
 		}
 		return tn;		
 	}
-	
-
-	/**
-	 * only for testing purposes 
-	 * @return
-	 */	
-	public String addTestStructure(){
-		try{
-			((DistributionServiceImpl)distributionService).buildTestStructure();
-		} catch (Exception e){
-			logger.error(e);
-		}
-		return DocConstants.DOCUMENTEXPLORER;
-	}
-
-	
-	public String clearRepository(){
-		try{
-			((DistributionServiceImpl)distributionService).clearRepository();
-		} catch (Exception e){
-			logger.error(e);
-		}
-		return DocConstants.DOCUMENTEXPLORER;
-	}
-	
 	
 	/**
 	 * Action method called if change folder button is clicked
@@ -588,6 +562,14 @@ public class DistributionViewBacker extends ExceptionHandler{
 
 	public void setDeleteLinks(String deleteLinks) {
 		this.deleteLinks = deleteLinks;
+	}
+
+	public Enrollment getEnrollment() {
+		return enrollment;
+	}
+
+	public void setEnrollment(Enrollment enrollment) {
+		this.enrollment = enrollment;
 	}
 		
 
