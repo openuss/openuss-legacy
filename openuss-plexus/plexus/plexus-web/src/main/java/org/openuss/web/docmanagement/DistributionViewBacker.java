@@ -92,7 +92,6 @@ public class DistributionViewBacker extends ExceptionHandler{
 	public TreeModel getTree(){
 		//TODO cache treeModel to prevent loading model 5 times a pageload
 		Folder folder = new FolderImpl();
-		//TODO change to getMainFolder(currentEnrollment.getId());
 		try {
 			folder = distributionService.getMainFolder(enrollment);
 		} catch (NotAFolderException e) {
@@ -505,6 +504,23 @@ public class DistributionViewBacker extends ExceptionHandler{
 		
 		return DocConstants.DOCUMENTEXPLORER;
 	}
+	
+	public String clearTrash(){		
+		try {
+			distributionService.clearEnrollmentTrash(enrollment);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
+		} catch (PathNotFoundException e) {
+			handlePathNotFoundException(e);
+		} catch (ResourceAlreadyExistsException e) {
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}	
+		return DocConstants.DOCUMENTEXPLORER;
+	}
 
 	public FileController getFileController() {
 		return fileController;
@@ -571,7 +587,11 @@ public class DistributionViewBacker extends ExceptionHandler{
 	public void setEnrollment(Enrollment enrollment) {
 		this.enrollment = enrollment;
 	}
-		
+	
+	public boolean isFolderTrash(){
+		if (this.folderPath==null) return false;
+		return this.folderPath.endsWith(DocConstants.TRASH_NAME);
+	}
 
 }
 

@@ -40,15 +40,18 @@
 						</td>
 					</tr>
 				</table>
-				<o:block>
+				<o:block rendered="#{not distributionViewBacker.folderTrash}">
 					<h:commandButton action="#{distributionViewBacker.newFolder}" value="#{msg.doc_dist_button_newfolder}" rendered="#{not empty distributionViewBacker.folderPath}" />
 					<h:commandButton action="#{distributionViewBacker.changeFolder}" value="#{msg.doc_dist_button_changefolder}" rendered="#{not empty distributionViewBacker.folderPath}"/>
 					<h:commandButton action="#{distributionViewBacker.deleteFolder}" value="#{msg.doc_dist_button_deletefolder}" rendered="#{not empty distributionViewBacker.folderPath}"/>					
 				</o:block>
-				<o:block>
+				<o:block rendered="#{not distributionViewBacker.folderTrash}">
 					<h:commandButton action="#{distributionViewBacker.newFile}" value="#{msg.doc_dist_button_newfile}" rendered="#{not empty distributionViewBacker.folderPath}"/>
 					<h:commandButton action="#{distributionViewBacker.downloadSelected}" value="#{msg.doc_dist_button_downloadselected}" rendered="#{not empty distributionViewBacker.folderPath}"/>
 					<h:commandButton action="docmanagement_delete" value="#{msg.doc_dist_button_delete}" rendered="#{not empty distributionViewBacker.folderPath}"/>					
+				</o:block>
+				<o:block rendered="#{distributionViewBacker.folderTrash}">
+					<h:commandButton action="#{distributionViewBacker.clearTrash}" value="#{msg.doc_dist_button_cleartrash}"></h:commandButton>
 				</o:block>
 			</h:form>
 		</ui:define>

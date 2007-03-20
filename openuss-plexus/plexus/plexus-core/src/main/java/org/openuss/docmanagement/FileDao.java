@@ -5,17 +5,14 @@ import javax.jcr.Node;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
-import javax.jcr.AccessDeniedException;
-import javax.jcr.InvalidItemStateException;
+
 import javax.jcr.ItemExistsException;
-import javax.jcr.ItemNotFoundException;
 import javax.jcr.LoginException;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.PropertyIterator;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import javax.jcr.ValueFormatException;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
@@ -166,7 +163,7 @@ public class FileDao extends ResourceDao {
 			// only reached if Node with same name exists
 			// TODO change to self-written exception
 			throw new ResourceAlreadyExistsException("File already exists");
-		} catch (PathNotFoundException e) {
+		} catch (javax.jcr.PathNotFoundException e) {
 			// should occur!
 			try {
 				// nt:File Knoten
@@ -297,8 +294,7 @@ public class FileDao extends ResourceDao {
 					n = pi.nextProperty().getNode();
 					n.remove();
 				}
-				node.remove();
-			
+				move2trash(node,0);			
 			} else if (!delLinks) {
 				PropertyIterator pi = node.getReferences();
 				Node n;
@@ -311,12 +307,42 @@ public class FileDao extends ResourceDao {
 					n.remove();
 					setDistributionFile(parent, getFile(f));
 				}
+				move2trash(node,0);
 			}
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {
 			throw new  DocManagementException("RepositoryException occured");
 		}
+	}
+	
+	private void move2trash(Node node, int i) throws ItemExistsException, PathNotFoundException, VersionException, ConstraintViolationException, LockException, RepositoryException{
+		//first try
+		if (i==0) {
+			try{
+				node.getSession().move(node.getPath(), getPathToTrash(node.getPath())+"/"+node.getName());		
+			} catch (ItemExistsException e){
+				move2trash(node, i+1);
+			}			
+		}
+		//higher tries -> add number to filename to prevent 2 items having the same name in a folder
+		else if (i>0){
+			try{
+				node.getSession().move(node.getPath(), getPathToTrash(node.getPath())+"/"+node.getName()+(new Integer(i)).toString());
+			} catch (ItemExistsException e){
+				move2trash(node, i+1);
+			}			
+		}
+	}
+
+	private String getPathToTrash(String path) {
+		if (path.startsWith("/")) path = path.substring(1);
+		String area = path.substring(0,path.indexOf("/"));
+		String id = path.substring(path.indexOf("/")+1);
+		id = id.substring(0,id.indexOf("/"));
+		String trash = "/"+area+"/"+id+"/"+DocConstants.TRASH_NAME;
+		logger.debug("path to trash is = ");
+		return trash;
 	}
 
 	/**
@@ -343,6 +369,27 @@ public class FileDao extends ResourceDao {
 		} catch (RepositoryException e) {
 			throw new  DocManagementException("RepositoryException occured");
 		}
+	}
+	
+	/**
+	 * deletes a file permanently - only for use to empty trash folder
+	 * @param file
+	 * @throws PathNotFoundException
+	 * @throws DocManagementException
+	 */
+	public void remove(File file) throws PathNotFoundException, DocManagementException{
+		try {
+			Session session = login(repository);
+			String path = file.getPath();
+			if (path.startsWith("/")) path = path.substring(1);
+			Node node = session.getRootNode().getNode(path);
+			node.remove();
+			logout(session);
+		} catch (javax.jcr.PathNotFoundException e) {
+			throw new PathNotFoundException("Path Not found");
+		} catch (RepositoryException e) {
+			throw new  DocManagementException("RepositoryException occured");
+		}		
 	}
 
 	public Repository getRepository() {

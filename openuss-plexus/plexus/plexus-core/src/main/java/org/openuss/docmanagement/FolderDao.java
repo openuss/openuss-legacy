@@ -2,16 +2,26 @@ package org.openuss.docmanagement;
 
 import java.io.ByteArrayInputStream;
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.jcr.LoginException;
 import javax.jcr.NodeIterator;
 import org.openuss.docmanagement.PathNotFoundException;
 
+import javax.jcr.AccessDeniedException;
+import javax.jcr.InvalidItemStateException;
+import javax.jcr.ItemExistsException;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Node;
+import javax.jcr.lock.LockException;
+import javax.jcr.nodetype.ConstraintViolationException;
+import javax.jcr.nodetype.NoSuchNodeTypeException;
+import javax.jcr.version.VersionException;
 
 import org.apache.log4j.Logger;
 
@@ -188,6 +198,7 @@ public class FolderDao extends ResourceDao {
 			logger.error(e);
 		}
 	}
+	
 	//TODO remove me
 	public void clearRepository(){
 		try{
@@ -206,6 +217,7 @@ public class FolderDao extends ResourceDao {
 		
 	}
 	
+	//TODO leave here?
 	public void buildMainRepositoryStructure(){
 		try{
 			Session session = login(repository);
@@ -221,6 +233,27 @@ public class FolderDao extends ResourceDao {
 		}
 	}
 
+
+	/**
+	 * deletes a folder permanently - only for use to empty trash folder
+	 * @param folder
+	 * @throws PathNotFoundException
+	 * @throws DocManagementException
+	 */
+	public void remove(Folder folder) throws PathNotFoundException, DocManagementException{
+		try {
+			Session session = login(repository);
+			String path = folder.getPath();
+			if (path.startsWith("/")) path = path.substring(1);
+			Node node = session.getRootNode().getNode(path);
+			node.remove();
+		} catch (javax.jcr.PathNotFoundException e) {
+			throw new PathNotFoundException("Path Not found");
+		} catch (RepositoryException e) {
+			throw new  DocManagementException("RepositoryException occured");
+		}		
+	}
+	
 	public Repository getRepository() {
 		return repository;
 	}

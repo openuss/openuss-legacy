@@ -78,7 +78,7 @@ public class FolderController extends ExceptionHandler{
 	}
 
 	public boolean isVisibleForAll() {
-		return visibleForAll;
+		return (folder.getVisibility()&DocRights.READ_ALL)>0;
 	}
 
 	public void setVisibleForAll(boolean visibleForAll) {

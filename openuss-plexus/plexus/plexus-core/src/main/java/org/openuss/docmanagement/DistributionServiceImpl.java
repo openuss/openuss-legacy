@@ -16,6 +16,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
+import org.openuss.lecture.Enrollment;
+import org.openuss.lecture.Faculty;
 
 
 /**
@@ -307,6 +309,35 @@ public class DistributionServiceImpl
 		}			
 	}
 
+	@Override
+	protected void handleClearEnrollmentTrash(Enrollment enrollment) throws Exception {
+		Folder f = getFolder(DocConstants.DISTRIBUTION+"/"+enrollment.getId().toString()+"/"+DocConstants.TRASH_NAME);
+		Iterator i = f.getSubnodes().iterator();
+		while (i.hasNext()){
+			Resource r = (Resource) i.next();
+			if (r instanceof File) {
+				fileDao.remove((File) r);				
+			}
+			if (r instanceof Folder) {
+				folderDao.remove((Folder) r);				
+			}//TODO add links
+		}
+	}
+
+	@Override
+	protected void handleClearFacultyTrash(Faculty faculty) throws Exception {
+		Folder f = getFolder(DocConstants.DISTRIBUTION+"/"+faculty.getId().toString()+"/"+DocConstants.TRASH_NAME);
+		Iterator i = f.getSubnodes().iterator();
+		while (i.hasNext()){
+			Resource r = (Resource) i.next();
+			if (r instanceof File) {
+				fileDao.remove((File) r);				
+			}
+			if (r instanceof Folder) {
+				folderDao.remove((Folder) r);				
+			}//TODO add links
+		}		
+	}	
 
 
 }
