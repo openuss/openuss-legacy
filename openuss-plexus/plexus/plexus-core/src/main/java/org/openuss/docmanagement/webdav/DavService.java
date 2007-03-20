@@ -1,5 +1,6 @@
 package org.openuss.docmanagement.webdav;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -64,9 +65,18 @@ public class DavService {
 			throw new DavException(HttpStatus.SC_METHOD_FAILURE, "Context and locator must not be null.");
 		}
 
-		// create instance of DavResource and export content
+		// create instance of DavResource
 		DavResource resource = getResourceFactory().createResource(getSession(), locator, false);
-		resource.exportContent(new ExportContext(context));
+		try {
+			// create export context and export content
+			ExportContext exportContext = new ExportContext(context);
+			resource.exportContent(exportContext);
+		} catch (IOException ex) {
+			logger.error("IO exception occurred.");
+			logger.error("Exception: " + ex.getMessage());
+			// rethrow IOException as DavException
+			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+		}
 	}
 	
 	/**

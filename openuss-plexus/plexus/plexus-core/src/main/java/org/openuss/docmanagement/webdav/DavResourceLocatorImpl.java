@@ -6,8 +6,8 @@ import org.apache.jackrabbit.webdav.DavLocatorFactory;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
 
 /**
- * @author David Ullrich
- * @version 0.7
+ * @author David Ullrich <lechuck@uni-muenster.de>
+ * @version 0.9
  */
 public class DavResourceLocatorImpl implements DavResourceLocator {
 	private final String prefix;
@@ -15,7 +15,13 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	private final String href;
 	private final DavLocatorFactory locatorFactory;
 	
-	public DavResourceLocatorImpl(String prefix, String resourcePath, DavLocatorFactory locatorFactory) {
+	/**
+	 * Constructor.
+	 * @param prefix The prefix which can be used to build absolute pathes.
+	 * @param resourcePath The relative path of the resource.
+	 * @param locatorFactory Reference to the locator factory implementation.
+	 */
+	DavResourceLocatorImpl(String prefix, String resourcePath, DavLocatorFactory locatorFactory) {
 		this.prefix = prefix;
 		// remove trailing slash except for root location
 		if (resourcePath.endsWith("/") && (resourcePath.length() > 1)) {
@@ -72,16 +78,16 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getWorkspaceName()
 	 */
 	public String getWorkspaceName() {
-		// TODO workspaces not supported yet
-		throw new NotImplementedException("DavResourceLocatorImpl.getWorkspaceName() not supported yet.");
+		// TODO workspaces are not supported
+		throw new NotImplementedException("DavResourceLocatorImpl.getWorkspaceName() not supported.");
 	}
 
 	/* (non-Javadoc)
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getWorkspacePath()
 	 */
 	public String getWorkspacePath() {
-		// TODO workspaces not supported yet
-		throw new NotImplementedException("DavResourceLocatorImpl.getWorkspacePath() not supported yet.");
+		// TODO workspaces not supported
+		throw new NotImplementedException("DavResourceLocatorImpl.getWorkspacePath() not supported.");
 	}
 
 	/* (non-Javadoc)

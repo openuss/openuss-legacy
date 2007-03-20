@@ -6,11 +6,10 @@ import javax.jcr.RepositoryException;
 import org.apache.log4j.Logger;
 
 /**
- * Very simple implementation of ItemFilter {@link ItemFilter}.
- * Only Items in namespace jcr and rep are filtered.
- * 
- * @author David Ullrich
- * @version 0.8
+ * Very simple implementation of {@link ItemFilter}.
+ * Only Items in namespaces jcr and rep are filtered.
+ * @author David Ullrich <lechuck@uni-muenster.de>
+ * @version 0.9
  */
 public class DefaultItemFilterImpl implements ItemFilter {
 	private final Logger logger = Logger.getLogger(DefaultItemFilterImpl.class);

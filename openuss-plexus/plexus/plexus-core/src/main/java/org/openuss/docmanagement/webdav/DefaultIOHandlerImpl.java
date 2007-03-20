@@ -243,11 +243,11 @@ public class DefaultIOHandlerImpl implements IOHandler {
 			// set creation time property of export context
 			// the property jcr:created can be found on the export root; navigate up for files
 			// test, if not a collection, node has a parent and the property is set in the repository 
-			if (!isCollection && (node.getDepth() > 0) && node.getParent().hasProperty(DocConstants.JCR_CREATED)) {
-				// export value to context
-				context.setCreationTime(node.getParent().getProperty(DocConstants.JCR_CREATED).getValue().getLong());
-			}
-
+//			if (!isCollection && (node.getDepth() > 0) && node.getParent().hasProperty(DocConstants.JCR_CREATED)) {
+//				// export value to context
+//				context.setCreationTime(node.getParent().getProperty(DocConstants.JCR_CREATED).getValue().getLong());
+//			}
+//
 			// set content length property of export context
 			long length = -1;
 			// test, if node contains data

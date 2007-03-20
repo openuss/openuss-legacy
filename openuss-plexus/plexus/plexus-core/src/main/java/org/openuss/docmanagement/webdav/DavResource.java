@@ -131,10 +131,6 @@ public abstract class DavResource {
 			// test, if not a collection, node has a parent and the property is set in the repository
 			
 			// TODO überarbeiten
-			if (!isCollection() && (node.getDepth() > 0) && node.getParent().hasProperty(JcrConstants.JCR_CREATED)) {
-				// export value to context
-				context.setCreationTime(node.getParent().getProperty(JcrConstants.JCR_CREATED).getValue().getLong());
-			}
 
 			// set content length property of export context
 			long length = -1;
