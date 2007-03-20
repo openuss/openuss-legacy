@@ -39,6 +39,8 @@ public class DocConstants{
 	public static final String DOCUMENTEXPLORER = "docmanagement_documentexplorer";
 	public static final String DELETE = "docmanagement_delete";
 	public static final String FACULTY_EXPLORER = "docmanagement_facultyexplorer";
+	public static final String EDITFACULTYFOLDER = "docmanagement_editfacultyfolder";
+	public static final String NEWFACULTYDOCUMENT = "docmanagement_newfacultydocument";
 	
 	//mimetype zip
 	public static final String MIMETYPE_ZIP = "application/zip";

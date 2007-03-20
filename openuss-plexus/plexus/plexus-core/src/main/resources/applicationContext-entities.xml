@@ -106,7 +106,7 @@
 	<bean id="mailRepeatTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
 		<property name="jobDetail" ref="mailSendingJobDetail"/>
 		<property name="startDelay" value="10000"/>
-		<property name="repeatInterval" value="30000"/>
+		<property name="repeatInterval" value="300000"/>
 	</bean>
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">

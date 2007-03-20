@@ -32,25 +32,25 @@ import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.Resource;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
 import org.openuss.docmanagement.DocConstants;
-import org.openuss.lecture.Enrollment;
+import org.openuss.lecture.Faculty;
 
-@Bean(name="distributionViewBacker", scope=Scope.SESSION)
+@Bean(name="facultyViewBacker", scope=Scope.SESSION)
 @View
-public class DistributionViewBacker extends ExceptionHandler{
+public class FacultyViewBacker extends ExceptionHandler{
 
 	@Property(value="#{distributionService}")
 	public DistributionService distributionService;
 
-	@Property(value="#{fileController}")
-	public FileController fileController;
+	@Property(value="#{facultyFileController}")
+	public FacultyFileController facultyFileController;
 	
-	@Property(value="#{folderController}")
-	public FolderController folderController;
+	@Property(value="#{facultyFolderController}")
+	public FacultyFolderController facultyFolderController;
 
-	@Property(value="#{enrollment}")
-	public Enrollment enrollment;
+	@Property(value="#{faculty}")
+	public Faculty faculty;
 
-	private static final Logger logger = Logger.getLogger(DistributionViewBacker.class);
+	private static final Logger logger = Logger.getLogger(FacultyViewBacker.class);
 
 	/**
 	 *	path of current selected folder in treeModel
@@ -93,7 +93,7 @@ public class DistributionViewBacker extends ExceptionHandler{
 		//TODO cache treeModel to prevent loading model 5 times a pageload
 		Folder folder = new FolderImpl();
 		try {
-			folder = distributionService.getMainFolder(enrollment);
+			folder = distributionService.getFacultyFolder(faculty);
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
@@ -147,7 +147,7 @@ public class DistributionViewBacker extends ExceptionHandler{
 		String path = getFolderPath();
 		if (path.startsWith("/")) path = path.substring(1);			
 		try {
-			folderController.setFolder(distributionService.getFolder(path));
+			facultyFolderController.setFolder(distributionService.getFolder(path));
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
@@ -160,7 +160,7 @@ public class DistributionViewBacker extends ExceptionHandler{
 			handleDocManagementException(e);
 		}		
 
-		return DocConstants.EDITFOLDER;
+		return DocConstants.EDITFACULTYFOLDER;
 	}
 	
 	/**
@@ -172,8 +172,8 @@ public class DistributionViewBacker extends ExceptionHandler{
 		String path = getFolderPath();
 		if (path.startsWith("/")) path = path.substring(1);	
 		folder.setPath(path);
-		folderController.setFolder(folder);
-		return DocConstants.EDITFOLDER;
+		facultyFolderController.setFolder(folder);
+		return DocConstants.EDITFACULTYFOLDER;
 	}
 	
 	/**
@@ -199,9 +199,9 @@ public class DistributionViewBacker extends ExceptionHandler{
 			handleDocManagementException(e);
 		}		
 
-		fileController.setFile(bigFile);
-		fileController.setOld(true);
-		return DocConstants.NEWDOCUMENTTOFOLDER;
+		facultyFileController.setFile(bigFile);
+		facultyFileController.setOld(true);
+		return DocConstants.NEWFACULTYDOCUMENT;
 	}
 	
 	/**
@@ -213,9 +213,9 @@ public class DistributionViewBacker extends ExceptionHandler{
 		String path = getFolderPath();
 		if (path.startsWith("/")) path = path.substring(1);
 		bf.setPath(path);
-		fileController.setFile(bf);
-		fileController.setOld(false);
-		return DocConstants.NEWDOCUMENTTOFOLDER;	
+		facultyFileController.setFile(bf);
+		facultyFileController.setOld(false);
+		return DocConstants.NEWFACULTYDOCUMENT;	
 	}
 	
 
@@ -322,7 +322,7 @@ public class DistributionViewBacker extends ExceptionHandler{
 			logger.error("IOException: ", e);
 		}
         FacesContext.getCurrentInstance().responseComplete();
-		return DocConstants.DOCUMENTEXPLORER;
+		return DocConstants.FACULTY_EXPLORER;
 	}
 	
 	/**
@@ -392,8 +392,7 @@ public class DistributionViewBacker extends ExceptionHandler{
 		InputStream in = getZipFile(zipName);	
 		if (in==null) handleDocManagementException(new DocManagementException("error zipping files"));
 		//trigger download of zipped file
-		triggerDownload(zipName, in);
-        
+		triggerDownload(zipName, in);        
 		//delete zipFile
         try {
 			in.close();
@@ -413,7 +412,7 @@ public class DistributionViewBacker extends ExceptionHandler{
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}
-        return DocConstants.DOCUMENTEXPLORER;
+        return DocConstants.FACULTY_EXPLORER;
 	}
 
 	/**
@@ -500,7 +499,7 @@ public class DistributionViewBacker extends ExceptionHandler{
 				}		
 		}	
 		
-		return DocConstants.DOCUMENTEXPLORER;
+		return DocConstants.FACULTY_EXPLORER;
 	}
 	
 	/**
@@ -509,7 +508,7 @@ public class DistributionViewBacker extends ExceptionHandler{
 	 */
 	public String clearTrash(){		
 		try {
-			distributionService.clearEnrollmentTrash(enrollment);
+			distributionService.clearFacultyTrash(faculty);
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
@@ -521,7 +520,7 @@ public class DistributionViewBacker extends ExceptionHandler{
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}	
-		return DocConstants.DOCUMENTEXPLORER;
+		return DocConstants.FACULTY_EXPLORER;
 	}
 	
 	public String deleteFolder(){
@@ -538,23 +537,23 @@ public class DistributionViewBacker extends ExceptionHandler{
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}	
-		return DocConstants.DOCUMENTEXPLORER;
+		return DocConstants.FACULTY_EXPLORER;
 	}
 
-	public FileController getFileController() {
-		return fileController;
+	public FacultyFileController getFacultyFileController() {
+		return facultyFileController;
 	}
 
-	public void setFileController(FileController fileController) {
-		this.fileController = fileController;
+	public void setFacultyFileController(FacultyFileController facultyFileController) {
+		this.facultyFileController = facultyFileController;
 	}
 
-	public FolderController getFolderController() {
-		return folderController;
+	public FacultyFolderController getFacultyFolderController() {
+		return facultyFolderController;
 	}
 
-	public void setFolderController(FolderController folderController) {
-		this.folderController = folderController;
+	public void setFacultyFolderController(FacultyFolderController facultyFolderController) {
+		this.facultyFolderController = facultyFolderController;
 	}
 
 	public String getFolderFacesPath() {
@@ -599,12 +598,12 @@ public class DistributionViewBacker extends ExceptionHandler{
 		this.deleteLinks = deleteLinks;
 	}
 
-	public Enrollment getEnrollment() {
-		return enrollment;
+	public Faculty getFaculty() {
+		return faculty;
 	}
 
-	public void setEnrollment(Enrollment enrollment) {
-		this.enrollment = enrollment;
+	public void setFaculty(Faculty faculty) {
+		this.faculty = faculty;
 	}
 	
 	public boolean isFolderTrash(){

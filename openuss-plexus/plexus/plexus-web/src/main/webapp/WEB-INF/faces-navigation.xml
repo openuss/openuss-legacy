@@ -562,6 +562,25 @@
 			<to-view-id>/views/secured/docmanagement/DeleteFolder.xhtml</to-view-id>
 		</navigation-case>
 
+		<navigation-case>
+			<from-outcome>docmanagement_deletefacultyfolder</from-outcome>
+			<to-view-id>/views/secured/docmanagement/DeleteFacultyFolder.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>docmanagement_deletefacultyfile</from-outcome>
+			<to-view-id>/views/secured/docmanagement/DeleteFacultyFile.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>docmanagement_editfacultyfolder</from-outcome>
+			<to-view-id>/views/secured/docmanagement/EditFacultyFolder.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>docmanagement_newfacultydocument</from-outcome>
+			<to-view-id>/views/secured/docmanagement/NewDocumentToInstitut.xhtml</to-view-id>
+		</navigation-case>
 
 	</navigation-rule>
 

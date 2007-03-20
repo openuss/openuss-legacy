@@ -37,6 +37,11 @@
 							<h:outputText value="#{msg['faculty_command_faculty']}" ></h:outputText>
 						</t:commandNavigation2>
 					</s:acl>
+					<s:acl domainObject="#{faculty}" hasPermission="#{ACL.UPDATE}">
+						<t:commandNavigation2 action="docmanagement_facultyexplorer" activeOnViewIds="/views/secured/docmanagement/FacultyExplorer.xhtml">
+							<h:outputText value="#{msg['faculty_command_docmanagement']}" ></h:outputText>
+						</t:commandNavigation2>
+					</s:acl>
 					<s:acl domainObject="#{faculty}" hasPermission="#{ACL.GRANT}">
 						<t:commandNavigation2 value="#{msg['faculty_command_authorisations']}" action="faculty_members">
 							<t:commandNavigation2 action="faculty_members" activeOnViewIds="/views/secured/lecture/auth/members.xhtml">

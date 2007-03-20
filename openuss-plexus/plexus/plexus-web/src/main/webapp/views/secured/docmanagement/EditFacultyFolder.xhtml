@@ -31,31 +31,26 @@
 		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
 	</ui:define>
 	<ui:define name="content">
-		<h:form id="newDocumentToFolderForm" enctype="multipart/form-data">
+		<h:form id="newFolderForm">
 		
-			<o:block label="#{msg.doc_addfile_header}">
-				<o:input entity="facultyFileController.file" property="name" required="true">
-				</o:input>
-				<o:input entity="facultyFileController.file" property="message" required="true">
-				</o:input>
-				<h:outputLabel value="#{msg.doc_addfile_file}" for="document"	styleClass="field_label" rendered="#{not facultyFileController.old}"/>
-				<t:inputFileUpload id="document" storage="file" immediate="true" styleClass="uploadField" rendered="#{not facultyFileController.old}">					
-					<f:valueChangeListener type="org.openuss.web.docmanagement.FacultyFileUploadListener" />
-				</t:inputFileUpload>
-				<h:message for="document" styleClass="field_error" showDetail="true" showSummary="false" />
-
-			<h:outputLabel value="#{msg.doc_addfile_distributiontime}" for="distributionTime"	styleClass="field_label"/>
-			<t:inputDate id="distributionTime" popupCalendar="true" value="#{facultyFileController.distributionTime}" type="full" ampm="false">
-			</t:inputDate>
-
-				<o:input entity="facultyFileController" property="visibleForAll" required="true" />				
+			<o:block label="#{msg.doc_addfolder_header}">
+				<h:outputLabel value="#{msg.foldercontroller_folder_name}" for="folderName" styleClass="field_label"></h:outputLabel><br />
+				<h:inputText id = "folderName" value="#{facultyFolderController.folder.name}" required="true" requiredMessage="#{msg.doc_required} #{msg.foldercontroller_folder_name}" styleClass="field"></h:inputText><br />
+				<h:message for="folderName"/>
+				<br />
+				<h:outputLabel value="#{msg.foldercontroller_folder_message}" for="folderMessage" styleClass="field_label"></h:outputLabel><br />
+				<h:inputText id = "folderMessage" value="#{facultyFolderController.folder.message}" required="true" requiredMessage="#{msg.doc_required} #{msg.foldercontroller_folder_message}" styleClass="field"></h:inputText>
+				<br />				
+				<h:outputLabel value="#{msg.foldercontroller_visibleforall}" for="visibleForAll" styleClass="field_label"></h:outputLabel>				
+				<h:selectBooleanCheckbox id="visibleForAll" value="#{facultyFolderController.visibleForAll}"></h:selectBooleanCheckbox>
 			</o:block>
+
 			<o:block>
-				<h:commandButton action="#{facultyFileController.save}"
-					value="#{msg['doc_addfile_button_save']}" styleClass="button"/>				
+				<h:commandButton action="#{facultyFolderController.save}" value="#{msg['doc_addfolder_button_save']}" styleClass="button"></h:commandButton>
 				<h:commandButton action="docmanagement_facultyexplorer"
-					value="#{msg['doc_addfile_button_cancel']}" styleClass="button" immediate="true"/>	
+					value="#{msg['doc_addfolder_button_cancel']}" styleClass="button" immediate="true"/>	
 			</o:block>
+
 		</h:form>
 	</ui:define>
 </ui:composition>

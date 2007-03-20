@@ -53,6 +53,7 @@ public class DistributionServiceImpl
     		String mainPath = DocConstants.DISTRIBUTION+"/"+enrollment.getId().toString();
     		Folder trash = new FolderImpl(DocConstants.TRASH_NAME, DocConstants.TRASH_NAME, mainPath, null, DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
     		folderDao.setFolder(trash);		
+    		logger.debug("main folder for enrollmoent added to repository");
     }
 
     /**
@@ -71,22 +72,15 @@ public class DistributionServiceImpl
         throws java.lang.Exception
     {
       try{ 
-    	//TODO rewrite me
-    	//if distribution folder does not exist create it
-    	Folder folder;
-		try{
-			folder = folderDao.getFolder(DocConstants.DISTRIBUTION);
-		} catch (Exception e){
-			//distribution folder does not exist    			
-			FolderImpl dist = new FolderImpl("Distribution main directory", DocConstants.DISTRIBUTION, "", null, DocRights.READ_ALL|DocRights.EDIT_ALL);
-			folderDao.setFolder(dist);
-		}
-		folder = folderDao.getFolder(DocConstants.DISTRIBUTION);
-		
+  		Folder folder = folderDao.getFolder(DocConstants.DISTRIBUTION);    		
 		//add faculty main folder to distribution part of repository
-		FolderImpl enrollmentMain = new FolderImpl(faculty.getShortcut(), faculty.getId().toString(), folder.getPath(), null, DocRights.READ_ALL|DocRights.EDIT_ALL);
+		Folder enrollmentMain = new FolderImpl(faculty.getShortcut(), faculty.getId().toString(), folder.getPath(), null, DocRights.READ_ALL|DocRights.EDIT_ALL);
 		folderDao.setFolder(enrollmentMain);
-		
+		//set trashfolder
+		String mainPath = DocConstants.DISTRIBUTION+"/"+faculty.getId().toString();
+		Folder trash = new FolderImpl(DocConstants.TRASH_NAME, DocConstants.TRASH_NAME, mainPath, null, DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
+		folderDao.setFolder(trash);		
+		logger.debug("main folder for faculty added to repository");
 	} catch (Exception e) {
 	}
         
@@ -178,15 +172,6 @@ public class DistributionServiceImpl
     }
 
 
-    /**
-     * @see org.openuss.docmanagement.DistributionService#getFiles(org.openuss.docmanagement.Folder)
-     */
-    protected List handleGetFiles(Folder folder)
-        throws java.lang.Exception
-    {
-    	return null;
-    }
-
 
     /**
      * @see org.openuss.docmanagement.DistributionService#getFile(org.openuss.docmanagement.File)
@@ -197,16 +182,6 @@ public class DistributionServiceImpl
 		return fileDao.getFile(file);
     }
 
-    /**
-     * @see org.openuss.docmanagement.DistributionService#getSharedFiles(org.openuss.lecture.Faculty)
-     */
-    protected List handleGetSharedFiles(org.openuss.lecture.Faculty faculty)
-        throws java.lang.Exception
-    {
-    	//TODO check if method is needed anymore
-    	// @todo implement protected org.openuss.docmanagement.File handleGetSharedFiles(org.openuss.lecture.Faculty faculty)
-        return null;
-    }
 
     /**
      * @see org.openuss.docmanagement.DistributionService#getMainFolder(org.openuss.lecture.Enrollment)
@@ -233,9 +208,17 @@ public class DistributionServiceImpl
     protected org.openuss.docmanagement.Folder handleGetFacultyFolder(org.openuss.lecture.Faculty faculty)
         throws java.lang.Exception
     {
-    	//TODO implement me
-    	FolderImpl folder = null;
-        return folder;
+    	Folder fi = new FolderImpl(); 
+    	if (faculty==null) throw new DocManagementException("no enrollment selected");
+    	else if (faculty!=null){
+    		try {
+				fi = folderDao.getFolder(DocConstants.DISTRIBUTION+"/"+faculty.getId().toString());
+			} catch (PathNotFoundException e) {
+				handleAddFacultyFolder(faculty);
+				return getFacultyFolder(faculty);				
+			}
+    	}
+    	return fi;
     }
     
     //TODO remove me
@@ -344,16 +327,18 @@ public class DistributionServiceImpl
 	@Override
 	protected void handleClearFacultyTrash(Faculty faculty) throws Exception {
 		Folder f = getFolder(DocConstants.DISTRIBUTION+"/"+faculty.getId().toString()+"/"+DocConstants.TRASH_NAME);
-		Iterator i = f.getSubnodes().iterator();
-		while (i.hasNext()){
-			Resource r = (Resource) i.next();
-			if (r instanceof File) {
-				fileDao.remove((File) r);				
+		if (f.getSubnodes()!=null) {
+			Iterator i = f.getSubnodes().iterator();
+			while (i.hasNext()){
+				Resource r = (Resource) i.next();
+				if (r instanceof File) {
+					fileDao.remove((File) r);				
+				}
+				if (r instanceof Folder) {
+					folderDao.remove((Folder) r);				
+				}//TODO add links
 			}
-			if (r instanceof Folder) {
-				folderDao.remove((Folder) r);				
-			}//TODO add links
-		}		
+		}
 	}	
 
 

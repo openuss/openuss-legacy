@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:plexus="ttp://www.openuss.org/plexus/jsf">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+  		<ui:define name="navigation"> 
+			<ui:include src="/views/commons/navigation/desktop.xhtml" />
+		</ui:define> 		
+  		<ui:define name="content">
+  			<h:form id="facultyView">
+				<table id="mainFacultyTable">
+					<tr style="width: 100%;">
+						<td id="treeViewArea" rowspan="2" style="width: 40%; vertical-align: top; overflow: scroll; max-width: 40%;">
+							<o:block>
+								<ui:include src="facultyTreeView.xhtml"/>
+							</o:block>
+						</td>
+						<td id="tableViewArea" style="vertical-align: top; width: 60%;">
+							<o:block>
+								<ui:include src="facultyTableView.xhtml"/>
+							</o:block>
+						</td>
+					</tr>
+				</table>
+				<o:block>
+					<h:commandButton action="#{facultyViewBacker.newFolder}" value="#{msg.doc_dist_button_newfolder}" rendered="#{not empty facultyViewBacker.folderPath}" />
+					<h:commandButton action="#{facultyViewBacker.changeFolder}" value="#{msg.doc_dist_button_changefolder}" rendered="#{not empty facultyViewBacker.folderPath}"/>
+					<h:commandButton action="docmanagement_deletefacultyfolder" value="#{msg.doc_dist_button_deletefolder}" rendered="#{not empty facultyViewBacker.folderPath}"/>					
+				</o:block>
+				<o:block>
+					<h:commandButton action="#{facultyViewBacker.newFile}" value="#{msg.doc_dist_button_newfile}" rendered="#{not empty facultyViewBacker.folderPath}"/>
+					<h:commandButton action="#{facultyViewBacker.downloadSelected}" value="#{msg.doc_dist_button_downloadselected}" rendered="#{not empty facultyViewBacker.folderPath}"/>
+					<h:commandButton action="docmanagement_deletefacultyfile" value="#{msg.doc_dist_button_delete}" rendered="#{not empty facultyViewBacker.folderPath}"/>					
+				</o:block>
+				<o:block>
+					<h:commandButton action="#{facultyViewBacker.clearTrash}" value="#{msg.doc_dist_button_cleartrash}"></h:commandButton>
+				</o:block>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>
