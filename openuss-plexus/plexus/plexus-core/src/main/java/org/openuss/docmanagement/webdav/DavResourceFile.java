@@ -68,7 +68,7 @@ public class DavResourceFile extends DavResource {
 				contentNode = representedNode.getNode(JcrConstants.JCR_CONTENT); 
 			} else {
 				Node rootNode = session.getRootNode();
-				representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.NT_FILE);
+				representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.DOC_FILE);
 				contentNode = representedNode.addNode(JcrConstants.JCR_CONTENT, JcrConstants.NT_RESOURCE);
 			}
 			

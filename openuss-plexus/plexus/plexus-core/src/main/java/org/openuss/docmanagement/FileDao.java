@@ -47,7 +47,7 @@ public class FileDao extends ResourceDao {
 		Node node = session.getRootNode();
 		if (!(path == ""))
 			node = node.getNode(path);
-		if (!node.isNodeType(DocConstants.NT_FILE))
+		if (!node.isNodeType(DocConstants.DOC_FILE))
 			throw new NotAFileException("Not a file");
 		file = new FileImpl(new Timestamp(node.getProperty(
 				DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTime()
@@ -167,7 +167,7 @@ public class FileDao extends ResourceDao {
 			// should occur!
 			try {
 				// nt:File Knoten
-				node.addNode(file.getName(), DocConstants.NT_FILE);
+				node.addNode(file.getName(), DocConstants.DOC_FILE);
 				node = node.getNode(file.getName());
 				node.setProperty(DocConstants.PROPERTY_MESSAGE, file.getMessage());
 				Calendar c = Calendar.getInstance();

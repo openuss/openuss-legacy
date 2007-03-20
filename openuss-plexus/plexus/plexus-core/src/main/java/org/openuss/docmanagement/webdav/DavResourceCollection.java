@@ -60,7 +60,7 @@ public class DavResourceCollection extends DavResource {
 		
 		try {
 			Node rootNode = session.getRootNode();
-			representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.NT_FOLDER);
+			representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.DOC_FOLDER);
 			
 			importProperties(null, representedNode);
 		} catch (RepositoryException ex) {

@@ -67,7 +67,7 @@ public class FolderDao extends ResourceDao {
 					catch (javax.jcr.PathNotFoundException e1){
 						throw new org.openuss.docmanagement.PathNotFoundException("folder does not exist");
 					}
-			if (!node.isNodeType(DocConstants.NT_FOLDER))
+			if (!node.isNodeType(DocConstants.DOC_FOLDER))
 				throw new NotAFolderException("resource at path  '"+ path + "' is not a folder");
 			fi = new FolderImpl(
 					node.getUUID(),
@@ -85,14 +85,14 @@ public class FolderDao extends ResourceDao {
 			while (ni.hasNext()) {
 				n = ni.nextNode();
 				if (!n.getName().startsWith("jcr:")) {
-					if (n.isNodeType(DocConstants.NT_FOLDER)) {
+					if (n.isNodeType(DocConstants.DOC_FOLDER)) {
 						if (path != "")
 							newPath = path + "/" + n.getName();
 						if (path == "")
 							newPath = n.getName(); // path in root
 						v.add(getFolder(newPath));
 					}
-					if (n.isNodeType(DocConstants.NT_FILE)) {
+					if (n.isNodeType(DocConstants.DOC_FILE)) {
 						filePath = n.getPath();						
 						if (filePath.startsWith("/")) filePath = filePath.substring(1);
 						v.add(fileDao.getFile(filePath));
@@ -136,7 +136,7 @@ public class FolderDao extends ResourceDao {
 			}
 			catch (javax.jcr.PathNotFoundException e){
 				//should occur
-				node.addNode(folder.getName(), DocConstants.NT_FOLDER);
+				node.addNode(folder.getName(), DocConstants.DOC_FOLDER);
 				node = node.getNode(folder.getName());
 				node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
 				node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());				

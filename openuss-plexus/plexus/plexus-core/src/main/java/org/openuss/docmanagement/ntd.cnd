@@ -9,3 +9,9 @@
 - doc:visibility (long) mandatory
 - doc:message (string) mandatory
 - doc:distributionTime (date) mandatory
+
+[doc:link] > nt:hierarchyNode
+- doc:reference (reference) mandatory
+- doc:visibility (long) mandatory
+- doc:message (string) mandatory
+- doc:distributionTime (date) mandatory

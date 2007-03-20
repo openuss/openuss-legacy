@@ -23,9 +23,10 @@ public class DocConstants{
 	//Link
 	public static final String PROPERTY_TARGET = "doc:target";
 	
-	public static final String NT_FILE = "doc:file";
-	public static final String NT_FOLDER = "doc:folder";
+	public static final String DOC_FILE = "doc:file";
+	public static final String DOC_FOLDER = "doc:folder";
 	public static final String NT_RESOURCE = "nt:resource";
+	public static final String DOC_LINK = "doc:link";
 	public static final String JCR_CONTENT = "jcr:content";
 	public static final String JCR_CREATED = "jcr:created";
 	public static final String JCR_ENCODING = "jcr:encoding";

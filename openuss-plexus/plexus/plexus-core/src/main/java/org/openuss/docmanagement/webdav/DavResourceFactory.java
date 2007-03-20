@@ -29,7 +29,7 @@ public class DavResourceFactory {
 				if (representedItem.isNode()) {
 					Node representedNode = (Node)representedItem;
 					// HACK
-					if (locator.isRootLocation() || (representedNode.isNodeType(DocConstants.NT_FOLDER))) {
+					if (locator.isRootLocation() || (representedNode.isNodeType(DocConstants.DOC_FOLDER))) {
 						resource = new DavResourceCollection(this, session, locator, representedNode);
 					} else {
 						resource = new DavResourceFile(this, session, locator, representedNode);
