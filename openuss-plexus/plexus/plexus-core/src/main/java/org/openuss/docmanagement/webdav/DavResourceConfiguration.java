@@ -8,32 +8,19 @@ import org.openuss.docmanagement.webdav.IOManager;
 import org.openuss.docmanagement.webdav.ItemFilter;
 
 /**
- * @author David Ullrich
+ * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.5
  */
 public class DavResourceConfiguration {
-	private IOManager ioManager;
 	private ItemFilter itemFilter;
 	
-	/**
-	 * @param configurationURL
-	 */
 	public void parse(URL configurationURL) {
 		// TODO angegebene Konfigurationsdatei parsen und IOManager und ItemFilter entsprechend setzen
 	}
 	
 	/**
-	 * @return
-	 */
-	public IOManager getIOManager() {
-		if (ioManager == null) {
-			ioManager = new DefaultIOManagerImpl();
-		}
-		return ioManager;
-	}
-	
-	/**
-	 * @return
+	 * Getter for the {@link ItemFilter}.
+	 * @return The ItemFilter.
 	 */
 	public ItemFilter getItemFilter() {
 		if (itemFilter == null) {
