@@ -1,22 +1,25 @@
 package org.openuss.docmanagement.webdav;
 
 /**
- * @author David Ullrich
- * @version 0.8
+ * @author David Ullrich <lechuck@uni-muenster.de>
+ * @version 0.9
  */
 public interface IOContext {
     /**
-     * @return
+     * Checks, if context owns a stream.
+     * @return True, if context owns a stream.
      */
     public boolean hasStream();
 
     /**
-     * @param success
+     * Ends transaction with transaction success.
+     * @param success Indicates a successful completion of data transfer.
      */
     public void informCompleted(boolean success);
 
     /**
-     * @return
+     * Checks, if context transaction is completed.
+     * @return True, if transaction is completed.
      */
     public boolean isCompleted();
 }

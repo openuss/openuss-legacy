@@ -10,15 +10,30 @@ import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.apache.log4j.Logger;
 import org.openuss.docmanagement.DocConstants;
 
+/**
+ * @author David Ullrich <lechuck@uni-muenster.de>
+ * @version 0.6
+ */
 public class DavResourceFactory {
 	private final Logger logger = Logger.getLogger(DavResourceFactory.class);
 	
 	private final DavResourceConfiguration configuration;
 	
+	/**
+	 * Constructor.
+	 * @param configuration The configuration object containing reference to the ItemFilter.
+	 */
 	public DavResourceFactory(DavResourceConfiguration configuration) {
 		this.configuration = configuration;
 	}
 	
+	/**
+	 * Creates an instance of {@link DavResource} identified by given locator.
+	 * @param session The repository session which will be used for repository operations.
+	 * @param locator The locator identifying the resource to create.
+	 * @param isCollection True, if a new collection should be created. Ignored, if resource already present.
+	 * @return The DavResource.
+	 */
 	public DavResource createResource(Session session, DavResourceLocator locator, boolean isCollection) {
 		DavResource resource = null;
 		

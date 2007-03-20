@@ -1,19 +1,14 @@
 package org.openuss.docmanagement.webdav;
 
-import java.io.IOException;
-
 import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
-import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import org.apache.jackrabbit.JcrConstants;
 import org.apache.jackrabbit.webdav.DavException;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
 
 /**
- * @author David Ullrich
- * @version 0.5
+ * @author David Ullrich <lechuck@uni-muenster.de>
+ * @version 0.6
  */
 public class DavResourceLink extends DavResource {
 	/**

@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -24,10 +22,9 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.openuss.docmanagement.DocConstants;
-import org.openuss.docmanagement.DocRights;
 
 /**
- * @author David Ullrich
+ * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.6
  */
 public abstract class DavResource {

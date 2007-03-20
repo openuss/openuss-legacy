@@ -10,14 +10,12 @@ import org.dom4j.Namespace;
 import org.dom4j.QName;
 
 /**
- * @author David Ullrich
+ * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.6
  */
 public class MultiStatusResponse {
-	// TODO propstats als Typ auslagern
-	
-	private String href;
-	private String description;
+	private final String href;
+	private final String description;
 	private int statusCode;
 	private boolean statusOnly;
 		

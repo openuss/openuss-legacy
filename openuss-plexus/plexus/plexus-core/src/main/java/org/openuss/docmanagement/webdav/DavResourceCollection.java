@@ -1,22 +1,19 @@
 package org.openuss.docmanagement.webdav;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import org.apache.jackrabbit.JcrConstants;
 import org.apache.jackrabbit.webdav.DavException;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.openuss.docmanagement.DocConstants;
 import org.openuss.docmanagement.DocRights;
 
 /**
- * @author David Ullrich
- * @version 0.5
+ * @author David Ullrich <lechuck@uni-muenster.de>
+ * @version 0.6
  */
 public class DavResourceCollection extends DavResource {
 	public DavResourceCollection(DavResourceFactory factory, Session session, DavResourceLocator locator, Node representedNode) {

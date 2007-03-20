@@ -33,7 +33,7 @@ public class ExportContext implements IOContext {
 	
 	/**
 	 * Constructor.
-	 * @param context
+	 * @param context The underlying output context.
 	 */
 	public ExportContext(OutputContext context) throws IOException {
 		this.context = context;
@@ -74,7 +74,7 @@ public class ExportContext implements IOContext {
 		
 		// transfer properties and data to underlying context, if successful
 		if (success && (context != null)) {
-			// content-length has to be accumulated
+			// content-length is an MUST have property for the context
 			boolean hasContentLength = false;
 			
 			// enumerate properties and copy them to context
@@ -179,22 +179,25 @@ public class ExportContext implements IOContext {
 	}
 	
 	/**
-	 * @param contentLanguage
+	 * Setter for the content language.
+	 * @param contentLanguage The content language to set.
 	 */
 	public void setContentLanguage(String contentLanguage) {
 		properties.put(DavConstants.HEADER_CONTENT_LANGUAGE, contentLanguage);
 	}
 	
 	/**
-	 * @param contentLength
+	 * Setter for the content length.
+	 * @param contentLength The content length to set.
 	 */
 	public void setContentLength(long contentLength) {
 		properties.put(DavConstants.HEADER_CONTENT_LENGTH, contentLength + "");
 	}
 	
 	/**
-	 * @param mimeType
-	 * @param encoding
+	 * Setter for the content type.
+	 * @param mimeType The mime type to set.
+	 * @param encoding The encoding to set.
 	 */
 	public void setContentType(String mimeType, String encoding) {
 		String contentType = mimeType;
@@ -206,14 +209,16 @@ public class ExportContext implements IOContext {
 	}
 	
 	/**
-	 * @param etag
+	 * Setter for the entity tag.
+	 * @param etag The entity tag to set.
 	 */
 	public void setETag(String etag) {
 		properties.put(DavConstants.HEADER_ETAG, etag);
 	}
 	
 	/**
-	 * @param modificationTime
+	 * Setter for the time of last modification.
+	 * @param modificationTime The time to set.
 	 */
 	public void setModificationTime(long modificationTime) {
 		// set modification time to now, if not defined or in the future
@@ -230,8 +235,9 @@ public class ExportContext implements IOContext {
 	}
 	
 	/**
-	 * @param propertyName
-	 * @param propertyValue
+	 * Setter for any other property name-value-combination.
+	 * @param propertyName The name of the property to set.
+	 * @param propertyValue The value of the property to set.
 	 */
 	public void setProperty(String propertyName, String propertyValue) {
 		properties.put(propertyName, propertyValue);

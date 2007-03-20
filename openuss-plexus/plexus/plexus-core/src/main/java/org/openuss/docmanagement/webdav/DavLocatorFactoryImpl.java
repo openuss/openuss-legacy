@@ -5,8 +5,6 @@ import org.apache.jackrabbit.webdav.DavLocatorFactory;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
 
 /**
- * Implementation of {@link DavLocatorFactory}.
- * Support for workspace names is missing.
  * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.9
  */

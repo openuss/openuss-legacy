@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Very simple implementation of {@link ItemFilter}.
- * Only Items in namespaces jcr and rep are filtered.
+ * Only {@link Item}s in namespaces jcr and rep are filtered.
  * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.9
  */

@@ -86,7 +86,7 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getWorkspacePath()
 	 */
 	public String getWorkspacePath() {
-		// TODO workspaces not supported
+		// TODO workspaces are not supported
 		throw new NotImplementedException("DavResourceLocatorImpl.getWorkspacePath() not supported.");
 	}
 

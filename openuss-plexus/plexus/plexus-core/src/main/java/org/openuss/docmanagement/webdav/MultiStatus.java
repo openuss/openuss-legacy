@@ -11,10 +11,9 @@ import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
 
-
 /**
- * @author David Ullrich
- * @version 0.5
+ * @author David Ullrich <lechuck@uni-muenster.de>
+ * @version 0.6
  */
 public class MultiStatus {
 	private final static Namespace defaultNamespace = DocumentHelper.createNamespace("D", "DAV:"); 
@@ -30,8 +29,8 @@ public class MultiStatus {
 		responses = new ArrayList<MultiStatusResponse>();
 	}
 	
-	public MultiStatusResponse[] getResponses() {
-		return (MultiStatusResponse[])responses.toArray();
+	public List<MultiStatusResponse> getResponses() {
+		return responses;
 	}
 	
 	public String getDescription() {
@@ -51,7 +50,7 @@ public class MultiStatus {
 		Element rootElement = document.addElement(rootName);
 
 		// iterate over responses and append to rootElement
-		Iterator<MultiStatusResponse> iterator = responses.iterator();
+		Iterator<MultiStatusResponse> iterator = getResponses().iterator();
 		MultiStatusResponse response;
 		while (iterator.hasNext()) {
 			response = iterator.next();

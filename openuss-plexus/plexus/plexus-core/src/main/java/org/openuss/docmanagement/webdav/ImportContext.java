@@ -2,13 +2,12 @@ package org.openuss.docmanagement.webdav;
 
 import java.io.InputStream;
 
-import org.apache.jackrabbit.webdav.DavConstants;
 import org.apache.jackrabbit.webdav.io.InputContext;
 import org.apache.log4j.Logger;
 
 /**
- * @author David Ullrich
- * @version 0.5
+ * @author David Ullrich <lechuck@uni-muenster.de>
+ * @version 0.6
  */
 public class ImportContext implements IOContext {
 	private final Logger logger = Logger.getLogger(ImportContext.class);

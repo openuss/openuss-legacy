@@ -6,10 +6,9 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 /**
- * @author David Ullrich
+ * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.7
  */
-
 public class HttpStatus {
 	public static final String HTTP_VERSION = "HTTP/1.1";
 	
@@ -69,22 +68,24 @@ public class HttpStatus {
 		try {
 			reasonPhrases.load(HttpStatus.class.getResourceAsStream("httpReasonPhrases.properties"));
 		} catch (IOException ex) {
-			logger.debug("IO exception occurred.");
-			logger.debug("Exception: " + ex.getMessage());
+			logger.error("IO exception occurred.");
+			logger.error("Exception: " + ex.getMessage());
 		}
 	}
 	
 	/**
-	 * @param statusCode
-	 * @return
+	 * Getter for a HTTP reason phrase for a given status code.
+	 * @param statusCode The status code.
+	 * @return The reason phrase.
 	 */
 	public static String getReasonPhrase(int statusCode) {
-		return reasonPhrases.getProperty("" + statusCode);
+		return reasonPhrases.getProperty(statusCode + "");
 	}
 
 	/**
-	 * @param statusCode
-	 * @return
+	 * Getter for a HTTP status line for a given status code.
+	 * @param statusCode The status code.
+	 * @return The status line.
 	 */
 	public static String getStatusLine(int statusCode) {
 		return HTTP_VERSION + " " + statusCode + " " + getReasonPhrase(statusCode);

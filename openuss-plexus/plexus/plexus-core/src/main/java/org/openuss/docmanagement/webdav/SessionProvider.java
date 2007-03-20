@@ -2,6 +2,7 @@ package org.openuss.docmanagement.webdav;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import javax.jcr.Credentials;
 import javax.jcr.LoginException;
@@ -9,9 +10,7 @@ import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.AuthenticationException;
@@ -19,25 +18,38 @@ import org.acegisecurity.AuthenticationManager;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.apache.jackrabbit.util.Base64;
 import org.apache.jackrabbit.webdav.DavException;
-import org.apache.jackrabbit.webdav.DavServletResponse;
 import org.apache.log4j.Logger;
+import org.openuss.desktop.Desktop;
+import org.openuss.desktop.DesktopException;
+import org.openuss.desktop.DesktopService;
+import org.openuss.lecture.Enrollment;
+import org.openuss.security.SecurityService;
+import org.openuss.security.User;
 
 /**
  * @author David Ullrich
- * @version 0.6
+ * @version 0.89
  */
 public class SessionProvider {
 	private final Logger logger = Logger.getLogger(SessionProvider.class);
 	
-	private final String REPOSITORY_USERNAME = "username";
-	private final String REPOSITORY_PASSWORD = "password";
+	// TODO auslagern in Konfigurationsdatei
+	private static final String REPOSITORY_USERNAME = "username";
+	private static final String REPOSITORY_PASSWORD = "password";
+	
 	private Repository repository;
 	private AuthenticationManager authenticationManager;
+	private SecurityService securityService;
+	private DesktopService desktopService;
 
 	/**
-	 * @param request
-	 * @param davService
-	 * @return
+	 * Retrieves user credentials from {@link HttpServletRequest}, verifies valid username password
+	 * combination, retrieves list of subscribed {@link Enrollment}s and creates a {@link Session}
+	 * with the {@link Repository}.
+	 * The list of subscriptions and the session are turned over to the {@link DavService}.
+	 * @param request Reference to the request of the servlet.
+	 * @param davService The service class.
+	 * @return True, if attaching session was successful.
 	 * @throws DavException
 	 */
 	public boolean attachSession(HttpServletRequest request, DavService davService) throws DavException {
@@ -46,7 +58,7 @@ public class SessionProvider {
 			SimpleCredentials userCredentials = getCredentials(request);
 			if (userCredentials == null) {
 				// user authentication missing
-				throw new DavException(HttpServletResponse.SC_UNAUTHORIZED);
+				throw new DavException(HttpStatus.SC_UNAUTHORIZED);
 			}
 			logger.debug("Authentication requested for user '" + userCredentials.getUserID() + "'");
 
@@ -56,12 +68,14 @@ public class SessionProvider {
 			authentication = getAuthenticationManager().authenticate(authenticationToken);
 			logger.debug("Authentication successful: " + (authentication != null));
 
-			// TODO authentication object verwenden, um später die Liste der abonnierten Enrollments abfragen zu können
+			// retrieve subscribed enrollments for user an attach them to service class
+			davService.setSubscribedEnrollments(getSubscribedEnrollments(userCredentials.getUserID()));
 
 			// establish session with repository
 			Credentials repositoryCredentials = new SimpleCredentials(REPOSITORY_USERNAME, REPOSITORY_PASSWORD.toCharArray());
 			Session session = getRepository().login(repositoryCredentials);
 
+			// check, if login to repository was successful
 			if (session == null) {
 				logger.debug("Could not establish a session with repository.");
 				return false;
@@ -78,30 +92,25 @@ public class SessionProvider {
 			logger.debug("Authentication exception occurred.");
 			logger.debug("Exception: " + ex.getMessage());
 			// rethrow exception as DavException -> request username password
-			throw new DavException(DavServletResponse.SC_UNAUTHORIZED, ex.getMessage());
-		} catch (ServletException ex) {
-			// invalid or not supported credentials
-			logger.debug("Servlet exception occurred.");
-			logger.debug("Exception: " + ex.getMessage());
-			// rethrow exception as DavException -> bad request
-			throw new DavException(DavServletResponse.SC_BAD_REQUEST, ex.getMessage());
+			throw new DavException(HttpStatus.SC_UNAUTHORIZED, ex.getMessage());
 		} catch (LoginException ex) {
-			// login to repository failed -> service unavailable
-			logger.debug("Login exception occurred.");
-			logger.debug("Exception: " + ex.getMessage());
+			// login to repository failed -> internal server error
+			logger.error("Login exception occurred.");
+			logger.error("Exception: " + ex.getMessage());
 			// rethrow exception as DavException
-			throw new DavException(DavServletResponse.SC_SERVICE_UNAVAILABLE, ex.getMessage());
+			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
 		} catch (RepositoryException ex) {
 			// undefined repository exception -> service unavailable
-			logger.debug("Repository exception occurred.");
-			logger.debug("Exception: " + ex.getMessage());
+			logger.error("Repository exception occurred.");
+			logger.error("Exception: " + ex.getMessage());
 			// rethrow exception as DavException
-			throw new DavException(DavServletResponse.SC_SERVICE_UNAVAILABLE, ex.getMessage());
+			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 	}
 
 	/**
-	 * @param davService
+	 * Closes {@link Session} and removes it from service class.
+	 * @param davService The service class.
 	 */
 	public void releaseSession(DavService davService) {
 		// retrieve Session from Service
@@ -125,76 +134,146 @@ public class SessionProvider {
 	}
 	
 	/**
-	 * @param request
-	 * @return
+	 * Retrieves the user credentials from a {@link HttpServletRequest}.
+	 * Only basic user authentication is supported. See RFC2617 for further details.
+	 * @param request Reference to the request of the servlet.
+	 * @return The decoded SimpleCredentials.
+	 * @throws DavException
 	 */
-	private SimpleCredentials getCredentials(HttpServletRequest request) throws ServletException {
+	private SimpleCredentials getCredentials(HttpServletRequest request) throws DavException {
 		// get value of authorization header field
 		String authorizationHeader = request.getHeader("Authorization");
 		
+		// header has to be present
 		if (authorizationHeader != null) {
 			// field was set -> decode
 			String[] headerFields = authorizationHeader.split(" ");
+			
 			// authorization header has to be like 'Basic credentials'
 			if ((headerFields.length >= 2) && headerFields[0].equalsIgnoreCase(HttpServletRequest.BASIC_AUTH)) {
 				// credentials are base64 encoded
 				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+				
 				try {
 					// decode credentials
 					Base64.decode(headerFields[1], outputStream);
 					String decodedCredentials = outputStream.toString("ISO-8859-1");
+					
 					// decoded credentials should be like 'username:password'
 					int position = decodedCredentials.indexOf(":");
+					
 					// minimum length for username and password is 1
 					if ((position < 1) || (position >= (decodedCredentials.length() - 1))) {
-						throw new ServletException("Missing username or password.");
+						throw new DavException(HttpStatus.SC_BAD_REQUEST, "Missing username or password.");
 					}
+					
 					// strip username and password from decoded credentials
 					String username = decodedCredentials.substring(0, position);
 					String password = decodedCredentials.substring(position + 1);
+					
 					// create new instance of simple credentials and return it
 					return new SimpleCredentials(username, password.toCharArray());
 				} catch (IOException ex) {
-					// rethrow exception as servlet exception
-					throw new ServletException(ex.getMessage());
+					logger.error("IO exception occurred.");
+					logger.error("Exception: " + ex.getMessage());
+					// rethrow exception as DavException
+					throw new DavException(HttpStatus.SC_BAD_REQUEST, ex.getMessage());
 				}
 			}
+			
 			// invalid format of authorization header
-			throw new ServletException("Invalid or not supported value of authorization header.");
+			throw new DavException(HttpStatus.SC_BAD_REQUEST, "Invalid or not supported value of authorization header.");
 		}
+		
 		// no authorization information found in request
 		return null;
 	}
 	
 	/**
-	 * Getter for repository
-	 * @return
+	 * Retrieves the list of subscribed enrollments for a user.
+	 * @param username The ID of the user whose subscribed enrollments to be retrieved.
+	 * @return The list of subscribed enrollments.
+	 * @throws DavException
+	 */
+	private List<Enrollment> getSubscribedEnrollments(String username) throws DavException {
+		try {
+			// get reference to user, his/her desktop and request subscribed enrollments
+			User user = securityService.getUserByName(username);
+			Desktop desktop = desktopService.getDesktopByUser(user);
+			List<Enrollment> subscribedEnrollments = desktop.getEnrollments();
+			logger.debug("List of subscribed enrollments: " + subscribedEnrollments.toString());
+			
+			return subscribedEnrollments;
+		} catch (DesktopException ex) {
+			// error while getting desktop for user -> internal server error
+			logger.error("Login exception occurred.");
+			logger.error("Exception: " + ex.getMessage());
+			// rethrow exception as DavException -> internal server error
+			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+		}
+	}
+	
+	/**
+	 * Getter for {@link Repository}.
+	 * @return The Repository.
 	 */
 	public Repository getRepository() {
 		return repository;
 	}
 	
 	/**
-	 * Setter for repository
-	 * @param repository The repository to set
+	 * Setter for {@link Repository}.
+	 * @param repository The Repository to set.
 	 */
 	public void setRepository(Repository repository) {
 		this.repository = repository;
 	}
 
 	/**
-	 * Getter for authentication manager
-	 * @return the authenticationManager
+	 * Getter for {@link AuthenticationManager}.
+	 * @return The AuthenticationManager.
 	 */
 	public AuthenticationManager getAuthenticationManager() {
 		return authenticationManager;
 	}
 
 	/**
-	 * Setter for authentication manager
-	 * @param authenticationManager The authenticationManager to set
+	 * Setter for {@link AuthenticationManager}.
+	 * @param authenticationManager The AuthenticationManager to set.
 	 */
 	public void setAuthenticationManager(AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
+	}
+	
+	/**
+	 * Getter for {@link SecurityService}.
+	 * @return The SecurityService.
+	 */
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+	
+	/**
+	 * Setter for {@link SecurityService}.
+	 * @param securityService The SecurityService to set.
+	 */
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
+	}
+	
+	/**
+	 * Getter for {@link DesktopService}.
+	 * @return The DesktopService.
+	 */
+	public DesktopService getDesktopService() {
+		return desktopService;
+	}
+	
+	/**
+	 * Setter for {@link DesktopService}.
+	 * @param desktopService The DesktopService to set.
+	 */
+	public void setDesktopService(DesktopService desktopService) {
+		this.desktopService = desktopService;
 	}
 }

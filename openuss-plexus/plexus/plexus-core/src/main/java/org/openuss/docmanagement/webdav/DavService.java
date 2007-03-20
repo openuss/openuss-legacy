@@ -15,16 +15,18 @@ import org.apache.jackrabbit.webdav.io.OutputContext;
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.openuss.lecture.Enrollment;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.6
+ * @version 0.7
  */
 public class DavService {
 	private final Logger logger = Logger.getLogger(DavService.class);
 	
 	private final DavResourceConfiguration configuration;
 	private Session session;
+	private List<Enrollment> subscribedEnrollments;
 	private DavResourceFactory resourceFactory;
 	
 	/**
@@ -50,6 +52,22 @@ public class DavService {
 	 */
 	public void setSession(Session session) {
 		this.session = session;
+	}
+
+	/**
+	 * Getter for the list of subscribed {@link Enrollment}s.
+	 * @return The subscribed Enrollments.
+	 */
+	public List<Enrollment> getSubscribedEnrollments() {
+		return subscribedEnrollments;
+	}
+
+	/**
+	 * Setter for the list of subscribed {@link Enrollment}s.
+	 * @param subscribedEnrollments
+	 */
+	public void setSubscribedEnrollments(List<Enrollment> subscribedEnrollments) {
+		this.subscribedEnrollments = subscribedEnrollments;
 	}
 
 	/**

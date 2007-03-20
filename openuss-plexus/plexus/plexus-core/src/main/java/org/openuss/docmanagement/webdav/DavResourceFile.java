@@ -17,8 +17,8 @@ import org.openuss.docmanagement.DocConstants;
 import org.openuss.docmanagement.DocRights;
 
 /**
- * @author David Ullrich
- * @version 0.5
+ * @author David Ullrich <lechuck@uni-muenster.de>
+ * @version 0.6
  */
 public class DavResourceFile extends DavResource {
 	public DavResourceFile(DavResourceFactory factory, Session session, DavResourceLocator locator, Node representedNode) {
