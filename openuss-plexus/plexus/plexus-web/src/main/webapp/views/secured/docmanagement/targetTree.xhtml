@@ -16,9 +16,9 @@
 				<h:commandLink immediate="true"
 					actionListener="#{targetToggler.setNodeSelected}">
 					<f:actionListener type="org.openuss.web.docmanagement.TargetNavigator" />
-					<t:graphicImage value="/images/folder-open.png"
+					<t:graphicImage value="/images/nav/folderopen.jpg"
 						rendered="#{targetToggler.nodeExpanded}" border="0" />
-					<t:graphicImage value="/images/folder-open.png"
+					<t:graphicImage value="/images/nav/folderclosed.jpg"
 						rendered="#{!targetToggler.nodeExpanded}" border="0" />
 					<h:outputText value="#{targetNode.description}" rendered="#{targetToggler.nodeSelected}" styleClass="header_font_normal" />
 					<h:outputText value="#{targetNode.description}" rendered="#{not targetToggler.nodeSelected}" styleClass="content_font_normal"/>					

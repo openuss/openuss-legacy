@@ -108,7 +108,33 @@ public class FileImpl extends ResourceImpl implements File{
 	}
 	
 	public String getExtension(){
-		return name.substring(name.lastIndexOf(".")+1);
+		String extension = name.substring(name.lastIndexOf(".")+1);
+		extension = extension.toLowerCase();
+		if (extension.equals("avi")) return "avi";
+		if (extension.equals("bmp")) return "bmp";
+		if (extension.equals("cs")) return "cs";
+		if (extension.equals("dll")) return "dll";
+		if (extension.equals("doc")) return "doc";
+		if (extension.equals("exe")) return "exe";
+		if (extension.equals("gif")) return "gif";
+		if (extension.equals("jpg")) return "jpg";
+		if (extension.equals("mdb")) return "mdb";
+		if (extension.equals("mov")) return "mov";
+		if (extension.equals("mp3")) return "mp3";
+		if (extension.equals("mpg")) return "mpg";
+		if (extension.equals("others")) return "others";
+		if (extension.equals("pdf")) return "pdf";
+		if (extension.equals("ppt")) return "ppt";
+		if (extension.equals("ra")) return "ra";
+		if (extension.equals("ram")) return "ram";
+		if (extension.equals("rar")) return "rar";
+		if (extension.equals("tar")) return "tar";
+		if (extension.equals("txt")) return "txt";
+		if (extension.equals("vsd")) return "vsd";
+		if (extension.equals("xls")) return "xls";
+		if (extension.equals("xml")) return "xml";
+		if (extension.equals("zip")) return "zip";
+		return "default";
 	}
 	
 	

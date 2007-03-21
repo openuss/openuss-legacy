@@ -35,10 +35,6 @@
 			<o:block label="#{msg.doc_addfile_header}">
 				<h:outputText value="#{msg['doc_dist_delete_message']}"></h:outputText>
 				<br />
-				<h:selectOneMenu styleClass="pulldown_small" value="#{distributionViewBacker.deleteLinks}">
-					<f:selectItem itemValue="delete" itemLabel="#{msg['doc_dist_select_delete']}"/>
-					<f:selectItem itemValue="copy" itemLabel="#{msg['doc_dist_select_copy']}"/>
-				</h:selectOneMenu><br />
 				<h:commandButton action="#{distributionViewBacker.confirmedDelete}" value="#{msg['doc_dist_delete_confirm']}"></h:commandButton>
 				<h:commandButton action="enrollment_documents" value="#{msg['doc_dist_delete_cancel']}"></h:commandButton>				
 			</o:block>

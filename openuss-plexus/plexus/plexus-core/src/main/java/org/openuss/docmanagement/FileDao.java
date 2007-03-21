@@ -59,8 +59,7 @@ public class FileDao extends ResourceDao {
 				node.getPath(), null, 1, ((int) node.getProperty(
 						DocConstants.PROPERTY_VISIBILITY).getLong()));
 		file.setCreated(new Timestamp(node
-				.getProperty(DocConstants.JCR_CREATED).getDate().getTime()
-				.getTime()));
+				.getProperty(DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
 		logout(session);
 		} catch (NotAFileException e) {
 			throw e;
@@ -89,8 +88,7 @@ public class FileDao extends ResourceDao {
 		Node node = session.getNodeByUUID(file.getId());
 		FileImpl pred = new FileImpl();
 		fi = new BigFileImpl(new Timestamp(node.getProperty(
-				DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTime()
-				.getTime()), node.getUUID(), new Timestamp(node.getNode(
+				DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTimeInMillis()), node.getUUID(), new Timestamp(node.getNode(
 				DocConstants.JCR_CONTENT).getProperty(
 				DocConstants.JCR_LASTMODIFIED).getDate().getTimeInMillis()),
 				0, node.getProperty(DocConstants.PROPERTY_MESSAGE).getString(),
@@ -101,7 +99,7 @@ public class FileDao extends ResourceDao {
 						.getNode(DocConstants.JCR_CONTENT).getProperty(
 								DocConstants.JCR_DATA).getStream());
 		fi.setCreated(new Timestamp(node.getProperty(DocConstants.JCR_CREATED)
-				.getDate().getTime().getTime()));
+				.getDate().getTimeInMillis()));
 		logout(session);
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");

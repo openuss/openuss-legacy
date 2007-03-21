@@ -485,7 +485,7 @@ public class DistributionViewBacker extends ExceptionHandler{
 			fte = (FileTableEntry)i.next();
 			if (fte.isChecked())
 				try {
-					distributionService.delFile(fileTableEntry2File(fte), deleteLinks.equals(DocConstants.DELETE_LINKS));
+					distributionService.delFile(fileTableEntry2File(fte), getDeleteLinks().equals(DocConstants.DELETE_LINKS));
 				} catch (NotAFolderException e) {
 					handleNotAFolderException(e);
 				} catch (PathNotFoundException e) {
@@ -525,7 +525,7 @@ public class DistributionViewBacker extends ExceptionHandler{
 	
 	public String deleteFolder(){
 		try {
-			distributionService.delFolder(distributionService.getFolder(this.folderPath), (this.deleteLinks.equals(DocConstants.DELETE_LINKS)));
+			distributionService.delFolder(distributionService.getFolder(this.folderPath), getDeleteLinks().equals(DocConstants.DELETE_LINKS));
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {

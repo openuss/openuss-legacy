@@ -1,7 +1,6 @@
 package org.openuss.web.docmanagement;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
