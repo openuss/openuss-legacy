@@ -13,6 +13,9 @@ import org.apache.log4j.Logger;
  * @version 0.9
  */
 public class MimeType {
+	/**
+	 * The default mime type for resources.
+	 */
 	public static final String DEFAULT_MIME_TYPE = "application/octet-stream";
 
 	private static final Logger logger = Logger.getLogger(MimeType.class);
@@ -29,18 +32,27 @@ public class MimeType {
 	}
 	
 	/**
-	 * @param resourceName
-	 * @return
+	 * Returns mime type associated with the suffix of the given name.
+	 * @param name The name whose suffix is used to lookup mime type.
+	 * @return The associated mime type or the default mime type;
 	 */
 	public static String getMimeType(String name) {
-		// retrieve resource type from name
-		String[] nameFields = name.split(".");
-		
-		// convert last part of name to lower case and search for mime type
-		String mimeType = mimeTypes.getProperty(nameFields[nameFields.length - 1].toLowerCase());
+		String mimeType = null;
+
+		if (name != null) {
+			// retrieve resource type from name
+			int position = name.lastIndexOf(".");
+
+			if (position != -1) {
+				// convert suffix of name to lower case and search for mime type
+				mimeType = mimeTypes.getProperty(name.substring(position).toLowerCase());
+			}
+		}
+
 		if (mimeType == null) {
 			return DEFAULT_MIME_TYPE;
 		}
+		
 		return mimeType;
 	}
 }

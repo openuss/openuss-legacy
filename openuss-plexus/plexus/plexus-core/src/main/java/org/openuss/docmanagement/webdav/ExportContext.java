@@ -166,7 +166,9 @@ public class ExportContext extends IOContext {
 	 * @param contentLanguage The content language to set.
 	 */
 	public void setContentLanguage(String contentLanguage) {
-		properties.put(DavConstants.HEADER_CONTENT_LANGUAGE, contentLanguage);
+		if (contentLanguage != null) {
+			properties.put(DavConstants.HEADER_CONTENT_LANGUAGE, contentLanguage);
+		}
 	}
 	
 	/**
@@ -187,8 +189,8 @@ public class ExportContext extends IOContext {
 		// append encoding as parameter, if media type is present
 		if ((contentType != null) && (encoding != null)) {
 			contentType += "; charset=" + encoding;
+			properties.put(DavConstants.HEADER_CONTENT_TYPE, contentType);
 		}
-		properties.put(DavConstants.HEADER_CONTENT_TYPE, contentType);
 	}
 	
 	/**
@@ -196,7 +198,9 @@ public class ExportContext extends IOContext {
 	 * @param etag The entity tag to set.
 	 */
 	public void setETag(String etag) {
-		properties.put(DavConstants.HEADER_ETAG, etag);
+		if (etag != null) {
+			properties.put(DavConstants.HEADER_ETAG, etag);
+		}
 	}
 	
 	/**
@@ -223,6 +227,8 @@ public class ExportContext extends IOContext {
 	 * @param propertyValue The value of the property to set.
 	 */
 	public void setProperty(String propertyName, String propertyValue) {
-		properties.put(propertyName, propertyValue);
+		if (propertyValue != null) {
+			properties.put(propertyName, propertyValue);
+		}
 	}
 }
