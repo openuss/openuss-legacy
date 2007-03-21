@@ -10,8 +10,7 @@
 		<c:if test="${empty styleClass}">
 			<c:set var="styleClass" value="command"/>
 		</c:if>
-		
-		<h:outputLink value="${facesContext.externalContext.requestContextPath}${value}" styleClass="${styleClass}" title="${title}">
+		<h:outputLink value="${facesContext.externalContext.requestContextPath}${value}" styleClass="${styleClass}" title="${title}" rendered="${rendered}">
 			<ui:insert/>
 		</h:outputLink>		
 	</ui:composition>
