@@ -71,4 +71,14 @@ public class Constants {
 
 	public static final String SUBJECT_ENROLLMENT_SELECTION_PAGE = "subject_enrollment_selection";
 
+	public static final String DOCUMENTS_NEW_FOLDER_PAGE = "document_new_folder";
+
+	public static final String SELECTED_FOLDER = "selected_folder";
+
+	public static final String DOCUMENTS_EDIT_FOLDER_PAGE = "document_edit_folder";
+
+	public static final String SELECTED_FILEENTRY = "selected_fileentry";
+
+	public static final String DOCUMENTS_EDIT_FILEENTRY_PAGE = "document_edit_fileentry";
+
 }

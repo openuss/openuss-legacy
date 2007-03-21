@@ -15,6 +15,9 @@
 		<phase-listener>
 			org.openuss.framework.web.jsf.pages.PagePhaseListener
 		</phase-listener>
+		<phase-listener>
+			org.openuss.framework.web.jsf.model.PagedListPhaseListener
+		</phase-listener>
 	</lifecycle>
 
 	<application>

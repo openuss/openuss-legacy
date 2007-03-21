@@ -251,7 +251,7 @@
 		</init-param>
 		<init-param>
 			<param-name>uploadThresholdSize</param-name>
-			<param-value>100k</param-value>
+			<param-value>1024k</param-value>
 		</init-param>
 		<init-param>
 			<param-name>uploadRepositoryPath</param-name>

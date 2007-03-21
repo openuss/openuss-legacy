@@ -414,12 +414,12 @@
 
 			<navigation-case>
 				<from-outcome>documents_new_file</from-outcome>
-				<to-view-id>/views/secured/documents/documentnew.xhtml</to-view-id>				
+				<to-view-id>/views/secured/documents/documentedit.xhtml</to-view-id>				
 			</navigation-case>			
 
 			<navigation-case>
 				<from-outcome>documents_new_folder</from-outcome>
-				<to-view-id>/views/secured/documents/foldernew.xhtml</to-view-id>				
+				<to-view-id>/views/secured/documents/folderedit.xhtml</to-view-id>				
 			</navigation-case>			
 
 			<navigation-case>
@@ -441,7 +441,14 @@
 				<from-outcome>wiki_edit</from-outcome>
 				<to-view-id>/views/secured/wiki/wikiedit.xhtml</to-view-id>				
 			</navigation-case>					
-
+		</navigation-rule>
+		
+		<navigation-rule>
+			<from-view-id>/views/secured/documents/addzip.xhtml</from-view-id>
+			<navigation-case>
+				<from-outcome>success</from-outcome>
+				<to-view-id>/views/secured/documents/documents.xhtml</to-view-id>
+			</navigation-case>
 		</navigation-rule>
 	
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  

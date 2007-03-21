@@ -33,21 +33,22 @@
 	<ui:define name="content">
 		<h:form id="newFolderForm">
 
-
 			<o:block label="#{msg.document_folder_new}">
-				<o:input entity="newFolder" property="name" required="true">
-				</o:input>
-				<o:input entity="newFolder" property="description" required="true">
-				</o:input>
+				<o:input entity="selectedFolder" property="name" required="true"/>
+				<o:input entity="selectedFolder" property="description" required="true"/>
 			</o:block>
 
 			<o:block>
-				<plexus:command bean="#{views$secured$documents$newfolder}"
-					action="save" label="#{msg['newfolder_button_save']}"
+				<plexus:command 
+					bean="#{views$secured$documents$folder}"
+					action="save" 
+					label="#{msg['newfolder_button_save']}"
 					title="#{msg['newfolder_button_save']}"
 					styleClass="button" />
-				<h:commandButton action="enrollment_documents"
-					value="#{msg['newfolder_button_cancel']}" styleClass="button"/>	
+				<h:commandButton 
+					action="enrollment_documents"
+					value="#{msg['newfolder_button_cancel']}" 
+					styleClass="button"/>	
 			</o:block>
 		</h:form>
 	</ui:define>

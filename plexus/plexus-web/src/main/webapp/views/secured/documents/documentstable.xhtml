@@ -12,37 +12,48 @@
     	id="documentstable" 
     	label="#{msg.documents_main_header}" 
     	value="views$secured$documents$documents.data" 
-    	var="doc" 
-    	rows="10">  
+    	columnClasses=" col_min_center, col_min_center,col_max_left, col_min_center,col_min_center,col_min_center"
+    	var="entry" 
+    	rows="15">  
       
 		<t:column>
 			<plexus:commandSortHeader columnName="mark"> #{msg['documents_main_column_mark']} </plexus:commandSortHeader>
-			<h:selectBooleanCheckbox styleClass="checkbox"></h:selectBooleanCheckbox>
-		</t:column>
-		
-		<t:column>
-			<plexus:commandSortHeader columnName="viewed"></plexus:commandSortHeader>
-			<h:outputText value="#{doc.viewed}"/>
+			<h:selectBooleanCheckbox styleClass="checkbox" valueChangeListener="#{views$secured$documents$documents.changedSelection}"/>
 		</t:column>
 
 		<t:column>
-			<plexus:commandSortHeader columnName="mimetype"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
-			<h:outputText value="#{doc.mimeType}"/>
+			<plexus:commandSortHeader columnName="size"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
+			<h:graphicImage value="/images/filetypes/folder.png" rendered="#{entry.folder}"/>
+			<h:graphicImage value="/images/filetypes/#{entry.extension}.gif" rendered="#{!entry.folder}"/>
 		</t:column>
 
 		<t:column>
 			<plexus:commandSortHeader columnName="name"> #{msg['documents_main_column_name']} </plexus:commandSortHeader>
-			<h:outputText value="#{doc.filename}"/>
+			<o:link value="/views/secured/documents/documents.faces" title="#{entry.description}" rendered="#{entry.folder}">
+				<f:param value="#{enrollment.id}" name="enrollment" />
+				<f:param value="#{entry.id}" name="folder" />
+				<h:outputText value="#{entry.name}"/>
+			</o:link>
+			
+			<h:outputLink value="/openuss-plexus/files/#{entry.name}" title="#{entry.name}" rendered="${!entry.folder}">
+				<f:param value="#{entry.repositoryFileId}" name="fileid" />
+				<h:outputText value="#{entry.name}"/>
+			</h:outputLink>
+		</t:column>
+
+		<t:column>
+			<plexus:commandSortHeader columnName="size"> #{msg['documents_main_column_size']} </plexus:commandSortHeader>
+			<h:outputText value="#{entry.sizeAsString}"/>
 		</t:column>
 
 		<t:column>
 			<plexus:commandSortHeader columnName="create"> #{msg['documents_main_column_create']} </plexus:commandSortHeader>
-			<h:outputText value="#{doc.created}"/>
+			<h:outputText value="#{entry.created}"/>
 		</t:column>
 
 		<t:column>
 			<plexus:commandSortHeader columnName="change"> #{msg['documents_main_column_change']} </plexus:commandSortHeader>
-			<h:outputText value="#{doc.lastChange}"/>
+			<h:outputText value="#{entry.modified}"/>
 		</t:column>
 		
 		<plexus:column header="#{msg.documents_main_column_actions}">
