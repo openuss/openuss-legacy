@@ -334,8 +334,10 @@ public class DavService {
 			logger.error("Locator is null.");
 			throw new DavException(HttpStatus.SC_METHOD_FAILURE, "Locator must not be null.");
 		}
-		// TODO Methode DELETE implementieren
-		throw new DavException(HttpStatus.SC_NOT_IMPLEMENTED, "DELETE not implemented.");
+		
+		// create instance of DavResource
+		DavResource resource = getResourceFactory().createResource(getSession(), locator, false);
+		resource.remove();
 	}
 	
 	/**

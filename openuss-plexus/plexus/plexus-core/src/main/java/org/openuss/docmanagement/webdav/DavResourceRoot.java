@@ -16,7 +16,6 @@ import org.openuss.lecture.Enrollment;
  * @version 0.5
  */
 public class DavResourceRoot extends DavResourceCollection {
-
 	/**
 	 * @param factory
 	 * @param session
@@ -27,6 +26,9 @@ public class DavResourceRoot extends DavResourceCollection {
 		super(factory, session, locator, representedNode);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#getMembers()
+	 */
 	@Override
 	public List<DavResource> getMembers() throws DavException {
 		List<DavResource> members = new LinkedList<DavResource>();
@@ -45,5 +47,14 @@ public class DavResourceRoot extends DavResourceCollection {
 		members.addAll(super.getMembers());
 
 		return members;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#remove()
+	 */
+	@Override
+	public void remove() throws DavException {
+		// throw exception with status code 403 (FORBIDDEN) independent of user rights
+		throw new DavException(HttpStatus.SC_FORBIDDEN, "Root cannot be deleted.");
 	}
 }

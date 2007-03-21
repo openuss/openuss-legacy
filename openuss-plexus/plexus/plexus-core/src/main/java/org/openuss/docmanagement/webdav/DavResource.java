@@ -6,6 +6,8 @@ import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Property;
@@ -333,6 +335,21 @@ public abstract class DavResource {
 			representedNode.save();
 		} catch (IOException ex) {
 			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+		} catch (RepositoryException ex) {
+			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+		}
+	}
+	
+	public void remove() throws DavException {
+		if (!exists()) {
+			throw new DavException(HttpStatus.SC_NOT_FOUND);
+		}
+		
+		try {
+			Node parent = representedNode.getParent();
+			representedNode.remove();
+			parent.save();
+			representedNode = null;
 		} catch (RepositoryException ex) {
 			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
 		}

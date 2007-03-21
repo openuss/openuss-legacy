@@ -6,7 +6,6 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import org.apache.jackrabbit.util.Text;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.apache.log4j.Logger;
 import org.openuss.docmanagement.DocConstants;
@@ -48,28 +47,23 @@ public class DavResourceFactory {
 
 				if (representedItem.isNode()) {
 					Node representedNode = (Node)representedItem;
-					// HACK
+
+					// creates adequate instance for node type
 					if (locator.isRootLocation()) {
 						resource = new DavResourceRoot(this, session, locator, representedNode);
-					} else if (representedNode.isNodeType(DocConstants.DOC_FOLDER)) {
-						resource = new DavResourceCollection(this, session, locator, representedNode);
-					} else if (representedNode.isNodeType(DocConstants.DOC_FILE)) {
-						resource = new DavResourceFile(this, session, locator, representedNode);
-					} else if (representedNode.isNodeType(DocConstants.DOC_LINK)) {
-						resource = new DavResourceLink(this, session, locator, representedNode);
+					} else {
+						resource = createResource(locator, representedNode);
 					}
-					// unknown node types. should not occur -> ignore
-					logger.debug("Unknown node type found. " + locator.getRepositoryPath());
 				} else {
 					// not a node. should not occur -> ignore
 					logger.debug("Non-node item requested. " + locator.getRepositoryPath());
 				}
 			} else {
-				// prüfen, ob virtueller Ordner
+
 				if (isSubscriptionCollection(locator.getRepositoryPath())) {
 					resource = new DavResourceSubscription(this, session, locator, null);
 				} else {
-					// TODO Pfad genauer prüfen
+
 					if (isCollection) {
 						resource = new DavResourceCollection(this, session, locator, null);
 					} else {
@@ -86,6 +80,31 @@ public class DavResourceFactory {
 		}
 		
 		return resource;
+	}
+	
+	/**
+	 * Creates an adequate instance of DavResource descendants for node.
+	 * @param locator The locator identifying the resource.
+	 * @param node The node.
+	 * @return The adequate instance or null.
+	 * @throws RepositoryException
+	 */
+	private DavResource createResource(DavResourceLocator locator, Node node) throws RepositoryException {
+		// examine node type
+		if (node.isNodeType(DocConstants.DOC_FOLDER)) {
+			// return instance of DavResourceCollection
+			return new DavResourceCollection(this, node.getSession(), locator, node);
+		} else if (node.isNodeType(DocConstants.DOC_FILE)) {
+			// return instance of DavResourceFile
+			return new DavResourceFile(this, node.getSession(), locator, node);
+		} else if (node.isNodeType(DocConstants.DOC_LINK)) {
+			// lookup link an create recursive call
+			return createResource(locator, node.getProperty(DocConstants.PROPERTY_REFERENCE).getNode());
+		}
+		
+		// unknown node types. should not occur -> ignore
+		logger.debug("Unknown node type found. " + locator.getRepositoryPath());
+		return null;
 	}
 	
 	/**
