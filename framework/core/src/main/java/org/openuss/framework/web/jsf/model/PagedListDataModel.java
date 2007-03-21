@@ -185,8 +185,9 @@ public abstract class PagedListDataModel<T> extends DataModel {
 	}
 	
 	public int checkFirstRow(int firstRow) {
-		if (getPage().getDatasetSize() - 1 < firstRow) {
-			firstRow = (getPage().getDatasetSize() / getPageSize() - 1) * getPageSize();
+		int size = getPage().getDatasetSize();
+		if ((size-1 < firstRow) && (size > 0 || firstRow > 0)) {
+			firstRow = getPage().getDatasetSize() - getPageSize();
 			if (firstRow < 0) {
 				firstRow = 0;
 			}
