@@ -53,7 +53,7 @@ public class DavResourceRoot extends DavResourceCollection {
 	 * @see org.openuss.docmanagement.webdav.DavResource#remove()
 	 */
 	@Override
-	public void remove() throws DavException {
+	public MultiStatus remove() throws DavException {
 		// throw exception with status code 403 (FORBIDDEN) independent of user rights
 		throw new DavException(HttpStatus.SC_FORBIDDEN, "Root cannot be deleted.");
 	}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.apache.jackrabbit.webdav.DavConstants;
@@ -328,7 +329,7 @@ public class DavService {
 	 * @param locator The locator identifying the repository object to delete.
 	 * @throws DavException
 	 */
-	public void deleteResource(DavResourceLocator locator) throws DavException {
+	public MultiStatus deleteResource(DavResourceLocator locator) throws DavException {
 		// check parameters
 		if (locator == null) {
 			logger.error("Locator is null.");
@@ -337,7 +338,24 @@ public class DavService {
 		
 		// create instance of DavResource
 		DavResource resource = getResourceFactory().createResource(getSession(), locator, false);
-		resource.remove();
+		
+		// remove resource
+		MultiStatus errorMultistatus = resource.remove();
+		// removal successful? -> persist pending changes
+		if (errorMultistatus.getResponses().size() == 0) {
+			try {
+				getSession().save();
+				// kill multi-status if transaction was successful
+				errorMultistatus = null;
+			} catch (RepositoryException ex) {
+				// error occurred while persisting pending changes
+				logger.error("Repository exception occurred.");
+				logger.error("Exception: " + ex.getMessage());
+				errorMultistatus.addResponse(new MultiStatusResponse(locator.getHref(resource.isCollection()), HttpStatus.SC_INTERNAL_SERVER_ERROR, null));
+			}
+		}
+
+		return errorMultistatus;
 	}
 	
 	/**

@@ -3,16 +3,19 @@ package org.openuss.docmanagement.webdav;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
-import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.lock.LockException;
+import javax.jcr.nodetype.ConstraintViolationException;
+import javax.jcr.version.VersionException;
 
 import org.apache.jackrabbit.JcrConstants;
 import org.apache.jackrabbit.util.Text;
@@ -340,18 +343,65 @@ public abstract class DavResource {
 		}
 	}
 	
-	public void remove() throws DavException {
+	/**
+	 * Removes the resource and returns multi-status, if any error occurred.
+	 * @return The multi-status containing error informations or null.
+	 * @throws DavException
+	 */
+	public MultiStatus remove() throws DavException {
 		if (!exists()) {
-			throw new DavException(HttpStatus.SC_NOT_FOUND);
+			throw new DavException(HttpStatus.SC_NOT_FOUND, "Resource not found: " + getLocator().getResourcePath());
 		}
+
+		// prepare multi-status for errors
+		MultiStatus multistatus = new MultiStatus();
 		
+		// initial remove operation with rethrow of exceptions
+		remove(multistatus, true);
+		
+		return multistatus;
+	}
+	
+	/**
+	 * Helper method which recursively tries to remove members and the resource itself.
+	 * @param multistatus The multi-status to fill with error responses.
+	 * @param rethrow True, if errors should be rethrown instead of added to the multi-status.
+	 * @throws DavException
+	 */
+	protected void remove(MultiStatus multistatus, boolean rethrow) throws DavException {
 		try {
-			Node parent = representedNode.getParent();
-			representedNode.remove();
-			parent.save();
-			representedNode = null;
+			// iterate through members and call remove method recursively
+			List<DavResource> members = getMembers();
+			Iterator<DavResource> iterator = members.iterator();
+			DavResource member;
+			while (iterator.hasNext()) {
+				member = iterator.next();
+				member.remove(multistatus, false);
+			}
+			
+			// all members removed; remove this, if multistatus has no responses
+			if (multistatus.getResponses().size() == 0) {
+				representedNode.remove();
+				representedNode = null;
+			}
+		} catch (AccessDeniedException ex) {
+			// access on node denied
+			if (rethrow) {
+				throw new DavException(HttpStatus.SC_FORBIDDEN, "Deleting the resource is not allowed.");
+			}
+			multistatus.addResponse(new MultiStatusResponse(getLocator().getHref(isCollection()), HttpStatus.SC_FORBIDDEN, null));
+		} catch (LockException ex) {
+			// resource is locked
+			if (rethrow) {
+				throw new DavException(HttpStatus.SC_LOCKED, "The resource is locked.");
+			}
+			multistatus.addResponse(new MultiStatusResponse(getLocator().getHref(isCollection()), HttpStatus.SC_LOCKED, null));
 		} catch (RepositoryException ex) {
-			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+			// undefined exception occurred
+			if (rethrow) {
+				throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+			}
+			multistatus.addResponse(new MultiStatusResponse(getLocator().getHref(isCollection()), HttpStatus.SC_INTERNAL_SERVER_ERROR, null));
 		}
 	}
 }
