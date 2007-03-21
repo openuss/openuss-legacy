@@ -28,13 +28,17 @@ public class LinkDao extends ResourceDao {
 	/**
 	 * @param link
 	 */
-	public void setLink(Link link) throws DocManagementException{
+	public void setLink(Link link) throws ResourceAlreadyExistsException, DocManagementException{
 		try{
 			Session session = login(repository);
 			Node node = session.getRootNode();
 			String path = link.getPath();
 			if (path.startsWith("/")) path = path.substring(1);		
 			node = node.getNode(path);
+			if (node.hasNode(link.getName())){
+				logout(session);
+				throw new ResourceAlreadyExistsException("That name already exists in folder ");
+			}
 			node = node.addNode(link.getName(), DocConstants.DOC_LINK);
 			node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, link.getDistributionDate().getTime());
 			node.setProperty(DocConstants.PROPERTY_MESSAGE, link.getMessage());
@@ -157,6 +161,29 @@ public class LinkDao extends ResourceDao {
 		id = id.substring(0,id.indexOf("/"));
 		String trash = "/"+area+"/"+id+"/"+DocConstants.TRASH_NAME;
 		return trash;
+	}
+	
+	public void changeLink(Link link) throws DocManagementException{
+		try{
+			Session session = login(repository);
+			Node node = session.getRootNode();
+			String path = link.getPath();
+			if (path.startsWith("/")) path = path.substring(1);
+			node = node.getNode(path);
+			node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, link.getDistributionDate().getTime());
+			node.setProperty(DocConstants.PROPERTY_MESSAGE, link.getMessage());
+			node.setProperty(DocConstants.PROPERTY_VISIBILITY, link.getVisibility());
+			if (!node.getPath().equals(node.getParent().getPath() + "/" + link.getName())) {
+				if (node.getParent().hasNode(link.getName())) {
+					logout(session);
+					throw new ResourceAlreadyExistsException("A File with that name already exists!");
+				}
+				session.move(node.getPath(), node.getParent().getPath() + "/"+ link.getName());
+			}	
+			logout(session);	
+		} catch (RepositoryException e) {
+			throw new DocManagementException("Repository Exception occured");
+		}		
 	}
 	
 	public Repository getRepository() {

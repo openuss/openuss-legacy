@@ -48,8 +48,10 @@ public class FileDao extends ResourceDao {
 		Node node = session.getRootNode();
 		if (path.startsWith("/")) path = path.substring(1);
 		node = node.getNode(path);
-		if (!node.isNodeType(DocConstants.DOC_FILE))
-			throw new NotAFileException("Not a file");
+		if (!node.isNodeType(DocConstants.DOC_FILE)){
+			logout(session);
+			throw new NotAFileException("Not a file");			
+		}
 		file = new FileImpl(new Timestamp(node.getProperty(
 				DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTimeInMillis()), node.getUUID(), new Timestamp(node.getNode(
 				DocConstants.JCR_CONTENT).getProperty(
@@ -158,7 +160,10 @@ public class FileDao extends ResourceDao {
 	 */
 	private void setDistributionFile(Node node, BigFile file) throws ResourceAlreadyExistsException, DocManagementException{ 
 		try {
-			if (node.hasNode(file.getName())) throw new ResourceAlreadyExistsException("File already exists!");
+			if (node.hasNode(file.getName())) {
+				logout(node.getSession());
+				throw new ResourceAlreadyExistsException("File already exists!");
+			}
 			// nt:File Knoten
 			node.addNode(file.getName(), DocConstants.DOC_FILE);
 			node = node.getNode(file.getName());
@@ -220,7 +225,10 @@ public class FileDao extends ResourceDao {
 			// if nodename has changed, move node
 			node = node.getParent();
 			if (!node.getPath().equals(node.getParent().getPath() + "/" + file.getName())) {
-				if (node.getParent().hasNode(file.getName())) throw new ResourceAlreadyExistsException("A File with that name already exists!");
+				if (node.getParent().hasNode(file.getName())) {
+					logout(session);
+					throw new ResourceAlreadyExistsException("A File with that name already exists!");
+				}
 				session.move(node.getPath(), node.getParent().getPath() + "/"+ file.getName());
 			}
 						
