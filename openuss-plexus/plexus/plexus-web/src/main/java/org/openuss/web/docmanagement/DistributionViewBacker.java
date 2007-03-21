@@ -37,7 +37,6 @@ import org.openuss.docmanagement.DocConstants;
 @Bean(name="distributionViewBacker", scope=Scope.SESSION)
 @View
 public class DistributionViewBacker extends AbstractEnrollmentDocPage{
-	//FIXME add visibility
 	@Property(value="#{distributionService}")
 	public DistributionService distributionService;
 
@@ -180,22 +179,7 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 		Folder folder = new FolderImpl();
 		String path = getFolderPath();
 		if (path.startsWith("/")) path = path.substring(1);
-		try {
-			if (!hasWritePermission(distributionService.getFolder(path))) {
-				noPermission();
-				return DocConstants.EDITFOLDER;
-			}
-		} catch (NotAFolderException e) {
-			handleNotAFolderException(e);
-		} catch (PathNotFoundException e) {
-			handlePathNotFoundException(e);
-		} catch (ResourceAlreadyExistsException e) {
-			handleResourceAlreadyExistsException(e);
-		} catch (NotAFileException e) {
-			handleNotAFileException(e);
-		} catch (DocManagementException e) {
-			handleDocManagementException(e);
-		}		
+
 		folder.setPath(path);
 		folderController.setFolder(folder);
 		return DocConstants.EDITFOLDER;
@@ -243,7 +227,7 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 		if (path.startsWith("/")) path = path.substring(1);
 		bf.setPath(path);
 		try{
-			File f = distributionService.getFile(path);
+			Folder f = distributionService.getFolder(path);
 			if (!hasWritePermission(f)){
 				noPermission();
 				return DocConstants.NEWDOCUMENTTOFOLDER;
@@ -277,6 +261,10 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			if (path.startsWith("/")) path = path.substring(1);
 			try {
 				folder = distributionService.getFolder(path);
+				if (!hasReadPermission(folder)){
+					noPermission();
+					return al;
+				}
 			} catch (NotAFolderException e) {
 				handleNotAFolderException(e);
 			} catch (PathNotFoundException e) {
@@ -296,23 +284,25 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 				Iterator nodeIterator = subnodes.iterator();
 				while (nodeIterator.hasNext()){
 					Resource r = (Resource) nodeIterator.next();
-					if (r instanceof File) {
-						FileTableEntry fte = new FileTableEntry();
-						f = (File) r;
-						fte.setCreated(f.getCreated());
-						fte.setDistributionTime(f.getDistributionTime());
-						fte.setId(f.getId());
-						fte.setLastModification(f.getLastModification());
-						fte.setLength(f.getLength());
-						fte.setMessage(f.getMessage());
-						fte.setMimeType(f.getMimeType());
-						fte.setName(f.getName());
-						fte.setPath(f.getPath());
-						fte.setPredecessor(f.getPredecessor());
-						fte.setVersion(f.getVersion());
-						fte.setVisibility(f.getVisibility());					
-						al.add((FileTableEntry)fte);					
-					}
+					if (hasReadPermission(r)) {
+						if (r instanceof File) {
+							FileTableEntry fte = new FileTableEntry();
+							f = (File) r;
+							fte.setCreated(f.getCreated());
+							fte.setDistributionTime(f.getDistributionTime());
+							fte.setId(f.getId());
+							fte.setLastModification(f.getLastModification());
+							fte.setLength(f.getLength());
+							fte.setMessage(f.getMessage());
+							fte.setMimeType(f.getMimeType());
+							fte.setName(f.getName());
+							fte.setPath(f.getPath());
+							fte.setPredecessor(f.getPredecessor());
+							fte.setVersion(f.getVersion());
+							fte.setVisibility(f.getVisibility());
+							al.add((FileTableEntry) fte);
+						}
+					}					
 				}
 			}
 		}
@@ -333,6 +323,10 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 		BigFile bigFile = new BigFileImpl();
 		try {
 			File file = distributionService.getFile(path);
+			if (!hasReadPermission(file)){
+				noPermission();
+				return DocConstants.DOCUMENTEXPLORER;
+			}
 			bigFile = distributionService.getFile(file);
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
@@ -532,7 +526,12 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			fte = (FileTableEntry)i.next();
 			if (fte.isChecked())
 				try {
-					distributionService.delFile(fileTableEntry2File(fte), getDeleteLinks().equals(DocConstants.DELETE_LINKS));
+					File f = fileTableEntry2File(fte);
+					if (!hasWritePermission(f)){
+						noPermission();
+						return DocConstants.DOCUMENTEXPLORER;
+					}
+					distributionService.delFile(f, getDeleteLinks().equals(DocConstants.DELETE_LINKS));
 				} catch (NotAFolderException e) {
 					handleNotAFolderException(e);
 				} catch (PathNotFoundException e) {
@@ -554,7 +553,7 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 	 * @return
 	 */
 	public String clearTrash(){		
-		try {
+		try {			
 			distributionService.clearEnrollmentTrash(enrollment);
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
@@ -572,7 +571,12 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 	
 	public String deleteFolder(){
 		try {
-			distributionService.delFolder(distributionService.getFolder(this.folderPath), getDeleteLinks().equals(DocConstants.DELETE_LINKS));
+			Folder folder = distributionService.getFolder(this.folderPath);
+			if (!hasWritePermission(folder)){
+				noPermission();
+				return DocConstants.DOCUMENTEXPLORER;
+			}
+			distributionService.delFolder(folder, getDeleteLinks().equals(DocConstants.DELETE_LINKS));
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {

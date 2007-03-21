@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:fck="http://www.fck-faces.org/fck-faces"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputText value="#{msg['enrollment_main_title']}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="newDocumentToFolderForm" enctype="multipart/form-data">
+		
+			<o:block label="#{msg.doc_addfile_header}">
+				<o:input entity="fileController.file" property="name" required="true">
+				</o:input>
+				<o:input entity="fileController.file" property="message" required="true">
+				</o:input>
+				<h:outputLabel value="#{msg.doc_addfile_file}" for="document"	styleClass="field_label" rendered="#{not fileController.old}"/>
+				<t:inputFileUpload id="document" storage="file" immediate="true" styleClass="uploadField" rendered="#{not fileController.old}" required="true">					
+					<f:valueChangeListener type="org.openuss.web.docmanagement.FileUploadListener" />
+				</t:inputFileUpload>
+				<h:message for="document" styleClass="field_error" showDetail="true" showSummary="false" />
+
+			<h:outputLabel value="#{msg.doc_addfile_distributiontime}" for="distributionTime"	styleClass="field_label"/>
+			<t:inputDate id="distributionTime" popupCalendar="true" value="#{fileController.distributionTime}" type="full" ampm="false">
+			</t:inputDate>
+
+				<o:input entity="fileController" property="visibleForAll" required="true" />				
+			</o:block>
+			<o:block>
+				<h:commandButton action="#{fileController.save}"
+					value="#{msg['doc_addfile_button_save']}" styleClass="button"/>				
+				<h:commandButton action="docmanagement_documentexplorer"
+					value="#{msg['doc_addfile_button_cancel']}" styleClass="button" immediate="true"/>	
+			</o:block>
+		</h:form>
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
+</html>

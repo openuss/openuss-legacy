@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 @Bean(name="facultyFolderController", scope=Scope.SESSION)
 @View
 public class FacultyFolderController extends AbstractFacultyDocPage{
-	//FIXME add visibility	
+
 	public Folder folder;
 	
 	public boolean visibleForAll;
@@ -45,6 +45,10 @@ public class FacultyFolderController extends AbstractFacultyDocPage{
 		if (visibleForAll) folder.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ALL);
 		else if (!visibleForAll) folder.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
 		try {
+			if (!hasWritePermission(folder)){
+				noPermission();
+				return DocConstants.FACULTY_EXPLORER;
+			}
 			distributionService.changeFolder(folder, old);
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);

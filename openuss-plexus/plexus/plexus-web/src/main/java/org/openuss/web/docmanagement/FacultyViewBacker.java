@@ -37,7 +37,7 @@ import org.openuss.lecture.Faculty;
 @Bean(name="facultyViewBacker", scope=Scope.SESSION)
 @View
 public class FacultyViewBacker extends AbstractFacultyDocPage{
-	//FIXME add visibility
+
 	@Property(value="#{distributionService}")
 	public DistributionService distributionService;
 
@@ -46,9 +46,6 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 	
 	@Property(value="#{facultyFolderController}")
 	public FacultyFolderController facultyFolderController;
-
-	@Property(value="#{faculty}")
-	public Faculty faculty;
 
 	private static final Logger logger = Logger.getLogger(FacultyViewBacker.class);
 
@@ -120,6 +117,7 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 	 * @return TreeNodeBase object as result of conversion
 	 */
 	private TreeNodeBase folder2TreeNodeBase(Folder folder){
+		if (!hasReadPermission(folder)) folder = null;
 		if (folder==null) return new TreeNodeBase();
 		TreeNodeBase tn = new TreeNodeBase("folder", folder.getName(), folder.getPath(), (folder.getSubnodes()==null));
 		Folder subFolder = null;
@@ -131,7 +129,7 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 				subFolder = null; 
 				if (o instanceof Folder) {
 					subFolder = (Folder) o;					
-				}	
+				}				
 				if (subFolder!=null) tn.getChildren().add(folder2TreeNodeBase(subFolder));
 				}
 		}
@@ -146,7 +144,12 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 		String path = getFolderPath();
 		if (path.startsWith("/")) path = path.substring(1);			
 		try {
-			facultyFolderController.setFolder(distributionService.getFolder(path));
+			Folder folder = distributionService.getFolder(path);
+			if (!hasWritePermission(folder)){
+				noPermission();
+				return DocConstants.EDITFACULTYFOLDER;
+			}
+			facultyFolderController.setFolder(folder);
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
@@ -230,6 +233,10 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 			if (path.startsWith("/")) path = path.substring(1);
 			try {
 				folder = distributionService.getFolder(path);
+				if (!hasReadPermission(folder)){
+					noPermission();
+					return al;
+				}
 			} catch (NotAFolderException e) {
 				handleNotAFolderException(e);
 			} catch (PathNotFoundException e) {
@@ -249,23 +256,25 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 				Iterator nodeIterator = subnodes.iterator();
 				while (nodeIterator.hasNext()){
 					Resource r = (Resource) nodeIterator.next();
-					if (r instanceof File) {
-						FileTableEntry fte = new FileTableEntry();
-						f = (File) r;
-						fte.setCreated(f.getCreated());
-						fte.setDistributionTime(f.getDistributionTime());
-						fte.setId(f.getId());
-						fte.setLastModification(f.getLastModification());
-						fte.setLength(f.getLength());
-						fte.setMessage(f.getMessage());
-						fte.setMimeType(f.getMimeType());
-						fte.setName(f.getName());
-						fte.setPath(f.getPath());
-						fte.setPredecessor(f.getPredecessor());
-						fte.setVersion(f.getVersion());
-						fte.setVisibility(f.getVisibility());					
-						al.add((FileTableEntry)fte);					
-					}
+					if (hasReadPermission(r)) {
+						if (r instanceof File) {
+							FileTableEntry fte = new FileTableEntry();
+							f = (File) r;
+							fte.setCreated(f.getCreated());
+							fte.setDistributionTime(f.getDistributionTime());
+							fte.setId(f.getId());
+							fte.setLastModification(f.getLastModification());
+							fte.setLength(f.getLength());
+							fte.setMessage(f.getMessage());
+							fte.setMimeType(f.getMimeType());
+							fte.setName(f.getName());
+							fte.setPath(f.getPath());
+							fte.setPredecessor(f.getPredecessor());
+							fte.setVersion(f.getVersion());
+							fte.setVisibility(f.getVisibility());
+							al.add((FileTableEntry) fte);
+						}
+					}					
 				}
 			}
 		}
@@ -286,6 +295,10 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 		BigFile bigFile = new BigFileImpl();
 		try {
 			File file = distributionService.getFile(path);
+			if (!hasReadPermission(file)){
+				noPermission();
+				return DocConstants.FACULTY_EXPLORER;
+			}
 			bigFile = distributionService.getFile(file);
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
@@ -299,7 +312,15 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 			handleDocManagementException(e);
 		}		
 
-	
+		triggerDownload(bigFile);
+		return DocConstants.FACULTY_EXPLORER;
+	}
+
+	/**
+	 * convenience method which trigger the download
+	 * @param bigFile
+	 */
+	private void triggerDownload(BigFile bigFile) {
 		FacesContext context = FacesContext.getCurrentInstance();
 	    HttpServletResponse response = 
 		         (HttpServletResponse) context.getExternalContext().getResponse();
@@ -321,7 +342,6 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 			logger.error("IOException: ", e);
 		}
         FacesContext.getCurrentInstance().responseComplete();
-		return DocConstants.FACULTY_EXPLORER;
 	}
 	
 	/**
@@ -496,8 +516,7 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 				} catch (DocManagementException e) {
 					handleDocManagementException(e);
 				}		
-		}	
-		
+		}			
 		return DocConstants.FACULTY_EXPLORER;
 	}
 	
@@ -524,7 +543,12 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 	
 	public String deleteFolder(){
 		try {
-			distributionService.delFolder(distributionService.getFolder(this.folderPath), getDeleteLinks().equals(DocConstants.DELETE_LINKS));
+			Folder folder = distributionService.getFolder(this.folderPath);
+			if (!hasWritePermission(folder)){
+				noPermission();
+				return DocConstants.FACULTY_EXPLORER;
+			}			
+			distributionService.delFolder(folder, getDeleteLinks().equals(DocConstants.DELETE_LINKS));
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
@@ -595,14 +619,6 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 
 	public void setDeleteLinks(String deleteLinks) {
 		this.deleteLinks = deleteLinks;
-	}
-
-	public Faculty getFaculty() {
-		return faculty;
-	}
-
-	public void setFaculty(Faculty faculty) {
-		this.faculty = faculty;
 	}
 	
 	public boolean isFolderTrash(){

@@ -26,7 +26,7 @@ import org.openuss.docmanagement.ResourceAlreadyExistsException;
 @Bean(name="fileController", scope=Scope.SESSION)
 @View
 public class FileController extends AbstractEnrollmentDocPage{
-	//FIXME add visibility	
+	
 	@Property(value = "#{distributionService}")
 	DistributionService distributionService;
 	
@@ -55,6 +55,10 @@ public class FileController extends AbstractEnrollmentDocPage{
 		if (visibleForAll) file.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ALL);
 		else if (!visibleForAll) file.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
 		try {
+			if (!hasWritePermission(file)){
+				noPermission();
+				return DocConstants.DOCUMENTEXPLORER;
+			}
 			distributionService.changeFile(file, old);
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);

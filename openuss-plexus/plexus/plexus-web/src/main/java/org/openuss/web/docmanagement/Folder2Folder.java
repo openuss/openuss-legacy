@@ -32,15 +32,12 @@ import org.openuss.docmanagement.DocConstants;
 @Bean(name="folder2Folder", scope=Scope.SESSION)
 @View
 public class Folder2Folder extends AbstractEnrollmentDocPage{
-	//FIXME add visibility
+
 	public static final Logger logger = Logger.getLogger(Folder2Folder.class);
 	
 	@Property(value="#{distributionService}")
 	public DistributionService distributionService;
 
-	@Property(value="#{enrollment}")
-	public Enrollment enrollment;
-	
 	@Property(value="#{faculty}")
 	public Faculty faculty;
 	
@@ -148,8 +145,14 @@ public class Folder2Folder extends AbstractEnrollmentDocPage{
 					subFile= (File)((Link) o).getTarget();					
 				}	
 
-				if (subFolder!=null) tn.getChildren().add(folder2TreeNodeBase(subFolder, includeFiles));
-				if (includeFiles) if((subFile!=null)) tn.getChildren().add(new TreeNodeBase("file", subFile.getName(), subFile.getPath(), true));
+				if (subFolder!=null) {
+					if (hasReadPermission(subFolder))
+						tn.getChildren().add(folder2TreeNodeBase(subFolder, includeFiles));
+				}
+				if (includeFiles) if((subFile!=null)) {
+					if (hasReadPermission(subFile))
+						tn.getChildren().add(new TreeNodeBase("file", subFile.getName(), subFile.getPath(), true));
+				}
 			}
 		}
 		return tn;		
@@ -161,6 +164,7 @@ public class Folder2Folder extends AbstractEnrollmentDocPage{
 	 */
 	public String link(){
 		try {
+			//FIXME fix me!!!
 			File file = distributionService.getFile(this.sourcePath);
 			Folder folder = distributionService.getFolder(this.targetPath);
 			Link link = new LinkImpl(); 
@@ -193,7 +197,16 @@ public class Folder2Folder extends AbstractEnrollmentDocPage{
 	public String copy(){
 		try {
 			File file = distributionService.getFile(this.sourcePath);
+			if (!hasReadPermission(file)){
+				noPermission();
+				return DocConstants.FOLDERTOFOLDER;
+			}
 			Folder folder = distributionService.getFolder(this.targetPath);
+			if (!hasWritePermission(folder)){
+				noPermission();
+				return DocConstants.FOLDERTOFOLDER;
+			}
+
 			distributionService.copyFile(file, folder);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
@@ -215,14 +228,6 @@ public class Folder2Folder extends AbstractEnrollmentDocPage{
 	
 	public void setDistributionService(DistributionService distributionService) {
 		this.distributionService = distributionService;
-	}
-
-	public Enrollment getEnrollment() {
-		return enrollment;
-	}
-
-	public void setEnrollment(Enrollment enrollment) {
-		this.enrollment = enrollment;
 	}
 
 	public Faculty getFaculty() {

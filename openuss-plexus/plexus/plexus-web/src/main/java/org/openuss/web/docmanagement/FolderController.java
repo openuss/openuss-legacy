@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 @Bean(name="folderController", scope=Scope.SESSION)
 @View
 public class FolderController extends AbstractEnrollmentDocPage{
-	//FIXME add visibility tests
+
 	public Folder folder;
 	
 	public boolean visibleForAll;
@@ -45,7 +45,11 @@ public class FolderController extends AbstractEnrollmentDocPage{
 		if (visibleForAll) folder.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ALL);
 		else if (!visibleForAll) folder.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
 		try {
-			distributionService.changeFolder(folder, old);
+			if (!hasWritePermission(folder)){
+				noPermission();
+				return DocConstants.DOCUMENTEXPLORER;
+			}
+			distributionService.changeFolder(folder, old);			
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
