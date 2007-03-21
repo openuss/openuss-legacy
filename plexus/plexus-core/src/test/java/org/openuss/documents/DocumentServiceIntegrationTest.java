@@ -29,7 +29,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	private FolderEntryDao folderEntryDao;
 	
 
-	public void testFolderEntries() throws DocumentApplicationExcepion {
+	public void testFolderEntries() throws DocumentApplicationException {
 		DomainObject domainObject = createDomainObject();
 		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, null);
 		assertNotNull(entries);
@@ -62,7 +62,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertEquals(0, entries.size());
 	}
 
-	public void testFolderPath() throws DocumentApplicationExcepion {
+	public void testFolderPath() throws DocumentApplicationException {
 		DomainObject domainObject = createDomainObject();
 		Folder root = documentService.getFolder(domainObject, null);
 		
@@ -87,7 +87,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertEquals(subFolder3, folderPath.get(3));
 	}
 	
-	public void testFolderAddRemoving() throws DocumentApplicationExcepion {
+	public void testFolderAddRemoving() throws DocumentApplicationException {
 		DomainObject domainObject = createDomainObject();
 		Folder root = documentService.getFolder(domainObject, null);
 		
@@ -132,7 +132,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertNull(folderEntry);
 	}
 	
-	public void testFileEntry() throws DocumentApplicationExcepion {
+	public void testFileEntry() throws DocumentApplicationException {
 		testUtility.createSecureContext();
 		DomainObject domainObject = createDomainObject();
 		Folder root = documentService.getFolder(domainObject, null);

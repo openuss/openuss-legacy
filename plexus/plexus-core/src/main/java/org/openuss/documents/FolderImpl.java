@@ -84,7 +84,7 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 
 	@Override
 	public String getExtension() {
-		return null;
+		return "folder";
 	}
 
 	@Override

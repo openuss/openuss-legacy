@@ -23,8 +23,7 @@
 
 		<t:column>
 			<plexus:commandSortHeader columnName="size"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
-			<h:graphicImage value="/images/filetypes/folder.png" rendered="#{entry.folder}"/>
-			<h:graphicImage value="/images/filetypes/#{entry.extension}.gif" rendered="#{!entry.folder}"/>
+			<h:graphicImage value="/images/filetypes/#{entry.extension}.gif"/>
 		</t:column>
 
 		<t:column>

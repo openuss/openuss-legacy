@@ -33,18 +33,28 @@
 	<ui:define name="content">
 		<h:form id="addZipForm" enctype="multipart/form-data">
 			<o:block label="#{msg.document_addzip_header}" styleClass="form_box">
+				<p class="content_font_normal">
+					Bitte wählen Sie eine ZIP-Datei aus. Die Zip-Datei wird entpackt und die enthalten Ordner und Dateien werden
+					entsprechend im System angelegt.
+				</p>
+				<h:outputText value="Zielordner" styleClass="field_label"/>
+				<span class="content_font_normal">
+					<t:dataList var="folder" layout="list" value="#{views$secured$documents$documents.path}">
+						/<h:outputText value="#{folder.name}" />
+					</t:dataList>
+				</span>
 				<h:outputLabel value="#{msg.newdocument_file}" for="newDocument" styleClass="field_label" />
 				<t:inputFileUpload id="newDocument" storage="file" accept="*" immediate="true" styleClass="uploadField">
 					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
 				</t:inputFileUpload>
-<!-- 
-				<o:input entity="views$secured$documents$addzip" property="releaseDate" required="true"/>
- -->
+				<!-- 
+					<o:input entity="views$secured$documents$addzip" property="releaseDate"/>
+				 -->
 			</o:block>
 			
 			<o:block>
 				<h:commandButton id="btn_save" action="#{views$secured$documents$addzip.unzip}" value="#{msg.save}" title="#{msg.save_hint}" styleClass="button_save" />
-				<h:commandButton id="btn_cancel" action="enrollment_documents" value="#{msg.cancel}" styleClass="button_cancel" immediate="true" />
+				<h:commandButton id="btn_cancel" action="documents_main" value="#{msg.cancel}" styleClass="button_cancel" immediate="true" />
 			</o:block>
 		</h:form>
 	</ui:define>

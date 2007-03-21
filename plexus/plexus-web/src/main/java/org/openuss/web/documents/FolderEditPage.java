@@ -5,7 +5,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
-import org.openuss.documents.DocumentApplicationExcepion;
+import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.Folder;
 import org.openuss.web.Constants;
 
@@ -18,7 +18,7 @@ public class FolderEditPage extends AbstractDocumentPage{
 	private Folder selectedFolder;
 
 
-	public String save() throws DocumentApplicationExcepion{
+	public String save() throws DocumentApplicationException{
 		logger.debug("new folder saved");
 		if (selectedFolder != null && selectedFolder.getId() == null) {
 			documentService.createFolderEntry(selectedFolder, currentFolder);

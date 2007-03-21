@@ -16,7 +16,6 @@ import org.openuss.documents.FolderEntryInfo;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$documents$documents", scope = Scope.REQUEST)
@@ -26,7 +25,7 @@ public class DocumentsMainPage extends AbstractDocumentPage{
 	
 	private DocumentDataProvider data = new DocumentDataProvider();
 	
-	private List<FolderEntryInfo> selectedFiles = new ArrayList<FolderEntryInfo>();
+	private List<FolderEntryInfo> selectedEntries = new ArrayList<FolderEntryInfo>();
 	
 	@Prerender
 	public void prerender() throws LectureException {
@@ -43,9 +42,9 @@ public class DocumentsMainPage extends AbstractDocumentPage{
 		}
 		
 		if (Boolean.TRUE.equals(event.getNewValue())) {
-			selectedFiles.add(entry);
+			selectedEntries.add(entry);
 		} else if (Boolean.FALSE.equals(event.getNewValue())) {
-			selectedFiles.remove(entry);
+			selectedEntries.remove(entry);
 		}
 	}
 	
@@ -70,7 +69,11 @@ public class DocumentsMainPage extends AbstractDocumentPage{
 	}
 	
 	public String delete(){
-		logger.debug("document deleted");
+		logger.debug("deleting documents:");
+		if (selectedEntries.size() > 0) {
+			setSessionBean(Constants.SELECTED_FOLDERENTRIES, selectedEntries);
+			return Constants.DOCUMENTS_REMOVE_FOLDERENTRY_PAGE;
+		}
 		return Constants.SUCCESS;
 	}
 	
@@ -95,6 +98,10 @@ public class DocumentsMainPage extends AbstractDocumentPage{
 		}
 	}
 
+	public List<FolderEntryInfo> getSelectedEntries () {
+		return selectedEntries;
+	}
+	
 	public DocumentDataProvider getData() {
 		return data;
 	}
@@ -104,9 +111,7 @@ public class DocumentsMainPage extends AbstractDocumentPage{
 		this.data = data;
 	}
 
-	public List<Folder> getPath() {
-		return documentService.getFolderPath(currentFolder);
-	}
+
 
 	
 }
