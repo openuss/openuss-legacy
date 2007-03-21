@@ -9,7 +9,7 @@ import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
 
-public class ExceptionHandler{
+public abstract class ExceptionHandler{
 	
 	public static final Logger exceptionLogger = Logger.getLogger(ExceptionHandler.class); 
 	
@@ -41,5 +41,11 @@ public class ExceptionHandler{
 		exceptionLogger.error(e.getMessage(), e);
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(),null);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	
+	
+	public void noPermission(){
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "No Permission Error",null);
+		FacesContext.getCurrentInstance().addMessage(null, msg);		
 	}
 }

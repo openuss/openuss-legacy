@@ -26,21 +26,18 @@ import org.openuss.docmanagement.File;
 import org.openuss.docmanagement.FileImpl;
 import org.openuss.docmanagement.Folder;
 import org.openuss.docmanagement.FolderImpl;
-import org.openuss.docmanagement.InformationService;
 import org.openuss.docmanagement.NotAFileException;
 import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.Resource;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
 import org.openuss.docmanagement.DocConstants;
-import org.openuss.docmanagement.DocRights;
-import org.openuss.lecture.Enrollment;
-import org.openuss.security.User;
+
 
 @Bean(name="distributionViewBacker", scope=Scope.SESSION)
 @View
-public class DistributionViewBacker extends ExceptionHandler{
-
+public class DistributionViewBacker extends AbstractEnrollmentDocPage{
+	//FIXME add visibility
 	@Property(value="#{distributionService}")
 	public DistributionService distributionService;
 
@@ -50,14 +47,6 @@ public class DistributionViewBacker extends ExceptionHandler{
 	@Property(value="#{folderController}")
 	public FolderController folderController;
 
-	@Property(value="#{enrollment}")
-	public Enrollment enrollment;
-	
-	@Property(value="#{informationService}")
-	public InformationService informationService;
-	
-	@Property(value="#{user}")
-	public User user;
 
 	private static final Logger logger = Logger.getLogger(DistributionViewBacker.class);
 
@@ -96,19 +85,6 @@ public class DistributionViewBacker extends ExceptionHandler{
 	 * String which saves what should happen when linked files are deleted
 	 */
 	public String deleteLinks;
-	
-	private boolean hasReadPermission(Resource resource){		
-		if ((resource.getVisibility()&DocRights.READ_ALL)>0) return true;
-		if ((resource.getVisibility()&DocRights.READ_ASSIST)>0){
-			if (informationService.userIsAssitant(enrollment, user.getUsername())) return true;
-		}
-		if ((resource.getVisibility()&DocRights.READ_OWNER)>0){
-			if (informationService.userIsAssitant(enrollment, user.getUsername())||informationService.userIsOwner(resource.getPath(), user.getUsername())) return true;
-		}
-		
-		return false;
-	}
-	
 	
 	/**
 	 * @return treeModel displayed by tree2 component
@@ -175,7 +151,12 @@ public class DistributionViewBacker extends ExceptionHandler{
 		String path = getFolderPath();
 		if (path.startsWith("/")) path = path.substring(1);			
 		try {
-			folderController.setFolder(distributionService.getFolder(path));
+			Folder f = distributionService.getFolder(path);
+			if (!hasWritePermission(f)){
+				noPermission();
+				return DocConstants.EDITFOLDER;
+			}
+			folderController.setFolder(f);
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
@@ -198,7 +179,23 @@ public class DistributionViewBacker extends ExceptionHandler{
 	public String newFolder(){
 		Folder folder = new FolderImpl();
 		String path = getFolderPath();
-		if (path.startsWith("/")) path = path.substring(1);	
+		if (path.startsWith("/")) path = path.substring(1);
+		try {
+			if (!hasWritePermission(distributionService.getFolder(path))) {
+				noPermission();
+				return DocConstants.EDITFOLDER;
+			}
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
+		} catch (PathNotFoundException e) {
+			handlePathNotFoundException(e);
+		} catch (ResourceAlreadyExistsException e) {
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}		
 		folder.setPath(path);
 		folderController.setFolder(folder);
 		return DocConstants.EDITFOLDER;
@@ -214,6 +211,10 @@ public class DistributionViewBacker extends ExceptionHandler{
 		BigFile bigFile = new BigFileImpl();
 		try {
 			File file = distributionService.getFile(path);
+			if (!hasWritePermission(file)){
+				noPermission();
+				return DocConstants.NEWDOCUMENTTOFOLDER; 
+			}
 			bigFile = distributionService.getFile(file);
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
@@ -241,6 +242,23 @@ public class DistributionViewBacker extends ExceptionHandler{
 		String path = getFolderPath();
 		if (path.startsWith("/")) path = path.substring(1);
 		bf.setPath(path);
+		try{
+			File f = distributionService.getFile(path);
+			if (!hasWritePermission(f)){
+				noPermission();
+				return DocConstants.NEWDOCUMENTTOFOLDER;
+			}
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
+		} catch (PathNotFoundException e) {
+			handlePathNotFoundException(e);
+		} catch (ResourceAlreadyExistsException e) {
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}	
 		fileController.setFile(bf);
 		fileController.setOld(false);
 		return DocConstants.NEWDOCUMENTTOFOLDER;	
@@ -626,34 +644,10 @@ public class DistributionViewBacker extends ExceptionHandler{
 	public void setDeleteLinks(String deleteLinks) {
 		this.deleteLinks = deleteLinks;
 	}
-
-	public Enrollment getEnrollment() {
-		return enrollment;
-	}
-
-	public void setEnrollment(Enrollment enrollment) {
-		this.enrollment = enrollment;
-	}
 	
 	public boolean isFolderTrash(){
 		if (this.folderPath==null) return false;
 		return this.folderPath.endsWith(DocConstants.TRASH_NAME);
-	}
-
-	public InformationService getInformationService() {
-		return informationService;
-	}
-
-	public void setInformationService(InformationService informationService) {
-		this.informationService = informationService;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 }

@@ -21,8 +21,8 @@ import org.apache.log4j.Logger;
 
 @Bean(name="facultyFolderController", scope=Scope.SESSION)
 @View
-public class FacultyFolderController extends ExceptionHandler{
-	
+public class FacultyFolderController extends AbstractFacultyDocPage{
+	//FIXME add visibility	
 	public Folder folder;
 	
 	public boolean visibleForAll;

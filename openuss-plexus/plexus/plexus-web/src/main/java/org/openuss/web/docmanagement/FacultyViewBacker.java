@@ -36,8 +36,8 @@ import org.openuss.lecture.Faculty;
 
 @Bean(name="facultyViewBacker", scope=Scope.SESSION)
 @View
-public class FacultyViewBacker extends ExceptionHandler{
-
+public class FacultyViewBacker extends AbstractFacultyDocPage{
+	//FIXME add visibility
 	@Property(value="#{distributionService}")
 	public DistributionService distributionService;
 

@@ -31,8 +31,8 @@ import org.openuss.docmanagement.DocConstants;
 
 @Bean(name="folder2Folder", scope=Scope.SESSION)
 @View
-public class Folder2Folder extends ExceptionHandler{
-	
+public class Folder2Folder extends AbstractEnrollmentDocPage{
+	//FIXME add visibility
 	public static final Logger logger = Logger.getLogger(Folder2Folder.class);
 	
 	@Property(value="#{distributionService}")

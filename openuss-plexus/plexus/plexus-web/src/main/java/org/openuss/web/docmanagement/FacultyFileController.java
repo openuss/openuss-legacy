@@ -25,8 +25,8 @@ import org.openuss.docmanagement.ResourceAlreadyExistsException;
 
 @Bean(name="facultyFileController", scope=Scope.SESSION)
 @View
-public class FacultyFileController extends ExceptionHandler{
-	
+public class FacultyFileController extends AbstractFacultyDocPage{
+	//FIXME add visibility	
 	@Property(value = "#{distributionService}")
 	DistributionService distributionService;
 	
