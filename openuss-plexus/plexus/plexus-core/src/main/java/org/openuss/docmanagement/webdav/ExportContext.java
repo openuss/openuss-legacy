@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,7 +21,7 @@ import org.apache.log4j.Logger;
  * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.9
  */
-public class ExportContext implements IOContext {
+public class ExportContext extends IOContext {
 	private final Logger logger = Logger.getLogger(ExportContext.class);
 	
 	private final OutputContext context;
@@ -45,6 +44,7 @@ public class ExportContext implements IOContext {
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.IOContext#hasStream()
 	 */
+	@Override
 	public boolean hasStream() {
 		if (context == null) {
 			return false;
@@ -55,6 +55,7 @@ public class ExportContext implements IOContext {
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.IOContext#informCompleted(boolean)
 	 */
+	@Override
 	public void informCompleted(boolean success) {
 		checkCompleted();
 
@@ -115,29 +116,11 @@ public class ExportContext implements IOContext {
 			outputFile.delete();
 		}
 	}
-	
-	/**
-	 * Copies data from {@link InputStream} to {@link OutputStream}.
-	 * @param inputStream The data source.
-	 * @param outputStream The data target.
-	 * @throws IOException
-	 */
-	private void transferData(InputStream inputStream, OutputStream outputStream) throws IOException {
-		try {
-			// read in 8k-blocks until end of input stream is reached
-			byte[] buffer = new byte[8192];
-			int readBytes;
-			while ((readBytes = inputStream.read(buffer)) > 0) {
-				outputStream.write(buffer, 0, readBytes);
-			}
-		} finally {
-			inputStream.close();
-		}
-	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.IOContext#isCompleted()
 	 */
+	@Override
 	public boolean isCompleted() {
 		return completed;
 	}

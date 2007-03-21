@@ -50,6 +50,8 @@
 	<bean id="sessionProvider" class="org.openuss.docmanagement.webdav.SessionProvider">
 		<property name="repository" ref="repository"></property>
 		<property name="authenticationManager" ref="authenticationManager"></property>
+		<property name="securityService" ref="securityService"></property>
+		<property name="desktopService" ref="desktopService"></property>
 	</bean>
 	
 </beans>

@@ -326,18 +326,20 @@ public abstract class DavResource {
 		// TODO filtern?
 		
 		ImportContext importContext = null;
-		
-		if (context != null) {
-			importContext = new ImportContext(context, Text.getName(resource.getLocator().getRepositoryPath()));
-		}
-
-		if (!resource.importContent(importContext)) {
-			throw new DavException(HttpStatus.SC_UNSUPPORTED_MEDIA_TYPE);
-		}
-		
 		try {
+			
+			if (context != null) {
+				importContext = new ImportContext(context, Text.getName(resource.getLocator().getRepositoryPath()));
+			}
+			
+			if (!resource.importContent(importContext)) {
+				throw new DavException(HttpStatus.SC_UNSUPPORTED_MEDIA_TYPE);
+			}
+			
 			// HÄ?
 			representedNode.save();
+		} catch (IOException ex) {
+			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
 		} catch (RepositoryException ex) {
 			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
