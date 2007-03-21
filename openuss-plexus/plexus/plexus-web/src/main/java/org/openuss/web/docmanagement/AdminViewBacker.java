@@ -18,30 +18,9 @@ public class AdminViewBacker{
 	@Property(value="#{distributionService}")
 	public DistributionService distributionService;
 
-	/**
-	 * only for testing purposes 
-	 * @return
-	 */	
-	public String addTestStructure(){
-		try{
-			((DistributionServiceImpl)distributionService).buildTestStructure();
-		} catch (Exception e){
-			logger.error(e);
-		}
-		return DocConstants.DOCUMENTEXPLORER;
-	}
 
 	
-	public String clearRepository(){
-		try{
-			((DistributionServiceImpl)distributionService).clearRepository();
-		} catch (Exception e){
-			logger.error(e);
-		}
-		return DocConstants.DOCUMENTEXPLORER;
-	}
-
-	public String buildMainRepositoryStructure(){
+		public String buildMainRepositoryStructure(){
 		try{
 			((DistributionServiceImpl)distributionService).buildMainRepositoryStructure();
 		} catch (Exception e){

@@ -60,10 +60,13 @@ public class FolderDao extends ResourceDao {
 						node = node.getNode(path);
 					}
 					catch (javax.jcr.PathNotFoundException e1){
+						logout(session);
 						throw new org.openuss.docmanagement.PathNotFoundException("folder does not exist");
 					}
-			if (!node.isNodeType(DocConstants.DOC_FOLDER))
+			if (!node.isNodeType(DocConstants.DOC_FOLDER)){
+				logout(session);
 				throw new NotAFolderException("resource at path  '"+ path + "' is not a folder");
+			}
 			fi = new FolderImpl(
 					node.getUUID(),
 					node.getProperty(DocConstants.PROPERTY_MESSAGE).getString(),
@@ -72,37 +75,7 @@ public class FolderDao extends ResourceDao {
 					null, 
 					(int) node.getProperty(DocConstants.PROPERTY_VISIBILITY).getLong());
 			fi.setCreated(new Timestamp(node.getProperty(DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
-			Vector<Resource> v = new Vector<Resource>();
-			NodeIterator ni = node.getNodes();
-			Node n;
-			String newPath = "";
-			String filePath;
-			while (ni.hasNext()) {
-				n = ni.nextNode();
-				if (!n.getName().startsWith("jcr:")) {
-					if (n.isNodeType(DocConstants.DOC_FOLDER)) {
-						if (path != "")
-							newPath = path + "/" + n.getName();
-						if (path == "")
-							newPath = n.getName(); // path in root
-						v.add(getFolder(newPath));
-					}
-					if (n.isNodeType(DocConstants.DOC_FILE)) {
-						filePath = n.getPath();						
-						if (filePath.startsWith("/")) filePath = filePath.substring(1);
-						v.add(fileDao.getFile(filePath));
-					}
-					if (n.isNodeType(DocConstants.DOC_LINK)) {
-						filePath = n.getPath();						
-						if (filePath.startsWith("/")) filePath = filePath.substring(1);
-						//if links to folders should be possible, differ here
-						v.add(linkDao.getLink(filePath));
-					}
-					
-				}
-			}
-			if (v.size() > 0)
-				fi.setSubnodes(v);
+			insertSubnodes(path, fi, node);
 			logout(session);
 		} catch (PathNotFoundException e){
 			throw e;
@@ -114,6 +87,50 @@ public class FolderDao extends ResourceDao {
 			throw new  DocManagementException("RepositoryException occured");
 		}
 		return fi;
+	}
+
+	/**
+	 * convenienceMethod to insert Subnodes
+	 * @param path
+	 * @param fi
+	 * @param node
+	 * @throws RepositoryException
+	 * @throws PathNotFoundException
+	 * @throws NotAFolderException
+	 * @throws NotAFileException
+	 * @throws DocManagementException
+	 */
+	private void insertSubnodes(String path, FolderImpl fi, Node node) throws RepositoryException, PathNotFoundException, NotAFolderException, NotAFileException, DocManagementException {
+		Vector<Resource> v = new Vector<Resource>();
+		NodeIterator ni = node.getNodes();
+		Node n;
+		String newPath = "";
+		String filePath;
+		while (ni.hasNext()) {
+			n = ni.nextNode();
+			if (!n.getName().startsWith("jcr:")) {
+				if (n.isNodeType(DocConstants.DOC_FOLDER)) {
+					if (path != "")
+						newPath = path + "/" + n.getName();
+					if (path == "")
+						newPath = n.getName(); // path in root
+					v.add(getFolder(newPath));
+				}
+				if (n.isNodeType(DocConstants.DOC_FILE)) {
+					filePath = n.getPath();						
+					if (filePath.startsWith("/")) filePath = filePath.substring(1);
+					v.add(fileDao.getFile(filePath));
+				}
+				if (n.isNodeType(DocConstants.DOC_LINK)) {
+					filePath = n.getPath();						
+					if (filePath.startsWith("/")) filePath = filePath.substring(1);
+					//if links to folders should be possible, differ here
+					v.add(linkDao.getLink(filePath));
+				}					
+			}
+		}
+		if (v.size() > 0)
+			fi.setSubnodes(v);
 	}
 
 	/**
@@ -130,7 +147,10 @@ public class FolderDao extends ResourceDao {
 			String path = folder.getPath();
 			if (path.startsWith("/")) path = path.substring(1);
 			if (path!="") node = node.getNode(path);
-			if (node.hasNode(folder.getName())) throw new ResourceAlreadyExistsException ("Folder already exists");
+			if (node.hasNode(folder.getName())) {
+				logout(session);
+				throw new ResourceAlreadyExistsException ("Folder already exists");
+			}
 			node.addNode(folder.getName(), DocConstants.DOC_FOLDER);
 			node = node.getNode(folder.getName());
 			node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
@@ -164,7 +184,10 @@ public class FolderDao extends ResourceDao {
 			session.save();
 			//if nodename has changed, move node
 			if (!node.getPath().equals(node.getParent().getPath() + "/" + folder.getName())){
-				if (node.getParent().hasNode(folder.getName())) throw new ResourceAlreadyExistsException("A Folder with that name already exists!");
+				if (node.getParent().hasNode(folder.getName())) {
+					logout(session);
+					throw new ResourceAlreadyExistsException("A Folder with that name already exists!");
+				}
 				
 				session.move(node.getPath(), node.getParent().getPath() + "/" + folder.getName());
 			}
@@ -179,43 +202,8 @@ public class FolderDao extends ResourceDao {
 		}
 	}
 	
-	//TODO remove me
-	public void addTestStructure(){
-		FolderImpl folder1 = new FolderImpl("TestMessage", "test", "", null, DocRights.EDIT_ALL|DocRights.READ_ALL);
-		FolderImpl folder2 = new FolderImpl("Sebastian Roekens", "Folder 1", "test", null, DocRights.EDIT_ALL|DocRights.READ_ALL);
-		FolderImpl folder3 = new FolderImpl("Distribution", "Distribution", "test", null, DocRights.EDIT_ALL|DocRights.READ_ALL);
-		byte[] ba = {65,66,67};
-		ByteArrayInputStream bais = new ByteArrayInputStream(ba);
-		BigFileImpl bfi = new BigFileImpl(new Timestamp(System.currentTimeMillis()),new Timestamp(System.currentTimeMillis()), 3, "TestDatei", "pdf", "test.pdf", "test/Distribution", null, 1, DocRights.EDIT_ALL|DocRights.READ_ALL, bais);
-		try {
-			setFolder(folder1);
-			setFolder(folder2);
-			setFolder(folder3);
-			fileDao.setFile(bfi);
-		} catch (Exception e) {
-			logger.error(e);
-		}
-	}
-	
-	//TODO remove me
-	public void clearRepository(){
-		try{
-			Session session = login(repository);
-			Node node  = session.getRootNode();
-			NodeIterator ni = node.getNodes();
-			Node delMe;
-			while (ni.hasNext()){
-				delMe = ni.nextNode();
-				if (!((delMe.getName().startsWith("jcr:")||delMe.getName().startsWith("rep:")))) delMe.remove();
-			}
-			logout(session);
-		} catch (Exception e){
-			logger.error("Exception: ", e);
-		}
 		
-	}
-	
-	//TODO leave here?
+	//TODO move to RepositoryStartup
 	public void buildMainRepositoryStructure(){
 		try{
 			Folder dist = new FolderImpl("Main distribution folder", DocConstants.DISTRIBUTION, "", null, DocRights.READ_OWNER|DocRights.EDIT_OWNER);

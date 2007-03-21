@@ -38,10 +38,6 @@ public class Folder2Folder extends AbstractEnrollmentDocPage{
 	@Property(value="#{distributionService}")
 	public DistributionService distributionService;
 
-	@Property(value="#{faculty}")
-	public Faculty faculty;
-	
-	
 	/**
 	 * source tree, which contains the files and folder of faculty
 	 */
@@ -140,10 +136,6 @@ public class Folder2Folder extends AbstractEnrollmentDocPage{
 				if (o instanceof File) {
 					subFile= (File) o;					
 				}	
-				if (o instanceof Link) {
-					//has to be differed, if links to folders are possible
-					subFile= (File)((Link) o).getTarget();					
-				}	
 
 				if (subFolder!=null) {
 					if (hasReadPermission(subFolder))
@@ -164,7 +156,6 @@ public class Folder2Folder extends AbstractEnrollmentDocPage{
 	 */
 	public String link(){
 		try {
-			//FIXME fix me!!!
 			File file = distributionService.getFile(this.sourcePath);
 			Folder folder = distributionService.getFolder(this.targetPath);
 			Link link = new LinkImpl(); 
@@ -228,14 +219,6 @@ public class Folder2Folder extends AbstractEnrollmentDocPage{
 	
 	public void setDistributionService(DistributionService distributionService) {
 		this.distributionService = distributionService;
-	}
-
-	public Faculty getFaculty() {
-		return faculty;
-	}
-
-	public void setFaculty(Faculty faculty) {
-		this.faculty = faculty;
 	}
 
 	public String getSourcePath() {

@@ -26,6 +26,8 @@ import org.openuss.docmanagement.File;
 import org.openuss.docmanagement.FileImpl;
 import org.openuss.docmanagement.Folder;
 import org.openuss.docmanagement.FolderImpl;
+import org.openuss.docmanagement.Link;
+import org.openuss.docmanagement.LinkImpl;
 import org.openuss.docmanagement.NotAFileException;
 import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
@@ -77,13 +79,17 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 	 */
 	public ArrayList<FileTableEntry> data;
 
-	//TODO delete
-	//securityContext.getAuthentication().getName();
 	
 	/**
 	 * String which saves what should happen when linked files are deleted
 	 */
 	public String deleteLinks;
+	
+	
+	/**
+	 * String to save the path to a link, when it should be deleted
+	 */
+	private String savePathToLink;
 	
 	/**
 	 * @return treeModel displayed by tree2 component
@@ -167,7 +173,6 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
-
 		return DocConstants.EDITFOLDER;
 	}
 	
@@ -207,13 +212,14 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 		} catch (ResourceAlreadyExistsException e) {
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
-			handleNotAFileException(e);
+			return changeLink();			
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
 
 		fileController.setFile(bigFile);
 		fileController.setOld(true);
+		fileController.setLink(false);
 		return DocConstants.NEWDOCUMENTTOFOLDER;
 	}
 	
@@ -277,39 +283,66 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 				handleDocManagementException(e);
 			}		
 
-			Collection subnodes = folder.getSubnodes();
-			File f;			
-			//check if folder has subnodes			
-			if (subnodes!=null){
-				Iterator nodeIterator = subnodes.iterator();
-				while (nodeIterator.hasNext()){
-					Resource r = (Resource) nodeIterator.next();
-					if (hasReadPermission(r)) {
-						if (r instanceof File) {
-							FileTableEntry fte = new FileTableEntry();
-							f = (File) r;
-							fte.setCreated(f.getCreated());
-							fte.setDistributionTime(f.getDistributionTime());
-							fte.setId(f.getId());
-							fte.setLastModification(f.getLastModification());
-							fte.setLength(f.getLength());
-							fte.setMessage(f.getMessage());
-							fte.setMimeType(f.getMimeType());
-							fte.setName(f.getName());
-							fte.setPath(f.getPath());
-							fte.setPredecessor(f.getPredecessor());
-							fte.setVersion(f.getVersion());
-							fte.setVisibility(f.getVisibility());
-							al.add((FileTableEntry) fte);
-						}
-					}					
-				}
-			}
+			addFiles(al, folder);
 		}
 		logger.debug("file table entries generated");
 		this.data = al;
 		return al;
 
+	}
+
+	/**
+	 * convenience method to add files to arraylist
+	 * @param al
+	 * @param folder
+	 */
+	private void addFiles(ArrayList<FileTableEntry> al, Folder folder) {
+		Collection subnodes = folder.getSubnodes();
+		//check if folder has subnodes			
+		if (subnodes!=null){
+			Iterator nodeIterator = subnodes.iterator();
+			while (nodeIterator.hasNext()){
+				Resource r = (Resource) nodeIterator.next();
+				if (hasReadPermission(r)) {
+					if (r instanceof File) {
+						FileTableEntry fte = file2FTE((File)r);
+						al.add((FileTableEntry) fte);
+					}
+					if (r instanceof Link) {
+						FileTableEntry fte = link2FTE((Link)r);
+						al.add((FileTableEntry) fte);
+					}
+				}					
+			}
+		}
+	}
+	
+	private FileTableEntry link2FTE(Link link){
+		FileTableEntry fte = file2FTE((File)link.getTarget());
+		fte.setPath(link.getPath());
+		return fte;	
+	}
+
+	/**
+	 * convenience method to change a File to a filetableentry
+	 * @param r
+	 * @return
+	 */
+	private FileTableEntry file2FTE(File f) {		
+		FileTableEntry fte = new FileTableEntry();		
+		fte.setCreated(f.getCreated());
+		fte.setDistributionTime(f.getDistributionTime());
+		fte.setId(f.getId());
+		fte.setLastModification(f.getLastModification());
+		fte.setLength(f.getLength());
+		fte.setMessage(f.getMessage());
+		fte.setMimeType(f.getMimeType());
+		fte.setName(f.getName());
+		fte.setPath(f.getPath());
+		fte.setPredecessor(f.getPredecessor());
+		fte.setVersion(f.getVersion());
+		fte.setVisibility(f.getVisibility());
+		return fte;
 	}
 
 	/**
@@ -335,12 +368,15 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 		} catch (ResourceAlreadyExistsException e) {
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
-			handleNotAFileException(e);
+			return downloadLink();
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
+		triggerDownload(bigFile);     
+		return DocConstants.DOCUMENTEXPLORER;
+	}
 
-	
+	private void triggerDownload(BigFile bigFile) {
 		FacesContext context = FacesContext.getCurrentInstance();
 	    HttpServletResponse response = 
 		         (HttpServletResponse) context.getExternalContext().getResponse();
@@ -361,8 +397,7 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 		} catch (IOException e) {
 			logger.error("IOException: ", e);
 		}
-        FacesContext.getCurrentInstance().responseComplete();
-		return DocConstants.DOCUMENTEXPLORER;
+		FacesContext.getCurrentInstance().responseComplete();		
 	}
 	
 	/**
@@ -527,10 +562,13 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			if (fte.isChecked())
 				try {
 					File f = fileTableEntry2File(fte);
+					this.savePathToLink = f.getPath();					
 					if (!hasWritePermission(f)){
 						noPermission();
 						return DocConstants.DOCUMENTEXPLORER;
 					}
+					//check if f is a file or a link
+					f = distributionService.getFile(f.getPath());
 					distributionService.delFile(f, getDeleteLinks().equals(DocConstants.DELETE_LINKS));
 				} catch (NotAFolderException e) {
 					handleNotAFolderException(e);
@@ -539,7 +577,7 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 				} catch (ResourceAlreadyExistsException e) {
 					handleResourceAlreadyExistsException(e);
 				} catch (NotAFileException e) {
-					handleNotAFileException(e);
+					return delLink(this.savePathToLink);
 				} catch (DocManagementException e) {
 					handleDocManagementException(e);
 				}		
@@ -569,6 +607,10 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 		return DocConstants.DOCUMENTEXPLORER;
 	}
 	
+	/**
+	 * Action method which triggers the delete of a folder 
+	 * @return
+	 */
 	public String deleteFolder(){
 		try {
 			Folder folder = distributionService.getFolder(this.folderPath);
@@ -588,6 +630,82 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}	
+		return DocConstants.DOCUMENTEXPLORER;
+	}
+	
+	public String delLink(String path){
+		if (path.startsWith("/")) path = path.substring(1);
+		try {
+			Link link = distributionService.getLink(path);
+			distributionService.delLink(link);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
+		} catch (PathNotFoundException e) {
+			handlePathNotFoundException(e);
+		} catch (ResourceAlreadyExistsException e) {
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}	
+		return DocConstants.DOCUMENTEXPLORER;
+	}
+	
+	public String changeLink(){
+		String path = this.data.get((new Integer(getFileFacesPath())).intValue()).getPath();
+		Link link = new LinkImpl();
+		if (path.startsWith("/")) path = path.substring(1);		
+		try {
+			link = distributionService.getLink(path);
+			if (!hasWritePermission(link)){
+				noPermission();
+				return DocConstants.NEWDOCUMENTTOFOLDER; 
+			}			
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
+		} catch (PathNotFoundException e) {
+			handlePathNotFoundException(e);
+		} catch (ResourceAlreadyExistsException e) {
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);	
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}		
+		BigFile file = new BigFileImpl(link.getDistributionDate(), null, 0, link.getMessage(), "", link.getName(), link.getPath(), null, 1, link.getVisibility(), null);
+		fileController.setFile(file);
+		fileController.setLinkToEdit(link);
+		fileController.setOld(true);
+		fileController.setLink(true);
+		return DocConstants.NEWDOCUMENTTOFOLDER;
+	}
+	
+	public String downloadLink(){
+		String path = this.data.get((new Integer(getFileFacesPath())).intValue()).getPath();
+		if (path.startsWith("/")) path = path.substring(1);
+		
+		BigFile bigFile = new BigFileImpl();
+		try {
+			Link link = distributionService.getLink(path);
+			File file = (File) link.getTarget();
+			if (!hasReadPermission(link)){
+				noPermission();
+				return DocConstants.DOCUMENTEXPLORER;
+			}
+			bigFile = distributionService.getFile(file);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
+		} catch (PathNotFoundException e) {
+			handlePathNotFoundException(e);
+		} catch (ResourceAlreadyExistsException e) {
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}		
+		triggerDownload(bigFile);     
 		return DocConstants.DOCUMENTEXPLORER;
 	}
 

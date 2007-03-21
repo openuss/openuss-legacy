@@ -170,8 +170,9 @@ public class DistributionServiceImpl
 				if (r instanceof Folder) {
 					handleDelFolder((Folder) r, delLinks);
 				}
-				//TODO add links
-
+				if (r instanceof Link){
+					linkDao.delLink((Link) r);
+				}
 			}
 		}    	
 		folderDao.remove(folder);
@@ -227,17 +228,8 @@ public class DistributionServiceImpl
     	return fi;
     }
     
-    //TODO remove me
-	public void buildTestStructure() throws Exception{
-		folderDao.addTestStructure();		
-	}
-	
-	public void buildMainRepositoryStructure(){
+ 	public void buildMainRepositoryStructure(){
 		folderDao.buildMainRepositoryStructure();
-	}
-
-	public void clearRepository() throws Exception{
-		folderDao.clearRepository();		
 	}
 
 	public FolderDao getFolderDao() {
@@ -359,6 +351,21 @@ public class DistributionServiceImpl
 
 	public void setLinkDao(LinkDao linkDao) {
 		this.linkDao = linkDao;
+	}
+
+	@Override
+	protected Link handleGetLink(String path) throws Exception {
+		return linkDao.getLink(path);
+	}
+
+	@Override
+	protected void handleChangeLink(Link link) throws Exception {
+		linkDao.changeLink(link);
+	}
+
+	@Override
+	protected void handleDelLink(Link link) throws Exception {
+		linkDao.delLink(link);
 	}
 
 }
