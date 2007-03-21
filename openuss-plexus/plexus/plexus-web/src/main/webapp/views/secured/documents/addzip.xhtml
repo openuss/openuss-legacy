@@ -31,26 +31,20 @@
 		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
 	</ui:define>
 	<ui:define name="content">
-		<h:form id="addZipForm">
-
-
-			<o:block label="#{msg.document_addzip_header}">
+		<h:form id="addZipForm" enctype="multipart/form-data">
+			<o:block label="#{msg.document_addzip_header}" styleClass="form_box">
 				<h:outputLabel value="#{msg.newdocument_file}" for="newDocument" styleClass="field_label" />
 				<t:inputFileUpload id="newDocument" storage="file" accept="*" immediate="true" styleClass="uploadField">
 					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
 				</t:inputFileUpload>
-
-				<o:input entity="views$secured$documents$addzip" property="releaseDate" required="true">
-				</o:input>
+<!-- 
+				<o:input entity="views$secured$documents$addzip" property="releaseDate" required="true"/>
+ -->
 			</o:block>
-
+			
 			<o:block>
-				<plexus:command bean="#{views$secured$documents$addzip}"
-					action="unzip" label="#{msg['document_addzip_save']}"
-					title="#{msg['document_addzip_save']}"
-					styleClass="button" />
-				<h:commandButton action="enrollment_documents"
-					value="#{msg['document_addzip_cancel']}" styleClass="button"/>	
+				<h:commandButton id="btn_save" action="#{views$secured$documents$addzip.unzip}" value="#{msg.save}" title="#{msg.save_hint}" styleClass="button_save" />
+				<h:commandButton id="btn_cancel" action="enrollment_documents" value="#{msg.cancel}" styleClass="button_cancel" immediate="true" />
 			</o:block>
 		</h:form>
 	</ui:define>

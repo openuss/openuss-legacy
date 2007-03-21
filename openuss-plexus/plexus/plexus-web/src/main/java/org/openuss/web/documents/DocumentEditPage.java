@@ -10,8 +10,8 @@ import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$documents$documentnew", scope = Scope.REQUEST)
 @View
-public class DocumentNewPage{
-	private static final Logger logger = Logger.getLogger(DocumentNewPage.class);
+public class DocumentEditPage{
+	private static final Logger logger = Logger.getLogger(DocumentEditPage.class);
 	
 	@Property(value = "#{newDocument}")
 	private RepositoryFile newDocument;

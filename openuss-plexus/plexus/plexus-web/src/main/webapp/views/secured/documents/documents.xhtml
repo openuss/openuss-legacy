@@ -34,6 +34,18 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="documentTableView">
+			<o:block>
+				<div class="content_font_normal">
+					<t:dataList var="folder" value="#{views$secured$documents$documents.path}">
+						<o:link value="/views/secured/documents/documents.faces" title="#{folder.description}">
+							<f:param value="#{enrollment.id}" name="enrollment" />
+							<f:param value="#{folder.id}" name="folder" />
+							<h:outputText value="#{folder.name}"/>
+						</o:link>					
+					</t:dataList>
+				</div>
+			</o:block>
+		
 			<ui:include src="documentstable.xhtml" />
 			<o:block>
 				<plexus:command
