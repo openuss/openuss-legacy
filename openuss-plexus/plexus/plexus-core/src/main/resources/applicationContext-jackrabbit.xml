@@ -37,6 +37,12 @@
 		<property name="fileDao" ref="fileDao"></property>		
 		<property name="linkDao" ref="linkDao"></property>				
 	</bean>
+	<bean id="informationService" class="org.openuss.docmanagement.InformationServiceImpl">
+		<property name="lectureService"><ref bean="lectureService"/></property>
+		<property name="enrollmentService"><ref bean="enrollmentService"/></property>
+		 
+	</bean>
+	
 	<bean id="collaborationService" class="org.openuss.docmanagement.CollaborationServiceImpl"/>
 	<bean id="examinationService" class="org.openuss.docmanagement.ExaminationServiceImpl"/>
 	<bean id="repositoryStartup" class="org.openuss.docmanagement.RepositoryStartup" init-method="init">

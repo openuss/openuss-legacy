@@ -26,13 +26,16 @@ import org.openuss.docmanagement.File;
 import org.openuss.docmanagement.FileImpl;
 import org.openuss.docmanagement.Folder;
 import org.openuss.docmanagement.FolderImpl;
+import org.openuss.docmanagement.InformationService;
 import org.openuss.docmanagement.NotAFileException;
 import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.Resource;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
 import org.openuss.docmanagement.DocConstants;
+import org.openuss.docmanagement.DocRights;
 import org.openuss.lecture.Enrollment;
+import org.openuss.security.User;
 
 @Bean(name="distributionViewBacker", scope=Scope.SESSION)
 @View
@@ -49,6 +52,12 @@ public class DistributionViewBacker extends ExceptionHandler{
 
 	@Property(value="#{enrollment}")
 	public Enrollment enrollment;
+	
+	@Property(value="#{informationService}")
+	public InformationService informationService;
+	
+	@Property(value="#{user}")
+	public User user;
 
 	private static final Logger logger = Logger.getLogger(DistributionViewBacker.class);
 
@@ -80,12 +89,27 @@ public class DistributionViewBacker extends ExceptionHandler{
 	 */
 	public ArrayList<FileTableEntry> data;
 
+	//TODO delete
+	//securityContext.getAuthentication().getName();
+	
 	/**
 	 * String which saves what should happen when linked files are deleted
 	 */
 	public String deleteLinks;
 	
+	private boolean hasReadPermission(Resource resource){		
+		if ((resource.getVisibility()&DocRights.READ_ALL)>0) return true;
+		if ((resource.getVisibility()&DocRights.READ_ASSIST)>0){
+			if (informationService.userIsAssitant(enrollment, user.getUsername())) return true;
+		}
+		if ((resource.getVisibility()&DocRights.READ_OWNER)>0){
+			if (informationService.userIsAssitant(enrollment, user.getUsername())||informationService.userIsOwner(resource.getPath(), user.getUsername())) return true;
+		}
 		
+		return false;
+	}
+	
+	
 	/**
 	 * @return treeModel displayed by tree2 component
 	 */
@@ -120,6 +144,7 @@ public class DistributionViewBacker extends ExceptionHandler{
 	 * @return TreeNodeBase object as result of conversion
 	 */
 	private TreeNodeBase folder2TreeNodeBase(Folder folder){
+		if (!hasReadPermission(folder)) folder = null;
 		if (folder==null) return new TreeNodeBase();
 		TreeNodeBase tn = new TreeNodeBase("folder", folder.getName(), folder.getPath(), (folder.getSubnodes()==null));
 		Folder subFolder = null;
@@ -132,8 +157,12 @@ public class DistributionViewBacker extends ExceptionHandler{
 				if (o instanceof Folder) {
 					subFolder = (Folder) o;					
 				}	
-				if (subFolder!=null) tn.getChildren().add(folder2TreeNodeBase(subFolder));
+				if (subFolder!=null) {
+					if (hasReadPermission(subFolder)){
+						tn.getChildren().add(folder2TreeNodeBase(subFolder));
+					}
 				}
+			}
 		}
 		return tn;		
 	}
@@ -609,6 +638,22 @@ public class DistributionViewBacker extends ExceptionHandler{
 	public boolean isFolderTrash(){
 		if (this.folderPath==null) return false;
 		return this.folderPath.endsWith(DocConstants.TRASH_NAME);
+	}
+
+	public InformationService getInformationService() {
+		return informationService;
+	}
+
+	public void setInformationService(InformationService informationService) {
+		this.informationService = informationService;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

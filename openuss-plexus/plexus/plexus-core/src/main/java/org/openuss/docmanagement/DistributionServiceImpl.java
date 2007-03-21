@@ -45,13 +45,13 @@ public class DistributionServiceImpl
 	public LinkDao linkDao;
 	
 	
-	
     /**
      * @see org.openuss.docmanagement.DistributionService#addMainFolder(org.openuss.lecture.Enrollment)
      */
     protected void handleAddMainFolder(org.openuss.lecture.Enrollment enrollment)
         throws java.lang.Exception
     {  
+    		//TODO getInformationService().userIsAssistant(enrollment.getId());    		
     		Folder folder = folderDao.getFolder(DocConstants.DISTRIBUTION);    		
     		//add faculty main folder to distribution part of repository
     		Folder enrollmentMain = new FolderImpl(enrollment.getShortcut(), enrollment.getId().toString(), folder.getPath(), null, DocRights.READ_ALL|DocRights.EDIT_ALL);
@@ -359,7 +359,6 @@ public class DistributionServiceImpl
 
 	public void setLinkDao(LinkDao linkDao) {
 		this.linkDao = linkDao;
-	}	
-
+	}
 
 }
