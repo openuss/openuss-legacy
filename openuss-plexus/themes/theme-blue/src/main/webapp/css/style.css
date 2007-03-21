@@ -957,6 +957,7 @@ ul{
   color:#505050; 
   border: 1px solid #B4B4B4;
   margin: 3px 0 5px 10px;
+  display: block;
 }
 
 .dateField {
@@ -1018,6 +1019,7 @@ ul{
 	font-weight: bold;
 	font-decoration: none;
 	padding: 2px;
+	background: #FFFFFF none repeat scroll 0%;
 }
 
 #center_block .tablenavigator table.paginator td a{
