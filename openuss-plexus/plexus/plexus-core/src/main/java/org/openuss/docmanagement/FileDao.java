@@ -4,6 +4,8 @@ import javax.jcr.Node;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 
 import javax.jcr.ItemExistsException;
@@ -60,6 +62,7 @@ public class FileDao extends ResourceDao {
 						DocConstants.PROPERTY_VISIBILITY).getLong()));
 		file.setCreated(new Timestamp(node
 				.getProperty(DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
+		
 		logout(session);
 		} catch (NotAFileException e) {
 			throw e;
@@ -156,12 +159,12 @@ public class FileDao extends ResourceDao {
 	 */
 	private void setDistributionFile(Node node, BigFile file) throws ResourceAlreadyExistsException, DocManagementException{ 
 		try {
-			if (node.hasNode(file.getName())) throw new ResourceAlreadyExistsException("File already exists");
+			if (node.hasNode(file.getName())) throw new ResourceAlreadyExistsException("File already exists!");
 			// nt:File Knoten
 			node.addNode(file.getName(), DocConstants.DOC_FILE);
 			node = node.getNode(file.getName());
 			node.setProperty(DocConstants.PROPERTY_MESSAGE, file.getMessage());
-			Calendar c = Calendar.getInstance();
+			Calendar c = new GregorianCalendar();
 			c.setTimeInMillis(file.getDistributionTime().getTime());
 			node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
 			node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
@@ -171,7 +174,8 @@ public class FileDao extends ResourceDao {
 			node = node.getNode(DocConstants.JCR_CONTENT);
 			node.setProperty(DocConstants.JCR_DATA, file.getFile());
 			node.setProperty(DocConstants.JCR_MIMETYPE, file.getMimeType());
-			c.setTimeInMillis(file.getLastModification().getTime());
+			Calendar c2 = new GregorianCalendar();
+			c2.setTimeInMillis(file.getLastModification().getTime());
 			node.setProperty(DocConstants.JCR_LASTMODIFIED, c);
 		} catch (LoginException e1) {
 			throw new DocManagementException("LoginException occured");
@@ -188,7 +192,7 @@ public class FileDao extends ResourceDao {
 	 * @throws LoginException
 	 * @throws RepositoryException
 	 */
-	public void changeFile(BigFile file) throws DocManagementException  {
+	public void changeFile(BigFile file) throws ResourceAlreadyExistsException, DocManagementException  {
 		try {
 			Session session = login(repository);
 			Node node = session.getRootNode();
@@ -200,7 +204,7 @@ public class FileDao extends ResourceDao {
 
 			// nt:File
 			node.setProperty(DocConstants.PROPERTY_MESSAGE, file.getMessage());
-			Calendar c = Calendar.getInstance();
+			Calendar c = new GregorianCalendar();
 			c.setTimeInMillis(file.getDistributionTime().getTime());
 			node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
 			node
@@ -209,16 +213,18 @@ public class FileDao extends ResourceDao {
 
 			// nt:resource
 			node = node.getNode(DocConstants.JCR_CONTENT);
-			c.setTimeInMillis(file.getLastModification().getTime());
+			Calendar c2 = new GregorianCalendar();
+			c2.setTimeInMillis(file.getLastModification().getTime());
 			node.setProperty(DocConstants.JCR_LASTMODIFIED, c);
 
 			session.save();
 			// if nodename has changed, move node
 			node = node.getParent();
-			if (!node.getPath().equals(
-					node.getParent().getPath() + "/" + file.getName()))
-				session.move(node.getPath(), node.getParent().getPath() + "/"
-						+ file.getName());
+			if (!node.getPath().equals(node.getParent().getPath() + "/" + file.getName())) {
+				if (node.getParent().hasNode(file.getName())) throw new ResourceAlreadyExistsException("A File with that name already exists!");
+				session.move(node.getPath(), node.getParent().getPath() + "/"+ file.getName());
+			}
+						
 			logout(session);
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");

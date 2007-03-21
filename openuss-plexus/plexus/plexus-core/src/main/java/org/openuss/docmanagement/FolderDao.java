@@ -154,7 +154,7 @@ public class FolderDao extends ResourceDao {
 	 * @throws LoginException
 	 * @throws RepositoryException
 	 */
-	public void changeFolder(Folder folder) throws PathNotFoundException, DocManagementException  {
+	public void changeFolder(Folder folder) throws PathNotFoundException, ResourceAlreadyExistsException, DocManagementException  {
 		try {
 			Session session = login(repository);
 			Node node = session.getRootNode();
@@ -163,7 +163,11 @@ public class FolderDao extends ResourceDao {
 			node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());
 			session.save();
 			//if nodename has changed, move node
-			if (!node.getPath().equals(node.getParent().getPath() + "/" + folder.getName())) session.move(node.getPath(), node.getParent().getPath() + "/" + folder.getName());
+			if (!node.getPath().equals(node.getParent().getPath() + "/" + folder.getName())){
+				if (node.getParent().hasNode(folder.getName())) throw new ResourceAlreadyExistsException("A Folder with that name already exists!");
+				
+				session.move(node.getPath(), node.getParent().getPath() + "/" + folder.getName());
+			}
 			logout(session);
 		
 		} catch (javax.jcr.PathNotFoundException e) {

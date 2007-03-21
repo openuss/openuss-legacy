@@ -36,10 +36,11 @@
 			<o:block label="#{msg.doc_addfolder_header}">
 				<h:outputLabel value="#{msg.foldercontroller_folder_name}" for="folderName" styleClass="field_label"></h:outputLabel><br />
 				<h:inputText id = "folderName" value="#{facultyFolderController.folder.name}" required="true" requiredMessage="#{msg.doc_required} #{msg.foldercontroller_folder_name}" styleClass="field"></h:inputText><br />
-				<h:message for="folderName"/>
+				<h:message for="folderName" styleClass="field_error"/>
 				<br />
 				<h:outputLabel value="#{msg.foldercontroller_folder_message}" for="folderMessage" styleClass="field_label"></h:outputLabel><br />
 				<h:inputText id = "folderMessage" value="#{facultyFolderController.folder.message}" required="true" requiredMessage="#{msg.doc_required} #{msg.foldercontroller_folder_message}" styleClass="field"></h:inputText>
+				<h:message for="folderMessage" styleClass="field_error"/>				
 				<br />				
 				<h:outputLabel value="#{msg.foldercontroller_visibleforall}" for="visibleForAll" styleClass="field_label"></h:outputLabel>				
 				<h:selectBooleanCheckbox id="visibleForAll" value="#{facultyFolderController.visibleForAll}"></h:selectBooleanCheckbox>

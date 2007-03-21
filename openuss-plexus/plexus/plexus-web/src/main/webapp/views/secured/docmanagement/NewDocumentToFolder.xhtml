@@ -39,7 +39,7 @@
 				<o:input entity="fileController.file" property="message" required="true">
 				</o:input>
 				<h:outputLabel value="#{msg.doc_addfile_file}" for="document"	styleClass="field_label" rendered="#{not fileController.old}"/>
-				<t:inputFileUpload id="document" storage="file" immediate="true" styleClass="uploadField" rendered="#{not fileController.old}">					
+				<t:inputFileUpload id="document" storage="file" immediate="true" styleClass="uploadField" rendered="#{not fileController.old}" required="true">					
 					<f:valueChangeListener type="org.openuss.web.docmanagement.FileUploadListener" />
 				</t:inputFileUpload>
 				<h:message for="document" styleClass="field_error" showDetail="true" showSummary="false" />
