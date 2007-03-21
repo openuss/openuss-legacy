@@ -31,10 +31,11 @@ public abstract class AbstractLecturePage extends BasePage {
 
 	/**
 	 * Refreshing faculty entity 
-	 * @throws LectureException
+	 * @throws Exception 
 	 */
 	@Preprocess
-	public void preprocess() throws LectureException {
+	public void preprocess() throws Exception {
+		super.preprocess();
 		logger.debug("preprocess - refreshing faculty session object");
 		if (faculty != null) {
 			faculty = lectureService.getFaculty(faculty.getId());

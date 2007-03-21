@@ -24,7 +24,7 @@ public class SubjectRemovePage extends AbstractLecturePage {
 	private static final long serialVersionUID = 345075116164346417L;
 	
 	@Preprocess
-	public void preprocess() throws LectureException {
+	public void preprocess() throws Exception {
 		super.preprocess();
 		reloadSubject();
 	}

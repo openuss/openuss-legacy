@@ -80,9 +80,11 @@ public class AspirantsPage extends AbstractLecturePage {
 		}
 		
 		if ("accept".equals(event.getNewValue())) {
+			rejectAspirants.remove(aspirant);
 			acceptAspirants.add(aspirant);
 		} else if ("reject".equals(event.getNewValue())) {
 			rejectAspirants.add(aspirant);
+			acceptAspirants.add(aspirant);
 		}
 	}
 	

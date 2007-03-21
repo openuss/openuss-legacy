@@ -7,6 +7,7 @@ import javax.faces.context.FacesContext;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.lecture.LectureException;
@@ -24,6 +25,16 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 	private static final long serialVersionUID = -3812508575903167466L;
 
 	private static final Logger logger = Logger.getLogger(PeriodsPage.class);
+
+	@Preprocess
+	@Override
+	public void preprocess() throws Exception {
+		super.preprocess();
+		if (period != null) {
+			period = lectureService.getPeriod(period.getId());
+			setSessionBean(Constants.PERIOD, period);
+		}
+	}
 
 	@Prerender
 	@Override
