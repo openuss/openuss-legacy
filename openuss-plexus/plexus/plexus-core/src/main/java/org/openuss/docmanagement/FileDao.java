@@ -4,7 +4,6 @@ import javax.jcr.Node;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 

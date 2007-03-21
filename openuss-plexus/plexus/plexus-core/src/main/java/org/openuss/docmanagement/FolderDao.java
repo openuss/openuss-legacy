@@ -96,7 +96,7 @@ public class FolderDao extends ResourceDao {
 						filePath = n.getPath();						
 						if (filePath.startsWith("/")) filePath = filePath.substring(1);
 						//if links to folders should be possible, differ here
-						v.add((File)linkDao.getLink(filePath).getTarget());
+						v.add(linkDao.getLink(filePath));
 					}
 					
 				}
