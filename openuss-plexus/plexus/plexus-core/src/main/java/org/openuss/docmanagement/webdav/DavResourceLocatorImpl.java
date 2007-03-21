@@ -4,6 +4,7 @@ import org.apache.commons.lang.NotImplementedException;
 import org.apache.jackrabbit.util.Text;
 import org.apache.jackrabbit.webdav.DavLocatorFactory;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
+import org.openuss.docmanagement.DocConstants;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
@@ -12,6 +13,7 @@ import org.apache.jackrabbit.webdav.DavResourceLocator;
 public class DavResourceLocatorImpl implements DavResourceLocator {
 	private final String prefix;
 	private final String resourcePath;
+	private final String repositoryPath;
 	private final String href;
 	private final DavLocatorFactory locatorFactory;
 	
@@ -28,6 +30,7 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 			resourcePath = resourcePath.substring(0, resourcePath.length() - 1);
 		}
 		this.resourcePath = resourcePath;
+		this.repositoryPath = mapPath(resourcePath);
 		this.locatorFactory = locatorFactory;
 		
 		this.href = prefix + Text.escapePath(resourcePath);
@@ -63,8 +66,7 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getRepositoryPath()
 	 */
 	public String getRepositoryPath() {
-		// no mapping between resource path and storage in repository
-		return resourcePath;
+		return repositoryPath;
 	}
 
 	/* (non-Javadoc)
@@ -72,6 +74,39 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	 */
 	public String getResourcePath() {
 		return resourcePath;
+	}
+	
+	/**
+	 * Maps virtual pathes to physical pathes.
+	 * @param path The path to map.
+	 * @return The mapped path.
+	 */
+	private String mapPath(String path) {
+		// no mapping for: /distribution/*, /examarea/*, /workingplace/*
+		if (resourcePath.startsWith("/" + DocConstants.DISTRIBUTION) || resourcePath.startsWith("/" + DocConstants.EXAMAREA) || resourcePath.startsWith("/" + DocConstants.WORKINGPLACE)) {
+			return path; 
+		}
+		
+		// mapping for: */distribution/*, */examarea/*, */workingplace/*
+		// mapping to: /distribution/*, /examarea/*, /workingplace/*
+		String[] pathFields = path.split("/");
+		if (pathFields.length > 2) {
+			String name = pathFields[2];
+			if (name.equalsIgnoreCase(DocConstants.DISTRIBUTION) || name.equalsIgnoreCase(DocConstants.EXAMAREA) || name.equalsIgnoreCase(DocConstants.WORKINGPLACE)) {
+				StringBuilder builder = new StringBuilder();
+				builder.append("/" + pathFields[2]);
+				builder.append("/" + pathFields[1]);
+				
+				for (int i = 3, j = pathFields.length; i < j; i++) {
+					builder.append("/" + pathFields[i]);
+				}
+				
+				return builder.toString();
+			}
+		}
+		
+		// no mapping for any other path
+		return path;
 	}
 
 	/* (non-Javadoc)

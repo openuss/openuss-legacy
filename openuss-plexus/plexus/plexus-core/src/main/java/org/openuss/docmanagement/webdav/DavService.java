@@ -258,13 +258,15 @@ public class DavService {
 		// recursive processing, if depth > 0
 		if (depth > 0) {
 			// iterate through members
-			DavResource[] members = resource.getMembers();
-			for (int i = 0, j = members.length; i < j; i++) {
-				// call method with adjusted depth-value, if not infinity
+			List<DavResource> members = resource.getMembers();
+			Iterator<DavResource> iterator = members.iterator();
+			DavResource member;
+			while (iterator.hasNext()) {
+				member = iterator.next();
 				if (depth == DavConstants.DEPTH_INFINITY) {
-					addResponse(multistatus, members[i], properties, namesOnly, depth);
+					addResponse(multistatus, member, properties, namesOnly, depth);
 				} else {
-					addResponse(multistatus, members[i], properties, namesOnly, 0);
+					addResponse(multistatus, member, properties, namesOnly, 0);
 				}
 			}
 		}
@@ -342,7 +344,7 @@ public class DavService {
 	 */
 	public DavResourceFactory getResourceFactory() {
 		if (resourceFactory == null) {
-			resourceFactory = new DavResourceFactory(configuration);
+			resourceFactory = new DavResourceFactory(this, configuration);
 		}
 		return resourceFactory;
 	}

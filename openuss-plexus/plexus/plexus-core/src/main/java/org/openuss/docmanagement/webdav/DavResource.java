@@ -3,7 +3,7 @@ package org.openuss.docmanagement.webdav;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -232,89 +232,82 @@ public abstract class DavResource {
 		}
 		
 		try {
-			// TODO kann das Property fehlen?
-			return representedNode.getProperty(DocConstants.JCR_CREATED).getString();
+			if (representedNode.hasProperty(DocConstants.JCR_CREATED)) {
+				return representedNode.getProperty(DocConstants.JCR_CREATED).getString();
+			} else {
+				return System.currentTimeMillis() + "";
+			}
 		} catch (RepositoryException ex) {
 			throw new DavException(HttpStatus.SC_SERVICE_UNAVAILABLE);
 		}
 	}
 	
-	public DavResource[] getMembers() throws DavException {
+	public List<DavResource> getMembers() throws DavException {
 		// TODO prüfen, ob der Fehler berechtigt ist
 		if (!exists()) {
 			throw new DavException(HttpStatus.SC_NOT_FOUND);
 		}
 		
-		List<DavResource> members = new ArrayList<DavResource>();
+		List<DavResource> members = new LinkedList<DavResource>();
 		
 		try {
 			ItemFilter itemFilter = getFactory().getConfiguration().getItemFilter();
 			
-//			if (locator.isRootLocation()) {
-//				// TODO abonnierte Elemente anzeigen
-//			} else {
-				// Kindknoten anzeigen
-				NodeIterator nodeIterator = representedNode.getNodes();
-				Node node;
-				DavResourceLocator locator;
-				while (nodeIterator.hasNext()) {
-					node = nodeIterator.nextNode();
-					if (!itemFilter.isFilteredItem(node)) {
-						locator = getLocator().getFactory().createResourceLocator(getLocator().getPrefix(), null, node.getPath());
-						members.add(getFactory().createResource(representedNode.getSession(), locator, false));
-					}
+			// Kindknoten anzeigen
+			NodeIterator nodeIterator = representedNode.getNodes();
+			Node node;
+			DavResourceLocator locator;
+			while (nodeIterator.hasNext()) {
+				node = nodeIterator.nextNode();
+				if (!itemFilter.isFilteredItem(node)) {
+					locator = getLocator().getFactory().createResourceLocator(getLocator().getPrefix(), null, node.getPath());
+					members.add(getFactory().createResource(session, locator, false));
 				}
-//			}
+			}
 		} catch (RepositoryException ex) {
 			// rethrow RepositoryException as DavException
 			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR);
 		}
 		
-		return members.toArray(new DavResource[0]);
+		return members;
 	}
 	
-	public MultiStatusResponse getProperties(List<String> properties, boolean namesOnly) {
+	public MultiStatusResponse getProperties(List<String> properties, boolean namesOnly) throws DavException {
 		MultiStatusResponse response = new MultiStatusResponse(locator.getHref(isCollection()), null);
 		
 		boolean spoolAllProperties = ((properties == null) || (properties.size() == 0));
 		
-		try {
-			// creationdate
-			if (spoolAllProperties || properties.contains(DavConstants.PROPERTY_CREATIONDATE)) {
-				if (representedNode.hasProperty(JcrConstants.JCR_CREATED)) {
-					if (namesOnly) {
-						response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_CREATIONDATE, null);
-					} else {
-						response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_CREATIONDATE, representedNode.getProperty(JcrConstants.JCR_CREATED).getString());
-					}
-				}
+		// creationdate
+		if (spoolAllProperties || properties.contains(DavConstants.PROPERTY_CREATIONDATE)) {
+			if (namesOnly) {
+				response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_CREATIONDATE, null);
+			} else {
+				response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_CREATIONDATE, getCreationDate());
 			}
-			
-			// displayname
-			if (spoolAllProperties || properties.contains(DavConstants.PROPERTY_DISPLAYNAME)) {
-				if (namesOnly) {
-					response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_DISPLAYNAME, null);
-				} else {
-					response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_DISPLAYNAME, representedNode.getName());
-				}
-			}
-			
-			// resourcetype
-			if (spoolAllProperties || properties.contains(DavConstants.PROPERTY_RESOURCETYPE)) {
-				if (namesOnly || !isCollection()) {
-					response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_RESOURCETYPE, null);
-				} else {
-					QName collectionName = DocumentHelper.createQName(DavConstants.XML_COLLECTION, MultiStatus.getDefaultNamespace());
-					Element collectionElement = DocumentHelper.createElement(collectionName);
-					response.addProperty(HttpStatus.SC_OK, null, DavConstants.PROPERTY_RESOURCETYPE, collectionElement);
-				}
-			}
-			
-			// TODO weitere properties ausgeben
-		} catch (RepositoryException ex) {
-			
 		}
-		
+
+		// displayname
+		if (spoolAllProperties || properties.contains(DavConstants.PROPERTY_DISPLAYNAME)) {
+			if (namesOnly) {
+				response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_DISPLAYNAME, null);
+			} else {
+				response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_DISPLAYNAME, getDisplayName());
+			}
+		}
+
+		// resourcetype
+		if (spoolAllProperties || properties.contains(DavConstants.PROPERTY_RESOURCETYPE)) {
+			if (namesOnly || !isCollection()) {
+				response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_RESOURCETYPE, null);
+			} else {
+				QName collectionName = DocumentHelper.createQName(DavConstants.XML_COLLECTION, MultiStatus.getDefaultNamespace());
+				Element collectionElement = DocumentHelper.createElement(collectionName);
+				response.addProperty(HttpStatus.SC_OK, null, DavConstants.PROPERTY_RESOURCETYPE, collectionElement);
+			}
+		}
+
+		// TODO weitere properties ausgeben
+
 		return response;
 	}
 	
