@@ -7,6 +7,7 @@ package org.openuss.documents;
 
 import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -70,5 +71,10 @@ public class FolderEntryImpl extends org.openuss.documents.FolderEntryBase imple
 		} else {
 			return getName();
 		}
+	}
+
+	@Override
+	public String getSizeAsString() {
+		return FileUtils.byteCountToDisplaySize(getSize());
 	}
 }

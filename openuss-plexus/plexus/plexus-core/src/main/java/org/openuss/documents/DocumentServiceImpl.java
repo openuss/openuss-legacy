@@ -180,10 +180,10 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 
 	@Override
 	protected List handleGetFolderEntries(Object domainObject, Folder folder) throws Exception {
-		if (folder == null) {
+		if (folder == null || folder.getId() == null) {
 			folder = getRootFolderForDomainObject(domainObject);
 		}
-		if (folder == null) {
+		if (folder == null || folder.getId() == null) {
 			throw new DocumentServiceException("message_error_folder_not_found");
 		}
 		List entries = getFolderEntryDao().findByParent(FolderEntryDao.TRANSFORM_FOLDERENTRYINFO, folder);
@@ -237,13 +237,17 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 			while ((entry = zis.getNextEntry()) != null) {
 				if (!entry.isDirectory()) {
 					logger.debug("-- name: " + entry.getName());
-					Folder folder = createFolderPathStructure(parent, entry);
-					createFileEntry(zis, entry, folder);
+					try {
+						Folder folder = createFolderPathStructure(parent, entry);
+						createFileEntry(zis, entry, folder);
+					} catch (IllegalArgumentException e) {
+						logger.error(e);
+					}
 				}
 			}
 			zis.close();
 			input.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error("Can't read next entry of zip input stream", e);
 			throw new DocumentApplicationExcepion("message_error_cannot_read_entry_in_zip_file");
 		}
