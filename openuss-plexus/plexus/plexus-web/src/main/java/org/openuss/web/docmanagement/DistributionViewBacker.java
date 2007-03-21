@@ -319,6 +319,10 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 	
 	private FileTableEntry link2FTE(Link link){
 		FileTableEntry fte = file2FTE((File)link.getTarget());
+		fte.setName(link.getName());
+		fte.setMessage(link.getMessage());
+		fte.setDistributionTime(link.getDistributionDate());
+		fte.setVisibility(link.getVisibility());		
 		fte.setPath(link.getPath());
 		return fte;	
 	}
