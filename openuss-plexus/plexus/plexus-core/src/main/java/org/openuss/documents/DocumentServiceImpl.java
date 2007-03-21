@@ -118,6 +118,8 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	@Override
 	protected List handleGetFolderPath(Folder folder) throws Exception {
 		Validate.notNull(folder, "Parameter folder must not be null!");
+		Validate.notNull(folder.getId(), "Paremter folder must contain a primary key.");
+		
 		List folderPath = new LinkedList();
 		folder = getFolderDao().load(folder.getId());
 		while (folder != null) {
@@ -184,7 +186,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 			folder = getRootFolderForDomainObject(domainObject);
 		}
 		if (folder == null || folder.getId() == null) {
-			throw new DocumentServiceException("message_error_folder_not_found");
+			throw new DocumentApplicationException("message_error_folder_not_found");
 		}
 		List entries = getFolderEntryDao().findByParent(FolderEntryDao.TRANSFORM_FOLDERENTRYINFO, folder);
 		if (entries == null) {
@@ -249,12 +251,12 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 			input.close();
 		} catch (Exception e) {
 			logger.error("Can't read next entry of zip input stream", e);
-			throw new DocumentApplicationExcepion("message_error_cannot_read_entry_in_zip_file");
+			throw new DocumentApplicationException("message_error_cannot_read_entry_in_zip_file");
 		}
 	}
 
 	private void createFileEntry(InputStream inputStream, ZipEntry entry, Folder folder)
-			throws DocumentApplicationExcepion {
+			throws DocumentApplicationException {
 		RepositoryFile repositoryFile = RepositoryFile.Factory.newInstance();
 		File file = new File(entry.getName());
 		repositoryFile.setName(file.getName());
@@ -272,7 +274,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		createFileEntry(fileEntry, folder);
 	}
 
-	private Folder createFolderPathStructure(Folder parent, ZipEntry entry) throws DocumentApplicationExcepion {
+	private Folder createFolderPathStructure(Folder parent, ZipEntry entry) throws DocumentApplicationException {
 		List<String> path = retrievePathByFileName(entry.getName());
 		for (String folderName : path) {
 			parent = createFolderByName(folderName, parent);
@@ -289,7 +291,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		return path;
 	}
 
-	private Folder createFolderByName(String folderName, Folder parent) throws DocumentApplicationExcepion {
+	private Folder createFolderByName(String folderName, Folder parent) throws DocumentApplicationException {
 		FolderEntry folderEntry = parent.getFolderEntryByName(folderName);
 		if (folderEntry == null) {
 			Folder folder = Folder.Factory.newInstance();
@@ -299,7 +301,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		} else if (folderEntry instanceof Folder) {
 			return (Folder) folderEntry;
 		} else if (folderEntry instanceof FileEntry) {
-			throw new DocumentApplicationExcepion("error_message_zip_file_produce_naming_conflicts");
+			throw new DocumentApplicationException("error_message_zip_file_produce_naming_conflicts");
 		} else {
 			throw new DocumentServiceException("error_message_unkown_folder_entry_type");
 		}

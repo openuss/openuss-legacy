@@ -408,13 +408,18 @@
 			</navigation-case>			
 
 			<navigation-case>
-				<from-outcome>enrollment_documents</from-outcome>
+				<from-outcome>documents_main</from-outcome>
 				<to-view-id>/views/secured/documents/documents.xhtml</to-view-id>				
 			</navigation-case>			
 
 			<navigation-case>
 				<from-outcome>documents_new_file</from-outcome>
 				<to-view-id>/views/secured/documents/documentedit.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>documents_remove_folderentries</from-outcome>
+				<to-view-id>/views/secured/documents/remove.xhtml</to-view-id>				
 			</navigation-case>			
 
 			<navigation-case>

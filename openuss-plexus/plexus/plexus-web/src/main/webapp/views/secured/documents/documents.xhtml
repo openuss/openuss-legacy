@@ -34,14 +34,14 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="documentTableView">
-			<o:block>
+			<o:block label="Aktuelle Position" styleClass="form_box">
 				<div class="content_font_normal">
 					<t:dataList var="folder" value="#{views$secured$documents$documents.path}">
-						<o:link value="/views/secured/documents/documents.faces" title="#{folder.description}">
+						/<o:link value="/views/secured/documents/documents.faces" title="#{folder.description}" styleClass="folder_link">
 							<f:param value="#{enrollment.id}" name="enrollment" />
 							<f:param value="#{folder.id}" name="folder" />
 							<h:outputText value="#{folder.name}"/>
-						</o:link>					
+						</o:link>				
 					</t:dataList>
 				</div>
 			</o:block>
@@ -54,30 +54,34 @@
 					label="#{msg['documents_main_button_download']}"
 					title="#{msg['documents_main_button_download']}"
 					styleClass="button" />
-				<h:commandButton 
-				    id="addZip"
-					action="documents_add_zip" 
-					value="#{msg.documents_main_button_zip}" 
-					title="#{msg.documents_main_button_zip}"
-					styleClass="button"/>
-				<h:commandButton 
-				    id="newFile"
-					action="documents_new_file" 
-					value="#{msg.documents_main_button_newfile}" 
-					title="#{msg.documents_main_button_newfile}"
-					styleClass="button"/>
-				<h:commandButton 
-				    id="newFolder"
-					action="documents_new_folder" 
-					value="#{msg.documents_main_button_newfolder}" 
-					title="#{msg.documents_main_button_newfolder}"
-					styleClass="button"/>
-				<plexus:command
-					bean="#{views$secured$documents$documents}"
-					action="delete"
-					label="#{msg['documents_main_button_delete']}"
-					title="#{msg['documents_main_button_delete']}"
-					styleClass="button" />
+				<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.CREATE}">
+					<h:commandButton 
+					    id="addZip"
+						action="documents_add_zip" 
+						value="#{msg.documents_main_button_zip}" 
+						title="#{msg.documents_main_button_zip}"
+						styleClass="button"/>
+					<h:commandButton 
+					    id="newFile"
+						action="documents_new_file" 
+						value="#{msg.documents_main_button_newfile}" 
+						title="#{msg.documents_main_button_newfile}"
+						styleClass="button"/>
+					<h:commandButton 
+					    id="newFolder"
+						action="documents_new_folder" 
+						value="#{msg.documents_main_button_newfolder}" 
+						title="#{msg.documents_main_button_newfolder}"
+						styleClass="button"/>
+				</s:acl>
+				<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.DELETE}">
+					<plexus:command
+						bean="#{views$secured$documents$documents}"
+						action="delete"
+						label="#{msg['documents_main_button_delete']}"
+						title="#{msg['documents_main_button_delete']}"
+						styleClass="button" />
+				</s:acl>
 			</o:block>
 		</h:form>
 	</ui:define>
