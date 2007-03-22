@@ -29,9 +29,10 @@ public class DistributionValidators extends ExceptionHandler implements Validato
 	
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		String resourceName = (String) value;
-		if (!checkResource(resourceName))((UIInput)component).setValid(false);
-		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Resource name not valid!" ,null);
-		context.addMessage(null, msg);
-
+		if (!checkResource(resourceName)){
+			((UIInput)component).setValid(false);
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Resource name not valid!" ,null);
+			context.addMessage(null, msg);
+		}
 	}
 }
