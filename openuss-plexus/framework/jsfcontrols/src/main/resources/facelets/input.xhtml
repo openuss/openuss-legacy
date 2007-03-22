@@ -55,14 +55,16 @@
 		</t:inputDate>
 	</oc:isDate>	
 	<oc:isBoolean id="value">
-		<h:selectBooleanCheckbox 
-			id="${property}" 
-			value="#{value}" 
-			required="${required}" 
-			disabled="${disabled}"
-			title="${title}"
-			styleClass="${styleClass}CheckBox"/>
-		<h:outputLabel id="${property}Label" value="${label}" for="${property}"	styleClass="${styleClass}_label" />
+		<label class="${styleClass}_label">
+			<h:selectBooleanCheckbox 
+				id="${property}" 
+				value="#{value}" 
+				required="${required}" 
+				disabled="${disabled}"
+				title="${title}"
+				styleClass="${styleClass}CheckBox"/>
+			${label}
+		</label>
 		<h:message id="${property}Error" for="${property}" styleClass="${styleClass}Error" showDetail="true" showSummary="false" />
 	</oc:isBoolean>
 	<oc:isText id="value">
