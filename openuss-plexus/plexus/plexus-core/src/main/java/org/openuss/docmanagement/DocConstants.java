@@ -18,8 +18,10 @@ public class DocConstants{
 	
 	//File 													
 	public static final String PROPERTY_DISTRIBUTIONTIME = "doc:distributionTime";	
-	public static final String PROPERTY_LENGTH = "doc:length"; //TODO check if needed	
-
+	public static final String PROPERTY_LENGTH = "doc:length"; 	
+	public static final String PROPERTY_OWNER = "doc:owner"; 
+	public static final String PROPERTY_VIEWED = "doc:viewed"; 
+	
 	//Link
 	public static final String PROPERTY_REFERENCE = "doc:reference";
 	

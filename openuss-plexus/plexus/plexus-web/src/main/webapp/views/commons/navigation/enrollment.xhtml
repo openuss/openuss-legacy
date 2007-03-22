@@ -20,9 +20,19 @@
 						</t:commandNavigation2>
 						<t:commandNavigation2 
 							action="enrollment_documents" 
-							activeOnViewIds="/views/secured/enrollment/documents.xhtml" 
+							activeOnViewIds="/views/secured/docmanagement/DocumentExplorer.xhtml" 
 							rendered="#{enrollment.documents}">
 							<h:outputText value="#{msg['enrollment_command_documents']}" />
+						</t:commandNavigation2>
+						<t:commandNavigation2 
+							action="enrollment_examarea" 
+							activeOnViewIds="/views/secured/enrollment/examarea/DocumentExplorer.xhtml">
+							<h:outputText value="#{msg['enrollment_command_examarea']}" />
+						</t:commandNavigation2>
+						<t:commandNavigation2 
+							action="enrollment_workingplace" 
+							activeOnViewIds="/views/secured/enrollment/DocumentExplorer.xhtml">
+							<h:outputText value="#{msg['enrollment_command_workingplace']}" />
 						</t:commandNavigation2>
 						<t:commandNavigation2 
 							action="enrollment_mailinglist" 
