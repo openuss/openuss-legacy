@@ -11,62 +11,99 @@ import org.apache.jackrabbit.webdav.DavException;
 import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.openuss.docmanagement.DocConstants;
 
+/**
+ * @author David Ullrich <lechuck@uni-muenster.de>
+ * @version 0.5
+ */
 public class DavResourceSubscription extends DavResource {
-	public DavResourceSubscription(DavResourceFactory factory, Session session,
-			DavResourceLocator locator, Node representedNode) {
+	/**
+	 * Constructor.
+	 * @param factory The resource factory.
+	 * @param session The session with the repository.
+	 * @param locator The locator identifying this resource.
+	 * @param representedNode The node from the repository or null.
+	 */
+	DavResourceSubscription(DavResourceFactory factory, Session session, DavResourceLocator locator, Node representedNode) {
 		super(factory, session, locator, representedNode);
-		// TODO Auto-generated constructor stub
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#copyDataFrom(org.openuss.docmanagement.webdav.DavResource)
+	 */
+	@Override
+	protected boolean copyDataFrom(DavResource source) throws DavException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#copyPropertiesFrom(org.openuss.docmanagement.webdav.DavResource)
+	 */
+	@Override
+	protected boolean copyPropertiesFrom(DavResource source) throws DavException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#exists()
+	 */
 	@Override
 	public boolean exists() {
-		return true;
+		return super.exists();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#exportData(org.openuss.docmanagement.webdav.ExportContext)
+	 */
 	@Override
-	public void exportContent(ExportContext context) throws DavException {
+	protected void exportData(ExportContext context) throws DavException {
 		// TODO Auto-generated method stub
+		
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#exportProperties(org.openuss.docmanagement.webdav.ExportContext)
+	 */
 	@Override
-	public boolean importContent(ImportContext context) throws DavException {
+	protected void exportProperties(ExportContext context) throws DavException {
 		// TODO Auto-generated method stub
-		return false;
+		
 	}
-
-	@Override
-	protected boolean importData(ImportContext context, Node node) throws DavException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	protected boolean importProperties(ImportContext context, Node node) throws DavException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isCollection() {
-		return true;
-	}
-
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#getCreationDate()
+	 */
 	@Override
 	public String getCreationDate() throws DavException {
-		// HACK
 		return System.currentTimeMillis() + "";
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#getDisplayName()
+	 */
 	@Override
 	public String getDisplayName() throws DavException {
-		// HACK ?
+		// TODO auf Anzeigename des Enrollments umbiegen
 		return Text.getName(getLocator().getRepositoryPath());
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#getVisibility()
+	 */
+	@Override
+	public int getVisibility() throws DavException {
+		// TODO Auto-generated method stub
+		return super.getVisibility();
+	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#getMembers()
+	 */
 	@Override
 	public List<DavResource> getMembers() throws DavException {
 		List<DavResource> members = new LinkedList<DavResource>();
-
+		
 		// add link to distribution folders
 		String distributionPath = getLocator().getRepositoryPath() + "/" + DocConstants.DISTRIBUTION;
 		DavResourceLocator distributionLocator = getLocator().getFactory().createResourceLocator(getLocator().getPrefix(), null, distributionPath);
@@ -90,7 +127,33 @@ public class DavResourceSubscription extends DavResource {
 		if (examAreaResource.exists()) {
 			members.add(examAreaResource);
 		}
-
+		
 		return members;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#importData(org.openuss.docmanagement.webdav.ImportContext)
+	 */
+	@Override
+	protected boolean importData(ImportContext context) throws DavException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#importProperties(org.openuss.docmanagement.webdav.ImportContext)
+	 */
+	@Override
+	protected boolean importProperties(ImportContext context) throws DavException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#isCollection()
+	 */
+	@Override
+	public boolean isCollection() {
+		return true;
 	}
 }

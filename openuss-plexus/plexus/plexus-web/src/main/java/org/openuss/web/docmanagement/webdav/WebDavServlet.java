@@ -188,13 +188,15 @@ public class WebDavServlet extends HttpServlet {
 				case DavMethods.DAV_DELETE:
 					// delete resource
 					logger.debug("Method DELETE requested for resource " + locator.getResourcePath());
-					getDavService().deleteResource(locator);
+					MultiStatus deleteStatus = getDavService().deleteResource(locator);
+					// send multi-status with error codes
+					sendMultiStatus(deleteStatus, response);
 					break;
 				case DavMethods.DAV_PROPFIND:
 					// fill properties from resource and send to client
 					logger.debug("Method PROPFIND requested for resource " + locator.getResourcePath() + " with depth " + getDepth(request));
-					MultiStatus multistatus = getDavService().getProperties(getRequestDocument(request), locator, getDepth(request));
-					sendMultiStatus(multistatus, response);
+					MultiStatus propertiesStatus = getDavService().getProperties(getRequestDocument(request), locator, getDepth(request));
+					sendMultiStatus(propertiesStatus, response);
 					break;
 				case DavMethods.DAV_PROPPATCH:
 					// alter values of properties
@@ -207,14 +209,34 @@ public class WebDavServlet extends HttpServlet {
 					getDavService().createCollection(locator);
 					break;
 				case DavMethods.DAV_COPY:
-					// copy resource to another collection
+					// comment: propertybehavior header value can be ignored since we only copy within the same repository
 					logger.debug("Method COPY requested for resource " + locator.getResourcePath() + ". Destination: " + getDestination(request));
-					getDavService().copyResource(locator, getResourceLocator(request, getDestination(request)));
+
+					// check depth header value for invalid value of 1
+					int copyDepth = getDepth(request);
+					if (copyDepth == DavConstants.DEPTH_1) {
+						throw new DavException(HttpStatus.SC_BAD_REQUEST, "A depth header value of 1 is invalid for the copy method.");
+					}
+					
+					// copy resource to another collection
+					MultiStatus copyStatus = getDavService().copyResource(locator, getResourceLocator(request, getDestination(request)), getOverwrite(request), (copyDepth > 0));
+					// send multi-status with error codes
+					sendMultiStatus(copyStatus, response);
 					break;
 				case DavMethods.DAV_MOVE:
-					// move resource to another collection
+					// comment: propertybehavior header value can be ignored since we only copy within the same repository
 					logger.debug("Method MOVE requested for resource " + locator.getResourcePath() + ". Destination: " + getDestination(request));
-					getDavService().moveResource(locator, getResourceLocator(request, getDestination(request)));
+
+					// check depth header value for invalid value of 1
+					int moveDepth = getDepth(request);
+					if (moveDepth != DavConstants.DEPTH_INFINITY) {
+						throw new DavException(HttpStatus.SC_BAD_REQUEST, "A depth header value other than infinity is invalid for the copy method.");
+					}
+
+					// move resource to another collection
+					MultiStatus moveStatus = getDavService().moveResource(locator, getResourceLocator(request, getDestination(request)), getOverwrite(request));
+					// send multi-status with error codes
+					sendMultiStatus(moveStatus, response);
 					break;
 				default:
 					// unknown or unsupported method code, cannot execute
@@ -267,11 +289,32 @@ public class WebDavServlet extends HttpServlet {
 	}
 	
 	/**
-	 * @param request
-	 * @return
+	 * Returns the destination header value of the request.
+	 * @param request Reference to the request of the servlet.
+	 * @return The destination header value.
 	 */
 	private String getDestination(HttpServletRequest request) {
 		return request.getHeader(DavConstants.HEADER_DESTINATION);
+	}
+	
+	/**
+	 * Returns the value of the overwrite header value as a boolean.
+	 * @param request Reference to the request of the servlet.
+	 * @return True, if overwrite header value is null or 'T'.
+	 * @throws DavException
+	 */
+	private boolean getOverwrite(HttpServletRequest request) throws DavException {
+		String overwriteHeaderValue = request.getHeader(DavConstants.HEADER_OVERWRITE);
+		if ((overwriteHeaderValue == null) || (overwriteHeaderValue.equals("T"))) {
+			// assume true, if no header value is present or is 'T'
+			return true;
+		} else if (overwriteHeaderValue.equals("F")) {
+			return false;
+		} else {
+			// invalid or not supported value for depth header found
+			logger.error("Overwrite header has an invalid value: " + overwriteHeaderValue);
+			throw new DavException(HttpServletResponse.SC_BAD_REQUEST, "Invalid value for depth header.");
+		}
 	}
 	
 	/**
@@ -339,11 +382,11 @@ public class WebDavServlet extends HttpServlet {
 	 * @throws IOException
 	 */
 	private void sendMultiStatus(MultiStatus multistatus, HttpServletResponse response) throws IOException {
-		// set status of http-reply to 207 (multi-status)
-		response.setStatus(HttpStatus.SC_MULTI_STATUS);
-		
 		// send multi-status, if present
 		if (multistatus != null) {
+			// set status of http-reply to 207 (multi-status)
+			response.setStatus(HttpStatus.SC_MULTI_STATUS);
+			
 			// create output stream
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			

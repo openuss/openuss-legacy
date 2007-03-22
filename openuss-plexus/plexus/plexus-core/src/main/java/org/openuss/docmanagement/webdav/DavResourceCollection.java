@@ -1,7 +1,5 @@
 package org.openuss.docmanagement.webdav;
 
-import java.io.IOException;
-
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -13,11 +11,94 @@ import org.openuss.docmanagement.DocRights;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.6
+ * @version 0.8
  */
 public class DavResourceCollection extends DavResource {
-	public DavResourceCollection(DavResourceFactory factory, Session session, DavResourceLocator locator, Node representedNode) {
+	/**
+	 * Constructor.
+	 * @param factory The resource factory.
+	 * @param session The session with the repository.
+	 * @param locator The locator identifying this resource.
+	 * @param representedNode The node from the repository or null.
+	 */
+	DavResourceCollection(DavResourceFactory factory, Session session, DavResourceLocator locator, Node representedNode) {
 		super(factory, session, locator, representedNode);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#copyDataFrom(org.openuss.docmanagement.webdav.DavResource)
+	 */
+	@Override
+	protected boolean copyDataFrom(DavResource source) throws DavException {
+		// collections do not contain data
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#copyPropertiesFrom(org.openuss.docmanagement.webdav.DavResource)
+	 */
+	@Override
+	protected boolean copyPropertiesFrom(DavResource source) throws DavException {
+		try {
+			// copy mandatory properties from source
+			representedNode.setProperty(DocConstants.PROPERTY_VISIBILITY, source.getVisibility());
+			representedNode.setProperty(DocConstants.PROPERTY_MESSAGE, source.getDisplayName());
+		} catch (RepositoryException ex) {
+			// undefined repository exception occurred -> rethrow as DavException
+			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+		}
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#exportData(org.openuss.docmanagement.webdav.ExportContext)
+	 */
+	@Override
+	protected void exportData(ExportContext context) throws DavException {
+		// TODO Daten über die Member als HTML oder XML ausgeben
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#exportProperties(org.openuss.docmanagement.webdav.ExportContext)
+	 */
+	@Override
+	protected void exportProperties(ExportContext context) throws DavException {
+		// TODO
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#importData(org.openuss.docmanagement.webdav.ImportContext)
+	 */
+	@Override
+	protected boolean importData(ImportContext context) throws DavException {
+		// collections cannot contain raw data
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#importProperties(org.openuss.docmanagement.webdav.ImportContext)
+	 */
+	@Override
+	protected boolean importProperties(ImportContext context) throws DavException {
+		boolean success = true;
+		
+		try {
+			// HACK set adequate visibility
+			representedNode.setProperty(DocConstants.PROPERTY_VISIBILITY, (DocRights.READ_ALL|DocRights.EDIT_ASSIST));
+		} catch (RepositoryException ex) {
+			// error occurred while setting mandatory property
+			success = false;
+		}
+		
+		try {
+			// set name of property as message
+			representedNode.setProperty(DocConstants.PROPERTY_MESSAGE, representedNode.getName());
+		} catch (RepositoryException ex) {
+			// error occurred while setting mandatory property
+			success = false;
+		}
+		
+		return success;
 	}
 
 	/* (non-Javadoc)
@@ -25,67 +106,6 @@ public class DavResourceCollection extends DavResource {
 	 */
 	@Override
 	public boolean isCollection() {
-		return true;
-	}
-
-	@Override
-	public void exportContent(ExportContext context) throws DavException {
-		if (!canExport(context)) {
-			// TODO exception message
-			throw new DavException(HttpStatus.SC_BAD_REQUEST);
-		}
-		
-		try {
-			exportProperties(context, representedNode);
-
-			if (context.hasStream()) {
-				// TODO collection entries ausgeben
-			}
-		} catch (IOException ex) {
-			// TODO
-			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
-		}
-		
-		context.informCompleted(true);
-	}
-
-	@Override
-	public boolean importContent(ImportContext context) throws DavException {
-		if (!canImport(context)) {
-			// TODO exception message
-		}
-		
-		try {
-			Node rootNode = session.getRootNode();
-			representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.DOC_FOLDER);
-			
-			importProperties(null, representedNode);
-		} catch (RepositoryException ex) {
-			
-		}
-		
-		return true;
-	}
-
-	@Override
-	protected boolean importData(ImportContext context, Node node) throws DavException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	@Override
-	protected boolean importProperties(ImportContext context, Node node) throws DavException {
-		// HACK
-		try {
-			node.setProperty(DocConstants.PROPERTY_VISIBILITY, (DocRights.READ_ALL|DocRights.EDIT_ASSIST));
-		} catch (RepositoryException ex) {
-			
-		}
-		try {
-			node.setProperty(DocConstants.PROPERTY_MESSAGE, node.getName());
-		} catch (RepositoryException ex) {
-			
-		}
 		return true;
 	}
 }

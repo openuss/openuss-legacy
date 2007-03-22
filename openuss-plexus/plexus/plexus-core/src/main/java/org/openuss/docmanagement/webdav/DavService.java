@@ -19,8 +19,9 @@ import org.dom4j.Element;
 import org.openuss.lecture.Enrollment;
 
 /**
+ * TODO: RFC compliance for spool, add sicherstellen
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.7
+ * @version 0.8
  */
 public class DavService {
 	private final Logger logger = Logger.getLogger(DavService.class);
@@ -296,40 +297,150 @@ public class DavService {
 	 * Creates a copy of a repository object.
 	 * @param source The locator identifying the source repository object.
 	 * @param target The locator identifying the target for the copy operation.
+	 * @param overwriteAllowed
+	 * @param recursive
+	 * @return The multi-status containing error information or null.
+	 * @throws DavException 
+	 */
+	public MultiStatus copyResource(DavResourceLocator source, DavResourceLocator destination, boolean overwriteAllowed, boolean recursive) throws DavException {
+		return copyResource(source, destination, overwriteAllowed, recursive, true);
+	}
+	
+	/**
+	 * Creates a copy of a repository object.
+	 * @param source The locator identifying the source repository object.
+	 * @param target The locator identifying the target for the copy operation.
+	 * @param overwriteAllowed True, if destination resource may be non-null.
+	 * @param recursive True, if copy operation should be performed for whole subtree.
+	 * @param autoCommit True, if pending changes should be persisted instantly.
+	 * @return The multi-status containing error informations or null.
 	 * @throws DavException
 	 */
-	public void copyResource(DavResourceLocator source, DavResourceLocator target) throws DavException {
+	private MultiStatus copyResource(DavResourceLocator source, DavResourceLocator destination, boolean overwriteAllowed, boolean recursive, boolean autoCommit) throws DavException {
 		// check parameters
-		if ((source == null) || (target == null)) {
-			logger.error("Source or target locator is null.");
-			throw new DavException(HttpStatus.SC_METHOD_FAILURE, "Source and target locator must not be null.");
+		if ((source == null) || (destination == null)) {
+			logger.error("Source or destination locator is null.");
+			throw new DavException(HttpStatus.SC_METHOD_FAILURE, "Source and destination locator must not be null.");
 		}
-		// TODO Methode COPY implementieren
-		throw new DavException(HttpStatus.SC_NOT_IMPLEMENTED, "COPY not implemented.");
+		
+		// send status code 403 (FORBIDDEN), if source and target are the same
+		if (source.getRepositoryPath().equals(destination.getRepositoryPath())) {
+			throw new DavException(HttpStatus.SC_FORBIDDEN, "The source and target must not be the same.");
+		}
+
+		// create instance of destination resource and check precondition
+		DavResource destinationResource = getResourceFactory().createResource(getSession(), destination, true);
+		boolean overwriteNeeded = destinationResource.exists();
+		if (overwriteNeeded && !overwriteAllowed) {
+			throw new DavException(HttpStatus.SC_PRECONDITION_FAILED, "Overwrite header was set to T and destination is non-null.");
+		}
+		
+		// create instance of source resource
+		DavResource sourceResource = getResourceFactory().createResource(getSession(), source, true);
+		
+		// copy resource
+		MultiStatus errorStatus = destinationResource.copyFrom(sourceResource, recursive);
+		
+		// persist pending changes
+		try {
+			// persist pending changes, if autoCommit is set
+			if (autoCommit) {
+				getSession().save();
+			}
+		} catch (RepositoryException ex) {
+			// error occurred while persisting pending changes
+			logger.error("Repository exception occurred.");
+			logger.error("Exception: " + ex.getMessage());
+			// rethrow as DavException 
+			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+		}
+		
+		// send adequate success status code to client
+		if (errorStatus == null) {
+			if (overwriteNeeded) {
+				throw new DavException(HttpStatus.SC_NO_CONTENT, "The source resource was successfully copied to a pre-existing destination resource.");
+			}
+			throw new DavException(HttpStatus.SC_CREATED, "The source resource was successfully copied.");
+		}
+
+		return errorStatus;
 	}
 	
 	/**
 	 * Moves a repository object to a different location.
 	 * @param source The locator identifying the source repository object.
 	 * @param target The locator identifying the target for the copy operation.
+	 * @param overwriteAllowed True, if destination resource may be non-null.
+	 * @return The multi-status containing error informations or null.
 	 * @throws DavException
 	 */
-	public void moveResource(DavResourceLocator source, DavResourceLocator target) throws DavException {
-		// check parameters
-		if ((source == null) || (target == null)) {
-			logger.error("Source or target locator is null.");
-			throw new DavException(HttpStatus.SC_METHOD_FAILURE, "Source and target locator must not be null.");
+	public MultiStatus moveResource(DavResourceLocator source, DavResourceLocator destination, boolean overwriteAllowed) throws DavException {
+		boolean overwriteNeeded = false;
+		MultiStatus errorStatus = null;
+		
+		try {
+			// create copy of resource prior to removing the source
+			errorStatus = copyResource(source, destination, overwriteAllowed, true, false);
+		} catch (DavException ex) {
+			// examine exception from copy operation
+			if (ex.getErrorCode() == HttpStatus.SC_CREATED) {
+				// copy successful without overwrite
+				overwriteNeeded = false;
+			} else if (ex.getErrorCode() == HttpStatus.SC_NO_CONTENT) {
+				// copy successful with overwrite
+				overwriteNeeded = true;
+			} else {
+				// undefined exception -> rethrow
+				throw ex;
+			}
 		}
-		// TODO Methode MOVE implementieren
-		throw new DavException(HttpStatus.SC_NOT_IMPLEMENTED, "MOVE not implemented.");
+		
+		// delete resource if copy operation was successful
+		if (errorStatus == null) {
+			errorStatus = deleteResource(source, false);
+		}
+		
+		// persist changes, if both operations were successful
+		try {
+			getSession().save();
+		} catch (RepositoryException ex) {
+			// error occurred while persisting pending changes
+			logger.error("Repository exception occurred.");
+			logger.error("Exception: " + ex.getMessage());
+			// rethrow as DavException 
+			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+		}
+
+		if (errorStatus == null) {
+
+			// send adequate success status code to client
+			if (overwriteNeeded) {
+				throw new DavException(HttpStatus.SC_NO_CONTENT, "The source resource was successfully copied to a pre-existing destination resource.");
+			}
+			throw new DavException(HttpStatus.SC_CREATED, "The source resource was successfully copied.");
+		}
+		
+		return errorStatus;
 	}
 	
 	/**
-	 * Deletes a repository object.
+	 * Deletes a resource identified by the {@link DavResourceLocator}.
 	 * @param locator The locator identifying the repository object to delete.
+	 * @return The multi-status containing error informations or null.
 	 * @throws DavException
 	 */
 	public MultiStatus deleteResource(DavResourceLocator locator) throws DavException {
+		return deleteResource(locator, true);
+	}
+	
+	/**
+	 * Deletes a resource identified by the {@link DavResourceLocator}.
+	 * @param locator The locator identifying the repository object to delete.
+	 * @param autoCommit True, if pending changes should be persisted instantly.
+	 * @return The multi-status containing error informations or null.
+	 * @throws DavException
+	 */
+	private MultiStatus deleteResource(DavResourceLocator locator, boolean autoCommit) throws DavException {
 		// check parameters
 		if (locator == null) {
 			logger.error("Locator is null.");
@@ -340,22 +451,27 @@ public class DavService {
 		DavResource resource = getResourceFactory().createResource(getSession(), locator, false);
 		
 		// remove resource
-		MultiStatus errorMultistatus = resource.remove();
+		MultiStatus errorStatus = resource.remove();
 		// removal successful? -> persist pending changes
-		if (errorMultistatus.getResponses().size() == 0) {
+		if (errorStatus.getResponses().size() == 0) {
 			try {
-				getSession().save();
+				// persist pending changes, if autoCommit is set
+				if (autoCommit) {
+					getSession().save();
+				}
+				
 				// kill multi-status if transaction was successful
-				errorMultistatus = null;
+				errorStatus = null;
 			} catch (RepositoryException ex) {
 				// error occurred while persisting pending changes
 				logger.error("Repository exception occurred.");
 				logger.error("Exception: " + ex.getMessage());
-				errorMultistatus.addResponse(new MultiStatusResponse(locator.getHref(resource.isCollection()), HttpStatus.SC_INTERNAL_SERVER_ERROR, null));
+				// rethrow as DavException
+				throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
 			}
 		}
 
-		return errorMultistatus;
+		return errorStatus;
 	}
 	
 	/**
