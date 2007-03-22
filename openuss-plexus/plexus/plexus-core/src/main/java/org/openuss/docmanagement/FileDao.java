@@ -181,7 +181,11 @@ public class FileDao extends ResourceDao {
 			writeNTFile(node, file);
 			node.getSession().save();
 			node.checkin();
+			return;
 		}
+		node.addNode(file.getName(), DocConstants.DOC_FILE);
+		node = node.getNode(file.getName());
+		writeNTFile(node, file);
 		 
 	}
 
@@ -207,7 +211,7 @@ public class FileDao extends ResourceDao {
 			}
 			// nt:File Knoten
 			node.addNode(file.getName(), DocConstants.DOC_FILE);
-			node = node.getNode(file.getName());
+			node = node.getNode(file.getName());			
 			writeNTFile(node, file);
 		} catch (LoginException e1) {
 			throw new DocManagementException("LoginException occured");
