@@ -20,5 +20,21 @@
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 		</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>dom4j</groupId>
+				<artifactId>dom4j</artifactId>
+			</dependency>
+			<dependency>
+            	<groupId>jsr170</groupId>
+	            <artifactId>jcr</artifactId>
+	        </dependency>  	
+			<dependency>
+				<groupId>org.acegisecurity</groupId>
+				<artifactId>acegi-security</artifactId>
+			</dependency>
 	</dependencies>
 </project>
