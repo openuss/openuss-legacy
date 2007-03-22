@@ -34,10 +34,15 @@
 		<h:form id="newDocumentToFolderForm" enctype="multipart/form-data">
 		
 			<o:block label="#{msg.doc_addfile_header}">
-				<o:input entity="fileController.file" property="name" required="true">
-				</o:input>
-				<o:input entity="fileController.file" property="message" required="true">
-				</o:input>
+				<h:outputLabel value="#{msg.filecontroller_file_name}" for="fileName" styleClass="field_label"></h:outputLabel><br />
+				<h:inputText id = "fileName" value="#{fileController.file.name}" required="true" styleClass="field">
+					<f:validator validatorId="checkResourceNameValidator" />				
+				</h:inputText><br />
+
+				<h:outputLabel value="#{msg.filecontroller_file_message}" for="fileMessage" styleClass="field_label"></h:outputLabel><br />
+				<h:inputText id = "fileMessage" value="#{fileController.file.message}" required="true" styleClass="field">
+				</h:inputText><br />
+
 				<h:outputLabel value="#{msg.doc_addfile_file}" for="document"	styleClass="field_label" rendered="#{not fileController.old}"/>
 				<t:inputFileUpload id="document" storage="file" immediate="true" styleClass="uploadField" rendered="#{not fileController.old}" required="true">					
 					<f:valueChangeListener type="org.openuss.web.docmanagement.FileUploadListener" />
