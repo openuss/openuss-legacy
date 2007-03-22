@@ -13,6 +13,7 @@ import org.apache.shale.tiger.view.View;
 import org.apache.log4j.Logger;
 import org.openuss.docmanagement.BigFile;
 import org.openuss.docmanagement.BigFileImpl;
+import org.openuss.docmanagement.DeadlineException;
 import org.openuss.docmanagement.DistributionService;
 import org.openuss.docmanagement.DocConstants;
 import org.openuss.docmanagement.DocManagementException;
@@ -58,6 +59,8 @@ public class ExamFileController extends AbstractEnrollmentDocPage {
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (DeadlineException e){
+			handleDeadlineException(e);
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}

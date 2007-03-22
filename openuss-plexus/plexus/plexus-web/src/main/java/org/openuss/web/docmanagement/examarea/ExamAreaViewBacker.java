@@ -2,6 +2,7 @@ package org.openuss.web.docmanagement.examarea;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -201,6 +202,10 @@ public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
 		return DocConstants.EXAMEXPLORER;
 	}
 
+	/**
+	 * convenience method, which trigger the download of given file
+	 * @param bigFile
+	 */
 	private void triggerDownload(BigFile bigFile) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletResponse response = (HttpServletResponse) context
@@ -242,6 +247,22 @@ public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
 
 
 	public String saveDeadline(){
+		ExamArea examArea;
+		try {
+			examArea = examinationService.getExamArea(enrollment);
+			examArea.setDeadline(new Timestamp(deadline.getTime()));
+			examinationService.setDeadline(examArea);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
+		} catch (PathNotFoundException e) {
+			handlePathNotFoundException(e);
+		} catch (ResourceAlreadyExistsException e) {
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}
 		return DocConstants.EXAMEXPLORER;
 	}
 

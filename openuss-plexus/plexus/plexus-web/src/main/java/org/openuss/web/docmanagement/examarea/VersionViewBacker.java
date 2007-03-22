@@ -45,6 +45,8 @@ public class VersionViewBacker extends AbstractEnrollmentDocPage{
 	
 	public ArrayList<FileTableEntry> data;
 	
+	public FileTableEntry baseVersion;
+	
 	/**
 	 * @return ArrayList, which contains all files of current selected folder
 	 *         for display in dataTable
@@ -52,6 +54,7 @@ public class VersionViewBacker extends AbstractEnrollmentDocPage{
 	public ArrayList<FileTableEntry> getData() {
 		ArrayList<FileTableEntry> al = new ArrayList<FileTableEntry>();
 		FileTableEntry fte = examAreaViewBacker.getData().get(new Integer(examAreaViewBacker.getFileFacesPath()).intValue());
+		this.baseVersion = fte;
 		try {
 			List l = examinationService.getVersions(fileTableEntry2File(fte));
 			Iterator i = l.iterator();
@@ -88,7 +91,7 @@ public class VersionViewBacker extends AbstractEnrollmentDocPage{
 		fte.setLength(f.getLength());
 		fte.setMessage(f.getMessage());
 		fte.setMimeType(f.getMimeType());
-		fte.setName(f.getName());
+		fte.setName(baseVersion.getName());
 		fte.setPath(f.getPath());
 		fte.setPredecessor(f.getPredecessor());
 		fte.setVersion(f.getVersion());
@@ -144,6 +147,10 @@ public class VersionViewBacker extends AbstractEnrollmentDocPage{
 		return DocConstants.EXAMEXPLORER;
 	}
 
+	/**
+	 * convenience method, which triggers the download of a file
+	 * @param bigFile
+	 */
 	private void triggerDownload(BigFile bigFile) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletResponse response = (HttpServletResponse) context
@@ -153,7 +160,7 @@ public class VersionViewBacker extends AbstractEnrollmentDocPage{
 
 		response.setContentType(bigFile.getMimeType());
 		response.setHeader("Content-Disposition", "attachment;filename=\""
-				+ bigFile.getName() + "\"");
+				+ baseVersion.getName() + "\"");
 		OutputStream os = null;
 		try {
 			os = response.getOutputStream();

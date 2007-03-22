@@ -8,7 +8,8 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:fck="http://www.fck-faces.org/fck-faces"
-	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:s="http://www.openuss.org/jsf-security">
 
 
 <head>
@@ -33,15 +34,17 @@
 	<ui:define name="content">
 		<h:form id="examAreaOptions">
 			<o:block label="#{msg.doc_examarea_options}">
-				<t:inputDate id="deadline" popupCalendar="true" value="#{examAreaViewBacker.deadline}" type="full" ampm="false">
+				<t:inputDate id="deadline" popupCalendar="true"
+					value="#{examAreaViewBacker.deadline}" type="full" ampm="false">
 				</t:inputDate>
-
 			</o:block>
 			<o:block>
 				<h:commandButton action="#{examAreaViewBacker.saveDeadline}"
-					value="#{msg['doc_examarea_button_savedeadline']}" styleClass="button"/>				
+					value="#{msg['doc_examarea_button_savedeadline']}"
+					styleClass="button" />
 				<h:commandButton action="enrollment_examarea"
-					value="#{msg['doc_examarea_button_cancel']}" styleClass="button" immediate="true"/>	
+					value="#{msg['doc_examarea_button_cancel']}" styleClass="button"
+					immediate="true" />
 			</o:block>
 		</h:form>
 	</ui:define>

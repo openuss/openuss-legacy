@@ -128,8 +128,12 @@ public class FileDao extends ResourceDao {
 							DocConstants.PROPERTY_VISIBILITY).getLong()), node
 							.getNode(DocConstants.JCR_CONTENT).getProperty(
 									DocConstants.JCR_DATA).getStream(), owner);
-			fi.setCreated(new Timestamp(node.getProperty(
+			try{
+				fi.setCreated(new Timestamp(node.getProperty(
 					DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
+			} catch (Exception e){
+				//JCR_CREATED is not saved in old versions
+			}
 			logout(session);
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
@@ -189,13 +193,18 @@ public class FileDao extends ResourceDao {
 	 * @throws ValueFormatException
 	 * @throws PathNotFoundException
 	 * @throws RepositoryException
+	 * @throws DocManagementException 
 	 */
 	private void setExamAreaFile(Node node, BigFile file)
 			throws NoSuchNodeTypeException, VersionException,
 			ConstraintViolationException, LockException, AccessDeniedException,
 			ItemExistsException, InvalidItemStateException,
 			UnsupportedRepositoryOperationException, ValueFormatException,
-			PathNotFoundException, RepositoryException {
+			PathNotFoundException, RepositoryException, DeadlineException, DocManagementException {
+		//check for deadline
+		if (!node.hasProperty(DocConstants.PROPERTY_DEADLINE)) throw new DocManagementException ("no deadline found");
+		if (node.getProperty(DocConstants.PROPERTY_DEADLINE).getDate().getTimeInMillis()<System.currentTimeMillis())
+			throw new DeadlineException("Deadline reached, no more submissions are possible!");
 		if (node.hasNode(file.getName())) {
 			node = node.getNode(file.getName());
 			if (!node.isNodeType(DocConstants.MIX_VERSIONABLE)) {
@@ -463,6 +472,17 @@ public class FileDao extends ResourceDao {
 		}
 	}
 
+	/**
+	 * convenience method, which moves a node to trashfolder
+	 * @param node
+	 * @param i
+	 * @throws ItemExistsException
+	 * @throws PathNotFoundException
+	 * @throws VersionException
+	 * @throws ConstraintViolationException
+	 * @throws LockException
+	 * @throws RepositoryException
+	 */
 	private void move2trash(Node node, int i) throws ItemExistsException,
 			PathNotFoundException, VersionException,
 			ConstraintViolationException, LockException, RepositoryException {
@@ -489,6 +509,11 @@ public class FileDao extends ResourceDao {
 		}
 	}
 
+	/**
+	 * convenience method, which returns the path, to current trash folder
+	 * @param path
+	 * @return
+	 */
 	private String getPathToTrash(String path) {
 		if (path.startsWith("/"))
 			path = path.substring(1);
@@ -550,6 +575,13 @@ public class FileDao extends ResourceDao {
 		}
 	}
 
+	/**
+	 * returns the owner of a file
+	 * @param file
+	 * @return
+	 * @throws PathNotFoundException
+	 * @throws DocManagementException
+	 */
 	public String getOwner(File file) throws PathNotFoundException,
 			DocManagementException {
 		String owner = null;
@@ -573,6 +605,12 @@ public class FileDao extends ResourceDao {
 		}
 	}
 
+	/**
+	 * returns a complete list of versions of the file, from oldest to newest
+	 * @param file
+	 * @return
+	 * @throws DocManagementException
+	 */
 	public List getVersions(File file) throws DocManagementException {
 		List l = new ArrayList();
 		try {
@@ -601,7 +639,6 @@ public class FileDao extends ResourceDao {
 						String mimeType = node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_MIMETYPE).getString();
 						String pathToVersion = node.getPath();
 						int visibility = ((int) node.getProperty(DocConstants.PROPERTY_VISIBILITY).getLong());
-						InputStream inputStream = node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_DATA).getStream();
 						long length =  node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_DATA).getLength();						
 						File f = new FileImpl(distTime, node.getUUID(), lastMod, length,message, mimeType, "", pathToVersion, null, versionnumber, visibility, owner);
 						l.add(f);

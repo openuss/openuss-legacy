@@ -3,6 +3,7 @@ package org.openuss.web.docmanagement;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.apache.log4j.Logger;
+import org.openuss.docmanagement.DeadlineException;
 import org.openuss.docmanagement.DocManagementException;
 import org.openuss.docmanagement.NotAFileException;
 import org.openuss.docmanagement.NotAFolderException;
@@ -38,6 +39,12 @@ public abstract class ExceptionHandler{
 	}
 	
 	public void handleDocManagementException(DocManagementException e) {
+		exceptionLogger.error(e.getMessage(), e);
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(),null);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public void handleDeadlineException(DeadlineException e) {
 		exceptionLogger.error(e.getMessage(), e);
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(),null);
 		FacesContext.getCurrentInstance().addMessage(null, msg);

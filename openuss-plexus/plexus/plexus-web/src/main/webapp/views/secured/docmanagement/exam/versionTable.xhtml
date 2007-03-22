@@ -12,11 +12,14 @@
 	<t:dataTable id="filesDataTable" var="file"
 		value="#{versionViewBacker.data}">
 		<t:column>
-			<h:selectBooleanCheckbox value="#{file.checked}"></h:selectBooleanCheckbox>
+			<h:outputText value="#{file.version}"></h:outputText>
 		</t:column>
 		<t:column>
 			<h:outputText value="#{file.name}" title="#{file.message}"/>
 		</t:column>
+		<t:column>
+			<h:outputText value="#{file.length}" />
+		</t:column>		
 		<t:column>
 			<h:graphicImage	value="/images/filetypes/#{file.extension}.gif" />	
 		</t:column>

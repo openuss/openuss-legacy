@@ -18,6 +18,9 @@
 			<h:outputText value="#{file.name}" title="#{file.message}"/>
 		</t:column>
 		<t:column>
+			<h:outputText value="#{file.length}" />
+		</t:column>
+		<t:column>
 			<h:graphicImage	value="/images/filetypes/#{file.extension}.gif" />	
 		</t:column>
 		<t:column>
