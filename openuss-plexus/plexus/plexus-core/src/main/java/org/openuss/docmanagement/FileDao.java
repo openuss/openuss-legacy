@@ -63,7 +63,6 @@ public class FileDao extends ResourceDao {
 						DocConstants.PROPERTY_VISIBILITY).getLong()));
 		file.setCreated(new Timestamp(node
 				.getProperty(DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
-		
 		logout(session);
 		} catch (NotAFileException e) {
 			throw e;
