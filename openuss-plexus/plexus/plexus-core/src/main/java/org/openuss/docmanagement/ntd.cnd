@@ -4,6 +4,7 @@
 [doc:folder] > nt:folder, mix:referenceable
 - doc:visibility (long) mandatory
 - doc:message (string) mandatory
+- doc:deadline (date)
 
 [doc:file] > nt:file, mix:referenceable
 - doc:visibility (long) mandatory
