@@ -680,7 +680,7 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
-		BigFile file = new BigFileImpl(link.getDistributionDate(), null, 0, link.getMessage(), "", link.getName(), link.getPath(), null, 1, link.getVisibility(), null);
+		BigFile file = new BigFileImpl(link.getDistributionDate(), null, 0, link.getMessage(), "", link.getName(), link.getPath(), null, 1, link.getVisibility(), null, "");
 		fileController.setFile(file);
 		fileController.setLinkToEdit(link);
 		fileController.setOld(true);

@@ -27,7 +27,9 @@
 			<h:commandButton action="#{examAreaViewBacker.download}" value="#{msg.doc_exam_button_download}">
 				<f:actionListener type="org.openuss.web.docmanagement.examarea.ExamFileChangeActionListener" />
 			</h:commandButton>
-			
+			<h:commandButton action="docmanagement_examareaversionexplorer" value="#{msg.doc_exam_button_versions}">
+				<f:actionListener type="org.openuss.web.docmanagement.examarea.ExamFileChangeActionListener" />
+			</h:commandButton>			
 		</t:column>
 	</t:dataTable>
 </ui:composition>

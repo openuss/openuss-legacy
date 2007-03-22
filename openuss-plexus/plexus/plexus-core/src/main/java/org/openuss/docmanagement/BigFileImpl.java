@@ -9,7 +9,7 @@ public class BigFileImpl extends FileImpl implements BigFile {
 		super();
 	}
 	
-	public BigFileImpl(Timestamp distributionTime, String id, Timestamp lastModification, long length, String message, String mimeType, String name, String path, File predecessor, int version, int visibility, InputStream file){
+	public BigFileImpl(Timestamp distributionTime, String id, Timestamp lastModification, long length, String message, String mimeType, String name, String path, File predecessor, int version, int visibility, InputStream file, String owner){
 		this.setDistributionTime(distributionTime);
 		this.setId(id);
 		this.setLastModification(lastModification);
@@ -22,9 +22,10 @@ public class BigFileImpl extends FileImpl implements BigFile {
 		this.setVersion(version);
 		this.setVisibility(visibility);
 		this.setFile(file);
+		this.setOwner(owner);
 	}
 
-	public BigFileImpl(Timestamp distributionTime, Timestamp lastModification, long length, String message, String mimeType, String name, String path, File predecessor, int version, int visibility, InputStream file){
+	public BigFileImpl(Timestamp distributionTime, Timestamp lastModification, long length, String message, String mimeType, String name, String path, File predecessor, int version, int visibility, InputStream file, String owner){
 		this.setDistributionTime(distributionTime);
 		this.setLastModification(lastModification);
 		this.setLength(length);
@@ -36,6 +37,7 @@ public class BigFileImpl extends FileImpl implements BigFile {
 		this.setVersion(version);
 		this.setVisibility(visibility);
 		this.setFile(file);
+		this.setOwner(owner);
 	}
 	
 	public InputStream file;

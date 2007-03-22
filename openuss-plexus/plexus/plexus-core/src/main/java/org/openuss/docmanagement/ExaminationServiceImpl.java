@@ -84,8 +84,7 @@ public class ExaminationServiceImpl
 
 	@Override
 	protected java.util.List handleGetVersions(File file) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return fileDao.getVersions(file);
 	}
 
 	@Override

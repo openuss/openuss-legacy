@@ -3,15 +3,18 @@ package org.openuss.docmanagement;
 import javax.jcr.Node;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
+import java.util.List;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.InvalidItemStateException;
 import javax.jcr.ItemExistsException;
 import javax.jcr.LoginException;
+import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
+import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
@@ -21,9 +24,15 @@ import javax.jcr.ValueFormatException;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
+import javax.jcr.version.Version;
 import javax.jcr.version.VersionException;
+import javax.jcr.version.VersionHistory;
+import javax.jcr.version.VersionIterator;
 
 import org.apache.log4j.Logger;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 /**
  * @author David Ullrich
@@ -44,42 +53,44 @@ public class FileDao extends ResourceDao {
 	 * @throws LoginException
 	 * @throws RepositoryException
 	 */
-	public File getFile(String path) throws NotAFileException, DocManagementException {
+	public File getFile(String path) throws NotAFileException,
+			DocManagementException {
 		Session session;
 		FileImpl file;
 		try {
 			session = login(repository);
-		Node node = session.getRootNode();
-		if (path.startsWith("/")) path = path.substring(1);
-		node = node.getNode(path);
-		if (!node.isNodeType(DocConstants.DOC_FILE)){
+			Node node = session.getRootNode();
+			if (path.startsWith("/"))
+				path = path.substring(1);
+			node = node.getNode(path);
+			if (!node.isNodeType(DocConstants.DOC_FILE)) {
+				logout(session);
+				throw new NotAFileException("Not a file");
+			}
+			String owner = "";
+			if (node.hasProperty(DocConstants.PROPERTY_OWNER))
+				owner = node.getProperty(DocConstants.PROPERTY_OWNER)
+						.getString();
+			file = new FileImpl(new Timestamp(node.getProperty(
+					DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate()
+					.getTimeInMillis()), node.getUUID(), new Timestamp(node
+					.getNode(DocConstants.JCR_CONTENT).getProperty(
+							DocConstants.JCR_LASTMODIFIED).getDate()
+					.getTimeInMillis()), 0, node.getProperty(
+					DocConstants.PROPERTY_MESSAGE).getString(), node.getNode(
+					DocConstants.JCR_CONTENT).getProperty(
+					DocConstants.JCR_MIMETYPE).getString(), node.getName(),
+					node.getPath(), null, 1, ((int) node.getProperty(
+							DocConstants.PROPERTY_VISIBILITY).getLong()), owner);
+			file.setCreated(new Timestamp(node.getProperty(
+					DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
 			logout(session);
-			throw new NotAFileException("Not a file");			
-		}
-		String owner = "";
-		if (node.hasProperty(DocConstants.PROPERTY_OWNER))
-			owner = node.getProperty(DocConstants.PROPERTY_OWNER).getString();
-
-
-		
-		file = new FileImpl(new Timestamp(node.getProperty(
-				DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTimeInMillis()), node.getUUID(), new Timestamp(node.getNode(
-				DocConstants.JCR_CONTENT).getProperty(
-				DocConstants.JCR_LASTMODIFIED).getDate().getTimeInMillis()),
-				0, node.getProperty(DocConstants.PROPERTY_MESSAGE).getString(),
-				node.getNode(DocConstants.JCR_CONTENT).getProperty(
-						DocConstants.JCR_MIMETYPE).getString(), node.getName(),
-				node.getPath(), null, 1, ((int) node.getProperty(
-						DocConstants.PROPERTY_VISIBILITY).getLong()), owner);
-		file.setCreated(new Timestamp(node
-				.getProperty(DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
-		logout(session);
 		} catch (NotAFileException e) {
 			throw e;
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {
-			throw new  DocManagementException("RepositoryException occured");
+			throw new DocManagementException("RepositoryException occured");
 		}
 		return file;
 	}
@@ -89,7 +100,7 @@ public class FileDao extends ResourceDao {
 	 * 
 	 * @param file
 	 * @return
-	 * @throws DocManagementException 
+	 * @throws DocManagementException
 	 * @throws LoginException
 	 * @throws RepositoryException
 	 */
@@ -98,40 +109,47 @@ public class FileDao extends ResourceDao {
 		BigFileImpl fi = new BigFileImpl();
 		try {
 			session = login(repository);
-		Node node = session.getNodeByUUID(file.getId());
-		//FIXME set if versioninable
-		FileImpl pred = new FileImpl();
-		fi = new BigFileImpl(new Timestamp(node.getProperty(
-				DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTimeInMillis()), node.getUUID(), new Timestamp(node.getNode(
-				DocConstants.JCR_CONTENT).getProperty(
-				DocConstants.JCR_LASTMODIFIED).getDate().getTimeInMillis()),
-				0, node.getProperty(DocConstants.PROPERTY_MESSAGE).getString(),
-				node.getNode(DocConstants.JCR_CONTENT).getProperty(
-						DocConstants.JCR_MIMETYPE).getString(), node.getName(),
-				node.getPath(), pred, 1, ((int) node.getProperty(
-						DocConstants.PROPERTY_VISIBILITY).getLong()), node
-						.getNode(DocConstants.JCR_CONTENT).getProperty(
-								DocConstants.JCR_DATA).getStream());
-		fi.setCreated(new Timestamp(node.getProperty(DocConstants.JCR_CREATED)
-				.getDate().getTimeInMillis()));
-		logout(session);
+			Node node = session.getNodeByUUID(file.getId());
+			FileImpl pred = new FileImpl();
+			String owner = "";
+			if (node.hasProperty(DocConstants.PROPERTY_OWNER))
+				owner = node.getProperty(DocConstants.PROPERTY_OWNER)
+						.getString();
+			fi = new BigFileImpl(new Timestamp(node.getProperty(
+					DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate()
+					.getTimeInMillis()), node.getUUID(), new Timestamp(node
+					.getNode(DocConstants.JCR_CONTENT).getProperty(
+							DocConstants.JCR_LASTMODIFIED).getDate()
+					.getTimeInMillis()), 0, node.getProperty(
+					DocConstants.PROPERTY_MESSAGE).getString(), node.getNode(
+					DocConstants.JCR_CONTENT).getProperty(
+					DocConstants.JCR_MIMETYPE).getString(), node.getName(),
+					node.getPath(), pred, 1, ((int) node.getProperty(
+							DocConstants.PROPERTY_VISIBILITY).getLong()), node
+							.getNode(DocConstants.JCR_CONTENT).getProperty(
+									DocConstants.JCR_DATA).getStream(), owner);
+			fi.setCreated(new Timestamp(node.getProperty(
+					DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
+			logout(session);
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {
-			throw new  DocManagementException("RepositoryException occured");
+			throw new DocManagementException("RepositoryException occured");
 		}
 		return fi;
 	}
 
 	/**
 	 * setFile method persists the file represented by BigFile object
+	 * 
 	 * @param file
-	 * @throws RepositoryException 
-	 * @throws LoginException 
-	 * @throws ResourceAlreadyExistsException 
+	 * @throws RepositoryException
+	 * @throws LoginException
+	 * @throws ResourceAlreadyExistsException
 	 * @throws Exception
 	 */
-	public void setFile(BigFile file) throws ResourceAlreadyExistsException, DocManagementException {
+	public void setFile(BigFile file) throws ResourceAlreadyExistsException,
+			DocManagementException {
 		try {
 			Session session = login(repository);
 			String path = file.getPath();
@@ -151,12 +169,13 @@ public class FileDao extends ResourceDao {
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {
-			throw new  DocManagementException("RepositoryException occured");
-		}			
+			throw new DocManagementException("RepositoryException occured");
+		}
 	}
-	
+
 	/**
 	 * convenience method, which sets given file to given node
+	 * 
 	 * @param node
 	 * @param file
 	 * @throws NoSuchNodeTypeException
@@ -171,45 +190,53 @@ public class FileDao extends ResourceDao {
 	 * @throws PathNotFoundException
 	 * @throws RepositoryException
 	 */
-	private void setExamAreaFile(Node node, BigFile file) throws NoSuchNodeTypeException, VersionException, ConstraintViolationException, LockException, AccessDeniedException, ItemExistsException, InvalidItemStateException, UnsupportedRepositoryOperationException, ValueFormatException, PathNotFoundException, RepositoryException{
+	private void setExamAreaFile(Node node, BigFile file)
+			throws NoSuchNodeTypeException, VersionException,
+			ConstraintViolationException, LockException, AccessDeniedException,
+			ItemExistsException, InvalidItemStateException,
+			UnsupportedRepositoryOperationException, ValueFormatException,
+			PathNotFoundException, RepositoryException {
 		if (node.hasNode(file.getName())) {
 			node = node.getNode(file.getName());
 			if (!node.isNodeType(DocConstants.MIX_VERSIONABLE)) {
 				node.addMixin(DocConstants.MIX_VERSIONABLE);
-				//FIXME Add owner
+				node.getNode(DocConstants.JCR_CONTENT).addMixin(
+						DocConstants.MIX_VERSIONABLE);
 				node.getSession().save();
 				node.checkin();
 				node.getSession().save();
 			}
 			node.checkout();
 			node.setProperty(DocConstants.PROPERTY_OWNER, file.getOwner());
-			writeNTFileProperties(node, file);			
+			writeNTFileProperties(node, file);
 			node.getSession().save();
 			node.checkin();
 			return;
 		}
-		node.addNode(file.getName(), DocConstants.DOC_FILE);		
+		node.addNode(file.getName(), DocConstants.DOC_FILE);
 		node = node.getNode(file.getName());
 		node.setProperty(DocConstants.PROPERTY_OWNER, file.getOwner());
 		writeNTFile(node, file);
-		 
+
 	}
 
 	/**
 	 * convenience method, which sets given file to given node
+	 * 
 	 * @param node
 	 * @param file
-	 * @throws ResourceAlreadyExistsException 
-	 * @throws RepositoryException 
-	 * @throws ConstraintViolationException 
-	 * @throws VersionException 
-	 * @throws LockException 
-	 * @throws NoSuchNodeTypeException 
-	 * @throws PathNotFoundException 
-	 * @throws ItemExistsException 
+	 * @throws ResourceAlreadyExistsException
+	 * @throws RepositoryException
+	 * @throws ConstraintViolationException
+	 * @throws VersionException
+	 * @throws LockException
+	 * @throws NoSuchNodeTypeException
+	 * @throws PathNotFoundException
+	 * @throws ItemExistsException
 	 * @throws Exception
 	 */
-	private void setDistributionFile(Node node, BigFile file) throws ResourceAlreadyExistsException, DocManagementException{ 
+	private void setDistributionFile(Node node, BigFile file)
+			throws ResourceAlreadyExistsException, DocManagementException {
 		try {
 			if (node.hasNode(file.getName())) {
 				logout(node.getSession());
@@ -217,18 +244,20 @@ public class FileDao extends ResourceDao {
 			}
 			// nt:File Knoten
 			node.addNode(file.getName(), DocConstants.DOC_FILE);
-			node = node.getNode(file.getName());			
+			node = node.getNode(file.getName());
 			writeNTFile(node, file);
 		} catch (LoginException e1) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e1) {
-			throw new  DocManagementException("RepositoryException occured");
+			throw new DocManagementException("RepositoryException occured");
 		}
-		
+
 	}
 
 	/**
-	 * convenience method which actually write the properties of nt:file and jcr:content nodes
+	 * convenience method which actually write the properties of nt:file and
+	 * jcr:content nodes
+	 * 
 	 * @param node
 	 * @param file
 	 * @throws ValueFormatException
@@ -240,14 +269,18 @@ public class FileDao extends ResourceDao {
 	 * @throws PathNotFoundException
 	 * @throws NoSuchNodeTypeException
 	 */
-	private void writeNTFileProperties(Node node, BigFile file) throws ValueFormatException, VersionException, LockException, ConstraintViolationException, RepositoryException, ItemExistsException, PathNotFoundException, NoSuchNodeTypeException {
+	private void writeNTFileProperties(Node node, BigFile file)
+			throws ValueFormatException, VersionException, LockException,
+			ConstraintViolationException, RepositoryException,
+			ItemExistsException, PathNotFoundException, NoSuchNodeTypeException {
 		node.setProperty(DocConstants.PROPERTY_MESSAGE, file.getMessage());
 		Calendar c = new GregorianCalendar();
 		c.setTimeInMillis(file.getDistributionTime().getTime());
 		node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
-		node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
-				.getVisibility());
-		// nt:resource Knoten, der die eigentlich Datei enthaelt		
+		node
+				.setProperty(DocConstants.PROPERTY_VISIBILITY, file
+						.getVisibility());
+		// nt:resource Knoten, der die eigentlich Datei enthaelt
 		node = node.getNode(DocConstants.JCR_CONTENT);
 		node.setProperty(DocConstants.JCR_DATA, file.getFile());
 		node.setProperty(DocConstants.JCR_MIMETYPE, file.getMimeType());
@@ -255,9 +288,10 @@ public class FileDao extends ResourceDao {
 		c2.setTimeInMillis(file.getLastModification().getTime());
 		node.setProperty(DocConstants.JCR_LASTMODIFIED, c);
 	}
-	
+
 	/**
 	 * convenience method which actually write the nt:file and jcr:content nodes
+	 * 
 	 * @param node
 	 * @param file
 	 * @throws ValueFormatException
@@ -269,14 +303,18 @@ public class FileDao extends ResourceDao {
 	 * @throws PathNotFoundException
 	 * @throws NoSuchNodeTypeException
 	 */
-	private void writeNTFile(Node node, BigFile file) throws ValueFormatException, VersionException, LockException, ConstraintViolationException, RepositoryException, ItemExistsException, PathNotFoundException, NoSuchNodeTypeException {
+	private void writeNTFile(Node node, BigFile file)
+			throws ValueFormatException, VersionException, LockException,
+			ConstraintViolationException, RepositoryException,
+			ItemExistsException, PathNotFoundException, NoSuchNodeTypeException {
 		node.setProperty(DocConstants.PROPERTY_MESSAGE, file.getMessage());
 		Calendar c = new GregorianCalendar();
 		c.setTimeInMillis(file.getDistributionTime().getTime());
 		node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
-		node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
-				.getVisibility());
-			// nt:resource Knoten, der die eigentlich Datei enthaelt
+		node
+				.setProperty(DocConstants.PROPERTY_VISIBILITY, file
+						.getVisibility());
+		// nt:resource Knoten, der die eigentlich Datei enthaelt
 		node.addNode(DocConstants.JCR_CONTENT, DocConstants.NT_RESOURCE);
 		node = node.getNode(DocConstants.JCR_CONTENT);
 		node.setProperty(DocConstants.JCR_DATA, file.getFile());
@@ -287,13 +325,15 @@ public class FileDao extends ResourceDao {
 	}
 
 	/**
-	 * Change the given file object 
+	 * Change the given file object
+	 * 
 	 * @param file
-	 * @throws DocManagementException 
+	 * @throws DocManagementException
 	 * @throws LoginException
 	 * @throws RepositoryException
 	 */
-	public void changeFile(BigFile file) throws ResourceAlreadyExistsException, DocManagementException  {
+	public void changeFile(BigFile file) throws ResourceAlreadyExistsException,
+			DocManagementException {
 		try {
 			Session session = login(repository);
 			Node node = session.getRootNode();
@@ -308,9 +348,8 @@ public class FileDao extends ResourceDao {
 			Calendar c = new GregorianCalendar();
 			c.setTimeInMillis(file.getDistributionTime().getTime());
 			node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
-			node
-					.setProperty(DocConstants.PROPERTY_VISIBILITY, file
-							.getVisibility());
+			node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
+					.getVisibility());
 
 			// nt:resource
 			node = node.getNode(DocConstants.JCR_CONTENT);
@@ -321,33 +360,40 @@ public class FileDao extends ResourceDao {
 			session.save();
 			// if nodename has changed, move node
 			node = node.getParent();
-			if (!node.getPath().equals(node.getParent().getPath() + "/" + file.getName())) {
+			if (!node.getPath().equals(
+					node.getParent().getPath() + "/" + file.getName())) {
 				if (node.getParent().hasNode(file.getName())) {
 					logout(session);
-					throw new ResourceAlreadyExistsException("A File with that name already exists!");
+					throw new ResourceAlreadyExistsException(
+							"A File with that name already exists!");
 				}
-				session.move(node.getPath(), node.getParent().getPath() + "/"+ file.getName());
+				session.move(node.getPath(), node.getParent().getPath() + "/"
+						+ file.getName());
 			}
-						
+
 			logout(session);
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {
-			throw new  DocManagementException("RepositoryException occured");
+			throw new DocManagementException("RepositoryException occured");
 		}
 	}
 
 	/**
 	 * delFile method deletes given file
+	 * 
 	 * @param file
-	 * @param delLinks if delLinks is true, links to given file are deleted, if delLinks is false, links are changed to copies of file
-	 * @throws RepositoryException 
-	 * @throws LoginException 
-	 * @throws ResourceAlreadyExistsException 
-	 * @throws NotAFileException 
+	 * @param delLinks
+	 *            if delLinks is true, links to given file are deleted, if
+	 *            delLinks is false, links are changed to copies of file
+	 * @throws RepositoryException
+	 * @throws LoginException
+	 * @throws ResourceAlreadyExistsException
+	 * @throws NotAFileException
 	 * @throws Exception
 	 */
-	public void delFile(File file, boolean delLinks) throws NotAFileException, ResourceAlreadyExistsException, DocManagementException{
+	public void delFile(File file, boolean delLinks) throws NotAFileException,
+			ResourceAlreadyExistsException, DocManagementException {
 		try {
 			Session session = login(repository);
 			String path = file.getPath();
@@ -363,7 +409,7 @@ public class FileDao extends ResourceDao {
 			if (areaType == DocConstants.WORKINGPLACE) {
 			}
 			logout(session);
-		
+
 		} catch (NotAFileException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (ResourceAlreadyExistsException e) {
@@ -371,19 +417,22 @@ public class FileDao extends ResourceDao {
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {
-			throw new  DocManagementException("RepositoryException occured");
+			throw new DocManagementException("RepositoryException occured");
 		}
 	}
 
 	/**
 	 * convenience method, which deletes a file in distribution part
+	 * 
 	 * @param node
 	 * @param delLinks
-	 * @throws RepositoryException 
-	 * @throws NotAFileException 
-	 * @throws ResourceAlreadyExistsException 
+	 * @throws RepositoryException
+	 * @throws NotAFileException
+	 * @throws ResourceAlreadyExistsException
 	 */
-	private void delDistributionFile(Node node, boolean delLinks) throws NotAFileException, ResourceAlreadyExistsException, DocManagementException {
+	private void delDistributionFile(Node node, boolean delLinks)
+			throws NotAFileException, ResourceAlreadyExistsException,
+			DocManagementException {
 		try {
 			if (delLinks) {
 				PropertyIterator pi = node.getReferences();
@@ -392,63 +441,72 @@ public class FileDao extends ResourceDao {
 					n = pi.nextProperty().getNode();
 					n.remove();
 				}
-				move2trash(node,0);			
+				move2trash(node, 0);
 			} else if (!delLinks) {
 				PropertyIterator pi = node.getReferences();
 				Node n;
 				Node parent;
 				File f = new FileImpl();
-				f = getFile(node.getPath());		
+				f = getFile(node.getPath());
 				while (pi.hasNext()) {
 					n = pi.nextProperty().getNode();
 					parent = n.getParent();
 					n.remove();
 					setDistributionFile(parent, getFile(f));
 				}
-				move2trash(node,0);
+				move2trash(node, 0);
 			}
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {
-			throw new  DocManagementException("RepositoryException occured");
+			throw new DocManagementException("RepositoryException occured");
 		}
 	}
-	
-	private void move2trash(Node node, int i) throws ItemExistsException, PathNotFoundException, VersionException, ConstraintViolationException, LockException, RepositoryException{
-		//first try
-		if (i==0) {
-			try{
-				node.getSession().move(node.getPath(), getPathToTrash(node.getPath())+"/"+node.getName());		
-			} catch (ItemExistsException e){
-				move2trash(node, i+1);
-			}			
+
+	private void move2trash(Node node, int i) throws ItemExistsException,
+			PathNotFoundException, VersionException,
+			ConstraintViolationException, LockException, RepositoryException {
+		// first try
+		if (i == 0) {
+			try {
+				node.getSession().move(node.getPath(),
+						getPathToTrash(node.getPath()) + "/" + node.getName());
+			} catch (ItemExistsException e) {
+				move2trash(node, i + 1);
+			}
 		}
-		//higher tries -> add number to filename to prevent 2 items having the same name in a folder
-		else if (i>0){
-			try{
-				node.getSession().move(node.getPath(), getPathToTrash(node.getPath())+"/"+node.getName()+(new Integer(i)).toString());
-			} catch (ItemExistsException e){
-				move2trash(node, i+1);
-			}			
+		// higher tries -> add number to filename to prevent 2 items having the
+		// same name in a folder
+		else if (i > 0) {
+			try {
+				node.getSession().move(
+						node.getPath(),
+						getPathToTrash(node.getPath()) + "/" + node.getName()
+								+ (new Integer(i)).toString());
+			} catch (ItemExistsException e) {
+				move2trash(node, i + 1);
+			}
 		}
 	}
 
 	private String getPathToTrash(String path) {
-		if (path.startsWith("/")) path = path.substring(1);
-		String area = path.substring(0,path.indexOf("/"));
-		String id = path.substring(path.indexOf("/")+1);
-		id = id.substring(0,id.indexOf("/"));
-		String trash = "/"+area+"/"+id+"/"+DocConstants.TRASH_NAME;
+		if (path.startsWith("/"))
+			path = path.substring(1);
+		String area = path.substring(0, path.indexOf("/"));
+		String id = path.substring(path.indexOf("/") + 1);
+		id = id.substring(0, id.indexOf("/"));
+		String trash = "/" + area + "/" + id + "/" + DocConstants.TRASH_NAME;
 		logger.debug("path to trash is = ");
 		return trash;
 	}
 
 	/**
-	 * returns the areaType of the given node. 
+	 * returns the areaType of the given node.
+	 * 
 	 * @param node
 	 * @return areaType, which can be distribution, exam area or working place
-	 * @throws DocManagementException 
-	 * @throws RepositoryException 
+	 * @throws DocManagementException
+	 * @throws RepositoryException
 	 */
 	private String getAreaType(Node node) throws DocManagementException {
 		try {
@@ -464,48 +522,101 @@ public class FileDao extends ResourceDao {
 				return DocConstants.WORKINGPLACE;
 			return null;
 		} catch (RepositoryException e) {
-			throw new  DocManagementException("RepositoryException occured");
+			throw new DocManagementException("RepositoryException occured");
 		}
 	}
-	
+
 	/**
 	 * deletes a file permanently - only for use to empty trash folder
+	 * 
 	 * @param file
 	 * @throws PathNotFoundException
 	 * @throws DocManagementException
 	 */
-	public void remove(File file) throws PathNotFoundException, DocManagementException{
+	public void remove(File file) throws PathNotFoundException,
+			DocManagementException {
 		try {
 			Session session = login(repository);
 			String path = file.getPath();
-			if (path.startsWith("/")) path = path.substring(1);
+			if (path.startsWith("/"))
+				path = path.substring(1);
 			Node node = session.getRootNode().getNode(path);
 			node.remove();
 			logout(session);
 		} catch (javax.jcr.PathNotFoundException e) {
 			throw new PathNotFoundException("Path Not found");
 		} catch (RepositoryException e) {
-			throw new  DocManagementException("RepositoryException occured");
-		}		
+			throw new DocManagementException("RepositoryException occured");
+		}
 	}
-	
-	public String getOwner(File file) throws PathNotFoundException, DocManagementException{
-		String owner=null;
+
+	public String getOwner(File file) throws PathNotFoundException,
+			DocManagementException {
+		String owner = null;
 		try {
 			Session session = login(repository);
 			String path = file.getPath();
-			if (path.startsWith("/")) path = path.substring(1);
-			Node node = session.getRootNode().getNode(path);			
-			if (node.hasProperty(DocConstants.PROPERTY_OWNER)) owner = node.getProperty(DocConstants.PROPERTY_OWNER).getString();
+			if (path.startsWith("/"))
+				path = path.substring(1);
+			Node node = session.getRootNode().getNode(path);
+			if (node.hasProperty(DocConstants.PROPERTY_OWNER))
+				owner = node.getProperty(DocConstants.PROPERTY_OWNER)
+						.getString();
 			logout(session);
-			if (owner!=null) return owner;
-			return ""; 
+			if (owner != null)
+				return owner;
+			return "";
 		} catch (javax.jcr.PathNotFoundException e) {
 			throw new PathNotFoundException("Path Not found");
 		} catch (RepositoryException e) {
-			throw new  DocManagementException("RepositoryException occured");
-		}		
+			throw new DocManagementException("RepositoryException occured");
+		}
+	}
 
+	public List getVersions(File file) throws DocManagementException {
+		List l = new ArrayList();
+		try {
+			Session session = login(repository);
+			String path = file.getPath();
+			if (path.startsWith("/"))
+				path = path.substring(1);
+			Node node = session.getRootNode().getNode(path);
+			if (!node.isNodeType(DocConstants.MIX_VERSIONABLE)) {
+				l.add(file);
+				return l;
+			}
+			
+			VersionHistory history = node.getVersionHistory();
+			int versionnumber = 0;
+			for (VersionIterator it = history.getAllVersions(); it.hasNext();) {
+				Version version = (Version) it.next();
+				NodeIterator it2 = version.getNodes("jcr:frozenNode");
+				if (it2.hasNext()) {
+					node = it2.nextNode();
+					try{
+						String owner = node.getProperty(DocConstants.PROPERTY_OWNER).getString();
+						Timestamp distTime = new Timestamp(node.getProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTimeInMillis());
+						Timestamp lastMod = new Timestamp(node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_LASTMODIFIED).getDate().getTimeInMillis());
+						String message = node.getProperty(DocConstants.PROPERTY_MESSAGE).getString();
+						String mimeType = node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_MIMETYPE).getString();
+						String pathToVersion = node.getPath();
+						int visibility = ((int) node.getProperty(DocConstants.PROPERTY_VISIBILITY).getLong());
+						InputStream inputStream = node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_DATA).getStream();
+						long length =  node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_DATA).getLength();						
+						File f = new FileImpl(distTime, node.getUUID(), lastMod, length,message, mimeType, "", pathToVersion, null, versionnumber, visibility, owner);
+						l.add(f);
+					}	
+					catch (Exception e){						
+					}
+					versionnumber++;
+				}
+			}
+			logout(session);
+			return l;
+		} catch (RepositoryException e) {
+			throw new DocManagementException(
+					"Exception retrieving file versions");
+		}
 	}
 
 	public Repository getRepository() {

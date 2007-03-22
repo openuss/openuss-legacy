@@ -56,7 +56,7 @@ public class FacultyFileUploadListener implements ValueChangeListener {
 					null,
 					1,
 					0,
-					uf.getInputStream());
+					uf.getInputStream(), "");
 			return bf;
 		} catch (IOException e) {
 			logger.error("IOException: ", e);
