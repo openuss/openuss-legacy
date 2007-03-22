@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 
+import javax.jcr.AccessDeniedException;
+import javax.jcr.InvalidItemStateException;
 import javax.jcr.ItemExistsException;
 import javax.jcr.LoginException;
 import javax.jcr.PathNotFoundException;
@@ -14,6 +16,8 @@ import javax.jcr.PropertyIterator;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.UnsupportedRepositoryOperationException;
+import javax.jcr.ValueFormatException;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
@@ -89,6 +93,7 @@ public class FileDao extends ResourceDao {
 		try {
 			session = login(repository);
 		Node node = session.getNodeByUUID(file.getId());
+		//FIXME set if versioninable
 		FileImpl pred = new FileImpl();
 		fi = new BigFileImpl(new Timestamp(node.getProperty(
 				DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTimeInMillis()), node.getUUID(), new Timestamp(node.getNode(
@@ -132,6 +137,7 @@ public class FileDao extends ResourceDao {
 				setDistributionFile(node, file);
 			}
 			if (areaType == DocConstants.EXAMAREA) {
+				setExamAreaFile(node, file);
 			}
 			if (areaType == DocConstants.WORKINGPLACE) {
 			}
@@ -141,6 +147,38 @@ public class FileDao extends ResourceDao {
 		} catch (RepositoryException e) {
 			throw new  DocManagementException("RepositoryException occured");
 		}			
+	}
+	
+	/**
+	 * convenience method, which sets given file to given node
+	 * @param node
+	 * @param file
+	 * @throws NoSuchNodeTypeException
+	 * @throws VersionException
+	 * @throws ConstraintViolationException
+	 * @throws LockException
+	 * @throws AccessDeniedException
+	 * @throws ItemExistsException
+	 * @throws InvalidItemStateException
+	 * @throws UnsupportedRepositoryOperationException
+	 * @throws ValueFormatException
+	 * @throws PathNotFoundException
+	 * @throws RepositoryException
+	 */
+	private void setExamAreaFile(Node node, BigFile file) throws NoSuchNodeTypeException, VersionException, ConstraintViolationException, LockException, AccessDeniedException, ItemExistsException, InvalidItemStateException, UnsupportedRepositoryOperationException, ValueFormatException, PathNotFoundException, RepositoryException{
+		if (node.hasNode(file.getName())) {
+			if (!node.isNodeType(DocConstants.MIX_VERSIONABLE)) {
+				node.addMixin(DocConstants.MIX_VERSIONABLE);
+				node.getSession().save();
+				node.checkin();
+				node.getSession().save();
+			}
+			node.checkout();
+			writeNTFile(node, file);
+			node.getSession().save();
+			node.checkin();
+		}
+		 
 	}
 
 	/**
@@ -166,26 +204,43 @@ public class FileDao extends ResourceDao {
 			// nt:File Knoten
 			node.addNode(file.getName(), DocConstants.DOC_FILE);
 			node = node.getNode(file.getName());
-			node.setProperty(DocConstants.PROPERTY_MESSAGE, file.getMessage());
-			Calendar c = new GregorianCalendar();
-			c.setTimeInMillis(file.getDistributionTime().getTime());
-			node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
-			node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
-					.getVisibility());
-				// nt:resource Knoten, der die eigentlich Datei enthaelt
-			node.addNode(DocConstants.JCR_CONTENT, DocConstants.NT_RESOURCE);
-			node = node.getNode(DocConstants.JCR_CONTENT);
-			node.setProperty(DocConstants.JCR_DATA, file.getFile());
-			node.setProperty(DocConstants.JCR_MIMETYPE, file.getMimeType());
-			Calendar c2 = new GregorianCalendar();
-			c2.setTimeInMillis(file.getLastModification().getTime());
-			node.setProperty(DocConstants.JCR_LASTMODIFIED, c);
+			writeNTFile(node, file);
 		} catch (LoginException e1) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e1) {
 			throw new  DocManagementException("RepositoryException occured");
 		}
 		
+	}
+
+	/**
+	 * convenience method which actually write the nt:file and jcr:content nodes
+	 * @param node
+	 * @param file
+	 * @throws ValueFormatException
+	 * @throws VersionException
+	 * @throws LockException
+	 * @throws ConstraintViolationException
+	 * @throws RepositoryException
+	 * @throws ItemExistsException
+	 * @throws PathNotFoundException
+	 * @throws NoSuchNodeTypeException
+	 */
+	private void writeNTFile(Node node, BigFile file) throws ValueFormatException, VersionException, LockException, ConstraintViolationException, RepositoryException, ItemExistsException, PathNotFoundException, NoSuchNodeTypeException {
+		node.setProperty(DocConstants.PROPERTY_MESSAGE, file.getMessage());
+		Calendar c = new GregorianCalendar();
+		c.setTimeInMillis(file.getDistributionTime().getTime());
+		node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
+		node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
+				.getVisibility());
+			// nt:resource Knoten, der die eigentlich Datei enthaelt
+		node.addNode(DocConstants.JCR_CONTENT, DocConstants.NT_RESOURCE);
+		node = node.getNode(DocConstants.JCR_CONTENT);
+		node.setProperty(DocConstants.JCR_DATA, file.getFile());
+		node.setProperty(DocConstants.JCR_MIMETYPE, file.getMimeType());
+		Calendar c2 = new GregorianCalendar();
+		c2.setTimeInMillis(file.getLastModification().getTime());
+		node.setProperty(DocConstants.JCR_LASTMODIFIED, c);
 	}
 
 	/**
@@ -389,6 +444,25 @@ public class FileDao extends ResourceDao {
 		} catch (RepositoryException e) {
 			throw new  DocManagementException("RepositoryException occured");
 		}		
+	}
+	
+	public String getOwner(File file) throws PathNotFoundException, DocManagementException{
+		String owner=null;
+		try {
+			Session session = login(repository);
+			String path = file.getPath();
+			if (path.startsWith("/")) path = path.substring(1);
+			Node node = session.getRootNode().getNode(path);			
+			if (node.hasProperty(DocConstants.PROPERTY_OWNER)) owner = node.getProperty(DocConstants.PROPERTY_OWNER).getString();
+			logout(session);
+			if (owner!=null) return owner;
+			return ""; 
+		} catch (javax.jcr.PathNotFoundException e) {
+			throw new PathNotFoundException("Path Not found");
+		} catch (RepositoryException e) {
+			throw new  DocManagementException("RepositoryException occured");
+		}		
+
 	}
 
 	public Repository getRepository() {
