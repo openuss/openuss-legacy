@@ -13,10 +13,6 @@ import javax.jcr.Session;
 import javax.jcr.lock.LockException;
 
 import org.apache.jackrabbit.util.Text;
-import org.apache.jackrabbit.webdav.DavConstants;
-import org.apache.jackrabbit.webdav.DavException;
-import org.apache.jackrabbit.webdav.DavResourceLocator;
-import org.apache.jackrabbit.webdav.io.InputContext;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.QName;
@@ -27,7 +23,7 @@ import org.openuss.docmanagement.DocConstants;
  * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.8
  */
-public abstract class DavResource {
+public abstract class DavResourceBase implements DavResource {
 	protected final DavResourceFactory factory;
 	protected final DavResourceLocator locator;
 	protected Node representedNode;
@@ -40,49 +36,39 @@ public abstract class DavResource {
 	 * @param locator The locator identifying this resource.
 	 * @param representedNode The node from the repository or null.
 	 */
-	protected DavResource(DavResourceFactory factory, Session session, DavResourceLocator locator, Node representedNode) {
+	protected DavResourceBase(DavResourceFactory factory, Session session, DavResourceLocator locator, Node representedNode) {
 		this.factory = factory;
 		this.session = session;
 		this.locator = locator;
 		this.representedNode = representedNode;
 	}
 	
-	/**
-	 * Returns, whether this resource is a representation of an existing object.
-	 * @return True, if this resource is a representation of an existing object.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#exists()
 	 */
 	public boolean exists() {
 		return (representedNode != null);
 	}
 	
-	/**
-	 * Returns resource type.
-	 * @return True, if the resource is a collection.
-	 */
-	public abstract boolean isCollection();
-	
-	/**
-	 * Getter for the {@link DavResourceFactory} used to create this resource.
-	 * @return The resource factory.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#getFactory()
 	 */
 	public DavResourceFactory getFactory() {
 		return factory;
 	}
 	
-	/**
-	 * Getter for the {@link DavResourceLocator} identifying this resource.
-	 * @return The resource locator.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#getLocator()
 	 */
 	public DavResourceLocator getLocator() {
 		return locator;
 	}
 	
-	/**
-	 * Returns the parent collection containing this resource or null.
-	 * @return The parent collection or null.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#getCollection()
 	 */
-	public DavResourceCollection getCollection() {
-		DavResourceCollection parent = null;
+	public DavResource getCollection() {
+		DavResource parent = null;
 		
 		// root element has no parent
 		if (!locator.isRootLocation()) {
@@ -96,16 +82,14 @@ public abstract class DavResource {
 			
 			// create instance of locator and resource
 			DavResourceLocator parentLocator = getLocator().getFactory().createResourceLocator(getLocator().getPrefix(), null, parentPath);
-			parent = (DavResourceCollection)getFactory().createResource(session, parentLocator, true);
+			parent = getFactory().createResource(session, parentLocator, true);
 		}
 		
 		return parent;
 	}
 	
-	/**
-	 * Exports the content of the resource to the given {@link ExportContext}.
-	 * @param context The export context.
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#exportContent(org.openuss.docmanagement.webdav.ExportContext)
 	 */
 	public void exportContent(ExportContext context) throws DavException {
 		// check parameters
@@ -130,11 +114,8 @@ public abstract class DavResource {
 		context.informCompleted(true);
 	}
 	
-	/**
-	 * Imports the content from the given {@link ImportContext}.
-	 * @param context The import context.
-	 * @return 
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#importContent(org.openuss.docmanagement.webdav.ImportContext)
 	 */
 	public boolean importContent(ImportContext context) throws DavException {
 		// check parameters
@@ -191,10 +172,8 @@ public abstract class DavResource {
 	 */
 	protected abstract boolean importProperties(ImportContext context) throws DavException;
 	
-	/**
-	 * Returns the name to display to user.
-	 * @return The display name.
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#getDisplayName()
 	 */
 	public String getDisplayName() throws DavException {
 		if (!exists()) {
@@ -215,10 +194,8 @@ public abstract class DavResource {
 		}
 	}
 	
-	/**
-	 * Returns the date and time of creation.
-	 * @return The creation date and time.
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#getCreationDate()
 	 */
 	public String getCreationDate() throws DavException {
 		if (!exists()) {
@@ -236,10 +213,8 @@ public abstract class DavResource {
 		}
 	}
 	
-	/**
-	 * Returns a filtered list of {@link DavResource} containing the descendents.
-	 * @return The list of descendent resources.
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#getMembers()
 	 */
 	public List<DavResource> getMembers() throws DavException {
 		if (!exists()) {
@@ -273,16 +248,12 @@ public abstract class DavResource {
 		return members;
 	}
 	
-	/**
-	 * Returns response containing the requested properties.
-	 * @param properties The names of the requested properties or null.
-	 * @param namesOnly True, if only the names are requested.
-	 * @return The response containing the properties.
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#getProperties(java.util.List, boolean)
 	 */
 	public MultiStatusResponse getProperties(List<String> properties, boolean namesOnly) throws DavException {
 		// create the response
-		MultiStatusResponse response = new MultiStatusResponse(locator.getHref(isCollection()), null);
+		MultiStatusResponse response = new MultiStatusResponseImpl(locator.getHref(isCollection()), null);
 		
 		// check, if all properties are requested
 		boolean spoolAllProperties = ((properties == null) || (properties.size() == 0));
@@ -310,7 +281,7 @@ public abstract class DavResource {
 			if (namesOnly || !isCollection()) {
 				response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_RESOURCETYPE, null);
 			} else {
-				QName collectionName = DocumentHelper.createQName(DavConstants.XML_COLLECTION, MultiStatus.getDefaultNamespace());
+				QName collectionName = DocumentHelper.createQName(DavConstants.XML_COLLECTION, DavConstants.XML_DAV_NAMESPACE);
 				Element collectionElement = DocumentHelper.createElement(collectionName);
 				response.addProperty(HttpStatus.SC_OK, null, DavConstants.PROPERTY_RESOURCETYPE, collectionElement);
 			}
@@ -319,48 +290,37 @@ public abstract class DavResource {
 		return response;
 	}
 	
-	/**
-	 * Adds a member to this resource.
-	 * @param resource
-	 * @param context
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#addMember(org.openuss.docmanagement.webdav.DavResource, org.openuss.docmanagement.webdav.ImportContext)
 	 */
-	public void addMember(DavResource resource, InputContext context) throws DavException {
+	public void addMember(DavResource resource, ImportContext context) throws DavException {
 		// return status code 409 (CONFLICT), if this resource is not physically present
 		if (!exists()) {
 			throw new DavException(HttpStatus.SC_CONFLICT);
 		}
 		
-		ImportContext importContext = null;
 		try {
-			// create instance of ImportContext
+			// rename system id in ImportContext
 			if (context != null) {
-				importContext = new ImportContext(context, Text.getName(resource.getLocator().getRepositoryPath()));
+				context.setSystemId(Text.getName(resource.getLocator().getRepositoryPath()));
 			}
 			
 			// try to import content
-			if (!resource.importContent(importContext)) {
+			if (!resource.importContent(context)) {
 				// import failed
 				throw new DavException(HttpStatus.SC_UNSUPPORTED_MEDIA_TYPE);
 			}
 			
 			// persist pending changes.
 			representedNode.save();
-		} catch (IOException ex) {
-			// error while creating import context
-			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
 		} catch (RepositoryException ex) {
 			// error while persisting changes
 			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
 		}
 	}
 	
-	/**
-	 * Copies data and properties from source.
-	 * @param source The source of the data and the properties.
-	 * @param recursive True, if members of source should be copied.
-	 * @return The multi-status containing error informations.
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#copyFrom(org.openuss.docmanagement.webdav.DavResource, boolean)
 	 */
 	public MultiStatus copyFrom(DavResource source, boolean recursive) throws DavException {
 		if ((source == null) || !source.exists()) {
@@ -368,7 +328,7 @@ public abstract class DavResource {
 		}
 		
 		// prepare multi-status for errors
-		MultiStatus multistatus = new MultiStatus();
+		MultiStatus multistatus = new MultiStatusImpl();
 
 		// copy this resource
 		boolean success = copyDataFrom(source) && copyPropertiesFrom(source);
@@ -383,7 +343,7 @@ public abstract class DavResource {
 				DavResource member;
 				String destinationPath;
 				DavResourceLocator destinationLocator;
-				DavResource destinationMember;
+				DavResourceBase destinationMember;
 				while (iterator.hasNext()) {
 					member = iterator.next();
 					
@@ -392,7 +352,7 @@ public abstract class DavResource {
 					
 					// get locator and instance of resource
 					destinationLocator = getLocator().getFactory().createResourceLocator(getLocator().getPrefix(), null, destinationPath);
-					destinationMember = getFactory().createResource(session, destinationLocator, member.isCollection());
+					destinationMember = (DavResourceBase)getFactory().createResource(session, destinationLocator, member.isCollection());
 					
 					// recursive call of method without rethrow
 					destinationMember.copyFrom(member, multistatus, true);
@@ -426,7 +386,7 @@ public abstract class DavResource {
 				DavResource member;
 				String destinationPath;
 				DavResourceLocator destinationLocator;
-				DavResource destinationMember;
+				DavResourceBase destinationMember;
 				while (iterator.hasNext()) {
 					member = iterator.next();
 					
@@ -435,7 +395,7 @@ public abstract class DavResource {
 					
 					// get locator and instance of resource
 					destinationLocator = getLocator().getFactory().createResourceLocator(getLocator().getPrefix(), null, destinationPath);
-					destinationMember = getFactory().createResource(session, destinationLocator, member.isCollection());
+					destinationMember = (DavResourceBase)getFactory().createResource(session, destinationLocator, member.isCollection());
 					
 					// recursive call of method with multi-status
 					destinationMember.copyFrom(member, multistatus, true);
@@ -469,7 +429,7 @@ public abstract class DavResource {
 		} catch (DavException ex) {
 			// add status codes other than 500 (Internal Server Error) too multi-status
 			if (ex.getErrorCode() != HttpStatus.SC_INTERNAL_SERVER_ERROR) {
-				multistatus.addResponse(new MultiStatusResponse(getLocator().getHref(isCollection()), ex.getErrorCode(), null));
+				multistatus.addResponse(new MultiStatusResponseImpl(getLocator().getHref(isCollection()), ex.getErrorCode(), null));
 			} else {
 				throw ex;
 			}
@@ -500,7 +460,7 @@ public abstract class DavResource {
 		} catch (DavException ex) {
 			// add status codes other than 500 (Internal Server Error) too multi-status
 			if (ex.getErrorCode() != HttpStatus.SC_INTERNAL_SERVER_ERROR) {
-				multistatus.addResponse(new MultiStatusResponse(getLocator().getHref(isCollection()), ex.getErrorCode(), null));
+				multistatus.addResponse(new MultiStatusResponseImpl(getLocator().getHref(isCollection()), ex.getErrorCode(), null));
 			} else {
 				throw ex;
 			}
@@ -509,6 +469,9 @@ public abstract class DavResource {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#getVisibility()
+	 */
 	public int getVisibility() throws DavException {
 		if (!exists()) {
 			throw new DavException(HttpStatus.SC_NOT_FOUND);
@@ -522,10 +485,8 @@ public abstract class DavResource {
 		}
 	}
 	
-	/**
-	 * Removes the resource and returns multi-status, if any error occurred.
-	 * @return The multi-status containing error informations.
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#remove()
 	 */
 	public MultiStatus remove() throws DavException {
 		if (!exists()) {
@@ -533,15 +494,15 @@ public abstract class DavResource {
 		}
 
 		// prepare multi-status for errors
-		MultiStatus multistatus = new MultiStatus();
+		MultiStatus multistatus = new MultiStatusImpl();
 		
 		try {
 			// iterate through members and call remove method recursively
 			List<DavResource> members = getMembers();
 			Iterator<DavResource> iterator = members.iterator();
-			DavResource member;
+			DavResourceBase member;
 			while (iterator.hasNext()) {
-				member = iterator.next();
+				member = (DavResourceBase)iterator.next();
 				member.remove(multistatus);
 			}
 			
@@ -574,9 +535,9 @@ public abstract class DavResource {
 			// iterate through members and call remove method recursively
 			List<DavResource> members = getMembers();
 			Iterator<DavResource> iterator = members.iterator();
-			DavResource member;
+			DavResourceBase member;
 			while (iterator.hasNext()) {
-				member = iterator.next();
+				member = (DavResourceBase)iterator.next();
 				member.remove(multistatus);
 			}
 			
@@ -587,10 +548,10 @@ public abstract class DavResource {
 			}
 		} catch (AccessDeniedException ex) {
 			// access on node denied
-			multistatus.addResponse(new MultiStatusResponse(getLocator().getHref(isCollection()), HttpStatus.SC_FORBIDDEN, null));
+			multistatus.addResponse(new MultiStatusResponseImpl(getLocator().getHref(isCollection()), HttpStatus.SC_FORBIDDEN, null));
 		} catch (LockException ex) {
 			// resource is locked
-			multistatus.addResponse(new MultiStatusResponse(getLocator().getHref(isCollection()), HttpStatus.SC_LOCKED, null));
+			multistatus.addResponse(new MultiStatusResponseImpl(getLocator().getHref(isCollection()), HttpStatus.SC_LOCKED, null));
 		} catch (RepositoryException ex) {
 			// undefined exception occurred -> rethrow as DavException
 			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());

@@ -6,19 +6,20 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.jackrabbit.webdav.io.InputContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.openuss.docmanagement.MimeType;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.6
+ * @version 0.9
  */
-public class ImportContext extends IOContext {
-	private final Logger logger = Logger.getLogger(ImportContext.class);
-	
-	private final InputContext context;
-	private final String systemId;
+public class ImportContextImpl extends IOContextBase implements ImportContext {
+	private final Logger logger = Logger.getLogger(ImportContextImpl.class);
+
+	private final HttpServletRequest request;
+	private String systemId;
 	private File inputFile;
 	private boolean completed = false;
 	
@@ -27,15 +28,15 @@ public class ImportContext extends IOContext {
 	 * @param context The underlying input context.
 	 * @param systemId The ID of the resource.
 	 */
-	public ImportContext(InputContext context, String systemId) throws IOException {
-		this.context = context;
+	public ImportContextImpl(HttpServletRequest request, InputStream stream, String systemId) throws IOException {
+		this.request = request;
 		this.systemId = systemId;
-
+		
 		// spool data from context to temporary file, if stream is present
-		if ((context != null) && (context.getInputStream() != null)) {
+		if (stream != null) {
 			inputFile = File.createTempFile("icontext", "tmp");
 			FileOutputStream outputStream = new FileOutputStream(inputFile);
-			transferData(context.getInputStream(), outputStream);
+			transferData(stream, outputStream);
 			outputStream.close();
 		}
 	}
@@ -80,34 +81,33 @@ public class ImportContext extends IOContext {
 		}
 	}
 
-	/**
-	 * Returns the content language or null.
-	 * @return The content language or null.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ImportContext#getContentLanguage()
 	 */
 	public String getContentLanguage() {
-		if (context != null) {
-			return context.getContentLanguage();
-		}
-		return null;
+		return request.getHeader(DavConstants.HEADER_CONTENT_LANGUAGE);
 	}
 	
-	/**
-	 * Returns the content length or -1.
-	 * @return The content length or -1 for undefined length.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ImportContext#getContentLength()
 	 */
 	public long getContentLength() {
-		if (context != null) {
-			return context.getContentLength();
+		String lengthString = request.getHeader(DavConstants.HEADER_CONTENT_LENGTH);
+		if (lengthString != null) {
+			try {
+				return Integer.parseInt(lengthString);
+			} catch (NumberFormatException ex) {
+				// TODO handle exception
+			}
 		}
 		return -1;
 	}
 
-	/**
-	 * Returns the encoding or null.
-	 * @return The encoding or null.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ImportContext#getEncoding()
 	 */
 	public String getEncoding() {
-		String contentType = context.getContentType();
+		String contentType = getContentType();
 		
 		if (contentType != null) {
 			// check, if content type contains parameter charset
@@ -131,9 +131,8 @@ public class ImportContext extends IOContext {
 		return null;
 	}
 
-	/**
-	 * Returns an input stream, if temporary file is present.
-	 * @return The input stream or null.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ImportContext#getInputStream()
 	 */
 	public InputStream getInputStream() {
 		checkCompleted();
@@ -153,9 +152,8 @@ public class ImportContext extends IOContext {
 		return inputStream;
 	}
 
-	/**
-	 * Returns the mime type.
-	 * @return The mime type.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ImportContext#getMimeType()
 	 */
 	public String getMimeType() {
 		String contentType = getContentType();
@@ -180,40 +178,34 @@ public class ImportContext extends IOContext {
 	 * @return The content type or null.
 	 */
 	private String getContentType() {
-		if (context != null) {
-			return context.getContentType();
-		}
-		return null;
+		return request.getHeader(DavConstants.HEADER_CONTENT_TYPE);
 	}
 
-	/**
-	 * Returns the time of last modification.
-	 * @return The time of last modification.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ImportContext#getModificationTime()
 	 */
 	public long getModificationTime() {
-		if (context != null) {
-			return context.getModificationTime();
-		}
 		return System.currentTimeMillis();
 	}
 
-	/**
-	 * Returns the value of a property or null.
-	 * @param propertyName The name of the property.
-	 * @return The value of the property or null.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ImportContext#getProperty(java.lang.String)
 	 */
 	public String getProperty(String propertyName) {
-		if (context != null) {
-			return context.getProperty(propertyName);
-		}
-		return null;
+		return request.getHeader(propertyName);
 	}
 
-	/**
-	 * Getter for the system ID.
-	 * @return The system ID.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ImportContext#getSystemId()
 	 */
 	public String getSystemId() {
 		return systemId;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ImportContext#setSystemId(java.lang.String)
+	 */
+	public void setSystemId(String systemId) {
+		this.systemId = systemId;		
 	}
 }

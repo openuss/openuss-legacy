@@ -3,14 +3,11 @@ package org.openuss.docmanagement.webdav;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
-import org.apache.jackrabbit.webdav.DavException;
-import org.apache.jackrabbit.webdav.DavResourceLocator;
-
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.5
  */
-public class DavResourceFile extends DavResource {
+public class DavResourceFile extends DavResourceBase {
 	/**
 	 * Constructor.
 	 * @param factory The resource factory.
@@ -174,7 +171,6 @@ public class DavResourceFile extends DavResource {
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResource#isCollection()
 	 */
-	@Override
 	public boolean isCollection() {
 		return false;
 	}

@@ -6,7 +6,6 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.apache.log4j.Logger;
 import org.openuss.docmanagement.DocConstants;
 
@@ -14,27 +13,23 @@ import org.openuss.docmanagement.DocConstants;
  * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.7
  */
-public class DavResourceFactory {
-	private final Logger logger = Logger.getLogger(DavResourceFactory.class);
+public class DavResourceFactoryImpl implements DavResourceFactory {
+	private final Logger logger = Logger.getLogger(DavResourceFactoryImpl.class);
 	
-	private final DavService service;
-	private final DavResourceConfiguration configuration;
+	private DavService service;
+	private DavConfiguration configuration;
 	
 	/**
 	 * Constructor.
 	 * @param configuration The configuration object containing reference to the ItemFilter.
 	 */
-	public DavResourceFactory(DavService service, DavResourceConfiguration configuration) {
+	public DavResourceFactoryImpl(DavService service, DavConfiguration configuration) {
 		this.service = service;
 		this.configuration = configuration;
 	}
 	
-	/**
-	 * Creates an instance of {@link DavResource} identified by given locator.
-	 * @param session The repository session which will be used for repository operations.
-	 * @param locator The locator identifying the resource to create.
-	 * @param isCollection True, if a new collection should be created. Ignored, if resource already present.
-	 * @return The DavResource.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResourceFactory#createResource(javax.jcr.Session, org.openuss.docmanagement.webdav.DavResourceLocator, boolean)
 	 */
 	public DavResource createResource(Session session, DavResourceLocator locator, boolean isCollection) {
 		DavResource resource = null;
@@ -130,19 +125,31 @@ public class DavResourceFactory {
 		return true;
 	}
 	
-	/**
-	 * Getter for the {@link DavService}.
-	 * @return The DavService.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResourceFactory#getService()
 	 */
 	public DavService getService() {
 		return service;
 	}
 	
-	/**
-	 * Getter for the {@link DavResourceConfiguration}.
-	 * @return The DavResourceConfiguration.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResourceFactory#setDavService(org.openuss.docmanagement.webdav.DavService)
 	 */
-	public DavResourceConfiguration getConfiguration() {
+	public void setDavService(DavService service) {
+		this.service = service;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResourceFactory#getConfiguration()
+	 */
+	public DavConfiguration getConfiguration() {
 		return configuration;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResourceFactory#setConfiguration(org.openuss.docmanagement.webdav.DavConfiguration)
+	 */
+	public void setConfiguration(DavConfiguration configuration) {
+		this.configuration = configuration;
 	}
 }

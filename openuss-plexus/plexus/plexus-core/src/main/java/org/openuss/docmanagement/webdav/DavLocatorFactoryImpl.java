@@ -1,8 +1,6 @@
 package org.openuss.docmanagement.webdav;
 
 import org.apache.jackrabbit.util.Text;
-import org.apache.jackrabbit.webdav.DavLocatorFactory;
-import org.apache.jackrabbit.webdav.DavResourceLocator;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
@@ -20,7 +18,7 @@ public class DavLocatorFactoryImpl implements DavLocatorFactory {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavLocatorFactory#createResourceLocator(java.lang.String, java.lang.String)
+	 * @see org.openuss.docmanagement.webdav.DavLocatorFactory#createResourceLocator(java.lang.String, java.lang.String)
 	 */
 	public DavResourceLocator createResourceLocator(String prefix, String href) {
         String locatorPrefix = "";
@@ -52,7 +50,7 @@ public class DavLocatorFactoryImpl implements DavLocatorFactory {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavLocatorFactory#createResourceLocator(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.openuss.docmanagement.webdav.DavLocatorFactory#createResourceLocator(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public DavResourceLocator createResourceLocator(String prefix, String workspacePath, String resourcePath) {
 		// delegate to other method
@@ -60,7 +58,7 @@ public class DavLocatorFactoryImpl implements DavLocatorFactory {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavLocatorFactory#createResourceLocator(java.lang.String, java.lang.String, java.lang.String, boolean)
+	 * @see org.openuss.docmanagement.webdav.DavLocatorFactory#createResourceLocator(java.lang.String, java.lang.String, java.lang.String, boolean)
 	 */
 	public DavResourceLocator createResourceLocator(String prefix, String workspacePath, String path, boolean isResourcePath) {
 		return new DavResourceLocatorImpl(prefix, path, this);

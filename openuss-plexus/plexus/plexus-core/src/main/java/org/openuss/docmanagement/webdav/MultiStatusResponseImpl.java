@@ -3,7 +3,6 @@ package org.openuss.docmanagement.webdav;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.apache.jackrabbit.webdav.DavConstants;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -13,7 +12,7 @@ import org.dom4j.QName;
  * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.6
  */
-public class MultiStatusResponse {
+public class MultiStatusResponseImpl implements MultiStatusResponse {
 	private final String href;
 	private final String description;
 	private int statusCode;
@@ -21,16 +20,16 @@ public class MultiStatusResponse {
 		
 	private final HashMap<Integer, Element> propstats;
 	
-	public MultiStatusResponse(String href, String responseDescription) {
+	public MultiStatusResponseImpl(String href, String responseDescription) {
 		this(href, responseDescription, false);
 	}
 	
-	public MultiStatusResponse(String href, int statusCode, String responseDescription) {
+	public MultiStatusResponseImpl(String href, int statusCode, String responseDescription) {
 		this(href, responseDescription, true);
 		this.statusCode = statusCode;
 	}
 	
-	private MultiStatusResponse(String href, String responseDescription, boolean statusOnly) {
+	private MultiStatusResponseImpl(String href, String responseDescription, boolean statusOnly) {
 		this.href = href;
 		this.description = responseDescription;
 		this.statusOnly = statusOnly;
@@ -48,7 +47,7 @@ public class MultiStatusResponse {
 	
 	public void addProperty(int statusCode, Namespace namespace, String name, String value) {
 		if (namespace == null) {
-			namespace = MultiStatus.getDefaultNamespace();
+			namespace = DavConstants.XML_DAV_NAMESPACE;
 		}
 		
 		QName propertyName = DocumentHelper.createQName(name, namespace);
@@ -63,7 +62,7 @@ public class MultiStatusResponse {
 	
 	public void addProperty(int statusCode, Namespace namespace, String name, Element innerElement) {
 		if (namespace == null) {
-			namespace = MultiStatus.getDefaultNamespace();
+			namespace = DavConstants.XML_DAV_NAMESPACE;
 		}
 		
 		QName propertyName = DocumentHelper.createQName(name, namespace);
@@ -85,10 +84,10 @@ public class MultiStatusResponse {
 		Element propstatElement = propstats.get(statusInteger);
 		
 		if (propstatElement == null) {
-			QName propstatName = DocumentHelper.createQName(DavConstants.XML_PROPSTAT, MultiStatus.getDefaultNamespace());
+			QName propstatName = DocumentHelper.createQName(DavConstants.XML_PROPSTAT, DavConstants.XML_DAV_NAMESPACE);
 			propstatElement = DocumentHelper.createElement(propstatName);
 			
-			QName propName = DocumentHelper.createQName(DavConstants.XML_PROP, MultiStatus.getDefaultNamespace());
+			QName propName = DocumentHelper.createQName(DavConstants.XML_PROP, DavConstants.XML_DAV_NAMESPACE);
 			propstatElement.addElement(propName);
 			
 			propstats.put(statusInteger, propstatElement);
@@ -98,11 +97,11 @@ public class MultiStatusResponse {
 	}
 	
 	public void toXml(Element element) {
-		QName rootName = DocumentHelper.createQName(DavConstants.XML_RESPONSE, MultiStatus.getDefaultNamespace());
+		QName rootName = DocumentHelper.createQName(DavConstants.XML_RESPONSE, DavConstants.XML_DAV_NAMESPACE);
 		Element rootElement = element.addElement(rootName);
 		
 		// append href
-		QName hrefName = DocumentHelper.createQName(DavConstants.XML_HREF, MultiStatus.getDefaultNamespace());
+		QName hrefName = DocumentHelper.createQName(DavConstants.XML_HREF, DavConstants.XML_DAV_NAMESPACE);
 		Element hrefElement = rootElement.addElement(hrefName);
 		hrefElement.addText(getHref());
 		
@@ -114,7 +113,7 @@ public class MultiStatusResponse {
 				statusInteger = iterator.next();
 				Element propstatElement = propstats.get(statusInteger);
 				// add status line
-				QName statusName = DocumentHelper.createQName(DavConstants.XML_STATUS, MultiStatus.getDefaultNamespace());
+				QName statusName = DocumentHelper.createQName(DavConstants.XML_STATUS, DavConstants.XML_DAV_NAMESPACE);
 				Element statusElement = propstatElement.addElement(statusName);
 				statusElement.addText(HttpStatus.getStatusLine(statusInteger.intValue()));
 				// add to response element
@@ -122,14 +121,14 @@ public class MultiStatusResponse {
 			}
 		} else {
 			// TYPE_STATUS
-			QName statusName = DocumentHelper.createQName(DavConstants.XML_STATUS, MultiStatus.getDefaultNamespace());
+			QName statusName = DocumentHelper.createQName(DavConstants.XML_STATUS, DavConstants.XML_DAV_NAMESPACE);
 			Element statusElement = rootElement.addElement(statusName);
 			statusElement.addText(HttpStatus.getStatusLine(statusCode));
 		}
 		
 		// append description, if set
 		if (description != null) {
-			QName descriptionName = DocumentHelper.createQName(DavConstants.XML_RESPONSEDESCRIPTION, MultiStatus.getDefaultNamespace());
+			QName descriptionName = DocumentHelper.createQName(DavConstants.XML_RESPONSEDESCRIPTION, DavConstants.XML_DAV_NAMESPACE);
 			Element descriptionElement = rootElement.addElement(descriptionName);
 			descriptionElement.addText(description);
 		}

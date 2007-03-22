@@ -13,20 +13,21 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.apache.jackrabbit.webdav.DavConstants;
-import org.apache.jackrabbit.webdav.io.OutputContext;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.9
  */
-public class ExportContext extends IOContext {
-	private final Logger logger = Logger.getLogger(ExportContext.class);
+public class ExportContextImpl extends IOContextBase implements ExportContext {
+	private final Logger logger = Logger.getLogger(ExportContextImpl.class);
 	
-	private final OutputContext context;
+	private final HttpServletResponse response;
+	private final OutputStream responseOutputStream;
 	private File outputFile;
-	private OutputStream outputStream;
+	private OutputStream fileOutputStream;
 	private Dictionary<String, String> properties = new Hashtable<String, String>();
 	private boolean completed = false;
 	
@@ -34,8 +35,10 @@ public class ExportContext extends IOContext {
 	 * Constructor.
 	 * @param context The underlying output context.
 	 */
-	public ExportContext(OutputContext context) throws IOException {
-		this.context = context;
+	public ExportContextImpl(HttpServletResponse response, OutputStream stream) throws IOException {
+		// TODO prüfen
+		this.response = response;
+		responseOutputStream = stream;
 		if (hasStream()) {
 			outputFile = File.createTempFile("econtext", "tmp");
 		}
@@ -46,10 +49,7 @@ public class ExportContext extends IOContext {
 	 */
 	@Override
 	public boolean hasStream() {
-		if (context == null) {
-			return false;
-		}
-		return context.hasStream();
+		return (responseOutputStream != null);
 	}
 
 	/* (non-Javadoc)
@@ -63,9 +63,9 @@ public class ExportContext extends IOContext {
 		completed = true;
 		
 		// close output stream
-		if (outputStream != null) {
+		if (fileOutputStream != null) {
 			try {
-				outputStream.close();
+				fileOutputStream.close();
 			} catch (IOException ex) {
 				logger.debug("IO exception occurred.");
 				logger.debug("Exception: " + ex.getMessage());
@@ -74,7 +74,7 @@ public class ExportContext extends IOContext {
 		}
 		
 		// transfer properties and data to underlying context, if successful
-		if (success && (context != null)) {
+		if (success) {
 			// content-length is an MUST have property for the context
 			boolean hasContentLength = false;
 			
@@ -86,24 +86,23 @@ public class ExportContext extends IOContext {
 				name = propertyNames.nextElement();
 				value = properties.get(name);
 				if (name != null && value != null) {
-					context.setProperty(name, value);
+					response.setHeader(name, value);
 					// check for content-length
 					hasContentLength = name.equals(DavConstants.HEADER_CONTENT_LENGTH);
 				}
 			}
 
 			// transfer data from temporary file, if present
-			if (context.hasStream() && outputFile != null) {
-				OutputStream contextOutputStream = context.getOutputStream();
+			if (hasStream() && outputFile != null) {
 				try {
 					// set content-length, if not set correctly
 					if (!hasContentLength) {
-						context.setContentLength(outputFile.length());
+						response.setHeader(DavConstants.HEADER_CONTENT_LENGTH, outputFile.length() + "");
 					}
 					FileInputStream fileInputStream = new FileInputStream(outputFile);
 
 					// copy data between streams
-					transferData(fileInputStream, contextOutputStream);
+					transferData(fileInputStream, responseOutputStream);
 				} catch (IOException ex) {
 					logger.error("IO exception occurred.");
 					logger.error("Exception: " + ex.getMessage());
@@ -126,31 +125,6 @@ public class ExportContext extends IOContext {
 	}
 	
 	/**
-	 * Gets the output stream, if present.
-	 * @return The output stream.
-	 */
-	public OutputStream getOutputStream() {
-		checkCompleted();
-		
-		try {
-			// close output stream, if preceeding operations did not completed 
-			if (outputStream != null) {
-				outputStream.close();
-			}
-			
-			// create new output stream
-			outputStream = new FileOutputStream(outputFile);
-			return outputStream;
-		} catch (IOException ex) {
-			logger.debug("IO exception occurred.");
-			logger.debug("Exception: " + ex.getMessage());
-			// ignoring exception will return null
-		}
-		
-		return null;
-	}
-	
-	/**
 	 * Checks, if context has been completed.
 	 */
 	private void checkCompleted() {
@@ -161,9 +135,32 @@ public class ExportContext extends IOContext {
 		}
 	}
 	
-	/**
-	 * Setter for the content language.
-	 * @param contentLanguage The content language to set.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ExportContext#getOutputStream()
+	 */
+	public OutputStream getOutputStream() {
+		checkCompleted();
+		
+		try {
+			// close output stream, if preceeding operations did not completed 
+			if (fileOutputStream != null) {
+				fileOutputStream.close();
+			}
+			
+			// create new output stream
+			fileOutputStream = new FileOutputStream(outputFile);
+			return fileOutputStream;
+		} catch (IOException ex) {
+			logger.debug("IO exception occurred.");
+			logger.debug("Exception: " + ex.getMessage());
+			// ignoring exception will return null
+		}
+		
+		return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ExportContext#setContentLanguage(java.lang.String)
 	 */
 	public void setContentLanguage(String contentLanguage) {
 		if (contentLanguage != null) {
@@ -171,18 +168,15 @@ public class ExportContext extends IOContext {
 		}
 	}
 	
-	/**
-	 * Setter for the content length.
-	 * @param contentLength The content length to set.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ExportContext#setContentLength(long)
 	 */
 	public void setContentLength(long contentLength) {
 		properties.put(DavConstants.HEADER_CONTENT_LENGTH, contentLength + "");
 	}
 	
-	/**
-	 * Setter for the content type.
-	 * @param mimeType The mime type to set.
-	 * @param encoding The encoding to set.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ExportContext#setContentType(java.lang.String, java.lang.String)
 	 */
 	public void setContentType(String mimeType, String encoding) {
 		String contentType = mimeType;
@@ -193,9 +187,8 @@ public class ExportContext extends IOContext {
 		}
 	}
 	
-	/**
-	 * Setter for the entity tag.
-	 * @param etag The entity tag to set.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ExportContext#setETag(java.lang.String)
 	 */
 	public void setETag(String etag) {
 		if (etag != null) {
@@ -203,9 +196,8 @@ public class ExportContext extends IOContext {
 		}
 	}
 	
-	/**
-	 * Setter for the time of last modification.
-	 * @param modificationTime The time to set.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ExportContext#setModificationTime(long)
 	 */
 	public void setModificationTime(long modificationTime) {
 		// set modification time to now, if not defined or in the future
@@ -221,10 +213,8 @@ public class ExportContext extends IOContext {
 		properties.put(DavConstants.HEADER_LAST_MODIFIED, modificationHttpDate);
 	}
 	
-	/**
-	 * Setter for any other property name-value-combination.
-	 * @param propertyName The name of the property to set.
-	 * @param propertyValue The value of the property to set.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.ExportContext#setProperty(java.lang.String, java.lang.String)
 	 */
 	public void setProperty(String propertyName, String propertyValue) {
 		if (propertyValue != null) {

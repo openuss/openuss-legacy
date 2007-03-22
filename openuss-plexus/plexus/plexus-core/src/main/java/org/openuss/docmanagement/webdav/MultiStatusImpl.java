@@ -4,28 +4,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.jackrabbit.webdav.DavConstants;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.Namespace;
 import org.dom4j.QName;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.6
  */
-public class MultiStatus {
-	private final static Namespace defaultNamespace = DocumentHelper.createNamespace("D", "DAV:"); 
-	
-	public static Namespace getDefaultNamespace() {
-		return defaultNamespace;
-	}
-
+public class MultiStatusImpl implements MultiStatus {
 	private final List<MultiStatusResponse> responses;
 	private String description;
 	
-	public MultiStatus() {
+	public MultiStatusImpl() {
 		responses = new ArrayList<MultiStatusResponse>();
 	}
 	
@@ -46,7 +38,7 @@ public class MultiStatus {
 	}
 
 	public void toXml(Document document) {
-		QName rootName = DocumentHelper.createQName(DavConstants.XML_MULTISTATUS, getDefaultNamespace());
+		QName rootName = DocumentHelper.createQName(DavConstants.XML_MULTISTATUS, DavConstants.XML_DAV_NAMESPACE);
 		Element rootElement = document.addElement(rootName);
 
 		// iterate over responses and append to rootElement
@@ -59,7 +51,7 @@ public class MultiStatus {
 		
 		// append description, if set
 		if (description != null) {
-			QName descriptionName = DocumentHelper.createQName(DavConstants.XML_RESPONSEDESCRIPTION, getDefaultNamespace());
+			QName descriptionName = DocumentHelper.createQName(DavConstants.XML_RESPONSEDESCRIPTION, DavConstants.XML_DAV_NAMESPACE);
 			Element descriptionElement = rootElement.addElement(descriptionName);
 			descriptionElement.addText(description);
 		}

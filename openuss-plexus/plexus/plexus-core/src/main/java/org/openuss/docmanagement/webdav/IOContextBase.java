@@ -8,22 +8,19 @@ import java.io.OutputStream;
  * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.9
  */
-public abstract class IOContext {
-    /**
-     * Checks, if context owns a stream.
-     * @return True, if context owns a stream.
+public abstract class IOContextBase implements IOContext {
+    /* (non-Javadoc)
+     * @see org.openuss.docmanagement.webdav.IOContext#hasStream()
      */
     public abstract boolean hasStream();
 
-    /**
-     * Ends transaction with transaction success.
-     * @param success Indicates a successful completion of data transfer.
+    /* (non-Javadoc)
+     * @see org.openuss.docmanagement.webdav.IOContext#informCompleted(boolean)
      */
     public abstract void informCompleted(boolean success);
 
-    /**
-     * Checks, if context transaction is completed.
-     * @return True, if transaction is completed.
+    /* (non-Javadoc)
+     * @see org.openuss.docmanagement.webdav.IOContext#isCompleted()
      */
     public abstract boolean isCompleted();
 

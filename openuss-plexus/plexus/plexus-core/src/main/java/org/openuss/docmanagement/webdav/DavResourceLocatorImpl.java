@@ -2,8 +2,6 @@ package org.openuss.docmanagement.webdav;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.jackrabbit.util.Text;
-import org.apache.jackrabbit.webdav.DavLocatorFactory;
-import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.openuss.docmanagement.DocConstants;
 
 /**
@@ -37,14 +35,14 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getFactory()
+	 * @see org.openuss.docmanagement.webdav.DavResourceLocator#getFactory()
 	 */
 	public DavLocatorFactory getFactory() {
 		return locatorFactory;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getHref(boolean)
+	 * @see org.openuss.docmanagement.webdav.DavResourceLocator#getHref(boolean)
 	 */
 	public String getHref(boolean isCollection) {
 		String suffix = "";
@@ -56,21 +54,21 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getPrefix()
+	 * @see org.openuss.docmanagement.webdav.DavResourceLocator#getPrefix()
 	 */
 	public String getPrefix() {
 		return prefix;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getRepositoryPath()
+	 * @see org.openuss.docmanagement.webdav.DavResourceLocator#getRepositoryPath()
 	 */
 	public String getRepositoryPath() {
 		return repositoryPath;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getResourcePath()
+	 * @see org.openuss.docmanagement.webdav.DavResourceLocator#getResourcePath()
 	 */
 	public String getResourcePath() {
 		return resourcePath;
@@ -110,7 +108,7 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getWorkspaceName()
+	 * @see org.openuss.docmanagement.webdav.DavResourceLocator#getWorkspaceName()
 	 */
 	public String getWorkspaceName() {
 		// TODO workspaces are not supported
@@ -118,15 +116,22 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#getWorkspacePath()
+	 * @see org.openuss.docmanagement.webdav.DavResourceLocator#getWorkspacePath()
 	 */
 	public String getWorkspacePath() {
 		// TODO workspaces are not supported
 		throw new NotImplementedException("DavResourceLocatorImpl.getWorkspacePath() not supported.");
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResourceLocator#getName()
+	 */
+	public String getName() {
+		return Text.getName(getRepositoryPath());
+	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#isRootLocation()
+	 * @see org.openuss.docmanagement.webdav.DavResourceLocator#isRootLocation()
 	 */
 	public boolean isRootLocation() {
 		// test, if resource path is /
@@ -134,7 +139,7 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#isSameWorkspace(org.apache.jackrabbit.webdav.DavResourceLocator)
+	 * @see org.openuss.docmanagement.webdav.DavResourceLocator#isSameWorkspace(org.openuss.docmanagement.webdav.DavResourceLocator)
 	 */
 	public boolean isSameWorkspace(DavResourceLocator locator) {
 		// workspaces cannot be equal if parameter is null
@@ -146,7 +151,7 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.jackrabbit.webdav.DavResourceLocator#isSameWorkspace(java.lang.String)
+	 * @see org.openuss.docmanagement.webdav.DavResourceLocator#isSameWorkspace(java.lang.String)
 	 */
 	public boolean isSameWorkspace(String workspaceName) {
 		return getWorkspaceName().equals(workspaceName);

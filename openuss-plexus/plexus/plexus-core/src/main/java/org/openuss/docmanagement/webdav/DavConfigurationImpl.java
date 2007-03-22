@@ -9,20 +9,18 @@ import org.openuss.docmanagement.webdav.ItemFilter;
  * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.6
  */
-public class DavResourceConfiguration {
+public class DavConfigurationImpl implements DavConfiguration {
 	private ItemFilter itemFilter;
 	
-	/**
-	 * Parses the XML file indentified by URL as configuration file.
-	 * @param configurationURL The URL identifying the configuration file.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavConfiguration#parse(java.net.URL)
 	 */
 	public void parse(URL configurationURL) {
 		// TODO angegebene Konfigurationsdatei parsen und ItemFilter entsprechend setzen
 	}
 	
-	/**
-	 * Getter for the {@link ItemFilter}.
-	 * @return The ItemFilter.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavConfiguration#getItemFilter()
 	 */
 	public ItemFilter getItemFilter() {
 		if (itemFilter == null) {

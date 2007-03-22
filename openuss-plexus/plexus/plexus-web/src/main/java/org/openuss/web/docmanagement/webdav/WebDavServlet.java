@@ -11,25 +11,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.jackrabbit.webdav.DavConstants;
-import org.apache.jackrabbit.webdav.DavException;
-import org.apache.jackrabbit.webdav.DavLocatorFactory;
-import org.apache.jackrabbit.webdav.DavMethods;
-import org.apache.jackrabbit.webdav.DavResourceLocator;
-import org.apache.jackrabbit.webdav.io.InputContextImpl;
-import org.apache.jackrabbit.webdav.io.OutputContextImpl;
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+import org.openuss.docmanagement.webdav.DavConfigurationImpl;
+import org.openuss.docmanagement.webdav.DavConstants;
+import org.openuss.docmanagement.webdav.DavException;
+import org.openuss.docmanagement.webdav.DavLocatorFactory;
 import org.openuss.docmanagement.webdav.DavLocatorFactoryImpl;
-import org.openuss.docmanagement.webdav.DavResourceConfiguration;
+import org.openuss.docmanagement.webdav.DavConfiguration;
+import org.openuss.docmanagement.webdav.DavResourceLocator;
 import org.openuss.docmanagement.webdav.DavService;
+import org.openuss.docmanagement.webdav.DavServiceImpl;
+import org.openuss.docmanagement.webdav.ExportContextImpl;
 import org.openuss.docmanagement.webdav.HttpStatus;
+import org.openuss.docmanagement.webdav.ImportContextImpl;
 import org.openuss.docmanagement.webdav.MultiStatus;
-import org.openuss.docmanagement.webdav.SessionProvider;
+import org.openuss.docmanagement.webdav.DavSessionProvider;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -56,10 +57,10 @@ public class WebDavServlet extends HttpServlet {
 	private String resourcePathPrefix;
 	private String authenticateHeader;
 	
-	private DavResourceConfiguration configuration;
+	private DavConfiguration configuration;
 	private DavService davService;
 	
-	private SessionProvider sessionProvider;
+	private DavSessionProvider sessionProvider;
 	
 	private DavLocatorFactory locatorFactory;
 	
@@ -73,7 +74,7 @@ public class WebDavServlet extends HttpServlet {
 		
 		//set sessionProvider
 		final WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-		sessionProvider = (SessionProvider) wac.getBean("sessionProvider", SessionProvider.class);
+		sessionProvider = (DavSessionProvider) wac.getBean("sessionProvider", DavSessionProvider.class);
 		
 		// read resource path prefix from configuration and store it in the context
 		resourcePathPrefix = getInitParameter(INIT_PARAMETER_RESOURCE_PATH_PREFIX);
@@ -93,11 +94,10 @@ public class WebDavServlet extends HttpServlet {
         logger.debug("AuthenticateHeader: " + authenticateHeader);
 		
 		// read the location of the configuration file and parse it
-		configuration = new DavResourceConfiguration();
         String configurationParameter = getInitParameter(INIT_PARAMETER_RESOURCE_CONFIGURATION);
         if (configurationParameter != null) {
         	try {
-            	configuration = new DavResourceConfiguration();
+        		configuration = new DavConfigurationImpl();
             	configuration.parse(getServletContext().getResource(configurationParameter));
         	} catch (MalformedURLException ex) {
         		logger.error("Unable to parse resource configuration file.");
@@ -119,7 +119,7 @@ public class WebDavServlet extends HttpServlet {
 		try {
 			// guarantee an authenticated user
 			logger.debug("Attaching session.");
-			if (!getSessionProvider().attachSession(request, getDavService())) {
+			if (!getDavSessionProvider().attachSession(request, getDavService())) {
 				return;
 			}
 			
@@ -146,7 +146,7 @@ public class WebDavServlet extends HttpServlet {
 		} finally {
 			// release session from request
 			logger.debug("Releasing session.");
-			getSessionProvider().releaseSession(getDavService());
+			getDavSessionProvider().releaseSession(getDavService());
 		}
 	}
 	
@@ -172,18 +172,18 @@ public class WebDavServlet extends HttpServlet {
 				case DavMethods.DAV_HEAD:
 					// spool header of resource, no content
 					logger.debug("Method HEAD requested for resource " + locator.getResourcePath());
-					getDavService().spoolResource(new OutputContextImpl(response, null), locator);
+					getDavService().spoolResource(new ExportContextImpl(response, null), locator);
 					break;
 				case DavMethods.DAV_GET:
 					// spool entire resource
 					logger.debug("Method GET requested for resource " + locator.getResourcePath());
-					getDavService().spoolResource(new OutputContextImpl(response, response.getOutputStream()), locator);
+					getDavService().spoolResource(new ExportContextImpl(response, response.getOutputStream()), locator);
 					break;
 				case DavMethods.DAV_POST:
 				case DavMethods.DAV_PUT:
 					// add content to resource
 					logger.debug("Method POST or PUT requested for resource " + locator.getResourcePath());
-					getDavService().addMember(new InputContextImpl(request, request.getInputStream()), locator);
+					getDavService().addMember(new ImportContextImpl(request, request.getInputStream(), locator.getName()), locator);
 					break;
 				case DavMethods.DAV_DELETE:
 					// delete resource
@@ -275,7 +275,7 @@ public class WebDavServlet extends HttpServlet {
 		String depthHeaderValue = request.getHeader(DavConstants.HEADER_DEPTH);
 		
 		// empty header has to be interpreted as infinity, if depth header is expected
-		if ((depthHeaderValue == null) || (depthHeaderValue.length() == 0) || depthHeaderValue.equalsIgnoreCase(DavConstants.DEPTH_INFINITY_S)) {
+		if ((depthHeaderValue == null) || (depthHeaderValue.length() == 0) || depthHeaderValue.equalsIgnoreCase(DavConstants.DEPTH_INFINITY_STRING)) {
 			return DavConstants.DEPTH_INFINITY;
 		} else if (depthHeaderValue.equals(DavConstants.DEPTH_0 + "")) {
 			return DavConstants.DEPTH_0;
@@ -415,7 +415,7 @@ public class WebDavServlet extends HttpServlet {
 	 * @see WebDavServlet#init()
 	 * @return The authenticate header value.
 	 */
-	public String getAuthenticateHeaderValue() {
+	private String getAuthenticateHeaderValue() {
 		return authenticateHeader;
 	}
 	
@@ -425,24 +425,32 @@ public class WebDavServlet extends HttpServlet {
 	 */
 	public DavService getDavService() {
 		if (davService == null) {
-			davService = new DavService(configuration);
+			davService = new DavServiceImpl(configuration);
 		}
 		return davService;
 	}
 	
 	/**
-	 * Getter for the {@link SessionProvider}.
-	 * @return The SessionProvider.
+	 * Setter for the {@link DavService}.
+	 * @param service The DavService to set.
 	 */
-	public SessionProvider getSessionProvider() {
+	public void setDavService(DavService service) {
+		davService = service;
+	}
+	
+	/**
+	 * Getter for the {@link DavSessionProvider}.
+	 * @return The DavSessionProvider.
+	 */
+	public DavSessionProvider getDavSessionProvider() {
 		return sessionProvider;
 	}
 
 	/**
-	 * Setter for the {@link SessionProvider}.
-	 * @param sessionProvider The session provider to set.
+	 * Setter for the {@link DavSessionProvider}.
+	 * @param sessionProvider The DavSessionProvider to set.
 	 */
-	public void setSessionProvider(SessionProvider sessionProvider) {
+	public void setDavSessionProvider(DavSessionProvider sessionProvider) {
 		this.sessionProvider = sessionProvider;
 	}
 	
@@ -450,11 +458,19 @@ public class WebDavServlet extends HttpServlet {
 	 * Getter for the {@link DavLocatorFactory}.
 	 * @return The DavLocatorFactory.
 	 */
-	public DavLocatorFactory getLocatorFactory() {
+	public DavLocatorFactory getDavLocatorFactory() {
 		if (locatorFactory == null) {
 			locatorFactory = new DavLocatorFactoryImpl(resourcePathPrefix);
 		}
 		return locatorFactory;
+	}
+	
+	/**
+	 * Setter for the {@link DavLocatorFactory}.
+	 * @param locatorFactory The DavLocatorFactory to set.
+	 */
+	public void setDavLocatorFactory(DavLocatorFactory locatorFactory) {
+		this.locatorFactory = locatorFactory;
 	}
 	
 	/**
@@ -484,6 +500,6 @@ public class WebDavServlet extends HttpServlet {
 		// create href prefix from request
 		String hrefPrefix = request.getScheme() + "://" + request.getHeader("Host") + contextPath;
 		
-		return getLocatorFactory().createResourceLocator(hrefPrefix, path);
+		return getDavLocatorFactory().createResourceLocator(hrefPrefix, path);
 	}
 }

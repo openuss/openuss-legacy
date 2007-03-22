@@ -17,7 +17,6 @@ import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.AuthenticationManager;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.apache.jackrabbit.util.Base64;
-import org.apache.jackrabbit.webdav.DavException;
 import org.apache.log4j.Logger;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopException;
@@ -28,10 +27,10 @@ import org.openuss.security.User;
 
 /**
  * @author David Ullrich
- * @version 0.89
+ * @version 0.8
  */
-public class SessionProvider {
-	private final Logger logger = Logger.getLogger(SessionProvider.class);
+public class DavSessionProviderImpl implements DavSessionProvider {
+	private final Logger logger = Logger.getLogger(DavSessionProviderImpl.class);
 	
 	// TODO auslagern in Konfigurationsdatei
 	private static final String REPOSITORY_USERNAME = "username";
@@ -42,15 +41,8 @@ public class SessionProvider {
 	private SecurityService securityService;
 	private DesktopService desktopService;
 
-	/**
-	 * Retrieves user credentials from {@link HttpServletRequest}, verifies valid username password
-	 * combination, retrieves list of subscribed {@link Enrollment}s and creates a {@link Session}
-	 * with the {@link Repository}.
-	 * The list of subscriptions and the session are turned over to the {@link DavService}.
-	 * @param request Reference to the request of the servlet.
-	 * @param davService The service class.
-	 * @return True, if attaching session was successful.
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavSessionProvider#attachSession(javax.servlet.http.HttpServletRequest, org.openuss.docmanagement.webdav.DavService)
 	 */
 	public boolean attachSession(HttpServletRequest request, DavService davService) throws DavException {
 		try {
@@ -108,9 +100,8 @@ public class SessionProvider {
 		}
 	}
 
-	/**
-	 * Closes {@link Session} and removes it from service class.
-	 * @param davService The service class.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavSessionProvider#releaseSession(org.openuss.docmanagement.webdav.DavService)
 	 */
 	public void releaseSession(DavService davService) {
 		// retrieve Session from Service

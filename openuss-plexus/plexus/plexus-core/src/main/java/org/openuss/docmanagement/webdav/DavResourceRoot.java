@@ -7,8 +7,6 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
-import org.apache.jackrabbit.webdav.DavException;
-import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.openuss.lecture.Enrollment;
 
 /**
@@ -22,7 +20,7 @@ public class DavResourceRoot extends DavResourceCollection {
 	 * @param locator
 	 * @param representedNode
 	 */
-	public DavResourceRoot(DavResourceFactory factory, Session session, DavResourceLocator locator, Node representedNode) {
+	DavResourceRoot(DavResourceFactory factory, Session session, DavResourceLocator locator, Node representedNode) {
 		super(factory, session, locator, representedNode);
 	}
 

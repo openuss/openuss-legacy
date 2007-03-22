@@ -4,8 +4,6 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import org.apache.jackrabbit.webdav.DavException;
-import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.openuss.docmanagement.DocConstants;
 import org.openuss.docmanagement.DocRights;
 
@@ -13,7 +11,7 @@ import org.openuss.docmanagement.DocRights;
  * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.8
  */
-public class DavResourceCollection extends DavResource {
+public class DavResourceCollection extends DavResourceBase {
 	/**
 	 * Constructor.
 	 * @param factory The resource factory.
@@ -104,7 +102,6 @@ public class DavResourceCollection extends DavResource {
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResource#isCollection()
 	 */
-	@Override
 	public boolean isCollection() {
 		return true;
 	}

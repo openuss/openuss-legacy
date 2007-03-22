@@ -7,15 +7,13 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.apache.jackrabbit.util.Text;
-import org.apache.jackrabbit.webdav.DavException;
-import org.apache.jackrabbit.webdav.DavResourceLocator;
 import org.openuss.docmanagement.DocConstants;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.5
+ * @version 0.6
  */
-public class DavResourceSubscription extends DavResource {
+public class DavResourceSubscription extends DavResourceCollection {
 	/**
 	 * Constructor.
 	 * @param factory The resource factory.
@@ -28,54 +26,20 @@ public class DavResourceSubscription extends DavResource {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.webdav.DavResource#copyDataFrom(org.openuss.docmanagement.webdav.DavResource)
-	 */
-	@Override
-	protected boolean copyDataFrom(DavResource source) throws DavException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.webdav.DavResource#copyPropertiesFrom(org.openuss.docmanagement.webdav.DavResource)
-	 */
-	@Override
-	protected boolean copyPropertiesFrom(DavResource source) throws DavException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResource#exists()
 	 */
 	@Override
 	public boolean exists() {
-		return super.exists();
+		// TODO
+		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.webdav.DavResource#exportData(org.openuss.docmanagement.webdav.ExportContext)
-	 */
-	@Override
-	protected void exportData(ExportContext context) throws DavException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.webdav.DavResource#exportProperties(org.openuss.docmanagement.webdav.ExportContext)
-	 */
-	@Override
-	protected void exportProperties(ExportContext context) throws DavException {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResource#getCreationDate()
 	 */
 	@Override
 	public String getCreationDate() throws DavException {
+		// TODO
 		return System.currentTimeMillis() + "";
 	}
 	
@@ -86,15 +50,6 @@ public class DavResourceSubscription extends DavResource {
 	public String getDisplayName() throws DavException {
 		// TODO auf Anzeigename des Enrollments umbiegen
 		return Text.getName(getLocator().getRepositoryPath());
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.webdav.DavResource#getVisibility()
-	 */
-	@Override
-	public int getVisibility() throws DavException {
-		// TODO Auto-generated method stub
-		return super.getVisibility();
 	}
 
 	/* (non-Javadoc)
@@ -129,31 +84,5 @@ public class DavResourceSubscription extends DavResource {
 		}
 		
 		return members;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.webdav.DavResource#importData(org.openuss.docmanagement.webdav.ImportContext)
-	 */
-	@Override
-	protected boolean importData(ImportContext context) throws DavException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.webdav.DavResource#importProperties(org.openuss.docmanagement.webdav.ImportContext)
-	 */
-	@Override
-	protected boolean importProperties(ImportContext context) throws DavException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.webdav.DavResource#isCollection()
-	 */
-	@Override
-	public boolean isCollection() {
-		return true;
 	}
 }

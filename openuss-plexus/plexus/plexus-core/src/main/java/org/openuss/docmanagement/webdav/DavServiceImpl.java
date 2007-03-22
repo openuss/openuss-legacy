@@ -1,84 +1,71 @@
 package org.openuss.docmanagement.webdav;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import org.apache.jackrabbit.webdav.DavConstants;
-import org.apache.jackrabbit.webdav.DavException;
-import org.apache.jackrabbit.webdav.DavResourceLocator;
-import org.apache.jackrabbit.webdav.io.InputContext;
-import org.apache.jackrabbit.webdav.io.OutputContext;
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.openuss.lecture.Enrollment;
 
 /**
- * TODO: RFC compliance for spool, add sicherstellen
+ * TODO: RFC compliance sicherstellen
  * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.8
  */
-public class DavService {
+public class DavServiceImpl implements DavService {
 	private final Logger logger = Logger.getLogger(DavService.class);
 	
-	private final DavResourceConfiguration configuration;
+	private final DavConfiguration configuration;
 	private Session session;
 	private List<Enrollment> subscribedEnrollments;
 	private DavResourceFactory resourceFactory;
 	
 	/**
 	 * Constructor.
-	 * @param configuration An instance of DavResourceConfiguration {@link ItemFilter}.
+	 * @param configuration An instance of DavConfiguration.
 	 */
-	public DavService(DavResourceConfiguration configuration) {
+	public DavServiceImpl(DavConfiguration configuration) {
 		this.configuration = configuration;
 		logger.debug("Init done.");
 	}
 	
-	/**
-	 * Getter for the {@link Session}.
-	 * @return
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavService#getSession()
 	 */
 	public Session getSession() {
 		return session;
 	}
 	
-	/**
-	 * Setter for the {@link Session}.
-	 * @param session The repository session to set.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavService#setSession(javax.jcr.Session)
 	 */
 	public void setSession(Session session) {
 		this.session = session;
 	}
 
-	/**
-	 * Getter for the list of subscribed {@link Enrollment}s.
-	 * @return The subscribed Enrollments.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavService#getSubscribedEnrollments()
 	 */
 	public List<Enrollment> getSubscribedEnrollments() {
 		return subscribedEnrollments;
 	}
 
-	/**
-	 * Setter for the list of subscribed {@link Enrollment}s.
-	 * @param subscribedEnrollments
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavService#setSubscribedEnrollments(java.util.List)
 	 */
 	public void setSubscribedEnrollments(List<Enrollment> subscribedEnrollments) {
 		this.subscribedEnrollments = subscribedEnrollments;
 	}
 
-	/**
-	 * Spools the {@link DavResource} identified by the given {@link DavResourceLocator} to the given {@link OutputContext}.
-	 * @param context The target context to which the resource should be spooled.
-	 * @param locator The locator identifying the resource to spool.
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavService#spoolResource(org.openuss.docmanagement.webdav.ExportContext, org.openuss.docmanagement.webdav.DavResourceLocator)
 	 */
-	public void spoolResource(OutputContext context, DavResourceLocator locator) throws DavException {
+	public void spoolResource(ExportContext context, DavResourceLocator locator) throws DavException {
 		// check parameters
 		if ((context == null) || (locator == null)) {
 			logger.error("Context or locator is null. Cannot spool resource.");
@@ -87,25 +74,13 @@ public class DavService {
 
 		// create instance of DavResource
 		DavResource resource = getResourceFactory().createResource(getSession(), locator, false);
-		try {
-			// create export context and export content
-			ExportContext exportContext = new ExportContext(context);
-			resource.exportContent(exportContext);
-		} catch (IOException ex) {
-			logger.error("IO exception occurred.");
-			logger.error("Exception: " + ex.getMessage());
-			// rethrow IOException as DavException
-			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
-		}
+		resource.exportContent(context);
 	}
 	
-	/**
-	 * Adds an member identified by the given {@link DavResourceLocator} and imports required data from given {@link InputContext}.
-	 * @param context The source context from which the data for the resource should be imported.
-	 * @param locator The locator identifying the resource to add.
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavService#addMember(org.openuss.docmanagement.webdav.ImportContext, org.openuss.docmanagement.webdav.DavResourceLocator)
 	 */
-	public void addMember(InputContext context, DavResourceLocator locator) throws DavException {
+	public void addMember(ImportContext context, DavResourceLocator locator) throws DavException {
 		// check parameters
 		if ((context == null) || (locator == null)) {
 			logger.error("Context or locator is null. Cannot add member.");
@@ -117,13 +92,8 @@ public class DavService {
 		resource.getCollection().addMember(resource, context);
 	}
 	
-	/**
-	 * Retrieves properties from a resource and returns an instance of {@link MultiStatus} as demanded by RFC2518.
-	 * @param requestDocument The XML document containing data for the PROPFIND method.
-	 * @param locator The locator identifying the root of the request.
-	 * @param depth The recursion depth.
-	 * @return The response Multistatus containing requested property informations. 
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavService#getProperties(org.dom4j.Document, org.openuss.docmanagement.webdav.DavResourceLocator, int)
 	 */
 	public MultiStatus getProperties(Document requestDocument, DavResourceLocator locator, int depth) throws DavException {
 		// check parameters
@@ -141,7 +111,7 @@ public class DavService {
 			throw new DavException(HttpStatus.SC_NOT_FOUND, "Resource not found in repository.");
 		}
 		
-		MultiStatus multistatus = new MultiStatus();
+		MultiStatus multistatus = new MultiStatusImpl();
 		
 		// examine request and add response to multi-status
 		List<String> requestedProperties = getRequestedProperties(requestDocument);
@@ -191,7 +161,7 @@ public class DavService {
 			
 			// iterate through property names and add them to the list, if prop element was found
 			if ((propElement != null) && (propElement.hasContent())) {
-				propertyNames = new ArrayList<String>();
+				propertyNames = new LinkedList<String>();
 				Iterator elementIterator = propElement.elementIterator();
 				Element element;
 				while (elementIterator.hasNext()) {
@@ -274,12 +244,8 @@ public class DavService {
 		}
 	}
 	
-	// TODO setProperties
-	
-	/**
-	 * Creates a collection identified by the given instance of {@link DavResourceLocator}.
-	 * @param locator The locator identifying the collection to create.
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavService#createCollection(org.openuss.docmanagement.webdav.DavResourceLocator)
 	 */
 	public void createCollection(DavResourceLocator locator) throws DavException {
 		// check parameters
@@ -293,14 +259,8 @@ public class DavService {
 		resource.getCollection().addMember(resource, null);
 	}
 	
-	/**
-	 * Creates a copy of a repository object.
-	 * @param source The locator identifying the source repository object.
-	 * @param target The locator identifying the target for the copy operation.
-	 * @param overwriteAllowed
-	 * @param recursive
-	 * @return The multi-status containing error information or null.
-	 * @throws DavException 
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavService#copyResource(org.openuss.docmanagement.webdav.DavResourceLocator, org.openuss.docmanagement.webdav.DavResourceLocator, boolean, boolean)
 	 */
 	public MultiStatus copyResource(DavResourceLocator source, DavResourceLocator destination, boolean overwriteAllowed, boolean recursive) throws DavException {
 		return copyResource(source, destination, overwriteAllowed, recursive, true);
@@ -366,13 +326,8 @@ public class DavService {
 		return errorStatus;
 	}
 	
-	/**
-	 * Moves a repository object to a different location.
-	 * @param source The locator identifying the source repository object.
-	 * @param target The locator identifying the target for the copy operation.
-	 * @param overwriteAllowed True, if destination resource may be non-null.
-	 * @return The multi-status containing error informations or null.
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavService#moveResource(org.openuss.docmanagement.webdav.DavResourceLocator, org.openuss.docmanagement.webdav.DavResourceLocator, boolean)
 	 */
 	public MultiStatus moveResource(DavResourceLocator source, DavResourceLocator destination, boolean overwriteAllowed) throws DavException {
 		boolean overwriteNeeded = false;
@@ -423,11 +378,8 @@ public class DavService {
 		return errorStatus;
 	}
 	
-	/**
-	 * Deletes a resource identified by the {@link DavResourceLocator}.
-	 * @param locator The locator identifying the repository object to delete.
-	 * @return The multi-status containing error informations or null.
-	 * @throws DavException
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavService#deleteResource(org.openuss.docmanagement.webdav.DavResourceLocator)
 	 */
 	public MultiStatus deleteResource(DavResourceLocator locator) throws DavException {
 		return deleteResource(locator, true);
@@ -474,13 +426,12 @@ public class DavService {
 		return errorStatus;
 	}
 	
-	/**
-	 * Getter for instance of {@link DavResourceFactory}.
-	 * @return The resource factory.
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavService#getResourceFactory()
 	 */
 	public DavResourceFactory getResourceFactory() {
 		if (resourceFactory == null) {
-			resourceFactory = new DavResourceFactory(this, configuration);
+			resourceFactory = new DavResourceFactoryImpl(this, configuration);
 		}
 		return resourceFactory;
 	}
