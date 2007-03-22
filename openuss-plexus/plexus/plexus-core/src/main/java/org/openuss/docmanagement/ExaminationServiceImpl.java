@@ -5,8 +5,12 @@
  */
 package org.openuss.docmanagement;
 
-import org.openuss.lecture.Enrollment;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Iterator;
 
+import org.openuss.lecture.Enrollment;
+import org.apache.log4j.Logger;
 /**
  * @see org.openuss.docmanagement.ExaminationService
  */
@@ -14,46 +18,97 @@ public class ExaminationServiceImpl
     extends org.openuss.docmanagement.ExaminationServiceBase
 {
 
+	public static final Logger logger = Logger.getLogger(ExaminationServiceImpl.class);
+	
+
+	public ExamAreaDao examAreaDao;
+	
+	/**
+	 * dao object to create and edit files, is injected by spring
+	 */
+	public FileDao fileDao;
+	
 	@Override
-	protected void handleAddExamArea(Enrollment enrollment) throws Exception {
-		// TODO Auto-generated method stub
-		
+	protected void handleAddExamArea(Enrollment enrollment) throws Exception {		
+		Folder folder = examAreaDao.getFolder(DocConstants.EXAMAREA);    		
+		//add faculty main folder to distribution part of repository
+		Folder enrollmentMain = new FolderImpl(enrollment.getShortcut(), enrollment.getId().toString(), folder.getPath(), null, DocRights.READ_ALL|DocRights.EDIT_ALL);
+		examAreaDao.setFolder(enrollmentMain);
+		logger.debug("main folder for enrollment added to repository");
 	}
 
 	@Override
-	protected void handleAddSubmission(BigFile file, ExamArea examArea) throws Exception {
-		// TODO Auto-generated method stub
-		
+	protected void handleAddSubmission(BigFile file) throws Exception {
+		fileDao.setFile(file);		
 	}
 
 	@Override
-	protected File handleGetAllSubmissions(ExamArea examArea) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	protected java.util.List handleGetAllSubmissions(ExamArea examArea) throws Exception {
+		Iterator i = examArea.getSubnodes().iterator();
+		List submissions = new ArrayList();
+		Resource r;
+		while (i.hasNext()){
+			r = (Resource) i.next();
+			if (r instanceof File){
+				submissions.add((File)r);
+			}			
+		}
+		return submissions;
 	}
 
 	@Override
 	protected ExamArea handleGetExamArea(Enrollment enrollment) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return examAreaDao.getExamArea("/"+DocConstants.EXAMAREA+"/"+enrollment.getId().toString());
 	}
 
 	@Override
 	protected BigFile handleGetSubmission(File file) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return fileDao.getFile(file);
 	}
 
 	@Override
-	protected File handleGetVersions(File file) throws Exception {
+	protected java.util.List handleGetVersions(File file) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	protected void handleUpdateSubmission(BigFile file, File oldFile) throws Exception {
-		// TODO Auto-generated method stub
-		
+		fileDao.setFile(file);
+	}
+
+	public FileDao getFileDao() {
+		return fileDao;
+	}
+
+	public void setFileDao(FileDao fileDao) {
+		this.fileDao = fileDao;
+	}
+
+
+	@Override
+	protected File handleGetSubmissionByUsername(String username, ExamArea examArea) throws Exception {
+		List l = handleGetAllSubmissions(examArea);
+		Iterator i = l.iterator();
+		File f;
+		while (i.hasNext()){
+			f = (File)i.next();
+			if (fileDao.getOwner(f).equals(username)) return f; 
+		}
+		return null;
+	}
+
+	public ExamAreaDao getExamAreaDao() {
+		return examAreaDao;
+	}
+
+	public void setExamAreaDao(ExamAreaDao examAreaDao) {
+		this.examAreaDao = examAreaDao;
+	}
+
+	@Override
+	protected void handleSetDeadline(ExamArea examArea) throws Exception {
+		examAreaDao.setDeadline(examArea);
 	}
 
 

@@ -1,26 +1,22 @@
 package org.openuss.docmanagement;
 
-import org.openuss.lecture.Enrollment;
+import java.sql.Timestamp;
 
 public class ExamAreaImpl extends FolderImpl implements ExamArea{
 	
-	public Enrollment enrollment;
-
+	public Timestamp deadline;
+	
 	public ExamAreaImpl(){
 		super();
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.ExamArea#getEnrollment()
-	 */
-	public Enrollment getEnrollment() {
-		return enrollment;
+	public Timestamp getDeadline() {
+		return deadline;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.ExamArea#setEnrollment(org.openuss.lecture.Enrollment)
-	 */
-	public void setEnrollment(Enrollment enrollment) {
-		this.enrollment = enrollment;
+	public void setDeadline(Timestamp deadline) {
+		this.deadline = deadline;
 	}
+	
+	
 }

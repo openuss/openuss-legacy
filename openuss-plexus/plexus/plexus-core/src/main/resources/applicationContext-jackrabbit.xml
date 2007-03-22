@@ -23,6 +23,7 @@
 	</bean>
 	<bean id="examAreaDao" class="org.openuss.docmanagement.ExamAreaDao" >
 		<property name="repository" ref="repository"></property>
+		<property name="fileDao" ref="fileDao"></property>
 	</bean>
 	<bean id="fileDao" class="org.openuss.docmanagement.FileDao" >
 		<property name="repository" ref="repository"></property>
@@ -37,9 +38,12 @@
 		<property name="fileDao" ref="fileDao"></property>		
 		<property name="linkDao" ref="linkDao"></property>				
 	</bean>
+	<bean id="examinationService" class="org.openuss.docmanagement.ExaminationServiceImpl">
+		<property name="fileDao" ref="fileDao"></property>
+		<property name="examAreaDao" ref="examAreaDao"></property>
+	</bean>
 	
 	<bean id="collaborationService" class="org.openuss.docmanagement.CollaborationServiceImpl"/>
-	<bean id="examinationService" class="org.openuss.docmanagement.ExaminationServiceImpl"/>
 	<bean id="repositoryStartup" class="org.openuss.docmanagement.RepositoryStartup" init-method="init">
 		<property name="repository" ref="repository"></property>
 	</bean>

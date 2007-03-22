@@ -571,19 +571,28 @@
 			<from-outcome>docmanagement_newfacultydocument</from-outcome>
 			<to-view-id>/views/secured/docmanagement/NewDocumentToInstitut.xhtml</to-view-id>
 		</navigation-case>
-
+		<!-- Exam Area -->
 		<navigation-case>
 			<from-outcome>enrollment_examarea</from-outcome>
-			<to-view-id>/views/secured/enrollment/examarea/DocumentExplorer.xhtml</to-view-id>
+			<to-view-id>/views/secured/docmanagement/examarea/DocumentExplorer.xhtml</to-view-id>
+		</navigation-case>
+
+
+		<navigation-case>
+			<from-outcome>docmanagement_examversionexplorer</from-outcome>
+			<to-view-id>/views/secured/docmanagement/examarea/VersionExplorer.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>enrollment_workingplace</from-outcome>
-			<to-view-id>/views/secured/enrollment/DocumentExplorer.xhtml</to-view-id>
+			<from-outcome>docmanagement_examnewdocument</from-outcome>
+			<to-view-id>/views/secured/docmanagement/examarea/NewDocument.xhtml</to-view-id>
 		</navigation-case>
-
+		<!-- Working places -->
+		<navigation-case>
+			<from-outcome>enrollment_workingplace</from-outcome>
+			<to-view-id>/views/secured/docmanagement/DocumentExplorer.xhtml</to-view-id>
+		</navigation-case>
 	</navigation-rule>
-
 	
 </faces-config>
 

@@ -16,6 +16,9 @@ public class DocConstants{
 	public static final String PROPERTY_VISIBILITY = "doc:visibility";
 	public static final String PROPERTY_MESSAGE = "doc:message";
 	
+	//Folder
+	public static final String PROPERTY_DEADLINE = "doc:deadline";
+	
 	//File 													
 	public static final String PROPERTY_DISTRIBUTIONTIME = "doc:distributionTime";	
 	public static final String PROPERTY_LENGTH = "doc:length"; 	
@@ -36,7 +39,7 @@ public class DocConstants{
 	public static final String JCR_DATA = "jcr:data";
 	public static final String JCR_LASTMODIFIED = "jcr:lastModified";
 
-	// navigation cases
+	// navigation cases distribution	
 	public static final String NEWDOCUMENTTOFOLDER = "docmanagement_newdocumenttofolder";
 	public static final String EDITFOLDER = "docmanagement_editfolder";
 	public static final String DOCUMENTEXPLORER = "docmanagement_documentexplorer";
@@ -45,6 +48,12 @@ public class DocConstants{
 	public static final String EDITFACULTYFOLDER = "docmanagement_editfacultyfolder";
 	public static final String NEWFACULTYDOCUMENT = "docmanagement_newfacultydocument";
 	public static final String FOLDERTOFOLDER = "docmanagement_foldertofolder";
+	
+	//navigation cases examarea
+	public static final String EXAMEXPLORER = "enrollment_examarea";
+	public static final String EXAMVERSIONEXPLORER = "docmanagement_examversionexplorer";
+	public static final String EXAMNEWDOCUMENT = "docmanagement_examnewdocument";
+	
 	
 	//mimetype zip
 	public static final String MIMETYPE_ZIP = "application/zip";
