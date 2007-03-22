@@ -1,6 +1,5 @@
 package org.openuss.docmanagement;
 
-import java.io.ByteArrayInputStream;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -9,19 +8,11 @@ import javax.jcr.LoginException;
 import javax.jcr.NodeIterator;
 import org.openuss.docmanagement.PathNotFoundException;
 
-import javax.jcr.AccessDeniedException;
-import javax.jcr.InvalidItemStateException;
-import javax.jcr.ItemExistsException;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Node;
-import javax.jcr.UnsupportedRepositoryOperationException;
-import javax.jcr.ValueFormatException;
-import javax.jcr.lock.LockException;
-import javax.jcr.nodetype.ConstraintViolationException;
-import javax.jcr.nodetype.NoSuchNodeTypeException;
-import javax.jcr.version.VersionException;
+
 
 
 import org.apache.log4j.Logger;
@@ -215,21 +206,6 @@ public class FolderDao extends ResourceDao {
 	}
 	
 		
-	//TODO move to RepositoryStartup
-	public void buildMainRepositoryStructure(){
-		try{
-			Folder dist = new FolderImpl("Main distribution folder", DocConstants.DISTRIBUTION, "", null, DocRights.READ_OWNER|DocRights.EDIT_OWNER);
-			Folder exam = new FolderImpl("Main exam area folder", DocConstants.EXAMAREA, "", null, DocRights.READ_OWNER|DocRights.EDIT_OWNER);
-			Folder wp = new FolderImpl("Main workingplace folder", DocConstants.WORKINGPLACE, "", null, DocRights.READ_OWNER|DocRights.EDIT_OWNER);
-			setFolder(dist);
-			setFolder(exam);
-			setFolder(wp);
-		} catch(Exception e){
-			logger.error("Exception: ", e);
-		}
-	}
-
-
 	/**
 	 * deletes a folder permanently - only for use to empty trash folder
 	 * @param folder
@@ -307,7 +283,6 @@ public class FolderDao extends ResourceDao {
 		Vector<Resource> v = new Vector<Resource>();
 		NodeIterator ni = node.getNodes();
 		Node n;
-		String newPath = "";
 		String filePath;
 		while (ni.hasNext()) {
 			n = ni.nextNode();

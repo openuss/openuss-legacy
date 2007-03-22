@@ -12,24 +12,20 @@ import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-/**
- * @author David Ullrich
- * @version 0.5
- */
-public class ExamAreaDao extends FolderDao {
+public class ExamAreaDao extends ResourceDao{
 	
-	private Repository repository;
-
+	public Repository repository;
+	
 	public FileDao fileDao;
 	
-	public void setDeadline(ExamArea ea) throws DocManagementException{
+	
+	public void setDeadline(Timestamp time, String path) throws DocManagementException{
 		try {
-			Session session = login(repository);
-			String path = ea.getPath();
+			Session session = login(getRepository());			
 			if (path.startsWith("/")) path = path.substring(1);
 			Node node = session.getRootNode().getNode(path);
 			Calendar c = new GregorianCalendar();
-			c.setTimeInMillis(ea.getDeadline().getTime());
+			c.setTimeInMillis(time.getTime());
 			node.setProperty(DocConstants.PROPERTY_DEADLINE, c);
 			logout(session);		
 		} catch (RepositoryException e) {
@@ -40,7 +36,7 @@ public class ExamAreaDao extends FolderDao {
 	public ExamArea getExamArea(String path) throws PathNotFoundException, DocManagementException{
 		ExamArea eai = new ExamAreaImpl();
 		try {
-			Session session = login(repository);
+			Session session = login(getRepository());
 			Node node = session.getRootNode();
 			if (path==null) throw new NotAFolderException("resource at path: '' is not a folder");
 			if (path.length() != 0)
@@ -76,7 +72,6 @@ public class ExamAreaDao extends FolderDao {
 		Vector<Resource> v = new Vector<Resource>();
 		NodeIterator ni = node.getNodes();
 		Node n;
-		String newPath = "";
 		String filePath;
 		while (ni.hasNext()) {
 			n = ni.nextNode();
@@ -84,20 +79,12 @@ public class ExamAreaDao extends FolderDao {
 				if (n.isNodeType(DocConstants.DOC_FILE)) {
 					filePath = n.getPath();						
 					if (filePath.startsWith("/")) filePath = filePath.substring(1);
-					v.add(fileDao.getFile(filePath));
+					v.add(getFileDao().getFile(filePath));
 				}
 			}
 		}
 		if (v.size() > 0)
 		eai.setSubnodes(v);
-	}
-	
-	public Repository getRepository() {
-		return repository;
-	}
-
-	public void setRepository(Repository repository) {
-		this.repository = repository;
 	}
 
 	public FileDao getFileDao() {
@@ -107,4 +94,14 @@ public class ExamAreaDao extends FolderDao {
 	public void setFileDao(FileDao fileDao) {
 		this.fileDao = fileDao;
 	}
+
+	public Repository getRepository() {
+		return repository;
+	}
+
+	public void setRepository(Repository repository) {
+		this.repository = repository;
+	}
+
+	
 }

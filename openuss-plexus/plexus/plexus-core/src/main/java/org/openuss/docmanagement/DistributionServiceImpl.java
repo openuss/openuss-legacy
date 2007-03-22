@@ -228,10 +228,6 @@ public class DistributionServiceImpl
     	return fi;
     }
     
- 	public void buildMainRepositoryStructure(){
-		folderDao.buildMainRepositoryStructure();
-	}
-
 	public FolderDao getFolderDao() {
 		return folderDao;
 	}

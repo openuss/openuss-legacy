@@ -56,6 +56,10 @@ public class FileDao extends ResourceDao {
 			logout(session);
 			throw new NotAFileException("Not a file");			
 		}
+		String owner = "";
+		if (node.hasProperty(DocConstants.PROPERTY_OWNER))
+			owner = node.getProperty(DocConstants.PROPERTY_OWNER).getString();
+		
 		file = new FileImpl(new Timestamp(node.getProperty(
 				DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTimeInMillis()), node.getUUID(), new Timestamp(node.getNode(
 				DocConstants.JCR_CONTENT).getProperty(
@@ -64,7 +68,7 @@ public class FileDao extends ResourceDao {
 				node.getNode(DocConstants.JCR_CONTENT).getProperty(
 						DocConstants.JCR_MIMETYPE).getString(), node.getName(),
 				node.getPath(), null, 1, ((int) node.getProperty(
-						DocConstants.PROPERTY_VISIBILITY).getLong()));
+						DocConstants.PROPERTY_VISIBILITY).getLong()), owner);
 		file.setCreated(new Timestamp(node
 				.getProperty(DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
 		logout(session);

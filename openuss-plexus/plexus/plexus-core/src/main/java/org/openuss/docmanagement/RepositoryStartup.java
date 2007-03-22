@@ -9,8 +9,11 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.jcr.ItemExistsException;
 import javax.jcr.NamespaceException;
 import javax.jcr.NamespaceRegistry;
+import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -42,18 +45,20 @@ public class RepositoryStartup {
 			Session session = repository.login(new SimpleCredentials(
 					RepositoryAccess.USERNAME, RepositoryAccess.PASSWORD
 							.toCharArray()));
+			
+			// add namesspace
 			NamespaceRegistry nsr = session.getWorkspace()
 					.getNamespaceRegistry();
 			try{
 				nsr.registerNamespace(DocConstants.NAMESPACE_PREFIX,
 					DocConstants.NAMESPACE_URI);
 			} catch (NamespaceException e){
-				//do nothing
+				// do nothing
 			}
 			NodeTypeManagerImpl ntm = (NodeTypeManagerImpl) session
 					.getWorkspace().getNodeTypeManager();
 		
-			//TODO find out how to use pathvariables
+			// TODO find out how to use pathvariables
 			FileReader fileReader = new FileReader("ntd.cnd");
 
 			// Create a CompactNodeTypeDefReader
@@ -76,6 +81,18 @@ public class RepositoryStartup {
 				ntreg.registerNodeType(ntd);
 			}
 			// ntr.registerNodeType(arg0)
+
+
+			Folder dist = new FolderImpl("Main distribution folder", DocConstants.DISTRIBUTION, "", null, DocRights.READ_OWNER|DocRights.EDIT_OWNER);
+			Folder exam = new FolderImpl("Main exam area folder", DocConstants.EXAMAREA, "", null, DocRights.READ_OWNER|DocRights.EDIT_OWNER);
+			Folder wp = new FolderImpl("Main workingplace folder", DocConstants.WORKINGPLACE, "", null, DocRights.READ_OWNER|DocRights.EDIT_OWNER);
+				
+			setFolder(dist, session.getRootNode());
+			setFolder(exam, session.getRootNode());
+			setFolder(wp, session.getRootNode());
+			
+			session.save();
+			session.logout();
 		} catch (RepositoryException e) {
 			logger.error(e);
 		} catch (InvalidNodeTypeDefException e) {
@@ -87,6 +104,19 @@ public class RepositoryStartup {
 		}
 		logger.debug("RepositoryStartup finished");
 	}
+
+	public void setFolder(Folder folder, Node root) throws PathNotFoundException, RepositoryException{
+			String path = folder.getPath();
+		if (path.startsWith("/")) path = path.substring(1);
+		if (path!="") root = root.getNode(path);
+		if (!root.hasNode(folder.getName())) {
+			root.addNode(folder.getName(), DocConstants.DOC_FOLDER);
+			root = root.getNode(folder.getName());
+			root.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
+			root.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());				
+		}
+	}	
+		
 
 	public Repository getRepository() {
 		return repository;

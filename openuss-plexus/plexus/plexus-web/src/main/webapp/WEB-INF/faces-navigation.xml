@@ -574,18 +574,18 @@
 		<!-- Exam Area -->
 		<navigation-case>
 			<from-outcome>enrollment_examarea</from-outcome>
-			<to-view-id>/views/secured/docmanagement/examarea/DocumentExplorer.xhtml</to-view-id>
+			<to-view-id>/views/secured/docmanagement/exam/DocumentExplorer.xhtml</to-view-id>
 		</navigation-case>
 
 
 		<navigation-case>
 			<from-outcome>docmanagement_examversionexplorer</from-outcome>
-			<to-view-id>/views/secured/docmanagement/examarea/VersionExplorer.xhtml</to-view-id>
+			<to-view-id>/views/secured/docmanagement/exam/VersionExplorer.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
 			<from-outcome>docmanagement_examnewdocument</from-outcome>
-			<to-view-id>/views/secured/docmanagement/examarea/NewDocument.xhtml</to-view-id>
+			<to-view-id>/views/secured/docmanagement/exam/NewDocument.xhtml</to-view-id>
 		</navigation-case>
 		<!-- Working places -->
 		<navigation-case>

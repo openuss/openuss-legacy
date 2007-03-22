@@ -64,4 +64,7 @@ public class DocConstants{
 	
 	//folder name of trash
 	public static final String TRASH_NAME = "trash";
+	
+	//mixin
+	public static final String MIX_VERSIONABLE = "mix:versionable";
 }

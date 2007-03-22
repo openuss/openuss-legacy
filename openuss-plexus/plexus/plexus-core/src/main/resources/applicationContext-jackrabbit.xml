@@ -40,6 +40,7 @@
 	</bean>
 	<bean id="examinationService" class="org.openuss.docmanagement.ExaminationServiceImpl">
 		<property name="fileDao" ref="fileDao"></property>
+		<property name="folderDao" ref="folderDao"></property>		
 		<property name="examAreaDao" ref="examAreaDao"></property>
 	</bean>
 	

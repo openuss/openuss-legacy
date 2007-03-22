@@ -12,7 +12,6 @@ import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.version.VersionException;
-import javax.jcr.Node;
 
 import org.openuss.docmanagement.RepositoryAccess;
 
@@ -22,9 +21,7 @@ import org.openuss.docmanagement.RepositoryAccess;
  */
 public abstract class ResourceDao {
 
-	protected Node representedNode;
-	
-	public Session login(Repository repository) throws LoginException, RepositoryException {
+		public Session login(Repository repository) throws LoginException, RepositoryException {
 		Session session = repository.login(new SimpleCredentials(
 				RepositoryAccess.USERNAME, RepositoryAccess.PASSWORD.toCharArray()));
 		return session;

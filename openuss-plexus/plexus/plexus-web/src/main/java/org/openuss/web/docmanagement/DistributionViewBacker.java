@@ -346,6 +346,7 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 		fte.setPredecessor(f.getPredecessor());
 		fte.setVersion(f.getVersion());
 		fte.setVisibility(f.getVisibility());
+		fte.setOwner(f.getOwner());
 		return fte;
 	}
 
@@ -421,7 +422,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 				fte.getPath(),
 				fte.getPredecessor(),
 				fte.getVersion(),
-				fte.getVisibility());
+				fte.getVisibility(), 
+				fte.getOwner());
 	}
 		
 	
@@ -442,7 +444,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 				fte.getPath(),
 				fte.getPredecessor(),
 				fte.getVersion(),
-				fte.getVisibility());
+				fte.getVisibility(), 
+				fte.getOwner());
 		try {
 			return distributionService.getFile(f);
 		} catch (NotAFolderException e) {

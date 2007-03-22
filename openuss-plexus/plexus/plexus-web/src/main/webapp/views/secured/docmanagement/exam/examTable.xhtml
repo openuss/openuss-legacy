@@ -10,7 +10,7 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<t:dataTable id="filesDataTable" var="file"
-		value="#{distributionViewBacker.data}">
+		value="#{examAreaViewBacker.data}">
 		<t:column>
 			<h:selectBooleanCheckbox value="#{file.checked}"></h:selectBooleanCheckbox>
 		</t:column>
@@ -24,11 +24,8 @@
 			<h:outputText value="#{file.lastModification}" />			
 		</t:column>
 		<t:column>
-			<h:commandButton action="#{distributionViewBacker.changeFile}" value="#{msg.doc_dist_button_changefile}">
-				<f:actionListener type="org.openuss.web.docmanagement.FileChangeActionListener" />
-			</h:commandButton>
-			<h:commandButton action="#{distributionViewBacker.download}" value="#{msg.doc_dist_button_download}">
-				<f:actionListener type="org.openuss.web.docmanagement.FileChangeActionListener" />
+			<h:commandButton action="#{examAreaViewBacker.download}" value="#{msg.doc_exam_button_download}">
+				<f:actionListener type="org.openuss.web.docmanagement.examarea.ExamFileChangeActionListener" />
 			</h:commandButton>
 			
 		</t:column>

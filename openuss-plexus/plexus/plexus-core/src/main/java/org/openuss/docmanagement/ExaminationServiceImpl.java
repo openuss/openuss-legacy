@@ -5,6 +5,7 @@
  */
 package org.openuss.docmanagement;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
@@ -23,6 +24,8 @@ public class ExaminationServiceImpl
 
 	public ExamAreaDao examAreaDao;
 	
+	public FolderDao folderDao;
+	
 	/**
 	 * dao object to create and edit files, is injected by spring
 	 */
@@ -30,10 +33,15 @@ public class ExaminationServiceImpl
 	
 	@Override
 	protected void handleAddExamArea(Enrollment enrollment) throws Exception {		
-		Folder folder = examAreaDao.getFolder(DocConstants.EXAMAREA);    		
+		Folder folder = folderDao.getFolder(DocConstants.EXAMAREA);    		
 		//add faculty main folder to distribution part of repository
 		Folder enrollmentMain = new FolderImpl(enrollment.getShortcut(), enrollment.getId().toString(), folder.getPath(), null, DocRights.READ_ALL|DocRights.EDIT_ALL);
-		examAreaDao.setFolder(enrollmentMain);
+		//Set deadline now + 6 weeks
+		try{
+			folderDao.setFolder(enrollmentMain);
+		} catch (ResourceAlreadyExistsException e){
+		}
+		examAreaDao.setDeadline(new Timestamp(System.currentTimeMillis()+ 1000*60*60*24*7*6), "/"+DocConstants.EXAMAREA+"/"+enrollment.getId().toString());
 		logger.debug("main folder for enrollment added to repository");
 	}
 
@@ -58,7 +66,15 @@ public class ExaminationServiceImpl
 
 	@Override
 	protected ExamArea handleGetExamArea(Enrollment enrollment) throws Exception {
-		return examAreaDao.getExamArea("/"+DocConstants.EXAMAREA+"/"+enrollment.getId().toString());
+		ExamArea examArea ;
+		try{
+			examArea = examAreaDao.getExamArea("/"+DocConstants.EXAMAREA+"/"+enrollment.getId().toString());
+		}
+		catch (PathNotFoundException e){
+			handleAddExamArea(enrollment);
+		}
+		examArea = examAreaDao.getExamArea("/"+DocConstants.EXAMAREA+"/"+enrollment.getId().toString());
+		return examArea;
 	}
 
 	@Override
@@ -108,7 +124,15 @@ public class ExaminationServiceImpl
 
 	@Override
 	protected void handleSetDeadline(ExamArea examArea) throws Exception {
-		examAreaDao.setDeadline(examArea);
+		examAreaDao.setDeadline(examArea.getDeadline(), examArea.getPath());
+	}
+
+	public FolderDao getFolderDao() {
+		return folderDao;
+	}
+
+	public void setFolderDao(FolderDao folderDao) {
+		this.folderDao = folderDao;
 	}
 
 

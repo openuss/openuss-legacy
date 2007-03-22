@@ -18,10 +18,12 @@ public class FileImpl extends ResourceImpl implements File{
 
 	public String mimeType;
 	
+	public String owner;
+	
 	public FileImpl(){		
 	}
 	
-	public FileImpl(Timestamp distributionTime, String id, Timestamp lastModification, long length, String message, String mimeType, String name, String path, File predecessor, int version, int visibility){
+	public FileImpl(Timestamp distributionTime, String id, Timestamp lastModification, long length, String message, String mimeType, String name, String path, File predecessor, int version, int visibility, String owner){
 		this.setDistributionTime(distributionTime);
 		this.setId(id);
 		this.setLastModification(lastModification);
@@ -135,6 +137,14 @@ public class FileImpl extends ResourceImpl implements File{
 		if (extension.equals("xml")) return "xml";
 		if (extension.equals("zip")) return "zip";
 		return "default";
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 	
 	
