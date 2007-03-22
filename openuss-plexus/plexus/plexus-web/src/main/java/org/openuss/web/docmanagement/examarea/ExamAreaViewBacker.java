@@ -2,19 +2,20 @@ package org.openuss.web.docmanagement.examarea;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
-
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.docmanagement.BigFile;
 import org.openuss.docmanagement.BigFileImpl;
+import org.openuss.docmanagement.DeadlineException;
 import org.openuss.docmanagement.DocConstants;
 import org.openuss.docmanagement.DocManagementException;
 import org.openuss.docmanagement.ExamArea;
@@ -46,6 +47,8 @@ public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
 	public String fileName;
 	
 	public ArrayList<FileTableEntry> data;
+	
+	public Date deadline;
 
 	@Property(value = "#{examFileController}")
 	public ExamFileController examFileController;
@@ -91,6 +94,7 @@ public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
 		ArrayList<FileTableEntry> al = new ArrayList<FileTableEntry>();
 		try {
 			examArea = examinationService.getExamArea(enrollment);
+			this.deadline = examArea.getDeadline();
 			if (!hasReadPermission(examArea)) {
 				noPermission();
 				return al;
@@ -236,30 +240,9 @@ public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
 				.getPredecessor(), fte.getVersion(), fte.getVisibility(), fte.getOwner());
 	}
 
-	//TODO remove?
-	/**
-	 * convenience method, which converts a FileTableEntry object into an
-	 * BigFile object
-	 * 
-	 * @param fte
-	 *            FileTableEntry
-	 * @return
-	 */
-	private BigFile fileTableEntry2BigFile(FileTableEntry fte) {
-		/*
-		 * File f = new FileImpl( fte.getDistributionTime(), fte.getId(),
-		 * fte.getLastModification(), fte.getLength(), fte.getMessage(),
-		 * fte.getMimeType(), fte.getName(), fte.getPath(),
-		 * fte.getPredecessor(), fte.getVersion(), fte.getVisibility()); try {
-		 * return distributionService.getFile(f); } catch (NotAFolderException
-		 * e) { handleNotAFolderException(e); } catch (PathNotFoundException e) {
-		 * handlePathNotFoundException(e); } catch
-		 * (ResourceAlreadyExistsException e) {
-		 * handleResourceAlreadyExistsException(e); } catch (NotAFileException
-		 * e) { handleNotAFileException(e); } catch (DocManagementException e) {
-		 * handleDocManagementException(e); }
-		 */
-		return null;
+
+	public String saveDeadline(){
+		return DocConstants.EXAMEXPLORER;
 	}
 
 	public ExaminationService getExaminationService() {
@@ -293,6 +276,34 @@ public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
 
 	public void setData(ArrayList data) {
 		this.data = data;
+	}
+
+	public Date getDeadline() {
+		return deadline;
+	}
+
+	public void setDeadline(Date deadline) {
+		this.deadline = deadline;
+	}
+	
+	public String getDeadlineString(){
+		if (this.deadline==null){
+			try {
+				this.deadline = examinationService.getExamArea(enrollment).getDeadline();
+			} catch (NotAFolderException e) {
+				handleNotAFolderException(e);
+			} catch (PathNotFoundException e) {
+				handlePathNotFoundException(e);
+			} catch (ResourceAlreadyExistsException e) {
+				handleResourceAlreadyExistsException(e);
+			} catch (NotAFileException e) {
+				handleNotAFileException(e);
+			} catch (DocManagementException e) {
+				handleDocManagementException(e);
+			}
+		}			
+		SimpleDateFormat df = new SimpleDateFormat( "yyyy-MM-dd HH:mm" );
+		return df.format(this.deadline.getTime());		
 	}
 
 }

@@ -587,6 +587,12 @@
 			<from-outcome>docmanagement_examnewdocument</from-outcome>
 			<to-view-id>/views/secured/docmanagement/exam/NewDocument.xhtml</to-view-id>
 		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>docmanagement_examareaoptions</from-outcome>
+			<to-view-id>/views/secured/docmanagement/exam/ExamAreaOptions.xhtml</to-view-id>
+		</navigation-case>
+
 		<!-- Working places -->
 		<navigation-case>
 			<from-outcome>enrollment_workingplace</from-outcome>

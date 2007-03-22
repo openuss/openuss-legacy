@@ -35,6 +35,7 @@ public class FileImpl extends ResourceImpl implements File{
 		this.setPredecessor(predecessor);
 		this.setVersion(version);
 		this.setVisibility(visibility);
+		this.owner = owner;
 	}
 	
 	/* (non-Javadoc)

@@ -59,6 +59,8 @@ public class FileDao extends ResourceDao {
 		String owner = "";
 		if (node.hasProperty(DocConstants.PROPERTY_OWNER))
 			owner = node.getProperty(DocConstants.PROPERTY_OWNER).getString();
+
+
 		
 		file = new FileImpl(new Timestamp(node.getProperty(
 				DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTimeInMillis()), node.getUUID(), new Timestamp(node.getNode(
@@ -171,20 +173,24 @@ public class FileDao extends ResourceDao {
 	 */
 	private void setExamAreaFile(Node node, BigFile file) throws NoSuchNodeTypeException, VersionException, ConstraintViolationException, LockException, AccessDeniedException, ItemExistsException, InvalidItemStateException, UnsupportedRepositoryOperationException, ValueFormatException, PathNotFoundException, RepositoryException{
 		if (node.hasNode(file.getName())) {
+			node = node.getNode(file.getName());
 			if (!node.isNodeType(DocConstants.MIX_VERSIONABLE)) {
 				node.addMixin(DocConstants.MIX_VERSIONABLE);
+				//FIXME Add owner
 				node.getSession().save();
 				node.checkin();
 				node.getSession().save();
 			}
 			node.checkout();
-			writeNTFile(node, file);
+			node.setProperty(DocConstants.PROPERTY_OWNER, file.getOwner());
+			writeNTFileProperties(node, file);			
 			node.getSession().save();
 			node.checkin();
 			return;
 		}
-		node.addNode(file.getName(), DocConstants.DOC_FILE);
+		node.addNode(file.getName(), DocConstants.DOC_FILE);		
 		node = node.getNode(file.getName());
+		node.setProperty(DocConstants.PROPERTY_OWNER, file.getOwner());
 		writeNTFile(node, file);
 		 
 	}
@@ -221,6 +227,35 @@ public class FileDao extends ResourceDao {
 		
 	}
 
+	/**
+	 * convenience method which actually write the properties of nt:file and jcr:content nodes
+	 * @param node
+	 * @param file
+	 * @throws ValueFormatException
+	 * @throws VersionException
+	 * @throws LockException
+	 * @throws ConstraintViolationException
+	 * @throws RepositoryException
+	 * @throws ItemExistsException
+	 * @throws PathNotFoundException
+	 * @throws NoSuchNodeTypeException
+	 */
+	private void writeNTFileProperties(Node node, BigFile file) throws ValueFormatException, VersionException, LockException, ConstraintViolationException, RepositoryException, ItemExistsException, PathNotFoundException, NoSuchNodeTypeException {
+		node.setProperty(DocConstants.PROPERTY_MESSAGE, file.getMessage());
+		Calendar c = new GregorianCalendar();
+		c.setTimeInMillis(file.getDistributionTime().getTime());
+		node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
+		node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
+				.getVisibility());
+		// nt:resource Knoten, der die eigentlich Datei enthaelt		
+		node = node.getNode(DocConstants.JCR_CONTENT);
+		node.setProperty(DocConstants.JCR_DATA, file.getFile());
+		node.setProperty(DocConstants.JCR_MIMETYPE, file.getMimeType());
+		Calendar c2 = new GregorianCalendar();
+		c2.setTimeInMillis(file.getLastModification().getTime());
+		node.setProperty(DocConstants.JCR_LASTMODIFIED, c);
+	}
+	
 	/**
 	 * convenience method which actually write the nt:file and jcr:content nodes
 	 * @param node

@@ -26,12 +26,13 @@
 		</ui:define> 		
   		<ui:define name="content">
   			<h:form id="examDataTableView">
-				<o:block>
+				<o:block label="#{msg.doc_examarea_options}: #{examAreaViewBacker.deadlineString}">
 					<ui:include src="examTable.xhtml"/>
 				</o:block>
 				<o:block>
 					<h:commandButton action="#{examAreaViewBacker.newFile}" value="#{msg.doc_exam_button_newfile}"/>
 					<h:commandButton action="#{examAreaViewBacker.downloadSelected}" value="#{msg.doc_exam_button_downloadselected}" />
+					<h:commandButton action="docmanagement_examareaoptions" value="#{msg.doc_examarea_options}"></h:commandButton>
 				</o:block>
 			</h:form>
 		</ui:define>
