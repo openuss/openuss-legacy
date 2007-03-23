@@ -36,7 +36,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.8
+ * @version 0.9
  */
 public class WebDavServlet extends HttpServlet {
 	private final static Logger logger = Logger.getLogger(WebDavServlet.class);
@@ -51,7 +51,9 @@ public class WebDavServlet extends HttpServlet {
 	private static final String INIT_PARAMETER_AUTHENTICATE_HEADER = "authenticate-header";
 	private static final String DEFAULT_AUTHENTICATE_HEADER = "Basic realm=\"OpenUSS Webdav Server\"";
 	
+	// TODO return "1,2" for compliance level 2
 	private static final String DAV_COMPLIANCE_CLASS = "1";
+	// TODO add methods LOCK and UNLOCK for compliance level 2
 	private static final String DAV_ALLOWED_METHODS = "OPTIONS, GET, HEAD, POST, DELETE, PUT, PROPFIND, PROPPATCH, MKCOL, COPY, MOVE";
 	
 	private String resourcePathPrefix;
@@ -160,8 +162,6 @@ public class WebDavServlet extends HttpServlet {
 	 * @throws DavException
 	 */
 	private boolean execute(HttpServletRequest request, HttpServletResponse response, DavResourceLocator locator, int methodCode) throws DavException {
-		// TODO support DAV_LOCK and DAV_UNLOCK for compliance level 2
-		// TODO Fehler werfen bei ungültigem Wert von depth
 		try {
 			switch (methodCode) {
 				case DavMethods.DAV_OPTIONS:
@@ -238,6 +238,14 @@ public class WebDavServlet extends HttpServlet {
 					// send multi-status with error codes
 					sendMultiStatus(moveStatus, response);
 					break;
+				case DavMethods.DAV_LOCK:
+					// TODO implement for compliance level 2
+					logger.debug("Method LOCK requested for resource " + locator.getResourcePath());
+					throw new DavException(HttpStatus.SC_NOT_IMPLEMENTED);
+				case DavMethods.DAV_UNLOCK:
+					// TODO implement for compliance level 2
+					logger.debug("Method UNLOCK requested for resource " + locator.getResourcePath());
+					throw new DavException(HttpStatus.SC_NOT_IMPLEMENTED);
 				default:
 					// unknown or unsupported method code, cannot execute
 					return false;
@@ -305,10 +313,10 @@ public class WebDavServlet extends HttpServlet {
 	 */
 	private boolean getOverwrite(HttpServletRequest request) throws DavException {
 		String overwriteHeaderValue = request.getHeader(DavConstants.HEADER_OVERWRITE);
-		if ((overwriteHeaderValue == null) || (overwriteHeaderValue.equals("T"))) {
+		if ((overwriteHeaderValue == null) || (overwriteHeaderValue.equals(DavConstants.HEADER_OVERWRITE_TRUE))) {
 			// assume true, if no header value is present or is 'T'
 			return true;
-		} else if (overwriteHeaderValue.equals("F")) {
+		} else if (overwriteHeaderValue.equals(DavConstants.HEADER_OVERWRITE_FALSE)) {
 			return false;
 		} else {
 			// invalid or not supported value for depth header found
