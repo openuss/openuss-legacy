@@ -1,5 +1,6 @@
 package org.openuss.docmanagement.webdav;
 
+import java.util.Dictionary;
 import java.util.List;
 
 /**
@@ -81,6 +82,14 @@ public interface DavResource {
 	 * @throws DavException
 	 */
 	public MultiStatusResponse getProperties(List<String> properties, boolean namesOnly) throws DavException;
+	
+	/**
+	 * @param propertiesToSet
+	 * @param propertiesToRemove
+	 * @return
+	 * @throws DavException
+	 */
+	public MultiStatus updateProperties(Dictionary<String, String> propertiesToSet, List<String> propertiesToRemove) throws DavException;
 	
 	/**
 	 * Adds a member to this resource.

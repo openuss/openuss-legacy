@@ -9,7 +9,7 @@ import org.openuss.lecture.Enrollment;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.8
+ * @version 0.9
  */
 public interface DavService {
 	/**
@@ -62,7 +62,14 @@ public interface DavService {
 	 */
 	public MultiStatus getProperties(Document requestDocument, DavResourceLocator locator, int depth) throws DavException;
 	
-	// TODO setProperties
+	/**
+	 * Updates properties from a resource and returns an instance of {@link MultiStatus}.
+	 * @param requestDocument The XML document containing data for the PROPPATCH method.
+	 * @param locator The locator identifying the root of the request.
+	 * @return The response Multistatus containing status information.
+	 * @throws DavException
+	 */
+	public MultiStatus updateProperties(Document requestDocument, DavResourceLocator locator) throws DavException;
 	
 	/**
 	 * Creates a collection identified by the given instance of {@link DavResourceLocator}.

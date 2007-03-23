@@ -51,9 +51,7 @@ public class WebDavServlet extends HttpServlet {
 	private static final String INIT_PARAMETER_AUTHENTICATE_HEADER = "authenticate-header";
 	private static final String DEFAULT_AUTHENTICATE_HEADER = "Basic realm=\"OpenUSS Webdav Server\"";
 	
-	// TODO return "1,2" for compliance level 2
-	private static final String DAV_COMPLIANCE_CLASS = "1";
-	// TODO add methods LOCK and UNLOCK for compliance level 2
+	private static final String DAV_COMPLIANCE_LEVEL = "1";
 	private static final String DAV_ALLOWED_METHODS = "OPTIONS, GET, HEAD, POST, DELETE, PUT, PROPFIND, PROPPATCH, MKCOL, COPY, MOVE";
 	
 	private String resourcePathPrefix;
@@ -195,13 +193,14 @@ public class WebDavServlet extends HttpServlet {
 				case DavMethods.DAV_PROPFIND:
 					// fill properties from resource and send to client
 					logger.debug("Method PROPFIND requested for resource " + locator.getResourcePath() + " with depth " + getDepth(request));
-					MultiStatus propertiesStatus = getDavService().getProperties(getRequestDocument(request), locator, getDepth(request));
-					sendMultiStatus(propertiesStatus, response);
+					MultiStatus propFindStatus = getDavService().getProperties(getRequestDocument(request), locator, getDepth(request));
+					sendMultiStatus(propFindStatus, response);
 					break;
 				case DavMethods.DAV_PROPPATCH:
 					// alter values of properties
 					logger.debug("Method PROPPATCH requested for resource " + locator.getResourcePath());
-					// TODO
+					MultiStatus propPatchStatus = getDavService().updateProperties(getRequestDocument(request), locator);
+					sendMultiStatus(propPatchStatus, response);
 					break;
 				case DavMethods.DAV_MKCOL:
 					// create collection
@@ -238,14 +237,6 @@ public class WebDavServlet extends HttpServlet {
 					// send multi-status with error codes
 					sendMultiStatus(moveStatus, response);
 					break;
-				case DavMethods.DAV_LOCK:
-					// TODO implement for compliance level 2
-					logger.debug("Method LOCK requested for resource " + locator.getResourcePath());
-					throw new DavException(HttpStatus.SC_NOT_IMPLEMENTED);
-				case DavMethods.DAV_UNLOCK:
-					// TODO implement for compliance level 2
-					logger.debug("Method UNLOCK requested for resource " + locator.getResourcePath());
-					throw new DavException(HttpStatus.SC_NOT_IMPLEMENTED);
 				default:
 					// unknown or unsupported method code, cannot execute
 					return false;
@@ -266,7 +257,7 @@ public class WebDavServlet extends HttpServlet {
 	 */
 	private void publishOptions(HttpServletResponse response) {
 		// add required headers and send status code 200 (OK)
-		response.addHeader(DavConstants.HEADER_DAV, DAV_COMPLIANCE_CLASS);
+		response.addHeader(DavConstants.HEADER_DAV, DAV_COMPLIANCE_LEVEL);
 		response.addHeader("Allowed", DAV_ALLOWED_METHODS);
 		response.addHeader("MS-Author-Via", DavConstants.HEADER_DAV);
 		response.setStatus(HttpStatus.SC_OK);

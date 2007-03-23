@@ -1,6 +1,6 @@
 package org.openuss.docmanagement.webdav;
 
-import java.io.IOException;
+import java.util.Dictionary;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -290,6 +290,14 @@ public abstract class DavResourceBase implements DavResource {
 		return response;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResource#updateProperties(java.util.Dictionary, java.util.List)
+	 */
+	public MultiStatus updateProperties(Dictionary<String, String> propertiesToSet, List<String> propertiesToRemove) throws DavException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResource#addMember(org.openuss.docmanagement.webdav.DavResource, org.openuss.docmanagement.webdav.ImportContext)
 	 */

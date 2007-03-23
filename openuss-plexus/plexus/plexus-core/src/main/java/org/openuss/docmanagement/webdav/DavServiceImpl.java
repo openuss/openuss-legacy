@@ -213,7 +213,15 @@ public class DavServiceImpl implements DavService {
 		}
 		return false;
 	}
-	
+		
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavService#updateProperties(org.dom4j.Document, org.openuss.docmanagement.webdav.DavResourceLocator)
+	 */
+	public MultiStatus updateProperties(Document requestDocument, DavResourceLocator locator) throws DavException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * Recursively add response data for a given {@link DavResource} to given {@link MultiStatus}. 
 	 * @param multistatus The multi-status containing responses.
