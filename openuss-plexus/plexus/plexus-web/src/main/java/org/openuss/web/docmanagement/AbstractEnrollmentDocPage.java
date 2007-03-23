@@ -21,7 +21,7 @@ public abstract class AbstractEnrollmentDocPage extends ExceptionHandler {
 	@Property(value = "#{faculty}")
 	public Faculty faculty;
 
-	final Authentication auth = SecurityContextHolder.getContext()
+	public final Authentication auth = SecurityContextHolder.getContext()
 			.getAuthentication();
 
 	public static final Logger enrollmentLogger = Logger

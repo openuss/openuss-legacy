@@ -306,6 +306,8 @@ public class WorkingPlaceViewBacker extends AbstractEnrollmentDocPage {
 		fte.setVersion(f.getVersion());
 		fte.setVisibility(f.getVisibility());
 		fte.setOwner(f.getOwner());
+		fte.setViewed(f.getViewed());
+		fte.setViewer(auth.getName());
 		return fte;
 	}
 
@@ -382,7 +384,9 @@ public class WorkingPlaceViewBacker extends AbstractEnrollmentDocPage {
 				fte.getPredecessor(),
 				fte.getVersion(),
 				fte.getVisibility(), 
-				fte.getOwner());
+				fte.getOwner(),
+				fte.getViewed(), 
+				fte.getViewer());
 	}
 		
 	

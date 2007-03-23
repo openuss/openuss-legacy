@@ -20,10 +20,14 @@ public class FileImpl extends ResourceImpl implements File{
 	
 	public String owner;
 	
+	public String[] viewed;
+	
+	public String viewer;
+	
 	public FileImpl(){		
 	}
 	
-	public FileImpl(Timestamp distributionTime, String id, Timestamp lastModification, long length, String message, String mimeType, String name, String path, File predecessor, int version, int visibility, String owner){
+	public FileImpl(Timestamp distributionTime, String id, Timestamp lastModification, long length, String message, String mimeType, String name, String path, File predecessor, int version, int visibility, String owner, String[] viewed, String viewer){
 		this.setDistributionTime(distributionTime);
 		this.setId(id);
 		this.setLastModification(lastModification);
@@ -36,6 +40,8 @@ public class FileImpl extends ResourceImpl implements File{
 		this.setVersion(version);
 		this.setVisibility(visibility);
 		this.owner = owner;
+		this.viewed = viewed;
+		this.viewer = viewer;
 	}
 	
 	/* (non-Javadoc)
@@ -147,6 +153,39 @@ public class FileImpl extends ResourceImpl implements File{
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
+
+	public String[] getViewed() {
+		return this.viewed;
+	}
+
+	public void setViewed(String[] viewed) {
+		this.viewed = viewed;
+	}
+
+	public String getViewer() {
+		return viewer;
+	}
+
+	public void setViewer(String viewer) {
+		this.viewer = viewer;
+	}
 	
+	public boolean isRead(){
+		boolean userHasViewedFile = false;
+		if ((this.viewed!=null)&&(viewer!=null)) {
+			for (int i = 0; i<this.viewed.length; i++){
+				if (this.viewed[i].equals(viewer)) return true;
+			}
+		}
+		return userHasViewedFile;
+	}
+
+	public String getSize() {
+		if (length>1048576)
+			return (new Long(length/1048576)).toString()+" MB";
+		if (length>1024) 
+			return (new Long(length/1024)).toString()+" KB";
+		return (new Long(length)).toString()+" B";
+	}
 	
 }

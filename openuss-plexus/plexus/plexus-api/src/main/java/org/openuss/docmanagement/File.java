@@ -33,5 +33,17 @@ public interface File extends Resource {
 	public String getOwner();
 	
 	public void setOwner(String owner);
+	
+	public String[] getViewed();
+	
+	public void setViewed(String[] viewed);
+	
+	public String getViewer();
+	
+	public void setViewer(String viewer);
+	
+	public boolean isRead();	
+	
+	public String getSize();
 
 }

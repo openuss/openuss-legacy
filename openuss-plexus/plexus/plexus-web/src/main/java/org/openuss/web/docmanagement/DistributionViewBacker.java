@@ -95,7 +95,6 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 	 * @return treeModel displayed by tree2 component
 	 */
 	public TreeModel getTree(){
-		//TODO cache treeModel to prevent loading model 5 times a pageload
 		Folder folder = new FolderImpl();
 		try {
 			folder = distributionService.getMainFolder(enrollment);
@@ -347,6 +346,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 		fte.setVersion(f.getVersion());
 		fte.setVisibility(f.getVisibility());
 		fte.setOwner(f.getOwner());
+		fte.setViewed(f.getViewed());
+		fte.setViewer(auth.getName());
 		return fte;
 	}
 
@@ -361,6 +362,7 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 		BigFile bigFile = new BigFileImpl();
 		try {
 			File file = distributionService.getFile(path);
+			file.setViewer(auth.getName());
 			if (!hasReadPermission(file)){
 				noPermission();
 				return DocConstants.DOCUMENTEXPLORER;
@@ -423,7 +425,9 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 				fte.getPredecessor(),
 				fte.getVersion(),
 				fte.getVisibility(), 
-				fte.getOwner());
+				fte.getOwner(),
+				fte.getViewed(), 
+				fte.getViewer());
 	}
 		
 	
@@ -445,7 +449,9 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 				fte.getPredecessor(),
 				fte.getVersion(),
 				fte.getVisibility(), 
-				fte.getOwner());
+				fte.getOwner(),
+				fte.getViewed(), 
+				fte.getViewer());
 		try {
 			return distributionService.getFile(f);
 		} catch (NotAFolderException e) {

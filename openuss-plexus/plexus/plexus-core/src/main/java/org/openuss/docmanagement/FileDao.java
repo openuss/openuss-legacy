@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
@@ -20,6 +21,8 @@ import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.UnsupportedRepositoryOperationException;
+import javax.jcr.Value;
+import javax.jcr.ValueFactory;
 import javax.jcr.ValueFormatException;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
@@ -28,11 +31,7 @@ import javax.jcr.version.Version;
 import javax.jcr.version.VersionException;
 import javax.jcr.version.VersionHistory;
 import javax.jcr.version.VersionIterator;
-
 import org.apache.log4j.Logger;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 
 /**
  * @author David Ullrich
@@ -71,17 +70,32 @@ public class FileDao extends ResourceDao {
 			if (node.hasProperty(DocConstants.PROPERTY_OWNER))
 				owner = node.getProperty(DocConstants.PROPERTY_OWNER)
 						.getString();
+			ArrayList<String> viewed = new ArrayList<String>();
+			if (node.hasProperty(DocConstants.PROPERTY_VIEWED)){				
+			    Property viewers = node.getProperty(DocConstants.PROPERTY_VIEWED);
+			    try {
+			      viewed.add(viewers.getString());
+			    } catch (ValueFormatException e) {
+			      Value[] viewerValues = viewers.getValues();
+			      for (Value c : viewerValues) {
+			    	  viewed.add(c.getString());
+			      }
+			    }	
+			}
 			file = new FileImpl(new Timestamp(node.getProperty(
 					DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate()
 					.getTimeInMillis()), node.getUUID(), new Timestamp(node
 					.getNode(DocConstants.JCR_CONTENT).getProperty(
 							DocConstants.JCR_LASTMODIFIED).getDate()
-					.getTimeInMillis()), 0, node.getProperty(
+					.getTimeInMillis()), node
+					.getNode(DocConstants.JCR_CONTENT).getProperty(
+							DocConstants.JCR_DATA).getLength(), node.getProperty(
 					DocConstants.PROPERTY_MESSAGE).getString(), node.getNode(
 					DocConstants.JCR_CONTENT).getProperty(
 					DocConstants.JCR_MIMETYPE).getString(), node.getName(),
 					node.getPath(), null, 1, ((int) node.getProperty(
-							DocConstants.PROPERTY_VISIBILITY).getLong()), owner);
+							DocConstants.PROPERTY_VISIBILITY).getLong()), owner,
+							viewed.toArray(new String[0]), "");
 			file.setCreated(new Timestamp(node.getProperty(
 					DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
 			logout(session);
@@ -105,6 +119,7 @@ public class FileDao extends ResourceDao {
 	 * @throws RepositoryException
 	 */
 	public BigFile getFile(File file) throws DocManagementException {
+		//FIXME split method
 		Session session;
 		BigFileImpl fi = new BigFileImpl();
 		try {
@@ -128,12 +143,49 @@ public class FileDao extends ResourceDao {
 							DocConstants.PROPERTY_VISIBILITY).getLong()), node
 							.getNode(DocConstants.JCR_CONTENT).getProperty(
 									DocConstants.JCR_DATA).getStream(), owner);
+			ArrayList<String> viewed = new ArrayList<String>();
+			Value[] viewerValues=null;
+			if (node.hasProperty(DocConstants.PROPERTY_VIEWED)){				
+			    Property viewers = node.getProperty(DocConstants.PROPERTY_VIEWED);
+			    try {
+			      viewed.add(viewers.getString());
+			    } catch (ValueFormatException e) {
+			      viewerValues = viewers.getValues();
+			      for (Value c : viewerValues) {
+			    	  viewed.add(c.getString());
+			      }
+			    }	
+			}
+			fi.setViewed(viewed.toArray(new String[0]));
 			try{
 				fi.setCreated(new Timestamp(node.getProperty(
 					DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
 			} catch (Exception e){
 				//JCR_CREATED is not saved in old versions
 			}
+			try{
+				Iterator i = viewed.iterator();
+				boolean hasViewed = false;				
+				while (i.hasNext()){
+					if (((String)i.next()).equals(file.getViewer())) hasViewed = true;
+				}
+				if (!hasViewed){
+					ValueFactory vf = session.getValueFactory();					
+					Value v = vf.createValue(file.getViewer());					
+					ArrayList<Value> valueList = new ArrayList<Value>();
+					if (viewerValues!=null){
+						for (int j = 0; j < viewerValues.length; j++) valueList.add(viewerValues[j]);
+					}
+					valueList.add(v);
+					Value[] v2 = valueList.toArray(new Value[0]);
+					node.setProperty(DocConstants.PROPERTY_VIEWED, v2);					
+				}
+			}catch (Exception e){
+				//TODO not ignore all exceptions
+				// old versions cannot be written, and are not handled
+				logger.debug(node.getPath());
+				logger.debug("ERROR:",e);
+			}			
 			logout(session);
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
@@ -688,8 +740,21 @@ public class FileDao extends ResourceDao {
 						String mimeType = node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_MIMETYPE).getString();
 						String pathToVersion = node.getPath();
 						int visibility = ((int) node.getProperty(DocConstants.PROPERTY_VISIBILITY).getLong());
-						long length =  node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_DATA).getLength();						
-						File f = new FileImpl(distTime, node.getUUID(), lastMod, length,message, mimeType, "", pathToVersion, null, versionnumber, visibility, owner);
+						long length =  node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_DATA).getLength();
+						
+						ArrayList<String> viewed = new ArrayList<String>();
+						if (node.hasProperty(DocConstants.PROPERTY_VIEWED)){				
+						    Property viewers = node.getProperty(DocConstants.PROPERTY_VIEWED);
+						    try {
+						      viewed.add(viewers.getString());
+						    } catch (ValueFormatException e) {
+						      Value[] viewerValues = viewers.getValues();
+						      for (Value c : viewerValues) {
+						    	  viewed.add(c.getString());
+						      }
+						    }	
+						}						
+						File f = new FileImpl(distTime, node.getUUID(), lastMod, length,message, mimeType, "", pathToVersion, null, versionnumber, visibility, owner, viewed.toArray(new String[0]), "");
 						l.add(f);
 					}	
 					catch (Exception e){						

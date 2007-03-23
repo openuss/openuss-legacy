@@ -163,6 +163,8 @@ public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
 		fte.setVersion(f.getVersion());
 		fte.setVisibility(f.getVisibility());
 		fte.setOwner(f.getOwner());
+		fte.setViewed(f.getViewed());
+		fte.setViewer(auth.getName());
 		return fte;
 	}
 
@@ -241,7 +243,8 @@ public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
 		return new FileImpl(fte.getDistributionTime(), fte.getId(), fte
 				.getLastModification(), fte.getLength(), fte.getMessage(), fte
 				.getMimeType(), fte.getName(), fte.getPath(), fte
-				.getPredecessor(), fte.getVersion(), fte.getVisibility(), fte.getOwner());
+				.getPredecessor(), fte.getVersion(), fte.getVisibility(), fte.getOwner(),
+				fte.getViewed(), fte.getViewer());
 	}
 
 

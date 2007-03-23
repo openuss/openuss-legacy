@@ -14,18 +14,30 @@
 		<t:column>
 			<h:selectBooleanCheckbox value="#{file.checked}"></h:selectBooleanCheckbox>
 		</t:column>
-		<t:column>
+		<t:column>		
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_exam_datatable_name}"/>
+        	</f:facet>
 			<h:outputText value="#{file.name}" title="#{file.message}"/>
 		</t:column>
 		<t:column>
-			<h:outputText value="#{file.length}" />
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_exam_datatable_size}"/>
+        	</f:facet>
+			<h:outputText value="#{file.size}"/>
 		</t:column>
 		<t:column>
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_exam_datatable_type}"/>
+        	</f:facet>
 			<h:graphicImage	value="/images/filetypes/#{file.extension}.gif" />	
 		</t:column>
 		<t:column>
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_exam_datatable_last}"/>
+        	</f:facet>
 			<h:outputText value="#{file.lastModification}" />			
-		</t:column>
+		</t:column>		
 		<t:column>
 			<h:commandButton action="#{examAreaViewBacker.download}" value="#{msg.doc_exam_button_download}">
 				<f:actionListener type="org.openuss.web.docmanagement.examarea.ExamFileChangeActionListener" />

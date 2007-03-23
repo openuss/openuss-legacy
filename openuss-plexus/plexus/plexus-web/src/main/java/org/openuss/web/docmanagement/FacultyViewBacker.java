@@ -273,6 +273,8 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 							fte.setVersion(f.getVersion());
 							fte.setVisibility(f.getVisibility());
 							fte.setOwner(f.getOwner());
+							fte.setViewed(f.getViewed());
+							fte.setViewer(auth.getName());
 							al.add((FileTableEntry) fte);
 						}
 					}					
@@ -363,7 +365,9 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 				fte.getPredecessor(),
 				fte.getVersion(),
 				fte.getVisibility(),
-				fte.getOwner());
+				fte.getOwner(), 
+				fte.getViewed(), 
+				fte.getViewer());
 	}
 		
 	
@@ -385,7 +389,9 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 				fte.getPredecessor(),
 				fte.getVersion(),
 				fte.getVisibility(), 
-				fte.getOwner());
+				fte.getOwner(), 
+				fte.getViewed(), 
+				fte.getViewer());
 		try {
 			return distributionService.getFile(f);
 		} catch (NotAFolderException e) {

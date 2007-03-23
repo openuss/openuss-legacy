@@ -15,22 +15,46 @@
 			<h:selectBooleanCheckbox value="#{file.checked}"></h:selectBooleanCheckbox>
 		</t:column>
 		<t:column>
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_dist_datatable_read}"/>
+        	</f:facet>
+			<h:graphicImage value="/images/pool/read.jpg" rendered="#{file.read}"></h:graphicImage>
+			<h:graphicImage value="/images/pool/notread.jpg" rendered="#{not file.read}"></h:graphicImage>
+		</t:column>
+		<t:column>
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_dist_datatable_name}"/>
+        	</f:facet>
 			<h:outputText value="#{file.name}" title="#{file.message}"/>
 		</t:column>
 		<t:column>
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_dist_datatable_size}"/>
+        	</f:facet>
+			<h:outputText value="#{file.size}"/>
+		</t:column>
+		<t:column>
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_dist_datatable_type}"/>
+        	</f:facet>
 			<h:graphicImage	value="/images/filetypes/#{file.extension}.gif" />	
 		</t:column>
 		<t:column>
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_dist_datatable_last}"/>
+        	</f:facet>
 			<h:outputText value="#{file.lastModification}" />			
 		</t:column>
 		<t:column>
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_dist_datatable_actions}"/>
+        	</f:facet>
 			<h:commandButton action="#{distributionViewBacker.changeFile}" value="#{msg.doc_dist_button_changefile}">
 				<f:actionListener type="org.openuss.web.docmanagement.FileChangeActionListener" />
 			</h:commandButton>
 			<h:commandButton action="#{distributionViewBacker.download}" value="#{msg.doc_dist_button_download}">
 				<f:actionListener type="org.openuss.web.docmanagement.FileChangeActionListener" />
 			</h:commandButton>
-			
 		</t:column>
 	</t:dataTable>
 </ui:composition>
