@@ -53,7 +53,7 @@
 		      WebDAV
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
 	
-	<bean id="sessionProvider" class="org.openuss.docmanagement.webdav.SessionProvider">
+	<bean id="sessionProvider" class="org.openuss.docmanagement.webdav.DavSessionProviderImpl">
 		<property name="repository" ref="repository"></property>
 		<property name="authenticationManager" ref="authenticationManager"></property>
 		<property name="securityService" ref="securityService"></property>
