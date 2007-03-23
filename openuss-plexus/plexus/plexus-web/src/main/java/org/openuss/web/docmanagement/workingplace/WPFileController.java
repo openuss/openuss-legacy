@@ -24,7 +24,7 @@ import org.openuss.web.docmanagement.AbstractEnrollmentDocPage;
 
 
 
-@Bean(name="wPFileController", scope=Scope.SESSION)
+@Bean(name="wpFileController", scope=Scope.SESSION)
 @View
 public class WPFileController extends AbstractEnrollmentDocPage{
 	
@@ -52,7 +52,7 @@ public class WPFileController extends AbstractEnrollmentDocPage{
 			file.setDistributionTime(new Timestamp(System.currentTimeMillis()));
 			file.setVisibility(DocRights.EDIT_ALL|DocRights.READ_ALL);
 			try {
-				collaborationService.changeFile(file);
+				collaborationService.addFile(file);
 			} catch (NotAFolderException e) {
 				handleNotAFolderException(e);
 			} catch (PathNotFoundException e) {

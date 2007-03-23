@@ -20,7 +20,7 @@ import org.openuss.docmanagement.ResourceAlreadyExistsException;
 import org.openuss.web.docmanagement.AbstractEnrollmentDocPage;
 import org.apache.log4j.Logger;
 
-@Bean(name="wPFolderController", scope=Scope.SESSION)
+@Bean(name="wpFolderController", scope=Scope.SESSION)
 @View
 public class WPFolderController extends AbstractEnrollmentDocPage{
 
@@ -43,7 +43,7 @@ public class WPFolderController extends AbstractEnrollmentDocPage{
 		}
 		folder.setVisibility(DocRights.READ_ALL|DocRights.EDIT_ALL);
 		try {
-			collaborationService.changeFolder(folder);			
+			collaborationService.addFolder(folder);			
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
@@ -65,6 +65,14 @@ public class WPFolderController extends AbstractEnrollmentDocPage{
 
 	public void setFolder(Folder folder) {
 		this.folder = folder;
+	}
+
+	public CollaborationService getCollaborationService() {
+		return collaborationService;
+	}
+
+	public void setCollaborationService(CollaborationService collaborationService) {
+		this.collaborationService = collaborationService;
 	}
 
 }

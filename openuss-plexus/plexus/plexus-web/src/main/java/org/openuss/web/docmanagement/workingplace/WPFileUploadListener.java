@@ -32,12 +32,12 @@ public class WPFileUploadListener implements ValueChangeListener {
 	public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
 		logger.debug("FileUpload event fired");
 		UploadedFile uploadedFile = (UploadedFile) event.getNewValue();
-		WPFileController wPFileController = (WPFileController) getObjectFromContext("#{wPFileController}");
+		WPFileController wpFileController = (WPFileController) getObjectFromContext("#{wpFileController}");
 		if (uploadedFile != null) {			
-			wPFileController.setFile(uploadedFile2File(uploadedFile, wPFileController.file.getPath()));
+			wpFileController.setFile(uploadedFile2File(uploadedFile, wpFileController.file.getPath()));
 		}
 		else if (uploadedFile == null) {
-			wPFileController.setFile(null);			
+			wpFileController.setFile(null);			
 		}
 		logger.debug("FileUpload event handled");
 	}

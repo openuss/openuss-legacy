@@ -4,8 +4,8 @@ import org.openuss.lecture.Enrollment;
 
 public class WorkingPlaceImpl extends FolderImpl implements WorkingPlace {
 	
-	public Enrollment enrollment;
-
+	public Enrollment enrollment;	
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.WorkingPlace#getEnrollment()
 	 */

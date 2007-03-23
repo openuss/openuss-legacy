@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:fck="http://www.fck-faces.org/fck-faces"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputText value="#{msg['enrollment_main_title']}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="newWPFolderForm">
+		
+			<o:block label="#{msg.doc_work_addfolder_header}">
+				<h:outputLabel value="#{msg.wpfoldercontroller_folder_name}" for="folderName" styleClass="field_label"></h:outputLabel><br />
+				<h:inputText id = "folderName" value="#{wpFolderController.folder.name}" required="true" styleClass="field">
+					<f:validator validatorId="checkResourceNameValidator" />
+				</h:inputText><br />
+				<h:message for="folderName" styleClass="field_error"/>
+				<br />
+				<h:outputLabel value="#{msg.wpfoldercontroller_folder_message}" for="folderMessage" styleClass="field_label"></h:outputLabel><br />
+				<h:inputText id = "folderMessage" value="#{wpFolderController.folder.message}" required="true" styleClass="field"></h:inputText>
+				<h:message for="folderMessage" styleClass="field_error"/>
+				<br />							
+			</o:block>
+
+			<o:block>
+				<h:commandButton action="#{wpFolderController.save}" value="#{msg['doc_addfolder_button_save']}" styleClass="button"></h:commandButton>
+				<h:commandButton action="enrollment_workingplace"
+					value="#{msg['doc_addfolder_button_cancel']}" styleClass="button" immediate="true"/>	
+			</o:block>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
+</html>

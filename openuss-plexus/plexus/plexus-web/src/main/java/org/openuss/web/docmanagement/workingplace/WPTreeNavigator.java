@@ -21,8 +21,8 @@ public class WPTreeNavigator implements ActionListener {
 		HtmlCommandLink link = (HtmlCommandLink)actionEvent.getComponent();
 		String clientId = link.getClientId(FacesContext.getCurrentInstance());
 		logger.debug("Selected compontent path: " + clientId);
-		//FIXME change
-		clientId = clientId.substring(clientId.indexOf("serverTree")+11, clientId.lastIndexOf(":"));		
+		//FIXME test me
+		clientId = clientId.substring(clientId.indexOf("workTree")+9, clientId.lastIndexOf(":"));		
 		logger.debug("Cleaned compontent path: " + clientId);
 		WorkingPlaceViewBacker workingPlaceViewBacker = (WorkingPlaceViewBacker) getObjectFromContext("#{workingPlaceViewBacker }");
 		workingPlaceViewBacker.setFolderPath(clientId);	

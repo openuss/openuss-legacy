@@ -20,6 +20,8 @@
 	</bean>
 	<bean id="workingPlaceDao" class="org.openuss.docmanagement.WorkingPlaceDao" >
 		<property name="repository" ref="repository"></property>
+		<property name="fileDao" ref="fileDao"></property>
+		<property name="folderDao" ref="folderDao"></property>		
 	</bean>
 	<bean id="examAreaDao" class="org.openuss.docmanagement.ExamAreaDao" >
 		<property name="repository" ref="repository"></property>
@@ -43,8 +45,11 @@
 		<property name="folderDao" ref="folderDao"></property>		
 		<property name="examAreaDao" ref="examAreaDao"></property>
 	</bean>
-	
-	<bean id="collaborationService" class="org.openuss.docmanagement.CollaborationServiceImpl"/>
+	<bean id="collaborationService" class="org.openuss.docmanagement.CollaborationServiceImpl">
+		<property name="fileDao" ref="fileDao"></property>
+		<property name="folderDao" ref="folderDao"></property>		
+		<property name="workingPlaceDao" ref="workingPlaceDao"></property>	
+	</bean>
 	<bean id="repositoryStartup" class="org.openuss.docmanagement.RepositoryStartup" init-method="init">
 		<property name="repository" ref="repository"></property>
 	</bean>

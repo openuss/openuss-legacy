@@ -226,7 +226,6 @@ public class FileDao extends ResourceDao {
 		node = node.getNode(file.getName());
 		node.setProperty(DocConstants.PROPERTY_OWNER, file.getOwner());
 		writeNTFile(node, file);
-
 	}
 
 	/**

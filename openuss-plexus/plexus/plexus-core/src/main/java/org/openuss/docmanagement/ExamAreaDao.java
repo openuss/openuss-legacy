@@ -3,7 +3,6 @@ package org.openuss.docmanagement;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Vector;
 
 import javax.jcr.Node;
