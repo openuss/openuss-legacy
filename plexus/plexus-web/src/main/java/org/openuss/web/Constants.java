@@ -23,7 +23,8 @@ public class Constants {
 	public static final String NEWSITEM = "newsItem";
 	public static final String NEWSBEAN = "newsBean";		
 
-	public static final String UPLOADED_FILE = "uploadedFile";
+	public static final String UPLOADED_FILE = "LAST_UPLOADED_FILE";
+	public static final String UPLOADED_ZIP_FILE = "LAST_UPLOADED_ZIP_FILE";
 	
 	// service beans
 	public static final String LECTURE_SERVICE = "lectureService";
@@ -83,6 +84,7 @@ public class Constants {
 	public static final String DOCUMENTS_NEW_FILEENTRY_PAGE = "documents_new_fileentry";
 	public static final String DOCUMENTS_EDIT_FILEENTRY_PAGE = "documents_edit_fileentry";
 	public static final String DOCUMENTS_REMOVE_FOLDERENTRY_PAGE = "documents_remove_folderentries";
+
 
 
 }

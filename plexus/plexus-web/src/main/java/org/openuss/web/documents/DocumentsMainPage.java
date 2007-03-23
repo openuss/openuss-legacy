@@ -10,9 +10,9 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.documents.FileEntry;
 import org.openuss.documents.Folder;
 import org.openuss.documents.FolderEntryInfo;
+import org.openuss.documents.FolderInfo;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
@@ -31,7 +31,7 @@ public class DocumentsMainPage extends AbstractDocumentPage{
 	public void prerender() throws LectureException {
 		super.prerender();
 		if (currentFolder == null || currentFolder.getId() == null) {
-			currentFolder = documentService.getFolder(enrollment,null);
+			currentFolder = documentService.getFolder(enrollment);
 		}
 	}
 	
@@ -88,11 +88,11 @@ public class DocumentsMainPage extends AbstractDocumentPage{
 		logger.debug("edit folder entry");
 		FolderEntryInfo entry = data.getRowData();
 		if (entry.isFolder()) {
-			Folder selectedFolder = documentService.getFolder(entry);
+			FolderInfo selectedFolder = documentService.getFolder(entry);
 			setSessionBean(Constants.SELECTED_FOLDER, selectedFolder);
 			return Constants.DOCUMENTS_EDIT_FOLDER_PAGE;
 		} else {
-			FileEntry selectedFile = documentService.getFileEntry(entry);
+			FolderEntryInfo selectedFile = documentService.getFileEntry(entry);
 			setSessionBean(Constants.SELECTED_FILEENTRY, selectedFile);
 			return Constants.DOCUMENTS_EDIT_FILEENTRY_PAGE;
 		}

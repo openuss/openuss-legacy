@@ -15,7 +15,7 @@ import org.openuss.repository.RepositoryService;
 
 
 /**
- * This class manage all temporary uploaded files and secures that they will delete 
+ * This class manage all temporary uploaded files and secures that they will be deleted 
  * if the user session ends.
  * @author Ingo Dueppe
  */

@@ -46,6 +46,16 @@ public class FileEntryImpl extends org.openuss.documents.FileEntryBase implement
 	public Integer getSize() { 
 		return (getRepositoryFile() == null) ? null : getRepositoryFile().getFileSize();
 	}
+	
+	@Override
+	public String getFileName() {
+		return (getRepositoryFile() == null) ? null : getRepositoryFile().getFileName();
+	}
+
+	@Override
+	public String getContentType() {
+		return (getRepositoryFile() == null) ? null : getRepositoryFile().getContentType();
+	}
 
 	@Override
 	public boolean isReleased() {
@@ -56,4 +66,5 @@ public class FileEntryImpl extends org.openuss.documents.FileEntryBase implement
 	public Date releaseDate() {
 		return getCreated();
 	}
+
 }

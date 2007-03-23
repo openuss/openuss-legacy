@@ -22,9 +22,6 @@ import org.openuss.web.Constants;
 public class UploadListener extends BaseBean implements ValueChangeListener {
 	private static final long serialVersionUID = 7200670022689284313L;
 
-	/**
-	 * Logger for this class
-	 */
 	private static final Logger logger = Logger.getLogger(UploadListener.class);
 
 	public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {

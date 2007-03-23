@@ -14,9 +14,10 @@ public class FolderEntryDaoImpl extends org.openuss.documents.FolderEntryDaoBase
 	 * @see org.openuss.documents.FolderEntryDao#toFolderEntryInfo(org.openuss.documents.FolderEntry,
 	 *      org.openuss.documents.FolderEntryInfo)
 	 */
-	public void toFolderEntryInfo(FolderEntry sourceEntity,	FolderEntryInfo targetVO) {
+	public void toFolderEntryInfo(FolderEntry sourceEntity, FolderEntryInfo targetVO) {
 		super.toFolderEntryInfo(sourceEntity, targetVO);
 		targetVO.setName(sourceEntity.getName());
+		targetVO.setPath(sourceEntity.getPath());
 		targetVO.setDescription(sourceEntity.getDescription());
 		targetVO.setExtension(sourceEntity.getExtension());
 		targetVO.setSize(sourceEntity.getSize());
@@ -24,11 +25,15 @@ public class FolderEntryDaoImpl extends org.openuss.documents.FolderEntryDaoBase
 		targetVO.setModified(sourceEntity.getModified());
 		targetVO.setFolder(sourceEntity instanceof Folder);
 		targetVO.setSizeAsString(sourceEntity.getSizeAsString());
-		
 		targetVO.setExtension(sourceEntity.getExtension());
+
+		targetVO.setReleaseDate(sourceEntity.getCreated());
 		if (sourceEntity instanceof FileEntry) {
 			FileEntry fileEntry = (FileEntry) sourceEntity;
 			targetVO.setRepositoryFileId(fileEntry.getRepositoryFile().getId());
+			targetVO.setReleased(fileEntry.isReleased());
+		} else {
+			targetVO.setReleased(true);
 		}
 	}
 
@@ -44,20 +49,18 @@ public class FolderEntryDaoImpl extends org.openuss.documents.FolderEntryDaoBase
 	 * object from the object store. If no such entity object exists in the
 	 * object store, a new, blank entity is created
 	 */
-	private org.openuss.documents.FolderEntry loadFolderEntryFromFolderEntryInfo(
-			org.openuss.documents.FolderEntryInfo folderEntryInfo) {
-		// @todo implement loadFolderEntryFromFolderEntryInfo
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.documents.loadFolderEntryFromFolderEntryInfo(org.openuss.documents.FolderEntryInfo) not yet implemented.");
-
-		/*
-		 * A typical implementation looks like this:
-		 * org.openuss.documents.FolderEntry folderEntry =
-		 * this.load(folderEntryInfo.getId()); if (folderEntry == null) {
-		 * folderEntry =
-		 * org.openuss.documents.FolderEntry.Factory.newInstance(); } return
-		 * folderEntry;
-		 */
+	private FolderEntry loadFolderEntryFromFolderEntryInfo(FolderEntryInfo folderEntryInfo) {
+		FolderEntry entry = null;
+		if (folderEntryInfo.getId() != null) {
+			entry = this.load(folderEntryInfo.getId());
+		}
+		if (entry == null)
+			if (folderEntryInfo.isFolder()) {
+				return Folder.Factory.newInstance();
+			} else {
+				return FileEntry.Factory.newInstance();
+		}
+		return entry;
 	}
 
 	/**

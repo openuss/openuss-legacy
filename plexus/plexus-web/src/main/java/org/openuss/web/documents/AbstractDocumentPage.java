@@ -1,13 +1,12 @@
 package org.openuss.web.documents;
 
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.openuss.documents.DocumentService;
-import org.openuss.documents.Folder;
+import org.openuss.documents.FolderInfo;
 import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 /**
@@ -21,7 +20,7 @@ public class AbstractDocumentPage extends AbstractEnrollmentPage {
 	protected DocumentService documentService;
 	
 	@Property(value = "#{folder}")
-	protected Folder currentFolder;
+	protected FolderInfo currentFolder;
 
 	public DocumentService getDocumentService() {
 		return documentService;
@@ -31,21 +30,21 @@ public class AbstractDocumentPage extends AbstractEnrollmentPage {
 		this.documentService = documentService;
 	}
 
-	public Folder getCurrentFolder() {
+	public FolderInfo getCurrentFolder() {
 		return currentFolder;
 	}
 
-	public void setCurrentFolder(Folder currentFolder) {
+	public void setCurrentFolder(FolderInfo currentFolder) {
 		this.currentFolder = currentFolder;
 	}
 
 	
-	public List<Folder> getPath() {
+	public List<FolderInfo> getPath() {
 		logger.debug("getting current path");
 		if (currentFolder != null && currentFolder.getId() != null) {
 			return documentService.getFolderPath(currentFolder);
 		} else {
-			return new ArrayList<Folder>();
+			return new ArrayList<FolderInfo>();
 		}
 	}
 }
