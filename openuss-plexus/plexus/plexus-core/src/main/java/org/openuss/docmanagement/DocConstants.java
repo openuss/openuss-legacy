@@ -54,7 +54,13 @@ public class DocConstants{
 	public static final String EXAMVERSIONEXPLORER = "docmanagement_examversionexplorer";
 	public static final String EXAMNEWDOCUMENT = "docmanagement_examnewdocument";
 	
-	
+	//navigation cases workingplace
+	public static final String WPEXPLORER = "enrollment_workingplace";
+	public static final String WPDELETEFILE = "docmanagement_wpdeletefile";
+	public static final String WPDELETEFOLDER = "docmanagement_wpdeletefolder";
+	public static final String WPNEWDOCUMENT = "docmanagement_wpnewdocument";
+	public static final String WPNEWFOLDER = "docmanagement_wpnewfolder";
+	public static final String WPVERSIONEXPLORER = "docmanagement_wpversionexplorer";
 	//mimetype zip
 	public static final String MIMETYPE_ZIP = "application/zip";
 	

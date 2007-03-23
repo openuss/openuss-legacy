@@ -16,7 +16,6 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.docmanagement.BigFile;
 import org.openuss.docmanagement.BigFileImpl;
-import org.openuss.docmanagement.DeadlineException;
 import org.openuss.docmanagement.DocConstants;
 import org.openuss.docmanagement.DocManagementException;
 import org.openuss.docmanagement.ExamArea;
@@ -293,10 +292,6 @@ public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
 
 	public void setExamFileController(ExamFileController examFileController) {
 		this.examFileController = examFileController;
-	}
-
-	public void setData(ArrayList data) {
-		this.data = data;
 	}
 
 	public Date getDeadline() {

@@ -1,4 +1,4 @@
-package org.openuss.web.docmanagement;
+package org.openuss.web.docmanagement.workingplace;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -16,12 +16,12 @@ import org.openuss.docmanagement.BigFileImpl;
 /**
  * ValueChangeListener for File Upload
  */
-public class FileUploadListener implements ValueChangeListener {
+public class WPFileUploadListener implements ValueChangeListener {
 	
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = Logger.getLogger(FileUploadListener.class);
+	private static final Logger logger = Logger.getLogger(WPFileUploadListener.class);
 
 	private Object getObjectFromContext(String expression) {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -32,12 +32,12 @@ public class FileUploadListener implements ValueChangeListener {
 	public void processValueChange(ValueChangeEvent event) throws AbortProcessingException {
 		logger.debug("FileUpload event fired");
 		UploadedFile uploadedFile = (UploadedFile) event.getNewValue();
-		FileController fileController = (FileController) getObjectFromContext("#{fileController}");
+		WPFileController wPFileController = (WPFileController) getObjectFromContext("#{wPFileController}");
 		if (uploadedFile != null) {			
-			fileController.setFile(uploadedFile2File(uploadedFile, fileController.file.getPath()));
+			wPFileController.setFile(uploadedFile2File(uploadedFile, wPFileController.file.getPath()));
 		}
 		else if (uploadedFile == null) {
-			fileController.setFile(null);			
+			wPFileController.setFile(null);			
 		}
 		logger.debug("FileUpload event handled");
 	}
