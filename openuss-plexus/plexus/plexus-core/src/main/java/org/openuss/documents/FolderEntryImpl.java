@@ -8,7 +8,6 @@ package org.openuss.documents;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * @see org.openuss.documents.FolderEntry
@@ -54,27 +53,27 @@ public class FolderEntryImpl extends org.openuss.documents.FolderEntryBase imple
 		if (getParent() == null) {
 			return "";
 		} else {
-			String path = getParent().getPath();
-			if (StringUtils.isNotBlank(path)) {
-				return getParent().getPath()+"/"+getName();
-			} else {
-				return getName();
-			}
+			return getParent().getPath()+"/"+getParent().getName();
 		}
 	}
 	
 	@Override
 	public String getAbsoluteName() {
-		String path = getPath();
-		if (StringUtils.isNotBlank(path)) {
-			return path + "/" + getName();
-		} else {
-			return getName();
-		}
+		return getPath()+"/"+getName();
 	}
 
 	@Override
 	public String getSizeAsString() {
-		return FileUtils.byteCountToDisplaySize(getSize());
+		Integer size = getSize();
+		if (size != null) {
+			return FileUtils.byteCountToDisplaySize(size);
+		} else {
+			return "";
+		}
+	}
+
+	@Override
+	public String getFileName() {
+		return getName();
 	}
 }

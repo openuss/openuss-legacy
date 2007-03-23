@@ -45,6 +45,10 @@
 				<f:converter converterId="facultyGroupConverter" />
 				<f:selectItems value="#{views$secured$lecture$auth$members.facultyGroups}"/>
 			</h:selectManyCheckbox>
+				<h:selectBooleanCheckbox id="test">
+				</h:selectBooleanCheckbox>
+			<h:outputLabel value="Label" for="test" >
+			</h:outputLabel>
 		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">

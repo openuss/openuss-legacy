@@ -56,24 +56,7 @@ public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServ
 		}
 	}
 
-	/**
-	 * @see org.openuss.repository.RepositoryService#getFile(org.openuss.repository.RepositoryFile)
-	 */
-	protected RepositoryFile handleGetFile(RepositoryFile file) throws java.lang.Exception {
-		Validate.notEmpty(path, "RepositoryLocation is not configured!");
-		Validate.notNull(file, "Parameter file is mandatory!");
-		Validate.notNull(file.getId(), "Parameter file.getId() must not be null.");
 
-		RepositoryFile repositoryFile = getRepositoryFileDao().load(file.getId());
-		if (repositoryFile == null) {
-			if (logger.isDebugEnabled()) {
-				logger.error("file with id " + file.getId() + " not found!");
-			}
-		} else {
-			getInputStreamOfFile(repositoryFile);
-		}
-		return repositoryFile;
-	}
 
 	/**
 	 * @see org.openuss.repository.RepositoryService#getSaveFile(org.openuss.repository.RepositoryFile)
@@ -86,20 +69,23 @@ public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServ
 		file.setModified(new Date());
 		if (file.getId() == null) {
 			file.setCreated(new Date());
+			file.setModified(new Date());
 			fileDao.create(file);
 		} else {
+			file.setModified(new Date());
 			fileDao.update(file);
 		}
 
 		String fileName = toFileName(file);
 
-		if (logger.isDebugEnabled())
+		if (logger.isDebugEnabled()) {
 			logger.debug("create file " + file.getFileName() + "(" + fileName + ") in repository");
+		}
 		try {
 			OutputStream output = new FileOutputStream(fileName);
 			InputStream input = file.getInputStream();
 			drain(input, output);
-			// input.close(); do not close input stream - it could be an used futher on - it belongs to the caller
+			// do not close input stream - it could be an used futher on - it belongs to the caller
 			output.close();
 		} catch (FileNotFoundException e) {
 			logger.error(e);
@@ -156,5 +142,29 @@ public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServ
 		InputStream is = new FileInputStream(fileName);
 		repositoryFile.setInputStream(is);
 		return is;
+	}
+
+	@Override
+	protected RepositoryFile handleGetFile(RepositoryFile file, boolean openStream) throws Exception {
+		Validate.notEmpty(path, "RepositoryLocation is not configured!");
+		Validate.notNull(file, "Parameter file is mandatory!");
+		Validate.notNull(file.getId(), "Parameter file.getId() must not be null.");
+		
+		RepositoryFile repositoryFile = getRepositoryFileDao().load(file.getId());
+		if (repositoryFile == null) {
+			if (logger.isDebugEnabled()) {
+				logger.error("file with id " + file.getId() + " not found!");
+			}
+		} else if (openStream) {
+			getInputStreamOfFile(repositoryFile);
+		}
+		return repositoryFile;
+	}
+	
+	/**
+	 * @see org.openuss.repository.RepositoryService#getFile(org.openuss.repository.RepositoryFile)
+	 */
+	protected RepositoryFile handleGetFile(RepositoryFile file) throws java.lang.Exception {
+		return getFile(file, true);
 	}
 }

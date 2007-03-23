@@ -45,7 +45,7 @@
 				</span>
 				<h:outputLabel value="#{msg.newdocument_file}" for="newDocument" styleClass="field_label" />
 				<t:inputFileUpload id="newDocument" storage="file" accept="*" immediate="true" styleClass="uploadField">
-					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
+					<f:valueChangeListener type="org.openuss.web.upload.ZipUploadListener" />
 				</t:inputFileUpload>
 				<!-- 
 					<o:input entity="views$secured$documents$addzip" property="releaseDate"/>

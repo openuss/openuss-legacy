@@ -59,8 +59,10 @@
 						<h:outputText value="#{property.value}" rendered="#{not propertyList.editable}"/>
 					</h:column>
 				</t:dataTable>
-				<h:selectBooleanCheckbox id="editable" value="#{propertyList.editable}" onchange="submit();"/>&#160;
-				<h:outputLabel value="#{msg['admin_properties_edit']}" for="editable" styleClass="field_label"/>
+				<label class="field_label">
+					<h:selectBooleanCheckbox id="editable" value="#{propertyList.editable}" onchange="submit();"/>
+					#{msg['admin_properties_edit']}
+				</label>
 			</o:block>
 
 			<o:block>

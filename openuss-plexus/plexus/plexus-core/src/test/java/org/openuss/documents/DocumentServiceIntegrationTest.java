@@ -7,10 +7,8 @@ package org.openuss.documents;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.ZipInputStream;
 
 import org.openuss.TestUtility;
 import org.openuss.repository.RepositoryFile;
@@ -35,18 +33,18 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertNotNull(entries);
 		assertEquals(0, entries.size());
 
-		Folder root = documentService.getFolder(domainObject, null);
+		FolderInfo root = documentService.getFolder(domainObject);
 		assertNotNull(root);
-		assertEquals("ROOT_FOLDER",root.getName());
-		assertEquals(domainObject.getId(), root.getDomainIdentifier());
+		assertEquals("ROOT",root.getName());
+		assertTrue(root.isRoot());
 		commit();
 		
-		Folder folder = createSubFolder();
+		FolderInfo folder = createSubFolder();
 
 		assertNull(folder.getId());
-		documentService.createFolderEntry(folder, root);
+		documentService.createFolder(folder, root);
 		assertNotNull(folder.getId());
-		assertEquals(root, folder.getParent());
+		assertEquals("/ROOT",folder.getPath());
 		
 		entries = documentService.getFolderEntries(null, root);
 		assertNotNull(entries);
@@ -55,7 +53,11 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertEquals(folder.getId(), info.getId());
 		assertEquals(folder.getName(), info.getName());
 		assertEquals(folder.getDescription(), info.getDescription());
-		assertEquals(folder.getExtension(), info.getExtension());
+		assertEquals(folder.getPath(), info.getPath());
+		assertEquals(folder.getModified(), info.getModified());
+		assertTrue( info.isFolder());
+		assertEquals( folder.getCreated(), info.getReleaseDate());
+		assertTrue( info.isReleased());
 		
 		entries = documentService.getFolderEntries(null, folder);
 		assertNotNull(entries);
@@ -64,15 +66,15 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 
 	public void testFolderPath() throws DocumentApplicationException {
 		DomainObject domainObject = createDomainObject();
-		Folder root = documentService.getFolder(domainObject, null);
+		FolderInfo root = documentService.getFolder(domainObject);
 		
-		Folder subFolder1 = createSubFolder();
-		Folder subFolder2 = createSubFolder();
-		Folder subFolder3 = createSubFolder();
+		FolderInfo subFolder1 = createSubFolder();
+		FolderInfo subFolder2 = createSubFolder();
+		FolderInfo subFolder3 = createSubFolder();
 		
-		documentService.createFolderEntry(subFolder1, root);
-		documentService.createFolderEntry(subFolder2, subFolder1);
-		documentService.createFolderEntry(subFolder3, subFolder2);
+		documentService.createFolder(subFolder1, root);
+		documentService.createFolder(subFolder2, subFolder1);
+		documentService.createFolder(subFolder3, subFolder2);
 		
 		commit();
 		
@@ -89,17 +91,22 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	
 	public void testFolderAddRemoving() throws DocumentApplicationException {
 		DomainObject domainObject = createDomainObject();
-		Folder root = documentService.getFolder(domainObject, null);
+		FolderInfo root = documentService.getFolder(domainObject);
 		
-		Folder subFolder1 = createSubFolder();
-		Folder subFolder2 = createSubFolder();
-		Folder subFolder3 = createSubFolder();
-		Folder subFolder4 = createSubFolder();
+		FolderInfo subFolder1 = createSubFolder();
+		FolderInfo subFolder2 = createSubFolder();
+		FolderInfo subFolder3 = createSubFolder();
+		FolderInfo subFolder4 = createSubFolder();
 		
-		documentService.createFolderEntry(subFolder1, root);
-		documentService.createFolderEntry(subFolder2, subFolder1);
-		documentService.createFolderEntry(subFolder3, subFolder2);
-		documentService.createFolderEntry(subFolder4, subFolder2);
+		documentService.createFolder(subFolder1, root);
+		documentService.createFolder(subFolder2, subFolder1);
+		documentService.createFolder(subFolder3, subFolder2);
+		documentService.createFolder(subFolder4, subFolder2);
+		
+		subFolder1 = documentService.getFolder(subFolder1);
+		subFolder2 = documentService.getFolder(subFolder2);
+		subFolder3 = documentService.getFolder(subFolder3);
+		subFolder4 = documentService.getFolder(subFolder4);
 		
 		assertNotNull(subFolder1.getId());
 		assertNotNull(subFolder2.getId());
@@ -132,15 +139,16 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertNull(folderEntry);
 	}
 	
-	public void testFileEntry() throws DocumentApplicationException {
+	public void testCreateFileByFolderEntryInfo() throws DocumentApplicationException {
 		testUtility.createSecureContext();
 		DomainObject domainObject = createDomainObject();
-		Folder root = documentService.getFolder(domainObject, null);
+		FolderInfo root = documentService.getFolder(domainObject);
 		
 		RepositoryFile repositoryFile = createRepositoryFile();
-		FileEntry fileEntry = FileEntry.Factory.newInstance();
-		fileEntry.setRepositoryFile(repositoryFile);
+		commit();
 		
+		FolderEntryInfo fileEntry = new FolderEntryInfo();
+		fileEntry.setRepositoryFileId(repositoryFile.getId());
 		
 		assertNull(fileEntry.getId());
 		documentService.createFileEntry(fileEntry, root);
@@ -158,56 +166,147 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertEquals(repositoryFile.getCreated(), info.getCreated());
 		assertEquals(repositoryFile.getModified(), info.getModified());
 		
+		commit();
+		
 		documentService.removeFolderEntry(info);
-		
-		RepositoryFile repoFile = repositoryService.getFile(repositoryFile);
-		assertNull(repoFile);
-	}
-	
-	public void testCreateFolderEntriesFromZip() throws IOException {
-		testUtility.createSecureContext();
-		DomainObject domainObject = createDomainObject();
-		Folder root = documentService.getFolder(domainObject, null);
-		
-		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream("example.zip");
-		
-		documentService.createFolderEntryFromZip(input, root);
-		
-		root = documentService.getFolder(domainObject, null);
-		assertEquals(1, root.getEntries().size());
-		Folder subfolder = (Folder) root.getEntries().get(0);
-		assertEquals("subfolder",subfolder.getName());
-		assertEquals(1, subfolder.getEntries().size());
-		Folder library = (Folder) subfolder.getEntries().get(0);
-		assertEquals("library", library.getName());
-		assertEquals(2, library.getEntries().size());
 		
 		commit();
 		
-		Collection<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, null);
-		InputStream is = documentService.getZippedFolderEntries(entries);
+		FolderInfo folderInfo = documentService.getFolder(info);
+		assertNull(folderInfo);
 		
-		ZipInputStream zis = new ZipInputStream(is);
-		assertEquals("subfolder/library/acegi.pdf/acegi.pdf",zis.getNextEntry().getName());
-		assertEquals("subfolder/library/OpenUSS-Kurzanleitung.pdf/OpenUSS-Kurzanleitung.pdf", zis.getNextEntry().getName());
-		zis.close();
-		is.close();
+		RepositoryFile repoFile = repositoryService.getFile(repositoryFile);
+		assertNull(repoFile);
+		commit();
 	}
+	
+	public void testCreateFileByFileInfo() throws DocumentApplicationException, IOException {
+		testUtility.createSecureContext();
+		DomainObject domainObject = createDomainObject();
+		FolderInfo root = documentService.getFolder(domainObject);
+
+		String name = "/dummy/dummy.txt";
+		
+		FileInfo info = createFileInfo(name);
+
+		documentService.createFileEntry(info, root);
+		
+		info.getInputStream().close();
+		
+		commit();
+		
+		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, null);
+		assertNotNull(entries);
+		assertEquals(1, entries.size());
+		
+		FolderEntryInfo dummyFolder = entries.get(0);
+		assertEquals("dummy", dummyFolder.getName());
+		
+		entries = documentService.getFolderEntries( null, documentService.getFolder(dummyFolder));
+		assertNotNull(entries);
+		assertEquals(1, entries.size());
+		
+		FolderEntryInfo entry = entries.get(0);
+		
+		assertEquals("dummy.txt", entry.getName());
+		assertEquals("txt", entry.getExtension());
+		assertEquals("/ROOT/dummy", entry.getPath());
+		assertEquals("description", entry.getDescription());
+		assertEquals(info.getSize(), entry.getSize());
+		assertNotNull(entry.getCreated());
+		assertNotNull(entry.getModified());
+		assertTrue(entry.isReleased());
+		assertFalse(entry.isFolder());
+		assertEquals(entry.getCreated(), entry.getReleaseDate());
+		
+		RepositoryFile repoFile = RepositoryFile.Factory.newInstance();
+		repoFile.setId(entry.getRepositoryFileId());
+
+		repoFile = repositoryService.getFile(repoFile, false);
+		assertNotNull(repoFile);
+		
+		documentService.removeFolderEntry(entry);
+		commit();
+
+		assertNull(repositoryService.getFile(repoFile, false));
+		commit();
+	}
+	
+	
+	public void testCreateFileEntries() throws DocumentApplicationException {
+		testUtility.createSecureContext();
+		DomainObject domainObject = createDomainObject();
+		FolderInfo root = documentService.getFolder(domainObject);
+		
+		FolderInfo subfolder = createSubFolder();
+		subfolder.setName("subfolder");
+		documentService.createFolder(subfolder, root);
+
+		List<FileInfo> files = new ArrayList<FileInfo>();
+
+		files.add(createFileInfo("/folien/kapitel 1/text.txt"));
+		files.add(createFileInfo("/folien/kapitel 2/readme.txt"));
+		files.add(createFileInfo("/übungen/aufgabe/aufgabentext1.txt"));
+		
+		documentService.createFolderEntries(files, subfolder);
+		
+		commit();
+		
+		List<FolderEntryInfo> entries = documentService.getFolderEntries(null, subfolder);
+		assertNotNull(entries);
+		assertEquals(2, entries.size());
+		FolderEntryInfo entry = entries.get(0);
+		assertTrue(entry.getPath().startsWith("/ROOT/subfolder"));
+		
+		List<FileInfo> infos = documentService.allFileEntries(entries);
+		assertNotNull(infos);
+		
+		assertEquals(3, infos.size());
+		
+		FileInfo info = infos.get(0);
+		assertNotNull(info.getName());
+		assertNotNull(info.getFileName());
+		assertNotNull(info.getCreated());
+		assertNotNull(info.getModified());
+		assertNotNull(info.getSize());
+		assertNotNull(info.getInputStream());
+		assertNotNull(info.getContentType());
+	}
+
+	private FileInfo createFileInfo(String name) {
+		FileInfo info = new FileInfo();
+		byte[] data = "this is the content of the file".getBytes();
+		info.setName(name);
+		info.setDescription("description");
+		info.setContentType("plain/text");
+		info.setSize(data.length);
+		info.setInputStream(new ByteArrayInputStream(data));
+		return info;
+	}
+	
 	
 	private RepositoryFile createRepositoryFile() {
 		RepositoryFile repositoryFile = RepositoryFile.Factory.newInstance();
 		byte[] data = "this is the content of the file".getBytes();
+		ByteArrayInputStream bais = new ByteArrayInputStream(data);
 		repositoryFile.setFileName("dummy.pdf");
 		repositoryFile.setFileSize(data.length);
 		repositoryFile.setContentType("plain/text");
 		repositoryFile.setName("name of the file");
-		repositoryFile.setInputStream(new ByteArrayInputStream(data));
+		
+		repositoryFile.setInputStream(bais);
+		repositoryService.saveFile(repositoryFile);
+		try {
+			bais.close();
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
 		return repositoryFile;
 	}
 	
 
-	private Folder createSubFolder() {
-		Folder folder = Folder.Factory.newInstance();
+	private FolderInfo createSubFolder() {
+		FolderInfo folder = new FolderInfo();
 		folder.setName(testUtility.unique("folder name"));
 		folder.setDescription("first folder description");
 		return folder;

@@ -49,8 +49,18 @@ public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrati
 		String str2 = getFileContentAsString(nfile);
 		assertEquals(str, str2);
 		
+		commit();
+		
 		repositoryService.removeFile(nfile);
+		commit();
+		
 		assertNull(repositoryService.getFile(nfile));
+	}
+
+	private void commit() {
+		setComplete();
+		endTransaction();
+		startNewTransaction();
 	}
 	
 	private RepositoryFile createRepositoryFile(byte[] data, String name) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/resources"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
@@ -82,5 +83,6 @@
 	<classpathentry kind="var" path="M2_REPO/org/apache/shale/shale-view/1.0.4/shale-view-1.0.4.jar" sourcepath="/M2_REPO/org/apache/shale/shale-view/1.0.4/shale-view-1.0.4-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/shale/shale-application/1.0.4/shale-application-1.0.4.jar" sourcepath="/M2_REPO/org/apache/shale/shale-application/1.0.4/shale-application-1.0.4-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-scxml/commons-scxml/0.6/commons-scxml-0.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/ant/ant/1.6.5/ant-1.6.5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

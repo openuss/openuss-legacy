@@ -1,23 +1,23 @@
 package org.openuss.web.documents;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
+import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.DocumentService;
-import org.openuss.documents.Folder;
-import org.openuss.repository.RepositoryFile;
-import org.openuss.repository.RepositoryService;
-import org.openuss.web.BasePage;
+import org.openuss.documents.FileInfo;
 import org.openuss.web.Constants;
-import org.openuss.web.upload.UploadFileManager;
 
 @Bean(name = "views$secured$documents$addzip", scope = Scope.REQUEST)
 @View
-public class DocumentAddZipPage extends BasePage{
+public class DocumentAddZipPage extends AbstractDocumentPage{
 	private Date releaseDate;
 		
 	private static final Logger logger = Logger.getLogger(DocumentAddZipPage.class);
@@ -25,52 +25,39 @@ public class DocumentAddZipPage extends BasePage{
 	@Property(value="#{documentService}")
 	private DocumentService documentService;
 	
-	@Property(value="#{sessionScope.selectedDocumentFolder}")
-	private Folder folder;
-	
 	@Property(value="#{sessionScope.enrollment}")
 	private Object domainObject;
 	
-	@Property(value = "#{uploadFileManager}")
-	private UploadFileManager uploadFileManager;
-	
-	@Property(value = "#{repositoryService}")
-	private RepositoryService repositoryService;
-
-	public String unzip(){
+	public String unzip() throws DocumentApplicationException{
 		logger.debug("new document saved");
 		
-		if (folder == null) {
-			folder = documentService.getFolder(domainObject, null);
+		if (currentFolder == null) {
+			currentFolder = documentService.getFolder(domainObject);
 		} else {
-			folder = documentService.getFolder(null, folder);
+			currentFolder = documentService.getFolder(currentFolder);
 		}
 		
-		RepositoryFile zipFile = (RepositoryFile) getSessionBean(Constants.UPLOADED_FILE);
-		if (zipFile != null) {
-			zipFile = repositoryService.getFile(zipFile);
-			documentService.createFolderEntryFromZip(zipFile.getInputStream(), folder);
-			uploadFileManager.removeFile(zipFile);
-			addMessage(i18n("message_documents_zip_file_upload_succeed"));
-			return Constants.SUCCESS;
-		} else {
-			addError(i18n("message_docuements_zip_upload_failed"));
+		File zip = (File) getSessionBean(Constants.UPLOADED_ZIP_FILE);
+		
+		ZipFileUnpacker unpacker;
+		try {
+			unpacker = new ZipFileUnpacker(zip);
+			List<FileInfo> infos = unpacker.extractZipFile();
+			try {
+				documentService.createFolderEntries(infos, currentFolder);
+			} finally{
+				unpacker.closeQuitly();
+				zip.delete();
+				removeSessionBean(Constants.UPLOADED_ZIP_FILE);
+			}
+		} catch (IOException e) {
+			logger.error(e);
+			addMessage(i18n("message_error_zip_file_unpacking"));
 			return Constants.FAILURE;
 		}
+		return Constants.SUCCESS;
 	}
 	
-	public UploadFileManager getUploadFileManager() {
-		return uploadFileManager;
-	}
-
-
-	public void setUploadFileManager(UploadFileManager uploadFileManager) {
-		this.uploadFileManager = uploadFileManager;
-	}
-
-
-
-
 	public Date getReleaseDate() {
 		return releaseDate;
 	}
@@ -100,22 +87,4 @@ public class DocumentAddZipPage extends BasePage{
 		this.domainObject = object;
 	}
 
-
-	public Folder getFolder() {
-		return folder;
-	}
-
-
-	public void setFolder(Folder folder) {
-		this.folder = folder;
-	}
-
-	public RepositoryService getRepositoryService() {
-		return repositoryService;
-	}
-
-	public void setRepositoryService(RepositoryService repositoryService) {
-		this.repositoryService = repositoryService;
-	}
-	
 }
