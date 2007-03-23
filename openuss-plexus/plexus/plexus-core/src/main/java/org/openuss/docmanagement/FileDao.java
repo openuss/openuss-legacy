@@ -168,6 +168,7 @@ public class FileDao extends ResourceDao {
 				setExamAreaFile(node, file);
 			}
 			if (areaType == DocConstants.WORKINGPLACE) {
+				setWorkingPlaceFile(node, file);
 			}
 			logout(session);
 		} catch (LoginException e) {
@@ -176,6 +177,55 @@ public class FileDao extends ResourceDao {
 			throw new DocManagementException("RepositoryException occured");
 		}
 	}
+	
+	/**
+	 * convenience method, which sets given file to given node
+	 * 
+	 * @param node
+	 * @param file
+	 * @throws NoSuchNodeTypeException
+	 * @throws VersionException
+	 * @throws ConstraintViolationException
+	 * @throws LockException
+	 * @throws AccessDeniedException
+	 * @throws ItemExistsException
+	 * @throws InvalidItemStateException
+	 * @throws UnsupportedRepositoryOperationException
+	 * @throws ValueFormatException
+	 * @throws PathNotFoundException
+	 * @throws RepositoryException
+	 * @throws DocManagementException 
+	 */
+	private void setWorkingPlaceFile(Node node, BigFile file)
+			throws NoSuchNodeTypeException, VersionException,
+			ConstraintViolationException, LockException, AccessDeniedException,
+			ItemExistsException, InvalidItemStateException,
+			UnsupportedRepositoryOperationException, ValueFormatException,
+			PathNotFoundException, RepositoryException, DeadlineException, DocManagementException {				
+		if (node.hasNode(file.getName())) {
+			node = node.getNode(file.getName());
+			if (!node.isNodeType(DocConstants.MIX_VERSIONABLE)) {
+				node.addMixin(DocConstants.MIX_VERSIONABLE);
+				node.getNode(DocConstants.JCR_CONTENT).addMixin(
+						DocConstants.MIX_VERSIONABLE);
+				node.getSession().save();
+				node.checkin();
+				node.getSession().save();
+			}
+			node.checkout();
+			node.setProperty(DocConstants.PROPERTY_OWNER, file.getOwner());
+			writeNTFileProperties(node, file);
+			node.getSession().save();
+			node.checkin();
+			return;
+		}
+		node.addNode(file.getName(), DocConstants.DOC_FILE);
+		node = node.getNode(file.getName());
+		node.setProperty(DocConstants.PROPERTY_OWNER, file.getOwner());
+		writeNTFile(node, file);
+	}	
+	
+	
 
 	/**
 	 * convenience method, which sets given file to given node
