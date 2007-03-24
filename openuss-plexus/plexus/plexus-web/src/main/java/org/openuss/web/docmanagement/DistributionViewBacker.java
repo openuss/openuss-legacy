@@ -584,6 +584,8 @@ public class DistributionViewBacker extends AbstractDocPage{
 				return DocConstants.DOCUMENTEXPLORER;
 			}
 			distributionService.delFolder(folder, getDeleteLinks().equals(DocConstants.DELETE_LINKS));
+			//set path to root
+			setFolderFacesPath("0");
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {

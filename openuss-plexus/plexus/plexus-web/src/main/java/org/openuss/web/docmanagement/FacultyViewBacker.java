@@ -525,6 +525,7 @@ public class FacultyViewBacker extends AbstractDocPage{
 				return DocConstants.FACULTY_EXPLORER;
 			}			
 			distributionService.delFolder(folder, getDeleteLinks().equals(DocConstants.DELETE_LINKS));
+			setFolderFacesPath("0");
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {

@@ -378,6 +378,7 @@ public class WorkingPlaceViewBacker extends AbstractDocPage {
 				return DocConstants.WPEXPLORER;
 			}
 			collaborationService.delFolder(folder);
+			setFolderPath(treeModel.getNodeById("0").getIdentifier());
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {
