@@ -16,7 +16,6 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.lecture.EnrollmentApplicationException;
 import org.openuss.lecture.EnrollmentMemberInfo;
 import org.openuss.lecture.EnrollmentMemberType;
-import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$enrollment$main", scope = Scope.REQUEST)
@@ -31,7 +30,7 @@ public class EnrollmentMainPage extends AbstractEnrollmentPage{
 	
 	@Override
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		super.prerender();
 		assistants = enrollmentService.getAssistants(enrollment);
 	}

@@ -58,7 +58,8 @@
 		<plexus:column header="#{msg.documents_main_column_actions}">
 			<h:commandButton 
 			    id="changeFile"
-				action="documents_new_file" 
+			    bean="views$secured$documents$documents"
+				action="editFolderEntry" 
 				value="#{msg.documents_main_button_change}" 
 				title="#{msg.documents_main_button_change}"
 				styleClass="button_edit"/>

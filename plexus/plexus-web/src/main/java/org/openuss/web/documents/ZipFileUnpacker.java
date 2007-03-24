@@ -13,7 +13,7 @@ import org.apache.tools.zip.ZipFile;
 import org.openuss.documents.FileInfo;
 
 /**
- * 
+ * Class to unpack a zip file and collect all file entries in a list of FileInfo objects
  * @author Ingo Dueppe
  */
 public class ZipFileUnpacker {

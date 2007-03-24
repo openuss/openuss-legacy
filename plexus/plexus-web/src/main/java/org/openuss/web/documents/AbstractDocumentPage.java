@@ -5,12 +5,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
+import org.apache.shale.tiger.view.Prerender;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FolderInfo;
+import org.openuss.web.Constants;
 import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 /**
- * 
  * @author Ingo Dueppe
  */
 public class AbstractDocumentPage extends AbstractEnrollmentPage {
@@ -19,8 +20,23 @@ public class AbstractDocumentPage extends AbstractEnrollmentPage {
 	@Property(value = "#{documentService}")
 	protected DocumentService documentService;
 	
-	@Property(value = "#{folder}")
+	@Property(value = "#{documents_current_folder}")
 	protected FolderInfo currentFolder;
+
+	@Property(value = "#{sessionScope.enrollment}")
+	protected Object domainObject;
+	
+	@Prerender
+	public void prerender() throws Exception {
+		super.prerender();
+	
+		if (currentFolder == null && domainObject == null) {
+			redirect(Constants.OUTCOME_BACKWARD);
+		} else {
+			retrieveActualFolder();
+		}
+		setSessionAttribute(Constants.CURRENT_FOLDER, currentFolder);
+	}
 
 	public DocumentService getDocumentService() {
 		return documentService;
@@ -38,6 +54,14 @@ public class AbstractDocumentPage extends AbstractEnrollmentPage {
 		this.currentFolder = currentFolder;
 	}
 
+	protected FolderInfo retrieveActualFolder() {
+		if (currentFolder == null || currentFolder.getId() == null) {
+			currentFolder = documentService.getFolder(domainObject);
+		} else {
+			currentFolder = documentService.getFolder(currentFolder);
+		}
+		return currentFolder;
+	}	
 	
 	public List<FolderInfo> getPath() {
 		logger.debug("getting current path");
@@ -46,5 +70,13 @@ public class AbstractDocumentPage extends AbstractEnrollmentPage {
 		} else {
 			return new ArrayList<FolderInfo>();
 		}
+	}
+
+	public Object getDomainObject() {
+		return domainObject;
+	}
+
+	public void setDomainObject(Object object) {
+		this.domainObject = object;
 	}
 }

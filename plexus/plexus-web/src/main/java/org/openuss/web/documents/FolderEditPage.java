@@ -19,15 +19,16 @@ public class FolderEditPage extends AbstractDocumentPage{
 
 
 	public String save() throws DocumentApplicationException{
-		logger.debug("new folder saved");
+		logger.debug("saving folder");
 		if (selectedFolder != null && selectedFolder.getId() == null) {
-			documentService.createFolder(selectedFolder, currentFolder);
+			documentService.createFolder(selectedFolder, retrieveActualFolder());
 			addMessage(i18n("message_documents_new_folder_created"));
 		} else if (selectedFolder != null && selectedFolder.getId() != null) {
 			documentService.saveFolder(selectedFolder);
 			addMessage(i18n("message_docuements_save_folder"));
 		}
-		return Constants.SUCCESS;
+		removeSessionBean("selectedFolder");
+		return Constants.DOCUMENTS_MAIN_PAGE;
 	}
 
 

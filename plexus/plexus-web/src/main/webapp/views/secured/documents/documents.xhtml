@@ -53,26 +53,26 @@
 					action="download"
 					label="#{msg['documents_main_button_download']}"
 					title="#{msg['documents_main_button_download']}"
-					styleClass="button" />
+					styleClass="button_cancel" />
 				<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.CREATE}">
 					<h:commandButton 
 					    id="addZip"
 						action="documents_add_zip" 
 						value="#{msg.documents_main_button_zip}" 
 						title="#{msg.documents_main_button_zip}"
-						styleClass="button"/>
+						styleClass="button_cancel"/>
 					<h:commandButton 
 					    id="newFile"
 						action="documents_new_file" 
 						value="#{msg.documents_main_button_newfile}" 
 						title="#{msg.documents_main_button_newfile}"
-						styleClass="button"/>
+						styleClass="button_cancel"/>
 					<h:commandButton 
 					    id="newFolder"
 						action="documents_new_folder" 
 						value="#{msg.documents_main_button_newfolder}" 
 						title="#{msg.documents_main_button_newfolder}"
-						styleClass="button"/>
+						styleClass="button_cancel"/>
 				</s:acl>
 				<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.DELETE}">
 					<plexus:command
@@ -80,7 +80,7 @@
 						action="delete"
 						label="#{msg['documents_main_button_delete']}"
 						title="#{msg['documents_main_button_delete']}"
-						styleClass="button" />
+						styleClass="button_cancel" />
 				</s:acl>
 			</o:block>
 		</h:form>

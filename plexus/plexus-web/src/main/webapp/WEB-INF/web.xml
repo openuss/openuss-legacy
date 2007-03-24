@@ -313,6 +313,12 @@
 	</servlet>
 	
 	<servlet>
+		<servlet-name>ZipDocumentServlet</servlet-name>
+		<servlet-class>org.openuss.web.repository.ZipDocumentServlet</servlet-class>
+		<load-on-startup>3</load-on-startup>
+	</servlet>
+	
+	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
@@ -333,6 +339,11 @@
 	<servlet-mapping>
 		<servlet-name>RepositoryServlet</servlet-name>
 		<url-pattern>/files/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>ZipDocumentServlet</servlet-name>
+		<url-pattern>/zips/documents.zip</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>

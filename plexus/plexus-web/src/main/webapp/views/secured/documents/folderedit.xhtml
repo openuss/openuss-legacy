@@ -34,8 +34,14 @@
 		<h:form id="newFolderForm">
 
 			<o:block label="#{msg.document_folder_new}">
-				<o:input entity="selectedFolder" property="name" required="true"/>
-				<o:input entity="selectedFolder" property="description" required="true"/>
+				<h:outputText value="Zielordner" styleClass="field_label"/>
+				<span class="content_font_normal">
+					<t:dataList var="folder" layout="list" value="#{views$secured$documents$folder.path}">
+						/<h:outputText value="#{folder.name}" />
+					</t:dataList>
+				</span>
+				<o:input entity="selectedFolder" property="name" required="true" maxlength="100"/>
+				<o:input entity="selectedFolder" property="description" />
 			</o:block>
 
 			<o:block>
@@ -44,11 +50,12 @@
 					action="save" 
 					label="#{msg['newfolder_button_save']}"
 					title="#{msg['newfolder_button_save']}"
-					styleClass="button" />
+					styleClass="button_save" />
 				<h:commandButton 
 					action="documents_main"
 					value="#{msg['newfolder_button_cancel']}" 
-					styleClass="button"/>	
+					styleClass="button_cancel"
+					immediate="true"/>	
 			</o:block>
 		</h:form>
 	</ui:define>

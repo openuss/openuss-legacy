@@ -85,6 +85,9 @@ public class Constants {
 	public static final String DOCUMENTS_EDIT_FILEENTRY_PAGE = "documents_edit_fileentry";
 	public static final String DOCUMENTS_REMOVE_FOLDERENTRY_PAGE = "documents_remove_folderentries";
 
+	public static final String CURRENT_FOLDER = "documents_current_folder";
 
+	public static final String SELECTED_FILEENTRIES = "selected_file_entries";
 
+	public static final String ZIP_DOWNLOAD = "/zips/documents.zip";
 }

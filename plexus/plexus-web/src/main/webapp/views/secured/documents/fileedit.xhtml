@@ -35,10 +35,14 @@
 
 
 			<o:block label="#{msg.document_new}">
-				<o:input entity="newDocument" property="name" required="true">
-				</o:input>
-				<o:input entity="newDocument" property="description" required="true">
-				</o:input>
+				<h:outputText value="Zielordner" styleClass="field_label"/>
+				<span class="content_font_normal">
+					<t:dataList var="folder" layout="list" value="#{views$secured$documents$folder.path}">
+						/<h:outputText value="#{folder.name}" />
+					</t:dataList>
+				</span>
+				<o:input entity="documents_selected_file" property="name" required="true" maxlength="100"/>
+				<o:input entity="documents_selected_file" property="description" />
 
 				
 				<h:outputLabel value="#{msg.newdocument_file}" for="newDocument" styleClass="field_label" />
@@ -46,16 +50,20 @@
 					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
 				</t:inputFileUpload>
 		
-				<o:input entity="newDocument" property="releaseDate" required="true" />
+				<o:input entity="documents_selected_file" property="created" required="true" />
 			</o:block>
 
 			<o:block>
-				<plexus:command bean="#{views$secured$documents$documentnew}"
-					action="save" label="#{msg['newdocument_button_save']}"
+				<plexus:command 
+					bean="#{views$secured$documents$fileedit}"
+					action="save" 
+					label="#{msg['newdocument_button_save']}"
 					title="#{msg['newdocument_button_save']}"
-					styleClass="button" />
-				<h:commandButton action="documents_main"
-					value="#{msg['newdocument_button_cancel']}" styleClass="button"/>	
+					styleClass="button_save" />
+				<h:commandButton 
+					action="documents_main"
+					value="#{msg['newdocument_button_cancel']}" 
+					styleClass="button_cancel"/>	
 			</o:block>
 		</h:form>
 	</ui:define>

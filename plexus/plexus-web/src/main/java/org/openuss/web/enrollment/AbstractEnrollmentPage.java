@@ -4,14 +4,12 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.lecture.Enrollment;
 import org.openuss.lecture.EnrollmentService;
-import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
  * @author Ingo Dueppe
- *
  */
 public class AbstractEnrollmentPage extends BasePage {
 	private static final long serialVersionUID = 1394531398550932611L;
@@ -26,7 +24,7 @@ public class AbstractEnrollmentPage extends BasePage {
 	protected EnrollmentService enrollmentService;
 
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		if (enrollment == null) {
 			enrollment = (Enrollment) getSessionBean(Constants.ENROLLMENT);
 		}
@@ -63,6 +61,4 @@ public class AbstractEnrollmentPage extends BasePage {
 	public void setEnrollmentService(EnrollmentService enrollmentService) {
 		this.enrollmentService = enrollmentService;
 	}
-
-
 }
