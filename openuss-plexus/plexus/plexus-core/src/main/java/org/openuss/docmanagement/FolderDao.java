@@ -53,6 +53,7 @@ public class FolderDao extends ResourceDao {
 	 */
 	public Folder getFolder(String path) throws PathNotFoundException, NotAFolderException, NotAFileException, DocManagementException{
 		FolderImpl fi;
+		systemFolder(path);
 		try {
 			Session session = login(repository);
 			Node node = session.getRootNode();

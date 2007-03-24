@@ -54,6 +54,7 @@ public class FileDao extends ResourceDao {
 	 */
 	public File getFile(String path) throws NotAFileException,
 			DocManagementException {
+		systemFolder(path);
 		Session session;
 		FileImpl file;
 		try {
@@ -207,6 +208,7 @@ public class FileDao extends ResourceDao {
 	public void setFile(BigFile file) throws ResourceAlreadyExistsException,
 			DocManagementException {
 		try {
+			//FIXME del viewed property if existing
 			Session session = login(repository);
 			String path = file.getPath();
 			if (path.startsWith("/"))
@@ -266,7 +268,7 @@ public class FileDao extends ResourceDao {
 			}
 			node.checkout();
 			node.setProperty(DocConstants.PROPERTY_OWNER, file.getOwner());
-			writeNTFileProperties(node, file);
+			writeDocFileProperties(node, file);
 			node.getSession().save();
 			node.checkin();
 			return;
@@ -274,7 +276,7 @@ public class FileDao extends ResourceDao {
 		node.addNode(file.getName(), DocConstants.DOC_FILE);
 		node = node.getNode(file.getName());
 		node.setProperty(DocConstants.PROPERTY_OWNER, file.getOwner());
-		writeNTFile(node, file);
+		writeDocFile(node, file);
 	}	
 	
 	
@@ -319,7 +321,7 @@ public class FileDao extends ResourceDao {
 			}
 			node.checkout();
 			node.setProperty(DocConstants.PROPERTY_OWNER, file.getOwner());
-			writeNTFileProperties(node, file);
+			writeDocFileProperties(node, file);
 			node.getSession().save();
 			node.checkin();
 			return;
@@ -327,7 +329,7 @@ public class FileDao extends ResourceDao {
 		node.addNode(file.getName(), DocConstants.DOC_FILE);
 		node = node.getNode(file.getName());
 		node.setProperty(DocConstants.PROPERTY_OWNER, file.getOwner());
-		writeNTFile(node, file);
+		writeDocFile(node, file);
 	}
 
 	/**
@@ -355,7 +357,7 @@ public class FileDao extends ResourceDao {
 			// nt:File Knoten
 			node.addNode(file.getName(), DocConstants.DOC_FILE);
 			node = node.getNode(file.getName());
-			writeNTFile(node, file);
+			writeDocFile(node, file);
 		} catch (LoginException e1) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e1) {
@@ -379,7 +381,7 @@ public class FileDao extends ResourceDao {
 	 * @throws PathNotFoundException
 	 * @throws NoSuchNodeTypeException
 	 */
-	private void writeNTFileProperties(Node node, BigFile file)
+	private void writeDocFileProperties(Node node, BigFile file)
 			throws ValueFormatException, VersionException, LockException,
 			ConstraintViolationException, RepositoryException,
 			ItemExistsException, PathNotFoundException, NoSuchNodeTypeException {
@@ -413,7 +415,7 @@ public class FileDao extends ResourceDao {
 	 * @throws PathNotFoundException
 	 * @throws NoSuchNodeTypeException
 	 */
-	private void writeNTFile(Node node, BigFile file)
+	private void writeDocFile(Node node, BigFile file)
 			throws ValueFormatException, VersionException, LockException,
 			ConstraintViolationException, RepositoryException,
 			ItemExistsException, PathNotFoundException, NoSuchNodeTypeException {
@@ -445,6 +447,7 @@ public class FileDao extends ResourceDao {
 	public void changeFile(BigFile file) throws ResourceAlreadyExistsException,
 			DocManagementException {
 		try {
+			//FIXME delete viewed property
 			Session session = login(repository);
 			Node node = session.getRootNode();
 			String path = file.getPath();
