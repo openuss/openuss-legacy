@@ -559,6 +559,7 @@ public class FileDao extends ResourceDao {
 				delDistributionFile(node, delLinks);
 			}
 			if (areaType == DocConstants.WORKINGPLACE) {
+				move2trash(node, 0);				
 			}
 			if (areaType == DocConstants.EXAMAREA) {
 				// no support for delete planned

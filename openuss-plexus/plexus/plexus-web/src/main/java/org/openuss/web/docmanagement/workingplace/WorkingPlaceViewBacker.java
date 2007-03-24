@@ -113,6 +113,45 @@ public class WorkingPlaceViewBacker extends AbstractDocPage {
 		}
 		return tn;		
 	}
+	
+	/**
+	 * action method, which triggers the deletion of selected files
+	 * @return
+	 */
+	public String confirmedDelete(){
+		Iterator i = this.data.iterator();
+		FileTableEntry fte;
+		while (i.hasNext()){
+			fte = (FileTableEntry)i.next();
+			if (fte.isChecked())
+				try {
+					File f = fileTableEntry2File(fte);										
+					if (!hasWritePermission(f)){
+						noPermission();
+						return DocConstants.WPEXPLORER;
+					}
+					//check if f is a file or a link
+					f = collaborationService.getFile(f.getPath());
+					collaborationService.delFile(f);
+				} catch (NotAFolderException e) {
+					handleNotAFolderException(e);
+				} catch (PathNotFoundException e) {
+					handlePathNotFoundException(e);
+				} catch (ResourceAlreadyExistsException e) {
+					handleResourceAlreadyExistsException(e);
+				} catch (NotAFileException e) {
+					handleNotAFileException(e);
+				} catch (SystemFolderException e) {
+					handleDocManagementException(e);		
+				} catch (DocManagementException e) {
+					handleDocManagementException(e);
+				}		
+		}	
+		
+		return DocConstants.WPEXPLORER;
+	}
+	
+	
 	/**
 	 * Action method called if change folder button is clicked
 	 * @return
@@ -403,7 +442,33 @@ public class WorkingPlaceViewBacker extends AbstractDocPage {
 				fte.getViewer());
 	}
 		
-	
+	/**
+	 * Action method which triggers the delete of a folder 
+	 * @return
+	 */
+	public String deleteFolder(){
+		try {
+			Folder folder = collaborationService.getFolder(this.folderPath);
+			if (!hasWritePermission(folder)){
+				noPermission();
+				return DocConstants.WPEXPLORER;
+			}
+			collaborationService.delFolder(folder);
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
+		} catch (PathNotFoundException e) {
+			handlePathNotFoundException(e);
+		} catch (ResourceAlreadyExistsException e) {
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}	
+		return DocConstants.WPEXPLORER;
+	}	
 	
 	
 	public CollaborationService getCollaborationService() {
