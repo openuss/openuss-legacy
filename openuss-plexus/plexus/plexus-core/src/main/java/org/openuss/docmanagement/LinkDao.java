@@ -1,13 +1,17 @@
 package org.openuss.docmanagement;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.jcr.ItemExistsException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
+import javax.jcr.Property;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.Value;
+import javax.jcr.ValueFormatException;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
@@ -74,6 +78,21 @@ public class LinkDao extends ResourceDao {
 			Node target = node.getProperty(DocConstants.PROPERTY_REFERENCE).getNode();			
 			link.setTarget(fileDao.getFile(target.getPath()));
 			link.setVisibility((int)node.getProperty(DocConstants.PROPERTY_VISIBILITY).getLong());
+			// get viewers of linked file
+			node = node.getProperty(DocConstants.PROPERTY_REFERENCE).getNode();
+			ArrayList<String> viewed = new ArrayList<String>();
+			if (node.hasProperty(DocConstants.PROPERTY_VIEWED)){				
+			    Property viewers = node.getProperty(DocConstants.PROPERTY_VIEWED);
+			    try {
+			      viewed.add(viewers.getString());
+			    } catch (ValueFormatException e) {
+			      Value[] viewerValues = viewers.getValues();
+			      for (Value c : viewerValues) {
+			    	  viewed.add(c.getString());
+			      }
+			    }	
+			}
+			link.setViewed(viewed.toArray(new String[0]));			
 			logout(session);
 			return link;
 		} catch (RepositoryException e) {

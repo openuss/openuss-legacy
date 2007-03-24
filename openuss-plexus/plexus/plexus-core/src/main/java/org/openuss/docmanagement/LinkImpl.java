@@ -8,6 +8,8 @@ public class LinkImpl extends ResourceImpl implements Link {
 	
 	public Timestamp distributionDate;
 	
+	public String[] viewed;
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.Link#getDistributionDate()
 	 */
@@ -34,6 +36,14 @@ public class LinkImpl extends ResourceImpl implements Link {
 	 */
 	public void setTarget(Resource target) {
 		this.target = target;
+	}
+
+	public String[] getViewed() {
+		return this.viewed;
+	}
+
+	public void setViewed(String[] viewed) {
+		this.viewed = viewed;		
 	}
 
 }

@@ -328,6 +328,11 @@ public class DistributionViewBacker extends AbstractDocPage{
 		}
 	}
 	
+	/**
+	 * convenience method to get the FileTableEntry representation of a link object
+	 * @param link
+	 * @return
+	 */
 	private FileTableEntry link2FTE(Link link){
 		FileTableEntry fte = file2FTE((File)link.getTarget());
 		fte.setName(link.getName());
@@ -335,6 +340,8 @@ public class DistributionViewBacker extends AbstractDocPage{
 		fte.setDistributionTime(link.getDistributionDate());
 		fte.setVisibility(link.getVisibility());		
 		fte.setPath(link.getPath());
+		fte.setViewed(link.getViewed());
+		fte.setViewer(auth.getName());
 		return fte;	
 	}
 
@@ -662,6 +669,7 @@ public class DistributionViewBacker extends AbstractDocPage{
 		try {
 			Link link = distributionService.getLink(path);
 			File file = (File) link.getTarget();
+			file.setViewer(auth.getName());
 			if (!hasReadPermission(link)){
 				noPermission();
 				return DocConstants.DOCUMENTEXPLORER;

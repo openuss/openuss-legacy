@@ -11,5 +11,9 @@ public interface Link extends Resource{
 	public Resource getTarget();
 
 	public void setTarget(Resource target);
+	
+	public String[] getViewed();
+	
+	public void setViewed(String[] viewed);
 
 }
