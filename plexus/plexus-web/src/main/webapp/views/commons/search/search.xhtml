@@ -9,7 +9,12 @@
 		<o:block label="#{msg.search}">
 			<p class="content_font_normal">
 				<h:inputText id="searchText" value="suche" styleClass="field_search"/>
-				<h:commandButton styleClass="button_search" action="search_faculties" immediate="true"/>
+				<h:commandLink 
+					styleClass="button_search" 
+					action="search_faculties" 
+					immediate="true">
+					<img src="#{theme.imagesPath}/search.jpg" title="search" alt="go"/>
+				</h:commandLink>
 			</p>
 		</o:block>
 	</h:form>
