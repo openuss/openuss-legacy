@@ -32,12 +32,13 @@ import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.Resource;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
-import org.openuss.web.docmanagement.AbstractEnrollmentDocPage;
+import org.openuss.docmanagement.SystemFolderException;
+import org.openuss.web.docmanagement.AbstractDocPage;
 import org.openuss.web.docmanagement.FileTableEntry;
 
 @Bean(name = "workingPlaceViewBacker", scope = Scope.SESSION)
 @View
-public class WorkingPlaceViewBacker extends AbstractEnrollmentDocPage {
+public class WorkingPlaceViewBacker extends AbstractDocPage {
 
 	public static final Logger logger = Logger
 			.getLogger(WorkingPlaceViewBacker.class);
@@ -73,6 +74,8 @@ public class WorkingPlaceViewBacker extends AbstractEnrollmentDocPage {
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
@@ -86,6 +89,7 @@ public class WorkingPlaceViewBacker extends AbstractEnrollmentDocPage {
 	 * @param folder Folder object to be converted
 	 * @return TreeNodeBase object as result of conversion
 	 */
+	@SuppressWarnings("unchecked")
 	private TreeNodeBase folder2TreeNodeBase(Folder folder){
 		if (!hasReadPermission(folder)) folder = null;
 		if (folder==null) return new TreeNodeBase();
@@ -131,6 +135,8 @@ public class WorkingPlaceViewBacker extends AbstractEnrollmentDocPage {
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
@@ -174,6 +180,8 @@ public class WorkingPlaceViewBacker extends AbstractEnrollmentDocPage {
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);			
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
@@ -206,6 +214,8 @@ public class WorkingPlaceViewBacker extends AbstractEnrollmentDocPage {
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}	
@@ -238,6 +248,8 @@ public class WorkingPlaceViewBacker extends AbstractEnrollmentDocPage {
 				handleResourceAlreadyExistsException(e);
 			} catch (NotAFileException e) {
 				handleNotAFileException(e);
+			} catch (SystemFolderException e) {
+				handleDocManagementException(e);		
 			} catch (DocManagementException e) {
 				handleDocManagementException(e);
 			}		
@@ -335,6 +347,8 @@ public class WorkingPlaceViewBacker extends AbstractEnrollmentDocPage {
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		

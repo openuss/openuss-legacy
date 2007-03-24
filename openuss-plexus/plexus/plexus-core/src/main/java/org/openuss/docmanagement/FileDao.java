@@ -33,10 +33,6 @@ import javax.jcr.version.VersionHistory;
 import javax.jcr.version.VersionIterator;
 import org.apache.log4j.Logger;
 
-/**
- * @author David Ullrich
- * @version 0.5
- */
 public class FileDao extends ResourceDao {
 
 	private Repository repository;
@@ -66,6 +62,7 @@ public class FileDao extends ResourceDao {
 				throw new NotAFileException("Not a file");
 			}
 			file = node2FileImpl(session, node);
+			logout(session);
 		} catch (NotAFileException e) {
 			throw e;
 		} catch (LoginException e) {
@@ -113,8 +110,9 @@ public class FileDao extends ResourceDao {
 				owner,
 				extractViewers(node).toArray(new String[0]), 
 				"");
-		file.setCreated(new Timestamp(node.getProperty(DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
-		logout(session);
+		if (node.hasProperty(DocConstants.JCR_CREATED)){
+			file.setCreated(new Timestamp(node.getProperty(DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
+		}
 		return file;
 	}
 
@@ -265,8 +263,7 @@ public class FileDao extends ResourceDao {
 			DocManagementException {
 		try {
 			//FIXME trigger mail sending, dependent on visibility
-			//FIXME del viewed property if existing
-			//FIXME check for system folder
+			if (systemFolder(file.getPath())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
 			Session session = login(repository);
 			String path = file.getPath();
 			if (path.startsWith("/"))
@@ -440,9 +437,7 @@ public class FileDao extends ResourceDao {
 		Calendar c = new GregorianCalendar();
 		c.setTimeInMillis(file.getDistributionTime().getTime());
 		node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
-		node
-				.setProperty(DocConstants.PROPERTY_VISIBILITY, file
-						.getVisibility());
+		node.setProperty(DocConstants.PROPERTY_VISIBILITY, file.getVisibility());
 		// nt:resource Knoten, der die eigentlich Datei enthaelt
 		node = node.getNode(DocConstants.JCR_CONTENT);
 		node.setProperty(DocConstants.JCR_DATA, file.getFile());
@@ -474,8 +469,7 @@ public class FileDao extends ResourceDao {
 		Calendar c = new GregorianCalendar();
 		c.setTimeInMillis(file.getDistributionTime().getTime());
 		node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
-		node
-				.setProperty(DocConstants.PROPERTY_VISIBILITY, file
+		node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
 						.getVisibility());
 		// nt:resource Knoten, der die eigentlich Datei enthaelt
 		node.addNode(DocConstants.JCR_CONTENT, DocConstants.NT_RESOURCE);
@@ -495,34 +489,29 @@ public class FileDao extends ResourceDao {
 	 * @throws LoginException
 	 * @throws RepositoryException
 	 */
-	public void changeFile(BigFile file) throws ResourceAlreadyExistsException,
+	public void changeFile(BigFile file) throws ResourceAlreadyExistsException, SystemFolderException, 
 			DocManagementException {
 		try {
 			//FIXME trigger mail sending, dependent on visibility			
-			//FIXME delete viewed property
-			//FIXME check for system folder
+			if (systemFolder(file.getPath())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
 			Session session = login(repository);
 			Node node = session.getRootNode();
 			String path = file.getPath();
-			if (path.startsWith("/"))
-				path = path.substring(1);
-			if (path != "")
-				node = node.getNode(path);
-
+			if (path.startsWith("/")) path = path.substring(1);
+			if (path != "")	node = node.getNode(path);
 			// nt:File
 			node.setProperty(DocConstants.PROPERTY_MESSAGE, file.getMessage());
 			Calendar c = new GregorianCalendar();
 			c.setTimeInMillis(file.getDistributionTime().getTime());
 			node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
-			node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
-					.getVisibility());
-
+			node.setProperty(DocConstants.PROPERTY_VISIBILITY, file.getVisibility());
+			//delete viewed property
+			if (node.hasProperty(DocConstants.PROPERTY_VIEWED)) node.setProperty(DocConstants.PROPERTY_VIEWED,(Value) null);	
 			// nt:resource
 			node = node.getNode(DocConstants.JCR_CONTENT);
 			Calendar c2 = new GregorianCalendar();
 			c2.setTimeInMillis(file.getLastModification().getTime());
 			node.setProperty(DocConstants.JCR_LASTMODIFIED, c);
-
 			session.save();
 			// if nodename has changed, move node
 			node = node.getParent();
@@ -533,10 +522,8 @@ public class FileDao extends ResourceDao {
 					throw new ResourceAlreadyExistsException(
 							"A File with that name already exists!");
 				}
-				session.move(node.getPath(), node.getParent().getPath() + "/"
-						+ file.getName());
+				session.move(node.getPath(), node.getParent().getPath() + "/"+ file.getName());
 			}
-
 			logout(session);
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
@@ -559,9 +546,9 @@ public class FileDao extends ResourceDao {
 	 * @throws Exception
 	 */
 	public void delFile(File file, boolean delLinks) throws NotAFileException,
-			ResourceAlreadyExistsException, DocManagementException {
+			ResourceAlreadyExistsException, SystemFolderException, DocManagementException {
 		try {
-			//FIXME check for system folder
+			if (systemFolder(file.getPath())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
 			Session session = login(repository);
 			String path = file.getPath();
 			if (path.startsWith("/"))
@@ -578,6 +565,8 @@ public class FileDao extends ResourceDao {
 			}
 			logout(session);
 
+		} catch (SystemFolderException e){
+			throw e;
 		} catch (NotAFileException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (ResourceAlreadyExistsException e) {
@@ -770,42 +759,32 @@ public class FileDao extends ResourceDao {
 	 * @return
 	 * @throws DocManagementException
 	 */
+	@SuppressWarnings("unchecked")
 	public List getVersions(File file) throws DocManagementException {
-		//TODO think about splitting
 		List l = new ArrayList();
 		try {
 			Session session = login(repository);
 			String path = file.getPath();
-			if (path.startsWith("/"))
-				path = path.substring(1);
+			if (path.startsWith("/")) path = path.substring(1);
 			Node node = session.getRootNode().getNode(path);
 			if (!node.isNodeType(DocConstants.MIX_VERSIONABLE)) {
 				l.add(file);
 				return l;
 			}
-			
 			VersionHistory history = node.getVersionHistory();
 			int versionnumber = 0;
+			File f = new FileImpl();
 			for (VersionIterator it = history.getAllVersions(); it.hasNext();) {
 				Version version = (Version) it.next();
 				NodeIterator it2 = version.getNodes("jcr:frozenNode");
 				if (it2.hasNext()) {
 					node = it2.nextNode();
-					try{
-						String owner = node.getProperty(DocConstants.PROPERTY_OWNER).getString();
-						Timestamp distTime = new Timestamp(node.getProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTimeInMillis());
-						Timestamp lastMod = new Timestamp(node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_LASTMODIFIED).getDate().getTimeInMillis());
-						String message = node.getProperty(DocConstants.PROPERTY_MESSAGE).getString();
-						String mimeType = node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_MIMETYPE).getString();
-						String pathToVersion = node.getPath();
-						int visibility = ((int) node.getProperty(DocConstants.PROPERTY_VISIBILITY).getLong());
-						long length =  node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_DATA).getLength();
-						
-						ArrayList<String> viewed = extractViewers(node);						
-						File f = new FileImpl(distTime, node.getUUID(), lastMod, length,message, mimeType, "", pathToVersion, null, versionnumber, visibility, owner, viewed.toArray(new String[0]), "");
+					// ignore first stub version 
+					if (versionnumber > 0){
+						f = node2FileImpl(session, node);
+						f.setName("");
+						f.setVersion(versionnumber);
 						l.add(f);
-					}	
-					catch (Exception e){						
 					}
 					versionnumber++;
 				}

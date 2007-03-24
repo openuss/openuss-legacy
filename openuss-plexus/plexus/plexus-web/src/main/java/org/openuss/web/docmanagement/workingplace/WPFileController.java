@@ -20,13 +20,14 @@ import org.openuss.docmanagement.NotAFileException;
 import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
-import org.openuss.web.docmanagement.AbstractEnrollmentDocPage;
+import org.openuss.docmanagement.SystemFolderException;
+import org.openuss.web.docmanagement.AbstractDocPage;
 
 
 
 @Bean(name="wpFileController", scope=Scope.SESSION)
 @View
-public class WPFileController extends AbstractEnrollmentDocPage{
+public class WPFileController extends AbstractDocPage{
 	
 	@Property(value = "#{collaborationService}")
 	CollaborationService collaborationService;
@@ -61,6 +62,8 @@ public class WPFileController extends AbstractEnrollmentDocPage{
 				handleResourceAlreadyExistsException(e);
 			} catch (NotAFileException e) {
 				handleNotAFileException(e);
+			} catch (SystemFolderException e) {
+				handleDocManagementException(e);		
 			} catch (DocManagementException e) {
 				handleDocManagementException(e);
 			}

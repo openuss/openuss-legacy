@@ -20,12 +20,13 @@ import org.openuss.docmanagement.NotAFileException;
 import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
+import org.openuss.docmanagement.SystemFolderException;
 
 
 
 @Bean(name="facultyFileController", scope=Scope.SESSION)
 @View
-public class FacultyFileController extends AbstractFacultyDocPage{
+public class FacultyFileController extends AbstractDocPage{
 
 	@Property(value = "#{distributionService}")
 	DistributionService distributionService;
@@ -68,6 +69,8 @@ public class FacultyFileController extends AbstractFacultyDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}	

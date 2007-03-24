@@ -10,23 +10,24 @@ import org.openuss.docmanagement.File;
 import org.openuss.docmanagement.Folder;
 import org.openuss.docmanagement.Link;
 import org.openuss.docmanagement.Resource;
+import org.openuss.lecture.Enrollment;
 import org.openuss.lecture.Faculty;
 
-public abstract class AbstractFacultyDocPage extends ExceptionHandler {
+public abstract class AbstractDocPage extends ExceptionHandler {
 
-	final Authentication auth = SecurityContextHolder.getContext()
-			.getAuthentication();
-
-	public static final Logger log = Logger
-			.getLogger(AbstractFacultyDocPage.class);
+	@Property(value = "#{enrollment}")
+	public Enrollment enrollment;
 
 	@Property(value = "#{faculty}")
 	public Faculty faculty;
 
-	public Long id;
+	public final Authentication auth = SecurityContextHolder.getContext()
+			.getAuthentication();
+
+	public static final Logger enrollmentLogger = Logger
+			.getLogger(AbstractDocPage.class);
 
 	public boolean hasReadPermission(Resource resource) {
-
 		boolean allowed = false;
 		if ((resource.getVisibility() & DocRights.READ_ALL) > 0) {
 			if (distTimeReached(resource))
@@ -54,10 +55,9 @@ public abstract class AbstractFacultyDocPage extends ExceptionHandler {
 		if ((resource.getVisibility() & DocRights.READ_OWNER) > 0) {
 			if (auth.getName().equals(((File) resource).getOwner()))
 				allowed = true;
-			;
+
 		}
 		return allowed;
-
 	}
 
 	private boolean distTimeReached(Resource resource) {
@@ -88,7 +88,7 @@ public abstract class AbstractFacultyDocPage extends ExceptionHandler {
 			GrantedAuthority[] ga = auth.getAuthorities();
 			for (int i = 0; i < ga.length; i++) {
 				if (ga[i].getAuthority().startsWith(
-						"GROUP_FACULTY_" + id.toString()))
+						"GROUP_FACULTY_" + faculty.getId().toString()))
 					return true;
 			}
 		}
@@ -99,12 +99,19 @@ public abstract class AbstractFacultyDocPage extends ExceptionHandler {
 		return false;
 	}
 
+	public Enrollment getEnrollment() {
+		return enrollment;
+	}
+
+	public void setEnrollment(Enrollment enrollment) {
+		this.enrollment = enrollment;
+	}
+
 	public Faculty getFaculty() {
 		return faculty;
 	}
 
 	public void setFaculty(Faculty faculty) {
-		this.id = faculty.getId();
 		this.faculty = faculty;
 	}
 

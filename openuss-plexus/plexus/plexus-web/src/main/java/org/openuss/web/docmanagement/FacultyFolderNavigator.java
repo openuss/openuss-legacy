@@ -5,8 +5,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-import org.openuss.web.docmanagement.DistributionViewBacker;
-
 import org.apache.log4j.Logger;
 
 public class FacultyFolderNavigator implements ActionListener {

@@ -25,13 +25,12 @@ import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.Resource;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
-import org.openuss.lecture.Enrollment;
-import org.openuss.lecture.Faculty;
 import org.openuss.docmanagement.DocConstants;
+import org.openuss.docmanagement.SystemFolderException;
 
 @Bean(name="folder2Folder", scope=Scope.SESSION)
 @View
-public class Folder2Folder extends AbstractEnrollmentDocPage{
+public class Folder2Folder extends AbstractDocPage{
 
 	public static final Logger logger = Logger.getLogger(Folder2Folder.class);
 	
@@ -75,6 +74,8 @@ public class Folder2Folder extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}
@@ -102,6 +103,8 @@ public class Folder2Folder extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}
@@ -118,6 +121,7 @@ public class Folder2Folder extends AbstractEnrollmentDocPage{
 	 * @param folder Folder object to be converted
 	 * @return TreeNodeBase object as result of conversion
 	 */
+	@SuppressWarnings("unchecked")
 	private TreeNodeBase folder2TreeNodeBase(Folder folder, boolean includeFiles){
 		if (folder==null) return new TreeNodeBase();
 		TreeNodeBase tn = new TreeNodeBase("folder", folder.getName(), folder.getPath(), (folder.getSubnodes()==null));
@@ -175,7 +179,9 @@ public class Folder2Folder extends AbstractEnrollmentDocPage{
 			handlePathNotFoundException(e);
 		} catch (ResourceAlreadyExistsException e) {
 			handleResourceAlreadyExistsException(e);
-		}catch (DocManagementException e) {
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
+		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}				
 		return DocConstants.FOLDERTOFOLDER;
@@ -207,7 +213,9 @@ public class Folder2Folder extends AbstractEnrollmentDocPage{
 			handlePathNotFoundException(e);
 		} catch (ResourceAlreadyExistsException e) {
 			handleResourceAlreadyExistsException(e);
-		}catch (DocManagementException e) {
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
+		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
 		return DocConstants.FOLDERTOFOLDER;

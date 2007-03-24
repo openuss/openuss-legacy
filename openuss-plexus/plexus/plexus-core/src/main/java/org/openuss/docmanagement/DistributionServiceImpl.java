@@ -127,7 +127,6 @@ public class DistributionServiceImpl
     protected void handleCopyFile(org.openuss.docmanagement.File file, org.openuss.docmanagement.Folder targetFolder)
         throws java.lang.Exception
     {
-    	//TODO think about moving method into fileDao to use workspace.copy()
     	BigFile bf = fileDao.getFile(file);
     	bf.setPath(targetFolder.getPath());
     	fileDao.setFile(bf);

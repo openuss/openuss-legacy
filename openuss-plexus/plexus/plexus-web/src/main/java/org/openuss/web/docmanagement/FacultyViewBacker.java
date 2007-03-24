@@ -32,11 +32,11 @@ import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.Resource;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
 import org.openuss.docmanagement.DocConstants;
-import org.openuss.lecture.Faculty;
+import org.openuss.docmanagement.SystemFolderException;
 
 @Bean(name="facultyViewBacker", scope=Scope.SESSION)
 @View
-public class FacultyViewBacker extends AbstractFacultyDocPage{
+public class FacultyViewBacker extends AbstractDocPage{
 
 	@Property(value="#{distributionService}")
 	public DistributionService distributionService;
@@ -87,7 +87,6 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 	 * @return treeModel displayed by tree2 component
 	 */
 	public TreeModel getTree(){
-		//TODO cache treeModel to prevent loading model 5 times a pageload
 		Folder folder = new FolderImpl();
 		try {
 			folder = distributionService.getFacultyFolder(faculty);
@@ -99,6 +98,8 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
@@ -116,6 +117,7 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 	 * @param folder Folder object to be converted
 	 * @return TreeNodeBase object as result of conversion
 	 */
+	@SuppressWarnings("unchecked")
 	private TreeNodeBase folder2TreeNodeBase(Folder folder){
 		if (!hasReadPermission(folder)) folder = null;
 		if (folder==null) return new TreeNodeBase();
@@ -158,6 +160,8 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
@@ -197,6 +201,8 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
@@ -245,6 +251,8 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 				handleResourceAlreadyExistsException(e);
 			} catch (NotAFileException e) {
 				handleNotAFileException(e);
+			} catch (SystemFolderException e) {
+				handleDocManagementException(e);		
 			} catch (DocManagementException e) {
 				handleDocManagementException(e);
 			}		
@@ -311,6 +319,8 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
@@ -437,6 +447,8 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}
@@ -496,6 +508,8 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}
@@ -522,6 +536,8 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 					handleResourceAlreadyExistsException(e);
 				} catch (NotAFileException e) {
 					handleNotAFileException(e);
+				} catch (SystemFolderException e) {
+					handleDocManagementException(e);		
 				} catch (DocManagementException e) {
 					handleDocManagementException(e);
 				}		
@@ -544,6 +560,8 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}	
@@ -566,6 +584,8 @@ public class FacultyViewBacker extends AbstractFacultyDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}	

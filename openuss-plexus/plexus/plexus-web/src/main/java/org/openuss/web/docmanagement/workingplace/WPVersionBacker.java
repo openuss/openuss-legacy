@@ -6,11 +6,11 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.docmanagement.CollaborationService;
-import org.openuss.web.docmanagement.AbstractEnrollmentDocPage;
+import org.openuss.web.docmanagement.AbstractDocPage;
 
 @Bean(name = "wPVersionBacker", scope = Scope.SESSION)
 @View
-public class WPVersionBacker extends AbstractEnrollmentDocPage {
+public class WPVersionBacker extends AbstractDocPage {
 
 	public static final Logger logger = Logger
 			.getLogger(WPVersionBacker.class);

@@ -2,9 +2,6 @@ package org.openuss.web.docmanagement.examarea;
 
 import java.sql.Timestamp;
 
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
-
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -14,22 +11,21 @@ import org.apache.log4j.Logger;
 import org.openuss.docmanagement.BigFile;
 import org.openuss.docmanagement.BigFileImpl;
 import org.openuss.docmanagement.DeadlineException;
-import org.openuss.docmanagement.DistributionService;
 import org.openuss.docmanagement.DocConstants;
 import org.openuss.docmanagement.DocManagementException;
 import org.openuss.docmanagement.DocRights;
 import org.openuss.docmanagement.ExaminationService;
-import org.openuss.docmanagement.Link;
-import org.openuss.docmanagement.LinkImpl;
+import org.openuss.docmanagement.SystemFolderException;
+
 import org.openuss.docmanagement.NotAFileException;
 import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
-import org.openuss.web.docmanagement.AbstractEnrollmentDocPage;
+import org.openuss.web.docmanagement.AbstractDocPage;
 
 @Bean(name = "examFileController", scope = Scope.SESSION)
 @View
-public class ExamFileController extends AbstractEnrollmentDocPage {
+public class ExamFileController extends AbstractDocPage {
 
 	@Property(value = "#{examinationService}")
 	ExaminationService examinationService;
@@ -61,6 +57,8 @@ public class ExamFileController extends AbstractEnrollmentDocPage {
 			handleNotAFileException(e);
 		} catch (DeadlineException e){
 			handleDeadlineException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}

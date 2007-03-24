@@ -34,11 +34,12 @@ import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.Resource;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
 import org.openuss.docmanagement.DocConstants;
+import org.openuss.docmanagement.SystemFolderException;
 
 
 @Bean(name="distributionViewBacker", scope=Scope.SESSION)
 @View
-public class DistributionViewBacker extends AbstractEnrollmentDocPage{
+public class DistributionViewBacker extends AbstractDocPage{
 	@Property(value="#{distributionService}")
 	public DistributionService distributionService;
 
@@ -106,6 +107,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
@@ -123,6 +126,7 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 	 * @param folder Folder object to be converted
 	 * @return TreeNodeBase object as result of conversion
 	 */
+	@SuppressWarnings("unchecked")
 	private TreeNodeBase folder2TreeNodeBase(Folder folder){
 		if (!hasReadPermission(folder)) folder = null;
 		if (folder==null) return new TreeNodeBase();
@@ -169,6 +173,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
@@ -212,6 +218,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			return changeLink();			
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
@@ -245,6 +253,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}	
@@ -278,6 +288,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 				handleResourceAlreadyExistsException(e);
 			} catch (NotAFileException e) {
 				handleNotAFileException(e);
+			} catch (SystemFolderException e) {
+				handleDocManagementException(e);		
 			} catch (DocManagementException e) {
 				handleDocManagementException(e);
 			}		
@@ -376,6 +388,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			return downloadLink();
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
@@ -462,6 +476,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
@@ -498,6 +514,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}
@@ -557,6 +575,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}
@@ -591,6 +611,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 					handleResourceAlreadyExistsException(e);
 				} catch (NotAFileException e) {
 					return delLink(this.savePathToLink);
+				} catch (SystemFolderException e) {
+					handleDocManagementException(e);		
 				} catch (DocManagementException e) {
 					handleDocManagementException(e);
 				}		
@@ -614,6 +636,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}	
@@ -640,6 +664,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}	
@@ -659,6 +685,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}	
@@ -683,6 +711,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);	
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
@@ -715,6 +745,8 @@ public class DistributionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		

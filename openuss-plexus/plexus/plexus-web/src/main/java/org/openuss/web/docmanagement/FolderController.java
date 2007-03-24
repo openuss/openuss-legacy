@@ -17,11 +17,12 @@ import org.openuss.docmanagement.NotAFileException;
 import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
+import org.openuss.docmanagement.SystemFolderException;
 import org.apache.log4j.Logger;
 
 @Bean(name="folderController", scope=Scope.SESSION)
 @View
-public class FolderController extends AbstractEnrollmentDocPage{
+public class FolderController extends AbstractDocPage{
 
 	public Folder folder;
 	
@@ -58,6 +59,8 @@ public class FolderController extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}	

@@ -27,14 +27,15 @@ import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.Resource;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
+import org.openuss.docmanagement.SystemFolderException;
 
-import org.openuss.web.docmanagement.AbstractEnrollmentDocPage;
+import org.openuss.web.docmanagement.AbstractDocPage;
 import org.openuss.web.docmanagement.FileTableEntry;
 import org.apache.log4j.Logger;
 
 @Bean(name = "examAreaViewBacker", scope = Scope.SESSION)
 @View
-public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
+public class ExamAreaViewBacker extends AbstractDocPage {
 
 	public static final Logger logger = Logger
 			.getLogger(ExamAreaViewBacker.class);
@@ -77,6 +78,8 @@ public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}
@@ -107,6 +110,8 @@ public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}
@@ -196,6 +201,8 @@ public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}
@@ -262,6 +269,8 @@ public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}
@@ -317,6 +326,8 @@ public class ExamAreaViewBacker extends AbstractEnrollmentDocPage {
 				handleResourceAlreadyExistsException(e);
 			} catch (NotAFileException e) {
 				handleNotAFileException(e);
+			} catch (SystemFolderException e) {
+				handleDocManagementException(e);		
 			} catch (DocManagementException e) {
 				handleDocManagementException(e);
 			}

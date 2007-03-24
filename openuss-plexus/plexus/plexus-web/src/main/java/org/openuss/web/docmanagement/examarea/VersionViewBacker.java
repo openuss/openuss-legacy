@@ -24,14 +24,15 @@ import org.openuss.docmanagement.NotAFileException;
 import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
-import org.openuss.web.docmanagement.AbstractEnrollmentDocPage;
+import org.openuss.docmanagement.SystemFolderException;
+import org.openuss.web.docmanagement.AbstractDocPage;
 import org.openuss.web.docmanagement.FileTableEntry;
 import org.apache.log4j.Logger;
 
 
 @Bean(name="versionViewBacker", scope=Scope.SESSION)
 @View
-public class VersionViewBacker extends AbstractEnrollmentDocPage{
+public class VersionViewBacker extends AbstractDocPage{
 	
 	public static final Logger logger = Logger.getLogger(VersionViewBacker.class);
 	
@@ -69,6 +70,8 @@ public class VersionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}
@@ -142,6 +145,8 @@ public class VersionViewBacker extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}

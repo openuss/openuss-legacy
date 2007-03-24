@@ -9,6 +9,7 @@ import org.openuss.docmanagement.NotAFileException;
 import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
+import org.openuss.docmanagement.SystemFolderException;
 
 public abstract class ExceptionHandler{
 	
@@ -45,6 +46,12 @@ public abstract class ExceptionHandler{
 	}
 
 	public void handleDeadlineException(DeadlineException e) {
+		exceptionLogger.error(e.getMessage(), e);
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(),null);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	
+	public void handleSystemFolderException(SystemFolderException e) {
 		exceptionLogger.error(e.getMessage(), e);
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(),null);
 		FacesContext.getCurrentInstance().addMessage(null, msg);

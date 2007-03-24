@@ -17,12 +17,13 @@ import org.openuss.docmanagement.NotAFileException;
 import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
 import org.openuss.docmanagement.ResourceAlreadyExistsException;
-import org.openuss.web.docmanagement.AbstractEnrollmentDocPage;
+import org.openuss.docmanagement.SystemFolderException;
+import org.openuss.web.docmanagement.AbstractDocPage;
 import org.apache.log4j.Logger;
 
 @Bean(name="wpFolderController", scope=Scope.SESSION)
 @View
-public class WPFolderController extends AbstractEnrollmentDocPage{
+public class WPFolderController extends AbstractDocPage{
 
 	public Folder folder;
 	
@@ -52,6 +53,8 @@ public class WPFolderController extends AbstractEnrollmentDocPage{
 			handleResourceAlreadyExistsException(e);
 		} catch (NotAFileException e) {
 			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}	
