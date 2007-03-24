@@ -27,6 +27,9 @@
 			<h:commandButton action="#{workingPlaceViewBacker.download}" value="#{msg.doc_work_button_download}">
 				<f:actionListener type="org.openuss.web.docmanagement.workingplace.WPFileChangeActionListener" />
 			</h:commandButton>			
+			<h:commandButton action="docmanagement_wpversionexplorer" value="#{msg.doc_work_button_versions}">
+				<f:actionListener type="org.openuss.web.docmanagement.workingplace.WPFileChangeActionListener" />
+			</h:commandButton>						
 		</t:column>
 	</t:dataTable>
 </ui:composition>

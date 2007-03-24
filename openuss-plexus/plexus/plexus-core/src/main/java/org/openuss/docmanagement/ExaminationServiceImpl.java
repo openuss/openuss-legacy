@@ -50,6 +50,7 @@ public class ExaminationServiceImpl
 		fileDao.setFile(file);		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected java.util.List handleGetAllSubmissions(ExamArea examArea) throws Exception {
 		Iterator i = examArea.getSubnodes().iterator();

@@ -1,15 +1,11 @@
 package org.openuss.web.docmanagement.examarea;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -21,7 +17,6 @@ import org.openuss.docmanagement.DocManagementException;
 import org.openuss.docmanagement.ExamArea;
 import org.openuss.docmanagement.ExaminationService;
 import org.openuss.docmanagement.File;
-import org.openuss.docmanagement.FileImpl;
 import org.openuss.docmanagement.NotAFileException;
 import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
@@ -147,31 +142,6 @@ public class ExamAreaViewBacker extends AbstractDocPage {
 		}
 	}
 
-	/**
-	 * convenience method to change a File to a filetableentry
-	 * 
-	 * @param r
-	 * @return
-	 */
-	private FileTableEntry file2FTE(File f) {
-		FileTableEntry fte = new FileTableEntry();
-		fte.setCreated(f.getCreated());
-		fte.setDistributionTime(f.getDistributionTime());
-		fte.setId(f.getId());
-		fte.setLastModification(f.getLastModification());
-		fte.setLength(f.getLength());
-		fte.setMessage(f.getMessage());
-		fte.setMimeType(f.getMimeType());
-		fte.setName(f.getName());
-		fte.setPath(f.getPath());
-		fte.setPredecessor(f.getPredecessor());
-		fte.setVersion(f.getVersion());
-		fte.setVisibility(f.getVisibility());
-		fte.setOwner(f.getOwner());
-		fte.setViewed(f.getViewed());
-		fte.setViewer(auth.getName());
-		return fte;
-	}
 
 	public String downloadSelected(){
 		return DocConstants.EXAMEXPLORER;
@@ -208,50 +178,6 @@ public class ExamAreaViewBacker extends AbstractDocPage {
 		}
 		triggerDownload(bigFile);
 		return DocConstants.EXAMEXPLORER;
-	}
-
-	/**
-	 * convenience method, which trigger the download of given file
-	 * @param bigFile
-	 */
-	private void triggerDownload(BigFile bigFile) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		HttpServletResponse response = (HttpServletResponse) context
-				.getExternalContext().getResponse();
-		int read = 0;
-		byte[] bytes = new byte[1024];
-
-		response.setContentType(bigFile.getMimeType());
-		response.setHeader("Content-Disposition", "attachment;filename=\""
-				+ bigFile.getName() + "\"");
-		OutputStream os = null;
-		try {
-			os = response.getOutputStream();
-			while ((read = bigFile.getFile().read(bytes)) != -1) {
-				os.write(bytes, 0, read);
-			}
-			os.flush();
-			os.close();
-		} catch (IOException e) {
-			logger.error("IOException: ", e);
-		}
-		FacesContext.getCurrentInstance().responseComplete();
-	}
-
-	/**
-	 * convenience method, which converts a FileTableEntry object into an File
-	 * object
-	 * 
-	 * @param fte
-	 *            FileTableEntry
-	 * @return
-	 */
-	private File fileTableEntry2File(FileTableEntry fte) {
-		return new FileImpl(fte.getDistributionTime(), fte.getId(), fte
-				.getLastModification(), fte.getLength(), fte.getMessage(), fte
-				.getMimeType(), fte.getName(), fte.getPath(), fte
-				.getPredecessor(), fte.getVersion(), fte.getVisibility(), fte.getOwner(),
-				fte.getViewed(), fte.getViewer());
 	}
 
 

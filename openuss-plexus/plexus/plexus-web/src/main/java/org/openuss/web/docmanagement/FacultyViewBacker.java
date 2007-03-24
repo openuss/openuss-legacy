@@ -329,57 +329,6 @@ public class FacultyViewBacker extends AbstractDocPage{
 		return DocConstants.FACULTY_EXPLORER;
 	}
 
-	/**
-	 * convenience method which trigger the download
-	 * @param bigFile
-	 */
-	private void triggerDownload(BigFile bigFile) {
-		FacesContext context = FacesContext.getCurrentInstance();
-	    HttpServletResponse response = 
-		         (HttpServletResponse) context.getExternalContext().getResponse();
-	    int read = 0;
-	    byte[] bytes = new byte[1024];
-
-	    response.setContentType(bigFile.getMimeType());
-	    response.setHeader("Content-Disposition", "attachment;filename=\"" +
-		         bigFile.getName() + "\""); 
-	    OutputStream os = null;	      
-        try {
-			os = response.getOutputStream();        
-			while((read = bigFile.getFile().read(bytes)) != -1){
-			   os.write(bytes,0,read);
-			}
-			os.flush();
-			os.close();
-		} catch (IOException e) {
-			logger.error("IOException: ", e);
-		}
-        FacesContext.getCurrentInstance().responseComplete();
-	}
-	
-	/**
-	 * convenience method, which converts a FileTableEntry object into an File object
-	 * @param fte FileTableEntry
-	 * @return
-	 */
-	private File fileTableEntry2File(FileTableEntry fte){
-		return new FileImpl(
-				fte.getDistributionTime(),
-				fte.getId(),
-				fte.getLastModification(),
-				fte.getLength(),
-				fte.getMessage(),
-				fte.getMimeType(),
-				fte.getName(),
-				fte.getPath(),
-				fte.getPredecessor(),
-				fte.getVersion(),
-				fte.getVisibility(),
-				fte.getOwner(), 
-				fte.getViewed(), 
-				fte.getViewer());
-	}
-		
 	
 	/**
 	 * convenience method, which converts a FileTableEntry object into an BigFile object

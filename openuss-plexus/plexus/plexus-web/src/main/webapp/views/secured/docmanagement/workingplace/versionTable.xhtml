@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<t:dataTable id="filesDataTable" var="file"
+		value="#{wpVersionBacker.data}">
+		<t:column>
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_exam_datatable_version}"/>
+        	</f:facet>
+			<h:outputText value="#{file.version}"></h:outputText>
+		</t:column>
+		<t:column>
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_exam_datatable_name}"/>
+        	</f:facet>
+			<h:outputText value="#{file.name}" title="#{file.message}"/>
+		</t:column>
+		<t:column>
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_exam_datatable_size}"/>
+        	</f:facet>
+			<h:outputText value="#{file.size}" />
+		</t:column>		
+		<t:column>
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_exam_datatable_type}"/>
+        	</f:facet>
+			<h:graphicImage	value="/images/filetypes/#{file.extension}.gif" />	
+		</t:column>
+		<t:column>
+			<f:facet name="header">
+    	        <h:outputText value="#{msg.doc_exam_datatable_last}"/>
+        	</f:facet>
+			<h:outputText value="#{file.lastModification}" />			
+		</t:column>
+		<t:column>
+			<h:commandButton action="#{wpVersionBacker.download}" value="#{msg.doc_work_button_download}">
+				<f:actionListener type="org.openuss.web.docmanagement.workingplace.WPVersionFileChangeListener" />
+			</h:commandButton>		
+		</t:column>
+	</t:dataTable>
+</ui:composition>

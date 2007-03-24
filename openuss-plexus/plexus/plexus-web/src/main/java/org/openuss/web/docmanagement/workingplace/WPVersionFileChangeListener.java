@@ -34,7 +34,7 @@ public class WPVersionFileChangeListener implements ActionListener {
 		clientId = clientId.substring(0, clientId.lastIndexOf(":"));
 		clientId = clientId.substring(clientId.lastIndexOf(":")+1);
 		logger.debug("cleared ClientId of pressed button: " + clientId);
-		WPVersionBacker wpvb = (WPVersionBacker) getObjectFromContext("#{wPVersionBacker}");
+		WPVersionBacker wpvb = (WPVersionBacker) getObjectFromContext("#{wpVersionBacker}");
 		wpvb.setFileFacesPath(clientId);
 	}
 

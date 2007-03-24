@@ -1,13 +1,8 @@
 package org.openuss.web.docmanagement.examarea;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -19,7 +14,6 @@ import org.openuss.docmanagement.DocConstants;
 import org.openuss.docmanagement.DocManagementException;
 import org.openuss.docmanagement.ExaminationService;
 import org.openuss.docmanagement.File;
-import org.openuss.docmanagement.FileImpl;
 import org.openuss.docmanagement.NotAFileException;
 import org.openuss.docmanagement.NotAFolderException;
 import org.openuss.docmanagement.PathNotFoundException;
@@ -59,8 +53,11 @@ public class VersionViewBacker extends AbstractDocPage{
 		try {
 			List l = examinationService.getVersions(fileTableEntry2File(fte));
 			Iterator i = l.iterator();
+			File f; 
 			while (i.hasNext()){
-				al.add(file2FTE((File)i.next()));
+				f = (File)i.next();
+				f.setName(baseVersion.getName());
+				al.add(file2FTE(f));
 			}
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
@@ -78,48 +75,6 @@ public class VersionViewBacker extends AbstractDocPage{
 		this.data = al;
 		return al;
 	}
-
-	/**
-	 * convenience method to change a File to a filetableentry
-	 * 
-	 * @param r
-	 * @return
-	 */
-	private FileTableEntry file2FTE(File f) {
-		FileTableEntry fte = new FileTableEntry();
-		fte.setCreated(f.getCreated());
-		fte.setDistributionTime(f.getDistributionTime());
-		fte.setId(f.getId());
-		fte.setLastModification(f.getLastModification());
-		fte.setLength(f.getLength());
-		fte.setMessage(f.getMessage());
-		fte.setMimeType(f.getMimeType());
-		fte.setName(baseVersion.getName());
-		fte.setPath(f.getPath());
-		fte.setPredecessor(f.getPredecessor());
-		fte.setVersion(f.getVersion());
-		fte.setVisibility(f.getVisibility());
-		fte.setOwner(f.getOwner());
-		fte.setViewed(f.getViewed());
-		fte.setViewer(auth.getName());
-		return fte;
-	}
-	
-	/**
-	 * convenience method, which converts a FileTableEntry object into an File
-	 * object
-	 * 
-	 * @param fte
-	 *            FileTableEntry
-	 * @return
-	 */
-	private File fileTableEntry2File(FileTableEntry fte) {
-		return new FileImpl(fte.getDistributionTime(), fte.getId(), fte
-				.getLastModification(), fte.getLength(), fte.getMessage(), fte
-				.getMimeType(), fte.getName(), fte.getPath(), fte
-				.getPredecessor(), fte.getVersion(), fte.getVisibility(), fte.getOwner(), fte.getViewed(), fte.getViewer());
-	}
-
 
 	/**
 	 * Action methods to trigger download
@@ -150,39 +105,11 @@ public class VersionViewBacker extends AbstractDocPage{
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}
+		bigFile.setName(baseVersion.getName());
 		triggerDownload(bigFile);
 		return DocConstants.EXAMEXPLORER;
 	}
 
-	/**
-	 * convenience method, which triggers the download of a file
-	 * @param bigFile
-	 */
-	private void triggerDownload(BigFile bigFile) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		HttpServletResponse response = (HttpServletResponse) context
-				.getExternalContext().getResponse();
-		int read = 0;
-		byte[] bytes = new byte[1024];
-
-		response.setContentType(bigFile.getMimeType());
-		response.setHeader("Content-Disposition", "attachment;filename=\""
-				+ baseVersion.getName() + "\"");
-		OutputStream os = null;
-		try {
-			os = response.getOutputStream();
-			while ((read = bigFile.getFile().read(bytes)) != -1) {
-				os.write(bytes, 0, read);
-			}
-			os.flush();
-			os.close();
-		} catch (IOException e) {
-			logger.error("IOException: ", e);
-		}
-		FacesContext.getCurrentInstance().responseComplete();
-	}
-
-	
 	public ExaminationService getExaminationService() {
 		return examinationService;
 	}

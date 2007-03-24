@@ -338,30 +338,6 @@ public class DistributionViewBacker extends AbstractDocPage{
 		return fte;	
 	}
 
-	/**
-	 * convenience method to change a File to a filetableentry
-	 * @param r
-	 * @return
-	 */
-	private FileTableEntry file2FTE(File f) {		
-		FileTableEntry fte = new FileTableEntry();		
-		fte.setCreated(f.getCreated());
-		fte.setDistributionTime(f.getDistributionTime());
-		fte.setId(f.getId());
-		fte.setLastModification(f.getLastModification());
-		fte.setLength(f.getLength());
-		fte.setMessage(f.getMessage());
-		fte.setMimeType(f.getMimeType());
-		fte.setName(f.getName());
-		fte.setPath(f.getPath());
-		fte.setPredecessor(f.getPredecessor());
-		fte.setVersion(f.getVersion());
-		fte.setVisibility(f.getVisibility());
-		fte.setOwner(f.getOwner());
-		fte.setViewed(f.getViewed());
-		fte.setViewer(auth.getName());
-		return fte;
-	}
 
 	/**
 	 * Action methods to trigger download
@@ -397,53 +373,7 @@ public class DistributionViewBacker extends AbstractDocPage{
 		return DocConstants.DOCUMENTEXPLORER;
 	}
 
-	private void triggerDownload(BigFile bigFile) {
-		FacesContext context = FacesContext.getCurrentInstance();
-	    HttpServletResponse response = 
-		         (HttpServletResponse) context.getExternalContext().getResponse();
-	    int read = 0;
-	    byte[] bytes = new byte[1024];
-
-	    response.setContentType(bigFile.getMimeType());
-	    response.setHeader("Content-Disposition", "attachment;filename=\"" +
-		         bigFile.getName() + "\""); 
-	    OutputStream os = null;	      
-        try {
-			os = response.getOutputStream();        
-			while((read = bigFile.getFile().read(bytes)) != -1){
-			   os.write(bytes,0,read);
-			}
-			os.flush();
-			os.close();
-		} catch (IOException e) {
-			logger.error("IOException: ", e);
-		}
-		FacesContext.getCurrentInstance().responseComplete();		
-	}
 	
-	/**
-	 * convenience method, which converts a FileTableEntry object into an File object
-	 * @param fte FileTableEntry
-	 * @return
-	 */
-	private File fileTableEntry2File(FileTableEntry fte){
-		return new FileImpl(
-				fte.getDistributionTime(),
-				fte.getId(),
-				fte.getLastModification(),
-				fte.getLength(),
-				fte.getMessage(),
-				fte.getMimeType(),
-				fte.getName(),
-				fte.getPath(),
-				fte.getPredecessor(),
-				fte.getVersion(),
-				fte.getVisibility(), 
-				fte.getOwner(),
-				fte.getViewed(), 
-				fte.getViewer());
-	}
-		
 	
 	/**
 	 * convenience method, which converts a FileTableEntry object into an BigFile object
@@ -484,7 +414,6 @@ public class DistributionViewBacker extends AbstractDocPage{
 		return null;
 	}
 	
-
 	
 	/**
 	 * Action method which starts the download of selected files in one zip-file
@@ -496,8 +425,7 @@ public class DistributionViewBacker extends AbstractDocPage{
 		InputStream in = getZipFile(zipName);	
 		if (in==null) handleDocManagementException(new DocManagementException("error zipping files"));
 		//trigger download of zipped file
-		triggerDownload(zipName, in);
-        
+		triggerDownload(zipName, in);        
 		//delete zipFile
         try {
 			in.close();
