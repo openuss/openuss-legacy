@@ -244,6 +244,8 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 
 		List<FileInfo> files = new ArrayList<FileInfo>();
 
+		
+		files.add(createFileInfo("readme.txt"));
 		files.add(createFileInfo("/folien/kapitel 1/text.txt"));
 		files.add(createFileInfo("/folien/kapitel 2/readme.txt"));
 		files.add(createFileInfo("/übungen/aufgabe/aufgabentext1.txt"));
@@ -254,24 +256,53 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		
 		List<FolderEntryInfo> entries = documentService.getFolderEntries(null, subfolder);
 		assertNotNull(entries);
-		assertEquals(2, entries.size());
+		assertEquals(3, entries.size());
 		FolderEntryInfo entry = entries.get(0);
 		assertTrue(entry.getPath().startsWith("/ROOT/subfolder"));
-		
+
 		List<FileInfo> infos = documentService.allFileEntries(entries);
 		assertNotNull(infos);
 		
-		assertEquals(3, infos.size());
+		assertEquals(4, infos.size());
 		
 		FileInfo info = infos.get(0);
+		validateFileInfo(info);
+	}
+
+	
+	public void testGetFileEntry() throws DocumentApplicationException {
+		testUtility.createSecureContext();
+		DomainObject domainObject = createDomainObject();
+		FolderInfo root = documentService.getFolder(domainObject);
+		
+		FileInfo info = createFileInfo("readme.txt");
+		
+		documentService.createFileEntry(info, root);
+		commit();
+
+		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, null);
+		FolderEntryInfo entry = entries.get(0);
+		
+		FileInfo file = documentService.getFileEntry(entry, false);
+		assertNull(file.getInputStream());
+		
+		file = documentService.getFileEntry(entry, true);
+		validateFileInfo(info);
+	}
+	
+	private void validateFileInfo(FileInfo info) {
 		assertNotNull(info.getName());
+		assertNotNull(info.getAbsoluteName());
+		assertNotNull(info.getPath());
 		assertNotNull(info.getFileName());
+		assertEquals(info.getPath()+"/"+info.getFileName(), info.getAbsoluteName());
 		assertNotNull(info.getCreated());
 		assertNotNull(info.getModified());
 		assertNotNull(info.getSize());
 		assertNotNull(info.getInputStream());
 		assertNotNull(info.getContentType());
 	}
+
 
 	private FileInfo createFileInfo(String name) {
 		FileInfo info = new FileInfo();

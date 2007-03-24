@@ -36,7 +36,7 @@ public class EnrollmentRemovePage extends AbstractEnrollmentPage {
 	
 	@Prerender
 	@Override
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		super.prerender();
 		enrollment = lectureService.getEnrollment(enrollment.getId());
 		setSessionBean(Constants.ENROLLMENT, enrollment );

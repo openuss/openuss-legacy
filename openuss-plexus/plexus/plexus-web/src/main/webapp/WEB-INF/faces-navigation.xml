@@ -407,14 +407,21 @@
 				<to-view-id>/views/secured/enrollment/braincontesttop.xhtml</to-view-id>				
 			</navigation-case>			
 
+			<!-- documents -->
+
 			<navigation-case>
 				<from-outcome>documents_main</from-outcome>
 				<to-view-id>/views/secured/documents/documents.xhtml</to-view-id>				
 			</navigation-case>			
 
 			<navigation-case>
-				<from-outcome>documents_new_file</from-outcome>
-				<to-view-id>/views/secured/documents/documentedit.xhtml</to-view-id>				
+				<from-outcome>documents_edit_file</from-outcome>
+				<to-view-id>/views/secured/documents/fileedit.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>documents_edit_folder</from-outcome>
+				<to-view-id>/views/secured/documents/folderedit.xhtml</to-view-id>				
 			</navigation-case>			
 
 			<navigation-case>
@@ -423,14 +430,11 @@
 			</navigation-case>			
 
 			<navigation-case>
-				<from-outcome>documents_new_folder</from-outcome>
-				<to-view-id>/views/secured/documents/folderedit.xhtml</to-view-id>				
-			</navigation-case>			
-
-			<navigation-case>
 				<from-outcome>documents_add_zip</from-outcome>
 				<to-view-id>/views/secured/documents/addzip.xhtml</to-view-id>				
-			</navigation-case>		
+			</navigation-case>	
+			
+			<!-- discussion -->	
 			
 			<navigation-case>
 				<from-outcome>discussion_new</from-outcome>

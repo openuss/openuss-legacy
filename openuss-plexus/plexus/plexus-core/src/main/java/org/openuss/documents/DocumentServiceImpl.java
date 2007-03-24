@@ -117,10 +117,11 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	@Override
 	protected List handleAllFileEntries(Collection entries) throws Exception {
 		Validate.allElementsOfType(entries, FolderEntryInfo.class, "Parameter entries must only contain FolderEntryInfo objects.");
-		getFolderDao().folderEntryInfoToEntityCollection(entries);
+		Collection entities = new ArrayList(entries);
+		getFolderEntryDao().folderEntryInfoToEntityCollection(entities);
 		
 		List files = new ArrayList();
-		collectAllFileEntries(entries, files);
+		collectAllFileEntries(entities, files);
 		
 		getFileEntryDao().toFileInfoCollection(files);
 		
@@ -217,14 +218,15 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	@Override
-	protected FolderEntryInfo handleGetFileEntry(FolderEntryInfo folderEntryInfo) throws Exception {
+	protected FileInfo handleGetFileEntry(FolderEntryInfo folderEntryInfo, boolean withInputStream) throws Exception {
 		Validate.notNull(folderEntryInfo, "Parameter folderEntry must not be null!");
-		Validate.notNull(folderEntryInfo.getId(),
-				"Parameter folderEntry must be an persisted entity with a valid identifier!");
+		Validate.notNull(folderEntryInfo.getId(), "Parameter folderEntry must be an persisted entity with a valid identifier!");
 
 		FileEntry file = getFileEntryDao().load(folderEntryInfo.getId());
-		connectWithFileInputStream(file);
-		return getFolderEntryDao().toFolderEntryInfo(file);
+		if (withInputStream) {
+			connectWithFileInputStream(file);
+		}
+		return getFileEntryDao().toFileInfo(file);
 	}
 
 
@@ -384,139 +386,5 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 			}
 		}
 	}
-
-//	private void createFileEntry(FileInfo info, Folder parent) throws DocumentApplicationException {
-//		logger.debug("createFileEntry(info=" + info + ", parent=" + parent + ")"); 
-//
-//		RepositoryFile repositoryFile = RepositoryFile.Factory.newInstance();
-//		File file = new File(info.getName());
-//		repositoryFile.setName(file.getName());
-//		repositoryFile.setFileName(file.getName());
-//		repositoryFile.setCreated(info.getCreated());
-//		repositoryFile.setModified(info.getModified());
-//		// bigger than int will cause trouble much early
-//		repositoryFile.setFileSize((int) info.getSize());
-//		repositoryFile.setDescription(info.getDescription());
-//		repositoryFile.setContentType(info.getContentType());
-//		repositoryFile.setInputStream(info.getInputStream());
-//		
-//		FileEntry fileEntry = FileEntry.Factory.newInstance();
-//		fileEntry.setRepositoryFile(repositoryFile);
-//		
-//		persistFileEntry(fileEntry, parent);
-//		getFileEntryDao().toFileInfo(fileEntry, info);
-//	}
-
-
-//	private static final int DRAIN_BUFFER_SIZE = 1024;
-//	protected void handleCreateFolderEntryFromZip(InputStream input, Folder parent) throws Exception {
-//	parent = loadFolder(parent.getId());
-//	try {
-//		ZipInputStream zis = new ZipInputStream(input);
-//		ZipEntry entry;
-//		while ((entry = zis.getNextEntry()) != null) {
-//			if (!entry.isDirectory()) {
-//				logger.debug("-- name: " + entry.getName());
-//				try {
-//					Folder folder = createFolderPathStructure(parent, entry);
-//					createFileEntry(zis, entry, folder);
-//				} catch (IllegalArgumentException e) {
-//					logger.error(e);
-//				}
-//			}
-//		}
-//		zis.close();
-//		input.close();
-//	} catch (Exception e) {
-//		logger.error("Can't read next entry of zip input stream", e);
-//		throw new DocumentApplicationException("message_error_cannot_read_entry_in_zip_file");
-//	}
-//}
-//
-//protected InputStream handleGetZippedFolderEntries(Collection selectedEntries) throws Exception {
-//	Collection<FolderEntry> entries = transformFolderEntryInfoToFolderEntry(selectedEntries);
-//	List<FileEntry> selectedFiles = new ArrayList<FileEntry>();
-//	collectAllFileEntries(entries, selectedFiles);
-//	logger.debug("ZippedFolderEntries : - " + selectedFiles.size() + " files selected!");
-//	return zippedFileContent(selectedFiles);
-//}
-//
-//private Collection<FolderEntry> transformFolderEntryInfoToFolderEntry(Collection selectedEntries) {
-//	Validate.allElementsOfType(selectedEntries, FolderEntryInfo.class,
-//			"Parameter selectedEntries must contain FolderEntryInfo objects");
-//	CollectionUtils.transform(selectedEntries, new Transformer() {
-//		public Object transform(Object object) {
-//			FolderEntryInfo info = (FolderEntryInfo) object;
-//			if (info.isFolder()) {
-//				return getFolder(info);
-//			} else {
-//				return getFileEntry(info);
-//			}
-//		}
-//	});
-//	Collection<FolderEntry> result = new ArrayList<FolderEntry>();
-//	result.addAll(selectedEntries);
-//	return result;
-//}
-//
-//private InputStream zippedFileContent(final Collection<FileEntry> files) throws Exception {
-//	try {
-//		final PipedInputStream pis = new PipedInputStream();
-//		final PipedOutputStream pot = new PipedOutputStream(pis);
-//
-//		new Thread(new Runnable() {
-//			public void run() {
-//				ZipOutputStream zos = null;
-//				InputStream fis = null;
-//				boolean empty = true;
-//				try {
-//					zos = new ZipOutputStream(pot);
-//					for (FileEntry file : files) {
-//						ZipEntry zipEntry = new ZipEntry(file.getAbsoluteName());
-//						zipEntry.setComment(file.getDescription());
-//						zipEntry.setTime(file.getModified().getTime());
-//						zos.putNextEntry(zipEntry);
-//						fis = file.getRepositoryFile().getInputStream();
-//						drain(fis, zos);
-//						fis.close();
-//						zos.closeEntry();
-//						empty = false;
-//					}
-//					if (empty) {
-//						zos.putNextEntry(new ZipEntry("readme.txt"));
-//						zos.write("No contents available".getBytes());
-//						zos.closeEntry();
-//					}
-//					zos.close();
-//				} catch (Exception e) {
-//					logger.error("Can't pipe output to input", e);
-//					try {
-//						if (fis != null)
-//							fis.close();
-//						if (zos != null)
-//							zos.close();
-//						if (pis != null)
-//							pis.close();
-//					} catch (IOException e1) {
-//						logger.error("Can't pipe output to input", e1);
-//					}
-//				}
-//			}
-//		}).start();
-//		return pis;
-//	} catch (Exception e) {
-//		logger.error("Can't create input-stream", e);
-//		return new ByteArrayInputStream(new byte[0]);
-//	}
-//}
-//
-//private void drain(InputStream input, OutputStream output) throws IOException {
-//	int bytesRead = 0;
-//	byte[] buffer = new byte[DRAIN_BUFFER_SIZE];
-//
-//	while ((bytesRead = input.read(buffer, 0, DRAIN_BUFFER_SIZE)) != -1) {
-//		output.write(buffer, 0, bytesRead);
-//	}
-//}
 
 }
