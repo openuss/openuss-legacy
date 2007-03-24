@@ -33,15 +33,10 @@ public class FacultyFileController extends AbstractDocPage{
 	
 	public BigFile file;
 	
-	public boolean visibleForAll;
-	
 	public static final Logger logger = Logger.getLogger(FacultyFileController.class);
 	
 	public boolean old;
 	
-	public java.util.Date distributionTime;
-	
-
 	public String save(){
 		//visibility is only 0, if folder is a new folder
 		old = (file.getVisibility()!=0);
@@ -52,9 +47,8 @@ public class FacultyFileController extends AbstractDocPage{
 			FacultyViewBacker fvb = (FacultyViewBacker)valueBinding.getValue(facesContext);
 			file.setPath(fvb.getFolderPath());
 		}
-		file.setDistributionTime(new Timestamp(distributionTime.getTime()));
-		if (visibleForAll) file.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ALL);
-		else if (!visibleForAll) file.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
+		file.setDistributionTime(new Timestamp(System.currentTimeMillis()));
+		file.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
 		try {
 			if (!hasWritePermission(file)){
 				noPermission();
@@ -98,10 +92,6 @@ public class FacultyFileController extends AbstractDocPage{
 		return (file.getVisibility()&DocRights.READ_ALL)>0;
 	}
 
-	public void setVisibleForAll(boolean visibleForAll) {
-		this.visibleForAll = visibleForAll;
-	}
-
 	public boolean isOld() {
 		return old;
 	}
@@ -114,7 +104,4 @@ public class FacultyFileController extends AbstractDocPage{
 		return file.getDistributionTime();
 	}
 
-	public void setDistributionTime(java.util.Date distributionTime) {
-		this.distributionTime = distributionTime;
-	}
 }

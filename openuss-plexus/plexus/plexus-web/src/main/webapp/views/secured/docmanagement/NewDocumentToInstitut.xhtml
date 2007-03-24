@@ -48,12 +48,6 @@
 					<f:valueChangeListener type="org.openuss.web.docmanagement.FacultyFileUploadListener" />
 				</t:inputFileUpload>
 				<h:message for="document" styleClass="field_error" showDetail="true" showSummary="false" />
-
-			<h:outputLabel value="#{msg.doc_addfile_distributiontime}" for="distributionTime"	styleClass="field_label"/>
-			<t:inputDate id="distributionTime" popupCalendar="true" value="#{facultyFileController.distributionTime}" type="full" ampm="false">
-			</t:inputDate>
-
-				<o:input entity="facultyFileController" property="visibleForAll" required="true" />				
 			</o:block>
 			<o:block>
 				<h:commandButton action="#{facultyFileController.save}"

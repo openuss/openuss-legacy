@@ -52,8 +52,6 @@
 			<h:outputLabel value="#{msg.doc_addfile_distributiontime}" for="distributionTime"	styleClass="field_label"/>
 			<t:inputDate id="distributionTime" popupCalendar="true" value="#{fileController.distributionTime}" type="full" ampm="false">
 			</t:inputDate>
-
-				<o:input entity="fileController" property="visibleForAll" required="true" />				
 			</o:block>
 			<o:block>
 				<h:commandButton action="#{fileController.save}"

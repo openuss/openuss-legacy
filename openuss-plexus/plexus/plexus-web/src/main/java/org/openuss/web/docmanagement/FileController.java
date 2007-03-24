@@ -35,8 +35,6 @@ public class FileController extends AbstractDocPage{
 	
 	public BigFile file;
 	
-	public boolean visibleForAll;
-	
 	public static final Logger logger = Logger.getLogger(FileController.class);
 	
 	public boolean old;
@@ -61,11 +59,8 @@ public class FileController extends AbstractDocPage{
 				file.setPath(dvb.getFolderPath());
 			}
 			file.setDistributionTime(new Timestamp(distributionTime.getTime()));
-			if (visibleForAll)
-				file.setVisibility(DocRights.EDIT_ASSIST | DocRights.READ_ALL);
-			else if (!visibleForAll)
-				file.setVisibility(DocRights.EDIT_ASSIST
-						| DocRights.READ_ASSIST);
+			file.setVisibility(DocRights.EDIT_ASSIST | DocRights.READ_ALL);
+
 			try {
 				if (!hasWritePermission(file)) {
 					noPermission();
@@ -91,11 +86,7 @@ public class FileController extends AbstractDocPage{
 			editedLink.setMessage(file.getMessage());
 			editedLink.setName(file.getName());
 			editedLink.setPath(file.getPath());
-			if (visibleForAll)
-				editedLink.setVisibility(DocRights.EDIT_ASSIST | DocRights.READ_ALL);
-			else if (!visibleForAll)
-				editedLink.setVisibility(DocRights.EDIT_ASSIST
-						| DocRights.READ_ASSIST);
+			editedLink.setVisibility(DocRights.EDIT_ASSIST | DocRights.READ_ALL);
 			try {
 				if (!hasWritePermission(editedLink)) {
 					noPermission();
@@ -134,14 +125,6 @@ public class FileController extends AbstractDocPage{
 
 	public void setDistributionService(DistributionService distributionService) {
 		this.distributionService = distributionService;
-	}
-
-	public boolean isVisibleForAll() {
-		return (file.getVisibility()&DocRights.READ_ALL)>0;
-	}
-
-	public void setVisibleForAll(boolean visibleForAll) {
-		this.visibleForAll = visibleForAll;
 	}
 
 	public boolean isOld() {

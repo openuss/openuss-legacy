@@ -26,8 +26,6 @@ public class FacultyFolderController extends AbstractDocPage{
 
 	public Folder folder;
 	
-	public boolean visibleForAll;
-	
 	@Property(value = "#{distributionService}")
 	public DistributionService distributionService;
 
@@ -43,8 +41,7 @@ public class FacultyFolderController extends AbstractDocPage{
 			FacultyViewBacker fvb = (FacultyViewBacker)valueBinding.getValue(facesContext);
 			folder.setPath(fvb.getFolderPath());
 		}
-		if (visibleForAll) folder.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ALL);
-		else if (!visibleForAll) folder.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
+		folder.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
 		try {
 			if (!hasWritePermission(folder)){
 				noPermission();
@@ -82,14 +79,6 @@ public class FacultyFolderController extends AbstractDocPage{
 
 	public void setDistributionService(DistributionService distributionService) {
 		this.distributionService = distributionService;
-	}
-
-	public boolean isVisibleForAll() {
-		return (folder.getVisibility()&DocRights.READ_ALL)>0;
-	}
-
-	public void setVisibleForAll(boolean visibleForAll) {
-		this.visibleForAll = visibleForAll;
 	}
 
 }
