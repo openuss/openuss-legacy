@@ -51,7 +51,8 @@ public class DistributionServiceImpl
     protected void handleAddMainFolder(org.openuss.lecture.Enrollment enrollment)
         throws java.lang.Exception
     {  
-		folderDao.buildSystemStructure(DocConstants.DISTRIBUTION, enrollment.getId().toString(),enrollment.getShortcut(), true);    
+		folderDao.buildSystemStructure(DocConstants.DISTRIBUTION, enrollment.getId().toString(),enrollment.getShortcut(), true);
+		logger.debug("added enrollment main folder");
 	}
 
     /**
@@ -109,6 +110,7 @@ public class DistributionServiceImpl
     {
     	BigFile bf = fileDao.getFile(file);
     	bf.setPath(targetFolder.getPath());
+    	bf.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ALL);
     	fileDao.setFile(bf);
     }
 

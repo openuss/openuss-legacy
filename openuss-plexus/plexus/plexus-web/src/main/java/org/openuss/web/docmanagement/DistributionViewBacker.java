@@ -49,7 +49,6 @@ public class DistributionViewBacker extends AbstractDocPage{
 	@Property(value="#{folderController}")
 	public FolderController folderController;
 
-
 	private static final Logger logger = Logger.getLogger(DistributionViewBacker.class);
 
 	/**

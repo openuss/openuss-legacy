@@ -39,6 +39,10 @@ public class FileDao extends ResourceDao {
 
 	public static Logger logger = Logger.getLogger(FileDao.class);
 
+	public MailSending mailSending;
+
+
+	
 	/**
 	 * getFile method retrieves a file object from given path and returns it
 	 * 
@@ -262,7 +266,6 @@ public class FileDao extends ResourceDao {
 	public void setFile(BigFile file) throws ResourceAlreadyExistsException,
 			DocManagementException {
 		try {
-			//FIXME trigger mail sending, dependent on visibility
 			if (systemFolder(file.getPath()+"/"+file.getName())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
 			Session session = login(repository);
 			String path = file.getPath();
@@ -279,6 +282,9 @@ public class FileDao extends ResourceDao {
 			if (areaType == DocConstants.WORKINGPLACE) {
 				setWorkingPlaceFile(node, file);
 			}
+			String id = path.substring(path.indexOf("/")+1);
+			if (id.indexOf("/")!=-1) id = id.substring(0, id.indexOf("/"));
+			mailSending.triggerMails(new Long(id),((file.getVisibility()&DocRights.READ_ALL)>0));
 			logout(session);
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
@@ -492,7 +498,6 @@ public class FileDao extends ResourceDao {
 	public void changeFile(BigFile file) throws ResourceAlreadyExistsException, SystemFolderException, 
 			DocManagementException {
 		try {
-			//FIXME trigger mail sending, dependent on visibility			
 			if (systemFolder(file.getPath())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
 			Session session = login(repository);
 			Node node = session.getRootNode();
@@ -506,7 +511,7 @@ public class FileDao extends ResourceDao {
 			node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
 			node.setProperty(DocConstants.PROPERTY_VISIBILITY, file.getVisibility());
 			//delete viewed property
-			if (node.hasProperty(DocConstants.PROPERTY_VIEWED)) node.setProperty(DocConstants.PROPERTY_VIEWED,(Value) null);	
+			if (node.hasProperty(DocConstants.PROPERTY_VIEWED)) node.setProperty(DocConstants.PROPERTY_VIEWED,new Value[0]);	
 			// nt:resource
 			node = node.getNode(DocConstants.JCR_CONTENT);
 			Calendar c2 = new GregorianCalendar();
@@ -524,6 +529,9 @@ public class FileDao extends ResourceDao {
 				}
 				session.move(node.getPath(), node.getParent().getPath() + "/"+ file.getName());
 			}
+			String id = path.substring(path.indexOf("/")+1);
+			if (id.indexOf("/")!=-1) id = id.substring(0, id.indexOf("/"));
+			mailSending.triggerMails(new Long(id),((file.getVisibility()&DocRights.READ_ALL)>0));			
 			logout(session);
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
@@ -804,5 +812,13 @@ public class FileDao extends ResourceDao {
 
 	public void setRepository(Repository repository) {
 		this.repository = repository;
+	}
+
+	public MailSending getMailSending() {
+		return mailSending;
+	}
+
+	public void setMailSending(MailSending mailSending) {
+		this.mailSending = mailSending;
 	}
 }

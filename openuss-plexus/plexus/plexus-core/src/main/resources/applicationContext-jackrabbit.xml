@@ -29,12 +29,13 @@
 	</bean>
 	<bean id="fileDao" class="org.openuss.docmanagement.FileDao" >
 		<property name="repository" ref="repository"></property>
+		<property name="mailSending" ref="mailSending"></property>
 	</bean>
 	<bean id="linkDao" class="org.openuss.docmanagement.LinkDao" >
 		<property name="repository" ref="repository"></property>
 		<property name="fileDao" ref="fileDao"></property>
 	</bean>
-
+	<bean id="mailSending" class="org.openuss.docmanagement.MailSendingImpl"></bean>
 	<bean id="distributionService" class="org.openuss.docmanagement.DistributionServiceImpl">
 		<property name="folderDao" ref="folderDao"></property>
 		<property name="fileDao" ref="fileDao"></property>		
