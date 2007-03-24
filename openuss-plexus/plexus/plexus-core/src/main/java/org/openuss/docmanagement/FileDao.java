@@ -263,7 +263,7 @@ public class FileDao extends ResourceDao {
 			DocManagementException {
 		try {
 			//FIXME trigger mail sending, dependent on visibility
-			if (systemFolder(file.getPath())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
+			if (systemFolder(file.getPath()+"/"+file.getName())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
 			Session session = login(repository);
 			String path = file.getPath();
 			if (path.startsWith("/"))
@@ -593,9 +593,9 @@ public class FileDao extends ResourceDao {
 		try {
 			if (delLinks) {
 				PropertyIterator pi = node.getReferences();
-				Node n;
+				Node n;				
 				while (pi.hasNext()) {
-					n = pi.nextProperty().getNode();
+					n = pi.nextProperty().getParent();
 					n.remove();
 				}
 				move2trash(node, 0);
@@ -605,8 +605,8 @@ public class FileDao extends ResourceDao {
 				Node parent;
 				File f = new FileImpl();
 				f = getFile(node.getPath());
-				while (pi.hasNext()) {
-					n = pi.nextProperty().getNode();
+				while (pi.hasNext()) {					
+					n = pi.nextProperty().getParent();
 					parent = n.getParent();
 					n.remove();
 					setDistributionFile(parent, getFile(f));

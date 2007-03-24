@@ -143,7 +143,7 @@ public class FolderDao extends ResourceDao {
 	 */
 	public void setFolder(Folder folder) throws SystemFolderException, ResourceAlreadyExistsException ,DocManagementException{
 		try {
-			if (systemFolder(folder.getPath())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
+			if (systemFolder(folder.getPath()+"/"+folder.getName())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
 			Session session = login(repository);
 			Node node = session.getRootNode();
 			String path = folder.getPath();
