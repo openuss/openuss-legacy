@@ -53,13 +53,15 @@
 				<h:outputLabel value="#{msg.newsitem_attachment}" for="attachment"	styleClass="field_label" />
 
 				<f:subview rendered="${!empty newsItem.attachment}">
-					<h:outputLink value="/openuss-plexus/files/#{sessionScope.newsItem.attachment.fileName}">
-						<f:param value="#{newsItem.attachment.id}" name="fileid" />
-						<h:graphicImage	value="/images/filetypes/#{sessionScope.newsItem.attachment.extension}.gif" />
-				  		#{sessionScope.newsItem.attachment.name} 
-				  	</h:outputLink>
-			  		&#160;
-			  		<h:commandButton value="delete" action="#{views$secured$lecture$newsedit.removeAttachment}" immediate="true" styleClass="button_remove"/><br/><br/>
+					<div class="content_font_normal">
+						<h:outputLink value="/openuss-plexus/files/#{sessionScope.newsItem.attachment.fileName}">
+							<f:param value="#{newsItem.attachment.id}" name="fileid" />
+							<h:graphicImage	value="/images/filetypes/#{sessionScope.newsItem.attachment.extension}.gif" />
+					  		#{sessionScope.newsItem.attachment.name} 
+					  	</h:outputLink>
+				  		&#160;
+				  		<h:commandButton value="delete" action="#{views$secured$lecture$newsedit.removeAttachment}" immediate="true" styleClass="button_remove"/><br/><br/>
+				  	</div>
 		  		</f:subview> 
 						
 				<t:inputFileUpload id="attachment" storage="file" accept="*" immediate="true" styleClass="uploadField">
