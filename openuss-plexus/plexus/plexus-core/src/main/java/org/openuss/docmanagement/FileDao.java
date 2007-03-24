@@ -54,52 +54,18 @@ public class FileDao extends ResourceDao {
 	 */
 	public File getFile(String path) throws NotAFileException,
 			DocManagementException {
-		systemFolder(path);
 		Session session;
 		FileImpl file;
 		try {
 			session = login(repository);
 			Node node = session.getRootNode();
-			if (path.startsWith("/"))
-				path = path.substring(1);
+			if (path.startsWith("/"))path = path.substring(1);
 			node = node.getNode(path);
 			if (!node.isNodeType(DocConstants.DOC_FILE)) {
 				logout(session);
 				throw new NotAFileException("Not a file");
 			}
-			String owner = "";
-			if (node.hasProperty(DocConstants.PROPERTY_OWNER))
-				owner = node.getProperty(DocConstants.PROPERTY_OWNER)
-						.getString();
-			ArrayList<String> viewed = new ArrayList<String>();
-			if (node.hasProperty(DocConstants.PROPERTY_VIEWED)){				
-			    Property viewers = node.getProperty(DocConstants.PROPERTY_VIEWED);
-			    try {
-			      viewed.add(viewers.getString());
-			    } catch (ValueFormatException e) {
-			      Value[] viewerValues = viewers.getValues();
-			      for (Value c : viewerValues) {
-			    	  viewed.add(c.getString());
-			      }
-			    }	
-			}
-			file = new FileImpl(new Timestamp(node.getProperty(
-					DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate()
-					.getTimeInMillis()), node.getUUID(), new Timestamp(node
-					.getNode(DocConstants.JCR_CONTENT).getProperty(
-							DocConstants.JCR_LASTMODIFIED).getDate()
-					.getTimeInMillis()), node
-					.getNode(DocConstants.JCR_CONTENT).getProperty(
-							DocConstants.JCR_DATA).getLength(), node.getProperty(
-					DocConstants.PROPERTY_MESSAGE).getString(), node.getNode(
-					DocConstants.JCR_CONTENT).getProperty(
-					DocConstants.JCR_MIMETYPE).getString(), node.getName(),
-					node.getPath(), null, 1, ((int) node.getProperty(
-							DocConstants.PROPERTY_VISIBILITY).getLong()), owner,
-							viewed.toArray(new String[0]), "");
-			file.setCreated(new Timestamp(node.getProperty(
-					DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
-			logout(session);
+			file = node2FileImpl(session, node);
 		} catch (NotAFileException e) {
 			throw e;
 		} catch (LoginException e) {
@@ -108,6 +74,72 @@ public class FileDao extends ResourceDao {
 			throw new DocManagementException("RepositoryException occured");
 		}
 		return file;
+	}
+
+	/**
+	 * convenience method, which extract the information of a node and return a fileImpl object representation
+	 * @param session
+	 * @param node
+	 * @return
+	 * @throws RepositoryException
+	 * @throws ValueFormatException
+	 * @throws PathNotFoundException
+	 * @throws UnsupportedRepositoryOperationException
+	 * @throws AccessDeniedException
+	 * @throws ItemExistsException
+	 * @throws ConstraintViolationException
+	 * @throws InvalidItemStateException
+	 * @throws VersionException
+	 * @throws LockException
+	 * @throws NoSuchNodeTypeException
+	 */
+	private FileImpl node2FileImpl(Session session, Node node) throws RepositoryException, ValueFormatException, PathNotFoundException, UnsupportedRepositoryOperationException, AccessDeniedException, ItemExistsException, ConstraintViolationException, InvalidItemStateException, VersionException, LockException, NoSuchNodeTypeException {
+		FileImpl file;
+		String owner = "";
+		if (node.hasProperty(DocConstants.PROPERTY_OWNER))
+			owner = node.getProperty(DocConstants.PROPERTY_OWNER).getString();
+		file = new FileImpl(
+				new Timestamp(node.getProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTimeInMillis()),
+				node.getUUID(), 
+				new Timestamp(node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_LASTMODIFIED).getDate().getTimeInMillis()),
+				node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_DATA).getLength(),
+				node.getProperty(DocConstants.PROPERTY_MESSAGE).getString(),
+				node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_MIMETYPE).getString(),
+				node.getName(),
+				node.getPath(), 
+				null, 
+				1, 
+				((int) node.getProperty(DocConstants.PROPERTY_VISIBILITY).getLong()), 
+				owner,
+				extractViewers(node).toArray(new String[0]), 
+				"");
+		file.setCreated(new Timestamp(node.getProperty(DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
+		logout(session);
+		return file;
+	}
+
+	/**
+	 * extracts all viewers of this node and returns a array list of usernames
+	 * @param node
+	 * @return
+	 * @throws RepositoryException
+	 * @throws PathNotFoundException
+	 * @throws ValueFormatException
+	 */
+	private ArrayList<String> extractViewers(Node node) throws RepositoryException, PathNotFoundException, ValueFormatException {
+		ArrayList<String> viewed = new ArrayList<String>();
+		if (node.hasProperty(DocConstants.PROPERTY_VIEWED)){				
+		    Property viewers = node.getProperty(DocConstants.PROPERTY_VIEWED);
+		    try {
+		      viewed.add(viewers.getString());
+		    } catch (ValueFormatException e) {
+		      Value[] viewerValues = viewers.getValues();
+		      for (Value c : viewerValues) {
+		    	  viewed.add(c.getString());
+		      }
+		    }	
+		}
+		return viewed;
 	}
 
 	/**
@@ -120,79 +152,103 @@ public class FileDao extends ResourceDao {
 	 * @throws RepositoryException
 	 */
 	public BigFile getFile(File file) throws DocManagementException {
-		//FIXME split method
 		Session session;
 		BigFileImpl fi = new BigFileImpl();
 		try {
 			session = login(repository);
 			Node node = session.getNodeByUUID(file.getId());
-			FileImpl pred = new FileImpl();
-			String owner = "";
-			if (node.hasProperty(DocConstants.PROPERTY_OWNER))
-				owner = node.getProperty(DocConstants.PROPERTY_OWNER)
-						.getString();
-			fi = new BigFileImpl(new Timestamp(node.getProperty(
-					DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate()
-					.getTimeInMillis()), node.getUUID(), new Timestamp(node
-					.getNode(DocConstants.JCR_CONTENT).getProperty(
-							DocConstants.JCR_LASTMODIFIED).getDate()
-					.getTimeInMillis()), 0, node.getProperty(
-					DocConstants.PROPERTY_MESSAGE).getString(), node.getNode(
-					DocConstants.JCR_CONTENT).getProperty(
-					DocConstants.JCR_MIMETYPE).getString(), node.getName(),
-					node.getPath(), pred, 1, ((int) node.getProperty(
-							DocConstants.PROPERTY_VISIBILITY).getLong()), node
-							.getNode(DocConstants.JCR_CONTENT).getProperty(
-									DocConstants.JCR_DATA).getStream(), owner);
-			ArrayList<String> viewed = new ArrayList<String>();
-			Value[] viewerValues=null;
-			if (node.hasProperty(DocConstants.PROPERTY_VIEWED)){				
-			    Property viewers = node.getProperty(DocConstants.PROPERTY_VIEWED);
-			    try {
-			      viewed.add(viewers.getString());
-			    } catch (ValueFormatException e) {
-			      viewerValues = viewers.getValues();
-			      for (Value c : viewerValues) {
-			    	  viewed.add(c.getString());
-			      }
-			    }	
+			fi = node2BigFileImpl(node);
+			//old versions have no jcr:created property 
+			if (node.hasProperty(DocConstants.JCR_CREATED)){
+				fi.setCreated(new Timestamp(node.getProperty(DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
 			}
-			fi.setViewed(viewed.toArray(new String[0]));
-			try{
-				fi.setCreated(new Timestamp(node.getProperty(
-					DocConstants.JCR_CREATED).getDate().getTimeInMillis()));
-			} catch (Exception e){
-				//JCR_CREATED is not saved in old versions
+			// visbility changes only can be saved, if nodes are not versionable, or every view would create a new version 
+			if (getAreaType(node).equals(DocConstants.DISTRIBUTION)){
+				handleVisibilityChanges(file, session, fi, node);			
 			}
-			try{
-				Iterator i = viewed.iterator();
-				boolean hasViewed = false;				
-				while (i.hasNext()){
-					if (((String)i.next()).equals(file.getViewer())) hasViewed = true;
-				}
-				if (!hasViewed){
-					ValueFactory vf = session.getValueFactory();					
-					Value v = vf.createValue(file.getViewer());					
-					ArrayList<Value> valueList = new ArrayList<Value>();
-					if (viewerValues!=null){
-						for (int j = 0; j < viewerValues.length; j++) valueList.add(viewerValues[j]);
-					}
-					valueList.add(v);
-					Value[] v2 = valueList.toArray(new Value[0]);
-					node.setProperty(DocConstants.PROPERTY_VIEWED, v2);					
-				}
-			}catch (Exception e){
-				//TODO not ignore all exceptions
-				// old versions cannot be written, and are not handled
-				logger.debug(node.getPath());
-				logger.debug("ERROR:",e);
-			}			
 			logout(session);
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {
 			throw new DocManagementException("RepositoryException occured");
 		}
+		return fi;
+	}
+
+	/**
+	 * if file is in a distribution file, system keeps information, if user has viewed a file or not. this is handled by this method
+	 * @param file
+	 * @param session
+	 * @param fi
+	 * @param node
+	 * @throws RepositoryException
+	 * @throws PathNotFoundException
+	 * @throws ValueFormatException
+	 */
+	private void handleVisibilityChanges(File file, Session session, BigFileImpl fi, Node node) throws RepositoryException, PathNotFoundException, ValueFormatException {
+		//get list of user, who have viewed the document
+		ArrayList<String> viewed = new ArrayList<String>();
+		Value[] viewerValues=null;
+		if (node.hasProperty(DocConstants.PROPERTY_VIEWED)){				
+		    Property viewers = node.getProperty(DocConstants.PROPERTY_VIEWED);
+		    try {
+		      viewed.add(viewers.getString());
+		    } catch (ValueFormatException e) {
+		      viewerValues = viewers.getValues();
+		      for (Value c : viewerValues) {
+		    	  viewed.add(c.getString());
+		      }
+		    }	
+		}
+		fi.setViewed(viewed.toArray(new String[0]));
+		//check if user has viewed document, if not, add him to list
+		Iterator i = viewed.iterator();
+		boolean hasViewed = false;				
+		while (i.hasNext()){
+			if (((String)i.next()).equals(file.getViewer())) hasViewed = true;
+		}
+		if (!hasViewed){
+			ValueFactory vf = session.getValueFactory();					
+			Value v = vf.createValue(file.getViewer());					
+			ArrayList<Value> valueList = new ArrayList<Value>();
+			if (viewerValues!=null){
+				for (int j = 0; j < viewerValues.length; j++) valueList.add(viewerValues[j]);
+			}
+			valueList.add(v);
+			Value[] v2 = valueList.toArray(new Value[0]);
+			node.setProperty(DocConstants.PROPERTY_VIEWED, v2);					
+		}		
+	}
+
+	/**
+	 * convenience method which returns the BigFileImpl representation of give node
+	 * @param node
+	 * @return
+	 * @throws RepositoryException
+	 * @throws ValueFormatException
+	 * @throws PathNotFoundException
+	 * @throws UnsupportedRepositoryOperationException
+	 */
+	private BigFileImpl node2BigFileImpl(Node node) throws RepositoryException, ValueFormatException, PathNotFoundException, UnsupportedRepositoryOperationException {
+		BigFileImpl fi;
+		String owner = "";
+		if (node.hasProperty(DocConstants.PROPERTY_OWNER))
+			owner = node.getProperty(DocConstants.PROPERTY_OWNER)
+					.getString();
+		fi = new BigFileImpl(
+				new Timestamp(node.getProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTimeInMillis()), 
+				node.getUUID(),
+				new Timestamp(node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_LASTMODIFIED).getDate().getTimeInMillis()), 
+				node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_DATA).getLength(), 
+				node.getProperty(DocConstants.PROPERTY_MESSAGE).getString(),
+				node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_MIMETYPE).getString(), 
+				node.getName(),
+				node.getPath(), 
+				null,
+				1, 
+				((int) node.getProperty(DocConstants.PROPERTY_VISIBILITY).getLong()), 
+				node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_DATA).getStream(),
+				owner);
 		return fi;
 	}
 
@@ -208,7 +264,9 @@ public class FileDao extends ResourceDao {
 	public void setFile(BigFile file) throws ResourceAlreadyExistsException,
 			DocManagementException {
 		try {
+			//FIXME trigger mail sending, dependent on visibility
 			//FIXME del viewed property if existing
+			//FIXME check for system folder
 			Session session = login(repository);
 			String path = file.getPath();
 			if (path.startsWith("/"))
@@ -338,14 +396,7 @@ public class FileDao extends ResourceDao {
 	 * @param node
 	 * @param file
 	 * @throws ResourceAlreadyExistsException
-	 * @throws RepositoryException
-	 * @throws ConstraintViolationException
-	 * @throws VersionException
-	 * @throws LockException
-	 * @throws NoSuchNodeTypeException
-	 * @throws PathNotFoundException
-	 * @throws ItemExistsException
-	 * @throws Exception
+	 * @throws DocManagementException 
 	 */
 	private void setDistributionFile(Node node, BigFile file)
 			throws ResourceAlreadyExistsException, DocManagementException {
@@ -447,7 +498,9 @@ public class FileDao extends ResourceDao {
 	public void changeFile(BigFile file) throws ResourceAlreadyExistsException,
 			DocManagementException {
 		try {
+			//FIXME trigger mail sending, dependent on visibility			
 			//FIXME delete viewed property
+			//FIXME check for system folder
 			Session session = login(repository);
 			Node node = session.getRootNode();
 			String path = file.getPath();
@@ -508,6 +561,7 @@ public class FileDao extends ResourceDao {
 	public void delFile(File file, boolean delLinks) throws NotAFileException,
 			ResourceAlreadyExistsException, DocManagementException {
 		try {
+			//FIXME check for system folder
 			Session session = login(repository);
 			String path = file.getPath();
 			if (path.startsWith("/"))
@@ -517,9 +571,10 @@ public class FileDao extends ResourceDao {
 			if (areaType == DocConstants.DISTRIBUTION) {
 				delDistributionFile(node, delLinks);
 			}
-			if (areaType == DocConstants.EXAMAREA) {
-			}
 			if (areaType == DocConstants.WORKINGPLACE) {
+			}
+			if (areaType == DocConstants.EXAMAREA) {
+				// no support for delete planned
 			}
 			logout(session);
 
@@ -649,7 +704,7 @@ public class FileDao extends ResourceDao {
 				return DocConstants.EXAMAREA;
 			if (path.startsWith(DocConstants.WORKINGPLACE))
 				return DocConstants.WORKINGPLACE;
-			return null;
+			return "";
 		} catch (RepositoryException e) {
 			throw new DocManagementException("RepositoryException occured");
 		}
@@ -716,6 +771,7 @@ public class FileDao extends ResourceDao {
 	 * @throws DocManagementException
 	 */
 	public List getVersions(File file) throws DocManagementException {
+		//TODO think about splitting
 		List l = new ArrayList();
 		try {
 			Session session = login(repository);
@@ -745,18 +801,7 @@ public class FileDao extends ResourceDao {
 						int visibility = ((int) node.getProperty(DocConstants.PROPERTY_VISIBILITY).getLong());
 						long length =  node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_DATA).getLength();
 						
-						ArrayList<String> viewed = new ArrayList<String>();
-						if (node.hasProperty(DocConstants.PROPERTY_VIEWED)){				
-						    Property viewers = node.getProperty(DocConstants.PROPERTY_VIEWED);
-						    try {
-						      viewed.add(viewers.getString());
-						    } catch (ValueFormatException e) {
-						      Value[] viewerValues = viewers.getValues();
-						      for (Value c : viewerValues) {
-						    	  viewed.add(c.getString());
-						      }
-						    }	
-						}						
+						ArrayList<String> viewed = extractViewers(node);						
 						File f = new FileImpl(distTime, node.getUUID(), lastMod, length,message, mimeType, "", pathToVersion, null, versionnumber, visibility, owner, viewed.toArray(new String[0]), "");
 						l.add(f);
 					}	

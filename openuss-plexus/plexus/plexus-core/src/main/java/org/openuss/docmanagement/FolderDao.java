@@ -52,8 +52,7 @@ public class FolderDao extends ResourceDao {
 	 * @throws  
 	 */
 	public Folder getFolder(String path) throws PathNotFoundException, NotAFolderException, NotAFileException, DocManagementException{
-		FolderImpl fi;
-		systemFolder(path);
+		FolderImpl fi;		
 		try {
 			Session session = login(repository);
 			Node node = session.getRootNode();
@@ -146,6 +145,7 @@ public class FolderDao extends ResourceDao {
 	 */
 	public void setFolder(Folder folder) throws ResourceAlreadyExistsException ,DocManagementException{
 		try {
+			//FIXME check for system folder
 			Session session = login(repository);
 			Node node = session.getRootNode();
 			String path = folder.getPath();
@@ -180,6 +180,7 @@ public class FolderDao extends ResourceDao {
 	 */
 	public void changeFolder(Folder folder) throws PathNotFoundException, ResourceAlreadyExistsException, DocManagementException  {
 		try {
+			//FIXME check for system folder
 			Session session = login(repository);
 			Node node = session.getRootNode();
 			if (folder.getPath()!="") node = node.getNode(folder.getPath().substring(1));
@@ -215,6 +216,7 @@ public class FolderDao extends ResourceDao {
 	 */
 	public void remove(Folder folder) throws PathNotFoundException, DocManagementException{
 		try {
+			//FIXME check for system folder
 			Session session = login(repository);
 			String path = folder.getPath();
 			if (path.startsWith("/")) path = path.substring(1);
@@ -228,7 +230,7 @@ public class FolderDao extends ResourceDao {
 		}		
 	}
 	
-	
+	/*
 	
 	public void setDeadline(ExamArea ea) throws DocManagementException{
 		try {
@@ -298,7 +300,7 @@ public class FolderDao extends ResourceDao {
 		if (v.size() > 0)
 		eai.setSubnodes(v);
 	}
-	
+	*/
 	public Repository getRepository() {
 		return repository;
 	}
