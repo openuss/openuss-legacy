@@ -218,6 +218,14 @@ span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:
   width: 180px;
 }
 
+li.nav_item > ul.navigation {
+  list-style-type: none;
+  margin: 0; 
+  padding: 0;
+  height: 0;
+} 
+
+
 .navigation {
   width: 180px;
   margin: 0;
