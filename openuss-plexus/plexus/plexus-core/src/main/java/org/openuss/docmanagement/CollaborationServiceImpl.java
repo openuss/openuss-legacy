@@ -40,17 +40,7 @@ public class CollaborationServiceImpl
 
 	@Override
 	protected void handleAddWorkingPlace(Enrollment enrollment) throws Exception {
-		Folder folder = folderDao.getFolder(DocConstants.WORKINGPLACE);    		
-		//add faculty main folder to distribution part of repository
-		Folder enrollmentMain = new FolderImpl(enrollment.getShortcut(), enrollment.getId().toString(), folder.getPath(), null, DocRights.READ_ALL|DocRights.EDIT_ALL);
-		try{
-			folderDao.setFolder(enrollmentMain);
-		} catch (ResourceAlreadyExistsException e){
-		}
-		//set trashfolder
-		String mainPath = DocConstants.WORKINGPLACE+"/"+enrollment.getId().toString();
-		Folder trash = new FolderImpl(DocConstants.TRASH_NAME, DocConstants.TRASH_NAME, mainPath, null, DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
-		folderDao.setFolder(trash);			
+		folderDao.buildSystemStructure(DocConstants.WORKINGPLACE, enrollment.getId().toString(),enrollment.getShortcut(), true);
 	}
 
 	@Override

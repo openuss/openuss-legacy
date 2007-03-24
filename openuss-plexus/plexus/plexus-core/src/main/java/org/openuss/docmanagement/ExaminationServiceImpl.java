@@ -5,7 +5,6 @@
  */
 package org.openuss.docmanagement;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
@@ -33,15 +32,7 @@ public class ExaminationServiceImpl
 	
 	@Override
 	protected void handleAddExamArea(Enrollment enrollment) throws Exception {		
-		Folder folder = folderDao.getFolder(DocConstants.EXAMAREA);    		
-		//add faculty main folder to distribution part of repository
-		Folder enrollmentMain = new FolderImpl(enrollment.getShortcut(), enrollment.getId().toString(), folder.getPath(), null, DocRights.READ_ALL|DocRights.EDIT_ALL);
-		//Set deadline now + 6 weeks
-		try{
-			folderDao.setFolder(enrollmentMain);
-		} catch (ResourceAlreadyExistsException e){
-		}
-		examAreaDao.setDeadline(new Timestamp(System.currentTimeMillis()+ 1000*60*60*24*7*6), "/"+DocConstants.EXAMAREA+"/"+enrollment.getId().toString());
+		folderDao.buildSystemStructure(DocConstants.EXAMAREA, enrollment.getId().toString(),enrollment.getShortcut(), false);
 		logger.debug("main folder for enrollment added to repository");
 	}
 

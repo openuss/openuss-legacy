@@ -1,6 +1,8 @@
 package org.openuss.docmanagement;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Vector;
 import javax.jcr.LoginException;
 import javax.jcr.NodeIterator;
@@ -222,6 +224,39 @@ public class FolderDao extends ResourceDao {
 		} catch (RepositoryException e) {
 			throw new  DocManagementException("RepositoryException occured");
 		}		
+	}
+	
+	public void buildSystemStructure(String area, String id, String message, boolean trash) throws ResourceAlreadyExistsException, DocManagementException{
+		try {
+			Session session = login(repository);
+			Node node = session.getRootNode();		
+			node = node.getNode(area);
+
+			if (node.hasNode(id)) {
+				logout(session);
+				throw new ResourceAlreadyExistsException ("Folder already exists");
+			}
+			node.addNode(id , DocConstants.DOC_FOLDER);
+			node = node.getNode(id);
+			node.setProperty(DocConstants.PROPERTY_MESSAGE, message);
+			node.setProperty(DocConstants.PROPERTY_VISIBILITY, DocRights.READ_ALL|DocRights.EDIT_ALL);
+			session.save();
+			if (area.equals(DocConstants.EXAMAREA)){
+				Calendar c = new GregorianCalendar();
+				c.setTimeInMillis(System.currentTimeMillis()+ 1000*60*60*24*7*6);
+				node.setProperty(DocConstants.PROPERTY_DEADLINE, c);
+			}
+			if(trash){
+				node.addNode(DocConstants.TRASH_NAME, DocConstants.DOC_FOLDER);
+				node = node.getNode(DocConstants.TRASH_NAME);
+				node.setProperty(DocConstants.PROPERTY_MESSAGE, "");
+				node.setProperty(DocConstants.PROPERTY_VISIBILITY, DocRights.READ_ASSIST|DocRights.EDIT_ASSIST);
+			}
+			
+			logout(session);
+		} catch (RepositoryException e) {
+			throw new  DocManagementException("RepositoryException occured");
+		}
 	}
 	
 

@@ -51,16 +51,8 @@ public class DistributionServiceImpl
     protected void handleAddMainFolder(org.openuss.lecture.Enrollment enrollment)
         throws java.lang.Exception
     {  
-    		Folder folder = folderDao.getFolder(DocConstants.DISTRIBUTION);    		
-    		//add faculty main folder to distribution part of repository
-    		Folder enrollmentMain = new FolderImpl(enrollment.getShortcut(), enrollment.getId().toString(), folder.getPath(), null, DocRights.READ_ALL|DocRights.EDIT_ALL);
-    		folderDao.setFolder(enrollmentMain);
-    		//set trashfolder
-    		String mainPath = DocConstants.DISTRIBUTION+"/"+enrollment.getId().toString();
-    		Folder trash = new FolderImpl(DocConstants.TRASH_NAME, DocConstants.TRASH_NAME, mainPath, null, DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
-    		folderDao.setFolder(trash);		
-    		logger.debug("main folder for enrollmoent added to repository");
-    }
+		folderDao.buildSystemStructure(DocConstants.DISTRIBUTION, enrollment.getId().toString(),enrollment.getShortcut(), true);    
+	}
 
     /**
      * @see org.openuss.docmanagement.DistributionService#addFolder(org.openuss.docmanagement.Folder)
@@ -77,19 +69,7 @@ public class DistributionServiceImpl
     protected void handleAddFacultyFolder(org.openuss.lecture.Faculty faculty)
         throws java.lang.Exception
     {
-      try{ 
-  		Folder folder = folderDao.getFolder(DocConstants.DISTRIBUTION);    		
-		//add faculty main folder to distribution part of repository
-		Folder enrollmentMain = new FolderImpl(faculty.getShortcut(), faculty.getId().toString(), folder.getPath(), null, DocRights.READ_ALL|DocRights.EDIT_ALL);
-		folderDao.setFolder(enrollmentMain);
-		//set trashfolder
-		String mainPath = DocConstants.DISTRIBUTION+"/"+faculty.getId().toString();
-		Folder trash = new FolderImpl(DocConstants.TRASH_NAME, DocConstants.TRASH_NAME, mainPath, null, DocRights.EDIT_ASSIST|DocRights.READ_ASSIST);
-		folderDao.setFolder(trash);		
-		logger.debug("main folder for faculty added to repository");
-	} catch (Exception e) {
-	}
-        
+  		folderDao.buildSystemStructure(DocConstants.DISTRIBUTION, faculty.getId().toString(), faculty.getShortcut(), true);
     }
 
 
