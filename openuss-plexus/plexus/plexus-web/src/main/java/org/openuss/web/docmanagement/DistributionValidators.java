@@ -14,15 +14,18 @@ import org.apache.shale.tiger.register.FacesValidator;
  */
 @FacesValidator(value="checkResourceNameValidator")
 public class DistributionValidators extends ExceptionHandler implements Validator {
-	public static final String allowed ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789äöüßÄÖÜ-_.";	
+	public static final String allowed ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789äöüßÄÖÜ-_. ";	
 	
 	public boolean checkResource(String resource){		
 		if (resource==null) return false;
 		if (resource.length()==0) return false;
 		if (resource.endsWith(".")) return false;
+		if (resource.endsWith(" ")) return false;
+		if (resource.startsWith(" ")) return false;
 		for (int i = 0; i < resource.length(); i++){
 			if (allowed.indexOf(resource.charAt(i))==-1) return false;
 			if (resource.charAt(i)=='.') if (resource.charAt(i+1)=='.') return false;
+			if (resource.charAt(i)==' ') if (resource.charAt(i+1)==' ') return false;
 		}
 		return true;	
 	}
