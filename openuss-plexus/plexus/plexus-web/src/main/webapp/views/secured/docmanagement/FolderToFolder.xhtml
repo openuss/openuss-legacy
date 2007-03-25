@@ -41,8 +41,8 @@
 					</tr>
 				</table>
 				<o:block>
-					<h:commandButton action="#{folder2Folder.link}" value="#{msg.doc_dist_copy_button_link}"></h:commandButton>
-					<h:commandButton action="#{folder2Folder.copy}" value="#{msg.doc_dist_copy_button_copy}"></h:commandButton>
+					<h:commandButton action="#{folder2Folder.link}" value="#{msg.doc_dist_copy_button_link}" rendered="#{not empty folder2Folder.sourcePath and not empty folder2Folder.targetPath}"></h:commandButton>
+					<h:commandButton action="#{folder2Folder.copy}" value="#{msg.doc_dist_copy_button_copy}" rendered="#{not empty folder2Folder.sourcePath and not empty folder2Folder.targetPath}"></h:commandButton>
 				</o:block>
 			</h:form>
 		</ui:define>
