@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	
+	<!-- Repository is accessed directly, tests use another repository 
+	     location and do not use authentication -->
+
+	<!-- normal repository -->
+	<bean id="repo"
+		class="org.springmodules.jcr.jackrabbit.RepositoryFactoryBean">
+		<!-- normal factory beans params -->
+		<property name="configuration"
+			value="classpath:jackrabbit-repo-test.xml" />
+		<property name="homeDir" value="file:./target/test-repo" />
+	</bean>
+ 
+	<bean id="jcrSessionFactory"
+		class="org.springmodules.jcr.JcrSessionFactory" singleton="true">
+		<property name="repository" ref="repo" />
+		<property name="credentials">
+			<bean class="javax.jcr.SimpleCredentials">
+				<constructor-arg index="0" value="username" />
+				<!-- create the credentials using a bean factory -->
+				<constructor-arg index="1">
+					<bean factory-bean="password"
+						factory-method="toCharArray" />
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- create the password to return it as a char[] -->
+	<bean id="password" class="java.lang.String">
+		<constructor-arg index="0" value="password" />
+	</bean>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		DocManagement
+		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<bean name="docTestUtility" class="org.openuss.docmanagement.DocTestUtility">
+		<property name="folderDao" ref="folderDao"></property>
+		<property name="fileDao" ref="fileDao"></property>
+		<property name="linkDao" ref="linkDao"></property>
+		<property name="examAreaDao" ref="examAreaDao"></property>
+		<property name="workingPlaceDao" ref="workingPlaceDao"></property>
+		<property name="jcrSessionFactory" ref="jcrSessionFactory"></property>
+	</bean>
+	<bean id="mailSending" class="org.openuss.docmanagement.MailSendingImpl">
+	</bean>
+	<bean id="folderDao" class="org.openuss.docmanagement.FolderDao" singleton="false">
+		<property name="sessionFactory" ref="jcrSessionFactory"></property>
+		<property name="fileDao" ref="fileDao"></property>
+		<property name="linkDao" ref="linkDao"></property>
+	</bean>
+	<bean id="workingPlaceDao" class="org.openuss.docmanagement.WorkingPlaceDao" singleton="false">
+		<property name="fileDao" ref="fileDao"></property>
+		<property name="folderDao" ref="folderDao"></property>
+	</bean>
+	<bean id="examAreaDao" class="org.openuss.docmanagement.ExamAreaDao" singleton="false">
+		<property name="sessionFactory" ref="jcrSessionFactory"></property>
+		<property name="fileDao" ref="fileDao"></property>
+	</bean>
+	<bean id="fileDao" class="org.openuss.docmanagement.FileDao" singleton="false">
+		<property name="sessionFactory" ref="jcrSessionFactory"></property>
+		<property name="mailSending" ref="mailSending"></property>		
+	</bean>
+	<bean id="linkDao" class="org.openuss.docmanagement.LinkDao" singleton="false">
+		<property name="sessionFactory" ref="jcrSessionFactory"></property>
+		<property name="fileDao" ref="fileDao"></property>
+	</bean>
+	<bean id="fileDaoTest" class="org.openuss.docmanagement.FileDaoTest">
+		<property name="fileDao" ref="fileDao"></property>
+		<property name="docTestUtility" ref="docTestUtility"></property>
+	</bean>
+
+</beans>

@@ -65,6 +65,11 @@
 	<classpathentry kind="var" path="M2_REPO/org/apache/jackrabbit/jackrabbit-core/1.2.1/jackrabbit-core-1.2.1.jar" sourcepath="/M2_REPO/jackrabbit-1.2.3-src.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/jackrabbit/jackrabbit-api/1.2.1/jackrabbit-api-1.2.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/jackrabbit/jackrabbit-jcr-rmi/1.2.1/jackrabbit-jcr-rmi-1.2.1.jar"/>
+	
+	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-log4j12/1.0/slf4j-log4j12-1.0.jar"></classpathentry>
+	<classpathentry kind="var" path="M2_REPO/concurrent/concurrent/1.3.4/concurrent-1.3.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.1/commons-collections-3.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/lucene/lucene-core/2.0.0/lucene-core-2.0.0.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/framework-core"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

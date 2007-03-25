@@ -1,0 +1,20 @@
+<doc = 'http://www.openuss.org/doc'>
+<nt = 'http://www.jcp.org/jcr/nt/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+[doc:folder] > nt:folder, mix:referenceable
+- doc:visibility (long) mandatory
+- doc:message (string) mandatory
+- doc:deadline (date)
+
+[doc:file] > nt:file, mix:referenceable
+- doc:visibility (long) mandatory
+- doc:message (string) mandatory
+- doc:distributionTime (date) mandatory
+- doc:owner (string) 
+- doc:viewed (string) multiple
+
+[doc:link] > nt:hierarchyNode
+- doc:reference (reference) mandatory
+- doc:visibility (long) mandatory
+- doc:message (string) mandatory
+- doc:distributionTime (date) mandatory

@@ -265,8 +265,8 @@ public class FileDao extends ResourceDao {
 	 */
 	public void setFile(BigFile file) throws ResourceAlreadyExistsException,
 			DocManagementException {
+		if (systemFolder(file.getPath()+"/"+file.getName())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
 		try {
-			if (systemFolder(file.getPath()+"/"+file.getName())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
 			String path = file.getPath();
 			if (path.startsWith("/"))
 				path = path.substring(1);
