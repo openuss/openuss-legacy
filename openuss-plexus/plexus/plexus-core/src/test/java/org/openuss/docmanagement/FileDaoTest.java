@@ -7,16 +7,11 @@ package org.openuss.docmanagement;
 
 import java.sql.Timestamp;
 
+import javax.jcr.PathNotFoundException;
+
 import org.apache.log4j.Logger;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
-/**
- * JUnit Test for Spring Hibernate LectureService class.
- * 
- * @see org.openuss.lecture.LectureService
- * 
- * @author Ingo Düppe
- */
 public class FileDaoTest extends AbstractTransactionalDataSourceSpringContextTests{
 	/**
 	 * Logger for this class
@@ -38,16 +33,7 @@ public class FileDaoTest extends AbstractTransactionalDataSourceSpringContextTes
 
 	
 	public void testSetFileGetFile(){
-		docTestUtility.setUp();
-		long enrollmentId = System.currentTimeMillis();		
-		String enrollment = (new Long(enrollmentId)).toString();
-		docTestUtility.addEnrollment(enrollmentId);
-		String fileName = (new Long(System.currentTimeMillis())).toString();
-		byte[] a = { 1, 2, 3, 4 };		
-		BigFile file = new BigFileImpl(
-				new Timestamp(1), new Timestamp(2), 1, "testMessage",
-				"mimeType", fileName, DocConstants.DISTRIBUTION+"/"+enrollment, null, 
-				1, 1, new java.io.ByteArrayInputStream(a), "testOwner");
+		BigFile file = startUp();
 		try {
 			fileDao.setFile(file);
 		} catch (ResourceAlreadyExistsException e) {
@@ -86,6 +72,20 @@ public class FileDaoTest extends AbstractTransactionalDataSourceSpringContextTes
 		if (!bf.getOwner().equals(bf.getOwner())) fail();
 		docTestUtility.tearDown();		
 	}
+
+	private BigFile startUp() {
+		docTestUtility.setUp();
+		long enrollmentId = System.currentTimeMillis();		
+		String enrollment = (new Long(enrollmentId)).toString();
+		docTestUtility.addEnrollment(enrollmentId);
+		String fileName = (new Long(System.currentTimeMillis())).toString();
+		byte[] a = { 1, 2, 3, 4 };		
+		BigFile file = new BigFileImpl(
+				new Timestamp(1), new Timestamp(2), 1, "testMessage",
+				"mimeType", fileName, DocConstants.DISTRIBUTION+"/"+enrollment, null, 
+				1, 1, new java.io.ByteArrayInputStream(a), "testOwner");
+		return file;
+	}
 	
 	
 	public void testSetSystemFile(){		
@@ -122,6 +122,69 @@ public class FileDaoTest extends AbstractTransactionalDataSourceSpringContextTes
 	}
 	
 
+	public void testGetOwner(){
+		BigFile file = startUp();
+		try {
+			fileDao.setFile(file);
+		} catch (SystemFolderException e) {				
+		} catch (DocManagementException e) {
+			fail();
+		}		
+		file.setPath(file.getPath()+"/"+file.getName());
+		try {
+			if (!file.getOwner().equals(fileDao.getOwner(file))) fail();
+		} catch (PathNotFoundException e) {
+			fail();
+		} catch (DocManagementException e) {
+			fail();
+		}
+		
+	}
+	
+	public void testDelete(){
+		docTestUtility.setUp();
+		long enrollmentId = System.currentTimeMillis();	
+		String enrollment = (new Long(enrollmentId)).toString();			
+		docTestUtility.addEnrollment(enrollmentId);
+		String fileName = (new Long(System.currentTimeMillis())).toString();
+		byte[] a = { 1, 2, 3, 4 };		
+		BigFile file = new BigFileImpl(
+				new Timestamp(1), new Timestamp(2), 1, "testMessage",
+				"mimeType", fileName, DocConstants.DISTRIBUTION+"/"+enrollment, null, 
+				1, 1, new java.io.ByteArrayInputStream(a), "testOwner");
+		try {
+			fileDao.setFile(file);
+		} catch (SystemFolderException e) {				
+		} catch (DocManagementException e) {
+			fail();
+		}
+		file.setPath(file.getPath()+"/"+file.getName());
+		try {
+			fileDao.delFile(file, true);
+		} catch (NotAFileException e) {
+			fail();
+		} catch (ResourceAlreadyExistsException e) {
+			fail();
+		} catch (SystemFolderException e) {
+			fail();
+		} catch (DocManagementException e) {
+			fail();
+		}
+		try {
+			File file2 = fileDao.getFile(file);
+			fail();
+		} catch (DocManagementException e) {			
+		}
+		file.setPath(DocConstants.DISTRIBUTION+"/"+enrollment+"/"+DocConstants.TRASH_NAME+"/"+file.getName());
+		try {
+			File file3 = fileDao.getFile(file);
+		} catch (DocManagementException e) {
+			fail();
+		}
+		docTestUtility.tearDown();
+	}
+	
+	
 	
 	
 	

@@ -158,7 +158,7 @@ public class FileDao extends ResourceDao {
 	public BigFile getFile(File file) throws DocManagementException {
 		BigFileImpl fi = new BigFileImpl();
 		try {
-			Node node = session.getNodeByUUID(file.getId());
+			Node node = session.getRootNode().getNode(file.getPath());
 			fi = node2BigFileImpl(node);
 			//old versions have no jcr:created property 
 			if (node.hasProperty(DocConstants.JCR_CREATED)){
@@ -189,6 +189,7 @@ public class FileDao extends ResourceDao {
 	 */
 	private void handleVisibilityChanges(File file, Session session, BigFileImpl fi, Node node) throws RepositoryException, PathNotFoundException, ValueFormatException {
 		//get list of user, who have viewed the document
+		if (file.getViewer()==null) file.setViewer("");
 		ArrayList<String> viewed = new ArrayList<String>();
 		Value[] viewerValues=null;
 		if (node.hasProperty(DocConstants.PROPERTY_VIEWED)){				
@@ -477,6 +478,7 @@ public class FileDao extends ResourceDao {
 		node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
 		node.setProperty(DocConstants.PROPERTY_VISIBILITY, file
 						.getVisibility());
+		if ((file.getOwner()!=null)&&(file.getOwner()!="")) node.setProperty(DocConstants.PROPERTY_OWNER, file.getOwner());
 		// nt:resource Knoten, der die eigentlich Datei enthaelt
 		node.addNode(DocConstants.JCR_CONTENT, DocConstants.NT_RESOURCE);
 		node = node.getNode(DocConstants.JCR_CONTENT);
@@ -728,7 +730,6 @@ public class FileDao extends ResourceDao {
 			throw new DocManagementException("RepositoryException occured");
 		}
 	}
-
 	/**
 	 * returns the owner of a file
 	 * @param file
