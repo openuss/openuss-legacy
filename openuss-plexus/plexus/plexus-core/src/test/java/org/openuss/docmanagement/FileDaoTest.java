@@ -119,6 +119,7 @@ public class FileDaoTest extends AbstractTransactionalDataSourceSpringContextTes
 			} catch (DocManagementException e) {
 				fail();
 			}
+			docTestUtility.tearDown();
 	}
 	
 
@@ -138,7 +139,7 @@ public class FileDaoTest extends AbstractTransactionalDataSourceSpringContextTes
 		} catch (DocManagementException e) {
 			fail();
 		}
-		
+		docTestUtility.tearDown();
 	}
 	
 	public void testDelete(){
@@ -184,8 +185,83 @@ public class FileDaoTest extends AbstractTransactionalDataSourceSpringContextTes
 		docTestUtility.tearDown();
 	}
 	
-	
-	
+	public void testRemove(){
+		docTestUtility.setUp();
+		long enrollmentId = System.currentTimeMillis();	
+		String enrollment = (new Long(enrollmentId)).toString();			
+		docTestUtility.addEnrollment(enrollmentId);
+		String fileName = (new Long(System.currentTimeMillis())).toString();
+		byte[] a = { 1, 2, 3, 4 };		
+		BigFile file = new BigFileImpl(
+				new Timestamp(1), new Timestamp(2), 1, "testMessage",
+				"mimeType", fileName, DocConstants.DISTRIBUTION+"/"+enrollment, null, 
+				1, 1, new java.io.ByteArrayInputStream(a), "testOwner");
+		try {
+			fileDao.setFile(file);
+		} catch (SystemFolderException e) {				
+		} catch (DocManagementException e) {
+			fail();
+		}
+		file.setPath(file.getPath()+"/"+file.getName());
+		try {
+			fileDao.remove(file);
+		} catch (PathNotFoundException e) {
+			fail();
+		} catch (DocManagementException e) {
+			fail();
+		}
+		try {
+			File file2 = fileDao.getFile(file);
+			fail();
+		} catch (DocManagementException e) {			
+		}
+		docTestUtility.tearDown();
+	}
+
+	public void testChange(){
+		docTestUtility.setUp();
+		long enrollmentId = System.currentTimeMillis();	
+		String enrollment = (new Long(enrollmentId)).toString();			
+		docTestUtility.addEnrollment(enrollmentId);
+		String fileName = (new Long(System.currentTimeMillis())).toString();
+		byte[] a = { 1, 2, 3, 4 };		
+		BigFile file = new BigFileImpl(
+				new Timestamp(111111111), new Timestamp(2122333222), 1, "testMessage",
+				"mimeType", fileName, DocConstants.DISTRIBUTION+"/"+enrollment, null, 
+				1, 1, new java.io.ByteArrayInputStream(a), "testOwner");
+		try {
+			fileDao.setFile(file);
+		} catch (SystemFolderException e) {				
+		} catch (DocManagementException e) {
+			fail();
+		}
+		BigFile file2 = new BigFileImpl();
+		file2.setName(file.getName());
+		file2.setPath(file.getPath()+"/"+file.getName());
+		file2.setDistributionTime(new Timestamp(1111122222));
+		file2.setLastModification(new Timestamp(1222211111));
+		file2.setMessage("testMessage2");
+		file2.setVisibility(2);
+		try {
+			fileDao.changeFile(file2);
+		} catch (ResourceAlreadyExistsException e) {
+			fail();
+		} catch (SystemFolderException e) {
+			fail();
+		} catch (DocManagementException e) {
+			fail();
+		}
+		try {
+			file2 = fileDao.getFile(file2);
+			if (file2.getDistributionTime().getTime()==file.getDistributionTime().getTime()) fail();
+			if (file2.getLastModification().getTime()==file.getLastModification().getTime()) fail();
+			if (file2.getMessage().equals(file.getMessage())) fail();
+			if (file2.getVisibility()==file.getVisibility())fail();		
+		} catch (DocManagementException e) {
+			fail();
+		}
+		docTestUtility.tearDown();		
+	}
 	
 	
 	protected String[] getConfigLocations() {

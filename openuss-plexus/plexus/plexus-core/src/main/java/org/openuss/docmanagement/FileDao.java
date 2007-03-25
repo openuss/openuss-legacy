@@ -158,7 +158,9 @@ public class FileDao extends ResourceDao {
 	public BigFile getFile(File file) throws DocManagementException {
 		BigFileImpl fi = new BigFileImpl();
 		try {
-			Node node = session.getRootNode().getNode(file.getPath());
+			String path = file.getPath();
+			if (path.startsWith("/")) path = path.substring(1);
+			Node node = session.getRootNode().getNode(path);
 			fi = node2BigFileImpl(node);
 			//old versions have no jcr:created property 
 			if (node.hasProperty(DocConstants.JCR_CREATED)){
