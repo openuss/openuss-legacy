@@ -40,12 +40,13 @@ public class FileDaoTest extends AbstractTransactionalDataSourceSpringContextTes
 	public void testSetFileGetFile(){
 		docTestUtility.setUp();
 		long enrollmentId = System.currentTimeMillis();		
+		String enrollment = (new Long(enrollmentId)).toString();
 		docTestUtility.addEnrollment(enrollmentId);
 		String fileName = (new Long(System.currentTimeMillis())).toString();
 		byte[] a = { 1, 2, 3, 4 };		
 		BigFile file = new BigFileImpl(
 				new Timestamp(1), new Timestamp(2), 1, "testMessage",
-				"mimeType", fileName, DocConstants.DISTRIBUTION+"/1", null, 
+				"mimeType", fileName, DocConstants.DISTRIBUTION+"/"+enrollment, null, 
 				1, 1, new java.io.ByteArrayInputStream(a), "testOwner");
 		try {
 			fileDao.setFile(file);
@@ -83,37 +84,44 @@ public class FileDaoTest extends AbstractTransactionalDataSourceSpringContextTes
 		if (!bf.getMimeType().equals(file.getMimeType()))fail();
 		if (bf.getVisibility()!=file.getVisibility())fail();		
 		if (!bf.getOwner().equals(bf.getOwner())) fail();
-		docTestUtility.tearDown();
+		docTestUtility.tearDown();		
 	}
 	
 	
-	public void testGetFileBig(){
-		
+	public void testSetSystemFile(){		
+			docTestUtility.setUp();
+			long enrollmentId = System.currentTimeMillis();	
+			String enrollment = (new Long(enrollmentId)).toString();			
+			docTestUtility.addEnrollment(enrollmentId);
+			String fileName = (new Long(System.currentTimeMillis())).toString();
+			byte[] a = { 1, 2, 3, 4 };		
+			BigFile file = new BigFileImpl(
+					new Timestamp(1), new Timestamp(2), 1, "testMessage",
+					"mimeType", fileName, DocConstants.DISTRIBUTION, null, 
+					1, 1, new java.io.ByteArrayInputStream(a), "testOwner");
+			try {
+				fileDao.setFile(file);
+			} catch (SystemFolderException e) {				
+			} catch (DocManagementException e) {
+				fail();
+			}
+			file.setPath(DocConstants.DISTRIBUTION+"/"+enrollment+"/"+DocConstants.TRASH_NAME);
+			try {
+				fileDao.setFile(file);
+			} catch (SystemFolderException e) {				
+			} catch (DocManagementException e) {
+				fail();
+			}
+			file.setPath(DocConstants.DISTRIBUTION+"/"+enrollment+"/"+DocConstants.TRASH_NAME+"/xyz");
+			try {
+				fileDao.setFile(file);
+			} catch (SystemFolderException e) {				
+			} catch (DocManagementException e) {
+				fail();
+			}
 	}
 	
-	public void testSetFile(){
-		
-	}
 
-	public void testChangeFile(){
-		
-	}
-	
-	public void testDelFile(){
-		
-	}
-	
-	public void testRemove(){
-		
-	}
-	
-	public void testGetOwner(){
-		
-	}
-	
-	public void testGetVersions(){
-		
-	}
 	
 	
 	

@@ -14,12 +14,10 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import org.springmodules.jcr.JcrSessionFactory;
-import org.apache.jackrabbit.core.nodetype.InvalidNodeTypeDefException;
 import org.apache.jackrabbit.core.nodetype.NodeTypeDef;
 import org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl;
 import org.apache.jackrabbit.core.nodetype.NodeTypeRegistry;
 import org.apache.jackrabbit.core.nodetype.compact.CompactNodeTypeDefReader;
-import org.apache.jackrabbit.core.nodetype.compact.ParseException;
 import org.apache.log4j.Logger;
 
 
@@ -67,7 +65,6 @@ public class DocTestUtility {
 			NodeTypeManagerImpl ntm = (NodeTypeManagerImpl) session
 					.getWorkspace().getNodeTypeManager();
 		
-			// TODO find out how to use pathvariables
 			try {
 				FileReader fileReader;
 				fileReader = new FileReader("ntd.cnd");
@@ -93,8 +90,7 @@ public class DocTestUtility {
 					// ...and register it
 					ntreg.registerNodeType(ntd);
 				}
-			} catch (Exception e) {
-				logger.error("",e);
+			} catch (Exception e) {				
 			}
 			// ntr.registerNodeType(arg0)
 			
