@@ -40,7 +40,7 @@
 					<f:selectItem itemValue="copy" itemLabel="#{msg['doc_dist_select_copy']}"/>
 				</h:selectOneMenu><br />
 				<h:commandButton action="#{facultyViewBacker.confirmedDelete}" value="#{msg['doc_dist_delete_confirm']}"></h:commandButton>
-				<h:commandButton action="faculty_explorer" value="#{msg['doc_dist_delete_cancel']}"></h:commandButton>				
+				<h:commandButton action="docmanagement_facultyexplorer" value="#{msg['doc_dist_delete_cancel']}" immediate="true"></h:commandButton>				
 			</o:block>
 		</h:form>
 	</ui:define>

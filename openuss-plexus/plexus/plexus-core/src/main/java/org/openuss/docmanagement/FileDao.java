@@ -99,10 +99,12 @@ public class FileDao extends ResourceDao {
 		String owner = "";
 		if (node.hasProperty(DocConstants.PROPERTY_OWNER))
 			owner = node.getProperty(DocConstants.PROPERTY_OWNER).getString();
+		Timestamp distributionTime = new Timestamp(node.getProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTimeInMillis());
+		Timestamp lastModification = new Timestamp(node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_LASTMODIFIED).getDate().getTimeInMillis()); 
 		file = new FileImpl(
-				new Timestamp(node.getProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME).getDate().getTimeInMillis()),
+				distributionTime,
 				node.getUUID(), 
-				new Timestamp(node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_LASTMODIFIED).getDate().getTimeInMillis()),
+				lastModification,
 				node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_DATA).getLength(),
 				node.getProperty(DocConstants.PROPERTY_MESSAGE).getString(),
 				node.getNode(DocConstants.JCR_CONTENT).getProperty(DocConstants.JCR_MIMETYPE).getString(),
@@ -366,9 +368,11 @@ public class FileDao extends ResourceDao {
 		//check for deadline
 		if (!node.hasProperty(DocConstants.PROPERTY_DEADLINE)) throw new DocManagementException ("no deadline found");
 		if (node.getProperty(DocConstants.PROPERTY_DEADLINE).getDate().getTimeInMillis()<System.currentTimeMillis())
-			throw new DeadlineException("Deadline reached, no more submissions are possible!");
+			throw new DeadlineException("Deadline reached, no more submissions are possible!");		
 		if (node.hasNode(file.getName())) {
 			node = node.getNode(file.getName());
+			if (!node.getProperty(DocConstants.PROPERTY_OWNER).getString().equals(file.getOwner()))
+					throw new DocManagementException("Filename is already used, choose a new name!");
 			if (!node.isNodeType(DocConstants.MIX_VERSIONABLE)) {
 				node.addMixin(DocConstants.MIX_VERSIONABLE);
 				node.getNode(DocConstants.JCR_CONTENT).addMixin(
@@ -446,7 +450,7 @@ public class FileDao extends ResourceDao {
 		node.setProperty(DocConstants.JCR_MIMETYPE, file.getMimeType());
 		Calendar c2 = new GregorianCalendar();
 		c2.setTimeInMillis(file.getLastModification().getTime());
-		node.setProperty(DocConstants.JCR_LASTMODIFIED, c);
+		node.setProperty(DocConstants.JCR_LASTMODIFIED, c2);
 	}
 
 	/**
@@ -480,7 +484,7 @@ public class FileDao extends ResourceDao {
 		node.setProperty(DocConstants.JCR_MIMETYPE, file.getMimeType());
 		Calendar c2 = new GregorianCalendar();
 		c2.setTimeInMillis(file.getLastModification().getTime());
-		node.setProperty(DocConstants.JCR_LASTMODIFIED, c);
+		node.setProperty(DocConstants.JCR_LASTMODIFIED, c2);
 	}
 
 	/**
@@ -511,7 +515,7 @@ public class FileDao extends ResourceDao {
 			node = node.getNode(DocConstants.JCR_CONTENT);
 			Calendar c2 = new GregorianCalendar();
 			c2.setTimeInMillis(file.getLastModification().getTime());
-			node.setProperty(DocConstants.JCR_LASTMODIFIED, c);
+			node.setProperty(DocConstants.JCR_LASTMODIFIED, c2);
 			session.save();
 			// if nodename has changed, move node
 			node = node.getParent();
