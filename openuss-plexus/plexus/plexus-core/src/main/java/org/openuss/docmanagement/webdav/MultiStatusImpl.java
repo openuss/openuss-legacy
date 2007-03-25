@@ -21,20 +21,32 @@ public class MultiStatusImpl implements MultiStatus {
 		responses = new ArrayList<MultiStatusResponse>();
 	}
 	
-	public List<MultiStatusResponse> getResponses() {
-		return responses;
+	public void addResponse(MultiStatusResponse response) {
+		responses.add(response);
+	}
+	
+	public PropertyResponse createPropertyResponse(String href, String description) {
+		PropertyResponse response = new PropertyResponseImpl(href, description);
+		responses.add(response);
+		return response;
+	}
+	
+	public StatusResponse createStatusResponse(String href, int statusCode, String description) {
+		StatusResponse response = new StatusResponseImpl(href, statusCode, description);
+		responses.add(response);
+		return response;
 	}
 	
 	public String getDescription() {
 		return description;
 	}
 	
-	public void setDescription(String description) {
-		this.description = description;
+	public List<MultiStatusResponse> getResponses() {
+		return responses;
 	}
 	
-	public void addResponse(MultiStatusResponse response) {
-		responses.add(response);
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public void toXml(Document document) {

@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package org.openuss.docmanagement.webdav;
 
 import java.util.HashMap;
@@ -10,41 +13,31 @@ import org.dom4j.QName;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.6
+ * @version 0.5
  */
-public class MultiStatusResponseImpl implements MultiStatusResponse {
+public class PropertyResponseImpl implements PropertyResponse {
 	private final String href;
 	private final String description;
-	private int statusCode;
-	private boolean statusOnly;
 		
 	private final HashMap<Integer, Element> propstats;
 	
-	public MultiStatusResponseImpl(String href, String responseDescription) {
-		this(href, responseDescription, false);
-	}
-	
-	public MultiStatusResponseImpl(String href, int statusCode, String responseDescription) {
-		this(href, responseDescription, true);
-		this.statusCode = statusCode;
-	}
-	
-	private MultiStatusResponseImpl(String href, String responseDescription, boolean statusOnly) {
+	PropertyResponseImpl(String href, String responseDescription) {
 		this.href = href;
 		this.description = responseDescription;
-		this.statusOnly = statusOnly;
 		
 		propstats = new HashMap<Integer, Element>();
 	}
-	
-	public String getHref() {
-		return href;
-	}
-	
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.PropertyResponse#addProperty(int, java.lang.String, java.lang.String)
+	 */
 	public void addProperty(int statusCode, String name, String value) {
 		addProperty(statusCode, null, name, value);
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.PropertyResponse#addProperty(int, org.dom4j.Namespace, java.lang.String, java.lang.String)
+	 */
 	public void addProperty(int statusCode, Namespace namespace, String name, String value) {
 		if (namespace == null) {
 			namespace = DavConstants.XML_DAV_NAMESPACE;
@@ -59,7 +52,10 @@ public class MultiStatusResponseImpl implements MultiStatusResponse {
 		
 		addProperty(statusCode, propertyElement);
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.PropertyResponse#addProperty(int, org.dom4j.Namespace, java.lang.String, org.dom4j.Element)
+	 */
 	public void addProperty(int statusCode, Namespace namespace, String name, Element innerElement) {
 		if (namespace == null) {
 			namespace = DavConstants.XML_DAV_NAMESPACE;
@@ -71,7 +67,10 @@ public class MultiStatusResponseImpl implements MultiStatusResponse {
 		
 		addProperty(statusCode, propertyElement);
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.PropertyResponse#addProperty(int, org.dom4j.Element)
+	 */
 	public void addProperty(int statusCode, Element element) {
 		Element propElement = getPropElement(statusCode);
 		
@@ -95,7 +94,17 @@ public class MultiStatusResponseImpl implements MultiStatusResponse {
 		
 		return propstatElement.element(DavConstants.XML_PROP);
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.MultiStatusResponse#getHref()
+	 */
+	public String getHref() {
+		return href;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.MultiStatusResponse#toXml(org.dom4j.Element)
+	 */
 	public void toXml(Element element) {
 		QName rootName = DocumentHelper.createQName(DavConstants.XML_RESPONSE, DavConstants.XML_DAV_NAMESPACE);
 		Element rootElement = element.addElement(rootName);
@@ -104,26 +113,19 @@ public class MultiStatusResponseImpl implements MultiStatusResponse {
 		QName hrefName = DocumentHelper.createQName(DavConstants.XML_HREF, DavConstants.XML_DAV_NAMESPACE);
 		Element hrefElement = rootElement.addElement(hrefName);
 		hrefElement.addText(getHref());
-		
-		if (!statusOnly) {
-			Iterator<Integer> iterator = propstats.keySet().iterator();
-			Integer statusInteger;
-			
-			while (iterator.hasNext()) {
-				statusInteger = iterator.next();
-				Element propstatElement = propstats.get(statusInteger);
-				// add status line
-				QName statusName = DocumentHelper.createQName(DavConstants.XML_STATUS, DavConstants.XML_DAV_NAMESPACE);
-				Element statusElement = propstatElement.addElement(statusName);
-				statusElement.addText(HttpStatus.getStatusLine(statusInteger.intValue()));
-				// add to response element
-				rootElement.add(propstatElement);
-			}
-		} else {
-			// TYPE_STATUS
+
+		Iterator<Integer> iterator = propstats.keySet().iterator();
+		Integer statusInteger;
+
+		while (iterator.hasNext()) {
+			statusInteger = iterator.next();
+			Element propstatElement = propstats.get(statusInteger);
+			// add status line
 			QName statusName = DocumentHelper.createQName(DavConstants.XML_STATUS, DavConstants.XML_DAV_NAMESPACE);
-			Element statusElement = rootElement.addElement(statusName);
-			statusElement.addText(HttpStatus.getStatusLine(statusCode));
+			Element statusElement = propstatElement.addElement(statusName);
+			statusElement.addText(HttpStatus.getStatusLine(statusInteger.intValue()));
+			// add to response element
+			rootElement.add(propstatElement);
 		}
 		
 		// append description, if set

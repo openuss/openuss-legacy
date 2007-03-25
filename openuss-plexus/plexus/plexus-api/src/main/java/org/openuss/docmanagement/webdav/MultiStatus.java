@@ -9,13 +9,17 @@ import org.dom4j.Document;
  * @version 0.5
  */
 public interface MultiStatus {
-	public List<MultiStatusResponse> getResponses();
+	public void addResponse(MultiStatusResponse response);
+	
+	public PropertyResponse createPropertyResponse(String href, String description);
+	
+	public StatusResponse createStatusResponse(String href, int statusCode, String description);
 	
 	public String getDescription();
 	
-	public void setDescription(String description);
+	public List<MultiStatusResponse> getResponses();
 	
-	public void addResponse(MultiStatusResponse response);
+	public void setDescription(String description);
 
 	public void toXml(Document document);
 }

@@ -37,7 +37,7 @@ public class DavResourceRoot extends DavResourceCollection {
 		DavResourceLocator locator;
 		while (iterator.hasNext()) {
 			enrollment = iterator.next();
-			locator = getLocator().getFactory().createResourceLocator(getLocator().getPrefix(), null, "/" + enrollment.getId().toString());
+			locator = getLocator().getFactory().createResourceLocator(getLocator().getPrefix(), null, "/"  + enrollment.getId().toString());
 			members.add(getFactory().createResource(session, locator, true));
 		}
 		

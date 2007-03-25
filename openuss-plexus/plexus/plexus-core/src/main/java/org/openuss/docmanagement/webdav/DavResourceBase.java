@@ -181,11 +181,14 @@ public abstract class DavResourceBase implements DavResource {
 		}
 		
 		try {
+			String name = "";
 			// lookup message property
-			String name = representedNode.getProperty(DocConstants.PROPERTY_MESSAGE).getString();
+			if (representedNode.hasProperty(DocConstants.PROPERTY_MESSAGE)) {
+				name = representedNode.getProperty(DocConstants.PROPERTY_MESSAGE).getString();
+			}
 			
 			// return property name, if message is not set
-			if (name.length() == 0) {
+			if ((name == null) || (name.length() == 0)) {
 				return representedNode.getName();
 			}
 			return name;
@@ -253,7 +256,7 @@ public abstract class DavResourceBase implements DavResource {
 	 */
 	public MultiStatusResponse getProperties(List<String> properties, boolean namesOnly) throws DavException {
 		// create the response
-		MultiStatusResponse response = new MultiStatusResponseImpl(locator.getHref(isCollection()), null);
+		PropertyResponse response = new PropertyResponseImpl(locator.getHref(isCollection()), null);
 		
 		// check, if all properties are requested
 		boolean spoolAllProperties = ((properties == null) || (properties.size() == 0));
@@ -437,7 +440,7 @@ public abstract class DavResourceBase implements DavResource {
 		} catch (DavException ex) {
 			// add status codes other than 500 (Internal Server Error) too multi-status
 			if (ex.getErrorCode() != HttpStatus.SC_INTERNAL_SERVER_ERROR) {
-				multistatus.addResponse(new MultiStatusResponseImpl(getLocator().getHref(isCollection()), ex.getErrorCode(), null));
+				multistatus.createStatusResponse(getLocator().getHref(isCollection()), ex.getErrorCode(), null);
 			} else {
 				throw ex;
 			}
@@ -468,7 +471,7 @@ public abstract class DavResourceBase implements DavResource {
 		} catch (DavException ex) {
 			// add status codes other than 500 (Internal Server Error) too multi-status
 			if (ex.getErrorCode() != HttpStatus.SC_INTERNAL_SERVER_ERROR) {
-				multistatus.addResponse(new MultiStatusResponseImpl(getLocator().getHref(isCollection()), ex.getErrorCode(), null));
+				multistatus.createStatusResponse(getLocator().getHref(isCollection()), ex.getErrorCode(), null);
 			} else {
 				throw ex;
 			}
@@ -556,10 +559,10 @@ public abstract class DavResourceBase implements DavResource {
 			}
 		} catch (AccessDeniedException ex) {
 			// access on node denied
-			multistatus.addResponse(new MultiStatusResponseImpl(getLocator().getHref(isCollection()), HttpStatus.SC_FORBIDDEN, null));
+			multistatus.createStatusResponse(getLocator().getHref(isCollection()), HttpStatus.SC_FORBIDDEN, null);
 		} catch (LockException ex) {
 			// resource is locked
-			multistatus.addResponse(new MultiStatusResponseImpl(getLocator().getHref(isCollection()), HttpStatus.SC_LOCKED, null));
+			multistatus.createStatusResponse(getLocator().getHref(isCollection()), HttpStatus.SC_LOCKED, null);
 		} catch (RepositoryException ex) {
 			// undefined exception occurred -> rethrow as DavException
 			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
