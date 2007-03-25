@@ -4,7 +4,7 @@ import java.net.URL;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.6
+ * @version 1.0
  */
 public interface DavConfiguration {
 	/**

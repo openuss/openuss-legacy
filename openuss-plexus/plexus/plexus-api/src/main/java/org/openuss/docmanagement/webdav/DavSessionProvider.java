@@ -9,7 +9,7 @@ import org.openuss.security.SecurityService;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.9
+ * @version 1.0
  */
 public interface DavSessionProvider {
 	/**
@@ -23,48 +23,12 @@ public interface DavSessionProvider {
 	 * @throws DavException
 	 */
 	public boolean attachSession(HttpServletRequest request, DavService davService) throws DavException;
-
-	/**
-	 * Closes {@link Session} and removes it from service class.
-	 * @param davService The service class.
-	 */
-	public void releaseSession(DavService davService);
-
-	/**
-	 * Getter for {@link Repository}.
-	 * @return The Repository.
-	 */
-	public Repository getRepository();
 	
-	/**
-	 * Setter for {@link Repository}.
-	 * @param repository The Repository to set.
-	 */
-	public void setRepository(Repository repository);
-
 	/**
 	 * Getter for {@link AuthenticationManager}.
 	 * @return The AuthenticationManager.
 	 */
 	public AuthenticationManager getAuthenticationManager();
-
-	/**
-	 * Setter for {@link AuthenticationManager}.
-	 * @param authenticationManager The AuthenticationManager to set.
-	 */
-	public void setAuthenticationManager(AuthenticationManager authenticationManager);
-	
-	/**
-	 * Getter for {@link SecurityService}.
-	 * @return The SecurityService.
-	 */
-	public SecurityService getSecurityService();
-	
-	/**
-	 * Setter for {@link SecurityService}.
-	 * @param securityService The SecurityService to set.
-	 */
-	public void setSecurityService(SecurityService securityService);
 	
 	/**
 	 * Getter for {@link DesktopService}.
@@ -73,8 +37,44 @@ public interface DavSessionProvider {
 	public DesktopService getDesktopService();
 	
 	/**
+	 * Getter for {@link Repository}.
+	 * @return The Repository.
+	 */
+	public Repository getRepository();
+	
+	/**
+	 * Getter for {@link SecurityService}.
+	 * @return The SecurityService.
+	 */
+	public SecurityService getSecurityService();
+
+	/**
+	 * Closes {@link Session} and removes it from service class.
+	 * @param davService The service class.
+	 */
+	public void releaseSession(DavService davService);
+	
+	/**
+	 * Setter for {@link AuthenticationManager}.
+	 * @param authenticationManager The AuthenticationManager to set.
+	 */
+	public void setAuthenticationManager(AuthenticationManager authenticationManager);
+	
+	/**
 	 * Setter for {@link DesktopService}.
 	 * @param desktopService The DesktopService to set.
 	 */
 	public void setDesktopService(DesktopService desktopService);
+	
+	/**
+	 * Setter for {@link Repository}.
+	 * @param repository The Repository to set.
+	 */
+	public void setRepository(Repository repository);
+	
+	/**
+	 * Setter for {@link SecurityService}.
+	 * @param securityService The SecurityService to set.
+	 */
+	public void setSecurityService(SecurityService securityService);
 }

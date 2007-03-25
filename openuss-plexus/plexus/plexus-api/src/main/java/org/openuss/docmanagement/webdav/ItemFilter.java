@@ -4,7 +4,7 @@ import javax.jcr.Item;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.9
+ * @version 1.0
  */
 public interface ItemFilter {
 	/**

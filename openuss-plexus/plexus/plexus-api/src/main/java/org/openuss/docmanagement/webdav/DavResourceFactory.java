@@ -4,7 +4,7 @@ import javax.jcr.Session;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.9
+ * @version 1.0
  */
 public interface DavResourceFactory {
 	/**
@@ -15,28 +15,28 @@ public interface DavResourceFactory {
 	 * @return The DavResource.
 	 */
 	public DavResource createResource(Session session, DavResourceLocator locator, boolean isCollection);
-
-	/**
-	 * Getter for the {@link DavService}.
-	 * @return The DavService.
-	 */
-	public DavService getService();
-	
-	/**
-	 * Setter for the {@link DavService}.
-	 * @param service
-	 */
-	public void setDavService(DavService service);
 	
 	/**
 	 * Getter for the {@link DavConfiguration}.
 	 * @return The DavResourceConfiguration.
 	 */
 	public DavConfiguration getConfiguration();
+
+	/**
+	 * Getter for the {@link DavService}.
+	 * @return The DavService.
+	 */
+	public DavService getDavService();
 	
 	/**
 	 * Setter for the {@link DavConfiguration}.
-	 * @param configuration
+	 * @param configuration The DavConfiguration to set.
 	 */
 	public void setConfiguration(DavConfiguration configuration);
+	
+	/**
+	 * Setter for the {@link DavService}.
+	 * @param service The DavService to set.
+	 */
+	public void setDavService(DavService service);
 }
