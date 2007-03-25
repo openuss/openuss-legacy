@@ -111,12 +111,7 @@ public class DistributionViewBacker extends AbstractDocPage{
 		} catch (DocManagementException e) {
 			handleDocManagementException(e);
 		}		
-
-
-		//change model only if model has changed
-		if (treeModel!=null){
-			if (!this.treeModel.equals(new TreeModelBase(folder2TreeNodeBase(folder))))this.treeModel = new TreeModelBase(folder2TreeNodeBase(folder));
-		} else if(treeModel==null) this.treeModel = new TreeModelBase(folder2TreeNodeBase(folder));
+		this.treeModel = new TreeModelBase(folder2TreeNodeBase(folder));
 		return 	this.treeModel;
 	}
 	

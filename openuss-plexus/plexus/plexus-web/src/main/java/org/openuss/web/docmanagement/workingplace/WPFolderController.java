@@ -35,16 +35,17 @@ public class WPFolderController extends AbstractDocPage{
 	public String save(){
 		//visibility is only 0, if folder is a new folder
 		boolean old = (folder.getVisibility()!=0);
-		
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ValueBinding valueBinding = facesContext.getApplication().createValueBinding("#{workingPlaceViewBacker}");
+		WorkingPlaceViewBacker wpvb = (WorkingPlaceViewBacker)valueBinding.getValue(facesContext);
+	
 		if (!old) {
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ValueBinding valueBinding = facesContext.getApplication().createValueBinding("#{workingPlaceViewBacker}");
-			WorkingPlaceViewBacker wpvb = (WorkingPlaceViewBacker)valueBinding.getValue(facesContext);
 			folder.setPath(wpvb.getFolderPath());
 		}
 		folder.setVisibility(DocRights.READ_ALL|DocRights.EDIT_ALL);
 		try {
-			collaborationService.addFolder(folder);			
+			collaborationService.changeFolder(folder, old);
+			wpvb.setFolderPath("0");
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {

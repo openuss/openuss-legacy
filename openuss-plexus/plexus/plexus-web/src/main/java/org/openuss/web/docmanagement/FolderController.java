@@ -37,10 +37,10 @@ public class FolderController extends AbstractDocPage{
 		//visibility is only 0, if folder is a new folder
 		boolean old = (folder.getVisibility()!=0);
 		
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ValueBinding valueBinding = facesContext.getApplication().createValueBinding("#{distributionViewBacker}");
+		DistributionViewBacker dvb = (DistributionViewBacker)valueBinding.getValue(facesContext);
 		if (!old) {
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ValueBinding valueBinding = facesContext.getApplication().createValueBinding("#{distributionViewBacker}");
-			DistributionViewBacker dvb = (DistributionViewBacker)valueBinding.getValue(facesContext);
 			folder.setPath(dvb.getFolderPath());
 		}
 		if (visibleForAll) folder.setVisibility(DocRights.EDIT_ASSIST|DocRights.READ_ALL);
@@ -50,7 +50,8 @@ public class FolderController extends AbstractDocPage{
 				noPermission();
 				return DocConstants.DOCUMENTEXPLORER;
 			}
-			distributionService.changeFolder(folder, old);			
+			distributionService.changeFolder(folder, old);		
+			dvb.setFolderFacesPath("0");
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {

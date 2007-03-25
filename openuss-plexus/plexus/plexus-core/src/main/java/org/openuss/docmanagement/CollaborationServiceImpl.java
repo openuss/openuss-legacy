@@ -93,8 +93,9 @@ public class CollaborationServiceImpl
 	}
 
 	@Override
-	protected void handleChangeFolder(Folder folder) throws Exception {
-		folderDao.changeFolder(folder);
+	protected void handleChangeFolder(Folder folder, boolean old) throws Exception {
+		if (old) folderDao.changeFolder(folder);
+		if (!old) folderDao.setFolder(folder);
 	}
 
 	@Override

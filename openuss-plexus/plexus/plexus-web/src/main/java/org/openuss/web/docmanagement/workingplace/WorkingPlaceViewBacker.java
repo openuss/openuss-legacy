@@ -378,7 +378,30 @@ public class WorkingPlaceViewBacker extends AbstractDocPage {
 				return DocConstants.WPEXPLORER;
 			}
 			collaborationService.delFolder(folder);
-			setFolderPath(treeModel.getNodeById("0").getIdentifier());
+			setFolderPath("0");
+		} catch (NotAFolderException e) {
+			handleNotAFolderException(e);
+		} catch (PathNotFoundException e) {
+			handlePathNotFoundException(e);
+		} catch (ResourceAlreadyExistsException e) {
+			handleResourceAlreadyExistsException(e);
+		} catch (NotAFileException e) {
+			handleNotAFileException(e);
+		} catch (SystemFolderException e) {
+			handleDocManagementException(e);		
+		} catch (DocManagementException e) {
+			handleDocManagementException(e);
+		}	
+		return DocConstants.WPEXPLORER;
+	}	
+	
+	/**
+	 * Action method which empties the trash bin
+	 * @return
+	 */
+	public String clearTrash(){		
+		try {			
+			collaborationService.clearTrash(enrollment);
 		} catch (NotAFolderException e) {
 			handleNotAFolderException(e);
 		} catch (PathNotFoundException e) {

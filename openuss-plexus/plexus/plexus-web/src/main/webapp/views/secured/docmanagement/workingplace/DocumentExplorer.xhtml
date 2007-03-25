@@ -43,8 +43,10 @@
 				<o:block>
 					<h:commandButton action="#{workingPlaceViewBacker.newFile}" value="#{msg.doc_work_button_newfile}"/>
 					<h:commandButton action="#{workingPlaceViewBacker.newFolder}" value="#{msg.doc_work_button_newfolder}"/>					
+					<h:commandButton action="#{workingPlaceViewBacker.changeFolder}" value="#{msg.doc_work_button_changefolder}"/>					
 					<h:commandButton action="docmanagement_wpdeletefile" value="#{msg.doc_work_button_deletefile}" />					
 					<h:commandButton action="docmanagement_wpdeletefolder" value="#{msg.doc_work_button_deletefolder}" />
+					<h:commandButton action="#{workingPlaceViewBacker.clearTrash}" value="#{msg.doc_work_button_cleartrash}"></h:commandButton>					
 				</o:block>
 			</h:form>
 		</ui:define>
