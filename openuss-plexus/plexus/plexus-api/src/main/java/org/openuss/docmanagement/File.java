@@ -28,8 +28,6 @@ public interface File extends Resource {
 
 	public void setMimeType(String mimeType);
 	
-	public String getExtension();
-	
 	public String getOwner();
 	
 	public void setOwner(String owner);
@@ -41,9 +39,6 @@ public interface File extends Resource {
 	public String getViewer();
 	
 	public void setViewer(String viewer);
-	
-	public boolean isRead();	
-	
-	public String getSize();
+
 
 }

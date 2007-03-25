@@ -27,7 +27,6 @@ import javax.security.auth.login.FailedLoginException;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
-import org.apache.jackrabbit.core.security.AnonymousPrincipal;
 import org.apache.jackrabbit.core.security.CredentialsCallback;
 import org.apache.jackrabbit.core.security.SecurityConstants;
 import org.apache.jackrabbit.core.security.UserPrincipal;
@@ -145,7 +144,8 @@ public class DocLoginModule implements LoginModule {
     /**
      * {@inheritDoc}
      */
-    public boolean login() throws LoginException {
+    @SuppressWarnings("unchecked")
+	public boolean login() throws LoginException {
         // prompt for a user name and password
         if (callbackHandler == null) {
             throw new LoginException("no CallbackHandler available");
@@ -200,7 +200,8 @@ public class DocLoginModule implements LoginModule {
     /**
      * {@inheritDoc}
      */
-    public boolean commit() throws LoginException {
+    @SuppressWarnings("unchecked")
+	public boolean commit() throws LoginException {
         if (principals.isEmpty()) {
             return false;
         } else {

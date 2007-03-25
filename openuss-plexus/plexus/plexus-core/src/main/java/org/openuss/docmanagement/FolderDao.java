@@ -17,10 +17,6 @@ import javax.jcr.Node;
 
 import org.apache.log4j.Logger;
 
-/**
- * @author David Ullrich
- * @version 0.5
- */
 public class FolderDao extends ResourceDao {
 	
 	private JcrSessionFactory sessionFactory;

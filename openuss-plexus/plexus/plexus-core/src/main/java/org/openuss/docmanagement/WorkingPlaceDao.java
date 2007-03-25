@@ -1,12 +1,5 @@
 package org.openuss.docmanagement;
 
-import javax.jcr.Repository;
-
-
-/**
- * @author David Ullrich
- * @version 0.5
- */
 public class WorkingPlaceDao extends ResourceDao {
 	
 	/**
@@ -19,9 +12,6 @@ public class WorkingPlaceDao extends ResourceDao {
 	 */
 	public FolderDao folderDao;
 
-	private Repository repository;
-
-
 	public WorkingPlace getWorkingPlace(String path) throws PathNotFoundException, NotAFolderException, NotAFileException, DocManagementException{
 		WorkingPlace wp = new WorkingPlaceImpl();
 		Folder f = folderDao.getFolder(path);
@@ -33,14 +23,6 @@ public class WorkingPlaceDao extends ResourceDao {
 		wp.setSubnodes(f.getSubnodes());
 		wp.setVisibility(f.getVisibility());
 		return wp;
-	}
-	
-	public Repository getRepository() {
-		return repository;
-	}
-
-	public void setRepository(Repository repository) {
-		this.repository = repository;
 	}
 
 	public FileDao getFileDao() {

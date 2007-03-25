@@ -1,25 +1,7 @@
 package org.openuss.docmanagement;
 
-import javax.jcr.AccessDeniedException;
-import javax.jcr.InvalidItemStateException;
-import javax.jcr.ItemExistsException;
-import javax.jcr.LoginException;
-import javax.jcr.Repository;
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
-import javax.jcr.SimpleCredentials;
-import javax.jcr.lock.LockException;
-import javax.jcr.nodetype.ConstraintViolationException;
-import javax.jcr.nodetype.NoSuchNodeTypeException;
-import javax.jcr.version.VersionException;
-
-import org.openuss.docmanagement.RepositoryAccess;
 import org.apache.log4j.Logger;
 
-/**
- * @author David Ullrich
- * @version 0.5
- */
 public abstract class ResourceDao {
 	
 	public static final Logger daoLogger = Logger.getLogger(ResourceDao.class);

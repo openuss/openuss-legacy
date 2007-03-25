@@ -2,20 +2,13 @@ package org.openuss.web.docmanagement.workingplace;
 
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-
+import org.openuss.web.docmanagement.AbstractChangeActionListener;
 import org.apache.log4j.Logger;
 
-public class WPTreeNavigator implements ActionListener {
+public class WPTreeNavigator extends AbstractChangeActionListener implements ActionListener {
 	private static final Logger logger = Logger.getLogger(WPTreeNavigator.class);
-
-	private Object getObjectFromContext(String expression) {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-        ValueBinding valueBinding = facesContext.getApplication().createValueBinding(expression);
-        return valueBinding.getValue(facesContext);
-	}
 
 	public void processAction(ActionEvent actionEvent) {
 		HtmlCommandLink link = (HtmlCommandLink)actionEvent.getComponent();
