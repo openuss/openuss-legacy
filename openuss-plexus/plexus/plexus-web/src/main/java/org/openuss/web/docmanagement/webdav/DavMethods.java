@@ -4,9 +4,10 @@ import java.util.HashMap;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.9
+ * @version 1.0
  */
 public class DavMethods {
+	// List of method names and randomly chosen values (Java cannot switch-case Strings)
 	public static final String METHOD_OPTIONS = "OPTIONS";
 	public static final int DAV_OPTIONS = 1;
 	public static final String METHOD_GET = "GET";
@@ -37,6 +38,7 @@ public class DavMethods {
 	private static HashMap<String, Integer> methodHashMap = new HashMap<String, Integer>();
 	
 	static {
+		// add methods to hash map with adequate Integer object
 		methodHashMap.put(METHOD_OPTIONS, new Integer(DAV_OPTIONS));
 		methodHashMap.put(METHOD_GET, new Integer(DAV_GET));
 		methodHashMap.put(METHOD_HEAD, new Integer(DAV_HEAD));
@@ -58,6 +60,7 @@ public class DavMethods {
 	 * @return The identifying integer value or 0 for unknown method.
 	 */
 	public static int getMethodCode(String method) {
+		// lookup method in hashmap by name
 		Integer value = methodHashMap.get(method);
 		if (value == null) {
 			return 0;

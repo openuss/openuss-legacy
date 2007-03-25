@@ -36,43 +36,47 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.9
+ * @version 1.0
  */
 public class WebDavServlet extends HttpServlet {
+	/**
+	 * Serial version UID.
+	 */
+	private static final long serialVersionUID = -2118472532657501078L;
+
 	private final static Logger logger = Logger.getLogger(WebDavServlet.class);
 	
-	// TODO passenden Wert eintragen
-	private static final long serialVersionUID = 23;
-	
+	// servlet initialization parameter names
 	private static final String INIT_PARAMETER_RESOURCE_PATH_PREFIX = "resource-path-prefix";
-	private static final String CONTEXT_ATTRIBUTE_RESOURCE_PATH_PREFIX = "docmanagement.resourcepathprefix";
-	
 	private static final String INIT_PARAMETER_RESOURCE_CONFIGURATION = "resource-config";
 	private static final String INIT_PARAMETER_AUTHENTICATE_HEADER = "authenticate-header";
+
+	// operational configuration
+	private static final String CONTEXT_ATTRIBUTE_RESOURCE_PATH_PREFIX = "docmanagement.resourcepathprefix";
 	private static final String DEFAULT_AUTHENTICATE_HEADER = "Basic realm=\"OpenUSS Webdav Server\"";
 	
+	// WebDAV compliance
 	private static final String DAV_COMPLIANCE_LEVEL = "1";
 	private static final String DAV_ALLOWED_METHODS = "OPTIONS, GET, HEAD, POST, DELETE, PUT, PROPFIND, PROPPATCH, MKCOL, COPY, MOVE";
 	
 	private String resourcePathPrefix;
 	private String authenticateHeader;
-	
+
+	// required object instances
 	private DavConfiguration configuration;
 	private DavService davService;
-	
 	private DavSessionProvider sessionProvider;
-	
 	private DavLocatorFactory locatorFactory;
 	
 	/* (non-Javadoc)
 	 * @see javax.servlet.GenericServlet#init()
 	 */
 	public void init() throws ServletException {
-		logger.debug("init started.");
+		logger.info("init() started.");
 		
 		super.init();
 		
-		//set sessionProvider
+		// set sessionProvider from context
 		final WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 		sessionProvider = (DavSessionProvider) wac.getBean("sessionProvider", DavSessionProvider.class);
 		
@@ -84,14 +88,14 @@ public class WebDavServlet extends HttpServlet {
 			resourcePathPrefix = resourcePathPrefix.substring(0, resourcePathPrefix.length() - 1);
 		}
 		getServletContext().setAttribute(CONTEXT_ATTRIBUTE_RESOURCE_PATH_PREFIX, resourcePathPrefix);
-		logger.debug("ResourcePathPrefix: " + resourcePathPrefix);
+		logger.info("ResourcePathPrefix: " + resourcePathPrefix);
 		
 		// read the authenticate header from configuration
         authenticateHeader = getInitParameter(INIT_PARAMETER_AUTHENTICATE_HEADER);
         if (authenticateHeader == null) {
             authenticateHeader = DEFAULT_AUTHENTICATE_HEADER;
         }
-        logger.debug("AuthenticateHeader: " + authenticateHeader);
+        logger.info("AuthenticateHeader: " + authenticateHeader);
 		
 		// read the location of the configuration file and parse it
         String configurationParameter = getInitParameter(INIT_PARAMETER_RESOURCE_CONFIGURATION);
@@ -105,7 +109,7 @@ public class WebDavServlet extends HttpServlet {
         	}
         }
         
-        logger.debug("init() done.");
+        logger.info("init() done.");
 	}
 	
 	/* (non-Javadoc)
@@ -118,14 +122,16 @@ public class WebDavServlet extends HttpServlet {
 		
 		try {
 			// guarantee an authenticated user
-			logger.debug("Attaching session.");
+			logger.info("Attaching session.");
 			if (!getDavSessionProvider().attachSession(request, getDavService())) {
 				return;
 			}
 			
+			logger.info("Creating resource locator from request.");
 			// create resource locator
 			DavResourceLocator locator = getResourceLocator(request);
 			
+			logger.info("Executing method.");
 			// try to execute method or delegate to super class
 			if (!execute(request, response, locator, methodCode)) {
 				logger.debug("Method execution failed. Delegating to super class.");
@@ -145,7 +151,7 @@ public class WebDavServlet extends HttpServlet {
 			}
 		} finally {
 			// release session from request
-			logger.debug("Releasing session.");
+			logger.info("Releasing session.");
 			getDavSessionProvider().releaseSession(getDavService());
 		}
 	}
@@ -238,11 +244,11 @@ public class WebDavServlet extends HttpServlet {
 					sendMultiStatus(moveStatus, response);
 					break;
 				default:
-					// unknown or unsupported method code, cannot execute
+					// unknown or unsupported method code; execution impossible
 					return false;
 			}
 		} catch (IOException ex) {
-			logger.error("IOException occured.");
+			logger.error("IOException occurred.");
 			logger.error("Exception: " + ex.getMessage());
 			// rethrow IOException as DavException
 			throw new DavException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
@@ -256,7 +262,7 @@ public class WebDavServlet extends HttpServlet {
 	 * @param response Reference to the response of the servlet.
 	 */
 	private void publishOptions(HttpServletResponse response) {
-		// add required headers and send status code 200 (OK)
+		// add required headers to response and send status code 200 (OK)
 		response.addHeader(DavConstants.HEADER_DAV, DAV_COMPLIANCE_LEVEL);
 		response.addHeader("Allowed", DAV_ALLOWED_METHODS);
 		response.addHeader("MS-Author-Via", DavConstants.HEADER_DAV);
@@ -356,6 +362,8 @@ public class WebDavServlet extends HttpServlet {
 					
 					// try to parse content as XML document
 					document = DocumentHelper.parseText(content.toString());
+					
+					// HACK remove from final implementation
 					logger.debug("Request document: " + document.asXML());
 				}
 			}
@@ -399,6 +407,7 @@ public class WebDavServlet extends HttpServlet {
 			writer.write(responseDocument);
 			writer.flush();
 
+			// HACK remove from final implementation
 			logger.debug("Response document: " + responseDocument.asXML());
 
 			// convert document in stream to byte array and write to response
