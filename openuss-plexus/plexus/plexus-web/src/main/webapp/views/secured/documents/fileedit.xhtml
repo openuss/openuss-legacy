@@ -34,34 +34,48 @@
 		<h:form id="newDocumentForm">
 
 
-			<o:block label="#{msg.document_new}">
-				<h:outputText value="Zielordner" styleClass="field_label"/>
+			<o:block label="#{msg.documents_file}">
+				<h:outputText value="#{msg.documents_target_folder}" styleClass="field_label"/>
 				<span class="content_font_normal">
 					<t:dataList var="folder" layout="list" value="#{views$secured$documents$folder.path}">
-						/<h:outputText value="#{folder.name}" />
+						<h:outputText value="#{folder.name}" rendered="#{!folder.root}"/> /
 					</t:dataList>
 				</span>
 				<o:input entity="documents_selected_file" property="name" required="true" maxlength="100"/>
-				<o:input entity="documents_selected_file" property="description" />
+				<o:input entity="documents_selected_file" property="description" type="textarea"/>
 
+				<f:subview rendered="${!empty documents_selected_filename.filename}">
+					<div class="content_font_normal">
+						<o:link value="/files/#{sessionScope.newsItem.attachment.fileName}">
+							<f:param value="#{newsItem.attachment.id}" name="fileid" />
+							<h:graphicImage	value="/images/filetypes/#{sessionScope.documents_selected_filename.extension}.gif" />
+					  		#{documents_selected_filename.filename} 
+					  	</o:link>
+				  		&#160;
+				  		<h:commandButton value="delete" action="#{views$secured$lecture$newsedit.removeAttachment}" immediate="true" styleClass="button_remove"/><br/><br/>
+				  	</div>
+		  		</f:subview> 				
 				
-				<h:outputLabel value="#{msg.newdocument_file}" for="newDocument" styleClass="field_label" />
-				<t:inputFileUpload id="newDocument" storage="file" accept="*" immediate="true" styleClass="uploadField">
+				
+				<h:outputLabel value="#{msg.documents_selected_file_file}" for="file" styleClass="field_label" />
+				<t:inputFileUpload id="file" storage="file" accept="*" immediate="true" styleClass="uploadField">
 					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
 				</t:inputFileUpload>
+				<h:message for="file" styleClass="field_error"/>
 		
-				<o:input entity="documents_selected_file" property="created" required="true" />
+				<o:input entity="documents_selected_file" property="created" required="true" label="#{msg.documents_selected_file_release}"/>
 			</o:block>
 
 			<o:block>
 				<plexus:command 
-					bean="#{views$secured$documents$fileedit}"
+					bean="#{views$secured$documents$file}"
 					action="save" 
 					label="#{msg['newdocument_button_save']}"
 					title="#{msg['newdocument_button_save']}"
 					styleClass="button_save" />
 				<h:commandButton 
 					action="documents_main"
+					immediate="true"
 					value="#{msg['newdocument_button_cancel']}" 
 					styleClass="button_cancel"/>	
 			</o:block>

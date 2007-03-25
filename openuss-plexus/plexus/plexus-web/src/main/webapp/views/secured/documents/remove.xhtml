@@ -41,12 +41,12 @@
 					<h:outputText value="#{msg.documents_actual_path}" styleClass="field_label"/>
 					<span class="content_font_normal">
 						<t:dataList var="folder" layout="list" value="#{views$secured$documents$remove.path}">
-							/<h:outputText value="#{folder.name}" />
+							<h:outputText value="/ #{folder.name}" rendered="#{!folder.root}"/>
 						</t:dataList>
 					</span>
 					<h:outputText value="#{msg.documents_selected_files}" styleClass="field_label"/>
 					<ul class="file-list">
-						<t:dataList id="entries" var="entry" layout="list" value="#{document_selected_folderentries}">
+						<t:dataList id="entries" var="entry" layout="list" value="#{documents_selected_folderentries}">
 							<li><h:graphicImage value="/images/filetypes/#{entry.extension}.gif"/> #{entry.name} #{entry.sizeAsString}</li>
 						</t:dataList>					
 					</ul>

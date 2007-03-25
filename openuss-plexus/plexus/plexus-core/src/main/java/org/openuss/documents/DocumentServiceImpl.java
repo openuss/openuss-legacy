@@ -9,6 +9,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -204,25 +205,18 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 	
 	@Override
-	protected void handleSaveFolderEntry(FolderEntryInfo folderEntryInfo) throws Exception {
-		Validate.notNull(folderEntryInfo, "Parameter folderEntry must not be null!");
-		FolderEntry entry = getFolderEntryDao().folderEntryInfoToEntity(folderEntryInfo);
-		if (entry instanceof FileEntry) {
-			injectRepositoryFileInEntry((FileEntry) entry);
-			persistFileEntry((FileEntry) entry);
-		} else if (entry instanceof Folder) {
-			persistFolder((Folder) entry);
-		} else {
-			throw new DocumentServiceException("Unkown folder entry type!");
-		}
+	protected void handleSaveFileEntry(FileInfo fileInfo) throws Exception {
+		Validate.notNull(fileInfo, "Parameter fileInfo must not be null!");
+		FileEntry entry = getFileEntryDao().fileInfoToEntity(fileInfo);
+		injectRepositoryFileInEntry(entry);
+		persistFileEntry(entry);
 	}
 
 	@Override
-	protected FileInfo handleGetFileEntry(FolderEntryInfo folderEntryInfo, boolean withInputStream) throws Exception {
-		Validate.notNull(folderEntryInfo, "Parameter folderEntry must not be null!");
-		Validate.notNull(folderEntryInfo.getId(), "Parameter folderEntry must be an persisted entity with a valid identifier!");
+	protected FileInfo handleGetFileEntry(Long fileId, boolean withInputStream) throws Exception {
+		Validate.notNull(fileId, "Parameter fileId must not be null!");
 
-		FileEntry file = getFileEntryDao().load(folderEntryInfo.getId());
+		FileEntry file = getFileEntryDao().load(fileId);
 		if (withInputStream) {
 			connectWithFileInputStream(file);
 		}
@@ -258,7 +252,6 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		logger.debug("Creating new root folder for domain object " + domainIdentifier);
 
 		Folder folder = Folder.Factory.newInstance();
-		folder.setName("ROOT");
 		folder.setDomainIdentifier(domainIdentifier);
 		folder.setParent(null);
 
@@ -338,7 +331,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	private Folder createFolderPathStructure(Folder parent, FileInfo info) throws DocumentApplicationException {
 		List<String> path = retrievePathOfFileName(info.getName());
 		for (String folderName : path) {
-			parent = createFolderByName(folderName, parent);
+			parent = createFolderByName(folderName, parent, info.getCreated());
 		}
 		return parent;
 	}
@@ -355,13 +348,14 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		return path;
 	}
 	
-	private Folder createFolderByName(String folderName, Folder parent) throws DocumentApplicationException {
+	private Folder createFolderByName(String folderName, Folder parent, Date created) throws DocumentApplicationException {
 		logger.debug("createFolderByName(folderName=" + folderName + ", parent=" + parent + ")");
 
 		FolderEntry folderEntry = parent.getFolderEntryByName(folderName);
 		if (folderEntry == null) {
 			Folder folder = Folder.Factory.newInstance();
 			folder.setName(folderName);
+			folder.setCreated(created);
 			createFolder(folder, parent);
 			return folder;
 		} else if (folderEntry instanceof Folder) {

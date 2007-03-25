@@ -20,6 +20,7 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 	private static final long serialVersionUID = 8286059784837095960L;
 	
 	public FolderImpl() {
+		setName("");
 		setCreated(new Date());
 	}
 

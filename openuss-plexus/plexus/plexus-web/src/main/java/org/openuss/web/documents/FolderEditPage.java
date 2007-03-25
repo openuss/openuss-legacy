@@ -14,7 +14,7 @@ import org.openuss.web.Constants;
 public class FolderEditPage extends AbstractDocumentPage{
 	private static final Logger logger = Logger.getLogger(FolderEditPage.class);
 	
-	@Property(value = "#{selectedFolder}")
+	@Property(value = "#{"+Constants.DOCUMENTS_SELECTED_FOLDER+"}")
 	private FolderInfo selectedFolder;
 
 
@@ -27,7 +27,7 @@ public class FolderEditPage extends AbstractDocumentPage{
 			documentService.saveFolder(selectedFolder);
 			addMessage(i18n("message_docuements_save_folder"));
 		}
-		removeSessionBean("selectedFolder");
+		removeSessionBean(Constants.DOCUMENTS_SELECTED_FOLDER);
 		return Constants.DOCUMENTS_MAIN_PAGE;
 	}
 

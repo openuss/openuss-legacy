@@ -33,11 +33,11 @@
 				<f:param value="#{entry.id}" name="folder" />
 				<h:outputText value="#{entry.name}"/>
 			</o:link>
-			
-			<h:outputLink value="/openuss-plexus/files/#{entry.name}" title="#{entry.name}" rendered="${!entry.folder}">
+
+			<o:link value="/openuss-plexus/files/#{entry.name}" title="#{entry.name}" rendered="${!entry.folder}">
 				<f:param value="#{entry.repositoryFileId}" name="fileid" />
 				<h:outputText value="#{entry.name}"/>
-			</h:outputLink>
+			</o:link>
 		</t:column>
 
 		<t:column>
@@ -47,20 +47,23 @@
 
 		<t:column>
 			<plexus:commandSortHeader columnName="create"> #{msg['documents_main_column_create']} </plexus:commandSortHeader>
-			<h:outputText value="#{entry.created}"/>
+			<h:outputText value="#{entry.created}">
+				<f:convertDateTime type="both"/>
+			</h:outputText>
 		</t:column>
 
 		<t:column>
 			<plexus:commandSortHeader columnName="change"> #{msg['documents_main_column_change']} </plexus:commandSortHeader>
-			<h:outputText value="#{entry.modified}"/>
+			<h:outputText value="#{entry.modified}">
+				<f:convertDateTime type="both"/>
+			</h:outputText>
 		</t:column>
 		
 		<plexus:column header="#{msg.documents_main_column_actions}">
-			<h:commandButton 
-			    id="changeFile"
-			    bean="views$secured$documents$documents"
+			<plexus:command 
+			    bean="#{views$secured$documents$documents}"
 				action="editFolderEntry" 
-				value="#{msg.documents_main_button_change}" 
+				label="#{msg.documents_main_button_change}" 
 				title="#{msg.documents_main_button_change}"
 				styleClass="button_edit"/>
 		</plexus:column>
