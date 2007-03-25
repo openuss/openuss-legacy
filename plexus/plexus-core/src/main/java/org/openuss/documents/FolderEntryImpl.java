@@ -8,6 +8,7 @@ package org.openuss.documents;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @see org.openuss.documents.FolderEntry
@@ -53,7 +54,11 @@ public class FolderEntryImpl extends org.openuss.documents.FolderEntryBase imple
 		if (getParent() == null) {
 			return "";
 		} else {
-			return getParent().getPath()+"/"+getParent().getName();
+			String path = getParent().getPath();
+			if (StringUtils.isNotBlank(path)) {
+				return path + "/" + getParent().getName();
+			}
+			return getParent().getName();
 		}
 	}
 	
@@ -75,5 +80,13 @@ public class FolderEntryImpl extends org.openuss.documents.FolderEntryBase imple
 	@Override
 	public String getFileName() {
 		return getName();
+	}
+
+	public boolean isReleased() {
+		return new Date().after(getCreated());
+	}
+
+	public Date releaseDate() {
+		return getCreated();
 	}
 }

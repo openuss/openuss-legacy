@@ -67,9 +67,14 @@ public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServ
 		final RepositoryFileDao fileDao = getRepositoryFileDao();
 
 		file.setModified(new Date());
-		if (file.getId() == null) {
-			file.setCreated(new Date());
-			file.setModified(new Date());
+		if (file.getId() == null) { 
+			Date now = new Date();
+			if (file.getCreated() == null) {
+				file.setCreated(now);
+			}
+			if (file.getModified() == null) {
+				file.setModified(now);
+			}
 			fileDao.create(file);
 		} else {
 			file.setModified(new Date());

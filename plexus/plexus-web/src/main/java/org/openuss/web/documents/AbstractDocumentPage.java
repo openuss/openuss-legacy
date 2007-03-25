@@ -35,7 +35,7 @@ public class AbstractDocumentPage extends AbstractEnrollmentPage {
 		} else {
 			retrieveActualFolder();
 		}
-		setSessionAttribute(Constants.CURRENT_FOLDER, currentFolder);
+		setSessionAttribute(Constants.DOCUMENTS_CURRENT_FOLDER, currentFolder);
 	}
 
 	public DocumentService getDocumentService() {

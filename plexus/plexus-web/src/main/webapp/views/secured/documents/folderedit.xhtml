@@ -34,14 +34,14 @@
 		<h:form id="newFolderForm">
 
 			<o:block label="#{msg.document_folder_new}">
-				<h:outputText value="Zielordner" styleClass="field_label"/>
+				<h:outputText value="#{msg.documents_target_folder}" styleClass="field_label"/>
 				<span class="content_font_normal">
 					<t:dataList var="folder" layout="list" value="#{views$secured$documents$folder.path}">
-						/<h:outputText value="#{folder.name}" />
+						<h:outputText value="#{folder.name}" rendered="#{!folder.root}"/> /
 					</t:dataList>
 				</span>
-				<o:input entity="selectedFolder" property="name" required="true" maxlength="100"/>
-				<o:input entity="selectedFolder" property="description" />
+				<o:input entity="documents_selected_folder" property="name" required="true" maxlength="100"/>
+				<o:input entity="documents_selected_folder" property="description" type="textarea"/>
 			</o:block>
 
 			<o:block>

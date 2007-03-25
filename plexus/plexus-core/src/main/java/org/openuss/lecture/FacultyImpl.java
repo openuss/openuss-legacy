@@ -8,6 +8,8 @@ package org.openuss.lecture;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 
 
 /**
@@ -23,6 +25,17 @@ public class FacultyImpl extends org.openuss.lecture.FacultyBase implements org.
 	@Override
 	public void add(Enrollment enrollment) {
 		getEnrollments().add(enrollment);
+	}
+
+	@Override
+	public String getWebsite() {
+		String url = StringUtils.trimToNull(super.getWebsite());
+		if (url != null) {
+			if (!url.startsWith("https://") && !url.startsWith("http://")) {
+				url = "http://"+url;
+			}
+		}
+		return url;
 	}
 
 	@Override

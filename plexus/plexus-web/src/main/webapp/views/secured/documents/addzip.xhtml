@@ -34,22 +34,19 @@
 		<h:form id="addZipForm" enctype="multipart/form-data">
 			<o:block label="#{msg.document_addzip_header}" styleClass="form_box">
 				<p class="content_font_normal">
-					Bitte wählen Sie eine ZIP-Datei aus. Die Zip-Datei wird entpackt und die enthalten Ordner und Dateien werden
-					entsprechend im System angelegt.
+					<h:outputText value="#{msg.documnets_add_zip_text}" escape="false"/>
 				</p>
-				<h:outputText value="Zielordner" styleClass="field_label"/>
+				<h:outputText value="#{msg.documents_target_folder}" styleClass="field_label"/>
 				<span class="content_font_normal">
 					<t:dataList var="folder" layout="list" value="#{views$secured$documents$documents.path}">
-						/<h:outputText value="#{folder.name}" />
+						<h:outputText value="#{folder.name}" rendered="#{!folder.root}"/> /
 					</t:dataList>
 				</span>
 				<h:outputLabel value="#{msg.newdocument_file}" for="zipfile" styleClass="field_label" />
 				<t:inputFileUpload id="zipfile" storage="file" accept="*" immediate="true" styleClass="uploadField">
 					<f:valueChangeListener type="org.openuss.web.upload.ZipUploadListener" />
 				</t:inputFileUpload>
-				<!-- 
-				<o:input entity="views$secured$documents$addzip" property="releaseDate"/>
-				 -->
+				<o:input entity="documents_selected_file" property="created" label="#{msg.documents_selected_file_release}"/>
 			</o:block>
 			
 			<o:block>

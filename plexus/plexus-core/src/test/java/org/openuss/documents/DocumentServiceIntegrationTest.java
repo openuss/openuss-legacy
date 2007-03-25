@@ -35,7 +35,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 
 		FolderInfo root = documentService.getFolder(domainObject);
 		assertNotNull(root);
-		assertEquals("ROOT",root.getName());
+		assertEquals("",root.getName());
 		assertTrue(root.isRoot());
 		commit();
 		
@@ -44,7 +44,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertNull(folder.getId());
 		documentService.createFolder(folder, root);
 		assertNotNull(folder.getId());
-		assertEquals("/ROOT",folder.getPath());
+		assertEquals("",folder.getPath());
 		
 		entries = documentService.getFolderEntries(null, root);
 		assertNotNull(entries);
@@ -210,7 +210,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		
 		assertEquals("dummy.txt", entry.getName());
 		assertEquals("txt", entry.getExtension());
-		assertEquals("/ROOT/dummy", entry.getPath());
+		assertEquals("dummy", entry.getPath());
 		assertEquals("description", entry.getDescription());
 		assertEquals(info.getSize(), entry.getSize());
 		assertNotNull(entry.getCreated());
@@ -258,7 +258,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertNotNull(entries);
 		assertEquals(3, entries.size());
 		FolderEntryInfo entry = entries.get(0);
-		assertTrue(entry.getPath().startsWith("/ROOT/subfolder"));
+		assertTrue(entry.getPath().startsWith("subfolder"));
 
 		List<FileInfo> infos = documentService.allFileEntries(entries);
 		assertNotNull(infos);
@@ -283,10 +283,10 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, null);
 		FolderEntryInfo entry = entries.get(0);
 		
-		FileInfo file = documentService.getFileEntry(entry, false);
+		FileInfo file = documentService.getFileEntry(entry.getId(), false);
 		assertNull(file.getInputStream());
 		
-		file = documentService.getFileEntry(entry, true);
+		file = documentService.getFileEntry(entry.getId(), true);
 		validateFileInfo(info);
 	}
 	

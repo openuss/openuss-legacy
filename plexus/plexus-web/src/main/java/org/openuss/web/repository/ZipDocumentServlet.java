@@ -41,8 +41,8 @@ public class ZipDocumentServlet extends HttpServlet {
 
 	@Override
 	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-		List<FileInfo> files = (List<FileInfo>) request.getSession().getAttribute(Constants.SELECTED_FILEENTRIES);
-		request.getSession().removeAttribute(Constants.SELECTED_FILEENTRIES);
+		List<FileInfo> files = (List<FileInfo>) request.getSession().getAttribute(Constants.DOCUMENTS_SELECTED_FILEENTRIES);
+		request.getSession().removeAttribute(Constants.DOCUMENTS_SELECTED_FILEENTRIES);
 		if (files == null) {
 			sendFileNotFound(response);
 		} else {

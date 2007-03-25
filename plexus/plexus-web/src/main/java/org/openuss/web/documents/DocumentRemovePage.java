@@ -22,7 +22,7 @@ public class DocumentRemovePage extends AbstractDocumentPage{
 	private static final Logger logger = Logger.getLogger(DocumentRemovePage.class);
 	
 
-	@Property(value="#{sessionScope.document_selected_folderentries}")
+	@Property(value="#{sessionScope.documents_selected_folderentries}")
 	private List<FolderEntryInfo> entries;
 	
 	/**
@@ -34,7 +34,7 @@ public class DocumentRemovePage extends AbstractDocumentPage{
 		logger.trace("removing entries");
 		if (entries != null) {
 			documentService.removeFolderEntries(entries);
-			removeSessionBean(Constants.SELECTED_FOLDERENTRIES);
+			removeSessionBean(Constants.DOCUMENTS_SELECTED_FOLDERENTRIES);
 			addMessage(i18n("faculty_enrollment_removed_succeed"));
 		}
 		return Constants.OUTCOME_BACKWARD;
@@ -45,7 +45,7 @@ public class DocumentRemovePage extends AbstractDocumentPage{
 	 * @return OUTCOME_BACKWARD
 	 */
 	public String cancelEntries() {
-		removeSessionBean(Constants.SELECTED_FOLDERENTRIES);
+		removeSessionBean(Constants.DOCUMENTS_SELECTED_FOLDERENTRIES);
 		return Constants.OUTCOME_BACKWARD;
 	}
 	
