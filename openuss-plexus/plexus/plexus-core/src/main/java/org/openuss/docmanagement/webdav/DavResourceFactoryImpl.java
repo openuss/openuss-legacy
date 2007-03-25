@@ -128,7 +128,7 @@ public class DavResourceFactoryImpl implements DavResourceFactory {
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResourceFactory#getService()
 	 */
-	public DavService getService() {
+	public DavService getDavService() {
 		return service;
 	}
 	

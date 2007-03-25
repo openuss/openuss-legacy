@@ -11,7 +11,7 @@ public class DavLocatorFactoryImpl implements DavLocatorFactory {
 	
 	/**
 	 * Constructor.
-	 * @param resourcePathPrefix
+	 * @param resourcePathPrefix The resource path prefix to subtract from pathes.
 	 */
 	public DavLocatorFactoryImpl(String resourcePathPrefix) {
 		this.resourcePathPrefix = resourcePathPrefix;
@@ -46,6 +46,7 @@ public class DavLocatorFactoryImpl implements DavLocatorFactory {
             href = "/";
         }
         
+        // FIXME analyze unescape method with Umlaute
         return new DavResourceLocatorImpl(locatorPrefix, Text.unescape(href), this);
 	}
 
@@ -61,6 +62,7 @@ public class DavLocatorFactoryImpl implements DavLocatorFactory {
 	 * @see org.openuss.docmanagement.webdav.DavLocatorFactory#createResourceLocator(java.lang.String, java.lang.String, java.lang.String, boolean)
 	 */
 	public DavResourceLocator createResourceLocator(String prefix, String workspacePath, String path, boolean isResourcePath) {
+		// simply delegate to other method, since workspace are not supported
 		return new DavResourceLocatorImpl(prefix, path, this);
 	}
 }

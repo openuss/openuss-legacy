@@ -32,7 +32,7 @@ public class DavResourceRoot extends DavResourceCollection {
 		List<DavResource> members = new LinkedList<DavResource>();
 		
 		// display virtual folders for each subscribed enrollment
-		Iterator<Enrollment> iterator = getFactory().getService().getSubscribedEnrollments().iterator();
+		Iterator<Enrollment> iterator = getFactory().getDavService().getSubscribedEnrollments().iterator();
 		Enrollment enrollment;
 		DavResourceLocator locator;
 		while (iterator.hasNext()) {

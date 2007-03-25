@@ -65,6 +65,12 @@ public interface DavResource {
 	public DavResourceFactory getFactory();
 	
 	/**
+	 * Returns the time of last modification.
+	 * @return The time of last modification.
+	 */
+	public String getLastModified() throws DavException;
+	
+	/**
 	 * Getter for the {@link DavResourceLocator} identifying this resource.
 	 * @return The resource locator.
 	 */
@@ -87,7 +93,8 @@ public interface DavResource {
 	public MultiStatusResponse getProperties(List<String> properties, boolean namesOnly) throws DavException;
 	
 	/**
-	 * @return
+	 * Returns the visibility of the resource.
+	 * @return The visitibility as defined in DocRights.
 	 * @throws DavException
 	 */
 	public int getVisibility() throws DavException;
@@ -114,10 +121,11 @@ public interface DavResource {
 	public MultiStatus remove() throws DavException;
 	
 	/**
-	 * @param propertiesToSet
-	 * @param propertiesToRemove
-	 * @return
+	 * Sets the given property values and removes given properties.
+	 * @param propertiesToSet The property names and values to set.
+	 * @param propertiesToRemove The properties to remove.
+	 * @return The response containing the status information.
 	 * @throws DavException
 	 */
-	public MultiStatus updateProperties(Dictionary<String, String> propertiesToSet, List<String> propertiesToRemove) throws DavException;
+	public MultiStatusResponse updateProperties(Dictionary<String, String> propertiesToSet, List<String> propertiesToRemove) throws DavException;
 }

@@ -3,11 +3,12 @@ package org.openuss.docmanagement.webdav;
 import org.dom4j.Namespace;
 
 /**
- * Strings defined in RFC2518.
+ * Constants as defined in RFC2518.
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.9
+ * @version 1.0
  */
 public class DavConstants {
+	// header values
 	public final static int DEPTH_0 = 0;
 	public final static String DEPTH_0_STRING = "0";
 	public final static int DEPTH_1 = 1;
@@ -49,6 +50,23 @@ public class DavConstants {
 	public final static String PROPERTY_RESOURCETYPE = "resourcetype";
 	public final static String PROPERTY_SOURCE = "source";
 	public final static String PROPERTY_SUPPORTEDLOCK = "supportedlock";
+	
+	// properties requested by Windows XP but not found in RFC2518
+	public final static String PROPERTY_NAME = "name";
+	public final static String PROPERTY_PARENTNAME = "parentname";
+	public final static String PROPERTY_HREF = "href";
+	public final static String PROPERTY_ISHIDDEN = "ishidden";
+	public final static String PROPERTY_ISCOLLECTION = "iscollection";
+	public final static String PROPERTY_ISREADONLY = "isreadonly";
+	public final static String PROPERTY_CONTENTCLASS = "contentclass";
+	public final static String PROPERTY_LASTACCESSED = "lastaccessed";
+	public final static String PROPERTY_ISSTRUCTUREDDOCUMENT = "isstructureddocument";
+	public final static String PROPERTY_DEFAULTDOCUMENT = "defaultdocument";
+	public final static String PROPERTY_ISROOT = "isroot";
+	
+	// property values
+	public final static String PROPERTY_VALUE_FALSE = "0";
+	public final static String PROPERTY_VALUE_TRUE = "1";
 	
 	// namespace used in multi-status
 	public final static Namespace XML_DAV_NAMESPACE = new Namespace("D", "DAV:");

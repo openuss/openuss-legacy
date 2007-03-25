@@ -23,6 +23,7 @@ public class DavConfigurationImpl implements DavConfiguration {
 	 * @see org.openuss.docmanagement.webdav.DavConfiguration#getItemFilter()
 	 */
 	public ItemFilter getItemFilter() {
+		// return instance of DefaultItemFilterImpl, if no ItemFilter-Definition is set
 		if (itemFilter == null) {
 			itemFilter = new DefaultItemFilterImpl();
 		}
