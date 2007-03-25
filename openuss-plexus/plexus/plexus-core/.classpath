@@ -62,8 +62,9 @@
 	<classpathentry kind="var" path="M2_REPO/org/apache/jackrabbit/jackrabbit-webdav/1.2.1/jackrabbit-webdav-1.2.1.jar" sourcepath="/JAVA_SRC/jackrabbit-1.2.1-src.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5-SNAPSHOT/tomahawk-1.1.5-SNAPSHOT.jar" sourcepath="/M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5-SNAPSHOT/tomahawk-1.1.5-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/jackrabbit/jackrabbit-jcr-commons/1.2.1/jackrabbit-jcr-commons-1.2.1.jar" sourcepath="/M2_REPO/org/apache/jackrabbit/jackrabbit-1.2.1-src.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/apache/jackrabbit/jackrabbit-core/1.2.1/jackrabbit-core-1.2.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/jackrabbit/jackrabbit-core/1.2.1/jackrabbit-core-1.2.1.jar" sourcepath="/M2_REPO/jackrabbit-1.2.3-src.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/jackrabbit/jackrabbit-api/1.2.1/jackrabbit-api-1.2.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/jackrabbit/jackrabbit-jcr-rmi/1.2.1/jackrabbit-jcr-rmi-1.2.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/framework-core"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

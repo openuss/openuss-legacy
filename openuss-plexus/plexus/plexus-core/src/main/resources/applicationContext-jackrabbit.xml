@@ -2,68 +2,126 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-
 	<!-- normal repository -->
-	<bean id="repository" class="org.springmodules.jcr.jackrabbit.RepositoryFactoryBean">
-	<!-- normal factory beans params -->
-		<property name="configuration" value="classpath:jackrabbit-repo.xml"/>
-		<property name="homeDir" value="file:./target/repo"/>
+	<bean id="repo"
+		class="org.springmodules.jcr.jackrabbit.RepositoryFactoryBean">
+		<!-- normal factory beans params -->
+		<property name="configuration"
+			value="classpath:jackrabbit-repo.xml" />
+		<property name="homeDir" value="file:./target/repo" />
 	</bean>
 
-   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		      DocManagement
-	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
-	<bean id="folderDao" class="org.openuss.docmanagement.FolderDao" >
-		<property name="repository" ref="repository"></property>
+	<!-- rmi server -->
+	<!-- use Spring's RMI classes to retrieve the RMI registry -->
+	<bean id="rmiRegistry"
+		class="org.springframework.remoting.rmi.RmiRegistryFactoryBean" />
+	<bean id="rmiServer"
+		class="org.springmodules.jcr.jackrabbit.RmiServerRepositoryFactoryBean">
+		<property name="repository" ref="repo" />
+		<property name="remoteAdapterFactory">
+			<bean
+				class="org.apache.jackrabbit.rmi.server.ServerAdapterFactory" />
+		</property>
+		<property name="registry" ref="rmiRegistry" />
+		<property name="rmiName" value="jackrabbit" />
+	</bean>
+	<!-- rmi client -->
+	<bean id="rmiClientFactory"
+		class="org.apache.jackrabbit.rmi.client.ClientRepositoryFactory" />
+	<bean id="repository" factory-bean="rmiClientFactory"
+		factory-method="getRepository" depends-on="rmiServer">
+		<constructor-arg value="rmi://localhost:1099/jackrabbit" />
+	</bean>
+
+	<!-- Session Factory -->
+
+	<bean id="jcrSessionFactory"
+		class="org.springmodules.jcr.JcrSessionFactory" singleton="true">
+		<property name="repository" ref="repo" />
+		<property name="credentials">
+			<bean class="javax.jcr.SimpleCredentials">
+				<constructor-arg index="0" value="username" />
+				<!-- create the credentials using a bean factory -->
+				<constructor-arg index="1">
+					<bean factory-bean="password"
+						factory-method="toCharArray" />
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- create the password to return it as a char[] -->
+	<bean id="password" class="java.lang.String">
+		<constructor-arg index="0" value="password" />
+	</bean>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		DocManagement
+		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<bean id="folderDao" class="org.openuss.docmanagement.FolderDao" singleton="false">
+		<property name="sessionFactory" ref="jcrSessionFactory"></property>
 		<property name="fileDao" ref="fileDao"></property>
 		<property name="linkDao" ref="linkDao"></property>
 	</bean>
-	<bean id="workingPlaceDao" class="org.openuss.docmanagement.WorkingPlaceDao" >
-		<property name="repository" ref="repository"></property>
+	<bean id="workingPlaceDao" class="org.openuss.docmanagement.WorkingPlaceDao" singleton="false">
 		<property name="fileDao" ref="fileDao"></property>
-		<property name="folderDao" ref="folderDao"></property>		
+		<property name="folderDao" ref="folderDao"></property>
 	</bean>
-	<bean id="examAreaDao" class="org.openuss.docmanagement.ExamAreaDao" >
-		<property name="repository" ref="repository"></property>
+	<bean id="examAreaDao" class="org.openuss.docmanagement.ExamAreaDao" singleton="false">
+		<property name="sessionFactory" ref="jcrSessionFactory"></property>
 		<property name="fileDao" ref="fileDao"></property>
 	</bean>
-	<bean id="fileDao" class="org.openuss.docmanagement.FileDao" >
-		<property name="repository" ref="repository"></property>
+	<bean id="fileDao" class="org.openuss.docmanagement.FileDao" singleton="false">
+		<property name="sessionFactory" ref="jcrSessionFactory"></property>
 		<property name="mailSending" ref="mailSending"></property>
 	</bean>
-	<bean id="linkDao" class="org.openuss.docmanagement.LinkDao" >
-		<property name="repository" ref="repository"></property>
+	<bean id="linkDao" class="org.openuss.docmanagement.LinkDao" singleton="false">
+		<property name="sessionFactory" ref="jcrSessionFactory"></property>
 		<property name="fileDao" ref="fileDao"></property>
 	</bean>
-	<bean id="mailSending" class="org.openuss.docmanagement.MailSendingImpl"></bean>
-	<bean id="distributionService" class="org.openuss.docmanagement.DistributionServiceImpl">
+	<bean id="mailSending" class="org.openuss.docmanagement.MailSendingImpl">
+	</bean>
+	<bean id="distributionService"
+		class="org.openuss.docmanagement.DistributionServiceImpl">
 		<property name="folderDao" ref="folderDao"></property>
-		<property name="fileDao" ref="fileDao"></property>		
-		<property name="linkDao" ref="linkDao"></property>				
-	</bean>
-	<bean id="examinationService" class="org.openuss.docmanagement.ExaminationServiceImpl">
 		<property name="fileDao" ref="fileDao"></property>
-		<property name="folderDao" ref="folderDao"></property>		
+		<property name="linkDao" ref="linkDao"></property>
+	</bean>
+	<bean id="examinationService"
+		class="org.openuss.docmanagement.ExaminationServiceImpl">
+		<property name="fileDao" ref="fileDao"></property>
+		<property name="folderDao" ref="folderDao"></property>
 		<property name="examAreaDao" ref="examAreaDao"></property>
 	</bean>
-	<bean id="collaborationService" class="org.openuss.docmanagement.CollaborationServiceImpl">
+	<bean id="collaborationService"
+		class="org.openuss.docmanagement.CollaborationServiceImpl">
 		<property name="fileDao" ref="fileDao"></property>
-		<property name="folderDao" ref="folderDao"></property>		
-		<property name="workingPlaceDao" ref="workingPlaceDao"></property>	
+		<property name="folderDao" ref="folderDao"></property>
+		<property name="workingPlaceDao" ref="workingPlaceDao"></property>
 	</bean>
-	<bean id="repositoryStartup" class="org.openuss.docmanagement.RepositoryStartup" init-method="init">
-		<property name="repository" ref="repository"></property>
+	<!-- Repository initializing needs direct access to repository -->
+	<bean id="repositoryStartup"
+		class="org.openuss.docmanagement.RepositoryStartup"
+		init-method="init">
+		<property name="repository" ref="repo"></property>
 	</bean>
 
-   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		      WebDAV
-	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
-	
-	<bean id="sessionProvider" class="org.openuss.docmanagement.webdav.DavSessionProviderImpl">
+
+
+
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		WebDAV
+		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<bean id="sessionProvider"
+		class="org.openuss.docmanagement.webdav.DavSessionProviderImpl">
 		<property name="repository" ref="repository"></property>
-		<property name="authenticationManager" ref="authenticationManager"></property>
+		<property name="authenticationManager"
+			ref="authenticationManager">
+		</property>
 		<property name="securityService" ref="securityService"></property>
 		<property name="desktopService" ref="desktopService"></property>
 	</bean>
-	
+
 </beans>

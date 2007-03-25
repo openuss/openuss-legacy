@@ -7,7 +7,6 @@ import javax.jcr.ItemExistsException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
-import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
@@ -15,13 +14,19 @@ import javax.jcr.ValueFormatException;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
+import org.apache.log4j.Logger;
+import org.springmodules.jcr.JcrSessionFactory;
 
 public class LinkDao extends ResourceDao {
+	
+	private JcrSessionFactory sessionFactory;
+	
+	public static final Logger logger = Logger.getLogger(LinkDao.class);
 	
 	/**
 	 * repository object injected by spring
 	 */
-	private Repository repository;
+	private Session session;
 	
 	/**
 	 * fileDao object injected by spring
@@ -34,13 +39,12 @@ public class LinkDao extends ResourceDao {
 	 */
 	public void setLink(Link link) throws ResourceAlreadyExistsException, DocManagementException{
 		try{
-			Session session = login(repository);
 			Node node = session.getRootNode();
 			String path = link.getPath();
 			if (path.startsWith("/")) path = path.substring(1);		
 			node = node.getNode(path);
 			if (node.hasNode(link.getName())){
-				logout(session);
+				session.save();
 				throw new ResourceAlreadyExistsException("That name already exists in folder ");
 			}
 			node = node.addNode(link.getName(), DocConstants.DOC_LINK);
@@ -51,7 +55,7 @@ public class LinkDao extends ResourceDao {
 			Node target = session.getRootNode().getNode(targetPath);			
 			node.setProperty(DocConstants.PROPERTY_REFERENCE, target);
 			node.setProperty(DocConstants.PROPERTY_VISIBILITY, link.getVisibility());			
-			logout(session);
+			session.save();
 		} catch (RepositoryException e){
 			throw new DocManagementException("RepositoryException occured");
 		}
@@ -65,7 +69,6 @@ public class LinkDao extends ResourceDao {
 	 */
 	public Link getLink(String path) throws DocManagementException{
 		try {
-			Session session = login(repository);
 			Node node = session.getRootNode();
 			if (path.startsWith("/")) path = path.substring(1);
 			node = node.getNode(path);
@@ -93,7 +96,7 @@ public class LinkDao extends ResourceDao {
 			    }	
 			}
 			link.setViewed(viewed.toArray(new String[0]));			
-			logout(session);
+			session.save();
 			return link;
 		} catch (RepositoryException e) {
 			throw new DocManagementException("Repository Exception occured");
@@ -107,13 +110,12 @@ public class LinkDao extends ResourceDao {
 	 */
 	public void delLink(Link link) throws DocManagementException{
 		try {
-			Session session = login(repository);
 			Node node = session.getRootNode();
 			String path = link.getPath();
 			if (path.startsWith("/")) path = path.substring(1);
 			node = node.getNode(path);
 			move2trash(node,0);
-			logout(session);
+			session.save();
 		} catch (RepositoryException e) {
 			throw new DocManagementException("RepositoryException occured");
 		}
@@ -126,13 +128,12 @@ public class LinkDao extends ResourceDao {
 	 */
 	public void remove(Link link) throws DocManagementException{
 		try{			
-			Session session = login(repository);
 			Node node = session.getRootNode();
 			String path = link.getPath();
 			if (path.startsWith("/")) path = path.substring(1);
 			node = node.getNode(path);
 			node.remove();
-			logout(session);
+			session.save();
 		} catch (RepositoryException e) {
 			throw new DocManagementException("RepositoryException occured");
 		}			
@@ -184,7 +185,6 @@ public class LinkDao extends ResourceDao {
 	
 	public void changeLink(Link link) throws DocManagementException{
 		try{
-			Session session = login(repository);
 			Node node = session.getRootNode();
 			String path = link.getPath();
 			if (path.startsWith("/")) path = path.substring(1);
@@ -194,23 +194,15 @@ public class LinkDao extends ResourceDao {
 			node.setProperty(DocConstants.PROPERTY_VISIBILITY, link.getVisibility());
 			if (!node.getPath().equals(node.getParent().getPath() + "/" + link.getName())) {
 				if (node.getParent().hasNode(link.getName())) {
-					logout(session);
+					session.save();
 					throw new ResourceAlreadyExistsException("A File with that name already exists!");
 				}
 				session.move(node.getPath(), node.getParent().getPath() + "/"+ link.getName());
 			}	
-			logout(session);	
+			session.save();	
 		} catch (RepositoryException e) {
 			throw new DocManagementException("Repository Exception occured");
 		}		
-	}
-	
-	public Repository getRepository() {
-		return repository;
-	}
-
-	public void setRepository(Repository repository) {
-		this.repository = repository;
 	}
 
 	public FileDao getFileDao() {
@@ -219,5 +211,28 @@ public class LinkDao extends ResourceDao {
 
 	public void setFileDao(FileDao fileDao) {
 		this.fileDao = fileDao;
+	}
+
+	public Session getSession() {
+		return session;
+	}
+
+	public void setSession(Session session) {
+		this.session = session;
+	}
+
+	public JcrSessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	public void setSessionFactory(JcrSessionFactory sessionFactory) {
+		if (sessionFactory!=null) {
+			try{
+				setSession(sessionFactory.getSession());
+			}catch (RepositoryException e){
+				logger.error("",e);
+			}
+		}
+		this.sessionFactory = sessionFactory;
 	}
 }

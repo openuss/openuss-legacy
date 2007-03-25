@@ -17,7 +17,6 @@ import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
-import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.UnsupportedRepositoryOperationException;
@@ -32,10 +31,13 @@ import javax.jcr.version.VersionException;
 import javax.jcr.version.VersionHistory;
 import javax.jcr.version.VersionIterator;
 import org.apache.log4j.Logger;
+import org.springmodules.jcr.JcrSessionFactory;
 
 public class FileDao extends ResourceDao {
 
-	private Repository repository;
+	private JcrSessionFactory sessionFactory;
+	
+	private Session session;
 
 	public static Logger logger = Logger.getLogger(FileDao.class);
 
@@ -54,19 +56,17 @@ public class FileDao extends ResourceDao {
 	 */
 	public File getFile(String path) throws NotAFileException,
 			DocManagementException {
-		Session session;
 		FileImpl file;
 		try {
-			session = login(repository);
 			Node node = session.getRootNode();
 			if (path.startsWith("/"))path = path.substring(1);
 			node = node.getNode(path);
 			if (!node.isNodeType(DocConstants.DOC_FILE)) {
-				logout(session);
+				session.save();
 				throw new NotAFileException("Not a file");
 			}
 			file = node2FileImpl(session, node);
-			logout(session);
+			session.save();
 		} catch (NotAFileException e) {
 			throw e;
 		} catch (LoginException e) {
@@ -154,10 +154,8 @@ public class FileDao extends ResourceDao {
 	 * @throws RepositoryException
 	 */
 	public BigFile getFile(File file) throws DocManagementException {
-		Session session;
 		BigFileImpl fi = new BigFileImpl();
 		try {
-			session = login(repository);
 			Node node = session.getNodeByUUID(file.getId());
 			fi = node2BigFileImpl(node);
 			//old versions have no jcr:created property 
@@ -168,7 +166,7 @@ public class FileDao extends ResourceDao {
 			if (getAreaType(node).equals(DocConstants.DISTRIBUTION)){
 				handleVisibilityChanges(file, session, fi, node);			
 			}
-			logout(session);
+			session.save();
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {
@@ -267,7 +265,6 @@ public class FileDao extends ResourceDao {
 			DocManagementException {
 		try {
 			if (systemFolder(file.getPath()+"/"+file.getName())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
-			Session session = login(repository);
 			String path = file.getPath();
 			if (path.startsWith("/"))
 				path = path.substring(1);
@@ -285,7 +282,7 @@ public class FileDao extends ResourceDao {
 			String id = path.substring(path.indexOf("/")+1);
 			if (id.indexOf("/")!=-1) id = id.substring(0, id.indexOf("/"));
 			mailSending.triggerMails(new Long(id),((file.getVisibility()&DocRights.READ_ALL)>0));
-			logout(session);
+			session.save();
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {
@@ -405,7 +402,6 @@ public class FileDao extends ResourceDao {
 			throws ResourceAlreadyExistsException, DocManagementException {
 		try {
 			if (node.hasNode(file.getName())) {
-				logout(node.getSession());
 				throw new ResourceAlreadyExistsException("File already exists!");
 			}
 			// nt:File Knoten
@@ -499,7 +495,6 @@ public class FileDao extends ResourceDao {
 			DocManagementException {
 		try {
 			if (systemFolder(file.getPath())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
-			Session session = login(repository);
 			Node node = session.getRootNode();
 			String path = file.getPath();
 			if (path.startsWith("/")) path = path.substring(1);
@@ -523,7 +518,7 @@ public class FileDao extends ResourceDao {
 			if (!node.getPath().equals(
 					node.getParent().getPath() + "/" + file.getName())) {
 				if (node.getParent().hasNode(file.getName())) {
-					logout(session);
+					session.save();
 					throw new ResourceAlreadyExistsException(
 							"A File with that name already exists!");
 				}
@@ -532,7 +527,7 @@ public class FileDao extends ResourceDao {
 			String id = path.substring(path.indexOf("/")+1);
 			if (id.indexOf("/")!=-1) id = id.substring(0, id.indexOf("/"));
 			mailSending.triggerMails(new Long(id),((file.getVisibility()&DocRights.READ_ALL)>0));			
-			logout(session);
+			session.save();
 		} catch (LoginException e) {
 			throw new DocManagementException("LoginException occured");
 		} catch (RepositoryException e) {
@@ -557,7 +552,6 @@ public class FileDao extends ResourceDao {
 			ResourceAlreadyExistsException, SystemFolderException, DocManagementException {
 		try {
 			if (systemFolder(file.getPath())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
-			Session session = login(repository);
 			String path = file.getPath();
 			if (path.startsWith("/"))
 				path = path.substring(1);
@@ -572,7 +566,7 @@ public class FileDao extends ResourceDao {
 			if (areaType == DocConstants.EXAMAREA) {
 				// no support for delete planned
 			}
-			logout(session);
+			session.save();
 
 		} catch (SystemFolderException e){
 			throw e;
@@ -718,13 +712,12 @@ public class FileDao extends ResourceDao {
 	public void remove(File file) throws PathNotFoundException,
 			DocManagementException {
 		try {
-			Session session = login(repository);
 			String path = file.getPath();
 			if (path.startsWith("/"))
 				path = path.substring(1);
 			Node node = session.getRootNode().getNode(path);
 			node.remove();
-			logout(session);
+			session.save();
 		} catch (javax.jcr.PathNotFoundException e) {
 			throw new PathNotFoundException("Path Not found");
 		} catch (RepositoryException e) {
@@ -743,7 +736,6 @@ public class FileDao extends ResourceDao {
 			DocManagementException {
 		String owner = null;
 		try {
-			Session session = login(repository);
 			String path = file.getPath();
 			if (path.startsWith("/"))
 				path = path.substring(1);
@@ -751,7 +743,7 @@ public class FileDao extends ResourceDao {
 			if (node.hasProperty(DocConstants.PROPERTY_OWNER))
 				owner = node.getProperty(DocConstants.PROPERTY_OWNER)
 						.getString();
-			logout(session);
+			session.save();
 			if (owner != null)
 				return owner;
 			return "";
@@ -772,7 +764,6 @@ public class FileDao extends ResourceDao {
 	public List getVersions(File file) throws DocManagementException {
 		List l = new ArrayList();
 		try {
-			Session session = login(repository);
 			String path = file.getPath();
 			if (path.startsWith("/")) path = path.substring(1);
 			Node node = session.getRootNode().getNode(path);
@@ -798,7 +789,7 @@ public class FileDao extends ResourceDao {
 					versionnumber++;
 				}
 			}
-			logout(session);
+			session.save();
 			return l;
 		} catch (RepositoryException e) {
 			throw new DocManagementException(
@@ -806,13 +797,6 @@ public class FileDao extends ResourceDao {
 		}
 	}
 
-	public Repository getRepository() {
-		return repository;
-	}
-
-	public void setRepository(Repository repository) {
-		this.repository = repository;
-	}
 
 	public MailSending getMailSending() {
 		return mailSending;
@@ -820,5 +804,28 @@ public class FileDao extends ResourceDao {
 
 	public void setMailSending(MailSending mailSending) {
 		this.mailSending = mailSending;
+	}
+
+	public Session getSession() {
+		return session;
+	}
+
+	public void setSession(Session session) {
+		this.session = session;
+	}
+
+	public JcrSessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	public void setSessionFactory(JcrSessionFactory sessionFactory) {
+		if (sessionFactory!=null) {
+			try{
+				setSession(sessionFactory.getSession());
+			}catch (RepositoryException e){
+				logger.error("",e);
+			}
+		}		
+		this.sessionFactory = sessionFactory;
 	}
 }

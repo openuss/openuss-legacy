@@ -27,18 +27,6 @@ public abstract class ResourceDao {
 	public ResourceDao(){		
 	}
 	
-	
-	public Session login(Repository repository) throws LoginException, RepositoryException {
-		Session session = repository.login(new SimpleCredentials(
-				RepositoryAccess.USERNAME, RepositoryAccess.PASSWORD.toCharArray()));
-		return session;
-	}
-
-	public void logout(Session session) throws AccessDeniedException, ItemExistsException, ConstraintViolationException, InvalidItemStateException, VersionException, LockException, NoSuchNodeTypeException, RepositoryException {
-		session.save();
-		session.logout();
-	}
-
 	public boolean systemFolder(String path){
 		String tempString = "";
 		if (!path.startsWith("/")) path = "/"+ path;

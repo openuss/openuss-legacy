@@ -1,15 +1,9 @@
 package org.openuss.docmanagement;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.jcr.ItemExistsException;
 import javax.jcr.NamespaceException;
 import javax.jcr.NamespaceRegistry;
 import javax.jcr.Node;
@@ -26,10 +20,7 @@ import org.apache.jackrabbit.core.nodetype.NodeTypeRegistry;
 import org.apache.jackrabbit.core.nodetype.compact.CompactNodeTypeDefReader;
 import org.apache.jackrabbit.core.nodetype.compact.ParseException;
 import org.apache.log4j.Logger;
-import org.apache.jackrabbit.name.QName;
-
 import org.openuss.docmanagement.RepositoryAccess;
-import java.io.File;
 
 public class RepositoryStartup {
 
