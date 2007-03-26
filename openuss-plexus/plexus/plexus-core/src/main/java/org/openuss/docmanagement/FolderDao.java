@@ -175,7 +175,9 @@ public class FolderDao extends ResourceDao {
 		try {
 			if (systemFolder(folder.getPath())) throw new SystemFolderException("Systemfolders cannot be edited, files in trash-folder cannot be edited!");
 			Node node = session.getRootNode();
-			if (folder.getPath()!="") node = node.getNode(folder.getPath().substring(1));
+			String path = folder.getPath();
+			if (path.startsWith("/")) path = path.substring(1);
+			if (path!="") node = node.getNode(path);
 			node.setProperty(DocConstants.PROPERTY_MESSAGE, folder.getMessage());
 			node.setProperty(DocConstants.PROPERTY_VISIBILITY, folder.getVisibility());
 			session.save();

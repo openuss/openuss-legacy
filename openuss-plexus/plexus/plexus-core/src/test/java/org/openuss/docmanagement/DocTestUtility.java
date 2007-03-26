@@ -133,30 +133,7 @@ public class DocTestUtility {
 			logger.error("", e);
 		}
 	}
-
-	public void addFile(){
-		try {
-			Session session = jcrSessionFactory.getSession();		
-			Node node = session.getRootNode().getNode(DocConstants.DISTRIBUTION+"/1");
-			node.setProperty(DocConstants.PROPERTY_MESSAGE, "testMessage");
-			Calendar c = new GregorianCalendar();
-			c.setTimeInMillis(1);
-			node.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, c);
-			node.setProperty(DocConstants.PROPERTY_VISIBILITY, 1);
-			// nt:resource Knoten, der die eigentlich Datei enthaelt
-			node.addNode(DocConstants.JCR_CONTENT, DocConstants.NT_RESOURCE);
-			node = node.getNode(DocConstants.JCR_CONTENT);
-			byte[] a = { 1, 2, 3, 4 };
-			node.setProperty(DocConstants.JCR_DATA, new java.io.ByteArrayInputStream(a));
-			node.setProperty(DocConstants.JCR_MIMETYPE, "testMime");
-			Calendar c2 = new GregorianCalendar();
-			c2.setTimeInMillis(2);
-			node.setProperty(DocConstants.JCR_LASTMODIFIED, c2);
-			session.save();
-		} catch (RepositoryException e) {
-			logger.error("", e);
-		}
-	}	
+	
 	
 	public void tearDown() {
 		try {
