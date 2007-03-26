@@ -128,7 +128,7 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	 * @see org.openuss.docmanagement.webdav.DavResourceLocator#getName()
 	 */
 	public String getName() {
-		return Text.getName(getRepositoryPath());
+		return Text.getName(getResourcePath());
 	}
 
 	/* (non-Javadoc)

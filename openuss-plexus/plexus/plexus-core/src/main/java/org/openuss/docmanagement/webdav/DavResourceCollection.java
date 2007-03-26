@@ -95,7 +95,7 @@ public class DavResourceCollection extends DavResourceBase {
 					member = iterator.next();
 					writer.write("<tr>");
 					writer.write("<td><img src=\"\"></td>");
-					writer.write("<td><a href=\"" + member.getLocator().getHref(member.isCollection()) + "\">" + member.getDisplayName() + "</a></td>");
+					writer.write("<td><a href=\"" + member.getLocator().getHref(member.isCollection()) + "\">" + member.getLocator().getName() + "</a></td>");
 					writer.write("</tr>");
 				}
 				

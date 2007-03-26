@@ -70,6 +70,7 @@ public class DavConstants {
 	
 	// namespace used in multi-status
 	public final static Namespace XML_DAV_NAMESPACE = new Namespace("D", "DAV:");
+	public final static Namespace XML_DOC_NAMESPACE = new Namespace("doc", "http://www.openuss.org/doc");
 	
 	// XML-elements
 	public final static String XML_ACTIVELOCK = "activelock";

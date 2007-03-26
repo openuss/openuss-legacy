@@ -18,7 +18,7 @@ import org.openuss.docmanagement.DocRights;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.5
+ * @version 0.8
  */
 public class DavResourceFile extends DavResourceBase {
 	/**
@@ -205,6 +205,33 @@ public class DavResourceFile extends DavResourceBase {
 	}
 	
 	/**
+	 * Returns the length of the contained data or -1.
+	 * @return The length of the contained data or -1.
+	 * @throws DavException
+	 */
+	public long getContentLength() throws DavException {
+		if (!exists()) {
+			throw new DavException(HttpStatus.SC_NOT_FOUND);
+		}
+		
+		try {
+			// get content node
+			Node contentNode;
+			if (representedNode.hasNode(JcrConstants.JCR_CONTENT)) {
+				contentNode = representedNode.getNode(JcrConstants.JCR_CONTENT);
+				
+				// return property value, if present
+				if (contentNode.hasProperty(JcrConstants.JCR_DATA)) {
+					return contentNode.getProperty(JcrConstants.JCR_DATA).getLength();
+				}
+			}
+			return -1;
+		} catch (RepositoryException ex) {
+			throw new DavException(HttpStatus.SC_SERVICE_UNAVAILABLE);
+		}
+	}
+	
+	/**
 	 * Returns the time of distribution or Long.MINIMAL_VALUE
 	 * @return The time of distribution or Long.MINIMAL_VALUE
 	 * @throws DavException
@@ -255,6 +282,15 @@ public class DavResourceFile extends DavResourceBase {
 
 		// check, if all properties are requested
 		boolean spoolAllProperties = ((properties == null) || (properties.size() == 0));
+		
+		// property contentlength
+		if (spoolAllProperties || properties.contains(DavConstants.PROPERTY_GETCONTENTLENGTH)) {
+			String propertyValue = null;
+			if (!namesOnly) {
+				propertyValue = getContentLength() + "";
+			}
+			response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_GETCONTENTLENGTH, propertyValue);
+		}
 
 		// property doc:owner
 		if (spoolAllProperties || properties.contains(DocConstants.PROPERTY_OWNER)) {
@@ -262,7 +298,8 @@ public class DavResourceFile extends DavResourceBase {
 			if (!namesOnly) {
 				propertyValue = getOwner();
 			}
-			response.addProperty(HttpStatus.SC_OK, DocConstants.PROPERTY_OWNER, propertyValue);
+			// FIXME implement indepent from namespace prefix length
+			response.addProperty(HttpStatus.SC_OK, DavConstants.XML_DOC_NAMESPACE, DocConstants.PROPERTY_OWNER.substring(4), propertyValue);
 		}
 		
 		// property distribution time
@@ -271,7 +308,8 @@ public class DavResourceFile extends DavResourceBase {
 			if (!namesOnly) {
 				propertyValue = getDistributionTime() + "";
 			}
-			response.addProperty(HttpStatus.SC_OK, DocConstants.PROPERTY_DISTRIBUTIONTIME, propertyValue);
+			// FIXME implement indepent from namespace prefix length
+			response.addProperty(HttpStatus.SC_OK, DavConstants.XML_DOC_NAMESPACE, DocConstants.PROPERTY_DISTRIBUTIONTIME.substring(4), propertyValue);
 		}
 		
 		// doc:viewed property is not required for webdav-access -> ignore
@@ -284,6 +322,11 @@ public class DavResourceFile extends DavResourceBase {
 	 */
 	@Override
 	protected boolean importData(ImportContext context) throws DavException {
+		// check parameter
+		if (context == null) {
+			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "The parameter context must not be null.");
+		}
+		
 		boolean success = true;
 		
 		// get input stream

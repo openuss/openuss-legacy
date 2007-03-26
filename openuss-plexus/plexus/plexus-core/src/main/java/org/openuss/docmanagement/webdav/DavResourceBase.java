@@ -126,12 +126,35 @@ public abstract class DavResourceBase implements DavResource {
 		}
 		
 		// TODO Sicherheitsabfrage einbauen
-						
+		
 		// prepare multi-status for errors
 		MultiStatus multistatus = new MultiStatusImpl();
+		
+		boolean success = true;
+		
+		// create node, if resource not already present
+		if (!exists()) {
+			try {
+				// get reference to root node in repository
+				Node rootNode = session.getRootNode();
 
-		// copy this resource
-		boolean success = copyDataFrom(source) && copyPropertiesFrom(source);
+				// create node in repository with relative path and with type doc:folder
+				representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.DOC_FOLDER);
+			} catch (RepositoryException ex) {
+				// exception occurred while accessing repository -> rethrow as DavException
+				throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+			}
+		}
+		
+		// avoid creation of filtered items
+		ItemFilter itemFilter = getFactory().getConfiguration().getItemFilter();
+		if (itemFilter.isFilteredItem(representedNode)) {
+			// remove node
+			success = false;
+		} else {
+			// copy this resource
+			success = copyDataFrom(source) && copyPropertiesFrom(source);
+		}
 
 		// remove copied data and properties, if not successful
 		if (success) {
@@ -252,11 +275,6 @@ public abstract class DavResourceBase implements DavResource {
 	 * @see org.openuss.docmanagement.webdav.DavResource#exportContent(org.openuss.docmanagement.webdav.ExportContext)
 	 */
 	public void exportContent(ExportContext context) throws DavException {
-		// check parameters
-		if (context == null) {
-			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Export context must not be null.");
-		}
-		
 		// only physically present collections can be exported
 		if (!exists()) {
 			throw new DavException(HttpStatus.SC_NOT_FOUND, "The resource could not be found in the repository.");
@@ -481,7 +499,7 @@ public abstract class DavResourceBase implements DavResource {
 		}
 		
 		// property iscollection
-		if (spoolAllProperties || properties.contains(DavConstants.PROPERTY_HREF)) {
+		if (spoolAllProperties || properties.contains(DavConstants.PROPERTY_ISCOLLECTION)) {
 			String propertyValue = null;
 			if (!namesOnly) {
 				if (isCollection()) {
@@ -490,7 +508,7 @@ public abstract class DavResourceBase implements DavResource {
 					propertyValue = DavConstants.PROPERTY_VALUE_FALSE;
 				}
 			}
-			response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_HREF, propertyValue);
+			response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_ISCOLLECTION, propertyValue);
 		}
 		
 		// property isroot
@@ -550,10 +568,11 @@ public abstract class DavResourceBase implements DavResource {
 		// property doc:visibility
 		if (spoolAllProperties || properties.contains(DocConstants.PROPERTY_VISIBILITY)) {
 			String propertyValue = null;
-			if (!namesOnly) {
+			if (!namesOnly && (getVisibility() > 0)) {
 				propertyValue = getVisibility() + "";
 			}
-			response.addProperty(HttpStatus.SC_OK, DocConstants.PROPERTY_VISIBILITY, propertyValue);
+			// FIXME implement indepent from namespace prefix length
+			response.addProperty(HttpStatus.SC_OK, DavConstants.XML_DOC_NAMESPACE, DocConstants.PROPERTY_VISIBILITY.substring(4), propertyValue);
 		}
 		
 		// property doc:message
@@ -562,7 +581,8 @@ public abstract class DavResourceBase implements DavResource {
 			if (!namesOnly) {
 				propertyValue = getDisplayName();
 			}
-			response.addProperty(HttpStatus.SC_OK, DocConstants.PROPERTY_MESSAGE, propertyValue);
+			// FIXME implement indepent from namespace prefix length
+			response.addProperty(HttpStatus.SC_OK, DavConstants.XML_DOC_NAMESPACE, DocConstants.PROPERTY_MESSAGE.substring(4), propertyValue);
 		}
 
 		return response;
@@ -577,8 +597,11 @@ public abstract class DavResourceBase implements DavResource {
 		}
 		
 		try {
-			// lookup visibility
-			return (int)representedNode.getProperty(DocConstants.PROPERTY_VISIBILITY).getLong();
+			if (representedNode.hasProperty(DocConstants.PROPERTY_VISIBILITY)) {
+				// lookup visibility
+				return (int)representedNode.getProperty(DocConstants.PROPERTY_VISIBILITY).getLong();
+			}
+			return -1;
 		} catch (RepositoryException ex) {
 			throw new DavException(HttpStatus.SC_SERVICE_UNAVAILABLE);
 		}
@@ -588,19 +611,20 @@ public abstract class DavResourceBase implements DavResource {
 	 * @see org.openuss.docmanagement.webdav.DavResource#importContent(org.openuss.docmanagement.webdav.ImportContext)
 	 */
 	public boolean importContent(ImportContext context) throws DavException {
-		// check parameters
-		if (context == null) {
-			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Import context must not be null.");
-		}
-
 		boolean success = false;
 		
 		try {
 			// get reference to root node in repository
 			Node rootNode = session.getRootNode();
 
-			// create node in repository with relative path and with type doc:folder
-			representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.DOC_FOLDER);
+			if (!exists()) {
+				// create node in repository with relative path and with type doc:folder
+				if (isCollection()) {
+					representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.DOC_FOLDER);
+				} else {
+					representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.DOC_FILE);
+				}
+			}
 			
 			// avoid creation of filtered items
 			ItemFilter itemFilter = getFactory().getConfiguration().getItemFilter();
