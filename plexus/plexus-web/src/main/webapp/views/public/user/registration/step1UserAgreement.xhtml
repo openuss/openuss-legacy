@@ -32,12 +32,14 @@
  					<div class="content_font_normal">
 		   				<h:outputText value="${msg.user_registration1_Text}" escape="false" styleClass="content_font_normal"/>
 	   				</div>
+	   				<label class="field_label">
    					<h:selectBooleanCheckbox id="checkAgree" 
    						value="#{registrationData.userAgreementAccepted}" 
    						validator="#{registrationData.validateAcception}"
    						styleClass="fieldCheckBox" 
    						required="true"/>
-   					<h:outputLabel value="#{msg.user_registration1_Check}" for="checkAgree" class="field_label"/>
+   						#{msg.user_registration1_Check}
+   					</label>
 	   				<h:message for="checkAgree" styleClass="field_error"/>
 	   			</o:block>
 	   			<o:block>
