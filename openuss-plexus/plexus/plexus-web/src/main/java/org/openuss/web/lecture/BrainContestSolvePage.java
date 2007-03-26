@@ -30,7 +30,7 @@ public class BrainContestSolvePage extends AbstractEnrollmentPage{
 		logger.debug("prerender - injecting demo data to brainContest");
 		brainContest.setTitle("Normative Entscheidungstheorie");
 		brainContest.setDescription("Test Description");
-		brainContest.setAttachment(null);		
+//		brainContest.setAttachment(null);		
 	}
 
 	public String save(){

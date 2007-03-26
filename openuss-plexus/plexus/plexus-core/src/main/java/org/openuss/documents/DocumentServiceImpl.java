@@ -381,4 +381,10 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		}
 	}
 
+	@Override
+	protected List handleGetFileEntries(Object domainObject) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
