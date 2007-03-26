@@ -10,6 +10,9 @@ public class DocManagementTests{
 		suite.addTestSuite(CollaborationServiceIntegrationTest.class);
 		suite.addTestSuite(DistributionServiceIntegrationTest.class);
 		suite.addTestSuite(ExaminationServiceIntegrationTest.class);
+		suite.addTestSuite(FileDaoTest.class);
+		suite.addTestSuite(FolderDaoTest.class);		
+		suite.addTestSuite(ExamAreaDaoTest.class);		
 		//$JUnit-END$
 		return suite;
 	}
