@@ -137,7 +137,7 @@ public class URLUTF8Encoder
    * [1] http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231
    */
 
-    private static String unescape(String s) {
+    public static String decode(String s) {
       StringBuffer sbuf = new StringBuffer () ;
       int l  = s.length() ;
       int ch = -1 ;
