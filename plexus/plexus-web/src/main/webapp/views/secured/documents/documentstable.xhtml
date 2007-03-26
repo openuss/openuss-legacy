@@ -34,7 +34,7 @@
 				<h:outputText value="#{entry.name}"/>
 			</o:link>
 
-			<o:link value="/openuss-plexus/files/#{entry.name}" title="#{entry.name}" rendered="${!entry.folder}">
+			<o:link value="/files/#{entry.name}" title="#{entry.name}" rendered="${!entry.folder}">
 				<f:param value="#{entry.repositoryFileId}" name="fileid" />
 				<h:outputText value="#{entry.name}"/>
 			</o:link>

@@ -118,7 +118,6 @@
     				BrainContest
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<bean id="brainContest" class="org.openuss.braincontest.BrainContestImpl" singleton="false"/>
-	<bean id="brainContestSolution" class="org.openuss.braincontest.SolutionImpl"  singleton="false"/>
 	<bean id="brainContestAnswer" class="org.openuss.braincontest.AnswerImpl"  singleton="false"/>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -133,6 +132,7 @@
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     				User Cache Configuration
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 	<!-- User Cache Configuration  -->
 	<bean id="userCache"
 		class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">

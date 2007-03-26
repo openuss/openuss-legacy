@@ -8,6 +8,7 @@ package org.openuss.documents;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.openuss.TestUtility;
@@ -311,6 +312,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		info.setDescription("description");
 		info.setContentType("plain/text");
 		info.setSize(data.length);
+		info.setCreated(new Date());
 		info.setInputStream(new ByteArrayInputStream(data));
 		return info;
 	}

@@ -5,10 +5,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
-
-
 import org.openuss.braincontest.BrainContest;
-import org.openuss.braincontest.Solution;
 import org.openuss.web.Constants;
 import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
@@ -19,10 +16,6 @@ public class BrainContestNewPage extends AbstractEnrollmentPage{
 	
 	@Property(value = "#{brainContest}")
 	private BrainContest brainContest;
-
-	@Property(value = "#{brainContestSolution}")
-	private Solution brainContestSolution;
-
 
 	public String save(){
 		logger.debug("braincontest saved");
@@ -42,14 +35,4 @@ public class BrainContestNewPage extends AbstractEnrollmentPage{
 		this.brainContest = brainContest;
 	}
 
-	public Solution getBrainContestSolution() {
-		return brainContestSolution;
-	}
-
-	public void setBrainContestSolution(Solution brainContestSolution) {
-		this.brainContestSolution = brainContestSolution;
-	}
-	
-	
-		
 }

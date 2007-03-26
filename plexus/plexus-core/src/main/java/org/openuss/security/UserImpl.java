@@ -97,6 +97,7 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public String getTitle() {
 		if (getContact() == null) {
@@ -109,6 +110,16 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	@Override
 	public String getName() {
 		return getUsername();
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public Long getImageId() {
+		if (getProfile() == null || getProfile().getImage() == null) {
+			return null;
+		} else {
+			return getProfile().getImage().getId();
+		}
 	}
 
 }
