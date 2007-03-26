@@ -38,7 +38,7 @@ public class URLUTF8EncoderTest extends TestCase {
 	 */
 	public final void testDecodeEncode() {
 		String testString = "ÄÖÜäöüß";
-		assertTrue(URLUTF8Encoder.decode(URLUTF8Encoder.encode(testString)) != testString);
+		assertTrue(URLUTF8Encoder.decode(URLUTF8Encoder.encode(testString)).equals(testString));
 	}
 
 }
