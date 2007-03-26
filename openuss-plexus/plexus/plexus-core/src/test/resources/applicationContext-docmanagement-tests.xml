@@ -77,5 +77,9 @@
 		<property name="folderDao" ref="folderDao"></property>
 		<property name="docTestUtility" ref="docTestUtility"></property>		  
 	</bean>
-
+	<bean id="examAreaDaoTest" class="org.openuss.docmanagement.ExamAreaDaoTest">
+	 	<property name="folderDao" ref="folderDao"></property>
+		<property name="docTestUtility" ref="docTestUtility"></property>	
+		<property name="examAreaDao" ref="examAreaDao"></property>	  
+	</bean>
 </beans>
