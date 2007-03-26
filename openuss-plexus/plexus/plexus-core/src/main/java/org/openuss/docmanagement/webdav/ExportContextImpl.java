@@ -36,7 +36,11 @@ public class ExportContextImpl extends IOContextBase implements ExportContext {
 	 * @param context The underlying output context.
 	 */
 	public ExportContextImpl(HttpServletResponse response, OutputStream stream) throws IOException {
-		// TODO prüfen
+		// check parameter
+		if (response == null) {
+			throw new IllegalArgumentException("The parameter response must not be null.");
+		}
+		
 		this.response = response;
 		responseOutputStream = stream;
 		if (hasStream()) {

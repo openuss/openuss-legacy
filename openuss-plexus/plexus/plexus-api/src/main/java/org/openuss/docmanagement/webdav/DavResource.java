@@ -2,6 +2,7 @@ package org.openuss.docmanagement.webdav;
 
 import java.util.Dictionary;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
@@ -68,7 +69,7 @@ public interface DavResource {
 	 * Returns the time of last modification.
 	 * @return The time of last modification.
 	 */
-	public String getLastModified() throws DavException;
+	public long getLastModified() throws DavException;
 	
 	/**
 	 * Getter for the {@link DavResourceLocator} identifying this resource.
@@ -127,5 +128,5 @@ public interface DavResource {
 	 * @return The response containing the status information.
 	 * @throws DavException
 	 */
-	public MultiStatusResponse updateProperties(Dictionary<String, String> propertiesToSet, List<String> propertiesToRemove) throws DavException;
+	public MultiStatusResponse updateProperties(Map<String, String> propertiesToSet, List<String> propertiesToRemove) throws DavException;
 }

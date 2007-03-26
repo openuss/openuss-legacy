@@ -4,6 +4,7 @@ import java.util.Dictionary;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
@@ -360,7 +361,7 @@ public abstract class DavResourceBase implements DavResource {
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResource#getLastModified()
 	 */
-	public String getLastModified() throws DavException {
+	public long getLastModified() throws DavException {
 		if (!exists()) {
 			throw new DavException(HttpStatus.SC_NOT_FOUND);
 		}
@@ -368,9 +369,9 @@ public abstract class DavResourceBase implements DavResource {
 		try {
 			// return property value, if present
 			if (representedNode.hasProperty(JcrConstants.JCR_LASTMODIFIED)) {
-				return representedNode.getProperty(DocConstants.JCR_LASTMODIFIED).getString();
+				return representedNode.getProperty(DocConstants.JCR_LASTMODIFIED).getLong();
 			}
-			return (System.currentTimeMillis() + "");
+			return System.currentTimeMillis();
 		} catch (RepositoryException ex) {
 			throw new DavException(HttpStatus.SC_SERVICE_UNAVAILABLE);
 		}
@@ -490,7 +491,7 @@ public abstract class DavResourceBase implements DavResource {
 		if (spoolAllProperties || properties.contains(DavConstants.PROPERTY_GETLASTMODIFIED)) {
 			String propertyValue = null;
 			if (!namesOnly) {
-				propertyValue = getLastModified();
+				propertyValue = getLastModified() + "";
 			}
 			response.addProperty(HttpStatus.SC_OK, DavConstants.PROPERTY_GETLASTMODIFIED, propertyValue);
 		}
@@ -525,6 +526,24 @@ public abstract class DavResourceBase implements DavResource {
 				Element collectionElement = DocumentHelper.createElement(collectionName);
 				response.addProperty(HttpStatus.SC_OK, null, DavConstants.PROPERTY_RESOURCETYPE, collectionElement);
 			}
+		}
+		
+		// property doc:visibility
+		if (spoolAllProperties || properties.contains(DocConstants.PROPERTY_VISIBILITY)) {
+			String propertyValue = null;
+			if (!namesOnly) {
+				propertyValue = getVisibility() + "";
+			}
+			response.addProperty(HttpStatus.SC_OK, DocConstants.PROPERTY_VISIBILITY, propertyValue);
+		}
+		
+		// property doc:message
+		if (spoolAllProperties || properties.contains(DocConstants.PROPERTY_MESSAGE)) {
+			String propertyValue = null;
+			if (!namesOnly) {
+				propertyValue = getDisplayName();
+			}
+			response.addProperty(HttpStatus.SC_OK, DocConstants.PROPERTY_MESSAGE, propertyValue);
 		}
 
 		return response;
@@ -673,7 +692,7 @@ public abstract class DavResourceBase implements DavResource {
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResource#updateProperties(java.util.Dictionary, java.util.List)
 	 */
-	public MultiStatusResponse updateProperties(Dictionary<String, String> propertiesToSet, List<String> propertiesToRemove) throws DavException {
+	public MultiStatusResponse updateProperties(Map<String, String> propertiesToSet, List<String> propertiesToRemove) throws DavException {
 		// properties can only be updated for existing resources
 		if (!exists()) {
 			throw new DavException(HttpStatus.SC_NOT_FOUND);

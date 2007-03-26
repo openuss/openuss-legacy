@@ -29,6 +29,14 @@ public class ImportContextImpl extends IOContextBase implements ImportContext {
 	 * @param systemId The ID of the resource.
 	 */
 	public ImportContextImpl(HttpServletRequest request, InputStream stream, String systemId) throws IOException {
+		// check parameter
+		if (request == null) {
+			throw new IllegalArgumentException("The parameter request must not be null.");
+		}
+		if ((systemId == null) || (systemId.length() == 0)) {
+			throw new IllegalArgumentException("The parameter systemId must not be null or empty.");
+		}
+		
 		this.request = request;
 		this.systemId = systemId;
 		
@@ -97,7 +105,7 @@ public class ImportContextImpl extends IOContextBase implements ImportContext {
 			try {
 				return Integer.parseInt(lengthString);
 			} catch (NumberFormatException ex) {
-				// TODO handle exception
+				// content length header value is not a number -> ignore
 			}
 		}
 		return -1;

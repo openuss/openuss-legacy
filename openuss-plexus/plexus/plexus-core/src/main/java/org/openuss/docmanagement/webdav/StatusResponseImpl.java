@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.openuss.docmanagement.webdav;
 
 import org.dom4j.DocumentHelper;
@@ -9,13 +6,19 @@ import org.dom4j.QName;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.5
+ * @version 0.9
  */
 public class StatusResponseImpl implements StatusResponse {
 	private final String href;
 	private final String description;
 	private int statusCode;
 	
+	/**
+	 * Constructor.
+	 * @param href The href of the resource this response is associated with.
+	 * @param statusCode The status code of the response.
+	 * @param responseDescription The description of the resource.
+	 */
 	StatusResponseImpl(String href, int statusCode, String responseDescription) {
 		this.href = href;
 		this.statusCode = statusCode;
@@ -33,6 +36,12 @@ public class StatusResponseImpl implements StatusResponse {
 	 * @see org.openuss.docmanagement.webdav.MultiStatusResponse#toXml(org.dom4j.Element)
 	 */
 	public void toXml(Element element) {
+		// check parameter
+		if (element == null) {
+			throw new IllegalArgumentException("The parameter element must not be null.");
+		}
+
+		// create response element
 		QName rootName = DocumentHelper.createQName(DavConstants.XML_RESPONSE, DavConstants.XML_DAV_NAMESPACE);
 		Element rootElement = element.addElement(rootName);
 		
@@ -41,6 +50,7 @@ public class StatusResponseImpl implements StatusResponse {
 		Element hrefElement = rootElement.addElement(hrefName);
 		hrefElement.addText(getHref());
 		
+		// append status
 		QName statusName = DocumentHelper.createQName(DavConstants.XML_STATUS, DavConstants.XML_DAV_NAMESPACE);
 		Element statusElement = rootElement.addElement(statusName);
 		statusElement.addText(HttpStatus.getStatusLine(statusCode));

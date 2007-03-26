@@ -1,8 +1,10 @@
 package org.openuss.docmanagement.webdav;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -13,9 +15,8 @@ import org.dom4j.Element;
 import org.openuss.lecture.Enrollment;
 
 /**
- * TODO: RFC compliance sicherstellen
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.8
+ * @version 0.9
  */
 public class DavServiceImpl implements DavService {
 	private final Logger logger = Logger.getLogger(DavService.class);
@@ -30,8 +31,12 @@ public class DavServiceImpl implements DavService {
 	 * @param configuration An instance of DavConfiguration.
 	 */
 	public DavServiceImpl(DavConfiguration configuration) {
+		// check paremeter
+		if (configuration == null) {
+			throw new IllegalArgumentException("The parameter configuration must not be null.");
+		}
+		
 		this.configuration = configuration;
-		logger.info("Initialization done.");
 	}
 	
 	/* (non-Javadoc)
@@ -132,7 +137,7 @@ public class DavServiceImpl implements DavService {
 			logger.error("Repository exception occurred.");
 			logger.error("Exception: " + ex.getMessage());
 			// rethrow as DavException 
-			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+			throw new DavException(HttpStatus.SC_SERVICE_UNAVAILABLE, ex.getMessage());
 		}
 		
 		// send adequate success status code to client
@@ -206,7 +211,7 @@ public class DavServiceImpl implements DavService {
 				logger.error("Repository exception occurred.");
 				logger.error("Exception: " + ex.getMessage());
 				// rethrow as DavException
-				throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+				throw new DavException(HttpStatus.SC_SERVICE_UNAVAILABLE, ex.getMessage());
 			}
 		}
 
@@ -237,7 +242,94 @@ public class DavServiceImpl implements DavService {
 	}
 	
 	private List<String> getPropertiesToRemove(Document requestDocument) throws DavException {
-		// TODO
+		// check parameter
+		if ((requestDocument == null) || (requestDocument.getRootElement() == null)) {
+			throw new DavException(HttpStatus.SC_BAD_REQUEST, "Body for PROPPATCH method must not be empty.");
+		}
+
+		Element rootElement = requestDocument.getRootElement();
+		// root element has to be propertyupdate
+		if (!rootElement.getName().equals(DavConstants.XML_PROPERTYUPDATE)) {
+			throw new DavException(HttpStatus.SC_BAD_REQUEST, "Root element has to be propertyupdate.");
+		}
+		
+		// retrieve remove element, if present
+		Element removeElement = rootElement.element(DavConstants.XML_REMOVE);
+		
+		if ((removeElement != null) && (removeElement.hasContent())) {
+			List<String> propertyNames = new LinkedList<String>();
+			// iterate through prop elements
+			Iterator elementIterator = removeElement.elementIterator(DavConstants.XML_PROP);
+			Element element;
+			Element innerElement;
+			while (elementIterator.hasNext()) {
+				element = (Element)elementIterator.next();
+
+				if (element.hasContent()) {
+					if (element.elements().size() > 1) {
+						throw new DavException(HttpStatus.SC_BAD_REQUEST, "Ill-formed content of prop element.");
+					}
+					innerElement = (Element)element.elements().get(0);
+
+					
+					// ignore namespace for properties from default namespace
+					if (innerElement.getNamespace() != DavConstants.XML_DAV_NAMESPACE) {
+						propertyNames.add(innerElement.getQualifiedName());
+					} else {
+						propertyNames.add(innerElement.getName());
+					}
+				}
+			}
+			
+			return propertyNames;
+		}
+
+		return null;
+	}
+	
+	private Map<String, String> getPropertiesToSet(Document requestDocument) throws DavException {
+		// check parameter
+		if ((requestDocument == null) || (requestDocument.getRootElement() == null)) {
+			throw new DavException(HttpStatus.SC_BAD_REQUEST, "Body for PROPPATCH method must not be empty.");
+		}
+
+		Element rootElement = requestDocument.getRootElement();
+		// root element has to be propertyupdate
+		if (!rootElement.getName().equals(DavConstants.XML_PROPERTYUPDATE)) {
+			throw new DavException(HttpStatus.SC_BAD_REQUEST, "Root element has to be propertyupdate.");
+		}
+		
+		// retrieve set element, if present
+		Element setElement = rootElement.element(DavConstants.XML_SET);
+		
+		if ((setElement != null) && (setElement.hasContent())) {
+			Map<String, String> properties = new HashMap<String, String>();
+			Iterator elementIterator = setElement.elementIterator();
+			Element element;
+			Element innerElement;
+
+			while (elementIterator.hasNext()) {
+				element = (Element)elementIterator.next();
+
+				if (element.hasContent()) {
+					if (element.elements().size() > 1) {
+						throw new DavException(HttpStatus.SC_BAD_REQUEST, "Ill-formed content of prop element.");
+					}
+					innerElement = (Element)element.elements().get(0);
+
+					
+					// ignore namespace for properties from default namespace
+					if (innerElement.getNamespace() != DavConstants.XML_DAV_NAMESPACE) {
+						properties.put(innerElement.getQualifiedName(), innerElement.asXML());
+					} else {
+						properties.put(innerElement.getName(), innerElement.asXML());
+					}
+				}
+			}
+			
+			return properties;
+		}
+
 		return null;
 	}
 	
@@ -249,8 +341,6 @@ public class DavServiceImpl implements DavService {
 	 * @throws DavException
 	 */
 	private List<String> getRequestedProperties(Document requestDocument) throws DavException {
-		List<String> propertyNames = null;
-		
 		// an empty document is equivalent to request-all-properties
 		if (requestDocument != null) {
 			Element propfindElement = requestDocument.getRootElement();
@@ -281,17 +371,24 @@ public class DavServiceImpl implements DavService {
 			
 			// iterate through property names and add them to the list, if prop element was found
 			if ((propElement != null) && (propElement.hasContent())) {
-				propertyNames = new LinkedList<String>();
+				List<String> propertyNames = new LinkedList<String>();
 				Iterator elementIterator = propElement.elementIterator();
 				Element element;
 				while (elementIterator.hasNext()) {
 					element = (Element)elementIterator.next();
-					propertyNames.add(element.getName());
+					// ignore namespace for properties from default namespace
+					if (element.getNamespace() != DavConstants.XML_DAV_NAMESPACE) {
+						propertyNames.add(element.getQualifiedName());
+					} else {
+						propertyNames.add(element.getName());
+					}
 				}
+				
+				return propertyNames;
 			}
 		}
 		
-		return propertyNames;
+		return null;
 	}
 		
 	/* (non-Javadoc)
@@ -395,7 +492,7 @@ public class DavServiceImpl implements DavService {
 			logger.error("Repository exception occurred.");
 			logger.error("Exception: " + ex.getMessage());
 			// rethrow as DavException 
-			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+			throw new DavException(HttpStatus.SC_SERVICE_UNAVAILABLE, ex.getMessage());
 		}
 
 		if (errorStatus == null) {
@@ -455,7 +552,7 @@ public class DavServiceImpl implements DavService {
 		MultiStatus multistatus = new MultiStatusImpl();
 		
 		// update properties and add response to multi-status
-		multistatus.addResponse(resource.updateProperties(null, null));
+		multistatus.addResponse(resource.updateProperties(getPropertiesToSet(requestDocument), getPropertiesToRemove(requestDocument)));
 		
 		return multistatus;
 	}

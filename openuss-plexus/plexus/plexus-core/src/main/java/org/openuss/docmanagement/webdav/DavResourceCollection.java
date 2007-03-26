@@ -24,6 +24,15 @@ public class DavResourceCollection extends DavResourceBase {
 	}
 
 	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResourceBase#addMember(org.openuss.docmanagement.webdav.DavResource, org.openuss.docmanagement.webdav.ImportContext)
+	 */
+	@Override
+	public void addMember(DavResource resource, ImportContext context) throws DavException {
+		// TODO Sicherheitsabfrage implementieren
+		super.addMember(resource, context);
+	}
+
+	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResource#copyDataFrom(org.openuss.docmanagement.webdav.DavResource)
 	 */
 	@Override
@@ -53,6 +62,8 @@ public class DavResourceCollection extends DavResourceBase {
 	 */
 	@Override
 	protected void exportData(ExportContext context) throws DavException {
+		context.setContentType("text/html", "UTF-8");
+		
 		// TODO Daten über die Member als HTML oder XML ausgeben
 	}
 
@@ -81,7 +92,7 @@ public class DavResourceCollection extends DavResourceBase {
 		boolean success = true;
 		
 		try {
-			// HACK set adequate visibility
+			// TODO set adequate visibility
 			representedNode.setProperty(DocConstants.PROPERTY_VISIBILITY, (DocRights.READ_ALL|DocRights.EDIT_ASSIST));
 		} catch (RepositoryException ex) {
 			// error occurred while setting mandatory property

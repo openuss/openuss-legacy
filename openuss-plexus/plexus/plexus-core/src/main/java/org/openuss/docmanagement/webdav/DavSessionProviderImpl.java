@@ -27,12 +27,12 @@ import org.openuss.security.User;
 
 /**
  * @author David Ullrich
- * @version 0.8
+ * @version 0.9
  */
 public class DavSessionProviderImpl implements DavSessionProvider {
 	private final Logger logger = Logger.getLogger(DavSessionProviderImpl.class);
 	
-	// TODO auslagern in Konfigurationsdatei
+	// credentials for repository access
 	private static final String REPOSITORY_USERNAME = "username";
 	private static final String REPOSITORY_PASSWORD = "password";
 	

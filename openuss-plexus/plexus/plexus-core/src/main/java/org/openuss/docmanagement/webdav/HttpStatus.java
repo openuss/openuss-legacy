@@ -7,11 +7,12 @@ import org.apache.log4j.Logger;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.7
+ * @version 0.9
  */
 public class HttpStatus {
 	public static final String HTTP_VERSION = "HTTP/1.1";
 	
+	// http status code with additional codes as defined in RFC2518
 	public static final int SC_CONTINUE = 100;
 	public static final int SC_SWITCHING_PROTOCOLS = 101;
 	public static final int SC_PROCESSING = 102;
@@ -65,6 +66,7 @@ public class HttpStatus {
 	private static final Properties reasonPhrases = new Properties();
 	
 	static {
+		// load reason phrases from properties file
 		try {
 			reasonPhrases.load(HttpStatus.class.getResourceAsStream("httpReasonPhrases.properties"));
 		} catch (IOException ex) {
