@@ -25,6 +25,24 @@ public class DavResourceRoot extends DavResourceCollection {
 	}
 
 	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResourceBase#addMember(org.openuss.docmanagement.webdav.DavResource, org.openuss.docmanagement.webdav.ImportContext)
+	 */
+	@Override
+	public void addMember(DavResource resource, ImportContext context) throws DavException {
+		// adding members to root is not allowed
+		throw new DavException(HttpStatus.SC_FORBIDDEN);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResourceBase#copyFrom(org.openuss.docmanagement.webdav.DavResource, boolean)
+	 */
+	@Override
+	public MultiStatus copyFrom(DavResource source, boolean recursive) throws DavException {
+		// adding members to root is not allowed
+		throw new DavException(HttpStatus.SC_FORBIDDEN);
+	}
+
+	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResource#getMembers()
 	 */
 	@Override
@@ -37,6 +55,7 @@ public class DavResourceRoot extends DavResourceCollection {
 		DavResourceLocator locator;
 		while (iterator.hasNext()) {
 			enrollment = iterator.next();
+			// FIXME auf Anzeigename des Enrollments umbiegen
 			locator = getLocator().getFactory().createResourceLocator(getLocator().getPrefix(), null, "/"  + enrollment.getId().toString());
 			members.add(getFactory().createResource(session, locator, true));
 		}

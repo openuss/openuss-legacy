@@ -122,7 +122,7 @@ public class DavServiceImpl implements DavService {
 		
 		// create instance of source resource
 		DavResource sourceResource = getResourceFactory().createResource(getSession(), source, true);
-		
+
 		// copy resource
 		MultiStatus errorStatus = destinationResource.copyFrom(sourceResource, recursive);
 		
@@ -193,7 +193,7 @@ public class DavServiceImpl implements DavService {
 		
 		// create instance of DavResource
 		DavResource resource = getResourceFactory().createResource(getSession(), locator, false);
-		
+
 		// remove resource
 		MultiStatus errorStatus = resource.remove();
 		// removal successful? -> persist pending changes
@@ -230,7 +230,7 @@ public class DavServiceImpl implements DavService {
 		
 		// create instance of DavResource 
 		DavResource resource = getResourceFactory().createResource(getSession(), locator, false);
-		
+
 		MultiStatus multistatus = new MultiStatusImpl();
 		
 		// examine request and add response to multi-status
@@ -548,7 +548,6 @@ public class DavServiceImpl implements DavService {
 		
 		// create instance of DavResource 
 		DavResource resource = getResourceFactory().createResource(getSession(), locator, false);
-		
 		MultiStatus multistatus = new MultiStatusImpl();
 		
 		// update properties and add response to multi-status

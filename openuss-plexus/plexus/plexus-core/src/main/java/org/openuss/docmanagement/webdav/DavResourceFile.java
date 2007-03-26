@@ -33,21 +33,47 @@ public class DavResourceFile extends DavResourceBase {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.webdav.DavResourceBase#addMember(org.openuss.docmanagement.webdav.DavResource, org.openuss.docmanagement.webdav.ImportContext)
-	 */
-	@Override
-	public void addMember(DavResource resource, ImportContext context) throws DavException {
-		// TODO Sicherheitsabfrage implementieren
-		super.addMember(resource, context);
-	}
-
-	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResource#copyDataFrom(org.openuss.docmanagement.webdav.DavResource)
 	 */
 	@Override
 	protected boolean copyDataFrom(DavResource source) throws DavException {
-		// TODO Auto-generated method stub
-		return false;
+		// check, if source is a file
+		if (!(source instanceof DavResourceFile)) {
+			throw new DavException(HttpStatus.SC_METHOD_FAILURE, "The source resource is not a file.");
+		}
+		
+		// retrieve node from source
+		Node sourceNode = ((DavResourceFile)source).representedNode;
+		
+		boolean success = true;
+		
+		try {
+			Node sourceContentNode;
+			
+			// snoop for data at source
+			if (sourceNode.hasNode(JcrConstants.JCR_CONTENT)) {
+				sourceContentNode = sourceNode.getNode(JcrConstants.JCR_CONTENT);
+				
+				if (sourceContentNode.hasProperty(JcrConstants.JCR_DATA)) {
+					// data found
+					Node targetContentNode;
+					
+					// create target, if not already present
+					if (representedNode.hasNode(JcrConstants.JCR_CONTENT)) {
+						targetContentNode = representedNode.getNode(JcrConstants.JCR_CONTENT);
+					} else {
+						targetContentNode = representedNode.addNode(JcrConstants.JCR_CONTENT, JcrConstants.NT_RESOURCE);
+					}
+					
+					// copy value of property
+					targetContentNode.setProperty(JcrConstants.JCR_DATA, sourceContentNode.getProperty(JcrConstants.JCR_DATA).getValue());
+				}
+			}
+		} catch (RepositoryException ex) {
+			success = false;
+		}
+
+		return success;
 	}
 
 	/* (non-Javadoc)
@@ -55,8 +81,39 @@ public class DavResourceFile extends DavResourceBase {
 	 */
 	@Override
 	protected boolean copyPropertiesFrom(DavResource source) throws DavException {
-		// TODO Auto-generated method stub
-		return false;
+		// retrieve node from source
+		DavResourceFile castedSource = (DavResourceFile)source;
+		
+		boolean success = true;
+		
+		try {
+			// copy mandatory properties
+			representedNode.setProperty(DocConstants.PROPERTY_VISIBILITY, source.getVisibility());
+			representedNode.setProperty(DocConstants.PROPERTY_MESSAGE, source.getDisplayName());
+			representedNode.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, castedSource.getDistributionTime());
+			
+			// copy owner, if set
+			if (castedSource.getOwner() != null) {
+				representedNode.setProperty(DocConstants.PROPERTY_OWNER, castedSource.getOwner());
+			}
+
+			// copy properties of jcr:content node  mimetype, encoding, lastmodified			
+			Node sourceContentNode = castedSource.representedNode.getNode(JcrConstants.JCR_CONTENT);
+			Node targetContentNode = representedNode.getNode(JcrConstants.JCR_CONTENT);
+			if (sourceContentNode.hasProperty(JcrConstants.JCR_MIMETYPE)) {
+				targetContentNode.setProperty(JcrConstants.JCR_MIMETYPE, sourceContentNode.getProperty(JcrConstants.JCR_MIMETYPE).getValue());
+			}
+			if (sourceContentNode.hasProperty(JcrConstants.JCR_ENCODING)) {
+				targetContentNode.setProperty(JcrConstants.JCR_ENCODING, sourceContentNode.getProperty(JcrConstants.JCR_ENCODING).getValue());
+			}
+			if (sourceContentNode.hasProperty(JcrConstants.JCR_LASTMODIFIED)) {
+				targetContentNode.setProperty(JcrConstants.JCR_LASTMODIFIED, sourceContentNode.getProperty(JcrConstants.JCR_LASTMODIFIED).getValue());
+			}
+		} catch (RepositoryException ex) {
+			success = false;
+		}
+		
+		return success;
 	}
 
 	/* (non-Javadoc)
@@ -146,6 +203,47 @@ public class DavResourceFile extends DavResourceBase {
             throw new DavException(HttpStatus.SC_SERVICE_UNAVAILABLE, ex.getMessage());
         }
 	}
+	
+	/**
+	 * Returns the time of distribution or Long.MINIMAL_VALUE
+	 * @return The time of distribution or Long.MINIMAL_VALUE
+	 * @throws DavException
+	 */
+	public long getDistributionTime() throws DavException {
+		if (!exists()) {
+			throw new DavException(HttpStatus.SC_NOT_FOUND);
+		}
+		
+		try {
+			// return property value, if present
+			if (representedNode.hasProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME)) {
+				return representedNode.getProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME).getLong();
+			}
+			return Long.MIN_VALUE;
+		} catch (RepositoryException ex) {
+			throw new DavException(HttpStatus.SC_SERVICE_UNAVAILABLE);
+		}
+	}
+	
+	/**
+	 * Returns the owner of the file, if set.
+	 * @return The name of the owner or null.
+	 * @throws DavException
+	 */
+	public String getOwner() throws DavException {
+		String name = null;
+
+		try {
+			// lookup owner property
+			if (representedNode.hasProperty(DocConstants.PROPERTY_OWNER)) {
+				name = representedNode.getProperty(DocConstants.PROPERTY_OWNER).getString();
+			}
+		} catch (RepositoryException ex) {
+			throw new DavException(HttpStatus.SC_SERVICE_UNAVAILABLE);
+		}
+
+		return name;
+	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResourceBase#getProperties(java.util.List, boolean)
@@ -154,12 +252,27 @@ public class DavResourceFile extends DavResourceBase {
 	public MultiStatusResponse getProperties(List<String> properties, boolean namesOnly) throws DavException {
 		// DavResourceBase returns a property response
 		PropertyResponse response = (PropertyResponse)super.getProperties(properties, namesOnly);
-		
+
+		// check, if all properties are requested
+		boolean spoolAllProperties = ((properties == null) || (properties.size() == 0));
+
 		// property doc:owner
-		// TODO
+		if (spoolAllProperties || properties.contains(DocConstants.PROPERTY_OWNER)) {
+			String propertyValue = null;
+			if (!namesOnly) {
+				propertyValue = getOwner();
+			}
+			response.addProperty(HttpStatus.SC_OK, DocConstants.PROPERTY_OWNER, propertyValue);
+		}
 		
 		// property distribution time
-		// TODO
+		if (spoolAllProperties || properties.contains(DocConstants.PROPERTY_DISTRIBUTIONTIME)) {
+			String propertyValue = null;
+			if (!namesOnly) {
+				propertyValue = getDistributionTime() + "";
+			}
+			response.addProperty(HttpStatus.SC_OK, DocConstants.PROPERTY_DISTRIBUTIONTIME, propertyValue);
+		}
 		
 		// doc:viewed property is not required for webdav-access -> ignore
 		
@@ -182,10 +295,10 @@ public class DavResourceFile extends DavResourceBase {
 				Node contentNode;
 				
 				// snoop for already existing jcr:content node
-				if (representedNode.hasNode(DocConstants.JCR_CONTENT)) {
-					contentNode = representedNode.getNode(DocConstants.JCR_CONTENT);
+				if (representedNode.hasNode(JcrConstants.JCR_CONTENT)) {
+					contentNode = representedNode.getNode(JcrConstants.JCR_CONTENT);
 				} else {
-					contentNode = representedNode.addNode(DocConstants.JCR_CONTENT, DocConstants.NT_RESOURCE);
+					contentNode = representedNode.addNode(JcrConstants.JCR_CONTENT, JcrConstants.NT_RESOURCE);
 				}
 				
 				contentNode.setProperty(JcrConstants.JCR_DATA, inputStream);
@@ -211,41 +324,36 @@ public class DavResourceFile extends DavResourceBase {
 	@Override
 	protected boolean importProperties(ImportContext context) throws DavException {
 		boolean success = true;
+		Node contentNode = null;
+		
+		try {
+			contentNode = representedNode.getNode(JcrConstants.JCR_CONTENT);
+		} catch (RepositoryException ex) {
+			// importData is called first -> jcr:content has to exist
+		}
 		
 		// set mime-type property of node
 		try {
-			representedNode.setProperty(JcrConstants.JCR_MIMETYPE, context.getMimeType());
+			contentNode.setProperty(JcrConstants.JCR_MIMETYPE, context.getMimeType());
 		} catch (RepositoryException ex) {
 			// ignore
 		}
 		
 		// set encoding property of node
 		try {
-			representedNode.setProperty(JcrConstants.JCR_ENCODING, context.getEncoding());
+			contentNode.setProperty(JcrConstants.JCR_ENCODING, context.getEncoding());
 		} catch (RepositoryException ex) {
 			// ignore
 		}
 
-		// set visibility property of node
+		// set mandatory properties of node
 		try {
+			representedNode.setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, Calendar.getInstance());
+			representedNode.setProperty(DocConstants.PROPERTY_MESSAGE, context.getSystemId());
+			// FIXME set adequate owner
+			representedNode.setProperty(DocConstants.PROPERTY_OWNER, "");
 			// FIXME set adequate visibility
-			representedNode.getParent().setProperty(DocConstants.PROPERTY_VISIBILITY, (DocRights.READ_ALL|DocRights.EDIT_ASSIST));
-		} catch (RepositoryException ex) {
-			// property mandatory, cannot ignore exception
-			success = false;
-		}
-
-		// set distribution time property of node
-		try {
-			representedNode.getParent().setProperty(DocConstants.PROPERTY_DISTRIBUTIONTIME, Calendar.getInstance());
-		} catch (RepositoryException ex) {
-			// property mandatory, cannot ignore exception
-			success = false;
-		}
-		
-		// set message property of node
-		try {
-			representedNode.getParent().setProperty(DocConstants.PROPERTY_MESSAGE, context.getSystemId());
+			representedNode.setProperty(DocConstants.PROPERTY_VISIBILITY, (DocRights.READ_ALL|DocRights.EDIT_ASSIST));
 		} catch (RepositoryException ex) {
 			// property mandatory, cannot ignore exception
 			success = false;
@@ -259,7 +367,7 @@ public class DavResourceFile extends DavResourceBase {
 			} else {
 				modificationTime.setTime(new Date());
 			}
-			representedNode.setProperty(JcrConstants.JCR_LASTMODIFIED, modificationTime);
+			contentNode.setProperty(JcrConstants.JCR_LASTMODIFIED, modificationTime);
 		} catch (RepositoryException ex) {
 			// ignore
 		}

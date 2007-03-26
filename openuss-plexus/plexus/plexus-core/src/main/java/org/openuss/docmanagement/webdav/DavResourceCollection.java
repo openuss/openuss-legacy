@@ -1,5 +1,9 @@
 package org.openuss.docmanagement.webdav;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.Iterator;
+
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -24,19 +28,15 @@ public class DavResourceCollection extends DavResourceBase {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openuss.docmanagement.webdav.DavResourceBase#addMember(org.openuss.docmanagement.webdav.DavResource, org.openuss.docmanagement.webdav.ImportContext)
-	 */
-	@Override
-	public void addMember(DavResource resource, ImportContext context) throws DavException {
-		// TODO Sicherheitsabfrage implementieren
-		super.addMember(resource, context);
-	}
-
-	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResource#copyDataFrom(org.openuss.docmanagement.webdav.DavResource)
 	 */
 	@Override
 	protected boolean copyDataFrom(DavResource source) throws DavException {
+		// check, if source is a file
+		if (!(source instanceof DavResourceCollection)) {
+			throw new DavException(HttpStatus.SC_METHOD_FAILURE, "The source resource is not a file.");
+		}
+		
 		// collections do not contain data
 		return true;
 	}
@@ -46,13 +46,20 @@ public class DavResourceCollection extends DavResourceBase {
 	 */
 	@Override
 	protected boolean copyPropertiesFrom(DavResource source) throws DavException {
+		DavResourceCollection castedSource = (DavResourceCollection)source;
+		
 		try {
 			// copy mandatory properties from source
 			representedNode.setProperty(DocConstants.PROPERTY_VISIBILITY, source.getVisibility());
 			representedNode.setProperty(DocConstants.PROPERTY_MESSAGE, source.getDisplayName());
+			
+			// copy deadline, if set at source
+			if (castedSource.getDeadline() < Long.MAX_VALUE) {
+				representedNode.setProperty(DocConstants.PROPERTY_DEADLINE, castedSource.getDeadline());
+			}
 		} catch (RepositoryException ex) {
 			// undefined repository exception occurred -> rethrow as DavException
-			throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+			throw new DavException(HttpStatus.SC_SERVICE_UNAVAILABLE);
 		}
 		return true;
 	}
@@ -62,9 +69,44 @@ public class DavResourceCollection extends DavResourceBase {
 	 */
 	@Override
 	protected void exportData(ExportContext context) throws DavException {
-		context.setContentType("text/html", "UTF-8");
-		
-		// TODO Daten über die Member als HTML oder XML ausgeben
+		if (context.hasStream()) {
+			// create stream writer for output
+			OutputStreamWriter writer = new OutputStreamWriter(context.getOutputStream());
+			
+			try {
+				// write html file containing a listing of the resource
+				writer.write("<html><head><title>");
+				writer.write("Content of collection " + getLocator().getHref(isCollection()));
+				writer.write("</title></head></body>");
+				writer.write("<table>");
+				
+				// show up-link, if not root
+				if (!getLocator().isRootLocation()) {
+					writer.write("<tr>");
+					writer.write("<td><img src=\"\"></td>");
+					writer.write("<td><a href=\"" + getCollection().getLocator().getHref(true) + "\">..</a></td>");
+					writer.write("</tr>");
+				}
+				
+				// iterate through members and display link for each of them
+				Iterator<DavResource> iterator = getMembers().iterator();
+				DavResource member;
+				while (iterator.hasNext()) {
+					member = iterator.next();
+					writer.write("<tr>");
+					writer.write("<td><img src=\"\"></td>");
+					writer.write("<td><a href=\"" + member.getLocator().getHref(member.isCollection()) + "\">" + member.getDisplayName() + "</a></td>");
+					writer.write("</tr>");
+				}
+				
+				writer.write("</table>");
+				writer.write("</body></html>");
+				writer.close();
+			} catch (IOException ex) {
+				// rethrow as DavException
+				throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+			}
+		}
 	}
 
 	/* (non-Javadoc)
@@ -72,7 +114,31 @@ public class DavResourceCollection extends DavResourceBase {
 	 */
 	@Override
 	protected void exportProperties(ExportContext context) throws DavException {
-		// TODO
+		// set properties for html export of collection members
+		context.setContentType("text/html", "UTF-8");
+		context.setETag("");
+		context.setModificationTime(getLastModified());
+	}
+	
+	/**
+	 * Returns the deadline for imports.
+	 * @return The deadline for imports or Long.MAX_VALUE if no deadline is set.
+	 * @throws DavException
+	 */
+	public long getDeadline() throws DavException {
+		if (!exists()) {
+			throw new DavException(HttpStatus.SC_NOT_FOUND);
+		}
+		
+		try {
+			// return property value, if present
+			if (representedNode.hasProperty(DocConstants.PROPERTY_DEADLINE)) {
+				return representedNode.getProperty(DocConstants.PROPERTY_DEADLINE).getLong();
+			}
+			return Long.MAX_VALUE;
+		} catch (RepositoryException ex) {
+			throw new DavException(HttpStatus.SC_SERVICE_UNAVAILABLE);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -92,7 +158,7 @@ public class DavResourceCollection extends DavResourceBase {
 		boolean success = true;
 		
 		try {
-			// TODO set adequate visibility
+			// FIXME set adequate visibility
 			representedNode.setProperty(DocConstants.PROPERTY_VISIBILITY, (DocRights.READ_ALL|DocRights.EDIT_ASSIST));
 		} catch (RepositoryException ex) {
 			// error occurred while setting mandatory property

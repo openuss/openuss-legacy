@@ -8,10 +8,11 @@ import javax.jcr.Session;
 
 import org.apache.jackrabbit.util.Text;
 import org.openuss.docmanagement.DocConstants;
+import org.openuss.docmanagement.DocRights;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 0.6
+ * @version 0.8
  */
 public class DavResourceSubscription extends DavResourceCollection {
 	/**
@@ -26,11 +27,29 @@ public class DavResourceSubscription extends DavResourceCollection {
 	}
 
 	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResourceBase#addMember(org.openuss.docmanagement.webdav.DavResource, org.openuss.docmanagement.webdav.ImportContext)
+	 */
+	@Override
+	public void addMember(DavResource resource, ImportContext context) throws DavException {
+		// adding members to subscription folder is not allowed
+		throw new DavException(HttpStatus.SC_FORBIDDEN);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.docmanagement.webdav.DavResourceBase#copyFrom(org.openuss.docmanagement.webdav.DavResource, boolean)
+	 */
+	@Override
+	public MultiStatus copyFrom(DavResource source, boolean recursive) throws DavException {
+		// adding members to subscription folder is not allowed
+		throw new DavException(HttpStatus.SC_FORBIDDEN);
+	}
+
+	/* (non-Javadoc)
 	 * @see org.openuss.docmanagement.webdav.DavResource#exists()
 	 */
 	@Override
 	public boolean exists() {
-		// TODO
+		// TODO testen, was passiert, wenn das nicht gepatcht wird
 		return true;
 	}
 
@@ -39,7 +58,7 @@ public class DavResourceSubscription extends DavResourceCollection {
 	 */
 	@Override
 	public String getCreationDate() throws DavException {
-		// TODO
+		// avoid 404 (Not Found)
 		return System.currentTimeMillis() + "";
 	}
 	
@@ -48,8 +67,14 @@ public class DavResourceSubscription extends DavResourceCollection {
 	 */
 	@Override
 	public String getDisplayName() throws DavException {
-		// TODO auf Anzeigename des Enrollments umbiegen
+		// avoid 404 (Not Found)
 		return Text.getName(getLocator().getRepositoryPath());
+	}
+
+	@Override
+	public long getLastModified() throws DavException {
+		// avoid 404 (Not Found)
+		return System.currentTimeMillis();
 	}
 
 	/* (non-Javadoc)
@@ -58,6 +83,10 @@ public class DavResourceSubscription extends DavResourceCollection {
 	@Override
 	public List<DavResource> getMembers() throws DavException {
 		List<DavResource> members = new LinkedList<DavResource>();
+		
+		// create virtual folders. mapping will result in real folders.
+		
+		// FIXME replace enrollment name with enrollment id from list of subscribed enrollments 
 		
 		// add link to distribution folders
 		String distributionPath = getLocator().getRepositoryPath() + "/" + DocConstants.DISTRIBUTION;
@@ -84,5 +113,11 @@ public class DavResourceSubscription extends DavResourceCollection {
 		}
 		
 		return members;
+	}
+
+	@Override
+	public int getVisibility() throws DavException {
+		// avoid 404 (Not Found)
+		return (DocRights.READ_ALL);
 	}
 }

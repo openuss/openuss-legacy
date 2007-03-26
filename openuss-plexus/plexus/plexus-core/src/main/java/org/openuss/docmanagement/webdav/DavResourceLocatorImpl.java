@@ -31,6 +31,7 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 		this.repositoryPath = mapPath(resourcePath);
 		this.locatorFactory = locatorFactory;
 		
+        // FIXME analyze escape method with Umlaute
 		this.href = prefix + Text.escapePath(resourcePath);
 	}
 
@@ -111,7 +112,7 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	 * @see org.openuss.docmanagement.webdav.DavResourceLocator#getWorkspaceName()
 	 */
 	public String getWorkspaceName() {
-		// TODO workspaces are not supported
+		// workspaces are not supported
 		throw new NotImplementedException("DavResourceLocatorImpl.getWorkspaceName() not supported.");
 	}
 
@@ -119,7 +120,7 @@ public class DavResourceLocatorImpl implements DavResourceLocator {
 	 * @see org.openuss.docmanagement.webdav.DavResourceLocator#getWorkspacePath()
 	 */
 	public String getWorkspacePath() {
-		// TODO workspaces are not supported
+		// workspaces are not supported
 		throw new NotImplementedException("DavResourceLocatorImpl.getWorkspacePath() not supported.");
 	}
 	

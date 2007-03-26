@@ -1,6 +1,5 @@
 package org.openuss.docmanagement.webdav;
 
-import java.util.Dictionary;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -53,6 +52,8 @@ public abstract class DavResourceBase implements DavResource {
 			throw new DavException(HttpStatus.SC_CONFLICT);
 		}
 		
+		// TODO Sicherheitsabfrage einbauen
+				
 		int statusCode;
 
 		// send 204 (No content for already existing resources), 201 (Created) otherwise
@@ -124,6 +125,8 @@ public abstract class DavResourceBase implements DavResource {
 			throw new DavException(HttpStatus.SC_NOT_FOUND, "Source resource not found.");
 		}
 		
+		// TODO Sicherheitsabfrage einbauen
+						
 		// prepare multi-status for errors
 		MultiStatus multistatus = new MultiStatusImpl();
 
@@ -170,6 +173,9 @@ public abstract class DavResourceBase implements DavResource {
 	 * @throws DavException
 	 */
 	protected void copyFrom(DavResource source, MultiStatus multistatus, boolean recursive) throws DavException {
+		
+		// TODO Sicherheitsabfrage einbauen
+				
 		// copy to this resource
 		boolean success = copyDataFrom(source, multistatus) && copyPropertiesFrom(source, multistatus);
 
@@ -255,7 +261,9 @@ public abstract class DavResourceBase implements DavResource {
 		if (!exists()) {
 			throw new DavException(HttpStatus.SC_NOT_FOUND, "The resource could not be found in the repository.");
 		}
-
+		
+		// TODO Sicherheitsabfrage einbauen
+		
 		// export properties to context
 		exportProperties(context);
 
@@ -367,9 +375,18 @@ public abstract class DavResourceBase implements DavResource {
 		}
 		
 		try {
-			// return property value, if present
-			if (representedNode.hasProperty(JcrConstants.JCR_LASTMODIFIED)) {
-				return representedNode.getProperty(DocConstants.JCR_LASTMODIFIED).getLong();
+			Node contentNode = null;
+			
+			// snoop for content node
+			if (representedNode.hasNode(JcrConstants.JCR_CONTENT)) {
+				contentNode = representedNode.getNode(JcrConstants.JCR_CONTENT);
+			}
+			
+			if (contentNode != null) {
+				// return property value, if present
+				if (representedNode.hasProperty(JcrConstants.JCR_LASTMODIFIED)) {
+					return representedNode.getProperty(JcrConstants.JCR_LASTMODIFIED).getLong();
+				}
 			}
 			return System.currentTimeMillis();
 		} catch (RepositoryException ex) {
@@ -428,6 +445,8 @@ public abstract class DavResourceBase implements DavResource {
 			throw new DavException(HttpStatus.SC_NOT_FOUND);
 		}
 		
+		// TODO Sicherheitsabfrage einbauen
+
 		// create the response
 		PropertyResponse response = new PropertyResponseImpl(locator.getHref(isCollection()), null);
 		
@@ -639,6 +658,9 @@ public abstract class DavResourceBase implements DavResource {
 			
 			// all members removed; remove this, if multistatus has no responses
 			if (multistatus.getResponses().size() == 0) {
+				
+				// TODO Sicherheitsabfrage einbauen
+						
 				representedNode.remove();
 				representedNode = null;
 			}
@@ -674,6 +696,9 @@ public abstract class DavResourceBase implements DavResource {
 			
 			// all members removed; remove this, if multistatus has no responses
 			if (multistatus.getResponses().size() == 0) {
+				
+				// TODO Sicherheitsabfrage einbauen
+						
 				representedNode.remove();
 				representedNode = null;
 			}
@@ -698,6 +723,8 @@ public abstract class DavResourceBase implements DavResource {
 			throw new DavException(HttpStatus.SC_NOT_FOUND);
 		}
 		
+		// TODO Sicherheitsabfrage einbauen
+
 		// create the response
 		PropertyResponse response = new PropertyResponseImpl(locator.getHref(isCollection()), null);
 		
