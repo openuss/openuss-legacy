@@ -435,24 +435,10 @@ ul.navigation li ul li ul li.active_item a:hover{
   text-decoration: none;
   color:#505050; 
   border: 1px solid #B4B4B4;
+  padding: 1px;
   margin-right: 5px;
 }
 
-.button_search {
-	display: inline;
-	width: 24px;
-	height: 17px;
-	margin: 0;
-	/* padding: 17px 0 0 5px; */
-	padding: 17px 0 0 0;
-	background: transparent url(../img/nav/nextPage.gif) 0px 0px no-repeat;
-	border: solid 0 #000;
-	color: #000;
-	overflow: hidden;
-	cursor: pointer;
-	cursor: hand; /* Handcursor für IE 5.x */
-	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschön */
-}
 
 .button_search:hover, .button_search:active, .button_search:focus {
 	background: transparent url(../img/nav/nextPage.gif) 0px 0px no-repeat;
@@ -544,6 +530,18 @@ ul.navigation li ul li ul li.active_item a:hover{
 	color: #505050;
 	background: url(../img/link_bg.jpg) -3px 0 no-repeat;
 	text-decoration: none; font-weight: none;
+}
+
+#right_block .content_box a.button_search{
+	display: inline;
+	padding-left: 0;
+	color: #505050;
+	background: none;
+	text-decoration: none; font-weight: none;
+}
+
+#right_block .content_box a.button_search:hover{
+	text-decoration: none;
 }
 
 #right_block .content_box a:hover{
@@ -851,7 +849,7 @@ p.content_font_normal, p.content_font_normal p {
 }
 
 div.content_font_normal {
-  padding: 10px 0 10px 10px;
+  padding: 10px 10px 10px 10px;
   font-size: 9pt;
   text-decoration: none;
   color:#505050; 
@@ -981,8 +979,7 @@ ul{
 }
 
 .fieldCheckBox {
-  float: left;
-  margin: 0 3px 0 10px;
+  margin: 0 3px 0 0;
 }
 
 .field_error {
@@ -1010,8 +1007,8 @@ ul{
 }
 
 .tablenavigator{
-	display: block;
 	width: 100%;
+	display: block;
 	height: 30px;
 }
 
@@ -1191,10 +1188,6 @@ th {
   /*background: url(../img/th_bg.jpg);*/
 }
 
-th a:before {
-	content:url(../img/before_link.png)" ";
-}
-
 tr.even {
 	background-color: #F0F0F0;
 }
@@ -1205,7 +1198,7 @@ tr.odd {
 
 tr {
   margin: 0;
-  background: #ECECEC;
+  background: none;
 }
 
 td {
@@ -1214,7 +1207,7 @@ td {
   text-align: left;
   font-size: 8pt;
   font-weight: none;
-/*  background: #FFFFFF;*/
+  background: none;
 }
 
 #footer_block {
@@ -1352,45 +1345,282 @@ td.col_max_left label input{
 	font-weight: bold;
 }
 
-.jscalendar-DB-table-style {
-	background-color:#E7E7E7;
-	border-color: #CFCFCF;
+/* Default attributes of table container for entire calendar */
+.jscalendar-DB-div-style .jscalendar-WH-table-style {
+    font-family:arial;
+    font-size:11px;
+    border-width:1;
+    border-style:solid;
+    border-color:#000000;
+    color:#000000;
+	background-color: #ffffff;
+}
+
+/* Default attributes of DIV containing table container for entire calendar.
+ * You probably don't want to alter this style.
+ */
+.jscalendar-DB-div-style .jscalendar-WH-div-style {
+	z-index: +999;
+	position: absolute;
+	visibility: hidden;
+}
+
+/* Default attributes used in calendar title (month and year columns).*/
+.jscalendar-DB-div-style .jscalendar-WH-title-style {
+    padding:2px;
+    font-family:arial;
+    font-size:11px;
+    font-weight:bold;
+    color:#000000;
+}
+
+/* Default attributes used in calendar title background.*/
+.jscalendar-DB-div-style .jscalendar-WH-title-background-style {
+	background-color: #EEEEEE;
+}
+
+/* Normal appearance of controls in calendar title. */
+/* Note: The right, left and down icons are images, jscalendar-WHich must be edited if you need to change them. */
+.jscalendar-DB-div-style .jscalendar-WH-title-control-normal-style {
 	border-style: solid;
 	border-width: 1px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 8pt;
-}
-
-.jscalendar-DB-body-style {
-	background-color:#E7E7E7;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size:8pt;
-}
-
-.jscalendar-DB-title-control-normal-style {
-	border: 0px solid #3366FF;
+	border-color: #CCCCCC;
 	cursor: pointer;
-	background: #FFFFFF;
-	color: #000000;
 }
 
-.jscalendar-DB-table-style td{
-	background: #E7E7E7;
-	padding: 1px 2px;
-}
-
-.jscalendar-DB-title-control-select-style {
+/* Moused-over (selected) appearance of controls in calendar title. */
+.jscalendar-DB-div-style .jscalendar-WH-title-control-select-style {
 	border-style: solid;
-	border-width: 0;
-	border-color: #88AAFF;
+	border-width: 1;
+	border-color: #FFFFFF;
 	cursor: pointer;
-	color: #000000;
 }
 
-.jscalendar-DB-today-style {
-	background-color: #E7E7E7;
-	color: #000000;
+/* Default attributes of drop down lists (month and year). */
+.jscalendar-DB-div-style .jscalendar-WH-dropdown-style {
+	font-family: arial;
+	font-size: 11px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #DDDDDD;
+	background-color: #EEEEEE;
+	cursor: pointer;
+}
+
+/* Default attributes selected (mouse-over) item in drop down lists (month and year). */
+.jscalendar-DB-div-style .jscalendar-WH-dropdown-select-style {
+	background-color: #F3F3F3;
+}
+
+/* Default attributes unselected (mouse-off) item in drop down lists (month and year). */
+.jscalendar-DB-div-style .jscalendar-WH-dropdown-normal-style {
+	background-color: inherit;
+}
+
+/* Default attributes of calendar body (weekday titles and numbers). */
+.jscalendar-DB-div-style .jscalendar-WH-body-style {
+	background-color: #FFFFFF;
+	font-family: verdana;
+	font-size: 10px;
+}
+
+/* Attributes of current day in calendar body. */
+.jscalendar-DB-div-style .jscalendar-WH-current-day-style {
+	color: red;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+/* Attributes of end-of-week days (Sundays) in calendar body. */
+.jscalendar-DB-div-style .jscalendar-WH-end-of-weekday-style {
+	color: #909090;
+	text-decoration: none;
+}
+
+/* Attributes of all other days in calendar body. */
+.jscalendar-DB-div-style .jscalendar-WH-normal-day-style {
+	color: black;
+	text-decoration: none;
+}
+
+.jscalendar-DB-div-style .jscalendar-WH-would-be-selected-day-style {
+	background-color: #EEEEEE;
+}
+
+/* Attributes of border around selected day in calendar body. */
+.jscalendar-DB-div-style .jscalendar-WH-selected-day-style {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #a0a0a0;
+}
+
+/* Default attributes of designated holidays. */
+.jscalendar-DB-div-style .jscalendar-WH-holiday-style {
+	background-color: #FFDDDD;
+}
+
+/* Attributes of today display at bottom on calendar */
+.jscalendar-DB-div-style .jscalendar-WH-today-style {
 	padding: 0px;
+	color: black;
+	background-color: #f0f0f0;
 	text-align: center;
 	text-decoration: none;
+}
+
+/* Attributes of today display label at bottom on calendar */
+.jscalendar-DB-div-style .jscalendar-WH-today-lbl-style {
+	padding: 5px;
+	text-align: center;
+}
+
+/* Attributes of week number division (divider.gif) */
+.jscalendar-DB-div-style .jscalendar-WH-weeknumber-div-style {
+	background-color: #d0d0d0;
+	padding: 0px;
+}
+
+/* Default attributes of table container for entire calendar */
+.jscalendar-DB-div-style .jscalendar-DB-table-style {
+    font-family:arial;
+    font-size:11px;
+    border-width:1;
+    border-style:solid;
+    border-color:#a0a0a0;
+	background-color: #ffffff;
+}
+
+/* Default attributes of DIV containing table container for entire calendar.
+ * You probably don't want to alter this style.
+ */
+.jscalendar-DB-div-style .jscalendar-DB-div-style {
+	z-index: +999;
+	position: absolute;
+	visibility: hidden;
+}
+
+/* Default attributes used in calendar title (month and year columns).*/
+.jscalendar-DB-div-style .jscalendar-DB-title-style {
+    padding:2px;
+    font-family:arial;
+    font-size:11px;
+    font-weight:bold;
+    color:#FFFFFF;    
+}
+
+/* Default attributes used in calendar title background.*/
+.jscalendar-DB-div-style .jscalendar-DB-title-background-style {
+	background-color: #0000aa;
+}
+
+/* Normal appearance of controls in calendar title. */
+/* Note: The right, left and down icons are images, jscalendar-DBich must be edited if you need to change them. */
+.jscalendar-DB-div-style .jscalendar-DB-title-control-normal-style {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #3366FF;
+	cursor: pointer;
+}
+
+/* Normal appearance of images in calendar title. */
+/* Note: The right, left and down icons are images, jscalendar-DBich must be edited if you need to change them. */
+.jscalendar-DB-div-style .jscalendar-DB-title-img-normal-style {
+	cursor: pointer;
+}
+
+/* Moused-over (selected) appearance of controls in calendar title. */
+.jscalendar-DB-div-style .jscalendar-DB-title-control-select-style {
+	border-style: solid;
+	border-width: 1;
+	border-color: #88AAFF;
+	cursor: pointer;
+}
+
+/* Moused-over (selected) appearance of controls in calendar title. */
+.jscalendar-DB-div-style .jscalendar-DB-title-img-select-style {
+	cursor: pointer;
+}
+
+/* Default attributes of drop down lists (month and year). */
+.jscalendar-DB-div-style .jscalendar-DB-dropdown-style {
+	font-family: arial;
+	font-size: 11px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #a0a0a0;
+	background-color: #FFFFDD;
+	cursor: pointer;
+}
+
+/* Default attributes selected (mouse-over) item in drop down lists (month and year). */
+.jscalendar-DB-div-style .jscalendar-DB-dropdown-select-style {
+	background-color: #FFCC99;
+}
+
+/* Default attributes unselected (mouse-off) item in drop down lists (month and year). */
+.jscalendar-DB-div-style .jscalendar-DB-dropdown-normal-style {
+	background-color:inherit;
+}
+
+/* Default attributes of calendar body (weekday titles and numbers). */
+.jscalendar-DB-div-style .jscalendar-DB-body-style {
+	background-color: #FFFFFF;
+	font-family: verdana;
+	font-size: 10px;
+}
+
+/* Attributes of current day in calendar body. */
+.jscalendar-DB-div-style .jscalendar-DB-current-day-style {
+	color: red;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+/* Attributes of end-of-week days (Sundays) in calendar body. */
+.jscalendar-DB-div-style .jscalendar-DB-end-of-weekday-style {
+	color: #909090;
+	text-decoration: none;
+}
+
+/* Attributes of all other days in calendar body. */
+.jscalendar-DB-div-style .jscalendar-DB-normal-day-style {
+	color: black;
+	text-decoration: none;
+}
+
+.jscalendar-DB-div-style .jscalendar-DB-would-be-selected-day-style {
+	background-color: #EEEEEE;
+}
+
+/* Attributes of border around selected day in calendar body. */
+.jscalendar-DB-div-style .jscalendar-DB-selected-day-style {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #a0a0a0;
+}
+
+/* Default attributes of designated holidays. */
+.jscalendar-DB-div-style .jscalendar-DB-holiday-style {
+	background-color: #FFDDDD;
+}
+
+/* Attributes of today display at bottom on calendar */
+.jscalendar-DB-div-style .jscalendar-DB-today-style {
+	padding: 0px;
+	color: black;
+	background-color: #f0f0f0;
+	text-align: center;
+	text-decoration: none;
+}
+
+/* Attributes of today display label at bottom on calendar */
+.jscalendar-DB-div-style .jscalendar-DB-today-lbl-style {
+	padding: 5px;
+	text-align: center;
+}
+
+/* Attributes of week number division (divider.gif) */
+.jscalendar-DB-div-style .jscalendar-DB-weeknumber-div-style {
+	background-color: #d0d0d0;
+	padding: 0px;
 }
