@@ -22,6 +22,34 @@
 ]]>    	
     	</to>
     </mapping>
+    <mapping>
+    	<from><![CDATA[<template
+        path="templates/hibernate/HibernateEntityPK.vsl"
+        outputPattern="$generatedFile"
+        outlet="entities"
+        overwrite="true">
+        <modelElements variable="entity">
+            <modelElement>
+                <type name="org.andromda.cartridges.hibernate.metafacades.HibernateEntity">
+                <property name="compositeIdentifier">true</property>
+                </type>
+            </modelElement>
+        </modelElements>
+    </template>]]></from>    	
+    <to><![CDATA[<template
+        path="templates/hibernate/HibernateEntityPK.vsl"
+        outputPattern="$generatedFile"
+        outlet="entity-interfaces"
+        overwrite="true">
+        <modelElements variable="entity">
+            <modelElement>
+                <type name="org.andromda.cartridges.hibernate.metafacades.HibernateEntity">
+                <property name="compositeIdentifier">true</property>
+                </type>
+            </modelElement>
+        </modelElements>
+    </template>]]></to>
+    </mapping>
 
     <mapping>
     	<from><![CDATA[<template
