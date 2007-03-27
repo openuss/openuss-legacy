@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.openuss.DomainObject;
 import org.openuss.TestUtility;
 import org.openuss.repository.RepositoryFile;
 import org.openuss.repository.RepositoryService;
@@ -357,24 +358,6 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		startNewTransaction();
 	}
 	
-	public static class DomainObject {
-		private Long id;
-
-		public DomainObject() {};
-		
-		public DomainObject(Long id) {
-			this.id = id;
-		}
-		
-		public Long getId() {
-			return id;
-		}
-
-		public void setId(Long id) {
-			this.id = id;
-		}
-	}
-
 	public TestUtility getTestUtility() {
 		return testUtility;
 	}
