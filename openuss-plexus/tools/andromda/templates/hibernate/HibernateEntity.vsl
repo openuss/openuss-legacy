@@ -32,7 +32,16 @@ public interface ${entity.entityName}
 
 #end
 #end
+#if($entity.compositeIdentifier)
+#set($primaryKeyType="${entity.fullyQualifiedEntityName}PK")
+#set($primaryKeyName="$stringUtils.uncapitalize($entity.name)Pk")
+	public $primaryKeyType get${entity.name}Pk();
+
+    public void set${entity.name}Pk($primaryKeyType $primaryKeyName);
+	
+#end
 #foreach ($attribute in $entity.attributes)
+#if (!$entity.compositeIdentifier || ($entity.compositeIdentifier && !$attribute.identifier))		
 #set ($typeName = $attribute.type.fullyQualifiedName)
 #if ($attribute.containsEmbeddedObject)
 #set ($typeName = $attribute.type.fullyQualifiedEntityName)
@@ -45,6 +54,7 @@ $attribute.getDocumentation("     * ")
 
 	$attribute.visibility void ${attribute.setterName}(${typeName} $attribute.name);
 #end	
+#end
 ## Generate the associations
 #foreach ($associationEnd in $entity.associationEnds)
 #set ($target = $associationEnd.otherEnd)
