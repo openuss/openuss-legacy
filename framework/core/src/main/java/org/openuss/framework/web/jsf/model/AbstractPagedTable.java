@@ -58,6 +58,7 @@ public abstract class AbstractPagedTable<T> extends BaseBean {
 	 * 
 	 * @return T or null
 	 */
+	@SuppressWarnings("unchecked")
 	public T getRowData() {
 		if (table != null) {
 			return (T) table.getRowData();

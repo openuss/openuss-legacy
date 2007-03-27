@@ -5,6 +5,8 @@
  */
 package org.openuss.braincontest;
 
+import org.openuss.security.User;
+
 /**
  * @see org.openuss.braincontest.Answer
  */
@@ -22,8 +24,9 @@ public class AnswerImpl
      */
     public java.lang.String getDisplayName()
     {
-        // @todo implement public java.lang.String getDisplayName()
-        return null;
+        if (getSolver()==null)return null;
+        User solver = getSolver();
+        return solver.getFirstName() + " "+ solver.getLastName() + " ("+solver.getUsername() + ")";        
     }
 
     /**

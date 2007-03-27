@@ -39,9 +39,8 @@
 			<plexus:dataTable id="brainContestTable"
 				columnClasses="col_min_center, col_max_left, col_min_center, col_commands_three"
 				label="#{msg.braincontest_main_header}"
-				value="views$secured$enrollment$braincontestmain.data"
+				value="views$secured$braincontest$braincontestmain.data"
 				var="braincontest" rows="10">
-
 
 				<t:column>
 					<plexus:commandSortHeader columnName="date">#{msg['braincontest_main_column_date']}</plexus:commandSortHeader>
@@ -49,34 +48,31 @@
 				</t:column>
 
 				<t:column>
-					<plexus:commandSortHeader columnName="title"> #{msg['braincontest_main_column_date']}</plexus:commandSortHeader>
+					<plexus:commandSortHeader columnName="title"> #{msg['braincontest_main_column_title']}</plexus:commandSortHeader>
 					<h:outputText value="#{braincontest.title}" />
 				</t:column>
 				
 				<t:column>
 					<plexus:commandSortHeader columnName="answers">#{msg['braincontest_main_column_answers']}</plexus:commandSortHeader>
-					<h:outputText value="#{braincontest.answerCount}" />
+					<h:outputText value="#{braincontest.tries} / #{braincontest.answers}" />
 				</t:column>
 
 				<plexus:column header="#{msg.braincontest_main_column_actions}">
 					<h:commandButton 
-				    	id="topList"
-						action="braincontest_top" 
+						bean="#{views$secured$braincontest$braincontestmain}"
+						action="topList"
 						value="#{msg.braincontest_main_button_top}" 
-						title="#{msg.braincontest_main_button_top}"
-						styleClass="button"/>
+						title="#{msg.braincontest_main_button_top}"/>
 					<h:commandButton 
-					    id="changeContest"
-						action="braincontest_new" 
-						value="#{msg.braincontest_new}" 
-						title="#{msg.braincontest_new}"
-						styleClass="button"/>
+						bean="#{views$secured$braincontest$braincontestmain}"
+						action="solve"
+						label="#{msg.braincontest_main_button_solve}" 
+						title="#{msg.braincontest_main_button_solve}"/>
 					<plexus:command
-						bean="#{views$secured$enrollment$braincontestmain}"
+						bean="#{views$secured$braincontest$braincontestmain}"
 						action="remove"
 						label="#{msg['braincontest_main_button_remove']}"
-						title="#{msg['braincontest_main_button_remove']}"
-						styleClass="button" />
+						title="#{msg['braincontest_main_button_remove']}"/>
 				</plexus:column>
 
 			</plexus:dataTable>

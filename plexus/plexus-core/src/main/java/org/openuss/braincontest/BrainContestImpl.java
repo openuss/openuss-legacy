@@ -5,6 +5,8 @@
  */
 package org.openuss.braincontest;
 
+import java.util.Date;
+
 /**
  * @see org.openuss.braincontest.BrainContest
  */
@@ -22,8 +24,7 @@ public class BrainContestImpl
      */
     public boolean isReleased()
     {
-        // @todo implement public boolean isReleased()
-        return false;
+        return getReleaseDate().before(new Date(System.currentTimeMillis()));
     }
 
     /**
@@ -31,8 +32,16 @@ public class BrainContestImpl
      */
     public java.lang.Integer getAnswersCount()
     {
-        // @todo implement public java.lang.Integer getAnswersCount()
-        return null;
+        if (getAnswers()==null) return 0;
+        return getAnswers().size();
     }
+
+	@Override
+	public void addAnswer(Answer answer) {
+		if (getAnswers() != null && answer != null) {
+			getAnswers().add(answer);
+			answer.setContest(this);
+		}
+	}
 
 }
