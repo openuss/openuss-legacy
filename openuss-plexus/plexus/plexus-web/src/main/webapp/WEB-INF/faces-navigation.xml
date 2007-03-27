@@ -387,24 +387,26 @@
 				<to-view-id>/views/secured/enrollment/mailinglistsubscribers.xhtml</to-view-id>				
 			</navigation-case>			
 
+			<!-- braincontest -->
+
 			<navigation-case>
 				<from-outcome>braincontest_main</from-outcome>
-				<to-view-id>/views/secured/enrollment/braincontestmain.xhtml</to-view-id>				
+				<to-view-id>/views/secured/braincontest/braincontestmain.xhtml</to-view-id>				
 			</navigation-case>			
 
 			<navigation-case>
 				<from-outcome>braincontest_new</from-outcome>
-				<to-view-id>/views/secured/enrollment/braincontestnew.xhtml</to-view-id>				
+				<to-view-id>/views/secured/braincontest/braincontestnew.xhtml</to-view-id>				
 			</navigation-case>			
 
 			<navigation-case>
 				<from-outcome>braincontest_solve</from-outcome>
-				<to-view-id>/views/secured/enrollment/braincontestsolve.xhtml</to-view-id>				
+				<to-view-id>/views/secured/braincontest/braincontestsolve.xhtml</to-view-id>				
 			</navigation-case>			
 
 			<navigation-case>
 				<from-outcome>braincontest_top</from-outcome>
-				<to-view-id>/views/secured/enrollment/braincontesttop.xhtml</to-view-id>				
+				<to-view-id>/views/secured/braincontest/braincontesttop.xhtml</to-view-id>				
 			</navigation-case>			
 
 			<!-- documents -->

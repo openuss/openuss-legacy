@@ -86,7 +86,11 @@ public class Constants {
 	public static final String DOCUMENTS_EDIT_FILEENTRY_PAGE = "documents_edit_fileentry";
 	public static final String DOCUMENTS_REMOVE_FOLDERENTRY_PAGE = "documents_remove_folderentries";
 
-
+	//brain contest
+	public static final String BRAINCONTEST_NEWCONTEST = "braincontest_new";
+	public static final String BRAINCONTEST_MAIN = "braincontest_main";
+	public static final String BRAINCONTEST_TOP = "braincontest_top";
+	public static final String BRAINCONTEST_SOLVE = "braincontest_solve";
 
 	public static final String ZIP_DOWNLOAD_URL = "/zips/documents.zip";
 }
