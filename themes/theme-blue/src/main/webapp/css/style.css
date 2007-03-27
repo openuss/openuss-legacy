@@ -29,7 +29,6 @@ input:focus{
   border: 1px solid #919191;
 }
 
-
 p {
   margin: 0;
   font-size: 10pt;
@@ -1184,21 +1183,20 @@ th {
   font-size: 8pt;
   font-weight: bold;
   color: #4C4C4C;
-  background: #E3EDCF; */
+  background: #E3EDCF;
   /*background: url(../img/th_bg.jpg);*/
 }
 
-tr.even {
+.even td{
 	background-color: #F0F0F0;
 }
 
-tr.odd {
+.odd td{
 	background-color: #FFFFFF;
 }
 
 tr {
-  margin: 0;
-  background: none;
+  	margin: 0;
 }
 
 td {
