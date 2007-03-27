@@ -94,7 +94,7 @@ public class TestUtility {
 		groupDao.update(group);
 
 		final UsernamePasswordAuthenticationToken authentication;
-		authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), "[Protected]", ((UserImpl) user).getAuthorities());
+		authentication = new UsernamePasswordAuthenticationToken(user, "[Protected]", ((UserImpl) user).getAuthorities());
 
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);
