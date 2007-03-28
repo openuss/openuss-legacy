@@ -11,9 +11,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -22,8 +23,6 @@ import org.apache.log4j.Logger;
  * @see org.openuss.repository.RepositoryService
  */
 public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServiceBase {
-
-	private static final int DRAIN_BUFFER_SIZE = 1024;
 
 	private static final Logger logger = Logger.getLogger(RepositoryServiceImpl.class);
 
@@ -34,86 +33,87 @@ public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServ
 		setRepositoryLocation(tmpPath + "/plexus/");
 	}
 
-	/**
-	 * @see org.openuss.repository.RepositoryService#removeFile(org.openuss.repository.RepositoryFile)
-	 */
-	protected void handleRemoveFile(RepositoryFile file) throws java.lang.Exception {
-		Validate.notEmpty(path, "RepositoryLocation is not configured!");
-		String fileName = toFileName(file);
-		if (logger.isDebugEnabled()) {
-			logger.debug("removing file " + fileName + " from repository.");
+	@Override
+	protected InputStream handleLoadContent(Long fileId) throws Exception {
+		Validate.notNull(fileId, "Parameter fileId must not be null.");
+
+		RepositoryFile file = getRepositoryFileDao().load(fileId);
+		if (file == null) {
+			logger.error("File with id " + fileId + " not found.");
+			throw new RepositoryServiceException("File with id " + fileId + " not found.");
 		}
 
-		getRepositoryFileDao().remove(file);
-
-		File f = new File(fileName);
-		if (f.exists()) {
-			boolean success = f.delete();
-			if (!success) {
-				logger.error("couldn't delete");
-				f.deleteOnExit();
-			}
-		}
+		return fetchInputStream(file);
 	}
 
-
-
-	/**
-	 * @see org.openuss.repository.RepositoryService#getSaveFile(org.openuss.repository.RepositoryFile)
-	 */
-	public void handleSaveFile(RepositoryFile file) throws java.lang.Exception {
-		Validate.notEmpty(path, "RepositoryLocation is not configured!");
-
-		final RepositoryFileDao fileDao = getRepositoryFileDao();
-
-		file.setModified(new Date());
-		if (file.getId() == null) { 
-			Date now = new Date();
-			if (file.getCreated() == null) {
-				file.setCreated(now);
-			}
-			if (file.getModified() == null) {
-				file.setModified(now);
-			}
-			fileDao.create(file);
+	private InputStream fetchInputStream(RepositoryFile file) throws FileNotFoundException, IOException {
+		long fileId = file.getId();
+		File cacheFile = cachedFile(fileId);
+		if (!cacheFile.exists() || !FileUtils.isFileNewer(cacheFile, file.getModified())) {
+			refreshCacheFile(file, cacheFile);
 		} else {
-			file.setModified(new Date());
-			fileDao.update(file);
+			if (cacheFile.delete()) {
+				refreshCacheFile(file, cacheFile);
+			} else {
+				// FIXME Resource request lock conflict - someone is reading an outdated file.
+				logger.error("could rewrite cache");
+				return file.getInputStream();
+			}
 		}
+		return new FileInputStream(cacheFile);
+	}
 
-		String fileName = toFileName(file);
-
-		if (logger.isDebugEnabled()) {
-			logger.debug("create file " + file.getFileName() + "(" + fileName + ") in repository");
-		}
-		try {
-			OutputStream output = new FileOutputStream(fileName);
-			InputStream input = file.getInputStream();
-			drain(input, output);
-			// do not close input stream - it could be an used futher on - it belongs to the caller
-			output.close();
-		} catch (FileNotFoundException e) {
-			logger.error(e);
-			throw e;
+	@Override
+	protected void handleRemoveContent(Long fileId) throws Exception {
+		Validate.notNull(fileId, "Parameter fileId must not be null.");
+		getRepositoryFileDao().remove(fileId);
+		File cachedFile = new File(toFileName(fileId));
+		if (cachedFile.exists()) {
+			if (!cachedFile.delete()) {
+				cachedFile.deleteOnExit();
+			}
 		}
 	}
 
-	private String toFileName(RepositoryFile file) {
-		return path + "/" + file.getId() + ".data";
+	private File cachedFile(long fileId) {
+		File cacheFile = new File(toFileName(fileId));
+		return cacheFile;
 	}
 
-	/**
-	 * @param input
-	 * @param output
-	 * @throws IOException
-	 */
-	private void drain(InputStream input, OutputStream output) throws IOException {
-		int bytesRead = 0;
-		byte[] buffer = new byte[DRAIN_BUFFER_SIZE];
+	private void refreshCacheFile(RepositoryFile file, File cacheFile) throws FileNotFoundException, IOException {
+		FileOutputStream fos = new FileOutputStream(cacheFile);
+		InputStream is = file.getInputStream();
+		IOUtils.copyLarge(is, fos);
+		IOUtils.closeQuietly(fos);
+		IOUtils.closeQuietly(file.getInputStream());
+	}
 
-		while ((bytesRead = input.read(buffer, 0, DRAIN_BUFFER_SIZE)) != -1) {
-			output.write(buffer, 0, bytesRead);
+	@Override
+	protected void handleSaveContent(Long fileId, InputStream content) throws Exception {
+		Validate.notNull(fileId, "Parameter fileId must not be null.");
+		Validate.notNull(content, "Parameter content must not be null.");
+		RepositoryFile file = getRepositoryFileDao().load(fileId);
+		if (file == null) {
+			persistNewFile(fileId, content);
+		} else {
+			persistFile(file, content);
 		}
+
+	}
+
+	private void persistFile(RepositoryFile file, InputStream content) {
+		file.setModified(new Date());
+		file.setInputStream(content);
+		getRepositoryFileDao().update(file);
+	}
+
+	private void persistNewFile(Long fileId, InputStream content) {
+		RepositoryFile file;
+		file = RepositoryFile.Factory.newInstance();
+		file.setId(fileId);
+		file.setModified(new Date());
+		file.setInputStream(content);
+		getRepositoryFileDao().create(file);
 	}
 
 	@Override
@@ -136,40 +136,9 @@ public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServ
 		return path;
 	}
 
-	@Override
-	protected InputStream handleGetInputStreamOfFile(RepositoryFile repositoryFile) throws Exception {
-		Validate.notNull(repositoryFile, "Parameter repositoryFile must not be null!");
-		
-		if (logger.isDebugEnabled()) {
-			logger.debug("loading file " + repositoryFile.getFileName());
-		}
-		String fileName = toFileName(repositoryFile);
-		InputStream is = new FileInputStream(fileName);
-		repositoryFile.setInputStream(is);
-		return is;
+	private String toFileName(Long fileId) {
+		return path + "/_filecontent_" + fileId + ".tmp";
 	}
 
-	@Override
-	protected RepositoryFile handleGetFile(RepositoryFile file, boolean openStream) throws Exception {
-		Validate.notEmpty(path, "RepositoryLocation is not configured!");
-		Validate.notNull(file, "Parameter file is mandatory!");
-		Validate.notNull(file.getId(), "Parameter file.getId() must not be null.");
-		
-		RepositoryFile repositoryFile = getRepositoryFileDao().load(file.getId());
-		if (repositoryFile == null) {
-			if (logger.isDebugEnabled()) {
-				logger.error("file with id " + file.getId() + " not found!");
-			}
-		} else if (openStream) {
-			getInputStreamOfFile(repositoryFile);
-		}
-		return repositoryFile;
-	}
-	
-	/**
-	 * @see org.openuss.repository.RepositoryService#getFile(org.openuss.repository.RepositoryFile)
-	 */
-	protected RepositoryFile handleGetFile(RepositoryFile file) throws java.lang.Exception {
-		return getFile(file, true);
-	}
+
 }

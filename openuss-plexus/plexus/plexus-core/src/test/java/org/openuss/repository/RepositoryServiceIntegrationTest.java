@@ -5,88 +5,61 @@
  */
 package org.openuss.repository;
 
-import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Timestamp;
+import java.net.URL;
 
+import org.apache.commons.io.FileUtils;
 import org.openuss.TestUtility;
 
 /**
  * JUnit Test for Spring Hibernate RepositoryService class.
+ * 
  * @see org.openuss.repository.RepositoryService
  */
 public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrationTestBase {
-	
+
 	private TestUtility testUtility;
-	
+
 	public void testRepositoryService() throws IOException {
 		testUtility.createSecureContext();
-		final String str = "This is the content of the file";
-		byte[] data = str.getBytes();
+		long fileId = testUtility.unique();
+		URL url = this.getClass().getClassLoader().getResource("core-test.zip");
+		File testFile = new File(url.getFile());
+		long checksum = FileUtils.checksumCRC32(testFile);
 		
-		String name = "dummy.dummy";
+		FileInputStream fis = new FileInputStream(testFile);
 		
-		RepositoryFile file = createRepositoryFile(data, name);
-		
-		repositoryService.saveFile(file);
-		file.getInputStream().close();
-		
-		assertNotNull(file.getId());
-		
-		
-		RepositoryFile nfile = RepositoryFile.Factory.newInstance();
-		nfile.setId(file.getId());
-		
-		nfile = repositoryService.getFile(nfile);
-		
-		assertEquals("dummy.dummy", nfile.getFileName());
-		assertTrue(data.length == nfile.getFileSize());
-		assertEquals("contentType",nfile.getContentType());
-		assertEquals("dummy", nfile.getName());
-		
-		assertNotNull(nfile.getInputStream());
-		String str2 = getFileContentAsString(nfile);
-		assertEquals(str, str2);
+		repositoryService.saveContent(fileId, fis);
 		
 		commit();
 		
-		repositoryService.removeFile(nfile);
-		commit();
+		InputStream is = repositoryService.loadContent(fileId); 
+		assertNotNull(is);
+		is.close();
+		String path = repositoryService.getRepositoryLocation();
+		File cachedFile = new File(path+"/_filecontent_" + fileId + ".tmp");
+		assertTrue(cachedFile.exists());
+		assertEquals(checksum, FileUtils.checksumCRC32(cachedFile));
 		
-		assertNull(repositoryService.getFile(nfile));
+		repositoryService.removeContent(fileId);
+		assertFalse(cachedFile.exists());
+		
+		try {
+			repositoryService.loadContent(fileId);
+			fail("RepositoryServiceException expected that fileId doesn't exists");
+		} catch (RepositoryServiceException rse) {
+			// expected
+		}
+	
 	}
 
 	private void commit() {
 		setComplete();
 		endTransaction();
 		startNewTransaction();
-	}
-	
-	private RepositoryFile createRepositoryFile(byte[] data, String name) {
-		RepositoryFile file = RepositoryFile.Factory.newInstance();
-		InputStream stream = new ByteArrayInputStream(data);
-		file.setFileName(name);
-		file.setFileSize(data.length);
-		file.setContentType("contentType");
-		file.setName("dummy");
-		file.setInputStream(stream);
-		file.setCreated(new Timestamp(System.currentTimeMillis()));
-		file.setModified(new Timestamp(System.currentTimeMillis()));
-		return file;
-	}
-
-	private String getFileContentAsString(RepositoryFile nfile) {
-		InputStream s = nfile.getInputStream();
-		byte[] d2 = new byte[nfile.getFileSize().intValue()];
-		try {
-			s.read(d2);
-			s.close();
-		} catch (IOException e) {
-			fail();
-		}
-		String s2 = new String(d2);
-		return s2;
 	}
 
 	public TestUtility getTestUtility() {
@@ -96,6 +69,5 @@ public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrati
 	public void setTestUtility(TestUtility testUtility) {
 		this.testUtility = testUtility;
 	}
-	
-	
+
 }

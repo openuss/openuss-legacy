@@ -134,6 +134,11 @@ public class NewsServiceTest extends AbstractDependencyInjectionSpringContextTes
 	}
 
 	public void testDeleteNewsItem() {
+		
+		NewsItem item = NewsItem.Factory.newInstance("TestTitle","TestText", new Timestamp(System.currentTimeMillis()), NewsCategory.Factory.newInstance("Description"), NewsPublisher.Factory.newInstance(0L, "displayName", "org.openuss.foreignClass"));
+		item.setId(10L);
+		item.setAttachmentId(10L);
+		expect(newsItemDaoMock.load(10L)).andReturn(item);
 		newsItemDaoMock.remove(10L);
 		replay(newsItemDaoMock);
 		newsService.deleteNewsItem(10L);

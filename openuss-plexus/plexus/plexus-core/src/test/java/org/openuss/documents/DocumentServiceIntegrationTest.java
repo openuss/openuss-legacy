@@ -7,14 +7,15 @@ package org.openuss.documents;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.openuss.DomainObject;
 import org.openuss.TestUtility;
-import org.openuss.repository.RepositoryFile;
 import org.openuss.repository.RepositoryService;
+import org.openuss.repository.RepositoryServiceException;
 
 /**
  * JUnit Test for Spring Hibernate DocumentService class.
@@ -131,7 +132,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		FolderEntryInfo info = new FolderEntryInfo();
 		info.setId(subFolder2.getId());
 		
-		documentService.removeFolderEntry(info);
+		documentService.removeFolderEntry(info.getId());
 		entries = documentService.getFolderEntries(null, subFolder1);
 		assertNotNull(entries);
 		assertEquals(0, entries.size());
@@ -140,57 +141,44 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		FolderEntry folderEntry = folderEntryDao.load(subFolder3.getId());
 		assertNull(folderEntry);
 	}
-	
-	public void testCreateFileByFolderEntryInfo() throws DocumentApplicationException {
+
+	public void testCreateFileInfo() throws DocumentApplicationException, IOException {
 		testUtility.createSecureContext();
 		DomainObject domainObject = createDomainObject();
 		FolderInfo root = documentService.getFolder(domainObject);
+
+		String name = "/dummy/readme.txt";
 		
-		RepositoryFile repositoryFile = createRepositoryFile();
-		commit();
+		FileInfo info = createFileInfo(name);
 		
-		FolderEntryInfo fileEntry = new FolderEntryInfo();
-		fileEntry.setRepositoryFileId(repositoryFile.getId());
+		documentService.createFileEntry(info, root);
 		
-		assertNull(fileEntry.getId());
-		documentService.createFileEntry(fileEntry, root);
-		assertNotNull(fileEntry.getId());
-		assertNotNull(repositoryFile.getId());
-		
-		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, null);
-		assertNotNull(entries);
-		assertEquals(1, entries.size());
-		FolderEntryInfo info = entries.get(0);
-		
-		assertEquals(repositoryFile.getName(), info.getName());
-		assertEquals(repositoryFile.getDescription(), info.getDescription());
-		assertEquals(repositoryFile.getFileSize(), info.getSize());
-		assertEquals(repositoryFile.getCreated(), info.getCreated());
-		assertEquals(repositoryFile.getModified(), info.getModified());
+		info.getInputStream().close();
 		
 		commit();
 		
-		documentService.removeFolderEntry(info);
+		FileInfo loaded = documentService.getFileEntry(info.getId(), true);
 		
-		commit();
-		
-		FolderInfo folderInfo = documentService.getFolder(info);
-		assertNull(folderInfo);
-		
-		RepositoryFile repoFile = repositoryService.getFile(repositoryFile);
-		assertNull(repoFile);
-		commit();
+		assertEquals("dummy", loaded.getPath());
+		assertEquals("readme", loaded.getName());
+		assertEquals("readme.txt", loaded.getFileName());
+		assertEquals("description", loaded.getDescription());
+		assertEquals(info.getFileSize(), loaded.getFileSize());
+		assertNotNull(loaded.getCreated());
+		assertNotNull(loaded.getModified());
+
 	}
+	
 	
 	public void testCreateFileByFileInfo() throws DocumentApplicationException, IOException {
 		testUtility.createSecureContext();
 		DomainObject domainObject = createDomainObject();
 		FolderInfo root = documentService.getFolder(domainObject);
 
-		String name = "/dummy/dummy.txt";
+		String name = "/dummy/readme.txt";
 		
 		FileInfo info = createFileInfo(name);
-
+		
 		documentService.createFileEntry(info, root);
 		
 		info.getInputStream().close();
@@ -210,28 +198,31 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		
 		FolderEntryInfo entry = entries.get(0);
 		
-		assertEquals("dummy.txt", entry.getName());
 		assertEquals("txt", entry.getExtension());
 		assertEquals("dummy", entry.getPath());
+		assertEquals("readme", entry.getName());
+		assertEquals("readme.txt", entry.getFileName());
 		assertEquals("description", entry.getDescription());
-		assertEquals(info.getSize(), entry.getSize());
+		assertEquals(info.getFileSize(), entry.getFileSize());
 		assertNotNull(entry.getCreated());
 		assertNotNull(entry.getModified());
 		assertTrue(entry.isReleased());
 		assertFalse(entry.isFolder());
 		assertEquals(entry.getCreated(), entry.getReleaseDate());
 		
-		RepositoryFile repoFile = RepositoryFile.Factory.newInstance();
-		repoFile.setId(entry.getRepositoryFileId());
-
-		repoFile = repositoryService.getFile(repoFile, false);
-		assertNotNull(repoFile);
+		InputStream is = getRepositoryService().loadContent(entry.getId());
+		assertNotNull(is);
+		is.close();
 		
-		documentService.removeFolderEntry(entry);
+		documentService.removeFolderEntry(entry.getId());
 		commit();
 
-		assertNull(repositoryService.getFile(repoFile, false));
-		commit();
+		try {
+			getRepositoryService().loadContent(entry.getId());
+			fail();
+		} catch (RepositoryServiceException rse) {
+			// expected
+		}
 	}
 	
 	
@@ -252,7 +243,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		files.add(createFileInfo("/folien/kapitel 2/readme.txt"));
 		files.add(createFileInfo("/übungen/aufgabe/aufgabentext1.txt"));
 		
-		documentService.createFolderEntries(files, subfolder);
+		documentService.createFileEntries(files, subfolder);
 		
 		commit();
 		
@@ -269,6 +260,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		
 		FileInfo info = infos.get(0);
 		validateFileInfo(info);
+		assertNull(info.getInputStream());
 	}
 
 	
@@ -290,6 +282,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		
 		file = documentService.getFileEntry(entry.getId(), true);
 		validateFileInfo(info);
+		assertNotNull(info.getInputStream());
 	}
 	
 	private void validateFileInfo(FileInfo info) {
@@ -300,45 +293,23 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertEquals(info.getPath()+"/"+info.getFileName(), info.getAbsoluteName());
 		assertNotNull(info.getCreated());
 		assertNotNull(info.getModified());
-		assertNotNull(info.getSize());
-		assertNotNull(info.getInputStream());
+		assertNotNull(info.getFileSize());
 		assertNotNull(info.getContentType());
 	}
-
 
 	private FileInfo createFileInfo(String name) {
 		FileInfo info = new FileInfo();
 		byte[] data = "this is the content of the file".getBytes();
-		info.setName(name);
+		info.setFileName(name);
 		info.setDescription("description");
 		info.setContentType("plain/text");
-		info.setSize(data.length);
+		info.setFileSize(data.length);
 		info.setCreated(new Date());
+		info.setModified(new Date());
 		info.setInputStream(new ByteArrayInputStream(data));
 		return info;
 	}
 	
-	
-	private RepositoryFile createRepositoryFile() {
-		RepositoryFile repositoryFile = RepositoryFile.Factory.newInstance();
-		byte[] data = "this is the content of the file".getBytes();
-		ByteArrayInputStream bais = new ByteArrayInputStream(data);
-		repositoryFile.setFileName("dummy.pdf");
-		repositoryFile.setFileSize(data.length);
-		repositoryFile.setContentType("plain/text");
-		repositoryFile.setName("name of the file");
-		
-		repositoryFile.setInputStream(bais);
-		repositoryService.saveFile(repositoryFile);
-		try {
-			bais.close();
-		} catch (IOException e) {
-			fail(e.getMessage());
-		}
-		return repositoryFile;
-	}
-	
-
 	private FolderInfo createSubFolder() {
 		FolderInfo folder = new FolderInfo();
 		folder.setName(testUtility.unique("folder name"));
@@ -346,7 +317,6 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		return folder;
 	}
 
-	
 	private DomainObject createDomainObject() {
 		DomainObject domainObject = new DomainObject(testUtility.unique());
 		return domainObject;

@@ -5,17 +5,22 @@
  */
 package org.openuss.repository;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
+import java.sql.SQLException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 
 /**
  * @see org.openuss.repository.RepositoryFile
  */
-public class RepositoryFileImpl extends org.openuss.repository.RepositoryFileBase implements
-		org.openuss.repository.RepositoryFile {
-	
+public class RepositoryFileImpl extends RepositoryFileBase implements RepositoryFile {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(RepositoryFileImpl.class);
+
 	/**
 	 * The serial version UID of this class. Needed for serialization.
 	 */
@@ -24,9 +29,18 @@ public class RepositoryFileImpl extends org.openuss.repository.RepositoryFileBas
 	private transient InputStream inputStream;
 
 	/**
+	 * @throws SQLException
 	 * @see org.openuss.repository.File#getInputStream()
 	 */
 	public java.io.InputStream getInputStream() {
+		if (inputStream == null) {
+			try {
+				inputStream = getContent().getBinaryStream();
+			} catch (SQLException e) {
+				logger.error(e);
+				throw new RuntimeException(e);
+			}
+		}
 		return inputStream;
 	}
 
@@ -35,32 +49,12 @@ public class RepositoryFileImpl extends org.openuss.repository.RepositoryFileBas
 	 */
 	public void setInputStream(java.io.InputStream inputStream) {
 		this.inputStream = inputStream;
-	}
-
-	/**
-	 * {@inheritDoc} 
-	 */
-	@Override
-	public String getExtension() {
-		String fileName = getFileName();
-		String extension = "";
-		if (StringUtils.isNotBlank(fileName)) {
-			int index = getFileName().lastIndexOf(".");
-			if (index > -1) {
-				extension = fileName.substring(index+1);
-			}
+		try {
+			setContent(Hibernate.createBlob(inputStream));
+		} catch (IOException e) {
+			logger.error(e);
+			throw new RuntimeException(e);
 		}
-		return extension;
-	}
-
-	@Override
-	public boolean isReleased() {
-		return getCreated().before(new Date()) ;
-	}
-
-	@Override
-	public Date releaseDate() {
-		return getCreated();
 	}
 
 }
