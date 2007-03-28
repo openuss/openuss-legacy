@@ -98,7 +98,7 @@
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/commons-el/commons-el/1.0/commons-el-1.0.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/jaybird/jaybird-full/2.0.1/jaybird-full-2.0.1.jar">
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/jaybird/jaybird-full/2.1.1/jaybird-full-2.1.1.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/shale/shale-remoting/1.0.4/shale-remoting-1.0.4.jar">
