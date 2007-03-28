@@ -22,8 +22,8 @@
 ]]>    	
     	</to>
     </mapping>    
-    
-    <mapping>
+<!-- 
+    <mapping>          
         <from><![CDATA[this.getHibernateTemplate().update($argumentName);]]></from>
         <to>
 		<![CDATA[
@@ -39,6 +39,7 @@
 		}
 		]]></to>
     </mapping>
+ -->    
     
     <!-- GenerateTest Merge -->
     <mapping>
