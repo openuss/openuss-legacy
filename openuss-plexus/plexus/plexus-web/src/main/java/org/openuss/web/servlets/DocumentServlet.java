@@ -73,12 +73,13 @@ public class DocumentServlet extends HttpServlet {
 		final ServletOutputStream os = response.getOutputStream();
 		final InputStream is = file.getInputStream();
 		try {
-			
 			IOUtils.copyLarge(is, os);
+			os.flush();
 		} finally {
 			IOUtils.closeQuietly(os);
 			IOUtils.closeQuietly(is);
 		}
+		logger.debug("send file content");
 	}
 
 	private void sendFileHeader(final HttpServletResponse response, final FileInfo file) {
