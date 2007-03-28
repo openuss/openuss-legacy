@@ -1,3 +1,6 @@
+delete from braincontest_answer;
+delete from braincontest;
+
 delete from desktop_desktop_subject;
 delete from desktop_desktop_faculty;
 delete from desktop_desktop;
@@ -7,6 +10,7 @@ delete from news_category;
 delete from lecture_faculty_aspirant;
 delete from lecture_faculty_group;
 delete from lecture_faculty_member;
+
 update lecture_enrollment e set e.faculty_fk = null;
 update lecture_period e set e.faculty_fk = null;
 update lecture_subject e set e.faculty_fk = null;
@@ -19,6 +23,7 @@ delete from lecture_subject;
 delete from security_group2authority;
 delete from security_group;
 delete from security_permission;
+
 update security_object_identity set parent_fk = null;
 delete from security_object_identity;
 delete from security_activationcode;
