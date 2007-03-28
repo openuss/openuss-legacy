@@ -34,47 +34,47 @@
 	</ui:define>
 	<ui:define name="content">
 		<!-- removed ACL tags -->
-
 		<h:form id="brainContestTopListForm">
 			<plexus:dataTable id="brainContestTopList"
-				label="#{msg.braincontest_main_header}-#{msg.braincontest_toplist_header}-#{brainContest.title} "
-				value="views$secured$enrollment$braincontesttoplist.data"
-				var="toplistentry" rows="10">
-
+				label="#{msg.braincontest_main_header}-#{msg.braincontest_toplist_header}-#{braincontest_contest.title} "
+				value="views$secured$braincontest$braincontesttoplist.data"
+		    	columnClasses=" col_min_center, col_min_center,col_max_left, col_min_center,col_min_center,col_min_center"				
+				var="answer" rows="10" rowIndex="index">
 				<t:column>
-					<plexus:commandSortHeader columnName="rank"> #{msg['braincontest_toplist_rank']} </plexus:commandSortHeader>
-					<h:outputText value="#{toplistentry.rank}" />
+					<f:facet name="header">
+						<h:outputText value="#{msg['braincontest_toplist_rank']}" />
+					</f:facet>
+					<h:outputText value="#{index+1}" />
 				</t:column>
 
 				<t:column>
-					<plexus:commandSortHeader columnName="time"> #{msg['braincontest_toplist_time']}</plexus:commandSortHeader>
-					<h:outputText value="#{toplistentry.answerTime}" />
+					<f:facet name="header">
+						<h:outputText value="#{msg['braincontest_toplist_time']}" />
+					</f:facet>
+					<h:outputText value="#{answer.answeredAt}" />
 				</t:column>
 
 				<t:column>
-					<plexus:commandSortHeader columnName="name">#{msg['braincontest_toplist_name']}</plexus:commandSortHeader>
-					<!-- TODO add picture -->
+					<f:facet name="header">
+						<h:outputText value="#{msg['braincontest_toplist_name']}" />
+					</f:facet>
 					<h:graphicImage styleClass="userphoto"
-						renderer="${not empty showuser.profile.image}"
-						value="/files/#{showuser.profile.image.fileName}?fileid=#{showuser.profile.image.id}"
-						alt="#{showuser.contact.firstName} #{showuser.contact.lastName}"
-						title="#{showuser.contact.firstName} #{showuser.contact.lastName}" 
-						rendered="#{not empty showuser.profile.image}"/>
+						value="/files?fileid=#{answer.imageId}"
+						title="#{answer.solverName}" rendered="#{not empty answer.imageId}" />
 					<h:graphicImage styleClass="userphoto"
-						value="/images/icons/no_pic.gif" width="80px" height="60px"
+						value="/images/icons/no_pic.gif" 
 						alt="#{msg.user_profile_no_image}"
-						title="#{msg.user_profile_no_image}" 
-						rendered="#{empty showuser.profile.image}"/>/>
+						title="#{msg.user_profile_no_image}"
+						rendered="#{empty answer.imageId}" />
 
-					<h:outputText
-						value="#{toplistentry.userInfo.firstName} #{toplistentry.userInfo.lastName} (#{toplistentry.userInfo.username})" />
+					<h:outputText value="#{answer.solverName}" />
 				</t:column>
 
 			</plexus:dataTable>
 
 			<o:block>
 				<h:commandButton value="${msg.back}" title="#{msg.back}"
-					action="enrollment" styleClass="button" />
+					action="braincontest_main" styleClass="button" immediate="true" />
 			</o:block>
 		</h:form>
 	</ui:define>

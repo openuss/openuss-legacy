@@ -407,7 +407,12 @@
 			<navigation-case>
 				<from-outcome>braincontest_top</from-outcome>
 				<to-view-id>/views/secured/braincontest/braincontesttop.xhtml</to-view-id>				
-			</navigation-case>			
+			</navigation-case>	
+			
+			<navigation-case>
+				<from-outcome>braincontest_result</from-outcome>
+				<to-view-id>/views/secured/braincontest/braincontestresult.xhtml</to-view-id>				
+			</navigation-case>					
 
 			<!-- documents -->
 

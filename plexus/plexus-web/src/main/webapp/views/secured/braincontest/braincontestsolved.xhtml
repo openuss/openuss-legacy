@@ -32,34 +32,14 @@
 		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
 	</ui:define>
 	<ui:define name="content">
-		<h:form id="brainContestSolveForm">
-			<o:block label="#{msg.braincontest_solve_header}">
-				<h:outputText value="#{msg.braincontest_description}"
-					styleClass="field_label" />
-				<h:outputText value="#{braincontest.description}" styleClass="content_font_normal"/>
-
-				<c:if test="#{!empty braincontest_attachment}">
-					<h:outputText value="#{msg.braincontest_attachment}"
-						styleClass="field_label" />
-					<h:outputLink value="/openuss-plexus/files/#{sessionScope.braincontest_attachment.fileName}">
-						<f:param value="#{braincontest_attachment.id}" name="fileid" />
-						<h:graphicImage	value="/images/filetypes/#{sessionScope.brainContest_attachment.extension}.gif" />
-				  		#{sessionScope.braincontest_attachment.name} 
-				  	</h:outputLink>					
-				</c:if>		
-
-				<o:input entity="braincontest_answer" property="answer" required="true">
-				</o:input>
-				<o:input entity="braincontest_answer" property="topList" >
-				</o:input>
-
+		<h:form id="brainContestResultForm">
+			<o:block label="#{msg.braincontest_result_header} : #{braincontest_contest.title}">
+				<h:outputText value="#{msg.braincontest_result_right}" styleClass="content_font_normal"/>
 			</o:block>
 
 			<o:block>
-				<plexus:command bean="#{views$secured$braincontest$braincontestsolve}"
-					action="save" label="#{msg['braincontest_solve_answer']}"
-					title="#{msg['braincontest_solve_answer']}"
-					styleClass="button" />
+				<h:commandButton action="braincontest_top" value="#{msg.braincontest_main_button_top}" rendered="#{views$secured$braincontest$braincontestsolve.result}"></h:commandButton>
+				<h:commandButton action="braincontest_main" value="#{msg.braincontest_cancel}" ></h:commandButton>				
 			</o:block>
 		</h:form>
 	</ui:define>

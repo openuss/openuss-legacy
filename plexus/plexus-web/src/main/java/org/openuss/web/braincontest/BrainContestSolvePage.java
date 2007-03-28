@@ -1,5 +1,7 @@
 package org.openuss.web.braincontest;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -12,6 +14,8 @@ import org.openuss.braincontest.Answer;
 import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.braincontest.BrainContestInfo;
 import org.openuss.braincontest.BrainContestService;
+import org.openuss.documents.FileInfo;
+import org.openuss.documents.FolderEntry;
 import org.openuss.lecture.LectureException;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
@@ -23,7 +27,7 @@ public class BrainContestSolvePage extends AbstractEnrollmentPage {
 	private static final Logger logger = Logger
 			.getLogger(BrainContestSolvePage.class);
 
-	@Property(value = "#{brainContest}")
+	@Property(value = "#{braincontest_contest}")
 	private BrainContestInfo brainContest;
 
 	@Property(value = "#{brainContestService}")
@@ -32,18 +36,41 @@ public class BrainContestSolvePage extends AbstractEnrollmentPage {
 	@Property(value = "#{user}")
 	private User user;
 
-	private String answer;
+	@Property(value = "#{braincontest_answer}")
+	private AnswerWebInfo answer;
+	
+	@Property(value = "#{braincontest_attachment}")
+	private FileInfo attachment;
+	
+	
+	public boolean result;
 
-	private boolean topList;
-
+	@SuppressWarnings("unchecked")
 	@Prerender
-	public void prerender() {
-
+	public void prerender() {		
+		if (!isPostBack()) {
+			if ( brainContest != null && brainContest.getId() != null) {
+				brainContest = brainContestService.getContest(brainContest);
+			}
+			if (brainContest == null || brainContest.getId() == null) {
+				addError(i18n("braincontest_message_contest_not_found"));
+				redirect(Constants.BRAINCONTEST_MAIN);
+			}
+		} 
+		if (brainContest!=null){
+			if (!brainContest.isReleased()) {
+				addError(i18n("braincontest_message_contest_not_released"));
+				redirect(Constants.BRAINCONTEST_MAIN);
+			}
+			List<FileInfo> attachments = brainContestService.getAttachments(brainContest);
+			if (attachments!= null)	setAttachment(attachments.get(0));
+		}		
 	}
 
 	public String save() throws BrainContestApplicationException {
-		brainContestService.answer(answer, user, brainContest, topList);
-		return Constants.SUCCESS;
+		this.result = brainContestService.answer(answer.getAnswer(), user, brainContest, answer.isTopList());		
+		logger.debug("answer triggered");		
+		return Constants.BRAINCONTEST_RESULT;
 	}
 
 	public BrainContestInfo getBrainContest() {
@@ -52,22 +79,6 @@ public class BrainContestSolvePage extends AbstractEnrollmentPage {
 
 	public void setBrainContest(BrainContestInfo brainContest) {
 		this.brainContest = brainContest;
-	}
-
-	public String getAnswer() {
-		return answer;
-	}
-
-	public void setAnswer(String answer) {
-		this.answer = answer;
-	}
-
-	public boolean isTopList() {
-		return topList;
-	}
-
-	public void setTopList(boolean topList) {
-		this.topList = topList;
 	}
 
 	public BrainContestService getBrainContestService() {
@@ -84,6 +95,30 @@ public class BrainContestSolvePage extends AbstractEnrollmentPage {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public boolean isResult() {
+		return result;
+	}
+
+	public void setResult(boolean result) {
+		this.result = result;
+	}
+
+	public AnswerWebInfo getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(AnswerWebInfo answer) {
+		this.answer = answer;
+	}
+
+	public FileInfo getAttachment() {
+		return attachment;
+	}
+
+	public void setAttachment(FileInfo attachment) {
+		this.attachment = attachment;
 	}
 
 }

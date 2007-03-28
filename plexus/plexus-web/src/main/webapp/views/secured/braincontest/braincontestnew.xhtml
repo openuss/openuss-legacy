@@ -7,6 +7,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:o="http://www.openuss.org/jsfcontrols"
+    xmlns:s="http://www.openuss.org/jsf-security"
 	xmlns:fck="http://www.fck-faces.org/fck-faces"
 	xmlns:plexus="http://www.openuss.org/plexus/jsf">
 
@@ -32,45 +33,58 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="newBrainContestForm">
-
-
-			<o:block label="#{msg.braincontest_new}">
-				<o:input entity="brainContest" property="title" required="true">
-				</o:input>
-				<h:outputText value="#{msg.braincontest_description}"
-					styleClass="field_label" />
-				<fck:editor value="#{brainContest.description}" id="textEditor"
-					toolbarSet="Basic" width="100%" height="200" />
-				
-				<h:outputLabel value="#{msg.braincontest_attachment}" for="attachment"	styleClass="field_label" />
-
-				<f:subview rendered="${!empty brainContest.attachment}">
-					<h:outputLink value="/openuss-plexus/files/#{sessionScope.brainContest.attachment.fileName}">
-						<f:param value="#{brainContest.attachment.id}" name="fileid" />
-						<h:graphicImage	value="/images/filetypes/#{sessionScope.brainContest.attachment.extension}.gif" />
-				  		#{sessionScope.brainContest.attachment.name} 
-				  	</h:outputLink>
-			  		&#160;
-			  		<h:commandButton value="delete" action="#{views$secured$enrollment$braincontestnew.removeAttachment}" immediate="true" styleClass="button_remove"/><br/><br/>
-		  		</f:subview> 
-						
-				<t:inputFileUpload id="attachment" storage="file" accept="*" immediate="true" styleClass="uploadField">
-					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
-				</t:inputFileUpload>
-		
-				<o:input entity="brainContestSolution" property="solution" required="true" />
-
-				<o:input entity="brainContest" property="releaseDate" required="true" />
-			</o:block>
-
-			<o:block>
-				<plexus:command bean="#{views$secured$enrollment$braincontestnew}"
-					action="save" label="#{msg['braincontest_save']}"
-					title="#{msg['braincontest_save']}"
-					styleClass="button_profile" />
-				<h:commandButton action="enrollment"
-					value="#{msg['braincontest_cancel']}" />	
-			</o:block>
+			<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}"
+				ifNot="error" />
+				<o:block label="#{msg.braincontest_new}">
+					<o:input entity="braincontest_contest" property="title"
+						required="true">
+					</o:input>
+					<h:outputText value="#{msg.braincontest_description}"
+						styleClass="field_label" />
+					<fck:editor value="#{braincontest_contest.description}"
+						id="textEditor" toolbarSet="Basic" width="100%" height="200" />
+	
+					<h:outputLabel value="#{msg.braincontest_attachment}"
+						for="attachment" styleClass="field_label" />
+	
+					<f:subview rendered="${not empty braincontest_attachment}">
+						<h:outputLink
+							value="/openuss-plexus/files/#{sessionScope.braincontest_attachment.fileName}">
+							<f:param value="#{braincontest_attachment.id}" name="fileid" />
+							<!-- 
+							<h:graphicImage	value="/images/filetypes/#{sessionScope.brainContest_attachment.extension}.gif" />
+							 -->
+					  		#{sessionScope.brainContest_attachment.name} 
+					  	</h:outputLink>
+				  		&#160;
+				  		<h:commandButton value="delete"
+							action="#{views$secured$braincontest$braincontestnew.removeAttachment}"
+							immediate="true" styleClass="button_remove" />
+						<br />
+						<br />
+					</f:subview>
+	
+					<t:inputFileUpload id="attachment" storage="file" accept="*"
+						immediate="true" styleClass="uploadField">
+						<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
+					</t:inputFileUpload>
+	
+					<o:input entity="braincontest_contest" property="solution"
+						required="true" />
+	
+					<o:input entity="braincontest_contest" property="releaseDate"
+						required="true" />
+				</o:block>
+	
+				<o:block>
+					<plexus:command bean="#{views$secured$braincontest$braincontestnew}"
+						action="save" label="#{msg['braincontest_save']}"
+						title="#{msg['braincontest_save']}" />
+					<h:commandButton action="braincontest_main"
+						value="#{msg['braincontest_cancel']}" styleClass="button"
+						immediate="true" />
+				</o:block>
+			</s:acl>
 		</h:form>
 	</ui:define>
 </ui:composition>
