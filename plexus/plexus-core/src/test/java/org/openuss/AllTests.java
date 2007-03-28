@@ -3,6 +3,7 @@ package org.openuss;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.openuss.braincontest.BrainContestTests;
 import org.openuss.desktop.DesktopTests;
 import org.openuss.discussion.DiscussionTests;
 import org.openuss.documents.DocumentTests;
@@ -29,6 +30,7 @@ public class AllTests {
 		suite.addTest(MailTests.suite());
 		suite.addTest(DocumentTests.suite());
 		suite.addTest(ViewTrackingTests.suite());
+		suite.addTest(BrainContestTests.suite());
 		// $JUnit-END$
 		return suite;
 	}
