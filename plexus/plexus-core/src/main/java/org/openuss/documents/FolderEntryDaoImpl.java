@@ -17,21 +17,18 @@ public class FolderEntryDaoImpl extends org.openuss.documents.FolderEntryDaoBase
 	public void toFolderEntryInfo(FolderEntry sourceEntity, FolderEntryInfo targetVO) {
 		super.toFolderEntryInfo(sourceEntity, targetVO);
 		targetVO.setName(sourceEntity.getName());
+		targetVO.setFileName(sourceEntity.getFileName());
 		targetVO.setPath(sourceEntity.getPath());
 		targetVO.setDescription(sourceEntity.getDescription());
 		targetVO.setExtension(sourceEntity.getExtension());
-		targetVO.setSize(sourceEntity.getSize());
+		targetVO.setFileSize(sourceEntity.getFileSize());
 		targetVO.setCreated(sourceEntity.getCreated());
 		targetVO.setModified(sourceEntity.getModified());
 		targetVO.setFolder(sourceEntity instanceof Folder);
 		targetVO.setSizeAsString(sourceEntity.getSizeAsString());
 		targetVO.setExtension(sourceEntity.getExtension());
 		targetVO.setReleased(sourceEntity.isReleased());
-
 		targetVO.setReleaseDate(sourceEntity.getCreated());
-		if (sourceEntity instanceof FileEntry) {
-			targetVO.setRepositoryFileId(((FileEntry) sourceEntity).getRepositoryFile().getId());
-		} 
 	}
 
 	/**

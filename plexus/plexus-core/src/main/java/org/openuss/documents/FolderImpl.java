@@ -19,11 +19,6 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 	 */
 	private static final long serialVersionUID = 8286059784837095960L;
 	
-	public FolderImpl() {
-		setName("");
-		setCreated(new Date());
-	}
-
 	/**
 	 * @see org.openuss.documents.Folder#addFolderEntry(org.openuss.documents.FolderEntry)
 	 */
@@ -89,11 +84,11 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 	}
 
 	@Override
-	public Integer getSize() {
+	public Integer getFileSize() {
 		int size = 0;
 		// TODO ATTENTION - Don't know what the performance this will be! - it's recursivly
 		for (FolderEntry entry : getEntries()) {
-			size += entry.getSize();
+			size += entry.getFileSize();
 		}
 		return size;
 	}

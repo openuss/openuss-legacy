@@ -5,7 +5,10 @@
  */
 package org.openuss.documents;
 
+import java.io.File;
 import java.util.Date;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @see org.openuss.documents.FileEntry
@@ -16,50 +19,42 @@ public class FileEntryImpl extends org.openuss.documents.FileEntryBase implement
 	 * The serial version UID of this class. Needed for serialization.
 	 */
 	private static final long serialVersionUID = 3992343940899917381L;
-
+	
 	@Override
-	public Date getCreated() {
-		return (getRepositoryFile() == null) ? null : getRepositoryFile().getCreated();
+	public String getFileName() {
+		File file = new File(super.getFileName());
+		return file.getName();
 	}
-
-	@Override
-	public String getDescription() {
-		return (getRepositoryFile() == null) ? null : getRepositoryFile().getDescription();
-	}
-
+	
 	@Override
 	public String getExtension() {
-		return (getRepositoryFile() == null) ? null : getRepositoryFile().getExtension();
-	}
-
-	@Override
-	public Date getModified() {
-		return (getRepositoryFile() == null) ? null : getRepositoryFile().getModified();
+		String fileName = getFileName();
+		if (fileName != null) {
+			int index = fileName.lastIndexOf('.');
+			return fileName.substring(index+1);
+		} else {
+			return "";
+		}
 	}
 
 	@Override
 	public String getName() {
-		return (getRepositoryFile() == null) ? null : getRepositoryFile().getName();
-	}
-
-	@Override
-	public Integer getSize() { 
-		return (getRepositoryFile() == null) ? null : getRepositoryFile().getFileSize();
+		String name = super.getName();
+		if (StringUtils.isBlank(name)) {
+			name = getFileName();
+			if (name != null) {
+				int index = name.lastIndexOf('.');
+				if (index > 0) {
+					name = name.substring(0, index);
+				}
+			}
+		}
+		return name;
 	}
 	
 	@Override
-	public String getFileName() {
-		return (getRepositoryFile() == null) ? null : getRepositoryFile().getFileName();
-	}
-
-	@Override
-	public String getContentType() {
-		return (getRepositoryFile() == null) ? null : getRepositoryFile().getContentType();
-	}
-
-	@Override
 	public boolean isReleased() {
-		return new Date().after(getCreated());
+		return !(new Date().before(getCreated()));
 	}
 
 	@Override

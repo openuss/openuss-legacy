@@ -5,9 +5,6 @@
  */
 package org.openuss.documents;
 
-import java.io.File;
-
-import org.openuss.repository.RepositoryFile;
 
 /**
  * @see org.openuss.documents.FileEntry author ingo dueppe
@@ -26,8 +23,7 @@ public class FileEntryDaoImpl extends org.openuss.documents.FileEntryDaoBase {
 		target.setModified(source.getModified());
 		target.setExtension(source.getExtension());
 		target.setPath(source.getPath());
-		target.setRepositoryFileId(source.getRepositoryFile().getId());
-		target.setSize(source.getSize());
+		target.setFileSize(source.getFileSize());
 		target.setSizeAsString(source.getSizeAsString());
 		target.setFolder(false);
 		target.setReleased(source.isReleased());
@@ -65,19 +61,11 @@ public class FileEntryDaoImpl extends org.openuss.documents.FileEntryDaoBase {
 	 */
 	public void folderEntryInfoToEntity(FolderEntryInfo sourceVO, FileEntry targetEntity, boolean copyIfNull) {
 		super.folderEntryInfoToEntity(sourceVO, targetEntity, copyIfNull);
-
-		RepositoryFile file = targetEntity.getRepositoryFile();
-		if (file != null) {
-			file.setName(sourceVO.getName());
-			file.setFileName(sourceVO.getName());
-			file.setFileSize(sourceVO.getSize());
-			file.setDescription(sourceVO.getDescription());
-			file.setCreated(sourceVO.getCreated());
-			file.setModified(sourceVO.getModified());
-		} else {
-			file = RepositoryFile.Factory.newInstance();
-			file.setId(sourceVO.getRepositoryFileId());
-			targetEntity.setRepositoryFile(file);
+		if (copyIfNull || sourceVO.getFileName() != null) {
+			targetEntity.setFileName(sourceVO.getFileName());
+		}
+		if (copyIfNull || sourceVO.getFileSize() != null) {
+			targetEntity.setFileSize(sourceVO.getFileSize());
 		}
 	}
 
@@ -99,7 +87,7 @@ public class FileEntryDaoImpl extends org.openuss.documents.FileEntryDaoBase {
 		}
 		if (entry == null) {
 			entry = FileEntry.Factory.newInstance();
-			entry.setRepositoryFile(RepositoryFile.Factory.newInstance());
+			// entry.setRepositoryFile(RepositoryFile.Factory.newInstance());
 		}
 		return entry;
 	}
@@ -109,45 +97,31 @@ public class FileEntryDaoImpl extends org.openuss.documents.FileEntryDaoBase {
 	 *      org.openuss.documents.FileEntry)
 	 */
 	public void fileInfoToEntity(FileInfo source, FileEntry target, boolean copyIfNull) {
-		if (target.getRepositoryFile() == null) {
-			target.setRepositoryFile(RepositoryFile.Factory.newInstance());
+		super.fileInfoToEntity(source, target, copyIfNull);
+		if (copyIfNull || source.getId() != null) {
+			target.setId(source.getId());
 		}
-		RepositoryFile file = target.getRepositoryFile();
-
 		if (copyIfNull || source.getName() != null) {
-			file.setName(extractName(source.getName()));
+			target.setFileName(source.getName());
 		}
 		if (copyIfNull || source.getFileName() != null) {
-			file.setFileName(extractFileName(source.getName()));
-		}
-		if (copyIfNull || source.getCreated() != null) {
-			file.setCreated(source.getCreated());
-		}
-		if (copyIfNull || source.getModified() != null) {
-			file.setModified(source.getModified());
-		}
-		if (copyIfNull || source.getSize() != null) {
-			file.setFileSize(source.getSize());
+			target.setFileName(source.getFileName());
 		}
 		if (copyIfNull || source.getContentType() != null) {
-			file.setContentType(source.getContentType());
+			target.setContentType(source.getContentType());
 		}
-		if (copyIfNull || source.getInputStream() != null) {
-			file.setInputStream(source.getInputStream());
+		if (copyIfNull || source.getCreated() != null) {
+			target.setCreated(source.getCreated());
+		}
+		if (copyIfNull || source.getModified() != null) {
+			target.setModified(source.getModified());
 		}
 		if (copyIfNull || source.getDescription() != null) {
-			file.setDescription(source.getDescription());
+			target.setDescription(source.getDescription());
 		}
-	}
-
-	private String extractFileName(String name) {
-		File file = new File(name);
-		return file.getName();
-	}
-
-	private String extractName(String name) {
-		File file = new File(name);
-		return file.getName();
+		if (copyIfNull || source.getFileSize() != null) {
+			target.setFileSize(source.getFileSize());
+		}
 	}
 
 	/**
@@ -164,10 +138,8 @@ public class FileEntryDaoImpl extends org.openuss.documents.FileEntryDaoBase {
 		target.setContentType(source.getContentType());
 		target.setCreated(source.getCreated());
 		target.setModified(source.getModified());
-		target.setSize(source.getSize());
-		if (source.getRepositoryFile() != null) {
-			target.setInputStream(source.getRepositoryFile().getInputStream());
-		}
+		target.setFileSize(source.getFileSize());
+		target.setExtension(source.getExtension());
 	}
 
 }
