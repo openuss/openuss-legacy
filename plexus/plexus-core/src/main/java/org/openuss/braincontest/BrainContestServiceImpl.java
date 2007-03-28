@@ -77,6 +77,7 @@ public class BrainContestServiceImpl
     	bci.setSolution(brainContest.getSolution());
     	bci.setTitle(brainContest.getTitle());
     	bci.setTries(brainContest.getTries());
+    	bci.setAnswers(brainContest.getAnswersCount());
 		return bci;
 	}
 
@@ -147,7 +148,7 @@ public class BrainContestServiceImpl
         }catch (IllegalArgumentException e){
         	throw new BrainContestApplicationException(e.getMessage());
         }
-    	List<FileInfo> files = getDocumentService().getFileEntries(contest);
+    	List<FileInfo> files = getDocumentService().getFileEntries(contest);    	
     	return  files;   	
     }
 
