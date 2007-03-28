@@ -1,4 +1,4 @@
-package org.openuss.web.repository;
+package org.openuss.web.servlets;
 
 import java.io.IOException;
 import java.util.List;
