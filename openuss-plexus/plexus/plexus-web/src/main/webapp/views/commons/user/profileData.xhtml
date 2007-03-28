@@ -14,10 +14,10 @@
 	<h:panelGrid columns="2">
 		<h:panelGroup>
 			
-			<c:if test="#{not empty user.profile.image}">
+			<c:if test="#{not empty user.imageId}">
 				<h:graphicImage styleClass="userphoto"
-					renderer="${not empty user.profile.image}"
-					value="/files/#{user.profile.image.fileName}?fileid=#{user.profile.image.id}"
+					renderer="${not empty user.imageId}"
+					value="/files?fileid=#{user.imageId}"
 					alt="#{user.contact.firstName} #{user.contact.lastName}"
 					title="#{user.contact.firstName} #{user.contact.lastName}"/> 
 				&#160;
@@ -29,7 +29,7 @@
 		  		</h:commandLink>
 			</c:if>
 					
-			<c:if test="#{empty user.profile.image}">
+			<c:if test="#{empty user.imageId}">
 				<h:graphicImage 
 					styleClass="userphoto" 
 					value="/images/icons/no_pic.gif" 

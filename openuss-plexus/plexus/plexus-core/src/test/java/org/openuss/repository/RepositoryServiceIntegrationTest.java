@@ -7,6 +7,7 @@ package org.openuss.repository;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -24,10 +25,15 @@ public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrati
 	private TestUtility testUtility;
 
 	public void testRepositoryService() throws IOException {
+		String fileName = this.getClass().getClassLoader().getResource("core-test.zip").getFile();
+		checkRepositoryRoundtrip(fileName);
+	}
+
+
+	private void checkRepositoryRoundtrip(String fileName) throws IOException, FileNotFoundException {
 		testUtility.createSecureContext();
 		long fileId = testUtility.unique();
-		URL url = this.getClass().getClassLoader().getResource("core-test.zip");
-		File testFile = new File(url.getFile());
+		File testFile = new File(fileName);
 		long checksum = FileUtils.checksumCRC32(testFile);
 		
 		FileInputStream fis = new FileInputStream(testFile);
@@ -36,12 +42,16 @@ public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrati
 		
 		commit();
 		
-		InputStream is = repositoryService.loadContent(fileId); 
+		InputStream is = repositoryService.loadContent(fileId);
+		
 		assertNotNull(is);
 		is.close();
 		String path = repositoryService.getRepositoryLocation();
 		File cachedFile = new File(path+"/_filecontent_" + fileId + ".tmp");
+		logger.debug("Cached File ==========> "+cachedFile.getAbsolutePath());
 		assertTrue(cachedFile.exists());
+		assertTrue(cachedFile.isFile());
+		assertTrue(testFile.length() == cachedFile.length());
 		assertEquals(checksum, FileUtils.checksumCRC32(cachedFile));
 		
 		repositoryService.removeContent(fileId);
@@ -53,7 +63,6 @@ public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrati
 		} catch (RepositoryServiceException rse) {
 			// expected
 		}
-	
 	}
 
 	private void commit() {
