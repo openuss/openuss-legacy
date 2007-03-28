@@ -788,6 +788,11 @@ p.header_font_normal, span.header_font_normal {
   border-left-color: #AFAFAF;
 }
 
+.userphoto {
+	width: 60px;
+	height: 60px;
+}
+
 .content_normal .userimage .userphoto{
 	border: 0;
 	float: left;
