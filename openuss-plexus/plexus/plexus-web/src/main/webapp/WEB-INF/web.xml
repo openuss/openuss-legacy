@@ -148,11 +148,16 @@
 	<!-- - - - - - - - - - - - - - - - - - - - - -
        OpenUSS Plexus Configuration  
 	- - - - - - - - - - - - - - - - - - - - - - - - -->
+	<context-param>
+		<param-name>org.openuss.servlet.node</param-name>
+		<param-value>plexus_node_one</param-value>
+	</context-param>
 	 
 	<context-param>
 		<param-name>org.openuss.web.themes.DEFAULT_THEME_ID</param-name>
 		<param-value>blue</param-value>
 	</context-param>
+	
 
 	<!-- - - - - - - - - - - - - - - - - - - - - -
 	   Shale Configuration
@@ -307,14 +312,14 @@
 	   Servlets
 	- - - - - - - - - - - - - - - - - - - - - - - - -->	
 	<servlet>
-		<servlet-name>RepositoryServlet</servlet-name>
-		<servlet-class>org.openuss.web.repository.RepositoryServlet</servlet-class>
+		<servlet-name>DocumentServlet</servlet-name>
+		<servlet-class>org.openuss.web.servlets.DocumentServlet</servlet-class>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 	
 	<servlet>
 		<servlet-name>ZipDocumentServlet</servlet-name>
-		<servlet-class>org.openuss.web.repository.ZipDocumentServlet</servlet-class>
+		<servlet-class>org.openuss.web.servlets.ZipDocumentServlet</servlet-class>
 		<load-on-startup>3</load-on-startup>
 	</servlet>
 	
@@ -337,7 +342,7 @@
 	</servlet>
 -->	
 	<servlet-mapping>
-		<servlet-name>RepositoryServlet</servlet-name>
+		<servlet-name>DocumentServlet</servlet-name>
 		<url-pattern>/files/*</url-pattern>
 	</servlet-mapping>
 
