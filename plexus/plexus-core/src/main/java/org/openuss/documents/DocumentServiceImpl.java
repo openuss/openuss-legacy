@@ -15,10 +15,10 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.framework.utilities.DomainObjectUtility;
-import org.openuss.repository.RepositoryFile;
 
 /**
  * @see org.openuss.documents.DocumentsService
@@ -47,7 +47,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		
 		Folder parent = obtainParentFolder(parentInfo);
 		
-		createFileEntryAndRepositoryFile(fileInfo, parent);
+		createFileEntryWithContent(fileInfo, parent);
 	}
 	
 	private Folder obtainParentFolder(FolderInfo parentInfo) throws DocumentApplicationException {
@@ -58,7 +58,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		return parent;
 	}
 	
-	private void createFileEntryAndRepositoryFile(FileInfo fileInfo, Folder parent) throws DocumentApplicationException {
+	private void createFileEntryWithContent(FileInfo fileInfo, Folder parent) throws DocumentApplicationException {
 		Folder folder = createFolderPathStructure(parent, fileInfo);
 		FileEntry entry = getFileEntryDao().fileInfoToEntity(fileInfo);
 		
@@ -281,6 +281,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	private Folder createFolderPathStructure(Folder parent, FileInfo info) throws DocumentApplicationException {
+		Validate.notNull(info.getFileName(), "Parameter fileInfo must contain a filename.");
 		List<String> path = retrievePathOfFileName(info.getFileName());
 		for (String folderName : path) {
 			parent = createFolderByName(folderName, parent, info.getCreated());
@@ -289,13 +290,15 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	private List<String> retrievePathOfFileName(String fileName) {
-		if (fileName.startsWith("/")) {
-			fileName = fileName.substring(1);
-		}
 		List<String> path = new ArrayList<String>();
-		File file = new File(fileName);
-		while ((file = file.getParentFile()) != null) {
-			path.add(0, file.getName());
+		if (StringUtils.isNotBlank(fileName)) {
+			if (fileName.startsWith("/")) {
+				fileName = fileName.substring(1);
+			}
+			File file = new File(fileName);
+			while ((file = file.getParentFile()) != null) {
+				path.add(0, file.getName());
+			}
 		}
 		return path;
 	}
@@ -322,6 +325,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 
 	@Override
 	protected List handleGetFileEntries(Object domainObject) throws Exception {
+		Validate.notNull(domainObject, "Parameter domainObject must not be null!");
 		Folder root = getRootFolderForDomainObject(domainObject);
 		List entries = root.getEntries();
 		CollectionUtils.filter(entries, new Predicate() {
@@ -329,6 +333,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 				return (object instanceof FileEntry);
 			}
 		});
+		getFileEntryDao().toFileInfoCollection(entries);
 		return entries;
 	}
 
@@ -340,7 +345,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		Folder parent = obtainParentFolder(parentInfo);
 
 		for (FileInfo entry : (Collection<FileInfo>) fileEntries) {
-			createFileEntryAndRepositoryFile(entry, parent);
+			createFileEntryWithContent(entry, parent);
 		}
 	}
 }
