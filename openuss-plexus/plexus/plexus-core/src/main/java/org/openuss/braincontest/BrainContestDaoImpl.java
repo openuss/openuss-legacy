@@ -4,78 +4,71 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.braincontest;
+
+import java.util.Date;
+
 /**
  * @see org.openuss.braincontest.BrainContest
  */
-public class BrainContestDaoImpl
-    extends org.openuss.braincontest.BrainContestDaoBase
-{
-    /**
-     * @see org.openuss.braincontest.BrainContestDao#toBrainContestInfo(org.openuss.braincontest.BrainContest, org.openuss.braincontest.BrainContestInfo)
-     */
-    public void toBrainContestInfo(
-        org.openuss.braincontest.BrainContest sourceEntity,
-        org.openuss.braincontest.BrainContestInfo targetVO)
-    {
-        // @todo verify behavior of toBrainContestInfo
-        super.toBrainContestInfo(sourceEntity, targetVO);
-        // WARNING! No conversion for targetVO.answers (can't convert sourceEntity.getAnswers():org.openuss.braincontest.Answer to java.lang.Integer
-    }
+public class BrainContestDaoImpl extends
+		org.openuss.braincontest.BrainContestDaoBase {
+	/**
+	 * @see org.openuss.braincontest.BrainContestDao#toBrainContestInfo(org.openuss.braincontest.BrainContest,
+	 *      org.openuss.braincontest.BrainContestInfo)
+	 */
+	public void toBrainContestInfo(BrainContest sourceEntity, BrainContestInfo targetVO) {
+		super.toBrainContestInfo(sourceEntity, targetVO);
+		targetVO.setAnswers(sourceEntity.getAnswersCount());
+        targetVO.setReleased(sourceEntity.getReleaseDate().before(new Date(System.currentTimeMillis())));
+	}
 
+	/**
+	 * @see org.openuss.braincontest.BrainContestDao#toBrainContestInfo(org.openuss.braincontest.BrainContest)
+	 */
+	public BrainContestInfo toBrainContestInfo(final BrainContest entity) {
+		return super.toBrainContestInfo(entity);
+	}
 
-    /**
-     * @see org.openuss.braincontest.BrainContestDao#toBrainContestInfo(org.openuss.braincontest.BrainContest)
-     */
-    public org.openuss.braincontest.BrainContestInfo toBrainContestInfo(final org.openuss.braincontest.BrainContest entity)
-    {
-        // @todo verify behavior of toBrainContestInfo
-        return super.toBrainContestInfo(entity);
-    }
+	/**
+	 * Retrieves the entity object that is associated with the specified value
+	 * object from the object store. If no such entity object exists in the
+	 * object store, a new, blank entity is created
+	 */
+	private BrainContest loadBrainContestFromInfo(BrainContestInfo info) {
+		BrainContest brainContest = null;
+		if (info.getId() != null) {
+			brainContest = this.load(info.getId());
+		}
+		if (brainContest == null) {
+			brainContest = BrainContest.Factory.newInstance();
+		}
+		return brainContest;
+	}
 
+	/**
+	 * @see org.openuss.braincontest.BrainContestDao#brainContestInfoToEntity(org.openuss.braincontest.BrainContestInfo)
+	 */
+	public BrainContest brainContestInfoToEntity(BrainContestInfo info) {
+		BrainContest entity = this.loadBrainContestFromInfo(info);
+		this.brainContestInfoToEntity(info, entity, true);
+		return entity;
+	}
 
-    /**
-     * Retrieves the entity object that is associated with the specified value object
-     * from the object store. If no such entity object exists in the object store,
-     * a new, blank entity is created
-     */
-    private org.openuss.braincontest.BrainContest loadBrainContestFromBrainContestInfo(org.openuss.braincontest.BrainContestInfo brainContestInfo)
-    {
-        // @todo implement loadBrainContestFromBrainContestInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.braincontest.loadBrainContestFromBrainContestInfo(org.openuss.braincontest.BrainContestInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.braincontest.BrainContest brainContest = this.load(brainContestInfo.getId());
-        if (brainContest == null)
+	/**
+	 * @see org.openuss.braincontest.BrainContestDao#brainContestInfoToEntity(org.openuss.braincontest.BrainContestInfo,
+	 *      org.openuss.braincontest.BrainContest)
+	 */
+	public void brainContestInfoToEntity(BrainContestInfo sourceVO,	BrainContest targetEntity,	boolean copyIfNull) {
+		super.brainContestInfoToEntity(sourceVO, targetEntity, copyIfNull);
+        if (sourceVO.getTries() != null)
         {
-            brainContest = org.openuss.braincontest.BrainContest.Factory.newInstance();
+            targetEntity.setTries(sourceVO.getTries());
         }
-        return brainContest;
-        */
-    }
+        else if (sourceVO.getTries() == null)
+        {
+        	targetEntity.setTries(new Integer(0));
+        }
 
-    
-    /**
-     * @see org.openuss.braincontest.BrainContestDao#brainContestInfoToEntity(org.openuss.braincontest.BrainContestInfo)
-     */
-    public org.openuss.braincontest.BrainContest brainContestInfoToEntity(org.openuss.braincontest.BrainContestInfo brainContestInfo)
-    {
-        // @todo verify behavior of brainContestInfoToEntity
-        org.openuss.braincontest.BrainContest entity = this.loadBrainContestFromBrainContestInfo(brainContestInfo);
-        this.brainContestInfoToEntity(brainContestInfo, entity, true);
-        return entity;
-    }
-
-
-    /**
-     * @see org.openuss.braincontest.BrainContestDao#brainContestInfoToEntity(org.openuss.braincontest.BrainContestInfo, org.openuss.braincontest.BrainContest)
-     */
-    public void brainContestInfoToEntity(
-        org.openuss.braincontest.BrainContestInfo sourceVO,
-        org.openuss.braincontest.BrainContest targetEntity,
-        boolean copyIfNull)
-    {
-        // @todo verify behavior of brainContestInfoToEntity
-        super.brainContestInfoToEntity(sourceVO, targetEntity, copyIfNull);
-    }
+	}
 
 }

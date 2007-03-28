@@ -10,7 +10,7 @@
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:s="http://www.openuss.org/jsf-security"
 	xmlns:c="http://java.sun.com/jstl/core"
-    xmlns:plexus="http://www.openuss.org/plexus/jsf">
+	xmlns:plexus="http://www.openuss.org/plexus/jsf">
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -49,40 +49,40 @@
 
 				<t:column>
 					<plexus:commandSortHeader columnName="title"> #{msg['braincontest_main_column_title']}</plexus:commandSortHeader>
-					<h:outputText value="#{braincontest.title}" />
+					<o:link value="/views/secured/braincontest/braincontestsolve.faces" title="#{braincontest.title}" >
+						<f:param value="#{enrollment.id}" name="enrollment" />
+						<f:param value="#{braincontest.id}" name="braincontest"/>
+						<h:outputText value="#{braincontest.title}" />
+					</o:link>
 				</t:column>
-				
+
 				<t:column>
 					<plexus:commandSortHeader columnName="answers">#{msg['braincontest_main_column_answers']}</plexus:commandSortHeader>
-					<h:outputText value="#{braincontest.tries} / #{braincontest.answers}" />
+					<h:outputText
+						value="#{braincontest.answers} / #{braincontest.tries}"/>
 				</t:column>
 
 				<plexus:column header="#{msg.braincontest_main_column_actions}">
-					<h:commandButton 
-						bean="#{views$secured$braincontest$braincontestmain}"
-						action="topList"
-						value="#{msg.braincontest_main_button_top}" 
-						title="#{msg.braincontest_main_button_top}"/>
-					<h:commandButton 
-						bean="#{views$secured$braincontest$braincontestmain}"
-						action="solve"
-						label="#{msg.braincontest_main_button_solve}" 
-						title="#{msg.braincontest_main_button_solve}"/>
 					<plexus:command
 						bean="#{views$secured$braincontest$braincontestmain}"
-						action="remove"
-						label="#{msg['braincontest_main_button_remove']}"
-						title="#{msg['braincontest_main_button_remove']}"/>
+						action="topList" label="#{msg.braincontest_main_button_top}"
+						title="#{msg.braincontest_main_button_top}" />
+					<plexus:command						
+						bean="#{views$secured$braincontest$braincontestmain}"
+						action="remove" label="#{msg['braincontest_main_button_remove']}"
+						title="#{msg['braincontest_main_button_remove']}" />
+					<plexus:command
+						bean="#{views$secured$braincontest$braincontestmain}"
+						action="editContest" label="#{msg['braincontest_main_button_edit']}"
+						title="#{msg['braincontest_main_button_edit']}" />
+						
 				</plexus:column>
-
 			</plexus:dataTable>
 			<o:block>
-				<h:commandButton 
-				    id="addNewsItem"
-					action="braincontest_new" 
-					value="#{msg.braincontest_new}" 
-					title="#{msg.braincontest_new}"
-					styleClass="button"/>
+				<plexus:command
+					bean="#{views$secured$braincontest$braincontestmain}"
+					action="newContest" label="#{msg.braincontest_new}"
+					title="#{msg.braincontest_new}" />
 			</o:block>
 		</h:form>
 	</ui:define>

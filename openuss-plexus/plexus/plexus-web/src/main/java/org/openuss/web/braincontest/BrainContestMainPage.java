@@ -41,7 +41,8 @@ public class BrainContestMainPage extends AbstractEnrollmentPage{
 
 	private void addContestToSession() {
 		BrainContestInfo bci = this.data.getRowData();
-		setSessionBean("brainContest", bci);
+		if (bci.getTries()==null) bci.setTries(new Integer(0));
+		setSessionBean(Constants.BRAINCONTENT_CONTEST, bci);
 	}
 	
 	public String topList(){
@@ -54,6 +55,17 @@ public class BrainContestMainPage extends AbstractEnrollmentPage{
 		return Constants.BRAINCONTEST_SOLVE;
 	}
 	
+	public String newContest(){
+		BrainContestInfo bci = new BrainContestInfo();
+		setSessionBean(Constants.BRAINCONTENT_CONTEST, bci);		
+		return Constants.BRAINCONTEST_NEWCONTEST;
+	}
+	
+	public String editContest(){
+		BrainContestInfo bci = brainContestService.getContest(this.data.getRowData());
+		setSessionBean(Constants.BRAINCONTENT_CONTEST, bci);
+		return Constants.BRAINCONTEST_NEWCONTEST;
+	}
 	
 	
 	@SuppressWarnings("unchecked")
