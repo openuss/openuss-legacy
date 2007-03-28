@@ -31,7 +31,6 @@
    	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		      Discussion
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
-	<bean id="discussionAttachment" class="org.openuss.discussion.AttachmentImpl" singleton="false"/>
 	<bean id="discussion" class="org.openuss.discussion.DiscussionImpl" singleton="false"/>
 	<bean id="discussionWatch" class="org.openuss.discussion.DiscussionWatchImpl" singleton="false"/>
 	<bean id="discussionFormula" class="org.openuss.discussion.FormulaImpl" singleton="false"/>

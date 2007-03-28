@@ -9,7 +9,6 @@ public class DiscussionTests {
 		TestSuite suite = new TestSuite("Test for org.openuss.discussion");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(ForumDaoTest.class);
-		suite.addTestSuite(AttachmentDaoTest.class);
 		suite.addTestSuite(FormulaDaoTest.class);
 		suite.addTestSuite(DiscussionDaoTest.class);
 		suite.addTestSuite(DiscussionWatchDaoTest.class);
