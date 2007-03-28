@@ -1,7 +1,5 @@
 package org.openuss.web.security.profile;
 
-import java.util.List;
-
 import javax.faces.event.ActionEvent;
 
 import org.apache.commons.lang.StringUtils;
@@ -18,7 +16,6 @@ import org.openuss.documents.FolderInfo;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserContact;
 import org.openuss.security.UserPreferences;
-import org.openuss.security.UserProfile;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.navigation.Navigator;
@@ -75,6 +72,7 @@ public class UserProfilePage extends BasePage{
 				user.setImageId(attachment.getId());
 			} else {
 				FileInfo image = documentService.getFileEntry(user.getImageId(), false);
+				image.setFileSize(attachment.getFileSize());
 				image.setInputStream(attachment.getInputStream());
 				documentService.saveFileEntry(image);
 			}
