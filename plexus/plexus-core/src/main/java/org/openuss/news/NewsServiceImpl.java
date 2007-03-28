@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 /**
@@ -41,25 +42,22 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 		if (item.getPublisher().getId() == null) {
 			getNewsPublisherDao().create(item.getPublisher());
 		}
-		// create or update news item
 		if (item.getId() == null) {
 			getNewsItemDao().create(item);
 		} else {
-			// check if repository file is removed or changed
-			NewsItem old = getNewsItemDao().load(item.getId());
-			if (old.getAttachment() != null && !old.getAttachment().equals(item.getAttachment())) {
-				// remove old attachment
-				getRepositoryService().removeFile(old.getAttachment());
-			}
-			
 			getNewsItemDao().update(item);
 		}
 	}
 
 	@Override
 	protected void handleDeleteNewsItem(Long id) throws Exception {
+		Validate.notNull(id, "Parameter id must not be null!");
 		
-		getNewsItemDao().remove(id);
+		NewsItem item = getNewsItemDao().load(id);
+		if (item != null && item.getAttachmentId() != null) {
+			getDocumentService().removeFolderEntry(item.getAttachmentId());
+			getNewsItemDao().remove(id);
+		}
 	}
 
 	@Override
