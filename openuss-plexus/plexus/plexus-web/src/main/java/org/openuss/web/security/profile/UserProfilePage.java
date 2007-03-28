@@ -1,5 +1,7 @@
 package org.openuss.web.security.profile;
 
+import java.util.List;
+
 import javax.faces.event.ActionEvent;
 
 import org.apache.commons.lang.StringUtils;
@@ -9,7 +11,10 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.repository.RepositoryFile;
+import org.openuss.documents.DocumentApplicationException;
+import org.openuss.documents.DocumentService;
+import org.openuss.documents.FileInfo;
+import org.openuss.documents.FolderInfo;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserContact;
 import org.openuss.security.UserPreferences;
@@ -34,10 +39,13 @@ public class UserProfilePage extends BasePage{
 	private static final long serialVersionUID = 1L;
 	
 	@Property (value="#{securityService}")
-	transient private SecurityService securityService;
+	private SecurityService securityService;
+	
+	@Property (value="#{documentService}")
+	private DocumentService documentService;
 	
 	@Property(value = "#{uploadFileManager}")
-	transient private UploadFileManager uploadFileManager;
+	private UploadFileManager uploadFileManager;
 	
 	@Property(value = "#{navigator}")
 	private Navigator navigator;
@@ -54,19 +62,27 @@ public class UserProfilePage extends BasePage{
 	
 	/**
 	 * Persist User Profile
+	 * @throws DocumentApplicationException 
 	 */
-	public void saveProfile(ActionEvent event) {
-		UserProfile profile = user.getProfile();
-		
+	public void saveProfile(ActionEvent event) throws DocumentApplicationException {
 		// fetch uploaded files and remove it from upload manager
-		RepositoryFile attachment = (RepositoryFile) getSessionBean(Constants.UPLOADED_FILE);
+		FileInfo attachment = (FileInfo) getSessionBean(Constants.UPLOADED_FILE);
 		if (attachment != null) {
-			profile.setImage(attachment);
+			if (user.getImageId() == null) {
+				attachment.setName(Constants.USER_IMAGE_NAME);
+				FolderInfo folder = documentService.getFolder(user);
+				documentService.createFileEntry(attachment, folder);
+				user.setImageId(attachment.getId());
+			} else {
+				FileInfo image = documentService.getFileEntry(user.getImageId(), false);
+				image.setInputStream(attachment.getInputStream());
+				documentService.saveFileEntry(image);
+			}
 			removeSessionBean(Constants.UPLOADED_FILE);
-			uploadFileManager.unregisterFile(profile.getImage());
+			uploadFileManager.removeFile(attachment);
 		}
 		
-		securityService.saveUserProfile(profile);
+		securityService.saveUser(user);
 	}
 	
 	/**
@@ -90,7 +106,7 @@ public class UserProfilePage extends BasePage{
 	public void saveContact(ActionEvent event) {
 		UserContact contact = user.getContact();
 		securityService.saveUserContact(contact);
-		// TODO add message here
+		addMessage(i18n("userprofile_message_saved_contact_data"));
 	}
 	
 	
@@ -100,7 +116,7 @@ public class UserProfilePage extends BasePage{
 	public void savePreferences(ActionEvent event) {
 		UserPreferences preferences = user.getPreferences();
 		securityService.saveUserPreferences(preferences);
-		// TODO add message here
+		addMessage(i18n("userprofile_message_saved_preferences"));
 	}
 	
 	/**
@@ -113,11 +129,13 @@ public class UserProfilePage extends BasePage{
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	
-	public void removeImage(ActionEvent event) {
-		UserProfile profile = user.getProfile();
-		
-		profile.setImage(null);
-		securityService.saveUserProfile(profile);
+	public void removeImage(ActionEvent event) throws DocumentApplicationException {
+		if (user.getImageId() != null) {
+			Long fileId = user.getImageId();
+			user.setImageId(null);
+			documentService.removeFolderEntry(fileId);
+		}
+		securityService.saveUser(user);
 		
 		setSessionBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
 	}
@@ -145,6 +163,14 @@ public class UserProfilePage extends BasePage{
 
 	public void setNavigator(Navigator navigator) {
 		this.navigator = navigator;
+	}
+
+	public DocumentService getDocumentService() {
+		return documentService;
+	}
+
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
 	}
 
 }

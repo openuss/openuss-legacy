@@ -97,7 +97,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FOLDER, selectedFolder);
 			return Constants.DOCUMENTS_EDIT_FOLDER_PAGE;
 		} else {
-			FileInfo selectedFile = documentService.getFileEntry(entry.getId(), true);
+			FileInfo selectedFile = documentService.getFileEntry(entry.getId(), false);
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRY, selectedFile);
 			return Constants.DOCUMENTS_EDIT_FILEENTRY_PAGE;
 		}

@@ -43,7 +43,7 @@ public class ZipFileUnpacker {
 					info.setModified(info.getCreated());
 					info.setContentType("application/octet-stream");
 					info.setInputStream(zipFile.getInputStream(entry));
-					info.setSize((int)entry.getSize());
+					info.setFileSize((int)entry.getSize());
 					fileInfos.add(info);
 				}
 			}
