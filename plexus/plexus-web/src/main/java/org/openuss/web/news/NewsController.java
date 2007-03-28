@@ -126,7 +126,7 @@ public class NewsController extends BaseBean {
 
 	
 	public void deleteAttachment() {
-		newsItem.setAttachment(null);
+		newsItem.setAttachmentId(null);
 	}
 	
 	public NewsItem getNewsItem() {

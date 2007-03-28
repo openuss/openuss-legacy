@@ -41,7 +41,7 @@ public class DocumentAddZipPage extends AbstractDocumentPage{
 			List<FileInfo> infos = unpacker.extractZipFile();
 			injectReleaseDate(infos);
 			try {
-				documentService.createFolderEntries(infos, retrieveActualFolder());
+				documentService.createFileEntries(infos, retrieveActualFolder());
 				addMessage(i18n("message_extract_files_successfully", infos.size()));
 			} finally{
 				unpacker.closeQuitly();

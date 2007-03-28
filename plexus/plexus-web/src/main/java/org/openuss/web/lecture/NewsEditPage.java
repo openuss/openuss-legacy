@@ -1,14 +1,20 @@
 package org.openuss.web.lecture;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.documents.DocumentApplicationException;
+import org.openuss.documents.DocumentService;
+import org.openuss.documents.FileInfo;
+import org.openuss.documents.FolderEntry;
+import org.openuss.documents.FolderInfo;
 import org.openuss.news.NewsItem;
 import org.openuss.news.NewsService;
-import org.openuss.repository.RepositoryFile;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
 import org.openuss.web.upload.UploadFileManager;
@@ -31,6 +37,9 @@ public class NewsEditPage extends AbstractLecturePage {
 	@Property(value = "#{uploadFileManager}")
 	private UploadFileManager uploadFileManager;
 	
+	@Property(value = "#{documentService}")
+	private DocumentService documentService;
+	
 	@Property(value = "#{newsService}")
 	private NewsService newsService;
 	
@@ -41,41 +50,39 @@ public class NewsEditPage extends AbstractLecturePage {
 			logger.debug("news item not set");
 			redirect(Constants.FACULTY_NEWS_PAGE);
 		}
-		// fetch uploaded files also a validation error occurs 
-		fetchUploadedFile();
-	}
-	
-	/**
-	 * checks whether or not a uploaded file is available
-	 * @return true if a file was uploaded
-	 */
-	private boolean fetchUploadedFile() {
-		RepositoryFile attachment = (RepositoryFile) getSessionBean(Constants.UPLOADED_FILE);
-		if (attachment != null) {
-			newsItem.setAttachment(attachment);
-			removeSessionBean(Constants.UPLOADED_FILE);
-		}
-		return attachment != null;
 	}
 
 	/**
 	 * Save the current newsbean into the database.
 	 * 
 	 * @return outcome
+	 * @throws DocumentApplicationException 
 	 */
-	public String save() {
+	public String save() throws DocumentApplicationException {
 		logger.debug("save");
 		if (!newsItem.isValidExpireDate()) {
 			addError(i18n("news_error_expire_before_publish_date"));
 			return Constants.FACULTY_NEWS_EDIT_PAGE;
 		}
-		if (fetchUploadedFile()) {
-			// a new file was uploaded so remove it from upload manager to avoid that it will be deleted
-			uploadFileManager.unregisterFile(newsItem.getAttachment());
-		}
 		newsItem.setAuthor(getAuthorName());
 		newsService.saveNewsItem(newsItem);
+
+		processAttachment();
 		return Constants.FACULTY_NEWS_PAGE;
+	}
+
+	private void processAttachment() throws DocumentApplicationException {
+		FileInfo attachment = (FileInfo) getSessionBean(Constants.UPLOADED_FILE);
+		if (attachment != null && newsItem.getId() != null) {
+			FolderInfo folder = documentService.getFolder(newsItem);
+			List<FolderEntry> attachments = documentService.getFolderEntries(null, folder);
+			documentService.removeFolderEntries(attachments);
+			documentService.createFileEntry(attachment, folder);
+			newsItem.setAttachmentId(attachment.getId());
+			newsService.saveNewsItem(newsItem);
+			uploadFileManager.removeFile(attachment);
+			removeSessionBean(Constants.UPLOADED_FILE);
+		}
 	}
 
 	private String getAuthorName() {
@@ -86,12 +93,14 @@ public class NewsEditPage extends AbstractLecturePage {
 	/**
 	 * Remove current attachment
 	 * @return outcome
+	 * @throws DocumentApplicationException 
 	 */
-	public String removeAttachment() {
-		RepositoryFile attachment = newsItem.getAttachment();
-		if (attachment != null) {
-			newsItem.setAttachment(null);
-			uploadFileManager.removeFile(attachment);
+	public String removeAttachment() throws DocumentApplicationException {
+		Long attachmentId = newsItem.getAttachmentId();
+		if (attachmentId != null) {
+			documentService.removeFolderEntry(attachmentId);
+			newsItem.setAttachmentId(null);
+			newsService.saveNewsItem(newsItem);
 			removeSessionBean(Constants.UPLOADED_FILE);
 		}
 		return Constants.FACULTY_NEWS_EDIT_PAGE;
@@ -132,5 +141,13 @@ public class NewsEditPage extends AbstractLecturePage {
 
 	public void setNewsService(NewsService newsService) {
 		this.newsService = newsService;
+	}
+
+	public DocumentService getDocumentService() {
+		return documentService;
+	}
+
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
 	}
 }

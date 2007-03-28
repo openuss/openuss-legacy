@@ -201,9 +201,9 @@
                 org.openuss.lecture.LectureService.removeSubject=ROLE_ADMIN, ROLE_ASSISTANT
                 org.openuss.lecture.LectureService.removePeriod=ROLE_ADMIN, ROLE_ASSISTANT
                 org.openuss.lecture.LectureService.removeEnrollment=ROLE_ADMIN, ROLE_ASSISTANT
-                org.openuss.repository.RepositoryService.saveFile=ROLE_USER, ROLE_ASSISTANT, ROLE_ADMIN
-                org.openuss.repository.RepositoryService.removeFile=ROLE_USER, ROLE_ASSISTANT, ROLE_ADMIN
-                org.openuss.repository.RepositoryService.getFile=ROLE_USER, ROLE_ASSISTANT, ROLE_ADMIN
+                org.openuss.repository.RepositoryService.saveContent=ROLE_USER, ROLE_ASSISTANT, ROLE_ADMIN
+                org.openuss.repository.RepositoryService.removeContent=ROLE_USER, ROLE_ASSISTANT, ROLE_ADMIN
+                org.openuss.repository.RepositoryService.loadContent=ROLE_USER, ROLE_ASSISTANT, ROLE_ADMIN
                 org.openuss.repository.RepositoryService.setRepositoryLocation=ROLE_USER, ROLE_ASSISTANT, ROLE_ADMIN
                 org.openuss.repository.RepositoryService.getRepositoryLocation=ROLE_USER, ROLE_ASSISTANT, ROLE_ADMIN
             </value>
