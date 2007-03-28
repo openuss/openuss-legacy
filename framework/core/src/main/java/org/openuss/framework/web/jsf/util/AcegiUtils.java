@@ -100,6 +100,7 @@ public class AcegiUtils {
 	private static AclManager _aclManager;
 	
 	public static AclManager getAclManager() {
+		// FIXME remove dependency to java server faces
 		if (_aclManager == null) {
 			FacesContext facesContext = FacesUtils.getFacesContext();
 			_aclManager = (AclManager) facesContext.getApplication().createValueBinding("#{aclManager}").getValue(facesContext);
