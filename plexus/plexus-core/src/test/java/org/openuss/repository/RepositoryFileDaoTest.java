@@ -5,7 +5,12 @@
  */
 package org.openuss.repository;
 
-import java.sql.Timestamp;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+
+import org.openuss.TestUtility;
 
 
 /**
@@ -14,17 +19,51 @@ import java.sql.Timestamp;
  */
 public class RepositoryFileDaoTest extends RepositoryFileDaoTestBase {
 	
+	private TestUtility testUtility;
+	
+
 	public void testRepositoryFileDaoCreate() {
-		RepositoryFile repositoryFile = new RepositoryFileImpl();
-		repositoryFile.setName(" ");
-		repositoryFile.setFileName(" ");
-		repositoryFile.setFileSize(100);
-		repositoryFile.setContentType(" ");
-//		repositoryFile.setReleaseDate(new Timestamp(System.currentTimeMillis()));
-		repositoryFile.setCreated(new Timestamp(System.currentTimeMillis()));
-		repositoryFile.setModified(new Timestamp(System.currentTimeMillis()));
-		assertNull(repositoryFile.getId());
-		repositoryFileDao.create(repositoryFile);
-		assertNotNull(repositoryFile.getId());
+		final String str = "This is the content of the file";
+		byte[] data = str.getBytes();
+		
+		RepositoryFile file = RepositoryFile.Factory.newInstance();
+		file.setId(testUtility.unique());
+		file.setModified(new Date());
+		file.setInputStream(new ByteArrayInputStream(data));
+		
+		repositoryFileDao.create(file);
+		
+		commit();
+		
+		RepositoryFile loaded = repositoryFileDao.load(file.getId());
+		assertEquals(file, loaded);
+		assertEquals(str, getFileContentAsString(loaded, data.length));
+	}
+	
+	private String getFileContentAsString(RepositoryFile nfile, int size) {
+		InputStream s = nfile.getInputStream();
+		byte[] d2 = new byte[size];
+		try {
+			s.read(d2);
+			s.close();
+		} catch (IOException e) {
+			fail();
+		}
+		String s2 = new String(d2);
+		return s2;
+	}
+
+	private void commit() {
+		setComplete();
+		endTransaction();
+		startNewTransaction();
+	}
+	
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+	
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
 	}
 }

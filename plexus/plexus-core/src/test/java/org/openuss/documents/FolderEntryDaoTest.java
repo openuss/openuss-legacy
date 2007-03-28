@@ -5,6 +5,8 @@
  */
 package org.openuss.documents;
 
+import java.util.Date;
+
 
 /**
  * JUnit Test for Spring Hibernate FolderEntryDao class.
@@ -14,6 +16,8 @@ public class FolderEntryDaoTest extends FolderEntryDaoTestBase {
 	
 	public void testFolderEntryDaoCreate() {
 		FolderEntry folderEntry = new FolderEntryImpl();
+		folderEntry.setName("name of the folder");
+		folderEntry.setCreated(new Date());
 		assertNull(folderEntry.getId());
 		folderEntryDao.create(folderEntry);
 		assertNotNull(folderEntry.getId());

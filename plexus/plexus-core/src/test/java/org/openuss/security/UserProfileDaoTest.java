@@ -25,7 +25,7 @@ public class UserProfileDaoTest extends UserProfileDaoTestBase {
 		super.onSetUpBeforeTransaction();
 		// create empty user profile
 		userProfile = new UserProfileImpl();
-		userProfile.setImage(null);
+		userProfile.setImageFileId(null);
 		userProfile.setTelephonePublic(true);
 		userProfile.setEmailPublic(true);
 		userProfile.setAddressPublic(true);

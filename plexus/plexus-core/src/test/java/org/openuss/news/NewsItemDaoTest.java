@@ -35,14 +35,13 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		
 		Collection<NewsCategory> categories = setUpCategories();
 		Collection<NewsPublisher> publishers = setUpPublishers();
-		
 		newsItem.setTitle("Title");
 		newsItem.setText("Text");
 		newsItem.setCategory(getNewsCategory(categories, USER));
 		newsItem.setPublisher(getNewsPublisher(publishers, PUBLISHER_A));
 		newsItem.setPublishDate(new Timestamp(System.currentTimeMillis()-1));
 		newsItem.setExpireDate(new Timestamp(System.currentTimeMillis()+1));
-//		newsItem.setAttachment(new byte[2000]);
+		newsItem.setAttachmentId(1234589L);
 		assertNull(newsItem.getId());
 		newsItemDao.create(newsItem);
 		assertNotNull(newsItem.getId());
@@ -53,7 +52,12 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		Collection<NewsPublisher> publishers = setUpPublishers();
 		
 		Timestamp time = new Timestamp(System.currentTimeMillis());
-		NewsItem newsItem = NewsItem.Factory.newInstance("Title","Text", time, getNewsCategory(categories, GLOBAL), getNewsPublisher(publishers, PUBLISHER_A));
+		NewsItem newsItem = NewsItem.Factory.newInstance();
+		newsItem.setTitle("Title");
+		newsItem.setText("Text");
+		newsItem.setPublishDate(time);
+		newsItem.setCategory(getNewsCategory(categories, GLOBAL));
+		newsItem.setPublisher(getNewsPublisher(publishers, PUBLISHER_A));
 		newsItemDao.create(newsItem);
 		assertNotNull(newsItem.getId());
 		Long id = newsItem.getId();
@@ -295,20 +299,20 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		NewsItem item21 = NewsItem.Factory.newInstance("title", "text", friday1800, getNewsCategory(categories, GLOBAL), getNewsPublisher(publishers, PUBLISHER_A));
 		NewsItem item22 = NewsItem.Factory.newInstance("title", "text", saturday0600, getNewsCategory(categories, GLOBAL), getNewsPublisher(publishers, PUBLISHER_B));
 		
-		NewsItem item301 = NewsItem.Factory.newInstance("title", "text", wednesday1800, monday0600,"author", getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_B),null);
-		NewsItem item302 = NewsItem.Factory.newInstance("title", "text", saturday0600, monday1200,"author", getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A),null);
-		NewsItem item303 = NewsItem.Factory.newInstance("title", "text", saturday1200, monday1800,"author", getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_B),null);
-		NewsItem item304 = NewsItem.Factory.newInstance("title", "text", saturday1800, tuesday0600,"author", getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A),null);
-		NewsItem item305 = NewsItem.Factory.newInstance("title", "text", sunday0600, tuesday1200,"author", getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_B),null);
-		NewsItem item306 = NewsItem.Factory.newInstance("title", "text", sunday1200, tuesday1800, "author",getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A),null);
-		NewsItem item307 = NewsItem.Factory.newInstance("title", "text", sunday1800, wednesday0600, "author",getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A),null);
-		NewsItem item308 = NewsItem.Factory.newInstance("title", "text", saturday0600, wednesday1200,"author", getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A),null);
-		NewsItem item309 = NewsItem.Factory.newInstance("title", "text", saturday1200, wednesday1800,"author", getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A),null);
-		NewsItem item310 = NewsItem.Factory.newInstance("title", "text", saturday1800, thursday0600,"author", getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_B),null);
-		NewsItem item311 = NewsItem.Factory.newInstance("title", "text", sunday0600, thursday1200,"author", getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A),null);
-		NewsItem item312 = NewsItem.Factory.newInstance("title", "text", sunday1200, thursday1800,"author", getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A),null);
-		NewsItem item313 = NewsItem.Factory.newInstance("title", "text", sunday1800, friday0600,"author", getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_B),null);
-		NewsItem item314 = NewsItem.Factory.newInstance("title", "text", saturday1200, friday1200,"author", getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A),null);
+		NewsItem item301 = NewsItem.Factory.newInstance("title", "text", wednesday1800, monday0600,"author", null, getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_B));
+		NewsItem item302 = NewsItem.Factory.newInstance("title", "text", saturday0600, monday1200,"author", null,getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A));
+		NewsItem item303 = NewsItem.Factory.newInstance("title", "text", saturday1200, monday1800,"author",null, getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_B));
+		NewsItem item304 = NewsItem.Factory.newInstance("title", "text", saturday1800, tuesday0600,"author", null,getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A));
+		NewsItem item305 = NewsItem.Factory.newInstance("title", "text", sunday0600, tuesday1200,"author", null,getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_B));
+		NewsItem item306 = NewsItem.Factory.newInstance("title", "text", sunday1200, tuesday1800, "author",null,getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A));
+		NewsItem item307 = NewsItem.Factory.newInstance("title", "text", sunday1800, wednesday0600, "author",null,getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A));
+		NewsItem item308 = NewsItem.Factory.newInstance("title", "text", saturday0600, wednesday1200,"author",null, getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A));
+		NewsItem item309 = NewsItem.Factory.newInstance("title", "text", saturday1200, wednesday1800,"author", null,getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A));
+		NewsItem item310 = NewsItem.Factory.newInstance("title", "text", saturday1800, thursday0600,"author",null,getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_B));
+		NewsItem item311 = NewsItem.Factory.newInstance("title", "text", sunday0600, thursday1200,"author",null, getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A));
+		NewsItem item312 = NewsItem.Factory.newInstance("title", "text", sunday1200, thursday1800,"author", null,getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A));
+		NewsItem item313 = NewsItem.Factory.newInstance("title", "text", sunday1800, friday0600,"author",null, getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_B));
+		NewsItem item314 = NewsItem.Factory.newInstance("title", "text", saturday1200, friday1200,"author", null,getNewsCategory(categories, FACULTY), getNewsPublisher(publishers, PUBLISHER_A));
 		
 		items.add(item11);
 		items.add(item12);

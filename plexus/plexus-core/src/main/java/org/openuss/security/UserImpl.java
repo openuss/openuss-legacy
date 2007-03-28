@@ -115,11 +115,20 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	@SuppressWarnings("deprecation")
 	@Override
 	public Long getImageId() {
-		if (getProfile() == null || getProfile().getImage() == null) {
+		if (getProfile() == null || getProfile().getImageFileId() == null) {
 			return null;
 		} else {
-			return getProfile().getImage().getId();
+			return getProfile().getImageFileId();
 		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public void setImageId(Long imageId) {
+		if (getProfile() == null) {
+			setProfile(UserProfile.Factory.newInstance());
+		}
+		getProfile().setImageFileId(imageId);
 	}
 
 }
