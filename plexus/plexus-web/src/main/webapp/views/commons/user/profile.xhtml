@@ -24,19 +24,17 @@
 	       </div>
 	       <div class="content_normal">
 				<div class="userimage">
-					<c:if test="#{not empty showuser.profile.image}">
+					<c:if test="#{not empty showuser.imageId}">
 						<h:graphicImage styleClass="userphoto"
-							renderer="${not empty showuser.profile.image}"
-							value="/files/#{showuser.profile.image.fileName}?fileid=#{showuser.profile.image.id}"
+							renderer="${not empty showuser.imageId}"
+							value="/files?fileid=#{showuser.imageId}"
 							alt="#{showuser.contact.firstName} #{showuser.contact.lastName}"
 							title="#{showuser.contact.firstName} #{showuser.contact.lastName}"/> 
 					</c:if>
-					<c:if test="#{empty showuser.profile.image}">
+					<c:if test="#{empty showuser.imageId}">
 						<h:graphicImage 
 							styleClass="userphoto" 
 							value="/images/icons/no_pic.gif" 
-							width="80px" 
-							height="60px" 
 							alt="#{msg.user_profile_no_image}" 
 							title="#{msg.user_profile_no_image}"/>
 					</c:if>

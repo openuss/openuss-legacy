@@ -49,15 +49,17 @@ public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServ
 	private InputStream fetchInputStream(RepositoryFile file) throws FileNotFoundException, IOException {
 		long fileId = file.getId();
 		File cacheFile = cachedFile(fileId);
-		if (!cacheFile.exists() || !FileUtils.isFileNewer(cacheFile, file.getModified())) {
+		if (!cacheFile.exists()) {
 			refreshCacheFile(file, cacheFile);
 		} else {
-			if (cacheFile.delete()) {
-				refreshCacheFile(file, cacheFile);
-			} else {
-				// FIXME Resource request lock conflict - someone is reading an outdated file.
-				logger.error("could rewrite cache");
-				return file.getInputStream();
+			if (!FileUtils.isFileNewer(cacheFile, file.getModified())) { 
+				if (cacheFile.delete()) {
+					refreshCacheFile(file, cacheFile);
+				} else {
+					// FIXME Resource request lock conflict - someone is reading an outdated file.
+					logger.error("-------------> CACHE Could rewrite cache");
+					return file.getInputStream();
+				}
 			}
 		}
 		return new FileInputStream(cacheFile);
@@ -83,7 +85,9 @@ public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServ
 	private void refreshCacheFile(RepositoryFile file, File cacheFile) throws FileNotFoundException, IOException {
 		FileOutputStream fos = new FileOutputStream(cacheFile);
 		InputStream is = file.getInputStream();
-		IOUtils.copyLarge(is, fos);
+		long count = IOUtils.copyLarge(is, fos);
+		logger.debug("===========================================================> wrote bytes to cache "+count);
+		fos.flush();
 		IOUtils.closeQuietly(fos);
 		IOUtils.closeQuietly(file.getInputStream());
 	}

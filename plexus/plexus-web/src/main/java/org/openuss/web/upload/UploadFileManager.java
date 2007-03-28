@@ -69,7 +69,7 @@ public class UploadFileManager extends BaseBean{
 		Validate.notNull(fileInfo, "Parameter fileInfo must not be null!");
 		
 		File file = files.get(fileInfo);
-		if (!file.delete()) {
+		if (file != null && !file.delete()) {
 			logger.error("couldn't delete tempory file "+ file.getAbsolutePath() +" for "+fileInfo.getName());
 			file.deleteOnExit();
 		}
