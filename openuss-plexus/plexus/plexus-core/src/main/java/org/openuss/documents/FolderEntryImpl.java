@@ -20,16 +20,6 @@ public class FolderEntryImpl extends org.openuss.documents.FolderEntryBase imple
 	private static final long serialVersionUID = 9108164927807060019L;
 
 	@Override
-	public Date getCreated() {
-		return null;
-	}
-
-	@Override
-	public String getDescription() {
-		return null;
-	}
-
-	@Override
 	public String getExtension() {
 		return null;
 	}
@@ -40,13 +30,8 @@ public class FolderEntryImpl extends org.openuss.documents.FolderEntryBase imple
 	}
 
 	@Override
-	public String getName() {
-		return null;
-	}
-
-	@Override
-	public Integer getSize() {
-		return null;
+	public Integer getFileSize() {
+		return 0;
 	}
 
 	@Override
@@ -64,12 +49,12 @@ public class FolderEntryImpl extends org.openuss.documents.FolderEntryBase imple
 	
 	@Override
 	public String getAbsoluteName() {
-		return getPath()+"/"+getName();
+		return getPath()+"/"+getFileName();
 	}
 
 	@Override
 	public String getSizeAsString() {
-		Integer size = getSize();
+		Integer size = getFileSize();
 		if (size != null) {
 			return FileUtils.byteCountToDisplaySize(size);
 		} else {
