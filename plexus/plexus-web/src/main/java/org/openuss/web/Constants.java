@@ -92,5 +92,9 @@ public class Constants {
 	public static final String BRAINCONTEST_TOP = "braincontest_top";
 	public static final String BRAINCONTEST_SOLVE = "braincontest_solve";
 
+
 	public static final String ZIP_DOWNLOAD_URL = "/zips/documents.zip";
+
+	public static final String USER_IMAGE_NAME = "useravartar";
+
 }
