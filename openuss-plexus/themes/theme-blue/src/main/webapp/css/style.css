@@ -21,7 +21,7 @@ input, select, textarea {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 9pt;
   text-decoration: none;
-  color:#000; 
+  color:#000;
 }
 
 input:focus{
@@ -789,8 +789,8 @@ p.header_font_normal, span.header_font_normal {
 }
 
 .userphoto {
-	width: 60px;
-	height: 60px;
+	display: run-in;
+	float: left;
 }
 
 .content_normal .userimage .userphoto{
@@ -1347,7 +1347,7 @@ td.col_max_left label input{
 .jscalendar-WH-table-style {
     font-family:arial;
     font-size:11px;
-    border-width:1;
+    border-width:1px;
     border-style:solid;
     border-color:#000000;
     color:#000000;
@@ -1358,7 +1358,6 @@ td.col_max_left label input{
  * You probably don't want to alter this style.
  */
 .jscalendar-WH-div-style {
-	z-index: +999;
 	position: absolute;
 	visibility: hidden;
 }
@@ -1408,7 +1407,7 @@ td.col_max_left label input{
 /* Default attributes selected (mouse-over) item in drop down lists (month and year). */
 .jscalendar-WH-dropdown-select-style {
 	background-color: #F3F3F3;
-	width:20px;
+	width: 20px;
 }
 
 /* Default attributes unselected (mouse-off) item in drop down lists (month and year). */
@@ -1479,11 +1478,15 @@ td.col_max_left label input{
 	padding: 0px;
 }
 
+.jscalendar-DB-body-style td{
+	padding: 2px;
+}
+
 /* Default attributes of table container for entire calendar */
 .jscalendar-DB-table-style {
     font-family:arial;
     font-size:11px;
-    border-width:1;
+    border-width:1px;
     border-style:solid;
     border-color:#a0a0a0;
 	background-color: #ffffff;
@@ -1500,7 +1503,7 @@ td.col_max_left label input{
 
 /* Default attributes used in calendar title (month and year columns).*/
 .jscalendar-DB-title-style {
-    padding:2px;
+    padding:1px;
     font-family:arial;
     font-size:11px;
     font-weight:bold;
@@ -1510,6 +1513,10 @@ td.col_max_left label input{
 /* Default attributes used in calendar title background.*/
 .jscalendar-DB-title-background-style {
 	background-color: #0000aa;
+}
+
+.jscalendar-DB-title-background-style td{
+	padding: 2px;
 }
 
 /* Normal appearance of controls in calendar title. */
@@ -1530,7 +1537,7 @@ td.col_max_left label input{
 /* Moused-over (selected) appearance of controls in calendar title. */
 .jscalendar-DB-title-control-select-style {
 	border-style: solid;
-	border-width: 1;
+	border-width: 1px;
 	border-color: #88AAFF;
 	cursor: pointer;
 }
@@ -1624,9 +1631,14 @@ table.jscalendar-DB-dropdown-style{
 .jscalendar-DB-weeknumber-div-style {
 	background-color: #d0d0d0;
 	padding: 0px;
+	width: 1px;
 }
 
-table .jscalendar-DB-dropdown-style{
+table.jscalendar-DB-dropdown-style{
+	width:20px;
+}
+
+table.jscalendar-DB-dropdown-style tr, table.jscalendar-DB-dropdown-style td{
 	width:20px;
 }
 
