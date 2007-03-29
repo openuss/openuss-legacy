@@ -6,7 +6,7 @@ import junit.framework.TestSuite;
 public class BrainContestTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.openuss.documents");
+		TestSuite suite = new TestSuite("Test for org.openuss.braincontest");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(BrainContestServiceIntegrationTest.class);
 		suite.addTestSuite(BrainContestDaoTest.class);

@@ -173,7 +173,7 @@ public class BrainContestServiceImpl extends
 		
 		List checkIfAnswered = getAnswerDao().findByContestAndSolver(user, bc);
 		if (checkIfAnswered.size()>0) throw new BrainContestApplicationException("braincontest_message_user_correct_answer");
-		
+		contest.setTries(bc.getTries() + 1);
 		bc.setTries(bc.getTries() + 1);
 		if (!bc.getSolution().equals(answer)) {
 			getBrainContestDao().update(bc);

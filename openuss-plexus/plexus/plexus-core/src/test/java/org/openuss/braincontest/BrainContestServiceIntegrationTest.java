@@ -318,7 +318,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertEquals(1, addedContest.getTries().intValue());
 		Collection<AnswerInfo> answers = brainContestService.getAnswers(addedContest);		
 		assertNull(answers);
-		//check case right answer + no adding to top list
+		//check case wrong answer + no adding to top list
 		try {
 			test = brainContestService.answer("xxx", user, addedContest, false);
 		} catch (BrainContestServiceException e) {
@@ -328,7 +328,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		answers = brainContestService.getAnswers(addedContest);		
 		assertNull(answers);		
 		assertEquals(2, addedContest.getTries().intValue());
-		//check case right answer + no adding to top list		
+		//check case wrong answer + adding to top list		
 		try {
 			test = brainContestService.answer("xxx", user, addedContest, true);
 		} catch (BrainContestServiceException e) {
