@@ -5,9 +5,9 @@
  */
 package org.openuss.discussion;
 /**
- * @see org.openuss.discussion.Discussion
+ * @see org.openuss.discussion.Forum
  */
-public class DiscussionDaoImpl
-    extends org.openuss.discussion.DiscussionDaoBase
+public class ForumDaoImpl
+    extends org.openuss.discussion.ForumDaoBase
 {
 }

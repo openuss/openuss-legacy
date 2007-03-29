@@ -31,11 +31,13 @@
    	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		      Discussion
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+<!-- 
 	<bean id="discussion" class="org.openuss.discussion.DiscussionImpl" singleton="false"/>
 	<bean id="discussionWatch" class="org.openuss.discussion.DiscussionWatchImpl" singleton="false"/>
 	<bean id="discussionFormula" class="org.openuss.discussion.FormulaImpl" singleton="false"/>
 	<bean id="discussionForum" class="org.openuss.discussion.ForumImpl" singleton="false"/>
 	<bean id="discussionTopic" class="org.openuss.discussion.TopicImpl" singleton="false"/>
+ -->
 	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			  Mail

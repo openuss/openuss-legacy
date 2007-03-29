@@ -5,8 +5,6 @@
  */
 package org.openuss.discussion;
 
-import org.openuss.TestUtility;
-
 
 /**
  * JUnit Test for Spring Hibernate TopicDao class.
@@ -14,25 +12,13 @@ import org.openuss.TestUtility;
  */
 public class TopicDaoTest extends TopicDaoTestBase {
 	
-	private TestUtility testUtility;
-	
 	public void testTopicDaoCreate() {
-		//FIXME TEST auto-generated
-//		Topic topic = new TopicImpl();
-//		topic.setSubject("subject");
-//		topic.setText("text");
-//		topic.setSubmitter(testUtility.createdDefaultUser());
-//		topic.setCreated(new Timestamp(System.currentTimeMillis()));
-//		assertNull(topic.getId());
-//		topicDao.create(topic);
-//		assertNotNull(topic.getId());
-	}
-
-	public TestUtility getTestUtility() {
-		return testUtility;
-	}
-
-	public void setTestUtility(TestUtility testUtility) {
-		this.testUtility = testUtility;
+		/*
+		Topic topic = new TopicImpl();
+		topic.setTitle(" ");
+		topic.setHits(" ");
+		assertNull(topic.getId());
+		topicDao.create(topic);
+		assertNotNull(topic.getId());*/
 	}
 }

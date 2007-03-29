@@ -15,6 +15,6 @@ public class ForumImpl
     /**
      * The serial version UID of this class. Needed for serialization.
      */
-    private static final long serialVersionUID = 6584962306015628388L;
+    private static final long serialVersionUID = -1086382949517313437L;
 
 }
