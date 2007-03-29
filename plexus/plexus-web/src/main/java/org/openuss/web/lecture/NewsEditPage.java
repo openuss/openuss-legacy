@@ -1,5 +1,6 @@
 package org.openuss.web.lecture;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -18,6 +19,7 @@ import org.openuss.news.NewsService;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
 import org.openuss.web.upload.UploadFileManager;
+import org.openuss.web.upload.UploadedDocument;
 
 /**
  * News Page Controller
@@ -57,8 +59,9 @@ public class NewsEditPage extends AbstractLecturePage {
 	 * 
 	 * @return outcome
 	 * @throws DocumentApplicationException 
+	 * @throws IOException 
 	 */
-	public String save() throws DocumentApplicationException {
+	public String save() throws DocumentApplicationException, IOException {
 		logger.debug("save");
 		if (!newsItem.isValidExpireDate()) {
 			addError(i18n("news_error_expire_before_publish_date"));
@@ -71,16 +74,27 @@ public class NewsEditPage extends AbstractLecturePage {
 		return Constants.FACULTY_NEWS_PAGE;
 	}
 
-	private void processAttachment() throws DocumentApplicationException {
-		FileInfo attachment = (FileInfo) getSessionBean(Constants.UPLOADED_FILE);
-		if (attachment != null && newsItem.getId() != null) {
+	private void processAttachment() throws DocumentApplicationException, IOException {
+		UploadedDocument uploaded = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
+		if (uploaded != null && newsItem.getId() != null) {
+			if (newsItem.getAttachmentId() != null) {
+				documentService.removeFolderEntry(newsItem.getAttachmentId());
+				newsItem.setAttachmentId(null);
+			}
+			
 			FolderInfo folder = documentService.getFolder(newsItem);
 			List<FolderEntry> attachments = documentService.getFolderEntries(null, folder);
-			documentService.removeFolderEntries(attachments);
+
+			FileInfo attachment = new FileInfo();
+			attachment.setFileName(uploaded.getFileName());
+			attachment.setContentType(uploaded.getContentType());
+			attachment.setFileSize(uploaded.getFileSize());
+			attachment.setInputStream(uploaded.getInputStream());
+			
 			documentService.createFileEntry(attachment, folder);
 			newsItem.setAttachmentId(attachment.getId());
 			newsService.saveNewsItem(newsItem);
-			uploadFileManager.removeFile(attachment);
+			uploadFileManager.removeDocument(uploaded);
 			removeSessionBean(Constants.UPLOADED_FILE);
 		}
 	}

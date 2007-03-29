@@ -14,6 +14,8 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.web.Constants;
+import org.openuss.web.upload.UploadFileManager;
+import org.openuss.web.upload.UploadedDocument;
 
 @Bean(name = "views$secured$documents$addzip", scope = Scope.REQUEST)
 @View
@@ -23,6 +25,9 @@ public class DocumentAddZipPage extends AbstractDocumentPage{
 	
 	@Property (value="#{"+Constants.DOCUMENTS_SELECTED_FILEENTRY+"}")
 	private FileInfo file;
+	
+	@Property (value="#{"+Constants.UPLOAD_FILE_MANAGER+"}")
+	private UploadFileManager uploadFileManager;
 	
 	@Prerender
 	public void prerender() {
@@ -34,19 +39,22 @@ public class DocumentAddZipPage extends AbstractDocumentPage{
 	
 	public String unzip() throws DocumentApplicationException{
 		logger.debug("new document saved");
-		File zip = (File) getSessionBean(Constants.UPLOADED_ZIP_FILE);
+		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
+
+		File zipFile = document.getFile(); 
 		ZipFileUnpacker unpacker;
 		try {
-			unpacker = new ZipFileUnpacker(zip);
+			unpacker = new ZipFileUnpacker(zipFile);
 			List<FileInfo> infos = unpacker.extractZipFile();
 			injectReleaseDate(infos);
 			try {
 				documentService.createFileEntries(infos, retrieveActualFolder());
+				uploadFileManager.removeDocument(document);
 				addMessage(i18n("message_extract_files_successfully", infos.size()));
 			} finally{
 				unpacker.closeQuitly();
-				zip.delete();
-				removeSessionBean(Constants.UPLOADED_ZIP_FILE);
+				zipFile.delete();
+				removeSessionBean(Constants.UPLOADED_FILE);
 			}
 		} catch (IOException e) {
 			logger.error(e);
@@ -72,5 +80,13 @@ public class DocumentAddZipPage extends AbstractDocumentPage{
 
 	public void setFile(FileInfo file) {
 		this.file = file;
+	}
+
+	public UploadFileManager getUploadFileManager() {
+		return uploadFileManager;
+	}
+
+	public void setUploadFileManager(UploadFileManager uploadFileManager) {
+		this.uploadFileManager = uploadFileManager;
 	}
 }

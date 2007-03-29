@@ -31,53 +31,52 @@
 		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
 	</ui:define>
 	<ui:define name="content">
-		<h:form id="newDocumentForm">
-
-
+		<h:form id="newDocumentForm" enctype="multipart/form-data">
 			<o:block label="#{msg.documents_file}">
-				<h:outputText value="#{msg.documents_target_folder}" styleClass="field_label"/>
-				<span class="content_font_normal">
+				<h:outputText value="#{msg.documents_target_folder}" styleClass="field_label" />
+				<span class="content_font_normal"> 
 					<t:dataList var="folder" layout="list" value="#{views$secured$documents$folder.path}">
-						<h:outputText value="#{folder.name}" rendered="#{!folder.root}"/> /
-					</t:dataList>
+						<h:outputText value="#{folder.name}" rendered="#{!folder.root}" /> /
+					</t:dataList> 
 				</span>
-				<o:input entity="documents_selected_file" property="name" required="true" maxlength="100"/>
-				<o:input entity="documents_selected_file" property="description" type="textarea"/>
+				
+				<o:input entity="documents_selected_file" property="name" maxlength="100" />
+				<o:input entity="documents_selected_file" property="description" type="textarea" />
 
 				<f:subview rendered="${!empty documents_selected_filename.filename}">
 					<div class="content_font_normal">
-						<o:link value="/files/#{sessionScope.newsItem.attachment.fileName}">
-							<f:param value="#{newsItem.attachment.id}" name="fileid" />
-							<h:graphicImage	value="/images/filetypes/#{sessionScope.documents_selected_filename.extension}.gif" />
-					  		#{documents_selected_filename.filename} 
-					  	</o:link>
-				  		&#160;
-				  		<h:commandButton value="delete" action="#{views$secured$lecture$newsedit.removeAttachment}" immediate="true" styleClass="button_remove"/><br/><br/>
-				  	</div>
-		  		</f:subview> 				
-				
-				
-				<h:outputLabel value="#{msg.documents_selected_file_file}" for="file" styleClass="field_label" />
-				<t:inputFileUpload id="file" storage="file" accept="*" immediate="true" styleClass="uploadField">
+						<h:graphicImage	value="/images/filetypes/#{sessionScope.documents_selected_filename.extension}.gif" />
+						<h:outputText value="#{documents_selected_filename.filename}"/>
+					</div>
+				</f:subview>
+
+				<h:outputLabel value="#{msg.documents_selected_file_file}"
+					for="file" styleClass="field_label" />
+				<t:inputFileUpload 
+					id="file" 
+					storage="file" 
+					accept="*" 
+					immediate="true" 
+					styleClass="uploadField">
 					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
 				</t:inputFileUpload>
-				<h:message for="file" styleClass="field_error"/>
-		
-				<o:input entity="documents_selected_file" property="created" required="true" label="#{msg.documents_selected_file_release}"/>
+				<h:message for="file" styleClass="field_error" />
+
+				<p class="content_font_normal">
+					<h:outputText value="Sie können optional den bei herunterladen anzuzeigenden Dateinamen bestimmen"/>
+				</p>
+				<o:input entity="documents_selected_file" property="fileName" maxlength="100"/>
+				
+				<o:input entity="documents_selected_file" property="created" required="true" label="#{msg.documents_selected_file_release}" type="full"/>
 			</o:block>
 
 			<o:block>
-				<plexus:command 
-					bean="#{views$secured$documents$file}"
-					action="save" 
+				<plexus:command bean="#{views$secured$documents$fileedit}" action="save"
 					label="#{msg['newdocument_button_save']}"
-					title="#{msg['newdocument_button_save']}"
-					styleClass="button_save" />
-				<h:commandButton 
-					action="documents_main"
-					immediate="true"
-					value="#{msg['newdocument_button_cancel']}" 
-					styleClass="button_cancel"/>	
+					title="#{msg['newdocument_button_save']}" styleClass="button_save" />
+				<h:commandButton action="documents_main" immediate="true"
+					value="#{msg['newdocument_button_cancel']}"
+					styleClass="button_cancel" />
 			</o:block>
 		</h:form>
 	</ui:define>

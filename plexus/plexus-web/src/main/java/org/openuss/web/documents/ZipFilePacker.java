@@ -8,10 +8,13 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipOutputStream;
 import org.openuss.documents.FileInfo;
+import org.openuss.repository.RepositoryService;
 
 /**
  * ZipFilePacker pa
@@ -21,9 +24,7 @@ import org.openuss.documents.FileInfo;
 public class ZipFilePacker {
 
 	private static final Logger logger = Logger.getLogger(ZipFilePacker.class);
-
-	private static final int DRAIN_BUFFER_SIZE = 1024;
-
+	
 	private List<FileInfo> files;
 	
 	public ZipFilePacker(List<FileInfo> files) {
@@ -32,10 +33,11 @@ public class ZipFilePacker {
 
 	public void writeZip(OutputStream outputStream) throws IOException {
 		InputStream is = zippedFileContent();
-		drain(is, outputStream);
+		IOUtils.copyLarge(is, outputStream);
 		outputStream.flush();
+		IOUtils.closeQuietly(outputStream);
+		IOUtils.closeQuietly(is);
 		outputStream.close();
-		is.close();
 	}
 	
 	private InputStream zippedFileContent() {
@@ -46,7 +48,7 @@ public class ZipFilePacker {
 			new Thread(new Runnable() {
 				public void run() {
 					ZipOutputStream zos = null;
-					InputStream fis = null;
+					InputStream is = null;
 					boolean empty = true;
 					try {
 						zos = new ZipOutputStream(pot);
@@ -55,9 +57,9 @@ public class ZipFilePacker {
 							zipEntry.setComment(file.getDescription());
 							zipEntry.setTime(file.getModified().getTime());
 							zos.putNextEntry(zipEntry);
-							fis = file.getInputStream();
-							drain(fis, zos);
-							fis.close();
+							is = file.getInputStream();
+							IOUtils.copyLarge(is, zos);
+							is.close();
 							zos.closeEntry();
 							empty = false;
 							zos.flush();
@@ -71,8 +73,8 @@ public class ZipFilePacker {
 					} catch (Exception e) {
 						logger.error("Can't pipe output to input", e);
 						try {
-							if (fis != null) {
-								fis.close();
+							if (is != null) {
+								is.close();
 							}
 							if (zos != null) {
 								zos.close();
@@ -92,15 +94,4 @@ public class ZipFilePacker {
 			return new ByteArrayInputStream(new byte[0]);
 		}
 	}
-
-	private void drain(InputStream input, OutputStream output) throws IOException {
-		int bytesRead = 0;
-		byte[] buffer = new byte[DRAIN_BUFFER_SIZE];
-
-		while ((bytesRead = input.read(buffer, 0, DRAIN_BUFFER_SIZE)) != -1) {
-			output.write(buffer, 0, bytesRead);
-			output.flush();
-		}
-	}
-
 }

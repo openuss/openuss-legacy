@@ -35,7 +35,7 @@
 			</o:link>
 
 			<o:link value="/files/#{entry.name}" title="#{entry.name}" rendered="${!entry.folder}">
-				<f:param value="#{entry.repositoryFileId}" name="fileid" />
+				<f:param value="#{entry.id}" name="fileid" />
 				<h:outputText value="#{entry.name}"/>
 			</o:link>
 		</t:column>
