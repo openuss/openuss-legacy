@@ -24,7 +24,6 @@ public class Constants {
 	public static final String NEWSBEAN = "newsBean";		
 
 	public static final String UPLOADED_FILE = "LAST_UPLOADED_FILE";
-	public static final String UPLOADED_ZIP_FILE = "LAST_UPLOADED_ZIP_FILE";
 	
 	// service beans
 	public static final String LECTURE_SERVICE = "lectureService";
@@ -96,5 +95,8 @@ public class Constants {
 	public static final String ZIP_DOWNLOAD_URL = "/zips/documents.zip";
 
 	public static final String BRAINCONTENT_CONTEST = "braincontest_contest";
-	public static final String USER_IMAGE_NAME = "useravartar";	
+	public static final String USER_IMAGE_NAME = "useravartar";
+	
+	
+	public static final String UPLOAD_FILE_MANAGER = "uploadFileManager";
 }
