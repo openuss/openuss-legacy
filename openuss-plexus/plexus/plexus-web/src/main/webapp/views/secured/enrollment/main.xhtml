@@ -36,11 +36,12 @@
 				<div class="content_font_normal">
 					<h:outputText value="#{enrollment.description}" escape="false"/>
 				</div>
-				<h:outputText value="#{msg.enrollment_main_assistants}" styleClass="field_label"/>
+				<h:outputText value="#{msg.enrollment_main_assistants}" styleClass="field_label" rendered="#{not empty views$secured$enrollment$main.assistants}"/>
 				<t:dataList 
 					id="assistants"  
 					var="assistant"
 					value="#{views$secured$enrollment$main.assistants}"
+					rendered="#{not empty views$secured$enrollment$main.assistants}"
 					layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
 					<h:outputText value="#{assistant.title} #{assistant.firstName} #{assistant.lastName}"/>
 				</t:dataList>
