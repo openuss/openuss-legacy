@@ -810,8 +810,7 @@ p.header_font_normal, span.header_font_normal {
 
 .content_normal iframe{
 	width: 97%;
-	margin-left: 10px;
-	margin-right: 10px;
+	margin: 0px;
 }
 
 .content_normal .usercontact ul {
@@ -1496,7 +1495,7 @@ td.col_max_left label input{
  * You probably don't want to alter this style.
  */
 .jscalendar-DB-div-style {
-	z-index: +999;
+
 	position: absolute;
 	visibility: hidden;
 }
@@ -1634,16 +1633,16 @@ table.jscalendar-DB-dropdown-style{
 	width: 1px;
 }
 
-table.jscalendar-DB-dropdown-style{
-	width:20px;
-}
-
-table.jscalendar-DB-dropdown-style tr, table.jscalendar-DB-dropdown-style td{
-	width:20px;
-}
-
 .jscalendar-DB-div-style table{
 	width: 250px;
+	margin: 0;
+	padding: 0;
+}
+
+table.jscalendar-DB-dropdown-style{
+	width: 50px;
+	margin: 0;
+	padding: 0;
 }
 
 .jscalendar-DB-title-background-style td{
