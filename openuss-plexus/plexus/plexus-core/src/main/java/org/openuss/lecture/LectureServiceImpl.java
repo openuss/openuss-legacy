@@ -189,6 +189,19 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 
 	@Override
 	protected void handlePersist(Enrollment enrollment) throws Exception {
+		storeEnrollment(enrollment);
+		defineAccessTypePermission(enrollment);
+	}
+
+	private void storeEnrollment(Enrollment enrollment) {
+		if (enrollment.getId() == null) {
+			getEnrollmentDao().create(enrollment);
+		} else {
+			getEnrollmentDao().update(enrollment);
+		}
+	}
+
+	private void defineAccessTypePermission(Enrollment enrollment) {
 		Group roleUser = Group.Factory.newInstance();
 		roleUser.setId(Roles.USER);
 		roleUser = getSecurityService().getGroup(roleUser);
@@ -197,11 +210,6 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		}
 		else if (enrollment.getAccessType()==AccessType.OPEN){
 			getSecurityService().setPermissions(roleUser, enrollment, LectureAclEntry.ENROLLMENT_PARTICIPANT);			
-		}
-		if (enrollment.getId() == null) {
-			getEnrollmentDao().create(enrollment);
-		} else {
-			getEnrollmentDao().update(enrollment);
 		}
 	}
 
@@ -319,12 +327,13 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		persist(faculty);
 		persist(subject);
 		persist(period);
-		persist(enrollment);
+		storeEnrollment(enrollment);
 
 		generateShortcut(enrollment);
-		persist(enrollment);
+		storeEnrollment(enrollment);
 		
 		getSecurityService().createObjectIdentity(enrollment, faculty);
+		defineAccessTypePermission(enrollment);
 
 		return enrollment;
 	}
