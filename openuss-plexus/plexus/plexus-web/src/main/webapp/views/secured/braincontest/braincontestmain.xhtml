@@ -67,15 +67,16 @@
 						bean="#{views$secured$braincontest$braincontestmain}"
 						action="topList" label="#{msg.braincontest_main_button_top}"
 						title="#{msg.braincontest_main_button_top}" />
-					<plexus:command						
-						bean="#{views$secured$braincontest$braincontestmain}"
-						action="remove" label="#{msg['braincontest_main_button_remove']}"
-						title="#{msg['braincontest_main_button_remove']}" />
-					<plexus:command
-						bean="#{views$secured$braincontest$braincontestmain}"
-						action="editContest" label="#{msg['braincontest_main_button_edit']}"
-						title="#{msg['braincontest_main_button_edit']}" />
-						
+					<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}" >
+						<plexus:command						
+							bean="#{views$secured$braincontest$braincontestmain}"
+							action="remove" label="#{msg['braincontest_main_button_remove']}"
+							title="#{msg['braincontest_main_button_remove']}" />
+						<plexus:command
+							bean="#{views$secured$braincontest$braincontestmain}"
+							action="editContest" label="#{msg['braincontest_main_button_edit']}"
+							title="#{msg['braincontest_main_button_edit']}" />
+					</s:acl>	
 				</plexus:column>
 			</plexus:dataTable>
 			<o:block>

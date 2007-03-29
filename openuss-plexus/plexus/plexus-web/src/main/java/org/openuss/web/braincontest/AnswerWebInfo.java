@@ -5,6 +5,10 @@ public class AnswerWebInfo{
 	
 	public boolean topList;
 
+	public AnswerWebInfo(){
+		this.topList = true;
+	}
+	
 	public String getAnswer() {
 		return answer;
 	}

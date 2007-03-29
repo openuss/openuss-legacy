@@ -38,8 +38,10 @@ public class BrainContestNewPage extends AbstractEnrollmentPage{
 		} 
 		if (brainContest!=null){
 			if (brainContest.getDomainIdentifier()==null) brainContest.setDomainIdentifier(enrollment.getId());
-			List<FileInfo> attachments = brainContestService.getAttachments(brainContest);			
-			if (attachments!=null) setAttachment(attachments.get(0));
+			if (brainContest.getId()!=null){
+				List<FileInfo> attachments = brainContestService.getAttachments(brainContest);
+				if (attachments!=null&&attachments.size()>0) setAttachment(attachments.get(0));
+			}
 		}
 		if (this.brainContest==null) this.brainContest = new BrainContestInfo(); 
 	}	

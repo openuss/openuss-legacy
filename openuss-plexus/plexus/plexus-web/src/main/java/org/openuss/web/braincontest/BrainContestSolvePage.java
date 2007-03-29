@@ -63,14 +63,15 @@ public class BrainContestSolvePage extends AbstractEnrollmentPage {
 				redirect(Constants.BRAINCONTEST_MAIN);
 			}
 			List<FileInfo> attachments = brainContestService.getAttachments(brainContest);
-			if (attachments!= null)	setAttachment(attachments.get(0));
+			if (attachments!= null&&attachments.size()>0)	setAttachment(attachments.get(0));
 		}		
 	}
 
 	public String save() throws BrainContestApplicationException {
 		this.result = brainContestService.answer(answer.getAnswer(), user, brainContest, answer.isTopList());		
 		logger.debug("answer triggered");		
-		return Constants.BRAINCONTEST_RESULT;
+		if (this.result) return Constants.BRAINCONTEST_SOLVED;
+		return Constants.BRAINCONTEST_WRONG;
 	}
 
 	public BrainContestInfo getBrainContest() {
