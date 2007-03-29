@@ -18,7 +18,7 @@ import org.apache.myfaces.custom.fileupload.UploadedFile;
  * 
  */
 public class UploadedDocument {
-	private static final Logger logger = Logger.getLogger(UploadedDocument.class);
+	static final Logger logger = Logger.getLogger(UploadedDocument.class);
 
 	private Object source;
 
@@ -48,7 +48,7 @@ public class UploadedDocument {
 	}
 	
 	private File storeTempFile(UploadedFile uploadedFile) {
-		File file = getTempFile();
+		File file = TempFileHelper.createTempFile();
 		FileOutputStream fos = null;
 		InputStream is = null;
 		try {
@@ -97,67 +97,6 @@ public class UploadedDocument {
 	}
 	
 	
-	/**
-	 * Creates and returns a {@link java.io.File File} representing a uniquely
-	 * named temporary file in the configured repository path.
-	 * 
-	 * @return The {@link java.io.File File} to be used for temporary storage.
-	 */
-	private File getTempFile() {
-		File tempDir = new File(System.getProperty("java.io.tmpdir"));
-
-		File file = new File(tempDir, uniqueFileName());
-		file = verifyTempFile(tempDir, file);
-		file.deleteOnExit();
-		
-		logger.debug("created temp file "+file.getAbsolutePath());
-		return file;
-	}
-
-	private File verifyTempFile(File tempDir, File file) {
-		if (file.exists()) {
-			int tries = 0;
-			while (!file.exists()) {
-				logger.error("generated duplicated temp file, trying again.");
-				file = new File(tempDir, uniqueFileName());
-				tries ++;
-				if (tries > 1000 ) {
-					throw new RuntimeException("Cannot generate new temp file");
-				}
-			}
-		}
-		return file;
-	}
-
-	private String uniqueFileName() {
-		String fileName = "upload_" + getUniqueId() + ".tmp";
-		return fileName;
-	}
-
-    /**
-     * Counter used in unique identifier generation.
-     */
-    private static int counter = 0;
-	
-	/**
-	 * Returns an identifier that is unique within the class loader used to load
-	 * this class, but does not have random-like apearance.
-	 * 
-	 * @return A String with the non-random looking instance identifier.
-	 */
-	private static String getUniqueId() {
-		int current;
-		synchronized (UploadedDocument.class) {
-			current = counter++;
-		}
-		String id = Integer.toString(current);
-
-		if (current < 100000000) {
-			id = ("00000000" + id).substring(id.length());
-		}
-		return id;
-	}
-
 	public void remove() {
 		logger.debug("removing uploaded document "+fileName);
 		if (file.exists()) {
