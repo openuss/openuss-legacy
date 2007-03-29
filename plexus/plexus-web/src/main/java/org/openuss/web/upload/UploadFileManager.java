@@ -13,6 +13,7 @@ import org.apache.shale.tiger.view.Destroy;
 import org.apache.shale.tiger.view.View;
 import org.openuss.documents.FileInfo;
 import org.openuss.framework.web.jsf.controller.BaseBean;
+import org.openuss.web.Constants;
 
 
 /**
@@ -20,7 +21,7 @@ import org.openuss.framework.web.jsf.controller.BaseBean;
  * if the user session ends.
  * @author Ingo Dueppe
  */
-@Bean (name="uploadFileManager", scope=Scope.SESSION)
+@Bean (name=Constants.UPLOAD_FILE_MANAGER, scope=Scope.SESSION)
 @View
 public class UploadFileManager extends BaseBean{
 	private static final Logger logger = Logger.getLogger(UploadFileManager.class);
@@ -73,5 +74,11 @@ public class UploadFileManager extends BaseBean{
 			logger.error("couldn't delete tempory file "+ file.getAbsolutePath() +" for "+fileInfo.getName());
 			file.deleteOnExit();
 		}
+	}
+	
+	public File retrieveFile(FileInfo fileInfo) {
+		Validate.notNull(fileInfo, "Parameter fileInfo must not be null!");
+		
+		return files.get(fileInfo);
 	}
 }
