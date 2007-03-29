@@ -245,7 +245,7 @@
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
 
 	<navigation-rule>
-		<from-view-id>/views/secured/lecture/*</from-view-id>
+		<from-view-id>/views/secured/*</from-view-id>
 
 		<navigation-case>
 			<from-outcome>faculty</from-outcome>
