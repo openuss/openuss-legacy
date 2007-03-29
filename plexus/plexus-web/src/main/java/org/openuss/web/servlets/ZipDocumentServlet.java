@@ -54,13 +54,13 @@ public class ZipDocumentServlet extends HttpServlet {
 		if (files == null) {
 			sendFileNotFound(response);
 		} else {
-			logger.debug("selected "+files.size()+" files.");
-			for (FileInfo file : files) {
-				logger.debug("obtaining input stream for "+file.getName());
-				file.setInputStream(repositoryService.loadContent(file.getId()));
-			}
+//			logger.debug("selected "+files.size()+" files.");
+//			for (FileInfo file : files) {
+//				logger.debug("obtaining input stream for "+file.getName());
+//				file.setInputStream(repositoryService.loadContent(file.getId()));
+//			}
 			
-			ZipFilePacker packer = new ZipFilePacker(files);
+			ZipFilePacker packer = new ZipFilePacker(files, repositoryService);
 			response.setContentType("application/octet-stream");
 			response.setHeader("Content-Disposition", "attachment;filename=\"documents.zip\"");
 			packer.writeZip(response.getOutputStream());

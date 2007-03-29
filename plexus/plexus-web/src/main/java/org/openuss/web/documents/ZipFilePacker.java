@@ -8,8 +8,9 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.List;
 
+import org.acegisecurity.context.SecurityContext;
+import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipOutputStream;
@@ -26,9 +27,11 @@ public class ZipFilePacker {
 	private static final Logger logger = Logger.getLogger(ZipFilePacker.class);
 	
 	private List<FileInfo> files;
+	private RepositoryService repositoryService;
 	
-	public ZipFilePacker(List<FileInfo> files) {
+	public ZipFilePacker(List<FileInfo> files, RepositoryService repositoryService) {
 		this.files = files;
+		this.repositoryService = repositoryService;
 	}
 
 	public void writeZip(OutputStream outputStream) throws IOException {
@@ -44,9 +47,12 @@ public class ZipFilePacker {
 		try {
 			final PipedInputStream pis = new PipedInputStream();
 			final PipedOutputStream pot = new PipedOutputStream(pis);
-
+			
+			final SecurityContext securityContext = SecurityContextHolder.getContext();
+			
 			new Thread(new Runnable() {
 				public void run() {
+					SecurityContextHolder.setContext(securityContext);
 					ZipOutputStream zos = null;
 					InputStream is = null;
 					boolean empty = true;
@@ -57,7 +63,8 @@ public class ZipFilePacker {
 							zipEntry.setComment(file.getDescription());
 							zipEntry.setTime(file.getModified().getTime());
 							zos.putNextEntry(zipEntry);
-							is = file.getInputStream();
+							logger.debug("obtaining input stream for "+file.getName());
+							is = repositoryService.loadContent(file.getId());
 							IOUtils.copyLarge(is, zos);
 							is.close();
 							zos.closeEntry();

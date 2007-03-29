@@ -1,16 +1,22 @@
 package org.openuss.web.documents;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 import org.openuss.documents.FileInfo;
+import org.openuss.web.upload.TempFileHelper;
 
 /**
  * Class to unpack a zip file and collect all file entries in a list of FileInfo objects
@@ -23,9 +29,12 @@ public class ZipFileUnpacker {
 	private File file;
 	private ZipFile zipFile;
 	
+	private List<File> files ;
+	
 	public ZipFileUnpacker(File file) throws IOException {
 		this.file = file;
-		zipFile = new ZipFile(file);
+		this.zipFile = new ZipFile(file);
+		this.files = new ArrayList<File>();
 	}
 	
 	public List<FileInfo> extractZipFile() {
@@ -36,18 +45,26 @@ public class ZipFileUnpacker {
 			Enumeration entries = zipFile.getEntries();
 			while(entries.hasMoreElements()) {
 				ZipEntry entry = (ZipEntry) entries.nextElement();
+				
+				
 				logger.debug(" - name: "+entry.getName());
 				if (!entry.isDirectory()) {
+					File file = TempFileHelper.createTempFile();
+					OutputStream os = new FileOutputStream(file);
+					InputStream is = zipFile.getInputStream(entry);
+					IOUtils.copyLarge(is, os);
+					IOUtils.closeQuietly(os);
+					IOUtils.closeQuietly(is);
 					FileInfo info = new FileInfo();
-					info.setName(entry.getName());
 					info.setFileName(entry.getName());
 					info.setDescription(entry.getComment());
 					info.setCreated(new Date(entry.getTime()));
 					info.setModified(info.getCreated());
 					info.setContentType("application/octet-stream");
-					info.setInputStream(zipFile.getInputStream(entry));
+					info.setInputStream(new FileInputStream(file));
 					info.setFileSize((int)entry.getSize());
 					fileInfos.add(info);
+					files.add(file);
 				}
 			}
 		} catch (IOException e) {
@@ -63,6 +80,11 @@ public class ZipFileUnpacker {
 	 */
 	public void closeQuitly() {
 		try {
+			for (File file : files) {
+				if (!file.delete()) {
+					logger.error("couldn't delete temp file!");
+				}
+			}
 			zipFile.close();
 		} catch (IOException e) {
 			logger.error(e);
