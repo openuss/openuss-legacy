@@ -1,5 +1,7 @@
 package org.openuss.web.security.profile;
 
+import java.io.IOException;
+
 import javax.faces.event.ActionEvent;
 
 import org.apache.commons.lang.StringUtils;
@@ -20,6 +22,7 @@ import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.navigation.Navigator;
 import org.openuss.web.upload.UploadFileManager;
+import org.openuss.web.upload.UploadedDocument;
 
 
 /**
@@ -60,27 +63,33 @@ public class UserProfilePage extends BasePage{
 	/**
 	 * Persist User Profile
 	 * @throws DocumentApplicationException 
+	 * @throws IOException 
 	 */
-	public void saveProfile(ActionEvent event) throws DocumentApplicationException {
+	public void saveProfile(ActionEvent event) throws DocumentApplicationException, IOException {
 		// fetch uploaded files and remove it from upload manager
-		FileInfo attachment = (FileInfo) getSessionBean(Constants.UPLOADED_FILE);
-		if (attachment != null) {
-			if (user.getImageId() == null) {
-				attachment.setName(Constants.USER_IMAGE_NAME);
-				FolderInfo folder = documentService.getFolder(user);
-				documentService.createFileEntry(attachment, folder);
-				user.setImageId(attachment.getId());
-			} else {
-				FileInfo image = documentService.getFileEntry(user.getImageId(), false);
-				image.setFileSize(attachment.getFileSize());
-				image.setInputStream(attachment.getInputStream());
-				documentService.saveFileEntry(image);
+		UploadedDocument uploaded = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
+		if (uploaded != null) {
+			if (user.getImageId() != null) {
+				documentService.removeFolderEntry(user.getImageId());
 			}
+			FileInfo imageFile = new FileInfo();
+				
+			imageFile.setName(Constants.USER_IMAGE_NAME);
+			imageFile.setFileName(uploaded.getFileName());
+			imageFile.setContentType(uploaded.getContentType());
+			imageFile.setFileSize(uploaded.getFileSize());
+			imageFile.setInputStream(uploaded.getInputStream());
+			
+			FolderInfo folder = documentService.getFolder(user);
+			documentService.createFileEntry(imageFile, folder);
+			user.setImageId(imageFile.getId());
+			user.setImageId(imageFile.getId());
+
 			removeSessionBean(Constants.UPLOADED_FILE);
-			uploadFileManager.removeFile(attachment);
+			uploadFileManager.removeDocument(uploaded);
 		}
-		
 		securityService.saveUser(user);
+		addMessage(i18n("user_message_saved_profile_successfully"));
 	}
 	
 	/**

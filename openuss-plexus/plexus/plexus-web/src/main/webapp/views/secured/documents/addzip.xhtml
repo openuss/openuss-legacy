@@ -44,7 +44,7 @@
 				</span>
 				<h:outputLabel value="#{msg.newdocument_file}" for="zipfile" styleClass="field_label" />
 				<t:inputFileUpload id="zipfile" storage="file" accept="*" immediate="true" styleClass="uploadField">
-					<f:valueChangeListener type="org.openuss.web.upload.ZipUploadListener" />
+					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
 				</t:inputFileUpload>
 				<o:input entity="documents_selected_file" property="created" type="full" label="#{msg.documents_selected_file_release}"/>
 			</o:block>

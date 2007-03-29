@@ -60,7 +60,7 @@
 				<h:outputText value="#{msg.news_colheader_attachment}"/>
 			</f:facet>
 			<h:outputLink value="/openuss-plexus/files/#{bean.attachment.fileName}" title="#{bean.attachment.fileName}" rendered="${!empty bean.attachment}">
-				<f:param value="#{bean.attachment.id}" name="fileid" /> 
+				<f:param value="#{bean.attachmentId}" name="fileid" /> 
 				<h:graphicImage value="/images/filetypes/#{bean.attachment.extension}.gif"/>
 			</h:outputLink>
 		</h:column>

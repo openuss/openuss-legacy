@@ -20,13 +20,16 @@ public class ZipFileUnpacker {
 
 	private static final Logger logger = Logger.getLogger(ZipFileUnpacker.class);
 
+	private File file;
 	private ZipFile zipFile;
 	
 	public ZipFileUnpacker(File file) throws IOException {
+		this.file = file;
 		zipFile = new ZipFile(file);
 	}
 	
 	public List<FileInfo> extractZipFile() {
+		logger.debug("start extracting zip file "+file.getAbsolutePath()+" size "+file.length());
 		List<FileInfo> fileInfos = new ArrayList<FileInfo>();
 
 		try {
@@ -49,6 +52,7 @@ public class ZipFileUnpacker {
 			}
 		} catch (IOException e) {
 			logger.error(e);
+			throw new RuntimeException(e);
 		}
 		
 		return fileInfos;
