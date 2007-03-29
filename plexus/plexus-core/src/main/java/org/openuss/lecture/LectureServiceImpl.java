@@ -15,6 +15,7 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.openuss.security.Group;
 import org.openuss.security.GroupType;
+import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
@@ -188,6 +189,15 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 
 	@Override
 	protected void handlePersist(Enrollment enrollment) throws Exception {
+		Group roleUser = Group.Factory.newInstance();
+		roleUser.setId(Roles.USER);
+		roleUser = getSecurityService().getGroup(roleUser);
+		if (enrollment.getAccessType()!=AccessType.OPEN){
+			getSecurityService().setPermissions(roleUser, enrollment, LectureAclEntry.NOTHING);		
+		}
+		else if (enrollment.getAccessType()==AccessType.OPEN){
+			getSecurityService().setPermissions(roleUser, enrollment, LectureAclEntry.ENROLLMENT_PARTICIPANT);			
+		}
 		if (enrollment.getId() == null) {
 			getEnrollmentDao().create(enrollment);
 		} else {
