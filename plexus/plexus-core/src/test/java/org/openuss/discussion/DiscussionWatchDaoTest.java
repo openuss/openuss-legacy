@@ -13,10 +13,10 @@ package org.openuss.discussion;
 public class DiscussionWatchDaoTest extends DiscussionWatchDaoTestBase {
 	
 	public void testDiscussionWatchDaoCreate() {
-		//TODO Auto-generated test case
-//		DiscussionWatch discussionWatch = new DiscussionWatchImpl();
-//		assertNull(discussionWatch.getId());
-//		discussionWatchDao.create(discussionWatch);
-//		assertNotNull(discussionWatch.getId());
+		/*
+		DiscussionWatch discussionWatch = new DiscussionWatchImpl();
+		assertNull(discussionWatch.getId());
+		discussionWatchDao.create(discussionWatch);
+		assertNotNull(discussionWatch.getId());*/
 	}
 }

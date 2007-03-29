@@ -6,15 +6,15 @@
 package org.openuss.discussion;
 
 /**
- * @see org.openuss.discussion.Discussion
+ * @see org.openuss.discussion.ForumWatch
  */
-public class DiscussionImpl
-    extends org.openuss.discussion.DiscussionBase
-	implements org.openuss.discussion.Discussion
+public class ForumWatchImpl
+    extends org.openuss.discussion.ForumWatchBase
+	implements org.openuss.discussion.ForumWatch
 {
     /**
      * The serial version UID of this class. Needed for serialization.
      */
-    private static final long serialVersionUID = -2582730469703378744L;
+    private static final long serialVersionUID = -3765354084068644880L;
 
 }
