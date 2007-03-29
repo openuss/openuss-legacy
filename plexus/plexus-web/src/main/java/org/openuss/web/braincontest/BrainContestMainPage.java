@@ -1,5 +1,6 @@
 package org.openuss.web.braincontest; 
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -57,6 +58,7 @@ public class BrainContestMainPage extends AbstractEnrollmentPage{
 	
 	public String newContest(){
 		BrainContestInfo bci = new BrainContestInfo();
+		bci.setReleaseDate(new Date(System.currentTimeMillis()));				
 		setSessionBean(Constants.BRAINCONTENT_CONTEST, bci);		
 		return Constants.BRAINCONTEST_NEWCONTEST;
 	}

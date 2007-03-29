@@ -128,11 +128,8 @@ public class BrainContestServiceImpl extends
 	@SuppressWarnings("unchecked")
 	protected java.util.List handleGetAttachments(BrainContestInfo contest)
 			throws Exception {
-		try {
-			Validate.notNull(contest, "BrainContest must not be null");
-		} catch (IllegalArgumentException e) {
-			throw new BrainContestApplicationException(e.getMessage());
-		}
+		Validate.notNull(contest, "BrainContest must not be null");
+		Validate.notNull(contest.getId());
 		List<FileInfo> files = getDocumentService().getFileEntries(contest);
 		return files;
 	}
@@ -173,8 +170,11 @@ public class BrainContestServiceImpl extends
 		Validate.notNull(contest, "Contest must not be null");
 
 		BrainContest bc = getBrainContestDao().load(contest.getId());
+		
+		List checkIfAnswered = getAnswerDao().findByContestAndSolver(user, bc);
+		if (checkIfAnswered.size()>0) throw new BrainContestApplicationException("braincontest_message_user_correct_answer");
+		
 		bc.setTries(bc.getTries() + 1);
-		contest.setTries(contest.getTries() + 1);
 		if (!bc.getSolution().equals(answer)) {
 			getBrainContestDao().update(bc);
 			return false;

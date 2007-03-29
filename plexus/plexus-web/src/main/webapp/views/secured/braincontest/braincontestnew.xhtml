@@ -34,7 +34,7 @@
 	<ui:define name="content">
 		<h:form id="newBrainContestForm">
 			<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}"
-				ifNot="error" />
+				ifNot="error" >
 				<o:block label="#{msg.braincontest_new}">
 					<o:input entity="braincontest_contest" property="title"
 						required="true">
