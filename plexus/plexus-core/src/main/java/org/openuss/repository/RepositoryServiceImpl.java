@@ -85,7 +85,7 @@ public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServ
 	private void refreshCacheFile(RepositoryFile file, File cacheFile) throws FileNotFoundException, IOException {
 		FileOutputStream fos = new FileOutputStream(cacheFile);
 		InputStream is = file.getInputStream();
-		long count = IOUtils.copyLarge(is, fos);
+		int count = IOUtils.copy(is, fos);
 		logger.debug("===========================================================> wrote bytes to cache "+count);
 		fos.flush();
 		IOUtils.closeQuietly(fos);

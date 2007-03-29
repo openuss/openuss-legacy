@@ -13,12 +13,11 @@ import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 
 /**
+ * @author ingo dueppe
  * @see org.openuss.repository.RepositoryFile
  */
 public class RepositoryFileImpl extends RepositoryFileBase implements RepositoryFile {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(RepositoryFileImpl.class);
 
 	/**
