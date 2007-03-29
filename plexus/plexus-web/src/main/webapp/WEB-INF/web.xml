@@ -239,6 +239,13 @@
 
 	<filter-mapping>
 		<filter-name>Acegi Security Chain Filter</filter-name>
+		<url-pattern>/zips/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>Acegi Security Chain Filter</filter-name>
 		<url-pattern>*.xhtml</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
@@ -348,7 +355,7 @@
 
 	<servlet-mapping>
 		<servlet-name>ZipDocumentServlet</servlet-name>
-		<url-pattern>/zips/documents.zip</url-pattern>
+		<url-pattern>/zips/*</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
