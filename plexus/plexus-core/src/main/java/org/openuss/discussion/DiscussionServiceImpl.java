@@ -13,26 +13,6 @@ public class DiscussionServiceImpl
 {
 
     /**
-     * @see org.openuss.discussion.DiscussionService#createForum(java.lang.Long)
-     */
-    protected void handleCreateForum(java.lang.Long domainIdentifier)
-        throws java.lang.Exception
-    {
-        // @todo implement protected void handleCreateForum(java.lang.Long domainIdentifier)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleCreateForum(java.lang.Long domainIdentifier) Not implemented!");
-    }
-
-    /**
-     * @see org.openuss.discussion.DiscussionService#deleteForum(java.lang.Long)
-     */
-    protected void handleDeleteForum(java.lang.Long daomainIdentifier)
-        throws java.lang.Exception
-    {
-        // @todo implement protected void handleDeleteForum(java.lang.Long daomainIdentifier)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleDeleteForum(java.lang.Long daomainIdentifier) Not implemented!");
-    }
-
-    /**
      * @see org.openuss.discussion.DiscussionService#createTopic(org.openuss.discussion.PostInfo, java.lang.Long)
      */
     protected void handleCreateTopic(org.openuss.discussion.PostInfo post, java.lang.Long domainObject)
@@ -160,6 +140,26 @@ public class DiscussionServiceImpl
     {
         // @todo implement protected void handleRemoveForumWatch(java.lang.Long domainIdentifier)
         throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleRemoveForumWatch(java.lang.Long domainIdentifier) Not implemented!");
+    }
+
+    /**
+     * @see org.openuss.discussion.DiscussionService#addAttachment(org.openuss.discussion.PostInfo, org.openuss.documents.FileInfo)
+     */
+    protected void handleAddAttachment(org.openuss.discussion.PostInfo post, org.openuss.documents.FileInfo file)
+        throws java.lang.Exception
+    {
+        // @todo implement protected void handleAddAttachment(org.openuss.discussion.PostInfo post, org.openuss.documents.FileInfo file)
+        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleAddAttachment(org.openuss.discussion.PostInfo post, org.openuss.documents.FileInfo file) Not implemented!");
+    }
+
+    /**
+     * @see org.openuss.discussion.DiscussionService#removeAttachment(org.openuss.discussion.PostInfo)
+     */
+    protected void handleRemoveAttachment(org.openuss.discussion.PostInfo post)
+        throws java.lang.Exception
+    {
+        // @todo implement protected void handleRemoveAttachment(org.openuss.discussion.PostInfo post)
+        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleRemoveAttachment(org.openuss.discussion.PostInfo post) Not implemented!");
     }
 
 }

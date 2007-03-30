@@ -15,6 +15,6 @@ public class ForumWatchImpl
     /**
      * The serial version UID of this class. Needed for serialization.
      */
-    private static final long serialVersionUID = -3765354084068644880L;
+    private static final long serialVersionUID = -2601109675791512958L;
 
 }

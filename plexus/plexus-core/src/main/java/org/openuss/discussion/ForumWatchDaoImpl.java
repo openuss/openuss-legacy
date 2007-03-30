@@ -5,9 +5,9 @@
  */
 package org.openuss.discussion;
 /**
- * @see org.openuss.discussion.Forum
+ * @see org.openuss.discussion.ForumWatch
  */
-public class ForumDaoImpl
-    extends org.openuss.discussion.ForumDaoBase
+public class ForumWatchDaoImpl
+    extends org.openuss.discussion.ForumWatchDaoBase
 {
 }

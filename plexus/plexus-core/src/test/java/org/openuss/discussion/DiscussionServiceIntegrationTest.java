@@ -10,5 +10,5 @@ package org.openuss.discussion;
  * @see org.openuss.discussion.DiscussionService
  */
 public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrationTestBase {
-	
+	//public void testCreateDeleteForum()	
 }
