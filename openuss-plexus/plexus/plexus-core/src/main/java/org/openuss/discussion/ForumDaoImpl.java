@@ -37,7 +37,8 @@ public class ForumDaoImpl
      */
     private org.openuss.discussion.Forum loadForumFromForumInfo(org.openuss.discussion.ForumInfo forumInfo)
     {
-        org.openuss.discussion.Forum forum = this.load(forumInfo.getId());
+    	Forum forum = null; 
+    	if (forumInfo.getId()!= null) forum = this.load(forumInfo.getId());
         if (forum == null)
         {
             forum = org.openuss.discussion.Forum.Factory.newInstance();

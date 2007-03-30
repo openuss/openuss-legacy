@@ -17,17 +17,12 @@ public class PostDaoImpl
         org.openuss.discussion.Post sourceEntity,
         org.openuss.discussion.PostInfo targetVO)
     {
-        super.toPostInfo(sourceEntity, targetVO);
+        super.toPostInfo(sourceEntity, targetVO);        
         targetVO.setFormula(sourceEntity.getFormulaString());
         targetVO.setEditor(sourceEntity.getEditorName());
         targetVO.setSubmitter(sourceEntity.getEditorName());
         targetVO.setIsEdited(sourceEntity.isEdited());
         targetVO.setSubmitterId(sourceEntity.getSubmitter().getId());
-        if (sourceEntity.getAttachment()!=null){
-        	targetVO.setAttachmentName(sourceEntity.getAttachment().getName());
-        	targetVO.setAttachmentId(sourceEntity.getAttachment().getId());
-        	targetVO.setExtension(sourceEntity.getAttachment().getExtension());
-        }
     }
 
 
@@ -36,10 +31,9 @@ public class PostDaoImpl
      */
     public org.openuss.discussion.PostInfo toPostInfo(final org.openuss.discussion.Post entity)
     {
-        // @todo verify behavior of toPostInfo
     	PostInfo pi = new PostInfo();
-    	//toPostInfo(sourceEntity, targetVO)
-        return super.toPostInfo(entity);
+    	toPostInfo(entity, pi);
+        return pi;
     }
 
 
@@ -50,17 +44,12 @@ public class PostDaoImpl
      */
     private org.openuss.discussion.Post loadPostFromPostInfo(org.openuss.discussion.PostInfo postInfo)
     {
-        // @todo implement loadPostFromPostInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.loadPostFromPostInfo(org.openuss.discussion.PostInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
         org.openuss.discussion.Post post = this.load(postInfo.getId());
         if (post == null)
         {
             post = org.openuss.discussion.Post.Factory.newInstance();
         }
         return post;
-        */
     }
 
     
@@ -69,7 +58,6 @@ public class PostDaoImpl
      */
     public org.openuss.discussion.Post postInfoToEntity(org.openuss.discussion.PostInfo postInfo)
     {
-        // @todo verify behavior of postInfoToEntity
         org.openuss.discussion.Post entity = this.loadPostFromPostInfo(postInfo);
         this.postInfoToEntity(postInfo, entity, true);
         return entity;
@@ -84,8 +72,18 @@ public class PostDaoImpl
         org.openuss.discussion.Post targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of postInfoToEntity
         super.postInfoToEntity(sourceVO, targetEntity, copyIfNull);
+        if (copyIfNull || sourceVO.getFormula() != null)
+        {
+        	if (targetEntity.getFormula()!=null){
+        		targetEntity.getFormula().setFormula(sourceVO.getFormula());
+        	} else if (targetEntity.getFormula()==null){
+        		Formula f = Formula.Factory.newInstance();
+        		f.setFormula(sourceVO.getFormula());
+        		targetEntity.setFormula(f);
+        	}
+        }
+
     }
 
 }

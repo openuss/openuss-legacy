@@ -5,6 +5,8 @@
  */
 package org.openuss.discussion;
 
+import java.util.List;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -20,18 +22,37 @@ public class DiscussionServiceImpl
     protected void handleCreateTopic(org.openuss.discussion.PostInfo post, java.lang.Long domainObject)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleCreateTopic(org.openuss.discussion.PostInfo post, java.lang.Long domainObject)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleCreateTopic(org.openuss.discussion.PostInfo post, java.lang.Long domainObject) Not implemented!");
+    	//create topic
+    	TopicInfo ti = extractTopicInfo(post, domainObject);    	
+    	Topic topic = getTopicDao().topicInfoToEntity(ti);
+    	ti = getTopicDao().toTopicInfo(topic);
+    	//add first post
+    	handleAddPost(post, ti);
     }
+
+	private TopicInfo extractTopicInfo(org.openuss.discussion.PostInfo post, java.lang.Long domainObject) {
+		TopicInfo ti = new TopicInfo();
+    	ti.setCreated(post.getCreated());
+    	ti.setForumId(getForum(domainObject).getId());
+    	ti.setHits(0);
+    	ti.setLastPost(post.getLastModification());
+    	ti.setReadOnly(true);
+    	ti.setSubmitter(post.getSubmitter());
+    	ti.setTitle(post.getTitle());
+		return ti;
+	}
 
     /**
      * @see org.openuss.discussion.DiscussionService#deleteTopic(org.openuss.discussion.TopicInfo)
      */
-    protected void handleDeleteTopic(org.openuss.discussion.TopicInfo topic)
+    @SuppressWarnings("unchecked")
+	protected void handleDeleteTopic(org.openuss.discussion.TopicInfo topic)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleDeleteTopic(org.openuss.discussion.TopicInfo topic)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleDeleteTopic(org.openuss.discussion.TopicInfo topic) Not implemented!");
+    	Topic t = getTopicDao().topicInfoToEntity(topic);
+    	List<DiscussionWatch> topicWatch = getDiscussionWatchDao().findByTopic(t);
+    	getDiscussionWatchDao().remove(topicWatch);
+    	getTopicDao().remove(t);
     }
 
     /**
@@ -40,8 +61,7 @@ public class DiscussionServiceImpl
     protected void handleAddPost(org.openuss.discussion.PostInfo post, org.openuss.discussion.TopicInfo topic)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleAddPost(org.openuss.discussion.PostInfo post, org.openuss.discussion.TopicInfo topic)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleAddPost(org.openuss.discussion.PostInfo post, org.openuss.discussion.TopicInfo topic) Not implemented!");
+    	//TODO implement
     }
 
     /**

@@ -22,8 +22,7 @@ public class TopicImpl
      */
     public void addPost(org.openuss.discussion.Post post)
     {
-        // @todo implement public void addPost(org.openuss.discussion.Post post)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.Topic.addPost(org.openuss.discussion.Post post) Not implemented!");
+    	getPosts().add(post);
     }
 
     /**
@@ -31,8 +30,7 @@ public class TopicImpl
      */
     public void removePost(org.openuss.discussion.Post post)
     {
-        // @todo implement public void removePost(org.openuss.discussion.Post post)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.Topic.removePost(org.openuss.discussion.Post post) Not implemented!");
+    	getPosts().remove(post);
     }
 
     /**
@@ -40,8 +38,7 @@ public class TopicImpl
      */
     public java.lang.Integer getAnswerCount()
     {
-        // @todo implement public java.lang.Integer getAnswerCount()
-        return null;
+    	return getPosts().size()-1;
     }
 
     /**
@@ -49,8 +46,7 @@ public class TopicImpl
      */
     public java.util.Date getCreated()
     {
-        // @todo implement public java.util.Date getCreated()
-        return null;
+        return getFirst().getCreated();
     }
 
     /**
@@ -58,8 +54,7 @@ public class TopicImpl
      */
     public java.lang.String getTitle()
     {
-        // @todo implement public java.lang.String getTitle()
-        return null;
+    	return getFirst().getTitle();
     }
 
     /**
@@ -67,8 +62,7 @@ public class TopicImpl
      */
     public java.util.Date getLastPostDate()
     {
-        // @todo implement public java.util.Date getLastPostDate()
-        return null;
+	     return getLast().getLastModification();
     }
 
     /**
@@ -76,8 +70,7 @@ public class TopicImpl
      */
     public java.lang.String getLastPostSubmitterName()
     {
-        // @todo implement public java.lang.String getLastPostSubmitterName()
-        return null;
+    	return getLast().getSubmitterName();
     }
 
 }

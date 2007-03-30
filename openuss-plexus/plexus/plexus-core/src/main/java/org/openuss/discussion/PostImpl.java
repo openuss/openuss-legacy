@@ -48,4 +48,15 @@ public class PostImpl
 		return "";
 	}
 
+	@Override
+	public void setFormulaString(String formula) {
+       	if (getFormula()!=null){
+       		getFormula().setFormula(formula);
+       	} else if (getFormula()==null){
+       		Formula f = Formula.Factory.newInstance();
+       		f.setFormula(formula);
+      		setFormula(f);
+       	}
+	}
+
 }
