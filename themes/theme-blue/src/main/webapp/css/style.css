@@ -813,7 +813,9 @@ p.header_font_normal, span.header_font_normal {
 
 .userphoto {
 	display: run-in;
-	float: left;
+	width: 60px;
+	height: 60px;
+	/*float: left;*/
 }
 
 .content_normal .userimage .userphoto{
@@ -1084,11 +1086,11 @@ span.table_data_info {
   background-color: #ff0000;
 }
 
- 
-.button_unlink, .button_link, .button_remove, .button_edit, .button_remove, .button_profile {
+  
+td > input.button, .button_unlink, .button_link, .button_remove, .button_edit, .button_remove, .button_profile {
   	width: 79px;
 	height: 17px;
-	margin-right: 5px;
+	margin: 2px 5px 2px 0;
 	padding: 0;
 	background: transparent url(../img/button_70_normal.png) 0px 0px no-repeat;
 	border: 0;
@@ -1103,7 +1105,7 @@ span.table_data_info {
 	filter:DropShadow(color=#FFF, offx=1, offy=1)
 }
 
-.button_unlink:hover, .button_link:hover, .button_remove:hover, .button_edit:hover, .button_remove:hover, .button_profile:hover {
+td > input.button:hover, .button_unlink:hover, .button_link:hover, .button_remove:hover, .button_edit:hover, .button_remove:hover, .button_profile:hover {
   	background: transparent url(../img/button_70_hover.png) 0px 0px no-repeat;
 }
 
@@ -1149,7 +1151,7 @@ span.table_data_info {
   	background: transparent url(../img/button_120_hover_red.png) 0px 0px no-repeat;
 }
 
-.button_add, .button_login {
+.button, .button_add, .button_login {
 	display: inline;
   	width: 151px;
 	height: 23px;
@@ -1167,7 +1169,11 @@ span.table_data_info {
 	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschön */
 }
 
-.button {
+.button:hover, .button_add:hover, .button_login:hover {
+  	background: transparent url(../img/button_140_hover.png) 0px 0px no-repeat;
+}
+
+.button_big {
 	display: inline;
   	width: 211px;
 	height: 23px;
@@ -1185,13 +1191,10 @@ span.table_data_info {
 	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschön */
 }
 
-.button:hover {
+.button_big:hover {
 	background: transparent url(../img/button_180_hover.png) 0px 0px no-repeat;
 }
 
-.button_add:hover, .button_login:hover {
-  	background: transparent url(../img/button_140_hover.png) 0px 0px no-repeat;
-}
 
 table {
   margin: 0;
@@ -1327,7 +1330,6 @@ td .pulldown_small {
   border: 1px solid #B4B4B4;
   margin: 1px 0 3px 10px; 
 }
-
 
 td.col_commands {
 	width: 50px;
