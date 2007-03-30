@@ -131,4 +131,9 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		getProfile().setImageFileId(imageId);
 	}
 
+	@Override
+	public String getDisplayName() {
+		return getTitle() + " " + getFirstName() + " " + getLastName();
+	}
+
 }
