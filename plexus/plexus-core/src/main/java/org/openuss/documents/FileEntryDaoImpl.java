@@ -140,6 +140,7 @@ public class FileEntryDaoImpl extends org.openuss.documents.FileEntryDaoBase {
 		target.setModified(source.getModified());
 		target.setFileSize(source.getFileSize());
 		target.setExtension(source.getExtension());
+		target.setReleased(source.isReleased());
 	}
 
 }

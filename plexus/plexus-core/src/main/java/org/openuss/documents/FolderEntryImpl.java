@@ -26,7 +26,7 @@ public class FolderEntryImpl extends org.openuss.documents.FolderEntryBase imple
 
 	@Override
 	public Date getModified() {
-		return null;
+		return getCreated();
 	}
 
 	@Override

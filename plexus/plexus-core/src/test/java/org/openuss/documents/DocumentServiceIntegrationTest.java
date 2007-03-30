@@ -12,10 +12,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.acegisecurity.acl.AclManager;
+import org.apache.commons.lang.StringUtils;
 import org.openuss.DomainObject;
 import org.openuss.TestUtility;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.repository.RepositoryService;
 import org.openuss.repository.RepositoryServiceException;
+import org.openuss.security.SecurityService;
 
 /**
  * JUnit Test for Spring Hibernate DocumentService class.
@@ -25,13 +29,47 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	
 	private TestUtility testUtility;
 	
+	private AclManager aclManager;
+	
 	private RepositoryService repositoryService;
 	
 	private FolderEntryDao folderEntryDao;
 	
+	private SecurityService securityService;
+	
+	private DomainObject domainObject;
+	
+
+	@Override
+	protected void onSetUpInTransaction() throws Exception {
+		AcegiUtils.setAclManager(aclManager);
+		testUtility.createSecureContext();
+		domainObject = createDomainObject();
+		super.onSetUpInTransaction();
+	}
+	
+	public void testNotReleasedFiles() throws DocumentApplicationException {
+		FolderInfo root = documentService.getFolder(domainObject);
+		
+		FileInfo fileOne = createFileInfo("readme.txt");
+		fileOne.setCreated(new Date(System.currentTimeMillis()+1000*60*60));
+
+		documentService.createFileEntry(fileOne, root);
+		assertNotNull(fileOne.getId());
+		assertFalse(fileOne.isReleased());
+		
+		FileInfo fileTwo = createFileInfo("released.txt");
+		documentService.createFileEntry(fileTwo, root);
+		assertNotNull(fileTwo.getId());
+		assertTrue(fileTwo.isReleased());
+		
+		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, null);
+		assertNotNull(entries);
+		assertEquals(1, entries.size());
+		
+	}
 
 	public void testFolderEntries() throws DocumentApplicationException {
-		DomainObject domainObject = createDomainObject();
 		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, null);
 		assertNotNull(entries);
 		assertEquals(0, entries.size());
@@ -68,7 +106,6 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	}
 
 	public void testFolderPath() throws DocumentApplicationException {
-		DomainObject domainObject = createDomainObject();
 		FolderInfo root = documentService.getFolder(domainObject);
 		
 		FolderInfo subFolder1 = createSubFolder();
@@ -93,7 +130,6 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	}
 	
 	public void testFolderAddRemoving() throws DocumentApplicationException {
-		DomainObject domainObject = createDomainObject();
 		FolderInfo root = documentService.getFolder(domainObject);
 		
 		FolderInfo subFolder1 = createSubFolder();
@@ -143,8 +179,6 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	}
 
 	public void testCreateFileInfo() throws DocumentApplicationException, IOException {
-		testUtility.createSecureContext();
-		DomainObject domainObject = createDomainObject();
 		FolderInfo root = documentService.getFolder(domainObject);
 
 		String name = "/dummy/readme.txt";
@@ -171,8 +205,6 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	
 	
 	public void testCreateFileByFileInfo() throws DocumentApplicationException, IOException {
-		testUtility.createSecureContext();
-		DomainObject domainObject = createDomainObject();
 		FolderInfo root = documentService.getFolder(domainObject);
 
 		String name = "/dummy/readme.txt";
@@ -227,8 +259,6 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	
 	
 	public void testCreateFileEntries() throws DocumentApplicationException {
-		testUtility.createSecureContext();
-		DomainObject domainObject = createDomainObject();
 		FolderInfo root = documentService.getFolder(domainObject);
 		
 		FolderInfo subfolder = createSubFolder();
@@ -265,8 +295,6 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 
 	
 	public void testGetFileEntry() throws DocumentApplicationException {
-		testUtility.createSecureContext();
-		DomainObject domainObject = createDomainObject();
 		FolderInfo root = documentService.getFolder(domainObject);
 		
 		FileInfo info = createFileInfo("readme.txt");
@@ -290,7 +318,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertNotNull(info.getAbsoluteName());
 		assertNotNull(info.getPath());
 		assertNotNull(info.getFileName());
-		assertEquals(info.getPath()+"/"+info.getFileName(), info.getAbsoluteName());
+		assertEquals(StringUtils.isBlank(info.getPath())?info.getFileName():info.getPath()+"/"+info.getFileName(), info.getAbsoluteName());
 		assertNotNull(info.getCreated());
 		assertNotNull(info.getModified());
 		assertNotNull(info.getFileSize());
@@ -319,6 +347,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 
 	private DomainObject createDomainObject() {
 		DomainObject domainObject = new DomainObject(testUtility.unique());
+		getSecurityService().createObjectIdentity(domainObject, null);
 		return domainObject;
 	}
 	
@@ -350,6 +379,22 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 
 	public void setRepositoryService(RepositoryService repositoryService) {
 		this.repositoryService = repositoryService;
+	}
+
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
+	}
+
+	public AclManager getAclManager() {
+		return aclManager;
+	}
+
+	public void setAclManager(AclManager aclManager) {
+		this.aclManager = aclManager;
 	}
 	
 }
