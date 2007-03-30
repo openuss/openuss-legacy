@@ -17,25 +17,26 @@
 	</page>
 
 	<page view-id="/views/secured/documents/*">
+	 	<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.READ}"/>
 		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.READ}"/>
 		<parameter name="folder" value="#{documents_current_folder.id}" converterId="javax.faces.Long"/>
 		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
 	</page>
 
 	<page view-id="/views/secured/documents/folderedit.xhtml">
-		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.CREATE}"/>
+		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.CRUD}"/>
 	</page>
 
 	<page view-id="/views/secured/documents/fileedit.xhtml">
-		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.CREATE}"/>
+		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.CRUD}"/>
 	</page>
 
 	<page view-id="/views/secured/documents/addzip.xhtml">
-		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.CREATE}"/>
+		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.CRUD}"/>
 	</page>
 
 	<page view-id="/views/secured/documents/remove.xhtml">
-		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.CREATE}"/>
+		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.CRUD}"/>
 	</page>
 
 	<page view-id="/views/secured/braincontest/*">
