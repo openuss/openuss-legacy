@@ -25,17 +25,16 @@ public class AbstractEnrollmentPage extends BasePage {
 
 	@Prerender
 	public void prerender() throws Exception {
-		if (enrollment == null) {
-			enrollment = (Enrollment) getSessionBean(Constants.ENROLLMENT);
+		if (enrollment != null) {
+			enrollment = enrollmentService.getEnrollment(enrollment);
 		}
 		if (enrollment == null) {
 			addMessage(i18n("message_error_enrollment_page"));
 			redirect(Constants.OUTCOME_BACKWARD);
 		} else {
-			enrollment = enrollmentService.getEnrollment(enrollment);
+			setSessionBean(Constants.ENROLLMENT, enrollment);
+			setSessionBean(Constants.FACULTY, enrollment.getFaculty());
 		} 
-		setSessionBean(Constants.ENROLLMENT, enrollment);
-		setSessionBean(Constants.FACULTY, enrollment.getFaculty());
 	}
 	
 	public Enrollment getEnrollment() {
