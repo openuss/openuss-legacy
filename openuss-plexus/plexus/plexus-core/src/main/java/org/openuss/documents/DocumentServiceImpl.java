@@ -19,6 +19,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.framework.utilities.DomainObjectUtility;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
+import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @see org.openuss.documents.DocumentsService
@@ -26,6 +28,22 @@ import org.openuss.framework.utilities.DomainObjectUtility;
 public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBase {
 
 	private static final Logger logger = Logger.getLogger(DocumentServiceImpl.class);
+
+	@Override
+	protected List handleAllFileEntries(Collection entries) throws Exception {
+		Validate.allElementsOfType(entries, FolderEntryInfo.class,
+				"Parameter entries must only contain FolderEntryInfo objects.");
+		Collection entities = new ArrayList(entries);
+		getFolderEntryDao().folderEntryInfoToEntityCollection(entities);
+
+		List files = new ArrayList();
+		collectAllFileEntries(entities, files);
+		filterEntriesByPermission(entries);
+
+		getFileEntryDao().toFileInfoCollection(files);
+
+		return files;
+	}
 
 	@Override
 	protected void handleCreateFolder(FolderInfo folderInfo, FolderInfo parentInfo) throws Exception {
@@ -38,81 +56,61 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		createFolder(folder, parent);
 		getFolderDao().toFolderInfo(folder, folderInfo);
 	}
-	
+
+	@Override
+	protected void handleCreateFileEntries(Collection fileEntries, FolderInfo parentInfo) throws Exception {
+		Validate.allElementsOfType(fileEntries, FileInfo.class,
+				"Parameter fileEntries must only contain FileEntryInfo objects.");
+		Validate.notNull(parentInfo, "Parameter parentInfo must not be null.");
+
+		Folder parent = obtainParentFolder(parentInfo);
+
+		for (FileInfo entry : (Collection<FileInfo>) fileEntries) {
+			createFileEntryWithContent(entry, parent);
+		}
+	}
+
 	@Override
 	protected void handleCreateFileEntry(FileInfo fileInfo, FolderInfo parentInfo) throws Exception {
 		Validate.notNull(parentInfo, "Parameter parentInfo must not be null.");
 		Validate.notNull(fileInfo, "Parameter info must not be null.");
 		Validate.notNull(fileInfo.getInputStream(), "Parameter info must provide an inputStream");
-		
-		Folder parent = obtainParentFolder(parentInfo);
-		
-		createFileEntryWithContent(fileInfo, parent);
-	}
-	
-	private Folder obtainParentFolder(FolderInfo parentInfo) throws DocumentApplicationException {
-		Folder parent = getFolderDao().load(parentInfo.getId());
-		if (parent == null) {
-			throw new DocumentApplicationException("message_parent_folder_not_found");
-		}
-		return parent;
-	}
-	
-	private void createFileEntryWithContent(FileInfo fileInfo, Folder parent) throws DocumentApplicationException {
-		Folder folder = createFolderPathStructure(parent, fileInfo);
-		FileEntry entry = getFileEntryDao().fileInfoToEntity(fileInfo);
-		
-		persistFileEntry(entry, folder);
-		
-		getRepositoryService().saveContent(entry.getId(), fileInfo.getInputStream());
 
-		getFileEntryDao().toFileInfo(entry, fileInfo);
-	}
-	
-	private void persistFileEntry(FileEntry entry, Folder parent) {
-		parent.addFolderEntry(entry);
-		persistFileEntry(entry);
-		getFolderDao().update(parent);
-	}
-	
-	private void persistFileEntry(FileEntry file) {
-		logger.debug("saving file entry " + file.getName());
-		if (file.getCreated() == null) {
-			file.setCreated(new Date());
-		}
-		
-		if (file.getId() == null) {
-			getFileEntryDao().create(file);
-		} else {
-			getFileEntryDao().update(file);
-		}
+		Folder parent = obtainParentFolder(parentInfo);
+
+		createFileEntryWithContent(fileInfo, parent);
 	}
 
 	@Override
-	protected List handleAllFileEntries(Collection entries) throws Exception {
-		Validate.allElementsOfType(entries, FolderEntryInfo.class, "Parameter entries must only contain FolderEntryInfo objects.");
-		Collection entities = new ArrayList(entries);
-		getFolderEntryDao().folderEntryInfoToEntityCollection(entities);
+	protected List handleGetFileEntries(Object domainObject) throws Exception {
+		Validate.notNull(domainObject, "Parameter domainObject must not be null!");
+		Folder root = getRootFolderForDomainObject(domainObject);
+		List entries = root.getEntries();
 
-		List files = new ArrayList();
-		collectAllFileEntries(entities, files);
-
-		getFileEntryDao().toFileInfoCollection(files);
-
-		return files;
-	}
-	
-	private void collectAllFileEntries(Collection<FolderEntry> entries, List<FileEntry> selectedFiles) {
-		logger.debug("collectAllFileEntries(entries=" + entries + ", selectedFiles=" + selectedFiles + ")");
-		for (FolderEntry entry : entries) {
-			if (entry instanceof FileEntry) {
-				FileEntry fileEntry = (FileEntry) entry;
-				selectedFiles.add(fileEntry);
-			} else if (entry instanceof Folder) {
-				Folder folder = (Folder) entry;
-				collectAllFileEntries(folder.getEntries(), selectedFiles);
+		CollectionUtils.filter(entries, new Predicate() {
+			public boolean evaluate(Object object) {
+				return (object instanceof FileEntry);
 			}
+		});
+		filterEntriesByPermission(entries);
+		getFileEntryDao().toFileInfoCollection(entries);
+		return entries;
+	}
+
+	@Override
+	protected FileInfo handleGetFileEntry(Long fileId, boolean withInputStream) throws Exception {
+		Validate.notNull(fileId, "Parameter fileId must not be null!");
+
+		FileInfo fileInfo = (FileInfo) getFileEntryDao().load(FileEntryDao.TRANSFORM_FILEINFO, fileId);
+		if (fileInfo != null && withInputStream) {
+			fileInfo.setInputStream(getRepositoryService().loadContent(fileInfo.getId()));
 		}
+		return fileInfo;
+	}
+
+	@Override
+	protected FolderInfo handleGetFolder(Object domainObject) throws Exception {
+		return getFolderDao().toFolderInfo(getRootFolderForDomainObject(domainObject));
 	}
 
 	@Override
@@ -139,6 +137,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 			throw new DocumentApplicationException("message_error_folder_not_found");
 		}
 		List entries = getFolderEntryDao().findByParent(FolderEntryDao.TRANSFORM_FOLDERENTRYINFO, folder);
+		filterEntriesByPermission(entries);
 		return entries;
 	}
 
@@ -190,119 +189,6 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		}
 	}
 
-	@Override
-	protected FileInfo handleGetFileEntry(Long fileId, boolean withInputStream) throws Exception {
-		Validate.notNull(fileId, "Parameter fileId must not be null!");
-
-		FileInfo fileInfo = (FileInfo) getFileEntryDao().load(FileEntryDao.TRANSFORM_FILEINFO, fileId);
-		if (fileInfo != null && withInputStream) {
-			fileInfo.setInputStream(getRepositoryService().loadContent(fileInfo.getId()));
-		}
-		return fileInfo;
-	}
-
-	@Override
-	protected FolderInfo handleGetFolder(Object domainObject) throws Exception {
-		return getFolderDao().toFolderInfo(getRootFolderForDomainObject(domainObject));
-	}
-
-	private Folder getRootFolderForDomainObject(Object domainObject) throws IllegalAccessException,
-			InvocationTargetException {
-		Validate.notNull(domainObject, "domain_object must not be null!");
-		Long domainIdentifier = DomainObjectUtility.identifierFromObject(domainObject);
-		if (domainIdentifier == null) {
-			throw new DocumentServiceException("no_domain_object_identifier_found");
-		}
-		Folder folder = getFolderDao().findByDomainIdentifier(domainIdentifier);
-		if (folder == null) {
-			folder = createRootFolderForDomainObject(domainIdentifier);
-		}
-		return folder;
-	}
-
-	private Folder createRootFolderForDomainObject(Long domainIdentifier) {
-		Validate.notNull(domainIdentifier, "DomainIdentifier must not be null.");
-		logger.debug("Creating new root folder for domain object " + domainIdentifier);
-
-		Folder folder = Folder.Factory.newInstance();
-		folder.setName("");
-		folder.setParent(null);
-		folder.setCreated(new Date());
-		folder.setDomainIdentifier(domainIdentifier);
-
-		getFolderDao().create(folder);
-		return folder;
-	}
-
-	private FolderInfo loadFolderInfo(Long folderId) {
-		Validate.notNull(folderId, "Must provide a folder id.");
-		return (FolderInfo) getFolderDao().load(FolderDao.TRANSFORM_FOLDERINFO, folderId);
-	}
-
-	private void removeFolderEntry(FolderEntry folderEntry) throws Exception {
-		if (folderEntry instanceof FileEntry) {
-			getFolderEntryDao().remove(folderEntry.getId());
-			getRepositoryService().removeContent(folderEntry.getId());
-		} else if (folderEntry instanceof Folder) {
-			Folder folder = (Folder) folderEntry;
-			for (FolderEntry entry : folder.getEntries()) {
-				removeFolderEntry(entry);
-			}
-			getFolderEntryDao().remove(folder);
-		}
-	}
-
-	private FolderEntry loadFolderEntry(Long id) {
-		Validate.notNull(id, "Must provide a folder entry id.");
-		FolderEntry entry = getFolderEntryDao().load(id);
-		return entry;
-	}
-
-
-	private void persistFolder(Folder folder) {
-		Validate.notNull(folder, "Parameter folder must not be null!");
-		Validate.notNull(folder, "Parameter folder must have a parent folder!");
-		if (logger.isDebugEnabled()) {
-			logger.debug("persisting folder " + folder.getName());
-		}
-		if (folder.getId() == null) {
-			getFolderDao().create(folder);
-		} else {
-			getFolderDao().update(folder);
-		}
-	}
-
-	private void createFolder(Folder folder, Folder parent) {
-		parent.addFolderEntry(folder);
-
-		persistFolder(folder);
-
-		getFolderDao().update(parent);
-	}
-
-	private Folder createFolderPathStructure(Folder parent, FileInfo info) throws DocumentApplicationException {
-		Validate.notNull(info.getFileName(), "Parameter fileInfo must contain a filename.");
-		List<String> path = retrievePathOfFileName(info.getFileName());
-		for (String folderName : path) {
-			parent = createFolderByName(folderName, parent, info.getCreated());
-		}
-		return parent;
-	}
-
-	private List<String> retrievePathOfFileName(String fileName) {
-		List<String> path = new ArrayList<String>();
-		if (StringUtils.isNotBlank(fileName)) {
-			if (fileName.startsWith("/")) {
-				fileName = fileName.substring(1);
-			}
-			File file = new File(fileName);
-			while ((file = file.getParentFile()) != null) {
-				path.add(0, file.getName());
-			}
-		}
-		return path;
-	}
-
 	private Folder createFolderByName(String folderName, Folder parent, Date created)
 			throws DocumentApplicationException {
 		logger.debug("createFolderByName(folderName=" + folderName + ", parent=" + parent + ")");
@@ -323,29 +209,196 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		}
 	}
 
-	@Override
-	protected List handleGetFileEntries(Object domainObject) throws Exception {
-		Validate.notNull(domainObject, "Parameter domainObject must not be null!");
-		Folder root = getRootFolderForDomainObject(domainObject);
-		List entries = root.getEntries();
-		CollectionUtils.filter(entries, new Predicate() {
-			public boolean evaluate(Object object) {
-				return (object instanceof FileEntry);
-			}
-		});
-		getFileEntryDao().toFileInfoCollection(entries);
-		return entries;
+	private void createFileEntryWithContent(FileInfo fileInfo, Folder parent) throws DocumentApplicationException {
+		Folder folder = createFolderPathStructure(parent, fileInfo);
+		FileEntry entry = getFileEntryDao().fileInfoToEntity(fileInfo);
+
+		persistFileEntry(entry, folder);
+		getRepositoryService().saveContent(entry.getId(), fileInfo.getInputStream());
+
+		defineSecurityPermission(entry, folder);
+
+		getFileEntryDao().toFileInfo(entry, fileInfo);
 	}
 
-	@Override
-	protected void handleCreateFileEntries(Collection fileEntries, FolderInfo parentInfo) throws Exception {
-		Validate.allElementsOfType(fileEntries, FileInfo.class,	"Parameter fileEntries must only contain FileEntryInfo objects.");
-		Validate.notNull(parentInfo, "Parameter parentInfo must not be null.");
+	private void createFolder(Folder folder, Folder parent) {
+		parent.addFolderEntry(folder);
+		persistFolder(folder);
+		getFolderDao().update(parent);
+		defineSecurityPermission(folder, parent);
+	}
 
-		Folder parent = obtainParentFolder(parentInfo);
+	private Folder createFolderPathStructure(Folder parent, FileInfo info) throws DocumentApplicationException {
+		Validate.notNull(info.getFileName(), "Parameter fileInfo must contain a filename.");
+		List<String> path = retrievePathOfFileName(info.getFileName());
+		for (String folderName : path) {
+			parent = createFolderByName(folderName, parent, info.getCreated());
+		}
+		return parent;
+	}
 
-		for (FileInfo entry : (Collection<FileInfo>) fileEntries) {
-			createFileEntryWithContent(entry, parent);
+	/**
+	 * Creates a new root folder for the domain object
+	 * 
+	 * @param domainIdentifier
+	 * @return Folder - new root folder
+	 */
+	private Folder createRootFolderForDomainObject(Long domainIdentifier) {
+		Validate.notNull(domainIdentifier, "DomainIdentifier must not be null.");
+		logger.debug("Creating new root folder for domain object " + domainIdentifier);
+
+		Folder folder = Folder.Factory.newInstance();
+		folder.setName("");
+		folder.setParent(null);
+		folder.setCreated(new Date());
+		folder.setDomainIdentifier(domainIdentifier);
+
+		getFolderDao().create(folder);
+
+		defineSecurityPermission(folder, domainIdentifier);
+
+		return folder;
+	}
+
+	private void defineSecurityPermission(Object object, Object parent) {
+		getSecurityService().createObjectIdentity(object, parent);
+	}
+
+	/**
+	 * Filter not released files if user doesn't have Assist permission
+	 * 
+	 * @param domainObject
+	 * @param contests
+	 */
+	private void filterEntriesByPermission(Collection entries) {
+		// TODO may be implemented as aspect 
+		if (entries != null && entries.size() > 0) {
+			Object object = entries.iterator().next();
+			if (!AcegiUtils.hasPermission(object, new Integer[] { LectureAclEntry.CRUD})) {
+				CollectionUtils.filter(entries, new Predicate() {
+					public boolean evaluate(Object object) {
+						if (object instanceof FolderEntry) {
+							return ((FolderEntry) object).isReleased();
+						} else if (object instanceof FileInfo) {
+							return ((FileInfo) object).isReleased(); 
+						} else if (object instanceof FolderEntryInfo) {
+							return ((FolderEntryInfo) object).isReleased();
+						}  else {
+							return false;
+						}
+					}
+				}
+				);
+			}
 		}
 	}
+
+	private Folder getRootFolderForDomainObject(Object domainObject) throws IllegalAccessException,
+			InvocationTargetException {
+		Validate.notNull(domainObject, "domain_object must not be null!");
+
+		Long domainIdentifier = DomainObjectUtility.identifierFromObject(domainObject);
+		if (domainIdentifier == null) {
+			throw new DocumentServiceException("no_domain_object_identifier_found");
+		}
+		Folder folder = getFolderDao().findByDomainIdentifier(domainIdentifier);
+		if (folder == null) {
+			folder = createRootFolderForDomainObject(domainIdentifier);
+		}
+		return folder;
+	}
+
+	private void persistFileEntry(FileEntry entry, Folder parent) {
+		parent.addFolderEntry(entry);
+		persistFileEntry(entry);
+		getFolderDao().update(parent);
+	}
+
+	private void persistFileEntry(FileEntry file) {
+		logger.debug("saving file entry " + file.getName());
+		if (file.getCreated() == null) {
+			file.setCreated(new Date());
+		}
+
+		if (file.getId() == null) {
+			getFileEntryDao().create(file);
+		} else {
+			getFileEntryDao().update(file);
+		}
+	}
+
+	private void persistFolder(Folder folder) {
+		Validate.notNull(folder, "Parameter folder must not be null!");
+		Validate.notNull(folder, "Parameter folder must have a parent folder!");
+		if (logger.isDebugEnabled()) {
+			logger.debug("persisting folder " + folder.getName());
+		}
+		if (folder.getId() == null) {
+			getFolderDao().create(folder);
+		} else {
+			getFolderDao().update(folder);
+		}
+	}
+
+	private void collectAllFileEntries(Collection<FolderEntry> entries, List<FileEntry> selectedFiles) {
+		logger.debug("collectAllFileEntries(entries=" + entries + ", selectedFiles=" + selectedFiles + ")");
+		for (FolderEntry entry : entries) {
+			if (entry instanceof FileEntry) {
+				FileEntry fileEntry = (FileEntry) entry;
+				selectedFiles.add(fileEntry);
+			} else if (entry instanceof Folder) {
+				Folder folder = (Folder) entry;
+				collectAllFileEntries(folder.getEntries(), selectedFiles);
+			}
+		}
+	}
+
+	private FolderInfo loadFolderInfo(Long folderId) {
+		Validate.notNull(folderId, "Must provide a folder id.");
+		return (FolderInfo) getFolderDao().load(FolderDao.TRANSFORM_FOLDERINFO, folderId);
+	}
+
+	private FolderEntry loadFolderEntry(Long id) {
+		Validate.notNull(id, "Must provide a folder entry id.");
+		FolderEntry entry = getFolderEntryDao().load(id);
+		return entry;
+	}
+
+	private Folder obtainParentFolder(FolderInfo parentInfo) throws DocumentApplicationException {
+		Folder parent = getFolderDao().load(parentInfo.getId());
+		if (parent == null) {
+			throw new DocumentApplicationException("message_parent_folder_not_found");
+		}
+		return parent;
+	}
+
+	private List<String> retrievePathOfFileName(String fileName) {
+		List<String> path = new ArrayList<String>();
+		if (StringUtils.isNotBlank(fileName)) {
+			if (fileName.startsWith("/")) {
+				fileName = fileName.substring(1);
+			}
+			File file = new File(fileName);
+			while ((file = file.getParentFile()) != null) {
+				path.add(0, file.getName());
+			}
+		}
+		return path;
+	}
+
+	private void removeFolderEntry(FolderEntry folderEntry) throws Exception {
+		if (folderEntry instanceof FileEntry) {
+			getFolderEntryDao().remove(folderEntry.getId());
+			getRepositoryService().removeContent(folderEntry.getId());
+			getSecurityService().removeObjectIdentity(folderEntry);
+		} else if (folderEntry instanceof Folder) {
+			Folder folder = (Folder) folderEntry;
+			for (FolderEntry entry : folder.getEntries()) {
+				removeFolderEntry(entry);
+			}
+			getFolderEntryDao().remove(folder);
+			getSecurityService().removeObjectIdentity(folderEntry);
+		}
+	}
+
 }
