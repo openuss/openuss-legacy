@@ -113,8 +113,8 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	public String download() throws IOException {
 		logger.debug("downloading documents");
-		if (entrySelection.getMap().size() > 0) {
-			List<FileInfo> files = documentService.allFileEntries(selectedEntries());
+		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
+		if (files.size() > 0) {
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
 			response.sendRedirect(getExternalContext().getRequestContextPath() + Constants.ZIP_DOWNLOAD_URL);
@@ -127,9 +127,10 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	}
 
 	public String delete() {
-		logger.debug("deleting documents:");
-		if (entrySelection.getMap().size() > 0) {
-			setSessionBean(Constants.DOCUMENTS_SELECTED_FOLDERENTRIES, selectedEntries());
+		List<FolderEntryInfo> entries = selectedEntries();
+		if (entries.size() > 0) {
+			logger.debug("deleting documents:");
+			setSessionBean(Constants.DOCUMENTS_SELECTED_FOLDERENTRIES, entries);
 			entrySelection.getMap().clear();
 			return Constants.DOCUMENTS_REMOVE_FOLDERENTRY_PAGE;
 		} else {
