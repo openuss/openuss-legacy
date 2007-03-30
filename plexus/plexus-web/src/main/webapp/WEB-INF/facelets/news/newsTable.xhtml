@@ -82,7 +82,7 @@ ________________________________________________________________________________
    			<c:set var="linkStyle" value="int"/>
    		</c:if>
 		<c:if test="#{!empty newsController.newsItems}">
-			<o:block label="${headline}">
+			<o:block label="${headline}" styleClass="news_box">
 				<h:form id="newsTables">
 		   			<h:dataTable id="news" value="${value}" var="newsItem" binding="#{newsController.newsTable}" styleClass="news">
 	    				<h:column>
