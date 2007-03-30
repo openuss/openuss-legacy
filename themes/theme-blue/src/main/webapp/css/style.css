@@ -779,7 +779,6 @@ p.header_font_normal, span.header_font_normal {
 }
 
 .content_normal {
-  overflow: auto;
   padding: 0 0 3px 0;
   margin: 0;
   border-style: dotted solid none solid;
@@ -812,6 +811,10 @@ p.header_font_normal, span.header_font_normal {
 .content_normal iframe{
 	width: 97%;
 	margin: 0px;
+}
+
+.content_iframe {
+	margin-left: 10px;
 }
 
 .content_normal .usercontact ul {
@@ -1373,6 +1376,7 @@ td.col_max_left label input{
  * You probably don't want to alter this style.
  */
 .jscalendar-WH-div-style {
+	z-index: 999;
 	position: absolute;
 	visibility: hidden;
 }
@@ -1513,6 +1517,7 @@ td.col_max_left label input{
  * You probably don't want to alter this style.
  */
 .jscalendar-DB-div-style {
+	z-index: +999;
 	position: absolute;
 	visibility: hidden;
 }
