@@ -74,6 +74,75 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		assertNotNull(posts);
 		assertEquals(1, posts.size());
 		//test correct adding of a post
-		//Post
+		PostInfo newPost = generatePost();
+		discussionService.addPost(newPost, addedTopic);
+		topics = discussionService.getTopics(domainObject);
+		assertNotNull(topics);
+		assertEquals(1, topics.size());
+		addedTopic = topics.get(0); 
+		assertEquals(1, addedTopic.getAnswerCount().intValue());
 	}
+	
+	public void testDeletePost(){
+		//test delete 
+		//test correct creation of a example topic
+		Long domainObject = generateDomainObject();
+		PostInfo firstPost = generatePost();
+		discussionService.createTopic(firstPost, domainObject);
+		List<TopicInfo> topics = discussionService.getTopics(domainObject);
+		assertNotNull(topics);
+		assertEquals(1, topics.size());
+		TopicInfo addedTopic = topics.get(0); 
+		assertEquals(0, addedTopic.getAnswerCount().intValue());
+		assertEquals(addedTopic.getTitle(), firstPost.getTitle());
+		assertEquals(addedTopic.getSubmitter(), firstPost.getSubmitter());
+		assertEquals(addedTopic.getCreated(), firstPost.getCreated());
+		List<PostInfo> posts =discussionService.getPosts(addedTopic); 
+		assertNotNull(posts);
+		assertEquals(1, posts.size());
+		//test correct adding of a post
+		PostInfo newPost = generatePost();
+		discussionService.addPost(newPost, addedTopic);
+		topics = discussionService.getTopics(domainObject);
+		assertNotNull(topics);
+		assertEquals(1, topics.size());
+		addedTopic = topics.get(0); 
+		assertEquals(1, addedTopic.getAnswerCount().intValue());
+		discussionService.deletePost(newPost);
+		topics = discussionService.getTopics(domainObject);
+		assertNotNull(topics);
+		assertEquals(1, topics.size());
+		addedTopic = topics.get(0); 
+		assertEquals(0, addedTopic.getAnswerCount().intValue());			
+	}
+	
+	
+	public void testUpdatePost(){
+		
+	}
+	
+	public void testAddRemoveAttachment(){
+		
+	}
+	
+	public void AddRemoveThreadWatch(){
+		
+	}
+	
+	public void AddRemoveForumWatch(){
+		
+	}
+	
+	public void testAddGetForum(){		
+		ForumInfo fi = new ForumInfo();
+		Long domainObject = generateDomainObject();
+		fi.setDomainIdentifier(domainObject);
+		fi.setReadOnly(false);
+		discussionService.addForum(fi);
+		ForumInfo loadedForum = discussionService.getForum(domainObject);
+		assertNotNull(loadedForum);
+		assertEquals(domainObject, loadedForum.getDomainIdentifier());
+		
+	}
+	
 }

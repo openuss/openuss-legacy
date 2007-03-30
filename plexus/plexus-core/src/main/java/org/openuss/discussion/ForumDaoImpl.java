@@ -17,7 +17,6 @@ public class ForumDaoImpl
         org.openuss.discussion.Forum sourceEntity,
         org.openuss.discussion.ForumInfo targetVO)
     {
-        // @todo verify behavior of toForumInfo
         super.toForumInfo(sourceEntity, targetVO);
     }
 
@@ -27,7 +26,6 @@ public class ForumDaoImpl
      */
     public org.openuss.discussion.ForumInfo toForumInfo(final org.openuss.discussion.Forum entity)
     {
-        // @todo verify behavior of toForumInfo
         return super.toForumInfo(entity);
     }
 
@@ -39,17 +37,12 @@ public class ForumDaoImpl
      */
     private org.openuss.discussion.Forum loadForumFromForumInfo(org.openuss.discussion.ForumInfo forumInfo)
     {
-        // @todo implement loadForumFromForumInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.loadForumFromForumInfo(org.openuss.discussion.ForumInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
         org.openuss.discussion.Forum forum = this.load(forumInfo.getId());
         if (forum == null)
         {
             forum = org.openuss.discussion.Forum.Factory.newInstance();
         }
         return forum;
-        */
     }
 
     
@@ -58,7 +51,6 @@ public class ForumDaoImpl
      */
     public org.openuss.discussion.Forum forumInfoToEntity(org.openuss.discussion.ForumInfo forumInfo)
     {
-        // @todo verify behavior of forumInfoToEntity
         org.openuss.discussion.Forum entity = this.loadForumFromForumInfo(forumInfo);
         this.forumInfoToEntity(forumInfo, entity, true);
         return entity;
@@ -73,7 +65,6 @@ public class ForumDaoImpl
         org.openuss.discussion.Forum targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of forumInfoToEntity
         super.forumInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 

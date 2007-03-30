@@ -17,11 +17,17 @@ public class PostDaoImpl
         org.openuss.discussion.Post sourceEntity,
         org.openuss.discussion.PostInfo targetVO)
     {
-        // @todo verify behavior of toPostInfo
         super.toPostInfo(sourceEntity, targetVO);
-        // WARNING! No conversion for targetVO.formula (can't convert sourceEntity.getFormula():org.openuss.discussion.Formula to java.lang.String
-        // WARNING! No conversion for targetVO.editor (can't convert sourceEntity.getEditor():org.openuss.security.User to java.lang.String
-        // WARNING! No conversion for targetVO.submitter (can't convert sourceEntity.getSubmitter():org.openuss.security.User to java.lang.String
+        targetVO.setFormula(sourceEntity.getFormulaString());
+        targetVO.setEditor(sourceEntity.getEditorName());
+        targetVO.setSubmitter(sourceEntity.getEditorName());
+        targetVO.setIsEdited(sourceEntity.isEdited());
+        targetVO.setSubmitterId(sourceEntity.getSubmitter().getId());
+        if (sourceEntity.getAttachment()!=null){
+        	targetVO.setAttachmentName(sourceEntity.getAttachment().getName());
+        	targetVO.setAttachmentId(sourceEntity.getAttachment().getId());
+        	targetVO.setExtension(sourceEntity.getAttachment().getExtension());
+        }
     }
 
 
@@ -31,6 +37,8 @@ public class PostDaoImpl
     public org.openuss.discussion.PostInfo toPostInfo(final org.openuss.discussion.Post entity)
     {
         // @todo verify behavior of toPostInfo
+    	PostInfo pi = new PostInfo();
+    	//toPostInfo(sourceEntity, targetVO)
         return super.toPostInfo(entity);
     }
 

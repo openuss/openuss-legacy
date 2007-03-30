@@ -22,8 +22,7 @@ public class PostImpl
      */
     public java.lang.String getSubmitterName()
     {
-        // @todo implement public java.lang.String getSubmitterName()
-        return null;
+    	return this.getSubmitter().getDisplayName();
     }
 
     /**
@@ -31,8 +30,8 @@ public class PostImpl
      */
     public java.lang.String getEditorName()
     {
-        // @todo implement public java.lang.String getEditorName()
-        return null;
+    	if (getEditor()!=null) 	return	getEditor().getDisplayName();
+    	return "";
     }
 
     /**
@@ -40,8 +39,13 @@ public class PostImpl
      */
     public boolean isEdited()
     {
-        // @todo implement public boolean isEdited()
-        return false;
+    	return (getEditorName()!=null);
     }
+
+	@Override
+	public String getFormulaString() {
+		if (getFormula()!=null)	return getFormula().getFormula();
+		return "";
+	}
 
 }
