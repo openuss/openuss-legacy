@@ -15,7 +15,7 @@ public class TopicImpl
     /**
      * The serial version UID of this class. Needed for serialization.
      */
-    private static final long serialVersionUID = 5211551320631816548L;
+    private static final long serialVersionUID = 8403531529041681845L;
 
     /**
      * @see org.openuss.discussion.Topic#addPost(org.openuss.discussion.Post)

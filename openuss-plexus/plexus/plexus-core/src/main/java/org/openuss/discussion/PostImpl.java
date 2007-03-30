@@ -15,7 +15,7 @@ public class PostImpl
     /**
      * The serial version UID of this class. Needed for serialization.
      */
-    private static final long serialVersionUID = 5799081473246069248L;
+    private static final long serialVersionUID = 6101341233546650814L;
 
     /**
      * @see org.openuss.discussion.Post#getSubmitterName()

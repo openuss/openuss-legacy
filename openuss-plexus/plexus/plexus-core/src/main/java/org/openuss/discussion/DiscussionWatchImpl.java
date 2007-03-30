@@ -15,6 +15,6 @@ public class DiscussionWatchImpl
     /**
      * The serial version UID of this class. Needed for serialization.
      */
-    private static final long serialVersionUID = -4742775785930462048L;
+    private static final long serialVersionUID = 4904346669649837008L;
 
 }
