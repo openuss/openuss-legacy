@@ -49,7 +49,8 @@ public class FolderEntryImpl extends org.openuss.documents.FolderEntryBase imple
 	
 	@Override
 	public String getAbsoluteName() {
-		return getPath()+"/"+getFileName();
+		String path = getPath();
+		return StringUtils.isBlank(path)?getFileName():getPath()+"/"+getFileName();
 	}
 
 	@Override

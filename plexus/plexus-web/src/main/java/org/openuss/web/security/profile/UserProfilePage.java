@@ -131,7 +131,7 @@ public class UserProfilePage extends BasePage{
 	 * @return outcome
 	 */
 	public String showProfile() {
-		setSessionBean(Constants.SHOW_USER, user);
+		setSessionBean(Constants.SHOW_USER_PROFILE, user);
 		navigator.setLastView(Constants.USER_PROFILE_PAGE);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}

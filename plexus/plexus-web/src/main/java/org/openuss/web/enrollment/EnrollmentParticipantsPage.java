@@ -49,7 +49,7 @@ public class EnrollmentParticipantsPage extends AbstractEnrollmentPage {
 		EnrollmentMemberInfo participant = data.getRowData();
 		User user = User.Factory.newInstance();
 		user.setId(participant.getUserId());
-		setSessionBean("showuser", user);
+		setSessionBean(Constants.SHOW_USER_PROFILE, user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 

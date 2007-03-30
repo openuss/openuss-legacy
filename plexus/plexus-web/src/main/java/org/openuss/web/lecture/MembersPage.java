@@ -138,7 +138,7 @@ public class MembersPage extends AbstractLecturePage {
 	public String showProfile() {
 		FacultyMember member = members.getRowData();
 		User user = securityService.getUser(member.getId());
-		setSessionBean("showuser", user);
+		setSessionBean(Constants.SHOW_USER_PROFILE, user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 

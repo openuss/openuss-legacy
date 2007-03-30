@@ -22,6 +22,22 @@
 		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
 	</page>
 
+	<page view-id="/views/secured/documents/folderedit.xhtml">
+		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.CREATE}"/>
+	</page>
+
+	<page view-id="/views/secured/documents/fileedit.xhtml">
+		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.CREATE}"/>
+	</page>
+
+	<page view-id="/views/secured/documents/addzip.xhtml">
+		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.CREATE}"/>
+	</page>
+
+	<page view-id="/views/secured/documents/remove.xhtml">
+		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.CREATE}"/>
+	</page>
+
 	<page view-id="/views/secured/braincontest/*">
 		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.READ}"/>
 		<parameter name="braincontest" value="#{braincontest_contest.id}" converterId="javax.faces.Long"/>
@@ -30,10 +46,6 @@
 	
 	<page view-id="/views/secured/braincontest/braincontestnew.xhtml">
 		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.ASSIST}"/>
-<!-- 
-		<parameter name="braincontest" value="#{braincontest_contest.id}" converterId="javax.faces.Long"/>
-		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
- -->
 	</page>
 	
 </pages>

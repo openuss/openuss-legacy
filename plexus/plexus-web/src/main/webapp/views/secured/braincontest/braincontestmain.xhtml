@@ -37,7 +37,7 @@
 
 		<h:form id="brainContestTableFrom">
 			<plexus:dataTable id="brainContestTable"
-				columnClasses="col_min_center, col_max_left, col_min_center, col_commands_three"
+				columnClasses="col_date, col_max_left, col_filesize, col_commands"
 				label="#{msg.braincontest_main_header}"
 				value="views$secured$braincontest$braincontestmain.data"
 				var="braincontest" rows="10">
@@ -58,8 +58,7 @@
 
 				<t:column>
 					<plexus:commandSortHeader columnName="answers">#{msg['braincontest_main_column_answers']}</plexus:commandSortHeader>
-					<h:outputText
-						value="#{braincontest.answers} / #{braincontest.tries}"/>
+					<h:outputText value="#{braincontest.answers} / #{braincontest.tries}"/>
 				</t:column>
 
 				<plexus:column header="#{msg.braincontest_main_column_actions}">
@@ -79,12 +78,14 @@
 					</s:acl>	
 				</plexus:column>
 			</plexus:dataTable>
-			<o:block>
-				<plexus:command
-					bean="#{views$secured$braincontest$braincontestmain}"
-					action="newContest" label="#{msg.braincontest_new}"
-					title="#{msg.braincontest_new}" />
-			</o:block>
+			<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}">
+				<o:block>
+					<plexus:command
+						bean="#{views$secured$braincontest$braincontestmain}"
+						action="newContest" label="#{msg.braincontest_new}"
+						title="#{msg.braincontest_new}" />
+				</o:block>
+			</s:acl>
 		</h:form>
 	</ui:define>
 </ui:composition>

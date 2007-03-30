@@ -38,7 +38,7 @@
 			<plexus:dataTable id="brainContestTopList"
 				label="#{msg.braincontest_main_header}-#{msg.braincontest_toplist_header}-#{braincontest_contest.title} "
 				value="views$secured$braincontest$braincontesttop.data"
-		    	columnClasses=" col_min_center, col_min_center,col_max_left, col_min_center,col_min_center,col_min_center"				
+		    	columnClasses="col_min_center, col_date, col_min_center, col_max_left"				
 				var="answer" rows="10" rowIndex="index">
 				<t:column>
 					<f:facet name="header">
@@ -51,7 +51,9 @@
 					<f:facet name="header">
 						<h:outputText value="#{msg['braincontest_toplist_time']}" />
 					</f:facet>
-					<h:outputText value="#{answer.answeredAt}" />
+					<h:outputText value="#{answer.answeredAt}" >
+						<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+					</h:outputText>
 				</t:column>
 
 				<t:column>
@@ -66,7 +68,8 @@
 						alt="#{msg.user_profile_no_image}"
 						title="#{msg.user_profile_no_image}"
 						rendered="#{empty answer.imageId}" />
-
+				</t:column>
+				<t:column>
 					<h:outputText value="#{answer.solverName}" />
 				</t:column>
 
