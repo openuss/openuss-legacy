@@ -17,9 +17,7 @@ public class TopicDaoImpl
         org.openuss.discussion.Topic sourceEntity,
         org.openuss.discussion.TopicInfo targetVO)
     {
-        // @todo verify behavior of toTopicInfo
         super.toTopicInfo(sourceEntity, targetVO);
-        // WARNING! No conversion for targetVO.submitter (can't convert sourceEntity.getSubmitter():org.openuss.security.User to java.lang.String
     }
 
 
@@ -28,7 +26,6 @@ public class TopicDaoImpl
      */
     public org.openuss.discussion.TopicInfo toTopicInfo(final org.openuss.discussion.Topic entity)
     {
-        // @todo verify behavior of toTopicInfo
         return super.toTopicInfo(entity);
     }
 
@@ -40,17 +37,12 @@ public class TopicDaoImpl
      */
     private org.openuss.discussion.Topic loadTopicFromTopicInfo(org.openuss.discussion.TopicInfo topicInfo)
     {
-        // @todo implement loadTopicFromTopicInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.loadTopicFromTopicInfo(org.openuss.discussion.TopicInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
         org.openuss.discussion.Topic topic = this.load(topicInfo.getId());
         if (topic == null)
         {
             topic = org.openuss.discussion.Topic.Factory.newInstance();
         }
         return topic;
-        */
     }
 
     
@@ -59,7 +51,6 @@ public class TopicDaoImpl
      */
     public org.openuss.discussion.Topic topicInfoToEntity(org.openuss.discussion.TopicInfo topicInfo)
     {
-        // @todo verify behavior of topicInfoToEntity
         org.openuss.discussion.Topic entity = this.loadTopicFromTopicInfo(topicInfo);
         this.topicInfoToEntity(topicInfo, entity, true);
         return entity;
@@ -74,7 +65,6 @@ public class TopicDaoImpl
         org.openuss.discussion.Topic targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of topicInfoToEntity
         super.topicInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 
