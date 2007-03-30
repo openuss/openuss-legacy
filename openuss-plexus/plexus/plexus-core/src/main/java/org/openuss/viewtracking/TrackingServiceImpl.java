@@ -83,4 +83,11 @@ public class TrackingServiceImpl extends org.openuss.viewtracking.TrackingServic
 		}
 		return entity;
 	}
+
+
+	@Override
+	protected void handleRemove(Object domainObject) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }
