@@ -69,7 +69,7 @@ public class AspirantsPage extends AbstractLecturePage {
 		UserInfo userInfo = data.getRowData();
 		User user = User.Factory.newInstance();
 		user.setId(userInfo.getId());
-		setSessionBean("showuser", user);
+		setSessionBean(Constants.SHOW_USER_PROFILE, user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	

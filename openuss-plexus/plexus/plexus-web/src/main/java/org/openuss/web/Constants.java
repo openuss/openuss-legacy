@@ -56,7 +56,7 @@ public class Constants {
 	public static final String USER_PROFILE_PAGE = "user_profile";
 	public static final String USER_PROFILE_VIEW_PAGE = "user_profile_view";
 
-	public static final String SHOW_USER = "showuser";
+	public static final String SHOW_USER_PROFILE = "showuser";
 
 	// session constants of the last view - used for back buttons
 	public static final String LAST_VIEW = "last_view";

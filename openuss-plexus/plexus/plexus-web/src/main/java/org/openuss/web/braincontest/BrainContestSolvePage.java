@@ -8,15 +8,10 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-
-import org.openuss.braincontest.BrainContest;
-import org.openuss.braincontest.Answer;
 import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.braincontest.BrainContestInfo;
 import org.openuss.braincontest.BrainContestService;
 import org.openuss.documents.FileInfo;
-import org.openuss.documents.FolderEntry;
-import org.openuss.lecture.LectureException;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
 import org.openuss.web.enrollment.AbstractEnrollmentPage;
@@ -51,6 +46,7 @@ public class BrainContestSolvePage extends AbstractEnrollmentPage {
 		if (!isPostBack()) {
 			if ( brainContest != null && brainContest.getId() != null) {
 				brainContest = brainContestService.getContest(brainContest);
+				setSessionBean(Constants.BRAINCONTENT_CONTEST, brainContest);
 			}
 			if (brainContest == null || brainContest.getId() == null) {
 				addError(i18n("braincontest_message_contest_not_found"));
@@ -63,7 +59,9 @@ public class BrainContestSolvePage extends AbstractEnrollmentPage {
 				redirect(Constants.BRAINCONTEST_MAIN);
 			}
 			List<FileInfo> attachments = brainContestService.getAttachments(brainContest);
-			if (attachments!= null&&attachments.size()>0)	setAttachment(attachments.get(0));
+			if (attachments!= null&&attachments.size()>0) {
+				setAttachment(attachments.get(0));
+			}
 		}		
 	}
 

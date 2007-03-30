@@ -6,7 +6,8 @@
       xmlns:plexus="http://www.openuss.org/plexus/jsf"
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols"
-      xmlns:c="http://java.sun.com/jstl/core">
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:s="http://www.openuss.org/jsf-security">
       
     <plexus:dataTable 
     	id="documentstable" 
@@ -21,6 +22,7 @@
 				<h:selectBooleanCheckbox 
 					immediate="true" 
 					onchange="this.form.submit();" 
+					onclick="this.form.submit();" 
 					value="#{documents_entry_selection.state}" 
 					valueChangeListener="#{documents_entry_selection.switchSelection}"/>
 			</f:facet>
@@ -54,25 +56,27 @@
 		<t:column>
 			<plexus:commandSortHeader columnName="created"> #{msg['documents_main_column_create']} </plexus:commandSortHeader>
 			<h:outputText value="#{entry.created}">
-				<f:convertDateTime type="both"/>
+				<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 			</h:outputText>
 		</t:column>
 
 		<t:column>
 			<plexus:commandSortHeader columnName="modified"> #{msg['documents_main_column_change']} </plexus:commandSortHeader>
 			<h:outputText value="#{entry.modified}">
-				<f:convertDateTime type="both"/>
+				<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 			</h:outputText>
 		</t:column>
 		
-		<plexus:column header="#{msg.documents_main_column_actions}">
-			<plexus:command 
-			    bean="#{views$secured$documents$documents}"
-				action="editFolderEntry" 
-				label="#{msg.documents_main_button_change}" 
-				title="#{msg.documents_main_button_change}"
-				styleClass="button_edit"/>
-		</plexus:column>
+		<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.CREATE}">
+			<plexus:column header="#{msg.documents_main_column_actions}">
+				<plexus:command 
+				    bean="#{views$secured$documents$documents}"
+					action="editFolderEntry" 
+					label="#{msg.documents_main_button_change}" 
+					title="#{msg.documents_main_button_change}"
+					styleClass="button_edit"/>
+			</plexus:column>
+		</s:acl>
 		
 	</plexus:dataTable>      
 </ui:composition>
