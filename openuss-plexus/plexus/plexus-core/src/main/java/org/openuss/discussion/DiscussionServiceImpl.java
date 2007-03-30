@@ -5,6 +5,7 @@
  */
 package org.openuss.discussion;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -19,7 +20,7 @@ public class DiscussionServiceImpl
     /**
      * @see org.openuss.discussion.DiscussionService#createTopic(org.openuss.discussion.PostInfo, java.lang.Long)
      */
-    protected void handleCreateTopic(org.openuss.discussion.PostInfo post, java.lang.Long domainObject)
+    protected void handleCreateTopic(PostInfo post, Long domainObject)
         throws java.lang.Exception
     {
     	//create topic
@@ -28,6 +29,9 @@ public class DiscussionServiceImpl
     	ti = getTopicDao().toTopicInfo(topic);
     	//add first post
     	handleAddPost(post, ti);
+    	Post p = getPostDao().postInfoToEntity(post);
+    	topic.setFirst(p);
+    	topic.setSubmitter(getSecurityService().getUserByName(post.getSubmitter()));
     }
 
 	private TopicInfo extractTopicInfo(org.openuss.discussion.PostInfo post, java.lang.Long domainObject) {
@@ -50,9 +54,24 @@ public class DiscussionServiceImpl
         throws java.lang.Exception
     {
     	Topic t = getTopicDao().topicInfoToEntity(topic);
-    	List<DiscussionWatch> topicWatch = getDiscussionWatchDao().findByTopic(t);
-    	getDiscussionWatchDao().remove(topicWatch);
+    	//remove all discussion watches to topic
+    	List<DiscussionWatch> topicWatches = getDiscussionWatchDao().findByTopic(t);
+    	getDiscussionWatchDao().remove(topicWatches);
+    	List<Post> posts = t.getPosts();
+    	// remove all attachments to posts of topic, 
+    	// remove all viewstates of posts of topic 
+    	Iterator i = posts.iterator();
+    	Post p;
+    	while (i.hasNext()){
+    		p = (Post) i.next();
+    		getTrackingService().remove(p);
+    		getDocumentService().removeFolderEntry(getDocumentService().getFolder(p).getId());
+    	}
+    	//remove viewstates to topic
+    	getTrackingService().remove(t);
+    	//remove topic itself
     	getTopicDao().remove(t);
+    	
     }
 
     /**
@@ -61,7 +80,20 @@ public class DiscussionServiceImpl
     protected void handleAddPost(org.openuss.discussion.PostInfo post, org.openuss.discussion.TopicInfo topic)
         throws java.lang.Exception
     {
-    	//TODO implement
+    	Topic t = getTopicDao().topicInfoToEntity(topic);
+    	Post newPost = getPostDao().postInfoToEntity(post);
+    	newPost.setTopic(t);
+    	newPost.setSubmitter(getSecurityService().getUserByName(post.getSubmitter()));
+    	getPostDao().update(newPost);
+    	
+    	
+    	List<Post> posts = t.getPosts();
+    	posts.add(newPost);
+    	t.setPosts(posts);
+    	t.setLast(newPost);
+    	getTopicDao().update(t);
+    	//TODO formula?
+    	
     }
 
     /**
@@ -70,9 +102,31 @@ public class DiscussionServiceImpl
     protected void handleDeletePost(org.openuss.discussion.PostInfo post)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleDeletePost(org.openuss.discussion.PostInfo post)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleDeletePost(org.openuss.discussion.PostInfo post) Not implemented!");
+    	Post p = getPostDao().postInfoToEntity(post);
+    	Topic t = p.getTopic();
+    	List<Post> posts = t.getPosts();
+    	//if first and only -> delete thread
+    	if (t.getAnswerCount()==0){
+    		handleDeleteTopic(getTopicDao().toTopicInfo(t));
+    		return;
+    	}    		
+    	//if first post -> repair first
+    	else if (t.getFirst().getId()==p.getId()){
+    		Post newFirst = posts.get(1);
+    		t.setFirst(newFirst);
+    	}
+    	//if last post -> delete post, repair last
+    	else if(p.getTopic().getLast().getId()==p.getId()){
+    		Post newLast = posts.get(posts.size()-2);
+    		t.setLast(newLast);
+    	}
+    	// post between first and last -> just delete post    	
+    	posts.remove(p);
+    	t.setPosts(posts);
+    	getTopicDao().update(t);
+    	getPostDao().remove(p);
     }
+    
 
     /**
      * @see org.openuss.discussion.DiscussionService#updatePost(org.openuss.discussion.PostInfo)
