@@ -8,7 +8,7 @@ public class DiscussionTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.openuss.discussion");
 		//$JUnit-BEGIN$
-		//suite.addTestSuite(FormulaDaoTest.class);
+		suite.addTestSuite(DiscussionServiceIntegrationTest.class);
 		//$JUnit-END$
 		return suite;
 	}

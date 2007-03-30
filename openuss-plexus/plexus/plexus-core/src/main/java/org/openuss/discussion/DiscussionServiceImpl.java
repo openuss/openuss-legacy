@@ -5,6 +5,8 @@
  */
 package org.openuss.discussion;
 
+import org.apache.commons.lang.Validate;
+
 /**
  * @see org.openuss.discussion.DiscussionService
  */
@@ -161,5 +163,31 @@ public class DiscussionServiceImpl
         // @todo implement protected void handleRemoveAttachment(org.openuss.discussion.PostInfo post)
         throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleRemoveAttachment(org.openuss.discussion.PostInfo post) Not implemented!");
     }
+
+	@Override
+	protected void handleAddForum(ForumInfo forum) throws Exception {
+		Validate.notNull(forum, "forum must not be null");
+		Validate.notNull(forum.getDomainIdentifier(), "domain Identifier of forum must not be null");
+		Forum forumObject = getForumDao().forumInfoToEntity(forum);
+		getForumDao().create(forumObject);		
+	}
+
+	@Override
+	protected void handleChangeEditState(ForumInfo forum) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleChangeEditState(TopicInfo topic) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected ForumInfo handleGetForum(Long domainIdentifier) throws Exception {
+		Forum forum = getForumDao().findByDomainIdentifier(domainIdentifier);
+		return getForumDao().toForumInfo(forum);
+	}
 
 }
