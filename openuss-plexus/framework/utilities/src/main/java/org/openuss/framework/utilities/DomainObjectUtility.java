@@ -1,15 +1,24 @@
 package org.openuss.framework.utilities;
 
+import org.apache.log4j.Logger;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class DomainObjectUtility {
 
-	public static Long identifierFromObject(Object object) throws IllegalAccessException, InvocationTargetException {
+	private static final Logger logger = Logger.getLogger(DomainObjectUtility.class);
+
+	public static Long identifierFromObject(Object object) {
 		if (object instanceof Long) {
 			return (Long) object;
 		} else {
-			return obtainIdentityByGetIdMethod(object);
+			try {
+				return obtainIdentityByGetIdMethod(object);
+			} catch (Exception e) {
+				logger.error("couldn't obtain id from domain object.",e);
+				return null;
+			}
 		}
 	}
 	
