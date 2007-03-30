@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.framework.web.jsf.util.FacesUtils;
@@ -110,10 +111,11 @@ public class AclHandler extends TagHandler {
 	private void logBodySkipped(Object resolvedDomainObject) {
 		if (logger.isDebugEnabled()) {
 			if (reverted) {
-				logger.debug("Has permission on "+resolvedDomainObject+", due to reverted the body is skiped!");
+				logger.debug("Has permission on "+ReflectionToStringBuilder.toString( resolvedDomainObject )+", due to reverted the body is skiped!");
 			} else {					
-				logger.debug("No permission on "+resolvedDomainObject+" to see the body!");
+				logger.debug("No permission on "+ReflectionToStringBuilder.toString( resolvedDomainObject )+" to see the body!");
 			}
+			
 		}
 	}
 	
