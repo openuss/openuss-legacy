@@ -33,13 +33,10 @@
 	<ui:define name="content">
 		<h:form id="newFolderForm">
 
-			<o:block label="#{msg.document_folder_new}">
+			<o:block label="#{msg.document_folder_edit_header}" styleClass="form_box">
 				<h:outputText value="#{msg.documents_target_folder}" styleClass="field_label"/>
-				<span class="content_font_normal">
-					<t:dataList var="folder" layout="list" value="#{views$secured$documents$folder.path}">
-						<h:outputText value="#{folder.name}" rendered="#{!folder.root}"/> /
-					</t:dataList>
-				</span>
+				<ui:include src="pathinfo.xhtml" />
+				
 				<o:input entity="documents_selected_folder" property="name" required="true" maxlength="100"/>
 				<o:input entity="documents_selected_folder" property="description" type="textarea"/>
 			</o:block>

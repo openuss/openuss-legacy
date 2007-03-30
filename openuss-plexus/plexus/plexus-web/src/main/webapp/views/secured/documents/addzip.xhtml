@@ -37,11 +37,8 @@
 					<h:outputText value="#{msg.documnets_add_zip_text}" escape="false"/>
 				</p>
 				<h:outputText value="#{msg.documents_target_folder}" styleClass="field_label"/>
-				<span class="content_font_normal">
-					<t:dataList var="folder" layout="list" value="#{views$secured$documents$documents.path}">
-						<h:outputText value="#{folder.name}" rendered="#{!folder.root}"/> /
-					</t:dataList>
-				</span>
+				<ui:include src="pathinfo.xhtml" />
+				
 				<h:outputLabel value="#{msg.newdocument_file}" for="zipfile" styleClass="field_label" />
 				<t:inputFileUpload id="zipfile" storage="file" accept="*" immediate="true" styleClass="uploadField">
 					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />

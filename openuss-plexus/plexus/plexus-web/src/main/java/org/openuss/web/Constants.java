@@ -82,8 +82,9 @@ public class Constants {
 	public static final String DOCUMENTS_MAIN_PAGE = "documents_main";
 	public static final String DOCUMENTS_ADD_ZIP_PAGE = "documents_add_zip";
 	public static final String DOCUMENTS_EDIT_FOLDER_PAGE = "documents_edit_folder";
-	public static final String DOCUMENTS_EDIT_FILEENTRY_PAGE = "documents_edit_fileentry";
+	public static final String DOCUMENTS_EDIT_FILEENTRY_PAGE = "documents_edit_file";
 	public static final String DOCUMENTS_REMOVE_FOLDERENTRY_PAGE = "documents_remove_folderentries";
+	public static final String DOCUMENTS_FOLDERENTRY_SELECTION = "documents_entry_selection";
 
 	//brain contest
 	public static final String BRAINCONTEST_NEWCONTEST = "braincontest_new";
@@ -100,4 +101,5 @@ public class Constants {
 	
 	
 	public static final String UPLOAD_FILE_MANAGER = "uploadFileManager";
+
 }

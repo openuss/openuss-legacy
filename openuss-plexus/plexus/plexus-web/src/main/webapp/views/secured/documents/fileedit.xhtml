@@ -34,19 +34,15 @@
 		<h:form id="newDocumentForm" enctype="multipart/form-data">
 			<o:block label="#{msg.documents_file}">
 				<h:outputText value="#{msg.documents_target_folder}" styleClass="field_label" />
-				<span class="content_font_normal"> 
-					<t:dataList var="folder" layout="list" value="#{views$secured$documents$folder.path}">
-						<h:outputText value="#{folder.name}" rendered="#{!folder.root}" /> /
-					</t:dataList> 
-				</span>
+				<ui:include src="pathinfo.xhtml" />
 				
 				<o:input entity="documents_selected_file" property="name" maxlength="100" />
 				<o:input entity="documents_selected_file" property="description" type="textarea" />
 
-				<f:subview rendered="${!empty documents_selected_filename.filename}">
+				<f:subview rendered="${!empty documents_selected_file.fileName}">
 					<div class="content_font_normal">
-						<h:graphicImage	value="/images/filetypes/#{sessionScope.documents_selected_filename.extension}.gif" />
-						<h:outputText value="#{documents_selected_filename.filename}"/>
+						<h:graphicImage	value="/images/filetypes/#{sessionScope.documents_selected_file.extension}.gif" />
+						&#160;<h:outputText value="#{documents_selected_file.fileName}"/>
 					</div>
 				</f:subview>
 
@@ -62,9 +58,6 @@
 				</t:inputFileUpload>
 				<h:message for="file" styleClass="field_error" />
 
-				<p class="content_font_normal">
-					<h:outputText value="Sie können optional den bei herunterladen anzuzeigenden Dateinamen bestimmen"/>
-				</p>
 				<o:input entity="documents_selected_file" property="fileName" maxlength="100"/>
 				
 				<o:input entity="documents_selected_file" property="created" required="true" label="#{msg.documents_selected_file_release}" type="full"/>

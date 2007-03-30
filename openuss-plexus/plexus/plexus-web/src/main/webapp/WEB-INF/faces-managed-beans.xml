@@ -77,6 +77,13 @@
  		<managed-bean-class>org.openuss.documents.FileInfo</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>documents_entry_selection</managed-bean-name>
+ 		<managed-bean-class>org.openuss.web.documents.FolderEntrySelection</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 
  	
  	<managed-bean>
  		<managed-bean-name>braincontest_answer</managed-bean-name>
