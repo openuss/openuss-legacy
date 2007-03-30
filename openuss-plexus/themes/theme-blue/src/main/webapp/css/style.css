@@ -779,6 +779,7 @@ p.header_font_normal, span.header_font_normal {
 }
 
 .content_normal {
+  overflow: auto;
   padding: 0 0 3px 0;
   margin: 0;
   border-style: dotted solid none solid;
@@ -1302,6 +1303,11 @@ td .pulldown_small {
 }
 
 
+td.col_commands {
+	width: 50px;
+}
+
+
 td.col_commands_two {
 	width: 172px;
 }
@@ -1313,6 +1319,16 @@ td.col_commands_three {
 td.col_min_left {
 	width: 110px;
 	text-align: left;
+}
+
+td.col_date {
+	width: 100px;
+	text-align: center;
+}
+
+td.col_filesize {
+	width: 60px;
+	text-align: right;
 }
 
 td.col_min_center {	
