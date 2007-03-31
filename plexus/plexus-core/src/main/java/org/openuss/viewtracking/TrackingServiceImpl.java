@@ -44,7 +44,8 @@ public class TrackingServiceImpl extends org.openuss.viewtracking.TrackingServic
 
 	@Override
 	protected void handleSetModified(Object domainObject) throws Exception {
-		setViewState(ViewState.MODIFIED, domainObject);
+		Long domainIdentifier = obtainDomainIdentifier(domainObject);
+		getDomainViewStateDao().updateAllToModified(domainIdentifier);
 	}
 
 	@Override
@@ -84,10 +85,17 @@ public class TrackingServiceImpl extends org.openuss.viewtracking.TrackingServic
 		return entity;
 	}
 
-
 	@Override
 	protected void handleRemove(Object domainObject) throws Exception {
-		// TODO Auto-generated method stub
-		
+		Long domainIdentifier = obtainDomainIdentifier(domainObject);
+		getDomainViewStateDao().removeAllByDomain(domainIdentifier);
+	}
+
+
+	private Long obtainDomainIdentifier(Object domainObject) {
+		Validate.notNull(domainObject, "Parameter domainObject must not be null");
+		Long domainIdentifier = DomainObjectUtility.identifierFromObject(domainObject);
+		Validate.notNull(domainIdentifier, "Parameter domainObject must contain an identifier");
+		return domainIdentifier;
 	}
 }
