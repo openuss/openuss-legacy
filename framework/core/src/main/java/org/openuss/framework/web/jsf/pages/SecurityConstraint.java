@@ -2,14 +2,12 @@ package org.openuss.framework.web.jsf.pages;
 
 import java.io.IOException;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.log4j.Logger;
-
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.openuss.framework.utilities.DomainObjectUtility;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.framework.web.jsf.util.FacesUtils;
@@ -80,14 +78,12 @@ public class SecurityConstraint {
 		Long identifier = DomainObjectUtility.identifierFromObject(resolvedDomainObject);
 		if (resolvedDomainObject == null || identifier == null) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("domain object or it's id is null - sure you can access not existing objects."
-						+ ReflectionToStringBuilder.reflectionToString(resolvedDomainObject));
+				logger.debug("domain object or it's id is null - sure you can access not existing objects."+resolvedDomainObject);
 			}
 			return true;
 		} else {
 			if (logger.isDebugEnabled()) {
-				logger.debug("checking permission on "
-						+ ReflectionToStringBuilder.reflectionToString(resolvedDomainObject));
+				logger.debug("checking permission on "+resolvedDomainObject);
 			}
 			return AcegiUtils.hasPermission(resolvedDomainObject, new Integer[] { permissions });
 		}
