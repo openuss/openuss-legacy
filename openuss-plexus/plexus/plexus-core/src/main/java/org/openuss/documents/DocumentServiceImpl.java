@@ -221,7 +221,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		getFileEntryDao().toFileInfo(entry, fileInfo);
 	}
 
-	private void createFolder(Folder folder, Folder parent) {
+	private void createFolder(Folder folder, Folder parent) throws DocumentApplicationException {
 		parent.addFolderEntry(folder);
 		persistFolder(folder);
 		getFolderDao().update(parent);
@@ -308,7 +308,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		return folder;
 	}
 
-	private void persistFileEntry(FileEntry entry, Folder parent) {
+	private void persistFileEntry(FileEntry entry, Folder parent) throws DocumentApplicationException {
 		parent.addFolderEntry(entry);
 		persistFileEntry(entry);
 		getFolderDao().update(parent);

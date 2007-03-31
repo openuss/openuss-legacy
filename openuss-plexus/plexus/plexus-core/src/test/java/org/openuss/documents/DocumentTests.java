@@ -12,6 +12,7 @@ public class DocumentTests {
 		suite.addTestSuite(FileEntryDaoTest.class);
 		suite.addTestSuite(FolderDaoTest.class);
 		suite.addTestSuite(FolderEntryDaoTest.class);
+		suite.addTestSuite(FolderTest.class);
 		//$JUnit-END$
 		return suite;
 	}

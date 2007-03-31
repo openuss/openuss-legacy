@@ -7,6 +7,7 @@ package org.openuss.documents;
 
 import java.util.Date;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -14,15 +15,16 @@ import org.apache.commons.lang.StringUtils;
  * @author ingo dueppe
  */
 public class FolderImpl extends org.openuss.documents.FolderBase implements org.openuss.documents.Folder {
-	/**
-	 * The serial version UID of this class. Needed for serialization.
-	 */
+
 	private static final long serialVersionUID = 8286059784837095960L;
 	
 	/**
 	 * @see org.openuss.documents.Folder#addFolderEntry(org.openuss.documents.FolderEntry)
 	 */
-	public void addFolderEntry(org.openuss.documents.FolderEntry entry) {
+	public void addFolderEntry(org.openuss.documents.FolderEntry entry) throws DocumentApplicationException {
+		if (!canAdd(entry)){
+			throw new DocumentApplicationException("documents_folder_not_a_unique_filename");
+		}
 		if (getEntries() != null && entry != null) {
 			getEntries().add(entry);
 			entry.setParent(this);
@@ -37,9 +39,9 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 	}
 
 	@Override
-	public boolean isValidSubfolderName(String name) {
+	public boolean canAdd(FolderEntry folderEntry) {
 		for (FolderEntry entry : getEntries()) {
-			if (StringUtils.equalsIgnoreCase(name, entry.getName())) {
+			if (StringUtils.equalsIgnoreCase(folderEntry.getFileName(), entry.getFileName()) && !ObjectUtils.equals(entry, folderEntry)) {
 				return false; // not valid
 			}
 		}
@@ -92,4 +94,5 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 		}
 		return size;
 	}
+
 }
