@@ -78,11 +78,11 @@ public class UploadedDocument {
 
 	public InputStream getInputStream() throws IOException {
 		if (inputStream == null) {
-			inputStream = new FileInputStream(file);
+			inputStream = new ProxyFileInputStream(file);
 		}
 		return inputStream;
 	}
-
+	
 	public Object getSource() {
 		return source;
 	}

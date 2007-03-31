@@ -1,8 +1,10 @@
 package org.openuss.web.documents;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -50,10 +52,12 @@ public class FileEditPage extends AbstractDocumentPage{
 				if (StringUtils.isBlank(selectedFile.getFileName())) {
 					selectedFile.setFileName(document.getFileName());
 				}
-				selectedFile.setInputStream(document.getInputStream());
+				selectedFile.setExtension(extension(document.getFileName()));
+
 				selectedFile.setContentType(document.getContentType());
 				selectedFile.setFileSize(document.getFileSize());
-				
+				selectedFile.setInputStream(document.getInputStream());
+
 				documentService.createFileEntry(selectedFile, retrieveActualFolder());
 				uploadFileManager.removeDocument(document);
 			} else {
@@ -66,6 +70,16 @@ public class FileEditPage extends AbstractDocumentPage{
 		}
 		removeSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRY);
 		return Constants.DOCUMENTS_MAIN_PAGE;
+	}
+
+	
+	private String extension(String fileName) {
+		if (fileName != null) {
+			int index = fileName.lastIndexOf('.');
+			return fileName.substring(index+1);
+		} else {
+			return "";
+		}
 	}
 
 
