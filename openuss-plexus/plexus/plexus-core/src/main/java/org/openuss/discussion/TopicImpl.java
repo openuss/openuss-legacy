@@ -54,7 +54,8 @@ public class TopicImpl
      */
     public java.lang.String getTitle()
     {
-    	return getFirst().getTitle();
+    	if (getFirst()!=null) return getFirst().getTitle();
+    	return null;
     }
 
     /**
@@ -62,7 +63,8 @@ public class TopicImpl
      */
     public java.util.Date getLastPostDate()
     {
-	     return getLast().getLastModification();
+	     if (getLast()!=null) getLast().getLastModification();
+	     return null;
     }
 
     /**
@@ -70,7 +72,8 @@ public class TopicImpl
      */
     public java.lang.String getLastPostSubmitterName()
     {
-    	return getLast().getSubmitterName();
+    	if (getLast()!=null) getLast().getSubmitterName();
+    	return null;
     }
 
 }

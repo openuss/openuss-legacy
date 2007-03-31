@@ -18,6 +18,20 @@ public class TopicDaoImpl
         org.openuss.discussion.TopicInfo targetVO)
     {
         super.toTopicInfo(sourceEntity, targetVO);
+        if (sourceEntity.getForum()!=null||sourceEntity.getId()!=null)
+        	targetVO.setForumId(sourceEntity.getForum().getId());
+        if (sourceEntity.getFirst()!=null){
+        	if (sourceEntity.getFirst().getTitle()!=null)
+        		targetVO.setTitle(sourceEntity.getFirst().getTitle());
+        	if (sourceEntity.getFirst().getCreated()!=null)
+        		targetVO.setCreated(sourceEntity.getFirst().getCreated());
+        	if (sourceEntity.getFirst().getSubmitterName()!=null)
+        		targetVO.setSubmitter(sourceEntity.getFirst().getSubmitterName());        	
+        }
+        if (sourceEntity.getLastPostDate()!=null)
+        	targetVO.setLastPost(sourceEntity.getLastPostDate());
+        if (sourceEntity.getAnswerCount()!=null)
+        	targetVO.setAnswerCount(sourceEntity.getAnswerCount());        
     }
 
 
@@ -37,12 +51,11 @@ public class TopicDaoImpl
      */
     private org.openuss.discussion.Topic loadTopicFromTopicInfo(org.openuss.discussion.TopicInfo topicInfo)
     {
-        org.openuss.discussion.Topic topic = this.load(topicInfo.getId());
-        if (topic == null)
+        if (topicInfo.getId() == null)
         {
-            topic = org.openuss.discussion.Topic.Factory.newInstance();
+            return org.openuss.discussion.Topic.Factory.newInstance();
         }
-        return topic;
+       	return this.load(topicInfo.getId());
     }
 
     

@@ -22,7 +22,8 @@ public class PostImpl
      */
     public java.lang.String getSubmitterName()
     {
-    	return this.getSubmitter().getDisplayName();
+    	if (this.getSubmitter()!=null) return this.getSubmitter().getDisplayName();
+    	return null;
     }
 
     /**
