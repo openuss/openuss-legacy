@@ -195,6 +195,20 @@
 		<url-pattern>*.faces</url-pattern>
 	</filter-mapping>
 
+	<filter-mapping>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<url-pattern>/files/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<url-pattern>/zips/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
 	<!-- - - - - - - - - - - - - - - - - - - - - - -
 	   Shale Filter
 	- - - - - - - - - - - - - - - - - - - - - - - - -->
