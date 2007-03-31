@@ -9,10 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.acegisecurity.acl.AclManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -28,6 +31,7 @@ public class DocumentServlet extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(DocumentServlet.class);
 	
 	private transient DocumentService documentService;
+	private transient AclManager aclManager;
 
 	@Override
 	public void init() throws ServletException {
@@ -36,6 +40,7 @@ public class DocumentServlet extends HttpServlet {
 		
 		final WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 		documentService = (DocumentService) wac.getBean("documentService", DocumentService.class);
+		aclManager = (AclManager) wac.getBean("aclManager", AclManager.class);
 	}
 	
 	
@@ -57,7 +62,11 @@ public class DocumentServlet extends HttpServlet {
 	@Override
 	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		final FileInfo file = lookupFile(request);
-		if (file == null) {
+		// FIXME should be declared by acegi security context;
+		AcegiUtils.setAclManager(aclManager);
+		if (!AcegiUtils.hasPermission(file, new Integer[]{ LectureAclEntry.READ})) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+		} else if (file == null) {
 			sendFileNotFound(response);
 		} else {
 			sendFileHeader(response, file);
@@ -103,6 +112,7 @@ public class DocumentServlet extends HttpServlet {
 		final String fileId = request.getParameter(Constants.REPOSITORY_FILE_ID);
 		// fetch file from document service
 		FileInfo file = documentService.getFileEntry(Long.parseLong(fileId), true);
+		
 		if (file == null) {
 			logger.debug("file not found with id "+fileId);
 		}
