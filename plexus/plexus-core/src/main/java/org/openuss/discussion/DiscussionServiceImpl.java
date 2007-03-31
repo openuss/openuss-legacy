@@ -5,10 +5,13 @@
  */
 package org.openuss.discussion;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.Validate;
+import org.openuss.security.User;
 
 /**
  * @see org.openuss.discussion.DiscussionService
@@ -20,24 +23,38 @@ public class DiscussionServiceImpl
     /**
      * @see org.openuss.discussion.DiscussionService#createTopic(org.openuss.discussion.PostInfo, java.lang.Long)
      */
-    protected void handleCreateTopic(PostInfo post, Long domainObject)
+    protected void handleCreateTopic(PostInfo post, ForumInfo forum)
         throws java.lang.Exception
     {
     	//create topic
-    	TopicInfo ti = extractTopicInfo(post, domainObject);    	
+    	TopicInfo ti = extractTopicInfo(post, forum);    	
     	Topic topic = getTopicDao().topicInfoToEntity(ti);
+    	User submitter = getSecurityService().getUserByName(post.getSubmitter());
+    	topic.setSubmitter(submitter);    	
+    	topic.setForum(getForumDao().load(forum.getId()));
+    	getTopicDao().create(topic);
     	ti = getTopicDao().toTopicInfo(topic);
+    	
+    	//add to forum
+    	Forum f = getForumDao().load(forum.getId());
+    	Set<Topic> topics = f.getTopics();
+    	topics.add(getTopicDao().topicInfoToEntity(ti));
+    	f.setTopics(topics);
+    	getForumDao().update(f);
+    	
     	//add first post
     	handleAddPost(post, ti);
-    	Post p = getPostDao().postInfoToEntity(post);
+    	topic = getTopicDao().load(ti.getId());
+    	Post p = topic.getLast();
     	topic.setFirst(p);
-    	topic.setSubmitter(getSecurityService().getUserByName(post.getSubmitter()));
+    	getPostDao().update(p);
+    	getTopicDao().update(topic);
     }
 
-	private TopicInfo extractTopicInfo(org.openuss.discussion.PostInfo post, java.lang.Long domainObject) {
+	private TopicInfo extractTopicInfo(org.openuss.discussion.PostInfo post, ForumInfo forum) {
 		TopicInfo ti = new TopicInfo();
     	ti.setCreated(post.getCreated());
-    	ti.setForumId(getForum(domainObject).getId());
+    	ti.setForumId(getForum(forum.getDomainIdentifier()).getId());
     	ti.setHits(0);
     	ti.setLastPost(post.getLastModification());
     	ti.setReadOnly(true);
@@ -84,7 +101,7 @@ public class DiscussionServiceImpl
     	Post newPost = getPostDao().postInfoToEntity(post);
     	newPost.setTopic(t);
     	newPost.setSubmitter(getSecurityService().getUserByName(post.getSubmitter()));
-    	getPostDao().update(newPost);
+    	getPostDao().create(newPost);
     	
     	
     	List<Post> posts = t.getPosts();
@@ -144,8 +161,9 @@ public class DiscussionServiceImpl
     protected org.openuss.discussion.PostInfo handleGetPost(org.openuss.discussion.PostInfo post)
         throws java.lang.Exception
     {
-        // @todo implement protected org.openuss.discussion.PostInfo handleGetPost(org.openuss.discussion.PostInfo post)
-        return null;
+    	Validate.notNull(post);
+    	Validate.notNull(post.getId());
+    	return getPostDao().toPostInfo(getPostDao().load(post.getId()));    	
     }
 
     /**
@@ -154,8 +172,17 @@ public class DiscussionServiceImpl
     protected java.util.List handleGetPosts(org.openuss.discussion.TopicInfo topic)
         throws java.lang.Exception
     {
-        // @todo implement protected java.util.List handleGetPosts(org.openuss.discussion.TopicInfo topic)
-        return null;
+    	Validate.notNull(topic);
+    	Validate.notNull(topic.getId());
+    	Topic t = getTopicDao().load(topic.getId());
+    	List<PostInfo> posts = new ArrayList<PostInfo>();
+    	if (t==null) return posts;
+    	List<Post> pList = t.getPosts();
+    	Iterator i = pList.iterator();
+    	while (i.hasNext()){
+    		posts.add(getPostDao().toPostInfo((Post)i.next()));
+    	}
+    	return posts;
     }
 
     /**
@@ -164,18 +191,27 @@ public class DiscussionServiceImpl
     protected org.openuss.discussion.TopicInfo handleGetTopic(org.openuss.discussion.TopicInfo topic)
         throws java.lang.Exception
     {
-        // @todo implement protected org.openuss.discussion.TopicInfo handleGetTopic(org.openuss.discussion.TopicInfo topic)
-        return null;
+    	Validate.notNull(topic);
+    	Validate.notNull(topic.getId());
+    	return getTopicDao().toTopicInfo(getTopicDao().load(topic.getId()));
     }
 
     /**
      * @see org.openuss.discussion.DiscussionService#getTopics(java.lang.Long)
      */
-    protected java.util.List handleGetTopics(java.lang.Long domainIdentifier)
+    protected java.util.List handleGetTopics(ForumInfo forum)
         throws java.lang.Exception
     {
-        // @todo implement protected java.util.List handleGetTopics(java.lang.Long domainIdentifier)
-        return null;
+    	Validate.notNull(forum);
+    	Validate.notNull(forum.getId());
+    	Forum f = getForumDao().load(forum.getId());
+    	Set<Topic> tList = f.getTopics();
+    	List<TopicInfo> topics = new ArrayList<TopicInfo>();
+    	Iterator i = tList.iterator();
+    	while (i.hasNext()){
+    		topics.add(getTopicDao().toTopicInfo((Topic)i.next()));
+    	}
+    	return topics;
     }
 
     /**
@@ -191,7 +227,7 @@ public class DiscussionServiceImpl
     /**
      * @see org.openuss.discussion.DiscussionService#addForumWatch(java.lang.Long)
      */
-    protected void handleAddForumWatch(java.lang.Long domainIdentifier)
+    protected void handleAddForumWatch(ForumInfo forum)
         throws java.lang.Exception
     {
         // @todo implement protected void handleAddForumWatch(java.lang.Long domainIdentifier)
@@ -211,7 +247,7 @@ public class DiscussionServiceImpl
     /**
      * @see org.openuss.discussion.DiscussionService#removeForumWatch(java.lang.Long)
      */
-    protected void handleRemoveForumWatch(java.lang.Long domainIdentifier)
+    protected void handleRemoveForumWatch(ForumInfo forum)
         throws java.lang.Exception
     {
         // @todo implement protected void handleRemoveForumWatch(java.lang.Long domainIdentifier)

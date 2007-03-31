@@ -8,6 +8,9 @@ package org.openuss.discussion;
 import java.util.Date;
 import java.util.List;
 
+import org.openuss.TestUtility;
+import org.openuss.security.User;
+
 /**
  * JUnit Test for Spring Hibernate DiscussionService class.
  * @see org.openuss.discussion.DiscussionService
@@ -15,14 +18,18 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrationTestBase {
 	
+	public TestUtility testUtility;
+	
 	private PostInfo generatePost(){
+		User user = testUtility.createSecureContext();
 		PostInfo postInfo = new PostInfo();
 		postInfo.setCreated(new Date(System.currentTimeMillis()));
 		postInfo.setLastModification(postInfo.getCreated());
-		postInfo.setSubmitter("user");
+		postInfo.setSubmitter(user.getUsername());
 		postInfo.setSubmitterId(new Long(1));
 		postInfo.setText("testText");
 		postInfo.setTitle("testTitle");	
+		postInfo.setIp("001.002.003.004");
 		return postInfo;
 	}
 
@@ -30,39 +37,63 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		return new Long(System.currentTimeMillis());
 	}
 	
+	private void commit() {
+		setComplete();
+		endTransaction();
+		startNewTransaction();
+	}
+	
 	public void testCreateDeleteTopic(){
 		//test correct creation of a example topic
+		ForumInfo fi = new ForumInfo();
 		Long domainObject = generateDomainObject();
+		fi.setDomainIdentifier(domainObject);
+		fi.setReadOnly(false);
+		discussionService.addForum(fi);
+		commit();
+		ForumInfo loadedForum = discussionService.getForum(domainObject);
+		assertNotNull(loadedForum);
+		assertEquals(domainObject, loadedForum.getDomainIdentifier());
 		PostInfo firstPost = generatePost();
-		discussionService.createTopic(firstPost, domainObject);
-		List<TopicInfo> topics = discussionService.getTopics(domainObject);
+		commit();
+		discussionService.createTopic(firstPost, loadedForum);
+		commit();		
+		List<TopicInfo> topics = discussionService.getTopics(loadedForum);
 		assertNotNull(topics);
 		assertEquals(1, topics.size());
 		TopicInfo addedTopic = topics.get(0); 
 		assertEquals(0, addedTopic.getAnswerCount().intValue());
 		assertEquals(addedTopic.getTitle(), firstPost.getTitle());
-		assertEquals(addedTopic.getSubmitter(), firstPost.getSubmitter());
-		assertEquals(addedTopic.getCreated(), firstPost.getCreated());
+		assertEquals(addedTopic.getCreated().getTime(), firstPost.getCreated().getTime());
 		List<PostInfo> posts =discussionService.getPosts(addedTopic); 
 		assertNotNull(posts);
 		assertEquals(1, posts.size());
 		//test correct delete of that topic
 		discussionService.deleteTopic(addedTopic);
-		topics = discussionService.getTopics(domainObject);
+		commit();
+		topics = discussionService.getTopics(discussionService.getForum(domainObject));
 		assertNotNull(topics);
 		assertEquals(0, topics.size());
-		
+		commit();
 		posts = discussionService.getPosts(addedTopic);
 		assertNotNull(posts);
 		assertEquals(0, posts.size());		
 	}
 	
 	public void testAddPost(){
-		//test correct creation of a example topic
+		ForumInfo fi = new ForumInfo();
 		Long domainObject = generateDomainObject();
+		fi.setDomainIdentifier(domainObject);
+		fi.setReadOnly(false);
+		discussionService.addForum(fi);
+		ForumInfo loadedForum = discussionService.getForum(domainObject);
+		assertNotNull(loadedForum);
+		assertEquals(domainObject, loadedForum.getDomainIdentifier());
+
+		//test correct creation of a example topic
 		PostInfo firstPost = generatePost();
-		discussionService.createTopic(firstPost, domainObject);
-		List<TopicInfo> topics = discussionService.getTopics(domainObject);
+		discussionService.createTopic(firstPost, loadedForum);
+		List<TopicInfo> topics = discussionService.getTopics(discussionService.getForum(domainObject));
 		assertNotNull(topics);
 		assertEquals(1, topics.size());
 		TopicInfo addedTopic = topics.get(0); 
@@ -76,7 +107,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		//test correct adding of a post
 		PostInfo newPost = generatePost();
 		discussionService.addPost(newPost, addedTopic);
-		topics = discussionService.getTopics(domainObject);
+		topics = discussionService.getTopics(discussionService.getForum(domainObject));
 		assertNotNull(topics);
 		assertEquals(1, topics.size());
 		addedTopic = topics.get(0); 
@@ -84,12 +115,19 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 	}
 	
 	public void testDeletePost(){
+		ForumInfo fi = new ForumInfo();
+		Long domainObject = generateDomainObject();
+		fi.setDomainIdentifier(domainObject);
+		fi.setReadOnly(false);
+		discussionService.addForum(fi);
+		ForumInfo loadedForum = discussionService.getForum(domainObject);
+		assertNotNull(loadedForum);
+		assertEquals(domainObject, loadedForum.getDomainIdentifier());
 		//test delete 
 		//test correct creation of a example topic
-		Long domainObject = generateDomainObject();
 		PostInfo firstPost = generatePost();
-		discussionService.createTopic(firstPost, domainObject);
-		List<TopicInfo> topics = discussionService.getTopics(domainObject);
+		discussionService.createTopic(firstPost, loadedForum);
+		List<TopicInfo> topics = discussionService.getTopics(discussionService.getForum(domainObject));
 		assertNotNull(topics);
 		assertEquals(1, topics.size());
 		TopicInfo addedTopic = topics.get(0); 
@@ -103,13 +141,13 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		//test correct adding of a post
 		PostInfo newPost = generatePost();
 		discussionService.addPost(newPost, addedTopic);
-		topics = discussionService.getTopics(domainObject);
+		topics = discussionService.getTopics(discussionService.getForum(domainObject));
 		assertNotNull(topics);
 		assertEquals(1, topics.size());
 		addedTopic = topics.get(0); 
 		assertEquals(1, addedTopic.getAnswerCount().intValue());
 		discussionService.deletePost(newPost);
-		topics = discussionService.getTopics(domainObject);
+		topics = discussionService.getTopics(discussionService.getForum(domainObject));
 		assertNotNull(topics);
 		assertEquals(1, topics.size());
 		addedTopic = topics.get(0); 
@@ -143,6 +181,14 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		assertNotNull(loadedForum);
 		assertEquals(domainObject, loadedForum.getDomainIdentifier());
 		
+	}
+
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
 	}
 	
 }

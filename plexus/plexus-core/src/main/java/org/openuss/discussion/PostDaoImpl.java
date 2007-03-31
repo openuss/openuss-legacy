@@ -44,21 +44,17 @@ public class PostDaoImpl
      */
     private org.openuss.discussion.Post loadPostFromPostInfo(org.openuss.discussion.PostInfo postInfo)
     {
-        org.openuss.discussion.Post post = this.load(postInfo.getId());
-        if (post == null)
-        {
-            post = org.openuss.discussion.Post.Factory.newInstance();
-        }
-        return post;
+    	if (postInfo.getId()==null) return Post.Factory.newInstance(); 
+        return this.load(postInfo.getId());
     }
 
     
     /**
      * @see org.openuss.discussion.PostDao#postInfoToEntity(org.openuss.discussion.PostInfo)
      */
-    public org.openuss.discussion.Post postInfoToEntity(org.openuss.discussion.PostInfo postInfo)
+    public Post postInfoToEntity(org.openuss.discussion.PostInfo postInfo)
     {
-        org.openuss.discussion.Post entity = this.loadPostFromPostInfo(postInfo);
+        Post entity = this.loadPostFromPostInfo(postInfo);
         this.postInfoToEntity(postInfo, entity, true);
         return entity;
     }
@@ -75,12 +71,11 @@ public class PostDaoImpl
         super.postInfoToEntity(sourceVO, targetEntity, copyIfNull);
         if (copyIfNull || sourceVO.getFormula() != null)
         {
-        	if (targetEntity.getFormula()!=null){
-        		targetEntity.getFormula().setFormula(sourceVO.getFormula());
-        	} else if (targetEntity.getFormula()==null){
-        		Formula f = Formula.Factory.newInstance();
-        		f.setFormula(sourceVO.getFormula());
-        		targetEntity.setFormula(f);
+        	if (sourceVO.getFormula()!=null){
+        		targetEntity.setFormula(Formula.Factory.newInstance(sourceVO.getFormula()));        		
+        	}
+        	else if (sourceVO.getFormula()==null){
+        		targetEntity.setFormula(null);
         	}
         }
 
