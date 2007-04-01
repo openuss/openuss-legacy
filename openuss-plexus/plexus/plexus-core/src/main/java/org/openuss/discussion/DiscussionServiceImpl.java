@@ -10,7 +10,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
+import org.openuss.documents.DocumentServiceException;
+import org.openuss.documents.FolderInfo;
 import org.openuss.security.User;
 
 /**
@@ -20,6 +24,7 @@ public class DiscussionServiceImpl
     extends org.openuss.discussion.DiscussionServiceBase
 {
 
+	public static final Logger logger = Logger.getLogger(DiscussionServiceImpl.class);
     /**
      * @see org.openuss.discussion.DiscussionService#createTopic(org.openuss.discussion.PostInfo, java.lang.Long)
      */
@@ -42,6 +47,8 @@ public class DiscussionServiceImpl
     	f.setTopics(topics);
     	getForumDao().update(f);
     	
+    	//add object identity to security
+    	getSecurityService().createObjectIdentity(topic, topic.getForum().getDomainIdentifier());
     	//add first post
     	handleAddPost(post, ti);
     	topic = getTopicDao().load(ti.getId());
@@ -79,15 +86,20 @@ public class DiscussionServiceImpl
     	// remove all viewstates of posts of topic 
     	Iterator i = posts.iterator();
     	Post p;
+    	
     	while (i.hasNext()){
     		p = (Post) i.next();
     		getTrackingService().remove(p);
-    		getDocumentService().removeFolderEntry(getDocumentService().getFolder(p).getId());
+    		FolderInfo fei = getDocumentService().getFolder(p);
+    		getDocumentService().removeFolderEntry(fei.getId());
     	}
+ 		getTopicDao().update(t);
     	//remove viewstates to topic
     	getTrackingService().remove(t);
     	//remove topic itself
     	getTopicDao().remove(t);
+    	//remove object identity from security context
+    	getSecurityService().removeObjectIdentity(topic);
     	
     }
 
@@ -111,7 +123,8 @@ public class DiscussionServiceImpl
     	getTopicDao().update(t);
     	//TODO formula?
     	post.setId(newPost.getId());
-    	
+    	//set object identity
+    	getSecurityService().createObjectIdentity(newPost, t);
     }
 
     /**
@@ -143,6 +156,7 @@ public class DiscussionServiceImpl
     	t.setPosts(posts);
     	getTopicDao().update(t);
     	getPostDao().remove(p);
+    	getSecurityService().removeObjectIdentity(p);
     }
     
 
@@ -221,8 +235,13 @@ public class DiscussionServiceImpl
     protected void handleAddTopicWatch(org.openuss.discussion.TopicInfo topic)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleAddTopicWatch(org.openuss.discussion.TopicInfo topic)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleAddTopicWatch(org.openuss.discussion.TopicInfo topic) Not implemented!");
+    	Validate.notNull(topic);
+    	Validate.notNull(topic.getId());
+    	DiscussionWatch dw = DiscussionWatch.Factory.newInstance();
+    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	dw.setTopic(getTopicDao().load(topic.getId()));
+    	dw.setUser(user);
+    	getDiscussionWatchDao().create(dw);
     }
 
     /**
@@ -231,8 +250,13 @@ public class DiscussionServiceImpl
     protected void handleAddForumWatch(ForumInfo forum)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleAddForumWatch(java.lang.Long domainIdentifier)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleAddForumWatch(java.lang.Long domainIdentifier) Not implemented!");
+    	Validate.notNull(forum);
+    	Validate.notNull(forum.getId());
+    	ForumWatch fw = ForumWatch.Factory.newInstance();
+    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	fw.setForum(getForumDao().load(forum.getId()));
+    	fw.setUser(user);
+    	getForumWatchDao().create(fw);
     }
 
     /**
@@ -241,8 +265,12 @@ public class DiscussionServiceImpl
     protected void handleRemoveTopicWatch(org.openuss.discussion.TopicInfo topic)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleRemoveTopicWatch(org.openuss.discussion.TopicInfo topic)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleRemoveTopicWatch(org.openuss.discussion.TopicInfo topic) Not implemented!");
+    	Validate.notNull(topic);
+    	Validate.notNull(topic.getId());
+    	Topic t = getTopicDao().load(topic.getId());
+    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	DiscussionWatch dw = getDiscussionWatchDao().findByTopicAndUser(t, user);
+    	getDiscussionWatchDao().remove(dw);
     }
 
     /**
@@ -251,8 +279,12 @@ public class DiscussionServiceImpl
     protected void handleRemoveForumWatch(ForumInfo forum)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleRemoveForumWatch(java.lang.Long domainIdentifier)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleRemoveForumWatch(java.lang.Long domainIdentifier) Not implemented!");
+    	Validate.notNull(forum);
+    	Validate.notNull(forum.getId());
+    	Forum f = getForumDao().load(forum.getId());
+    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	ForumWatch fw = getForumWatchDao().findByUserAndForum(user, f);
+    	getForumWatchDao().remove(fw);
     }
 
     /**
@@ -261,7 +293,10 @@ public class DiscussionServiceImpl
     protected void handleAddAttachment(org.openuss.discussion.PostInfo post, org.openuss.documents.FileInfo file)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleAddAttachment(org.openuss.discussion.PostInfo post, org.openuss.documents.FileInfo file)
+    	Validate.notNull(post);
+    	Validate.notNull(post.getId());
+    	Validate.notNull(file);    	
+        //TODO implement protected void handleAddAttachment(org.openuss.discussion.PostInfo post, org.openuss.documents.FileInfo file)
         throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleAddAttachment(org.openuss.discussion.PostInfo post, org.openuss.documents.FileInfo file) Not implemented!");
     }
 
@@ -271,7 +306,9 @@ public class DiscussionServiceImpl
     protected void handleRemoveAttachment(org.openuss.discussion.PostInfo post)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleRemoveAttachment(org.openuss.discussion.PostInfo post)
+    	Validate.notNull(post);
+    	Validate.notNull(post.getId());
+    	//TODO implement protected void handleRemoveAttachment(org.openuss.discussion.PostInfo post)
         throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleRemoveAttachment(org.openuss.discussion.PostInfo post) Not implemented!");
     }
 
@@ -285,14 +322,20 @@ public class DiscussionServiceImpl
 
 	@Override
 	protected void handleChangeEditState(ForumInfo forum) throws Exception {
-		// TODO Auto-generated method stub
-		
+		Validate.notNull(forum);		
+		Validate.notNull(forum.getId());
+		Forum f = getForumDao().load(forum.getId());
+		f.setReadOnly(!f.isReadOnly());		
+		getForumDao().update(f);
 	}
 
 	@Override
 	protected void handleChangeEditState(TopicInfo topic) throws Exception {
-		// TODO Auto-generated method stub
-		
+		Validate.notNull(topic);		
+		Validate.notNull(topic.getId());
+		Topic t = getTopicDao().load(topic.getId());
+		t.setReadOnly(!t.isReadOnly());
+		getTopicDao().update(t);
 	}
 
 	@Override
