@@ -54,7 +54,7 @@ public class EntityObjectIdentity implements AclObjectIdentity {
 
 	private Long identifierFromObject(Object object) throws IllegalAccessException, InvocationTargetException {
 		if (object instanceof ObjectIdentity) {
-			return ((ObjectIdentity) object).getObjectIdentity();
+			return ((ObjectIdentity) object).getId();
 		} else {
 			return DomainObjectUtility.identifierFromObject(object);
 		}

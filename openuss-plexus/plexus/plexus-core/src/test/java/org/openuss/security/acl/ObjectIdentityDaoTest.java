@@ -5,6 +5,8 @@
  */
 package org.openuss.security.acl;
 
+import org.openuss.TestUtility;
+
 
 /**
  * JUnit Test for Spring Hibernate ObjectIdentityDao class.
@@ -12,20 +14,19 @@ package org.openuss.security.acl;
  */
 public class ObjectIdentityDaoTest extends ObjectIdentityDaoTestBase {
 	
+	private TestUtility testUtility;
+	
 	public void testObjectIdentityDaoCreate() {
 		ObjectIdentity objectIdentity = ObjectIdentity.Factory.newInstance();
-//		objectIdentity.setAclClass("org.openuss.security.acl.EntityObjectIdentity");
-		objectIdentity.setObjectIdentity(4711L);
-//		objectIdentity.setObjectIdentityClass("org.openuss.test.dummy.4711");
+		long id = testUtility.unique();
+		objectIdentity.setId(id);
 		objectIdentity.setParent(null);
-		assertNull(objectIdentity.getId());
 		objectIdentityDao.create(objectIdentity);
-		assertNotNull(objectIdentity.getId());
 
 		commitAndNewTransaction();
 		
 		// load objectIdentity from db
-		ObjectIdentity oid = objectIdentityDao.load(objectIdentity.getId());
+		ObjectIdentity oid = objectIdentityDao.load(id);
 		assertNotNull(oid);
 		assertEquals(oid, objectIdentity);
 		
@@ -34,7 +35,7 @@ public class ObjectIdentityDaoTest extends ObjectIdentityDaoTestBase {
 		
 		commitAndNewTransaction();
 		
-		ObjectIdentity noid = objectIdentityDao.load(oid.getId());
+		ObjectIdentity noid = objectIdentityDao.load(id);
 		assertNull(noid);
 		
 	}
@@ -44,5 +45,13 @@ public class ObjectIdentityDaoTest extends ObjectIdentityDaoTestBase {
 		setComplete();
 		endTransaction();
 		startNewTransaction();
+	}
+
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
 	}
 }

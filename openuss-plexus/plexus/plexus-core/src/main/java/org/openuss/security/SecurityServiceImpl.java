@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.security.acegi.acl.EntityObjectIdentity;
 import org.openuss.security.acl.ObjectIdentity;
@@ -261,7 +262,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		ObjectIdentity parentObjectIdentity = null;
 		if (parent != null) {
 			EntityObjectIdentity parentOI = new EntityObjectIdentity(parent);
-			parentObjectIdentity = getObjectIdentityDao().findByObjectIdentifier(parentOI.getIdentifier());
+			parentObjectIdentity = getObjectIdentityDao().load(parentOI.getIdentifier());
 			
 			if (parentObjectIdentity == null) {
 				throw new SecurityServiceException("Object Identity to Object "+parent+" does not exist!");
@@ -273,7 +274,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		
 		// define ObjectIdentity entity
 		ObjectIdentity objectIdentity = ObjectIdentity.Factory.newInstance();
-		objectIdentity.setObjectIdentity(entityOI.getIdentifier());
+		objectIdentity.setId(entityOI.getIdentifier());
 		// These fields are not needed in openuss
 		//		objectIdentity.setObjectIdentityClass(entityOI.getClassname());
 		//		objectIdentity.setAclClass(entityOI.getClass().getName());
@@ -293,12 +294,12 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 
 	@Override
 	protected void handleSetPermissions(Authority authority, Object object, Integer mask) throws Exception {
-		ObjectIdentity oi = getObjectIdentity(object);
+		ObjectIdentity objectIdentity = getObjectIdentity(object);
 
-		Permission permission = getPermissionDao().findPermission(oi.getId(), authority.getId());
+		Permission permission = getPermissionDao().findPermission(objectIdentity, authority);
 		if (permission == null) {
 			// permission does not exist, create a new one
-			permission = Permission.Factory.newInstance(mask, oi, authority);
+			permission = Permission.Factory.newInstance(mask, objectIdentity, authority);
 			getPermissionDao().create(permission);
 		} else {
 			permission.setMask(mask);
@@ -346,7 +347,8 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	}
 
 	private ObjectIdentity getObjectIdentity(Object object) throws IllegalAccessException, InvocationTargetException {
-		ObjectIdentity objectIdentity = getObjectIdentityDao().findByObjectIdentifier(new EntityObjectIdentity(object).getIdentifier());
+		
+		ObjectIdentity objectIdentity = getObjectIdentityDao().load(new EntityObjectIdentity(object).getIdentifier());
 		if (objectIdentity == null) {
 			throw new SecurityServiceException("ObjectIdentity doesn't exist for object "+object);
 		}
@@ -355,8 +357,10 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 
 	@Override
 	protected Permission handleGetPermissions(Authority authority, Object object) throws Exception {
-		ObjectIdentity oi = getObjectIdentity(object);
-		return getPermissionDao().findPermission(oi.getObjectIdentity(), authority.getId());
+		Validate.notNull(authority, "Parameter authority must not be null.");
+		Validate.notNull(object, "Parameter object must not be null.");
+		ObjectIdentity objectIdentity = getObjectIdentity(object);
+		return getPermissionDao().findPermission(objectIdentity, authority);
 	}
 
 

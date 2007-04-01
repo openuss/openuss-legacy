@@ -65,7 +65,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 
 	public void testAclAccessGrantedToUserCheckedMethodInvocation() {
 		ObjectIdentity oi = ObjectIdentity.Factory.newInstance();
-		oi.setObjectIdentity(FACULTY_TEST_ID);
+		oi.setId(FACULTY_TEST_ID);
 
 		Permission permission = Permission.Factory.newInstance();
 		permission.setAclObjectIdentity(oi);
@@ -100,7 +100,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 
 	public void testAclHirarchyAccessGrantedToUserCheckedMethodInvocation() {
 		ObjectIdentity oi = ObjectIdentity.Factory.newInstance();
-		oi.setObjectIdentity(FACULTY_TEST_ID);
+		oi.setId(FACULTY_TEST_ID);
 
 		Permission permission = Permission.Factory.newInstance();
 		permission.setAclObjectIdentity(oi);
@@ -111,7 +111,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		oi.addPermission(permission);
 
 		ObjectIdentity oi2 = ObjectIdentity.Factory.newInstance();
-		oi2.setObjectIdentity(1234L);
+		oi2.setId(1234L);
 		oi2.setParent(oi);
 		
 		objectIdentityDao.create(oi2);
@@ -133,7 +133,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 	
 	public void testAclHirarchyAccessGrantedToRoleCheckedMethodInvocation() {
 		ObjectIdentity oi = ObjectIdentity.Factory.newInstance();
-		oi.setObjectIdentity(FACULTY_TEST_ID);
+		oi.setId(FACULTY_TEST_ID);
 //		oi.setObjectIdentityClass("org.openuss.lecture.Faculty");
 
 		Permission permission = Permission.Factory.newInstance();
@@ -145,7 +145,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		oi.addPermission(permission);
 
 		ObjectIdentity oi2 = ObjectIdentity.Factory.newInstance();
-		oi2.setObjectIdentity(1234L);
+		oi2.setId(1234L);
 //		oi2.setObjectIdentityClass("org.openuss.lecture.Faculty");
 		oi2.setParent(oi);
 		objectIdentityDao.create(oi2);
