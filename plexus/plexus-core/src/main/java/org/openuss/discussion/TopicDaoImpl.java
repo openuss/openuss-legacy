@@ -40,7 +40,9 @@ public class TopicDaoImpl
      */
     public org.openuss.discussion.TopicInfo toTopicInfo(final org.openuss.discussion.Topic entity)
     {
-        return super.toTopicInfo(entity);
+        final TopicInfo target = new TopicInfo();
+        this.toTopicInfo(entity, target);
+        return target;
     }
 
 
