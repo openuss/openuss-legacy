@@ -9,7 +9,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.openuss.TestUtility;
+import org.openuss.security.SecurityService;
 import org.openuss.security.User;
+import org.openuss.security.acl.LectureAclEntry;
+
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 /**
  * JUnit Test for Spring Hibernate DiscussionService class.
@@ -19,6 +23,8 @@ import org.openuss.security.User;
 public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrationTestBase {
 	
 	public TestUtility testUtility;
+	
+	public SecurityService securityService;
 	
 	private PostInfo generatePost(){
 		User user = testUtility.createSecureContext();
@@ -34,7 +40,10 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 	}
 
 	private Long generateDomainObject(){
-		return new Long(System.currentTimeMillis());
+		Long domainId = new Long(System.currentTimeMillis());
+		securityService.createObjectIdentity(domainId, null);
+		//securityService.setPermissions(user, domainId, LectureAclEntry.ASSIST);		
+		return domainId;
 	}
 	
 	private void commit() {
@@ -46,7 +55,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 	public void testCreateDeleteTopic(){
 		//test correct creation of a example topic
 		ForumInfo fi = new ForumInfo();
-		Long domainObject = generateDomainObject();
+		Long domainObject = generateDomainObject();		
 		fi.setDomainIdentifier(domainObject);
 		fi.setReadOnly(false);
 		discussionService.addForum(fi);
@@ -68,7 +77,8 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		List<PostInfo> posts =discussionService.getPosts(addedTopic); 
 		assertNotNull(posts);
 		assertEquals(1, posts.size());
-		//test correct delete of that topic
+		commit();
+		//test correct delete of that topic		
 		discussionService.deleteTopic(addedTopic);
 		commit();
 		topics = discussionService.getTopics(discussionService.getForum(domainObject));
@@ -192,6 +202,14 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 
 	public void setTestUtility(TestUtility testUtility) {
 		this.testUtility = testUtility;
+	}
+
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
 	}
 	
 }
