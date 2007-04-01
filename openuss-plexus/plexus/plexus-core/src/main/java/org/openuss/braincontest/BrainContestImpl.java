@@ -7,34 +7,30 @@ package org.openuss.braincontest;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @see org.openuss.braincontest.BrainContest
  */
-public class BrainContestImpl
-    extends org.openuss.braincontest.BrainContestBase
-	implements org.openuss.braincontest.BrainContest
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = -7791661522910186680L;
+public class BrainContestImpl extends BrainContestBase implements BrainContest {
+	
+	private static final long serialVersionUID = -7791661522910186680L;
 
-    /**
-     * @see org.openuss.braincontest.BrainContest#isReleased()
-     */
-    public boolean isReleased()
-    {
-        return getReleaseDate().before(new Date(System.currentTimeMillis()));
-    }
+	/**
+	 * @see org.openuss.braincontest.BrainContest#isReleased()
+	 */
+	public boolean isReleased() {
+		return getReleaseDate().before(new Date(System.currentTimeMillis()));
+	}
 
-    /**
-     * @see org.openuss.braincontest.BrainContest#getAnswersCount()
-     */
-    public java.lang.Integer getAnswersCount()
-    {
-        if (getAnswers()==null) return 0;
-        return getAnswers().size();
-    }
+	/**
+	 * @see org.openuss.braincontest.BrainContest#getAnswersCount()
+	 */
+	public java.lang.Integer getAnswersCount() {
+		if (getAnswers() == null)
+			return 0;
+		return getAnswers().size();
+	}
 
 	@Override
 	public void addAnswer(Answer answer) {
@@ -44,4 +40,9 @@ public class BrainContestImpl
 		}
 	}
 
+	@Override
+	public boolean validateAnswer(String answer) {
+		setTries(getTries()+1);
+		return StringUtils.equalsIgnoreCase(answer, getSolution());
+	}
 }

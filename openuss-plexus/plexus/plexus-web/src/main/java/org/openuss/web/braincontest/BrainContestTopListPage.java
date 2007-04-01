@@ -12,7 +12,6 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.AnswerInfo;
 import org.openuss.braincontest.BrainContestInfo;
 import org.openuss.braincontest.BrainContestService;
-import org.openuss.documents.FileInfo;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
@@ -60,9 +59,10 @@ public class BrainContestTopListPage extends AbstractEnrollmentPage{
 		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<AnswerInfo> getDataPage(int startRow, int pageSize) {			
-			List<AnswerInfo> al = brainContestService.getAnswers(brainContest);
-			if (al==null) al = new ArrayList<AnswerInfo>();
-			page = new DataPage<AnswerInfo>(al.size(),0,al);
+			if (page == null) {
+				List<AnswerInfo> answers = brainContestService.getAnswers(brainContest);
+				page = new DataPage<AnswerInfo>(answers.size(),0,answers);
+			}
 			return page;
 		}
 	}

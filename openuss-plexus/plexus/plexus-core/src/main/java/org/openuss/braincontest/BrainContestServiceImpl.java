@@ -8,138 +8,158 @@ package org.openuss.braincontest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.framework.utilities.DomainObjectUtility;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
-import org.openuss.framework.web.jsf.util.AcegiUtils;
 
 /**
+ * @author ingo dueppe
+ * @author sebastian roeken
  * @see org.openuss.braincontest.BrainContestService
  */
-public class BrainContestServiceImpl extends
-		org.openuss.braincontest.BrainContestServiceBase {
+public class BrainContestServiceImpl extends BrainContestServiceBase {
+
+	private static final Logger logger = Logger.getLogger(BrainContestServiceImpl.class);
 
 	/**
 	 * @see org.openuss.braincontest.BrainContestService#getContests(java.lang.Object)
 	 */
 	@SuppressWarnings("unchecked")
-	protected java.util.List handleGetContests(java.lang.Object domainObject) throws java.lang.Exception {
-		Validate.notNull(domainObject, "domainObject must not be null");
+	protected List handleGetContests(java.lang.Object domainObject) throws java.lang.Exception {
+		Validate.notNull(domainObject, "Parameter domainObject must not be null");
 
 		Long domainIdentifier = DomainObjectUtility.identifierFromObject(domainObject);
-		if (domainIdentifier == null) {
-			throw new BrainContestApplicationException("no_domain_object_identifier_found");
-		}
+		Validate.notNull(domainIdentifier, "Parameter domainObject must provide a id");
 
-		List<BrainContest> contests = getBrainContestDao().findByDomainObject(domainIdentifier);
-		Iterator i = contests.iterator();
-		List<BrainContestInfo> bciList = new ArrayList<BrainContestInfo>();
-		if (contests != null) {
+		List<BrainContest> contests = getBrainContestDao().findByDomainObject(
+				BrainContestDao.TRANSFORM_BRAINCONTESTINFO, domainIdentifier);
+
+		if (contests == null) {
+			return new ArrayList<BrainContestInfo>();
+		} else {
 			verifiyPermissionsOnEntries(domainObject, contests);
-			getBrainContestDao().toBrainContestInfoCollection(contests);
 			return contests;
-		} else if (contests == null) {
-			bciList = new ArrayList<BrainContestInfo>();
 		}
-		return bciList;
 	}
 
 	private void verifiyPermissionsOnEntries(java.lang.Object domainObject, List<BrainContest> contests) {
-		if (!AcegiUtils.hasPermission(domainObject, new Integer[]{ LectureAclEntry.ASSIST})) {
+		logger.debug("verify permissions on entries");
+		if (!AcegiUtils.hasPermission(domainObject, new Integer[] { LectureAclEntry.ASSIST })) {
 			CollectionUtils.filter(contests, new Predicate() {
 				public boolean evaluate(Object object) {
-					return ((BrainContest)object).isReleased();
-				}});
+					if (object instanceof BrainContestInfo) {
+						return ((BrainContestInfo) object).isReleased();
+					} else if (object instanceof BrainContest) {
+						return ((BrainContest) object).isReleased();
+					} else {
+						return false;
+					}
+				}
+			});
 		}
 	}
 
 	/**
 	 * @see org.openuss.braincontest.BrainContestService#getContest(org.openuss.braincontest.BrainContestInfo)
 	 */
-	protected org.openuss.braincontest.BrainContestInfo handleGetContest(
-			org.openuss.braincontest.BrainContestInfo contest)
-			throws java.lang.Exception {
-		return privGetContest(contest);
-
-	}
-
-	private org.openuss.braincontest.BrainContestInfo privGetContest(
-			BrainContestInfo contest) {
-		Validate.notNull(contest.getId());
-		BrainContest brainContest = getBrainContestDao().load(contest.getId());
-		BrainContestInfo bci = getBrainContestDao().toBrainContestInfo(
-				brainContest);
+	protected BrainContestInfo handleGetContest(BrainContestInfo contest) throws Exception {
+		Validate.notNull(contest.getId(), "Parameter contest must provide an identifier.");
+		BrainContestInfo bci = (BrainContestInfo) getBrainContestDao().load(BrainContestDao.TRANSFORM_BRAINCONTESTINFO,
+				contest.getId());
+		List<FileInfo> attachments = getAttachments(bci);
+		bci.setAttachments(attachments);
 		return bci;
 	}
 
 	/**
 	 * @see org.openuss.braincontest.BrainContestService#createContest(org.openuss.braincontest.BrainContestInfo)
 	 */
-	protected void handleCreateContest(BrainContestInfo contest)
-			throws Exception {
-		Validate.notNull(contest.getTitle(), "contest title must not be null");
-		Validate.notNull(contest.getDescription(),
-				"contest descruption must not be null");
-		Validate.notNull(contest.getReleaseDate(),
-				"contest release date must not be null");
-		Validate.notNull(contest.getSolution(),
-				"contest solution must not be null");
-		Validate.notNull(contest.getDomainIdentifier(),
-				"contest domain identifier must not bei null");
+	protected void handleCreateContest(BrainContestInfo contest) throws Exception {
+		validateBrainContestInfo(contest);
+		Validate.isTrue(contest.getId() == null, "contest must not have a identifier, call save method instead");
+
+		logger.debug("Creating new braincontest.");
 		
 		BrainContest brainContest = getBrainContestDao().brainContestInfoToEntity(contest);
+
 		getBrainContestDao().create(brainContest);
+		getSecurityService().createObjectIdentity(brainContest, contest.getDomainIdentifier());
 
-		contest.setId(brainContest.getId());
-		contest.setTries(brainContest.getTries());
+		if (contest.getAttachments() != null && !contest.getAttachments().isEmpty()) {
+			logger.debug("found "+contest.getAttachments().size()+" attachments.");
+			FolderInfo folder = getDocumentService().getFolder(brainContest);
 
+			for (FileInfo attachment : contest.getAttachments()) {
+				getDocumentService().createFileEntry(attachment, folder);
+			}
+		}
+
+		getBrainContestDao().toBrainContestInfo(brainContest, contest);
 	}
 
 	/**
 	 * @see org.openuss.braincontest.BrainContestService#saveContest(org.openuss.braincontest.BrainContestInfo)
 	 */
 	protected void handleSaveContest(BrainContestInfo contest) throws Exception {
-		Validate.notNull(contest.getId(), "id must not be null");
-		Validate.notNull(contest.getTitle(), "contest title must not be null");
-		Validate.notNull(contest.getDescription(),
-				"contest descruption must not be null");
-		Validate.notNull(contest.getReleaseDate(),
-				"contest release date must not be null");
-		Validate.notNull(contest.getSolution(),
-				"contest solution must not be null");
-		Validate.notNull(contest.getDomainIdentifier(),
-				"contest domain identifier must not bei null");
+		validateBrainContestInfo(contest);
 
 		BrainContest brainContest = getBrainContestDao().brainContestInfoToEntity(contest);
 		getBrainContestDao().update(brainContest);
+		
+		if (contest.getAttachments() == null) {
+			contest.setAttachments(new ArrayList<FileInfo>());
+		}
+		
+		
+		List<FileInfo> savedAttachments = getDocumentService().getFileEntries(brainContest);
+		
+		Collection<FileInfo> removedAttachments = CollectionUtils.subtract(savedAttachments, contest.getAttachments());
+		getDocumentService().removeFileEntries(removedAttachments);
+		
+		
+		FolderInfo folder = getDocumentService().getFolder(brainContest);
+		for (FileInfo attachment: contest.getAttachments()) {
+			if (attachment.getId() == null) {
+				getDocumentService().createFileEntry(attachment, folder);
+			}
+		}
+		getBrainContestDao().toBrainContestInfo(brainContest, contest);
+	}
+
+	private void validateBrainContestInfo(BrainContestInfo contest) {
+		Validate.notNull(contest, "contest must not be null");
+		Validate.notNull(contest.getTitle(), "contest title must not be null");
+		Validate.notNull(contest.getDescription(), "contest description must not be null");
+		Validate.notNull(contest.getReleaseDate(), "contest release date must not be null");
+		Validate.notNull(contest.getSolution(), "contest solution must not be null");
+		Validate.notNull(contest.getDomainIdentifier(), "contest domain identifier must not bei null");
 	}
 
 	/**
 	 * @see org.openuss.braincontest.BrainContestService#getAttachments(org.openuss.braincontest.BrainContestInfo)
 	 */
 	@SuppressWarnings("unchecked")
-	protected java.util.List handleGetAttachments(BrainContestInfo contest)
-			throws Exception {
-		Validate.notNull(contest, "BrainContest must not be null");
-		Validate.notNull(contest.getId());
-		List<FileInfo> files = getDocumentService().getFileEntries(contest);
-		return files;
+	protected java.util.List handleGetAttachments(BrainContestInfo contest) throws Exception {
+		Validate.notNull(contest, "Parameter contest must not be null");
+		Validate.notNull(contest.getId(), "Parameter contest must provide an identifier.");
+		List<FileInfo> attachments = getDocumentService().getFileEntries(contest);
+		return attachments;
 	}
 
 	/**
 	 * @see org.openuss.braincontest.BrainContestService#addAttachment(org.openuss.braincontest.BrainContestInfo,
 	 *      org.openuss.documents.FileInfo)
 	 */
-	protected void handleAddAttachment(BrainContestInfo contest,
-			FileInfo fileInfo) throws java.lang.Exception {
+	protected void handleAddAttachment(BrainContestInfo contest, FileInfo fileInfo) throws Exception {
 		Validate.notNull(contest, "BrainContest must not be null");
 		Validate.notNull(fileInfo, "fileInfo must not be null");
 		FolderInfo parent = getDocumentService().getFolder(contest);
@@ -150,8 +170,7 @@ public class BrainContestServiceImpl extends
 	 * @see org.openuss.braincontest.BrainContestService#removeAttachment(org.openuss.braincontest.BrainContestInfo,
 	 *      org.openuss.documents.FileInfo)
 	 */
-	protected void handleRemoveAttachment(BrainContestInfo contest,
-			FileInfo fileInfo) throws java.lang.Exception {
+	protected void handleRemoveAttachment(BrainContestInfo contest, FileInfo fileInfo) throws Exception {
 		Validate.notNull(contest, "BrainContest must not be null");
 		Validate.notNull(fileInfo, "fileInfo must not be null");
 
@@ -163,33 +182,34 @@ public class BrainContestServiceImpl extends
 	 *      org.openuss.security.User,
 	 *      org.openuss.braincontest.BrainContestInfo, boolean)
 	 */
-	protected boolean handleAnswer(String answer, User user,
-			BrainContestInfo contest, boolean topList) throws Exception {
+	protected boolean handleAnswer(String answer, User user, BrainContestInfo contest, boolean topList)
+			throws Exception {
 		Validate.notNull(answer, "Answer must not be null");
 		Validate.notNull(user, "User must not be null");
 		Validate.notNull(contest, "Contest must not be null");
 
 		BrainContest bc = getBrainContestDao().load(contest.getId());
-		
+
+		// TODO findByContestAndSolver should only return one instance
+		// There fore the answer id is a composite id of contest and solver
 		List checkIfAnswered = getAnswerDao().findByContestAndSolver(user, bc);
-		if (checkIfAnswered.size()>0) throw new BrainContestApplicationException("braincontest_message_user_correct_answer");
-		contest.setTries(bc.getTries() + 1);
-		bc.setTries(bc.getTries() + 1);
-		if (!bc.getSolution().equals(answer)) {
-			getBrainContestDao().update(bc);
-			return false;
+		if (checkIfAnswered.size() > 0) {
+			throw new BrainContestApplicationException("braincontest_message_user_correct_answer");
 		}
-		if (!topList) {
-			getBrainContestDao().update(bc);
-			return true;
+
+		boolean valid = bc.validateAnswer(answer);
+
+		if (valid && topList) {
+			Answer answerObject = Answer.Factory.newInstance();
+			answerObject.setAnsweredAt(new Date(System.currentTimeMillis()));
+			answerObject.setSolver(user);
+			bc.addAnswer(answerObject);
 		}
-		Answer answerObject = Answer.Factory.newInstance();
-		answerObject.setAnsweredAt(new Date(System.currentTimeMillis()));
-		answerObject.setContest(bc);
-		answerObject.setSolver(user);
-		bc.addAnswer(answerObject);
 		getBrainContestDao().update(bc);
-		return true;
+
+		// refresh given object
+		getBrainContestDao().toBrainContestInfo(bc, contest);
+		return valid;
 	}
 
 	/**
@@ -199,34 +219,19 @@ public class BrainContestServiceImpl extends
 		Validate.notNull(contest, "Contest must not be null");
 
 		BrainContest bc = getBrainContestDao().load(contest.getId());
-		List<AnswerInfo> answerInfoList = new ArrayList<AnswerInfo>();
-		Collection<Answer> answerCollection = bc.getAnswers();
-		Iterator i = answerCollection.iterator();
-		while (i.hasNext()) {
-			answerInfoList.add(answer2AnswerInfo((Answer) i.next()));
-		}
-		if (answerInfoList.size() == 0)
-			return null;
-		return answerInfoList;
-	}
 
-	private AnswerInfo answer2AnswerInfo(Answer answer) {
-		AnswerInfo ai = new AnswerInfo();
-		ai.setAnsweredAt(answer.getAnsweredAt());
-		ai.setImageId(answer.getSolver().getImageId());
-		ai.setSolverName(answer.getSolver().getFirstName() + " "
-				+ answer.getSolver().getLastName() + " ("
-				+ answer.getSolver().getUsername() + ")");
-		return ai;
+		List answers = new ArrayList(bc.getAnswers());
+		getAnswerDao().toAnswerInfoCollection(answers);
+		return answers;
 	}
 
 	@Override
-	protected void handleRemoveContest(BrainContestInfo contest)
-			throws Exception {
+	protected void handleRemoveContest(BrainContestInfo contest) throws Exception {
 		Validate.notNull(contest, "Contest must not be null");
 
 		BrainContest bc = getBrainContestDao().load(contest.getId());
 		getBrainContestDao().remove(bc);
+		getSecurityService().removeObjectIdentity(contest);
 	}
 
 }
