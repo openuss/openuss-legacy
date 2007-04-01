@@ -37,15 +37,22 @@
 				<div class="content_font_normal">
 					<h:outputText value="#{braincontest_contest.description}" escape="false"/>
 				</div>
-				<c:if test="#{!empty braincontest_attachment}">
-					<h:outputText value="#{msg.braincontest_attachment}" styleClass="field_label" />
-					<h:outputLink value="/openuss-plexus/files/#{sessionScope.braincontest_attachment.fileName}">
-						<f:param value="#{braincontest_attachment.id}" name="fileid" />
-						<h:graphicImage	value="/images/filetypes/#{sessionScope.brainContest_attachment.extension}.gif" />
-				  		#{sessionScope.braincontest_attachment.name} 
-				  	</h:outputLink>					
-				</c:if>		
-
+				
+				<f:subview rendered="#{!(empty sessionScope.braincontest_contest.attachments)}">
+					<div class="content_font_normal">
+						<t:dataList 
+							var="attachment" 
+							value="#{sessionScope.braincontest_contest.attachments}" >
+							<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
+								<f:param value="#{attachment.id}" name="fileid" />
+								<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+						  		#{attachment.fileName} 
+						  	</o:link> 
+							<br/>	
+						</t:dataList>
+					</div>
+				</f:subview>
+				
 				<o:input entity="braincontest_answer" property="answer" required="true"/>
 				<o:input entity="braincontest_answer" property="topList" />
 

@@ -34,7 +34,9 @@
 	<ui:define name="content">
 		<h:form id="brainContestResultForm">
 			<o:block label="#{msg.braincontest_result_header} : #{braincontest_contest.title}">
-				<h:outputText value="#{msg.braincontest_result_wrong}" styleClass="content_font_normal"/>
+				<p class="content_font_normal">
+					<h:outputText value="#{msg.braincontest_result_wrong}"/>
+				</p>
 			</o:block>
 
 			<o:block>

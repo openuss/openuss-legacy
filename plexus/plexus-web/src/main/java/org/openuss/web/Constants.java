@@ -102,4 +102,6 @@ public class Constants {
 	
 	public static final String UPLOAD_FILE_MANAGER = "uploadFileManager";
 
+	public static final String BRAINCONTEST_ATTACHMENTS = "braincontest_attachments";
+
 }
