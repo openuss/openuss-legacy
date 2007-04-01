@@ -102,7 +102,7 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 		logger.debug("setting user object identity");
 		Collection<ObjectIdentity> objIds = new ArrayList<ObjectIdentity>();
 		for (User user : users.values()) {
-			createObjectIdentity(user.getId(), null);
+			objIds.add(createObjectIdentity(user.getId(), null));
 		}
 		getObjectIdentityDao().create(objIds);
 		
@@ -279,7 +279,7 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 	
 	private ObjectIdentity createObjectIdentity(Long id, ObjectIdentity parent) {
 		ObjectIdentity objId = ObjectIdentity.Factory.newInstance();
-		objId.setObjectIdentity(id);
+		objId.setId(id);
 		objId.setParent(parent);
 		return objId;
 	}
