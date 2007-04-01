@@ -85,7 +85,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	protected List handleGetFileEntries(Object domainObject) throws Exception {
 		Validate.notNull(domainObject, "Parameter domainObject must not be null!");
 		Folder root = getRootFolderForDomainObject(domainObject);
-		List entries = root.getEntries();
+		List entries = new ArrayList(root.getEntries());
 
 		CollectionUtils.filter(entries, new Predicate() {
 			public boolean evaluate(Object object) {
@@ -167,6 +167,14 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		Validate.allElementsOfType(folderEntries, FolderEntryInfo.class,
 				"Parameter folderEntries must contain only FolderEntryInfo objects.");
 		for (FolderEntryInfo entry : (Collection<FolderEntryInfo>) folderEntries) {
+			removeFolderEntry(entry.getId());
+		}
+	}
+	
+	@Override
+	protected void handleRemoveFileEntries(Collection entries) throws Exception {
+		Validate.allElementsOfType(entries, FileInfo.class);
+		for (FileInfo entry : (Collection<FileInfo>) entries) {
 			removeFolderEntry(entry.getId());
 		}
 	}
