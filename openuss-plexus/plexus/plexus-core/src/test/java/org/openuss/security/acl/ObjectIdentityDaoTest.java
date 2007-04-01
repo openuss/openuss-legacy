@@ -17,34 +17,63 @@ public class ObjectIdentityDaoTest extends ObjectIdentityDaoTestBase {
 	private TestUtility testUtility;
 	
 	public void testObjectIdentityDaoCreate() {
-		ObjectIdentity objectIdentity = ObjectIdentity.Factory.newInstance();
-		long id = testUtility.unique();
-		objectIdentity.setId(id);
-		objectIdentity.setParent(null);
+		ObjectIdentity objectIdentity = createObjectIdentity(null);
 		objectIdentityDao.create(objectIdentity);
 
-		commitAndNewTransaction();
+		commit();
 		
 		// load objectIdentity from db
-		ObjectIdentity oid = objectIdentityDao.load(id);
+		ObjectIdentity oid = objectIdentityDao.load(objectIdentity.getId());
 		assertNotNull(oid);
 		assertEquals(oid, objectIdentity);
 		
 		// remove objectIdentity from db
 		objectIdentityDao.remove(oid);
 		
-		commitAndNewTransaction();
+		commit();
 		
-		ObjectIdentity noid = objectIdentityDao.load(id);
+		ObjectIdentity noid = objectIdentityDao.load(objectIdentity.getId());
 		assertNull(noid);
+	}
+
+	public void testCascadingDelete() {
+		ObjectIdentity root = createObjectIdentity(null);
+		objectIdentityDao.create(root);
+		ObjectIdentity level1 = createObjectIdentity(root);
+		objectIdentityDao.create(level1);
+		ObjectIdentity level2 = createObjectIdentity(level1);
+		objectIdentityDao.create(level2);
+		ObjectIdentity level3 = createObjectIdentity(level2);
+		objectIdentityDao.create(level3);
+		
+		commit();
+		
+		ObjectIdentity loaded = objectIdentityDao.load(level3.getId());
+		assertEquals(level3, loaded);
+		assertEquals(level2, loaded.getParent());
+		assertEquals(level1, loaded.getParent().getParent());
+		assertEquals(root, loaded.getParent().getParent().getParent());
+		assertNull(loaded.getParent().getParent().getParent().getParent());
+		
+		objectIdentityDao.remove(root.getId());
+		
+		commit();
+		
+		assertNull(objectIdentityDao.load(level3.getId()));
 		
 	}
 
-	private void commitAndNewTransaction() {
-		// commit and start new transaction
+	private void commit() {
 		setComplete();
 		endTransaction();
 		startNewTransaction();
+	}
+
+	private ObjectIdentity createObjectIdentity(ObjectIdentity parent) {
+		ObjectIdentity objectIdentity = ObjectIdentity.Factory.newInstance();
+		objectIdentity.setId(testUtility.unique());
+		objectIdentity.setParent(parent);
+		return objectIdentity;
 	}
 
 	public TestUtility getTestUtility() {
