@@ -74,6 +74,8 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 			handleAddAuthorityToGroup(user, roleAdmin);
 		}
 		
+		// define object identity
+		createObjectIdentity(user, null);
 		
 		return user;
 	}

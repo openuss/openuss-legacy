@@ -49,7 +49,9 @@
 	</h:panelGrid>
 
   	<h:outputLabel value="#{msg.user_profile_portrait}" for="portraitEditor" styleClass="fieldLabel"/>
-	<fck:editor value="#{user.profile.portrait}" id="portraitEditor" toolbarSet="Portrait" width="100%"  height="200px"/>
+  	<div class="content_iframe">
+		<fck:editor value="#{user.profile.portrait}" id="portraitEditor" toolbarSet="Portrait" width="100%"  height="200px"/>
+	</div>
 
 	<o:input entity="user.profile" property="ageGroup" maxlength="50"/>
 	<o:input entity="user.profile" property="matriculation" maxlength="50"/>

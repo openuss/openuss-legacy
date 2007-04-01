@@ -75,6 +75,64 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 	}
 
 	/**
+	 * Loads assistants information.
+	 * Creates user, profile, preferences, contact, and role informations for each legacy assistant.
+	 */
+	private void migrateAssistantsToUsers(Collection<Assistant2> assistants2) {
+		logger.debug("migrating assistants to users");
+		logger.debug("transforming assistants ");
+		for (Assistant2 assistant : assistants2) {
+			users.put(assistant.getId(), assistantToUser(assistant));
+		}
+		logger.debug("starting to persist "+users.size()+" users");
+		getUserDao().create(users.values());
+	
+		logger.debug("starting to add users to group");
+		Group roleUser = getGroupDao().load(Roles.USER);
+		Group roleAssist = getGroupDao().load(Roles.ASSISTANT);
+		for (User user : users.values()) {
+			roleUser.addMember(user);
+			roleAssist.addMember(user);
+			user.addGroup(roleUser);
+			user.addGroup(roleAssist);
+		}
+		getGroupDao().update(roleUser);
+		getGroupDao().update(roleAssist);
+		
+		logger.debug("setting user object identity");
+		Collection<ObjectIdentity> objIds = new ArrayList<ObjectIdentity>();
+		for (User user : users.values()) {
+			createObjectIdentity(user.getId(), null);
+		}
+		getObjectIdentityDao().create(objIds);
+		
+		logger.debug("finished to add assistants to group");
+		
+		
+	}
+
+	/**
+	 * Transformation of Faculties
+	 */
+	private void migrateFacultiesToFaculties(Collection<Faculty2> faculties2) {
+		logger.debug("migrate faculties");
+		logger.debug("starting to transform faculties");
+		for (Faculty2 faculty2 : faculties2) {
+			Faculty faculty = faculty2ToFaculty(faculty2);
+			// define owner 
+			User owner = users.get(faculty2.getAssistant().getId());
+			faculty.setOwner(owner);
+			faculty.getMembers().add(owner);
+			
+			faculties.put(faculty2.getId(),faculty);
+		}
+		logger.debug("finished to transform faculty structure");
+		logger.debug("starting to persist faculties");
+		getFacultyDao().create(faculties.values());
+		logger.debug("finishing to persist faculties");
+	}
+
+	/**
 	 *  The faculty groups must inherit the grant priviledges from faculty.
 	 *  Therefor each group must be defined as a subelement of the facutly.
 	 */
@@ -254,34 +312,6 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 	}
 
 	/**
-	 * Loads assistants information.
-	 * Creates user, profile, preferences, contact, and role informations for each legacy assistant.
-	 */
-	private void migrateAssistantsToUsers(Collection<Assistant2> assistants2) {
-		logger.debug("migrating assistants to users");
-		logger.debug("transforming assistants ");
-		for (Assistant2 assistant : assistants2) {
-			users.put(assistant.getId(), assistantToUser(assistant));
-		}
-		logger.debug("starting to persist "+users.size()+" users");
-		getUserDao().create(users.values());
-
-		logger.debug("starting to add users to group");
-		Group roleUser = getGroupDao().load(Roles.USER);
-		Group roleAssist = getGroupDao().load(Roles.ASSISTANT);
-		for (User user : users.values()) {
-			roleUser.addMember(user);
-			roleAssist.addMember(user);
-			user.addGroup(roleUser);
-			user.addGroup(roleAssist);
-		}
-		getGroupDao().update(roleUser);
-		getGroupDao().update(roleAssist);
-		logger.debug("finished to add assistants to group");
-	}
-	
-	
-	/**
 	 * Map legacy assistant object to new user object.
 	 * Creates an User with contact, preferences, and profile.
 	 * @param assistant
@@ -353,27 +383,6 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 		contact.setTelephone(assistant.getTelephone());
 		contact.setSmsEmail(assistant.getEmailsmsgatewayaddress());
 		return contact;
-	}
-	
-	/**
-	 * Transformation of Faculties
-	 */
-	private void migrateFacultiesToFaculties(Collection<Faculty2> faculties2) {
-		logger.debug("migrate faculties");
-		logger.debug("starting to transform faculties");
-		for (Faculty2 faculty2 : faculties2) {
-			Faculty faculty = faculty2ToFaculty(faculty2);
-			// define owner 
-			User owner = users.get(faculty2.getAssistant().getId());
-			faculty.setOwner(owner);
-			faculty.getMembers().add(owner);
-			
-			faculties.put(faculty2.getId(),faculty);
-		}
-		logger.debug("finished to transform faculty structure");
-		logger.debug("starting to persist faculties");
-		getFacultyDao().create(faculties.values());
-		logger.debug("finishing to persist faculties");
 	}
 	
 	/**

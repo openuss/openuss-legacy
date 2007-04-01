@@ -15,9 +15,12 @@ import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
+import org.openuss.security.Group;
+import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserContact;
 import org.openuss.security.UserPreferences;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.navigation.Navigator;
@@ -82,6 +85,9 @@ public class UserProfilePage extends BasePage{
 			
 			FolderInfo folder = documentService.getFolder(user);
 			documentService.createFileEntry(imageFile, folder);
+			
+			permitRolesImageReadPermission(imageFile);
+			
 			user.setImageId(imageFile.getId());
 			user.setImageId(imageFile.getId());
 
@@ -90,6 +96,19 @@ public class UserProfilePage extends BasePage{
 		}
 		securityService.saveUser(user);
 		addMessage(i18n("user_message_saved_profile_successfully"));
+	}
+
+	private void permitRolesImageReadPermission(FileInfo imageFile) {
+		// TODO should be done within the business layer
+		Group roleAnonymous = Group.Factory.newInstance();
+		roleAnonymous.setId(Roles.ANONYMOUS);
+		roleAnonymous = securityService.getGroup(roleAnonymous);
+		securityService.setPermissions(roleAnonymous, imageFile, LectureAclEntry.READ);
+		
+		Group roleUser = Group.Factory.newInstance();
+		roleUser.setId(Roles.USER);
+		roleUser = securityService.getGroup(roleUser);
+		securityService.setPermissions(roleUser, imageFile, LectureAclEntry.READ);
 	}
 	
 	/**
