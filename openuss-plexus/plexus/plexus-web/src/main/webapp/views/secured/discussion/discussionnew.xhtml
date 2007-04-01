@@ -30,20 +30,20 @@
  		 
   		<ui:define name="content">
 			<h:form id="newDiscussionEntryForm">
-	  			<o:block label="#{msg.discussionnew_entry}" styleClass="form_box">
-					<o:input entity="discussionNew" property="title" required="true"></o:input>
+	  			<o:block label="#{msg.discussion_new_discussion_entry}" styleClass="form_box">
+					<o:input entity="discussion_discussionentry" property="title" required="true"></o:input>
 					
-					<h:outputText value="#{msg.discussionnew_text}" styleClass="field_label"/>					
-					<fck:editor value="#{discussionNew.text}" id="textEditor" toolbarSet="Discussion" width="100%" height="200" />	 				
+					<h:outputText value="#{msg.discussion_discussionentry_text}" styleClass="field_label"/>					
+					<fck:editor value="#{discussion_discussionentry.text}" id="textEditor" toolbarSet="Discussion" width="100%" height="200" />	 				
 
-				<f:subview rendered="${!empty discussionNew.attachment}">
-					<h:outputLink value="/openuss-plexus/files/#{sessionScope.discussionNew.attachment.fileName}">
-						<f:param value="#{discussionNew.attachment.id}" name="fileid" />
-						<h:graphicImage	value="/images/filetypes/#{sessionScope.discussionNew.attachment.extension}.gif" />
-				  		#{sessionScope.discussionNew.attachment.name} 
+				<f:subview rendered="${!empty discussion_discussionentry.attachmentId}">
+					<h:outputLink value="/openuss-plexus/files/#{sessionScope.discussion_discussionentry.attachmentName}">
+						<f:param value="#{discussion_discussionentry.attachmentId}" name="fileid" />
+						<h:graphicImage	value="/images/filetypes/#{sessionScope.discussion_discussionentry.extension}.gif" />
+				  		#{sessionScope.discussion_discussionentry.attachmentName} 
 				  	</h:outputLink>
 			  		&#160;
-			  		<h:commandButton value="delete" action="#{discussionNew.removeAttachment}" immediate="true" styleClass="button_remove"/><br/><br/>
+			  		<h:commandButton value="delete" action="#{views$secured$discussion$discussionnew.removeAttachment}" immediate="true" styleClass="button_remove"/><br/><br/>
 		  		</f:subview> 
 						
 				<t:inputFileUpload id="attachment" storage="file" accept="*" immediate="true" styleClass="uploadField">
@@ -53,12 +53,12 @@
 	 				
 				</o:block>
 				<o:block>
-					<plexus:command bean="#{discussionNew}"
-						action="send" label="#{msg['discussionnew_button_send']}"
-						title="#{msg['discussionnew_button_send']}"
+					<plexus:command bean="#{views$secured$discussion$discussionnew}"
+						action="send" label="#{msg['discussion_discussionentry_button_send']}"
+						title="#{msg['discussion_discussionentry_button_send']}"
 						styleClass="button" />				
 					<h:commandButton 
-						value="${msg.discussionnew_button_draft}" 
+						value="${msg.discussion_discussionentry_button_draft}" 
 						action="discussion_thread" 
 						immediate="true" 
 						styleClass="button"/>

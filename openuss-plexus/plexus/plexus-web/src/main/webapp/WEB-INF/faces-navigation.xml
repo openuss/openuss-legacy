@@ -318,12 +318,10 @@
 				<to-view-id>/views/secured/enrollment/main.xhtml</to-view-id>
 			</navigation-case>
 
-<!-- 
 			<navigation-case>
 				<from-outcome>enrollment_discussion</from-outcome>
 				<to-view-id>/views/secured/discussion/discussions.xhtml</to-view-id>
 			</navigation-case>
- -->
 	
 			<navigation-case>
 				<from-outcome>enrollment_mailinglist</from-outcome>
@@ -445,7 +443,6 @@
 			</navigation-case>	
 			
 			<!-- discussion -->	
-			<!-- 
 			<navigation-case>
 				<from-outcome>discussion_new</from-outcome>
 				<to-view-id>/views/secured/discussion/discussionnew.xhtml</to-view-id>				
@@ -455,7 +452,6 @@
 				<from-outcome>discussion_thread</from-outcome>
 				<to-view-id>/views/secured/discussion/discussionthread.xhtml</to-view-id>				
 			</navigation-case>					
-			 -->
 
 			<navigation-case>
 				<from-outcome>wiki_edit</from-outcome>

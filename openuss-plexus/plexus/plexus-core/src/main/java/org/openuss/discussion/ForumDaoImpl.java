@@ -17,7 +17,11 @@ public class ForumDaoImpl
         org.openuss.discussion.Forum sourceEntity,
         org.openuss.discussion.ForumInfo targetVO)
     {
-        super.toForumInfo(sourceEntity, targetVO);
+    	if (sourceEntity!=null){
+	    	if (sourceEntity.getDomainIdentifier()!=null) targetVO.setDomainIdentifier(sourceEntity.getDomainIdentifier());
+	        if (sourceEntity.getId()!=null) targetVO.setId(sourceEntity.getId());
+	        targetVO.setReadOnly(sourceEntity.isReadOnly());
+    	}
     }
 
 
@@ -26,7 +30,9 @@ public class ForumDaoImpl
      */
     public org.openuss.discussion.ForumInfo toForumInfo(final org.openuss.discussion.Forum entity)
     {
-        return super.toForumInfo(entity);
+        ForumInfo target = new ForumInfo();
+        this.toForumInfo(entity, target);
+        return target;
     }
 
 
