@@ -99,8 +99,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		TopicInfo addedTopic = topics.get(0); 
 		assertEquals(0, addedTopic.getAnswerCount().intValue());
 		assertEquals(addedTopic.getTitle(), firstPost.getTitle());
-		assertEquals(addedTopic.getSubmitter(), firstPost.getSubmitter());
-		assertEquals(addedTopic.getCreated(), firstPost.getCreated());
+		assertEquals(addedTopic.getCreated().getTime(), firstPost.getCreated().getTime());
 		List<PostInfo> posts =discussionService.getPosts(addedTopic); 
 		assertNotNull(posts);
 		assertEquals(1, posts.size());
@@ -125,6 +124,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		assertEquals(domainObject, loadedForum.getDomainIdentifier());
 		//test delete 
 		//test correct creation of a example topic
+		commit();
 		PostInfo firstPost = generatePost();
 		discussionService.createTopic(firstPost, loadedForum);
 		List<TopicInfo> topics = discussionService.getTopics(discussionService.getForum(domainObject));
@@ -133,21 +133,24 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		TopicInfo addedTopic = topics.get(0); 
 		assertEquals(0, addedTopic.getAnswerCount().intValue());
 		assertEquals(addedTopic.getTitle(), firstPost.getTitle());
-		assertEquals(addedTopic.getSubmitter(), firstPost.getSubmitter());
-		assertEquals(addedTopic.getCreated(), firstPost.getCreated());
+		assertEquals(addedTopic.getCreated().getTime(), firstPost.getCreated().getTime());
 		List<PostInfo> posts =discussionService.getPosts(addedTopic); 
 		assertNotNull(posts);
 		assertEquals(1, posts.size());
 		//test correct adding of a post
 		PostInfo newPost = generatePost();
 		discussionService.addPost(newPost, addedTopic);
+		commit();
 		topics = discussionService.getTopics(discussionService.getForum(domainObject));
 		assertNotNull(topics);
 		assertEquals(1, topics.size());
 		addedTopic = topics.get(0); 
 		assertEquals(1, addedTopic.getAnswerCount().intValue());
-		discussionService.deletePost(newPost);
-		topics = discussionService.getTopics(discussionService.getForum(domainObject));
+		PostInfo addedPost = discussionService.getPost(newPost);
+		commit();
+		discussionService.deletePost(addedPost);
+		commit();
+		topics = discussionService.getTopics(loadedForum);
 		assertNotNull(topics);
 		assertEquals(1, topics.size());
 		addedTopic = topics.get(0); 

@@ -110,6 +110,7 @@ public class DiscussionServiceImpl
     	t.setLast(newPost);
     	getTopicDao().update(t);
     	//TODO formula?
+    	post.setId(newPost.getId());
     	
     }
 
