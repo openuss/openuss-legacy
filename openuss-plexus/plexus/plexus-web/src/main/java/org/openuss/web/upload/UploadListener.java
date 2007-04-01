@@ -36,7 +36,7 @@ public class UploadListener extends BaseBean implements ValueChangeListener {
 	}
 
 	private UploadFileManager getUploadFileManager() {
-		return (UploadFileManager) getBean("uploadFileManager");
+		return (UploadFileManager) getBean(Constants.UPLOAD_FILE_MANAGER);
 	}
 
 
