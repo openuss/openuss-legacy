@@ -35,7 +35,7 @@ public class DocumentRemovePage extends AbstractDocumentPage{
 		if (entries != null) {
 			documentService.removeFolderEntries(entries);
 			removeSessionBean(Constants.DOCUMENTS_SELECTED_FOLDERENTRIES);
-			addMessage(i18n("faculty_enrollment_removed_succeed"));
+			addMessage(i18n("documents_message_removing_files_succeed"));
 		}
 		return Constants.OUTCOME_BACKWARD;
 	}
