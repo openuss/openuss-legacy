@@ -13,8 +13,6 @@ import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
 /**
  * JUnit Test for Spring Hibernate DiscussionService class.
  * @see org.openuss.discussion.DiscussionService

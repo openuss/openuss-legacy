@@ -11,12 +11,11 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.repository.RepositoryFileImpl;
 import org.openuss.security.UserImpl;
-import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 
 @Bean(name = "views$secured$discussion$discussionthread", scope = Scope.REQUEST)
 @View
-public class DiscussionThreadPage extends AbstractEnrollmentPage{
+public class DiscussionThreadPage extends AbstractDiscussionPage{
 	private static final Logger logger = Logger.getLogger(DiscussionThreadPage.class);
 	
 	private DiscussionThreadDataProvider data = new DiscussionThreadDataProvider();

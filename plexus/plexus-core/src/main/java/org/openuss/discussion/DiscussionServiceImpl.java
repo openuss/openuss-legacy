@@ -341,6 +341,13 @@ public class DiscussionServiceImpl
 	@Override
 	protected ForumInfo handleGetForum(Long domainIdentifier) throws Exception {
 		Forum forum = getForumDao().findByDomainIdentifier(domainIdentifier);
+		if (forum==null){
+			ForumInfo f = new ForumInfo();
+			f.setDomainIdentifier(domainIdentifier);
+			f.setReadOnly(false);
+			handleAddForum(f);
+			forum = getForumDao().findByDomainIdentifier(domainIdentifier);
+		}
 		return getForumDao().toForumInfo(forum);
 	}
 
