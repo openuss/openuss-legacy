@@ -36,5 +36,11 @@
 			<plexus:commandSortHeader columnName="lastPost"> #{msg['discussion_main_column_lastentry']} </plexus:commandSortHeader>
 			<h:outputText value="#{topic.lastPost} - #{topic.lastPostSubmitterName}" />
 		</t:column>
+		<t:column>
+			<plexus:commandSortHeader columnName="actions"> #{msg['discussion_main_column_actions']} </plexus:commandSortHeader>
+			<plexus:command bean="#{views$secured$discussion$discussions}"
+				action="removeTopic" label="#{msg['discussion_thread_remove_topic']}"
+				title="#{msg['discussion_thread_remove_topic']}"/>				
+		</t:column>
 	</plexus:dataTable>      
 </ui:composition>

@@ -31,6 +31,9 @@
 				<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 			</h:outputText>
 			<h:outputText value="#{post.title}" styleClass="header_font_normal" />
+			<plexus:command bean="#{views$secured$discussion$discussionthread}"
+				action="removePost" label="#{msg['discussion_thread_remove_post']}"
+				title="#{msg['discussion_thread_remove_post']}"/>				
 			<hr />
 			<div class="content_font_normal">
 				<h:outputText value="#{post.text}" escape="false"/>

@@ -9,6 +9,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.braincontest.BrainContestInfo;
 import org.openuss.discussion.PostInfo;
 import org.openuss.discussion.TopicInfo;
 import org.openuss.documents.FileInfo;
@@ -61,6 +62,14 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		PostInfo post = new PostInfo();
 		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, post);
 		return Constants.DISCUSSION_NEW;
+	}
+	
+	public String removePost(){
+		PostInfo pi = this.data.getRowData();
+		//TODO test if pi is the last element in topic, the return to main discussion view
+		discussionService.deletePost(pi);
+		addMessage(i18n("discussion_post_deleted", pi.getTitle()));
+		return Constants.SUCCESS;
 	}
 	
 	public DiscussionThreadDataProvider getData() {
