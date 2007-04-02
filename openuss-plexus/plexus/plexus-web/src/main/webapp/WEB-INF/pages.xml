@@ -15,6 +15,10 @@
 		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.ASSIST}"/>
 		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
 	</page>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Documents
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
 	<page view-id="/views/secured/documents/*">
 	 	<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.READ}"/>
@@ -39,6 +43,10 @@
 		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.CRUD}"/>
 	</page>
 
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			BrainContest
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
 	<page view-id="/views/secured/braincontest/*">
 		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.READ}"/>
 		<parameter name="braincontest" value="#{braincontest_contest.id}" converterId="javax.faces.Long"/>
@@ -48,5 +56,15 @@
 	<page view-id="/views/secured/braincontest/braincontestnew.xhtml">
 		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.ASSIST}"/>
 	</page>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			News
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+	<page view-id="/views/public/news/*">
+		<securityConstraint domainObject="#{news_selected_newsitem}" permissions="#{ACL.READ}"/>
+		<parameter name="news" value="#{news_selected_newsitem.id}" converterId="javax.faces.Long"/>
+	</page>
+	
 	
 </pages>

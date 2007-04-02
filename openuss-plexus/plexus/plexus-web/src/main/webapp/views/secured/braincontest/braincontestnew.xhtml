@@ -79,6 +79,9 @@
 						action="#{views$secured$braincontest$braincontestnew.addAttachment}"
 						immediate="true"
 						styleClass="button"/> 
+					
+					<h:message for="attachmentUpload" styleClass="field_error" showDetail="true" showSummary="false" />
+					
 	
 					<o:input entity="braincontest_contest" property="solution"
 						required="true" />

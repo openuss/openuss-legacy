@@ -16,20 +16,35 @@
 	<ui:composition template="/views/layout/dialog.xhtml">
 		<ui:define name="content">
 		   	<h:form id="newsItemDetail"> 
-		   		<o:block label="Nachricht - #{newsItem.publisher.displayName}">
-					<h:outputText id="publisher" value="#{newsItem.title} - " styleClass="content_font_normal"/>
-					<h:outputText id="publishDate" value="#{newsItem.publishDate}" styleClass="content_font_normal">
-						<f:convertDateTime timeZone="visit.timezone" type="date" dateStyle="medium" timeStyle="medium"/>
-					</h:outputText>
-			    	<h:outputText id="newsText" value="#{newsItem.text}" escape="false" styleClass="content_font_normal"/>
-				  	<h:outputLink value="/openuss-plexus/files/#{newsItem.attachment.fileName}">
-				  		<f:param value="#{newsItem.attachment.id}" name="fileid" /> 
-				  		<h:graphicImage value="/images/filetypes/#{newsItem.attachment.extension}.gif"/>
-				  		#{sessionScope.newsItem.attachment.name} 
-				  	</h:outputLink>
+		   		<o:block label="#{msg.news_header} - #{news_selected_newsitem.publisherName}">
+		   			<p class="header_font_normal">
+						<h:outputText id="publisher" value="#{news_selected_newsitem.title} - "/>
+						<h:outputText id="publishDate" value="#{news_selected_newsitem.publishDate}">
+							<f:convertDateTime timeZone="#{visit.timeZone}" type="date" dateStyle="medium" timeStyle="medium"/>
+						</h:outputText>
+					</p>
+					<div class="content_font_normal">
+				    	<h:outputText id="newsText" value="#{news_selected_newsitem.text}" escape="false"/>
+				    </div>
+
+					<f:subview rendered="#{!(empty sessionScope.news_selected_newsitem.attachments)}">
+						<div class="content_font_normal">
+							<t:dataList 
+								var="attachment" 
+								value="#{sessionScope.news_selected_newsitem.attachments}" >
+								<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
+									<f:param value="#{attachment.id}" name="fileid" />
+									<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+							  		#{attachment.fileName} 
+							  	</o:link> 
+								<br/>	
+							</t:dataList>
+						</div>
+					</f:subview>
+
 				</o:block>
 				<o:block>
-					<h:commandButton id="linkBack" action="view:backward" value="#{msg['newsitem_back']}" styleClass="button_back"/>
+					<h:commandButton id="linkBack" action="view:backward" value="#{msg['news_selected_newsitem_back']}" styleClass="button_back"/>
 				</o:block>
 	  		</h:form>
 	    </ui:define>
