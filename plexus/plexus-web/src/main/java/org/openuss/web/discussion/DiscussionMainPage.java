@@ -41,6 +41,13 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 		return Constants.DISCUSSION_NEW;
 	}
 
+	public String removeTopic(){
+		TopicInfo t = this.data.getRowData();
+		discussionService.deleteTopic(t);
+		addMessage(i18n("discussion_topic_deleted", t.getTitle()));
+		return Constants.SUCCESS;
+	}
+	
 	public DiscussionDataProvider getData() {
 		return data;
 	}
