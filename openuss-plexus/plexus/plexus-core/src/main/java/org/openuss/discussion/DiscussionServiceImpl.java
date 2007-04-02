@@ -14,6 +14,7 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentServiceException;
+import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.security.User;
 
@@ -115,7 +116,6 @@ public class DiscussionServiceImpl
     	newPost.setSubmitter(getSecurityService().getUserByName(post.getSubmitter()));
     	getPostDao().create(newPost);
     	
-    	
     	List<Post> posts = t.getPosts();
     	posts.add(newPost);
     	t.setPosts(posts);
@@ -123,8 +123,17 @@ public class DiscussionServiceImpl
     	getTopicDao().update(t);
     	//TODO formula?
     	post.setId(newPost.getId());
-    	//set object identity
+    	//set object identity and attachments
     	getSecurityService().createObjectIdentity(newPost, t);
+		if (post.getAttachments() != null && !post.getAttachments().isEmpty()) {
+			logger.debug("found "+post.getAttachments().size()+" attachments.");
+			FolderInfo folder = getDocumentService().getFolder(post);
+
+			for (FileInfo attachment : post.getAttachments()) {
+				getDocumentService().createFileEntry(attachment, folder);
+			}
+		}		
+		getPostDao().toPostInfo(newPost);
     }
 
     /**
@@ -178,7 +187,11 @@ public class DiscussionServiceImpl
     {
     	Validate.notNull(post);
     	Validate.notNull(post.getId());
-    	return getPostDao().toPostInfo(getPostDao().load(post.getId()));    	
+    	PostInfo postInfo = getPostDao().toPostInfo(getPostDao().load(post.getId()));
+		List<FileInfo> attachments = getAttachments(postInfo);
+		postInfo.setAttachments(attachments);
+		return postInfo;
+
     }
 
     /**
@@ -193,9 +206,12 @@ public class DiscussionServiceImpl
     	List<PostInfo> posts = new ArrayList<PostInfo>();
     	if (t==null) return posts;
     	List<Post> pList = t.getPosts();
-    	Iterator i = pList.iterator();
+    	Iterator i = pList.iterator();    	
     	while (i.hasNext()){
-    		posts.add(getPostDao().toPostInfo((Post)i.next()));
+    		PostInfo newPost = getPostDao().toPostInfo((Post)i.next()); 
+    		List<FileInfo> attachments = getAttachments(newPost);
+    		newPost.setAttachments(attachments);
+    		posts.add(newPost);
     	}
     	return posts;
     }
@@ -297,20 +313,21 @@ public class DiscussionServiceImpl
     	Validate.notNull(post);
     	Validate.notNull(post.getId());
     	Validate.notNull(file);    	
-        //TODO implement protected void handleAddAttachment(org.openuss.discussion.PostInfo post, org.openuss.documents.FileInfo file)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleAddAttachment(org.openuss.discussion.PostInfo post, org.openuss.documents.FileInfo file) Not implemented!");
+		FolderInfo parent = getDocumentService().getFolder(post);
+		getDocumentService().createFileEntry(file, parent);
     }
 
     /**
      * @see org.openuss.discussion.DiscussionService#removeAttachment(org.openuss.discussion.PostInfo)
      */
-    protected void handleRemoveAttachment(org.openuss.discussion.PostInfo post)
+    protected void handleRemoveAttachment(org.openuss.discussion.PostInfo post, org.openuss.documents.FileInfo fileInfo)
         throws java.lang.Exception
     {
     	Validate.notNull(post);
     	Validate.notNull(post.getId());
-    	//TODO implement protected void handleRemoveAttachment(org.openuss.discussion.PostInfo post)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleRemoveAttachment(org.openuss.discussion.PostInfo post) Not implemented!");
+    	Validate.notNull(fileInfo);
+    	Validate.notNull(fileInfo.getId());
+    	getDocumentService().removeFolderEntry(fileInfo.getId());   
     }
 
 	@Override
@@ -360,6 +377,15 @@ public class DiscussionServiceImpl
 		t.setHits(t.getHits()+1);
 		topic.setHits(t.getHits());
 		getTopicDao().update(t);		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected List handleGetAttachments(PostInfo post) throws Exception {
+		Validate.notNull(post);
+		Validate.notNull(post.getId());		
+		List<FileInfo> attachments = getDocumentService().getFileEntries(post);
+		return attachments;
 	}
 
 }
