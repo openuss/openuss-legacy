@@ -7,6 +7,9 @@
 			org.openuss.framework.web.jsf.events.ConversationPhaseListener
 		</phase-listener>
 		<phase-listener>
+			org.openuss.framework.web.jsf.events.ViewStackPhaseListener
+		</phase-listener>
+		<phase-listener>
 			org.openuss.framework.web.jsf.events.PostRedirectGetPhaseListener
 		</phase-listener>
 		<phase-listener>

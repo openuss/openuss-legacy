@@ -59,12 +59,6 @@ public class RedirectNavigationHandler extends NavigationHandler {
 				redirectToViewId(facesContext, viewId);
 				return;
 			}
-		} else if (!viewStack.contains(currentViewId)) {
-			viewStack.push(currentViewId);
-		} else {
-			while (!currentViewId.equals(viewStack.peek())) {
-				viewStack.pop();
-			}
 		}
 
 		if (isViewId(outcome)) {
@@ -76,7 +70,8 @@ public class RedirectNavigationHandler extends NavigationHandler {
 
 		checkForRedirect(facesContext, currentViewId);
 	}
-	
+
+
 	private boolean isBackward(String outcome) {
 		return outcome != null && outcome.startsWith(VIEW_BACKWARD);
 	}
