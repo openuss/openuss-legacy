@@ -31,14 +31,22 @@ public class NewsItemImpl extends NewsItemBase implements NewsItem {
 	 * @see org.openuss.news.NewsItem#isReleased()
 	 */
 	public boolean isReleased() {
-		return new Date().after(getPublishDate());
+		if (getPublishDate() != null) {
+			return new Date().after(getPublishDate());
+		} else {
+			return true;
+		}
 	}
 
 	/**
 	 * @see org.openuss.news.NewsItem#isExpired()
 	 */
 	public boolean isExpired() {
-		return new Date().after(getExpireDate());
+		if (getExpireDate() != null) {
+			return new Date().after(getExpireDate());
+		} else {
+			return false;
+		}
 	}
 
 }

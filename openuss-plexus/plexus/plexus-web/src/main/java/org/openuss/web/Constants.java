@@ -110,4 +110,8 @@ public class Constants {
 
 	public static final String BRAINCONTEST_ATTACHMENTS = "braincontest_attachments";
 
+	public static final String ENROLLMENT_NEWS_EDIT_PAGE = "enrollment_news_edit";
+
+	public static final String ENROLLMENT_NEWS_PAGE = "enrollment_news";
+
 }
