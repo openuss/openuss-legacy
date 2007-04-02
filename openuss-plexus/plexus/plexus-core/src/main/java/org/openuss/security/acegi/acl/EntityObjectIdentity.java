@@ -73,7 +73,11 @@ public class EntityObjectIdentity implements AclObjectIdentity {
 	 */
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(1330891477, -1591801705).append(identifier).hashCode();
+		if (identifier != null) {
+			return identifier.intValue();
+		} else {
+			return super.hashCode();
+		}
 	}
 
 	/**
