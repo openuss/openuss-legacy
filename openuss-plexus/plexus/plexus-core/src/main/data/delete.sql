@@ -4,9 +4,7 @@ delete from braincontest;
 delete from desktop_desktop_subject;
 delete from desktop_desktop_faculty;
 delete from desktop_desktop;
-delete from news_item;
-delete from news_publisher;
-delete from news_category;
+delete from news_newsitem;
 delete from lecture_faculty_aspirant;
 delete from lecture_faculty_group;
 delete from lecture_faculty_member;
@@ -14,6 +12,10 @@ delete from lecture_faculty_member;
 update lecture_enrollment e set e.faculty_fk = null;
 update lecture_period e set e.faculty_fk = null;
 update lecture_subject e set e.faculty_fk = null;
+
+update discussion_post d set d.submitter_fk = null;
+update discussion_post d set d.topic_fk = null;
+delete from discussion_topic;
 
 delete from enrollment_member;
 delete from lecture_faculty;

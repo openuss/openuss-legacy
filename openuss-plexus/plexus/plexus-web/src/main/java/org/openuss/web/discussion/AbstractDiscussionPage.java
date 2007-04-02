@@ -4,12 +4,17 @@ import org.apache.shale.tiger.managed.Property;
 import org.openuss.discussion.DiscussionService;
 import org.openuss.discussion.ForumInfo;
 import org.openuss.discussion.PostInfo;
+import org.openuss.discussion.TopicInfo;
+import org.openuss.web.Constants;
 import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 public class AbstractDiscussionPage extends AbstractEnrollmentPage{
 
-	@Property(value = "#{discussion_discussionentry}")
+	@Property(value = "#{"+Constants.DISCUSSION_DISCUSSIONENTRY+"}")
 	protected PostInfo postInfo;
+
+	@Property(value = "#{"+Constants.DISCUSSION_TOPIC+"}")
+	protected TopicInfo topic;
 	
 	@Property(value = "#{discussionService}")
 	protected DiscussionService discussionService;
@@ -39,5 +44,13 @@ public class AbstractDiscussionPage extends AbstractEnrollmentPage{
 
 	public void setForum(ForumInfo forum) {
 		this.forum = forum;
+	}
+
+	public TopicInfo getTopic() {
+		return topic;
+	}
+
+	public void setTopic(TopicInfo topic) {
+		this.topic = topic;
 	}	
 }

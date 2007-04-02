@@ -1,16 +1,21 @@
 package org.openuss.web.discussion; 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.sql.Date;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.discussion.PostInfo;
+import org.openuss.documents.FileInfo;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.repository.RepositoryFileImpl;
 import org.openuss.security.UserImpl;
+import org.openuss.web.Constants;
 
 
 @Bean(name = "views$secured$discussion$discussionthread", scope = Scope.REQUEST)
@@ -20,18 +25,30 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	
 	private DiscussionThreadDataProvider data = new DiscussionThreadDataProvider();
 	
-	private class DiscussionThreadDataProvider extends AbstractPagedTable<ThreadEntry> {
+	@SuppressWarnings("unchecked")
+	@Prerender
+	public void prerender() {		
+		if (!isPostBack()) {
+			if ( topic != null && topic.getId() != null) {
+				topic = discussionService.getTopic(topic);
+				setSessionBean(Constants.DISCUSSION_TOPIC, topic);
+			}
+			if (topic == null || topic.getId() == null) {
+				addError(i18n("braincontest_message_contest_not_found"));
+				redirect(Constants.DISCUSSION_MAIN);
+			}
+		} 
+	}	
+	
+	
+	private class DiscussionThreadDataProvider extends AbstractPagedTable<PostInfo> {
 
-		private DataPage<ThreadEntry> page; 
+		private DataPage<PostInfo> page; 
 		
 		@Override 
-		public DataPage<ThreadEntry> getDataPage(int startRow, int pageSize) {		
-			ArrayList<ThreadEntry> al = new ArrayList<ThreadEntry>();
-			UserImpl ui = new UserImpl();
-			RepositoryFileImpl rf = new RepositoryFileImpl();			
-			ThreadEntry te1 = new ThreadEntry(ui, "test", new Date(System.currentTimeMillis()),"testtitle", rf);
-			al.add(te1); 
-			page = new DataPage<ThreadEntry>(al.size(),0,al);
+		public DataPage<PostInfo> getDataPage(int startRow, int pageSize) {		
+			List<PostInfo> al = discussionService.getPosts(topic);
+			page = new DataPage<PostInfo>(al.size(),0,al);
 			return page;
 		}
 	}
