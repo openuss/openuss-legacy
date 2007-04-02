@@ -100,6 +100,7 @@ public class Constants {
 	public static final String DISCUSSION_NEW = "discussion_new";
 	public static final String DISCUSSION_TOPIC = "discussion_topic";
 	public static final String DISCUSSION_MAIN = "discussion_main";
+	public static final String DISCUSSION_THREAD = "discussion_thread";
 	
 	public static final String ZIP_DOWNLOAD_URL = "/zips/documents.zip";
 	

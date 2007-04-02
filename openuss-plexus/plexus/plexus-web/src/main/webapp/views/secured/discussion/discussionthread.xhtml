@@ -36,18 +36,19 @@
 		<h:form id="discussionThreadTableView">
 			<ui:include src="discussionthreadtable.xhtml" />
 			<o:block>
+				<plexus:command bean="#{views$secured$discussion$discussions}"
+					action="newTopic" label="#{msg['discussion_new']}"
+					title="#{msg['discussion_new']}"/>	
+				<plexus:command bean="#{views$secured$discussion$discussionthread}"
+					action="addPost" label="#{msg['discussion_new_addpost']}"
+					title="#{msg['discussion_new_addpost']}"/>	
 				<h:commandButton 
 				    id="newDiscussionEntry"
-					action="discussion_new" 
-					value="#{msg.discussion_new}" 
-					title="#{msg.discussion_new}"
-					styleClass="button"/>
-				<h:commandButton 
-				    id="newDiscussionEntry"
-					action="discussion_new" 
-					value="#{msg.discussion_new_answer}" 
-					title="#{msg.discussion_new_answer}"
-					styleClass="button"/>
+					action="discussion_main" 
+					value="#{msg.cancel}" 
+					title="#{msg.cancel}"
+					styleClass="button"
+					immediate="true"/>
 
 			</o:block>
 		</h:form>

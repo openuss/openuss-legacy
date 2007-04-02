@@ -34,6 +34,8 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	}
 	
 	public String newTopic(){
+		TopicInfo ti = new TopicInfo();
+		setSessionBean(Constants.DISCUSSION_TOPIC, ti);
 		PostInfo pi = new PostInfo();
 		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, pi);
 		return Constants.DISCUSSION_NEW;
