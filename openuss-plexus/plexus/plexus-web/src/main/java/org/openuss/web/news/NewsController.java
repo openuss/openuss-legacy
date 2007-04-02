@@ -42,26 +42,6 @@ public class NewsController extends BaseBean {
 	
 	private List<NewsItemInfo> news;
 
-//	@Init
-//	public void init() {
-//		logger.debug("news_controller init <-----------------------------------------------------------");
-//		//TODO call business method here
-//		
-//		if (newsItem != null && newsItem.getId() != null) {
-//			newsItem = newsService.getNewsItem(newsItem);
-//			setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
-//		}
-//			
-//		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
-//	}
-//	
-//	public String cancel() {
-//		return Constants.FACULTY_NEWS_PAGE;
-//	}
-	
-	
-	
-	
 	/**
 	 * @TODO the viewId of the page to be return should be fetched from an conversational context!
 	 * @return /viewId of the welcome page
@@ -70,7 +50,6 @@ public class NewsController extends BaseBean {
 		return Constants.OUTCOME_BACKWARD;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<NewsItemInfo> getCurrentGlobalNews() {
 		if (news == null) {
 			news = newsService.getCurrentNewsItems(NewsCategory.GLOBAL, 20);
@@ -78,6 +57,12 @@ public class NewsController extends BaseBean {
 		return news;
 	}
 	
+	public List<NewsItemInfo> getCurrentSidebarNews() {
+		if (news == null) {
+			news = newsService.getCurrentNewsItems(NewsCategory.GLOBAL, 3);
+		}
+		return news;
+	}
 
 	public void fetchNewsItem() {
 		if (newsItem != null) {
