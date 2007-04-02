@@ -1,8 +1,6 @@
 package org.openuss.web.discussion; 
 
-import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -16,7 +14,6 @@ import org.openuss.web.Constants;
 @Bean(name = "views$secured$discussion$discussions", scope = Scope.REQUEST)
 @View
 public class DiscussionMainPage extends AbstractDiscussionPage{
-	private static final Logger logger = Logger.getLogger(DiscussionMainPage.class);
 	
 	private DiscussionDataProvider data = new DiscussionDataProvider();
 	
@@ -24,6 +21,7 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 
 		private DataPage<TopicInfo> page; 
 		
+		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<TopicInfo> getDataPage(int startRow, int pageSize) {		
 			List<TopicInfo> al = discussionService.getTopics(getForum());		

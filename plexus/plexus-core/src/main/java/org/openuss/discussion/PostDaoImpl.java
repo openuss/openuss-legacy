@@ -69,16 +69,12 @@ public class PostDaoImpl
         org.openuss.discussion.Post targetEntity,
         boolean copyIfNull)
     {
-        //targetEntity = loadPostFromPostInfo(sourceVO);
     	super.postInfoToEntity(sourceVO, targetEntity, copyIfNull);
         if (copyIfNull || sourceVO.getFormula() != null)
         {
         	if (sourceVO.getFormula()!=null){
         		targetEntity.setFormula(Formula.Factory.newInstance(sourceVO.getFormula()));        		
         	}
-//        	else if (sourceVO.getFormula()==null){
-//        		targetEntity.setFormula(null);
-//        	}        	
         }
 
     }
