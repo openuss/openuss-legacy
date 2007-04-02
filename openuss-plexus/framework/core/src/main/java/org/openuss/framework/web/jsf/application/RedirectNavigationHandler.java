@@ -51,9 +51,9 @@ public class RedirectNavigationHandler extends NavigationHandler {
 		String currentViewId = facesContext.getViewRoot().getViewId();
 		
 		if (isBackward(outcome)) {
-			if (viewStack.size() > 0) {
+			if (!viewStack.isEmpty()) {
 				String viewId = viewStack.pop();
-				if (StringUtils.equals(viewId, currentViewId)) {
+				if (StringUtils.equals(viewId, currentViewId) && !viewStack.isEmpty()) {
 					viewId = viewStack.pop();
 				}
 				redirectToViewId(facesContext, viewId);
