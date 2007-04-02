@@ -1,6 +1,5 @@
 package org.openuss.web.braincontest; 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -60,6 +59,7 @@ public class BrainContestTopListPage extends AbstractEnrollmentPage{
 		@Override 
 		public DataPage<AnswerInfo> getDataPage(int startRow, int pageSize) {			
 			if (page == null) {
+				logger.debug("fetching answers");
 				List<AnswerInfo> answers = brainContestService.getAnswers(brainContest);
 				page = new DataPage<AnswerInfo>(answers.size(),0,answers);
 			}
