@@ -38,7 +38,8 @@ public class BrainContestNewPage extends AbstractEnrollmentPage {
 
 	@SuppressWarnings("unchecked")
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
+		super.prerender();
 		if (!isPostBack()) {
 			if (brainContest != null && brainContest.getId() != null) {
 				brainContest = brainContestService.getContest(brainContest);

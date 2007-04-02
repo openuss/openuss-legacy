@@ -20,7 +20,8 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	
 	@SuppressWarnings("unchecked")
 	@Prerender
-	public void prerender() {		
+	public void prerender() throws Exception {	
+		super.prerender();
 		if (!isPostBack()) {
 			if ( topic != null && topic.getId() != null) {
 				topic = discussionService.getTopic(topic);
