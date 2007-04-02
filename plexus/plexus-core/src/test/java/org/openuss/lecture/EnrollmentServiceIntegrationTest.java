@@ -8,7 +8,6 @@ package org.openuss.lecture;
 import java.util.Collection;
 import java.util.List;
 
-import org.openuss.TestUtility;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
@@ -21,8 +20,6 @@ import org.openuss.security.acl.Permission;
 public class EnrollmentServiceIntegrationTest extends EnrollmentServiceIntegrationTestBase {
 	
 	private FacultyDao facultyDao;
-	
-	private TestUtility testUtility;
 	
 	private SecurityService securityService;
 	
@@ -159,27 +156,12 @@ public class EnrollmentServiceIntegrationTest extends EnrollmentServiceIntegrati
 		return lectureBuilder;
 	}
 	
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
-	}
-
-	
 	public FacultyDao getFacultyDao() {
 		return facultyDao;
 	}
 
 	public void setFacultyDao(FacultyDao facultyDao) {
 		this.facultyDao = facultyDao;
-	}
-
-	public TestUtility getTestUtility() {
-		return testUtility;
-	}
-
-	public void setTestUtility(TestUtility testUtility) {
-		this.testUtility = testUtility;
 	}
 
 	public SecurityService getSecurityService() {

@@ -11,6 +11,8 @@ package $service.packageName;
 import org.apache.log4j.Logger;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
+import org.openuss.TestUtility;
+
 
 #set($varService = "${stringUtils.uncapitalize($service.name)}")
 
@@ -34,6 +36,22 @@ public abstract class ${testClassName} extends AbstractTransactionalDataSourceSp
 
 	public void test${service.name}Injection() {
 		assertNotNull($varService);
+	}
+	
+	protected void commit() {
+		setComplete();
+		endTransaction();
+		startNewTransaction();
+	}
+	
+	protected TestUtility testUtility;
+	
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
 	}
 	
 	protected String[] getConfigLocations() {

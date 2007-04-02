@@ -8,10 +8,8 @@ package org.openuss.discussion;
 import java.util.Date;
 import java.util.List;
 
-import org.openuss.TestUtility;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
-import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * JUnit Test for Spring Hibernate DiscussionService class.
@@ -19,8 +17,6 @@ import org.openuss.security.acl.LectureAclEntry;
  */
 @SuppressWarnings("unchecked")
 public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrationTestBase {
-	
-	public TestUtility testUtility;
 	
 	public SecurityService securityService;
 	
@@ -42,12 +38,6 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		securityService.createObjectIdentity(domainId, null);
 		//securityService.setPermissions(user, domainId, LectureAclEntry.ASSIST);		
 		return domainId;
-	}
-	
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
 	}
 	
 	public void testCreateDeleteTopic(){
@@ -192,14 +182,6 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		assertNotNull(loadedForum);
 		assertEquals(domainObject, loadedForum.getDomainIdentifier());
 		
-	}
-
-	public TestUtility getTestUtility() {
-		return testUtility;
-	}
-
-	public void setTestUtility(TestUtility testUtility) {
-		this.testUtility = testUtility;
 	}
 
 	public SecurityService getSecurityService() {

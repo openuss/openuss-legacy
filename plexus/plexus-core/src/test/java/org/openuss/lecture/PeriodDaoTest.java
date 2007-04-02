@@ -5,7 +5,6 @@
  */
 package org.openuss.lecture;
 
-import org.openuss.lecture.PeriodImpl;
 import org.openuss.security.SecurityTestUtils;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;

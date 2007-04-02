@@ -9,7 +9,6 @@ import org.acegisecurity.acl.AclManager;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-import org.openuss.TestUtility;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.security.acl.Permission;
@@ -24,7 +23,6 @@ import org.openuss.security.acl.Permission;
  */
 public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTestBase {
 	
-	private TestUtility testUtility;
 	private AclManager aclManager;
 	
 	public void testSaveLoadAndRemoveUser() {
@@ -65,12 +63,6 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 		assertNotNull(found);
 	}
 
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
-	}
-	
 	public void testAclGrants() {
 		User user = testUtility.createDefaultUser();
 		
@@ -91,15 +83,6 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 		assertTrue(AcegiUtils.hasPermission(child, new Integer[]{LectureAclEntry.ASSIST}));
 	}
 	
-	public TestUtility getTestUtility() {
-		return testUtility;
-	}
-	
-	public void setTestUtility(TestUtility testUtility) {
-		this.testUtility = testUtility;
-	}
-	
-
 	public AclManager getAclManager() {
 		return aclManager;
 	}
