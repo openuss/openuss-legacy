@@ -106,13 +106,25 @@
 								</o:block>
 							</h:form>
 						</c:if>
-					</c:if>
+					</c:if> 
 				</s:acl>
 		</s:authorize>
 		<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.READ}">
-			<plexus:newsTable
-				value="#{views$secured$enrollment$enrollment.currentNewsItems}"
-				headline="${msg.news_header}" />
+			<o:block label="Aktuelles" styleClass="news_box">
+				<h:form id="newsTables">
+		   			<t:dataList id="news" value="#{views$secured$enrollment$enrollmentnews.currentNews}" var="item" styleClass="news">
+						<p class="header_font_normal">
+	    					<h:outputText value="#{item.publishDate}" styleClass="newsDate">
+    							<oc:convertTimestamp timeZone="#{visit.timeZone}" type="date" dateStyle="medium" timeStyle="medium"/>
+    						</h:outputText>
+    						<h:outputText value="- #{item.title}" styleClass="newsTitle"/>
+    					</p>
+    					<div class="content_font_normal">
+		    				<h:outputText value="#{item.text}" escape="false"/>
+	    				</div>
+	   				</t:dataList>
+	   			</h:form>
+   			</o:block>
 		</s:acl>
 	</ui:define>
 </ui:composition>

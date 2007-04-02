@@ -367,6 +367,17 @@
 				<from-outcome>enrollment_options_assistants</from-outcome>
 				<to-view-id>/views/secured/enrollment/enrollmentassistants.xhtml</to-view-id>
      		</navigation-case>
+     		
+     		<navigation-case>
+				<from-outcome>enrollment_news</from-outcome>
+				<to-view-id>/views/secured/enrollment/enrollmentnews.xhtml</to-view-id>
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>enrollment_news_edit</from-outcome>
+				<to-view-id>/views/secured/enrollment/enrollmentnewsedit.xhtml</to-view-id>
+			</navigation-case>
+     		
 
 			<navigation-case>
 				<from-outcome>enrollment_options_news</from-outcome>

@@ -146,7 +146,7 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 		NewsCriteria criteria = new NewsCriteria();
 		criteria.setPublisherIdentifier(identifier);
 		criteria.setPublishDate(new Date());
-		criteria.setExpireDate(new Date());
+//		criteria.setExpireDate(new Date());
 		criteria.setMaximumResultSize(count);
 		
 		return getNewsItemDao().findByCriteria(NewsItemDao.TRANSFORM_NEWSITEMINFO, criteria); 
