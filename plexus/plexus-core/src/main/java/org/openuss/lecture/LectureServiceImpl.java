@@ -202,14 +202,11 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 	}
 
 	private void defineAccessTypePermission(Enrollment enrollment) {
-		Group roleUser = Group.Factory.newInstance();
-		roleUser.setId(Roles.USER);
-		roleUser = getSecurityService().getGroup(roleUser);
 		if (enrollment.getAccessType()!=AccessType.OPEN){
-			getSecurityService().setPermissions(roleUser, enrollment, LectureAclEntry.NOTHING);		
+			getSecurityService().setPermissions(Roles.USER, enrollment, LectureAclEntry.NOTHING);		
 		}
 		else if (enrollment.getAccessType()==AccessType.OPEN){
-			getSecurityService().setPermissions(roleUser, enrollment, LectureAclEntry.ENROLLMENT_PARTICIPANT);			
+			getSecurityService().setPermissions(Roles.USER, enrollment, LectureAclEntry.ENROLLMENT_PARTICIPANT);			
 		}
 	}
 

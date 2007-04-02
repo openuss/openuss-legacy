@@ -87,7 +87,7 @@ public class TestUtility {
 		user.setPassword(password);
 		user.setEmail("email");
 		user.setEnabled(true);
-		Group group = groupDao.load(Roles.ADMINISTRATOR);
+		Group group = groupDao.load(Roles.ADMINISTRATOR.getId());
 		user.addGroup(group);
 		group.addMember(user);
 		userDao.create(user);

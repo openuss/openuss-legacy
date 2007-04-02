@@ -69,7 +69,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		
 		user = getUserDao().create(user);
 		
-		Group roleAdmin = getGroupDao().load(Roles.ADMINISTRATOR);
+		Group roleAdmin = getGroupDao().load(Roles.ADMINISTRATOR_ID);
 		if (roleAdmin.getMembers().size() == 0) {
 			logger.info("User "+user.getUsername()+" is the first user and achieve administrator role!");
 			handleAddAuthorityToGroup(user, roleAdmin);
