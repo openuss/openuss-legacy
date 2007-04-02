@@ -20,8 +20,9 @@ public class Constants {
 	
 	public static final String USER = "user";
 	
-	public static final String NEWSITEM = "newsItem";
-	public static final String NEWSBEAN = "newsBean";		
+	public static final String NEWS_PUBLISHER = "news_publisher";
+	public static final String NEWS_SELECTED_NEWSITEM = "news_selected_newsitem";
+	public static final String NEWS_NEWSDETAIL_PAGE = "news_newsdetail_page";
 
 	public static final String UPLOADED_FILE = "LAST_UPLOADED_FILE";
 	
@@ -103,5 +104,7 @@ public class Constants {
 	public static final String UPLOAD_FILE_MANAGER = "uploadFileManager";
 
 	public static final String BRAINCONTEST_ATTACHMENTS = "braincontest_attachments";
+
+
 
 }

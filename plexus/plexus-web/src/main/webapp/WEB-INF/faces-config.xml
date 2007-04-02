@@ -51,18 +51,6 @@
 	</render-kit>
 
 	<converter>
-		<description>
-			Converts a NewsCategory object to a string representation
-			and vice versa
-		</description>
-		<display-name>NewsCategoryConverter</display-name>
-		<converter-id>NewsCategoryConverter</converter-id>
-		<converter-class>
-			org.openuss.web.news.NewsCategoryConverter
-		</converter-class>
-	</converter>
-	
-	<converter>
 		<description>Converts a FacultyGroup object to a string and vice versa</description>
 		<display-name>FacultyGroupConverter</display-name>
 		<converter-id>facultyGroupConverter</converter-id>

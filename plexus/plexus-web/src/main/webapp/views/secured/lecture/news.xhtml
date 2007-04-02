@@ -30,9 +30,7 @@
 	  		<s:acl domainObject="#{faculty}" hasPermission="#{ACL.UPDATE}" ifNot="error"/>
   		 -->
   			<h:form> 
-  				<o:block label="#{msg.news_header}" styleClass="form_box">
-  					<ui:include src="newstable.xhtml"/>
-  				</o:block>
+ 				<ui:include src="newstable.xhtml"/>
   				<o:block>
 					<h:commandButton 
 					    id="addNewsItem"

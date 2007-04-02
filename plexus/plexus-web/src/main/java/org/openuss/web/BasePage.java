@@ -23,7 +23,7 @@ public abstract class BasePage extends BaseBean {
 	@Property(value = "#{desktopService}")
 	protected DesktopService desktopService;
 	
-	@Property(value = "#{user}")
+	@Property(value = "#{sessionScope.user}")
 	protected User user;
 	
 	/**

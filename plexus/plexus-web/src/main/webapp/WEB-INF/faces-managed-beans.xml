@@ -102,7 +102,11 @@
  		<managed-bean-class>org.openuss.braincontest.BrainContestInfo</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope> 	
  	</managed-bean>
- 	
- 	
 
+ 	<managed-bean>
+ 		<managed-bean-name>news_selected_newsitem</managed-bean-name>
+ 		<managed-bean-class>org.openuss.news.NewsItemInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope> 	
+ 	</managed-bean>
+ 	
 </faces-config>

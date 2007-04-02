@@ -37,37 +37,62 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="newsEditForm" enctype="multipart/form-data">
-			<o:block styleClass="form_box" label="#{msg.newsitem_header}">
-				<h:outputText value="#{msg.newsitem_category}" id="categoryLabel" styleClass="field_label" />
-				<h:selectOneListbox id="categorySelect" size="1" styleClass="pulldown" value="#{newsItem.category}">
-					<f:converter converterId="NewsCategoryConverter" />
-					<f:selectItems value="#{newsCategorySelectItems.items}" />
+			<o:block styleClass="form_box" label="#{msg.news_header}">
+				<h:outputText value="#{msg.news_selected_newsitem_category}" id="categoryLabel" styleClass="field_label" />
+				<h:selectOneListbox id="categorySelect" size="1" styleClass="pulldown" value="#{news_selected_newsitem.category}">
+					<f:converter converterId="newsCategoryConverter" />
+					<f:selectItems value="#{views$secured$lecture$newsedit.newsCategories}" />
 				</h:selectOneListbox>
 
-				<o:input property="publishDate" entity="newsItem" required="true" />
-				<o:input property="expireDate" entity="newsItem" validator="#{newsLectureController.validateExpireDate}" />
+				<o:input property="publishDate" entity="news_selected_newsitem" required="true" />
+				<o:input property="expireDate" entity="news_selected_newsitem" validator="#{newsLectureController.validateExpireDate}" />
 
-				<o:input property="title" entity="newsItem" maxlength="250"	required="true" />
-				<h:outputLabel value="#{msg.newsitem_text}" for="textEditor" styleClass="field_label" />
-				<fck:editor value="#{newsItem.text}" id="textEditor" toolbarSet="News" width="100%" height="200" />
-				<h:outputLabel value="#{msg.newsitem_attachment}" for="attachment"	styleClass="field_label" />
+				<o:input property="title" entity="news_selected_newsitem" maxlength="250"	required="true" />
+				<h:outputLabel value="#{msg.news_selected_newsitem_text}" for="textEditor" styleClass="field_label" />
+				<div class="content_iframe">
+					<fck:editor value="#{news_selected_newsitem.text}" id="textEditor" toolbarSet="News" width="100%" height="200" />
+				</div>
+				
+				<h:outputLabel value="#{msg.news_selected_newsitem_attachment}" for="attachment"	styleClass="field_label" />
 
-				<f:subview rendered="${!empty newsItem.attachmentId}">
+				<f:subview rendered="#{!(empty sessionScope.news_selected_newsitem.attachments)}">
 					<div class="content_font_normal">
-						<h:outputLink value="/openuss-plexus/files/#{sessionScope.newsItem.attachmentId}">
-							<f:param value="#{newsItem.attachment.id}" name="fileid" />
-							<h:graphicImage	value="/images/filetypes/#{sessionScope.newsItem.attachment.extension}.gif" />
-					  		#{sessionScope.newsItem.attachment.name} 
-					  	</h:outputLink>
-				  		&#160;
-				  		<h:commandButton value="delete" action="#{views$secured$lecture$newsedit.removeAttachment}" immediate="true" styleClass="button_remove"/><br/><br/>
-				  	</div>
-		  		</f:subview> 
-						
-				<t:inputFileUpload id="attachment" storage="file" accept="*" immediate="true" styleClass="uploadField">
+						<t:dataList 
+							var="attachment" 
+							value="#{sessionScope.news_selected_newsitem.attachments}" 
+							binding="${views$secured$lecture$newsedit.attachmentList}">
+					  		<h:commandButton value="delete"
+								action="#{views$secured$lecture$newsedit.removeAttachment}"
+								immediate="true" styleClass="button_remove" />
+					  		&#160;
+							<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
+								<f:param value="#{attachment.id}" name="fileid" />
+								<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+						  		#{attachment.fileName} 
+						  	</o:link> 
+							<f:subview rendered="#{empty attachment.id}">
+								<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+						  		#{attachment.fileName} 
+						  	</f:subview> 
+							<br/>	
+						</t:dataList>
+					</div>
+				</f:subview>
+	
+				<t:inputFileUpload 
+					id="attachmentUpload" 
+					storage="file" 
+					accept="*"
+					immediate="true" styleClass="uploadField">
 					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
 				</t:inputFileUpload>
-				<h:message for="attachment" styleClass="field_error" showDetail="true" showSummary="false" />
+					
+				<h:commandButton value="#{msg.braincontest_add_attachment}"
+					action="#{views$secured$lecture$newsedit.addAttachment}"
+					immediate="true"
+					styleClass="button"/> 
+
+				<h:message for="attachmentUpload" styleClass="field_error" showDetail="true" showSummary="false" />
 			</o:block>
 			<o:block>
 				<h:commandButton id="btn_save" action="#{views$secured$lecture$newsedit.save}" value="#{msg.save}" title="#{msg.save_hint}" styleClass="button_save" />

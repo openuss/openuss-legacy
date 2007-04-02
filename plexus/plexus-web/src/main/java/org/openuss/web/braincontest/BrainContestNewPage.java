@@ -36,14 +36,6 @@ public class BrainContestNewPage extends AbstractEnrollmentPage {
 	
 	private UIData attachmentList;
 
-	public UIData getAttachmentList() {
-		return attachmentList;
-	}
-
-	public void setAttachmentList(UIData attachmentList) {
-		this.attachmentList = attachmentList;
-	}
-
 	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() {
@@ -128,4 +120,12 @@ public class BrainContestNewPage extends AbstractEnrollmentPage {
 		this.uploadFileManager = uploadFileManager;
 	}
 
+	public UIData getAttachmentList() {
+		return attachmentList;
+	}
+
+	public void setAttachmentList(UIData attachmentList) {
+		this.attachmentList = attachmentList;
+	}
+	
 }
