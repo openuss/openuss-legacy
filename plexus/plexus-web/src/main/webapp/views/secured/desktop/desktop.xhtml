@@ -9,9 +9,8 @@
       xmlns:fn="http://java.sun.com/jsp/jstl/functions"	  
 	  xmlns:t="http://myfaces.apache.org/tomahawk"
   	  xmlns:o="http://www.openuss.org/jsfcontrols"
-      xmlns:foundation="http://www.openuss.org/foundation/jsf"
-      xmlns:news="http://www.openuss.org/news/jsf"
-      xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+  	  xmlns:p="http://www.openuss.org/plexus/jsf"
+      xmlns:news="http://www.openuss.org/news/jsf">
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -32,6 +31,10 @@
 	</ui:define>
 	<ui:define name="navigation"> 
 		<ui:include src="/views/commons/navigation/desktop.xhtml" />
+	</ui:define>
+	<ui:define name="sidebar"> 
+		<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
+		<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
 	</ui:define>
 	<ui:define name="content">
 		<o:block>

@@ -142,7 +142,7 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 		criteria.setPublisherIdentifier(identifier);
 		criteria.setPublishDate(new Date());
 		criteria.setExpireDate(new Date());
-		criteria.setFetchSize(count);
+		criteria.setMaximumResultSize(count);
 		
 		return getNewsItemDao().findByCriteria(NewsItemDao.TRANSFORM_NEWSITEMINFO, criteria); 
 	}
@@ -156,7 +156,7 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 		criteria.setCategory(category);
 		criteria.setPublishDate(new Date());
 		criteria.setExpireDate(new Date());
-		criteria.setFetchSize(count);
+		criteria.setMaximumResultSize(count);
 		
 		return getNewsItemDao().findByCriteria(NewsItemDao.TRANSFORM_NEWSITEMINFO, criteria); 
 	}
@@ -173,7 +173,7 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 		criteria.setPublishDate(new Date());
 		criteria.setExpireDate(new Date());
 		criteria.setFirstResult(firstResult);
-		criteria.setFetchSize(count);
+		criteria.setMaximumResultSize(count);
 		
 		return getNewsItemDao().findByCriteria(NewsItemDao.TRANSFORM_NEWSITEMINFO, criteria); 
 	}
@@ -188,7 +188,7 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 		criteria.setPublishDate(new Date());
 		criteria.setExpireDate(new Date());
 		criteria.setFirstResult(firstResult);
-		criteria.setFetchSize(count);
+		criteria.setMaximumResultSize(count);
 		
 		return getNewsItemDao().findByCriteria(NewsItemDao.TRANSFORM_NEWSITEMINFO, criteria); 
 	}

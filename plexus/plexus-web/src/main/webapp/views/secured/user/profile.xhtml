@@ -32,6 +32,10 @@
   		<ui:define name="navigation">  			
 			<ui:include src="/views/commons/navigation/profile.xhtml" />
   		</ui:define>
+  		<ui:define name="sidebar">  			
+			<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
+			<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
+  		</ui:define>
   		<ui:define name="content">
 			<h:form id="profileForm" enctype="multipart/form-data">
 				<o:block label="#{msg['user_profile_command_preview']}" styleClass="form_box">
