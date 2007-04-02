@@ -22,6 +22,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  * Servlet to retrieve a given file from the plexus-repository
+ * 
  * @author Ingo Dueppe
  */
 public class DocumentServlet extends HttpServlet {
@@ -29,23 +30,26 @@ public class DocumentServlet extends HttpServlet {
 	private static final long serialVersionUID = -8848001102897327126L;
 
 	private static final Logger logger = Logger.getLogger(DocumentServlet.class);
-	
+
 	private transient DocumentService documentService;
 	private transient AclManager aclManager;
 
 	@Override
 	public void init() throws ServletException {
 		logger.info("Initialise OpenUSS-Plexus RepositoryServlet");
-		super.init(); 
-		
-		final WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		super.init();
+
+		final WebApplicationContext wac = WebApplicationContextUtils
+				.getRequiredWebApplicationContext(getServletContext());
 		documentService = (DocumentService) wac.getBean("documentService", DocumentService.class);
+		// FIXME should be declared by acegi security context;
 		aclManager = (AclManager) wac.getBean("aclManager", AclManager.class);
+		AcegiUtils.setAclManager(aclManager);
 	}
-	
-	
+
 	@Override
-	protected void doHead(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+	protected void doHead(final HttpServletRequest request, final HttpServletResponse response)
+			throws ServletException, IOException {
 		final FileInfo file = lookupFile(request);
 		if (file == null) {
 			sendFileNotFound(response);
@@ -55,29 +59,28 @@ public class DocumentServlet extends HttpServlet {
 	}
 
 	@Override
-	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException,
+			IOException {
 		doGet(request, response);
 	}
 
 	@Override
-	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException,
+			IOException {
 		final FileInfo file = lookupFile(request);
-		// FIXME should be declared by acegi security context;
-		AcegiUtils.setAclManager(aclManager);
-		if (!AcegiUtils.hasPermission(file, new Integer[]{ LectureAclEntry.READ})) {
-			response.sendError(HttpServletResponse.SC_FORBIDDEN);
-		} else if (file == null) {
+		if (file == null) {
 			sendFileNotFound(response);
+		} else if (!AcegiUtils.hasPermission(file, new Integer[] { LectureAclEntry.READ })) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 		} else {
 			sendFileHeader(response, file);
 			sendFileContent(response, file);
 		}
 	}
 
-
 	private void sendFileContent(final HttpServletResponse response, final FileInfo file) throws IOException {
 		if (logger.isDebugEnabled()) {
-			logger.debug("sending content of file "+file.getFileName()+" size "+file.getFileSize());
+			logger.debug("sending content of file " + file.getFileName() + " size " + file.getFileSize());
 		}
 		final ServletOutputStream os = response.getOutputStream();
 		final InputStream is = file.getInputStream();
@@ -93,7 +96,7 @@ public class DocumentServlet extends HttpServlet {
 
 	private void sendFileHeader(final HttpServletResponse response, final FileInfo file) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("sending header of file "+file.getFileName()+" size "+file.getFileSize());
+			logger.debug("sending header of file " + file.getFileName() + " size " + file.getFileSize());
 		}
 		response.setContentType(file.getContentType());
 		response.setContentLength(file.getFileSize().intValue());
@@ -112,9 +115,9 @@ public class DocumentServlet extends HttpServlet {
 		final String fileId = request.getParameter(Constants.REPOSITORY_FILE_ID);
 		// fetch file from document service
 		FileInfo file = documentService.getFileEntry(Long.parseLong(fileId), true);
-		
+
 		if (file == null) {
-			logger.debug("file not found with id "+fileId);
+			logger.debug("file not found with id " + fileId);
 		}
 		return file;
 	}
