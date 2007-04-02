@@ -34,7 +34,22 @@
 			<hr />
 			<div class="content_font_normal">
 				<h:outputText value="#{post.text}" escape="false"/>
-			</div>		
+			</div>	
+			<hr />
+			<f:subview rendered="#{!(empty post.attachments)}">
+					<div class="content_font_normal">
+						<t:dataList 
+							var="attachment" 
+							value="#{post.attachments}" >
+							<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
+								<f:param value="#{attachment.id}" name="fileid" />
+								<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+						  		#{attachment.fileName} 
+						  	</o:link> 
+							<br/>	
+						</t:dataList>
+					</div>
+				</f:subview>	
 		</t:column>		
 	</plexus:dataTable>      
 </ui:composition>
