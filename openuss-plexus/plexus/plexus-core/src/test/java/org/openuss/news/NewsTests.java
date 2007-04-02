@@ -8,11 +8,11 @@ public class NewsTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.openuss.news");
 		//$JUnit-BEGIN$
+		suite.addTestSuite(NewsItemTest.class);
 		suite.addTestSuite(NewsItemDaoTest.class);
-		suite.addTestSuite(NewsCategoryDaoTest.class);
-		suite.addTestSuite(NewsPublisherDaoTest.class);
-		suite.addTestSuite(NewsServiceInputValidationTest.class);
-		suite.addTestSuite(NewsServiceTest.class);
+//		suite.addTestSuite(NewsCategoryDaoTest.class);
+//		suite.addTestSuite(NewsPublisherDaoTest.class);
+//		suite.addTestSuite(NewsServiceInputValidationTest.class);
 		suite.addTestSuite(NewsServiceIntegrationTest.class);
 		//$JUnit-END$
 		return suite;

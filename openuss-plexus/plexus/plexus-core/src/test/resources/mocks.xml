@@ -4,21 +4,6 @@
 <beans>
     <!-- ========================= GENERAL DEFINITIONS ========================= -->
 
-    <!-- NewsItem Entity Proxy with inner NewsItem Entity implementation -->
-    <bean id="newsItemDao" class="org.openuss.framework.tests.EasyMockFactoryBean">
-    	<property name="targetClass" value="org.openuss.news.NewsItemDao"/>
-    </bean>
-    
-    <!-- NewsCategory Entity Proxy with inner NewsCategory Entity implementation -->
-    <bean id="newsCategoryDao" class="org.openuss.framework.tests.EasyMockFactoryBean">
-    	<property name="targetClass" value="org.openuss.news.NewsCategoryDao"/>
-    </bean>
-    
-    <!-- NewsPublisher Entity Proxy with inner NewsPublisher Entity implementation -->
-    <bean id="newsPublisherDao" class="org.openuss.framework.tests.EasyMockFactoryBean">
-    	<property name="targetClass" value="org.openuss.news.NewsPublisherDao"/>
-    </bean>
-
 	<!-- Local DataSource that works in any environment -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName"><value>org.firebirdsql.jdbc.FBDriver</value></property>

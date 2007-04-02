@@ -5,259 +5,213 @@
  */
 package org.openuss.news;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.documents.DocumentApplicationException;
+import org.openuss.documents.FileInfo;
+import org.openuss.documents.FolderInfo;
+import org.openuss.framework.utilities.DomainObjectUtility;
 
 /**
+ * @author ingo dueppe
  * @see org.openuss.news.NewsService
- * @author Ingo Dueppe
  */
 public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(NewsServiceImpl.class);
-	
-	@Override
-	protected Collection handleGetCategories() throws Exception {
-		return getNewsCategoryDao().loadAll();
-	}
 
-	@Override
-	protected org.openuss.news.NewsItem handleGetNewsItem(java.lang.Long id) throws java.lang.Exception {
-		return getNewsItemDao().load(id);
-	}
-
-	@Override
-	protected void handleSaveNewsItem(NewsItem item) throws Exception {
-		// check if publisher need to be created
-		if (item.getPublisher().getId() == null) {
-			getNewsPublisherDao().create(item.getPublisher());
-		}
-		if (item.getId() == null) {
-			getNewsItemDao().create(item);
+	/**
+	 * @see org.openuss.news.NewsService#saveNewsItem(org.openuss.news.NewsItemInfo)
+	 */
+	protected void handleSaveNewsItem(NewsItemInfo item) throws Exception {
+		Validate.notNull(item, "item must not be null.");
+		Validate.notNull(item.getCategory(), "item.category must not be null.");
+		Validate.notNull(item.getPublisherIdentifier(), "item.publisherIdentifier must not be null.");
+		Validate.notNull(item.getTitle(), "item.title must not be null.");
+		Validate.notNull(item.getText(), "item.text must not be null.");
+		
+		NewsItem entity = getNewsItemDao().newsItemInfoToEntity(item);
+		
+		if (entity.getId() == null) {
+			createNewsItem(item, entity);
 		} else {
-			getNewsItemDao().update(item);
+			saveNewsItem(item, entity);
+		}
+		getNewsItemDao().toNewsItemInfo(entity, item);
+	}
+
+	private void createNewsItem(NewsItemInfo item, NewsItem entity) throws DocumentApplicationException {
+		getNewsItemDao().create(entity);
+		getSecurityService().createObjectIdentity(entity, item.getPublisherIdentifier());
+		
+		if (item.getAttachments() != null && !item.getAttachments().isEmpty()) {
+			logger.debug("found "+item.getAttachments().size()+" attachments");
+			FolderInfo folder = getDocumentService().getFolder(entity);
+			
+			for (FileInfo attachment : item.getAttachments()) {
+				getDocumentService().createFileEntry(attachment, folder);
+			}
 		}
 	}
 
-	@Override
-	protected void handleDeleteNewsItem(Long id) throws Exception {
-		Validate.notNull(id, "Parameter id must not be null!");
-		
-		NewsItem item = getNewsItemDao().load(id);
-		if (item != null && item.getAttachmentId() != null) {
-			getDocumentService().removeFolderEntry(item.getAttachmentId());
-			getNewsItemDao().remove(id);
+	private void saveNewsItem(NewsItemInfo item, NewsItem entity) throws DocumentApplicationException {
+		getNewsItemDao().update(entity);
+		if (item.getAttachments() == null) {
+			item.setAttachments(new ArrayList<FileInfo>());
 		}
-	}
-
-	@Override
-	protected Collection handleGetNewsItems(Long categoryId, Long publisherForeignId, String publisherForeignClass) throws Exception {
-		
-		NewsCriteria criteria = new NewsCriteria(publisherForeignId, publisherForeignClass, categoryId, null, null);
-		
-		return getNewsItemDao().findByCriteria(criteria);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected Collection handleGetNewsItems(Long publisherForeignId, String publisherForeignClass, int count) throws Exception {
-		
-		
-		NewsCriteria criteria = new NewsCriteria(publisherForeignId, publisherForeignClass, null, null, null);
-		
-		Collection<NewsItem> entities = getNewsItemDao().findByCriteria(criteria);
-		
-		Collection<NewsItem> results = narrowResults(count, entities);
-		
-		return results;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected Collection handleGetNewsItems(Long categoryId, Long publisherForeignId, String publisherForeignClass, int count) throws Exception {
-		
-		
-		NewsCriteria criteria = new NewsCriteria(publisherForeignId, publisherForeignClass, categoryId, null, null);
-		
-		Collection<NewsItem> entities = getNewsItemDao().findByCriteria(criteria);
-		
-		Collection<NewsItem> results = narrowResults(count, entities);
-		
-		return results;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected Collection handleGetNewsItems(Timestamp timestamp, int count) throws Exception {
-		
-		
-		NewsCriteria criteria = new NewsCriteria(null, null, null, timestamp, timestamp);
-		criteria.setMaximumResultSize(count);
-		
-		return getNewsItemDao().findByCriteria(criteria);
-				
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected Collection handleGetNewsItems(Timestamp timestamp, int count, Long publisherId) throws Exception {
-		
-		NewsPublisher publisher = getNewsPublisherDao().load(publisherId);
-		
-//		if (publisher==null) throw new IllegalArgumentException("The specified publisher dows not exist!\n\n");
-		
-		NewsCriteria criteria = new NewsCriteria(publisher.getForeignId(), publisher.getForeignClass(), null, timestamp, timestamp);
-		
-		Collection<NewsItem> entities = getNewsItemDao().findByCriteria(criteria);
-		
-		Collection<NewsItem> results = narrowResults(count, entities);
-		
-		return results;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected Collection handleGetNewsItems(Timestamp timestamp, int count, Long publisherId, Long categoryId) throws Exception {
-		
-		NewsPublisher publisher = getNewsPublisherDao().load(publisherId);
-		
-		NewsCriteria criteria = new NewsCriteria(publisher.getForeignId(), publisher.getForeignClass(), categoryId, timestamp, timestamp);
-		
-		Collection<NewsItem> entities = getNewsItemDao().findByCriteria(criteria);
-		
-		Collection<NewsItem> results = narrowResults(count, entities);
-		
-		return results;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected Collection handleGetNewsItems(Timestamp begin, Timestamp end) throws Exception {
-		
-		if (begin.getTime()== end.getTime()) throw new IllegalArgumentException("\nRelease date is identical with expiration date of the date range\n\n");
-		
-		if (begin.getTime() > end.getTime()) throw new IllegalArgumentException("\nRelease date is earlier than expiration date of the date range\n\n");
-		
-		
-		NewsCriteria criteria = new NewsCriteria(null, null, null, begin, end);
-		
-		Collection<NewsItem> results = getNewsItemDao().findByCriteria(criteria);
-	
-		return results;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected Collection handleGetNewsItems(Timestamp begin, Timestamp end, Long publisherId) throws Exception {
-	
-		if (begin.getTime()== end.getTime()) throw new IllegalArgumentException("\nRelease date is identical with expiration date of the date range\n\n");
-		
-		if (begin.getTime() > end.getTime()) throw new IllegalArgumentException("\nRelease date is earlier than expiration date of the date range\n\n");
-		
-		NewsPublisher publisher = getNewsPublisherDao().load(publisherId);
-		
-		NewsCriteria criteria = new NewsCriteria(publisher.getForeignId(), publisher.getForeignClass(), null, begin, end);
-		
-		Collection<NewsItem> results = getNewsItemDao().findByCriteria(criteria);
-	
-		return results;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected Collection handleGetNewsItems(Timestamp begin, Timestamp end, Long publisherId, Long categoryId) throws Exception {
-		
-		if (begin.getTime()== end.getTime()) throw new IllegalArgumentException("\nRelease date is identical with expiration date of the date range\n\n");
-		
-		if (begin.getTime() > end.getTime()) throw new IllegalArgumentException("\nRelease date is earlier than expiration date of the date range\n\n");
-		
-		NewsPublisher publisher = getNewsPublisherDao().load(publisherId);
-		
-		NewsCriteria criteria = new NewsCriteria(publisher.getForeignId(), publisher.getForeignClass(), categoryId, begin, end);
-		
-		Collection<NewsItem> results = getNewsItemDao().findByCriteria(criteria);
-	
-		return results;
+		List<FileInfo> attachments = item.getAttachments();
+		importFileEntries(entity, attachments);
 	}
 
 	/**
-	 * @deprecated should be handled within the database or by hibernate.
-	 * @param count
-	 * @param entities
-	 * @return Collection<NewsItem>
+	 * This method delete all existing file entries within the root folder of the domain object, that are not
+	 * listed in the attachment list. Also it will persist all new files into the folder  
+	 * @param domain
+	 * @param attachments
+	 * @throws DocumentApplicationException
 	 */
-	private Collection<NewsItem> narrowResults(int count, Collection<NewsItem> entities) {
-		Collection<NewsItem> results = new ArrayList<NewsItem>(); 
+	private void importFileEntries(Object domain, List<FileInfo> attachments) throws DocumentApplicationException {
+		List<FileInfo> savedAttachments = getDocumentService().getFileEntries(domain);
+		Collection<FileInfo> removedAttachments = CollectionUtils.subtract(savedAttachments, attachments);
+		getDocumentService().removeFileEntries(removedAttachments);
 		
-		for (NewsItem newsItem : entities) {
-			results.add(newsItem);
-			if (results.size() >= count) break;
+		FolderInfo folder = getDocumentService().getFolder(domain);
+		for (FileInfo attachment: attachments) {
+			if (attachment.getId() == null) {
+				getDocumentService().createFileEntry(attachment, folder);
+			}
 		}
-		return results;
 	}
 
-	@Override
-	protected Collection handleGetCurrentNewsItems(Object publisher, Integer count) throws Exception {
-		NewsPublisher newsPublisher = getPublisher(publisher);
-		if (newsPublisher == null) {
-			return null;
+	/**
+	 * @see org.openuss.news.NewsService#getNewsItem(org.openuss.news.NewsItemInfo)
+	 */
+	protected NewsItemInfo handleGetNewsItem(NewsItemInfo item)	throws Exception {
+		validateInfoParameter(item);
+		
+		NewsItemInfo result = (NewsItemInfo) getNewsItemDao().load(NewsItemDao.TRANSFORM_NEWSITEMINFO, item.getId() );
+		
+		if (result != null) {
+			result.setAttachments(getDocumentService().getFileEntries(result));
 		}
 		
-		NewsCriteria criteria = new NewsCriteria(newsPublisher.getForeignId(),null,null,new Date(),new Date());
-		criteria.setMaximumResultSize(count);
-		return getNewsItemDao().findByCriteria(criteria);
+		return result;
 	}
 
-	@Override
-	protected Collection handleGetCurrentNewsItems(Long categoryId, Integer count) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	private void validateInfoParameter(NewsItemInfo item) {
+		Validate.notNull(item, "item must not be null.");
+		Validate.notNull(item.getId(), "item must provide an id.");
 	}
 
-	@Override
+
+	/**
+	 * @see org.openuss.news.NewsService#deleteNewsItem(org.openuss.news.NewsItemInfo)
+	 */
+	protected void handleDeleteNewsItem(NewsItemInfo item) throws Exception {
+		validateInfoParameter(item);
+		
+		NewsItem entity = (NewsItem) getNewsItemDao().load(item.getId());
+		if (entity != null) {
+			getNewsItemDao().remove(entity);
+			getDocumentService().removeFileEntries(getDocumentService().getFileEntries(entity));
+		}
+	}
+
+	/**
+	 * @see org.openuss.news.NewsService#getNewsItems(java.lang.Object)
+	 */
 	protected List handleGetNewsItems(Object publisher) throws Exception {
-		NewsPublisher newsPublisher = getPublisher(publisher);
-		if (newsPublisher == null)
-			return null;
-		NewsCriteria criteria = new NewsCriteria(newsPublisher.getForeignId(), null, null, null, null); 
-		return getNewsItemDao().findByCriteria(criteria);
+		return getNewsItemDao().findByPublisher(NewsItemDao.TRANSFORM_NEWSITEMINFO, obtainIdentifier(publisher));
 	}
 
-	
-	@Override
-	protected NewsPublisher handleGetPublisher(Object publisher) throws Exception {
-		// extract publisher id
-		Long foreignId = extractPublisherId(publisher);
-		if (foreignId == null) {
-			return null;
-		}
-		// load publisher 
-		return getNewsPublisherDao().findPublisher(foreignId);
+
+	/**
+	 * @see org.openuss.news.NewsService#getCurrentNewsItems(java.lang.Object,
+	 *      java.lang.Integer)
+	 */
+	protected List handleGetCurrentNewsItems(Object publisher, Integer count) throws Exception {
+		Long identifier = obtainIdentifier(publisher);
+		
+		NewsCriteria criteria = new NewsCriteria();
+		criteria.setPublisherIdentifier(identifier);
+		criteria.setPublishDate(new Date());
+		criteria.setExpireDate(new Date());
+		criteria.setFetchSize(count);
+		
+		return getNewsItemDao().findByCriteria(NewsItemDao.TRANSFORM_NEWSITEMINFO, criteria); 
 	}
 
-	@Override
-	protected NewsCategory handleGetCategory(Long id) throws Exception {
-		return getNewsCategoryDao().load(id);
+	/**
+	 * @see org.openuss.news.NewsService#getCurrentNewsItems(org.openuss.news.NewsCategory,
+	 *      java.lang.Integer)
+	 */
+	protected List handleGetCurrentNewsItems(NewsCategory category, Integer count) throws Exception {
+		NewsCriteria criteria = new NewsCriteria();
+		criteria.setCategory(category);
+		criteria.setPublishDate(new Date());
+		criteria.setExpireDate(new Date());
+		criteria.setFetchSize(count);
+		
+		return getNewsItemDao().findByCriteria(NewsItemDao.TRANSFORM_NEWSITEMINFO, criteria); 
 	}
-	
-	private Long extractPublisherId(Object publisher) throws IllegalAccessException, InvocationTargetException {
-		Class clazz = publisher.getClass();
-		try {
-			Method method = clazz.getMethod("getId", new Class[] {});
-			return (Long) method.invoke(publisher, new Object[]{});
-		} catch (NoSuchMethodException e) {
-			logger.error(e);
-			throw new IllegalArgumentException("Publisher of class '"+clazz+"' does not provide the required getId() method: "+publisher);
-		}
+
+	/**
+	 * @see org.openuss.news.NewsService#getPublishedNewsItems(java.lang.Object,
+	 *      java.lang.Integer, java.lang.Integer)
+	 */
+	protected List handleGetPublishedNewsItems(Object publisher, Integer firstResult,Integer count) throws Exception {
+		Long identifier = obtainIdentifier(publisher);
+
+		NewsCriteria criteria = new NewsCriteria();
+		criteria.setPublisherIdentifier(identifier);
+		criteria.setPublishDate(new Date());
+		criteria.setExpireDate(new Date());
+		criteria.setFirstResult(firstResult);
+		criteria.setFetchSize(count);
+		
+		return getNewsItemDao().findByCriteria(NewsItemDao.TRANSFORM_NEWSITEMINFO, criteria); 
+	}
+
+	/**
+	 * @see org.openuss.news.NewsService#getPublishedNewsItems(org.openuss.news.NewsCategory,
+	 *      java.lang.Integer, java.lang.Integer)
+	 */
+	protected List handleGetPublishedNewsItems(NewsCategory category, Integer firstResult, Integer count) throws Exception {
+		NewsCriteria criteria = new NewsCriteria();
+		criteria.setCategory(category);
+		criteria.setPublishDate(new Date());
+		criteria.setExpireDate(new Date());
+		criteria.setFirstResult(firstResult);
+		criteria.setFetchSize(count);
+		
+		return getNewsItemDao().findByCriteria(NewsItemDao.TRANSFORM_NEWSITEMINFO, criteria); 
+	}
+
+	/**
+	 * @see org.openuss.news.NewsService#getPublishedNewsItemsCount(java.lang.Object)
+	 */
+	protected long handleGetPublishedNewsItemsCount(Object publisher) throws Exception {
+		return getNewsItemDao().countByPublisher(obtainIdentifier(publisher));
+	}
+
+	/**
+	 * @see org.openuss.news.NewsService#getPublishedNewsItemsCount(org.openuss.news.NewsCategory)
+	 */
+	protected long handleGetPublishedNewsItemsCount(NewsCategory category) throws Exception {
+		Validate.notNull(category, "category must not be null");
+		return getNewsItemDao().countByCategory(category);
+	}
+
+	private Long obtainIdentifier(Object publisher) {
+		Validate.notNull(publisher, "publisher must not be null.");
+		Long identifier = DomainObjectUtility.identifierFromObject(publisher);
+		Validate.notNull(identifier, "publisher must provide an identifier");
+		return identifier;
 	}
 }
