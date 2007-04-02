@@ -30,6 +30,8 @@ public class TopicDaoImpl
         }
         if (sourceEntity.getLastPostDate()!=null)
         	targetVO.setLastPost(sourceEntity.getLastPostDate());
+        if (sourceEntity.getLastPostSubmitterName()!=null)
+        	targetVO.setLastPostSubmitterName(sourceEntity.getLastPostSubmitterName());
         if (sourceEntity.getAnswerCount()!=null)
         	targetVO.setAnswerCount(sourceEntity.getAnswerCount());        
     }

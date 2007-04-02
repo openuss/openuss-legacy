@@ -33,6 +33,7 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 			if ( topic != null && topic.getId() != null) {
 				topic = discussionService.getTopic(topic);
 				setSessionBean(Constants.DISCUSSION_TOPIC, topic);
+				discussionService.addHit(topic);
 			}
 			if (topic == null || topic.getId() == null) {
 				addError(i18n("braincontest_message_contest_not_found"));

@@ -63,7 +63,7 @@ public class TopicImpl
      */
     public java.util.Date getLastPostDate()
     {
-	     if (getLast()!=null) getLast().getLastModification();
+	     if (getLast()!=null) return getLast().getLastModification();
 	     return null;
     }
 
@@ -72,7 +72,7 @@ public class TopicImpl
      */
     public java.lang.String getLastPostSubmitterName()
     {
-    	if (getLast()!=null) getLast().getSubmitterName();
+    	if (getLast()!=null) return getLast().getSubmitterName();
     	return null;
     }
 
