@@ -29,9 +29,12 @@ public class DiscussionNewEntryPage extends AbstractDiscussionPage{
 		postInfo.setLastModification(new Date(System.currentTimeMillis()));
 		postInfo.setSubmitter(user.getUsername());
 		postInfo.setSubmitterId(user.getId());
-		discussionService.createTopic(postInfo, getForum());		
-		
-		return Constants.SUCCESS;
+		if (topic.getId()==null){
+			discussionService.createTopic(postInfo, getForum());
+			return Constants.DISCUSSION_MAIN;
+		}
+		discussionService.addPost(postInfo, topic);
+		return Constants.DISCUSSION_THREAD;		
 	}
 	
 	public String addFormula(){

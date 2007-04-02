@@ -33,9 +33,9 @@
 	  			<o:block label="#{msg.discussion_new_discussion_entry}" styleClass="form_box">
 					<o:input entity="discussion_discussionentry" property="title" required="true"></o:input>
 					
-					<h:outputText value="#{msg.discussionnew_text}" styleClass="field_label"/>					
+					<h:outputText value="#{msg.discussion_discussionentry_text}" styleClass="field_label"/>					
 					<div class="content_iframe">
-						<fck:editor value="#{discussionNew.text}" id="textEditor" toolbarSet="Discussion" width="100%" height="200" />	 				
+						<fck:editor value="#{discussion_discussionentry.text}" id="textEditor" toolbarSet="Discussion" width="100%" height="200" />	 				
 					</div>
 
 				<f:subview rendered="${!empty discussion_discussionentry.attachmentId}">
@@ -60,7 +60,7 @@
 						title="#{msg['discussion_discussionentry_button_send']}"
 						styleClass="button" />				
 					<h:commandButton 
-						value="${msg.discussion_discussionentry_button_draft}" 
+						value="${msg.cancel}" 
 						action="discussion_thread" 
 						immediate="true" 
 						styleClass="button"/>

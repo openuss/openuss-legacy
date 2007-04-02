@@ -11,22 +11,29 @@
     <plexus:dataTable id="discussionsThreadTable" label="#{msg.discussion_main_header}" value="views$secured$discussion$discussionthread.data" var="post" rows="10">
       
 		<t:column>
+			<h:graphicImage styleClass="userphoto"
+				value="/files?fileid=#{post.submitterPicture}"
+				title="#{post.submitter}" rendered="#{not empty post.submitterPicture}" />
+			<h:graphicImage styleClass="userphoto"
+				value="/images/icons/no_pic.gif" 
+				alt="#{msg.user_profile_no_image}"
+				title="#{msg.user_profile_no_image}"
+				rendered="#{empty post.submitterPicture}" />
+		</t:column>
+		<t:column>
 			<plexus:commandSortHeader columnName="author"> #{msg['discussion_thread_column_author']} </plexus:commandSortHeader>
 			<h:outputText value="#{post.submitter}"></h:outputText>			
-					<h:graphicImage styleClass="userphoto"
-						value="/files?fileid=#{post.submitterPicture}"
-						title="#{post.submitter}" rendered="#{not empty post.submitterPicture}" />
-					<h:graphicImage styleClass="userphoto"
-						value="/images/icons/no_pic.gif" 
-						alt="#{msg.user_profile_no_image}"
-						title="#{msg.user_profile_no_image}"
-						rendered="#{empty post.submitterPicture}" />
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="text"> #{msg['discussion_thread_column_message']} </plexus:commandSortHeader>
-			<h:outputText value="#{post.created} #{post.title}"/>
-			<h:outputText value="#{post.text}"/>
-		</t:column>
-		
+			<h:outputText value="#{post.created}" styleClass="content_font_normal">	
+				<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+			</h:outputText>
+			<h:outputText value="#{post.title}" styleClass="header_font_normal" />
+			<hr />
+			<div class="content_font_normal">
+				<h:outputText value="#{post.text}" escape="false"/>
+			</div>		
+		</t:column>		
 	</plexus:dataTable>      
 </ui:composition>

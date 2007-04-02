@@ -20,7 +20,7 @@ public class PostDaoImpl
         super.toPostInfo(sourceEntity, targetVO);        
         targetVO.setFormula(sourceEntity.getFormulaString());
         targetVO.setEditor(sourceEntity.getEditorName());
-        targetVO.setSubmitter(sourceEntity.getEditorName());
+        targetVO.setSubmitter(sourceEntity.getSubmitterName());
         targetVO.setIsEdited(sourceEntity.isEdited());
         targetVO.setSubmitterId(sourceEntity.getSubmitter().getId());
         targetVO.setSubmitterPicture(sourceEntity.getSubmitterPicture());

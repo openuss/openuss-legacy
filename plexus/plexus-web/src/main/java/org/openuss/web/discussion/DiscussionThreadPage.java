@@ -10,6 +10,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.discussion.PostInfo;
+import org.openuss.discussion.TopicInfo;
 import org.openuss.documents.FileInfo;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -53,7 +54,14 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		}
 	}
 	
-
+	public String addPost(){
+		TopicInfo topic = discussionService.getTopic(this.topic);
+		setSessionBean(Constants.DISCUSSION_TOPIC, topic);
+		PostInfo post = new PostInfo();
+		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, post);
+		return Constants.DISCUSSION_NEW;
+	}
+	
 	public DiscussionThreadDataProvider getData() {
 		return data;
 	}
