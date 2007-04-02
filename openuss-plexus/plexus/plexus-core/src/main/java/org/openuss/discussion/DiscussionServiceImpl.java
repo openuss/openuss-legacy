@@ -352,4 +352,14 @@ public class DiscussionServiceImpl
 		return getForumDao().toForumInfo(forum);
 	}
 
+	@Override
+	protected void handleAddHit(TopicInfo topic) throws Exception {
+		Validate.notNull(topic);
+		Validate.notNull(topic.getId());
+		Topic t = getTopicDao().load(topic.getId());
+		t.setHits(t.getHits()+1);
+		topic.setHits(t.getHits());
+		getTopicDao().update(t);		
+	}
+
 }

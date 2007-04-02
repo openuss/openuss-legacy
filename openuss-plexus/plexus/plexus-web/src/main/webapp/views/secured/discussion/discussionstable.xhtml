@@ -8,7 +8,9 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:c="http://java.sun.com/jstl/core">
       
-    <plexus:dataTable id="discussionstable" label="#{msg.discussion_main_header}" value="views$secured$discussion$discussions.data" var="topic" rows="10">  
+    <plexus:dataTable id="discussionstable" label="#{msg.discussion_main_header}" 
+    	value="views$secured$discussion$discussions.data" var="topic" rows="10"
+    	columnClasses="col_max_left, col_min_center, col_center, col_min_center, col_date">  
       
 		<t:column>
 			<plexus:commandSortHeader columnName="title"> #{msg['discussion_main_column_name']} </plexus:commandSortHeader>
@@ -20,19 +22,19 @@
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="answerCount"> #{msg['discussion_main_column_answers']} </plexus:commandSortHeader>
-			<h:outputText value="#{topic.answerCount}"></h:outputText>
+			<h:outputText value="#{topic.answerCount}" />
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="submitter"> #{msg['discussion_main_column_author']} </plexus:commandSortHeader>
-			<h:outputText value="#{topic.submitter}"></h:outputText>
+			<h:outputText value="#{topic.submitter}" />
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="hits"> #{msg['discussion_main_column_clicks']} </plexus:commandSortHeader>
-			<h:outputText value="#{topic.hits}"></h:outputText>
+			<h:outputText value="#{topic.hits}" />
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="lastPost"> #{msg['discussion_main_column_lastentry']} </plexus:commandSortHeader>
-			<h:outputText value="#{topic.lastPost}"></h:outputText>
+			<h:outputText value="#{topic.lastPost} - #{topic.lastPostSubmitterName}" />
 		</t:column>
 	</plexus:dataTable>      
 </ui:composition>
