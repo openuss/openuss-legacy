@@ -10,32 +10,31 @@ import org.openuss.security.User;
 /**
  * @see org.openuss.braincontest.Answer
  */
-public class AnswerImpl
-    extends org.openuss.braincontest.AnswerBase
-	implements org.openuss.braincontest.Answer
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = 7085597565132883484L;
+public class AnswerImpl extends org.openuss.braincontest.AnswerBase implements org.openuss.braincontest.Answer {
+	/**
+	 * The serial version UID of this class. Needed for serialization.
+	 */
+	private static final long serialVersionUID = 7085597565132883484L;
 
-    /**
-     * @see org.openuss.braincontest.Answer#getDisplayName()
-     */
-    public java.lang.String getDisplayName()
-    {
-        if (getSolver()==null)return null;
-        User solver = getSolver();
-        return solver.getFirstName() + " "+ solver.getLastName() + " ("+solver.getUsername() + ")";        
-    }
+	/**
+	 * @see org.openuss.braincontest.Answer#getDisplayName()
+	 */
+	public java.lang.String getDisplayName() {
+		if (getSolver() == null)
+			return null;
+		User solver = getSolver();
+		return solver.getFirstName() + " " + solver.getLastName() + " (" + solver.getUsername() + ")";
+	}
 
-    /**
-     * @see org.openuss.braincontest.Answer#getImageId()
-     */
-    public java.lang.Long getImageId()
-    {
-        // @todo implement public java.lang.Long getImageId()
-        return null;
-    }
+	/**
+	 * @see org.openuss.braincontest.Answer#getImageId()
+	 */
+	public java.lang.Long getImageId() {
+		if (getSolver() != null) {
+			return getSolver().getImageId();
+		} else {
+			return null;
+		}
+	}
 
 }
