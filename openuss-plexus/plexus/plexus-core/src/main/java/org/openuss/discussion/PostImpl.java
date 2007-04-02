@@ -40,7 +40,7 @@ public class PostImpl
      */
     public boolean isEdited()
     {
-    	return (getEditorName()!=null);
+    	return (!getEditorName().equals(""));
     }
 
 	@Override

@@ -155,23 +155,6 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		assertEquals(0, addedTopic.getAnswerCount().intValue());			
 	}
 	
-	
-	public void testUpdatePost(){
-		
-	}
-	
-	public void testAddRemoveAttachment(){
-		
-	}
-	
-	public void AddRemoveThreadWatch(){
-		
-	}
-	
-	public void AddRemoveForumWatch(){
-		
-	}
-	
 	public void testAddGetForum(){		
 		ForumInfo fi = new ForumInfo();
 		Long domainObject = generateDomainObject();

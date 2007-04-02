@@ -6,14 +6,15 @@
 package org.openuss.discussion;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.acegisecurity.context.SecurityContextHolder;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-import org.openuss.documents.DocumentServiceException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.security.User;
@@ -172,17 +173,38 @@ public class DiscussionServiceImpl
     /**
      * @see org.openuss.discussion.DiscussionService#updatePost(org.openuss.discussion.PostInfo)
      */
-    protected void handleUpdatePost(org.openuss.discussion.PostInfo post)
+    @SuppressWarnings("unchecked")
+	protected void handleUpdatePost(org.openuss.discussion.PostInfo post)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleUpdatePost(org.openuss.discussion.PostInfo post)
-        throw new java.lang.UnsupportedOperationException("org.openuss.discussion.DiscussionService.handleUpdatePost(org.openuss.discussion.PostInfo post) Not implemented!");
+    	Post newPost = getPostDao().load(post.getId());
+    	newPost.setText(post.getText());
+    	newPost.setTitle(post.getTitle());
+    	newPost.setEditor(getSecurityService().getUserByName(post.getEditor()));
+    	newPost.setLastModification(post.getLastModification());
+    	getPostDao().update(newPost);
+    	//handle changes in attachments
+    	if (post.getAttachments() == null) {
+			post.setAttachments(new ArrayList<FileInfo>());
+		}
+		List<FileInfo> savedAttachments = getDocumentService().getFileEntries(post);
+		Collection<FileInfo> removedAttachments = CollectionUtils.subtract(savedAttachments, post.getAttachments());
+		getDocumentService().removeFileEntries(removedAttachments);
+		FolderInfo folder = getDocumentService().getFolder(post);
+		for (FileInfo attachment: post.getAttachments()) {
+			if (attachment.getId() == null) {
+				getDocumentService().createFileEntry(attachment, folder);
+			}
+		}
+		post = getPostDao().toPostInfo(newPost);
+		//TODO formula
     }
 
     /**
      * @see org.openuss.discussion.DiscussionService#getPost(org.openuss.discussion.PostInfo)
      */
-    protected org.openuss.discussion.PostInfo handleGetPost(org.openuss.discussion.PostInfo post)
+    @SuppressWarnings("unchecked")
+	protected org.openuss.discussion.PostInfo handleGetPost(org.openuss.discussion.PostInfo post)
         throws java.lang.Exception
     {
     	Validate.notNull(post);
@@ -197,7 +219,8 @@ public class DiscussionServiceImpl
     /**
      * @see org.openuss.discussion.DiscussionService#getPosts(org.openuss.discussion.TopicInfo)
      */
-    protected java.util.List handleGetPosts(org.openuss.discussion.TopicInfo topic)
+    @SuppressWarnings("unchecked")
+	protected java.util.List handleGetPosts(org.openuss.discussion.TopicInfo topic)
         throws java.lang.Exception
     {
     	Validate.notNull(topic);

@@ -27,17 +27,27 @@
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="text"> #{msg['discussion_thread_column_message']} </plexus:commandSortHeader>
-			<h:outputText value="#{post.created}" styleClass="content_font_normal">	
-				<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
-			</h:outputText>
-			<h:outputText value="#{post.title}" styleClass="header_font_normal" />
-			<plexus:command bean="#{views$secured$discussion$discussionthread}"
-				action="removePost" label="#{msg['discussion_thread_remove_post']}"
-				title="#{msg['discussion_thread_remove_post']}"/>				
+			<div class="content_font_normal">
+				<h:outputText value="#{post.created}" styleClass="content_font_normal">	
+					<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+				</h:outputText>
+				<h:outputText value="#{post.title}" styleClass="header_font_normal" />
+				<plexus:command bean="#{views$secured$discussion$discussionthread}"
+					action="removePost" label="#{msg['discussion_thread_remove_post']}"
+					title="#{msg['discussion_thread_remove_post']}"
+					styleClass="button_remove"/>				
+				<plexus:command bean="#{views$secured$discussion$discussionthread}"
+					action="editPost" label="#{msg['discussion_thread_edit_post']}"
+					title="#{msg['discussion_thread_edit_post']}"
+					styleClass="button_remove"/>
+			</div>
 			<hr />
 			<div class="content_font_normal">
 				<h:outputText value="#{post.text}" escape="false"/>
 			</div>	
+			<h:outputText value="#{msg.discussion_post_edited} #{post.editor} #{msg.discussion_post_edited2} #{post.lastModification}" rendered="#{post.isEdited}">
+				<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+			</h:outputText>
 			<hr />
 			<f:subview rendered="#{!(empty post.attachments)}">
 					<div class="content_font_normal">

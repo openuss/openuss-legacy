@@ -1,29 +1,20 @@
 package org.openuss.web.discussion; 
 
-import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
-
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.braincontest.BrainContestInfo;
 import org.openuss.discussion.PostInfo;
 import org.openuss.discussion.TopicInfo;
-import org.openuss.documents.FileInfo;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.repository.RepositoryFileImpl;
-import org.openuss.security.UserImpl;
 import org.openuss.web.Constants;
 
 
 @Bean(name = "views$secured$discussion$discussionthread", scope = Scope.REQUEST)
 @View
 public class DiscussionThreadPage extends AbstractDiscussionPage{
-	private static final Logger logger = Logger.getLogger(DiscussionThreadPage.class);
 	
 	private DiscussionThreadDataProvider data = new DiscussionThreadDataProvider();
 	
@@ -48,6 +39,7 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 
 		private DataPage<PostInfo> page; 
 		
+		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<PostInfo> getDataPage(int startRow, int pageSize) {		
 			List<PostInfo> al = discussionService.getPosts(topic);
@@ -70,6 +62,13 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		discussionService.deletePost(pi);
 		addMessage(i18n("discussion_post_deleted", pi.getTitle()));
 		return Constants.SUCCESS;
+	}
+	
+	public String editPost(){
+		PostInfo pi = this.data.getRowData();
+		pi = discussionService.getPost(pi);
+		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, pi);
+		return Constants.DISCUSSION_NEW;
 	}
 	
 	public DiscussionThreadDataProvider getData() {
