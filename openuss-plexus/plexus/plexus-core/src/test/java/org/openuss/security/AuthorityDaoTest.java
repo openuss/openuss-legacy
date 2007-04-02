@@ -5,7 +5,6 @@
  */
 package org.openuss.security;
 
-import org.openuss.security.AuthorityImpl;
 
 
 /**

@@ -5,7 +5,6 @@
  */
 package org.openuss.mail;
 
-import java.sql.Timestamp;
 
 
 /**

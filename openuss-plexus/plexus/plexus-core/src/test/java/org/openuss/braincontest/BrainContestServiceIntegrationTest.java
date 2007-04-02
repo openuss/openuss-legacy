@@ -27,8 +27,6 @@ import org.openuss.security.acl.LectureAclEntry;
 @SuppressWarnings("unchecked")
 public class BrainContestServiceIntegrationTest extends BrainContestServiceIntegrationTestBase {
 
-	private TestUtility testUtility;
-	
 	private SecurityService securityService;
 	
 	private AclManager aclManager;
@@ -417,17 +415,6 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		return domainObject;
 	}
 	
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
-	}
-	
-	public TestUtility getTestUtility() {
-		return testUtility;
-	}
-
-
 	public void setTestUtility(TestUtility testUtility) {
 		this.testUtility = testUtility;
 	}

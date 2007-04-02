@@ -6,7 +6,6 @@
 package org.openuss.lecture;
 
 import org.apache.log4j.Logger;
-import org.openuss.TestUtility;
 import org.openuss.security.AuthorityDao;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
@@ -27,8 +26,6 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 	private AuthorityDao authorityDao;
 
 	private User user;
-
-	private TestUtility testUtility;
 
 	public LectureServiceIntegrationTest() {
 		setDefaultRollback(false);
@@ -85,12 +82,6 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		setComplete();
 	}
 	
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
-	}
-
 	private Faculty createFaculty() {
 		Faculty faculty = Faculty.Factory.newInstance();
 		faculty.setName(unique("faculty name"));
@@ -122,12 +113,4 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		this.userDao = userDao;
 	}
 
-	public TestUtility getTestUtility() {
-		return testUtility;
-	}
-
-	public void setTestUtility(TestUtility testUtility) {
-		this.testUtility = testUtility;
-	}
-	
 }

@@ -15,7 +15,6 @@ import java.util.List;
 import org.acegisecurity.acl.AclManager;
 import org.apache.commons.lang.StringUtils;
 import org.openuss.DomainObject;
-import org.openuss.TestUtility;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.repository.RepositoryService;
 import org.openuss.repository.RepositoryServiceException;
@@ -26,8 +25,6 @@ import org.openuss.security.SecurityService;
  * @see org.openuss.documents.DocumentService
  */
 public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTestBase {
-	
-	private TestUtility testUtility;
 	
 	private AclManager aclManager;
 	
@@ -351,20 +348,6 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		return domainObject;
 	}
 	
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
-	}
-	
-	public TestUtility getTestUtility() {
-		return testUtility;
-	}
-
-	public void setTestUtility(TestUtility testUtility) {
-		this.testUtility = testUtility;
-	}
-
 	public FolderEntryDao getFolderEntryDao() {
 		return folderEntryDao;
 	}

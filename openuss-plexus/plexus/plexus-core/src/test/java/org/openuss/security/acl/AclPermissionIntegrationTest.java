@@ -7,6 +7,7 @@ import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
 import org.apache.log4j.Logger;
+import org.openuss.TestUtility;
 import org.openuss.lecture.Faculty;
 import org.openuss.lecture.LectureService;
 import org.openuss.lecture.LectureServiceException;
@@ -25,7 +26,6 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 
 	private static final String TEST_ROLE_ADMIN = "ROLE_ADMIN";
 	private static final String TEST_ADMIN = "admin";
-	private static final long FACULTY_TEST_ID = 4711;
 
 	private static final Logger logger = Logger.getLogger(AclPermissionIntegrationTest.class);
 
@@ -42,13 +42,18 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 	private Group groupFaculty;
 	
 	private EhCacheBasedUserCache cache ;
+	
+	private TestUtility testUtility;
+
+	private long facultyTestID;
 
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
+		facultyTestID = testUtility.unique();
 		cache.getCache().flush();
 		createSecureContext(TEST_ADMIN, TEST_ROLE_ADMIN);
 		faculty = Faculty.Factory.newInstance();
-		faculty.setId(FACULTY_TEST_ID);
+		faculty.setId(facultyTestID);
 	}
 
 	public void testAclAccessDeniedMethodInvocation() {
@@ -65,7 +70,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 
 	public void testAclAccessGrantedToUserCheckedMethodInvocation() {
 		ObjectIdentity oi = ObjectIdentity.Factory.newInstance();
-		oi.setId(FACULTY_TEST_ID);
+		oi.setId(facultyTestID);
 
 		Permission permission = Permission.Factory.newInstance();
 		permission.setAclObjectIdentity(oi);
@@ -100,7 +105,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 
 	public void testAclHirarchyAccessGrantedToUserCheckedMethodInvocation() {
 		ObjectIdentity oi = ObjectIdentity.Factory.newInstance();
-		oi.setId(FACULTY_TEST_ID);
+		oi.setId(facultyTestID);
 
 		Permission permission = Permission.Factory.newInstance();
 		permission.setAclObjectIdentity(oi);
@@ -110,15 +115,17 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		objectIdentityDao.create(oi);
 		oi.addPermission(permission);
 
+		long oid = testUtility.unique();
+		
 		ObjectIdentity oi2 = ObjectIdentity.Factory.newInstance();
-		oi2.setId(1234L);
+		oi2.setId(oid);
 		oi2.setParent(oi);
 		
 		objectIdentityDao.create(oi2);
 		permissionDao.create(permission);
 
 		Faculty faculty2 = Faculty.Factory.newInstance();
-		faculty2.setId(1234L);
+		faculty2.setId(oid);
 
 		try {
 			lectureService.getFaculty(faculty.getId());
@@ -133,8 +140,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 	
 	public void testAclHirarchyAccessGrantedToRoleCheckedMethodInvocation() {
 		ObjectIdentity oi = ObjectIdentity.Factory.newInstance();
-		oi.setId(FACULTY_TEST_ID);
-//		oi.setObjectIdentityClass("org.openuss.lecture.Faculty");
+		oi.setId(facultyTestID);
 
 		Permission permission = Permission.Factory.newInstance();
 		permission.setAclObjectIdentity(oi);
@@ -144,15 +150,15 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		objectIdentityDao.create(oi);
 		oi.addPermission(permission);
 
+		long oid = testUtility.unique();
 		ObjectIdentity oi2 = ObjectIdentity.Factory.newInstance();
-		oi2.setId(1234L);
-//		oi2.setObjectIdentityClass("org.openuss.lecture.Faculty");
+		oi2.setId(oid);
 		oi2.setParent(oi);
 		objectIdentityDao.create(oi2);
 		permissionDao.create(permission);
 
 		Faculty faculty2 = Faculty.Factory.newInstance();
-		faculty2.setId(1234L);
+		faculty2.setId(oid);
 
 		try {
 			lectureService.getFaculty(faculty.getId());
@@ -254,5 +260,13 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 
 	public void setCache(EhCacheBasedUserCache cache) {
 		this.cache = cache;
+	}
+
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
 	}
 }

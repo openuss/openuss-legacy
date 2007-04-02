@@ -8,12 +8,12 @@ import org.openuss.desktop.DesktopTests;
 import org.openuss.discussion.DiscussionTests;
 import org.openuss.documents.DocumentTests;
 import org.openuss.lecture.LectureTests;
+import org.openuss.mail.MailTests;
 import org.openuss.news.NewsTests;
 import org.openuss.repository.RepositoryTests;
 import org.openuss.security.SecurityTests;
 import org.openuss.system.SystemTests;
 import org.openuss.viewtracking.ViewTrackingTests;
-import org.openuss.mail.MailTests;
 
 public class AllTests {
 

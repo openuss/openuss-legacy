@@ -1,6 +1,5 @@
 package org.openuss.lecture;
 
-import org.openuss.TestUtility;
 
 /**
  * Factory to create lecture structures

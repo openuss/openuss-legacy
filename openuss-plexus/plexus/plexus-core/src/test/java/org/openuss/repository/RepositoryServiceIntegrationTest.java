@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.FileUtils;
-import org.openuss.TestUtility;
 
 /**
  * JUnit Test for Spring Hibernate RepositoryService class.
@@ -20,8 +19,6 @@ import org.openuss.TestUtility;
  * @see org.openuss.repository.RepositoryService
  */
 public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrationTestBase {
-
-	private TestUtility testUtility;
 
 	public void testRepositoryService() throws IOException {
 		String fileName = this.getClass().getClassLoader().getResource("core-test.zip").getFile();
@@ -63,19 +60,4 @@ public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrati
 			// expected
 		}
 	}
-
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
-	}
-
-	public TestUtility getTestUtility() {
-		return testUtility;
-	}
-
-	public void setTestUtility(TestUtility testUtility) {
-		this.testUtility = testUtility;
-	}
-
 }
