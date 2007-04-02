@@ -23,6 +23,7 @@ public class PostDaoImpl
         targetVO.setSubmitter(sourceEntity.getEditorName());
         targetVO.setIsEdited(sourceEntity.isEdited());
         targetVO.setSubmitterId(sourceEntity.getSubmitter().getId());
+        targetVO.setSubmitterPicture(sourceEntity.getSubmitterPicture());
     }
 
 

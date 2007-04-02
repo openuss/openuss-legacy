@@ -94,17 +94,19 @@ public class Constants {
 	public static final String BRAINCONTEST_SOLVE = "braincontest_solve";
 	public static final String BRAINCONTEST_SOLVED = "braincontest_solved";
 	public static final String BRAINCONTEST_WRONG = "braincontest_wrong";
-
-	public static final String ZIP_DOWNLOAD_URL = "/zips/documents.zip";
-
 	public static final String BRAINCONTENT_CONTEST = "braincontest_contest";
-	public static final String USER_IMAGE_NAME = "useravartar";
+
+	public static final String DISCUSSION_DISCUSSIONENTRY = "discussion_discussionentry";
+	public static final String DISCUSSION_NEW = "discussion_new";
+	public static final String DISCUSSION_TOPIC = "discussion_topic";
+	public static final String DISCUSSION_MAIN = "discussion_main";
 	
+	public static final String ZIP_DOWNLOAD_URL = "/zips/documents.zip";
+	
+	public static final String USER_IMAGE_NAME = "useravartar";
 	
 	public static final String UPLOAD_FILE_MANAGER = "uploadFileManager";
 
 	public static final String BRAINCONTEST_ATTACHMENTS = "braincontest_attachments";
-
-
 
 }

@@ -60,4 +60,10 @@ public class PostImpl
        	}
 	}
 
+	@Override
+	public Long getSubmitterPicture() {
+		if (getSubmitter().getImageId()!=null) return getSubmitter().getImageId();
+		return null;		
+	}
+
 }

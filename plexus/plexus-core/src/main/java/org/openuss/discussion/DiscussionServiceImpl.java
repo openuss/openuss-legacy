@@ -222,6 +222,7 @@ public class DiscussionServiceImpl
     	Forum f = getForumDao().load(forum.getId());
     	Set<Topic> tList = f.getTopics();
     	List<TopicInfo> topics = new ArrayList<TopicInfo>();
+    	//TODO move to dao
     	Iterator i = tList.iterator();
     	while (i.hasNext()){
     		topics.add(getTopicDao().toTopicInfo((Topic)i.next()));

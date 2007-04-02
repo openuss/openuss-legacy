@@ -83,13 +83,18 @@
  		<managed-bean-class>org.openuss.web.documents.FolderEntrySelection</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
- 
+
  	<managed-bean>
  		<managed-bean-name>discussion_discussionentry</managed-bean-name>
  		<managed-bean-class>org.openuss.discussion.PostInfo</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
- 
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>discussion_topic</managed-bean-name>
+ 		<managed-bean-class>org.openuss.discussion.TopicInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
  	
  	<managed-bean>
  		<managed-bean-name>braincontest_answer</managed-bean-name>

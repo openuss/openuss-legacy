@@ -12,8 +12,11 @@
       
 		<t:column>
 			<plexus:commandSortHeader columnName="title"> #{msg['discussion_main_column_name']} </plexus:commandSortHeader>
-			<h:outputText value="#{topic.title}"></h:outputText>
-			
+			<o:link value="/views/secured/discussion/discussionthread.faces" title="#{topic.title}" >
+				<f:param value="#{enrollment.id}" name="enrollment" />
+				<f:param value="#{topic.id}" name="topic"/>
+				<h:outputText value="#{topic.title}" />
+			</o:link>			
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="answerCount"> #{msg['discussion_main_column_answers']} </plexus:commandSortHeader>

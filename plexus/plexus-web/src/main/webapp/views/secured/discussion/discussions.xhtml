@@ -36,12 +36,9 @@
 		<h:form id="discussionTableView">
 			<ui:include src="discussionstable.xhtml" />
 			<o:block>
-				<h:commandButton 
-				    id="newDiscussionEntry"
-					action="discussion_new" 
-					value="#{msg.discussion_new}" 
-					title="#{msg.discussion_new}"
-					styleClass="button"/>
+				<plexus:command bean="#{views$secured$discussion$discussions}"
+					action="newTopic" label="#{msg['discussion_new']}"
+					title="#{msg['discussion_new']}"/>				
 			</o:block>
 		</h:form>
 	</ui:define>

@@ -6,10 +6,6 @@ insert into SECURITY_GROUP (ID, NAME, LABEL, GROUP_TYPE) values (-1, 'ROLE_ANONY
 insert into SECURITY_GROUP (ID, NAME, LABEL, GROUP_TYPE) values (-2, 'ROLE_USER', 'USER', 1);
 insert into SECURITY_GROUP (ID, NAME, LABEL, GROUP_TYPE) values (-3, 'ROLE_ASSISTANT', 'ASSISTANT', 1);
 insert into SECURITY_GROUP (ID, NAME, LABEL, GROUP_TYPE) values (-4, 'ROLE_ADMIN', 'ADMINISTRATOR', 1);
-insert into NEWS_CATEGORY (ID, NAME) values (0,'news_category_global');
-insert into NEWS_CATEGORY (ID, NAME) values (1,'news_category_faculty');
-insert into NEWS_CATEGORY (ID, NAME) values (2,'news_category_user');
-insert into NEWS_CATEGORY (ID, NAME) values (3,'news_category_enrollment');
 insert into SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) values (0, 'openuss.url', 'localhost:8080');
 insert into SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) values (1, 'repository.path', 'd:/temp');
 insert into SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) values (2, 'mail.from.address', 'plexus@openuss-plexus.org');
