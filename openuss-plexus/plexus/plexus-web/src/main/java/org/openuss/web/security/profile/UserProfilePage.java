@@ -100,15 +100,8 @@ public class UserProfilePage extends BasePage{
 
 	private void permitRolesImageReadPermission(FileInfo imageFile) {
 		// TODO should be done within the business layer
-		Group roleAnonymous = Group.Factory.newInstance();
-		roleAnonymous.setId(Roles.ANONYMOUS);
-		roleAnonymous = securityService.getGroup(roleAnonymous);
-		securityService.setPermissions(roleAnonymous, imageFile, LectureAclEntry.READ);
-		
-		Group roleUser = Group.Factory.newInstance();
-		roleUser.setId(Roles.USER);
-		roleUser = securityService.getGroup(roleUser);
-		securityService.setPermissions(roleUser, imageFile, LectureAclEntry.READ);
+		securityService.setPermissions(Roles.ANONYMOUS, imageFile, LectureAclEntry.READ);
+		securityService.setPermissions(Roles.USER, imageFile, LectureAclEntry.READ);
 	}
 	
 	/**

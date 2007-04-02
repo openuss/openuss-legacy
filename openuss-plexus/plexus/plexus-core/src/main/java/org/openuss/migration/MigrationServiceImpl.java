@@ -88,16 +88,12 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 		getUserDao().create(users.values());
 	
 		logger.debug("starting to add users to group");
-		Group roleUser = getGroupDao().load(Roles.USER);
-		Group roleAssist = getGroupDao().load(Roles.ASSISTANT);
+		Group roleUser = getGroupDao().load(Roles.USER_ID);
 		for (User user : users.values()) {
 			roleUser.addMember(user);
-			roleAssist.addMember(user);
 			user.addGroup(roleUser);
-			user.addGroup(roleAssist);
 		}
 		getGroupDao().update(roleUser);
-		getGroupDao().update(roleAssist);
 		
 		logger.debug("setting user object identity");
 		Collection<ObjectIdentity> objIds = new ArrayList<ObjectIdentity>();

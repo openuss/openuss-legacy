@@ -1,6 +1,7 @@
 package org.openuss.security;
 
 
+
 /**
  * Defines the global constants for the four major roles.
  * <ol>
@@ -12,12 +13,23 @@ package org.openuss.security;
  *  
  * @author Ingo Dueppe
  */
-public interface Roles {
+public final class Roles {
+
+	//	public static final long ASSISTANT_ID = -3L;
+	//	public static final Group ASSISTANT = Group.Factory.newInstance();
 	
-	public static final long ANONYMOUS = -1L;
-	public static final long USER = -2L;
-	public static final long ASSISTANT = -3L;
-	public static final long ADMINISTRATOR = -4L;
+	public static final long ANONYMOUS_ID = -1L;
+	public static final long USER_ID = -2L;
+	public static final long ADMINISTRATOR_ID = -4L;
 	
+	public static final Group ANONYMOUS = Group.Factory.newInstance();
+	public static final Group USER = Group.Factory.newInstance();
+	public static final Group ADMINISTRATOR = Group.Factory.newInstance();
+
+	static {
+		ANONYMOUS.setId(ANONYMOUS_ID);
+		USER.setId(USER_ID);
+		ADMINISTRATOR.setId(ADMINISTRATOR_ID);
+	}
 	
 }

@@ -17,6 +17,8 @@ import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.framework.utilities.DomainObjectUtility;
+import org.openuss.security.Roles;
+import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @author ingo dueppe
@@ -49,6 +51,9 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 	private void createNewsItem(NewsItemInfo item, NewsItem entity) throws DocumentApplicationException {
 		getNewsItemDao().create(entity);
 		getSecurityService().createObjectIdentity(entity, item.getPublisherIdentifier());
+		
+		getSecurityService().setPermissions(Roles.ANONYMOUS, entity, LectureAclEntry.READ);
+		getSecurityService().setPermissions(Roles.USER, entity, LectureAclEntry.READ);
 		
 		if (item.getAttachments() != null && !item.getAttachments().isEmpty()) {
 			logger.debug("found "+item.getAttachments().size()+" attachments");

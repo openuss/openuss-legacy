@@ -13,7 +13,6 @@ import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.apache.log4j.Logger;
-import org.openuss.security.GroupImpl;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
@@ -42,19 +41,8 @@ public class RegistrationServiceImpl extends org.openuss.security.registration.R
 
 		getSecurityService().createUser(user);
 		
-//		try {
-			// create user by transitive persistence
-			// create user desktop
-			
-			// FIXME Security must not depend on desktop !!! - Maybe DesktopService can automaticaly generate a new desktop object on demand
-//			getDesktopService().createDesktop(user);
-			
-//		} catch (DesktopException e) {
-//			logger.error(e);
-//			throw new RegistrationException(e);
-//		}
 		// asign roles to user
-		asignRolesToUser(user, assistant);
+		asignRolesToUser(user);
 	}
 
 	@Override
@@ -89,14 +77,11 @@ public class RegistrationServiceImpl extends org.openuss.security.registration.R
 	 * @param assistant
 	 *            wether or not to asign the assistant role to the user
 	 */
-	private void asignRolesToUser(User user, boolean assistant) {
+	private void asignRolesToUser(User user) {
 		// assign roles to user
 		final SecurityService securityService = getSecurityService();
 		
-		securityService.addAuthorityToGroup(user, new GroupImpl(Roles.USER));
-		if (assistant) {
-			securityService.addAuthorityToGroup(user, new GroupImpl(Roles.ASSISTANT));
-		}
+		securityService.addAuthorityToGroup(user, Roles.USER);
 		securityService.saveUser(user);
 	}
 
