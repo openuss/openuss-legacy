@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    				Cache Configuration
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<!-- User Cache Configuration  -->
+	<bean id="userCache"
+		class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
+		<property name="cache">
+			<ref local="userCacheBackend" />
+		</property>
+	</bean>
+	
+	<bean id="userCacheBackend"
+		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager" />
+		</property>
+		<property name="cacheName">
+			<value>userCache</value>
+		</property>
+	</bean>
+
+	<bean id="cacheManager"	class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation"><value>classpath:/ehcache-failsafe.xml</value></property>
+	</bean>
+
+	<bean id="passwordEncoder"
+		class="org.acegisecurity.providers.encoding.Md5PasswordEncoder" />
+
+	
+
+</beans>
