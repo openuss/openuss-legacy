@@ -256,12 +256,14 @@ public class DiscussionServiceImpl
     protected java.util.List handleGetTopics(ForumInfo forum)
         throws java.lang.Exception
     {
+    	//String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();    	
+    	//List<Object[]> viewStates = getTrackingService().getTopicViewStates(forum.getId(), getSecurityService().getUserByName(currentUser).getId());
     	Validate.notNull(forum);
     	Validate.notNull(forum.getId());
     	Forum f = getForumDao().load(forum.getId());
     	Set<Topic> tList = f.getTopics();
     	List<TopicInfo> topics = new ArrayList<TopicInfo>();
-    	//TODO move to dao
+    	//TODO add viewstate to topicInfos
     	Iterator i = tList.iterator();
     	while (i.hasNext()){
     		topics.add(getTopicDao().toTopicInfo((Topic)i.next()));
@@ -409,6 +411,22 @@ public class DiscussionServiceImpl
 		Validate.notNull(post.getId());		
 		List<FileInfo> attachments = getDocumentService().getFileEntries(post);
 		return attachments;
+	}
+
+	@Override
+	protected boolean handleWatchesForum(ForumInfo forum) throws Exception {
+		Validate.notNull(forum);
+		Validate.notNull(forum.getId());
+		User user = getSecurityService().getUserByName(SecurityContextHolder.getContext().getAuthentication().getName());
+		return (getForumWatchDao().findByUserAndForum(user, getForumDao().load(forum.getId()))!=null);
+	}
+
+	@Override
+	protected boolean handleWatchesTopic(TopicInfo topic) throws Exception {
+		Validate.notNull(topic);
+		Validate.notNull(topic.getId());
+		User user = getSecurityService().getUserByName(SecurityContextHolder.getContext().getAuthentication().getName());
+		return (getDiscussionWatchDao().findByTopicAndUser(getTopicDao().load(topic.getId()), user)!=null);
 	}
 
 }

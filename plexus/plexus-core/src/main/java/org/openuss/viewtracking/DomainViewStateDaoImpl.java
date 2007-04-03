@@ -5,7 +5,10 @@
  */
 package org.openuss.viewtracking;
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 
 /**
  * @see org.openuss.viewtracking.DomainViewState
@@ -44,4 +47,19 @@ public class DomainViewStateDaoImpl extends DomainViewStateDaoBase {
 		}, true);
 
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected List handleGetTopicViewStates(final Long domainIdentifier, final Long userId) throws Exception {
+		final String hqlGetTopicStates = "SELECT t, v FROM DISCUSSION_TOPIC t, ViewState v WHERE t.id = v.id and t.domainIdentifier = :domainIdentifer and v.userId = :userId";
+		return (List<Object[]>) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
+			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
+				Query query = session.createQuery(hqlGetTopicStates);
+				query.setLong("domainIdentifier",domainIdentifier);
+				query.setLong("userId",userId);
+				return query.list();  
+			}
+		}, true);
+	}
+	
 }

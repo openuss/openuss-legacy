@@ -1,9 +1,9 @@
 package org.openuss.web.discussion; 
 
-import java.sql.Clob;
 import java.util.List;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.discussion.PostInfo;
@@ -18,6 +18,11 @@ import org.openuss.web.Constants;
 public class DiscussionThreadPage extends AbstractDiscussionPage{
 	
 	private DiscussionThreadDataProvider data = new DiscussionThreadDataProvider();
+	
+	@Property(value= "#{"+Constants.DISCUSSION_THREADLENGTH+"}")
+	public int length;
+	
+	public boolean topicWatchState;
 	
 	@SuppressWarnings("unchecked")
 	@Prerender
@@ -34,6 +39,7 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 				redirect(Constants.DISCUSSION_MAIN);
 			}
 		} 
+		topicWatchState = discussionService.watchesTopic(topic);
 	}	
 	
 	
@@ -45,6 +51,7 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		@Override 
 		public DataPage<PostInfo> getDataPage(int startRow, int pageSize) {		
 			List<PostInfo> al = discussionService.getPosts(topic);
+			setSessionBean(Constants.DISCUSSION_THREADLENGTH, al.size());
 			page = new DataPage<PostInfo>(al.size(),0,al);
 			return page;
 		}
@@ -61,7 +68,11 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	
 	public String removePost(){
 		PostInfo pi = this.data.getRowData();
-		//TODO test if pi is the last element in topic, the return to main discussion view
+		if (this.length==1){
+			discussionService.deleteTopic(topic);
+			addMessage(i18n("discussion_post_deleted", pi.getTitle()));
+			return Constants.DISCUSSION_MAIN;
+		}
 		discussionService.deletePost(pi);
 		addMessage(i18n("discussion_post_deleted", pi.getTitle()));
 		return Constants.SUCCESS;
@@ -88,6 +99,15 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		return Constants.DISCUSSION_NEW;
 	}
 	
+	public String changeWatchState(){
+		if (discussionService.watchesTopic(topic)){
+			discussionService.removeTopicWatch(topic);
+		} else if(!discussionService.watchesTopic(topic)){
+			discussionService.addTopicWatch(topic);
+		} 
+		return Constants.SUCCESS;
+	}
+	
 	public DiscussionThreadDataProvider getData() {
 		return data;
 	}
@@ -95,6 +115,22 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 
 	public void setData(DiscussionThreadDataProvider data) {
 		this.data = data;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+	public boolean isTopicWatchState() {
+		return topicWatchState;
+	}
+
+	public void setTopicWatchState(boolean topicWatchState) {
+		this.topicWatchState = topicWatchState;
 	}
 	
 }

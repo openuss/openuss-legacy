@@ -6,6 +6,7 @@
 package org.openuss.viewtracking;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.lang.Validate;
@@ -97,5 +98,13 @@ public class TrackingServiceImpl extends org.openuss.viewtracking.TrackingServic
 		Long domainIdentifier = DomainObjectUtility.identifierFromObject(domainObject);
 		Validate.notNull(domainIdentifier, "Parameter domainObject must contain an identifier");
 		return domainIdentifier;
+	}
+
+
+	@Override
+	protected List handleGetTopicViewStates(Long domainIdentifier, Long userId) throws Exception {
+		Validate.notNull(domainIdentifier);
+		Validate.notNull(userId);	
+		return getDomainViewStateDao().getTopicViewStates(domainIdentifier, userId);
 	}
 }

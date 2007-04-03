@@ -36,6 +36,13 @@
 		<h:form id="discussionTableView">
 			<ui:include src="discussionstable.xhtml" />
 			<o:block>
+				<h:outputText value="#{msg.discussion_forum_watch_true}" styleClass="content_font_normal" rendered="#{views$secured$discussion$discussions.forumWatchState}"/>
+				<h:outputText value="#{msg.discussion_forum_watch_false}" styleClass="content_font_normal" rendered="#{not views$secured$discussion$discussions.forumWatchState}"/>
+				<plexus:command bean="#{views$secured$discussion$discussions}"
+					action="changeWatchState" label="#{msg['discussion_forum_watch']}"
+					title="#{msg['discussion_forum_watch']}"/>				
+			</o:block>
+			<o:block>
 				<plexus:command bean="#{views$secured$discussion$discussions}"
 					action="newTopic" label="#{msg['discussion_new']}"
 					title="#{msg['discussion_new']}"/>				
