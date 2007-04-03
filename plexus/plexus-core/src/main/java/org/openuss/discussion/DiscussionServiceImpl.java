@@ -66,7 +66,7 @@ public class DiscussionServiceImpl
     	ti.setForumId(getForum(forum.getDomainIdentifier()).getId());
     	ti.setHits(0);
     	ti.setLastPost(post.getLastModification());
-    	ti.setReadOnly(true);
+    	ti.setReadOnly(false);
     	ti.setSubmitter(post.getSubmitter());
     	ti.setTitle(post.getTitle());
 		return ti;
