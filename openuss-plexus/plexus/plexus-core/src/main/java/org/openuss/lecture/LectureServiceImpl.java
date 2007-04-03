@@ -190,7 +190,7 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 	@Override
 	protected void handlePersist(Enrollment enrollment) throws Exception {
 		storeEnrollment(enrollment);
-		defineAccessTypePermission(enrollment);
+		updateAccessTypePermission(enrollment);
 	}
 
 	private void storeEnrollment(Enrollment enrollment) {
@@ -201,7 +201,7 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		}
 	}
 
-	private void defineAccessTypePermission(Enrollment enrollment) {
+	private void updateAccessTypePermission(Enrollment enrollment) {
 		if (enrollment.getAccessType()!=AccessType.OPEN){
 			getSecurityService().setPermissions(Roles.USER, enrollment, LectureAclEntry.NOTHING);		
 		}
@@ -330,7 +330,7 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		storeEnrollment(enrollment);
 		
 		getSecurityService().createObjectIdentity(enrollment, faculty);
-		defineAccessTypePermission(enrollment);
+		updateAccessTypePermission(enrollment);
 
 		return enrollment;
 	}

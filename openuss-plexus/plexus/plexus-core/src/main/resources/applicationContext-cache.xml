@@ -11,14 +11,17 @@
 	<bean id="userCache"
 		class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
 		<property name="cache">
-			<ref local="userCacheBackend" />
+			<ref local="cacheBackend" />
 		</property>
 	</bean>
 	
-	<bean id="userCacheBackend"
-		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+	<bean id="ehCacheBasedAclEntryCache" class="org.acegisecurity.acl.basic.cache.EhCacheBasedAclEntryCache">
+		<property name="cache"><ref local="cacheBackend"/></property>
+	</bean>
+	
+	<bean id="cacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
 		<property name="cacheManager">
-			<ref local="cacheManager" />
+			<ref local="cacheManager"/>
 		</property>
 		<property name="cacheName">
 			<value>userCache</value>
