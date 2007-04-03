@@ -57,20 +57,25 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 	public void testFindByCriteria() {
 		removeAllNewsItem();
 
-		NewsItem itemOne = createNewsItem();
-		itemOne.setPublishDate(past);
-		itemOne.setExpireDate(past);
-		newsItemDao.create(itemOne);
+		NewsItem item1 = createNewsItem();
+		item1.setPublishDate(past);
+		item1.setExpireDate(past);
+		newsItemDao.create(item1);
 
-		NewsItem itemTwo = createNewsItem();
-		itemTwo.setPublishDate(past);
-		itemTwo.setExpireDate(future);
-		newsItemDao.create(itemTwo);
+		NewsItem item2 = createNewsItem();
+		item2.setPublishDate(past);
+		item2.setExpireDate(future);
+		newsItemDao.create(item2);
 
-		NewsItem itemThree = createNewsItem();
-		itemThree.setPublishDate(future);
-		itemThree.setExpireDate(future);
-		newsItemDao.create(itemThree);
+		NewsItem item3 = createNewsItem();
+		item3.setPublishDate(future);
+		item3.setExpireDate(future);
+		newsItemDao.create(item3);
+		
+		NewsItem item4 = createNewsItem();
+		item4.setPublishDate(past);
+		item4.setExpireDate(null);
+		newsItemDao.create(item4);
 
 		commit();
 		
@@ -81,11 +86,11 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		
 		List items = newsItemDao.findByCriteria(criteria);
 		assertNotNull(items);
-		assertEquals(1, items.size());
-		assertFalse(items.contains(itemOne));
-		assertTrue(items.contains(itemTwo));
-		assertFalse(items.contains(itemThree));
-		
+		assertEquals(2, items.size());
+		assertFalse(items.contains(item1));
+		assertTrue(items.contains(item2));
+		assertFalse(items.contains(item3));
+		assertTrue(items.contains(item4));
 	}
 	
 	public void testFindAndCountByPublisher() {

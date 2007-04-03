@@ -5,14 +5,62 @@
  */
 package org.openuss.news;
 
+import java.util.List;
+
 import org.apache.commons.lang.Validate;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.Order;
+import static org.hibernate.criterion.Restrictions.*;
 
 /**
  * @author ingo dueppe
  * @see org.openuss.news.NewsItem
  */
 public class NewsItemDaoImpl extends NewsItemDaoBase {
+
+	@Override
+	public List findByCriteria(int transform, NewsCriteria criteria) {
+
+		Session sess = this.getSession(false);
+
+		Criteria crit = sess.createCriteria(NewsItem.class);
+
+		Conjunction conjunction = conjunction();
+		if (criteria.getCategory() != null) {
+			conjunction.add(eq("category", criteria.getCategory()));
+		}
+		if (criteria.getPublisherIdentifier() != null) {
+			conjunction.add(eq("publisherIdentifier", criteria.getPublisherIdentifier()));
+		}
+		if (criteria.getPublishDate() != null) {
+			conjunction.add(le("publishDate", criteria.getPublishDate()));
+		}
+		if (criteria.getExpireDate() != null) {
+			conjunction.add(or(ge("expireDate", criteria.getExpireDate()), isNull("expireDate")));
+		}
+		crit.add(conjunction);
+
+		if (criteria.getFetchSize() != null)
+			crit.setFetchSize(criteria.getFetchSize());
+		if (criteria.getFirstResult() != null)
+			crit.setFetchSize(criteria.getFirstResult());
+		if (criteria.getMaximumResultSize() != null)
+			crit.setFetchSize(criteria.getMaximumResultSize());
+
+		crit.addOrder(Order.desc("publishDate"));
+		List results = crit.list();
+		transformEntities(transform, results);
+		return results;
+	}
+
+	@Override
+	public List findByCriteria(NewsCriteria criteria) {
+		return findByCriteria(TRANSFORM_NONE, criteria);
+	}
+
 	/**
 	 * @see org.openuss.news.NewsItemDao#countByCategory(org.openuss.news.NewsCategory)
 	 */
@@ -20,10 +68,8 @@ public class NewsItemDaoImpl extends NewsItemDaoBase {
 		final String hqlUpdate = "select count(n) from NewsItemImpl n where n.category = :category";
 		return (Long) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
 			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
-				Long count = (Long) session.createQuery(hqlUpdate)
-				.setParameter("category", category)
-				.uniqueResult();
-				logger.debug("updated "+count+" records.");
+				Long count = (Long) session.createQuery(hqlUpdate).setParameter("category", category).uniqueResult();
+				logger.debug("updated " + count + " records.");
 				return count;
 			}
 		}, true);
@@ -36,14 +82,13 @@ public class NewsItemDaoImpl extends NewsItemDaoBase {
 		final String hqlUpdate = "select count(n) from NewsItemImpl n where n.publisherIdentifier = :publisherIdentifier";
 		return (Long) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
 			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
-				Long count = (Long) session.createQuery(hqlUpdate)
-				.setLong("publisherIdentifier", publisherIdentifier)
-				.uniqueResult();
-				logger.debug("updated "+count+" records.");
+				Long count = (Long) session.createQuery(hqlUpdate).setLong("publisherIdentifier", publisherIdentifier)
+						.uniqueResult();
+				logger.debug("updated " + count + " records.");
 				return count;
 			}
 		}, true);
-		
+
 	}
 
 	/**
@@ -60,7 +105,6 @@ public class NewsItemDaoImpl extends NewsItemDaoBase {
 	 * @see org.openuss.news.NewsItemDao#toNewsItemInfo(org.openuss.news.NewsItem)
 	 */
 	public NewsItemInfo toNewsItemInfo(final NewsItem entity) {
-		// @todo verify behavior of toNewsItemInfo
 		return super.toNewsItemInfo(entity);
 	}
 
@@ -95,7 +139,7 @@ public class NewsItemDaoImpl extends NewsItemDaoBase {
 	 * @see org.openuss.news.NewsItemDao#newsItemInfoToEntity(org.openuss.news.NewsItemInfo,
 	 *      org.openuss.news.NewsItem)
 	 */
-	public void newsItemInfoToEntity(NewsItemInfo sourceVO, NewsItem targetEntity,	boolean copyIfNull) {
+	public void newsItemInfoToEntity(NewsItemInfo sourceVO, NewsItem targetEntity, boolean copyIfNull) {
 		super.newsItemInfoToEntity(sourceVO, targetEntity, copyIfNull);
 	}
 
