@@ -52,8 +52,10 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 		getNewsItemDao().create(entity);
 		getSecurityService().createObjectIdentity(entity, item.getPublisherIdentifier());
 		
-		getSecurityService().setPermissions(Roles.ANONYMOUS, entity, LectureAclEntry.READ);
-		getSecurityService().setPermissions(Roles.USER, entity, LectureAclEntry.READ);
+		if (NewsCategory.ENROLLMENT != entity.getCategory()) {
+			getSecurityService().setPermissions(Roles.ANONYMOUS, entity, LectureAclEntry.READ);
+			getSecurityService().setPermissions(Roles.USER, entity, LectureAclEntry.READ);
+		} 
 		
 		if (item.getAttachments() != null && !item.getAttachments().isEmpty()) {
 			logger.debug("found "+item.getAttachments().size()+" attachments");
@@ -146,7 +148,7 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 		NewsCriteria criteria = new NewsCriteria();
 		criteria.setPublisherIdentifier(identifier);
 		criteria.setPublishDate(new Date());
-//		criteria.setExpireDate(new Date());
+		criteria.setExpireDate(new Date());
 		criteria.setMaximumResultSize(count);
 		
 		return getNewsItemDao().findByCriteria(NewsItemDao.TRANSFORM_NEWSITEMINFO, criteria); 
