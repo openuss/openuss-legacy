@@ -48,6 +48,7 @@ public abstract class ${testClassName} extends AbstractTransactionalDataSourceSp
 			"classpath*:applicationContext-localDataSource.xml",
 			"classpath*:applicationContext-beans.xml", 
 			"classpath*:applicationContext-tests.xml", 
+			"classpath*:applicationContext-cache.xml",
 			"classpath*:beanRefFactory",
 			"classpath*:testSecurity.xml",
 			"classpath*:testDataSource.xml"};
