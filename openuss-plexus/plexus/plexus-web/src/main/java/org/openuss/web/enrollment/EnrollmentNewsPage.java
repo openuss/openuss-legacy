@@ -49,7 +49,7 @@ public class EnrollmentNewsPage extends AbstractEnrollmentPage {
 	}
 	
 	public List<NewsItemInfo> getCurrentNews() {
-		return newsService.getNewsItems(enrollment);
+		return newsService.getCurrentNewsItems(enrollment,null);
 	}
 	
 	/**

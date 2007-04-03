@@ -69,6 +69,7 @@ public class EnrollmentNewsEditPage extends AbstractEnrollmentPage {
 	public String save() throws DocumentApplicationException, IOException {
 		logger.debug("saving news");
 		
+		newsItem.setCategory(NewsCategory.ENROLLMENT);
 		newsItem.setExpireDate(null);
 		newsItem.setPublisherIdentifier(enrollment.getId());
 		newsItem.setAuthor(getAuthorName());
