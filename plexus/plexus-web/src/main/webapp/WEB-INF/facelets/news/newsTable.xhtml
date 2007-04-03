@@ -29,15 +29,15 @@
    		</c:if>
 		<c:if test="#{!empty value}">
 			<o:block label="${headline}" styleClass="news_box">
-				<h:form id="newsTables">
+				<h:form id="news_tables">
 		   			<h:dataTable id="news" value="${value}" var="item" binding="#{news_controller.newsTable}" styleClass="news">
 	    				<h:column>
-	    					<h:outputText value="#{item.publisherName} - " styleClass="newsPublisher"/>
-	    					<h:outputText value="#{item.publishDate}" styleClass="newsDate">
+	    					<h:outputText value="#{item.publisherName} - " styleClass="news_publisher"/>
+	    					<h:outputText value="#{item.publishDate}" styleClass="news_date">
 	    						<oc:convertTimestamp timeZone="#{visit.timeZone}" type="${displayDateTime}" dateStyle="${dateStyle}" timeStyle="${timeStyle}"/>
 	    					</h:outputText>
 	    					<br/>
-		    				<h:outputText value="#{item.title}" styleClass="newsTitle"/>
+		    				<h:outputText value="#{item.title}" styleClass="news_title"/>
 	    					<br/>
 	    					<o:link value="/views/public/news/newsDetail.faces">
 	    						<f:param value="#{item.id}" name="news"/>
