@@ -189,10 +189,6 @@
 		</property>
 	</bean>
 	
-	<bean id="aclCache" class="org.acegisecurity.acl.basic.cache.EhCacheBasedAclEntryCache">
-		<property name="cache"><bean name="userCacheBackend"/></property>
-	</bean>
-
 	<bean id="basicAclProvider" class="org.acegisecurity.acl.basic.BasicAclProvider">
 		<property name="basicAclDao">
 			<ref local="basicAclDao"/>
@@ -202,7 +198,7 @@
 				org.openuss.security.acegi.acl.EntityObjectIdentity
 			</value>
 		</property>
-		<property name="basicAclEntryCache"><ref local="aclCache"/></property>
+		<property name="basicAclEntryCache"><bean name="ehCacheBasedAclEntryCache"/></property>
 	</bean>
 	
 	
