@@ -24,22 +24,22 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	
 	public boolean topicWatchState;
 	
+	public boolean topicReadOnly;
+	
 	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		if (!isPostBack()) {
-			if ( topic != null && topic.getId() != null) {
-				topic = discussionService.getTopic(topic);
-				setSessionBean(Constants.DISCUSSION_TOPIC, topic);
-				discussionService.addHit(topic);
-			}
-			if (topic == null || topic.getId() == null) {
-				addError(i18n("braincontest_message_contest_not_found"));
-				redirect(Constants.DISCUSSION_MAIN);
-			}
-		} 
+		if ( topic != null && topic.getId() != null) {
+			topic = discussionService.getTopic(topic);
+			setSessionBean(Constants.DISCUSSION_TOPIC, topic);
+			discussionService.addHit(topic);
+		}
+		if (topic == null || topic.getId() == null) {
+			redirect(Constants.DISCUSSION_MAIN);
+		}
 		topicWatchState = discussionService.watchesTopic(topic);
+		topicReadOnly = topic.isReadOnly();
 	}	
 	
 	
@@ -58,6 +58,10 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	}
 	
 	public String addPost(){
+		if (topic.isReadOnly()||getForum().isReadOnly()){
+			addMessage(i18n("discussion_readonly"));
+			return Constants.FAILURE;			
+		}
 		TopicInfo topic = discussionService.getTopic(this.topic);
 		setSessionBean(Constants.DISCUSSION_TOPIC, topic);
 		PostInfo post = new PostInfo();
@@ -67,6 +71,10 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	}
 	
 	public String removePost(){
+		if (topic.isReadOnly()||getForum().isReadOnly()){
+			addMessage(i18n("discussion_readonly"));
+			return Constants.FAILURE;			
+		}		
 		PostInfo pi = this.data.getRowData();
 		if (this.length==1){
 			discussionService.deleteTopic(topic);
@@ -79,6 +87,10 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	}
 	
 	public String editPost(){
+		if (topic.isReadOnly()||getForum().isReadOnly()){
+			addMessage(i18n("discussion_readonly"));
+			return Constants.FAILURE;			
+		}		
 		PostInfo pi = this.data.getRowData();
 		pi = discussionService.getPost(pi);
 		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, pi);
@@ -86,6 +98,10 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	}
 	
 	public String quote(){
+		if (topic.isReadOnly()||getForum().isReadOnly()){
+			addMessage(i18n("discussion_readonly"));
+			return Constants.FAILURE;			
+		}
 		TopicInfo topic = discussionService.getTopic(this.topic);
 		setSessionBean(Constants.DISCUSSION_TOPIC, topic);
 		PostInfo quoteFrom = this.data.getRowData();
@@ -105,6 +121,11 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		} else if(!discussionService.watchesTopic(topic)){
 			discussionService.addTopicWatch(topic);
 		} 
+		return Constants.SUCCESS;
+	}
+	
+	public String changeReadOnly(){
+		discussionService.changeEditState(topic);
 		return Constants.SUCCESS;
 	}
 	
@@ -131,6 +152,14 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 
 	public void setTopicWatchState(boolean topicWatchState) {
 		this.topicWatchState = topicWatchState;
+	}
+
+	public boolean isTopicReadOnly() {
+		return topicReadOnly;
+	}
+
+	public void setTopicReadOnly(boolean topicReadOnly) {
+		this.topicReadOnly = topicReadOnly;
 	}
 	
 }

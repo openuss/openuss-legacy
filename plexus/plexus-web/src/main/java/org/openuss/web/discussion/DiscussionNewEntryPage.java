@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.documents.FileInfo;
@@ -30,6 +31,14 @@ public class DiscussionNewEntryPage extends AbstractDiscussionPage{
 	
 	private UIData attachmentList;
 
+	@Prerender
+	public void prerender() throws Exception {	
+		super.prerender();
+		if (getForum().isReadOnly()||topic.isReadOnly()){
+			addMessage(i18n("discussion_readonly"));
+			redirect(Constants.DISCUSSION_MAIN);			
+		}		
+	}
 	
 	public String send(){
 		logger.debug("new document saved");
