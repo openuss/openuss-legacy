@@ -21,11 +21,14 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	
 	public boolean forumWatchState;
 	
+	public boolean forumReadOnly;
+	
 	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
 		forumWatchState = discussionService.watchesForum(getForum());
+		forumReadOnly = getForum().isReadOnly();
 	}	
 	
 	private class DiscussionDataProvider extends AbstractPagedTable<TopicInfo> {
@@ -43,6 +46,10 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	}
 	
 	public String newTopic(){
+		if (getForum().isReadOnly()){
+			addMessage(i18n("discussion_readonly"));
+			return Constants.FAILURE;			
+		}
 		TopicInfo ti = new TopicInfo();
 		setSessionBean(Constants.DISCUSSION_TOPIC, ti);
 		PostInfo pi = new PostInfo();
@@ -51,6 +58,10 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	}
 
 	public String removeTopic(){
+		if (getForum().isReadOnly()){
+			addMessage(i18n("discussion_readonly"));
+			return Constants.FAILURE;			
+		}		
 		TopicInfo t = this.data.getRowData();
 		discussionService.deleteTopic(t);
 		addMessage(i18n("discussion_topic_deleted", t.getTitle()));
@@ -64,6 +75,11 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 		} else if(!discussionService.watchesForum(forum)){
 			discussionService.addForumWatch(forum);
 		} 
+		return Constants.SUCCESS;
+	}
+	
+	public String changeReadOnly(){
+		discussionService.changeEditState(getForum());
 		return Constants.SUCCESS;
 	}
 	
@@ -82,6 +98,14 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 
 	public void setForumWatchState(boolean forumWatchState) {
 		this.forumWatchState = forumWatchState;
+	}
+
+	public boolean isForumReadOnly() {
+		return forumReadOnly;
+	}
+
+	public void setForumReadOnly(boolean forumReadOnly) {
+		this.forumReadOnly = forumReadOnly;
 	}
 	
 }
