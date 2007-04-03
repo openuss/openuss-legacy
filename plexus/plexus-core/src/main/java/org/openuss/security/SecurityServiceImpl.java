@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -127,35 +129,55 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 
 	@Override
 	protected void handleAddAuthorityToGroup(Authority authority, Group group) throws Exception {
-		if (authority == null) {
-			throw new IllegalArgumentException("Authority must not be null!");
-		}
-		if (authority.getId() == null) {
-			throw new IllegalArgumentException("Authority must be persistent with a valid id!");
-		}
-		if (authority.equals(group)) {
-			throw new SecurityServiceException("Authority cannot be a member of itselfs.");
-		}
+		Validate.notNull(authority, "Authority must not be null");
+		Validate.notNull(authority.getId(), " Authority must provide a valid id.");
+		Validate.notNull(group, "Group must not be null");
+		Validate.isTrue(!authority.equals(group),"Authority cannot become a member of itself");
 		
-		// refresh group object
-		final GroupDao groupDao = getGroupDao();
-		group = groupDao.load(group.getId());
-		
-		if (group == null) {
-			throw new SecurityServiceException("Group cannot be found!");
-		}
+		group = forceGroupLoad(group);
+		authority = forceAuthorityLoad(authority);
 
-		// check inheritance constraints
+		checkInheritanceConstraints(authority, group);
+		
+		authority.addGroup(group);
+		group.addMember(authority);
+		getGroupDao().update(group);
+
+		updateSecurityContext(authority);
+		
+		removeAuthorityFromUserCache(authority);
+	}
+
+	private void updateSecurityContext(Authority authority) {
+		if (authority instanceof UserImpl) {
+			logger.debug("refresing current user security context.");
+			final UsernamePasswordAuthenticationToken authentication;
+			authentication = new UsernamePasswordAuthenticationToken((UserImpl) authority, "[Protected]", ((UserImpl) authority).getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+		}
+	}
+
+	private Authority forceAuthorityLoad(Authority authority) {
+		authority = getAuthorityDao().load(authority.getId());
+		if (authority == null) {
+			throw new SecurityServiceException("Authority not found");
+		}
+		return authority;
+	}
+
+	private Group forceGroupLoad(Group group) {
+		group = getGroupDao().load(group.getId());
+		if (group == null) {
+			throw new SecurityServiceException("Group not found!");
+		}
+		return group;
+	}
+
+	private void checkInheritanceConstraints(Authority authority, Group group) {
 		List grantedGroups = group.getGrantedGroups();
 		if (grantedGroups.contains(authority) ) {
 			throw new SecurityServiceException("Circular dependencies between authorities is not supported");
 		}
-		
-		authority.addGroup(group);
-		group.addMember(authority);
-		groupDao.update(group);
-		
-		removeAuthorityFromUserCache(authority);
 	}
 
 	private void removeAuthorityFromUserCache(Authority authority) {
@@ -167,28 +189,18 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 
 	@Override
 	protected void handleRemoveAuthorityFromGroup(Authority authority, Group group) throws Exception {
-		if (authority == null) {
-			throw new IllegalArgumentException("Authority must not be null!");
-		}
-		if (group == null) {
-			throw new IllegalArgumentException("Group must not be null");
-		}
-		if (authority.getId() == null) {
-			throw new IllegalArgumentException("Authority must be persistent with a valid id!");
-		}
+		Validate.notNull(authority, "Authority must not be null.");
+		Validate.notNull(authority.getId(),"Authority mut provide a valid id.");
+		Validate.notNull(group, "Group must not be null.");
 		
-		// refresh group 
-		final GroupDao groupDao = getGroupDao();
-		group = groupDao.load(group.getId());
-		
-		if (group == null) {
-			throw new IllegalStateException("Group does not exist!");  
-		}
+		group = forceGroupLoad(group);
+		authority = forceAuthorityLoad(authority);
 		
 		authority.removeGroup(group);
 		group.removeMember(authority);
+		getGroupDao().update(group);
 		
-		groupDao.update(group);
+		updateSecurityContext(authority);
 		
 		removeAuthorityFromUserCache(authority);
 	}
@@ -275,9 +287,6 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		// define ObjectIdentity entity
 		ObjectIdentity objectIdentity = ObjectIdentity.Factory.newInstance();
 		objectIdentity.setId(entityOI.getIdentifier());
-		// These fields are not needed in openuss
-		//		objectIdentity.setObjectIdentityClass(entityOI.getClassname());
-		//		objectIdentity.setAclClass(entityOI.getClass().getName());
 		objectIdentity.setParent(parentObjectIdentity);
 
 		getObjectIdentityDao().create(objectIdentity);
@@ -289,6 +298,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	protected void handleRemoveObjectIdentity(Object object) throws Exception {
 		ObjectIdentity oi = getObjectIdentity(object);
 		getObjectIdentityDao().remove(oi);
+		removeAclsFromCache(object);
 	}
 
 
@@ -306,7 +316,13 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 			getPermissionDao().update(permission);
 		}
 		
+		removeAclsFromCache(object);
 		removeAuthorityFromUserCache(authority);
+	}
+
+	private void removeAclsFromCache(Object object) throws IllegalAccessException, InvocationTargetException {
+		logger.debug("removing acls from cache for "+object);
+		getAclCache().removeEntriesFromCache(new EntityObjectIdentity(object));
 	}
 
 	@Override

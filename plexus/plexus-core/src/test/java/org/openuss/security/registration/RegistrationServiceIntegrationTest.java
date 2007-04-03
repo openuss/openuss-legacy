@@ -147,6 +147,7 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 			"classpath*:applicationContext-beans.xml",
 			"classpath*:applicationContext-service.xml",
 			"classpath*:applicationContext-entities.xml",
+			"classpath*:applicationContext-cache.xml",
 			"classpath*:applicationContext-tests.xml",
 			"classpath*:beanRefFactory",
 			"classpath*:testSecurity.xml",

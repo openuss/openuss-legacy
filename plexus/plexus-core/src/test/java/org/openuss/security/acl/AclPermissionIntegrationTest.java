@@ -209,6 +209,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 			"classpath*:applicationContext.xml", 
 			"classpath*:applicationContext-localDataSource.xml",
 			"classpath*:applicationContext-beans.xml", 
+			"classpath*:applicationContext-cache.xml",			
 			"classpath*:beanRefFactory", 
 			"classpath*:testSecurity.xml",
 			"classpath*:testDataSource.xml" };
