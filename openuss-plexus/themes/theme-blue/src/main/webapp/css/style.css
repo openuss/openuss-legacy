@@ -1377,13 +1377,20 @@ td.col_max_left label input{
 	display: inline;
 }
 
-.newsPublisher {
+.news_publisher {
 	font-weight: bold;
 }
 
-.newsDate {
+.news_date {
 	color: #000;
 	font-weight: bold;
+}
+
+.news_title {
+	color: #333;
+	font-weight: bold;	
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 /* Default attributes of table container for entire calendar */
