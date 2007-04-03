@@ -89,6 +89,7 @@ public class LectureServiceTest extends AbstractTransactionalDataSourceSpringCon
 			"classpath*:applicationContext-beans.xml",
 			"classpath*:applicationContext-entities.xml",
 			"classpath*:applicationContext-tests.xml",
+			"classpath*:applicationContext-cache.xml",
 			"classpath*:testSecurity.xml",
 			"classpath*:testDataSource.xml", 
 			"classpath*:mocks.xml" };
