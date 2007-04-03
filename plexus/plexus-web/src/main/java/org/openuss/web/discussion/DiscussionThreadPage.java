@@ -1,5 +1,6 @@
 package org.openuss.web.discussion; 
 
+import java.sql.Clob;
 import java.util.List;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -53,6 +54,7 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		TopicInfo topic = discussionService.getTopic(this.topic);
 		setSessionBean(Constants.DISCUSSION_TOPIC, topic);
 		PostInfo post = new PostInfo();
+		post.setTitle("Re: "+this.topic.getTitle());
 		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, post);
 		return Constants.DISCUSSION_NEW;
 	}
@@ -69,6 +71,20 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		PostInfo pi = this.data.getRowData();
 		pi = discussionService.getPost(pi);
 		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, pi);
+		return Constants.DISCUSSION_NEW;
+	}
+	
+	public String quote(){
+		TopicInfo topic = discussionService.getTopic(this.topic);
+		setSessionBean(Constants.DISCUSSION_TOPIC, topic);
+		PostInfo quoteFrom = this.data.getRowData();
+		PostInfo post = new PostInfo();
+		String text = "<div style=\"border: 1px solid rgb(204, 204, 204); margin: 15px 20px; padding: 4px; background-color: rgb(238, 238, 238);\"><strong>" 
+		+ quoteFrom.getSubmitter()+" - " + quoteFrom.getCreated()+ ":</strong> <br/>"+
+		quoteFrom.getText()+"</div><br/><br/>";
+		post.setText(text);
+		post.setTitle("Re: "+quoteFrom.getTitle());
+		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, post);
 		return Constants.DISCUSSION_NEW;
 	}
 	
