@@ -37,6 +37,7 @@ public class NewsDetailsPage extends BasePage {
 		} 
 		if (newsItem == null || newsItem.getId() == null){
 			addError(i18n("news_message_newsitem_not_found"));
+			redirect(Constants.HOME);
 		}
 	}
 
