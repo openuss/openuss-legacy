@@ -6,13 +6,11 @@
 package org.openuss.discussion;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.acegisecurity.context.SecurityContextHolder;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.documents.FileInfo;
@@ -30,164 +28,131 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	 * @see org.openuss.discussion.DiscussionService#createTopic(org.openuss.discussion.PostInfo,
 	 *      java.lang.Long)
 	 */
-	protected void handleCreateTopic(PostInfo post, ForumInfo forum) throws Exception {
+	protected void handleCreateTopic(PostInfo postInfo, ForumInfo forumInfo) throws Exception {
+		Validate.notNull(postInfo, "postInfo must not be null");
+		Validate.notNull(forumInfo, "forumInfo must not be null");
+
 		// create topic
-		TopicInfo ti = extractTopicInfo(post, forum);
-		Topic topic = getTopicDao().topicInfoToEntity(ti);
+		Topic topic = Topic.Factory.newInstance();
+		topic.setReadOnly(false);
 
-		User submitter = getSecurityService().getUserByName(post.getSubmitter());
-		topic.setSubmitter(submitter);
-		topic.setForum(getForumDao().load(forum.getId()));
+		topic.setSubmitter(getSecurityService().getUserByName(postInfo.getSubmitter()));
+		Forum forum = getForumDao().load(forumInfo.getId());
+		// TODO define a add topic method in forum 
+		forum.getTopics().add(topic);
+		topic.setForum(forum);
+
 		getTopicDao().create(topic);
-		ti = getTopicDao().toTopicInfo(topic);
-
-		// add to forum
-		Forum f = getForumDao().load(forum.getId());
-		Set<Topic> topics = f.getTopics();
-		topics.add(getTopicDao().topicInfoToEntity(ti));
-		f.setTopics(topics);
-		getForumDao().update(f);
-
+		getForumDao().update(forum);
+		
 		// add object identity to security
 		getSecurityService().createObjectIdentity(topic, topic.getForum().getDomainIdentifier());
-		// add first post
-		handleAddPost(post, ti);
-		topic = getTopicDao().load(ti.getId());
-		Post p = topic.getLast();
-		topic.setFirst(p);
-		getPostDao().update(p);
-		getTopicDao().update(topic);
-	}
+		
+ 		TopicInfo topicInfo = getTopicDao().toTopicInfo(topic);
 
-	private TopicInfo extractTopicInfo(PostInfo post, ForumInfo forum) {
-		TopicInfo ti = new TopicInfo();
-		ti.setCreated(post.getCreated());
-		ti.setForumId(getForum(forum.getDomainIdentifier()).getId());
-		ti.setHits(0);
-		ti.setLastPost(post.getLastModification());
-		ti.setReadOnly(false);
-		ti.setSubmitter(post.getSubmitter());
-		ti.setTitle(post.getTitle());
-		return ti;
+ 		// add first post
+		handleAddPost(postInfo, topicInfo);
+		topic = getTopicDao().load(topicInfo.getId());
+		
+		getPostDao().toPostInfo(topic.getFirst(), postInfo);
 	}
 
 	/**
 	 * @see org.openuss.discussion.DiscussionService#deleteTopic(org.openuss.discussion.TopicInfo)
 	 */
 	@SuppressWarnings("unchecked")
-	protected void handleDeleteTopic(org.openuss.discussion.TopicInfo topic) throws java.lang.Exception {
-		Topic t = getTopicDao().topicInfoToEntity(topic);
-		// remove all discussion watches to topic
-		List<DiscussionWatch> topicWatches = getDiscussionWatchDao().findByTopic(t);
-		getDiscussionWatchDao().remove(topicWatches);
+	protected void handleDeleteTopic(TopicInfo topicInfo) throws Exception {
+		Validate.notNull(topicInfo, "topicInfo must not be null.");
+		Topic topic = getTopicDao().topicInfoToEntity(topicInfo);
+		removeTopic(topic);
+	}
 
-		for (Post post : t.getPosts()) {
+	private void removeTopic(Topic topic) {
+		removeAllDiscussionWatchesOfTopic(topic);
+		for (Post post : topic.getPosts()) {
 			getTrackingService().remove(post);
-			FolderInfo folder = getDocumentService().getFolder(post);
-			getDocumentService().removeFolderEntry(folder.getId());
+			getDocumentService().remove(post);
 		}
 
-		getTopicDao().update(t);
+		getTopicDao().update(topic);
 		// remove viewstates to topic
-		getTrackingService().remove(t);
+		getTrackingService().remove(topic);
 		// remove topic itself
-		getTopicDao().remove(t);
+		getTopicDao().remove(topic);
 		// remove object identity from security context
 		getSecurityService().removeObjectIdentity(topic);
+	}
 
+	private void removeAllDiscussionWatchesOfTopic(Topic topic) {
+		List<DiscussionWatch> topicWatches = getDiscussionWatchDao().findByTopic(topic);
+		getDiscussionWatchDao().remove(topicWatches);
 	}
 
 	/**
 	 * @see org.openuss.discussion.DiscussionService#addPost(org.openuss.discussion.PostInfo,
 	 *      org.openuss.discussion.TopicInfo)
 	 */
-	protected void handleAddPost(PostInfo post, TopicInfo topic) throws Exception {
-		Topic t = getTopicDao().topicInfoToEntity(topic);
-		Post newPost = getPostDao().postInfoToEntity(post);
-		newPost.setTopic(t);
-		newPost.setSubmitter(getSecurityService().getUserByName(post.getSubmitter()));
-		getPostDao().create(newPost);
+	protected void handleAddPost(PostInfo postInfo, TopicInfo topicInfo) throws Exception {
+		Validate.notNull(postInfo, "PostInfo must not be null.");
+		Validate.notNull(topicInfo, "TopicInfo must not be null.");
+		
+		Topic topic = getTopicDao().topicInfoToEntity(topicInfo);
+		Post post = getPostDao().postInfoToEntity(postInfo);
+		
+		post.setSubmitter(getSecurityService().getUserByName(postInfo.getSubmitter()));
 
-		// TODO topic should have a method for add posts
-		List<Post> posts = t.getPosts();
-		posts.add(newPost);
-		t.setPosts(posts);
-		t.setLast(newPost);
-		getTopicDao().update(t);
-		// TODO formula?
-		post.setId(newPost.getId());
-		// set object identity and attachments
-		getSecurityService().createObjectIdentity(newPost, t);
-		if (post.getAttachments() != null && !post.getAttachments().isEmpty()) {
-			logger.debug("found " + post.getAttachments().size() + " attachments.");
-			FolderInfo folder = getDocumentService().getFolder(post);
+		addPostToTopicAndPersist(topic, post);
+		
+		getDocumentService().diffSave(post, postInfo.getAttachments());
+		
+		getPostDao().toPostInfo(post, postInfo);
+	}
 
-			for (FileInfo attachment : post.getAttachments()) {
-				getDocumentService().createFileEntry(attachment, folder);
-			}
-		}
-		getPostDao().toPostInfo(newPost);
+	private void addPostToTopicAndPersist(Topic topic, Post post) {
+		topic.addPost(post);
+		getPostDao().create(post);
+		getTopicDao().update(topic);
+
+		getSecurityService().createObjectIdentity(post, topic);
 	}
 
 	/**
 	 * @see org.openuss.discussion.DiscussionService#deletePost(org.openuss.discussion.PostInfo)
 	 */
-	protected void handleDeletePost(PostInfo post) throws Exception {
-		Validate.notNull(post, "post must not be null");
-		Post p = getPostDao().postInfoToEntity(post);
-		Topic t = p.getTopic();
-		List<Post> posts = t.getPosts();
-		// if first and only -> delete thread
-		if (t.getAnswerCount() == 0) {
-			handleDeleteTopic(getTopicDao().toTopicInfo(t));
-			return;
+	protected void handleDeletePost(PostInfo postInfo) throws Exception {
+		Validate.notNull(postInfo, "post must not be null");
+		Post post = getPostDao().postInfoToEntity(postInfo);
+		Topic topic = post.getTopic();
+		if (topic != null) {
+			topic.removePost(post);
+			if (topic.getPosts().isEmpty()) {
+				removeTopic(topic);
+			} else {
+				getDocumentService().remove(post);
+				getSecurityService().removeObjectIdentity(post);
+				
+				getTopicDao().update(topic);
+				getPostDao().remove(post);
+			}
 		}
-		// if first post -> repair first
-		else if (t.getFirst().getId() == p.getId()) {
-			Post newFirst = posts.get(1);
-			t.setFirst(newFirst);
-		}
-		// if last post -> delete post, repair last
-		else if (p.getTopic().getLast().getId() == p.getId()) {
-			Post newLast = posts.get(posts.size() - 2);
-			t.setLast(newLast);
-		}
-		// post between first and last -> just delete post
-		posts.remove(p);
-		t.setPosts(posts);
-		getTopicDao().update(t);
-		getPostDao().remove(p);
-		getSecurityService().removeObjectIdentity(p);
+
 	}
 
 	/**
 	 * @see org.openuss.discussion.DiscussionService#updatePost(org.openuss.discussion.PostInfo)
 	 */
 	@SuppressWarnings("unchecked")
-	protected void handleUpdatePost(PostInfo post) throws Exception {
-		Post newPost = getPostDao().load(post.getId());
-		newPost.setText(post.getText());
-		newPost.setTitle(post.getTitle());
-		newPost.setEditor(getSecurityService().getUserByName(post.getEditor()));
-		newPost.setLastModification(post.getLastModification());
-		getPostDao().update(newPost);
-		// handle changes in attachments
-		if (post.getAttachments() == null) {
-			post.setAttachments(new ArrayList<FileInfo>());
-		}
-		List<FileInfo> savedAttachments = getDocumentService().getFileEntries(post);
-		Collection<FileInfo> removedAttachments = CollectionUtils.subtract(savedAttachments, post.getAttachments());
-		getDocumentService().removeFileEntries(removedAttachments);
-		FolderInfo folder = getDocumentService().getFolder(post);
+	protected void handleUpdatePost(PostInfo postInfo) throws Exception {
+		Post post = getPostDao().load(postInfo.getId());
+		post.setText(postInfo.getText());
+		post.setTitle(postInfo.getTitle());
+		post.setEditor(getSecurityService().getUserByName(postInfo.getEditor()));
+		post.setLastModification(postInfo.getLastModification());
+		getPostDao().update(post);
 		
-		// FIXME need to delete old attachments 
-		for (FileInfo attachment : post.getAttachments()) {
-			if (attachment.getId() == null) {
-				getDocumentService().createFileEntry(attachment, folder);
-			}
-		}
-		post = getPostDao().toPostInfo(newPost);
-		// TODO formula
+		getDocumentService().diffSave(post, postInfo.getAttachments());
+
+		getPostDao().toPostInfo(post,postInfo);
 	}
 
 	/**
@@ -239,17 +204,18 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	 * @see org.openuss.discussion.DiscussionService#getTopics(java.lang.Long)
 	 */
 	protected List handleGetTopics(ForumInfo forum) throws Exception {
+		Validate.notNull(forum);
+		Validate.notNull(forum.getId());
+		// FIXME with viewstate
+		
 		// String currentUser =
 		// SecurityContextHolder.getContext().getAuthentication().getName();
 		// List<Object[]> viewStates =
 		// getTrackingService().getTopicViewStates(forum.getId(),
 		// getSecurityService().getUserByName(currentUser).getId());
-		Validate.notNull(forum);
-		Validate.notNull(forum.getId());
 		Forum f = getForumDao().load(forum.getId());
 		Set<Topic> tList = f.getTopics();
 		List<TopicInfo> topics = new ArrayList<TopicInfo>();
-		// TODO add viewstate to topicInfos
 		Iterator i = tList.iterator();
 		while (i.hasNext()) {
 			topics.add(getTopicDao().toTopicInfo((Topic) i.next()));
@@ -399,6 +365,9 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	}
 
 	private User currentUser() {
+		// FIXME me be optimized by user id 
+		// UserInfo userInfo = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+		// USer user = getSecurityService().getCurrentUser();
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		return getSecurityService().getUserByName(username);
 	}

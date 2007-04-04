@@ -409,4 +409,31 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		}
 	}
 
+	@Override
+	protected void handleDiffSave(Object domainObject, List files) throws Exception {
+		Validate.notNull(domainObject, "Parameter domainObject must not be null");
+		if (files == null) {
+			files = new ArrayList<FileInfo>();
+		}
+		
+		List<FileInfo> savedAttachments = getFileEntries(domainObject);
+		Collection<FileInfo> removedAttachments = CollectionUtils.subtract(savedAttachments, files);
+		removeFileEntries(removedAttachments);
+		
+		FolderInfo folder = getFolder(domainObject);
+		for (FileInfo file: (List<FileInfo>) files) {
+			if (file.getId() == null) {
+				createFileEntry(file, folder);
+			}
+		}
+		
+	}
+
+	@Override
+	protected void handleRemove(Object domainObject) throws Exception {
+		Validate.notNull(domainObject, "Parameter domainObject must not be null.");
+		Folder root = getRootFolderForDomainObject(domainObject);
+		removeFolderEntry(root.getId());
+	}
+
 }

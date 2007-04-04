@@ -6,16 +6,13 @@
 package org.openuss.news;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
-import org.openuss.documents.FolderInfo;
 import org.openuss.framework.utilities.DomainObjectUtility;
 import org.openuss.security.Roles;
 import org.openuss.security.acl.LectureAclEntry;
@@ -59,11 +56,7 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 		
 		if (item.getAttachments() != null && !item.getAttachments().isEmpty()) {
 			logger.debug("found "+item.getAttachments().size()+" attachments");
-			FolderInfo folder = getDocumentService().getFolder(entity);
-			
-			for (FileInfo attachment : item.getAttachments()) {
-				getDocumentService().createFileEntry(attachment, folder);
-			}
+			getDocumentService().diffSave(entity, item.getAttachments());
 		}
 	}
 
@@ -72,29 +65,9 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 		if (item.getAttachments() == null) {
 			item.setAttachments(new ArrayList<FileInfo>());
 		}
-		List<FileInfo> attachments = item.getAttachments();
-		importFileEntries(entity, attachments);
+		getDocumentService().diffSave(entity, item.getAttachments());
 	}
 
-	/**
-	 * This method delete all existing file entries within the root folder of the domain object, that are not
-	 * listed in the attachment list. Also it will persist all new files into the folder  
-	 * @param domain
-	 * @param attachments
-	 * @throws DocumentApplicationException
-	 */
-	private void importFileEntries(Object domain, List<FileInfo> attachments) throws DocumentApplicationException {
-		List<FileInfo> savedAttachments = getDocumentService().getFileEntries(domain);
-		Collection<FileInfo> removedAttachments = CollectionUtils.subtract(savedAttachments, attachments);
-		getDocumentService().removeFileEntries(removedAttachments);
-		
-		FolderInfo folder = getDocumentService().getFolder(domain);
-		for (FileInfo attachment: attachments) {
-			if (attachment.getId() == null) {
-				getDocumentService().createFileEntry(attachment, folder);
-			}
-		}
-	}
 
 	/**
 	 * @see org.openuss.news.NewsService#getNewsItem(org.openuss.news.NewsItemInfo)
