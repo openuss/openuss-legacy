@@ -8,13 +8,10 @@ package org.openuss.discussion;
 /**
  * @see org.openuss.discussion.Forum
  */
-public class ForumImpl
-    extends org.openuss.discussion.ForumBase
-	implements org.openuss.discussion.Forum
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = -2096584781367256187L;
+public class ForumImpl extends ForumBase implements Forum {
+	/**
+	 * The serial version UID of this class. Needed for serialization.
+	 */
+	private static final long serialVersionUID = -2096584781367256187L;
 
 }

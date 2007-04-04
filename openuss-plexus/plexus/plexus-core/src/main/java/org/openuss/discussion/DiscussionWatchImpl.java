@@ -8,13 +8,10 @@ package org.openuss.discussion;
 /**
  * @see org.openuss.discussion.DiscussionWatch
  */
-public class DiscussionWatchImpl
-    extends org.openuss.discussion.DiscussionWatchBase
-	implements org.openuss.discussion.DiscussionWatch
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = 4904346669649837008L;
+public class DiscussionWatchImpl extends DiscussionWatchBase implements DiscussionWatch {
+	/**
+	 * The serial version UID of this class. Needed for serialization.
+	 */
+	private static final long serialVersionUID = 4904346669649837008L;
 
 }
