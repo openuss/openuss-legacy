@@ -5,7 +5,15 @@
  */
 package org.openuss.discussion;
 
+import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.openuss.security.User;
+import org.openuss.viewtracking.ViewState;
 
 /**
  * @see org.openuss.discussion.Topic
@@ -74,9 +82,43 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 	}
 
 	@Override
-	protected List handleLoadTopicsWithViewState(Forum forum) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	protected List handleLoadTopicsWithViewState(final Forum forum, final User user) throws Exception {
+		// FIXME - Need to extend andromda generator to support association classes
+		// Hibernate doesn't support left outer join on object that doesn't have a association.
+		// Therefore ViewState should be an associaction class between topic and user, but
+		// this isn't support by andromda 3.2 yet.
+		
+		// So the workaround are these two queries and the memory join.
+		
+		final String queryString = 
+			" SELECT topic.ID,  v.VIEW_STATE " +
+			" FROM DISCUSSION_TOPIC as topic LEFT OUTER JOIN TRACKING_VIEWSTATE as v " +
+			" ON topic.id = v.DOMAIN_IDENTIFIER and v.USER_IDENTIFIER = :userId " +
+			" WHERE topic.FORUM_FK = :forumId ";
+		return (List) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
+			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
+				Query queryObject = session.createSQLQuery(queryString);
+				queryObject.setParameter("forumId", forum.getId());
+				queryObject.setParameter("userId", user.getId());
+				List<Object[]> results = queryObject.list();
+				
+				Map<Long, ViewState> viewstates = new HashMap<Long, ViewState>();
+				for(Object[] obj : results) {
+					Long topicId = ((BigInteger) obj[0]).longValue();
+					ViewState state = ViewState.NEW;
+					if (obj[1] != null) {
+						state = ViewState.fromInteger((Integer)obj[1]);
+					} 
+					viewstates.put(topicId, state);
+				}
+				
+				List<TopicInfo> topics = findByForum(TRANSFORM_TOPICINFO, forum);
+				// inject view state
+				for(TopicInfo info: topics) {
+					info.setViewState(viewstates.get(info.getId()));
+				}
+				return topics;
+			}
+		}, true);
 	}
-
 }
