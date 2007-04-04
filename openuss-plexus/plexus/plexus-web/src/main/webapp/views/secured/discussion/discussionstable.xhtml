@@ -11,8 +11,11 @@
       
     <plexus:dataTable id="discussionstable" label="#{msg.discussion_main_header}" 
     	value="views$secured$discussion$discussions.data" var="topic" rows="10"
-    	columnClasses="col_max_left, col_min_center, col_center, col_min_center, col_date">  
+    	columnClasses="col_min_center, col_max_left, col_min_center, col_min_center, col_min_center, col_date">  
       
+		<t:column>
+			<img src="#{theme.imagesPath}/icons/viewstate#{topic.viewState}.gif"/>
+		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="title"> #{msg['discussion_main_column_name']} </plexus:commandSortHeader>
 			<o:link value="/views/secured/discussion/discussionthread.faces" title="#{topic.title}" >
