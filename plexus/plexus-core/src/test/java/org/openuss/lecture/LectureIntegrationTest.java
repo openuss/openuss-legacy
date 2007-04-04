@@ -2,6 +2,7 @@ package org.openuss.lecture;
 
 import org.apache.commons.lang.StringUtils;
 import org.openuss.TestUtility;
+import org.openuss.security.Group;
 import org.openuss.security.User;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
@@ -40,7 +41,7 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 
 	@Override
 	protected void onTearDownInTransaction() throws Exception {
-		testUtility.removeUser();
+		testUtility.removeUser(user);
 	}
 
 	/**
