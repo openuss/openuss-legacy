@@ -27,6 +27,7 @@ public class MigrationServiceIntegrationTest extends MigrationServiceIntegration
 			"classpath*:applicationContext-beans.xml", 
 			"classpath*:applicationContext-tests.xml", 
 			"classpath*:applicationContext-legacy.xml",
+			"classpath*:applicationContext-cache.xml",
 			"classpath*:testSecurity.xml",
 			"classpath*:testDisableSecurity.xml",
 			"classpath*:beanRefFactory",
