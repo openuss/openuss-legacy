@@ -4,10 +4,9 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.discussion;
+
 /**
  * @see org.openuss.discussion.DiscussionWatch
  */
-public class DiscussionWatchDaoImpl
-    extends org.openuss.discussion.DiscussionWatchDaoBase
-{
+public class DiscussionWatchDaoImpl extends DiscussionWatchDaoBase {
 }
