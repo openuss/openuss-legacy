@@ -6,9 +6,7 @@
 package org.openuss.discussion;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.lang.Validate;
@@ -97,6 +95,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Validate.notNull(topicInfo, "TopicInfo must not be null.");
 		
 		Topic topic = getTopicDao().topicInfoToEntity(topicInfo);
+		
 		Post post = getPostDao().postInfoToEntity(postInfo);
 		
 		post.setSubmitter(getSecurityService().getUserByName(postInfo.getSubmitter()));
@@ -105,6 +104,8 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		
 		getDocumentService().diffSave(post, postInfo.getAttachments());
 		
+		getTrackingService().setModified(topic);
+		getTrackingService().setRead(topic);
 		getPostDao().toPostInfo(post, postInfo);
 	}
 
@@ -173,21 +174,20 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	 * @see org.openuss.discussion.DiscussionService#getPosts(org.openuss.discussion.TopicInfo)
 	 */
 	@SuppressWarnings("unchecked")
-	protected List handleGetPosts(TopicInfo topic) throws Exception {
-		Validate.notNull(topic);
-		Validate.notNull(topic.getId());
-		Topic t = getTopicDao().load(topic.getId());
-		List<PostInfo> posts = new ArrayList<PostInfo>();
-		if (t == null)
-			return posts;
-		List<Post> pList = t.getPosts();
-		Iterator i = pList.iterator();
-		while (i.hasNext()) {
-			PostInfo newPost = getPostDao().toPostInfo((Post) i.next());
-			List<FileInfo> attachments = getAttachments(newPost);
-			newPost.setAttachments(attachments);
-			posts.add(newPost);
+	protected List handleGetPosts(TopicInfo topicInfo) throws Exception {
+		Validate.notNull(topicInfo);
+		Validate.notNull(topicInfo.getId());
+		
+		getTrackingService().setRead(topicInfo);
+
+		Topic topic = getTopicDao().load(topicInfo.getId());
+		List<PostInfo> posts = getPostDao().findByTopic(PostDao.TRANSFORM_POSTINFO, topic);
+
+		for (PostInfo post : posts) {
+			List<FileInfo> attachments = getDocumentService().getFileEntries(post);
+			post.setAttachments(attachments);
 		}
+		
 		return posts;
 	}
 
@@ -203,24 +203,16 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	/**
 	 * @see org.openuss.discussion.DiscussionService#getTopics(java.lang.Long)
 	 */
-	protected List handleGetTopics(ForumInfo forum) throws Exception {
-		Validate.notNull(forum);
-		Validate.notNull(forum.getId());
-		// FIXME with viewstate
+	protected List handleGetTopics(ForumInfo forumInfo) throws Exception {
+		Validate.notNull(forumInfo, "Parameter forum must not be null");
+		Validate.notNull(forumInfo.getId(), "Parameter form must provide an valid id.");
 		
-		// String currentUser =
-		// SecurityContextHolder.getContext().getAuthentication().getName();
-		// List<Object[]> viewStates =
-		// getTrackingService().getTopicViewStates(forum.getId(),
-		// getSecurityService().getUserByName(currentUser).getId());
-		Forum f = getForumDao().load(forum.getId());
-		Set<Topic> tList = f.getTopics();
-		List<TopicInfo> topics = new ArrayList<TopicInfo>();
-		Iterator i = tList.iterator();
-		while (i.hasNext()) {
-			topics.add(getTopicDao().toTopicInfo((Topic) i.next()));
+		Forum forum = getForumDao().load(forumInfo.getId());
+		if (forum == null) {
+			return new ArrayList<TopicInfo>();
+		} else {
+			return getTopicDao().loadTopicsWithViewState(forum, currentUser());
 		}
-		return topics;
 	}
 
 	/**

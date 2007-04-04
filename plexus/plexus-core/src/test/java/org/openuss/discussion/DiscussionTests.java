@@ -12,6 +12,7 @@ public class DiscussionTests {
 		suite.addTestSuite(DiscussionWatchDaoTest.class);
 		suite.addTestSuite(FormulaDaoTest.class);
 		suite.addTestSuite(ForumWatchDaoTest.class);
+		suite.addTestSuite(TopicDaoTest.class);
 		suite.addTestSuite(PostDaoTest.class);
 		suite.addTestSuite(TopicTest.class);
 		//$JUnit-END$
