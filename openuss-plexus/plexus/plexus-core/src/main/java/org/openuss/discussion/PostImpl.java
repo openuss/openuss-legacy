@@ -5,45 +5,53 @@
  */
 package org.openuss.discussion;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
+ * @author ingo dueppe
+ * @author sebastian roekens
  * @see org.openuss.discussion.Post
  */
 public class PostImpl extends PostBase implements Post {
-	/**
-	 * The serial version UID of this class. Needed for serialization.
-	 */
+
 	private static final long serialVersionUID = 6101341233546650814L;
 
 	/**
 	 * @see org.openuss.discussion.Post#getSubmitterName()
 	 */
 	public String getSubmitterName() {
-		if (this.getSubmitter() != null)
+		if (this.getSubmitter() != null) {
 			return this.getSubmitter().getDisplayName();
-		return null;
+		} else {
+			return null;
+		}
 	}
 
 	/**
 	 * @see org.openuss.discussion.Post#getEditorName()
 	 */
 	public String getEditorName() {
-		if (getEditor() != null)
+		if (getEditor() != null) {
 			return getEditor().getDisplayName();
-		return "";
+		} else {
+			return "";
+		}
 	}
 
 	/**
 	 * @see org.openuss.discussion.Post#isEdited()
 	 */
 	public boolean isEdited() {
-		return (!getEditorName().equals(""));
+		return StringUtils.isNotBlank(getEditorName());
 	}
 
 	@Override
 	public String getFormulaString() {
-		if (getFormula() != null)
+		if (getFormula() != null) {
 			return getFormula().getFormula();
-		return "";
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -59,9 +67,11 @@ public class PostImpl extends PostBase implements Post {
 
 	@Override
 	public Long getSubmitterPicture() {
-		if (getSubmitter().getImageId() != null)
+		if (getSubmitter().getImageId() != null) {
 			return getSubmitter().getImageId();
-		return null;
+		} else {
+			return null;
+		}
 	}
 
 }

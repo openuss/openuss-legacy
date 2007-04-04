@@ -9,6 +9,11 @@ public class DiscussionTests {
 		TestSuite suite = new TestSuite("Test for org.openuss.discussion");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(DiscussionServiceIntegrationTest.class);
+		suite.addTestSuite(DiscussionWatchDaoTest.class);
+		suite.addTestSuite(FormulaDaoTest.class);
+		suite.addTestSuite(ForumWatchDaoTest.class);
+		suite.addTestSuite(PostDaoTest.class);
+		suite.addTestSuite(TopicTest.class);
 		//$JUnit-END$
 		return suite;
 	}

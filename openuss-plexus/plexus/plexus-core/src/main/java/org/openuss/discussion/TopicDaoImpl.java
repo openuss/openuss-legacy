@@ -5,6 +5,8 @@
  */
 package org.openuss.discussion;
 
+import java.util.List;
+
 /**
  * @see org.openuss.discussion.Topic
  */
@@ -69,6 +71,12 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 	 */
 	public void topicInfoToEntity(TopicInfo sourceVO, Topic targetEntity, boolean copyIfNull) {
 		super.topicInfoToEntity(sourceVO, targetEntity, copyIfNull);
+	}
+
+	@Override
+	protected List handleLoadTopicsWithViewState(Forum forum) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

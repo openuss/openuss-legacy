@@ -6,7 +6,6 @@
 package org.openuss.braincontest;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -115,23 +114,8 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 		BrainContest brainContest = getBrainContestDao().brainContestInfoToEntity(contest);
 		getBrainContestDao().update(brainContest);
 		
-		if (contest.getAttachments() == null) {
-			contest.setAttachments(new ArrayList<FileInfo>());
-		}
+		getDocumentService().diffSave(brainContest, contest.getAttachments());
 		
-		
-		List<FileInfo> savedAttachments = getDocumentService().getFileEntries(brainContest);
-		
-		Collection<FileInfo> removedAttachments = CollectionUtils.subtract(savedAttachments, contest.getAttachments());
-		getDocumentService().removeFileEntries(removedAttachments);
-		
-		
-		FolderInfo folder = getDocumentService().getFolder(brainContest);
-		for (FileInfo attachment: contest.getAttachments()) {
-			if (attachment.getId() == null) {
-				getDocumentService().createFileEntry(attachment, folder);
-			}
-		}
 		getBrainContestDao().toBrainContestInfo(brainContest, contest);
 	}
 
