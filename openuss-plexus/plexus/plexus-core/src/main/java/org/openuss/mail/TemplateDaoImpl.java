@@ -4,10 +4,9 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.mail;
+
 /**
  * @see org.openuss.mail.Template
  */
-public class TemplateDaoImpl
-    extends org.openuss.mail.TemplateDaoBase
-{
+public class TemplateDaoImpl extends TemplateDaoBase {
 }

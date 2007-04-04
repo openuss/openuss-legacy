@@ -8,13 +8,10 @@ package org.openuss.mail;
 /**
  * @see org.openuss.mail.Template
  */
-public class TemplateImpl
-    extends org.openuss.mail.TemplateBase
-	implements org.openuss.mail.Template
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = -5573864976072763404L;
+public class TemplateImpl extends TemplateBase implements Template {
+	/**
+	 * The serial version UID of this class. Needed for serialization.
+	 */
+	private static final long serialVersionUID = -5573864976072763404L;
 
 }
