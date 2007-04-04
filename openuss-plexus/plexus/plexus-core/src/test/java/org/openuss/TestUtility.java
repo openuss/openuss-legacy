@@ -50,7 +50,12 @@ public class TestUtility {
 		removeUser(defaultUser);
 	}
 	
+	public void updateUser(User user) {
+		userDao.update(user);
+	}
+	
 	public void removeUser(User user) {
+		user = userDao.load(user.getId());
 		userDao.remove(user);
 	}
 
