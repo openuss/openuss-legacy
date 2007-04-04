@@ -8,13 +8,10 @@ package org.openuss.mail;
 /**
  * @see org.openuss.mail.MailToSend
  */
-public class MailToSendImpl
-    extends org.openuss.mail.MailToSendBase
-	implements org.openuss.mail.MailToSend
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = -2940053795663484199L;
+public class MailToSendImpl extends MailToSendBase implements MailToSend {
+	/**
+	 * The serial version UID of this class. Needed for serialization.
+	 */
+	private static final long serialVersionUID = -2940053795663484199L;
 
 }
