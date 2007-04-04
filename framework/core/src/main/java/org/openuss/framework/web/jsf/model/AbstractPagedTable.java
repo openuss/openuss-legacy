@@ -8,6 +8,7 @@ import javax.faces.component.UIData;
 import javax.faces.event.PhaseId;
 import javax.faces.model.DataModel;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.myfaces.custom.datascroller.HtmlDataScroller;
 import org.openuss.framework.web.jsf.controller.BaseBean;
@@ -199,7 +200,7 @@ public abstract class AbstractPagedTable<T> extends BaseBean {
 	 * @param periods
 	 */
 	protected void sort(List<T> list) {
-		if (getSortColumn() != null) {
+		if (StringUtils.isNotBlank(getSortColumn())) {
 			Collections.sort(list, new PropertyComparator(getSortColumn(), true, isAscending()));
 		}
 	}
