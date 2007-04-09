@@ -86,6 +86,13 @@ FCKConfig.ToolbarSets["Discussion"] = [
 	['Table','Smiley','SpecialChar','UniversalKey']
 ] ;
 
+FCKConfig.ToolbarSets["Chat"] = [
+	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript','-','Smiley'],
+	['Link','Unlink','Anchor'],
+	['TextColor','BGColor'],
+	['SpecialChar','UniversalKey']
+] ;
+
 FCKConfig.ToolbarSets["Portrait"] = [
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['Undo','Redo','-'],
