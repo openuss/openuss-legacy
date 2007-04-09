@@ -54,12 +54,14 @@
 							rendered="#{enrollment.chat}">
 							<h:outputText value="#{msg['enrollment_command_chat']}"/>
 						</t:commandNavigation2>
+<!-- 
 						<t:commandNavigation2 
 							action="enrollment_wiki" 
 							activeOnViewIds="/views/secured/enrollment/wiki.xhtml"
 							rendered="#{enrollment.wiki}">
 							<h:outputText value="#{msg['enrollment_command_wiki']}"/>
 						</t:commandNavigation2>
+ -->						
 					</s:acl>
 
 					<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}">
