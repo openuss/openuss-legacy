@@ -11,6 +11,7 @@ import org.openuss.lecture.LectureTests;
 import org.openuss.mail.MailTests;
 import org.openuss.news.NewsTests;
 import org.openuss.repository.RepositoryTests;
+import org.openuss.search.SearchTests;
 import org.openuss.security.SecurityTests;
 import org.openuss.system.SystemTests;
 import org.openuss.viewtracking.ViewTrackingTests;
@@ -28,6 +29,7 @@ public class AllTests {
 		suite.addTest(LectureTests.suite());
 		suite.addTest(DiscussionTests.suite());
 		suite.addTest(MailTests.suite());
+		suite.addTest(SearchTests.suite());
 		suite.addTest(DocumentTests.suite());
 		suite.addTest(ViewTrackingTests.suite());
 		suite.addTest(BrainContestTests.suite());
