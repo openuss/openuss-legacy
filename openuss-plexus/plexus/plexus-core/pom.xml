@@ -168,6 +168,14 @@
 		<dependency>
 			<groupId>velocity</groupId>
 			<artifactId>velocity</artifactId>
-		</dependency>		
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+		</dependency>	
+		<dependency>
+			<groupId>org.springmodules</groupId>
+			<artifactId>spring-modules-lucene</artifactId>
+		</dependency>	
 	</dependencies>
 </project>
