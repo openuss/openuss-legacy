@@ -10,13 +10,13 @@
 	<ui:include src="/views/commons/faculty/facultyInfo.xhtml" />
 	
 	<ui:include src="/views/commons/navigation/desktop.xhtml" />
+	<s:acl domainObject="#{faculty}" hasPermission="#{ACL.FACULTY_TUTOR}">
 		<h:form id="facultyNavigationForm">
 			<t:panelNavigation2 id="faculty_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
 				<t:commandNavigation2 value="#{msg['faculty_navigation_header']}">
 					<t:commandNavigation2 action="faculty" activeOnViewIds="/views/secured/lecture/faculty.xhtml" >
 						<h:outputText value="#{msg['faculty_command_main']}" ></h:outputText>
 					</t:commandNavigation2>
-					<s:acl domainObject="#{faculty}" hasPermission="#{ACL.FACULTY_TUTOR}">
 						<s:acl domainObject="#{faculty}" hasPermission="#{ACL.MANAGE_SUBJECTS}">
 							<t:commandNavigation2 action="faculty_news" activeOnViewIds="/views/secured/lecture/news.xhtml">
 								<h:outputText value="#{msg['faculty_command_news']}" ></h:outputText>
@@ -47,10 +47,10 @@
 								</t:commandNavigation2>
 							</t:commandNavigation2>
 						</s:acl>
-					</s:acl> 
 				</t:commandNavigation2>
 			</t:panelNavigation2>	
 		</h:form>
+	</s:acl> 
 	
 	
 	
