@@ -33,11 +33,10 @@ public class MailServiceImpl
 		mailingJob.setMailTitle(subject);
 		getMailingJobDao().create(mailingJob);
 		//save used template
-		Template template = new TemplateImpl();
+		Template template = Template.Factory.newInstance();
 		template.setTemplate(templateName);
 		getTemplateDao().create(template);
 		//save template model
-		TemplateModel templateModel = new TemplateModelImpl();
 		convertMapToTemplateModels(model, template);		
 		//save MailToSend		
 		MailToSend mailToSend = new MailToSendImpl();
@@ -49,20 +48,15 @@ public class MailServiceImpl
 	}
 
 	private void convertMapToTemplateModels(Map model, Template template) {
-		TemplateModel templateModel;		
-		Set keySet = model.keySet();		
-		Iterator i = keySet.iterator();
-		String key;
-		while (i.hasNext()){
-			//TODO use for other datatypes?		
-			templateModel = new TemplateModelImpl();
-			key = (String)i.next();
-			templateModel.setModelName(key); 
-			templateModel.setModelValue((String) model.get(key));
-			templateModel.setTemplate(template);
-			getTemplateModelDao().create(templateModel);		
+		List<TemplateModel> templates = new ArrayList<TemplateModel>();
+		for (Map.Entry<String, String> entry: (Set<Map.Entry<String, String>>)model.entrySet()) {
+			TemplateModel tm = TemplateModel.Factory.newInstance();
+			tm.setModelName(entry.getKey());
+			tm.setModelValue(entry.getValue());
+			tm.setTemplate(template);
+			templates.add(tm);
 		}
-		
+		getTemplateModelDao().create(templates);
 	}
 
 	@Override
