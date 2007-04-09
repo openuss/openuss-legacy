@@ -28,31 +28,23 @@
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
     <bean id="newsItem" class="org.openuss.news.NewsItemImpl" singleton="false"/>
 
-   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		      Discussion
-	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
-<!-- 
-	<bean id="discussion" class="org.openuss.discussion.DiscussionImpl" singleton="false"/>
-	<bean id="discussionWatch" class="org.openuss.discussion.DiscussionWatchImpl" singleton="false"/>
-	<bean id="discussionFormula" class="org.openuss.discussion.FormulaImpl" singleton="false"/>
-	<bean id="discussionForum" class="org.openuss.discussion.ForumImpl" singleton="false"/>
-	<bean id="discussionTopic" class="org.openuss.discussion.TopicImpl" singleton="false"/>
- -->
-	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			  Mail
  	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 	<!-- Beans for Quartz sending -->
     <bean id="mailEngine" class="org.openuss.framework.mail.MailEngine">
         <property name="mailSender" ref="mailSender"/>
         <property name="velocityEngine" ref="velocityEngine"/>
         <property name="defaultFrom" value="no-reply@openuss.org"/>
     </bean>
+
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="127.0.0.1"/>
         <property name="username" value="no-reply@openuss-plexus.org"/>
         <property name="password" value="plexus"/>
     </bean>
+
     <!-- Configure Velocity for sending e-mail -->
     <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
         <property name="velocityProperties">
@@ -65,12 +57,14 @@
             </props>
         </property>
     </bean>
+    
     <bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage" singleton="false">
         <property name="from" value="no-reply@openuss.org"/>
     </bean>    
+    
     <bean id="mimeMessage" class="javax.mail.internet.MimeMessage" singleton="false" factory-bean="mailSender" factory-method="createMimeMessage">
     </bean>
-    <bean id="mimeMessageHelper" class="org.springframework.mail.javamail.MimeMessageHelper" singleton="false">
+    <bean id="mimeMessageHelper" class="org.springframework.mail.javamail.MimeMessageHelper">
     	<constructor-arg>
     		<ref bean="mimeMessage"/>
     	</constructor-arg>
@@ -87,34 +81,6 @@
     <bean id="mailingMessage" class="org.openuss.mail.MailMessageImpl" />
     <bean id="mailingJob" class="org.openuss.mail.MailingJobImpl" />
     
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    				Quartz
-     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	
-	<bean id="mailSendingQuartzBean" class="org.openuss.mail.MailSendingQuartzBean" >	
-		<property name="mailService"><ref bean="mailService"/></property>		
-		<property name="mimeMessageHelper"><ref bean="mimeMessageHelper"/></property>		
-		<property name="mailEngine"><ref bean="mailEngine"/></property>				
-		<property name="securityService"><ref bean="securityService"/></property>				
-	</bean>	
-    <bean id="mailSendingJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="mailSendingQuartzBean"/>
-		<property name="targetMethod" value="send"/>
-		<property name="concurrent" value="false"/>
-	</bean>
-	<bean id="mailRepeatTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="jobDetail" ref="mailSendingJobDetail"/>
-		<property name="startDelay" value="10000"/>
-		<property name="repeatInterval" value="30000"/>
-	</bean>
-	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<property name="triggers">
-			<list>
-				<ref bean="mailRepeatTrigger"/>		
-			</list>
-		</property>
-	</bean>
-
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     				BrainContest
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

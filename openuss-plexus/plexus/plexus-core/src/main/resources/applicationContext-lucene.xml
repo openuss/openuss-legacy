@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    				Lucene Configuration
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<bean id="ramDirectory" class="org.springmodules.lucene.index.support.RAMDirectoryFactoryBean"/>
+	
+	<bean id="fsDirectory" class="org.springmodules.lucene.index.support.FSDirectoryFactoryBean">
+		<property name="create" value="true"/>
+		<property name="location" value="file:d:/temp/lucene/lectureindex"/>
+	</bean>
+	
+	<bean id="analyzer" class="org.apache.lucene.analysis.standard.StandardAnalyzer"/>
+	
+	<bean id="indexFactory" class="org.springmodules.lucene.index.support.SimpleIndexFactoryBean">
+		<property name="create" value="true"/>
+		<property name="directory" ref="ramDirectory"/>
+		<property name="analyzer" ref="analyzer"/>
+	</bean>
+	
+	<bean id="lectureIndexer" class="org.openuss.search.LectureIndexerImpl">
+		<property name="indexFactory" ref="indexFactory"/>
+	</bean>
+	
+	<bean id="indexingDatabase" class="org.openuss.search.SimpleDatabaseIndexingImpl">
+		<property name="indexFactory" ref="indexFactory"/>
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	
+	<bean id="searcherFactory" class="org.springmodules.lucene.search.factory.SimpleSearcherFactory">
+		<property name="directory" ref="ramDirectory"/>
+	</bean>
+	
+	<bean id="lectureSearcher" class="org.openuss.search.LectureSearchQuery">
+		<constructor-arg index="0" ref="searcherFactory"/>
+		<constructor-arg index="1" ref="analyzer" />
+	</bean>	
+
+</beans>

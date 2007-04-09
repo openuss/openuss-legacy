@@ -198,7 +198,7 @@
 				org.openuss.security.acegi.acl.EntityObjectIdentity
 			</value>
 		</property>
-		<property name="basicAclEntryCache"><bean name="ehCacheBasedAclEntryCache"/></property>
+		<property name="basicAclEntryCache"><ref bean="ehCacheBasedAclEntryCache"/></property>
 	</bean>
 	
 	
