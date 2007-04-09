@@ -1,5 +1,6 @@
 package org.openuss.mail;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,14 +13,17 @@ import org.openuss.security.SecurityService;
 import org.openuss.security.UserImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-public class MailSendingQuartzBean{
+public class MailSendingQuartzBean implements Serializable{
+
+	private static final long serialVersionUID = 6988073826486603295L;
+
 	private static final Logger logger = Logger.getLogger(MailSendingQuartzBean.class);
 	
-	private MailEngine mailEngine;
-	private MailService mailService;
-	private MimeMessageHelper mimeMessageHelper;
+	private transient MailEngine mailEngine;
+	private transient MailService mailService;
+	private transient MimeMessageHelper mimeMessageHelper;
 	
-	private SecurityService securityService;
+	private transient SecurityService securityService;
 	
 	public void send() throws MessagingException{
 		ArrayList<MailingJob> jobs = (ArrayList<MailingJob>) mailService.getJobs();		
