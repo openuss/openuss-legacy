@@ -7,6 +7,7 @@ package org.openuss.mail;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ public class MailServiceImpl
 		mailToSend.setEmail(eMail);
 		mailToSend.setSubject(subject);		
 		mailToSend.setStatus(MailingStatus.PLANNED);
+		mailToSend.setStatusTime(new Date(System.currentTimeMillis()));
 		mailToSend.setJob(mailingJob);
 		mailToSend.setMailBody(template);
 		getMailToSendDao().create(mailToSend);		
