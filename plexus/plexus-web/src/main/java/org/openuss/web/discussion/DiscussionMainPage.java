@@ -69,7 +69,7 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	}
 
 	public String changeWatchState(){
-		ForumInfo forum = discussionService.getForum(enrollment.getId());
+		ForumInfo forum = discussionService.getForum(enrollment);
 		if (discussionService.watchesForum(forum)){
 			discussionService.removeForumWatch(forum);
 		} else if(!discussionService.watchesForum(forum)){

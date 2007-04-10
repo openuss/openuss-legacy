@@ -13,7 +13,7 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
-import org.openuss.framework.utilities.DomainObjectUtility;
+import org.openuss.foundation.DomainObject;
 import org.openuss.security.Roles;
 import org.openuss.security.acl.LectureAclEntry;
 
@@ -106,8 +106,9 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 	/**
 	 * @see org.openuss.news.NewsService#getNewsItems(java.lang.Object)
 	 */
-	protected List handleGetNewsItems(Object publisher) throws Exception {
-		return getNewsItemDao().findByPublisher(NewsItemDao.TRANSFORM_NEWSITEMINFO, obtainIdentifier(publisher));
+	protected List handleGetNewsItems(DomainObject publisher) throws Exception {
+		Validate.notNull(publisher, "Parameter publisher must not be null!");
+		return getNewsItemDao().findByPublisher(NewsItemDao.TRANSFORM_NEWSITEMINFO, publisher.getId());
 	}
 
 
@@ -115,11 +116,11 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 	 * @see org.openuss.news.NewsService#getCurrentNewsItems(java.lang.Object,
 	 *      java.lang.Integer)
 	 */
-	protected List handleGetCurrentNewsItems(Object publisher, Integer count) throws Exception {
-		Long identifier = obtainIdentifier(publisher);
+	protected List handleGetCurrentNewsItems(DomainObject publisher, Integer count) throws Exception {
+		Validate.notNull(publisher, "Parameter publisher must not be null!");
 		
 		NewsCriteria criteria = new NewsCriteria();
-		criteria.setPublisherIdentifier(identifier);
+		criteria.setPublisherIdentifier(publisher.getId());
 		criteria.setPublishDate(new Date());
 		criteria.setExpireDate(new Date());
 		criteria.setMaximumResultSize(count);
@@ -145,11 +146,11 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 	 * @see org.openuss.news.NewsService#getPublishedNewsItems(java.lang.Object,
 	 *      java.lang.Integer, java.lang.Integer)
 	 */
-	protected List handleGetPublishedNewsItems(Object publisher, Integer firstResult,Integer count) throws Exception {
-		Long identifier = obtainIdentifier(publisher);
+	protected List handleGetPublishedNewsItems(DomainObject publisher, Integer firstResult,Integer count) throws Exception {
+		Validate.notNull(publisher, "Parameter publisher must not be null!");
 
 		NewsCriteria criteria = new NewsCriteria();
-		criteria.setPublisherIdentifier(identifier);
+		criteria.setPublisherIdentifier(publisher.getId());
 		criteria.setPublishDate(new Date());
 		criteria.setExpireDate(new Date());
 		criteria.setFirstResult(firstResult);
@@ -176,8 +177,9 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 	/**
 	 * @see org.openuss.news.NewsService#getPublishedNewsItemsCount(java.lang.Object)
 	 */
-	protected long handleGetPublishedNewsItemsCount(Object publisher) throws Exception {
-		return getNewsItemDao().countByPublisher(obtainIdentifier(publisher));
+	protected long handleGetPublishedNewsItemsCount(DomainObject publisher) throws Exception {
+		Validate.notNull(publisher, "Parameter publisher must not be null!");
+		return getNewsItemDao().countByPublisher(publisher.getId());
 	}
 
 	/**
@@ -186,12 +188,5 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 	protected long handleGetPublishedNewsItemsCount(NewsCategory category) throws Exception {
 		Validate.notNull(category, "category must not be null");
 		return getNewsItemDao().countByCategory(category);
-	}
-
-	private Long obtainIdentifier(Object publisher) {
-		Validate.notNull(publisher, "publisher must not be null.");
-		Long identifier = DomainObjectUtility.identifierFromObject(publisher);
-		Validate.notNull(identifier, "publisher must provide an identifier");
-		return identifier;
 	}
 }

@@ -18,7 +18,7 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-import org.openuss.framework.utilities.DomainObjectUtility;
+import org.openuss.foundation.DomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.acl.LectureAclEntry;
 
@@ -82,7 +82,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	@Override
-	protected List handleGetFileEntries(Object domainObject) throws Exception {
+	protected List handleGetFileEntries(DomainObject domainObject) throws Exception {
 		Validate.notNull(domainObject, "Parameter domainObject must not be null!");
 		Folder root = getRootFolderForDomainObject(domainObject);
 		List entries = new ArrayList(root.getEntries());
@@ -109,7 +109,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	@Override
-	protected FolderInfo handleGetFolder(Object domainObject) throws Exception {
+	protected FolderInfo handleGetFolder(DomainObject domainObject) throws Exception {
 		return getFolderDao().toFolderInfo(getRootFolderForDomainObject(domainObject));
 	}
 
@@ -126,7 +126,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	@Override
-	protected List handleGetFolderEntries(Object domainObject, FolderInfo folderInfo) throws Exception {
+	protected List handleGetFolderEntries(DomainObject domainObject, FolderInfo folderInfo) throws Exception {
 		Folder folder;
 		if (folderInfo == null || folderInfo.getId() == null) {
 			folder = getRootFolderForDomainObject(domainObject);
@@ -301,17 +301,14 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		}
 	}
 
-	private Folder getRootFolderForDomainObject(Object domainObject) throws IllegalAccessException,
+	private Folder getRootFolderForDomainObject(DomainObject domainObject) throws IllegalAccessException,
 			InvocationTargetException {
 		Validate.notNull(domainObject, "domain_object must not be null!");
+		Validate.notNull(domainObject.getId(), "domain object must provide an id!");
 
-		Long domainIdentifier = DomainObjectUtility.identifierFromObject(domainObject);
-		if (domainIdentifier == null) {
-			throw new DocumentServiceException("no_domain_object_identifier_found");
-		}
-		Folder folder = getFolderDao().findByDomainIdentifier(domainIdentifier);
+		Folder folder = getFolderDao().findByDomainIdentifier(domainObject.getId());
 		if (folder == null) {
-			folder = createRootFolderForDomainObject(domainIdentifier);
+			folder = createRootFolderForDomainObject(domainObject.getId());
 		}
 		return folder;
 	}
@@ -410,7 +407,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	@Override
-	protected void handleDiffSave(Object domainObject, List files) throws Exception {
+	protected void handleDiffSave(DomainObject domainObject, List files) throws Exception {
 		Validate.notNull(domainObject, "Parameter domainObject must not be null");
 		if (files == null) {
 			files = new ArrayList<FileInfo>();
@@ -430,7 +427,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	@Override
-	protected void handleRemove(Object domainObject) throws Exception {
+	protected void handleRemove(DomainObject domainObject) throws Exception {
 		Validate.notNull(domainObject, "Parameter domainObject must not be null.");
 		Folder root = getRootFolderForDomainObject(domainObject);
 		removeFolderEntry(root.getId());

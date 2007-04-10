@@ -8,6 +8,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FolderInfo;
+import org.openuss.foundation.DomainObject;
 import org.openuss.web.Constants;
 import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
@@ -24,7 +25,7 @@ public class AbstractDocumentPage extends AbstractEnrollmentPage {
 	protected FolderInfo currentFolder;
 
 	@Property(value = "#{sessionScope.enrollment}")
-	protected Object domainObject;
+	protected DomainObject domainObject;
 	
 	@Prerender
 	public void prerender() throws Exception {
@@ -72,11 +73,11 @@ public class AbstractDocumentPage extends AbstractEnrollmentPage {
 		}
 	}
 
-	public Object getDomainObject() {
+	public DomainObject getDomainObject() {
 		return domainObject;
 	}
 
-	public void setDomainObject(Object object) {
-		this.domainObject = object;
+	public void setDomainObject(DomainObject domainObject) {
+		this.domainObject = domainObject;
 	}
 }

@@ -55,22 +55,22 @@ public class MailingListPage extends AbstractEnrollmentPage {
 			MailingJob mj3 = MailingJob.Factory.newInstance();
 			MailingJob mj4 = MailingJob.Factory.newInstance();
 			
-			mj1.setJobId(new Long(1));
+			mj1.setId(new Long(1));
 			mj1.setMailTitle("Lösungen zu Fallstudien");
 			mj1.setSendingTime(new Timestamp(System.currentTimeMillis()));
 			//mj1.setStatus(MailingStatus.DRAFT);
 			
-			mj2.setJobId(new Long(2));
+			mj2.setId(new Long(2));
 			mj2.setMailTitle("RWC Seminar");
 			mj2.setSendingTime(new Timestamp(System.currentTimeMillis()));
 			//mj2.setStatus(MailingStatus.INQUEUE);
 
-			mj3.setJobId(new Long(3));
+			mj3.setId(new Long(3));
 			mj3.setMailTitle("SAP Workshop");
 			mj3.setSendingTime(new Timestamp(System.currentTimeMillis()));
 			//mj3.setStatus(MailingStatus.PLANNED);
 
-			mj4.setJobId(new Long(4));
+			mj4.setId(new Long(4));
 			mj4.setMailTitle("OpenUSS");
 			mj4.setSendingTime(new Timestamp(System.currentTimeMillis()));
 			//mj4.setStatus(MailingStatus.SEND);

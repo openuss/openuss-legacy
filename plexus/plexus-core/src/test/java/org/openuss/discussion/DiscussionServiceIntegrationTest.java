@@ -8,6 +8,8 @@ package org.openuss.discussion;
 import java.util.Date;
 import java.util.List;
 
+import org.openuss.foundation.DefaultDomainObject;
+import org.openuss.foundation.DomainObject;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 
@@ -33,24 +35,24 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		return postInfo;
 	}
 
-	private Long generateDomainObject(){
-		Long domainId = new Long(System.currentTimeMillis());
-		securityService.createObjectIdentity(domainId, null);
+	private DomainObject generateDomainObject(){
+		DomainObject domainObject = new DefaultDomainObject(testUtility.unique());
+		securityService.createObjectIdentity(domainObject, null);
 		//securityService.setPermissions(user, domainId, LectureAclEntry.ASSIST);		
-		return domainId;
+		return domainObject;
 	}
 	
 	public void testCreateDeleteTopic(){
 		//test correct creation of a example topic
 		ForumInfo fi = new ForumInfo();
-		Long domainObject = generateDomainObject();		
-		fi.setDomainIdentifier(domainObject);
+		DomainObject domainObject = generateDomainObject();		
+		fi.setDomainIdentifier(domainObject.getId());
 		fi.setReadOnly(false);
 		discussionService.addForum(fi);
 		commit();
 		ForumInfo loadedForum = discussionService.getForum(domainObject);
 		assertNotNull(loadedForum);
-		assertEquals(domainObject, loadedForum.getDomainIdentifier());
+		assertEquals(domainObject.getId(), loadedForum.getDomainIdentifier());
 		PostInfo firstPost = generatePost();
 		commit();
 		discussionService.createTopic(firstPost, loadedForum);
@@ -80,13 +82,13 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 	
 	public void testAddPost(){
 		ForumInfo fi = new ForumInfo();
-		Long domainObject = generateDomainObject();
-		fi.setDomainIdentifier(domainObject);
+		DomainObject domainObject = generateDomainObject();
+		fi.setDomainIdentifier(domainObject.getId());
 		fi.setReadOnly(false);
 		discussionService.addForum(fi);
 		ForumInfo loadedForum = discussionService.getForum(domainObject);
 		assertNotNull(loadedForum);
-		assertEquals(domainObject, loadedForum.getDomainIdentifier());
+		assertEquals(domainObject.getId(), loadedForum.getDomainIdentifier());
 
 		//test correct creation of a example topic
 		PostInfo firstPost = generatePost();
@@ -113,13 +115,13 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 	
 	public void testDeletePost(){
 		ForumInfo fi = new ForumInfo();
-		Long domainObject = generateDomainObject();
-		fi.setDomainIdentifier(domainObject);
+		DomainObject domainObject = generateDomainObject();
+		fi.setDomainIdentifier(domainObject.getId());
 		fi.setReadOnly(false);
 		discussionService.addForum(fi);
 		ForumInfo loadedForum = discussionService.getForum(domainObject);
 		assertNotNull(loadedForum);
-		assertEquals(domainObject, loadedForum.getDomainIdentifier());
+		assertEquals(domainObject.getId(), loadedForum.getDomainIdentifier());
 		//test delete 
 		//test correct creation of a example topic
 		commit();
@@ -157,13 +159,13 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 	
 	public void testAddGetForum(){		
 		ForumInfo fi = new ForumInfo();
-		Long domainObject = generateDomainObject();
-		fi.setDomainIdentifier(domainObject);
+		DomainObject domainObject = generateDomainObject();
+		fi.setDomainIdentifier(domainObject.getId());
 		fi.setReadOnly(false);
 		discussionService.addForum(fi);
 		ForumInfo loadedForum = discussionService.getForum(domainObject);
 		assertNotNull(loadedForum);
-		assertEquals(domainObject, loadedForum.getDomainIdentifier());
+		assertEquals(domainObject.getId(), loadedForum.getDomainIdentifier());
 		
 	}
 

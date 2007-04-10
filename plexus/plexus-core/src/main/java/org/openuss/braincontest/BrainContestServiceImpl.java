@@ -15,7 +15,7 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
-import org.openuss.framework.utilities.DomainObjectUtility;
+import org.openuss.foundation.DomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
@@ -33,14 +33,12 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 	 * @see org.openuss.braincontest.BrainContestService#getContests(java.lang.Object)
 	 */
 	@SuppressWarnings("unchecked")
-	protected List handleGetContests(java.lang.Object domainObject) throws java.lang.Exception {
+	protected List handleGetContests(DomainObject domainObject) throws java.lang.Exception {
 		Validate.notNull(domainObject, "Parameter domainObject must not be null");
-
-		Long domainIdentifier = DomainObjectUtility.identifierFromObject(domainObject);
-		Validate.notNull(domainIdentifier, "Parameter domainObject must provide a id");
+		Validate.notNull(domainObject.getId(), "Parameter domainObject must provide an id");
 
 		List<BrainContest> contests = getBrainContestDao().findByDomainObject(
-				BrainContestDao.TRANSFORM_BRAINCONTESTINFO, domainIdentifier);
+				BrainContestDao.TRANSFORM_BRAINCONTESTINFO, domainObject.getId());
 
 		if (contests == null) {
 			return new ArrayList<BrainContestInfo>();
@@ -50,7 +48,7 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 		}
 	}
 
-	private void verifiyPermissionsOnEntries(java.lang.Object domainObject, List<BrainContest> contests) {
+	private void verifiyPermissionsOnEntries(DomainObject domainObject, List<BrainContest> contests) {
 		logger.debug("verify permissions on entries");
 		if (!AcegiUtils.hasPermission(domainObject, new Integer[] { LectureAclEntry.ASSIST })) {
 			CollectionUtils.filter(contests, new Predicate() {

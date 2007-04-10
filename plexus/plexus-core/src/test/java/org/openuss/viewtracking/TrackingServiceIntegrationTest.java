@@ -5,8 +5,8 @@
  */
 package org.openuss.viewtracking;
 
-import org.openuss.DomainObject;
 import org.openuss.TestUtility;
+import org.openuss.foundation.DefaultDomainObject;
 
 /**
  * JUnit Test for Spring Hibernate TrackingService class.
@@ -18,19 +18,19 @@ public class TrackingServiceIntegrationTest extends TrackingServiceIntegrationTe
 
 	public void testViewState() {
 		testUtility.createSecureContext();
-		DomainObject domainObject = new DomainObject(testUtility.unique());
+		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(testUtility.unique());
 		
-		assertEquals(ViewState.NEW, trackingService.getViewState(domainObject));
+		assertEquals(ViewState.NEW, trackingService.getViewState(defaultDomainObject));
 		
-		trackingService.setViewState(ViewState.MODIFIED, domainObject);
+		trackingService.setViewState(ViewState.MODIFIED, defaultDomainObject);
 		
-		assertEquals(ViewState.MODIFIED, trackingService.getViewState(domainObject));
+		assertEquals(ViewState.MODIFIED, trackingService.getViewState(defaultDomainObject));
 
-		trackingService.setRead(domainObject);
-		assertEquals(ViewState.READ, trackingService.getViewState(domainObject));
+		trackingService.setRead(defaultDomainObject);
+		assertEquals(ViewState.READ, trackingService.getViewState(defaultDomainObject));
 
-		trackingService.setNew(domainObject);
-		assertEquals(ViewState.NEW, trackingService.getViewState(domainObject));
+		trackingService.setNew(defaultDomainObject);
+		assertEquals(ViewState.NEW, trackingService.getViewState(defaultDomainObject));
 		
 	}
 	

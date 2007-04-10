@@ -12,6 +12,8 @@ import java.util.List;
 
 import org.acegisecurity.acl.AclManager;
 import org.openuss.documents.FileInfo;
+import org.openuss.foundation.DefaultDomainObject;
+import org.openuss.foundation.DomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.SecurityService;
 
@@ -23,7 +25,6 @@ import org.openuss.security.SecurityService;
 public class NewsServiceIntegrationTest extends NewsServiceIntegrationTestBase {
 
 	private Date past = new Date(System.currentTimeMillis() - 1000000);
-	private Date now = new Date(System.currentTimeMillis());
 	private Date future = new Date(System.currentTimeMillis() + 1000000);
 	
 	private SecurityService securityService;
@@ -90,11 +91,11 @@ public class NewsServiceIntegrationTest extends NewsServiceIntegrationTestBase {
 	}
 	
 	public void testGetNewsItemsByPublisher() {
-		Long publisher = testUtility.unique();
+		DomainObject publisher = new DefaultDomainObject(testUtility.unique());
 		securityService.createObjectIdentity(publisher, null);
 		
 		NewsItemInfo info1 = createNewsItem();
-		info1.setPublisherIdentifier(publisher);
+		info1.setPublisherIdentifier(publisher.getId());
 		newsService.saveNewsItem(info1);
 		
 		NewsItemInfo info2 = createNewsItem();
@@ -102,7 +103,7 @@ public class NewsServiceIntegrationTest extends NewsServiceIntegrationTestBase {
 		newsService.saveNewsItem(info2);
 
 		NewsItemInfo info3 = createNewsItem();
-		info3.setPublisherIdentifier(publisher);
+		info3.setPublisherIdentifier(publisher.getId());
 		newsService.saveNewsItem(info3);
 		
 		commit();

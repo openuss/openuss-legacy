@@ -12,9 +12,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.acegisecurity.acl.AclManager;
-import org.openuss.DomainObject;
 import org.openuss.TestUtility;
 import org.openuss.documents.FileInfo;
+import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
@@ -31,7 +31,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 	
 	private AclManager aclManager;
 
-	private DomainObject domainObject;
+	private DefaultDomainObject defaultDomainObject;
 
 	private User user;
 	
@@ -39,10 +39,10 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 	protected void onSetUpInTransaction() throws Exception {
 		super.onSetUpInTransaction();
 		AcegiUtils.setAclManager(aclManager);
-		domainObject = createDomainObject();
+		defaultDomainObject = createDomainObject();
 		user = testUtility.createSecureContext();
-		securityService.createObjectIdentity(domainObject, null);
-		securityService.setPermissions(user, domainObject, LectureAclEntry.ASSIST);
+		securityService.createObjectIdentity(defaultDomainObject, null);
+		securityService.setPermissions(user, defaultDomainObject, LectureAclEntry.ASSIST);
 	}
 	
 	private BrainContestInfo createContest(Long domainId, boolean released){
@@ -62,26 +62,26 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 	
 	public void testFiltered(){
 		
-		List<BrainContestInfo> entries = brainContestService.getContests(domainObject);
+		List<BrainContestInfo> entries = brainContestService.getContests(defaultDomainObject);
 		assertNotNull(entries);
 		assertEquals(entries.size(), 0);
 		
-		BrainContestInfo brainContest = createBrainContestInfo(domainObject.getId());
+		BrainContestInfo brainContest = createBrainContestInfo(defaultDomainObject.getId());
 		assertNull(brainContest.getId());
 		
 		try {
-			brainContestService.createContest(createContest(domainObject.getId(), true));			
-			brainContestService.createContest(createContest(domainObject.getId(), false));			
+			brainContestService.createContest(createContest(defaultDomainObject.getId(), true));			
+			brainContestService.createContest(createContest(defaultDomainObject.getId(), false));			
 		} catch (BrainContestApplicationException e) {
 			fail(e.getMessage());
 		}
-		entries = brainContestService.getContests(domainObject);
+		entries = brainContestService.getContests(defaultDomainObject);
 		assertNotNull(entries);
 		assertEquals(2, entries.size());
 		//remove rights from user
 	
-		securityService.setPermissions(user, domainObject, LectureAclEntry.READ);
-		entries = brainContestService.getContests(domainObject);
+		securityService.setPermissions(user, defaultDomainObject, LectureAclEntry.READ);
+		entries = brainContestService.getContests(defaultDomainObject);
 		assertNotNull(entries);
 		assertEquals(1, entries.size());
 		
@@ -89,11 +89,11 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 	}
 	
 	public void testCreateAndGetContest() throws BrainContestApplicationException{		
-		List<BrainContestInfo> entries = brainContestService.getContests(domainObject);
+		List<BrainContestInfo> entries = brainContestService.getContests(defaultDomainObject);
 		assertNotNull(entries);
 		assertEquals(entries.size(), 0);
 		
-		BrainContestInfo brainContest = createBrainContestInfo(domainObject.getId());
+		BrainContestInfo brainContest = createBrainContestInfo(defaultDomainObject.getId());
 		assertNull(brainContest.getId());
 		
 		try {
@@ -105,9 +105,9 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertEquals("testDescription", brainContest.getDescription());
 		assertEquals("testTitle", brainContest.getTitle());
 		assertEquals(brainContest.getTries().intValue(), 0);
-		assertEquals(brainContest.getDomainIdentifier(), domainObject.getId());
+		assertEquals(brainContest.getDomainIdentifier(), defaultDomainObject.getId());
 		
-		entries = brainContestService.getContests(domainObject);
+		entries = brainContestService.getContests(defaultDomainObject);
 		assertEquals(entries.size(), 1);
 		BrainContestInfo addedContest = entries.get(0);
 		assertEquals(brainContest.getId(), addedContest.getId());
@@ -134,17 +134,17 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		} catch (BrainContestServiceException e) {
 		}
 		
-		entries = brainContestService.getContests(domainObject);
+		entries = brainContestService.getContests(defaultDomainObject);
 		assertNotNull(entries);
 		assertEquals(1, entries.size());
 	}
 	
 	public void testSaveContest() throws BrainContestApplicationException{
-		List<BrainContestInfo> entries = brainContestService.getContests(domainObject);
+		List<BrainContestInfo> entries = brainContestService.getContests(defaultDomainObject);
 		assertNotNull(entries);
 		assertEquals(entries.size(), 0);
 		
-		BrainContestInfo brainContest = createBrainContestInfo(domainObject.getId());
+		BrainContestInfo brainContest = createBrainContestInfo(defaultDomainObject.getId());
 		assertNull(brainContest.getId());
 		
 		brainContestService.createContest(brainContest);
@@ -154,9 +154,9 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertEquals("testDescription", brainContest.getDescription());
 		assertEquals("testTitle", brainContest.getTitle());
 		assertEquals(brainContest.getTries().intValue(), 0);
-		assertEquals(brainContest.getDomainIdentifier(), domainObject.getId());
+		assertEquals(brainContest.getDomainIdentifier(), defaultDomainObject.getId());
 
-		entries = brainContestService.getContests(domainObject);
+		entries = brainContestService.getContests(defaultDomainObject);
 		assertEquals(1, entries.size());
 		BrainContestInfo addedContest = entries.get(0);
 		assertEquals(brainContest.getId(), addedContest.getId());
@@ -167,7 +167,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertEquals(brainContest.getTries(), addedContest.getTries());
 		assertEquals(brainContest.getDomainIdentifier(), addedContest.getDomainIdentifier());
 		
-		DomainObject newDomain = createDomainObject();
+		DefaultDomainObject newDomain = createDomainObject();
 		Date newDate = new Date(System.currentTimeMillis());		
 		addedContest.setDomainIdentifier(newDomain.getId());
 		addedContest.setReleaseDate(newDate);
@@ -178,7 +178,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 
 		brainContestService.saveContest(addedContest);
 		
-		entries = brainContestService.getContests(domainObject);
+		entries = brainContestService.getContests(defaultDomainObject);
 		assertEquals(0, entries.size());
 		entries = brainContestService.getContests(newDomain);
 		assertEquals(1, entries.size());
@@ -200,7 +200,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 	}
 
 	public void testAttachmentUpdate() throws BrainContestApplicationException {
-		BrainContestInfo brainContest = createBrainContestInfo(domainObject.getId());
+		BrainContestInfo brainContest = createBrainContestInfo(defaultDomainObject.getId());
 		
 		FileInfo fileOne = createFileInfo("one");
 		FileInfo fileTwo = createFileInfo("two");
@@ -239,11 +239,11 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 	}
 	
 	public void testAttachments() throws BrainContestApplicationException{
-		List<BrainContestInfo> entries = brainContestService.getContests(domainObject);
+		List<BrainContestInfo> entries = brainContestService.getContests(defaultDomainObject);
 		assertNotNull(entries);
 		assertEquals(entries.size(), 0);
 		
-		BrainContestInfo brainContest = createBrainContestInfo(domainObject.getId());
+		BrainContestInfo brainContest = createBrainContestInfo(defaultDomainObject.getId());
 		assertNull(brainContest.getId());
 		
 		brainContestService.createContest(brainContest);
@@ -253,9 +253,9 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertEquals("testDescription", brainContest.getDescription());
 		assertEquals("testTitle", brainContest.getTitle());
 		assertEquals(brainContest.getTries().intValue(), 0);
-		assertEquals(brainContest.getDomainIdentifier(), domainObject.getId());
+		assertEquals(brainContest.getDomainIdentifier(), defaultDomainObject.getId());
 
-		entries = brainContestService.getContests(domainObject);
+		entries = brainContestService.getContests(defaultDomainObject);
 		assertEquals(entries.size(), 1);
 		BrainContestInfo addedContest = entries.get(0);
 		assertEquals(brainContest.getId(), addedContest.getId());
@@ -289,11 +289,11 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 	}
 	
 	public void testAnswers() throws BrainContestApplicationException{
-		List<BrainContestInfo> entries = brainContestService.getContests(domainObject);
+		List<BrainContestInfo> entries = brainContestService.getContests(defaultDomainObject);
 		assertNotNull(entries);
 		assertEquals(entries.size(), 0);
 		
-		BrainContestInfo brainContest = createBrainContestInfo(domainObject.getId());
+		BrainContestInfo brainContest = createBrainContestInfo(defaultDomainObject.getId());
 		assertNull(brainContest.getId());
 		
 		brainContestService.createContest(brainContest);		
@@ -303,9 +303,9 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertEquals("testDescription", brainContest.getDescription());
 		assertEquals("testTitle", brainContest.getTitle());
 		assertEquals(brainContest.getTries().intValue(), 0);
-		assertEquals(brainContest.getDomainIdentifier(), domainObject.getId());
+		assertEquals(brainContest.getDomainIdentifier(), defaultDomainObject.getId());
 
-		entries = brainContestService.getContests(domainObject);
+		entries = brainContestService.getContests(defaultDomainObject);
 		assertEquals(1, entries.size());
 		BrainContestInfo addedContest = entries.get(0);
 		assertEquals(brainContest.getId(), addedContest.getId());
@@ -353,11 +353,11 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		}catch (BrainContestServiceException e){
 			// succeed
 		}
-		List<BrainContestInfo> entries = brainContestService.getContests(domainObject);
+		List<BrainContestInfo> entries = brainContestService.getContests(defaultDomainObject);
 		assertNotNull(entries);
 		assertEquals(entries.size(), 0);
 		
-		BrainContestInfo brainContest = createBrainContestInfo(domainObject.getId());
+		BrainContestInfo brainContest = createBrainContestInfo(defaultDomainObject.getId());
 		assertNull(brainContest.getId());
 		
 		brainContestService.createContest(brainContest);
@@ -366,9 +366,9 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertEquals("testDescription", brainContest.getDescription());
 		assertEquals("testTitle", brainContest.getTitle());
 		assertEquals(brainContest.getTries().intValue(), 0);
-		assertEquals(brainContest.getDomainIdentifier(), domainObject.getId());
+		assertEquals(brainContest.getDomainIdentifier(), defaultDomainObject.getId());
 
-		entries = brainContestService.getContests(domainObject);
+		entries = brainContestService.getContests(defaultDomainObject);
 		assertEquals(entries.size(), 1);
 		BrainContestInfo addedContest = entries.get(0);
 		assertEquals(brainContest.getId(), addedContest.getId());
@@ -381,7 +381,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		
 		brainContestService.removeContest(addedContest);
 
-		entries = brainContestService.getContests(domainObject);
+		entries = brainContestService.getContests(defaultDomainObject);
 		assertEquals(0,entries.size());
 		
 	}
@@ -410,9 +410,9 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		return brainContestInfo;
 	}
 		
-	private DomainObject createDomainObject() {
-		DomainObject domainObject = new DomainObject(testUtility.unique());
-		return domainObject;
+	private DefaultDomainObject createDomainObject() {
+		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(testUtility.unique());
+		return defaultDomainObject;
 	}
 	
 	public void setTestUtility(TestUtility testUtility) {
