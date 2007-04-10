@@ -11,7 +11,7 @@
 	
 	<bean id="fsDirectory" class="org.springmodules.lucene.index.support.FSDirectoryFactoryBean">
 		<property name="create" value="true"/>
-		<property name="location" value="file:d:/temp/lucene/lectureindex"/>
+		<property name="location" value="file:${java.io.tmpdir}lucene/lectureindex"/>
 	</bean>
 	
 	<bean id="analyzer" class="org.apache.lucene.analysis.standard.StandardAnalyzer"/>
