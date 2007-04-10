@@ -6,7 +6,7 @@ import junit.framework.TestSuite;
 public class SearchTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.openuss.system");
+		TestSuite suite = new TestSuite("Test for org.openuss.search");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(SearchEngineTest.class);
 		suite.addTestSuite(SearchEngineTest.class);

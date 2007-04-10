@@ -6,7 +6,7 @@ import junit.framework.TestSuite;
 public class MailTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.openuss.system");
+		TestSuite suite = new TestSuite("Test for org.openuss.mail");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(MailingJobDaoTest.class);		
 		suite.addTestSuite(MailServiceIntegrationTest.class);
