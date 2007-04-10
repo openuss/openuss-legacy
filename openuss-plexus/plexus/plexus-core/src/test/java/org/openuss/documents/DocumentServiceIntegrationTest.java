@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.acegisecurity.acl.AclManager;
 import org.apache.commons.lang.StringUtils;
-import org.openuss.DomainObject;
+import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.repository.RepositoryService;
 import org.openuss.repository.RepositoryServiceException;
@@ -34,19 +34,19 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	
 	private SecurityService securityService;
 	
-	private DomainObject domainObject;
+	private DefaultDomainObject defaultDomainObject;
 	
 
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
 		AcegiUtils.setAclManager(aclManager);
 		testUtility.createSecureContext();
-		domainObject = createDomainObject();
+		defaultDomainObject = createDomainObject();
 		super.onSetUpInTransaction();
 	}
 	
 	public void testNotReleasedFiles() throws DocumentApplicationException {
-		FolderInfo root = documentService.getFolder(domainObject);
+		FolderInfo root = documentService.getFolder(defaultDomainObject);
 		
 		FileInfo fileOne = createFileInfo("readme.txt");
 		fileOne.setCreated(new Date(System.currentTimeMillis()+1000*60*60));
@@ -60,18 +60,18 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertNotNull(fileTwo.getId());
 		assertTrue(fileTwo.isReleased());
 		
-		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, null);
+		List<FolderEntryInfo> entries = documentService.getFolderEntries(defaultDomainObject, null);
 		assertNotNull(entries);
 		assertEquals(1, entries.size());
 		
 	}
 
 	public void testFolderEntries() throws DocumentApplicationException {
-		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, null);
+		List<FolderEntryInfo> entries = documentService.getFolderEntries(defaultDomainObject, null);
 		assertNotNull(entries);
 		assertEquals(0, entries.size());
 
-		FolderInfo root = documentService.getFolder(domainObject);
+		FolderInfo root = documentService.getFolder(defaultDomainObject);
 		assertNotNull(root);
 		assertEquals("",root.getName());
 		assertTrue(root.isRoot());
@@ -103,7 +103,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	}
 
 	public void testFolderPath() throws DocumentApplicationException {
-		FolderInfo root = documentService.getFolder(domainObject);
+		FolderInfo root = documentService.getFolder(defaultDomainObject);
 		
 		FolderInfo subFolder1 = createSubFolder();
 		FolderInfo subFolder2 = createSubFolder();
@@ -127,7 +127,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	}
 	
 	public void testFolderAddRemoving() throws DocumentApplicationException {
-		FolderInfo root = documentService.getFolder(domainObject);
+		FolderInfo root = documentService.getFolder(defaultDomainObject);
 		
 		FolderInfo subFolder1 = createSubFolder();
 		FolderInfo subFolder2 = createSubFolder();
@@ -149,7 +149,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertNotNull(subFolder3.getId());
 		assertNotNull(subFolder4.getId());
 		
-		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, subFolder2);
+		List<FolderEntryInfo> entries = documentService.getFolderEntries(defaultDomainObject, subFolder2);
 		assertNotNull(entries);
 		assertEquals(2, entries.size());
 
@@ -176,7 +176,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	}
 
 	public void testCreateFileInfo() throws DocumentApplicationException, IOException {
-		FolderInfo root = documentService.getFolder(domainObject);
+		FolderInfo root = documentService.getFolder(defaultDomainObject);
 
 		String name = "/dummy/readme.txt";
 		
@@ -202,7 +202,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	
 	
 	public void testCreateFileByFileInfo() throws DocumentApplicationException, IOException {
-		FolderInfo root = documentService.getFolder(domainObject);
+		FolderInfo root = documentService.getFolder(defaultDomainObject);
 
 		String name = "/dummy/readme.txt";
 		
@@ -214,7 +214,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		
 		commit();
 		
-		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, null);
+		List<FolderEntryInfo> entries = documentService.getFolderEntries(defaultDomainObject, null);
 		assertNotNull(entries);
 		assertEquals(1, entries.size());
 		
@@ -256,7 +256,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	
 	
 	public void testCreateFileEntries() throws DocumentApplicationException {
-		FolderInfo root = documentService.getFolder(domainObject);
+		FolderInfo root = documentService.getFolder(defaultDomainObject);
 		
 		FolderInfo subfolder = createSubFolder();
 		subfolder.setName("subfolder");
@@ -292,14 +292,14 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 
 	
 	public void testGetFileEntry() throws DocumentApplicationException {
-		FolderInfo root = documentService.getFolder(domainObject);
+		FolderInfo root = documentService.getFolder(defaultDomainObject);
 		
 		FileInfo info = createFileInfo("readme.txt");
 		
 		documentService.createFileEntry(info, root);
 		commit();
 
-		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, null);
+		List<FolderEntryInfo> entries = documentService.getFolderEntries(defaultDomainObject, null);
 		FolderEntryInfo entry = entries.get(0);
 		
 		FileInfo file = documentService.getFileEntry(entry.getId(), false);
@@ -342,10 +342,10 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		return folder;
 	}
 
-	private DomainObject createDomainObject() {
-		DomainObject domainObject = new DomainObject(testUtility.unique());
-		getSecurityService().createObjectIdentity(domainObject, null);
-		return domainObject;
+	private DefaultDomainObject createDomainObject() {
+		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(testUtility.unique());
+		getSecurityService().createObjectIdentity(defaultDomainObject, null);
+		return defaultDomainObject;
 	}
 	
 	public FolderEntryDao getFolderEntryDao() {

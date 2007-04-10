@@ -34,7 +34,7 @@ public class MailSendingQuartzBean implements Serializable{
 		MailToSend mts;
 		while (jobIterator.hasNext()){
 			mj = (MailingJob)jobIterator.next();			
-			mails = (ArrayList<MailToSend>)mailService.getMailsToSendByMailingJob(mj.getJobId());
+			mails = (ArrayList<MailToSend>)mailService.getMailsToSendByMailingJob(mj.getId());
 			mailIterator = mails.iterator();
 			while(mailIterator.hasNext()){
 				mts = (MailToSend)mailIterator.next();
@@ -42,7 +42,7 @@ public class MailSendingQuartzBean implements Serializable{
 				mailService.deleteMailToSend(mts.getId()); //only needed, if mailingjobs are splitted
 			}
 			// deletion of mailingJobs only if no more mailsToSend -> due to possible splitting of jobs in future
-			if (mailService.getMailsToSendByMailingJob(mj.getJobId()).size()==0) mailService.deleteMailingJob(mj.getJobId());
+			if (mailService.getMailsToSendByMailingJob(mj.getId()).size()==0) mailService.deleteMailingJob(mj.getId());
 		}
 		logger.debug("Mailsending job was finished successfully.");
 	}

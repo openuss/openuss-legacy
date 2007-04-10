@@ -1,18 +1,18 @@
 /**
  * 
  */
-package org.openuss;
+package org.openuss.foundation;
 
 /**
  * DomainObject for testing   
  * @author Ingo Dueppe
  */
-public class DomainObject {
+public class DefaultDomainObject implements DomainObject {
 	private Long id;
 
-	public DomainObject() {};
+	public DefaultDomainObject() {};
 	
-	public DomainObject(Long id) {
+	public DefaultDomainObject(Long id) {
 		this.id = id;
 	}
 	

@@ -38,7 +38,7 @@ public class AbstractDiscussionPage extends AbstractEnrollmentPage{
 	}
 	
 	public ForumInfo getForum() {
-		this.forum = discussionService.getForum(enrollment.getId());
+		this.forum = discussionService.getForum(enrollment);
 		return this.forum;
 	}
 

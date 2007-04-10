@@ -13,6 +13,7 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
+import org.openuss.foundation.DomainObject;
 import org.openuss.security.User;
 
 /**
@@ -311,14 +312,16 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	}
 
 	@Override
-	protected ForumInfo handleGetForum(Long domainIdentifier) throws Exception {
-		Forum forum = getForumDao().findByDomainIdentifier(domainIdentifier);
+	protected ForumInfo handleGetForum(DomainObject domainObject) throws Exception {
+		Validate.notNull(domainObject, "DomainObject must not be null.");
+		Validate.notNull(domainObject.getId(),"DomainObject must provide an id.");
+		Forum forum = getForumDao().findByDomainIdentifier(domainObject.getId());
 		if (forum == null) {
 			ForumInfo f = new ForumInfo();
-			f.setDomainIdentifier(domainIdentifier);
+			f.setDomainIdentifier(domainObject.getId());
 			f.setReadOnly(false);
 			handleAddForum(f);
-			forum = getForumDao().findByDomainIdentifier(domainIdentifier);
+			forum = getForumDao().findByDomainIdentifier(domainObject.getId());
 		}
 		return getForumDao().toForumInfo(forum);
 	}
