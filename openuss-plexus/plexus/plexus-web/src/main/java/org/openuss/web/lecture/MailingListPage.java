@@ -58,22 +58,22 @@ public class MailingListPage extends AbstractEnrollmentPage {
 			mj1.setJobId(new Long(1));
 			mj1.setMailTitle("Lösungen zu Fallstudien");
 			mj1.setSendingTime(new Timestamp(System.currentTimeMillis()));
-			mj1.setStatus(MailingStatus.DRAFT);
+			//mj1.setStatus(MailingStatus.DRAFT);
 			
 			mj2.setJobId(new Long(2));
 			mj2.setMailTitle("RWC Seminar");
 			mj2.setSendingTime(new Timestamp(System.currentTimeMillis()));
-			mj2.setStatus(MailingStatus.INQUEUE);
+			//mj2.setStatus(MailingStatus.INQUEUE);
 
 			mj3.setJobId(new Long(3));
 			mj3.setMailTitle("SAP Workshop");
 			mj3.setSendingTime(new Timestamp(System.currentTimeMillis()));
-			mj3.setStatus(MailingStatus.PLANNED);
+			//mj3.setStatus(MailingStatus.PLANNED);
 
 			mj4.setJobId(new Long(4));
 			mj4.setMailTitle("OpenUSS");
 			mj4.setSendingTime(new Timestamp(System.currentTimeMillis()));
-			mj4.setStatus(MailingStatus.SEND);
+			//mj4.setStatus(MailingStatus.SEND);
 
 			al.add(mj1); al.add(mj2); al.add(mj3); al.add(mj4);
 			page = new DataPage<MailingJob>(al.size(),0,al);
