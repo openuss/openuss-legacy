@@ -29,7 +29,6 @@ public class MailServiceImpl
 		MailingJob mailingJob = new MailingJobImpl(); 
 		mailingJob.setSenderName("System");
 		mailingJob.setSendingTime(new Timestamp(System.currentTimeMillis()));
-		mailingJob.setStatus(MailingStatus.PLANNED);
 		mailingJob.setMailTitle(subject);
 		getMailingJobDao().create(mailingJob);
 		//save used template
@@ -42,6 +41,7 @@ public class MailServiceImpl
 		MailToSend mailToSend = new MailToSendImpl();
 		mailToSend.setEmail(eMail);
 		mailToSend.setSubject(subject);		
+		mailToSend.setStatus(MailingStatus.PLANNED);
 		mailToSend.setJob(mailingJob);
 		mailToSend.setMailBody(template);
 		getMailToSendDao().create(mailToSend);		
