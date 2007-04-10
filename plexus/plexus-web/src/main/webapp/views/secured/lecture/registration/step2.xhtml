@@ -33,7 +33,16 @@
 						</h:outputFormat>
 					</p>
 					<p class="content_font_normal">
-						<ui:include src="/views/commons/faculty/facultyInfo.xhtml" />
+		    			<f:param name="faculty" value="#{faculty.id}"/>
+					 	<h:outputText value="#{faculty.name}" styleClass="header_font_normal"/>
+						<h:outputText value="#{faculty.address}" styleClass="content_font_normal"/>
+						<h:outputText value="#{faculty.postcode} #{faculty.city}" styleClass="content_font_normal"/>
+						<h:outputFormat value="#{msg.faculty_information_telephone}" rendered="#{!empty faculty.telephone}" styleClass="content_font_normal">
+							<f:param value="#{faculty.telephone}" styleClass="content_font_normal"/>
+						</h:outputFormat>
+						<h:outputFormat value="#{msg.faculty_information_telefax}" rendered="#{!empty faculty.telefax}" styleClass="content_font_normal">
+							<f:param value="#{faculty.telefax}" />
+						</h:outputFormat>
 					</p>
 				</o:block>
 				<o:block>
