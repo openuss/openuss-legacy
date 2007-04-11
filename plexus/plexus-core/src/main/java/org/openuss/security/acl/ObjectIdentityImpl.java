@@ -5,19 +5,21 @@
 //
 package org.openuss.security.acl;
 
-
 /**
+ * @author Ingo Dueppe
  * @see org.openuss.security.acl.ObjectIdentity
  */
-public class ObjectIdentityImpl extends org.openuss.security.acl.ObjectIdentityBase implements
-		org.openuss.security.acl.ObjectIdentity {
+public class ObjectIdentityImpl extends ObjectIdentityBase implements ObjectIdentity {
+	
+	private static final long SYSTEM_OBJECT_IDENTITY = 0L;
+	
 	/**
 	 * The serial version UID of this class. Needed for serialization.
 	 */
 	private static final long serialVersionUID = 161217105102033676L;
-	
+
 	public ObjectIdentityImpl() {
-		//	setAclClass("org.openuss.security.acl.EntityObjectIdentity");
+		// setAclClass("org.openuss.security.acl.EntityObjectIdentity");
 	}
 
 	public void addPermission(Permission permission) {
@@ -28,6 +30,16 @@ public class ObjectIdentityImpl extends org.openuss.security.acl.ObjectIdentityB
 		if (permission != null) {
 			getPermissions().add(permission);
 		}
+	}
+
+	@Override
+	public ObjectIdentity getParent() {
+		ObjectIdentity parent = super.getParent();
+		if (getId() != SYSTEM_OBJECT_IDENTITY && parent == null) {
+			parent = new ObjectIdentityImpl();
+			parent.setId(SYSTEM_OBJECT_IDENTITY);
+		}
+		return parent;
 	}
 
 }
