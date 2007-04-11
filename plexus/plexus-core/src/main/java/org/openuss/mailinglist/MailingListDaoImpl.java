@@ -4,6 +4,15 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.mailinglist;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
+
+import org.openuss.mail.RecipientInfo;
+import org.openuss.security.User;
+
 /**
  * @see org.openuss.mail.MailingList
  */
@@ -26,7 +35,21 @@ public class MailingListDaoImpl extends MailingListDaoBase
      */
     public MailingListInfo toMailingListInfo(final MailingList entity)
     {
-        return super.toMailingListInfo(entity);
+        MailingListInfo mli = super.toMailingListInfo(entity);
+        Set<User> recipients= entity.getRecipients();
+        Iterator i = recipients.iterator();
+        Collection<RecipientInfo> riList = new ArrayList<RecipientInfo>();
+        User user;
+        while(i.hasNext()){
+        	user = (User)i.next();
+        	RecipientInfo ri = new RecipientInfo();
+        	ri.setId(user.getId());
+        	ri.setName(user.getUsername());
+        	ri.setEmail(user.getEmail());
+        	riList.add(ri);
+        }
+        mli.setRecipients(riList);
+        return mli;
     }
 
 
@@ -37,17 +60,12 @@ public class MailingListDaoImpl extends MailingListDaoBase
      */
     private MailingList loadMailingListFromMailingListInfo(MailingListInfo mailingListInfo)
     {
-        // @todo implement loadMailingListFromMailingListInfo
-        throw new java.lang.UnsupportedOperationException("loadMailingListFromMailingListInfo(MailingListInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
         MailingList mailingList = this.load(mailingListInfo.getId());
         if (mailingList == null)
         {
             mailingList = MailingList.Factory.newInstance();
         }
         return mailingList;
-        */
     }
 
     
@@ -74,5 +92,18 @@ public class MailingListDaoImpl extends MailingListDaoBase
         // @todo verify behavior of mailingListInfoToEntity
         super.mailingListInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
+
+
+	@Override
+	protected MailingListInfo handleGetByDomainIdentifier(Long domainIdentifier) throws Exception {
+        MailingList mailingList = this.findByDomainIdentity(domainIdentifier);
+        if (mailingList == null)
+        {
+            mailingList = MailingList.Factory.newInstance();
+            mailingList.setDomainIdentity(domainIdentifier);
+            this.create(mailingList);
+        }
+        return this.toMailingListInfo(mailingList);
+	}
 
 }
