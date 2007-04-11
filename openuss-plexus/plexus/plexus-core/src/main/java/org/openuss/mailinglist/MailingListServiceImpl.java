@@ -5,10 +5,12 @@
  */
 package org.openuss.mailinglist;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.commons.lang.Validate;
+import org.openuss.foundation.DomainObject;
 import org.openuss.mail.MailInfo;
 import org.openuss.mail.RecipientInfo;
 import org.openuss.security.User;
@@ -21,10 +23,11 @@ public class MailingListServiceImpl extends MailingListServiceBase {
 	/**
 	 * @see org.openuss.mail.MailingListService#getMailingList(java.lang.Long)
 	 */
-	protected MailingListInfo handleGetMailingList(Long domainIdentifier) throws Exception {
-		// FIXME paramter should be object not long
-		Validate.notNull(domainIdentifier);
-		return (MailingListInfo) getMailingListDao().load(MailingListDao.TRANSFORM_MAILINGLISTINFO, domainIdentifier);
+	protected MailingListInfo handleGetMailingList(DomainObject domainObject) throws Exception {
+		Validate.notNull(domainObject.getId());
+		MailingListInfo mli = new MailingListInfo();
+		mli.setDomainIdentity(domainObject.getId());
+		return getMailingListDao().getByDomainIdentifier(domainObject.getId());
 
 	}
 
@@ -35,13 +38,20 @@ public class MailingListServiceImpl extends MailingListServiceBase {
 	protected void handleAddUserToMailingList(User user, MailingListInfo mailingList) throws Exception {
 		Validate.notNull(user);
 		Validate.notNull(mailingList);
+		Validate.notNull(mailingList.getId());
+		MailingList ml = getMailingListDao().load(mailingList.getId());
 		RecipientInfo ri = new RecipientInfo();
 		ri.setName(user.getUsername());
+		ri.setId(user.getId());
 		ri.setEmail(user.getEmail());
 		Collection<RecipientInfo> recipients = mailingList.getRecipients();
+		if (recipients==null) recipients = new ArrayList<RecipientInfo>();
 		recipients.add(ri);
 		mailingList.setRecipients(recipients);
-		getMailingListDao().update(getMailingListDao().mailingListInfoToEntity(mailingList));
+		Set<User> mlRecipients = ml.getRecipients();
+		mlRecipients.add(user);
+		ml.setRecipients(mlRecipients);
+		getMailingListDao().update(ml);
 	}
 
 	/**
@@ -51,13 +61,12 @@ public class MailingListServiceImpl extends MailingListServiceBase {
 	protected void handleRemoveUserFromMailingList(User user, MailingListInfo mailingList) throws Exception {
 		Validate.notNull(user);
 		Validate.notNull(mailingList);
-		Collection<RecipientInfo> recipients = mailingList.getRecipients();
-		Iterator i = recipients.iterator();
-		while (i.hasNext()) {
-			RecipientInfo ri = (RecipientInfo) i.next();
-			if (ri.getName().equals(user.getUsername()) && ri.getEmail().equals(user.getEmail()))
-				recipients.remove(ri);
-		}
+		Validate.notNull(mailingList.getId());		
+		MailingList ml = getMailingListDao().load(mailingList.getId());
+		Set<User> mlRecipients = ml.getRecipients();
+		mlRecipients.remove(user);
+		getMailingListDao().update(ml);
+		mailingList = getMailingListDao().toMailingListInfo(ml);
 	}
 
 	/**
