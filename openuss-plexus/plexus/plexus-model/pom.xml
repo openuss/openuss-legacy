@@ -70,7 +70,7 @@
 				</executions>
 				<configuration>
 					<configurationUri>
-						${pom.basedir}/src/main/config/andromda.xml
+						${pom.basedir}/src/main/config/${andromda.config}
 					</configurationUri>
 				</configuration>
 			</plugin>
@@ -78,6 +78,7 @@
 	</build>
 
 	<properties>
+		<andromda.config>andromda.xml</andromda.config>
 		<model.uri>
 			jar:file:${project.build.sourceDirectory}/plexus.xml.zip!/plexus.xml
 		</model.uri>
