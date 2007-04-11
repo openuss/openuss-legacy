@@ -4,6 +4,16 @@
 			<arg line="-e -o generate-sources"/>
 		</exec>
 	</target>
+	<target name="generate-sources ORG::OPENUSS::SYSTEM">
+		<exec executable="mvn.bat">
+			<arg line="-e -o generate-sources -Dandromda.config=andromda-system.xml "/>
+		</exec>
+	</target>
+	<target name="generate-sources ORG::OPENUSS::MAILINGLIST">
+		<exec executable="mvn.bat">
+			<arg line="-e -o generate-sources -Dandromda.config=andromda-mailinglist.xml "/>
+		</exec>
+	</target>
 	<target name="compile">
 		<exec executable="mvn.bat">
 			<arg line="compile"/>
