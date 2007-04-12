@@ -9,12 +9,8 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-
-
-import org.openuss.lecture.Faculty;
+import org.apache.tools.mail.MailMessage;
 import org.openuss.lecture.LectureException;
-import org.openuss.mail.MailMessage;
-import org.openuss.mail.MailingJob;
 import org.openuss.web.Constants;
 import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
@@ -26,42 +22,42 @@ public class NewMailPage extends AbstractEnrollmentPage {
 	@Property(value = "#{mailingMessage}")
 	MailMessage mailMessage;
 	
-	@Property(value = "#{mailingJob}")
-	MailingJob mailingJob;
+//	@Property(value = "#{mailingJob}")
+//	MailingJob mailingJob;
 	
 	@Preprocess
 	public void preprocess() throws LectureException {
-		if (mailMessage==null){
-			mailMessage = org.openuss.mail.MailMessage.Factory.newInstance();
-			mailMessage.setMailMessage("example message");			
-		}
-		if (mailingJob==null){
-			mailingJob = org.openuss.mail.MailingJob.Factory.newInstance();
-			mailingJob.setMailTitle("MailTitle");
-			mailingJob.setSendingTime(new Timestamp(System.currentTimeMillis()));			
-		}
+//		if (mailMessage==null){
+//			mailMessage = org.openuss.mail.MailMessage.Factory.newInstance();
+//			mailMessage.setMailMessage("example message");			
+//		}
+//		if (mailingJob==null){
+//			mailingJob = org.openuss.mail.MailingJob.Factory.newInstance();
+//			mailingJob.setMailTitle("MailTitle");
+//			mailingJob.setSendingTime(new Timestamp(System.currentTimeMillis()));			
+//		}
 	}
 	
 	@Prerender
 	public void prerender() throws LectureException {
-		if (mailMessage==null){
-			mailMessage = org.openuss.mail.MailMessage.Factory.newInstance();
-			mailMessage.setMailMessage("example message");			
-		}
-		if (mailingJob==null){
-			mailingJob = org.openuss.mail.MailingJob.Factory.newInstance();
-			mailingJob.setMailTitle("MailTitle");
-			mailingJob.setSendingTime(new Timestamp(System.currentTimeMillis()));			
-		}
+//		if (mailMessage==null){
+//			mailMessage = org.openuss.mail.MailMessage.Factory.newInstance();
+//			mailMessage.setMailMessage("example message");			
+//		}
+//		if (mailingJob==null){
+//			mailingJob = org.openuss.mail.MailingJob.Factory.newInstance();
+//			mailingJob.setMailTitle("MailTitle");
+//			mailingJob.setSendingTime(new Timestamp(System.currentTimeMillis()));			
+//		}
 	}
 
-	public MailingJob getMailingJob() {
-		return mailingJob;
-	}
-
-	public void setMailingJob(MailingJob mailingJob) {
-		this.mailingJob = mailingJob;
-	}
+//	public MailingJob getMailingJob() {
+//		return mailingJob;
+//	}
+//
+//	public void setMailingJob(MailingJob mailingJob) {
+//		this.mailingJob = mailingJob;
+//	}
 
 	public MailMessage getMailMessage() {
 		return mailMessage;

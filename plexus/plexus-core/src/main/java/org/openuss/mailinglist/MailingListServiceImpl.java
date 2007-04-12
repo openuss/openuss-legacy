@@ -5,80 +5,121 @@
  */
 package org.openuss.mailinglist;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
-
-import org.apache.commons.lang.Validate;
-import org.openuss.foundation.DomainObject;
-import org.openuss.mail.MailInfo;
-import org.openuss.mail.RecipientInfo;
-import org.openuss.security.User;
-
 /**
- * @see org.openuss.mail.MailingListService
+ * @see org.openuss.mailinglist.MailingListService
  */
-public class MailingListServiceImpl extends MailingListServiceBase {
+public class MailingListServiceImpl
+    extends org.openuss.mailinglist.MailingListServiceBase
+{
 
-	/**
-	 * @see org.openuss.mail.MailingListService#getMailingList(java.lang.Long)
-	 */
-	protected MailingListInfo handleGetMailingList(DomainObject domainObject) throws Exception {
-		Validate.notNull(domainObject.getId());
-		MailingListInfo mli = new MailingListInfo();
-		mli.setDomainIdentity(domainObject.getId());
-		return getMailingListDao().getByDomainIdentifier(domainObject.getId());
+    /**
+     * @see org.openuss.mailinglist.MailingListService#subscribe(org.openuss.foundation.DomainObject, org.openuss.security.User)
+     */
+    protected void handleSubscribe(org.openuss.foundation.DomainObject domainObject, org.openuss.security.User user)
+        throws java.lang.Exception
+    {
+        // @todo implement protected void handleSubscribe(org.openuss.foundation.DomainObject domainObject, org.openuss.security.User user)
+        throw new java.lang.UnsupportedOperationException("org.openuss.mailinglist.MailingListService.handleSubscribe(org.openuss.foundation.DomainObject domainObject, org.openuss.security.User user) Not implemented!");
+    }
 
-	}
+    /**
+     * @see org.openuss.mailinglist.MailingListService#unsubscribe(org.openuss.foundation.DomainObject, org.openuss.security.User)
+     */
+    protected void handleUnsubscribe(org.openuss.foundation.DomainObject domainObject, org.openuss.security.User user)
+        throws java.lang.Exception
+    {
+        // @todo implement protected void handleUnsubscribe(org.openuss.foundation.DomainObject domainObject, org.openuss.security.User user)
+        throw new java.lang.UnsupportedOperationException("org.openuss.mailinglist.MailingListService.handleUnsubscribe(org.openuss.foundation.DomainObject domainObject, org.openuss.security.User user) Not implemented!");
+    }
 
-	/**
-	 * @see org.openuss.mail.MailingListService#addUserToMailingList(org.openuss.security.UserInfo,
-	 *      org.openuss.mail.MailingListInfo)
-	 */
-	protected void handleAddUserToMailingList(User user, MailingListInfo mailingList) throws Exception {
-		Validate.notNull(user);
-		Validate.notNull(mailingList);
-		Validate.notNull(mailingList.getId());
-		MailingList ml = getMailingListDao().load(mailingList.getId());
-		RecipientInfo ri = new RecipientInfo();
-		ri.setName(user.getUsername());
-		ri.setId(user.getId());
-		ri.setEmail(user.getEmail());
-		Collection<RecipientInfo> recipients = mailingList.getRecipients();
-		if (recipients==null) recipients = new ArrayList<RecipientInfo>();
-		recipients.add(ri);
-		mailingList.setRecipients(recipients);
-		Set<User> mlRecipients = ml.getRecipients();
-		mlRecipients.add(user);
-		ml.setRecipients(mlRecipients);
-		getMailingListDao().update(ml);
-	}
+    /**
+     * @see org.openuss.mailinglist.MailingListService#unsubscribe(org.openuss.mailinglist.SubscriberInfo)
+     */
+    protected void handleUnsubscribe(org.openuss.mailinglist.SubscriberInfo subscriber)
+        throws java.lang.Exception
+    {
+        // @todo implement protected void handleUnsubscribe(org.openuss.mailinglist.SubscriberInfo subscriber)
+        throw new java.lang.UnsupportedOperationException("org.openuss.mailinglist.MailingListService.handleUnsubscribe(org.openuss.mailinglist.SubscriberInfo subscriber) Not implemented!");
+    }
 
-	/**
-	 * @see org.openuss.mail.MailingListService#removeUserFromMailingList(org.openuss.security.UserInfo,
-	 *      org.openuss.mail.MailingListInfo)
-	 */
-	protected void handleRemoveUserFromMailingList(User user, MailingListInfo mailingList) throws Exception {
-		Validate.notNull(user);
-		Validate.notNull(mailingList);
-		Validate.notNull(mailingList.getId());		
-		MailingList ml = getMailingListDao().load(mailingList.getId());
-		Set<User> mlRecipients = ml.getRecipients();
-		mlRecipients.remove(user);
-		getMailingListDao().update(ml);
-		mailingList = getMailingListDao().toMailingListInfo(ml);
-	}
+    /**
+     * @see org.openuss.mailinglist.MailingListService#setBlockingState(org.openuss.mailinglist.SubscriberInfo)
+     */
+    protected void handleSetBlockingState(org.openuss.mailinglist.SubscriberInfo subscriber)
+        throws java.lang.Exception
+    {
+        // @todo implement protected void handleSetBlockingState(org.openuss.mailinglist.SubscriberInfo subscriber)
+        throw new java.lang.UnsupportedOperationException("org.openuss.mailinglist.MailingListService.handleSetBlockingState(org.openuss.mailinglist.SubscriberInfo subscriber) Not implemented!");
+    }
 
-	/**
-	 * @see org.openuss.mail.MailingListService#sendMail(org.openuss.mail.MailInfo,
-	 *      org.openuss.mail.MailingListInfo)
-	 */
-	protected void handleSendMail(MailInfo mail, MailingListInfo mailingList) throws Exception {
-		// @todo implement protected void
-		// handleSendMail(org.openuss.mail.MailInfo mail,
-		// org.openuss.mail.MailingListInfo mailingList)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.mail.MailingListService.handleSendMail(org.openuss.mail.MailInfo mail, org.openuss.mail.MailingListInfo mailingList) Not implemented!");
-	}
+    /**
+     * @see org.openuss.mailinglist.MailingListService#getSubscribers(org.openuss.foundation.DomainObject)
+     */
+    protected java.util.List handleGetSubscribers(org.openuss.foundation.DomainObject domainObject)
+        throws java.lang.Exception
+    {
+        // @todo implement protected java.util.List handleGetSubscribers(org.openuss.foundation.DomainObject domainObject)
+        return null;
+    }
+
+    /**
+     * @see org.openuss.mailinglist.MailingListService#saveMail(org.openuss.foundation.DomainObject, org.openuss.mailinglist.MailDetail)
+     */
+    protected void handleSaveMail(org.openuss.foundation.DomainObject domainObject, org.openuss.mailinglist.MailDetail mail)
+        throws java.lang.Exception
+    {
+        // @todo implement protected void handleSaveMail(org.openuss.foundation.DomainObject domainObject, org.openuss.mailinglist.MailDetail mail)
+        throw new java.lang.UnsupportedOperationException("org.openuss.mailinglist.MailingListService.handleSaveMail(org.openuss.foundation.DomainObject domainObject, org.openuss.mailinglist.MailDetail mail) Not implemented!");
+    }
+
+    /**
+     * @see org.openuss.mailinglist.MailingListService#deleteMail(org.openuss.foundation.DomainObject, org.openuss.mailinglist.MailDetail)
+     */
+    protected void handleDeleteMail(org.openuss.foundation.DomainObject domainObject, org.openuss.mailinglist.MailDetail mail)
+        throws java.lang.Exception
+    {
+        // @todo implement protected void handleDeleteMail(org.openuss.foundation.DomainObject domainObject, org.openuss.mailinglist.MailDetail mail)
+        throw new java.lang.UnsupportedOperationException("org.openuss.mailinglist.MailingListService.handleDeleteMail(org.openuss.foundation.DomainObject domainObject, org.openuss.mailinglist.MailDetail mail) Not implemented!");
+    }
+
+    /**
+     * @see org.openuss.mailinglist.MailingListService#sendPreview(org.openuss.mailinglist.MailDetail)
+     */
+    protected void handleSendPreview(org.openuss.mailinglist.MailDetail mail)
+        throws java.lang.Exception
+    {
+        // @todo implement protected void handleSendPreview(org.openuss.mailinglist.MailDetail mail)
+        throw new java.lang.UnsupportedOperationException("org.openuss.mailinglist.MailingListService.handleSendPreview(org.openuss.mailinglist.MailDetail mail) Not implemented!");
+    }
+
+    /**
+     * @see org.openuss.mailinglist.MailingListService#getMails(org.openuss.foundation.DomainObject)
+     */
+    protected java.util.List handleGetMails(org.openuss.foundation.DomainObject domainObject)
+        throws java.lang.Exception
+    {
+        // @todo implement protected java.util.List handleGetMails(org.openuss.foundation.DomainObject domainObject)
+        return null;
+    }
+
+    /**
+     * @see org.openuss.mailinglist.MailingListService#getMail(org.openuss.mailinglist.MailInfo)
+     */
+    protected org.openuss.mailinglist.MailDetail handleGetMail(org.openuss.mailinglist.MailInfo mail)
+        throws java.lang.Exception
+    {
+        // @todo implement protected org.openuss.mailinglist.MailDetail handleGetMail(org.openuss.mailinglist.MailInfo mail)
+        return null;
+    }
+
+    /**
+     * @see org.openuss.mailinglist.MailingListService#sendMail(org.openuss.mailinglist.MailInfo)
+     */
+    protected void handleSendMail(org.openuss.mailinglist.MailInfo mail)
+        throws java.lang.Exception
+    {
+        // @todo implement protected void handleSendMail(org.openuss.mailinglist.MailInfo mail)
+        throw new java.lang.UnsupportedOperationException("org.openuss.mailinglist.MailingListService.handleSendMail(org.openuss.mailinglist.MailInfo mail) Not implemented!");
+    }
 
 }

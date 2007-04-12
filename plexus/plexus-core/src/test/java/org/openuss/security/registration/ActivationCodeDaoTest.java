@@ -8,13 +8,15 @@ package org.openuss.security.registration;
 import java.sql.Timestamp;
 
 import org.openuss.TestUtility;
+import org.openuss.registration.ActivationCode;
+import org.openuss.registration.ActivationCodeDaoTestBase;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
 
 
 /**
  * JUnit Test for Spring Hibernate ActivationCodeDao class.
- * @see org.openuss.security.registration.ActivationCodeDao
+ * @see org.openuss.registration.ActivationCodeDao
  */
 public class ActivationCodeDaoTest extends ActivationCodeDaoTestBase {
 	

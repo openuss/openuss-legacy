@@ -5,8 +5,8 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.openuss.framework.web.jsf.controller.BaseBean;
-import org.openuss.security.registration.RegistrationCodeNotFoundException;
-import org.openuss.security.registration.RegistrationService;
+import org.openuss.registration.RegistrationCodeNotFoundException;
+import org.openuss.registration.RegistrationService;
 import org.openuss.web.Constants;
 
 /**

@@ -7,7 +7,6 @@ insert into SECURITY_GROUP (ID, NAME, LABEL, GROUP_TYPE) values (-2, 'ROLE_USER'
 insert into SECURITY_GROUP (ID, NAME, LABEL, GROUP_TYPE) values (-3, 'ROLE_ASSISTANT', 'ASSISTANT', 1);
 insert into SECURITY_GROUP (ID, NAME, LABEL, GROUP_TYPE) values (-4, 'ROLE_ADMIN', 'ADMINISTRATOR', 1);
 
-/* define administrator super permission on system object */
 insert into SECURITY_PERMISSION (ID, MASK, ACL_OBJECT_IDENTITY_FK, RECIPIENT_FK) values (1, 32767, 0, -4);
 insert into SECURITY_OBJECT_IDENTITY (ID, PARENT_FK) VALUES (0, null);
 
