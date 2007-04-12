@@ -39,10 +39,17 @@ public class BrainContestImpl extends BrainContestBase implements BrainContest {
 			answer.setContest(this);
 		}
 	}
+	
+	
+
+	@Override
+	public String getSolution() {
+		return super.getSolution().trim();
+	}
 
 	@Override
 	public boolean validateAnswer(String answer) {
 		setTries(getTries()+1);
-		return StringUtils.equalsIgnoreCase(answer, getSolution());
+		return StringUtils.equalsIgnoreCase(answer.trim(), getSolution());
 	}
 }
