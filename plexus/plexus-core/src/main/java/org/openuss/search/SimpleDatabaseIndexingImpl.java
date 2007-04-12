@@ -49,7 +49,7 @@ public class SimpleDatabaseIndexingImpl implements InitializingBean, SimpleDatab
 					String content = rs.getString(col);
 					if (StringUtils.isNotBlank(content)) {
 						sb.append(content);
-						sb.append("|+|");
+						sb.append(" ");
 					}
 				}
 				document.add(new Field("CONTENT", sb.toString(), Field.Store.YES, Field.Index.TOKENIZED));

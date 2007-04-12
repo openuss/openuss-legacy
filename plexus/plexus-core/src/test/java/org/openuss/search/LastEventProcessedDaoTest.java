@@ -5,6 +5,8 @@
  */
 package org.openuss.search;
 
+import java.util.Date;
+
 
 /**
  * JUnit Test for Spring Hibernate LastEventProcessedDao class.
@@ -13,10 +15,19 @@ package org.openuss.search;
 public class LastEventProcessedDaoTest extends LastEventProcessedDaoTestBase {
 	
 	public void testLastEventProcessedDaoCreate() {
-		//TODO write test with assigned id
-		/*LastEventProcessed lastEventProcessed = new LastEventProcessedImpl();
-		assertNull(lastEventProcessed.getId());
+		
+		IndexEvent indexEvent = IndexEvent.Factory.newInstance();
+		indexEvent.setEventType(IndexEventType.CREATE);
+		indexEvent.setEventTime(new Date());
+		indexEvent.setDomainIdentifier(1234L);
+		indexEvent.setCommandName("commandName");
+		
+		LastEventProcessed lastEventProcessed = LastEventProcessed.Factory.newInstance();
+		lastEventProcessed.setId(120L);
+		lastEventProcessed.setLast(indexEvent);
+		
+		assertNull(lastEventProcessed.getLast().getId());
 		lastEventProcessedDao.create(lastEventProcessed);
-		assertNotNull(lastEventProcessed.getId());*/
+		assertNotNull(lastEventProcessed.getLast().getId());
 	}
 }

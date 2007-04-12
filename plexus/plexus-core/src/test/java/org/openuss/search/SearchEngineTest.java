@@ -36,6 +36,7 @@ public class SearchEngineTest extends AbstractTransactionalDataSourceSpringConte
 			"classpath*:applicationContext-tests.xml",
 			"classpath*:applicationContext-lucene.xml",
 			"classpath*:applicationContext-cache.xml",
+			"classpath*:applicationContext-legacy.xml",
 			"classpath*:beanRefFactory",
 			"classpath*:testSecurity.xml",
 			"classpath*:testDataSource.xml"};

@@ -39,5 +39,6 @@
 		<constructor-arg index="0" ref="searcherFactory"/>
 		<constructor-arg index="1" ref="analyzer" />
 	</bean>	
+	
 
 </beans>
