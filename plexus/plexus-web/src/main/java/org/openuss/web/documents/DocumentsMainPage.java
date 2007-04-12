@@ -12,6 +12,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.comparators.ComparatorChain;
 import org.apache.commons.collections.comparators.ReverseComparator;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -91,8 +92,10 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 				chain.addComparator(new ReverseComparator(folderComparator));
 			}
 			
-			if (getSortColumn() != null) {
+			if (StringUtils.isNotBlank(getSortColumn())) {
 				chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
+			} else {
+				chain.addComparator(new PropertyComparator("name", true, isAscending()));
 			}
 			Collections.sort(list, chain);
 		}
