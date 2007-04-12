@@ -38,6 +38,7 @@
 	    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     				Quartz
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
@@ -55,7 +56,6 @@
 		<property name="startDelay" value="10000"/>
 		<property name="repeatInterval" value="30000"/>
 	</bean>
-	
 	<bean id="mailSendingQuartzBean" class="org.openuss.mail.MailSendingQuartzBean" >	
 		<property name="mailService"><ref bean="mailService"/></property>		
 		<property name="mimeMessageHelper"><ref bean="mimeMessageHelper"/></property>		
@@ -68,5 +68,6 @@
 		<property name="targetMethod" value="send"/>
 		<property name="concurrent" value="false"/>
 	</bean>
+	 -->
 
 </beans>

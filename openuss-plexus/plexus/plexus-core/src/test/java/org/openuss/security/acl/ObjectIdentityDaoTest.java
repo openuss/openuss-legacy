@@ -53,7 +53,7 @@ public class ObjectIdentityDaoTest extends ObjectIdentityDaoTestBase {
 		assertEquals(level2, loaded.getParent());
 		assertEquals(level1, loaded.getParent().getParent());
 		assertEquals(root, loaded.getParent().getParent().getParent());
-		assertNull(loaded.getParent().getParent().getParent().getParent());
+		assertTrue(ObjectIdentityImpl.SYSTEM_OBJECT_IDENTITY == loaded.getParent().getParent().getParent().getParent().getId());
 		
 		objectIdentityDao.remove(root.getId());
 		
