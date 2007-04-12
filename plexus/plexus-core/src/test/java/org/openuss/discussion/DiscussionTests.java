@@ -11,6 +11,7 @@ public class DiscussionTests {
 		suite.addTestSuite(DiscussionServiceIntegrationTest.class);
 		suite.addTestSuite(DiscussionWatchDaoTest.class);
 		suite.addTestSuite(FormulaDaoTest.class);
+		suite.addTestSuite(ForumDaoTest.class);
 		suite.addTestSuite(ForumWatchDaoTest.class);
 		suite.addTestSuite(TopicDaoTest.class);
 		suite.addTestSuite(PostDaoTest.class);

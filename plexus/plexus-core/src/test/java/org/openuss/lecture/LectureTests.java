@@ -9,14 +9,14 @@ public class LectureTests {
 		TestSuite suite = new TestSuite("Test for org.openuss.lecture");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(EnrollmentDaoTest.class);
-		suite.addTestSuite(LectureServiceTest.class);
-		suite.addTestSuite(SubjectDaoTest.class);
-		suite.addTestSuite(PeriodDaoTest.class);
-		suite.addTestSuite(LectureIntegrationTest.class);
-		suite.addTestSuite(FacultyDaoTest.class);
-		suite.addTestSuite(LectureServiceIntegrationTest.class);
 		suite.addTestSuite(EnrollmentMemberDaoTest.class);
 		suite.addTestSuite(EnrollmentServiceIntegrationTest.class);
+		suite.addTestSuite(FacultyDaoTest.class);
+		suite.addTestSuite(LectureIntegrationTest.class);
+		suite.addTestSuite(LectureServiceIntegrationTest.class);
+		suite.addTestSuite(LectureServiceTest.class);
+		suite.addTestSuite(PeriodDaoTest.class);
+		suite.addTestSuite(SubjectDaoTest.class);
 		//$JUnit-END$
 		return suite;
 	}

@@ -9,7 +9,12 @@ public class MessagingTests {
 		TestSuite suite = new TestSuite("Test for org.openuss.messaging");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(MessageDaoTest.class);
-		suite.addTestSuite(MessageDaoTest.class);
+		suite.addTestSuite(MessageJobDaoTest.class);
+		suite.addTestSuite(MessageServiceIntegrationTest.class);
+		suite.addTestSuite(RecipientDaoTest.class);
+		suite.addTestSuite(TemplateMessageDaoTest.class);
+		suite.addTestSuite(TemplateParameterDaoTest.class);
+		suite.addTestSuite(TextMessageDaoTest.class);
 		//$JUnit-END$
 		return suite;
 	}
