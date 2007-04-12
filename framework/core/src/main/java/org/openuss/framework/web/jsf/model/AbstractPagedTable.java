@@ -140,6 +140,8 @@ public abstract class AbstractPagedTable<T> extends BaseBean {
 		state.rowsPerPage = rowsPerPage;
 	}
 
+	private boolean firstRowChecked = false;
+	
 	public int getFirstRow() {
 		// Should check if the firstRow index greater then datasize
 		// This may only happen within the render-response phase.
@@ -147,15 +149,17 @@ public abstract class AbstractPagedTable<T> extends BaseBean {
 		// LocalDataModel model = (LocalDataModel) getData();
 		// state.firstRow = model.checkFirstRow(state.firstRow);
 		// DONE - id 21.03.2007 - see PagedListPhaseListener
-		logger.debug("getFirstRow() <--------------------------------");
-		if (isBeforeRenderResponse()) {
+		if (isInRenderResponsePhase() && !firstRowChecked) {
 			logger.debug("checking first row");
 			state.firstRow = ((LocalDataModel) getData()).checkFirstRow(state.firstRow);
+			firstRowChecked = true;
+		} else if (!isInRenderResponsePhase()){
+			firstRowChecked = false;
 		}
 		return state.firstRow;
 	}
 
-	private boolean isBeforeRenderResponse() {
+	private boolean isInRenderResponsePhase() {
 		return PhaseId.RENDER_RESPONSE.equals(PagedListPhaseListener.currentPhase());
 	}
 
