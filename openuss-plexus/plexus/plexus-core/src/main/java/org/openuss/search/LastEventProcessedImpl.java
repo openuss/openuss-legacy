@@ -8,13 +8,10 @@ package org.openuss.search;
 /**
  * @see org.openuss.search.LastEventProcessed
  */
-public class LastEventProcessedImpl
-    extends org.openuss.search.LastEventProcessedBase
-	implements org.openuss.search.LastEventProcessed
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = 4747248044401399222L;
+public class LastEventProcessedImpl extends LastEventProcessedBase implements LastEventProcessed {
+	/**
+	 * The serial version UID of this class. Needed for serialization.
+	 */
+	private static final long serialVersionUID = 4747248044401399222L;
 
 }

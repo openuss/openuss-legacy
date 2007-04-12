@@ -8,13 +8,10 @@ package org.openuss.search;
 /**
  * @see org.openuss.search.IndexEvent
  */
-public class IndexEventImpl
-    extends org.openuss.search.IndexEventBase
-	implements org.openuss.search.IndexEvent
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = -4685512997384630354L;
+public class IndexEventImpl extends IndexEventBase implements IndexEvent {
+	/**
+	 * The serial version UID of this class. Needed for serialization.
+	 */
+	private static final long serialVersionUID = -4685512997384630354L;
 
 }
