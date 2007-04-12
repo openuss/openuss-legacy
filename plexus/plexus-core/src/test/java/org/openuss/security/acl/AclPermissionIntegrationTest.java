@@ -38,7 +38,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 
 	private Faculty faculty;
 	
-	private Group roleAdmin;
+	private Group roleUser;
 	private Group groupFaculty;
 	
 	private EhCacheBasedUserCache cache ;
@@ -75,7 +75,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		Permission permission = Permission.Factory.newInstance();
 		permission.setAclObjectIdentity(oi);
 		permission.setMask(SimpleAclEntry.READ | SimpleAclEntry.ADMINISTRATION);
-		permission.setRecipient(roleAdmin);
+		permission.setRecipient(roleUser);
 
 		objectIdentityDao.create(oi);
 
@@ -110,7 +110,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		Permission permission = Permission.Factory.newInstance();
 		permission.setAclObjectIdentity(oi);
 		permission.setMask(SimpleAclEntry.READ | SimpleAclEntry.ADMINISTRATION);
-		permission.setRecipient(roleAdmin);
+		permission.setRecipient(roleUser);
 
 		objectIdentityDao.create(oi);
 		oi.addPermission(permission);
@@ -179,14 +179,14 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		user.setEmail("email");
 		user.setEnabled(true);
 		
-		roleAdmin = groupDao.load(Roles.ADMINISTRATOR.getId());
-		user.addGroup(roleAdmin);
-		roleAdmin.addMember(user);
+		roleUser = groupDao.load(Roles.USER_ID);
+		user.addGroup(roleUser);
+		roleUser.addMember(user);
 		userDao.create(user);
-		groupDao.create(roleAdmin);
+		groupDao.create(roleUser);
 
 		assertNotNull(user.getId());
-		assertNotNull(roleAdmin.getId());
+		assertNotNull(roleUser.getId());
 		
 		
 		groupFaculty = Group.Factory.newInstance();

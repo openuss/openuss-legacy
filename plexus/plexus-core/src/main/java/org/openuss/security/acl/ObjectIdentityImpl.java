@@ -11,7 +11,7 @@ package org.openuss.security.acl;
  */
 public class ObjectIdentityImpl extends ObjectIdentityBase implements ObjectIdentity {
 	
-	private static final long SYSTEM_OBJECT_IDENTITY = 0L;
+	public static final long SYSTEM_OBJECT_IDENTITY = 0L;
 	
 	/**
 	 * The serial version UID of this class. Needed for serialization.

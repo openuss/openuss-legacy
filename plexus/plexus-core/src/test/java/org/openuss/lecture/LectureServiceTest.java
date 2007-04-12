@@ -43,13 +43,13 @@ public class LectureServiceTest extends AbstractTransactionalDataSourceSpringCon
 	public void testDeniedAccess() {
 		logger.info("----> BEGIN denied access to createFaculty test");
 		try {
-			createSecureContext("ROLE_USER");
+			createSecureContext("ROLE_ANONYMOUS");
 			Faculty faculty = Faculty.Factory.newInstance();
 			try {
 				lectureService.persist(faculty);
 			} catch (LectureServiceException e) {
 				fail(e.getMessage());
-				e.printStackTrace();
+				logger.error(e);
 			}
 			fail("Should have thrown AccessDeniedException");
 		} catch (AccessDeniedException expected) {
@@ -73,8 +73,7 @@ public class LectureServiceTest extends AbstractTransactionalDataSourceSpringCon
 	}
 
 	private static void createSecureContext(String roleName) {
-		TestingAuthenticationToken authentication = new TestingAuthenticationToken("principal", "credentials",
-				new GrantedAuthority[] { new GrantedAuthorityImpl(roleName) });
+		TestingAuthenticationToken authentication = new TestingAuthenticationToken("principal", "credentials",	new GrantedAuthority[] { new GrantedAuthorityImpl(roleName) });
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 
