@@ -3,7 +3,7 @@
  * This is only generated once! It will never be overwritten.
  * You can (and have to!) safely modify it by hand.
  */
-package org.openuss.security.registration;
+package org.openuss.registration;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -13,6 +13,10 @@ import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.apache.log4j.Logger;
+import org.openuss.registration.ActivationCode;
+import org.openuss.registration.RegistrationCodeExpiredException;
+import org.openuss.registration.RegistrationCodeNotFoundException;
+import org.openuss.registration.RegistrationException;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
@@ -21,9 +25,9 @@ import org.openuss.security.UserImpl;
 
 /**
  * @author Ingo Dueppe
- * @see org.openuss.security.registration.RegistrationService
+ * @see org.openuss.registration.RegistrationService
  */
-public class RegistrationServiceImpl extends org.openuss.security.registration.RegistrationServiceBase {
+public class RegistrationServiceImpl extends org.openuss.registration.RegistrationServiceBase {
 
 	private static final Logger logger = Logger.getLogger(RegistrationServiceImpl.class);
 	

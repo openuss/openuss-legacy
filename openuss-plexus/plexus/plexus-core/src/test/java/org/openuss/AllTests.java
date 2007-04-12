@@ -8,8 +8,8 @@ import org.openuss.desktop.DesktopTests;
 import org.openuss.discussion.DiscussionTests;
 import org.openuss.documents.DocumentTests;
 import org.openuss.lecture.LectureTests;
-import org.openuss.mail.MailTests;
 import org.openuss.mailinglist.MailinglistTests;
+import org.openuss.messaging.MessagingTests;
 import org.openuss.news.NewsTests;
 import org.openuss.repository.RepositoryTests;
 import org.openuss.search.SearchTests;
@@ -29,7 +29,7 @@ public class AllTests {
 		suite.addTest(DesktopTests.suite());
 		suite.addTest(LectureTests.suite());
 		suite.addTest(DiscussionTests.suite());
-		suite.addTest(MailTests.suite());
+		suite.addTest(MessagingTests.suite());
 		suite.addTest(MailinglistTests.suite());
 		suite.addTest(SearchTests.suite());
 		suite.addTest(DocumentTests.suite());

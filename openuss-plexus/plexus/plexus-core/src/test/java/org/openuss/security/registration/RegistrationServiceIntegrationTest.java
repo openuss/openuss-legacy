@@ -9,6 +9,9 @@ import java.util.TimeZone;
 
 import org.openuss.TestUtility;
 import org.openuss.desktop.DesktopDao;
+import org.openuss.registration.RegistrationCodeNotFoundException;
+import org.openuss.registration.RegistrationException;
+import org.openuss.registration.RegistrationServiceIntegrationTestBase;
 import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
 import org.openuss.security.User;
@@ -20,7 +23,7 @@ import org.openuss.security.UserPreferencesDao;
 
 /**
  * JUnit Test for Spring Hibernate RegistrationService class.
- * @see org.openuss.security.registration.RegistrationService
+ * @see org.openuss.registration.RegistrationService
  */
 public class RegistrationServiceIntegrationTest extends RegistrationServiceIntegrationTestBase {
 	

@@ -41,5 +41,22 @@ public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
 	protected void handlePersistProperties(Collection properties) throws Exception {
 		getSystemPropertyDao().update(properties);
 	}
+	
+	/** 
+	 * This is the system instance identity, that must be unique with the cluster
+	 */
+	private static volatile Long instanceIdentity = 1L;
+
+	@Override
+	protected Long handleGetInstanceIdentity() throws Exception {
+		return instanceIdentity;
+	}
+
+	@Override
+	protected void handleSetInstanceIdentity(Long identity) throws Exception {
+		synchronized (SystemService.class) {
+			instanceIdentity = identity;
+		}
+	}
 
 }

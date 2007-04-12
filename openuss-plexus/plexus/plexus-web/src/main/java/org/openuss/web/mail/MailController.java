@@ -6,17 +6,15 @@ import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.openuss.framework.web.jsf.controller.BaseBean;
-import org.openuss.mail.MailService;
 import org.openuss.security.User;
 
 @Bean(name="mailController", scope=Scope.APPLICATION)
 public class MailController extends BaseBean{
 	
-	@Property(value="#{mailService}")
-	public MailService mailService;
+//	@Property(value="#{mailService}")
+//	public MailService mailService;
 
 	private static final Logger logger = Logger.getLogger(MailController.class);
 	
@@ -30,14 +28,14 @@ public class MailController extends BaseBean{
 			
 		}
 		
-		mailService.sendMails(localSubject, templateName, model, user.getEmail() );
+//		mailService.sendMails(localSubject, templateName, model, user.getEmail() );
 	}
 
-	public MailService getMailService() {
-		return mailService;
-	}
-
-	public void setMailService(MailService mailService) {
-		this.mailService = mailService;
-	}
+//	public MailService getMessageService() {
+//		return mailService;
+//	}
+//
+//	public void setMailService(MailService mailService) {
+//		this.mailService = mailService;
+//	}
 }
