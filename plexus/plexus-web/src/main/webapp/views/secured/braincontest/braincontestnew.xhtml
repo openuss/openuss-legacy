@@ -49,7 +49,7 @@
 								var="attachment" 
 								value="#{sessionScope.braincontest_contest.attachments}" 
 								binding="${views$secured$braincontest$braincontestnew.attachmentList}">
-						  		<h:commandButton value="delete"
+						  		<h:commandButton value="#{msg.attachment_delete}" title="#{msg.attachment_delete_hint}"
 									action="#{views$secured$braincontest$braincontestnew.removeAttachment}"
 									immediate="true" styleClass="button_remove" />
 						  		&#160;
