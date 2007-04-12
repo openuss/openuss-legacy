@@ -45,7 +45,7 @@
 								var="attachment" 
 								value="#{sessionScope.discussion_discussionentry.attachments}" 
 								binding="${views$secured$discussion$discussionnew.attachmentList}">
-						  		<h:commandButton value="delete"
+						  		<h:commandButton value="#{msg.attachment_delete}" title="#{msg.attachment_delete_hint}"
 									action="#{views$secured$discussion$discussionnew.removeAttachment}"
 									immediate="true" styleClass="button_remove" />
 						  		&#160;

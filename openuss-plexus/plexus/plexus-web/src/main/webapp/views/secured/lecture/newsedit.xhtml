@@ -61,7 +61,7 @@
 							var="attachment" 
 							value="#{sessionScope.news_selected_newsitem.attachments}" 
 							binding="${views$secured$lecture$newsedit.attachmentList}">
-					  		<h:commandButton value="delete"
+					  		<h:commandButton value="#{msg.attachment_delete}" title="#{msg.attachment_delete_hint}"
 								action="#{views$secured$lecture$newsedit.removeAttachment}"
 								immediate="true" styleClass="button_remove" />
 					  		&#160;
