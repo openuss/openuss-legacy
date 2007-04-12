@@ -6,8 +6,6 @@ import junit.framework.TestSuite;
 import org.openuss.security.acl.AclPermissionIntegrationTest;
 import org.openuss.security.acl.ObjectIdentityDaoTest;
 import org.openuss.security.acl.PermissionDaoTest;
-import org.openuss.security.registration.ActivationCodeDaoTest;
-import org.openuss.security.registration.RegistrationServiceIntegrationTest;
 
 public class SecurityTests {
 
@@ -28,9 +26,6 @@ public class SecurityTests {
 		suite.addTestSuite(AclPermissionIntegrationTest.class);
 		suite.addTestSuite(ObjectIdentityDaoTest.class);
 		suite.addTestSuite(PermissionDaoTest.class);
-		// registration package
-		suite.addTestSuite(ActivationCodeDaoTest.class);
-		suite.addTestSuite(RegistrationServiceIntegrationTest.class);
 		//$JUnit-END$
 		return suite;
 	}

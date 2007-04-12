@@ -10,9 +10,6 @@ public class NewsTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(NewsItemTest.class);
 		suite.addTestSuite(NewsItemDaoTest.class);
-//		suite.addTestSuite(NewsCategoryDaoTest.class);
-//		suite.addTestSuite(NewsPublisherDaoTest.class);
-//		suite.addTestSuite(NewsServiceInputValidationTest.class);
 		suite.addTestSuite(NewsServiceIntegrationTest.class);
 		//$JUnit-END$
 		return suite;

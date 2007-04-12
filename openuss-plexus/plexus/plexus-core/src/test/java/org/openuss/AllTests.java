@@ -10,6 +10,8 @@ import org.openuss.documents.DocumentTests;
 import org.openuss.lecture.LectureTests;
 import org.openuss.mailinglist.MailinglistTests;
 import org.openuss.messaging.MessagingTests;
+import org.openuss.migration.MigrationServiceIntegrationTest;
+import org.openuss.migration.MigrationTests;
 import org.openuss.news.NewsTests;
 import org.openuss.registration.RegistrationTests;
 import org.openuss.repository.RepositoryTests;
@@ -17,6 +19,7 @@ import org.openuss.search.SearchTests;
 import org.openuss.security.SecurityTests;
 import org.openuss.system.SystemTests;
 import org.openuss.viewtracking.ViewTrackingTests;
+import org.openuss.wiki.WikiTests;
 
 public class AllTests {
 	public static Test suite() {
@@ -29,6 +32,7 @@ public class AllTests {
 		suite.addTest(LectureTests.suite());
 		suite.addTest(MailinglistTests.suite());
 		suite.addTest(MessagingTests.suite());
+		suite.addTest(MigrationTests.suite());
 		suite.addTest(NewsTests.suite());
 		suite.addTest(RegistrationTests.suite());
 		suite.addTest(RepositoryTests.suite());
@@ -36,6 +40,7 @@ public class AllTests {
 		suite.addTest(SecurityTests.suite());
 		suite.addTest(SystemTests.suite());
 		suite.addTest(ViewTrackingTests.suite());
+		suite.addTest(WikiTests.suite());
 		// $JUnit-END$
 		return suite;
 	}
