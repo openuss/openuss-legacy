@@ -7,6 +7,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:plexus="http://www.openuss.org/plexus/jsf">
       
  	<head>
@@ -36,7 +37,7 @@
 				     	columnClasses="col_max_left, col_commands_two"
 						styleClass="tabel"
 				     	rows="10">       
-				      
+				       
 						<t:column>
 							<plexus:commandSortHeader columnName="subject.name">
 								<h:outputFormat value="#{msg.faculty_main_active_enrollments_header}">
@@ -48,16 +49,18 @@
 								<h:outputText value="#{enrollment.subject.name} (#{enrollment.shortcut})"/>
 							</o:link>
 						</t:column>
-						
-						<plexus:column header="#{msg.commands_header}">		
-							<plexus:command  
-								bean="#{views$secured$lecture$faculty}"
-								action="shortcutEnrollment"
-								label="#{msg.enrollment_command_shortcut}"
-								title="#{msg.enrollment_command_shortcut_hint}"
-								styleClass="button_link">
-							</plexus:command>
-						</plexus:column>
+						  
+						<s:authorize ifAllGranted="ROLE_USER">
+							<plexus:column header="#{msg.commands_header}">		
+								<plexus:command  
+									bean="#{views$secured$lecture$faculty}"
+									action="shortcutEnrollment"
+									label="#{msg.enrollment_command_shortcut}"
+									title="#{msg.enrollment_command_shortcut_hint}"
+									styleClass="button_link">
+								</plexus:command>
+							</plexus:column>
+						</s:authorize>
 					</plexus:dataTable>
 				</h:form>
 			<br/>
