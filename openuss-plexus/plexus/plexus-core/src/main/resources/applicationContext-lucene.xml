@@ -22,10 +22,6 @@
 		<property name="analyzer" ref="analyzer"/>
 	</bean>
 	
-	<bean id="lectureIndexer" class="org.openuss.search.LectureIndexerImpl">
-		<property name="indexFactory" ref="indexFactory"/>
-	</bean>
-	
 	<bean id="indexingDatabase" class="org.openuss.search.SimpleDatabaseIndexingImpl">
 		<property name="indexFactory" ref="indexFactory"/>
 		<property name="dataSource"><ref bean="dataSource"/></property>
