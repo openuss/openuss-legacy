@@ -23,7 +23,6 @@
 
 	<modules>
 		<module>theme-core</module>
-		<module>theme-blue</module>
 		<module>theme-plexus</module>
 		<module>theme-plexus-none</module>
 		<module>theme-university-of-muenster</module>
