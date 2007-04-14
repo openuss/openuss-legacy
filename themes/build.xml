@@ -19,6 +19,4 @@
 			<arg line="eclipse:eclipse"/>
 		</exec>
 	</target>
-
-
 </project>
