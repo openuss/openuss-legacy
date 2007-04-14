@@ -158,7 +158,7 @@
 	 
 	<context-param>
 		<param-name>org.openuss.web.themes.DEFAULT_THEME_ID</param-name>
-		<param-value>blue</param-value>
+		<param-value>plexus</param-value>
 	</context-param>
 	
 
