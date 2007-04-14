@@ -12,7 +12,11 @@
     <plexus:dataTable id="discussionsThreadTable" label="#{msg.discussion_main_header}" 
     	value="views$secured$discussion$discussionthread.data" var="post" rows="10">
       
-		<t:column>
+		<t:column styleClass="col_post_author">
+			<f:facet name="header">  
+				#{msg['discussion_thread_column_author']} 
+			</f:facet>
+			<h:outputText value="#{post.submitter}" styleClass="user_name"/>
 			<h:graphicImage styleClass="userphoto"
 				value="/files?fileid=#{post.submitterPicture}"
 				title="#{post.submitter}" rendered="#{not empty post.submitterPicture}" />
@@ -22,54 +26,66 @@
 				title="#{msg.user_profile_no_image}"
 				rendered="#{empty post.submitterPicture}" />
 		</t:column>
-		<t:column>
-			<plexus:commandSortHeader columnName="author"> #{msg['discussion_thread_column_author']} </plexus:commandSortHeader>
-			<h:outputText value="#{post.submitter}"></h:outputText>			
-		</t:column>
-		<t:column>
-			<plexus:commandSortHeader columnName="text"> #{msg['discussion_thread_column_message']} </plexus:commandSortHeader>
-			<div class="content_font_normal">
-				<h:outputText value="#{post.created}" styleClass="content_font_normal">	
-					<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
-				</h:outputText>
-				<h:outputText value="#{post.title}" styleClass="header_font_normal" />
-				<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}" >
-					<plexus:command bean="#{views$secured$discussion$discussionthread}"
-						action="removePost" label="#{msg['discussion_thread_remove_post']}"
-						title="#{msg['discussion_thread_remove_post']}"
-						styleClass="button_remove"/>				
-				</s:acl>
-				<plexus:command bean="#{views$secured$discussion$discussionthread}"
-					action="editPost" label="#{msg['discussion_thread_edit_post']}"
-					title="#{msg['discussion_thread_edit_post']}"
-					styleClass="button_remove"/>
-				<plexus:command bean="#{views$secured$discussion$discussionthread}"
-					action="quote" label="#{msg['discussion_thread_quote']}"
-					title="#{msg['discussion_thread_quote']}"
-					styleClass="button_remove"/>
-			</div>
-			<hr />
-			<div class="content_font_normal">
-				<h:outputText value="#{post.text}" escape="false"/>
-			</div>	
-			<h:outputText value="#{msg.discussion_post_edited} #{post.editor} #{msg.discussion_post_edited2} #{post.lastModification}" rendered="#{post.isEdited}">
-				<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
-			</h:outputText>
-			<hr />
-			<f:subview rendered="#{!(empty post.attachments)}">
-					<div class="content_font_normal">
-						<t:dataList 
-							var="attachment" 
-							value="#{post.attachments}" >
-							<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
-								<f:param value="#{attachment.id}" name="fileid" />
-								<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
-						  		#{attachment.fileName} 
-						  	</o:link> 
-							<br/>	
-						</t:dataList>
-					</div>
-				</f:subview>	
+		<t:column styleClass="col_post">
+			<f:facet name="header">
+				#{msg['discussion_thread_column_message']} 
+			</f:facet>
+			<table>
+				<tr>
+					<td class="col_post_date">
+						<h:outputText value="#{post.created}" styleClass="content_font_header">	
+							<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+						</h:outputText> 
+					</td>
+					<td class="col_post_title">
+						<h:outputText value="#{post.title}" styleClass="header_font_normal" />
+					</td>
+					<td class="col_post_commands">
+						<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}" >
+							<plexus:command bean="#{views$secured$discussion$discussionthread}"
+								action="removePost" label="#{msg['discussion_thread_remove_post']}"
+								title="#{msg['discussion_thread_remove_post']}"
+								styleClass="button_remove"/>				
+							<plexus:command bean="#{views$secured$discussion$discussionthread}"
+								action="editPost" label="#{msg['discussion_thread_edit_post']}"
+								title="#{msg['discussion_thread_edit_post']}"
+								styleClass="button_remove"/>
+						</s:acl>
+						<plexus:command bean="#{views$secured$discussion$discussionthread}"
+							action="quote" label="#{msg['discussion_thread_quote']}"
+							title="#{msg['discussion_thread_quote']}"
+							styleClass="button_remove"/>  
+					</td>
+				</tr>
+				<tr>
+					<td class="col_post_text" colspan="3">
+						<div class="content_font_normal">
+							<h:outputText value="#{post.text}" escape="false"/>
+						</div>	
+					</td>
+				</tr>
+				<tr>
+					<td class="col_post_attachments" colspan="3">
+						<h:outputText value="#{msg.discussion_post_edited} #{post.editor} #{msg.discussion_post_edited2} #{post.lastModification}" rendered="#{post.isEdited}">
+							<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+						</h:outputText>
+						<f:subview rendered="#{!(empty post.attachments)}">
+							<div class="content_font_normal">
+								<t:dataList 
+									var="attachment" 
+									value="#{post.attachments}" >
+									<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
+										<f:param value="#{attachment.id}" name="fileid" />
+										<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+								  		#{attachment.fileName} 
+								  	</o:link> 
+									<br/>	
+								</t:dataList>
+							</div>
+						</f:subview>	
+					</td>
+				</tr>
+			</table>
 		</t:column>		
 	</plexus:dataTable>      
 </ui:composition>
