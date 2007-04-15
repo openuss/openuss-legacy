@@ -6,6 +6,11 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 	
 	<div id="left_block">
+		<h:form>
+			<h:outputLink value="#{facesContext.externalContext.requestContextPath}/views/welcome.faces" styleClass="openuss_logo">
+				<div class="openuss_logo"/>
+			</h:outputLink>			
+		</h:form>
 		<ui:insert name="navigation"/>
 	</div>
 	

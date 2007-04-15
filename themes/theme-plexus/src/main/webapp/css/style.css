@@ -43,12 +43,18 @@ span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:
   color: #FFF !important;
 }
 
-#left_block {
+.openuss_logo {
   background-image: url(../img/logo.jpg);
   background-repeat: no-repeat;
+  background-position: -5px 10px;
+  width: 180px;
+  height: 89px;
+}
+
+#left_block {
   float: left;
   margin: 0;
-  padding: 90px 0 0 0;
+  padding: 0;
   width: 180px;
   min-height: 89px;
 }
