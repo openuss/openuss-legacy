@@ -29,24 +29,26 @@
     <oc:setValueBinding var="firstRow" bean="${value}" property="firstRow"/>
     
     <o:block label="${label}">
-		<t:dataTable id="${id}" 
-			value="${data}"
-			binding="#{binding}"
-			styleClass="table"
-			headerClass="table_header"
-			footerClass="table_footer"
-			rowClasses="${rowClasses}"
-			columnClasses="${columnClasses}"
-			preserveDataModel="true"
-			preserveSort="true"
-			rows="${rows}"
-			sortColumn="${sortColumn}" 
-			sortAscending="${ascending}"
-			first="${firstRow}">
-			<oc:strAttribute name="var" value="${var}" />
-			<oc:strAttribute name="rowIndexVar" value="${rowIndex}" />
-			<ui:insert/>
-		</t:dataTable>
+    	<div class="table_scroll">
+			<t:dataTable id="${id}" 
+				value="${data}"
+				binding="#{binding}"
+				styleClass="table"
+				headerClass="table_header"
+				footerClass="table_footer"
+				rowClasses="${rowClasses}"
+				columnClasses="${columnClasses}"
+				preserveDataModel="true"
+				preserveSort="true"
+				rows="${rows}"
+				sortColumn="${sortColumn}" 
+				sortAscending="${ascending}"
+				first="${firstRow}">
+				<oc:strAttribute name="var" value="${var}" />
+				<oc:strAttribute name="rowIndexVar" value="${rowIndex}" />
+				<ui:insert/>
+			</t:dataTable>
+		</div>
 		<plexus:dataScroller for="${id}" pages="${pages}"/>
 	</o:block>
 	

@@ -1420,6 +1420,10 @@ td.col_max_left label input{
 	padding-right: 5px;
 }
 
+.table_scroll {
+	overflow: auto;
+}
+
 /* Default attributes of table container for entire calendar */
 .jscalendar-WH-table-style {
     font-family:arial;
