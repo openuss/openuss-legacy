@@ -4,13 +4,13 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.openuss.braincontest.BrainContestTests;
+import org.openuss.commands.CommandTests;
 import org.openuss.desktop.DesktopTests;
 import org.openuss.discussion.DiscussionTests;
 import org.openuss.documents.DocumentTests;
 import org.openuss.lecture.LectureTests;
 import org.openuss.mailinglist.MailinglistTests;
 import org.openuss.messaging.MessagingTests;
-import org.openuss.migration.MigrationServiceIntegrationTest;
 import org.openuss.migration.MigrationTests;
 import org.openuss.news.NewsTests;
 import org.openuss.registration.RegistrationTests;
@@ -26,6 +26,7 @@ public class AllTests {
 		TestSuite suite = new TestSuite("Test for org.openuss");
 		// $JUnit-BEGIN$
 		suite.addTest(BrainContestTests.suite());
+		suite.addTest(CommandTests.suite());
 		suite.addTest(DesktopTests.suite());
 		suite.addTest(DiscussionTests.suite());
 		suite.addTest(DocumentTests.suite());

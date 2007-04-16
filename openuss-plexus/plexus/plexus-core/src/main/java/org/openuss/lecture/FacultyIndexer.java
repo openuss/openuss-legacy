@@ -1,17 +1,15 @@
 package org.openuss.lecture;
 
-import org.apache.log4j.Logger;
-
 import java.util.Date;
 
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.DateTools.Resolution;
 import org.apache.lucene.index.Term;
-import org.openuss.search.AbstractDomainIndexCommand;
-import org.openuss.search.DomainIndexerCommand;
+import org.openuss.search.DomainIndexCommand;
 import org.springmodules.lucene.index.core.DocumentCreator;
 import org.springmodules.lucene.index.core.DocumentModifier;
 
@@ -19,7 +17,7 @@ import org.springmodules.lucene.index.core.DocumentModifier;
  * 
  * @author Ingo Dueppe
  */
-public class FacultyIndexer extends AbstractDomainIndexCommand implements DomainIndexerCommand {
+public class FacultyIndexer extends DomainIndexCommand {
 
 	private static final String DOMAINTYPE_VALUE = "FACULTY";
 

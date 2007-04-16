@@ -6,24 +6,24 @@
 package org.openuss.messaging;
 
 /**
+ * @author Ingo Dueppe
  * @see org.openuss.messaging.MessageJob
  */
-public class MessageJobImpl
-    extends org.openuss.messaging.MessageJobBase
-	implements org.openuss.messaging.MessageJob
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = 7356518302537926968L;
+public class MessageJobImpl extends MessageJobBase implements MessageJob {
+	/**
+	 * The serial version UID of this class. Needed for serialization.
+	 */
+	private static final long serialVersionUID = 7356518302537926968L;
 
-    /**
-     * @see org.openuss.messaging.MessageJob#getToSend()
-     */
-    public int getToSend()
-    {
-        // @todo implement public int getToSend()
-        return 0;
-    }
+	/**
+	 * @see org.openuss.messaging.MessageJob#getToSend()
+	 */
+	public int getToSend() {
+		int send = 0;
+		// TODO everything
+		return send;
+	}
+	
+	
 
 }
