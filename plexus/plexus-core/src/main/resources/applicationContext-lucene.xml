@@ -6,21 +6,48 @@
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     				Lucene Configuration
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	 
+	 <bean id="domainIndexerFactory" class="org.openuss.search.DomainIndexerFactory" singleton="true">
+	 	<property name="indexer">
+	 		<map>
+	 			<entry>
+	 			 	<key><value>org.openuss.lecture.FacultyImpl</value></key>
+					<value>facultyIndexer</value>
+	 		 	</entry>
+	 		</map>
+	 	</property>
+	 </bean>
+	 
+	 <bean name="facultyIndexer" class="org.openuss.lecture.FacultyIndexer">
+	 	<property name="analyzer"><ref bean="analyzer"/></property>
+	 	<property name="facultyDao"><ref bean="facultyDao"/></property>
+	 	<property name="indexFactory"><ref bean="indexFactory"/></property>
+	 </bean>
+	 
+	<bean id="indexerServiceAbstract" abstract="true" class="org.openuss.search.IndexerServiceImpl">
+		<property name="indexerFactory"><ref bean="domainIndexerFactory"/></property>
+		<property name="commandService"><ref bean="commandService"/></property>
+    </bean>
 
+	<!-- Lucene Support Beans -->
+	 
+	<bean id="analyzer" class="org.apache.lucene.analysis.standard.StandardAnalyzer"/>
+	
 	<bean id="ramDirectory" class="org.springmodules.lucene.index.support.RAMDirectoryFactoryBean"/>
+
+	<bean id="indexFactory" class="org.springmodules.lucene.index.support.SimpleIndexFactoryBean">
+		<property name="create" value="true"/>
+		<property name="directory" ref="ramDirectory"/>
+		<property name="analyzer" ref="analyzer"/>
+	</bean>
+<!-- 
 	
 	<bean id="fsDirectory" class="org.springmodules.lucene.index.support.FSDirectoryFactoryBean">
 		<property name="create" value="true"/>
 		<property name="location" value="file:${java.io.tmpdir}lucene/lectureindex"/>
 	</bean>
 	
-	<bean id="analyzer" class="org.apache.lucene.analysis.standard.StandardAnalyzer"/>
 	
-	<bean id="indexFactory" class="org.springmodules.lucene.index.support.SimpleIndexFactoryBean">
-		<property name="create" value="true"/>
-		<property name="directory" ref="ramDirectory"/>
-		<property name="analyzer" ref="analyzer"/>
-	</bean>
 	
 	<bean id="indexingDatabase" class="org.openuss.search.SimpleDatabaseIndexingImpl">
 		<property name="indexFactory" ref="indexFactory"/>
@@ -36,5 +63,6 @@
 		<constructor-arg index="1" ref="analyzer" />
 	</bean>	
 	
+ -->
 
 </beans>
