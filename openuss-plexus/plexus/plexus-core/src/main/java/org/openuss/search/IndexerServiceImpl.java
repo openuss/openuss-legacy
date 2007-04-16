@@ -5,45 +5,53 @@
  */
 package org.openuss.search;
 
-import java.util.Date;
-
 import org.apache.commons.lang.Validate;
+import org.openuss.commands.CommandApplicationService;
 import org.openuss.foundation.DomainObject;
 
 /**
  * @author Ingo Dueppe
  * @see org.openuss.search.IndexerService
  */
-public class IndexerServiceImpl extends org.openuss.search.IndexerServiceBase {
+public class IndexerServiceImpl extends IndexerServiceBase {
 
+	private DomainIndexerFactory indexerFactory;
+	
 	@Override
-	protected void handleCreateIndex(DomainObject domainObject, String command) throws Exception {
-		createIndexEvent(domainObject, command, IndexEventType.CREATE);
+	protected void handleCreateIndex(DomainObject domainObject) throws Exception {
+		createIndexEvent(domainObject, "CREATE");
 	}
 
 	@Override
-	protected void handleDeleteIndex(DomainObject domainObject, String command) throws Exception {
-		createIndexEvent(domainObject, command, IndexEventType.DELETE);
+	protected void handleDeleteIndex(DomainObject domainObject) throws Exception {
+		createIndexEvent(domainObject, "DELETE");
 		
 	}
 
 	@Override
-	protected void handleUpdateIndex(DomainObject domainObject, String command) throws Exception {
-		createIndexEvent(domainObject, command, IndexEventType.UPDATE);
+	protected void handleUpdateIndex(DomainObject domainObject) throws Exception {
+		createIndexEvent(domainObject, "UPDATE");
 	}
 	
-	private void createIndexEvent(DomainObject domainObject, String command, IndexEventType type) {
+	private void createIndexEvent(DomainObject domainObject, String commandType) throws IndexerApplicationException {
 		Validate.notNull(domainObject, "Parameter domainObject must not be null.");
 		Validate.notNull(domainObject.getId(), "Parameter domainObject.getId() must not be null.");
-		Validate.notEmpty(command, "Parameter domainObject.getId() must not be null.");
 		
-		IndexEvent event = IndexEvent.Factory.newInstance();
-		event.setCommandName(command);
-		event.setDomainIdentifier(domainObject.getId());
-		event.setEventType(type);
-		event.setEventTime(new Date());
-			
-		getIndexEventDao().create(event);
+		try {
+			String commandName = indexerFactory.getIndexerName(domainObject);
+			getCommandService().doClusterEachCommand(domainObject, commandName, commandType);
+		} catch (CommandApplicationService e) {
+			throw new IndexerApplicationException(e);
+		}
 	}
+
+	public DomainIndexerFactory getIndexerFactory() {
+		return indexerFactory;
+	}
+
+	public void setIndexerFactory(DomainIndexerFactory indexerFactory) {
+		this.indexerFactory = indexerFactory;
+	}
+	
 
 }
