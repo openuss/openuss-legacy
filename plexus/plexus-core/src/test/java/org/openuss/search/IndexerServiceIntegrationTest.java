@@ -7,8 +7,10 @@ package org.openuss.search;
 
 import java.util.Collection;
 
-import org.openuss.foundation.DefaultDomainObject;
+import org.openuss.commands.Command;
+import org.openuss.commands.CommandDao;
 import org.openuss.foundation.DomainObject;
+import org.openuss.lecture.Faculty;
 
 /**
  * JUnit Test for Spring Hibernate IndexerService class.
@@ -16,47 +18,63 @@ import org.openuss.foundation.DomainObject;
  */
 public class IndexerServiceIntegrationTest extends IndexerServiceIntegrationTestBase {
 	
-	private IndexEventDao indexEventDao;
+	private CommandDao commandDao;
 	
-	public void testCreateIndex() {
-		indexEventDao.remove(indexEventDao.loadAll());
-		String command = "facultyIndexer";
-		DomainObject domain = new DefaultDomainObject(testUtility.unique());
-		indexerService.createIndex(domain, command);
-		check(command, IndexEventType.CREATE, domain);
+	public void testCreateIndex() throws IndexerApplicationException {
+		commandDao.remove(commandDao.loadAll());
+		DomainObject domain = createDomainObject();
+		indexerService.createIndex(domain);
+		check("facultyIndexer", "CREATE", domain);
 	}
 
-	public void testUpdateIndex() {
-		indexEventDao.remove(indexEventDao.loadAll());
-		String command = "facultyIndexer";
-		DomainObject domain = new DefaultDomainObject(testUtility.unique());
-		indexerService.updateIndex(domain, command);
-		check(command, IndexEventType.UPDATE, domain);
+	private DomainObject createDomainObject() {
+		Faculty faculty = Faculty.Factory.newInstance();
+		faculty.setId(testUtility.unique());
+		return faculty;
 	}
 
-	public void testDeleteIndex() {
-		indexEventDao.remove(indexEventDao.loadAll());
-		String command = "facultyIndexer";
-		DomainObject domain = new DefaultDomainObject(testUtility.unique());
-		indexerService.deleteIndex(domain, command);
-		check(command, IndexEventType.DELETE, domain);
+	public void testUpdateIndex() throws IndexerApplicationException {
+		commandDao.remove(commandDao.loadAll());
+		DomainObject domain = createDomainObject();
+		indexerService.updateIndex(domain);
+		check("facultyIndexer", "UPDATE", domain);
 	}
 
-	private void check(String command, IndexEventType type, DomainObject domain) {
-		Collection<IndexEvent> events = indexEventDao.loadAll();
-		assertEquals(1, events.size());
-		IndexEvent event = events.iterator().next();
+	public void testDeleteIndex() throws IndexerApplicationException {
+		commandDao.remove(commandDao.loadAll());
+		DomainObject domain = createDomainObject();
+		indexerService.deleteIndex(domain);
+		check("facultyIndexer", "DELETE", domain);
+	}
+
+	private void check(String command, String commandType, DomainObject domain) {
+		Collection<Command> commands = commandDao.loadAll();
+		assertEquals(1, commands.size());
+		Command event = commands.iterator().next();
 		assertEquals(domain.getId(), event.getDomainIdentifier());
-		assertEquals(command, event.getCommandName());
-		assertEquals(type, event.getEventType());
+		assertEquals(command, event.getCommand());
+		assertEquals(commandType, event.getCommandType());
 	}
 
-	public IndexEventDao getIndexEventDao() {
-		return indexEventDao;
+
+	public CommandDao getCommandDao() {
+		return commandDao;
 	}
 
-	public void setIndexEventDao(IndexEventDao indexEventDao) {
-		this.indexEventDao = indexEventDao;
+	public void setCommandDao(CommandDao commandDao) {
+		this.commandDao = commandDao;
 	}
 	
+	protected String[] getConfigLocations() {
+		return new String[] { 
+				"classpath*:applicationContext.xml",
+				"classpath*:applicationContext-localDataSource.xml",
+				"classpath*:applicationContext-beans.xml", 
+				"classpath*:applicationContext-tests.xml",
+				"classpath*:applicationContext-lucene.xml",
+				"classpath*:applicationContext-cache.xml",
+				"classpath*:beanRefFactory",
+				"classpath*:testSecurity.xml",
+				"classpath*:testDataSource.xml"};
+	}
 }
