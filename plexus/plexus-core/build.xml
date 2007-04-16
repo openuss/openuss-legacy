@@ -22,6 +22,11 @@
 			<arg line="install" />
 		</exec>
 	</target>
+	<target name="install offline">
+		<exec executable="mvn.bat">
+			<arg line="-o install" />
+		</exec>
+	</target>
 	<target name="install w/o tests">
 		<exec executable="mvn.bat">
 			<arg line="-o install -Dmaven.test.skip=true" />
