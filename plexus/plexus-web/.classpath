@@ -77,7 +77,7 @@
 	<classpathentry kind="src" path="/plexus-core"/>
 	<classpathentry kind="src" path="/framework-jsfcontrols"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/shale/shale-core/1.0.4/shale-core-1.0.4.jar" sourcepath="/M2_REPO/org/apache/shale/shale-core/1.0.4/shale-core-1.0.4-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate/3.2.1.ga/hibernate-3.2.1.ga.jar" sourcepath="/M2_REPO/org/hibernate/hibernate/3.2.1.ga/hibernate-3.2.1.ga-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate/3.2.2.ga/hibernate-3.2.2.ga.jar" sourcepath="/M2_REPO/org/hibernate/hibernate/3.2.2.ga/hibernate-3.2.2.ga-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" sourcepath="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/2.0.4/spring-beans-2.0.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/shale/shale-view/1.0.4/shale-view-1.0.4.jar" sourcepath="/M2_REPO/org/apache/shale/shale-view/1.0.4/shale-view-1.0.4-sources.jar"/>
