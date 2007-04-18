@@ -9,7 +9,10 @@ public class DomainIndexerFactoryTest extends AbstractDependencyInjectionSpringC
 	
 	private DomainIndexerFactory domainIndexerFactory;
 	
-	//TODO write tests for DomainIndexerFactory
+	public void testIndexer() {
+		//TODO write tests for DomainIndexerFactory
+		
+	}
 	
 	protected String[] getConfigLocations() {
 		return new String[] { 
