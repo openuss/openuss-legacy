@@ -40,13 +40,11 @@
 		<property name="directory" ref="ramDirectory"/>
 		<property name="analyzer" ref="analyzer"/>
 	</bean>
-<!-- 
 	
 	<bean id="fsDirectory" class="org.springmodules.lucene.index.support.FSDirectoryFactoryBean">
 		<property name="create" value="true"/>
 		<property name="location" value="file:${java.io.tmpdir}lucene/lectureindex"/>
 	</bean>
-	
 	
 	
 	<bean id="indexingDatabase" class="org.openuss.search.SimpleDatabaseIndexingImpl">
@@ -62,7 +60,5 @@
 		<constructor-arg index="0" ref="searcherFactory"/>
 		<constructor-arg index="1" ref="analyzer" />
 	</bean>	
-	
- -->
 
 </beans>

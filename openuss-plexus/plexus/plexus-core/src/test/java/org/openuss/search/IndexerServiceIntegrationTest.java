@@ -6,7 +6,9 @@
 package org.openuss.search;
 
 import java.util.Collection;
+import java.util.Iterator;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.openuss.commands.Command;
 import org.openuss.commands.CommandDao;
 import org.openuss.foundation.DomainObject;
@@ -21,7 +23,6 @@ public class IndexerServiceIntegrationTest extends IndexerServiceIntegrationTest
 	private CommandDao commandDao;
 	
 	public void testCreateIndex() throws IndexerApplicationException {
-		commandDao.remove(commandDao.loadAll());
 		DomainObject domain = createDomainObject();
 		indexerService.createIndex(domain);
 		check("facultyIndexer", "CREATE", domain);
@@ -34,14 +35,12 @@ public class IndexerServiceIntegrationTest extends IndexerServiceIntegrationTest
 	}
 
 	public void testUpdateIndex() throws IndexerApplicationException {
-		commandDao.remove(commandDao.loadAll());
 		DomainObject domain = createDomainObject();
 		indexerService.updateIndex(domain);
 		check("facultyIndexer", "UPDATE", domain);
 	}
 
 	public void testDeleteIndex() throws IndexerApplicationException {
-		commandDao.remove(commandDao.loadAll());
 		DomainObject domain = createDomainObject();
 		indexerService.deleteIndex(domain);
 		check("facultyIndexer", "DELETE", domain);
@@ -49,11 +48,20 @@ public class IndexerServiceIntegrationTest extends IndexerServiceIntegrationTest
 
 	private void check(String command, String commandType, DomainObject domain) {
 		Collection<Command> commands = commandDao.loadAll();
-		assertEquals(1, commands.size());
-		Command event = commands.iterator().next();
-		assertEquals(domain.getId(), event.getDomainIdentifier());
-		assertEquals(command, event.getCommand());
-		assertEquals(commandType, event.getCommandType());
+		assertFalse(commands.isEmpty());
+		Command cmd = last(commands);
+		assertEquals(domain.getId(), cmd.getDomainIdentifier());
+		assertEquals(command, cmd.getCommand());
+		assertEquals(commandType, cmd.getCommandType());
+	}
+
+	private Command last(Collection<Command> commands) {
+		Command command = null;
+		Iterator iter = commands.iterator();
+		while (iter.hasNext()) {
+			command = (Command) iter.next();
+		}
+		return command;
 	}
 
 
