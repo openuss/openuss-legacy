@@ -5,8 +5,27 @@
  */
 package org.openuss.commands;
 
+import org.hibernate.LockMode;
+import org.springframework.dao.DataAccessException;
+
 /**
  * @see org.openuss.commands.Command
  */
 public class CommandDaoImpl extends CommandDaoBase {
+
+	@Override
+	protected boolean handleObtainLock(Command command) throws Exception {
+		try {
+			getHibernateTemplate().lock(command, LockMode.FORCE);
+			return true;
+		} catch (DataAccessException dae) {
+			return false;
+		}
+	}
+
+	@Override
+	protected void handleReleaseLock(Command command) throws Exception {
+		getHibernateTemplate().lock(command, LockMode.NONE);
+	}
+
 }

@@ -32,7 +32,7 @@ public class CommandDaoTest extends CommandDaoTestBase {
 		
 		commit();
 		
-		List<Command> commands = commandDao.findAllEventsAfter(command2.getId());
+		List<Command> commands = commandDao.findAllEachCommandsAfter(command2.getId());
 		
 		assertEquals(3, commands.size());
 		
@@ -51,7 +51,7 @@ public class CommandDaoTest extends CommandDaoTestBase {
 
 		commit();
 		
-		commands = commandDao.findAllEventsAfter(command2.getId());
+		commands = commandDao.findAllEachCommandsAfter(command2.getId());
 		
 		assertEquals(3, commands.size());
 		
