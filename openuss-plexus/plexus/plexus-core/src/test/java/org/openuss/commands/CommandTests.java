@@ -11,6 +11,7 @@ public class CommandTests {
 		suite.addTestSuite(CommandDaoTest.class);
 		suite.addTestSuite(CommandServiceIntegrationTest.class);
 		suite.addTestSuite(LastProcessedCommandDaoTest.class);
+		suite.addTestSuite(ClusterCommandProcessorTest.class);
 		//$JUnit-END$
 		return suite;
 	}

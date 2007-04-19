@@ -14,7 +14,7 @@ public interface DomainCommand {
 	/**
 	 * Execute the command
 	 */
-	public void execute();
+	public void execute() throws Exception;
 	
 	/**
 	 * Retrieve the associated domain object
