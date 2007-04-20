@@ -53,7 +53,7 @@
 	<classpathentry kind="var" path="M2_REPO/jstl/jstl/1.2/jstl-1.2.jar" sourcepath="M2_REPO/jstl/jstl/1.2/jstl-1.2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate/3.2.2.ga/hibernate-3.2.2.ga.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/2.0.4/spring-beans-2.0.4.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5-SNAPSHOT/tomahawk-1.1.5-SNAPSHOT.jar" sourcepath="/M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5-SNAPSHOT/tomahawk-1.1.5-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5/tomahawk-1.1.5.jar" sourcepath="/M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5/tomahawk-1.1.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/shale/shale-test/1.0.4/shale-test-1.0.4.jar" sourcepath="/M2_REPO/org/apache/shale/shale-test/1.0.4/shale-test-1.0.4-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -39,7 +39,7 @@
 	<classpathentry kind="var" path="M2_REPO/com/sun/facelets/jsf-facelets/1.1.12/jsf-facelets-1.1.12.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-core/2.0.4/spring-core-2.0.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.3/acegi-security-1.0.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5-SNAPSHOT/tomahawk-1.1.5-SNAPSHOT.jar" sourcepath="/M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5-SNAPSHOT/tomahawk-1.1.5-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5/tomahawk-1.1.5.jar" sourcepath="/M2_REPO/org/apache/myfaces/tomahawk/tomahawk/1.1.5/tomahawk-1.1.5-sources.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/framework-core"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
