@@ -23,6 +23,16 @@ public class CommandDaoTest extends CommandDaoTestBase {
 		createCommandInDB(testUtility.unique(), "commandname", "commandType", CommandState.ONCE);
 	}
 	
+	public void testCommandDaoUpdate() {
+		Command command = createCommandInDB(testUtility.unique(), "commandname", "commandType", CommandState.EACH);
+		commit();
+		command = commandDao.load(command.getId());
+		command.setCommand("new command");
+		commit();
+		command = commandDao.load(command.getId());
+		assertEquals("new command",command.getCommand());
+	}
+	
 	public void testFindAllCommandsAfter() {
 		Command command1 = createCommandInDB(testUtility.unique(), "commandName", "commanType", CommandState.EACH);
 		Command command2 = createCommandInDB(testUtility.unique(), "commandName", "commanType", CommandState.EACH);
