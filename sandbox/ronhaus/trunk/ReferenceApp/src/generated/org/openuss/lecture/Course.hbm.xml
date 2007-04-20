@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--Attention: Generated code! Do not modify by hand!-->
+<hibernate-mapping> 
+  <class name="org.openuss.lecture.CourseImpl" table="COURSE"> 
+    <id name="id" column="ID" access="property"> 
+      <generator class="sequence"> 
+        <param name="sequence">GLOBAL_SEQUENCE</param> 
+      </generator> 
+    </id>  
+    <property name="name" column="NAME" not-null="true" access="property"/>  
+    <property name="maxParticipants" column="MAXPARTICIPANTS" not-null="true" access="property"/>  
+    <many-to-one name="lecturer" column="LECTURER_FK" class="org.openuss.registration.AssistantImpl" not-null="true" cascade="save-update, persist"/>  
+    <set name="participants" table="PARTICIPANTS_COURSES" inverse="false"> 
+      <key column="COURSES_FK"/>  
+      <many-to-many column="PARTICIPANTS_FK" class="org.openuss.registration.StudentImpl"/> 
+    </set> 
+  </class> 
+</hibernate-mapping>

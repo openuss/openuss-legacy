@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<workflow>
+
+	<!--Loading the property files-->
+    <property file="workflow.properties"/>
+    <property file="dataSource.properties"/>
+    <property file="hibernateCartridge.properties"/>
+    <property file="springCartridge.properties"/>
+
+	<!--UML2 setup-->
+	<bean class="org.openarchitectureware.uml2.Setup" standardUML2Setup="true"/>
+	
+	<!--The XMI Reader component.-->
+	<component class="org.openarchitectureware.emf.XmiReader">
+		<modelFile value="${modelfile}"/>
+		<outputSlot value="model"/>
+	</component>
+
+	<!--The DirectoryCleaner component-->
+    <component id="dirCleaner" class="org.openarchitectureware.workflow.common.DirectoryCleaner">
+		<directories value="${outlet.src.dir}"/>
+	</component>
+
+	<!--The Hibernate cartridge-->
+	<cartridge id="hibernateCartridge" file="org/openuss/cartridges/uml2/hibernate/hibernate.oaw" inheritAll="true">   	
+	   	<modelfile value="${modelfile}"/>
+		<expandExpression value="org::openuss::cartridges::uml2::hibernate::Root::Root FOR model"/>
+	</cartridge>
+	
+	<!--The Spring cartridge-->
+	<cartridge id="springCartridge" file="org/openuss/cartridges/uml2/spring/spring.oaw" inheritAll="true">   			   	
+	   	<modelfile value="${modelfile}"/>
+		<expandExpression value="org::openuss::cartridges::uml2::spring::Root::Root FOR model"/>	
+	</cartridge>
+	
+</workflow>

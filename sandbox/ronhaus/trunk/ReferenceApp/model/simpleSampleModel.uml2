@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:BusinessApps_0="http:///BusinessApps_0_mXJyYe60EduiM-oReH7YLA.profile.uml2" xmlns:uml="http://www.eclipse.org/uml2/1.0.0/UML" xsi:schemaLocation="http:///BusinessApps_0_mXJyYe60EduiM-oReH7YLA.profile.uml2 BusinessApps.profile.uml2#_muKkRO60EduiM-oReH7YLA" xmi:id="_ms1HcO60EduiM-oReH7YLA" name="Data" appliedProfile="_ms1HdO60EduiM-oReH7YLA _ms1Hd-60EduiM-oReH7YLA _ms1Heu60EduiM-oReH7YLA _ms7OEO60EduiM-oReH7YLA _ms7OE-60EduiM-oReH7YLA _ms7OFu60EduiM-oReH7YLA">
+  <ownedComment xmi:id="_ms1Hce60EduiM-oReH7YLA" body="Author:Ron Haus.&#xA;Created:26.02.07 18:30.&#xA;Title:.&#xA;Comment:.&#xA;" annotatedElement="_ms1HcO60EduiM-oReH7YLA"/>
+  <packageImport xmi:id="_ms1Hcu60EduiM-oReH7YLA">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_EfRZoK86EdieaYgxtVWN8Q"/>
+  </packageImport>
+  <packageImport xmi:id="_ms1Hc-60EduiM-oReH7YLA">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_RjmyoK86EdieaYgxtVWN8Q"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_ms1HdO60EduiM-oReH7YLA">
+    <eAnnotations xmi:id="_ms1Hde60EduiM-oReH7YLA" source="attributes">
+      <details xmi:id="_ms1Hdu60EduiM-oReH7YLA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="UML_Standard_Profile.Validation_Profile.profile.uml2#_mui_Bu60EduiM-oReH7YLA"/>
+    <importedProfile href="UML_Standard_Profile.Validation_Profile.profile.uml2#_mui_Bu60EduiM-oReH7YLA"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_ms1Hd-60EduiM-oReH7YLA">
+    <eAnnotations xmi:id="_ms1HeO60EduiM-oReH7YLA" source="attributes">
+      <details xmi:id="_ms1Hee60EduiM-oReH7YLA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml2#_mupHqu60EduiM-oReH7YLA"/>
+    <importedProfile href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml2#_mupHqu60EduiM-oReH7YLA"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_ms1Heu60EduiM-oReH7YLA">
+    <eAnnotations xmi:id="_ms1He-60EduiM-oReH7YLA" source="attributes">
+      <details xmi:id="_ms1HfO60EduiM-oReH7YLA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="UML_Standard_Profile.UML_Standard_Profile.profile.uml2#_muvMmu60EduiM-oReH7YLA"/>
+    <importedProfile href="UML_Standard_Profile.UML_Standard_Profile.profile.uml2#_muvMmu60EduiM-oReH7YLA"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_ms7OEO60EduiM-oReH7YLA">
+    <eAnnotations xmi:id="_ms7OEe60EduiM-oReH7YLA" source="attributes">
+      <details xmi:id="_ms7OEu60EduiM-oReH7YLA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="BusinessApps.profile.uml2#_muKkQO60EduiM-oReH7YLA"/>
+    <importedProfile href="BusinessApps.profile.uml2#_muKkQO60EduiM-oReH7YLA"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_ms7OE-60EduiM-oReH7YLA">
+    <eAnnotations xmi:id="_ms7OFO60EduiM-oReH7YLA" source="attributes">
+      <details xmi:id="_ms7OFe60EduiM-oReH7YLA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml2#_muEdme60EduiM-oReH7YLA"/>
+    <importedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml2#_muEdme60EduiM-oReH7YLA"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_ms7OFu60EduiM-oReH7YLA">
+    <eAnnotations xmi:id="_ms7OF-60EduiM-oReH7YLA" source="attributes">
+      <details xmi:id="_ms7OGO60EduiM-oReH7YLA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="datatypes.profile.uml2#_mu1Tre60EduiM-oReH7YLA"/>
+    <importedProfile href="datatypes.profile.uml2#_mu1Tre60EduiM-oReH7YLA"/>
+  </packageImport>
+  <ownedMember xmi:type="uml:Package" xmi:id="_ms7OGe60EduiM-oReH7YLA" name="org.openuss.lecture">
+    <ownedMember xmi:type="uml:Class" xmi:id="_ms7OGu60EduiM-oReH7YLA" name="Course">
+      <eAnnotations xmi:id="_ms7OG-60EduiM-oReH7YLA" source="appliedStereotypes">
+        <contents xmi:type="BusinessApps_0:BusinessApps__Entity" xmi:id="_ms7OHO60EduiM-oReH7YLA"/>
+      </eAnnotations>
+      <ownedAttribute xmi:id="_ms7OHe60EduiM-oReH7YLA" name="id" visibility="private">
+        <eAnnotations xmi:id="_ms7OHu60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Key" xmi:id="_ms7OH-60EduiM-oReH7YLA"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1T1O60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7OIO60EduiM-oReH7YLA" name="name" visibility="private">
+        <eAnnotations xmi:id="_ms7OIe60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Field" xmi:id="_ms7OIu60EduiM-oReH7YLA"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1Ty-60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7OI-60EduiM-oReH7YLA" name="maxParticipants" visibility="private">
+        <eAnnotations xmi:id="_ms7OJO60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Field" xmi:id="_ms7OJe60EduiM-oReH7YLA"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1TzO60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7OJu60EduiM-oReH7YLA" name="participants" visibility="private" type="_ms7OfO60EduiM-oReH7YLA" association="_ms7Oju60EduiM-oReH7YLA">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ms7OJ-60EduiM-oReH7YLA" value="-1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ms7OKO60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7OKe60EduiM-oReH7YLA" name="lecturer" visibility="private" type="_ms7OYO60EduiM-oReH7YLA" association="_ms7Oj-60EduiM-oReH7YLA">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ms7OKu60EduiM-oReH7YLA" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ms7OK-60EduiM-oReH7YLA" value="1"/>
+      </ownedAttribute>
+    </ownedMember>
+    <ownedMember xmi:type="uml:Class" xmi:id="_ms7OLO60EduiM-oReH7YLA" name="LectureService" clientDependency="_muEdlu60EduiM-oReH7YLA _muEdle60EduiM-oReH7YLA _muEdlO60EduiM-oReH7YLA">
+      <eAnnotations xmi:id="_ms7OLe60EduiM-oReH7YLA" source="appliedStereotypes">
+        <contents xmi:type="BusinessApps_0:BusinessApps__Service" xmi:id="_ms7OLu60EduiM-oReH7YLA"/>
+      </eAnnotations>
+      <ownedOperation xmi:id="_ms7OL-60EduiM-oReH7YLA" name="enrollStudentInCourse">
+        <returnResult xmi:id="_ms7OMO60EduiM-oReH7YLA" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu7ZOu60EduiM-oReH7YLA"/>
+        </returnResult>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu7ZOu60EduiM-oReH7YLA"/>
+        <ownedParameter xmi:id="_ms7OMe60EduiM-oReH7YLA" name="student" type="_ms7OfO60EduiM-oReH7YLA" direction="inout"/>
+        <ownedParameter xmi:id="_ms7OMu60EduiM-oReH7YLA" name="course" type="_ms7OGu60EduiM-oReH7YLA" direction="inout"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_ms7OM-60EduiM-oReH7YLA" name="getFullCourses" type="_ms7OGu60EduiM-oReH7YLA">
+        <returnResult xmi:id="_ms7ONO60EduiM-oReH7YLA" type="_ms7OGu60EduiM-oReH7YLA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ms7ONe60EduiM-oReH7YLA" value="-1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ms7ONu60EduiM-oReH7YLA"/>
+        </returnResult>
+      </ownedOperation>
+      <ownedOperation xmi:id="_ms7ON-60EduiM-oReH7YLA" name="persist">
+        <returnResult xmi:id="_ms7OOO60EduiM-oReH7YLA" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1T1O60EduiM-oReH7YLA"/>
+        </returnResult>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1T1O60EduiM-oReH7YLA"/>
+        <ownedParameter xmi:id="_ms7OOe60EduiM-oReH7YLA" name="student" type="_ms7OfO60EduiM-oReH7YLA" direction="inout"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_ms7OOu60EduiM-oReH7YLA" name="persist">
+        <returnResult xmi:id="_ms7OO-60EduiM-oReH7YLA" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1T1O60EduiM-oReH7YLA"/>
+        </returnResult>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1T1O60EduiM-oReH7YLA"/>
+        <ownedParameter xmi:id="_ms7OPO60EduiM-oReH7YLA" name="assistent" type="_ms7OYO60EduiM-oReH7YLA" direction="inout"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_ms7OPe60EduiM-oReH7YLA" name="persist">
+        <returnResult xmi:id="_ms7OPu60EduiM-oReH7YLA" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1T1O60EduiM-oReH7YLA"/>
+        </returnResult>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1T1O60EduiM-oReH7YLA"/>
+        <ownedParameter xmi:id="_ms7OP-60EduiM-oReH7YLA" name="course" type="_ms7OGu60EduiM-oReH7YLA" direction="inout"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_ms7OQO60EduiM-oReH7YLA" name="readStudent" type="_ms7OfO60EduiM-oReH7YLA">
+        <returnResult xmi:id="_ms7OQe60EduiM-oReH7YLA" type="_ms7OfO60EduiM-oReH7YLA" direction="return"/>
+        <ownedParameter xmi:id="_ms7OQu60EduiM-oReH7YLA" name="mnr" direction="inout">
+          <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1T1O60EduiM-oReH7YLA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_ms7OQ-60EduiM-oReH7YLA" name="readAssistant" type="_ms7OYO60EduiM-oReH7YLA">
+        <returnResult xmi:id="_ms7ORO60EduiM-oReH7YLA" type="_ms7OYO60EduiM-oReH7YLA" direction="return"/>
+        <ownedParameter xmi:id="_ms7ORe60EduiM-oReH7YLA" name="id" direction="inout">
+          <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1T1O60EduiM-oReH7YLA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_ms7ORu60EduiM-oReH7YLA" name="readCourse" type="_ms7OGu60EduiM-oReH7YLA">
+        <returnResult xmi:id="_ms7OR-60EduiM-oReH7YLA" type="_ms7OGu60EduiM-oReH7YLA" direction="return"/>
+        <ownedParameter xmi:id="_ms7OSO60EduiM-oReH7YLA" name="id" direction="inout">
+          <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1T1O60EduiM-oReH7YLA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_ms7OSe60EduiM-oReH7YLA" name="testTransactionManager">
+        <returnResult xmi:id="_ms7OSu60EduiM-oReH7YLA" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu7ZOu60EduiM-oReH7YLA"/>
+        </returnResult>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu7ZOu60EduiM-oReH7YLA"/>
+        <ownedParameter xmi:id="_ms7OS-60EduiM-oReH7YLA" name="student" type="_ms7OfO60EduiM-oReH7YLA" direction="inout"/>
+      </ownedOperation>
+    </ownedMember>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Package" xmi:id="_ms7OTO60EduiM-oReH7YLA" name="org.openuss.registration">
+    <ownedMember xmi:type="uml:Class" xmi:id="_ms7OTe60EduiM-oReH7YLA" name="Address">
+      <eAnnotations xmi:id="_ms7OTu60EduiM-oReH7YLA" source="appliedStereotypes">
+        <contents xmi:type="BusinessApps_0:BusinessApps__Entity" xmi:id="_ms7OT-60EduiM-oReH7YLA"/>
+      </eAnnotations>
+      <ownedAttribute xmi:id="_ms7OUO60EduiM-oReH7YLA" name="id" visibility="private">
+        <eAnnotations xmi:id="_ms7OUe60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Key" xmi:id="_ms7OUu60EduiM-oReH7YLA"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1T1O60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7OU-60EduiM-oReH7YLA" name="street" visibility="private">
+        <eAnnotations xmi:id="_ms7OVO60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Field" xmi:id="_ms7OVe60EduiM-oReH7YLA"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1Ty-60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7OVu60EduiM-oReH7YLA" name="number" visibility="private">
+        <eAnnotations xmi:id="_ms7OV-60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Field" xmi:id="_ms7OWO60EduiM-oReH7YLA"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1TzO60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7OWe60EduiM-oReH7YLA" name="zipCode" visibility="private">
+        <eAnnotations xmi:id="_ms7OWu60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Field" xmi:id="_ms7OW-60EduiM-oReH7YLA"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1T1O60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7OXO60EduiM-oReH7YLA" name="country" visibility="private">
+        <eAnnotations xmi:id="_ms7OXe60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Field" xmi:id="_ms7OXu60EduiM-oReH7YLA"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1Ty-60EduiM-oReH7YLA"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_ms7OX-60EduiM-oReH7YLA" value="Germany"/>
+      </ownedAttribute>
+    </ownedMember>
+    <ownedMember xmi:type="uml:Class" xmi:id="_ms7OYO60EduiM-oReH7YLA" name="Assistant">
+      <eAnnotations xmi:id="_ms7OYe60EduiM-oReH7YLA" source="appliedStereotypes">
+        <contents xmi:type="BusinessApps_0:BusinessApps__Entity" xmi:id="_ms7OYu60EduiM-oReH7YLA"/>
+      </eAnnotations>
+      <generalization xmi:id="_ms7OY-60EduiM-oReH7YLA" general="_ms7Oau60EduiM-oReH7YLA"/>
+      <ownedAttribute xmi:id="_ms7OZO60EduiM-oReH7YLA" name="department" visibility="private">
+        <eAnnotations xmi:id="_ms7OZe60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Field" xmi:id="_ms7OZu60EduiM-oReH7YLA"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1Ty-60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7OZ-60EduiM-oReH7YLA" name="lectures" visibility="private" type="_ms7OGu60EduiM-oReH7YLA" association="_ms7Oj-60EduiM-oReH7YLA">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ms7OaO60EduiM-oReH7YLA" value="-1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ms7Oae60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+    </ownedMember>
+    <ownedMember xmi:type="uml:Class" xmi:id="_ms7Oau60EduiM-oReH7YLA" name="Person" isAbstract="true">
+      <eAnnotations xmi:id="_ms7Oa-60EduiM-oReH7YLA" source="appliedStereotypes">
+        <contents xmi:type="BusinessApps_0:BusinessApps__Entity" xmi:id="_ms7ObO60EduiM-oReH7YLA"/>
+      </eAnnotations>
+      <ownedAttribute xmi:id="_ms7Obe60EduiM-oReH7YLA" name="id" visibility="private">
+        <eAnnotations xmi:id="_ms7Obu60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Key" xmi:id="_ms7Ob-60EduiM-oReH7YLA"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1T1O60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7OcO60EduiM-oReH7YLA" name="firstname" visibility="private">
+        <eAnnotations xmi:id="_ms7Oce60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Field" xmi:id="_ms7Ocu60EduiM-oReH7YLA"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1Ty-60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7Oc-60EduiM-oReH7YLA" name="lastname" visibility="private">
+        <eAnnotations xmi:id="_ms7OdO60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Field" xmi:id="_ms7Ode60EduiM-oReH7YLA"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7Odu60EduiM-oReH7YLA" name="registration" visibility="private">
+        <eAnnotations xmi:id="_ms7Od-60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Field" xmi:id="_ms7OeO60EduiM-oReH7YLA" columnType="timestamp"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu7ZMO60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7Oee60EduiM-oReH7YLA" name="address" visibility="private" type="_ms7OTe60EduiM-oReH7YLA" association="_muEdkO60EduiM-oReH7YLA">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ms7Oeu60EduiM-oReH7YLA" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ms7Oe-60EduiM-oReH7YLA" value="1"/>
+      </ownedAttribute>
+    </ownedMember>
+    <ownedMember xmi:type="uml:Class" xmi:id="_ms7OfO60EduiM-oReH7YLA" name="Student">
+      <eAnnotations xmi:id="_ms7Ofe60EduiM-oReH7YLA" source="appliedStereotypes">
+        <contents xmi:type="BusinessApps_0:BusinessApps__Entity" xmi:id="_ms7Ofu60EduiM-oReH7YLA"/>
+      </eAnnotations>
+      <generalization xmi:id="_ms7Of-60EduiM-oReH7YLA" general="_ms7Oau60EduiM-oReH7YLA"/>
+      <ownedAttribute xmi:id="_ms7OgO60EduiM-oReH7YLA" name="mnr" visibility="private">
+        <eAnnotations xmi:id="_ms7Oge60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Field" xmi:id="_ms7Ogu60EduiM-oReH7YLA" isUnique="true"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1T1O60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7Og-60EduiM-oReH7YLA" name="enrollment" visibility="private">
+        <eAnnotations xmi:id="_ms7OhO60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Field" xmi:id="_ms7Ohe60EduiM-oReH7YLA" columnType="date"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu7ZMO60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7Ohu60EduiM-oReH7YLA" name="mainFields" visibility="private">
+        <eAnnotations xmi:id="_ms7Oh-60EduiM-oReH7YLA" source="appliedStereotypes">
+          <contents xmi:type="BusinessApps_0:BusinessApps__Field" xmi:id="_ms7OiO60EduiM-oReH7YLA"/>
+        </eAnnotations>
+        <type xmi:type="uml:PrimitiveType" href="datatypes.profile.uml2#_mu1Ty-60EduiM-oReH7YLA"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ms7Oie60EduiM-oReH7YLA" value="-1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ms7Oiu60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_ms7Oi-60EduiM-oReH7YLA" name="courses" visibility="private" type="_ms7OGu60EduiM-oReH7YLA" association="_ms7Oju60EduiM-oReH7YLA">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ms7OjO60EduiM-oReH7YLA" value="-1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ms7Oje60EduiM-oReH7YLA"/>
+      </ownedAttribute>
+    </ownedMember>
+    <ownedMember xmi:type="uml:Association" xmi:id="_ms7Oju60EduiM-oReH7YLA" memberEnd="_ms7OJu60EduiM-oReH7YLA _ms7Oi-60EduiM-oReH7YLA"/>
+    <ownedMember xmi:type="uml:Association" xmi:id="_ms7Oj-60EduiM-oReH7YLA" memberEnd="_ms7OKe60EduiM-oReH7YLA _ms7OZ-60EduiM-oReH7YLA">
+      <eAnnotations xmi:id="_mt-W8O60EduiM-oReH7YLA" source="appliedStereotypes">
+        <contents xmi:type="BusinessApps_0:BusinessApps__PersistentAssociation" xmi:id="_mt-W8e60EduiM-oReH7YLA" cascade="save-update, persist"/>
+      </eAnnotations>
+    </ownedMember>
+    <ownedMember xmi:type="uml:Association" xmi:id="_muEdkO60EduiM-oReH7YLA" memberEnd="_muEdk-60EduiM-oReH7YLA _ms7Oee60EduiM-oReH7YLA">
+      <eAnnotations xmi:id="_muEdke60EduiM-oReH7YLA" source="appliedStereotypes">
+        <contents xmi:type="BusinessApps_0:BusinessApps__PersistentAssociation" xmi:id="_muEdku60EduiM-oReH7YLA" cascade="all" lazy="false"/>
+      </eAnnotations>
+      <ownedEnd xmi:id="_muEdk-60EduiM-oReH7YLA" visibility="private" type="_ms7Oau60EduiM-oReH7YLA" association="_muEdkO60EduiM-oReH7YLA"/>
+    </ownedMember>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Dependency" xmi:id="_muEdlO60EduiM-oReH7YLA" client="_ms7OLO60EduiM-oReH7YLA" supplier="_ms7OfO60EduiM-oReH7YLA"/>
+  <ownedMember xmi:type="uml:Dependency" xmi:id="_muEdle60EduiM-oReH7YLA" client="_ms7OLO60EduiM-oReH7YLA" supplier="_ms7OYO60EduiM-oReH7YLA"/>
+  <ownedMember xmi:type="uml:Dependency" xmi:id="_muEdlu60EduiM-oReH7YLA" client="_ms7OLO60EduiM-oReH7YLA" supplier="_ms7OGu60EduiM-oReH7YLA"/>
+  <ownedMember xmi:type="uml:Package" xmi:id="_muEdl-60EduiM-oReH7YLA" name="UML Standard Profile">
+    <ownedComment xmi:id="_muEdmO60EduiM-oReH7YLA" body="UML Standard Profile contains several popular stereotypes, tag definitions and constraints described in UML 1.4 and UML 2.0 Specifications." annotatedElement="_muEdl-60EduiM-oReH7YLA"/>
+  </ownedMember>
+</uml:Model>

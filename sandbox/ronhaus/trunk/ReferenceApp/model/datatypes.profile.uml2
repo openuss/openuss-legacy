@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Profile xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/1.0.0/UML" xmi:id="_mu1Tre60EduiM-oReH7YLA" name="datatypes" metamodelReference="_mu1TyO60EduiM-oReH7YLA">
+  <eAnnotations xmi:id="_mu1Tru60EduiM-oReH7YLA" source="attributes">
+    <details xmi:id="_mu1Tr-60EduiM-oReH7YLA" key="version" value="0"/>
+  </eAnnotations>
+  <eAnnotations xmi:id="_mu1TsO60EduiM-oReH7YLA" source="ePackages">
+    <contents xmi:type="ecore:EPackage" xmi:id="_mu1Tse60EduiM-oReH7YLA" name="datatypes_0" nsURI="http:///datatypes_0_mXV_oO60EduiM-oReH7YLA.profile.uml2" nsPrefix="datatypes_0">
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Tsu60EduiM-oReH7YLA" name="datatypes__String" instanceClassName="datatypes__String"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Ts-60EduiM-oReH7YLA" name="datatypes__Integer" instanceClassName="datatypes__Integer"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1TtO60EduiM-oReH7YLA" name="datatypes__Boolean" instanceClassName="datatypes__Boolean"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Tte60EduiM-oReH7YLA" name="datatypes__Double" instanceClassName="datatypes__Double"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Ttu60EduiM-oReH7YLA" name="datatypes__Float" instanceClassName="datatypes__Float"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Tt-60EduiM-oReH7YLA" name="datatypes__Long" instanceClassName="datatypes__Long"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1TuO60EduiM-oReH7YLA" name="datatypes__Byte" instanceClassName="datatypes__Byte"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Tue60EduiM-oReH7YLA" name="datatypes__Character" instanceClassName="datatypes__Character"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Tuu60EduiM-oReH7YLA" name="datatypes__Short" instanceClassName="datatypes__Short"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Tu-60EduiM-oReH7YLA" name="datatypes__byte" instanceClassName="datatypes__byte"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1TvO60EduiM-oReH7YLA" name="datatypes__short" instanceClassName="datatypes__short"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Tve60EduiM-oReH7YLA" name="datatypes__int" instanceClassName="datatypes__int"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Tvu60EduiM-oReH7YLA" name="datatypes__long" instanceClassName="datatypes__long"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Tv-60EduiM-oReH7YLA" name="datatypes__float" instanceClassName="datatypes__float"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1TwO60EduiM-oReH7YLA" name="datatypes__double" instanceClassName="datatypes__double"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Twe60EduiM-oReH7YLA" name="datatypes__Date" instanceClassName="datatypes__Date"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Twu60EduiM-oReH7YLA" name="datatypes__Timestamp" instanceClassName="datatypes__Timestamp"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Tw-60EduiM-oReH7YLA" name="datatypes__DateTime" instanceClassName="datatypes__DateTime"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1TxO60EduiM-oReH7YLA" name="datatypes__Time" instanceClassName="datatypes__Time"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Txe60EduiM-oReH7YLA" name="datatypes__boolean" instanceClassName="datatypes__boolean"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Txu60EduiM-oReH7YLA" name="datatypes__char" instanceClassName="datatypes__char"/>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_mu1Tx-60EduiM-oReH7YLA" name="datatypes__void" instanceClassName="datatypes__void"/>
+    </contents>
+  </eAnnotations>
+  <packageImport xmi:id="_mu1TyO60EduiM-oReH7YLA" visibility="private">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_METAMODELS/UML2.metamodel.uml2#_m8qbA686EdiEh75YJ_3n8g"/>
+  </packageImport>
+  <packageImport xmi:id="_mu1Tye60EduiM-oReH7YLA">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_EfRZoK86EdieaYgxtVWN8Q"/>
+  </packageImport>
+  <packageImport xmi:id="_mu1Tyu60EduiM-oReH7YLA">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_RjmyoK86EdieaYgxtVWN8Q"/>
+  </packageImport>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1Ty-60EduiM-oReH7YLA" name="String"/>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1TzO60EduiM-oReH7YLA" name="Integer">
+    <generalization xmi:id="_mu1Tze60EduiM-oReH7YLA" general="_mu1T3u60EduiM-oReH7YLA"/>
+  </ownedMember>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1Tzu60EduiM-oReH7YLA" name="Boolean">
+    <generalization xmi:id="_mu1Tz-60EduiM-oReH7YLA" general="_mu7ZOO60EduiM-oReH7YLA"/>
+  </ownedMember>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1T0O60EduiM-oReH7YLA" name="Double">
+    <generalization xmi:id="_mu1T0e60EduiM-oReH7YLA" general="_mu1T4e60EduiM-oReH7YLA"/>
+  </ownedMember>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1T0u60EduiM-oReH7YLA" name="Float">
+    <generalization xmi:id="_mu1T0-60EduiM-oReH7YLA" general="_mu1T4O60EduiM-oReH7YLA"/>
+  </ownedMember>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1T1O60EduiM-oReH7YLA" name="Long">
+    <generalization xmi:id="_mu1T1e60EduiM-oReH7YLA" general="_mu1T3-60EduiM-oReH7YLA"/>
+  </ownedMember>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1T1u60EduiM-oReH7YLA" name="Byte">
+    <generalization xmi:id="_mu1T1-60EduiM-oReH7YLA" general="_mu1T3O60EduiM-oReH7YLA"/>
+  </ownedMember>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1T2O60EduiM-oReH7YLA" name="Character">
+    <generalization xmi:id="_mu1T2e60EduiM-oReH7YLA" general="_mu7ZOe60EduiM-oReH7YLA"/>
+  </ownedMember>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1T2u60EduiM-oReH7YLA" name="Short">
+    <generalization xmi:id="_mu1T2-60EduiM-oReH7YLA" general="_mu1T3e60EduiM-oReH7YLA"/>
+  </ownedMember>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1T3O60EduiM-oReH7YLA" name="byte"/>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1T3e60EduiM-oReH7YLA" name="short"/>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1T3u60EduiM-oReH7YLA" name="int"/>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1T3-60EduiM-oReH7YLA" name="long"/>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1T4O60EduiM-oReH7YLA" name="float"/>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu1T4e60EduiM-oReH7YLA" name="double"/>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu7ZMO60EduiM-oReH7YLA" name="Date"/>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu7ZMe60EduiM-oReH7YLA" name="Timestamp">
+    <generalization xmi:id="_mu7ZMu60EduiM-oReH7YLA" general="_mu7ZN-60EduiM-oReH7YLA"/>
+    <generalization xmi:id="_mu7ZM-60EduiM-oReH7YLA" general="_mu7ZMO60EduiM-oReH7YLA"/>
+  </ownedMember>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu7ZNO60EduiM-oReH7YLA" name="DateTime">
+    <generalization xmi:id="_mu7ZNe60EduiM-oReH7YLA" general="_mu7ZN-60EduiM-oReH7YLA"/>
+    <generalization xmi:id="_mu7ZNu60EduiM-oReH7YLA" general="_mu7ZMO60EduiM-oReH7YLA"/>
+  </ownedMember>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu7ZN-60EduiM-oReH7YLA" name="Time"/>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu7ZOO60EduiM-oReH7YLA" name="boolean"/>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu7ZOe60EduiM-oReH7YLA" name="char"/>
+  <ownedMember xmi:type="uml:PrimitiveType" xmi:id="_mu7ZOu60EduiM-oReH7YLA" name="void"/>
+</uml:Profile>

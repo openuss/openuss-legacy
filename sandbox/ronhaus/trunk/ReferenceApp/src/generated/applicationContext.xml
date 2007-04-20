@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">  
+  <!-- ========================= DATASOURCE DEFINITION ========================== -->  
+  <!-- DataSource -->  
+  <bean id="myDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+    <property name="driverClassName" value="org.firebirdsql.jdbc.FBDriver"/>  
+    <property name="username" value="sysdba"/>  
+    <property name="password" value="masterkey"/>  
+    <property name="url" value="jdbc:firebirdsql:localhost:openuss30"/> 
+  </bean>  
+  <!-- ========================= HIBERNATE CONFIGURATION ========================= -->  
+  <!-- Hibernate SessionFactory -->  
+  <bean id="mySessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"> 
+    <property name="dataSource" ref="myDataSource"/>  
+    <property name="configLocation" value="classpath:hibernate.cfg.xml"/> 
+  </bean>  
+  <!-- ==================== TRANSACTION MANAGER CONFIGURATION ==================== -->  
+  <!-- Hibernate TransactionManager -->  
+  <bean id="myTxManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"> 
+    <property name="sessionFactory" ref="mySessionFactory"/> 
+  </bean>  
+  <!-- AOP Entry Points -->  
+  <aop:config> 
+    <aop:pointcut id="LectureServiceMethods" expression="execution(* org.openuss.lecture.LectureService.*(..))"/>  
+    <aop:advisor advice-ref="txAdvice" pointcut-ref="LectureServiceMethods"/> 
+  </aop:config>  
+  <!-- AOP Transaction Advisor -->  
+  <tx:advice id="txAdvice" transaction-manager="myTxManager"> 
+    <tx:attributes> 
+      <tx:method name="*" propagation="REQUIRED"/> 
+    </tx:attributes> 
+  </tx:advice>  
+  <!-- ============================ DAO DEFINITIONS ============================== -->  
+  <bean id="StudentDao" class="org.openuss.registration.StudentDaoImpl"> 
+    <property name="sessionFactory" ref="mySessionFactory"/> 
+  </bean>  
+  <bean id="AssistantDao" class="org.openuss.registration.AssistantDaoImpl"> 
+    <property name="sessionFactory" ref="mySessionFactory"/> 
+  </bean>  
+  <bean id="AddressDao" class="org.openuss.registration.AddressDaoImpl"> 
+    <property name="sessionFactory" ref="mySessionFactory"/> 
+  </bean>  
+  <bean id="CourseDao" class="org.openuss.lecture.CourseDaoImpl"> 
+    <property name="sessionFactory" ref="mySessionFactory"/> 
+  </bean>  
+  <!-- =========================== SERVICE DEFINITIONS =========================== -->  
+  <bean id="LectureService" class="org.openuss.lecture.LectureServiceImpl"> 
+    <property name="courseDao" ref="CourseDao"/>  
+    <property name="assistantDao" ref="AssistantDao"/>  
+    <property name="studentDao" ref="StudentDao"/> 
+  </bean> 
+</beans>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--Attention: Generated code! Do not modify by hand!-->
+<hibernate-mapping> 
+  <class name="org.openuss.registration.PersonImpl" table="PERSON" abstract="true"> 
+    <id name="id" column="ID" access="property"> 
+      <generator class="sequence"> 
+        <param name="sequence">GLOBAL_SEQUENCE</param> 
+      </generator> 
+    </id>  
+    <property name="firstname" column="FIRSTNAME" not-null="true" access="property"/>  
+    <property name="lastname" column="LASTNAME" not-null="true" access="property"/>  
+    <property name="registration" column="REGISTRATION" type="timestamp" not-null="true" access="property"/>  
+    <many-to-one name="address" class="org.openuss.registration.AddressImpl" column="ADDRESS_FK" unique="true" not-null="true" cascade="all" lazy="false"/>  
+    <joined-subclass name="org.openuss.registration.StudentImpl" table="STUDENT"> 
+      <key column="ID" foreign-key="STUDENTIFKC"/>  
+      <property name="mnr" column="MNR" not-null="true" unique="true" access="property"/>  
+      <property name="enrollment" column="ENROLLMENT" type="date" not-null="true" access="property"/>  
+      <set name="mainFields" table="STUDENT_MAINFIELDS" lazy="false"> 
+        <key column="STUDENT_FK"/>  
+        <element type="string" column="MAINFIELDS_FK"/> 
+      </set>  
+      <set name="courses" table="PARTICIPANTS_COURSES" inverse="true"> 
+        <key column="PARTICIPANTS_FK"/>  
+        <many-to-many column="COURSES_FK" class="org.openuss.lecture.CourseImpl"/> 
+      </set> 
+    </joined-subclass>  
+    <joined-subclass name="org.openuss.registration.AssistantImpl" table="ASSISTANT"> 
+      <key column="ID" foreign-key="ASSISTANTIFKC"/>  
+      <property name="department" column="DEPARTMENT" not-null="true" access="property"/>  
+      <set name="lectures" inverse="true" cascade="save-update, persist"> 
+        <key column="LECTURER_FK" not-null="true"/>  
+        <one-to-many class="org.openuss.lecture.CourseImpl"/> 
+      </set> 
+    </joined-subclass> 
+  </class> 
+</hibernate-mapping>

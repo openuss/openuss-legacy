@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Profile xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/1.0.0/UML" xmi:id="_muKkQO60EduiM-oReH7YLA" name="BusinessApps" metamodelReference="_mui-sO60EduiM-oReH7YLA">
+  <eAnnotations xmi:id="_muKkQe60EduiM-oReH7YLA" source="attributes">
+    <details xmi:id="_muKkQu60EduiM-oReH7YLA" key="version" value="0"/>
+  </eAnnotations>
+  <eAnnotations xmi:id="_muKkQ-60EduiM-oReH7YLA" source="ePackages">
+    <contents xmi:type="ecore:EPackage" xmi:id="_muKkRO60EduiM-oReH7YLA" name="BusinessApps_0" nsURI="http:///BusinessApps_0_mXJyYe60EduiM-oReH7YLA.profile.uml2" nsPrefix="BusinessApps_0">
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_muKkRe60EduiM-oReH7YLA" name="BusinessApps__Entity">
+        <eAnnotations xmi:id="_muKkRu60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+          <details xmi:id="_muKkR-60EduiM-oReH7YLA" key="documentation" value="class for persistence"/>
+        </eAnnotations>
+        <eAnnotations xmi:id="_muKkSO60EduiM-oReH7YLA" source="stereotype" references="_mui-s-60EduiM-oReH7YLA"/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muKkSe60EduiM-oReH7YLA" name="tableName" ordered="false" lowerBound="1" defaultValueLiteral="">
+          <eAnnotations xmi:id="_muKkSu60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muKkS-60EduiM-oReH7YLA" key="documentation" value="The name of its database table."/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muKkTO60EduiM-oReH7YLA" name="discriminatorValue" ordered="false" lowerBound="1" defaultValueLiteral="">
+          <eAnnotations xmi:id="_muKkTe60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muKkTu60EduiM-oReH7YLA" key="documentation" value="A value that distiguishes individual subclasses, used for polymorphic behaviour."/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_muKkT-60EduiM-oReH7YLA" name="BusinessApps__Key" eSuperTypes="_muKkVu60EduiM-oReH7YLA">
+        <eAnnotations xmi:id="_muKkUO60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+          <details xmi:id="_muKkUe60EduiM-oReH7YLA" key="documentation" value="primary key of an entity"/>
+        </eAnnotations>
+        <eAnnotations xmi:id="_muKkUu60EduiM-oReH7YLA" source="stereotype" references="_mui-uu60EduiM-oReH7YLA"/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muKkU-60EduiM-oReH7YLA" name="generatorClass" ordered="false" lowerBound="1" defaultValueLiteral="GLOBAL_SEQUENCE">
+          <eAnnotations xmi:id="_muKkVO60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muKkVe60EduiM-oReH7YLA" key="documentation" value="Names a class used to generate unique identifiers for instances of the persistent class."/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_muKkVu60EduiM-oReH7YLA" name="BusinessApps__Attribute" abstract="true">
+        <eAnnotations xmi:id="_muKkV-60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+          <details xmi:id="_muKkWO60EduiM-oReH7YLA" key="documentation" value="generalized attribute of an entity&#xA;not to be instantiated"/>
+        </eAnnotations>
+        <eAnnotations xmi:id="_muKkWe60EduiM-oReH7YLA" source="stereotype" references="_mui-1u60EduiM-oReH7YLA"/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muKkWu60EduiM-oReH7YLA" name="columnName" ordered="false" lowerBound="1" defaultValueLiteral="">
+          <eAnnotations xmi:id="_muKkW-60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muKkXO60EduiM-oReH7YLA" key="documentation" value="the name of the mapped database table column"/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muKkXe60EduiM-oReH7YLA" name="columnType" ordered="false" lowerBound="1" defaultValueLiteral="">
+          <eAnnotations xmi:id="_muKkXu60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muKkX-60EduiM-oReH7YLA" key="documentation" value="A name that indicates the Hibernate type. This is not the SQL-type."/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muKkYO60EduiM-oReH7YLA" name="access" ordered="false" lowerBound="1" defaultValueLiteral="property">
+          <eAnnotations xmi:id="_muKkYe60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muKkYu60EduiM-oReH7YLA" key="documentation" value="The strategy that should be used for accessing the property value"/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_muKkY-60EduiM-oReH7YLA" name="BusinessApps__Field" eSuperTypes="_muKkVu60EduiM-oReH7YLA">
+        <eAnnotations xmi:id="_muKkZO60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+          <details xmi:id="_muKkZe60EduiM-oReH7YLA" key="documentation" value="attribute of an entity"/>
+        </eAnnotations>
+        <eAnnotations xmi:id="_muKkZu60EduiM-oReH7YLA" source="stereotype" references="_mui-we60EduiM-oReH7YLA"/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muKkZ-60EduiM-oReH7YLA" name="index" ordered="false" lowerBound="1" defaultValueLiteral="">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muKkaO60EduiM-oReH7YLA" name="collectionTableName" ordered="false" lowerBound="1" defaultValueLiteral="">
+          <eAnnotations xmi:id="_muKkae60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muKkau60EduiM-oReH7YLA" key="documentation" value="For a collection, the name of the collection table."/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muKka-60EduiM-oReH7YLA" name="collectionElementColumnName" ordered="false" lowerBound="1" defaultValueLiteral="">
+          <eAnnotations xmi:id="_muKkbO60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muQq0O60EduiM-oReH7YLA" key="documentation" value="For a collection, the name of the foreign key column in the collection table."/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muQq0e60EduiM-oReH7YLA" name="collectionLazy" ordered="false" lowerBound="1" defaultValueLiteral="false">
+          <eAnnotations xmi:id="_muQq0u60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muQq0-60EduiM-oReH7YLA" key="documentation" value="For a collection, specifies that this property should be fetched lazily when the instance&#xA;variable is first accessed."/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muQq1O60EduiM-oReH7YLA" name="associatedClassName" ordered="false" lowerBound="1" defaultValueLiteral="">
+          <eAnnotations xmi:id="_muQq1e60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muQq1u60EduiM-oReH7YLA" key="documentation" value="For an association, the name of the opposite class."/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muQq1-60EduiM-oReH7YLA" name="length" ordered="false" lowerBound="1" defaultValueLiteral="">
+          <eAnnotations xmi:id="_muQq2O60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muQq2e60EduiM-oReH7YLA" key="documentation" value="For DDL generation, the length of the column."/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muQq2u60EduiM-oReH7YLA" name="precision" ordered="false" lowerBound="1" defaultValueLiteral="">
+          <eAnnotations xmi:id="_muQq2-60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muQq3O60EduiM-oReH7YLA" key="documentation" value="For DDL generation, the precision of the column."/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muQq3e60EduiM-oReH7YLA" name="scale" ordered="false" lowerBound="1" defaultValueLiteral="">
+          <eAnnotations xmi:id="_muQq3u60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muQq3-60EduiM-oReH7YLA" key="documentation" value="For DDL generation, the scale of the column."/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muQq4O60EduiM-oReH7YLA" name="isUnique" ordered="false" lowerBound="1" defaultValueLiteral="">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_muQq4e60EduiM-oReH7YLA" name="BusinessApps__PersistentAssociation">
+        <eAnnotations xmi:id="_muQq4u60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+          <details xmi:id="_muQq4-60EduiM-oReH7YLA" key="documentation" value="association between entities"/>
+        </eAnnotations>
+        <eAnnotations xmi:id="_muQq5O60EduiM-oReH7YLA" source="stereotype" references="_mui-4O60EduiM-oReH7YLA"/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muQq5e60EduiM-oReH7YLA" name="tableName" ordered="false" lowerBound="1" defaultValueLiteral="">
+          <eAnnotations xmi:id="_muQq5u60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muQq5-60EduiM-oReH7YLA" key="documentation" value="The name of the association table."/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muQq6O60EduiM-oReH7YLA" name="cascade" ordered="false" lowerBound="1" defaultValueLiteral="none">
+          <eAnnotations xmi:id="_muQq6e60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muQq6u60EduiM-oReH7YLA" key="documentation" value="Specifies which operations should be cascaded from the parent object to the associated object."/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_muQq6-60EduiM-oReH7YLA" name="lazy" ordered="false" lowerBound="1" defaultValueLiteral="">
+          <eAnnotations xmi:id="_muQq7O60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+            <details xmi:id="_muQq7e60EduiM-oReH7YLA" key="documentation" value="Specifies that the property should be fetched lazily when the instance variable is first accessed."/>
+          </eAnnotations>
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_muQq7u60EduiM-oReH7YLA" name="BusinessApps__Service">
+        <eAnnotations xmi:id="_muQq7-60EduiM-oReH7YLA" source="http://www.eclipse.org/emf/2002/GenModel">
+          <details xmi:id="_muQq8O60EduiM-oReH7YLA" key="documentation" value="class for services"/>
+        </eAnnotations>
+        <eAnnotations xmi:id="_muQq8e60EduiM-oReH7YLA" source="stereotype" references="_mui-6-60EduiM-oReH7YLA"/>
+      </eClassifiers>
+    </contents>
+  </eAnnotations>
+  <packageImport xmi:id="_mui-sO60EduiM-oReH7YLA" visibility="private">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_METAMODELS/UML2.metamodel.uml2#_m8qbA686EdiEh75YJ_3n8g"/>
+  </packageImport>
+  <packageImport xmi:id="_mui-se60EduiM-oReH7YLA">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_EfRZoK86EdieaYgxtVWN8Q"/>
+  </packageImport>
+  <packageImport xmi:id="_mui-su60EduiM-oReH7YLA">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_LIBRARIES/JavaPrimitiveTypes.library.uml2#_RjmyoK86EdieaYgxtVWN8Q"/>
+  </packageImport>
+  <ownedMember xmi:type="uml:Stereotype" xmi:id="_mui-s-60EduiM-oReH7YLA" name="Entity">
+    <ownedComment xmi:id="_mui-tO60EduiM-oReH7YLA" body="class for persistence" annotatedElement="_mui-s-60EduiM-oReH7YLA"/>
+    <ownedAttribute xmi:id="_mui-te60EduiM-oReH7YLA" name="base_Class" visibility="private" association="_mui-7u60EduiM-oReH7YLA">
+      <type xmi:type="uml:Class" href="pathmap://UML2_METAMODELS/UML2.metamodel.uml2#_m88uxq86EdiEh75YJ_3n8g"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-tu60EduiM-oReH7YLA" name="tableName" visibility="private">
+      <ownedComment xmi:id="_mui-t-60EduiM-oReH7YLA" body="The name of its database table." annotatedElement="_mui-tu60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-uO60EduiM-oReH7YLA" name="discriminatorValue" visibility="private">
+      <ownedComment xmi:id="_mui-ue60EduiM-oReH7YLA" body="A value that distiguishes individual subclasses, used for polymorphic behaviour." annotatedElement="_mui-uO60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+    </ownedAttribute>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Stereotype" xmi:id="_mui-uu60EduiM-oReH7YLA" name="Key">
+    <ownedComment xmi:id="_mui-u-60EduiM-oReH7YLA" body="primary key of an entity" annotatedElement="_mui-uu60EduiM-oReH7YLA"/>
+    <generalization xmi:id="_mui-vO60EduiM-oReH7YLA" general="_mui-1u60EduiM-oReH7YLA"/>
+    <ownedAttribute xmi:id="_mui-ve60EduiM-oReH7YLA" name="base_Property" visibility="private" association="_mui-8u60EduiM-oReH7YLA">
+      <type xmi:type="uml:Class" href="pathmap://UML2_METAMODELS/UML2.metamodel.uml2#_m9C1la86EdiEh75YJ_3n8g"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-vu60EduiM-oReH7YLA" name="generatorClass" visibility="private">
+      <ownedComment xmi:id="_mui-v-60EduiM-oReH7YLA" body="Names a class used to generate unique identifiers for instances of the persistent class." annotatedElement="_mui-vu60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_mui-wO60EduiM-oReH7YLA" value="GLOBAL_SEQUENCE"/>
+    </ownedAttribute>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Stereotype" xmi:id="_mui-we60EduiM-oReH7YLA" name="Field">
+    <ownedComment xmi:id="_mui-wu60EduiM-oReH7YLA" body="attribute of an entity" annotatedElement="_mui-we60EduiM-oReH7YLA"/>
+    <generalization xmi:id="_mui-w-60EduiM-oReH7YLA" general="_mui-1u60EduiM-oReH7YLA"/>
+    <ownedAttribute xmi:id="_mui-xO60EduiM-oReH7YLA" name="base_Property" visibility="private" association="_mui-9u60EduiM-oReH7YLA">
+      <type xmi:type="uml:Class" href="pathmap://UML2_METAMODELS/UML2.metamodel.uml2#_m9C1la86EdiEh75YJ_3n8g"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-xe60EduiM-oReH7YLA" name="index" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-xu60EduiM-oReH7YLA" name="collectionTableName" visibility="private">
+      <ownedComment xmi:id="_mui-x-60EduiM-oReH7YLA" body="For a collection, the name of the collection table." annotatedElement="_mui-xu60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-yO60EduiM-oReH7YLA" name="collectionElementColumnName" visibility="private">
+      <ownedComment xmi:id="_mui-ye60EduiM-oReH7YLA" body="For a collection, the name of the foreign key column in the collection table." annotatedElement="_mui-yO60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-yu60EduiM-oReH7YLA" name="collectionLazy" visibility="private">
+      <ownedComment xmi:id="_mui-y-60EduiM-oReH7YLA" body="For a collection, specifies that this property should be fetched lazily when the instance&#xA;variable is first accessed." annotatedElement="_mui-yu60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_mui-zO60EduiM-oReH7YLA" value="false"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-ze60EduiM-oReH7YLA" name="associatedClassName" visibility="private">
+      <ownedComment xmi:id="_mui-zu60EduiM-oReH7YLA" body="For an association, the name of the opposite class." annotatedElement="_mui-ze60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-z-60EduiM-oReH7YLA" name="length" visibility="private">
+      <ownedComment xmi:id="_mui-0O60EduiM-oReH7YLA" body="For DDL generation, the length of the column." annotatedElement="_mui-z-60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-0e60EduiM-oReH7YLA" name="precision" visibility="private">
+      <ownedComment xmi:id="_mui-0u60EduiM-oReH7YLA" body="For DDL generation, the precision of the column." annotatedElement="_mui-0e60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-0-60EduiM-oReH7YLA" name="scale" visibility="private">
+      <ownedComment xmi:id="_mui-1O60EduiM-oReH7YLA" body="For DDL generation, the scale of the column." annotatedElement="_mui-0-60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-1e60EduiM-oReH7YLA" name="isUnique" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+    </ownedAttribute>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Stereotype" xmi:id="_mui-1u60EduiM-oReH7YLA" name="Attribute" isAbstract="true">
+    <ownedComment xmi:id="_mui-1-60EduiM-oReH7YLA" body="generalized attribute of an entity&#xA;not to be instantiated" annotatedElement="_mui-1u60EduiM-oReH7YLA"/>
+    <ownedAttribute xmi:id="_mui-2O60EduiM-oReH7YLA" name="base_Property" visibility="private" association="_mui--u60EduiM-oReH7YLA">
+      <type xmi:type="uml:Class" href="pathmap://UML2_METAMODELS/UML2.metamodel.uml2#_m9C1la86EdiEh75YJ_3n8g"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-2e60EduiM-oReH7YLA" name="columnName" visibility="private">
+      <ownedComment xmi:id="_mui-2u60EduiM-oReH7YLA" body="the name of the mapped database table column" annotatedElement="_mui-2e60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-2-60EduiM-oReH7YLA" name="columnType" visibility="private">
+      <ownedComment xmi:id="_mui-3O60EduiM-oReH7YLA" body="A name that indicates the Hibernate type. This is not the SQL-type." annotatedElement="_mui-2-60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-3e60EduiM-oReH7YLA" name="access" visibility="private">
+      <ownedComment xmi:id="_mui-3u60EduiM-oReH7YLA" body="The strategy that should be used for accessing the property value" annotatedElement="_mui-3e60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_mui-3-60EduiM-oReH7YLA" value="property"/>
+    </ownedAttribute>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Stereotype" xmi:id="_mui-4O60EduiM-oReH7YLA" name="PersistentAssociation">
+    <ownedComment xmi:id="_mui-4e60EduiM-oReH7YLA" body="association between entities" annotatedElement="_mui-4O60EduiM-oReH7YLA"/>
+    <ownedAttribute xmi:id="_mui-4u60EduiM-oReH7YLA" name="base_Association" visibility="private" association="_mui-_u60EduiM-oReH7YLA">
+      <type xmi:type="uml:Class" href="pathmap://UML2_METAMODELS/UML2.metamodel.uml2#_m9VJSq86EdiEh75YJ_3n8g"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-4-60EduiM-oReH7YLA" name="tableName" visibility="private">
+      <ownedComment xmi:id="_mui-5O60EduiM-oReH7YLA" body="The name of the association table." annotatedElement="_mui-4-60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-5e60EduiM-oReH7YLA" name="cascade" visibility="private">
+      <ownedComment xmi:id="_mui-5u60EduiM-oReH7YLA" body="Specifies which operations should be cascaded from the parent object to the associated object." annotatedElement="_mui-5e60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_mui-5-60EduiM-oReH7YLA" value="none"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_mui-6O60EduiM-oReH7YLA" name="lazy" visibility="private">
+      <ownedComment xmi:id="_mui-6e60EduiM-oReH7YLA" body="Specifies that the property should be fetched lazily when the instance variable is first accessed." annotatedElement="_mui-6O60EduiM-oReH7YLA"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_IXlH8a86EdieaYgxtVWN8Q"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_mui-6u60EduiM-oReH7YLA"/>
+    </ownedAttribute>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Stereotype" xmi:id="_mui-6-60EduiM-oReH7YLA" name="Service">
+    <ownedComment xmi:id="_mui-7O60EduiM-oReH7YLA" body="class for services" annotatedElement="_mui-6-60EduiM-oReH7YLA"/>
+    <ownedAttribute xmi:id="_mui-7e60EduiM-oReH7YLA" name="base_Class" visibility="private" association="_mui_Au60EduiM-oReH7YLA">
+      <type xmi:type="uml:Class" href="pathmap://UML2_METAMODELS/UML2.metamodel.uml2#_m88uxq86EdiEh75YJ_3n8g"/>
+    </ownedAttribute>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Extension" xmi:id="_mui-7u60EduiM-oReH7YLA" memberEnd="_mui-7-60EduiM-oReH7YLA _mui-te60EduiM-oReH7YLA">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_mui-7-60EduiM-oReH7YLA" name="extension_Entity" visibility="private" type="_mui-s-60EduiM-oReH7YLA" association="_mui-7u60EduiM-oReH7YLA" aggregation="composite">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_mui-8O60EduiM-oReH7YLA" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_mui-8e60EduiM-oReH7YLA"/>
+    </ownedEnd>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Extension" xmi:id="_mui-8u60EduiM-oReH7YLA" memberEnd="_mui-ve60EduiM-oReH7YLA _mui-8-60EduiM-oReH7YLA">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_mui-8-60EduiM-oReH7YLA" name="extension_Identifier" visibility="private" type="_mui-uu60EduiM-oReH7YLA" association="_mui-8u60EduiM-oReH7YLA" aggregation="composite">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_mui-9O60EduiM-oReH7YLA" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_mui-9e60EduiM-oReH7YLA"/>
+    </ownedEnd>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Extension" xmi:id="_mui-9u60EduiM-oReH7YLA" memberEnd="_mui-9-60EduiM-oReH7YLA _mui-xO60EduiM-oReH7YLA">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_mui-9-60EduiM-oReH7YLA" name="extension_Field" visibility="private" type="_mui-we60EduiM-oReH7YLA" association="_mui-9u60EduiM-oReH7YLA" aggregation="composite">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_mui--O60EduiM-oReH7YLA" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_mui--e60EduiM-oReH7YLA"/>
+    </ownedEnd>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Extension" xmi:id="_mui--u60EduiM-oReH7YLA" memberEnd="_mui---60EduiM-oReH7YLA _mui-2O60EduiM-oReH7YLA">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_mui---60EduiM-oReH7YLA" name="extension_Attribute" visibility="private" type="_mui-1u60EduiM-oReH7YLA" association="_mui--u60EduiM-oReH7YLA" aggregation="composite">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_mui-_O60EduiM-oReH7YLA" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_mui-_e60EduiM-oReH7YLA"/>
+    </ownedEnd>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Extension" xmi:id="_mui-_u60EduiM-oReH7YLA" memberEnd="_mui-_-60EduiM-oReH7YLA _mui-4u60EduiM-oReH7YLA">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_mui-_-60EduiM-oReH7YLA" name="extension_unbenannt1" visibility="private" type="_mui-4O60EduiM-oReH7YLA" association="_mui-_u60EduiM-oReH7YLA" aggregation="composite">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_mui_AO60EduiM-oReH7YLA" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_mui_Ae60EduiM-oReH7YLA"/>
+    </ownedEnd>
+  </ownedMember>
+  <ownedMember xmi:type="uml:Extension" xmi:id="_mui_Au60EduiM-oReH7YLA" memberEnd="_mui_A-60EduiM-oReH7YLA _mui-7e60EduiM-oReH7YLA">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_mui_A-60EduiM-oReH7YLA" name="extension_Service" visibility="private" type="_mui-6-60EduiM-oReH7YLA" association="_mui_Au60EduiM-oReH7YLA" aggregation="composite">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_mui_BO60EduiM-oReH7YLA" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_mui_Be60EduiM-oReH7YLA"/>
+    </ownedEnd>
+  </ownedMember>
+</uml:Profile>
