@@ -1,0 +1,64 @@
+«IMPORT uml»
+«IMPORT BusinessApps»
+
+«EXTENSION org::openuss::cartridges::uml2::spring::extensions::Spring»
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::Helper»
+
+«DEFINE Start FOR Model»
+	«FILE "applicationContext.xml"»<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+	
+	«IF GLOBALVAR spring_Persistence == "true"»
+		«EXPAND DataSource»
+		«IF GLOBALVAR spring_OR_Mapper == "hibernate3"»«EXPAND HibernateConfiguration::Hibernate3»«ENDIF»
+	«ENDIF»
+	
+	«EXPAND AOP::Start»
+	
+	«IF GLOBALVAR spring_Persistence == "true"»
+		<!-- ============================ DAO DEFINITIONS ============================== -->
+		«EXPAND DAO FOREACH eAllContents.typeSelect(Entity)»
+	«ENDIF»
+	
+	<!-- =========================== SERVICE DEFINITIONS =========================== -->
+	«EXPAND Service FOREACH eAllContents.typeSelect(Service)»
+</beans>
+	«ENDFILE»
+«ENDDEFINE»
+
+
+«DEFINE DataSource FOR Model»
+	<!-- ========================= DATASOURCE DEFINITION ========================== -->
+	<!-- DataSource -->
+	<bean id="myDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="«GLOBALVAR connectiondriver_class»"/>
+        <property name="username" value="«GLOBALVAR connection_user»"/>
+        <property name="password" value="«GLOBALVAR connection_password»"/>
+        <property name="url" value="«GLOBALVAR connection_url»"/>
+    </bean>
+«ENDDEFINE»
+
+«DEFINE DAO FOR Entity»
+	«IF !isAbstract»
+		<bean id="«interfaceDaoClassName(this)»" class="«getFQNPackageName(this)».«implDaoClassName(this)»">
+			<property name="sessionFactory" ref="mySessionFactory"/>
+    	</bean>
+    «ENDIF»
+«ENDDEFINE»
+
+«DEFINE Service FOR Service»
+	<bean id="«name»" class="«getFQNPackageName(this)».«implClassName(this)»">
+		«FOREACH AllDependencies().typeSelect(Dependency) AS a»
+			«IF Entity.isInstance(a.supplier.get(0))»
+				<property name="«interfaceDaoClassName(a.supplier.get(0)).toFirstLower()»" ref="«interfaceDaoClassName(a.supplier.get(0))»"/>   		
+    		«ELSEIF Class.isInstance(a.supplier.get(0))»
+    			<property name="«interfaceClassName(a.supplier.get(0)).toFirstLower()»" ref="«interfaceClassName(a.supplier.get(0))»"/>
+			«ENDIF»
+		«ENDFOREACH»
+	</bean>
+«ENDDEFINE»

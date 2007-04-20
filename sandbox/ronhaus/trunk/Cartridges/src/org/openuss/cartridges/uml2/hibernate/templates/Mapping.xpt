@@ -1,0 +1,139 @@
+«IMPORT uml»
+«IMPORT BusinessApps»
+
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::Helper»
+«EXTENSION org::openuss::cartridges::uml2::hibernate::extensions::Hibernate»
+
+«REM»
+Dies ist der Startpunkt der Generierung. Es generiert die Hibernate-Mapping Datein (*.hbm.xml) für
+alle Entities. Die Datein werden im gleiche Verzeichnis wie die Java-Klassen gespeichert (outlet: default).
+«ENDREM»
+«DEFINE Start FOR Entity»
+	«IF superClass.select(x|Entity.isInstance(x)).isEmpty»
+		«FILE getFQNPackagePath(this) + "/" + name + ".hbm.xml" »<?xml version="1.0" encoding="UTF-8"?>
+		<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">  
+		<!--Attention: Generated code! Do not modify by hand!-->
+
+		<hibernate-mapping>
+			<class name="«className(this)»" table="«tableName(this)»" «IF isAbstract»abstract="true"«ENDIF»>
+    			«EXPAND attrib»
+    			«EXPAND special»
+ 			</class>
+		</hibernate-mapping>
+		«ENDFILE»
+	«ENDIF»
+«ENDDEFINE»
+
+
+«REM»Dies ist der Startpunkt der Generierung des Mappings der Attribute.«ENDREM»
+«DEFINE attrib FOR Entity»
+	«EXPAND identifier FOREACH ownedAttribute.typeSelect(Key)»
+	«EXPAND simpleProperty FOREACH ownedAttribute.typeSelect(Field).select(x|!Class.isInstance(x.type) && !x.isMultivalued())»
+	«EXPAND complexProperty FOREACH ownedAttribute.typeSelect(Field).select(x|Class.isInstance(x.type) && x.association == null)»
+	«EXPAND collection FOREACH ownedAttribute.typeSelect(Field).select(x|!Class.isInstance(x.type) && x.isMultivalued())»
+	«EXPAND toOne_Entity FOREACH ownedAttribute.select(x|Entity.isInstance(x.type) && !x.isMultivalued() && x.isNavigable() && x.association != null)»
+	«EXPAND toMany_Entity FOREACH ownedAttribute.select(x|Entity.isInstance(x.type) && x.isMultivalued() && x.isNavigable() && x.association != null)»
+«ENDDEFINE»
+
+«REM»Dies ist der Startpunkt der Generierung des Mappings der Spezialisierungen.«ENDREM»
+«DEFINE special FOR Entity»
+	«EXPAND specialClass FOREACH getModel().eAllContents.typeSelect(Entity).select(x|!x.superClass.select(x|x==this).isEmpty)»
+«ENDDEFINE»
+
+«DEFINE specialClass FOR Entity»
+	<joined-subclass name="«className(this)»" table="«tableName(this)»">
+		<key column="«superClassIDColumnName(this)»" foreign-key="«tableName(this)»IFKC"/>
+		«EXPAND attrib»
+	</joined-subclass>
+«ENDDEFINE»
+
+«REM»Erzeugen des Mappings des PrimaryKey.«ENDREM»
+«DEFINE identifier FOR Key»
+	<id name="«name»" column="«columnName(this)»" «columnType(this)» access="«access»">
+		<generator class="sequence">
+			<param name="sequence">«this.generatorClass»</param>
+		</generator>
+	</id>
+«ENDDEFINE»
+
+«REM»Erzeugen des Mappings der Basisdatentypen.«ENDREM»
+«DEFINE simpleProperty FOR Field»
+	<property name="«name»" column="«columnName(this)»" «columnType(this)» not-null="«lower!=0»" «fieldUnique(this)» «columnLength()» «columnPrecision()» «columnScale()»
+	access="«access»" «columnIndex(this)»/>
+«ENDDEFINE»
+
+«REM»Erzeugen des Mappings der Collection.«ENDREM»
+«DEFINE collection FOR Field»
+	«IF isOrdered»
+		<bag name="«name»" table="«mappingTable(this)»" lazy="«collectionLazy»">
+			<key «keyColumnName(this)»/>
+			<element type="«elementColumnType(this)»" column="«elementColumnName(this)»" />
+		</bag>
+	«ELSE»
+		<set name="«name»" table="«mappingTable(this)»" lazy="«collectionLazy»">
+			<key «keyColumnName(this)»/>
+			<element type="«elementColumnType(this)»" column="«elementColumnName(this)»" />
+		</set>
+	«ENDIF»
+«ENDDEFINE»
+
+«REM»Erzeugt ein Mapping für ein Field mit einem komplexen Typ (Klasse).«ENDREM»
+«DEFINE complexProperty FOR Field»
+«REM»Ist so nicht vorgesehen. Solche Beziehungen sollen über "Associations" modelliert werden.«ENDREM»
+«REM»Im Constraints-Check wird eine Fehlermeldung ausgelöst.«ENDREM»
+«ENDDEFINE»
+
+
+
+
+
+
+«REM»Erzeugt ein Mapping für eine to-One-Beziehung.«ENDREM»
+«DEFINE toOne_Entity FOR Property»
+	«IF association.memberEnd.reject(p | p == this).get(0).isMultivalued()»
+		<many-to-one name="«name»" column="«oppColumnName(this)»" class="«oppClassName(this)»" not-null="«lower!=0»" 
+		«cascadeStyle(this.association)» «lazyStyle(this.association)» «REM»foreign-key="«foreignKeyConstraintName(this)»"«ENDREM»/>
+	«ELSE»
+		«REM»Bei der one-to-one-Beziehung wird die Variante "unique foreign key association" verwendet.«ENDREM»
+		«IF association.memberEnd.get(0) == this || !association.memberEnd.reject(a | a == this).get(0).isNavigable()»
+			<many-to-one name="«name»" class="«oppClassName(this)»" column="«oppColumnName(this)»" unique="true" not-null="«lower!=0»" 
+			«cascadeStyle(this.association)» «lazyStyle(this.association)» «REM»foreign-key="«foreignKeyConstraintName(this)»"«ENDREM»/>
+		«ELSE»
+			<one-to-one name="«name»"  class="«oppClassName(this)»" property-ref="«association.memberEnd.reject(a | a == this).get(0).name»"
+			«cascadeStyle(this.association)» «lazyStyle(this.association)»/>
+		«ENDIF»
+	«ENDIF»
+«ENDDEFINE»
+
+
+
+
+«REM»Erzeugt ein Mapping für eine to-Many-Beziehung.«ENDREM»
+«REM»Es wird überprüft, ob es sich um eine geordnete (Bag) oder ungeordnete Beziehung (Set) handelt.«ENDREM»
+«DEFINE toMany_Entity FOR Property»
+	«IF isOrdered»
+		«IF association.memberEnd.reject(p | p == this).get(0).isMultivalued()»
+			<bag name="«name»" table="«mappingTable(association)»" inverse="«isInverse(this)»" «cascadeStyle(this.association)» «lazyStyle(this.association)»>
+				<key column="«keyColumnName(this)»"/>
+				<many-to-many column="«oppColumnName(this)»" class="«oppClassName(this)»" «REM»foreign-key="«foreignKeyConstraintManyName(this)»"«ENDREM»/>
+			</bag>
+		«ELSE»
+			<bag name="«name»" inverse="«!isBidirectional(this)»" «cascadeStyle(this.association)» «lazyStyle(this.association)»>
+				<key column="«keyColumnName(this)»" not-null="«isForeignNotNull(this)»"/>
+				<one-to-many class="«oppClassName(this)»"/>
+			</bag>
+		«ENDIF»		
+	«ELSE»
+		«IF association.memberEnd.reject(p | p == this).get(0).isMultivalued()»
+			<set name="«name»" table="«mappingTable(association)»" inverse="«isInverse(this)»" «cascadeStyle(this.association)» «lazyStyle(this.association)»>
+				<key column="«keyColumnName(this)»"/>
+				<many-to-many column="«oppColumnName(this)»" class="«oppClassName(this)»" «REM»foreign-key="«foreignKeyConstraintManyName(this)»"«ENDREM»/>
+			</set>
+		«ELSE»
+			<set name="«name»" inverse="«isInverse(this)»" «cascadeStyle(this.association)» «lazyStyle(this.association)»>
+				<key column="«keyColumnName(this)»" not-null="«isForeignNotNull(this)»"/>
+				<one-to-many class="«oppClassName(this)»"/>
+			</set>
+		«ENDIF»	
+	«ENDIF»
+«ENDDEFINE»

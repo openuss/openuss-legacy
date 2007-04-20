@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+	<properties>
+		<title>openArchitectureWare Cartridge for Java 5: Changelog</title>
+	</properties>
+	<body>
+		<release version="1.2.0-SNAPSHOT" date="January 2007" desc="Release Version of Fornax">
+			<author email="thorsten.kamann@googlemail.com">Thorsten Kamann</author>
+			<information>
+				Third version of the oAW JavaBeans Cartridge and can be found at Fornax-Platform. It's based on
+				the 4.1.1 release of the openArchitectureWare-Framework.
+			</information>
+		</release>
+		<release version="1.3.0" date="March 2007" desc="Initial OpenUSS Integrated Version">
+			<author email="ronhaus@arcor.de">Ron Haus</author>
+			<information>
+				This is the initial release of the OpenUSS Javabasic Cartridge for openArchitectureWare. It is reduced and 
+				adjusted to the needs of OpenUSS 3.0.
+			</information>
+			<changelog>
+				Added the ability to handle OpenUSS datatypes.
+				Added the usage of generic collections including type safety.
+				Added the ability to configure class names for Interfaces, Abstract and Impl classes.
+				Removed the initialization of attributes with no default values.
+				Fixed the handling of packages.
+				Fixed the handling of inheritence for attributes and operations.
+			</changelog>
+			<restrictions>
+				Model interfaces are not supported.
+				Exceptions are not supported.
+			</restrictions>
+			<knownIssues>
+				Documentation for functions creates null parameters
+			</knownIssues>
+			<dependency>
+				This release was created using the 4.1.2 release of the openArchitectureWare-Framework, Eclipse UML 2.0.3
+				and Eclipse EMF Ecore 2.2.2. It generates outputs conform to Java 5.
+			</dependency>
+		</release>
+	</body>
+</document>

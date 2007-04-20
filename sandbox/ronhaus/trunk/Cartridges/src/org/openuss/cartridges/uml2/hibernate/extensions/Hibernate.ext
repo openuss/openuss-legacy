@@ -1,0 +1,114 @@
+import uml;
+import BusinessApps;
+
+extension org::openuss::cartridges::uml2::javabasic::extensions::Helper;
+
+Boolean isNameUnique (List[NamedElement] elements) :
+	elements.forAll(p|!elements.exists(x|x.name==p.name && x!=p));
+
+boolean isUnnamed (NamedElement elem) : elem.name==null || elem.name=="";
+
+/* 
+	Funktion für die einfachen Eigenschaften der Klassen.
+	Achtung: Auch die Default-Werte von Hibernate und dem Meta-Model beachten!
+*/
+String className(Class e):
+	((String)GLOBALVAR javaImplementationPrefix)+getFQNPackageName(e)+"."+e.name+((String)GLOBALVAR javaImplementationSuffix);
+
+String tableName(Entity e):
+	e.tableName=="" ? e.name.toUpperCase() : e.tableName;
+
+
+/* 
+	Funktion für die einfachen Eigenschaften von erbenden Klassen.
+*/
+String superClassIDColumnName(Entity e):
+	e.superClass.select(x|Entity.isInstance(x)).isEmpty ? "" :
+	columnName(e.superClass.ownedAttribute.typeSelect(Key).get(0));
+
+/* 
+	Funktion für die einfachen Eigenschaften der Attribute.
+	Achtung: Auch die Default-Werte von Hibernate und dem Meta-Model beachten!
+*/
+String columnName(Attribute a):
+	a.columnName=="" ? a.name.toUpperCase() : a.columnName;
+
+String columnType(Attribute a):
+	a.columnType=="" ? "" : "type=\""+a.columnType+"\"";
+
+String columnIndex(Field f):
+	f.index=="" ? "" : "index=\""+f.index+"\"";
+	
+String mappingTable(Field f):
+	f.collectionTableName=="" ?
+	f.class.name.toUpperCase()+"_"+f.name.toUpperCase() :
+	f.collectionTableName;
+	
+String elementColumnType(Field f):
+	f.columnType=="" ? f.type.name.toLowerCase() : f.columnType;
+	
+String elementColumnName(Field f):
+	f.collectionElementColumnName=="" ? f.name.toUpperCase()+"_FK" : f.collectionElementColumnName;
+	
+String keyColumnName(Field f):
+	f.columnName=="" ? "column=\""+f.class.name.toUpperCase()+"_FK\"" : "column=\""+f.columnName+"\"";
+	
+String columnLength(Field f):
+	f.length=='' ? "" : "length=\""+f.length+"\"";
+	
+String columnScale(Field f):
+	f.scale=='' ? "" : "scale=\""+f.scale+"\"";
+	
+String columnPrecision(Field f):
+	f.precision=='' ? "" : "precision=\""+f.precision+"\"";
+	
+String fieldUnique(Field f):
+	f.isUnique=='' ? "" : "unique=\""+f.isUnique+"\"";
+
+/* 
+	Funktion für die Eigenschaften der Beziehungen
+*/
+String mappingTable(Association a):
+	PersistentAssociation.isInstance(a) && ((PersistentAssociation)a).tableName!="" ?
+	((PersistentAssociation)a).tableName :
+	a.memberEnd.get(0).name.toUpperCase() + "_" + a.memberEnd.get(1).name.toUpperCase();
+	
+String keyColumnName(Property p):
+	Field.isInstance(p.association.memberEnd.reject(a | a == p).get(0)) && ((Field)p.association.memberEnd.reject(a | a == p).get(0)).columnName!="" ?
+	((Field)p.association.memberEnd.reject(a | a == p).get(0)).columnName :
+	p.association.memberEnd.reject(a | a == p).get(0).name.toUpperCase()+"_FK";
+
+String oppColumnName(Property p):
+	Field.isInstance(p) && ((Field)p).columnName!="" ?
+	((Field)p).columnName :
+	p.name.toUpperCase()+"_FK";
+	
+String oppClassName(Property p):
+	Field.isInstance(p) && ((Field)p).associatedClassName!="" ?
+	((Field)p).associatedClassName :
+	((String)GLOBALVAR javaImplementationPrefix)+getFQNPackageName(p.type)+"."+p.type.name+((String)GLOBALVAR javaImplementationSuffix);
+
+boolean isInverse(Property p):
+	p.isMultivalued() && p.isNavigable() &&  p.association.memberEnd.reject(a | a == p).get(0).isNavigable()?
+	(p.association.memberEnd.reject(a | a == p).get(0).isMultivalued() && p.association.memberEnd.get(0) == p ? false : true) :
+	false;
+
+String cascadeStyle(Association a):
+	PersistentAssociation.isInstance(a) ?
+	(((PersistentAssociation)a).cascade=='' ? "" : "cascade=\""+((PersistentAssociation)a).cascade+"\"") : "";
+
+String lazyStyle(Association a):
+	PersistentAssociation.isInstance(a) ?
+	(((PersistentAssociation)a).lazy=='' ? "" : "lazy=\""+((PersistentAssociation)a).lazy+"\"") : "";
+
+boolean isForeignNotNull(Property p):
+	p.association.memberEnd.reject(a | a == p).get(0).lower!=0;
+
+boolean isBidirectional(Property p):
+	p.isMultivalued() && p.isNavigable() &&  p.association.memberEnd.reject(a | a == p).get(0).isNavigable();
+
+String foreignKeyConstraintName(Property p):
+	tableName((Entity)p.class)+"_"+((Field.isInstance(p) && ((Field)p).columnName!="") ? ((Field)p).columnName : p.name.toUpperCase())+"_FKC";
+
+String foreignKeyConstraintManyName(Property p):
+	mappingTable(p.association)+"_"+((Field.isInstance(p) && ((Field)p).columnName!="") ? ((Field)p).columnName : p.name.toUpperCase())+"_FKC";

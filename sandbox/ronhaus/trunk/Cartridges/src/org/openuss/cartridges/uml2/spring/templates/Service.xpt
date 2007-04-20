@@ -1,0 +1,51 @@
+«IMPORT uml»
+«IMPORT BusinessApps»
+
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::Helper»
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::DataType»
+«EXTENSION org::openuss::cartridges::uml2::spring::extensions::Spring»
+
+/**
+* Create the interface, the abstract and the basic implementation
+*/
+«DEFINE Start FOR Service»
+	«EXPAND org::openuss::cartridges::uml2::javabasic::templates::Class::interface»
+	«EXPAND org::openuss::cartridges::uml2::javabasic::templates::Class::abstractClass»
+	«EXPAND org::openuss::cartridges::uml2::javabasic::templates::Class::basicClass»
+«ENDDEFINE»
+
+/**
+* Includes the dependencies as properties with protected getter/public setter
+*/
+«AROUND org::openuss::cartridges::uml2::javabasic::templates::Attribute::attribute FOR Classifier»
+	«FOREACH AllDependencies().typeSelect(Dependency) AS a»
+		«IF Entity.isInstance(a.supplier.get(0))»
+			/**
+			* Dependency to «getFQNPackageName(((Entity)a.supplier.get(0)))».«interfaceDaoClassName(a.supplier.get(0))»
+			*/
+			private «getFQNPackageName(((Entity)a.supplier.get(0)))».«interfaceDaoClassName(a.supplier.get(0))» «interfaceDaoClassName(a.supplier.get(0)).toFirstLower()»;
+			
+			public void set«interfaceDaoClassName(a.supplier.get(0))»(«getFQNPackageName(((Entity)a.supplier.get(0)))».«interfaceDaoClassName(a.supplier.get(0))» «interfaceDaoClassName(a.supplier.get(0)).toFirstLower()») {
+        		this.«interfaceDaoClassName(a.supplier.get(0)).toFirstLower()» = «interfaceDaoClassName(a.supplier.get(0)).toFirstLower()»;
+    		}
+    		
+    		protected «getFQNPackageName(((Entity)a.supplier.get(0)))».«interfaceDaoClassName(a.supplier.get(0))» get«interfaceDaoClassName(a.supplier.get(0))»() {
+        		return this.«interfaceDaoClassName(a.supplier.get(0)).toFirstLower()»;
+    		}    		
+    	«ELSEIF Class.isInstance(a.supplier.get(0))»
+    		/**
+			* Dependency to «getFQNPackageName(((Class)a.supplier.get(0)))».«interfaceClassName(a.supplier.get(0))»
+			*/
+			private «getFQNPackageName(((Class)a.supplier.get(0)))».«interfaceClassName(a.supplier.get(0))» «interfaceClassName(a.supplier.get(0)).toFirstLower()»;
+			
+			public void set«interfaceClassName(a.supplier.get(0))»(«getFQNPackageName(((Class)a.supplier.get(0)))».«interfaceClassName(a.supplier.get(0))» «interfaceClassName(a.supplier.get(0)).toFirstLower()») {
+        		this.«interfaceClassName(a.supplier.get(0)).toFirstLower()» = «interfaceClassName(a.supplier.get(0)).toFirstLower()»;
+    		}
+    		
+    		protected «getFQNPackageName(((Class)a.supplier.get(0)))».«interfaceClassName(a.supplier.get(0))» get«interfaceClassName(a.supplier.get(0))»() {
+        		return this.«interfaceClassName(a.supplier.get(0)).toFirstLower()»;
+    		} 
+		«ENDIF»
+	«ENDFOREACH»
+	«targetDef.proceed()»
+«ENDAROUND»

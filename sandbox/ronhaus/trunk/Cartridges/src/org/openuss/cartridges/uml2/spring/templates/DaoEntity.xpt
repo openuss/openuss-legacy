@@ -1,0 +1,67 @@
+«IMPORT uml»
+«IMPORT BusinessApps»
+
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::Helper»
+«EXTENSION org::openuss::cartridges::uml2::spring::extensions::Spring»
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::DataType»
+
+/**
+* Create the interface, the abstract and the basic implementation
+*/
+«DEFINE Start FOR Entity»
+	«EXPAND daoInterface»
+	«IF GLOBALVAR spring_OR_Mapper == "hibernate3"»
+		«EXPAND DaoEntityHibernate3::daoAbstractClass»
+		«EXPAND DaoEntity::daoBasicClass»
+	«ENDIF»
+«ENDDEFINE»
+
+/**
+* Creates the interface for for the Entity DAO
+* Todo: Serializable
+*/
+«DEFINE daoInterface FOR Entity»
+	«FILE getFQNPackagePath()+"/"+interfaceDaoClassName(this)+".java"»
+		
+		package «getFQNPackageName()»;
+		
+		public interface «interfaceDaoClassName(this)»
+			«EXPAND org::openuss::cartridges::uml2::javabasic::templates::Realization::realizationInterface»{
+			
+			«EXPAND operationInterface»
+		}
+	«ENDFILE»
+«ENDDEFINE»
+
+
+/**
+*	Creates a basic implementation for the Entity DAO
+* Todo: Serializable
+*/
+«DEFINE daoBasicClass FOR Entity»
+	«FILE getFQNPackagePath()+"/"+implDaoClassName(this)+".java" outletSrcOnceDir»
+		
+		package «getFQNPackageName()»;
+		
+		public «IF isAbstract»abstract«ENDIF» class «implDaoClassName(this)» extends «abstractDaoClassName(this)»{
+
+		}
+	«ENDFILE»
+«ENDDEFINE»
+
+/**
+* Creates CRUD operations for the Entity DAO interface
+*/
+«DEFINE operationInterface FOR Entity»
+	
+	public java.io.Serializable create(«interfaceClassName(this)» «interfaceClassName(this).toLowerCase()»);
+
+	public «interfaceClassName(this)» read(«typeName(AllAttributesInherited(this).typeSelect(Key).get(0))» «AllAttributesInherited(this).typeSelect(Key).get(0).name.toLowerCase()»);
+	
+	public java.util.List<«interfaceClassName(this)»> readAll();
+	
+	public void update(«interfaceClassName(this)» «interfaceClassName(this).toLowerCase()»);
+	
+	public void delete(«interfaceClassName(this)» «interfaceClassName(this).toLowerCase()»);
+	
+«ENDDEFINE»

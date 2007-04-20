@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<workflow>
+
+	<!--Metamodel definitions needed for the components-->
+	<bean id="mm_uml2" class="org.openarchitectureware.uml2.UML2MetaModel"/>
+	<bean id="mm_ecore" class="org.openarchitectureware.type.emf.EmfMetaModel">
+		<metaModelPackage value="org.eclipse.emf.ecore.EcorePackage"/>
+	</bean>
+	<bean id="mm_business_profile" class="org.openarchitectureware.uml2.profile.ProfileMetaModel">
+		<profile value="${profilefile}"/>
+	</bean>
+	
+	<!--The Check component. The checks provided by the Hibernate cartridge are invoked here-->
+	<component class="org.openarchitectureware.check.CheckComponent">
+		<metaModel idRef="mm_uml2"/>	
+		<metaModel idRef="mm_ecore"/>
+		<metaModel idRef="mm_business_profile"/>		
+		<checkFile value="org::openuss::cartridges::uml2::hibernate::checks::Constraints"/>		
+		<emfAllChildrenSlot value="model"/>
+	</component>
+
+
+	<!--The Generator component.-->
+	<component id="generatorHibernate" class="org.openarchitectureware.xpand2.Generator" skipOnErrors="true">
+		<metaModel idRef="mm_uml2"/>	
+		<metaModel idRef="mm_ecore"/>
+		<metaModel idRef="mm_business_profile"/>
+		
+		<fileEncoding value="ISO-8859-1"/>
+		
+		<globalVarDef name="connectiondriver_class" value="${dataSource.connection.driver_class}"/>
+		<globalVarDef name="connection_url" value="${dataSource.connection.url}"/>
+		<globalVarDef name="connection_user" value="${dataSource.connection.user}"/>
+		<globalVarDef name="connection_password" value="${dataSource.connection.password}"/>
+		
+		<globalVarDef name="javaInterfacePrefix" value="${hibernate.java.interface.prefix}"/>
+		<globalVarDef name="javaInterfaceSuffix" value="${hibernate.java.interface.suffix}"/>
+		<globalVarDef name="javaAbstractPrefix" value="${hibernate.java.abstract.prefix}"/>
+		<globalVarDef name="javaAbstractSuffix" value="${hibernate.java.abstract.suffix}"/>
+		<globalVarDef name="javaImplementationPrefix" value="${hibernate.java.implementation.prefix}"/>
+		<globalVarDef name="javaImplementationSuffix" value="${hibernate.java.implementation.suffix}"/>		
+		<globalVarDef name="sessionFactory" value="${hibernate.sessionFactory}"/>
+		<globalVarDef name="connectionPool_size" value="${hibernate.connectionPool_size}"/>
+		<globalVarDef name="dialect" value="${hibernate.dialect}"/>
+		<globalVarDef name="current_session_context_class" value="${hibernate.current_session_context_class}"/>
+		<globalVarDef name="cacheProvider_class" value="${hibernate.cacheProvider_class}"/>
+		<globalVarDef name="show_sql" value="${hibernate.show_sql}"/>
+		<globalVarDef name="hbm2ddlAuto" value="${hibernate.hbm2ddlAuto}"/>
+		
+		<expand value="${expandExpression}"/>
+		
+		<outlet path="${outlet.src.dir}"/>
+	   	<outlet name="outletSrcOnceDir" path="${outlet.src.once.dir}" overwrite="false"/>
+
+   		<beautifier class="org.openarchitectureware.xpand2.output.JavaBeautifier"/>
+   		<beautifier class="org.openarchitectureware.xpand2.output.XmlBeautifier" fileExtensions=".xml"/>
+	</component>
+
+</workflow>

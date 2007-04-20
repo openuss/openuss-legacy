@@ -1,0 +1,22 @@
+import uml;
+
+String toSetter(Property property):
+	"set"+property.name.toFirstUpper();
+	
+String toGetter(Property property):
+	"get"+property.name.toFirstUpper();
+	
+String toAdder(Property property):
+	"addTo"+property.name.toFirstUpper();
+	
+String toAddAll(Property property):
+	"addAllTo"+property.name.toFirstUpper();
+	
+String toRemover(Property property):
+	"removeFrom"+property.name.toFirstUpper();
+	
+String toRemoveAll(Property property):
+	"removeAllFrom"+property.name.toFirstUpper();
+	
+String toVar(Type type):
+	type.name.toFirstLower();

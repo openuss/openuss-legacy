@@ -1,0 +1,65 @@
+«IMPORT uml»
+
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::Helper»
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::DataType»
+
+/**
+* Creates the interface for the model class
+*/
+«DEFINE interface FOR Class»
+	«FILE getFQNPackagePath(this)+"/"+interfaceClassName(this)+".java"»
+
+		package «getFQNPackageName(this)»;
+		
+		«EXPAND Documentation::documentation»
+		public interface «interfaceClassName(this)»
+			«EXPAND Generalization::generalizationInterface»
+			«EXPAND Realization::realizationInterface»{
+			
+			«EXPAND Attribute::staticAttribute»
+			«EXPAND Attribute::getterSetterInterface FOREACH attribute.select(a|!a.isStatic)»
+			«EXPAND Operation::operationInterface FOREACH this.getOperations()»
+			«EXPAND Association::accessorsInterface FOREACH this.getAssociations().ownedEnd.select(e|e.type.name!=name)»
+		}
+	«ENDFILE»
+«ENDDEFINE»
+
+/**
+*	Creates a abstract implementation for the model class
+*/
+«DEFINE abstractClass FOR Class»
+	«FILE getFQNPackagePath(this)+"/"+abstractClassName(this)+".java"»
+		package «getFQNPackageName(this)»;
+
+		«EXPAND Documentation::documentation»
+		public abstract class «abstractClassName(this)»
+			«EXPAND Generalization::generalizationAbstract»
+			implements «interfaceClassName(this)»{
+			
+			«EXPAND Attribute::attribute»
+			«EXPAND Association::attribute»
+			«EXPAND Attribute::staticAttribute»
+
+			«EXPAND Attribute::getterSetter»
+			«EXPAND Operation::operation»
+			«EXPAND Generalization::operation»
+			«EXPAND Association::accessors»
+		}
+	«ENDFILE»
+«ENDDEFINE»
+
+
+/**
+*	Creates a basic implementation for the model class
+*/
+«DEFINE basicClass FOR Class»
+	«FILE getFQNPackagePath(this)+"/"+implClassName(this)+".java" outletSrcOnceDir»
+		
+		package «getFQNPackageName(this)»;
+		
+		«EXPAND Documentation::documentation»
+		public «IF isAbstract»abstract«ENDIF» class «implClassName(this)» extends «abstractClassName(this)»{
+
+		}
+	«ENDFILE»
+«ENDDEFINE»

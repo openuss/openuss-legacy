@@ -1,0 +1,82 @@
+«IMPORT uml»
+«IMPORT BusinessApps»
+
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::Helper»
+«EXTENSION org::openuss::cartridges::uml2::spring::extensions::Spring»
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::DataType»
+
+/**
+*	Creates a abstract implementation for the Entity DAO using Hibernate3
+* Todo: Serializable
+*/
+«DEFINE daoAbstractClass FOR Entity»
+	«FILE getFQNPackagePath()+"/"+abstractDaoClassName(this)+".java"»
+		
+		package «getFQNPackageName()»;
+
+		import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
+		public abstract class «abstractDaoClassName(this)» extends HibernateDaoSupport implements «interfaceDaoClassName(this)»{
+		
+			«EXPAND operation»
+		}
+	«ENDFILE»
+«ENDDEFINE»
+
+
+/**
+* Creates CRUD operations for the Entity DAO abstract class using Hibernate3
+*/
+«DEFINE operation FOR Entity»
+
+	public java.io.Serializable create(«interfaceClassName(this)» «interfaceClassName(this).toLowerCase()») {
+		if («interfaceClassName(this).toLowerCase()» == null) {
+			throw new IllegalArgumentException("«interfaceClassName(this)».create - '«interfaceClassName(this).toLowerCase()»' cannot be null");
+		}
+		
+		java.io.Serializable id = getHibernateTemplate().save(«interfaceClassName(this).toLowerCase()»);
+        return id;
+	}
+	
+	public «interfaceClassName(this)» read(«typeName(AllAttributesInherited(this).typeSelect(Key).get(0))» «AllAttributesInherited(this).typeSelect(Key).get(0).name.toLowerCase()») {
+		Object o = getHibernateTemplate().load(«implClassName(this)».class, id);
+		
+		if (o instanceof «interfaceClassName(this)») {
+			return («interfaceClassName(this)») o;
+		} else {
+			return null;
+		}
+	}
+	
+	public java.util.List<«interfaceClassName(this)»> readAll() {
+		
+		java.util.List values = getHibernateTemplate().loadAll(«implClassName(this)».class);
+
+		java.util.List<«interfaceClassName(this)»> list = new java.util.ArrayList<«interfaceClassName(this)»>();
+
+		for (java.util.Iterator i = values.iterator(); i.hasNext();) {
+			Object o = i.next();
+			if (o instanceof «interfaceClassName(this)») {
+				list.add((«interfaceClassName(this)») o);
+			}
+		}
+
+		return list;
+	}
+	
+	public void update(«interfaceClassName(this)» «interfaceClassName(this).toLowerCase()») {
+		if («interfaceClassName(this).toLowerCase()» == null) {
+			throw new IllegalArgumentException("«interfaceClassName(this)».update - '«interfaceClassName(this).toLowerCase()»' cannot be null");
+		}
+		
+		getHibernateTemplate().update(«interfaceClassName(this).toLowerCase()»);
+	}
+	
+	public void delete(«interfaceClassName(this)» «interfaceClassName(this).toLowerCase()») {
+		if («interfaceClassName(this).toLowerCase()» == null) {
+			throw new IllegalArgumentException("«interfaceClassName(this)».delete - '«interfaceClassName(this).toLowerCase()»' cannot be null");
+		}
+		
+		getHibernateTemplate().delete(«interfaceClassName(this).toLowerCase()»);
+	}
+«ENDDEFINE»

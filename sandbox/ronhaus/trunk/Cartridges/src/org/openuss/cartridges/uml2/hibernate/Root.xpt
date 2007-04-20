@@ -1,0 +1,18 @@
+«IMPORT uml»
+«IMPORT BusinessApps»
+
+
+«REM»Zentraler Einstieg ins Model«ENDREM»
+«DEFINE Root FOR Model»
+	
+	«REM»Erzeugen der JavaBeans für alle als BusinessApps::Entity gekennzeichnete Klassen«ENDREM»
+	«EXPAND org::openuss::cartridges::uml2::javabasic::templates::Class::interface FOREACH eAllContents.typeSelect(Entity)»
+	«EXPAND org::openuss::cartridges::uml2::javabasic::templates::Class::abstractClass FOREACH eAllContents.typeSelect(Entity)»
+	«EXPAND org::openuss::cartridges::uml2::javabasic::templates::Class::basicClass FOREACH eAllContents.typeSelect(Entity)»
+
+	«REM»Erzeugen der HibernateMappings für alle als <<Entity>> gekennzeichnete Klassen«ENDREM»
+	«EXPAND templates::Mapping::Start FOREACH eAllContents.typeSelect(Entity)»	
+	«REM»Erzeugen der HibernateConfig«ENDREM»
+	«EXPAND templates::HibernateConfig::Start»
+	
+«ENDDEFINE»

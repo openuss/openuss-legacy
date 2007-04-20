@@ -1,0 +1,34 @@
+«IMPORT uml»
+
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::Helper»
+
+/**
+* Creates the generalization (extends Interface1, Interface2 und so on) for the given Class
+* for the generating Interface
+*/
+«DEFINE generalizationInterface FOR Class»
+	«IF !generalization.isEmpty»
+	extends «interfaceClassName(((uml::Generalization) generalization.get(0)).general)»
+	«ENDIF»
+«ENDDEFINE»
+
+/**
+* Creates the generalization (extends Interface1, Interface2 und so on) for 
+* the given Class for the generating abstract class
+*/
+«DEFINE generalizationAbstract FOR Class»
+	«IF !generalization.isEmpty»
+	extends «abstractClassName(((uml::Generalization) generalization.get(0)).general)»
+	«ENDIF»
+«ENDDEFINE»
+
+/**
+* Creates the operations marked as abstract in the superclass
+*/
+«DEFINE operation FOR Class»
+	«IF !generalization.isEmpty»
+		«FOREACH ((uml::Generalization) generalization.get(0)).general.getOperations() AS o»
+			«EXPAND Operation::operation FOR o»
+		«ENDFOREACH»
+	«ENDIF»
+«ENDDEFINE»

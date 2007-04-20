@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+	<properties>
+		<title>openArchitectureWare Cartridge for Spring 2: Changelog</title>
+	</properties>
+	<body>
+		<release version="1.0.0" date="March 2007" desc="Initial OpenUSS Integrated Version">
+			<author email="ronhaus@arcor.de">Ron Haus</author>
+			<information>
+				This is the initial release of the OpenUSS Spring Cartridge for openArchitectureWare. It is adjusted
+				to the needs of OpenUSS 3.0.
+				Only Hibernate 3 is supported for persistence.
+				Dependencies for Service classes in the model are implemented as unidirectional one-to-one associations (properties).
+			</information>
+			<changelog/>
+			<restrictions>
+				Model interfaces are not supported.
+				Value Objects are not supported.
+				Enumerations are not supported.
+				Exceptions are not supported.
+				Spring Web Application integration is not supported.
+				Inheritence of Service classes is not supported.
+			</restrictions>
+			<knownIssues>
+			</knownIssues>
+			<dependency>
+				This release was created using the 4.1.2 release of the openArchitectureWare-Framework, Eclipse UML 2.0.3
+				and Eclipse EMF Ecore 2.2.2. It generates outputs conform to Hibernate 3.2.2.
+				It depends on the JavaBasic Cartridge 1.3.0 and Hibernate Cartridge 1.0.0.
+			</dependency>
+		</release>
+	</body>
+</document>

@@ -1,0 +1,50 @@
+import uml;
+
+/**
+* @returns The text formatted for Javadocs
+*/
+String formatJavaDoc(String text):
+	text.replaceAll("\\n", "\n* ").replaceAll("\\t", "");
+
+
+String formatComment2JavaDoc(Element element, String prefix):
+	JAVA org.openuss.cartridges.uml2.javabasic.extensions.Helper.formatComment(org.eclipse.uml2.uml.Element, java.lang.String);
+
+
+String formatParameterComment2JavaDoc(Parameter parameter, String prefix, String annotation):
+	JAVA org.openuss.cartridges.uml2.javabasic.extensions.Helper.formatParameterComment(
+		org.eclipse.uml2.uml.Parameter,
+		java.lang.String,
+		java.lang.String);
+
+
+String getFQNPackageName(Type type):
+	JAVA org.openuss.cartridges.uml2.javabasic.extensions.Helper.getFQNPackageName(org.eclipse.uml2.uml.Type);
+
+String getFQNPackagePath(Type type):
+	JAVA org.openuss.cartridges.uml2.javabasic.extensions.Helper.getFQNPackagePath(org.eclipse.uml2.uml.Type);
+
+List AllAttributes(Classifier classifier):
+	JAVA org.openuss.cartridges.uml2.javabasic.extensions.Helper.getAllAttributes(org.eclipse.uml2.uml.Classifier);
+	
+List AllAttributesInherited(Classifier classifier):
+	JAVA org.openuss.cartridges.uml2.javabasic.extensions.Helper.getAllAttributesInherited(org.eclipse.uml2.uml.Classifier);
+
+List AllOperations(Classifier classifier):
+	JAVA org.openuss.cartridges.uml2.javabasic.extensions.Helper.getAllOperations(org.eclipse.uml2.uml.Classifier);
+
+List AllAssociations(Classifier classifier):
+	JAVA org.openuss.cartridges.uml2.javabasic.extensions.Helper.getAllAssociations(org.eclipse.uml2.uml.Classifier);
+	
+List AllDependencies(Classifier classifier):
+	JAVA org.openuss.cartridges.uml2.javabasic.extensions.Helper.getAllDependencies(org.eclipse.uml2.uml.Classifier);
+
+	
+String interfaceClassName(NamedElement classifier):
+	 ((String)GLOBALVAR javaInterfacePrefix)+classifier.name+((String)GLOBALVAR javaInterfaceSuffix);
+	 
+String abstractClassName(Classifier classifier):
+	 ((String)GLOBALVAR javaAbstractPrefix)+classifier.name+((String)GLOBALVAR javaAbstractSuffix); 
+	 
+String implClassName(Classifier classifier):
+	 ((String)GLOBALVAR javaImplementationPrefix)+classifier.name+((String)GLOBALVAR javaImplementationSuffix); 

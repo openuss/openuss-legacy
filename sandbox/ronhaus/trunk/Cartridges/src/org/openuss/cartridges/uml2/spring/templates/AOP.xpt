@@ -1,0 +1,9 @@
+«IMPORT uml»
+«IMPORT BusinessApps»
+
+
+«DEFINE Start FOR Model»
+
+	«IF GLOBALVAR spring_OR_Mapper == "hibernate3"»«EXPAND TransactionManager::HibernateTransactionManager»«ENDIF»
+
+«ENDDEFINE»

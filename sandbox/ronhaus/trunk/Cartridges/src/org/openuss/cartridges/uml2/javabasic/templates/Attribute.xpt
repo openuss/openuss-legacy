@@ -1,0 +1,79 @@
+«IMPORT uml»
+
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::Names»
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::Helper»
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::DataType»
+
+/**
+* 	Creates a static field. The attribute must have the static option set in the model.
+*/
+«DEFINE staticAttribute FOR Classifier»
+	«FOREACH attribute.typeSelect(Property).select(a|a.isStatic) AS attr»
+		«EXPAND Documentation::documentation FOR attr»
+		public static «typeName(attr)» «attr.name.toUpperCase()»;
+	«ENDFOREACH»
+«ENDDEFINE»
+
+/**
+* Creates the getter/setter for the  given Property of an interface
+*/
+«DEFINE getterSetterInterface FOR Property»
+	«IF isNavigable()»
+		«EXPAND Documentation::documentationGetter»
+		public «typeName(this)» «toGetter()»();
+	
+		«EXPAND Documentation::documentationSetter»
+		public void «toSetter()»(«typeName(this)» «name»);
+	«ENDIF»	
+«ENDDEFINE»
+
+/**
+*	Creates the a field for every attribute the Classifier must implement.
+*	All attributes from interfaces this Classifier must implement is included.
+*/
+«DEFINE attribute FOR Classifier»
+	«FOREACH AllAttributes().typeSelect(Property).select(a|!a.isStatic) AS attr»
+		«EXPAND field FOR attr»
+	«ENDFOREACH»
+«ENDDEFINE»
+
+/**
+* Creates a field for the given Property
+*/
+«DEFINE field FOR Property»
+	«IF isNavigable()»
+	 	«IF getUpper() == -1»
+	 		private «typeName(this)» «name» = 
+	 			new «IF isOrdered»java.util.ArrayList<«typeNamePure(this.type)»>()«ELSE»java.util.HashSet<«typeNamePure(this.type)»>()«ENDIF»;
+	 	«ELSE»
+	 		«visibility» «typeName(this)» «name» «DefaultValue(this)»;
+	 	«ENDIF»
+	 «ENDIF»
+«ENDDEFINE»
+
+/**
+* Creates the getter/setter methods for the Classifier.
+* Here all generalizations that must be implemented are considered.
+*/
+«DEFINE getterSetter FOR Classifier»
+	«FOREACH AllAttributes().typeSelect(uml::Property).select(a|!a.isStatic) AS attr»
+		«EXPAND getterSetter FOR attr»
+	«ENDFOREACH»
+«ENDDEFINE»
+
+/**
+* Creates the getter/setter for the given Property
+*/
+«DEFINE getterSetter FOR Property»
+	«IF isNavigable()»
+		«EXPAND Documentation::documentationGetter»
+		public «typeName(this)» «toGetter()»(){
+			return «name»;
+		}
+	
+		«EXPAND Documentation::documentationSetter»
+		public void «toSetter()»(«typeName(this)» «name»){
+			this.«name» = «name»;
+		}
+	«ENDIF»	
+«ENDDEFINE»

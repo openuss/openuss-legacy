@@ -1,0 +1,17 @@
+«IMPORT uml»
+«IMPORT BusinessApps»
+
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::Helper»
+«EXTENSION org::openuss::cartridges::uml2::spring::extensions::Spring»
+
+«DEFINE Hibernate3 FOR Model»
+
+	<!-- ========================= HIBERNATE CONFIGURATION ========================= -->
+
+	<!-- Hibernate SessionFactory -->
+    <bean id="mySessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    	<property name="dataSource" ref="myDataSource"/>
+		<property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+	</bean>
+	
+«ENDDEFINE»

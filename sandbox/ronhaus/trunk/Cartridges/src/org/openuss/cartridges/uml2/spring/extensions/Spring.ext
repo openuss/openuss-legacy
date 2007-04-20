@@ -1,0 +1,8 @@
+String interfaceDaoClassName(uml::NamedElement classifier):
+	 ((String)GLOBALVAR javaInterfacePrefix)+classifier.name+"Dao"+((String)GLOBALVAR javaInterfaceSuffix);
+	 
+String abstractDaoClassName(uml::Classifier classifier):
+	 ((String)GLOBALVAR javaAbstractPrefix)+classifier.name+"Dao"+((String)GLOBALVAR javaAbstractSuffix); 
+	 
+String implDaoClassName(uml::Classifier classifier):
+	 ((String)GLOBALVAR javaImplementationPrefix)+classifier.name+"Dao"+((String)GLOBALVAR javaImplementationSuffix); 

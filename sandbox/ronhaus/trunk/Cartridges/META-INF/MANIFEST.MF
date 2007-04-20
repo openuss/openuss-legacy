@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: HibernateCartridge
+Bundle-SymbolicName: HibernateCartridge; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Localization: plugin
+Require-Bundle: org.openarchitectureware.core.check,
+ org.openarchitectureware.core.emftools,
+ org.openarchitectureware.core.xpand2

@@ -1,0 +1,102 @@
+«IMPORT uml»
+
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::Helper»
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::DataType»
+
+/**
+* Creates the JavaDoc for an Classifier
+*/
+«DEFINE documentation FOR Classifier»
+	/**
+	«formatComment2JavaDoc("* ")»
+	*/
+«ENDDEFINE»
+
+/**
+* Creates the JavaDoc for an Property
+*/
+«DEFINE documentation FOR Property»
+	/** 
+	«formatComment2JavaDoc("* ")»
+	*/
+«ENDDEFINE»
+
+/**
+* Creates the JavaDoc for the a getter of an Property
+*/
+«DEFINE documentationGetter FOR Property»
+	/**
+	«formatComment2JavaDoc("* ")»
+	* @return The «name» as <code>«typeName(this)»</code>
+	*/
+«ENDDEFINE»
+
+/**
+* Creates the JavaDoc for the a setter of an Property
+*/
+«DEFINE documentationSetter FOR Property»
+  	/**
+  	«formatComment2JavaDoc("* ")»
+  	* @param «name» The «name» to set
+  	*/
+«ENDDEFINE»
+
+/**
+* Creates the JavaDoc for the a getter of an Association
+* @param name The name of the association end
+* @param isOrdered Is the end ordered or unordered modelled?
+*/
+«DEFINE documentationAssociationGetter(String name, boolean isOrdered) FOR Association»
+	/**
+	«formatComment2JavaDoc("* ")»
+	* @return The «name» as <code>«IF isOrdered»java.util.List«ELSE»java.util.Set«ENDIF»</code>
+  	*/
+«ENDDEFINE»
+
+/**
+* Creates the JavaDoc for the a getter of an Association
+* @param name The name of the association end
+* @param type The type of the association end
+*/
+«DEFINE documentationAssociationGetter(String name, Type type) FOR Association»
+	/**
+	«formatComment2JavaDoc("* ")»
+	* @return The «name» as <code>«type.name»</code>
+  	*/
+«ENDDEFINE»
+
+/**
+* Creates the JavaDoc for the a setter of an Association
+* @param name The name of the association end
+* @param isOrdered Is the end ordered or unordered modelled?
+*/
+«DEFINE documentationAssociationSetter(String name, boolean isOrdered) FOR Association»
+	/**
+	«formatComment2JavaDoc("* ")»
+	* @param «name» The «name» as <code>«IF isOrdered»java.util.List«ELSE»java.util.Set«ENDIF»</code> to set
+  	*/
+«ENDDEFINE»
+
+/**
+* Creates the JavaDoc for the a getter of an Association
+* @param name The name of the association end
+* @param type The type of the association end
+*/
+«DEFINE documentationAssociationSetter(String name, Type type) FOR Association»
+	/**
+	«formatComment2JavaDoc("* ")»
+	* @param «name» The <code>«type.name»</code> to set
+  	*/
+«ENDDEFINE»
+
+/**
+* Creates the JavaDoc for the an Operation
+*/
+«DEFINE documentation FOR Operation»
+	/** 
+	«formatComment2JavaDoc("* ")»
+	«FOREACH ownedParameter.select(e|e.name != "return") AS p-»
+		«p.formatParameterComment2JavaDoc("* ", "param")»
+	«ENDFOREACH-»
+	*/
+«ENDDEFINE»

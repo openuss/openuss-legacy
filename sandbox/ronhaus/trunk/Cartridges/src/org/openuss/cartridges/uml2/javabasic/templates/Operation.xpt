@@ -1,0 +1,38 @@
+«IMPORT uml»
+
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::DataType»
+«EXTENSION org::openuss::cartridges::uml2::javabasic::extensions::Helper»
+
+/**
+* Creates an operation for an interface
+*/
+«DEFINE operationInterface FOR Operation»
+	«EXPAND Documentation::documentation»
+	public «IF isAbstract»abstract «ENDIF»«getReturnResult().ReturnType()» «name»(«FOREACH ownedParameter.select(e|e.direction.toString() != "return") AS p SEPARATOR ","»«typeName(p)» «p.name»«ENDFOREACH»);
+«ENDDEFINE»
+
+/**
+* Creates all operations for the given uml::Classifier
+*/
+«DEFINE operation FOR Classifier»
+	«FOREACH AllOperations().typeSelect(Operation).select(o|!o.isAbstract) AS op»
+		«EXPAND operation FOR op»
+	«ENDFOREACH»
+	«FOREACH AllOperations().typeSelect(Operation).select(o|o.isAbstract) AS op»
+		«EXPAND operationInterface FOR op»
+	«ENDFOREACH»
+«ENDDEFINE»
+
+/**
+* Creates an operation for a class
+*/
+«DEFINE operation FOR Operation»
+	«EXPAND Documentation::documentation»
+	public «getReturnResult().ReturnType()» «name»(«FOREACH ownedParameter.select(e|e.direction.toString() != "return") AS p SEPARATOR ","»«typeName(p)» «p.name»«ENDFOREACH»){
+		«IF getReturnResult() != null»
+			«IF getReturnResult().ReturnType() != "void"»
+				return «getReturnResult().type.DefaultValue()»;
+			«ENDIF»
+		«ENDIF»
+	}
+«ENDDEFINE»

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="lib" path="D:/Bachelor/Praxis/Tools/Eclipse/eclipse/plugins/org.eclipse.uml2.uml_2.0.3.v200702141227.jar"/>
+	<classpathentry kind="lib" path="D:/Bachelor/Praxis/Tools/Eclipse/eclipse/plugins/org.openarchitectureware.uml2.adapter_4.1.2.v20070314.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,12 @@
+«IMPORT uml»
+«IMPORT BusinessApps»
+/**
+* The entry point for the generation
+*/
+«DEFINE Root FOR Model»
+	«EXPAND templates::ApplicationContext::Start»
+	«EXPAND templates::Service::Start FOREACH eAllContents.typeSelect(Service)»
+	«IF GLOBALVAR spring_Persistence == "true"»
+		«EXPAND templates::DaoEntity::Start FOREACH eAllContents.typeSelect(Entity).select(x|!x.isAbstract)»
+	«ENDIF»
+«ENDDEFINE»
