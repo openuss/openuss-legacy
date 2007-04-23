@@ -9,15 +9,15 @@
 	<h:form id="mainmenu">
 		<ul id="header_navigation">
 			<c:if test="#{empty sessionScope.desktop}">
-				<li><h:commandLink action="home" value="#{msg.mainmenu_command_home}" /></li>
+				<li class="main_nav_home"><h:commandLink action="home" value="#{msg.mainmenu_command_home}" /></li>
 			</c:if>
 			<s:authorize ifAllGranted="ROLE_USER">
-				<li><h:commandLink action="desktop" value="#{msg.mainmenu_command_desktop}" /></li>
+				<li class="main_nav_desktop"><h:commandLink action="desktop" value="#{msg.mainmenu_command_desktop}" /></li>
 			</s:authorize>
-			<li><h:outputLink value="http://localhost:8080/openuss-plexus">#{msg.mainmenu_command_documentation}</h:outputLink></li>
-			<li><h:outputLink value="http://localhost:8080/openuss-plexus">#{msg.mainmenu_command_userforum}</h:outputLink></li>
+			<li class="main_nav_doc"><h:outputLink value="http://localhost:8080/openuss-plexus">#{msg.mainmenu_command_documentation}</h:outputLink></li>
+			<li class="main_nav_forum"><h:outputLink value="http://localhost:8080/openuss-plexus">#{msg.mainmenu_command_userforum}</h:outputLink></li>
 			<s:authorize ifAllGranted="ROLE_ADMIN">
-				<li><h:commandLink action="administration" value="#{msg['mainmenu_command_administration']}" /></li>
+				<li class="main_nav_admin"><h:commandLink action="administration" value="#{msg['mainmenu_command_administration']}" /></li>
 			</s:authorize>
 		</ul>
 	</h:form>
