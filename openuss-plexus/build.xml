@@ -28,6 +28,9 @@
 		<exec executable="mvn.bat">
 			<arg line="clean"/>
 		</exec>
+		<antcall target="clean-logs"/>
+	</target>
+	<target name="clean-logs">
 		<delete verbose="true" includeemptydirs="true" failonerror="false">
 			<fileset dir=".">
 				<include name="**/andromda*.log"/>
