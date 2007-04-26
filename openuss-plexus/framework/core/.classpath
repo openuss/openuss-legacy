@@ -5,7 +5,7 @@
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
+<!-- 	<classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/> -->
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.4/servlet-api-2.4.jar" sourcepath="M2_REPO/javax/servlet/servlet-api/2.4/servlet-api-2.4-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-jdbc/2.0.4/spring-jdbc-2.0.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/logkit/logkit/1.0.1/logkit-1.0.1.jar"/>
@@ -32,7 +32,7 @@
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-core/2.0.4/spring-core-2.0.4.jar" sourcepath="/JAVALIBS/spring-framework-2.0.4/src"/>
 	<classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.0.1B/jta-1.0.1B.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-support/2.0.4/spring-support-2.0.4.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/2.0.4/spring-aop-2.0.4.jar" sourcepath="/JAVALIBS/spring-framework-2.0.4/src"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/2.0.4/spring-aop-2.0.4.jar" sourcepath="/M2_REPO/org/springframework/spring/2.0.4/spring-2.0.4-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.1/commons-lang-2.1.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.1/commons-lang-2.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/antlr/antlr/2.7.6/antlr-2.7.6.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar" sourcepath="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0-sources.jar"/>
