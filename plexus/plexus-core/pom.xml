@@ -24,7 +24,7 @@
 				<executions>
 					<execution>
 						<id>sql</id>
-						<phase>test-compile</phase>
+						<phase>test</phase>
 						<configuration>
 							<tasks>
 								<sql driver="org.firebirdsql.jdbc.FBDriver" url="jdbc:firebirdsql:localhost:openuss30-test"
