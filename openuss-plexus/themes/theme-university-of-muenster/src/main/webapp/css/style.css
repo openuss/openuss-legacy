@@ -43,14 +43,53 @@ span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:
   color: #FFF !important;
 }
 
+#top {
+	position: relative;
+}
+
+#top_right {
+	background-image: url(../img/logo.jpg);
+    background-repeat: no-repeat;
+	height: 90px;
+	padding: 0px;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	width: 180px;
+}
+
+#top_left {
+	background-image: url(../images/logos/logo_wwu.gif);
+  	background-repeat: no-repeat;
+	height: 130px;
+	left: 0px;
+	position: absolute;
+	top: 0px;
+	width: 190px;
+}
+
+#top_center {
+	margin-left: 190px;
+	margin-right: 180px;
+	height: 90px;
+}
+
+#main {
+	float: none;
+	margin-left: 190px;
+	margin-right: 182px;
+	padding-top: 0px;
+	position: static;
+}
+
 #left_block {
-  background-image: url(../img/logo.jpg);
-  background-repeat: no-repeat;
-  float: left;
-  margin: 0;
-  padding: 90px 0 0 0;
-  width: 180px;
-  min-height: 90px;
+	clear: both;
+	float: left;
+	margin-left: -190px;
+	padding-right: 5px;
+	padding-top: 62px;
+	position: relative;
+	width: 185px;
 }
 
 #left_block .pulldown_form {
@@ -412,12 +451,12 @@ ul.navigation li ul li ul li.active_item a:hover{
 }
 
 #right_block {
-	background-image: url(../images/logos/logo_wwu180x90.gif);
-    background-repeat: no-repeat;
-  	float: right;
-  	margin: 0;
-  	padding: 100px 0 0 0;
-  	width: 180px;
+  	float: left;
+	left: 180px;
+	padding-top: 30px;
+	position: relative;
+	right: 0px;
+	width: 165px;
 }
 
 .field_search {
@@ -526,14 +565,14 @@ ul.navigation li ul li ul li.active_item a:hover{
 }
 
 #center_block {
-  margin: 0 180px 0 190px;
-  padding: 0;
-  min-width: 630px;
-  height: 100%;
-  background-color: #EFF3F8;
-  border-top: 0; border-right: 1px; border-bottom: 0; border-left: 1px;
-  border-style: dotted;
-  border-color: #4682B4;
+	float: left;
+	margin-right: -180px;
+	min-height: 450px;
+	position: relative;
+	width: 100%;
+	background-color: #EDF0F3;
+	border-left: 1px dotted #4682B4;
+	border-right: 1px dotted #4682B4;
 }
 
 #center_block a{
@@ -1176,14 +1215,15 @@ td {
 #footer_center {
 	vertical-align: top;
 	text-align: left;
-	margin:0pt 180px 0pt 190px;
+	margin:0;
+	height: 50px;
 	background-image: url(../images/farbschemauni.gif);
 	background-repeat: no-repeat;
-	padding-top: 15px;
+	padding: 15px 0 0 10px;
 	background-color: #EFF3F8;
 	border-top: 0; border-right: 1px; border-bottom: 0; border-left: 1px;
   	border-style: dotted;
-  	border-color: #4682B4;
+  	border-color: #4682B4;#
 }
 
 #footer_center label{
@@ -1198,16 +1238,18 @@ td {
 }
 
 #footer_left {
+	visibility: hidden;
 	float: left;
-	width: 180px;
-	padding-left: 10px;
+	width: 0px;
+	padding-left: 0px;
 	vertical-align: middle;
 	text-align: left;
 }
 
 #footer_right {
+	visibility: hidden;
 	float: right;
-	width: 170px;
+	width: 0px;
 	vertical-align: middle;
 	text-align: left;
 }
