@@ -77,9 +77,12 @@ span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:
 #main {
 	float: none;
 	margin-left: 190px;
-	margin-right: 182px;
+	margin-right: 180px;
 	padding-top: 0px;
 	position: static;
+	background-color: #EDF0F3;
+	border-left: 1px dotted #4682B4;
+	border-right: 1px dotted #4682B4;
 }
 
 #left_block {
@@ -507,7 +510,7 @@ ul.navigation li ul li ul li.active_item a:hover{
 }
 
 #right_block .content_normal {
-  padding: 5px 5px 5px 10px;
+  padding: 0px 5px 5px 10px;
 }
 
 #right_block p.content_font_normal {
@@ -567,12 +570,9 @@ ul.navigation li ul li ul li.active_item a:hover{
 #center_block {
 	float: left;
 	margin-right: -180px;
-	min-height: 450px;
+	min-height: 400px;
 	position: relative;
 	width: 100%;
-	background-color: #EDF0F3;
-	border-left: 1px dotted #4682B4;
-	border-right: 1px dotted #4682B4;
 }
 
 #center_block a{
@@ -1220,10 +1220,6 @@ td {
 	background-image: url(../images/farbschemauni.gif);
 	background-repeat: no-repeat;
 	padding: 15px 0 0 10px;
-	background-color: #EFF3F8;
-	border-top: 0; border-right: 1px; border-bottom: 0; border-left: 1px;
-  	border-style: dotted;
-  	border-color: #4682B4;#
 }
 
 #footer_center label{
@@ -1277,9 +1273,12 @@ div.faculty_info{
 }
 
 div.faculty_info span{
-  display:block;
-  padding-bottom: 0;
-  padding-top:0;
+	font-size: 8pt;
+	letter-spacing: 0;
+   	display: block;
+  	padding-bottom: 0;
+  	padding-top: 0;
+  	padding-left: 20px;
 }
 	
 a.sort_header {
