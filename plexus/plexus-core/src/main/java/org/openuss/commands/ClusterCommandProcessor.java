@@ -3,6 +3,7 @@ package org.openuss.commands;
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.system.SystemService;
@@ -28,24 +29,22 @@ public class ClusterCommandProcessor implements ApplicationContextAware {
 	private SystemService systemService;
 
 	/**
-	 * process all pending commands
+	 * process all pending each node commands
 	 */
-	public void processCommands() {
-		// FIXME - need to separate EACH and ONCE commands otherwise it can 
-		// happend under some circumstances that a ONCE command will not processed due to the last processed flag
+	public void processEachCommands() {
 		Collection<Command> commands = loadNextEachCommands();
 		for (Command command : commands) {
-			if (CommandState.EACH == command.getState()) {
-				processEachCommand(command);
-			} else if (CommandState.ONCE == command.getState()){
-				processOnceCommand(command);
-			}
+			processEachCommand(command);
 			updateLastProcessedCommand(command);
 		}
 	}
-
-	private void processOnceCommand(Command command) {
-		if (obtainLock(command)) {
+	
+	/**
+	 * process next pending once node command
+	 */
+	public void processOnceCommand() {
+		Command command = loadNextOnceCommand();
+		if (command != null) {
 			try {
 				createCommand(command).execute();
 				command.setState(CommandState.DONE);
@@ -54,8 +53,16 @@ public class ClusterCommandProcessor implements ApplicationContextAware {
 				command.setState(CommandState.ERROR);
 			} finally {
 				commandDao.update(command);
-				releaseLock(command);
 			}
+		}
+	}
+	
+	private Command loadNextOnceCommand() {
+		List<Command> commands = commandDao.findAllOnceCommands();
+		if (!commands.isEmpty()) {
+			return commands.get(0);
+		} else {
+			return null;
 		}
 	}
 
@@ -95,19 +102,11 @@ public class ClusterCommandProcessor implements ApplicationContextAware {
 		logger.error(msg.toString(), th);
 	}
 
-	private void releaseLock(Command command) {
-		commandDao.releaseLock(command);
-	}
-
-	private boolean obtainLock(Command command) {
-		return commandDao.obtainLock(command);
-	}
-
 	private Collection<Command> loadNextEachCommands() {
 		LastProcessedCommand last = lastProcessedCommandDao.load(systemService.getInstanceIdentity());
 
 		if (last == null || last.getLast() == null) {
-			return commandDao.loadAll();
+			return commandDao.findAllEachCommandsAfter(0L);
 		} else {
 			return commandDao.findAllEachCommandsAfter(last.getLast().getId());
 		}

@@ -2,7 +2,6 @@ package org.openuss.lecture;
 
 import org.apache.commons.lang.StringUtils;
 import org.openuss.TestUtility;
-import org.openuss.security.Group;
 import org.openuss.security.User;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
@@ -227,6 +226,7 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 				"classpath*:applicationContext-tests.xml", 
 				"classpath*:applicationContext.xml",
 				"classpath*:applicationContext-localDataSource.xml",
+				"classpath*:applicationContext-lucene.xml",
 				"classpath*:applicationContext-beans.xml",
 				"classpath*:applicationContext-cache.xml",
 				"classpath*:beanRefFactory",

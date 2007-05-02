@@ -2,42 +2,54 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    				Quartz Commands
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-<!-- 
 	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="applicationContextSchedulerContextKey">
 			<value>applicationContext</value>
 		</property>
 		<property name="autoStartup" value="true"/>
-		<property name="schedulerName" value="plexus"/>
+		<property name="schedulerName" value="commands"/>
 		<property name="waitForJobsToCompleteOnShutdown" value="true"/>
-		<property name="schedulerContextAsMap">
-			<map>
-				<entry>
-					<key><value>mailEngine</value></key>
-					<ref bean="mailEngine"/>
-				 </entry>
-				<entry>
-					<key><value>mailService</value></key>
-					<ref bean="mailService"/>
-				</entry>
- 				<entry>
-					<key><value>mimeMessageHelper</value></key>
-					<ref bean="mimeMessageHelper"/>
-				</entry>
-				<entry>
-					<key><value>securityService</value></key>
-					<ref bean="securityService"/>
-				</entry>
-			</map>
-		</property>
- 		<property name="dataSource" ref="dataSource" />
+ 		<property name="triggers">
+ 			<list>
+ 				<ref bean="eachCommandTrigger"/>
+ 			</list>
+ 		</property>
 	</bean>
- -->
-	
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    				Quartz
-     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+     
+    <bean id="clusterCommandProcessor" class="org.openuss.commands.ClusterCommandProcessor">
+    	<property name="commandDao"><ref bean="commandDao"/></property>
+    	<property name="lastProcessedCommandDao"><ref bean="lastProcessedCommandDao"/></property>
+    	<property name="systemService"><ref bean="systemService"/></property>
+    </bean>
+
+	<bean id="eachCommandTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="eachCommandJobDetail"/>
+		<property name="startDelay" value="30000"/>
+		<property name="repeatInterval" value="15000"/>
+	</bean>
+
+    <bean id="eachCommandJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="clusterCommandProcessor"/>
+		<property name="targetMethod" value="processEachCommands"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="onceCommandTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="onceCommandJobDetail"/>
+		<property name="startDelay" value="30000"/>
+		<property name="repeatInterval" value="15000"/>
+	</bean>
+
+    <bean id="onceCommandJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="clusterCommandProcessor"/>
+		<property name="targetMethod" value="processOnceCommand"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+
 <!--  
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
@@ -58,18 +70,13 @@
 	<bean id="lectureIndexingTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
 	</bean>
 
-
-	<bean id="mailRepeatTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="jobDetail" ref="mailSendingJobDetail"/>
-		<property name="startDelay" value="10000"/>
-		<property name="repeatInterval" value="30000"/>
-	</bean>
 	<bean id="mailSendingQuartzBean" class="org.openuss.mail.MailSendingQuartzBean" >	
 		<property name="mailService"><ref bean="mailService"/></property>		
 		<property name="mimeMessageHelper"><ref bean="mimeMessageHelper"/></property>		
 		<property name="mailEngine"><ref bean="mailEngine"/></property>				
 		<property name="securityService"><ref bean="securityService"/></property>				
 	</bean>	
+
 
     <bean id="mailSendingJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="mailSendingQuartzBean"/>

@@ -8,7 +8,6 @@ package org.openuss.search;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.openuss.commands.Command;
 import org.openuss.commands.CommandDao;
 import org.openuss.foundation.DomainObject;

@@ -27,7 +27,8 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 
 	private static final Logger logger = Logger.getLogger(LectureServiceImpl.class);
 
-	public LectureServiceImpl() {}
+	public LectureServiceImpl() {
+	}
 
 	@Override
 	protected Collection handleGetFaculties(boolean enabledOnly) throws Exception {
@@ -119,6 +120,10 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 
 		if (faculty.getId() != null) {
 			getFacultyDao().update(faculty);
+
+			// TODO use aop
+			// update faculty index
+			// getIndexerService().updateIndex(faculty);
 		} else {
 			logger.error("Faculty object without id, use createFaculty method instead!!!");
 			throw new LectureServiceException("Use createFaculty method instead!");
@@ -166,6 +171,10 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 
 		// define security rights of faculty
 		fireCreatedFaculty(faculty);
+		
+		// TODO use aop
+		// create index
+		// getIndexerService().createIndex(faculty);
 
 	}
 
@@ -202,11 +211,10 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 	}
 
 	private void updateAccessTypePermission(Enrollment enrollment) {
-		if (enrollment.getAccessType()!=AccessType.OPEN){
-			getSecurityService().setPermissions(Roles.USER, enrollment, LectureAclEntry.NOTHING);		
-		}
-		else if (enrollment.getAccessType()==AccessType.OPEN){
-			getSecurityService().setPermissions(Roles.USER, enrollment, LectureAclEntry.ENROLLMENT_PARTICIPANT);			
+		if (enrollment.getAccessType() != AccessType.OPEN) {
+			getSecurityService().setPermissions(Roles.USER, enrollment, LectureAclEntry.NOTHING);
+		} else if (enrollment.getAccessType() == AccessType.OPEN) {
+			getSecurityService().setPermissions(Roles.USER, enrollment, LectureAclEntry.ENROLLMENT_PARTICIPANT);
 		}
 	}
 
@@ -219,6 +227,9 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		// fire events
 		for (Enrollment enrollment : faculty.getEnrollments()) {
 			fireRemovingEnrollment(enrollment);
+			
+			// TODO use aop
+			//	getIndexerService().deleteIndex(enrollment);
 		}
 
 		for (Subject subject : faculty.getSubjects()) {
@@ -227,6 +238,8 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 
 		fireRemovingFaculty(faculty);
 
+		// TODO use aop
+		//	getIndexerService().deleteIndex(faculty);
 		getFacultyDao().remove(faculty);
 	}
 
@@ -328,7 +341,7 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 
 		generateShortcut(enrollment);
 		storeEnrollment(enrollment);
-		
+
 		getSecurityService().createObjectIdentity(enrollment, faculty);
 		updateAccessTypePermission(enrollment);
 
@@ -342,7 +355,7 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		int index = subject.getShortcut().length();
 		if (index + id.length() >= 30)
 			index -= id.length();
-		
+
 		String shortcut = subject.getShortcut().substring(0, index - 1) + id;
 
 		enrollment.setShortcut(shortcut);
@@ -496,6 +509,8 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		}
 	}
 
+	// FIXME use event handler instead 
+	
 	private void fireRemovingEnrollment(Enrollment enrollment) throws LectureException {
 		if (listeners != null) {
 			logger.debug("fire removing enrollment event");

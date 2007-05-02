@@ -1,16 +1,35 @@
-package org.openuss.search;
+package org.openuss.lecture;
 
 import org.openuss.lecture.indexer.FacultyIndexer;
+import org.openuss.security.User;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
-public class DomainIndexerFactoryTest extends AbstractDependencyInjectionSpringContextTests {
+public class FacultyIndexerTest extends AbstractDependencyInjectionSpringContextTests {
 
 	private FacultyIndexer facultyIndexer;
 	
-	private DomainIndexerFactory domainIndexerFactory;
+	private FacultyDao facultyDao = new FacultyDaoMock();
 	
+	@Override
+	protected void onSetUp() throws Exception {
+		super.onSetUp();
+		facultyIndexer.setFacultyDao(facultyDao);
+	}
+
 	public void testIndexer() {
-		//TODO write tests for DomainIndexerFactory
+		Faculty faculty = new LectureBuilder().createFaculty(User.Factory.newInstance()).getFaculty();
+
+		facultyDao.create(faculty);
+		
+		facultyIndexer.setDomainObject(faculty);
+		facultyIndexer.setCommandType("CREATE");
+		facultyIndexer.execute();
+		
+		faculty.setName("neuer name");
+		
+		facultyIndexer.setDomainObject(faculty);
+		facultyIndexer.setCommandType("UPDATE");
+		facultyIndexer.execute();
 		
 	}
 	
@@ -35,12 +54,4 @@ public class DomainIndexerFactoryTest extends AbstractDependencyInjectionSpringC
 		this.facultyIndexer = facultyIndexer;
 	}
 
-	public DomainIndexerFactory getDomainIndexerFactory() {
-		return domainIndexerFactory;
-	}
-
-	public void setDomainIndexerFactory(DomainIndexerFactory domainIndexerFactory) {
-		this.domainIndexerFactory = domainIndexerFactory;
-	}
-	
 }

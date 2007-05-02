@@ -33,44 +33,75 @@ public class CommandDaoTest extends CommandDaoTestBase {
 		assertEquals("new command",command.getCommand());
 	}
 	
-	public void testFindAllCommandsAfter() {
-		Command command1 = createCommandInDB(testUtility.unique(), "commandName", "commanType", CommandState.EACH);
-		Command command2 = createCommandInDB(testUtility.unique(), "commandName", "commanType", CommandState.EACH);
-		Command command3 = createCommandInDB(testUtility.unique(), "commandName", "commanType", CommandState.EACH);
-		Command command4 = createCommandInDB(testUtility.unique(), "commandName", "commanType", CommandState.EACH);
-		Command command5 = createCommandInDB(testUtility.unique(), "commandName", "commanType", CommandState.EACH);
+	
+	public void testFindAllOnceCommands() {
+		markAllAsDone();
+		
+		Command[] command = new Command[5];
+		fillCommandArray(command, CommandState.ONCE);
 		
 		commit();
 		
-		List<Command> commands = commandDao.findAllEachCommandsAfter(command2.getId());
+		List<Command> commands = commandDao.findAllOnceCommands();
+		
+		assertEquals(5, commands.size());
+		for (Command com : command) {
+			assertTrue(commands.contains(com));
+		}
+		
+		markAllAsDone();
+
+		commands = commandDao.findAllOnceCommands();
+		assertEquals(0, commands.size());
+		
+	}
+
+	private void markAllAsDone() {
+		// check previous created commands and mark them as done
+		List<Command> commands = commandDao.findAllOnceCommands();
+		for (Command command : commands) {
+			assertEquals(CommandState.ONCE, command.getState());
+			command.setState(CommandState.DONE);
+		}
+		commit();
+	}
+
+	public void testFindAllEachCommandsAfter() {
+		Command[] command = new Command[5];
+		fillCommandArray(command, CommandState.EACH);
+		
+		commit();
+		
+		List<Command> commands = commandDao.findAllEachCommandsAfter(command[1].getId());
 		
 		assertEquals(3, commands.size());
 		
-		assertFalse(commands.contains(command1));
-		assertFalse(commands.contains(command2));
-		assertTrue(commands.contains(command3));
-		assertTrue(commands.contains(command4));
-		assertTrue(commands.contains(command5));
+		assertFalse(commands.contains(command[0]));
+		assertFalse(commands.contains(command[1]));
+		assertTrue(commands.contains(command[2]));
+		assertTrue(commands.contains(command[3]));
+		assertTrue(commands.contains(command[4]));
 		
 		
-		command1 = createCommandInDB(testUtility.unique(), "commandName", "commanType", CommandState.EACH);
-		command2 = createCommandInDB(testUtility.unique(), "commandName", "commanType", CommandState.EACH);
-		command3 = createCommandInDB(testUtility.unique(), "commandName", "commanType", CommandState.EACH);
-		command4 = createCommandInDB(testUtility.unique(), "commandName", "commanType", CommandState.EACH);
-		command5 = createCommandInDB(testUtility.unique(), "commandName", "commanType", CommandState.EACH);
+		fillCommandArray(command, CommandState.EACH);
 
 		commit();
 		
-		commands = commandDao.findAllEachCommandsAfter(command2.getId());
+		commands = commandDao.findAllEachCommandsAfter(command[1].getId());
 		
 		assertEquals(3, commands.size());
 		
-		assertFalse(commands.contains(command1));
-		assertFalse(commands.contains(command2));
-		assertTrue(commands.contains(command3));
-		assertTrue(commands.contains(command4));
-		assertTrue(commands.contains(command5));
-		
+		assertFalse(commands.contains(command[0]));
+		assertFalse(commands.contains(command[1]));
+		assertTrue(commands.contains(command[2]));
+		assertTrue(commands.contains(command[3]));
+		assertTrue(commands.contains(command[4]));
+	}
+
+	private void fillCommandArray(Command[] command, CommandState state) {
+		for (int i = 0; i < command.length; i++) {
+			command[i] = createCommandInDB(testUtility.unique(), "commandName", "commanType", state);
+		}
 	}
 	
 	private void commit() {

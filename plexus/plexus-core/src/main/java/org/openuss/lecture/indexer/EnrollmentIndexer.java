@@ -1,4 +1,4 @@
-package org.openuss.lecture;
+package org.openuss.lecture.indexer;
 
 import java.util.Date;
 
@@ -9,27 +9,30 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.DateTools.Resolution;
 import org.apache.lucene.index.Term;
+import org.openuss.lecture.Enrollment;
+import org.openuss.lecture.EnrollmentDao;
+import org.openuss.lecture.Faculty;
 import org.openuss.search.DomainIndexCommand;
+import org.springmodules.lucene.index.LuceneIndexAccessException;
 import org.springmodules.lucene.index.core.DocumentCreator;
 import org.springmodules.lucene.index.core.DocumentModifier;
 
 /**
- * 
+ * FIXME - implement everything
  * @author Ingo Dueppe
  */
-public class FacultyIndexer extends DomainIndexCommand {
+public class EnrollmentIndexer extends DomainIndexCommand {
 
-	private static final String DOMAINTYPE_VALUE = "FACULTY";
+	private static final String DOMAINTYPE_VALUE = "ENROLLMENT";
 
-	private static final Logger logger = Logger.getLogger(FacultyIndexer.class);
+	private static final Logger logger = Logger.getLogger(EnrollmentIndexer.class);
 
-	private FacultyDao facultyDao;
-
+	private EnrollmentDao enrollmentDao;
 	
 	public void create() {
 		final Faculty faculty = loadFaculty();
 		if (faculty != null) {
-			logger.debug("create new index for faculty "+faculty.getName()+" ("+faculty.getId()+")");
+			logger.debug("create new index for enrollment "+faculty.getName()+" ("+faculty.getId()+")");
 			getLuceneIndexTemplate().addDocument(new DocumentCreator() {
 				public Document createDocument() throws Exception {
 					Document document = new Document();
@@ -43,22 +46,27 @@ public class FacultyIndexer extends DomainIndexCommand {
 	public void update() {
 		final Faculty faculty = loadFaculty();
 		if (faculty != null) {
-			logger.debug("update new index for faculty "+faculty.getName()+" ("+faculty.getId()+")");
-			Term facultyTerm = new Term(IDENTIFIER, String.valueOf(faculty.getId()));
-			getLuceneIndexTemplate().updateDocument(facultyTerm, new DocumentModifier() {
-				public Document updateDocument(Document document) throws Exception {
-					Document newDocument = new Document();
-					setFields(faculty, document);
-					return newDocument;
-				}
-			});
+			logger.debug("update new index for enrollment "+faculty.getName()+" ("+faculty.getId()+")");
+			try {
+				Term facultyTerm = new Term(IDENTIFIER, String.valueOf(faculty.getId()));
+				getLuceneIndexTemplate().updateDocument(facultyTerm, new DocumentModifier() {
+					public Document updateDocument(Document document) throws Exception {
+						Document newDocument = new Document();
+						setFields(faculty, document);
+						return newDocument;
+					}
+				});
+			} catch (LuceneIndexAccessException ex) {
+				create();				
+			}
 		}
 	}
 
 	private Faculty loadFaculty() {
 		Validate.notNull(getDomainObject(), "Parameter domainObject must not be null");
 		Validate.notNull(getDomainObject().getId(), "Parameter domainObject.id must not be null");
-		return facultyDao.load(getDomainObject().getId());
+		Enrollment enrollment = enrollmentDao.load(getDomainObject().getId());
+		return enrollment.getFaculty();
 	}
 
 	private void setFields(final Faculty faculty, Document document) {
@@ -96,12 +104,12 @@ public class FacultyIndexer extends DomainIndexCommand {
 		return content.toString();
 	}
 
-	public FacultyDao getFacultyDao() {
-		return facultyDao;
+	public EnrollmentDao getEnrollmentDao() {
+		return enrollmentDao;
 	}
 
-	public void setFacultyDao(FacultyDao facultyDao) {
-		this.facultyDao = facultyDao;
+	public void setEnrollmentDao(EnrollmentDao enrollmentDao) {
+		this.enrollmentDao = enrollmentDao;
 	}
 
 }

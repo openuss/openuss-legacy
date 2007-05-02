@@ -11,14 +11,24 @@
 	 	<property name="indexer">
 	 		<map>
 	 			<entry>
-	 			 	<key><value>org.openuss.lecture.FacultyImpl</value></key>
+	 			 	<key><value>org.openuss.lecture.Faculty</value></key>
 					<value>facultyIndexer</value>
+	 		 	</entry>
+	 			<entry>
+	 			 	<key><value>org.openuss.lecture.Enrollment</value></key>
+					<value>enrollmentIndexer</value>
 	 		 	</entry>
 	 		</map>
 	 	</property>
 	 </bean>
 	 
-	 <bean name="facultyIndexer" class="org.openuss.lecture.FacultyIndexer">
+	 <bean name="enrollmentIndexer" class="org.openuss.lecture.indexer.EnrollmentIndexer">
+	 	<property name="analyzer"><ref bean="analyzer"/></property>
+	 	<property name="enrollmentDao"><ref bean="enrollmentDao"/></property>
+	 	<property name="indexFactory"><ref bean="indexFactory"/></property>
+	 </bean>
+	 
+	 <bean name="facultyIndexer" class="org.openuss.lecture.indexer.FacultyIndexer">
 	 	<property name="analyzer"><ref bean="analyzer"/></property>
 	 	<property name="facultyDao"><ref bean="facultyDao"/></property>
 	 	<property name="indexFactory"><ref bean="indexFactory"/></property>
@@ -33,32 +43,38 @@
 	 
 	<bean id="analyzer" class="org.apache.lucene.analysis.standard.StandardAnalyzer"/>
 	
-	<bean id="ramDirectory" class="org.springmodules.lucene.index.support.RAMDirectoryFactoryBean"/>
+	<bean id="searcherFactory" class="org.springmodules.lucene.search.factory.SimpleSearcherFactory">
+		<property name="directory" ref="fsDirectory"/>
+	</bean>
 
-	<bean id="indexFactory" class="org.springmodules.lucene.index.support.SimpleIndexFactoryBean">
+	<bean id="indexFactory" class="org.openuss.search.lucene.LuceneIndexFactoryBean">
 		<property name="create" value="true"/>
-		<property name="directory" ref="ramDirectory"/>
+		<property name="directory" ref="fsDirectory"/>
 		<property name="analyzer" ref="analyzer"/>
+<!-- 
+ 		<property name="searcherFactory" ref="searchFactory"/>
+ -->
 	</bean>
 	
 	<bean id="fsDirectory" class="org.springmodules.lucene.index.support.FSDirectoryFactoryBean">
 		<property name="create" value="true"/>
-		<property name="location" value="file:${java.io.tmpdir}lucene/lectureindex"/>
+		<property name="location" value="file:${java.io.tmpdir}lucene/index/lecture"/>
 	</bean>
+
 	
+	<!-- 
+	<bean id="ramDirectory" class="org.springmodules.lucene.index.support.RAMDirectoryFactoryBean"/>
 	
 	<bean id="indexingDatabase" class="org.openuss.search.SimpleDatabaseIndexingImpl">
 		<property name="indexFactory" ref="indexFactory"/>
 		<property name="dataSource"><ref bean="dataSource"/></property>
 	</bean>
 	
-	<bean id="searcherFactory" class="org.springmodules.lucene.search.factory.SimpleSearcherFactory">
-		<property name="directory" ref="ramDirectory"/>
-	</bean>
 	
 	<bean id="lectureSearcher" class="org.openuss.search.LectureSearchQuery">
 		<constructor-arg index="0" ref="searcherFactory"/>
 		<constructor-arg index="1" ref="analyzer" />
 	</bean>	
+	 -->
 
 </beans>
