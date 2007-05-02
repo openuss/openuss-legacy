@@ -96,4 +96,8 @@ public class DesktopLectureAdapter implements LectureListener{
 		}
 		
 	}
+
+	public void updateFaculty(Faculty faculty) throws LectureException {
+		// NOTHING TO DO
+	}
 }

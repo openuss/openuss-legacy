@@ -1,11 +1,11 @@
 package org.openuss.commands;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.openuss.foundation.AbstractMockDao;
 
 /**
  * Mockup Command Dao
@@ -25,7 +25,7 @@ public class MockCommandDao extends AbstractMockDao<Command> implements CommandD
 	}
 
 	public List findAllEachCommandsAfter(final Long commandId) {
-		List<Command> commands = new ArrayList<Command>(store.values());
+		List<Command> commands = (List<Command>) loadAll();
 		CollectionUtils.filter(commands, new Predicate() {
 			public boolean evaluate(Object object) {
 				if (object instanceof Command) {
@@ -42,30 +42,38 @@ public class MockCommandDao extends AbstractMockDao<Command> implements CommandD
 		return findAllEachCommandsAfter(commandId);
 	}
 
-	private static Boolean lock = Boolean.FALSE;
-	
-	public boolean obtainLock(Command command) {
-		if (!lock) {
-			synchronized(lock) {
-				lock = true;
-				return lock;
-			}
-		}
-		return false;
-	}
-
-	public void releaseLock(Command command) {
-		synchronized(lock) {
-			lock = false;
-		}
-	}
-
 	public List findAllEachCommandsAfter(int transform, Long commandId) {
 		return findAllEachCommandsAfter(commandId);
 	}
 
 	public List findAllEachCommandsAfter(int transform, String queryString, Long commandId) {
 		return findAllEachCommandsAfter(commandId);
+	}
+
+	public List findAllOnceCommands() {
+		List<Command> commands = (List<Command>) loadAll();
+		CollectionUtils.filter(commands, new Predicate() {
+			public boolean evaluate(Object object) {
+				if (object instanceof Command) {
+					Command command = (Command) object;
+					return  command.getState() == CommandState.ONCE;
+				}
+				return false;
+			}
+		});
+		return commands;
+	}
+
+	public List findAllOnceCommands(String queryString) {
+		return findAllOnceCommands();
+	}
+
+	public List findAllOnceCommands(int transform) {
+		return findAllOnceCommands();
+	}
+
+	public List findAllOnceCommands(int transform, String queryString) {
+		return findAllOnceCommands();
 	}
 
 }

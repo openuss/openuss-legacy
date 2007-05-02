@@ -1,6 +1,7 @@
 package org.openuss.commands;
 
 import org.apache.commons.lang.Validate;
+import org.openuss.foundation.AbstractMockDao;
 
 /**
  * 

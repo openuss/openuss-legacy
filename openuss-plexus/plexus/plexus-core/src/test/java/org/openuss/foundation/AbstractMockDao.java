@@ -1,4 +1,4 @@
-package org.openuss.commands;
+package org.openuss.foundation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +19,7 @@ public abstract class AbstractMockDao<T extends DomainObject> {
 
 	protected Map<Long, T> store = new HashMap<Long, T>();
 	
-	private static long id = 0;
+	private static long id = 1;
 	
 	protected long nextId() {
 		synchronized(AbstractMockDao.class) {
@@ -84,7 +84,10 @@ public abstract class AbstractMockDao<T extends DomainObject> {
 	}
 
 	public void update(T entity) {
-		create(entity);
+		if (store.containsKey(entity.getId())) {
+			store.remove(entity.getId());
+			store.put(entity.getId(), entity);
+		} 
 	}
 
 	public void update(Collection<T> entities) {

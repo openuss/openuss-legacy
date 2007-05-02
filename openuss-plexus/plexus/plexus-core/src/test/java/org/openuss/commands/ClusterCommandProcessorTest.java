@@ -33,13 +33,13 @@ public class ClusterCommandProcessorTest extends AbstractDependencyInjectionSpri
 	public void testEachCommandExecution() {
 		List<Command> commands = createCommands(10, CommandState.EACH);
 		mockCommandDao.create(commands);
-		commandProcessor.processCommands();
+		commandProcessor.processEachCommands();
 		assertEquals(commands.size(), mockCommand.getExecutionCount());
 
 		checkStateForAll(commands, CommandState.EACH);
 		assertEquals(commands.get(commands.size()-1),lastProcessedCommand());
 
-		commandProcessor.processCommands();
+		commandProcessor.processEachCommands();
 		assertEquals(commands.size(), mockCommand.getExecutionCount());
 	}
 
@@ -47,23 +47,29 @@ public class ClusterCommandProcessorTest extends AbstractDependencyInjectionSpri
 		List<Command> commands = createCommands(10, CommandState.EACH);
 		mockCommandDao.create(commands);
 		mockCommand.setThrowException(true);
-		commandProcessor.processCommands();
+		commandProcessor.processEachCommands();
 		assertEquals(commands.size(), mockCommand.getExecutionCount());
 
 		checkStateForAll(commands, CommandState.ERROR);
 		assertEquals(commands.get(commands.size()-1),lastProcessedCommand());
-		commandProcessor.processCommands();
+		commandProcessor.processEachCommands();
 		assertEquals(commands.size(), mockCommand.getExecutionCount());
 	}
 
 	public void testOnceCommandExecution() {
 		List<Command> commands = createCommands(10, CommandState.ONCE);
 		mockCommandDao.create(commands);
-		commandProcessor.processCommands();
-		assertEquals(commands.size(), mockCommand.getExecutionCount());
+		commandProcessor.processOnceCommand();
+		assertEquals(1, mockCommand.getExecutionCount());
+		Command commandFirst = commands.get(0);
+		assertEquals(CommandState.DONE, commandFirst.getState());
+		Command commandSecond = commands.get(1);
+		assertEquals(CommandState.ONCE, commandSecond.getState());
+		
+		for(int i=0; i < 10; i++) {
+			commandProcessor.processOnceCommand();
+		}
 		checkStateForAll(commands, CommandState.DONE);
-		commandProcessor.processCommands();
-		assertEquals(commands.size(), mockCommand.getExecutionCount());
 	}
 
 	private Command lastProcessedCommand() {
