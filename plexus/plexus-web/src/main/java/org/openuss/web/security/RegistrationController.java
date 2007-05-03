@@ -7,6 +7,7 @@ import java.util.TimeZone;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -16,8 +17,8 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.registration.RegistrationException;
 import org.openuss.registration.RegistrationService;
-import org.openuss.security.User;
 import org.openuss.security.SecurityService;
+import org.openuss.security.User;
 import org.openuss.web.Constants;
 import org.openuss.web.mail.MailController;
 import org.openuss.web.utils.MessageBox;
@@ -68,20 +69,18 @@ public class RegistrationController extends BaseBean {
 
 		User user = (User) getSessionBean(AuthenticationController.USER_SESSION_KEY);
 		// set default user timezone
-		user.getPreferences().setTimezone(TimeZone.getDefault().getID());
+		user.setTimezone(TimeZone.getDefault().getID());
 
-		registrationService.registrateUser(user, registrationData
-				.isEnableAssistantRole());
-		String activationCode = registrationService
-				.generateActivationCode(user);
+		registrationService.registrateUser(user, registrationData.isEnableAssistantRole());
+		String activationCode = registrationService.generateActivationCode(user);
 		// send verification email
 		sendVerificationEmail(user, activationCode);
 
 		removeSessionBean(RegistrationData.SESSION_KEY);
 		removeSessionBean(AuthenticationController.USER_SESSION_KEY);
+		SecurityContextHolder.clearContext();
 
-		String message = i18n("user_email_verification_send_message", user
-				.getEmail());
+		String message = i18n("user_email_verification_send_message", user.getEmail());
 		String title = i18n("user_email_verification_send_message_title");
 		return MessageBox.showDefaultMessage(message, title);
 	}
@@ -94,8 +93,7 @@ public class RegistrationController extends BaseBean {
 	 */
 	private void sendVerificationEmail(User user, String activationCode) {
 		try {
-			String link = "/actions/public/user/activate.faces?code="
-					+ activationCode;
+			String link = "/actions/public/user/activate.faces?code="+ activationCode;
 
 			// FIXME the configuration should come from the resources
 			final HttpServletRequest request = getRequest();
