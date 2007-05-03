@@ -3,7 +3,6 @@ package org.openuss.web.braincontest;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -13,15 +12,12 @@ import org.openuss.braincontest.BrainContestInfo;
 import org.openuss.braincontest.BrainContestService;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-
-
 import org.openuss.web.Constants;
 import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 @Bean(name = "views$secured$braincontest$braincontestmain", scope = Scope.REQUEST)
 @View
 public class BrainContestMainPage extends AbstractEnrollmentPage{
-	private static final Logger logger = Logger.getLogger(BrainContestMainPage.class);
 	
 	private BrainContestMainDataProvider data = new BrainContestMainDataProvider();
 	
