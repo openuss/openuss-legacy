@@ -13,22 +13,21 @@ public class SubscriberDaoImpl
     /**
      * @see org.openuss.mailinglist.SubscriberDao#toSubscriberInfo(org.openuss.mailinglist.Subscriber, org.openuss.mailinglist.SubscriberInfo)
      */
-    public void toSubscriberInfo(
-        org.openuss.mailinglist.Subscriber sourceEntity,
-        org.openuss.mailinglist.SubscriberInfo targetVO)
+    public void toSubscriberInfo(Subscriber sourceEntity,
+        SubscriberInfo targetVO)
     {
-        // @todo verify behavior of toSubscriberInfo
         super.toSubscriberInfo(sourceEntity, targetVO);
+        targetVO.setDisplayName(sourceEntity.getUser().getDisplayName());
+        targetVO.setEmail(sourceEntity.getUser().getEmail());
     }
 
 
     /**
      * @see org.openuss.mailinglist.SubscriberDao#toSubscriberInfo(org.openuss.mailinglist.Subscriber)
      */
-    public org.openuss.mailinglist.SubscriberInfo toSubscriberInfo(final org.openuss.mailinglist.Subscriber entity)
+    public SubscriberInfo toSubscriberInfo(final Subscriber entity)
     {
-        // @todo verify behavior of toSubscriberInfo
-        return super.toSubscriberInfo(entity);
+        return toSubscriberInfo(entity);
     }
 
 
@@ -37,29 +36,28 @@ public class SubscriberDaoImpl
      * from the object store. If no such entity object exists in the object store,
      * a new, blank entity is created
      */
-    private org.openuss.mailinglist.Subscriber loadSubscriberFromSubscriberInfo(org.openuss.mailinglist.SubscriberInfo subscriberInfo)
+    private Subscriber loadSubscriberFromSubscriberInfo(SubscriberInfo subscriberInfo)
     {
-        // @todo implement loadSubscriberFromSubscriberInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.mailinglist.loadSubscriberFromSubscriberInfo(org.openuss.mailinglist.SubscriberInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.mailinglist.Subscriber subscriber = this.load(subscriberInfo.getId());
-        if (subscriber == null)
-        {
-            subscriber = org.openuss.mailinglist.Subscriber.Factory.newInstance();
-        }
+    	Subscriber subscriber;
+    	if (subscriberInfo.getId() == null)
+    	{
+    		return subscriber = Subscriber.Factory.newInstance();
+    	}
+        subscriber = this.load(subscriberInfo.getId());
+    	if (subscriber == null)
+    	{
+    		subscriber = Subscriber.Factory.newInstance();
+    	}
         return subscriber;
-        */
     }
 
     
     /**
      * @see org.openuss.mailinglist.SubscriberDao#subscriberInfoToEntity(org.openuss.mailinglist.SubscriberInfo)
      */
-    public org.openuss.mailinglist.Subscriber subscriberInfoToEntity(org.openuss.mailinglist.SubscriberInfo subscriberInfo)
+    public Subscriber subscriberInfoToEntity(SubscriberInfo subscriberInfo)
     {
-        // @todo verify behavior of subscriberInfoToEntity
-        org.openuss.mailinglist.Subscriber entity = this.loadSubscriberFromSubscriberInfo(subscriberInfo);
+        Subscriber entity = this.loadSubscriberFromSubscriberInfo(subscriberInfo);
         this.subscriberInfoToEntity(subscriberInfo, entity, true);
         return entity;
     }
@@ -73,7 +71,6 @@ public class SubscriberDaoImpl
         org.openuss.mailinglist.Subscriber targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of subscriberInfoToEntity
         super.subscriberInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 

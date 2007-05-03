@@ -4,29 +4,27 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.mailinglist;
+
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.openuss.security.User;
+import org.openuss.viewtracking.ViewState;
+
 /**
  * @see org.openuss.mailinglist.Mail
  */
-public class MailDaoImpl
-    extends org.openuss.mailinglist.MailDaoBase
+public class MailDaoImpl extends MailDaoBase
 {
-    /**
-     * @see org.openuss.mailinglist.MailDao#loadMailInfos(org.openuss.mailinglist.MailingList, org.openuss.security.User, org.openuss.mailinglist.MailingStatus)
-     */
-    protected java.util.List handleLoadMailInfos(org.openuss.mailinglist.MailingList mailingList, org.openuss.security.User user, org.openuss.mailinglist.MailingStatus status)
-    {
-        // @todo implement public java.util.List handleLoadMailInfos(org.openuss.mailinglist.MailingList mailingList, org.openuss.security.User user, org.openuss.mailinglist.MailingStatus status)
-        return null;
-}
-
     /**
      * @see org.openuss.mailinglist.MailDao#toMailInfo(org.openuss.mailinglist.Mail, org.openuss.mailinglist.MailInfo)
      */
-    public void toMailInfo(
-        org.openuss.mailinglist.Mail sourceEntity,
-        org.openuss.mailinglist.MailInfo targetVO)
+    public void toMailInfo(Mail sourceEntity, MailInfo targetVO)
     {
-        // @todo verify behavior of toMailInfo
         super.toMailInfo(sourceEntity, targetVO);
     }
 
@@ -34,9 +32,8 @@ public class MailDaoImpl
     /**
      * @see org.openuss.mailinglist.MailDao#toMailInfo(org.openuss.mailinglist.Mail)
      */
-    public org.openuss.mailinglist.MailInfo toMailInfo(final org.openuss.mailinglist.Mail entity)
+    public MailInfo toMailInfo(final Mail entity)
     {
-        // @todo verify behavior of toMailInfo
         return super.toMailInfo(entity);
     }
 
@@ -46,29 +43,29 @@ public class MailDaoImpl
      * from the object store. If no such entity object exists in the object store,
      * a new, blank entity is created
      */
-    private org.openuss.mailinglist.Mail loadMailFromMailInfo(org.openuss.mailinglist.MailInfo mailInfo)
+    private Mail loadMailFromMailInfo(MailInfo mailInfo)
     {
-        // @todo implement loadMailFromMailInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.mailinglist.loadMailFromMailInfo(org.openuss.mailinglist.MailInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.mailinglist.Mail mail = this.load(mailInfo.getId());
-        if (mail == null)
-        {
-            mail = org.openuss.mailinglist.Mail.Factory.newInstance();
-        }
-        return mail;
-        */
+    	Mail mail;
+    	if (mailInfo.getId() == null)
+    	{
+    		mail = org.openuss.mailinglist.Mail.Factory.newInstance();
+    		return mail;
+    	}        
+    	mail = this.load(mailInfo.getId());
+    	if (mail == null)
+    	{
+    		mail = org.openuss.mailinglist.Mail.Factory.newInstance();
+    	}        
+    	return mail;
     }
 
     
     /**
      * @see org.openuss.mailinglist.MailDao#mailInfoToEntity(org.openuss.mailinglist.MailInfo)
      */
-    public org.openuss.mailinglist.Mail mailInfoToEntity(org.openuss.mailinglist.MailInfo mailInfo)
+    public Mail mailInfoToEntity(MailInfo mailInfo)
     {
-        // @todo verify behavior of mailInfoToEntity
-        org.openuss.mailinglist.Mail entity = this.loadMailFromMailInfo(mailInfo);
+        Mail entity = this.loadMailFromMailInfo(mailInfo);
         this.mailInfoToEntity(mailInfo, entity, true);
         return entity;
     }
@@ -77,9 +74,7 @@ public class MailDaoImpl
     /**
      * @see org.openuss.mailinglist.MailDao#mailInfoToEntity(org.openuss.mailinglist.MailInfo, org.openuss.mailinglist.Mail)
      */
-    public void mailInfoToEntity(
-        org.openuss.mailinglist.MailInfo sourceVO,
-        org.openuss.mailinglist.Mail targetEntity,
+    public void mailInfoToEntity(MailInfo sourceVO, Mail targetEntity,
         boolean copyIfNull)
     {
         // @todo verify behavior of mailInfoToEntity
@@ -89,21 +84,20 @@ public class MailDaoImpl
     /**
      * @see org.openuss.mailinglist.MailDao#toMailDetail(org.openuss.mailinglist.Mail, org.openuss.mailinglist.MailDetail)
      */
-    public void toMailDetail(
-        org.openuss.mailinglist.Mail sourceEntity,
-        org.openuss.mailinglist.MailDetail targetVO)
+    public void toMailDetail(Mail sourceEntity, MailDetail targetVO)
     {
-        // @todo verify behavior of toMailDetail
         super.toMailDetail(sourceEntity, targetVO);
+        targetVO.setToSendCount(sourceEntity.toSendCount());
+        targetVO.setSendCount(sourceEntity.sendCount());
+        targetVO.setErrorCount(sourceEntity.errorCount());
     }
 
 
     /**
      * @see org.openuss.mailinglist.MailDao#toMailDetail(org.openuss.mailinglist.Mail)
      */
-    public org.openuss.mailinglist.MailDetail toMailDetail(final org.openuss.mailinglist.Mail entity)
+    public MailDetail toMailDetail(final Mail entity)
     {
-        // @todo verify behavior of toMailDetail
         return super.toMailDetail(entity);
     }
 
@@ -113,29 +107,29 @@ public class MailDaoImpl
      * from the object store. If no such entity object exists in the object store,
      * a new, blank entity is created
      */
-    private org.openuss.mailinglist.Mail loadMailFromMailDetail(org.openuss.mailinglist.MailDetail mailDetail)
+    private Mail loadMailFromMailDetail(MailDetail mailDetail)
     {
-        // @todo implement loadMailFromMailDetail
-        throw new java.lang.UnsupportedOperationException("org.openuss.mailinglist.loadMailFromMailDetail(org.openuss.mailinglist.MailDetail) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.mailinglist.Mail mail = this.load(mailDetail.getId());
-        if (mail == null)
-        {
-            mail = org.openuss.mailinglist.Mail.Factory.newInstance();
-        }
-        return mail;
-        */
+    	Mail mail;
+    	if (mailDetail.getId() == null)
+    	{
+    		mail = org.openuss.mailinglist.Mail.Factory.newInstance();
+    		return mail;
+    	}        
+    	mail = this.load(mailDetail.getId());
+    	if (mail == null)
+    	{
+    		mail = org.openuss.mailinglist.Mail.Factory.newInstance();
+    	}        
+    	return mail;
     }
 
     
     /**
      * @see org.openuss.mailinglist.MailDao#mailDetailToEntity(org.openuss.mailinglist.MailDetail)
      */
-    public org.openuss.mailinglist.Mail mailDetailToEntity(org.openuss.mailinglist.MailDetail mailDetail)
+    public Mail mailDetailToEntity(MailDetail mailDetail)
     {
-        // @todo verify behavior of mailDetailToEntity
-        org.openuss.mailinglist.Mail entity = this.loadMailFromMailDetail(mailDetail);
+        Mail entity = this.loadMailFromMailDetail(mailDetail);
         this.mailDetailToEntity(mailDetail, entity, true);
         return entity;
     }
@@ -144,13 +138,91 @@ public class MailDaoImpl
     /**
      * @see org.openuss.mailinglist.MailDao#mailDetailToEntity(org.openuss.mailinglist.MailDetail, org.openuss.mailinglist.Mail)
      */
-    public void mailDetailToEntity(
-        org.openuss.mailinglist.MailDetail sourceVO,
-        org.openuss.mailinglist.Mail targetEntity,
-        boolean copyIfNull)
+    public void mailDetailToEntity(MailDetail sourceVO,
+        Mail targetEntity, boolean copyIfNull)
     {
-        // @todo verify behavior of mailDetailToEntity
         super.mailDetailToEntity(sourceVO, targetEntity, copyIfNull);
     }
 
+
+	@Override
+	protected List handleLoadAllMailInfos(final MailingList mailingList, final User user) throws Exception {
+		// FIXME - Need to extend andromda generator to support association classes
+		// Hibernate doesn't support left outer join on object that doesn't have a association.
+		// Therefore ViewState should be an associaction class between mailingList and user, but
+		// this isn't support by andromda 3.2 yet.
+		
+		// So the workaround are these two queries and the memory join.
+		final String queryString = 
+			" SELECT mail.ID,  v.VIEW_STATE " +
+			" FROM MAILINGLIST_MAIL as mail LEFT OUTER JOIN TRACKING_VIEWSTATE as v " +
+			" ON mail.id = v.DOMAIN_IDENTIFIER and v.USER_IDENTIFIER = :userId " +
+			" WHERE mail.MAILING_LIST_FK = :mailingListId ";
+		return (List) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
+			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
+				Query queryObject = session.createSQLQuery(queryString);
+				queryObject.setParameter("mailingListId", mailingList.getId());
+				queryObject.setParameter("userId", user.getId());
+				List<Object[]> results = queryObject.list();
+				
+				Map<Long, ViewState> viewstates = new HashMap<Long, ViewState>();
+				for(Object[] obj : results) {
+					Long mailId = ((BigInteger) obj[0]).longValue();
+					ViewState state = ViewState.NEW;
+					if (obj[1] != null) {
+						state = ViewState.fromInteger((Integer)obj[1]);
+					} 
+					viewstates.put(mailId, state);
+				}
+				
+				List<MailInfo> mails = findMailByMailingList(TRANSFORM_MAILINFO, mailingList);
+				// inject view state
+				for(MailInfo info: mails) {
+					info.setViewState(viewstates.get(info.getId()));
+				}
+				return mails;
+			}
+		}, true);
+	}	
+
+
+	@Override
+	protected List handleLoadSendMailInfos(final MailingList mailingList, final User user) throws Exception {
+		// FIXME - Need to extend andromda generator to support association classes
+		// Hibernate doesn't support left outer join on object that doesn't have a association.
+		// Therefore ViewState should be an associaction class between topic and user, but
+		// this isn't support by andromda 3.2 yet.
+		
+		// So the workaround are these two queries and the memory join.
+		final String queryString = 
+			" SELECT mail.ID,  v.VIEW_STATE " +
+			" FROM MAILINGLIST_MAIL as mail LEFT OUTER JOIN TRACKING_VIEWSTATE as v " +
+			" ON mail.id = v.DOMAIN_IDENTIFIER and v.USER_IDENTIFIER = :userId " +
+			" WHERE mail.MAILING_LIST_FK = :mailingListId ";
+		return (List) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
+			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
+				Query queryObject = session.createSQLQuery(queryString);
+				queryObject.setParameter("mailingListId", mailingList.getId());
+				queryObject.setParameter("userId", user.getId());
+				List<Object[]> results = queryObject.list();
+				
+				Map<Long, ViewState> viewstates = new HashMap<Long, ViewState>();
+				for(Object[] obj : results) {
+					Long mailId = ((BigInteger) obj[0]).longValue();
+					ViewState state = ViewState.NEW;
+					if (obj[1] != null) {
+						state = ViewState.fromInteger((Integer)obj[1]);
+					} 
+					viewstates.put(mailId, state);
+				}
+				
+				List<MailInfo> mails = findMailByMailingListAndStatus(TRANSFORM_MAILINFO, mailingList);
+				// inject view state
+				for(MailInfo info: mails) {
+					info.setViewState(viewstates.get(info.getId()));
+				}
+				return mails;
+			}
+		}, true);
+	}
 }
