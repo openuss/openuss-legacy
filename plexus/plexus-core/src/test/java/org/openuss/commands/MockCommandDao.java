@@ -76,4 +76,12 @@ public class MockCommandDao extends AbstractMockDao<Command> implements CommandD
 		return findAllOnceCommands();
 	}
 
+	public Command create(Long domainIdentifier, String command, CommandState state, String commandType, Date startTime, Date executionTime) {
+		return create(Command.Factory.newInstance(domainIdentifier, command, state, commandType, startTime, executionTime));
+	}
+
+	public Object create(int transform, Long domainIdentifier, String command, CommandState state, String commandType, Date startTime, Date executionTime) {
+		return create(Command.Factory.newInstance(domainIdentifier, command, state, commandType, startTime, executionTime));
+	}
+
 }

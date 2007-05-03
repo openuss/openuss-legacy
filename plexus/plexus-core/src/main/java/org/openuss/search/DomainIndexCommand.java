@@ -26,7 +26,7 @@ public abstract class DomainIndexCommand extends LuceneIndexSupport implements D
 	
 	private DomainObject domainObject;
 	private String commandType;
-	private Date commandTime;
+	private Date startTime;
 	
 	/**
 	 * Create a new index entry of the domain object
@@ -79,15 +79,15 @@ public abstract class DomainIndexCommand extends LuceneIndexSupport implements D
 	/**
 	 * {@inheritDoc}
 	 */
-	public Date getCommandTime() {
-		return commandTime;
+	public Date getStartTime() {
+		return startTime;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setCommandTime(Date commandTime) {
-		this.commandTime = commandTime;
+	public void setStartTime(Date commandTime) {
+		this.startTime = commandTime;
 	}
 
 	/**

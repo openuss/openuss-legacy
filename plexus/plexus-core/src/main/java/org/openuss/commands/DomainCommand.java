@@ -42,15 +42,15 @@ public interface DomainCommand {
 	
 	
 	/**
-	 * Getting the command time
-	 * @return Date - point of time when the command was fired
+	 * Getting the start time
+	 * @return Date - earliest point of time to execute the command
 	 */
-	public abstract Date getCommandTime();
+	public abstract Date getStartTime();
 	
 	/**
-	 * Setting the command time. 
-	 * @param commandTime - point of time when the command was original fired
+	 * Setting the start time. 
+	 * @param startTime - earliest point of time to execute the command
 	 */
-	public abstract void setCommandTime(Date commandTime);
+	public abstract void setStartTime(Date startTime);
 	
 }

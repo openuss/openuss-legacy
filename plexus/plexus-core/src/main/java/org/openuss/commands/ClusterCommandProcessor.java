@@ -3,6 +3,7 @@ package org.openuss.commands;
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.openuss.foundation.DefaultDomainObject;
@@ -52,6 +53,7 @@ public class ClusterCommandProcessor implements ApplicationContextAware {
 				logExecutionError(command, th);
 				command.setState(CommandState.ERROR);
 			} finally {
+				command.setExecutionTime(new Date());
 				commandDao.update(command);
 			}
 		}
@@ -96,7 +98,8 @@ public class ClusterCommandProcessor implements ApplicationContextAware {
 		msg.append("\n\t DomainIdentifier = "+command.getDomainIdentifier());
 		msg.append("\n\t Command = "+command.getCommand());
 		msg.append("\n\t CommandType = "+command.getCommandType());
-		msg.append("\n\t CommandTime = "+command.getCommandTime());
+		msg.append("\n\t StartTime = "+command.getStartTime());
+		msg.append("\n\t ExecutionTime = "+command.getExecutionTime());
 		msg.append("\n\t State = "+command.getState());
 		
 		logger.error(msg.toString(), th);
@@ -116,7 +119,7 @@ public class ClusterCommandProcessor implements ApplicationContextAware {
 		DomainCommand domainCommand = (DomainCommand) applicationContext.getBean(command.getCommand());
 
 		domainCommand.setDomainObject(new DefaultDomainObject(command.getDomainIdentifier()));
-		domainCommand.setCommandTime(command.getCommandTime());
+		domainCommand.setStartTime(command.getStartTime());
 		domainCommand.setCommandType(command.getCommandType());
 		return domainCommand;
 	}
