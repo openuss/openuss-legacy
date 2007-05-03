@@ -135,5 +135,32 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	public String getDisplayName() {
 		return getTitle() + " " + getFirstName() + " " + getLastName();
 	}
+	
+	public String getTimezone() {
+		return getPreferences().getTimezone(); 
+	}
+	
+	public void setTimezone(String timezone) {
+		getPreferences().setTimezone(timezone);
+	}
+	
+	@Override
+	@SuppressWarnings("deprecation")
+	public UserPreferences getPreferences() {
+		if (super.getPreferences() != null) {
+			return super.getPreferences();
+		} else {
+			return UserPreferences.Factory.newInstance();
+		}
+	}
+
+	@Override
+	public String getLocale() {
+		return getPreferences().getLocale();
+	}
+
+	public void setLocale(String locale) {
+		getPreferences().setLocale(locale);
+	}
 
 }
