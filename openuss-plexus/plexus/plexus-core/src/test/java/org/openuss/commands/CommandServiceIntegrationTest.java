@@ -8,6 +8,7 @@ package org.openuss.commands;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.openuss.foundation.DefaultDomainObject;
@@ -24,13 +25,13 @@ public class CommandServiceIntegrationTest extends CommandServiceIntegrationTest
 	
 	public void testDoClusterOnceCommand() throws CommandApplicationService {
 		DomainObject domainObject = new DefaultDomainObject(testUtility.unique());
-		commandService.doClusterOnceCommand(domainObject, "commandName", "commandType");
+		commandService.createOnceCommand(domainObject, "commandName", new Date(), "commandType");
 		checkCommand(domainObject, CommandState.ONCE);
 	}
 	
 	public void testDoClusterEachCommand() throws CommandApplicationService {
 		DomainObject domainObject = new DefaultDomainObject(testUtility.unique());
-		commandService.doClusterEachCommand(domainObject, "commandName", "commandType");
+		commandService.createEachCommand(domainObject, "commandName", "commandType");
 		checkCommand(domainObject, CommandState.EACH);
 	}
 

@@ -40,20 +40,23 @@ public class CommandDaoTest extends CommandDaoTestBase {
 		Command[] command = new Command[5];
 		fillCommandArray(command, CommandState.ONCE);
 		
+		command[4].setStartTime(new Date(System.currentTimeMillis()+3000L));
+		
 		commit();
 		
 		List<Command> commands = commandDao.findAllOnceCommands();
 		
-		assertEquals(5, commands.size());
-		for (Command com : command) {
-			assertTrue(commands.contains(com));
-		}
-		
+		assertEquals(4, commands.size());
+		assertTrue(commands.contains(command[0]));
+		assertTrue(commands.contains(command[1]));
+		assertTrue(commands.contains(command[2]));
+		assertTrue(commands.contains(command[3]));
+		assertFalse(commands.contains(command[4]));
+	
 		markAllAsDone();
 
 		commands = commandDao.findAllOnceCommands();
 		assertEquals(0, commands.size());
-		
 	}
 
 	private void markAllAsDone() {
@@ -115,7 +118,7 @@ public class CommandDaoTest extends CommandDaoTestBase {
 		command.setDomainIdentifier(domainIdentifier);
 		command.setCommand(commandName);
 		command.setCommandType(commandType);
-		command.setCommandTime(new Date());
+		command.setStartTime(new Date());
 		command.setState(state);
 		assertNull(command.getId());
 		commandDao.create(command);

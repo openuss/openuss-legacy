@@ -5,22 +5,23 @@ import java.util.Date;
 import org.openuss.foundation.DomainObject;
 
 /**
- * 
+ * Default implementation of DomainCommand
  * @author Ingo Dueppe
  * 
  */
 public abstract class AbstractDomainCommand implements DomainCommand {
 
-	private Date commandTime;
+	private Date startTime;
+	
 	private DomainObject domainObject;
 	private String commandType;
 
-	public Date getCommandTime() {
-		return commandTime;
+	public Date getStartTime() {
+		return startTime;
 	}
 
-	public void setCommandTime(Date commandTime) {
-		this.commandTime = commandTime;
+	public void setStartTime(Date commandTime) {
+		this.startTime = commandTime;
 	}
 
 	public String getCommandType() {

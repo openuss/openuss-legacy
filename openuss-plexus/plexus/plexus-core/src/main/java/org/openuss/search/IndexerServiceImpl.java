@@ -39,7 +39,7 @@ public class IndexerServiceImpl extends IndexerServiceBase {
 		
 		try {
 			String commandName = indexerFactory.getIndexerName(domainObject);
-			getCommandService().doClusterEachCommand(domainObject, commandName, commandType);
+			getCommandService().createEachCommand(domainObject, commandName, commandType);
 		} catch (CommandApplicationService e) {
 			throw new IndexerApplicationException(e);
 		}

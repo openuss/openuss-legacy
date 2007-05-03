@@ -22,7 +22,7 @@ public class LastProcessedCommandDaoTest extends LastProcessedCommandDaoTestBase
 		
 		command.setCommand("command");
 		command.setCommandType("commandType");
-		command.setCommandTime(new Date());
+		command.setStartTime(new Date());
 		command.setState(CommandState.ONCE);
 		command.setDomainIdentifier(1234L);
 		
