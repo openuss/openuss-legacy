@@ -63,7 +63,7 @@ public class Visit extends BaseBean {
 	public String getTimeZone() {
 		User user = (User) getSessionBean(Constants.USER);
 		if (user != null) {
-			return user.getPreferences().getTimezone();
+			return user.getTimezone();
 		} 
 		if (timeZone == null)
 			timeZone = TimeZone.getDefault();
@@ -81,8 +81,8 @@ public class Visit extends BaseBean {
 	public String getLocale() {
 		User user = (User) getSessionBean(AuthenticationController.USER_SESSION_KEY);
 		
-		if (user != null && user.getPreferences() != null) {
-			locale = user.getPreferences().getLocale();
+		if (user != null) {
+			locale = user.getLocale();
 		}
 		if (locale == null) {
 			locale = getViewRoot().getLocale().toString();
