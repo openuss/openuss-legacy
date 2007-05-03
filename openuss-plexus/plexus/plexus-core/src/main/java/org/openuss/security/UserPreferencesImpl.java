@@ -5,20 +5,22 @@
 //
 package org.openuss.security;
 
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
  * @see org.openuss.security.UserPreferences
+ * @author ingo dueppe
+ * @version $id $
  */
-public class UserPreferencesImpl extends org.openuss.security.UserPreferencesBase implements
-		org.openuss.security.UserPreferences {
-	/**
-	 * The serial version UID of this class. Needed for serialization.
-	 */
+public class UserPreferencesImpl extends UserPreferencesBase implements UserPreferences {
+
 	private static final long serialVersionUID = 1357311931143018441L;
 	
 	public UserPreferencesImpl() {
 		setTimezone(TimeZone.getDefault().getID());
+		setLocale(Locale.getDefault().toString());
+		setTheme("plexus");
 	}
 
 }
