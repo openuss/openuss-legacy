@@ -4,11 +4,9 @@ import java.util.List;
 
 import javax.faces.component.UIData;
 
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Init;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.news.NewsCategory;
@@ -27,8 +25,6 @@ public class NewsController extends BaseBean {
 
 	private static final long serialVersionUID = -4246786726261901182L;
 
-	private static final Logger logger = Logger.getLogger(NewsController.class);
-	
 	@Property(value="#{newsService}")
 	private NewsService newsService;
 	

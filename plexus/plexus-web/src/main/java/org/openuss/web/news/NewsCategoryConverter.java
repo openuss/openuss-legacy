@@ -5,7 +5,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.register.FacesConverter;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.news.NewsCategory;
