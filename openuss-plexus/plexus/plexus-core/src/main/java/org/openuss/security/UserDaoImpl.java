@@ -72,10 +72,8 @@ public class UserDaoImpl extends org.openuss.security.UserDaoBase {
 		super.toUserInfo(source, target);
 		// do not provide the users password hash code
 		target.setPassword("[PROTECTED]");
-		if (source.getContact() != null) {
-			target.setFirstName(source.getContact().getFirstName());
-			target.setLastName(source.getContact().getLastName());
-		}
+		target.setFirstName(source.getFirstName());
+		target.setLastName(source.getLastName());
 	}
 
 }
