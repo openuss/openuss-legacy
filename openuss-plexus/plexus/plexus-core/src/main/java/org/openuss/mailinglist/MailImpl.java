@@ -8,9 +8,7 @@ package org.openuss.mailinglist;
 /**
  * @see org.openuss.mailinglist.Mail
  */
-public class MailImpl
-    extends org.openuss.mailinglist.MailBase
-	implements org.openuss.mailinglist.Mail
+public class MailImpl extends MailBase implements Mail
 {
     /**
      * The serial version UID of this class. Needed for serialization.
@@ -22,8 +20,7 @@ public class MailImpl
      */
     public int sendCount()
     {
-        // @todo implement public int sendCount()
-        return 0;
+        return this.getJob().getSend();
     }
 
     /**
@@ -31,8 +28,7 @@ public class MailImpl
      */
     public int toSendCount()
     {
-        // @todo implement public int toSendCount()
-        return 0;
+    	return this.getJob().getToSend();
     }
 
     /**
@@ -40,8 +36,7 @@ public class MailImpl
      */
     public int errorCount()
     {
-        // @todo implement public int errorCount()
-        return 0;
+    	return this.getJob().getError();
     }
 
 }
