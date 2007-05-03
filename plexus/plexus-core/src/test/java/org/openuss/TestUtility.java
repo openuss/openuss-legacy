@@ -13,6 +13,7 @@ import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
 import org.openuss.security.UserImpl;
+import org.openuss.security.UserPreferences;
 
 /**
  * Test Utility to generate default database structures
@@ -36,6 +37,7 @@ public class TestUtility {
 	public User createDefaultUserInDB() {
 		defaultUser.setUsername(unique("username"));
 		defaultUser.setGroups(new ArrayList());
+		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
 		userDao.create(defaultUser);
 		return defaultUser;
 	}
@@ -61,6 +63,7 @@ public class TestUtility {
 
 	public Faculty createPersistFacultyWithDefaultUser() {
 		defaultUser.setUsername(unique("username"));
+		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
 		userDao.create(defaultUser);
 		defaultFaculty.setName(unique("name"));
 		defaultFaculty.setShortcut(unique("shortcut"));

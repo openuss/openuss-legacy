@@ -45,8 +45,8 @@ public class UserPreferencesDaoTest extends UserPreferencesDaoTestBase {
 	public void testUserPreferencesAssociation() {
 		UserPreferences preferences = UserPreferences.Factory.newInstance("de","plexus",TimeZone.getDefault().getID());
 		User user = testUtility.createDefaultUser();
-		
-		assertNull(user.getPreferences());
+
+		assertNotNull(user.getPreferences());
 		assertNull(user.getId());
 		assertNull(preferences.getId());
 		
