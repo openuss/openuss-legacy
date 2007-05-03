@@ -3,129 +3,150 @@
 <document>
 
     <properties>
-        <author email="isarsu.AT.sourceforge.DOT.net">Arne Sutor</author>
+     <author email="isarsu.AT.sourceforge.DOT.net">Arne Sutor</author>
+        <author email="kstettner.AT.users.DOT.sourceforge.DOT.net">Kai Stettner</author>
+        <author email="ronhaus.AT.users.DOT.sourceforge.DOT.net">Ron Haus</author>
         <title>Getting Started Guide</title>
     </properties>
 
     <body>
-    	<a name="top"/>
-	    <section name="Overview">
-	    	<p>
-	    		In order to get your project up and running, please just follow the steps mentioned below.
-	    		<ul>
-	    			<li><a href="#maven-install">Maven 2 Installation and Configuration</a></li>
-	    			<li><a href="#firebird-install">Firebird Installation and Configuration</a></li>
-	    			<li><a href="#eclipse-download">Download Eclipse 3.2 Callisto</a></li>
-	    			<li><a href="maven-repo">Set up your Maven2 Repository</a></li>
-	    		</ul>
-	    		If anything goes wrong please refer to the <a href="../troubleshooting.html">troubleshooting page</a>. If not reported yet, please let us know.
-	    	</p>
-	    </section>
-		<a name="maven-install"/>
-        <section name="Maven 2 Installation and Configuration">
-			<p>
-				Maven 2 can be downloaded from the <a href="http://maven.apache.org/download.html">Maven 2 Site</a><br/>
-				Unzip it into a specified directory, e.g. <code>C:\PathToMaven2</code>.
-			</p>
-			<p>
-				Refer to the <strong>readme.txt</strong> in the root directory of your Maven 2 Installation.<br/>
-				Please ensure that
-				<ol>
-					<li>JAVA_HOME is set and is pointing to the correct SDK (type java -version to test it)</li>
-					<li>The Maven Bin Directory is in your <code>PATH</code> variable</li>
-				</ol>
-			</p>
-		</section>
-		<a name="firebird-install"/>
-        <section name="Firebird Installation and Configuration">
-			<p>
-				Firebird can be downloaded from the <a href="http://www.firebirdsql.org/">Firebird Site</a><br/>
-				Please choose the installer method. This makes things easier for you. Just follow the onscreen instructions.
-			</p>
-			<p>
-				A nice admin tool for firbird databases can be downloaded from the <a href="http://www.sqlmanager.net/de/products/ibfb/manager">SQL Manager Site</a><br/>
-				Just install it using the onscreen instructions.
-			</p>
-			First of all you have to set up your own Server. Therefore you have to register a new host.<br/>
-			A shortcut is also available by pressing <code>SHIFT+CTRL+R</code>.
-			<p/>
-			Just change the following standard settings:
-			<ol>
-				<li>Protocol: TCP/IP</li>
-				<li>Password: masterkey</li>
-			</ol>
-			Click 'next' to continue. The other settings should just be left to the standard entries.
-			<p/>
-			After you set up the server you have to set up the databases to get thing work. Doubleclick on the new host entry in the naigation area situated on your left.
-			<ul>
-				<li>openuss30.fdb - The Application Database</li>
-				<li>openuss30-test.fdb - The Test Database</li>
-			</ul>
-			Please choose 'Create a new database' from the menu. Unfortunatley there is no shortcut available for this one.
-			The host name is your just generated server. It should allready be selected. Click 'Next'.<br/>
-			In the database path enter the full qualified path and file name of the database to be created, e.g. 
-			<code>C:\DATABASES\openuss30.fdb</code>. <br/>
-			Change the <code>SQL Dialect</code> from 1 to <strong>3</strong>.<br/>
-			Leave all other settings to the standard ones and click 'Next'.
-			A SQL excerpt will be presented to you. Just click 'Finish'.
-			<p/><br/>
-			<strong>Please repeat these steps for the test database naming it openuss30-test.fdb.</strong>
-			<div align="right"><a href="#top">Go to the top.</a></div>
-		</section>
-		<a name="eclipse-download"/>
-        <section name="Download Eclipse 3.2 Callisto">
-			<p>
-				Just download the <a href="http://teamopenuss.uni-muenster.de/downloads/eclipse-3.2.zip">preconfigured eclipse version</a> and unzip it to your harddisk.
-			</p>
-			<p>
-				After you unziped eclipse go to the <a href="http://www.exadel.com/web/portal/download">Exadel Studio Site</a> and download the free version <code>Exadel Studio 4.0</code>. 
-				After the download please follow the onscreen instructions to install it. 
-			</p>
-			<div align="right"><a href="#top">Go to the top.</a></div>
-		</section>
+     <a name="top"/>
+     
+<section name="Overview">
+      <p>
+       In order to get your project up and running on Windows, please just follow the steps mentioned below.
+ <ul>
+        <li><a href="#java-install">Java 6 Installation and Configuration</a></li>
+        <li><a href="#maven-install">Maven 2 Installation and Configuration</a></li>
+        <li><a href="#firebird-install">Firebird 2.0 Installation and Configuration</a></li>
+        <li><a href="#eclipse-download">Eclipse 3.2 Installation and Configuration</a></li>
+            <li>
+              <a href="#almost-finished">Finished?</a>
+            </li>
+ </ul>
+     If anything goes wrong, please refer to the <a href="../troubleshooting.html">troubleshooting page</a>. If not reported yet, please let us know.
+    </p>
+</section>
+     
+     <a name="java-install"/>
+    <section name="Java 6 Installation and Configuration">
+   
+   <p>The Java 6 JDK can be downloaded from the <a href="http://java.sun.com/javase/downloads/index.jsp" target="_blank">Sun Homepage</a>. Please set the following classpaths for windows:<br/>
+   <ul>
+     <li><code>JAVA_HOME</code> - The directory of the local JAVA-SDK installation.</li>
+     <li><code>PATH</code> - Add the path to the <code>bin</code>-directory of your JAVA-SDK installation.</li>
+   </ul>
+    <p>(For testing issues just enter <code>java -version</code> resp. <code>javac</code> into your command shell.)</p>
+   </p>
+  </section>
+  
+  
+  <a name="maven-install"/>
+<section name="Maven 2 Installation and Configuration">
+<p>
+    Maven 2 can be downloaded from the <a href="http://maven.apache.org/download.html" target="_blank">Maven 2 Site</a><br/>
+    Unzip it into a specified directory, e.g. <code>C:\PathToMaven2</code>.
+ </p>
+   <p>
+    Refer to the <strong>readme.txt</strong> in the root directory of your Maven 2 Installation.<br/>
+    Please ensure that
 
-		<a name="maven-repo"/>
-        <section name="Set up your Maven2 Repository">
-			<p>
-				Go to your Maven 2 Root  Directory. Edit the <code>conf/settings.xml</code> with a text editor of your choice.
-				Go to the following entry, uncomment it and point it to a path on your harddisk, e.g. <code>c:\Maven2\Repository</code>.
-				<source>
-					<![CDATA[
-<localRepository>C:/MyPathToMyRepository</localRepository>
-					]]>
-				</source>
-			</p>
-			<p>
-				In order to tell eclipse, where to find the additional libraries, you have to set up a eclipse system variable pointing to your local repository.
-				In order to do so, go to the command shell and type 
-				<source>
-					<![CDATA[
-mvn -Declipse.workspace=<path-to-eclipse-workspace> eclipse:add-maven-repo
-					]]>
-				</source>
-				where the 'path-to-eclipse-workspace' is the path to your local workspace of eclipse. If you do not have one, you have to start eclipse before in order to create one.
-				Maven then will create a class variable using the entry in the <code>settings.xml</code>. If the does not work you have to create the class variable by yourself.
-			</p>
-			
-			<p>
-				In order to be able to use the ant build scripts you have to set up an eclipse ant property <code>m2_repo</code> pointing to your local repository.
-				You can define such a property in the eclipse preferences (Ant/Runtimes/Properties).
-			</p>
-			<div align="right"><a href="#top">Go to the top.</a></div>
-		</section>
-		
-		
-		<section name="Nearly finished">
-			<p>
-				Please use your eclipse to download the sources via <code>CVS</code> form our <a href="source-repository.html">sourceforge.net project site</a>.
-			</p>
-			<p>
-				After download has finnished, open the java perspective and open the ant file <code>openuss-plexus/tools/missing-dependencies/build.xml</code> and 
-				execute the default target. <br/>
-				After build has finnished go to the main ant file <code>openuss-plexus/build.xml</code> and run the install target.
-			</p>
-			If you discover any problems blease refer to your <a href="troubleshooting.html">troobleshooting page</a> first.
-			<div align="right"><a href="#top">Go to the top.</a></div>
-		</section>
+ <ul>
+   <li><code>M2_HOME</code> is set and is pointing to the correct Maven installation (type mvn --version into the command shell to test it)</li>
+   <li>The Maven <code>bin</code>-directory is in your <code>PATH</code> variable</li>
+ </ul>
+ </p>
+   <p>Create a folder of your choice where Maven can store its (local) repository. (e.g. <code>M2_HOME</code>/repository)<br/>
+   Then add or check that the configuration entry of your <code>M2_HOME</code>/conf/settings.xml points to that repository folder. </p>
+   <div align="right"><a href="#top">Go to the top.</a></div>
+  </section>
+  
+  <a name="firebird-install"/>  
+        <section name="Firebird 2.0 Installation and Configuration">
+   <p>
+    Firebird 2.0 can be downloaded from the <a href="http://www.firebirdsql.org/" target="_blank">Firebird Site</a><br/>
+    Please choose the installer method. This makes things easier for you. Just follow the onscreen instructions.
+   </p>
+   <p>
+    A nice admin tool for firebird databases can be downloaded from the <a href="http://www.ibexpert.com/download.php" target="_blank">IBExpert Site</a><br/>
+    Just install it using the onscreen instructions.
+   </p>
+   <p>
+    OpenUSS requires two databases with the aliases: <code>openuss30</code> and <code>openuss30-test</code> (During the process of migration you also need the alias <code>openuss</code>).<br/>
+    Either you download the pre-defined databases or you create new ones with the help of the hibernate schema exporter.    
+   <ul>
+     <li><code>openuss30</code> points to your main database for OpenUSS</li>
+     <li><code>openuss30-test</code> points to your main test database for OpenUSS</li>
+     <li><code>openuss</code> is just necessary for the migration: points to your old OpenUSS database (or something else)</li>
+   </ul>
+    The aliases specified above have to be defined in the <code>aliases.conf</code> file in your firebird installation folder.<br/>
+    <code>openuss=D:\Path_to_your_databases\OPENUSS-30.FDB</code><br/>
+    <code>openuss30=D:\Path_to_your_databases\OPENUSS-30.FDB</code><br/>
+    <code>openuss30-test=D:\Path_to_your_databases\OPENUSS-30-TEST.FDB</code>
+   </p>
+   <p> 
+    Afterwards you have to register the databases in the firebird database server via IBExpert.<br/>
+    Just use the function "Register Database" using the following standard settings:
+   <ul>
+     <li>Server: Remote</li>
+     <li>Server name: localhost</li>
+     <li>Server version: Firebird 2.0</li>
+     <li>Database file and alias: the according alias</li>
+     <li>User name: sysdba</li>
+     <li>Password: masterkey</li>
+   </ul>
+    The other settings should be left to the standard entries.
+   </p>
+   <div align="right"><a href="#top">Go to the top.</a></div>
+  </section>
+  
+  <a name="eclipse-download"/>
+        <section name="Download Eclipse 3.2 Callisto">
+   <p>
+    Download the <a href="http://teamopenuss.uni-muenster.de/downloads/eclipse-3.2.zip">preconfigured eclipse version</a> and unzip it to your harddisk.
+   </p>
+   <p>
+    After you have unzipped eclipse go to the <a href="http://www.exadel.com/web/portal/download" target="_blank">Exadel Studio Site</a> and download the free version <code>Exadel Studio 4.0</code>. 
+    After the download please follow the onscreen instructions to install it.   </p>
+      <p>
+        Recommendation: If you use a computer with less than 1024MB memory, the usage of the eclipse distribution is quite uncomfortable.
+        Instead you should download the normal <a href="http://www.eclipse.org/downloads/">Eclipse 3.2 distribution</a>. If you choose to download the normal version you have to install Eclipse, define a new workspace and follow the instructions below:
+        <ul>
+          <li>Set the java compiler to 6.0</li>
+          <li>Add <code>JDK 6</code> to the Eclipse setting "Java-Installed JREs"</li>
+          <li>Add <code>m2_repo</code> to the "Ant_Runtime_Properties"</li>
+          <li>Add <code>M2_REPO</code> to the "Java Build-Path Classpath"</li>
+          <li>Install the plug-ins Web Standard Tools (WST) and J2EE Standard Tools (JST) from the Eclipse Update Site (Callisto)</li>
+          <li>
+            Install Subversive 1.1. from the Ecplise-Plugin-Site <a href="http://www.polarion.org/projects/subversive/download/1.1/update-site/"></a>
+          </li>
+          <li>Add to "Team-Ignored Ressources" the pattern "target"</li>
+          <li>Register a new repository in the repository view of Eclipse with the URL <a href="https://openuss.svn.sourceforge.net/svnroot/openuss">https://openuss.svn.sourceforge.net/svnroot/openuss</a><br/>
+            As authentication you have to use your sourceforge username and password.</li>
+          <li>Check out the project "openuss-plexus" from the just included repository. </li>
+          <li>Go back to the Java view of Eclipse and execute the Ant-Target "install w/o tests", which initiates the Maven-Build-Process, in the main build.xml</li>
+          <li>
+            Import the child projects of the main project out of the workspace (Import, don't copy them!)
+          </li>
+          <li>Define a new server (Apache Tomcat 5.5 from the project folder servers/tomcat) in the server view</li>
+          <li>Add all projects on the server</li>
+          <li>Start the server in the debug mode</li>
+      </ul>
+      </p>
+   <div align="right"><a href="#top">Go to the top.</a></div>
+  </section>
+
+
+      <a name="almost-finished"/>
+      <section name="Finished?">
+        <p>
+          You have succefully completed the installation and configuration of OpenUSS if you see the start screen of OpenUSS<br/>
+          after entering the URL <a href="http://localhost:8080/openuss-plexus">http://localhost:8080/openuss-plexus</a>.
+          If this doesn't work, please refer to the previous sections or the troubleshooting page!        </p>
+        <div align="right">
+          <a href="#top">Go to the top.</a>
+        </div>
+      </section>
+ 
     </body>
 </document>
