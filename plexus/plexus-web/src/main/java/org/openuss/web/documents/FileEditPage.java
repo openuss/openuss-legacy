@@ -1,10 +1,8 @@
 package org.openuss.web.documents;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
