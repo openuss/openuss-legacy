@@ -360,7 +360,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	}
 
 	private User currentUser() {
-		// FIXME me be optimized by user id 
+		// FIXME may be optimized by user id 
 		// UserInfo userInfo = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
 		// USer user = getSecurityService().getCurrentUser();
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
