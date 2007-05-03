@@ -51,12 +51,6 @@
 		</exec>
 	</target>
 	
-	<target name="copy-profiles">
-		<copy todir="D:/development/programs/MagicDraw UML/profiles" flatten="true" verbose="true">
-			<fileset dir="D:/development/repository/maven-2.0/org/andromda/profiles/uml14" includes="**/*.xml.zip"/>
-		</copy>
-	</target>
-	
 	<target name="undeploy">
 		<ant antfile="build-deploy.xml" target="undeploy"/>
 	</target>
