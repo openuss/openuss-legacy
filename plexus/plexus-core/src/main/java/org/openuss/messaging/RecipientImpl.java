@@ -8,13 +8,10 @@ package org.openuss.messaging;
 /**
  * @see org.openuss.messaging.Recipient
  */
-public class RecipientImpl
-    extends org.openuss.messaging.RecipientBase
-	implements org.openuss.messaging.Recipient
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = -3940109635404398657L;
+public class RecipientImpl extends RecipientBase implements Recipient {
+	/**
+	 * The serial version UID of this class. Needed for serialization.
+	 */
+	private static final long serialVersionUID = -3940109635404398657L;
 
 }
