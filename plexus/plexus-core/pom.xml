@@ -46,7 +46,7 @@
 											<pathelement location="${settings.localRepository}/commons-logging/commons-logging/1.1/commons-logging-1.1.jar"/>
 											<pathelement location="${settings.localRepository}/commons-collections/commons-collections/3.1/commons-collections-3.1.jar"/>
 											<pathelement location="${settings.localRepository}/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar"/>
-											<pathelement location="/target/classes" />
+											<pathelement location="./target/classes" />
 											<pathelement location="../plexus-api/target/classes" />
 										</classpath>
 									</java>
@@ -61,11 +61,16 @@
 		            		<phase>install</phase>
 		            		<configuration>
 		              			<tasks>
-									<echo>database setup started</echo>
-									<exec executable="${env.M2_HOME}/isql">
-									    <arg value="-i"/>
-									    <arg value="src/main/data/databases.sql"/>
-									</exec>
+									<echo>INFO: Database setup started</echo>
+									<taskdef name="createDB" classname="org.openuss.anttasks.DatabaseManager">
+										<classpath>
+											<pathelement location="${settings.localRepository}/jaybird/jaybird-full/2.1.1/jaybird-full-2.1.1.jar"/>
+											<pathelement location="${settings.localRepository}/ant/ant/1.6.5/ant-1.6.5.jar"/>
+											<pathelement location="./target/classes" />
+										</classpath>
+									</taskdef>
+									<createDB/>
+									<echo>INFO: Creating database schemas..."</echo>
 									<sql driver="org.firebirdsql.jdbc.FBDriver" url="jdbc:firebirdsql:localhost:openuss30"
 										userid="sysdba"
 										password="masterkey"
@@ -86,7 +91,8 @@
 										<transaction src="target/firebird_database_schema.sql"/>
 										<transaction src="src/main/data/init.sql"/>
 									</sql>
-									<echo>database setup finished</echo>		
+									<echo>INFO: Database schemas created</echo>
+									<echo>INFO: Database setup finished</echo>	
 		              			</tasks>
 		            		</configuration>
 		            		<goals>
@@ -182,7 +188,6 @@
 		<dependency>
 			<groupId>jaybird</groupId>
 			<artifactId>jaybird-full</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
@@ -224,6 +229,10 @@
 		<dependency>
 			<groupId>org.springmodules</groupId>
 			<artifactId>spring-modules-lucene</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ant</groupId>
+			<artifactId>ant</artifactId>
 		</dependency>	
 	</dependencies>
 </project>

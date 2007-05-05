@@ -45,7 +45,6 @@
 	</target>
 	
 	<target name="hibernate-schema" description="Generates database schema">
-
 		<fileset id="hibernate.mapping.files" dir="target/classes">
 			<include name="**/*.hbm.xml" />
 		</fileset>
@@ -54,6 +53,7 @@
 		
 		<java classname="org.hibernate.tool.hbm2ddl.SchemaExport" fork="true">
 			<arg value="--output=target/firebird_database_schema.sql" />
+			<arg value="--create" />
 			<arg value="--text" />
 			<arg value="--format" />
    			<arg value="--delimiter=;" />
@@ -64,10 +64,44 @@
 				<pathelement location="${m2_repo}/commons-logging/commons-logging/1.1/commons-logging-1.1.jar"/>
 				<pathelement location="${m2_repo}/commons-collections/commons-collections/3.1/commons-collections-3.1.jar"/>
 				<pathelement location="${m2_repo}/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar"/>
-				<pathelement location="/target/classes" />
+				<pathelement location="./target/classes" />
 				<pathelement location="../plexus-api/target/classes" />
 			</classpath>
 		</java>
+	</target>
+
+	<target name="create-database">
+		<taskdef name="createDB" classname="org.openuss.anttasks.DatabaseManager">
+			<classpath>
+				<pathelement location="${m2_repo}/jaybird/jaybird-full/2.1.1/jaybird-full-2.1.1.jar"/>
+				<pathelement location="${m2_repo}/ant/ant/1.6.5/ant-1.6.5.jar"/>
+				<pathelement location="./target/classes" />
+			</classpath>
+		</taskdef>
+		<createDB/>
+		
+		<echo message="INFO: Creating database schemas..." />
+		<sql driver="org.firebirdsql.jdbc.FBDriver" url="jdbc:firebirdsql:localhost:openuss30"
+			userid="sysdba"
+			password="masterkey"
+			autocommit="true">
+			<classpath>
+				<pathelement location="${m2_repo}/jaybird/jaybird-full/2.1.1/jaybird-full-2.1.1.jar"/>
+			</classpath>
+			<transaction src="target/firebird_database_schema.sql"/>
+			<transaction src="src/main/data/init.sql"/>
+		</sql>		
+		<sql driver="org.firebirdsql.jdbc.FBDriver" url="jdbc:firebirdsql:localhost:openuss30-test"
+			userid="sysdba"
+			password="masterkey"
+			autocommit="true">
+			<classpath>
+				<pathelement location="${m2_repo}/jaybird/jaybird-full/2.1.1/jaybird-full-2.1.1.jar"/>
+			</classpath>
+			<transaction src="target/firebird_database_schema.sql"/>
+			<transaction src="src/main/data/init.sql"/>
+		</sql>
+		<echo message="INFO: Database schemas created" />
 	</target>
 
 </project>
