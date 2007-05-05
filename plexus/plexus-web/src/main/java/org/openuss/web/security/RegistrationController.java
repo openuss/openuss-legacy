@@ -7,7 +7,6 @@ import java.util.TimeZone;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -63,11 +62,7 @@ public class RegistrationController extends BaseBean {
 	 * @return outcome
 	 */
 	public String performRegistration() throws RegistrationException {
-		if (registrationService == null)
-			throw new IllegalStateException(
-					"RegistrationController isn't connected to a RegistrationService. Check if the property is properly initialized within managed beans configuration.");
-
-		User user = (User) getSessionBean(AuthenticationController.USER_SESSION_KEY);
+		User user = (User) getSessionBean(Constants.USER_SESSION_KEY);
 		// set default user timezone
 		user.setTimezone(TimeZone.getDefault().getID());
 
@@ -76,10 +71,10 @@ public class RegistrationController extends BaseBean {
 		// send verification email
 		sendVerificationEmail(user, activationCode);
 
-		removeSessionBean(RegistrationData.SESSION_KEY);
-		removeSessionBean(AuthenticationController.USER_SESSION_KEY);
-		SecurityContextHolder.clearContext();
-
+		removeSessionBean(Constants.REGISTRATION_DATA);
+		removeSessionBean(Constants.USER_SESSION_KEY);
+		
+		
 		String message = i18n("user_email_verification_send_message", user.getEmail());
 		String title = i18n("user_email_verification_send_message_title");
 		return MessageBox.showDefaultMessage(message, title);

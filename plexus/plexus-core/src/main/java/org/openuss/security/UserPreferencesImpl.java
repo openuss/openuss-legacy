@@ -11,7 +11,6 @@ import java.util.TimeZone;
 /**
  * @see org.openuss.security.UserPreferences
  * @author ingo dueppe
- * @version $id $
  */
 public class UserPreferencesImpl extends UserPreferencesBase implements UserPreferences {
 

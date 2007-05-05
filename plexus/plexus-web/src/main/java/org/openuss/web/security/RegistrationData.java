@@ -13,6 +13,7 @@ import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.security.User;
 import org.openuss.security.UserContact;
 import org.openuss.security.UserPreferences;
+import org.openuss.web.Constants;
 
 /**
  * Value Object containing additional data during registration process
@@ -20,7 +21,7 @@ import org.openuss.security.UserPreferences;
  * @author Ingo Dueppe
  * 
  */
-@Bean(name = "registrationData", scope = Scope.SESSION)
+@Bean(name = Constants.REGISTRATION_DATA, scope = Scope.SESSION)
 @View
 public class RegistrationData extends BaseBean {
 
@@ -28,8 +29,6 @@ public class RegistrationData extends BaseBean {
 
 	private static final long serialVersionUID = -6694421104045121170L;
 
-	public static final String SESSION_KEY = "reigstrationData";
-	
 	private boolean userAgreementAccepted;
 	private boolean enableAssistantRole;
 	private String username;
@@ -46,7 +45,7 @@ public class RegistrationData extends BaseBean {
 		user.setContact(UserContact.Factory.newInstance());
 		String locale = getFacesContext().getViewRoot().getLocale().toString();
 		user.setLocale(locale);
-		setSessionBean(AuthenticationController.USER_SESSION_KEY, user);
+		setSessionBean(Constants.USER_SESSION_KEY, user);
 	}
 	
 	/**

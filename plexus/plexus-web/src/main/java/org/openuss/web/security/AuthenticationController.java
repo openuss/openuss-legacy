@@ -50,8 +50,6 @@ public class AuthenticationController extends BasePage {
 
 	private static final Logger logger = Logger.getLogger(AuthenticationController.class);
 
-	public static final String USER_SESSION_KEY = "user";
-
 	public static final String LOGIN = "login";
 	public static final String LOGOUT = "logout";
 	
@@ -162,7 +160,7 @@ public class AuthenticationController extends BasePage {
 			User details = (User) auth.getPrincipal();
 			User user = securityService.getUserByName(details.getUsername());
 			securityService.setLoginTime(user);
-			setSessionBean(USER_SESSION_KEY, user);
+			setSessionBean(Constants.USER_SESSION_KEY, user);
 		}
 	}
 

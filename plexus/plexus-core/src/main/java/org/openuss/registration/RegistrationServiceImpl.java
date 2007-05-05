@@ -36,10 +36,8 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 		// check arguments
 		if (user == null)
 			throw new IllegalArgumentException("User parameter must not be null!");
-		if (user.getPreferences() == null)
-			throw new IllegalArgumentException("Associated UserPerferences must not be null!");
 		if (user.getContact() == null)
-			throw new IllegalArgumentException("Associated Person must not be null!");
+			throw new IllegalArgumentException("Associated Contact must not be null!");
 		// ensure that user will not be activate
 		user.setEnabled(false);
 

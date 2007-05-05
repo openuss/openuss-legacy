@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.apache.commons.lang.StringUtils;
@@ -149,14 +150,15 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	}
 
 	private void updateSecurityContext(Authority authority) {
-		if (authority instanceof UserImpl) {
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		if (authority.equals(securityContext.getAuthentication().getPrincipal())) {
 			logger.debug("refresing current user security context.");
 			final UsernamePasswordAuthenticationToken authentication;
 			authentication = new UsernamePasswordAuthenticationToken((UserImpl) authority, "[Protected]", ((UserImpl) authority).getAuthorities());
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+			securityContext.setAuthentication(authentication);
 		}
 	}
-
+	
 	private Authority forceAuthorityLoad(Authority authority) {
 		authority = getAuthorityDao().load(authority.getId());
 		if (authority == null) {
