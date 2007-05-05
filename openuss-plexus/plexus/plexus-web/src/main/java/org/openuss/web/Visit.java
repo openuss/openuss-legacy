@@ -17,7 +17,6 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.security.User;
-import org.openuss.web.security.AuthenticationController;
 
 /**
  * Represents a visit of a anonymous user. 
@@ -79,7 +78,7 @@ public class Visit extends BaseBean {
 	}
 
 	public String getLocale() {
-		User user = (User) getSessionBean(AuthenticationController.USER_SESSION_KEY);
+		User user = (User) getSessionBean(Constants.USER_SESSION_KEY);
 		
 		if (user != null) {
 			locale = user.getLocale();

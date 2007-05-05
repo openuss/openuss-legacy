@@ -115,4 +115,8 @@ public class Constants {
 
 	public static final String ENROLLMENT_NEWS_PAGE = "enrollment_news";
 
+	public static final String REGISTRATION_DATA = "registrationData";
+
+	public static final String USER_SESSION_KEY = "user";
+
 }
