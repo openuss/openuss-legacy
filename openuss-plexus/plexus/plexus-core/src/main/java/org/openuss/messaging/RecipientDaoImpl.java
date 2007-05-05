@@ -4,10 +4,9 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.messaging;
+
 /**
  * @see org.openuss.messaging.Recipient
  */
-public class RecipientDaoImpl
-    extends org.openuss.messaging.RecipientDaoBase
-{
+public class RecipientDaoImpl extends RecipientDaoBase {
 }

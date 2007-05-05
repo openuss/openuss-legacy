@@ -5,31 +5,35 @@
  */
 package org.openuss.messaging;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @see org.openuss.messaging.MessageService
  */
-public class MessageServiceImpl
-    extends org.openuss.messaging.MessageServiceBase
-{
+public class MessageServiceImpl extends MessageServiceBase {
 
-    /**
-     * @see org.openuss.messaging.MessageService#sendMessage(java.lang.String, java.lang.String, boolean, java.util.List)
-     */
-    protected org.openuss.messaging.MessageJob handleSendMessage(java.lang.String subject, java.lang.String text, boolean sms, java.util.List recipients)
-        throws java.lang.Exception
-    {
-        // @todo implement protected org.openuss.messaging.MessageJob handleSendMessage(java.lang.String subject, java.lang.String text, boolean sms, java.util.List recipients)
-        return null;
-    }
+	/**
+	 * @see org.openuss.messaging.MessageService#sendMessage(java.lang.String,
+	 *      java.lang.String, boolean, java.util.List)
+	 */
+	protected MessageJob handleSendMessage(String subject, String text, boolean sms, List recipients) throws Exception {
+		// @todo implement protected org.openuss.messaging.MessageJob
+		// handleSendMessage(java.lang.String subject, java.lang.String text,
+		// boolean sms, java.util.List recipients)
+		return null;
+	}
 
-    /**
-     * @see org.openuss.messaging.MessageService#sendMessage(java.lang.String, java.lang.String, java.util.Map, java.util.List)
-     */
-    protected org.openuss.messaging.MessageJob handleSendMessage(java.lang.String subject, java.lang.String templateName, java.util.Map parameters, java.util.List recipients)
-        throws java.lang.Exception
-    {
-        // @todo implement protected org.openuss.messaging.MessageJob handleSendMessage(java.lang.String subject, java.lang.String templateName, java.util.Map parameters, java.util.List recipients)
-        return null;
-    }
+	/**
+	 * @see org.openuss.messaging.MessageService#sendMessage(java.lang.String,
+	 *      java.lang.String, java.util.Map, java.util.List)
+	 */
+	protected MessageJob handleSendMessage(String subject, String templateName, Map parameters, List recipients)
+			throws Exception {
+		// @todo implement protected org.openuss.messaging.MessageJob
+		// handleSendMessage(java.lang.String subject, java.lang.String
+		// templateName, java.util.Map parameters, java.util.List recipients)
+		return null;
+	}
 
 }
