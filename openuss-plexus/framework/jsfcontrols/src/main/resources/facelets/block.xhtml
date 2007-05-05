@@ -27,9 +27,9 @@
 		</c:if>
 		<div class="${styleClass}">
 		     <div class="content_box">
-			    <div class="header_normal_left_bg"/>
-	    		<div class="header_normal_right_bg"/>
 			    <div class="header_normal">
+			    	<div class="header_normal_left_bg"/>
+	    			<div class="header_normal_right_bg"/>
 					<c:if test="${!empty label}">
 						<p class="${headerClass}">${label}</p>
 					</c:if>
@@ -39,9 +39,9 @@
 		       		<c:set var="styleClass" value=""/>
 					<ui:insert/>
 		       </div>
-		       <div class="footer_normal_left_bg"/>
-		       <div class="footer_normal_right_bg"/>
 		       <div class="footer_normal">
+		       		<div class="footer_normal_left_bg"/>
+		       	  	<div class="footer_normal_right_bg"/>
 		       	  <c:if test="${!empty footer}">
 		       	  	<p class="${footerClass}">${footer}</p>
 		       	  </c:if>
