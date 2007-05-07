@@ -27,7 +27,9 @@ public class SubscriberDaoImpl
      */
     public SubscriberInfo toSubscriberInfo(final Subscriber entity)
     {
-        return toSubscriberInfo(entity);
+    	SubscriberInfo si = new SubscriberInfo();
+        toSubscriberInfo(entity, si);
+        return si;
     }
 
 

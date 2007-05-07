@@ -25,7 +25,10 @@ public class MailingListServiceImpl
 	private MailingList getMailingList(DomainObject domainObject){
 		MailingList ml = getMailingListDao().load(domainObject.getId());
 		if (ml != null) return ml;
-		return MailingList.Factory.newInstance();
+		ml = MailingList.Factory.newInstance();
+		ml.setId(domainObject.getId());
+		getMailingListDao().create(ml);
+		return ml;
 	}
 	
     /**
@@ -41,6 +44,7 @@ public class MailingListServiceImpl
     		subscriber.setMailingList(ml);
     		subscriber.setUser(user);
     	}
+    	getSubscriberDao().create(subscriber);
     }
 
     /**
