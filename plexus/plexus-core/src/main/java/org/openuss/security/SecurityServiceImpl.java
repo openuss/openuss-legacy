@@ -381,5 +381,10 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		return getPermissionDao().findPermission(objectIdentity, authority);
 	}
 
+	@Override
+	protected User handleGetCurrentUser() throws Exception {
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		return getUserByName(name);
+	}
 
 }
