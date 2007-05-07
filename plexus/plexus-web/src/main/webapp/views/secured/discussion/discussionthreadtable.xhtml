@@ -11,12 +11,16 @@
       
     <plexus:dataTable id="discussionsThreadTable" label="#{msg.discussion_main_header}" 
     	value="views$secured$discussion$discussionthread.data" var="post" rows="10">
-      
 		<t:column styleClass="col_post_author">
 			<f:facet name="header">  
 				#{msg['discussion_thread_column_author']} 
 			</f:facet>
-			<h:outputText value="#{post.submitter}" styleClass="user_name"/>
+			<h:outputText value="#{post.submitter}" styleClass="user_name"/>		
+		</t:column>      
+		<t:column styleClass="col_post_author">
+			<f:facet name="header">  
+				#{msg['discussion_thread_column_picture']} 
+			</f:facet>
 			<h:graphicImage styleClass="userphoto"
 				value="/files?fileid=#{post.submitterPicture}"
 				title="#{post.submitter}" rendered="#{not empty post.submitterPicture}" />
@@ -42,16 +46,33 @@
 					</td>
 					<td class="col_post_commands">
 						<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}" >
-							<plexus:command bean="#{views$secured$discussion$discussionthread}"
-								action="removePost" label="#{msg['discussion_thread_remove_post']}"
+							<h:commandButton 
+								action="#{views$secured$discussion$discussionthread.removePost}"
+								value="#{msg['discussion_thread_remove_post']}"
 								title="#{msg['discussion_thread_remove_post']}"
 								styleClass="button_remove"/>				
-							<plexus:command bean="#{views$secured$discussion$discussionthread}"
-								action="editPost" label="#{msg['discussion_thread_edit_post']}"
+							<h:commandButton 
+								action="#{views$secured$discussion$discussionthread.editPost}"
+								value="#{msg['discussion_thread_edit_post']}"
 								title="#{msg['discussion_thread_edit_post']}"
 								styleClass="button_remove"/>
 						</s:acl>
-						<plexus:command bean="#{views$secured$discussion$discussionthread}"
+						<s:acl domainObject="#{enrollment}" hasNotPermission="#{ACL.ASSIST}" >
+							<h:commandButton  
+								action="#{views$secured$discussion$discussionthread.removePost}"
+								value="#{msg['discussion_thread_remove_post']}"
+								title="#{msg['discussion_thread_remove_post']}"
+								styleClass="button_remove"
+								rendered="#{post.userIsSubmitter}"/>				
+							<h:commandButton 
+								action="#{views$secured$discussion$discussionthread.editPost}"
+								value="#{msg['discussion_thread_edit_post']}"
+								title="#{msg['discussion_thread_edit_post']}"
+								styleClass="button_remove" 
+								rendered="#{post.userIsSubmitter}"/>
+						</s:acl>
+						<plexus:command 
+							bean="#{views$secured$discussion$discussionthread}"
 							action="quote" label="#{msg['discussion_thread_quote']}"
 							title="#{msg['discussion_thread_quote']}"
 							styleClass="button_remove"/>  
