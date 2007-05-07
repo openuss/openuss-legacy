@@ -20,7 +20,8 @@ public class MailImpl extends MailBase implements Mail
      */
     public int sendCount()
     {
-        return this.getJob().getSend();
+        if (this.getJob()==null) return 0;
+    	return this.getJob().getSend();
     }
 
     /**
@@ -28,6 +29,7 @@ public class MailImpl extends MailBase implements Mail
      */
     public int toSendCount()
     {
+    	if (this.getJob()==null) return this.getMailingList().getSubscribers().size();
     	return this.getJob().getToSend();
     }
 
@@ -36,6 +38,7 @@ public class MailImpl extends MailBase implements Mail
      */
     public int errorCount()
     {
+    	if (this.getJob()==null) return 0;
     	return this.getJob().getError();
     }
 
