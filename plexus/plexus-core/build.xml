@@ -71,7 +71,7 @@
 	</target>
 
 	<target name="create-database">
-		<taskdef name="createDB" classname="org.openuss.framework.tools.db.DatabaseManager">
+		<taskdef name="createDB" classname="org.openuss.framework.tools.db.DatabaseSetupTask">
 			<classpath>
 				<pathelement location="${m2_repo}/jaybird/jaybird-full/2.1.1/jaybird-full-2.1.1.jar"/>
 				<pathelement location="${m2_repo}/ant/ant/1.6.5/ant-1.6.5.jar"/>

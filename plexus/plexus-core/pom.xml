@@ -62,7 +62,7 @@
 		            		<configuration>
 		              			<tasks>
 									<echo>INFO: Database setup started</echo>
-									<taskdef name="createDB" classname="org.openuss.framework.tools.db.DatabaseManager">
+									<taskdef name="createDB" classname="org.openuss.framework.tools.db.DatabaseSetupTask">
 										<classpath>
 											<pathelement location="${settings.localRepository}/jaybird/jaybird-full/2.1.1/jaybird-full-2.1.1.jar"/>
 											<pathelement location="${settings.localRepository}/ant/ant/1.6.5/ant-1.6.5.jar"/>

@@ -4,7 +4,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.firebirdsql.management.FBManager;
 
-public class DatabaseManager extends Task {
+public class DatabaseSetupTask extends Task {
 
 	public void execute() throws BuildException {
 
