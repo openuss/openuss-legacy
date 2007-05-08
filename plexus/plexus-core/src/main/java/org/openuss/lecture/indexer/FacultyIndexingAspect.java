@@ -1,7 +1,6 @@
 package org.openuss.lecture.indexer;
 
 import org.apache.log4j.Logger;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.openuss.lecture.Faculty;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
