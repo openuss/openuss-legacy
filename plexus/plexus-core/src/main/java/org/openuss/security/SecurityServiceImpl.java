@@ -16,6 +16,7 @@ import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.acegi.acl.EntityObjectIdentity;
 import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.Permission;
@@ -385,6 +386,12 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	protected User handleGetCurrentUser() throws Exception {
 		String name = SecurityContextHolder.getContext().getAuthentication().getName();
 		return getUserByName(name);
+	}
+
+	@Override
+	protected boolean handleHasPermission(Object domainObject, Integer[] permissions) throws Exception {
+		//FIXME make SecurityService independent from AcegiUtils
+		return AcegiUtils.hasPermission(domainObject, permissions);
 	}
 
 }
