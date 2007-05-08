@@ -44,7 +44,6 @@ p {
 }
 
 #left {
-	float: left;
 	top: 0;
 	left: 0;
 	position: absolute;
@@ -142,7 +141,6 @@ span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:
 }
 
 #left .content_normal {
-	clear: both;
   padding: 5px 5px 5px 10px;
   border-style: dotted solid none solid;
   border-width: 1px;
@@ -194,7 +192,7 @@ span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:
   margin: 0;
   height: 9px;
   width: 180px;
-  background: #ECECEC;
+  background-image: url(../img/footer_normal.jpg);
 }
 
 #left .field {
@@ -522,7 +520,8 @@ ul.navigation li ul li ul li.active_item a:hover{
   padding: 5px 5px 5px 10px;
   border-style: dotted solid none solid;
   border-width: 1px;
-  background: #ECECEC;
+  background-color: #ECECEC;
+  background-image: none;
   border-top-color: #505050;
   border-right-color: #ECECEC;
   border-left-color: #ECECEC;
