@@ -31,16 +31,4 @@
 		<nature>com.exadel.jsf.jsfnature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>WEB-ROOT</name>
-			<type>2</type>
-			<location>/Applications/eclipse/Eclipse.app/Contents/MacOS/W::/openuss-plexus/plexus/plexus-web/src/main/webapp</location>
-		</link>
-		<link>
-			<name>WEB-INF</name>
-			<type>2</type>
-			<location>/Applications/eclipse/Eclipse.app/Contents/MacOS/W::/openuss-plexus/plexus/plexus-web/src/main/webapp/WEB-INF</location>
-		</link>
-	</linkedResources>
 </projectDescription>
