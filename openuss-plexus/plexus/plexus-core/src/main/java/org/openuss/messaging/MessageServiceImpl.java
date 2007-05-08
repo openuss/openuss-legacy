@@ -17,7 +17,7 @@ public class MessageServiceImpl extends MessageServiceBase {
 	 * @see org.openuss.messaging.MessageService#sendMessage(java.lang.String,
 	 *      java.lang.String, boolean, java.util.List)
 	 */
-	protected MessageJob handleSendMessage(String subject, String text, boolean sms, List recipients) throws Exception {
+	protected Long handleSendMessage(String subject, String text, boolean sms, List recipients) throws Exception {
 		// @todo implement protected org.openuss.messaging.MessageJob
 		// handleSendMessage(java.lang.String subject, java.lang.String text,
 		// boolean sms, java.util.List recipients)
@@ -28,7 +28,7 @@ public class MessageServiceImpl extends MessageServiceBase {
 	 * @see org.openuss.messaging.MessageService#sendMessage(java.lang.String,
 	 *      java.lang.String, java.util.Map, java.util.List)
 	 */
-	protected MessageJob handleSendMessage(String subject, String templateName, Map parameters, List recipients)
+	protected Long handleSendMessage(String subject, String templateName, Map parameters, List recipients)
 			throws Exception {
 		// @todo implement protected org.openuss.messaging.MessageJob
 		// handleSendMessage(java.lang.String subject, java.lang.String
@@ -37,7 +37,7 @@ public class MessageServiceImpl extends MessageServiceBase {
 	}
 
 	@Override
-	protected JobState handleGetJobState(Long mailId) throws Exception {
+	protected JobState handleGetJobState(Long messageId) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

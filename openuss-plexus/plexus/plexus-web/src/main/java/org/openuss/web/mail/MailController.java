@@ -19,7 +19,9 @@ public class MailController extends BaseBean{
 	private static final Logger logger = Logger.getLogger(MailController.class);
 	
 	public void sendMails(String subject, User user, String templateName, Map model) throws Exception {
-		ResourceBundle resourceBundle = ResourceBundle.getBundle(getBundleName(), new Locale (user.getPreferences().getLocale()));		
+		logger.info("\n\n\n------------------> Mail Controller <----------------\n\n\n");
+		
+		ResourceBundle resourceBundle = ResourceBundle.getBundle(getBundleName(), new Locale (user.getLocale()));		
 		String localSubject="";
 		try {
 			localSubject = resourceBundle.getString(subject);			
