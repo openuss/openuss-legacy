@@ -1,80 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
-<beans>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    				Lucene Configuration
-	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	 
-	 <bean id="domainIndexerFactory" class="org.openuss.search.DomainIndexerFactory" singleton="true">
-	 	<property name="indexer">
-	 		<map>
-	 			<entry>
-	 			 	<key><value>org.openuss.lecture.Faculty</value></key>
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+		Lucene Configuration
+		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- 
+	
+	<aop:config  >
+		<aop:aspect id="lectureIndexAspect" ref="lectureIndexAspectBean">
+			<aop:after
+				pointcut="execution(* org.openuss.lecture.LectureService.createFaculty(org.openuss.lecture.Faculty))" 
+				method="createNewFacultyIndex" 
+				arg-names="faculty"/>
+		</aop:aspect>
+	</aop:config>
+	
+	<bean id="lectureIndexAspectBean" class="org.openuss.lecture.indexer.FacultyIndexingAspect">
+		<property name="indexerService"><ref bean="indexerService"/></property>
+	</bean>
+ -->
+
+
+	<bean id="domainIndexerFactory"
+		class="org.openuss.search.DomainIndexerFactory" scope="singleton">
+		<property name="indexer">
+			<map>
+				<entry>
+					<key>
+						<value>org.openuss.lecture.Faculty</value>
+					</key>
 					<value>facultyIndexer</value>
-	 		 	</entry>
-	 			<entry>
-	 			 	<key><value>org.openuss.lecture.Enrollment</value></key>
+				</entry>
+				<entry>
+					<key>
+						<value>org.openuss.lecture.Enrollment</value>
+					</key>
 					<value>enrollmentIndexer</value>
-	 		 	</entry>
-	 		</map>
-	 	</property>
-	 </bean>
-	 
-	 <bean name="enrollmentIndexer" class="org.openuss.lecture.indexer.EnrollmentIndexer">
-	 	<property name="analyzer"><ref bean="analyzer"/></property>
-	 	<property name="enrollmentDao"><ref bean="enrollmentDao"/></property>
-	 	<property name="indexFactory"><ref bean="indexFactory"/></property>
-	 </bean>
-	 
-	 <bean name="facultyIndexer" class="org.openuss.lecture.indexer.FacultyIndexer">
-	 	<property name="analyzer"><ref bean="analyzer"/></property>
-	 	<property name="facultyDao"><ref bean="facultyDao"/></property>
-	 	<property name="indexFactory"><ref bean="indexFactory"/></property>
-	 </bean>
-	 
-	<bean id="indexerServiceAbstract" abstract="true" class="org.openuss.search.IndexerServiceImpl">
-		<property name="indexerFactory"><ref bean="domainIndexerFactory"/></property>
-		<property name="commandService"><ref bean="commandService"/></property>
-    </bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean name="enrollmentIndexer"
+		class="org.openuss.lecture.indexer.EnrollmentIndexer">
+		<property name="analyzer">
+			<ref bean="analyzer" />
+		</property>
+		<property name="enrollmentDao">
+			<ref bean="enrollmentDao" />
+		</property>
+		<property name="indexFactory">
+			<ref bean="indexFactory" />
+		</property>
+	</bean>
+
+	<bean name="facultyIndexer"
+		class="org.openuss.lecture.indexer.FacultyIndexer">
+		<property name="analyzer">
+			<ref bean="analyzer" />
+		</property>
+		<property name="facultyDao">
+			<ref bean="facultyDao" />
+		</property>
+		<property name="indexFactory">
+			<ref bean="indexFactory" />
+		</property>
+	</bean>
+
+	<bean id="indexerServiceAbstract" abstract="true"
+		class="org.openuss.search.IndexerServiceImpl">
+		<property name="indexerFactory">
+			<ref bean="domainIndexerFactory" />
+		</property>
+		<property name="commandService">
+			<ref bean="commandService" />
+		</property>
+	</bean>
 
 	<!-- Lucene Support Beans -->
-	 
-	<bean id="analyzer" class="org.apache.lucene.analysis.standard.StandardAnalyzer"/>
-	
-	<bean id="searcherFactory" class="org.springmodules.lucene.search.factory.SimpleSearcherFactory">
-		<property name="directory" ref="fsDirectory"/>
+
+	<bean id="analyzer"
+		class="org.apache.lucene.analysis.standard.StandardAnalyzer" />
+
+	<bean id="searcherFactory"
+		class="org.springmodules.lucene.search.factory.SimpleSearcherFactory">
+		<property name="directory" ref="fsDirectory" />
 	</bean>
 
-	<bean id="indexFactory" class="org.openuss.search.lucene.LuceneIndexFactoryBean">
-		<property name="create" value="true"/>
-		<property name="directory" ref="fsDirectory"/>
-		<property name="analyzer" ref="analyzer"/>
-<!-- 
- 		<property name="searcherFactory" ref="searchFactory"/>
- -->
-	</bean>
-	
-	<bean id="fsDirectory" class="org.springmodules.lucene.index.support.FSDirectoryFactoryBean">
-		<property name="create" value="true"/>
-		<property name="location" value="file:${java.io.tmpdir}lucene/index/lecture"/>
+	<bean id="indexFactory"
+		class="org.openuss.search.lucene.LuceneIndexFactoryBean">
+		<property name="create" value="true" />
+		<property name="directory" ref="fsDirectory" />
+		<property name="analyzer" ref="analyzer" />
+		<!-- 
+			<property name="searcherFactory" ref="searchFactory"/>
+		-->
 	</bean>
 
-	
+	<bean id="fsDirectory"
+		class="org.springmodules.lucene.index.support.FSDirectoryFactoryBean">
+		<property name="create" value="true" />
+		<property name="location"
+			value="file:${java.io.tmpdir}lucene/index/lecture" />
+	</bean>
+
+
 	<!-- 
-	<bean id="ramDirectory" class="org.springmodules.lucene.index.support.RAMDirectoryFactoryBean"/>
-	
-	<bean id="indexingDatabase" class="org.openuss.search.SimpleDatabaseIndexingImpl">
+		<bean id="ramDirectory" class="org.springmodules.lucene.index.support.RAMDirectoryFactoryBean"/>
+		
+		<bean id="indexingDatabase" class="org.openuss.search.SimpleDatabaseIndexingImpl">
 		<property name="indexFactory" ref="indexFactory"/>
 		<property name="dataSource"><ref bean="dataSource"/></property>
-	</bean>
-	
-	
-	<bean id="lectureSearcher" class="org.openuss.search.LectureSearchQuery">
+		</bean>
+		
+		
+		<bean id="lectureSearcher" class="org.openuss.search.LectureSearchQuery">
 		<constructor-arg index="0" ref="searcherFactory"/>
 		<constructor-arg index="1" ref="analyzer" />
-	</bean>	
-	 -->
+		</bean>	
+	-->
 
 </beans>
