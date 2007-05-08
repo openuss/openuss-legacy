@@ -87,9 +87,6 @@ public class MailDaoImpl extends MailDaoBase
     public void toMailDetail(Mail sourceEntity, MailDetail targetVO)
     {
         super.toMailDetail(sourceEntity, targetVO);
-        targetVO.setToSendCount(sourceEntity.toSendCount());
-        targetVO.setSendCount(sourceEntity.sendCount());
-        targetVO.setErrorCount(sourceEntity.errorCount());
     }
 
 

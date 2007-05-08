@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.openuss.foundation.DomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
+import org.openuss.messaging.JobState;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 
@@ -99,7 +100,8 @@ public class MailingListServiceImpl
     	MailingList ml = getMailingList(domainObject);
     	Mail m = getMailDao().mailDetailToEntity(mail);
     	m.setMailingList(ml);
-    	getMailDao().update(m);
+    	m.setStatus(MailingStatus.DRAFT);
+    	getMailDao().create(m);
     }
 
     /**
@@ -110,8 +112,12 @@ public class MailingListServiceImpl
     {
     	MailingList ml = getMailingList(domainObject);
     	Mail m = getMailDao().mailDetailToEntity(mail);
-    	if (m.getJob() != null) throw new MailingListApplicationException("Mail already send!");
-    	getMailDao().remove(m);    	
+    	if (getMessageService().getJobState(m.getId())!=null) throw new MailingListApplicationException("Mail already send!");
+    	if (m.getStatus()==MailingStatus.DRAFT)	getMailDao().remove(m);
+    	else if (m.getStatus()!=MailingStatus.DRAFT){
+    		m.setStatus(MailingStatus.DELETED);
+    		getMailDao().update(m);
+    	}
     }
 
     /**
@@ -132,7 +138,7 @@ public class MailingListServiceImpl
         throws java.lang.Exception
     {
     	MailingList ml = getMailingList(domainObject);
-    	if (!AcegiUtils.hasPermission(domainObject, new Integer[] { LectureAclEntry.ASSIST })) {
+    	if (!getSecurityService().hasPermission(domainObject, new Integer[] { LectureAclEntry.ASSIST })) {
     		return getMailDao().findMailByMailingListAndStatus(MailDao.TRANSFORM_MAILINFO, ml);
     	} 
     	return getMailDao().findMailByMailingList(MailDao.TRANSFORM_MAILINFO, ml);
@@ -144,23 +150,42 @@ public class MailingListServiceImpl
     protected org.openuss.mailinglist.MailDetail handleGetMail(MailInfo mail)
         throws java.lang.Exception
     {
-    	return getMailDao().toMailDetail(getMailDao().load(mail.getId()));
+    	MailDetail md = getMailDao().toMailDetail(getMailDao().load(mail.getId()));
+    	JobState js = getMessageService().getJobState(mail.getId());
+    	if (js!=null){
+	    	md.setErrorCount(js.getError());
+	    	md.setSendCount(js.getSend());
+	    	md.setToSendCount(js.getTosend());
+    	}
+    	return md;
     }
 
     /**
      * @see org.openuss.mailinglist.MailingListService#sendMail(org.openuss.mailinglist.MailInfo)
      */
-    protected void handleSendMail(org.openuss.mailinglist.MailInfo mail)
+    protected void handleSendMail(DomainObject domainObject, org.openuss.mailinglist.MailDetail mail)
         throws java.lang.Exception
     {
-    	Mail m = getMailDao().load(mail.getId());
+    	Mail m = getMailDao().mailDetailToEntity(mail);
+    	m.setStatus(MailingStatus.PLANNED);
+    	if (mail.getId()!=null){
+    		getMailDao().update(m);
+    	} else if (mail.getId()==null){
+    		MailingList ml = getMailingList(domainObject);
+    		m.setMailingList(ml);
+    		getMailDao().create(m);  
+    		
+    	}
+    	//TODO trigger command
+    	/*
+    	 * move to MailSendingCommand 
     	Set<Subscriber> subscribers = m.getMailingList().getSubscribers();
     	List<User> recipients = new ArrayList<User>(); 
     	Iterator i = subscribers.iterator();
     	while (i.hasNext()){
     		recipients.add(((Subscriber)i.next()).getUser());
     	}
-    	getMessageService().sendMessage(m.getSubject(), m.getText(), m.isSms(), recipients);
+    	getMessageService().sendMessage(m.getSubject(), m.getText(), m.isSms(), recipients);*/
     }
 
 }

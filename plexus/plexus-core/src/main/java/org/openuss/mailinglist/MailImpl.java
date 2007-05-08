@@ -15,31 +15,4 @@ public class MailImpl extends MailBase implements Mail
      */
     private static final long serialVersionUID = -7966428695284584773L;
 
-    /**
-     * @see org.openuss.mailinglist.Mail#sendCount()
-     */
-    public int sendCount()
-    {
-        if (this.getJob()==null) return 0;
-    	return this.getJob().getSend();
-    }
-
-    /**
-     * @see org.openuss.mailinglist.Mail#toSendCount()
-     */
-    public int toSendCount()
-    {
-    	if (this.getJob()==null) return this.getMailingList().getSubscribers().size();
-    	return this.getJob().getToSend();
-    }
-
-    /**
-     * @see org.openuss.mailinglist.Mail#errorCount()
-     */
-    public int errorCount()
-    {
-    	if (this.getJob()==null) return 0;
-    	return this.getJob().getError();
-    }
-
 }
