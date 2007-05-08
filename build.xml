@@ -1,6 +1,6 @@
 <project name="openuss :: build" default="install" basedir=".">
 
-	<!-- Continous Integration Test -->
+	<!-- Continous Integration Test 2 -->
 	
 	<target name="compile">
 		<exec executable="mvn.bat">
