@@ -62,11 +62,11 @@
 		            		<configuration>
 		              			<tasks>
 									<echo>INFO: Database setup started</echo>
-									<taskdef name="createDB" classname="org.openuss.anttasks.DatabaseManager">
+									<taskdef name="createDB" classname="org.openuss.framework.tools.db.DatabaseManager">
 										<classpath>
 											<pathelement location="${settings.localRepository}/jaybird/jaybird-full/2.1.1/jaybird-full-2.1.1.jar"/>
 											<pathelement location="${settings.localRepository}/ant/ant/1.6.5/ant-1.6.5.jar"/>
-											<pathelement location="./target/classes" />
+											<pathelement location="${settings.localRepository}/org/openuss/framework/framework-tools/3.0-SNAPSHOT/framework-tools-3.0-SNAPSHOT.jar" />
 										</classpath>
 									</taskdef>
 									<createDB/>
@@ -229,10 +229,6 @@
 		<dependency>
 			<groupId>org.springmodules</groupId>
 			<artifactId>spring-modules-lucene</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>ant</groupId>
-			<artifactId>ant</artifactId>
 		</dependency>	
 	</dependencies>
 </project>
