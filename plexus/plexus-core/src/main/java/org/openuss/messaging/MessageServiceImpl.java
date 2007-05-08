@@ -36,4 +36,10 @@ public class MessageServiceImpl extends MessageServiceBase {
 		return null;
 	}
 
+	@Override
+	protected JobState handleGetJobState(Long mailId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
