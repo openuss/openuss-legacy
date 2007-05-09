@@ -201,12 +201,6 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		assertEquals(expected.getExpireDate(), info.getExpireDate());
 	}
 
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
-	}
-	
 	public TestUtility getTestUtility() {
 		return testUtility;
 	}

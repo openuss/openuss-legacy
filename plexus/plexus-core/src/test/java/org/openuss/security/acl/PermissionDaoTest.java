@@ -39,12 +39,6 @@ public class PermissionDaoTest extends PermissionDaoTestBase {
 		assertEquals(objectIdentity, permission.getAclObjectIdentity());
 	}
 
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
-	}
-
 	private Permission createAndTestPermission(User user, ObjectIdentity objectIdentity) {
 		Permission permission = Permission.Factory.newInstance();
 		permission.setMask(2);

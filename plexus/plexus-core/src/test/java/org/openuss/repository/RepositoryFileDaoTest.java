@@ -53,12 +53,6 @@ public class RepositoryFileDaoTest extends RepositoryFileDaoTestBase {
 		return s2;
 	}
 
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
-	}
-	
 	public TestUtility getTestUtility() {
 		return testUtility;
 	}

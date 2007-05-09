@@ -107,12 +107,6 @@ public class CommandDaoTest extends CommandDaoTestBase {
 		}
 	}
 	
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
-	}
-
 	private Command createCommandInDB(Long domainIdentifier, String commandName, String commandType, CommandState state) {
 		Command command = new CommandImpl();
 		command.setDomainIdentifier(domainIdentifier);

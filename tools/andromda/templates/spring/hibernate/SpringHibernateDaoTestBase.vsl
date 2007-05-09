@@ -42,6 +42,12 @@ public abstract class ${testClassName} extends AbstractTransactionalDataSourceSp
 		assertNotNull($varDao);
 	}
 	
+	protected void commit() {
+		setComplete();
+		endTransaction();
+		startNewTransaction();
+	}
+	
 	protected String[] getConfigLocations() {
 		return new String[] { 
 			"classpath*:applicationContext.xml",

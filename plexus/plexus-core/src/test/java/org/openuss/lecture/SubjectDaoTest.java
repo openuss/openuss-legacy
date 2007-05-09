@@ -34,12 +34,6 @@ public class SubjectDaoTest extends SubjectDaoTestBase {
 		testUtility.removePersistFacultyAndDefaultUser();
 	}
 	
-	private void commit() {
-		endTransaction();
-		startNewTransaction();
-	}
-	
-	
 	public void testSubjectDao() {
 		// create a subject
 		Subject subject = new SubjectImpl();
