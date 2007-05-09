@@ -29,9 +29,9 @@ public class MailingListServiceIntegrationTest extends MailingListServiceIntegra
 	
 	private AclManager aclManager;
 
-	private DomainObject assist;
+	private MailingListInfo assist;
 	
-	private DomainObject noAssist;
+	private MailingListInfo noAssist;
 
 	private User user;
 	
@@ -40,21 +40,27 @@ public class MailingListServiceIntegrationTest extends MailingListServiceIntegra
 		super.onSetUpInTransaction();
 		AcegiUtils.setAclManager(aclManager);
 		user = testUtility.createSecureContext();
-		assist = generateDOAssist(user);
-		noAssist = generateDomainObject();
+		DomainObject assistDO = generateDOAssist(user);
+		getMailingListService().addMailingList(assistDO, "assistML"); 
+		assist = getMailingListService().getMailingList(assistDO);
+		DomainObject noAssistDO = generateDomainObject();
+		getMailingListService().addMailingList(noAssistDO, "noAssistML"); 
+		noAssist = getMailingListService().getMailingList(noAssistDO);
 	}
 	
 	
 	public void testMailingListSubscription(){
 		DomainObject domainObject = generateDomainObject();
+		getMailingListService().addMailingList(domainObject, "testName");		
+		MailingListInfo mailingList = getMailingListService().getMailingList(domainObject);
 		User user = testUtility.createDefaultUserInDB();
 		commit();
 		//init list of subscribers has to be empty
-		List subscribers = getMailingListService().getSubscribers(domainObject);
+		List subscribers = getMailingListService().getSubscribers(mailingList);
 		assertEquals(0, subscribers.size());
 		//add user to mailinglist
-		getMailingListService().subscribe(domainObject, user);
-		subscribers = getMailingListService().getSubscribers(domainObject);
+		getMailingListService().subscribe(mailingList, user);
+		subscribers = getMailingListService().getSubscribers(mailingList);
 		assertEquals(1, subscribers.size());
 		SubscriberInfo si = (SubscriberInfo) subscribers.get(0);
 		assertEquals(false, si.isBlocked());
@@ -62,37 +68,39 @@ public class MailingListServiceIntegrationTest extends MailingListServiceIntegra
 		assertEquals(user.getEmail(), si.getEmail());
 		//delete user from mailingList using first unsubscribe method
 		getMailingListService().unsubscribe(si);
-		subscribers = getMailingListService().getSubscribers(domainObject);
+		subscribers = getMailingListService().getSubscribers(mailingList);
 		assertEquals(0, subscribers.size());
 		//add user to mailingList
-		getMailingListService().subscribe(domainObject, user);
-		subscribers = getMailingListService().getSubscribers(domainObject);
+		getMailingListService().subscribe(mailingList, user);
+		subscribers = getMailingListService().getSubscribers(mailingList);
 		assertEquals(1, subscribers.size());
 		si = (SubscriberInfo) subscribers.get(0);
 		assertEquals(false, si.isBlocked());
 		assertEquals(user.getDisplayName(), si.getDisplayName());
 		assertEquals(user.getEmail(), si.getEmail());
 		//delete user from mailingList using second unsubscribe method
-		getMailingListService().unsubscribe(domainObject, user);
-		subscribers = getMailingListService().getSubscribers(domainObject);
+		getMailingListService().unsubscribe(mailingList, user);
+		subscribers = getMailingListService().getSubscribers(mailingList);
 		assertEquals(0, subscribers.size());
 		//test unsubscribe methods if user not in mailinglist
-		getMailingListService().unsubscribe(domainObject, user);
+		getMailingListService().unsubscribe(mailingList, user);
 		getMailingListService().unsubscribe(si);
-		subscribers = getMailingListService().getSubscribers(domainObject);
+		subscribers = getMailingListService().getSubscribers(mailingList);
 		assertEquals(0, subscribers.size());
 	}
 	
 	public void testSetBlockingState(){
 		DomainObject domainObject = generateDomainObject();
+		getMailingListService().addMailingList(domainObject, "testName");		
+		MailingListInfo mailingList = getMailingListService().getMailingList(domainObject);
 		User user = testUtility.createDefaultUserInDB();
 		commit();
 		//init list of subscribers has to be empty
-		List subscribers = getMailingListService().getSubscribers(domainObject);
+		List subscribers = getMailingListService().getSubscribers(mailingList);
 		assertEquals(0, subscribers.size());
 		//add user to mailinglist
-		getMailingListService().subscribe(domainObject, user);
-		subscribers = getMailingListService().getSubscribers(domainObject);
+		getMailingListService().subscribe(mailingList, user);
+		subscribers = getMailingListService().getSubscribers(mailingList);
 		assertEquals(1, subscribers.size());
 		SubscriberInfo si = (SubscriberInfo) subscribers.get(0);
 		assertEquals(false, si.isBlocked());
@@ -101,14 +109,14 @@ public class MailingListServiceIntegrationTest extends MailingListServiceIntegra
 		//set Blocking State of User to true		 
 		si.setBlocked(true);
 		getMailingListService().setBlockingState(si);
-		subscribers = getMailingListService().getSubscribers(domainObject);
+		subscribers = getMailingListService().getSubscribers(mailingList);
 		assertEquals(1, subscribers.size());
 		si = (SubscriberInfo) subscribers.get(0);
 		assertEquals(true, si.isBlocked());
 		//set user to unblocked
 		si.setBlocked(false);
 		getMailingListService().setBlockingState(si);
-		subscribers = getMailingListService().getSubscribers(domainObject);
+		subscribers = getMailingListService().getSubscribers(mailingList);
 		assertEquals(1, subscribers.size());
 		si = (SubscriberInfo) subscribers.get(0);
 		assertEquals(false, si.isBlocked());
