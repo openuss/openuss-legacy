@@ -192,7 +192,9 @@ public class MailingListServiceImpl
 
 	@Override
 	protected MailingListInfo handleGetMailingList(DomainObject domainObject) throws Exception {
-		return getMailingListDao().toMailingListInfo(getMailingListDao().load(domainObject.getId()));
+		MailingList ml = getMailingListDao().load(domainObject.getId());
+		if (ml!=null) return getMailingListDao().toMailingListInfo(ml);
+		return null;
 
 	}
 
