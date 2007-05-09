@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
-import org.openuss.security.User;
 
 /**
  * @see org.openuss.messaging.MessageService
@@ -23,10 +22,20 @@ public class MessageServiceImpl extends MessageServiceBase {
 	protected Long handleSendMessage(String sender, String subject, String text, boolean sms, List recipients) throws Exception {
 		Validate.notEmpty(subject, "Parameter subject must not be empty");
 		validateRecipients(recipients);
-		// @todo implement protected org.openuss.messaging.MessageJob
-		// handleSendMessage(java.lang.String subject, java.lang.String text,
-		// boolean sms, java.util.List recipients)
-		return null;
+		
+		TextMessage message = TextMessage.Factory.newInstance();
+		message.setSenderName(sender);
+		message.setSubject(subject);
+		message.setText(text);
+		
+		MessageJob job = MessageJob.Factory.newInstance();
+		job.setSendAsSms(sms);
+		job.addRecipients(recipients);
+		job.setMessage(message);
+		
+		getMessageJobDao().create(job);
+		
+		return job.getId();
 	}
 
 	/**
@@ -36,16 +45,22 @@ public class MessageServiceImpl extends MessageServiceBase {
 	protected Long handleSendMessage(String sender, String subject, String templateName, Map parameters, List recipients) throws Exception {
 		Validate.notEmpty(subject, "Parameter subject must not be empty");
 		Validate.notEmpty(templateName,"Parameter templateName must not be empty");
+
 		validateRecipients(recipients);
 		
+		TemplateMessage message = TemplateMessage.Factory.newInstance();
+		message.setSenderName(sender);
+		message.setSenderName(subject);
+		message.addParameters(parameters);
+
 		MessageJob job = MessageJob.Factory.newInstance();
 		job.setSendAsSms(false);
 		job.addRecipients(recipients);
+		job.setMessage(message);
 		
-		Message message = TemplateMessage.Factory.newInstance();
-		message.setSenderName(sender);
+		getMessageJobDao().create(job);
 		
-		return null;
+		return job.getId();
 	}
 
 	private void validateRecipients(List recipients) {
@@ -55,7 +70,7 @@ public class MessageServiceImpl extends MessageServiceBase {
 
 	@Override
 	protected JobState handleGetJobState(Long messageId) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
