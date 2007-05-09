@@ -180,13 +180,15 @@ $operation.getDocumentation("     * ")
      */
 #renderHashCodeMethod($entity $entity.entityName $identifiers)
 
+#if(!$entity.abstract)
 	public static class Factory extends ${entity.entityName}.Factory {
 		
 		public ${entity.entityName} create${entity.entityName}() {
 			return new ${entity.entityImplementationName}();
 		}
 	}
-
+#end
+	
 #end
 // HibernateEntity.vsl merge-point
 }
