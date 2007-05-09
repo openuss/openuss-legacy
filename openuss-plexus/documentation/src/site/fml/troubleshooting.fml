@@ -78,5 +78,13 @@ MAVEN_OPTS=-Xmx384M
 		</p>
       </answer>
     </faq>
+	<faq id="Problems on ValueObject realizing DomainObject">
+	<question>After creation of an value object, which realizes the DomainObject interface the error "Shared packages has references to outer elements" occurs on saving.</question>
+	<answer>
+		<p>
+			Open inheritance tree and delete the newly created (blue) realize abstraction.
+		</p>
+      </answer>
+    </faq>
 </part>
 </faqs>
