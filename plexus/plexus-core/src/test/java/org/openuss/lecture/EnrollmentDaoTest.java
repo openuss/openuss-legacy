@@ -62,6 +62,7 @@ public class EnrollmentDaoTest extends EnrollmentDaoTestBase {
 	}
 	
 	public void testEnrollmentUniqueShortcut() {
+		String shortcut = testUtility.unique("shortcut");
 		// create faculty
 		Faculty faculty = createFaculty();
 		facultyDao.create(faculty);
@@ -84,39 +85,29 @@ public class EnrollmentDaoTest extends EnrollmentDaoTestBase {
 		enrollment.setFaculty(faculty);
 		enrollment.setSubject(subject);
 		enrollment.setPeriod(period);
-		enrollment.setShortcut("shortcut");
+		enrollment.setShortcut(shortcut);
 		assertNull(enrollment.getId());
 		enrollmentDao.create(enrollment);
 		assertNotNull(enrollment.getId());
 
+		commit();
+		
 		// create secord enrollment
 		Enrollment enrollment2 = new EnrollmentImpl();
 		enrollment2.setFaculty(faculty);
 		enrollment2.setSubject(subject);
 		enrollment2.setPeriod(period);
-		enrollment2.setShortcut("shortcut");
+		enrollment2.setShortcut(shortcut);
 		assertNull(enrollment2.getId());
 		enrollmentDao.create(enrollment2);
 		assertNotNull(enrollment2.getId());
 		
 		try {
-			setComplete();
-			endTransaction();
+			commit();
+			fail("Shortcut violation expected!");
 		} catch (DataAccessException e) {
-			// success - unique key constraint
-			// cleanup
-			/*
-			startNewTransaction();
-			enrollmentDao.remove(enrollment);
-			subjectDao.remove(subject);
-			periodDao.remove(period);
-			facultyDao.remove(faculty);
-			userDao.remove(user);
-			setComplete();
-			 */
+			// succeed - cannot create two or more enrollments with the same shortcut
 		}
-		
-		
 	}
 	
 	public void testEnrollmentDaoCreate() {
@@ -158,7 +149,7 @@ public class EnrollmentDaoTest extends EnrollmentDaoTestBase {
 	private Subject createSubject(Faculty faculty) {
 		Subject subject = Subject.Factory.newInstance();
 		subject.setName("name");
-		subject.setShortcut("shortcut");
+		subject.setShortcut(testUtility.unique("shortcut"));
 		subject.setFaculty(faculty);
 		return subject;
 	}
@@ -169,7 +160,7 @@ public class EnrollmentDaoTest extends EnrollmentDaoTestBase {
 				
 		Faculty faculty = Faculty.Factory.newInstance();
 		faculty.setName("EnrollmentDaoTest");
-		faculty.setShortcut("shortcut");
+		faculty.setShortcut(testUtility.unique("shortcut"));
 		faculty.setOwnername("ownername");
 		faculty.setOwner(user);
 		faculty.setEmail("email@faculty");

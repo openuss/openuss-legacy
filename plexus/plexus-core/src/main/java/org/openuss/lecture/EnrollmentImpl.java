@@ -5,16 +5,19 @@
 //
 package org.openuss.lecture;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.event.SaveOrUpdateEvent;
-import org.hibernate.event.SaveOrUpdateEventListener;
+import org.hibernate.CallbackException;
+import org.hibernate.Session;
+import org.hibernate.classic.Lifecycle;
+import org.hibernate.event.PreInsertEvent;
 
 /**
  * @see org.openuss.lecture.Enrollment
  */
-public class EnrollmentImpl extends org.openuss.lecture.EnrollmentBase implements org.openuss.lecture.Enrollment,	SaveOrUpdateEventListener {
+public class EnrollmentImpl extends EnrollmentBase implements Enrollment, Lifecycle {
 
 	private static final Logger logger = Logger.getLogger(EnrollmentImpl.class);
 
@@ -39,12 +42,6 @@ public class EnrollmentImpl extends org.openuss.lecture.EnrollmentBase implement
 
 	}
 
-	public void onSaveOrUpdate(SaveOrUpdateEvent event) throws HibernateException {
-		if (StringUtils.isBlank(getShortcut())) {
-			generateShortcut();
-		}
-	}
-
 	@Override
 	public boolean isPasswordCorrect(String password) {
 		return StringUtils.equalsIgnoreCase(getPassword(), password);
@@ -53,6 +50,24 @@ public class EnrollmentImpl extends org.openuss.lecture.EnrollmentBase implement
 	@Override
 	public String getName() {
 		return this.getSubject().getName();
+	}
+
+	public boolean onDelete(Session session) throws CallbackException {
+		return false;
+	}
+
+	public void onLoad(Session session, Serializable id) {
+	}
+
+	public boolean onSave(Session session) throws CallbackException {
+		if (StringUtils.isBlank(getShortcut())) {
+			generateShortcut();
+		}
+		return false;
+	}
+
+	public boolean onUpdate(Session session) throws CallbackException {
+		return false;
 	}
 
 }

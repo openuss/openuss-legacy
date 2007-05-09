@@ -67,4 +67,12 @@ public class EnrollmentRemovePage extends AbstractEnrollmentPage {
 			addError(toValidate.getClientId(context), i18n("error_need_to_confirm_removement"), null);
 		}
 	}
+
+	public List<FolderEntryInfo> getEntries() {
+		return entries;
+	}
+
+	public void setEntries(List<FolderEntryInfo> entries) {
+		this.entries = entries;
+	}
 }

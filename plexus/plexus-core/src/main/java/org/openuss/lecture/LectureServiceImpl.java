@@ -339,26 +339,12 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		persist(period);
 		storeEnrollment(enrollment);
 
-		generateShortcut(enrollment);
 		storeEnrollment(enrollment);
 
 		getSecurityService().createObjectIdentity(enrollment, faculty);
 		updateAccessTypePermission(enrollment);
 
 		return enrollment;
-	}
-
-	public static void generateShortcut(Enrollment enrollment) {
-		// FIXME make this method robust against unique key violations
-		Subject subject = enrollment.getSubject();
-		String id = String.valueOf(enrollment.getId());
-		int index = subject.getShortcut().length();
-		if (index + id.length() >= 30)
-			index -= id.length();
-
-		String shortcut = subject.getShortcut().substring(0, index - 1) + id;
-
-		enrollment.setShortcut(shortcut);
 	}
 
 	@Override
