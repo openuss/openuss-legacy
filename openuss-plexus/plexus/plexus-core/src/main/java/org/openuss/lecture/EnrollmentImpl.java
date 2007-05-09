@@ -34,7 +34,7 @@ public class EnrollmentImpl extends org.openuss.lecture.EnrollmentBase implement
 		int index = subjectShortcut.length();
 		if (index + id.length() >= 30)
 			index -= id.length();
-		String shortcut = subjectShortcut.substring(0, index - 1) + id;
+		String shortcut = subjectShortcut.substring(0, index) + id;
 		this.setShortcut(shortcut);
 
 	}
@@ -48,6 +48,11 @@ public class EnrollmentImpl extends org.openuss.lecture.EnrollmentBase implement
 	@Override
 	public boolean isPasswordCorrect(String password) {
 		return StringUtils.equalsIgnoreCase(getPassword(), password);
+	}
+
+	@Override
+	public String getName() {
+		return this.getSubject().getName();
 	}
 
 }
