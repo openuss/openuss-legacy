@@ -12,8 +12,6 @@
 
 		<delete dir="${tomcat}/webapps/openuss-plexus" failonerror="false" />
 		<delete file="${tomcat}/webapps/openuss-plexus.war" failonerror="false" />
-		<delete dir="${tomcat}/webapps/theme-classic" failonerror="false" />
-		<delete file="${tomcat}/webapps/theme-classic.war" failonerror="false" />
 		<delete dir="${tomcat}/webapps/theme-plexus" failonerror="false" />
 		<delete file="${tomcat}/webapps/theme-plexus.war" failonerror="false" />
 		<delete dir="${tomcat}/webapps/theme-university-of-muenster" failonerror="false" />
@@ -24,7 +22,6 @@
 	<target name="deploy" depends="undeploy">
 		<copy file="framework/deployer/target/framework-deployer-${version}.jar" todir="${tomcat}/common/lib" />
 		<copy file="plexus/plexus-web/target/plexus-web-${version}.war" tofile="${tomcat}/webapps/openuss-plexus.war" />
-		<copy file="themes/theme-classic/target/theme-classic-${version}.war" tofile="${tomcat}/webapps/theme-classic.war" />
 		<copy file="themes/theme-plexus/target/theme-plexus-${version}.war" tofile="${tomcat}/webapps/theme-plexus.war" />
 		<copy file="themes/theme-university-of-muenster/target/theme-university-of-muenster-${version}.war" tofile="${tomcat}/webapps/theme-university-of-muenster.war" />
 	</target>
