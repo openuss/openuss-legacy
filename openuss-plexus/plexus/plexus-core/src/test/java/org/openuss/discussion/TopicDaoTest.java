@@ -56,12 +56,6 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		
 	}
 
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
-	}
-
 	private DomainViewState createViewState(User user, Topic topic) {
 		DomainViewState viewState = DomainViewState.Factory.newInstance();
 		DomainViewStatePK pk = new DomainViewStatePK();

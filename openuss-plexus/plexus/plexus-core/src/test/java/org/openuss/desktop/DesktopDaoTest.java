@@ -88,12 +88,6 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		return desktopOne;
 	}
 
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
-	}
-
 	public User getDefaultUser() {
 		return defaultUser;
 	}

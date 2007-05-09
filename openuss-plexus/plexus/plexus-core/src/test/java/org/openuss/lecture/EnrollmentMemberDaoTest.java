@@ -101,13 +101,6 @@ public class EnrollmentMemberDaoTest extends EnrollmentMemberDaoTestBase {
 		return member;
 	}
 
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
-	}
-
-
 	public TestUtility getTestUtility() {
 		return testUtility;
 	}

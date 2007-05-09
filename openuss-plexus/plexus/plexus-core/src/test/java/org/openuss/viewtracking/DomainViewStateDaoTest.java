@@ -95,9 +95,4 @@ public class DomainViewStateDaoTest extends DomainViewStateDaoTestBase {
 		return pk;
 	}
 
-	private void commit() {
-		setComplete();
-		endTransaction();
-		startNewTransaction();
-	}
 }
