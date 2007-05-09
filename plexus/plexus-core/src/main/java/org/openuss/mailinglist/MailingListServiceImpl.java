@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openuss.foundation.DomainObject;
-import org.openuss.messaging.JobState;
+import org.openuss.messaging.JobInfo;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 
@@ -142,7 +142,7 @@ public class MailingListServiceImpl
         throws java.lang.Exception
     {
     	MailDetail md = getMailDao().toMailDetail(getMailDao().load(mail.getId()));
-    	JobState js = getMessageService().getJobState(mail.getId());
+    	JobInfo js = getMessageService().getJobState(mail.getId());
     	if (js!=null){
 	    	md.setErrorCount(js.getError());
 	    	md.setSendCount(js.getSend());
