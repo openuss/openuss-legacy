@@ -40,7 +40,7 @@ public class CommandDaoTest extends CommandDaoTestBase {
 		Command[] command = new Command[5];
 		fillCommandArray(command, CommandState.ONCE);
 		
-		command[4].setStartTime(new Date(System.currentTimeMillis()+3000L));
+		command[4].setStartTime(new Date(System.currentTimeMillis()+10000L));
 		
 		commit();
 		
