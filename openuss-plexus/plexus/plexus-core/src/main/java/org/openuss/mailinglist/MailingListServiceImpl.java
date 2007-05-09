@@ -128,7 +128,7 @@ public class MailingListServiceImpl
     {
     	List<User> recipients = new ArrayList<User>();
     	recipients.add(getSecurityService().getCurrentUser());
-    	getMessageService().sendMessage(mail.getSubject(), mail.getText(), mail.isSms(), recipients);
+    	getMessageService().sendMessage("", mail.getSubject(), mail.getText(), mail.isSms(), recipients);
     }
 
     /**
