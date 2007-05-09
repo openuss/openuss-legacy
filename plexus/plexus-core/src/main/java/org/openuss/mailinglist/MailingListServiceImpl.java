@@ -167,16 +167,7 @@ public class MailingListServiceImpl
     		getMailDao().create(m);  
     		
     	}
-    	//TODO trigger command
-    	/*
-    	 * move to MailSendingCommand 
-    	Set<Subscriber> subscribers = m.getMailingList().getSubscribers();
-    	List<User> recipients = new ArrayList<User>(); 
-    	Iterator i = subscribers.iterator();
-    	while (i.hasNext()){
-    		recipients.add(((Subscriber)i.next()).getUser());
-    	}
-    	getMessageService().sendMessage(m.getSubject(), m.getText(), m.isSms(), recipients);*/
+    	getCommandService().createOnceCommand(m, "mailSendingCommand", m.getSendDate(), null);
     }
 
 	@Override
