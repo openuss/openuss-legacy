@@ -5,6 +5,8 @@
  */
 package org.openuss.lecture;
 
+import java.util.List;
+
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 
@@ -150,6 +152,76 @@ public class EnrollmentServiceImpl extends org.openuss.lecture.EnrollmentService
 	protected EnrollmentMemberInfo handleGetMemberInfo(Enrollment enrollment, User user) throws Exception {
 		return (EnrollmentMemberInfo) getEnrollmentMemberDao().findByUserAndEnrollment(
 				EnrollmentMemberDao.TRANSFORM_ENROLLMENTMEMBERINFO, user, enrollment);
+	}
+
+	@Override
+	protected void handleAddAspirant(EnrollmentInfo enrollment, User user) throws Exception {
+		EnrollmentMember aspirant = createEnrollmentMember(getEnrollmentDao().enrollmentInfoToEntity(enrollment), user);
+		aspirant.setMemberType(EnrollmentMemberType.ASPIRANT);
+		getEnrollmentMemberDao().create(aspirant);
+	}
+
+	@Override
+	protected void handleAddAssistant(EnrollmentInfo enrollment, User user) throws Exception {
+		EnrollmentMember assistant = createEnrollmentMember(getEnrollmentDao().enrollmentInfoToEntity(enrollment), user);
+		assistant.setMemberType(EnrollmentMemberType.ASSISTANT);
+		getEnrollmentMemberDao().create(assistant);
+	}
+
+	@Override
+	protected void handleAddParticipant(EnrollmentInfo enrollment, User user) throws Exception {
+		EnrollmentMember participant = createEnrollmentMember(getEnrollmentDao().enrollmentInfoToEntity(enrollment), user);
+		persistParticipantWithPermissions(participant);
+	}
+
+	@Override
+	protected void handleApplyUser(EnrollmentInfo enrollment, User user) throws Exception {
+		Enrollment originalEnrollment = getEnrollmentDao().enrollmentInfoToEntity(enrollment);
+		if (originalEnrollment.getAccessType() == AccessType.APPLICATION) {
+			// TODO send email to all assistants
+			addAspirant(originalEnrollment, user);
+		} else {
+			throw new EnrollmentApplicationException("message_error_enrollment_accesstype_is_not_application");
+		}
+	}
+
+	@Override
+	protected void handleApplyUserByPassword(String password, EnrollmentInfo enrollment, User user) throws Exception {
+		Enrollment originalEnrollment = getEnrollmentDao().enrollmentInfoToEntity(enrollment);
+		if (originalEnrollment.getAccessType() == AccessType.PASSWORD && originalEnrollment.isPasswordCorrect(password)) {
+			addParticipant(originalEnrollment, user);
+		} else {
+			throw new EnrollmentApplicationException("message_error_password_is_not_correct");
+		}
+	}
+
+	@Override
+	protected List handleGetAspirants(EnrollmentInfo enrollment) throws Exception {
+		return getEnrollmentMemberDao().findByType(EnrollmentMemberDao.TRANSFORM_ENROLLMENTMEMBERINFO, getEnrollmentDao().enrollmentInfoToEntity(enrollment),
+				EnrollmentMemberType.ASPIRANT);
+	}
+
+	@Override
+	protected List handleGetAssistants(EnrollmentInfo enrollment) throws Exception {
+		return getEnrollmentMemberDao().findByType(EnrollmentMemberDao.TRANSFORM_ENROLLMENTMEMBERINFO, getEnrollmentDao().enrollmentInfoToEntity(enrollment),
+				EnrollmentMemberType.ASSISTANT);
+	}
+
+	@Override
+	protected EnrollmentInfo handleGetEnrollmentInfo(Enrollment enrollment) throws Exception {
+		return getEnrollmentDao().toEnrollmentInfo(enrollment);
+	}
+
+	@Override
+	protected EnrollmentMemberInfo handleGetMemberInfo(EnrollmentInfo enrollment, User user) throws Exception {
+		return (EnrollmentMemberInfo) getEnrollmentMemberDao().findByUserAndEnrollment(
+				EnrollmentMemberDao.TRANSFORM_ENROLLMENTMEMBERINFO, user, getEnrollmentDao().enrollmentInfoToEntity(enrollment));
+	}
+
+	@Override
+	protected List handleGetParticipants(EnrollmentInfo enrollment) throws Exception {
+		return getEnrollmentMemberDao().findByType(EnrollmentMemberDao.TRANSFORM_ENROLLMENTMEMBERINFO, getEnrollmentDao().enrollmentInfoToEntity(enrollment),
+				EnrollmentMemberType.PARTICIPANT);
 	}
 
 }
