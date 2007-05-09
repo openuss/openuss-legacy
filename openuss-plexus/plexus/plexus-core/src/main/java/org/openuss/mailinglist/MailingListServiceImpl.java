@@ -6,12 +6,9 @@
 package org.openuss.mailinglist;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.openuss.foundation.DomainObject;
-import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.messaging.JobState;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
@@ -23,22 +20,17 @@ public class MailingListServiceImpl
     extends org.openuss.mailinglist.MailingListServiceBase
 {
 
-	private MailingList getMailingList(DomainObject domainObject){
-		MailingList ml = getMailingListDao().load(domainObject.getId());
-		if (ml != null) return ml;
-		ml = MailingList.Factory.newInstance();
-		ml.setId(domainObject.getId());
-		getMailingListDao().create(ml);
-		return ml;
+	private MailingList getMailingListDao(MailingListInfo mailingList){
+		return getMailingListDao().load(mailingList.getId());
 	}
 	
     /**
      * @see org.openuss.mailinglist.MailingListService#subscribe(org.openuss.foundation.DomainObject, org.openuss.security.User)
      */
-    protected void handleSubscribe(DomainObject domainObject, User user)
+    protected void handleSubscribe(MailingListInfo mailingList, User user)
         throws java.lang.Exception
     {
-    	MailingList ml = getMailingList(domainObject);
+    	MailingList ml = getMailingListDao(mailingList);
     	Subscriber subscriber = getSubscriberDao().findByUserAndMailingList(user, ml);
     	if (subscriber==null){
     		subscriber = Subscriber.Factory.newInstance();    		
@@ -51,10 +43,10 @@ public class MailingListServiceImpl
     /**
      * @see org.openuss.mailinglist.MailingListService#unsubscribe(org.openuss.foundation.DomainObject, org.openuss.security.User)
      */
-    protected void handleUnsubscribe(DomainObject domainObject, User user)
+    protected void handleUnsubscribe(MailingListInfo mailingList, User user)
         throws java.lang.Exception
     {
-    	MailingList ml = getMailingList(domainObject);
+    	MailingList ml = getMailingListDao(mailingList);
     	Subscriber subscriber = getSubscriberDao().findByUserAndMailingList(user, ml);
     	if (subscriber!=null){
     		getSubscriberDao().remove(subscriber);    		
@@ -83,10 +75,10 @@ public class MailingListServiceImpl
     /**
      * @see org.openuss.mailinglist.MailingListService#getSubscribers(org.openuss.foundation.DomainObject)
      */
-    protected List handleGetSubscribers(DomainObject domainObject)
+    protected List handleGetSubscribers(MailingListInfo mailingList)
         throws java.lang.Exception
     {
-    	MailingList ml = getMailingList(domainObject);
+    	MailingList ml = getMailingListDao(mailingList);
     	List<SubscriberInfo> subscribers = getSubscriberDao().findByMailingList(SubscriberDao.TRANSFORM_SUBSCRIBERINFO, ml);
     	return subscribers;
     }
@@ -94,10 +86,10 @@ public class MailingListServiceImpl
     /**
      * @see org.openuss.mailinglist.MailingListService#saveMail(org.openuss.foundation.DomainObject, org.openuss.mailinglist.MailDetail)
      */
-    protected void handleSaveMail(DomainObject domainObject, MailDetail mail)
+    protected void handleSaveMail(MailingListInfo mailingList, MailDetail mail)
         throws java.lang.Exception
     {
-    	MailingList ml = getMailingList(domainObject);
+    	MailingList ml = getMailingListDao(mailingList);
     	Mail m = getMailDao().mailDetailToEntity(mail);
     	m.setMailingList(ml);
     	m.setStatus(MailingStatus.DRAFT);
@@ -107,10 +99,9 @@ public class MailingListServiceImpl
     /**
      * @see org.openuss.mailinglist.MailingListService#deleteMail(org.openuss.foundation.DomainObject, org.openuss.mailinglist.MailDetail)
      */
-    protected void handleDeleteMail(DomainObject domainObject, MailDetail mail)
+    protected void handleDeleteMail(MailingListInfo mailingList, MailDetail mail)
         throws java.lang.Exception
     {
-    	MailingList ml = getMailingList(domainObject);
     	Mail m = getMailDao().mailDetailToEntity(mail);
     	if (getMessageService().getJobState(m.getId())!=null) throw new MailingListApplicationException("Mail already send!");
     	if (m.getStatus()==MailingStatus.DRAFT)	getMailDao().remove(m);
@@ -123,22 +114,22 @@ public class MailingListServiceImpl
     /**
      * @see org.openuss.mailinglist.MailingListService#sendPreview(org.openuss.mailinglist.MailDetail)
      */
-    protected void handleSendPreview(MailDetail mail)
+    protected void handleSendPreview(MailingListInfo mailingList, MailDetail mail)
         throws java.lang.Exception
     {
     	List<User> recipients = new ArrayList<User>();
-    	recipients.add(getSecurityService().getCurrentUser());
-    	getMessageService().sendMessage("", mail.getSubject(), mail.getText(), mail.isSms(), recipients);
+    	recipients.add(getSecurityService().getCurrentUser());    	
+    	getMessageService().sendMessage(getMailingList(mailingList).getName(), mail.getSubject(), mail.getText(), mail.isSms(), recipients);
     }
 
     /**
      * @see org.openuss.mailinglist.MailingListService#getMails(org.openuss.foundation.DomainObject)
      */
-    protected java.util.List handleGetMails(DomainObject domainObject)
+    protected java.util.List handleGetMails(MailingListInfo mailingList)
         throws java.lang.Exception
     {
-    	MailingList ml = getMailingList(domainObject);
-    	if (!getSecurityService().hasPermission(domainObject, new Integer[] { LectureAclEntry.ASSIST })) {
+    	MailingList ml = getMailingListDao(mailingList);
+    	if (!getSecurityService().hasPermission(mailingList, new Integer[] { LectureAclEntry.ASSIST })) {
     		return getMailDao().findMailByMailingListAndStatus(MailDao.TRANSFORM_MAILINFO, ml);
     	} 
     	return getMailDao().findMailByMailingList(MailDao.TRANSFORM_MAILINFO, ml);
@@ -163,7 +154,7 @@ public class MailingListServiceImpl
     /**
      * @see org.openuss.mailinglist.MailingListService#sendMail(org.openuss.mailinglist.MailInfo)
      */
-    protected void handleSendMail(DomainObject domainObject, org.openuss.mailinglist.MailDetail mail)
+    protected void handleSendMail(MailingListInfo mailingList, org.openuss.mailinglist.MailDetail mail)
         throws java.lang.Exception
     {
     	Mail m = getMailDao().mailDetailToEntity(mail);
@@ -171,7 +162,7 @@ public class MailingListServiceImpl
     	if (mail.getId()!=null){
     		getMailDao().update(m);
     	} else if (mail.getId()==null){
-    		MailingList ml = getMailingList(domainObject);
+    		MailingList ml = getMailingListDao(mailingList);
     		m.setMailingList(ml);
     		getMailDao().create(m);  
     		
@@ -187,5 +178,28 @@ public class MailingListServiceImpl
     	}
     	getMessageService().sendMessage(m.getSubject(), m.getText(), m.isSms(), recipients);*/
     }
+
+	@Override
+	protected void handleAddMailingList(DomainObject domainObject, String name) throws Exception {
+		MailingList ml = getMailingListDao().load(domainObject.getId());
+		if (ml == null) {
+			ml = MailingList.Factory.newInstance();
+			ml.setId(domainObject.getId());
+			ml.setName(name);
+			getMailingListDao().create(ml);
+		}
+	}
+
+	@Override
+	protected MailingListInfo handleGetMailingList(DomainObject domainObject) throws Exception {
+		return getMailingListDao().toMailingListInfo(getMailingListDao().load(domainObject.getId()));
+
+	}
+
+	@Override
+	protected void handleUpdateMailingList(MailingListInfo mailingList) throws Exception {
+		MailingList ml = getMailingListDao().mailingListInfoToEntity(mailingList);
+		getMailingListDao().update(ml);
+	}
 
 }
