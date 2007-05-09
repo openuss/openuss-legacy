@@ -7,11 +7,16 @@ package org.openuss.messaging;
 
 /**
  * @see org.openuss.messaging.Recipient
+ * @author ingo dueppe
  */
 public class RecipientImpl extends RecipientBase implements Recipient {
 	/**
 	 * The serial version UID of this class. Needed for serialization.
 	 */
 	private static final long serialVersionUID = -3940109635404398657L;
+	
+	public RecipientImpl() {
+		setStatus(SendState.TOSEND);
+	}
 
 }

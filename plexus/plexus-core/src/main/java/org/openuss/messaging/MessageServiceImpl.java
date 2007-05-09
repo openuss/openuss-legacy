@@ -50,14 +50,14 @@ public class MessageServiceImpl extends MessageServiceBase {
 		
 		TemplateMessage message = TemplateMessage.Factory.newInstance();
 		message.setSenderName(sender);
-		message.setSenderName(subject);
+		message.setSubject(subject);
+		message.setTemplate(templateName);
 		message.addParameters(parameters);
 
 		MessageJob job = MessageJob.Factory.newInstance();
 		job.setSendAsSms(false);
 		job.addRecipients(recipients);
 		job.setMessage(message);
-		
 		getMessageJobDao().create(job);
 		
 		return job.getId();
@@ -69,9 +69,9 @@ public class MessageServiceImpl extends MessageServiceBase {
 	}
 
 	@Override
-	protected JobState handleGetJobState(Long messageId) throws Exception {
-		
-		return null;
+	protected JobInfo handleGetJobState(Long messageId) throws Exception {
+		Validate.notNull(messageId, "Parameter messageId must not be null.");
+		return (JobInfo) getMessageJobDao().load(MessageJobDao.TRANSFORM_JOBINFO, messageId );
 	}
 
 }

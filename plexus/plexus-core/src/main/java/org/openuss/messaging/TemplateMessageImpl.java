@@ -5,6 +5,7 @@
  */
 package org.openuss.messaging;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,9 +16,7 @@ import org.apache.commons.lang.Validate;
  * @author Ingo Dueppe
  */
 public class TemplateMessageImpl extends TemplateMessageBase implements TemplateMessage {
-	/**
-	 * The serial version UID of this class. Needed for serialization.
-	 */
+
 	private static final long serialVersionUID = -1469121877101237995L;
 
 	/**
@@ -62,4 +61,12 @@ public class TemplateMessageImpl extends TemplateMessageBase implements Template
 		}
 	}
 
+	@Override
+	public Map getParameterMap() {
+		Map<String, String> params = new HashMap<String,String>();
+		for(TemplateParameter param : getParameters()) {
+			params.put(param.getName(), param.getValue());
+		}
+		return params;
+	}
 }

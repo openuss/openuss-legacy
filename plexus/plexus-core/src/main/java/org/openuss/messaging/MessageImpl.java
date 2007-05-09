@@ -8,22 +8,10 @@ package org.openuss.messaging;
 /**
  * @see org.openuss.messaging.Message
  */
-public abstract class MessageImpl
-    extends org.openuss.messaging.MessageBase
-	implements org.openuss.messaging.Message
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = 7887844451927027994L;
-
-    /**
-     * @see org.openuss.messaging.Message#getBody()
-     */
-    public java.lang.String getBody()
-    {
-        // @todo implement public java.lang.String getBody()
-        return null;
-    }
+public abstract class MessageImpl extends MessageBase implements Message {
+	/**
+	 * The serial version UID of this class. Needed for serialization.
+	 */
+	private static final long serialVersionUID = 7887844451927027994L;
 
 }
