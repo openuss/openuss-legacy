@@ -29,6 +29,7 @@ public class MessageServiceImpl extends MessageServiceBase {
 		message.setText(text);
 		
 		MessageJob job = MessageJob.Factory.newInstance();
+		job.setState(JobState.INQUEUE);
 		job.setSendAsSms(sms);
 		job.addRecipients(recipients);
 		job.setMessage(message);
@@ -55,6 +56,7 @@ public class MessageServiceImpl extends MessageServiceBase {
 		message.addParameters(parameters);
 
 		MessageJob job = MessageJob.Factory.newInstance();
+		job.setState(JobState.INQUEUE);
 		job.setSendAsSms(false);
 		job.addRecipients(recipients);
 		job.setMessage(message);
