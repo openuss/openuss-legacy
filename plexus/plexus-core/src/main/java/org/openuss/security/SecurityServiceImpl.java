@@ -10,9 +10,11 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -152,11 +154,14 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 
 	private void updateSecurityContext(Authority authority) {
 		SecurityContext securityContext = SecurityContextHolder.getContext();
-		if (authority.equals(securityContext.getAuthentication().getPrincipal())) {
-			logger.debug("refresing current user security context.");
-			final UsernamePasswordAuthenticationToken authentication;
-			authentication = new UsernamePasswordAuthenticationToken((UserImpl) authority, "[Protected]", ((UserImpl) authority).getAuthorities());
-			securityContext.setAuthentication(authentication);
+		if (securityContext != null) {
+			Authentication auth = securityContext.getAuthentication();
+			if (auth != null && ObjectUtils.equals(authority, auth.getPrincipal())) {
+				logger.debug("refresing current user security context.");
+				final UsernamePasswordAuthenticationToken authentication;
+				authentication = new UsernamePasswordAuthenticationToken((UserImpl) authority, "[Protected]", ((UserImpl) authority).getAuthorities());
+				securityContext.setAuthentication(authentication);
+			}
 		}
 	}
 	
