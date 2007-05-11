@@ -9,7 +9,8 @@ public class StarterClass {
 		
 		DataCreator dc = new DataCreator();
 		try {
-			dc.createBasicData(1000, 100, 3, 4, 2);
+			//Vorsicht, dauert sehr lange :-)
+			dc.createBasicData(1000, 50, 3, 4, 2);
 			dc.createForumData(5, 10);
 		} catch (Exception e) {
 			e.printStackTrace();
