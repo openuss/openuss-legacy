@@ -71,16 +71,6 @@
 									</taskdef>
 									<createDB/>
 									<echo>INFO: Creating database schemas..."</echo>
-									<sql driver="org.firebirdsql.jdbc.FBDriver" url="jdbc:firebirdsql:localhost:openuss30"
-										userid="sysdba"
-										password="masterkey"
-										autocommit="true">
-										<classpath>
-											<pathelement location="${settings.localRepository}/jaybird/jaybird-full/2.1.1/jaybird-full-2.1.1.jar"/>
-										</classpath>
-										<transaction src="target/firebird_database_schema.sql"/>
-										<transaction src="src/main/data/init.sql"/>
-									</sql>
 									<sql driver="org.firebirdsql.jdbc.FBDriver" url="jdbc:firebirdsql:localhost:openuss30-test"
 										userid="sysdba"
 										password="masterkey"
