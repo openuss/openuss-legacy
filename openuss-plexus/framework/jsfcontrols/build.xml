@@ -18,7 +18,7 @@
 		</exec>
 	</target>
 	<target name="install">
-		<exec executable="mvn.bat">
+		<exec executable="mvn.bat" failifexecutionfails="true" failonerror="true">
 			<arg line="install"/>
 		</exec>
 	</target>
