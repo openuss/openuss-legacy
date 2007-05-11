@@ -1,6 +1,6 @@
 <project name="openuss :: build" default="install" basedir=".">
 
-	<!-- Continous Integration Test 5 -->
+	<!-- test CI -->
 	
 	<target name="compile">
 		<exec executable="mvn.bat">
@@ -13,7 +13,6 @@
 			<arg line="-e install"/>
 		</exec>
 	</target>
-	
 	
 	<target name="install w/o tests">
 		<exec executable="mvn.bat">
