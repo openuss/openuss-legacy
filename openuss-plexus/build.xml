@@ -1,6 +1,6 @@
 <project name="openuss :: build" default="install" basedir=".">
 
-	<!-- test CI 2-->
+	<!-- test CI 3-->
 	
 	<target name="compile">
 		<exec executable="mvn.bat">
