@@ -11,12 +11,13 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath*:applicationContext.xml,
-			classpath*:applicationContext-cache.xml,
+			<!--classpath*:applicationContext-cache.xml,-->
 			classpath*:applicationContext-entities.xml,
-			classpath*:applicationContext-services.xml,
-			classpath*:applicationContext-localDataSource.xml,
+			<!--classpath*:applicationContext-services.xml,-->
+			<!--classpath*:applicationContext-localDataSource.xml,-->
+			classpath*:applicationContext-dataSource.xml,
 			classpath*:applicationContext-legacy.xml,
-			classpath*:applicationContext-beans.xml,
+			<!--classpath*:applicationContext-beans.xml,-->
 			classpath*:applicationContext-adapters.xml,
 			classpath*:applicationContext-commands.xml,
 			classpath*:applicationContext-lucene.xml,
@@ -441,8 +442,13 @@
 		</form-login-config>
 	</login-config>
 	
-	
+	<!-- Describe a DataSource -->
 	<resource-ref>
+		<description>
+			Resource reference to a factory for java.sql.Connection
+			instances that may be used for talking to a particular
+			database that is configured in the context.xml file of Tomcat.
+		</description>
 		<res-ref-name>jdbc/openuss</res-ref-name>
 		<res-type>javax.sql.DataSource</res-type>
 		<res-auth>Container</res-auth>

@@ -8,9 +8,9 @@
          The following properties are translated:
          user.home - User's home directory
          user.dir - User's current working directory
-         java.io.tmpdir - Default temp file path 
-    <diskStore path="java.io.tmpdir"/>
-         -->
+         java.io.tmpdir - Default temp file path--> 
+    <diskStore path="java.io.tmpdir\spring"/>
+         
 
 
     <!--Default Cache configuration. These will applied to caches programmatically created through
@@ -41,14 +41,20 @@
                                          is 120 seconds.
         -->
 
+	<!-- Required elements -->
     <defaultCache
         maxElementsInMemory="10000"
         eternal="false"
         overflowToDisk="false"
-        timeToIdleSeconds="120"
+     	timeToIdleSeconds="120"
         timeToLiveSeconds="120"
         diskPersistent="false"
         diskExpiryThreadIntervalSeconds="120"/>
+
+	<!-- Cache settings per class -->
+	
+	
+	
         
     <!-- See http://ehcache.sourceforge.net/documentation/#mozTocId258426 for how to configure caching for your objects -->
 </ehcache>
