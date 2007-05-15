@@ -25,6 +25,11 @@
 			<arg line="-o install"/>
 		</exec>
 	</target>
+	<target name="install w/o tests">
+		<exec executable="mvn.bat">
+			<arg line="install -Dmaven.test.skip=true" />
+		</exec>
+	</target>
 	<target name="eclipse">
 		<exec executable="mvn.bat">
 			<arg line="eclipse:eclipse -DdownloadSources=true -Dwtpversion=1.0"/>
