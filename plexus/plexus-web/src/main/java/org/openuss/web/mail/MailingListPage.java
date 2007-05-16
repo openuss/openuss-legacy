@@ -1,4 +1,4 @@
-package org.openuss.web.lecture;
+package org.openuss.web.mail;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
 import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
+//TODO remove me
 @Bean(name = "views$secured$enrollment$mailinglist", scope = Scope.REQUEST)
 @View
 public class MailingListPage extends AbstractEnrollmentPage {
