@@ -14,19 +14,6 @@ public class DomainIndexerFactoryTest extends AbstractDependencyInjectionSpringC
 		
 	}
 	
-	protected String[] getConfigLocations() {
-		return new String[] { 
-			"classpath*:applicationContext.xml",
-			"classpath*:applicationContext-localDataSource.xml",
-			"classpath*:applicationContext-beans.xml", 
-			"classpath*:applicationContext-tests.xml",
-			"classpath*:applicationContext-cache.xml",
-			"classpath*:applicationContext-lucene.xml",
-			"classpath*:beanRefFactory",
-			"classpath*:testSecurity.xml",
-			"classpath*:testDataSource.xml"};
-	}
-
 	public FacultyIndexer getFacultyIndexer() {
 		return facultyIndexer;
 	}
@@ -42,5 +29,17 @@ public class DomainIndexerFactoryTest extends AbstractDependencyInjectionSpringC
 	public void setDomainIndexerFactory(DomainIndexerFactory domainIndexerFactory) {
 		this.domainIndexerFactory = domainIndexerFactory;
 	}
+	
+	protected String[] getConfigLocations() {
+		return new String[] { 
+			"classpath*:applicationContext.xml",
+			"classpath*:applicationContext-beans.xml", 
+			"classpath*:applicationContext-tests.xml",
+			"classpath*:applicationContext-lucene.xml",
+			"classpath*:applicationContext-cache.xml",
+			"classpath*:beanRefFactory",
+			"classpath*:testSecurity.xml",
+			"classpath*:testDataSource.xml"};
+	}	
 	
 }

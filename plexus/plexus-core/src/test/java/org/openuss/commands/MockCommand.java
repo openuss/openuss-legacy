@@ -6,10 +6,22 @@ public class MockCommand extends AbstractDomainCommand {
 
 	private boolean throwException;
 	
+	private Exception mockException = new MockException();
+	
+	public class MockException extends Exception{
+
+		private static final long serialVersionUID = -1009697074693508307L;
+		
+		public MockException() {
+			super("MOCKUP-COMMAND-TEST-EXCEPTION");
+		}
+		
+	}
+	
 	public void execute() throws Exception {
 		executionCount++;
 		if (throwException) {
-			throw new Exception("Error during execution of mock command");
+			throw mockException;
 		}
 	}
 

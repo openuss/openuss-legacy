@@ -7,11 +7,7 @@ package org.openuss.registration;
 
 import java.util.TimeZone;
 
-import org.openuss.TestUtility;
 import org.openuss.desktop.DesktopDao;
-import org.openuss.registration.RegistrationCodeNotFoundException;
-import org.openuss.registration.RegistrationException;
-import org.openuss.registration.RegistrationServiceIntegrationTestBase;
 import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
 import org.openuss.security.User;
@@ -140,21 +136,6 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 		this.groupDao = groupDao;
 	}
 	
-	@Override
-	protected String[] getConfigLocations() {
-		return new String[] { 
-			"classpath*:applicationContext.xml",
-			"classpath*:applicationContext-localDataSource.xml",
-			"classpath*:applicationContext-beans.xml",
-			"classpath*:applicationContext-service.xml",
-			"classpath*:applicationContext-entities.xml",
-			"classpath*:applicationContext-cache.xml",
-			"classpath*:applicationContext-tests.xml",
-			"classpath*:beanRefFactory",
-			"classpath*:testSecurity.xml",
-			"classpath*:testDataSource.xml"};
-	}
-
 	public void setUserContactDao(UserContactDao userContactDao) {
 		this.userContactDao = userContactDao;
 	}

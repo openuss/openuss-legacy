@@ -36,11 +36,10 @@ public class FacultyIndexerTest extends AbstractDependencyInjectionSpringContext
 	protected String[] getConfigLocations() {
 		return new String[] { 
 			"classpath*:applicationContext.xml",
-			"classpath*:applicationContext-localDataSource.xml",
 			"classpath*:applicationContext-beans.xml", 
 			"classpath*:applicationContext-tests.xml",
-			"classpath*:applicationContext-cache.xml",
 			"classpath*:applicationContext-lucene.xml",
+			"classpath*:applicationContext-cache.xml",
 			"classpath*:beanRefFactory",
 			"classpath*:testSecurity.xml",
 			"classpath*:testDataSource.xml"};

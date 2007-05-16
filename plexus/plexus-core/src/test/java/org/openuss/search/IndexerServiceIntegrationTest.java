@@ -71,17 +71,4 @@ public class IndexerServiceIntegrationTest extends IndexerServiceIntegrationTest
 	public void setCommandDao(CommandDao commandDao) {
 		this.commandDao = commandDao;
 	}
-	
-	protected String[] getConfigLocations() {
-		return new String[] { 
-				"classpath*:applicationContext.xml",
-				"classpath*:applicationContext-localDataSource.xml",
-				"classpath*:applicationContext-beans.xml", 
-				"classpath*:applicationContext-tests.xml",
-				"classpath*:applicationContext-lucene.xml",
-				"classpath*:applicationContext-cache.xml",
-				"classpath*:beanRefFactory",
-				"classpath*:testSecurity.xml",
-				"classpath*:testDataSource.xml"};
-	}
 }

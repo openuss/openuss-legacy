@@ -11,27 +11,27 @@ package org.openuss.migration;
  */
 public class MigrationServiceIntegrationTest extends MigrationServiceIntegrationTestBase {
 	
-	public void testPerformMigration() {
+//	public void testPerformMigration() {
 //		getMigrationService().performMigration();
 //		setComplete();
 //		endTransaction();
 //		startNewTransaction();
-	}
+//	}
 	
 	
 	
-	protected String[] getConfigLocations() {
-		return new String[] { 
-			"classpath*:applicationContext.xml",
-			"classpath*:applicationContext-localDataSource.xml",
-			"classpath*:applicationContext-beans.xml", 
-			"classpath*:applicationContext-tests.xml", 
-			"classpath*:applicationContext-legacy.xml",
-			"classpath*:applicationContext-cache.xml",
-			"classpath*:testSecurity.xml",
-			"classpath*:testDisableSecurity.xml",
-			"classpath*:beanRefFactory",
-			"classpath*:testDataSource.xml"};
-	}
+//	protected String[] getConfigLocations() {
+//		return new String[] { 
+//			"classpath*:applicationContext.xml",
+//			"classpath*:applicationContext-localDataSource.xml",
+//			"classpath*:applicationContext-beans.xml", 
+//			"classpath*:applicationContext-tests.xml", 
+//			"classpath*:applicationContext-legacy.xml",
+//			"classpath*:applicationContext-cache.xml",
+//			"classpath*:testSecurity.xml",
+//			"classpath*:testDisableSecurity.xml",
+//			"classpath*:beanRefFactory",
+//			"classpath*:testDataSource.xml"};
+//	}
 	
 }
