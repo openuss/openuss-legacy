@@ -63,6 +63,7 @@
 				<version>3.2</version>
 				<executions>
 					<execution>
+	 			     	<phase>generate-sources</phase>
 						<goals>
 							<goal>run</goal>
 						</goals>
