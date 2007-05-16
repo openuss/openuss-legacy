@@ -4,21 +4,40 @@
 <beans>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    				Cache Configuration
+    				User Cache Configuration
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+	<!-- Spring Cache Manager Configuration  -->
+	<bean id="cacheManager"	class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="shared" value="true"></property>
+	</bean>
+	
+	<!-- Cache Region  -->	
+	<bean id="userCacheBackend"
+		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager" />
+		</property>
+		<property name="cacheName">
+			<value>userCache</value>
+		</property>
+	</bean>
+	
 	<!-- User Cache Configuration  -->
 	<bean id="userCache"
 		class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
 		<property name="cache">
-			<ref local="cacheBackend" />
+			<ref local="userCacheBackend" />
 		</property>
 	</bean>
 	
 	<bean id="ehCacheBasedAclEntryCache" class="org.acegisecurity.acl.basic.cache.EhCacheBasedAclEntryCache">
-		<property name="cache"><ref local="cacheBackend"/></property>
+		<property name="cache"><ref local="userCacheBackend"/></property>
 	</bean>
 	
+	<bean id="passwordEncoder"
+		class="org.acegisecurity.providers.encoding.Md5PasswordEncoder" />
+
 	<bean id="cacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
 		<property name="cacheManager">
 			<ref local="cacheManager"/>
@@ -27,14 +46,5 @@
 			<value>userCache</value>
 		</property>
 	</bean>
-
-	<bean id="cacheManager"	class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-		<property name="configLocation"><value>classpath:/ehcache-failsafe.xml</value></property>
-	</bean>
-
-	<bean id="passwordEncoder"
-		class="org.acegisecurity.providers.encoding.Md5PasswordEncoder" />
-
 	
-
 </beans>
