@@ -45,12 +45,26 @@
                 <property name="maxSqlNameLength">30</property>
                 <property name="foreignKeySuffix">_FK</property>
 
-                <property name="hibernateVersion">3</property>
-                <property name="hibernateCacheProvider">org.hibernate.cache.EhCacheProvider</property>
                 
                 <property name="enableTemplating">true</property>
                 <property name="defaultCollectionInterfaces">java.util.List</property>
                 <property name="specificCollectionInterfaces">true</property>
+                
+                <!-- Hibernate cache (default) configuration -->
+                <property name="hibernateVersion">3</property>
+                <property name="hibernateEnableCache">true</property>
+                <property name="cache">${core.generated.dir}</property>
+                <property name="hibernateEhCacheDiskStore">java.io.tmpdir\hibernate</property>
+                <property name="hibernateCacheProvider">org.hibernate.cache.EhCacheProvider</property>                
+                <property name="hibernateEntityCache">none</property>
+                <property name="hibernateAssociationCache">read-write</property>
+                <property name="hibernateQueryCacheFactory">org.hibernate.cache.StandardQueryCacheFactory</property>
+                <property name="hibernateUseQueryCache">true</property>
+                <property name="ehCacheMaxElementsInMemory">10000</property>
+                <property name="ehCacheEternal">false</property>
+                <property name="ehCacheTimeToIdleSeconds">120</property>
+                <property name="ehCacheTimeToLiveSeconds">120</property>
+                <property name="ehCacheOverflowToDisk">false</property>
 
             </properties>
         </namespace>
@@ -107,9 +121,6 @@
         <namespace name="hibernate">
             <properties>
                 <property name="mergeMappingsUri">file:${tools.andromda.dir}/mappings/HibernateMergeMappings.xml</property>
-<!-- 
-                <property name="userTypesPackage">org.openuss.framework.persistence.hibernate.usertypes</property>
- -->                
 
                 <property name="customTypesPackage">org.openuss.framework.persistence.hibernate</property>
                 <property name="defaultHibernateGeneratorClass">sequence</property>
@@ -120,21 +131,6 @@
                 <property name="entity-mappings">${core.generated.dir}</property>
                 <property name="user-types">${core.generated.dir}</property>
                 
-                <!-- Hibernate cache (default) configuration -->
-                <property name="hibernateEnableCache">true</property>
-                <property name="cache">${core.generated.dir}</property>
-                <property name="hibernateEhCacheDiskStore">java.io.tmpdir\hibernate</property>
-                <property name="hibernateCacheProvider">org.hibernate.cache.EhCacheProvider</property>                
-                <property name="hibernateEntityCache">read-write</property>
-                <property name="hibernateAssociationCache">read-write</property>
-                <property name="hibernateQueryCacheFactory">org.hibernate.cache.StandardQueryCacheFactory</property>
-                <property name="hibernateUseQueryCache">false</property>
-                <property name="ehCacheMaxElementsInMemory">10000</property>
-                <property name="ehCacheEternal">false</property>
-                <property name="ehCacheTimeToIdleSeconds">120</property>
-                <property name="ehCacheTimeToLiveSeconds">120</property>
-                <property name="ehCacheOverflowToDisk">false</property>
-
             </properties>
         </namespace>
 
