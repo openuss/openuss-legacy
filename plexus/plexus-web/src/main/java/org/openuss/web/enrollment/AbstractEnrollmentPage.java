@@ -3,6 +3,7 @@ package org.openuss.web.enrollment;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.lecture.Enrollment;
+import org.openuss.lecture.EnrollmentInfo;
 import org.openuss.lecture.EnrollmentService;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
@@ -14,8 +15,13 @@ import org.openuss.web.Constants;
 public class AbstractEnrollmentPage extends BasePage {
 	private static final long serialVersionUID = 1394531398550932611L;
 	
+	//TODO remove dao object from web layer
 	@Property(value = "#{enrollment}")
 	protected Enrollment enrollment;
+	
+	//TODO refactor backing beans to use this value object instead of dao object enrollment
+	@Property(value = "#{enrollmentInfo}")
+	protected EnrollmentInfo enrollmentInfo;
 	
 	@Property(value = "#{lectureService}")
 	protected LectureService lectureService;
@@ -27,6 +33,7 @@ public class AbstractEnrollmentPage extends BasePage {
 	public void prerender() throws Exception {
 		if (enrollment != null) {
 			enrollment = enrollmentService.getEnrollment(enrollment);
+			enrollmentInfo = enrollmentService.getEnrollmentInfo(enrollment);
 		}
 		if (enrollment == null) {
 			addMessage(i18n("message_error_enrollment_page"));
@@ -59,5 +66,13 @@ public class AbstractEnrollmentPage extends BasePage {
 
 	public void setEnrollmentService(EnrollmentService enrollmentService) {
 		this.enrollmentService = enrollmentService;
+	}
+
+	public EnrollmentInfo getEnrollmentInfo() {
+		return enrollmentInfo;
+	}
+
+	public void setEnrollmentInfo(EnrollmentInfo enrollmentInfo) {
+		this.enrollmentInfo = enrollmentInfo;
 	}
 }
