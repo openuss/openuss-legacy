@@ -38,7 +38,6 @@
 				<property name="mergeLocation">${tools.andromda.dir}</property>            
                 <property name="mergeMappingsUri">file:${tools.andromda.dir}/mappings/FoundationMergeMappings.xml</property>
                 
-            
                 <property name="languageMappingsUri">file:${tools.andromda.dir}/mappings/JavaMappings.xml</property>
                 <property name="wrapperMappingsUri">JavaWrapper</property>
                 <property name="sqlMappingsUri">file:${tools.andromda.dir}/mappings/FirebirdMappings.xml</property>
@@ -89,7 +88,6 @@
                 <property name="hibernateHbm2DDLAuto">auto</property>
                 <property name="hibernateShowSql">false</property>
                 <property name="parameterRequiredCheck">false</property>
-                
                 <property name="daoInheritanceEnabled">false</property>
 
                 <!-- Spring Configuration for proper support of hibernate 3.x -->
@@ -102,7 +100,6 @@
                 <!-- Spring Security Configuration -->
                 <property name="acegiServiceSecurity">true</property>
                 <property name="acegiAuthenticationManager">authenticationManager</property>
-                
 
             </properties>
         </namespace>
@@ -122,6 +119,21 @@
                 <property name="entity-interfaces">${api.generated.dir}</property>
                 <property name="entity-mappings">${core.generated.dir}</property>
                 <property name="user-types">${core.generated.dir}</property>
+                
+                <!-- Hibernate cache (default) configuration -->
+                <property name="hibernateEnableCache">true</property>
+                <property name="cache">${core.generated.dir}</property>
+                <property name="hibernateEhCacheDiskStore">java.io.tmpdir\hibernate</property>
+                <property name="hibernateCacheProvider">org.hibernate.cache.EhCacheProvider</property>                
+                <property name="hibernateEntityCache">read-write</property>
+                <property name="hibernateAssociationCache">read-write</property>
+                <property name="hibernateQueryCacheFactory">org.hibernate.cache.StandardQueryCacheFactory</property>
+                <property name="hibernateUseQueryCache">false</property>
+                <property name="ehCacheMaxElementsInMemory">10000</property>
+                <property name="ehCacheEternal">false</property>
+                <property name="ehCacheTimeToIdleSeconds">120</property>
+                <property name="ehCacheTimeToLiveSeconds">120</property>
+                <property name="ehCacheOverflowToDisk">false</property>
 
             </properties>
         </namespace>
