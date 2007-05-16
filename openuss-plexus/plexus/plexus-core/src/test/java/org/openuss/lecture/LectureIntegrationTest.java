@@ -28,7 +28,7 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 	
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
-		user = testUtility.createDefaultUserInDB();
+		user = testUtility.createAdminSecureContext();
 		commit();
 		
 		faculty = LectureFactory.createFaculty();
@@ -36,11 +36,6 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		assertNull(faculty.getId());
 		lectureService.createFaculty(faculty);
 		commit();
-	}
-
-	@Override
-	protected void onTearDownInTransaction() throws Exception {
-		testUtility.removeUser(user);
 	}
 
 	/**
@@ -223,17 +218,15 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 
 	protected String[] getConfigLocations() {
 		return new String[] { 
-				"classpath*:applicationContext-tests.xml", 
-				"classpath*:applicationContext.xml",
-				"classpath*:applicationContext-localDataSource.xml",
-				"classpath*:applicationContext-lucene.xml",
-				"classpath*:applicationContext-beans.xml",
-				"classpath*:applicationContext-cache.xml",
-				"classpath*:beanRefFactory",
-				"classpath*:testSecurity.xml",
-				"classpath*:testDisableSecurity.xml",
-				"classpath*:testDataSource.xml"};
-	}
+			"classpath*:applicationContext.xml",
+			"classpath*:applicationContext-beans.xml", 
+			"classpath*:applicationContext-tests.xml",
+			"classpath*:applicationContext-lucene.xml",
+			"classpath*:applicationContext-cache.xml",
+			"classpath*:beanRefFactory",
+			"classpath*:testSecurity.xml",
+			"classpath*:testDataSource.xml"};
+	}		
 
 	// --------- Properties --------------------
 	

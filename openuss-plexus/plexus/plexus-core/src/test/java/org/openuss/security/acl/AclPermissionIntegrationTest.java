@@ -205,14 +205,14 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 	@Override
 	protected String[] getConfigLocations() {
 		return new String[] {
-			"classpath*:applicationContext-tests.xml",
-			"classpath*:applicationContext.xml", 
-			"classpath*:applicationContext-localDataSource.xml",
-			"classpath*:applicationContext-beans.xml", 
-			"classpath*:applicationContext-cache.xml",			
-			"classpath*:beanRefFactory", 
-			"classpath*:testSecurity.xml",
-			"classpath*:testDataSource.xml" };
+				"classpath*:applicationContext.xml",
+				"classpath*:applicationContext-beans.xml", 
+				"classpath*:applicationContext-tests.xml",
+				"classpath*:applicationContext-lucene.xml",
+				"classpath*:applicationContext-cache.xml",
+				"classpath*:beanRefFactory",
+				"classpath*:testSecurity.xml",
+				"classpath*:testDataSource.xml"};
 	}
 
 	public LectureService getLectureService() {
