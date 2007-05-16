@@ -86,6 +86,14 @@ public class TestUtility {
 	}
 
 	public User createSecureContext() {
+		return createSecureContext(Roles.USER_ID);
+	} 
+	
+	public User createAdminSecureContext() {
+		return createSecureContext(Roles.ADMINISTRATOR_ID);
+	}
+
+	private User createSecureContext(Long roleId) {
 		String username = unique("username");
 		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 		String password = encoder.encodePassword("password", null);
@@ -95,7 +103,7 @@ public class TestUtility {
 		user.setPassword(password);
 		user.setEmail("email");
 		user.setEnabled(true);
-		Group group = groupDao.load(Roles.USER_ID);
+		Group group = groupDao.load(roleId);
 		user.addGroup(group);
 		group.addMember(user);
 		userDao.create(user);
@@ -108,6 +116,7 @@ public class TestUtility {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		return user;
 	} 
+	
 	
 	public User createDefaultUser() {
 		User user = User.Factory.newInstance();
