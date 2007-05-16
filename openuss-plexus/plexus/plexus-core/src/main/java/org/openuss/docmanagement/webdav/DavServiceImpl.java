@@ -112,16 +112,16 @@ public class DavServiceImpl implements DavService {
 		if (source.getRepositoryPath().equals(destination.getRepositoryPath())) {
 			throw new DavException(HttpStatus.SC_FORBIDDEN, "The source and target must not be the same.");
 		}
-
+		
+		// create instance of source resource
+		DavResource sourceResource = getResourceFactory().createResource(getSession(), source, true);
+		
 		// create instance of destination resource and check precondition
-		DavResource destinationResource = getResourceFactory().createResource(getSession(), destination, true);
+		DavResource destinationResource = getResourceFactory().createResource(getSession(), destination, sourceResource.isCollection());
 		boolean overwriteNeeded = destinationResource.exists();
 		if (overwriteNeeded && !overwriteAllowed) {
 			throw new DavException(HttpStatus.SC_PRECONDITION_FAILED, "Overwrite header was set to T and destination is non-null.");
 		}
-		
-		// create instance of source resource
-		DavResource sourceResource = getResourceFactory().createResource(getSession(), source, true);
 
 		// copy resource
 		MultiStatus errorStatus = destinationResource.copyFrom(sourceResource, recursive);
@@ -480,7 +480,7 @@ public class DavServiceImpl implements DavService {
 		}
 		
 		// delete resource if copy operation was successful
-		if (errorStatus == null) {
+		if ((errorStatus != null) && (errorStatus.getResponses().size() == 0)) {
 			errorStatus = deleteResource(source, false);
 		}
 		

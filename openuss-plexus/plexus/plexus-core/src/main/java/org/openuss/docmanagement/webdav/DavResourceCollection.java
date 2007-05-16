@@ -34,7 +34,7 @@ public class DavResourceCollection extends DavResourceBase {
 	protected boolean copyDataFrom(DavResource source) throws DavException {
 		// check, if source is a file
 		if (!(source instanceof DavResourceCollection)) {
-			throw new DavException(HttpStatus.SC_METHOD_FAILURE, "The source resource is not a file.");
+			throw new DavException(HttpStatus.SC_METHOD_FAILURE, "The source resource is not a collection.");
 		}
 		
 		// collections do not contain data

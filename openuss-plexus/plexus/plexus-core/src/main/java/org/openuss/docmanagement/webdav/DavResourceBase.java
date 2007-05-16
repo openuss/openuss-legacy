@@ -138,8 +138,12 @@ public abstract class DavResourceBase implements DavResource {
 				// get reference to root node in repository
 				Node rootNode = session.getRootNode();
 
-				// create node in repository with relative path and with type doc:folder
-				representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.DOC_FOLDER);
+				// create node in repository with relative path and with proper type
+				if (isCollection()) {
+					representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.DOC_FOLDER);
+				} else {
+					representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.DOC_FILE);
+				}
 			} catch (RepositoryException ex) {
 				// exception occurred while accessing repository -> rethrow as DavException
 				throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
@@ -182,7 +186,7 @@ public abstract class DavResourceBase implements DavResource {
 				}
 			}
 		} else {
-			remove();
+			multistatus = remove();
 		}
 		
 		return multistatus;
@@ -199,8 +203,35 @@ public abstract class DavResourceBase implements DavResource {
 		
 		// TODO Sicherheitsabfrage einbauen
 				
-		// copy to this resource
-		boolean success = copyDataFrom(source, multistatus) && copyPropertiesFrom(source, multistatus);
+		boolean success = true;
+		
+		// create node, if resource not already present
+		if (!exists()) {
+			try {
+				// get reference to root node in repository
+				Node rootNode = session.getRootNode();
+
+				// create node in repository with relative path and with proper type
+				if (isCollection()) {
+					representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.DOC_FOLDER);
+				} else {
+					representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.DOC_FILE);
+				}
+			} catch (RepositoryException ex) {
+				// exception occurred while accessing repository -> rethrow as DavException
+				throw new DavException(HttpStatus.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+			}
+		}
+		
+		// avoid creation of filtered items
+		ItemFilter itemFilter = getFactory().getConfiguration().getItemFilter();
+		if (itemFilter.isFilteredItem(representedNode)) {
+			// remove node
+			success = false;
+		} else {
+			// copy this resource
+			success = copyDataFrom(source) && copyPropertiesFrom(source);
+		}
 
 		// remove copied data and properties, if not successful
 		if (success) {
@@ -618,7 +649,7 @@ public abstract class DavResourceBase implements DavResource {
 			Node rootNode = session.getRootNode();
 
 			if (!exists()) {
-				// create node in repository with relative path and with type doc:folder
+				// create node in repository with relative path and with proper type
 				if (isCollection()) {
 					representedNode = rootNode.addNode(getLocator().getRepositoryPath().substring(1), DocConstants.DOC_FOLDER);
 				} else {
