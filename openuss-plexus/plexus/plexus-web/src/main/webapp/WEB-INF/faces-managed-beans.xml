@@ -59,6 +59,12 @@
  		<managed-bean-class>org.openuss.lecture.EnrollmentImpl</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>enrollmentInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.EnrollmentInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
 
  	<managed-bean>
  		<managed-bean-name>documents_current_folder</managed-bean-name>
