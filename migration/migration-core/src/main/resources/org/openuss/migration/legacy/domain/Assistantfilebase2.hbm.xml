@@ -4,6 +4,7 @@
 <!-- Generated 14.09.2006 11:30:18 by Hibernate Tools 3.2.0.beta7 -->
 <hibernate-mapping>
     <class name="org.openuss.migration.legacy.domain.Assistantfilebase2" table="ASSISTANTFILEBASE">
+        <cache usage="read-only"/>
         <id name="id" type="string">
             <column name="ID" length="30" />
             <generator class="assigned" />
