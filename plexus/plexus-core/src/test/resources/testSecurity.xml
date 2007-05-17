@@ -33,11 +33,11 @@
 		<property name="userDetailsService">
 			<ref local="userDetailsService" />
 		</property>
-		<property name="userCache">
-			<ref local="userCache" />
-		</property>
+			<property name="userCache">
+				<ref bean="userCache" />
+			</property>
 		<property name="passwordEncoder">
-			<ref local="passwordEncoder" />
+			<ref bean="passwordEncoder" />
 		</property>
 	</bean>
 
@@ -48,31 +48,7 @@
 		</property>
 	</bean>
 
-	<!-- User Cache Configuration  -->
-	<bean id="userCache"
-		class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
-		<property name="cache">
-			<ref local="userCacheBackend" />
-		</property>
-	</bean>
 
-	<bean id="userCacheBackend"
-		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
-		<property name="cacheManager">
-			<ref local="cacheManager" />
-		</property>
-		<property name="cacheName">
-			<value>userCache</value>
-		</property>
-	</bean>
-
-	<bean id="cacheManager"
-		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" />
-
-	<bean id="passwordEncoder"
-		class="org.acegisecurity.providers.encoding.Md5PasswordEncoder" />
-		
-	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		      Before Invocation Authorization Definitions
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
