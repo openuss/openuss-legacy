@@ -192,7 +192,9 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		if (logger.isDebugEnabled()) {
 			logger.debug("removing authority "+authority.getName()+" from cache!");
 		}
-		getUserCache().removeUserFromCache(authority.getName());
+		if (getUserCache() != null) {
+			getUserCache().removeUserFromCache(authority.getName());
+		}
 	}
 
 	@Override
@@ -329,8 +331,10 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	}
 
 	private void removeAclsFromCache(Object object) throws IllegalAccessException, InvocationTargetException {
-		logger.debug("removing acls from cache for "+object);
-		getAclCache().removeEntriesFromCache(new EntityObjectIdentity(object));
+		if (getAclCache() != null) {
+			logger.debug("removing acls from cache for "+object);
+			getAclCache().removeEntriesFromCache(new EntityObjectIdentity(object));
+		}
 	}
 
 	@Override
