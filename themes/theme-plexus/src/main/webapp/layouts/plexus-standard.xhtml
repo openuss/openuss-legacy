@@ -38,17 +38,17 @@
 			<ui:insert name="search"/>
 			<ui:insert name="sidebar"/>
 		</div>
-		<div id="footer">
-			<div id="footer_border"/>
-			<ui:insert name="footer">
-				<ui:include src="footer.xhtml" />
-			</ui:insert>
-			<ul>
-			<t:dataList var="v" value="#{viewStack}" layout="list">
-				<li>#{v}</li>
-			</t:dataList>
-			</ul>
-		</div>
+	</div>
+	<div id="footer">
+		<div id="footer_border"/>
+		<ui:insert name="footer">
+			<ui:include src="footer.xhtml" />
+		</ui:insert>
+		<ul>
+		<t:dataList var="v" value="#{viewStack}" layout="list">
+			<li>#{v}</li>
+		</t:dataList>
+		</ul>
 	</div>
 	
 	<!-- <div id="left_block">
