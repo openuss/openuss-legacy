@@ -1318,8 +1318,7 @@ td {
 
 #footer_left {
 	float: left;
-	visibility: hidden;
-	width: 0px;
+	width: 190px;
 	padding-left: 10px;
 	vertical-align: middle;
 	text-align: left;
@@ -1327,8 +1326,7 @@ td {
 
 #footer_right {
 	float: right;
-	visibility: hidden;
-	width: 0px;
+	width: 180px;
 	vertical-align: middle;
 	text-align: left;
 }
