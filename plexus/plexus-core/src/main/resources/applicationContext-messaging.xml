@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="127.0.0.1"/>
+		<property name="username" value="no-reply@openuss-plexus.com"/>
+		<property name="password" value="plexus"/>
+	</bean>
+
+	<bean id="messagePreparator"
+		class="org.openuss.messaging.MessagePreparator" abstract="true">
+		<property name="fromAddress"
+			value="no-reply@openuss.uni-muenster.de" />
+	</bean>
+
+	<bean id="textMessagePreparator"
+		class="org.openuss.messaging.TextMessagePreparator"
+		singleton="false" parent="messagePreparator">
+	</bean>
+
+	<bean id="templateMessagePreparator"
+		class="org.openuss.messaging.TemplateMessagePreparator"
+		singleton="false" parent="messagePreparator">
+		<property name="velocityEngine">
+			<ref local="velocityEngine"/> 
+		</property>
+	</bean>
+
+	<bean id="messageSendingCommmand"
+		class="org.openuss.messaging.MessageSendingCommand">
+		<property name="messageJobDao">
+			<ref bean="messageJobDao" />
+		</property>
+		<property name="mailSender">
+			<ref bean="mailSender" />
+		</property>
+	</bean>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	                Configure Velocity for sending e-mail 
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<bean id="velocityEngine"
+		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+			<props>
+				<prop key="resource.loader">class</prop>
+				<prop key="class.resource.loader.class">org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader</prop>
+				<prop key="velocimacro.library"></prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>
