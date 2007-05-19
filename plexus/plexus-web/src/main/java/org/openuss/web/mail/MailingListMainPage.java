@@ -13,6 +13,8 @@ public class MailingListMainPage extends AbstractMailingListPage{
 	
 	private class MailingListDataProvider extends AbstractPagedTable<MailInfo> {
 
+		private static final long serialVersionUID = -2157142740537022537L;
+		
 		private DataPage<MailInfo> page; 
 		
 		@SuppressWarnings("unchecked")

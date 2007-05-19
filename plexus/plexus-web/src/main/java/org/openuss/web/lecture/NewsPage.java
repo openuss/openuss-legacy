@@ -35,6 +35,8 @@ public class NewsPage extends AbstractLecturePage {
 	
 	private class NewsDataProvider extends AbstractPagedTable<NewsItemInfo> {
 
+		private static final long serialVersionUID = -8735576547984958020L;
+		
 		private DataPage<NewsItemInfo> page; 
 		
 		@Override 

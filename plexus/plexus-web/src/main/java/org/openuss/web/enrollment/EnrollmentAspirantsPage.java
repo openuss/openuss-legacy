@@ -87,6 +87,8 @@ public class EnrollmentAspirantsPage extends AbstractEnrollmentPage {
 	
 	private class AspirantDataProvider extends AbstractPagedTable<EnrollmentMemberInfo> {
 
+		private static final long serialVersionUID = 2219795204824844857L;
+		
 		private DataPage<EnrollmentMemberInfo> page; 
 		
 		@Override 

@@ -135,6 +135,9 @@ public class DesktopPage extends BasePage {
 	
 	/* ------------------ data models ------------------- */
 	private class EnrollmentDataProvider extends AbstractPagedTable<Enrollment> {
+		
+		private static final long serialVersionUID = 255073655670856663L;
+		
 		private DataPage<Enrollment> page;
 
 		@Override
@@ -149,6 +152,9 @@ public class DesktopPage extends BasePage {
 	}
 
 	private class SubjectDataProvider extends AbstractPagedTable<Subject> {
+		
+		private static final long serialVersionUID = -932405920082089168L;
+		
 		private DataPage<Subject> page;
 		
 		@Override
@@ -163,6 +169,8 @@ public class DesktopPage extends BasePage {
 	}
 
 	private class FacultyDataProvider extends AbstractPagedTable<Faculty> {
+		private static final long serialVersionUID = 2146461373793139193L;
+		
 		private DataPage<Faculty> page;
 		
 		@Override

@@ -123,6 +123,9 @@ public class SubjectsPage extends AbstractLecturePage {
 	}
 
 	private class LocalDataModel extends AbstractPagedTable<Subject> {
+		
+		private static final long serialVersionUID = -6289875618529435428L;
+		
 		private DataPage<Subject> page;
 
 		@Override

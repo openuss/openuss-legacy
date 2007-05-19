@@ -105,6 +105,9 @@ public class UserBrowserPage extends BasePage{
 	}
 	
 	private class LocalDataModel extends AbstractPagedTable<UserInfo> {
+		
+		private static final long serialVersionUID = -7432989613782632232L;
+
 		@Override
 		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 			return fetchDataPage(startRow, pageSize);

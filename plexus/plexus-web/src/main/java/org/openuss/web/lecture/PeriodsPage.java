@@ -274,6 +274,9 @@ public class PeriodsPage extends AbstractLecturePage {
 	/* ------------------ data models ------------------- */
 	
 	private class PeriodDataModel extends AbstractPagedTable<Period> {
+		
+		private static final long serialVersionUID = 1872495569523386246L;
+		
 		private DataPage<Period> page;
 		
 		@Override
@@ -289,6 +292,8 @@ public class PeriodsPage extends AbstractLecturePage {
 	}
 	
 	private class EnrollmentDataModel extends AbstractPagedTable<Enrollment> {
+		private static final long serialVersionUID = 7931835846045404043L;
+		
 		private DataPage<Enrollment> page;
 
 		@Override

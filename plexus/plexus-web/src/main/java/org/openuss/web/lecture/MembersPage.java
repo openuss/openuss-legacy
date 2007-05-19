@@ -187,6 +187,8 @@ public class MembersPage extends AbstractLecturePage {
 	 */
 	private class MembersTable extends AbstractPagedTable<FacultyMember> {
 
+		private static final long serialVersionUID = 449438749521068451L;
+
 		@Override
 		public DataPage<FacultyMember> getDataPage(int startRow, int pageSize) {
 			return fetchDataPage(startRow, pageSize);

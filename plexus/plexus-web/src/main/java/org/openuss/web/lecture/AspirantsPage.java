@@ -90,6 +90,8 @@ public class AspirantsPage extends AbstractLecturePage {
 	
 	private class AspirantDataProvider extends AbstractPagedTable<UserInfo> {
 
+		private static final long serialVersionUID = -7717775162072514379L;
+		
 		private DataPage<UserInfo> page; 
 		
 		@Override 

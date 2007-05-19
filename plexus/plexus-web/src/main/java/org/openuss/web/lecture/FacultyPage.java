@@ -30,6 +30,9 @@ public class FacultyPage extends AbstractLecturePage {
 	private EnrollmentDataModel enrollmentData = new EnrollmentDataModel();
 	
 	private class EnrollmentDataModel extends AbstractPagedTable<Enrollment> {
+		
+		private static final long serialVersionUID = 3682383483634321520L;
+		
 		private DataPage<Enrollment> page;
 
 		@Override

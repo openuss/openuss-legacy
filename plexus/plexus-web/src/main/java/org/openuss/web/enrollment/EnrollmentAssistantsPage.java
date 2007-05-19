@@ -40,6 +40,8 @@ public class EnrollmentAssistantsPage extends AbstractEnrollmentPage {
 
 	private class AssistantsDataProvider extends AbstractPagedTable<EnrollmentMemberInfo> {
 		
+		private static final long serialVersionUID = -5342817757466323535L;
+
 		@Override
 		public DataPage<EnrollmentMemberInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {

@@ -66,6 +66,8 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	private class DocumentDataProvider extends AbstractPagedTable<FolderEntryInfo> {
 
+		private static final long serialVersionUID = -1886479086904372812L;
+		
 		private DataPage<FolderEntryInfo> page;
 
 		@Override

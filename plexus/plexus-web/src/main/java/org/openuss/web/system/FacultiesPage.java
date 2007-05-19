@@ -78,6 +78,8 @@ public class FacultiesPage extends BasePage{
 	
 	private class FacultyDataProvider extends AbstractPagedTable<FacultyDetails> {
 		
+		private static final long serialVersionUID = 8894509911074086603L;
+		
 		private DataPage<FacultyDetails> page;
 		
 		@Override
