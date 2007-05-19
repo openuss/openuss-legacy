@@ -163,4 +163,13 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		getPreferences().setLocale(locale);
 	}
 
+	@Override
+	@SuppressWarnings("deprecation")
+	public String getSmsEmail() {
+		if (getContact() != null) {
+			return getContact().getSmsEmail();
+		}
+		return null;
+	}
+
 }
