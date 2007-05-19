@@ -15,12 +15,7 @@
 			<f:facet name="header">  
 				#{msg['discussion_thread_column_author']} 
 			</f:facet>
-			<h:outputText value="#{post.submitter}" styleClass="user_name"/>		
-		</t:column>      
-		<t:column styleClass="col_post_author">
-			<f:facet name="header">  
-				#{msg['discussion_thread_column_picture']} 
-			</f:facet>
+			<h:outputText value="#{post.submitter}" styleClass="user_name"/>
 			<h:graphicImage styleClass="userphoto"
 				value="/files?fileid=#{post.submitterPicture}"
 				title="#{post.submitter}" rendered="#{not empty post.submitterPicture}" />
