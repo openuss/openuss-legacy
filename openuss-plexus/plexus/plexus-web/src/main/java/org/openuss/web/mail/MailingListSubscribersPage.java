@@ -25,6 +25,8 @@ public class MailingListSubscribersPage extends AbstractEnrollmentPage{
 	
 	private class MailingListSubscriberProvider extends AbstractPagedTable<UserInfo> {
 
+		private static final long serialVersionUID = 5920707255237913795L;
+		
 		private DataPage<UserInfo> page; 
 		
 		@Override 

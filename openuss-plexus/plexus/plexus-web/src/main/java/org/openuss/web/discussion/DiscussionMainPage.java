@@ -33,6 +33,8 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	
 	private class DiscussionDataProvider extends AbstractPagedTable<TopicInfo> {
 
+		private static final long serialVersionUID = 5974442506189912052L;
+		
 		private DataPage<TopicInfo> page; 
 		
 		@SuppressWarnings("unchecked")

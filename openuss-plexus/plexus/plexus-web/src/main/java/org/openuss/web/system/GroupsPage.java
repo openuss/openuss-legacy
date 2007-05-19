@@ -29,6 +29,9 @@ public class GroupsPage extends BasePage{
 	private GroupTable table = new GroupTable();
 
 	private class GroupTable extends AbstractPagedTable<GroupItem> {
+		
+		private static final long serialVersionUID = 8632408249099301747L;
+		
 		private DataPage<GroupItem> page;
 		
 		@Override

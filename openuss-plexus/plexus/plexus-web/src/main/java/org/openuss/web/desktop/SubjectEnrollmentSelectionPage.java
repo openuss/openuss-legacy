@@ -50,6 +50,8 @@ public class SubjectEnrollmentSelectionPage extends BasePage {
 	
 	/* ------------------ data models ------------------- */
 	private class EnrollmentDataProvider extends AbstractPagedTable<Enrollment> {
+		private static final long serialVersionUID = 6604486126694733013L;
+		
 		private DataPage<Enrollment> page;
 
 		@Override

@@ -69,6 +69,8 @@ public class BrainContestMainPage extends AbstractEnrollmentPage{
 	@SuppressWarnings("unchecked")
 	private class BrainContestMainDataProvider extends AbstractPagedTable<BrainContestInfo> {
 
+		private static final long serialVersionUID = -7344640723752102800L;
+		
 		private DataPage<BrainContestInfo> page; 
 		
 		@Override 

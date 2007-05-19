@@ -45,6 +45,8 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	
 	private class DiscussionThreadDataProvider extends AbstractPagedTable<PostInfo> {
 
+		private static final long serialVersionUID = -2279124328223684525L;
+		
 		private DataPage<PostInfo> page; 
 		
 		@SuppressWarnings("unchecked")
