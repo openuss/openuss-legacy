@@ -98,6 +98,8 @@
 
                 <!-- Spring Hibernate Configuraiton  -->
 
+				<property name="jdbcDataSourceClass">org.apache.commons.dbcp.BasicDataSource</property>
+				<property name="jdbcDataSourceDestroyMethod">close</property>
                 <property name="hibernateDialect">org.hibernate.dialect.FirebirdDialect</property>
                 <property name="hibernateHbm2DDLAuto">auto</property>
                 <property name="hibernateShowSql">false</property>
