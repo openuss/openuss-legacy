@@ -28,8 +28,6 @@ public class DesktopPage extends BasePage {
 
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
 
-	private static final long serialVersionUID = -3558991501240784974L;
-	
 	private EnrollmentDataProvider enrollmentsProvider = new EnrollmentDataProvider();
 	private SubjectDataProvider subjectsProvider = new SubjectDataProvider();
 	private FacultyDataProvider facultiesProvider = new FacultyDataProvider();

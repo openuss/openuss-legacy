@@ -5,10 +5,13 @@
  */
 package org.openuss.messaging;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
+import org.openuss.security.User;
 
 /**
  * @see org.openuss.messaging.MessageService
@@ -35,6 +38,7 @@ public class MessageServiceImpl extends MessageServiceBase {
 		job.setMessage(message);
 		
 		getMessageJobDao().create(job);
+		getCommandService().createOnceCommand(job, "messageSendingCommmand", new Date(), null);
 		
 		return job.getId();
 	}
@@ -60,7 +64,9 @@ public class MessageServiceImpl extends MessageServiceBase {
 		job.setSendAsSms(false);
 		job.addRecipients(recipients);
 		job.setMessage(message);
+
 		getMessageJobDao().create(job);
+		getCommandService().createOnceCommand(job, "messageSendingCommmand", new Date(), null);
 		
 		return job.getId();
 	}
@@ -75,5 +81,22 @@ public class MessageServiceImpl extends MessageServiceBase {
 		Validate.notNull(messageId, "Parameter messageId must not be null.");
 		return (JobInfo) getMessageJobDao().load(MessageJobDao.TRANSFORM_JOBINFO, messageId );
 	}
+
+	@Override
+	protected Long handleSendMessage(String senderName, String subject, String text, boolean sms, User recipient) throws Exception {
+		return handleSendMessage(senderName, subject, text, sms, wrapRecipient(recipient));
+	}
+
+	@Override
+	protected Long handleSendMessage(String senderName, String subject, String templateName, Map parameters, User recipient) throws Exception {
+		return handleSendMessage(senderName, subject, templateName, parameters, wrapRecipient(recipient));
+	}
+
+	private List<User> wrapRecipient(User recipient) {
+		List<User> recipients = new ArrayList<User>();
+		recipients.add(recipient);
+		return recipients;
+	}
+
 
 }

@@ -186,15 +186,4 @@
         </property>
     </bean>
     
-   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		      Message Resources
-	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-   	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basenames">
-			<list>
-				<value>classpath:/org/acegisecurity/messages</value>
-			</list>
-		</property>
-	</bean>
-
 </beans>

@@ -19,11 +19,10 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
  * Class for sending e-mail messages 
  * 
  * @author Ingo Dueppe
+ * @deprecated
  */
 public class MailEngine {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(MailEngine.class);
 	
 	private static final String TEMPLATE_PREFIX = "templates/emails/";
@@ -71,7 +70,7 @@ public class MailEngine {
      * @author Ben Gill
      */
     public void sendMessage(String[] emailAddresses,
-                            ClassPathResource resource, String bodyText,
+    						ClassPathResource resource, String bodyText,
                             String subject, String attachmentName)
     throws MessagingException {
         MimeMessage message =

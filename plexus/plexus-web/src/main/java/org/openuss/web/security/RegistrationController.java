@@ -14,12 +14,13 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Session;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.controller.BaseBean;
+import org.openuss.messaging.MessageService;
 import org.openuss.registration.RegistrationException;
 import org.openuss.registration.RegistrationService;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
+import org.openuss.system.SystemService;
 import org.openuss.web.Constants;
-import org.openuss.web.mail.MailController;
 import org.openuss.web.utils.MessageBox;
 
 
@@ -43,9 +44,12 @@ public class RegistrationController extends BaseBean {
 
 	@Property(value = "#{securityService}")
 	transient private SecurityService securityService;
-
-	@Property(value = "#{mailController}")
-	transient private MailController mailController;
+	
+	@Property(value = "#{messageService}")
+	transient private MessageService messageService;
+	
+	@Property(value = "#{systemService}")
+	transient private SystemService systemService;
 
 	@Property(value = "#{registrationData}")
 	private RegistrationData registrationData;
@@ -90,16 +94,18 @@ public class RegistrationController extends BaseBean {
 		try {
 			String link = "/actions/public/user/activate.faces?code="+ activationCode;
 
-			// FIXME the configuration should come from the resources
-			final HttpServletRequest request = getRequest();
-			link = "http://" + request.getServerName() + ":"
-					+ request.getServerPort() + request.getContextPath() + link;
+			link = applicationAddress() + link;
 
 			Map parameters = new HashMap();
 			parameters.put("username", user.getUsername());
 			parameters.put("link", link);
 			
-			mailController.sendMails("user_email_verification_subject", user, "verification", parameters);
+			messageService.sendMessage(
+					"user.email.verification.sender", 
+					"user.email.verification.subject", 
+					"verification",
+					parameters,
+					user);
 			
 		} catch (Exception e) {
 			logger.error("Error: ", e);
@@ -143,14 +149,24 @@ public class RegistrationController extends BaseBean {
 	private void sendForgottenPasswordEmail(User user, String verificationCode) throws Exception {
 			String link = "/actions/public/user/password/change.faces?code=" + verificationCode;
 
-			final HttpServletRequest request = getRequest();
-			link = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + link;
+			link = applicationAddress() + link;
 
 			Map parameters = new HashMap();
 			parameters.put("username", user.getUsername());
-			parameters.put("link", link);
-
-			mailController.sendMails("user_password_requestMail_subject", user, "verification", parameters);
+			parameters.put("passwordresetlink", link);
+			
+			messageService.sendMessage(
+					"user.password.request.sender", 
+					"user.password.request.subject",
+					"password",
+					parameters,
+					user);
+	}
+	
+	private String applicationAddress() {
+		// FIXME - must be configurable from outside
+		final HttpServletRequest request = getRequest();
+		return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 	}
 
 	/**
@@ -230,12 +246,20 @@ public class RegistrationController extends BaseBean {
 		this.userToken = userToken;
 	}
 
-	public MailController getMailController() {
-		return mailController;
+	public MessageService getMessageService() {
+		return messageService;
 	}
 
-	public void setMailController(MailController mailController) {
-		this.mailController = mailController;
+	public void setMessageService(MessageService messageService) {
+		this.messageService = messageService;
+	}
+
+	public SystemService getSystemService() {
+		return systemService;
+	}
+
+	public void setSystemService(SystemService systemService) {
+		this.systemService = systemService;
 	}
 
 }

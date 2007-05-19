@@ -33,17 +33,20 @@ public class ClusterCommandProcessor implements ApplicationContextAware {
 	 * process all pending each node commands
 	 */
 	public void processEachCommands() {
+		logger.info("starting processing each commands");
 		Collection<Command> commands = loadNextEachCommands();
 		for (Command command : commands) {
 			processEachCommand(command);
 			updateLastProcessedCommand(command);
 		}
+		logger.info("finished processing each commands");
 	}
 	
 	/**
 	 * process next pending once node command
 	 */
 	public void processOnceCommand() {
+		logger.info("starting processing next once command");
 		Command command = loadNextOnceCommand();
 		if (command != null) {
 			try {
@@ -57,6 +60,7 @@ public class ClusterCommandProcessor implements ApplicationContextAware {
 				commandDao.update(command);
 			}
 		}
+		logger.info("fished processing next once command");
 	}
 	
 	private Command loadNextOnceCommand() {

@@ -84,6 +84,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertNotNull(folder.getId());
 		assertEquals("",folder.getPath());
 		
+		commit();
 		entries = documentService.getFolderEntries(null, root);
 		assertNotNull(entries);
 		assertEquals(1, entries.size());
