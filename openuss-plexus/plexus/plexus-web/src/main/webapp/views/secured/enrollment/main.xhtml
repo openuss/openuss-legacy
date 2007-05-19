@@ -32,11 +32,15 @@
 		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
 	</ui:define>
 	<ui:define name="content" styleClass="footer_normal">
-			<o:block label="#{enrollment.subject.name} (#{enrollment.shortcut})">
+			<o:block>
+				<h:outputText value="#{enrollment.shortcut}" styleClass="content_font_normal"></h:outputText>
+			</o:block>
+			<o:block>
 				<div class="content_font_normal">
 					<h:outputText value="#{enrollment.description}" escape="false"/>
 				</div>
 				<h:outputText value="#{msg.enrollment_main_assistants}" styleClass="field_label" rendered="#{not empty views$secured$enrollment$main.assistants}"/>
+				<span class="content_font_normal">
 				<t:dataList 
 					id="assistants"  
 					var="assistant"
@@ -45,6 +49,7 @@
 					layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
 					<h:outputText value="#{assistant.title} #{assistant.firstName} #{assistant.lastName}"/>
 				</t:dataList>
+				</span>
 			</o:block>
 
 			<s:authorize ifAllGranted="ROLE_USER">

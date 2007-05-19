@@ -10,13 +10,38 @@ package org.openuss.messaging;
  * @author ingo dueppe
  */
 public class RecipientImpl extends RecipientBase implements Recipient {
-	/**
-	 * The serial version UID of this class. Needed for serialization.
-	 */
+
 	private static final long serialVersionUID = -3940109635404398657L;
 	
 	public RecipientImpl() {
-		setStatus(SendState.TOSEND);
+		setState(SendState.TOSEND);
+	}
+
+	@Override
+	public String getEmail() {
+		if (getUser() != null) {
+			return getUser().getEmail();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public String getLocale() {
+		if (getUser() != null) {
+			return getUser().getLocale();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public String getSmsEmail() {
+		if (getUser() != null) {
+			return getUser().getSmsEmail();
+		} else {
+			return null;
+		}
 	}
 
 }

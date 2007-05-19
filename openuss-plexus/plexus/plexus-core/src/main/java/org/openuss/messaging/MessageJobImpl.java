@@ -48,7 +48,7 @@ public class MessageJobImpl extends MessageJobBase implements MessageJob {
 	public int getToSend() {
 		return CollectionUtils.countMatches(getRecipients(), new Predicate() {
 			public boolean evaluate(Object object) {
-				return SendState.TOSEND.equals(((Recipient) object).getStatus()); 
+				return SendState.TOSEND.equals(((Recipient) object).getState()); 
 			}
 		});
 	}
@@ -60,7 +60,7 @@ public class MessageJobImpl extends MessageJobBase implements MessageJob {
 	public int getError() {
 		return CollectionUtils.countMatches(getRecipients(), new Predicate() {
 			public boolean evaluate(Object object) {
-				return SendState.ERROR.equals(((Recipient) object).getStatus()); 
+				return SendState.ERROR.equals(((Recipient) object).getState()); 
 			}
 		});
 	}
@@ -71,7 +71,7 @@ public class MessageJobImpl extends MessageJobBase implements MessageJob {
 	public int getSend() {
 		return CollectionUtils.countMatches(getRecipients(), new Predicate() {
 			public boolean evaluate(Object object) {
-				return SendState.SEND.equals(((Recipient) object).getStatus()); 
+				return SendState.SEND.equals(((Recipient) object).getState()); 
 			}
 		});
 	}

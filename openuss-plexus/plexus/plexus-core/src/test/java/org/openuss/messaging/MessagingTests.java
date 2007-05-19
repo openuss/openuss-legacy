@@ -15,6 +15,7 @@ public class MessagingTests {
 		suite.addTestSuite(TemplateMessageDaoTest.class);
 		suite.addTestSuite(TemplateParameterDaoTest.class);
 		suite.addTestSuite(TextMessageDaoTest.class);
+		suite.addTestSuite(MessageSendingCommandTest.class);
 		//$JUnit-END$
 		return suite;
 	}

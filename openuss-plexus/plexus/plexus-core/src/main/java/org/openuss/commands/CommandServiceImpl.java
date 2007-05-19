@@ -38,6 +38,10 @@ public class CommandServiceImpl extends CommandServiceBase {
 		Validate.notEmpty(commandName, "CommandName must not be null.");
 		Validate.notNull(state, "State must not be null");
 		
+		if (startTime == null) {
+			startTime = new Date();
+		}
+		
 		Command command = Command.Factory.newInstance();
 		command.setDomainIdentifier(domainObject.getId());
 		command.setCommand(commandName);

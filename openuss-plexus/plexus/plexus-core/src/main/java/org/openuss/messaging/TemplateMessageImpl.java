@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -23,13 +26,25 @@ public class TemplateMessageImpl extends TemplateMessageBase implements Template
 	 * @see org.openuss.messaging.TemplateMessage#addParameter(java.lang.String,
 	 *      java.lang.String)
 	 */
-	public void addParameter(String name, String value) {
+	public void addParameter(final String name, String value) {
 		Validate.notEmpty(name, "Parameter name must not be null");
 		Validate.notEmpty(value, "Parameter value must not be null");
-		TemplateParameter parameter = TemplateParameter.Factory.newInstance();
-		parameter.setName(name);
-		parameter.setValue(value);
-		addParameter(parameter);
+
+		TemplateParameter parameter = (TemplateParameter) CollectionUtils.find(getParameters(), new Predicate() {
+			public boolean evaluate(Object object) {
+				TemplateParameter param = (TemplateParameter) object;
+				return StringUtils.equals(name, param.getName());
+			}
+		});
+		
+		if (parameter == null) {
+			parameter = TemplateParameter.Factory.newInstance();
+			parameter.setName(name);
+			parameter.setValue(value);
+			addParameter(parameter);
+		} else {
+			parameter.setValue(value);
+		}
 	}
 
 	/**
@@ -55,16 +70,17 @@ public class TemplateMessageImpl extends TemplateMessageBase implements Template
 	 */
 	public void addParameters(Map parameters) {
 		Validate.notNull(parameters, "Parameter parameters must not be null");
-		Validate.allElementsOfType(parameters.keySet(), String.class, "Parameter parameters must contain Map<String,String>");
-		for(Map.Entry<String, String> entry : (Set<Map.Entry<String,String>>)parameters.entrySet()) {
-			addParameter(entry.getKey(),entry.getValue());
+		Validate.allElementsOfType(parameters.keySet(), String.class,
+				"Parameter parameters must contain Map<String,String>");
+		for (Map.Entry<String, String> entry : (Set<Map.Entry<String, String>>) parameters.entrySet()) {
+			addParameter(entry.getKey(), entry.getValue());
 		}
 	}
 
 	@Override
 	public Map getParameterMap() {
-		Map<String, String> params = new HashMap<String,String>();
-		for(TemplateParameter param : getParameters()) {
+		Map<String, String> params = new HashMap<String, String>();
+		for (TemplateParameter param : getParameters()) {
 			params.put(param.getName(), param.getValue());
 		}
 		return params;

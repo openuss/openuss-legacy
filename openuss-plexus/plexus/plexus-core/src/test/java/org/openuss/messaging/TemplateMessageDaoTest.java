@@ -5,6 +5,11 @@
  */
 package org.openuss.messaging;
 
+import java.util.ArrayList;
+import java.util.Set;
+
+import org.apache.commons.lang.RandomStringUtils;
+
 
 
 /**
@@ -30,20 +35,36 @@ public class TemplateMessageDaoTest extends TemplateMessageDaoTestBase {
 		message.addParameter("name","name of the sender");
 		message.addParameter("fromEmail","no-reply@openuss.org");
 		message.addParameter("sender","mailing list");
+		message.addParameter(RandomStringUtils.random(64), RandomStringUtils.randomAlphanumeric(255));
 		
 		templateMessageDao.update(message);
-		
-		
 		commit();
 		
 		TemplateMessage loadMessage = templateMessageDao.load(message.getId());
 		
 		commit();
 		
-		assertEquals(3, loadMessage.getParameters().size());
+		assertEquals(4, loadMessage.getParameters().size());
 		assertEquals(TEMPLATENAME, loadMessage.getTemplate());
 		assertEquals(SENDERNAME, loadMessage.getSenderName());
 		assertEquals(SUBJECT, loadMessage.getSubject());
+	}
+	
+	public void testTemplateMessageParameters() {
+		TemplateMessage message = TemplateMessage.Factory.newInstance();
+		message.addParameter("paramter_1", RandomStringUtils.random(255) );
+		message.addParameter("paramter_2", RandomStringUtils.random(255) );
+		message.addParameter("paramter_3", RandomStringUtils.random(255) );
+		message.addParameter("paramter_4", RandomStringUtils.random(255) );
+		message.addParameter("paramter_4", RandomStringUtils.random(255) );
 		
+		Set<TemplateParameter> params = message.getParameters();
+		assertEquals(4, params.size());
+		
+		for (TemplateParameter param : new ArrayList<TemplateParameter>(params)) {
+			message.removeParameter(param);
+		}
+		
+		assertEquals(0, message.getParameters().size());
 	}
 }
