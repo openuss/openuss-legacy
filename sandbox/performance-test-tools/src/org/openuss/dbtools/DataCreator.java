@@ -43,7 +43,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * This class contains methods to put some (non-random) data into the database.
  * It always expects a clean database!
  * 
- * @version	1.0.0-SNAPSHOT
+ * @version	1.0.1-SNAPSHOT
  * 
  * @author Ron Haus
  * 
@@ -82,9 +82,13 @@ public class DataCreator {
 	}
 
 	private String[] getConfigLocations() {
-		return new String[] { "classpath*:applicationContext.xml", "classpath*:applicationContext-localDataSource.xml",
-				"classpath*:applicationContext-beans.xml", "classpath*:applicationContext-tests.xml",
-				"classpath*:applicationContext-cache.xml", "classpath*:beanRefFactory", "classpath*:testSecurity.xml" };
+		return new String[] { 	"classpath*:applicationContext.xml",
+								"classpath*:testDataSource.xml",
+								"classpath*:applicationContext-cache.xml",
+								"classpath*:applicationContext-entities.xml",
+								"classpath*:applicationContext-tests.xml",								
+								"classpath*:testSecurity.xml",
+								"classpath*:beanRefFactory" };
 	}
 
 	private static void createSecureContext(String roleName) {
