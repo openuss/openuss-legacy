@@ -5,23 +5,27 @@ import org.apache.lucene.search.Searcher;
 import org.springmodules.lucene.index.factory.SimpleLuceneIndexReader;
 import org.springmodules.lucene.search.factory.LuceneSearcher;
 
-public class LuceneIndexReader extends SimpleLuceneIndexReader {
+/**
+ * Workaround class until spring modules will implement the SimpleLuceneIndexReader. 
+ * @author Ingo Dueppe
+ *
+ */
+public class WorkaroundIndexReader extends SimpleLuceneIndexReader {
+	
+	private LuceneSearcher luceneSearcher;
 
-	public LuceneIndexReader(IndexReader indexReader) {
+	public WorkaroundIndexReader(IndexReader indexReader, LuceneSearcher luceneSearcher) {
 		super(indexReader);
+		this.luceneSearcher = luceneSearcher;
 	}
 
 	@Override
 	public LuceneSearcher createSearcher() {
-		return super.createSearcher();
+		return luceneSearcher;
 	}
 
 	@Override
 	public Searcher createNativeSearcher() {
 		return super.createNativeSearcher();
 	}
-	
-	
-	
-
 }
