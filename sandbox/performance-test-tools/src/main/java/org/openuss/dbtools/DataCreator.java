@@ -1,5 +1,8 @@
 package org.openuss.dbtools;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +23,9 @@ import org.openuss.discussion.DiscussionService;
 import org.openuss.discussion.ForumInfo;
 import org.openuss.discussion.PostInfo;
 import org.openuss.discussion.TopicInfo;
+import org.openuss.documents.DocumentService;
+import org.openuss.documents.FileInfo;
+import org.openuss.documents.FolderInfo;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.Enrollment;
 import org.openuss.lecture.Faculty;
@@ -43,7 +49,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * This class contains methods to put some (non-random) data into the database.
  * It always expects a clean database!
  * 
- * @version	1.0.1-SNAPSHOT
+ * @version 1.1.0-SNAPSHOT
  * 
  * @author Ron Haus
  * 
@@ -59,9 +65,11 @@ public class DataCreator {
 
 	private DiscussionService discussionService;
 
+	private DocumentService documentService;
+
 	private FacultyDao facultyDao;
 
-	SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 
 	private static Logger logger = Logger.getRootLogger();
 
@@ -77,18 +85,15 @@ public class DataCreator {
 		lectureService = (LectureService) appContext.getBean("lectureService");
 		desktopService = (DesktopService) appContext.getBean("desktopService");
 		discussionService = (DiscussionService) appContext.getBean("discussionService");
+		documentService = (DocumentService) appContext.getBean("documentService");
 
 		facultyDao = (FacultyDao) appContext.getBean("facultyDao");
 	}
 
 	private String[] getConfigLocations() {
-		return new String[] { 	"classpath*:applicationContext.xml",
-								"classpath*:testDataSource.xml",
-								"classpath*:applicationContext-cache.xml",
-								"classpath*:applicationContext-entities.xml",
-								"classpath*:applicationContext-tests.xml",								
-								"classpath*:testSecurity.xml",
-								"classpath*:beanRefFactory" };
+		return new String[] { "classpath*:applicationContext.xml", "classpath*:performanceTestDataSource.xml",
+				"classpath*:applicationContext-cache.xml", "classpath*:applicationContext-entities.xml",
+				"classpath*:applicationContext-tests.xml", "classpath*:testSecurity.xml", "classpath*:beanRefFactory" };
 	}
 
 	private static void createSecureContext(String roleName) {
@@ -110,9 +115,9 @@ public class DataCreator {
 	 * @param userNumber -
 	 *            Total number of users that will be created.
 	 * @param facultyNumber -
-	 *            Total number of faculties that will be created for the
-	 *            first $facultyNumber of users. Therefore, needs to be smaller
-	 *            that &userNumber.
+	 *            Total number of faculties that will be created for the first
+	 *            $facultyNumber of users. Therefore, needs to be smaller that
+	 *            &userNumber.
 	 * @param periodNumber -
 	 *            Total number of tperiods that will be created for each
 	 *            faculty.
@@ -306,11 +311,11 @@ public class DataCreator {
 
 	/**
 	 * 
-	 * Creates (non-random) topics and posts. Everything created by the owner of the faculty.
+	 * Creates (non-random) topics and posts. Everything created by the owner of
+	 * the faculty.
 	 * 
 	 * @param topicNumber -
-	 *            Total number of topics that will be created for each
-	 *            forum.
+	 *            Total number of topics that will be created for each forum.
 	 * @param postNumber -
 	 *            Total number of posts that will be put into each topic.
 	 */
@@ -356,7 +361,8 @@ public class DataCreator {
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
 			for (Enrollment enrollment : enrollments) {
-				logger.info("Starting with the Forum of Subject "+enrollment.getSubject().getName()+" in Period "+enrollment.getPeriod().getName()+"...");
+				logger.info("Starting with the Forum of Subject " + enrollment.getSubject().getName() + " in Period "
+						+ enrollment.getPeriod().getName() + "...");
 				loadedForum = discussionService.getForum(enrollment);
 				for (int j = 1; j < (topicNumber + 1); j++) {
 					post = new PostInfo();
@@ -383,7 +389,7 @@ public class DataCreator {
 						post.setSubmitter(owner.getUsername());
 						post.setSubmitterId(owner.getId());
 						post.setText("This is another posting!");
-						post.setTitle("This is posting number " + (m+1));
+						post.setTitle("This is posting number " + (m + 1));
 						post.setIp("192.168.0.1");
 
 						discussionService.addPost(post, topic);
@@ -394,5 +400,89 @@ public class DataCreator {
 
 		destroySecureContext();
 
+	}
+
+	public void createDocuments() throws Exception {
+		logger.info("Creating Documents...");
+
+		createSecureContext("ROLE_ADMIN");
+
+		// Load Faculties
+		List faculties = facultyDao.loadAllEnabled();
+		logger.info("Number of Faculties found: " + faculties.size());
+
+		Faculty faculty = null;
+		List<Enrollment> enrollments = null;
+		FolderInfo root = null;
+		FolderInfo folder = null;
+		File file1 = null;
+		File file2 = null;
+		File file3 = null;
+		FileInputStream fileStream1 = null;
+		FileInputStream fileStream2 = null;
+		FileInputStream fileStream3 = null;
+		FileInfo fileInfo1 = null;
+		FileInfo fileInfo2 = null;
+		FileInfo fileInfo3 = null;
+
+		Iterator itFac = faculties.iterator();
+		for (int i = 0; i < faculties.size(); i++) {
+			faculty = (Faculty) itFac.next();
+			enrollments = faculty.getEnrollments();
+			logger.info("Number of Enrollments in Faculty \""+faculty.getName()+"\" found: " + enrollments.size());
+			
+			for (Enrollment enrollment : enrollments) {
+
+				// Create Folder
+				logger.info("Creating a folder for Enrollment \""+enrollment.getName()+"\"...");
+				root = documentService.getFolder(enrollment);
+				folder = new FolderInfo();
+				folder.setName("Lecture Notes");
+				folder.setDescription("Files for the lecture");
+				documentService.createFolder(folder, root);
+
+				// Create FileInputStreams
+				file1 = new File(System.getProperty("user.dir")+"/src/main/resources/files/openuss-plexus.txt");
+				fileStream1 = new FileInputStream(file1);
+				file2 = new File(System.getProperty("user.dir")+"/src/main/resources/files/ET+EUS_1.1_EUS-CAL.pdf");
+				fileStream2 = new FileInputStream(file2);
+				file3 = new File(System.getProperty("user.dir")+"/src/main/resources/files/ET+EUS_1.2.2_1.2.4.pdf");
+				fileStream3 = new FileInputStream(file3);
+				
+				//Create FileInfos
+				fileInfo1 = new FileInfo();
+				fileInfo1.setFileName("openuss-plexus.txt");
+				fileInfo1.setDescription("Log-File of OpenUSS");
+				fileInfo1.setContentType("plain/text");
+				fileInfo1.setFileSize(new Long(file1.length()).intValue());
+				fileInfo1.setCreated(new Date());
+				fileInfo1.setModified(new Date());
+				fileInfo1.setInputStream(fileStream1);
+				fileInfo2 = new FileInfo();
+				fileInfo2.setFileName("ET+EUS_1.1_EUS-CAL.pdf");
+				fileInfo2.setDescription("Log-File of OpenUSS");
+				fileInfo2.setContentType("application/pdf");
+				fileInfo2.setFileSize(new Long(file2.length()).intValue());
+				fileInfo2.setCreated(new Date());
+				fileInfo2.setModified(new Date());
+				fileInfo2.setInputStream(fileStream2);
+				fileInfo3 = new FileInfo();
+				fileInfo3.setFileName("ET+EUS_1.2.2_1.2.4.pdf");
+				fileInfo3.setDescription("Log-File of OpenUSS");
+				fileInfo3.setContentType("application/pdf");
+				fileInfo3.setFileSize(new Long(file3.length()).intValue());
+				fileInfo3.setCreated(new Date());
+				fileInfo3.setModified(new Date());
+				fileInfo3.setInputStream(fileStream3);
+
+				// Upload Files
+				logger.info("Uploading 3 files for Enrollment \""+enrollment.getName()+"\"...");
+				documentService.createFileEntry(fileInfo1, folder);
+				documentService.createFileEntry(fileInfo2, folder);
+				documentService.createFileEntry(fileInfo3, folder);
+			}
+		}
+
+		destroySecureContext();
 	}
 }
