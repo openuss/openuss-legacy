@@ -9,6 +9,7 @@
 
 	<!-- Spring Cache Manager Configuration  -->
 	<bean id="cacheManager"	class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation"><value>ehcache-security.xml</value></property>
 		<property name="shared" value="true"></property>
 	</bean>
 	
@@ -19,11 +20,10 @@
 			<ref local="cacheManager" />
 		</property>
 		<property name="cacheName">
-			<value>userCache</value>
+			<value>user</value>
 		</property>
 	</bean>
 	
-	<!-- User Cache Configuration  -->
 	<bean id="userCache"
 		class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
 		<property name="cache">
@@ -31,20 +31,20 @@
 		</property>
 	</bean>
 	
-	<bean id="ehCacheBasedAclEntryCache" class="org.acegisecurity.acl.basic.cache.EhCacheBasedAclEntryCache">
-		<property name="cache"><ref local="userCacheBackend"/></property>
-	</bean>
-	
-	<bean id="passwordEncoder"
-		class="org.acegisecurity.providers.encoding.Md5PasswordEncoder" />
 
-	<bean id="cacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+	<bean id="aclCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
 		<property name="cacheManager">
 			<ref local="cacheManager"/>
 		</property>
 		<property name="cacheName">
-			<value>userCache</value>
+			<value>acls</value>
 		</property>
 	</bean>
 	
+	<bean id="ehCacheBasedAclEntryCache" class="org.acegisecurity.acl.basic.cache.EhCacheBasedAclEntryCache">
+		<property name="cache"><ref local="aclCacheBackend"/></property>
+	</bean>
+
+	<bean id="passwordEncoder"
+		class="org.acegisecurity.providers.encoding.Md5PasswordEncoder" />
 </beans>
