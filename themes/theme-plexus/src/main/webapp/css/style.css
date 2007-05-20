@@ -282,7 +282,7 @@ span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:
   width: 180px;
 }
 
-li.nav_item > ul.navigation {
+li.nav_item ul.navigation {
   list-style-type: none;
   margin: 0; 
   padding: 0;
@@ -1159,7 +1159,7 @@ span.table_data_info {
 }
 
   
-td > input.button, .button_unlink, .button_link, .button_remove, .button_edit, .button_remove, .button_profile {
+td input.button, .button_unlink, .button_link, .button_remove, .button_edit, .button_remove, .button_profile {
   	width: 79px;
 	height: 17px;
 	margin: 2px 5px 2px 0;
@@ -1177,7 +1177,7 @@ td > input.button, .button_unlink, .button_link, .button_remove, .button_edit, .
 	filter:DropShadow(color=#FFF, offx=1, offy=1)
 }
 
-td > input.button:hover, .button_unlink:hover, .button_link:hover, .button_remove:hover, .button_edit:hover, .button_remove:hover, .button_profile:hover {
+td input.button:hover, .button_unlink:hover, .button_link:hover, .button_remove:hover, .button_edit:hover, .button_remove:hover, .button_profile:hover {
   	background: transparent url(../img/button_70_hover.png) 0px 0px no-repeat;
 }
 
