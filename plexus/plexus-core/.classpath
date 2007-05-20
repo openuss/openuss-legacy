@@ -63,6 +63,7 @@
 	<classpathentry kind="var" path="M2_REPO/org/apache/lucene/lucene-core/2.0.0/lucene-core-2.0.0.jar" sourcepath="/JAVALIBS/lucene-2.0.0/src/java"/>
 	<classpathentry kind="var" path="M2_REPO/org/springmodules/spring-modules-lucene/0.8a/spring-modules-lucene-0.8a.jar" sourcepath="/M2_REPO/org/springmodules/spring-modules-lucene/0.8a/spring-modules-lucene-0.8a-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/ant/ant/1.6.5/ant-1.6.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-pool/commons-pool/1.3/commons-pool-1.3.jar"/> 
 	<classpathentry kind="var" path="M2_REPO/commons-dbcp/commons-dbcp/1.2.2/commons-dbcp-1.2.2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
