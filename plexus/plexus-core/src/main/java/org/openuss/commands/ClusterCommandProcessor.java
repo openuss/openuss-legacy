@@ -60,7 +60,7 @@ public class ClusterCommandProcessor implements ApplicationContextAware {
 				commandDao.update(command);
 			}
 		}
-		logger.info("fished processing next once command");
+		logger.info("finished processing next once command");
 	}
 	
 	private Command loadNextOnceCommand() {
