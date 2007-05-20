@@ -101,8 +101,8 @@ public class RegistrationController extends BaseBean {
 			parameters.put("link", link);
 			
 			messageService.sendMessage(
-					"user.email.verification.sender", 
-					"user.email.verification.subject", 
+					"user.registration.email.verification.sender", 
+					"user.registration.email.verification.subject", 
 					"verification",
 					parameters,
 					user);
