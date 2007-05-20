@@ -9,7 +9,7 @@
 
 	<!-- Spring Cache Manager Configuration  -->
 	<bean id="cacheManager"	class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-		<property name="configLocation"><value>ehcache-security.xml</value></property>
+		<property name="configLocation"><value>classpath:ehcache-security.xml</value></property>
 		<property name="shared" value="true"></property>
 	</bean>
 	
