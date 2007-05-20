@@ -1380,6 +1380,42 @@ a.sort_header {
 	text-decoration: none;
 }
 
+td .user_name{
+	display:block;
+	margin-bottom:5px;
+}
+
+td .userphoto {
+	display:block;
+}
+
+td .col_post_text .content_font_normal {
+	padding: 5px 0 5px 0;
+	color: #000000;
+}
+
+td .col_post_attachments {
+	color: #505050;
+}
+
+td .col_post_attachments .content_font_normal {
+	padding: 5px 0 5px 0;
+	font-weight: bold;
+	color: #000000;
+}
+
+td .col_post_author{
+	width: 250px;
+}
+
+td .col_post_date{
+	width: 150px;
+}
+
+td .col_post_commands{
+	width: 270px;
+}
+
 td .pulldown_small {
   display: block;
   width: 100px;
