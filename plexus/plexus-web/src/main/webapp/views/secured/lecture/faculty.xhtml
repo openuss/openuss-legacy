@@ -32,21 +32,32 @@
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
 		</ui:define>		
   		<ui:define name="content"> 
-				<h:form id="facultyMainForm" rendered="${!empty faculty.activePeriod}">
+				<h:form id="facultyMainForm" rendered="${!empty faculty.periods}">
+					<o:block>
+						<h:outputText value="#{msg.faculty_period_selection}" styleClass="header_font_normal"/>
+						<h:selectOneMenu id="periodSelection" 
+							layout="pageDirection"  
+							value="#{period.id}" 
+							valueChangeListener="#{views$secured$lecture$faculty.processPeriodSelectChanged}" 
+							onchange="this.form.submit();"
+							immediate="true" 
+							styleClass="pulldown_inline">
+							<t:selectItems value="#{faculty.periods}" var="period" itemLabel="#{period.name}" itemValue="#{period.id}"/>
+						</h:selectOneMenu>
+					</o:block>
+					
 				    <plexus:dataTable 
 				     	id="enrollments" 
 				     	var="enrollment" 
-				     	label="#{period.name}" 
+				     	label="#{period.name}"
 				     	value="views$secured$lecture$faculty.enrollmentData" 
 				     	columnClasses="col_max_left, col_commands_two"
-						styleClass="tabel"
+						styleClass="table"
 				     	rows="10">       
 				       
 						<t:column>
 							<plexus:commandSortHeader columnName="subject.name">
-								<h:outputFormat value="#{msg.faculty_main_active_enrollments_header}">
-						  			<f:param value="#{faculty.activePeriod.name}"/>
-						  		</h:outputFormat>
+								<h:outputText value="#{msg.enrollment_colheader_name}"/>
 							</plexus:commandSortHeader>
 							<o:link value="/views/secured/enrollment/main.faces" title="#{enrollment.subject.description}">
 								<f:param value="#{enrollment.id}" name="enrollment" />
