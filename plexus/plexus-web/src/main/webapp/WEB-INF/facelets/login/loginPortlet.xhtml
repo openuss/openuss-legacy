@@ -19,8 +19,8 @@
 		<s:authorize ifNotGranted="ROLE_USER">
    			<o:block label="#{msg.login_headline}">
 		   		<h:form id="loginPortletLogin" >
-		   			<o:input entity="authenticationController" property="username" label="${msg['login_username']}" required="true"/>
-		   			<o:input entity="authenticationController" property="password" label="${msg['login_password']}" required="true" type="password"/>
+		   			<o:input entity="authenticationController" property="username" label="${msg['login_username']}" title="${msg['login_username_hint']}" required="true"/>
+		   			<o:input entity="authenticationController" property="password" label="${msg['login_password']}" title="${msg['login_password_hint']}" required="true" type="password"/>
 			    	<h:commandButton id="loginButton" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button"/>
 			    	
 		    	</h:form>
