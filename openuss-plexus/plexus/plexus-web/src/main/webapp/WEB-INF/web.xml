@@ -21,6 +21,7 @@
 			classpath*:applicationContext-adapters.xml,
 			classpath*:applicationContext-commands.xml,
 			classpath*:applicationContext-messaging.xml,
+			classpath*:applicationContext-mailinglist.xml,
 			classpath*:applicationContext-lucene.xml,
 			classpath*:applicationContext-resources.xml,
 			/WEB-INF/security.xml,

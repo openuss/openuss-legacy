@@ -1,66 +1,84 @@
-package org.openuss.web.mail; 
+package org.openuss.web.mail;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.mailinglist.SubscriberInfo;
 import org.openuss.security.User;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
-import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
-//TODO remove me
-@Bean(name = "views$secured$enrollment$mailinglistsubscribers", scope = Scope.REQUEST)
+@Bean(name = "views$secured$mailinglist$mailinglistsubscribers", scope = Scope.REQUEST)
 @View
-public class MailingListSubscribersPage extends AbstractEnrollmentPage{
-	private static final Logger logger = Logger.getLogger(MailingListSubscribersPage.class);
+public class MailingListSubscribersPage extends AbstractMailingListPage{
 	
-	private MailingListSubscriberProvider data = new MailingListSubscriberProvider();
+	private SubscriberDataProvider data = new SubscriberDataProvider();
 	
+	@Property(value= "#{"+Constants.USER+"}")
+	private User user;
 	
-	private class MailingListSubscriberProvider extends AbstractPagedTable<UserInfo> {
+	@SuppressWarnings("unchecked")
+	@Prerender
+	public void prerender() throws Exception {	
+		super.prerender();
+		mailingList = getEnrollmentMailingListService().getMailingList(enrollmentInfo);
+		setSessionBean(Constants.MAILINGLIST_MAILINGLIST, mailingList);
+	}	
+	
+	private class SubscriberDataProvider extends AbstractPagedTable<SubscriberInfo> {
 
-		private static final long serialVersionUID = 5920707255237913795L;
+
+		private static final long serialVersionUID = -6827145859288709001L;
+
+		private DataPage<SubscriberInfo> page; 
 		
-		private DataPage<UserInfo> page; 
-		
+		@SuppressWarnings("unchecked")
 		@Override 
-		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {		
-			ArrayList<UserInfo> al = new ArrayList<UserInfo>();			
-			UserInfo ui1 = new UserInfo(new Long(1234), "cag", "Sebastian", "Roekens", "abc123", "plexus@openuss-plexus.com", true, false, false, new Date(System.currentTimeMillis()));
-			UserInfo ui2 = new UserInfo(new Long(12345), "dueppe", "Ingo", "Düppe", "12345", "plexus@openuss-plexus.com", true, true, false, new Date(System.currentTimeMillis()));
-			UserInfo ui3 = new UserInfo(new Long(1111), "bundy", "Al", "Bundy", "dumpfbacke", "plexus@openuss-plexus.com", true, false, true, new Date(System.currentTimeMillis()));
-			al.add(ui1); al.add(ui2); al.add(ui3);
-			page = new DataPage<UserInfo>(al.size(),0,al);
+		public DataPage<SubscriberInfo> getDataPage(int startRow, int pageSize) {		
+			List<SubscriberInfo> al = enrollmentMailingListService.getSubscribers(enrollmentInfo);			
+			page = new DataPage<SubscriberInfo>(al.size(),0,al);
 			return page;
 		}
 	}
 
 	public String showProfile() {
-		UserInfo userInfo = data.getRowData();
+		SubscriberInfo subscriberInfo = data.getRowData();
 		User user = User.Factory.newInstance();
-		user.setId(userInfo.getId());
+		user.setId(subscriberInfo.getUserId());
 		setSessionBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
-		
-	public String exportList() {
-		logger.debug("mailingList exported");
-		return Constants.SUCCESS;		
+	
+	public String removeSubscriber(){
+		User user = User.Factory.newInstance();
+		user.setId(data.getRowData().getUserId());
+		getEnrollmentMailingListService().unsubscribe(enrollmentInfo, user);
+		 return Constants.SUCCESS;
 	}
+	
 
-	public MailingListSubscriberProvider getData() {
+	public SubscriberDataProvider getData() {
 		return data;
 	}
 
-	public void setData(MailingListSubscriberProvider data) {
+	public void setData(SubscriberDataProvider data) {
 		this.data = data;
 	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	
 	
 }

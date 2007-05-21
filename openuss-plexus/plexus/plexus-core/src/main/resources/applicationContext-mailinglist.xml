@@ -7,7 +7,7 @@
     				MailingList Command Configuration
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	 
-	 <bean name="mailSendingCommand" class="org.openuss.mailsending.MailSendingCommand">
+	 <bean name="mailSendingCommand" class="org.openuss.mailinglist.MailSendingCommand">
 	 	<property name="messageService"><ref bean="messageService"/></property>
 	 	<property name="mailDao"><ref bean="mailDao"/></property>
 	 </bean>

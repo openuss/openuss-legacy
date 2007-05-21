@@ -25,8 +25,8 @@
 				</o:block>
 			</s:acl>					
 		
-			<o:block label="#{msg['mailinglist_options']}" styleClass="option_box">
-				<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}">
+			<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}">
+				<o:block label="#{msg['mailinglist_options']}" styleClass="option_box">
 					<ul>
 						<li class="sidebar_listPoint" >
 							<h:commandLink value="#{msg['mailinglist_xmlexport']}" action="#{views$secured$mailinglist$mailinglist.exportSubscribers}"/>
@@ -35,8 +35,8 @@
 							<h:commandLink value="#{msg['mailinglist_subscriberlist']}" action="mailinglist_subscribers"/>
 						</li>
 					</ul>
-				</s:acl>
-			</o:block>
+				</o:block>
+			</s:acl>
 		</h:form>
 	
 </f:subview>

@@ -60,7 +60,9 @@ public class MailingListMainPage extends AbstractMailingListPage{
 		return Constants.SUCCESS;
 	}
 	
-	public String changeMail(){		
+	public String changeMail(){	
+		MailInfo mi = data.getRowData();
+		setSessionBean(Constants.MAILINGLIST_MAIL, getEnrollmentMailingListService().getMail(mi));
 		return Constants.MAILINGLIST_NEWMAIL;
 	}
 	
@@ -79,6 +81,10 @@ public class MailingListMainPage extends AbstractMailingListPage{
 		this.mail = md;
 		setSessionBean(Constants.MAILINGLIST_MAIL, md);
 		getEnrollmentMailingListService().sendMail(enrollmentInfo, getMail());
+		return Constants.SUCCESS;
+	}
+	
+	public String showMail(){
 		return Constants.SUCCESS;
 	}
 	

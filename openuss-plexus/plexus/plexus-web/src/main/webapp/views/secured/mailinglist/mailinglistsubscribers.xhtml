@@ -38,20 +38,15 @@
 		<h:form id="mailingListSubscribers">
 			<plexus:dataTable id="subscribertable"
 				label="#{msg.mailinglist_subscribertable_header}"
-				value="views$secured$enrollment$mailinglistsubscribers.data"
+				value="views$secured$mailinglist$mailinglistsubscribers.data"
 				var="subscriber" rows="10">
 
 
 				<t:column>
-					<plexus:commandSortHeader columnName="lastname">#{msg['user_contact_lastname']}</plexus:commandSortHeader>
-					<h:outputText value="#{subscriber.lastName}" />
+					<plexus:commandSortHeader columnName="displayName">#{msg['mailinglist_contact_name']}</plexus:commandSortHeader>
+					<h:commandLink value="#{subscriber.displayName}" action="#{views$secured$mailinglist$mailinglistsubscribers.showProfile}" title="#{subscriber.displayName}" />
 				</t:column>
 
-				<t:column>
-					<plexus:commandSortHeader columnName="firstname"> #{msg['user_contact_firstname']}</plexus:commandSortHeader>
-					<h:outputText value="#{subscriber.firstName}" />
-				</t:column>
-				
 				<t:column>
 					<plexus:commandSortHeader columnName="email">#{msg['user_email']}</plexus:commandSortHeader>
 					<h:outputText value="#{subscriber.email}" />
@@ -59,25 +54,18 @@
 
 				<plexus:column header="#{msg.commands_header}">
 					<plexus:command
-						bean="#{views$secured$enrollment$mailinglistsubscribers}"
-						action="showProfile"
-						label="#{msg['user_profile_command_show_profile']}"
-						title="#{msg['user_profile_command_show_profile_hint']}"
-						styleClass="button_profile" />
+						bean="#{views$secured$mailinglist$mailinglistsubscribers}"
+						action="removeSubscriber"
+						label="#{msg['mailinglist_subscriber_remove']}"
+						title="#{msg['mailinglist_subscriber_remove']}"
+						styleClass="button" />
 				</plexus:column>
 
 			</plexus:dataTable>
 			<o:block>
 				<h:commandButton value="${msg.cancel}" title="#{msg.cancel}"
-					action="enrollment" styleClass="button_cancel"
+					action="enrollment_mailinglist" styleClass="button_cancel"
 					immediate="true" />
-				<plexus:command
-					bean="#{views$secured$enrollment$mailinglistsubscribers}"
-					action="exportList"
-					label="#{msg['mailinglist_subscribertable_export']}"
-					title="#{msg['mailinglist_subscribertable_export']}"
-					styleClass="button" />
-
 			</o:block>
 		</h:form>
 	</ui:define>
