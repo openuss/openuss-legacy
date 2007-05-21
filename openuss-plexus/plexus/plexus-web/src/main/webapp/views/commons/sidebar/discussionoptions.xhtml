@@ -12,11 +12,11 @@
     xmlns:x="http://myfaces.apache.org/extensions">
 	
 		<h:form>
-			<o:block styleClass="option_box">
+			<o:block styleClass="option_box" label="#{msg.discussion_watch_state_header}">
 				<h:outputText value="#{msg.discussion_forum_watch_true}" styleClass="content_font_normal" rendered="#{views$secured$discussion$discussions.forumWatchState}" escape="false"/>
 				<h:outputText value="#{msg.discussion_forum_watch_false}" styleClass="content_font_normal" rendered="#{not views$secured$discussion$discussions.forumWatchState}" escape="false"/>
-					<ul>
-						<li class="sidebar_listPoint">
+					<ul class="int">
+						<li>
 							<h:commandLink action="#{views$secured$discussion$discussions.changeWatchState}"
 								value="#{msg['discussion_forum_watch']}"
 								title="#{msg['discussion_forum_watch']}"/>				
@@ -25,11 +25,11 @@
 			</o:block>
 
 			<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}" >
-				<o:block styleClass="option_box">
+				<o:block styleClass="option_box" label="#{msg.discussion_config_state_header}">
 					<h:outputText value="#{msg.discussion_forum_readonly_true}" styleClass="content_font_normal" rendered="#{views$secured$discussion$discussions.forumReadOnly}" escape="false"/>
 					<h:outputText value="#{msg.discussion_forum_readonly_false}" styleClass="content_font_normal" rendered="#{not views$secured$discussion$discussions.forumReadOnly}" escape="false"/>
-					<ul>
-						<li class="sidebar_listPoint">
+					<ul class="int">
+						<li>
 							<h:commandLink action="#{views$secured$discussion$discussions.changeReadOnly}"
 								value="#{msg['discussion_forum_readonly']}"
 								title="#{msg['discussion_forum_readonly']}"/>
