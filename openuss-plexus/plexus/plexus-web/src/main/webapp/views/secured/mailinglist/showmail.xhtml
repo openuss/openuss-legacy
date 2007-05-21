@@ -31,6 +31,24 @@
 	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
 	</ui:define>
+	<ui:define name="sidebar"> 
+		<ui:include src="/views/commons/sidebar/mailinglistoptions.xhtml" />
+		<c:if test="#{not empty mailinglist_mail.messageId}">
+			<o:block label="#{msg.mailinglist_mail_send_state_header}">
+				<p class="content_font_normal">
+					<h:outputText value="#{mailinglist_mail.mailCount} #{msg.mailinglist_status_message}"/>
+					<ul class="int">
+						<li>
+							<h:outputText value="#{mailinglist_mail.toSendCount} #{msg.mailinglist_status_tosend}"/>
+						</li>
+						<li>
+							<h:outputText value="#{mailinglist_mail.errorCount} #{msg.mailinglist_status_error}"/>
+						</li>
+					</ul>
+				</p>
+			</o:block>
+		</c:if>
+	</ui:define>
 	<ui:define name="content">
 		<h:form id="newMailForm">
 			<o:block label="#{mailinglist_mail.subject}">
@@ -38,19 +56,6 @@
 					<h:outputText value="#{mailinglist_mail.text}" escape="false"/>
 				</div>	
 			</o:block>
-			<c:if test="#{not empty mailinglist_mail.messageId}">
-				<o:block>
-					<h:outputText value="#{mailinglist_mail.mailCount} #{msg.mailinglist_status_message}" styleClass="conten_font_normal"/>
-					<ul>
-						<li>
-							<h:outputText value="#{mailinglist_mail.toSendCount} #{msg.mailinglist_status_tosend}" styleClass="conten_font_normal"/>
-						</li>
-						<li>
-							<h:outputText value="#{mailinglist_mail.errorCount} #{msg.mailinglist_status_error}" styleClass="conten_font_normal"/>
-						</li>
-					</ul>
-				</o:block>
-			</c:if>
 			<o:block>
 				<h:commandButton action="enrollment_mailinglist" value="#{msg.back}" styleClass="button"></h:commandButton>
 			</o:block>
