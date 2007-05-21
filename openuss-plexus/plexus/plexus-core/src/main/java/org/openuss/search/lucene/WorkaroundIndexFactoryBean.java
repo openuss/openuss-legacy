@@ -14,7 +14,7 @@ import org.springmodules.lucene.search.factory.SimpleSearcherFactory;
  * @author Ingo Dueppe
  * @see org.springmodules.lucene.index.factory.SimpleIndexFactory
  */
-public class WorkaroundIndexFactoryBean implements FactoryBean, InitializingBean {
+public class WorkAroundIndexFactoryBean implements FactoryBean, InitializingBean {
 
 	private SimpleIndexFactory indexFactory;
 	private SimpleSearcherFactory searcherFactory;

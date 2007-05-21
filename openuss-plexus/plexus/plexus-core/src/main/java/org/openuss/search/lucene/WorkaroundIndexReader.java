@@ -10,11 +10,11 @@ import org.springmodules.lucene.search.factory.LuceneSearcher;
  * @author Ingo Dueppe
  *
  */
-public class WorkaroundIndexReader extends SimpleLuceneIndexReader {
+public class WorkAroundIndexReader extends SimpleLuceneIndexReader {
 	
 	private LuceneSearcher luceneSearcher;
 
-	public WorkaroundIndexReader(IndexReader indexReader, LuceneSearcher luceneSearcher) {
+	public WorkAroundIndexReader(IndexReader indexReader, LuceneSearcher luceneSearcher) {
 		super(indexReader);
 		this.luceneSearcher = luceneSearcher;
 	}
