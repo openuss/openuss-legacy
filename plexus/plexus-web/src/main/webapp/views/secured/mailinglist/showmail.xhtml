@@ -33,13 +33,12 @@
 	<ui:define name="content">
 		<h:form id="newMailForm">
 			<o:block label="#{mailinglist_mail.subject}">
-				<h:outputText value="#{mailinglist_mail.text}"	styleClass="content_font_normal" />
 				<div class="content_font_normal">
 					<h:outputText value="#{mailinglist_mail.text}" escape="false"/>
 				</div>	
 			</o:block>
 			<o:block>
-				
+				<h:commandButton action="enrollment_mailinglist" value="#{msg.back}" styleClass="button"></h:commandButton>
 			</o:block>
 		</h:form>
 	</ui:define>

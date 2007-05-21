@@ -85,7 +85,11 @@ public class MailingListMainPage extends AbstractMailingListPage{
 	}
 	
 	public String showMail(){
-		return Constants.SUCCESS;
+		MailInfo mi = data.getRowData();
+		MailDetail md = getEnrollmentMailingListService().getMail(mi);		
+		this.mail = md;
+		setSessionBean(Constants.MAILINGLIST_MAIL, md);
+		return Constants.MAILINGLIST_SHOWMAIL;
 	}
 	
 	public String listSubscribers(){		

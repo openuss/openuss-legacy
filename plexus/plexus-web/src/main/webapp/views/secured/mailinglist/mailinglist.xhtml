@@ -46,7 +46,7 @@
 
 				<t:column>
 					<plexus:commandSortHeader columnName="mailTitle"> #{msg['mailinglist_mailtitle']} </plexus:commandSortHeader>
-					<h:outputText value="#{mail.subject}" />
+					<h:commandLink value="#{mail.subject}" action="#{views$secured$mailinglist$mailinglist.showMail}" title="#{mail.subject}" />
 				</t:column>
 
 				<t:column>
