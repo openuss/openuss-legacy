@@ -250,17 +250,32 @@ span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:
 	background: transparent url(../img/button_80_hover.png) 0px 0px no-repeat;
 }
 
-#left .content_box ul{
+#left .content_box ul.int{
 	margin: 5px 0 0 0;
 }
 	
-#left .content_box li{
+#left .content_box ul.int li{
+	margin-left:-23px;
+	margin-top: 2px;
+	list-style-image:url(../img/link_int.png);
+}
+
+#left .content_box ul.int a{
+	color: #505050;
+	text-decoration: none; font-weight: none;
+}
+
+#right .content_box ul.ext{
+	margin: 5px 0 0 0;
+}
+	
+#right .content_box ul.ext li{
 	margin-left:-23px;
 	margin-top: 2px;
 	list-style-image:url(../img/link.png);
 }
 
-#left .content_box a{
+#right .content_box ul.ext a{
 	color: #505050;
 	text-decoration: none; font-weight: none;
 }
@@ -624,17 +639,32 @@ ul.navigation li ul li ul li.active_item a:hover{
   background-repeat: repeat-x;
 }
 
-#right .content_box ul{
-	margin: 3px 0 0 0;
+#right .content_box ul.int{
+	margin: 5px 0 0 0;
 }
 	
-#right .content_box li{
+#right .content_box ul.int li{
 	margin-left:-23px;
-	margin-bottom: 2px;
+	margin-top: 2px;
+	list-style-image:url(../img/link_int.png);
+}
+
+#right .content_box ul.int a{
+	color: #505050;
+	text-decoration: none; font-weight: none;
+}
+
+#right .content_box ul.ext{
+	margin: 5px 0 0 0;
+}
+	
+#right .content_box ul.ext li{
+	margin-left:-23px;
+	margin-top: 2px;
 	list-style-image:url(../img/link.png);
 }
 
-#right .content_box a{
+#right .content_box ul.ext a{
 	color: #505050;
 	text-decoration: none; font-weight: none;
 }
@@ -653,6 +683,10 @@ ul.navigation li ul li ul li.active_item a:hover{
 
 #right .content_box a:hover{
 	text-decoration: underline; font-weight: none;
+}
+
+#center ul{
+	margin: 0;
 }
 
 #center a{
@@ -1719,7 +1753,7 @@ td.col_max_left label input{
 
 .jscalendar-DB-table-style {
 	position: absolute;
-	left: 191px;
+	left: 0px;
     font-family:arial;
     font-size:11px;
     border-width:1px;
@@ -1855,7 +1889,7 @@ table.jscalendar-DB-dropdown-style{
 
 table.jscalendar-DB-dropdown-style{
 	position: absolute;
-	left: 191px;
+	left: 0px;
 	width: 50px;
 	margin: 0;
 	padding: 0;
