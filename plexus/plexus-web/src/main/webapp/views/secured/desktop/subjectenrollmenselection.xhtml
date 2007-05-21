@@ -34,7 +34,9 @@
 		<ui:include src="/views/commons/navigation/desktop.xhtml" />
 	</ui:define>
 	<ui:define name="sidebar"> 
-		<ui:include src="/views/commons/sidebar/desktop.xhtml" />
+		<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
+		<ui:include src="/views/commons/sidebar/whoisonline.xhtml" />
+		<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
 	</ui:define>
 	<ui:define name="content">
 		<o:block>
@@ -45,7 +47,7 @@
 		<h:form id="enrollmentsForm">
 		  <plexus:dataTable 
 		    	id="enrollments" 
-		    	label="#{msg.desktop_enrollments_header}"
+		    	label="#{subject.name}"
 		    	value="views$secured$desktop$subjectenrollmenselection.enrollmentsProvider" 
 		    	var="enrollmentItem" 
 		    	rows="5">
