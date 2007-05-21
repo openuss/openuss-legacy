@@ -32,25 +32,12 @@
 	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
 	</ui:define>
+	<ui:define name="sidebar"> 
+		<ui:include src="/views/commons/sidebar/discussionoptions.xhtml" />
+	</ui:define>
 	<ui:define name="content">
 		<h:form id="discussionTableView">
 			<ui:include src="discussionstable.xhtml" />
-			<o:block>
-				<h:outputText value="#{msg.discussion_forum_watch_true}" styleClass="content_font_normal" rendered="#{views$secured$discussion$discussions.forumWatchState}"/>
-				<h:outputText value="#{msg.discussion_forum_watch_false}" styleClass="content_font_normal" rendered="#{not views$secured$discussion$discussions.forumWatchState}"/>
-				<plexus:command bean="#{views$secured$discussion$discussions}"
-					action="changeWatchState" label="#{msg['discussion_forum_watch']}"
-					title="#{msg['discussion_forum_watch']}"/>				
-			</o:block>
-			<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}" >
-				<o:block>
-					<h:outputText value="#{msg.discussion_forum_readonly_true}" styleClass="content_font_normal" rendered="#{views$secured$discussion$discussions.forumReadOnly}"/>
-					<h:outputText value="#{msg.discussion_forum_readonly_false}" styleClass="content_font_normal" rendered="#{not views$secured$discussion$discussions.forumReadOnly}"/>
-					<plexus:command bean="#{views$secured$discussion$discussions}"
-						action="changeReadOnly" label="#{msg['discussion_forum_readonly']}"
-						title="#{msg['discussion_forum_readonly']}"/>				
-				</o:block>
-			</s:acl>
 			<o:block>
 				<plexus:command bean="#{views$secured$discussion$discussions}"
 					action="newTopic" label="#{msg['discussion_new']}"
