@@ -121,5 +121,7 @@ public class Constants {
 	
 	public static final String MAILINGLIST_MAILINGLIST = "mailinglist_mailinglist";
 	public static final String MAILINGLIST_MAIL = "mailinglist_mail";
+	public static final String MAILINGLIST_NEWMAIL = "mailinglist_newmail";
+	public static final String MAILINGLIST_SUBSCRIBERS = "mailinglist_subscribers";
 
 }

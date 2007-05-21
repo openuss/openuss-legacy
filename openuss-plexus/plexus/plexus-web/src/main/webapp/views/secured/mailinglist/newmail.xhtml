@@ -33,26 +33,26 @@
 	<ui:define name="content">
 		<h:form id="newMailForm">
 			<o:block label="#{msg.mailinglist_newmail_header}">
-				<o:input entity="mailingJob" property="mailTitle" required="true"></o:input>
+				<o:input entity="mailinglist_mail" property="subject" required="true"></o:input>
 				<h:outputText value="#{msg.mailingjob_newmail_mailmessage}"	styleClass="field_label" />
 				<div class="content_iframe">
-					<fck:editor value="#{mailingMessage.mailMessage}" id="textEditor" toolbarSet="Basic" width="100%" height="200" />
+					<fck:editor value="#{mailinglist_mail.text}" id="textEditor" toolbarSet="Email" width="100%" height="200" />
 				</div>
 
-				<o:input property="sendingTime" entity="mailingJob" required="true" />
+				<o:input property="sendDate" entity="mailinglist_mail" required="true" />
 			</o:block>
 
 			<o:block>
-				<plexus:command bean="#{views$secured$enrollment$newmail}"
-					action="delete" label="#{msg['mailingjob_newmail_button_send']}"
+				<plexus:command bean="#{views$secured$mailinglist$mailinglistnewmailpage}"
+					action="send" label="#{msg['mailingjob_newmail_button_send']}"
 					title="#{msg['mailingjob_newmail_button_send']}"
 					styleClass="button" />
-				<plexus:command bean="#{views$secured$enrollment$newmail}"
-					action="delete" label="#{msg['mailingjob_newmail_button_senddraft']}"
+				<plexus:command bean="#{views$secured$mailinglist$mailinglistnewmailpage}"
+					action="send" label="#{msg['mailingjob_newmail_button_senddraft']}"
 					title="#{msg['mailingjob_newmail_button_senddraft']}"
 					styleClass="button" />
-				<plexus:command bean="#{views$secured$enrollment$newmail}"
-					action="delete" label="#{msg['mailingjob_newmail_button_savedraft']}"
+				<plexus:command bean="#{views$secured$mailinglist$mailinglistnewmailpage}"
+					action="saveDraft" label="#{msg['mailingjob_newmail_button_savedraft']}"
 					title="#{msg['mailingjob_newmail_button_savedraft']}"
 					styleClass="button" />
 				<h:commandButton action="enrollment_mailinglist"

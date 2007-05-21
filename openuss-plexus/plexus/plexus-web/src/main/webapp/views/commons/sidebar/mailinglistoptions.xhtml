@@ -1,0 +1,42 @@
+<!-- Default Sidebar -->
+<f:subview
+	xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:o="http://www.openuss.org/jsfcontrols"
+    xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:p="http://www.openuss.org/plexus/jsf"
+    xmlns:x="http://myfaces.apache.org/extensions">
+	
+		<h:form>
+			<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.PARTICIPATE}">
+				<o:block label="#{msg['mailinglist_status']}" styleClass="option_box">
+					<h:outputText value="#{msg['mailinglist_subscribe']}" styleClass="content_font_normal" rendered="#{not mailinglist_mailinglist.subscribed}"></h:outputText>
+					<h:outputText value="#{msg['mailinglist_unsubscribe']}" styleClass="content_font_normal" rendered="#{mailinglist_mailinglist.subscribed}"></h:outputText>
+					<ul>
+						<li class="sidebar_listPoint">
+							<h:commandLink value="#{msg['mailinglist_button_subscribe']}" action="#{views$secured$mailinglist$mailinglist.toggleMailingListStatus}" rendered="#{not mailinglist_mailinglist.subscribed}"/>
+							<h:commandLink value="#{msg['mailinglist_button_unsubscribe']}" action="#{views$secured$mailinglist$mailinglist.toggleMailingListStatus}" rendered="#{mailinglist_mailinglist.subscribed}"/>
+						</li>
+					</ul>
+				</o:block>
+			</s:acl>					
+		
+			<o:block label="#{msg['mailinglist_options']}" styleClass="option_box">
+				<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}">
+					<ul>
+						<li class="sidebar_listPoint" >
+							<h:commandLink value="#{msg['mailinglist_xmlexport']}" action="#{views$secured$mailinglist$mailinglist.exportSubscribers}"/>
+						</li>
+						<li class="sidebar_listPoint" >
+							<h:commandLink value="#{msg['mailinglist_subscriberlist']}" action="mailinglist_subscribers"/>
+						</li>
+					</ul>
+				</s:acl>
+			</o:block>
+		</h:form>
+	
+</f:subview>

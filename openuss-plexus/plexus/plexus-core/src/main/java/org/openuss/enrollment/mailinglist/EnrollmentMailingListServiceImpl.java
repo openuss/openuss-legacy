@@ -17,10 +17,10 @@ import org.openuss.security.User;
 public class EnrollmentMailingListServiceImpl extends EnrollmentMailingListServiceBase
 {
 
-	private MailingListInfo getMailingList(EnrollmentInfo enrollment){
+	protected MailingListInfo handleGetMailingList(EnrollmentInfo enrollment){
 		MailingListInfo mailingList = getMailingListService().getMailingList(enrollment);
 		if (mailingList == null){
-			getMailingListService().addMailingList(enrollment, enrollment.getName());
+			addMailingList(enrollment);
 			mailingList = getMailingListService().getMailingList(enrollment);
 		}
 		if (mailingList.getName().equals(enrollment.getName())){
@@ -136,5 +136,15 @@ public class EnrollmentMailingListServiceImpl extends EnrollmentMailingListServi
     	MailingListInfo mailingList = getMailingList(enrollment);
     	getMailingListService().deleteMail(mailingList, mail);
     }
+
+	@Override
+	protected void handleAddMailingList(EnrollmentInfo enrollment) throws Exception {
+		getMailingListService().addMailingList(enrollment, enrollment.getName());
+	}
+
+	@Override
+	protected void handleUpdateMailingList(MailingListInfo mailingList) throws Exception {
+		getMailingListService().updateMailingList(mailingList);
+	}
 
 }
