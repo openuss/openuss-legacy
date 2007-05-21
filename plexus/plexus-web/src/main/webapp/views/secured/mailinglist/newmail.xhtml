@@ -32,7 +32,7 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="newMailForm">
-			<o:block label="#{msg.mailinglist_newmail_header}">
+			<o:block label="#{msg.mailinglist_newmail_header}" styleClass="form_box">
 				<o:input entity="mailinglist_mail" property="subject" required="true"></o:input>
 				<h:outputText value="#{msg.mailingjob_newmail_mailmessage}"	styleClass="field_label" />
 				<div class="content_iframe">
