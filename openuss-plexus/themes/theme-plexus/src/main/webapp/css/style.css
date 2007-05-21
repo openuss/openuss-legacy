@@ -88,6 +88,7 @@ p {
     border-style: solid none none none;
     border-width: 1px;
     border-color: #C0C0C0;
+    margin-top: 10px;
     padding-top: 5px;
 	clear: both;
 	position: relative;
@@ -1283,7 +1284,6 @@ table {
   margin: 0;
   padding: 0;
   width: 100%;
-  /* min-width: 820px;  ??? */
   overflow: scroll;
 }
 
@@ -1304,7 +1304,6 @@ th {
   font-weight: bold;
   color: #4C4C4C;
   background: #E3EDCF;
-  /*background: url(../img/th_bg.jpg);*/
 }
 
 .even td{
@@ -1400,31 +1399,57 @@ td .userphoto {
 	display:block;
 }
 
+.col_post_text {
+	margin: 0;
+	padding: 0 5px 0 5px;
+}
+
+.col_post {
+	margin: 0;
+	padding: 0 5px 0 5px;
+}
+
 td .col_post_text .content_font_normal {
-	padding: 5px 0 5px 0;
+	padding: 8px 0 8px 0;
 	color: #000000;
+  	border-style: solid none solid none;
+  	border-width: 1px;
+  	border-top-color: #919191;
+  	border-bottom-color: #919191;
 }
 
 td .col_post_attachments {
 	color: #505050;
+	padding: 0 5px 0 5px;
 }
 
 td .col_post_attachments .content_font_normal {
-	padding: 5px 0 5px 0;
+	padding: 3px 0 0 0;
 	font-weight: bold;
 	color: #000000;
 }
 
-td .col_post_author{
-	width: 250px;
+.col_post_author{
+	vertical-align: top;
+	width: 200px;
+	margin: 0;
 }
 
 td .col_post_date{
 	width: 150px;
+	padding: 0 0 0 5px;
+	margin: 0;
 }
 
 td .col_post_commands{
 	width: 270px;
+	padding: 0;
+	margin: 0;
+}
+
+td .col_post_title {
+	padding: 0;
+	margin: 0;
 }
 
 td .pulldown_small {
