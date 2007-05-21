@@ -8,7 +8,8 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:fck="http://www.fck-faces.org/fck-faces"
-	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+    xmlns:c="http://java.sun.com/jstl/core">
 
 
 <head>
@@ -37,17 +38,19 @@
 					<h:outputText value="#{mailinglist_mail.text}" escape="false"/>
 				</div>	
 			</o:block>
-			<o:block rendered="#{not empty mailinglist_mail.messageId}">
-				<h:outputText value="#{mailinglist_mail.mailCount} #{msg.mailinglist_status_message}" styleClass="conten_font_normal"/>
-				<ul>
-					<li>
-						<h:outputText value="#{mailinglist_mail.toSendCount} #{msg.mailinglist_status_tosend}" styleClass="conten_font_normal"/>
-					</li>
-					<li>
-						<h:outputText value="#{mailinglist_mail.errorCount} #{msg.mailinglist_status_error}" styleClass="conten_font_normal"/>
-					</li>
-				</ul>
-			</o:block>
+			<c:if test="#{not empty mailinglist_mail.messageId}">
+				<o:block>
+					<h:outputText value="#{mailinglist_mail.mailCount} #{msg.mailinglist_status_message}" styleClass="conten_font_normal"/>
+					<ul>
+						<li>
+							<h:outputText value="#{mailinglist_mail.toSendCount} #{msg.mailinglist_status_tosend}" styleClass="conten_font_normal"/>
+						</li>
+						<li>
+							<h:outputText value="#{mailinglist_mail.errorCount} #{msg.mailinglist_status_error}" styleClass="conten_font_normal"/>
+						</li>
+					</ul>
+				</o:block>
+			</c:if>
 			<o:block>
 				<h:commandButton action="enrollment_mailinglist" value="#{msg.back}" styleClass="button"></h:commandButton>
 			</o:block>
