@@ -25,9 +25,7 @@
 	</bean>
  -->
 
-
-	<bean id="domainIndexerFactory"
-		class="org.openuss.search.DomainIndexerFactory" scope="singleton">
+	<bean id="domainIndexerFactory"	class="org.openuss.search.DomainIndexerFactory" scope="singleton">
 		<property name="indexer">
 			<map>
 				<entry>
@@ -93,13 +91,11 @@
 	</bean>
 
 	<bean id="indexFactory"
-		class="org.openuss.search.lucene.LuceneIndexFactoryBean">
+		class="org.openuss.search.lucene.WorkAroundIndexFactoryBean">
 		<property name="create" value="true" />
 		<property name="directory" ref="fsDirectory" />
 		<property name="analyzer" ref="analyzer" />
-		<!-- 
-			<property name="searcherFactory" ref="searchFactory"/>
-		-->
+		<property name="searcherFactory" ref="searcherFactory"/>
 	</bean>
 
 	<bean id="fsDirectory"
