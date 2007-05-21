@@ -393,6 +393,13 @@
 				<from-outcome>mailinglist_subscribers</from-outcome>
 				<to-view-id>/views/secured/mailinglist/mailinglistsubscribers.xhtml</to-view-id>				
 			</navigation-case>			
+			
+			
+			<navigation-case>
+				<from-outcome>mailinglist_showmail</from-outcome>
+				<to-view-id>/views/secured/mailinglist/showmail.xhtml</to-view-id>				
+			</navigation-case>			
+		
 
 			<!-- braincontest -->
 
