@@ -25,26 +25,28 @@
 							<h:outputText value="#{msg['enrollment_command_documents']}" />
 						</t:commandNavigation2>
 						<t:commandNavigation2 
+							action="enrollment_discussion" 
+							activeOnViewIds="/views/secured/discussion/discussions.xhtml,/views/secured/discussion/discussionnew.xhtml,/views/secured/discussion/discussionsthread.xhtml"
+							rendered="#{enrollment.discussion}">
+							<h:outputText value="#{msg['enrollment_command_discussion']}"/>
+						</t:commandNavigation2>
+						<t:commandNavigation2 
 							action="enrollment_mailinglist" 
-							activeOnViewIds="/views/secured/enrollment/mailinglist.xhtml"
+							activeOnViewIds="/views/secured/mailinglist/mailinglist.xhtml,/views/secured/mailinglist/mailinglistsubscribers.xhtml,/views/secured/mailinglist/showmail.xhtml,/views/secured/mailinglist/newmail.xhtml"
 							rendered="#{enrollment.mailinglist}">
 							<h:outputText value="#{msg['enrollment_command_mailinglist']}"/>
 						</t:commandNavigation2>
+<!-- 
 						<t:commandNavigation2 
 							action="mailinglist_subscribers" 
 							activeOnViewIds="/views/secured/enrollment/mailinglistsubscribers.xhtml"
 							rendered="#{enrollment.mailinglist}">
 							<h:outputText value="#{msg['enrollment_command_mailinglistsubscribers']}"/>
 						</t:commandNavigation2>					
-						<t:commandNavigation2 
-							action="enrollment_discussion" 
-							activeOnViewIds="/views/secured/enrollment/discussion.xhtml"
-							rendered="#{enrollment.discussion}">
-							<h:outputText value="#{msg['enrollment_command_discussion']}"/>
-						</t:commandNavigation2>
+ -->						
 						<t:commandNavigation2 
 							action="braincontest_main" 
-							activeOnViewIds="/views/secured/braincontest/braincontestmain.xhtml"
+							activeOnViewIds="/views/secured/braincontest/braincontestmain.xhtml,/views/secured/braincontest/braincontestnew.xhtml,/views/secured/braincontest/braincontestsolve.xhtml,/views/secured/braincontest/braincontestsolved.xhtml,/views/secured/braincontest/braincontesttop.xhtml,/views/secured/braincontest/braincontestwrong.xhtml"
 							rendered="#{enrollment.braincontest}">
 							<h:outputText value="#{msg['enrollment_command_quiz']}" />
 						</t:commandNavigation2>
