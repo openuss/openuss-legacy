@@ -47,21 +47,6 @@
 					</t:dataList>
 				</span>
 			</o:block>
-			<!-- 
-			<o:block label="Aktuelle Position" styleClass="form_box">
-				<div class="content_font_normal">
-					<t:dataList var="folder" value="#{views$secured$documents$documents.path}">
-						<o:link value="/views/secured/documents/documents.faces" title="#{folder.description}" styleClass="folder_link">
-							<f:param value="#{enrollment.id}" name="enrollment" />
-							<f:param value="#{folder.id}" name="folder" />
-							<h:outputText value="#{msg.documents_root_folder}" rendered="#{folder.root}"/>
-							<h:outputText value="/ #{folder.name}" rendered="#{!folder.root}"/>
-						</o:link>
-					</t:dataList>
-				</div>
-			</o:block>
-			 -->
-		
 			<ui:include src="documentstable.xhtml" />
 			<o:block>
 				<plexus:command
