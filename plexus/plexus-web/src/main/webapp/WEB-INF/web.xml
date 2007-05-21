@@ -349,6 +349,12 @@
 			org.apache.commons.chain.web.ChainListener
 		</listener-class>
 	</listener>
+
+	<listener>
+		<listener-class>
+			org.openuss.web.servlets.ActiveSessionCounter
+		</listener-class>
+	</listener>
 	
 	<!-- - - - - - - - - - - - - - - - - - - - - - -
 	   Servlets
