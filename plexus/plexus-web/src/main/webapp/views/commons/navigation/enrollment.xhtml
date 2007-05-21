@@ -8,7 +8,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<ui:include src="/views/commons/navigation/faculty.xhtml" />
-	<s:authorize ifAllGranted="ROLE_USER"> 
+	<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.READ}">
 		<h:form id="enrollmentNavigationForm">
 			<t:panelNavigation2 id="enrollment_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
 				<t:commandNavigation2 value="#{msg['enrollment_navigation_header']}">
@@ -100,5 +100,5 @@
 				</t:commandNavigation2>
 			</t:panelNavigation2>	
 		</h:form>
-	</s:authorize> 
+	</s:acl> 
 </ui:composition>
