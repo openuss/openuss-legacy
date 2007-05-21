@@ -28,15 +28,18 @@ public class MailingListNewMailPage extends AbstractMailingListPage{
 		super.prerender();
 	}	
 
-	public String delete(){
-		return Constants.SUCCESS;
+	public String saveDraft(){
+		getEnrollmentMailingListService().saveMail(enrollmentInfo, mail);
+		return Constants.MAILINGLIST_MAIN;
 	}
 	
-	public String send(){		
-		return Constants.SUCCESS;
+	public String send(){
+		getEnrollmentMailingListService().sendMail(enrollmentInfo, mail);
+		return Constants.MAILINGLIST_MAIN;
 	}
 	
-	public String sendDraft(){		
+	public String sendDraft(){
+		getEnrollmentMailingListService().sendPreview(enrollmentInfo, mail);
 		return Constants.SUCCESS;	
 	}
 	

@@ -19,6 +19,7 @@ public class SubscriberDaoImpl
         super.toSubscriberInfo(sourceEntity, targetVO);
         targetVO.setDisplayName(sourceEntity.getUser().getDisplayName());
         targetVO.setEmail(sourceEntity.getUser().getEmail());
+        targetVO.setUserId(sourceEntity.getUser().getId());
     }
 
 

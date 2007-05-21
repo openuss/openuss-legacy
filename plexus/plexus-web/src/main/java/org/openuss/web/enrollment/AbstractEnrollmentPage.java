@@ -20,7 +20,7 @@ public class AbstractEnrollmentPage extends BasePage {
 	protected Enrollment enrollment;
 	
 	//TODO refactor backing beans to use this value object instead of dao object enrollment
-	@Property(value = "#{enrollmentInfo}")
+	@Property(value = "#{" + Constants.ENROLLMENT_INFO + "}")
 	protected EnrollmentInfo enrollmentInfo;
 	
 	@Property(value = "#{lectureService}")
@@ -40,6 +40,7 @@ public class AbstractEnrollmentPage extends BasePage {
 			redirect(Constants.OUTCOME_BACKWARD);
 		} else {
 			setSessionBean(Constants.ENROLLMENT, enrollment);
+			setSessionBean(Constants.ENROLLMENT_INFO, enrollmentInfo);
 			setSessionBean(Constants.FACULTY, enrollment.getFaculty());
 		} 
 	}

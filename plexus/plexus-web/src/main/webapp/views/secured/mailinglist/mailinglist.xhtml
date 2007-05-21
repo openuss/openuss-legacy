@@ -46,7 +46,7 @@
 
 				<t:column>
 					<plexus:commandSortHeader columnName="mailTitle"> #{msg['mailinglist_mailtitle']} </plexus:commandSortHeader>
-					<h:outputText value="#{mail.mailTitle}" />
+					<h:outputText value="#{mail.subject}" />
 				</t:column>
 
 				<t:column>
@@ -59,24 +59,26 @@
 
 				<t:column>
 					<plexus:commandSortHeader columnName="sendingTime">#{msg['mailinglist_sendingtime']}</plexus:commandSortHeader>
-					<h:outputText value="#{mail.sendingTime}" />
+					<h:outputText id="sendDate" value="#{mail.sendDate}">
+						<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+					</h:outputText>					
 				</t:column>
 
 				
-				<s:acl domainObject="#{faculty}" hasNotPermission="#{ACL.ASSIST}">
+				<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}">
 					<plexus:column header="#{msg.mailinglist_actions}">
-						<plexus:command bean="#{views$secured$enrollment$mailinglist}"
-							action="delete" label="#{msg['mailinglist_button_delete']}"
+						<plexus:command bean="#{views$secured$mailinglist$mailinglist}"
+							action="delMail" label="#{msg['mailinglist_button_delete']}"
 							title="#{msg['mailinglist_button_delete_hint']}"
 							styleClass="button_profile"
 							rendered="#{not (mail.status.value==3)}" />
-						<plexus:command bean="#{views$secured$enrollment$mailinglist}"
-							action="send" label="#{msg['mailinglist_button_send']}"
+						<plexus:command bean="#{views$secured$mailinglist$mailinglist}"
+							action="sendMail" label="#{msg['mailinglist_button_send']}"
 							title="#{msg['mailinglist_button_send']}"
 							styleClass="button_profile"
 							rendered="#{mail.status.value==2}" />
-						<plexus:command bean="#{views$secured$enrollment$mailinglist}"
-							action="change" label="#{msg['mailinglist_button_change']}"
+						<plexus:command bean="#{views$secured$mailinglist$mailinglist}"
+							action="changeMail" label="#{msg['mailinglist_button_change']}"
 							title="#{msg['mailinglist_button_change_hint']}"
 							styleClass="button_profile" 
 							rendered="#{(mail.status.value==2)||(mail.status.value==1)}"/>
@@ -86,7 +88,7 @@
 
 			<o:block>
 				<h:commandButton action="#{views$secured$mailinglist$mailinglist.newMail}"
-					value="#{msg['mailinglist_button_newmail']}" />
+					value="#{msg['mailinglist_button_newmail']}" styleClass="button"/>
 			</o:block>
 
 		</h:form>
