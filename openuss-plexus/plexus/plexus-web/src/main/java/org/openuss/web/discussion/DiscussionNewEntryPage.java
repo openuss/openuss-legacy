@@ -110,6 +110,11 @@ public class DiscussionNewEntryPage extends AbstractDiscussionPage{
 		logger.debug("formula added");
 		return Constants.SUCCESS;		
 	}
+	
+	public String cancel(){
+		if (topic.getId()==null) return Constants.DISCUSSION_MAIN;
+		return Constants.DISCUSSION_THREAD;
+	}
 
 	public UIData getAttachmentList() {
 		return attachmentList;
