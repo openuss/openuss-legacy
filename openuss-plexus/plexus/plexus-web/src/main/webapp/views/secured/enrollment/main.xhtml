@@ -33,9 +33,12 @@
 	</ui:define>
 	<ui:define name="content" styleClass="footer_normal">
 			<o:block>
-				<h:outputText value="#{enrollment.shortcut}" styleClass="content_font_normal"></h:outputText>
-			</o:block>
-			<o:block>
+				<p class="header_font_normal">
+					<h:outputText value="#{enrollment.name}"/>
+				</p>
+				<p class="content_font_normal">
+					<h:outputText value="#{enrollment.subject.description}"/>
+				</p>
 				<div class="content_font_normal">
 					<h:outputText value="#{enrollment.description}" escape="false"/>
 				</div>
