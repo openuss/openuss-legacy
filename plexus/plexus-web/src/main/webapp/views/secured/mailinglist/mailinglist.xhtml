@@ -8,6 +8,7 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+    xmlns:s="http://www.openuss.org/jsf-security"	
 	xmlns:c="http://java.sun.com/jstl/core">
 
 <head>
@@ -29,21 +30,16 @@
 	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
 	</ui:define>
+	<ui:define name="sidebar"> 
+		<ui:include src="/views/commons/sidebar/mailinglistoptions.xhtml" />
+	</ui:define>
 	<ui:define name="content">
 		<h:form id="mailingListForm">
-			<o:block label="#{msg.mailinglist_status_header}">
-				<plexus:command bean="#{views$secured$enrollment$mailinglist}"
-					action="changeStatus"
-					label="#{msg['mailinglist_button_changestatus']}"
-					title="#{msg['mailinglist_button_changestatus']}"
-					styleClass="button_profile" />
-			</o:block>
-
 
 			<plexus:dataTable 
 				id="mailinglist" 
 				label="#{msg.mailinglist_header}"
-				value="views$secured$mailinglist$mailinglist" 
+				value="views$secured$mailinglist$mailinglist.data" 
 				columnClasses="col_max_left, col_min_center, col_min_center, col_commands"
 				var="mail"
 				rows="10">
@@ -67,32 +63,29 @@
 				</t:column>
 
 				
-
-
-
-				<plexus:column header="#{msg.mailinglist_actions}">
-					<plexus:command bean="#{views$secured$enrollment$mailinglist}"
-						action="delete" label="#{msg['mailinglist_button_delete']}"
-						title="#{msg['mailinglist_button_delete_hint']}"
-						styleClass="button_profile"
-						rendered="#{not (mail.status.value==3)}" />
-					<plexus:command bean="#{views$secured$enrollment$mailinglist}"
-						action="send" label="#{msg['mailinglist_button_send']}"
-						title="#{msg['mailinglist_button_send']}"
-						styleClass="button_profile"
-						rendered="#{mail.status.value==2}" />
-					<plexus:command bean="#{views$secured$enrollment$mailinglist}"
-						action="change" label="#{msg['mailinglist_button_change']}"
-						title="#{msg['mailinglist_button_change_hint']}"
-						styleClass="button_profile" 
-						rendered="#{(mail.status.value==2)||(mail.status.value==1)}"/>
-
-				</plexus:column>
-
+				<s:acl domainObject="#{faculty}" hasNotPermission="#{ACL.ASSIST}">
+					<plexus:column header="#{msg.mailinglist_actions}">
+						<plexus:command bean="#{views$secured$enrollment$mailinglist}"
+							action="delete" label="#{msg['mailinglist_button_delete']}"
+							title="#{msg['mailinglist_button_delete_hint']}"
+							styleClass="button_profile"
+							rendered="#{not (mail.status.value==3)}" />
+						<plexus:command bean="#{views$secured$enrollment$mailinglist}"
+							action="send" label="#{msg['mailinglist_button_send']}"
+							title="#{msg['mailinglist_button_send']}"
+							styleClass="button_profile"
+							rendered="#{mail.status.value==2}" />
+						<plexus:command bean="#{views$secured$enrollment$mailinglist}"
+							action="change" label="#{msg['mailinglist_button_change']}"
+							title="#{msg['mailinglist_button_change_hint']}"
+							styleClass="button_profile" 
+							rendered="#{(mail.status.value==2)||(mail.status.value==1)}"/>
+					</plexus:column>
+				</s:acl>
 			</plexus:dataTable>
 
 			<o:block>
-				<h:commandButton action="mailinglist_newmail"
+				<h:commandButton action="#{views$secured$mailinglist$mailinglist.newMail}"
 					value="#{msg['mailinglist_button_newmail']}" />
 			</o:block>
 

@@ -101,3 +101,16 @@ FCKConfig.ToolbarSets["Portrait"] = [
 	['FitWindow'],
 ] ;
 
+FCKConfig.ToolbarSets["Email"] = [
+	['FitWindow','Preview'],
+	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
+	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+	'/',
+	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
+	['OrderedList','UnorderedList','-','Outdent','Indent'],
+	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
+	['Link','Unlink','Anchor'],
+	['TextColor','BGColor'],
+	['Table']
+] ;
+
