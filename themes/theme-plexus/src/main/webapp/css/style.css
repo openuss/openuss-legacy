@@ -85,15 +85,18 @@ p {
 }
 
 #footer {
-    border-style: solid none none none;
-    border-width: 1px;
-    border-color: #C0C0C0;
-    margin-top: 10px;
     padding-top: 5px;
 	clear: both;
 	position: relative;
 }
 
+#footer_border {
+	border-style: none none solid none;
+    border-width: 1px;
+    border-color: #C0C0C0;
+	height: 10px;
+	margin-bottom: 5px;
+}
 
 span.userinfo{
   font-size: 8pt;
@@ -248,19 +251,17 @@ span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:
 }
 
 #left .content_box ul{
-	margin: 10px 10px 4px 0;
-	padding: 0;
-	list-style-type: none;	
+	margin: 5px 0 0 0;
 }
-
+	
 #left .content_box li{
-	margin-top: 3px;
+	margin-left:-23px;
+	margin-top: 2px;
+	list-style-image:url(../img/link.png);
 }
 
 #left .content_box a{
-	padding-left: 10px;
 	color: #505050;
-	background: url(../img/link_bg.jpg) -3px 0 no-repeat;
 	text-decoration: none; font-weight: none;
 }
 
@@ -513,7 +514,15 @@ ul.navigation li ul li ul li.active_item a:hover{
   float: left;
   width: 9px;
   height: 22px;
-  background-image: url(../img/right_header_left.jpg);
+  background-image: url(../img/right_header_left2.jpg);
+  background-repeat: no-repeat;
+}
+
+#right .option_box .header_normal_left_bg {
+  float: left;
+  width: 9px;
+  height: 22px;
+  background-image: url(../img/option_box_right_header_left.jpg);
   background-repeat: no-repeat;
 }
 
@@ -526,7 +535,15 @@ ul.navigation li ul li ul li.active_item a:hover{
 #right .header_normal {
   padding: 0;
   height: 22px;
-  background: #ECECEC;
+  background-image: url(../img/right_header_bg.jpg);
+  background-repeat: repeat-x;
+}
+
+#right .option_box .header_normal {
+  padding: 0;
+  height: 22px;
+  background-image: url(../img/option_box_header.jpg);
+  background-repeat: repeat-x;
 }
 
 #right p.header_font_normal {
@@ -536,15 +553,30 @@ ul.navigation li ul li ul li.active_item a:hover{
   color:#505050; 
 }
 
+#right .option_box p.header_font_normal {
+	color:#FFFFFF;
+}
+
 #right .content_normal {
   padding: 5px 5px 5px 10px;
   border-style: dotted solid none solid;
   border-width: 1px;
-  background-color: #ECECEC;
+  background-color: #FFFFFF;
   background-image: none;
   border-top-color: #505050;
-  border-right-color: #ECECEC;
-  border-left-color: #ECECEC;
+  border-right-color: #FFFFFF;
+  border-left-color: #AFAFAF;
+}
+
+#right .option_box .content_normal {
+  padding: 5px 5px 5px 10px;
+  border-style: dotted solid none solid;
+  border-width: 1px;
+  background-color: #FFFFFF;
+  background-image: none;
+  border-top-color: #505050;
+  border-right-color: #FFFFFF;
+  border-left-color: #AFAFAF;
 }
 
 #right p.content_font_normal {
@@ -558,7 +590,15 @@ ul.navigation li ul li ul li.active_item a:hover{
   float: left;
   width: 9px;
   height: 9px;
-  background-image: url(../img/right_footer_left.jpg);
+  background-image: url(../img/footer_left_bg.jpg);
+  background-repeat: no-repeat;
+}
+
+#right .option_box .footer_normal_left_bg {
+  float: left;
+  width: 9px;
+  height: 9px;
+  background-image: url(../img/footer_left_bg.jpg);
   background-repeat: no-repeat;
 }
 
@@ -571,23 +611,31 @@ ul.navigation li ul li ul li.active_item a:hover{
 #right .footer_normal {
   padding: 0;
   height: 9px;
-  background: #ECECEC;
+  background-color: #FFFFFF;
+  background-image: url(../img/footer_bg.jpg);
+  background-repeat: repeat-x;
+}
+
+#right .option_box .footer_normal {
+  padding: 0;
+  height: 9px;
+  background-color: #FFFFFF;
+  background-image: url(../img/footer_bg.jpg);
+  background-repeat: repeat-x;
 }
 
 #right .content_box ul{
-	margin: 10px 10px 4px 0;
-	padding: 0;
-	list-style-type: none;	
+	margin: 3px 0 0 0;
 }
-
+	
 #right .content_box li{
-	margin-top: 3px;
+	margin-left:-23px;
+	margin-bottom: 2px;
+	list-style-image:url(../img/link.png);
 }
 
 #right .content_box a{
-	padding-left: 10px;
 	color: #505050;
-	background: url(../img/link_bg.jpg) -3px 0 no-repeat;
 	text-decoration: none; font-weight: none;
 }
 
@@ -949,6 +997,13 @@ span.content_font_normal {
   font-size: 8pt;
   text-decoration: none;
   color:#505050; 
+}
+
+#right span.content_font_normal {
+  padding: 20px 0 10px 0;
+  font-size: 8pt;
+  text-decoration: none;
+  color:#505050;
 }
 
 p.content_font_error {
