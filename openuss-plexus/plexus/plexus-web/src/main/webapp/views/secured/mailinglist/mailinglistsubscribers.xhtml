@@ -39,6 +39,7 @@
 			<plexus:dataTable id="subscribertable"
 				label="#{msg.mailinglist_subscribertable_header}"
 				value="views$secured$mailinglist$mailinglistsubscribers.data"
+		    	columnClasses="col_max_left, col_min_center, col_command"
 				var="subscriber" rows="10">
 
 
@@ -63,8 +64,8 @@
 
 			</plexus:dataTable>
 			<o:block>
-				<h:commandButton value="${msg.cancel}" title="#{msg.cancel}"
-					action="enrollment_mailinglist" styleClass="button_cancel"
+				<h:commandButton value="${msg.back}" title="#{msg.back}"
+					action="enrollment_mailinglist" styleClass="button"
 					immediate="true" />
 			</o:block>
 		</h:form>

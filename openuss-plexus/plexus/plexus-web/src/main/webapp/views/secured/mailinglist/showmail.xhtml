@@ -37,6 +37,17 @@
 					<h:outputText value="#{mailinglist_mail.text}" escape="false"/>
 				</div>	
 			</o:block>
+			<o:block rendered="#{not empty mailinglist_mail.messageId}">
+				<h:outputText value="#{mailinglist_mail.mailCount} #{msg.mailinglist_status_message}" styleClass="conten_font_normal"/>
+				<ul>
+					<li>
+						<h:outputText value="#{mailinglist_mail.toSendCount} #{msg.mailinglist_status_tosend}" styleClass="conten_font_normal"/>
+					</li>
+					<li>
+						<h:outputText value="#{mailinglist_mail.errorCount} #{msg.mailinglist_status_error}" styleClass="conten_font_normal"/>
+					</li>
+				</ul>
+			</o:block>
 			<o:block>
 				<h:commandButton action="enrollment_mailinglist" value="#{msg.back}" styleClass="button"></h:commandButton>
 			</o:block>

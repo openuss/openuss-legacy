@@ -142,11 +142,13 @@ public class MailingListServiceImpl
         throws java.lang.Exception
     {
     	MailDetail md = getMailDao().toMailDetail(getMailDao().load(mail.getId()));
-    	JobInfo js = getMessageService().getJobState(mail.getId());
+    	JobInfo js = null;
+    	if (md.getMessageId()!=null) js = getMessageService().getJobState(md.getMessageId());
     	if (js!=null){
 	    	md.setErrorCount(js.getError());
 	    	md.setSendCount(js.getSend());
 	    	md.setToSendCount(js.getTosend());
+	    	md.setMailCount(js.getTotal());
     	}
     	return md;
     }

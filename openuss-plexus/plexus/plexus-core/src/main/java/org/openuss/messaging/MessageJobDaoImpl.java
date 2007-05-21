@@ -17,7 +17,9 @@ public class MessageJobDaoImpl extends MessageJobDaoBase {
 	public void toJobInfo(MessageJob sourceEntity, JobInfo targetVO) {
 		super.toJobInfo(sourceEntity, targetVO);
 		targetVO.setTosend(sourceEntity.getToSend());
-		
+		targetVO.setSend(sourceEntity.getSend());
+		targetVO.setError(sourceEntity.getError());
+		targetVO.setTotal(sourceEntity.getRecipients().size());		
 	}
 
 	/**
