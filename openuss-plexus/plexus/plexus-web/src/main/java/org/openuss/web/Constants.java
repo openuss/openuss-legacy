@@ -118,5 +118,8 @@ public class Constants {
 	public static final String REGISTRATION_DATA = "registrationData";
 
 	public static final String USER_SESSION_KEY = "user";
+	
+	public static final String MAILINGLIST_MAILINGLIST = "mailinglist_mailinglist";
+	public static final String MAILINGLIST_MAIL = "mailinglist_mail";
 
 }

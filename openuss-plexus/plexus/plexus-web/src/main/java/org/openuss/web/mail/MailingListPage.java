@@ -13,8 +13,6 @@ import org.openuss.web.Constants;
 import org.openuss.web.enrollment.AbstractEnrollmentPage;
 
 //TODO remove me
-@Bean(name = "views$secured$enrollment$mailinglist", scope = Scope.REQUEST)
-@View
 public class MailingListPage extends AbstractEnrollmentPage {
 	private static final Logger logger = Logger.getLogger(MailingListPage.class);
 	
