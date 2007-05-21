@@ -1069,6 +1069,17 @@ ul{
   display: block;
 }
 
+.pulldown_inline {
+  width: 500px;
+  font-size: 9pt;
+  text-decoration: none;
+  color:#505050; 
+  border: 1px solid #B4B4B4;
+  margin: 3px 0 0 10px;
+  display: inline;
+}
+
+
 .dateField {
 	margin-left: 10px;
 }
