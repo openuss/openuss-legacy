@@ -255,11 +255,12 @@ span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:
 }
 
 #left .content_box ul.int{
-	margin: 5px 0 0 0;
+	margin: 10px 0 4px 20px;
+	padding: 0;
+	list-style-type: none;
 }
 	
 #left .content_box ul.int li{
-	margin-left:-23px;
 	margin-top: 2px;
 	list-style-image:url(../img/link_int.png);
 }
@@ -270,12 +271,13 @@ span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:
 }
 
 #right .content_box ul.ext{
-	margin: 5px 0 0 0;
+	margin: 10px 0 4px 12px;
+	padding: 0;
+	list-style-type: none;	
 }
 	
 #right .content_box ul.ext li{
-	margin-left:-23px;
-	margin-top: 2px;
+	margin-top: 2px; 
 	list-style-image:url(../img/link.png);
 }
 
@@ -644,31 +646,17 @@ ul.navigation li ul li ul li.active_item a:hover{
 }
 
 #right .content_box ul.int{
-	margin: 5px 0 0 0;
+	margin: 10px 0 4px 12px;
+	padding: 0;
+	list-style-type: none;
 }
 	
 #right .content_box ul.int li{
-	margin-left:-23px;
 	margin-top: 2px;
 	list-style-image:url(../img/link_int.png);
 }
 
 #right .content_box ul.int a{
-	color: #505050;
-	text-decoration: none; font-weight: none;
-}
-
-#right .content_box ul.ext{
-	margin: 5px 0 0 0;
-}
-	
-#right .content_box ul.ext li{
-	margin-left:-23px;
-	margin-top: 2px;
-	list-style-image:url(../img/link.png);
-}
-
-#right .content_box ul.ext a{
 	color: #505050;
 	text-decoration: none; font-weight: none;
 }
