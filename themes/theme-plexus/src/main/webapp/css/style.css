@@ -769,15 +769,25 @@ ul#header_navigation li:hover{
   width: 100%;
 }
 
-.teaser_blue {
-	width: 400px;
+.teaser_blue{
+	width:auto;
+	padding-right: 210px;
 }
 
 .teaser_blue .content_box {
-  display: block;
+  display: inline;
   margin: 0;
   padding: 0 0 15px 0;
-  width: 400px;
+}
+
+.teaser_blue_right{
+	float:right;
+	width:200px;
+}
+
+.teaser_blue_right .content_box {
+	display: inline;
+	float: right;
 }
 
 .header_normal_left_bg {
@@ -789,7 +799,8 @@ ul#header_navigation li:hover{
 }
 
 .user_box .header_normal_left_bg,
-.teaser_blue .header_normal_left_bg {
+.teaser_blue .header_normal_left_bg,
+.teaser_blue_right .header_normal_left_bg {
   float: left;
   width: 9px;
   height: 28px;
@@ -831,7 +842,9 @@ ul#header_navigation li:hover{
 }
 
 .user_box .header_normal_right_bg,
-.teaser_blue .header_normal_right_bg {
+.teaser_blue .header_normal_right_bg,
+.teaser_blue_right .header_normal_right_bg
+ {
   float: right;
   width: 9px;
   height: 28px;
@@ -872,7 +885,8 @@ ul#header_navigation li:hover{
 }
 
 .user_box .header_normal,
-.teaser_blue .header_normal {
+.teaser_blue .header_normal,
+.teaser_blue_right .header_normal {
   padding: 0;
   height: 28px;
   background-image: url(../img/teaser_blue_bg.jpg);
