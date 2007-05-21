@@ -98,6 +98,10 @@ p {
 	margin-bottom: 5px;
 }
 
+.clear_both{
+	clear: both;
+}
+
 span.userinfo{
   font-size: 8pt;
   color: #FFF !important;
