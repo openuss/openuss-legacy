@@ -14,6 +14,10 @@
 				<t:panelNavigation2 id="desktop" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator" >
 					<t:commandNavigation2 value="#{msg['desktop_navigation_header']}">
 						<s:authorize ifAllGranted="ROLE_USER">
+							<t:commandNavigation2 value="#{msg['desktop_command_bookmarks']}" activeOnViewIds="/views/secured/desktop/desktop.xhtml" action="desktop"/>
+						</s:authorize>
+						<t:commandNavigation2 value="#{msg['desktop_search_faculty']}" action="search_faculties" activeOnViewIds="/views/public/faculty/faculties.xhtml"/>
+						<s:authorize ifAllGranted="ROLE_USER">
 							<t:commandNavigation2 value="#{msg['desktop_command_userprofile']}" action="user_logindata" >
 								<t:commandNavigation2 action="user_logindata" activeOnViewIds="/views/secured/user/logindata.xhtml" >
 									<h:outputText value="#{msg['user_profile_login_header']}" />
@@ -31,9 +35,7 @@
 									<h:outputText value="#{msg['user_profile_command_preview']}" />
 								</t:commandNavigation2>
 							</t:commandNavigation2>
-							<t:commandNavigation2 value="#{msg['desktop_command_bookmarks']}" activeOnViewIds="/views/secured/desktop/desktop.xhtml" action="desktop"/>
 						</s:authorize>
-						<t:commandNavigation2 value="#{msg['welcome_search_faculty']}" action="search_faculties" activeOnViewIds="/views/public/faculty/faculties.xhtml"/>
 					</t:commandNavigation2>
 				</t:panelNavigation2>	
 			</h:form>
