@@ -16,7 +16,7 @@
      	label="#{period.name}" 
      	value="views$secured$lecture$periods.enrollmentData" 
      	var="enrollment" 
-     	columnClasses="col_max_left, col_commands_two"
+     	columnClasses="col_max_left, col_min_left, col_commands_two"
      	rows="5">       
       
 		<t:column>
@@ -25,6 +25,13 @@
 				<f:param value="#{enrollment.id}" name="enrollment" />
 				<h:outputText value="#{enrollment.subject.name} (#{enrollment.shortcut})"/>
 			</o:link>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="accessType">#{msg.enrollment_options_access_headline}</plexus:commandSortHeader>
+			<h:outputText value="#{enrollment.accessType}">
+					<f:converter converterId="accessTypeLabelConverter" />
+			</h:outputText>
 		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">		
