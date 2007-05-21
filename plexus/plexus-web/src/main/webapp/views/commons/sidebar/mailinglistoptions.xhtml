@@ -16,8 +16,8 @@
 				<o:block label="#{msg['mailinglist_status']}" styleClass="option_box">
 					<h:outputText value="#{msg['mailinglist_subscribe']}" styleClass="content_font_normal" rendered="#{not mailinglist_mailinglist.subscribed}" escape="false"></h:outputText>
 					<h:outputText value="#{msg['mailinglist_unsubscribe']}" styleClass="content_font_normal" rendered="#{mailinglist_mailinglist.subscribed}" escape="false"></h:outputText>
-					<ul>
-						<li class="sidebar_listPoint">
+					<ul class="int">
+						<li>
 							<h:commandLink value="#{msg['mailinglist_button_subscribe']}" action="#{views$secured$mailinglist$mailinglist.toggleMailingListStatus}" rendered="#{not mailinglist_mailinglist.subscribed}"/>
 							<h:commandLink value="#{msg['mailinglist_button_unsubscribe']}" action="#{views$secured$mailinglist$mailinglist.toggleMailingListStatus}" rendered="#{mailinglist_mailinglist.subscribed}"/>
 						</li>
@@ -27,7 +27,7 @@
 		
 			<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}">
 				<o:block label="#{msg['mailinglist_options']}" styleClass="option_box">
-					<ul>
+					<ul class="int">
 						<li class="sidebar_listPoint" >
 							<h:commandLink value="#{msg['mailinglist_xmlexport']}" action="#{views$secured$mailinglist$mailinglist.exportSubscribers}"/>
 						</li>
