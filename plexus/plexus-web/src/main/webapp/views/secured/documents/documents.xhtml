@@ -35,15 +35,17 @@
 	<ui:define name="content">
 		<h:form id="documentTableView">
 			<o:block>
-				<h:outputText value="ET+EUS 2007 > Materialien > " styleClass="content_font_normal"></h:outputText>
-				<t:dataList var="folder" value="#{views$secured$documents$documents.path}">
-						<o:link value="/views/secured/documents/documents.faces" title="#{folder.description}" styleClass="folder_link">
-							<f:param value="#{enrollment.id}" name="enrollment" />
-							<f:param value="#{folder.id}" name="folder" />
-							<h:outputText value="#{msg.documents_root_folder}" rendered="#{folder.root}"/>
-							<h:outputText value="> #{folder.name}" rendered="#{!folder.root}"/>
-						</o:link>
-				</t:dataList>
+				<span class="header_font_normal">
+					<h:outputText value="#{enrollment.shortcut} > #{msg.documents_main_header} > " styleClass="content_font_normal"></h:outputText>
+					<t:dataList var="folder" value="#{views$secured$documents$documents.path}">
+							<o:link value="/views/secured/documents/documents.faces" title="#{folder.description}" styleClass="folder_link">
+								<f:param value="#{enrollment.id}" name="enrollment" />
+								<f:param value="#{folder.id}" name="folder" />
+								<h:outputText value="#{msg.documents_root_folder}" rendered="#{folder.root}"/>
+								<h:outputText value="> #{folder.name}" rendered="#{!folder.root}"/>
+							</o:link>
+					</t:dataList>
+				</span>
 			</o:block>
 			<!-- 
 			<o:block label="Aktuelle Position" styleClass="form_box">
