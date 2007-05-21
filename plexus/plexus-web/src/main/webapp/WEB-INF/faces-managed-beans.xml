@@ -120,4 +120,16 @@
  		<managed-bean-scope>session</managed-bean-scope> 	
  	</managed-bean>
  	
+ 	<managed-bean>
+ 		<managed-bean-name>mailinglist_mailinglist</managed-bean-name>
+ 		<managed-bean-class>org.openuss.mailinglist.MailingListInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope> 	 		
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>mailinglist_mail</managed-bean-name>
+ 		<managed-bean-class>org.openuss.mailinglist.MailDetail</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope> 	 		
+ 	</managed-bean>
+ 	 	
 </faces-config>

@@ -2,11 +2,16 @@ package org.openuss.web.mail;
 
 import java.util.List;
 
+import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.mailinglist.MailInfo;
 import org.openuss.web.Constants;
 
+@Bean(name = "views$secured$mailinglist$mailinglist", scope = Scope.REQUEST)
+@View
 public class MailingListMainPage extends AbstractMailingListPage{
 	
 	private MailingListDataProvider data = new MailingListDataProvider();

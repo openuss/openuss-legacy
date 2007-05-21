@@ -184,8 +184,10 @@ public class MailingListServiceImpl
 	@Override
 	protected MailingListInfo handleGetMailingList(DomainObject domainObject) throws Exception {
 		MailingList ml = getMailingListDao().load(domainObject.getId());
-		if (ml!=null) return getMailingListDao().toMailingListInfo(ml);
-		return null;
+		MailingListInfo mli = null; 
+		if (ml!=null) mli = getMailingListDao().toMailingListInfo(ml);
+		if (getSubscriberDao().findByUserAndMailingList(getSecurityService().getCurrentUser(), ml)!=null) mli.setSubscribed(true);				
+		return mli;
 
 	}
 
