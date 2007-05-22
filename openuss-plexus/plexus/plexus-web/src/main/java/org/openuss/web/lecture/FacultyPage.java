@@ -50,7 +50,7 @@ public class FacultyPage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
-		if (period == null && faculty != null) {
+		if (period == null && faculty != null || faculty != null && !faculty.getPeriods().contains(period)) {
 			period = faculty.getActivePeriod();
 		} else {
 			period = lectureService.getPeriod(period.getId());
@@ -90,6 +90,19 @@ public class FacultyPage extends AbstractLecturePage {
 			}
 			return page;
 		}
+	}
+	
+	/**
+	 * Apply for Membership.
+	 * @return outcome
+	 * @throws LectureException 
+	 */
+	public String applyForMembership() throws LectureException {
+		if (user != null && faculty != null) {
+			lectureService.addFacultyAspirant(user.getId(), faculty.getId());
+			addMessage(i18n("faculty_message_application_of_membership_send"));
+		}
+		return Constants.SUCCESS;
 	}
 
 	/**

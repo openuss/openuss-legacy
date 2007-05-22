@@ -23,7 +23,7 @@ public class FacultyOptionsPage extends AbstractLecturePage {
 	 */
 	public String saveFaculty() throws LectureException {
 		lectureService.persist(faculty);
-		addMessage("faculty_message_command_save_succeed");
+		addMessage(i18n("faculty_message_command_save_succeed"));
 		return Constants.SUCCESS;
 	}
 

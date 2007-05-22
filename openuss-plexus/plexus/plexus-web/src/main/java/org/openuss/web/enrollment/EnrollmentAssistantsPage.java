@@ -82,7 +82,7 @@ public class EnrollmentAssistantsPage extends AbstractEnrollmentPage {
 		logger.debug("enrollment member deleted");
 		EnrollmentMemberInfo assistant = data.getRowData();
 		enrollmentService.removeMember(assistant.getId());
-		addMessage(i18n("message_enrollment_removed_assistant"), assistant.getUsername());
+		addMessage(i18n("message_enrollment_removed_assistant", assistant.getUsername()));
 		resetCachedData();
 		return Constants.SUCCESS;
 	}
