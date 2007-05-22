@@ -1417,7 +1417,7 @@ td {
   margin: 1px;
   padding: 4px 5px 4px 5px;
   text-align: left;
-  font-size: 8pt;
+  font-size: 7pt;
   font-weight: none;
   background: none;
 }
@@ -1615,7 +1615,7 @@ td.col_max_left label input{
 
 .news_title {
 	color: #333;
-	font-weight: bold;	
+	font-weight: normal;	
 	padding-left: 5px;
 	padding-right: 5px;
 }
