@@ -7,9 +7,11 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:news="http://www.openuss.org/news/jsf"
       xmlns:t="http://myfaces.apache.org/tomahawk"
-      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:c="http://java.sun.com/jstl/core"      
       xmlns:s="http://www.openuss.org/jsf-security"
-      xmlns:c="http://java.sun.com/jstl/core">
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:plexus="http://www.openuss.org/plexus/jsf"      
+      xmlns:fck="http://www.fck-faces.org/fck-faces">
       
  	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -17,34 +19,38 @@
 		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
 		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
 		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+
+
 	</head>
 
 	<body>      
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
-  		<ui:define name="title"><h:outputText value="#{msg.enrollment_main_title} - #{enrollment.shortcut}"/></ui:define>
- 		<ui:define name="navigation">
+		<ui:define name="navigation">
 			<ui:include src="/views/commons/navigation/enrollment.xhtml" />
 		</ui:define>
+ 		 
   		<ui:define name="content">
-  		<!-- removed ACL tags -->
-		  	<o:block>
-				<span class="header_font_normal">
-					<h:outputText value="#{enrollment.shortcut}" styleClass="content_font_normal"></h:outputText>
-				</span>
-			</o:block>
-			<h:form id="aspirantsForm"> 
-				<ui:include src="enrollmentaspirantstable.xhtml" />
+			<h:form id="chatForm">
 				<o:block>
-					<h:commandButton value="${msg.save}" title="#{msg.save_hint}" action="#{views$secured$enrollment$enrollmentaspirants.save}" styleClass="button_save"/>
-					<h:commandButton value="${msg.cancel}" title="#{msg.cancel}" action="enrollment" styleClass="button_cancel" immediate="true"/>
+					<span class="header_font_normal">
+						<h:outputText value="#{enrollment.shortcut} > Chat  " styleClass="content_font_normal"></h:outputText>
+					</span>
 				</o:block>
-	  		</h:form>
+				<o:block>
+					<p class="content_font_normal">
+						Um ein einfaches Chat-Fenster zu öffnen, klicken Sie auf der linken Seite auf "Öffnen". 
+						Wenn Sie das Collaborationswerkzeug verwenden wollen, klicken Sie auf "Collaboration Öffnen".
+					</p>
+					<ul class="int">
+						<li><a href="javascript:openChat(#{enrollment.id});">Chat öffnen</a></li>
+						<li><h:outputLink value="http://openuss02.uni-muenster.de/extension/chatfoundation/babylon/BabylonChatPage.po">Collaboration öffnen</h:outputLink></li>
+					</ul>
+						
+				</o:block>
+			</h:form>
   		</ui:define>
 	</ui:composition>
-	
 	<!-- text above will be ignored -->
-	
 	</body>
 </html>
-

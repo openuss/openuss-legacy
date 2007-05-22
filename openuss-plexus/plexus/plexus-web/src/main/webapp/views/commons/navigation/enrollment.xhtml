@@ -36,14 +36,6 @@
 							rendered="#{enrollment.mailinglist}">
 							<h:outputText value="#{msg['enrollment_command_mailinglist']}"/>
 						</t:commandNavigation2>
-<!-- 
-						<t:commandNavigation2 
-							action="mailinglist_subscribers" 
-							activeOnViewIds="/views/secured/enrollment/mailinglistsubscribers.xhtml"
-							rendered="#{enrollment.mailinglist}">
-							<h:outputText value="#{msg['enrollment_command_mailinglistsubscribers']}"/>
-						</t:commandNavigation2>					
- -->						
 						<t:commandNavigation2 
 							action="braincontest_main" 
 							activeOnViewIds="/views/secured/braincontest/braincontestmain.xhtml,/views/secured/braincontest/braincontestnew.xhtml,/views/secured/braincontest/braincontestsolve.xhtml,/views/secured/braincontest/braincontestsolved.xhtml,/views/secured/braincontest/braincontesttop.xhtml,/views/secured/braincontest/braincontestwrong.xhtml"
@@ -52,16 +44,22 @@
 						</t:commandNavigation2>
 						<t:commandNavigation2 
 							action="enrollment_chat" 
-							activeOnViewIds="/views/secured/enrollment/chat.xhtml"
+							activeOnViewIds="/views/secured/enrollment/chatmain.xhtml"
 							rendered="#{enrollment.chat}">
 							<h:outputText value="#{msg['enrollment_command_chat']}"/>
 						</t:commandNavigation2>
 						<t:commandNavigation2 
 							action="enrollment_wiki" 
-							activeOnViewIds="/views/secured/enrollment/wiki.xhtml"
+							activeOnViewIds="/views/secured/wiki/wikimain.xhtml,/views/secured/wiki/wikiedit.xhtml"
 							rendered="#{enrollment.wiki}">
 							<h:outputText value="#{msg['enrollment_command_wiki']}"/>
 						</t:commandNavigation2>
+						<t:commandNavigation2 
+							action="freestyle_learning" 
+							activeOnViewIds="/views/secured/enrollment/fslinstall.xhtml"
+							rendered="#{enrollment.freestylelearning}">
+							<h:outputText value="Freestyle Learning"/>
+						</t:commandNavigation2>					
 					</s:acl>
 
 					<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}">
