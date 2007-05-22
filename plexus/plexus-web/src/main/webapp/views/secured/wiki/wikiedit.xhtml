@@ -30,8 +30,10 @@
  		 
   		<ui:define name="content">
 			<h:form id="editWikiForm">
-				<o:block label="#{msg.wiki_edit_header}">
-					<fck:editor value="#{views$secured$wiki$wikimain.wikiPage.text}" id="textEditor" toolbarSet="Wiki" width="100%" height="200" />	 				
+				<o:block label="#{msg.wiki_edit_header}" styleClass="form_box">
+					<div class="content_iframe">
+						<fck:editor value="#{views$secured$wiki$wikimain.wikiPage.text}" id="textEditor" toolbarSet="Wiki" width="100%" height="400" />	 				
+					</div>
 				</o:block>					
 				<o:block>
 					<plexus:command bean="#{views$secured$wiki$wikimain}"
