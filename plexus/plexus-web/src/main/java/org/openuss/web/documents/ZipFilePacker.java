@@ -58,6 +58,7 @@ public class ZipFilePacker {
 					boolean empty = true;
 					try {
 						zos = new ZipOutputStream(pot);
+						zos.setEncoding("cp850");
 						for (FileInfo file : files) {
 							ZipEntry zipEntry = new ZipEntry(file.getAbsoluteName());
 							zipEntry.setComment(file.getDescription());
