@@ -8,11 +8,11 @@ import org.apache.lucene.store.Directory;
 import org.springmodules.lucene.index.LuceneIndexAccessException;
 import org.springmodules.lucene.index.factory.LuceneIndexReader;
 import org.springmodules.lucene.index.factory.SimpleIndexFactory;
-import org.springmodules.lucene.search.factory.LuceneSearcher;
+import org.springmodules.lucene.search.factory.SimpleSearcherFactory;
 
 public class WorkAroundSimpleIndexFactory extends SimpleIndexFactory {
 
-	private LuceneSearcher luceneSearcher;
+	private SimpleSearcherFactory searcherFactory;
 	
 	public WorkAroundSimpleIndexFactory() {
 		super();
@@ -22,9 +22,9 @@ public class WorkAroundSimpleIndexFactory extends SimpleIndexFactory {
 		super(directory, analyzer);
 	}
 
-	public WorkAroundSimpleIndexFactory(Directory directory, Analyzer analyzer, LuceneSearcher luceneSearcher) {
+	public WorkAroundSimpleIndexFactory(Directory directory, Analyzer analyzer, SimpleSearcherFactory searcherFactory) {
 		super(directory, analyzer);
-		this.luceneSearcher = luceneSearcher;
+		this.searcherFactory = searcherFactory;
 	}
 	
 	/**
@@ -38,12 +38,20 @@ public class WorkAroundSimpleIndexFactory extends SimpleIndexFactory {
 		LuceneIndexReader reader = super.getIndexReader();
 		if (reader != null) {
 			try {
-				reader =  new WorkAroundIndexReader(IndexReader.open(getDirectory()), luceneSearcher);
+				reader =  new WorkAroundIndexReader(IndexReader.open(getDirectory()), searcherFactory);
 			} catch (IOException ex) {
 				throw new LuceneIndexAccessException("Error during opening the reader",ex);			
 			}
 		}
 		return reader;
+	}
+
+	public SimpleSearcherFactory getSearcherFactory() {
+		return searcherFactory;
+	}
+
+	public void setSearcher(SimpleSearcherFactory searcherFactory) {
+		this.searcherFactory = searcherFactory;
 	}
 
 
