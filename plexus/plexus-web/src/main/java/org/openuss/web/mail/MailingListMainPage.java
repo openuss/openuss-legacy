@@ -12,6 +12,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.mailinglist.MailDetail;
 import org.openuss.mailinglist.MailInfo;
+import org.openuss.mailinglist.MailingStatus;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
 
@@ -57,12 +58,16 @@ public class MailingListMainPage extends AbstractMailingListPage{
 	public String delMail(){
 		MailInfo mi = data.getRowData();		
 		getEnrollmentMailingListService().deleteMail(enrollmentInfo, getEnrollmentMailingListService().getMail(mi));
+		this.mail = new MailDetail();
 		return Constants.SUCCESS;
 	}
 	
 	public String changeMail(){	
 		MailInfo mi = data.getRowData();
-		setSessionBean(Constants.MAILINGLIST_MAIL, getEnrollmentMailingListService().getMail(mi));
+		MailDetail md = getEnrollmentMailingListService().getMail(mi);
+		md.setStatus(MailingStatus.DRAFT);
+		getEnrollmentMailingListService().updateMail(md);
+		setSessionBean(Constants.MAILINGLIST_MAIL, md);
 		return Constants.MAILINGLIST_NEWMAIL;
 	}
 	
@@ -90,6 +95,23 @@ public class MailingListMainPage extends AbstractMailingListPage{
 		this.mail = md;		
 		setSessionBean(Constants.MAILINGLIST_MAIL, md);
 		return Constants.MAILINGLIST_SHOWMAIL;
+	}
+	
+	public String sendPlannedMailNow(){
+		MailInfo mi = data.getRowData();
+		MailDetail md = getEnrollmentMailingListService().getMail(mi);		
+		md.setSendDate(new Date(System.currentTimeMillis()));
+		getEnrollmentMailingListService().updateMail(md);
+		return Constants.MAILINGLIST_MAIN;
+		
+	}
+	
+	public String stopMail(){
+		MailInfo mi = data.getRowData();
+		MailDetail md = getEnrollmentMailingListService().getMail(mi);
+		md.setStatus(MailingStatus.DRAFT);
+		getEnrollmentMailingListService().updateMail(md);
+		return Constants.MAILINGLIST_MAIN;
 	}
 	
 	public String listSubscribers(){		

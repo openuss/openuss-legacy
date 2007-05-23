@@ -47,7 +47,7 @@ public class EnrollmentMailingListServiceImpl extends EnrollmentMailingListServi
         throws java.lang.Exception
     {
     	MailingListInfo mailingList = getMailingList(enrollment);
-    	return getMailingListService().getMails(mailingList);
+    	return getMailingListService().getMails(mailingList, false);
     }
 
     /**
@@ -145,6 +145,11 @@ public class EnrollmentMailingListServiceImpl extends EnrollmentMailingListServi
 	@Override
 	protected void handleUpdateMailingList(MailingListInfo mailingList) throws Exception {
 		getMailingListService().updateMailingList(mailingList);
+	}
+
+	@Override
+	protected void handleUpdateMail(MailDetail mail) throws Exception {
+		getMailingListService().updateMail(mail);		
 	}
 
 }

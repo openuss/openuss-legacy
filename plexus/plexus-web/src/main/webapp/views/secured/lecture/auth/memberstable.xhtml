@@ -57,7 +57,7 @@
 			<plexus:command
 				bean="#{views$secured$lecture$auth$members}"
 				action="removeMember"
-				onclick="if (!confirm('Are you sure you want to delete this record?')) return false"
+				onclick="if (!confirm('#{msg.lecture_remove_facultymember_confirmation}')) return false"
 				label="#{msg.faculty_members_command_remove}"
 				title="#{msg.faculty_members_command_remove_hint}"
 				rendered="#{!bean.owner}"

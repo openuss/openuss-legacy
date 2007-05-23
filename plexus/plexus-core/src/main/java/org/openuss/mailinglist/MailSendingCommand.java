@@ -17,7 +17,7 @@ public class MailSendingCommand extends AbstractDomainCommand implements DomainC
 	
 	public void execute() throws Exception {
 		Mail mail = mailDao.load(getDomainObject().getId());
-		if (mail.getStatus() == MailingStatus.PLANNED){
+		if ((mail.getStatus() == MailingStatus.PLANNED)&&(mail.getSendDate().getTime()<=System.currentTimeMillis())){			
 			Set<Subscriber> recipients = mail.getMailingList().getSubscribers();
 			Iterator i = recipients.iterator();
 			List<User> users = new ArrayList<User>();
