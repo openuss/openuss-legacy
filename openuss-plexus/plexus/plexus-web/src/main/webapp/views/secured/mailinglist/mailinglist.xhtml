@@ -86,11 +86,12 @@
 				</s:acl>
 			</plexus:dataTable>
 
-			<o:block>
-				<h:commandButton action="#{views$secured$mailinglist$mailinglist.newMail}"
-					value="#{msg['mailinglist_button_newmail']}" styleClass="button"/>
-			</o:block>
-
+			<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}">
+				<o:block>
+					<h:commandButton action="#{views$secured$mailinglist$mailinglist.newMail}"
+						value="#{msg['mailinglist_button_newmail']}" styleClass="button"/>
+				</o:block>
+			</s:acl>
 		</h:form>
 	</ui:define>
 </ui:composition>
