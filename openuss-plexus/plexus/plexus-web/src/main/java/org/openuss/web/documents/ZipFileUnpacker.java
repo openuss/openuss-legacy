@@ -33,7 +33,7 @@ public class ZipFileUnpacker {
 	
 	public ZipFileUnpacker(File file) throws IOException {
 		this.file = file;
-		this.zipFile = new ZipFile(file);
+		this.zipFile = new ZipFile(file,"Cp850");
 		this.files = new ArrayList<File>();
 	}
 	
