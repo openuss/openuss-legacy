@@ -1,20 +1,23 @@
 package org.openuss.web.mail;
 
-import java.util.Date;
-import java.util.List;
-
+import org.acegisecurity.acl.AclEntry;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.mailinglist.MailDetail;
+import org.openuss.mailinglist.MailInfo;
+import org.openuss.mailinglist.MailingStatus;
+import org.openuss.security.SecurityService;
 import org.openuss.security.User;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$mailinglist$mailinglistnewmailpage", scope = Scope.REQUEST)
 @View
-public class MailingListNewMailPage extends AbstractMailingListPage{
+public class MailingListNewMailPage extends AbstractMailPage{
 	
 	@Property(value= "#{"+Constants.USER+"}")
 	private User user;
@@ -26,10 +29,28 @@ public class MailingListNewMailPage extends AbstractMailingListPage{
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
+		if (mail.getId()!=null){
+			MailInfo mi = new MailInfo(); 
+			mi.setId(mail.getId());
+			mail = getEnrollmentMailingListService().getMail(mi);
+			if (mail.getStatus()==MailingStatus.DELETED){
+				addError(i18n("mailinglist_mailaccess_impossible"));
+				redirect(Constants.MAILINGLIST_MAIN);
+			}
+			setSessionBean(Constants.MAILINGLIST_MAIL, mail);
+			if (mail==null){
+				addError(i18n("mailinglist_mailaccess_impossible"));
+				redirect(Constants.MAILINGLIST_MAIN);
+			}			
+			if (!AcegiUtils.hasPermission(mail, new Integer[] { LectureAclEntry.ASSIST })){
+				addError(i18n("mailinglist_mailaccess_noright"));
+				redirect(Constants.MAILINGLIST_MAIN);				
+			}				
+		}
 	}	
 
 	public String saveDraft(){
-		getEnrollmentMailingListService().saveMail(enrollmentInfo, mail);
+		getEnrollmentMailingListService().updateMail(mail);
 		return Constants.MAILINGLIST_MAIN;
 	}
 	
@@ -61,4 +82,5 @@ public class MailingListNewMailPage extends AbstractMailingListPage{
 	public void setMail(MailDetail mail) {
 		this.mail = mail;
 	}
+
 }

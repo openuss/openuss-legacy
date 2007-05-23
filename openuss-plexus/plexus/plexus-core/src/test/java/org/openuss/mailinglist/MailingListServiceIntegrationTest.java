@@ -136,7 +136,7 @@ public class MailingListServiceIntegrationTest extends MailingListServiceIntegra
 		MailDetail mail = generateMailToSend();		
 		getMailingListService().saveMail(assist, mail);
 		commit();
-		List mails = getMailingListService().getMails(assist);
+		List mails = getMailingListService().getMails(assist, false);
 		assertNotNull(mails);
 		assertEquals(1, mails.size());
 		MailDetail md = getMailingListService().getMail((MailInfo)mails.get(0));
@@ -144,7 +144,7 @@ public class MailingListServiceIntegrationTest extends MailingListServiceIntegra
 		assertEquals(mail.getSubject(), md.getSubject());
 		assertEquals(mail.getText(), md.getText());
 		assertEquals(mail.getSendDate(), md.getSendDate());
-		mails = getMailingListService().getMails(noAssist);
+		mails = getMailingListService().getMails(noAssist, false);
 		assertEquals(0, mails.size());
 	}
 	
@@ -152,7 +152,7 @@ public class MailingListServiceIntegrationTest extends MailingListServiceIntegra
 		MailDetail mail = generateMailToSend();		
 		getMailingListService().saveMail(assist, mail);
 		commit();
-		List mails = getMailingListService().getMails(assist);
+		List mails = getMailingListService().getMails(assist, false);
 		assertNotNull(mails);
 		assertEquals(1, mails.size());
 		MailDetail md = getMailingListService().getMail((MailInfo)mails.get(0));
@@ -165,7 +165,7 @@ public class MailingListServiceIntegrationTest extends MailingListServiceIntegra
 		} catch (MailingListApplicationException e) {
 			fail();
 		}
-		mails = getMailingListService().getMails(assist);
+		mails = getMailingListService().getMails(assist, false);
 		assertEquals(0, mails.size());
 		//TODO insert testcase where mail has a message job
 	}
@@ -174,7 +174,7 @@ public class MailingListServiceIntegrationTest extends MailingListServiceIntegra
 		MailDetail mail = generateMailToSend();		
 		getMailingListService().sendMail(assist, mail);
 		commit();
-		List mails = getMailingListService().getMails(assist);
+		List mails = getMailingListService().getMails(assist, false);
 		assertNotNull(mails);
 		assertEquals(1, mails.size());
 		MailDetail md = getMailingListService().getMail((MailInfo)mails.get(0));
@@ -185,11 +185,11 @@ public class MailingListServiceIntegrationTest extends MailingListServiceIntegra
 		//generate draft, then send draft
 		MailDetail mailDraft = generateMailToSend();
 		getMailingListService().saveMail(assist, mailDraft);
-		MailDetail loadedDraft = getMailingListService().getMail((MailInfo)getMailingListService().getMails(assist).get(1));
+		MailDetail loadedDraft = getMailingListService().getMail((MailInfo)getMailingListService().getMails(assist, false).get(1));
 		assertNotNull(loadedDraft);
 		assertNotNull(loadedDraft.getId());
 		getMailingListService().sendMail(assist, loadedDraft);
-		MailDetail loadedSendMessage = getMailingListService().getMail((MailInfo)getMailingListService().getMails(assist).get(1));
+		MailDetail loadedSendMessage = getMailingListService().getMail((MailInfo)getMailingListService().getMails(assist, false).get(1));
 		assertEquals(MailingStatus.PLANNED, loadedSendMessage.getStatus());
 		assertEquals(mailDraft.getSubject(), loadedSendMessage.getSubject());
 		assertEquals(mailDraft.getText(), loadedSendMessage.getText());

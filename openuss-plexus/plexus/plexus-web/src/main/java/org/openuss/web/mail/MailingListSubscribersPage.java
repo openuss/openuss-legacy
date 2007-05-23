@@ -1,6 +1,5 @@
 package org.openuss.web.mail;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.shale.tiger.managed.Bean;

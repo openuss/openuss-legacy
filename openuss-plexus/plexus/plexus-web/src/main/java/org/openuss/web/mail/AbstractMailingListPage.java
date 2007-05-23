@@ -1,6 +1,7 @@
 package org.openuss.web.mail;
 
 import org.apache.shale.tiger.managed.Property;
+import org.apache.shale.tiger.view.Prerender;
 import org.openuss.enrollment.mailinglist.EnrollmentMailingListService;
 import org.openuss.mailinglist.MailDetail;
 import org.openuss.mailinglist.MailingListInfo;
@@ -17,6 +18,12 @@ public class AbstractMailingListPage extends AbstractEnrollmentPage{
 	@Property(value = "#{" + Constants.MAILINGLIST_MAILINGLIST + "}")
 	protected MailingListInfo mailingList;
 
+	
+	@Prerender
+	public void prerender() throws Exception {	
+		super.prerender();
+	}	
+	
 	public EnrollmentMailingListService getEnrollmentMailingListService() {
 		return enrollmentMailingListService;
 	}

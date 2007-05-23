@@ -19,6 +19,7 @@ import org.openuss.security.acl.LectureAclEntry;
 public class MailingListServiceImpl
     extends org.openuss.mailinglist.MailingListServiceBase
 {
+	
 
 	private MailingList getMailingListDao(MailingListInfo mailingList){
 		return getMailingListDao().load(mailingList.getId());
@@ -75,7 +76,8 @@ public class MailingListServiceImpl
     /**
      * @see org.openuss.mailinglist.MailingListService#getSubscribers(org.openuss.foundation.DomainObject)
      */
-    protected List handleGetSubscribers(MailingListInfo mailingList)
+    @SuppressWarnings("unchecked")
+	protected List handleGetSubscribers(MailingListInfo mailingList)
         throws java.lang.Exception
     {
     	MailingList ml = getMailingListDao(mailingList);
@@ -89,11 +91,12 @@ public class MailingListServiceImpl
     protected void handleSaveMail(MailingListInfo mailingList, MailDetail mail)
         throws java.lang.Exception
     {
-    	MailingList ml = getMailingListDao(mailingList);
-    	Mail m = getMailDao().mailDetailToEntity(mail);
-    	m.setMailingList(ml);
-    	m.setStatus(MailingStatus.DRAFT);
-    	getMailDao().create(m);
+	    	MailingList ml = getMailingListDao(mailingList);
+	    	Mail m = getMailDao().mailDetailToEntity(mail);
+	    	m.setMailingList(ml);
+	    	m.setStatus(MailingStatus.DRAFT);
+	    	getMailDao().create(m);
+	    	getSecurityService().createObjectIdentity(m, mailingList);
     }
 
     /**
@@ -125,14 +128,21 @@ public class MailingListServiceImpl
     /**
      * @see org.openuss.mailinglist.MailingListService#getMails(org.openuss.foundation.DomainObject)
      */
-    protected java.util.List handleGetMails(MailingListInfo mailingList)
+    protected java.util.List handleGetMails(MailingListInfo mailingList, boolean withDeleted)
         throws java.lang.Exception
     {
     	MailingList ml = getMailingListDao(mailingList);
-    	if (!getSecurityService().hasPermission(mailingList, new Integer[] { LectureAclEntry.ASSIST })) {
-    		return getMailDao().findMailByMailingListAndStatus(MailDao.TRANSFORM_MAILINFO, ml);
-    	} 
-    	return getMailDao().findMailByMailingList(MailDao.TRANSFORM_MAILINFO, ml);
+    	if (withDeleted){
+    		if (!getSecurityService().hasPermission(mailingList, new Integer[] { LectureAclEntry.ASSIST })) {
+    			return getMailDao().findMailByMailingListAndStatus(MailDao.TRANSFORM_MAILINFO, ml);
+    		} 
+    		return getMailDao().findMailByMailingList(MailDao.TRANSFORM_MAILINFO, ml);
+    	} else if (!withDeleted){
+    		if (!getSecurityService().hasPermission(mailingList, new Integer[] { LectureAclEntry.ASSIST })) {
+    			return getMailDao().findNotDeletedByStatus(MailDao.TRANSFORM_MAILINFO, ml);    			
+    		} 
+    	}
+    	return getMailDao().findByMailingListWithoutDeleted(MailDao.TRANSFORM_MAILINFO, ml);
     }
 
     /**
@@ -167,6 +177,7 @@ public class MailingListServiceImpl
     		MailingList ml = getMailingListDao(mailingList);
     		m.setMailingList(ml);
     		getMailDao().create(m);  
+    		getSecurityService().createObjectIdentity(m, mailingList);
     		
     	}
     	getCommandService().createOnceCommand(m, "mailSendingCommand", m.getSendDate(), null);
@@ -198,5 +209,20 @@ public class MailingListServiceImpl
 		MailingList ml = getMailingListDao().mailingListInfoToEntity(mailingList);
 		getMailingListDao().update(ml);
 	}
+
+	@Override
+	protected void handleUpdateMail(MailDetail mail) throws Exception {
+		if (mail.getStatus()==MailingStatus.PLANNED) getCommandService().createOnceCommand(mail, "mailSendingCommand", mail.getSendDate(), null);
+		Mail m = getMailDao().mailDetailToEntity(mail);
+		getMailDao().update(m);
+	}
+
+	@Override
+	protected MailingListInfo handleGetMailingList(MailDetail mail) throws Exception {
+		Mail m = getMailDao().mailDetailToEntity(mail);
+		return getMailingListDao().toMailingListInfo(m.getMailingList());
+	}
+
+
 
 }

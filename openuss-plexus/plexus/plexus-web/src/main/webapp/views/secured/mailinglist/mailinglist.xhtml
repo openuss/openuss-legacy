@@ -71,18 +71,29 @@
 							action="delMail" label="#{msg['mailinglist_button_delete']}"
 							title="#{msg['mailinglist_button_delete_hint']}"
 							styleClass="button_profile"
-							rendered="#{not (mail.status.value==3)}" />
+							onclick="if (!confirm('#{msg.mailinglist_remove_mail}')) return false"
+							rendered="#{not (mail.status.value==3)}"/>
 						<plexus:command bean="#{views$secured$mailinglist$mailinglist}"
 							action="sendMail" label="#{msg['mailinglist_button_send']}"
 							title="#{msg['mailinglist_button_send']}"
 							styleClass="button_profile"
 							rendered="#{mail.status.value==2}" />
 						<plexus:command bean="#{views$secured$mailinglist$mailinglist}"
+							action="sendPlannedMailNow" label="#{msg['mailinglist_button_send']}"
+							title="#{msg['mailinglist_button_send_hint']}"
+							styleClass="button_profile" 
+							rendered="#{mail.status.value==1}"/>
+						<plexus:command bean="#{views$secured$mailinglist$mailinglist}"
 							action="changeMail" label="#{msg['mailinglist_button_change']}"
 							title="#{msg['mailinglist_button_change_hint']}"
 							styleClass="button_profile" 
-							rendered="#{(mail.status.value==2)||(mail.status.value==1)}"/>
-					</plexus:column>
+							rendered="#{(mail.status.value==2)}"/>
+						<plexus:command bean="#{views$secured$mailinglist$mailinglist}"
+							action="stopMail" label="#{msg['mailinglist_button_stop']}"
+							title="#{msg['mailinglist_button_stop']}"
+							styleClass="button_profile" 
+							rendered="#{(mail.status.value==1)}"/>
+					</plexus:column>					
 				</s:acl>
 			</plexus:dataTable>
 
