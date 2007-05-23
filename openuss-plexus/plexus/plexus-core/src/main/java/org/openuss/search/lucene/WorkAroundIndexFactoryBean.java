@@ -16,7 +16,7 @@ import org.springmodules.lucene.search.factory.SimpleSearcherFactory;
  */
 public class WorkAroundIndexFactoryBean implements FactoryBean, InitializingBean {
  
-	private SimpleIndexFactory indexFactory;
+	private WorkAroundSimpleIndexFactory indexFactory;
 	private SimpleSearcherFactory searcherFactory;
 	private boolean resolveLock = false;
 	private boolean create = false;
@@ -109,6 +109,7 @@ public class WorkAroundIndexFactoryBean implements FactoryBean, InitializingBean
 			throw new IllegalArgumentException("directory is required");
 		}
 		this.indexFactory = new WorkAroundSimpleIndexFactory(getDirectory(), getAnalyzer());
+		this.indexFactory.setSearcher(searcherFactory);
 		this.indexFactory.setResolveLock(resolveLock);
 		this.indexFactory.setCreate(create);
 	}
@@ -117,7 +118,7 @@ public class WorkAroundIndexFactoryBean implements FactoryBean, InitializingBean
 		return indexFactory;
 	}
 
-	public void setIndexFactory(SimpleIndexFactory indexFactory) {
+	public void setIndexFactory(WorkAroundSimpleIndexFactory indexFactory) {
 		this.indexFactory = indexFactory;
 	}
 
