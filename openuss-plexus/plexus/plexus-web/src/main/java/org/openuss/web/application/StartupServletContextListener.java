@@ -16,9 +16,7 @@ import org.openuss.web.themes.ThemeManagerBean;
  *
  */
 public class StartupServletContextListener implements ServletContextListener {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(StartupServletContextListener.class);
 	
 	private ThemeHotDeployListener themeHotDeployListener;
@@ -33,6 +31,12 @@ public class StartupServletContextListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent event) {
 		logger.info("================ Starting OpenUSS Plexus ======================");
 		ServletContext servletContext = event.getServletContext();
+		configureThemeManager(servletContext);
+		
+	}
+
+	private void configureThemeManager(ServletContext servletContext) {
+		logger.info("configuring themes");
 		String defaultThemeId = servletContext.getInitParameter(ThemeManager.DEFAULT_THEME_ID_PARAMETER);
 		
 		ThemeManager themeManager = (ThemeManager) servletContext.getAttribute(ThemeManager.THEMEMANAGER_APPLICATIONKEY);
