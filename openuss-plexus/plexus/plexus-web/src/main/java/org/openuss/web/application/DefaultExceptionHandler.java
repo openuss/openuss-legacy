@@ -37,7 +37,7 @@ public class DefaultExceptionHandler extends BaseBean implements ExceptionHandle
 		boolean found = false;
 		// search for application exceptions
 		Throwable e = exception;
-		while (e.getCause() != null && !found) {
+		while (e != e.getCause() && e.getCause() != null && !found) {
 			e = e.getCause();
 			found = e instanceof ApplicationException;
 		}
