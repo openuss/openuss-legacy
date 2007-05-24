@@ -148,8 +148,13 @@ public class EnrollmentMailingListServiceImpl extends EnrollmentMailingListServi
 	}
 
 	@Override
-	protected void handleUpdateMail(MailDetail mail) throws Exception {
-		getMailingListService().updateMail(mail);		
+	protected void handleUpdateMail(EnrollmentInfo enrollment, MailDetail mail) throws Exception {
+		getMailingListService().updateMail(enrollment, mail);		
+	}
+
+	@Override
+	protected String handleExportSubscribers(EnrollmentInfo enrollment) throws Exception {
+		return getMailingListService().exportSubscribers(getMailingList(enrollment));
 	}
 
 }

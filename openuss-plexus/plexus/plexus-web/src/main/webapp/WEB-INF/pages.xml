@@ -72,25 +72,27 @@
 			MailingList
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
-	<page view-id="/views/secured/mailinglist/*">
-		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.READ}"/>
-		<parameter name="mail" value="#{mail.id}" converterId="javax.faces.Long"/>
-	</page>
-
-	<page view-id="/views/secured/mailinglist/newmail.xhtml">
-		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.ASSIST}"/>
-		<parameter name="mail" value="#{mail.id}" converterId="javax.faces.Long"/>
-		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
-	</page>
-	
-	
-	
 	<page view-id="/views/secured/mailinglist/mailinglist.xhtml">
 		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.READ}"/>
 		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
 	</page>
 
 	<page view-id="/views/secured/mailinglist/showsubscribers.xhtml">
+		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.ASSIST}"/>
+		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/mailinglist/newmail.xhtml">
+		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.ASSIST}"/>
+		<parameter name="mail" value="#{mailinglist_mail.id}" converterId="javax.faces.Long"/>
+		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/mailinglist/showmail.xhtml">
+		<parameter name="mail" value="#{mailinglist_mail.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/mailinglist/exportedsubscribers.xhtml">
 		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.ASSIST}"/>
 		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
 	</page>

@@ -35,7 +35,7 @@ public class AbstractEnrollmentPage extends BasePage {
 			enrollment = enrollmentService.getEnrollment(enrollment);
 			enrollmentInfo = enrollmentService.getEnrollmentInfo(enrollment);
 		}
-		if (enrollment == null) {
+		if ((enrollment == null)||(enrollmentInfo == null)) {
 			addMessage(i18n("message_error_enrollment_page"));
 			redirect(Constants.OUTCOME_BACKWARD);
 		} else {

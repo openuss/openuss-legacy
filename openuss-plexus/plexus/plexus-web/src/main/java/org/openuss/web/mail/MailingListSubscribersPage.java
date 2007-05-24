@@ -61,6 +61,9 @@ public class MailingListSubscribersPage extends AbstractMailingListPage{
 		 return Constants.SUCCESS;
 	}
 	
+	public String exportSubscribers(){
+		return Constants.MAILINGLIST_EXPORT;
+	}
 
 	public SubscriberDataProvider getData() {
 		return data;
