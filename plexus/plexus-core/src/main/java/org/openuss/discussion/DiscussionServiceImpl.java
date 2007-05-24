@@ -54,6 +54,8 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		topic = getTopicDao().load(topicInfo.getId());
 		
 		getPostDao().toPostInfo(topic.getFirst(), postInfo);
+		
+		sendNotifications(topic, topic.getForum());
 	}
 
 	/**
@@ -108,7 +110,18 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		
 		getTrackingService().setModified(topic);
 		getTrackingService().setRead(topic);
+		
 		getPostDao().toPostInfo(post, postInfo);
+		
+		sendNotifications(topic, topic.getForum());
+		
+	}
+	
+		@SuppressWarnings("unchecked")
+		private void sendNotifications(Topic topic, Forum forum){
+		@SuppressWarnings("unused")
+		List<User> users = getTopicDao().findUsersToNotify(topic, forum);
+		logger.debug("got users to notify");
 	}
 
 	private void addPostToTopicAndPersist(Topic topic, Post post) {
