@@ -66,7 +66,7 @@ public class MailingListMainPage extends AbstractMailingListPage{
 		MailInfo mi = data.getRowData();
 		MailDetail md = getEnrollmentMailingListService().getMail(mi);
 		md.setStatus(MailingStatus.DRAFT);
-		getEnrollmentMailingListService().updateMail(md);
+		getEnrollmentMailingListService().updateMail(enrollmentInfo, md);
 		setSessionBean(Constants.MAILINGLIST_MAIL, md);
 		return Constants.MAILINGLIST_NEWMAIL;
 	}
@@ -101,7 +101,7 @@ public class MailingListMainPage extends AbstractMailingListPage{
 		MailInfo mi = data.getRowData();
 		MailDetail md = getEnrollmentMailingListService().getMail(mi);		
 		md.setSendDate(new Date(System.currentTimeMillis()));
-		getEnrollmentMailingListService().updateMail(md);
+		getEnrollmentMailingListService().updateMail(enrollmentInfo, md);
 		return Constants.MAILINGLIST_MAIN;
 		
 	}
@@ -110,7 +110,7 @@ public class MailingListMainPage extends AbstractMailingListPage{
 		MailInfo mi = data.getRowData();
 		MailDetail md = getEnrollmentMailingListService().getMail(mi);
 		md.setStatus(MailingStatus.DRAFT);
-		getEnrollmentMailingListService().updateMail(md);
+		getEnrollmentMailingListService().updateMail(enrollmentInfo, md);
 		return Constants.MAILINGLIST_MAIN;
 	}
 	

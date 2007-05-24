@@ -6,7 +6,9 @@
 package org.openuss.mailinglist;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.openuss.foundation.DomainObject;
 import org.openuss.messaging.JobInfo;
@@ -122,7 +124,7 @@ public class MailingListServiceImpl
     {
     	List<User> recipients = new ArrayList<User>();
     	recipients.add(getSecurityService().getCurrentUser());    	
-    	getMessageService().sendMessage(getMailingList(mailingList).getName(), mail.getSubject(), mail.getText(), mail.isSms(), recipients);
+    	getMessageService().sendMessage(getMailingList(mailingList).getName(), "["+getMailingList(mailingList).getName()+"]"+mail.getSubject(), mail.getText(), mail.isSms(), recipients);
     }
 
     /**
@@ -151,7 +153,9 @@ public class MailingListServiceImpl
     protected org.openuss.mailinglist.MailDetail handleGetMail(MailInfo mail)
         throws java.lang.Exception
     {
-    	MailDetail md = getMailDao().toMailDetail(getMailDao().load(mail.getId()));
+    	Mail m = getMailDao().load(mail.getId());
+    	if (m==null) return null;
+    	MailDetail md = getMailDao().toMailDetail(m);
     	JobInfo js = null;
     	if (md.getMessageId()!=null) js = getMessageService().getJobState(md.getMessageId());
     	if (js!=null){
@@ -211,16 +215,34 @@ public class MailingListServiceImpl
 	}
 
 	@Override
-	protected void handleUpdateMail(MailDetail mail) throws Exception {
+	protected void handleUpdateMail(DomainObject domainObject, MailDetail mail) throws Exception {
 		if (mail.getStatus()==MailingStatus.PLANNED) getCommandService().createOnceCommand(mail, "mailSendingCommand", mail.getSendDate(), null);
+		if (mail.getStatus()==null) mail.setStatus(MailingStatus.DRAFT);
 		Mail m = getMailDao().mailDetailToEntity(mail);
-		getMailDao().update(m);
+		m.setMailingList(getMailingListDao(getMailingList(domainObject)));
+		if (mail.getId()==null) getMailDao().create(m);
+		else if (mail.getId()!=null) getMailDao().update(m);
 	}
 
 	@Override
 	protected MailingListInfo handleGetMailingList(MailDetail mail) throws Exception {
 		Mail m = getMailDao().mailDetailToEntity(mail);
 		return getMailingListDao().toMailingListInfo(m.getMailingList());
+	}
+
+	@Override
+	protected String handleExportSubscribers(MailingListInfo mailingList) throws Exception {
+		MailingList ml = getMailingListDao().load(mailingList.getId());
+		Set<Subscriber> subscribers = ml.getSubscribers();
+		Iterator i = subscribers.iterator();
+		Subscriber s;
+		String subscriberList = "";
+		while (i.hasNext()){
+			s = (Subscriber)i.next();
+			subscriberList = subscriberList + s.getUser().getEmail();
+			if (i.hasNext()) subscriberList = subscriberList+"; ";
+		}
+		return subscriberList;
 	}
 
 

@@ -1,6 +1,5 @@
 package org.openuss.web.mail;
 
-import org.acegisecurity.acl.AclEntry;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -10,14 +9,13 @@ import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.mailinglist.MailDetail;
 import org.openuss.mailinglist.MailInfo;
 import org.openuss.mailinglist.MailingStatus;
-import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 
-@Bean(name = "views$secured$mailinglist$mailinglistnewmailpage", scope = Scope.REQUEST)
+@Bean(name = "views$secured$mailinglist$mailinglist$newmail", scope = Scope.REQUEST)
 @View
-public class MailingListNewMailPage extends AbstractMailPage{
+public class MailingListNewMailPage extends AbstractMailingListPage{
 	
 	@Property(value= "#{"+Constants.USER+"}")
 	private User user;
@@ -29,28 +27,37 @@ public class MailingListNewMailPage extends AbstractMailPage{
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
+		if (mail.getId() == null) setMail(null);
+		if (mail==null){
+			addError(i18n("mailinglist_mailaccess_impossible"));
+			redirect(Constants.MAILINGLIST_MAIN);
+			return;
+		}			
 		if (mail.getId()!=null){
 			MailInfo mi = new MailInfo(); 
 			mi.setId(mail.getId());
 			mail = getEnrollmentMailingListService().getMail(mi);
-			if (mail.getStatus()==MailingStatus.DELETED){
-				addError(i18n("mailinglist_mailaccess_impossible"));
-				redirect(Constants.MAILINGLIST_MAIN);
-			}
-			setSessionBean(Constants.MAILINGLIST_MAIL, mail);
 			if (mail==null){
 				addError(i18n("mailinglist_mailaccess_impossible"));
 				redirect(Constants.MAILINGLIST_MAIN);
-			}			
+				return;
+			}		
+			if (mail.getStatus()==MailingStatus.DELETED){
+				addError(i18n("mailinglist_mailaccess_impossible"));
+				redirect(Constants.MAILINGLIST_MAIN);
+				return;
+			}
+			setSessionBean(Constants.MAILINGLIST_MAIL, mail);
 			if (!AcegiUtils.hasPermission(mail, new Integer[] { LectureAclEntry.ASSIST })){
 				addError(i18n("mailinglist_mailaccess_noright"));
-				redirect(Constants.MAILINGLIST_MAIN);				
+				redirect(Constants.MAILINGLIST_MAIN);
+				return;
 			}				
 		}
 	}	
 
 	public String saveDraft(){
-		getEnrollmentMailingListService().updateMail(mail);
+		getEnrollmentMailingListService().updateMail(enrollmentInfo, mail);
 		return Constants.MAILINGLIST_MAIN;
 	}
 	

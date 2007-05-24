@@ -36,38 +36,13 @@
 		<!-- removed ACL tags -->
 
 		<h:form id="mailingListSubscribers">
-			<plexus:dataTable id="subscribertable"
-				label="#{msg.mailinglist_subscribertable_header}"
-				value="views$secured$mailinglist$mailinglistsubscribers.data"
-		    	columnClasses="col_max_left, col_min_center, col_command"
-				var="subscriber" rows="10">
-
-
-				<t:column>
-					<plexus:commandSortHeader columnName="displayName">#{msg['mailinglist_contact_name']}</plexus:commandSortHeader>
-					<h:commandLink value="#{subscriber.displayName}" action="#{views$secured$mailinglist$mailinglistsubscribers.showProfile}" title="#{subscriber.displayName}" />
-				</t:column>
-
-				<t:column>
-					<plexus:commandSortHeader columnName="email">#{msg['user_email']}</plexus:commandSortHeader>
-					<h:outputText value="#{subscriber.email}" />
-				</t:column>
-
-				<plexus:column header="#{msg.commands_header}">
-					<plexus:command
-						bean="#{views$secured$mailinglist$mailinglistsubscribers}"
-						action="removeSubscriber"
-						label="#{msg['mailinglist_subscriber_remove']}"
-						title="#{msg['mailinglist_subscriber_remove']}"
-						styleClass="button" />
-				</plexus:column>
-
-			</plexus:dataTable>
 			<o:block>
-				<plexus:command bean="#{views$secured$mailinglist$mailinglistsubscribers}"
-					action="exportSubscribers" label="#{msg['mailingjob_newmail_button_export']}"
-					title="#{msg['mailingjob_newmail_button_export']}"
-					styleClass="button" />
+				<h:outputText value="#{views$secured$mailinglist$exportedsubscribers.subscribersSemicolon}" styleClass="font_content_normal"></h:outputText>
+			</o:block>
+			<o:block>
+				<h:outputText value="#{views$secured$mailinglist$exportedsubscribers.subscribersComma}" styleClass="font_content_normal"></h:outputText>
+			</o:block>
+			<o:block>
 				<h:commandButton value="${msg.back}" title="#{msg.back}"
 					action="enrollment_mailinglist" styleClass="button"
 					immediate="true" />
