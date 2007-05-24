@@ -8,11 +8,10 @@
 	<h:form id="search">
 		<o:block label="#{msg.search}">
 			<p class="content_font_normal">
-				<h:inputText id="searchText" value="suche" styleClass="field_search"/>
+				<h:inputText id="searchText" value="#{search_results.textToSearch}" styleClass="field_search"/>
 				<h:commandLink 
 					styleClass="button_search" 
-					action="search" 
-					immediate="true">
+					action="#{views$public$search$search.search}">
 					<img src="#{theme.imagesPath}/search.jpg" title="search" alt="go"/>
 				</h:commandLink>
 			</p>
