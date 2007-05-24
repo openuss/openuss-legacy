@@ -103,6 +103,7 @@ public class Constants {
 	public static final String DISCUSSION_MAIN = "discussion_main";
 	public static final String DISCUSSION_THREAD = "discussion_thread";
 	public static final String DISCUSSION_THREADLENGTH = "discussion_threadlength";
+	public static final String DISCUSSION_REMOVETHREAD = "discussion_removethread";
 	
 	public static final String ZIP_DOWNLOAD_URL = "/zips/documents.zip";
 	
