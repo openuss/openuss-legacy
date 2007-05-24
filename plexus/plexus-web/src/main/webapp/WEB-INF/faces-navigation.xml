@@ -106,6 +106,10 @@
 			<to-view-id>/views/secured/enrollment/main.xhtml</to-view-id>
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>search_result</from-outcome>
+			<to-view-id>/views/public/search/search.xhtml</to-view-id>
+		</navigation-case>
 	</navigation-rule>
 	
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
