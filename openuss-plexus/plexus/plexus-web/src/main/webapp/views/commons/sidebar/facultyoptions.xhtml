@@ -11,16 +11,18 @@
 	xmlns:p="http://www.openuss.org/plexus/jsf"
     xmlns:x="http://myfaces.apache.org/extensions">
 	
-	<s:acl domainObject="#{faculty}" hasNotPermission="#{ACL.FACULTY_TUTOR}">
-		<h:form>
-			<o:block label="Optionen" styleClass="option_box">
-				<ul class="int">
-					<li>
-						<h:commandLink value="#{msg['faculty_command_assistant_application']}" action="#{views$secured$lecture$faculty.applyForMembership}"/>
-					</li>
-				</ul>
-			</o:block>
-		</h:form>
-	</s:acl>
+	<s:authorize ifAllGranted="ROLE_USER">
+		<s:acl domainObject="#{faculty}" hasNotPermission="#{ACL.FACULTY_TUTOR}">
+			<h:form>
+				<o:block label="Optionen" styleClass="option_box">
+					<ul class="int">
+						<li>
+							<h:commandLink value="#{msg['faculty_command_assistant_application']}" action="#{views$secured$lecture$faculty.applyForMembership}"/>
+						</li>
+					</ul>
+				</o:block>
+			</h:form>
+		</s:acl>
+	</s:authorize>
 	
 </f:subview>
