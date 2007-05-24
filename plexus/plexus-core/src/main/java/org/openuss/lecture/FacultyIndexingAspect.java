@@ -1,4 +1,4 @@
-package org.openuss.lecture.indexer;
+package org.openuss.lecture;
 
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Faculty;

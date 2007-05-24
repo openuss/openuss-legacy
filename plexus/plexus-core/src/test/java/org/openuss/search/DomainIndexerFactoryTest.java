@@ -1,6 +1,6 @@
 package org.openuss.search;
 
-import org.openuss.lecture.indexer.FacultyIndexer;
+import org.openuss.lecture.FacultyIndexer;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 public class DomainIndexerFactoryTest extends AbstractDependencyInjectionSpringContextTests {
