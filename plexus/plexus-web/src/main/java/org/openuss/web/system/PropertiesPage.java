@@ -8,6 +8,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.lecture.LectureIndex;
 import org.openuss.migration.MigrationService;
 import org.openuss.system.SystemService;
 import org.openuss.web.BasePage;
@@ -64,6 +65,12 @@ public class PropertiesPage extends BasePage  {
 	public String migrate() {
 		MigrationService service = (MigrationService) getBean("migrationService");
 		service.performMigration();
+		return Constants.SUCCESS;
+	}
+	
+	public String recreateLectureIndex() throws Exception {
+		LectureIndex lectureIndex = (LectureIndex) getBean("lectureIndex");
+		lectureIndex.recreate();
 		return Constants.SUCCESS;
 	}
 
