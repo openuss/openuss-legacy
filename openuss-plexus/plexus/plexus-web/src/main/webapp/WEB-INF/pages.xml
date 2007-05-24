@@ -63,8 +63,8 @@
 
 	<page view-id="/views/secured/discussion/*">
 		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.READ}"/>
-		<parameter name="topic" value="#{discussion_topic.id}" converterId="javax.faces.Long"/>
 		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
+		<parameter name="topic" value="#{discussion_topic.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 

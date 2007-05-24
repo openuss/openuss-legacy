@@ -27,6 +27,13 @@ public class TopicDaoTest extends TopicDaoTestBase {
 	
 	public ForumDao forumDao;
 	
+	public ForumWatchDao forumWatchDao;
+	
+	public DiscussionWatchDao discussionWatchDao;
+	
+	
+	
+	
 	public void testTopicDaoViewState() {
 		Forum forum = Forum.Factory.newInstance();
 		forum.setDomainIdentifier(testUtility.unique());
@@ -79,6 +86,32 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		return topic;
 	}
 
+	public void testSearchForUsersToNotify(){
+		Forum forum = Forum.Factory.newInstance();
+		forum.setDomainIdentifier(testUtility.unique());
+		forum.setReadOnly(false);
+		
+		forumDao.create(forum);
+		
+		User user = testUtility.createUserInDB();
+
+		Topic topic1 = createTopic(user, forum);
+		
+		ForumWatch fw = ForumWatch.Factory.newInstance();
+		fw.setForum(forum);
+		fw.setUser(user);
+		getForumWatchDao().create(fw);
+		
+		DiscussionWatch dw = DiscussionWatch.Factory.newInstance();
+		dw.setTopic(topic1);
+		dw.setUser(user);
+		getDiscussionWatchDao().create(dw);
+		commit();
+		List l = getTopicDao().findUsersToNotify(topic1, forum);
+		
+		//assertEquals(1,l.size());		
+	}
+	
 	public DomainViewStateDao getDomainViewStateDao() {
 		return domainViewStateDao;
 	}
@@ -101,5 +134,21 @@ public class TopicDaoTest extends TopicDaoTestBase {
 
 	public void setForumDao(ForumDao forumDao) {
 		this.forumDao = forumDao;
+	}
+
+	public DiscussionWatchDao getDiscussionWatchDao() {
+		return discussionWatchDao;
+	}
+
+	public void setDiscussionWatchDao(DiscussionWatchDao discussionWatchDao) {
+		this.discussionWatchDao = discussionWatchDao;
+	}
+
+	public ForumWatchDao getForumWatchDao() {
+		return forumWatchDao;
+	}
+
+	public void setForumWatchDao(ForumWatchDao forumWatchDao) {
+		this.forumWatchDao = forumWatchDao;
 	}
 }

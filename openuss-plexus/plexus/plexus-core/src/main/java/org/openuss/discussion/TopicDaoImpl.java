@@ -121,4 +121,25 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 			}
 		}, true);
 	}
+
+	@Override
+	protected List handleFindUsersToNotify(final Topic topic, final Forum forum) throws Exception {
+		final String queryString = 
+			" SELECT v.USER_IDENTIFIER" +
+			" FROM DISCUSSION_TOPIC as t, TRACKING_VIEWSTATE as v, DISCUSSION_TOPICWATCH as tw, DISCUSSION_FORUMWATCH as fw" +
+			" WHERE v.VIEW_STATE = :viewStateRead and v.DOMAIN_IDENTIFIER = :topicId" +
+			" and ((tw.TOPIC_FK = v.DOMAIN_IDENTIFIER and tw.USER_FK = v.USER_IDENTIFIER)" +
+			" or (fw.USER_FK = v.USER_IDENTIFIER and fw.FORUM_FK = :forumId))";
+		return (List) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
+			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
+				Query queryObject = session.createSQLQuery(queryString);
+				queryObject.setParameter("topicId", topic.getId());
+				queryObject.setParameter("forumId", forum.getId());
+				queryObject.setParameter("viewStateRead", ViewState.READ.getValue().intValue());
+				List<Object> results = queryObject.list();				
+				return results; 
+			}
+		}, true);		
+	}
+
 }

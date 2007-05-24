@@ -1,6 +1,7 @@
 package org.openuss.web.discussion;
 
 import org.apache.shale.tiger.managed.Property;
+import org.apache.shale.tiger.view.Prerender;
 import org.openuss.discussion.DiscussionService;
 import org.openuss.discussion.ForumInfo;
 import org.openuss.discussion.PostInfo;
@@ -20,6 +21,11 @@ public class AbstractDiscussionPage extends AbstractEnrollmentPage{
 	protected DiscussionService discussionService;
 	
 	public ForumInfo forum;
+	
+	@Prerender
+	public void prerender() throws Exception {
+		super.prerender();
+	}
 	
 	public PostInfo getPostInfo() {
 		return postInfo;
