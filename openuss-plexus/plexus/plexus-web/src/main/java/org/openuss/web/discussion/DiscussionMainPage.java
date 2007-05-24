@@ -65,9 +65,8 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 			return Constants.FAILURE;			
 		}		
 		TopicInfo t = this.data.getRowData();
-		discussionService.deleteTopic(t);
-		addMessage(i18n("discussion_topic_deleted", t.getTitle()));
-		return Constants.SUCCESS;
+		setSessionBean(Constants.DISCUSSION_TOPIC, t);
+		return Constants.DISCUSSION_REMOVETHREAD;
 	}
 
 	public String changeWatchState(){

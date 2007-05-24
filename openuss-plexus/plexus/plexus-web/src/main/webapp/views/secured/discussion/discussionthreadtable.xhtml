@@ -43,6 +43,7 @@
 						<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}" >
 							<h:commandButton 
 								action="#{views$secured$discussion$discussionthread.removePost}"
+								onclick="if (!confirm('#{msg.discussion_confirm_delete_post}')) return false"
 								value="#{msg['discussion_thread_remove_post']}"
 								title="#{msg['discussion_thread_remove_post']}"
 								styleClass="button_remove"/>				
