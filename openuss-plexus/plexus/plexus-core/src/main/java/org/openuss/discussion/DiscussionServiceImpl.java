@@ -82,6 +82,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		getSecurityService().removeObjectIdentity(topic);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void removeAllDiscussionWatchesOfTopic(Topic topic) {
 		List<DiscussionWatch> topicWatches = getDiscussionWatchDao().findByTopic(topic);
 		getDiscussionWatchDao().remove(topicWatches);
