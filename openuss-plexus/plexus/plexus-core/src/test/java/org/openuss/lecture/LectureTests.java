@@ -17,6 +17,7 @@ public class LectureTests {
 		suite.addTestSuite(LectureServiceTest.class);
 		suite.addTestSuite(PeriodDaoTest.class);
 		suite.addTestSuite(SubjectDaoTest.class);
+		suite.addTestSuite(FacultyIndexerTest.class);
 		//$JUnit-END$
 		return suite;
 	}

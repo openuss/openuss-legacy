@@ -127,5 +127,8 @@ public class Constants {
 	public static final String MAILINGLIST_SUBSCRIBERS = "mailinglist_subscribers";
 	public static final String MAILINGLIST_MAIN = "enrollment_mailinglist";
 	public static final String MAILINGLIST_SHOWMAIL = "mailinglist_showmail";
+
+	public static final String SEARCH_RESULT = "search_result";
+
 	public static final String MAILINGLIST_EXPORT = "mailinglist_export"; 
 }

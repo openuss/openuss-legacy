@@ -1,6 +1,9 @@
 package org.openuss.lecture;
 
-import org.openuss.lecture.indexer.FacultyIndexer;
+import java.util.List;
+
+import org.apache.commons.lang.ArrayUtils;
+import org.openuss.search.DomainResult;
 import org.openuss.security.User;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
@@ -10,6 +13,8 @@ public class FacultyIndexerTest extends AbstractDependencyInjectionSpringContext
 	
 	private FacultyDao facultyDao = new FacultyDaoMock();
 	
+	private LectureSearcher lectureSearcher;
+							   	
 	@Override
 	protected void onSetUp() throws Exception {
 		super.onSetUp();
@@ -22,14 +27,28 @@ public class FacultyIndexerTest extends AbstractDependencyInjectionSpringContext
 		facultyDao.create(faculty);
 		
 		facultyIndexer.setDomainObject(faculty);
-		facultyIndexer.setCommandType("CREATE");
-		facultyIndexer.execute();
+		facultyIndexer.create();
 		
 		faculty.setName("neuer name");
 		
+		facultyIndexer.update();
+		
+		facultyIndexer.delete();
+	}
+	
+	public void testIndexingAndSearching() {
+		Faculty faculty = new LectureBuilder().createFaculty(User.Factory.newInstance()).getFaculty();
+		faculty.setOwnername("test owner name grob");
+		facultyDao.create(faculty);
+		
 		facultyIndexer.setDomainObject(faculty);
-		facultyIndexer.setCommandType("UPDATE");
-		facultyIndexer.execute();
+		facultyIndexer.create();
+		
+		List<String> results = lectureSearcher.search("grob");
+		DomainResult[] resultObjs = (DomainResult[]) results.toArray(new DomainResult[results.size()]);
+		logger.debug("--- RESULTS ---> "+ArrayUtils.toString(resultObjs));
+		assertNotNull(results);
+		assertTrue(results.size() >= 1);
 		
 	}
 	
@@ -52,6 +71,14 @@ public class FacultyIndexerTest extends AbstractDependencyInjectionSpringContext
 
 	public void setFacultyIndexer(FacultyIndexer facultyIndexer) {
 		this.facultyIndexer = facultyIndexer;
+	}
+
+	public LectureSearcher getLectureSearcher() {
+		return lectureSearcher;
+	}
+
+	public void setLectureSearcher(LectureSearcher lectureSearcher) {
+		this.lectureSearcher = lectureSearcher;
 	}
 
 }
