@@ -52,6 +52,9 @@ public class FacultyPage extends AbstractLecturePage {
 		super.prerender();
 		if (period == null && faculty != null || faculty != null && !faculty.getPeriods().contains(period)) {
 			period = faculty.getActivePeriod();
+			if (period == null && faculty.getPeriods().size() > 0) {
+				period = faculty.getPeriods().get(0);
+			}
 		} else {
 			period = lectureService.getPeriod(period.getId());
 		}
