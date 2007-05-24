@@ -51,12 +51,13 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		
 		private DataPage<PostInfo> page; 
 		
-		@SuppressWarnings("unchecked")
 		@Override 
-		public DataPage<PostInfo> getDataPage(int startRow, int pageSize) {		
-			List<PostInfo> al = discussionService.getPosts(topic);
-			setSessionBean(Constants.DISCUSSION_THREADLENGTH, al.size());
-			page = new DataPage<PostInfo>(al.size(),0,al);
+		public DataPage<PostInfo> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				List<PostInfo> al = discussionService.getPosts(topic);
+				setSessionBean(Constants.DISCUSSION_THREADLENGTH, al.size());
+				page = new DataPage<PostInfo>(al.size(),0,al);
+			}
 			return page;
 		}
 	}
