@@ -209,6 +209,9 @@ public class EnrollmentServiceImpl extends org.openuss.lecture.EnrollmentService
 
 	@Override
 	protected EnrollmentInfo handleGetEnrollmentInfo(Enrollment enrollment) throws Exception {
+		if ((enrollment==null)||(enrollment.getId()==null)) return null;
+		enrollment = getEnrollmentDao().load(enrollment.getId());
+		if (enrollment==null) return null;
 		return getEnrollmentDao().toEnrollmentInfo(enrollment);
 	}
 
