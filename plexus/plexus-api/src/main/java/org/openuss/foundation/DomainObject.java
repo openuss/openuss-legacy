@@ -1,12 +1,14 @@
 package org.openuss.foundation;
 
+import java.io.Serializable;
+
 /**
  * DomainObject is the central interface of all domain entity object
  * 
  * @author Ingo Dueppe
  *
  */
-public interface DomainObject {
+public interface DomainObject extends Serializable {
 	
 	/**
 	 * Unique identifier of the domain object
