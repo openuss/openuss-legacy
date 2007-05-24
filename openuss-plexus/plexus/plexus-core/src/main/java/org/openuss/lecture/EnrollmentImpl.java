@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.CallbackException;
 import org.hibernate.Session;
 import org.hibernate.classic.Lifecycle;
-import org.hibernate.event.PreInsertEvent;
 
 /**
  * @see org.openuss.lecture.Enrollment

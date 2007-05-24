@@ -5,7 +5,6 @@
  */
 package org.openuss.messaging;
 
-import java.util.Date;
 
 
 /**

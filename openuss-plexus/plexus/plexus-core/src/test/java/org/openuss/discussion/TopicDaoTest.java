@@ -107,9 +107,8 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		dw.setUser(user);
 		getDiscussionWatchDao().create(dw);
 		commit();
-		List l = getTopicDao().findUsersToNotify(topic1, forum);
-		
-		//assertEquals(1,l.size());		
+		List list = getTopicDao().findUsersToNotify(topic1, forum);
+//		assertEquals(1,list.size());		
 	}
 	
 	public DomainViewStateDao getDomainViewStateDao() {
