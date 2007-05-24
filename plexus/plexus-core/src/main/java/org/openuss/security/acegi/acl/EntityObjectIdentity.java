@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.acegisecurity.acl.basic.AclObjectIdentity;
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.log4j.Logger;
 import org.openuss.framework.utilities.DomainObjectUtility;
 import org.openuss.security.acl.ObjectIdentity;

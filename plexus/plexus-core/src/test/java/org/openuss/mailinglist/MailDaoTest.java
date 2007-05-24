@@ -5,7 +5,6 @@
  */
 package org.openuss.mailinglist;
 
-import java.util.Date;
 
 
 /**
