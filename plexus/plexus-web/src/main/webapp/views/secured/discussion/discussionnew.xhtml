@@ -31,7 +31,7 @@
   		<ui:define name="content">
 			<h:form id="newDiscussionEntryForm" enctype="multipart/form-data">
 	  			<o:block label="#{msg.discussion_new_discussion_entry}" styleClass="form_box">
-					<o:input entity="discussion_discussionentry" property="title" required="true"></o:input>
+					<o:input entity="discussion_discussionentry" property="title" required="true" maxlength="250"></o:input>
 					
 					<h:outputText value="#{msg.discussion_discussionentry_text}" styleClass="field_label"/>					
 					<div class="content_iframe">

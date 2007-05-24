@@ -1,6 +1,8 @@
 package org.openuss.web.discussion; 
 
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.managed.Property;
@@ -67,7 +69,9 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		TopicInfo topic = discussionService.getTopic(this.topic);
 		setSessionBean(Constants.DISCUSSION_TOPIC, topic);
 		PostInfo post = new PostInfo();
-		post.setTitle("Re: "+this.topic.getTitle());
+		String title = "Re: "+this.topic.getTitle();
+		if (title.length()>250) title = StringUtils.abbreviate(title, 250);
+		post.setTitle(title);
 		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, post);
 		return Constants.DISCUSSION_NEW;
 	}
