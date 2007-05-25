@@ -80,43 +80,4 @@
 		<property name="concurrent" value="false" />
 	</bean>
 
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-		Message Service Cluster Commands
-		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-	<!--  
-		<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<property name="triggers">
-		<list>
-		<ref bean="mailRepeatTrigger"/>		
-		</list>
-		</property>
-		</bean>
-	-->
-
-	<!-- 
-		<bean id="indexingEventHandlingTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="jobDetail" ref="mailSendingJobDetail"/>
-		<property name="startDelay" value="10000"/>
-		<property name="repeatInterval" value="30000"/>
-		</bean>
-		
-		<bean id="lectureIndexingTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		</bean>
-		
-		<bean id="mailSendingQuartzBean" class="org.openuss.mail.MailSendingQuartzBean" >	
-		<property name="mailService"><ref bean="mailService"/></property>		
-		<property name="mimeMessageHelper"><ref bean="mimeMessageHelper"/></property>		
-		<property name="mailEngine"><ref bean="mailEngine"/></property>				
-		<property name="securityService"><ref bean="securityService"/></property>				
-		</bean>	
-		
-		
-		<bean id="mailSendingJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="mailSendingQuartzBean"/>
-		<property name="targetMethod" value="send"/>
-		<property name="concurrent" value="false"/>
-		</bean>
-	-->
-
 </beans>

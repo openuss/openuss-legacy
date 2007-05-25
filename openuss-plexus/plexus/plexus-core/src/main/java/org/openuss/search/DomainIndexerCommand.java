@@ -20,6 +20,7 @@ public class DomainIndexerCommand extends AbstractDomainCommand implements Initi
 	 * {@inheritDoc}
 	 */
 	public final void execute() {
+		domainIndexer.setDomainObject(getDomainObject());
 		if (StringUtils.equals("CREATE",getCommandType())) {
 			domainIndexer.create();
 		} else if (StringUtils.equals("UPDATE",getCommandType())) {
