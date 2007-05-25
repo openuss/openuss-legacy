@@ -27,6 +27,7 @@
 					<li><a href="#maven-install">Maven 2 Installation and Configuration</a></li>
 					<li><a href="#firebird-install">Firebird 2.0 Installation and Configuration</a></li>
 					<li><a href="#eclipse-download">Eclipse 3.2 Installation and Configuration</a></li>
+					<li><a href="#tomcat-install">Tomcat 6 (standalone) Installation and Configuration</a></li>
 					<li><a href="#almost-finished">Finished?</a></li>
 				</ul>
 				If anything goes wrong, please refer to the
@@ -59,6 +60,7 @@
 						(JST) 1.5.3
 					</li>
 					<li>Exadel Studio Pro 4.0.4 for Eclipse</li>
+					<li>Apache Tomcat 6.0.13</li>
 				</ul>
 			</p>
 			<div align="right"><a href="#top">Go to the top.</a></div>
@@ -189,6 +191,41 @@
 					<li>Add all projects to the server.</li>
 					<li>Start the server in the debug mode to test OpenUSS.</li>
 				</ul>
+			</p>
+			<div align="right"><a href="#top">Go to the top.</a></div>
+		</section>
+
+		<a name="tomcat-install" />
+		<section name="Tomcat 6 (standalone) Installation and Configuration">
+			<p>
+				Download the <a	href="http://tomcat.apache.org/download-60.cgi"> binary distribution of Tomcat 6 as Windows Service Installer</a> and install it on your harddrive.
+				Do not use spaces in your installation path to avoid Facelets Null-Pointer-Exception! 
+			</p>
+			<p>
+				Tomcat needs to have the following additional libaries in its <code>CATALINA_HOME/lib</code> folder:
+				<ul>
+					<li><code>log4j-1.2.13.jar</code></li>
+					<li><code>jaybird-full-2.1.1.jar</code></li>
+					<li><code>framework-deployer.jar</code> - you can find it in also your <code>framework\deployer\target</code> folder</li>
+					<li><code>naming-factory.jar</code></li>
+					<li><code>naming-factory-dbcp.jar</code></li>
+				</ul>
+				Most libaries can be found in the <code>server\tomcat\commons\lib</code> folder of your project.
+			</p>
+			<p>
+				OpenUSS uses the Connection Pooling capability of Tomcat. For that Tomcat needs to define a JNDI database <code>jdbc/openuss</code>.
+				This can be defined in a context <code>openuss-plexus.xml</code> deposited in the <code>CATALINA_HOME/conf</code> folder.</br></br>
+				<code>
+					<Context path="/openuss-plexus" debug="0" reloadable="true">
+						<Resource name="jdbc/openuss" auth="Container"
+              					  type="javax.sql.DataSource"
+			  					  maxActive="150" maxIdle="50" maxWait="10000"
+              					  username="SYSDBA"
+			  					  password="masterkey"
+			  					  driverClassName="org.firebirdsql.jdbc.FBDriver"
+			  					  url="jdbc:firebirdsql:localhost:openuss30" />
+					</Context>
+				</code>
 			</p>
 			<div align="right"><a href="#top">Go to the top.</a></div>
 		</section>
