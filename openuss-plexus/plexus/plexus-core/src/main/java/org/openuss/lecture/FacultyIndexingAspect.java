@@ -10,9 +10,7 @@ import org.openuss.search.IndexerService;
  * @author Ingo Dueppe
  */
 public class FacultyIndexingAspect {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(FacultyIndexingAspect.class);
 
 	private IndexerService indexerService;
@@ -25,11 +23,28 @@ public class FacultyIndexingAspect {
 		this.indexerService = indexerService;
 	}
 
-	public void createNewFacultyIndex(Faculty faculty) {
-//		Faculty faculty = (Faculty) pjp.getArgs()[0];
+	public void createFacultyIndex(Faculty faculty) {
 		logger.info("aspect: new faculty created - creating new index "+faculty.getId());
 		try {
 			indexerService.createIndex(faculty);
+		} catch (IndexerApplicationException e) {
+			logger.error(e);
+		}
+	}
+	
+	public void updateFacultyIndex(Faculty faculty) {
+		logger.info("aspect: faculty updated - updating index "+faculty.getId());
+		try {
+			indexerService.updateIndex(faculty);
+		} catch (IndexerApplicationException e) {
+			logger.error(e);
+		}
+	}
+	
+	public void deleteFacultyIndex(Faculty faculty) {
+		logger.info("aspect: faculty deleted - deleting index "+faculty.getId());
+		try {
+			indexerService.deleteIndex(faculty);
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}

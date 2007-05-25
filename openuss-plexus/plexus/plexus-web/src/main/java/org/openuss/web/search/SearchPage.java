@@ -39,6 +39,7 @@ public class SearchPage extends BasePage{
 			try {
 				searchResults.setHits(lectureSearcher.search(searchResults.getTextToSearch()));
 			} catch (LuceneSearchException ex) {
+				logger.error(ex);
 				addError(i18n("search_text_error"));
 			}
 		}
