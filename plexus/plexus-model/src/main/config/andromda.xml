@@ -78,7 +78,7 @@
 
             	<!-- Spring Datasource Configuration -->
 
-            	<property name="dataSource">java:comp/env/jdbc/openuss</property>
+            	<property name="dataSource">java:comp/env/jdbc/openuss30</property>
 	          	<property name="username">sysdba</property> 
                 <property name="password">masterkey</property>
                 <property name="driver">org.firebirdsql.jdbc.FBDriver</property>
