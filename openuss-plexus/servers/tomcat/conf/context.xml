@@ -8,5 +8,16 @@
     <!--
     <Manager pathname="" />
     -->
+    
+    <Resource name="jdbc/openuss30" auth="Container" type="javax.sql.DataSource" 
+		driverClassName="org.firebirdsql.jdbc.FBDriver" 
+		url="jdbc:firebirdsql:localhost:openuss30" 
+		username="sysdba" password="masterkey" />
+
+    <Resource name="jdbc/openuss" auth="Container" type="javax.sql.DataSource" 
+		driverClassName="org.firebirdsql.jdbc.FBDriver" 
+		url="jdbc:firebirdsql:localhost:openuss" 
+		username="sysdba" password="masterkey" />
+    
 
 </Context>
