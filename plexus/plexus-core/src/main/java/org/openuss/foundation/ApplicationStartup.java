@@ -2,7 +2,7 @@ package org.openuss.foundation;
 
 import org.apache.log4j.Logger;
 
-import org.openuss.lecture.LectureIndex;
+import org.openuss.lecture.LectureIndexImpl;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -16,7 +16,7 @@ public class ApplicationStartup implements ApplicationListener {
 
 	private static final Logger logger = Logger.getLogger(ApplicationStartup.class);
 	
-	private LectureIndex lectureIndex;
+	private LectureIndexImpl lectureIndex;
 
 	public void onApplicationEvent(ApplicationEvent event) {
 		if (event instanceof ContextRefreshedEvent) {
@@ -35,11 +35,11 @@ public class ApplicationStartup implements ApplicationListener {
 		logger.info("===================> finished to initialize openuss plexus application!  <=====================");
 	}
 
-	public LectureIndex getLectureIndex() {
+	public LectureIndexImpl getLectureIndex() {
 		return lectureIndex;
 	}
 
-	public void setLectureIndex(LectureIndex recreateLectureIndex) {
+	public void setLectureIndex(LectureIndexImpl recreateLectureIndex) {
 		this.lectureIndex = recreateLectureIndex;
 	}
 

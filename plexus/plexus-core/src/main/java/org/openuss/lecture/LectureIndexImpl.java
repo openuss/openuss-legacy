@@ -8,9 +8,9 @@ import org.apache.lucene.store.Directory;
 /**
  * @author Ingo Dueppe
  */
-public class LectureIndex {
+public class LectureIndexImpl implements LectureIndex{
 
-	private static final Logger logger = Logger.getLogger(LectureIndex.class);
+	private static final Logger logger = Logger.getLogger(LectureIndexImpl.class);
 	
 	private FacultyDao facultyDao;
 	private EnrollmentDao enrollmentDao;

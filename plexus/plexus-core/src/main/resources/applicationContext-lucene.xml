@@ -9,21 +9,27 @@
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 		Domain Indexing Configuration
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<!-- 
 	
-	<aop:config  >
-		<aop:aspect id="lectureIndexAspect" ref="lectureIndexAspectBean">
-			<aop:after
-				pointcut="execution(* org.openuss.lecture.LectureService.createFaculty(org.openuss.lecture.Faculty))" 
-				method="createNewFacultyIndex" 
+	<aop:config>
+		<aop:aspect id="facultyIndexAspect" ref="facultyIndexAspectBean">
+			<aop:after-returning
+				method="createFacultyIndex" 
+				pointcut="execution(* org.openuss.lecture.LectureService.createFaculty(..)) and args(faculty)"
+				arg-names="faculty"/>
+			<aop:after-returning
+				method="updateFacultyIndex"
+				pointcut="execution(* org.openuss.lecture.LectureService.persist(..)) and args(faculty)"
+				arg-names="faculty"/>
+			<aop:after-returning
+				method="deleteFacultyIndex"
+				pointcut="execution(* org.openuss.lecture.LectureService.deleteFaculty(..)) and args(faculty)"
 				arg-names="faculty"/>
 		</aop:aspect>
 	</aop:config>
 	
-	<bean id="lectureIndexAspectBean" class="org.openuss.lecture.indexer.FacultyIndexingAspect">
+	<bean id="facultyIndexAspectBean" class="org.openuss.lecture.FacultyIndexingAspect">
 		<property name="indexerService"><ref bean="indexerService"/></property>
 	</bean>
- -->
 
 	<bean id="domainIndexerFactory"	class="org.openuss.search.DomainIndexerFactory" scope="singleton">
 		<property name="indexer">
@@ -68,7 +74,7 @@
 		</property>
 	</bean>
 	
-	<bean id="lectureIndexImpl" class="org.openuss.lecture.LectureIndex">
+	<bean id="lectureIndexImpl" class="org.openuss.lecture.LectureIndexImpl">
 		<property name="facultyDao" ref="facultyDao"/>
 		<property name="facultyIndexer" ref="facultyIndexer"/>
 		<property name="enrollmentDao" ref="enrollmentDao"/>
@@ -76,10 +82,10 @@
 	</bean>
 	
 	<bean id="lectureIndex" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces"><value>org.openuss.lecture.LectureIndex</value></property>
 		<property name="target">
 			<bean parent="lectureIndexImpl" />
 		</property>
-		<property name="proxyTargetClass"><value>true</value></property>
 		<property name="interceptorNames">
 			<list>
 				<value>serviceTransactionInterceptor</value>
