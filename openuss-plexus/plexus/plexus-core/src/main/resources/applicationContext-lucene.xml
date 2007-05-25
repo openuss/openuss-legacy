@@ -38,13 +38,13 @@
 					<key>
 						<value>org.openuss.lecture.Faculty</value>
 					</key>
-					<value>facultyIndexer</value>
+					<value>facultyIndexerCommand</value>
 				</entry>
 				<entry>
 					<key>
 						<value>org.openuss.lecture.Enrollment</value>
 					</key>
-					<value>enrollmentIndexer</value>
+					<value>enrollmentIndexerCommand</value>
 				</entry>
 			</map>
 		</property>
@@ -96,6 +96,10 @@
 	
 	<bean id="facultyIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
 		<property name="domainIndexer" ref="facultyIndexer"/>
+	</bean>
+
+	<bean id="enrollmentIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
+		<property name="domainIndexer" ref="enrollmentIndexer"/>
 	</bean>
 
 	<bean id="indexerServiceAbstract" abstract="true"
