@@ -294,15 +294,15 @@
 		<filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>
 		<init-param>
 			<param-name>uploadMaxFileSize</param-name>
-			<param-value>600M</param-value>
+			<param-value>100M</param-value>
 		</init-param>
 		<init-param>
 			<param-name>uploadThresholdSize</param-name>
-			<param-value>1024k</param-value>
+			<param-value>256k</param-value>
 		</init-param>
 		<init-param>
 			<param-name>uploadRepositoryPath</param-name>
-			<param-value>/temp</param-value>
+			<param-value>java.io./temp</param-value>
 		</init-param>
 	</filter>
 	
