@@ -8,7 +8,10 @@
 	<packaging>pom</packaging>
 	<name>Open University Support System - The Relaunch</name>
 	<version>3.0-SNAPSHOT</version>
-	<description>OpenUSS Plexus is the relaunch of the well known E-Learning plattform OpenUSS.</description>
+	<description>
+		OpenUSS Plexus is the relaunch of the well known E-Learning
+		plattform OpenUSS.
+	</description>
 	<url>http://teamopenuss.uni-muenster.de/</url>
 	<prerequisites>
 		<maven>2.0.1</maven>
@@ -18,6 +21,23 @@
 		<url>http://teamopenuss.uni-muenster.de/jira/browse/USS</url>
 	</issueManagement>
 	<inceptionYear>2006</inceptionYear>
+	<ciManagement>
+		<system>continuum</system>
+		<notifiers>
+			<notifier>
+				<type>mail</type>
+				<configuration>
+					<address>openuss-svn-commits@lists.sourceforge.net</address>
+				</configuration>
+			</notifier>
+			<notifier>
+				<type>mail</type>
+				<configuration>
+					<address>idueppe@users.sourceforge.net</address>
+				</configuration>
+			</notifier>
+		</notifiers>
+	</ciManagement>
 	<mailingLists>
 		<mailingList>
 			<name>OpenUSS CVS List</name>
@@ -162,13 +182,17 @@
 						</execution>
 					</executions>
 					<configuration>
-						<includesAllSourceRoots>false</includesAllSourceRoots>
+						<includesAllSourceRoots>
+							false
+						</includesAllSourceRoots>
 						<generateHistorical>true</generateHistorical>
 						<flushPolicy>threaded</flushPolicy>
 						<flushInterval>100</flushInterval>
 						<jdk>1.5</jdk>
-<!-- 						<licenseLocation>http://teamopenuss.uni-muenster.de/downloads/clover.license</licenseLocation>-->
-						<licenseLocation>${clover.license}</licenseLocation>
+						<!-- 						<licenseLocation>http://teamopenuss.uni-muenster.de/downloads/clover.license</licenseLocation>-->
+						<licenseLocation>
+							${clover.license}
+						</licenseLocation>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -251,52 +275,52 @@
 			<name>OpenUSS Plexus</name>
 			<url>http://teamopenuss.uni-muenster.de/repository</url>
 		</repository>
-	<!-- 
-		<repository>
+		<!-- 
+			<repository>
 			<id>java-net</id>
 			<name>Java.Net</name>
 			<layout>legacy</layout>
 			<url>https://maven-repository.dev.java.net/nonav/repository</url>
-		</repository>		
-		<repository>
+			</repository>		
+			<repository>
 			<id>central</id>
 			<name>ibiblio</name>
 			<url>http://www.ibiblio.org/maven2</url>
 			<snapshots><enabled>false</enabled></snapshots>
 			<releases><enabled>true</enabled></releases>
-		</repository>
-		<repository>
+			</repository>
+			<repository>
 			<id>andromda</id>
 			<name>andromda</name>
 			<url>http://team.andromda.org/maven2</url>
 			<snapshots><enabled>false</enabled></snapshots>
 			<releases><enabled>true</enabled></releases>
-		</repository>
-        <repository>
-           <id>apache.snapshots</id>
-	        <snapshots>	       <enabled>true</enabled>       </snapshots>
-           <name>Apache Snapshot Repository</name>
-           <url>http://people.apache.org/repo/m2-snapshot-repository</url>
-        </repository>
-		<repository>
-    		   <releases>
-		           <enabled>true</enabled>
-	         </releases>
-	         <id>myfaces.staging</id>
-	         <name>MyFaces Staging Repository</name>
-    	     <url>http://myfaces.zones.apache.org/dist/maven-repository</url>
-	    </repository>
-      <repository>
-           <id>myfaces-114-staging</id>
-           <name>Apache MyFaces Core 1.1.4 Staging Repository</name>
-           <url>http://people.apache.org/builds/myfaces/core-1.1.4/m2-staging-repository</url>
-        </repository>		
-		<repository>
-           <id>apache.snapshots</id>
-           <name>Apache Snapshot Repository</name>
-           <url>http://people.apache.org/maven-snapshot-repository</url>
-        </repository>		
-	-->
+			</repository>
+			<repository>
+			<id>apache.snapshots</id>
+			<snapshots>	       <enabled>true</enabled>       </snapshots>
+			<name>Apache Snapshot Repository</name>
+			<url>http://people.apache.org/repo/m2-snapshot-repository</url>
+			</repository>
+			<repository>
+			<releases>
+			<enabled>true</enabled>
+			</releases>
+			<id>myfaces.staging</id>
+			<name>MyFaces Staging Repository</name>
+			<url>http://myfaces.zones.apache.org/dist/maven-repository</url>
+			</repository>
+			<repository>
+			<id>myfaces-114-staging</id>
+			<name>Apache MyFaces Core 1.1.4 Staging Repository</name>
+			<url>http://people.apache.org/builds/myfaces/core-1.1.4/m2-staging-repository</url>
+			</repository>		
+			<repository>
+			<id>apache.snapshots</id>
+			<name>Apache Snapshot Repository</name>
+			<url>http://people.apache.org/maven-snapshot-repository</url>
+			</repository>		
+		-->
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -304,33 +328,33 @@
 			<name>OpenUSS Plexus</name>
 			<url>http://teamopenuss.uni-muenster.de/repository</url>
 		</pluginRepository>
-<!--		
-		<pluginRepository>
+		<!--		
+			<pluginRepository>
 			<releases><enabled>true</enabled></releases>
 			<id>central</id>
 			<name>ibiblio</name>
 			<url>http://www.ibiblio.org/maven2</url>
-		</pluginRepository>
-		<pluginRepository>
+			</pluginRepository>
+			<pluginRepository>
 			<id>codehaus-plugins</id>
 			<name>codehaus-plugins</name>
 			<url>http://repository.codehaus.org/</url>
-		</pluginRepository>
-		<pluginRepository>
+			</pluginRepository>
+			<pluginRepository>
 			<id>andromda</id>
 			<name>andromda</name>
 			<url>http://team.andromda.org/maven2</url>
 			<snapshots><enabled>false</enabled></snapshots>
 			<releases><enabled>true</enabled></releases>
-		</pluginRepository>
-		<pluginRepository>
+			</pluginRepository>
+			<pluginRepository>
 			<id>apache-snapshots</id>
 			<name>Apache snapshots</name>
 			<url>
-				http://people.apache.org/maven-snapshot-repository/
+			http://people.apache.org/maven-snapshot-repository/
 			</url>
-		</pluginRepository>
- -->
+			</pluginRepository>
+		-->
 	</pluginRepositories>
 	<dependencies>
 		<dependency>
@@ -345,18 +369,18 @@
 			<version>2.2</version>
 			<scope>test</scope>
 		</dependency>
-	    <dependency>
+		<dependency>
 			<groupId>org.easymock</groupId>
-      		<artifactId>easymockclassextension</artifactId>
-      		<version>2.2</version>
+			<artifactId>easymockclassextension</artifactId>
+			<version>2.2</version>
 			<scope>test</scope>
-    	</dependency>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.shale</groupId>
 			<artifactId>shale-test</artifactId>
 			<version>1.0.4</version>
-			<scope>test</scope>			
-		</dependency>    	
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<reporting>
 		<plugins>
@@ -433,34 +457,34 @@
 					<aggregate>true</aggregate>
 				</configuration>
 			</plugin>
-	<!-- 
-			<plugin>
+			<!-- 
+				<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jxr-maven-plugin</artifactId>
 				<configuration>
-					<aggregate>true</aggregate>
+				<aggregate>true</aggregate>
 				</configuration>
-			</plugin>
--->			
+				</plugin>
+			-->
 			<plugin>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 			</plugin>
-<!--	
-			<plugin>
+			<!--	
+				<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
+				</plugin>
+				<plugin>
 				<artifactId>maven-changes-plugin</artifactId>
 				<reportSets>
-					<reportSet>
-						<reports>
-							<report>jira-report</report>
-						</reports>
-					</reportSet>
+				<reportSet>
+				<reports>
+				<report>jira-report</report>
+				</reports>
+				</reportSet>
 				</reportSets>
-			</plugin>
--->
+				</plugin>
+			-->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jdepend-maven-plugin</artifactId>
@@ -519,36 +543,36 @@
 				<artifactId>fckfaces</artifactId>
 				<version>1.7.27</version>
 			</dependency>
-	        <dependency>
-	            <groupId>org.apache.shale</groupId>
-	            <artifactId>shale-application</artifactId>
-	            <version>1.0.4</version>
-	        </dependency>	
+			<dependency>
+				<groupId>org.apache.shale</groupId>
+				<artifactId>shale-application</artifactId>
+				<version>1.0.4</version>
+			</dependency>
 			<dependency>
 				<groupId>org.apache.shale</groupId>
 				<artifactId>shale-core</artifactId>
 				<version>1.0.4</version>
-			</dependency>			
-	        <dependency>
-	            <groupId>org.apache.shale</groupId>
-	            <artifactId>shale-dialog</artifactId>
-	            <version>1.0.4</version>
-	        </dependency>	
-	        <dependency>
-	            <groupId>org.apache.shale</groupId>
-	            <artifactId>shale-dialog-scxml</artifactId>
-	            <version>1.0.4</version>
-	        </dependency>	
+			</dependency>
+			<dependency>
+				<groupId>org.apache.shale</groupId>
+				<artifactId>shale-dialog</artifactId>
+				<version>1.0.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.shale</groupId>
+				<artifactId>shale-dialog-scxml</artifactId>
+				<version>1.0.4</version>
+			</dependency>
 			<dependency>
 				<groupId>org.apache.shale</groupId>
 				<artifactId>shale-remoting</artifactId>
 				<version>1.0.4</version>
-			</dependency>	
+			</dependency>
 			<dependency>
 				<groupId>org.apache.shale</groupId>
 				<artifactId>shale-tiger</artifactId>
 				<version>1.0.4</version>
-			</dependency>	
+			</dependency>
 			<dependency>
 				<groupId>org.apache.shale</groupId>
 				<artifactId>shale-spring</artifactId>
@@ -805,17 +829,17 @@
 				<groupId>javax.activation</groupId>
 				<artifactId>activation</artifactId>
 				<version>1.1</version>
-			</dependency>	
+			</dependency>
 			<dependency>
 				<groupId>velocity</groupId>
 				<artifactId>velocity</artifactId>
 				<version>1.4</version>
 			</dependency>
-	    	<dependency>
-    			<groupId>quartz</groupId>
-    			<artifactId>quartz</artifactId>
-	   			<version>1.5.2</version>
-    		</dependency>
+			<dependency>
+				<groupId>quartz</groupId>
+				<artifactId>quartz</artifactId>
+				<version>1.5.2</version>
+			</dependency>
 			<dependency>
 				<groupId>commons-chain</groupId>
 				<artifactId>commons-chain</artifactId>
@@ -855,7 +879,7 @@
 				<groupId>aopalliance</groupId>
 				<artifactId>aopalliance</artifactId>
 				<version>1.0</version>
-			</dependency>		
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<distributionManagement>
@@ -866,10 +890,10 @@
 		</site>
 	</distributionManagement>
 	<!--
-	<properties>
+		<properties>
 		<maven.andromda.loggingConfigurationUri>
-			${project.dir}/tools/config/log4j.xml
+		${project.dir}/tools/config/log4j.xml
 		</maven.andromda.loggingConfigurationUri>
-	</properties>
+		</properties>
 	-->
 </project>
