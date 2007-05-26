@@ -5,6 +5,7 @@
  */
 package org.openuss.security;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
 import org.springframework.dao.DataAccessException;
@@ -118,7 +119,7 @@ public class UserDaoTest extends UserDaoTestBase {
 		userDao.create(user);
 		assertNotNull(user.getId());
 		
-		User found = userDao.findUserByUsername(user.getUsername());
+		User found = userDao.findUserByUsername(StringUtils.swapCase(user.getUsername()));
 		assertNotNull(found);
 		assertEquals(user, found);
 		
