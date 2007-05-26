@@ -119,9 +119,7 @@
 		</contributor>
 	</contributors>
 	<scm>
-		<connection>
-			scm:svn:https://openuss.svn.sourceforge.net/svnroot/openuss/trunk/openuss-plexus
-		</connection>
+		<connection>scm:svn:https://openuss.svn.sourceforge.net/svnroot/openuss/trunk/openuss-plexus</connection>
 		<url>https://openuss.svn.sourceforge.net/svnroot/openuss/trunk/openuss-plexus</url>
 	</scm>
 	<organization>
