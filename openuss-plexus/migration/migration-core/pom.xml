@@ -13,7 +13,7 @@
 	<artifactId>migration-core</artifactId>
 	<name>Migration - Core</name>
 	<packaging>jar</packaging>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -57,5 +57,10 @@
 			<artifactId>spring-mock</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+		</dependency>
+
 	</dependencies>
 </project>
