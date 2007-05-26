@@ -85,7 +85,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertEquals("",folder.getPath());
 		
 		commit();
-		entries = documentService.getFolderEntries(null, root);
+		entries = documentService.getFolderEntries(defaultDomainObject, root);
 		assertNotNull(entries);
 		assertEquals(1, entries.size());
 		FolderEntryInfo info = entries.get(0);
@@ -98,7 +98,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertEquals( folder.getCreated(), info.getReleaseDate());
 		assertTrue( info.isReleased());
 		
-		entries = documentService.getFolderEntries(null, folder);
+		entries = documentService.getFolderEntries(defaultDomainObject, folder);
 		assertNotNull(entries);
 		assertEquals(0, entries.size());
 	}
@@ -167,7 +167,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		info.setId(subFolder2.getId());
 		
 		documentService.removeFolderEntry(info.getId());
-		entries = documentService.getFolderEntries(null, subFolder1);
+		entries = documentService.getFolderEntries(defaultDomainObject, subFolder1);
 		assertNotNull(entries);
 		assertEquals(0, entries.size());
 		
@@ -222,7 +222,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		FolderEntryInfo dummyFolder = entries.get(0);
 		assertEquals("dummy", dummyFolder.getName());
 		
-		entries = documentService.getFolderEntries( null, documentService.getFolder(dummyFolder));
+		entries = documentService.getFolderEntries( defaultDomainObject, documentService.getFolder(dummyFolder));
 		assertNotNull(entries);
 		assertEquals(1, entries.size());
 		
@@ -275,7 +275,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		
 		commit();
 		
-		List<FolderEntryInfo> entries = documentService.getFolderEntries(null, subfolder);
+		List<FolderEntryInfo> entries = documentService.getFolderEntries(defaultDomainObject, subfolder);
 		assertNotNull(entries);
 		assertEquals(3, entries.size());
 		FolderEntryInfo entry = entries.get(0);
