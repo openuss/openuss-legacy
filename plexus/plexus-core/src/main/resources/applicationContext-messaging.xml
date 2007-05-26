@@ -5,7 +5,7 @@
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="mail.uni-muenster.de"/>
-		<property name="username" value="no-reply@openuss-plexus.com"/>
+		<property name="username" value="no-reply@openuss.uni-muenster.de"/>
 		<property name="password" value="n/a"/>
 	</bean>
 
