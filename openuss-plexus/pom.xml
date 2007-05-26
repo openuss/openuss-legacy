@@ -120,12 +120,9 @@
 	</contributors>
 	<scm>
 		<connection>
-			scm:cvs:pserver:anonymous:@openuss.cvs.sourceforge.net:/cvsroot/openuss:openuss-plexus
+			scm:svn:http://openuss.svn.sourceforge.net/viewvc/openuss/trunk/openuss-plexus
 		</connection>
-		<developerConnection>
-			scv:cvs:ext:${maven.username}@openuss.sourceforge.net:/cvsroot/openuss:openuss-plexus
-		</developerConnection>
-		<url>http://openuss.cvs.sourceforge.net/openuss/</url>
+		<url>http://openuss.svn.sourceforge.net/viewvc/openuss/trunk/openuss-plexus</url>
 	</scm>
 	<organization>
 		<name>OpenUSS</name>
