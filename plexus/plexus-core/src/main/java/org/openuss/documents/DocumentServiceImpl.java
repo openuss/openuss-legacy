@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -127,18 +128,25 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 
 	@Override
 	protected List handleGetFolderEntries(DomainObject domainObject, FolderInfo folderInfo) throws Exception {
-		Folder folder;
-		if (folderInfo == null || folderInfo.getId() == null) {
-			folder = getRootFolderForDomainObject(domainObject);
-		} else {
+		Validate.notNull(domainObject, "Parameter DomainObject must not be null!");
+		Folder folder = null;
+		if (folderInfo != null && folderInfo.getId() != null) {
 			folder = getFolderDao().load(folderInfo.getId());
 		}
-		if (folder == null || folder.getId() == null) {
-			throw new DocumentApplicationException("message_error_folder_not_found");
+		if (folder == null || !isFolderOfDomainObject(domainObject, folder)) {
+			folder = getRootFolderForDomainObject(domainObject);
 		}
 		List entries = getFolderEntryDao().findByParent(FolderEntryDao.TRANSFORM_FOLDERENTRYINFO, folder);
 		filterEntriesByPermission(entries);
 		return entries;
+	}
+	
+	private boolean isFolderOfDomainObject(DomainObject domainObject, Folder folder) {
+		Validate.notNull(folder);
+		while (folder.getParent() != null) {
+			folder = folder.getParent();
+		}
+		return ObjectUtils.equals(folder.getDomainIdentifier(), domainObject.getId());
 	}
 
 	@Override
@@ -170,7 +178,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 			removeFolderEntry(entry.getId());
 		}
 	}
-	
+
 	@Override
 	protected void handleRemoveFileEntries(Collection entries) throws Exception {
 		Validate.allElementsOfType(entries, FileInfo.class);
@@ -279,24 +287,23 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	 * @param contests
 	 */
 	private void filterEntriesByPermission(Collection entries) {
-		// TODO may be implemented as aspect 
+		// TODO may be implemented as aspect
 		if (entries != null && entries.size() > 0) {
 			Object object = entries.iterator().next();
-			if (!AcegiUtils.hasPermission(object, new Integer[] { LectureAclEntry.CRUD})) {
+			if (!AcegiUtils.hasPermission(object, new Integer[] { LectureAclEntry.CRUD })) {
 				CollectionUtils.filter(entries, new Predicate() {
 					public boolean evaluate(Object object) {
 						if (object instanceof FolderEntry) {
 							return ((FolderEntry) object).isReleased();
 						} else if (object instanceof FileInfo) {
-							return ((FileInfo) object).isReleased(); 
+							return ((FileInfo) object).isReleased();
 						} else if (object instanceof FolderEntryInfo) {
 							return ((FolderEntryInfo) object).isReleased();
-						}  else {
+						} else {
 							return false;
 						}
 					}
-				}
-				);
+				});
 			}
 		}
 	}
@@ -412,18 +419,18 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		if (files == null) {
 			files = new ArrayList<FileInfo>();
 		}
-		
+
 		List<FileInfo> savedAttachments = getFileEntries(domainObject);
 		Collection<FileInfo> removedAttachments = CollectionUtils.subtract(savedAttachments, files);
 		removeFileEntries(removedAttachments);
-		
+
 		FolderInfo folder = getFolder(domainObject);
-		for (FileInfo file: (List<FileInfo>) files) {
+		for (FileInfo file : (List<FileInfo>) files) {
 			if (file.getId() == null) {
 				createFileEntry(file, folder);
 			}
 		}
-		
+
 	}
 
 	@Override

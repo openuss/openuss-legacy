@@ -24,7 +24,7 @@ public class IndexerServiceIntegrationTest extends IndexerServiceIntegrationTest
 	public void testCreateIndex() throws IndexerApplicationException {
 		DomainObject domain = createDomainObject();
 		indexerService.createIndex(domain);
-		check("facultyIndexer", "CREATE", domain);
+		check("facultyIndexerCommand", "CREATE", domain);
 	}
 
 	private DomainObject createDomainObject() {
@@ -36,13 +36,13 @@ public class IndexerServiceIntegrationTest extends IndexerServiceIntegrationTest
 	public void testUpdateIndex() throws IndexerApplicationException {
 		DomainObject domain = createDomainObject();
 		indexerService.updateIndex(domain);
-		check("facultyIndexer", "UPDATE", domain);
+		check("facultyIndexerCommand", "UPDATE", domain);
 	}
 
 	public void testDeleteIndex() throws IndexerApplicationException {
 		DomainObject domain = createDomainObject();
 		indexerService.deleteIndex(domain);
-		check("facultyIndexer", "DELETE", domain);
+		check("facultyIndexerCommand", "DELETE", domain);
 	}
 
 	private void check(String command, String commandType, DomainObject domain) {
