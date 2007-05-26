@@ -585,11 +585,11 @@ $xmlIndent        return transformEntity(transform, ($entity.fullyQualifiedName)
 #if ($useNamedParametersInQueries && ($argument.type.collectionType || $argument.type.arrayType))
 #set ($setParameterOperation = "${setParameterOperation}List")
 #end
-##if ($finder.useNamedParameters || $argument.type.collectionType || $argument.type.arrayType)
+#if ($finder.useNamedParameters || $argument.type.collectionType || $argument.type.arrayType)
             queryObject.${setParameterOperation}("$argument.name", $argumentValue);
-##else
-##            queryObject.${setParameterOperation}($count, $argumentValue);
-###end
+#else
+            queryObject.${setParameterOperation}($count, $argumentValue);
+#end
 #end
 #if ($finder.returnType.setType || !$finder.returnType.collectionType)
             java.util.Set results = new java.util.LinkedHashSet(queryObject.list());
