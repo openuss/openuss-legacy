@@ -156,17 +156,17 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 	@Override
 	protected List handleFindUsersToNotifyByForum(final Topic topic, final Forum forum) throws Exception {
 		final String queryString = 
-			" SELECT u.EMAIL" +
-			" FROM SECURITY_USER u, DISCUSSION_TOPIC as t, TRACKING_VIEWSTATE as v, DISCUSSION_FORUMWATCH fw" +
+			" SELECT DISTINCT u.EMAIL" +
+			" FROM SECURITY_USER as u, DISCUSSION_TOPIC as t, TRACKING_VIEWSTATE as v, DISCUSSION_FORUMWATCH as fw" +
 			" WHERE"+
 			" v.VIEW_STATE = :viewStateRead and v.DOMAIN_IDENTIFIER = :topicId"+
 			" and fw.USER_FK = v.USER_IDENTIFIER" +
-			" and u.id = fw.USER_FK and fw.FORUM_FK = forumId";
+			" and u.id = fw.USER_FK and fw.FORUM_FK = :forumId";
 		return (List) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
 			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
 				Query queryObject = session.createSQLQuery(queryString);
 				queryObject.setParameter("forumId", forum.getId());				
-				queryObject.setParameter("topicId", forum.getId());				
+				queryObject.setParameter("topicId", topic.getId());				
 				queryObject.setParameter("viewStateRead", ViewState.READ.getValue().intValue());
 				List<Object> results = queryObject.list();				
 				return results; 
