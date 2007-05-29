@@ -130,8 +130,8 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 	@Override
 	protected List handleFindUsersToNotifyByTopic(final Topic topic) throws Exception {
 		final String queryString = 
-			" SELECT u.EMAIL" +
-			" FROM SECURITY_USER u, DISCUSSION_TOPIC as t, TRACKING_VIEWSTATE as v, DISCUSSION_TOPICWATCH as tw" +
+			" SELECT DISTINCT u.EMAIL" +
+			" FROM SECURITY_USER as u, DISCUSSION_TOPIC as t, TRACKING_VIEWSTATE as v, DISCUSSION_TOPICWATCH as tw" +
 			" WHERE"+
 			" v.VIEW_STATE = :viewStateRead and v.DOMAIN_IDENTIFIER = :topicId"+
 			" and tw.TOPIC_FK = v.DOMAIN_IDENTIFIER and tw.USER_FK = v.USER_IDENTIFIER" +
