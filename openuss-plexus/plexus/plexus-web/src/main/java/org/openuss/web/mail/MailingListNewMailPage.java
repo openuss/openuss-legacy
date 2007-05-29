@@ -67,6 +67,7 @@ public class MailingListNewMailPage extends AbstractMailingListPage{
 	}
 	
 	public String sendDraft(){
+		addMessage(i18n("mailinglist_draft_send_message", getUser().getEmail()));
 		getEnrollmentMailingListService().sendPreview(enrollmentInfo, mail);
 		return Constants.SUCCESS;	
 	}
