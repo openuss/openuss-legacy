@@ -120,10 +120,6 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 
 		if (faculty.getId() != null) {
 			getFacultyDao().update(faculty);
-
-			// TODO use aop
-			// update faculty index
-			// getIndexerService().updateIndex(faculty);
 		} else {
 			logger.error("Faculty object without id, use createFaculty method instead!!!");
 			throw new LectureServiceException("Use createFaculty method instead!");
@@ -172,10 +168,6 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		// define security rights of faculty
 		fireCreatedFaculty(faculty);
 		
-		// TODO use aop
-		// create index
-		// getIndexerService().createIndex(faculty);
-
 	}
 
 	@Override
@@ -227,9 +219,6 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		// fire events
 		for (Enrollment enrollment : faculty.getEnrollments()) {
 			fireRemovingEnrollment(enrollment);
-			
-			// TODO use aop
-			//	getIndexerService().deleteIndex(enrollment);
 		}
 
 		for (Subject subject : faculty.getSubjects()) {
@@ -238,8 +227,6 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 
 		fireRemovingFaculty(faculty);
 
-		// TODO use aop
-		//	getIndexerService().deleteIndex(faculty);
 		getFacultyDao().remove(faculty);
 	}
 
