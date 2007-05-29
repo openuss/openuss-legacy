@@ -47,7 +47,7 @@ public class FacultyIndexer extends DomainIndexer {
 		final Faculty faculty = getFaculty();
 		if (faculty != null) {
 			logger.debug("update new index for faculty " + faculty.getName() + " (" + faculty.getId() + ")");
-			Term facultyTerm = new Term(IDENTIFIER, String.valueOf(faculty.getId()));
+			Term facultyTerm = new Term(IDENTIFIER, String.valueOf(faculty.getId().longValue()));
 			try {
 				getLuceneIndexTemplate().updateDocument(facultyTerm, new DocumentModifier() {
 					public Document updateDocument(Document document) throws Exception {
@@ -57,7 +57,7 @@ public class FacultyIndexer extends DomainIndexer {
 					}
 				});
 			} catch (LuceneIndexAccessException ex) {
-				logger.warn("exception during update, trying to create...");
+				logger.warn("Exception during update, trying to create...",ex);
 				create();
 			}
 		}
@@ -70,7 +70,7 @@ public class FacultyIndexer extends DomainIndexer {
 	}
 
 	private void setFields(final Faculty faculty, Document document) {
-		document.add(new Field(IDENTIFIER, String.valueOf(faculty.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(IDENTIFIER, String.valueOf(faculty.getId().longValue()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(DOMAINTYPE, DOMAINTYPE_VALUE, Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(MODIFIED, DateTools.dateToString(new Date(), Resolution.MINUTE), Field.Store.YES,
 				Field.Index.UN_TOKENIZED));
