@@ -88,7 +88,29 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		return topic;
 	}
 
-	public void testSearchForUsersToNotify(){
+	public void testSearchForUsersToNotifyByTopic(){
+		Forum forum = Forum.Factory.newInstance();
+		forum.setDomainIdentifier(testUtility.unique());
+		forum.setReadOnly(false);
+		
+		forumDao.create(forum);
+		
+		User user = testUtility.createSecureContext();
+
+		Topic topic1 = createTopic(user, forum);
+		
+		DiscussionWatch dw = DiscussionWatch.Factory.newInstance();
+		dw.setTopic(topic1);
+		dw.setUser(user);
+		getDiscussionWatchDao().create(dw);
+		commit();
+		getTrackingService().setRead(topic1);
+		commit();
+		List list = getTopicDao().findUsersToNotifyByTopic(topic1);
+		assertEquals(1,list.size());		
+	}
+
+	public void testSearchForUsersToNotifyByForum(){
 		Forum forum = Forum.Factory.newInstance();
 		forum.setDomainIdentifier(testUtility.unique());
 		forum.setReadOnly(false);
@@ -104,17 +126,14 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		fw.setUser(user);
 		getForumWatchDao().create(fw);
 		
-		DiscussionWatch dw = DiscussionWatch.Factory.newInstance();
-		dw.setTopic(topic1);
-		dw.setUser(user);
-		getDiscussionWatchDao().create(dw);
 		commit();
 		getTrackingService().setRead(topic1);
 		commit();
-		List list = getTopicDao().findUsersToNotifyByTopic(topic1);
+		
+		List list = getTopicDao().findUsersToNotifyByForum(topic1, forum);
 		assertEquals(1,list.size());		
 	}
-	
+
 	public DomainViewStateDao getDomainViewStateDao() {
 		return domainViewStateDao;
 	}
