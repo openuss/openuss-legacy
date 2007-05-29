@@ -12,6 +12,7 @@ import org.openuss.security.User;
 import org.openuss.viewtracking.DomainViewState;
 import org.openuss.viewtracking.DomainViewStateDao;
 import org.openuss.viewtracking.DomainViewStatePK;
+import org.openuss.viewtracking.TrackingService;
 import org.openuss.viewtracking.ViewState;
 
 
@@ -31,6 +32,7 @@ public class TopicDaoTest extends TopicDaoTestBase {
 	
 	public DiscussionWatchDao discussionWatchDao;
 	
+	public TrackingService trackingService;
 	
 	
 	
@@ -93,7 +95,7 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		
 		forumDao.create(forum);
 		
-		User user = testUtility.createUserInDB();
+		User user = testUtility.createSecureContext();
 
 		Topic topic1 = createTopic(user, forum);
 		
@@ -107,8 +109,10 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		dw.setUser(user);
 		getDiscussionWatchDao().create(dw);
 		commit();
-		List list = getTopicDao().findUsersToNotify(topic1, forum);
-//		assertEquals(1,list.size());		
+		getTrackingService().setRead(topic1);
+		commit();
+		List list = getTopicDao().findUsersToNotifyByTopic(topic1);
+		//assertEquals(1,list.size());		
 	}
 	
 	public DomainViewStateDao getDomainViewStateDao() {
@@ -149,5 +153,13 @@ public class TopicDaoTest extends TopicDaoTestBase {
 
 	public void setForumWatchDao(ForumWatchDao forumWatchDao) {
 		this.forumWatchDao = forumWatchDao;
+	}
+
+	public TrackingService getTrackingService() {
+		return trackingService;
+	}
+
+	public void setTrackingService(TrackingService trackingService) {
+		this.trackingService = trackingService;
 	}
 }

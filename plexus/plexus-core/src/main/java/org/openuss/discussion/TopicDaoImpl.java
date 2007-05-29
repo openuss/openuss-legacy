@@ -122,19 +122,51 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 		}, true);
 	}
 
+	/**
+	 * finds all users, which have specified a topicwatch for a topic. users with specified topicwatch
+	 * without any viewstate are ignored, because a viewstate is defined while viewing a topic and users 
+	 * need to view a topic to define a topicwatch.
+	 */
 	@Override
-	protected List handleFindUsersToNotify(final Topic topic, final Forum forum) throws Exception {
+	protected List handleFindUsersToNotifyByTopic(final Topic topic) throws Exception {
 		final String queryString = 
-			" SELECT v.USER_IDENTIFIER" +
-			" FROM DISCUSSION_TOPIC as t, TRACKING_VIEWSTATE as v, DISCUSSION_TOPICWATCH as tw, DISCUSSION_FORUMWATCH as fw" +
-			" WHERE v.VIEW_STATE = :viewStateRead and v.DOMAIN_IDENTIFIER = :topicId" +
-			" and ((tw.TOPIC_FK = v.DOMAIN_IDENTIFIER and tw.USER_FK = v.USER_IDENTIFIER)" +
-			" or (fw.USER_FK = v.USER_IDENTIFIER and fw.FORUM_FK = :forumId))";
+			" SELECT u.EMAIL" +
+			" FROM SECURITY_USER u, DISCUSSION_TOPIC as t, TRACKING_VIEWSTATE as v, DISCUSSION_TOPICWATCH as tw" +
+			" WHERE"+
+			" v.VIEW_STATE = :viewStateRead and v.DOMAIN_IDENTIFIER = :topicId"+
+			" and tw.TOPIC_FK = v.DOMAIN_IDENTIFIER and tw.USER_FK = v.USER_IDENTIFIER" +
+			" and u.id = tw.USER_FK";			
 		return (List) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
 			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
 				Query queryObject = session.createSQLQuery(queryString);
-				queryObject.setParameter("topicId", topic.getId());
-				queryObject.setParameter("forumId", forum.getId());
+				queryObject.setParameter("topicId", topic.getId());				
+				queryObject.setParameter("viewStateRead", ViewState.READ.getValue().intValue());
+				List<Object> results = queryObject.list();				
+				return results; 
+			}
+		}, true);		
+	}
+	
+	/**
+	 * finds all users, which defined a forumwatch, when a new post is added to a topic they have read. 
+	 * (new topics are not handled by this method, if there is a topic they haven't read yet, they are
+	 * notified on creation of this topic)
+	 * it is assumed that given topic is part of given forum.
+	 */
+	@Override
+	protected List handleFindUsersToNotifyByForum(final Topic topic, final Forum forum) throws Exception {
+		final String queryString = 
+			" SELECT u.EMAIL" +
+			" FROM SECURITY_USER u, DISCUSSION_TOPIC as t, TRACKING_VIEWSTATE as v, DISCUSSION_FORUMWATCH fw" +
+			" WHERE"+
+			" v.VIEW_STATE = :viewStateRead and v.DOMAIN_IDENTIFIER = :topicId"+
+			" and fw.USER_FK = v.USER_IDENTIFIER" +
+			" and u.id = fw.USER_FK and fw.FORUM_FK = forumId";
+		return (List) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
+			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
+				Query queryObject = session.createSQLQuery(queryString);
+				queryObject.setParameter("forumId", forum.getId());				
+				queryObject.setParameter("topicId", forum.getId());				
 				queryObject.setParameter("viewStateRead", ViewState.READ.getValue().intValue());
 				List<Object> results = queryObject.list();				
 				return results; 

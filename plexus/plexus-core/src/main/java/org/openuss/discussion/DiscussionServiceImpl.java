@@ -120,7 +120,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		@SuppressWarnings("unchecked")
 		private void sendNotifications(Topic topic, Forum forum){
 		@SuppressWarnings("unused")
-		List<User> users = getTopicDao().findUsersToNotify(topic, forum);
+		List<User> users = getTopicDao().findUsersToNotifyByTopic(topic);
 		logger.debug("got users to notify");
 	}
 
