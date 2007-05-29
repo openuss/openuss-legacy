@@ -112,7 +112,7 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		getTrackingService().setRead(topic1);
 		commit();
 		List list = getTopicDao().findUsersToNotifyByTopic(topic1);
-		//assertEquals(1,list.size());		
+		assertEquals(1,list.size());		
 	}
 	
 	public DomainViewStateDao getDomainViewStateDao() {
