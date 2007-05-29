@@ -130,23 +130,24 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 	@Override
 	protected List handleFindUsersToNotifyByTopic(final Topic topic) throws Exception {
 		final String queryString = 
-			" SELECT DISTINCT u.EMAIL" +
-			" FROM SECURITY_USER as u, DISCUSSION_TOPIC as t, TRACKING_VIEWSTATE as v, DISCUSSION_TOPICWATCH as tw" +
+			" SELECT DISTINCT u" +
+			" FROM UserImpl u, TopicImpl as t, DomainViewStateImpl as v, DiscussionWatchImpl as tw" +
 			" WHERE"+
-			" v.VIEW_STATE = :viewStateRead and v.DOMAIN_IDENTIFIER = :topicId"+
-			" and tw.TOPIC_FK = v.DOMAIN_IDENTIFIER and tw.USER_FK = v.USER_IDENTIFIER" +
-			" and u.id = tw.USER_FK";			
+			" v.viewState = :viewStateRead and v.domainViewStatePk.domainIdentifier = :topicId"+
+			" and tw.topic.id = v.domainViewStatePk.domainIdentifier and tw.user.id = v.domainViewStatePk.userIdentifier" +
+			" and u = tw.user";			
 		return (List) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
 			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
-				Query queryObject = session.createSQLQuery(queryString);
+				Query queryObject = session.createQuery(queryString);
 				queryObject.setParameter("topicId", topic.getId());				
-				queryObject.setParameter("viewStateRead", ViewState.READ.getValue().intValue());
+				queryObject.setParameter("viewStateRead", ViewState.READ);
 				List<Object> results = queryObject.list();				
 				return results; 
 			}
 		}, true);		
 	}
 	
+
 	/**
 	 * finds all users, which defined a forumwatch, when a new post is added to a topic they have read. 
 	 * (new topics are not handled by this method, if there is a topic they haven't read yet, they are
@@ -156,18 +157,18 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 	@Override
 	protected List handleFindUsersToNotifyByForum(final Topic topic, final Forum forum) throws Exception {
 		final String queryString = 
-			" SELECT DISTINCT u.EMAIL" +
-			" FROM SECURITY_USER as u, DISCUSSION_TOPIC as t, TRACKING_VIEWSTATE as v, DISCUSSION_FORUMWATCH as fw" +
+			" SELECT DISTINCT u" +
+			" FROM UserImpl as u, TopicImpl as t, DomainViewStateImpl as v, ForumWatchImpl as fw" +
 			" WHERE"+
-			" v.VIEW_STATE = :viewStateRead and v.DOMAIN_IDENTIFIER = :topicId"+
-			" and fw.USER_FK = v.USER_IDENTIFIER" +
-			" and u.id = fw.USER_FK and fw.FORUM_FK = :forumId";
+			" v.viewState = :viewStateRead and v.domainViewStatePk.domainIdentifier = :topicId"+
+			" and fw.user.id = v.domainViewStatePk.userIdentifier" +
+			" and u = fw.user and fw.forum.id = :forumId";
 		return (List) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
 			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
-				Query queryObject = session.createSQLQuery(queryString);
+				Query queryObject = session.createQuery(queryString);
 				queryObject.setParameter("forumId", forum.getId());				
 				queryObject.setParameter("topicId", topic.getId());				
-				queryObject.setParameter("viewStateRead", ViewState.READ.getValue().intValue());
+				queryObject.setParameter("viewStateRead", ViewState.READ);
 				List<Object> results = queryObject.list();				
 				return results; 
 			}
