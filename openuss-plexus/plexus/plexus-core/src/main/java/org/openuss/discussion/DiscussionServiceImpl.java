@@ -6,8 +6,11 @@
 package org.openuss.discussion;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.Validate;
@@ -15,7 +18,9 @@ import org.apache.log4j.Logger;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
+import org.openuss.messaging.MessageService;
 import org.openuss.security.User;
+import org.openuss.system.SystemService;
 
 /**
  * @see org.openuss.discussion.DiscussionService
@@ -59,13 +64,15 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		sendNotificationsToForumWatchers(topic, topic.getForum());
 	}
 
+	@SuppressWarnings("unchecked")
 	private void sendNotificationsToForumWatchers(Topic topic, Forum forum) {
 		List<ForumWatch> watches = getForumWatchDao().findByForum(forum);
-		Set<String> emails = new HashSet();
+		List<User> emails = new ArrayList<User>();
 		for (ForumWatch watch : watches){
-			emails.add(watch.getUser().getEmail());			
+			emails.add(watch.getUser());			
 		}
 		logEmailAdresses(emails);
+		sendNotificationEmail(emails, topic);
 	}
 
 	/**
@@ -118,24 +125,25 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		
 		getDocumentService().diffSave(post, postInfo.getAttachments());
 		
+		sendNotifications(topic, topic.getForum());
 		getTrackingService().setModified(topic);
 		getTrackingService().setRead(topic);
 		
 		getPostDao().toPostInfo(post, postInfo);
 		
-		sendNotifications(topic, topic.getForum());
 		
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void sendNotifications(Topic topic, Forum forum){
-		@SuppressWarnings("unused")
-		List<String> emailsByTopic = getTopicDao().findUsersToNotifyByTopic(topic);
-		List<String> emailsByForum = getTopicDao().findUsersToNotifyByForum(topic, forum);
-		Set<String> emails = new HashSet();
+		List<User> emailsByTopic = getTopicDao().findUsersToNotifyByTopic(topic);
+		List<User> emailsByForum = getTopicDao().findUsersToNotifyByForum(topic, forum);
+		Set<User> emails = new HashSet();
 		emails.addAll(emailsByTopic);
 		emails.addAll(emailsByForum);		
 		logEmailAdresses(emails);
+		List l = new ArrayList(emails);
+		sendNotificationEmail(l, topic);
 		logger.debug("got users to notify");
 	}
 	
@@ -144,10 +152,10 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	 * just for testing purposes
 	 * TODO remove me 
 	 */
-	private void logEmailAdresses(Set<String> emails){
+	private void logEmailAdresses(Collection<User> emails){
 		logger.debug("email adresses to notify:");
-		for (String adress: emails){
-			logger.debug("----------- " + adress+ "-----------");
+		for (User adress: emails){
+			logger.debug("----------- " + adress.getEmail()+ "-----------");
 		}
 	}
 
@@ -198,6 +206,10 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		getPostDao().toPostInfo(post,postInfo);
 		
 		sendNotifications(post.getTopic(), post.getTopic().getForum());
+		
+		getTrackingService().setModified(post.getTopic());
+		getTrackingService().setRead(post.getTopic());
+
 	}
 
 	/**
@@ -403,5 +415,29 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Validate.notNull(topic.getId());
 		return (getDiscussionWatchDao().findByTopicAndUser(getTopicDao().load(topic.getId()), getSecurityService().getCurrentUser()) != null);
 	}
+	
+	private void sendNotificationEmail(List<User> recipients, Topic topic) {
+		if (recipients==null||recipients.size()==0) return;
+		try {
+			String link = "/views/secured/discussion/discussionthread.faces?topic="+ topic.getId()+"&enrollment="+topic.getForum().getDomainIdentifier();
+
+			link = getSystemService().getProperty(org.openuss.system.System.OPENUSS_SERVER_URL).getValue()+link;
+				
+
+			Map parameters = new HashMap();
+			parameters.put("topicname", topic.getTitle());
+			parameters.put("topiclink", link);
+			
+			getMessageService().sendMessage(
+					"user.discussion.watch.sender", 
+					"user.discussion.watch.subject", 
+					"discussionnotification",
+					parameters, recipients);
+		} catch (Exception e) {
+			logger.error("Error: ", e);
+		}
+	}
+
+
 
 }
