@@ -15,3 +15,4 @@ insert into SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) values (3, 'mail.from.na
 insert into SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) values (4, 'mail.host.name', 'localhost');
 insert into SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) values (5, 'mail.host.user', 'plexus@openuss-plexus.org');
 insert into SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) values (6, 'mail.host.password', 'plexus');
+insert into SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) values (7, 'openuss.server.url', 'http://localhost:8080/openuss-plexus/');
