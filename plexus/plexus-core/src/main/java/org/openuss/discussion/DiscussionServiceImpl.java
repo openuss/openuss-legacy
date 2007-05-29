@@ -6,9 +6,10 @@
 package org.openuss.discussion;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.documents.FileInfo;
@@ -55,7 +56,16 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		
 		getPostDao().toPostInfo(topic.getFirst(), postInfo);
 		
-		sendNotifications(topic, topic.getForum());
+		sendNotificationsToForumWatchers(topic, topic.getForum());
+	}
+
+	private void sendNotificationsToForumWatchers(Topic topic, Forum forum) {
+		List<ForumWatch> watches = getForumWatchDao().findByForum(forum);
+		Set<String> emails = new HashSet();
+		for (ForumWatch watch : watches){
+			emails.add(watch.getUser().getEmail());			
+		}
+		logEmailAdresses(emails);
 	}
 
 	/**
@@ -117,11 +127,28 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		
 	}
 	
-		@SuppressWarnings("unchecked")
-		private void sendNotifications(Topic topic, Forum forum){
+	@SuppressWarnings("unchecked")
+	private void sendNotifications(Topic topic, Forum forum){
 		@SuppressWarnings("unused")
-		List<User> users = getTopicDao().findUsersToNotifyByTopic(topic);
+		List<String> emailsByTopic = getTopicDao().findUsersToNotifyByTopic(topic);
+		List<String> emailsByForum = getTopicDao().findUsersToNotifyByForum(topic, forum);
+		Set<String> emails = new HashSet();
+		emails.addAll(emailsByTopic);
+		emails.addAll(emailsByForum);		
+		logEmailAdresses(emails);
 		logger.debug("got users to notify");
+	}
+	
+	/**
+	 * obsolete method, which prints out email adresses of users to notify
+	 * just for testing purposes
+	 * TODO remove me 
+	 */
+	private void logEmailAdresses(Set<String> emails){
+		logger.debug("email adresses to notify:");
+		for (String adress: emails){
+			logger.debug("----------- " + adress+ "-----------");
+		}
 	}
 
 	private void addPostToTopicAndPersist(Topic topic, Post post) {
@@ -169,6 +196,8 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		getDocumentService().diffSave(post, postInfo.getAttachments());
 
 		getPostDao().toPostInfo(post,postInfo);
+		
+		sendNotifications(post.getTopic(), post.getTopic().getForum());
 	}
 
 	/**
@@ -228,7 +257,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		if (forum == null) {
 			return new ArrayList<TopicInfo>();
 		} else {
-			return getTopicDao().loadTopicsWithViewState(forum, currentUser());
+			return getTopicDao().loadTopicsWithViewState(forum, getSecurityService().getCurrentUser());
 		}
 	}
 
@@ -240,7 +269,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Validate.notNull(topic.getId());
 		DiscussionWatch dw = DiscussionWatch.Factory.newInstance();
 		dw.setTopic(getTopicDao().load(topic.getId()));
-		dw.setUser(currentUser());
+		dw.setUser(getSecurityService().getCurrentUser());
 		getDiscussionWatchDao().create(dw);
 	}
 
@@ -252,7 +281,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Validate.notNull(forum.getId());
 		ForumWatch fw = ForumWatch.Factory.newInstance();
 		fw.setForum(getForumDao().load(forum.getId()));
-		fw.setUser(currentUser());
+		fw.setUser(getSecurityService().getCurrentUser());
 		getForumWatchDao().create(fw);
 	}
 
@@ -263,7 +292,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Validate.notNull(topic);
 		Validate.notNull(topic.getId());
 		Topic t = getTopicDao().load(topic.getId());
-		DiscussionWatch dw = getDiscussionWatchDao().findByTopicAndUser(t, currentUser());
+		DiscussionWatch dw = getDiscussionWatchDao().findByTopicAndUser(t, getSecurityService().getCurrentUser());
 		getDiscussionWatchDao().remove(dw);
 	}
 
@@ -274,7 +303,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Validate.notNull(forum);
 		Validate.notNull(forum.getId());
 		Forum f = getForumDao().load(forum.getId());
-		ForumWatch fw = getForumWatchDao().findByUserAndForum(currentUser(), f);
+		ForumWatch fw = getForumWatchDao().findByUserAndForum(getSecurityService().getCurrentUser(), f);
 		getForumWatchDao().remove(fw);
 	}
 
@@ -365,22 +394,14 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	protected boolean handleWatchesForum(ForumInfo forum) throws Exception {
 		Validate.notNull(forum);
 		Validate.notNull(forum.getId());
-		return (getForumWatchDao().findByUserAndForum(currentUser(), getForumDao().load(forum.getId())) != null);
+		return (getForumWatchDao().findByUserAndForum(getSecurityService().getCurrentUser(), getForumDao().load(forum.getId())) != null);
 	}
 
 	@Override
 	protected boolean handleWatchesTopic(TopicInfo topic) throws Exception {
 		Validate.notNull(topic);
 		Validate.notNull(topic.getId());
-		return (getDiscussionWatchDao().findByTopicAndUser(getTopicDao().load(topic.getId()), currentUser()) != null);
-	}
-
-	private User currentUser() {
-		// FIXME may be optimized by user id 
-		// UserInfo userInfo = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
-		// USer user = getSecurityService().getCurrentUser();
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		return getSecurityService().getUserByName(username);
+		return (getDiscussionWatchDao().findByTopicAndUser(getTopicDao().load(topic.getId()), getSecurityService().getCurrentUser()) != null);
 	}
 
 }
