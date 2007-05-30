@@ -1,15 +1,20 @@
 package org.openuss.messaging;
 
+import java.io.IOException;
 import java.util.Locale;
 
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.VelocityException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.velocity.VelocityEngineUtils;
+import org.springframework.ui.velocity.VelocityEngineFactory;
 
 /**
  * 
@@ -23,6 +28,8 @@ public class TemplateMessagePreparator extends MessagePreparator implements Mess
 
 	private VelocityEngine velocityEngine;
 	
+	private static final Logger logger = Logger.getLogger(TemplateMessagePreparator.class);
+	
 	private static final String TEMPLATE_PREFIX = "templates/emails/";
 	private static final String TEMPLATE_SUFFIX = ".vsl";
 	private static final String LOCALE_SEPARATOR = "_";
@@ -35,13 +42,20 @@ public class TemplateMessagePreparator extends MessagePreparator implements Mess
 
 		String text = VelocityEngineUtils.mergeTemplateIntoString(
 				velocityEngine, 
-				localizedTemplate(),
+				determineMostFittingTemplate(localizedTemplate()),
 				templateMessage.getParameterMap());
 		message.setText(text, true);
 
 		if (sendDate != null) {
 			message.setSentDate(sendDate);
 		}
+	}
+	
+	private String determineMostFittingTemplate(String template){
+		if (velocityEngine.templateExists(template)) return template;
+		while (!velocityEngine.templateExists(template))
+			template = template.substring(0,template.lastIndexOf(LOCALE_SEPARATOR.charAt(0)))+TEMPLATE_SUFFIX;
+		return template;
 	}
 	
 	private String localizedSubject() {
