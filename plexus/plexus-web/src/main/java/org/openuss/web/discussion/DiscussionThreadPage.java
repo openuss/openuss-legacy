@@ -12,6 +12,7 @@ import org.openuss.discussion.PostInfo;
 import org.openuss.discussion.TopicInfo;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.security.User;
 import org.openuss.web.Constants;
 
 
@@ -23,6 +24,9 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	
 	@Property(value= "#{"+Constants.DISCUSSION_THREADLENGTH+"}")
 	public int length;
+	
+	@Property(value= "#{"+Constants.SHOW_USER_PROFILE+"}")
+	public User profile;
 	
 	public boolean topicWatchState;
 	
@@ -136,6 +140,12 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		return Constants.SUCCESS;
 	}
 	
+	public String linkProfile(){
+		profile.setId(this.data.getRowData().getSubmitterId());
+		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
+		return Constants.USER_PROFILE_VIEW_PAGE;
+	}
+	
 	public DiscussionThreadDataProvider getData() {
 		return data;
 	}
@@ -167,6 +177,14 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 
 	public void setTopicReadOnly(boolean topicReadOnly) {
 		this.topicReadOnly = topicReadOnly;
+	}
+
+	public User getProfile() {
+		return profile;
+	}
+
+	public void setProfile(User profile) {
+		this.profile = profile;
 	}
 	
 }

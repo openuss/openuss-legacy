@@ -15,15 +15,19 @@
 			<f:facet name="header">  
 				#{msg['discussion_thread_column_author']} 
 			</f:facet>
-			<h:outputText value="#{post.submitter}" styleClass="user_name"/>
-			<h:graphicImage styleClass="userphoto"
-				value="/files?fileid=#{post.submitterPicture}"
-				title="#{post.submitter}" rendered="#{not empty post.submitterPicture}" />
-			<h:graphicImage styleClass="userphoto"
-				value="/images/icons/no_pic.gif" 
-				alt="#{msg.user_profile_no_image}"
-				title="#{msg.user_profile_no_image}"
-				rendered="#{empty post.submitterPicture}" />
+			<h:commandLink value="" action="#{views$secured$discussion$discussionthread.linkProfile}">
+				<h:outputText value="#{post.submitter}" styleClass="user_name"/>
+			</h:commandLink>
+			<h:commandLink value="" action="#{views$secured$discussion$discussionthread.linkProfile}">
+				<h:graphicImage styleClass="userphoto"
+					value="/files?fileid=#{post.submitterPicture}"
+					title="#{post.submitter}" rendered="#{not empty post.submitterPicture}" />
+				<h:graphicImage styleClass="userphoto"
+					value="/images/icons/no_pic.gif" 
+					alt="#{msg.user_profile_no_image}"
+					title="#{msg.user_profile_no_image}"
+					rendered="#{empty post.submitterPicture}" />
+				</h:commandLink>					
 		</t:column>
 		<t:column styleClass="col_post">
 			<f:facet name="header">
