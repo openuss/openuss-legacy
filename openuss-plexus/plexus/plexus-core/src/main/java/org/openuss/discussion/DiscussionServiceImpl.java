@@ -18,9 +18,7 @@ import org.apache.log4j.Logger;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
-import org.openuss.messaging.MessageService;
 import org.openuss.security.User;
-import org.openuss.system.SystemService;
 
 /**
  * @see org.openuss.discussion.DiscussionService
@@ -416,6 +414,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		return (getDiscussionWatchDao().findByTopicAndUser(getTopicDao().load(topic.getId()), getSecurityService().getCurrentUser()) != null);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void sendNotificationEmail(List<User> recipients, Topic topic) {
 		if (recipients==null||recipients.size()==0) return;
 		try {
