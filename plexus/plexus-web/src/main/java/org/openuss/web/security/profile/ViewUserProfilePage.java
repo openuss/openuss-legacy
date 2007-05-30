@@ -38,7 +38,7 @@ public class ViewUserProfilePage extends BasePage{
 			setSessionBean(Constants.SHOW_USER_PROFILE, profile);
 		}
 		if (profile==null||profile.getId()==null) {
-			addError("user_profile_notexisting");
+			addError(i18n("user_profile_notexisting"));
 			redirect(Constants.DESKTOP);			
 		}
 	}
