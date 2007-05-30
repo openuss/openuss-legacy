@@ -16,6 +16,10 @@
 		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
 	</page>
 	
+	<page view-id="/views/secured/user/userprofile.xhtml">
+		<parameter name="showuser" value="#{showuser.id}" converterId="javax.faces.Long"/>
+	</page>
+	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			Documents
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
