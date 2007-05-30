@@ -17,7 +17,7 @@ import org.openuss.web.Constants;
  * ViewUserProfile page to display user profile informations
  * @author Ingo Dueppe
  */
-@Bean(name="views$public$user$userprofile",scope=Scope.REQUEST)
+@Bean(name="views$secured$user$userprofile",scope=Scope.REQUEST)
 @View
 public class ViewUserProfilePage extends BasePage{
 	private static final Logger logger = Logger.getLogger(ViewUserProfilePage.class);
@@ -33,9 +33,13 @@ public class ViewUserProfilePage extends BasePage{
 	@Prerender
 	public void prerender() {
 		logger.debug("prerender - refreshing showuser session bean");
-		if (profile != null) {
+		if ((profile != null)&&(profile.getId()!=null)) {
 			profile = securityService.getUser(profile.getId());
 			setSessionBean(Constants.SHOW_USER_PROFILE, profile);
+		}
+		if (profile==null||profile.getId()==null) {
+			addError("user_profile_notexisting");
+			redirect(Constants.DESKTOP);			
 		}
 	}
 

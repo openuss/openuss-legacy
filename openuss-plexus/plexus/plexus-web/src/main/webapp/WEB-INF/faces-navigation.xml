@@ -82,7 +82,7 @@
 
 		<navigation-case>
 			<from-outcome>user_profile_view</from-outcome>
-			<to-view-id>/views/public/user/userprofile.xhtml</to-view-id>
+			<to-view-id>/views/secured/user/userprofile.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
