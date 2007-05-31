@@ -45,7 +45,7 @@ public class FeedServiceImpl
 	    	
 		Iterator i = newsEntries.iterator();
 		NewsItemInfo newsItem;
-		while (!i.hasNext()) {  
+		while (i.hasNext()) {  
 			newsItem = (NewsItemInfo) i.next();
 			this.addEntry(newsItem.getTitle(), link, newsItem.getPublishDate(), newsItem.getText(), enrollment.getName(), newsItem.getPublisherName());
 		}
@@ -83,32 +83,25 @@ public class FeedServiceImpl
 		
 	}	
 	
-	/**
-	 * This method is called last after you have added all your entries and have specified your
-	 * feed type and filename. This actually does the work
-	 * <p>
-	 * NOTE: This has static content entered in to the fields! You must have access to the source
-	 * code edit this method or else you will be publishing content as the Post Modern Banter Blog
-	 * Yes, I should change this immediately. Ideally, it would take values from the web.xml file itself.
-	 * <p>
-	 * @throws Exception
-	 */
 	private String doSyndication(String title, String link, String description_loc, String copyright) {
             try {
  
                 final SyndFeed feed = new SyndFeedImpl();
-                feed.setFeedType(feedType);
- 
                 feed.setTitle(title);
                 feed.setLink(link);
-                feed.setDescription(description_loc);
-			    feed.setCopyright(copyright);
+                feed.setDescription("testDescription");
+                feed.setCopyright(copyright);
+                feed.setFeedType("rss_2.0");
+                
 				
                 feed.setEntries(entries);
 			   
                 final Writer writer = new StringWriter();
                 final SyndFeedOutput output = new SyndFeedOutput();
+                //feed.s
                 output.output(feed,writer);
+                logger.debug("XML Feed:");
+                logger.debug(writer.toString());
                 return writer.toString();
                  
             }
