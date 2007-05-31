@@ -62,7 +62,7 @@ public class FeedServiceIntegrationTest extends FeedServiceIntegrationTestBase {
 	}
 	
 	public void testEnrollmentRss(){
-		/*
+/*
 		Faculty faculty = testUtility.createPersistFacultyWithDefaultUser();
 
 		Subject subject = Subject.Factory.newInstance();
@@ -96,8 +96,8 @@ public class FeedServiceIntegrationTest extends FeedServiceIntegrationTestBase {
 		
 		commit();
 		
-		String xml = getFeedService().getRssFeedForEnrollment(getEnrollmentService().getEnrollmentInfo(enrollment));		
-		*/
+		String xml = getFeedService().getRssFeedForEnrollment(getEnrollmentService().getEnrollmentInfo(enrollment));
+		*/		
 	}
 
 	public TestUtility getTestUtility() {

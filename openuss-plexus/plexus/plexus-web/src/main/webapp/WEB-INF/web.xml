@@ -201,11 +201,6 @@
 		<filter-name>openSessionInViewFilter</filter-name>
 		<url-pattern>*.faces</url-pattern>
 	</filter-mapping>
-	
-	<filter-mapping>
-		<filter-name>openSessionInViewFilter</filter-name>
-		<url-pattern>*.rss</url-pattern>
-	</filter-mapping>
 
 	<filter-mapping>
 		<filter-name>openSessionInViewFilter</filter-name>
@@ -383,6 +378,13 @@
 	</servlet>
 	
 	<servlet>
+		<servlet-name>Feed Servlet</servlet-name>
+		<servlet-class>org.openuss.web.servlets.FeedServlet</servlet-class>
+		<load-on-startup>4</load-on-startup>
+	</servlet>
+
+	
+	<servlet>
 		<servlet-name>FCKFaces</servlet-name>
 		<servlet-class>org.fckfaces.util.Servlet</servlet-class>
 	</servlet>
@@ -423,6 +425,11 @@
 	<servlet-mapping>
 		<servlet-name>FCKFaces</servlet-name>
 		<url-pattern>/fckfaces/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Feed Servlet</servlet-name>
+		<url-pattern>/rss/*</url-pattern>
 	</servlet-mapping>
 	
 <!--

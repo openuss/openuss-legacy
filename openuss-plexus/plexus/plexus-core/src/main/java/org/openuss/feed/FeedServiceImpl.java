@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.openuss.lecture.Enrollment;
 import org.openuss.lecture.EnrollmentInfo;
 import org.openuss.news.NewsItemInfo;
 
@@ -35,11 +36,9 @@ public class FeedServiceImpl
 	SyndCategory category;
 	
 
-	private String populateCategoryArray(EnrollmentInfo enrollment, String title, String link, String description, String copyright) {
+	private String buildFeedArray(EnrollmentInfo enrollment) {
 		 
 		List newsEntries = null;
-		//List blogInfo = null;
-		//List blogCategories = null;
 		
 	    newsEntries = getNewsService().getNewsItems(enrollment); 
 	    	
@@ -47,10 +46,10 @@ public class FeedServiceImpl
 		NewsItemInfo newsItem;
 		while (i.hasNext()) {  
 			newsItem = (NewsItemInfo) i.next();
-			this.addEntry(newsItem.getTitle(), link, newsItem.getPublishDate(), newsItem.getText(), enrollment.getName(), newsItem.getPublisherName());
+			this.addEntry(newsItem.getTitle(), "link", newsItem.getPublishDate(), newsItem.getText(), enrollment.getName(), newsItem.getPublisherName());
 		}
 
-		return this.doSyndication(title, link, description, copyright);
+		return this.convertToXml(enrollment.getName(), "link", enrollment.getDescription(), "Copyright OpenUSS");
 	}	
 	
 	@SuppressWarnings("unchecked")
@@ -77,16 +76,16 @@ public class FeedServiceImpl
 		}
 		
         catch (Exception ex) {
-            ex.printStackTrace();
-            System.out.println("ERROR: "+ex.getMessage());
-                             }
+        	logger.error("Unknown error occured:", ex);
+        }
 		
 	}	
 	
-	private String doSyndication(String title, String link, String description_loc, String copyright) {
+	private String convertToXml(String title, String link, String description_loc, String copyright) {
             try {
  
                 final SyndFeed feed = new SyndFeedImpl();
+                feed.setEncoding("ISO-8859-1");
                 feed.setTitle(title);
                 feed.setLink(link);
                 feed.setDescription("testDescription");
@@ -98,7 +97,6 @@ public class FeedServiceImpl
 			   
                 final Writer writer = new StringWriter();
                 final SyndFeedOutput output = new SyndFeedOutput();
-                //feed.s
                 output.output(feed,writer);
                 logger.debug("XML Feed:");
                 logger.debug(writer.toString());
@@ -115,10 +113,15 @@ public class FeedServiceImpl
     /**
      * @see org.openuss.feed.FeedService#getRssFeedForEnrollment(org.openuss.lecture.EnrollmentInfo)
      */
-    protected java.lang.String handleGetRssFeedForEnrollment(EnrollmentInfo enrollment)
+    protected java.lang.String handleGetRssFeedForEnrollment(Long enrollmentId)
         throws java.lang.Exception
-    {    	
-        return populateCategoryArray(enrollment, enrollment.getName(), "link"+enrollment.getId(), enrollment.getDescription(), "OpenUSS");
+    {
+    	if (enrollmentId==null||enrollmentId==0) return "";
+    	Enrollment e = Enrollment.Factory.newInstance();
+    	e.setId(enrollmentId);    	
+    	EnrollmentInfo enrollment = getEnrollmentService().getEnrollmentInfo(getEnrollmentService().getEnrollment(e));
+    	if (enrollment==null) return "";
+        return buildFeedArray(enrollment);
     }
 
 }
