@@ -271,6 +271,7 @@
 			<url>http://teamopenuss.uni-muenster.de/repository</url>
 		</repository>
 		<!-- 
+		-->
 			<repository>
 			<id>java-net</id>
 			<name>Java.Net</name>
@@ -315,7 +316,6 @@
 			<name>Apache Snapshot Repository</name>
 			<url>http://people.apache.org/maven-snapshot-repository</url>
 			</repository>		
-		-->
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -879,7 +879,12 @@
 			    <groupId>rome</groupId>
 			    <artifactId>rome</artifactId>
 			    <version>0.9</version>
-			</dependency>			
+			</dependency>	
+			<dependency>
+			    <groupId>jdom</groupId>
+			    <artifactId>jdom</artifactId>
+			    <version>1.0</version>
+			</dependency>					
 		</dependencies>
 	</dependencyManagement>
 	<distributionManagement>
