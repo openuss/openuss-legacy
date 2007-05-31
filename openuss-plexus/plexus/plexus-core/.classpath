@@ -50,7 +50,7 @@
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/2.0.5/spring-beans-2.0.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-mock/2.0.5/spring-mock-2.0.5.jar" sourcepath="/JAVALIBS/spring-framework-2.0.5/mock"/>
 	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.3/acegi-security-1.0.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/velocity/velocity/1.4/velocity-1.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/velocity/velocity/1.4/velocity-1.4.jar" sourcepath="/M2_REPO/velocity/velocity/velocity-1.5.zip"/>
 	<classpathentry kind="var" path="M2_REPO/velocity/velocity-dep/1.4/velocity-dep-1.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/quartz/quartz/1.5.2/quartz-1.5.2.jar" sourcepath="/M2_REPO/quartz/quartz/1.5.2/quartz-1.5.2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4/mail-1.4.jar"/>
@@ -67,5 +67,6 @@
 	<classpathentry kind="var" path="M2_REPO/aspectj/aspectjweaver/1.5.3/aspectjweaver-1.5.3.jar"/>
 	<classpathentry kind="var" path="M2_REPO/asm/asm-commons/3.0/asm-commons-3.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/asm/asm/2.1/asm-2.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/rome/rome/0.9/rome-0.9.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
