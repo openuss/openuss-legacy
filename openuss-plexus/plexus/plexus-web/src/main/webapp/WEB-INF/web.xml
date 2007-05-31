@@ -201,6 +201,11 @@
 		<filter-name>openSessionInViewFilter</filter-name>
 		<url-pattern>*.faces</url-pattern>
 	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<url-pattern>*.rss</url-pattern>
+	</filter-mapping>
 
 	<filter-mapping>
 		<filter-name>openSessionInViewFilter</filter-name>
