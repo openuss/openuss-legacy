@@ -1,4 +1,4 @@
-$Id: RUNNING.txt,v 1.1 2006/06/02 10:59:04 idueppe Exp $
+$Id: RUNNING.txt 354430 2005-12-06 13:44:26Z yoavs $
 
                  ============================================
                  Running The Tomcat 5.5 Servlet/JSP Container

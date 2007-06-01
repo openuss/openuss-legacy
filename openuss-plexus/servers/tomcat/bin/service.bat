@@ -11,7 +11,7 @@ rem
 rem name        (optional) If the second argument is present it is considered
 rem                        to be new service name                                           
 rem
-rem $Id: service.bat,v 1.1 2006/06/02 10:58:57 idueppe Exp $
+rem $Id: service.bat 414655 2006-06-15 18:56:42Z yoavs $
 rem ---------------------------------------------------------------------------
 
 rem Guess CATALINA_HOME if not defined
@@ -74,17 +74,22 @@ echo Using JAVA_HOME:        %JAVA_HOME%
 rem Use the environment variables as an example
 rem Each command line option is prefixed with PR_
 
-set PR_DESCRIPTION=Apache Tomcat Server - http://jakarta.apache.org/tomcat
+set PR_DESCRIPTION=Apache Tomcat Server - http://tomcat.apache.org
 set PR_INSTALL=%EXECUTABLE%
 set PR_LOGPATH=%CATALINA_BASE%\logs
 set PR_CLASSPATH=%CATALINA_HOME%\bin\bootstrap.jar
+
 rem Set the server jvm from JAVA_HOME
 set PR_JVM=%JAVA_HOME%\jre\bin\server\jvm.dll
 if exist "%PR_JVM%" goto foundJvm
 rem Set the client jvm from JAVA_HOME
 set PR_JVM=%JAVA_HOME%\jre\bin\client\jvm.dll
 if exist "%PR_JVM%" goto foundJvm
+rem Check for JRockit JVM: Bugzilla 39674
+set PR_JVM=%JAVA_HOME%\jre\bin\jrockit\jvm.dll
+if exist "%PR_JVM%" goto foundJvm
 set PR_JVM=auto
+
 :foundJvm
 echo Using JVM:              %PR_JVM%
 "%EXECUTABLE%" //IS//%SERVICE_NAME% --StartClass org.apache.catalina.startup.Bootstrap --StopClass org.apache.catalina.startup.Bootstrap --StartParams start --StopParams stop

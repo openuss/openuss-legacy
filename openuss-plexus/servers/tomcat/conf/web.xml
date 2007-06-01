@@ -392,8 +392,10 @@
   <!-- directives in HTML pages consistent with similar support in web      -->
   <!-- servers like Apache.  Traditionally, this filter is mapped to the    -->
   <!-- URL pattern "*.shtml", though it can be mapped to "*" as it will     -->
-  <!-- selectively enable/disable SSI processing based on mime types.  The  -->
-  <!-- contentType init param allows you to apply SSI processing to JSP     -->
+  <!-- selectively enable/disable SSI processing based on mime types. For   -->
+  <!-- this to work you will need to uncomment the .shtml mime type         -->
+  <!-- definition towards the bottom of this file.                          -->
+  <!-- The contentType init param allows you to apply SSI processing to JSP -->
   <!-- pages, javascript, or any other content you wish.  This filter       -->
   <!-- supports the following initialization parameters (default values are -->
   <!-- in square brackets):                                                 -->
@@ -768,8 +770,78 @@
         <mime-type>application/oda</mime-type>
     </mime-mapping>
     <mime-mapping>
+        <!-- OpenDocument Database -->
+        <extension>odb</extension>
+        <mime-type>application/vnd.oasis.opendocument.database</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <!-- OpenDocument Chart -->
+        <extension>odc</extension>
+        <mime-type>application/vnd.oasis.opendocument.chart</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <!-- OpenDocument Formula -->
+        <extension>odf</extension>
+        <mime-type>application/vnd.oasis.opendocument.formula</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <!-- OpenDocument Drawing -->
+        <extension>odg</extension>
+        <mime-type>application/vnd.oasis.opendocument.graphics</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <!-- OpenDocument Image -->
+        <extension>odi</extension>
+        <mime-type>application/vnd.oasis.opendocument.image</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <!-- OpenDocument Master Document -->
+        <extension>odm</extension>
+        <mime-type>application/vnd.oasis.opendocument.text-master</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <!-- OpenDocument Presentation -->
+        <extension>odp</extension>
+        <mime-type>application/vnd.oasis.opendocument.presentation</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <!-- OpenDocument Spreadsheet -->
+        <extension>ods</extension>
+        <mime-type>application/vnd.oasis.opendocument.spreadsheet</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <!-- OpenDocument Text -->
+        <extension>odt</extension>
+        <mime-type>application/vnd.oasis.opendocument.text</mime-type>
+    </mime-mapping>
+    <mime-mapping>
         <extension>ogg</extension>
         <mime-type>application/ogg</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <!-- OpenDocument Drawing Template -->
+        <extension>otg </extension>
+        <mime-type>application/vnd.oasis.opendocument.graphics-template</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <!-- HTML Document Template -->
+        <extension>oth</extension>
+        <mime-type>application/vnd.oasis.opendocument.text-web</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <!-- OpenDocument Presentation Template -->
+        <extension>otp</extension>
+        <mime-type>application/vnd.oasis.opendocument.presentation-template</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <!-- OpenDocument Spreadsheet Template -->
+        <extension>ots</extension>
+        <mime-type>application/vnd.oasis.opendocument.spreadsheet-template </mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <!-- OpenDocument Text Template -->
+        <extension>ott</extension>
+        <mime-type>application/vnd.oasis.opendocument.text-template</mime-type>
     </mime-mapping>
     <mime-mapping>
         <extension>pbm</extension>
@@ -879,10 +951,12 @@
         <extension>shar</extension>
         <mime-type>application/x-shar</mime-type>
     </mime-mapping>
+<!--
     <mime-mapping>
         <extension>shtml</extension>
         <mime-type>text/x-server-parsed-html</mime-type>
     </mime-mapping>
+-->
     <mime-mapping>
         <extension>smf</extension>
         <mime-type>audio/x-midi</mime-type>
@@ -913,7 +987,7 @@
     </mime-mapping>
     <mime-mapping>
         <extension>svgz</extension>
-        <mime-type>image/svg</mime-type>
+        <mime-type>image/svg+xml</mime-type>
     </mime-mapping>
     <mime-mapping>
         <extension>swf</extension>

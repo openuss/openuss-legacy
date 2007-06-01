@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------
 #  Set CLASSPATH and Java options
 #
-#  $Id: setclasspath.sh,v 1.1 2006/06/02 10:58:58 idueppe Exp $
+#  $Id: setclasspath.sh 345508 2005-11-18 15:54:56Z yoavs $
 # -----------------------------------------------------------------------------
 
 # First clear out the user classpath

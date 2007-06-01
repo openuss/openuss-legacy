@@ -1,10 +1,10 @@
 
 
-                     Apache Tomcat Version @VERSION@
+                     Apache Tomcat Version 5.5.23
                             Release Notes
 
 
-$Id: RELEASE-NOTES,v 1.1 2006/06/02 10:59:04 idueppe Exp $
+$Id: RELEASE-NOTES 439327 2006-09-01 14:06:34Z fhanik $
 
 
 =============================
@@ -115,6 +115,12 @@ export LD_ASSUME_KERNEL=2.2.5
 Redhat Linux 9.0 users should use the following setting to avoid
 stability problems:
 export LD_ASSUME_KERNEL=2.4.1
+
+Please note, that these are only recommendations and may not apply in some cases.
+Before you change this variable, make sure you understand its impact, and what it does.
+A brief explanation can be found in the mailing archives at 
+http://marc.theaimsgroup.com/?l=tomcat-dev&m=115689139313901&w=2
+For further assistance, please consult your JVM vendor.
 
 
 =============================
