@@ -1,6 +1,7 @@
 <projectDescription>
   <name>theme-core</name>
-  <comment>OpenUSS Plexus is the relaunch of the well known E-Learning plattform OpenUSS.</comment>
+  <comment>OpenUSS Plexus is the relaunch of the well known E-Learning
+		plattform OpenUSS.</comment>
   <projects>
     <project>framework-deployer</project>
     <project>framework-utilities</project>

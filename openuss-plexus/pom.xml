@@ -271,20 +271,19 @@
 			<url>http://teamopenuss.uni-muenster.de/repository</url>
 		</repository>
 		<!-- 
-		-->
+			<repository>
+			<id>maven-repo</id>
+			<name>maven-repo</name>
+			<url>http://repo1.maven.org/maven2</url>
+			<snapshots><enabled>false</enabled></snapshots>
+			<releases><enabled>true</enabled></releases>
+			</repository>
 			<repository>
 			<id>java-net</id>
 			<name>Java.Net</name>
 			<layout>legacy</layout>
 			<url>https://maven-repository.dev.java.net/nonav/repository</url>
 			</repository>		
-			<repository>
-			<id>central</id>
-			<name>ibiblio</name>
-			<url>http://www.ibiblio.org/maven2</url>
-			<snapshots><enabled>false</enabled></snapshots>
-			<releases><enabled>true</enabled></releases>
-			</repository>
 			<repository>
 			<id>andromda</id>
 			<name>andromda</name>
@@ -316,6 +315,7 @@
 			<name>Apache Snapshot Repository</name>
 			<url>http://people.apache.org/maven-snapshot-repository</url>
 			</repository>		
+		-->
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -511,7 +511,7 @@
 			<dependency>
 				<groupId>commons-lang</groupId>
 				<artifactId>commons-lang</artifactId>
-				<version>2.1</version>
+				<version>2.3</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-io</groupId>
@@ -656,6 +656,16 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-mock</artifactId>
+				<version>2.0.5</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-dao</artifactId>
+				<version>2.0.5</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jca</artifactId>
 				<version>2.0.5</version>
 			</dependency>
 			<dependency>

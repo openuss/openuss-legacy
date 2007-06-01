@@ -1,8 +1,10 @@
 <projectDescription>
   <name>framework-jsfcontrols</name>
-  <comment>OpenUSS Plexus is the relaunch of the well known E-Learning plattform OpenUSS.</comment>
+  <comment>OpenUSS Plexus is the relaunch of the well known E-Learning
+		plattform OpenUSS.</comment>
   <projects>
     <project>framework-utilities</project>
+    <project>framework-core</project>
   </projects>
   <buildSpec>
     <buildCommand>
