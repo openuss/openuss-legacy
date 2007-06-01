@@ -1,6 +1,7 @@
 <projectDescription>
   <name>theme-university-of-muenster</name>
-  <comment>OpenUSS Plexus is the relaunch of the well known E-Learning plattform OpenUSS.</comment>
+  <comment>OpenUSS Plexus is the relaunch of the well known E-Learning
+		plattform OpenUSS.</comment>
   <projects/>
   <buildSpec>
     <buildCommand>
