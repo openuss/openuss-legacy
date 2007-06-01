@@ -1,20 +1,15 @@
 package org.openuss.messaging;
 
-import java.io.IOException;
 import java.util.Locale;
 
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.exception.VelocityException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.velocity.VelocityEngineUtils;
-import org.springframework.ui.velocity.VelocityEngineFactory;
 
 /**
  * 
@@ -28,8 +23,6 @@ public class TemplateMessagePreparator extends MessagePreparator implements Mess
 
 	private VelocityEngine velocityEngine;
 	
-	private static final Logger logger = Logger.getLogger(TemplateMessagePreparator.class);
-	
 	private static final String TEMPLATE_PREFIX = "templates/emails/";
 	private static final String TEMPLATE_SUFFIX = ".vsl";
 	private static final String LOCALE_SEPARATOR = "_";
@@ -38,7 +31,7 @@ public class TemplateMessagePreparator extends MessagePreparator implements Mess
 		MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 		message.setTo(recipient.getEmail());
 		message.setSubject(localizedSubject());
-		message.setFrom(fromAddress, templateMessage.getSenderName());
+		message.setFrom(fromAddress, localeSenderName());
 
 		String text = VelocityEngineUtils.mergeTemplateIntoString(
 				velocityEngine, 
@@ -49,6 +42,10 @@ public class TemplateMessagePreparator extends MessagePreparator implements Mess
 		if (sendDate != null) {
 			message.setSentDate(sendDate);
 		}
+	}
+	
+	private String localeSenderName() {
+		return messageSource.getMessage(templateMessage.getSenderName(), null, new Locale(recipient.getLocale()));
 	}
 	
 	private String determineMostFittingTemplate(String template){
