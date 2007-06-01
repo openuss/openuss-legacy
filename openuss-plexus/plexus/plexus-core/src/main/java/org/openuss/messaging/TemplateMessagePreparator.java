@@ -4,10 +4,11 @@ import java.util.Locale;
 
 import javax.mail.internet.MimeMessage;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.LocalizedResourceHelper;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
@@ -20,12 +21,12 @@ public class TemplateMessagePreparator extends MessagePreparator implements Mess
 	private MessageSource messageSource;
 
 	private TemplateMessage templateMessage;
-
+	
 	private VelocityEngine velocityEngine;
 	
 	private static final String TEMPLATE_PREFIX = "templates/emails/";
 	private static final String TEMPLATE_SUFFIX = ".vsl";
-	private static final String LOCALE_SEPARATOR = "_";
+//	private static final String LOCALE_SEPARATOR = "_";
 
 	public void prepare(MimeMessage mimeMessage) throws Exception {
 		MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -33,9 +34,13 @@ public class TemplateMessagePreparator extends MessagePreparator implements Mess
 		message.setSubject(localizedSubject());
 		message.setFrom(fromAddress, localeSenderName());
 
+		
+		LocalizedResourceHelper helper = new LocalizedResourceHelper();
+		Resource resource = helper.findLocalizedResource(TEMPLATE_PREFIX+templateMessage.getTemplate(), TEMPLATE_SUFFIX, new Locale(recipient.getLocale()));
+		
 		String text = VelocityEngineUtils.mergeTemplateIntoString(
 				velocityEngine, 
-				determineMostFittingTemplate(localizedTemplate()),
+				TEMPLATE_PREFIX+resource.getFilename(),
 				templateMessage.getParameterMap());
 		message.setText(text, true);
 
@@ -45,14 +50,7 @@ public class TemplateMessagePreparator extends MessagePreparator implements Mess
 	}
 	
 	private String localeSenderName() {
-		return messageSource.getMessage(templateMessage.getSenderName(), null, new Locale(recipient.getLocale()));
-	}
-	
-	private String determineMostFittingTemplate(String template){
-		if (velocityEngine.templateExists(template)) return template;
-		while (!velocityEngine.templateExists(template))
-			template = template.substring(0,template.lastIndexOf(LOCALE_SEPARATOR.charAt(0)))+TEMPLATE_SUFFIX;
-		return template;
+		return messageSource.getMessage(templateMessage.getSenderName(), null, templateMessage.getSenderName(), new Locale(recipient.getLocale()));
 	}
 	
 	private String localizedSubject() {
@@ -62,14 +60,6 @@ public class TemplateMessagePreparator extends MessagePreparator implements Mess
 			templateMessage.getSubject(),
 			new Locale(recipient.getLocale())
 		);
-	}
-
-	private String localizedTemplate() {
-		if (StringUtils.isNotBlank(recipient.getLocale())) {
-			return TEMPLATE_PREFIX + templateMessage.getTemplate() + LOCALE_SEPARATOR + recipient.getLocale() + TEMPLATE_SUFFIX;
-		} else {
-			return TEMPLATE_PREFIX + templateMessage.getTemplate() + TEMPLATE_SUFFIX;
-		}
 	}
 
 	public TemplateMessage getTemplateMessage() {
