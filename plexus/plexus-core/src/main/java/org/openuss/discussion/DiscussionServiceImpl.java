@@ -19,6 +19,7 @@ import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
 import org.openuss.security.User;
+import org.openuss.system.SystemProperties;
 
 /**
  * @see org.openuss.discussion.DiscussionService
@@ -420,7 +421,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		try {
 			String link = "/views/secured/discussion/discussionthread.faces?topic="+ topic.getId()+"&enrollment="+topic.getForum().getDomainIdentifier();
 
-			link = getSystemService().getProperty(org.openuss.system.System.OPENUSS_SERVER_URL).getValue()+link;
+			link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+link;
 				
 
 			Map parameters = new HashMap();
