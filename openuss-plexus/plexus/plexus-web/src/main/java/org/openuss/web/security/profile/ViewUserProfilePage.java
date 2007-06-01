@@ -22,8 +22,6 @@ import org.openuss.web.Constants;
 public class ViewUserProfilePage extends BasePage{
 	private static final Logger logger = Logger.getLogger(ViewUserProfilePage.class);
 
-	private static final long serialVersionUID = -91320323156133863L;
-	
 	@Property(value="#{securityService}")
 	private SecurityService securityService;
 	

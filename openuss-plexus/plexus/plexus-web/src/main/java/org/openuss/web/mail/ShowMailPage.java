@@ -1,16 +1,18 @@
 package org.openuss.web.mail;
 
-
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.mailinglist.MailInfo;
 import org.openuss.mailinglist.MailingStatus;
-import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 
+/**
+ * 
+ * @author Ingo Dueppe
+ *
+ */
 @Bean(name = "views$secured$mailinglist$showmail", scope = Scope.REQUEST)
 @View
 public class ShowMailPage extends AbstractMailingListPage{

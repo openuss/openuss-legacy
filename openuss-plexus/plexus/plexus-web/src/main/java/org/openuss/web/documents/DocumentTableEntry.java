@@ -6,9 +6,6 @@ import java.util.Date;
 
 public class DocumentTableEntry implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3053386731692416783L;
 
 	public String filename;

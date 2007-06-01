@@ -31,12 +31,10 @@ public class FacultiesPage extends BasePage{
 
 	private static final Logger logger = Logger.getLogger(FacultiesPage.class);
 
-	private static final long serialVersionUID = -3339596434048309514L;
-	
 	@Property (value="#{lectureService}")
 	private LectureService lectureService;
 	
-	private transient Set<FacultyDetails> changedFaculties = new HashSet<FacultyDetails>();
+	private Set<FacultyDetails> changedFaculties = new HashSet<FacultyDetails>();
 
 	private FacultyDataProvider provider = new FacultyDataProvider();
 

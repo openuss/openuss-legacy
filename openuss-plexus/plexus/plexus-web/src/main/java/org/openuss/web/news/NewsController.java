@@ -23,8 +23,6 @@ import org.openuss.web.Constants;
 @View
 public class NewsController extends BaseBean {
 
-	private static final long serialVersionUID = -4246786726261901182L;
-
 	@Property(value="#{newsService}")
 	private NewsService newsService;
 	

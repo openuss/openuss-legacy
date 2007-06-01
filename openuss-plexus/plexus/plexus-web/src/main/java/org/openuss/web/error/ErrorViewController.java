@@ -16,9 +16,7 @@ import org.apache.shale.tiger.view.View;
 @Bean(name="errorController",scope=Scope.REQUEST)
 @View
 public class ErrorViewController {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(ErrorViewController.class);
 	
 	@Property(value="#{requestScope['javax.servlet.error.exception']}")

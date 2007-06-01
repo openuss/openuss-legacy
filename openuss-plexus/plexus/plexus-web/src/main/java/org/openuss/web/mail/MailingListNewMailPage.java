@@ -13,6 +13,11 @@ import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 
+/**
+ * 
+ * @author Ingo Dueppe
+ *
+ */
 @Bean(name = "views$secured$mailinglist$mailinglist$newmail", scope = Scope.REQUEST)
 @View
 public class MailingListNewMailPage extends AbstractMailingListPage{

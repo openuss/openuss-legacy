@@ -16,6 +16,11 @@ import org.openuss.mailinglist.MailingStatus;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
 
+/**
+ * 
+ * @author Ingo Dueppe
+ *
+ */
 @Bean(name = "views$secured$mailinglist$mailinglist", scope = Scope.REQUEST)
 @View
 public class MailingListMainPage extends AbstractMailingListPage{

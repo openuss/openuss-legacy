@@ -18,8 +18,6 @@ import org.openuss.news.NewsCategory;
 @FacesConverter(value = "newsCategoryConverter")
 public class NewsCategoryConverter extends BaseBean implements Converter {
 	
-	private static final long serialVersionUID = -1469962525827248875L;
-
 	public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
 		int literal = Integer.parseInt(value);
 		return NewsCategory.fromInteger(literal);

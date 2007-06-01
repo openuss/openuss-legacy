@@ -22,8 +22,6 @@ import org.openuss.web.Constants;
 @View
 public class PropertiesPage extends BasePage  {
 
-	private static final long serialVersionUID = 2867546010439962386L;
-	
 	@Property(value="#{propertyList}")
 	private PropertyList propertyList;
 	

@@ -33,8 +33,6 @@ public class UserBrowserPage extends BasePage{
 
 	private static final Logger logger = Logger.getLogger(UserBrowserPage.class);
 
-	private static final long serialVersionUID = -3339596434048309514L;
-	
 	@Property (value="#{securityService}")
 	private SecurityService securityService;
 	
