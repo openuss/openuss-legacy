@@ -60,9 +60,9 @@ public class MessageSendingCommandTest extends AbstractDependencyInjectionSpring
 	}
 
 	private void createRecipients(MessageJob job) {
-		addRecipient(job, "de", "plexus@openuss-plexus.com", "sms");
+		addRecipient(job, "de_DE", "plexus@openuss-plexus.com", "sms");
 		addRecipient(job, "de", "admin@openuss-plexus.com", "sms");
-		addRecipient(job, "de", "xxxopenuss-plexus", "sms");
+		addRecipient(job, "en", "xxxopenuss-plexus", "sms");
 	}
 	
 	private MessageJob createTextMessage() {
