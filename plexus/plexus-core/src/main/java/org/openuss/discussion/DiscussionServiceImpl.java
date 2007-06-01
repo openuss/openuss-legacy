@@ -253,7 +253,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	protected TopicInfo handleGetTopic(TopicInfo topic)	throws Exception {
 		Validate.notNull(topic);
 		Validate.notNull(topic.getId());
-		return getTopicDao().toTopicInfo(getTopicDao().load(topic.getId()));
+		return (TopicInfo) getTopicDao().load(TopicDao.TRANSFORM_TOPICINFO, topic.getId());
 	}
 
 	/**
