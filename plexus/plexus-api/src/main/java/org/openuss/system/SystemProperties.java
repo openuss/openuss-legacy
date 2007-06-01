@@ -1,6 +1,6 @@
 package org.openuss.system;
 
-public interface System {
+public interface SystemProperties {
 	
 	public static final String REPOSITORY_PATH = "repository.path";
 	
