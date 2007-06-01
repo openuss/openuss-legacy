@@ -18,8 +18,6 @@ public class UserActivateAction extends BaseBean {
 
 	private static final Logger logger = Logger.getLogger(UserActivateAction.class);
 
-	private static final long serialVersionUID = -5591512850818541400L;
-	
 	@Property(value="#{registrationService}")
 	private RegistrationService registrationService;
 	

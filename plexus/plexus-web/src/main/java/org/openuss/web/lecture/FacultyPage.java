@@ -27,9 +27,7 @@ import org.openuss.web.Constants;
 @View
 @Bean(name = "views$secured$lecture$faculty", scope = Scope.REQUEST)
 public class FacultyPage extends AbstractLecturePage {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(FacultyPage.class);
 
 	private static final long serialVersionUID = -1982354759705300093L;

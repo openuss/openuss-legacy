@@ -23,7 +23,6 @@ import org.openuss.system.SystemService;
 import org.openuss.web.Constants;
 import org.openuss.web.utils.MessageBox;
 
-
 /**
  * Registration process controller to manage the user registration process
  * 
@@ -34,20 +33,17 @@ import org.openuss.web.utils.MessageBox;
 @Session
 public class RegistrationController extends BaseBean {
 
-	private static final long serialVersionUID = 6463310796388525903L;
-
-	private static final Logger logger = Logger
-			.getLogger(RegistrationController.class);
+	private static final Logger logger = Logger.getLogger(RegistrationController.class);
 
 	@Property(value = "#{registrationService}")
 	transient private RegistrationService registrationService;
 
 	@Property(value = "#{securityService}")
 	transient private SecurityService securityService;
-	
+
 	@Property(value = "#{messageService}")
 	transient private MessageService messageService;
-	
+
 	@Property(value = "#{systemService}")
 	transient private SystemService systemService;
 
@@ -77,8 +73,7 @@ public class RegistrationController extends BaseBean {
 
 		removeSessionBean(Constants.REGISTRATION_DATA);
 		removeSessionBean(Constants.USER_SESSION_KEY);
-		
-		
+
 		String message = i18n("user_email_verification_send_message", user.getEmail());
 		String title = i18n("user_email_verification_send_message_title");
 		return MessageBox.showDefaultMessage(message, title);
@@ -92,21 +87,17 @@ public class RegistrationController extends BaseBean {
 	 */
 	private void sendVerificationEmail(User user, String activationCode) {
 		try {
-			String link = "/actions/public/user/activate.faces?code="+ activationCode;
+			String link = "/actions/public/user/activate.faces?code=" + activationCode;
 
 			link = applicationAddress() + link;
 
 			Map parameters = new HashMap();
 			parameters.put("username", user.getUsername());
 			parameters.put("link", link);
-			
-			messageService.sendMessage(
-					"user.registration.email.verification.sender", 
-					"user.registration.email.verification.subject", 
-					"verification",
-					parameters,
-					user);
-			
+
+			messageService.sendMessage("user.registration.email.verification.sender",
+					"user.registration.email.verification.subject", "verification", parameters, user);
+
 		} catch (Exception e) {
 			logger.error("Error: ", e);
 		}
@@ -124,11 +115,9 @@ public class RegistrationController extends BaseBean {
 				addError("User does not exist");
 				return Constants.FAILURE;
 			}
-			String activationCode = registrationService
-					.generateActivationCode(user);
+			String activationCode = registrationService.generateActivationCode(user);
 			sendVerificationEmail(user, activationCode);
-			return MessageBox.showDefaultMessage(
-					i18n("user_email_verification_resend_message"),
+			return MessageBox.showDefaultMessage(i18n("user_email_verification_resend_message"),
 					i18n("user_email_verification_resend_message_title"));
 		} catch (RegistrationException e) {
 			logger.error(e);
@@ -144,25 +133,21 @@ public class RegistrationController extends BaseBean {
 	 * 
 	 * @param user
 	 * @param verificationCode
-	 * @throws MessagingException 
+	 * @throws MessagingException
 	 */
 	private void sendForgottenPasswordEmail(User user, String verificationCode) throws Exception {
-			String link = "/actions/public/user/password/change.faces?code=" + verificationCode;
+		String link = "/actions/public/user/password/change.faces?code=" + verificationCode;
 
-			link = applicationAddress() + link;
+		link = applicationAddress() + link;
 
-			Map parameters = new HashMap();
-			parameters.put("username", user.getUsername());
-			parameters.put("passwordresetlink", link);
-			
-			messageService.sendMessage(
-					"user.password.request.sender", 
-					"user.password.request.subject",
-					"password",
-					parameters,
-					user);
+		Map parameters = new HashMap();
+		parameters.put("username", user.getUsername());
+		parameters.put("passwordresetlink", link);
+
+		messageService.sendMessage("user.password.request.sender", "user.password.request.subject", "password",
+				parameters, user);
 	}
-	
+
 	private String applicationAddress() {
 		// FIXME - must be configurable from outside
 		final HttpServletRequest request = getRequest();
@@ -173,14 +158,14 @@ public class RegistrationController extends BaseBean {
 	 * Generates a new Password and send it per email to the user.
 	 * 
 	 * @return Outcome SUCCESS | FAILURE
-	 * @throws RegistrationException 
-	 * @throws MessagingException 
+	 * @throws RegistrationException
+	 * @throws MessagingException
 	 */
-	public String forgotPassword() throws RegistrationException, Exception {	
+	public String forgotPassword() throws RegistrationException, Exception {
 		if (registrationService == null)
 			throw new IllegalStateException(
 					"RegistrationController isn't connected to a RegistrationService. Check if the property is properly initialized within managed beans configuration.");
-		
+
 		User user = securityService.getUserByName(userToken);
 		if (user == null) {
 			user = securityService.getUserByEmail(userToken);

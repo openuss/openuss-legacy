@@ -46,8 +46,6 @@ import org.openuss.web.Constants;
 @View
 public class AuthenticationController extends BasePage {
 
-	private static final long serialVersionUID = -5958917267574771548L;
-
 	private static final Logger logger = Logger.getLogger(AuthenticationController.class);
 
 	public static final String LOGIN = "login";
@@ -139,7 +137,7 @@ public class AuthenticationController extends BasePage {
 			if (savedRequest != null) {
 				try {
 					getExternalContext().redirect(savedRequest.getFullRequestUrl());
-					getFacesContext().responseComplete();
+					getFacesContext().responseComplete(); 
 				} catch (IOException e) {
 					logger.error(e);
 					String target = savedRequest.getServletPath() + savedRequest.getPathInfo() + "?" + savedRequest.getQueryString();
