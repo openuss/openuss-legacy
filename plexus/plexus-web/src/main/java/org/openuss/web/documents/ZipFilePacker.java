@@ -18,7 +18,7 @@ import org.openuss.documents.FileInfo;
 import org.openuss.repository.RepositoryService;
 
 /**
- * ZipFilePacker pa
+ * ZipFilePacker 
  * 
  * @author Ingo Dueppe
  */

@@ -19,8 +19,6 @@ import org.openuss.security.SecurityService;
 @FacesValidator(value="usernameExistValidator")
 public class UsernameExistValidator extends BaseBean implements Validator {
 	
-	private static final long serialVersionUID = -3002419073055652642L;
-
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		String username = (String) value;
 		if (StringUtils.isNotEmpty(username)) {

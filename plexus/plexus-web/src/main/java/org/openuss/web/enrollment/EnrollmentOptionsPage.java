@@ -29,7 +29,7 @@ public class EnrollmentOptionsPage extends AbstractEnrollmentPage {
 
 	private static final long serialVersionUID = 8821048605517398410L;
 	
-/*	
+/*	TODO what about this below?
  	@Preprocess
 	public void preprocess() {
 		if (enrollment != null) {

@@ -13,9 +13,7 @@ import org.openuss.web.themes.Theme;
 import org.openuss.web.themes.ThemeManager;
 
 public class ThemeAwareResourceResolver extends ClasspathResourceResolver {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(ThemeAwareResourceResolver.class);
 
 	@Override

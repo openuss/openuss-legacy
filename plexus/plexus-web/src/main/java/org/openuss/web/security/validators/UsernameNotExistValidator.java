@@ -21,8 +21,6 @@ import org.openuss.web.Constants;
 @FacesValidator(value="usernameNotExistValidator")
 public class UsernameNotExistValidator extends BaseBean implements Validator {
 	
-	private static final long serialVersionUID = -3002419073055652642L;
-
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		String username = (String) value;
 		if (StringUtils.isNotEmpty(username)) {

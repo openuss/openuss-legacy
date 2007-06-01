@@ -24,8 +24,6 @@ public class FacultyShortcutValidator extends BaseBean implements Validator {
 	
 	private static final Logger logger = Logger.getLogger(FacultyShortcutValidator.class);
 
-	private static final long serialVersionUID = 3587957165927946017L;
-
 	public static final String SHORTCUT_MESSAGE_ID = "error_shortcut_already_exists";
 
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {

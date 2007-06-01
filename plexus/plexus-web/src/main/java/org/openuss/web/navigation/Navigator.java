@@ -14,15 +14,13 @@ import org.openuss.lecture.Period;
 import org.openuss.web.Constants;
 
 /**
- * Navigator Bean maneged the navigation through the application 
+ * Navigator Bean managed the navigation through the application 
  * @author Ingo Dueppe
  */
 @Bean(name="navigator", scope=Scope.SESSION)
 @View
 public class Navigator extends BaseBean {
 
-	private static final long serialVersionUID = -2298413242224266103L;
-	
 	private String lastView;
 	
 	/**

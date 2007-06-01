@@ -1,5 +1,7 @@
 package org.openuss.web.utils;
 
+import java.io.Serializable;
+
 import org.openuss.framework.web.jsf.controller.BaseBean;
 
 /**
@@ -9,7 +11,7 @@ import org.openuss.framework.web.jsf.controller.BaseBean;
  *  
  * @author Ingo Dueppe
  */
-public class MessageBox extends BaseBean{
+public class MessageBox extends BaseBean implements Serializable{
 	
 	private static final String MESSAGEBOX = "messagebox";
 

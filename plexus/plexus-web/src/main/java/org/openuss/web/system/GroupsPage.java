@@ -21,8 +21,6 @@ import org.openuss.web.BasePage;
 @View
 public class GroupsPage extends BasePage{
 
-	private static final long serialVersionUID = -3339596434048309514L;
-	
 	@Property (value="#{securityService}")
 	private SecurityService securityService;
 

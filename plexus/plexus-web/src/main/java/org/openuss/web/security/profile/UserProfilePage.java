@@ -38,8 +38,6 @@ public class UserProfilePage extends BasePage{
 
 	private static final Logger logger = Logger.getLogger(UserProfilePage.class);
 
-	private static final long serialVersionUID = 1L;
-	
 	@Property (value="#{securityService}")
 	private SecurityService securityService;
 	
