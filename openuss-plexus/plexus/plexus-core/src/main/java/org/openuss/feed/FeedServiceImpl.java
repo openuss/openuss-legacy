@@ -29,50 +29,50 @@ public class FeedServiceImpl
 	public static final Logger logger = Logger.getLogger(FeedServiceImpl.class);
 
 	private static String feedType = null;
-    private final List entries = new ArrayList();
-    private final List categories = new ArrayList();
-    SyndEntry entry;
-    SyndContent description;
-	SyndCategory category;
 	
 
-	private String buildFeedArray(EnrollmentInfo enrollment) {
-		 
-		List newsEntries = null;
-		
-	    newsEntries = getNewsService().getNewsItems(enrollment); 
-	    	
+	private FeedWrapper buildFeedArray(EnrollmentInfo enrollment) {
+		final List entries = new ArrayList();
+		List newsEntries = getNewsService().getNewsItems(enrollment);
+		FeedWrapper feedWrapper = new FeedWrapper();
+	    
 		Iterator i = newsEntries.iterator();
 		NewsItemInfo newsItem;
 		while (i.hasNext()) {  
 			newsItem = (NewsItemInfo) i.next();
-			this.addEntry(newsItem.getTitle(), "link", newsItem.getPublishDate(), newsItem.getText(), enrollment.getName(), newsItem.getPublisherName());
+			this.addEntry(entries, newsItem.getTitle(), "link", newsItem.getPublishDate(), newsItem.getText(), enrollment.getName(), newsItem.getPublisherName());
 		}
 
-		return this.convertToXml(enrollment.getName(), "link", enrollment.getDescription(), "Copyright OpenUSS");
+		feedWrapper.setWriter(this.convertToXml(enrollment.getName(), "link", enrollment.getDescription(), "Copyright OpenUSS", entries));
+		newsItem = (NewsItemInfo) newsEntries.get(0);
+		feedWrapper.setLastModified(newsItem.getPublishDate());
+		return feedWrapper;
 	}	
 	
 	@SuppressWarnings("unchecked")
-	private void addEntry(String title, String link, Date date, String blogContent, String cat, String author) {
+	private void addEntry(List entries, String title, String link, Date date, String blogContent, String cat, String author) {
 		
-		try {
+		try {			
+			final List categories = new ArrayList();
+			SyndEntry entry;
+			SyndContent description;
+			SyndCategory category;
  
-        entry = new SyndEntryImpl();
-	    entry.setAuthor(author);
-        entry.setTitle(title);
-        entry.setLink(link);
-        entry.setPublishedDate(date);
-        description = new SyndContentImpl();
-        description.setType("text/plain");
-        description.setValue(blogContent);
-        entry.setDescription(description);
-	    category = new SyndCategoryImpl();
-		category.setName(cat);
-		categories.add(category);
-		entry.setCategories(categories);
-		categories.remove(category);
-		entries.add(entry);
-		
+	        entry = new SyndEntryImpl();
+		    entry.setAuthor(author);
+	        entry.setTitle(title);
+	        entry.setLink(link);
+	        entry.setPublishedDate(date);
+	        description = new SyndContentImpl();
+	        description.setType("text/plain");
+	        description.setValue(blogContent);
+	        entry.setDescription(description);
+		    category = new SyndCategoryImpl();
+			category.setName(cat);
+			categories.add(category);
+			entry.setCategories(categories);
+			categories.remove(category);
+			entries.add(entry);
 		}
 		
         catch (Exception ex) {
@@ -81,7 +81,7 @@ public class FeedServiceImpl
 		
 	}	
 	
-	private String convertToXml(String title, String link, String description_loc, String copyright) {
+	private Writer convertToXml(String title, String link, String description_loc, String copyright, List entries) {
             try {
  
                 final SyndFeed feed = new SyndFeedImpl();
@@ -91,16 +91,12 @@ public class FeedServiceImpl
                 feed.setDescription("testDescription");
                 feed.setCopyright(copyright);
                 feed.setFeedType("rss_2.0");
-                
-				
+
                 feed.setEntries(entries);
-			   
                 final Writer writer = new StringWriter();
                 final SyndFeedOutput output = new SyndFeedOutput();
-                output.output(feed,writer);
-                logger.debug("XML Feed:");
-                logger.debug(writer.toString());
-                return writer.toString();
+                output.output(feed,writer);                
+                return writer;
                  
             }
 			
@@ -113,14 +109,15 @@ public class FeedServiceImpl
     /**
      * @see org.openuss.feed.FeedService#getRssFeedForEnrollment(org.openuss.lecture.EnrollmentInfo)
      */
-    protected java.lang.String handleGetRssFeedForEnrollment(Long enrollmentId)
+    protected FeedWrapper handleGetRssFeedForEnrollment(Long enrollmentId)
         throws java.lang.Exception
     {
-    	if (enrollmentId==null||enrollmentId==0) return "";
+    	if (enrollmentId==null||enrollmentId==0) return null;
     	Enrollment e = Enrollment.Factory.newInstance();
     	e.setId(enrollmentId);    	
     	EnrollmentInfo enrollment = getEnrollmentService().getEnrollmentInfo(getEnrollmentService().getEnrollment(e));
-    	if (enrollment==null) return "";
+    	if (enrollment==null) return null;
+
         return buildFeedArray(enrollment);
     }
 
