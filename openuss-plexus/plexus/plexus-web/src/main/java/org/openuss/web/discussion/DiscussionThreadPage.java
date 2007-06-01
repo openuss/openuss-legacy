@@ -23,7 +23,7 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	private DiscussionThreadDataProvider data = new DiscussionThreadDataProvider();
 	
 	@Property(value= "#{"+Constants.DISCUSSION_THREADLENGTH+"}")
-	public int length;
+	public Integer length;
 	
 	@Property(value= "#{"+Constants.SHOW_USER_PROFILE+"}")
 	public User profile;
@@ -39,13 +39,14 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		if ( topic != null && topic.getId() != null) {
 			topic = discussionService.getTopic(topic);
 			setSessionBean(Constants.DISCUSSION_TOPIC, topic);
-			discussionService.addHit(topic);
 		}
 		if (topic == null || topic.getId() == null) {
 			redirect(Constants.DISCUSSION_MAIN);
+		} else { 
+			discussionService.addHit(topic);
+			topicWatchState = discussionService.watchesTopic(topic);
+			topicReadOnly = topic.isReadOnly();
 		}
-		topicWatchState = discussionService.watchesTopic(topic);
-		topicReadOnly = topic.isReadOnly();
 	}	
 	
 	
@@ -155,11 +156,11 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		this.data = data;
 	}
 
-	public int getLength() {
+	public Integer getLength() {
 		return length;
 	}
 
-	public void setLength(int length) {
+	public void setLength(Integer length) {
 		this.length = length;
 	}
 
