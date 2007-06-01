@@ -6,13 +6,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.openuss.framework.web.jsf.actions.PageActionManager;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.jsf.FacesContextUtils;
 
 /**
  * ViewStackPhaseListener main the view stack of the visit views of the user
@@ -31,7 +27,11 @@ public class ViewStackPhaseListener implements PhaseListener {
 		if (logger.isDebugEnabled())
 			logger.debug("After " + event.getPhaseId() + " Phase ");
 		
-		String viewId = event.getFacesContext().getViewRoot().getViewId();
+		String viewId = null;
+		
+		if (event.getFacesContext().getViewRoot() != null) {
+			viewId = event.getFacesContext().getViewRoot().getViewId();
+		}
 		
 		if (StringUtils.isNotBlank(viewId)) {
 			Stack<String> viewStack = getViewStack(event.getFacesContext());
