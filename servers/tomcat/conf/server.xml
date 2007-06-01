@@ -10,7 +10,7 @@
      define subcomponents such as "Valves" or "Loggers" at this level.
  -->
 
-<Server port="8005" shutdown="SHUTDOWN" debug="4">
+<Server port="8005" shutdown="SHUTDOWN">
 
   <!-- Comment these entries out to disable JMX MBeans support used for the 
        administration web application -->
@@ -135,6 +135,14 @@
            example application (the source for this filter may be found in
            "$CATALINA_HOME/webapps/examples/WEB-INF/classes/filters").
 
+           Note that this Valve uses the platform's default character encoding.
+           This may cause problems for developers in another encoding, e.g.
+           UTF-8.  Use the RequestDumperFilter instead.
+
+           Also note that enabling this Valve will write a ton of stuff to your
+           logs.  They are likely to grow quite large.  This extensive log writing
+           will definitely slow down your server.
+
            Request dumping is disabled by default.  Uncomment the following
            element to enable it. -->
       <!--
@@ -190,7 +198,7 @@
        -->
       <Host name="localhost" appBase="webapps"
        unpackWARs="true" autoDeploy="true"
-       xmlValidation="false" xmlNamespaceAware="false" debug="4">
+       xmlValidation="false" xmlNamespaceAware="false">
 
         <!-- Defines a cluster for this node,
              By defining this element, means that every manager will be changed.
