@@ -34,8 +34,6 @@ public class NewsEditPage extends AbstractLecturePage {
 
 	private static final Logger logger = Logger.getLogger(NewsEditPage.class);
 
-	private static final long serialVersionUID = 792199034646593736L;
-
 	@Property(value = "#{"+Constants.NEWS_SELECTED_NEWSITEM+"}")
 	private NewsItemInfo newsItem;
 

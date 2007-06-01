@@ -39,8 +39,6 @@ public class MembersPage extends AbstractLecturePage {
 
 	private static final Logger logger = Logger.getLogger(MembersPage.class);
 
-	private static final long serialVersionUID = 3577437988777775136L;
-
 	@Property(value = "#{securityService}")
 	private SecurityService securityService;
 	

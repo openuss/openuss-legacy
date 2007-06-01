@@ -27,10 +27,8 @@ public class RegistrationData extends BaseBean {
 
 	private static final Logger logger = Logger.getLogger(RegistrationData.class);
 
-	private static final long serialVersionUID = -6694421104045121170L;
-
-	private boolean userAgreementAccepted;
-	private boolean enableAssistantRole;
+	private Boolean userAgreementAccepted;
+	private Boolean enableAssistantRole;
 	private String username;
 
 	/**
@@ -62,19 +60,19 @@ public class RegistrationData extends BaseBean {
 		}
 	}
 	
-	public boolean isEnableAssistantRole() {
+	public Boolean isEnableAssistantRole() {
 		return enableAssistantRole;
 	}
 
-	public void setEnableAssistantRole(boolean enableAssistantRole) {
+	public void setEnableAssistantRole(Boolean enableAssistantRole) {
 		this.enableAssistantRole = enableAssistantRole;
 	}
 
-	public boolean isUserAgreementAccepted() {
+	public Boolean isUserAgreementAccepted() {
 		return userAgreementAccepted;
 	}
 
-	public void setUserAgreementAccepted(boolean userAgreementAccepted) {
+	public void setUserAgreementAccepted(Boolean userAgreementAccepted) {
 		this.userAgreementAccepted = userAgreementAccepted;
 	}
 

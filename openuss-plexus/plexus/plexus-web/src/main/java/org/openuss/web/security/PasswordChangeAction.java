@@ -20,8 +20,6 @@ import org.openuss.web.Constants;
 @Bean(name="passwordChangeAction", scope=Scope.REQUEST)
 public class PasswordChangeAction extends BaseBean {
 
-	private static final long serialVersionUID = 447705240246781333L;
-
 	@Property(value="#{registrationService}")
 	private RegistrationService registrationService;
 	 

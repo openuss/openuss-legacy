@@ -16,8 +16,6 @@ public class FacultyRegistrationController extends AbstractLecturePage{
 
 	private static final Logger logger = Logger.getLogger(FacultyRegistrationController.class);
 
-	private static final long serialVersionUID = 1L;
-	
 	public String start() {
 		logger.debug("start registration process");
 		faculty = Faculty.Factory.newInstance();

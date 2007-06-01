@@ -15,8 +15,6 @@ import org.openuss.web.Constants;
 @View
 public class PeriodEditPage extends AbstractPeriodPage {
 
-	private static final long serialVersionUID = -3812508575903167466L;
-
 	/**
 	 * Store changes in the business layer.
 	 * 

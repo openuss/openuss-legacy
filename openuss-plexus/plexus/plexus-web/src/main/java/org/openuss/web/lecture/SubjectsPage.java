@@ -24,8 +24,6 @@ public class SubjectsPage extends AbstractLecturePage {
 
 	private static final Logger logger = Logger.getLogger(SubjectsPage.class);
 
-	private static final long serialVersionUID = 4667557973921766455L;
-
 	private LocalDataModel data = new LocalDataModel();
 	
 	@Prerender

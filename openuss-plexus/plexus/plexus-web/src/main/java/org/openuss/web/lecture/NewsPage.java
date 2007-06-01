@@ -26,8 +26,6 @@ public class NewsPage extends AbstractLecturePage {
 
 	private static final Logger logger = Logger.getLogger(NewsPage.class);
 
-	private static final long serialVersionUID = 792199034646593736L;
-
 	@Property(value = "#{newsService}")
 	private NewsService newsService;
 

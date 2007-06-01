@@ -32,8 +32,6 @@ import org.openuss.web.Constants;
 @View
 public class PeriodsPage extends AbstractLecturePage {
 
-	private static final long serialVersionUID = -3812508575903167466L;
-
 	private static final Logger logger = Logger.getLogger(PeriodsPage.class);
 
 	private PeriodDataModel periodData = new PeriodDataModel();
