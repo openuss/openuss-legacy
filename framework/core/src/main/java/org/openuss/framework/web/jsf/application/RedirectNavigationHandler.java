@@ -56,7 +56,9 @@ public class RedirectNavigationHandler extends NavigationHandler {
 				if (StringUtils.equals(viewId, currentViewId) && !viewStack.isEmpty()) {
 					viewId = viewStack.pop();
 				}
-				redirectToViewId(facesContext, viewId);
+				if (!StringUtils.equals(currentViewId, viewId)) {
+					redirectToViewId(facesContext, viewId);
+				}
 				return;
 			}
 		}
@@ -67,7 +69,6 @@ public class RedirectNavigationHandler extends NavigationHandler {
 		} else {
 			originalNavigationHandler.handleNavigation(facesContext, fromAction, outcome);
 		}
-
 		checkForRedirect(facesContext, currentViewId);
 	}
 
@@ -114,8 +115,6 @@ public class RedirectNavigationHandler extends NavigationHandler {
 		final ExternalContext externalContext = facesContext.getExternalContext();
 		externalContext.getSessionMap().put(PostRedirectGetPhaseListener.POST_REDIRECT_GET_KEY,	viewId);
 		ConversationUtil.redirect(facesContext, viewId, null);
-//  	This is no solution request parameter must be stored on server side to be sure that the url not is getting to long
-//		ConversationUtil.redirect(facesContext, viewId, externalContext.getRequestParameterMap());
 		facesContext.responseComplete();
 	}
 	
