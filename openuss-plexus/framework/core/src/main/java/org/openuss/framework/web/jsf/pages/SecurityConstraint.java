@@ -18,9 +18,7 @@ import org.openuss.framework.web.jsf.util.FacesUtils;
  * @author Ingo Dueppe
  */
 public class SecurityConstraint {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(SecurityConstraint.class);
 
 	private ValueBinding domainObject;
@@ -67,6 +65,7 @@ public class SecurityConstraint {
 	private void sendAccessDeniedError() {
 		try {
 			FacesUtils.sendError(HttpServletResponse.SC_FORBIDDEN);
+			FacesContext.getCurrentInstance().responseComplete();
 		} catch (IOException e) {
 			logger.error(e);
 			throw new RuntimeException(e);
