@@ -27,8 +27,10 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		forumWatchState = discussionService.watchesForum(getForum());
-		forumReadOnly = getForum().isReadOnly();
+		if (enrollmentInfo != null) {
+			forumWatchState = discussionService.watchesForum(getForum());
+			forumReadOnly = getForum().isReadOnly();
+		}
 	}	
 	
 	private class DiscussionDataProvider extends AbstractPagedTable<TopicInfo> {
