@@ -319,6 +319,7 @@ public class FacesUtils {
 	public static void sendError(int statusCode) throws IOException {
 		HttpServletResponse response =(HttpServletResponse) getExternalContext().getResponse();
 		response.sendError(statusCode);
+		getFacesContext().responseComplete();
 	}
 
 }

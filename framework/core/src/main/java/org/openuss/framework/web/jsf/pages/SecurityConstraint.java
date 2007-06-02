@@ -65,7 +65,6 @@ public class SecurityConstraint {
 	private void sendAccessDeniedError() {
 		try {
 			FacesUtils.sendError(HttpServletResponse.SC_FORBIDDEN);
-			FacesContext.getCurrentInstance().responseComplete();
 		} catch (IOException e) {
 			logger.error(e);
 			throw new RuntimeException(e);
