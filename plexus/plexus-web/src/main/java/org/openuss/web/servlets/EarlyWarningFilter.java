@@ -1,7 +1,5 @@
 package org.openuss.web.servlets;
 
-import org.apache.log4j.Logger;
-
 import java.io.ByteArrayOutputStream;
 import java.io.CharArrayWriter;
 import java.io.IOException;
@@ -28,10 +26,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
  * happens.
  */
 public class EarlyWarningFilter implements Filter {
-	/**
-	 * Logger for this class
-	 */
-	private static final Logger logger = Logger.getLogger(EarlyWarningFilter.class);
 
 	public void destroy() {
 	}

@@ -5,10 +5,10 @@
  */
 package org.openuss.desktop;
 
-import org.apache.log4j.Logger;
-
 import java.util.Collection;
 
+import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 import org.openuss.lecture.Enrollment;
 import org.openuss.lecture.Faculty;
 import org.openuss.lecture.Subject;
@@ -33,6 +33,7 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 
 	@Override
 	protected Desktop handleGetDesktop(Desktop desktop) throws Exception {
+		Validate.notNull(desktop, "Parameter desktop must not be null!");
 		desktop = getDesktopDao().load(desktop.getId());
 		return desktop;
 	}
