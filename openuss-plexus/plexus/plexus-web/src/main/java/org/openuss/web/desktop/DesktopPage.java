@@ -17,12 +17,12 @@ import org.openuss.lecture.Subject;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
-
 /**
- * DesktopViewController is the mvc bean to handle the desktop view. 
+ * DesktopViewController is the mvc bean to handle the desktop view.
+ * 
  * @author Ingo Dueppe
  */
-@Bean(name="views$secured$desktop$desktop", scope=Scope.REQUEST)
+@Bean(name = "views$secured$desktop$desktop", scope = Scope.REQUEST)
 @View
 public class DesktopPage extends BasePage {
 
@@ -37,7 +37,7 @@ public class DesktopPage extends BasePage {
 		logger.debug("prerender desktop");
 		refreshDesktop();
 	}
-	
+
 	private void refreshDesktop() {
 		if (user != null) {
 			try {
@@ -55,9 +55,10 @@ public class DesktopPage extends BasePage {
 			}
 		}
 	}
-	
+
 	/**
 	 * Show selected faculty
+	 * 
 	 * @return outcome
 	 */
 	public String showFaculty() {
@@ -66,9 +67,10 @@ public class DesktopPage extends BasePage {
 		setSessionBean(Constants.FACULTY, faculty);
 		return Constants.FACULTY;
 	}
-	
+
 	/**
 	 * Remove selected faculty from desktop
+	 * 
 	 * @return outcome = DESKTOP
 	 */
 	public String removeFaculty() throws DesktopException {
@@ -78,10 +80,11 @@ public class DesktopPage extends BasePage {
 		addMessage(i18n("desktop_message_removed_faculty_succeed", faculty.getName()));
 		return Constants.DESKTOP;
 	}
-	
+
 	/**
-	 * Show selected enrollment 
-	 * @return outcome 
+	 * Show selected enrollment
+	 * 
+	 * @return outcome
 	 */
 	public String showEnrollment() {
 		logger.debug("showEnrollment");
@@ -89,9 +92,10 @@ public class DesktopPage extends BasePage {
 		setSessionBean(Constants.ENROLLMENT, enrollment);
 		return Constants.ENROLLMENT_PAGE;
 	}
-	
+
 	/**
-	 * Remove enrollment 
+	 * Remove enrollment
+	 * 
 	 * @return outcome
 	 */
 	public String removeEnrollment() {
@@ -106,9 +110,10 @@ public class DesktopPage extends BasePage {
 		}
 		return Constants.DESKTOP;
 	}
-	
+
 	/**
 	 * Remove subject
+	 * 
 	 * @return outcome
 	 */
 	public String showSubject() {
@@ -117,72 +122,64 @@ public class DesktopPage extends BasePage {
 		setSessionBean(Constants.SUBJECT, subject);
 		return Constants.SUBJECT_ENROLLMENT_SELECTION_PAGE;
 	}
-	
+
 	public String removeSubject() {
 		logger.debug("remove subject");
 		Subject subject = subjectsProvider.getRowData();
 		try {
 			desktopService.unlinkSubject(desktop, subject);
-			addMessage(i18n("desktop_message_removed_subject_succeed",subject.getName()));
+			addMessage(i18n("desktop_message_removed_subject_succeed", subject.getName()));
 		} catch (DesktopException e) {
 			logger.debug(e);
 			addError(i18n(e.getMessage()));
 		}
 		return Constants.DESKTOP;
 	}
-	
+
 	/* ------------------ data models ------------------- */
 	private class EnrollmentDataProvider extends AbstractPagedTable<Enrollment> {
-		
+
 		private static final long serialVersionUID = 255073655670856663L;
-		
+
 		private DataPage<Enrollment> page;
 
 		@Override
 		public DataPage<Enrollment> getDataPage(int startRow, int pageSize) {
-			if (page == null) {
-				List<Enrollment> enrollments = new ArrayList(desktop.getEnrollments());
-				sort(enrollments);
-				page = new DataPage<Enrollment>(enrollments.size(),0,enrollments);
-			}
+			List<Enrollment> enrollments = new ArrayList(desktop.getEnrollments());
+			sort(enrollments);
+			page = new DataPage<Enrollment>(enrollments.size(), 0, enrollments);
 			return page;
 		}
 	}
 
 	private class SubjectDataProvider extends AbstractPagedTable<Subject> {
-		
+
 		private static final long serialVersionUID = -932405920082089168L;
-		
+
 		private DataPage<Subject> page;
-		
+
 		@Override
 		public DataPage<Subject> getDataPage(int startRow, int pageSize) {
-			if (page == null) {
-				List<Subject> subjects = new ArrayList(desktop.getSubjects());
-				sort(subjects);
-				page = new DataPage<Subject>(subjects.size(),0,subjects);
-			}
+			List<Subject> subjects = new ArrayList(desktop.getSubjects());
+			sort(subjects);
+			page = new DataPage<Subject>(subjects.size(), 0, subjects);
 			return page;
 		}
 	}
 
 	private class FacultyDataProvider extends AbstractPagedTable<Faculty> {
 		private static final long serialVersionUID = 2146461373793139193L;
-		
+
 		private DataPage<Faculty> page;
-		
+
 		@Override
 		public DataPage<Faculty> getDataPage(int startRow, int pageSize) {
-			if (page == null) {
-				List<Faculty> faculties = new ArrayList(desktop.getFaculties());
-				sort(faculties);
-				page = new DataPage<Faculty>(faculties.size(),0,faculties);
-			}
+			List<Faculty> faculties = new ArrayList(desktop.getFaculties());
+			sort(faculties);
+			page = new DataPage<Faculty>(faculties.size(), 0, faculties);
 			return page;
 		}
 	}
-	
-	
 
 	public EnrollmentDataProvider getEnrollmentsProvider() {
 		return enrollmentsProvider;
