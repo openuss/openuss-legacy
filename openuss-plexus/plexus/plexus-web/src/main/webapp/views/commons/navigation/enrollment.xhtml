@@ -4,6 +4,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:s="http://www.openuss.org/jsf-security"
+    xmlns:c="http://java.sun.com/jstl/core"  
     xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
@@ -48,12 +49,14 @@
 							rendered="#{enrollment.chat}">
 							<h:outputText value="#{msg['enrollment_command_chat']}"/>
 						</t:commandNavigation2>
+<!--
 						<t:commandNavigation2 
 							action="enrollment_wiki" 
 							activeOnViewIds="/views/secured/wiki/wikimain.xhtml,/views/secured/wiki/wikiedit.xhtml"
 							rendered="#{enrollment.wiki}">
 							<h:outputText value="#{msg['enrollment_command_wiki']}"/>
 						</t:commandNavigation2>
+  -->
 						<t:commandNavigation2 
 							action="freestyle_learning" 
 							activeOnViewIds="/views/secured/enrollment/fslinstall.xhtml"
@@ -63,11 +66,11 @@
 					</s:acl>
 
 					<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}">
-						<t:commandNavigation2 value="#{msg['enrollment_command_options']}" action="enrollment_options_config" >
+<!-- 						<t:commandNavigation2 value="#{msg['enrollment_command_options']}" action="enrollment_options_config" >-->
 							<t:commandNavigation2 
-								action="enrollment_options_config" 
-								activeOnViewIds="/views/secured/enrollment/enrollmentoptions.xhtml">
-								<h:outputText value="#{msg['enrollment_command_options_config']}" />
+								action="enrollment_news"
+								activeOnViewIds="/views/secured/enrollment/enrollmentnews.xhtml,/views/secured/enrollment/enrollmentnews.xhtml">
+								<h:outputText value="#{msg['enrollment_command_options_news']}" />
 							</t:commandNavigation2>
 							<t:commandNavigation2 
 								action="enrollment_options_assistants" 
@@ -79,17 +82,19 @@
 								activeOnViewIds="/views/secured/enrollment/enrollmentparticipants.xhtml">
 								<h:outputText value="#{msg['enrollment_command_options_participants']}" />
 							</t:commandNavigation2>
+							<c:if test="#{sessionScope.enrollment.accessType.value == 3}">
+								<t:commandNavigation2 
+									action="enrollment_options_aspirants" 
+									activeOnViewIds="/views/secured/enrollment/enrollmentaspirants.xhtml">
+									<h:outputText value="#{msg['enrollment_command_options_aspirants']}" />
+								</t:commandNavigation2>
+							</c:if>
 							<t:commandNavigation2 
-								action="enrollment_options_aspirants" 
-								activeOnViewIds="/views/secured/enrollment/enrollmentaspirants.xhtml">
-								<h:outputText value="#{msg['enrollment_command_options_aspirants']}" />
+								action="enrollment_options_config" 
+								activeOnViewIds="/views/secured/enrollment/enrollmentoptions.xhtml">
+								<h:outputText value="#{msg['enrollment_command_options_config']}" />
 							</t:commandNavigation2>
-							<t:commandNavigation2 
-								action="enrollment_news"
-								activeOnViewIds="/views/secured/enrollment/enrollmentnews.xhtml,/views/secured/enrollment/enrollmentnews.xhtml">
-								<h:outputText value="#{msg['enrollment_command_options_news']}" />
-							</t:commandNavigation2>
-						</t:commandNavigation2>
+<!--  						</t:commandNavigation2>-->
 					</s:acl>
 		
 				
