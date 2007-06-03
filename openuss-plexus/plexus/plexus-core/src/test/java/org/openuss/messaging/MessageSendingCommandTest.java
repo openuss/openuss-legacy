@@ -98,14 +98,13 @@ public class MessageSendingCommandTest extends AbstractDependencyInjectionSpring
 		return new String[] { 
 				"classpath*:applicationContext.xml", 
 				"classpath*:applicationContext-beans.xml",
-				"classpath*:applicationContext-tests.xml", 
 				"classpath*:applicationContext-lucene.xml",
 				"classpath*:applicationContext-cache.xml", 
 				"classpath*:applicationContext-messaging.xml",
 				"classpath*:applicationContext-resources.xml",
-				"classpath*:beanRefFactory", 
+				"classpath*:testContext.xml", 
 				"classpath*:testSecurity.xml", 
-				"classpath*:testDataSource.xml" };
+				"classpath*:testDataSource.xml"};
 	}
 
 	public MessageSendingCommand getMessageSendingCommand() {

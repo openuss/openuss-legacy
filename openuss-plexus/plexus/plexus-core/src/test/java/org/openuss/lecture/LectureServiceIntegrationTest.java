@@ -16,9 +16,7 @@ import org.openuss.security.UserDao;
  * @see org.openuss.lecture.LectureService
  */
 public class LectureServiceIntegrationTest extends LectureServiceIntegrationTestBase {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(LectureServiceIntegrationTest.class);
 
 	private UserDao userDao;
