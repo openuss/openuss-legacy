@@ -1,7 +1,9 @@
 package org.openuss.messaging;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,8 +12,11 @@ import javax.mail.Address;
 import javax.mail.SendFailedException;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.openuss.commands.AbstractDomainCommand;
+import org.openuss.commands.CommandApplicationService;
+import org.openuss.commands.CommandService;
 import org.openuss.commands.DomainCommand;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -29,7 +34,10 @@ public class MessageSendingCommand extends AbstractDomainCommand implements Doma
 	private static final Logger logger = Logger.getLogger(MessageSendingCommand.class);
 
 	private MessageJobDao messageJobDao;
+	
 	private JavaMailSender mailSender;
+	
+	private CommandService commandService;
 
 	private ApplicationContext applicationContext;
 
@@ -64,16 +72,36 @@ public class MessageSendingCommand extends AbstractDomainCommand implements Doma
 			updateRecipientState(job, null);
 			job.setState(JobState.DONE);
 		} catch (MailSendException mse) {
-			if (mse.getCause() == null) {
-				// some recipients cause an error but the job is done
-				updateRecipientState(job, extractInvalidEMails(mse));
-				job.setState(JobState.DONE);
+			if (mse.getCause().getCause() instanceof ConnectException) {
+				defineRetryCommand(job, mse);
 			} else {
-				job.setState(JobState.ERROR);
+				if (mse.getCause() == null) {
+					// some recipients cause an error but the job is done
+					updateRecipientState(job, extractInvalidEMails(mse));
+					job.setState(JobState.DONE);
+				} else {
+					job.setState(JobState.ERROR);
+				}
+				logger.error(mse.getCause());
 			}
-			logger.error(mse.getCause());
+			throw mse;
 		} finally {
 			messageJobDao.update(job);
+		}
+	}
+
+	/**
+	 * A mail server connection error ocured, setting retry command.
+	 * @param job
+	 * @param mse
+	 */
+	private void defineRetryCommand(MessageJob job, MailSendException mse) {
+		logger.info("setting retry command for job "+job.getId());
+		logger.debug("mail sending error", mse);
+		try {
+			getCommandService().createOnceCommand(job, "messageSendingCommmand", DateUtils.addMinutes(new Date(), 1), "retry...");
+		} catch (CommandApplicationService e) {
+			logger.error(e);
 		}
 	}
 
@@ -133,6 +161,14 @@ public class MessageSendingCommand extends AbstractDomainCommand implements Doma
 
 	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
+	}
+
+	public CommandService getCommandService() {
+		return commandService;
+	}
+
+	public void setCommandService(CommandService commandService) {
+		this.commandService = commandService;
 	}
 
 }

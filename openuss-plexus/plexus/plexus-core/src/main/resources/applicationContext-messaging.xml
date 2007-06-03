@@ -30,12 +30,9 @@
 
 	<bean id="messageSendingCommmand"
 		class="org.openuss.messaging.MessageSendingCommand">
-		<property name="messageJobDao">
-			<ref bean="messageJobDao" />
-		</property>
-		<property name="mailSender">
-			<ref bean="mailSender" />
-		</property>
+		<property name="messageJobDao" ref="messageJobDao" />
+		<property name="mailSender" ref="mailSender" />
+		<property name="commandService" ref="commandService"/>		
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

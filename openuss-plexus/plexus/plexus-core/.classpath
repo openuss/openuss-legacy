@@ -12,7 +12,7 @@
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.4/servlet-api-2.4.jar" sourcepath="M2_REPO/javax/servlet/servlet-api/2.4/servlet-api-2.4-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/quartz/quartz/1.5.2/quartz-1.5.2.jar" sourcepath="M2_REPO/quartz/quartz/1.5.2/quartz-1.5.2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/rome/rome/0.9/rome-0.9.jar" sourcepath="M2_REPO/rome/rome/0.9/rome-0.9-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-support/2.0.5/spring-support-2.0.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-support/2.0.5/spring-support-2.0.5.jar" sourcepath="/M2_REPO/org/springframework/spring/2.0.5/spring-2.0.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/logkit/logkit/1.0.1/logkit-1.0.1.jar" sourcepath="M2_REPO/logkit/logkit/1.0.1/logkit-1.0.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13.jar" sourcepath="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/asm/asm/1.5.3/asm-1.5.3.jar"/>
@@ -74,7 +74,7 @@
 	<classpathentry kind="var" path="M2_REPO/javax/el/el-api/1.0/el-api-1.0.jar"/>
 	<classpathentry kind="src" path="/framework-utilities"/>
 	<classpathentry kind="src" path="/framework-core"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-core/2.0.5/spring-core-2.0.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-core/2.0.5/spring-core-2.0.5.jar" sourcepath="/M2_REPO/org/springframework/spring/2.0.5/spring-2.0.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-dbcp/commons-dbcp/1.2.2/commons-dbcp-1.2.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" sourcepath="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar" sourcepath="M2_REPO/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3-sources.jar"/>
