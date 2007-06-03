@@ -72,19 +72,20 @@ public class MessageSendingCommand extends AbstractDomainCommand implements Doma
 			updateRecipientState(job, null);
 			job.setState(JobState.DONE);
 		} catch (MailSendException mse) {
-			if (mse.getCause().getCause() instanceof ConnectException) {
+			if (mse.getCause() != null && mse.getCause().getCause() instanceof ConnectException) {
 				defineRetryCommand(job, mse);
+				throw mse;
 			} else {
+				logger.error(mse.getCause());
 				if (mse.getCause() == null) {
 					// some recipients cause an error but the job is done
 					updateRecipientState(job, extractInvalidEMails(mse));
 					job.setState(JobState.DONE);
 				} else {
 					job.setState(JobState.ERROR);
+					throw mse;
 				}
-				logger.error(mse.getCause());
 			}
-			throw mse;
 		} finally {
 			messageJobDao.update(job);
 		}
