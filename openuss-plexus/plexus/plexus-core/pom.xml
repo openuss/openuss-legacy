@@ -16,9 +16,11 @@
 	
 	<build>
 		<plugins>
+		<!-- 
 			<plugin>
 				<artifactId>maven-clover-plugin</artifactId>
 			</plugin>
+		 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -126,10 +128,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
 		</dependency>
 		<dependency>
@@ -154,6 +152,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>spring-dao</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-remoting</artifactId>
 		</dependency>
 		<dependency>
@@ -163,6 +165,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-mock</artifactId>
+			<scope>test</scope>
 		</dependency>		
 		<dependency>
 			<groupId>org.springframework</groupId>

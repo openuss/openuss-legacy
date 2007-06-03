@@ -15,14 +15,6 @@
 	<name>Framework</name>
 	<packaging>pom</packaging>
 
-	 <build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-clover-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
-
 	<modules>
 		<module>deployer</module>
 		<module>utilities</module>
