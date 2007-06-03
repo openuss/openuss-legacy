@@ -143,12 +143,15 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		// create system defined groups for faculty
 		// FIXME Administrators, Assistants, and Tutor labels of Groups should
 		// be configurable from the database through system properties-
-		Group admins = securityService.createGroup("FACULTY_" + faculty.getId() + "_ADMINS", "Administrators", null,
-				GroupType.ADMINISTRATOR);
-		Group assistants = securityService.createGroup("FACULTY_" + faculty.getId() + "_ASSISTANTS", "Assistants",
-				null, GroupType.ASSISTANT);
-		Group tutors = securityService.createGroup("FACULTY_" + faculty.getId() + "_TUTORS", "Tutors", null,
-				GroupType.TUTOR);
+		Group admins = securityService.createGroup(
+					"FACULTY_" + faculty.getId() + "_ADMINS", 
+					"Administrators", null,	GroupType.ADMINISTRATOR);
+		Group assistants = securityService.createGroup(
+					"FACULTY_" + faculty.getId() + "_ASSISTANTS", 
+					"Assistants", null, GroupType.ASSISTANT);
+		Group tutors = securityService.createGroup(
+					"FACULTY_" + faculty.getId() + "_TUTORS", 
+					"Tutors", null,GroupType.TUTOR);
 
 		securityService.addAuthorityToGroup(faculty.getOwner(), admins);
 
