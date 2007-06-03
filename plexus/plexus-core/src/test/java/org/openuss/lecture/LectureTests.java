@@ -8,6 +8,7 @@ public class LectureTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.openuss.lecture");
 		//$JUnit-BEGIN$
+		suite.addTestSuite(FacultyIndexingAspectTest.class);
 		suite.addTestSuite(EnrollmentDaoTest.class);
 		suite.addTestSuite(EnrollmentMemberDaoTest.class);
 		suite.addTestSuite(EnrollmentServiceIntegrationTest.class);
