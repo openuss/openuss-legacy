@@ -9,8 +9,8 @@
     <project>framework-utilities</project>
     <project>framework-core</project>
     <project>plexus-api</project>
-    <project>framework-jsfcontrols</project>
     <project>plexus-core</project>
+    <project>framework-jsfcontrols</project>
   </projects>
   <buildSpec>
     <buildCommand>
