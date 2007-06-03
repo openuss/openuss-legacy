@@ -9,11 +9,8 @@ import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.DateTools.Resolution;
-import org.apache.lucene.index.Term;
 import org.openuss.search.DomainIndexer;
-import org.springmodules.lucene.index.LuceneIndexAccessException;
 import org.springmodules.lucene.index.core.DocumentCreator;
-import org.springmodules.lucene.index.core.DocumentModifier;
 
 /**
  *
@@ -47,18 +44,20 @@ public class EnrollmentIndexer extends DomainIndexer {
 		final Enrollment enrollment = getEnrollment();
 		if (enrollment != null) {
 			logger.debug("update new index for enrollment "+enrollment.getName()+" ("+enrollment.getId()+")");
-			try {
-				Term facultyTerm = new Term(IDENTIFIER, String.valueOf(enrollment.getId()));
-				getLuceneIndexTemplate().updateDocument(facultyTerm, new DocumentModifier() {
-					public Document updateDocument(Document document) throws Exception {
-						Document newDocument = new Document();
-						setFields(enrollment, document);
-						return newDocument;
-					}
-				});
-			} catch (LuceneIndexAccessException ex) {
-				create();				
-			}
+			delete();
+			create();
+//			try {
+//				Term facultyTerm = new Term(IDENTIFIER, String.valueOf(enrollment.getId()));
+//				getLuceneIndexTemplate().updateDocument(facultyTerm, new DocumentModifier() {
+//					public Document updateDocument(Document document) throws Exception {
+//						Document newDocument = new Document();
+//						setFields(enrollment, document);
+//						return newDocument;
+//					}
+//				});
+//			} catch (LuceneIndexAccessException ex) {
+//				create();				
+//			}
 		}
 	}
 

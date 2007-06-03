@@ -1,8 +1,6 @@
 package org.openuss.lecture;
 
 import org.apache.log4j.Logger;
-import org.openuss.foundation.DefaultDomainObject;
-import org.openuss.lecture.Faculty;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
 
@@ -16,14 +14,8 @@ public class FacultyIndexingAspect {
 
 	private IndexerService indexerService;
 	
-	public IndexerService getIndexerService() {
-		return indexerService;
-	}
-
-	public void setIndexerService(IndexerService indexerService) {
-		this.indexerService = indexerService;
-	}
-
+	private LectureService lectureService;
+	
 	/**
 	 * Create index entry of faculty if it is enabled. 
 	 * @param faculty
@@ -46,8 +38,17 @@ public class FacultyIndexingAspect {
 		try {
 			if (faculty.isEnabled()) {
 				indexerService.updateIndex(faculty);
+				for(Enrollment enrollment:faculty.getEnrollments()) {
+					if (enrollment.getAccessType() != AccessType.CLOSED) {
+						indexerService.updateIndex(enrollment);
+					}
+					
+				}
 			} else {
 				indexerService.deleteIndex(faculty);
+				for (Enrollment enrollment:faculty.getEnrollments()) {
+					indexerService.deleteIndex(enrollment);
+				}
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -68,4 +69,19 @@ public class FacultyIndexingAspect {
 		}
 	}
 	
+	public IndexerService getIndexerService() {
+		return indexerService;
+	}
+
+	public void setIndexerService(IndexerService indexerService) {
+		this.indexerService = indexerService;
+	}
+
+	public LectureService getLectureService() {
+		return lectureService;
+	}
+
+	public void setLectureService(LectureService lectureService) {
+		this.lectureService = lectureService;
+	}
 }

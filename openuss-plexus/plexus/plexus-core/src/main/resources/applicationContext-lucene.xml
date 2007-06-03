@@ -13,9 +13,8 @@
 		<aop:aspect id="facultyIndexAspect" ref="facultyIndexAspectBean">
 			<aop:after-returning
 				method="createFacultyIndex" 
-				pointcut="execution(* org..LectureServiceBase.createFaculty(org.openuss.lecture.Faculty)) and args(faculty) and this(org.openuss.lecture.LectureService)"
-				arg-names="faculty"
-				/>
+				pointcut="execution(* org..LectureServiceBase.createFaculty(org.openuss.lecture.Faculty)) and args(faculty)"
+				arg-names="faculty"/>
 			<aop:after-returning
 				method="updateFacultyIndex"
 				pointcut="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Faculty)) and args(faculty)"
@@ -25,10 +24,34 @@
 				pointcut="execution(* org..LectureServiceBase.removeFaculty(java.lang.Long)) and args(facultyId)"
 				arg-names="facultyId"/>
 		</aop:aspect>
+		<aop:aspect id="enrollmentIndexAspect" ref="enrollmentIndexAspectBean">
+			<aop:after-returning
+				method="updateEnrollmentIndexOnPeriodUpdate" 
+				pointcut="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Period)) and args(period)"
+				arg-names="period"/>
+			<aop:after-returning
+				method="createEnrollmentIndex" 
+				pointcut="execution(* org..LectureServiceBase.createEnrollment(org.openuss.lecture.Faculty)) and args(enrollment)"
+				arg-names="enrollment"/>
+			<aop:after-returning
+				method="updateEnrollmentIndex"
+				pointcut="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Enrollment)) and args(enrollment)"
+				arg-names="enrollment"/>
+			<aop:after-returning
+				method="deleteEnrollmentIndex"
+				pointcut="execution(* org..LectureServiceBase.removeEnrollment(java.lang.Long)) and args(enrollmentId)"
+				arg-names="enrollmentId"/>
+		</aop:aspect>
 	</aop:config>
 	
+	<bean id="enrollmentIndexAspectBean" class="org.openuss.lecture.EnrollmentIndexingAspect">
+		<property name="lectureService" ref="lectureService"/>
+		<property name="indexerService" ref="indexerService"/>
+	</bean>
+	
 	<bean id="facultyIndexAspectBean" class="org.openuss.lecture.FacultyIndexingAspect">
-		<property name="indexerService"><ref bean="indexerService"/></property>
+		<property name="lectureService" ref="lectureService"/>
+		<property name="indexerService" ref="indexerService"/>
 	</bean>
 
 	<bean id="domainIndexerFactory"	class="org.openuss.search.DomainIndexerFactory" scope="singleton">
@@ -129,16 +152,6 @@
 		<property name="indexFactory" ref="indexFactory" />
 		<property name="directory" ref="lectureDirectory" />
 	</bean>
-
-<!-- 
-	<bean id="workAroundIndexFactory"
-		class="org.openuss.search.lucene.WorkAroundSimpleIndexFactory">
-		<property name="create" value="true" />
-		<property name="directory" ref="lectureDirectory" />
-		<property name="analyzer" ref="analyzer" />
-		<property name="searcher" ref="searcherFactory" />
-	</bean>
- -->
 
 	<bean id="indexFactory"
 		class="org.springmodules.lucene.index.factory.SimpleIndexFactory">

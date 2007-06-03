@@ -21,12 +21,12 @@
 	    		<o:link value="/views/secured/lecture/faculty.faces" rendered="#{result.domainType == 'FACULTY'}">
 	    			<f:param name="faculty" value="#{result.id}"/>
 				 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
-					<h:outputText value="#{result.details}" styleClass="content_font_normal"/>
+					<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
 	    		</o:link>
 	    		<o:link value="/views/secured/enrollment/main.faces" rendered="#{result.domainType == 'ENROLLMENT'}">
 	    			<f:param name="enrollment" value="#{result.id}"/>
 				 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
-					<h:outputText value="#{result.details}" styleClass="content_font_normal"/>
+					<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
 	    		</o:link>
     		</div>
 		</t:column>
