@@ -312,7 +312,7 @@
 		</init-param>
 		<init-param>
 			<param-name>uploadRepositoryPath</param-name>
-			<param-value>java.io./temp</param-value>
+			<param-value>/temp</param-value>
 		</init-param>
 	</filter>
 	
