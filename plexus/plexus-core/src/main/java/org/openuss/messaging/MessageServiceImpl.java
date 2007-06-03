@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
+import org.openuss.commands.CommandApplicationService;
 import org.openuss.security.User;
 
 /**
@@ -31,6 +32,12 @@ public class MessageServiceImpl extends MessageServiceBase {
 		message.setSubject(subject);
 		message.setText(text);
 		
+		MessageJob job = createMessageJob(sms, recipients, message);
+		
+		return job.getId();
+	}
+
+	private MessageJob createMessageJob(boolean sms, List recipients, Message message) throws CommandApplicationService {
 		MessageJob job = MessageJob.Factory.newInstance();
 		job.setState(JobState.INQUEUE);
 		job.setSendAsSms(sms);
@@ -39,8 +46,7 @@ public class MessageServiceImpl extends MessageServiceBase {
 		
 		getMessageJobDao().create(job);
 		getCommandService().createOnceCommand(job, "messageSendingCommmand", new Date(), null);
-		
-		return job.getId();
+		return job;
 	}
 
 	/**
@@ -59,14 +65,7 @@ public class MessageServiceImpl extends MessageServiceBase {
 		message.setTemplate(templateName);
 		message.addParameters(parameters);
 
-		MessageJob job = MessageJob.Factory.newInstance();
-		job.setState(JobState.INQUEUE);
-		job.setSendAsSms(false);
-		job.addRecipients(recipients);
-		job.setMessage(message);
-
-		getMessageJobDao().create(job);
-		getCommandService().createOnceCommand(job, "messageSendingCommmand", new Date(), null);
+		MessageJob job = createMessageJob(false, recipients, message);
 		
 		return job.getId();
 	}
