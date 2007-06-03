@@ -27,7 +27,9 @@
 			<notifier>
 				<type>mail</type>
 				<configuration>
-					<address>openuss-svn-commits@lists.sourceforge.net</address>
+					<address>
+						openuss-svn-commits@lists.sourceforge.net
+					</address>
 				</configuration>
 			</notifier>
 			<notifier>
@@ -119,8 +121,12 @@
 		</contributor>
 	</contributors>
 	<scm>
-		<connection>scm:svn:https://openuss.svn.sourceforge.net/svnroot/openuss/trunk/openuss-plexus</connection>
-		<url>https://openuss.svn.sourceforge.net/svnroot/openuss/trunk/openuss-plexus</url>
+		<connection>
+			scm:svn:https://openuss.svn.sourceforge.net/svnroot/openuss/trunk/openuss-plexus
+		</connection>
+		<url>
+			https://openuss.svn.sourceforge.net/svnroot/openuss/trunk/openuss-plexus
+		</url>
 	</scm>
 	<organization>
 		<name>OpenUSS</name>
@@ -153,43 +159,46 @@
 					<artifactId>andromda-maven-plugin</artifactId>
 					<version>3.2</version>
 				</plugin>
-				<plugin>
+				<!-- 
+					<plugin>
 					<artifactId>maven-clover-plugin</artifactId>
 					<executions>
-						<execution>
-							<id>main</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>instrument</goal>
-								<goal>aggregate</goal>
-								<goal>save-history</goal>
-								<goal>log</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>site</id>
-							<phase>pre-site</phase>
-							<goals>
-								<goal>instrument</goal>
-								<goal>aggregate</goal>
-								<goal>save-history</goal>
-							</goals>
-						</execution>
+					<execution>
+					<id>main</id>
+					<phase>verify</phase>
+					<goals>
+					<goal>instrument</goal>
+					<goal>aggregate</goal>
+					<goal>save-history</goal>
+					<goal>log</goal>
+					</goals>
+					</execution>
+					<execution>
+					<id>site</id>
+					<phase>pre-site</phase>
+					<goals>
+					<goal>instrument</goal>
+					<goal>aggregate</goal>
+					<goal>save-history</goal>
+					</goals>
+					</execution>
 					</executions>
 					<configuration>
-						<includesAllSourceRoots>
-							false
-						</includesAllSourceRoots>
-						<generateHistorical>true</generateHistorical>
-						<flushPolicy>threaded</flushPolicy>
-						<flushInterval>100</flushInterval>
-						<jdk>1.5</jdk>
-						<!-- 						<licenseLocation>http://teamopenuss.uni-muenster.de/downloads/clover.license</licenseLocation>-->
-						<licenseLocation>
-							${clover.license}
-						</licenseLocation>
+					<includesAllSourceRoots>
+					false
+					</includesAllSourceRoots>
+					<generateHistorical>true</generateHistorical>
+					<flushPolicy>threaded</flushPolicy>
+					<flushInterval>100</flushInterval>
+					<jdk>1.5</jdk>
+					<licenseLocation>http://teamopenuss.uni-muenster.de/downloads/clover.license</licenseLocation>
+					
+					<licenseLocation>
+					${clover.license}
+					</licenseLocation>
 					</configuration>
-				</plugin>
+					</plugin>
+				-->
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -270,14 +279,18 @@
 			<name>OpenUSS Plexus</name>
 			<url>http://teamopenuss.uni-muenster.de/repository</url>
 		</repository>
-		<!-- 
-			<repository>
+		<repository>
 			<id>maven-repo</id>
 			<name>maven-repo</name>
 			<url>http://repo1.maven.org/maven2</url>
-			<snapshots><enabled>false</enabled></snapshots>
-			<releases><enabled>true</enabled></releases>
-			</repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<!-- 
 			<repository>
 			<id>java-net</id>
 			<name>Java.Net</name>
@@ -595,11 +608,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
-				<artifactId>spring</artifactId>
-				<version>2.0.5</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
 				<artifactId>spring-aop</artifactId>
 				<version>2.0.5</version>
 			</dependency>
@@ -661,6 +669,11 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-dao</artifactId>
+				<version>2.0.5</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-hibernate3</artifactId>
 				<version>2.0.5</version>
 			</dependency>
 			<dependency>
@@ -891,15 +904,15 @@
 				<version>1.0</version>
 			</dependency>
 			<dependency>
-			    <groupId>rome</groupId>
-			    <artifactId>rome</artifactId>
-			    <version>0.9</version>
-			</dependency>	
+				<groupId>rome</groupId>
+				<artifactId>rome</artifactId>
+				<version>0.9</version>
+			</dependency>
 			<dependency>
-			    <groupId>jdom</groupId>
-			    <artifactId>jdom</artifactId>
-			    <version>1.0</version>
-			</dependency>					
+				<groupId>jdom</groupId>
+				<artifactId>jdom</artifactId>
+				<version>1.0</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<distributionManagement>
