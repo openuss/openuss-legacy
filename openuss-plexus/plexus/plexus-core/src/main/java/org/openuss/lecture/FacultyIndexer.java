@@ -9,13 +9,8 @@ import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.DateTools.Resolution;
-import org.apache.lucene.index.Term;
-import org.openuss.lecture.Faculty;
-import org.openuss.lecture.FacultyDao;
 import org.openuss.search.DomainIndexer;
-import org.springmodules.lucene.index.LuceneIndexAccessException;
 import org.springmodules.lucene.index.core.DocumentCreator;
-import org.springmodules.lucene.index.core.DocumentModifier;
 
 /**
  * 
@@ -47,19 +42,22 @@ public class FacultyIndexer extends DomainIndexer {
 		final Faculty faculty = getFaculty();
 		if (faculty != null) {
 			logger.debug("update new index for faculty " + faculty.getName() + " (" + faculty.getId() + ")");
-			Term facultyTerm = new Term(IDENTIFIER, String.valueOf(faculty.getId().longValue()));
-			try {
-				getLuceneIndexTemplate().updateDocument(facultyTerm, new DocumentModifier() {
-					public Document updateDocument(Document document) throws Exception {
-						Document newDocument = new Document();
-						setFields(faculty, document);
-						return newDocument;
-					}
-				});
-			} catch (LuceneIndexAccessException ex) {
-				logger.warn("Exception during update, trying to create...",ex);
-				create();
-			}
+			// update doesn't work properly, so deleting and create does the same.
+			delete();
+			create();
+			//	Term facultyTerm = new Term(IDENTIFIER, String.valueOf(faculty.getId().longValue()));
+			//	try {
+			//		getLuceneIndexTemplate().updateDocument(facultyTerm, new DocumentModifier() {
+			//			public Document updateDocument(Document document) throws Exception {
+			//				Document newDocument = new Document();
+			//				setFields(faculty, document);
+			//				return newDocument;
+			//			}
+			//		});
+			//	} catch (LuceneIndexAccessException ex) {
+			//		logger.debug("Exception during update, trying to create...",ex);
+			//		create();
+			//	}
 		}
 	}
 

@@ -9,21 +9,21 @@
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 		Domain Indexing Configuration
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	
 	<aop:config>
 		<aop:aspect id="facultyIndexAspect" ref="facultyIndexAspectBean">
 			<aop:after-returning
 				method="createFacultyIndex" 
-				pointcut="execution(* org.openuss.lecture.LectureService.createFaculty(..)) and args(faculty)"
-				arg-names="faculty"/>
+				pointcut="execution(* org..LectureServiceBase.createFaculty(org.openuss.lecture.Faculty)) and args(faculty) and this(org.openuss.lecture.LectureService)"
+				arg-names="faculty"
+				/>
 			<aop:after-returning
 				method="updateFacultyIndex"
-				pointcut="execution(* org.openuss.lecture.LectureService.persist(..)) and args(faculty)"
+				pointcut="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Faculty)) and args(faculty)"
 				arg-names="faculty"/>
 			<aop:after-returning
 				method="deleteFacultyIndex"
-				pointcut="execution(* org.openuss.lecture.LectureService.deleteFaculty(..)) and args(faculty)"
-				arg-names="faculty"/>
+				pointcut="execution(* org..LectureServiceBase.removeFaculty(java.lang.Long)) and args(facultyId)"
+				arg-names="facultyId"/>
 		</aop:aspect>
 	</aop:config>
 	
@@ -70,7 +70,7 @@
 			<ref bean="facultyDao" />
 		</property>
 		<property name="indexFactory">
-			<ref bean="workAroundIndexFactory" />
+			<ref bean="indexFactory" />
 		</property>
 	</bean>
 	
@@ -130,6 +130,7 @@
 		<property name="directory" ref="lectureDirectory" />
 	</bean>
 
+<!-- 
 	<bean id="workAroundIndexFactory"
 		class="org.openuss.search.lucene.WorkAroundSimpleIndexFactory">
 		<property name="create" value="true" />
@@ -137,6 +138,7 @@
 		<property name="analyzer" ref="analyzer" />
 		<property name="searcher" ref="searcherFactory" />
 	</bean>
+ -->
 
 	<bean id="indexFactory"
 		class="org.springmodules.lucene.index.factory.SimpleIndexFactory">
@@ -147,17 +149,8 @@
 
 	<bean id="lectureDirectory"
 		class="org.springmodules.lucene.index.support.FSDirectoryFactoryBean">
-		<property name="create" value="true" />
+		<property name="create" value="false" />
 		<property name="location" value="file:${java.io.tmpdir}/lucene/lecture" />
 	</bean>
-
-	<!-- 
-		<bean id="ramDirectory" class="org.springmodules.lucene.index.support.RAMDirectoryFactoryBean"/>
-		
-		<bean id="indexingDatabase" class="org.openuss.search.SimpleDatabaseIndexingImpl">
-		<property name="indexFactory" ref="indexFactory"/>
-		<property name="dataSource"><ref bean="dataSource"/></property>
-		</bean>
-	-->
 
 </beans>
