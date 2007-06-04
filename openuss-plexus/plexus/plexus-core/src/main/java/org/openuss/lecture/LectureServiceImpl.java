@@ -558,4 +558,11 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		}
 	}
 
+	@Override
+	protected FacultyDetails handleGetFaculty(Faculty faculty) throws Exception {
+		faculty = handleGetFaculty(faculty.getId());
+		FacultyDetails facultyDetails = getFacultyDao().toFacultyDetails(faculty);
+		return facultyDetails;
+	}
+
 }
