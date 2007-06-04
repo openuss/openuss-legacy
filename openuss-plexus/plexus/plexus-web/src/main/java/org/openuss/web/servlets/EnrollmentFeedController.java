@@ -3,56 +3,45 @@ package org.openuss.web.servlets;
 import java.text.DateFormat;
 import java.text.ParseException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.log4j.Logger;
-//import org.openuss.feed.FeedService;
-//import org.openuss.feed.FeedWrapper;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.openuss.web.feeds.EnrollmentFeed;
+import org.openuss.web.feeds.FeedWrapper;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
 
-public class FeedServlet extends HttpServlet{
+public class EnrollmentFeedController implements Controller{
+
+	private static final String DATE_FORMAT = "EEE, dd MMM yyyy hh:mm:ss zzz";
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8840385885628513134L;
-/*
-	private static Logger logger = Logger.getLogger(FeedServlet.class);
-	
-	private transient FeedService feedService;
-	
-	@Override
-	public void init() throws ServletException {
-		logger.info("Initialise OpenUSS-Plexus FeedServlet");
-		super.init();
 
-		final WebApplicationContext wac = WebApplicationContextUtils
-				.getRequiredWebApplicationContext(getServletContext());
-		feedService = (FeedService) wac.getBean("feedService", FeedService.class);
-	}
+	private static Logger logger = Logger.getLogger(EnrollmentFeedController.class);
 	
-
-	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse res) throws java.io.IOException {
+	private EnrollmentFeed enrollmentFeed;
+	
+	public ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		Long enrollmentId = Long.parseLong(req.getParameter("enrollment"));
 		String modifiedSince = req.getParameter("If-Modified-Since");
+		
 		if (enrollmentId!=null) {
-			FeedWrapper  feedWrapper = feedService.getRssFeedForEnrollment(enrollmentId);
+			FeedWrapper  feedWrapper = enrollmentFeed.getFeed(enrollmentId);
 			if (feedWrapper==null){
 				res.sendError(HttpServletResponse.SC_NOT_FOUND);
-				return;
+				return null;
 			}
 			
 			if (modifiedSince!=null&&modifiedSince!=""){
 				try {
 					if (DateFormat.getDateTimeInstance().parse(modifiedSince).getTime()<feedWrapper.getLastModified().getTime()){
 						res.sendError(HttpServletResponse.SC_NOT_MODIFIED);
-						return;
+						return null;
 					}
 				} catch (ParseException e) {
 					logger.debug("Malformed header information");
@@ -60,11 +49,20 @@ public class FeedServlet extends HttpServlet{
 			}
 			res.setContentType("application/rss+xml");
 			res.getWriter().write(feedWrapper.getWriter().toString());
-			String lastModified = DateFormatUtils.format(feedWrapper.getLastModified(), "EEE, dd MMM yyyy hh:mm:ss zzz");
+			String lastModified = DateFormatUtils.format(feedWrapper.getLastModified(), DATE_FORMAT);
 			res.setHeader("Last-Modified", lastModified);
-			return;
+			return null;
 		}
 		res.sendError(HttpServletResponse.SC_NOT_FOUND);
+		return null;
 	}
-	*/
+
+	public EnrollmentFeed getEnrollmentFeed() {
+		return enrollmentFeed;
+	}
+
+	public void setEnrollmentFeed(EnrollmentFeed enrollmentFeed) {
+		this.enrollmentFeed = enrollmentFeed;
+	}
+	
 }

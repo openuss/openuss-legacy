@@ -27,8 +27,7 @@
 			/WEB-INF/security.xml,
 			/WEB-INF/actions.xml,
 			/WEB-INF/openuss-context.xml,
-			/WEB-INF/views-controller-map.xml,
-			/WEB-INF/applicationContext-prototypes.xml
+			/WEB-INF/views-controller-map.xml
 		</param-value>
 	</context-param>
 
@@ -370,29 +369,29 @@
 	   Servlets
 	- - - - - - - - - - - - - - - - - - - - - - - - -->	
 	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet>
 		<servlet-name>DocumentServlet</servlet-name>
 		<servlet-class>org.openuss.web.servlets.DocumentServlet</servlet-class>
-		<load-on-startup>2</load-on-startup>
+		<load-on-startup>3</load-on-startup>
 	</servlet>
 	
 	<servlet>
 		<servlet-name>ZipDocumentServlet</servlet-name>
 		<servlet-class>org.openuss.web.servlets.ZipDocumentServlet</servlet-class>
-		<load-on-startup>3</load-on-startup>
+		<load-on-startup>4</load-on-startup>
 	</servlet>
 	
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
+		<load-on-startup>2</load-on-startup>
 	</servlet>
-	
-	<servlet>
-		<servlet-name>Feed Servlet</servlet-name>
-		<servlet-class>org.openuss.web.servlets.FeedServlet</servlet-class>
-		<load-on-startup>4</load-on-startup>
-	</servlet>
-
 	
 	<servlet>
 		<servlet-name>FCKFaces</servlet-name>
@@ -438,7 +437,7 @@
 	</servlet-mapping>
 	
 	<servlet-mapping>
-		<servlet-name>Feed Servlet</servlet-name>
+		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/rss/*</url-pattern>
 	</servlet-mapping>
 	
