@@ -11,7 +11,8 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
-				/**=httpSessionContextIntegrationFilter, authenticationProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, exceptionTranslationFilter, filterInvocationInterceptor
+				/views/**=httpSessionContextIntegrationFilter, authenticationProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, formExceptionTranslationFilter, filterInvocationInterceptor
+				/**=httpSessionContextIntegrationFilter, basicProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, basicExceptionTranslationFilter, filterInvocationInterceptor
 			</value>
 		</property>
 	</bean>
@@ -26,15 +27,20 @@
 		class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
 	</bean>
 
-	<bean id="authenticationProcessingFilter"
-		class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
-		<property name="authenticationManager">
-			<ref bean="authenticationManager" />
-		</property>
-		<property name="defaultTargetUrl"><value>/views/public/login/login.faces</value></property>
-		<property name="authenticationFailureUrl">
-			<value>/views/public/login/login.faces?error=true</value>
-		</property>
+	<bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="defaultTargetUrl" value="/views/public/login/login.faces"/>
+		<property name="authenticationFailureUrl" value="/views/public/login/login.faces?error=true"/>
+	</bean>
+
+	<bean id="basicProcessingFilter" class="org.acegisecurity.ui.basicauth.BasicProcessingFilter">
+		<property name="authenticationManager" ref="authenticationManager"/>
+		<property name="authenticationEntryPoint" ref="basicProcessingFilterEntryPoint"/>
+		<property name="ignoreFailure" value="false"/>
+	</bean>
+	
+	<bean id="basicProcessingFilterEntryPoint" class="org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint">
+		<property name="realmName" value="OpenUSS"/>
 	</bean>
 
 	<bean id="contextHolderAwareRequestFilter"
@@ -50,11 +56,15 @@
 		</property>
 	</bean>
 
-	<bean id="exceptionTranslationFilter"
+	<bean id="formExceptionTranslationFilter"
 		class="org.acegisecurity.ui.ExceptionTranslationFilter">
 		<property name="authenticationEntryPoint">
 			<ref local="authenticationProcessingFilterEntryPoint" />
 		</property>
+	</bean>
+
+	<bean id="basicExceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint" ref="basicProcessingFilterEntryPoint"/>
 	</bean>
 
 	<bean id="filterInvocationInterceptor"
