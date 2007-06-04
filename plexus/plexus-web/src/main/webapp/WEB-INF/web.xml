@@ -464,6 +464,8 @@
 		<location>/views/errors/403.faces</location>
 	</error-page>
 	
+
+<!-- 
 	<login-config>
 		<auth-method>FORM</auth-method>
 		<realm-name>plexus</realm-name>
@@ -472,6 +474,7 @@
 			<form-error-page>/views/loginfailed.faces</form-error-page>
 		</form-login-config>
 	</login-config>
+ -->
 	
 	<!-- Describe a DataSource -->
 	<resource-ref>
