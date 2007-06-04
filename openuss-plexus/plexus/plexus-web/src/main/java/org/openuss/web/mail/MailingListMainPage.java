@@ -112,10 +112,9 @@ public class MailingListMainPage extends AbstractMailingListPage{
 	}
 	
 	public String stopMail(){
-		MailInfo mi = data.getRowData();
-		MailDetail md = getEnrollmentMailingListService().getMail(mi);
-		md.setStatus(MailingStatus.DRAFT);
-		getEnrollmentMailingListService().updateMail(enrollmentInfo, md);
+		MailInfo mailInfo = data.getRowData();
+		getEnrollmentMailingListService().cancelSending(mailInfo);
+		// TODO closed
 		return Constants.MAILINGLIST_MAIN;
 	}
 	
