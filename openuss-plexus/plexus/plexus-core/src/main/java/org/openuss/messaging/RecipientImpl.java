@@ -44,4 +44,12 @@ public class RecipientImpl extends RecipientBase implements Recipient {
 		}
 	}
 
+	public boolean hasSmsNotification() {
+		if (getUser() != null) {
+			return getUser().hasSmsNotification();
+		} else {
+			return false;
+		}
+	}
+
 }

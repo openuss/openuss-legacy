@@ -54,15 +54,19 @@ public class MessageSendingCommand extends AbstractDomainCommand implements Doma
 		List<MessagePreparator> messages = new ArrayList<MessagePreparator>();
 		for (Recipient recipient : job.getRecipients()) {
 			if (job.getMessage() instanceof TextMessage) {
-				TextMessagePreparator preparator = (TextMessagePreparator) applicationContext
-						.getBean("textMessagePreparator");
+				TextMessagePreparator preparator = (TextMessagePreparator) applicationContext.getBean("textMessagePreparator");
 				preparator.setTextMessage((TextMessage) job.getMessage());
 				preparator.setRecipient(recipient);
 				messages.add(preparator);
 			} else if (job.getMessage() instanceof TemplateMessage) {
-				TemplateMessagePreparator preparator = (TemplateMessagePreparator) applicationContext
-						.getBean("templateMessagePreparator");
+				TemplateMessagePreparator preparator = (TemplateMessagePreparator) applicationContext.getBean("templateMessagePreparator");
 				preparator.setTemplateMessage((TemplateMessage) job.getMessage());
+				preparator.setRecipient(recipient);
+				messages.add(preparator);
+			}
+			if (job.isSendAsSms() && recipient.hasSmsNotification()) {
+				SmsMessagePreparator preparator = (SmsMessagePreparator) applicationContext.getBean("smsMessagePreparator");
+				preparator.setMessage(job.getMessage());
 				preparator.setRecipient(recipient);
 				messages.add(preparator);
 			}
