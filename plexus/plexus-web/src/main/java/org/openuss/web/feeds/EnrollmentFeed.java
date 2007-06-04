@@ -25,20 +25,16 @@ import org.openuss.system.SystemService;
 import com.sun.syndication.feed.synd.*;
 import com.sun.syndication.io.SyndFeedOutput;
 
-/**
- * @see org.openuss.feed.FeedService
- */
-public class EnrollmentFeed{
+public class EnrollmentFeed extends AbstractFeed{
 	
-	public static final Logger logger = Logger.getLogger(EnrollmentFeed.class);
-/*
-	private static String feedType = null;
-	
-	private transient NewsService newsService;
+
+	private transient EnrollmentService enrollmentService;
 	
 	private transient SystemService systemService;
 	
-	private transient EnrollmentService enrollmentService;
+	private transient NewsService newsService;
+	
+	public static final Logger logger = Logger.getLogger(EnrollmentFeed.class);
 
 	private FeedWrapper buildFeedArray(EnrollmentInfo enrollment) {
 		final List entries = new ArrayList();
@@ -49,13 +45,16 @@ public class EnrollmentFeed{
 	    
 		Iterator i = newsEntries.iterator();
 		NewsItemInfo newsItem;
+		String link;
 		while (i.hasNext()) {  
 			newsItem = (NewsItemInfo) i.next();
-			String link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL)+"views/public/news/newsDetail.faces?news="+newsItem.getId();
+			link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/public/news/newsDetail.faces?news="+newsItem.getId();
 			this.addEntry(entries, newsItem.getTitle(), link, newsItem.getPublishDate(), newsItem.getText(), enrollment.getName(), newsItem.getPublisherName());
 		}
-
-		feedWrapper.setWriter(this.convertToXml(enrollment.getName(), "http://localhost:8080/openuss-plexus/rss/feed.xml?enrollment=14074", enrollment.getDescription(), "Copyright OpenUSS", entries));
+		
+		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/enrollment/main.faces?"+enrollment.getId();
+		
+		feedWrapper.setWriter(this.convertToXml(enrollment.getName(), link, enrollment.getDescription(), systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
 		newsItem = (NewsItemInfo) newsEntries.get(newsEntries.size()-1);
 		feedWrapper.setLastModified(newsItem.getPublishDate());
 		return feedWrapper;
@@ -76,7 +75,7 @@ public class EnrollmentFeed{
 	        entry.setLink(link);
 	        entry.setPublishedDate(date);
 	        description = new SyndContentImpl();
-	        description.setType("text/plain");
+	        description.setType(TEXT_HTML);
 	        description.setValue(blogContent);
 	        entry.setDescription(description);
 		    category = new SyndCategoryImpl();
@@ -93,16 +92,17 @@ public class EnrollmentFeed{
 		
 	}	
 	
-	private Writer convertToXml(String title, String link, String description_loc, String copyright, List entries) {
+	private Writer convertToXml(String title, String link, String description, String copyright, List entries) {
             try {
  
                 final SyndFeed feed = new SyndFeedImpl();
-                feed.setEncoding("ISO-8859-1");
+                feed.setEncoding(ISO_8859_1);
                 feed.setTitle(title);
                 feed.setLink(link);
-                feed.setDescription("testDescription");
+                if (description==null) feed.setDescription("");
+                else if (description != null)feed.setDescription(description);
                 feed.setCopyright(copyright);
-                feed.setFeedType("rss_2.0");
+                feed.setFeedType(RSS_2_0);
                 feed.setEntries(entries);
                 
                 final Writer writer = new StringWriter();
@@ -120,9 +120,8 @@ public class EnrollmentFeed{
 	
     /**
      * @see org.openuss.feed.FeedService#getRssFeedForEnrollment(org.openuss.lecture.EnrollmentInfo)
-     *//*
-    protected FeedWrapper getFeed(Long enrollmentId)
-        throws java.lang.Exception
+     */
+    public FeedWrapper getFeed(Long enrollmentId)        
     {
     	if (enrollmentId==null||enrollmentId==0) return null;
     	Enrollment e = Enrollment.Factory.newInstance();
@@ -155,6 +154,6 @@ public class EnrollmentFeed{
 
 	public void setEnrollmentService(EnrollmentService enrollmentService) {
 		this.enrollmentService = enrollmentService;
-	}*/
+	}
 
 }
