@@ -11,6 +11,8 @@ import org.openuss.security.User;
  */
 public class RecipientMock implements Recipient {
 
+	private static final long serialVersionUID = 1626941589497304940L;
+	
 	private Long id;
 	private MessageJob job;
 	private String email;
@@ -18,6 +20,7 @@ public class RecipientMock implements Recipient {
 	private String locale;
 	private SendState state;
 	private Date send;
+	private boolean smsNotification;
 
 	public String getEmail() {
 		return email;
@@ -80,6 +83,14 @@ public class RecipientMock implements Recipient {
 	}
 
 	public void setUser(User user) {
+	}
+
+	public boolean hasSmsNotification() {
+		return smsNotification;
+	}
+
+	public void setSmsNotification(boolean smsNotification) {
+		this.smsNotification = smsNotification;
 	}
 
 }

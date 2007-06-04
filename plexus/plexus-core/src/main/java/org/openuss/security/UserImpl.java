@@ -172,4 +172,9 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		return null;
 	}
 
+	@Override
+	public boolean hasSmsNotification() {
+		return StringUtils.isNotBlank(getSmsEmail());
+	}
+
 }
