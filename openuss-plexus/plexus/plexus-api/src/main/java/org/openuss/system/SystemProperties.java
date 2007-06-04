@@ -12,5 +12,6 @@ public interface SystemProperties {
 	public static final String MAIL_HOST_USR = "mail.host.user";
 	public static final String MAIL_HOST_PWD = "mail.host.password";
 	public static final String OPENUSS_SERVER_URL = "openuss.server.url";
+	public static final String COPYRIGHT = "openuss.copyright";
 		
 }
