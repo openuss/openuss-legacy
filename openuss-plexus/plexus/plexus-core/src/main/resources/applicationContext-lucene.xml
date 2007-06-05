@@ -162,7 +162,7 @@
 
 	<bean id="lectureDirectory"
 		class="org.springmodules.lucene.index.support.FSDirectoryFactoryBean">
-		<property name="create" value="false" />
+		<property name="create" value="create" />
 		<property name="location" value="file:${java.io.tmpdir}/lucene/lecture" />
 	</bean>
 
