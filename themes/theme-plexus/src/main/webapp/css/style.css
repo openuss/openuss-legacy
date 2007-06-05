@@ -677,8 +677,12 @@ ul.navigation li ul li ul li.active_item a:hover{
 	text-decoration: underline; font-weight: none;
 }
 
-#center ul{
+#center .content_box ul{
 	margin: 0;
+}
+
+#center ul{
+	margin: 10px 0 10px 0;
 }
 
 #center a{
