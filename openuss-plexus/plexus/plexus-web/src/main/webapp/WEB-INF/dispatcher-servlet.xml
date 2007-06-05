@@ -23,4 +23,16 @@
 		<property name="lectureService"><ref bean="lectureService"/></property>
 	</bean>
 
+	<bean name="discussionFeed" class="org.openuss.web.feeds.DiscussionFeed">	
+		<property name="discussionService"><ref bean="discussionService"/></property>
+		<property name="systemService"><ref bean="systemService"/></property>
+		<property name="enrollmentService"><ref bean="enrollmentService"/></property>
+	</bean>
+
+	<bean name="mailingListFeed" class="org.openuss.web.feeds.MailingListFeed">	
+		<property name="enrollmentMailingListService"><ref bean="enrollmentMailingListService"/></property>
+		<property name="systemService"><ref bean="systemService"/></property>
+		<property name="enrollmentService"><ref bean="enrollmentService"/></property>
+	</bean>
+
 </beans>
