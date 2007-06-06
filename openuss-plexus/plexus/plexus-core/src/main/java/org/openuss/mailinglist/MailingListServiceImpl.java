@@ -176,6 +176,7 @@ public class MailingListServiceImpl extends org.openuss.mailinglist.MailingListS
 
 		}
 		mail.setCommandId(getCommandService().createOnceCommand(mail, MAIL_SENDING_COMMAND, mail.getSendDate(), null));
+		mailDetail.setId(mail.getId());
 	}
 
 	@Override

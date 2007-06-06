@@ -225,12 +225,12 @@ public class MailDaoImpl extends MailDaoBase
 	
     public java.util.List findNotDeletedByStatus(final int transform, final org.openuss.mailinglist.MailingList mailingList)
     {
-        return this.findNotDeletedByStatus(transform, "from org.openuss.mailinglist.Mail as m where m.mailingList = :mailingList and m.status = org.openuss.mailinglist.MailingStatus.SEND and m.status <> org.openuss.mailinglist.MailingStatus.DELETED", mailingList);
+        return this.findNotDeletedByStatus(transform, "from org.openuss.mailinglist.Mail as m where m.mailingList = :mailingList and m.status <> org.openuss.mailinglist.MailingStatus.DELETED", mailingList);
     }
 
     public java.util.List findByMailingListWithoutDeleted(final int transform, final org.openuss.mailinglist.MailingList mailingList)
     {
-        return this.findByMailingListWithoutDeleted(transform, "from org.openuss.mailinglist.Mail as m where m.mailingList = :mailingList and m.status <> org.openuss.mailinglist.MailingStatus.DELETED", mailingList);
+        return this.findByMailingListWithoutDeleted(transform, "from org.openuss.mailinglist.Mail as m where m.mailingList = :mailingList and m.status = org.openuss.mailinglist.MailingStatus.SEND", mailingList);
     }
 
 
