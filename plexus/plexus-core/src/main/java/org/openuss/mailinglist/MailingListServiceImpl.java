@@ -90,7 +90,8 @@ public class MailingListServiceImpl extends org.openuss.mailinglist.MailingListS
 		m.setMailingList(ml);
 		m.setStatus(MailingStatus.DRAFT);
 		getMailDao().create(m);
-		getSecurityService().createObjectIdentity(m, mailingList);
+		mail.setId(m.getId());
+		getSecurityService().createObjectIdentity(m, mailingList.getDomainIdentifier());
 	}
 
 	/**
@@ -126,12 +127,12 @@ public class MailingListServiceImpl extends org.openuss.mailinglist.MailingListS
 	protected List handleGetMails(MailingListInfo mailingList, boolean withDeleted) throws Exception {
 		MailingList ml = loadMailingList(mailingList);
 		if (withDeleted) {
-			if (!getSecurityService().hasPermission(mailingList, new Integer[] { LectureAclEntry.ASSIST })) {
+			if (getSecurityService().hasPermission(mailingList, new Integer[] { LectureAclEntry.ASSIST })) {
 				return getMailDao().findMailByMailingListAndStatus(MailDao.TRANSFORM_MAILINFO, ml);
 			}
 			return getMailDao().findMailByMailingList(MailDao.TRANSFORM_MAILINFO, ml);
 		} else if (!withDeleted) {
-			if (!getSecurityService().hasPermission(mailingList, new Integer[] { LectureAclEntry.ASSIST })) {
+			if (getSecurityService().hasPermission(mailingList, new Integer[] { LectureAclEntry.ASSIST })) {
 				return getMailDao().findNotDeletedByStatus(MailDao.TRANSFORM_MAILINFO, ml);
 			}
 		}
@@ -171,7 +172,7 @@ public class MailingListServiceImpl extends org.openuss.mailinglist.MailingListS
 			MailingList ml = loadMailingList(mailingList);
 			mail.setMailingList(ml);
 			getMailDao().create(mail);
-			getSecurityService().createObjectIdentity(mail, mailingList);
+			getSecurityService().createObjectIdentity(mail, mailingList.getDomainIdentifier());
 
 		}
 		mail.setCommandId(getCommandService().createOnceCommand(mail, MAIL_SENDING_COMMAND, mail.getSendDate(), null));
@@ -179,26 +180,22 @@ public class MailingListServiceImpl extends org.openuss.mailinglist.MailingListS
 
 	@Override
 	protected void handleAddMailingList(DomainObject domainObject, String name) throws Exception {
-		MailingList mailingList = getMailingListDao().load(domainObject.getId());
-		if (mailingList == null) {
-			mailingList = MailingList.Factory.newInstance();
-			mailingList.setId(domainObject.getId());
-			mailingList.setName(name);
-			getMailingListDao().create(mailingList);
-		}
+		MailingList mailingList = MailingList.Factory.newInstance();
+		mailingList.setDomainIdentifier(domainObject.getId());
+		mailingList.setName(name);
+		getMailingListDao().create(mailingList);
 	}
 
 	@Override
 	protected MailingListInfo handleGetMailingList(DomainObject domainObject) throws Exception {
-		MailingList ml = getMailingListDao().load(domainObject.getId());
-		MailingListInfo mlInfo = null;
-		if (ml != null)
-			mlInfo = getMailingListDao().toMailingListInfo(ml);
-		if (getSubscriberDao().findByUserAndMailingList(getSecurityService().getCurrentUser(), ml) != null) {
-			mlInfo.setSubscribed(true);
+		List mailingLists = getMailingListDao().findByDomainIdentifier(domainObject.getId());
+		if (mailingLists == null||mailingLists.size()==0){
+			return null;
 		}
-		return mlInfo;
-
+		//return first mailinglist of all, at the moment it is 
+		//supposed that there is just 1 mailinglist per domain object 
+		MailingListInfo ml = getMailingListDao().toMailingListInfo((MailingList)mailingLists.get(0)); 
+		return ml;
 	}
 
 	@Override
@@ -263,6 +260,15 @@ public class MailingListServiceImpl extends org.openuss.mailinglist.MailingListS
 		} else {
 			throw new MailingListApplicationException("mailing_cannot_be_canceled");
 		}
+	}
+
+	@Override
+	protected void handleMarkAsSend(MailInfo mail) throws Exception {
+		Validate.notNull(mail);
+		Validate.notNull(mail.getId());
+		MailDetail mailDetail =	(MailDetail) getMailDao().load(getMailDao().TRANSFORM_MAILDETAIL, mail.getId());
+		mailDetail.setStatus(MailingStatus.SEND);
+		getMailDao().update(getMailDao().mailDetailToEntity(mailDetail));
 	}
 
 }
