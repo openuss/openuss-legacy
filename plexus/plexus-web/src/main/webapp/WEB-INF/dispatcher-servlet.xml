@@ -15,6 +15,10 @@
 		<property name="discussionFeed"><ref bean="discussionFeed"/></property>
 	</bean>
 
+	<bean name="/secured/mailinglist.xml*" class="org.openuss.web.servlets.feedservlets.MailingListFeedController">	
+		<property name="mailingListFeed"><ref bean="mailingListFeed"/></property>
+	</bean>
+
 	<bean name="enrollmentFeed" class="org.openuss.web.feeds.EnrollmentFeed">	
 		<property name="newsService"><ref bean="newsService"/></property>
 		<property name="systemService"><ref bean="systemService"/></property>

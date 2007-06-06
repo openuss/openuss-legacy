@@ -57,7 +57,7 @@ public class MailingListFeed extends AbstractFeed{
 		
 		feedWrapper.setWriter(this.convertToXml(enrollment.getName(), link, enrollment.getDescription(), systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
 		//TODO check sorting
-		mailDetail = (MailDetail) mails.get(mails.size()-1);
+		mailDetail = getEnrollmentMailingListService().getMail((MailInfo)mails.get(mails.size()-1));
 		feedWrapper.setLastModified(mailDetail.getSendDate());
 		return feedWrapper;
 	}	
