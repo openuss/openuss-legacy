@@ -454,12 +454,7 @@
 	
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>
-		<url-pattern>/rss/public/*</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>dispatcher</servlet-name>
-		<url-pattern>/rss/secured/*</url-pattern>
+		<url-pattern>/rss/*</url-pattern>
 	</servlet-mapping>
 	
 <!--
