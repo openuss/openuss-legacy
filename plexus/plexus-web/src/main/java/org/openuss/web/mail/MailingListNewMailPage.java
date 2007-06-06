@@ -32,12 +32,16 @@ public class MailingListNewMailPage extends AbstractMailingListPage{
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		if (mail.getId() == null) setMail(null);
 		if (mail==null){
 			addError(i18n("mailinglist_mailaccess_impossible"));
 			redirect(Constants.MAILINGLIST_MAIN);
 			return;
 		}			
+		if (mail.getId() == null) {
+			addError(i18n("mailinglist_mailaccess_impossible"));
+			redirect(Constants.MAILINGLIST_MAIN);
+			return;
+		}
 		if (mail.getId()!=null){
 			MailInfo mi = new MailInfo(); 
 			mi.setId(mail.getId());

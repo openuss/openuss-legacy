@@ -18,12 +18,13 @@ import org.openuss.web.Constants;
 public class ShowMailPage extends AbstractMailingListPage{
 	@Prerender
 	public void prerender() throws Exception {
-		if (mail.getId() == null) setMail(null);
+		super.prerender();
 		if (mail==null){
 			addError(i18n("mailinglist_mailaccess_impossible"));
 			redirect(Constants.MAILINGLIST_MAIN);
 			return;
 		}			
+		if (mail.getId() == null) setMail(null);
 		if (mail.getId()!=null){
 			MailInfo mi = new MailInfo(); 
 			mi.setId(mail.getId());
