@@ -24,6 +24,7 @@ public class DiscussionFeedController implements Controller{
 	public ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		Long enrollmentId = Long.parseLong(req.getParameter("enrollment"));
 		String modifiedSince = req.getParameter("If-Modified-Since");
+		logger.debug("handling rss request");
 		
 		if (enrollmentId!=null) {
 			FeedWrapper  feedWrapper = discussionFeed.getFeed(enrollmentId);

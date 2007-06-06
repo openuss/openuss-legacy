@@ -12,6 +12,7 @@
     <plexus:dataTable id="discussionsThreadTable" label="#{msg.discussion_main_header}" 
     	value="views$secured$discussion$discussionthread.data" var="post" rows="10">
 		<t:column styleClass="col_post_author">
+			<a name="#{post.id}"></a>
 			<f:facet name="header">  
 				#{msg['discussion_thread_column_author']} 
 			</f:facet>
