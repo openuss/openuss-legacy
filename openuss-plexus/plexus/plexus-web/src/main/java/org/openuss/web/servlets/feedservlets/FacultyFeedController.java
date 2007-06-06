@@ -1,4 +1,4 @@
-package org.openuss.web.servlets;
+package org.openuss.web.servlets.feedservlets;
 
 import java.text.DateFormat;
 import java.text.ParseException;

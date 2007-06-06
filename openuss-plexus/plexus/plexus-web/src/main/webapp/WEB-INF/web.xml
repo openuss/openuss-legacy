@@ -213,6 +213,13 @@
 
 	<filter-mapping>
 		<filter-name>openSessionInViewFilter</filter-name>
+		<url-pattern>/rss/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>openSessionInViewFilter</filter-name>
 		<url-pattern>/files/*</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
@@ -269,6 +276,13 @@
 	
 	<filter-mapping>
 		<filter-name>Acegi Security Chain Filter</filter-name>
+		<url-pattern>/rss/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>Acegi Security Chain Filter</filter-name>
 		<url-pattern>/files/*</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
@@ -309,10 +323,12 @@
 			<param-name>uploadThresholdSize</param-name>
 			<param-value>256k</param-value>
 		</init-param>
+		<!-- 
 		<init-param>
 			<param-name>uploadRepositoryPath</param-name>
 			<param-value>/temp</param-value>
 		</init-param>
+		 -->
 	</filter>
 	
 	<filter-mapping>
@@ -438,7 +454,12 @@
 	
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>
-		<url-pattern>/rss/*</url-pattern>
+		<url-pattern>/rss/public/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/rss/secured/*</url-pattern>
 	</servlet-mapping>
 	
 <!--
