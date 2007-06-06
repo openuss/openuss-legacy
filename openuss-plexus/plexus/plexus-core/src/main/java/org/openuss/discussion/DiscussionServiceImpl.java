@@ -61,6 +61,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		getPostDao().toPostInfo(topic.getFirst(), postInfo);
 		
 		sendNotificationsToForumWatchers(topic, topic.getForum());
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -122,6 +123,8 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 
 		addPostToTopicAndPersist(topic, post);
 		
+		getSecurityService().createObjectIdentity(post, topicInfo.getId());
+
 		getDocumentService().diffSave(post, postInfo.getAttachments());
 		
 		sendNotifications(topic, topic.getForum());
@@ -129,7 +132,6 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		getTrackingService().setRead(topic);
 		
 		getPostDao().toPostInfo(post, postInfo);
-		
 		
 	}
 	
@@ -162,8 +164,6 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		topic.addPost(post);
 		getPostDao().create(post);
 		getTopicDao().update(topic);
-
-		getSecurityService().createObjectIdentity(post, topic);
 	}
 
 	/**
@@ -179,13 +179,12 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 				removeTopic(topic);
 			} else {
 				getDocumentService().remove(post);
-				getSecurityService().removeObjectIdentity(post);
-				
+				getSecurityService().removeObjectIdentity(postInfo);
 				getTopicDao().update(topic);
 				getPostDao().remove(post);
 			}
 		}
-
+		
 	}
 
 	/**
