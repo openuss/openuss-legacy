@@ -41,9 +41,11 @@ public class MailingListServiceIntegrationTest extends MailingListServiceIntegra
 		AcegiUtils.setAclManager(aclManager);
 		user = testUtility.createSecureContext();
 		DomainObject assistDO = generateDOAssist(user);
+		commit();
 		getMailingListService().addMailingList(assistDO, "assistML"); 
 		assist = getMailingListService().getMailingList(assistDO);
 		DomainObject noAssistDO = generateDomainObject();
+		commit();
 		getMailingListService().addMailingList(noAssistDO, "noAssistML"); 
 		noAssist = getMailingListService().getMailingList(noAssistDO);
 	}
@@ -135,12 +137,15 @@ public class MailingListServiceIntegrationTest extends MailingListServiceIntegra
 	public void testGetMails(){
 		MailDetail mail = generateMailToSend();		
 		getMailingListService().saveMail(assist, mail);
+		MailInfo mailInfo = new MailInfo();
+		mailInfo.setId(mail.getId());
+		getMailingListService().markAsSend(mailInfo);
 		commit();
 		List mails = getMailingListService().getMails(assist, false);
 		assertNotNull(mails);
 		assertEquals(1, mails.size());
 		MailDetail md = getMailingListService().getMail((MailInfo)mails.get(0));
-		assertEquals(MailingStatus.DRAFT, md.getStatus());
+		assertEquals(MailingStatus.SEND, md.getStatus());
 		assertEquals(mail.getSubject(), md.getSubject());
 		assertEquals(mail.getText(), md.getText());
 		assertEquals(mail.getSendDate(), md.getSendDate());
@@ -151,12 +156,15 @@ public class MailingListServiceIntegrationTest extends MailingListServiceIntegra
 	public void testDeleteMail(){
 		MailDetail mail = generateMailToSend();		
 		getMailingListService().saveMail(assist, mail);
+		MailInfo mailInfo = new MailInfo();
+		mailInfo.setId(mail.getId());
+		getMailingListService().markAsSend(mailInfo);
 		commit();
 		List mails = getMailingListService().getMails(assist, false);
 		assertNotNull(mails);
 		assertEquals(1, mails.size());
 		MailDetail md = getMailingListService().getMail((MailInfo)mails.get(0));
-		assertEquals(MailingStatus.DRAFT, md.getStatus());
+		assertEquals(MailingStatus.SEND, md.getStatus());
 		assertEquals(mail.getSubject(), md.getSubject());
 		assertEquals(mail.getText(), md.getText());
 		assertEquals(mail.getSendDate(), md.getSendDate());
