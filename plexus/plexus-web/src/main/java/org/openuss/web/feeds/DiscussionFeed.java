@@ -15,6 +15,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openuss.discussion.DiscussionService;
+import org.openuss.discussion.ForumInfo;
+import org.openuss.discussion.Topic;
+import org.openuss.discussion.TopicInfo;
 import org.openuss.lecture.Enrollment;
 import org.openuss.lecture.EnrollmentInfo;
 import org.openuss.lecture.EnrollmentService;
@@ -38,28 +41,31 @@ public class DiscussionFeed extends AbstractFeed{
 	private transient DiscussionService discussionService;
 	
 	public static final Logger logger = Logger.getLogger(DiscussionFeed.class);
-/*
+
 	private FeedWrapper buildFeedArray(EnrollmentInfo enrollment) {
 		final List entries = new ArrayList();
-		List newsEntries = getNewsService().getNewsItems(enrollment);
-		Collections.reverse(newsEntries);
-		if (newsEntries==null||newsEntries.size()==0) return null;
+		ForumInfo forum = getDiscussionService().getForum(enrollment);
+		
+		List<Topic> topics = getDiscussionService().getTopics(forum);
+		
+		if (topics==null||topics.size()==0) return null;
+		
 		FeedWrapper feedWrapper = new FeedWrapper();
 	    
-		Iterator i = newsEntries.iterator();
-		NewsItemInfo newsItem;
+		Iterator i = topics.iterator();
+		TopicInfo topic;
 		String link;
 		while (i.hasNext()) {  
-			newsItem = (NewsItemInfo) i.next();
-			link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/public/news/newsDetail.faces?news="+newsItem.getId();
-			this.addEntry(entries, newsItem.getTitle(), link, newsItem.getPublishDate(), newsItem.getText(), enrollment.getName(), newsItem.getPublisherName());
+			topic = (TopicInfo) i.next();
+			link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/public/news/newsDetail.faces?news="+topic.getId();
+			//this.addEntry(entries, newsItem.getTitle(), link, newsItem.getPublishDate(), newsItem.getText(), enrollment.getName(), newsItem.getPublisherName());
 		}
 		
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/enrollment/main.faces?"+enrollment.getId();
 		
 		feedWrapper.setWriter(this.convertToXml(enrollment.getName(), link, enrollment.getDescription(), systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
-		newsItem = (NewsItemInfo) newsEntries.get(newsEntries.size()-1);
-		feedWrapper.setLastModified(newsItem.getPublishDate());
+		//newsItem = (NewsItemInfo) newsEntries.get(newsEntries.size()-1);
+		//feedWrapper.setLastModified(newsItem.getPublishDate());
 		return feedWrapper;
 	}	
 	
@@ -120,8 +126,8 @@ public class DiscussionFeed extends AbstractFeed{
             }
             return null;
 	}	
-	*/
-    /**
+
+	/**
      * @see org.openuss.feed.FeedService#getRssFeedForEnrollment(org.openuss.lecture.EnrollmentInfo)
      */
     public FeedWrapper getFeed(Long enrollmentId)        

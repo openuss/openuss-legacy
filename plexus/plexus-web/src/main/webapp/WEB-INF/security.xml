@@ -93,6 +93,8 @@
 				/views/secured/**=ROLE_USER, ROLE_ASSISTANT
 				/views/**=ROLE_ADMIN
 				/files/**=ROLE_USER
+				/rss/public/**=ROLE_ANONYMOUS, ROLE_USER
+				/rss/secured/**=ROLE_USER
 			</value>
 		</property>
 	</bean>

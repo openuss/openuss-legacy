@@ -3,11 +3,11 @@
 
 <beans>
 
-	<bean name="/enrollment.xml*" class="org.openuss.web.servlets.EnrollmentFeedController">	
+	<bean name="/enrollment.xml*" class="org.openuss.web.servlets.feedservlets.EnrollmentFeedController">	
 		<property name="enrollmentFeed"><ref bean="enrollmentFeed"/></property>
 	</bean>
 	
-	<bean name="/faculty.xml*" class="org.openuss.web.servlets.FacultyFeedController">	
+	<bean name="/faculty.xml*" class="org.openuss.web.servlets.feedservlets.FacultyFeedController">	
 		<property name="facultyFeed"><ref bean="facultyFeed"/></property>
 	</bean>
 
