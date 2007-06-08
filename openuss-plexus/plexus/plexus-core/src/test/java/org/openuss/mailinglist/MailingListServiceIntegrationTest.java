@@ -179,32 +179,35 @@ public class MailingListServiceIntegrationTest extends MailingListServiceIntegra
 	}
 	
 	public void testSendMail(){
-	/*	MailDetail mail = generateMailToSend();		
+		MailDetail mail = generateMailToSend();		
 		getMailingListService().sendMail(assist, mail);
 		commit();
-		List mails = getMailingListService().getMails(assist, false);
 		MailInfo mailInfo = new MailInfo();
 		mailInfo.setId(mail.getId());
 		getMailingListService().markAsSend(mailInfo);
 		commit();
+		List mails = getMailingListService().getMails(assist, false);
 		assertNotNull(mails);
 		assertEquals(1, mails.size());
 		MailDetail md = getMailingListService().getMail((MailInfo)mails.get(0));
-		assertEquals(MailingStatus.PLANNED, md.getStatus());
+		assertEquals(MailingStatus.SEND, md.getStatus());
 		assertEquals(mail.getSubject(), md.getSubject());
 		assertEquals(mail.getText(), md.getText());
 		assertEquals(mail.getSendDate(), md.getSendDate());
 		//generate draft, then send draft
 		MailDetail mailDraft = generateMailToSend();
 		getMailingListService().saveMail(assist, mailDraft);
-		MailDetail loadedDraft = getMailingListService().getMail((MailInfo)getMailingListService().getMails(assist, false).get(1));
+		mailInfo = new MailInfo(); 
+		mailInfo.setId(mailDraft.getId());
+		MailDetail loadedDraft = getMailingListService().getMail(mailInfo);
 		assertNotNull(loadedDraft);
 		assertNotNull(loadedDraft.getId());
 		getMailingListService().sendMail(assist, loadedDraft);
+		getMailingListService().markAsSend(mailInfo);
 		MailDetail loadedSendMessage = getMailingListService().getMail((MailInfo)getMailingListService().getMails(assist, false).get(1));
-		assertEquals(MailingStatus.PLANNED, loadedSendMessage.getStatus());
+		assertEquals(MailingStatus.SEND, loadedSendMessage.getStatus());
 		assertEquals(mailDraft.getSubject(), loadedSendMessage.getSubject());
-		assertEquals(mailDraft.getText(), loadedSendMessage.getText());*/
+		assertEquals(mailDraft.getText(), loadedSendMessage.getText());
 	}
 
 	private DomainObject generateDomainObject(){
