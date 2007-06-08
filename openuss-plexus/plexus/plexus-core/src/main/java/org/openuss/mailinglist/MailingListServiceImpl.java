@@ -127,12 +127,12 @@ public class MailingListServiceImpl extends org.openuss.mailinglist.MailingListS
 	protected List handleGetMails(MailingListInfo mailingList, boolean withDeleted) throws Exception {
 		MailingList ml = loadMailingList(mailingList);
 		if (withDeleted) {
-			if (getSecurityService().hasPermission(mailingList, new Integer[] { LectureAclEntry.ASSIST })) {
+			if (getSecurityService().hasPermission(mailingList.getDomainIdentifier(), new Integer[] { LectureAclEntry.ASSIST })) {
 				return getMailDao().findMailByMailingListAndStatus(MailDao.TRANSFORM_MAILINFO, ml);
 			}
 			return getMailDao().findMailByMailingList(MailDao.TRANSFORM_MAILINFO, ml);
 		} else if (!withDeleted) {
-			if (getSecurityService().hasPermission(mailingList, new Integer[] { LectureAclEntry.ASSIST })) {
+			if (getSecurityService().hasPermission(mailingList.getDomainIdentifier(), new Integer[] { LectureAclEntry.ASSIST })) {
 				return getMailDao().findNotDeletedByStatus(MailDao.TRANSFORM_MAILINFO, ml);
 			}
 		}
