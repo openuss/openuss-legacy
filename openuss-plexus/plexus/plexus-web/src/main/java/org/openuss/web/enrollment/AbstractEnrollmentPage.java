@@ -38,6 +38,7 @@ public class AbstractEnrollmentPage extends BasePage {
 		if ((enrollment == null)||(enrollmentInfo == null)) {
 			addMessage(i18n("message_error_enrollment_page"));
 			redirect(Constants.OUTCOME_BACKWARD);
+			return;
 		} else {
 			setSessionBean(Constants.ENROLLMENT, enrollment);
 			setSessionBean(Constants.ENROLLMENT_INFO, enrollmentInfo);
