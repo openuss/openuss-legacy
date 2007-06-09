@@ -38,7 +38,7 @@ public class FacultyFeed extends AbstractFeed{
 				this.addEntry(entries, newsItem.getTitle(), link, newsItem.getPublishDate(), newsItem.getText(), faculty.getName(), newsItem.getPublisherName());
 			}
 			
-			link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/enrollment/main.faces?"+faculty.getId();
+			link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/faculty.faces?faculty="+faculty.getId();
 			
 			feedWrapper.setWriter(this.convertToXml(faculty.getName(), link, faculty.getDescription(), systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
 			newsItem = (NewsItemInfo) newsEntries.get(newsEntries.size()-1);
