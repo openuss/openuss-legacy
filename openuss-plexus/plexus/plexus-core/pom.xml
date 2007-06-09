@@ -224,13 +224,5 @@
 			<groupId>org.springmodules</groupId>
 			<artifactId>spring-modules-lucene</artifactId>
 		</dependency>	
-		<dependency>
-		    <groupId>rome</groupId>
-		    <artifactId>rome</artifactId>
-		</dependency>
-		<dependency>
-		    <groupId>jdom</groupId>
-		    <artifactId>jdom</artifactId>
-		</dependency>
 	</dependencies>
 </project>
