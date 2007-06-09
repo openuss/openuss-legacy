@@ -18,7 +18,7 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.SyndFeedOutput;
 
-public class AbstractFeed {
+public abstract class AbstractFeed {
 
 	public static final String RSS_2_0 = "rss_2.0";
 
