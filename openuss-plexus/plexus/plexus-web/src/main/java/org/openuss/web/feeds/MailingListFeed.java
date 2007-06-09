@@ -6,6 +6,7 @@
 package org.openuss.web.feeds;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -32,28 +33,30 @@ public class MailingListFeed extends AbstractFeed{
 
 	private FeedWrapper buildFeedArray(EnrollmentInfo enrollment) {
 		final List entries = new ArrayList();
-		List mails = getEnrollmentMailingListService().getMails(enrollment);
-		if (mails==null||mails.size()==0) return null;
-		FeedWrapper feedWrapper = new FeedWrapper();
-	    
-		Iterator i = mails.iterator();
 		MailInfo mailInfo;
 		MailDetail mailDetail;
 		String link;
-		while (i.hasNext()) {  
-			mailInfo = (MailInfo) i.next();
-			link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/public/mailinglist/showmail.faces?mail="+mailInfo.getId();
-			mailDetail = getEnrollmentMailingListService().getMail(mailInfo);
-			this.addEntry(entries, mailDetail.getSubject(), link, mailDetail.getSendDate(), mailDetail.getText(), enrollment.getName(), enrollment.getName());
-		}
-		
-		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/enrollment/main.faces?"+enrollment.getId();
+		FeedWrapper feedWrapper = new FeedWrapper();
+		List mails = getEnrollmentMailingListService().getMails(enrollment);
+
+		if (mails!=null&&mails.size()!=0){ 
+			Collections.reverse(mails);
+			Iterator i = mails.iterator();
+			while (i.hasNext()) {  
+				mailInfo = (MailInfo) i.next();
+				link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/public/mailinglist/showmail.faces?mail="+mailInfo.getId();
+				mailDetail = getEnrollmentMailingListService().getMail(mailInfo);
+				this.addEntry(entries, mailDetail.getSubject(), link, mailDetail.getSendDate(), mailDetail.getText(), enrollment.getName(), enrollment.getName());
+			}
+			mailDetail = getEnrollmentMailingListService().getMail((MailInfo)mails.get(0));
+			feedWrapper.setLastModified(mailDetail.getSendDate());
+		}	
+			
+		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/mailinglist/mailinglist.faces?enrollment="+enrollment.getId();
 		
 		feedWrapper.setWriter(this.convertToXml(enrollment.getName(), link, enrollment.getDescription(), systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
-		//TODO check sorting
-		mailDetail = getEnrollmentMailingListService().getMail((MailInfo)mails.get(mails.size()-1));
-		feedWrapper.setLastModified(mailDetail.getSendDate());
-		return feedWrapper;
+		
+		return feedWrapper;		
 	}	
 	
     /**
