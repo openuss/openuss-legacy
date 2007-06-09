@@ -30,7 +30,10 @@
 		<ui:define name="sidebar"> 
 			<ui:include src="/views/commons/sidebar/facultyoptions.xhtml" />
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
-		</ui:define>		
+		</ui:define>	
+		<ui:define name="sidebar"> 
+			<ui:include src="/views/commons/sidebar/feeds/facultyfeed.xhtml" />
+		</ui:define>			
   		<ui:define name="content"> 
 				<h:form id="facultyMainForm" rendered="${!empty faculty.periods}">
 					<o:block>
