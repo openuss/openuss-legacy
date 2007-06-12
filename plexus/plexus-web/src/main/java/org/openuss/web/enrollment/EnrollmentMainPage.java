@@ -28,11 +28,12 @@ public class EnrollmentMainPage extends AbstractEnrollmentPage{
 
 	private List<EnrollmentMemberInfo> assistants = new ArrayList<EnrollmentMemberInfo>();
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		assistants = enrollmentService.getAssistants(enrollment);
+		assistants = enrollmentService.getAssistants(enrollmentInfo);
 	}
 	
 
@@ -46,14 +47,14 @@ public class EnrollmentMainPage extends AbstractEnrollmentPage{
 	
 	public String applyWithPassword() throws EnrollmentApplicationException{
 		logger.debug("enrollment entry with password applied");
-		enrollmentService.applyUserByPassword(password, enrollment, user);
+		enrollmentService.applyUserByPassword(password, enrollmentInfo, user);
 		addMessage(i18n("message_enrollment_password_accepted"));
 		return Constants.SUCCESS;
 	}
 	
 	public String apply() throws EnrollmentApplicationException{
 		logger.debug("enrollment entry applied");
-		enrollmentService.applyUser(enrollment, user);
+		enrollmentService.applyUser(enrollmentInfo, user);
 		addMessage(i18n("message_enrollment_send_application"));
 		return Constants.SUCCESS;
 	}
