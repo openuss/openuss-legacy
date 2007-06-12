@@ -8,14 +8,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.log4j.Logger;
+import org.openuss.lecture.EnrollmentInfo;
 import org.openuss.web.feeds.DiscussionFeed;
 import org.openuss.web.feeds.FeedWrapper;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
-public class DiscussionFeedController implements Controller{
-
-	private static final String DATE_FORMAT = "EEE, dd MMM yyyy hh:mm:ss zzz";
+public class DiscussionFeedController extends AbstractFeedServlet implements Controller{
 
 	private static Logger logger = Logger.getLogger(DiscussionFeedController.class);
 	
@@ -23,10 +22,16 @@ public class DiscussionFeedController implements Controller{
 	
 	public ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		Long enrollmentId = Long.parseLong(req.getParameter("enrollment"));
-		String modifiedSince = req.getParameter("If-Modified-Since");
-		logger.debug("handling rss request");
+		String modifiedSince = req.getParameter(IF_MODIFIED_SINCE);
 		
 		if (enrollmentId!=null) {
+			EnrollmentInfo enrollment = new EnrollmentInfo();
+			enrollment.setId(enrollmentId);
+			if (!checkEnrollmentAccess(enrollment)){
+				res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+				return null;
+			}
+		
 			FeedWrapper  feedWrapper = discussionFeed.getFeed(enrollmentId);
 			if (feedWrapper==null){
 				res.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -43,10 +48,12 @@ public class DiscussionFeedController implements Controller{
 					logger.debug("Malformed header information");
 				}
 			}
-			res.setContentType("application/rss+xml");
+			res.setContentType(APPLICATION_RSS_XML);
 			res.getWriter().write(feedWrapper.getWriter().toString());
-			String lastModified = DateFormatUtils.format(feedWrapper.getLastModified(), DATE_FORMAT);
-			res.setHeader("Last-Modified", lastModified);
+			if (feedWrapper.getLastModified()!=null){
+				String lastModified = DateFormatUtils.format(feedWrapper.getLastModified(), DATE_FORMAT);
+				res.setHeader(LAST_MODIFIED, lastModified);
+			}
 			return null;
 		}
 		res.sendError(HttpServletResponse.SC_NOT_FOUND);

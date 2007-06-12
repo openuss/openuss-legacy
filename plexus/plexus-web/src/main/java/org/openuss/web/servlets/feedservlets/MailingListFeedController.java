@@ -16,15 +16,13 @@ import org.springframework.web.servlet.mvc.Controller;
 
 public class MailingListFeedController extends AbstractFeedServlet implements Controller{
 
-	private static final String DATE_FORMAT = "EEE, dd MMM yyyy hh:mm:ss zzz";
-
 	private static Logger logger = Logger.getLogger(MailingListFeedController.class);
 	
 	private MailingListFeed mailingListFeed;
 	
 	public ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		Long enrollmentId = Long.parseLong(req.getParameter("enrollment"));
-		String modifiedSince = req.getParameter("If-Modified-Since");
+		String modifiedSince = req.getParameter(IF_MODIFIED_SINCE);
 		
 		if (enrollmentId!=null) {
 			EnrollmentInfo enrollment = new EnrollmentInfo();
@@ -49,12 +47,12 @@ public class MailingListFeedController extends AbstractFeedServlet implements Co
 					logger.debug("Malformed header information");
 				}
 			}
-			res.setContentType("application/rss+xml");
+			res.setContentType(APPLICATION_RSS_XML);
 			res.getWriter().write(feedWrapper.getWriter().toString());
 			
 			if (feedWrapper.getLastModified()!=null){
 				String lastModified = DateFormatUtils.format(feedWrapper.getLastModified(), DATE_FORMAT);
-				res.setHeader("Last-Modified", lastModified);
+				res.setHeader(LAST_MODIFIED, lastModified);
 			}
 			return null;
 		}
