@@ -5,10 +5,15 @@
  */
 package org.openuss.lecture;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
+import org.openuss.system.SystemProperties;
 
 /**
  * @see org.openuss.lecture.EnrollmentService
@@ -174,11 +179,24 @@ public class EnrollmentServiceImpl extends org.openuss.lecture.EnrollmentService
 		persistParticipantWithPermissions(participant);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void handleApplyUser(EnrollmentInfo enrollment, User user) throws Exception {
 		Enrollment originalEnrollment = getEnrollmentDao().enrollmentInfoToEntity(enrollment);
 		if (originalEnrollment.getAccessType() == AccessType.APPLICATION) {
-			// TODO send email to all assistants
+			List<EnrollmentMemberInfo> assistants = getAssistants(enrollment);
+			List<User> recipients = new ArrayList();
+			if (assistants!=null&&assistants.size()!=0){
+				Iterator i = assistants.iterator();
+				while (i.hasNext()){
+					recipients.add(getSecurityService().getUser(((EnrollmentMemberInfo)i.next()).getUserId()));					
+				}
+				String link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/enrollment/enrollmentaspirants.faces?enrollment="+enrollment.getId(); 
+				Map parameters = new HashMap();
+				parameters.put("enrollmentname", enrollment.getName()+"("+enrollment.getShortcut()+")");
+				parameters.put("enrollmentapplicantlink", link);			
+				getMessageService().sendMessage(enrollment.getName(), "enrollment.application.subject", "enrollmentapplication", parameters, recipients);
+			}
 			addAspirant(originalEnrollment, user);
 		} else {
 			throw new EnrollmentApplicationException("message_error_enrollment_accesstype_is_not_application");
