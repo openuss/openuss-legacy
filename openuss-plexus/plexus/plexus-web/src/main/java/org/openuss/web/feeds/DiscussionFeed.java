@@ -6,6 +6,7 @@
 package org.openuss.web.feeds;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -37,37 +38,38 @@ public class DiscussionFeed extends AbstractFeed{
 	private FeedWrapper buildFeedArray(EnrollmentInfo enrollment) {
 		final List entries = new ArrayList();
 		ForumInfo forum = getDiscussionService().getForum(enrollment);
+		FeedWrapper feedWrapper = new FeedWrapper();
+		String link;
 		
 		List<Topic> topics = getDiscussionService().getTopics(forum);
 		
-		if (topics==null||topics.size()==0) return null;
-		
-		FeedWrapper feedWrapper = new FeedWrapper();
-	    
-		Iterator i = topics.iterator();
-		Iterator j;
-		TopicInfo topic;
-		String link;
-		List<PostInfo> posts;
-		PostInfo post;
-		Date lastEntry = new Date();
-		while (i.hasNext()) {  
-			topic = (TopicInfo) i.next();
-			posts = getDiscussionService().getPosts(topic);
-			j = posts.iterator();
-			while(j.hasNext()){
-				post = (PostInfo) j.next();
-				if (lastEntry==null) lastEntry = post.getLastModification();
-				if (post.getLastModification().after(lastEntry)) lastEntry = post.getLastModification();
-				link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/discussion/discussionthread.faces?enrollment="+enrollment.getId()+"&topic="+topic.getId()+"#"+post.getId();
-				this.addEntry(entries, post.getTitle(), link, post.getLastModification(), post.getText(), topic.getTitle(), post.getSubmitter());
+		if (topics!=null&&topics.size()!=0) {
+			Collections.reverse(topics);
+			Iterator i = topics.iterator();
+			Iterator j;
+			TopicInfo topic;
+			List<PostInfo> posts;
+			PostInfo post;
+			Date lastEntry = new Date();
+			while (i.hasNext()) {  
+				topic = (TopicInfo) i.next();
+				posts = getDiscussionService().getPosts(topic);
+				Collections.reverse(posts);
+				j = posts.iterator();
+				while(j.hasNext()){
+					post = (PostInfo) j.next();
+					if (lastEntry==null) lastEntry = post.getLastModification();
+					if (post.getLastModification().after(lastEntry)) lastEntry = post.getLastModification();
+					link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/discussion/discussionthread.faces?enrollment="+enrollment.getId()+"&topic="+topic.getId()+"#"+post.getId();
+					this.addEntry(entries, post.getTitle(), link, post.getLastModification(), post.getText(), topic.getTitle(), post.getSubmitter());
+				}
 			}
+			feedWrapper.setLastModified(lastEntry);
 		}
 		
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"rss/secured/discussion.xml?enrollment="+enrollment.getId();
 		
 		feedWrapper.setWriter(this.convertToXml(enrollment.getName(), link, enrollment.getDescription(), systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
-		feedWrapper.setLastModified(lastEntry);
 		return feedWrapper;
 	}	
 	

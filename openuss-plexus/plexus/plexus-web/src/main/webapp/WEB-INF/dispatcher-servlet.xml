@@ -9,6 +9,7 @@
 	
 	<bean name="/public/faculty.xml*" class="org.openuss.web.servlets.feedservlets.FacultyFeedController">	
 		<property name="facultyFeed"><ref bean="facultyFeed"/></property>
+		<property name="lectureService"><ref bean="lectureService"/></property>
 	</bean>
 
 	<bean name="/secured/discussion.xml*" class="org.openuss.web.servlets.feedservlets.DiscussionFeedController">	

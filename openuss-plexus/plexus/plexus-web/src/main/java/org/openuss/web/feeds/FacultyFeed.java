@@ -1,6 +1,7 @@
 package org.openuss.web.feeds;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,23 +27,25 @@ public class FacultyFeed extends AbstractFeed{
 		private FeedWrapper buildFeedArray(FacultyDetails faculty) {
 			final List entries = new ArrayList();
 			List newsEntries = getNewsService().getNewsItems(faculty);
-			if (newsEntries==null||newsEntries.size()==0) return null;
 			FeedWrapper feedWrapper = new FeedWrapper();
-		    
-			Iterator i = newsEntries.iterator();
 			NewsItemInfo newsItem;
 			String link;
-			while (i.hasNext()) {  
-				newsItem = (NewsItemInfo) i.next();
-				link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/public/news/newsDetail.faces?news="+newsItem.getId();
-				this.addEntry(entries, newsItem.getTitle(), link, newsItem.getPublishDate(), newsItem.getText(), faculty.getName(), newsItem.getPublisherName());
+
+			if (newsEntries!=null&&newsEntries.size()!=0) {
+				Collections.reverse(newsEntries);
+				Iterator i = newsEntries.iterator();
+				while (i.hasNext()) {  
+					newsItem = (NewsItemInfo) i.next();
+					link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/public/news/newsDetail.faces?news="+newsItem.getId();
+					this.addEntry(entries, newsItem.getTitle(), link, newsItem.getPublishDate(), newsItem.getText(), faculty.getName(), newsItem.getPublisherName());
+				}
+				
+				newsItem = (NewsItemInfo) newsEntries.get(0);
+				feedWrapper.setLastModified(newsItem.getPublishDate());
 			}
-			
+		    
 			link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/faculty.faces?faculty="+faculty.getId();
-			
 			feedWrapper.setWriter(this.convertToXml(faculty.getName(), link, faculty.getDescription(), systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
-			newsItem = (NewsItemInfo) newsEntries.get(newsEntries.size()-1);
-			feedWrapper.setLastModified(newsItem.getPublishDate());
 			return feedWrapper;
 		}	
 		
