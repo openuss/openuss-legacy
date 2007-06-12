@@ -93,7 +93,11 @@ public class EnrollmentServiceImpl extends org.openuss.lecture.EnrollmentService
 		if (member.getMemberType() == EnrollmentMemberType.ASPIRANT) {
 			persistParticipantWithPermissions(member);
 		}
-		// TODO send email to accepted user
+		Map parameters = new HashMap();
+		parameters.put("enrollmentname", ""+member.getEnrollment().getName()+"("+member.getEnrollment().getShortcut()+")");
+		getMessageService().sendMessage(member.getEnrollment().getName()+"("+member.getEnrollment().getShortcut()+")", 
+				"enrollment.application.subject", "enrollmentapplicationapply", parameters, 
+				member.getUser());
 	}
 
 	private void persistParticipantWithPermissions(EnrollmentMember participant) {
@@ -140,8 +144,13 @@ public class EnrollmentServiceImpl extends org.openuss.lecture.EnrollmentService
 
 	@Override
 	protected void handleRejectAspirant(Long memberId) throws Exception {
-		// TODO send email to rejected user
+		EnrollmentMember member = getEnrollmentMemberDao().load(memberId);
 		removeMember(memberId);
+		Map parameters = new HashMap();
+		parameters.put("enrollmentname", ""+member.getEnrollment().getName()+"("+member.getEnrollment().getShortcut()+")");
+		getMessageService().sendMessage(member.getEnrollment().getName()+"("+member.getEnrollment().getShortcut()+")", 
+				"enrollment.application.subject", "enrollmentapplicationreject", parameters, 
+				member.getUser());		
 	}
 
 	@Override
