@@ -135,8 +135,10 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating new faculty " + faculty.getName());
 		}
+		faculty.setEnabled(false);
 
 		faculty = getFacultyDao().create(faculty);
+		
 
 		// define the security
 		SecurityService securityService = getSecurityService();
@@ -175,8 +177,16 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		// define security rights of faculty
 		fireCreatedFaculty(faculty);
 		
+		//send activation mail
+		String activationCode = getRegistrationService().generateFacultyActivationCode(faculty);
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("facultyname", faculty.getName()+"("+faculty.getShortcut()+")");
+		parameters.put("facultylink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"actions/public/lecture/facultyactivation.faces?code="+activationCode);
+		getMessageService().sendMessage(faculty.getShortcut(), "faculty.activation.subject", "facultyactivation", parameters, getSecurityService().getCurrentUser());
+		
 	}
 
+	
 	@Override
 	protected void handlePersist(Subject subject) throws Exception {
 		if (subject.getId() == null) {
@@ -234,6 +244,7 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 
 		fireRemovingFaculty(faculty);
 
+		getRegistrationService().removeFacultyCodes(faculty);
 		getFacultyDao().remove(faculty);
 	}
 
