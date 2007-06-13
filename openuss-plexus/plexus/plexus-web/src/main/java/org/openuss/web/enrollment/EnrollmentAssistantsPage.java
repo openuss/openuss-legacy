@@ -2,6 +2,7 @@ package org.openuss.web.enrollment;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +14,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
@@ -20,7 +22,10 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.EnrollmentMemberInfo;
 import org.openuss.lecture.FacultyMember;
 import org.openuss.lecture.FacultySecurity;
+import org.openuss.lecture.LectureService;
+import org.openuss.security.SecurityService;
 import org.openuss.security.User;
+import org.openuss.security.UserComparator;
 import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$enrollment$enrollmentassistants", scope = Scope.REQUEST)
@@ -29,6 +34,9 @@ public class EnrollmentAssistantsPage extends AbstractEnrollmentPage {
 	private static final Logger logger = Logger.getLogger(EnrollmentAssistantsPage.class);
 
 	private AssistantsDataProvider data = new AssistantsDataProvider();
+
+	@Property(value = "#{securityService}")
+	protected SecurityService securityService;
 
 	private Long userId;
 
@@ -115,10 +123,18 @@ public class EnrollmentAssistantsPage extends AbstractEnrollmentPage {
 					return !userIds.contains(member.getId());
 				}
 			});
-			facultyMembers = new ArrayList<SelectItem>();
+			List<User> membersUser = new ArrayList<User>();
 			for(FacultyMember member : members) {
-				facultyMembers.add(new SelectItem(member.getId(), member.getFirstName()+ " "+member.getLastName() + "("+member.getUsername()+")"));
+				membersUser.add(getSecurityService().getUserByName(member.getUsername()));
 			}
+			UserComparator userComparator = new UserComparator();
+			Collections.sort(membersUser, userComparator);
+			facultyMembers = new ArrayList<SelectItem>();
+			for(User member : membersUser) {
+				facultyMembers.add(new SelectItem(member.getId(), member.getTitle()+" "+member.getLastName()+" "+member.getFirstName()));
+			}
+
+			
 		}
 		return facultyMembers;
 	}
@@ -146,6 +162,14 @@ public class EnrollmentAssistantsPage extends AbstractEnrollmentPage {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
 	}
 
 }
