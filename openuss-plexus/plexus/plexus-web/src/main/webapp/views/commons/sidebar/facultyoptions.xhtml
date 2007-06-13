@@ -14,7 +14,7 @@
 	<s:authorize ifAllGranted="ROLE_USER">
 		<s:acl domainObject="#{faculty}" hasNotPermission="#{ACL.FACULTY_TUTOR}">
 			<h:form>
-				<o:block label="Optionen" styleClass="option_box">
+				<o:block label="#{msg.options}" styleClass="option_box">
 					<ul class="int">
 						<li>
 							<h:commandLink value="#{msg['faculty_command_assistant_application']}" action="#{views$secured$lecture$faculty.applyForMembership}"/>
