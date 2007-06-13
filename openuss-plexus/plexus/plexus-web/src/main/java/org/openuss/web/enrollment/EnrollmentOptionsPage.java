@@ -13,6 +13,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.Enrollment;
+import org.openuss.lecture.EnrollmentInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
@@ -65,6 +66,10 @@ public class EnrollmentOptionsPage extends AbstractEnrollmentPage {
 	 */
 	public String saveOptions() throws LectureException {
 		logger.trace("saving enrollment options");
+		EnrollmentInfo enrollmentOld = getEnrollmentService().getEnrollmentInfo(enrollment);
+		if (enrollmentOld.getAccessType()==AccessType.APPLICATION&&enrollment.getAccessType()!=AccessType.APPLICATION){
+			getEnrollmentService().removeAspirants(enrollmentOld);
+		}
 		lectureService.persist(enrollment);
 		addMessage(i18n("message_enrollment_options_saved"));
 		return Constants.ENROLLMENT_OPTIONS_PAGE;
