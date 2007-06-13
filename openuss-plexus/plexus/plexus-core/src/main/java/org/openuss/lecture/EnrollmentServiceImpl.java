@@ -254,4 +254,18 @@ public class EnrollmentServiceImpl extends org.openuss.lecture.EnrollmentService
 				EnrollmentMemberType.PARTICIPANT);
 	}
 
+	@Override
+	protected void handleRemoveAspirants(EnrollmentInfo enrollment) throws Exception {
+		Enrollment enrollmentDao = getEnrollmentDao().load(enrollment.getId()); 
+		List<EnrollmentMember> members = getEnrollmentMemberDao().findByEnrollment(enrollmentDao);
+		Iterator i = members.iterator();
+		EnrollmentMember member;
+		while (i.hasNext()){
+			member = (EnrollmentMember) i.next();
+			if (member.getMemberType()== EnrollmentMemberType.ASPIRANT){
+				getEnrollmentMemberDao().remove(member.getId()); 
+			}
+		}
+	}
+
 }
