@@ -190,6 +190,20 @@
     		<from-outcome>failure</from-outcome>
     		<to-view-id>/views/public/login/forgotPassword.xhtml</to-view-id>
     	</navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+    	<from-view-id>/actions/public/lecture/facultyactivation.xhtml</from-view-id>
+    	<navigation-case>
+    		<from-action>facultyActivationAction.activateFaculty</from-action>
+    		<from-outcome>success</from-outcome>
+    		<to-view-id>/views/secured/desktop/desktop.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    		<from-action>facultyActivationAction.activateFaculty</from-action>
+    		<from-outcome>failure</from-outcome>
+    		<to-view-id>/views/welcome.xhtml</to-view-id>
+    	</navigation-case>
     
     </navigation-rule>
 

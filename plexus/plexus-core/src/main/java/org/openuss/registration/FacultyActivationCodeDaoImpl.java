@@ -4,10 +4,10 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.registration;
-
 /**
- * @see org.openuss.registration.ActivationCode
+ * @see org.openuss.registration.FacultyActivationCode
  */
-public class ActivationCodeDaoImpl extends org.openuss.registration.ActivationCodeDaoBase {
-	
+public class FacultyActivationCodeDaoImpl
+    extends org.openuss.registration.FacultyActivationCodeDaoBase
+{
 }

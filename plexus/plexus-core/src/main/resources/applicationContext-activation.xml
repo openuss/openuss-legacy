@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    				Faculty Activation Configuration
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	 
+	 <bean name="facultyActivationCommand" class="org.openuss.lecture.FacultyActivationCommand">
+	 	<property name="facultyDao"><ref bean="facultyDao"/></property>
+	 </bean>
+
+</beans>
