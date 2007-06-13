@@ -7,8 +7,11 @@ package org.openuss.lecture;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.ObjectUtils;
@@ -19,6 +22,7 @@ import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
+import org.openuss.system.SystemProperties;
 
 /**
  * @see org.openuss.lecture.LectureService
@@ -384,8 +388,40 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		} else {
 			throw new LectureException("user_is_already_a_member_of_the_faculty");
 		}
+		//send mail to adminisitrators
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("facultyname", faculty.getName()+"("+faculty.getShortcut()+")");
+		parameters.put("facultyapplicantlink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/auth/aspirants.faces?faculty="+faculty.getId());
+		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.subject", "facultyapplication", parameters, getFacultyAdmins(faculty));
 	}
 
+	private List<User> getFacultyAdmins(Faculty faculty){
+		Collection<Group> groups = faculty.getGroups();
+		Iterator i = groups.iterator();
+		Group adminGroup = null;
+		Group group;
+		List facultyMembers;
+		User member;
+		List<User> administrators = new ArrayList<User>();
+		//find administrator group of faculty
+		while (i.hasNext()){
+			group = (Group) i.next();
+			if (group.getGroupType()==GroupType.ADMINISTRATOR){
+				adminGroup = group;
+			}
+		}
+		//add members of administrator group to list of administrators
+		facultyMembers = faculty.getMembers();
+		i = facultyMembers.iterator();
+		while (i.hasNext()){
+			member = (User) i.next();
+			if (member.getGroups().contains(adminGroup)) {
+				administrators.add(member); 
+			}
+		}
+		return administrators;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -413,6 +449,10 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		User user = getUser(userId);
 		faculty.getAspirants().remove(user);
 		persist(faculty);
+		
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("facultyname", faculty.getName()+"("+faculty.getShortcut()+")");
+		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.subject", "facultyapplicationreject", parameters, user);
 	}
 
 	/**
@@ -468,6 +508,10 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 			faculty.getMembers().add(user);
 			getFacultyDao().update(faculty);
 		}
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("facultyname", faculty.getName()+"("+faculty.getShortcut()+")");
+		parameters.put("facultylink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/faculty.faces?faculty="+faculty.getId());
+		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.subject", "facultyapplicationapply", parameters, user);
 	}
 
 	@Override
