@@ -44,11 +44,12 @@ p {
 }
 
 #left {
-  float: left;
-  margin: 0;
-  padding: 0;
-  width: 180px;
-  min-height: 89px;
+	float: left;
+	margin-left: -190px;
+	position: relative;
+	width: 180px;
+	padding-right: 10px;
+	z-index: 200;
 }
 
 @media all{
@@ -59,9 +60,12 @@ p {
 }
 
 #center {
-  margin: 0 180px 0 190px;
-  padding: 0;
-  min-width: 630px;
+	float: left;
+	margin-right: -180px;
+	min-height: 450px;
+	position: relative;
+	width: 100%;
+	z-index: 10000000;
 }
 
  @media all{
@@ -72,10 +76,12 @@ p {
 }
 
 #right {
-  float: right;
-  margin: 0;
-  padding: 90px 0 0 0;
-  width: 170px;
+	float: left;
+	left: 190px;
+	padding-top: 90px;
+	position: relative;
+	right: 0px;
+	width: 170px;
 }
 
 #footer {
@@ -738,7 +744,7 @@ ul.navigation li ul li ul li.active_item a:hover{
   position: absolute;
   margin: 0;
   padding: 0;
-  top: 49px; left: 200px;
+  top: 49px; left: 10px; right: 190px; bottom: 0;
   height: 20px;
   width: 600px;
 }
@@ -1751,7 +1757,7 @@ td.col_max_left label input{
 
 .jscalendar-DB-table-style {
 	position: absolute;
-	left: 191px;
+	left: 0px;
     font-family:arial;
     font-size:11px;
     border-width:1px;
@@ -1887,7 +1893,7 @@ table.jscalendar-DB-dropdown-style{
 
 table.jscalendar-DB-dropdown-style{
 	position: absolute;
-	left: 191px;
+	left: 0px;
 	width: 50px;
 	margin: 0;
 	padding: 0;
