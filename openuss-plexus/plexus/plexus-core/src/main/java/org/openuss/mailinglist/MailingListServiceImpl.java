@@ -195,7 +195,9 @@ public class MailingListServiceImpl extends org.openuss.mailinglist.MailingListS
 		}
 		//return first mailinglist of all, at the moment it is 
 		//supposed that there is just 1 mailinglist per domain object 
-		MailingListInfo ml = getMailingListDao().toMailingListInfo((MailingList)mailingLists.get(0)); 
+		MailingList mailingList = (MailingList)mailingLists.get(0);
+		MailingListInfo ml = getMailingListDao().toMailingListInfo(mailingList);
+		ml.setSubscribed(getSubscriberDao().findByUserAndMailingList(getSecurityService().getCurrentUser(), mailingList)!=null);
 		return ml;
 	}
 
