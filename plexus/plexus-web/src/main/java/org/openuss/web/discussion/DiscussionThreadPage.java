@@ -31,7 +31,7 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	public boolean topicWatchState;
 	
 	public boolean topicReadOnly;
-	
+
 	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception {	
@@ -187,5 +187,13 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	public void setProfile(User profile) {
 		this.profile = profile;
 	}
+
+	public boolean isForumReadOnly() {
+		return getDiscussionService().getForum(enrollmentInfo).isReadOnly();
+	}
 	
+	public boolean isForumWatchState(){
+		return getDiscussionService().watchesForum(getDiscussionService().getForum(enrollmentInfo));
+	}
+
 }

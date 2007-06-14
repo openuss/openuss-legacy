@@ -11,8 +11,7 @@
 	xmlns:p="http://www.openuss.org/plexus/jsf"
     xmlns:x="http://myfaces.apache.org/extensions">
 	
-		<h:form>
-		
+		<h:form rendered="#{not views$secured$discussion$discussionthread.forumWatchState}">
 			<o:block styleClass="option_box" label="#{msg.discussion_watch_state_header}">
 				<h:outputText value="#{msg.discussion_topic_watch_true}" styleClass="content_font_normal" rendered="#{views$secured$discussion$discussionthread.topicWatchState}" escape="false"/>
 				<h:outputText value="#{msg.discussion_topic_watch_false}" styleClass="content_font_normal" rendered="#{not views$secured$discussion$discussionthread.topicWatchState}" escape="false"/>
@@ -24,6 +23,8 @@
 					</li>
 				</ul>
 			</o:block>
+		</h:form>
+		<h:form rendered="#{not views$secured$discussion$discussionthread.forumReadOnly}">
 			<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}" label="#{msg.discussion_config_state_header}">
 				<o:block styleClass="option_box">
 					<h:outputText value="#{msg.discussion_topic_readonly_true}" styleClass="content_font_normal" rendered="#{views$secured$discussion$discussionthread.topicReadOnly}" escape="false"/>
@@ -37,7 +38,6 @@
 					</ul>
 				</o:block>
 			</s:acl>
-			
 		</h:form>
 	
 </f:subview>
