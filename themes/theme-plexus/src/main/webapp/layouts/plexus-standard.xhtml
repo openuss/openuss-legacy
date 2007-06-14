@@ -5,7 +5,7 @@
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 	
-	
+	<!-- 
 	<div id="main">
 		<div id="left">
 			<h:form>
@@ -44,16 +44,16 @@
 		<ui:insert name="footer">
 			<ui:include src="footer.xhtml" />
 		</ui:insert>
-<!-- 
+
 		<ul>
 		<t:dataList var="v" value="#{viewStack}" layout="list">
 			<li>#{v}</li>
 		</t:dataList>
 		</ul>
- -->
+
 	</div>
-	
-	<!-- <div id="left_block">
+	-->
+	<div id="left">
 		<h:form>
 			<h:outputLink value="#{facesContext.externalContext.requestContextPath}/views/welcome.faces" styleClass="openuss_logo">
 				<div class="openuss_logo"/>
@@ -62,12 +62,12 @@
 		<ui:insert name="navigation"/>
 	</div>
 	
-	<div id="right_block">
+	<div id="right">
 		<ui:insert name="search"/>
 		<ui:insert name="sidebar"/>
 	</div>
 	
-	<div id="center_block">
+	<div id="center">
 	     <div id="header_right"/>
 	     <div id="header_center">
     		   <div id="header_bg">
@@ -87,7 +87,7 @@
 		</ui:insert>
     
 	</div>
-	<div id="footer_block">
+	<div id="footer">
 		<div id="footer_border"/>
 		<ui:insert name="footer">
 			<ui:include src="footer.xhtml" />
@@ -97,5 +97,5 @@
 			<li>#{v}</li>
 		</t:dataList>
 		</ul>
-	</div> -->
+	</div>
 </f:subview>
