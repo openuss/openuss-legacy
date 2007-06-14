@@ -683,6 +683,8 @@ ul.navigation li ul li ul li.active_item a:hover{
 
 #center ul{
 	margin: 10px 0 10px 0;
+	list-style-type: none;
+	padding-left: 10px;
 }
 
 #center a{
