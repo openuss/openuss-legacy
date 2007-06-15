@@ -5,6 +5,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.openuss.lecture.Enrollment;
 import org.openuss.lecture.EnrollmentInfo;
 import org.openuss.lecture.EnrollmentService;
+import org.openuss.lecture.Faculty;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -28,12 +29,17 @@ public class AbstractEnrollmentPage extends BasePage {
 	
 	@Property(value = "#{enrollmentService}")
 	protected EnrollmentService enrollmentService;
+	
+	@Property(value = "#{faculty}")
+	protected Faculty faculty;
 
 	@Prerender
 	public void prerender() throws Exception {
 		if (enrollment != null) {
 			enrollment = enrollmentService.getEnrollment(enrollment);
 			enrollmentInfo = enrollmentService.getEnrollmentInfo(enrollment);
+			faculty = enrollment.getFaculty();
+			setSessionBean("faculty", faculty);
 		}
 		if ((enrollment == null)||(enrollmentInfo == null)) {
 			addMessage(i18n("message_error_enrollment_page"));
@@ -76,5 +82,13 @@ public class AbstractEnrollmentPage extends BasePage {
 
 	public void setEnrollmentInfo(EnrollmentInfo enrollmentInfo) {
 		this.enrollmentInfo = enrollmentInfo;
+	}
+
+	public Faculty getFaculty() {
+		return faculty;
+	}
+
+	public void setFaculty(Faculty faculty) {
+		this.faculty = faculty;
 	}
 }
