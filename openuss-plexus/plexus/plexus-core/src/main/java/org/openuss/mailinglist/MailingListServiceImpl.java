@@ -222,7 +222,7 @@ public class MailingListServiceImpl extends org.openuss.mailinglist.MailingListS
 		}
 		mail.setMailingList(loadMailingList(getMailingList(domainObject)));
 		if (mailDetail.getId() == null) {
-			getMailDao().create(mail);
+			handleSaveMail(getMailingListDao().toMailingListInfo(mail.getMailingList()), getMailDao().toMailDetail(mail));
 		} else if (mailDetail.getId() != null) {
 			getMailDao().update(mail);
 		}
