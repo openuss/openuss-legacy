@@ -18,7 +18,7 @@ import org.openuss.web.Constants;
  * @author Ingo Dueppe
  *
  */
-@Bean(name = "views$secured$mailinglist$mailinglist$newmail", scope = Scope.REQUEST)
+@Bean(name = "views$secured$mailinglist$newmail", scope = Scope.REQUEST)
 @View
 public class MailingListNewMailPage extends AbstractMailingListPage{
 	
@@ -32,37 +32,9 @@ public class MailingListNewMailPage extends AbstractMailingListPage{
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		if (mail==null){
-			addError(i18n("mailinglist_mailaccess_impossible"));
-			redirect(Constants.MAILINGLIST_MAIN);
-			return;
-		}			
-		if (mail.getId() == null) {
-			addError(i18n("mailinglist_mailaccess_impossible"));
-			redirect(Constants.MAILINGLIST_MAIN);
-			return;
-		}
-		if (mail.getId()!=null){
-			MailInfo mi = new MailInfo(); 
-			mi.setId(mail.getId());
-			mail = getEnrollmentMailingListService().getMail(mi);
-			if (mail==null){
-				addError(i18n("mailinglist_mailaccess_impossible"));
-				redirect(Constants.MAILINGLIST_MAIN);
-				return;
-			}		
-			if (mail.getStatus()==MailingStatus.DELETED){
-				addError(i18n("mailinglist_mailaccess_impossible"));
-				redirect(Constants.MAILINGLIST_MAIN);
-				return;
-			}
-			setSessionBean(Constants.MAILINGLIST_MAIL, mail);
-			if (!AcegiUtils.hasPermission(mail, new Integer[] { LectureAclEntry.ASSIST })){
-				addError(i18n("mailinglist_mailaccess_noright"));
-				redirect(Constants.MAILINGLIST_MAIN);
-				return;
-			}				
-		}
+		mailingList = getEnrollmentMailingListService().getMailingList(enrollmentInfo);
+		setSessionBean(Constants.MAILINGLIST_MAILINGLIST, mailingList);
+
 	}	
 
 	public String saveDraft(){
