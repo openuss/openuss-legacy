@@ -10,6 +10,8 @@ public class RegistrationTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(ActivationCodeDaoTest.class);
 		suite.addTestSuite(RegistrationServiceIntegrationTest.class);
+		suite.addTestSuite(UserActivationCodeDaoTest.class);
+		suite.addTestSuite(FacultyActivationCodeDaoTest.class);
 		//$JUnit-END$
 		return suite;
 	}
