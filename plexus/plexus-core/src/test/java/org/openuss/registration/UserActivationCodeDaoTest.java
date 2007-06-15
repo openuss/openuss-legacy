@@ -31,6 +31,9 @@ public class UserActivationCodeDaoTest extends UserActivationCodeDaoTestBase {
 	
 	public void testUserActivationCodeDaoCreate() {
 		UserActivationCode userActivationCode = new UserActivationCodeImpl();
+		userActivationCode.setCode("code");
+		userActivationCode.setUser(testUtility.createUserInDB());
+		userActivationCode.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		assertNull(userActivationCode.getId());
 		userActivationCodeDao.create(userActivationCode);
 		assertNotNull(userActivationCode.getId());

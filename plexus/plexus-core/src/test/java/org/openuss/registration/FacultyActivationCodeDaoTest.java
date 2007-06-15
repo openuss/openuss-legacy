@@ -5,6 +5,11 @@
  */
 package org.openuss.registration;
 
+import java.sql.Timestamp;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.openuss.TestUtility;
+
 
 /**
  * JUnit Test for Spring Hibernate FacultyActivationCodeDao class.
@@ -12,10 +17,24 @@ package org.openuss.registration;
  */
 public class FacultyActivationCodeDaoTest extends FacultyActivationCodeDaoTestBase {
 	
+	private TestUtility testUtility;
+	
 	public void testFacultyActivationCodeDaoCreate() {
-		FacultyActivationCode facultyActivationCode = new FacultyActivationCodeImpl();
-		assertNull(facultyActivationCode.getId());
-		facultyActivationCodeDao.create(facultyActivationCode);
-		assertNotNull(facultyActivationCode.getId());
+		FacultyActivationCode code = FacultyActivationCode.Factory.newInstance();
+		code.setCode(RandomStringUtils.random(40));
+		code.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		code.setFaculty(testUtility.createPersistFacultyWithDefaultUser());
+		
+		assertNull(code.getId());
+		facultyActivationCodeDao.create(code);
+		assertNotNull(code.getId());
+	}
+
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
 	}
 }
