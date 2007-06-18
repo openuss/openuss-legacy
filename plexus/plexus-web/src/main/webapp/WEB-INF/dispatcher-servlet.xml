@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
 
 <beans>
 
@@ -20,28 +20,38 @@
 		<property name="mailingListFeed"><ref bean="mailingListFeed"/></property>
 	</bean>
 
-	<bean name="enrollmentFeed" class="org.openuss.web.feeds.EnrollmentFeed">	
-		<property name="newsService"><ref bean="newsService"/></property>
-		<property name="systemService"><ref bean="systemService"/></property>
-		<property name="enrollmentService"><ref bean="enrollmentService"/></property>
+	<bean name="/secured/documents.xml*" class="org.openuss.web.servlets.feedservlets.DocumentsFeedController">	
+		<property name="documentFeed"><ref bean="documentsFeed"/></property>
+	</bean>
+	
+	<bean name="feedTemplate" abstract="true">
+		<property name="systemService" ref="systemService"/>
 	</bean>
 
-	<bean name="facultyFeed" class="org.openuss.web.feeds.FacultyFeed">	
-		<property name="newsService"><ref bean="newsService"/></property>
-		<property name="systemService"><ref bean="systemService"/></property>
-		<property name="lectureService"><ref bean="lectureService"/></property>
+	<bean name="enrollmentFeed" class="org.openuss.web.feeds.EnrollmentFeed" parent="feedTemplate">	
+		<property name="enrollmentService" ref="enrollmentService"/>
+		<property name="newsService" ref="newsService"/>
 	</bean>
 
-	<bean name="discussionFeed" class="org.openuss.web.feeds.DiscussionFeed">	
-		<property name="discussionService"><ref bean="discussionService"/></property>
-		<property name="systemService"><ref bean="systemService"/></property>
-		<property name="enrollmentService"><ref bean="enrollmentService"/></property>
+	<bean name="facultyFeed" class="org.openuss.web.feeds.FacultyFeed" parent="feedTemplate">	
+		<property name="lectureService" ref="lectureService"/>
+		<property name="newsService" ref="newsService"/>
 	</bean>
 
-	<bean name="mailingListFeed" class="org.openuss.web.feeds.MailingListFeed">	
-		<property name="enrollmentMailingListService"><ref bean="enrollmentMailingListService"/></property>
-		<property name="systemService"><ref bean="systemService"/></property>
-		<property name="enrollmentService"><ref bean="enrollmentService"/></property>
+	<bean name="discussionFeed" class="org.openuss.web.feeds.DiscussionFeed" parent="feedTemplate">	
+		<property name="enrollmentService" ref="enrollmentService"/>
+		<property name="discussionService" ref="discussionService"/>
+	</bean>
+
+	<bean name="mailingListFeed" class="org.openuss.web.feeds.MailingListFeed" parent="feedTemplate">	
+		<property name="enrollmentService" ref="enrollmentService"/>
+		<property name="enrollmentMailingListService" ref="enrollmentMailingListService"/>
+	</bean>
+
+	<bean name="documentsFeed" class="org.openuss.web.feeds.DocumentsFeed" parent="feedTemplate">	
+		<property name="enrollmentService" ref="enrollmentService"/>
+		<property name="documentService" ref="documentService"/>
+		<property name="viewUri" value="/views/secured/documents/documents.faces"/>
 	</bean>
 
 </beans>

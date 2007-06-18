@@ -41,9 +41,7 @@ import org.openuss.security.acl.Permission;
  * @see org.openuss.migration.MigrationService
  */
 public class MigrationServiceImpl extends org.openuss.migration.MigrationServiceBase {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(MigrationServiceImpl.class);
 	
 	private Map<String, User> users = new HashMap<String, User>();
