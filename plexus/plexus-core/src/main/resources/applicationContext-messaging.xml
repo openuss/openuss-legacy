@@ -18,12 +18,12 @@
 
 	<bean id="textMessagePreparator"
 		class="org.openuss.messaging.TextMessagePreparator"
-		singleton="false" parent="messagePreparator">
+		scope="singleton" parent="messagePreparator">
 	</bean>
 
 	<bean id="templateMessagePreparator"
 		class="org.openuss.messaging.TemplateMessagePreparator"
-		singleton="false" parent="messagePreparator">
+		scope="singleton" parent="messagePreparator">
 		<property name="velocityEngine">
 			<ref local="velocityEngine"/> 
 		</property>
