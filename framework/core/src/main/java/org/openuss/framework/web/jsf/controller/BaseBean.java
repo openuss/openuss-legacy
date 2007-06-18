@@ -221,6 +221,19 @@ public abstract class BaseBean {
 
 		return message;
 	}
+	
+	public String i18n(String key, String defaultLabel) {
+		String message;
+
+		try {
+			message = getBundle().getString(key);
+		} catch (java.util.MissingResourceException mre) {
+			return defaultLabel;
+		} catch (NullPointerException ex) {
+			return defaultLabel;
+		}
+		return message;
+	}
 
 	/**
 	 * Convenience method to get a String from the resources.

@@ -22,7 +22,6 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.EnrollmentMemberInfo;
 import org.openuss.lecture.FacultyMember;
 import org.openuss.lecture.FacultySecurity;
-import org.openuss.lecture.LectureService;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserComparator;
