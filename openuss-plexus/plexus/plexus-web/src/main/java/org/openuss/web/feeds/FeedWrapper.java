@@ -7,78 +7,67 @@ package org.openuss.web.feeds;
 
 /**
  * 
+ * 
  */
-public class FeedWrapper
-	implements  java.io.Serializable
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = 3926487462738394282L;
+public class FeedWrapper implements java.io.Serializable {
 
-    public FeedWrapper()
-    {
-        this.writer = null;
-        this.lastModified = null;
-    }
+	private static final long serialVersionUID = 3926487462738394282L;
 
-    public FeedWrapper(java.io.Writer writer, java.util.Date lastModified)
-    {
-        this.writer = writer;
-        this.lastModified = lastModified;
-    }
+	public FeedWrapper() {
+		this.writer = null;
+		this.lastModified = null;
+	}
 
-    /**
-     * Copies constructor from other FeedWrapper
-     *
-     * @param otherBean, cannot be <code>null</code>
-     * @throws java.lang.NullPointerException if the argument is <code>null</code>
-     */
-    public FeedWrapper(FeedWrapper otherBean)
-    {
-        this(otherBean.getWriter(), otherBean.getLastModified());
-    }
+	public FeedWrapper(java.io.Writer writer, java.util.Date lastModified) {
+		this.writer = writer;
+		this.lastModified = lastModified;
+	}
 
-    /**
-     * Copies all properties from the argument value object into this value object.
-     */
-    public void copy(FeedWrapper otherBean)
-    {
-        this.setWriter(otherBean.getWriter());
-        this.setLastModified(otherBean.getLastModified());
-    }
+	/**
+	 * Copies constructor from other FeedWrapper
+	 * 
+	 * @param otherBean,
+	 *            cannot be <code>null</code>
+	 * @throws java.lang.NullPointerException
+	 *             if the argument is <code>null</code>
+	 */
+	public FeedWrapper(FeedWrapper otherBean) {
+		this(otherBean.getWriter(), otherBean.getLastModified());
+	}
 
-    private java.io.Writer writer;
+	/**
+	 * Copies all properties from the argument value object into this value
+	 * object.
+	 */
+	public void copy(FeedWrapper otherBean) {
+		this.setWriter(otherBean.getWriter());
+		this.setLastModified(otherBean.getLastModified());
+	}
 
-    /**
-     * 
-     */
-    public java.io.Writer getWriter()
-    {
-        return this.writer;
-    }
+	private java.io.Writer writer;
 
-    public void setWriter(java.io.Writer writer)
-    {
-        this.writer = writer;
-    }
+	/**
+	 * 
+	 */
+	public java.io.Writer getWriter() {
+		return this.writer;
+	}
 
-    private java.util.Date lastModified;
+	public void setWriter(java.io.Writer writer) {
+		this.writer = writer;
+	}
 
-    /**
-     * 
-     */
-    public java.util.Date getLastModified()
-    {
-        return this.lastModified;
-    }
+	private java.util.Date lastModified;
 
-    public void setLastModified(java.util.Date lastModified)
-    {
-        this.lastModified = lastModified;
-    }
+	/**
+	 * 
+	 */
+	public java.util.Date getLastModified() {
+		return this.lastModified;
+	}
 
-
-
+	public void setLastModified(java.util.Date lastModified) {
+		this.lastModified = lastModified;
+	}
 
 }

@@ -114,7 +114,12 @@ public class DocumentServlet extends HttpServlet {
 	private FileInfo lookupFile(final HttpServletRequest request) {
 		final String fileId = request.getParameter(Constants.REPOSITORY_FILE_ID);
 		// fetch file from document service
-		FileInfo file = documentService.getFileEntry(Long.parseLong(fileId), true);
+		FileInfo file = null;
+		try {
+			file = documentService.getFileEntry(Long.parseLong(fileId), true);
+		} catch (NumberFormatException nfe) {
+			// number format exception can be ignored.
+		}
 
 		if (file == null) {
 			logger.debug("file not found with id " + fileId);

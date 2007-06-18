@@ -6,55 +6,49 @@
 package org.openuss.web.feeds;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.openuss.enrollment.mailinglist.EnrollmentMailingListService;
+import org.openuss.documents.DocumentService;
+import org.openuss.documents.FileInfo;
 import org.openuss.lecture.Enrollment;
 import org.openuss.lecture.EnrollmentInfo;
 import org.openuss.lecture.EnrollmentService;
-import org.openuss.mailinglist.MailDetail;
-import org.openuss.mailinglist.MailInfo;
 import org.openuss.system.SystemProperties;
 import org.openuss.system.SystemService;
+import org.openuss.web.Constants;
 
-public class MailingListFeed extends AbstractFeed {
+public class DocumentsFeed extends AbstractFeed {
 
+	private transient DocumentService documentService;
+	
 	private transient EnrollmentService enrollmentService;
 
 	private transient SystemService systemService;
 
-	private transient EnrollmentMailingListService enrollmentMailingListService;
 
-	public static final Logger logger = Logger.getLogger(MailingListFeed.class);
+	private String viewUri; 
+	
+	public static final Logger logger = Logger.getLogger(DocumentsFeed.class);
 
 	private FeedWrapper buildFeedArray(EnrollmentInfo enrollment) {
 		final List entries = new ArrayList();
-		MailInfo mailInfo;
-		MailDetail mailDetail;
-		String link;
 		FeedWrapper feedWrapper = new FeedWrapper();
-		List mails = getEnrollmentMailingListService().getMails(enrollment);
-
-		if (mails != null && mails.size() != 0) {
-			Collections.reverse(mails);
-			Iterator i = mails.iterator();
-			while (i.hasNext()) {
-				mailInfo = (MailInfo) i.next();
-				link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
-						+ "views/secured/mailinglist/showmail.faces?mail=" + mailInfo.getId();
-				mailDetail = getEnrollmentMailingListService().getMail(mailInfo);
-				this.addEntry(entries, mailDetail.getSubject(), link, mailDetail.getSendDate(), mailDetail.getText(),
-						enrollment.getName(), enrollment.getName());
+		
+		List folders = getDocumentService().getFolderEntries(enrollment, null);
+		List<FileInfo> files = getDocumentService().allFileEntries(folders);
+		
+		String urlServer = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue();
+		
+		if (files != null && files.size() > 0) {
+			for(FileInfo entry : files) {
+				String link = urlServer + "files/" + entry.getFileName() + "?"+Constants.REPOSITORY_FILE_ID+"="+entry.getId();
+				this.addEntry(entries, enrollment.getName()+" - "+entry.getName(), link, entry.getCreated(), entry.getName()+"\n"+entry.getDescription(), enrollment.getName(),enrollment.getName());
 			}
-			mailDetail = getEnrollmentMailingListService().getMail((MailInfo) mails.get(0));
-			feedWrapper.setLastModified(mailDetail.getSendDate());
+			
 		}
-
-		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
-				+ "views/secured/mailinglist/mailinglist.faces?enrollment=" + enrollment.getId();
+		
+		String link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+viewUri+"?enrollment=" + enrollment.getId();
 
 		feedWrapper.setWriter(this.convertToXml(enrollment.getName(), link, enrollment.getDescription(), systemService
 				.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
@@ -95,12 +89,20 @@ public class MailingListFeed extends AbstractFeed {
 		this.enrollmentService = enrollmentService;
 	}
 
-	public EnrollmentMailingListService getEnrollmentMailingListService() {
-		return enrollmentMailingListService;
+	public DocumentService getDocumentService() {
+		return documentService;
 	}
 
-	public void setEnrollmentMailingListService(EnrollmentMailingListService enrollmentMailingListService) {
-		this.enrollmentMailingListService = enrollmentMailingListService;
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
+	}
+
+	public String getViewUri() {
+		return viewUri;
+	}
+
+	public void setViewUri(String viewUri) {
+		this.viewUri = viewUri;
 	}
 
 }
