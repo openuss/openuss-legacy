@@ -58,7 +58,9 @@
 					value="#{views$secured$enrollment$main.assistants}"
 					rendered="#{not empty views$secured$enrollment$main.assistants}"
 					layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
-					<h:outputText value="#{assistant.title} #{assistant.firstName} #{assistant.lastName}"/>
+					<o:link value="/views/secured/user/userprofile.faces?showuser=#{assistant.userId}">
+						<h:outputText value="#{assistant.title} #{assistant.firstName} #{assistant.lastName}"/>
+					</o:link>
 				</t:dataList>
 				</span>
 			</o:block>
