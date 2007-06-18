@@ -130,5 +130,7 @@ public class Constants {
 
 	public static final String SEARCH_RESULT = "search_result";
 
-	public static final String MAILINGLIST_EXPORT = "mailinglist_export"; 
+	public static final String MAILINGLIST_EXPORT = "mailinglist_export";
+	
+	public static final String BREADCRUMBS = "breadCrumbs";	
 }
