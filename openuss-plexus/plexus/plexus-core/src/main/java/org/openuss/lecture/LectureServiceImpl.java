@@ -27,13 +27,10 @@ import org.openuss.system.SystemProperties;
 /**
  * @see org.openuss.lecture.LectureService
  */
-public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
+public class LectureServiceImpl extends LectureServiceBase{
 
 	private static final Logger logger = Logger.getLogger(LectureServiceImpl.class);
-
-	public LectureServiceImpl() {
-	}
-
+	
 	@Override
 	protected Collection handleGetFaculties(boolean enabledOnly) throws Exception {
 		if (enabledOnly)
@@ -147,17 +144,15 @@ public class LectureServiceImpl extends org.openuss.lecture.LectureServiceBase {
 		securityService.createObjectIdentity(faculty, null);
 
 		// create system defined groups for faculty
-		// FIXME Administrators, Assistants, and Tutor labels of Groups should
-		// be configurable from the database through system properties-
 		Group admins = securityService.createGroup(
 					"FACULTY_" + faculty.getId() + "_ADMINS", 
-					"Administrators", null,	GroupType.ADMINISTRATOR);
+					"autogroup_administrator_label", null, GroupType.ADMINISTRATOR);
 		Group assistants = securityService.createGroup(
 					"FACULTY_" + faculty.getId() + "_ASSISTANTS", 
-					"Assistants", null, GroupType.ASSISTANT);
+					"autogroup_assistant_label", null, GroupType.ASSISTANT);
 		Group tutors = securityService.createGroup(
 					"FACULTY_" + faculty.getId() + "_TUTORS", 
-					"Tutors", null,GroupType.TUTOR);
+					"autogroup_tutor_label", null,GroupType.TUTOR);
 
 		securityService.addAuthorityToGroup(faculty.getOwner(), admins);
 
