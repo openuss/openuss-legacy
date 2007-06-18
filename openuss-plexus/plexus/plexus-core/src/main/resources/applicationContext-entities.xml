@@ -9,25 +9,25 @@
 		      Security
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
     
-    <bean id="user" class="org.openuss.security.UserImpl" singleton="false"/>
-    <bean id="userContact" class="org.openuss.security.UserContactImpl" singleton="false"/>
-    <bean id="userPreferences" class="org.openuss.security.UserPreferencesImpl" singleton="false"/>
-    <bean id="userProfile" class="org.openuss.security.UserProfileImpl" singleton="false"/>
+    <bean id="user" class="org.openuss.security.UserImpl" scope="singleton"/>
+    <bean id="userContact" class="org.openuss.security.UserContactImpl" scope="singleton"/>
+    <bean id="userPreferences" class="org.openuss.security.UserPreferencesImpl" scope="singleton"/>
+    <bean id="userProfile" class="org.openuss.security.UserProfileImpl" scope="singleton"/>
 
    	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		      Lecture
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
 
-	<bean id="faculty" class="org.openuss.lecture.FacultyImpl" singleton="false"/>
-	<bean id="subject" class="org.openuss.lecture.SubjectImpl" singleton="false"/>
-	<bean id="period" class="org.openuss.lecture.PeriodImpl" singleton="false"/>
-	<bean id="enrollment" class="org.openuss.lecture.EnrollmentImpl"  singleton="false"/>
+	<bean id="faculty" class="org.openuss.lecture.FacultyImpl" scope="singleton"/>
+	<bean id="subject" class="org.openuss.lecture.SubjectImpl" scope="singleton"/>
+	<bean id="period" class="org.openuss.lecture.PeriodImpl" scope="singleton"/>
+	<bean id="enrollment" class="org.openuss.lecture.EnrollmentImpl"  scope="singleton"/>
 
 
    	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		      News
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
-    <bean id="newsItem" class="org.openuss.news.NewsItemImpl" singleton="false"/>
+    <bean id="newsItem" class="org.openuss.news.NewsItemImpl" scope="singleton"/>
 
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
         <property name="locations">
@@ -45,15 +45,15 @@
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     				BrainContest
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<bean id="brainContest" class="org.openuss.braincontest.BrainContestImpl" singleton="false"/>
-	<bean id="brainContestAnswer" class="org.openuss.braincontest.AnswerImpl"  singleton="false"/>
+	<bean id="brainContest" class="org.openuss.braincontest.BrainContestImpl" scope="singleton"/>
+	<bean id="brainContestAnswer" class="org.openuss.braincontest.AnswerImpl"  scope="singleton"/>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     				Documents
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
- 	<bean id="folder" class="org.openuss.documents.FolderImpl"  singleton="false"/>
-	<bean id="fileEntry" class="org.openuss.documents.FileEntryImpl" singleton="false"/>
+ 	<bean id="folder" class="org.openuss.documents.FolderImpl"  scope="singleton"/>
+	<bean id="fileEntry" class="org.openuss.documents.FileEntryImpl" scope="singleton"/>
 	 
-	<bean id="newDocument" class="org.openuss.repository.RepositoryFileImpl"  singleton="false"/>
-	<bean id="newFolder" class="org.openuss.documents.FolderImpl"  singleton="false"/>
+	<bean id="newDocument" class="org.openuss.repository.RepositoryFileImpl"  scope="singleton"/>
+	<bean id="newFolder" class="org.openuss.documents.FolderImpl"  scope="singleton"/>
 </beans>
