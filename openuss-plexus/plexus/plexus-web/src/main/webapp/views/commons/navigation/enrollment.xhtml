@@ -20,6 +20,12 @@
 							<h:outputText value="#{msg['enrollment_command_main']}" />
 						</t:commandNavigation2>
 						<t:commandNavigation2 
+							action="enrollment_mailinglist" 
+							activeOnViewIds="/views/secured/mailinglist/mailinglist.xhtml,/views/secured/mailinglist/mailinglistsubscribers.xhtml,/views/secured/mailinglist/showmail.xhtml,/views/secured/mailinglist/newmail.xhtml"
+							rendered="#{enrollment.mailinglist}">
+							<h:outputText value="#{msg['enrollment_command_mailinglist']}"/>
+						</t:commandNavigation2>
+						<t:commandNavigation2 
 							action="documents_main" 
 							activeOnViewIds="/views/secured/documents/documents.xhtml,/views/secured/documents/fileedit.xhtml,/views/secured/documents/addzip.xhtml,/views/secured/documents/folderedit.xhtml,/views/secured/documents/remove.faces" 
 							rendered="#{enrollment.documents}">
@@ -30,12 +36,6 @@
 							activeOnViewIds="/views/secured/discussion/discussions.xhtml,/views/secured/discussion/discussionnew.xhtml,/views/secured/discussion/discussionthread.xhtml"
 							rendered="#{enrollment.discussion}">
 							<h:outputText value="#{msg['enrollment_command_discussion']}"/>
-						</t:commandNavigation2>
-						<t:commandNavigation2 
-							action="enrollment_mailinglist" 
-							activeOnViewIds="/views/secured/mailinglist/mailinglist.xhtml,/views/secured/mailinglist/mailinglistsubscribers.xhtml,/views/secured/mailinglist/showmail.xhtml,/views/secured/mailinglist/newmail.xhtml"
-							rendered="#{enrollment.mailinglist}">
-							<h:outputText value="#{msg['enrollment_command_mailinglist']}"/>
 						</t:commandNavigation2>
 						<t:commandNavigation2 
 							action="braincontest_main" 
