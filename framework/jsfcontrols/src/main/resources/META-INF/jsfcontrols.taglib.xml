@@ -52,5 +52,10 @@
 		<tag-name>block</tag-name>
 		<source>../facelets/block.xhtml</source>
 	</tag>
+	
+	<tag>
+		<tag-name>breadCrumb</tag-name>
+		<source>../facelets/breadCrumb.xhtml</source>
+	</tag>
 
 </facelet-taglib>

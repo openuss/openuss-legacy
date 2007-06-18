@@ -1,14 +1,21 @@
 package org.openuss.web.enrollment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.Enrollment;
 import org.openuss.lecture.EnrollmentInfo;
 import org.openuss.lecture.EnrollmentService;
 import org.openuss.lecture.Faculty;
 import org.openuss.lecture.LectureService;
+import org.openuss.system.SystemProperties;
+import org.openuss.system.SystemService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 
 /**
  * @author Ingo Dueppe
@@ -27,11 +34,17 @@ public class AbstractEnrollmentPage extends BasePage {
 	@Property(value = "#{lectureService}")
 	protected LectureService lectureService;
 	
+	@Property(value = "#{systemService}")
+	protected SystemService systemService;
+	
 	@Property(value = "#{enrollmentService}")
 	protected EnrollmentService enrollmentService;
 	
 	@Property(value = "#{faculty}")
 	protected Faculty faculty;
+	
+	@Property(value = "#{breadCrumbs}")
+	protected List<BreadCrumb> breadCrumbs;
 
 	@Prerender
 	public void prerender() throws Exception {
@@ -49,7 +62,26 @@ public class AbstractEnrollmentPage extends BasePage {
 			setSessionBean(Constants.ENROLLMENT, enrollment);
 			setSessionBean(Constants.ENROLLMENT_INFO, enrollmentInfo);
 			setSessionBean(Constants.FACULTY, enrollment.getFaculty());
+			generateBreadCrumbs();
+			setSessionBean(Constants.BREADCRUMBS, breadCrumbs);
 		} 
+	}
+	
+	private void generateBreadCrumbs(){
+		breadCrumbs = new ArrayList<BreadCrumb>();
+		BreadCrumb facultyCrumb = new BreadCrumb();
+		//TODO set short faculty name + shortcut
+		facultyCrumb.setName(faculty.getName());
+		facultyCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.FACULTY_PAGE+"?faculty="+faculty.getId());
+		facultyCrumb.setHint(faculty.getName());
+		
+		BreadCrumb enrollmentCrumb = new BreadCrumb();
+		enrollmentCrumb.setName(enrollmentInfo.getName());
+		enrollmentCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.ENROLLMENT_PAGE+"?enrollment="+enrollmentInfo.getId());
+		enrollmentCrumb.setHint(enrollment.getName());
+		
+		breadCrumbs.add(facultyCrumb);
+		breadCrumbs.add(enrollmentCrumb);
 	}
 	
 	public Enrollment getEnrollment() {
@@ -90,5 +122,21 @@ public class AbstractEnrollmentPage extends BasePage {
 
 	public void setFaculty(Faculty faculty) {
 		this.faculty = faculty;
+	}
+
+	public List<BreadCrumb> getBreadCrumbs() {
+		return breadCrumbs;
+	}
+
+	public void setBreadCrumbs(List<BreadCrumb> breadCrumbs) {
+		this.breadCrumbs = breadCrumbs;
+	}
+
+	public SystemService getSystemService() {
+		return systemService;
+	}
+
+	public void setSystemService(SystemService systemService) {
+		this.systemService = systemService;
 	}
 }
