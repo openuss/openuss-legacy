@@ -17,12 +17,12 @@
 					<t:commandNavigation2 action="faculty" activeOnViewIds="/views/secured/lecture/faculty.xhtml" >
 						<h:outputText value="#{msg['faculty_command_main']}" ></h:outputText>
 					</t:commandNavigation2>
-						<s:acl domainObject="#{faculty}" hasPermission="#{ACL.MANAGE_SUBJECTS}">
+						<s:acl domainObject="#{faculty}" hasPermission="#{ACL.MANAGE_NEWS}">
 							<t:commandNavigation2 action="faculty_news" activeOnViewIds="/views/secured/lecture/news.xhtml">
 								<h:outputText value="#{msg['faculty_command_news']}" ></h:outputText>
 							</t:commandNavigation2>
 						</s:acl>
-						<s:acl domainObject="#{faculty}" hasPermission="#{ACL.MANAGE_NEWS}">
+						<s:acl domainObject="#{faculty}" hasPermission="#{ACL.MANAGE_SUBJECTS}">
 							<t:commandNavigation2 action="faculty_subjects" activeOnViewIds="/views/secured/lecture/subjects.xhtml">
 								<h:outputText value="#{msg['faculty_command_subjects']}" ></h:outputText>
 							</t:commandNavigation2>
