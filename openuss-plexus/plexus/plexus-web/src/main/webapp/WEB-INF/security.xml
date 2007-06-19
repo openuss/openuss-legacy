@@ -87,7 +87,7 @@
 				/views/errors/**=ROLE_ANONYMOUS, ROLE_USER
 				/views/public/**=ROLE_ANONYMOUS, ROLE_USER
 				/views/welcome.faces*=ROLE_ANONYMOUS, ROLE_USER
-				/views/secured/enrollment/main.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
+				/views/secured/course/main.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
 				/views/secured/lecture/faculty.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ASSISTANT, ROLE_ADMIN
 				/views/secured/system/**=ROLE_ADMIN
 				/views/secured/**=ROLE_USER, ROLE_ASSISTANT
