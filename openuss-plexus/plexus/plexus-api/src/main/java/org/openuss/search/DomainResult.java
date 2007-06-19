@@ -24,13 +24,13 @@ public interface DomainResult extends DomainObject {
 	public Date getModified();
 	
 	/**
-	 * Details of the result like the description of a faculty or enrollment.
+	 * Details of the result like the description of a faculty or course.
 	 * @return string
 	 */
 	public String getDetails();
 
 	/**
-	 * Type of the domain object like faculty or enrollment.
+	 * Type of the domain object like faculty or course.
 	 * @return string
 	 */
 	public String getDomainType();
