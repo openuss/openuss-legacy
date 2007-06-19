@@ -62,8 +62,8 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	@Override
-	protected Enrollment handleGetEnrollment(Long enrollmentId) throws Exception {
-		return getEnrollmentDao().load(enrollmentId);
+	protected Course handleGetCourse(Long courseId) throws Exception {
+		return getCourseDao().load(courseId);
 
 	}
 
@@ -74,8 +74,8 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	@Override
-	protected boolean handleIsNoneExistingEnrollmentShortcut(Enrollment self, String shortcut) throws Exception {
-		Enrollment found = getEnrollmentDao().findByShortcut(shortcut);
+	protected boolean handleIsNoneExistingCourseShortcut(Course self, String shortcut) throws Exception {
+		Course found = getCourseDao().findByShortcut(shortcut);
 		return isEqualOrNull(self, found);
 	}
 
@@ -201,24 +201,24 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	@Override
-	protected void handlePersist(Enrollment enrollment) throws Exception {
-		storeEnrollment(enrollment);
-		updateAccessTypePermission(enrollment);
+	protected void handlePersist(Course course) throws Exception {
+		storeCourse(course);
+		updateAccessTypePermission(course);
 	}
 
-	private void storeEnrollment(Enrollment enrollment) {
-		if (enrollment.getId() == null) {
-			getEnrollmentDao().create(enrollment);
+	private void storeCourse(Course course) {
+		if (course.getId() == null) {
+			getCourseDao().create(course);
 		} else {
-			getEnrollmentDao().update(enrollment);
+			getCourseDao().update(course);
 		}
 	}
 
-	private void updateAccessTypePermission(Enrollment enrollment) {
-		if (enrollment.getAccessType() != AccessType.OPEN) {
-			getSecurityService().setPermissions(Roles.USER, enrollment, LectureAclEntry.NOTHING);
-		} else if (enrollment.getAccessType() == AccessType.OPEN) {
-			getSecurityService().setPermissions(Roles.USER, enrollment, LectureAclEntry.ENROLLMENT_PARTICIPANT);
+	private void updateAccessTypePermission(Course course) {
+		if (course.getAccessType() != AccessType.OPEN) {
+			getSecurityService().setPermissions(Roles.USER, course, LectureAclEntry.NOTHING);
+		} else if (course.getAccessType() == AccessType.OPEN) {
+			getSecurityService().setPermissions(Roles.USER, course, LectureAclEntry.COURSE_PARTICIPANT);
 		}
 	}
 
@@ -229,8 +229,8 @@ public class LectureServiceImpl extends LectureServiceBase{
 			throw new LectureServiceException("Faculty not found " + facultyId);
 
 		// fire events
-		for (Enrollment enrollment : faculty.getEnrollments()) {
-			fireRemovingEnrollment(enrollment);
+		for (Course course : faculty.getCourses()) {
+			fireRemovingCourse(course);
 		}
 
 		for (Subject subject : faculty.getSubjects()) {
@@ -250,13 +250,13 @@ public class LectureServiceImpl extends LectureServiceBase{
 		// refresh faculty
 		Subject subject = getSubject(subjectId);
 
-		// fire enrollment delete
-		for (Enrollment enrollment : subject.getEnrollments()) {
-			fireRemovingEnrollment(enrollment);
+		// fire course delete
+		for (Course course : subject.getCourses()) {
+			fireRemovingCourse(course);
 		}
 		fireRemovingSubject(subject);
 
-		getEnrollmentDao().remove(subject.getEnrollments());
+		getCourseDao().remove(subject.getCourses());
 
 		getSubjectDao().remove(subject);
 	}
@@ -267,13 +267,13 @@ public class LectureServiceImpl extends LectureServiceBase{
 			logger.debug("Remove period " + periodId);
 		Period period = getPeriod(periodId);
 
-		// fire enrollment delete
-		for (Enrollment enrollment : period.getEnrollments()) {
-			fireRemovingEnrollment(enrollment);
+		// fire course delete
+		for (Course course : period.getCourses()) {
+			fireRemovingCourse(course);
 		}
 
-		// remove associated enrollments
-		getEnrollmentDao().remove(period.getEnrollments());
+		// remove associated courses
+		getCourseDao().remove(period.getCourses());
 
 		Faculty faculty = period.getFaculty();
 
@@ -293,29 +293,29 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	@Override
-	protected void handleRemoveEnrollment(Long enrollmentId) throws Exception {
+	protected void handleRemoveCourse(Long courseId) throws Exception {
 		if (logger.isDebugEnabled())
-			logger.debug("Remove enrollment " + enrollmentId);
-		Enrollment enrollment = getEnrollment(enrollmentId);
-		// fire remove enrollment event
-		fireRemovingEnrollment(enrollment);
+			logger.debug("Remove course " + courseId);
+		Course course = getCourse(courseId);
+		// fire remove course event
+		fireRemovingCourse(course);
 
 		// remove associations
-		Faculty faculty = enrollment.getFaculty();
-		Period period = enrollment.getPeriod();
-		period.remove(enrollment);
+		Faculty faculty = course.getFaculty();
+		Period period = course.getPeriod();
+		period.remove(course);
 		persist(period);
-		Subject subject = enrollment.getSubject();
-		subject.remove(enrollment);
+		Subject subject = course.getSubject();
+		subject.remove(course);
 		persist(subject);
-		faculty.remove(enrollment);
+		faculty.remove(course);
 
 		persist(faculty);
-		getEnrollmentDao().remove(enrollment);
+		getCourseDao().remove(course);
 	}
 
 	@Override
-	protected Enrollment handleCreateEnrollment(Long subjectId, Long periodId) throws Exception {
+	protected Course handleCreateCourse(Long subjectId, Long periodId) throws Exception {
 		// refresh instances
 		Subject subject = getSubject(subjectId);
 		Period period = getPeriod(periodId);
@@ -325,26 +325,26 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 		Faculty faculty = subject.getFaculty();
 
-		Enrollment enrollment = Enrollment.Factory.newInstance();
-		subject.add(enrollment);
-		period.add(enrollment);
-		faculty.add(enrollment);
+		Course course = Course.Factory.newInstance();
+		subject.add(course);
+		period.add(course);
+		faculty.add(course);
 
-		enrollment.setFaculty(faculty);
-		enrollment.setSubject(subject);
-		enrollment.setPeriod(period);
+		course.setFaculty(faculty);
+		course.setSubject(subject);
+		course.setPeriod(period);
 
 		persist(faculty);
 		persist(subject);
 		persist(period);
-		storeEnrollment(enrollment);
+		storeCourse(course);
 
-		storeEnrollment(enrollment);
+		storeCourse(course);
 
-		getSecurityService().createObjectIdentity(enrollment, faculty);
-		updateAccessTypePermission(enrollment);
+		getSecurityService().createObjectIdentity(course, faculty);
+		updateAccessTypePermission(course);
 
-		return enrollment;
+		return course;
 	}
 
 	@Override
@@ -537,11 +537,11 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 	// FIXME use event handler instead 
 	
-	private void fireRemovingEnrollment(Enrollment enrollment) throws LectureException {
+	private void fireRemovingCourse(Course course) throws LectureException {
 		if (listeners != null) {
-			logger.debug("fire removing enrollment event");
+			logger.debug("fire removing course event");
 			for (LectureListener listener : listeners) {
-				listener.removingEnrollment(enrollment);
+				listener.removingCourse(course);
 			}
 		}
 	}

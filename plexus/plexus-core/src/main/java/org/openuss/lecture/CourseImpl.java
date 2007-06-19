@@ -14,11 +14,11 @@ import org.hibernate.Session;
 import org.hibernate.classic.Lifecycle;
 
 /**
- * @see org.openuss.lecture.Enrollment
+ * @see org.openuss.lecture.Course
  */
-public class EnrollmentImpl extends EnrollmentBase implements Enrollment, Lifecycle {
+public class CourseImpl extends CourseBase implements Course, Lifecycle {
 
-	private static final Logger logger = Logger.getLogger(EnrollmentImpl.class);
+	private static final Logger logger = Logger.getLogger(CourseImpl.class);
 
 	/**
 	 * The serial version UID of this class. Needed for serialization.
@@ -29,7 +29,7 @@ public class EnrollmentImpl extends EnrollmentBase implements Enrollment, Lifecy
 	 * Generates a guid shortcut on persisting if no shortcut is already set.
 	 */
 	private void generateShortcut() {
-		logger.debug("auto-generate shortcut for enrollment");
+		logger.debug("auto-generate shortcut for course");
 		// FIXME make this method robust against unique key violations
 		String subjectShortcut = getSubject().getShortcut();
 		String id = String.valueOf(this.getId());

@@ -23,8 +23,8 @@ public class FacultyImpl extends org.openuss.lecture.FacultyBase implements org.
 	}
 
 	@Override
-	public void add(Enrollment enrollment) {
-		getEnrollments().add(enrollment);
+	public void add(Course course) {
+		getCourses().add(course);
 	}
 
 	@Override
@@ -49,8 +49,8 @@ public class FacultyImpl extends org.openuss.lecture.FacultyBase implements org.
 	}
 
 	@Override
-	public void remove(Enrollment enrollment) {
-		getEnrollments().remove(enrollment);
+	public void remove(Course course) {
+		getCourses().remove(course);
 	}
 
 	@Override
@@ -64,11 +64,11 @@ public class FacultyImpl extends org.openuss.lecture.FacultyBase implements org.
 	}
 
 	@Override
-	public List getActiveEnrollments() {
+	public List getActiveCourses() {
 		if (getActivePeriod() == null) {
 			return new ArrayList();
 		} else {
-			return getActivePeriod().getEnrollments();
+			return getActivePeriod().getCourses();
 		}
 	}
 

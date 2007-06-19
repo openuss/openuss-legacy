@@ -16,13 +16,13 @@ public class SubjectImpl extends org.openuss.lecture.SubjectBase implements org.
 	private static final long serialVersionUID = -3094289073434197423L;
 
 	@Override
-	public void add(Enrollment enrollment) {
-		getEnrollments().add(enrollment);
+	public void add(Course course) {
+		getCourses().add(course);
 	}
 
 	@Override
-	public void remove(Enrollment enrollment) {
-		getEnrollments().remove(enrollment);
+	public void remove(Course course) {
+		getCourses().remove(course);
 	}
 
 }

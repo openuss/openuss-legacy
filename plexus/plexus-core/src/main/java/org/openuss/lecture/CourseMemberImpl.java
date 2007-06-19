@@ -6,11 +6,11 @@
 package org.openuss.lecture;
 
 /**
- * @see org.openuss.lecture.EnrollmentMember
+ * @see org.openuss.lecture.CourseMember
  */
-public class EnrollmentMemberImpl
-    extends org.openuss.lecture.EnrollmentMemberBase
-	implements org.openuss.lecture.EnrollmentMember
+public class CourseMemberImpl
+    extends org.openuss.lecture.CourseMemberBase
+	implements org.openuss.lecture.CourseMember
 {
     /**
      * The serial version UID of this class. Needed for serialization.
