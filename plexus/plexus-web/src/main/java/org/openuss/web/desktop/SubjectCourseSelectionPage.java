@@ -11,7 +11,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.Enrollment;
+import org.openuss.lecture.Course;
 import org.openuss.lecture.LectureService;
 import org.openuss.lecture.Subject;
 import org.openuss.web.BasePage;
@@ -19,16 +19,16 @@ import org.openuss.web.Constants;
 
 
 /**
- * SubjectEnrollmentSelectionPage is the controller bean to handle the desktop view. 
+ * SubjectCourseSelectionPage is the controller bean to handle the desktop view. 
  * @author Ingo Dueppe
  */
-@Bean(name="views$secured$desktop$subjectenrollmenselection", scope=Scope.REQUEST)
+@Bean(name="views$secured$desktop$subjectcourseselection", scope=Scope.REQUEST)
 @View
-public class SubjectEnrollmentSelectionPage extends BasePage {
+public class SubjectCourseSelectionPage extends BasePage {
 
-	private static final Logger logger = Logger.getLogger(SubjectEnrollmentSelectionPage.class);
+	private static final Logger logger = Logger.getLogger(SubjectCourseSelectionPage.class);
 	
-	private EnrollmentDataProvider enrollmentsProvider = new EnrollmentDataProvider();
+	private CourseDataProvider coursesProvider = new CourseDataProvider();
 	
 	@Property(value="#{sessionScope.subject}")
 	private Subject subject;
@@ -38,7 +38,7 @@ public class SubjectEnrollmentSelectionPage extends BasePage {
 
 	@Prerender
 	public void prerender() {
-		logger.debug("prerender subject enrollment selction");
+		logger.debug("prerender subject course selction");
 		if (subject == null) {
 			addError(i18n("message_error_no_subject_selected"));
 			redirect(Constants.OUTCOME_BACKWARD);
@@ -49,28 +49,28 @@ public class SubjectEnrollmentSelectionPage extends BasePage {
 	}
 	
 	/* ------------------ data models ------------------- */
-	private class EnrollmentDataProvider extends AbstractPagedTable<Enrollment> {
+	private class CourseDataProvider extends AbstractPagedTable<Course> {
 		private static final long serialVersionUID = 6604486126694733013L;
 		
-		private DataPage<Enrollment> page;
+		private DataPage<Course> page;
 
 		@Override
-		public DataPage<Enrollment> getDataPage(int startRow, int pageSize) {
+		public DataPage<Course> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<Enrollment> enrollments = new ArrayList(subject.getEnrollments());
-				sort(enrollments);
-				page = new DataPage<Enrollment>(enrollments.size(),0,enrollments);
+				List<Course> courses = new ArrayList(subject.getCourses());
+				sort(courses);
+				page = new DataPage<Course>(courses.size(),0,courses);
 			}
 			return page;
 		}
 	}
 
-	public EnrollmentDataProvider getEnrollmentsProvider() {
-		return enrollmentsProvider;
+	public CourseDataProvider getCoursesProvider() {
+		return coursesProvider;
 	}
 
-	public void setEnrollmentsProvider(EnrollmentDataProvider enrollmentsProvider) {
-		this.enrollmentsProvider = enrollmentsProvider;
+	public void setCoursesProvider(CourseDataProvider coursesProvider) {
+		this.coursesProvider = coursesProvider;
 	}
 
 	public LectureService getLectureService() {
