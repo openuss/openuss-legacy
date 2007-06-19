@@ -3,8 +3,8 @@
 
 <beans>
 
-	<bean name="/secured/enrollment.xml*" class="org.openuss.web.servlets.feedservlets.EnrollmentFeedController">	
-		<property name="enrollmentFeed"><ref bean="enrollmentFeed"/></property>
+	<bean name="/secured/course.xml*" class="org.openuss.web.servlets.feedservlets.CourseFeedController">	
+		<property name="courseFeed"><ref bean="courseFeed"/></property>
 	</bean>
 	
 	<bean name="/public/faculty.xml*" class="org.openuss.web.servlets.feedservlets.FacultyFeedController">	
@@ -28,8 +28,8 @@
 		<property name="systemService" ref="systemService"/>
 	</bean>
 
-	<bean name="enrollmentFeed" class="org.openuss.web.feeds.EnrollmentFeed" parent="feedTemplate">	
-		<property name="enrollmentService" ref="enrollmentService"/>
+	<bean name="courseFeed" class="org.openuss.web.feeds.CourseFeed" parent="feedTemplate">	
+		<property name="courseService" ref="courseService"/>
 		<property name="newsService" ref="newsService"/>
 	</bean>
 
@@ -39,17 +39,17 @@
 	</bean>
 
 	<bean name="discussionFeed" class="org.openuss.web.feeds.DiscussionFeed" parent="feedTemplate">	
-		<property name="enrollmentService" ref="enrollmentService"/>
+		<property name="courseService" ref="courseService"/>
 		<property name="discussionService" ref="discussionService"/>
 	</bean>
 
 	<bean name="mailingListFeed" class="org.openuss.web.feeds.MailingListFeed" parent="feedTemplate">	
-		<property name="enrollmentService" ref="enrollmentService"/>
-		<property name="enrollmentMailingListService" ref="enrollmentMailingListService"/>
+		<property name="courseService" ref="courseService"/>
+		<property name="courseMailingListService" ref="courseMailingListService"/>
 	</bean>
 
 	<bean name="documentsFeed" class="org.openuss.web.feeds.DocumentsFeed" parent="feedTemplate">	
-		<property name="enrollmentService" ref="enrollmentService"/>
+		<property name="courseService" ref="courseService"/>
 		<property name="documentService" ref="documentService"/>
 		<property name="viewUri" value="/views/secured/documents/documents.faces"/>
 	</bean>

@@ -7,13 +7,13 @@
 		<parameter name="period" value="#{period.id}" converterId="javax.faces.Long"/>
 	</page>
 	
-	<page view-id="/views/secured/enrollment/*">
-		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
+	<page view-id="/views/secured/course/*">
+		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
 	</page>
 
-	<page view-id="/views/secured/enrollment/enrollment*">
-		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.ASSIST}"/>
-		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
+	<page view-id="/views/secured/course/course*">
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.ASSIST}"/>
+		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<page view-id="/views/secured/user/userprofile.xhtml">
@@ -26,9 +26,9 @@
 
 	<page view-id="/views/secured/documents/*">
 	 	<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.READ}"/>
-		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.READ}"/>
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.READ}"/>
 		<parameter name="folder" value="#{documents_current_folder.id}" converterId="javax.faces.Long"/>
-		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
+		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
 	</page>
 
 	<page view-id="/views/secured/documents/folderedit.xhtml">
@@ -52,13 +52,13 @@
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
 	<page view-id="/views/secured/braincontest/*">
-		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.READ}"/>
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.READ}"/>
 		<parameter name="braincontest" value="#{braincontest_contest.id}" converterId="javax.faces.Long"/>
-		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
+		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<page view-id="/views/secured/braincontest/braincontestnew.xhtml">
-		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.ASSIST}"/>
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.ASSIST}"/>
 	</page>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -66,8 +66,8 @@
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
 	<page view-id="/views/secured/discussion/*">
-		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.READ}"/>
-		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.READ}"/>
+		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
 		<parameter name="topic" value="#{discussion_topic.id}" converterId="javax.faces.Long"/>
 	</page>
 	
@@ -82,8 +82,8 @@
 	</page>
 
 	<page view-id="/views/secured/mailinglist/*">
-		<securityConstraint domainObject="#{enrollment}" permissions="#{ACL.READ}"/>
-		<parameter name="enrollment" value="#{enrollment.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.READ}"/>
+		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
 	</page>
 
 	

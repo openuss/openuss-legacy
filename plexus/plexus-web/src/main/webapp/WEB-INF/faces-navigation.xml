@@ -102,8 +102,8 @@
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>enrollment_main</from-outcome>
-			<to-view-id>/views/secured/enrollment/main.xhtml</to-view-id>
+			<from-outcome>course_main</from-outcome>
+			<to-view-id>/views/secured/course/main.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
@@ -233,8 +233,8 @@
     <navigation-rule>
     	<from-view-id>/views/secured/desktop/*</from-view-id>
     	<navigation-case>
-    		<from-outcome>subject_enrollment_selection</from-outcome>
-    		<to-view-id>/views/secured/desktop/subjectenrollmenselection.xhtml</to-view-id>
+    		<from-outcome>subject_course_selection</from-outcome>
+    		<to-view-id>/views/secured/desktop/subjectcourseselection.xhtml</to-view-id>
     	</navigation-case>
     </navigation-rule>
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
@@ -322,8 +322,8 @@
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>faculty_enrollment_remove</from-outcome>
-			<to-view-id>/views/secured/lecture/enrollmentremove.xhtml</to-view-id>
+			<from-outcome>faculty_course_remove</from-outcome>
+			<to-view-id>/views/secured/lecture/courseremove.xhtml</to-view-id>
 		</navigation-case>
 		
 		
@@ -335,80 +335,80 @@
 		<navigation-rule>
 			<from-view-id>/views/secured/*</from-view-id>
 		
-			<!-- TODO move main to public or insert second public enrollment main -->
+			<!-- TODO move main to public or insert second public course main -->
 			<navigation-case>
-				<from-outcome>enrollment</from-outcome>
-				<to-view-id>/views/secured/enrollment/main.xhtml</to-view-id>
+				<from-outcome>course</from-outcome>
+				<to-view-id>/views/secured/course/main.xhtml</to-view-id>
 			</navigation-case>
 
 			<navigation-case>
-				<from-outcome>enrollment_discussion</from-outcome>
+				<from-outcome>course_discussion</from-outcome>
 				<to-view-id>/views/secured/discussion/discussions.xhtml</to-view-id>
 			</navigation-case>
 	
 			<navigation-case>
-				<from-outcome>enrollment_mailinglist</from-outcome>
+				<from-outcome>course_mailinglist</from-outcome>
 				<to-view-id>/views/secured/mailinglist/mailinglist.xhtml</to-view-id>
 			</navigation-case>
 	
 			<navigation-case>
-				<from-outcome>enrollment_quiz</from-outcome>
-				<to-view-id>/views/secured/enrollment/quiz.xhtml</to-view-id>
+				<from-outcome>course_quiz</from-outcome>
+				<to-view-id>/views/secured/course/quiz.xhtml</to-view-id>
 			</navigation-case>
 	
 			<navigation-case>
-				<from-outcome>enrollment_chat</from-outcome>
-				<to-view-id>/views/secured/enrollment/chatmain.xhtml</to-view-id>
+				<from-outcome>course_chat</from-outcome>
+				<to-view-id>/views/secured/course/chatmain.xhtml</to-view-id>
 			</navigation-case>
 	
 			<navigation-case>
-				<from-outcome>enrollment_wiki</from-outcome>
+				<from-outcome>course_wiki</from-outcome>
 				<to-view-id>/views/secured/wiki/wikimain.xhtml</to-view-id>
 			</navigation-case>
 	
 			<navigation-case>
 				<from-outcome>freestyle_learning</from-outcome>
-				<to-view-id>/views/secured/enrollment/fslinstall.xhtml</to-view-id>
+				<to-view-id>/views/secured/course/fslinstall.xhtml</to-view-id>
 			</navigation-case>
 
 			<navigation-case>
-				<from-outcome>enrollment_options</from-outcome>
-				<to-view-id>/views/secured/enrollment/enrollmentoptions.xhtml</to-view-id>
+				<from-outcome>course_options</from-outcome>
+				<to-view-id>/views/secured/course/courseoptions.xhtml</to-view-id>
 			</navigation-case>
 			
 			<navigation-case>
-				<from-outcome>enrollment_options_config</from-outcome>
-				<to-view-id>/views/secured/enrollment/enrollmentoptions.xhtml</to-view-id>				
+				<from-outcome>course_options_config</from-outcome>
+				<to-view-id>/views/secured/course/courseoptions.xhtml</to-view-id>				
 			</navigation-case>
 
 			<navigation-case>
-				<from-outcome>enrollment_options_aspirants</from-outcome>
-				<to-view-id>/views/secured/enrollment/enrollmentaspirants.xhtml</to-view-id>				
+				<from-outcome>course_options_aspirants</from-outcome>
+				<to-view-id>/views/secured/course/courseaspirants.xhtml</to-view-id>				
 			</navigation-case>
 			
 			<navigation-case>
-				<from-outcome>enrollment_options_members</from-outcome>
-				<to-view-id>/views/secured/enrollment/enrollmentparticipants.xhtml</to-view-id>				
+				<from-outcome>course_options_members</from-outcome>
+				<to-view-id>/views/secured/course/courseparticipants.xhtml</to-view-id>				
 			</navigation-case>
 
 			<navigation-case>
-				<from-outcome>enrollment_options_assistants</from-outcome>
-				<to-view-id>/views/secured/enrollment/enrollmentassistants.xhtml</to-view-id>
+				<from-outcome>course_options_assistants</from-outcome>
+				<to-view-id>/views/secured/course/courseassistants.xhtml</to-view-id>
      		</navigation-case>
      		
      		<navigation-case>
-				<from-outcome>enrollment_news</from-outcome>
-				<to-view-id>/views/secured/enrollment/enrollmentnews.xhtml</to-view-id>
+				<from-outcome>course_news</from-outcome>
+				<to-view-id>/views/secured/course/coursenews.xhtml</to-view-id>
 			</navigation-case>
 
 			<navigation-case>
-				<from-outcome>enrollment_news_edit</from-outcome>
-				<to-view-id>/views/secured/enrollment/enrollmentnewsedit.xhtml</to-view-id>
+				<from-outcome>course_news_edit</from-outcome>
+				<to-view-id>/views/secured/course/coursenewsedit.xhtml</to-view-id>
 			</navigation-case>
      		
 
 			<navigation-case>
-				<from-outcome>enrollment_options_news</from-outcome>
+				<from-outcome>course_options_news</from-outcome>
 				<to-view-id>/views/secured/lecture/news.xhtml</to-view-id>				
 			</navigation-case>
 
