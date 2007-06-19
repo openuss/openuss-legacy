@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+    xmlns:c="http://java.sun.com/jstl/core"  
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:include src="/views/commons/navigation/faculty.xhtml" />
+	<s:acl domainObject="#{course}" hasPermission="#{ACL.READ}">
+		<h:form id="courseNavigationForm">
+			<t:panelNavigation2 id="course_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
+				<t:commandNavigation2 value="#{msg['course_navigation_header']}">
+					<s:acl domainObject="#{course}" hasPermission="#{ACL.READ}">
+						<t:commandNavigation2 
+							action="course_main" 
+							activeOnViewIds="/views/secured/course/main.xhtml" >
+							<h:outputText value="#{msg['course_command_main']}" />
+						</t:commandNavigation2>
+						<t:commandNavigation2 
+							action="course_mailinglist" 
+							activeOnViewIds="/views/secured/mailinglist/mailinglist.xhtml,/views/secured/mailinglist/mailinglistsubscribers.xhtml,/views/secured/mailinglist/showmail.xhtml,/views/secured/mailinglist/newmail.xhtml"
+							rendered="#{course.mailinglist}">
+							<h:outputText value="#{msg['course_command_mailinglist']}"/>
+						</t:commandNavigation2>
+						<t:commandNavigation2 
+							action="documents_main" 
+							activeOnViewIds="/views/secured/documents/documents.xhtml,/views/secured/documents/fileedit.xhtml,/views/secured/documents/addzip.xhtml,/views/secured/documents/folderedit.xhtml,/views/secured/documents/remove.faces" 
+							rendered="#{course.documents}">
+							<h:outputText value="#{msg['course_command_documents']}" />
+						</t:commandNavigation2>
+						<t:commandNavigation2 
+							action="course_discussion" 
+							activeOnViewIds="/views/secured/discussion/discussions.xhtml,/views/secured/discussion/discussionnew.xhtml,/views/secured/discussion/discussionthread.xhtml"
+							rendered="#{course.discussion}">
+							<h:outputText value="#{msg['course_command_discussion']}"/>
+						</t:commandNavigation2>
+						<t:commandNavigation2 
+							action="braincontest_main" 
+							activeOnViewIds="/views/secured/braincontest/braincontestmain.xhtml,/views/secured/braincontest/braincontestnew.xhtml,/views/secured/braincontest/braincontestsolve.xhtml,/views/secured/braincontest/braincontestsolved.xhtml,/views/secured/braincontest/braincontesttop.xhtml,/views/secured/braincontest/braincontestwrong.xhtml"
+							rendered="#{course.braincontest}">
+							<h:outputText value="#{msg['course_command_quiz']}" />
+						</t:commandNavigation2>
+						<t:commandNavigation2 
+							action="course_chat" 
+							activeOnViewIds="/views/secured/course/chatmain.xhtml"
+							rendered="#{course.chat}">
+							<h:outputText value="#{msg['course_command_chat']}"/>
+						</t:commandNavigation2>
+<!--
+						<t:commandNavigation2 
+							action="course_wiki" 
+							activeOnViewIds="/views/secured/wiki/wikimain.xhtml,/views/secured/wiki/wikiedit.xhtml"
+							rendered="#{course.wiki}">
+							<h:outputText value="#{msg['course_command_wiki']}"/>
+						</t:commandNavigation2>
+  -->
+						<t:commandNavigation2 
+							action="freestyle_learning" 
+							activeOnViewIds="/views/secured/course/fslinstall.xhtml"
+							rendered="#{course.freestylelearning}">
+							<h:outputText value="Freestyle Learning"/>
+						</t:commandNavigation2>					
+					</s:acl>
+
+					<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}">
+<!-- 						<t:commandNavigation2 value="#{msg['course_command_options']}" action="course_options_config" >-->
+							<t:commandNavigation2 
+								action="course_news"
+								activeOnViewIds="/views/secured/course/coursenews.xhtml,/views/secured/course/coursenews.xhtml">
+								<h:outputText value="#{msg['course_command_options_news']}" />
+							</t:commandNavigation2>
+							<t:commandNavigation2 
+								action="course_options_assistants" 
+								activeOnViewIds="/views/secured/course/courseassistants.xhtml">
+								<h:outputText value="#{msg['course_command_options_assistants']}" />
+							</t:commandNavigation2>
+							<t:commandNavigation2 
+								action="course_options_members" 
+								activeOnViewIds="/views/secured/course/courseparticipants.xhtml">
+								<h:outputText value="#{msg['course_command_options_participants']}" />
+							</t:commandNavigation2>
+							<c:if test="#{sessionScope.course.accessType.value == 3}">
+								<t:commandNavigation2 
+									action="course_options_aspirants" 
+									activeOnViewIds="/views/secured/course/courseaspirants.xhtml">
+									<h:outputText value="#{msg['course_command_options_aspirants']}" />
+								</t:commandNavigation2>
+							</c:if>
+							<t:commandNavigation2 
+								action="course_options_config" 
+								activeOnViewIds="/views/secured/course/courseoptions.xhtml">
+								<h:outputText value="#{msg['course_command_options_config']}" />
+							</t:commandNavigation2>
+<!--  						</t:commandNavigation2>-->
+					</s:acl>
+		
+				
+	
+		
+				</t:commandNavigation2>
+			</t:panelNavigation2>	
+		</h:form>
+	</s:acl> 
+</ui:composition>

@@ -17,13 +17,13 @@ public class DiscussionFeedController extends AbstractFeedServlet implements Con
 	}
 
 	@Override
-	protected FeedWrapper getFeedWrapper(Long enrollmentId) {
-		return discussionFeed.getFeed(enrollmentId);
+	protected FeedWrapper getFeedWrapper(Long courseId) {
+		return discussionFeed.getFeed(courseId);
 	}
 
 	@Override
 	protected String domainParameterName() {
-		return "enrollment";
+		return "course";
 	}
 
 }

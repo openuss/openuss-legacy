@@ -18,7 +18,7 @@ public class MailingListFeedController extends AbstractFeedServlet implements Co
 
 	@Override
 	protected String domainParameterName() {
-		return "enrollment";
+		return "course";
 	}
 
 	@Override

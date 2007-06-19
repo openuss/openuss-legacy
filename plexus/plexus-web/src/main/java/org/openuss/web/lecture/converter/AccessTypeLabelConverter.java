@@ -20,13 +20,13 @@ public class AccessTypeLabelConverter extends BaseBean implements Converter  {
 		if (value instanceof AccessType){
 			AccessType accessType = (AccessType) value;
 			if (accessType == AccessType.OPEN) {
-				return i18n("enrollment_options_access_open_short");
+				return i18n("course_options_access_open_short");
 			} else if (accessType == AccessType.CLOSED) {
-				return i18n("enrollment_options_access_closed_short");
+				return i18n("course_options_access_closed_short");
 			} else if (accessType == AccessType.PASSWORD) {
-				return i18n("enrollment_options_access_password_short");
+				return i18n("course_options_access_password_short");
 			} else if (accessType == AccessType.APPLICATION) {
-				return i18n("enrollment_options_access_application_short");
+				return i18n("course_options_access_application_short");
 			}
 			return accessType.getValue().toString();
 		}  else if (value instanceof Integer) {

@@ -2,15 +2,15 @@ package org.openuss.web.mail;
 
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
-import org.openuss.enrollment.mailinglist.EnrollmentMailingListService;
+import org.openuss.course.mailinglist.CourseMailingListService;
 import org.openuss.mailinglist.MailDetail;
 import org.openuss.mailinglist.MailingListInfo;
-import org.openuss.web.enrollment.AbstractEnrollmentPage;
+import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.web.Constants;
-public class AbstractMailingListPage extends AbstractEnrollmentPage{
+public class AbstractMailingListPage extends AbstractCoursePage{
 
-	@Property(value = "#{enrollmentMailingListService}")
-	protected EnrollmentMailingListService enrollmentMailingListService;
+	@Property(value = "#{courseMailingListService}")
+	protected CourseMailingListService courseMailingListService;
 	
 	@Property(value = "#{" + Constants.MAILINGLIST_MAIL + "}")
 	protected MailDetail mail;
@@ -24,13 +24,13 @@ public class AbstractMailingListPage extends AbstractEnrollmentPage{
 		super.prerender();
 	}	
 	
-	public EnrollmentMailingListService getEnrollmentMailingListService() {
-		return enrollmentMailingListService;
+	public CourseMailingListService getCourseMailingListService() {
+		return courseMailingListService;
 	}
 
-	public void setEnrollmentMailingListService(
-			EnrollmentMailingListService enrollmentMailingListService) {
-		this.enrollmentMailingListService = enrollmentMailingListService;
+	public void setCourseMailingListService(
+			CourseMailingListService courseMailingListService) {
+		this.courseMailingListService = courseMailingListService;
 	}
 
 	public MailDetail getMail() {

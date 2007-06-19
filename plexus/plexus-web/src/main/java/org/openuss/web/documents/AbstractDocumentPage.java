@@ -10,12 +10,12 @@ import org.openuss.documents.DocumentService;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
 import org.openuss.web.Constants;
-import org.openuss.web.enrollment.AbstractEnrollmentPage;
+import org.openuss.web.course.AbstractCoursePage;
 
 /**
  * @author Ingo Dueppe
  */
-public class AbstractDocumentPage extends AbstractEnrollmentPage {
+public class AbstractDocumentPage extends AbstractCoursePage {
 	private static final Logger logger = Logger.getLogger(AbstractDocumentPage.class);
 
 	@Property(value = "#{documentService}")
@@ -24,7 +24,7 @@ public class AbstractDocumentPage extends AbstractEnrollmentPage {
 	@Property(value = "#{documents_current_folder}")
 	protected FolderInfo currentFolder;
 
-	@Property(value = "#{sessionScope.enrollment}")
+	@Property(value = "#{sessionScope.course}")
 	protected DomainObject domainObject;
 	
 	@Prerender

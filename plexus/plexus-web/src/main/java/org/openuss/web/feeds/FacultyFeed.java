@@ -22,7 +22,7 @@ public class FacultyFeed extends AbstractFeed{
 		
 		private transient NewsService newsService;
 		
-		public static final Logger logger = Logger.getLogger(EnrollmentFeed.class);
+		public static final Logger logger = Logger.getLogger(CourseFeed.class);
 
 		private FeedWrapper buildFeedArray(FacultyDetails faculty) {
 			final List entries = new ArrayList();

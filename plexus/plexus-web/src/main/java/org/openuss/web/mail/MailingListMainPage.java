@@ -34,7 +34,7 @@ public class MailingListMainPage extends AbstractMailingListPage{
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		mailingList = getEnrollmentMailingListService().getMailingList(enrollmentInfo);
+		mailingList = getCourseMailingListService().getMailingList(courseInfo);
 		setSessionBean(Constants.MAILINGLIST_MAILINGLIST, mailingList);
 	}	
 	
@@ -47,7 +47,7 @@ public class MailingListMainPage extends AbstractMailingListPage{
 		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<MailInfo> getDataPage(int startRow, int pageSize) {		
-			List<MailInfo> al = enrollmentMailingListService.getMails(enrollmentInfo);			
+			List<MailInfo> al = courseMailingListService.getMails(courseInfo);			
 			page = new DataPage<MailInfo>(al.size(),0,al);
 			return page;
 		}
@@ -62,41 +62,41 @@ public class MailingListMainPage extends AbstractMailingListPage{
 	
 	public String delMail(){
 		MailInfo mi = data.getRowData();		
-		getEnrollmentMailingListService().deleteMail(enrollmentInfo, getEnrollmentMailingListService().getMail(mi));
+		getCourseMailingListService().deleteMail(courseInfo, getCourseMailingListService().getMail(mi));
 		this.mail = new MailDetail();
 		return Constants.SUCCESS;
 	}
 	
 	public String changeMail(){	
 		MailInfo mi = data.getRowData();
-		MailDetail md = getEnrollmentMailingListService().getMail(mi);
+		MailDetail md = getCourseMailingListService().getMail(mi);
 		md.setStatus(MailingStatus.DRAFT);
-		getEnrollmentMailingListService().updateMail(enrollmentInfo, md);
+		getCourseMailingListService().updateMail(courseInfo, md);
 		setSessionBean(Constants.MAILINGLIST_MAIL, md);
 		return Constants.MAILINGLIST_NEWMAIL;
 	}
 	
 	public String toggleMailingListStatus(){
 		if (getMailingList().isSubscribed()){
-			getEnrollmentMailingListService().unsubscribe(enrollmentInfo, user);			
+			getCourseMailingListService().unsubscribe(courseInfo, user);			
 		} else if (!getMailingList().isSubscribed()){
-			getEnrollmentMailingListService().subscribe(enrollmentInfo, user);
+			getCourseMailingListService().subscribe(courseInfo, user);
 		}
 		return Constants.SUCCESS;
 	}
 	
 	public String sendMail(){
 		MailInfo mi = data.getRowData();
-		MailDetail md = getEnrollmentMailingListService().getMail(mi);
+		MailDetail md = getCourseMailingListService().getMail(mi);
 		this.mail = md;
 		setSessionBean(Constants.MAILINGLIST_MAIL, md);
-		getEnrollmentMailingListService().sendMail(enrollmentInfo, getMail());
+		getCourseMailingListService().sendMail(courseInfo, getMail());
 		return Constants.SUCCESS;
 	}
 	
 	public String showMail(){
 		MailInfo mi = data.getRowData();
-		MailDetail md = getEnrollmentMailingListService().getMail(mi);		
+		MailDetail md = getCourseMailingListService().getMail(mi);		
 		this.mail = md;		
 		setSessionBean(Constants.MAILINGLIST_MAIL, md);
 		return Constants.MAILINGLIST_SHOWMAIL;
@@ -104,16 +104,16 @@ public class MailingListMainPage extends AbstractMailingListPage{
 	
 	public String sendPlannedMailNow(){
 		MailInfo mi = data.getRowData();
-		MailDetail md = getEnrollmentMailingListService().getMail(mi);		
+		MailDetail md = getCourseMailingListService().getMail(mi);		
 		md.setSendDate(new Date(System.currentTimeMillis()));
-		getEnrollmentMailingListService().updateMail(enrollmentInfo, md);
+		getCourseMailingListService().updateMail(courseInfo, md);
 		return Constants.MAILINGLIST_MAIN;
 		
 	}
 	
 	public String stopMail(){
 		MailInfo mailInfo = data.getRowData();
-		getEnrollmentMailingListService().cancelSending(mailInfo);
+		getCourseMailingListService().cancelSending(mailInfo);
 		return Constants.MAILINGLIST_MAIN;
 	}
 	

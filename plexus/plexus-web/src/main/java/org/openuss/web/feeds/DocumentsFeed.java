@@ -11,9 +11,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
-import org.openuss.lecture.Enrollment;
-import org.openuss.lecture.EnrollmentInfo;
-import org.openuss.lecture.EnrollmentService;
+import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.CourseService;
 import org.openuss.system.SystemProperties;
 import org.openuss.system.SystemService;
 import org.openuss.web.Constants;
@@ -22,7 +22,7 @@ public class DocumentsFeed extends AbstractFeed {
 
 	private transient DocumentService documentService;
 	
-	private transient EnrollmentService enrollmentService;
+	private transient CourseService courseService;
 
 	private transient SystemService systemService;
 
@@ -31,11 +31,11 @@ public class DocumentsFeed extends AbstractFeed {
 	
 	public static final Logger logger = Logger.getLogger(DocumentsFeed.class);
 
-	private FeedWrapper buildFeedArray(EnrollmentInfo enrollment) {
+	private FeedWrapper buildFeedArray(CourseInfo course) {
 		final List entries = new ArrayList();
 		FeedWrapper feedWrapper = new FeedWrapper();
 		
-		List folders = getDocumentService().getFolderEntries(enrollment, null);
+		List folders = getDocumentService().getFolderEntries(course, null);
 		List<FileInfo> files = getDocumentService().allFileEntries(folders);
 		
 		String urlServer = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue();
@@ -43,34 +43,34 @@ public class DocumentsFeed extends AbstractFeed {
 		if (files != null && files.size() > 0) {
 			for(FileInfo entry : files) {
 				String link = urlServer + "files/" + entry.getFileName() + "?"+Constants.REPOSITORY_FILE_ID+"="+entry.getId();
-				this.addEntry(entries, enrollment.getName()+" - "+entry.getName(), link, entry.getCreated(), entry.getName()+"\n"+entry.getDescription(), enrollment.getName(),enrollment.getName());
+				this.addEntry(entries, course.getName()+" - "+entry.getName(), link, entry.getCreated(), entry.getName()+"\n"+entry.getDescription(), course.getName(),course.getName());
 			}
 			
 		}
 		
-		String link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+viewUri+"?enrollment=" + enrollment.getId();
+		String link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+viewUri+"?course=" + course.getId();
 
-		feedWrapper.setWriter(this.convertToXml(enrollment.getName(), link, enrollment.getDescription(), systemService
+		feedWrapper.setWriter(this.convertToXml(course.getName(), link, course.getDescription(), systemService
 				.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
 
 		return feedWrapper;
 	}
 
 	/**
-	 * @see org.openuss.feed.FeedService#getRssFeedForEnrollment(org.openuss.lecture.EnrollmentInfo)
+	 * @see org.openuss.feed.FeedService#getRssFeedForCourse(org.openuss.lecture.CourseInfo)
 	 */
-	public FeedWrapper getFeed(Long enrollmentId) {
-		if (enrollmentId == null || enrollmentId == 0) {
+	public FeedWrapper getFeed(Long courseId) {
+		if (courseId == null || courseId == 0) {
 			return null;
 		}
-		Enrollment e = Enrollment.Factory.newInstance();
-		e.setId(enrollmentId);
-		EnrollmentInfo enrollment = getEnrollmentService().getEnrollmentInfo(getEnrollmentService().getEnrollment(e));
-		if (enrollment == null) {
+		Course e = Course.Factory.newInstance();
+		e.setId(courseId);
+		CourseInfo course = getCourseService().getCourseInfo(getCourseService().getCourse(e));
+		if (course == null) {
 			return null;
 		}
 
-		return buildFeedArray(enrollment);
+		return buildFeedArray(course);
 	}
 
 	public SystemService getSystemService() {
@@ -81,12 +81,12 @@ public class DocumentsFeed extends AbstractFeed {
 		this.systemService = systemService;
 	}
 
-	public EnrollmentService getEnrollmentService() {
-		return enrollmentService;
+	public CourseService getCourseService() {
+		return courseService;
 	}
 
-	public void setEnrollmentService(EnrollmentService enrollmentService) {
-		this.enrollmentService = enrollmentService;
+	public void setCourseService(CourseService courseService) {
+		this.courseService = courseService;
 	}
 
 	public DocumentService getDocumentService() {

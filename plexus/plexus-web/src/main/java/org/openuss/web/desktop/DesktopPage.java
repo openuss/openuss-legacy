@@ -11,7 +11,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.Enrollment;
+import org.openuss.lecture.Course;
 import org.openuss.lecture.Faculty;
 import org.openuss.lecture.Subject;
 import org.openuss.web.BasePage;
@@ -28,7 +28,7 @@ public class DesktopPage extends BasePage {
 
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
 
-	private EnrollmentDataProvider enrollmentsProvider = new EnrollmentDataProvider();
+	private CourseDataProvider coursesProvider = new CourseDataProvider();
 	private SubjectDataProvider subjectsProvider = new SubjectDataProvider();
 	private FacultyDataProvider facultiesProvider = new FacultyDataProvider();
 
@@ -82,28 +82,28 @@ public class DesktopPage extends BasePage {
 	}
 
 	/**
-	 * Show selected enrollment
+	 * Show selected course
 	 * 
 	 * @return outcome
 	 */
-	public String showEnrollment() {
-		logger.debug("showEnrollment");
-		Enrollment enrollment = enrollmentsProvider.getRowData();
-		setSessionBean(Constants.ENROLLMENT, enrollment);
-		return Constants.ENROLLMENT_PAGE;
+	public String showCourse() {
+		logger.debug("showCourse");
+		Course course = coursesProvider.getRowData();
+		setSessionBean(Constants.COURSE, course);
+		return Constants.COURSE_PAGE;
 	}
 
 	/**
-	 * Remove enrollment
+	 * Remove course
 	 * 
 	 * @return outcome
 	 */
-	public String removeEnrollment() {
-		logger.debug("remove enrollment");
-		Enrollment enrollment = enrollmentsProvider.getRowData();
+	public String removeCourse() {
+		logger.debug("remove course");
+		Course course = coursesProvider.getRowData();
 		try {
-			desktopService.unlinkEnrollment(desktop, enrollment);
-			addMessage(i18n("desktop_mesage_removed_enrollment_succeed", enrollment.getShortcut()));
+			desktopService.unlinkCourse(desktop, course);
+			addMessage(i18n("desktop_mesage_removed_course_succeed", course.getShortcut()));
 		} catch (DesktopException e) {
 			logger.debug(e);
 			addError(i18n(e.getMessage()));
@@ -120,7 +120,7 @@ public class DesktopPage extends BasePage {
 		logger.debug("showSubject");
 		Subject subject = subjectsProvider.getRowData();
 		setSessionBean(Constants.SUBJECT, subject);
-		return Constants.SUBJECT_ENROLLMENT_SELECTION_PAGE;
+		return Constants.SUBJECT_COURSE_SELECTION_PAGE;
 	}
 
 	public String removeSubject() {
@@ -137,17 +137,17 @@ public class DesktopPage extends BasePage {
 	}
 
 	/* ------------------ data models ------------------- */
-	private class EnrollmentDataProvider extends AbstractPagedTable<Enrollment> {
+	private class CourseDataProvider extends AbstractPagedTable<Course> {
 
 		private static final long serialVersionUID = 255073655670856663L;
 
-		private DataPage<Enrollment> page;
+		private DataPage<Course> page;
 
 		@Override
-		public DataPage<Enrollment> getDataPage(int startRow, int pageSize) {
-			List<Enrollment> enrollments = new ArrayList(desktop.getEnrollments());
-			sort(enrollments);
-			page = new DataPage<Enrollment>(enrollments.size(), 0, enrollments);
+		public DataPage<Course> getDataPage(int startRow, int pageSize) {
+			List<Course> courses = new ArrayList(desktop.getCourses());
+			sort(courses);
+			page = new DataPage<Course>(courses.size(), 0, courses);
 			return page;
 		}
 	}
@@ -181,12 +181,12 @@ public class DesktopPage extends BasePage {
 		}
 	}
 
-	public EnrollmentDataProvider getEnrollmentsProvider() {
-		return enrollmentsProvider;
+	public CourseDataProvider getCoursesProvider() {
+		return coursesProvider;
 	}
 
-	public void setEnrollmentsProvider(EnrollmentDataProvider enrollmentsProvider) {
-		this.enrollmentsProvider = enrollmentsProvider;
+	public void setCoursesProvider(CourseDataProvider coursesProvider) {
+		this.coursesProvider = coursesProvider;
 	}
 
 	public FacultyDataProvider getFacultiesProvider() {

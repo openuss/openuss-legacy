@@ -21,9 +21,9 @@ public class ExportedSubscribersPage extends AbstractMailingListPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		mailingList = getEnrollmentMailingListService().getMailingList(enrollmentInfo);
+		mailingList = getCourseMailingListService().getMailingList(courseInfo);
 		setSessionBean(Constants.MAILINGLIST_MAILINGLIST, mailingList);
-		setSubscribersSemicolon(getEnrollmentMailingListService().exportSubscribers(enrollmentInfo));
+		setSubscribersSemicolon(getCourseMailingListService().exportSubscribers(courseInfo));
 		setSubscribersComma(getSubscribersSemicolon().replace(';', ','));
 	}
 

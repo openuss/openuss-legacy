@@ -27,7 +27,7 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		if (enrollmentInfo != null) {
+		if (courseInfo != null) {
 			forumWatchState = discussionService.watchesForum(getForum());
 			forumReadOnly = getForum().isReadOnly();
 		}
@@ -72,7 +72,7 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	}
 
 	public String changeWatchState(){
-		ForumInfo forum = discussionService.getForum(enrollment);
+		ForumInfo forum = discussionService.getForum(course);
 		if (discussionService.watchesForum(forum)){
 			discussionService.removeForumWatch(forum);
 		} else if(!discussionService.watchesForum(forum)){

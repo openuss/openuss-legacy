@@ -8,8 +8,8 @@ public class DocumentsFeedController extends AbstractFeedServlet implements Cont
 
 	private DocumentsFeed documentFeed;
 
-	protected FeedWrapper getFeedWrapper(Long enrollmentId) {
-		return documentFeed.getFeed(enrollmentId);
+	protected FeedWrapper getFeedWrapper(Long courseId) {
+		return documentFeed.getFeed(courseId);
 	}
 
 	public DocumentsFeed getDocumentFeed() {
@@ -22,7 +22,7 @@ public class DocumentsFeedController extends AbstractFeedServlet implements Cont
 
 	@Override
 	protected String domainParameterName() {
-		return "enrollment";
+		return "course";
 	}
 
 }
