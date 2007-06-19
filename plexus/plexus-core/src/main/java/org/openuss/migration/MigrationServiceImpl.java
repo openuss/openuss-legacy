@@ -13,7 +13,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.openuss.desktop.Desktop;
-import org.openuss.lecture.Enrollment;
+import org.openuss.lecture.Course;
 import org.openuss.lecture.Faculty;
 import org.openuss.lecture.Period;
 import org.openuss.lecture.Subject;
@@ -47,7 +47,7 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 	private Map<String, User> users = new HashMap<String, User>();
 	private Map<String, Desktop> desktops = new HashMap<String, Desktop>();
 	private Map<String, Faculty> faculties = new HashMap<String, Faculty>();
-	private Map<String, Enrollment> enrollments = new HashMap<String, Enrollment>();
+	private Map<String, Course> courses = new HashMap<String, Course>();
 	private Map<String, Subject> subjects = new HashMap<String, Subject>();
 	private Map<Faculty, ObjectIdentity> facultyObjIds = new HashMap<Faculty, ObjectIdentity>();
 	
@@ -148,14 +148,14 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 	 * @param assistants2
 	 */
 	private void createDesktopLinksForAssistants(Collection<Assistant2> assistants2) {
-		logger.debug("creating assistant desktop links for enrollments and faculties");
+		logger.debug("creating assistant desktop links for courses and faculties");
 		for (Assistant2 assistant: assistants2) {
 			Desktop desktop = desktops.get(assistant.getId());
 			if (desktop != null) {
 				for (Assistantenrollment2 assistEnrollment: assistant.getAssistantenrollments()) {
-					Enrollment enrollment = enrollments.get(assistEnrollment.getEnrollment().getId());
-					if (enrollment != null) {
-						desktop.getEnrollments().add(enrollment);
+					Course course = courses.get(assistEnrollment.getEnrollment().getId());
+					if (course != null) {
+						desktop.getCourses().add(course);
 					}
 				}
 				for (Assistantfaculty2 facultyLink: assistant.getAssistantfaculties()) {
@@ -236,8 +236,8 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 	/**
 	 * Builds the Faculty ACL security. This depends on two steps:
 	 * <ol>
-	 * 		<li>Define a domain object identity structure for each faculty and its enrollments</li>
-	 * 		<li>Define the group permissions to the faculty, that will be inherited to the enrollments</li>
+	 * 		<li>Define a domain object identity structure for each faculty and its courses</li>
+	 * 		<li>Define the group permissions to the faculty, that will be inherited to the courses</li>
 	 * </ol> 
 	 * 
 	 * 
@@ -255,15 +255,15 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 		
 		groups.addAll(faculty.getGroups());
 		
-		// create object identity structure faculty <-(parent)---- enrollment
+		// create object identity structure faculty <-(parent)---- course
 		ObjectIdentity facultyObjId = createObjectIdentity(faculty.getId(), null);
 		objIds.add(facultyObjId);
 		
 		// cache faculty <--> objId dependency
 		facultyObjIds.put(faculty, facultyObjId);
 		
-		for (Enrollment enrollment: faculty.getEnrollments()) {
-			objIds.add(createObjectIdentity(enrollment.getId(),facultyObjId));
+		for (Course course: faculty.getCourses()) {
+			objIds.add(createObjectIdentity(course.getId(),facultyObjId));
 		}
 		// create group permissions
 		facultyObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.FACULTY_ADMINISTRATION, facultyObjId, groupAdmins ));
@@ -432,9 +432,9 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 			Period period = semester2ToPeriod(semester2, subjects);
 			faculty.add(period);
 			period.setFaculty(faculty);
-			for (Enrollment enrollment: period.getEnrollments()) {
-				faculty.add(enrollment);
-				enrollment.setFaculty(faculty);
+			for (Course course: period.getCourses()) {
+				faculty.add(course);
+				course.setFaculty(faculty);
 			}
 		}
 	}
@@ -450,15 +450,15 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 		period.setName(semester.getName());
 		period.setDescription(semester.getRemark());
 		
-		Collection<Enrollment2> enrollments2 = semester.getEnrollments();
-		for (Enrollment2 enrollment2 : enrollments2) {
-			Enrollment enrollment = enrollment2ToEnrollment(enrollment2);
-			enrollment.setPeriod(period);
-			period.add(enrollment);
-			enrollments.put(enrollment2.getId(), enrollment);
+		Collection<Enrollment2> courses2 = semester.getEnrollments();
+		for (Enrollment2 enrollment2 : courses2) {
+			Course course = enrollment2ToCourse(enrollment2);
+			course.setPeriod(period);
+			period.add(course);
+			courses.put(enrollment2.getId(), course);
 			Subject subject = subjects.get(enrollment2.getSubject().getId());
-			subject.add(enrollment);
-			enrollment.setSubject(subject);
+			subject.add(course);
+			course.setSubject(subject);
 		}
 		
 		return period;
@@ -478,20 +478,20 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 		return subject;
 	}
 	
-	private Enrollment enrollment2ToEnrollment(Enrollment2 enrollment2) {
-		Enrollment enrollment = Enrollment.Factory.newInstance();
+	private Course enrollment2ToCourse(Enrollment2 enrollment2) {
+		Course course = Course.Factory.newInstance();
 		// TODO check if the shortcut can be generated from the faculty and subject name instead of the previous guid
-		enrollment.setShortcut(enrollment2.getId());
-		enrollment.setDescription(enrollment2.getSubject().getRemark());
+		course.setShortcut(enrollment2.getId());
+		course.setDescription(enrollment2.getSubject().getRemark());
 
-		enrollment.setBraincontest(toBoolean(enrollment2.getQuiz()));
-		enrollment.setChat(toBoolean(enrollment2.getChat()));
-		enrollment.setDiscussion(toBoolean(enrollment2.getDiscussion()));
-		enrollment.setDocuments(toBoolean(enrollment2.getLecturematerials()));
-		enrollment.setMailinglist(toBoolean(enrollment2.getMailinglist()));
-		enrollment.setFreestylelearning(toBoolean(enrollment2.getFslinstall()));
-		enrollment.setWiki(false);
-		return enrollment;
+		course.setBraincontest(toBoolean(enrollment2.getQuiz()));
+		course.setChat(toBoolean(enrollment2.getChat()));
+		course.setDiscussion(toBoolean(enrollment2.getDiscussion()));
+		course.setDocuments(toBoolean(enrollment2.getLecturematerials()));
+		course.setMailinglist(toBoolean(enrollment2.getMailinglist()));
+		course.setFreestylelearning(toBoolean(enrollment2.getFslinstall()));
+		course.setWiki(false);
+		return course;
 	}
 	
 	/**

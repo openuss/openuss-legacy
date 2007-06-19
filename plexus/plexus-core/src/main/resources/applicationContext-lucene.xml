@@ -18,20 +18,20 @@
 				</entry>
 				<entry>
 					<key>
-						<value>org.openuss.lecture.Enrollment</value>
+						<value>org.openuss.lecture.Course</value>
 					</key>
-					<value>enrollmentIndexerCommand</value>
+					<value>courseIndexerCommand</value>
 				</entry>
 			</map>
 		</property>
 	</bean>
 
-	<bean name="enrollmentIndexer" class="org.openuss.lecture.EnrollmentIndexer">
+	<bean name="courseIndexer" class="org.openuss.lecture.CourseIndexer">
 		<property name="analyzer">
 			<ref bean="analyzer" />
 		</property>
-		<property name="enrollmentDao">
-			<ref bean="enrollmentDao" />
+		<property name="courseDao">
+			<ref bean="courseDao" />
 		</property>
 		<property name="indexFactory">
 			<ref bean="indexFactory" />
@@ -53,8 +53,8 @@
 	<bean id="lectureIndexImpl" class="org.openuss.lecture.LectureIndexImpl">
 		<property name="facultyDao" ref="facultyDao"/>
 		<property name="facultyIndexer" ref="facultyIndexer"/>
-		<property name="enrollmentDao" ref="enrollmentDao"/>
-		<property name="enrollmentIndexer" ref="enrollmentIndexer"/>
+		<property name="courseDao" ref="courseDao"/>
+		<property name="courseIndexer" ref="courseIndexer"/>
 	</bean>
 	
 	<bean id="lectureIndex" class="org.springframework.aop.framework.ProxyFactoryBean">
@@ -74,8 +74,8 @@
 		<property name="domainIndexer" ref="facultyIndexer"/>
 	</bean>
 
-	<bean id="enrollmentIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
-		<property name="domainIndexer" ref="enrollmentIndexer"/>
+	<bean id="courseIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
+		<property name="domainIndexer" ref="courseIndexer"/>
 	</bean>
 
 	<bean id="indexerServiceAbstract" abstract="true"

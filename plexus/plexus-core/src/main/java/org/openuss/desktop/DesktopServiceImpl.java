@@ -9,7 +9,7 @@ import java.util.Collection;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-import org.openuss.lecture.Enrollment;
+import org.openuss.lecture.Course;
 import org.openuss.lecture.Faculty;
 import org.openuss.lecture.Subject;
 import org.openuss.security.User;
@@ -85,13 +85,13 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 	}
 
 	@Override
-	protected void handleLinkEnrollment(Desktop desktop, Enrollment enrollment) throws Exception {
-		if (enrollment == null) {
-			throw new NullPointerException("Enrollment must not be null!");
+	protected void handleLinkCourse(Desktop desktop, Course course) throws Exception {
+		if (course == null) {
+			throw new NullPointerException("Course must not be null!");
 		}
 		desktop = getDesktop(desktop);
-		if (!desktop.getEnrollments().contains(enrollment)) {
-			desktop.linkEnrollment(enrollment);
+		if (!desktop.getCourses().contains(course)) {
+			desktop.linkCourse(course);
 			saveDesktop(desktop);
 		}
 	}
@@ -114,16 +114,16 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 	}
 
 	@Override
-	protected void handleUnlinkEnrollment(Desktop desktop, Enrollment enrollment) throws Exception {
-		desktop.unlinkEnrollment(enrollment);
+	protected void handleUnlinkCourse(Desktop desktop, Course course) throws Exception {
+		desktop.unlinkCourse(course);
 		saveDesktop(desktop);
 	}
 
 	@Override
-	protected void handleUnlinkAllFromEnrollment(Enrollment enrollment) throws Exception {
-		Collection<Desktop> desktops = getDesktopDao().findByEnrollment(enrollment);
+	protected void handleUnlinkAllFromCourse(Course course) throws Exception {
+		Collection<Desktop> desktops = getDesktopDao().findByCourse(course);
 		for (Desktop desktop : desktops) {
-			unlinkEnrollment(desktop, enrollment);
+			unlinkCourse(desktop, course);
 		}
 	}
 

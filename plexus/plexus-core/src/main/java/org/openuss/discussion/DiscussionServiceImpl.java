@@ -418,7 +418,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	private void sendNotificationEmail(List<User> recipients, Topic topic) {
 		if (recipients==null||recipients.size()==0) return;
 		try {
-			String link = "/views/secured/discussion/discussionthread.faces?topic="+ topic.getId()+"&enrollment="+topic.getForum().getDomainIdentifier();
+			String link = "/views/secured/discussion/discussionthread.faces?topic="+ topic.getId()+"&course="+topic.getForum().getDomainIdentifier();
 
 			link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+link;
 				
