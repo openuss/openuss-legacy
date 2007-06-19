@@ -25,7 +25,7 @@
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
 		<ui:define name="navigation">
-			<ui:include src="/views/commons/navigation/enrollment.xhtml" />
+			<ui:include src="/views/commons/navigation/course.xhtml" />
 		</ui:define>
  		 
   		<ui:define name="content">
@@ -42,7 +42,7 @@
 						styleClass="button" />				
 					<h:commandButton 
 						value="${msg.wiki_edit_button_cancel}" 
-						action="enrollment_wiki" 
+						action="course_wiki" 
 						immediate="true" 
 						styleClass="button"/>
 				</o:block>

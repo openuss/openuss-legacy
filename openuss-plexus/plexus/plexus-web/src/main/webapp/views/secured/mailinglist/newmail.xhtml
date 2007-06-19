@@ -25,10 +25,10 @@
 <!-- text above will be ignored -->
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="title">
-		<h:outputText value="#{msg['enrollment_main_title']}" />
+		<h:outputText value="#{msg['course_main_title']}" />
 	</ui:define>
 	<ui:define name="navigation">
-		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
+		<ui:include src="/views/commons/navigation/course.xhtml" />
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="newMailForm">
@@ -55,7 +55,7 @@
 					action="saveDraft" label="#{msg['mailingjob_newmail_button_savedraft']}"
 					title="#{msg['mailingjob_newmail_button_savedraft']}"
 					styleClass="button" />
-				<h:commandButton action="enrollment_mailinglist"
+				<h:commandButton action="course_mailinglist"
 					value="#{msg['mailingjob_newmail_button_cancel']}" 
 					styleClass="button" immediate="true"/>	
 			</o:block>

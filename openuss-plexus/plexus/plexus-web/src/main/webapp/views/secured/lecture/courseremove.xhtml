@@ -25,26 +25,26 @@
 			<ui:include src="/views/commons/navigation/faculty.xhtml" />
 		</ui:define>
   		<ui:define name="content"> 
-			<h:form id="removeEnrollmentForm">
-	  			<o:block label="#{msg.warning_attention_dataloss} - #{msg.enrollment_remove_header}" styleClass="warning_box">
+			<h:form id="removeCourseForm">
+	  			<o:block label="#{msg.warning_attention_dataloss} - #{msg.course_remove_header}" styleClass="warning_box">
 	  				<p class="content_font_normal">
-						<h:outputText value="#{msg.enrollment_remove_text}" styleClass="warning"/>
+						<h:outputText value="#{msg.course_remove_text}" styleClass="warning"/>
 						<br/>
-						<strong>#{enrollment.subject.name} (#{enrollment.shortcut})</strong><br/> 
-						#{enrollment.period.name}<br/>
+						<strong>#{course.subject.name} (#{course.shortcut})</strong><br/> 
+						#{course.period.name}<br/>
 					</p>
 	  				<p class="content_font_normal">
 	   					<h:selectBooleanCheckbox id="checkConfirmation" 
-	   						validator="#{views$secured$lecture$enrollmentremove.validateRemoveConfirmation}"
+	   						validator="#{views$secured$lecture$courseremove.validateRemoveConfirmation}"
 	   						styleClass="checkbox" 
 	   						required="true"/>
-	   					<h:outputLabel value="#{msg.enrollment_remove_confirmation_flag}" for="checkConfirmation"/>
+	   					<h:outputLabel value="#{msg.course_remove_confirmation_flag}" for="checkConfirmation"/>
 		   				<h:message for="checkConfirmation" styleClass="field_error"/>					
 		   			</p>
 		   		</o:block>
 		   		<o:block>
 					<h:commandButton value="${msg.cancel}" action="faculty_periods" immediate="true" styleClass="button_cancel"/>
-					<h:commandButton value="${msg.remove}" action="#{views$secured$lecture$enrollmentremove.removeEnrollment}" styleClass="button_warning"/>
+					<h:commandButton value="${msg.remove}" action="#{views$secured$lecture$courseremove.removeCourse}" styleClass="button_warning"/>
 				</o:block>
 			</h:form>
   		</ui:define>

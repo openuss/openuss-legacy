@@ -12,24 +12,24 @@
       
       
     <plexus:dataTable 
-     	id="enrollments" 
+     	id="courses" 
      	label="#{period.name}" 
-     	value="views$secured$lecture$periods.enrollmentData" 
-     	var="enrollment" 
+     	value="views$secured$lecture$periods.courseData" 
+     	var="course" 
      	columnClasses="col_max_left, col_min_left, col_commands_two"
      	rows="5">       
       
 		<t:column>
-			<plexus:commandSortHeader columnName="subject.name">#{msg.enrollment_colheader_name}</plexus:commandSortHeader>
-			<o:link value="/views/secured/enrollment/main.faces" title="#{enrollment.subject.description}">
-				<f:param value="#{enrollment.id}" name="enrollment" />
-				<h:outputText value="#{enrollment.subject.name} (#{enrollment.shortcut})"/>
+			<plexus:commandSortHeader columnName="subject.name">#{msg.course_colheader_name}</plexus:commandSortHeader>
+			<o:link value="/views/secured/course/main.faces" title="#{course.subject.description}">
+				<f:param value="#{course.id}" name="course" />
+				<h:outputText value="#{course.subject.name} (#{course.shortcut})"/>
 			</o:link>
 		</t:column>
 		
 		<t:column>
-			<plexus:commandSortHeader columnName="accessType">#{msg.enrollment_options_access_headline}</plexus:commandSortHeader>
-			<h:outputText value="#{enrollment.accessType}">
+			<plexus:commandSortHeader columnName="accessType">#{msg.course_options_access_headline}</plexus:commandSortHeader>
+			<h:outputText value="#{course.accessType}">
 					<f:converter converterId="accessTypeLabelConverter" />
 			</h:outputText>
 		</t:column>
@@ -37,17 +37,17 @@
 		<plexus:column header="#{msg.commands_header}">		
 			<plexus:command  
 				bean="#{views$secured$lecture$periods}"
-				action="shortcutEnrollment"
-				label="#{msg.enrollment_command_shortcut}"
-				title="#{msg.enrollment_command_shortcut_hint}"
+				action="shortcutCourse"
+				label="#{msg.course_command_shortcut}"
+				title="#{msg.course_command_shortcut_hint}"
 				styleClass="button_link">
 			</plexus:command>
 	
 			<plexus:command 
 				bean="#{views$secured$lecture$periods}"
-				action="confirmRemoveEnrollment"
-				label="#{msg.enrollment_command_remove}"
-				title="#{msg.enrollment_command_remove_hint}"
+				action="confirmRemoveCourse"
+				label="#{msg.course_command_remove}"
+				title="#{msg.course_command_remove_hint}"
 				styleClass="button_remove">
 			</plexus:command>
 		</plexus:column>
