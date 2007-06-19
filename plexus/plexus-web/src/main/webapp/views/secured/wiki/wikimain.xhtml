@@ -25,7 +25,7 @@
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
 		<ui:define name="navigation">
-			<ui:include src="/views/commons/navigation/enrollment.xhtml" />
+			<ui:include src="/views/commons/navigation/course.xhtml" />
 		</ui:define>
  		 
   		<ui:define name="content">
@@ -33,7 +33,7 @@
 				<o:block label="#{msg.wiki_main_header}">
 					<h:outputText value="#{views$secured$wiki$wikimain.wikiPage.text}"></h:outputText>
 				</o:block>					
-				<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}">
+				<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}">
 					<o:block>
 						<h:commandButton 
 							value="${msg.wiki_main_button_edit}" 

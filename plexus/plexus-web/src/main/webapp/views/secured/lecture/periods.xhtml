@@ -39,9 +39,9 @@
 				</o:block>
 			</h:form>
 
-			<f:subview id="enrollmentView" rendered="${!(empty sessionScope.period)}">
+			<f:subview id="courseView" rendered="${!(empty sessionScope.period)}">
 				<h:form id="periodForm">
-					<ui:include src="periodenrollmentstable.xhtml"/>
+					<ui:include src="periodcoursestable.xhtml"/>
 				</h:form>
 				<c:if test="#{empty views$secured$lecture$periods.subjectSelectItems}">
 					<o:block>
@@ -52,16 +52,16 @@
 				</c:if>
 				<c:if test="#{not empty views$secured$lecture$periods.subjectSelectItems}">
 					<o:block>
-						<h:form id="enrollmentForm">
-							<h:outputLabel value="#{msg['period_header_add_enrollment']}" for="subjectSelect" styleClass="field_label"/>
+						<h:form id="courseForm">
+							<h:outputLabel value="#{msg['period_header_add_course']}" for="subjectSelect" styleClass="field_label"/>
 						 	<h:selectOneListbox id="subjectSelect" size="1" styleClass="pulldown_inline" value="#{views$secured$lecture$periods.subjectId}">
 						    	<f:selectItems value="#{views$secured$lecture$periods.subjectSelectItems}"/>
 							</h:selectOneListbox>
 							<h:commandButton 
 							    id="addPeriod"
-								action="#{views$secured$lecture$periods.addEnrollment}" 
-								value="#{msg.period_command_add_enrollment}" 
-								title="#{msg.period_command_add_enrollment_hint}"
+								action="#{views$secured$lecture$periods.addCourse}" 
+								value="#{msg.period_command_add_course}" 
+								title="#{msg.period_command_add_course_hint}"
 								styleClass="button_add"/>
 						</h:form>
 					</o:block>

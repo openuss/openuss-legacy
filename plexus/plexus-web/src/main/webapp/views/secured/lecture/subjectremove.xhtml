@@ -33,8 +33,8 @@
 							#{subject.description}<br/>
 							<br/>
 							<h:outputText value="#{msg.subject_remove_text_part_2}" styleClass="warning"/>
-							<t:dataList var="enrollment" value="#{subject.enrollments}" layout="unorderedList">
-								#{enrollment.subject.name} (#{enrollment.shortcut}) - #{enrollment.period.name}
+							<t:dataList var="course" value="#{subject.courses}" layout="unorderedList">
+								#{course.subject.name} (#{course.shortcut}) - #{course.period.name}
 							</t:dataList>
 							<h:outputText value="#{msg.subject_remove_text_part_3}" styleClass="warning"/>
 						</span>
