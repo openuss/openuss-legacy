@@ -38,16 +38,16 @@ public class FacultyIndexingAspect {
 		try {
 			if (faculty.isEnabled()) {
 				indexerService.updateIndex(faculty);
-				for(Enrollment enrollment:faculty.getEnrollments()) {
-					if (enrollment.getAccessType() != AccessType.CLOSED) {
-						indexerService.updateIndex(enrollment);
+				for(Course course:faculty.getCourses()) {
+					if (course.getAccessType() != AccessType.CLOSED) {
+						indexerService.updateIndex(course);
 					}
 					
 				}
 			} else {
 				indexerService.deleteIndex(faculty);
-				for (Enrollment enrollment:faculty.getEnrollments()) {
-					indexerService.deleteIndex(enrollment);
+				for (Course course:faculty.getCourses()) {
+					indexerService.deleteIndex(course);
 				}
 			}
 		} catch (IndexerApplicationException e) {

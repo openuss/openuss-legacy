@@ -9,25 +9,25 @@ import org.openuss.search.IndexerService;
  * 
  * @author Ingo Dueppe
  */
-public class EnrollmentIndexingAspect {
+public class CourseIndexingAspect {
 
-	private static final Logger logger = Logger.getLogger(EnrollmentIndexingAspect.class);
+	private static final Logger logger = Logger.getLogger(CourseIndexingAspect.class);
 
 	private IndexerService indexerService;
 
 	private LectureService lectureService;
 
-	public void updateEnrollmentIndexOnPeriodUpdate(Period period) {
+	public void updateCourseIndexOnPeriodUpdate(Period period) {
 		Validate.notNull(period, "Parameter period must not be null");
-		for (Enrollment enrollment : period.getEnrollments()) {
-			updateEnrollmentIndex(enrollment);
+		for (Course course : period.getCourses()) {
+			updateCourseIndex(course);
 		}
 	}
 
-	public void createEnrollmentIndex(Enrollment enrollment) {
+	public void createCourseIndex(Course course) {
 		try {
-			if (enrollment.getAccessType() != AccessType.CLOSED) {
-				indexerService.createIndex(enrollment);
+			if (course.getAccessType() != AccessType.CLOSED) {
+				indexerService.createIndex(course);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -35,23 +35,23 @@ public class EnrollmentIndexingAspect {
 
 	}
 
-	public void updateEnrollmentIndex(Enrollment enrollment) {
+	public void updateCourseIndex(Course course) {
 		try {
-			if (enrollment.getAccessType() == AccessType.CLOSED) {
-				indexerService.deleteIndex(enrollment);
+			if (course.getAccessType() == AccessType.CLOSED) {
+				indexerService.deleteIndex(course);
 			} else {
-				indexerService.updateIndex(enrollment);
+				indexerService.updateIndex(course);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}
 	}
 
-	public void deleteEnrollmentIndex(Long enrollmentId) {
+	public void deleteCourseIndex(Long courseId) {
 		try {
-			Enrollment enrollment = Enrollment.Factory.newInstance();
-			enrollment.setId(enrollmentId);
-			indexerService.deleteIndex(enrollment);
+			Course course = Course.Factory.newInstance();
+			course.setId(courseId);
+			indexerService.deleteIndex(course);
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}

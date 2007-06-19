@@ -13,12 +13,12 @@ public class LectureIndexImpl implements LectureIndex{
 	private static final Logger logger = Logger.getLogger(LectureIndexImpl.class);
 	
 	private FacultyDao facultyDao;
-	private EnrollmentDao enrollmentDao;
+	private CourseDao courseDao;
 	
 	private Directory directory;
 	
 	private FacultyIndexer facultyIndexer;
-	private EnrollmentIndexer enrollmentIndexer;
+	private CourseIndexer courseIndexer;
 
 	/**
 	 * Recreates the full lecture index
@@ -28,7 +28,7 @@ public class LectureIndexImpl implements LectureIndex{
 		logger.debug("start to recreate lecture index.");
 
 		indexFaculties();
-		indexEnrollments();
+		indexCourses();
 		
 		logger.debug("recreated lecture index.");
 	}
@@ -43,13 +43,13 @@ public class LectureIndexImpl implements LectureIndex{
 		}
 	}
 
-	private void indexEnrollments() {
-		logger.debug("indexing enrollments...");
-		Collection<Enrollment> enrollments = enrollmentDao.loadAll();
+	private void indexCourses() {
+		logger.debug("indexing courses...");
+		Collection<Course> courses = courseDao.loadAll();
 		
-		for(Enrollment enrollment: enrollments) {
-			enrollmentIndexer.setDomainObject(enrollment);
-			enrollmentIndexer.create();
+		for(Course course: courses) {
+			courseIndexer.setDomainObject(course);
+			courseIndexer.create();
 		}
 	}
 
@@ -77,20 +77,20 @@ public class LectureIndexImpl implements LectureIndex{
 		this.directory = directory;
 	}
 
-	public EnrollmentDao getEnrollmentDao() {
-		return enrollmentDao;
+	public CourseDao getCourseDao() {
+		return courseDao;
 	}
 
-	public void setEnrollmentDao(EnrollmentDao enrollmentDao) {
-		this.enrollmentDao = enrollmentDao;
+	public void setCourseDao(CourseDao courseDao) {
+		this.courseDao = courseDao;
 	}
 
-	public EnrollmentIndexer getEnrollmentIndexer() {
-		return enrollmentIndexer;
+	public CourseIndexer getCourseIndexer() {
+		return courseIndexer;
 	}
 
-	public void setEnrollmentIndexer(EnrollmentIndexer enrollmentIndexer) {
-		this.enrollmentIndexer = enrollmentIndexer;
+	public void setCourseIndexer(CourseIndexer courseIndexer) {
+		this.courseIndexer = courseIndexer;
 	}
 
 }

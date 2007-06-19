@@ -15,13 +15,13 @@ public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.op
 	private static final long serialVersionUID = 9086031628022698697L;
 
 	@Override
-	public void add(Enrollment enrollment) {
-		getEnrollments().add(enrollment);
+	public void add(Course course) {
+		getCourses().add(course);
 	}
 
 	@Override
-	public void remove(Enrollment enrollment) {
-		getEnrollments().remove(enrollment);
+	public void remove(Course course) {
+		getCourses().remove(course);
 	}
 
 	@Override
