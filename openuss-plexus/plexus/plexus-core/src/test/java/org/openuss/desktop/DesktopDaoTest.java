@@ -8,7 +8,7 @@ package org.openuss.desktop;
 import java.util.Collection;
 
 import org.openuss.TestUtility;
-import org.openuss.lecture.Enrollment;
+import org.openuss.lecture.Course;
 import org.openuss.lecture.FacultyDao;
 import org.openuss.lecture.LectureBuilder;
 import org.openuss.security.User;
@@ -35,15 +35,15 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 	}
 	
 	
-	public void testFindByEnrollment() {
-		// create enrollments
-		Enrollment enrollment = lectureBuilder
+	public void testFindByCourse() {
+		// create courses
+		Course course = lectureBuilder
 			.createFaculty(testUtility.createDefaultUserInDB())
 			.addPeriod()
 			.addSubject()
-			.addEnrollment()
+			.addCourse()
 			.persist()
-			.getEnrollment();
+			.getCourse();
 		commit();
 		
 		// create desktops
@@ -52,15 +52,15 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		Desktop desktopThree = createDesktop();
 		
 
-		// create desktop - enrollment link
-		desktopTwo.linkEnrollment(enrollment);
+		// create desktop - course link
+		desktopTwo.linkCourse(course);
 		desktopDao.update(desktopTwo);
 		commit();
 		
-		assertNotNull(enrollment.getId());
+		assertNotNull(course.getId());
 		
-		// test findByEnrollment
-		Collection desktops = desktopDao.findByEnrollment(enrollment);
+		// test findByCourse
+		Collection desktops = desktopDao.findByCourse(course);
 		assertEquals(1, desktops.size());
 		assertEquals(desktopTwo,desktops.iterator().next());
 		commit();
