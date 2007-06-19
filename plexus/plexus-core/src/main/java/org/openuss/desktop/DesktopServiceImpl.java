@@ -11,7 +11,7 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.Faculty;
-import org.openuss.lecture.Subject;
+import org.openuss.lecture.CourseType;
 import org.openuss.security.User;
 
 /**
@@ -73,13 +73,13 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 	}
 
 	@Override
-	protected void handleLinkSubject(Desktop desktop, Subject subject) throws Exception {
-		if (subject == null) {
-			throw new NullPointerException("Subject must not be null!");
+	protected void handleLinkCourseType(Desktop desktop, CourseType courseType) throws Exception {
+		if (courseType == null) {
+			throw new NullPointerException("CourseType must not be null!");
 		}
 		desktop = getDesktop(desktop);
-		if (!desktop.getSubjects().contains(subject)) {
-			desktop.linkSubject(subject);
+		if (!desktop.getCourseTypes().contains(courseType)) {
+			desktop.linkCourseType(courseType);
 			saveDesktop(desktop);
 		}
 	}
@@ -108,8 +108,8 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 	}
 
 	@Override
-	protected void handleUnlinkSubject(Desktop desktop, Subject subject) throws Exception {
-		desktop.unlinkSubject(subject);
+	protected void handleUnlinkCourseType(Desktop desktop, CourseType courseType) throws Exception {
+		desktop.unlinkCourseType(courseType);
 		saveDesktop(desktop);
 	}
 
@@ -136,10 +136,10 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 	}
 
 	@Override
-	protected void handleUnlinkAllFromSubject(Subject subject) throws Exception {
-		Collection<Desktop> desktops = getDesktopDao().findBySubject(subject);
+	protected void handleUnlinkAllFromCourseType(CourseType courseType) throws Exception {
+		Collection<Desktop> desktops = getDesktopDao().findByCourseType(courseType);
 		for (Desktop desktop: desktops) {
-			unlinkSubject(desktop, subject);
+			unlinkCourseType(desktop, courseType);
 		}
 	}
 }

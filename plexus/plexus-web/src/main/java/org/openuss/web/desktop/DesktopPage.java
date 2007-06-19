@@ -13,7 +13,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.Faculty;
-import org.openuss.lecture.Subject;
+import org.openuss.lecture.CourseType;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -29,7 +29,7 @@ public class DesktopPage extends BasePage {
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
 
 	private CourseDataProvider coursesProvider = new CourseDataProvider();
-	private SubjectDataProvider subjectsProvider = new SubjectDataProvider();
+	private CourseTypeDataProvider courseTypesProvider = new CourseTypeDataProvider();
 	private FacultyDataProvider facultiesProvider = new FacultyDataProvider();
 
 	@Prerender
@@ -112,23 +112,23 @@ public class DesktopPage extends BasePage {
 	}
 
 	/**
-	 * Remove subject
+	 * Remove courseType
 	 * 
 	 * @return outcome
 	 */
-	public String showSubject() {
-		logger.debug("showSubject");
-		Subject subject = subjectsProvider.getRowData();
-		setSessionBean(Constants.SUBJECT, subject);
-		return Constants.SUBJECT_COURSE_SELECTION_PAGE;
+	public String showCourseType() {
+		logger.debug("showCourseType");
+		CourseType courseType = courseTypesProvider.getRowData();
+		setSessionBean(Constants.COURSE_TYPE, courseType);
+		return Constants.COURSE_TYPE_COURSE_SELECTION_PAGE;
 	}
 
-	public String removeSubject() {
-		logger.debug("remove subject");
-		Subject subject = subjectsProvider.getRowData();
+	public String removeCourseType() {
+		logger.debug("remove courseType");
+		CourseType courseType = courseTypesProvider.getRowData();
 		try {
-			desktopService.unlinkSubject(desktop, subject);
-			addMessage(i18n("desktop_message_removed_subject_succeed", subject.getName()));
+			desktopService.unlinkCourseType(desktop, courseType);
+			addMessage(i18n("desktop_message_removed_coursetype_succeed", courseType.getName()));
 		} catch (DesktopException e) {
 			logger.debug(e);
 			addError(i18n(e.getMessage()));
@@ -152,17 +152,17 @@ public class DesktopPage extends BasePage {
 		}
 	}
 
-	private class SubjectDataProvider extends AbstractPagedTable<Subject> {
+	private class CourseTypeDataProvider extends AbstractPagedTable<CourseType> {
 
 		private static final long serialVersionUID = -932405920082089168L;
 
-		private DataPage<Subject> page;
+		private DataPage<CourseType> page;
 
 		@Override
-		public DataPage<Subject> getDataPage(int startRow, int pageSize) {
-			List<Subject> subjects = new ArrayList(desktop.getSubjects());
-			sort(subjects);
-			page = new DataPage<Subject>(subjects.size(), 0, subjects);
+		public DataPage<CourseType> getDataPage(int startRow, int pageSize) {
+			List<CourseType> courseTypes = new ArrayList(desktop.getCourseTypes());
+			sort(courseTypes);
+			page = new DataPage<CourseType>(courseTypes.size(), 0, courseTypes);
 			return page;
 		}
 	}
@@ -197,11 +197,11 @@ public class DesktopPage extends BasePage {
 		this.facultiesProvider = facultiesProvider;
 	}
 
-	public SubjectDataProvider getSubjectsProvider() {
-		return subjectsProvider;
+	public CourseTypeDataProvider getCourseTypesProvider() {
+		return courseTypesProvider;
 	}
 
-	public void setSubjectsProvider(SubjectDataProvider subjectsProvider) {
-		this.subjectsProvider = subjectsProvider;
+	public void setCourseTypesProvider(CourseTypeDataProvider courseTypesProvider) {
+		this.courseTypesProvider = courseTypesProvider;
 	}
 }

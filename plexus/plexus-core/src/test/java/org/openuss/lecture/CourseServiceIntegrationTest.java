@@ -139,7 +139,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		User owner = testUtility.createUserInDB();
 
 		lectureBuilder.createFaculty(owner)
-			.addSubject()
+			.addCourseType()
 			.addPeriod()
 			.addCourse();
 		

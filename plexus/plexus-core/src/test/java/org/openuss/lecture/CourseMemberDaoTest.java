@@ -27,7 +27,7 @@ public class CourseMemberDaoTest extends CourseMemberDaoTestBase {
 		User owner = testUtility.createUserInDB();
 
 		lectureBuilder.createFaculty(owner)
-			.addSubject()
+			.addCourseType()
 			.addPeriod()
 			.addCourse();
 		

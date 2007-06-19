@@ -13,39 +13,39 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.LectureService;
-import org.openuss.lecture.Subject;
+import org.openuss.lecture.CourseType;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 
 /**
- * SubjectCourseSelectionPage is the controller bean to handle the desktop view. 
+ * CourseTypeCourseSelectionPage is the controller bean to handle the desktop view. 
  * @author Ingo Dueppe
  */
-@Bean(name="views$secured$desktop$subjectcourseselection", scope=Scope.REQUEST)
+@Bean(name="views$secured$desktop$coursetypecourseselection", scope=Scope.REQUEST)
 @View
-public class SubjectCourseSelectionPage extends BasePage {
+public class CourseTypeCourseSelectionPage extends BasePage {
 
-	private static final Logger logger = Logger.getLogger(SubjectCourseSelectionPage.class);
+	private static final Logger logger = Logger.getLogger(CourseTypeCourseSelectionPage.class);
 	
 	private CourseDataProvider coursesProvider = new CourseDataProvider();
 	
-	@Property(value="#{sessionScope.subject}")
-	private Subject subject;
+	@Property(value="#{sessionScope.courseType}")
+	private CourseType courseType;
 	
 	@Property(value="#{lectureService}")
 	LectureService lectureService;
 
 	@Prerender
 	public void prerender() {
-		logger.debug("prerender subject course selction");
-		if (subject == null) {
-			addError(i18n("message_error_no_subject_selected"));
+		logger.debug("prerender courseType course selction");
+		if (courseType == null) {
+			addError(i18n("message_error_no_coursetype_selected"));
 			redirect(Constants.OUTCOME_BACKWARD);
 		} else {
-			subject = lectureService.getSubject(subject.getId());
+			courseType = lectureService.getCourseType(courseType.getId());
 		}
-		setSessionBean(Constants.SUBJECT, subject);
+		setSessionBean(Constants.COURSE_TYPE, courseType);
 	}
 	
 	/* ------------------ data models ------------------- */
@@ -57,7 +57,7 @@ public class SubjectCourseSelectionPage extends BasePage {
 		@Override
 		public DataPage<Course> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<Course> courses = new ArrayList(subject.getCourses());
+				List<Course> courses = new ArrayList(courseType.getCourses());
 				sort(courses);
 				page = new DataPage<Course>(courses.size(),0,courses);
 			}
@@ -81,11 +81,11 @@ public class SubjectCourseSelectionPage extends BasePage {
 		this.lectureService = lectureService;
 	}
 
-	public Subject getSubject() {
-		return subject;
+	public CourseType getCourseType() {
+		return courseType;
 	}
 
-	public void setSubject(Subject subject) {
-		this.subject = subject;
+	public void setCourseType(CourseType courseType) {
+		this.courseType = courseType;
 	}
 }

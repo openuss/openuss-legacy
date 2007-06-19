@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.lecture.LectureService;
 import org.openuss.lecture.LectureServiceException;
-import org.openuss.lecture.Subject;
+import org.openuss.lecture.CourseType;
 import org.openuss.web.Constants;
 
 /**
@@ -18,9 +18,9 @@ import org.openuss.web.Constants;
  * 
  * @author Ingo Dueppe
  */
-public class SubjectShortcutValidator extends BaseBean implements Validator {
+public class CourseTypeShortcutValidator extends BaseBean implements Validator {
 
-	private static final Logger logger = Logger.getLogger(SubjectShortcutValidator.class);
+	private static final Logger logger = Logger.getLogger(CourseTypeShortcutValidator.class);
 
 	public static final String SHORTCUT_MESSAGE_ID = "error_shortcut_already_exists";
 	
@@ -28,9 +28,9 @@ public class SubjectShortcutValidator extends BaseBean implements Validator {
 		final String shortcut = (String) value;
 		LectureService service = (LectureService) getBean(Constants.LECTURE_SERVICE);
 		try {
-			// TODO subject parameter should be defined through property of validator
-			Subject subject = (Subject) getSessionBean(Constants.SUBJECT);
-			boolean unique = service.isNoneExistingSubjectShortcut(subject, shortcut);
+			// TODO courseType parameter should be defined through property of validator
+			CourseType courseType = (CourseType) getSessionBean(Constants.COURSE_TYPE);
+			boolean unique = service.isNoneExistingCourseTypeShortcut(courseType, shortcut);
 			if (!unique) {
 				((UIInput) component).setValid(false);
 				addError(component.getClientId(context), i18n(SHORTCUT_MESSAGE_ID),null);

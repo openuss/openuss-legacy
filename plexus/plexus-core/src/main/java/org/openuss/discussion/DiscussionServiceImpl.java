@@ -429,7 +429,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 			
 			getMessageService().sendMessage(
 					"user.discussion.watch.sender", 
-					"user.discussion.watch.subject", 
+					"user.discussion.watch.courseType", 
 					"discussionnotification",
 					parameters, recipients);
 		} catch (Exception e) {

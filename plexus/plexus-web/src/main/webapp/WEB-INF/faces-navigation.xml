@@ -233,8 +233,8 @@
     <navigation-rule>
     	<from-view-id>/views/secured/desktop/*</from-view-id>
     	<navigation-case>
-    		<from-outcome>subject_course_selection</from-outcome>
-    		<to-view-id>/views/secured/desktop/subjectcourseselection.xhtml</to-view-id>
+    		<from-outcome>coursetype_course_selection</from-outcome>
+    		<to-view-id>/views/secured/desktop/coursetypecourseselection.xhtml</to-view-id>
     	</navigation-case>
     </navigation-rule>
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
@@ -297,13 +297,13 @@
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>faculty_subjects</from-outcome>
-			<to-view-id>/views/secured/lecture/subjects.xhtml</to-view-id>
+			<from-outcome>faculty_coursetypes</from-outcome>
+			<to-view-id>/views/secured/lecture/coursetypes.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>faculty_subject_remove</from-outcome>
-			<to-view-id>/views/secured/lecture/subjectremove.xhtml</to-view-id>
+			<from-outcome>faculty_coursetype_remove</from-outcome>
+			<to-view-id>/views/secured/lecture/coursetyperemove.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>

@@ -10,7 +10,7 @@ import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureListener;
 import org.openuss.lecture.LectureService;
 import org.openuss.lecture.LectureServiceException;
-import org.openuss.lecture.Subject;
+import org.openuss.lecture.CourseType;
 import org.openuss.security.User;
 
 
@@ -49,14 +49,14 @@ public class DesktopLectureAdapter implements LectureListener{
 		
 	}
 
-	public void removingSubject(Subject subject) throws LectureException {
+	public void removingCourseType(CourseType courseType) throws LectureException {
 		if (desktopService == null) {
 			throw new IllegalStateException("desktopService property must not be null!");
 		}
 		try {
-			desktopService.unlinkAllFromSubject(subject);
+			desktopService.unlinkAllFromCourseType(courseType);
 		} catch (DesktopException e) {
-			throw new LectureException("Desktop Lecture Adapter couldn't unlink subject",e);
+			throw new LectureException("Desktop Lecture Adapter couldn't unlink courseType",e);
 		}
 		
 	}

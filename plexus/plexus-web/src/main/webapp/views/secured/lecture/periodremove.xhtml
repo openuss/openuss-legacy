@@ -37,7 +37,7 @@
 							<br/>
 							<h:outputText value="#{msg.period_remove_text_part_2}" styleClass="warning"/>
 							<t:dataList var="course" value="#{period.courses}" layout="unorderedList">
-								#{course.subject.name} (#{course.shortcut})
+								#{course.courseType.name} (#{course.shortcut})
 							</t:dataList>
 							<h:outputText value="#{msg.period_remove_text_part_3}" styleClass="warning"/>
 	   						<h:selectBooleanCheckbox id="checkConfirmation" 

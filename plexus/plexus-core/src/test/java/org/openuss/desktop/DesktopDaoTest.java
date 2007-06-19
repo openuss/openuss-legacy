@@ -40,7 +40,7 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		Course course = lectureBuilder
 			.createFaculty(testUtility.createDefaultUserInDB())
 			.addPeriod()
-			.addSubject()
+			.addCourseType()
 			.addCourse()
 			.persist()
 			.getCourse();

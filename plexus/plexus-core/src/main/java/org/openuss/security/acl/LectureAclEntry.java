@@ -20,7 +20,7 @@ import org.acegisecurity.acl.basic.AbstractBasicAclEntry;
  * <p>
  * Additional permissions of faculties:
  * <ul>
- * <li><b>MANAGE_SUBJECTS</b> - may create, read, update, and delete subjects
+ * <li><b>MANAGE_COURSE_TYPES</b> - may create, read, update, and delete courseTypes
  * of the faculty</li>
  * <li><b>MANAGE_PERIODS</b> - may create, read, update, and delete periods of
  * the faculty</li>
@@ -59,7 +59,7 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	public static final int DELETE 				= 1 << 6;
 
 	// Additional permissions to faculties
-	public static final int MANAGE_SUBJECTS 	= 1 << 7;
+	public static final int MANAGE_COURSE_TYPES 	= 1 << 7;
 	public static final int MANAGE_PERIODS 		= 1 << 8;
 	public static final int MANAGE_CourseS 	= 1 << 9;
 	public static final int MANAGE_NEWS 		= 1 << 10;
@@ -70,7 +70,7 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 
 	// Default combinations of base permissions
 	public static final int FACULTY_TUTOR = PARTICIPATE | ASSIST | READ;
-	public static final int FACULTY_ASSIST = CREATE | MANAGE_NEWS | MANAGE_SUBJECTS | MANAGE_PERIODS | MANAGE_CourseS | FACULTY_TUTOR;
+	public static final int FACULTY_ASSIST = CREATE | MANAGE_NEWS | MANAGE_COURSE_TYPES | MANAGE_PERIODS | MANAGE_CourseS | FACULTY_TUTOR;
 	public static final int FACULTY_ADMINISTRATION = GRANT | UPDATE | DELETE | FACULTY_ASSIST;
 	public static final int FACULTY_OWN = DELETE | FACULTY_ADMINISTRATION;
 	
@@ -109,7 +109,7 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 		sb.append(((mask & UPDATE) == UPDATE) ? "U" : "-");
 		sb.append(((mask & DELETE) == DELETE) ? "D" : "-");
 		sb.append("|");
-		sb.append(((mask & MANAGE_SUBJECTS) == MANAGE_SUBJECTS) ? "MS" : "--");
+		sb.append(((mask & MANAGE_COURSE_TYPES) == MANAGE_COURSE_TYPES) ? "MS" : "--");
 		sb.append(((mask & MANAGE_PERIODS) == MANAGE_PERIODS) ? "MP" : "--");
 		sb.append(((mask & MANAGE_CourseS) == MANAGE_CourseS) ? "ME" : "--");
 		sb.append(((mask & MANAGE_NEWS) == MANAGE_NEWS) ? "MN" : "--");
@@ -186,8 +186,8 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 		return MANAGE_PERIODS;
 	}
 
-	public int getMANAGE_SUBJECTS() {
-		return MANAGE_SUBJECTS;
+	public int getMANAGE_COURSE_TYPES() {
+		return MANAGE_COURSE_TYPES;
 	}
 
 	public int getNOTHING() {

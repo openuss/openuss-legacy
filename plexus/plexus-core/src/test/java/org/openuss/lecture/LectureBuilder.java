@@ -3,7 +3,7 @@ package org.openuss.lecture;
 import org.openuss.security.User;
 
 /**
- * Builds faculty, periods, subject, and course structures.
+ * Builds faculty, periods, courseType, and course structures.
  *  
  * @author Ingo Dueppe
  */
@@ -33,12 +33,12 @@ public class LectureBuilder {
 		return this;
 	}
 	
-	public LectureBuilder addSubject() {
-		Subject subject = Subject.Factory.newInstance();
-		subject.setName(unique());
-		subject.setShortcut(unique());
-		subject.setDescription("description");
-		faculty.add(subject);
+	public LectureBuilder addCourseType() {
+		CourseType courseType = CourseType.Factory.newInstance();
+		courseType.setName(unique());
+		courseType.setShortcut(unique());
+		courseType.setDescription("description");
+		faculty.add(courseType);
 		return this;
 	}
 	
@@ -55,10 +55,10 @@ public class LectureBuilder {
 		return addCourse(0, 0);
 	}
 	
-	public LectureBuilder addCourse(int indexSubject, int indexPeriod ) {
-		Subject subject = faculty.getSubjects().get(indexSubject);
+	public LectureBuilder addCourse(int indexCourseType, int indexPeriod ) {
+		CourseType courseType = faculty.getCourseTypes().get(indexCourseType);
 		Period period = faculty.getPeriods().get(indexPeriod);
-		addCourse(faculty, subject, period);
+		addCourse(faculty, courseType, period);
 		return this;
 	}
 	
@@ -89,11 +89,11 @@ public class LectureBuilder {
 		return ""+(System.currentTimeMillis()+code++);
 	}
 	
-	public Subject addSubject(Faculty faculty) {
-		Subject subject = LectureFactory.createSubject();
-		subject.setFaculty(faculty);
-		faculty.add(subject);
-		return subject;
+	public CourseType addCourseType(Faculty faculty) {
+		CourseType courseType = LectureFactory.createCourseType();
+		courseType.setFaculty(faculty);
+		faculty.add(courseType);
+		return courseType;
 	}
 	
 	public Period addPeriod(Faculty faculty) {
@@ -103,10 +103,10 @@ public class LectureBuilder {
 		return period;
 	}
 	
-	public Course addCourse(Faculty faculty, Subject subject, Period period) {
+	public Course addCourse(Faculty faculty, CourseType courseType, Period period) {
 		Course course = LectureFactory.createCourse();
-		subject.add(course);
-		course.setSubject(subject);
+		courseType.add(course);
+		course.setCourseType(courseType);
 		course.setShortcut(unique());
 		period.add(course);
 		course.setPeriod(period);

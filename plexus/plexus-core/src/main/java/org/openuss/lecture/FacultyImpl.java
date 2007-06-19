@@ -39,8 +39,8 @@ public class FacultyImpl extends org.openuss.lecture.FacultyBase implements org.
 	}
 
 	@Override
-	public void add(Subject subject) {
-		getSubjects().add(subject);
+	public void add(CourseType courseType) {
+		getCourseTypes().add(courseType);
 	}
 
 	@Override
@@ -54,8 +54,8 @@ public class FacultyImpl extends org.openuss.lecture.FacultyBase implements org.
 	}
 
 	@Override
-	public void remove(Subject subject) {
-		getSubjects().remove(subject);
+	public void remove(CourseType courseType) {
+		getCourseTypes().remove(courseType);
 	}
 
 	@Override

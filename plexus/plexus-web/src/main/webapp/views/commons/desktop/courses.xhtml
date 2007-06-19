@@ -15,12 +15,12 @@
     	var="courseItem" 
     	rows="5">
 		<t:column>
-			<plexus:commandSortHeader columnName="subject.name">
+			<plexus:commandSortHeader columnName="courseType.name">
 				<h:outputText value="#{msg.desktop_courses_colheader_name}"/>
 			</plexus:commandSortHeader>
-			<o:link value="/views/secured/course/main.faces" title="#{courseItem.subject.description}">
+			<o:link value="/views/secured/course/main.faces" title="#{courseItem.courseType.description}">
 				<f:param value="#{courseItem.id}" name="course" />
-				<h:outputText value="#{courseItem.subject.name} - #{courseItem.period.name} (#{courseItem.shortcut})"/>
+				<h:outputText value="#{courseItem.courseType.name} - #{courseItem.period.name} (#{courseItem.shortcut})"/>
 			</o:link>
 		</t:column>
 		 

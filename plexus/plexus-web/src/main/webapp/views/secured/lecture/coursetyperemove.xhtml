@@ -23,34 +23,34 @@
 	<ui:composition template="/views/layout/dialog.xhtml">
   		<ui:define name="title"><h:outputText value="#{msg.faculty_maintitle} - #{faculty.name}"/></ui:define>
   		<ui:define name="content"> 
-			<s:acl domainObject="#{faculty}" hasPermission="#{ACL.MANAGE_SUBJECTS}" ifNot="error"/>
-			<h:form id="removeSubjectForm">
-	  			<o:block label="#{msg.warning_attention_dataloss}- #{msg.subject_remove_header}" styleClass="warning_box">
+			<s:acl domainObject="#{faculty}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}" ifNot="error"/>
+			<h:form id="removeCourseTypeForm">
+	  			<o:block label="#{msg.warning_attention_dataloss}- #{msg.coursetype_remove_header}" styleClass="warning_box">
 	  				<p class="content_font_normal">
 	  					<span>
-							<h:outputText value="#{msg.subject_remove_text_part_1}" styleClass="warning"/>	<br/>
-							<strong>#{subject.name} (#{subject.shortcut})	</strong><br/> 
-							#{subject.description}<br/>
+							<h:outputText value="#{msg.coursetype_remove_text_part_1}" styleClass="warning"/>	<br/>
+							<strong>#{courseType.name} (#{courseType.shortcut})	</strong><br/> 
+							#{courseType.description}<br/>
 							<br/>
-							<h:outputText value="#{msg.subject_remove_text_part_2}" styleClass="warning"/>
-							<t:dataList var="course" value="#{subject.courses}" layout="unorderedList">
-								#{course.subject.name} (#{course.shortcut}) - #{course.period.name}
+							<h:outputText value="#{msg.coursetype_remove_text_part_2}" styleClass="warning"/>
+							<t:dataList var="course" value="#{courseType.courses}" layout="unorderedList">
+								#{course.courseType.name} (#{course.shortcut}) - #{course.period.name}
 							</t:dataList>
-							<h:outputText value="#{msg.subject_remove_text_part_3}" styleClass="warning"/>
+							<h:outputText value="#{msg.coursetype_remove_text_part_3}" styleClass="warning"/>
 						</span>
 					</p>
 					<p class="content_font_normal">
 	   					<h:selectBooleanCheckbox id="checkConfirmation" 
-	   						validator="#{views$secured$lecture$subjectremove.validateRemoveConfirmation}"
+	   						validator="#{views$secured$lecture$coursetyperemove.validateRemoveConfirmation}"
 	   						styleClass="checkbox" 
 	   						required="true"/>
-	   					<h:outputLabel value="#{msg.subject_remove_confirmation_flag}" for="checkConfirmation"/>
+	   					<h:outputLabel value="#{msg.coursetype_remove_confirmation_flag}" for="checkConfirmation"/>
 	   				</p>
 	   				<h:message for="checkConfirmation" styleClass="field_error"/>					
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.cancel}" action="#{views$secured$lecture$subjectremove.cancelSubject}" styleClass="button_cancel" immediate="true"/>
-					<h:commandButton value="${msg.remove}" action="#{views$secured$lecture$subjectremove.removeSubject}" styleClass="button_warning"/>
+					<h:commandButton value="${msg.cancel}" action="#{views$secured$lecture$coursetyperemove.cancelCourseType}" styleClass="button_cancel" immediate="true"/>
+					<h:commandButton value="${msg.remove}" action="#{views$secured$lecture$coursetyperemove.removeCourseType}" styleClass="button_warning"/>
 				</o:block>
 			</h:form>
   		</ui:define>

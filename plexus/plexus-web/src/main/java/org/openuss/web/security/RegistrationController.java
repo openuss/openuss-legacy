@@ -96,7 +96,7 @@ public class RegistrationController extends BaseBean {
 			parameters.put("link", link);
 
 			messageService.sendMessage("user.registration.email.verification.sender",
-					"user.registration.email.verification.subject", "verification", parameters, user);
+					"user.registration.email.verification.courseType", "verification", parameters, user);
 
 		} catch (Exception e) {
 			logger.error("Error: ", e);
@@ -144,7 +144,7 @@ public class RegistrationController extends BaseBean {
 		parameters.put("username", user.getUsername());
 		parameters.put("passwordresetlink", link);
 
-		messageService.sendMessage("user.password.request.sender", "user.password.request.subject", "password",
+		messageService.sendMessage("user.password.request.sender", "user.password.request.courseType", "password",
 				parameters, user);
 	}
 

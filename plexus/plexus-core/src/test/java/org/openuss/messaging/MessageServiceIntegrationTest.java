@@ -20,7 +20,7 @@ public class MessageServiceIntegrationTest extends MessageServiceIntegrationTest
 	
 	public void testSendTextMessage() {
 		List recipients = createUsers(50);
-		Long messageId = messageService.sendMessage("sender", "subject", "text", true, recipients);
+		Long messageId = messageService.sendMessage("sender", "courseType", "text", true, recipients);
 		assertNotNull(messageId);
 		commit();
 		JobInfo state = messageService.getJobState(messageId);
@@ -36,7 +36,7 @@ public class MessageServiceIntegrationTest extends MessageServiceIntegrationTest
 		parameters.put("param1", "value");
 		parameters.put("param2", "value");
 		
-		Long messageId = messageService.sendMessage("sender", "subject", "templatename", parameters , recipients);
+		Long messageId = messageService.sendMessage("sender", "courseType", "templatename", parameters , recipients);
 		
 		assertNotNull(messageId);
 		commit();

@@ -39,12 +39,12 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 	}
 
 	/**
-	 * Add subject to an existing faculty 
+	 * Add courseType to an existing faculty 
 	 * 
 	 * @throws LectureException
 	 */
-	public void testAddSubjectToFaculty() throws LectureException{
-		Subject subject = createAndCheckSubject();
+	public void testAddCourseTypeToFaculty() throws LectureException{
+		CourseType courseType = createAndCheckCourseType();
 
 		lectureService.removeFaculty(faculty.getId());
 		commit();
@@ -53,9 +53,9 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		faculty = lectureService.getFaculty(faculty.getId());
 		assertNull(faculty);
 		
-		// check if subject is removed
-		subject = lectureService.getSubject(subject.getId());
-		assertNull(subject);
+		// check if courseType is removed
+		courseType = lectureService.getCourseType(courseType.getId());
+		assertNull(courseType);
 	}
 
 	
@@ -130,9 +130,9 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 	
 	public void testAddCourseToFaculty() throws LectureException {
 		Period period = createAndCheckPeriod();
-		Subject subject = createAndCheckSubject();
+		CourseType courseType = createAndCheckCourseType();
 		
-		Course course = lectureService.createCourse(subject.getId(), period.getId());
+		Course course = lectureService.createCourse(courseType.getId(), period.getId());
 		commit();
 		// re-attach
 		course = lectureService.getCourse(course.getId());
@@ -142,19 +142,19 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		assertNotNull(course.getId());
 		assertTrue(StringUtils.isNotBlank(course.getShortcut()));
 		
-		assertNotNull(course.getSubject());
+		assertNotNull(course.getCourseType());
 		assertNotNull(course.getPeriod());
 		assertNotNull(course.getFaculty());
 		
-		assertEquals(subject, course.getSubject());
+		assertEquals(courseType, course.getCourseType());
 		assertEquals(period, course.getPeriod());
 		assertEquals(faculty, course.getFaculty());
 		
 		assertTrue(course.getPeriod().getCourses().contains(course));
-		assertTrue(course.getSubject().getCourses().contains(course));
+		assertTrue(course.getCourseType().getCourses().contains(course));
 		assertTrue(course.getFaculty().getCourses().contains(course));
 		
-		Course course2 = lectureService.createCourse(subject.getId(), period.getId());
+		Course course2 = lectureService.createCourse(courseType.getId(), period.getId());
 		commit();
 		
 		assertNotNull(course2);
@@ -167,11 +167,11 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		
 		faculty = lectureService.getFaculty(faculty.getId());
 		period = lectureService.getPeriod(period.getId());
-		subject = lectureService.getSubject(subject.getId());
+		courseType = lectureService.getCourseType(courseType.getId());
 		assertEquals(1, faculty.getCourses().size());
 		
 		assertNotNull("Couldn't find previous Period object.", period);
-		assertNotNull("Couldn't find previous Subject object.", subject);
+		assertNotNull("Couldn't find previous CourseType object.", courseType);
 		
 		// remove faculty
 		lectureService.removeFaculty(faculty.getId());
@@ -200,14 +200,14 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 	 * @return
 	 * @throws LectureException
 	 */
-	private Subject createAndCheckSubject() throws LectureException {
-		Subject subject = LectureFactory.createSubject();
-		faculty = lectureService.add(faculty.getId(), subject);
+	private CourseType createAndCheckCourseType() throws LectureException {
+		CourseType courseType = LectureFactory.createCourseType();
+		faculty = lectureService.add(faculty.getId(), courseType);
 		commit();
 		faculty = lectureService.getFaculty(faculty.getId());
-		assertTrue(faculty.getSubjects().contains(subject));
-		assertNotNull(subject.getId());
-		return subject;
+		assertTrue(faculty.getCourseTypes().contains(courseType));
+		assertNotNull(courseType.getId());
+		return courseType;
 	}
 	
 	private void commit() {

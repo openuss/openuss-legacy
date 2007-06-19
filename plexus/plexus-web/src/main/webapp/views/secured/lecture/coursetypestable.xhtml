@@ -8,16 +8,16 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:c="http://java.sun.com/jstl/core">
       
-     <plexus:dataTable 
-     	id="subjects" 
-     	label="#{msg['subject_subjectstable_header']}" 
-     	value="views$secured$lecture$subjects.data" 
+     <plexus:dataTable   
+     	id="courseTypes" 
+     	label="#{msg['coursetype_coursetypestable_header']}" 
+     	value="views$secured$lecture$coursetypes.data" 
      	columnClasses="col_max_left, col_commands"
      	var="bean" 
      	rows="5">  
-  
+   
 		<t:column>
-			<plexus:commandSortHeader columnName="name">#{msg.subject_colheader_name}</plexus:commandSortHeader> 
+			<plexus:commandSortHeader columnName="name">#{msg.coursetype_colheader_name}</plexus:commandSortHeader> 
 			<b><h:outputText value="#{bean.name} (#{bean.shortcut})"/></b><br/>
 			<small><h:outputText value="#{bean.description}"/></small>
 		</t:column>
@@ -25,26 +25,26 @@
 		<plexus:column header="#{msg.commands_header}">
 			
 			<plexus:command
-				bean="#{views$secured$lecture$subjects}"
-				action="shortcutSubject"
+				bean="#{views$secured$lecture$coursetypes}"
+				action="shortcutCourseType"
 				label="#{msg.period_command_shortcut}"
 				hint="#{msg.period_command_shortcut_hint}"
 				styleClass="button_link">
 			</plexus:command>
 				 
 			<plexus:command 
-				bean="#{views$secured$lecture$subjects}"
-				action="editSubject"
-				label="#{msg.subject_command_edit}"
-				hint="#{msg.subject_command_edit_hint}"
+				bean="#{views$secured$lecture$coursetypes}"
+				action="editCourseType"
+				label="#{msg.coursetype_command_edit}"
+				hint="#{msg.coursetype_command_edit_hint}"
 				styleClass="button_edit">
 			</plexus:command>
 				
 			<plexus:command   
-				bean="#{views$secured$lecture$subjects}"
-				action="confirmRemoveSubject"
-				label="#{msg.subject_command_remove}"
-				hint="#{msg.subject_command_remove_hint}"
+				bean="#{views$secured$lecture$coursetypes}"
+				action="confirmRemoveCourseType"
+				label="#{msg.coursetype_command_remove}"
+				hint="#{msg.coursetype_command_remove_hint}"
 				styleClass="button_remove">
 			</plexus:command>
 		</plexus:column>

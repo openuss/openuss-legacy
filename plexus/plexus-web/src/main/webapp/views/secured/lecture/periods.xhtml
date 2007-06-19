@@ -43,19 +43,19 @@
 				<h:form id="periodForm">
 					<ui:include src="periodcoursestable.xhtml"/>
 				</h:form>
-				<c:if test="#{empty views$secured$lecture$periods.subjectSelectItems}">
+				<c:if test="#{empty views$secured$lecture$periods.courseTypeSelectItems}">
 					<o:block>
 						<p class="content_font_normal">
-							<h:outputText value="#{msg.faculty_no_subjects_defined_yet}"/>
+							<h:outputText value="#{msg.faculty_no_courseTypes_defined_yet}"/>
 						</p>
 					</o:block>
 				</c:if>
-				<c:if test="#{not empty views$secured$lecture$periods.subjectSelectItems}">
+				<c:if test="#{not empty views$secured$lecture$periods.courseTypeSelectItems}">
 					<o:block>
 						<h:form id="courseForm">
-							<h:outputLabel value="#{msg['period_header_add_course']}" for="subjectSelect" styleClass="field_label"/>
-						 	<h:selectOneListbox id="subjectSelect" size="1" styleClass="pulldown_inline" value="#{views$secured$lecture$periods.subjectId}">
-						    	<f:selectItems value="#{views$secured$lecture$periods.subjectSelectItems}"/>
+							<h:outputLabel value="#{msg['period_header_add_course']}" for="courseTypeSelect" styleClass="field_label"/>
+						 	<h:selectOneListbox id="courseTypeSelect" size="1" styleClass="pulldown_inline" value="#{views$secured$lecture$periods.courseTypeId}">
+						    	<f:selectItems value="#{views$secured$lecture$periods.courseTypeSelectItems}"/>
 							</h:selectOneListbox>
 							<h:commandButton 
 							    id="addPeriod"

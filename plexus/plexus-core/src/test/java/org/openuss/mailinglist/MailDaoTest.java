@@ -16,7 +16,7 @@ public class MailDaoTest extends MailDaoTestBase {
 	public void testMailDaoCreate() {
 		/*Mail mail = new MailImpl();
 		mail.setStatus(MailingStatus.INQUEUE);
-		mail.setSubject(" ");
+		mail.setCourseType(" ");
 		mail.setText(" ");
 		mail.setSms(true);
 		mail.setSendDate(new Date());
