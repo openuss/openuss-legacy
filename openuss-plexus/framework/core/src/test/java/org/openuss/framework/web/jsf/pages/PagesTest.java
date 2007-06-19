@@ -90,11 +90,11 @@ public class PagesTest extends AbstractJsfTestCase {
 	
 	public void testPerformSecurityConstraints() {
 		navigationHandler.addDestination("error", "view/error.xhtml");
-		facesContext.getViewRoot().setViewId("/enrollment/main.xhtml");
+		facesContext.getViewRoot().setViewId("/course/main.xhtml");
 		Pages.instance().performSecurityConstraints(facesContext);
 		assertEquals("view/error.xhtml", facesContext.getViewRoot().getViewId());
 
-		facesContext.getViewRoot().setViewId("/enrollment/nodeniedaction.xhtml");
+		facesContext.getViewRoot().setViewId("/course/nodeniedaction.xhtml");
 		Pages.instance().performSecurityConstraints(facesContext);
 		assertEquals(HttpServletResponse.SC_FORBIDDEN, response.getStatus());
 	}
@@ -111,9 +111,9 @@ public class PagesTest extends AbstractJsfTestCase {
 	}
 	
 	public void testSecurityConstraintParse() {
-		Page page = Pages.instance().getPage("/enrollment/main.xhtml");
+		Page page = Pages.instance().getPage("/course/main.xhtml");
 		assertNotNull(page);
-		assertEquals("Check viewId", "/enrollment/main.xhtml", page.getViewId());
+		assertEquals("Check viewId", "/course/main.xhtml", page.getViewId());
 		assertEquals("SecurityConstraint count", 1,page.getSecurityConstraints().size());
 		
 		SecurityConstraint constraint = page.getSecurityConstraints().get(0);
