@@ -24,7 +24,7 @@
 					</ul>
 			</o:block>
 
-			<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}" >
+			<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}" >
 				<o:block styleClass="option_box" label="#{msg.discussion_config_state_header}">
 					<h:outputText value="#{msg.discussion_forum_readonly_true}" styleClass="content_font_normal" rendered="#{views$secured$discussion$discussions.forumReadOnly}" escape="false"/>
 					<h:outputText value="#{msg.discussion_forum_readonly_false}" styleClass="content_font_normal" rendered="#{not views$secured$discussion$discussions.forumReadOnly}" escape="false"/>

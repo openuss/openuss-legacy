@@ -23,8 +23,8 @@
 				 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
 					<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
 	    		</o:link>
-	    		<o:link value="/views/secured/enrollment/main.faces" rendered="#{result.domainType == 'ENROLLMENT'}">
-	    			<f:param name="enrollment" value="#{result.id}"/>
+	    		<o:link value="/views/secured/course/main.faces" rendered="#{result.domainType == 'Course'}">
+	    			<f:param name="course" value="#{result.id}"/>
 				 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
 					<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
 	    		</o:link>
