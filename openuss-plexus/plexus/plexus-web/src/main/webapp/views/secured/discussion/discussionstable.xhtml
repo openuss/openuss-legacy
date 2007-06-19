@@ -19,7 +19,7 @@
 		<t:column>
 			<plexus:commandSortHeader columnName="title"> #{msg['discussion_main_column_name']} </plexus:commandSortHeader>
 			<o:link value="/views/secured/discussion/discussionthread.faces" title="#{topic.title}" >
-				<f:param value="#{enrollment.id}" name="enrollment" />
+				<f:param value="#{course.id}" name="course" />
 				<f:param value="#{topic.id}" name="topic"/>
 				<h:outputText value="#{topic.title}" />
 			</o:link>			
@@ -40,7 +40,7 @@
 			<plexus:commandSortHeader columnName="lastPost"> #{msg['discussion_main_column_lastentry']} </plexus:commandSortHeader>
 			<h:outputText value="#{topic.lastPost} - #{topic.lastPostSubmitterName}" />
 		</t:column>
-		<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}" >
+		<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}" >
 			<t:column>
 				<plexus:commandSortHeader columnName="actions"> #{msg['discussion_main_column_actions']} </plexus:commandSortHeader>
 				<plexus:command bean="#{views$secured$discussion$discussions}"

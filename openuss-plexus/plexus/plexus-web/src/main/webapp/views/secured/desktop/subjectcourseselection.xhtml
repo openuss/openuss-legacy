@@ -44,20 +44,20 @@
 				<f:param value="#{user.contact.firstName} #{user.contact.lastName}" />
 			</h:outputFormat>
 		</o:block>
-		<h:form id="enrollmentsForm">
+		<h:form id="coursesForm">
 		  <plexus:dataTable 
-		    	id="enrollments" 
+		    	id="courses" 
 		    	label="#{subject.name}"
-		    	value="views$secured$desktop$subjectenrollmenselection.enrollmentsProvider" 
-		    	var="enrollmentItem" 
+		    	value="views$secured$desktop$subjectcourseselection.coursesProvider" 
+		    	var="courseItem" 
 		    	rows="5">
 				<t:column>
 					<plexus:commandSortHeader columnName="subject.name">
-						<h:outputText value="#{msg.desktop_enrollments_colheader_name}"/>
+						<h:outputText value="#{msg.desktop_courses_colheader_name}"/>
 					</plexus:commandSortHeader>
-					<o:link value="/views/secured/enrollment/main.faces" title="#{enrollmentItem.subject.description}">
-						<f:param value="#{enrollmentItem.id}" name="enrollment" />
-						<h:outputText value="#{enrollmentItem.period.name} (#{enrollmentItem.shortcut})"/>
+					<o:link value="/views/secured/course/main.faces" title="#{courseItem.subject.description}">
+						<f:param value="#{courseItem.id}" name="course" />
+						<h:outputText value="#{courseItem.period.name} (#{courseItem.shortcut})"/>
 					</o:link>
 				</t:column>
 			</plexus:dataTable>

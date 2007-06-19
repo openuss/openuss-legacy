@@ -26,14 +26,14 @@
 <!-- text above will be ignored -->
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="header">
-		<link type="application/rss+xml" title="RSS-#{enrollment_info.name}" rel="alternate" href="../../../rss/secured/documents.xml?enrollment=#{enrollment_info.id}"/>
+		<link type="application/rss+xml" title="RSS-#{course_info.name}" rel="alternate" href="../../../rss/secured/documents.xml?course=#{course_info.id}"/>
 	</ui:define>
 	<ui:define name="title">
 		<h:outputText
-			value="#{msg.enrollment_main_title} - #{enrollment.shortcut}" />
+			value="#{msg.course_main_title} - #{course.shortcut}" />
 	</ui:define>
 	<ui:define name="navigation">
-		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
+		<ui:include src="/views/commons/navigation/course.xhtml" />
 	</ui:define>
 	<ui:define name="sidebar"> 
 		<ui:include src="/views/commons/sidebar/feeds/documentsfeed.xhtml" />
@@ -42,10 +42,10 @@
 		<h:form id="documentTableView">
 			<o:block>
 				<span class="header_font_normal">
-					<h:outputText value="#{enrollment.shortcut} > #{msg.documents_main_header} > " styleClass="content_font_normal"></h:outputText>
+					<h:outputText value="#{course.shortcut} > #{msg.documents_main_header} > " styleClass="content_font_normal"></h:outputText>
 					<t:dataList var="folder" value="#{views$secured$documents$documents.path}">
 							<o:link value="/views/secured/documents/documents.faces" title="#{folder.description}" styleClass="folder_link">
-								<f:param value="#{enrollment.id}" name="enrollment" />
+								<f:param value="#{course.id}" name="course" />
 								<f:param value="#{folder.id}" name="folder" />
 								<h:outputText value="#{msg.documents_root_folder}" rendered="#{folder.root}"/>
 								<h:outputText value="> #{folder.name}" rendered="#{!folder.root}"/>
@@ -61,7 +61,7 @@
 					label="#{msg['documents_main_button_download']}"
 					title="#{msg['documents_main_button_download']}"
 					styleClass="button_add" />
-				<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.CREATE}">
+				<s:acl domainObject="#{course}" hasPermission="#{ACL.CREATE}">
 					<h:commandButton 
 					    id="addZip"
 						action="documents_add_zip" 
@@ -81,7 +81,7 @@
 						title="#{msg.documents_main_button_newfolder}"
 						styleClass="button_add"/>
 				</s:acl>
-				<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.DELETE}">
+				<s:acl domainObject="#{course}" hasPermission="#{ACL.DELETE}">
 					<plexus:command
 						bean="#{views$secured$documents$documents}"
 						action="delete"

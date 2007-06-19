@@ -12,12 +12,12 @@
     xmlns:x="http://myfaces.apache.org/extensions">
 	
 		<h:form>
-			<o:block styleClass="option_box" label="#{msg.feed_enrollment}">
+			<o:block styleClass="option_box" label="#{msg.feed_course}">
 					<ul class="int">
 						<li>
-							<h:outputLink value="../../../rss/secured/enrollment.xml?enrollment=#{enrollment.id}" 
-							 			title="#{msg['feed_enrollment']}" >
-							   #{msg['feed_enrollment']}
+							<h:outputLink value="../../../rss/secured/course.xml?course=#{course.id}" 
+							 			title="#{msg['feed_course']}" >
+							   #{msg['feed_course']}
 							</h:outputLink>
 								
 						</li>

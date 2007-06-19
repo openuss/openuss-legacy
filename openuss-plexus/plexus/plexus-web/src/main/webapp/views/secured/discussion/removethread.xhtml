@@ -25,16 +25,16 @@
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="title">
 		<h:outputText
-			value="#{msg.enrollment_main_title} - #{enrollment.shortcut}" />
+			value="#{msg.course_main_title} - #{course.shortcut}" />
 	</ui:define>
 	<ui:define name="navigation">
-		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
+		<ui:include src="/views/commons/navigation/course.xhtml" />
 	</ui:define>
 	<ui:define name="sidebar"> 
 		<ui:include src="/views/commons/sidebar/discussionoptions.xhtml" />
 	</ui:define>
   		<ui:define name="content"> 
-			<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.ASSIST}" ifNot="error"/>
+			<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}" ifNot="error"/>
 			<h:form id="removeThreadForm">
 	  			<o:block label="#{msg.warning_attention_dataloss} - #{msg.discussion_remove_topic_header}" styleClass="warning_box">
 	  				<p class="content_font_normal">
@@ -52,7 +52,7 @@
 					</p>
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.cancel}" action="enrollment_discussion" immediate="true" styleClass="button_cancel"/>
+					<h:commandButton value="${msg.cancel}" action="course_discussion" immediate="true" styleClass="button_cancel"/>
 					<h:commandButton value="${msg.remove}" action="#{views$secured$discussion$removethread.removeThread}" styleClass="button_warning"/>
 				</o:block>
 			</h:form>

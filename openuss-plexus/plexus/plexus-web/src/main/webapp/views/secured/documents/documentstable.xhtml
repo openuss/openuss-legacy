@@ -37,7 +37,7 @@
 		<t:column>
 			<plexus:commandSortHeader columnName="name"> #{msg['documents_main_column_name']} </plexus:commandSortHeader>
 			<o:link value="/views/secured/documents/documents.faces" title="#{entry.description}" rendered="#{entry.folder}">
-				<f:param value="#{enrollment.id}" name="enrollment" />
+				<f:param value="#{course.id}" name="course" />
 				<f:param value="#{entry.id}" name="folder" />
 				<h:outputText value="#{entry.name}"/>
 			</o:link>
@@ -67,7 +67,7 @@
 			</h:outputText>
 		</t:column>
 		
-		<s:acl domainObject="#{enrollment}" hasPermission="#{ACL.CREATE}">
+		<s:acl domainObject="#{course}" hasPermission="#{ACL.CREATE}">
 			<plexus:column header="#{msg.documents_main_column_actions}">
 				<plexus:command 
 				    bean="#{views$secured$documents$documents}"

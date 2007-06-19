@@ -27,10 +27,10 @@
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="title">
 		<h:outputText
-			value="#{msg.enrollment_main_title} - #{enrollment.shortcut}" />
+			value="#{msg.course_main_title} - #{course.shortcut}" />
 	</ui:define>
 	<ui:define name="navigation">
-		<ui:include src="/views/commons/navigation/enrollment.xhtml" />
+		<ui:include src="/views/commons/navigation/course.xhtml" />
 	</ui:define>
 	<ui:define name="sidebar">
 		<ui:include src="/views/commons/sidebar/threadoptions.xhtml" />
@@ -40,7 +40,7 @@
 		<h:form id="discussionThreadTableView">
 			<o:block>
 				<span class="header_font_normal">
-					<h:outputText value="#{enrollment.shortcut} > #{msg.enrollment_command_discussion}" styleClass="content_font_normal"></h:outputText>
+					<h:outputText value="#{course.shortcut} > #{msg.course_command_discussion}" styleClass="content_font_normal"></h:outputText>
 				</span>
 			</o:block>
 			<ui:include src="discussionthreadtable.xhtml" />
