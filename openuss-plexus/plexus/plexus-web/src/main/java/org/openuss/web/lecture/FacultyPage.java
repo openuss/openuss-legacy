@@ -15,7 +15,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.Enrollment;
+import org.openuss.lecture.Course;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.Period;
 import org.openuss.news.NewsService;
@@ -38,7 +38,7 @@ public class FacultyPage extends AbstractLecturePage {
 	@Property(value = "#{sessionScope.period}")
 	private Period period;
 
-	private EnrollmentDataModel enrollmentData = new EnrollmentDataModel();
+	private CourseDataModel courseData = new CourseDataModel();
 
 	/**
 	 * Refreshing faculty entity
@@ -70,24 +70,24 @@ public class FacultyPage extends AbstractLecturePage {
 		setSessionBean(Constants.PERIOD, period);
 	}
 
-	private class EnrollmentDataModel extends AbstractPagedTable<Enrollment> {
+	private class CourseDataModel extends AbstractPagedTable<Course> {
 
 		private static final long serialVersionUID = 3682383483634321520L;
 
-		private DataPage<Enrollment> page;
+		private DataPage<Course> page;
 
 		@Override
-		public DataPage<Enrollment> getDataPage(int startRow, int pageSize) {
+		public DataPage<Course> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<Enrollment> enrollments = new ArrayList();
+				List<Course> courses = new ArrayList();
 				if (period != null) {
 					period = lectureService.getPeriod(period.getId());
-					enrollments.addAll(period.getEnrollments());
+					courses.addAll(period.getCourses());
 				} else {
 					logger.error("faculty page - no period selected!");
 				}
-				sort(enrollments);
-				page = new DataPage<Enrollment>(enrollments.size(), 0, enrollments);
+				sort(courses);
+				page = new DataPage<Course>(courses.size(), 0, courses);
 			}
 			return page;
 		}
@@ -128,18 +128,18 @@ public class FacultyPage extends AbstractLecturePage {
 		return Constants.DESKTOP;
 	}
 
-	public EnrollmentDataModel getEnrollmentData() {
-		return enrollmentData;
+	public CourseDataModel getCourseData() {
+		return courseData;
 	}
 
-	public void setEnrollmentData(EnrollmentDataModel enrollmentData) {
-		this.enrollmentData = enrollmentData;
+	public void setCourseData(CourseDataModel courseData) {
+		this.courseData = courseData;
 	}
 
-	public String shortcutEnrollment() throws DesktopException {
-		Enrollment enrollment = enrollmentData.getRowData();
-		desktopService.linkEnrollment(desktop, enrollment);
-		addMessage(i18n("message_enrollment_shortcut_created"));
+	public String shortcutCourse() throws DesktopException {
+		Course course = courseData.getRowData();
+		desktopService.linkCourse(desktop, course);
+		addMessage(i18n("message_course_shortcut_created"));
 		return Constants.FACULTY_PAGE;
 	}
 

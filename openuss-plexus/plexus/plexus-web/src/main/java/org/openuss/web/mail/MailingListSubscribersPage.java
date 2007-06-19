@@ -31,7 +31,7 @@ public class MailingListSubscribersPage extends AbstractMailingListPage{
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		mailingList = getEnrollmentMailingListService().getMailingList(enrollmentInfo);
+		mailingList = getCourseMailingListService().getMailingList(courseInfo);
 		setSessionBean(Constants.MAILINGLIST_MAILINGLIST, mailingList);
 	}	
 	
@@ -45,7 +45,7 @@ public class MailingListSubscribersPage extends AbstractMailingListPage{
 		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<SubscriberInfo> getDataPage(int startRow, int pageSize) {		
-			List<SubscriberInfo> al = enrollmentMailingListService.getSubscribers(enrollmentInfo);			
+			List<SubscriberInfo> al = courseMailingListService.getSubscribers(courseInfo);			
 			page = new DataPage<SubscriberInfo>(al.size(),0,al);
 			return page;
 		}
@@ -62,7 +62,7 @@ public class MailingListSubscribersPage extends AbstractMailingListPage{
 	public String removeSubscriber(){
 		User user = User.Factory.newInstance();
 		user.setId(data.getRowData().getUserId());
-		getEnrollmentMailingListService().unsubscribe(enrollmentInfo, user);
+		getCourseMailingListService().unsubscribe(courseInfo, user);
 		 return Constants.SUCCESS;
 	}
 	

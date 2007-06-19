@@ -26,7 +26,7 @@ public class DocumentRemovePage extends AbstractDocumentPage{
 	private List<FolderEntryInfo> entries;
 	
 	/**
-	 * Remove the current enrollment and all its data
+	 * Remove the current course and all its data
 	 * @return OUTCOME_BACKWARD
 	 * @throws DocumentApplicationException 
 	 */

@@ -189,11 +189,11 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	}
 
 	public boolean isForumReadOnly() {
-		return getDiscussionService().getForum(enrollmentInfo).isReadOnly();
+		return getDiscussionService().getForum(courseInfo).isReadOnly();
 	}
 	
 	public boolean isForumWatchState(){
-		return getDiscussionService().watchesForum(getDiscussionService().getForum(enrollmentInfo));
+		return getDiscussionService().watchesForum(getDiscussionService().getForum(courseInfo));
 	}
 
 }

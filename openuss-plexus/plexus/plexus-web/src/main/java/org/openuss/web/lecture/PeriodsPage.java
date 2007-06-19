@@ -17,7 +17,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.Enrollment;
+import org.openuss.lecture.Course;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.Period;
 import org.openuss.lecture.Subject;
@@ -36,7 +36,7 @@ public class PeriodsPage extends AbstractLecturePage {
 
 	private PeriodDataModel periodData = new PeriodDataModel();
 	
-	private EnrollmentDataModel enrollmentData = new EnrollmentDataModel();
+	private CourseDataModel courseData = new CourseDataModel();
 	
 	private Long subjectId;
 
@@ -217,53 +217,53 @@ public class PeriodsPage extends AbstractLecturePage {
 	}
 
 	/**
-	 * Creates a new Enrollment and adds it to the selected period
+	 * Creates a new Course and adds it to the selected period
 	 * 
 	 * @return outcome
 	 */
-	public String addEnrollment() {
+	public String addCourse() {
 		Subject subject = Subject.Factory.newInstance();
 		subject.setId(subjectId);
-		lectureService.createEnrollment(subject.getId(), period.getId());
+		lectureService.createCourse(subject.getId(), period.getId());
 		return Constants.SUCCESS;
 	}
 	
-	public String shortcutEnrollment() throws DesktopException {
-		Enrollment enrollment = enrollmentData.getRowData();
-		getDesktopService().linkEnrollment(getDesktop(), enrollment);
-		addMessage(i18n("message_enrollment_shortcut_created"));
+	public String shortcutCourse() throws DesktopException {
+		Course course = courseData.getRowData();
+		getDesktopService().linkCourse(getDesktop(), course);
+		addMessage(i18n("message_course_shortcut_created"));
 		return Constants.FACULTY_PERIODS_PAGE; 
 	}
 
 	/**
-	 * Confirm the removement of an enrollment
+	 * Confirm the removement of an course
 	 * 
 	 * @return
 	 */
-	public String confirmRemoveEnrollment() {
-		Enrollment enrollment = enrollmentData.getRowData();
-		setSessionBean(Constants.ENROLLMENT, enrollment);
-		return Constants.FACULTY_ENROLLMENT_REMOVE_PAGE;
+	public String confirmRemoveCourse() {
+		Course course = courseData.getRowData();
+		setSessionBean(Constants.COURSE, course);
+		return Constants.FACULTY_COURSE_REMOVE_PAGE;
 	}
 
 	/**
 	 * 
 	 * @return Constants
 	 */
-	public String editEnrollment() {
-		logger.debug("edit enrollment");
-		Enrollment enrollment = enrollmentData.getRowData();
-		setSessionBean(Constants.ENROLLMENT, enrollment);
-		return Constants.ENROLLMENT_OPTIONS_PAGE;
+	public String editCourse() {
+		logger.debug("edit course");
+		Course course = courseData.getRowData();
+		setSessionBean(Constants.COURSE, course);
+		return Constants.COURSE_OPTIONS_PAGE;
 	}
 
 	/**
 	 * @deprecated
 	 * @return
 	 */
-	public List<Enrollment> getEnrollments() {
-		if (period != null && period.getEnrollments() != null && period.getEnrollments().size() > 0) {
-			return new ArrayList(period.getEnrollments());
+	public List<Course> getCourses() {
+		if (period != null && period.getCourses() != null && period.getCourses().size() > 0) {
+			return new ArrayList(period.getCourses());
 		} else {
 			return null;
 		}
@@ -289,20 +289,20 @@ public class PeriodsPage extends AbstractLecturePage {
 		
 	}
 	
-	private class EnrollmentDataModel extends AbstractPagedTable<Enrollment> {
+	private class CourseDataModel extends AbstractPagedTable<Course> {
 		private static final long serialVersionUID = 7931835846045404043L;
 		
-		private DataPage<Enrollment> page;
+		private DataPage<Course> page;
 
 		@Override
-		public DataPage<Enrollment> getDataPage(int startRow, int pageSize) {
+		public DataPage<Course> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<Enrollment> enrollments = new ArrayList(); 
+				List<Course> courses = new ArrayList(); 
 				if (period != null) { 
-					enrollments.addAll(period.getEnrollments());
+					courses.addAll(period.getCourses());
 				}
-				sort(enrollments);
-				page = new DataPage<Enrollment>(enrollments.size(),0,enrollments);
+				sort(courses);
+				page = new DataPage<Course>(courses.size(),0,courses);
 			}
 			return page;
 		}
@@ -318,12 +318,12 @@ public class PeriodsPage extends AbstractLecturePage {
 		this.periodData = periodData;
 	}
 
-	public EnrollmentDataModel getEnrollmentData() {
-		return enrollmentData;
+	public CourseDataModel getCourseData() {
+		return courseData;
 	}
 
-	public void setEnrollmentData(EnrollmentDataModel enrollmentData) {
-		this.enrollmentData = enrollmentData;
+	public void setCourseData(CourseDataModel courseData) {
+		this.courseData = courseData;
 	}
 
 	public Long getSubjectId() {

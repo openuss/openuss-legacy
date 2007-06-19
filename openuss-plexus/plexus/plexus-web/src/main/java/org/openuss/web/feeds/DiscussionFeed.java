@@ -17,16 +17,16 @@ import org.openuss.discussion.ForumInfo;
 import org.openuss.discussion.PostInfo;
 import org.openuss.discussion.Topic;
 import org.openuss.discussion.TopicInfo;
-import org.openuss.lecture.Enrollment;
-import org.openuss.lecture.EnrollmentInfo;
-import org.openuss.lecture.EnrollmentService;
+import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.CourseService;
 import org.openuss.system.SystemProperties;
 import org.openuss.system.SystemService;
 
 public class DiscussionFeed extends AbstractFeed{
 	
 
-	private transient EnrollmentService enrollmentService;
+	private transient CourseService courseService;
 	
 	private transient SystemService systemService;
 	
@@ -35,9 +35,9 @@ public class DiscussionFeed extends AbstractFeed{
 	public static final Logger logger = Logger.getLogger(DiscussionFeed.class);
 
 	@SuppressWarnings("unchecked")
-	private FeedWrapper buildFeedArray(EnrollmentInfo enrollment) {
+	private FeedWrapper buildFeedArray(CourseInfo course) {
 		final List entries = new ArrayList();
-		ForumInfo forum = getDiscussionService().getForum(enrollment);
+		ForumInfo forum = getDiscussionService().getForum(course);
 		FeedWrapper feedWrapper = new FeedWrapper();
 		String link;
 		
@@ -60,30 +60,30 @@ public class DiscussionFeed extends AbstractFeed{
 					post = (PostInfo) j.next();
 					if (lastEntry==null) lastEntry = post.getLastModification();
 					if (post.getLastModification().after(lastEntry)) lastEntry = post.getLastModification();
-					link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/discussion/discussionthread.faces?enrollment="+enrollment.getId()+"&topic="+topic.getId()+"#"+post.getId();
+					link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/discussion/discussionthread.faces?course="+course.getId()+"&topic="+topic.getId()+"#"+post.getId();
 					this.addEntry(entries, post.getTitle(), link, post.getLastModification(), post.getText(), topic.getTitle(), post.getSubmitter());
 				}
 			}
 			feedWrapper.setLastModified(lastEntry);
 		}
 		
-		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"rss/secured/discussion.xml?enrollment="+enrollment.getId();
+		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"rss/secured/discussion.xml?course="+course.getId();
 		
-		feedWrapper.setWriter(this.convertToXml(enrollment.getName(), link, enrollment.getDescription(), systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
+		feedWrapper.setWriter(this.convertToXml(course.getName(), link, course.getDescription(), systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
 		return feedWrapper;
 	}	
 	
 	/**
-     * @see org.openuss.feed.FeedService#getRssFeedForEnrollment(org.openuss.lecture.EnrollmentInfo)
+     * @see org.openuss.feed.FeedService#getRssFeedForCourse(org.openuss.lecture.CourseInfo)
      */
-    public FeedWrapper getFeed(Long enrollmentId)        
+    public FeedWrapper getFeed(Long courseId)        
     {
-    	if (enrollmentId==null||enrollmentId==0) return null;
-    	Enrollment e = Enrollment.Factory.newInstance();
-    	e.setId(enrollmentId);    	
-    	EnrollmentInfo enrollment = getEnrollmentService().getEnrollmentInfo(getEnrollmentService().getEnrollment(e));
-    	if (enrollment==null) return null;
-        return buildFeedArray(enrollment);
+    	if (courseId==null||courseId==0) return null;
+    	Course e = Course.Factory.newInstance();
+    	e.setId(courseId);    	
+    	CourseInfo course = getCourseService().getCourseInfo(getCourseService().getCourse(e));
+    	if (course==null) return null;
+        return buildFeedArray(course);
     }
 
 	public SystemService getSystemService() {
@@ -94,12 +94,12 @@ public class DiscussionFeed extends AbstractFeed{
 		this.systemService = systemService;
 	}
 
-	public EnrollmentService getEnrollmentService() {
-		return enrollmentService;
+	public CourseService getCourseService() {
+		return courseService;
 	}
 
-	public void setEnrollmentService(EnrollmentService enrollmentService) {
-		this.enrollmentService = enrollmentService;
+	public void setCourseService(CourseService courseService) {
+		this.courseService = courseService;
 	}
 
 	public DiscussionService getDiscussionService() {

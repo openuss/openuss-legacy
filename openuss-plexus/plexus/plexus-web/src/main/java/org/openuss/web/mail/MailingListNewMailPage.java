@@ -32,24 +32,24 @@ public class MailingListNewMailPage extends AbstractMailingListPage{
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		mailingList = getEnrollmentMailingListService().getMailingList(enrollmentInfo);
+		mailingList = getCourseMailingListService().getMailingList(courseInfo);
 		setSessionBean(Constants.MAILINGLIST_MAILINGLIST, mailingList);
 
 	}	
 
 	public String saveDraft(){
-		getEnrollmentMailingListService().updateMail(enrollmentInfo, mail);
+		getCourseMailingListService().updateMail(courseInfo, mail);
 		return Constants.MAILINGLIST_MAIN;
 	}
 	
 	public String send(){
-		getEnrollmentMailingListService().sendMail(enrollmentInfo, mail);
+		getCourseMailingListService().sendMail(courseInfo, mail);
 		return Constants.MAILINGLIST_MAIN;
 	}
 	
 	public String sendDraft(){
 		addMessage(i18n("mailinglist_draft_send_message", getUser().getEmail()));
-		getEnrollmentMailingListService().sendPreview(enrollmentInfo, mail);
+		getCourseMailingListService().sendPreview(courseInfo, mail);
 		return Constants.SUCCESS;	
 	}
 	

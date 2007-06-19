@@ -5,7 +5,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.enrollment.mailinglist.EnrollmentMailingListService;
+import org.openuss.course.mailinglist.CourseMailingListService;
 import org.openuss.mailinglist.MailDetail;
 import org.openuss.mailinglist.MailInfo;
 import org.openuss.mailinglist.MailingListInfo;
@@ -22,8 +22,8 @@ import org.openuss.web.Constants;
 @View
 public class ShowMailPage extends BasePage{
 	
-	@Property(value = "#{enrollmentMailingListService}")
-	protected EnrollmentMailingListService enrollmentMailingListService;
+	@Property(value = "#{courseMailingListService}")
+	protected CourseMailingListService courseMailingListService;
 	
 	@Property(value = "#{" + Constants.MAILINGLIST_MAIL + "}")
 	protected MailDetail mail;
@@ -47,7 +47,7 @@ public class ShowMailPage extends BasePage{
 		if (mail.getId()!=null){
 			MailInfo mi = new MailInfo(); 
 			mi.setId(mail.getId());
-			mail = getEnrollmentMailingListService().getMail(mi);
+			mail = getCourseMailingListService().getMail(mi);
 			if (mail==null){
 				addError(i18n("mailinglist_mailaccess_impossible"));
 				redirect(Constants.MAILINGLIST_MAIN);
@@ -64,14 +64,14 @@ public class ShowMailPage extends BasePage{
 	}
 
 
-	public EnrollmentMailingListService getEnrollmentMailingListService() {
-		return enrollmentMailingListService;
+	public CourseMailingListService getCourseMailingListService() {
+		return courseMailingListService;
 	}
 
 
-	public void setEnrollmentMailingListService(
-			EnrollmentMailingListService enrollmentMailingListService) {
-		this.enrollmentMailingListService = enrollmentMailingListService;
+	public void setCourseMailingListService(
+			CourseMailingListService courseMailingListService) {
+		this.courseMailingListService = courseMailingListService;
 	}
 
 

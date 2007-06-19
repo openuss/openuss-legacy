@@ -1,4 +1,4 @@
-package org.openuss.web.lecture;
+package org.openuss.web.enrollment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,11 +28,13 @@ import org.openuss.web.upload.UploadFileManager;
  * News Page Controller
  * @author Ingo Dueppe
  */
-@Bean(name = "views$secured$lecture$newsedit", scope = Scope.REQUEST)
+@Bean(name = "views$secured$enrollment$enrollmentnewsedit", scope = Scope.REQUEST)
 @View
-public class NewsEditPage extends AbstractLecturePage {
+public class EnrollmentNewsEditPage extends AbstractEnrollmentPage {
 
-	private static final Logger logger = Logger.getLogger(NewsEditPage.class);
+	private static final Logger logger = Logger.getLogger(EnrollmentNewsEditPage.class);
+
+	private static final long serialVersionUID = 792199034646593736L;
 
 	@Property(value = "#{"+Constants.NEWS_SELECTED_NEWSITEM+"}")
 	private NewsItemInfo newsItem;
@@ -47,7 +49,8 @@ public class NewsEditPage extends AbstractLecturePage {
 	
 	@Override
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
+		super.prerender();
 		if (!isPostBack()) {
 			if (newsItem != null && newsItem.getId() != null) {
 				newsItem = newsService.getNewsItem(newsItem);
@@ -66,14 +69,13 @@ public class NewsEditPage extends AbstractLecturePage {
 	public String save() throws DocumentApplicationException, IOException {
 		logger.debug("saving news");
 		
-		if (newsItem.getPublishDate().after(newsItem.getExpireDate())) {
-			addError(i18n("news_error_expire_before_publish_date"));
-			return Constants.FACULTY_NEWS_EDIT_PAGE;
-		}
+		newsItem.setCategory(NewsCategory.ENROLLMENT);
+		newsItem.setExpireDate(null);
+		newsItem.setPublisherIdentifier(enrollment.getId());
 		newsItem.setAuthor(getAuthorName());
 		newsService.saveNewsItem(newsItem);
 
-		return Constants.FACULTY_NEWS_PAGE;
+		return Constants.ENROLLMENT_NEWS_PAGE;
 	}
 
 	private String getAuthorName() {
@@ -112,10 +114,10 @@ public class NewsEditPage extends AbstractLecturePage {
 	
 	public List<SelectItem> getNewsCategories() {
 		List<SelectItem> items = new ArrayList<SelectItem>();
-		items.add(new SelectItem(NewsCategory.GLOBAL,i18n("news_category_global")));
+//		items.add(new SelectItem(NewsCategory.GLOBAL,i18n("news_category_global")));
 //		items.add(new SelectItem(NewsCategory.DESKTOP,i18n("news_category_desktop")));
-		items.add(new SelectItem(NewsCategory.FACULTY,i18n("news_category_faculty")));
-		items.add(new SelectItem(NewsCategory.COURSE,i18n("news_category_course")));
+//		items.add(new SelectItem(NewsCategory.FACULTY,i18n("news_category_faculty")));
+		items.add(new SelectItem(NewsCategory.ENROLLMENT,i18n("news_category_enrollment")));
 		return items;
 	}
 	
@@ -136,7 +138,7 @@ public class NewsEditPage extends AbstractLecturePage {
 		logger.debug("cancel");
 		removeSessionBean(Constants.NEWS_SELECTED_NEWSITEM);
 		removeSessionBean(Constants.UPLOADED_FILE);
-		return Constants.FACULTY_NEWS_PAGE;
+		return Constants.ENROLLMENT_NEWS_PAGE;
 	}
 
 	/* ----------------- properties ------------------*/

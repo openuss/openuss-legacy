@@ -7,9 +7,9 @@ import org.openuss.discussion.ForumInfo;
 import org.openuss.discussion.PostInfo;
 import org.openuss.discussion.TopicInfo;
 import org.openuss.web.Constants;
-import org.openuss.web.enrollment.AbstractEnrollmentPage;
+import org.openuss.web.course.AbstractCoursePage;
 
-public class AbstractDiscussionPage extends AbstractEnrollmentPage{
+public class AbstractDiscussionPage extends AbstractCoursePage{
 
 	@Property(value = "#{"+Constants.DISCUSSION_DISCUSSIONENTRY+"}")
 	protected PostInfo postInfo;
@@ -44,7 +44,7 @@ public class AbstractDiscussionPage extends AbstractEnrollmentPage{
 	}
 	
 	public ForumInfo getForum() {
-		this.forum = discussionService.getForum(enrollment);
+		this.forum = discussionService.getForum(course);
 		return this.forum;
 	}
 
