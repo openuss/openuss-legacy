@@ -36,23 +36,23 @@ public class Visit extends BaseBean {
 
 	private List timeZoneItems;
 	
-	private int enrollmentsPageIndex;
-	private int enrollmentsPageCount;
+	private int coursesPageIndex;
+	private int coursesPageCount;
 	
-	public int getEnrollmentsPageCount() {
-		return enrollmentsPageCount;
+	public int getCoursesPageCount() {
+		return coursesPageCount;
 	}
 
-	public void setEnrollmentsPageCount(int enrollmentsPageCount) {
-		this.enrollmentsPageCount = enrollmentsPageCount;
+	public void setCoursesPageCount(int coursesPageCount) {
+		this.coursesPageCount = coursesPageCount;
 	}
 
-	public int getEnrollmentsPageIndex() {
-		return enrollmentsPageIndex;
+	public int getCoursesPageIndex() {
+		return coursesPageIndex;
 	}
 
-	public void setEnrollmentsPageIndex(int enrollmentsPageIndex) {
-		this.enrollmentsPageIndex = enrollmentsPageIndex;
+	public void setCoursesPageIndex(int coursesPageIndex) {
+		this.coursesPageIndex = coursesPageIndex;
 	}
 
 	public Visit() {

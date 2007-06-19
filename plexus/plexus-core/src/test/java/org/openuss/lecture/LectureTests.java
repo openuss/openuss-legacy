@@ -9,9 +9,9 @@ public class LectureTests {
 		TestSuite suite = new TestSuite("Test for org.openuss.lecture");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(FacultyIndexingAspectTest.class);
-		suite.addTestSuite(EnrollmentDaoTest.class);
-		suite.addTestSuite(EnrollmentMemberDaoTest.class);
-		suite.addTestSuite(EnrollmentServiceIntegrationTest.class);
+		suite.addTestSuite(CourseDaoTest.class);
+		suite.addTestSuite(CourseMemberDaoTest.class);
+		suite.addTestSuite(CourseServiceIntegrationTest.class);
 		suite.addTestSuite(FacultyDaoTest.class);
 		suite.addTestSuite(LectureIntegrationTest.class);
 		suite.addTestSuite(LectureServiceIntegrationTest.class);

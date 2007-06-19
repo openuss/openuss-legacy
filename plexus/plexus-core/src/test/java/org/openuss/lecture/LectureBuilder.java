@@ -3,7 +3,7 @@ package org.openuss.lecture;
 import org.openuss.security.User;
 
 /**
- * Builds faculty, periods, subject, and enrollment structures.
+ * Builds faculty, periods, subject, and course structures.
  *  
  * @author Ingo Dueppe
  */
@@ -51,14 +51,14 @@ public class LectureBuilder {
 		return this;
 	}
 	
-	public LectureBuilder addEnrollment() {
-		return addEnrollment(0, 0);
+	public LectureBuilder addCourse() {
+		return addCourse(0, 0);
 	}
 	
-	public LectureBuilder addEnrollment(int indexSubject, int indexPeriod ) {
+	public LectureBuilder addCourse(int indexSubject, int indexPeriod ) {
 		Subject subject = faculty.getSubjects().get(indexSubject);
 		Period period = faculty.getPeriods().get(indexPeriod);
-		addEnrollment(faculty, subject, period);
+		addCourse(faculty, subject, period);
 		return this;
 	}
 	
@@ -71,12 +71,12 @@ public class LectureBuilder {
 		return this;
 	}
 	
-	public Enrollment getEnrollment() {
-		return getEnrollment(0);
+	public Course getCourse() {
+		return getCourse(0);
 	}
 	
-	public Enrollment getEnrollment(int index) {
-		return faculty.getEnrollments().get(index);
+	public Course getCourse(int index) {
+		return faculty.getCourses().get(index);
 	}
 	
 	public LectureBuilder remove() {
@@ -103,16 +103,16 @@ public class LectureBuilder {
 		return period;
 	}
 	
-	public Enrollment addEnrollment(Faculty faculty, Subject subject, Period period) {
-		Enrollment enrollment = LectureFactory.createEnrollment();
-		subject.add(enrollment);
-		enrollment.setSubject(subject);
-		enrollment.setShortcut(unique());
-		period.add(enrollment);
-		enrollment.setPeriod(period);
-		faculty.add(enrollment);
-		enrollment.setFaculty(faculty);
-		return enrollment;
+	public Course addCourse(Faculty faculty, Subject subject, Period period) {
+		Course course = LectureFactory.createCourse();
+		subject.add(course);
+		course.setSubject(subject);
+		course.setShortcut(unique());
+		period.add(course);
+		course.setPeriod(period);
+		faculty.add(course);
+		course.setFaculty(faculty);
+		return course;
 	}
 	
 	public User getOwner() {

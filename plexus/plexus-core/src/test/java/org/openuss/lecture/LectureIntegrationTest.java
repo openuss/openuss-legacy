@@ -128,47 +128,47 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		commit();
 	}
 	
-	public void testAddEnrollmentToFaculty() throws LectureException {
+	public void testAddCourseToFaculty() throws LectureException {
 		Period period = createAndCheckPeriod();
 		Subject subject = createAndCheckSubject();
 		
-		Enrollment enrollment = lectureService.createEnrollment(subject.getId(), period.getId());
+		Course course = lectureService.createCourse(subject.getId(), period.getId());
 		commit();
 		// re-attach
-		enrollment = lectureService.getEnrollment(enrollment.getId());
+		course = lectureService.getCourse(course.getId());
 		
 		// check constraints
-		assertNotNull(enrollment);
-		assertNotNull(enrollment.getId());
-		assertTrue(StringUtils.isNotBlank(enrollment.getShortcut()));
+		assertNotNull(course);
+		assertNotNull(course.getId());
+		assertTrue(StringUtils.isNotBlank(course.getShortcut()));
 		
-		assertNotNull(enrollment.getSubject());
-		assertNotNull(enrollment.getPeriod());
-		assertNotNull(enrollment.getFaculty());
+		assertNotNull(course.getSubject());
+		assertNotNull(course.getPeriod());
+		assertNotNull(course.getFaculty());
 		
-		assertEquals(subject, enrollment.getSubject());
-		assertEquals(period, enrollment.getPeriod());
-		assertEquals(faculty, enrollment.getFaculty());
+		assertEquals(subject, course.getSubject());
+		assertEquals(period, course.getPeriod());
+		assertEquals(faculty, course.getFaculty());
 		
-		assertTrue(enrollment.getPeriod().getEnrollments().contains(enrollment));
-		assertTrue(enrollment.getSubject().getEnrollments().contains(enrollment));
-		assertTrue(enrollment.getFaculty().getEnrollments().contains(enrollment));
+		assertTrue(course.getPeriod().getCourses().contains(course));
+		assertTrue(course.getSubject().getCourses().contains(course));
+		assertTrue(course.getFaculty().getCourses().contains(course));
 		
-		Enrollment enrollment2 = lectureService.createEnrollment(subject.getId(), period.getId());
+		Course course2 = lectureService.createCourse(subject.getId(), period.getId());
 		commit();
 		
-		assertNotNull(enrollment2);
-		assertNotNull(enrollment2.getId());
+		assertNotNull(course2);
+		assertNotNull(course2.getId());
 		
-		lectureService.removeEnrollment(enrollment.getId());
+		lectureService.removeCourse(course.getId());
 		commit();
 		
-		assertNull(lectureService.getEnrollment(enrollment.getId()));
+		assertNull(lectureService.getCourse(course.getId()));
 		
 		faculty = lectureService.getFaculty(faculty.getId());
 		period = lectureService.getPeriod(period.getId());
 		subject = lectureService.getSubject(subject.getId());
-		assertEquals(1, faculty.getEnrollments().size());
+		assertEquals(1, faculty.getCourses().size());
 		
 		assertNotNull("Couldn't find previous Period object.", period);
 		assertNotNull("Couldn't find previous Subject object.", subject);
@@ -177,7 +177,7 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		lectureService.removeFaculty(faculty.getId());
 		commit();
 		
-		assertNull(lectureService.getEnrollment(enrollment.getId()));
+		assertNull(lectureService.getCourse(course.getId()));
 	}
 
 	/**

@@ -37,7 +37,7 @@ public class MessageSendingCommandTest extends AbstractDependencyInjectionSpring
 
 	private void validateSendState(MessageJob job) {
 		for (Recipient recipient : job.getRecipients()) {
-			if (StringUtils.equals(recipient.getEmail(),"xxxopenuss-plexus")) {
+			if (StringUtils.equals(recipient.getEmail(),"OFF xxxopenuss-plexus")) {
 				assertEquals(SendState.ERROR, recipient.getState());
 			} else {
 				assertEquals(SendState.SEND, recipient.getState());

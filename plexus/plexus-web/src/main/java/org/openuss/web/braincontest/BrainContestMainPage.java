@@ -13,11 +13,11 @@ import org.openuss.braincontest.BrainContestService;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
-import org.openuss.web.enrollment.AbstractEnrollmentPage;
+import org.openuss.web.course.AbstractCoursePage;
 
 @Bean(name = "views$secured$braincontest$braincontestmain", scope = Scope.REQUEST)
 @View
-public class BrainContestMainPage extends AbstractEnrollmentPage{
+public class BrainContestMainPage extends AbstractCoursePage{
 	
 	private BrainContestMainDataProvider data = new BrainContestMainDataProvider();
 	
@@ -75,7 +75,7 @@ public class BrainContestMainPage extends AbstractEnrollmentPage{
 		
 		@Override 
 		public DataPage<BrainContestInfo> getDataPage(int startRow, int pageSize) {		
-			List<BrainContestInfo> al = brainContestService.getContests(enrollment);			 
+			List<BrainContestInfo> al = brainContestService.getContests(course);			 
 			page = new DataPage <BrainContestInfo>(al.size(),0,al);
 			return page;
 		}

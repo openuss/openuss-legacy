@@ -17,12 +17,12 @@ import org.openuss.braincontest.BrainContestInfo;
 import org.openuss.braincontest.BrainContestService;
 import org.openuss.documents.FileInfo;
 import org.openuss.web.Constants;
-import org.openuss.web.enrollment.AbstractEnrollmentPage;
+import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.web.upload.UploadFileManager;
 
 @Bean(name = "views$secured$braincontest$braincontestnew", scope = Scope.REQUEST)
 @View
-public class BrainContestNewPage extends AbstractEnrollmentPage {
+public class BrainContestNewPage extends AbstractCoursePage {
 	private static final Logger logger = Logger.getLogger(BrainContestNewPage.class);
 
 	@Property(value = "#{braincontest_contest}")
@@ -50,7 +50,7 @@ public class BrainContestNewPage extends AbstractEnrollmentPage {
 
 	public String save() throws BrainContestApplicationException {
 		if (this.brainContest.getId() == null) {
-			brainContest.setDomainIdentifier(enrollment.getId());
+			brainContest.setDomainIdentifier(course.getId());
 			brainContestService.createContest(brainContest);
 			addMessage(i18n("braincontest_message_created"));
 		} else if (this.brainContest.getId() != null) {

@@ -14,11 +14,11 @@ import org.openuss.braincontest.BrainContestService;
 import org.openuss.documents.FileInfo;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
-import org.openuss.web.enrollment.AbstractEnrollmentPage;
+import org.openuss.web.course.AbstractCoursePage;
 
 @Bean(name = "views$secured$braincontest$braincontestsolve", scope = Scope.REQUEST)
 @View
-public class BrainContestSolvePage extends AbstractEnrollmentPage {
+public class BrainContestSolvePage extends AbstractCoursePage {
 	private static final Logger logger = Logger
 			.getLogger(BrainContestSolvePage.class);
 
