@@ -12,7 +12,7 @@ public class Constants {
 	// Session Entity Beans
 	
 	public static final String FACULTY = "faculty";
-	public static final String SUBJECT = "subject";
+	public static final String COURSE_TYPE = "courseType";
 	public static final String COURSE = "course";
 	public static final String COURSE_INFO = "course_info";
 
@@ -44,9 +44,9 @@ public class Constants {
 	public static final String FACULTY_PERIOD_PAGE = "faculty_period";
 	public static final String FACULTY_PERIODS_PAGE = "faculty_periods";
 	public static final String FACULTY_PERIOD_REMOVE_PAGE = "faculty_period_remove";
-	public static final String FACULTY_SUBJECTS_PAGE = "faculty_subjects";
+	public static final String FACULTY_COURSE_TYPES_PAGE = "faculty_coursetypes";
 	public static final String FACULTY_COURSE_REMOVE_PAGE = "faculty_course_remove";
-	public static final String FACULTY_SUBJECT_REMOVE_PAGE = "faculty_subject_remove";
+	public static final String FACULTY_COURSE_TYPE_REMOVE_PAGE = "faculty_coursetype_remove";
 	public static final String FACULTY_MEMBERS_PAGE = "faculty_members";
 	public static final String FACULTY_NEWS_PAGE = "faculty_news";
 	public static final String FACULTY_NEWS_EDIT_PAGE = "faculty_news_edit";
@@ -72,7 +72,7 @@ public class Constants {
 
 	public static final String OUTCOME_BACKWARD = "view:backward";
 
-	public static final String SUBJECT_COURSE_SELECTION_PAGE = "subject_course_selection";
+	public static final String COURSE_TYPE_COURSE_SELECTION_PAGE = "coursetype_course_selection";
 
 	
 	public static final String DOCUMENTS_CURRENT_FOLDER = "documents_current_folder";

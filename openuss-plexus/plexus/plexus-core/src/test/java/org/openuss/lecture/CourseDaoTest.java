@@ -20,7 +20,7 @@ public class CourseDaoTest extends CourseDaoTestBase {
 	private TestUtility testUtility;
 
 	private FacultyDao facultyDao;
-	private SubjectDao subjectDao;
+	private CourseTypeDao courseTypeDao;
 	private PeriodDao periodDao;
 	private UserDao userDao;
 	private User user;
@@ -33,12 +33,12 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		return facultyDao;
 	}
 	
-	public void setSubjectDao(SubjectDao subjectDao) {
-		this.subjectDao = subjectDao;
+	public void setCourseTypeDao(CourseTypeDao courseTypeDao) {
+		this.courseTypeDao = courseTypeDao;
 	}
 	
-	public SubjectDao getSubjectDao() {
-		return subjectDao;
+	public CourseTypeDao getCourseTypeDao() {
+		return courseTypeDao;
 	}
 	
 	public void setPeriodDao(PeriodDao periodDao) {
@@ -53,8 +53,8 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		assertNotNull(facultyDao);
 	}
 	
-	public void testSubjectDaoInjection() {
-		assertNotNull(subjectDao);
+	public void testCourseTypeDaoInjection() {
+		assertNotNull(courseTypeDao);
 	}
 	
 	public void testPeriodDaoInjection() {
@@ -68,11 +68,11 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		facultyDao.create(faculty);
 		assertNotNull(faculty);
 		
-		// create subject
-		Subject subject = createSubject(faculty);
-		subject.setFaculty(faculty);
-		subjectDao.create(subject);
-		assertNotNull(subjectDao);
+		// create courseType
+		CourseType courseType = createCourseType(faculty);
+		courseType.setFaculty(faculty);
+		courseTypeDao.create(courseType);
+		assertNotNull(courseTypeDao);
 		
 		//create period
 		Period period = createPeriod();
@@ -83,7 +83,7 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		// create first course
 		Course course = new CourseImpl();
 		course.setFaculty(faculty);
-		course.setSubject(subject);
+		course.setCourseType(courseType);
 		course.setPeriod(period);
 		course.setShortcut(shortcut);
 		assertNull(course.getId());
@@ -95,7 +95,7 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		// create secord course
 		Course course2 = new CourseImpl();
 		course2.setFaculty(faculty);
-		course2.setSubject(subject);
+		course2.setCourseType(courseType);
 		course2.setPeriod(period);
 		course2.setShortcut(shortcut);
 		assertNull(course2.getId());
@@ -116,11 +116,11 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		facultyDao.create(faculty);
 		assertNotNull(faculty);
 		
-		// create subject
-		Subject subject = createSubject(faculty);
-		subject.setFaculty(faculty);
-		subjectDao.create(subject);
-		assertNotNull(subjectDao);
+		// create courseType
+		CourseType courseType = createCourseType(faculty);
+		courseType.setFaculty(faculty);
+		courseTypeDao.create(courseType);
+		assertNotNull(courseTypeDao);
 		
 		//create period
 		Period period = createPeriod();
@@ -131,7 +131,7 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		
 		Course course = new CourseImpl();
 		course.setFaculty(faculty);
-		course.setSubject(subject);
+		course.setCourseType(courseType);
 		course.setPeriod(period);
 		course.setShortcut("shortcut");
 
@@ -146,12 +146,12 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		return period;
 	}
 
-	private Subject createSubject(Faculty faculty) {
-		Subject subject = Subject.Factory.newInstance();
-		subject.setName("name");
-		subject.setShortcut(testUtility.unique("shortcut"));
-		subject.setFaculty(faculty);
-		return subject;
+	private CourseType createCourseType(Faculty faculty) {
+		CourseType courseType = CourseType.Factory.newInstance();
+		courseType.setName("name");
+		courseType.setShortcut(testUtility.unique("shortcut"));
+		courseType.setFaculty(faculty);
+		return courseType;
 	}
 
 	private Faculty createFaculty() {

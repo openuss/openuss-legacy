@@ -16,7 +16,7 @@ import org.openuss.desktop.Desktop;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.Faculty;
 import org.openuss.lecture.Period;
-import org.openuss.lecture.Subject;
+import org.openuss.lecture.CourseType;
 import org.openuss.migration.legacy.dao.LegacyDao;
 import org.openuss.migration.legacy.domain.Assistant2;
 import org.openuss.migration.legacy.domain.Assistantenrollment2;
@@ -48,7 +48,7 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 	private Map<String, Desktop> desktops = new HashMap<String, Desktop>();
 	private Map<String, Faculty> faculties = new HashMap<String, Faculty>();
 	private Map<String, Course> courses = new HashMap<String, Course>();
-	private Map<String, Subject> subjects = new HashMap<String, Subject>();
+	private Map<String, CourseType> courseTypes = new HashMap<String, CourseType>();
 	private Map<Faculty, ObjectIdentity> facultyObjIds = new HashMap<Faculty, ObjectIdentity>();
 	
 	/**
@@ -394,9 +394,9 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 		faculty.setOwnername(faculty2.getOwner());
 		faculty.setEnabled(toBoolean(faculty2.getAactive()));
 
-		Map<String, Subject> subjects = transformFacultySubjects(faculty2, faculty);
+		Map<String, CourseType> courseTypes = transformFacultySubjects(faculty2, faculty);
 		
-		transformFacultySemesters(faculty2, faculty, subjects);
+		transformFacultySemesters(faculty2, faculty, courseTypes);
 		
 		return faculty;
 	}
@@ -407,25 +407,25 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 	 * @param faculty
 	 * @return Map<old uid, Subject> 
 	 */
-	private Map<String, Subject> transformFacultySubjects(Faculty2 faculty2, Faculty faculty) {
+	private Map<String, CourseType> transformFacultySubjects(Faculty2 faculty2, Faculty faculty) {
 		// migrating subjects
 		Collection<Subject2> subjects2 = faculty2.getSubjects();
 		for (Subject2 subject2 : subjects2) {
-			Subject subject = subject2ToSubject(subject2);
-			subjects.put(subject2.getId(), subject);
-			faculty.add(subject);
-			subject.setFaculty(faculty);
+			CourseType courseType = subject2ToCourseType(subject2);
+			courseTypes.put(subject2.getId(), courseType);
+			faculty.add(courseType);
+			courseType.setFaculty(faculty);
 		}
-		return subjects;
+		return courseTypes;
 	}
 
 	/**
 	 * 
 	 * @param faculty2
 	 * @param faculty
-	 * @param subjects
+	 * @param courseTypes
 	 */
-	private void transformFacultySemesters(Faculty2 faculty2, Faculty faculty, Map<String, Subject> subjects) {
+	private void transformFacultySemesters(Faculty2 faculty2, Faculty faculty, Map<String, CourseType> subjects) {
 		// migrating semesters
 		Collection<Semester2> semesters2 = faculty2.getSemesters();
 		for (Semester2 semester2 : semesters2) {
@@ -445,7 +445,7 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 	 * @param semester
 	 * @return object of period
 	 */
-	private Period semester2ToPeriod(Semester2 semester, Map<String, Subject> subjects) {
+	private Period semester2ToPeriod(Semester2 semester, Map<String, CourseType> subjects) {
 		Period period = Period.Factory.newInstance();
 		period.setName(semester.getName());
 		period.setDescription(semester.getRemark());
@@ -456,9 +456,9 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 			course.setPeriod(period);
 			period.add(course);
 			courses.put(enrollment2.getId(), course);
-			Subject subject = subjects.get(enrollment2.getSubject().getId());
+			CourseType subject = subjects.get(enrollment2.getSubject().getId());
 			subject.add(course);
-			course.setSubject(subject);
+			course.setCourseType(subject);
 		}
 		
 		return period;
@@ -469,13 +469,13 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 	 * @param subject2
 	 * @return object of subject
 	 */
-	private Subject subject2ToSubject(Subject2 subject2) {
-		Subject subject = Subject.Factory.newInstance();
-		subject.setName(subject2.getName());
-		subject.setShortcut(subject2.getId());
-		subject.setDescription(subject2.getRemark());
+	private CourseType subject2ToCourseType(Subject2 subject2) {
+		CourseType courseType = CourseType.Factory.newInstance();
+		courseType.setName(subject2.getName());
+		courseType.setShortcut(subject2.getId());
+		courseType.setDescription(subject2.getRemark());
 
-		return subject;
+		return courseType;
 	}
 	
 	private Course enrollment2ToCourse(Enrollment2 enrollment2) {

@@ -15,7 +15,7 @@ public class MessageDaoTest extends MessageDaoTestBase {
 	public void testMessageDaoCreate() {
 //		Message message = new MessageImpl();
 //		message.setSenderName(" ");
-//		message.setSubject(" ");
+//		message.setCourseType(" ");
 //		assertNull(message.getId());
 //		messageDao.create(message);
 //		assertNotNull(message.getId());

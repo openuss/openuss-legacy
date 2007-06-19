@@ -31,12 +31,12 @@ public class CourseImpl extends CourseBase implements Course, Lifecycle {
 	private void generateShortcut() {
 		logger.debug("auto-generate shortcut for course");
 		// FIXME make this method robust against unique key violations
-		String subjectShortcut = getSubject().getShortcut();
+		String courseTypeShortcut = getCourseType().getShortcut();
 		String id = String.valueOf(this.getId());
-		int index = subjectShortcut.length();
+		int index = courseTypeShortcut.length();
 		if (index + id.length() >= 30)
 			index -= id.length();
-		String shortcut = subjectShortcut.substring(0, index) + id;
+		String shortcut = courseTypeShortcut.substring(0, index) + id;
 		this.setShortcut(shortcut);
 
 	}
@@ -48,7 +48,7 @@ public class CourseImpl extends CourseBase implements Course, Lifecycle {
 
 	@Override
 	public String getName() {
-		return this.getSubject().getName();
+		return this.getCourseType().getName();
 	}
 
 	public boolean onDelete(Session session) throws CallbackException {

@@ -5,7 +5,7 @@
  */
 package org.openuss.desktop;
 
-import org.openuss.lecture.Subject;
+import org.openuss.lecture.CourseType;
 
 /**
  * @see org.openuss.desktop.Desktop
@@ -45,14 +45,14 @@ public class DesktopImpl extends org.openuss.desktop.DesktopBase implements org.
 	}
 
 	@Override
-	public void linkSubject(Subject subject) {
-		getSubjects().add(subject);
+	public void linkCourseType(CourseType courseType) {
+		getCourseTypes().add(courseType);
 		
 	}
 
 	@Override
-	public void unlinkSubject(Subject subject) {
-		getSubjects().remove(subject);
+	public void unlinkCourseType(CourseType courseType) {
+		getCourseTypes().remove(courseType);
 	}
 
 }

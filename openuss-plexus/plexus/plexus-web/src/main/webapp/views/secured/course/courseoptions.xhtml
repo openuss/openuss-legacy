@@ -29,7 +29,7 @@
  		 
   		<ui:define name="content">
 			<h:form id="courseOptionForm">
-	  			<o:block label="#{msg.course_options_headline} - #{sessionScope.course.subject.name} - #{sessionScope.course.period.name}" styleClass="form_box">
+	  			<o:block label="#{msg.course_options_headline} - #{sessionScope.course.courseType.name} - #{sessionScope.course.period.name}" styleClass="form_box">
 					<o:input entity="course" property="shortcut" maxlength="30" required="true">
 				 		<f:validator validatorId="courseShortcutValidator"/>
 					</o:input>

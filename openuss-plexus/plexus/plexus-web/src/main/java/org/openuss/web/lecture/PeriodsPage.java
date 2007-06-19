@@ -20,7 +20,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.Period;
-import org.openuss.lecture.Subject;
+import org.openuss.lecture.CourseType;
 import org.openuss.web.Constants;
 
 /**
@@ -38,7 +38,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	
 	private CourseDataModel courseData = new CourseDataModel();
 	
-	private Long subjectId;
+	private Long courseTypeId;
 
 	@Property(value = "#{sessionScope.period}")
 	private Period period;
@@ -64,9 +64,9 @@ public class PeriodsPage extends AbstractLecturePage {
 		
 		setSessionBean(Constants.PERIOD, period);
 		
-		// check if subject should be removed TODO Why?
+		// check if courseType should be removed TODO Why?
 		if (period == null) {
-			removeSessionBean(Constants.SUBJECT);
+			removeSessionBean(Constants.COURSE_TYPE);
 		}
 	}
 
@@ -180,21 +180,21 @@ public class PeriodsPage extends AbstractLecturePage {
 	}
 
 	/**
-	 * List of Subjects of the current faculty
+	 * List of CourseTypes of the current faculty
 	 * 
-	 * @return SelectItem List of Subjects
+	 * @return SelectItem List of CourseTypes
 	 */
-	public List<SelectItem> getSubjectSelectItems() {
+	public List<SelectItem> getCourseTypeSelectItems() {
 		if (logger.isDebugEnabled()) {
 			logger.debug("select period of line " + periodData.getRowIndex());
 		}
 
 		List<SelectItem> items = new ArrayList();
-		for (Subject subject : faculty.getSubjects()) {
+		for (CourseType courseType : faculty.getCourseTypes()) {
 			final SelectItem item = new SelectItem();
-			item.setValue(subject.getId());
-			item.setLabel(subject.getName() + "(" + subject.getShortcut() + ")");
-			item.setDescription(subject.getDescription());
+			item.setValue(courseType.getId());
+			item.setLabel(courseType.getName() + "(" + courseType.getShortcut() + ")");
+			item.setDescription(courseType.getDescription());
 			items.add(item);
 		}
 		return items;
@@ -222,9 +222,9 @@ public class PeriodsPage extends AbstractLecturePage {
 	 * @return outcome
 	 */
 	public String addCourse() {
-		Subject subject = Subject.Factory.newInstance();
-		subject.setId(subjectId);
-		lectureService.createCourse(subject.getId(), period.getId());
+		CourseType courseType = CourseType.Factory.newInstance();
+		courseType.setId(courseTypeId);
+		lectureService.createCourse(courseType.getId(), period.getId());
 		return Constants.SUCCESS;
 	}
 	
@@ -326,12 +326,12 @@ public class PeriodsPage extends AbstractLecturePage {
 		this.courseData = courseData;
 	}
 
-	public Long getSubjectId() {
-		return subjectId;
+	public Long getCourseTypeId() {
+		return courseTypeId;
 	}
 	
-	public void setSubjectId(Long subjectID) {
-		this.subjectId = subjectID;
+	public void setCourseTypeId(Long courseTypeID) {
+		this.courseTypeId = courseTypeID;
 	}
 	
 	public Period getPeriod() {

@@ -13,18 +13,18 @@ import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
 /**
- * Removing subject from faculty
+ * Removing courseType from faculty
  * 
  * @author Ingo Dueppe
  */
-@Bean(name = "views$secured$lecture$subjectremove", scope = Scope.REQUEST)
+@Bean(name = "views$secured$lecture$coursetyperemove", scope = Scope.REQUEST)
 @View
-public class SubjectRemovePage extends AbstractLecturePage {
+public class CourseTypeRemovePage extends AbstractLecturePage {
 
 	@Preprocess
 	public void preprocess() throws Exception {
 		super.preprocess();
-		reloadSubject();
+		reloadCourseType();
 	}
 
 
@@ -32,35 +32,35 @@ public class SubjectRemovePage extends AbstractLecturePage {
 	@Override
 	public void prerender() throws LectureException {
 		super.prerender();
-		reloadSubject();
+		reloadCourseType();
 	}
 
-	private void reloadSubject() throws LectureException {
-		subject = lectureService.getSubject(subject.getId());
-		setSessionBean(Constants.SUBJECT, subject);
+	private void reloadCourseType() throws LectureException {
+		courseType = lectureService.getCourseType(courseType.getId());
+		setSessionBean(Constants.COURSE_TYPE, courseType);
 	}
 
 	/**
-	 * Remove the subject
+	 * Remove the courseType
 	 * 
 	 * @return outcome
 	 * @throws LectureException 
 	 */
-	public String removeSubject() throws LectureException {
-		lectureService.removeSubject(subject.getId());
-		addMessage(i18n("faculty_message_remove_subject_succeed"));
-		removeSessionBean(Constants.SUBJECT);
-		return Constants.FACULTY_SUBJECTS_PAGE;
+	public String removeCourseType() throws LectureException {
+		lectureService.removeCourseType(courseType.getId());
+		addMessage(i18n("faculty_message_remove_coursetype_succeed"));
+		removeSessionBean(Constants.COURSE_TYPE);
+		return Constants.FACULTY_COURSE_TYPES_PAGE;
 	}
 
 	/**
-	 * Cancel removing subjects
+	 * Cancel removing courseTypes
 	 * 
 	 * @return outcome
 	 */
-	public String cancelSubject() {
-		removeSessionBean(Constants.SUBJECT);
-		return Constants.FACULTY_SUBJECTS_PAGE;
+	public String cancelCourseType() {
+		removeSessionBean(Constants.COURSE_TYPE);
+		return Constants.FACULTY_COURSE_TYPES_PAGE;
 	}
 
 	/**

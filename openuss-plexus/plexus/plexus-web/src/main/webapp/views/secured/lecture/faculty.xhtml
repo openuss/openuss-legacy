@@ -60,12 +60,12 @@
 				     	rows="10">       
 				       
 						<t:column>
-							<plexus:commandSortHeader columnName="subject.name">
+							<plexus:commandSortHeader columnName="courseType.name">
 								<h:outputText value="#{msg.course_colheader_name}"/>
 							</plexus:commandSortHeader>
-							<o:link value="/views/secured/course/main.faces" title="#{course.subject.description}">
+							<o:link value="/views/secured/course/main.faces" title="#{course.courseType.description}">
 								<f:param value="#{course.id}" name="course" />
-								<h:outputText value="#{course.subject.name} (#{course.shortcut})"/>
+								<h:outputText value="#{course.courseType.name} (#{course.shortcut})"/>
 							</o:link>
 						</t:column>
 						  

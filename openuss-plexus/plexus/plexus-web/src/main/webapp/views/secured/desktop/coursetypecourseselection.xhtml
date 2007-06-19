@@ -47,15 +47,15 @@
 		<h:form id="coursesForm">
 		  <plexus:dataTable 
 		    	id="courses" 
-		    	label="#{subject.name}"
-		    	value="views$secured$desktop$subjectcourseselection.coursesProvider" 
+		    	label="#{courseType.name}"
+		    	value="views$secured$desktop$coursetypecourseselection.coursesProvider" 
 		    	var="courseItem" 
 		    	rows="5">
 				<t:column>
-					<plexus:commandSortHeader columnName="subject.name">
+					<plexus:commandSortHeader columnName="courseType.name">
 						<h:outputText value="#{msg.desktop_courses_colheader_name}"/>
 					</plexus:commandSortHeader>
-					<o:link value="/views/secured/course/main.faces" title="#{courseItem.subject.description}">
+					<o:link value="/views/secured/course/main.faces" title="#{courseItem.courseType.description}">
 						<f:param value="#{courseItem.id}" name="course" />
 						<h:outputText value="#{courseItem.period.name} (#{courseItem.shortcut})"/>
 					</o:link>

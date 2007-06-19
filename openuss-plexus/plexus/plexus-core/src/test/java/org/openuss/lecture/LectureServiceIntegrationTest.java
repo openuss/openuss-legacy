@@ -34,21 +34,21 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		assertNotNull(authorityDao);
 	}
 
-	public void testAddSubjectToFaculty() throws LectureException{
-		logger.debug("----> add subject <---- ");
+	public void testAddCourseTypeToFaculty() throws LectureException{
+		logger.debug("----> add courseType <---- ");
 		user = testUtility.createSecureContext();
 		Faculty faculty = createFaculty();
 		lectureService.createFaculty(faculty);
 
 		commit();
 		
-		Subject subject = Subject.Factory.newInstance(unique("name"), unique("subject"));
-		faculty = lectureService.add(faculty.getId(), subject);
-		assertTrue(faculty.getSubjects().contains(subject));
+		CourseType courseType = CourseType.Factory.newInstance(unique("name"), unique("courseType"));
+		faculty = lectureService.add(faculty.getId(), courseType);
+		assertTrue(faculty.getCourseTypes().contains(courseType));
 		
 		commit();
 		
-		assertNotNull(subject.getId());
+		assertNotNull(courseType.getId());
 		
 		lectureService.removeFaculty(faculty.getId());
 		setComplete();

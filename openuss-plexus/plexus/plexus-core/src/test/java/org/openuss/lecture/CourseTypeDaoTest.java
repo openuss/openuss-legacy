@@ -9,17 +9,17 @@ import org.openuss.TestUtility;
 
 
 /**
- * JUnit Test for Spring Hibernate SubjectDao class.
- * @see org.openuss.lecture.SubjectDao
+ * JUnit Test for Spring Hibernate CourseTypeDao class.
+ * @see org.openuss.lecture.CourseTypeDao
  */
-public class SubjectDaoTest extends SubjectDaoTestBase {
+public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 	
 	private TestUtility testUtility;
 	private Faculty faculty;
 	
 	private FacultyDao facultyDao;
 	
-	public SubjectDaoTest () {
+	public CourseTypeDaoTest () {
 		setDefaultRollback(false);
 	}
 	
@@ -34,32 +34,32 @@ public class SubjectDaoTest extends SubjectDaoTestBase {
 		testUtility.removePersistFacultyAndDefaultUser();
 	}
 	
-	public void testSubjectDao() {
-		// create a subject
-		Subject subject = new SubjectImpl();
-		subject.setName("subjectname"+System.currentTimeMillis());
-		subject.setShortcut("shortcut"+System.currentTimeMillis());
+	public void testCourseTypeDao() {
+		// create a courseType
+		CourseType courseType = new CourseTypeImpl();
+		courseType.setName("courseTypename"+System.currentTimeMillis());
+		courseType.setShortcut("shortcut"+System.currentTimeMillis());
 		
-		// associate subject with faculty
-		faculty.add(subject);
-		subject.setFaculty(faculty);
+		// associate courseType with faculty
+		faculty.add(courseType);
+		courseType.setFaculty(faculty);
 		
 		// persist
-		assertNull(subject.getId());
+		assertNull(courseType.getId());
 		facultyDao.update(faculty);
-		assertNotNull(subject.getId());
+		assertNotNull(courseType.getId());
 		commit();
 		
 		// load 
-		Subject s = subjectDao.load(subject.getId());
-		assertEquals(subject.getId(),s.getId());
+		CourseType s = courseTypeDao.load(courseType.getId());
+		assertEquals(courseType.getId(),s.getId());
 		
 		// update
 		s.setDescription("description");
-		subjectDao.update(s);
+		courseTypeDao.update(s);
 		commit();
 
-		// remove subject from faculty
+		// remove courseType from faculty
 		faculty.remove(s);
 		facultyDao.update(faculty);
 		commit();

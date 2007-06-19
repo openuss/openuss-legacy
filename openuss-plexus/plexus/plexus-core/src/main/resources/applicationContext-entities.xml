@@ -19,7 +19,7 @@
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
 
 	<bean id="faculty" class="org.openuss.lecture.FacultyImpl" scope="singleton"/>
-	<bean id="subject" class="org.openuss.lecture.SubjectImpl" scope="singleton"/>
+	<bean id="courseType" class="org.openuss.lecture.CourseTypeImpl" scope="singleton"/>
 	<bean id="period" class="org.openuss.lecture.PeriodImpl" scope="singleton"/>
 	<bean id="course" class="org.openuss.lecture.CourseImpl"  scope="singleton"/>
 

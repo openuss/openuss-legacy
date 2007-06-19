@@ -22,9 +22,9 @@
 								<h:outputText value="#{msg['faculty_command_news']}" ></h:outputText>
 							</t:commandNavigation2>
 						</s:acl>
-						<s:acl domainObject="#{faculty}" hasPermission="#{ACL.MANAGE_SUBJECTS}">
-							<t:commandNavigation2 action="faculty_subjects" activeOnViewIds="/views/secured/lecture/subjects.xhtml">
-								<h:outputText value="#{msg['faculty_command_subjects']}" ></h:outputText>
+						<s:acl domainObject="#{faculty}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}">
+							<t:commandNavigation2 action="faculty_coursetypes" activeOnViewIds="/views/secured/lecture/coursetypes.xhtml">
+								<h:outputText value="#{msg['faculty_command_coursetypes']}" ></h:outputText>
 							</t:commandNavigation2>
 						</s:acl>
 						<s:acl domainObject="#{faculty}" hasPermission="#{ACL.MANAGE_PERIODS}">

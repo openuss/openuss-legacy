@@ -8,7 +8,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.openuss.lecture.Faculty;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureService;
-import org.openuss.lecture.Subject;
+import org.openuss.lecture.CourseType;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -26,8 +26,8 @@ public abstract class AbstractLecturePage extends BasePage {
 	@Property(value = "#{lectureService}")
 	protected LectureService lectureService;
 
-	@Property(value = "#{sessionScope.subject}")
-	protected Subject subject;
+	@Property(value = "#{sessionScope.courseType}")
+	protected CourseType courseType;
 
 	/**
 	 * Refreshing faculty entity 
@@ -76,11 +76,11 @@ public abstract class AbstractLecturePage extends BasePage {
 		this.lectureService = lectureService;
 	}
 
-	public Subject getSubject() {
-		return subject;
+	public CourseType getCourseType() {
+		return courseType;
 	}
 
-	public void setSubject(Subject subject) {
-		this.subject = subject;
+	public void setCourseType(CourseType courseType) {
+		this.courseType = courseType;
 	}
 }

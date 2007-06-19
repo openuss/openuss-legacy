@@ -38,9 +38,9 @@ public interface LectureListener {
 	public void removingCourse(Course course) throws LectureException;
 	
 	/**
-	 * Fired if an subject is going to be removed
+	 * Fired if an courseType is going to be removed
 	 * @param course
 	 * @throws LectureException to cancel the transaction
 	 */
-	public void removingSubject(Subject course) throws LectureException; 
+	public void removingCourseType(CourseType course) throws LectureException; 
 }

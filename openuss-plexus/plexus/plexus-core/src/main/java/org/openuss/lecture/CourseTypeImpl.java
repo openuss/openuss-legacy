@@ -6,10 +6,10 @@
 package org.openuss.lecture;
 
 /**
- * @see org.openuss.lecture.Subject
+ * @see org.openuss.lecture.CourseType
  * @author Ingo Dueppe
  */
-public class SubjectImpl extends org.openuss.lecture.SubjectBase implements org.openuss.lecture.Subject {
+public class CourseTypeImpl extends org.openuss.lecture.CourseTypeBase implements org.openuss.lecture.CourseType {
 	/**
 	 * The serial version UID of this class. Needed for serialization.
 	 */

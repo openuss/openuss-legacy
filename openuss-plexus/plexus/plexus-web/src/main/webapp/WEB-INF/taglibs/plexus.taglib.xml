@@ -53,9 +53,9 @@
 	</tag>	
 	
 	<tag>
-        <tag-name>validateSubjectShortcut</tag-name>
+        <tag-name>validateCourseTypeShortcut</tag-name>
         <validator>
-            <validator-id>org.openuss.web.lecture.validators.SubjectShortcutValidator</validator-id>
+            <validator-id>org.openuss.web.lecture.validators.CourseTypeShortcutValidator</validator-id>
         </validator>
     </tag>
 </facelet-taglib>

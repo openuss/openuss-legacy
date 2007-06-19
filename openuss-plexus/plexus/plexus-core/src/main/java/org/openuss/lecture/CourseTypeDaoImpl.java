@@ -7,9 +7,9 @@ package org.openuss.lecture;
 
 
 /**
- * @see org.openuss.lecture.Subject
+ * @see org.openuss.lecture.CourseType
  * @author Ingo Dueppe
  */
-public class SubjectDaoImpl extends org.openuss.lecture.SubjectDaoBase {
+public class CourseTypeDaoImpl extends org.openuss.lecture.CourseTypeDaoBase {
 
 }

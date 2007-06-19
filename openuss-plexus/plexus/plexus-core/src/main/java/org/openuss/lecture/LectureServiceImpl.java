@@ -49,8 +49,8 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	@Override
-	protected Subject handleGetSubject(Long subjectId) throws Exception {
-		return getSubjectDao().load(subjectId);
+	protected CourseType handleGetCourseType(Long courseTypeId) throws Exception {
+		return getCourseTypeDao().load(courseTypeId);
 	}
 
 	@Override
@@ -80,24 +80,24 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	@Override
-	protected boolean handleIsNoneExistingSubjectShortcut(Subject self, String shortcut) throws Exception {
-		Subject found = getSubjectDao().findByShortcut(shortcut);
+	protected boolean handleIsNoneExistingCourseTypeShortcut(CourseType self, String shortcut) throws Exception {
+		CourseType found = getCourseTypeDao().findByShortcut(shortcut);
 		return isEqualOrNull(self, found);
 	}
 
 	@Override
-	protected boolean handleIsNoneExistingSubjectName(Subject self, String name) throws Exception {
-		Subject found = getSubjectDao().findByName(name);
+	protected boolean handleIsNoneExistingCourseTypeName(CourseType self, String name) throws Exception {
+		CourseType found = getCourseTypeDao().findByName(name);
 		return isEqualOrNull(self, found);
 	}
 
 	@Override
-	protected Faculty handleAdd(Long facultyId, Subject subject) throws Exception {
+	protected Faculty handleAdd(Long facultyId, CourseType courseType) throws Exception {
 		if (logger.isDebugEnabled())
-			logger.debug("Add Subject " + subject.getName() + " from faculty " + facultyId);
+			logger.debug("Add CourseType " + courseType.getName() + " from faculty " + facultyId);
 		Faculty faculty = getFaculty(facultyId);
-		faculty.add(subject);
-		subject.setFaculty(faculty);
+		faculty.add(courseType);
+		courseType.setFaculty(faculty);
 		persist(faculty);
 		return faculty;
 	}
@@ -177,17 +177,17 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("facultyname", faculty.getName()+"("+faculty.getShortcut()+")");
 		parameters.put("facultylink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"actions/public/lecture/facultyactivation.faces?code="+activationCode);
-		getMessageService().sendMessage(faculty.getShortcut(), "faculty.activation.subject", "facultyactivation", parameters, getSecurityService().getCurrentUser());
+		getMessageService().sendMessage(faculty.getShortcut(), "faculty.activation.courseType", "facultyactivation", parameters, getSecurityService().getCurrentUser());
 		
 	}
 
 	
 	@Override
-	protected void handlePersist(Subject subject) throws Exception {
-		if (subject.getId() == null) {
-			getSubjectDao().create(subject);
+	protected void handlePersist(CourseType courseType) throws Exception {
+		if (courseType.getId() == null) {
+			getCourseTypeDao().create(courseType);
 		} else {
-			getSubjectDao().update(subject);
+			getCourseTypeDao().update(courseType);
 		}
 	}
 
@@ -233,8 +233,8 @@ public class LectureServiceImpl extends LectureServiceBase{
 			fireRemovingCourse(course);
 		}
 
-		for (Subject subject : faculty.getSubjects()) {
-			fireRemovingSubject(subject);
+		for (CourseType courseType : faculty.getCourseTypes()) {
+			fireRemovingCourseType(courseType);
 		}
 
 		fireRemovingFaculty(faculty);
@@ -244,21 +244,21 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	@Override
-	protected void handleRemoveSubject(Long subjectId) throws Exception {
+	protected void handleRemoveCourseType(Long courseTypeId) throws Exception {
 		if (logger.isDebugEnabled())
-			logger.debug("Remove Subject " + subjectId);
+			logger.debug("Remove CourseType " + courseTypeId);
 		// refresh faculty
-		Subject subject = getSubject(subjectId);
+		CourseType courseType = getCourseType(courseTypeId);
 
 		// fire course delete
-		for (Course course : subject.getCourses()) {
+		for (Course course : courseType.getCourses()) {
 			fireRemovingCourse(course);
 		}
-		fireRemovingSubject(subject);
+		fireRemovingCourseType(courseType);
 
-		getCourseDao().remove(subject.getCourses());
+		getCourseDao().remove(courseType.getCourses());
 
-		getSubjectDao().remove(subject);
+		getCourseTypeDao().remove(courseType);
 	}
 
 	@Override
@@ -305,9 +305,9 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Period period = course.getPeriod();
 		period.remove(course);
 		persist(period);
-		Subject subject = course.getSubject();
-		subject.remove(course);
-		persist(subject);
+		CourseType courseType = course.getCourseType();
+		courseType.remove(course);
+		persist(courseType);
 		faculty.remove(course);
 
 		persist(faculty);
@@ -315,27 +315,27 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	@Override
-	protected Course handleCreateCourse(Long subjectId, Long periodId) throws Exception {
+	protected Course handleCreateCourse(Long courseTypeId, Long periodId) throws Exception {
 		// refresh instances
-		Subject subject = getSubject(subjectId);
+		CourseType courseType = getCourseType(courseTypeId);
 		Period period = getPeriod(periodId);
 
-		if (!ObjectUtils.equals(subject.getFaculty(), period.getFaculty()))
-			throw new LectureServiceException("Subject and period must be associated to the same faculty!");
+		if (!ObjectUtils.equals(courseType.getFaculty(), period.getFaculty()))
+			throw new LectureServiceException("CourseType and period must be associated to the same faculty!");
 
-		Faculty faculty = subject.getFaculty();
+		Faculty faculty = courseType.getFaculty();
 
 		Course course = Course.Factory.newInstance();
-		subject.add(course);
+		courseType.add(course);
 		period.add(course);
 		faculty.add(course);
 
 		course.setFaculty(faculty);
-		course.setSubject(subject);
+		course.setCourseType(courseType);
 		course.setPeriod(period);
 
 		persist(faculty);
-		persist(subject);
+		persist(courseType);
 		persist(period);
 		storeCourse(course);
 
@@ -398,7 +398,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("facultyname", faculty.getName()+"("+faculty.getShortcut()+")");
 		parameters.put("facultyapplicantlink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/auth/aspirants.faces?faculty="+faculty.getId());
-		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.subject", "facultyapplication", parameters, getFacultyAdmins(faculty));
+		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.courseType", "facultyapplication", parameters, getFacultyAdmins(faculty));
 	}
 
 	private List<User> getFacultyAdmins(Faculty faculty){
@@ -458,7 +458,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("facultyname", faculty.getName()+"("+faculty.getShortcut()+")");
-		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.subject", "facultyapplicationreject", parameters, user);
+		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.courseType", "facultyapplicationreject", parameters, user);
 	}
 
 	/**
@@ -517,7 +517,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("facultyname", faculty.getName()+"("+faculty.getShortcut()+")");
 		parameters.put("facultylink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/faculty.faces?faculty="+faculty.getId());
-		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.subject", "facultyapplicationapply", parameters, user);
+		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.courseType", "facultyapplicationapply", parameters, user);
 	}
 
 	@Override
@@ -546,11 +546,11 @@ public class LectureServiceImpl extends LectureServiceBase{
 		}
 	}
 
-	private void fireRemovingSubject(Subject subject) throws LectureException {
+	private void fireRemovingCourseType(CourseType courseType) throws LectureException {
 		if (listeners != null) {
-			logger.debug("fire removing subject event");
+			logger.debug("fire removing courseType event");
 			for (LectureListener listener : listeners) {
-				listener.removingSubject(subject);
+				listener.removingCourseType(courseType);
 			}
 		}
 	}

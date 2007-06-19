@@ -29,12 +29,12 @@ public class LectureFactory {
 		return period;
 	}
 	
-	public static Subject createSubject() {
-		Subject subject = Subject.Factory.newInstance();
-		subject.setName(unique("test-subject"));
-		subject.setShortcut(unique("test-shortcut"));
-		subject.setDescription("description");
-		return subject;
+	public static CourseType createCourseType() {
+		CourseType courseType = CourseType.Factory.newInstance();
+		courseType.setName(unique("test-courseType"));
+		courseType.setShortcut(unique("test-shortcut"));
+		courseType.setDescription("description");
+		return courseType;
 	}
 	
 	public static Course createCourse() {

@@ -61,11 +61,11 @@
 	</converter>
 
 	<validator>
-		<validator-id>org.openuss.web.lecture.validators.SubjectShortcutValidator</validator-id>
-		<validator-class>org.openuss.web.lecture.validators.SubjectShortcutValidator</validator-class>
+		<validator-id>org.openuss.web.lecture.validators.CourseTypeShortcutValidator</validator-id>
+		<validator-class>org.openuss.web.lecture.validators.CourseTypeShortcutValidator</validator-class>
 		<property>
-			<property-name>subject</property-name>
-			<property-class>org.openuss.lecture.Subject</property-class>
+			<property-name>courseType</property-name>
+			<property-class>org.openuss.lecture.CourseType</property-class>
 		</property>
 	</validator>
 
