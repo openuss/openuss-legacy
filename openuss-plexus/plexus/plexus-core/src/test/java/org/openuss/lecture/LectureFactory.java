@@ -37,11 +37,11 @@ public class LectureFactory {
 		return subject;
 	}
 	
-	public static Enrollment createEnrollment() {
-		Enrollment enrollment = Enrollment.Factory.newInstance();
-		enrollment.setShortcut(unique("enrollment-shortcut"));
-		enrollment.setAccessType(AccessType.CLOSED);
-		return enrollment;
+	public static Course createCourse() {
+		Course course = Course.Factory.newInstance();
+		course.setShortcut(unique("course-shortcut"));
+		course.setAccessType(AccessType.CLOSED);
+		return course;
 	}
 	
 	

@@ -133,7 +133,7 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		newsItemDao.create(itemTwo);
 		
 		NewsItem itemThree = createNewsItem();
-		itemThree.setCategory(NewsCategory.ENROLLMENT);
+		itemThree.setCategory(NewsCategory.COURSE);
 		newsItemDao.create(itemThree);
 
 		NewsItem itemFour = createNewsItem();
@@ -158,7 +158,7 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		assertEquals(1, newsItemDao.countByCategory(NewsCategory.GLOBAL));
 		assertEquals(2, newsItemDao.countByCategory(NewsCategory.DESKTOP));
 		assertEquals(1, newsItemDao.countByCategory(NewsCategory.FACULTY));
-		assertEquals(1, newsItemDao.countByCategory(NewsCategory.ENROLLMENT));
+		assertEquals(1, newsItemDao.countByCategory(NewsCategory.COURSE));
 	}
 
 	private void removeAllNewsItem() {
