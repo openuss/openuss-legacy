@@ -38,7 +38,7 @@ function openChat(id) {
     if (openWindow) {
         x = (screen.availWidth-WIDTH-10)/2;
         y = (screen.availHeight-HEIGHT-30)/2;
-        obj[window] = window.open('chat.faces?enrollment=' + id, name, "menubar=no,status=no,scrollbars=no,dependent=no,resizable=no,width=" + WIDTH + ",height=" + HEIGHT + ",left=" + x + ",top=" + y);
+        obj[window] = window.open('chat.faces?course=' + id, name, "menubar=no,status=no,scrollbars=no,dependent=no,resizable=no,width=" + WIDTH + ",height=" + HEIGHT + ",left=" + x + ",top=" + y);
 	    obj[window].innerWidth = WIDTH;
     	obj[window].innerHeight = HEIGHT;
 	}
