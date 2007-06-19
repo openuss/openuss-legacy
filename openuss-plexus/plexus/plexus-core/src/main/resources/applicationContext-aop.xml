@@ -22,23 +22,23 @@
 				pointcut="execution(* org..LectureServiceBase.removeFaculty(java.lang.Long)) and args(facultyId)"
 				arg-names="facultyId"/>
 		</aop:aspect>
-		<aop:aspect id="enrollmentIndexAspect" ref="enrollmentIndexAspectBean">
+		<aop:aspect id="courseIndexAspect" ref="courseIndexAspectBean">
 			<aop:after-returning
-				method="updateEnrollmentIndexOnPeriodUpdate" 
+				method="updateCourseIndexOnPeriodUpdate" 
 				pointcut="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Period)) and args(period)"
 				arg-names="period"/>
 			<aop:after-returning
-				method="createEnrollmentIndex" 
-				pointcut="execution(* org..LectureServiceBase.createEnrollment(org.openuss.lecture.Faculty)) and args(enrollment)"
-				arg-names="enrollment"/>
+				method="createCourseIndex" 
+				pointcut="execution(* org..LectureServiceBase.createCourse(org.openuss.lecture.Faculty)) and args(course)"
+				arg-names="course"/>
 			<aop:after-returning
-				method="updateEnrollmentIndex"
-				pointcut="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Enrollment)) and args(enrollment)"
-				arg-names="enrollment"/>
+				method="updateCourseIndex"
+				pointcut="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Course)) and args(course)"
+				arg-names="course"/>
 			<aop:after-returning
-				method="deleteEnrollmentIndex"
-				pointcut="execution(* org..LectureServiceBase.removeEnrollment(java.lang.Long)) and args(enrollmentId)"
-				arg-names="enrollmentId"/>
+				method="deleteCourseIndex"
+				pointcut="execution(* org..LectureServiceBase.removeCourse(java.lang.Long)) and args(courseId)"
+				arg-names="courseId"/>
 		</aop:aspect>
 <!--
 <aop:aspect id="mailingStatusAspect" ref="mailingStatusAspectBean">
@@ -51,7 +51,7 @@
 		<property name="mailDao" ref="mailDao"/>
 	</bean>
 	
-	<bean id="enrollmentIndexAspectBean" class="org.openuss.lecture.EnrollmentIndexingAspect">
+	<bean id="courseIndexAspectBean" class="org.openuss.lecture.CourseIndexingAspect">
 		<property name="lectureService" ref="lectureService"/>
 		<property name="indexerService" ref="indexerService"/>
 	</bean>

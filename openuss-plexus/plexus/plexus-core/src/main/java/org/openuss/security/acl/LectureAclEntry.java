@@ -25,16 +25,16 @@ import org.acegisecurity.acl.basic.AbstractBasicAclEntry;
  * <li><b>MANAGE_PERIODS</b> - may create, read, update, and delete periods of
  * the faculty</li>
  * <li><b>MANAGE_ENROLLEMNTS</b> - may create, read, update, and delete
- * enrollments of the faculty</li>
+ * courses of the faculty</li>
  * <li><b>MANAGE_NEWS</b> - may create, read, update, and delete news of the
  * faculty</li>
  * </ul>
  * </p>
  * <p>
- * Additional permissions of enrollments:
+ * Additional permissions of courses:
  * <ul>
- * <li><b>PARTICIPATE</b> - may participate on enrollment</li>
- * <li><b>ASSIST</b> - may assist enrollment</li>
+ * <li><b>PARTICIPATE</b> - may participate on course</li>
+ * <li><b>ASSIST</b> - may assist course</li>
  * </ul>
  * </p>
  * 
@@ -61,21 +61,21 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	// Additional permissions to faculties
 	public static final int MANAGE_SUBJECTS 	= 1 << 7;
 	public static final int MANAGE_PERIODS 		= 1 << 8;
-	public static final int MANAGE_ENROLLMENTS 	= 1 << 9;
+	public static final int MANAGE_CourseS 	= 1 << 9;
 	public static final int MANAGE_NEWS 		= 1 << 10;
 
-	// Additional permissions to enrollments
+	// Additional permissions to courses
 	public static final int PARTICIPATE 		= 1 << 11;
 	public static final int ASSIST 				= 1 << 12;
 
 	// Default combinations of base permissions
 	public static final int FACULTY_TUTOR = PARTICIPATE | ASSIST | READ;
-	public static final int FACULTY_ASSIST = CREATE | MANAGE_NEWS | MANAGE_SUBJECTS | MANAGE_PERIODS | MANAGE_ENROLLMENTS | FACULTY_TUTOR;
+	public static final int FACULTY_ASSIST = CREATE | MANAGE_NEWS | MANAGE_SUBJECTS | MANAGE_PERIODS | MANAGE_CourseS | FACULTY_TUTOR;
 	public static final int FACULTY_ADMINISTRATION = GRANT | UPDATE | DELETE | FACULTY_ASSIST;
 	public static final int FACULTY_OWN = DELETE | FACULTY_ADMINISTRATION;
 	
-	// Default combinations of base enrollment permissions
-	public static final int ENROLLMENT_PARTICIPANT = READ | PARTICIPATE;
+	// Default combinations of base course permissions
+	public static final int COURSE_PARTICIPANT = READ | PARTICIPATE;
 	
 	// Combinations of base permissions we permit
 	public static final int RU = READ | UPDATE;
@@ -111,7 +111,7 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 		sb.append("|");
 		sb.append(((mask & MANAGE_SUBJECTS) == MANAGE_SUBJECTS) ? "MS" : "--");
 		sb.append(((mask & MANAGE_PERIODS) == MANAGE_PERIODS) ? "MP" : "--");
-		sb.append(((mask & MANAGE_ENROLLMENTS) == MANAGE_ENROLLMENTS) ? "ME" : "--");
+		sb.append(((mask & MANAGE_CourseS) == MANAGE_CourseS) ? "ME" : "--");
 		sb.append(((mask & MANAGE_NEWS) == MANAGE_NEWS) ? "MN" : "--");
 		sb.append("|");
 		sb.append(((mask & PARTICIPATE) == PARTICIPATE) ? "P" : "-");
@@ -174,8 +174,8 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 		return GRANT;
 	}
 
-	public int getMANAGE_ENROLLMENTS() {
-		return MANAGE_ENROLLMENTS;
+	public int getMANAGE_CourseS() {
+		return MANAGE_CourseS;
 	}
 
 	public int getMANAGE_NEWS() {

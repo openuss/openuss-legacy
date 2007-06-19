@@ -31,17 +31,17 @@ public class DesktopImpl extends org.openuss.desktop.DesktopBase implements org.
 	}
 
 	/**
-	 * @see org.openuss.desktop.Desktop#linkEnrollment(org.openuss.lecture.Enrollment)
+	 * @see org.openuss.desktop.Desktop#linkCourse(org.openuss.lecture.Course)
 	 */
-	public void linkEnrollment(org.openuss.lecture.Enrollment enrollment) {
-		getEnrollments().add(enrollment);
+	public void linkCourse(org.openuss.lecture.Course course) {
+		getCourses().add(course);
 	}
 
 	/**
-	 * @see org.openuss.desktop.Desktop#unlinkEnrollment(org.openuss.lecture.Enrollment)
+	 * @see org.openuss.desktop.Desktop#unlinkCourse(org.openuss.lecture.Course)
 	 */
-	public void unlinkEnrollment(org.openuss.lecture.Enrollment enrollment) {
-		getEnrollments().remove(enrollment);
+	public void unlinkCourse(org.openuss.lecture.Course course) {
+		getCourses().remove(course);
 	}
 
 	@Override

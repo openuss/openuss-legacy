@@ -17,9 +17,9 @@ import org.openuss.lecture.Subject;
 public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 
 	@Override
-	public java.util.Collection findByEnrollment(final int transform, final org.openuss.lecture.Enrollment enrollment)
+	public java.util.Collection findByCourse(final int transform, final org.openuss.lecture.Course course)
     {
-        return this.findByEnrollment(transform, "select d from org.openuss.desktop.Desktop as d, org.openuss.lecture.Enrollment e where e=:enrollment and e in elements(d.enrollments)", enrollment);
+        return this.findByCourse(transform, "select d from org.openuss.desktop.Desktop as d, org.openuss.lecture.Course e where e=:course and e in elements(d.courses)", course);
     }
 
 	@Override

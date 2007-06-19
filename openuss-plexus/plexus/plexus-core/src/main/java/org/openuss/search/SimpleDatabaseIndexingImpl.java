@@ -57,10 +57,10 @@ public class SimpleDatabaseIndexingImpl implements InitializingBean, SimpleDatab
 			}
 		};
 		String sqlFaculty = "SELECT ID,'FACULTY' as DOMAINTYPE, NAME AS DOMAINNAME, SHORTCUT, OWNERNAME, POSTCODE, CITY, TELEPHONE, TELEFAX, DESCRIPTION, EMAIL FROM LECTURE_FACULTY";
-		String sqlEnrollment = "SELECT e.id, 'ENROLLMENT' as DOMAINTYPE, e.shortcut, e.description, s.name AS DOMAINNAME, s.description, p.name, p.description, f.name, f.ownername FROM LECTURE_ENROLLMENT e, LECTURE_SUBJECT s, lecture_period p, LECTURE_FACULTY f WHERE e.subject_fk = s.id AND e.period_fk = p.id AND e.faculty_fk = f.id;";
+		String sqlCourse = "SELECT e.id, 'Course' as DOMAINTYPE, e.shortcut, e.description, s.name AS DOMAINNAME, s.description, p.name, p.description, f.name, f.ownername FROM LECTURE_Course e, LECTURE_SUBJECT s, lecture_period p, LECTURE_FACULTY f WHERE e.subject_fk = s.id AND e.period_fk = p.id AND e.faculty_fk = f.id;";
 		
 		this.indexer.registerDocumentHandler(new SqlRequest(sqlFaculty), sqlDocumentHandler);
-		this.indexer.registerDocumentHandler(new SqlRequest(sqlEnrollment), sqlDocumentHandler);
+		this.indexer.registerDocumentHandler(new SqlRequest(sqlCourse), sqlDocumentHandler);
 	}
 
 	/**

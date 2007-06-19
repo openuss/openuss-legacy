@@ -49,7 +49,7 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 		getNewsItemDao().create(entity);
 		getSecurityService().createObjectIdentity(entity, item.getPublisherIdentifier());
 		
-		if (NewsCategory.ENROLLMENT != entity.getCategory()) {
+		if (NewsCategory.COURSE != entity.getCategory()) {
 			getSecurityService().setPermissions(Roles.ANONYMOUS, entity, LectureAclEntry.READ);
 			getSecurityService().setPermissions(Roles.USER, entity, LectureAclEntry.READ);
 		} 

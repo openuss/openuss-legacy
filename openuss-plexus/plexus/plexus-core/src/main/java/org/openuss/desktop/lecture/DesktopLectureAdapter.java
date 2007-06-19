@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopService;
-import org.openuss.lecture.Enrollment;
+import org.openuss.lecture.Course;
 import org.openuss.lecture.Faculty;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureListener;
@@ -26,14 +26,14 @@ public class DesktopLectureAdapter implements LectureListener{
 	
 	private LectureService lectureService;
 	
-	public void removingEnrollment(Enrollment enrollment) throws LectureException {
+	public void removingCourse(Course course) throws LectureException {
 		if (desktopService == null) {
 			throw new IllegalStateException("desktopService property must not be null!");
 		}
 		try {
-			desktopService.unlinkAllFromEnrollment(enrollment);
+			desktopService.unlinkAllFromCourse(course);
 		} catch (DesktopException e) {
-			throw new LectureException("Desktop Lecture Adapter couldn't unlink enrollment", e);
+			throw new LectureException("Desktop Lecture Adapter couldn't unlink course", e);
 		}
 	}
 
