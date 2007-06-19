@@ -31,16 +31,16 @@ public interface LectureListener {
 	
 	
 	/**
-	 * Fired if an enrollment is going to be removed.
-	 * @param enrollment
+	 * Fired if an course is going to be removed.
+	 * @param course
 	 * @throws LectureException to cancel the transaction
 	 */
-	public void removingEnrollment(Enrollment enrollment) throws LectureException;
+	public void removingCourse(Course course) throws LectureException;
 	
 	/**
 	 * Fired if an subject is going to be removed
-	 * @param enrollment
+	 * @param course
 	 * @throws LectureException to cancel the transaction
 	 */
-	public void removingSubject(Subject enrollment) throws LectureException; 
+	public void removingSubject(Subject course) throws LectureException; 
 }
