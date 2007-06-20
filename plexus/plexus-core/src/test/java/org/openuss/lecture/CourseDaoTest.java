@@ -19,18 +19,18 @@ public class CourseDaoTest extends CourseDaoTestBase {
 	
 	private TestUtility testUtility;
 
-	private FacultyDao facultyDao;
+	private InstituteDao instituteDao;
 	private CourseTypeDao courseTypeDao;
 	private PeriodDao periodDao;
 	private UserDao userDao;
 	private User user;
 	
-	public void setFacultyDao(FacultyDao facultyDao) {
-		this.facultyDao = facultyDao;
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
 	}
 	
-	public FacultyDao getFacultyDao() {
-		return facultyDao;
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
 	}
 	
 	public void setCourseTypeDao(CourseTypeDao courseTypeDao) {
@@ -49,8 +49,8 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		return periodDao;
 	}
 	
-	public void testFacultyDaoInjection() {
-		assertNotNull(facultyDao);
+	public void testInstituteDaoInjection() {
+		assertNotNull(instituteDao);
 	}
 	
 	public void testCourseTypeDaoInjection() {
@@ -63,26 +63,26 @@ public class CourseDaoTest extends CourseDaoTestBase {
 	
 	public void testCourseUniqueShortcut() {
 		String shortcut = testUtility.unique("shortcut");
-		// create faculty
-		Faculty faculty = createFaculty();
-		facultyDao.create(faculty);
-		assertNotNull(faculty);
+		// create institute
+		Institute institute = createInstitute();
+		instituteDao.create(institute);
+		assertNotNull(institute);
 		
 		// create courseType
-		CourseType courseType = createCourseType(faculty);
-		courseType.setFaculty(faculty);
+		CourseType courseType = createCourseType(institute);
+		courseType.setInstitute(institute);
 		courseTypeDao.create(courseType);
 		assertNotNull(courseTypeDao);
 		
 		//create period
 		Period period = createPeriod();
-		period.setFaculty(faculty);
+		period.setInstitute(institute);
 		periodDao.create(period);
 		assertNotNull(periodDao);
 		
 		// create first course
 		Course course = new CourseImpl();
-		course.setFaculty(faculty);
+		course.setInstitute(institute);
 		course.setCourseType(courseType);
 		course.setPeriod(period);
 		course.setShortcut(shortcut);
@@ -94,7 +94,7 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		
 		// create secord course
 		Course course2 = new CourseImpl();
-		course2.setFaculty(faculty);
+		course2.setInstitute(institute);
 		course2.setCourseType(courseType);
 		course2.setPeriod(period);
 		course2.setShortcut(shortcut);
@@ -111,26 +111,26 @@ public class CourseDaoTest extends CourseDaoTestBase {
 	}
 	
 	public void testCourseDaoCreate() {
-		// create faculty
-		Faculty faculty = createFaculty();
-		facultyDao.create(faculty);
-		assertNotNull(faculty);
+		// create institute
+		Institute institute = createInstitute();
+		instituteDao.create(institute);
+		assertNotNull(institute);
 		
 		// create courseType
-		CourseType courseType = createCourseType(faculty);
-		courseType.setFaculty(faculty);
+		CourseType courseType = createCourseType(institute);
+		courseType.setInstitute(institute);
 		courseTypeDao.create(courseType);
 		assertNotNull(courseTypeDao);
 		
 		//create period
 		Period period = createPeriod();
-		period.setFaculty(faculty);
+		period.setInstitute(institute);
 		assertNull(period.getId());
 		periodDao.create(period);
 		assertNotNull(period.getId());
 		
 		Course course = new CourseImpl();
-		course.setFaculty(faculty);
+		course.setInstitute(institute);
 		course.setCourseType(courseType);
 		course.setPeriod(period);
 		course.setShortcut("shortcut");
@@ -146,25 +146,25 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		return period;
 	}
 
-	private CourseType createCourseType(Faculty faculty) {
+	private CourseType createCourseType(Institute institute) {
 		CourseType courseType = CourseType.Factory.newInstance();
 		courseType.setName("name");
 		courseType.setShortcut(testUtility.unique("shortcut"));
-		courseType.setFaculty(faculty);
+		courseType.setInstitute(institute);
 		return courseType;
 	}
 
-	private Faculty createFaculty() {
+	private Institute createInstitute() {
 		user = testUtility.createDefaultUser();
 		userDao.create(user);
 				
-		Faculty faculty = Faculty.Factory.newInstance();
-		faculty.setName("CourseDaoTest");
-		faculty.setShortcut(testUtility.unique("shortcut"));
-		faculty.setOwnername("ownername");
-		faculty.setOwner(user);
-		faculty.setEmail("email@faculty");
-		return faculty;
+		Institute institute = Institute.Factory.newInstance();
+		institute.setName("CourseDaoTest");
+		institute.setShortcut(testUtility.unique("shortcut"));
+		institute.setOwnername("ownername");
+		institute.setOwner(user);
+		institute.setEmail("email@institute");
+		return institute;
 	}
 
 	public UserDao getUserDao() {

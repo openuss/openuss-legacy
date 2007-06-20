@@ -3,7 +3,7 @@ package org.openuss.lecture;
 import org.openuss.security.User;
 
 /**
- * Builds faculty, periods, courseType, and course structures.
+ * Builds institute, periods, courseType, and course structures.
  *  
  * @author Ingo Dueppe
  */
@@ -11,25 +11,25 @@ public class LectureBuilder {
 	
 	private User owner;
 	
-	private Faculty faculty;
+	private Institute institute;
 	
-	private FacultyDao facultyDao;
+	private InstituteDao instituteDao;
 	
 	private static int code = 0;
 	
-	public LectureBuilder createFaculty(User owner) {
-		faculty = Faculty.Factory.newInstance();
-		faculty.setName(unique());
-		faculty.setOwnername("faculty owner");
-		faculty.setShortcut(unique());
-		faculty.setEmail("email@email.com");
-		faculty.setAddress("Leonardo-Campus 3");
-		faculty.setPostcode("48149");
-		faculty.setCity("Münster");
-		faculty.setLocale("de");
-		faculty.setTheme("plexus");
-		faculty.setWebsite("www.openuss.org");
-		faculty.setOwner(owner);
+	public LectureBuilder createInstitute(User owner) {
+		institute = Institute.Factory.newInstance();
+		institute.setName(unique());
+		institute.setOwnername("institute owner");
+		institute.setShortcut(unique());
+		institute.setEmail("email@email.com");
+		institute.setAddress("Leonardo-Campus 3");
+		institute.setPostcode("48149");
+		institute.setCity("Münster");
+		institute.setLocale("de");
+		institute.setTheme("plexus");
+		institute.setWebsite("www.openuss.org");
+		institute.setOwner(owner);
 		return this;
 	}
 	
@@ -38,7 +38,7 @@ public class LectureBuilder {
 		courseType.setName(unique());
 		courseType.setShortcut(unique());
 		courseType.setDescription("description");
-		faculty.add(courseType);
+		institute.add(courseType);
 		return this;
 	}
 	
@@ -46,8 +46,8 @@ public class LectureBuilder {
 		Period period = Period.Factory.newInstance();
 		period.setName("test-period");
 		period.setDescription("description");
-		faculty.add(period);
-		period.setFaculty(faculty);
+		institute.add(period);
+		period.setInstitute(institute);
 		return this;
 	}
 	
@@ -56,17 +56,17 @@ public class LectureBuilder {
 	}
 	
 	public LectureBuilder addCourse(int indexCourseType, int indexPeriod ) {
-		CourseType courseType = faculty.getCourseTypes().get(indexCourseType);
-		Period period = faculty.getPeriods().get(indexPeriod);
-		addCourse(faculty, courseType, period);
+		CourseType courseType = institute.getCourseTypes().get(indexCourseType);
+		Period period = institute.getPeriods().get(indexPeriod);
+		addCourse(institute, courseType, period);
 		return this;
 	}
 	
 	public LectureBuilder persist() {
-		if (faculty.getId() == null) {
-			facultyDao.create(faculty);
+		if (institute.getId() == null) {
+			instituteDao.create(institute);
 		} else {
-			facultyDao.update(faculty);
+			instituteDao.update(institute);
 		}
 		return this;
 	}
@@ -76,12 +76,12 @@ public class LectureBuilder {
 	}
 	
 	public Course getCourse(int index) {
-		return faculty.getCourses().get(index);
+		return institute.getCourses().get(index);
 	}
 	
 	public LectureBuilder remove() {
-		if (faculty.getId() != null)
-			facultyDao.remove(faculty);
+		if (institute.getId() != null)
+			instituteDao.remove(institute);
 		return this;
 	}
 	
@@ -89,29 +89,29 @@ public class LectureBuilder {
 		return ""+(System.currentTimeMillis()+code++);
 	}
 	
-	public CourseType addCourseType(Faculty faculty) {
+	public CourseType addCourseType(Institute institute) {
 		CourseType courseType = LectureFactory.createCourseType();
-		courseType.setFaculty(faculty);
-		faculty.add(courseType);
+		courseType.setInstitute(institute);
+		institute.add(courseType);
 		return courseType;
 	}
 	
-	public Period addPeriod(Faculty faculty) {
+	public Period addPeriod(Institute institute) {
 		Period period = LectureFactory.createPeriod();
-		period.setFaculty(faculty);
-		faculty.add(period);
+		period.setInstitute(institute);
+		institute.add(period);
 		return period;
 	}
 	
-	public Course addCourse(Faculty faculty, CourseType courseType, Period period) {
+	public Course addCourse(Institute institute, CourseType courseType, Period period) {
 		Course course = LectureFactory.createCourse();
 		courseType.add(course);
 		course.setCourseType(courseType);
 		course.setShortcut(unique());
 		period.add(course);
 		course.setPeriod(period);
-		faculty.add(course);
-		course.setFaculty(faculty);
+		institute.add(course);
+		course.setInstitute(institute);
 		return course;
 	}
 	
@@ -123,19 +123,19 @@ public class LectureBuilder {
 		this.owner = owner;
 	}
 
-	public Faculty getFaculty() {
-		return faculty;
+	public Institute getInstitute() {
+		return institute;
 	}
 
-	public void setFaculty(Faculty faculty) {
-		this.faculty = faculty;
+	public void setInstitute(Institute institute) {
+		this.institute = institute;
 	}
 
-	public FacultyDao getFacultyDao() {
-		return facultyDao;
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
 	}
 
-	public void setFacultyDao(FacultyDao facultyDao) {
-		this.facultyDao = facultyDao;
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
 	}
 }

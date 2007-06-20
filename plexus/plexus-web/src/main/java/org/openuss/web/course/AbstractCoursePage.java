@@ -9,7 +9,7 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
-import org.openuss.lecture.Faculty;
+import org.openuss.lecture.Institute;
 import org.openuss.lecture.LectureService;
 import org.openuss.system.SystemProperties;
 import org.openuss.system.SystemService;
@@ -40,8 +40,8 @@ public class AbstractCoursePage extends BasePage {
 	@Property(value = "#{courseService}")
 	protected CourseService courseService;
 	
-	@Property(value = "#{faculty}")
-	protected Faculty faculty;
+	@Property(value = "#{institute}")
+	protected Institute institute;
 	
 	@Property(value = "#{breadCrumbs}")
 	protected List<BreadCrumb> breadCrumbs;
@@ -51,8 +51,8 @@ public class AbstractCoursePage extends BasePage {
 		if (course != null) {
 			course = courseService.getCourse(course);
 			courseInfo = courseService.getCourseInfo(course);
-			faculty = course.getFaculty();
-			setSessionBean("faculty", faculty);
+			institute = course.getInstitute();
+			setSessionBean("institute", institute);
 		}
 		if ((course == null)||(courseInfo == null)) {
 			addMessage(i18n("message_error_course_page"));
@@ -61,7 +61,7 @@ public class AbstractCoursePage extends BasePage {
 		} else {
 			setSessionBean(Constants.COURSE, course);
 			setSessionBean(Constants.COURSE_INFO, courseInfo);
-			setSessionBean(Constants.FACULTY, course.getFaculty());
+			setSessionBean(Constants.INSTITUTE, course.getInstitute());
 			generateBreadCrumbs();
 			setSessionBean(Constants.BREADCRUMBS, breadCrumbs);
 		} 
@@ -69,18 +69,18 @@ public class AbstractCoursePage extends BasePage {
 	
 	private void generateBreadCrumbs(){
 		breadCrumbs = new ArrayList<BreadCrumb>();
-		BreadCrumb facultyCrumb = new BreadCrumb();
-		//TODO set short faculty name + shortcut
-		facultyCrumb.setName(faculty.getName());
-		facultyCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.FACULTY_PAGE+"?faculty="+faculty.getId());
-		facultyCrumb.setHint(faculty.getName());
+		BreadCrumb instituteCrumb = new BreadCrumb();
+		//TODO set short institute name + shortcut
+		instituteCrumb.setName(institute.getName());
+		instituteCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.INSTITUTE_PAGE+"?institute="+institute.getId());
+		instituteCrumb.setHint(institute.getName());
 		
 		BreadCrumb courseCrumb = new BreadCrumb();
 		courseCrumb.setName(courseInfo.getName());
 		courseCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.COURSE_PAGE+"?course="+courseInfo.getId());
 		courseCrumb.setHint(course.getName());
 		
-		breadCrumbs.add(facultyCrumb);
+		breadCrumbs.add(instituteCrumb);
 		breadCrumbs.add(courseCrumb);
 	}
 	
@@ -116,12 +116,12 @@ public class AbstractCoursePage extends BasePage {
 		this.courseInfo = courseInfo;
 	}
 
-	public Faculty getFaculty() {
-		return faculty;
+	public Institute getInstitute() {
+		return institute;
 	}
 
-	public void setFaculty(Faculty faculty) {
-		this.faculty = faculty;
+	public void setInstitute(Institute institute) {
+		this.institute = institute;
 	}
 
 	public List<BreadCrumb> getBreadCrumbs() {

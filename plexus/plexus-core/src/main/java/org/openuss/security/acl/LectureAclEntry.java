@@ -18,16 +18,16 @@ import org.acegisecurity.acl.basic.AbstractBasicAclEntry;
  * </ul>
  * </p>
  * <p>
- * Additional permissions of faculties:
+ * Additional permissions of institutes:
  * <ul>
  * <li><b>MANAGE_COURSE_TYPES</b> - may create, read, update, and delete courseTypes
- * of the faculty</li>
+ * of the institute</li>
  * <li><b>MANAGE_PERIODS</b> - may create, read, update, and delete periods of
- * the faculty</li>
+ * the institute</li>
  * <li><b>MANAGE_ENROLLEMNTS</b> - may create, read, update, and delete
- * courses of the faculty</li>
+ * courses of the institute</li>
  * <li><b>MANAGE_NEWS</b> - may create, read, update, and delete news of the
- * faculty</li>
+ * institute</li>
  * </ul>
  * </p>
  * <p>
@@ -58,7 +58,7 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	public static final int UPDATE 				= 1 << 5;
 	public static final int DELETE 				= 1 << 6;
 
-	// Additional permissions to faculties
+	// Additional permissions to institutes
 	public static final int MANAGE_COURSE_TYPES 	= 1 << 7;
 	public static final int MANAGE_PERIODS 		= 1 << 8;
 	public static final int MANAGE_CourseS 	= 1 << 9;
@@ -69,10 +69,10 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	public static final int ASSIST 				= 1 << 12;
 
 	// Default combinations of base permissions
-	public static final int FACULTY_TUTOR = PARTICIPATE | ASSIST | READ;
-	public static final int FACULTY_ASSIST = CREATE | MANAGE_NEWS | MANAGE_COURSE_TYPES | MANAGE_PERIODS | MANAGE_CourseS | FACULTY_TUTOR;
-	public static final int FACULTY_ADMINISTRATION = GRANT | UPDATE | DELETE | FACULTY_ASSIST;
-	public static final int FACULTY_OWN = DELETE | FACULTY_ADMINISTRATION;
+	public static final int INSTITUTE_TUTOR = PARTICIPATE | ASSIST | READ;
+	public static final int INSTITUTE_ASSIST = CREATE | MANAGE_NEWS | MANAGE_COURSE_TYPES | MANAGE_PERIODS | MANAGE_CourseS | INSTITUTE_TUTOR;
+	public static final int INSTITUTE_ADMINISTRATION = GRANT | UPDATE | DELETE | INSTITUTE_ASSIST;
+	public static final int INSTITUTE_OWN = DELETE | INSTITUTE_ADMINISTRATION;
 	
 	// Default combinations of base course permissions
 	public static final int COURSE_PARTICIPANT = READ | PARTICIPATE;
@@ -87,7 +87,7 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	private static final int[] validPermissions = {
 		GRANT, CREATE, READ, UPDATE, DELETE, ASSIST, PARTICIPATE, 
 		RU, CRU, CRUD, GCRUD, OGCRUD,
-		FACULTY_TUTOR, FACULTY_ASSIST, FACULTY_ADMINISTRATION, FACULTY_OWN
+		INSTITUTE_TUTOR, INSTITUTE_ASSIST, INSTITUTE_ADMINISTRATION, INSTITUTE_OWN
 	};
 	
 
@@ -150,20 +150,20 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 		return DELETE;
 	}
 
-	public int getFACULTY_ADMINISTRATION() {
-		return FACULTY_ADMINISTRATION;
+	public int getINSTITUTE_ADMINISTRATION() {
+		return INSTITUTE_ADMINISTRATION;
 	}
 
-	public int getFACULTY_ASSIST() {
-		return FACULTY_ASSIST;
+	public int getINSTITUTE_ASSIST() {
+		return INSTITUTE_ASSIST;
 	}
 
-	public int getFACULTY_OWN() {
-		return FACULTY_OWN;
+	public int getINSTITUTE_OWN() {
+		return INSTITUTE_OWN;
 	}
 
-	public int getFACULTY_TUTOR() {
-		return FACULTY_TUTOR;
+	public int getINSTITUTE_TUTOR() {
+		return INSTITUTE_TUTOR;
 	}
 
 	public int getGCRUD() {

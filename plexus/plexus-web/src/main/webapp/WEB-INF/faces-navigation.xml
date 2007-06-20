@@ -51,13 +51,13 @@
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>search_faculties</from-outcome>
-			<to-view-id>/views/public/faculty/faculties.xhtml</to-view-id>
+			<from-outcome>search_institutes</from-outcome>
+			<to-view-id>/views/public/institute/institutes.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>faculty</from-outcome>
-			<to-view-id>/views/secured/lecture/faculty.xhtml</to-view-id>
+			<from-outcome>institute</from-outcome>
+			<to-view-id>/views/secured/lecture/institute.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
@@ -193,14 +193,14 @@
     </navigation-rule>
 
     <navigation-rule>
-    	<from-view-id>/actions/public/lecture/facultyactivation.xhtml</from-view-id>
+    	<from-view-id>/actions/public/lecture/instituteactivation.xhtml</from-view-id>
     	<navigation-case>
-    		<from-action>facultyActivationAction.activateFaculty</from-action>
+    		<from-action>instituteActivationAction.activateInstitute</from-action>
     		<from-outcome>success</from-outcome>
     		<to-view-id>/views/secured/desktop/desktop.xhtml</to-view-id>
     	</navigation-case>
     	<navigation-case>
-    		<from-action>facultyActivationAction.activateFaculty</from-action>
+    		<from-action>instituteActivationAction.activateInstitute</from-action>
     		<from-outcome>failure</from-outcome>
     		<to-view-id>/views/welcome.xhtml</to-view-id>
     	</navigation-case>
@@ -217,7 +217,7 @@
 			<to-view-id>/views/sercured/user/profile.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>faculty_create</from-outcome>
+			<from-outcome>institute_create</from-outcome>
 			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
@@ -244,17 +244,17 @@
 		<from-view-id>/views/secured/lecture/registration/*</from-view-id>
 
 		<navigation-case>
-			<from-outcome>faculty_registration_start</from-outcome>
+			<from-outcome>institute_registration_start</from-outcome>
 			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>faculty_registration_step1</from-outcome>		
+			<from-outcome>institute_registration_step1</from-outcome>		
 			<to-view-id>/views/secured/lecture/registration/step1.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>faculty_registration_step2</from-outcome>		
+			<from-outcome>institute_registration_step2</from-outcome>		
 			<to-view-id>/views/secured/lecture/registration/step2.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
@@ -267,62 +267,62 @@
 		<from-view-id>/views/secured/*</from-view-id>
 
 		<navigation-case>
-			<from-outcome>faculty</from-outcome>
-			<to-view-id>/views/secured/lecture/faculty.xtml</to-view-id>
+			<from-outcome>institute</from-outcome>
+			<to-view-id>/views/secured/lecture/institute.xtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>faculty_data</from-outcome>
-			<to-view-id>/views/secured/lecture/facultyoptions.xhtml</to-view-id>
+			<from-outcome>institute_data</from-outcome>
+			<to-view-id>/views/secured/lecture/instituteoptions.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>faculty_members</from-outcome>
+			<from-outcome>institute_members</from-outcome>
 			<to-view-id>/views/secured/lecture/auth/members.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>faculty_aspirants</from-outcome>
+			<from-outcome>institute_aspirants</from-outcome>
 			<to-view-id>/views/secured/lecture/auth/aspirants.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>faculty_news</from-outcome>
+			<from-outcome>institute_news</from-outcome>
 			<to-view-id>/views/secured/lecture/news.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>faculty_news_edit</from-outcome>
+			<from-outcome>institute_news_edit</from-outcome>
 			<to-view-id>/views/secured/lecture/newsedit.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>faculty_coursetypes</from-outcome>
+			<from-outcome>institute_coursetypes</from-outcome>
 			<to-view-id>/views/secured/lecture/coursetypes.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>faculty_coursetype_remove</from-outcome>
+			<from-outcome>institute_coursetype_remove</from-outcome>
 			<to-view-id>/views/secured/lecture/coursetyperemove.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>faculty_periods</from-outcome>
+			<from-outcome>institute_periods</from-outcome>
 			<to-view-id>/views/secured/lecture/periods.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>faculty_period</from-outcome>
+			<from-outcome>institute_period</from-outcome>
 			<to-view-id>/views/secured/lecture/periodedit.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>faculty_period_remove</from-outcome>
+			<from-outcome>institute_period_remove</from-outcome>
 			<to-view-id>/views/secured/lecture/periodremove.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>faculty_course_remove</from-outcome>
+			<from-outcome>institute_course_remove</from-outcome>
 			<to-view-id>/views/secured/lecture/courseremove.xhtml</to-view-id>
 		</navigation-case>
 		
@@ -573,8 +573,8 @@
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>admin_faculties</from-outcome>
-			<to-view-id>/views/secured/system/faculties.xhtml</to-view-id>
+			<from-outcome>admin_institutes</from-outcome>
+			<to-view-id>/views/secured/system/institutes.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>

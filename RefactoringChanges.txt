@@ -1,0 +1,90 @@
+ Volume in Laufwerk C: hat keine Bezeichnung.
+ Volumeseriennummer: 80FB-315E
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\lecture
+
+20.06.2007  15:11             4.671 FacultiesPage.java
+               1 Datei(en)          4.671 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\lecture\.svn\text-base
+
+20.06.2007  13:49             4.544 FacultiesPage.java.svn-base
+               1 Datei(en)          4.544 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\lecture\.svn\wcprops
+
+20.06.2007  13:49               167 FacultiesPage.java.svn-work
+               1 Datei(en)            167 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\system
+
+20.06.2007  15:11             3.494 FacultiesPage.java
+               1 Datei(en)          3.494 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\system\.svn\text-base
+
+20.06.2007  13:49             3.389 FacultiesPage.java.svn-base
+               1 Datei(en)          3.389 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\java\org\openuss\web\system\.svn\wcprops
+
+20.06.2007  13:49               167 FacultiesPage.java.svn-work
+               1 Datei(en)            167 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\webapp\views\commons\desktop
+
+20.06.2007  15:11             1.484 faculties.xhtml
+               1 Datei(en)          1.484 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\webapp\views\commons\desktop\.svn\text-base
+
+20.06.2007  13:51             1.462 faculties.xhtml.svn-base
+               1 Datei(en)          1.462 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\webapp\views\commons\desktop\.svn\wcprops
+
+20.06.2007  13:51               164 faculties.xhtml.svn-work
+               1 Datei(en)            164 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\webapp\views\public\faculty\.svn\text-base
+
+20.06.2007  13:51             1.473 faculties.xhtml.svn-base
+20.06.2007  13:51             1.948 facultiestable.xhtml.svn-base
+               2 Datei(en)          3.421 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\webapp\views\public\faculty\.svn\wcprops
+
+20.06.2007  13:51               163 faculties.xhtml.svn-work
+20.06.2007  13:51               169 facultiestable.xhtml.svn-work
+               2 Datei(en)            332 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\webapp\views\public\institute
+
+02.04.2007  17:04             1.473 faculties.xhtml
+20.06.2007  14:34             1.966 facultiestable.xhtml
+               2 Datei(en)          3.439 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\webapp\views\public\institute\.svn\text-base
+
+20.06.2007  13:51             1.473 faculties.xhtml.svn-base
+20.06.2007  13:51             1.948 facultiestable.xhtml.svn-base
+               2 Datei(en)          3.421 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\webapp\views\secured\system
+
+20.06.2007  15:11             3.785 faculties.xhtml
+               1 Datei(en)          3.785 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\webapp\views\secured\system\.svn\text-base
+
+20.06.2007  13:51             3.758 faculties.xhtml.svn-base
+               1 Datei(en)          3.758 Bytes
+
+ Verzeichnis von C:\SHK-Workspace\openuss-plexus\plexus\plexus-web\src\main\webapp\views\secured\system\.svn\wcprops
+
+20.06.2007  13:51               163 faculties.xhtml.svn-work
+               1 Datei(en)            163 Bytes
+
+     Anzahl der angezeigten Dateien:
+              20 Datei(en)         37.861 Bytes
+               0 Verzeichnis(se), 13.783.060.480 Bytes frei

@@ -10,7 +10,7 @@ import java.util.Collection;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Course;
-import org.openuss.lecture.Faculty;
+import org.openuss.lecture.Institute;
 import org.openuss.lecture.CourseType;
 import org.openuss.security.User;
 
@@ -61,13 +61,13 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 	}
 
 	@Override
-	protected void handleLinkFaculty(Desktop desktop, Faculty faculty) throws Exception {
-		if (faculty == null) {
-			throw new NullPointerException("Faculty must not be null!");
+	protected void handleLinkInstitute(Desktop desktop, Institute institute) throws Exception {
+		if (institute == null) {
+			throw new NullPointerException("Institute must not be null!");
 		}
 		desktop = getDesktop(desktop);
-		if (!desktop.getFaculties().contains(faculty)) {
-			desktop.linkFaculty(faculty);
+		if (!desktop.getInstitutes().contains(institute)) {
+			desktop.linkInstitute(institute);
 			saveDesktop(desktop);
 		}
 	}
@@ -97,13 +97,13 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 	}
 
 	@Override
-	protected void handleUnlinkFaculty(Desktop desktop, Faculty faculty) throws Exception {
+	protected void handleUnlinkInstitute(Desktop desktop, Institute institute) throws Exception {
 		desktop = getDesktop(desktop);
-		faculty = getFacultyDao().load(faculty.getId());
-		if (desktop.getUser().equals(faculty.getOwner())) {
-			throw new DesktopException("error_must_not_remove_owned_faculty");
+		institute = getInstituteDao().load(institute.getId());
+		if (desktop.getUser().equals(institute.getOwner())) {
+			throw new DesktopException("error_must_not_remove_owned_institute");
 		}
-		desktop.unlinkFaculty(faculty);
+		desktop.unlinkInstitute(institute);
 		saveDesktop(desktop);
 	}
 
@@ -128,10 +128,10 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 	}
 
 	@Override
-	protected void handleUnlinkAllFromFaculty(Faculty faculty) throws Exception {
-		Collection<Desktop> desktops = getDesktopDao().findByFaculty(faculty);
+	protected void handleUnlinkAllFromInstitute(Institute institute) throws Exception {
+		Collection<Desktop> desktops = getDesktopDao().findByInstitute(institute);
 		for (Desktop desktop : desktops) {
-			unlinkFaculty(desktop, faculty);
+			unlinkInstitute(desktop, institute);
 		}
 	}
 

@@ -15,9 +15,9 @@ import org.openuss.TestUtility;
 public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 	
 	private TestUtility testUtility;
-	private Faculty faculty;
+	private Institute institute;
 	
-	private FacultyDao facultyDao;
+	private InstituteDao instituteDao;
 	
 	public CourseTypeDaoTest () {
 		setDefaultRollback(false);
@@ -25,13 +25,13 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 	
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
-		faculty = testUtility.createPersistFacultyWithDefaultUser();
+		institute = testUtility.createPersistInstituteWithDefaultUser();
 		commit();
 	}
 	
 	@Override
 	protected void onTearDownInTransaction() throws Exception {
-		testUtility.removePersistFacultyAndDefaultUser();
+		testUtility.removePersistInstituteAndDefaultUser();
 	}
 	
 	public void testCourseTypeDao() {
@@ -40,13 +40,13 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 		courseType.setName("courseTypename"+System.currentTimeMillis());
 		courseType.setShortcut("shortcut"+System.currentTimeMillis());
 		
-		// associate courseType with faculty
-		faculty.add(courseType);
-		courseType.setFaculty(faculty);
+		// associate courseType with institute
+		institute.add(courseType);
+		courseType.setInstitute(institute);
 		
 		// persist
 		assertNull(courseType.getId());
-		facultyDao.update(faculty);
+		instituteDao.update(institute);
 		assertNotNull(courseType.getId());
 		commit();
 		
@@ -59,9 +59,9 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 		courseTypeDao.update(s);
 		commit();
 
-		// remove courseType from faculty
-		faculty.remove(s);
-		facultyDao.update(faculty);
+		// remove courseType from institute
+		institute.remove(s);
+		instituteDao.update(institute);
 		commit();
 	}
 
@@ -73,12 +73,12 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 		this.testUtility = testUtility;
 	}
 
-	public FacultyDao getFacultyDao() {
-		return facultyDao;
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
 	}
 
-	public void setFacultyDao(FacultyDao facultyDao) {
-		this.facultyDao = facultyDao;
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
 	}
 
 

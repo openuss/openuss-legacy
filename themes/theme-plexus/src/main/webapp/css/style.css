@@ -1481,12 +1481,12 @@ td {
 	text-decoration: none;
 }
 
-div.faculty_info{
+div.institute_info{
 	margin-bottom: 10px;
 	overflow: auto;
 }
 
-div.faculty_info span{
+div.institute_info span{
   display:block;
   padding-bottom: 0;
   padding-top:0;

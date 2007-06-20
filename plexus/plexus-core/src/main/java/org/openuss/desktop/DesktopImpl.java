@@ -17,17 +17,17 @@ public class DesktopImpl extends org.openuss.desktop.DesktopBase implements org.
 	private static final long serialVersionUID = 7305422481011599756L;
 
 	/**
-	 * @see org.openuss.desktop.Desktop#linkFaculty(org.openuss.lecture.Faculty)
+	 * @see org.openuss.desktop.Desktop#linkInstitute(org.openuss.lecture.Institute)
 	 */
-	public void linkFaculty(org.openuss.lecture.Faculty faculty) {
-		getFaculties().add(faculty);
+	public void linkInstitute(org.openuss.lecture.Institute institute) {
+		getInstitutes().add(institute);
 	}
 
 	/**
-	 * @see org.openuss.desktop.Desktop#unlinkFaculty(org.openuss.lecture.Faculty)
+	 * @see org.openuss.desktop.Desktop#unlinkInstitute(org.openuss.lecture.Institute)
 	 */
-	public void unlinkFaculty(org.openuss.lecture.Faculty faculty) {
-		getFaculties().remove(faculty);
+	public void unlinkInstitute(org.openuss.lecture.Institute institute) {
+		getInstitutes().remove(institute);
 	}
 
 	/**

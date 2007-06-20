@@ -12,12 +12,12 @@ public class LectureIndexImpl implements LectureIndex{
 
 	private static final Logger logger = Logger.getLogger(LectureIndexImpl.class);
 	
-	private FacultyDao facultyDao;
+	private InstituteDao instituteDao;
 	private CourseDao courseDao;
 	
 	private Directory directory;
 	
-	private FacultyIndexer facultyIndexer;
+	private InstituteIndexer instituteIndexer;
 	private CourseIndexer courseIndexer;
 
 	/**
@@ -27,19 +27,19 @@ public class LectureIndexImpl implements LectureIndex{
 	public void recreate() throws Exception {
 		logger.debug("start to recreate lecture index.");
 
-		indexFaculties();
+		indexInstitutes();
 		indexCourses();
 		
 		logger.debug("recreated lecture index.");
 	}
 
-	private void indexFaculties() {
-		logger.debug("indexing faculties...");
-		Collection<Faculty> faculties = facultyDao.loadAll();
+	private void indexInstitutes() {
+		logger.debug("indexing institutes...");
+		Collection<Institute> institutes = instituteDao.loadAll();
 		
-		for(Faculty faculty: faculties) {
-			facultyIndexer.setDomainObject(faculty);
-			facultyIndexer.create();
+		for(Institute institute: institutes) {
+			instituteIndexer.setDomainObject(institute);
+			instituteIndexer.create();
 		}
 	}
 
@@ -53,20 +53,20 @@ public class LectureIndexImpl implements LectureIndex{
 		}
 	}
 
-	public FacultyDao getFacultyDao() {
-		return facultyDao;
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
 	}
 
-	public void setFacultyDao(FacultyDao facultyDao) {
-		this.facultyDao = facultyDao;
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
 	}
 
-	public FacultyIndexer getFacultyIndexer() {
-		return facultyIndexer;
+	public InstituteIndexer getInstituteIndexer() {
+		return instituteIndexer;
 	}
 
-	public void setFacultyIndexer(FacultyIndexer facultyIndexer) {
-		this.facultyIndexer = facultyIndexer;
+	public void setInstituteIndexer(InstituteIndexer instituteIndexer) {
+		this.instituteIndexer = instituteIndexer;
 	}
 
 	public Directory getDirectory() {

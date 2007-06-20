@@ -11,7 +11,7 @@ public class RegistrationTests {
 		suite.addTestSuite(ActivationCodeDaoTest.class);
 		suite.addTestSuite(RegistrationServiceIntegrationTest.class);
 		suite.addTestSuite(UserActivationCodeDaoTest.class);
-		suite.addTestSuite(FacultyActivationCodeDaoTest.class);
+		suite.addTestSuite(InstituteActivationCodeDaoTest.class);
 		//$JUnit-END$
 		return suite;
 	}

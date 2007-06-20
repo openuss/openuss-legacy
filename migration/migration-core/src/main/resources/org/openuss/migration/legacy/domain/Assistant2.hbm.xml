@@ -66,7 +66,7 @@
             </key>
             <one-to-many class="org.openuss.migration.legacy.domain.Consultancy2" />
         </set>
-        <set name="faculties" inverse="true">
+        <set name="institutes" inverse="true">
             <key>
                 <column name="OWNERID" length="30" />
             </key>
@@ -84,7 +84,7 @@
             </key>
             <one-to-many class="org.openuss.migration.legacy.domain.Assistantinformation2" />
         </set>
-        <set name="assistantfaculties" inverse="true">
+        <set name="assistantinstitutes" inverse="true">
             <key>
                 <column name="ASSISTANTPK" length="30" />
             </key>

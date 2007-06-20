@@ -54,10 +54,10 @@
 	</render-kit>
 
 	<converter>
-		<description>Converts a FacultyGroup object to a string and vice versa</description>
-		<display-name>FacultyGroupConverter</display-name>
-		<converter-id>facultyGroupConverter</converter-id>
-		<converter-class>org.openuss.web.lecture.FacultyGroupConverter</converter-class>
+		<description>Converts a InstituteGroup object to a string and vice versa</description>
+		<display-name>InstituteGroupConverter</display-name>
+		<converter-id>instituteGroupConverter</converter-id>
+		<converter-class>org.openuss.web.lecture.InstituteGroupConverter</converter-class>
 	</converter>
 
 	<validator>

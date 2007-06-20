@@ -9,7 +9,7 @@ import java.util.Collection;
 
 import org.openuss.TestUtility;
 import org.openuss.lecture.Course;
-import org.openuss.lecture.FacultyDao;
+import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.LectureBuilder;
 import org.openuss.security.User;
 
@@ -24,7 +24,7 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 	
 	private TestUtility testUtility;
 	
-	private FacultyDao facultyDao;
+	private InstituteDao instituteDao;
 	
 	private LectureBuilder lectureBuilder;
 	
@@ -38,7 +38,7 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 	public void testFindByCourse() {
 		// create courses
 		Course course = lectureBuilder
-			.createFaculty(testUtility.createDefaultUserInDB())
+			.createInstitute(testUtility.createDefaultUserInDB())
 			.addPeriod()
 			.addCourseType()
 			.addCourse()
@@ -104,12 +104,12 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		this.testUtility = testUtility;
 	}
 
-	public FacultyDao getFacultyDao() {
-		return facultyDao;
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
 	}
 
-	public void setFacultyDao(FacultyDao facultyDao) {
-		this.facultyDao = facultyDao;
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
 	}
 
 	public LectureBuilder getLectureBuilder() {

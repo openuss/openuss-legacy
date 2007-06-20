@@ -68,9 +68,9 @@
 	<!-- An access decision voter that reads ROLE_* configuration settings -->
 	<bean id="roleVoter" class="org.acegisecurity.vote.RoleVoter" />
 	
-	<bean id="aclFacultyReadVoter" class="org.acegisecurity.vote.BasicAclEntryVoter">
+	<bean id="aclInstituteReadVoter" class="org.acegisecurity.vote.BasicAclEntryVoter">
 		<property name="processConfigAttribute">
-			<value>ACL_FACULTY_READ</value>
+			<value>ACL_INSTITUTE_READ</value>
 		</property>
 		<property name="processDomainObjectClass">
 			<value>java.lang.Long</value>
@@ -89,7 +89,7 @@
 		<property name="decisionVoters">
 			<list>
 				<ref bean="serviceDecisionVoter"/>
-				<ref local="aclFacultyReadVoter"/>
+				<ref local="aclInstituteReadVoter"/>
 			</list>
 		</property>
 	</bean>
@@ -163,17 +163,17 @@
         <property name="afterInvocationManager"><ref bean="afterInvocationManager"/></property>
         <property name="objectDefinitionSource">
             <value>
-                org.openuss.lecture.LectureService.getFaculties=ROLE_ADMIN, ROLE_USER, ACL_FACULTY_READ
-                org.openuss.lecture.LectureService.getFaculty=ACL_FACULTY_READ
+                org.openuss.lecture.LectureService.getInstitutes=ROLE_ADMIN, ROLE_USER, ACL_INSTITUTE_READ
+                org.openuss.lecture.LectureService.getInstitute=ACL_INSTITUTE_READ
                 org.openuss.lecture.LectureService.getCourseType=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.getPeriod=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.getCourse=ROLE_ADMIN, ROLE_USER
-                org.openuss.lecture.LectureService.isNoneExistingFacultyShortcut=ROLE_ADMIN, ROLE_USER
+                org.openuss.lecture.LectureService.isNoneExistingInstituteShortcut=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.isNoneExistingCourseTypeShortcut=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.isNoneExistingCourseShortcut=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.persist=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.add=ROLE_ADMIN, ROLE_USER
-                org.openuss.lecture.LectureService.removeFaculty=ROLE_ADMIN, ROLE_USER
+                org.openuss.lecture.LectureService.removeInstitute=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.removeCourseType=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.removePeriod=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.removeCourse=ROLE_ADMIN, ROLE_USER

@@ -5,7 +5,7 @@ import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopService;
 import org.openuss.lecture.Course;
-import org.openuss.lecture.Faculty;
+import org.openuss.lecture.Institute;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureListener;
 import org.openuss.lecture.LectureService;
@@ -37,14 +37,14 @@ public class DesktopLectureAdapter implements LectureListener{
 		}
 	}
 
-	public void removingFaculty(Faculty faculty) throws LectureException {
+	public void removingInstitute(Institute institute) throws LectureException {
 		if (desktopService == null) {
 			throw new IllegalStateException("desktopService property must not be null!");
 		}
 		try {
-			desktopService.unlinkAllFromFaculty(faculty);
+			desktopService.unlinkAllFromInstitute(institute);
 		} catch (DesktopException e) {
-			throw new LectureException("Desktop Lecture Adapter couldn't unlink faculty", e);
+			throw new LectureException("Desktop Lecture Adapter couldn't unlink institute", e);
 		}
 		
 	}
@@ -85,19 +85,19 @@ public class DesktopLectureAdapter implements LectureListener{
 		}
 	}
 
-	public void createdFaculty(Faculty faculty) throws LectureException {
+	public void createdInstitute(Institute institute) throws LectureException {
 		try {
-			User user = faculty.getOwner();
+			User user = institute.getOwner();
 			Desktop desktop = desktopService.getDesktopByUser(user);
-			desktopService.linkFaculty(desktop, faculty);
+			desktopService.linkInstitute(desktop, institute);
 		} catch (DesktopException e) {
-			logger.error("Desktop adapter couldn't create new faculty link on user desktop",e);
+			logger.error("Desktop adapter couldn't create new institute link on user desktop",e);
 			throw new LectureException(e);
 		}
 		
 	}
 
-	public void updateFaculty(Faculty faculty) throws LectureException {
+	public void updateInstitute(Institute institute) throws LectureException {
 		// NOTHING TO DO
 	}
 }

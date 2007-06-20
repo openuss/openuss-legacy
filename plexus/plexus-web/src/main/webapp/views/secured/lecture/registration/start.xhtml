@@ -22,14 +22,14 @@
 	<ui:composition template="/views/layout/dialog.xhtml">
   		<ui:define name="content">
   			<h:form id="registration_form">
-                <t:saveState value="#{faculty}" id="facultyState"/>
-  				<o:block label="#{msg.faculty_registration_start_headline}">
+                <t:saveState value="#{institute}" id="instituteState"/>
+  				<o:block label="#{msg.institute_registration_start_headline}">
 					<div class="content_font_normal"> 
-						<h:outputText value="#{msg.faculty_registration_start_text}" escape="false"/>
+						<h:outputText value="#{msg.institute_registration_start_text}" escape="false"/>
 			   		</div>
 			   	</o:block>
 			   	<o:block>
-					<h:commandButton action="#{facultyRegistration.start}" value="#{msg.forward}" styleClass="button_continue"/>
+					<h:commandButton action="#{instituteRegistration.start}" value="#{msg.forward}" styleClass="button_continue"/>
 					<h:commandButton action="desktop" value="#{msg.cancel}" styleClass="button_cancel"/>
 		  		</o:block>
 		  	</h:form>

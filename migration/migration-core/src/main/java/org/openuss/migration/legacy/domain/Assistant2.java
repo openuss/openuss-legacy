@@ -230,11 +230,11 @@ public class Assistant2 implements java.io.Serializable {
 		this.consultancy2s = consultancy2s;
 	}
 
-	public Set<Faculty2> getFaculties() {
+	public Set<Faculty2> getInstitutes() {
 		return this.faculty2s;
 	}
 
-	public void setFaculties(Set<Faculty2> faculty2s) {
+	public void setInstitutes(Set<Faculty2> faculty2s) {
 		this.faculty2s = faculty2s;
 	}
 
@@ -254,11 +254,11 @@ public class Assistant2 implements java.io.Serializable {
 		this.assistantinformation2s = assistantinformation2s;
 	}
 
-	public Set<Assistantfaculty2> getAssistantfaculties() {
+	public Set<Assistantfaculty2> getAssistantinstitutes() {
 		return this.assistantfaculty2s;
 	}
 
-	public void setAssistantfaculties(Set<Assistantfaculty2> assistantfaculty2s) {
+	public void setAssistantinstitutes(Set<Assistantfaculty2> assistantfaculty2s) {
 		this.assistantfaculty2s = assistantfaculty2s;
 	}
 

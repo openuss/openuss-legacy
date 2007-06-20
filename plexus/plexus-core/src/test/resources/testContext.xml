@@ -28,8 +28,8 @@
 		<property name="accountLocked" value="true" />
 	</bean>
 
-	<bean id="defaultFaculty" class="org.openuss.lecture.FacultyImpl">
-		<property name="name" value="facultyname" />
+	<bean id="defaultInstitute" class="org.openuss.lecture.InstituteImpl">
+		<property name="name" value="institutename" />
 		<property name="shortcut" value="shortcut" />
 		<property name="email" value="email" />
 		<property name="ownername" value="ownername" />
@@ -42,8 +42,8 @@
 		<property name="defaultUser">
 			<ref local="defaultUser" />
 		</property>
-		<property name="defaultFaculty">
-			<ref local="defaultFaculty" />
+		<property name="defaultInstitute">
+			<ref local="defaultInstitute" />
 		</property>
 		<property name="userDao">
 			<ref bean="userDao" />
@@ -51,15 +51,15 @@
 		<property name="groupDao">
 			<ref bean="groupDao" />
 		</property>
-		<property name="facultyDao">
-			<ref bean="facultyDao" />
+		<property name="instituteDao">
+			<ref bean="instituteDao" />
 		</property>
 	</bean>
 
 	<bean id="lectureBuilder"
 		class="org.openuss.lecture.LectureBuilder">
-		<property name="facultyDao">
-			<ref bean="facultyDao" />
+		<property name="instituteDao">
+			<ref bean="instituteDao" />
 		</property>
 	</bean>
 

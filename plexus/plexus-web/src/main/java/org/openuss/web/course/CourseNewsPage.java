@@ -67,7 +67,7 @@ public class CourseNewsPage extends AbstractCoursePage {
 		
 		newsItem.setPublisherIdentifier(course.getId());
 		// FIXME BEWARE OF LAZYEXCEPTION HERE
-		newsItem.setPublisherName(course.getFaculty().getName());
+		newsItem.setPublisherName(course.getInstitute().getName());
 		
 		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
 		return Constants.COURSE_NEWS_EDIT_PAGE;

@@ -20,8 +20,8 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseMemberInfo;
-import org.openuss.lecture.FacultyMember;
-import org.openuss.lecture.FacultySecurity;
+import org.openuss.lecture.InstituteMember;
+import org.openuss.lecture.InstituteSecurity;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserComparator;
@@ -41,7 +41,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	List<CourseMemberInfo> assistants;
 	Set<Long> assistantsUserIds;
-	List<SelectItem> facultyMembers;
+	List<SelectItem> instituteMembers;
 	
 	private DataPage<CourseMemberInfo> page;
 
@@ -106,36 +106,36 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	private void resetCachedData() {
 		assistants = null;
-		facultyMembers = null;
+		instituteMembers = null;
 		assistantsUserIds = null;
 		page = null;
 	}
 
-	public Collection<SelectItem> getFacultyMemberList() {
-		if (facultyMembers == null) {
-			FacultySecurity facultySecurity = lectureService.getFacultySecurity(course.getFaculty().getId());
-			List<FacultyMember> members = facultySecurity.getMembers();
+	public Collection<SelectItem> getInstituteMemberList() {
+		if (instituteMembers == null) {
+			InstituteSecurity instituteSecurity = lectureService.getInstituteSecurity(course.getInstitute().getId());
+			List<InstituteMember> members = instituteSecurity.getMembers();
 			final Set<Long> userIds = getAssistantsUserIdMap();
 			CollectionUtils.filter(members, new Predicate() {
 				public boolean evaluate(Object object) {
-					FacultyMember member = (FacultyMember) object;
+					InstituteMember member = (InstituteMember) object;
 					return !userIds.contains(member.getId());
 				}
 			});
 			List<User> membersUser = new ArrayList<User>();
-			for(FacultyMember member : members) {
+			for(InstituteMember member : members) {
 				membersUser.add(getSecurityService().getUserByName(member.getUsername()));
 			}
 			UserComparator userComparator = new UserComparator();
 			Collections.sort(membersUser, userComparator);
-			facultyMembers = new ArrayList<SelectItem>();
+			instituteMembers = new ArrayList<SelectItem>();
 			for(User member : membersUser) {
-				facultyMembers.add(new SelectItem(member.getId(), member.getTitle()+" "+member.getLastName()+" "+member.getFirstName()));
+				instituteMembers.add(new SelectItem(member.getId(), member.getTitle()+" "+member.getLastName()+" "+member.getFirstName()));
 			}
 
 			
 		}
-		return facultyMembers;
+		return instituteMembers;
 	}
 
 	public String save() {

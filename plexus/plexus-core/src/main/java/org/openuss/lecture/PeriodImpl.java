@@ -26,7 +26,7 @@ public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.op
 
 	@Override
 	public boolean isActive() {
-		return getFaculty() != null && equals(getFaculty().getActivePeriod());
+		return getInstitute() != null && equals(getInstitute().getActivePeriod());
 	}
 
 }

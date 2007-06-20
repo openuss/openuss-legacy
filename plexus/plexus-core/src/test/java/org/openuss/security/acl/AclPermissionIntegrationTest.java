@@ -8,7 +8,7 @@ import org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
 import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
-import org.openuss.lecture.Faculty;
+import org.openuss.lecture.Institute;
 import org.openuss.lecture.LectureService;
 import org.openuss.lecture.LectureServiceException;
 import org.openuss.security.Group;
@@ -36,29 +36,29 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 	private PermissionDao permissionDao;
 	private ObjectIdentityDao objectIdentityDao;
 
-	private Faculty faculty;
+	private Institute institute;
 	
 	private Group roleUser;
-	private Group groupFaculty;
+	private Group groupInstitute;
 	
 	private EhCacheBasedUserCache cache ;
 	
 	private TestUtility testUtility;
 
-	private long facultyTestID;
+	private long instituteTestID;
 
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
-		facultyTestID = testUtility.unique();
+		instituteTestID = testUtility.unique();
 		cache.getCache().flush();
 		createSecureContext(TEST_ADMIN, TEST_ROLE_ADMIN);
-		faculty = Faculty.Factory.newInstance();
-		faculty.setId(facultyTestID);
+		institute = Institute.Factory.newInstance();
+		institute.setId(instituteTestID);
 	}
 
 	public void testAclAccessDeniedMethodInvocation() {
 		try {
-			lectureService.getFaculty(faculty.getId());
+			lectureService.getInstitute(institute.getId());
 			fail();
 		} catch (AcegiSecurityException ase) {
 			logger.error(ase);
@@ -70,7 +70,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 
 	public void testAclAccessGrantedToUserCheckedMethodInvocation() {
 		ObjectIdentity oi = ObjectIdentity.Factory.newInstance();
-		oi.setId(facultyTestID);
+		oi.setId(instituteTestID);
 
 		Permission permission = Permission.Factory.newInstance();
 		permission.setAclObjectIdentity(oi);
@@ -80,7 +80,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		objectIdentityDao.create(oi);
 
 		try {
-			lectureService.getFaculty(faculty.getId());
+			lectureService.getInstitute(institute.getId());
 			fail();
 		} catch (AcegiSecurityException ase) {
 			logger.info("access denied");
@@ -93,7 +93,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		permissionDao.create(permission);
 
 		try {
-			lectureService.getFaculty(faculty.getId());
+			lectureService.getInstitute(institute.getId());
 			logger.info("access granted");
 		} catch (AcegiSecurityException e) {
 			logger.error(e);
@@ -105,7 +105,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 
 	public void testAclHirarchyAccessGrantedToUserCheckedMethodInvocation() {
 		ObjectIdentity oi = ObjectIdentity.Factory.newInstance();
-		oi.setId(facultyTestID);
+		oi.setId(instituteTestID);
 
 		Permission permission = Permission.Factory.newInstance();
 		permission.setAclObjectIdentity(oi);
@@ -124,11 +124,11 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		objectIdentityDao.create(oi2);
 		permissionDao.create(permission);
 
-		Faculty faculty2 = Faculty.Factory.newInstance();
-		faculty2.setId(oid);
+		Institute institute2 = Institute.Factory.newInstance();
+		institute2.setId(oid);
 
 		try {
-			lectureService.getFaculty(faculty.getId());
+			lectureService.getInstitute(institute.getId());
 			logger.info("access granted");
 		} catch (AcegiSecurityException e) {
 			logger.error(e);
@@ -140,12 +140,12 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 	
 	public void testAclHirarchyAccessGrantedToRoleCheckedMethodInvocation() {
 		ObjectIdentity oi = ObjectIdentity.Factory.newInstance();
-		oi.setId(facultyTestID);
+		oi.setId(instituteTestID);
 
 		Permission permission = Permission.Factory.newInstance();
 		permission.setAclObjectIdentity(oi);
 		permission.setMask(SimpleAclEntry.READ | SimpleAclEntry.ADMINISTRATION);
-		permission.setRecipient(groupFaculty);
+		permission.setRecipient(groupInstitute);
 
 		objectIdentityDao.create(oi);
 		oi.addPermission(permission);
@@ -157,11 +157,11 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		objectIdentityDao.create(oi2);
 		permissionDao.create(permission);
 
-		Faculty faculty2 = Faculty.Factory.newInstance();
-		faculty2.setId(oid);
+		Institute institute2 = Institute.Factory.newInstance();
+		institute2.setId(oid);
 
 		try {
-			lectureService.getFaculty(faculty.getId());
+			lectureService.getInstitute(institute.getId());
 			logger.info("access granted");
 		} catch (Exception e) {
 			logger.error(e);
@@ -189,12 +189,12 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		assertNotNull(roleUser.getId());
 		
 		
-		groupFaculty = Group.Factory.newInstance();
-		groupFaculty.setName("GROUP_FACULTY");
-		groupFaculty.setLabel("Group label of the Authory");
-		groupFaculty.addMember(user);
-		user.addGroup(groupFaculty);
-		groupDao.create(groupFaculty);
+		groupInstitute = Group.Factory.newInstance();
+		groupInstitute.setName("GROUP_INSTITUTE");
+		groupInstitute.setLabel("Group label of the Authory");
+		groupInstitute.addMember(user);
+		user.addGroup(groupInstitute);
+		groupDao.create(groupInstitute);
 		userDao.update(user);
 
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username,

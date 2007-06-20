@@ -14,7 +14,7 @@ import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.apache.log4j.Logger;
-import org.openuss.lecture.Faculty;
+import org.openuss.lecture.Institute;
 import org.openuss.registration.ActivationCode;
 import org.openuss.registration.RegistrationCodeExpiredException;
 import org.openuss.registration.RegistrationCodeNotFoundException;
@@ -31,7 +31,7 @@ import org.openuss.security.UserImpl;
  */
 public class RegistrationServiceImpl extends org.openuss.registration.RegistrationServiceBase {
 
-	private static final String FACULTY_ACTIVATION_COMMAND = "facultyActivationCommand";
+	private static final String INSTITUTE_ACTIVATION_COMMAND = "instituteActivationCommand";
 	private static final Logger logger = Logger.getLogger(RegistrationServiceImpl.class);
 	
 	@Override
@@ -153,35 +153,35 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 	}
 
 	@Override
-	protected void handleActivateFacultyByCode(String code) throws Exception {		
+	protected void handleActivateInstituteByCode(String code) throws Exception {		
 		
-		FacultyActivationCode activateCode = getFacultyActivationCodeDao().findByActivationCode(code);
+		InstituteActivationCode activateCode = getInstituteActivationCodeDao().findByActivationCode(code);
 		if (activateCode == null) {
 			logger.debug("Could not find registration code "+code);
 			throw new RegistrationCodeNotFoundException("Could not find registration code "+code);
 		}
 
-		getCommandService().createOnceCommand(activateCode.getFaculty(), FACULTY_ACTIVATION_COMMAND, new Date(System.currentTimeMillis()), null);
+		getCommandService().createOnceCommand(activateCode.getInstitute(), INSTITUTE_ACTIVATION_COMMAND, new Date(System.currentTimeMillis()), null);
 		
-		getFacultyActivationCodeDao().remove(activateCode);
+		getInstituteActivationCodeDao().remove(activateCode);
 	}
 
 	@Override
-	protected String handleGenerateFacultyActivationCode(Faculty faculty) throws Exception {
-		FacultyActivationCode facultyActivationCode = FacultyActivationCode.Factory.newInstance();
+	protected String handleGenerateInstituteActivationCode(Institute institute) throws Exception {
+		InstituteActivationCode instituteActivationCode = InstituteActivationCode.Factory.newInstance();
 
 		// generate new MD5 hash from user id and current time millis
 
-		String input = faculty.getId()+""+System.currentTimeMillis();
+		String input = institute.getId()+""+System.currentTimeMillis();
 		StringBuffer resultString = md5(input);
 		
 		String code = "FA"+resultString.toString();
 		
 		// store registration code
-		facultyActivationCode.setFaculty(faculty);
-		facultyActivationCode.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		facultyActivationCode.setCode(code);		
-		getFacultyActivationCodeDao().create(facultyActivationCode);
+		instituteActivationCode.setInstitute(institute);
+		instituteActivationCode.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		instituteActivationCode.setCode(code);		
+		getInstituteActivationCodeDao().create(instituteActivationCode);
 		
 		return code;	
 	}
@@ -207,8 +207,8 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void handleRemoveFacultyCodes(Faculty faculty) throws Exception {
-		getFacultyActivationCodeDao().remove(getFacultyActivationCodeDao().findByFaculty(faculty));
+	protected void handleRemoveInstituteCodes(Institute institute) throws Exception {
+		getInstituteActivationCodeDao().remove(getInstituteActivationCodeDao().findByInstitute(institute));
 	}
 
 }

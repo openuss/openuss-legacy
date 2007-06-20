@@ -17,7 +17,7 @@ public class ThemeManager {
 	 * The layout property defines the facelets composite template that sites should use.
 	 * @TODO For now it is statically bound within the faces-config.xml. But it should be used
 	 * to dynamically change the templating according to the current context of the user.
-	 * For example different theme packages for faculties.  
+	 * For example different theme packages for institutes.  
 	 */
 	public String getLayout() {
 		return layout;

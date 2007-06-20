@@ -61,7 +61,7 @@ public class CourseTypesPage extends AbstractLecturePage {
 	 */
 	public String addCourseType() {
 		courseType = CourseType.Factory.newInstance();
-		courseType.setFaculty(faculty);
+		courseType.setInstitute(institute);
 		setSessionBean(Constants.COURSE_TYPE, courseType);
 		return Constants.SUCCESS;
 	}
@@ -88,7 +88,7 @@ public class CourseTypesPage extends AbstractLecturePage {
 	public String confirmRemoveCourseType() {
 		courseType = data.getRowData();;
 		setSessionBean(Constants.COURSE_TYPE, courseType);
-		return Constants.FACULTY_COURSE_TYPE_REMOVE_PAGE;
+		return Constants.INSTITUTE_COURSE_TYPE_REMOVE_PAGE;
 	}
 
 	/**
@@ -99,11 +99,11 @@ public class CourseTypesPage extends AbstractLecturePage {
 	public String saveCourseType() {
 		logger.debug("saveCourseType()");
 		if (courseType.getId() == null) {
-			lectureService.add(faculty.getId(), courseType);
-			addMessage(i18n("faculty_message_add_coursetype_succeed"));
+			lectureService.add(institute.getId(), courseType);
+			addMessage(i18n("institute_message_add_coursetype_succeed"));
 		} else {
 			lectureService.persist(courseType);
-			addMessage(i18n("faculty_message_persist_coursetype_succeed"));
+			addMessage(i18n("institute_message_persist_coursetype_succeed"));
 		}
 		removeSessionBean(Constants.COURSE_TYPE);
 		courseType = null;
@@ -129,7 +129,7 @@ public class CourseTypesPage extends AbstractLecturePage {
 		@Override
 		public DataPage<CourseType> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<CourseType> courseTypes = new ArrayList(faculty.getCourseTypes());
+				List<CourseType> courseTypes = new ArrayList(institute.getCourseTypes());
 				sort(courseTypes);
 				page = new DataPage<CourseType>(courseTypes.size(),0,courseTypes);
 			}

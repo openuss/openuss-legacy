@@ -44,8 +44,8 @@ public class AspirantsPage extends AbstractLecturePage {
 	private void rejectAspirants() {
 		for (UserInfo userInfo : rejectAspirants) {
 			try {
-				lectureService.rejectFacultyAspirant(userInfo.getId(), faculty.getId());
-				addMessage(i18n("faculty_reject_aspirants",userInfo.getUsername()));
+				lectureService.rejectInstituteAspirant(userInfo.getId(), institute.getId());
+				addMessage(i18n("institute_reject_aspirants",userInfo.getUsername()));
 			} catch (LectureException e) {
 				logger.error(e);
 				addError(i18n(e.getMessage()));
@@ -56,8 +56,8 @@ public class AspirantsPage extends AbstractLecturePage {
 	private void acceptAspirants() {
 		for (UserInfo userInfo : acceptAspirants) {
 			try {
-				lectureService.acceptFacultyAspirant(userInfo.getId(), faculty.getId());
-				addMessage(i18n("faculty_add_member_to_faculty", userInfo.getUsername()));
+				lectureService.acceptInstituteAspirant(userInfo.getId(), institute.getId());
+				addMessage(i18n("institute_add_member_to_institute", userInfo.getUsername()));
 			} catch (LectureException e) {
 				logger.error(e);
 				addError(i18n(e.getMessage()));
@@ -97,7 +97,7 @@ public class AspirantsPage extends AbstractLecturePage {
 		@Override 
 		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List aspirants = lectureService.getFacultyAspirants(faculty.getId());
+				List aspirants = lectureService.getInstituteAspirants(institute.getId());
 				page = new DataPage<UserInfo>(aspirants.size(),0,aspirants);
 				sort(aspirants);
 			}

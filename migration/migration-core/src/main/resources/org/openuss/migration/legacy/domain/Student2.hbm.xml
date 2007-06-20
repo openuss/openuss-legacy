@@ -64,7 +64,7 @@
         <property name="telephone" type="string">
             <column name="TELEPHONE" length="100" />
         </property>
-        <set name="studentfaculties" inverse="true">
+        <set name="studentinstitutes" inverse="true">
             <key>
                 <column name="STUDENTPK" length="30" />
             </key>

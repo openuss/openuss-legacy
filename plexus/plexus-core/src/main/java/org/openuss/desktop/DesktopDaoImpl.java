@@ -7,7 +7,7 @@ package org.openuss.desktop;
 
 import java.util.Collection;
 
-import org.openuss.lecture.Faculty;
+import org.openuss.lecture.Institute;
 import org.openuss.lecture.CourseType;
 
 /**
@@ -23,8 +23,8 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
     }
 
 	@Override
-	public Collection findByFaculty(final int transform, final Faculty faculty) {
-		return this.findByFaculty(transform, "select d from org.openuss.desktop.Desktop as d, org.openuss.lecture.Faculty f where f=:faculty and f in elements(d.faculties)", faculty);
+	public Collection findByInstitute(final int transform, final Institute institute) {
+		return this.findByInstitute(transform, "select d from org.openuss.desktop.Desktop as d, org.openuss.lecture.Institute f where f=:institute and f in elements(d.institutes)", institute);
 	}
 
 	@Override

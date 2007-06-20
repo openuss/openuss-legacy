@@ -7,8 +7,8 @@
 		<property name="courseFeed"><ref bean="courseFeed"/></property>
 	</bean>
 	
-	<bean name="/public/faculty.xml*" class="org.openuss.web.servlets.feedservlets.FacultyFeedController">	
-		<property name="facultyFeed"><ref bean="facultyFeed"/></property>
+	<bean name="/public/institute.xml*" class="org.openuss.web.servlets.feedservlets.InstituteFeedController">	
+		<property name="instituteFeed"><ref bean="instituteFeed"/></property>
 		<property name="lectureService"><ref bean="lectureService"/></property>
 	</bean>
 
@@ -33,7 +33,7 @@
 		<property name="newsService" ref="newsService"/>
 	</bean>
 
-	<bean name="facultyFeed" class="org.openuss.web.feeds.FacultyFeed" parent="feedTemplate">	
+	<bean name="instituteFeed" class="org.openuss.web.feeds.InstituteFeed" parent="feedTemplate">	
 		<property name="lectureService" ref="lectureService"/>
 		<property name="newsService" ref="newsService"/>
 	</bean>
