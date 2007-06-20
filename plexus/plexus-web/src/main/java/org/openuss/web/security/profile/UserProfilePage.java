@@ -22,7 +22,6 @@ import org.openuss.security.UserPreferences;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-import org.openuss.web.navigation.Navigator;
 import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
 
@@ -46,9 +45,6 @@ public class UserProfilePage extends BasePage{
 	
 	@Property(value = "#{uploadFileManager}")
 	private UploadFileManager uploadFileManager;
-	
-	@Property(value = "#{navigator}")
-	private Navigator navigator;
 	
 	@Prerender
 	public void prerender() {
@@ -141,7 +137,6 @@ public class UserProfilePage extends BasePage{
 	 */
 	public String showProfile() {
 		setSessionBean(Constants.SHOW_USER_PROFILE, user);
-		navigator.setLastView(Constants.USER_PROFILE_PAGE);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	
@@ -171,14 +166,6 @@ public class UserProfilePage extends BasePage{
 
 	public void setUploadFileManager(UploadFileManager uploadFileManager) {
 		this.uploadFileManager = uploadFileManager;
-	}
-
-	public Navigator getNavigator() {
-		return navigator;
-	}
-
-	public void setNavigator(Navigator navigator) {
-		this.navigator = navigator;
 	}
 
 	public DocumentService getDocumentService() {
