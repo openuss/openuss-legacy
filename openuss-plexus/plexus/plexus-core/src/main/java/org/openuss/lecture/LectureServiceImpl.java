@@ -177,7 +177,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("facultyname", faculty.getName()+"("+faculty.getShortcut()+")");
 		parameters.put("facultylink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"actions/public/lecture/facultyactivation.faces?code="+activationCode);
-		getMessageService().sendMessage(faculty.getShortcut(), "faculty.activation.courseType", "facultyactivation", parameters, getSecurityService().getCurrentUser());
+		getMessageService().sendMessage(faculty.getShortcut(), "faculty.activation.subject", "facultyactivation", parameters, getSecurityService().getCurrentUser());
 		
 	}
 
@@ -398,7 +398,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("facultyname", faculty.getName()+"("+faculty.getShortcut()+")");
 		parameters.put("facultyapplicantlink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/auth/aspirants.faces?faculty="+faculty.getId());
-		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.courseType", "facultyapplication", parameters, getFacultyAdmins(faculty));
+		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.subject", "facultyapplication", parameters, getFacultyAdmins(faculty));
 	}
 
 	private List<User> getFacultyAdmins(Faculty faculty){
@@ -458,7 +458,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("facultyname", faculty.getName()+"("+faculty.getShortcut()+")");
-		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.courseType", "facultyapplicationreject", parameters, user);
+		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.subject", "facultyapplicationreject", parameters, user);
 	}
 
 	/**
@@ -517,7 +517,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("facultyname", faculty.getName()+"("+faculty.getShortcut()+")");
 		parameters.put("facultylink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/faculty.faces?faculty="+faculty.getId());
-		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.courseType", "facultyapplicationapply", parameters, user);
+		getMessageService().sendMessage(faculty.getShortcut(), "faculty.application.subject", "facultyapplicationapply", parameters, user);
 	}
 
 	@Override
