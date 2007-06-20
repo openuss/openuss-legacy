@@ -96,7 +96,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		Map parameters = new HashMap();
 		parameters.put("coursename", ""+member.getCourse().getName()+"("+member.getCourse().getShortcut()+")");
 		getMessageService().sendMessage(member.getCourse().getName()+"("+member.getCourse().getShortcut()+")", 
-				"course.application.courseType", "courseapplicationapply", parameters, 
+				"course.application.subject", "courseapplicationapply", parameters, 
 				member.getUser());
 	}
 
@@ -149,7 +149,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		Map parameters = new HashMap();
 		parameters.put("coursename", ""+member.getCourse().getName()+"("+member.getCourse().getShortcut()+")");
 		getMessageService().sendMessage(member.getCourse().getName()+"("+member.getCourse().getShortcut()+")", 
-				"course.application.courseType", "courseapplicationreject", parameters, 
+				"course.application.subject", "courseapplicationreject", parameters, 
 				member.getUser());		
 	}
 
@@ -204,7 +204,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 				Map parameters = new HashMap();
 				parameters.put("coursename", course.getName()+"("+course.getShortcut()+")");
 				parameters.put("courseapplicantlink", link);			
-				getMessageService().sendMessage(course.getName(), "course.application.courseType", "courseapplication", parameters, recipients);
+				getMessageService().sendMessage(course.getName(), "course.application.subject", "courseapplication", parameters, recipients);
 			}
 			addAspirant(originalCourse, user);
 		} else {
