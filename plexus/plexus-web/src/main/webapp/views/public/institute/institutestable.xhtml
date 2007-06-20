@@ -10,9 +10,9 @@
       xmlns:c="http://java.sun.com/jstl/core">
       
 	<plexus:dataTable 
-		id="faculties" 
+		id="institutes" 
 		label="#{msg.instituteList_header}" 
-		value="views$public$institute$faculties.faculties" 
+		value="views$public$institute$institutes.institutes" 
 		var="bean" 
 		columnClasses="col_max_left, col_max_left, col_min_left, col_min_left"
 		rows="15">
@@ -20,7 +20,7 @@
 			<plexus:commandSortHeader columnName="name">
 				#{msg['institute_name']}
 			</plexus:commandSortHeader>
-				<h:commandLink action="#{views$public$institute$faculties.selectInstitute}" styleClass="command">
+				<h:commandLink action="#{views$public$institute$institutes.selectInstitute}" styleClass="command">
 					<h:outputText value="#{bean.name}"/>
 				</h:commandLink> 
 		</t:column>
@@ -42,7 +42,7 @@
 		<s:authorize ifAllGranted="ROLE_USER">
 			<plexus:column header="#{msg.commands_header}">
 				<plexus:command 
-					bean="#{views$public$institute$faculties}"
+					bean="#{views$public$institute$institutes}"
 					action="shortcutInstitute"
 					label="#{msg.course_command_shortcut}"
 					title="#{msg.course_command_shortcut_hint}"
