@@ -59,10 +59,10 @@ public class InstituteDaoTest extends InstituteDaoTestBase {
 		setComplete();
 		endTransaction();
 		
-		List faculties = instituteDao.loadAllEnabled();
-		assertTrue(faculties.contains(institute2));
-		faculties.contains(institute1);
-		assertFalse(faculties.contains(institute1));
+		List institutes = instituteDao.loadAllEnabled();
+		assertTrue(institutes.contains(institute2));
+		institutes.contains(institute1);
+		assertFalse(institutes.contains(institute1));
 		
 	}
 
