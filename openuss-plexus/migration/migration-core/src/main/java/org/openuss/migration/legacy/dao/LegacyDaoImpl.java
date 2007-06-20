@@ -47,7 +47,7 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 	/**
 	 * {@inheritDoc}
 	 */
-	public Collection<Faculty2> loadAllFaculties() {
+	public Collection<Faculty2> loadAllInstitutes() {
 		return (Collection<Faculty2>) this.getHibernateTemplate().loadAll(Faculty2.class);
 	}
 

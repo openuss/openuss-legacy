@@ -41,12 +41,12 @@ public class LectureServiceTest extends AbstractTransactionalDataSourceSpringCon
 	}
 
 	public void testDeniedAccess() {
-		logger.info("----> BEGIN denied access to createFaculty test");
+		logger.info("----> BEGIN denied access to createInstitute test");
 		try {
 			createSecureContext("ROLE_ANONYMOUS");
-			Faculty faculty = Faculty.Factory.newInstance();
+			Institute institute = Institute.Factory.newInstance();
 			try {
-				lectureService.persist(faculty);
+				lectureService.persist(institute);
 			} catch (LectureServiceException e) {
 				fail(e.getMessage());
 				logger.error(e);
@@ -55,21 +55,21 @@ public class LectureServiceTest extends AbstractTransactionalDataSourceSpringCon
 		} catch (AccessDeniedException expected) {
 			assertNotNull(expected);
 		}
-		logger.info("----> END denied access to createFaculty test");
+		logger.info("----> END denied access to createInstitute test");
 	}
 
-	public void testCreateFaculty() {
-		logger.info("----> BEGIN access to createFaculty test");
+	public void testCreateInstitute() {
+		logger.info("----> BEGIN access to createInstitute test");
 		createSecureContext("ROLE_ADMIN");
-		Faculty faculty = testUtility.createPersistFacultyWithDefaultUser();
+		Institute institute = testUtility.createPersistInstituteWithDefaultUser();
 		try {
-			lectureService.persist(faculty);
+			lectureService.persist(institute);
 		} catch (LectureServiceException e) {
 			fail(e.getMessage());
 			e.printStackTrace();
 		}
 		destroySecureContext();
-		logger.info("----> END access to createFaculty test");
+		logger.info("----> END access to createInstitute test");
 	}
 
 	private static void createSecureContext(String roleName) {

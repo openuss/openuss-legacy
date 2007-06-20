@@ -25,8 +25,8 @@
 	<!-- DataTableModels -->
 
  	<managed-bean>
- 		<managed-bean-name>facultySecurity</managed-bean-name>
- 		<managed-bean-class>org.openuss.lecture.FacultySecurity</managed-bean-class>
+ 		<managed-bean-name>instituteSecurity</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.InstituteSecurity</managed-bean-class>
  		<managed-bean-scope>request</managed-bean-scope>
  	</managed-bean>
 
@@ -37,26 +37,26 @@
  	</managed-bean>
  	
  	<managed-bean>
- 		<managed-bean-name>facultyMember</managed-bean-name>
- 		<managed-bean-class>org.openuss.lecture.FacultyMember</managed-bean-class>
+ 		<managed-bean-name>instituteMember</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.InstituteMember</managed-bean-class>
  		<managed-bean-scope>request</managed-bean-scope>
  	</managed-bean>
  	
  	<managed-bean>
- 		<managed-bean-name>facultyGroup</managed-bean-name>
- 		<managed-bean-class>org.openuss.lecture.FacultyGroup</managed-bean-class>
+ 		<managed-bean-name>instituteGroup</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.InstituteGroup</managed-bean-class>
  		<managed-bean-scope>request</managed-bean-scope>
  	</managed-bean>
  	
  	<converter>
- 		<converter-id>facultyConverter</converter-id>
- 		<converter-class>org.openuss.web.lecture.converter.FacultyConverter</converter-class>
+ 		<converter-id>instituteConverter</converter-id>
+ 		<converter-class>org.openuss.web.lecture.converter.InstituteConverter</converter-class>
  	</converter>
  	
  	<!-- Managed Beans -->
  	<managed-bean>
- 		<managed-bean-name>faculty</managed-bean-name>
- 		<managed-bean-class>org.openuss.lecture.FacultyImpl</managed-bean-class>
+ 		<managed-bean-name>institute</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.InstituteImpl</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
 

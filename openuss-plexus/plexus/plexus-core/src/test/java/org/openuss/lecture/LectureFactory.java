@@ -7,19 +7,19 @@ package org.openuss.lecture;
  */
 public class LectureFactory {
 	
-	public static Faculty createFaculty() {
-		Faculty faculty = Faculty.Factory.newInstance();
-		faculty.setName(unique("test-faculty"));
-		faculty.setOwnername("faculty owner");
-		faculty.setShortcut(unique("shortcut"));
-		faculty.setEmail("email@email.com");
-		faculty.setAddress("Leonardo-Campus 3");
-		faculty.setPostcode("48149");
-		faculty.setCity("Münster");
-		faculty.setLocale("de");
-		faculty.setTheme("plexus");
-		faculty.setWebsite("www.openuss.org");
-		return faculty;
+	public static Institute createInstitute() {
+		Institute institute = Institute.Factory.newInstance();
+		institute.setName(unique("test-institute"));
+		institute.setOwnername("institute owner");
+		institute.setShortcut(unique("shortcut"));
+		institute.setEmail("email@email.com");
+		institute.setAddress("Leonardo-Campus 3");
+		institute.setPostcode("48149");
+		institute.setCity("Münster");
+		institute.setLocale("de");
+		institute.setTheme("plexus");
+		institute.setWebsite("www.openuss.org");
+		return institute;
 	}
 	
 	public static Period createPeriod() {

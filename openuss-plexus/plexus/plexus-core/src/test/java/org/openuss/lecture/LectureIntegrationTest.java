@@ -20,7 +20,7 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 	
 	private User user;
 
-	private Faculty faculty;
+	private Institute institute;
 
 	public LectureIntegrationTest() {
 		setDefaultRollback(false);
@@ -31,27 +31,27 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		user = testUtility.createAdminSecureContext();
 		commit();
 		
-		faculty = LectureFactory.createFaculty();
-		faculty.setOwner(user);
-		assertNull(faculty.getId());
-		lectureService.createFaculty(faculty);
+		institute = LectureFactory.createInstitute();
+		institute.setOwner(user);
+		assertNull(institute.getId());
+		lectureService.createInstitute(institute);
 		commit();
 	}
 
 	/**
-	 * Add courseType to an existing faculty 
+	 * Add courseType to an existing institute 
 	 * 
 	 * @throws LectureException
 	 */
-	public void testAddCourseTypeToFaculty() throws LectureException{
+	public void testAddCourseTypeToInstitute() throws LectureException{
 		CourseType courseType = createAndCheckCourseType();
 
-		lectureService.removeFaculty(faculty.getId());
+		lectureService.removeInstitute(institute.getId());
 		commit();
 		
-		// check if faculty is removed
-		faculty = lectureService.getFaculty(faculty.getId());
-		assertNull(faculty);
+		// check if institute is removed
+		institute = lectureService.getInstitute(institute.getId());
+		assertNull(institute);
 		
 		// check if courseType is removed
 		courseType = lectureService.getCourseType(courseType.getId());
@@ -61,21 +61,21 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 	
 
 	/**
-	 * Add period to an existing faculty 
+	 * Add period to an existing institute 
 	 * @throws LectureException
 	 */
-	public void testAddPeriodToFaculty() throws LectureException {
+	public void testAddPeriodToInstitute() throws LectureException {
 		Period period = createAndCheckPeriod();
 
 		lectureService.removePeriod(period.getId());
 		commit();
 		
-		lectureService.removeFaculty(faculty.getId());
+		lectureService.removeInstitute(institute.getId());
 		commit();
 
-		// check if faculty is removed
-		faculty = lectureService.getFaculty(faculty.getId());
-		assertNull(faculty);
+		// check if institute is removed
+		institute = lectureService.getInstitute(institute.getId());
+		assertNull(institute);
 		
 		// check if period is removed
 		period = lectureService.getPeriod(period.getId());
@@ -86,15 +86,15 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 	 * add active period settings 
 	 * @throws LectureException
 	 */
-	public void testAddActivePeriodToFaculty() throws LectureException {
+	public void testAddActivePeriodToInstitute() throws LectureException {
 		Period period = createAndCheckPeriod();
 		commit();
-		lectureService.setActivePeriod(faculty.getId(), period);
+		lectureService.setActivePeriod(institute.getId(), period);
 		commit();
-		faculty = lectureService.getFaculty(faculty.getId());
+		institute = lectureService.getInstitute(institute.getId());
 		
-		assertNotNull(faculty.getActivePeriod());
-		assertEquals(faculty.getActivePeriod(), period);
+		assertNotNull(institute.getActivePeriod());
+		assertEquals(institute.getActivePeriod(), period);
 		assertTrue(period.isActive());
 		
 		// remove active period
@@ -103,32 +103,32 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		period = lectureService.getPeriod(period.getId());
 		assertNull(period);
 		
-		faculty = lectureService.getFaculty(faculty.getId());
-		assertNull(faculty.getActivePeriod());
+		institute = lectureService.getInstitute(institute.getId());
+		assertNull(institute.getActivePeriod());
 
-		lectureService.removeFaculty(faculty.getId());
+		lectureService.removeInstitute(institute.getId());
 		commit();
 	}
 	
-	public void testTwoActivePeriodToFaculty() throws LectureException {
+	public void testTwoActivePeriodToInstitute() throws LectureException {
 		Period activePeriod = createAndCheckPeriod();
 		Period period = createAndCheckPeriod();
 		
-		lectureService.setActivePeriod(faculty.getId(), activePeriod);
+		lectureService.setActivePeriod(institute.getId(), activePeriod);
 		commit();
-		faculty = lectureService.getFaculty(faculty.getId());
-		assertEquals(faculty.getActivePeriod(), activePeriod);
+		institute = lectureService.getInstitute(institute.getId());
+		assertEquals(institute.getActivePeriod(), activePeriod);
 		
 		lectureService.removePeriod(period.getId());
 		commit();
-		faculty = lectureService.getFaculty(faculty.getId());
-		assertEquals(faculty.getActivePeriod(), activePeriod);
+		institute = lectureService.getInstitute(institute.getId());
+		assertEquals(institute.getActivePeriod(), activePeriod);
 		
-		lectureService.removeFaculty(faculty.getId());
+		lectureService.removeInstitute(institute.getId());
 		commit();
 	}
 	
-	public void testAddCourseToFaculty() throws LectureException {
+	public void testAddCourseToInstitute() throws LectureException {
 		Period period = createAndCheckPeriod();
 		CourseType courseType = createAndCheckCourseType();
 		
@@ -144,15 +144,15 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		
 		assertNotNull(course.getCourseType());
 		assertNotNull(course.getPeriod());
-		assertNotNull(course.getFaculty());
+		assertNotNull(course.getInstitute());
 		
 		assertEquals(courseType, course.getCourseType());
 		assertEquals(period, course.getPeriod());
-		assertEquals(faculty, course.getFaculty());
+		assertEquals(institute, course.getInstitute());
 		
 		assertTrue(course.getPeriod().getCourses().contains(course));
 		assertTrue(course.getCourseType().getCourses().contains(course));
-		assertTrue(course.getFaculty().getCourses().contains(course));
+		assertTrue(course.getInstitute().getCourses().contains(course));
 		
 		Course course2 = lectureService.createCourse(courseType.getId(), period.getId());
 		commit();
@@ -165,47 +165,47 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		
 		assertNull(lectureService.getCourse(course.getId()));
 		
-		faculty = lectureService.getFaculty(faculty.getId());
+		institute = lectureService.getInstitute(institute.getId());
 		period = lectureService.getPeriod(period.getId());
 		courseType = lectureService.getCourseType(courseType.getId());
-		assertEquals(1, faculty.getCourses().size());
+		assertEquals(1, institute.getCourses().size());
 		
 		assertNotNull("Couldn't find previous Period object.", period);
 		assertNotNull("Couldn't find previous CourseType object.", courseType);
 		
-		// remove faculty
-		lectureService.removeFaculty(faculty.getId());
+		// remove institute
+		lectureService.removeInstitute(institute.getId());
 		commit();
 		
 		assertNull(lectureService.getCourse(course.getId()));
 	}
 
 	/**
-	 * Creates a period, adds it to the faculty, make a commit and checks the results
+	 * Creates a period, adds it to the institute, make a commit and checks the results
 	 * @return
 	 * @throws LectureException
 	 */
 	private Period createAndCheckPeriod() throws LectureException {
 		Period period = LectureFactory.createPeriod();
-		faculty = lectureService.add(faculty.getId(), period);
+		institute = lectureService.add(institute.getId(), period);
 		commit();
-		faculty = lectureService.getFaculty(faculty.getId());
-		assertTrue(faculty.getPeriods().contains(period));
+		institute = lectureService.getInstitute(institute.getId());
+		assertTrue(institute.getPeriods().contains(period));
 		assertNotNull(period.getId());
 		return period;
 	}
 	
 	/**
-	 * Creates a period, adds it to the faculty, make a commit and checks the results
+	 * Creates a period, adds it to the institute, make a commit and checks the results
 	 * @return
 	 * @throws LectureException
 	 */
 	private CourseType createAndCheckCourseType() throws LectureException {
 		CourseType courseType = LectureFactory.createCourseType();
-		faculty = lectureService.add(faculty.getId(), courseType);
+		institute = lectureService.add(institute.getId(), courseType);
 		commit();
-		faculty = lectureService.getFaculty(faculty.getId());
-		assertTrue(faculty.getCourseTypes().contains(courseType));
+		institute = lectureService.getInstitute(institute.getId());
+		assertTrue(institute.getCourseTypes().contains(courseType));
 		assertNotNull(courseType.getId());
 		return courseType;
 	}

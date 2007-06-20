@@ -16,24 +16,24 @@ import org.openuss.security.UserDao;
  */
 public class PeriodDaoTest extends PeriodDaoTestBase {
 	
-	private FacultyDao facultyDao;
+	private InstituteDao instituteDao;
 	private UserDao userDao;
 	
 	public void testPeriodDaoCreate() {
 		User user = SecurityTestUtils.createDefaultUser();
 		userDao.create(user);
 		
-		Faculty faculty = Faculty.Factory.newInstance();
-		faculty.setName("name");
-		faculty.setOwnername("ownername");
-		faculty.setOwner(user);
-		faculty.setShortcut("shortcut");
-		assertNull(faculty.getId());
-		facultyDao.create(faculty);
-		assertNotNull(faculty.getId());
+		Institute institute = Institute.Factory.newInstance();
+		institute.setName("name");
+		institute.setOwnername("ownername");
+		institute.setOwner(user);
+		institute.setShortcut("shortcut");
+		assertNull(institute.getId());
+		instituteDao.create(institute);
+		assertNotNull(institute.getId());
 		
 		Period period = new PeriodImpl();
-		period.setFaculty(faculty);
+		period.setInstitute(institute);
 		period.setName(" ");
 		assertNull(period.getId());
 		periodDao.create(period);
@@ -45,16 +45,16 @@ public class PeriodDaoTest extends PeriodDaoTestBase {
 		assertNotNull(period);
 	}
 	
-	public void testFacultyDaoInjection() {
-		assertNotNull(facultyDao);
+	public void testInstituteDaoInjection() {
+		assertNotNull(instituteDao);
 	}
 
-	public FacultyDao getFacultyDao() {
-		return facultyDao;
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
 	}
 
-	public void setFacultyDao(FacultyDao facultyDao) {
-		this.facultyDao = facultyDao;
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
 	}
 
 	public UserDao getUserDao() {

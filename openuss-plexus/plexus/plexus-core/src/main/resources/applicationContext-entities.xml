@@ -18,7 +18,7 @@
 		      Lecture
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
 
-	<bean id="faculty" class="org.openuss.lecture.FacultyImpl" scope="singleton"/>
+	<bean id="institute" class="org.openuss.lecture.InstituteImpl" scope="singleton"/>
 	<bean id="courseType" class="org.openuss.lecture.CourseTypeImpl" scope="singleton"/>
 	<bean id="period" class="org.openuss.lecture.PeriodImpl" scope="singleton"/>
 	<bean id="course" class="org.openuss.lecture.CourseImpl"  scope="singleton"/>

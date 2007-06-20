@@ -56,10 +56,10 @@ public class SimpleDatabaseIndexingImpl implements InitializingBean, SimpleDatab
 				return document;
 			}
 		};
-		String sqlFaculty = "SELECT ID,'FACULTY' as DOMAINTYPE, NAME AS DOMAINNAME, SHORTCUT, OWNERNAME, POSTCODE, CITY, TELEPHONE, TELEFAX, DESCRIPTION, EMAIL FROM LECTURE_FACULTY";
-		String sqlCourse = "SELECT e.id, 'Course' as DOMAINTYPE, e.shortcut, e.description, s.name AS DOMAINNAME, s.description, p.name, p.description, f.name, f.ownername FROM LECTURE_Course e, LECTURE_COURSE_TYPE s, lecture_period p, LECTURE_FACULTY f WHERE e.courseType_fk = s.id AND e.period_fk = p.id AND e.faculty_fk = f.id;";
+		String sqlInstitute = "SELECT ID,'INSTITUTE' as DOMAINTYPE, NAME AS DOMAINNAME, SHORTCUT, OWNERNAME, POSTCODE, CITY, TELEPHONE, TELEFAX, DESCRIPTION, EMAIL FROM LECTURE_INSTITUTE";
+		String sqlCourse = "SELECT e.id, 'Course' as DOMAINTYPE, e.shortcut, e.description, s.name AS DOMAINNAME, s.description, p.name, p.description, f.name, f.ownername FROM LECTURE_Course e, LECTURE_COURSE_TYPE s, lecture_period p, LECTURE_INSTITUTE f WHERE e.courseType_fk = s.id AND e.period_fk = p.id AND e.institute_fk = f.id;";
 		
-		this.indexer.registerDocumentHandler(new SqlRequest(sqlFaculty), sqlDocumentHandler);
+		this.indexer.registerDocumentHandler(new SqlRequest(sqlInstitute), sqlDocumentHandler);
 		this.indexer.registerDocumentHandler(new SqlRequest(sqlCourse), sqlDocumentHandler);
 	}
 

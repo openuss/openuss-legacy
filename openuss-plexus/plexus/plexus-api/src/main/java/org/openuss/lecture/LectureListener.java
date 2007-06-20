@@ -1,7 +1,7 @@
 package org.openuss.lecture;
 
 /**
- * Lecture Faculty listener informs listeners if a domain object will be created, updated or removed.
+ * Lecture Institute listener informs listeners if a domain object will be created, updated or removed.
  * 
  * @author Ingo Dueppe
  *
@@ -9,25 +9,25 @@ package org.openuss.lecture;
 public interface LectureListener {
 
 	/**
-	 * Fired if an new faculty is created
-	 * @param faculty
+	 * Fired if an new institute is created
+	 * @param institute
 	 * @throws LectureException
 	 */
-	public void createdFaculty(Faculty faculty) throws LectureException;
+	public void createdInstitute(Institute institute) throws LectureException;
 	
 	/**
-	 * Fired if an faculty is going to be removed
-	 * @param faculty
+	 * Fired if an institute is going to be removed
+	 * @param institute
 	 * @throws LectureException to cancel the transaction
 	 */
-	public void removingFaculty(Faculty faculty) throws LectureException;
+	public void removingInstitute(Institute institute) throws LectureException;
 
 	/**
-	 * Fired if an faculty object is updated
-	 * @param faculty
+	 * Fired if an institute object is updated
+	 * @param institute
 	 * @throws LectureException 
 	 */
-	public void updateFaculty(Faculty faculty) throws LectureException;
+	public void updateInstitute(Institute institute) throws LectureException;
 	
 	
 	/**

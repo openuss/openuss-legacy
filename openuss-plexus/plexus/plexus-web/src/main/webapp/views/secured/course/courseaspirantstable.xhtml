@@ -10,7 +10,7 @@
       
     <plexus:dataTable 
     	id="courseaspirants" 
-    	label="#{msg.faculty_members_subheading}" 
+    	label="#{msg.institute_members_subheading}" 
     	value="views$secured$course$courseaspirants.data" 
     	columnClasses="col_max_left"
     	var="aspirant" 
@@ -40,8 +40,8 @@
 			<f:facet name="header">#{msg['course_aspirants_aspire']}</f:facet>
 			<h:selectOneMenu styleClass="pulldown_small" valueChangeListener="#{views$secured$course$courseaspirants.changedAspirant}">
 				<f:selectItem itemValue="null" itemLabel=""/>
-				<f:selectItem itemValue="accept" itemLabel="#{msg['faculty_aspirant_accept']}"/>
-				<f:selectItem itemValue="reject" itemLabel="#{msg['faculty_aspirant_reject']}"/>
+				<f:selectItem itemValue="accept" itemLabel="#{msg['institute_aspirant_accept']}"/>
+				<f:selectItem itemValue="reject" itemLabel="#{msg['institute_aspirant_reject']}"/>
 			</h:selectOneMenu>
 		</t:column>
 		

@@ -10,16 +10,16 @@
       xmlns:c="http://java.sun.com/jstl/core">
       
 	<plexus:dataTable 
-		id="faculties" 
+		id="institutes" 
 		label="#{msg.search_result_header}" 
 		value="views$public$search$search.resultProvider" 
 		var="result" 
 		columnClasses="col_max_left, col_commands"
 		rows="15">
 		<t:column>
-			<div  class="faculty_info">
-	    		<o:link value="/views/secured/lecture/faculty.faces" rendered="#{result.domainType == 'FACULTY'}">
-	    			<f:param name="faculty" value="#{result.id}"/>
+			<div  class="institute_info">
+	    		<o:link value="/views/secured/lecture/institute.faces" rendered="#{result.domainType == 'INSTITUTE'}">
+	    			<f:param name="institute" value="#{result.id}"/>
 				 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
 					<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
 	    		</o:link>

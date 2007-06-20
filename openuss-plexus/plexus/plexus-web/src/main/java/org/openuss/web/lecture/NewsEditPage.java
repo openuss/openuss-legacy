@@ -68,12 +68,12 @@ public class NewsEditPage extends AbstractLecturePage {
 		
 		if (newsItem.getPublishDate().after(newsItem.getExpireDate())) {
 			addError(i18n("news_error_expire_before_publish_date"));
-			return Constants.FACULTY_NEWS_EDIT_PAGE;
+			return Constants.INSTITUTE_NEWS_EDIT_PAGE;
 		}
 		newsItem.setAuthor(getAuthorName());
 		newsService.saveNewsItem(newsItem);
 
-		return Constants.FACULTY_NEWS_PAGE;
+		return Constants.INSTITUTE_NEWS_PAGE;
 	}
 
 	private String getAuthorName() {
@@ -114,7 +114,7 @@ public class NewsEditPage extends AbstractLecturePage {
 		List<SelectItem> items = new ArrayList<SelectItem>();
 		items.add(new SelectItem(NewsCategory.GLOBAL,i18n("news_category_global")));
 //		items.add(new SelectItem(NewsCategory.DESKTOP,i18n("news_category_desktop")));
-		items.add(new SelectItem(NewsCategory.FACULTY,i18n("news_category_faculty")));
+		items.add(new SelectItem(NewsCategory.INSTITUTE,i18n("news_category_institute")));
 		items.add(new SelectItem(NewsCategory.COURSE,i18n("news_category_course")));
 		return items;
 	}
@@ -136,7 +136,7 @@ public class NewsEditPage extends AbstractLecturePage {
 		logger.debug("cancel");
 		removeSessionBean(Constants.NEWS_SELECTED_NEWSITEM);
 		removeSessionBean(Constants.UPLOADED_FILE);
-		return Constants.FACULTY_NEWS_PAGE;
+		return Constants.INSTITUTE_NEWS_PAGE;
 	}
 
 	/* ----------------- properties ------------------*/

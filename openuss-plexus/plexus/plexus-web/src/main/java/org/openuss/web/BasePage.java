@@ -27,7 +27,7 @@ public abstract class BasePage extends BaseBean {
 	protected User user;
 	
 	/**
-	 * Refreshing faculty entity 
+	 * Refreshing institute entity 
 	 * @throws DesktopException 
 	 */
 	@Preprocess

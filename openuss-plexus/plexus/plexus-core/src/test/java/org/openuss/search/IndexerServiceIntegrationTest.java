@@ -11,7 +11,7 @@ import java.util.Iterator;
 import org.openuss.commands.Command;
 import org.openuss.commands.CommandDao;
 import org.openuss.foundation.DomainObject;
-import org.openuss.lecture.Faculty;
+import org.openuss.lecture.Institute;
 
 /**
  * JUnit Test for Spring Hibernate IndexerService class.
@@ -24,25 +24,25 @@ public class IndexerServiceIntegrationTest extends IndexerServiceIntegrationTest
 	public void testCreateIndex() throws IndexerApplicationException {
 		DomainObject domain = createDomainObject();
 		indexerService.createIndex(domain);
-		check("facultyIndexerCommand", "CREATE", domain);
+		check("instituteIndexerCommand", "CREATE", domain);
 	}
 
 	private DomainObject createDomainObject() {
-		Faculty faculty = Faculty.Factory.newInstance();
-		faculty.setId(testUtility.unique());
-		return faculty;
+		Institute institute = Institute.Factory.newInstance();
+		institute.setId(testUtility.unique());
+		return institute;
 	}
 
 	public void testUpdateIndex() throws IndexerApplicationException {
 		DomainObject domain = createDomainObject();
 		indexerService.updateIndex(domain);
-		check("facultyIndexerCommand", "UPDATE", domain);
+		check("instituteIndexerCommand", "UPDATE", domain);
 	}
 
 	public void testDeleteIndex() throws IndexerApplicationException {
 		DomainObject domain = createDomainObject();
 		indexerService.deleteIndex(domain);
-		check("facultyIndexerCommand", "DELETE", domain);
+		check("instituteIndexerCommand", "DELETE", domain);
 	}
 
 	private void check(String command, String commandType, DomainObject domain) {

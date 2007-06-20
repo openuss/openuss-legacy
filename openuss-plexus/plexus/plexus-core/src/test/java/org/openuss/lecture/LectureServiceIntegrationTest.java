@@ -34,33 +34,33 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		assertNotNull(authorityDao);
 	}
 
-	public void testAddCourseTypeToFaculty() throws LectureException{
+	public void testAddCourseTypeToInstitute() throws LectureException{
 		logger.debug("----> add courseType <---- ");
 		user = testUtility.createSecureContext();
-		Faculty faculty = createFaculty();
-		lectureService.createFaculty(faculty);
+		Institute institute = createInstitute();
+		lectureService.createInstitute(institute);
 
 		commit();
 		
 		CourseType courseType = CourseType.Factory.newInstance(unique("name"), unique("courseType"));
-		faculty = lectureService.add(faculty.getId(), courseType);
-		assertTrue(faculty.getCourseTypes().contains(courseType));
+		institute = lectureService.add(institute.getId(), courseType);
+		assertTrue(institute.getCourseTypes().contains(courseType));
 		
 		commit();
 		
 		assertNotNull(courseType.getId());
 		
-		lectureService.removeFaculty(faculty.getId());
+		lectureService.removeInstitute(institute.getId());
 		setComplete();
 	}
 	
 	
-	public void testAddPeriodToFaculty() throws LectureException {
-		logger.debug("add period to faculty");
+	public void testAddPeriodToInstitute() throws LectureException {
+		logger.debug("add period to institute");
 		user = testUtility.createSecureContext();
 		
-		Faculty faculty = createFaculty();
-		lectureService.createFaculty(faculty);
+		Institute institute = createInstitute();
+		lectureService.createInstitute(institute);
 		
 		commit();
 		
@@ -68,26 +68,26 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		period.setName("WS06/07");
 		period.setDescription("Wintersemester 2006 / 2007");
 		
-		faculty = lectureService.add(faculty.getId(), period);
+		institute = lectureService.add(institute.getId(), period);
 		
-		assertTrue(faculty.getPeriods().contains(period));
+		assertTrue(institute.getPeriods().contains(period));
 		commit();
 		
 		assertNotNull(period.getId());
 		
-		lectureService.removeFaculty(faculty.getId());
+		lectureService.removeInstitute(institute.getId());
 		
 		setComplete();
 	}
 	
-	private Faculty createFaculty() {
-		Faculty faculty = Faculty.Factory.newInstance();
-		faculty.setName(unique("faculty name"));
-		faculty.setShortcut(unique("faculty"));
-		faculty.setOwnername("ownername");
-		faculty.setEmail("email@faculty");
-		faculty.setOwner(user);
-		return faculty;
+	private Institute createInstitute() {
+		Institute institute = Institute.Factory.newInstance();
+		institute.setName(unique("institute name"));
+		institute.setShortcut(unique("institute"));
+		institute.setOwnername("ownername");
+		institute.setEmail("email@institute");
+		institute.setOwner(user);
+		return institute;
 	}
 	
 	private String unique(String name) {

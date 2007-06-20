@@ -40,7 +40,7 @@ public class NewsPage extends AbstractLecturePage {
 		@Override 
 		public DataPage<NewsItemInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<NewsItemInfo> news = newsService.getNewsItems(faculty);
+				List<NewsItemInfo> news = newsService.getNewsItems(institute);
 				page = new DataPage<NewsItemInfo>(news.size(),0,news);
 				sort(news);
 			}
@@ -59,11 +59,11 @@ public class NewsPage extends AbstractLecturePage {
 		newsItem.setPublishDate(new Date());
 		newsItem.setExpireDate(new Date(System.currentTimeMillis()+1000L*60L*60L*24L*28L));
 		
-		newsItem.setPublisherIdentifier(faculty.getId());
-		newsItem.setPublisherName(faculty.getName());
+		newsItem.setPublisherIdentifier(institute.getId());
+		newsItem.setPublisherName(institute.getName());
 		
 		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
-		return Constants.FACULTY_NEWS_EDIT_PAGE;
+		return Constants.INSTITUTE_NEWS_EDIT_PAGE;
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public class NewsPage extends AbstractLecturePage {
 		logger.debug("edit news item");
 		NewsItemInfo newsItem = data.getRowData();
 		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
-		return Constants.FACULTY_NEWS_EDIT_PAGE;
+		return Constants.INSTITUTE_NEWS_EDIT_PAGE;
 	}
 	
 	/**
@@ -86,12 +86,12 @@ public class NewsPage extends AbstractLecturePage {
 		NewsItemInfo newsItem = data.getRowData();
 		newsService.deleteNewsItem(newsItem);
 		addMessage(i18n("message_newsitem_removed_succeed"));
-		return Constants.FACULTY_NEWS_PAGE;
+		return Constants.INSTITUTE_NEWS_PAGE;
 	}
 
 	public List<NewsItem> getNewsItems() {
-		logger.debug("getting newsitems for faculty " + faculty);
-		return newsService.getNewsItems(faculty);
+		logger.debug("getting newsitems for institute " + institute);
+		return newsService.getNewsItems(institute);
 	}
 
 	/* --------------- properties -------------- */

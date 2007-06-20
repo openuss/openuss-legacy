@@ -236,11 +236,11 @@ public class Student2 implements java.io.Serializable {
 		this.telephone = telephone;
 	}
 
-	public Set<Studentfaculty2> getStudentfaculties() {
+	public Set<Studentfaculty2> getStudentinstitutes() {
 		return this.studentfaculty2s;
 	}
 
-	public void setStudentfaculties(Set<Studentfaculty2> studentfaculty2s) {
+	public void setStudentinstitutes(Set<Studentfaculty2> studentfaculty2s) {
 		this.studentfaculty2s = studentfaculty2s;
 	}
 

@@ -30,10 +30,10 @@
 <!-- text above will be ignored -->
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="title"> 
-		<h:outputText value="#{msg.faculty_maintitle} - #{faculty.name}" />
+		<h:outputText value="#{msg.institute_maintitle} - #{institute.name}" />
 	</ui:define>
 	<ui:define name="navigation">
-		<ui:include src="/views/commons/navigation/faculty.xhtml" />
+		<ui:include src="/views/commons/navigation/institute.xhtml" />
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="newsEditForm" enctype="multipart/form-data">

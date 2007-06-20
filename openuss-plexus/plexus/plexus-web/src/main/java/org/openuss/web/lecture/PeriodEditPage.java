@@ -23,13 +23,13 @@ public class PeriodEditPage extends AbstractPeriodPage {
 	 */
 	public String savePeriod() throws LectureException {
 		if (period.getId() == null) {
-			lectureService.add(faculty.getId(), period);
+			lectureService.add(institute.getId(), period);
 			addMessage(i18n("message_created_new_period_succeed"));
 		} else {
 			lectureService.persist(period);
 			addMessage(i18n("message_save_period_succeed"));
 		}
-		return Constants.FACULTY_PERIODS_PAGE;
+		return Constants.INSTITUTE_PERIODS_PAGE;
 	}
 
 }

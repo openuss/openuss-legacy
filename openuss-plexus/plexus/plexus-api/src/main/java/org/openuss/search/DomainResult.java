@@ -12,7 +12,7 @@ import org.openuss.foundation.DomainObject;
 public interface DomainResult extends DomainObject {
 
 	/**
-	 * Name of the result, for instance the title of the faculty.
+	 * Name of the result, for instance the title of the institute.
 	 * @return string 
 	 */
 	public String getName();
@@ -24,13 +24,13 @@ public interface DomainResult extends DomainObject {
 	public Date getModified();
 	
 	/**
-	 * Details of the result like the description of a faculty or course.
+	 * Details of the result like the description of a institute or course.
 	 * @return string
 	 */
 	public String getDetails();
 
 	/**
-	 * Type of the domain object like faculty or course.
+	 * Type of the domain object like institute or course.
 	 * @return string
 	 */
 	public String getDomainType();

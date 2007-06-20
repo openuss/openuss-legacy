@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
-import org.openuss.lecture.Faculty;
-import org.openuss.lecture.FacultyDao;
+import org.openuss.lecture.Institute;
+import org.openuss.lecture.InstituteDao;
 import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
 import org.openuss.security.Roles;
@@ -26,11 +26,11 @@ public class TestUtility {
 	
 	private GroupDao groupDao;
 
-	private FacultyDao facultyDao;
+	private InstituteDao instituteDao;
 
 	private User defaultUser;
 
-	private Faculty defaultFaculty;
+	private Institute defaultInstitute;
 	
 	private static long uniqueId = System.currentTimeMillis();
 
@@ -61,28 +61,28 @@ public class TestUtility {
 		userDao.remove(user);
 	}
 
-	public Faculty createPersistFacultyWithDefaultUser() {
+	public Institute createPersistInstituteWithDefaultUser() {
 		defaultUser.setUsername(unique("username"));
 		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
 		userDao.create(defaultUser);
-		defaultFaculty.setName(unique("name"));
-		defaultFaculty.setShortcut(unique("shortcut"));
-		facultyDao.create(defaultFaculty);
-		return defaultFaculty;
+		defaultInstitute.setName(unique("name"));
+		defaultInstitute.setShortcut(unique("shortcut"));
+		instituteDao.create(defaultInstitute);
+		return defaultInstitute;
 	}
 
-	public void removePersistFacultyAndDefaultUser() {
-		facultyDao.remove(defaultFaculty);
-		userDao.remove(defaultFaculty.getOwner());
+	public void removePersistInstituteAndDefaultUser() {
+		instituteDao.remove(defaultInstitute);
+		userDao.remove(defaultInstitute.getOwner());
 	}
 
-	public Faculty createdDefaultFacultyWithStoredUser() {
+	public Institute createdDefaultInstituteWithStoredUser() {
 		defaultUser.setUsername(unique("username"));
 		userDao.create(defaultUser);
-		defaultFaculty.setName(unique("name"));
-		defaultFaculty.setShortcut(unique("shortcut"));
-		facultyDao.create(defaultFaculty);
-		return defaultFaculty;
+		defaultInstitute.setName(unique("name"));
+		defaultInstitute.setShortcut(unique("shortcut"));
+		instituteDao.create(defaultInstitute);
+		return defaultInstitute;
 	}
 
 	public User createSecureContext() {
@@ -156,20 +156,20 @@ public class TestUtility {
 		this.defaultUser = defaultUser;
 	}
 
-	public Faculty getDefaultFaculty() {
-		return defaultFaculty;
+	public Institute getDefaultInstitute() {
+		return defaultInstitute;
 	}
 
-	public void setDefaultFaculty(Faculty defaultFaculty) {
-		this.defaultFaculty = defaultFaculty;
+	public void setDefaultInstitute(Institute defaultInstitute) {
+		this.defaultInstitute = defaultInstitute;
 	}
 
-	public FacultyDao getFacultyDao() {
-		return facultyDao;
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
 	}
 
-	public void setFacultyDao(FacultyDao facultyDao) {
-		this.facultyDao = facultyDao;
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
 	}
 
 	public GroupDao getGroupDao() {

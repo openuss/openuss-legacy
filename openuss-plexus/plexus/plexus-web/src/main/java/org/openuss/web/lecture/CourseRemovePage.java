@@ -50,8 +50,8 @@ public class CourseRemovePage extends AbstractCoursePage {
 	public String removeCourse() throws LectureException {
 		logger.trace("removing course");
 		lectureService.removeCourse(course.getId());
-		addMessage(i18n("faculty_course_removed_succeed"));
-		return Constants.FACULTY_PERIODS_PAGE;
+		addMessage(i18n("institute_course_removed_succeed"));
+		return Constants.INSTITUTE_PERIODS_PAGE;
 	}
 	
 	/**

@@ -20,10 +20,10 @@
 			<plexus:commandSortHeader columnName="name"> 
 				<h:outputText value="#{msg.desktop_coursetypes_colheader_name}"/>
 			</plexus:commandSortHeader>
-			<o:link value="/views/secured/lecture/coursetype.faces" title="#{courseTypeItem.faculty.name}">
+			<o:link value="/views/secured/lecture/coursetype.faces" title="#{courseTypeItem.institute.name}">
 				<f:param value="#{courseTypeItem.id}" name="coursetype" />
 			</o:link>
-			<h:commandLink action="#{views$secured$desktop$desktop.showCourseType}" styleClass="command" title="#{courseTypeItem.faculty.name}">
+			<h:commandLink action="#{views$secured$desktop$desktop.showCourseType}" styleClass="command" title="#{courseTypeItem.institute.name}">
 				<h:outputText value="#{courseTypeItem.name} (#{courseTypeItem.shortcut})"/>
 			</h:commandLink>
 		</t:column>

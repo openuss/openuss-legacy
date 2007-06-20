@@ -6,11 +6,11 @@
     					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    				Faculty Activation Configuration
+    				Institute Activation Configuration
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	 
-	 <bean name="facultyActivationCommand" class="org.openuss.lecture.FacultyActivationCommand">
-	 	<property name="facultyDao"><ref bean="facultyDao"/></property>
+	 <bean name="instituteActivationCommand" class="org.openuss.lecture.InstituteActivationCommand">
+	 	<property name="instituteDao"><ref bean="instituteDao"/></property>
 	 </bean>
 
 </beans>

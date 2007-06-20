@@ -1,11 +1,11 @@
 package org.openuss.search;
 
-import org.openuss.lecture.FacultyIndexer;
+import org.openuss.lecture.InstituteIndexer;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 public class DomainIndexerFactoryTest extends AbstractDependencyInjectionSpringContextTests {
 
-	private FacultyIndexer facultyIndexer;
+	private InstituteIndexer instituteIndexer;
 	
 	private DomainIndexerFactory domainIndexerFactory;
 	
@@ -14,12 +14,12 @@ public class DomainIndexerFactoryTest extends AbstractDependencyInjectionSpringC
 		
 	}
 	
-	public FacultyIndexer getFacultyIndexer() {
-		return facultyIndexer;
+	public InstituteIndexer getInstituteIndexer() {
+		return instituteIndexer;
 	}
 
-	public void setFacultyIndexer(FacultyIndexer facultyIndexer) {
-		this.facultyIndexer = facultyIndexer;
+	public void setInstituteIndexer(InstituteIndexer instituteIndexer) {
+		this.instituteIndexer = instituteIndexer;
 	}
 
 	public DomainIndexerFactory getDomainIndexerFactory() {

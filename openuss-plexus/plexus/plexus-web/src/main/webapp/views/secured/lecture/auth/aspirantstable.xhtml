@@ -8,7 +8,7 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:c="http://java.sun.com/jstl/core">
       
-    <plexus:dataTable id="aspirants" label="#{msg.faculty_members_subheading}" value="views$secured$lecture$auth$aspirants.data" var="aspirant" rows="10">  
+    <plexus:dataTable id="aspirants" label="#{msg.institute_members_subheading}" value="views$secured$lecture$auth$aspirants.data" var="aspirant" rows="10">  
       
 		<t:column>
 			<plexus:commandSortHeader columnName="username"> #{msg['user_username']} </plexus:commandSortHeader>
@@ -34,8 +34,8 @@
 			<f:facet name="header">#{msg['commands_header']}</f:facet>
 			<h:selectOneMenu styleClass="pulldown_small" valueChangeListener="#{views$secured$lecture$auth$aspirants.changedAspirant}">
 				<f:selectItem itemValue="null" itemLabel=""/>
-				<f:selectItem itemValue="accept" itemLabel="#{msg['faculty_aspirant_accept']}"/>
-				<f:selectItem itemValue="reject" itemLabel="#{msg['faculty_aspirant_reject']}"/>
+				<f:selectItem itemValue="accept" itemLabel="#{msg['institute_aspirant_accept']}"/>
+				<f:selectItem itemValue="reject" itemLabel="#{msg['institute_aspirant_reject']}"/>
 			</h:selectOneMenu>
 		</t:column>
 		

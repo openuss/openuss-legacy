@@ -22,12 +22,12 @@
 	<ui:composition template="/views/layout/dialog.xhtml">
   		<ui:define name="content">
 			<h:form id="reg1Form"> 
-				<o:block label="#{msg.faculty_registration_step1_headline}" styleClass="form_box">
-					<ui:include src="/views/commons/faculty/facultyData.xhtml" />
+				<o:block label="#{msg.institute_registration_step1_headline}" styleClass="form_box">
+					<ui:include src="/views/commons/institute/instituteData.xhtml" />
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.forward}" action="faculty_registration_step2" styleClass="button_continue" />
-					<h:commandButton value="${msg.back}" action="faculty_registration_start" styleClass="button_back" immediate="true"/>
+					<h:commandButton value="${msg.forward}" action="institute_registration_step2" styleClass="button_continue" />
+					<h:commandButton value="${msg.back}" action="institute_registration_start" styleClass="button_back" immediate="true"/>
 		  		</o:block>
 	  		</h:form>
   		</ui:define>

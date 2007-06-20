@@ -47,8 +47,8 @@ public class CourseIndexer extends DomainIndexer {
 			delete();
 			create();
 //			try {
-//				Term facultyTerm = new Term(IDENTIFIER, String.valueOf(course.getId()));
-//				getLuceneIndexTemplate().updateDocument(facultyTerm, new DocumentModifier() {
+//				Term instituteTerm = new Term(IDENTIFIER, String.valueOf(course.getId()));
+//				getLuceneIndexTemplate().updateDocument(instituteTerm, new DocumentModifier() {
 //					public Document updateDocument(Document document) throws Exception {
 //						Document newDocument = new Document();
 //						setFields(course, document);
@@ -83,8 +83,8 @@ public class CourseIndexer extends DomainIndexer {
 	}
 	
 	private String details(final Course course) {
-		return course.getFaculty().getName()+SPACE
-				+course.getFaculty().getOwnername()+SPACE
+		return course.getInstitute().getName()+SPACE
+				+course.getInstitute().getOwnername()+SPACE
 				+StringUtils.abbreviate(course.getDescription(), 100);
 	}
 
@@ -96,10 +96,10 @@ public class CourseIndexer extends DomainIndexer {
 		content.append(StringUtils.trimToEmpty(course.getDescription())+SPACE);
 		content.append(StringUtils.trimToEmpty(course.getPeriod().getName())+SPACE);
 		content.append(StringUtils.trimToEmpty(course.getPeriod().getDescription())+SPACE);
-		content.append(StringUtils.trimToEmpty(course.getFaculty().getDescription())+SPACE);
-		content.append(StringUtils.trimToEmpty(course.getFaculty().getName())+SPACE);
-		content.append(StringUtils.trimToEmpty(course.getFaculty().getOwnername())+SPACE);
-		content.append(StringUtils.trimToEmpty(course.getFaculty().getAddress())+SPACE);
+		content.append(StringUtils.trimToEmpty(course.getInstitute().getDescription())+SPACE);
+		content.append(StringUtils.trimToEmpty(course.getInstitute().getName())+SPACE);
+		content.append(StringUtils.trimToEmpty(course.getInstitute().getOwnername())+SPACE);
+		content.append(StringUtils.trimToEmpty(course.getInstitute().getAddress())+SPACE);
 		return content.toString();
 	}
 

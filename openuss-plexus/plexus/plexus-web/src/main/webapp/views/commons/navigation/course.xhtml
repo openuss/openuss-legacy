@@ -8,7 +8,7 @@
     xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<ui:include src="/views/commons/navigation/faculty.xhtml" />
+	<ui:include src="/views/commons/navigation/institute.xhtml" />
 	<s:acl domainObject="#{course}" hasPermission="#{ACL.READ}">
 		<h:form id="courseNavigationForm">
 			<t:panelNavigation2 id="course_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">

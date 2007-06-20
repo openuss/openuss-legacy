@@ -11,7 +11,7 @@ public class Constants {
 	
 	// Session Entity Beans
 	
-	public static final String FACULTY = "faculty";
+	public static final String INSTITUTE = "institute";
 	public static final String COURSE_TYPE = "courseType";
 	public static final String COURSE = "course";
 	public static final String COURSE_INFO = "course_info";
@@ -31,7 +31,7 @@ public class Constants {
 	public static final String LECTURE_SERVICE = "lectureService";
 	
 	// Session View Controller
-	public static final String FACULTY_REGISTRATION_CONTROLLER = "facultyRegistration";
+	public static final String INSTITUTE_REGISTRATION_CONTROLLER = "instituteRegistration";
 
 
 	// outcomes 
@@ -40,20 +40,20 @@ public class Constants {
 	public static final String SUCCESS = "success";
 	public static final String DESKTOP = "desktop";
 
-	public static final String FACULTY_PAGE = "faculty";
-	public static final String FACULTY_PERIOD_PAGE = "faculty_period";
-	public static final String FACULTY_PERIODS_PAGE = "faculty_periods";
-	public static final String FACULTY_PERIOD_REMOVE_PAGE = "faculty_period_remove";
-	public static final String FACULTY_COURSE_TYPES_PAGE = "faculty_coursetypes";
-	public static final String FACULTY_COURSE_REMOVE_PAGE = "faculty_course_remove";
-	public static final String FACULTY_COURSE_TYPE_REMOVE_PAGE = "faculty_coursetype_remove";
-	public static final String FACULTY_MEMBERS_PAGE = "faculty_members";
-	public static final String FACULTY_NEWS_PAGE = "faculty_news";
-	public static final String FACULTY_NEWS_EDIT_PAGE = "faculty_news_edit";
+	public static final String INSTITUTE_PAGE = "institute";
+	public static final String INSTITUTE_PERIOD_PAGE = "institute_period";
+	public static final String INSTITUTE_PERIODS_PAGE = "institute_periods";
+	public static final String INSTITUTE_PERIOD_REMOVE_PAGE = "institute_period_remove";
+	public static final String INSTITUTE_COURSE_TYPES_PAGE = "institute_coursetypes";
+	public static final String INSTITUTE_COURSE_REMOVE_PAGE = "institute_course_remove";
+	public static final String INSTITUTE_COURSE_TYPE_REMOVE_PAGE = "institute_coursetype_remove";
+	public static final String INSTITUTE_MEMBERS_PAGE = "institute_members";
+	public static final String INSTITUTE_NEWS_PAGE = "institute_news";
+	public static final String INSTITUTE_NEWS_EDIT_PAGE = "institute_news_edit";
 
-	public static final String FACULTY_REGISTRATION_START_PAGE = "faculty_registration_start";
-	public static final String FACULTY_REGISTRATION_STEP1_PAGE = "faculty_registration_step1";
-	public static final String FACULTY_REGISTRATION_STEP2_PAGE = "faculty_registration_step2";
+	public static final String INSTITUTE_REGISTRATION_START_PAGE = "institute_registration_start";
+	public static final String INSTITUTE_REGISTRATION_STEP1_PAGE = "institute_registration_step1";
+	public static final String INSTITUTE_REGISTRATION_STEP2_PAGE = "institute_registration_step2";
 
 	public static final String USER_PROFILE_PAGE = "user_profile";
 	public static final String USER_PROFILE_VIEW_PAGE = "user_profile_view";

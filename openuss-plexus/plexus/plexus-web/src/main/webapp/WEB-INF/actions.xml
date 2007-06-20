@@ -16,8 +16,8 @@
 					<property name="action" value="#{passwordChangeAction.loginUserByCode}"/>
 				</bean>
 				<bean class="org.openuss.framework.web.jsf.actions.PageAction">
-					<property name="viewId" value="/actions/public/lecture/facultyactivation.xhtml"/>
-					<property name="action" value="#{facultyActivationAction.activateFaculty}"/>
+					<property name="viewId" value="/actions/public/lecture/instituteactivation.xhtml"/>
+					<property name="action" value="#{instituteActivationAction.activateInstitute}"/>
 				</bean>
 			</list>
 		</property>

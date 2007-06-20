@@ -21,6 +21,6 @@ public interface LegacyDao {
 	
 	public abstract Faculty2 loadFaculty(String id);
 	
-	public abstract Collection<Faculty2> loadAllFaculties();
+	public abstract Collection<Faculty2> loadAllInstitutes();
 
 }

@@ -47,10 +47,10 @@ public class PeriodsPage extends AbstractLecturePage {
 	@Override
 	public void prerender() throws LectureException {
 		super.prerender();
-		if (faculty != null) {
+		if (institute != null) {
 			// refresh period list
-			// TODO ask the lectureService instead of faculty and use value objects
-			List periods = faculty.getPeriods();
+			// TODO ask the lectureService instead of institute and use value objects
+			List periods = institute.getPeriods();
 			
 			period = (Period) getSessionBean(Constants.PERIOD);
 			if (period != null) {
@@ -82,7 +82,7 @@ public class PeriodsPage extends AbstractLecturePage {
 		}
 		
 		Period period = periodData.getRowData();
-		lectureService.setActivePeriod(faculty.getId(), period);
+		lectureService.setActivePeriod(institute.getId(), period);
 
 		return Constants.SUCCESS;
 	}
@@ -103,13 +103,13 @@ public class PeriodsPage extends AbstractLecturePage {
 	}
 
 	/**
-	 * Adds a new period to faculty
+	 * Adds a new period to institute
 	 * @return
 	 */
 	public String addPeriod() {
 		Period period = Period.Factory.newInstance();
 		setSessionBean(Constants.PERIOD, period);
-		return Constants.FACULTY_PERIOD_PAGE;
+		return Constants.INSTITUTE_PERIOD_PAGE;
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	public String editPeriod() {
 		Period period = periodData.getRowData();
 		setSessionBean(Constants.PERIOD, period);
-		return Constants.FACULTY_PERIOD_PAGE;
+		return Constants.INSTITUTE_PERIOD_PAGE;
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	public String confirmRemovePeriod() {
 		Period period = periodData.getRowData();
 		setSessionBean(Constants.PERIOD, period);
-		return Constants.FACULTY_PERIOD_REMOVE_PAGE;
+		return Constants.INSTITUTE_PERIOD_REMOVE_PAGE;
 	}
 
 	/**
@@ -148,7 +148,7 @@ public class PeriodsPage extends AbstractLecturePage {
 		}
 		lectureService.removePeriod(period.getId());
 		removeSessionBean(Constants.PERIOD);
-		return Constants.FACULTY_PERIODS_PAGE;
+		return Constants.INSTITUTE_PERIODS_PAGE;
 	}
 
 	/**
@@ -159,28 +159,28 @@ public class PeriodsPage extends AbstractLecturePage {
 	 */
 	public String savePeriod() throws LectureException {
 		if (period.getId() == null) {
-			lectureService.add(faculty.getId(), period);
+			lectureService.add(institute.getId(), period);
 		} else {
 			lectureService.persist(period);
 		}
 			
-		return Constants.FACULTY_PERIODS_PAGE;
+		return Constants.INSTITUTE_PERIODS_PAGE;
 	}
 
 	/**
 	 * Creates a new period object instance and stores it into session. Forwards
 	 * to the period view.
 	 * 
-	 * @return outcome - faculty_period
+	 * @return outcome - institute_period
 	 */
 	public String createPeriod() {
 		Period period = Period.Factory.newInstance();
 		setSessionBean(Constants.PERIOD, period);
-		return Constants.FACULTY_PERIOD_PAGE;
+		return Constants.INSTITUTE_PERIOD_PAGE;
 	}
 
 	/**
-	 * List of CourseTypes of the current faculty
+	 * List of CourseTypes of the current institute
 	 * 
 	 * @return SelectItem List of CourseTypes
 	 */
@@ -190,7 +190,7 @@ public class PeriodsPage extends AbstractLecturePage {
 		}
 
 		List<SelectItem> items = new ArrayList();
-		for (CourseType courseType : faculty.getCourseTypes()) {
+		for (CourseType courseType : institute.getCourseTypes()) {
 			final SelectItem item = new SelectItem();
 			item.setValue(courseType.getId());
 			item.setLabel(courseType.getName() + "(" + courseType.getShortcut() + ")");
@@ -232,7 +232,7 @@ public class PeriodsPage extends AbstractLecturePage {
 		Course course = courseData.getRowData();
 		getDesktopService().linkCourse(getDesktop(), course);
 		addMessage(i18n("message_course_shortcut_created"));
-		return Constants.FACULTY_PERIODS_PAGE; 
+		return Constants.INSTITUTE_PERIODS_PAGE; 
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	public String confirmRemoveCourse() {
 		Course course = courseData.getRowData();
 		setSessionBean(Constants.COURSE, course);
-		return Constants.FACULTY_COURSE_REMOVE_PAGE;
+		return Constants.INSTITUTE_COURSE_REMOVE_PAGE;
 	}
 
 	/**
@@ -280,7 +280,7 @@ public class PeriodsPage extends AbstractLecturePage {
 		@Override
 		public DataPage<Period> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<Period> periods = new ArrayList(faculty.getPeriods());
+				List<Period> periods = new ArrayList(institute.getPeriods());
 				sort(periods);
 				page = new DataPage<Period>(periods.size(),0,periods);
 			}

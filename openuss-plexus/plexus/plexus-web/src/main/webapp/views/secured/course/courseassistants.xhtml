@@ -32,10 +32,10 @@
 		  	
 			<h:form id="assistantsForm"> 
 				<ui:include src="courseassistantstable.xhtml" />
-				<c:if test="#{not empty views$secured$course$courseassistants.facultyMemberList}">
+				<c:if test="#{not empty views$secured$course$courseassistants.instituteMemberList}">
 					<o:block>
 						<h:selectOneMenu id="assistantSelectBox" value="#{views$secured$course$courseassistants.userId}" styleClass="pulldown_inline">
-						   	<f:selectItems value="#{views$secured$course$courseassistants.facultyMemberList}"/>
+						   	<f:selectItems value="#{views$secured$course$courseassistants.instituteMemberList}"/>
 						</h:selectOneMenu>
 						<plexus:command 
 								bean="#{views$secured$course$courseassistants}"

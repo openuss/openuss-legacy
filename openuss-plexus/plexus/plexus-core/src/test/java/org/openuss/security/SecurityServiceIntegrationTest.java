@@ -54,7 +54,7 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 		
 		securityService.createObjectIdentity(bean, null);
 		
-		securityService.setPermissions(user, bean, LectureAclEntry.FACULTY_OWN);
+		securityService.setPermissions(user, bean, LectureAclEntry.INSTITUTE_OWN);
 
 		commit();
 		

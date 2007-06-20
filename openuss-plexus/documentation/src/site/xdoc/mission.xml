@@ -11,7 +11,7 @@
 		<section name="Our mission">
 			<p>
 				We are pleased to announce this Open Source project to support 
-				all universities, institutes, faculties and students. 
+				all universities, institutes, institutes and students. 
 				We separate our mission in two kind of activities: 
 			</p>
 			<ul>
@@ -32,13 +32,13 @@
 			</subsection>
 			<subsection name="Users">
 				<p>
-					Users are universities, faculties, institutes and students, which use 
+					Users are universities, institutes, institutes and students, which use 
 					OpenUSS as their publishing and information center system (portal). <br/>
 					They should have an easy system to deal with lectures, documents and exercises. 
 					Besides the portal should be the communication center for all kind of such 
-					organisation's members. Universities, faculties and intitutes which 
+					organisation's members. Universities, institutes and intitutes which 
 					don't have a capability to run the system can use the reference implementation 
-					and outsource it to OpenUSS. This is important because many faculties don't 
+					and outsource it to OpenUSS. This is important because many institutes don't 
 					have the knowledge and a possibility to set up such a publishing system. 
 					To all users please refer the <a href="users.html">users'</a> page of this site.
 				</p>

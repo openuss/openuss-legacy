@@ -1,0 +1,21 @@
+<html>
+	<body>
+		<h3><font color="#003366">OpenUSS Email application notifier</font></h3>
+			A user has requested applicationship for <i>${institutename}</i>,
+			Please click on the following link to respond to this request:<br/>
+		<p>
+		<a href="${instituteapplicantlink}">${instituteapplicantlink}</a>
+		</p>
+		<p>
+			If clicking the link above does not work, copy and paste the URL in a new browser window instead.
+		</p>
+		<p>
+			Thank you for using OpenUSS.
+		</p>
+		<p>
+			<small>This is a post-only mailing. Replies to this message are not monitored or answered.</small>
+		</p>
+	</body>
+</html>
+
+

@@ -19,13 +19,13 @@ import org.openuss.security.acl.Permission;
  */
 public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBase {
 	
-	private FacultyDao facultyDao;
+	private InstituteDao instituteDao;
 	
 	private SecurityService securityService;
 	
 	
 	public void testAspirantToParticipant() {
-		LectureBuilder lectureBuilder = createFacultyStructure(AccessType.APPLICATION);
+		LectureBuilder lectureBuilder = createInstituteStructure(AccessType.APPLICATION);
 		
 		User user = testUtility.createUserInDB();
 		Course course = lectureBuilder.getCourse();
@@ -59,7 +59,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	}
 
 	public void testRejectAspirant() {
-		LectureBuilder lectureBuilder = createFacultyStructure(AccessType.APPLICATION);
+		LectureBuilder lectureBuilder = createInstituteStructure(AccessType.APPLICATION);
 		
 		User user = testUtility.createUserInDB();
 		Course course = lectureBuilder.getCourse();
@@ -83,7 +83,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	}
 	
 	public void testAspirants() {
-		LectureBuilder lectureBuilder = createFacultyStructure(AccessType.APPLICATION);
+		LectureBuilder lectureBuilder = createInstituteStructure(AccessType.APPLICATION);
 		
 		User user = testUtility.createUserInDB();
 		Course course = lectureBuilder.getCourse();
@@ -100,7 +100,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	}
 
 	public void testAssistants() {
-		LectureBuilder lectureBuilder = createFacultyStructure(AccessType.APPLICATION);
+		LectureBuilder lectureBuilder = createInstituteStructure(AccessType.APPLICATION);
 		
 		User user = testUtility.createUserInDB();
 		Course course = lectureBuilder.getCourse();
@@ -117,7 +117,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	}
 	
 	public void testParticipant() {
-		LectureBuilder lectureBuilder = createFacultyStructure(AccessType.APPLICATION);
+		LectureBuilder lectureBuilder = createInstituteStructure(AccessType.APPLICATION);
 		
 		User user = testUtility.createUserInDB();
 		Course course = lectureBuilder.getCourse();
@@ -134,34 +134,34 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	}
 	
 
-	private LectureBuilder createFacultyStructure(AccessType accessType) {
+	private LectureBuilder createInstituteStructure(AccessType accessType) {
 		LectureBuilder lectureBuilder = new LectureBuilder();
 		User owner = testUtility.createUserInDB();
 
-		lectureBuilder.createFaculty(owner)
+		lectureBuilder.createInstitute(owner)
 			.addCourseType()
 			.addPeriod()
 			.addCourse();
 		
-		Faculty faculty = lectureBuilder.getFaculty();
+		Institute institute = lectureBuilder.getInstitute();
 		lectureBuilder.getCourse().setAccessType(accessType);
 		
-		facultyDao.create(faculty);
+		instituteDao.create(institute);
 		
 		// define security settings
-		securityService.createObjectIdentity(faculty, null);
-		securityService.createObjectIdentity(lectureBuilder.getCourse(), faculty);
+		securityService.createObjectIdentity(institute, null);
+		securityService.createObjectIdentity(lectureBuilder.getCourse(), institute);
 		
 		commit();
 		return lectureBuilder;
 	}
 	
-	public FacultyDao getFacultyDao() {
-		return facultyDao;
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
 	}
 
-	public void setFacultyDao(FacultyDao facultyDao) {
-		this.facultyDao = facultyDao;
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
 	}
 
 	public SecurityService getSecurityService() {

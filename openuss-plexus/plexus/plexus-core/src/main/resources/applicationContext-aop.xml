@@ -8,19 +8,19 @@
 		Aspect Configuration
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<aop:config>
-		<aop:aspect id="facultyIndexAspect" ref="facultyIndexAspectBean">
+		<aop:aspect id="instituteIndexAspect" ref="instituteIndexAspectBean">
 			<aop:after-returning
-				method="createFacultyIndex" 
-				pointcut="execution(* org..LectureServiceBase.createFaculty(org.openuss.lecture.Faculty)) and args(faculty)"
-				arg-names="faculty"/>
+				method="createInstituteIndex" 
+				pointcut="execution(* org..LectureServiceBase.createInstitute(org.openuss.lecture.Institute)) and args(institute)"
+				arg-names="institute"/>
 			<aop:after-returning
-				method="updateFacultyIndex"
-				pointcut="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Faculty)) and args(faculty)"
-				arg-names="faculty"/>
+				method="updateInstituteIndex"
+				pointcut="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Institute)) and args(institute)"
+				arg-names="institute"/>
 			<aop:after-returning
-				method="deleteFacultyIndex"
-				pointcut="execution(* org..LectureServiceBase.removeFaculty(java.lang.Long)) and args(facultyId)"
-				arg-names="facultyId"/>
+				method="deleteInstituteIndex"
+				pointcut="execution(* org..LectureServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)"
+				arg-names="instituteId"/>
 		</aop:aspect>
 		<aop:aspect id="courseIndexAspect" ref="courseIndexAspectBean">
 			<aop:after-returning
@@ -29,7 +29,7 @@
 				arg-names="period"/>
 			<aop:after-returning
 				method="createCourseIndex" 
-				pointcut="execution(* org..LectureServiceBase.createCourse(org.openuss.lecture.Faculty)) and args(course)"
+				pointcut="execution(* org..LectureServiceBase.createCourse(org.openuss.lecture.Institute)) and args(course)"
 				arg-names="course"/>
 			<aop:after-returning
 				method="updateCourseIndex"
@@ -56,7 +56,7 @@
 		<property name="indexerService" ref="indexerService"/>
 	</bean>
 	
-	<bean id="facultyIndexAspectBean" class="org.openuss.lecture.FacultyIndexingAspect">
+	<bean id="instituteIndexAspectBean" class="org.openuss.lecture.InstituteIndexingAspect">
 		<property name="lectureService" ref="lectureService"/>
 		<property name="indexerService" ref="indexerService"/>
 	</bean>

@@ -13,7 +13,7 @@ import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
 /**
- * Removing courseType from faculty
+ * Removing courseType from institute
  * 
  * @author Ingo Dueppe
  */
@@ -48,9 +48,9 @@ public class CourseTypeRemovePage extends AbstractLecturePage {
 	 */
 	public String removeCourseType() throws LectureException {
 		lectureService.removeCourseType(courseType.getId());
-		addMessage(i18n("faculty_message_remove_coursetype_succeed"));
+		addMessage(i18n("institute_message_remove_coursetype_succeed"));
 		removeSessionBean(Constants.COURSE_TYPE);
-		return Constants.FACULTY_COURSE_TYPES_PAGE;
+		return Constants.INSTITUTE_COURSE_TYPES_PAGE;
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class CourseTypeRemovePage extends AbstractLecturePage {
 	 */
 	public String cancelCourseType() {
 		removeSessionBean(Constants.COURSE_TYPE);
-		return Constants.FACULTY_COURSE_TYPES_PAGE;
+		return Constants.INSTITUTE_COURSE_TYPES_PAGE;
 	}
 
 	/**

@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
-import org.openuss.lecture.Faculty;
+import org.openuss.lecture.Institute;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureService;
 import org.openuss.lecture.CourseType;
@@ -20,8 +20,8 @@ public abstract class AbstractLecturePage extends BasePage {
 
 	private static final Logger logger = Logger.getLogger(AbstractLecturePage.class);
 
-	@Property(value = "#{faculty}")
-	protected Faculty faculty;
+	@Property(value = "#{institute}")
+	protected Institute institute;
 	
 	@Property(value = "#{lectureService}")
 	protected LectureService lectureService;
@@ -30,42 +30,42 @@ public abstract class AbstractLecturePage extends BasePage {
 	protected CourseType courseType;
 
 	/**
-	 * Refreshing faculty entity 
+	 * Refreshing institute entity 
 	 * @throws Exception 
 	 */
 	@Preprocess
 	public void preprocess() throws Exception {
 		super.preprocess();
-		logger.debug("preprocess - refreshing faculty session object");
-		if (faculty != null) {
-			faculty = lectureService.getFaculty(faculty.getId());
+		logger.debug("preprocess - refreshing institute session object");
+		if (institute != null) {
+			institute = lectureService.getInstitute(institute.getId());
 		} else {
-			faculty = (Faculty) getSessionBean(Constants.FACULTY);
+			institute = (Institute) getSessionBean(Constants.INSTITUTE);
 		}
-		setSessionBean(Constants.FACULTY, faculty);
+		setSessionBean(Constants.INSTITUTE, institute);
 	}
 	
 	@Prerender
 	public void prerender() throws LectureException {
-		logger.debug("prerender - refreshing faculty session object");
-		if (faculty == null) {
-			faculty = (Faculty) getSessionBean(Constants.FACULTY);
+		logger.debug("prerender - refreshing institute session object");
+		if (institute == null) {
+			institute = (Institute) getSessionBean(Constants.INSTITUTE);
 		} 
-		if (faculty == null) {
-			addError(i18n("message_error_no_faculty_selected"));
+		if (institute == null) {
+			addError(i18n("message_error_no_institute_selected"));
 			redirect(Constants.DESKTOP);
 		} else {
-			faculty = lectureService.getFaculty(faculty.getId());
-			setSessionBean(Constants.FACULTY, faculty);
+			institute = lectureService.getInstitute(institute.getId());
+			setSessionBean(Constants.INSTITUTE, institute);
 		}
 	}
 
-	public Faculty getFaculty() {
-		return faculty;
+	public Institute getInstitute() {
+		return institute;
 	}
 
-	public void setFaculty(Faculty faculty) {
-		this.faculty = faculty;
+	public void setInstitute(Institute institute) {
+		this.institute = institute;
 	}
 
 	public LectureService getLectureService() {

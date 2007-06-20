@@ -12,7 +12,7 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Course;
-import org.openuss.lecture.Faculty;
+import org.openuss.lecture.Institute;
 import org.openuss.lecture.CourseType;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -30,7 +30,7 @@ public class DesktopPage extends BasePage {
 
 	private CourseDataProvider coursesProvider = new CourseDataProvider();
 	private CourseTypeDataProvider courseTypesProvider = new CourseTypeDataProvider();
-	private FacultyDataProvider facultiesProvider = new FacultyDataProvider();
+	private InstituteDataProvider institutesProvider = new InstituteDataProvider();
 
 	@Prerender
 	public void prerender() {
@@ -57,27 +57,27 @@ public class DesktopPage extends BasePage {
 	}
 
 	/**
-	 * Show selected faculty
+	 * Show selected institute
 	 * 
 	 * @return outcome
 	 */
-	public String showFaculty() {
-		logger.debug("showFaculty");
-		Faculty faculty = facultiesProvider.getRowData();
-		setSessionBean(Constants.FACULTY, faculty);
-		return Constants.FACULTY;
+	public String showInstitute() {
+		logger.debug("showInstitute");
+		Institute institute = institutesProvider.getRowData();
+		setSessionBean(Constants.INSTITUTE, institute);
+		return Constants.INSTITUTE;
 	}
 
 	/**
-	 * Remove selected faculty from desktop
+	 * Remove selected institute from desktop
 	 * 
 	 * @return outcome = DESKTOP
 	 */
-	public String removeFaculty() throws DesktopException {
-		logger.debug("remove faculty");
-		Faculty faculty = facultiesProvider.getRowData();
-		desktopService.unlinkFaculty(desktop, faculty);
-		addMessage(i18n("desktop_message_removed_faculty_succeed", faculty.getName()));
+	public String removeInstitute() throws DesktopException {
+		logger.debug("remove institute");
+		Institute institute = institutesProvider.getRowData();
+		desktopService.unlinkInstitute(desktop, institute);
+		addMessage(i18n("desktop_message_removed_institute_succeed", institute.getName()));
 		return Constants.DESKTOP;
 	}
 
@@ -167,16 +167,16 @@ public class DesktopPage extends BasePage {
 		}
 	}
 
-	private class FacultyDataProvider extends AbstractPagedTable<Faculty> {
+	private class InstituteDataProvider extends AbstractPagedTable<Institute> {
 		private static final long serialVersionUID = 2146461373793139193L;
 
-		private DataPage<Faculty> page;
+		private DataPage<Institute> page;
 
 		@Override
-		public DataPage<Faculty> getDataPage(int startRow, int pageSize) {
-			List<Faculty> faculties = new ArrayList(desktop.getFaculties());
-			sort(faculties);
-			page = new DataPage<Faculty>(faculties.size(), 0, faculties);
+		public DataPage<Institute> getDataPage(int startRow, int pageSize) {
+			List<Institute> institutes = new ArrayList(desktop.getInstitutes());
+			sort(institutes);
+			page = new DataPage<Institute>(institutes.size(), 0, institutes);
 			return page;
 		}
 	}
@@ -189,12 +189,12 @@ public class DesktopPage extends BasePage {
 		this.coursesProvider = coursesProvider;
 	}
 
-	public FacultyDataProvider getFacultiesProvider() {
-		return facultiesProvider;
+	public InstituteDataProvider getInstitutesProvider() {
+		return institutesProvider;
 	}
 
-	public void setFacultiesProvider(FacultyDataProvider facultiesProvider) {
-		this.facultiesProvider = facultiesProvider;
+	public void setInstitutesProvider(InstituteDataProvider institutesProvider) {
+		this.institutesProvider = institutesProvider;
 	}
 
 	public CourseTypeDataProvider getCourseTypesProvider() {

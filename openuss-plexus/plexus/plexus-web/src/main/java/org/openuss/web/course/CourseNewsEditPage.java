@@ -116,7 +116,7 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 		List<SelectItem> items = new ArrayList<SelectItem>();
 //		items.add(new SelectItem(NewsCategory.GLOBAL,i18n("news_category_global")));
 //		items.add(new SelectItem(NewsCategory.DESKTOP,i18n("news_category_desktop")));
-//		items.add(new SelectItem(NewsCategory.FACULTY,i18n("news_category_faculty")));
+//		items.add(new SelectItem(NewsCategory.INSTITUTE,i18n("news_category_institute")));
 		items.add(new SelectItem(NewsCategory.COURSE,i18n("news_category_course")));
 		return items;
 	}

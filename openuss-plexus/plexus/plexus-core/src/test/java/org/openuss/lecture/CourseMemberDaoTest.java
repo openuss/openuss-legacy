@@ -18,7 +18,7 @@ import org.openuss.security.User;
  */
 public class CourseMemberDaoTest extends CourseMemberDaoTestBase {
 	
-	private FacultyDao facultyDao;
+	private InstituteDao instituteDao;
 	
 	private TestUtility testUtility;
 	
@@ -26,14 +26,14 @@ public class CourseMemberDaoTest extends CourseMemberDaoTestBase {
 		LectureBuilder lectureBuilder = new LectureBuilder();
 		User owner = testUtility.createUserInDB();
 
-		lectureBuilder.createFaculty(owner)
+		lectureBuilder.createInstitute(owner)
 			.addCourseType()
 			.addPeriod()
 			.addCourse();
 		
-		Faculty faculty = lectureBuilder.getFaculty();
+		Institute institute = lectureBuilder.getInstitute();
 		
-		facultyDao.create(faculty);
+		instituteDao.create(institute);
 		commit();
 		
 		User user = testUtility.createUserInDB();
@@ -111,12 +111,12 @@ public class CourseMemberDaoTest extends CourseMemberDaoTestBase {
 	}
 
 
-	public FacultyDao getFacultyDao() {
-		return facultyDao;
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
 	}
 
 
-	public void setFacultyDao(FacultyDao facultyDao) {
-		this.facultyDao = facultyDao;
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
 	}
 }
