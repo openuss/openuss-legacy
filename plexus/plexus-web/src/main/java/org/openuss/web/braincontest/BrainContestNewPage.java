@@ -13,23 +13,17 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.BrainContestApplicationException;
-import org.openuss.braincontest.BrainContestInfo;
-import org.openuss.braincontest.BrainContestService;
 import org.openuss.documents.FileInfo;
 import org.openuss.web.Constants;
-import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.web.upload.UploadFileManager;
 
+/**
+ * @author Sebastian Roekens
+ */
 @Bean(name = "views$secured$braincontest$braincontestnew", scope = Scope.REQUEST)
 @View
-public class BrainContestNewPage extends AbstractCoursePage {
+public class BrainContestNewPage extends AbstractBrainContestPage {
 	private static final Logger logger = Logger.getLogger(BrainContestNewPage.class);
-
-	@Property(value = "#{braincontest_contest}")
-	private BrainContestInfo brainContest;
-
-	@Property(value = "#{brainContestService}")
-	private BrainContestService brainContestService;
 
 	@Property(value = "#{"+Constants.UPLOAD_FILE_MANAGER+"}")
 	private UploadFileManager uploadFileManager;
@@ -41,20 +35,20 @@ public class BrainContestNewPage extends AbstractCoursePage {
 	public void prerender() throws Exception {
 		super.prerender();
 		if (!isPostBack()) {
-			if (brainContest != null && brainContest.getId() != null) {
-				brainContest = brainContestService.getContest(brainContest);
-				setSessionBean(Constants.BRAINCONTENT_CONTEST, brainContest);
+			if (getBrainContest() != null && getBrainContest().getId() != null) {
+				setBrainContest(getBrainContestService().getContest(getBrainContest()));
+				setSessionBean(Constants.BRAINCONTENT_CONTEST, getBrainContest());
 			} 
 		}
 	}
 
 	public String save() throws BrainContestApplicationException {
-		if (this.brainContest.getId() == null) {
-			brainContest.setDomainIdentifier(course.getId());
-			brainContestService.createContest(brainContest);
+		if (this.getBrainContest().getId() == null) {
+			getBrainContest().setDomainIdentifier(course.getId());
+			getBrainContestService().createContest(getBrainContest());
 			addMessage(i18n("braincontest_message_created"));
-		} else if (this.brainContest.getId() != null) {
-			brainContestService.saveContest(brainContest);
+		} else if (this.getBrainContest().getId() != null) {
+			getBrainContestService().saveContest(getBrainContest());
 			addMessage(i18n("braincontest_message_saved"));
 		}
 		return Constants.BRAINCONTEST_MAIN;
@@ -63,21 +57,21 @@ public class BrainContestNewPage extends AbstractCoursePage {
 	public String removeAttachment() {
 		logger.debug("braincontest attachment removed");
 		FileInfo attachment = (FileInfo) attachmentList.getRowData();
-		if (brainContest.getAttachments() != null) {
-			brainContest.getAttachments().remove(attachment);
+		if (getBrainContest().getAttachments() != null) {
+			getBrainContest().getAttachments().remove(attachment);
 		}
 		return Constants.SUCCESS;
 	}
 
 	public String addAttachment() throws IOException, BrainContestApplicationException {
 		logger.debug("braincontest attachment add");
-		if (brainContest.getAttachments() == null) {
-			brainContest.setAttachments(new ArrayList<FileInfo>());
+		if (getBrainContest().getAttachments() == null) {
+			getBrainContest().setAttachments(new ArrayList<FileInfo>());
 		}
 		FileInfo fileInfo = uploadFileManager.lastUploadAsFileInfo();
-		if (fileInfo != null && !brainContest.getAttachments().contains(fileInfo)) {
+		if (fileInfo != null && !getBrainContest().getAttachments().contains(fileInfo)) {
 			if (validFileName(fileInfo.getFileName())) {
-				brainContest.getAttachments().add(fileInfo);
+				getBrainContest().getAttachments().add(fileInfo);
 			} else {
 				addError(i18n("braincontest_filename_already_exists"));
 				return Constants.FAILURE;
@@ -89,28 +83,12 @@ public class BrainContestNewPage extends AbstractCoursePage {
 	}
 	
 	private boolean validFileName(String fileName) {
-		for (FileInfo attachment : brainContest.getAttachments()) {
+		for (FileInfo attachment : getBrainContest().getAttachments()) {
 			if (StringUtils.equalsIgnoreCase(fileName, attachment.getFileName())) {
 				return false;
 			}
 		}
 		return true;
-	}
-
-	public BrainContestInfo getBrainContest() {
-		return brainContest;
-	}
-
-	public void setBrainContest(BrainContestInfo brainContest) {
-		this.brainContest = brainContest;
-	}
-
-	public BrainContestService getBrainContestService() {
-		return brainContestService;
-	}
-
-	public void setBrainContestService(BrainContestService brainContestService) {
-		this.brainContestService = brainContestService;
 	}
 
 	public UploadFileManager getUploadFileManager() {

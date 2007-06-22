@@ -1,5 +1,8 @@
 package org.openuss.web.braincontest;
 
+/**
+ * @author Sebastian Roekens
+ */
 public class AnswerWebInfo{
 	public String answer;
 	

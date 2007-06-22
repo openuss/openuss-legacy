@@ -43,8 +43,8 @@ public class AbstractCoursePage extends BasePage {
 	@Property(value = "#{institute}")
 	protected Institute institute;
 	
-	@Property(value = "#{breadCrumbs}")
-	protected List<BreadCrumb> breadCrumbs;
+	@Property(value = "#{crumbs}")
+	protected List<BreadCrumb> crumbs;
 
 	@Prerender
 	public void prerender() throws Exception {
@@ -63,25 +63,25 @@ public class AbstractCoursePage extends BasePage {
 			setSessionBean(Constants.COURSE_INFO, courseInfo);
 			setSessionBean(Constants.INSTITUTE, course.getInstitute());
 			generateBreadCrumbs();
-			setSessionBean(Constants.BREADCRUMBS, breadCrumbs);
+			setSessionBean(Constants.BREADCRUMBS, crumbs);
 		} 
 	}
 	
-	private void generateBreadCrumbs(){
-		breadCrumbs = new ArrayList<BreadCrumb>();
+	public void generateBreadCrumbs(){
+		crumbs = new ArrayList<BreadCrumb>();
 		BreadCrumb instituteCrumb = new BreadCrumb();
-		//TODO set short institute name + shortcut
-		instituteCrumb.setName(institute.getName());
-		instituteCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.INSTITUTE_PAGE+"?institute="+institute.getId());
+		
+		instituteCrumb.setName(institute.getShortcut());
+		instituteCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.INSTITUTE_PAGE+"?institute="+institute.getId()+"&period="+course.getPeriod().getId());
 		instituteCrumb.setHint(institute.getName());
 		
 		BreadCrumb courseCrumb = new BreadCrumb();
-		courseCrumb.setName(courseInfo.getName());
+		courseCrumb.setName(courseInfo.getShortcut());
 		courseCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.COURSE_PAGE+"?course="+courseInfo.getId());
 		courseCrumb.setHint(course.getName());
 		
-		breadCrumbs.add(instituteCrumb);
-		breadCrumbs.add(courseCrumb);
+		crumbs.add(instituteCrumb);
+		crumbs.add(courseCrumb);
 	}
 	
 	public Course getCourse() {
@@ -124,19 +124,19 @@ public class AbstractCoursePage extends BasePage {
 		this.institute = institute;
 	}
 
-	public List<BreadCrumb> getBreadCrumbs() {
-		return breadCrumbs;
-	}
-
-	public void setBreadCrumbs(List<BreadCrumb> breadCrumbs) {
-		this.breadCrumbs = breadCrumbs;
-	}
-
 	public SystemService getSystemService() {
 		return systemService;
 	}
 
 	public void setSystemService(SystemService systemService) {
 		this.systemService = systemService;
+	}
+
+	public List<BreadCrumb> getCrumbs() {
+		return crumbs;
+	}
+
+	public void setCrumbs(List<BreadCrumb> crumbs) {
+		this.crumbs = crumbs;
 	}
 }
