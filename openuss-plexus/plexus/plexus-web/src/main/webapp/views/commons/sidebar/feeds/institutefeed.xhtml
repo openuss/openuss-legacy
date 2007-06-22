@@ -12,16 +12,18 @@
     xmlns:x="http://myfaces.apache.org/extensions">
 	
 		<h:form>
-			<o:block styleClass="option_box" label="#{msg.feed_institute}">
-					<ul class="int">
-						<li>
-							<h:outputLink value="../../../rss/public/institute.xml?institute=#{institute.id}" 
-							 			title="#{msg['feed_institute']}" >
-							   #{msg['feed_institute']}
-							</h:outputLink>
-								
-						</li>
-					</ul>
-			</o:block>
+		    <div class="feed">		
+				<o:block styleClass="option_box" label="#{msg.feed_institute}">
+						<ul class="int">
+							<li>
+								<h:outputLink value="../../../rss/public/institute.xml?institute=#{institute.id}" 
+								 			title="#{msg['feed_institute']}" >
+								   #{msg['feed_institute']}
+								</h:outputLink>
+									
+							</li>
+						</ul>
+				</o:block>
+			</div>
 		</h:form>
 </f:subview>
