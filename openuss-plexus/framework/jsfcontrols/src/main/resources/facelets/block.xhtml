@@ -22,31 +22,8 @@
 		<c:if test="${empty rendered}">
 			<c:set var="rendered" value="true"/>
 		</c:if>
-		<c:if test="${empty styleClass}">
-		     <div class="content_box">
-			    <div class="header_normal">
-			    	<div class="header_normal_left_bg"/>
-	    			<div class="header_normal_right_bg"/>
-					<c:if test="${!empty label}">
-						<p class="${headerClass}">${label}</p>
-					</c:if>
-		       </div>
-		       <div class="content_normal">
-		       		<c:set var="label" value=""/>
-		       		<c:set var="styleClass" value=""/>
-					<ui:insert/>
-		       </div>
-		       <div class="footer_normal">
-		       		<div class="footer_normal_left_bg"/>
-		       	  	<div class="footer_normal_right_bg"/>
-		       	  <c:if test="${!empty footer}">
-		       	  	<p class="${footerClass}">${footer}</p>
-		       	  </c:if>
-		       </div>
-		     </div>
-		</c:if>
-		<c:if test="${!empty styleClass}">
-			<div class="${styleClass}">
+		<c:if test="${rendered}">
+			<c:if test="${empty styleClass}">
 			     <div class="content_box">
 				    <div class="header_normal">
 				    	<div class="header_normal_left_bg"/>
@@ -68,7 +45,32 @@
 			       	  </c:if>
 			       </div>
 			     </div>
-		    </div>
+			</c:if>
+			<c:if test="${!empty styleClass}">
+				<div class="${styleClass}">
+				     <div class="content_box">
+					    <div class="header_normal">
+					    	<div class="header_normal_left_bg"/>
+			    			<div class="header_normal_right_bg"/>
+							<c:if test="${!empty label}">
+								<p class="${headerClass}">${label}</p>
+							</c:if>
+				       </div>
+				       <div class="content_normal">
+				       		<c:set var="label" value=""/>
+				       		<c:set var="styleClass" value=""/>
+							<ui:insert/>
+				       </div>
+				       <div class="footer_normal">
+				       		<div class="footer_normal_left_bg"/>
+				       	  	<div class="footer_normal_right_bg"/>
+				       	  <c:if test="${!empty footer}">
+				       	  	<p class="${footerClass}">${footer}</p>
+				       	  </c:if>
+				       </div>
+				     </div>
+			    </div>
+			</c:if>
 		</c:if>
 	</ui:composition>
 </html>
