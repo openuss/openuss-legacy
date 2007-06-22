@@ -40,11 +40,6 @@
 		<ui:include src="/views/commons/sidebar/feeds/discussionfeed.xhtml" />
 	</ui:define>
 	<ui:define name="content">
-		<o:block>
-			<span class="header_font_normal">
-				<h:outputText value="#{course.shortcut} > #{msg.course_command_discussion}  " styleClass="content_font_normal"></h:outputText>
-			</span>
-		</o:block>
 		<h:form id="discussionTableView">
 			<ui:include src="discussionstable.xhtml" />
 			<o:block>
