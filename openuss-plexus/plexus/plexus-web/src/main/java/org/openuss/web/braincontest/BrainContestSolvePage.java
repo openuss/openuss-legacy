@@ -9,24 +9,18 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.BrainContestApplicationException;
-import org.openuss.braincontest.BrainContestInfo;
-import org.openuss.braincontest.BrainContestService;
 import org.openuss.documents.FileInfo;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
-import org.openuss.web.course.AbstractCoursePage;
 
+/**
+ * @author Sebastian Roekens
+ */
 @Bean(name = "views$secured$braincontest$braincontestsolve", scope = Scope.REQUEST)
 @View
-public class BrainContestSolvePage extends AbstractCoursePage {
+public class BrainContestSolvePage extends AbstractBrainContestPage {
 	private static final Logger logger = Logger
 			.getLogger(BrainContestSolvePage.class);
-
-	@Property(value = "#{braincontest_contest}")
-	private BrainContestInfo brainContest;
-
-	@Property(value = "#{brainContestService}")
-	private BrainContestService brainContestService;
 
 	@Property(value = "#{user}")
 	private User user;
@@ -45,21 +39,21 @@ public class BrainContestSolvePage extends AbstractCoursePage {
 	public void prerender() throws Exception {	
 		super.prerender();
 		if (!isPostBack()) {
-			if ( brainContest != null && brainContest.getId() != null) {
-				brainContest = brainContestService.getContest(brainContest);
-				setSessionBean(Constants.BRAINCONTENT_CONTEST, brainContest);
+			if ( getBrainContest() != null && getBrainContest().getId() != null) {
+				setBrainContest(getBrainContestService().getContest(getBrainContest()));
+				setSessionBean(Constants.BRAINCONTENT_CONTEST, getBrainContest());
 			}
-			if (brainContest == null || brainContest.getId() == null) {
+			if (getBrainContest() == null || getBrainContest().getId() == null) {
 				addError(i18n("braincontest_message_contest_not_found"));
 				redirect(Constants.BRAINCONTEST_MAIN);
 			}
 		} 
-		if (brainContest!=null){
-			if (!brainContest.isReleased()) {
+		if (getBrainContest()!=null){
+			if (!getBrainContest().isReleased()) {
 				addError(i18n("braincontest_message_contest_not_released"));
 				redirect(Constants.BRAINCONTEST_MAIN);
 			}
-			List<FileInfo> attachments = brainContestService.getAttachments(brainContest);
+			List<FileInfo> attachments = getBrainContestService().getAttachments(getBrainContest());
 			if (attachments!= null&&attachments.size()>0) {
 				setAttachment(attachments.get(0));
 			}
@@ -67,26 +61,10 @@ public class BrainContestSolvePage extends AbstractCoursePage {
 	}
 
 	public String save() throws BrainContestApplicationException {
-		this.result = brainContestService.answer(answer.getAnswer(), user, brainContest, answer.isTopList());		
+		this.result = getBrainContestService().answer(answer.getAnswer(), user, getBrainContest(), answer.isTopList());		
 		logger.debug("answer triggered");		
 		if (this.result) return Constants.BRAINCONTEST_SOLVED;
 		return Constants.BRAINCONTEST_WRONG;
-	}
-
-	public BrainContestInfo getBrainContest() {
-		return brainContest;
-	}
-
-	public void setBrainContest(BrainContestInfo brainContest) {
-		this.brainContest = brainContest;
-	}
-
-	public BrainContestService getBrainContestService() {
-		return brainContestService;
-	}
-
-	public void setBrainContestService(BrainContestService brainContestService) {
-		this.brainContestService = brainContestService;
 	}
 
 	public User getUser() {

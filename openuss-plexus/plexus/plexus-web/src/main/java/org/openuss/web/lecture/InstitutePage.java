@@ -23,6 +23,7 @@ import org.openuss.web.Constants;
 
 /**
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  */
 @View
 @Bean(name = "views$secured$lecture$institute", scope = Scope.REQUEST)
@@ -57,6 +58,8 @@ public class InstitutePage extends AbstractLecturePage {
 			period = lectureService.getPeriod(period.getId());
 		}
 		setSessionBean(Constants.PERIOD, period);
+		//breadcrumbs shall not be displayed here
+		setSessionBean(Constants.BREADCRUMBS, null);
 	}
 
 	/**
@@ -79,7 +82,7 @@ public class InstitutePage extends AbstractLecturePage {
 		@Override
 		public DataPage<Course> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<Course> courses = new ArrayList();
+				List<Course> courses = new ArrayList<Course>();
 				if (period != null) {
 					period = lectureService.getPeriod(period.getId());
 					courses.addAll(period.getCourses());

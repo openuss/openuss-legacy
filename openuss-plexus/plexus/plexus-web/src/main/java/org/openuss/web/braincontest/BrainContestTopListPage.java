@@ -4,27 +4,20 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.AnswerInfo;
-import org.openuss.braincontest.BrainContestInfo;
-import org.openuss.braincontest.BrainContestService;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
-import org.openuss.web.course.AbstractCoursePage;
 
+/**
+ * @author Sebastian Roekens
+ */
 @Bean(name = "views$secured$braincontest$braincontesttop", scope = Scope.REQUEST)
 @View
-public class BrainContestTopListPage extends AbstractCoursePage {
-
-	@Property(value = "#{brainContestService}")
-	private BrainContestService brainContestService;
-
-	@Property(value = "#{braincontest_contest}")
-	private BrainContestInfo brainContest;
+public class BrainContestTopListPage extends AbstractBrainContestPage {
 
 	private static final Logger logger = Logger.getLogger(BrainContestTopListPage.class);
 
@@ -35,16 +28,16 @@ public class BrainContestTopListPage extends AbstractCoursePage {
 	public void prerender() throws Exception {
 		super.prerender();
 		if (!isPostBack()) {
-			if (brainContest != null && brainContest.getId() != null) {
-				brainContest = brainContestService.getContest(brainContest);
+			if (getBrainContest() != null && getBrainContest().getId() != null) {
+				setBrainContest(getBrainContestService().getContest(getBrainContest()));
 			}
-			if (brainContest == null || brainContest.getId() == null) {
+			if (getBrainContest() == null || getBrainContest().getId() == null) {
 				addError(i18n("braincontest_message_contest_not_found"));
 				redirect(Constants.BRAINCONTEST_MAIN);
 			}
 		}
-		if (brainContest != null) {
-			if (!brainContest.isReleased()) {
+		if (getBrainContest() != null) {
+			if (!getBrainContest().isReleased()) {
 				addError(i18n("braincontest_message_contest_not_released"));
 				redirect(Constants.BRAINCONTEST_MAIN);
 			}
@@ -62,7 +55,7 @@ public class BrainContestTopListPage extends AbstractCoursePage {
 		public DataPage<AnswerInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				logger.debug("fetching answers");
-				List<AnswerInfo> answers = brainContestService.getAnswers(brainContest);
+				List<AnswerInfo> answers = getBrainContestService().getAnswers(getBrainContest());
 				page = new DataPage<AnswerInfo>(answers.size(), 0, answers);
 			}
 			return page;
@@ -75,22 +68,6 @@ public class BrainContestTopListPage extends AbstractCoursePage {
 
 	public void setData(BrainContestTopListDataProvider data) {
 		this.data = data;
-	}
-
-	public BrainContestService getBrainContestService() {
-		return brainContestService;
-	}
-
-	public void setBrainContestService(BrainContestService brainContestService) {
-		this.brainContestService = brainContestService;
-	}
-
-	public BrainContestInfo getBrainContest() {
-		return brainContest;
-	}
-
-	public void setBrainContest(BrainContestInfo brainContest) {
-		this.brainContest = brainContest;
 	}
 
 }

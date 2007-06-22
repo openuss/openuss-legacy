@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -17,6 +18,7 @@ import org.springmodules.lucene.search.LuceneSearchException;
 /**
  * Lecture search page 
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  */
 @Bean(name = "views$public$search$search", scope = Scope.REQUEST)
 @View
@@ -32,6 +34,13 @@ public class SearchPage extends BasePage{
 	private SearchResults searchResults;
 	
 	private SearchResultDataProvider resultProvider = new SearchResultDataProvider();
+	
+	@Prerender
+	public void prerender(){
+		//breadcrumbs shall not be displayed on search pages
+		setSessionBean(Constants.BREADCRUMBS, null);
+	}
+	
 	
 	public String search() {
 		if (StringUtils.isNotBlank(searchResults.getTextToSearch())) {
