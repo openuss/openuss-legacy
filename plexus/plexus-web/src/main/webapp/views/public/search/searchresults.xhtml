@@ -16,6 +16,12 @@
 		var="result" 
 		columnClasses="col_max_left, col_commands"
 		rows="15">
+		<t:column rendered="#{result.domainType == 'Course'}">
+			<img src="#{theme.imagesPath}/course.png" alt="#{result.name}" title="#{result.name}" />
+		</t:column>
+		<t:column rendered="#{result.domainType == 'INSTITUTE'}" >
+			<img src="#{theme.imagesPath}/institute.png" alt="#{result.name}" title="#{result.name}" />
+		</t:column>
 		<t:column>
 			<div  class="institute_info">
 	    		<o:link value="/views/secured/lecture/institute.faces" rendered="#{result.domainType == 'INSTITUTE'}">
