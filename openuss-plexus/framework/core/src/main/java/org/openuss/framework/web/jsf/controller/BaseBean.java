@@ -222,17 +222,16 @@ public abstract class BaseBean {
 		return message;
 	}
 	
-	public String i18n(String key, String defaultLabel) {
+	public String i18n(String key, String defaultLabel, Object arg) {
 		String message;
-
 		try {
 			message = getBundle().getString(key);
 		} catch (java.util.MissingResourceException mre) {
-			return defaultLabel;
+			return msgFormat(defaultLabel, arg);
 		} catch (NullPointerException ex) {
-			return defaultLabel;
+			return msgFormat(defaultLabel, arg);
 		}
-		return message;
+		return msgFormat(message,arg);
 	}
 
 	/**
@@ -243,7 +242,10 @@ public abstract class BaseBean {
 	 */
 	public String i18n(String key, Object arg) {
 		String text = i18n(key);
+		return msgFormat(text, arg);
+	}
 
+	private String msgFormat(String text, Object arg) {
 		MessageFormat form = new MessageFormat(text);
 
 		if (arg instanceof String) {

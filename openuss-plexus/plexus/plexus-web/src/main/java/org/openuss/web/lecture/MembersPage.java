@@ -77,7 +77,7 @@ public class MembersPage extends AbstractLecturePage {
 				public Object transform(Object input) {
 					if (input instanceof InstituteGroup) {
 						InstituteGroup group = (InstituteGroup) input;
-						return new SelectItem(group, i18n(group.getLabel(),group.getLabel()));
+						return new SelectItem(group, i18n(group.getLabel(),group.getLabel(),null));
 					}
 					return null;
 				}
@@ -96,7 +96,7 @@ public class MembersPage extends AbstractLecturePage {
 		for(InstituteMember member : changedMembers) {
 			try {
 				getLectureService().setGroupOfMember(member, institute.getId());
-				addMessage(i18n("institute_auth_message_changed_member", new Object[]{member.getUsername()}));
+				addMessage(i18n("institute_auth_message_changed_member", member.getUsername()));
 			} catch (LectureException e) {
 				addError(i18n(e.getMessage()));
 			}
