@@ -233,11 +233,4 @@ public class MailDaoImpl extends MailDaoBase
         return this.findByMailingListWithoutDeleted(transform, "from org.openuss.mailinglist.Mail as m where m.mailingList = :mailingList and m.status = org.openuss.mailinglist.MailingStatus.SEND", mailingList);
     }
 
-
-	@Override
-	protected Mail handleFindMailByMessageId(Long messageId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
