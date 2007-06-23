@@ -74,7 +74,7 @@ public class RegistrationController extends BaseBean {
 		removeSessionBean(Constants.REGISTRATION_DATA);
 		removeSessionBean(Constants.USER_SESSION_KEY);
 
-		String message = i18n("user_email_verification_send_message", user.getEmail());
+		String message = i18n("user_email_verification_send_message", new Object[]{user.getEmail()});
 		String title = i18n("user_email_verification_send_message_title");
 		return MessageBox.showDefaultMessage(message, title);
 	}
