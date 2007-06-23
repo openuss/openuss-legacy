@@ -269,7 +269,7 @@ public class MailingListServiceImpl extends org.openuss.mailinglist.MailingListS
 	protected void handleMarkAsSend(MailInfo mail) throws Exception {
 		Validate.notNull(mail);
 		Validate.notNull(mail.getId());
-		MailDetail mailDetail =	(MailDetail) getMailDao().load(getMailDao().TRANSFORM_MAILDETAIL, mail.getId());
+		MailDetail mailDetail =	(MailDetail) getMailDao().load(MailDao.TRANSFORM_MAILDETAIL, mail.getId());
 		mailDetail.setStatus(MailingStatus.SEND);
 		getMailDao().update(getMailDao().mailDetailToEntity(mailDetail));
 	}
