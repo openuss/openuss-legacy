@@ -67,9 +67,9 @@ public class InstitutesPage extends BasePage{
 			institute.setEnabled(instituteDetails.isEnabled());
 			lectureService.persist(institute);
 			if (institute.isEnabled())
-				addMessage(i18n("system_message_institute_enabled", institute.getName()));
+				addMessage(i18n("system_message_institute_enabled", new Object[]{ institute.getName()}));
 			else
-				addMessage(i18n("system_message_institute_disabled", institute.getName()));
+				addMessage(i18n("system_message_institute_disabled", new Object[]{ institute.getName()}));
 		}
 		return Constants.SUCCESS;
 	}
