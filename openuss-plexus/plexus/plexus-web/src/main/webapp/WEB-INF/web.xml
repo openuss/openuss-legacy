@@ -25,6 +25,7 @@
 			classpath*:applicationContext-mailinglist.xml,
 			classpath*:applicationContext-lucene.xml,
 			classpath*:applicationContext-resources.xml,
+			classpath*:applicationContext-aop.xml,
 			/WEB-INF/security.xml,
 			/WEB-INF/actions.xml,
 			/WEB-INF/openuss-context.xml,

@@ -21,11 +21,17 @@ public class MailingStatusAspect {
 	 * @param message MessageJob
 	 */
 	public void updateMailingStatus(MessageJob message) {
-		if (message.getState() == JobState.DONE) { 
-			logger.debug("setting mail state to SEND");
+		if (message.getState() != JobState.INQUEUE) { 
+			logger.debug("updating mail state...");
 			Mail mail = mailDao.findMailByMessageId(message.getId());
-			mail.setStatus(MailingStatus.SEND);
-			mailDao.update(mail);
+			if (mail != null) {
+				if (message.getState() == JobState.DONE) {
+					mail.setStatus(MailingStatus.SEND);
+				} else {
+					mail.setStatus(MailingStatus.ERROR);
+				}
+				mailDao.update(mail);
+			}
 		}
 	}
 

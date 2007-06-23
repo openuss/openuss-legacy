@@ -5,6 +5,8 @@
  */
 package org.openuss.messaging;
 
+import java.util.Date;
+
 
 
 /**
@@ -14,11 +16,18 @@ package org.openuss.messaging;
 public class MessageJobDaoTest extends MessageJobDaoTestBase {
 	
 	public void testMessageJobDaoCreate() {
-		/*MessageJob messageJob = new MessageJobImpl();
+		MessageJob messageJob = MessageJob.Factory.newInstance();
 		messageJob.setCreated(new Date());
-		messageJob.setSendAsSms(true);
+		messageJob.setState(JobState.INQUEUE);
+		TextMessage message = TextMessage.Factory.newInstance();
+		message.setSenderName("sender name");
+		message.setSubject("subject");
+		message.setText("Text");
+		messageJob.setMessage(message);
 		assertNull(messageJob.getId());
 		messageJobDao.create(messageJob);
-		assertNotNull(messageJob.getId());*/
+		assertNotNull(messageJob.getId());
+		messageJob.setState(JobState.DONE);
+		messageJobDao.update(messageJob);
 	}
 }

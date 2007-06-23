@@ -22,6 +22,7 @@
 				pointcut="execution(* org..LectureServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)"
 				arg-names="instituteId"/>
 		</aop:aspect>
+		
 		<aop:aspect id="courseIndexAspect" ref="courseIndexAspectBean">
 			<aop:after-returning
 				method="updateCourseIndexOnPeriodUpdate" 
@@ -40,11 +41,14 @@
 				pointcut="execution(* org..LectureServiceBase.removeCourse(java.lang.Long)) and args(courseId)"
 				arg-names="courseId"/>
 		</aop:aspect>
-<!--
-<aop:aspect id="mailingStatusAspect" ref="mailingStatusAspectBean">
 		
+		<aop:aspect id="mailingStatusAspect" ref="mailingStatusAspectBean">
+			<aop:after-returning
+				method="updateMailingStatus"
+				pointcut="execution(* org..MessageJobDaoBase.update(org.openuss.messaging.MessageJob)) and args(messageJob)"
+				arg-names="messageJob"/>
 		</aop:aspect>
-  -->		
+		
 	</aop:config>
 	
 	<bean id="mailingStatusAspectBean" class="org.openuss.mailinglist.MailingStatusAspect">
