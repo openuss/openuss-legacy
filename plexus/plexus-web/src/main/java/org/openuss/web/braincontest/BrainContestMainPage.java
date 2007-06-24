@@ -25,6 +25,8 @@ public class BrainContestMainPage extends AbstractBrainContestPage{
 	@Prerender
 	public void prerender() throws Exception{
 		super.prerender();
+		crumbs.remove(crumbs.size()-1);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
 	public String remove() throws BrainContestApplicationException{

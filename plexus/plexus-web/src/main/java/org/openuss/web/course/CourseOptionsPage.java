@@ -43,7 +43,8 @@ public class CourseOptionsPage extends AbstractCoursePage {
 	
 	@Prerender
 	@Override
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
+		super.prerender();
 		if (course == null) {
 			course = (Course) getSessionBean(Constants.COURSE);
 		}
@@ -56,7 +57,7 @@ public class CourseOptionsPage extends AbstractCoursePage {
 				course = courseService.getCourse(course);
 			}
 		}
-		setSessionBean(Constants.COURSE, course);
+		setSessionBean(Constants.COURSE, course);		
 	}
 
 	/**

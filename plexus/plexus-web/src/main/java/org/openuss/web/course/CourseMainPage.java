@@ -33,7 +33,13 @@ public class CourseMainPage extends AbstractCoursePage{
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		removeCourseCrumb();
 		assistants = courseService.getAssistants(courseInfo);
+	}
+	
+	private void removeCourseCrumb(){
+		crumbs.remove(crumbs.size()-1);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 
