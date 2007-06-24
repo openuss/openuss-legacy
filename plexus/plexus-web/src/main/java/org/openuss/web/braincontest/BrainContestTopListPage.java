@@ -8,6 +8,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.AnswerInfo;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
@@ -42,8 +43,18 @@ public class BrainContestTopListPage extends AbstractBrainContestPage {
 				redirect(Constants.BRAINCONTEST_MAIN);
 			}
 		}
+		addPageCrumb();
 	}
-
+	
+	private void addPageCrumb() {
+		BreadCrumb newBrainContest = new BreadCrumb();
+		newBrainContest.setLink("");
+		newBrainContest.setName(i18n("braincontest_toplist_header"));
+		newBrainContest.setHint(i18n("braincontest_toplist_header"));
+		crumbs.add(newBrainContest);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}
+		
 	private class BrainContestTopListDataProvider extends AbstractPagedTable<AnswerInfo> {
 
 		private static final long serialVersionUID = -6154567464715182827L;

@@ -10,6 +10,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.documents.FileInfo;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
 
@@ -57,7 +58,17 @@ public class BrainContestSolvePage extends AbstractBrainContestPage {
 			if (attachments!= null&&attachments.size()>0) {
 				setAttachment(attachments.get(0));
 			}
-		}		
+		}
+		addPageCrumb();
+	}
+	
+	private void addPageCrumb() {
+		BreadCrumb newBrainContest = new BreadCrumb();
+		newBrainContest.setLink("");
+		newBrainContest.setName(getBrainContest().getTitle());
+		newBrainContest.setName(getBrainContest().getTitle());
+		crumbs.add(newBrainContest);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 
 	public String save() throws BrainContestApplicationException {
