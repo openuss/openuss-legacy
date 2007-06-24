@@ -4,6 +4,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
@@ -19,8 +20,17 @@ public class PeriodEditPage extends AbstractPeriodPage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		addPageCrumb();
 	}
 	
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("period_heading"));
+		crumb.setHint(i18n("period_heading"));
+		crumbs.add(crumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}
 	
 	/**
 	 * Store changes in the business layer.

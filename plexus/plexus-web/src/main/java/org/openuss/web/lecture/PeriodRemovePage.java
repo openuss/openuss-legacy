@@ -10,6 +10,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
@@ -42,7 +43,17 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 			period = lectureService.getPeriod(period.getId());
 			setSessionBean(Constants.PERIOD, period);
 		}
+		addPageCrumb();
 	}
+	
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("period_remove_header"));
+		crumb.setHint(i18n("period_remove_header"));
+		crumbs.add(crumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}	
 
 	/**
 	 * Forwards to an additional security question
