@@ -25,6 +25,7 @@ public class ExportedSubscribersPage extends AbstractMailingListPage {
 		setSessionBean(Constants.MAILINGLIST_MAILINGLIST, mailingList);
 		setSubscribersSemicolon(getCourseMailingListService().exportSubscribers(courseInfo));
 		setSubscribersComma(getSubscribersSemicolon().replace(';', ','));
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 
 	public String getSubscribersSemicolon() {

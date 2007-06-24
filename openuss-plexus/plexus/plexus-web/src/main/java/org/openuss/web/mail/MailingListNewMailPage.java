@@ -34,7 +34,7 @@ public class MailingListNewMailPage extends AbstractMailingListPage{
 		super.prerender();
 		mailingList = getCourseMailingListService().getMailingList(courseInfo);
 		setSessionBean(Constants.MAILINGLIST_MAILINGLIST, mailingList);
-
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	
 
 	public String saveDraft(){
