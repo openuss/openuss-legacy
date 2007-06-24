@@ -129,13 +129,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	@Override
 	protected List handleGetFolderEntries(DomainObject domainObject, FolderInfo folderInfo) throws Exception {
 		Validate.notNull(domainObject, "Parameter DomainObject must not be null!");
-		Folder folder = null;
-		if (folderInfo != null && folderInfo.getId() != null) {
-			folder = getFolderDao().load(folderInfo.getId());
-		}
-		if (folder == null || !isFolderOfDomainObject(domainObject, folder)) {
-			folder = getRootFolderForDomainObject(domainObject);
-		}
+		Folder folder = retrieveFolderOfOwner(domainObject, folderInfo);
 		List entries = getFolderEntryDao().findByParent(FolderEntryDao.TRANSFORM_FOLDERENTRYINFO, folder);
 		filterEntriesByPermission(entries);
 		return entries;
@@ -287,7 +281,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	 * @param contests
 	 */
 	private void filterEntriesByPermission(Collection entries) {
-		// TODO may be implemented as aspect
+		// FIXME should be implemented as aspect
 		if (entries != null && entries.size() > 0) {
 			Object object = entries.iterator().next();
 			if (!AcegiUtils.hasPermission(object, new Integer[] { LectureAclEntry.CRUD })) {
@@ -438,6 +432,33 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		Validate.notNull(domainObject, "Parameter domainObject must not be null.");
 		Folder root = getRootFolderForDomainObject(domainObject);
 		removeFolderEntry(root.getId());
+	}
+
+	@Override
+	protected FolderInfo handleGetFolder(DomainObject owner, FolderInfo folderInfo) throws Exception {
+		Validate.notNull(owner, "Parameter DomainObject must not be null!");
+		Folder folder = retrieveFolderOfOwner(owner, folderInfo);
+		return getFolderDao().toFolderInfo(folder);
+	}
+
+	/**
+	 * This method verifies that the returned folder belongs to the domain object. If the specified folder
+	 * is not a subfolder of the domain object this method will return the root folder of the domain object.
+	 * @param owner
+	 * @param folderInfo
+	 * @return folder entity instance
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
+	private Folder retrieveFolderOfOwner(DomainObject owner, FolderInfo folderInfo) throws IllegalAccessException, InvocationTargetException {
+		Folder folder = null;
+		if (folderInfo != null && folderInfo.getId() != null) {
+			folder = getFolderDao().load(folderInfo.getId());
+		}
+		if (folder == null || !isFolderOfDomainObject(owner, folder)) {
+			folder = getRootFolderForDomainObject(owner);
+		}
+		return folder;
 	}
 
 }
