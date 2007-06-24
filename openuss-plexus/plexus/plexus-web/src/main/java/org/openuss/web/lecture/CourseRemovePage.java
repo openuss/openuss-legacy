@@ -35,11 +35,16 @@ public class CourseRemovePage extends AbstractCoursePage {
 	private List<FolderEntryInfo> entries;
 	
 	@Prerender
-	@Override
 	public void prerender() throws Exception {
 		super.prerender();
 		course = lectureService.getCourse(course.getId());
 		setSessionBean(Constants.COURSE, course );
+		removeCourseCrumb();
+	}
+	
+	private void removeCourseCrumb(){
+		crumbs.remove(crumbs.size()-1);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	/**

@@ -2,6 +2,7 @@ package org.openuss.web.lecture;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
@@ -15,6 +16,12 @@ import org.openuss.web.Constants;
 @View
 public class PeriodEditPage extends AbstractPeriodPage {
 
+	@Prerender
+	public void prerender() throws LectureException {
+		super.prerender();
+	}
+	
+	
 	/**
 	 * Store changes in the business layer.
 	 * 

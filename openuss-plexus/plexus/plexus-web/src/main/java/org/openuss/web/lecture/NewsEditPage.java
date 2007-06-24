@@ -17,11 +17,15 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.lecture.LectureException;
 import org.openuss.news.NewsCategory;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
 import org.openuss.security.User;
+import org.openuss.system.SystemProperties;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 import org.openuss.web.upload.UploadFileManager;
 
 /**
@@ -47,15 +51,27 @@ public class NewsEditPage extends AbstractLecturePage {
 	
 	@Override
 	@Prerender
-	public void prerender() {
+	public void prerender() throws LectureException{
+		super.prerender();
 		if (!isPostBack()) {
 			if (newsItem != null && newsItem.getId() != null) {
 				newsItem = newsService.getNewsItem(newsItem);
 				setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
 			} 
 		}
+		addNewsCrumb();
+		
 	}
 
+	private void addNewsCrumb(){
+		BreadCrumb courseNewsCrumb = new BreadCrumb();
+		courseNewsCrumb.setName(i18n("news_header"));
+		courseNewsCrumb.setHint(i18n("news_header"));
+		courseNewsCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.INSTITUTE_NEWS+"?institute="+institute.getId());
+		crumbs.add(courseNewsCrumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}
+	
 	/**
 	 * Save the current newsbean into the database.
 	 * 
