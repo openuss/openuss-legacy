@@ -7,6 +7,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.mailinglist.SubscriberInfo;
@@ -33,7 +34,17 @@ public class MailingListSubscribersPage extends AbstractMailingListPage{
 		super.prerender();
 		mailingList = getCourseMailingListService().getMailingList(courseInfo);
 		setSessionBean(Constants.MAILINGLIST_MAILINGLIST, mailingList);
+		addPageCrumb();
 	}	
+	
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("mailinglist_subscribertable_header"));
+		crumb.setHint(i18n("mailinglist_subscribertable_header"));
+		crumbs.add(crumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}
 	
 	private class SubscriberDataProvider extends AbstractPagedTable<SubscriberInfo> {
 

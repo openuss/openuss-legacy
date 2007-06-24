@@ -60,8 +60,15 @@ public class CourseTypeCourseSelectionPage extends BasePage {
 		instituteCrumb.addParameter("institute",courseType.getInstitute().getId());
 		instituteCrumb.setHint(courseType.getInstitute().getName());
 		crumbs.add(instituteCrumb);
+		
+		BreadCrumb courseType = new BreadCrumb();
+		courseType.setHint(this.courseType.getName());
+		courseType.setName(this.courseType.getShortcut());
+		courseType.setLink("");
+		crumbs.add(courseType);
 	}
-	
+
+		
 	/* ------------------ data models ------------------- */
 	private class CourseDataProvider extends AbstractPagedTable<Course> {
 		private static final long serialVersionUID = 6604486126694733013L;
