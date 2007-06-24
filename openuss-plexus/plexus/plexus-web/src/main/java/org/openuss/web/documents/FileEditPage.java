@@ -39,6 +39,7 @@ public class FileEditPage extends AbstractDocumentPage{
 				selectedFile.setCreated(new Date());
 			}
 		}
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 
 	public String save() throws DocumentApplicationException, IOException{

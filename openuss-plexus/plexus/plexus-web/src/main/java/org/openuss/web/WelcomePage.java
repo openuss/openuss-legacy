@@ -22,6 +22,7 @@ public class WelcomePage extends BasePage{
 				user.setContact(null);
 				setSessionBean(Constants.USER, null);
 		}
+		setSessionBean(Constants.BREADCRUMBS, null);
 	}
 	public User getUser() {
 		return user;

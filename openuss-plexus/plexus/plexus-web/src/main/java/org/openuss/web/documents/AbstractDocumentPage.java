@@ -9,7 +9,10 @@ import org.apache.shale.tiger.view.Prerender;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.system.SystemProperties;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 import org.openuss.web.course.AbstractCoursePage;
 
 /**
@@ -37,6 +40,15 @@ public class AbstractDocumentPage extends AbstractCoursePage {
 			retrieveActualFolder();
 		}
 		setSessionAttribute(Constants.DOCUMENTS_CURRENT_FOLDER, currentFolder);
+		addDocumentCrumb();
+	}
+	
+	private void addDocumentCrumb(){
+		BreadCrumb documentCrumb = new BreadCrumb();
+		documentCrumb.setHint(i18n("course_command_documents"));
+		documentCrumb.setName(i18n("course_command_documents"));
+		documentCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.DOCUMENTS_MAIN+"?course="+course.getId());
+		crumbs.add(documentCrumb);		
 	}
 
 	public DocumentService getDocumentService() {

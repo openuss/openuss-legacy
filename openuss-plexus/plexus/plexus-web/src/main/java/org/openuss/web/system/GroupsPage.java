@@ -6,12 +6,14 @@ import java.util.List;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.GroupItem;
 import org.openuss.security.SecurityService;
 import org.openuss.web.BasePage;
+import org.openuss.web.Constants;
 
 /**
  * 
@@ -26,6 +28,11 @@ public class GroupsPage extends BasePage{
 
 	private GroupTable table = new GroupTable();
 
+	@Prerender
+	public void prerender() {
+		setSessionBean(Constants.BREADCRUMBS, null);
+	}		
+	
 	private class GroupTable extends AbstractPagedTable<GroupItem> {
 		
 		private static final long serialVersionUID = 8632408249099301747L;

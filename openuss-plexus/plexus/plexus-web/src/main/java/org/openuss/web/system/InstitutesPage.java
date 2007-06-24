@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -38,6 +39,11 @@ public class InstitutesPage extends BasePage{
 
 	private InstituteDataProvider provider = new InstituteDataProvider();
 
+	@Prerender
+	public void prerender() {
+		setSessionBean(Constants.BREADCRUMBS, null);
+	}
+	
 	public String selectInstitute() {
 		Institute institute = currentInstitute();
 		setSessionBean(Constants.INSTITUTE, institute);

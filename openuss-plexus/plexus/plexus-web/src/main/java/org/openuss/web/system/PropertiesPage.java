@@ -32,6 +32,7 @@ public class PropertiesPage extends BasePage  {
 	@Prerender
 	public void prerender() {
 		propertyList.setData(new ArrayList(systemService.getProperties()));
+		setSessionBean(Constants.BREADCRUMBS, null);
 	}
 	
 	public Collection getProperties() {
