@@ -23,7 +23,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#getAssistants(org.openuss.lecture.Course)
 	 */
-	protected java.util.List handleGetAssistants(org.openuss.lecture.Course course) throws java.lang.Exception {
+	protected java.util.List handleGetAssistants(Course course) throws Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course,
 				CourseMemberType.ASSISTANT);
 	}
@@ -31,7 +31,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#getAspirants(org.openuss.lecture.Course)
 	 */
-	protected java.util.List handleGetAspirants(org.openuss.lecture.Course course) throws java.lang.Exception {
+	protected java.util.List handleGetAspirants(Course course) throws Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course,
 				CourseMemberType.ASPIRANT);
 	}
@@ -39,8 +39,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#getParticipants(org.openuss.lecture.Course)
 	 */
-	protected java.util.List handleGetParticipants(org.openuss.lecture.Course course)
-			throws java.lang.Exception {
+	protected java.util.List handleGetParticipants(Course course) throws java.lang.Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course,
 				CourseMemberType.PARTICIPANT);
 	}
@@ -49,41 +48,48 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	 * @see org.openuss.lecture.CourseService#addAssistant(org.openuss.lecture.Course,
 	 *      org.openuss.security.User)
 	 */
-	protected void handleAddAssistant(org.openuss.lecture.Course course, org.openuss.security.User user)
-			throws java.lang.Exception {
-		CourseMember assistant = createCourseMember(course, user);
+	protected void handleAddAssistant(Course course, User user) throws Exception {
+		CourseMember assistant = retrieveCourseMember(course, user);
 		assistant.setMemberType(CourseMemberType.ASSISTANT);
-		getCourseMemberDao().create(assistant);
+		persistCourseMember(assistant);
+	}
+
+	private void persistCourseMember(CourseMember member) {
+		if (member.getId() == null) {
+			getCourseMemberDao().create(member);
+		} else {
+			getCourseMemberDao().update(member);
+		}
 	}
 
 	/**
 	 * @see org.openuss.lecture.CourseService#addAspirant(org.openuss.lecture.Course,
 	 *      org.openuss.security.User)
 	 */
-	protected void handleAddAspirant(org.openuss.lecture.Course course, org.openuss.security.User user)
-			throws java.lang.Exception {
-		CourseMember aspirant = createCourseMember(course, user);
+	protected void handleAddAspirant(Course course, User user) throws Exception {
+		CourseMember aspirant = retrieveCourseMember(course, user);
 		aspirant.setMemberType(CourseMemberType.ASPIRANT);
-		getCourseMemberDao().create(aspirant);
+		persistCourseMember(aspirant);
 	}
 
-	private CourseMember createCourseMember(org.openuss.lecture.Course course,
-			org.openuss.security.User user) {
-		course = getCourseDao().load(course.getId());
-		user = getSecurityService().getUser(user.getId());
-		CourseMember aspirant = CourseMember.Factory.newInstance();
-		aspirant.setCourse(course);
-		aspirant.setUser(user);
-		return aspirant;
+	private CourseMember retrieveCourseMember(Course course, User user) {
+		CourseMember member = getCourseMemberDao().findByUserAndCourse(user, course);
+		if (member == null) {
+			member = CourseMember.Factory.newInstance();
+			course = getCourseDao().load(course.getId());
+			user = getSecurityService().getUser(user.getId());
+			member.setCourse(course);
+			member.setUser(user);
+		}
+		return member;
 	}
 
 	/**
 	 * @see org.openuss.lecture.CourseService#addParticipant(org.openuss.lecture.Course,
 	 *      org.openuss.security.User)
 	 */
-	protected void handleAddParticipant(org.openuss.lecture.Course course, org.openuss.security.User user)
-			throws java.lang.Exception {
-		CourseMember participant = createCourseMember(course, user);
+	protected void handleAddParticipant(Course course, User user) throws Exception {
+		CourseMember participant = retrieveCourseMember(course, user);
 		persistParticipantWithPermissions(participant);
 	}
 
@@ -94,22 +100,15 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 			persistParticipantWithPermissions(member);
 		}
 		Map parameters = new HashMap();
-		parameters.put("coursename", ""+member.getCourse().getName()+"("+member.getCourse().getShortcut()+")");
-		getMessageService().sendMessage(member.getCourse().getName()+"("+member.getCourse().getShortcut()+")", 
-				"course.application.subject", "courseapplicationapply", parameters, 
-				member.getUser());
+		parameters.put("coursename", "" + member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")");
+		getMessageService().sendMessage(member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")",
+				"course.application.subject", "courseapplicationapply", parameters, member.getUser());
 	}
 
 	private void persistParticipantWithPermissions(CourseMember participant) {
 		participant.setMemberType(CourseMemberType.PARTICIPANT);
-		getSecurityService().setPermissions(participant.getUser(), participant.getCourse(),
-				LectureAclEntry.COURSE_PARTICIPANT);
-
-		if (participant.getId() == null) {
-			getCourseMemberDao().create(participant);
-		} else {
-			getCourseMemberDao().update(participant);
-		}
+		getSecurityService().setPermissions(participant.getUser(), participant.getCourse(),	LectureAclEntry.COURSE_PARTICIPANT);
+		persistCourseMember(participant);
 	}
 
 	@Override
@@ -118,17 +117,6 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		if (member != null) {
 			getSecurityService().removePermission(member.getUser(), member.getCourse());
 			getCourseMemberDao().remove(member);
-		}
-	}
-
-	@Override
-	protected void handleApplyUser(Course course, User user) throws Exception {
-		Course originalCourse = getCourseDao().load(course.getId());
-		if (originalCourse.getAccessType() == AccessType.APPLICATION) {
-			// TODO send email to all assistants
-			addAspirant(originalCourse, user);
-		} else {
-			throw new CourseApplicationException("message_error_course_accesstype_is_not_application");
 		}
 	}
 
@@ -147,10 +135,9 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		CourseMember member = getCourseMemberDao().load(memberId);
 		removeMember(memberId);
 		Map parameters = new HashMap();
-		parameters.put("coursename", ""+member.getCourse().getName()+"("+member.getCourse().getShortcut()+")");
-		getMessageService().sendMessage(member.getCourse().getName()+"("+member.getCourse().getShortcut()+")", 
-				"course.application.subject", "courseapplicationreject", parameters, 
-				member.getUser());		
+		parameters.put("coursename", "" + member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")");
+		getMessageService().sendMessage(member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")",
+				"course.application.subject", "courseapplicationreject", parameters, member.getUser());
 	}
 
 	@Override
@@ -164,47 +151,54 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	@Override
 	protected CourseMemberInfo handleGetMemberInfo(Course course, User user) throws Exception {
-		return (CourseMemberInfo) getCourseMemberDao().findByUserAndCourse(
-				CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, user, course);
+		return (CourseMemberInfo) getCourseMemberDao().findByUserAndCourse(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
+				user, course);
 	}
 
 	@Override
 	protected void handleAddAspirant(CourseInfo course, User user) throws Exception {
-		CourseMember aspirant = createCourseMember(getCourseDao().courseInfoToEntity(course), user);
+		CourseMember aspirant = retrieveCourseMember(getCourseDao().courseInfoToEntity(course), user);
 		aspirant.setMemberType(CourseMemberType.ASPIRANT);
 		getCourseMemberDao().create(aspirant);
 	}
 
 	@Override
 	protected void handleAddAssistant(CourseInfo course, User user) throws Exception {
-		CourseMember assistant = createCourseMember(getCourseDao().courseInfoToEntity(course), user);
+		CourseMember assistant = retrieveCourseMember(getCourseDao().courseInfoToEntity(course), user);
 		assistant.setMemberType(CourseMemberType.ASSISTANT);
 		getCourseMemberDao().create(assistant);
 	}
 
 	@Override
 	protected void handleAddParticipant(CourseInfo course, User user) throws Exception {
-		CourseMember participant = createCourseMember(getCourseDao().courseInfoToEntity(course), user);
+		CourseMember participant = retrieveCourseMember(getCourseDao().courseInfoToEntity(course), user);
 		persistParticipantWithPermissions(participant);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void handleApplyUser(CourseInfo course, User user) throws Exception {
-		Course originalCourse = getCourseDao().courseInfoToEntity(course);
+		handleApplyUser(getCourseDao().courseInfoToEntity(course),user);
+	}
+	
+	@Override
+	protected void handleApplyUser(Course course, User user) throws Exception {
+		Course originalCourse = getCourseDao().load(course.getId());
 		if (originalCourse.getAccessType() == AccessType.APPLICATION) {
 			List<CourseMemberInfo> assistants = getAssistants(course);
 			List<User> recipients = new ArrayList();
-			if (assistants!=null&&assistants.size()!=0){
+			if (assistants != null && assistants.size() != 0) {
 				Iterator i = assistants.iterator();
-				while (i.hasNext()){
-					recipients.add(getSecurityService().getUser(((CourseMemberInfo)i.next()).getUserId()));					
+				while (i.hasNext()) {
+					recipients.add(getSecurityService().getUser(((CourseMemberInfo) i.next()).getUserId()));
 				}
-				String link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/course/courseaspirants.faces?course="+course.getId(); 
+				String link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
+						+ "views/secured/course/courseaspirants.faces?course=" + course.getId();
 				Map parameters = new HashMap();
-				parameters.put("coursename", course.getName()+"("+course.getShortcut()+")");
-				parameters.put("courseapplicantlink", link);			
-				getMessageService().sendMessage(course.getName(), "course.application.subject", "courseapplication", parameters, recipients);
+				parameters.put("coursename", course.getName() + "(" + course.getShortcut() + ")");
+				parameters.put("courseapplicantlink", link);
+				getMessageService().sendMessage(course.getName(), "course.application.subject", "courseapplication",
+						parameters, recipients);
 			}
 			addAspirant(originalCourse, user);
 		} else {
@@ -224,46 +218,46 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	@Override
 	protected List handleGetAspirants(CourseInfo course) throws Exception {
-		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, getCourseDao().courseInfoToEntity(course),
-				CourseMemberType.ASPIRANT);
+		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
+				getCourseDao().courseInfoToEntity(course), CourseMemberType.ASPIRANT);
 	}
 
 	@Override
 	protected List handleGetAssistants(CourseInfo course) throws Exception {
-		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, getCourseDao().courseInfoToEntity(course),
-				CourseMemberType.ASSISTANT);
+		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
+				getCourseDao().courseInfoToEntity(course), CourseMemberType.ASSISTANT);
 	}
 
 	@Override
 	protected CourseInfo handleGetCourseInfo(Course course) throws Exception {
-		if ((course==null)||(course.getId()==null)) return null;
-		course = getCourseDao().load(course.getId());
-		if (course==null) return null;
-		return getCourseDao().toCourseInfo(course);
+		if ((course == null) || (course.getId() == null)) {
+			return null;
+		}
+		return (CourseInfo) getCourseDao().load(CourseDao.TRANSFORM_COURSEINFO, course.getId());
 	}
 
 	@Override
 	protected CourseMemberInfo handleGetMemberInfo(CourseInfo course, User user) throws Exception {
-		return (CourseMemberInfo) getCourseMemberDao().findByUserAndCourse(
-				CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, user, getCourseDao().courseInfoToEntity(course));
+		return (CourseMemberInfo) getCourseMemberDao().findByUserAndCourse(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
+				user, getCourseDao().courseInfoToEntity(course));
 	}
 
 	@Override
 	protected List handleGetParticipants(CourseInfo course) throws Exception {
-		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, getCourseDao().courseInfoToEntity(course),
-				CourseMemberType.PARTICIPANT);
+		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
+				getCourseDao().courseInfoToEntity(course), CourseMemberType.PARTICIPANT);
 	}
 
 	@Override
 	protected void handleRemoveAspirants(CourseInfo course) throws Exception {
-		Course courseDao = getCourseDao().load(course.getId()); 
+		Course courseDao = getCourseDao().load(course.getId());
 		List<CourseMember> members = getCourseMemberDao().findByCourse(courseDao);
 		Iterator i = members.iterator();
 		CourseMember member;
-		while (i.hasNext()){
+		while (i.hasNext()) {
 			member = (CourseMember) i.next();
-			if (member.getMemberType()== CourseMemberType.ASPIRANT){
-				getCourseMemberDao().remove(member.getId()); 
+			if (member.getMemberType() == CourseMemberType.ASPIRANT) {
+				getCourseMemberDao().remove(member.getId());
 			}
 		}
 	}
