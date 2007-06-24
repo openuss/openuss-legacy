@@ -13,16 +13,21 @@
 			<c:set var="styleClass" value="conten_font_normal"/>
 		</c:if>
 		<span class="header_font_normal">		
-		    <t:dataList id="data1"
+		    <t:dataList id="breadcrumb_links"
 		        styleClass="${styleClass}"
 	    	    var="crumb"
 	        	value="${value}"
 		        layout="simple"
 		        rowCountVar="rowCount"
 		        rowIndexVar="rowIndex">
-				<h:outputLink value="${crumb.link}" styleClass="${styleClass}" title="${crumb.hint}" rendered="true">
+	    		<h:outputLink 
+	    			value="${facesContext.externalContext.requestContextPath}${crumb.link}" 
+	    			styleClass="${styleClass}" 
+	    			title="${crumb.hint}" 
+	    			rendered="#{not empty crumb.link}">
 					#{crumb.name}
 				</h:outputLink>		
+				<h:outputText value="#{crumb.name}" rendered="#{empty crumb.link}"/>
 		        <h:outputText value=" > " rendered="#{(rowIndex + 1) lt rowCount}" styleClass="${styleClass}"/>
 			</t:dataList>
 		</span>

@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FolderInfo;
@@ -18,12 +17,7 @@ public class FolderEditPage extends AbstractDocumentPage{
 	@Property(value = "#{"+Constants.DOCUMENTS_SELECTED_FOLDER+"}")
 	private FolderInfo selectedFolder;
 
-	@Prerender
-	public void prerender() throws Exception {
-		super.prerender();
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
-	}
-	
+
 	public String save() throws DocumentApplicationException{
 		logger.debug("saving folder");
 		if (selectedFolder != null && selectedFolder.getId() == null) {

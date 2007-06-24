@@ -13,10 +13,8 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Course;
-import org.openuss.lecture.LectureService;
 import org.openuss.lecture.CourseType;
-import org.openuss.system.SystemProperties;
-import org.openuss.system.SystemService;
+import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
@@ -40,12 +38,6 @@ public class CourseTypeCourseSelectionPage extends BasePage {
 	@Property(value="#{lectureService}")
 	LectureService lectureService;
 
-	@Property(value="#{systemService}")
-	SystemService systemService;
-	
-	@Property(value = "#{crumbs}")
-	protected List<BreadCrumb> crumbs;
-	
 	@Prerender
 	public void prerender() {
 		logger.debug("prerender courseType course selction");
@@ -60,14 +52,14 @@ public class CourseTypeCourseSelectionPage extends BasePage {
 	}
 	
 	private void generateBreadCrumbs(){
-		crumbs = new ArrayList<BreadCrumb>();
+		crumbs.clear();
 		BreadCrumb instituteCrumb = new BreadCrumb();
 		
 		instituteCrumb.setName(courseType.getInstitute().getShortcut());
-		instituteCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.INSTITUTE_PAGE+"?institute="+courseType.getInstitute().getId());
+		instituteCrumb.setLink(PageLinks.INSTITUTE_PAGE);
+		instituteCrumb.addParameter("institute",courseType.getInstitute().getId());
 		instituteCrumb.setHint(courseType.getInstitute().getName());
 		crumbs.add(instituteCrumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	/* ------------------ data models ------------------- */
@@ -109,21 +101,5 @@ public class CourseTypeCourseSelectionPage extends BasePage {
 
 	public void setCourseType(CourseType courseType) {
 		this.courseType = courseType;
-	}
-
-	public List<BreadCrumb> getCrumbs() {
-		return crumbs;
-	}
-
-	public void setCrumbs(List<BreadCrumb> crumbs) {
-		this.crumbs = crumbs;
-	}
-
-	public SystemService getSystemService() {
-		return systemService;
-	}
-
-	public void setSystemService(SystemService systemService) {
-		this.systemService = systemService;
 	}
 }

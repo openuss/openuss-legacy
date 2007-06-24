@@ -22,8 +22,6 @@ import org.openuss.news.NewsCategory;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
 import org.openuss.security.User;
-import org.openuss.system.SystemProperties;
-import org.openuss.system.SystemProperty;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.upload.UploadFileManager;
@@ -68,9 +66,9 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 		BreadCrumb courseNewsCrumb = new BreadCrumb();
 		courseNewsCrumb.setName(i18n("news_header"));
 		courseNewsCrumb.setHint(i18n("news_header"));
-		courseNewsCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.COURSE_NEWS+"?course="+course.getId());
+		courseNewsCrumb.setLink(PageLinks.COURSE_NEWS);
+		courseNewsCrumb.addParameter("course",courseInfo.getId());
 		crumbs.add(courseNewsCrumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 
 	/**
@@ -85,7 +83,7 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 		
 		newsItem.setCategory(NewsCategory.COURSE);
 		newsItem.setExpireDate(null);
-		newsItem.setPublisherIdentifier(course.getId());
+		newsItem.setPublisherIdentifier(courseInfo.getId());
 		newsItem.setAuthor(getAuthorName());
 		newsService.saveNewsItem(newsItem);
 

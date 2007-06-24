@@ -7,7 +7,6 @@ import javax.faces.event.ValueChangeEvent;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -23,11 +22,6 @@ public class CourseParticipantsPage extends AbstractCoursePage {
 
 	private ParticipantDataProvider data = new ParticipantDataProvider();
 
-	@Prerender
-	public void prerender() throws Exception {
-		super.prerender(); 
-	}
-	
 	public String save() {
 		logger.debug("Course member page - saved");
 		return Constants.SUCCESS;
@@ -46,7 +40,7 @@ public class CourseParticipantsPage extends AbstractCoursePage {
 		@Override
 		public DataPage<CourseMemberInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<CourseMemberInfo> participants = courseService.getParticipants(course);
+				List<CourseMemberInfo> participants = courseService.getParticipants(courseInfo);
 				page = new DataPage<CourseMemberInfo>(participants.size(), 0, participants);
 			}
 			return page;

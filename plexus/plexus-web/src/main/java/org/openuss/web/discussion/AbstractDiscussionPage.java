@@ -7,8 +7,6 @@ import org.openuss.discussion.ForumInfo;
 import org.openuss.discussion.PostInfo;
 import org.openuss.discussion.TopicInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.system.SystemProperties;
-import org.openuss.system.SystemService;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.course.AbstractCoursePage;
@@ -24,9 +22,6 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 	@Property(value = "#{discussionService}")
 	protected DiscussionService discussionService;
 	
-	@Property(value = "#{systemService}")
-	protected SystemService systemService;
-	
 	public ForumInfo forum;
 	
 	@Prerender
@@ -39,7 +34,8 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 		BreadCrumb discussionMain = new BreadCrumb();
 		discussionMain.setName(i18n("course_command_discussion"));
 		discussionMain.setHint(i18n("course_command_discussion"));
-		discussionMain.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.DISCUSSION_MAIN+"?course="+course.getId());
+		discussionMain.setLink(PageLinks.DISCUSSION_MAIN);
+		discussionMain.addParameter("course",courseInfo.getId());
 		crumbs.add(discussionMain);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
@@ -61,7 +57,7 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 	}
 	
 	public ForumInfo getForum() {
-		this.forum = discussionService.getForum(course);
+		this.forum = discussionService.getForum(courseInfo);
 		return this.forum;
 	}
 
@@ -76,12 +72,4 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 	public void setTopic(TopicInfo topic) {
 		this.topic = topic;
 	}
-
-	public SystemService getSystemService() {
-		return systemService;
-	}
-
-	public void setSystemService(SystemService systemService) {
-		this.systemService = systemService;
-	}	
 }

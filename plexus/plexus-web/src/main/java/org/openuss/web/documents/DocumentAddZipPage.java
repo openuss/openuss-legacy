@@ -36,7 +36,6 @@ public class DocumentAddZipPage extends AbstractDocumentPage{
 			logger.debug("reseting date");
 			file.setCreated(new Date());
 		}
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	public String unzip() throws DocumentApplicationException{
