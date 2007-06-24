@@ -31,7 +31,13 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 			forumWatchState = discussionService.watchesForum(getForum());
 			forumReadOnly = getForum().isReadOnly();
 		}
+		removeDiscussionCrumb();
 	}	
+	
+	private void removeDiscussionCrumb(){
+		crumbs.remove(crumbs.size()-1);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}
 	
 	private class DiscussionDataProvider extends AbstractPagedTable<TopicInfo> {
 

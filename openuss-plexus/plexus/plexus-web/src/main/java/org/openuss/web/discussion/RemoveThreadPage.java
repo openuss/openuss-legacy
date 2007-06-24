@@ -6,11 +6,17 @@ import javax.faces.context.FacesContext;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.web.Constants;
 @Bean(name = "views$secured$discussion$removethread", scope = Scope.REQUEST)
 @View
 public class RemoveThreadPage extends AbstractDiscussionPage{
+	
+	@Prerender
+	public void prerender() throws Exception {	
+		super.prerender();
+	}		
 	
 	public String removeThread(){
 		discussionService.deleteTopic(topic);
