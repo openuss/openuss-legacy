@@ -24,10 +24,10 @@
 	    			value="${facesContext.externalContext.requestContextPath}${crumb.link}" 
 	    			styleClass="${styleClass}" 
 	    			title="${crumb.hint}" 
-	    			rendered="#{not empty crumb.link}">
+	    			rendered="#{(not empty crumb.link) and not ((rowIndex+1) == rowCount)}">
 					#{crumb.name}
 				</h:outputLink>		
-				<h:outputText value="#{crumb.name}" rendered="#{empty crumb.link}"/>
+				<h:outputText value="#{crumb.name}" rendered="#{(empty crumb.link) or ((rowIndex+1) == rowCount)}"/>
 		        <h:outputText value=" > " rendered="#{(rowIndex + 1) lt rowCount}" styleClass="${styleClass}"/>
 			</t:dataList>
 		</span>
