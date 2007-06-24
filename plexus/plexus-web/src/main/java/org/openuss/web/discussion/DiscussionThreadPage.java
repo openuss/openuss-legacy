@@ -10,6 +10,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.discussion.PostInfo;
 import org.openuss.discussion.TopicInfo;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.User;
@@ -47,8 +48,17 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 			topicWatchState = discussionService.watchesTopic(topic);
 			topicReadOnly = topic.isReadOnly();
 		}
+		addPageCrumb();
 	}	
 	
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(topic.getTitle());
+		crumb.setHint(topic.getTitle());
+		crumbs.add(crumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}	
 	
 	private class DiscussionThreadDataProvider extends AbstractPagedTable<PostInfo> {
 
