@@ -13,6 +13,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
 import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
@@ -36,7 +37,17 @@ public class DocumentAddZipPage extends AbstractDocumentPage{
 			logger.debug("reseting date");
 			file.setCreated(new Date());
 		}
+		addPageCrumb();
 	}
+	
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("document_addzip_header"));
+		crumb.setHint(i18n("document_addzip_header"));
+		crumbs.add(crumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}	
 	
 	public String unzip() throws DocumentApplicationException{
 		logger.debug("new document saved");
