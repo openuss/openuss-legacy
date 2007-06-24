@@ -9,6 +9,7 @@ import javax.faces.event.ValueChangeEvent;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -33,6 +34,11 @@ public class AspirantsPage extends AbstractLecturePage {
 	
 	private transient Set<UserInfo> acceptAspirants = new HashSet<UserInfo>();
 	private transient Set<UserInfo> rejectAspirants = new HashSet<UserInfo>();
+
+	@Prerender
+	public void prerender() throws LectureException {
+		super.prerender();
+	}
 	
 	public String save() {
 		acceptAspirants();

@@ -83,6 +83,7 @@ public abstract class AbstractLecturePage extends BasePage {
 		instituteCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.INSTITUTE_PAGE+"?institute="+institute.getId());
 		instituteCrumb.setHint(institute.getName());
 		
+		crumbs.add(instituteCrumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
