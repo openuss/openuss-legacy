@@ -11,6 +11,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseInfo;
@@ -57,7 +58,17 @@ public class CourseOptionsPage extends AbstractCoursePage {
 			}
 		}
 		setSessionBean(Constants.COURSE, course);
+		addPageCrumb();
 	}
+	
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("course_command_options_config"));
+		crumb.setHint(i18n("course_command_options_config"));
+		crumbs.add(crumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}	
 
 	/**
 	 * Save changes of the course 
