@@ -33,19 +33,12 @@ public class CourseMainPage extends AbstractCoursePage{
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		removeCourseCrumb();
 		assistants = courseService.getAssistants(courseInfo);
 	}
 	
-	private void removeCourseCrumb(){
-		crumbs.remove(crumbs.size()-1);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
-	}
-	
-
 	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {
 		String password = (String) value;
-		if (!StringUtils.equalsIgnoreCase(password, course.getPassword())) {
+		if (!StringUtils.equalsIgnoreCase(password, courseInfo.getPassword())) {
 			((UIInput) toValidate).setValid(false);
 			addError(toValidate.getClientId(context), i18n("message_error_password_is_not_correct"), null);
 		}
@@ -66,7 +59,7 @@ public class CourseMainPage extends AbstractCoursePage{
 	}
 	
 	public boolean isAspirant() {
-		CourseMemberInfo info = courseService.getMemberInfo(course, user);
+		CourseMemberInfo info = courseService.getMemberInfo(courseInfo, user);
 		return (info != null) && (info.getMemberType() == CourseMemberType.ASPIRANT);
 	}
 

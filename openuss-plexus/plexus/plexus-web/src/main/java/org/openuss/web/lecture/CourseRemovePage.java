@@ -30,7 +30,6 @@ public class CourseRemovePage extends AbstractCoursePage {
 
 	private static final long serialVersionUID = 8821048605517398410L;
 	
-	
 	@Property(value="#{sessionScope.document_selected_folderentries}")
 	private List<FolderEntryInfo> entries;
 	
@@ -39,13 +38,8 @@ public class CourseRemovePage extends AbstractCoursePage {
 		super.prerender();
 		course = lectureService.getCourse(course.getId());
 		setSessionBean(Constants.COURSE, course );
-		removeCourseCrumb();
 	}
 	
-	private void removeCourseCrumb(){
-		crumbs.remove(crumbs.size()-1);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
-	}
 	
 	/**
 	 * Remove the current course and all its data

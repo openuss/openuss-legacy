@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -34,11 +33,6 @@ public class CourseNewsPage extends AbstractCoursePage {
 
 	private NewsDataProvider data = new NewsDataProvider();
 	
-	@Prerender
-	public void prerender() throws Exception {
-		super.prerender(); 
-	}		
-	
 	private class NewsDataProvider extends AbstractPagedTable<NewsItemInfo> {
 
 		private static final long serialVersionUID = 8155867089090710357L;
@@ -48,7 +42,7 @@ public class CourseNewsPage extends AbstractCoursePage {
 		@Override 
 		public DataPage<NewsItemInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<NewsItemInfo> news = newsService.getNewsItems(course);
+				List<NewsItemInfo> news = newsService.getNewsItems(courseInfo);
 				page = new DataPage<NewsItemInfo>(news.size(),0,news);
 				sort(news);
 			}
@@ -57,7 +51,7 @@ public class CourseNewsPage extends AbstractCoursePage {
 	}
 	
 	public List<NewsItemInfo> getCurrentNews() {
-		return newsService.getCurrentNewsItems(course,null);
+		return newsService.getCurrentNewsItems(courseInfo,null);
 	}
 	
 	/**
@@ -71,7 +65,7 @@ public class CourseNewsPage extends AbstractCoursePage {
 		newsItem.setPublishDate(new Date());
 		newsItem.setExpireDate(new Date(System.currentTimeMillis()+1000L*60L*60L*24L*28L));
 		
-		newsItem.setPublisherIdentifier(course.getId());
+		newsItem.setPublisherIdentifier(courseInfo.getId());
 		// FIXME BEWARE OF LAZYEXCEPTION HERE
 		newsItem.setPublisherName(course.getInstitute().getName());
 		
@@ -103,8 +97,8 @@ public class CourseNewsPage extends AbstractCoursePage {
 	}
 
 	public List<NewsItem> getNewsItems() {
-		logger.debug("getting newsitems for course " + course);
-		return newsService.getNewsItems(course);
+		logger.debug("getting newsitems for course " + courseInfo);
+		return newsService.getNewsItems(courseInfo);
 	}
 
 	/* --------------- properties -------------- */

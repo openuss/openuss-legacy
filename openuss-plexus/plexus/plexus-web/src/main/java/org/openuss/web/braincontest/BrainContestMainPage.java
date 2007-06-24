@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.braincontest.BrainContestInfo;
@@ -21,13 +20,6 @@ import org.openuss.web.Constants;
 public class BrainContestMainPage extends AbstractBrainContestPage{
 	
 	private BrainContestMainDataProvider data = new BrainContestMainDataProvider();
-	
-	@Prerender
-	public void prerender() throws Exception{
-		super.prerender();
-		crumbs.remove(crumbs.size()-1);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
-	}	
 	
 	public String remove() throws BrainContestApplicationException{
 		BrainContestInfo bci = this.data.getRowData();
@@ -80,7 +72,7 @@ public class BrainContestMainPage extends AbstractBrainContestPage{
 		
 		@Override 
 		public DataPage<BrainContestInfo> getDataPage(int startRow, int pageSize) {		
-			List<BrainContestInfo> al = getBrainContestService().getContests(course);			 
+			List<BrainContestInfo> al = getBrainContestService().getContests(courseInfo);			 
 			page = new DataPage <BrainContestInfo>(al.size(),0,al);
 			return page;
 		}

@@ -5,17 +5,15 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
-import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Course;
-import org.openuss.lecture.Institute;
 import org.openuss.lecture.CourseType;
+import org.openuss.lecture.Institute;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -34,21 +32,13 @@ public class DesktopPage extends BasePage {
 	private CourseTypeDataProvider courseTypesProvider = new CourseTypeDataProvider();
 	private InstituteDataProvider institutesProvider = new InstituteDataProvider();
 
-	@Property(value = "#{crumbs}")
-	protected List<BreadCrumb> crumbs;
-	
 	@Prerender
 	public void prerender() {
 		logger.debug("prerender desktop");
 		refreshDesktop();
-		removeCrumbs();		
+		crumbs.clear();
 	}
 	
-	private void removeCrumbs(){
-		crumbs = null;
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
-	}
-
 	private void refreshDesktop() {
 		if (user != null) {
 			try {
@@ -214,13 +204,5 @@ public class DesktopPage extends BasePage {
 
 	public void setCourseTypesProvider(CourseTypeDataProvider courseTypesProvider) {
 		this.courseTypesProvider = courseTypesProvider;
-	}
-
-	public List<BreadCrumb> getCrumbs() {
-		return crumbs;
-	}
-
-	public void setCrumbs(List<BreadCrumb> crumbs) {
-		this.crumbs = crumbs;
 	}
 }

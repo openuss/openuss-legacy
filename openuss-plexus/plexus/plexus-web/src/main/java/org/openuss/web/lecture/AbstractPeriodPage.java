@@ -5,7 +5,6 @@ import org.apache.shale.tiger.view.Prerender;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.Period;
-import org.openuss.system.SystemProperties;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 
@@ -27,28 +26,26 @@ public class AbstractPeriodPage extends AbstractLecturePage {
 			redirect(Constants.INSTITUTE_PERIODS_PAGE);
 		} else if (period.getId() != null) {
 			period = lectureService.getPeriod(period.getId());
-			// check security constraint 
-			// TODO acegi should check this method if user is allow to read or update the period
+			// check security constraint
+			// TODO acegi should check this method if user is allow to read or
+			// update the period
 			if (!institute.getPeriods().contains(period)) {
 				period = null;
 				addMessage(i18n("message_error_period_does_not_belong_to_selected_institute"));
 				redirect(Constants.INSTITUTE_PERIODS_PAGE);
 			}
-			setBean("period",period);
+			setBean("period", period);
 		}
 		addPeriodCrumb();
 	}
-	
-	private void addPeriodCrumb(){
-			BreadCrumb periodCrumb = new BreadCrumb();
-			
-			periodCrumb.setName(i18n("institute_command_periods"));
-			periodCrumb.setHint(i18n("institute_command_periods"));
-			periodCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.INSTITUTE_PERIODS+"?institute="+institute.getId());
-			
-			crumbs.add(periodCrumb);
-			
-			setSessionBean(Constants.BREADCRUMBS, crumbs);
+
+	private void addPeriodCrumb() {
+		BreadCrumb periodCrumb = new BreadCrumb();
+		periodCrumb.setName(i18n("institute_command_periods"));
+		periodCrumb.setHint(i18n("institute_command_periods"));
+		periodCrumb.setLink(PageLinks.INSTITUTE_PERIODS);
+		periodCrumb.addParameter("institute", institute.getId());
+		crumbs.add(periodCrumb);
 	}
 
 	public Period getPeriod() {

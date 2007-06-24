@@ -59,7 +59,7 @@ public class InstitutePage extends AbstractLecturePage {
 		}
 		setSessionBean(Constants.PERIOD, period);
 		//breadcrumbs shall not be displayed here
-		setSessionBean(Constants.BREADCRUMBS, null);
+		crumbs.clear();
 	}
 
 	/**

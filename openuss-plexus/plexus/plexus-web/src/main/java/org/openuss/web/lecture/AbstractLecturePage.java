@@ -1,19 +1,15 @@
 package org.openuss.web.lecture;
 
 
-import java.util.ArrayList;
-
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureService;
-import org.openuss.lecture.CourseType;
-import org.openuss.system.SystemProperties;
-import org.openuss.system.SystemService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
@@ -36,12 +32,6 @@ public abstract class AbstractLecturePage extends BasePage {
 	@Property(value = "#{sessionScope.courseType}")
 	protected CourseType courseType;
 	
-	@Property(value = "#{crumbs}")
-	protected ArrayList<BreadCrumb> crumbs;
-
-	@Property(value = "#{systemService}")
-	protected SystemService systemService;
-	
 	/**
 	 * Refreshing institute entity 
 	 * @throws Exception 
@@ -61,7 +51,6 @@ public abstract class AbstractLecturePage extends BasePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		logger.debug("prerender - refreshing institute session object");
-		setCrumbs(null);
 		if (institute == null) {
 			institute = (Institute) getSessionBean(Constants.INSTITUTE);
 		} 
@@ -76,15 +65,13 @@ public abstract class AbstractLecturePage extends BasePage {
 	}
 
 	private void generateCrumbs(){
-		crumbs = new ArrayList<BreadCrumb>();
+		crumbs.clear();
 		BreadCrumb instituteCrumb = new BreadCrumb();
-		
 		instituteCrumb.setName(institute.getShortcut());
-		instituteCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.INSTITUTE_PAGE+"?institute="+institute.getId());
+		instituteCrumb.setLink(PageLinks.INSTITUTE_PAGE);
+		instituteCrumb.addParameter("institute",institute.getId());
 		instituteCrumb.setHint(institute.getName());
-		
 		crumbs.add(instituteCrumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	public Institute getInstitute() {
@@ -109,21 +96,5 @@ public abstract class AbstractLecturePage extends BasePage {
 
 	public void setCourseType(CourseType courseType) {
 		this.courseType = courseType;
-	}
-
-	public ArrayList getCrumbs() {
-		return crumbs;
-	}
-
-	public void setCrumbs(ArrayList<BreadCrumb> crumbs) {
-		this.crumbs = crumbs;
-	}
-
-	public SystemService getSystemService() {
-		return systemService;
-	}
-
-	public void setSystemService(SystemService systemService) {
-		this.systemService = systemService;
 	}
 }

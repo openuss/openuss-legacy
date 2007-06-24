@@ -60,7 +60,7 @@ public class ShowMailPage extends BasePage{
 				return;
 			}
 			setSessionBean(Constants.MAILINGLIST_MAIL, mail);
-			setSessionBean(Constants.BREADCRUMBS, null);
+			crumbs.clear();
 		}
 	}
 

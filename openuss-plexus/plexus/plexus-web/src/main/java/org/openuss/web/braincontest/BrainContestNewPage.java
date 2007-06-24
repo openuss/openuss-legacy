@@ -44,7 +44,7 @@ public class BrainContestNewPage extends AbstractBrainContestPage {
 
 	public String save() throws BrainContestApplicationException {
 		if (this.getBrainContest().getId() == null) {
-			getBrainContest().setDomainIdentifier(course.getId());
+			getBrainContest().setDomainIdentifier(courseInfo.getId());
 			getBrainContestService().createContest(getBrainContest());
 			addMessage(i18n("braincontest_message_created"));
 		} else if (this.getBrainContest().getId() != null) {

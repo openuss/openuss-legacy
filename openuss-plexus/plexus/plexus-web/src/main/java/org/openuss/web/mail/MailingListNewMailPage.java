@@ -5,12 +5,8 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.mailinglist.MailDetail;
-import org.openuss.mailinglist.MailInfo;
-import org.openuss.mailinglist.MailingStatus;
 import org.openuss.security.User;
-import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 
 /**

@@ -8,9 +8,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FolderInfo;
-import org.openuss.foundation.DomainObject;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.system.SystemProperties;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.course.AbstractCoursePage;
@@ -27,30 +25,37 @@ public class AbstractDocumentPage extends AbstractCoursePage {
 	@Property(value = "#{documents_current_folder}")
 	protected FolderInfo currentFolder;
 
-	@Property(value = "#{sessionScope.course}")
-	protected DomainObject domainObject;
-	
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
 	
-		if (currentFolder == null && domainObject == null) {
+		if (currentFolder == null && courseInfo == null) {
 			redirect(Constants.OUTCOME_BACKWARD);
 		} else {
-			retrieveActualFolder();
+			currentFolder = retrieveActualFolder();
 		}
 		setSessionAttribute(Constants.DOCUMENTS_CURRENT_FOLDER, currentFolder);
-		addDocumentCrumb();
-	}
-	
-	private void addDocumentCrumb(){
-		BreadCrumb documentCrumb = new BreadCrumb();
-		documentCrumb.setHint(i18n("course_command_documents"));
-		documentCrumb.setName(i18n("course_command_documents"));
-		documentCrumb.setLink(getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+PageLinks.DOCUMENTS_MAIN+"?course="+course.getId());
-		crumbs.add(documentCrumb);		
+		addDocumentsCrumbs();
 	}
 
+	public void addDocumentsCrumbs(){
+		for(FolderInfo folder : getCurrentPath()) {
+			BreadCrumb crumb = new BreadCrumb();
+			if (folder.isRoot()) {
+				crumb.setName(i18n("documents_main_header"));
+				crumb.setHint(i18n("documents_root_folder"));
+			} else {
+				crumb.setName(folder.getName());
+				crumb.setHint(folder.getDescription());
+			}
+			crumb.setLink(PageLinks.DOCUMENTS_MAIN);
+			crumb.addParameter("course",courseInfo.getId());
+			crumb.addParameter("folder",folder.getId());
+			crumbs.add(crumb);
+		}
+		
+	}
+	
 	public DocumentService getDocumentService() {
 		return documentService;
 	}
@@ -68,28 +73,15 @@ public class AbstractDocumentPage extends AbstractCoursePage {
 	}
 
 	protected FolderInfo retrieveActualFolder() {
-		if (currentFolder == null || currentFolder.getId() == null) {
-			currentFolder = documentService.getFolder(domainObject);
-		} else {
-			currentFolder = documentService.getFolder(currentFolder);
-		}
-		return currentFolder;
+		return documentService.getFolder(courseInfo, currentFolder);
 	}	
 	
-	public List<FolderInfo> getPath() {
+	public List<FolderInfo> getCurrentPath() {
 		logger.debug("getting current path");
 		if (currentFolder != null && currentFolder.getId() != null) {
-			return documentService.getFolderPath(currentFolder);
+			return documentService.getFolderPath(retrieveActualFolder());
 		} else {
 			return new ArrayList<FolderInfo>();
 		}
-	}
-
-	public DomainObject getDomainObject() {
-		return domainObject;
-	}
-
-	public void setDomainObject(DomainObject domainObject) {
-		this.domainObject = domainObject;
 	}
 }

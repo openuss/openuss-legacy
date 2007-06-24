@@ -31,13 +31,7 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 			forumWatchState = discussionService.watchesForum(getForum());
 			forumReadOnly = getForum().isReadOnly();
 		}
-		removeDiscussionCrumb();
 	}	
-	
-	private void removeDiscussionCrumb(){
-		crumbs.remove(crumbs.size()-1);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
-	}
 	
 	private class DiscussionDataProvider extends AbstractPagedTable<TopicInfo> {
 
@@ -78,7 +72,7 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	}
 
 	public String changeWatchState(){
-		ForumInfo forum = discussionService.getForum(course);
+		ForumInfo forum = discussionService.getForum(courseInfo);
 		if (discussionService.watchesForum(forum)){
 			discussionService.removeForumWatch(forum);
 		} else if(!discussionService.watchesForum(forum)){
