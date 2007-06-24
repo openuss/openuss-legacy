@@ -5,6 +5,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.mailinglist.MailDetail;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
@@ -31,7 +32,17 @@ public class MailingListNewMailPage extends AbstractMailingListPage{
 		mailingList = getCourseMailingListService().getMailingList(courseInfo);
 		setSessionBean(Constants.MAILINGLIST_MAILINGLIST, mailingList);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		addPageCrumb();
 	}	
+	
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("mailinglist_newmail_header"));
+		crumb.setHint(i18n("mailinglist_newmail_header"));
+		crumbs.add(crumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}
 
 	public String saveDraft(){
 		getCourseMailingListService().updateMail(courseInfo, mail);

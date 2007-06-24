@@ -19,6 +19,7 @@ import org.openuss.web.Constants;
 /**
  * 
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  *
  */
 @Bean(name = "views$secured$mailinglist$mailinglist", scope = Scope.REQUEST)
@@ -37,7 +38,6 @@ public class MailingListMainPage extends AbstractMailingListPage{
 		mailingList = getCourseMailingListService().getMailingList(courseInfo);
 		setSessionBean(Constants.MAILINGLIST_MAILINGLIST, mailingList);
 		//remove last element, beccause current page is main
-		crumbs.remove(crumbs.size()-1);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
