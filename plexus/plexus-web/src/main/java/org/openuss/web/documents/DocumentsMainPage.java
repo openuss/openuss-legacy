@@ -44,6 +44,8 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		super.prerender();
 		entrySelection.setEntries(loadFolderEntries());
 		entrySelection.processSwitch();
+		crumbs.remove(crumbs.size()-1);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 
 	private List<FolderEntryInfo> loadFolderEntries() {

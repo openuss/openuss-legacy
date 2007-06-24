@@ -30,11 +30,13 @@ public class DocumentAddZipPage extends AbstractDocumentPage{
 	private UploadFileManager uploadFileManager;
 	
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
+		super.prerender();
 		if (file != null && file.getCreated() == null) {
 			logger.debug("reseting date");
 			file.setCreated(new Date());
 		}
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	public String unzip() throws DocumentApplicationException{

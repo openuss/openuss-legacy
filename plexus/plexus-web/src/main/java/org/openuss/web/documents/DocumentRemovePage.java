@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FolderEntryInfo;
@@ -24,6 +25,12 @@ public class DocumentRemovePage extends AbstractDocumentPage{
 
 	@Property(value="#{sessionScope.documents_selected_folderentries}")
 	private List<FolderEntryInfo> entries;
+
+	@Prerender
+	public void prerender() throws Exception {
+		super.prerender();
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}	
 	
 	/**
 	 * Remove the current course and all its data
