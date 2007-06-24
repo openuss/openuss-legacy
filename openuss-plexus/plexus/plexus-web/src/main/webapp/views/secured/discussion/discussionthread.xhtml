@@ -38,11 +38,6 @@
 	
 	<ui:define name="content">
 		<h:form id="discussionThreadTableView">
-			<o:block>
-				<span class="header_font_normal">
-					<h:outputText value="#{course.shortcut} > #{msg.course_command_discussion}" styleClass="content_font_normal"></h:outputText>
-				</span>
-			</o:block>
 			<ui:include src="discussionthreadtable.xhtml" />
 			<o:block>
 				<plexus:command bean="#{views$secured$discussion$discussions}"
