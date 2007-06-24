@@ -44,7 +44,6 @@ public class CourseOptionsPage extends AbstractCoursePage {
 	@Prerender
 	@Override
 	public void prerender() throws Exception {
-		super.prerender();
 		if (course == null) {
 			course = (Course) getSessionBean(Constants.COURSE);
 		}
@@ -54,10 +53,10 @@ public class CourseOptionsPage extends AbstractCoursePage {
 		} else {
 			if (!isPostBack()) {
 				logger.debug("------------------------- is not postback --------------- refreshing course");
-				course = courseService.getCourse(course);
+				super.prerender();
 			}
 		}
-		setSessionBean(Constants.COURSE, course);		
+		setSessionBean(Constants.COURSE, course);
 	}
 
 	/**
