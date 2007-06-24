@@ -17,6 +17,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.documents.FileInfo;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
 import org.openuss.web.upload.UploadFileManager;
 
@@ -37,7 +38,8 @@ public class DiscussionNewEntryPage extends AbstractDiscussionPage{
 		if (getForum().isReadOnly()||topic.isReadOnly()){
 			addMessage(i18n("discussion_readonly"));
 			redirect(Constants.DISCUSSION_MAIN);			
-		}		
+		}	
+		addPageCrumb();
 	}
 	
 	public String send(){
@@ -66,6 +68,15 @@ public class DiscussionNewEntryPage extends AbstractDiscussionPage{
 			discussionService.updatePost(postInfo);
 		}
 		return Constants.DISCUSSION_THREAD;		
+	}
+	
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("discussion_new_discussion_entry"));
+		crumb.setHint(i18n("discussion_new_discussion_entry"));
+		crumbs.add(crumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	public String removeAttachment() {
