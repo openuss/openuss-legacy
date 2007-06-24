@@ -9,6 +9,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
@@ -33,8 +34,18 @@ public class CourseTypeRemovePage extends AbstractLecturePage {
 	public void prerender() throws LectureException {
 		super.prerender();
 		reloadCourseType();
+		addPageCrumb();
 	}
-
+	
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("coursetype_remove_header"));
+		crumb.setHint(i18n("coursetype_remove_header"));
+		crumbs.add(crumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}
+	
 	private void reloadCourseType() throws LectureException {
 		courseType = lectureService.getCourseType(courseType.getId());
 		setSessionBean(Constants.COURSE_TYPE, courseType);

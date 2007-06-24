@@ -58,17 +58,24 @@ public class NewsEditPage extends AbstractLecturePage {
 				setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
 			} 
 		}
-		addNewsCrumb();
+		addNewsCrumbs();
 		
 	}
 
-	private void addNewsCrumb(){
+	private void addNewsCrumbs(){
 		BreadCrumb courseNewsCrumb = new BreadCrumb();
-		courseNewsCrumb.setName(i18n("news_header"));
-		courseNewsCrumb.setHint(i18n("news_header"));
+		courseNewsCrumb.setName(i18n("institute_command_news"));
+		courseNewsCrumb.setHint(i18n("institute_command_news"));
 		courseNewsCrumb.setLink(PageLinks.INSTITUTE_NEWS);
 		courseNewsCrumb.addParameter("institute",institute.getId());
 		crumbs.add(courseNewsCrumb);
+
+		BreadCrumb newsEditCrumb = new BreadCrumb();
+		newsEditCrumb.setName(i18n("mews_selected_newsitem_header"));
+		newsEditCrumb.setHint(i18n("mews_selected_newsitem_header"));
+		newsEditCrumb.setLink("");
+		crumbs.add(newsEditCrumb);
+		
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 	

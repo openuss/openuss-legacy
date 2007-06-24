@@ -13,6 +13,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.documents.FolderEntryInfo;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
@@ -38,8 +39,17 @@ public class CourseRemovePage extends AbstractCoursePage {
 		super.prerender();
 		course = lectureService.getCourse(course.getId());
 		setSessionBean(Constants.COURSE, course );
+		addPageCrumb();
 	}
 	
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("course_remove_header"));
+		crumb.setHint(i18n("course_remove_header"));
+		crumbs.add(crumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}
 	
 	/**
 	 * Remove the current course and all its data

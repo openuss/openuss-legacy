@@ -4,6 +4,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
@@ -20,7 +21,17 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		addPageCrumb();
 	}
+	
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("institute_command_institute"));
+		crumb.setHint(i18n("institute_command_institute"));
+		crumbs.add(crumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}	
 	
 	/**
 	 * Save institute options.

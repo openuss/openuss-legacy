@@ -11,6 +11,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
@@ -38,6 +39,16 @@ public class AspirantsPage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		addPageCrumb();
+	}
+
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("institute_command_aspirants"));
+		crumb.setHint(i18n("institute_command_aspirants"));
+		crumbs.add(crumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	public String save() {
