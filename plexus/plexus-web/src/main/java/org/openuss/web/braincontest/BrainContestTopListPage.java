@@ -47,11 +47,11 @@ public class BrainContestTopListPage extends AbstractBrainContestPage {
 	}
 	
 	private void addPageCrumb() {
-		BreadCrumb newBrainContest = new BreadCrumb();
-		newBrainContest.setLink("");
-		newBrainContest.setName(i18n("braincontest_toplist_header"));
-		newBrainContest.setHint(i18n("braincontest_toplist_header"));
-		crumbs.add(newBrainContest);
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("braincontest_toplist_header"));
+		crumb.setHint(i18n("braincontest_toplist_header"));
+		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 		

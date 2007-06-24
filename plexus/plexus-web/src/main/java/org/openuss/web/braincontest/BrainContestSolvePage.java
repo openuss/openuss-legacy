@@ -63,11 +63,11 @@ public class BrainContestSolvePage extends AbstractBrainContestPage {
 	}
 	
 	private void addPageCrumb() {
-		BreadCrumb newBrainContest = new BreadCrumb();
-		newBrainContest.setLink("");
-		newBrainContest.setName(getBrainContest().getTitle());
-		newBrainContest.setName(getBrainContest().getTitle());
-		crumbs.add(newBrainContest);
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(getBrainContest().getTitle());
+		crumb.setName(getBrainContest().getTitle());
+		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 
