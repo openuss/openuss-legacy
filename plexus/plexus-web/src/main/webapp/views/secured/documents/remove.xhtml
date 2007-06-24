@@ -40,7 +40,7 @@
 					</p>
 					<h:outputText value="#{msg.documents_actual_path}" styleClass="field_label"/>
 					<span class="content_font_normal">
-						<t:dataList var="folder" layout="list" value="#{views$secured$documents$remove.path}">
+						<t:dataList var="folder" layout="list" value="#{views$secured$documents$remove.currentPath}">
 							<h:outputText value="/ #{folder.name}" rendered="#{!folder.root}"/>
 						</t:dataList>
 					</span>
