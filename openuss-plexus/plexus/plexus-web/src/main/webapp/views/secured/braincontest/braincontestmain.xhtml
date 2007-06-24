@@ -69,6 +69,7 @@
 					<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}" >
 						<plexus:command						
 							bean="#{views$secured$braincontest$braincontestmain}"
+							onclick="if (!confirm('#{msg.braincontest_confirm_delete_post}')) return false"
 							action="remove" label="#{msg['braincontest_main_button_remove']}"
 							title="#{msg['braincontest_main_button_remove']}" />
 						<plexus:command
