@@ -14,4 +14,6 @@ public class PageLinks{
 	public static final String INSTITUTE_NEWS =  "views/secured/lecture/news.faces";
 	
 	public static final String INSTITUTE_PERIODS = "views/secured/lecture/periods.faces";
+	
+	public static final String COURSE_MAILINGLIST = "views/secured/mailinglist/mailinglist.faces";
 }

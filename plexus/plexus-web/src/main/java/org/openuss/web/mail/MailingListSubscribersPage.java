@@ -33,6 +33,7 @@ public class MailingListSubscribersPage extends AbstractMailingListPage{
 		super.prerender();
 		mailingList = getCourseMailingListService().getMailingList(courseInfo);
 		setSessionBean(Constants.MAILINGLIST_MAILINGLIST, mailingList);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
 	private class SubscriberDataProvider extends AbstractPagedTable<SubscriberInfo> {

@@ -36,6 +36,9 @@ public class MailingListMainPage extends AbstractMailingListPage{
 		super.prerender();
 		mailingList = getCourseMailingListService().getMailingList(courseInfo);
 		setSessionBean(Constants.MAILINGLIST_MAILINGLIST, mailingList);
+		//remove last element, beccause current page is main
+		crumbs.remove(crumbs.size()-1);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
 	private class MailingListDataProvider extends AbstractPagedTable<MailInfo> {
