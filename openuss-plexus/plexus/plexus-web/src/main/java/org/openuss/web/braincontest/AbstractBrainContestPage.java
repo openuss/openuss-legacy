@@ -38,7 +38,7 @@ public class AbstractBrainContestPage extends AbstractCoursePage{
 		crumb.setLink(PageLinks.BRAINCONTEST_MAIN);
 		crumb.addParameter("course", courseInfo.getId());
 		if (brainContest.getId() != null && brainContest.getId() != 0) {
-			crumb.addParameter("briancontest",brainContest.getId());
+			crumb.addParameter("braincontest",brainContest.getId());
 		}
 
 		crumbs.add(crumb);
