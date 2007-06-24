@@ -53,7 +53,6 @@ public class AbstractDocumentPage extends AbstractCoursePage {
 			crumb.addParameter("folder",folder.getId());
 			crumbs.add(crumb);
 		}
-		
 	}
 	
 	public DocumentService getDocumentService() {

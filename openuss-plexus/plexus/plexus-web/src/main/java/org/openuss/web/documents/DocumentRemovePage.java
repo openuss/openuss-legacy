@@ -8,11 +8,13 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FolderEntryInfo;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$documents$remove", scope = Scope.REQUEST)
@@ -24,6 +26,21 @@ public class DocumentRemovePage extends AbstractDocumentPage{
 
 	@Property(value="#{sessionScope.documents_selected_folderentries}")
 	private List<FolderEntryInfo> entries;
+
+	@Prerender
+	public void prerender() throws Exception {
+		super.prerender();
+		addPageCrumb();
+	}
+	
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("documents_remove_header"));
+		crumb.setHint(i18n("documents_remove_header"));
+		crumbs.add(crumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}	
 	
 	/** 
 	 * Remove the current course and all its data
