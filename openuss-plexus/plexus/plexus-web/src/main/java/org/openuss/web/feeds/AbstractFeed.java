@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.openuss.web.BasePage;
 
 import com.sun.syndication.feed.synd.SyndCategory;
 import com.sun.syndication.feed.synd.SyndCategoryImpl;
@@ -18,7 +19,7 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.SyndFeedOutput;
 
-public abstract class AbstractFeed {
+public abstract class AbstractFeed extends BasePage {
 
 	public static final String RSS_2_0 = "rss_2.0";
 

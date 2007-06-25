@@ -50,8 +50,10 @@ public class DocumentsFeed extends AbstractFeed {
 		
 		String link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+viewUri+"?course=" + course.getId();
 
-		feedWrapper.setWriter(this.convertToXml(course.getName(), link, course.getDescription(), systemService
-				.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
+		feedWrapper.setWriter(this.convertToXml("["+i18n("rss_documents")+"] "+course.getName(), 
+				link, course.getDescription(), 
+				systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), 
+				entries));
 
 		return feedWrapper;
 	}

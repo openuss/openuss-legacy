@@ -45,7 +45,10 @@ public class InstituteFeed extends AbstractFeed{
 			}
 		    
 			link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/institute.faces?institute="+institute.getId();
-			feedWrapper.setWriter(this.convertToXml(institute.getName(), link, institute.getDescription(), systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
+			feedWrapper.setWriter(this.convertToXml("["+i18n("rss_institute")+"] "+institute.getName(), 
+					link, institute.getDescription(),
+					systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), 
+					entries));
 			return feedWrapper;
 		}	
 		
