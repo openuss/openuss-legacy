@@ -16,6 +16,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
+import org.openuss.registration.RegistrationException;
 import org.openuss.security.Group;
 import org.openuss.security.GroupType;
 import org.openuss.security.Roles;
@@ -173,12 +174,16 @@ public class LectureServiceImpl extends LectureServiceBase{
 		fireCreatedInstitute(institute);
 		
 		//send activation mail
+		sendActivationCode(institute);
+		
+	}
+
+	protected void handleSendActivationCode(Institute institute) throws RegistrationException {
 		String activationCode = getRegistrationService().generateInstituteActivationCode(institute);
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("institutename", institute.getName()+"("+institute.getShortcut()+")");
 		parameters.put("institutelink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"actions/public/lecture/instituteactivation.faces?code="+activationCode);
 		getMessageService().sendMessage(institute.getShortcut(), "institute.activation.subject", "instituteactivation", parameters, getSecurityService().getCurrentUser());
-		
 	}
 
 	

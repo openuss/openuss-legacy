@@ -73,6 +73,12 @@ public class InstitutePage extends AbstractLecturePage {
 		setSessionBean(Constants.PERIOD, period);
 	}
 
+	public String resendActivationMail(){
+		getLectureService().sendActivationCode(institute);
+		addMessage(i18n("institute_activationcode_send"));
+		return Constants.SUCCESS;
+	}
+	
 	private class CourseDataModel extends AbstractPagedTable<Course> {
 
 		private static final long serialVersionUID = 3682383483634321520L;

@@ -26,6 +26,7 @@ public class InstituteActivationAction extends BaseBean {
 		if (activationCode != null){
 			try {
 				getRegistrationService().activateInstituteByCode(activationCode);
+				addMessage(i18n("institute_activation_successful"));
 				return Constants.SUCCESS;
 			} catch (RegistrationCodeNotFoundException e) {
 				addError(i18n("activation_error_code_not_found"));
