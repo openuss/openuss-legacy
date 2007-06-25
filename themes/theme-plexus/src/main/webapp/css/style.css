@@ -656,6 +656,13 @@ ul.navigation li ul li ul li.active_item a:hover{
 	list-style-image:url(../img/link_int.png);
 }
 
+#right .feed .content_box ul.int{
+	margin: 3px 0 4px 24px;
+	padding: 0;
+	list-style-type: none;
+}
+
+
 #right .feed .content_box ul.int li{
 	margin-top: 2px;
 	list-style-image:url(../img/feed.gif);
