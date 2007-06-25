@@ -60,6 +60,9 @@ public abstract class AbstractLecturePage extends BasePage {
 		} else {
 			institute = lectureService.getInstitute(institute.getId());
 			setSessionBean(Constants.INSTITUTE, institute);
+			if (!institute.isEnabled()){
+				addMessage(i18n("institute_not_activated"));
+			}
 		}
 		generateCrumbs();
 	}
