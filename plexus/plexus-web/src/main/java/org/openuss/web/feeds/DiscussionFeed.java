@@ -69,7 +69,10 @@ public class DiscussionFeed extends AbstractFeed{
 		
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"rss/secured/discussion.xml?course="+course.getId();
 		
-		feedWrapper.setWriter(this.convertToXml(course.getName(), link, course.getDescription(), systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
+		feedWrapper.setWriter(this.convertToXml("["+i18n("rss_discussion")+"] "+course.getName(),
+				link, course.getDescription(), 
+				systemService.getProperty(SystemProperties.COPYRIGHT).getValue(),
+				entries));
 		return feedWrapper;
 	}	
 	

@@ -52,7 +52,10 @@ public class CourseFeed extends AbstractFeed{
 		}
 
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/course/main.faces?"+course.getId();
-		feedWrapper.setWriter(this.convertToXml(course.getName(), link, course.getDescription(), systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
+		feedWrapper.setWriter(this.convertToXml("["+i18n("rss_course")+"] "+course.getName(), 
+				link, course.getDescription(), 
+				systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), 
+				entries));
 		
 		return feedWrapper;
 	}	

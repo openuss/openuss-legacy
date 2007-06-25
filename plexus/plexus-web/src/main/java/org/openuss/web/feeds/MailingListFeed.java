@@ -56,7 +56,8 @@ public class MailingListFeed extends AbstractFeed {
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
 				+ "views/secured/mailinglist/mailinglist.faces?course=" + course.getId();
 
-		feedWrapper.setWriter(this.convertToXml(course.getName(), link, course.getDescription(), systemService
+		feedWrapper.setWriter(this.convertToXml("["+i18n("rss_mailinglist")+"] "+course.getName(),
+				link, course.getDescription(), systemService
 				.getProperty(SystemProperties.COPYRIGHT).getValue(), entries));
 
 		return feedWrapper;
