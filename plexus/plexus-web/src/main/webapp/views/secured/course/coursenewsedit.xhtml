@@ -37,7 +37,7 @@
 		<h:form id="newsEditForm" enctype="multipart/form-data">
 			<o:block styleClass="form_box" label="#{msg.news_header}">
 				<o:input property="publishDate" entity="news_selected_newsitem" required="true" type="full"/>
-				<o:input property="title" entity="news_selected_newsitem" maxlength="250"/>
+				<o:input property="title" entity="news_selected_newsitem" maxlength="250"  required="true"/>
 				<h:outputLabel value="#{msg.news_selected_newsitem_text}" for="textEditor" styleClass="field_label" />
 				<div class="content_iframe">
 					<fck:editor value="#{news_selected_newsitem.text}" id="textEditor" toolbarSet="News" width="100%" height="200" />
