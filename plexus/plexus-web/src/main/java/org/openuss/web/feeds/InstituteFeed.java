@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Institute;
@@ -45,7 +46,7 @@ public class InstituteFeed extends AbstractFeed{
 			}
 		    
 			link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/institute.faces?institute="+institute.getId();
-			feedWrapper.setWriter(this.convertToXml("["+i18n("rss_institute")+"] "+institute.getName(), 
+			feedWrapper.setWriter(this.convertToXml("["+i18n("rss_institute", null, new Locale(getSecurityService().getCurrentUser().getLocale()))+"] "+institute.getName(), 
 					link, institute.getDescription(),
 					systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), 
 					entries));

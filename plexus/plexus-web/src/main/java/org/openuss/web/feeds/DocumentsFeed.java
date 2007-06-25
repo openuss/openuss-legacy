@@ -7,6 +7,7 @@ package org.openuss.web.feeds;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentService;
@@ -50,7 +51,7 @@ public class DocumentsFeed extends AbstractFeed {
 		
 		String link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+viewUri+"?course=" + course.getId();
 
-		feedWrapper.setWriter(this.convertToXml("["+i18n("rss_documents")+"] "+course.getName(), 
+		feedWrapper.setWriter(this.convertToXml("["+i18n("rss_documents", null, new Locale(getSecurityService().getCurrentUser().getLocale()))+"] "+course.getName(), 
 				link, course.getDescription(), 
 				systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), 
 				entries));

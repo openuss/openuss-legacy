@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Course;
@@ -52,7 +53,7 @@ public class CourseFeed extends AbstractFeed{
 		}
 
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/course/main.faces?"+course.getId();
-		feedWrapper.setWriter(this.convertToXml("["+i18n("rss_course")+"] "+course.getName(), 
+		feedWrapper.setWriter(this.convertToXml("["+i18n("rss_course", null, new Locale(getSecurityService().getCurrentUser().getLocale()))+"] "+course.getName(), 
 				link, course.getDescription(), 
 				systemService.getProperty(SystemProperties.COPYRIGHT).getValue(), 
 				entries));
