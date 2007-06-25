@@ -19,9 +19,7 @@ import org.openuss.framework.web.jsf.controller.BaseBean;
  * @author Ingo Düppe
  */
 public class ThemeManagerBean extends BaseBean implements ThemeManager {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(ThemeManagerBean.class);
 
 	private static final long serialVersionUID = -5093914806760249739L;
@@ -108,6 +106,7 @@ public class ThemeManagerBean extends BaseBean implements ThemeManager {
 	 * {@inheritDoc}
 	 */
 	public Theme getCurrentTheme() {
+		currentTheme = (Theme) getSessionBean(THEME_SCOPEKEY);
 		return currentTheme;
 	}
 	
@@ -115,8 +114,8 @@ public class ThemeManagerBean extends BaseBean implements ThemeManager {
 	 * {@inheritDoc}
 	 */
 	public String getSelectedTheme() {
-		if (currentTheme != null) {
-			return currentTheme.getId();
+		if (getCurrentTheme() != null) {
+			return getCurrentTheme().getId();
 		} else if (defaultTheme != null) {
 			return defaultTheme.getId();
 		} else {
