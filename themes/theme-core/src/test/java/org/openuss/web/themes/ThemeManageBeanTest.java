@@ -7,6 +7,14 @@ import static org.easymock.classextension.EasyMock.replay;
 import javax.faces.model.SelectItem;
 import javax.servlet.ServletContext;
 
+import org.apache.shale.test.mock.MockApplication;
+import org.apache.shale.test.mock.MockExternalContext;
+import org.apache.shale.test.mock.MockFacesContext;
+import org.apache.shale.test.mock.MockHttpServletRequest;
+import org.apache.shale.test.mock.MockHttpServletResponse;
+import org.apache.shale.test.mock.MockHttpSession;
+import org.apache.shale.test.mock.MockServletContext;
+
 import junit.framework.TestCase;
 
 public class ThemeManageBeanTest extends TestCase {
@@ -15,13 +23,18 @@ public class ThemeManageBeanTest extends TestCase {
 	private ServletContext mockServletContext;
 	private Theme theme;
 	
-//	private FacesContext mockFacesContext;
-//	private ExternalContext mockExternalContext;
-//	private Application mockApplication;
-//	private Map mockSessionMap;
-	
 	public void setUp() {
 		manager = new ThemeManagerBean();
+		
+		MockFacesContext ctx = new MockFacesContext();
+		ctx.setApplication(new MockApplication());
+		ctx.setExternalContext(new MockExternalContext(
+				new MockServletContext(),
+				new MockHttpServletRequest(new MockHttpSession()), 
+				new MockHttpServletResponse()));
+		manager.setFacesContext(ctx);
+
+		
 		mockServletContext = createMock(ServletContext.class);
 		expect(mockServletContext.getServletContextName()).andReturn("Test Servlet Context").anyTimes();
 		theme = new ThemeBean();
