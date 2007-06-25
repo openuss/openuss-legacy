@@ -17,7 +17,9 @@
 		<ui:define name="content">
 			<f:loadBundle basename="resources" var="msg"/>
 			<o:block label="#{messagebox.title}">
-				<h:messages id="messages" styleClass="messages" errorClass="error" infoClass="info" fatalClass="fatal" warnClass="warn" globalOnly="true" showSummary="true" showDetail="false"/>
+				<span class="content_font_normal">
+					<h:messages id="messages" styleClass="messages" errorClass="error" infoClass="info" fatalClass="fatal" warnClass="warn" globalOnly="true" showSummary="true" showDetail="false"/>
+				</span>
 			</o:block>
 			<o:block>
 	   			<h:form id="message">
