@@ -14,4 +14,8 @@
             </list>
         </property>
     </bean>
+    
+    <bean id="sessionTracker" class="org.openuss.web.statistics.OnlineSessionTracker">
+    	<property name="onlineStatisticService" ref="onlineStatisticService"/>
+    </bean>
 </beans>

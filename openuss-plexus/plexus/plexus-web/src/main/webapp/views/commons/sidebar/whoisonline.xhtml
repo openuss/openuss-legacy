@@ -16,11 +16,12 @@
 	  		<p class="content_font_normal"> 
 		  		<ul class="int">
 		  			<li>
-					  	<h:outputLink value="http://localhost:8080/openuss-plexus/whoisonline.faces">
-					  		<h:outputFormat value="#{msg.whoisonline_text}">
-					  			<f:param value="#{whoisonline.count}" />
+					  	<o:link value="/views/secured/statistics/whoisonline.faces">
+					  		<h:outputFormat value="#{msg.whoisonline_text}" escape="false">
+					  			<f:param value="#{whoisonline.userCount}" />
+					  			<f:param value="#{whoisonline.guestCount}" />
 				  			</h:outputFormat>
-				  		</h:outputLink>
+				  		</o:link>
 			  		</li>
 			  	</ul>
 			 </p>

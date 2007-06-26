@@ -35,6 +35,7 @@ import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.statistics.OnlineSessionTracker;
 
 
 /**
@@ -65,6 +66,9 @@ public class AuthenticationController extends BasePage {
 	
 	@Property(value="#{securityService}")
 	private SecurityService securityService;
+	
+	@Property(value="#{sessionTracker}")
+	private OnlineSessionTracker sessionTracker;
 
 	
 	public AuthenticationController() {
@@ -95,6 +99,7 @@ public class AuthenticationController extends BasePage {
 			rememberMeServices.loginSuccess(request, response, auth);
 			// setup user and userPreferences
 			injectUserInformationIntoSession(auth);
+			sessionTracker.logSessionCreated(getSession());
 		
 			if (logger.isDebugEnabled())
 				logger.debug("User: " + username + " switched to active state.");
@@ -178,6 +183,8 @@ public class AuthenticationController extends BasePage {
 		Cookie terminate = new Cookie(TokenBasedRememberMeServices.ACEGI_SECURITY_HASHED_REMEMBER_ME_COOKIE_KEY, null);
 		terminate.setMaxAge(0);
 		getResponse().addCookie(terminate);
+		
+		SecurityContextHolder.clearContext();
 
 		return LOGOUT;
 	}
@@ -259,6 +266,14 @@ public class AuthenticationController extends BasePage {
 
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
+	}
+
+	public OnlineSessionTracker getSessionTracker() {
+		return sessionTracker;
+	}
+
+	public void setSessionTracker(OnlineSessionTracker sessionTracker) {
+		this.sessionTracker = sessionTracker;
 	}
 
 }

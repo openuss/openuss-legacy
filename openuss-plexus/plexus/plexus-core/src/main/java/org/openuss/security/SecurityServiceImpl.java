@@ -393,7 +393,11 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 
 	@Override
 	protected User handleGetCurrentUser() throws Exception {
-		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		SecurityContext context = SecurityContextHolder.getContext();
+		if (context == null || context.getAuthentication() == null) {
+			return null;
+		}
+		String name = context.getAuthentication().getName();
 		return getUserByName(name);
 	}
 

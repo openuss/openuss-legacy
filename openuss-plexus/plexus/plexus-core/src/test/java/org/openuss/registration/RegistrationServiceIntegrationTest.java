@@ -59,10 +59,6 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 		registrationService.registrateUser(user, true);
 		
 		assertNotNull(user.getId());
-		assertNotNull(user.getContact());
-		assertNotNull(user.getContact().getId());
-		assertNotNull(user.getPreferences());
-		assertNotNull(user.getPreferences().getId());
 		assertEquals(false, user.isEnabled());
 		
 		setComplete();
@@ -93,11 +89,6 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 			groupDao.update(group);
 		}
 
-		
-//		Desktop will be on demand at the first request
-//		Desktop desktop = desktopDao.findByUser(user);
-//		desktopDao.remove(desktop);
-		
 		userDao.remove(user);
 		
 		setComplete();

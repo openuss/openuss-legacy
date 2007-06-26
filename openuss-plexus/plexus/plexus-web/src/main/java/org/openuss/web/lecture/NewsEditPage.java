@@ -138,7 +138,7 @@ public class NewsEditPage extends AbstractLecturePage {
 		items.add(new SelectItem(NewsCategory.GLOBAL,i18n("news_category_global")));
 //		items.add(new SelectItem(NewsCategory.DESKTOP,i18n("news_category_desktop")));
 		items.add(new SelectItem(NewsCategory.INSTITUTE,i18n("news_category_institute")));
-		items.add(new SelectItem(NewsCategory.COURSE,i18n("news_category_course")));
+//		items.add(new SelectItem(NewsCategory.COURSE,i18n("news_category_course")));
 		return items;
 	}
 	

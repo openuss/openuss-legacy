@@ -380,7 +380,7 @@
 
 	<listener>
 		<listener-class>
-			org.openuss.web.servlets.ActiveSessionCounter
+			org.acegisecurity.ui.session.HttpSessionEventPublisher
 		</listener-class>
 	</listener>
 	

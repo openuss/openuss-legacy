@@ -132,5 +132,7 @@ public class Constants {
 
 	public static final String MAILINGLIST_EXPORT = "mailinglist_export";
 	
-	public static final String BREADCRUMBS = "crumbs";	
+	public static final String BREADCRUMBS = "crumbs";
+
+	public static final String ONLINE_SESSION_ID = "org.openuss.statistics.onlinesession.id";	
 }
