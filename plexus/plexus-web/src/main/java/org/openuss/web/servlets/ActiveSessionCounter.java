@@ -7,6 +7,9 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 /**
  * Listener that keeps track of the number of sessions that the Web application
  * is currently using.
@@ -25,6 +28,12 @@ public class ActiveSessionCounter implements HttpSessionListener {
 	 * exceeds the limit, print a warning in the log file.
 	 */
 	public void sessionCreated(HttpSessionEvent event) {
+		final WebApplicationContext ctx = WebApplicationContextUtils
+				.getRequiredWebApplicationContext(event
+				.getSession().getServletContext());
+		
+		
+		
 		sessionCount++;
 		if (context == null) {
 			recordServletContext(event);

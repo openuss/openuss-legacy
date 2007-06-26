@@ -18,6 +18,7 @@ import org.openuss.registration.RegistrationTests;
 import org.openuss.repository.RepositoryTests;
 import org.openuss.search.SearchTests;
 import org.openuss.security.SecurityTests;
+import org.openuss.statistics.StatisticsTests;
 import org.openuss.system.SystemTests;
 import org.openuss.viewtracking.ViewTrackingTests;
 import org.openuss.wiki.WikiTests;
@@ -44,6 +45,7 @@ public class AllTests {
 		suite.addTest(SystemTests.suite());
 		suite.addTest(ViewTrackingTests.suite());
 		suite.addTest(WikiTests.suite());
+		suite.addTest(StatisticsTests.suite());
 		// $JUnit-END$
 		return suite;
 	}
