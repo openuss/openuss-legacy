@@ -657,8 +657,7 @@ ul.navigation li ul li ul li.active_item a:hover{
 }
 
 #right .feed .content_box ul.int{
-	margin: 3px 0 4px 24px;
-	padding: 0;
+
 	list-style-type: none;
 }
 
@@ -966,6 +965,14 @@ p.header_font_normal, span.header_font_normal {
   color:#505050; 
 }
 
+.empty_box span.content_font_normal{
+	padding: 0;
+}
+
+.empty_box .header_font_normal{
+	padding: 0;
+}
+
 .content_normal {
   padding: 0 0 3px 0;
   margin: 0;
@@ -1027,7 +1034,7 @@ p.header_font_normal, span.header_font_normal {
 }
 
 .empty_box .content_normal {
-  padding: 0;
+  padding: 0 0 0 10px;
   border-style: none solid none solid;
   border-width: 1px;
   background: #F4F4F4;
@@ -1235,7 +1242,8 @@ ul{
 }
 
 .pulldown_inline{
-	margin-left: 10px;
+	margin-left: 0;
+	margin-right: 10px;
 	display: inline;
 }
 
@@ -1357,7 +1365,7 @@ td input.button:hover, .button_unlink:hover, .button_link:hover, .button_remove:
 	display:inline;
   	width:151px;
 	height:23px;
-	margin-left:10px;
+	margin-right:10px;
 	padding:0;
 	background:transparent url(../img/button_140_normal.png) 0px 0px no-repeat;
 	border:0;
