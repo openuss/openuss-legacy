@@ -20,7 +20,7 @@ public class PageLinks{
 	
 	public static final String INSTITUTE_PERIODS = "/views/secured/lecture/periods.faces";
 	
-	public static final String COURSE_MAILINGLIST = "/views/secured/mailinglist/mailinglist.faces";
+	public static final String COURSE_NEWSLETTER = "/views/secured/newsletter/newsletter.faces";
 
 	public static final String DOCUMENTS_MAIN = "/views/secured/documents/documents.faces";
 }

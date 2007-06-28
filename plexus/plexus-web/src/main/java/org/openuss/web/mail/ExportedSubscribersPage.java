@@ -10,9 +10,9 @@ import org.openuss.web.Constants;
 /**
  * @author Ingo Dueppe
  */
-@Bean(name = "views$secured$mailinglist$exportedsubscribers", scope = Scope.REQUEST)
+@Bean(name = "views$secured$newsletter$exportedsubscribers", scope = Scope.REQUEST)
 @View
-public class ExportedSubscribersPage extends AbstractMailingListPage {
+public class ExportedSubscribersPage extends AbstractNewsletterPage {
 
 	private String subscribersSemicolon;
 
@@ -22,9 +22,9 @@ public class ExportedSubscribersPage extends AbstractMailingListPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		mailingList = getCourseMailingListService().getMailingList(courseInfo);
-		setSessionBean(Constants.MAILINGLIST_MAILINGLIST, mailingList);
-		setSubscribersSemicolon(getCourseMailingListService().exportSubscribers(courseInfo));
+		newsletter = getCourseNewsletterService().getNewsletter(courseInfo);
+		setSessionBean(Constants.NEWSLETTER_NEWSLETTER, newsletter);
+		setSubscribersSemicolon(getCourseNewsletterService().exportSubscribers(courseInfo));
 		setSubscribersComma(getSubscribersSemicolon().replace(';', ','));
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 		addPageCrumb();
@@ -33,8 +33,8 @@ public class ExportedSubscribersPage extends AbstractMailingListPage {
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
-		crumb.setName(i18n("mailinglist_subscribertable_header"));
-		crumb.setHint(i18n("mailinglist_subscribertable_header"));
+		crumb.setName(i18n("newsletter_subscribertable_header"));
+		crumb.setHint(i18n("newsletter_subscribertable_header"));
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}

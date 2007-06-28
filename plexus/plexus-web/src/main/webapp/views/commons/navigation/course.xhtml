@@ -20,10 +20,10 @@
 							<h:outputText value="#{msg['course_command_main']}" />
 						</t:commandNavigation2>
 						<t:commandNavigation2 
-							action="course_mailinglist" 
-							activeOnViewIds="/views/secured/mailinglist/mailinglist.xhtml,/views/secured/mailinglist/mailinglistsubscribers.xhtml,/views/secured/mailinglist/showmail.xhtml,/views/secured/mailinglist/newmail.xhtml"
-							rendered="#{course.mailinglist}">
-							<h:outputText value="#{msg['course_command_mailinglist']}"/>
+							action="course_newsletter" 
+							activeOnViewIds="/views/secured/newsletter/newsletter.xhtml,/views/secured/newsletter/newslettersubscribers.xhtml,/views/secured/newsletter/showmail.xhtml,/views/secured/newsletter/newmail.xhtml"
+							rendered="#{course.newsletter}">
+							<h:outputText value="#{msg['course_command_newsletter']}"/>
 						</t:commandNavigation2>
 						<t:commandNavigation2 
 							action="documents_main" 

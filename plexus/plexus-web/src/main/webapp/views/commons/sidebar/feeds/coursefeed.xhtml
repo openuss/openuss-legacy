@@ -40,11 +40,11 @@
 										
 								</li>
 							</c:if>
-							<c:if test="#{course.mailinglist}">							
+							<c:if test="#{course.newsletter}">							
 								<li>
-									<h:outputLink value="../../../rss/secured/mailinglist.xml?course=#{course.id}" 
-									 			title="#{msg['rss_mailinglist']}" >
-									   #{msg['rss_mailinglist']}
+									<h:outputLink value="../../../rss/secured/newsletter.xml?course=#{course.id}" 
+									 			title="#{msg['rss_newsletter']}" >
+									   #{msg['rss_newsletter']}
 									</h:outputLink>
 								</li>
 							</c:if>

@@ -347,8 +347,8 @@
 			</navigation-case>
 	
 			<navigation-case>
-				<from-outcome>course_mailinglist</from-outcome>
-				<to-view-id>/views/secured/mailinglist/mailinglist.xhtml</to-view-id>
+				<from-outcome>course_newsletter</from-outcome>
+				<to-view-id>/views/secured/newsletter/newsletter.xhtml</to-view-id>
 			</navigation-case>
 	
 			<navigation-case>
@@ -413,24 +413,24 @@
 			</navigation-case>
 
 			<navigation-case>
-				<from-outcome>mailinglist_newmail</from-outcome>
-				<to-view-id>/views/secured/mailinglist/newmail.xhtml</to-view-id>				
+				<from-outcome>newsletter_newmail</from-outcome>
+				<to-view-id>/views/secured/newsletter/newmail.xhtml</to-view-id>				
 			</navigation-case>			
 
 			<navigation-case>
-				<from-outcome>mailinglist_subscribers</from-outcome>
-				<to-view-id>/views/secured/mailinglist/mailinglistsubscribers.xhtml</to-view-id>				
+				<from-outcome>newsletter_subscribers</from-outcome>
+				<to-view-id>/views/secured/newsletter/newslettersubscribers.xhtml</to-view-id>				
 			</navigation-case>			
 			
 			
 			<navigation-case>
-				<from-outcome>mailinglist_showmail</from-outcome>
-				<to-view-id>/views/secured/mailinglist/showmail.xhtml</to-view-id>				
+				<from-outcome>newsletter_showmail</from-outcome>
+				<to-view-id>/views/secured/newsletter/showmail.xhtml</to-view-id>				
 			</navigation-case>			
 		
 			<navigation-case>
-				<from-outcome>mailinglist_export</from-outcome>
-				<to-view-id>/views/secured/mailinglist/exportedsubscribers.xhtml</to-view-id>				
+				<from-outcome>newsletter_export</from-outcome>
+				<to-view-id>/views/secured/newsletter/exportedsubscribers.xhtml</to-view-id>				
 			</navigation-case>			
 		
 

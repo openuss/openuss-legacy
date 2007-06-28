@@ -51,7 +51,7 @@
 		
 	</aop:config>
 	
-	<bean id="mailingStatusAspectBean" class="org.openuss.mailinglist.MailingStatusAspect">
+	<bean id="mailingStatusAspectBean" class="org.openuss.newsletter.MailingStatusAspect">
 		<property name="mailDao" ref="mailDao"/>
 	</bean>
 	
