@@ -73,15 +73,15 @@
 	
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-			MailingList
+			Newsletter
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 	
-	<page view-id="/views/secured/mailinglist/showmail.xhtml">
-		<securityConstraint domainObject="#{mailinglist_mail}" permissions="#{ACL.READ}"/>
-		<parameter name="mail" value="#{mailinglist_mail.id}" converterId="javax.faces.Long"/>
+	<page view-id="/views/secured/newsletter/showmail.xhtml">
+		<securityConstraint domainObject="#{newsletter_mail}" permissions="#{ACL.READ}"/>
+		<parameter name="mail" value="#{newsletter_mail.id}" converterId="javax.faces.Long"/>
 	</page>
 
-	<page view-id="/views/secured/mailinglist/*">
+	<page view-id="/views/secured/newsletter/*">
 		<securityConstraint domainObject="#{course}" permissions="#{ACL.READ}"/>
 		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
 	</page>

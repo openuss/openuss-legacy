@@ -16,8 +16,8 @@
 		<property name="discussionFeed"><ref bean="discussionFeed"/></property>
 	</bean>
 
-	<bean name="/secured/mailinglist.xml*" class="org.openuss.web.servlets.feedservlets.MailingListFeedController">	
-		<property name="mailingListFeed"><ref bean="mailingListFeed"/></property>
+	<bean name="/secured/newsletter.xml*" class="org.openuss.web.servlets.feedservlets.NewsletterFeedController">	
+		<property name="newsletterFeed"><ref bean="newsletterFeed"/></property>
 	</bean>
 
 	<bean name="/secured/documents.xml*" class="org.openuss.web.servlets.feedservlets.DocumentsFeedController">	
@@ -49,9 +49,9 @@
 		<property name="i18nMessageSource" ref="i18nMessageSource"/>		
 	</bean>
 
-	<bean name="mailingListFeed" class="org.openuss.web.feeds.MailingListFeed" parent="feedTemplate">	
+	<bean name="newsletterFeed" class="org.openuss.web.feeds.NewsletterFeed" parent="feedTemplate">	
 		<property name="courseService" ref="courseService"/>
-		<property name="courseMailingListService" ref="courseMailingListService"/>
+		<property name="courseNewsletterService" ref="courseNewsletterService"/>
 		<property name="securityService" ref="securityService"/>
 		<property name="i18nMessageSource" ref="i18nMessageSource"/>		
 	</bean>

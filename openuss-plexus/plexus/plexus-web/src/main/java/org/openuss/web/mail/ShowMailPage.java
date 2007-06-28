@@ -5,11 +5,11 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.course.mailinglist.CourseMailingListService;
-import org.openuss.mailinglist.MailDetail;
-import org.openuss.mailinglist.MailInfo;
-import org.openuss.mailinglist.MailingListInfo;
-import org.openuss.mailinglist.MailingStatus;
+import org.openuss.course.newsletter.CourseNewsletterService;
+import org.openuss.newsletter.MailDetail;
+import org.openuss.newsletter.MailInfo;
+import org.openuss.newsletter.NewsletterInfo;
+import org.openuss.newsletter.MailingStatus;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -18,61 +18,61 @@ import org.openuss.web.Constants;
  * @author Ingo Dueppe
  *
  */
-@Bean(name = "views$secured$mailinglist$showmail", scope = Scope.REQUEST)
+@Bean(name = "views$secured$newsletter$showmail", scope = Scope.REQUEST)
 @View
 public class ShowMailPage extends BasePage{
 	
-	@Property(value = "#{courseMailingListService}")
-	protected CourseMailingListService courseMailingListService;
+	@Property(value = "#{courseNewsletterService}")
+	protected CourseNewsletterService courseNewsletterService;
 	
-	@Property(value = "#{" + Constants.MAILINGLIST_MAIL + "}")
+	@Property(value = "#{" + Constants.NEWSLETTER_MAIL + "}")
 	protected MailDetail mail;
 	
-	@Property(value = "#{" + Constants.MAILINGLIST_MAILINGLIST + "}")
-	protected MailingListInfo mailingList;
+	@Property(value = "#{" + Constants.NEWSLETTER_NEWSLETTER + "}")
+	protected NewsletterInfo newsletter;
 
 	
 	@Prerender
 	public void prerender() throws Exception {
 		if (mail==null){
-			addError(i18n("mailinglist_mailaccess_impossible"));
-			redirect(Constants.MAILINGLIST_MAIN);
+			addError(i18n("newsletter_mailaccess_impossible"));
+			redirect(Constants.NEWSLETTER_MAIN);
 			return;
 		}			
 		if (mail.getId() == null) {
-			addError(i18n("mailinglist_mailaccess_impossible"));
-			redirect(Constants.MAILINGLIST_MAIN);
+			addError(i18n("newsletter_mailaccess_impossible"));
+			redirect(Constants.NEWSLETTER_MAIN);
 			return;
 		}
 		if (mail.getId()!=null){
 			MailInfo mi = new MailInfo(); 
 			mi.setId(mail.getId());
-			mail = getCourseMailingListService().getMail(mi);
+			mail = getCourseNewsletterService().getMail(mi);
 			if (mail==null){
-				addError(i18n("mailinglist_mailaccess_impossible"));
-				redirect(Constants.MAILINGLIST_MAIN);
+				addError(i18n("newsletter_mailaccess_impossible"));
+				redirect(Constants.NEWSLETTER_MAIN);
 				return;
 			}
 			
 			if (mail.getStatus()==MailingStatus.DELETED){
-				addError(i18n("mailinglist_mailaccess_impossible"));
-				redirect(Constants.MAILINGLIST_MAIN);
+				addError(i18n("newsletter_mailaccess_impossible"));
+				redirect(Constants.NEWSLETTER_MAIN);
 				return;
 			}
-			setSessionBean(Constants.MAILINGLIST_MAIL, mail);
+			setSessionBean(Constants.NEWSLETTER_MAIL, mail);
 			crumbs.clear();
 		}
 	}
 
 
-	public CourseMailingListService getCourseMailingListService() {
-		return courseMailingListService;
+	public CourseNewsletterService getCourseNewsletterService() {
+		return courseNewsletterService;
 	}
 
 
-	public void setCourseMailingListService(
-			CourseMailingListService courseMailingListService) {
-		this.courseMailingListService = courseMailingListService;
+	public void setCourseNewsletterService(
+			CourseNewsletterService courseNewsletterService) {
+		this.courseNewsletterService = courseNewsletterService;
 	}
 
 
@@ -86,12 +86,12 @@ public class ShowMailPage extends BasePage{
 	}
 
 
-	public MailingListInfo getMailingList() {
-		return mailingList;
+	public NewsletterInfo getNewsletter() {
+		return newsletter;
 	}
 
 
-	public void setMailingList(MailingListInfo mailingList) {
-		this.mailingList = mailingList;
+	public void setNewsletter(NewsletterInfo newsletter) {
+		this.newsletter = newsletter;
 	}	
 }

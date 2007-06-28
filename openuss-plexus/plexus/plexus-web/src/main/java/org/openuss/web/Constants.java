@@ -121,16 +121,16 @@ public class Constants {
 
 	public static final String USER_SESSION_KEY = "user";
 	
-	public static final String MAILINGLIST_MAILINGLIST = "mailinglist_mailinglist";
-	public static final String MAILINGLIST_MAIL = "mailinglist_mail";
-	public static final String MAILINGLIST_NEWMAIL = "mailinglist_newmail";
-	public static final String MAILINGLIST_SUBSCRIBERS = "mailinglist_subscribers";
-	public static final String MAILINGLIST_MAIN = "course_mailinglist";
-	public static final String MAILINGLIST_SHOWMAIL = "mailinglist_showmail";
+	public static final String NEWSLETTER_NEWSLETTER = "newsletter_newsletter";
+	public static final String NEWSLETTER_MAIL = "newsletter_mail";
+	public static final String NEWSLETTER_NEWMAIL = "newsletter_newmail";
+	public static final String NEWSLETTER_SUBSCRIBERS = "newsletter_subscribers";
+	public static final String NEWSLETTER_MAIN = "course_newsletter";
+	public static final String NEWSLETTER_SHOWMAIL = "newsletter_showmail";
 
 	public static final String SEARCH_RESULT = "search_result";
 
-	public static final String MAILINGLIST_EXPORT = "mailinglist_export";
+	public static final String NEWSLETTER_EXPORT = "newsletter_export";
 	
 	public static final String BREADCRUMBS = "crumbs";
 
