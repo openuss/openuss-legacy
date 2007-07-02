@@ -1,0 +1,101 @@
+<pages>
+	<page view-id="/views/secured/lecture/*">
+		<parameter name="institute" value="#{institute.id}" converterId="javax.faces.Long"/>
+	</page>
+	<page view-id="/views/secured/lecture/period*">
+		<securityConstraint domainObject="#{institute}" permissions="#{ACL.MANAGE_PERIODS}"/> 
+		<parameter name="period" value="#{period.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/course/*">
+		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
+	</page>
+
+	<page view-id="/views/secured/course/course*">
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.ASSIST}"/>
+		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/user/userprofile.xhtml">
+		<parameter name="showuser" value="#{showuser.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Documents
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+	<page view-id="/views/secured/documents/*">
+	 	<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.READ}"/>
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.READ}"/>
+		<parameter name="folder" value="#{documents_current_folder.id}" converterId="javax.faces.Long"/>
+		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
+	</page>
+
+	<page view-id="/views/secured/documents/folderedit.xhtml">
+		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.CRUD}"/>
+	</page>
+
+	<page view-id="/views/secured/documents/fileedit.xhtml">
+		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.CRUD}"/>
+	</page>
+
+	<page view-id="/views/secured/documents/addzip.xhtml">
+		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.CRUD}"/>
+	</page>
+
+	<page view-id="/views/secured/documents/remove.xhtml">
+		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.CRUD}"/>
+	</page>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			BrainContest
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+	<page view-id="/views/secured/braincontest/*">
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.READ}"/>
+		<parameter name="braincontest" value="#{braincontest_contest.id}" converterId="javax.faces.Long"/>
+		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/braincontest/braincontestnew.xhtml">
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.ASSIST}"/>
+	</page>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Discussion
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+	<page view-id="/views/secured/discussion/*">
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.READ}"/>
+		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
+		<parameter name="topic" value="#{discussion_topic.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Newsletter
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+	
+	<page view-id="/views/secured/newsletter/showmail.xhtml">
+		<securityConstraint domainObject="#{newsletter_mail}" permissions="#{ACL.READ}"/>
+		<parameter name="mail" value="#{newsletter_mail.id}" converterId="javax.faces.Long"/>
+	</page>
+
+	<page view-id="/views/secured/newsletter/*">
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.READ}"/>
+		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
+	</page>
+
+	
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			News
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+	<page view-id="/views/public/news/*">
+		<securityConstraint domainObject="#{news_selected_newsitem}" permissions="#{ACL.READ}"/>
+		<parameter name="news" value="#{news_selected_newsitem.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	
+</pages>

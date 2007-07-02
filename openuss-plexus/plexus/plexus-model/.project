@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>plexus-model</name>
+	<comment>OpenUSS Plexus is the relaunch of the well known E-Learning plattform OpenUSS.</comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+	</natures>
+</projectDescription>

@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:foundation="http://www.openuss.org/foundation/jsf">
+	<h:form id="search">
+		<o:block label="#{msg.search}">
+			<p class="content_font_normal">
+				<h:inputText id="searchText" value="#{search_results.textToSearch}" styleClass="field_search"/>
+				<h:commandLink 
+					styleClass="button_search" 
+					action="#{views$public$search$search.search}">
+					<img src="#{theme.imagesPath}/search.jpg" title="search" alt="go"/>
+				</h:commandLink>
+			</p>
+		</o:block>
+	</h:form>
+</ui:composition>
+

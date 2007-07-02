@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+		Quartz Cluster Commands
+		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<bean id="scheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="applicationContextSchedulerContextKey">
+			<value>applicationContext</value>
+		</property>
+		<property name="autoStartup" value="true" />
+		<property name="schedulerName" value="commands" />
+		<property name="waitForJobsToCompleteOnShutdown" value="true" />
+		<property name="triggers">
+			<list>
+				<ref bean="eachCommandTrigger" />
+				<ref bean="onceCommandTrigger" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="clusterCommandProcessor" class="org.openuss.commands.ClusterCommandProcessor">
+		<property name="commandDao">
+			<ref bean="commandDao" />
+		</property>
+		<property name="lastProcessedCommandDao">
+			<ref bean="lastProcessedCommandDao" />
+		</property>
+		<property name="systemService">
+			<ref bean="systemService" />
+		</property>
+	</bean>
+	
+	
+	<bean id="clusterCommand" class="org.openuss.commands.ClusterCommand">
+		<property name="clusterCommandProcessor"><ref bean="clusterCommandService"/></property>
+	</bean>
+
+	<bean id="clusterCommandService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<bean parent="clusterCommandProcessor" />
+		</property>
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="interceptorNames">
+			<list>
+				<value>serviceTransactionInterceptor</value>
+				<value>hibernateInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="eachCommandTrigger"
+		class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="eachCommandJobDetail" />
+		<property name="startDelay" value="3000" />
+		<property name="repeatInterval" value="15000" />
+	</bean>
+
+	<bean id="eachCommandJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="clusterCommand" />
+		<property name="targetMethod" value="processEachCommands" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<bean id="onceCommandTrigger"
+		class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="onceCommandJobDetail" />
+		<property name="startDelay" value="3000" />
+		<property name="repeatInterval" value="15000" />
+	</bean>
+
+	<bean id="onceCommandJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="clusterCommand" />
+		<property name="targetMethod" value="processOnceCommand" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+</beans>

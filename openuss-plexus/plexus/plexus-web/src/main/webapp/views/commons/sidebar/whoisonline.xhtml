@@ -1,0 +1,31 @@
+<!-- Default Sidebar -->
+<f:subview
+	xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:o="http://www.openuss.org/jsfcontrols"
+    xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:p="http://www.openuss.org/plexus/jsf"
+    xmlns:x="http://myfaces.apache.org/extensions">
+	
+	<h:form>
+	  	<o:block styleClass="whoisonline_box" label="#{msg.whoisonline_header}">
+	  		<p class="content_font_normal"> 
+		  		<ul class="int">
+		  			<li>
+					  	<o:link value="/views/secured/statistics/whoisonline.faces">
+					  		<h:outputFormat value="#{msg.whoisonline_text}" escape="false">
+					  			<f:param value="#{whoisonline.userCount}" />
+					  			<f:param value="#{whoisonline.guestCount}" />
+				  			</h:outputFormat>
+				  		</o:link>
+			  		</li>
+			  	</ul>
+			 </p>
+	  	</o:block>
+	</h:form>
+	
+</f:subview>

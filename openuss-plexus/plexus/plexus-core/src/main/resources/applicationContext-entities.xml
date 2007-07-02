@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+    
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      Security
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+    
+    <bean id="user" class="org.openuss.security.UserImpl" scope="singleton"/>
+    <bean id="userContact" class="org.openuss.security.UserContactImpl" scope="singleton"/>
+    <bean id="userPreferences" class="org.openuss.security.UserPreferencesImpl" scope="singleton"/>
+    <bean id="userProfile" class="org.openuss.security.UserProfileImpl" scope="singleton"/>
+
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      Lecture
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+
+	<bean id="institute" class="org.openuss.lecture.InstituteImpl" scope="singleton"/>
+	<bean id="courseType" class="org.openuss.lecture.CourseTypeImpl" scope="singleton"/>
+	<bean id="period" class="org.openuss.lecture.PeriodImpl" scope="singleton"/>
+	<bean id="course" class="org.openuss.lecture.CourseImpl"  scope="singleton"/>
+
+
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      News
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+    <bean id="newsItem" class="org.openuss.news.NewsItemImpl" scope="singleton"/>
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
+        <property name="locations">
+            <list>
+                <value>openuss.properties</value>
+            </list>
+        </property>
+    </bean>
+    
+    <!-- Beans for Mail initialize and editing  
+    <bean id="mailingMessage" class="org.openuss.mail.MailMessageImpl" />
+    <bean id="mailingJob" class="org.openuss.mail.MailingJobImpl" />
+    -->
+    
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    				BrainContest
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<bean id="brainContest" class="org.openuss.braincontest.BrainContestImpl" scope="singleton"/>
+	<bean id="brainContestAnswer" class="org.openuss.braincontest.AnswerImpl"  scope="singleton"/>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    				Documents
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+ 	<bean id="folder" class="org.openuss.documents.FolderImpl"  scope="singleton"/>
+	<bean id="fileEntry" class="org.openuss.documents.FileEntryImpl" scope="singleton"/>
+	 
+	<bean id="newDocument" class="org.openuss.repository.RepositoryFileImpl"  scope="singleton"/>
+	<bean id="newFolder" class="org.openuss.documents.FolderImpl"  scope="singleton"/>
+</beans>

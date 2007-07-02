@@ -1,0 +1,22 @@
+<project name="openuss :: themes :: build" default="install" basedir=".">
+	<target name="compile">
+		<exec executable="mvn.bat">
+			<arg line="compile"/>
+		</exec>
+	</target>
+	<target name="install">
+		<exec executable="mvn.bat">
+			<arg line="-e install"/>
+		</exec>
+	</target>
+	<target name="clean">
+		<exec executable="mvn.bat">
+			<arg line="clean"/>
+		</exec>
+	</target>
+	<target name="eclipse">
+		<exec executable="mvn.bat">
+			<arg line="eclipse:eclipse"/>
+		</exec>
+	</target>
+</project>
