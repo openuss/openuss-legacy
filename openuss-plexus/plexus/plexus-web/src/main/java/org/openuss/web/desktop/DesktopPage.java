@@ -146,9 +146,11 @@ public class DesktopPage extends BasePage {
 
 		@Override
 		public DataPage<Course> getDataPage(int startRow, int pageSize) {
-			List<Course> courses = new ArrayList(desktop.getCourses());
-			sort(courses);
-			page = new DataPage<Course>(courses.size(), 0, courses);
+			if (desktop != null) {
+				List<Course> courses = new ArrayList<Course>(desktop.getCourses());
+				sort(courses);
+				page = new DataPage<Course>(courses.size(), 0, courses);
+			}
 			return page;
 		}
 	}
@@ -161,7 +163,7 @@ public class DesktopPage extends BasePage {
 
 		@Override
 		public DataPage<CourseType> getDataPage(int startRow, int pageSize) {
-			List<CourseType> courseTypes = new ArrayList(desktop.getCourseTypes());
+			List<CourseType> courseTypes = new ArrayList<CourseType>(desktop.getCourseTypes());
 			sort(courseTypes);
 			page = new DataPage<CourseType>(courseTypes.size(), 0, courseTypes);
 			return page;
@@ -175,7 +177,7 @@ public class DesktopPage extends BasePage {
 
 		@Override
 		public DataPage<Institute> getDataPage(int startRow, int pageSize) {
-			List<Institute> institutes = new ArrayList(desktop.getInstitutes());
+			List<Institute> institutes = new ArrayList<Institute>(desktop.getInstitutes());
 			sort(institutes);
 			page = new DataPage<Institute>(institutes.size(), 0, institutes);
 			return page;

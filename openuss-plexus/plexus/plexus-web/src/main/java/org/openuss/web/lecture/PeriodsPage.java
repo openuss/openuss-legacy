@@ -19,9 +19,11 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.CourseService;
+import org.openuss.lecture.CourseType;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.Period;
-import org.openuss.lecture.CourseType;
 import org.openuss.web.Constants;
 
 /**
@@ -41,6 +43,9 @@ public class PeriodsPage extends AbstractLecturePage {
 	
 	private Long courseTypeId;
 
+	@Property(value = "#{courseService}")
+	private CourseService courseService;
+	
 	@Property(value = "#{sessionScope.period}")
 	private Period period;
 	
@@ -51,7 +56,7 @@ public class PeriodsPage extends AbstractLecturePage {
 		if (institute != null) {
 			// refresh period list
 			// TODO ask the lectureService instead of institute and use value objects
-			List periods = institute.getPeriods();
+			List<Period> periods = institute.getPeriods();
 			
 			period = (Period) getSessionBean(Constants.PERIOD);
 			if (period != null) {
@@ -83,7 +88,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	}	
 
 	/**
-	 * Change the actuall active period.
+	 * Change the actual active period.
 	 * 
 	 * @return outcome
 	 * @throws LectureException 
@@ -201,7 +206,7 @@ public class PeriodsPage extends AbstractLecturePage {
 			logger.debug("select period of line " + periodData.getRowIndex());
 		}
 
-		List<SelectItem> items = new ArrayList();
+		List<SelectItem> items = new ArrayList<SelectItem>();
 		for (CourseType courseType : institute.getCourseTypes()) {
 			final SelectItem item = new SelectItem();
 			item.setValue(courseType.getId());
@@ -213,7 +218,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	}
 
 	/**
-	 * Validator to check wether the user has accepted the user agreement or
+	 * Validator to check whether the user has accepted the user agreement or
 	 * not.
 	 * 
 	 * @param context
@@ -248,13 +253,16 @@ public class PeriodsPage extends AbstractLecturePage {
 	}
 
 	/**
-	 * Confirm the removement of an course
-	 * 
-	 * @return
+	 * Confirm the removal of an course
+	 * @return outcome
 	 */
 	public String confirmRemoveCourse() {
 		Course course = courseData.getRowData();
-		setSessionBean(Constants.COURSE, course);
+		if (course != null) {
+			CourseInfo courseInfo = new CourseInfo();
+			courseInfo.setId(course.getId());
+			setSessionBean(Constants.COURSE, courseInfo);
+		}
 		return Constants.INSTITUTE_COURSE_REMOVE_PAGE;
 	}
 
@@ -270,12 +278,12 @@ public class PeriodsPage extends AbstractLecturePage {
 	}
 
 	/**
-	 * @deprecated
 	 * @return
 	 */
 	public List<Course> getCourses() {
+		logger.warn(" ===========> call of deprecated method <============= DEPRECATED ========== ");
 		if (period != null && period.getCourses() != null && period.getCourses().size() > 0) {
-			return new ArrayList(period.getCourses());
+			return new ArrayList<Course>(period.getCourses());
 		} else {
 			return null;
 		}
@@ -292,13 +300,12 @@ public class PeriodsPage extends AbstractLecturePage {
 		@Override
 		public DataPage<Period> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<Period> periods = new ArrayList(institute.getPeriods());
+				List<Period> periods = new ArrayList<Period>(institute.getPeriods());
 				sort(periods);
 				page = new DataPage<Period>(periods.size(),0,periods);
 			}
 			return page;
 		}
-		
 	}
 	
 	private class CourseDataModel extends AbstractPagedTable<Course> {
@@ -309,7 +316,7 @@ public class PeriodsPage extends AbstractLecturePage {
 		@Override
 		public DataPage<Course> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<Course> courses = new ArrayList(); 
+				List<Course> courses = new ArrayList<Course>(); 
 				if (period != null) { 
 					courses.addAll(period.getCourses());
 				}
@@ -353,5 +360,13 @@ public class PeriodsPage extends AbstractLecturePage {
 	public void setPeriod(Period period) {
 		logger.trace("setPeriod " + period);
 		this.period = period;
+	}
+
+	public CourseService getCourseService() {
+		return courseService;
+	}
+
+	public void setCourseService(CourseService courseService) {
+		this.courseService = courseService;
 	}
 }
