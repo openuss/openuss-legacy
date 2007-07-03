@@ -7,8 +7,11 @@ import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
+import org.openuss.lecture.University;
+import org.openuss.lecture.UniversityDao;
 import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
+import org.openuss.security.Membership;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
@@ -27,10 +30,16 @@ public class TestUtility {
 	private GroupDao groupDao;
 
 	private InstituteDao instituteDao;
+	
+	private UniversityDao universityDao;
 
 	private User defaultUser;
+	
+	private Membership defaultMembership;
 
 	private Institute defaultInstitute;
+	
+	private University defaultUniversity;
 	
 	private static long uniqueId = System.currentTimeMillis();
 
@@ -69,6 +78,16 @@ public class TestUtility {
 		defaultInstitute.setShortcut(unique("shortcut"));
 		instituteDao.create(defaultInstitute);
 		return defaultInstitute;
+	}
+	
+	public University createPersistUniversityWithDefaultUser() {
+		defaultUser.setUsername(unique("username"));
+		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
+		userDao.create(defaultUser);
+		defaultUniversity.setName(unique("name"));
+		defaultUniversity.setShortcut(unique("shortcut"));
+		universityDao.create(defaultUniversity);
+		return defaultUniversity;
 	}
 
 	public void removePersistInstituteAndDefaultUser() {
@@ -155,6 +174,14 @@ public class TestUtility {
 	public void setDefaultUser(User defaultUser) {
 		this.defaultUser = defaultUser;
 	}
+	
+	public Membership getDefaultMembership() {
+		return defaultMembership;
+	}
+
+	public void setDefaultMembership(Membership defaultMembership) {
+		this.defaultMembership = defaultMembership;
+	}
 
 	public Institute getDefaultInstitute() {
 		return defaultInstitute;
@@ -163,6 +190,14 @@ public class TestUtility {
 	public void setDefaultInstitute(Institute defaultInstitute) {
 		this.defaultInstitute = defaultInstitute;
 	}
+	
+	public University getDefaultUniversity() {
+		return defaultUniversity;
+	}
+
+	public void setDefaultUniversity(University defaultUniversity) {
+		this.defaultUniversity = defaultUniversity;
+	}
 
 	public InstituteDao getInstituteDao() {
 		return instituteDao;
@@ -170,6 +205,14 @@ public class TestUtility {
 
 	public void setInstituteDao(InstituteDao instituteDao) {
 		this.instituteDao = instituteDao;
+	}
+
+	public UniversityDao getUniversityDao() {
+		return universityDao;
+	}
+
+	public void setUniversityDao(UniversityDao universityDao) {
+		this.universityDao = universityDao;
 	}
 
 	public GroupDao getGroupDao() {
