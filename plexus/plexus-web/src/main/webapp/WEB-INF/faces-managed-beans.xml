@@ -62,7 +62,7 @@
 
  	<managed-bean>
  		<managed-bean-name>course</managed-bean-name>
- 		<managed-bean-class>org.openuss.lecture.CourseImpl</managed-bean-class>
+ 		<managed-bean-class>org.openuss.lecture.CourseInfo</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
  	

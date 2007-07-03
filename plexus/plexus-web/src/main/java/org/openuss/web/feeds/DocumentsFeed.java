@@ -12,12 +12,14 @@ import java.util.Locale;
 import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
-import org.openuss.lecture.Course;
+import org.openuss.documents.FolderEntry;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.system.SystemProperties;
 import org.openuss.system.SystemService;
 import org.openuss.web.Constants;
+
+import com.sun.syndication.feed.synd.SyndEntry;
 
 public class DocumentsFeed extends AbstractFeed {
 
@@ -33,10 +35,10 @@ public class DocumentsFeed extends AbstractFeed {
 	public static final Logger logger = Logger.getLogger(DocumentsFeed.class);
 
 	private FeedWrapper buildFeedArray(CourseInfo course) {
-		final List entries = new ArrayList();
+		final List<SyndEntry> entries = new ArrayList<SyndEntry>();
 		FeedWrapper feedWrapper = new FeedWrapper();
 		
-		List folders = getDocumentService().getFolderEntries(course, null);
+		List<FolderEntry> folders = getDocumentService().getFolderEntries(course, null);
 		List<FileInfo> files = getDocumentService().allFileEntries(folders);
 		
 		String urlServer = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue();
@@ -66,9 +68,7 @@ public class DocumentsFeed extends AbstractFeed {
 		if (courseId == null || courseId == 0) {
 			return null;
 		}
-		Course e = Course.Factory.newInstance();
-		e.setId(courseId);
-		CourseInfo course = getCourseService().getCourseInfo(getCourseService().getCourse(e));
+		CourseInfo course = getCourseService().getCourseInfo(courseId);
 		if (course == null) {
 			return null;
 		}

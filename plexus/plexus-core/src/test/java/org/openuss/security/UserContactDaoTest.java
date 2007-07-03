@@ -71,8 +71,6 @@ public class UserContactDaoTest extends UserContactDaoTestBase {
 		User testUser = userDao.load(user.getId());
 
 		assertEquals(user.getId(), testUser.getId());
-		assertNotNull(testUser.getContact());
-		assertEquals(contact, testUser.getContact());
 		
 		// remove created record after test
 		userDao.remove(user.getId());

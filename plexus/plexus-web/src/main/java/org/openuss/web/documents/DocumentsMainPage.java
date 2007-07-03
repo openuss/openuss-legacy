@@ -102,10 +102,8 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 			Collections.sort(list, chain);
 		}
 
-		private Comparator folderComparator = new Comparator() {
-			public int compare(Object object1, Object object2) {
-				FolderEntryInfo info1 = (FolderEntryInfo) object1;
-				FolderEntryInfo info2 = (FolderEntryInfo) object2;
+		private Comparator<FolderEntryInfo> folderComparator = new Comparator<FolderEntryInfo>() {
+			public int compare(FolderEntryInfo info1, FolderEntryInfo info2) {
 				if (info1.isFolder() && info2.isFolder() || !info1.isFolder() && !info2.isFolder()) {
 					return 0;
 				} else {
