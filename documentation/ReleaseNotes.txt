@@ -6,7 +6,12 @@ Release Notes
 
 Changes in package LECTURE
 
++ Added new abstract entity "Organisation"
++ Added new entity "University"
 
 
 
 Changes in package SECURITY
+
++ Added new entity "Membership"
++ Added new service "MembershipService"
