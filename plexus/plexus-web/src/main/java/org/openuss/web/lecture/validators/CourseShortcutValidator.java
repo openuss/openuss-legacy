@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.register.FacesValidator;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.LectureService;
 import org.openuss.lecture.LectureServiceException;
 import org.openuss.web.Constants;
@@ -30,8 +31,9 @@ public class CourseShortcutValidator extends BaseBean implements Validator {
 		final String shortcut = (String) value;
 		LectureService service = (LectureService) getBean(Constants.LECTURE_SERVICE);
 		try {
-			//TODO Course should by defined by attribute of the validator 
-			Course course = (Course) getSessionBean(Constants.COURSE);
+			// TODO fixme - isNoneExistingCourseShorcut should also work with courseInfo objects.
+			CourseInfo courseInfo = (CourseInfo) getSessionBean(Constants.COURSE);
+			Course course = service.getCourse(courseInfo.getId()); 
 			boolean unique = service.isNoneExistingCourseShortcut(course, shortcut);
 			if (!unique) {
 				((UIInput) component).setValid(false);
