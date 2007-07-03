@@ -9,7 +9,6 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Course;
@@ -17,7 +16,6 @@ import org.openuss.lecture.CourseType;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-import org.openuss.web.PageLinks;
 
 
 /**
@@ -60,7 +58,7 @@ public class CourseTypeCourseSelectionPage extends BasePage {
 		@Override
 		public DataPage<Course> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<Course> courses = new ArrayList(courseType.getCourses());
+				List<Course> courses = new ArrayList<Course>(courseType.getCourses());
 				sort(courses);
 				page = new DataPage<Course>(courses.size(),0,courses);
 			}

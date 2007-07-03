@@ -131,7 +131,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	public Collection<SelectItem> getInstituteMemberList() {
 		if (instituteMembers == null) {
-			InstituteSecurity instituteSecurity = lectureService.getInstituteSecurity(course.getInstitute().getId());
+			InstituteSecurity instituteSecurity = lectureService.getInstituteSecurity(courseInfo.getInstituteId());
 			List<InstituteMember> members = instituteSecurity.getMembers();
 			final Set<Long> userIds = getAssistantsUserIdMap();
 			CollectionUtils.filter(members, new Predicate() {

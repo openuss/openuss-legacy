@@ -37,8 +37,8 @@ public class CourseRemovePage extends AbstractCoursePage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		course = lectureService.getCourse(course.getId());
-		setSessionBean(Constants.COURSE, course );
+		courseInfo = courseService.getCourseInfo(courseInfo.getId());
+		setSessionBean(Constants.COURSE, courseInfo );
 		addPageCrumb();
 	}
 	
@@ -58,13 +58,13 @@ public class CourseRemovePage extends AbstractCoursePage {
 	 */
 	public String removeCourse() throws LectureException {
 		logger.trace("removing course");
-		lectureService.removeCourse(course.getId());
+		lectureService.removeCourse(courseInfo.getId());
 		addMessage(i18n("institute_course_removed_succeed"));
 		return Constants.INSTITUTE_PERIODS_PAGE;
 	}
 	
 	/**
-	 * Validator to check wether or not the removement is accepted
+	 * Validator to check whether or not the removal is accepted
 	 * @param context
 	 * @param toValidate
 	 * @param value

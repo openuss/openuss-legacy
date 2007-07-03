@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.Validate;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.system.SystemProperties;
@@ -23,7 +24,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#getAssistants(org.openuss.lecture.Course)
 	 */
-	protected java.util.List handleGetAssistants(Course course) throws Exception {
+	private List<CourseMemberInfo> getAssistants(Course course) throws Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course,
 				CourseMemberType.ASSISTANT);
 	}
@@ -31,7 +32,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#getAspirants(org.openuss.lecture.Course)
 	 */
-	protected java.util.List handleGetAspirants(Course course) throws Exception {
+	protected List<CourseMemberInfo> handleGetAspirants(Course course) throws Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course,
 				CourseMemberType.ASPIRANT);
 	}
@@ -39,7 +40,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#getParticipants(org.openuss.lecture.Course)
 	 */
-	protected java.util.List handleGetParticipants(Course course) throws java.lang.Exception {
+	protected List<CourseMemberInfo> handleGetParticipants(Course course) throws Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course,
 				CourseMemberType.PARTICIPANT);
 	}
@@ -47,6 +48,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#addAssistant(org.openuss.lecture.Course,
 	 *      org.openuss.security.User)
+	 * @deprecated
 	 */
 	protected void handleAddAssistant(Course course, User user) throws Exception {
 		CourseMember assistant = retrieveCourseMember(course, user);
@@ -63,10 +65,9 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	}
 
 	/**
-	 * @see org.openuss.lecture.CourseService#addAspirant(org.openuss.lecture.Course,
-	 *      org.openuss.security.User)
+	 * Add aspirant to course
 	 */
-	protected void handleAddAspirant(Course course, User user) throws Exception {
+	private void addAspirant(Course course, User user) throws Exception {
 		CourseMember aspirant = retrieveCourseMember(course, user);
 		aspirant.setMemberType(CourseMemberType.ASPIRANT);
 		persistCourseMember(aspirant);
@@ -85,10 +86,9 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	}
 
 	/**
-	 * @see org.openuss.lecture.CourseService#addParticipant(org.openuss.lecture.Course,
-	 *      org.openuss.security.User)
+	 * Add participant to course
 	 */
-	protected void handleAddParticipant(Course course, User user) throws Exception {
+	private void addParticipant(Course course, User user) throws Exception {
 		CourseMember participant = retrieveCourseMember(course, user);
 		persistParticipantWithPermissions(participant);
 	}
@@ -99,7 +99,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		if (member.getMemberType() == CourseMemberType.ASPIRANT) {
 			persistParticipantWithPermissions(member);
 		}
-		Map parameters = new HashMap();
+		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("coursename", "" + member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")");
 		getMessageService().sendMessage(member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")",
 				"course.application.subject", "courseapplicationapply", parameters, member.getUser());
@@ -107,7 +107,8 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	private void persistParticipantWithPermissions(CourseMember participant) {
 		participant.setMemberType(CourseMemberType.PARTICIPANT);
-		getSecurityService().setPermissions(participant.getUser(), participant.getCourse(),	LectureAclEntry.COURSE_PARTICIPANT);
+		getSecurityService().setPermissions(participant.getUser(), participant.getCourse(),
+				LectureAclEntry.COURSE_PARTICIPANT);
 		persistCourseMember(participant);
 	}
 
@@ -121,38 +122,13 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	}
 
 	@Override
-	protected void handleApplyUserByPassword(String password, Course course, User user) throws Exception {
-		Course originalCourse = getCourseDao().load(course.getId());
-		if (originalCourse.getAccessType() == AccessType.PASSWORD && originalCourse.isPasswordCorrect(password)) {
-			addParticipant(originalCourse, user);
-		} else {
-			throw new CourseApplicationException("message_error_password_is_not_correct");
-		}
-	}
-
-	@Override
 	protected void handleRejectAspirant(Long memberId) throws Exception {
 		CourseMember member = getCourseMemberDao().load(memberId);
 		removeMember(memberId);
-		Map parameters = new HashMap();
+		Map<String,String> parameters = new HashMap<String,String>();
 		parameters.put("coursename", "" + member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")");
 		getMessageService().sendMessage(member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")",
 				"course.application.subject", "courseapplicationreject", parameters, member.getUser());
-	}
-
-	@Override
-	protected Course handleGetCourse(Course course) throws Exception {
-		if (course == null) {
-			return null;
-		} else {
-			return getCourseDao().load(course.getId());
-		}
-	}
-
-	@Override
-	protected CourseMemberInfo handleGetMemberInfo(Course course, User user) throws Exception {
-		return (CourseMemberInfo) getCourseMemberDao().findByUserAndCourse(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
-				user, course);
 	}
 
 	@Override
@@ -177,30 +153,29 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void handleApplyUser(CourseInfo course, User user) throws Exception {
-		handleApplyUser(getCourseDao().courseInfoToEntity(course),user);
-	}
-	
-	@Override
-	protected void handleApplyUser(Course course, User user) throws Exception {
-		Course originalCourse = getCourseDao().load(course.getId());
-		if (originalCourse.getAccessType() == AccessType.APPLICATION) {
+	protected void handleApplyUser(CourseInfo courseInfo, User user) throws Exception {
+		Validate.notNull(user, "Parameter user must not be null.");
+		Validate.notNull(courseInfo, "Parameter courseInfo must not be null.");
+		Validate.notNull(courseInfo.getId(), "Parameter courseInfo.id must not be null.");
+		Course course = getCourseDao().load(courseInfo.getId());
+		if (course.getAccessType() == AccessType.APPLICATION) {
 			List<CourseMemberInfo> assistants = getAssistants(course);
-			List<User> recipients = new ArrayList();
+			List<User> recipients = new ArrayList<User>();
 			if (assistants != null && assistants.size() != 0) {
-				Iterator i = assistants.iterator();
-				while (i.hasNext()) {
-					recipients.add(getSecurityService().getUser(((CourseMemberInfo) i.next()).getUserId()));
+				for (CourseMemberInfo member : assistants) {
+					recipients.add(getSecurityService().getUser(member.getUserId()));
 				}
+				// FIXME - link should be configured from outside the core
+				// component
 				String link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
 						+ "views/secured/course/courseaspirants.faces?course=" + course.getId();
-				Map parameters = new HashMap();
+				Map<String, String> parameters = new HashMap<String, String>();
 				parameters.put("coursename", course.getName() + "(" + course.getShortcut() + ")");
 				parameters.put("courseapplicantlink", link);
 				getMessageService().sendMessage(course.getName(), "course.application.subject", "courseapplication",
 						parameters, recipients);
 			}
-			addAspirant(originalCourse, user);
+			addAspirant(course, user);
 		} else {
 			throw new CourseApplicationException("message_error_course_accesstype_is_not_application");
 		}
@@ -217,23 +192,21 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	}
 
 	@Override
-	protected List handleGetAspirants(CourseInfo course) throws Exception {
+	protected List<CourseMemberInfo> handleGetAspirants(CourseInfo course) throws Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
 				getCourseDao().courseInfoToEntity(course), CourseMemberType.ASPIRANT);
 	}
 
 	@Override
-	protected List handleGetAssistants(CourseInfo course) throws Exception {
+	protected List<CourseMemberInfo> handleGetAssistants(CourseInfo course) throws Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
 				getCourseDao().courseInfoToEntity(course), CourseMemberType.ASSISTANT);
 	}
 
 	@Override
-	protected CourseInfo handleGetCourseInfo(Course course) throws Exception {
-		if ((course == null) || (course.getId() == null)) {
-			return null;
-		}
-		return (CourseInfo) getCourseDao().load(CourseDao.TRANSFORM_COURSEINFO, course.getId());
+	protected CourseInfo handleGetCourseInfo(Long courseId) throws Exception {
+		Validate.notNull(courseId, "Parameter courseId must not be null!");
+		return (CourseInfo) getCourseDao().load(CourseDao.TRANSFORM_COURSEINFO, courseId);
 	}
 
 	@Override
@@ -243,7 +216,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	}
 
 	@Override
-	protected List handleGetParticipants(CourseInfo course) throws Exception {
+	protected List<CourseMemberInfo> handleGetParticipants(CourseInfo course) throws Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
 				getCourseDao().courseInfoToEntity(course), CourseMemberType.PARTICIPANT);
 	}
@@ -252,14 +225,23 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	protected void handleRemoveAspirants(CourseInfo course) throws Exception {
 		Course courseDao = getCourseDao().load(course.getId());
 		List<CourseMember> members = getCourseMemberDao().findByCourse(courseDao);
-		Iterator i = members.iterator();
+		Iterator<CourseMember> i = members.iterator();
 		CourseMember member;
 		while (i.hasNext()) {
-			member = (CourseMember) i.next();
+			member = i.next();
 			if (member.getMemberType() == CourseMemberType.ASPIRANT) {
 				getCourseMemberDao().remove(member.getId());
 			}
 		}
+	}
+
+	@Override
+	protected void handleUpdateCourse(CourseInfo courseInfo) throws Exception {
+		Validate.notNull(courseInfo, "Parameter course must not be null.");
+		Validate.notNull(courseInfo.getId(), "Parameter course must contain a valid course id.");
+		Course course = getCourseDao().courseInfoToEntity(courseInfo);
+		getCourseDao().update(course);
+
 	}
 
 }

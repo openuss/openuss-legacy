@@ -3,7 +3,6 @@ package org.openuss.web.course;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.Institute;
@@ -18,14 +17,14 @@ import org.openuss.web.PageLinks;
 public class AbstractCoursePage extends BasePage {
 	private static final long serialVersionUID = 1394531398550932611L;
 
-	// TODO remove dao object from web layer
-	/**
-	 * @deprecated
-	 */
-	@Property(value = "#{course}")
-	protected Course course;
+//	/**
+//	 * TODO remove DAO object from web layer
+//	 * @deprecated
+//	 */
+//	@Property(value = "#{course}")
+//	protected Course course;
 
-	@Property(value = "#{" + Constants.COURSE_INFO + "}")
+	@Property(value = "#{" + Constants.COURSE + "}")
 	protected CourseInfo courseInfo;
 
 	@Property(value = "#{lectureService}")
@@ -39,20 +38,18 @@ public class AbstractCoursePage extends BasePage {
 
 	@Prerender
 	public void prerender() throws Exception {
-		if (course != null) {
-			course = courseService.getCourse(course);
-			courseInfo = courseService.getCourseInfo(course);
-			institute = course.getInstitute();
-			setSessionBean("institute", institute);
+		if (courseInfo != null) {
+			courseInfo = courseService.getCourseInfo(courseInfo.getId());
+			institute = lectureService.getInstitute(courseInfo.getInstituteId());
 		}
-		if ((course == null) || (courseInfo == null)) {
+		if (courseInfo == null) {
 			addMessage(i18n("message_error_course_page"));
 			redirect(Constants.OUTCOME_BACKWARD);
 			return;
 		} else {
-			setSessionBean(Constants.COURSE, course);
+			setSessionBean(Constants.COURSE, courseInfo);
 			setSessionBean(Constants.COURSE_INFO, courseInfo);
-			setSessionBean(Constants.INSTITUTE, course.getInstitute());
+			setSessionBean(Constants.INSTITUTE, institute);
 			generateBreadCrumbs();
 		}
 	}
@@ -64,7 +61,7 @@ public class AbstractCoursePage extends BasePage {
 		instituteCrumb.setName(institute.getShortcut());
 		instituteCrumb.setLink(PageLinks.INSTITUTE_PAGE);
 		instituteCrumb.addParameter("institute", institute.getId());
-		instituteCrumb.addParameter("period", course.getPeriod().getId());
+		instituteCrumb.addParameter("period", courseInfo.getPeriodId());
 		instituteCrumb.setHint(institute.getName());
 
 		BreadCrumb courseCrumb = new BreadCrumb();
@@ -77,17 +74,17 @@ public class AbstractCoursePage extends BasePage {
 		crumbs.add(courseCrumb);
 	}
 
-	public Course getCourse() {
-		return course;
-	}
-
-	public void setCourse(Course course) {
-		this.course = course;
-	}
-
-	public LectureService getLectureService() {
-		return lectureService;
-	}
+//	public Course getCourse() {
+//		return course;
+//	}
+//
+//	public void setCourse(Course course) {
+//		this.course = course;
+//	}
+//
+//	public LectureService getLectureService() {
+//		return lectureService;
+//	}
 
 	public void setLectureService(LectureService lectureService) {
 		this.lectureService = lectureService;
