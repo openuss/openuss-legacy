@@ -41,7 +41,7 @@ public class FolderEditPage extends AbstractDocumentPage{
 			addMessage(i18n("message_documents_new_folder_created"));
 		} else if (selectedFolder != null && selectedFolder.getId() != null) {
 			documentService.saveFolder(selectedFolder);
-			addMessage(i18n("message_docuements_save_folder"));
+			addMessage(i18n("message_documents_save_folder"));
 		}
 		removeSessionBean(Constants.DOCUMENTS_SELECTED_FOLDER);
 		return Constants.DOCUMENTS_MAIN_PAGE;
