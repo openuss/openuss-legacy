@@ -21,7 +21,7 @@
 	<bean id="defaultUser" class="org.openuss.security.UserImpl">
 		<property name="username" value="defaultuser" />
 		<property name="password" value="defaultpassword" />
-		<property name="email" value="defaultpassword" />
+		<property name="email" value="default@email.de" />
 		<property name="enabled" value="true" />
 		<property name="accountExpired" value="false" />
 		<property name="credentialsExpired" value="true" />

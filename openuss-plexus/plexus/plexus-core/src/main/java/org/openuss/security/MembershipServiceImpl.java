@@ -9,6 +9,7 @@ import org.openuss.lecture.Organisation;
 
 /**
  * @see org.openuss.security.MembershipService
+ * @author Ron Haus, Florian Dondorf
  */
 public class MembershipServiceImpl extends org.openuss.security.MembershipServiceBase {
 
@@ -37,9 +38,16 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 * @see org.openuss.security.MembershipService#findOwner(java.lang.Long)
 	 */
 	protected org.openuss.security.UserInfo handleFindOwner(java.lang.Long organisationId) throws java.lang.Exception {
-		// @todo implement protected org.openuss.security.UserInfo
-		// handleFindOwner(java.lang.Long organisationId)
-		return null;
+		Organisation organisation = this.getOrganisationDao().load(organisationId);
+		if (organisation == null) {
+			throw new IllegalArgumentException(
+					"MembershipService.handleSetOwner - no organisation found corresponding to the id "
+							+ organisationId);
+		}
+		
+		UserInfo ownerInfo = this.getUserDao().toUserInfo(organisation.getOwner());
+		
+		return ownerInfo;
 	}
 
 }

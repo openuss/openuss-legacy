@@ -50,6 +50,19 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		logger.info("----> END access to setOwner test");
 	}
+	
+	public void testFindOwner() {
+		logger.info("----> BEGIN access to findOwner test");
+		
+		// Create University with DeafultUser as Owner
+		University university = testUtility.createPersistUniversityWithDefaultUser();
+		
+		//Find Owner
+		UserInfo ownerInfo = membershipService.findOwner(university.getId());
+		assertNotNull(ownerInfo);
+		
+		logger.info("----> END access to findOwner test");
+	}
 
 	private static void createSecureContext(String roleName) {
 		TestingAuthenticationToken authentication = new TestingAuthenticationToken("principal", "credentials",
