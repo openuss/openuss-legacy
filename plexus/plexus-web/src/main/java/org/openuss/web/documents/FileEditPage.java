@@ -75,7 +75,7 @@ public class FileEditPage extends AbstractDocumentPage{
 			addMessage(i18n("message_documents_new_ folder_created"));
 		} else if (selectedFile != null && selectedFile.getId() != null) {
 			documentService.saveFileEntry(selectedFile);
-			addMessage(i18n("message_docuements_save_folder"));
+			addMessage(i18n("message_documents_save_folder"));
 		}
 		removeSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRY);
 		return Constants.DOCUMENTS_MAIN_PAGE;
