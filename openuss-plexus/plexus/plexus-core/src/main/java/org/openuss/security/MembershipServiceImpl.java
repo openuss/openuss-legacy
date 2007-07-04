@@ -18,6 +18,8 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 *      java.lang.Long)
 	 */
 	protected void handleSetOwner(java.lang.Long organisationId, java.lang.Long userId) throws java.lang.Exception {
+		// TODO Check Security - only admin and owner must be allowed to change
+		// the owner
 		User owner = this.getUserDao().load(userId);
 		if (owner == null) {
 			throw new IllegalArgumentException(
@@ -44,10 +46,57 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 					"MembershipService.handleSetOwner - no organisation found corresponding to the id "
 							+ organisationId);
 		}
-		
+
 		UserInfo ownerInfo = this.getUserDao().toUserInfo(organisation.getOwner());
-		
+
 		return ownerInfo;
 	}
 
+	/**
+	 * @see org.openuss.security.MembershipService#acceptAspirant(java.lang.Long,
+	 *      java.lang.Long)
+	 */
+	protected void handleAcceptAspirant(java.lang.Long organisationId, java.lang.Long userId)
+			throws java.lang.Exception {
+
+	}
+
+	/**
+	 * @see org.openuss.security.MembershipService#rejectAspirant(java.lang.Long,
+	 *      java.lang.Long)
+	 */
+	protected void handleRejectAspirant(java.lang.Long organisationId, java.lang.Long userId)
+			throws java.lang.Exception {
+
+	}
+
+	/**
+	 * @see org.openuss.security.MembershipService#addMember(java.lang.Long,
+	 *      java.lang.Long)
+	 */
+	protected void handleAddMember(java.lang.Long organisationId, java.lang.Long userId) throws java.lang.Exception {
+	}
+
+	/**
+	 * @see org.openuss.security.MembershipService#addAspirant(java.lang.Long,
+	 *      java.lang.Long)
+	 */
+	protected void handleAddAspirant(java.lang.Long organisationId, java.lang.Long userId) throws java.lang.Exception {
+
+	}
+
+	/**
+	 * @see org.openuss.security.MembershipService#findAllMembers(java.lang.Long)
+	 */
+	protected java.util.List handleFindAllMembers(java.lang.Long organisationId) throws java.lang.Exception {
+
+		return null;
+	}
+
+	/**
+	 * @see org.openuss.security.MembershipService#findAllAspirants(java.lang.Long)
+	 */
+	protected java.util.List handleFindAllAspirants(java.lang.Long organisationId) throws java.lang.Exception {
+		return null;
+	}
 }
