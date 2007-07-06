@@ -16,5 +16,11 @@ public class UniversityImpl
      * The serial version UID of this class. Needed for serialization.
      */
     private static final long serialVersionUID = -2187281787752079304L;
+    
+    public java.lang.Boolean isRemovable() {
+    	//TODO implement this method
+    	
+    	return true;
+    }
 
 }
