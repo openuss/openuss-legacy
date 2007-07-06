@@ -75,12 +75,18 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		// Create a 2nd User
 		User user1 = testUtility.createUserInDB();
 		
-		// Get List of Members and add user to it
+		// Get List of Members
 		List members = membershipService.findAllMembers(university.getId());
 		assertNotNull(members);
 		assertEquals(members.size(),0);
-		members.add(user1);
-		assertEquals(university.getMembers().size(),1);
+
+		// Add a user using DAO object
+		university.getMembers().add(user1);
+		
+		// Get List of Members again
+		List members2 = membershipService.findAllMembers(university.getId());
+		assertNotNull(members2);
+		assertEquals(members2.size(),1);
 		
 		logger.info("----> END access to findAllMembers test");
 	}
@@ -94,12 +100,18 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		// Create a 2nd User
 		User user1 = testUtility.createUserInDB();
 		
-		// Get List of Aspirants and add user to it
+		// Get List of Aspirants
 		List aspirants = membershipService.findAllAspirants(university.getId());
 		assertNotNull(aspirants);
 		assertEquals(aspirants.size(),0);
-		aspirants.add(user1);
-		assertEquals(university.getAspirants().size(),1);
+		
+		// Add a user using DAO object
+		university.getAspirants().add(user1);
+		
+		// Get List of Aspirants again
+		List aspirants2 = membershipService.findAllAspirants(university.getId());
+		assertNotNull(aspirants2);
+		assertEquals(aspirants2.size(),1);
 		
 		logger.info("----> END access to findAllAspirants test");
 	}

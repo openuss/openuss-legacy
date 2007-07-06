@@ -5,6 +5,10 @@
  */
 package org.openuss.security;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.openuss.lecture.Organisation;
 
 /**
@@ -93,8 +97,18 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 					"MembershipService.FindAllMembers - no organisation found corresponding to the id "
 							+ organisationId);
 		}
+		List members = organisation.getMembers();
+		Iterator iterator = members.iterator();
 
-		return organisation.getMembers();
+		List memberInfos = new ArrayList(members.size());
+		for (int i = 0; i < members.size(); i++) {
+			Object member = iterator.next();
+			if (member instanceof User) {
+				memberInfos.add(this.getUserDao().toUserInfo((User) member));
+			}
+		}
+
+		return memberInfos;
 	}
 
 	/**
@@ -108,6 +122,17 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 							+ organisationId);
 		}
 
-		return organisation.getAspirants();
+		List aspirants = organisation.getAspirants();
+		Iterator iterator = aspirants.iterator();
+
+		List aspirantInfos = new ArrayList(aspirants.size());
+		for (int i = 0; i < aspirants.size(); i++) {
+			Object aspirant = iterator.next();
+			if (aspirant instanceof User) {
+				aspirantInfos.add(this.getUserDao().toUserInfo((User) aspirant));
+			}
+		}
+
+		return aspirantInfos;
 	}
 }
