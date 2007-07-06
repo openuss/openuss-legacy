@@ -5,6 +5,8 @@
  */
 package org.openuss.security;
 
+import java.util.List;
+
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.context.SecurityContextHolder;
@@ -50,18 +52,56 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		logger.info("----> END access to setOwner test");
 	}
-	
+
 	public void testFindOwner() {
 		logger.info("----> BEGIN access to findOwner test");
+
+		// Create University with DeafultUser as Owner
+		University university = testUtility.createPersistUniversityWithDefaultUser();
+
+		// Find Owner
+		UserInfo ownerInfo = membershipService.findOwner(university.getId());
+		assertNotNull(ownerInfo);
+
+		logger.info("----> END access to findOwner test");
+	}
+	
+	public void testFindAllMembers() {
+		logger.info("----> BEGIN access to findAllMembers test");
 		
 		// Create University with DeafultUser as Owner
 		University university = testUtility.createPersistUniversityWithDefaultUser();
 		
-		//Find Owner
-		UserInfo ownerInfo = membershipService.findOwner(university.getId());
-		assertNotNull(ownerInfo);
+		// Create a 2nd User
+		User user1 = testUtility.createUserInDB();
 		
-		logger.info("----> END access to findOwner test");
+		// Get List of Members and add user to it
+		List members = membershipService.findAllMembers(university.getId());
+		assertNotNull(members);
+		assertEquals(members.size(),0);
+		members.add(user1);
+		assertEquals(university.getMembers().size(),1);
+		
+		logger.info("----> END access to findAllMembers test");
+	}
+	
+	public void testFindAllAspirants() {
+		logger.info("----> BEGIN access to findAllAspirants test");
+		
+		// Create University with DeafultUser as Owner
+		University university = testUtility.createPersistUniversityWithDefaultUser();
+		
+		// Create a 2nd User
+		User user1 = testUtility.createUserInDB();
+		
+		// Get List of Aspirants and add user to it
+		List aspirants = membershipService.findAllAspirants(university.getId());
+		assertNotNull(aspirants);
+		assertEquals(aspirants.size(),0);
+		aspirants.add(user1);
+		assertEquals(university.getAspirants().size(),1);
+		
+		logger.info("----> END access to findAllAspirants test");
 	}
 
 	private static void createSecureContext(String roleName) {

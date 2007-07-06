@@ -27,4 +27,12 @@ public abstract class OrganisationImpl
     	}
     	this.getMembership().setOwner(owner);
     }
+    
+    public java.util.List getMembers() {
+    	return this.getMembership().getMembers();
+    }
+    
+    public java.util.List getAspirants() {
+    	return this.getMembership().getAspirants();
+    }
 }

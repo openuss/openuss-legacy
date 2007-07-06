@@ -47,9 +47,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 							+ organisationId);
 		}
 
-		UserInfo ownerInfo = this.getUserDao().toUserInfo(organisation.getOwner());
-
-		return ownerInfo;
+		return getUserDao().toUserInfo(organisation.getOwner());
 	}
 
 	/**
@@ -89,14 +87,27 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 * @see org.openuss.security.MembershipService#findAllMembers(java.lang.Long)
 	 */
 	protected java.util.List handleFindAllMembers(java.lang.Long organisationId) throws java.lang.Exception {
+		Organisation organisation = this.getOrganisationDao().load(organisationId);
+		if (organisation == null) {
+			throw new IllegalArgumentException(
+					"MembershipService.FindAllMembers - no organisation found corresponding to the id "
+							+ organisationId);
+		}
 
-		return null;
+		return organisation.getMembers();
 	}
 
 	/**
 	 * @see org.openuss.security.MembershipService#findAllAspirants(java.lang.Long)
 	 */
 	protected java.util.List handleFindAllAspirants(java.lang.Long organisationId) throws java.lang.Exception {
-		return null;
+		Organisation organisation = this.getOrganisationDao().load(organisationId);
+		if (organisation == null) {
+			throw new IllegalArgumentException(
+					"MembershipService.handleFindAllAspirants - no organisation found corresponding to the id "
+							+ organisationId);
+		}
+
+		return organisation.getAspirants();
 	}
 }
