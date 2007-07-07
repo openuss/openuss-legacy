@@ -28,12 +28,21 @@
 		<property name="accountLocked" value="true" />
 	</bean>
 
-	<bean id="defaultMembership" class="org.openuss.security.MembershipImpl">
+	<bean id="defaultMembershipUniversity" class="org.openuss.security.MembershipImpl">
 		<property name="owner">
 			<ref local="defaultUser" />
 		</property>
 	</bean>
 
+	<bean id="defaultUniversity" class="org.openuss.lecture.UniversityImpl">
+		<property name="name" value="defaultUniversity" />
+		<property name="description" value="defaultDescription" />
+		<property name="shortcut" value="shortcutUniversity" />
+		<property name="membership">
+			<ref local="defaultMembershipUniversity" />
+		</property>
+	</bean>
+	
 	<bean id="defaultInstitute" class="org.openuss.lecture.InstituteImpl">
 		<property name="name" value="institutename" />
 		<property name="shortcut" value="shortcut" />
@@ -41,15 +50,6 @@
 		<property name="ownername" value="ownername" />
 		<property name="owner">
 			<ref local="defaultUser" />
-		</property>
-	</bean>
-	
-	<bean id="defaultUniversity" class="org.openuss.lecture.UniversityImpl">
-		<property name="name" value="universityname" />
-		<property name="description" value="defaultdescription" />
-		<property name="shortcut" value="shortcut" />
-		<property name="membership">
-			<ref local="defaultMembership" />
 		</property>
 	</bean>
 
@@ -62,9 +62,6 @@
 		</property>
 		<property name="defaultUniversity">
 			<ref local="defaultUniversity" />
-		</property>
-		<property name="defaultMembership">
-			<ref bean="defaultMembership" />
 		</property>
 		<property name="userDao">
 			<ref bean="userDao" />

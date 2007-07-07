@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
+import org.openuss.lecture.Department;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
 import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
-import org.openuss.security.Membership;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
@@ -34,8 +34,6 @@ public class TestUtility {
 	private UniversityDao universityDao;
 
 	private User defaultUser;
-	
-	private Membership defaultMembership;
 
 	private Institute defaultInstitute;
 	
@@ -80,13 +78,11 @@ public class TestUtility {
 		return defaultInstitute;
 	}
 	
-	public University createPersistUniversityWithDefaultUser() {
-		defaultUser.setUsername(unique("username"));
+	public University createDefaultUniversityWithDefaultUser() {
 		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
 		userDao.create(defaultUser);
-		defaultUniversity.setName(unique("name"));
-		defaultUniversity.setShortcut(unique("shortcut"));
 		universityDao.create(defaultUniversity);
+		//defaultUniversity is also creating a default Department!
 		return defaultUniversity;
 	}
 
@@ -173,14 +169,6 @@ public class TestUtility {
 
 	public void setDefaultUser(User defaultUser) {
 		this.defaultUser = defaultUser;
-	}
-	
-	public Membership getDefaultMembership() {
-		return defaultMembership;
-	}
-
-	public void setDefaultMembership(Membership defaultMembership) {
-		this.defaultMembership = defaultMembership;
 	}
 
 	public Institute getDefaultInstitute() {

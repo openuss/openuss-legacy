@@ -5,19 +5,23 @@
  */
 package org.openuss.lecture;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openuss.TestUtility;
 import org.openuss.security.Membership;
-
+import org.openuss.security.User;
 
 /**
  * JUnit Test for Spring Hibernate UniversityDao class.
+ * 
  * @see org.openuss.lecture.UniversityDao
  * @author Ron Haus
  */
 public class UniversityDaoTest extends UniversityDaoTestBase {
-	
-private TestUtility testUtility;
-	
+
+	private TestUtility testUtility;
+
 	public TestUtility getTestUtility() {
 		return testUtility;
 	}
@@ -25,20 +29,48 @@ private TestUtility testUtility;
 	public void setTestUtility(TestUtility testUtility) {
 		this.testUtility = testUtility;
 	}
-	
+
 	public void testUniversityDaoCreate() {
+
+		// Create Universities
 		University university = University.Factory.newInstance();
-		university.setName("testUniversity");
-		university.setShortcut("testU");
-		
+		university.setName(testUtility.unique("testUniversity"));
+		university.setShortcut(testUtility.unique("testU"));
+
+		University university2 = University.Factory.newInstance();
+		university2.setName(testUtility.unique("testUniversity"));
+		university2.setShortcut(testUtility.unique("testU"));
+
+		// Create Memberships
+		List<User> users = new ArrayList<User>(5);
+		for (int i = 0; i < 5; i++) {
+			users.add(testUtility.createUserInDB());
+		}
+
 		Membership membership = Membership.Factory.newInstance();
-		membership.setOwner(testUtility.createUserInDB());
-		membership.getAspirants().add(testUtility.createUserInDB());
-		membership.getMembers().add(testUtility.createUserInDB());
+		membership.setOwner(users.get(0));
+		membership.getAspirants().add(users.get(1));
+		membership.getAspirants().add(users.get(2));
+		membership.getMembers().add(users.get(3));
+		membership.getMembers().add(users.get(4));
+
+		Membership membership2 = Membership.Factory.newInstance();
+		membership2.setOwner(users.get(0));
+		membership2.getAspirants().add(users.get(1));
+		membership2.getAspirants().add(users.get(2));
+		membership2.getMembers().add(users.get(3));
+		membership2.getMembers().add(users.get(4));
+
 		university.setMembership(membership);
-		
+		university2.setMembership(membership2);
+
+		// Test DAO
 		assertNull(university.getId());
 		universityDao.create(university);
 		assertNotNull(university.getId());
+
+		assertNull(university2.getId());
+		universityDao.create(university2);
+		assertNotNull(university2.getId());
 	}
 }

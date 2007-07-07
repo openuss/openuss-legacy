@@ -40,7 +40,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		;
 
 		// Create University with DeafultUser as Owner
-		University university = testUtility.createPersistUniversityWithDefaultUser();
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
 
 		// Create a 2nd User
 		User user1 = testUtility.createUserInDB();
@@ -57,7 +57,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		logger.info("----> BEGIN access to findOwner test");
 
 		// Create University with DeafultUser as Owner
-		University university = testUtility.createPersistUniversityWithDefaultUser();
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
 
 		// Find Owner
 		UserInfo ownerInfo = membershipService.findOwner(university.getId());
@@ -70,7 +70,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		logger.info("----> BEGIN access to findAllMembers test");
 		
 		// Create University with DeafultUser as Owner
-		University university = testUtility.createPersistUniversityWithDefaultUser();
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
 		
 		// Create a 2nd User
 		User user1 = testUtility.createUserInDB();
@@ -95,7 +95,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		logger.info("----> BEGIN access to findAllAspirants test");
 		
 		// Create University with DeafultUser as Owner
-		University university = testUtility.createPersistUniversityWithDefaultUser();
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
 		
 		// Create a 2nd User
 		User user1 = testUtility.createUserInDB();
@@ -120,7 +120,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		logger.info("----> BEGIN access to addAspirant test");
 		
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createPersistUniversityWithDefaultUser();
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
 		
 		// Try to add Owner as an Aspirant
 		try {
@@ -167,7 +167,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		logger.info("----> BEGIN access to acceptAspirant test");
 		
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createPersistUniversityWithDefaultUser();
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
 		
 		// Create a 2nd User
 		User user1 = testUtility.createUserInDB();
