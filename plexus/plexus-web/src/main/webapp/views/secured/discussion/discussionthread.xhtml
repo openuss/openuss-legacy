@@ -40,12 +40,34 @@
 		<h:form id="discussionThreadTableView">
 			<ui:include src="discussionthreadtable.xhtml" />
 			<o:block>
-				<plexus:command bean="#{views$secured$discussion$discussionthread}"
-					action="addPost" label="#{msg['discussion_new_addpost']}"
-					title="#{msg['discussion_new_addpost']}"/>	
-				<plexus:command bean="#{views$secured$discussion$discussions}"
-					action="newTopic" label="#{msg['discussion_new']}"
-					title="#{msg['discussion_new']}"/>	
+				<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}" >
+					<h:commandButton 
+						id="addPostButtonUser"
+					    action="#{views$secured$discussion$discussionthread.addPost}"
+						value="#{msg['discussion_new_addpost']}"
+						title="#{msg['discussion_new_addpost']}"
+						styleClass="button"/>	
+					<h:commandButton 
+						action="#{views$secured$discussion$discussions.newTopic}"
+						value="#{msg['discussion_new']}"
+						title="#{msg['discussion_new']}"
+						styleClass="button"/>	
+				</s:acl>
+				<s:acl domainObject="#{course}" hasNotPermission="#{ACL.ASSIST}" >
+					<h:commandButton 
+						id="addPostButtonUser"
+					    action="#{views$secured$discussion$discussionthread.addPost}"
+						value="#{msg['discussion_new_addpost']}"
+						title="#{msg['discussion_new_addpost']}"
+						rendered="#{not discussion_forum.readOnly and not discussion_topic.readOnly}"
+						styleClass="button"/>	
+					<h:commandButton 
+						action="#{views$secured$discussion$discussions.newTopic}"
+						value="#{msg['discussion_new']}"
+						title="#{msg['discussion_new']}"
+						rendered="#{not discussion_forum.readOnly and not discussion_topic.readOnly}"
+						styleClass="button"/>	
+				</s:acl>
 				<h:commandButton 
 				    id="newDiscussionEntry"
 					action="discussion_main" 
@@ -53,7 +75,6 @@
 					title="#{msg.back}"
 					styleClass="button"
 					immediate="true"/>
-
 			</o:block>
 		</h:form>
 	</ui:define>

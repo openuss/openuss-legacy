@@ -31,6 +31,9 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 			forumWatchState = discussionService.watchesForum(getForum());
 			forumReadOnly = getForum().isReadOnly();
 		}
+		if (forum.isReadOnly()){
+			addMessage(i18n("discussion_forum_readonly_true_simple"));
+		}
 	}	
 	
 	private class DiscussionDataProvider extends AbstractPagedTable<TopicInfo> {
@@ -50,8 +53,8 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	}
 	
 	public String newTopic(){
-		if (getForum().isReadOnly()){
-			addMessage(i18n("discussion_readonly"));
+		if (getForum().isReadOnly()&&(!isAssistant())){
+			addError(i18n("discussion_readonly"));
 			return Constants.FAILURE;			
 		}
 		TopicInfo ti = new TopicInfo();
@@ -62,8 +65,8 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	}
 
 	public String removeTopic(){
-		if (getForum().isReadOnly()){
-			addMessage(i18n("discussion_readonly"));
+		if (getForum().isReadOnly()&&(!isAssistant())){
+			addError(i18n("discussion_readonly"));
 			return Constants.FAILURE;			
 		}		
 		TopicInfo t = this.data.getRowData();

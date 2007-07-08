@@ -17,6 +17,10 @@ public class RemoveThreadPage extends AbstractDiscussionPage{
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
+		if (!isAssistant()){
+			addError(i18n("error_access_denied_details"));
+			redirect(Constants.DISCUSSION_MAIN);			
+		}			
 		addPageCrumb();
 	}		
 
