@@ -23,7 +23,7 @@ public class AnswerImpl extends org.openuss.braincontest.AnswerBase implements o
 		if (getSolver() == null)
 			return null;
 		User solver = getSolver();
-		return solver.getFirstName() + " " + solver.getLastName() + " (" + solver.getUsername() + ")";
+		return solver.getDisplayName()+" ("+solver.getUsername()+")";
 	}
 
 	/**
