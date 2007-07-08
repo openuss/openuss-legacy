@@ -35,8 +35,8 @@ public class DiscussionNewEntryPage extends AbstractDiscussionPage{
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		if (getForum().isReadOnly()||topic.isReadOnly()){
-			addMessage(i18n("discussion_readonly"));
+		if ((topic.isReadOnly()||getForum().isReadOnly())&&(!isAssistant())){
+			addError(i18n("discussion_readonly"));
 			redirect(Constants.DISCUSSION_MAIN);			
 		}	
 		addPageCrumb();

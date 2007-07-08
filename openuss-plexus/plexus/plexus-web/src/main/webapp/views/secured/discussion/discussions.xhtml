@@ -42,11 +42,26 @@
 	<ui:define name="content">
 		<h:form id="discussionTableView">
 			<ui:include src="discussionstable.xhtml" />
-			<o:block>
-				<plexus:command bean="#{views$secured$discussion$discussions}"
-					action="newTopic" label="#{msg['discussion_new']}"
-					title="#{msg['discussion_new']}"/>				
-			</o:block>
+			<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}" >
+				<o:block>
+					<h:commandButton
+						id="newTopicButtonAssist"
+						action="#{views$secured$discussion$discussions.newTopic}"
+						value="#{msg['discussion_new']}"
+						title="#{msg['discussion_new']}"
+						styleClass="button"/>				
+				</o:block>
+			</s:acl>
+			<s:acl domainObject="#{course}" hasNotPermission="#{ACL.ASSIST}" >
+				<o:block rendered="not discussion_forum.readOnly">
+					<h:commandButton
+						id="newTopicButton"
+						action="#{views$secured$discussion$discussions.newTopic}"
+						value="#{msg['discussion_new']}"
+						title="#{msg['discussion_new']}"
+						styleClass="button"/>				
+				</o:block>
+			</s:acl>
 		</h:form>
 	</ui:define>
 </ui:composition>

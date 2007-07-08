@@ -1,5 +1,10 @@
 package org.openuss.web.discussion;
 
+import org.acegisecurity.Authentication;
+import org.acegisecurity.acl.AclEntry;
+import org.acegisecurity.acl.AclManager;
+import org.acegisecurity.acl.basic.BasicAclEntry;
+import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.discussion.DiscussionService;
@@ -7,6 +12,7 @@ import org.openuss.discussion.ForumInfo;
 import org.openuss.discussion.PostInfo;
 import org.openuss.discussion.TopicInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.course.AbstractCoursePage;
@@ -21,15 +27,40 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 	
 	@Property(value = "#{discussionService}")
 	protected DiscussionService discussionService;
+
+	@Property(value = "#{aclManager}")
+	protected AclManager aclManager;
 	
 	public ForumInfo forum;
 	
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if (courseInfo!=null&&courseInfo.getId()!=null){
+			forum = getDiscussionService().getForum(courseInfo);
+			setSessionBean(Constants.DISCUSSION_FORUM, forum);
+		}
 		addDiscussionCrumb();
 	}
 
+	protected boolean isAssistant(){
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		AclEntry[] acls = aclManager.getAcls(courseInfo, auth);
+		Integer required = LectureAclEntry.ASSIST;
+		if ((acls != null) && acls.length > 0) {
+			for (AclEntry aclEntry : acls) {
+				if (aclEntry instanceof BasicAclEntry) {
+					BasicAclEntry processableAcl = (BasicAclEntry) aclEntry;
+					if (processableAcl.isPermitted(required)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+
+	}
+	
 	private void addDiscussionCrumb() {
 		BreadCrumb discussionMain = new BreadCrumb();
 		discussionMain.setName(i18n("course_command_discussion"));
@@ -71,5 +102,13 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 
 	public void setTopic(TopicInfo topic) {
 		this.topic = topic;
+	}
+
+	public AclManager getAclManager() {
+		return aclManager;
+	}
+
+	public void setAclManager(AclManager aclManager) {
+		this.aclManager = aclManager;
 	}
 }

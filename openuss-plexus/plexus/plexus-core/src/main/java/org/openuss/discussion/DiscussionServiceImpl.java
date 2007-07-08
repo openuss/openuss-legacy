@@ -7,6 +7,7 @@ package org.openuss.discussion;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -237,7 +238,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 
 		Topic topic = getTopicDao().load(topicInfo.getId());
 		List<PostInfo> posts = getPostDao().findByTopic(PostDao.TRANSFORM_POSTINFO, topic);
-
+		Collections.sort(posts, new PostInfoComparator());
 		for (PostInfo post : posts) {
 			post.setUserIsSubmitter(post.getSubmitterId()==getSecurityService().getCurrentUser().getId());
 			List<FileInfo> attachments = getDocumentService().getFileEntries(post);
@@ -259,6 +260,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	/**
 	 * @see org.openuss.discussion.DiscussionService#getTopics(java.lang.Long)
 	 */
+	@SuppressWarnings("unchecked")
 	protected List handleGetTopics(ForumInfo forumInfo) throws Exception {
 		Validate.notNull(forumInfo, "Parameter forum must not be null");
 		Validate.notNull(forumInfo.getId(), "Parameter form must provide an valid id.");
@@ -267,7 +269,9 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		if (forum == null) {
 			return new ArrayList<TopicInfo>();
 		} else {
-			return getTopicDao().loadTopicsWithViewState(forum, getSecurityService().getCurrentUser());
+			List <TopicInfo> topics = getTopicDao().loadTopicsWithViewState(forum, getSecurityService().getCurrentUser());
+			Collections.sort(topics, new TopicInfoComparator());
+			return topics;
 		}
 	}
 
