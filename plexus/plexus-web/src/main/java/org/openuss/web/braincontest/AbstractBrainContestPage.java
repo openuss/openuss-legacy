@@ -1,5 +1,10 @@
 package org.openuss.web.braincontest; 
 
+import org.acegisecurity.Authentication;
+import org.acegisecurity.acl.AclEntry;
+import org.acegisecurity.acl.AclManager;
+import org.acegisecurity.acl.basic.BasicAclEntry;
+import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -8,6 +13,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.BrainContestInfo;
 import org.openuss.braincontest.BrainContestService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.PageLinks;
 import org.openuss.web.course.AbstractCoursePage;
 
@@ -23,6 +29,10 @@ public class AbstractBrainContestPage extends AbstractCoursePage{
 	
 	@Property(value = "#{brainContestService}")
 	private BrainContestService brainContestService;
+	
+	@Property(value = "#{aclManager}")
+	protected AclManager aclManager;
+	
 	
 	@Prerender
 	public void prerender() throws Exception{
@@ -44,6 +54,24 @@ public class AbstractBrainContestPage extends AbstractCoursePage{
 		crumbs.add(crumb);
 	}
 	
+	protected boolean isAssistant(){
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		AclEntry[] acls = aclManager.getAcls(courseInfo, auth);
+		Integer required = LectureAclEntry.ASSIST;
+		if ((acls != null) && acls.length > 0) {
+			for (AclEntry aclEntry : acls) {
+				if (aclEntry instanceof BasicAclEntry) {
+					BasicAclEntry processableAcl = (BasicAclEntry) aclEntry;
+					if (processableAcl.isPermitted(required)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+
+	}	
+	
 	public BrainContestService getBrainContestService() {
 		return brainContestService;
 	}
@@ -58,6 +86,14 @@ public class AbstractBrainContestPage extends AbstractCoursePage{
 
 	public void setBrainContest(BrainContestInfo brainContest) {
 		this.brainContest = brainContest;
+	}
+
+	public AclManager getAclManager() {
+		return aclManager;
+	}
+
+	public void setAclManager(AclManager aclManager) {
+		this.aclManager = aclManager;
 	}	
 	
 

@@ -50,7 +50,7 @@ public class BrainContestSolvePage extends AbstractBrainContestPage {
 			}
 		} 
 		if (getBrainContest()!=null){
-			if (!getBrainContest().isReleased()) {
+			if (!getBrainContest().isReleased()&&!isAssistant()) {
 				addError(i18n("braincontest_message_contest_not_released"));
 				redirect(Constants.BRAINCONTEST_MAIN);
 			}
