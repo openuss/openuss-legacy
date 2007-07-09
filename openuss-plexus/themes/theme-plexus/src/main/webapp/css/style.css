@@ -657,14 +657,13 @@ ul.navigation li ul li ul li.active_item a:hover{
 }
 
 #right .feed .content_box ul.int{
-
 	list-style-type: none;
 }
 
 
 #right .feed .content_box ul.int li{
-	margin-top: 2px;
-	list-style-image:url(../img/feed.gif);
+	margin-top: 3px;
+	list-style-image:url(../img/rss.png);
 }
 
 #right .content_box ul.int a{
@@ -813,8 +812,9 @@ ul#header_navigation li:hover{
 }
 
 .teaser_blue{
-	width:auto;
-	padding-right: 210px;
+	margin: 0;
+	width: auto;
+	margin-right: 210px;
 }
 
 .teaser_blue .content_box {
@@ -891,6 +891,7 @@ ul#header_navigation li:hover{
   float: right;
   width: 9px;
   height: 28px;
+  margin: 0;
   background-image: url(../img/teaser_blue_right_bg.jpg);
   background-repeat: no-repeat;
 }
@@ -932,6 +933,7 @@ ul#header_navigation li:hover{
 .teaser_blue_right .header_normal {
   padding: 0;
   height: 28px;
+  margin: 0;
   background-image: url(../img/teaser_blue_bg.jpg);
   background-repeat: repeat-x;
 }
