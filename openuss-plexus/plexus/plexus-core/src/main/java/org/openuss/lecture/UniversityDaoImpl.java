@@ -24,8 +24,9 @@ public class UniversityDaoImpl extends org.openuss.lecture.UniversityDaoBase {
 	 * @see org.openuss.lecture.UniversityDao#toUniversityInfo(org.openuss.lecture.University)
 	 */
 	public org.openuss.lecture.UniversityInfo toUniversityInfo(final org.openuss.lecture.University entity) {
-		// @todo verify behavior of toUniversityInfo
-		return super.toUniversityInfo(entity);
+		UniversityInfo universityInfo = super.toUniversityInfo(entity);
+		universityInfo.setUniversityType(entity.getType().getValue());
+		return universityInfo;
 	}
 
 	/**
@@ -34,22 +35,18 @@ public class UniversityDaoImpl extends org.openuss.lecture.UniversityDaoBase {
 	 */
 	private org.openuss.lecture.University loadUniversityFromUniversityInfo(
 			org.openuss.lecture.UniversityInfo universityInfo) {
-		// @todo implement loadUniversityFromUniversityInfo
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.lecture.loadUniversityFromUniversityInfo(org.openuss.lecture.UniversityInfo) not yet implemented.");
-
-		/*
-		 * A typical implementation looks like this: org.openuss.lecture.University university =
-		 * this.load(universityInfo.getId()); if (university == null) { university =
-		 * org.openuss.lecture.University.Factory.newInstance(); } return university;
-		 */
+		
+		org.openuss.lecture.University university = this.load(universityInfo.getId());
+		if (university == null) {
+			university = org.openuss.lecture.University.Factory.newInstance();
+		} return university;
+		
 	}
 
 	/**
 	 * @see org.openuss.lecture.UniversityDao#universityInfoToEntity(org.openuss.lecture.UniversityInfo)
 	 */
 	public org.openuss.lecture.University universityInfoToEntity(org.openuss.lecture.UniversityInfo universityInfo) {
-		// @todo verify behavior of universityInfoToEntity
 		org.openuss.lecture.University entity = this.loadUniversityFromUniversityInfo(universityInfo);
 		this.universityInfoToEntity(universityInfo, entity, true);
 		return entity;

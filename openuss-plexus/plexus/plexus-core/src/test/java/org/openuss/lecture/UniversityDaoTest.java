@@ -73,4 +73,58 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		universityDao.create(university2);
 		assertNotNull(university2.getId());
 	}
+	
+	public void testUniversityDaoToUniversityInfo() {
+		
+		// Create a complete University
+		University university = University.Factory.newInstance();
+		university.setName(testUtility.unique("testUniversity"));
+		university.setShortcut(testUtility.unique("testU"));
+		university.setDescription("This is a test University");
+		Membership membership = Membership.Factory.newInstance();
+		membership.setOwner(testUtility.createUserInDB());
+		university.setMembership(membership);
+		
+		universityDao.create(university);
+		assertNotNull(university.getId());
+		
+		// Test ValueObject
+		UniversityInfo universityInfo = universityDao.toUniversityInfo(university);
+		
+		assertEquals(university.getId(), universityInfo.getId());
+		assertEquals(university.getName(), universityInfo.getName());
+		assertEquals(university.getShortcut(), universityInfo.getShortcut());
+		assertEquals(university.getDescription(), universityInfo.getDescription());
+		assertEquals(university.getType().getValue(), universityInfo.getUniversityType());
+		
+	}
+	
+	public void testUniversityDaoUniversityInfoToEntity() {
+		
+		// Create a complete University
+		University university = University.Factory.newInstance();
+		university.setName(testUtility.unique("testUniversity"));
+		university.setShortcut(testUtility.unique("testU"));
+		university.setDescription("This is a test University");
+		Membership membership = Membership.Factory.newInstance();
+		membership.setOwner(testUtility.createUserInDB());
+		university.setMembership(membership);
+		
+		universityDao.create(university);
+		assertNotNull(university.getId());
+		
+		// Create the corresponding ValueObject
+		UniversityInfo universityInfo = new UniversityInfo();
+		universityInfo.setId(university.getId());
+		
+		// Test Entity
+		University university2 = universityDao.universityInfoToEntity(universityInfo);
+		
+		assertEquals(university2.getId(), university.getId());
+		assertEquals(university2.getName(), university.getName());
+		assertEquals(university2.getShortcut(), university.getShortcut());
+		assertEquals(university2.getDescription(), university.getDescription());
+		assertEquals(university2.getType(), university.getType());
+		
+	}
 }
