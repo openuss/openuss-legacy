@@ -24,14 +24,15 @@ import com.sun.facelets.tag.TagException;
 import com.sun.facelets.tag.TagHandler;
 
 /**
- * Facelets Tag to check acegi acl permissions
+ * Facelets Tag to check Acegi ACL permissions
  * 
  * The tag has the following attributes:
  * <ul>
  * 	<li><code>domainObject</code> - defines the domain object on which the current authority must have permissions on.</li>
  *  <li><code>hasPermission</code> - defines the permission bit mask the authority must have.</li>
- *  <li><code>onErrorAction</code> - jsf action method binding to define an action that is performed if permission is denied</li>
+ *  <li><code>onErrorAction</code> - JSF action method binding to define an action that is performed if permission is denied</li>
  *  <li><code>ifNot="error"</code> - if is set the tag sends a 403 forbidden access error if permission is denied</li>
+ *  <li><code>hasNotPermission</code> - defines the permission bit mask the authority must not have.</li>
  * </ul>
  * 
  * @author Ingo Dueppe
@@ -83,7 +84,7 @@ public class AclHandler extends TagHandler {
 			if (logger.isDebugEnabled()) {
 				logger.debug("SecurityContextHolder did not return a non-null Authentication object, so skipping tag body!");
 			}
-			return; // skip enty
+			return; // skip entry
 		}
 
 		if (domainObject.getObject(faceletContext) == null) {
@@ -146,7 +147,7 @@ public class AclHandler extends TagHandler {
 	}
 
 	/**
-	 * Determins from a input object the required integers
+	 * Determines from a input object the required integers
 	 * @param value
 	 * @return required integers
 	 */
@@ -180,7 +181,6 @@ public class AclHandler extends TagHandler {
 				isAuthorized = false;
 				break;
 			}
-
 		}
 		return isAuthorized;
 	}
