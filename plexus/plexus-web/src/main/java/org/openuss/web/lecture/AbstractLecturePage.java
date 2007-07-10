@@ -1,6 +1,5 @@
 package org.openuss.web.lecture;
 
-
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
@@ -16,6 +15,7 @@ import org.openuss.web.PageLinks;
 
 /**
  * Abstract Lecture Page
+ * 
  * @author Ingo Dueppe
  * @author Sebastian Roekens
  */
@@ -25,16 +25,17 @@ public abstract class AbstractLecturePage extends BasePage {
 
 	@Property(value = "#{institute}")
 	protected Institute institute;
-	
+
 	@Property(value = "#{lectureService}")
 	protected LectureService lectureService;
 
 	@Property(value = "#{sessionScope.courseType}")
 	protected CourseType courseType;
-	
+
 	/**
-	 * Refreshing institute entity 
-	 * @throws Exception 
+	 * Refreshing institute entity
+	 * 
+	 * @throws Exception
 	 */
 	@Preprocess
 	public void preprocess() throws Exception {
@@ -47,36 +48,39 @@ public abstract class AbstractLecturePage extends BasePage {
 		}
 		setSessionBean(Constants.INSTITUTE, institute);
 	}
-	
+
 	@Prerender
 	public void prerender() throws LectureException {
 		logger.debug("prerender - refreshing institute session object");
-		if (institute == null) {
-			institute = (Institute) getSessionBean(Constants.INSTITUTE);
-		} 
+		refreshInstitute();
 		if (institute == null) {
 			addError(i18n("message_error_no_institute_selected"));
 			redirect(Constants.DESKTOP);
-		} else {
-			institute = lectureService.getInstitute(institute.getId());
-			setSessionBean(Constants.INSTITUTE, institute);
-			if (!institute.isEnabled()){
+		} else { 
+			if (!institute.isEnabled()) {
 				addMessage(i18n("institute_not_activated"));
 			}
+			generateCrumbs();
 		}
-		generateCrumbs();
 	}
 
-	private void generateCrumbs(){
+	private void refreshInstitute() {
+		if (institute != null) {
+			institute = lectureService.getInstitute(institute.getId());
+			setSessionBean(Constants.INSTITUTE, institute);
+		}
+	}
+
+	private void generateCrumbs() {
 		crumbs.clear();
 		BreadCrumb instituteCrumb = new BreadCrumb();
 		instituteCrumb.setName(institute.getShortcut());
 		instituteCrumb.setLink(PageLinks.INSTITUTE_PAGE);
-		instituteCrumb.addParameter("institute",institute.getId());
+		instituteCrumb.addParameter("institute", institute.getId());
 		instituteCrumb.setHint(institute.getName());
 		crumbs.add(instituteCrumb);
 	}
-	
+
 	public Institute getInstitute() {
 		return institute;
 	}
