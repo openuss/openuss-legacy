@@ -55,6 +55,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	/**
 	 * @see org.openuss.security.MembershipService#acceptAspirant(java.lang.Long, java.lang.Long)
 	 */
+	@SuppressWarnings({"unchecked"})
 	protected void handleAcceptAspirant(java.lang.Long organisationId, java.lang.Long userId)
 			throws java.lang.Exception {
 		// TODO Check Security - only admin, owner and members must be allowed to accept aspirants
@@ -94,21 +95,80 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	/**
 	 * @see org.openuss.security.MembershipService#rejectAspirant(java.lang.Long, java.lang.Long)
 	 */
+	@SuppressWarnings({"unchecked"})
 	protected void handleRejectAspirant(java.lang.Long organisationId, java.lang.Long userId)
 			throws java.lang.Exception {
-
+		// TODO Check Security - only admin, owner and members must be allowed to add members
+		
+		User aspirant = this.getUserDao().load(userId);
+		if (aspirant == null) {
+			throw new IllegalArgumentException(
+					"MembershipService.handleRejectAspirant - no user found corresponding to the id " + userId);
+		}
+		
+		Organisation organisation = this.getOrganisationDao().load(organisationId);
+		if (organisation == null) {
+			throw new IllegalArgumentException(
+					"MembershipService.handleRejectAspirant - no organisation found corresponding to the id "
+							+ organisationId);
+		}
+		
+		// Remove Aspirant from List of Aspirants
+		List aspirants = organisation.getAspirants();
+		boolean wasFound = aspirants.remove(aspirant);
+		if (!wasFound) {
+			throw new IllegalArgumentException("MembershipService.handleRejectAspirant - the user "
+					+ aspirant.getUsername() + " has not been an Aspirant");
+		}
+		
+		// To inform the aspirant of his "rejection" is the responibility of the web layer
+		
 	}
 
 	/**
 	 * @see org.openuss.security.MembershipService#addMember(java.lang.Long, java.lang.Long)
 	 */
+	@SuppressWarnings({"unchecked"})
 	protected void handleAddMember(java.lang.Long organisationId, java.lang.Long userId) throws java.lang.Exception {
 		// TODO Check Security - only admin, owner and members must be allowed to add members
+		
+		User user = this.getUserDao().load(userId);
+		if (user == null) {
+			throw new IllegalArgumentException(
+					"MembershipService.handleAddMember - no user found corresponding to the id " + userId);
+		}
+		
+		Organisation organisation = this.getOrganisationDao().load(organisationId);
+		if (organisation == null) {
+			throw new IllegalArgumentException(
+					"MembershipService.handleAddMember - no organisation found corresponding to the id "
+							+ organisationId);
+		}
+		
+		// Check whether the User is already a Member, Aspirant or the Owner
+		if (organisation.getOwner().equals(user)) {
+			throw new IllegalArgumentException("MembershipService.handleAddMember - the User " + user.getUsername()
+					+ " is already the Owner");
+		}
+		List members = organisation.getMembers();
+		if (members.contains(user)) {
+			throw new IllegalArgumentException("MembershipService.handleAddMember - the User " + user.getUsername()
+					+ " is already a Member");
+		}
+		List aspirants = organisation.getAspirants();
+		if (aspirants.contains(user)) {
+			throw new IllegalArgumentException("MembershipService.handleAddMember - the User " + user.getUsername()
+					+ " is already an Aspirant");
+		}
+
+		// Add User to the List of Members
+		members.add(user);
 	}
 
 	/**
 	 * @see org.openuss.security.MembershipService#addAspirant(java.lang.Long, java.lang.Long)
 	 */
+	@SuppressWarnings({"unchecked"})
 	protected void handleAddAspirant(java.lang.Long organisationId, java.lang.Long userId) throws java.lang.Exception {
 		// TODO Check Security - only admin, owner and members must be allowed to add aspirants
 
@@ -149,6 +209,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	/**
 	 * @see org.openuss.security.MembershipService#findAllMembers(java.lang.Long)
 	 */
+	@SuppressWarnings({"unchecked"})
 	protected java.util.List handleFindAllMembers(java.lang.Long organisationId) throws java.lang.Exception {
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		if (organisation == null) {
@@ -173,6 +234,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	/**
 	 * @see org.openuss.security.MembershipService#findAllAspirants(java.lang.Long)
 	 */
+	@SuppressWarnings({"unchecked"})
 	protected java.util.List handleFindAllAspirants(java.lang.Long organisationId) throws java.lang.Exception {
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		if (organisation == null) {
