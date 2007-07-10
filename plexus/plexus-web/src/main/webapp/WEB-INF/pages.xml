@@ -82,7 +82,7 @@
 	</page>
 
 	<page view-id="/views/secured/newsletter/*">
-		<securityConstraint domainObject="#{course}" permissions="#{ACL.ASSIST}"/>
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.READ}"/>
 		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
 	</page>
 
