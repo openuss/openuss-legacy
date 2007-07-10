@@ -64,7 +64,7 @@
 
 			<s:authorize ifAllGranted="ROLE_USER">
 				<s:acl domainObject="#{course}" hasNotPermission="#{ACL.READ}">
-					<!-- check if accesstype is AccessType.CLOSED -->
+					<!-- check if access type is AccessType.CLOSED -->
 					<c:if test="#{course.accessType.value == 1}">
 						<o:block label="#{msg.course_main_access}" styleClass="form_box">
 							<h:outputText value="#{msg.course_main_access_closed_text}" styleClass="content_font_normal"/>
@@ -72,7 +72,7 @@
 						
 					</c:if>
 				
-					<!-- check if accesstype is AccessType.PASSWORD -->
+					<!-- check if access type is AccessType.PASSWORD -->
 					<c:if test="#{course.accessType.value == 2}">
 						<h:form id="course_main_apply_password_form">
 							<o:block label="#{msg.course_main_access}" styleClass="form_box">
@@ -96,7 +96,7 @@
 						</h:form>
 					</c:if>
 	
-					<!-- check if accesstype is AccessType.APPLICATION -->
+					<!-- check if access type is AccessType.APPLICATION -->
 					<c:if test="#{course.accessType.value == 3}">
 						<c:if test="#{views$secured$course$main.aspirant}">
 							<o:block label="#{msg.course_main_access}">
