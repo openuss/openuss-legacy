@@ -5,6 +5,8 @@
  */
 package org.openuss.newsletter;
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +22,10 @@ import org.openuss.security.acl.LectureAclEntry;
  * @see org.openuss.newsletter.NewsletterService
  */
 public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServiceBase {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(NewsletterServiceImpl.class);
 
 	private static final String MAIL_SENDING_COMMAND = "mailSendingCommand";
 
@@ -113,14 +119,21 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 	/**
 	 * @see org.openuss.newsletter.NewsletterService#sendPreview(org.openuss.newsletter.MailDetail)
 	 */
-	protected void handleSendPreview(NewsletterInfo newsletter, MailDetail mail) throws java.lang.Exception {
+	protected void handleSendPreview(NewsletterInfo newsLetterInfo, MailDetail mail) throws java.lang.Exception {
+		Validate.notNull(newsLetterInfo,"Parameter NewsLetterInfo must not be null.");
+		Validate.notNull(newsLetterInfo.getId(), "Parameter NewsLetterInfo must contain a valid id.");
 		List<User> recipients = new ArrayList<User>();
 		recipients.add(getSecurityService().getCurrentUser());
-		getMessageService().sendMessage(getNewsletter(newsletter).getName(),
-				"[" + getNewsletter(newsletter).getName() + "]" + mail.getSubject(), mail.getText(), mail.isSms(),
-				recipients);
+		newsLetterInfo = getNewsletter(newsLetterInfo);
+		if (newsLetterInfo != null) {
+			getMessageService().sendMessage(newsLetterInfo.getName(),				
+					"[" + newsLetterInfo.getName() + "]" + mail.getSubject(), mail.getText(), mail.isSms(),	recipients);
+		} else {
+			logger.error("Newsletter not found !");
+		}
 	}
 
+		
 	/**
 	 * @see org.openuss.newsletter.NewsletterService#getMails(org.openuss.foundation.DomainObject)
 	 */
