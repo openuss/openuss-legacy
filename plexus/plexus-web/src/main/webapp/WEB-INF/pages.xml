@@ -2,9 +2,15 @@
 	<page view-id="/views/secured/lecture/*">
 		<parameter name="institute" value="#{institute.id}" converterId="javax.faces.Long"/>
 	</page>
+	
 	<page view-id="/views/secured/lecture/period*">
 		<securityConstraint domainObject="#{institute}" permissions="#{ACL.MANAGE_PERIODS}"/> 
 		<parameter name="period" value="#{period.id}" converterId="javax.faces.Long"/>
+	</page>
+
+	<page view-id="/views/secured/lecture/course*">
+		<securityConstraint domainObject="#{institute}" permissions="#{ACL.MANAGE_COURSE_TYPES}"/> 
+		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<page view-id="/views/secured/course/*">
