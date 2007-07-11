@@ -21,25 +21,31 @@ public class PagePhaseListener implements PhaseListener {
 	private static final long serialVersionUID = 6953211197121628585L;
 	
 	public void afterPhase(PhaseEvent event) {
-		FacesContext facesContext = event.getFacesContext();
-		
-		final HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-		if (facesContext.getViewRoot() != null ) {
-			if ( "GET".equals(request.getMethod())) {
-				logger.debug("GET-Request: apply request parameter values...");
-				Pages.instance().applyRequestParameterValues(facesContext);
+		if (event.getPhaseId() == PhaseId.RESTORE_VIEW) {
+			FacesContext facesContext = event.getFacesContext();
+			
+			if (facesContext.getViewRoot() != null ) {
+				final HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+				if ( "GET".equals(request.getMethod())) {
+					logger.debug("GET-Request: apply request parameter values...");
+					Pages.instance().applyRequestParameterValues(facesContext);
+				}
+				logger.debug("perform security constraints check...");
+				Pages.instance().performSecurityConstraints(facesContext);
 			}
+		}
+	}
+
+	public void beforePhase(PhaseEvent event) {
+		if (event.getPhaseId() == PhaseId.RENDER_RESPONSE) {
+			FacesContext facesContext = event.getFacesContext();
 			logger.debug("perform security constraints check...");
 			Pages.instance().performSecurityConstraints(facesContext);
 		}
 	}
 
-	public void beforePhase(PhaseEvent event) {
-		// do nothing
-	}
-
 	public PhaseId getPhaseId() {
-		return PhaseId.RESTORE_VIEW;
+		return PhaseId.ANY_PHASE;
 	}
 
 }
