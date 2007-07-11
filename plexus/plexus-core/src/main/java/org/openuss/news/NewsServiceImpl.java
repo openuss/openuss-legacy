@@ -106,7 +106,7 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 	/**
 	 * @see org.openuss.news.NewsService#getNewsItems(java.lang.Object)
 	 */
-	protected List handleGetNewsItems(DomainObject publisher) throws Exception {
+	protected List<NewsItemInfo> handleGetNewsItems(DomainObject publisher) throws Exception {
 		Validate.notNull(publisher, "Parameter publisher must not be null!");
 		return getNewsItemDao().findByPublisher(NewsItemDao.TRANSFORM_NEWSITEMINFO, publisher.getId());
 	}
@@ -116,7 +116,7 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 	 * @see org.openuss.news.NewsService#getCurrentNewsItems(java.lang.Object,
 	 *      java.lang.Integer)
 	 */
-	protected List handleGetCurrentNewsItems(DomainObject publisher, Integer count) throws Exception {
+	protected List<NewsItemInfo> handleGetCurrentNewsItems(DomainObject publisher, Integer count) throws Exception {
 		Validate.notNull(publisher, "Parameter publisher must not be null!");
 		
 		NewsCriteria criteria = new NewsCriteria();
@@ -132,7 +132,7 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 	 * @see org.openuss.news.NewsService#getCurrentNewsItems(org.openuss.news.NewsCategory,
 	 *      java.lang.Integer)
 	 */
-	protected List handleGetCurrentNewsItems(NewsCategory category, Integer count) throws Exception {
+	protected List<NewsItemInfo> handleGetCurrentNewsItems(NewsCategory category, Integer count) throws Exception {
 		NewsCriteria criteria = new NewsCriteria();
 		criteria.setCategory(category);
 		criteria.setPublishDate(new Date());
@@ -146,7 +146,7 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 	 * @see org.openuss.news.NewsService#getPublishedNewsItems(java.lang.Object,
 	 *      java.lang.Integer, java.lang.Integer)
 	 */
-	protected List handleGetPublishedNewsItems(DomainObject publisher, Integer firstResult,Integer count) throws Exception {
+	protected List<NewsItemInfo> handleGetPublishedNewsItems(DomainObject publisher, Integer firstResult,Integer count) throws Exception {
 		Validate.notNull(publisher, "Parameter publisher must not be null!");
 
 		NewsCriteria criteria = new NewsCriteria();
@@ -163,7 +163,7 @@ public class NewsServiceImpl extends org.openuss.news.NewsServiceBase {
 	 * @see org.openuss.news.NewsService#getPublishedNewsItems(org.openuss.news.NewsCategory,
 	 *      java.lang.Integer, java.lang.Integer)
 	 */
-	protected List handleGetPublishedNewsItems(NewsCategory category, Integer firstResult, Integer count) throws Exception {
+	protected List<NewsItemInfo> handleGetPublishedNewsItems(NewsCategory category, Integer firstResult, Integer count) throws Exception {
 		NewsCriteria criteria = new NewsCriteria();
 		criteria.setCategory(category);
 		criteria.setPublishDate(new Date());
