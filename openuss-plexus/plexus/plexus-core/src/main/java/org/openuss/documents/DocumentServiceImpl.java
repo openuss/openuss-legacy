@@ -127,10 +127,10 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	@Override
-	protected List handleGetFolderEntries(DomainObject domainObject, FolderInfo folderInfo) throws Exception {
+	protected List<FolderEntryInfo> handleGetFolderEntries(DomainObject domainObject, FolderInfo folderInfo) throws Exception {
 		Validate.notNull(domainObject, "Parameter DomainObject must not be null!");
 		Folder folder = retrieveFolderOfOwner(domainObject, folderInfo);
-		List entries = getFolderEntryDao().findByParent(FolderEntryDao.TRANSFORM_FOLDERENTRYINFO, folder);
+		List<FolderEntryInfo> entries = getFolderEntryDao().findByParent(FolderEntryDao.TRANSFORM_FOLDERENTRYINFO, folder);
 		filterEntriesByPermission(entries);
 		return entries;
 	}

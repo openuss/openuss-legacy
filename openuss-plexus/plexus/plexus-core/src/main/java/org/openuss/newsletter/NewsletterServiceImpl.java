@@ -124,7 +124,7 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 	/**
 	 * @see org.openuss.newsletter.NewsletterService#getMails(org.openuss.foundation.DomainObject)
 	 */
-	protected List handleGetMails(NewsletterInfo newsletter, boolean withDeleted) throws Exception {
+	protected List<MailInfo> handleGetMails(NewsletterInfo newsletter, boolean withDeleted) throws Exception {
 		Newsletter ml = loadNewsletter(newsletter);
 		if (withDeleted) {
 			if (getSecurityService().hasPermission(newsletter.getDomainIdentifier(), new Integer[] { LectureAclEntry.ASSIST })) {
@@ -189,16 +189,16 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 
 	@Override
 	protected NewsletterInfo handleGetNewsletter(DomainObject domainObject) throws Exception {
-		List newsletters = getNewsletterDao().findByDomainIdentifier(domainObject.getId());
+		List<Newsletter> newsletters = getNewsletterDao().findByDomainIdentifier(domainObject.getId());
 		if (newsletters == null||newsletters.size()==0){
 			return null;
 		}
 		//return first newsletter of all, at the moment it is 
 		//supposed that there is just 1 newsletter per domain object 
 		Newsletter newsletter = (Newsletter)newsletters.get(0);
-		NewsletterInfo ml = getNewsletterDao().toNewsletterInfo(newsletter);
-		ml.setSubscribed(getSubscriberDao().findByUserAndNewsletter(getSecurityService().getCurrentUser(), newsletter)!=null);
-		return ml;
+		NewsletterInfo info = getNewsletterDao().toNewsletterInfo(newsletter);
+		info.setSubscribed(getSubscriberDao().findByUserAndNewsletter(getSecurityService().getCurrentUser(), newsletter)!=null);
+		return info;
 	}
 
 	@Override
@@ -239,11 +239,10 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 	protected String handleExportSubscribers(NewsletterInfo newsletterInfo) throws Exception {
 		Newsletter newsletter = getNewsletterDao().load(newsletterInfo.getId());
 		Set<Subscriber> subscribers = newsletter.getSubscribers();
-		Iterator i = subscribers.iterator();
-		Subscriber s;
+		Iterator<Subscriber> i = subscribers.iterator();
 		String subscriberList = "";
 		while (i.hasNext()) {
-			s = (Subscriber) i.next();
+			Subscriber s = i.next();
 			subscriberList = subscriberList + s.getUser().getEmail();
 			if (i.hasNext())
 				subscriberList = subscriberList + "; ";

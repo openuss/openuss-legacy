@@ -95,7 +95,7 @@
 				/views/secured/system/**=ROLE_ADMIN
 				/views/secured/**=ROLE_USER, ROLE_ASSISTANT
 				/views/**=ROLE_ADMIN
-				/files/**=ROLE_USER
+				/files/**=ROLE_ANONYMOUS
 				/rss/public/**=ROLE_ANONYMOUS, ROLE_USER
 				/rss/secured/**=ROLE_USER
 			</value>
