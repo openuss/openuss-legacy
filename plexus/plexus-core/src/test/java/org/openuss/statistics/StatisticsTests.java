@@ -10,6 +10,7 @@ public class StatisticsTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(OnlineSessionDaoTest.class);
 		suite.addTestSuite(OnlineStatisticServiceIntegrationTest.class);
+		suite.addTestSuite(SystemStatisticDaoTest.class);
 		//$JUnit-END$
 		return suite;
 	}

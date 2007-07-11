@@ -81,4 +81,14 @@ public class OnlineStatisticServiceImpl extends OnlineStatisticServiceBase {
 		return getOnlineSessionDao().findActiveUsers(OnlineSessionDao.TRANSFORM_ONLINEUSERINFO);
 	}
 
+	@Override
+	protected SystemStatisticInfo handleGetSystemStatistics() throws Exception {
+		SystemStatisticInfo sysInfo = new SystemStatisticInfo();
+		sysInfo = getSystemStatisticDao().toSystemStatisticInfo(getSystemStatisticDao().findNewest());
+		if ((sysInfo==null)){			
+			sysInfo = getSystemStatisticDao().toSystemStatisticInfo(getSystemStatisticDao().current());
+		}
+		return sysInfo;
+	}
+
 }
