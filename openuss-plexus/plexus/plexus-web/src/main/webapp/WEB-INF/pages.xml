@@ -3,6 +3,18 @@
 		<parameter name="institute" value="#{institute.id}" converterId="javax.faces.Long"/>
 	</page>
 	
+	<page view-id="/views/secured/lecture/auth/*">
+		<securityConstraint domainObject="#{institute}" permissions="#{ACL.GRANT}"/> 
+	</page>
+
+	<page view-id="/views/secured/lecture/news*">
+		<securityConstraint domainObject="#{institute}" permissions="#{ACL.MANAGE_NEWS}"/> 
+	</page>
+
+	<page view-id="/views/secured/lecture/instituteoptions*">
+		<securityConstraint domainObject="#{institute}" permissions="#{ACL.OWN}"/> 
+	</page>
+	
 	<page view-id="/views/secured/lecture/period*">
 		<securityConstraint domainObject="#{institute}" permissions="#{ACL.MANAGE_PERIODS}"/> 
 		<parameter name="period" value="#{period.id}" converterId="javax.faces.Long"/>
