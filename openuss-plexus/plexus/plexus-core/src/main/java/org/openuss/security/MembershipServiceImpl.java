@@ -25,13 +25,13 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		User owner = this.getUserDao().load(userId);
 		if (owner == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleSetOwner - no user found corresponding to the id " + userId);
+					"MembershipService.handleSetOwner - no User found corresponding to the ID " + userId);
 		}
 
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		if (organisation == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleSetOwner - no organisation found corresponding to the id "
+					"MembershipService.handleSetOwner - no Organisation found corresponding to the ID "
 							+ organisationId);
 		}
 
@@ -45,7 +45,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		if (organisation == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleSetOwner - no organisation found corresponding to the id "
+					"MembershipService.handleSetOwner - no Organisation found corresponding to the ID "
 							+ organisationId);
 		}
 
@@ -63,13 +63,13 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		User aspirant = this.getUserDao().load(userId);
 		if (aspirant == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleAcceptAspirant - no user found corresponding to the id " + userId);
+					"MembershipService.handleAcceptAspirant - no User found corresponding to the ID " + userId);
 		}
 
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		if (organisation == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleAcceptAspirant - no organisation found corresponding to the id "
+					"MembershipService.handleAcceptAspirant - no Organisation found corresponding to the ID "
 							+ organisationId);
 		}
 
@@ -77,7 +77,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		List aspirants = organisation.getAspirants();
 		boolean wasFound = aspirants.remove(aspirant);
 		if (!wasFound) {
-			throw new IllegalArgumentException("MembershipService.handleAcceptAspirant - the user "
+			throw new IllegalArgumentException("MembershipService.handleAcceptAspirant - the User "
 					+ aspirant.getUsername() + " has not been an Aspirant");
 		}
 
@@ -103,13 +103,13 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		User aspirant = this.getUserDao().load(userId);
 		if (aspirant == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleRejectAspirant - no user found corresponding to the id " + userId);
+					"MembershipService.handleRejectAspirant - no User found corresponding to the ID " + userId);
 		}
 		
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		if (organisation == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleRejectAspirant - no organisation found corresponding to the id "
+					"MembershipService.handleRejectAspirant - no Organisation found corresponding to the ID "
 							+ organisationId);
 		}
 		
@@ -117,7 +117,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		List aspirants = organisation.getAspirants();
 		boolean wasFound = aspirants.remove(aspirant);
 		if (!wasFound) {
-			throw new IllegalArgumentException("MembershipService.handleRejectAspirant - the user "
+			throw new IllegalArgumentException("MembershipService.handleRejectAspirant - the User "
 					+ aspirant.getUsername() + " has not been an Aspirant");
 		}
 		
@@ -135,13 +135,13 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		User user = this.getUserDao().load(userId);
 		if (user == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleAddMember - no user found corresponding to the id " + userId);
+					"MembershipService.handleAddMember - no User found corresponding to the ID " + userId);
 		}
 		
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		if (organisation == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleAddMember - no organisation found corresponding to the id "
+					"MembershipService.handleAddMember - no Organisation found corresponding to the ID "
 							+ organisationId);
 		}
 		
@@ -175,13 +175,13 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		User user = this.getUserDao().load(userId);
 		if (user == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleAddAspirant - no user found corresponding to the id " + userId);
+					"MembershipService.handleAddAspirant - no User found corresponding to the ID " + userId);
 		}
 
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		if (organisation == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleAddAspirant - no organisation found corresponding to the id "
+					"MembershipService.handleAddAspirant - no Organisation found corresponding to the ID "
 							+ organisationId);
 		}
 
@@ -214,7 +214,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		if (organisation == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.FindAllMembers - no organisation found corresponding to the id "
+					"MembershipService.FindAllMembers - no Organisation found corresponding to the ID "
 							+ organisationId);
 		}
 		List members = organisation.getMembers();
@@ -239,7 +239,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		if (organisation == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleFindAllAspirants - no organisation found corresponding to the id "
+					"MembershipService.handleFindAllAspirants - no Organisation found corresponding to the ID "
 							+ organisationId);
 		}
 

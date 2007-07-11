@@ -117,7 +117,7 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		UniversityInfo universityInfo = new UniversityInfo();
 		universityInfo.setId(university.getId());
 		
-		// Test Entity
+		// Test toEntity
 		University university2 = universityDao.universityInfoToEntity(universityInfo);
 		
 		assertEquals(university2.getId(), university.getId());
@@ -125,6 +125,13 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		assertEquals(university2.getShortcut(), university.getShortcut());
 		assertEquals(university2.getDescription(), university.getDescription());
 		assertEquals(university2.getType(), university.getType());
+		
+		// Create a new ValueObject (no Entity available)
+		UniversityInfo universityInfo2 = new UniversityInfo();
+		universityInfo2.setName(testUtility.unique("testUniversity2"));
+		universityInfo2.setShortcut(testUtility.unique("testU2"));
+		universityInfo2.setDescription("This is a test University2");
+		universityInfo2.setUniversityType(0);
 		
 	}
 }
