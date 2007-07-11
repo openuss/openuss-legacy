@@ -96,5 +96,21 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 	public void toInstituteSecurityCollection(Collection entities) {
 	}
 
+	public Long getInstituteCount() {
+		return null;
+	}
 
+	public Long getInstituteCount(String queryString) {
+		return null;
+	}
+
+	public Object getInstituteCount(int transform) {
+		return null;
+	}
+
+	public Object getInstituteCount(int transform, String queryString) {
+		return null;
+	}
+
+	
 }

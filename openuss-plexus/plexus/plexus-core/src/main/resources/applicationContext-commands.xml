@@ -20,6 +20,7 @@
 			<list>
 				<ref bean="eachCommandTrigger" />
 				<ref bean="onceCommandTrigger" />
+				<ref bean="eachStatisticCommandTrigger" />
 			</list>
 		</property>
 	</bean>
@@ -67,6 +68,25 @@
 		<property name="targetMethod" value="processEachCommands" />
 		<property name="concurrent" value="false" />
 	</bean>
+
+	<bean id="eachStatisticCommandTrigger"
+		class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="eachStatisticCommandJobDetail" />
+		<property name="startDelay" value="3000" />
+		<property name="repeatInterval" value="15000" />
+	</bean>
+
+	<bean id="eachStatisticCommandJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="statisticCommand" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<bean id="statisticCommand" class="org.openuss.statistics.StatisticCommand">
+		<property name="systemStatisticDao" ref="systemStatisticDao" />
+	</bean>
+	
 
 	<bean id="onceCommandTrigger"
 		class="org.springframework.scheduling.quartz.SimpleTriggerBean">
