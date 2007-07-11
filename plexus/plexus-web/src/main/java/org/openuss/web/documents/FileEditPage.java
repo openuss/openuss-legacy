@@ -60,6 +60,12 @@ public class FileEditPage extends AbstractDocumentPage{
 			if (document != null) {
 				if (StringUtils.isBlank(selectedFile.getFileName())) {
 					selectedFile.setFileName(document.getFileName());
+				} else {
+					String fileName = selectedFile.getFileName();
+					if (!StringUtils.equals(extension(fileName), extension(document.getFileName()))) {
+						fileName = fileName + '.' +extension(document.getFileName());
+					}
+					selectedFile.setFileName(fileName);
 				}
 				selectedFile.setExtension(extension(document.getFileName()));
 
@@ -84,8 +90,7 @@ public class FileEditPage extends AbstractDocumentPage{
 	
 	private String extension(String fileName) {
 		if (fileName != null) {
-			int index = fileName.lastIndexOf('.');
-			return fileName.substring(index+1);
+			return fileName.substring(fileName.lastIndexOf('.')+1).trim();
 		} else {
 			return "";
 		}
