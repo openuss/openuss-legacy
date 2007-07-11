@@ -128,33 +128,47 @@ public class AuthenticationController extends BasePage {
 				exceptionMessage = ex.getMessage();
 			}
 			addError(exceptionMessage);
-			// Set ACEGI vars
+			// Set ACEGI variables
 			setSessionBean(AbstractProcessingFilter.ACEGI_SECURITY_LAST_EXCEPTION_KEY, ex);
 			logger.trace("authentication fail ", ex);
 
 			return LOGIN;
 		}
 		if (auth != null) {
-			// forward to request url if any
-			String urlKey = AbstractProcessingFilter.ACEGI_SAVED_REQUEST_KEY;
-			SavedRequest savedRequest = (SavedRequest) session.getAttribute(urlKey);
-			session.removeAttribute(urlKey);
-			if (savedRequest != null) {
-				try {
-					getExternalContext().redirect(savedRequest.getFullRequestUrl());
-					getFacesContext().responseComplete(); 
-				} catch (IOException e) {
-					logger.error(e);
-					String target = savedRequest.getServletPath() + savedRequest.getPathInfo() + "?" + savedRequest.getQueryString();
-					if (!target.startsWith("/"))
-						target = "/" + target;
-					return target;
-				}
-				return Constants.SUCCESS;
-			}
-			return Constants.DESKTOP;
+			return forwardToNextView(session);
+		} else {
+			return LOGIN;
 		}
-		return LOGIN;
+	}
+
+	/**
+	 * Check if user have request a view that needed authentication. If so forward no to this view.
+	 * @param session
+	 * @return outcome
+	 */
+	private String forwardToNextView(final HttpSession session) {
+		// forward to request URL if any
+		String urlKey = AbstractProcessingFilter.ACEGI_SAVED_REQUEST_KEY;
+		SavedRequest savedRequest = (SavedRequest) session.getAttribute(urlKey);
+		session.removeAttribute(urlKey);
+		if (isValidSavedRequest(savedRequest)) {
+			try {
+				getExternalContext().redirect(savedRequest.getFullRequestUrl());
+				getFacesContext().responseComplete(); 
+			} catch (IOException e) {
+				logger.error(e);
+				String target = savedRequest.getServletPath() + savedRequest.getPathInfo() + "?" + savedRequest.getQueryString();
+				if (!target.startsWith("/"))
+					target = "/" + target;
+				return target;
+			}
+			return Constants.SUCCESS;
+		}
+		return Constants.DESKTOP;
+	}
+	
+	private boolean isValidSavedRequest(SavedRequest request) {
+		return request != null && request.getFullRequestUrl().contains("/views/");
 	}
 
 	private void injectUserInformationIntoSession(Authentication auth) {
