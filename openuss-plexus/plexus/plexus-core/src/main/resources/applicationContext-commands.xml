@@ -73,7 +73,7 @@
 		class="org.springframework.scheduling.quartz.SimpleTriggerBean">
 		<property name="jobDetail" ref="eachStatisticCommandJobDetail" />
 		<property name="startDelay" value="3000" />
-		<property name="repeatInterval" value="15000" />
+		<property name="repeatInterval" value="30000" />
 	</bean>
 
 	<bean id="eachStatisticCommandJobDetail"
