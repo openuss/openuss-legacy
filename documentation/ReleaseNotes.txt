@@ -8,7 +8,18 @@ Changes in package LECTURE
 
 + Added new abstract entity "Organisation"
 + Added new entity "University"
-
++ Added new entity "Department"
++ Added new service "UniversityService"
++ Added new service "DepartmentService"
++ Added new Enumeration "UniversityType"
++ Added new Enumeration "DepartmentType"
++ Added new ValueObject "UniversityInfo"
++ Added new ValueObject "PeriodInfo"
++ Added new ValueObject "DepartmentInfo"
++ Added new ValueObject "ApplicationInfo"
++ Added new ValueObject "InstituteInfo"
++ Added new ValueObject "CourseTypeInfo"
++ Added new ValueObject "CourseInfo"
 
 
 Changes in package SECURITY
