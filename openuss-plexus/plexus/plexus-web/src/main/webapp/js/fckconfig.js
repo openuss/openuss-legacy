@@ -26,7 +26,7 @@ FCKConfig.ToolbarSets["OpenUSS"] = [
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink','Anchor'],
+	['Link','Unlink'],
 	['Smiley'],
 	'/',
 	['Style','FontFormat','FontName','FontSize'],
@@ -42,7 +42,7 @@ FCKConfig.ToolbarSets["News"] = [
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink','Anchor'],
+	['Link','Unlink'],
 	['TextColor','BGColor'],
 	['Smiley']
 ] ;
@@ -55,7 +55,7 @@ FCKConfig.ToolbarSets["Wiki"] = [
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink','Anchor'],
+	['Link','Unlink'],
 	['TextColor','BGColor'],
 	['Smiley']
 ] ;
@@ -68,7 +68,7 @@ FCKConfig.ToolbarSets["Description"] = [
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink','Anchor'],
+	['Link','Unlink'],
 	['TextColor','BGColor'],
 	['Smiley']
 ] ;
@@ -81,14 +81,14 @@ FCKConfig.ToolbarSets["Discussion"] = [
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink','Anchor'],
+	['Link','Unlink'],
 	['TextColor','BGColor'],
 	['Smiley']
 ] ;
 
 FCKConfig.ToolbarSets["Chat"] = [
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript','-','Smiley'],
-	['Link','Unlink','Anchor'],
+	['Link','Unlink'],
 	['TextColor','BGColor'],	
 ] ;
 
@@ -108,7 +108,7 @@ FCKConfig.ToolbarSets["Email"] = [
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink','Anchor'],
+	['Link','Unlink'],
 	['TextColor','BGColor']
 	
 ] ;
