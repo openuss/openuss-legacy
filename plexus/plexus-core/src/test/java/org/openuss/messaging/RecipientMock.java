@@ -2,8 +2,6 @@ package org.openuss.messaging;
 
 import java.util.Date;
 
-import org.openuss.security.User;
-
 /**
  * MockUp of Recipient
  *
@@ -16,7 +14,7 @@ public class RecipientMock implements Recipient {
 	private Long id;
 	private MessageJob job;
 	private String email;
-	private String smsEmail;
+	private String sms;
 	private String locale;
 	private SendState state;
 	private Date send;
@@ -46,12 +44,12 @@ public class RecipientMock implements Recipient {
 		this.locale = locale;
 	}
 
-	public String getSmsEmail() {
-		return smsEmail;
+	public String getSms() {
+		return sms;
 	}
 
-	public void setSmsEmail(String smsEmail) {
-		this.smsEmail = smsEmail;
+	public void setSms(String sms) {
+		this.sms = sms;
 	}
 
 	public MessageJob getJob() {
@@ -78,12 +76,6 @@ public class RecipientMock implements Recipient {
 		this.state = state;
 	}
 
-	public User getUser() {
-		return null;
-	}
-
-	public void setUser(User user) {
-	}
 
 	public boolean hasSmsNotification() {
 		return smsNotification;
@@ -92,5 +84,6 @@ public class RecipientMock implements Recipient {
 	public void setSmsNotification(boolean smsNotification) {
 		this.smsNotification = smsNotification;
 	}
+
 
 }

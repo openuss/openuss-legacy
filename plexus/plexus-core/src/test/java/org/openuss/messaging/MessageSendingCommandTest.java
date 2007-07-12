@@ -87,7 +87,7 @@ public class MessageSendingCommandTest extends AbstractDependencyInjectionSpring
 		RecipientMock recipient = new RecipientMock();
 		recipient.setLocale(locale);
 		recipient.setEmail(email);
-		recipient.setSmsEmail(sms);
+		recipient.setSms(sms);
 		
 		job.getRecipients().add(recipient);
 	}
