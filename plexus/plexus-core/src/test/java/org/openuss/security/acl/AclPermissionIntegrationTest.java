@@ -25,7 +25,7 @@ import org.springframework.test.AbstractTransactionalDataSourceSpringContextTest
 public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourceSpringContextTests {
 
 	private static final String TEST_ROLE_ADMIN = "ROLE_ADMIN";
-	private static final String TEST_ADMIN = "admin";
+	private static final String TEST_ADMIN = "test_admin";
 
 	private static final Logger logger = Logger.getLogger(AclPermissionIntegrationTest.class);
 
