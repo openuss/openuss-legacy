@@ -29,6 +29,7 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 	private UserContactDao userContactDao;
 	private GroupDao groupDao;
 	private User user;
+	private ActivationCodeDao activationCodeDao;
 	
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
@@ -76,12 +77,13 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 		// try to activate again
 		try {
 			registrationService.activateUserByCode(code);
-			fail("RegistrationCodeNotFoundException expected!");
+			//success
 		} catch (RegistrationCodeNotFoundException ex) {
-			 //success
+			fail("RegistrationCodeNotFoundException expected!");
 		}
 		
 		//clean up
+		activationCodeDao.remove(activationCodeDao.loadAll());
 		user = userDao.load(user.getId());
 		for (Group group: user.getGroups()) {
 			group = groupDao.load(group.getId());
@@ -137,5 +139,13 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 
 	public void setDesktopDao(DesktopDao desktopDao) {
 		this.desktopDao = desktopDao;
+	}
+
+	public ActivationCodeDao getActivationCodeDao() {
+		return activationCodeDao;
+	}
+
+	public void setActivationCodeDao(ActivationCodeDao activationCodeDao) {
+		this.activationCodeDao = activationCodeDao;
 	}
 }
