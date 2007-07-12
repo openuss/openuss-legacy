@@ -20,7 +20,7 @@ public class SmsMessagePreparator extends MessagePreparator {
 	public void prepare(MimeMessage mimeMessage) throws Exception {
 		MimeMessageHelper msg = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 		msg.setFrom(fromAddress, message.getSenderName());
-		msg.setTo(recipient.getSmsEmail());
+		msg.setTo(recipient.getSms());
 		msg.setSubject(message.getSubject());
 		msg.setText(message.getSubject());
 		if (sendDate != null) {
