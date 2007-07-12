@@ -8,21 +8,20 @@ public class InstituteActivationCommand extends AbstractDomainCommand implements
 
 	private static Logger logger = Logger.getLogger(InstituteActivationCommand.class);
 	
-	private InstituteDao instituteDao;
-	
+	private LectureService lectureService;
+
 	public void execute() throws Exception {
-		Institute institute = instituteDao.load(getDomainObject().getId());
+		Institute institute = lectureService.getInstitute(getDomainObject().getId());
 		institute.setEnabled(true);
-		instituteDao.update(institute);
+		lectureService.persist(institute);
 		logger.debug("Institute activated");
 	}
 
-	public InstituteDao getInstituteDao() {
-		return instituteDao;
+	public LectureService getLectureService() {
+		return lectureService;
 	}
-
-	public void setInstituteDao(InstituteDao instituteDao) {
-		this.instituteDao = instituteDao;
+	
+	public void setLectureService(LectureService lectureService) {
+		this.lectureService = lectureService;
 	}
-
 }
