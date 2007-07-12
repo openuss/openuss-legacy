@@ -112,5 +112,20 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		return null;
 	}
 
+	public Institute create(String name, String shortcut, String ownername,
+			String address, String postcode, String city, String telephone,
+			String telefax, String website, String locale, String description,
+			String email, String theme, String land, boolean enabled) {
+		return null;
+	}
+
+	public Object create(int transform, String name, String shortcut,
+			String ownername, String address, String postcode, String city,
+			String telephone, String telefax, String website, String locale,
+			String description, String email, String theme, String land,
+			boolean enabled) {
+		return null;
+	}
+
 	
 }
