@@ -13,9 +13,7 @@
       
  	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title><ui:insert name="title"/></title>
 		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
-		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
 		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
 	</head>
 
@@ -53,7 +51,7 @@
 				<c:if test="#{not empty views$secured$lecture$periods.courseTypeSelectItems}">
 					<o:block>
 						<h:form id="courseForm">
-							<h:outputLabel value="#{msg['period_header_add_course']}" for="courseTypeSelect" styleClass="field_label"/>
+						    <h:outputLabel value="#{msg['period_header_add_course']}" for="courseTypeSelect" styleClass="field_label"/>
 						 	<h:selectOneListbox id="courseTypeSelect" size="1" styleClass="pulldown_inline" value="#{views$secured$lecture$periods.courseTypeId}">
 						    	<f:selectItems value="#{views$secured$lecture$periods.courseTypeSelectItems}"/>
 							</h:selectOneListbox>

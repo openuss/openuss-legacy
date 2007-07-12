@@ -41,7 +41,7 @@
 					<o:input entity="views$secured$lecture$auth$members" property="username" required="true" label="#{msg['user_username']}">
 						<f:validator validatorId="usernameExistValidator" />
 					</o:input>
-					<h:commandButton value="#{msg['institute_members_command_add']}" title="#{msg['institute_members_command_add_hint']}" actionListener="#{views$secured$lecture$auth$members.addMember}" styleClass="button"/>
+					<h:commandButton value="#{msg['institute_members_command_add']}" title="#{msg['institute_members_command_add_hint']}" actionListener="#{views$secured$lecture$auth$members.addMember}" styleClass="button_save"/>
 				</o:block>
 			</h:form>	
   		</ui:define>
