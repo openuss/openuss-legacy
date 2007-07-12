@@ -5,6 +5,8 @@
  */
 package org.openuss.statistics;
 
+import java.util.Date;
+
 
 /**
  * JUnit Test for Spring Hibernate SystemStatisticsDao class.
@@ -19,6 +21,7 @@ public class SystemStatisticDaoTest extends SystemStatisticDaoTestBase {
 		systemStatistic.setCourses(new Long(1));
 		systemStatistic.setDocuments(new Long(1));
 		systemStatistic.setPosts(new Long(1));
+		systemStatistic.setCreateTime(new Date());
 		assertNull(systemStatistic.getId());
 		systemStatisticDao.create(systemStatistic);
 		assertNotNull(systemStatistic.getId());
