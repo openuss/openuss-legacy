@@ -61,9 +61,19 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#update(org.openuss.lecture.UniversityInfo)
 	 */
 	protected void handleUpdate(org.openuss.lecture.UniversityInfo university) throws java.lang.Exception {
-		// @todo implement protected void handleUpdate(org.openuss.lecture.UniversityInfo university)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.lecture.UniversityService.handleUpdate(org.openuss.lecture.UniversityInfo university) Not implemented!");
+		
+		if (university == null) {
+			throw new IllegalArgumentException("UniversityService.handleCreate - the University cannot be null");
+		}
+		
+		if ((university.getId() == null) || (university.getId() == 0L)) {
+			throw new IllegalArgumentException("UniversityService.handleCreate - the University must have an valid ID");
+		}
+		
+		University universityEntity = getUniversityDao().universityInfoToEntity(university);
+		
+		getUniversityDao().update(universityEntity);
+		
 	}
 
 	/**

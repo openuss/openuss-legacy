@@ -34,10 +34,45 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		User owner = testUtility.createUserInDB();
 		
 		//Create Entity
-		Long userId = universityService.create(universityInfo, owner.getId());
-		assertNotNull(userId);
+		Long universityId = universityService.create(universityInfo, owner.getId());
+		assertNotNull(universityId);
 
 		logger.info("----> END access to create(University) test");
+	}
+	
+	public void testUpdateUniversity() {
+		logger.info("----> BEGIN access to umpdate(University) test");
+
+		//Create a default University
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		assertNotNull(university.getId());
+		
+		//Create new UniversityInfo object
+		UniversityInfo universityInfo = new UniversityInfo();
+		universityInfo.setId(university.getId());
+		universityInfo.setName(testUtility.unique("testUniversity"));
+		universityInfo.setShortcut(testUtility.unique("testU"));
+		universityInfo.setDescription("This is a test University");
+		universityInfo.setUniversityType(0);
+		
+		// Check
+		assertTrue(universityInfo.getId().longValue() == university.getId().longValue());
+		assertFalse(universityInfo.getName().compareTo(university.getName()) == 0);
+		assertFalse(universityInfo.getShortcut().compareTo(university.getShortcut()) == 0);
+		assertFalse(universityInfo.getDescription().compareTo(university.getDescription()) == 0);
+		assertFalse(universityInfo.getUniversityType().intValue() == university.getType().getValue().intValue());
+		
+		//Update University
+		universityService.update(universityInfo);
+		
+		//Check
+		assertTrue(universityInfo.getId().longValue() == university.getId().longValue());
+		assertTrue(universityInfo.getName().compareTo(university.getName()) == 0);
+		assertTrue(universityInfo.getShortcut().compareTo(university.getShortcut()) == 0);
+		assertTrue(universityInfo.getDescription().compareTo(university.getDescription()) == 0);
+		assertTrue(universityInfo.getUniversityType().intValue() == university.getType().getValue().intValue());
+
+		logger.info("----> END access to update(University) test");
 	}
 	
 }

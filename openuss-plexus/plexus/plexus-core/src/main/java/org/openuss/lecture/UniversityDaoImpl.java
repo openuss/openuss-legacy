@@ -58,7 +58,12 @@ public class UniversityDaoImpl extends org.openuss.lecture.UniversityDaoBase {
 	 */
 	public void universityInfoToEntity(org.openuss.lecture.UniversityInfo sourceVO,
 			org.openuss.lecture.University targetEntity, boolean copyIfNull) {
-		// @todo verify behavior of universityInfoToEntity
+
 		super.universityInfoToEntity(sourceVO, targetEntity, copyIfNull);
+		
+		if (copyIfNull || sourceVO.getUniversityType() != null)
+        {
+			targetEntity.setType(UniversityType.fromInteger(sourceVO.getUniversityType()));
+        }
 	}
 }
