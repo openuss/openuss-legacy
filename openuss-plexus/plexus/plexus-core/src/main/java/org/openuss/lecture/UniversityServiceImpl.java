@@ -89,9 +89,17 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#removeUniversity(java.lang.Long)
 	 */
 	protected void handleRemoveUniversity(java.lang.Long universityId) throws java.lang.Exception {
-		// @todo implement protected void handleRemoveUniversity(java.lang.Long universityId)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.lecture.UniversityService.handleRemoveUniversity(java.lang.Long universityId) Not implemented!");
+		
+		University university = getUniversityDao().load(universityId);
+		if (university == null) {
+			throw new IllegalArgumentException("UniversityService.handleRemoveUniversity - no University found corresponding to the ID " + universityId);
+		}
+		
+		if (university.getDepartments().size() != 0) {
+			throw new IllegalStateException("UniversityService.handleRemoveUniversity - University cannot be removed as long as it still owns departments");
+		}
+		
+		getUniversityDao().remove(universityId);
 	}
 
 	/**

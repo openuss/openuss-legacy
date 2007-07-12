@@ -41,7 +41,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 	}
 	
 	public void testUpdateUniversity() {
-		logger.info("----> BEGIN access to umpdate(University) test");
+		logger.info("----> BEGIN access to update(University) test");
 
 		//Create a default University
 		University university = testUtility.createDefaultUniversityWithDefaultUser();
@@ -73,6 +73,27 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertTrue(universityInfo.getUniversityType().intValue() == university.getType().getValue().intValue());
 
 		logger.info("----> END access to update(University) test");
+	}
+	
+	public void testRemoveUniversity() {
+		logger.info("----> BEGIN access to removeUniversity test");
+
+		//Create a University
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		assertNotNull(university.getId());
+		
+		//Save UniversityID
+		Long id = university.getId();
+		
+		//Remove University
+		universityService.removeUniversity(id);
+		
+		//Try to load University
+		UniversityDao universityDao = (UniversityDao) this.applicationContext.getBean("universityDao");
+		University university2 = universityDao.load(id);
+		assertNull(university2);
+
+		logger.info("----> END access to removeUniversity test");		
 	}
 	
 }
