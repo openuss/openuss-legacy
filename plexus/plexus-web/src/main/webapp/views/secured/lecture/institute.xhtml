@@ -31,13 +31,13 @@
 			<ui:include src="/views/commons/navigation/institute.xhtml" />
 		</ui:define>
 		<ui:define name="sidebar"> 		
-			<ui:include src="/views/commons/sidebar/instituteactivation.xhtml" />
 			<ui:include src="/views/commons/sidebar/instituteoptions.xhtml" />
 			<ui:include src="/views/commons/sidebar/feeds/institutefeed.xhtml" />
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
 		</ui:define>	
-  		<ui:define name="content"> 
-				<h:form id="instituteMainForm" rendered="${!empty institute.periods}">
+  		<ui:define name="content">
+  				<ui:include src="/views/commons/sidebar/instituteactivation.xhtml" />
+  				<h:form id="instituteMainForm" rendered="${!empty institute.periods}">
 					<o:block>
 						<h:outputText value="#{msg.institute_period_selection}" styleClass="header_font_normal"/>
 						<h:selectOneMenu id="periodSelection" 

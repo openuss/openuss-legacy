@@ -87,6 +87,7 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		institute.setOwnername("ownername");
 		institute.setEmail("email@institute");
 		institute.setOwner(user);
+		institute.setLocale("de");
 		return institute;
 	}
 	
