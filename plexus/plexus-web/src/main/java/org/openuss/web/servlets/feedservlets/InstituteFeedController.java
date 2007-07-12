@@ -1,8 +1,8 @@
 package org.openuss.web.servlets.feedservlets;
 
 import org.openuss.lecture.LectureService;
-import org.openuss.web.feeds.InstituteFeed;
 import org.openuss.web.feeds.FeedWrapper;
+import org.openuss.web.feeds.InstituteFeed;
 import org.springframework.web.servlet.mvc.Controller;
 
 public class InstituteFeedController extends AbstractFeedServlet implements Controller{
@@ -37,4 +37,11 @@ public class InstituteFeedController extends AbstractFeedServlet implements Cont
 		return "institute";
 	}
 
+	@Override
+	public boolean checkPermissions(Long domainIdentifier) {
+		return true; // anonymous access allowed
+	}
+
+	
+	
 }
