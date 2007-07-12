@@ -66,7 +66,7 @@ public class AcegiUtils {
 	 * @throws NumberFormatException
 	 */
 	public static Integer[] parseIntegersString(String integersString) throws NumberFormatException {
-		final Set integers = new HashSet();
+		final Set<Integer> integers = new HashSet<Integer>();
 		final StringTokenizer tokenizer;
 		tokenizer = new StringTokenizer(integersString, ",", false);
 	
