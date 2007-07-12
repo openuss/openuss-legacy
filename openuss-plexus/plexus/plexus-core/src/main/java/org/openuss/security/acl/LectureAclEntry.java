@@ -70,8 +70,8 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 
 	// Default combinations of base permissions
 	public static final int INSTITUTE_TUTOR = PARTICIPATE | ASSIST | READ;
-	public static final int INSTITUTE_ASSIST = CREATE | MANAGE_NEWS | MANAGE_COURSE_TYPES | MANAGE_PERIODS | MANAGE_COURSES | INSTITUTE_TUTOR;
-	public static final int INSTITUTE_ADMINISTRATION = GRANT | UPDATE | DELETE | INSTITUTE_ASSIST;
+	public static final int INSTITUTE_ASSIST = CREATE | UPDATE | DELETE | MANAGE_NEWS | MANAGE_COURSE_TYPES | MANAGE_PERIODS | MANAGE_COURSES | INSTITUTE_TUTOR;
+	public static final int INSTITUTE_ADMINISTRATION = GRANT | INSTITUTE_ASSIST;
 	public static final int INSTITUTE_OWN = DELETE | INSTITUTE_ADMINISTRATION;
 	
 	// Default combinations of base course permissions
@@ -122,8 +122,8 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	@Override
     protected boolean isPermitted(int maskToCheck, int permissionToCheck) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("mask = "+printPermissionsBlock(maskToCheck)+ " permission = " +printPermissionsBlock(permissionToCheck));
-			logger.debug("mask = "+Integer.toBinaryString(maskToCheck)+ " permission = "+Integer.toBinaryString(permissionToCheck));
+			logger.debug("user priveledge = "+printPermissionsBlock(maskToCheck)+ " needed permission = " +printPermissionsBlock(permissionToCheck));
+			logger.debug("user priveledge = "+Integer.toBinaryString(maskToCheck)+ " needed permission = "+Integer.toBinaryString(permissionToCheck));
 		}
         return ((maskToCheck & permissionToCheck) == permissionToCheck);
     }

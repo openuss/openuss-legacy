@@ -12,7 +12,7 @@
 	</page>
 
 	<page view-id="/views/secured/lecture/instituteoptions*">
-		<securityConstraint domainObject="#{institute}" permissions="#{ACL.OWN}"/> 
+		<securityConstraint domainObject="#{institute}" permissions="#{ACL.GRANT}"/> 
 	</page>
 	
 	<page view-id="/views/secured/lecture/period*">
