@@ -95,7 +95,11 @@
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 	
 	<page view-id="/views/secured/newsletter/showmail.xhtml">
-		<securityConstraint domainObject="#{newsletter_mail}" permissions="#{ACL.READ}"/>
+		<parameter name="mail" value="#{newsletter_mail.id}" converterId="javax.faces.Long"/>
+	</page>
+
+	<page view-id="/views/secured/newsletter/newmail.xhtml">
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.ASSIST}"/>
 		<parameter name="mail" value="#{newsletter_mail.id}" converterId="javax.faces.Long"/>
 	</page>
 
