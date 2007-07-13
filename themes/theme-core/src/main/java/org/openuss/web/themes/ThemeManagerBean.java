@@ -16,7 +16,7 @@ import org.openuss.framework.web.jsf.controller.BaseBean;
 /**
  * This class is to intend to provide theme management
  * 
- * @author Ingo Düppe
+ * @author Ingo Dueppe
  */
 public class ThemeManagerBean extends BaseBean implements ThemeManager {
 
@@ -56,6 +56,7 @@ public class ThemeManagerBean extends BaseBean implements ThemeManager {
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("unchecked")
 	public Collection<SelectItem> getSelectableThemes() {
 		Collection items = new ArrayList();
 		items.addAll(themes.values());
