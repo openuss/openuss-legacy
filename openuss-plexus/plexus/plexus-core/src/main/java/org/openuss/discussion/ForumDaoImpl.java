@@ -52,6 +52,9 @@ public class ForumDaoImpl extends ForumDaoBase {
 	 */
 	public Forum forumInfoToEntity(ForumInfo forumInfo) {
 		Forum entity = this.loadForumFromForumInfo(forumInfo);
+		if (entity == null) {
+			entity = Forum.Factory.newInstance();
+		}
 		this.forumInfoToEntity(forumInfo, entity, true);
 		return entity;
 	}

@@ -68,7 +68,10 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 	 * @see org.openuss.discussion.TopicDao#topicInfoToEntity(org.openuss.discussion.TopicInfo)
 	 */
 	public Topic topicInfoToEntity(TopicInfo topicInfo) {
-		org.openuss.discussion.Topic entity = this.loadTopicFromTopicInfo(topicInfo);
+		Topic entity = this.loadTopicFromTopicInfo(topicInfo);
+		if (entity == null) {
+			entity = Topic.Factory.newInstance();
+		}
 		this.topicInfoToEntity(topicInfo, entity, true);
 		return entity;
 	}
