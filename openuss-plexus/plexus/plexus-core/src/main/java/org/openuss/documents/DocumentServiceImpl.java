@@ -30,8 +30,9 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 
 	private static final Logger logger = Logger.getLogger(DocumentServiceImpl.class);
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected List handleAllFileEntries(Collection entries) throws Exception {
+	protected List<FileInfo> handleAllFileEntries(Collection entries) throws Exception {
 		Validate.allElementsOfType(entries, FolderEntryInfo.class,
 				"Parameter entries must only contain FolderEntryInfo objects.");
 		Collection entities = new ArrayList(entries);
