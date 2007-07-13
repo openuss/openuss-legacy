@@ -2,7 +2,6 @@ package org.openuss.messaging;
 
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 public class MessageSendingCommandTest extends AbstractDependencyInjectionSpringContextTests {

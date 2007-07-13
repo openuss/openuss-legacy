@@ -73,10 +73,10 @@ public class DefaultExceptionHandler extends BaseBean implements ExceptionHandle
 		// reported at the completion of the request.
 
 		if (context != null && context.getExternalContext() != null) {
-			Map requestMap = context.getExternalContext().getRequestMap();
-			List list = (List) requestMap.get(FacesConstants.EXCEPTIONS_LIST);
+			Map<String, List<Throwable>> requestMap = context.getExternalContext().getRequestMap();
+			List<Throwable> list = (List<Throwable>) requestMap.get(FacesConstants.EXCEPTIONS_LIST);
 			if (list == null) {
-				list = new ArrayList();
+				list = new ArrayList<Throwable>();
 				requestMap.put(FacesConstants.EXCEPTIONS_LIST, list);
 			}
 			list.add(exception);

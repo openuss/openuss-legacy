@@ -47,7 +47,7 @@ public abstract class AbstractMockDao<T extends DomainObject> {
 		return entities;
 	}
 	
-	public Collection create(int transform, Collection<T> entities) {
+	public Collection<?> create(int transform, Collection<T> entities) {
 		return create(entities);
 	}
 
@@ -65,7 +65,7 @@ public abstract class AbstractMockDao<T extends DomainObject> {
 		return result;
 	}
 
-	public Collection loadAll(int transform) {
+	public Collection<?> loadAll(int transform) {
 		return loadAll();
 	}
 

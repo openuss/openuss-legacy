@@ -42,7 +42,7 @@ public abstract class IsTypeHandler extends TagHandler {
         String tid = this.id.getValue(faceletsContext);
         ValueExpression ve = faceletsContext.getVariableMapper().resolveVariable(tid+"Type");
         if (ve != null) {
-	        Class type = (Class) faceletsContext.getVariableMapper().resolveVariable(tid + "Type")
+	        Class<?> type = (Class<?>) faceletsContext.getVariableMapper().resolveVariable(tid + "Type")
 	                                            .getValue(faceletsContext);
 	
 	        /* If the type is a boolean, process the body of the tag. */
@@ -59,5 +59,5 @@ public abstract class IsTypeHandler extends TagHandler {
      *
      * @return true if this is the correct type.
      */
-    protected abstract boolean isType(Class type);
+    protected abstract boolean isType(Class<?> type);
 }

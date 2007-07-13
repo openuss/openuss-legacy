@@ -15,7 +15,7 @@ public class MockServiceSystem implements SystemService {
 
 	
 	
-	public Collection getProperties() {
+	public Collection<?> getProperties() {
 		return null;
 	}
 
@@ -23,6 +23,7 @@ public class MockServiceSystem implements SystemService {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void persistProperties(Collection properties) {}
 
 	public void persistProperty(SystemProperty property) {}

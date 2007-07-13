@@ -79,7 +79,7 @@ public final class SetValueBindingHandler extends TagHandler {
     	}
     }
 
-	private ValueExpression getValueExpression(String expression, FaceletContext ctx, Class type) {
+	private ValueExpression getValueExpression(String expression, FaceletContext ctx, Class<?> type) {
 		try {
 			final ExpressionFactory expressionFactory = ctx.getExpressionFactory();
 			final ValueExpression valueExpression = expressionFactory.createValueExpression(ctx, expression, type);

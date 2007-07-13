@@ -31,6 +31,7 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void instituteDetailsToEntityCollection(Collection instances) {
 	}
 
@@ -41,6 +42,7 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void instituteSecurityToEntityCollection(Collection instances) {
 	}
 
@@ -60,19 +62,19 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		return null;
 	}
 
-	public List loadAllEnabled() {
+	public List<Institute> loadAllEnabled() {
 		return null;
 	}
 
-	public List loadAllEnabled(String queryString) {
+	public List<Institute> loadAllEnabled(String queryString) {
 		return null;
 	}
 
-	public List loadAllEnabled(int transform) {
+	public List<?> loadAllEnabled(int transform) {
 		return null;
 	}
 
-	public List loadAllEnabled(int transform, String queryString) {
+	public List<?> loadAllEnabled(int transform, String queryString) {
 		return null;
 	}
 
@@ -83,6 +85,7 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void toInstituteDetailsCollection(Collection entities) {
 	}
 
@@ -93,6 +96,7 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void toInstituteSecurityCollection(Collection entities) {
 	}
 

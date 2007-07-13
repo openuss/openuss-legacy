@@ -26,7 +26,8 @@ public final class IsTextHandler extends IsTypeHandler {
      *
      * @return true if this is a boolean.
      */
-    protected boolean isType(final Class type) {
+    @Override
+	protected boolean isType(final Class<?> type) {
         /* If the type is a string, process the body of the tag.
          */
         if (type == String.class

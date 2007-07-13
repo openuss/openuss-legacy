@@ -34,7 +34,7 @@ public class Visit extends BaseBean {
 	private TimeZone timeZone;
 	private String locale;
 
-	private List timeZoneItems;
+	private List<SelectItem> timeZoneItems;
 	
 	private int coursesPageIndex;
 	private int coursesPageCount;
@@ -105,11 +105,11 @@ public class Visit extends BaseBean {
 		getViewRoot().setLocale(new Locale(locale));
 	}
 	
-	public List getSupportedLocaleItems() {
+	public List<SelectItem> getSupportedLocaleItems() {
 		if (localeItems == null) {
 			localeItems = new ArrayList<SelectItem>();
 			Application application = FacesContext.getCurrentInstance().getApplication();
-			for (Iterator iter = application.getSupportedLocales(); iter.hasNext();) {
+			for (Iterator<Locale> iter = application.getSupportedLocales(); iter.hasNext();) {
 				Locale locale = (Locale) iter.next();
 				SelectItem item = new SelectItem(locale.toString(), locale.getDisplayName());
 				localeItems.add(item);
@@ -122,7 +122,7 @@ public class Visit extends BaseBean {
 		return localeItems;
 	}
 
-	public List getSupportedTimeZoneItems() {
+	public List<SelectItem> getSupportedTimeZoneItems() {
 		if (timeZoneItems == null) {
 			timeZoneItems = new ArrayList<SelectItem>();
 			

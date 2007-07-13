@@ -6,7 +6,7 @@ import com.sun.facelets.tag.jsf.ComponentConfig;
 import com.sun.facelets.tag.jsf.html.HtmlComponentHandler;
 
 public class PopupFrameComponentHandler extends HtmlComponentHandler {
-	protected final static Class[] ACTION_METHOD_SIG = new Class[0];
+	protected final static Class<?>[] ACTION_METHOD_SIG = new Class[0];
 	protected final static MethodRule actionOpenTagRule = new MethodRule("actionOpen", String.class, ACTION_METHOD_SIG);
 	protected final static MethodRule actionCloseTagRule = new MethodRule("actionClose", String.class, ACTION_METHOD_SIG);
 
@@ -14,6 +14,8 @@ public class PopupFrameComponentHandler extends HtmlComponentHandler {
 		super(tagConfig);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
 	protected MetaRuleset createMetaRuleset(Class type) {
 		MetaRuleset m = super.createMetaRuleset(type);
 

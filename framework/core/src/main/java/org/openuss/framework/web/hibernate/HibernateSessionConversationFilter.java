@@ -52,7 +52,7 @@ public class HibernateSessionConversationFilter extends OncePerRequestFilter {
 			if (disconnectedSession == null) {
 				logger.trace(">>> new conversation");
 				currentSession = (org.hibernate.classic.Session) SessionFactoryUtils.getSession(sessionFactory, true);
-				currentSession.setFlushMode(FlushMode.NEVER);
+				currentSession.setFlushMode(FlushMode.MANUAL);
 			} else {
 				logger.trace("<<< continuing conversation");
 				currentSession = (org.hibernate.classic.Session) disconnectedSession;

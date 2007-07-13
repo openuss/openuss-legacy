@@ -44,7 +44,7 @@ public class InstituteIndexerTest extends AbstractDependencyInjectionSpringConte
 		instituteIndexer.setDomainObject(institute);
 		instituteIndexer.create();
 		
-		List<String> results = lectureSearcher.search("grob");
+		List<DomainResult> results = lectureSearcher.search("grob");
 		DomainResult[] resultObjs = (DomainResult[]) results.toArray(new DomainResult[results.size()]);
 		logger.debug("--- RESULTS ---> "+ArrayUtils.toString(resultObjs));
 		assertNotNull(results);

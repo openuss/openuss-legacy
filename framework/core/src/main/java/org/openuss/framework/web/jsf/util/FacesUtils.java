@@ -52,7 +52,7 @@ public class FacesUtils {
 			String parameterName = param.getKey();
 		
 			if (parameterValue instanceof Iterable) {
-				for (Object value : (Iterable) parameterValue) {
+				for (Object value : (Iterable<Object>) parameterValue) {
 					builder.append('&').append(parameterName).append('=');
 					if (value != null) {
 						builder.append(encode(value));

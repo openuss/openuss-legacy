@@ -52,10 +52,10 @@ public final class SetValueTypeBindingHandler extends TagHandler {
 
         /* Get the name of the new value. */
         String tvar = this.var.getValue(faceletsContext);
-        Class type = valueExpression.getType(faceletsContext);
+        Class<?> type = valueExpression.getType(faceletsContext);
 
         /* Put the value binding into the FaceletsContext where
-         * we can retrive it from other components.
+         * we can retrieve it from other components.
          */
         faceletsContext.setAttribute(tvar, valueExpression);
 

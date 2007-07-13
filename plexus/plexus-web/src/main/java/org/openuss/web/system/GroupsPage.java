@@ -42,9 +42,9 @@ public class GroupsPage extends BasePage{
 		@Override
 		public DataPage<GroupItem> getDataPage(int startRow, int pageSize) {
 			if (page == null){
-				List<GroupItem> groups = new ArrayList(securityService.getAllGroups());
+				List<GroupItem> groups = new ArrayList<GroupItem>(securityService.getAllGroups());
 				sort(groups);
-				page = new DataPage(groups.size(), 0, groups);
+				page = new DataPage<GroupItem>(groups.size(), 0, groups);
 			}
 			return page;
 		}

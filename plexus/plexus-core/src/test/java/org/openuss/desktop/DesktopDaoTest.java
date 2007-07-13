@@ -60,7 +60,7 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		assertNotNull(course.getId());
 		
 		// test findByCourse
-		Collection desktops = desktopDao.findByCourse(course);
+		Collection<Desktop> desktops = desktopDao.findByCourse(course);
 		assertEquals(1, desktops.size());
 		assertEquals(desktopTwo,desktops.iterator().next());
 		commit();

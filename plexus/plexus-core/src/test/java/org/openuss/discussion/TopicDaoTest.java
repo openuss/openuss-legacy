@@ -106,7 +106,7 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		commit();
 		getTrackingService().setRead(topic1);
 		commit();
-		List list = getTopicDao().findUsersToNotifyByTopic(topic1);
+		List<User> list = getTopicDao().findUsersToNotifyByTopic(topic1);
 		assertEquals(1,list.size());		
 	}
 
@@ -130,7 +130,7 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		getTrackingService().setRead(topic1);
 		commit();
 		
-		List list = getTopicDao().findUsersToNotifyByForum(topic1, forum);
+		List<User> list = getTopicDao().findUsersToNotifyByForum(topic1, forum);
 		assertEquals(1,list.size());		
 	}
 

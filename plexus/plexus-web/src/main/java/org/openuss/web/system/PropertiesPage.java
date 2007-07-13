@@ -10,6 +10,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.lecture.LectureIndex;
 import org.openuss.migration.MigrationService;
+import org.openuss.system.SystemProperty;
 import org.openuss.system.SystemService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -31,11 +32,11 @@ public class PropertiesPage extends BasePage  {
 	
 	@Prerender
 	public void prerender() {
-		propertyList.setData(new ArrayList(systemService.getProperties()));
+		propertyList.setData(new ArrayList<SystemProperty>(systemService.getProperties()));
 		setSessionBean(Constants.BREADCRUMBS, null);
 	}
 	
-	public Collection getProperties() {
+	public Collection<SystemProperty> getProperties() {
 		return systemService.getProperties();
 	}
 	
@@ -56,7 +57,7 @@ public class PropertiesPage extends BasePage  {
 	}
 	
 	public String saveProperties() {
-		Collection properties = propertyList.getData();
+		Collection<SystemProperty> properties = propertyList.getData();
 		systemService.persistProperties(properties);
 		return Constants.SUCCESS;
 	}
