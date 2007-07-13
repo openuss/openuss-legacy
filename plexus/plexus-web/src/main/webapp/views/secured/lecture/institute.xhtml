@@ -14,7 +14,6 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title><ui:insert name="title"/></title>
 		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
-		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
 		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
 	</head>
 
@@ -36,55 +35,56 @@
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
 		</ui:define>	
   		<ui:define name="content">
-  				<ui:include src="/views/commons/sidebar/instituteactivation.xhtml" />
-  				<h:form id="instituteMainForm" rendered="${!empty institute.periods}">
-					<o:block>
-						<h:outputText value="#{msg.institute_period_selection}" styleClass="header_font_normal"/>
-						<h:selectOneMenu id="periodSelection" 
-							layout="pageDirection"  
-							value="#{period.id}" 
-							valueChangeListener="#{views$secured$lecture$institute.processPeriodSelectChanged}" 
-							onchange="this.form.submit();"
-							immediate="true" 
-							styleClass="pulldown_inline">
-							<t:selectItems value="#{institute.periods}" var="period" itemLabel="#{period.name}" itemValue="#{period.id}"/>
-						</h:selectOneMenu>
-					</o:block>
-					
-				    <plexus:dataTable 
-				     	id="courses" 
-				     	var="course" 
-				     	label="#{period.name}"
-				     	value="views$secured$lecture$institute.courseData" 
-				     	columnClasses="col_max_left, col_commands"
-						styleClass="table"
-				     	rows="10">       
+  			<ui:include src="/views/commons/sidebar/instituteactivation.xhtml" />
+  			<h:form id="instituteMainForm">
+				<o:block>
+					<h:outputText value="#{msg.institute_period_selection}" styleClass="header_font_normal"/>
+					<h:selectOneMenu id="periodSelection" 
+						layout="pageDirection"  
+						value="#{period.id}" 
+						valueChangeListener="#{views$secured$lecture$institute.processPeriodSelectChanged}" 
+						onchange="this.form.submit();"
+						immediate="true" 
+						styleClass="pulldown_inline">
+						<t:selectItems value="#{institute.periods}" var="period" itemLabel="#{period.name}" itemValue="#{period.id}"/>
+					</h:selectOneMenu>
+				</o:block>
+				
+			    <plexus:dataTable 
+			     	id="courses" 
+			     	var="course" 
+			     	label="#{period.name}"
+			     	value="views$secured$lecture$institute.courseData" 
+			     	columnClasses="col_max_left, col_commands"
+					styleClass="table"
+			     	rows="10"
+			     	rendered="${!empty institute.periods}">       
 				       
-						<t:column>
-							<plexus:commandSortHeader columnName="courseType.name">
-								<h:outputText value="#{msg.course_colheader_name}"/>
-							</plexus:commandSortHeader>
-							<o:link value="/views/secured/course/main.faces" title="#{course.courseType.description}">
-								<f:param value="#{course.id}" name="course" />
-								<h:outputText value="#{course.courseType.name} (#{course.shortcut})"/>
-							</o:link>
-						</t:column>
-						  
-						<s:authorize ifAllGranted="ROLE_USER">
-							<plexus:column header="#{msg.commands_header}">		
-								<plexus:command  
-									bean="#{views$secured$lecture$institute}"
-									action="shortcutCourse"
-									label="#{msg.course_command_shortcut}"
-									title="#{msg.course_command_shortcut_hint}"
-									styleClass="button_link">
-								</plexus:command>
-							</plexus:column>
-						</s:authorize>
-					</plexus:dataTable>
-				</h:form>
-			<br/>
-	  		<plexus:newsTable value="#{views$secured$lecture$institute.currentNewsItems}" headline="${msg.news_header}"/>
+					<t:column>
+						<plexus:commandSortHeader columnName="courseType.name">
+							<h:outputText value="#{msg.course_colheader_name}"/>
+						</plexus:commandSortHeader>
+						<o:link value="/views/secured/course/main.faces" title="#{course.courseType.description}">
+							<f:param value="#{course.id}" name="course" />
+							<h:outputText value="#{course.courseType.name} (#{course.shortcut})"/>
+						</o:link>
+					</t:column>
+					  
+					<s:authorize ifAllGranted="ROLE_USER">
+						<plexus:column header="#{msg.commands_header}">		
+							<plexus:command  
+								bean="#{views$secured$lecture$institute}"
+								action="shortcutCourse"
+								label="#{msg.course_command_shortcut}"
+								title="#{msg.course_command_shortcut_hint}"
+								styleClass="button_link">
+							</plexus:command>
+						</plexus:column>
+					</s:authorize>
+				</plexus:dataTable>
+			</h:form>
+		<br/>
+	  	<plexus:newsTable value="#{views$secured$lecture$institute.currentNewsItems}" headline="${msg.news_header}"/>
   		</ui:define>
 	</ui:composition>
 	<!-- text above will be ignored -->
