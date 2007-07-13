@@ -18,6 +18,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.Period;
+import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
 import org.openuss.web.Constants;
 
@@ -121,7 +122,7 @@ public class InstitutePage extends AbstractLecturePage {
 	 * @return
 	 * @throws LectureException
 	 */
-	public Collection getCurrentNewsItems() {
+	public Collection<NewsItemInfo> getCurrentNewsItems() {
 		return newsService.getCurrentNewsItems(institute, 10);
 	}
 

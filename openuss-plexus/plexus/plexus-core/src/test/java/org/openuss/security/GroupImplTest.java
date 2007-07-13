@@ -24,7 +24,7 @@ public class GroupImplTest extends TestCase {
 		assertEquals(0, group.getMembers().size());
 		group.addMember(user);
 		// check user
-		Collection members = group.getMembers();
+		Collection<Authority> members = group.getMembers();
 		assertEquals(1, members.size());
 		assertEquals(user, members.iterator().next());
 		// remove not existing users

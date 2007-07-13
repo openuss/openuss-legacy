@@ -82,9 +82,9 @@ public abstract class PagedListDataModel<T> extends DataModel {
 	 * the current rowIndex row; see getRowData.
 	 */
 	private DataPage<T> getPage() {
-		if (page != null)
+		if (page != null) {
 			return page;
-
+		}
 		int rowIndex = getRowIndex();
 		int startRow = rowIndex;
 		if (rowIndex == -1) {

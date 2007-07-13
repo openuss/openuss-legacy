@@ -89,9 +89,9 @@ public class InstitutesPage extends BasePage{
 		@Override
 		public DataPage<InstituteDetails> getDataPage(int startRow, int pageSize) {
 			if (page == null){
-				List<InstituteDetails> institutes = new ArrayList(lectureService.getInstitutes(false));
+				List<InstituteDetails> institutes = new ArrayList<InstituteDetails>(lectureService.getInstitutes(false));
 				sort(institutes);
-				page = new DataPage(institutes.size(), 0, institutes);
+				page = new DataPage<InstituteDetails>(institutes.size(), 0, institutes);
 			}
 			return page;
 		}

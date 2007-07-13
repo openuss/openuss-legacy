@@ -51,8 +51,8 @@ public class CommandDaoImpl extends CommandDaoBase {
 	 * @see org.openuss.commands.CommandDao#loadAll(int)
 	 */
 	@Override
-	public Collection loadAll(final int transform) {
-		final Collection results = this.getHibernateTemplate().loadAll(CommandImpl.class);
+	public Collection<?> loadAll(final int transform) {
+		final Collection<?> results = this.getHibernateTemplate().loadAll(CommandImpl.class);
 		this.transformEntities(transform, results);
 		return results;
 	}

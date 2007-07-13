@@ -44,7 +44,7 @@ public class CourseNewsletterServiceImpl extends CourseNewsletterServiceBase {
 	/**
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#getMails(org.openuss.lecture.CourseInfo)
 	 */
-	protected List handleGetMails(CourseInfo course) throws Exception {
+	protected List<MailInfo> handleGetMails(CourseInfo course) throws Exception {
 		NewsletterInfo newsletter = getNewsletter(course);
 		return getNewsletterService().getMails(newsletter, false);
 	}
@@ -100,8 +100,7 @@ public class CourseNewsletterServiceImpl extends CourseNewsletterServiceBase {
 	/**
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#getSubscribers(org.openuss.lecture.CourseInfo)
 	 */
-	protected java.util.List handleGetSubscribers(org.openuss.lecture.CourseInfo course)
-			throws java.lang.Exception {
+	protected List<SubscriberInfo> handleGetSubscribers(CourseInfo course) throws Exception {
 		NewsletterInfo newsletter = getNewsletter(course);
 		return getNewsletterService().getSubscribers(newsletter);
 	}

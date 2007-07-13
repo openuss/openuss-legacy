@@ -47,7 +47,7 @@ public class MembersPage extends AbstractLecturePage {
 
 	private InstituteSecurity instituteSecurity;
 
-	private List instituteGroups;
+	private List<?> instituteGroups;
 	
 	private transient Set<InstituteMember> changedMembers = new HashSet<InstituteMember>();
 
@@ -80,7 +80,7 @@ public class MembersPage extends AbstractLecturePage {
 		return instituteSecurity;
 	}
 
-	public List getInstituteGroups() {
+	public List<?> getInstituteGroups() {
 		if (instituteGroups == null) {
 			logger.debug("fetching available institute group informatiosn");
 			instituteGroups = getInstituteSecurity().getGroups();
@@ -124,7 +124,7 @@ public class MembersPage extends AbstractLecturePage {
 	}
 
 	/**
-	 * Lockup the username and add the member
+	 * Lockup the user name and add the member
 	 * 
 	 * @param event
 	 * @throws LectureException
@@ -169,7 +169,7 @@ public class MembersPage extends AbstractLecturePage {
 	
 	private void sortMembers(List<InstituteMember> members, final String column, final boolean ascending) {
 		logger.debug("sorting members by "+column+" ascending "+ascending);
-		Comparator comparator = new Comparator<InstituteMember>() {
+		Comparator<InstituteMember> comparator = new Comparator<InstituteMember>() {
 			public int compare(InstituteMember m1, InstituteMember m2) {
 				if (column == null) {
 					return 0;

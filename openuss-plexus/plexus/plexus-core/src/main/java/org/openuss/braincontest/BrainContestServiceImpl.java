@@ -174,7 +174,7 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 
 		// TODO findByContestAndSolver should only return one instance
 		// There fore the answer id is a composite id of contest and solver
-		List checkIfAnswered = getAnswerDao().findByContestAndSolver(user, bc);
+		List<Answer> checkIfAnswered = getAnswerDao().findByContestAndSolver(user, bc);
 		if (checkIfAnswered.size() > 0) {
 			throw new BrainContestApplicationException("braincontest_message_user_correct_answer");
 		}
@@ -197,14 +197,14 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 	/**
 	 * @see org.openuss.braincontest.BrainContestService#getAnswers(org.openuss.braincontest.BrainContestInfo)
 	 */
-	protected List handleGetAnswers(BrainContestInfo contest) throws Exception {
+	protected List<AnswerInfo> handleGetAnswers(BrainContestInfo contest) throws Exception {
 		Validate.notNull(contest, "Contest must not be null");
 
 		BrainContest bc = getBrainContestDao().load(contest.getId());
 
-		List answers = new ArrayList(bc.getAnswers());
+		List<?> answers = new ArrayList<Answer>(bc.getAnswers());
 		getAnswerDao().toAnswerInfoCollection(answers);
-		return answers;
+		return (List<AnswerInfo>)answers;
 	}
 
 	@Override

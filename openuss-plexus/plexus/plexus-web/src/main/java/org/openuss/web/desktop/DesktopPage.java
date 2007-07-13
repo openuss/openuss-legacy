@@ -31,7 +31,7 @@ public class DesktopPage extends BasePage {
 	private CourseDataProvider coursesProvider = new CourseDataProvider();
 	private CourseTypeDataProvider courseTypesProvider = new CourseTypeDataProvider();
 	private InstituteDataProvider institutesProvider = new InstituteDataProvider();
-
+	
 	@Prerender
 	public void prerender() {
 		logger.debug("prerender desktop");

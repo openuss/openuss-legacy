@@ -95,7 +95,7 @@ public class FactoryFinder {
      */
     private static Object newInstance(String factoryClassName, ClassLoader classLoader) throws ConfigurationError {
         try {
-            Class provider;
+            Class<?> provider;
 
             if (classLoader == null) {
                 provider = Class.forName(factoryClassName);

@@ -8,7 +8,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
-
 /**
  * Custom LabelRenderer component that adds asterisks for required fields. Based
  * off of an example from David Geary on the MyFaces Mailing list.
@@ -25,8 +24,8 @@ public class LabelRenderer extends Renderer {
 	public void encodeBegin(FacesContext context, UIComponent component) throws java.io.IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
-		Map attrs = component.getAttributes();
-		String id = (String) attrs.get("for");
+		Map<String, String> attrs = component.getAttributes();
+		String id = attrs.get("for");
 
 		UIInput input = (UIInput) component.findComponent(id);
 
@@ -46,8 +45,8 @@ public class LabelRenderer extends Renderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws java.io.IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
-		Map attrs = component.getAttributes();
-		String id = (String) attrs.get("for");
+		Map<String, String> attrs = component.getAttributes();
+		String id = attrs.get("for");
 
 		UIInput input = (UIInput) component.findComponent(id);
 

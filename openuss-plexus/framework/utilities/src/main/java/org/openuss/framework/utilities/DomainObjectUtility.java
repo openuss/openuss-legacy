@@ -23,7 +23,7 @@ public class DomainObjectUtility {
 	}
 	
 	public static Long obtainIdentityByGetIdMethod(Object object) throws IllegalAccessException, InvocationTargetException {
-		final Class clazz = object.getClass();
+		final Class<?> clazz = object.getClass();
 		try {
 			final Method method = clazz.getMethod("getId", new Class[] {});
 			final Object result = method.invoke(object, new Object[] {});

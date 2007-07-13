@@ -23,7 +23,8 @@ public final class IsBooleanHandler extends IsTypeHandler {
      *
      * @return true if this is a boolean.
      */
-    protected boolean isType(final Class type) {
+    @Override
+	protected boolean isType(final Class<?> type) {
         /* If the type is a boolean, process the body of the tag.
          */
         if (type == Boolean.class) {

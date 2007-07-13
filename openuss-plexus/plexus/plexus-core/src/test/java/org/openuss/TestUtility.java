@@ -36,7 +36,7 @@ public class TestUtility {
 
 	public User createDefaultUserInDB() {
 		defaultUser.setUsername(unique("username"));
-		defaultUser.setGroups(new ArrayList());
+		defaultUser.setGroups(new ArrayList<Group>());
 		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
 		userDao.create(defaultUser);
 		return defaultUser;

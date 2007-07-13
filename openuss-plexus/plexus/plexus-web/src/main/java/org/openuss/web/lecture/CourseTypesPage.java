@@ -140,7 +140,7 @@ public class CourseTypesPage extends AbstractLecturePage {
 		@Override
 		public DataPage<CourseType> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<CourseType> courseTypes = new ArrayList(institute.getCourseTypes());
+				List<CourseType> courseTypes = new ArrayList<CourseType>(institute.getCourseTypes());
 				sort(courseTypes);
 				page = new DataPage<CourseType>(courseTypes.size(),0,courseTypes);
 			}

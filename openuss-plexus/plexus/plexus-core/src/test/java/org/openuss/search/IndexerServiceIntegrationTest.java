@@ -56,9 +56,9 @@ public class IndexerServiceIntegrationTest extends IndexerServiceIntegrationTest
 
 	private Command last(Collection<Command> commands) {
 		Command command = null;
-		Iterator iter = commands.iterator();
+		Iterator<Command> iter = commands.iterator();
 		while (iter.hasNext()) {
-			command = (Command) iter.next();
+			command = iter.next();
 		}
 		return command;
 	}

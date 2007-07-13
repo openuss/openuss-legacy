@@ -17,7 +17,7 @@ public class EasyMockFactoryBean extends AbstractFactoryBean implements BeanFact
 	private ConfigurableBeanFactory beanFactory;
 	private String beanName;
 	private String controlName;
-	private Class targetClass;
+	private Class<?> targetClass;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -35,7 +35,7 @@ public class EasyMockFactoryBean extends AbstractFactoryBean implements BeanFact
 		this.beanFactory = (ConfigurableBeanFactory) beanFactory;
 	}
 	
-	public Class getObjectType() {
+	public Class<?> getObjectType() {
 		return targetClass;
 	}
 	
@@ -47,7 +47,7 @@ public class EasyMockFactoryBean extends AbstractFactoryBean implements BeanFact
 		return beanName;
 	}
 	
-	public Class getTargetClass() {
+	public Class<?> getTargetClass() {
 		return targetClass;
 	}
 

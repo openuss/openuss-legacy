@@ -56,14 +56,14 @@ public class RegistrationController extends BaseBean {
 	private String userToken;
 
 	/**
-	 * Performes user registrations and removes user registration information
+	 * Performs user registrations and removes user registration information
 	 * from the session.
 	 * 
 	 * @return outcome
 	 */
 	public String performRegistration() throws RegistrationException {
 		User user = (User) getSessionBean(Constants.USER_SESSION_KEY);
-		// set default user timezone
+		// set default user time zone
 		user.setTimezone(TimeZone.getDefault().getID());
 
 		registrationService.registrateUser(user, registrationData.isEnableAssistantRole());
@@ -80,7 +80,7 @@ public class RegistrationController extends BaseBean {
 	}
 
 	/**
-	 * Convience method to send an verification e-mail to the given user
+	 * Convince method to send an verification e-mail to the given user
 	 * 
 	 * @param user
 	 * @param activationCode
@@ -91,7 +91,7 @@ public class RegistrationController extends BaseBean {
 
 			link = applicationAddress() + link;
 
-			Map parameters = new HashMap();
+			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("username", user.getUsername());
 			parameters.put("link", link);
 
@@ -104,7 +104,7 @@ public class RegistrationController extends BaseBean {
 	}
 
 	/**
-	 * Resends a new activation code to the user. username property must be set
+	 * Resends a new activation code to the user. user name property must be set
 	 * 
 	 * @return outcome
 	 */
@@ -140,7 +140,7 @@ public class RegistrationController extends BaseBean {
 
 		link = applicationAddress() + link;
 
-		Map parameters = new HashMap();
+		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("username", user.getUsername());
 		parameters.put("passwordresetlink", link);
 
