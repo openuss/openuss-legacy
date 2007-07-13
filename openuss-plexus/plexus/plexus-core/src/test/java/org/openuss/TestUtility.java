@@ -82,8 +82,12 @@ public class TestUtility {
 		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
 		userDao.create(defaultUser);
 		universityDao.create(defaultUniversity);
-		//defaultUniversity is also creating a default Department!
 		return defaultUniversity;
+	}
+	
+	public void removeDefaultUniversityWithDefaultUser() {
+		universityDao.remove(defaultUniversity);
+		userDao.remove(defaultUniversity.getOwner());
 	}
 
 	public void removePersistInstituteAndDefaultUser() {
