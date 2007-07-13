@@ -48,6 +48,9 @@ public class PostDaoImpl extends PostDaoBase {
 	 */
 	public Post postInfoToEntity(PostInfo postInfo) {
 		Post entity = this.loadPostFromPostInfo(postInfo);
+		if (entity == null) {
+			entity = Post.Factory.newInstance();
+		}
 		this.postInfoToEntity(postInfo, entity, true);
 		return entity;
 	}
