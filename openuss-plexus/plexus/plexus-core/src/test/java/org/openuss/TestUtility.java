@@ -1,19 +1,22 @@
 package org.openuss;
 
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
-import org.openuss.lecture.Department;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
 import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
+import org.openuss.security.Membership;
+import org.openuss.security.MembershipDao;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
+import org.openuss.security.UserContact;
 import org.openuss.security.UserDao;
 import org.openuss.security.UserImpl;
 import org.openuss.security.UserPreferences;
@@ -28,6 +31,8 @@ public class TestUtility {
 	private UserDao userDao;
 	
 	private GroupDao groupDao;
+	
+	private MembershipDao membershipDao;
 
 	private InstituteDao instituteDao;
 	
@@ -37,13 +42,11 @@ public class TestUtility {
 
 	private Institute defaultInstitute;
 	
-	private University defaultUniversity;
-	
 	private static long uniqueId = System.currentTimeMillis();
 
 	public User createDefaultUserInDB() {
 		defaultUser.setUsername(unique("username"));
-		defaultUser.setGroups(new ArrayList());
+		defaultUser.setGroups(new ArrayList<Group>());
 		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
 		userDao.create(defaultUser);
 		return defaultUser;
@@ -79,15 +82,51 @@ public class TestUtility {
 	}
 	
 	public University createDefaultUniversityWithDefaultUser() {
-		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
-		userDao.create(defaultUser);
-		universityDao.create(defaultUniversity);
-		return defaultUniversity;
-	}
-	
-	public void removeDefaultUniversityWithDefaultUser() {
-		universityDao.remove(defaultUniversity);
-		userDao.remove(defaultUniversity.getOwner());
+		// Create a unique User
+		UserPreferences userPreferences = UserPreferences.Factory.newInstance();
+		userPreferences.setLocale("de");
+		userPreferences.setTheme("plexus");
+		userPreferences.setTimezone(TimeZone.getDefault().getID());
+		
+		UserContact userContact = UserContact.Factory.newInstance();
+		userContact.setFirstName("Unique");
+		userContact.setLastName("User");
+		userContact.setAddress("Leonardo Campus 5");
+		userContact.setCity("Münster");
+		userContact.setCountry("Germany");
+		userContact.setPostcode("48149");
+		
+		User user = User.Factory.newInstance();
+		user.setUsername(unique("username"));
+		user.setPassword("masterkey");
+		user.setEmail(unique("openuss")+"@e-learning.uni-muenster.de");
+		user.setEnabled(true);
+		user.setAccountExpired(false);
+		user.setCredentialsExpired(false);
+		user.setAccountLocked(false);
+		
+		user.setPreferences(userPreferences);
+		user.setContact(userContact);
+		user.setGroups(new ArrayList<Group>());
+		
+		userDao.create(user);
+		
+		// Create a unique Membership
+		Membership membership = Membership.Factory.newInstance();
+		membership.setOwner(user);
+		
+		membershipDao.create(membership);
+		
+		// Create a unique University
+		University university = University.Factory.newInstance();
+		university.setName(unique("University"));
+		university.setShortcut(unique("Uni"));
+		university.setDescription("A unique University");
+		university.setMembership(membership);
+		
+		universityDao.create(university);
+		
+		return university;
 	}
 
 	public void removePersistInstituteAndDefaultUser() {
@@ -166,6 +205,14 @@ public class TestUtility {
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
+	
+	public MembershipDao getMembershipDao() {
+		return membershipDao;
+	}
+
+	public void setMembershipDao(MembershipDao membershipDao) {
+		this.membershipDao = membershipDao;
+	}
 
 	public User getDefaultUser() {
 		return defaultUser;
@@ -181,14 +228,6 @@ public class TestUtility {
 
 	public void setDefaultInstitute(Institute defaultInstitute) {
 		this.defaultInstitute = defaultInstitute;
-	}
-	
-	public University getDefaultUniversity() {
-		return defaultUniversity;
-	}
-
-	public void setDefaultUniversity(University defaultUniversity) {
-		this.defaultUniversity = defaultUniversity;
 	}
 
 	public InstituteDao getInstituteDao() {

@@ -27,21 +27,6 @@
 		<property name="credentialsExpired" value="true" />
 		<property name="accountLocked" value="true" />
 	</bean>
-
-	<bean id="defaultMembershipUniversity" class="org.openuss.security.MembershipImpl">
-		<property name="owner">
-			<ref local="defaultUser" />
-		</property>
-	</bean>
-
-	<bean id="defaultUniversity" class="org.openuss.lecture.UniversityImpl">
-		<property name="name" value="defaultUniversity" />
-		<property name="description" value="defaultDescription" />
-		<property name="shortcut" value="shortcutUniversity" />
-		<property name="membership">
-			<ref local="defaultMembershipUniversity" />
-		</property>
-	</bean>
 	
 	<bean id="defaultInstitute" class="org.openuss.lecture.InstituteImpl">
 		<property name="name" value="institutename" />
@@ -60,14 +45,14 @@
 		<property name="defaultInstitute">
 			<ref local="defaultInstitute" />
 		</property>
-		<property name="defaultUniversity">
-			<ref local="defaultUniversity" />
-		</property>
 		<property name="userDao">
 			<ref bean="userDao" />
 		</property>
 		<property name="groupDao">
 			<ref bean="groupDao" />
+		</property>
+		<property name="membershipDao">
+			<ref bean="membershipDao" />
 		</property>
 		<property name="instituteDao">
 			<ref bean="instituteDao" />
