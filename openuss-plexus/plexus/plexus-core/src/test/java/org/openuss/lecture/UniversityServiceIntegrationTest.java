@@ -6,6 +6,8 @@
 package org.openuss.lecture;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.openuss.security.User;
 
 /**
@@ -19,6 +21,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 	 * Logger for this class
 	 */
 	private static final Logger logger = Logger.getLogger(UniversityServiceIntegrationTest.class);
+	
 	
 	public void testCreateUniversity() {
 		logger.info("----> BEGIN access to create(University) test");
@@ -36,6 +39,11 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		//Create Entity
 		Long universityId = universityService.create(universityInfo, owner.getId());
 		assertNotNull(universityId);
+		
+		//Synchronize with database
+		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
+		Session session = sessionFactory.getCurrentSession();
+		session.flush();
 
 		logger.info("----> END access to create(University) test");
 	}
@@ -62,8 +70,14 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertFalse(universityInfo.getDescription().compareTo(university.getDescription()) == 0);
 		assertFalse(universityInfo.getUniversityType().intValue() == university.getType().getValue().intValue());
 		
+		
+		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
+		Session session = sessionFactory.getCurrentSession();
+		
 		//Update University
+		session.flush();
 		universityService.update(universityInfo);
+		session.flush();
 		
 		//Check
 		assertTrue(universityInfo.getId().longValue() == university.getId().longValue());
@@ -71,13 +85,13 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertTrue(universityInfo.getShortcut().compareTo(university.getShortcut()) == 0);
 		assertTrue(universityInfo.getDescription().compareTo(university.getDescription()) == 0);
 		assertTrue(universityInfo.getUniversityType().intValue() == university.getType().getValue().intValue());
-
+		
 		logger.info("----> END access to update(University) test");
 	}
 	
 	public void testRemoveUniversity() {
 		logger.info("----> BEGIN access to removeUniversity test");
-
+		
 		//Create a University
 		University university = testUtility.createDefaultUniversityWithDefaultUser();
 		assertNotNull(university.getId());
@@ -85,10 +99,15 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		//Save UniversityID
 		Long id = university.getId();
 		
+		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
+		Session session = sessionFactory.getCurrentSession();
+
 		//Remove University
+		session.flush();
 		universityService.removeUniversity(id);
+		session.flush();
 		
-		//Try to load University
+		//Try to load University again
 		UniversityDao universityDao = (UniversityDao) this.applicationContext.getBean("universityDao");
 		University university2 = universityDao.load(id);
 		assertNull(university2);

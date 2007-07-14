@@ -8,6 +8,8 @@ package org.openuss.security;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.openuss.TestUtility;
 
 
@@ -56,5 +58,11 @@ public class MembershipDaoTest extends MembershipDaoTestBase {
 		assertNull(membership2.getId());
 		membershipDao.create(membership2);
 		assertNotNull(membership2.getId());
+		
+		//Synchronize with Database
+		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
+		Session session = sessionFactory.getCurrentSession();
+		session.flush();
+		
 	}
 }
