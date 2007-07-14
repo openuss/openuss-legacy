@@ -31,11 +31,12 @@
   		<ui:define name="content">
   			<h:form id="institutesForm">
 	  			<o:block>
-	  				<h:outputLabel value="Suche" for="search_input" styleClass="field_label"></h:outputLabel>
-	  				<h:inputText id="search_input" value="#{search_results.textToSearch}" styleClass="field"/>
-	  				<h:commandButton action="#{views$public$search$search.search}" value="Search" styleClass="button"/>
-	  				<br/>
-					<h:commandLink value="Erweiterte Suche"></h:commandLink>
+	  				<p class="content_font_normal">
+		  				<h:outputLabel value="Suche" for="search_input" styleClass="field_label"></h:outputLabel>
+		  				<h:inputText id="search_input" value="#{search_results.textToSearch}" styleClass="field"/>
+		  				<h:commandButton action="#{views$public$search$search.search}" value="Search" styleClass="button"/>
+		  				<!-- KS: Check if entire class can be deleted -->
+	  				</p>
 	  			</o:block>
 				<ui:include src="searchresults.xhtml"/>
 			</h:form>

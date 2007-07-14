@@ -15,7 +15,11 @@
 					<img src="#{theme.imagesPath}/search.jpg" title="search" alt="go"/>
 				</h:commandLink>
 				<br/>
-				<h:commandLink action="extended_search" value="Erweiterte Suche"></h:commandLink>
+		  		<ul class="int">
+		  			<li>
+						<h:commandLink action="extended_search" value="${msg.extended_search_link}"></h:commandLink>
+			  		</li>
+			  	</ul>
 			</p>
 		</o:block>
 	</h:form>
