@@ -128,6 +128,7 @@ public class NewsServiceIntegrationTest extends NewsServiceIntegrationTestBase {
 		vo.setAuthor("author of the newsitem");
 		vo.setPublishDate(past);
 		vo.setExpireDate(future);
+		vo.setPublisherType(PublisherType.COURSE);
 		return vo;
 	}
 	
