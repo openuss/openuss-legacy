@@ -48,10 +48,19 @@
 			</o:link>
 		</t:column>
 
-		<t:column>
-			<plexus:commandSortHeader columnName="fileSize"> #{msg['documents_main_column_size']} </plexus:commandSortHeader>
-			<h:outputText value="#{entry.sizeAsString}"/>
-		</t:column>
+		<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}">
+			<t:column>
+				<plexus:commandSortHeader columnName="fileSize"> #{msg['documents_main_column_size']} </plexus:commandSortHeader>
+				<h:outputText value="#{entry.sizeAsString}"/>
+			</t:column>
+		</s:acl>
+
+		<s:acl domainObject="#{course}" hasNotPermission="#{ACL.ASSIST}">
+			<t:column>
+				<plexus:commandSortHeader columnName="fileSize"> #{msg['documents_main_column_size']} </plexus:commandSortHeader>
+				<h:outputText value="#{entry.sizeAsString}" rendered="${!entry.folder}"/>
+			</t:column>
+		</s:acl>
 
 		<t:column>
 			<plexus:commandSortHeader columnName="created"> #{msg['documents_main_column_create']} </plexus:commandSortHeader>
