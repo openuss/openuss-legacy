@@ -176,6 +176,7 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		newsItem.setAuthor("author of the newsitem");
 		newsItem.setPublishDate(past);
 		newsItem.setExpireDate(future);
+		newsItem.setPublisherType(PublisherType.COURSE);
 		return newsItem;
 	}
 
