@@ -56,8 +56,8 @@ public class FileEditPage extends AbstractDocumentPage{
 		logger.debug("saving file");
 		if (selectedFile != null && selectedFile.getId() == null) {
 			UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
-			logger.debug("source is "+document.getSource());
 			if (document != null) {
+				logger.debug("source is "+document.getSource());
 				if (StringUtils.isBlank(selectedFile.getFileName())) {
 					selectedFile.setFileName(document.getFileName());
 				} else {
@@ -80,7 +80,30 @@ public class FileEditPage extends AbstractDocumentPage{
 			}
 			addMessage(i18n("message_documents_new_ folder_created"));
 		} else if (selectedFile != null && selectedFile.getId() != null) {
+			
+			UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
+			if (document != null) {
+				logger.debug("source is "+document.getSource());
+				if (StringUtils.isBlank(selectedFile.getFileName())) {
+					selectedFile.setFileName(document.getFileName());
+				} else {
+					String fileName = selectedFile.getFileName();
+					if (!StringUtils.equals(extension(fileName), extension(document.getFileName()))) {
+						fileName = fileName + '.' +extension(document.getFileName());
+					}
+					selectedFile.setFileName(fileName);
+				}
+				selectedFile.setExtension(extension(document.getFileName()));
+				selectedFile.setContentType(document.getContentType());
+				selectedFile.setFileSize(document.getFileSize());
+				selectedFile.setInputStream(document.getInputStream());
+			}
 			documentService.saveFileEntry(selectedFile);
+			
+			if (document != null) {
+				uploadFileManager.removeDocument(document);
+			}
+			
 			addMessage(i18n("message_documents_save_folder"));
 		}
 		removeSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRY);

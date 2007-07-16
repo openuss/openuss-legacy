@@ -65,7 +65,7 @@ public class FileEntryImpl extends org.openuss.documents.FileEntryBase implement
 	@Override
 	public Date getModified() {
 		Date modified = super.getModified();
-		if (modified == null) {
+		if (modified == null || modified.before(getCreated())) {
 			modified = getCreated();
 		}
 		return modified;
