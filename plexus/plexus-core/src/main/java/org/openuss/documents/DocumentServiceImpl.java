@@ -194,6 +194,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		Validate.notNull(fileInfo, "Parameter fileInfo must not be null!");
 		Validate.notNull(fileInfo.getId(), "Parameter fileInfo must contain an id.");
 		FileEntry entry = getFileEntryDao().fileInfoToEntity(fileInfo);
+		entry.setModified(new Date());
 		getFileEntryDao().update(entry);
 		if (fileInfo.getInputStream() != null) {
 			getRepositoryService().saveContent(fileInfo.getId(), fileInfo.getInputStream());

@@ -19,6 +19,7 @@ import org.openuss.registration.RegistrationException;
 import org.openuss.registration.RegistrationService;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
+import org.openuss.system.SystemProperties;
 import org.openuss.system.SystemService;
 import org.openuss.web.Constants;
 import org.openuss.web.utils.MessageBox;
@@ -149,9 +150,8 @@ public class RegistrationController extends BaseBean {
 	}
 
 	private String applicationAddress() {
-		// FIXME - must be configurable from outside
 		final HttpServletRequest request = getRequest();
-		return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+		return "http://"+systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL)+request.getContextPath();
 	}
 
 	/**
