@@ -37,7 +37,7 @@ public class SearchPage extends BasePage{
 	
 	@Prerender
 	public void prerender(){
-		//breadcrumbs shall not be displayed on search pages
+		//bread crumbs shall not be displayed on search pages
 		crumbs.clear();
 	}
 	
