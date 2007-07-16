@@ -34,7 +34,11 @@ public class OnlineSessionTracker implements ApplicationListener{
 	private void logSessionDestroyed(HttpSession session) {
 		logger.debug("session destroyed");
 		Long sessionId = (Long) session.getAttribute(Constants.ONLINE_SESSION_ID);
-		onlineStatisticService.logSessionEnd(sessionId);
+		if (sessionId != null) {
+			onlineStatisticService.logSessionEnd(sessionId);
+		} else {
+			logger.warn("session ends without session id!");
+		}
 	}
 
 	public void logSessionCreated(HttpSession session) {
