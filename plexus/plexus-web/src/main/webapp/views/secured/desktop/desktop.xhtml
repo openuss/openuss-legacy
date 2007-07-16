@@ -35,7 +35,6 @@
 	<ui:define name="sidebar"> 
 		<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
 		<ui:include src="/views/commons/sidebar/whoisonline.xhtml" />
-		<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
 	</ui:define>
 	<ui:define name="content">
 		<o:block>
@@ -52,6 +51,7 @@
 		<h:form id="institutesForm" rendered="${!empty desktop.institutes}"> 
 			<ui:include src="/views/commons/desktop/institutes.xhtml" />
 		</h:form>
+		<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->
