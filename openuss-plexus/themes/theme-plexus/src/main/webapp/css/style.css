@@ -814,7 +814,7 @@ ul#header_navigation li:hover{
 .teaser_blue{
 	margin: 0;
 	width: auto;
-	margin-right: 210px;
+	margin-right: 260px;
 }
 
 .teaser_blue .content_box {
@@ -825,7 +825,7 @@ ul#header_navigation li:hover{
 
 .teaser_blue_right{
 	float:right;
-	width:200px;
+	width:250px;
 }
 
 .teaser_blue_right .content_box {
