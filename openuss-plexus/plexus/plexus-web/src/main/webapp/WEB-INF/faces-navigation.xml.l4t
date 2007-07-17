@@ -15,13 +15,14 @@
     NAME="output2" PATH="/views/public/search/extendedsearch.xhtml"
     TARGET="rules:#views#public#search#extendedsearch.xhtml" TITLE="extended_search"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="login::#views#public#login#login.xhtml" NAME="output3"
+    ID="extended_search_results::#views#public#search#extendedsearchresults.xhtml"
+    NAME="output3"
+    PATH="/views/public/search/extendedsearchresults.xhtml"
+    TARGET="rules:#views#public#search#extendedsearchresults.xhtml" TITLE="extended_search_results"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="login::#views#public#login#login.xhtml" NAME="output4"
     PATH="/views/public/login/login.xhtml"
     TARGET="rules:#views#public#login#login.xhtml" TITLE="login"/>
-   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="logout::#views#public#login#logout.xhtml" NAME="output4"
-    PATH="/views/public/login/logout.xhtml"
-    TARGET="rules:#views#public#login#logout.xhtml" TITLE="logout"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="messagebox::#views#public#messagebox.xhtml" NAME="output5"
     PATH="/views/public/messagebox.xhtml"
@@ -736,4 +737,7 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#public#search#extendedsearch.xhtml"
   PATH="/views/public/search/extendedsearch.xhtml" SHAPE="304,753,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#public#search#extendedsearchresults.xhtml"
+  PATH="/views/public/search/extendedsearchresults.xhtml" SHAPE="304,753,0,0"/>
 </PROCESS>

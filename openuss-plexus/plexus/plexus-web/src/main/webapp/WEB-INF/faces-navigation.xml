@@ -24,7 +24,12 @@
 			<from-outcome>extended_search</from-outcome>
 			<to-view-id>/views/public/search/extendedsearch.xhtml</to-view-id>
 		</navigation-case>
-
+		
+		<navigation-case>
+			<from-outcome>extended_search_results</from-outcome>
+			<to-view-id>/views/public/search/extendedsearchresults.xhtml</to-view-id>
+		</navigation-case>
+		
 		<navigation-case>
 			<from-outcome>home</from-outcome>
 			<to-view-id>/views/welcome.xhtml</to-view-id>

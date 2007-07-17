@@ -5,13 +5,14 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:news="http://www.openuss.org/news/jsf"
       xmlns:t="http://myfaces.apache.org/tomahawk"
-      xmlns:o="http://www.openuss.org/jsfcontrols">
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:plexus="ttp://www.openuss.org/plexus/jsf">
       
  	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title><ui:insert name="title">OpenUSS</ui:insert></title>
+		<title><ui:insert name="title"/></title>
 		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
 		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
 		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
@@ -19,20 +20,25 @@
 
 	<body>      
 	<!-- text above will be ignored -->
-	<f:loadBundle basename="resources" var="msg" />
-	<ui:composition template="/views/layout/dialog.xhtml">
+	<ui:composition template="/views/layout/layout.xhtml">
+  		<ui:define name="navigation"> 
+			<ui:include src="/views/commons/navigation/desktop.xhtml" />
+		</ui:define>
+ 		<ui:define name="sidebar"> 
+			<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
+		</ui:define>
   		<ui:define name="content">
-			<h:form id="extendedSearchForm"> 
+  			<h:form id="extendedSearchForm"> 
 				<o:block label="#{msg.extended_search_headline}">
 					<div class="content_font_normal">
 						<h:outputText value="Extended Search Dummy" escape="false" />
 					</div>
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.extended_search_search}" styleClass="button_continue" />
+					<h:commandButton value="${msg.extended_search_search}" styleClass="button_continue" action="extended_search_results" />
 				</o:block>
 			</h:form>
-  		</ui:define>
+		</ui:define>
 	</ui:composition>
 	<!-- text above will be ignored -->
 	</body>
