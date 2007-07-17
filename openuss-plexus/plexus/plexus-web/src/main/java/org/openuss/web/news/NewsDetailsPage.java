@@ -1,7 +1,6 @@
 package org.openuss.web.news;
 
 import org.apache.log4j.Logger;
-
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -9,7 +8,6 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.Course;
-import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.LectureService;
 import org.openuss.news.NewsItemInfo;
@@ -38,26 +36,23 @@ public class NewsDetailsPage extends BasePage {
 	@Property(value="#{lectureService}")
 	private LectureService lectureService;
 	
-	private Course course; 
-	
-	private Institute institute;
-	
 	@Prerender
 	public void prerender() {
+		crumbs.clear();
 		if (newsItem != null && newsItem.getId() != null) {
 			logger.debug("refreshing newsitem "+newsItem.getId());
 			newsItem = newsService.getNewsItem(newsItem);
 			setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
 			if (newsItem.getPublisherType()==PublisherType.INSTITUTE){
-				institute = getLectureService().getInstitute(newsItem.getPublisherIdentifier());
-				generateBreadCrumb();
+				Institute institute = getLectureService().getInstitute(newsItem.getPublisherIdentifier());
+				addInstituteCrumb(institute);
 				setSessionBean(Constants.INSTITUTE, institute);
 				addNewsCrumb();
-			}else if (newsItem.getPublisherType()==PublisherType.COURSE){				
-				course = getLectureService().getCourse(newsItem.getPublisherIdentifier());
-				institute = course.getInstitute();
-				generateBreadCrumb();
-				addCourseCrumb();
+			}else if (newsItem.getPublisherType()==PublisherType.COURSE){
+				Course course = getLectureService().getCourse(newsItem.getPublisherIdentifier());
+				Institute institute = course.getInstitute();
+				addInstituteCrumb(institute);
+				addCourseCrumb(course);
 				setSessionBean(Constants.INSTITUTE, institute);
 				addNewsCrumb();
 			}
@@ -68,8 +63,7 @@ public class NewsDetailsPage extends BasePage {
 		}
 	}
 
-	public void generateBreadCrumb() {
-		crumbs.clear();
+	public void addInstituteCrumb(Institute institute) {
 		BreadCrumb instituteCrumb = new BreadCrumb();
 		instituteCrumb.setName(institute.getShortcut());
 		instituteCrumb.setLink(PageLinks.INSTITUTE_PAGE);
@@ -78,7 +72,7 @@ public class NewsDetailsPage extends BasePage {
 		crumbs.add(instituteCrumb);
 	}
 	
-	public void addCourseCrumb(){
+	public void addCourseCrumb(Course course){
 		BreadCrumb courseCrumb = new BreadCrumb();
 		courseCrumb.setName(course.getShortcut());
 		courseCrumb.setLink(PageLinks.COURSE_PAGE);
