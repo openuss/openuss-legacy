@@ -1,3 +1,4 @@
+#if(!$entity.abstract)
 #set($testClassName = "${entity.daoName}Test")
 #set ($generatedFile = "${entity.packagePath}/${testClassName}.java")
 #if ($enableTemplating)
@@ -24,7 +25,7 @@ package $entity.packageName;
 public class ${testClassName} extends ${testClassName}Base {
 	
 	public void test${entity.daoName}Create() {
-		${entity.name} ${varEntity} = new ${entity.name}Impl();
+		${entity.name} ${varEntity} = new ${entity.name}.Factory.newInstance();
 #foreach($attribute in $entity.attributes)	
 #if (!$attribute.identifier && !$attribute.transient && $attribute.required)
 		${varEntity}.set${stringUtils.capitalize($attribute.name)}(" ");
@@ -39,3 +40,4 @@ public class ${testClassName} extends ${testClassName}Base {
 #end		
 	}
 }
+#end
