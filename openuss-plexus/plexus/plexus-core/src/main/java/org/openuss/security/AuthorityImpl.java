@@ -12,7 +12,7 @@ import java.util.List;
  * @see org.openuss.security.Authority
  * @author Ingo Dueppe
  */
-public class AuthorityImpl extends AuthorityBase implements Authority {
+public abstract class AuthorityImpl extends AuthorityBase implements Authority {
 
 	private static final long serialVersionUID = -8268493244078008798L;
 

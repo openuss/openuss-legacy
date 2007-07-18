@@ -12,7 +12,6 @@ public class SecurityTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.openuss.security");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(AuthorityDaoTest.class);
 		suite.addTestSuite(GroupDaoTest.class);
 		suite.addTestSuite(GroupImplTest.class);
 		suite.addTestSuite(SecurityServiceIntegrationTest.class);
@@ -22,7 +21,7 @@ public class SecurityTests {
 		suite.addTestSuite(UserImplTest.class);
 		suite.addTestSuite(UserPreferencesDaoTest.class);
 		suite.addTestSuite(UserProfileDaoTest.class);
-		// acl package
+		// ACL package
 		suite.addTestSuite(AclPermissionIntegrationTest.class);
 		suite.addTestSuite(ObjectIdentityDaoTest.class);
 		suite.addTestSuite(PermissionDaoTest.class);
