@@ -116,6 +116,7 @@ public class UserProfilePage extends BasePage{
 	/**
 	 * Persist User Contact Data
 	 */
+	@SuppressWarnings("deprecation")
 	public void saveContact(ActionEvent event) {
 		UserContact contact = user.getContact();
 		securityService.saveUserContact(contact);
@@ -126,6 +127,7 @@ public class UserProfilePage extends BasePage{
 	/**
 	 * Persist User Preferences
 	 */
+	@SuppressWarnings("deprecation")
 	public void savePreferences(ActionEvent event) {
 		UserPreferences preferences = user.getPreferences();
 		securityService.saveUserPreferences(preferences);

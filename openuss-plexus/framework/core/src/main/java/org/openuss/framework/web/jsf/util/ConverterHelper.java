@@ -36,7 +36,7 @@ public class ConverterHelper extends BaseBean {
      *
      * @exception ConverterException if a conversion error occurs
      */
-    public Object asObject(FacesContext context, Class type, String value) {
+	public Object asObject(FacesContext context, Class<?> type, String value) {
 
         if (String.class == type) {
             return value;
@@ -59,7 +59,7 @@ public class ConverterHelper extends BaseBean {
      *
      * @exception ConverterException if a conversion error occurs
      */
-    public String asString(FacesContext context, Class type, Object value) {
+    public String asString(FacesContext context, Class<?> type, Object value) {
         if (value == null) {
             return null;
         } else if ((String.class == type) && (value instanceof String)) {
@@ -73,7 +73,7 @@ public class ConverterHelper extends BaseBean {
     // --------------------------------------------------------- Private Methods
 
     /**
-     * Checks whether viewRoot is allready set or not.
+     * Checks whether viewRoot is already set or not.
      * If it is not set a dummy component will be created to support javax.faces.convert.Converter specification.
      */
     private UIComponent getComponent(FacesContext context) {
@@ -95,7 +95,7 @@ public class ConverterHelper extends BaseBean {
      * @exception ConverterException if no <code>Converter</code> has been
      *  registered for the specified type
      */
-    private Converter converter(FacesContext context, Class type) {
+    private Converter converter(FacesContext context, Class<?> type) {
         if (type == null) {
             throw new ConverterException(i18n("converter_type_not_defined"));
         }

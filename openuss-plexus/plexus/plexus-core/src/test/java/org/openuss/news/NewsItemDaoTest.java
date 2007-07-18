@@ -84,7 +84,7 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		criteria.setPublishDate(now);
 		criteria.setExpireDate(now);
 		
-		List items = newsItemDao.findByCriteria(criteria);
+		List<NewsItem> items = newsItemDao.findByCriteria(criteria);
 		assertNotNull(items);
 		assertEquals(2, items.size());
 		assertFalse(items.contains(item1));
@@ -111,7 +111,7 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		
 		commit();
 		
-		List items = newsItemDao.findByPublisher(publisherId);
+		List<NewsItem> items = newsItemDao.findByPublisher(publisherId);
 		assertNotNull(items);
 		assertEquals(2, items.size());
 		assertTrue(items.contains(itemOne));
@@ -146,7 +146,7 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		
 		commit();
 		
-		List items = newsItemDao.findByCategory(NewsCategory.DESKTOP);
+		List<NewsItem> items = newsItemDao.findByCategory(NewsCategory.DESKTOP);
 		assertNotNull(items);
 		assertEquals(2, items.size());
 		assertFalse(items.contains(itemOne));
@@ -162,7 +162,7 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 	}
 
 	private void removeAllNewsItem() {
-		Collection all = newsItemDao.loadAll();
+		Collection<NewsItem> all = newsItemDao.loadAll();
 		newsItemDao.remove(all);
 	}
 	
@@ -176,6 +176,7 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		newsItem.setAuthor("author of the newsitem");
 		newsItem.setPublishDate(past);
 		newsItem.setExpireDate(future);
+		newsItem.setPublisherType(PublisherType.COURSE);
 		return newsItem;
 	}
 

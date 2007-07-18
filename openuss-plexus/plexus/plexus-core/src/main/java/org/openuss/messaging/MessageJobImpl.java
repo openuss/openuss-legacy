@@ -25,16 +25,18 @@ public class MessageJobImpl extends MessageJobBase implements MessageJob {
 		setCreated(new Date());
 	}
 
-
 	public void addRecipient(User user) {
 		Validate.notNull(user, "Parameter recipient must not be null.");
 		Recipient recipient = Recipient.Factory.newInstance();
-		recipient.setUser(user);
+		recipient.setEmail(user.getEmail());
+		recipient.setSms(user.getSmsEmail());
+		recipient.setLocale(user.getLocale());
 		recipient.setJob(this);
 		getRecipients().add(recipient);
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public void addRecipients(Collection users) {
 		Validate.allElementsOfType(users, User.class, "Parameter users must contain user objects");
 		for (User user : (Collection<User>) users) {
@@ -74,6 +76,17 @@ public class MessageJobImpl extends MessageJobBase implements MessageJob {
 				return SendState.SEND.equals(((Recipient) object).getState()); 
 			}
 		});
+	}
+
+
+	@Override
+	public void addRecipient(String email, String locale) {
+		Validate.notNull(email, "Parameter email must not be null.");
+		Recipient recipient = Recipient.Factory.newInstance();
+		recipient.setEmail(email);
+		recipient.setLocale(locale);
+		recipient.setJob(this);
+		getRecipients().add(recipient);
 	}
 
 }

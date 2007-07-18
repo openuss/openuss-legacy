@@ -77,7 +77,7 @@ public final class SetEntityBindingHandler extends TagHandler {
 			faceletsContext.getVariableMapper().setVariable(varName, propertyValueExpression);
 
 			// Cache the type so we don't have to look it up in each tag.
-			Class type = propertyValueExpression.getType(faceletsContext);
+			Class<?> type = propertyValueExpression.getType(faceletsContext);
 			faceletsContext.setAttribute(varName + "Type", type);
 		} catch (Exception ex) {
 			logger.error(ex);
@@ -85,7 +85,7 @@ public final class SetEntityBindingHandler extends TagHandler {
 		}
 	}
 
-	private ValueExpression getValueExpression(String expression, FaceletContext ctx, Class type) {
+	private ValueExpression getValueExpression(String expression, FaceletContext ctx, Class<?> type) {
 		try {
 			final ExpressionFactory expressionFactory = ctx.getExpressionFactory();
 			final ValueExpression valueExpression = expressionFactory.createValueExpression(ctx, expression, type);

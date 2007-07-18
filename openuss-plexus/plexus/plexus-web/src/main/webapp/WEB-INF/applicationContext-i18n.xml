@@ -7,8 +7,8 @@
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 		      Message Resources
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-   	<bean id="i18nMessageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basenames">
+   	<bean id="messageSource" parent="message_source">
+   		<property name="basenames">
 			<list merge="true">
 	  			<value>resources</value>
 			</list>

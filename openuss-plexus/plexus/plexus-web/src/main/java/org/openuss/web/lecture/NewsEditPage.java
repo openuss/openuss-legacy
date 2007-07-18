@@ -22,6 +22,7 @@ import org.openuss.lecture.LectureException;
 import org.openuss.news.NewsCategory;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
+import org.openuss.news.PublisherType;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
@@ -94,6 +95,7 @@ public class NewsEditPage extends AbstractLecturePage {
 			return Constants.INSTITUTE_NEWS_EDIT_PAGE;
 		}
 		newsItem.setAuthor(getAuthorName());
+		newsItem.setPublisherType(PublisherType.INSTITUTE);
 		newsService.saveNewsItem(newsItem);
 
 		return Constants.INSTITUTE_NEWS_PAGE;
@@ -101,7 +103,7 @@ public class NewsEditPage extends AbstractLecturePage {
 
 	private String getAuthorName() {
 		User user = (User) getSessionBean(Constants.USER);
-		return user.getFirstName() + " " + user.getLastName();
+		return user.getDisplayName();
 	}
 	
 	

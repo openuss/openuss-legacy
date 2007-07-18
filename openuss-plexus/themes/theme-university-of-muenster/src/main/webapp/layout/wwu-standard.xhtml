@@ -5,6 +5,56 @@
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 	
+	
+	<div id="main">
+		<div id="left">
+			<h:form>
+				<h:outputLink value="#{facesContext.externalContext.requestContextPath}/views/welcome.faces" styleClass="openuss_logo">
+					<div class="openuss_logo"/>
+				</h:outputLink>			
+			</h:form>
+		<ui:insert name="navigation"/>
+		</div>
+		<div id="center">
+		     <div id="header_center">
+				   <div id="userinfo">
+	        			<span class="userinfo"><ui:insert name="userportlet"/></span>
+				   </div>
+	    		   <div id="header_navigation_block">
+						<ui:insert name="mainmenu"/>
+			       </div>
+		     </div>		
+		     
+			<ui:insert name="breadcrumb"/>
+			
+	        <ui:insert name="messages"/>
+	        
+			<ui:insert name="content">
+				<ui:include src="content.xhtml" />
+			</ui:insert>
+		</div>
+		<div id="right">
+			<ui:insert name="search"/>
+			<ui:insert name="sidebar"/>
+		</div>
+		<div id="footer">
+			<div id="footer_border"/>
+			<ui:insert name="footer">
+				<ui:include src="footer.xhtml" />
+			</ui:insert>
+	<!-- 
+			<ul>
+			<t:dataList var="v" value="#{viewStack}" layout="list">
+				<li>#{v}</li>
+			</t:dataList>
+			</ul>
+ 	-->
+		</div>
+	</div>
+	
+	
+	
+	<!--  
 	<div id="top">
 		<div id="top_right"/>
 		<div id="top_left"/>
@@ -56,6 +106,6 @@
 	</div>
 	</div>
 	
-	
+	-->
 	
 </f:subview>

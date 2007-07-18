@@ -29,6 +29,8 @@ public class Constants {
 	
 	// service beans
 	public static final String LECTURE_SERVICE = "lectureService";
+	public static final String SECURITY_SERVICE ="securityService";
+	public static final String ONLINE_STATISTIC_SERVICE = "onlineStatisticService";
 	
 	// Session View Controller
 	public static final String INSTITUTE_REGISTRATION_CONTROLLER = "instituteRegistration";
@@ -104,6 +106,7 @@ public class Constants {
 	public static final String DISCUSSION_THREAD = "discussion_thread";
 	public static final String DISCUSSION_THREADLENGTH = "discussion_threadlength";
 	public static final String DISCUSSION_REMOVETHREAD = "discussion_removethread";
+	public static final String DISCUSSION_FORUM = "discussion_forum";
 	
 	public static final String ZIP_DOWNLOAD_URL = "/zips/documents.zip";
 	
@@ -134,5 +137,7 @@ public class Constants {
 	
 	public static final String BREADCRUMBS = "crumbs";
 
-	public static final String ONLINE_SESSION_ID = "org.openuss.statistics.onlinesession.id";	
+	public static final String ONLINE_SESSION_ID = "org.openuss.statistics.onlinesession.id";
+	
+	public static final String SYSTEM_STATISTIC = "systemStatistic";
 }

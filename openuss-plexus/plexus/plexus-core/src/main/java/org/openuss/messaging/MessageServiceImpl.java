@@ -23,6 +23,8 @@ public class MessageServiceImpl extends MessageServiceBase {
 	 * @see org.openuss.messaging.MessageService#sendMessage(java.lang.String,
 	 *      java.lang.String, boolean, java.util.List)
 	 */
+	@SuppressWarnings("unchecked")
+	@Override
 	protected Long handleSendMessage(String sender, String subject, String text, boolean sms, List recipients) throws Exception {
 		Validate.notEmpty(subject, "Parameter subject must not be empty");
 		validateRecipients(recipients);
@@ -37,7 +39,7 @@ public class MessageServiceImpl extends MessageServiceBase {
 		return job.getId();
 	}
 
-	private MessageJob createMessageJob(boolean sms, List recipients, Message message) throws CommandApplicationService {
+	private MessageJob createMessageJob(boolean sms, List<User> recipients, Message message) throws CommandApplicationService {
 		MessageJob job = MessageJob.Factory.newInstance();
 		job.setState(JobState.INQUEUE);
 		job.setSendAsSms(sms);
@@ -53,24 +55,30 @@ public class MessageServiceImpl extends MessageServiceBase {
 	 * @see org.openuss.messaging.MessageService#sendMessage(java.lang.String,
 	 *      java.lang.String, java.util.Map, java.util.List)
 	 */
+	@SuppressWarnings("unchecked")
 	protected Long handleSendMessage(String sender, String subject, String templateName, Map parameters, List recipients) throws Exception {
 		Validate.notEmpty(subject, "Parameter subject must not be empty");
 		Validate.notEmpty(templateName,"Parameter templateName must not be empty");
 
 		validateRecipients(recipients);
 		
-		TemplateMessage message = TemplateMessage.Factory.newInstance();
-		message.setSenderName(sender);
-		message.setSubject(subject);
-		message.setTemplate(templateName);
-		message.addParameters(parameters);
+		TemplateMessage message = createMessage(sender, subject, templateName, parameters);
 
 		MessageJob job = createMessageJob(false, recipients, message);
 		
 		return job.getId();
 	}
 
-	private void validateRecipients(List recipients) {
+	private TemplateMessage createMessage(String sender, String subject, String templateName, Map<String, Object> parameters) {
+		TemplateMessage message = TemplateMessage.Factory.newInstance();
+		message.setSenderName(sender);
+		message.setSubject(subject);
+		message.setTemplate(templateName);
+		message.addParameters(parameters);
+		return message;
+	}
+
+	private void validateRecipients(List<User> recipients) {
 		Validate.notNull(recipients,"Parameter recipient must not be empty");
 		Validate.allElementsOfType(recipients, org.openuss.security.User.class,"Parameter recipient must only contain User objects.");
 	}
@@ -86,6 +94,7 @@ public class MessageServiceImpl extends MessageServiceBase {
 		return handleSendMessage(senderName, subject, text, sms, wrapRecipient(recipient));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Long handleSendMessage(String senderName, String subject, String templateName, Map parameters, User recipient) throws Exception {
 		return handleSendMessage(senderName, subject, templateName, parameters, wrapRecipient(recipient));
@@ -97,5 +106,26 @@ public class MessageServiceImpl extends MessageServiceBase {
 		return recipients;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Long handleSendMessage(String sender, String subject, String templateName, Map parameters, String email, String locale) throws Exception {
+		Validate.notEmpty(sender, "Parameter sender must not be empty.");
+		Validate.notEmpty(subject, "Parameter subject must not be empty.");
+		Validate.notEmpty(templateName,"Parameter templateName must not be empty.");
+		Validate.notEmpty(email, "Parameter email must not be empty.");
+		Validate.notEmpty(locale, "Parameter locale must not be empty.");
+
+		TemplateMessage message = createMessage(sender, subject, templateName, parameters);
+		
+		MessageJob job = MessageJob.Factory.newInstance();
+		job.setState(JobState.INQUEUE);
+		job.addRecipient(email, locale);
+		job.setMessage(message);
+		
+		getMessageJobDao().create(job);
+		getCommandService().createOnceCommand(job, "messageSendingCommmand", new Date(), null);
+		
+		return job.getId();
+	}
 
 }

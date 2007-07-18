@@ -33,11 +33,12 @@ public class LectureServiceImpl extends LectureServiceBase{
 	private static final Logger logger = Logger.getLogger(LectureServiceImpl.class);
 	
 	@Override
-	protected Collection handleGetInstitutes(boolean enabledOnly) throws Exception {
-		if (enabledOnly)
+	protected Collection<InstituteDetails> handleGetInstitutes(boolean enabledOnly) throws Exception {
+		if (enabledOnly) {
 			return getInstituteDao().loadAllEnabled(InstituteDao.TRANSFORM_INSTITUTEDETAILS);
-		else
+		} else {
 			return getInstituteDao().loadAll(InstituteDao.TRANSFORM_INSTITUTEDETAILS);
+		}
 	}
 
 	@Override
@@ -183,7 +184,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("institutename", institute.getName()+"("+institute.getShortcut()+")");
 		parameters.put("institutelink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"actions/public/lecture/instituteactivation.faces?code="+activationCode);
-		getMessageService().sendMessage(institute.getShortcut(), "institute.activation.subject", "instituteactivation", parameters, getSecurityService().getCurrentUser());
+		getMessageService().sendMessage(institute.getShortcut(), "institute.activation.subject", "instituteactivation", parameters, institute.getEmail(), institute.getLocale());
 	}
 
 	
@@ -371,7 +372,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 	@Override
 	protected List handleGetInstituteAspirants(Long instituteId) throws Exception {
 		Institute institute = getInstituteDao().load(instituteId);
-		// need to get ride of persistant back so use a new arraylist
+		// need to get ride of persistent back so use a new ArrayList
 		List aspirants = new ArrayList<User>(institute.getAspirants());
 		getUserDao().toUserInfoCollection(aspirants);
 		return aspirants;
@@ -399,7 +400,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		} else {
 			throw new LectureException("user_is_already_a_member_of_the_institute");
 		}
-		//send mail to adminisitrators
+		//send mail to administrators
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("institutename", institute.getName()+"("+institute.getShortcut()+")");
 		parameters.put("instituteapplicantlink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/auth/aspirants.faces?institute="+institute.getId());
@@ -407,6 +408,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	private List<User> getInstituteAdmins(Institute institute){
+		// XXX Polish me!
 		Collection<Group> groups = institute.getGroups();
 		Iterator i = groups.iterator();
 		Group adminGroup = null;

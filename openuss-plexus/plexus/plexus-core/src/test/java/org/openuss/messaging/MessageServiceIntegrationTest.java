@@ -19,7 +19,7 @@ import org.openuss.security.User;
 public class MessageServiceIntegrationTest extends MessageServiceIntegrationTestBase {
 	
 	public void testSendTextMessage() {
-		List recipients = createUsers(50);
+		List<User> recipients = createUsers(50);
 		Long messageId = messageService.sendMessage("sender", "courseType", "text", true, recipients);
 		assertNotNull(messageId);
 		commit();
@@ -30,7 +30,7 @@ public class MessageServiceIntegrationTest extends MessageServiceIntegrationTest
 	}
 
 	public void testSendTemplateMessage() {
-		List recipients = createUsers(50);
+		List<User> recipients = createUsers(50);
 		
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("param1", "value");

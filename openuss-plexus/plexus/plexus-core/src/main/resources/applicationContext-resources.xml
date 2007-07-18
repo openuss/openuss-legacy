@@ -6,8 +6,8 @@
     					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 		      Message Resources
-	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-   	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+   	<bean abstract="true" id="message_source" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames">
 			<list merge="true">
 				<value>org.acegisecurity.messages</value>
@@ -15,4 +15,6 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="messageSource" parent="message_source"/>
 </beans>

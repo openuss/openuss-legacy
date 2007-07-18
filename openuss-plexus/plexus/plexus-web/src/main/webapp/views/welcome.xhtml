@@ -32,9 +32,15 @@
   			<o:block styleClass="teaser_blue_right" label="#{msg.welcome_barometer_header}">
 		  		<h:panelGrid columns="2">
 		  			<h:outputText value="#{msg.welcome_barometer_institutes}" styleClass="content_font_normal"/>
-		  			<h:outputText value="486" styleClass="content_font_normal"/>
+		  			<h:outputText value="#{systemStatistic.institutes}" styleClass="content_font_normal"/>
+		  			<h:outputText value="#{msg.welcome_barometer_courses}" styleClass="content_font_normal"/>
+		  			<h:outputText value="#{systemStatistic.courses}" styleClass="content_font_normal"/>
 		  			<h:outputText value="#{msg.welcome_barometer_users}" styleClass="content_font_normal"/>
-		  			<h:outputText value="36515" styleClass="content_font_normal"/>
+		  			<h:outputText value="#{systemStatistic.users}" styleClass="content_font_normal"/>
+		  			<h:outputText value="#{msg.welcome_barometer_documents}" styleClass="content_font_normal"/>
+		  			<h:outputText value="#{systemStatistic.documents}" styleClass="content_font_normal"/>
+		  			<h:outputText value="#{msg.welcome_barometer_posts}" styleClass="content_font_normal"/>
+		  			<h:outputText value="#{systemStatistic.posts}" styleClass="content_font_normal"/>
 		  		</h:panelGrid>
 		  	</o:block>
 		  	<o:block styleClass="teaser_blue" label="#{msg.welcome_teaser_header}">

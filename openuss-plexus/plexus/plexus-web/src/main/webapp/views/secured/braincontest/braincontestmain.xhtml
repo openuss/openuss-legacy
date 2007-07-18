@@ -13,13 +13,9 @@
 	xmlns:plexus="http://www.openuss.org/plexus/jsf">
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><ui:insert name="title" /></title>
-<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
-	media="screen,screen" />
-<!-- css-Datei mit Farbdefinitionen der Rubrik -->
-<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
-	media="screen" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="../../css/openuss.css" rel="stylesheet" type="text/css"	media="screen,screen" />
+	<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 
 <body>
@@ -58,14 +54,15 @@
 
 				<t:column>
 					<plexus:commandSortHeader columnName="answers">#{msg['braincontest_main_column_answers']}</plexus:commandSortHeader>
-					<h:outputText value="#{braincontest.answers} / #{braincontest.tries}"/>
+					<h:outputText value="#{braincontest.answers} / #{braincontest.tries}" />
 				</t:column>
 
 				<plexus:column header="#{msg.braincontest_main_column_actions}">
 					<plexus:command
 						bean="#{views$secured$braincontest$braincontestmain}"
 						action="topList" label="#{msg.braincontest_main_button_top}"
-						title="#{msg.braincontest_main_button_top}" />
+						title="#{msg.braincontest_main_button_top}" 
+						rendered="#{braincontest.released}"/>
 					<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}" >
 						<plexus:command						
 							bean="#{views$secured$braincontest$braincontestmain}"

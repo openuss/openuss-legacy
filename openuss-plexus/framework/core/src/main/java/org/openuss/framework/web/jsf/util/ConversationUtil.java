@@ -31,7 +31,7 @@ public class ConversationUtil {
 	public static final String FACES_MESSAGES_SESSION_KEY = "org.openuss.framework.web.jsf.events.RedirectPhaseListener.SaveGlobalFacesMessages";
 
 	/**
-	 * Redirects to the given url 
+	 * Redirects to the given URL 
 	 * @param facesContext
 	 * @param url
 	 */
@@ -43,7 +43,7 @@ public class ConversationUtil {
 			while (tokens.hasMoreTokens()) {
 				String name = tokens.nextToken();
 				String value = null;
-				// be more robust against misspelling urls
+				// be more robust against misspelling URLs
 				if (tokens.hasMoreTokens())
 					value = ConversationUtil.interpolate(tokens.nextToken());
 				else
@@ -66,8 +66,10 @@ public class ConversationUtil {
 
 		String url = facesContext.getApplication().getViewHandler().getActionURL(facesContext, viewId);
 		if (parameters != null) {
-			// FIXME check if url is getting longer then 1024 bytes  
 			url = ConversationUtil.encodeParameters(url, parameters);
+			if (url.length() > 1024) {
+				logger.error("url "+url+"is longer then 1024 bytes");
+			}
 		}
 		try {
 			externalContext.redirect(externalContext.encodeActionURL(url));
@@ -162,23 +164,23 @@ public class ConversationUtil {
 		}
 		logger.trace("save global messages");
 		
-		Map sessionMap = facesContext.getExternalContext().getSessionMap();
+		Map<String, Object> sessionMap = facesContext.getExternalContext().getSessionMap();
 		
 		if (!sessionMap.containsKey(FACES_MESSAGES_SESSION_KEY)) {
-			sessionMap.put(FACES_MESSAGES_SESSION_KEY, new HashMap<String,List>());
+			sessionMap.put(FACES_MESSAGES_SESSION_KEY, new HashMap<String,List<FacesMessage>>());
 		}
 		
-		Map<String, List> allMessages = (Map) sessionMap.get(FACES_MESSAGES_SESSION_KEY);
+		Map<String, List<FacesMessage>> allMessages = (Map<String, List<FacesMessage>>) sessionMap.get(FACES_MESSAGES_SESSION_KEY);
 		
-		for (Iterator ids = facesContext.getClientIdsWithMessages(); ids.hasNext();) {
-			String clientId = (String) ids.next();
+		for (Iterator<String> ids = facesContext.getClientIdsWithMessages(); ids.hasNext();) {
+			String clientId = ids.next();
 			List<FacesMessage> messages = new ArrayList<FacesMessage>();
 			// for each component (client id) retrieve the messages
-			for (Iterator msgs = facesContext.getMessages(clientId); msgs.hasNext();) {
-				messages.add((FacesMessage)msgs.next());
+			for (Iterator<FacesMessage> msgs = facesContext.getMessages(clientId); msgs.hasNext();) {
+				messages.add(msgs.next());
 				msgs.remove();
 			}
-			List clientMessages = (List) allMessages.get(clientId);
+			List<FacesMessage> clientMessages = allMessages.get(clientId);
 			if (clientMessages != null) {
 				clientMessages.addAll(messages);
 			} else {
@@ -194,18 +196,18 @@ public class ConversationUtil {
 	 * @param facesContext
 	 */
 	public static void restoreMessagesFromSession(FacesContext facesContext) {
-		final Map sessionMap = facesContext.getExternalContext().getSessionMap();
+		final Map<String, Object> sessionMap = facesContext.getExternalContext().getSessionMap();
 		
-		Map<String, List> allMessages = (Map) sessionMap.remove(FACES_MESSAGES_SESSION_KEY);
+		Map<String, List<FacesMessage>> allMessages = (Map<String, List<FacesMessage>>) sessionMap.remove(FACES_MESSAGES_SESSION_KEY);
 		if (allMessages == null) {
 			logger.trace("no messages to restore");
 			return;
 		}
 		logger.trace("restore messages from session");
 		
-		for (Entry entry : allMessages.entrySet()) {
+		for (Entry<String, List<FacesMessage>> entry : allMessages.entrySet()) {
 			String clientId = (String) entry.getKey();
-			List<FacesMessage> clientMessages = (List) entry.getValue();
+			List<FacesMessage> clientMessages = entry.getValue();
 			for (FacesMessage message : clientMessages) {
 				facesContext.addMessage(clientId, message);
 			}
@@ -216,9 +218,9 @@ public class ConversationUtil {
      * Resets UIInput component values From 
      * http://forum.java.sun.com/thread.jspa?threadID=495087&messageID=3704164
      */
-    public static void resetComponentValues(List childList) {
+    public static void resetComponentValues(List<UIComponent> childList) {
         for (int i = 0; i < childList.size(); i++) {
-            UIComponent component = (UIComponent) childList.get(i);
+            UIComponent component = childList.get(i);
             if (component instanceof UIInput) {
             	UIInput input = (UIInput) component;
             	if (logger.isTraceEnabled()) {

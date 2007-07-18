@@ -15,18 +15,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><ui:insert name="title" /></title>
-<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
-	media="screen,screen" />
-<!-- css-Datei mit Farbdefinitionen der Rubrik -->
-<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
-	media="screen" />
+	<link href="../../css/openuss.css" rel="stylesheet" type="text/css"	media="screen,screen" />
+	<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 
 <body>
 <!-- text above will be ignored -->
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="header">
-		<link type="application/rss+xml" title="RSS-#{course_info.name}" rel="alternate" href="../../../rss/secured/discussion.xml?course=#{course_info.id}"/>
+		<link type="application/rss+xml" title="RSS-#{course.name}" rel="alternate" href="../../../rss/secured/discussion.xml?course=#{course.id}"/>
 	</ui:define>
 	<ui:define name="title">
 		<h:outputText
@@ -42,11 +39,26 @@
 	<ui:define name="content">
 		<h:form id="discussionTableView">
 			<ui:include src="discussionstable.xhtml" />
-			<o:block>
-				<plexus:command bean="#{views$secured$discussion$discussions}"
-					action="newTopic" label="#{msg['discussion_new']}"
-					title="#{msg['discussion_new']}"/>				
-			</o:block>
+			<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}" >
+				<o:block>
+					<h:commandButton
+						id="newTopicButtonAssist"
+						action="#{views$secured$discussion$discussions.newTopic}"
+						value="#{msg['discussion_new']}"
+						title="#{msg['discussion_new']}"
+						styleClass="button"/>				
+				</o:block>
+			</s:acl>
+			<s:acl domainObject="#{course}" hasNotPermission="#{ACL.ASSIST}" >
+				<o:block rendered="#{not discussion_forum.readOnly}">
+					<h:commandButton
+						id="newTopicButton"
+						action="#{views$secured$discussion$discussions.newTopic}"
+						value="#{msg['discussion_new']}"
+						title="#{msg['discussion_new']}"
+						styleClass="button"/>				
+				</o:block>
+			</s:acl>
 		</h:form>
 	</ui:define>
 </ui:composition>

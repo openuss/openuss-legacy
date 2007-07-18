@@ -31,6 +31,7 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void instituteDetailsToEntityCollection(Collection instances) {
 	}
 
@@ -41,6 +42,7 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void instituteSecurityToEntityCollection(Collection instances) {
 	}
 
@@ -60,19 +62,19 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		return null;
 	}
 
-	public List loadAllEnabled() {
+	public List<Institute> loadAllEnabled() {
 		return null;
 	}
 
-	public List loadAllEnabled(String queryString) {
+	public List<Institute> loadAllEnabled(String queryString) {
 		return null;
 	}
 
-	public List loadAllEnabled(int transform) {
+	public List<?> loadAllEnabled(int transform) {
 		return null;
 	}
 
-	public List loadAllEnabled(int transform, String queryString) {
+	public List<?> loadAllEnabled(int transform, String queryString) {
 		return null;
 	}
 
@@ -83,6 +85,7 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void toInstituteDetailsCollection(Collection entities) {
 	}
 
@@ -93,8 +96,40 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void toInstituteSecurityCollection(Collection entities) {
 	}
 
+	public Long getInstituteCount() {
+		return null;
+	}
 
+	public Long getInstituteCount(String queryString) {
+		return null;
+	}
+
+	public Object getInstituteCount(int transform) {
+		return null;
+	}
+
+	public Object getInstituteCount(int transform, String queryString) {
+		return null;
+	}
+
+	public Institute create(String name, String shortcut, String ownername,
+			String address, String postcode, String city, String telephone,
+			String telefax, String website, String locale, String description,
+			String email, String theme, String land, boolean enabled) {
+		return null;
+	}
+
+	public Object create(int transform, String name, String shortcut,
+			String ownername, String address, String postcode, String city,
+			String telephone, String telefax, String website, String locale,
+			String description, String email, String theme, String land,
+			boolean enabled) {
+		return null;
+	}
+
+	
 }

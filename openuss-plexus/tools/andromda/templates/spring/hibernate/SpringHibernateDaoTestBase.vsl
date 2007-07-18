@@ -14,8 +14,9 @@
 package $entity.packageName;
 #end
 
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
+import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
 #set($varDao = "${stringUtils.uncapitalize($entity.daoName)}")
 #set($varEntity = "${stringUtils.uncapitalize($entity.name)}")
@@ -46,6 +47,20 @@ public abstract class ${testClassName} extends AbstractTransactionalDataSourceSp
 		setComplete();
 		endTransaction();
 		startNewTransaction();
+	}
+	
+	protected void flush() {
+	    sessionFactory.getCurrentSession().flush();
+	}
+	
+	protected SessionFactory sessionFactory;
+	
+	public SessionFactory getSessionFactory() {
+	    return sessionFactory;
+	}
+	
+	public void setSessionFactory(SessionFactory sessionFactory) { 
+	     this.sessionFactory = sessionFactory;
 	}
 	
 	protected String[] getConfigLocations() {

@@ -21,13 +21,13 @@
 FCKConfig.ToolbarSets["OpenUSS"] = [
 	['Preview'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
-	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+	['Undo','Redo','-','SelectAll','RemoveFormat'],
 	'/',
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink','Anchor'],
-	['Table','Smiley','SpecialChar','UniversalKey'],
+	['Link','Unlink'],
+	['Smiley'],
 	'/',
 	['Style','FontFormat','FontName','FontSize'],
 	['TextColor','BGColor'],
@@ -37,60 +37,59 @@ FCKConfig.ToolbarSets["OpenUSS"] = [
 FCKConfig.ToolbarSets["News"] = [
 	['FitWindow','Preview'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
-	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+	['Undo','Redo','-','SelectAll','RemoveFormat'],
 	'/',
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink','Anchor'],
+	['Link','Unlink'],
 	['TextColor','BGColor'],
-	['Table','Smiley','SpecialChar','UniversalKey']
+	['Smiley']
 ] ;
 
 FCKConfig.ToolbarSets["Wiki"] = [
 	['FitWindow','Preview'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
-	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+	['Undo','Redo','-','SelectAll','RemoveFormat'],
 	'/',
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink','Anchor'],
+	['Link','Unlink'],
 	['TextColor','BGColor'],
-	['Table','Smiley','SpecialChar','UniversalKey']
+	['Smiley']
 ] ;
 
 FCKConfig.ToolbarSets["Description"] = [
 	['FitWindow','Preview'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
-	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+	['Undo','Redo','-','SelectAll','RemoveFormat'],
 	'/',
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink','Anchor'],
+	['Link','Unlink'],
 	['TextColor','BGColor'],
-	['Table','Smiley','SpecialChar','UniversalKey']
+	['Smiley']
 ] ;
 
 FCKConfig.ToolbarSets["Discussion"] = [
 	['FitWindow','Preview'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
-	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+	['Undo','Redo','-','SelectAll','RemoveFormat'],
 	'/',
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink','Anchor'],
+	['Link','Unlink'],
 	['TextColor','BGColor'],
-	['Table','Smiley','SpecialChar','UniversalKey']
+	['Smiley']
 ] ;
 
 FCKConfig.ToolbarSets["Chat"] = [
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript','-','Smiley'],
-	['Link','Unlink','Anchor'],
-	['TextColor','BGColor'],
-	['SpecialChar','UniversalKey']
+	['Link','Unlink'],
+	['TextColor','BGColor'],	
 ] ;
 
 FCKConfig.ToolbarSets["Portrait"] = [
@@ -104,13 +103,13 @@ FCKConfig.ToolbarSets["Portrait"] = [
 FCKConfig.ToolbarSets["Email"] = [
 	['FitWindow','Preview'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
-	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+	['Undo','Redo','-','SelectAll','RemoveFormat'],
 	'/',
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink','Anchor'],
-	['TextColor','BGColor'],
-	['Table']
+	['Link','Unlink'],
+	['TextColor','BGColor']
+	
 ] ;
 

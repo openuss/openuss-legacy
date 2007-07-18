@@ -30,8 +30,9 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 
 	private static final Logger logger = Logger.getLogger(DocumentServiceImpl.class);
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected List handleAllFileEntries(Collection entries) throws Exception {
+	protected List<FileInfo> handleAllFileEntries(Collection entries) throws Exception {
 		Validate.allElementsOfType(entries, FolderEntryInfo.class,
 				"Parameter entries must only contain FolderEntryInfo objects.");
 		Collection entities = new ArrayList(entries);
@@ -127,10 +128,10 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	@Override
-	protected List handleGetFolderEntries(DomainObject domainObject, FolderInfo folderInfo) throws Exception {
+	protected List<FolderEntryInfo> handleGetFolderEntries(DomainObject domainObject, FolderInfo folderInfo) throws Exception {
 		Validate.notNull(domainObject, "Parameter DomainObject must not be null!");
 		Folder folder = retrieveFolderOfOwner(domainObject, folderInfo);
-		List entries = getFolderEntryDao().findByParent(FolderEntryDao.TRANSFORM_FOLDERENTRYINFO, folder);
+		List<FolderEntryInfo> entries = getFolderEntryDao().findByParent(FolderEntryDao.TRANSFORM_FOLDERENTRYINFO, folder);
 		filterEntriesByPermission(entries);
 		return entries;
 	}
@@ -193,6 +194,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		Validate.notNull(fileInfo, "Parameter fileInfo must not be null!");
 		Validate.notNull(fileInfo.getId(), "Parameter fileInfo must contain an id.");
 		FileEntry entry = getFileEntryDao().fileInfoToEntity(fileInfo);
+		entry.setModified(new Date());
 		getFileEntryDao().update(entry);
 		if (fileInfo.getInputStream() != null) {
 			getRepositoryService().saveContent(fileInfo.getId(), fileInfo.getInputStream());

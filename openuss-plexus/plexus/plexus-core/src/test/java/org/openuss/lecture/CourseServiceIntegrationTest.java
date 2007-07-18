@@ -22,34 +22,40 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	private InstituteDao instituteDao;
 	
 	private SecurityService securityService;
+
+	private User user;
+
+	private CourseInfo courseInfo;
 	
-	
-	public void testAspirantToParticipant() {
+	@Override
+	protected void onSetUp() throws Exception {
+		super.onSetUp();
+
 		LectureBuilder lectureBuilder = createInstituteStructure(AccessType.APPLICATION);
 		
-		User user = testUtility.createUserInDB();
+		user = testUtility.createUserInDB();
 		Course course = lectureBuilder.getCourse();
+		courseInfo = courseService.getCourseInfo(course.getId());
+	}
 
-		try {
-			courseService.applyUser(course, user);
-		} catch (CourseApplicationException e) {
-			fail(e.getMessage());
-		}
+	public void testAspirantToParticipant() {
+
+		courseService.applyUser(courseInfo, user);
 	
-		List<CourseMemberInfo> aspirants = courseService.getAspirants(course);
+		List<CourseMemberInfo> aspirants = courseService.getAspirants(courseInfo);
 		assertEquals(1, aspirants.size());
 		
 		courseService.acceptAspirant(aspirants.get(0).getId());
 
-		Collection<CourseMember> emptyAspirants = courseService.getAspirants(course);
+		Collection<CourseMember> emptyAspirants = courseService.getAspirants(courseInfo);
 		assertEquals(0, emptyAspirants.size());
 		
-		List<CourseMemberInfo> participants = courseService.getParticipants(course);
+		List<CourseMemberInfo> participants = courseService.getParticipants(courseInfo);
 		assertEquals(1, participants.size());
 		
 		commit();
 		
-		Permission permission = securityService.getPermissions(user, course);
+		Permission permission = securityService.getPermissions(user, courseInfo);
 		assertNotNull(permission);
 		
 		LectureAclEntry acl = new LectureAclEntry();
@@ -59,77 +65,53 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	}
 
 	public void testRejectAspirant() {
-		LectureBuilder lectureBuilder = createInstituteStructure(AccessType.APPLICATION);
+		courseService.applyUser(courseInfo, user);
 		
-		User user = testUtility.createUserInDB();
-		Course course = lectureBuilder.getCourse();
-		
-		try {
-			courseService.applyUser(course, user);
-		} catch (CourseApplicationException e) {
-			fail(e.getMessage());
-		}
-		
-		List<CourseMemberInfo> aspirants = courseService.getAspirants(course);
+		List<CourseMemberInfo> aspirants = courseService.getAspirants(courseInfo);
 		assertEquals(1, aspirants.size());
 		
 		courseService.rejectAspirant(aspirants.get(0).getId());
 		
-		Collection<CourseMember> emptyAspirants = courseService.getAspirants(course);
+		Collection<CourseMember> emptyAspirants = courseService.getAspirants(courseInfo);
 		assertEquals(0, emptyAspirants.size());
 		
-		List<CourseMemberInfo> emptyParticipants = courseService.getParticipants(course);
+		List<CourseMemberInfo> emptyParticipants = courseService.getParticipants(courseInfo);
 		assertEquals(0, emptyParticipants.size());
 	}
 	
 	public void testAspirants() {
-		LectureBuilder lectureBuilder = createInstituteStructure(AccessType.APPLICATION);
-		
-		User user = testUtility.createUserInDB();
-		Course course = lectureBuilder.getCourse();
-		
-		courseService.addAspirant(course, user);
+		courseService.addAspirant(courseInfo, user);
 	
-		List<CourseMemberInfo> aspirants = courseService.getAspirants(course);
+		List<CourseMemberInfo> aspirants = courseService.getAspirants(courseInfo);
 		assertEquals(1, aspirants.size());
 		
 		courseService.removeMember(aspirants.get(0).getId());
 
-		Collection<CourseMember> emptyAspirants = courseService.getAspirants(course);
+		Collection<CourseMember> emptyAspirants = courseService.getAspirants(courseInfo);
 		assertEquals(0, emptyAspirants.size());
 	}
 
 	public void testAssistants() {
-		LectureBuilder lectureBuilder = createInstituteStructure(AccessType.APPLICATION);
+		courseService.addAssistant(courseInfo, user);
 		
-		User user = testUtility.createUserInDB();
-		Course course = lectureBuilder.getCourse();
-		
-		courseService.addAssistant(course, user);
-		
-		List<CourseMemberInfo> assistants = courseService.getAssistants(course);
+		List<CourseMemberInfo> assistants = courseService.getAssistants(courseInfo);
 		assertEquals(1, assistants.size());
 		
 		courseService.removeMember(assistants.get(0).getId());
 		
-		Collection<CourseMember> emptyAssistant = courseService.getAssistants(course);
+		Collection<CourseMember> emptyAssistant = courseService.getAssistants(courseInfo);
 		assertEquals(0, emptyAssistant.size());
 	}
 	
 	public void testParticipant() {
-		LectureBuilder lectureBuilder = createInstituteStructure(AccessType.APPLICATION);
+		courseService.addParticipant(courseInfo, user);
 		
-		User user = testUtility.createUserInDB();
-		Course course = lectureBuilder.getCourse();
-		
-		courseService.addParticipant(course, user);
-		
-		List<CourseMemberInfo> participant = courseService.getParticipants(course);
+		List<CourseMemberInfo> participant = courseService.getParticipants(courseInfo);
 		assertEquals(1, participant.size());
 		
 		courseService.removeMember(participant.get(0).getId());
 		
-		Collection<CourseMember> emptyParticipants = courseService.getParticipants(course);
+		Collection<CourseMember> emptyParticipants = courseService.getParticipants(courseInfo);
 		assertEquals(0, emptyParticipants.size());
 	}
 	

@@ -24,7 +24,7 @@ public class MockCommandDao extends AbstractMockDao<Command> implements CommandD
 		return null;
 	}
 
-	public List findAllEachCommandsAfter(final Long commandId) {
+	public List<Command> findAllEachCommandsAfter(final Long commandId) {
 		List<Command> commands = (List<Command>) loadAll();
 		CollectionUtils.filter(commands, new Predicate() {
 			public boolean evaluate(Object object) {
@@ -38,19 +38,19 @@ public class MockCommandDao extends AbstractMockDao<Command> implements CommandD
 		return commands;
 	}
 
-	public List findAllEachCommandsAfter(String queryString, Long commandId) {
+	public List<Command> findAllEachCommandsAfter(String queryString, Long commandId) {
 		return findAllEachCommandsAfter(commandId);
 	}
 
-	public List findAllEachCommandsAfter(int transform, Long commandId) {
+	public List<?> findAllEachCommandsAfter(int transform, Long commandId) {
 		return findAllEachCommandsAfter(commandId);
 	}
 
-	public List findAllEachCommandsAfter(int transform, String queryString, Long commandId) {
+	public List<?> findAllEachCommandsAfter(int transform, String queryString, Long commandId) {
 		return findAllEachCommandsAfter(commandId);
 	}
 
-	public List findAllOnceCommands() {
+	public List<Command> findAllOnceCommands() {
 		List<Command> commands = (List<Command>) loadAll();
 		CollectionUtils.filter(commands, new Predicate() {
 			public boolean evaluate(Object object) {
@@ -64,15 +64,15 @@ public class MockCommandDao extends AbstractMockDao<Command> implements CommandD
 		return commands;
 	}
 
-	public List findAllOnceCommands(String queryString) {
+	public List<Command> findAllOnceCommands(String queryString) {
 		return findAllOnceCommands();
 	}
 
-	public List findAllOnceCommands(int transform) {
+	public List<Command> findAllOnceCommands(int transform) {
 		return findAllOnceCommands();
 	}
 
-	public List findAllOnceCommands(int transform, String queryString) {
+	public List<?> findAllOnceCommands(int transform, String queryString) {
 		return findAllOnceCommands();
 	}
 

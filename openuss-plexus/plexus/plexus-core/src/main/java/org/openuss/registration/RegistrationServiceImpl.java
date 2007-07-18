@@ -57,11 +57,13 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 			logger.debug("Could not find registration code "+code);
 			throw new RegistrationCodeNotFoundException("Could not find registration code "+code);
 		}
+		if (isExpired(activateCode)){
+			logger.debug("Activation code expired!");
+			throw new RegistrationCodeExpiredException("activation code expired: " + activateCode);
+		}		
 		// activate user
 		activateCode.getUser().setEnabled(true);
 		getSecurityService().saveUser(activateCode.getUser());
-		// remove regCode
-		getUserActivationCodeDao().remove(activateCode);
 	}
 
 	@Override
@@ -123,7 +125,6 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 			throw new RegistrationCodeExpiredException("activation code expired!" + activationCode);
 		}
 		loginUser(code.getUser());
-		getUserActivationCodeDao().remove(code);
 		return code.getUser();
 		
 	}
@@ -160,10 +161,11 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 			logger.debug("Could not find registration code "+code);
 			throw new RegistrationCodeNotFoundException("Could not find registration code "+code);
 		}
-
+		if (isExpired(activateCode)){
+			logger.debug("Activation code expired!");
+			throw new RegistrationCodeExpiredException("activation code expired: " + activateCode);
+		}	
 		getCommandService().createOnceCommand(activateCode.getInstitute(), INSTITUTE_ACTIVATION_COMMAND, new Date(System.currentTimeMillis()), null);
-		
-		getInstituteActivationCodeDao().remove(activateCode);
 	}
 
 	@Override

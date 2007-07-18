@@ -29,7 +29,7 @@
  		 
   		<ui:define name="content">
 			<h:form id="courseOptionForm">
-	  			<o:block label="#{msg.course_options_headline} - #{sessionScope.course.courseType.name} - #{sessionScope.course.period.name}" styleClass="form_box">
+	  			<o:block label="#{msg.course_options_headline} - #{sessionScope.course.name} - #{sessionScope.course.periodName}" styleClass="form_box">
 					<o:input entity="course" property="shortcut" maxlength="30" required="true">
 				 		<f:validator validatorId="courseShortcutValidator"/>
 					</o:input>
@@ -46,7 +46,7 @@
 					</h:selectOneMenu>
 					<h:message for="accessType" styleClass="field_error"/>
 					<c:if test="#{sessionScope.course.accessType.value == 2}">
-		 				<o:input entity="course" property="password"/>
+		 				<o:input entity="course" property="password" required="true"/>
 	 				</c:if> 				
 					
 					<h:outputText value="#{msg.course_description}" styleClass="field_label"/>					

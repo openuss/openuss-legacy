@@ -107,7 +107,8 @@ public class ConvertTimestampHandler extends ConvertHandler {
         }
     }
 
-    protected MetaRuleset createMetaRuleset(Class type) {
+    @SuppressWarnings("unchecked")
+	protected MetaRuleset createMetaRuleset(Class type) {
         return super.createMetaRuleset(type).ignoreAll();
     }
 }

@@ -100,32 +100,4 @@ public class ThemeManageBeanTest extends TestCase {
 		assertEquals(theme.getId(), item.getValue());
 		
 	}
-	
-	public void testCurrentTheme() {
-		//FIXME MockObjecte
-//		createFacesContextMock();
-//		expect(mockSessionMap.put(ThemeManager.THEME_SCOPEKEY, theme)).andReturn(theme);
-//		manager.setFacesContext(mockFacesContext);
-//
-//		replay(mockFacesContext);
-//		replay(mockExternalContext);
-//		replay(mockSessionMap);
-//		replay(mockApplication);
-//		
-//		manager.setCurrentTheme(theme);
-//		assertEquals(theme, manager.getCurrentTheme());
-//		verify(mockSessionMap);
-	}
-	
-//	private void createFacesContextMock() {
-//		mockFacesContext = createMock(FacesContext.class);
-//		mockExternalContext = createMock(ExternalContext.class);
-//		mockApplication = createMock(Application.class);
-//		mockSessionMap = createMock(Map.class);
-//		expect(mockFacesContext.getExternalContext()).andReturn(mockExternalContext).anyTimes();
-//		expect(mockExternalContext.getSessionMap()).andReturn(mockSessionMap).anyTimes();
-//		expect(mockFacesContext.getApplication()).andReturn(mockApplication).anyTimes();
-//	}
-
-
 }

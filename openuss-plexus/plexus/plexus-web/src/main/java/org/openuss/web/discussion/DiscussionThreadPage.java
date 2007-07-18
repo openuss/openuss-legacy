@@ -47,6 +47,13 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 			discussionService.addHit(topic);
 			topicWatchState = discussionService.watchesTopic(topic);
 			topicReadOnly = topic.isReadOnly();
+			if (forum.isReadOnly()){
+				addMessage(i18n("discussion_forum_readonly_true_simple"));
+			}else if (!forum.isReadOnly()){
+				if (topicReadOnly){
+					addMessage(i18n("discussion_topic_readonly_true_simple"));
+				} 
+			}
 		}
 		addPageCrumb();
 	}	
@@ -66,6 +73,7 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		
 		private DataPage<PostInfo> page; 
 		
+		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<PostInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
@@ -78,8 +86,8 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	}
 	
 	public String addPost(){
-		if (topic.isReadOnly()||getForum().isReadOnly()){
-			addMessage(i18n("discussion_readonly"));
+		if ((topic.isReadOnly()||getForum().isReadOnly())&&(!isAssistant())){
+			addError(i18n("discussion_readonly"));
 			return Constants.FAILURE;			
 		}
 		TopicInfo topic = discussionService.getTopic(this.topic);
@@ -93,8 +101,8 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	}
 	
 	public String removePost(){
-		if (topic.isReadOnly()||getForum().isReadOnly()){
-			addMessage(i18n("discussion_readonly"));
+		if ((topic.isReadOnly()||getForum().isReadOnly())&&(!isAssistant())){
+			addError(i18n("discussion_readonly"));
 			return Constants.FAILURE;			
 		}		
 		PostInfo pi = this.data.getRowData();
@@ -109,8 +117,8 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	}
 	
 	public String editPost(){
-		if (topic.isReadOnly()||getForum().isReadOnly()){
-			addMessage(i18n("discussion_readonly"));
+		if ((topic.isReadOnly()||getForum().isReadOnly())&&(!isAssistant())){
+			addError(i18n("discussion_readonly"));
 			return Constants.FAILURE;			
 		}		
 		PostInfo pi = this.data.getRowData();
@@ -120,8 +128,8 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	}
 	
 	public String quote(){
-		if (topic.isReadOnly()||getForum().isReadOnly()){
-			addMessage(i18n("discussion_readonly"));
+		if ((topic.isReadOnly()||getForum().isReadOnly())&&(!isAssistant())){
+			addError(i18n("discussion_readonly"));
 			return Constants.FAILURE;			
 		}
 		TopicInfo topic = discussionService.getTopic(this.topic);

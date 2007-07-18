@@ -21,6 +21,7 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.news.NewsCategory;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
+import org.openuss.news.PublisherType;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
@@ -92,6 +93,7 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 		newsItem.setExpireDate(null);
 		newsItem.setPublisherIdentifier(courseInfo.getId());
 		newsItem.setAuthor(getAuthorName());
+		newsItem.setPublisherType(PublisherType.COURSE);
 		newsService.saveNewsItem(newsItem);
 
 		return Constants.COURSE_NEWS_PAGE;

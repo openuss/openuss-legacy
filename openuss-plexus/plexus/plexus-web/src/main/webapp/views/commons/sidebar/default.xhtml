@@ -10,42 +10,35 @@
     xmlns:s="http://www.openuss.org/jsf-security"
     xmlns:x="http://myfaces.apache.org/extensions">
     <ui:include src="whoisonline.xhtml"/>
-	<o:block label="${msg['useFulLinks_Headline']}">
+    <o:block label="${msg['useFulLinks_Headline']}">
 		<p class="content_font_normal">
 			<ul class="ext">
 				<li class="sidebar_listPoint">
-					<h:outputLink value="http://localhost:8080/openuss-plexus">
-						<h:outputText value="${msg.useFulLinks_L1}"/>
-					</h:outputLink>
-				</li>
-				<li class="sidebar_listPoint">
-					<h:outputLink value="http://localhost:8080/openuss-plexus">
+					<h:outputLink value="http://cgi.uni-muenster.de/exec/Rektorat/upm.php">
 						<h:outputText value="${msg.useFulLinks_L2}"/>
 					</h:outputLink>
 				</li>
-				
-				<li class="sidebar_listPoint">
-					<h:outputLink value="http://localhost:8080/openuss-plexus">
-						<h:outputText value="${msg.useFulLinks_L3}"/>
-					</h:outputLink>
-				</li>
+				 
 			</ul>
 		</p>
 	</o:block>
+	
 	<o:block label="${msg.topLinks_Headline}">
 		<p class="content_font_normal">
 			<ul class="int">
-				<h:form id="topLinksForm">
 				<li class="sidebar_listPoint">
-					<h:commandLink value="${msg.topLinks_L1}" action="search_institutes"/>
+					<h:outputLink value="http://uvlsf.uni-muenster.de/qisserver/servlet/de.his.servlet.RequestDispatcherServlet">
+						<f:param name="state" value="wtree"/>
+						<f:param name="search" value="1"/>
+						<f:param name="menuid" value="lectureindex"/>
+						<h:outputText value="${msg.useFulLinks_L3}"/>
+					</h:outputLink>
 				</li>
 				<li class="sidebar_listPoint">
-					<h:commandLink value="${msg.topLinks_L2}" action="searchCourses"/>					
+					<h:outputLink value="http://www.uni-muenster.de/organisation/e_learning/index.html">
+						<h:outputText value="${msg.topLinks_L2}"/>
+					</h:outputLink>
 				</li>
-				<li class="sidebar_listPoint">
-					<h:commandLink value="${msg.topLinks_L3}" action="searchMembers"/>
-				</li>
-				</h:form>
 			</ul>
 		</p>
 	</o:block>

@@ -2,9 +2,27 @@
 	<page view-id="/views/secured/lecture/*">
 		<parameter name="institute" value="#{institute.id}" converterId="javax.faces.Long"/>
 	</page>
+	
+	<page view-id="/views/secured/lecture/auth/*">
+		<securityConstraint domainObject="#{institute}" permissions="#{ACL.GRANT}"/> 
+	</page>
+
+	<page view-id="/views/secured/lecture/news*">
+		<securityConstraint domainObject="#{institute}" permissions="#{ACL.MANAGE_NEWS}"/> 
+	</page>
+
+	<page view-id="/views/secured/lecture/instituteoptions*">
+		<securityConstraint domainObject="#{institute}" permissions="#{ACL.GRANT}"/> 
+	</page>
+	
 	<page view-id="/views/secured/lecture/period*">
 		<securityConstraint domainObject="#{institute}" permissions="#{ACL.MANAGE_PERIODS}"/> 
 		<parameter name="period" value="#{period.id}" converterId="javax.faces.Long"/>
+	</page>
+
+	<page view-id="/views/secured/lecture/course*">
+		<securityConstraint domainObject="#{institute}" permissions="#{ACL.MANAGE_COURSE_TYPES}"/> 
+		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<page view-id="/views/secured/course/*">
@@ -77,7 +95,11 @@
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 	
 	<page view-id="/views/secured/newsletter/showmail.xhtml">
-		<securityConstraint domainObject="#{newsletter_mail}" permissions="#{ACL.READ}"/>
+		<parameter name="mail" value="#{newsletter_mail.id}" converterId="javax.faces.Long"/>
+	</page>
+
+	<page view-id="/views/secured/newsletter/newmail.xhtml">
+		<securityConstraint domainObject="#{course}" permissions="#{ACL.ASSIST}"/>
 		<parameter name="mail" value="#{newsletter_mail.id}" converterId="javax.faces.Long"/>
 	</page>
 

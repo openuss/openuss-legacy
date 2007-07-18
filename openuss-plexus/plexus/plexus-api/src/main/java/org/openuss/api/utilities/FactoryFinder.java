@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 /**
- * @author Ingo Düppe
+ * @author Ingo Dueppe
  * @version 1.0 - 25.11.2004
  */
 public class FactoryFinder {
@@ -27,8 +27,8 @@ public class FactoryFinder {
      * <ul>
      * <li>Use the <strong>factoryId </strong> system property.</li>
      * <li>Use the Services API (as detailed in the JAR specification), if
-     * available, to determine the classname. The Services API will look for a
-     * classname in the file
+     * available, to determine the class name. The Services API will look for a
+     * class name in the file
      * <code>META-INF/services/<strong>factoryId</strong></code> in jars
      * available to the runtime.</li>
      * </ul>
@@ -44,7 +44,7 @@ public class FactoryFinder {
         ClassLoader classLoader = securitySupport.getContextClassLoader();
 
         if (classLoader == null) {
-            // if no Context ClassLoader then une current class loader.
+            // if no Context ClassLoader then use current class loader.
             classLoader = FactoryFinder.class.getClassLoader();
         }
 
@@ -95,7 +95,7 @@ public class FactoryFinder {
      */
     private static Object newInstance(String factoryClassName, ClassLoader classLoader) throws ConfigurationError {
         try {
-            Class provider;
+            Class<?> provider;
 
             if (classLoader == null) {
                 provider = Class.forName(factoryClassName);

@@ -13,15 +13,13 @@
 	
 		<h:form>
 			<s:acl domainObject="#{institute}" hasPermission="#{ACL.INSTITUTE_ADMINISTRATION}" >
-				<o:block styleClass="option_box" label="#{msg.institute_activation_sidebox}" rendered="#{not institute.enabled}">
-					<h:outputText value="#{msg.institute_not_activated_message}" styleClass="content_font_normal" escape="false"/>					
-					<ul class="int">
-						<li>
-							<h:commandLink action="#{views$secured$lecture$institute.resendActivationMail}"
-								value="#{msg['institute_activate_button']}"
-								title="#{msg['institute_activate_button']}"/>
-						</li>
-					</ul>
+				<o:block styleClass="warning_box" label="#{msg.institute_activation_sidebox}" rendered="#{not institute.enabled}">
+					<p class="content_font_normal">
+						<h:outputText value="#{msg.institute_not_activated_message}" styleClass="content_font_normal" escape="false"/>					
+					</p>
+					<h:commandButton action="#{views$secured$lecture$institute.resendActivationMail}"
+							value="#{msg['institute_activate_button']}"
+							title="#{msg['institute_activate_button']}" styleClass="button_save"/>
 				</o:block>
 			</s:acl>
 		</h:form>

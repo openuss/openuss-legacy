@@ -5,6 +5,8 @@
  */
 package org.openuss.newsletter;
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +22,10 @@ import org.openuss.security.acl.LectureAclEntry;
  * @see org.openuss.newsletter.NewsletterService
  */
 public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServiceBase {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(NewsletterServiceImpl.class);
 
 	private static final String MAIL_SENDING_COMMAND = "mailSendingCommand";
 
@@ -113,18 +119,25 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 	/**
 	 * @see org.openuss.newsletter.NewsletterService#sendPreview(org.openuss.newsletter.MailDetail)
 	 */
-	protected void handleSendPreview(NewsletterInfo newsletter, MailDetail mail) throws java.lang.Exception {
+	protected void handleSendPreview(NewsletterInfo newsLetterInfo, MailDetail mail) throws java.lang.Exception {
+		Validate.notNull(newsLetterInfo,"Parameter NewsLetterInfo must not be null.");
+		Validate.notNull(newsLetterInfo.getId(), "Parameter NewsLetterInfo must contain a valid id.");
 		List<User> recipients = new ArrayList<User>();
 		recipients.add(getSecurityService().getCurrentUser());
-		getMessageService().sendMessage(getNewsletter(newsletter).getName(),
-				"[" + getNewsletter(newsletter).getName() + "]" + mail.getSubject(), mail.getText(), mail.isSms(),
-				recipients);
+		newsLetterInfo = getNewsletter(newsLetterInfo);
+		if (newsLetterInfo != null) {
+			getMessageService().sendMessage(newsLetterInfo.getName(),				
+					"[" + newsLetterInfo.getName() + "]" + mail.getSubject(), mail.getText(), mail.isSms(),	recipients);
+		} else {
+			logger.error("Newsletter not found !");
+		}
 	}
 
+		
 	/**
 	 * @see org.openuss.newsletter.NewsletterService#getMails(org.openuss.foundation.DomainObject)
 	 */
-	protected List handleGetMails(NewsletterInfo newsletter, boolean withDeleted) throws Exception {
+	protected List<MailInfo> handleGetMails(NewsletterInfo newsletter, boolean withDeleted) throws Exception {
 		Newsletter ml = loadNewsletter(newsletter);
 		if (withDeleted) {
 			if (getSecurityService().hasPermission(newsletter.getDomainIdentifier(), new Integer[] { LectureAclEntry.ASSIST })) {
@@ -189,16 +202,16 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 
 	@Override
 	protected NewsletterInfo handleGetNewsletter(DomainObject domainObject) throws Exception {
-		List newsletters = getNewsletterDao().findByDomainIdentifier(domainObject.getId());
+		List<Newsletter> newsletters = getNewsletterDao().findByDomainIdentifier(domainObject.getId());
 		if (newsletters == null||newsletters.size()==0){
 			return null;
 		}
 		//return first newsletter of all, at the moment it is 
 		//supposed that there is just 1 newsletter per domain object 
 		Newsletter newsletter = (Newsletter)newsletters.get(0);
-		NewsletterInfo ml = getNewsletterDao().toNewsletterInfo(newsletter);
-		ml.setSubscribed(getSubscriberDao().findByUserAndNewsletter(getSecurityService().getCurrentUser(), newsletter)!=null);
-		return ml;
+		NewsletterInfo info = getNewsletterDao().toNewsletterInfo(newsletter);
+		info.setSubscribed(getSubscriberDao().findByUserAndNewsletter(getSecurityService().getCurrentUser(), newsletter)!=null);
+		return info;
 	}
 
 	@Override
@@ -239,11 +252,10 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 	protected String handleExportSubscribers(NewsletterInfo newsletterInfo) throws Exception {
 		Newsletter newsletter = getNewsletterDao().load(newsletterInfo.getId());
 		Set<Subscriber> subscribers = newsletter.getSubscribers();
-		Iterator i = subscribers.iterator();
-		Subscriber s;
+		Iterator<Subscriber> i = subscribers.iterator();
 		String subscriberList = "";
 		while (i.hasNext()) {
-			s = (Subscriber) i.next();
+			Subscriber s = i.next();
 			subscriberList = subscriberList + s.getUser().getEmail();
 			if (i.hasNext())
 				subscriberList = subscriberList + "; ";

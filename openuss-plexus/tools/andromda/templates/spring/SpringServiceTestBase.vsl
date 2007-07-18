@@ -8,11 +8,12 @@
 #if ($stringUtils.isNotBlank($service.packageName))
 package $service.packageName;
 #end
+
 import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
 import org.openuss.TestUtility;
-
 
 #set($varService = "${stringUtils.uncapitalize($service.name)}")
 
@@ -42,6 +43,20 @@ public abstract class ${testClassName} extends AbstractTransactionalDataSourceSp
 		setComplete();
 		endTransaction();
 		startNewTransaction();
+	}
+	
+	protected void flush() {
+	    sessionFactory.getCurrentSession().flush();
+	}
+	
+	protected SessionFactory sessionFactory;
+	
+	public SessionFactory getSessionFactory() {
+	    return sessionFactory;
+	}
+	
+	public void setSessionFactory(SessionFactory sessionFactory) { 
+	     this.sessionFactory = sessionFactory;
 	}
 	
 	protected TestUtility testUtility;

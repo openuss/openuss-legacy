@@ -82,9 +82,9 @@ public abstract class PagedListDataModel<T> extends DataModel {
 	 * the current rowIndex row; see getRowData.
 	 */
 	private DataPage<T> getPage() {
-		if (page != null)
+		if (page != null) {
 			return page;
-
+		}
 		int rowIndex = getRowIndex();
 		int startRow = rowIndex;
 		if (rowIndex == -1) {
@@ -185,14 +185,17 @@ public abstract class PagedListDataModel<T> extends DataModel {
 	}
 	
 	public int checkFirstRow(int firstRow) {
-		int size = getPage().getDatasetSize();
-		if ((size-1 < firstRow) && (size > 0 || firstRow > 0)) {
-			firstRow = getPage().getDatasetSize() - getPageSize();
-			if (firstRow < 0) {
-				firstRow = 0;
-			}
-			if (logger.isDebugEnabled()) {
-				logger.debug("reducing firstRow to "+ firstRow+" to point on the last page!");
+		final DataPage<T> page = getPage();
+		if (page != null) {
+			int size = page.getDatasetSize();
+			if ((size-1 < firstRow) && (size > 0 || firstRow > 0)) {
+				firstRow = getPage().getDatasetSize() - getPageSize();
+				if (firstRow < 0) {
+					firstRow = 0;
+				}
+				if (logger.isDebugEnabled()) {
+					logger.debug("reducing firstRow to "+ firstRow+" to point on the last page!");
+				}
 			}
 		}
 		return firstRow;

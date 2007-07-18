@@ -29,19 +29,19 @@ public class MessageJobDaoMock extends AbstractMockDao<MessageJob> implements Me
 		return null;
 	}
 
-	public List findByState(JobState state) {
+	public List<MessageJob> findByState(JobState state) {
 		return null;
 	}
 
-	public List findByState(String queryString, JobState state) {
+	public List<MessageJob> findByState(String queryString, JobState state) {
 		return null;
 	}
 
-	public List findByState(int transform, JobState state) {
+	public List<?> findByState(int transform, JobState state) {
 		return null;
 	}
 
-	public List findByState(int transform, String queryString, JobState state) {
+	public List<?> findByState(int transform, String queryString, JobState state) {
 		return null;
 	}
 
@@ -53,6 +53,7 @@ public class MessageJobDaoMock extends AbstractMockDao<MessageJob> implements Me
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void jobInfoToEntityCollection(Collection instances) {
 		
 	}
@@ -65,6 +66,7 @@ public class MessageJobDaoMock extends AbstractMockDao<MessageJob> implements Me
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void toJobInfoCollection(Collection entities) {
 		
 	}

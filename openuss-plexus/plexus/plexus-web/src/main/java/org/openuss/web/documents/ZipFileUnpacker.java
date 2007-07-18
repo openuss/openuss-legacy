@@ -42,7 +42,7 @@ public class ZipFileUnpacker {
 		List<FileInfo> fileInfos = new ArrayList<FileInfo>();
 
 		try {
-			Enumeration entries = zipFile.getEntries();
+			Enumeration<ZipEntry> entries = zipFile.getEntries();
 			while(entries.hasMoreElements()) {
 				ZipEntry entry = (ZipEntry) entries.nextElement();
 				

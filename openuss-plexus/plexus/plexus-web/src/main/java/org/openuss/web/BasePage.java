@@ -40,12 +40,19 @@ public abstract class BasePage extends BaseBean {
 	public void preprocess() throws Exception {
 		crumbs.clear();
 		
-		// FIXME Tell, don't ask user.isExisting() <-- user.getId() == null 
-		if (desktop == null && user != null && user.getId() != null) {
-			logger.debug("preprocess - getting desktop session object");
-			desktop = desktopService.getDesktopByUser(user);
-			setSessionBean(Constants.DESKTOP, desktop);
-		} 
+		if (desktop == null) {
+			if (user != null && user.getId() != null) {
+				logger.debug("preprocess - getting desktop session object");
+				desktop = desktopService.getDesktopByUser(user);
+				setSessionBean(Constants.DESKTOP, desktop);
+			} 
+			
+			if (desktop != null) {
+				logger.error("could not find desktor for user "+user);
+				addError("message_error_no_desktop_found");
+				redirect(Constants.HOME);
+			}
+		}
 	}
 
 	public Desktop getDesktop() {
@@ -72,11 +79,11 @@ public abstract class BasePage extends BaseBean {
 		this.user = user;
 	}
 
-	public List getCrumbs() {
+	public List<BreadCrumb> getCrumbs() {
 		return crumbs;
 	}
 
-	public void setCrumbs(List crumbs) {
+	public void setCrumbs(List<BreadCrumb> crumbs) {
 		this.crumbs = crumbs;
 	}
 

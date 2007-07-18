@@ -32,35 +32,30 @@
 		<property name="courseService" ref="courseService"/>
 		<property name="newsService" ref="newsService"/>
 		<property name="securityService" ref="securityService"/>
-		<property name="i18nMessageSource" ref="i18nMessageSource"/>
 	</bean>
 
 	<bean name="instituteFeed" class="org.openuss.web.feeds.InstituteFeed" parent="feedTemplate">	
 		<property name="lectureService" ref="lectureService"/>
 		<property name="newsService" ref="newsService"/>
 		<property name="securityService" ref="securityService"/>
-		<property name="i18nMessageSource" ref="i18nMessageSource"/>		
 	</bean>
 
 	<bean name="discussionFeed" class="org.openuss.web.feeds.DiscussionFeed" parent="feedTemplate">	
 		<property name="courseService" ref="courseService"/>
 		<property name="discussionService" ref="discussionService"/>
 		<property name="securityService" ref="securityService"/>
-		<property name="i18nMessageSource" ref="i18nMessageSource"/>		
 	</bean>
 
 	<bean name="newsletterFeed" class="org.openuss.web.feeds.NewsletterFeed" parent="feedTemplate">	
 		<property name="courseService" ref="courseService"/>
 		<property name="courseNewsletterService" ref="courseNewsletterService"/>
 		<property name="securityService" ref="securityService"/>
-		<property name="i18nMessageSource" ref="i18nMessageSource"/>		
 	</bean>
 
 	<bean name="documentsFeed" class="org.openuss.web.feeds.DocumentsFeed" parent="feedTemplate">	
 		<property name="courseService" ref="courseService"/>
 		<property name="documentService" ref="documentService"/>
 		<property name="securityService" ref="securityService"/>
-		<property name="i18nMessageSource" ref="i18nMessageSource"/>		
 		<property name="viewUri" value="/views/secured/documents/documents.faces"/>
 	</bean>
 

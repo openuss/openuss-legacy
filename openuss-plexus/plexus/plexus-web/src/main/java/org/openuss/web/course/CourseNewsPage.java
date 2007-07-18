@@ -72,7 +72,7 @@ public class CourseNewsPage extends AbstractCoursePage {
 	}
 	
 	/**
-	 * Starting to add a new newsitem. 
+	 * Starting to add a new news item. 
 	 * @return outcome
 	 */
 	public String addNewsItem() {
@@ -84,7 +84,7 @@ public class CourseNewsPage extends AbstractCoursePage {
 		
 		newsItem.setPublisherIdentifier(courseInfo.getId());
 		// FIXME BEWARE OF LAZYEXCEPTION HERE
-		newsItem.setPublisherName(course.getInstitute().getName());
+		newsItem.setPublisherName(courseInfo.getInstituteName());
 		
 		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
 		return Constants.COURSE_NEWS_EDIT_PAGE;

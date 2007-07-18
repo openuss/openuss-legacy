@@ -60,9 +60,9 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 
 	// Additional permissions to institutes
 	public static final int MANAGE_COURSE_TYPES 	= 1 << 7;
-	public static final int MANAGE_PERIODS 		= 1 << 8;
-	public static final int MANAGE_CourseS 	= 1 << 9;
-	public static final int MANAGE_NEWS 		= 1 << 10;
+	public static final int MANAGE_PERIODS 			= 1 << 8;
+	public static final int MANAGE_COURSES 			= 1 << 9;
+	public static final int MANAGE_NEWS 			= 1 << 10;
 
 	// Additional permissions to courses
 	public static final int PARTICIPATE 		= 1 << 11;
@@ -70,8 +70,8 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 
 	// Default combinations of base permissions
 	public static final int INSTITUTE_TUTOR = PARTICIPATE | ASSIST | READ;
-	public static final int INSTITUTE_ASSIST = CREATE | MANAGE_NEWS | MANAGE_COURSE_TYPES | MANAGE_PERIODS | MANAGE_CourseS | INSTITUTE_TUTOR;
-	public static final int INSTITUTE_ADMINISTRATION = GRANT | UPDATE | DELETE | INSTITUTE_ASSIST;
+	public static final int INSTITUTE_ASSIST = CREATE | UPDATE | DELETE | MANAGE_NEWS | MANAGE_COURSE_TYPES | MANAGE_PERIODS | MANAGE_COURSES | INSTITUTE_TUTOR;
+	public static final int INSTITUTE_ADMINISTRATION = GRANT | INSTITUTE_ASSIST;
 	public static final int INSTITUTE_OWN = DELETE | INSTITUTE_ADMINISTRATION;
 	
 	// Default combinations of base course permissions
@@ -111,7 +111,7 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 		sb.append("|");
 		sb.append(((mask & MANAGE_COURSE_TYPES) == MANAGE_COURSE_TYPES) ? "MS" : "--");
 		sb.append(((mask & MANAGE_PERIODS) == MANAGE_PERIODS) ? "MP" : "--");
-		sb.append(((mask & MANAGE_CourseS) == MANAGE_CourseS) ? "ME" : "--");
+		sb.append(((mask & MANAGE_COURSES) == MANAGE_COURSES) ? "ME" : "--");
 		sb.append(((mask & MANAGE_NEWS) == MANAGE_NEWS) ? "MN" : "--");
 		sb.append("|");
 		sb.append(((mask & PARTICIPATE) == PARTICIPATE) ? "P" : "-");
@@ -122,8 +122,8 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	@Override
     protected boolean isPermitted(int maskToCheck, int permissionToCheck) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("mask = "+printPermissionsBlock(maskToCheck)+ " permission = " +printPermissionsBlock(permissionToCheck));
-			logger.debug("mask = "+Integer.toBinaryString(maskToCheck)+ " permission = "+Integer.toBinaryString(permissionToCheck));
+			logger.debug("user priveledge = "+printPermissionsBlock(maskToCheck)+ " needed permission = " +printPermissionsBlock(permissionToCheck));
+			logger.debug("user priveledge = "+Integer.toBinaryString(maskToCheck)+ " needed permission = "+Integer.toBinaryString(permissionToCheck));
 		}
         return ((maskToCheck & permissionToCheck) == permissionToCheck);
     }
@@ -175,7 +175,7 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	}
 
 	public int getMANAGE_CourseS() {
-		return MANAGE_CourseS;
+		return MANAGE_COURSES;
 	}
 
 	public int getMANAGE_NEWS() {
