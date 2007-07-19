@@ -19,23 +19,6 @@ public abstract class OrganisationImpl
      */
     private static final long serialVersionUID = -1208147996320435736L;
     
-    public org.openuss.security.User getOwner() {
-    	if (getMembership() == null) {
-    		setMembership(Membership.Factory.newInstance());
-    	}
-    	return this.getMembership().getOwner();
-    }
-    
-    public void setOwner(org.openuss.security.User owner) {
-    	if (getMembership() == null) {
-    		setMembership(Membership.Factory.newInstance());
-    	}
-    	if (owner == null) {
-    		throw new IllegalArgumentException("Organisation.setOwner - 'owner' can not be null");
-    	}
-    	this.getMembership().setOwner(owner);
-    }
-    
     public java.util.List getMembers() {
     	if (getMembership() == null) {
     		setMembership(Membership.Factory.newInstance());

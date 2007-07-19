@@ -113,7 +113,7 @@ public class TestUtility {
 		
 		// Create a unique Membership
 		Membership membership = Membership.Factory.newInstance();
-		membership.setOwner(user);
+		membership.getMembers().add(user);
 		
 		membershipDao.create(membership);
 		

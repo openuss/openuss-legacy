@@ -48,14 +48,14 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		}
 
 		Membership membership = Membership.Factory.newInstance();
-		membership.setOwner(users.get(0));
+		membership.getMembers().add(users.get(0));
 		membership.getAspirants().add(users.get(1));
 		membership.getAspirants().add(users.get(2));
 		membership.getMembers().add(users.get(3));
 		membership.getMembers().add(users.get(4));
 
 		Membership membership2 = Membership.Factory.newInstance();
-		membership2.setOwner(users.get(0));
+		membership.getMembers().add(users.get(0));
 		membership2.getAspirants().add(users.get(1));
 		membership2.getAspirants().add(users.get(2));
 		membership2.getMembers().add(users.get(3));
@@ -82,7 +82,7 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		university.setShortcut(testUtility.unique("testU"));
 		university.setDescription("This is a test University");
 		Membership membership = Membership.Factory.newInstance();
-		membership.setOwner(testUtility.createUserInDB());
+		membership.getMembers().add(testUtility.createUserInDB());
 		university.setMembership(membership);
 		
 		universityDao.create(university);
@@ -107,7 +107,7 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		university.setShortcut(testUtility.unique("testU"));
 		university.setDescription("This is a test University");
 		Membership membership = Membership.Factory.newInstance();
-		membership.setOwner(testUtility.createUserInDB());
+		membership.getMembers().add(testUtility.createUserInDB());
 		university.setMembership(membership);
 		
 		universityDao.create(university);

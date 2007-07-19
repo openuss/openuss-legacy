@@ -9,56 +9,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.openuss.lecture.Organisation;
-
 /**
  * @see org.openuss.security.MembershipService
  * @author Ron Haus, Florian Dondorf
  */
 public class MembershipServiceImpl extends org.openuss.security.MembershipServiceBase {
 
-	/**
-	 * @see org.openuss.security.MembershipService#setOwner(java.lang.Long, java.lang.Long)
-	 */
-	protected void handleSetOwner(java.lang.Long organisationId, java.lang.Long userId) throws java.lang.Exception {
-		// TODO Check Security - only admin and owner must be allowed to change the owner
-		User owner = this.getUserDao().load(userId);
-		if (owner == null) {
-			throw new IllegalArgumentException(
-					"MembershipService.handleSetOwner - no User found corresponding to the ID " + userId);
-		}
-
-		Organisation organisation = this.getOrganisationDao().load(organisationId);
-		if (organisation == null) {
-			throw new IllegalArgumentException(
-					"MembershipService.handleSetOwner - no Organisation found corresponding to the ID "
-							+ organisationId);
-		}
-
-		organisation.setOwner(owner);
-	}
-
-	/**
-	 * @see org.openuss.security.MembershipService#findOwner(java.lang.Long)
-	 */
-	protected org.openuss.security.UserInfo handleFindOwner(java.lang.Long organisationId) throws java.lang.Exception {
-		Organisation organisation = this.getOrganisationDao().load(organisationId);
-		if (organisation == null) {
-			throw new IllegalArgumentException(
-					"MembershipService.handleSetOwner - no Organisation found corresponding to the ID "
-							+ organisationId);
-		}
-
-		return getUserDao().toUserInfo(organisation.getOwner());
-	}
 
 	/**
 	 * @see org.openuss.security.MembershipService#acceptAspirant(java.lang.Long, java.lang.Long)
 	 */
 	@SuppressWarnings({"unchecked"})
-	protected void handleAcceptAspirant(java.lang.Long organisationId, java.lang.Long userId)
+	protected void handleAcceptAspirant(java.lang.Long membershipId, java.lang.Long userId, org.openuss.security.MembershipParameters parameters)
 			throws java.lang.Exception {
-		// TODO Check Security - only admin, owner and members must be allowed to accept aspirants
+		// TODO Check Security
 
 		User aspirant = this.getUserDao().load(userId);
 		if (aspirant == null) {
@@ -66,29 +30,26 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 					"MembershipService.handleAcceptAspirant - no User found corresponding to the ID " + userId);
 		}
 
-		Organisation organisation = this.getOrganisationDao().load(organisationId);
-		if (organisation == null) {
+		Membership membership = this.getMembershipDao().load(membershipId);
+		if (membership == null) {
 			throw new IllegalArgumentException(
 					"MembershipService.handleAcceptAspirant - no Organisation found corresponding to the ID "
-							+ organisationId);
+							+ membershipId);
 		}
 
 		// Remove Aspirant from List of Aspirants
-		List aspirants = organisation.getAspirants();
+		List aspirants = membership.getAspirants();
 		boolean wasFound = aspirants.remove(aspirant);
 		if (!wasFound) {
 			throw new IllegalArgumentException("MembershipService.handleAcceptAspirant - the User "
 					+ aspirant.getUsername() + " has not been an Aspirant");
 		}
 
-		// There is no need to check whether the Aspirant is already a Member or Owner, since the method addAspirant
+		// There is no need to check whether the Aspirant is already a Member, since the method addAspirant
 		// is taken care of that
 		
 		// Add Aspirant to List of Members
-		List members = organisation.getMembers();
-		members.add(aspirant);
-		
-		// To inform the aspirant of his "upgrade" is the responibility of the web layer
+		this.addMember(membershipId, userId, parameters);
 
 	}
 
@@ -96,9 +57,9 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 * @see org.openuss.security.MembershipService#rejectAspirant(java.lang.Long, java.lang.Long)
 	 */
 	@SuppressWarnings({"unchecked"})
-	protected void handleRejectAspirant(java.lang.Long organisationId, java.lang.Long userId)
+	protected void handleRejectAspirant(java.lang.Long membershipId, java.lang.Long userId)
 			throws java.lang.Exception {
-		// TODO Check Security - only admin, owner and members must be allowed to add members
+		// TODO Check Security
 		
 		User aspirant = this.getUserDao().load(userId);
 		if (aspirant == null) {
@@ -106,22 +67,20 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 					"MembershipService.handleRejectAspirant - no User found corresponding to the ID " + userId);
 		}
 		
-		Organisation organisation = this.getOrganisationDao().load(organisationId);
-		if (organisation == null) {
+		Membership membership = this.getMembershipDao().load(membershipId);
+		if (membership == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleRejectAspirant - no Organisation found corresponding to the ID "
-							+ organisationId);
+					"MembershipService.handleRejectAspirant - no Membership found corresponding to the ID "
+							+ membershipId);
 		}
 		
 		// Remove Aspirant from List of Aspirants
-		List aspirants = organisation.getAspirants();
+		List aspirants = membership.getAspirants();
 		boolean wasFound = aspirants.remove(aspirant);
 		if (!wasFound) {
 			throw new IllegalArgumentException("MembershipService.handleRejectAspirant - the User "
 					+ aspirant.getUsername() + " has not been an Aspirant");
 		}
-		
-		// To inform the aspirant of his "rejection" is the responibility of the web layer
 		
 	}
 
@@ -129,8 +88,8 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 * @see org.openuss.security.MembershipService#addMember(java.lang.Long, java.lang.Long)
 	 */
 	@SuppressWarnings({"unchecked"})
-	protected void handleAddMember(java.lang.Long organisationId, java.lang.Long userId) throws java.lang.Exception {
-		// TODO Check Security - only admin, owner and members must be allowed to add members
+	protected void handleAddMember(java.lang.Long membershipId, java.lang.Long userId, org.openuss.security.MembershipParameters parameters) throws java.lang.Exception {
+		// TODO Check Security
 		
 		User user = this.getUserDao().load(userId);
 		if (user == null) {
@@ -138,24 +97,20 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 					"MembershipService.handleAddMember - no User found corresponding to the ID " + userId);
 		}
 		
-		Organisation organisation = this.getOrganisationDao().load(organisationId);
-		if (organisation == null) {
+		Membership membership = this.getMembershipDao().load(membershipId);
+		if (membership == null) {
 			throw new IllegalArgumentException(
 					"MembershipService.handleAddMember - no Organisation found corresponding to the ID "
-							+ organisationId);
+							+ membershipId);
 		}
 		
-		// Check whether the User is already a Member, Aspirant or the Owner
-		if (organisation.getOwner().equals(user)) {
-			throw new IllegalArgumentException("MembershipService.handleAddMember - the User " + user.getUsername()
-					+ " is already the Owner");
-		}
-		List members = organisation.getMembers();
+		// Check whether the User is already a Member or Aspirant
+		List members = membership.getMembers();
 		if (members.contains(user)) {
 			throw new IllegalArgumentException("MembershipService.handleAddMember - the User " + user.getUsername()
 					+ " is already a Member");
 		}
-		List aspirants = organisation.getAspirants();
+		List aspirants = membership.getAspirants();
 		if (aspirants.contains(user)) {
 			throw new IllegalArgumentException("MembershipService.handleAddMember - the User " + user.getUsername()
 					+ " is already an Aspirant");
@@ -163,14 +118,18 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 
 		// Add User to the List of Members
 		members.add(user);
+		
+		// TODO Add User to the official Group "Administrators"
+		
+		// TODO Send Email to inform the Members
 	}
 
 	/**
 	 * @see org.openuss.security.MembershipService#addAspirant(java.lang.Long, java.lang.Long)
 	 */
 	@SuppressWarnings({"unchecked"})
-	protected void handleAddAspirant(java.lang.Long organisationId, java.lang.Long userId) throws java.lang.Exception {
-		// TODO Check Security - only admin, owner and members must be allowed to add aspirants
+	protected void handleAddAspirant(java.lang.Long membershipId, java.lang.Long userId, org.openuss.security.MembershipParameters parameters) throws java.lang.Exception {
+		// TODO Check Security
 
 		User user = this.getUserDao().load(userId);
 		if (user == null) {
@@ -178,24 +137,20 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 					"MembershipService.handleAddAspirant - no User found corresponding to the ID " + userId);
 		}
 
-		Organisation organisation = this.getOrganisationDao().load(organisationId);
-		if (organisation == null) {
+		Membership membership = this.getMembershipDao().load(membershipId);
+		if (membership == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleAddAspirant - no Organisation found corresponding to the ID "
-							+ organisationId);
+					"MembershipService.handleAddAspirant - no Membership found corresponding to the ID "
+							+ membershipId);
 		}
 
-		// Check whether the User is already a Member, Aspirant or the Owner
-		if (organisation.getOwner().equals(user)) {
-			throw new IllegalArgumentException("MembershipService.handleAddAspirant - the User " + user.getUsername()
-					+ " is already the Owner");
-		}
-		List members = organisation.getMembers();
+		// Check whether the User is already a Member or Aspirant
+		List members = membership.getMembers();
 		if (members.contains(user)) {
 			throw new IllegalArgumentException("MembershipService.handleAddAspirant - the User " + user.getUsername()
 					+ " is already a Member");
 		}
-		List aspirants = organisation.getAspirants();
+		List aspirants = membership.getAspirants();
 		if (aspirants.contains(user)) {
 			throw new IllegalArgumentException("MembershipService.handleAddAspirant - the User " + user.getUsername()
 					+ " is already an Aspirant");
@@ -203,21 +158,22 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 
 		// Add User to the List of Aspirants
 		aspirants.add(user);
-
+		
+		// TODO Send Email to inform the Members
 	}
 
 	/**
 	 * @see org.openuss.security.MembershipService#findAllMembers(java.lang.Long)
 	 */
 	@SuppressWarnings({"unchecked"})
-	protected java.util.List handleFindAllMembers(java.lang.Long organisationId) throws java.lang.Exception {
-		Organisation organisation = this.getOrganisationDao().load(organisationId);
-		if (organisation == null) {
+	protected java.util.List handleFindAllMembers(java.lang.Long membershipId) throws java.lang.Exception {
+		Membership membership = this.getMembershipDao().load(membershipId);
+		if (membership == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.FindAllMembers - no Organisation found corresponding to the ID "
-							+ organisationId);
+					"MembershipService.FindAllMembers - no Membership found corresponding to the ID "
+							+ membershipId);
 		}
-		List members = organisation.getMembers();
+		List members = membership.getMembers();
 		Iterator iterator = members.iterator();
 
 		List memberInfos = new ArrayList(members.size());
@@ -235,15 +191,15 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 * @see org.openuss.security.MembershipService#findAllAspirants(java.lang.Long)
 	 */
 	@SuppressWarnings({"unchecked"})
-	protected java.util.List handleFindAllAspirants(java.lang.Long organisationId) throws java.lang.Exception {
-		Organisation organisation = this.getOrganisationDao().load(organisationId);
-		if (organisation == null) {
+	protected java.util.List handleFindAllAspirants(java.lang.Long membershipId) throws java.lang.Exception {
+		Membership membership = this.getMembershipDao().load(membershipId);
+		if (membership == null) {
 			throw new IllegalArgumentException(
-					"MembershipService.handleFindAllAspirants - no Organisation found corresponding to the ID "
-							+ organisationId);
+					"MembershipService.handleFindAllAspirants - no Membership found corresponding to the ID "
+							+ membershipId);
 		}
 
-		List aspirants = organisation.getAspirants();
+		List aspirants = membership.getAspirants();
 		Iterator iterator = aspirants.iterator();
 
 		List aspirantInfos = new ArrayList(aspirants.size());

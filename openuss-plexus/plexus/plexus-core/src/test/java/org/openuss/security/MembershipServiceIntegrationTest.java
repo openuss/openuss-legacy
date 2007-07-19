@@ -31,93 +31,42 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 	 */
 	private static final Logger logger = Logger.getLogger(MembershipServiceIntegrationTest.class);
 
-	public void testSetOwner() {
-		logger.info("----> BEGIN access to setOwner test");
-
-		// Check for Exception
-		try {
-			membershipService.setOwner(-100L, -100L);
-			fail("Exception should have been thrown");
-		} catch (MembershipServiceException mse) {
-		}
-		;
-
-		// Create University with DeafultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
-
-		// Create a 2nd User
-		User user1 = testUtility.createUserInDB();
-		
-		// Synchronize with Database
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = sessionFactory.getCurrentSession();
-		session.flush();
-
-		// Change Owner
-		assertFalse(user1.getUsername().compareTo(university.getOwner().getUsername()) == 0);
-		membershipService.setOwner(university.getId(), user1.getId());
-		assertEquals(user1.getUsername(), university.getOwner().getUsername());
-
-		// Synchronize with Database
-		session.flush();
-
-		logger.info("----> END access to setOwner test");
-	}
-
-	public void testFindOwner() {
-		logger.info("----> BEGIN access to findOwner test");
-
-		// Create University with DeafultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
-		
-		// Synchronize with Database
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = sessionFactory.getCurrentSession();
-		session.flush();
-
-		// Find Owner
-		UserInfo ownerInfo = membershipService.findOwner(university.getId());
-		assertNotNull(ownerInfo);
-
-		logger.info("----> END access to findOwner test");
-	}
-
 	public void testAcceptAspirant() {
 		logger.info("----> BEGIN access to acceptAspirant test");
 
 		// Create University with DefaultUser as Owner
 		University university = testUtility.createDefaultUniversityWithDefaultUser();
 
-		// Create a 2nd User
+		// Create a User
 		User user1 = testUtility.createUserInDB();
-		
-		// Synchronize with Database
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = sessionFactory.getCurrentSession();
-		session.flush();
 
 		// Try to accept the User
 		try {
-			membershipService.acceptAspirant(university.getId(), user1.getId());
+			membershipService.acceptAspirant(university.getMembership().getId(), user1.getId(), null);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
 		;
 
-		// Add User to Aspirants and accept after that
-		university.getAspirants().add(user1);
-		int sizeAspirantsBefore = university.getAspirants().size();
-		int sizeMembersBefore = university.getMembers().size();
-		membershipService.acceptAspirant(university.getId(), user1.getId());
-		List aspirants = university.getAspirants();
+		// Add User to Aspirants
+		university.getMembership().getAspirants().add(user1);
+		int sizeAspirantsBefore = university.getMembership().getAspirants().size();
+		int sizeMembersBefore = university.getMembership().getMembers().size();
+		
+		// Synchronize with Database
+		flush();
+		
+		// Accept Aspirant
+		membershipService.acceptAspirant(university.getMembership().getId(), user1.getId(), null);
+		List aspirants = university.getMembership().getAspirants();
 		assertNotNull(aspirants);
 		assertEquals(aspirants.size(), sizeAspirantsBefore - 1);
-		List members = university.getMembers();
+		List members = university.getMembership().getMembers();
 		assertNotNull(members);
 		assertEquals(members.size(), sizeMembersBefore + 1);
 
 		// Synchronize with Database
-		session.flush();
+		flush();
 		
 		logger.info("----> END access to acceptAspirant test");
 	}
@@ -128,37 +77,36 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		// Create University with DefaultUser as Owner
 		University university = testUtility.createDefaultUniversityWithDefaultUser();
 
-		// Create a 2nd User
+		// Create a User
 		User user1 = testUtility.createUserInDB();
-
-		// Synchronize with Database
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = sessionFactory.getCurrentSession();
-		session.flush();
-
 		
 		// Try to accept the User
 		try {
-			membershipService.rejectAspirant(university.getId(), user1.getId());
+			membershipService.rejectAspirant(university.getMembership().getId(), user1.getId());
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
 		;
 
 		// Add User to Aspirants and reject after that
-		university.getAspirants().add(user1);
-		int sizeAspirantsBefore = university.getAspirants().size();
-		int sizeMembersBefore = university.getMembers().size();
-		membershipService.rejectAspirant(university.getId(), user1.getId());
-		List aspirants = university.getAspirants();
+		university.getMembership().getAspirants().add(user1);
+		int sizeAspirantsBefore = university.getMembership().getAspirants().size();
+		int sizeMembersBefore = university.getMembership().getMembers().size();
+		
+		// Synchronize with Database
+		flush();
+		
+		// Reject Aspirant
+		membershipService.rejectAspirant(university.getMembership().getId(), user1.getId());
+		List aspirants = university.getMembership().getAspirants();
 		assertNotNull(aspirants);
 		assertEquals(aspirants.size(), sizeAspirantsBefore - 1);
-		List members = university.getMembers();
+		List members = university.getMembership().getMembers();
 		assertNotNull(members);
 		assertEquals(members.size(), sizeMembersBefore);
 
 		// Synchronize with Database
-		session.flush();
+		flush();
 		
 		logger.info("----> END access to rejectAspirant test");
 	}
@@ -169,63 +117,44 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		// Create University with DefaultUser as Owner
 		University university = testUtility.createDefaultUniversityWithDefaultUser();
 
-		// Synchronize with Database
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = sessionFactory.getCurrentSession();
-		session.flush();
-		
-		// Try to add Owner as an Member
-		try {
-			membershipService.addMember(university.getId(), university.getOwner().getId());
-			fail("Exception should have been thrown");
-		} catch (MembershipServiceException mse) {
-		}
-		;
-
-		// Create a 2nd User
+		// Create a User
 		User user1 = testUtility.createUserInDB();
-
-		// Synchronize with Database
-		session.flush();
 		
-		// Try to add Aspirant as a Member
+		// Try to add a Aspirant as a Member
 		try {
-			university.getAspirants().add(user1);
-			membershipService.addMember(university.getId(), user1.getId());
+			university.getMembership().getAspirants().add(user1);
+			membershipService.addMember(university.getMembership().getId(), user1.getId(), null);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
 		;
 
 		// Get List of Members
-		List members = university.getMembers();
+		List members = university.getMembership().getMembers();
 		assertNotNull(members);
 		int sizeBefore = members.size();
 
-		// Create a 3rd User
+		// Create a 2nd User
 		User user2 = testUtility.createUserInDB();
-
-		// Synchronize with Database
-		session.flush();
 		
 		// Add a User
-		membershipService.addMember(university.getId(), user2.getId());
+		membershipService.addMember(university.getMembership().getId(), user2.getId(), null);
 
 		// Get List of Members again
-		List members2 = university.getMembers();
+		List members2 = university.getMembership().getMembers();
 		assertNotNull(members2);
 		assertEquals(members2.size(), sizeBefore + 1);
 
 		// Try to add Member again
 		try {
-			membershipService.addMember(university.getId(), user2.getId());
+			membershipService.addMember(university.getMembership().getId(), user2.getId(), null);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
 		;
 
 		// Synchronize with Database
-		session.flush();
+		flush();
 		
 		logger.info("----> END access to addMember test");
 	}
@@ -235,64 +164,41 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Create University with DefaultUser as Owner
 		University university = testUtility.createDefaultUniversityWithDefaultUser();
-
-		// Synchronize with Database
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = sessionFactory.getCurrentSession();
-		session.flush();
-		
-		// Try to add Owner as an Aspirant
-		try {
-			membershipService.addAspirant(university.getId(), university.getOwner().getId());
-			fail("Exception should have been thrown");
-		} catch (MembershipServiceException mse) {
-		}
-		;
-
-		// Create a 2nd User
-		User user1 = testUtility.createUserInDB();
-
-		// Synchronize with Database
-		session.flush();
 		
 		// Try to add Member as an Aspirant
 		try {
-			university.getMembers().add(user1);
-			membershipService.addAspirant(university.getId(), user1.getId());
+			membershipService.addAspirant(university.getMembership().getId(), university.getMembership().getMembers().get(0).getId(), null);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
 		;
 
 		// Get List of Aspirants
-		List aspirants = university.getAspirants();
+		List aspirants = university.getMembership().getAspirants();
 		assertNotNull(aspirants);
 		int sizeBefore = aspirants.size();
 
-		// Create a 3rd User
+		// Create a 2nd User
 		User user2 = testUtility.createUserInDB();
-
-		// Synchronize with Database
-		session.flush();
 		
 		// Add a user
-		membershipService.addAspirant(university.getId(), user2.getId());
+		membershipService.addAspirant(university.getMembership().getId(), user2.getId(), null);
 
 		// Get List of Aspirants again
-		List aspirants2 = university.getAspirants();
+		List aspirants2 = university.getMembership().getAspirants();
 		assertNotNull(aspirants2);
 		assertEquals(aspirants2.size(), sizeBefore + 1);
 
 		// Try to add Aspirant again
 		try {
-			membershipService.addAspirant(university.getId(), user2.getId());
+			membershipService.addAspirant(university.getMembership().getId(), user2.getId(), null);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
 		;
 
 		// Synchronize with Database
-		session.flush();
+		flush();
 		
 		logger.info("----> END access to addAspirant test");
 	}
@@ -305,25 +211,20 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Create a 2nd User
 		User user1 = testUtility.createUserInDB();
-
-		// Synchronize with Database
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = sessionFactory.getCurrentSession();
-		session.flush();
 		
 		// Get List of Members
-		List members = membershipService.findAllMembers(university.getId());
+		List members = membershipService.findAllMembers(university.getMembership().getId());
 		assertNotNull(members);
 		int sizeBefore = members.size();
 
 		// Add a user using DAO object
-		university.getMembers().add(user1);
+		university.getMembership().getMembers().add(user1);
 		
 		// Synchronize with Database
-		session.flush();
+		flush();
 
 		// Get List of Members again
-		List members2 = membershipService.findAllMembers(university.getId());
+		List members2 = membershipService.findAllMembers(university.getMembership().getId());
 		assertNotNull(members2);
 		assertEquals(members2.size(), sizeBefore + 1);
 
@@ -338,25 +239,20 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Create a 2nd User
 		User user1 = testUtility.createUserInDB();
-		
-		// Synchronize with Database
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = sessionFactory.getCurrentSession();
-		session.flush();
 
 		// Get List of Aspirants
-		List aspirants = membershipService.findAllAspirants(university.getId());
+		List aspirants = membershipService.findAllAspirants(university.getMembership().getId());
 		assertNotNull(aspirants);
 		int sizeBefore = aspirants.size();
 
 		// Add a user using DAO object
-		university.getAspirants().add(user1);
+		university.getMembership().getAspirants().add(user1);
 		
 		// Synchronize with Database
-		session.flush();
+		flush();
 		
 		// Get List of Aspirants again
-		List aspirants2 = membershipService.findAllAspirants(university.getId());
+		List aspirants2 = membershipService.findAllAspirants(university.getMembership().getId());
 		assertNotNull(aspirants2);
 		assertEquals(aspirants2.size(), sizeBefore + 1);
 

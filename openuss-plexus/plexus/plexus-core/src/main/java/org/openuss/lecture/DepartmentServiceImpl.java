@@ -21,35 +21,8 @@ public class DepartmentServiceImpl
     protected java.lang.Long handleCreate(org.openuss.lecture.DepartmentInfo department, java.lang.Long ownerId)
         throws java.lang.Exception
     {
-       	if (department == null) {
-       		throw new IllegalArgumentException("DepartmentService.handleCreate - the department cannot be null");
-       	}
-       	
-       	if (ownerId == null) {
-       		throw new IllegalArgumentException("DepartmentService.handleCreate - the owner must have a valid ID");
-       	}
-       	
-       	User owner = this.getUserDao().load(ownerId);
-       	if (owner == null) {
-       		throw new IllegalArgumentException("DepartmentService.handleCreate - no user found to the id "+ownerId);
-       	}
-       	
-       	if (department.getId() != null) {
-       		throw new IllegalArgumentException("DepartmentService.handleCreate - department must have a valid Id");
-       	}
-       	
-       	Department departmentEntity = Department.Factory.newInstance();
-       	departmentEntity.setName(department.getName());
-       	departmentEntity.setShortcut(department.getShortcut());
-       	departmentEntity.setDescription(department.getDescription());
-       	departmentEntity.setDepartmentType(DepartmentType.fromInteger(department.getDepartmentType()));
-       	departmentEntity.setUniversity(this.getUniversityDao().load(department.getUniversityId()));
-       	
-       	departmentEntity.setOwner(owner);
-       	
-       	this.getDepartmentDao().create(departmentEntity).getId();
-       	
-       	return departmentEntity.getId();
+        // @todo implement protected void handleUpdate(org.openuss.lecture.DepartmentInfo department)
+        throw new java.lang.UnsupportedOperationException("org.openuss.lecture.DepartmentService.handleCreate(org.openuss.lecture.DepartmentInfo department) Not implemented!");
     }
 
     /**
