@@ -41,7 +41,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		universityEntity.setName(university.getName());
 		universityEntity.setShortcut(university.getShortcut());
 		universityEntity.setDescription(university.getDescription());
-		universityEntity.setType(UniversityType.fromInteger(university.getUniversityType()));
+		universityEntity.setUniversityType(UniversityType.fromInteger(university.getUniversityType()));
 		
 		universityEntity.setOwner(owner);
 		
@@ -138,26 +138,26 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	}
 
 	/**
-	 * @see org.openuss.lecture.UniversityService#findAllPeriods(java.lang.Long)
+	 * @see org.openuss.lecture.UniversityService#findPeriodsByUniversity(java.lang.Long)
 	 */
-	protected java.util.List handleFindAllPeriods(java.lang.Long universityId) throws java.lang.Exception {
+	protected java.util.List handleFindPeriodsByUniversity(java.lang.Long universityId) throws java.lang.Exception {
 		// @todo implement protected java.util.List handleFindAllPeriods(java.lang.Long universityId)
 		return null;
 	}
 
 	/**
-	 * @see org.openuss.lecture.UniversityService#findActivePeriod(java.lang.Long)
+	 * @see org.openuss.lecture.UniversityService#findctivePeriodByUniversity(java.lang.Long)
 	 */
-	protected org.openuss.lecture.PeriodInfo handleFindActivePeriod(java.lang.Long universityId)
+	protected org.openuss.lecture.PeriodInfo handleFindActivePeriodByUniversity(java.lang.Long universityId)
 			throws java.lang.Exception {
 		// @todo implement protected org.openuss.lecture.PeriodInfo handleFindActivePeriod(java.lang.Long universityId)
 		return null;
 	}
 
 	/**
-	 * @see org.openuss.lecture.UniversityService#findOrganisationsByUser(java.lang.Long)
+	 * @see org.openuss.lecture.UniversityService#findUniversitiesByUser(java.lang.Long)
 	 */
-	protected java.util.List handleFindOrganisationsByUser(java.lang.Long userId) throws java.lang.Exception {
+	protected java.util.List handleFindUniversitiesByUser(java.lang.Long userId) throws java.lang.Exception {
 		// @todo implement protected java.util.List handleFindOrganisationsByUser(java.lang.Long userId)
 		return null;
 	}

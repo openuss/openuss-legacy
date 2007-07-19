@@ -25,7 +25,7 @@ public class DepartmentDaoImpl extends org.openuss.lecture.DepartmentDaoBase {
 	 */
 	public org.openuss.lecture.DepartmentInfo toDepartmentInfo(final org.openuss.lecture.Department entity) {
 		DepartmentInfo departmentInfo = super.toDepartmentInfo(entity);
-		departmentInfo.setDepartmentType(entity.getType().getValue());
+		departmentInfo.setDepartmentType(entity.getDepartmentType().getValue());
 		departmentInfo.setUniversityId(entity.getUniversity().getId());
 		return departmentInfo;
 	}

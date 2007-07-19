@@ -42,7 +42,7 @@ public class DepartmentServiceImpl
        	departmentEntity.setName(department.getName());
        	departmentEntity.setShortcut(department.getShortcut());
        	departmentEntity.setDescription(department.getDescription());
-       	departmentEntity.setType(DepartmentType.fromInteger(department.getDepartmentType()));
+       	departmentEntity.setDepartmentType(DepartmentType.fromInteger(department.getDepartmentType()));
        	departmentEntity.setUniversity(this.getUniversityDao().load(department.getUniversityId()));
        	
        	departmentEntity.setOwner(owner);

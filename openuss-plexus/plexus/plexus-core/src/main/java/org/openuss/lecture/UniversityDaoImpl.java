@@ -25,7 +25,7 @@ public class UniversityDaoImpl extends org.openuss.lecture.UniversityDaoBase {
 	 */
 	public org.openuss.lecture.UniversityInfo toUniversityInfo(final org.openuss.lecture.University entity) {
 		UniversityInfo universityInfo = super.toUniversityInfo(entity);
-		universityInfo.setUniversityType(entity.getType().getValue());
+		universityInfo.setUniversityType(entity.getUniversityType().getValue());
 		return universityInfo;
 	}
 
@@ -63,7 +63,7 @@ public class UniversityDaoImpl extends org.openuss.lecture.UniversityDaoBase {
 		
 		if (copyIfNull || sourceVO.getUniversityType() != null)
         {
-			targetEntity.setType(UniversityType.fromInteger(sourceVO.getUniversityType()));
+			targetEntity.setUniversityType(UniversityType.fromInteger(sourceVO.getUniversityType()));
         }
 	}
 }

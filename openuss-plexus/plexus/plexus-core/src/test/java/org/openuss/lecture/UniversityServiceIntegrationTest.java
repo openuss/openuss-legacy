@@ -68,7 +68,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertFalse(universityInfo.getName().compareTo(university.getName()) == 0);
 		assertFalse(universityInfo.getShortcut().compareTo(university.getShortcut()) == 0);
 		assertFalse(universityInfo.getDescription().compareTo(university.getDescription()) == 0);
-		assertFalse(universityInfo.getUniversityType().intValue() == university.getType().getValue().intValue());
+		assertFalse(universityInfo.getUniversityType().intValue() == university.getUniversityType().getValue().intValue());
 		
 		
 		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
@@ -84,7 +84,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertTrue(universityInfo.getName().compareTo(university.getName()) == 0);
 		assertTrue(universityInfo.getShortcut().compareTo(university.getShortcut()) == 0);
 		assertTrue(universityInfo.getDescription().compareTo(university.getDescription()) == 0);
-		assertTrue(universityInfo.getUniversityType().intValue() == university.getType().getValue().intValue());
+		assertTrue(universityInfo.getUniversityType().intValue() == university.getUniversityType().getValue().intValue());
 		
 		logger.info("----> END access to update(University) test");
 	}

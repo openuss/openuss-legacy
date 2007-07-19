@@ -95,7 +95,7 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		assertEquals(department.getName(), departmentInfo.getName());
 		assertEquals(department.getShortcut(), departmentInfo.getShortcut());
 		assertEquals(department.getDescription(), departmentInfo.getDescription());
-		assertEquals(department.getType().getValue(), departmentInfo.getDepartmentType());
+		assertEquals(department.getDepartmentType().getValue(), departmentInfo.getDepartmentType());
 		assertEquals(department.getUniversity().getId(), departmentInfo.getUniversityId());
 	}
 
@@ -125,7 +125,7 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		assertEquals(department2.getName(), department.getName());
 		assertEquals(department2.getShortcut(), department.getShortcut());
 		assertEquals(department2.getDescription(), department.getDescription());
-		assertEquals(department2.getType(), department.getType());
+		assertEquals(department2.getDepartmentType(), department.getDepartmentType());
 
 	}
 }
