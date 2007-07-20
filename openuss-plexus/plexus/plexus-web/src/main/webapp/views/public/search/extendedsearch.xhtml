@@ -24,21 +24,26 @@
   		<ui:define name="navigation"> 
 			<ui:include src="/views/commons/navigation/desktop.xhtml" />
 		</ui:define>
+		<ui:define name="breadcrumb">
+			<ui:include src="/views/commons/navigation/crumb.xhtml" />
+		</ui:define>
  		<ui:define name="sidebar"> 
 			<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
 		</ui:define>
   		<ui:define name="content">
   			<h:form id="extendedSearchForm"> 
 				<o:block label="#{msg.extended_search_headline}">
-					<div class="content_font_normal">
-						<h:outputText value="Extended Search Dummy" escape="false" />
-					</div>
-				</o:block>
-				<o:block>
-					<h:commandButton value="${msg.extended_search_search}" styleClass="button_continue" action="extended_search_results" />
-				</o:block>
+		  			<p class="content_font_normal">
+	  				<h:outputLabel value="#{msg['extended_search_search_for']}" for="search_input" styleClass="field_label"></h:outputLabel>
+	  				<h:inputText id="extended_search_input" value="#{extended_search_results.textToSearch}" styleClass="field"/>
+	  				<h:commandButton action="#{views$public$search$extendedsearch.extendedSearch}" value="${msg.extended_search_search}" styleClass="button_save"/>
+	  				</p>
+	  			</o:block>
+				<ui:include src="extendedsearchresults.xhtml"/>
 			</h:form>
 		</ui:define>
+
+	  			
 	</ui:composition>
 	<!-- text above will be ignored -->
 	</body>

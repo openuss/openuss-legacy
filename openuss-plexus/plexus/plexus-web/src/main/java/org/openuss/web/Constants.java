@@ -132,6 +132,8 @@ public class Constants {
 	public static final String NEWSLETTER_SHOWMAIL = "newsletter_showmail";
 
 	public static final String SEARCH_RESULT = "search_result";
+	
+	public static final String EXTENDED_SEARCH_RESULT = "extended_search_result";
 
 	public static final String NEWSLETTER_EXPORT = "newsletter_export";
 	

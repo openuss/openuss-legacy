@@ -11,43 +11,41 @@
     PATH="/views/public/search/search.xhtml"
     TARGET="rules:#views#public#search#search.xhtml" TITLE="search"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="extended_search::#views#public#search#extendedsearch.xhtml"
+    ID="extendedSearch::#views#public#search#extendedsearch.xhtml"
     NAME="output2" PATH="/views/public/search/extendedsearch.xhtml"
-    TARGET="rules:#views#public#search#extendedsearch.xhtml" TITLE="extended_search"/>
+    TARGET="rules:#views#public#search#extendedsearch.xhtml" TITLE="extendedSearch"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="extended_search_results::#views#public#search#extendedsearchresults.xhtml"
-    NAME="output3"
-    PATH="/views/public/search/extendedsearchresults.xhtml"
-    TARGET="rules:#views#public#search#extendedsearchresults.xhtml" TITLE="extended_search_results"/>
+    ID="home::#views#welcome.xhtml" NAME="output4"
+    PATH="/views/welcome.xhtml" TARGET="rules:#views#welcome.xhtml" TITLE="home"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="login::#views#public#login#login.xhtml" NAME="output4"
+    ID="login::#views#public#login#login.xhtml" NAME="output5"
     PATH="/views/public/login/login.xhtml"
     TARGET="rules:#views#public#login#login.xhtml" TITLE="login"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="messagebox::#views#public#messagebox.xhtml" NAME="output5"
+    ID="logout::#views#public#login#logout.xhtml" NAME="output6"
+    PATH="/views/public/login/logout.xhtml"
+    TARGET="rules:#views#public#login#logout.xhtml" TITLE="logout"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="messagebox::#views#public#messagebox.xhtml" NAME="output7"
     PATH="/views/public/messagebox.xhtml"
     TARGET="rules:#views#public#messagebox.xhtml" TITLE="messagebox"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="forgot_password::#views#public#login#forgotPassword.xhtml"
-    NAME="output6" PATH="/views/public/login/forgotPassword.xhtml"
+    NAME="output3" PATH="/views/public/login/forgotPassword.xhtml"
     TARGET="rules:#views#public#login#forgotPassword.xhtml" TITLE="forgot_password"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="register_user::#views#public#user#registration#startProcess.xhtml"
-    NAME="output7"
+    NAME="output8"
     PATH="/views/public/user/registration/startProcess.xhtml"
     TARGET="rules:#views#public#user#registration#startProcess.xhtml" TITLE="register_user"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="search_institutes::#views#public#institute#institutes.xhtml"
-    NAME="output8" PATH="/views/public/institute/institutes.xhtml"
+    NAME="output9" PATH="/views/public/institute/institutes.xhtml"
     TARGET="rules:#views#public#institute#institutes.xhtml" TITLE="search_institutes"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="institute::#views#secured#lecture#institute.xhtml"
-    NAME="output9" PATH="/views/secured/lecture/institute.xhtml"
+    NAME="output10" PATH="/views/secured/lecture/institute.xhtml"
     TARGET="rules:#views#secured#lecture#institute.xhtml" TITLE="institute"/>
-   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="user_profile::#views#secured#user#profile.xhtml" NAME="output10"
-    PATH="/views/secured/user/profile.xhtml"
-    TARGET="rules:#views#secured#user#profile.xhtml" TITLE="user_profile"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="user_logindata::#views#secured#user#logindata.xhtml"
     NAME="output11" PATH="/views/secured/user/logindata.xhtml"
@@ -84,6 +82,10 @@
     ID="search_result::#views#public#search#search.xhtml"
     NAME="output19" PATH="/views/public/search/search.xhtml"
     TARGET="rules:#views#public#search#search.xhtml" TITLE="search_result"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="extended_search_result::#views#public#search#extendedsearch.xhtml"
+    NAME="output20" PATH="/views/public/search/extendedsearch.xhtml"
+    TARGET="rules:#views#public#search#extendedsearch.xhtml" TITLE="extended_search_result"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -737,7 +739,4 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#public#search#extendedsearch.xhtml"
   PATH="/views/public/search/extendedsearch.xhtml" SHAPE="304,753,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#public#search#extendedsearchresults.xhtml"
-  PATH="/views/public/search/extendedsearchresults.xhtml" SHAPE="304,753,0,0"/>
 </PROCESS>

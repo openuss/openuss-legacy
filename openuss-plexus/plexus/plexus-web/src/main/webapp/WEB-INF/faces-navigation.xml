@@ -19,15 +19,10 @@
 			<from-outcome>search</from-outcome>
 			<to-view-id>/views/public/search/search.xhtml</to-view-id>
 		</navigation-case>
-		
+			
 		<navigation-case>
-			<from-outcome>extended_search</from-outcome>
+			<from-outcome>extendedSearch</from-outcome>
 			<to-view-id>/views/public/search/extendedsearch.xhtml</to-view-id>
-		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>extended_search_results</from-outcome>
-			<to-view-id>/views/public/search/extendedsearchresults.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
@@ -120,7 +115,14 @@
 			<from-outcome>search_result</from-outcome>
 			<to-view-id>/views/public/search/search.xhtml</to-view-id>
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>extended_search_result</from-outcome>
+			<to-view-id>/views/public/search/extendedsearch.xhtml</to-view-id>
+		</navigation-case>
 	</navigation-rule>
+	
+	
 	
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
     	L o g i n / L o g o u t  - R u l e s
