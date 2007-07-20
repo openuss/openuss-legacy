@@ -18,26 +18,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 	public void testCreateDepartment() {
 		logger.info("----> BEGIN access to create(Department) test");
 
-		//Create new DepartmentInfo object
-		DepartmentInfo departmentInfo = new DepartmentInfo();
-		departmentInfo.setName(testUtility.unique("testDepartment"));
-		departmentInfo.setShortcut(testUtility.unique("testD"));
-		departmentInfo.setDescription("This is a test Department");
-		University uni = testUtility.createDefaultUniversityWithDefaultUser();
-		departmentInfo.setUniversityId(uni.getId());
-		departmentInfo.setDepartmentType(0);
-		
-		//Create a User
-		User owner = testUtility.createUserInDB();
-		
-		//Create Entity
-		Long departmentId = departmentService.create(departmentInfo, owner.getId());
-		assertNotNull(departmentId);
 
-		//Synchronize with Database
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = sessionFactory.getCurrentSession();
-		session.flush();
 		
 		logger.info("----> END access to create(Department) test");
 	}

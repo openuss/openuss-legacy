@@ -5,6 +5,9 @@
  */
 package org.openuss.lecture;
 
+import org.apache.commons.lang.Validate;
+import org.openuss.security.User;
+
 
 /**
  * @see org.openuss.lecture.OrganisationService
@@ -21,12 +24,12 @@ public class OrganisationServiceImpl
         throws java.lang.Exception
     {
     	Organisation organisation = this.getOrganisationDao().load(organisationId);
-		if (organisation == null) {
-			throw new IllegalArgumentException(
-					"MembershipService.handleAddMember - no Organisation found corresponding to the ID " + organisationId);
-		}
+		Validate.notNull(organisation, "MembershipService.handleAddMember - no Organisation found corresponding to the ID " + organisationId);
 		
-		this.getMembershipService().addMember(organisation.getMembership().getId(), userId, null);
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(organisation, "MembershipService.handleAddMember - no User found corresponding to the ID " + userId);
+		
+		this.getMembershipService().addMember(organisation.getMembership(), user, null);
 
     }
 

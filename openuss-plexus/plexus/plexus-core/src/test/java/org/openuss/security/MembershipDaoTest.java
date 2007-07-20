@@ -32,17 +32,28 @@ public class MembershipDaoTest extends MembershipDaoTestBase {
 	
 	public void testMembershipDaoCreate() {
 		
+		// Create users
 		List<User> users = new ArrayList<User>(5);
 		for(int i=0;i<5;i++) {
 			users.add(testUtility.createUserInDB());
 		}
 		
+		// Create Groups
+		List<Group> groups = new ArrayList<Group>(4);
+		for(int i=0;i<4;i++) {
+			groups.add(Group.Factory.newInstance("Group"+i, GroupType.ADMINISTRATOR));
+			groups.get(0).addMember(users.get(i));
+		}
+		
+		// Create Memberships
 		Membership membership = Membership.Factory.newInstance();
 		membership.getMembers().add(users.get(0));
 		membership.getAspirants().add(users.get(1));
 		membership.getAspirants().add(users.get(2));
 		membership.getMembers().add(users.get(3));
 		membership.getMembers().add(users.get(4));
+		membership.getGroups().add(groups.get(0));
+		membership.getGroups().add(groups.get(1));
 		
 		assertNull(membership.getId());
 		membershipDao.create(membership);
@@ -54,15 +65,15 @@ public class MembershipDaoTest extends MembershipDaoTestBase {
 		membership2.getAspirants().add(users.get(2));
 		membership2.getMembers().add(users.get(3));
 		membership2.getMembers().add(users.get(4));
+		membership2.getGroups().add(groups.get(2));
+		membership2.getGroups().add(groups.get(3));
 		
 		assertNull(membership2.getId());
 		membershipDao.create(membership2);
 		assertNotNull(membership2.getId());
 		
 		//Synchronize with Database
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = sessionFactory.getCurrentSession();
-		session.flush();
+		flush();
 		
 	}
 }

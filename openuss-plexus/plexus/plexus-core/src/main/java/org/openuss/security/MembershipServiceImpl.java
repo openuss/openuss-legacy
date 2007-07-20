@@ -9,101 +9,85 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.Validate;
+
 /**
  * @see org.openuss.security.MembershipService
- * @author Ron Haus, Florian Dondorf
+ * @author Ron Haus
  */
 public class MembershipServiceImpl extends org.openuss.security.MembershipServiceBase {
 
-
 	/**
-	 * @see org.openuss.security.MembershipService#acceptAspirant(java.lang.Long, java.lang.Long)
+	 * @see org.openuss.security.MembershipService#acceptAspirant(org.openuss.security.Membership,
+	 *      org.openuss.security.User, org.openuss.security.MembershipParameters)
 	 */
-	@SuppressWarnings({"unchecked"})
-	protected void handleAcceptAspirant(java.lang.Long membershipId, java.lang.Long userId, org.openuss.security.MembershipParameters parameters)
-			throws java.lang.Exception {
+	@SuppressWarnings( { "unchecked" })
+	protected void handleAcceptAspirant(org.openuss.security.Membership membership, org.openuss.security.User user,
+			org.openuss.security.MembershipParameters parameters) throws java.lang.Exception {
 		// TODO Check Security
 
-		User aspirant = this.getUserDao().load(userId);
-		if (aspirant == null) {
-			throw new IllegalArgumentException(
-					"MembershipService.handleAcceptAspirant - no User found corresponding to the ID " + userId);
-		}
-
-		Membership membership = this.getMembershipDao().load(membershipId);
-		if (membership == null) {
-			throw new IllegalArgumentException(
-					"MembershipService.handleAcceptAspirant - no Organisation found corresponding to the ID "
-							+ membershipId);
-		}
+		Validate.notNull(user, "MembershipService.handleAcceptAspirant - User cannot be null");
+		Validate.notNull(user.getId(), "MembershipService.handleAcceptAspirant - User must have a valid ID");
+		Validate.notNull(membership, "MembershipService.handleAcceptAspirant - Membership cannot be null");
+		Validate
+				.notNull(membership.getId(), "MembershipService.handleAcceptAspirant - Membership must have a valid ID");
 
 		// Remove Aspirant from List of Aspirants
 		List aspirants = membership.getAspirants();
-		boolean wasFound = aspirants.remove(aspirant);
+		boolean wasFound = aspirants.remove(user);
 		if (!wasFound) {
 			throw new IllegalArgumentException("MembershipService.handleAcceptAspirant - the User "
-					+ aspirant.getUsername() + " has not been an Aspirant");
+					+ user.getUsername() + " has not been an Aspirant");
 		}
 
-		// There is no need to check whether the Aspirant is already a Member, since the method addAspirant
-		// is taken care of that
-		
+		// There is no need to check whether the Aspirant is already a Member, since the method addAspirant is taken
+		// care of that
+
 		// Add Aspirant to List of Members
-		this.addMember(membershipId, userId, parameters);
+		this.addMember(membership, user, parameters);
 
 	}
 
 	/**
-	 * @see org.openuss.security.MembershipService#rejectAspirant(java.lang.Long, java.lang.Long)
+	 * @see org.openuss.security.MembershipService#rejectAspirant(org.openuss.security.Membership, org.openuss.security.User,
+	 *      org.openuss.security.MembershipParameters)
 	 */
-	@SuppressWarnings({"unchecked"})
-	protected void handleRejectAspirant(java.lang.Long membershipId, java.lang.Long userId)
-			throws java.lang.Exception {
+	@SuppressWarnings( { "unchecked" })
+	protected void handleRejectAspirant(org.openuss.security.Membership membership, org.openuss.security.User user,
+			org.openuss.security.MembershipParameters parameters) throws java.lang.Exception {
+		
 		// TODO Check Security
-		
-		User aspirant = this.getUserDao().load(userId);
-		if (aspirant == null) {
-			throw new IllegalArgumentException(
-					"MembershipService.handleRejectAspirant - no User found corresponding to the ID " + userId);
-		}
-		
-		Membership membership = this.getMembershipDao().load(membershipId);
-		if (membership == null) {
-			throw new IllegalArgumentException(
-					"MembershipService.handleRejectAspirant - no Membership found corresponding to the ID "
-							+ membershipId);
-		}
-		
+
+		Validate.notNull(user, "MembershipService.handleRejectAspirant - User cannot be null");
+		Validate.notNull(user.getId(), "MembershipService.handleRejectAspirant - User must have a valid ID");
+		Validate.notNull(membership, "MembershipService.handleRejectAspirant - Membership cannot be null");
+		Validate
+				.notNull(membership.getId(), "MembershipService.handleRejectAspirant - Membership must have a valid ID");
+
 		// Remove Aspirant from List of Aspirants
 		List aspirants = membership.getAspirants();
-		boolean wasFound = aspirants.remove(aspirant);
+		boolean wasFound = aspirants.remove(user);
 		if (!wasFound) {
 			throw new IllegalArgumentException("MembershipService.handleRejectAspirant - the User "
-					+ aspirant.getUsername() + " has not been an Aspirant");
+					+ user.getUsername() + " has not been an Aspirant");
 		}
-		
+
 	}
 
 	/**
-	 * @see org.openuss.security.MembershipService#addMember(java.lang.Long, java.lang.Long)
+	 * @see org.openuss.security.MembershipService#addMember(org.openuss.security.Membership, java.lang.Long)
 	 */
-	@SuppressWarnings({"unchecked"})
-	protected void handleAddMember(java.lang.Long membershipId, java.lang.Long userId, org.openuss.security.MembershipParameters parameters) throws java.lang.Exception {
+	@SuppressWarnings( { "unchecked" })
+	protected void handleAddMember(org.openuss.security.Membership membership, org.openuss.security.User user,
+			org.openuss.security.MembershipParameters parameters) throws java.lang.Exception {
+		
 		// TODO Check Security
-		
-		User user = this.getUserDao().load(userId);
-		if (user == null) {
-			throw new IllegalArgumentException(
-					"MembershipService.handleAddMember - no User found corresponding to the ID " + userId);
-		}
-		
-		Membership membership = this.getMembershipDao().load(membershipId);
-		if (membership == null) {
-			throw new IllegalArgumentException(
-					"MembershipService.handleAddMember - no Organisation found corresponding to the ID "
-							+ membershipId);
-		}
-		
+
+		Validate.notNull(user, "MembershipService.handleAddMember - User cannot be null");
+		Validate.notNull(user.getId(), "MembershipService.handleAddMember - User must have a valid ID");
+		Validate.notNull(membership, "MembershipService.handleAddMember - Membership cannot be null");
+		Validate.notNull(membership.getId(), "MembershipService.handleAddMember - Membership must have a valid ID");
+
 		// Check whether the User is already a Member or Aspirant
 		List members = membership.getMembers();
 		if (members.contains(user)) {
@@ -118,31 +102,23 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 
 		// Add User to the List of Members
 		members.add(user);
-		
-		// TODO Add User to the official Group "Administrators"
-		
-		// TODO Send Email to inform the Members
+
+		// TODO Send Email to inform the Members and the new Member
 	}
 
 	/**
-	 * @see org.openuss.security.MembershipService#addAspirant(java.lang.Long, java.lang.Long)
+	 * @see org.openuss.security.MembershipService#addAspirant(org.openuss.security.Membership, java.lang.Long)
 	 */
-	@SuppressWarnings({"unchecked"})
-	protected void handleAddAspirant(java.lang.Long membershipId, java.lang.Long userId, org.openuss.security.MembershipParameters parameters) throws java.lang.Exception {
+	@SuppressWarnings( { "unchecked" })
+	protected void handleAddAspirant(org.openuss.security.Membership membership, org.openuss.security.User user,
+			org.openuss.security.MembershipParameters parameters) throws java.lang.Exception {
+		
 		// TODO Check Security
 
-		User user = this.getUserDao().load(userId);
-		if (user == null) {
-			throw new IllegalArgumentException(
-					"MembershipService.handleAddAspirant - no User found corresponding to the ID " + userId);
-		}
-
-		Membership membership = this.getMembershipDao().load(membershipId);
-		if (membership == null) {
-			throw new IllegalArgumentException(
-					"MembershipService.handleAddAspirant - no Membership found corresponding to the ID "
-							+ membershipId);
-		}
+		Validate.notNull(user, "MembershipService.handleAddAspirant - User cannot be null");
+		Validate.notNull(user.getId(), "MembershipService.handleAddAspirant - User must have a valid ID");
+		Validate.notNull(membership, "MembershipService.handleAddAspirant - Membership cannot be null");
+		Validate.notNull(membership.getId(), "MembershipService.handleAddAspirant - Membership must have a valid ID");
 
 		// Check whether the User is already a Member or Aspirant
 		List members = membership.getMembers();
@@ -158,58 +134,16 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 
 		// Add User to the List of Aspirants
 		aspirants.add(user);
-		
-		// TODO Send Email to inform the Members
+
+		// TODO Send Email to inform the Members and the Aspirant
 	}
 
 	/**
-	 * @see org.openuss.security.MembershipService#findAllMembers(java.lang.Long)
+	 * @see org.openuss.security.MembershipService#findAllAspirants(org.openuss.security.Membership, org.openuss.security.GroupItem)
 	 */
-	@SuppressWarnings({"unchecked"})
-	protected java.util.List handleFindAllMembers(java.lang.Long membershipId) throws java.lang.Exception {
-		Membership membership = this.getMembershipDao().load(membershipId);
-		if (membership == null) {
-			throw new IllegalArgumentException(
-					"MembershipService.FindAllMembers - no Membership found corresponding to the ID "
-							+ membershipId);
-		}
-		List members = membership.getMembers();
-		Iterator iterator = members.iterator();
+	protected java.lang.Long handleCreateGroup(org.openuss.security.Membership membership, org.openuss.security.GroupItem groupItem)
+			throws java.lang.Exception {
+		return null;
 
-		List memberInfos = new ArrayList(members.size());
-		for (int i = 0; i < members.size(); i++) {
-			Object member = iterator.next();
-			if (member instanceof User) {
-				memberInfos.add(this.getUserDao().toUserInfo((User) member));
-			}
-		}
-
-		return memberInfos;
-	}
-
-	/**
-	 * @see org.openuss.security.MembershipService#findAllAspirants(java.lang.Long)
-	 */
-	@SuppressWarnings({"unchecked"})
-	protected java.util.List handleFindAllAspirants(java.lang.Long membershipId) throws java.lang.Exception {
-		Membership membership = this.getMembershipDao().load(membershipId);
-		if (membership == null) {
-			throw new IllegalArgumentException(
-					"MembershipService.handleFindAllAspirants - no Membership found corresponding to the ID "
-							+ membershipId);
-		}
-
-		List aspirants = membership.getAspirants();
-		Iterator iterator = aspirants.iterator();
-
-		List aspirantInfos = new ArrayList(aspirants.size());
-		for (int i = 0; i < aspirants.size(); i++) {
-			Object aspirant = iterator.next();
-			if (aspirant instanceof User) {
-				aspirantInfos.add(this.getUserDao().toUserInfo((User) aspirant));
-			}
-		}
-
-		return aspirantInfos;
 	}
 }

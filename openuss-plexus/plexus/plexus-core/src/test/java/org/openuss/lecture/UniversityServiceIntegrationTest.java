@@ -31,7 +31,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		universityInfo.setName(testUtility.unique("testUniversity"));
 		universityInfo.setShortcut(testUtility.unique("testU"));
 		universityInfo.setDescription("This is a test University");
-		universityInfo.setUniversityType(0);
+		universityInfo.setUniversityType(UniversityType.MISC);
 		
 		//Create a User
 		User owner = testUtility.createUserInDB();
@@ -61,14 +61,14 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		universityInfo.setName(testUtility.unique("testUniversity"));
 		universityInfo.setShortcut(testUtility.unique("testU"));
 		universityInfo.setDescription("This is a test University");
-		universityInfo.setUniversityType(0);
+		universityInfo.setUniversityType(UniversityType.MISC);
 		
 		// Check
 		assertTrue(universityInfo.getId().longValue() == university.getId().longValue());
 		assertFalse(universityInfo.getName().compareTo(university.getName()) == 0);
 		assertFalse(universityInfo.getShortcut().compareTo(university.getShortcut()) == 0);
 		assertFalse(universityInfo.getDescription().compareTo(university.getDescription()) == 0);
-		assertFalse(universityInfo.getUniversityType().intValue() == university.getUniversityType().getValue().intValue());
+		assertFalse(universityInfo.getUniversityType().getValue().intValue() == university.getUniversityType().getValue().intValue());
 		
 		
 		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
@@ -84,7 +84,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertTrue(universityInfo.getName().compareTo(university.getName()) == 0);
 		assertTrue(universityInfo.getShortcut().compareTo(university.getShortcut()) == 0);
 		assertTrue(universityInfo.getDescription().compareTo(university.getDescription()) == 0);
-		assertTrue(universityInfo.getUniversityType().intValue() == university.getUniversityType().getValue().intValue());
+		assertTrue(universityInfo.getUniversityType().getValue().intValue() == university.getUniversityType().getValue().intValue());
 		
 		logger.info("----> END access to update(University) test");
 	}

@@ -21,7 +21,7 @@ import org.openuss.lecture.University;
  * JUnit Test for Spring Hibernate MembershipService class.
  * 
  * @see org.openuss.security.MembershipService
- * @author Ron Haus, Florian Dondorf
+ * @author Ron Haus
  */
 @SuppressWarnings( { "unchecked" })
 public class MembershipServiceIntegrationTest extends MembershipServiceIntegrationTestBase {
@@ -42,7 +42,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Try to accept the User
 		try {
-			membershipService.acceptAspirant(university.getMembership().getId(), user1.getId(), null);
+			membershipService.acceptAspirant(university.getMembership(), user1, null);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
@@ -52,12 +52,12 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		university.getMembership().getAspirants().add(user1);
 		int sizeAspirantsBefore = university.getMembership().getAspirants().size();
 		int sizeMembersBefore = university.getMembership().getMembers().size();
-		
+
 		// Synchronize with Database
 		flush();
-		
+
 		// Accept Aspirant
-		membershipService.acceptAspirant(university.getMembership().getId(), user1.getId(), null);
+		membershipService.acceptAspirant(university.getMembership(), user1, null);
 		List aspirants = university.getMembership().getAspirants();
 		assertNotNull(aspirants);
 		assertEquals(aspirants.size(), sizeAspirantsBefore - 1);
@@ -67,7 +67,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Synchronize with Database
 		flush();
-		
+
 		logger.info("----> END access to acceptAspirant test");
 	}
 
@@ -79,10 +79,10 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Create a User
 		User user1 = testUtility.createUserInDB();
-		
+
 		// Try to accept the User
 		try {
-			membershipService.rejectAspirant(university.getMembership().getId(), user1.getId());
+			membershipService.rejectAspirant(university.getMembership(), user1, null);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
@@ -92,12 +92,12 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		university.getMembership().getAspirants().add(user1);
 		int sizeAspirantsBefore = university.getMembership().getAspirants().size();
 		int sizeMembersBefore = university.getMembership().getMembers().size();
-		
+
 		// Synchronize with Database
 		flush();
-		
+
 		// Reject Aspirant
-		membershipService.rejectAspirant(university.getMembership().getId(), user1.getId());
+		membershipService.rejectAspirant(university.getMembership(), user1, null);
 		List aspirants = university.getMembership().getAspirants();
 		assertNotNull(aspirants);
 		assertEquals(aspirants.size(), sizeAspirantsBefore - 1);
@@ -107,7 +107,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Synchronize with Database
 		flush();
-		
+
 		logger.info("----> END access to rejectAspirant test");
 	}
 
@@ -119,11 +119,11 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Create a User
 		User user1 = testUtility.createUserInDB();
-		
+
 		// Try to add a Aspirant as a Member
 		try {
 			university.getMembership().getAspirants().add(user1);
-			membershipService.addMember(university.getMembership().getId(), user1.getId(), null);
+			membershipService.addMember(university.getMembership(), user1, null);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
@@ -136,9 +136,9 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Create a 2nd User
 		User user2 = testUtility.createUserInDB();
-		
+
 		// Add a User
-		membershipService.addMember(university.getMembership().getId(), user2.getId(), null);
+		membershipService.addMember(university.getMembership(), user2, null);
 
 		// Get List of Members again
 		List members2 = university.getMembership().getMembers();
@@ -147,7 +147,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Try to add Member again
 		try {
-			membershipService.addMember(university.getMembership().getId(), user2.getId(), null);
+			membershipService.addMember(university.getMembership(), user2, null);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
@@ -155,7 +155,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Synchronize with Database
 		flush();
-		
+
 		logger.info("----> END access to addMember test");
 	}
 
@@ -164,10 +164,11 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Create University with DefaultUser as Owner
 		University university = testUtility.createDefaultUniversityWithDefaultUser();
-		
+
 		// Try to add Member as an Aspirant
 		try {
-			membershipService.addAspirant(university.getMembership().getId(), university.getMembership().getMembers().get(0).getId(), null);
+			membershipService.addAspirant(university.getMembership(), university.getMembership().getMembers()
+					.get(0), null);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
@@ -180,9 +181,9 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Create a 2nd User
 		User user2 = testUtility.createUserInDB();
-		
+
 		// Add a user
-		membershipService.addAspirant(university.getMembership().getId(), user2.getId(), null);
+		membershipService.addAspirant(university.getMembership(), user2, null);
 
 		// Get List of Aspirants again
 		List aspirants2 = university.getMembership().getAspirants();
@@ -191,7 +192,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Try to add Aspirant again
 		try {
-			membershipService.addAspirant(university.getMembership().getId(), user2.getId(), null);
+			membershipService.addAspirant(university.getMembership(), user2, null);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
@@ -199,64 +200,8 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Synchronize with Database
 		flush();
-		
+
 		logger.info("----> END access to addAspirant test");
-	}
-
-	public void testFindAllMembers() {
-		logger.info("----> BEGIN access to findAllMembers test");
-
-		// Create University with DeafultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
-
-		// Create a 2nd User
-		User user1 = testUtility.createUserInDB();
-		
-		// Get List of Members
-		List members = membershipService.findAllMembers(university.getMembership().getId());
-		assertNotNull(members);
-		int sizeBefore = members.size();
-
-		// Add a user using DAO object
-		university.getMembership().getMembers().add(user1);
-		
-		// Synchronize with Database
-		flush();
-
-		// Get List of Members again
-		List members2 = membershipService.findAllMembers(university.getMembership().getId());
-		assertNotNull(members2);
-		assertEquals(members2.size(), sizeBefore + 1);
-
-		logger.info("----> END access to findAllMembers test");
-	}
-
-	public void testFindAllAspirants() {
-		logger.info("----> BEGIN access to findAllAspirants test");
-
-		// Create University with DeafultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
-
-		// Create a 2nd User
-		User user1 = testUtility.createUserInDB();
-
-		// Get List of Aspirants
-		List aspirants = membershipService.findAllAspirants(university.getMembership().getId());
-		assertNotNull(aspirants);
-		int sizeBefore = aspirants.size();
-
-		// Add a user using DAO object
-		university.getMembership().getAspirants().add(user1);
-		
-		// Synchronize with Database
-		flush();
-		
-		// Get List of Aspirants again
-		List aspirants2 = membershipService.findAllAspirants(university.getMembership().getId());
-		assertNotNull(aspirants2);
-		assertEquals(aspirants2.size(), sizeBefore + 1);
-
-		logger.info("----> END access to findAllAspirants test");
 	}
 
 	private static void createSecureContext(String roleName) {

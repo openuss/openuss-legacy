@@ -12,6 +12,7 @@ import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
 import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
+import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
 import org.openuss.security.MembershipDao;
 import org.openuss.security.Roles;
@@ -114,6 +115,9 @@ public class TestUtility {
 		// Create a unique Membership
 		Membership membership = Membership.Factory.newInstance();
 		membership.getMembers().add(user);
+		Group group = Group.Factory.newInstance(unique("Group"), GroupType.ADMINISTRATOR);
+		group.addMember(user);
+		membership.getGroups().add(group);
 		
 		membershipDao.create(membership);
 		

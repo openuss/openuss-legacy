@@ -131,7 +131,7 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		universityInfo2.setName(testUtility.unique("testUniversity2"));
 		universityInfo2.setShortcut(testUtility.unique("testU2"));
 		universityInfo2.setDescription("This is a test University2");
-		universityInfo2.setUniversityType(0);
+		universityInfo2.setUniversityType(UniversityType.UNIVERSITY);
 		
 	}
 }
