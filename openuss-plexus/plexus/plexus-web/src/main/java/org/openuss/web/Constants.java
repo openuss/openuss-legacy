@@ -140,4 +140,6 @@ public class Constants {
 	public static final String ONLINE_SESSION_ID = "org.openuss.statistics.onlinesession.id";
 	
 	public static final String SYSTEM_STATISTIC = "systemStatistic";
+	
+	public static final String VISIT = "visit";
 }

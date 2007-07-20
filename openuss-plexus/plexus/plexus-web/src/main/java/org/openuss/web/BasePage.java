@@ -5,12 +5,16 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
+import org.apache.shale.tiger.view.Prerender;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.security.User;
+import org.openuss.security.UserContact;
+import org.openuss.security.UserPreferences;
+
 
 /**
  * Abstract BasePage  
@@ -54,7 +58,19 @@ public abstract class BasePage extends BaseBean {
 			}
 		}
 	}
+	
+	@Prerender
+	public void prerender() throws Exception {
+		if ((user!=null)&&(user.getId()==null)){	
+			user = User.Factory.newInstance();
+			user.setPreferences(UserPreferences.Factory.newInstance());
+			user.setContact(UserContact.Factory.newInstance());
+			setSessionBean(Constants.USER, user);
+		}
+	}
+	
 
+	
 	public Desktop getDesktop() {
 		return desktop;
 	}

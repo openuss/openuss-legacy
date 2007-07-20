@@ -15,9 +15,6 @@ import org.openuss.statistics.SystemStatisticInfo;
 @View
 public class WelcomePage extends BasePage{
 
-	@Property (value="#{"+Constants.USER+"}")
-	private User user;
-	
 	@Property (value="#{"+Constants.LECTURE_SERVICE+"}")
 	private LectureService lectureService;
 	
@@ -31,7 +28,8 @@ public class WelcomePage extends BasePage{
 	private OnlineStatisticService onlineStatisticService;
 	
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception{
+		super.prerender();
 		if (user != null && user.getId()==null) {
 				user = User.Factory.newInstance();
 				user.setPreferences(null);
