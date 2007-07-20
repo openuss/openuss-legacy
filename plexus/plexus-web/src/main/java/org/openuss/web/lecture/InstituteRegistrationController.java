@@ -19,6 +19,9 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 	public String start() {
 		logger.debug("start registration process");
 		institute = Institute.Factory.newInstance();
+		institute.setOwnername(user.getDisplayName());
+		institute.setEmail(user.getEmail());
+		institute.setLocale(user.getLocale());
 		setSessionBean(Constants.INSTITUTE, institute);
 		return Constants.INSTITUTE_REGISTRATION_STEP1_PAGE;
 	}
@@ -33,5 +36,5 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		desktopService.linkInstitute(desktop, institute);
 		return Constants.INSTITUTE;
 	}
-	
+
 }
