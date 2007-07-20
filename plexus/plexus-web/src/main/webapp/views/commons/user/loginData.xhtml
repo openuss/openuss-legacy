@@ -6,19 +6,22 @@
 	xmlns:s="http://www.openuss.org/security/jsf"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-	
+
 	<o:input entity="user" property="username" required="true">
 		<f:validator validatorId="usernameNotExistValidator" />
 	</o:input>
 	<o:input entity="user" property="email" required="true">
-		<t:validateEmail/>
+		<t:validateEmail />
 	</o:input>
-	<o:input entity="user" property="password" required="false" type="password" redisplay="false">
-		<f:validateLength minimum="5"/>
+	<o:input entity="user" property="password" required="true"
+		type="password" redisplay="false">
+		<f:validateLength minimum="5" />
 	</o:input>
-	<h:outputLabel value="#{msg.user_passwordconfirm}" for="confirmPassword" styleClass="field_label"/>
-	<h:inputSecret id="confirmPassword" styleClass="field" required="false" redisplay="false">
-		<t:validateEqual for="password"/>
-	</h:inputSecret> 
-	<h:message for="confirmPassword" styleClass="field_error"/>
+	<h:outputLabel value="#{msg.user_passwordconfirm}"
+		for="confirmPassword" styleClass="field_label" />
+	<h:inputSecret id="confirmPassword" styleClass="field" required="true"
+		redisplay="false">
+		<t:validateEqual for="password" />
+	</h:inputSecret>
+	<h:message for="confirmPassword" styleClass="field_error" />
 </ui:composition>
