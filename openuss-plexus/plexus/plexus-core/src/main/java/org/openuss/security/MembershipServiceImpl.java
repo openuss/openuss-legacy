@@ -5,8 +5,6 @@
  */
 package org.openuss.security;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -141,9 +139,20 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	/**
 	 * @see org.openuss.security.MembershipService#findAllAspirants(org.openuss.security.Membership, org.openuss.security.GroupItem)
 	 */
-	protected java.lang.Long handleCreateGroup(org.openuss.security.Membership membership, org.openuss.security.GroupItem groupItem)
+	protected org.openuss.security.Group handleCreateGroup(org.openuss.security.Membership membership, org.openuss.security.GroupItem groupItem)
 			throws java.lang.Exception {
-		return null;
+		
+		Validate.notNull(membership, "MembershipService.handleCreateGroup - Membership cannot be null");
+		Validate.notNull(membership.getId(), "MembershipService.handleCreateGroup - Membership must have a valid ID");
+		Validate.notNull(groupItem, "MembershipService.handleCreateGroup - GroupItem cannot be null");
+		
+		Group group = this.getSecurityService().createGroup(groupItem.getName(), groupItem.getLabel(), groupItem.getPassword(), groupItem.getGroupType());
+		Validate.notNull(group, "MembershipService.handleCreateGroup - Group couldn't be created");
+		Validate.notNull(group.getId(), "MembershipService.handleCreateGroup - Group couldn't be created");
+		
+		membership.getGroups().add(group);
+		
+		return group;
 
 	}
 }

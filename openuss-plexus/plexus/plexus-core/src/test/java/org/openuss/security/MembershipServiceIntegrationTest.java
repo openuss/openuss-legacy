@@ -60,10 +60,10 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		membershipService.acceptAspirant(university.getMembership(), user1, null);
 		List aspirants = university.getMembership().getAspirants();
 		assertNotNull(aspirants);
-		assertEquals(aspirants.size(), sizeAspirantsBefore - 1);
+		assertEquals(sizeAspirantsBefore - 1, aspirants.size());
 		List members = university.getMembership().getMembers();
 		assertNotNull(members);
-		assertEquals(members.size(), sizeMembersBefore + 1);
+		assertEquals(sizeMembersBefore + 1, members.size());
 
 		// Synchronize with Database
 		flush();
@@ -100,10 +100,10 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		membershipService.rejectAspirant(university.getMembership(), user1, null);
 		List aspirants = university.getMembership().getAspirants();
 		assertNotNull(aspirants);
-		assertEquals(aspirants.size(), sizeAspirantsBefore - 1);
+		assertEquals(sizeAspirantsBefore - 1, aspirants.size());
 		List members = university.getMembership().getMembers();
 		assertNotNull(members);
-		assertEquals(members.size(), sizeMembersBefore);
+		assertEquals(sizeMembersBefore, members.size());
 
 		// Synchronize with Database
 		flush();
@@ -143,7 +143,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		// Get List of Members again
 		List members2 = university.getMembership().getMembers();
 		assertNotNull(members2);
-		assertEquals(members2.size(), sizeBefore + 1);
+		assertEquals(sizeBefore + 1, members2.size());
 
 		// Try to add Member again
 		try {
@@ -188,7 +188,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		// Get List of Aspirants again
 		List aspirants2 = university.getMembership().getAspirants();
 		assertNotNull(aspirants2);
-		assertEquals(aspirants2.size(), sizeBefore + 1);
+		assertEquals(sizeBefore + 1, aspirants2.size());
 
 		// Try to add Aspirant again
 		try {
@@ -202,6 +202,33 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		flush();
 
 		logger.info("----> END access to addAspirant test");
+	}
+	
+	public void testCreateGroup() {
+		logger.info("----> BEGIN access to createGroup test");
+
+		// Create University with DefaultUser as Owner
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
+
+		//Create a GroupItem
+		GroupItem groupItem = new GroupItem();
+		groupItem.setName("Administrators");
+		groupItem.setLabel("Admins");
+		groupItem.setPassword("feelfree");
+		groupItem.setGroupType(GroupType.ADMINISTRATOR);
+		
+		assertNotNull(university.getMembership().getGroups());
+		int sizeBefore = university.getMembership().getGroups().size();
+		
+		// Create the Group
+		membershipService.createGroup(university.getMembership(), groupItem);
+		
+		assertEquals(sizeBefore + 1, university.getMembership().getGroups().size());
+		
+		// Synchronize with Database
+		flush();
+
+		logger.info("----> END access to createGroup test");
 	}
 
 	private static void createSecureContext(String roleName) {
