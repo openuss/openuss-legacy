@@ -80,15 +80,15 @@ public class AutoSubmitHandler {
 	public List getUniversities(){
 		System.out.println("getUniversities() called");
 		List returnValue = new ArrayList();
-		returnValue.add(new SelectItem(new Integer(-1), "- bitte auswählen -"));
-		returnValue.add(new SelectItem(new Integer(10), "WWU Münster"));
-		returnValue.add(new SelectItem(new Integer(11), "FH Münster"));
+		returnValue.add(new SelectItem(new Integer(-1), "- bitte auswÃ¤hlen -"));
+		returnValue.add(new SelectItem(new Integer(10), "WWU MÃ¼nster"));
+		returnValue.add(new SelectItem(new Integer(11), "FH MÃ¼nster"));
 		return returnValue;
 	}
 	
 	public List getDepartments(){
 		List returnValue = new ArrayList();
-		returnValue.add(new SelectItem(new Integer(-1), "- bitte auswählen -"));
+		returnValue.add(new SelectItem(new Integer(-1), "- bitte auswÃ¤hlen -"));
 		System.out.println("getDepartments() called");
 		System.out.println("current university: "+getUniversity());
 		if( getUniversity().equals(new Integer(10)) ){
@@ -103,7 +103,7 @@ public class AutoSubmitHandler {
 
 	public List getInstitutions(){
 		List returnValue = new ArrayList();
-		returnValue.add(new SelectItem(new Integer(-1), "- bitte auswählen -"));
+		returnValue.add(new SelectItem(new Integer(-1), "- bitte auswÃ¤hlen -"));
 		System.out.println("getInstitutions() called");
 		System.out.println("current department: "+getDepartment());
 		if( getDepartment().equals(new Integer(20)) ){

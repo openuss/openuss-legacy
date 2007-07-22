@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
-  <display-name>dynamic-web</display-name>
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list>
+  
+	<display-name>dynamic-web</display-name>
+  
+	<welcome-file-list>
+	  <welcome-file>index.xhtml</welcome-file>
+	  <welcome-file>index.html</welcome-file>
+	  <welcome-file>index.htm</welcome-file>
+	</welcome-file-list>
   
 	<!-- JSF Servlet -->
 	<servlet>
@@ -16,9 +15,11 @@
 	  <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 	  <load-on-startup>1</load-on-startup>
 	</servlet>
+	
+	<!-- Faces Servlet Mappings -->
 	<servlet-mapping>
 	  <servlet-name>FacesServlet</servlet-name>
-	  <url-pattern>*.xhtml</url-pattern>
+	  <url-pattern>/faces/*</url-pattern>
 	</servlet-mapping>
   	
   	<!-- Trinidad Filter (according to Trinidad install guide) -->
@@ -52,16 +53,16 @@
 	    <param-value>client</param-value>
 	</context-param>
 	
-	<!-- Trinidad FaceletViewHandler configuration 
+	<!-- Trinidad FaceletViewHandler configuration --> 
 	<context-param>
 	    <param-name>org.apache.myfaces.trinidad.ALTERNATE_VIEW_HANDLER</param-name>
 	    <param-value>com.sun.facelets.FaceletViewHandler</param-value>
 	</context-param>
 
+	<!-- Use Documents Saved as *.xhtml -->
 	<context-param>
-	    <param-name>facelets.VIEW_MAPPINGS</param-name>
-	    <param-value>*.xhtml</param-value>
+	  <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+	  <param-value>.xhtml</param-value>
 	</context-param>
-	-->
   
 </web-app>
