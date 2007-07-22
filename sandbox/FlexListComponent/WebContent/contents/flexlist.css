@@ -1,0 +1,72 @@
+html {
+	margin: 0px;
+    padding: 0px;
+    font-family: Verdana;
+    font-size: 13px;
+	color:black;
+}
+
+body {
+ 	float:left;
+}
+
+#wrapper {
+	width: 500px;
+}
+
+.flexList a {
+	text-decoration: none;
+	color: #5493D4;
+}
+
+.flexList a:hover {
+	text-decoration: underline;
+}
+
+.flexList ul {
+	list-style-type: none;
+	padding-left: 0px;
+}
+
+.flexList {
+	width: 100%;
+	margin-top: 7px;
+}
+
+.flexList .flexListItems {
+	margin: 0px;
+}
+
+.flexListItems li {
+	border-bottom: 1px solid #CCCCCC;
+	padding: 5px 0px 5px 0px;
+}
+
+.flexList .flexListBottom {
+	margin: 0px;
+}
+
+.flexListBottom li {
+	border: none;
+	padding: 5px 0px 5px 0px;
+}
+
+.flexList .header {
+	background-color: #5493D4;
+	color: white;
+	border: none;
+	padding: 3px 0px 3px 0px;
+}
+
+.flexListItemRight {
+	float:right;
+	padding-right: 10px;
+}
+
+.flexListItemLeft {
+	padding-left: 10px;
+}
+
+.flexList .highlight {
+	color: #5DBF00;
+}
