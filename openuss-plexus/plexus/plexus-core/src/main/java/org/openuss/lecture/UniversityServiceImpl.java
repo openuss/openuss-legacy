@@ -5,6 +5,8 @@
  */
 package org.openuss.lecture;
 
+import org.apache.commons.lang.Validate;
+import org.openuss.security.GroupItem;
 import org.openuss.security.User;
 
 /**
@@ -18,27 +20,27 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 */
 	protected java.lang.Long handleCreate(org.openuss.lecture.UniversityInfo university, java.lang.Long ownerId) {
 
-		if (university == null) {
-			throw new IllegalArgumentException("UniversityService.handleCreate - the University cannot be null");
-		}
+		Validate.notNull(university, "UniversityService.handleCreate - the University cannot be null");
+		Validate.notNull(ownerId, "UniversityService.handleCreate - the Owner must have a valid ID");
 		
-		if (ownerId == null) {
-			throw new IllegalArgumentException("UniversityService.handleCreate - the Owner must have a valid ID");
-		}
+		Validate.isTrue(university.getId() == null, "UniversityService.handleCreate - the University shouldn't have an ID yet");
+
+		//Create University
+		University universityEntity = this.getUniversityDao().universityInfoToEntity(university);
+		this.getUniversityDao().create(universityEntity);
+		Validate.notNull(universityEntity.getId(), "UniversityService.handleCreate - Couldn't create University");
 		
-		User owner = this.getUserDao().load(ownerId);
-		if (owner == null) {
-			throw new IllegalArgumentException("UniversityService.handleCreate - no User found corresponding to the id " + ownerId);
-		}
+		//Create Groups for University
+		GroupItem groupItem = new GroupItem();
+		groupItem.setName("Administrators");
+		groupItem.setLabel("Admins");
+		Long groupId = this.getOrganisationService().createGroup(universityEntity.getId(), groupItem);
 		
-		if (university.getId() != null) {
-			if (university.getId() != 0L) {
-				throw new IllegalArgumentException("UniversityService.handleCreate - the University shouldn't have an ID yet");
-			}
-		}
+		//Add Owner to Members and Group of Administrators
+		this.getOrganisationService().addMember(universityEntity.getId(), ownerId);
+		this.getOrganisationService().addUserToGroup(ownerId, groupId);
 		
-		throw new java.lang.UnsupportedOperationException(
-		"org.openuss.lecture.UniversityService.handleCreate(org.openuss.lecture.UniversityInfo university, java.lang.Long ownerId) Not implemented!");
+		return universityEntity.getId();
 	}
 
 	/**
