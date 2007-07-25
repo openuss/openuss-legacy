@@ -31,6 +31,8 @@
   LOCATION="%exadel.workspace%/lib/standard.jar" NAME="lib-standard.jar"/>
  <FILESYSTEM ENTITY="FileSystemFolder"
   LOCATION="%exadel.eclipse.project%" NAME="test"/>
+ <FILESYSTEM ENTITY="FileSystemJar"
+  LOCATION="%exadel.workspace%/lib/servlet.jar" NAME="lib-servlet.jar"/>
  <WEB ENTITY="ExadelWeb" MODEL_PATH="/web.xml" SERVLET_VERSION="2.4">
   <MODULE ENTITY="WebJSFModule" MODEL_PATH="/faces-config.xml"
    ROOT="WEB-ROOT" SRC="src" URI="/WEB-INF/faces-config.xml"/>
