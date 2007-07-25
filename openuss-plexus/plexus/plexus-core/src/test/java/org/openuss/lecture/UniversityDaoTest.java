@@ -95,7 +95,7 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		assertEquals(university.getName(), universityInfo.getName());
 		assertEquals(university.getShortcut(), universityInfo.getShortcut());
 		assertEquals(university.getDescription(), universityInfo.getDescription());
-		assertEquals(university.getUniversityType().getValue(), universityInfo.getUniversityType());
+		assertEquals(university.getUniversityType(), universityInfo.getUniversityType());
 		
 	}
 	
