@@ -135,12 +135,20 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 	/**
 	 * @see org.openuss.lecture.OrganisationService#removeGroup(java.lang.Long)
 	 */
-	protected void handleRemoveGroup(java.lang.Long groupId) throws java.lang.Exception {
+	protected void handleRemoveGroup(java.lang.Long organisationId, java.lang.Long groupId) throws java.lang.Exception {
 		Group group = this.getGroupDao().load(groupId);
 		Validate.notNull(group, "MembershipService.handleRemoveGroup - no Group found corresponding to the ID "
 				+ groupId);
 
-		this.getSecurityService().removeGroup(group);
+		// Not using the following code because of inverse cascade
+		// this.getSecurityService().removeGroup(group);
+		
+		Organisation organisation = this.getOrganisationDao().load(organisationId);
+		Validate.notNull(organisation, "MembershipService.handleRemoveGroup - no Organisation found corresponding to the ID "
+				+ organisationId);
+		
+		boolean removed = organisation.getMembership().getGroups().remove(group);	
+		Validate.isTrue(removed, "MembershipService.handleRemoveGroup - Group "+groupId+" couldn't be removed");
 	}
 
 	/**
