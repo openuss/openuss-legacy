@@ -17,6 +17,11 @@
 		<component-type>org.openuss.framework.jsfcontrols.components.param</component-type>
 		<component-class>org.openuss.framework.jsfcontrols.components.UIParam</component-class>
 	</component>
+	
+	<component>
+		<component-type>flexlist</component-type>
+		<component-class>org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList</component-class>
+	</component>
    
     <converter>
     	<description>Converts a TimeZone object to a string representation and vice versa</description>
