@@ -5,7 +5,9 @@
  */
 package org.openuss.lecture;
 
-import org.openuss.security.User;
+import org.apache.commons.lang.Validate;
+import org.openuss.security.GroupItem;
+import org.openuss.security.GroupType;
 
 /**
  * @see org.openuss.lecture.DepartmentService
@@ -21,8 +23,34 @@ public class DepartmentServiceImpl
     protected java.lang.Long handleCreate(org.openuss.lecture.DepartmentInfo department, java.lang.Long ownerId)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleUpdate(org.openuss.lecture.DepartmentInfo department)
-        throw new java.lang.UnsupportedOperationException("org.openuss.lecture.DepartmentService.handleCreate(org.openuss.lecture.DepartmentInfo department) Not implemented!");
+    	Validate.notNull(department, "DepartmentService.handleCreate - the Department cannot be null");
+		Validate.notNull(ownerId, "DepartmentService.handleCreate - the Owner must have a valid ID");
+		
+		Validate.isTrue(department.getId() == null, "DepartmentService.handleCreate - the Department shouldn't have an ID yet");
+
+		//Create University
+		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(department);
+		this.getDepartmentDao().create(departmentEntity);
+		Validate.notNull(departmentEntity.getId(), "DepartmentService.handleCreate - Couldn't create Deparment");
+		
+		// create object identity
+		// TODO: Implement this via OrganisationService???
+		
+		//Create Groups for Department
+		GroupItem groupItem = new GroupItem();
+		groupItem.setName("DEPARTMENT_"+department.getId()+"_ADMINS");
+		groupItem.setLabel("autogroup_administrator_label");
+		groupItem.setGroupType(GroupType.ADMINISTRATOR);
+		Long groupId = this.getOrganisationService().createGroup(departmentEntity.getId(), groupItem);
+		
+		//Add Owner to Members and Group of Administrators
+		this.getOrganisationService().addMember(departmentEntity.getId(), ownerId);
+		this.getOrganisationService().addUserToGroup(ownerId, groupId);
+		
+		//Add group of Administrators to department
+		
+		return departmentEntity.getId();
+    	
     }
 
     /**

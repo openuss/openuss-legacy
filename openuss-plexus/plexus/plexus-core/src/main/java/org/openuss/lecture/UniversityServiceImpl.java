@@ -7,11 +7,12 @@ package org.openuss.lecture;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.security.GroupItem;
+import org.openuss.security.GroupType;
 import org.openuss.security.User;
 
 /**
  * @see org.openuss.lecture.UniversityService
- * @author Ron Haus
+ * @author Ron Haus, Florian Dondorf
  */
 public class UniversityServiceImpl extends org.openuss.lecture.UniversityServiceBase {
 
@@ -32,8 +33,9 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		
 		//Create Groups for University
 		GroupItem groupItem = new GroupItem();
-		groupItem.setName("Administrators");
-		groupItem.setLabel("Admins");
+		groupItem.setName("UNIVERSITY_"+universityEntity.getId()+"_ADMINS");
+		groupItem.setLabel("autogroup_administrator_label");
+		groupItem.setGroupType(GroupType.ADMINISTRATOR);
 		Long groupId = this.getOrganisationService().createGroup(universityEntity.getId(), groupItem);
 		
 		//Add Owner to Members and Group of Administrators
