@@ -8,7 +8,7 @@ package org.openuss.lecture;
 import org.apache.commons.lang.Validate;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
-import org.openuss.security.User;
+import org.openuss.security.Membership;
 
 /**
  * @see org.openuss.lecture.UniversityService
@@ -23,15 +23,20 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 		Validate.notNull(university, "UniversityService.handleCreate - the University cannot be null");
 		Validate.notNull(ownerId, "UniversityService.handleCreate - the Owner must have a valid ID");
-		
 		Validate.isTrue(university.getId() == null, "UniversityService.handleCreate - the University shouldn't have an ID yet");
 
-		//Create University
+		// Transform ValueObject into Entity
 		University universityEntity = this.getUniversityDao().universityInfoToEntity(university);
+		
+		// Create a default Membership for the University
+		Membership membership = Membership.Factory.newInstance();
+		universityEntity.setMembership(membership);
+		
+		//Create the University
 		this.getUniversityDao().create(universityEntity);
 		Validate.notNull(universityEntity.getId(), "UniversityService.handleCreate - Couldn't create University");
 		
-		//Create Groups for University
+		//Create default Groups for the University
 		GroupItem groupItem = new GroupItem();
 		groupItem.setName("UNIVERSITY_"+universityEntity.getId()+"_ADMINS");
 		groupItem.setLabel("autogroup_administrator_label");
@@ -58,8 +63,14 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 */
 	protected void handleUpdate(org.openuss.lecture.UniversityInfo university) throws java.lang.Exception {
 		
-		throw new java.lang.UnsupportedOperationException(
-		"org.openuss.lecture.UniversityService.handleUpdate(org.openuss.lecture.PeriodInfo period) Not implemented!");
+		Validate.notNull(university, "UniversityService.handleUpdate - the University cannot be null");
+		Validate.notNull(university.getId(), "UniversityService.handleUpdate - the University must have a valid ID");
+		
+		// Transform ValueObject into Entity
+		University universityEntity = this.getUniversityDao().universityInfoToEntity(university);
+		
+		// Update Entity
+		this.getUniversityDao().update(universityEntity);
 		
 	}
 
@@ -77,8 +88,9 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 */
 	protected void handleRemoveUniversity(java.lang.Long universityId) throws java.lang.Exception {
 		
-		throw new java.lang.UnsupportedOperationException(
-		"org.openuss.lecture.UniversityService.handleRemoveUniversity(java.lang.Long universityId) Not implemented!");
+		Validate.notNull(universityId, "UniversityService.handleRemoveUniversity - the University must have a valid ID");
+		
+		this.getUniversityDao().remove(universityId);
 
 	}
 
@@ -104,6 +116,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	/**
 	 * @see org.openuss.lecture.UniversityService#findAllUniversities()
 	 */
+	@SuppressWarnings( { "unchecked" })
 	protected java.util.List handleFindAllUniversities() throws java.lang.Exception {
 		// @todo implement protected java.util.List handleFindAllUniversities()
 		return null;
@@ -137,6 +150,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	/**
 	 * @see org.openuss.lecture.UniversityService#findUniversitiesByUser(java.lang.Long)
 	 */
+	@SuppressWarnings( { "unchecked" })
 	protected java.util.List handleFindUniversitiesByUser(java.lang.Long userId) throws java.lang.Exception {
 		// @todo implement protected java.util.List handleFindOrganisationsByUser(java.lang.Long userId)
 		return null;

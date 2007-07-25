@@ -33,17 +33,15 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		universityInfo.setDescription("This is a test University");
 		universityInfo.setUniversityType(UniversityType.MISC);
 		
-		//Create a User
+		//Create a User as Owner
 		User owner = testUtility.createUserInDB();
 		
 		//Create Entity
 		Long universityId = universityService.create(universityInfo, owner.getId());
 		assertNotNull(universityId);
 		
-		//Synchronize with database
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = sessionFactory.getCurrentSession();
-		session.flush();
+		//Synchronize with Database
+		flush();
 
 		logger.info("----> END access to create(University) test");
 	}
@@ -60,8 +58,12 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		universityInfo.setId(university.getId());
 		universityInfo.setName(testUtility.unique("testUniversity"));
 		universityInfo.setShortcut(testUtility.unique("testU"));
-		universityInfo.setDescription("This is a test University");
-		universityInfo.setUniversityType(UniversityType.MISC);
+		universityInfo.setDescription("This is a test University at "+testUtility.unique("time"));
+		if (university.getUniversityType().compareTo(UniversityType.MISC) == 0) {
+			universityInfo.setUniversityType(UniversityType.UNIVERSITY);
+		} else {
+			universityInfo.setUniversityType(UniversityType.MISC);
+		}
 		
 		// Check
 		assertTrue(universityInfo.getId().longValue() == university.getId().longValue());
@@ -69,22 +71,22 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertFalse(universityInfo.getShortcut().compareTo(university.getShortcut()) == 0);
 		assertFalse(universityInfo.getDescription().compareTo(university.getDescription()) == 0);
 		assertFalse(universityInfo.getUniversityType().getValue().intValue() == university.getUniversityType().getValue().intValue());
-		
-		
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = sessionFactory.getCurrentSession();
+
+		//Synchronize with Database
+		flush();
 		
 		//Update University
-		session.flush();
 		universityService.update(universityInfo);
-		session.flush();
-		
+
 		//Check
 		assertTrue(universityInfo.getId().longValue() == university.getId().longValue());
 		assertTrue(universityInfo.getName().compareTo(university.getName()) == 0);
 		assertTrue(universityInfo.getShortcut().compareTo(university.getShortcut()) == 0);
 		assertTrue(universityInfo.getDescription().compareTo(university.getDescription()) == 0);
 		assertTrue(universityInfo.getUniversityType().getValue().intValue() == university.getUniversityType().getValue().intValue());
+		
+		//Synchronize with Database
+		flush();
 		
 		logger.info("----> END access to update(University) test");
 	}
@@ -99,13 +101,14 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		//Save UniversityID
 		Long id = university.getId();
 		
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = sessionFactory.getCurrentSession();
+		//Synchronize with Database
+		flush();
 
 		//Remove University
-		session.flush();
 		universityService.removeUniversity(id);
-		session.flush();
+		
+		//Synchronize with Database
+		flush();
 		
 		//Try to load University again
 		UniversityDao universityDao = (UniversityDao) this.applicationContext.getBean("universityDao");
