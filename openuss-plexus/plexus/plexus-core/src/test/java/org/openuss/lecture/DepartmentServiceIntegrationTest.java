@@ -5,8 +5,6 @@
  */
 package org.openuss.lecture;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.openuss.security.User;
 
 /**
@@ -17,8 +15,28 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 	
 	public void testCreateDepartment() {
 		logger.info("----> BEGIN access to create(Department) test");
-
-
+		
+		// Create university with user
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		flush();
+		
+		// Create departmentInfo
+		DepartmentInfo departmentInfo = new DepartmentInfo();
+		departmentInfo.setName("Wirtschaftswissenschaften - FB 4");
+		departmentInfo.setDescription("Testdescription");
+		departmentInfo.setShortcut("FB4");
+		departmentInfo.setUniversityId(university.getId());
+		departmentInfo.setDepartmentType(DepartmentType.OFFICIAL);
+		
+		//Create a User as Owner
+		User owner = testUtility.createUserInDB();
+		
+		//Test
+		Long departmentId = departmentService.create(departmentInfo, owner.getId());
+		assertNotNull(departmentId);
+		
+		//Synchronize with Database
+		flush();
 		
 		logger.info("----> END access to create(Department) test");
 	}

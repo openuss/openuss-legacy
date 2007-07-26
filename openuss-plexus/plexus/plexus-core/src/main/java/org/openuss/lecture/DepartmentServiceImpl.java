@@ -23,6 +23,8 @@ public class DepartmentServiceImpl
     protected java.lang.Long handleCreate(org.openuss.lecture.DepartmentInfo department, java.lang.Long ownerId)
         throws java.lang.Exception
     {
+    	//TODO: Security
+    	
     	Validate.notNull(department, "DepartmentService.handleCreate - the Department cannot be null");
 		Validate.notNull(ownerId, "DepartmentService.handleCreate - the Owner must have a valid ID");
 		
@@ -32,9 +34,6 @@ public class DepartmentServiceImpl
 		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(department);
 		this.getDepartmentDao().create(departmentEntity);
 		Validate.notNull(departmentEntity.getId(), "DepartmentService.handleCreate - Couldn't create Deparment");
-		
-		// create object identity
-		// TODO: Implement this via OrganisationService???
 		
 		//Create Groups for Department
 		GroupItem groupItem = new GroupItem();
@@ -47,8 +46,6 @@ public class DepartmentServiceImpl
 		this.getOrganisationService().addMember(departmentEntity.getId(), ownerId);
 		this.getOrganisationService().addUserToGroup(ownerId, groupId);
 		
-		//Add group of Administrators to department
-		
 		return departmentEntity.getId();
     	
     }
@@ -59,9 +56,17 @@ public class DepartmentServiceImpl
     protected void handleUpdate(org.openuss.lecture.DepartmentInfo department)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleUpdate(org.openuss.lecture.DepartmentInfo department)
-        throw new java.lang.UnsupportedOperationException("org.openuss.lecture.DepartmentService.handleUpdate(org.openuss.lecture.DepartmentInfo department) Not implemented!");
-    }
+    	// TODO: Security
+    	
+    	Validate.notNull(department, "DepartmentService.handleUpdate - the Department cannot be null");
+		Validate.isTrue(department.getId() != null, "DepartmentService.handleUpdate - the Department should have an valid ID");
+		
+		//Transform departmentInfo to departmentEntity
+		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(department);
+		
+		//Update department
+		this.getDepartmentDao().update(departmentEntity);
+	}
 
     /**
      * @see org.openuss.lecture.DepartmentService#removeDepartment(java.lang.Long)
