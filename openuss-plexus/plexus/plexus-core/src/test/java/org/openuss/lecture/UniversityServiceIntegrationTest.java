@@ -5,10 +5,14 @@
  */
 package org.openuss.lecture;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.openuss.security.Membership;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 
 /**
  * JUnit Test for Spring Hibernate UniversityService class.
@@ -116,6 +120,70 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertNull(university2);
 
 		logger.info("----> END access to removeUniversity test");		
+	}
+	
+	public void testFindUniversity() {
+		logger.info("----> BEGIN access to findUniversity test");
+		
+		//Create a University
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		assertNotNull(university.getId());
+		
+		//Synchronize with Database
+		flush();
+
+		//Find University
+		UniversityInfo universityInfo = universityService.findUniversity(university.getId());
+		
+		assertEquals(university.getId(),universityInfo.getId());
+
+		logger.info("----> END access to findUniversity test");		
+	}
+	
+	public void testFindAllUniversities() {
+		logger.info("----> BEGIN access to findAllUniversities test");
+		
+		// Create complete Universities
+		List<University> universities = new ArrayList<University>();
+		University university = null;
+		Membership membership = null;
+		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
+		for (int i = 0; i < 3; i++) {
+			university = University.Factory.newInstance();
+			university.setName(testUtility.unique("testUniversity"+i));
+			university.setShortcut(testUtility.unique("testU"+i));
+			university.setDescription("This is a test University"+i);
+			membership = Membership.Factory.newInstance();
+			membership.getMembers().add(testUtility.createUserInDB());
+			university.setMembership(membership);
+			universityDao.create(university);
+			assertNotNull(university.getId());
+			universities.add(university);
+		}
+		
+		//Synchronize with Database
+		flush();
+
+		//Find all University
+		List universityInfos = universityService.findAllUniversities();
+		
+		assertEquals(universities.size(), universityInfos.size());
+
+		Iterator iterator = null;
+		UniversityInfo universityInfo = null;
+		int count = 0;
+		for (University uni : universities) {
+			iterator = universityInfos.iterator();
+			while (iterator.hasNext()) {
+				universityInfo = (UniversityInfo) iterator.next();
+				if (universityInfo.getId() == uni.getId()) {
+					count++;
+				}
+			}
+		}
+		assertEquals(universities.size(), count);
+		
+		logger.info("----> END access to findAllUniversities test");		
 	}
 	
 }

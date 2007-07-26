@@ -5,6 +5,10 @@
  */
 package org.openuss.lecture;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.lang.Validate;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
@@ -88,7 +92,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 */
 	protected void handleRemoveUniversity(java.lang.Long universityId) throws java.lang.Exception {
 		
-		Validate.notNull(universityId, "UniversityService.handleRemoveUniversity - the University must have a valid ID");
+		Validate.notNull(universityId, "UniversityService.handleRemoveUniversity - the UniversityID cannot be null");
 		
 		this.getUniversityDao().remove(universityId);
 
@@ -108,9 +112,13 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 */
 	protected org.openuss.lecture.UniversityInfo handleFindUniversity(java.lang.Long universityId)
 			throws java.lang.Exception {
-		// @todo implement protected org.openuss.lecture.UniversityInfo handleFindUniversity(java.lang.Long
-		// universityId)
-		return null;
+		
+		Validate.notNull(universityId, "UniversityService.handleFindUniversity - the UniversityID cannot be null");
+		
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university, "UniversityService.handleFindUniversity - no University found corresponding to the ID "+universityId);
+		
+		return this.getUniversityDao().toUniversityInfo(university);
 	}
 
 	/**
@@ -118,8 +126,15 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 */
 	@SuppressWarnings( { "unchecked" })
 	protected java.util.List handleFindAllUniversities() throws java.lang.Exception {
-		// @todo implement protected java.util.List handleFindAllUniversities()
-		return null;
+		
+		Collection<University> universities = this.getUniversityDao().loadAll();
+		
+		List universityInfos = new ArrayList();
+		for(University university:universities) {
+			universityInfos.add(this.getUniversityDao().toUniversityInfo(university));
+		}
+		
+		return universityInfos;
 	}
 
 	/**
