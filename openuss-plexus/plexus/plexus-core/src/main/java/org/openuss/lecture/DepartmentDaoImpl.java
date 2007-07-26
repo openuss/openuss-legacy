@@ -19,6 +19,9 @@ public class DepartmentDaoImpl
     {
         // @todo verify behavior of toDepartmentInfo
         super.toDepartmentInfo(sourceEntity, targetVO);
+        if (sourceEntity.getUniversity() != null) {
+        	targetVO.setUniversityId(sourceEntity.getUniversity().getId());
+        }
     }
 
 
@@ -39,17 +42,12 @@ public class DepartmentDaoImpl
      */
     private org.openuss.lecture.Department loadDepartmentFromDepartmentInfo(org.openuss.lecture.DepartmentInfo departmentInfo)
     {
-        // @todo implement loadDepartmentFromDepartmentInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.lecture.loadDepartmentFromDepartmentInfo(org.openuss.lecture.DepartmentInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.lecture.Department department = this.load(departmentInfo.getId());
-        if (department == null)
-        {
-            department = org.openuss.lecture.Department.Factory.newInstance();
-        }
-        return department;
-        */
+        org.openuss.lecture.Department department = org.openuss.lecture.Department.Factory.newInstance();
+        department.setMembership(org.openuss.security.Membership.Factory.newInstance());
+		if (departmentInfo.getId() != null) {
+			department = this.load(departmentInfo.getId());
+		}
+		return department;
     }
 
     
@@ -59,8 +57,13 @@ public class DepartmentDaoImpl
     public org.openuss.lecture.Department departmentInfoToEntity(org.openuss.lecture.DepartmentInfo departmentInfo)
     {
         // @todo verify behavior of departmentInfoToEntity
+    	if (departmentInfo.getUniversityId() == null) {
+        	throw new IllegalArgumentException("DepartmentDaoImpl.departmentInfoToEntity - the UniversityId cannot be null");
+    	}
         org.openuss.lecture.Department entity = this.loadDepartmentFromDepartmentInfo(departmentInfo);
         this.departmentInfoToEntity(departmentInfo, entity, true);
+        entity.setUniversity(this.getUniversityDao().load(departmentInfo.getUniversityId()));
+    
         return entity;
     }
 
