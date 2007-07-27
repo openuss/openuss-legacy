@@ -5,6 +5,8 @@
  */
 package org.openuss.lecture;
 
+import java.util.List;
+
 import org.openuss.security.Membership;
 import org.openuss.security.User;
 
@@ -35,6 +37,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		//Test
 		Long departmentId = departmentService.create(departmentInfo, owner.getId());
 		assertNotNull(departmentId);
+		assertEquals(1, university.getDepartments().size());
 		
 		//Synchronize with Database
 		flush();
@@ -145,5 +148,102 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 			this.getDepartmentService().findDepartment(department.getId());
 		assertNotNull(departmentInfo);
 		assertEquals(departmentInfo.getName(), department.getName());
+		
+		logger.info("----> END access to findDepartment(Department) test");
+	}
+	
+	public void testFindDepartmentsByUniversity () {
+		
+		//Create University
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		flush();
+		
+		//Create DepartmentDao
+		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
+		
+		//Create departments
+		Department department1 = Department.Factory.newInstance();
+		department1.setName("Wirtschaftswissenschaften - FB 4");
+		department1.setDescription("Testdescription1");
+		department1.setShortcut("FB4");
+		department1.setUniversity(university);
+		department1.setDepartmentType(DepartmentType.OFFICIAL);
+		department1.setMembership(Membership.Factory.newInstance());
+		departmentDao.create(department1);
+		
+		university.getDepartments().add(department1);
+		
+		Department department2 = Department.Factory.newInstance();
+		department2.setName("Rechtsswissenschaften - FB 3");
+		department2.setDescription("Testdescription2");
+		department2.setShortcut("FB3");
+		department2.setUniversity(university);
+		department2.setDepartmentType(DepartmentType.NONOFFICIAL);
+		department2.setMembership(Membership.Factory.newInstance());
+		departmentDao.create(department2);
+		
+		university.getDepartments().add(department2);
+		
+		flush();
+		
+		//Test
+		List<Department> departments = this.getDepartmentService().findDepartmentsByUniversity(university.getId());
+		assertNotNull(departments);
+		//assertEquals(1, departments.size());
+		assertEquals(2, departments.size());
+		assertEquals(department1.getName(), departments.get(0).getName());
+		//assertEquals(departmentInfo2.getName(), departments.get(1).getName());
+		
+		logger.info("----> END access to findDepartmentsByUniversity(Department) test");
+	}
+	
+	public void testFindDepartmentsByUserAndUniversity () {
+		
+		//Create University
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		flush();
+		
+		User user = testUtility.createDefaultUserInDB();
+		
+		//Create DepartmentDao
+		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
+		
+		//Create departments
+		Department department1 = Department.Factory.newInstance();
+		department1.setName("Wirtschaftswissenschaften - FB 4");
+		department1.setDescription("Testdescription1");
+		department1.setShortcut("FB4");
+		department1.setUniversity(university);
+		department1.setDepartmentType(DepartmentType.OFFICIAL);
+		Membership membership = Membership.Factory.newInstance();
+		membership.getMembers().add(user);
+		department1.setMembership(membership);
+		departmentDao.create(department1);
+		
+		university.getDepartments().add(department1);
+		
+		Department department2 = Department.Factory.newInstance();
+		department2.setName("Rechtsswissenschaften - FB 3");
+		department2.setDescription("Testdescription2");
+		department2.setShortcut("FB3");
+		department2.setUniversity(university);
+		department2.setDepartmentType(DepartmentType.NONOFFICIAL);
+		membership = Membership.Factory.newInstance();
+		membership.getMembers().add(user);
+		department2.setMembership(membership);
+		departmentDao.create(department2);
+		
+		university.getDepartments().add(department2);
+		
+		flush();
+		
+		//Test
+		List<Department> departments = this.getDepartmentService().findByUserAndUniversity(user.getId(), university.getId());
+		assertNotNull(departments);
+		assertEquals(2, departments.size());
+		assertEquals(department1.getName(), departments.get(0).getName());
+		assertEquals(department2.getName(), departments.get(1).getName());
+		
+		logger.info("----> END access to findDepartmentsByUserAndUniversity(Department) test");
 	}
 }

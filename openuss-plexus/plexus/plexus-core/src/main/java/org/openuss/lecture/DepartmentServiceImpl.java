@@ -5,9 +5,14 @@
  */
 package org.openuss.lecture;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.commons.lang.Validate;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
+import org.openuss.security.User;
 
 /**
  * @see org.openuss.lecture.DepartmentService
@@ -28,10 +33,12 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Validate.isTrue(department.getId() == null,
 				"DepartmentService.handleCreate - the Department shouldn't have an ID yet");
 
-		// Create University
+		// Create Department
 		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(department);
 		this.getDepartmentDao().create(departmentEntity);
-		Validate.notNull(departmentEntity.getId(), "DepartmentService.handleCreate - Couldn't create Deparment");
+		departmentEntity.getUniversity().getDepartments().add(departmentEntity);
+		
+		Validate.notNull(departmentEntity.getId(), "DepartmentService.handleCreate - Couldn't create Department");
 
 		// Create Groups for Department
 		GroupItem groupItem = new GroupItem();
@@ -98,8 +105,14 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	 * @see org.openuss.lecture.DepartmentService#findDepartmentsByUniversity(java.lang.Long)
 	 */
 	protected java.util.List handleFindDepartmentsByUniversity(java.lang.Long universityId) throws java.lang.Exception {
-		// @todo implement protected java.util.List handleFindDepartmentsByUniversity(java.lang.Long universityId)
-		return null;
+		
+		// TODO: Security
+    	
+    	Validate.notNull(universityId, "DepartmentService.handleFindDepartmentsByUniversity - the universityId cannot be null");
+    	
+    	University university = this.getUniversityDao().load(universityId);
+    	
+		return university.getDepartments();
 	}
 
 	/**
@@ -125,9 +138,25 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	 */
 	protected java.util.List handleFindByUserAndUniversity(java.lang.Long userId, java.lang.Long universityId)
 			throws java.lang.Exception {
-		// @todo implement protected java.util.List handleFindByUserAndUniversity(java.lang.Long userId, java.lang.Long
-		// universityId)
-		return null;
+		// TODO: Security
+    	
+    	Validate.notNull(userId, "DepartmentService.handleFindByUserAndUniversity - the userId cannot be null");
+    	Validate.notNull(universityId, "DepartmentService.handleFindByUserAndUniversity - the universityId cannot be null");
+    	
+    	User user = this.getUserDao().load(userId);
+    	
+    	List<Department> allDepartments = (List<Department>)this.getDepartmentDao().loadAll();
+    	List<Department> selectedDepartments = new ArrayList<Department>();
+    	Iterator iter = allDepartments.iterator();
+    	while (iter.hasNext()) {
+    		Department department = (Department) iter.next();
+    		if (department.getUniversity().getId() == universityId &&
+    				department.getMembership().getMembers().contains(user)) {
+    			selectedDepartments.add(department);
+    		}
+    	}
+    	
+		return selectedDepartments;
 	}
 
 }
