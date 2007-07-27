@@ -11,6 +11,9 @@ import org.openuss.TestUtility;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.LectureBuilder;
+import org.openuss.lecture.University;
+import org.openuss.lecture.UniversityDao;
+import org.openuss.security.Membership;
 import org.openuss.security.User;
 
 
@@ -25,6 +28,8 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 	private TestUtility testUtility;
 	
 	private InstituteDao instituteDao;
+	
+	private UniversityDao universityDao;
 	
 	private LectureBuilder lectureBuilder;
 	
@@ -111,6 +116,14 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 	public void setInstituteDao(InstituteDao instituteDao) {
 		this.instituteDao = instituteDao;
 	}
+	
+	public UniversityDao getUniversityDao() {
+		return universityDao;
+	}
+
+	public void setUniversityDao(UniversityDao universityDao) {
+		this.universityDao = universityDao;
+	}
 
 	public LectureBuilder getLectureBuilder() {
 		return lectureBuilder;
@@ -118,6 +131,78 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 
 	public void setLectureBuilder(LectureBuilder lectureBuilder) {
 		this.lectureBuilder = lectureBuilder;
+	}
+	
+	public void testDesktopDaoToDesktopInfo() {
+		
+		// Create a complete Desktop
+		Desktop desktop = Desktop.Factory.newInstance();
+		
+		desktop.setUser(testUtility.createUserInDB());
+		
+		University university = University.Factory.newInstance();
+		university.setName(testUtility.unique("testUniversity"));
+		university.setShortcut(testUtility.unique("testU"));
+		desktop.getUniversities().add(university);
+
+		University university2 = University.Factory.newInstance();
+		university2.setName(testUtility.unique("testUniversity"));
+		university2.setShortcut(testUtility.unique("testU"));
+		desktop.getUniversities().add(university2);
+		
+		desktopDao.create(desktop);
+		
+		// Test ValueObject
+		DesktopInfo desktopInfo = desktopDao.toDesktopInfo(desktop);
+		
+		assertEquals(desktop.getId(), desktopInfo.getId());
+		assertEquals(desktop.getUser().getId(), desktopInfo.getUserId());
+		assertEquals(desktop.getUniversities().get(0).getId(), (Long) desktopInfo.getUniversityIds().get(0));
+		assertEquals(desktop.getUniversities().get(1).getId(), (Long) desktopInfo.getUniversityIds().get(1));
+	}
+	
+	public void testDesktopDaoDesktopInfoToEntity() {
+		
+		// Create a complete Desktop
+		Desktop desktop = Desktop.Factory.newInstance();
+		
+		desktop.setUser(testUtility.createUserInDB());
+		
+		University university = University.Factory.newInstance();
+		university.setName(testUtility.unique("testUniversity"));
+		university.setShortcut(testUtility.unique("testU"));
+		university.setDescription("This is a test University");
+		Membership membership = Membership.Factory.newInstance();
+		membership.getMembers().add(testUtility.createUserInDB());
+		university.setMembership(membership);
+		desktop.getUniversities().add(university);
+
+		University university2 = University.Factory.newInstance();
+		university2.setName(testUtility.unique("testUniversity2"));
+		university2.setShortcut(testUtility.unique("testU2"));
+		university2.setDescription("This is a test University2");
+		Membership membership2 = Membership.Factory.newInstance();
+		membership2.getMembers().add(testUtility.createUserInDB());
+		university2.setMembership(membership2);
+		desktop.getUniversities().add(university2);
+		
+		universityDao.create(university);
+		universityDao.create(university2);
+		
+		desktopDao.create(desktop);
+		
+		// Create the corresponding ValueObject
+		DesktopInfo desktopInfo = new DesktopInfo();
+		desktopInfo.setId(desktop.getId());
+		
+		// Test toEntity
+		Desktop desktop2 = desktopDao.desktopInfoToEntity(desktopInfo);
+
+		assertEquals(desktop.getId(), desktop2.getId());
+		assertEquals(desktop.getUser().getId(), desktop2.getUser().getId());
+		assertEquals(desktop.getUniversities().get(0).getId(), desktop2.getUniversities().get(0).getId());
+		assertEquals(desktop.getUniversities().get(1).getId(), desktop2.getUniversities().get(1).getId());
+		
 	}
 	
 }
