@@ -16,10 +16,14 @@
 		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
 		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
 		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+		
 	</head>
 
 	<body>      
 	<!-- text above will be ignored -->
+	
+	<f:view>
+	
 	<ui:composition template="/views/layout/layout.xhtml">
   		<ui:define name="navigation"> 
 			<ui:include src="/views/commons/navigation/desktop.xhtml" />
@@ -32,19 +36,76 @@
 		</ui:define>
   		<ui:define name="content">
   			<h:form id="extendedSearchForm"> 
+  				<script language="javascript">
+					function pulldownChanged(){
+						document.getElementById("_id6:extendedSearchForm:updateButton").click();
+					}
+				</script>
 				<o:block label="#{msg.extended_search_headline}">
-		  			<p class="content_font_normal">
-	  				<h:outputLabel value="#{msg['extended_search_search_for']}" for="search_input" styleClass="field_label"></h:outputLabel>
-	  				<h:inputText id="extended_search_input" value="#{extended_search_results.textToSearch}" styleClass="field"/>
-	  				<h:commandButton action="#{views$public$search$extendedsearch.extendedSearch}" value="${msg.extended_search_search}" styleClass="button_save"/>
-	  				</p>
-	  			</o:block>
-				<ui:include src="extendedsearchresults.xhtml"/>
+					<h:panelGrid border="0" columns="2">
+						<h:outputText value="#{msg.extended_search_search_term}"/>
+					 	<h:panelGrid border="0" columns="1">
+					 		<h:inputText id="search_term" value="#{extended_search_results.textToSearch}"/>
+					 		<h:panelGroup>
+					 			<h:outputText value="#{msg.extended_search_title_only}"/>
+					 			<h:selectBooleanCheckbox id="title_only" value="#{extended_search_results.titleOnly}"/>
+								<h:outputText value="#{msg.extended_search_official_only}"/>
+								<h:selectBooleanCheckbox id="official_only" value="#{extended_search_results.officialOnly}"/>
+					 		</h:panelGroup>
+					 	</h:panelGrid>
+						<h:outputText value="#{msg.extended_search_scope}"/>
+						<h:selectOneMenu id="search_scope" value="#{extended_search_results.searchScopeId}" 
+							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.searchScopeChanged}">
+							<f:selectItems value="#{extended_search_results.searchScopes}"/>
+						</h:selectOneMenu>
+						<h:outputText value="#{msg.extended_search_result_type}"/>
+						<h:selectOneMenu id="search_for" value="#{extended_search_results.resultTypeId}" 
+							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.resultTypeChanged}">
+							<f:selectItems value="#{extended_search_results.resultTypes}"/>
+						</h:selectOneMenu>
+						<h:outputText value="#{views$public$search$extendedsearch.organisationLabel}"
+							style="#{views$public$search$extendedsearch.visibilityOrganisation}"/>
+						<h:selectOneMenu id="organisation" value="#{extended_search_results.organisationId}" 
+							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.organisationChanged}"
+							style="#{views$public$search$extendedsearch.visibilityOrganisation}">
+							<f:selectItems value="#{extended_search_results.organisations}"/>
+						</h:selectOneMenu>
+						<h:outputText value="#{views$public$search$extendedsearch.suborganisationLabel}"
+							style="#{views$public$search$extendedsearch.visibilitySuborganisation}"/>
+						<h:selectOneMenu id="suborganisation" value="#{extended_search_results.suborganisationId}" 
+							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.suborganisationChanged}"
+							style="#{views$public$search$extendedsearch.visibilitySuborganisation}">
+							<f:selectItems value="#{extended_search_results.suborganisations}"/>
+						</h:selectOneMenu>
+						<h:outputText value="#{views$public$search$extendedsearch.institutionLabel}" 
+							style="#{views$public$search$extendedsearch.visibilityInstitution}"/>
+						<h:selectOneMenu id="institution" value="#{extended_search_results.institutionId}" 
+							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.institutionChanged}"
+							style="#{views$public$search$extendedsearch.visibilityInstitution}">
+							<f:selectItems value="#{extended_search_results.institutions}"/>
+						</h:selectOneMenu>
+						<h:outputText value="#{views$public$search$extendedsearch.courseTypeLabel}" 
+							style="#{views$public$search$extendedsearch.visibilityCourseType}"/>
+						<h:selectOneMenu id="course_type" value="#{extended_search_results.courseTypeId}" 
+							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.courseTypeChanged}"
+							style="#{views$public$search$extendedsearch.visibilityCourseType}">
+							<f:selectItems value="#{extended_search_results.courseTypes}"/>
+						</h:selectOneMenu>
+						<h:outputText value="#{views$public$search$extendedsearch.periodLabel}" 
+							style="#{views$public$search$extendedsearch.visibilityPeriod}"/>
+						<h:selectOneMenu id="period" value="#{extended_search_results.periodId}" 
+							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.periodChanged}"
+							style="#{views$public$search$extendedsearch.visibilityPeriod}">
+							<f:selectItems value="#{extended_search_results.periods}"/>
+						</h:selectOneMenu>
+					</h:panelGrid>
+		  			<h:commandButton action="#{views$public$search$extendedsearch.extendedSearch}" value="${msg.extended_search_search}" styleClass="button_save" />
+		  			<h:commandButton action="#{views$public$search$extendedsearch.extendedSearchCriteriaUpdate}" id="updateButton" value="selection_update" style="display:none;" />
+				</o:block>
+				<ui:include src="extendedsearchresults.xhtml" />
 			</h:form>
 		</ui:define>
 
 	  			
-	</ui:composition>
-	<!-- text above will be ignored -->
-	</body>
+	</ui:composition></f:view></body>
 </html>
