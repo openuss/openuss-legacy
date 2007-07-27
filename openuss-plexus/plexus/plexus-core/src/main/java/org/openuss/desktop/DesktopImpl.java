@@ -22,12 +22,26 @@ public class DesktopImpl extends org.openuss.desktop.DesktopBase implements org.
 	public void linkInstitute(org.openuss.lecture.Institute institute) {
 		getInstitutes().add(institute);
 	}
+	
+	/**
+	 * @see org.openuss.desktop.Desktop#linkUniversity(org.openuss.lecture.University)
+	 */
+	public void linkUniversity(org.openuss.lecture.University university) {
+		getUniversities().add(university);
+	}
 
 	/**
 	 * @see org.openuss.desktop.Desktop#unlinkInstitute(org.openuss.lecture.Institute)
 	 */
 	public void unlinkInstitute(org.openuss.lecture.Institute institute) {
 		getInstitutes().remove(institute);
+	}
+	
+	/**
+	 * @see org.openuss.desktop.Desktop#unlinkUniversity(org.openuss.lecture.University)
+	 */
+	public void unlinkUniversity(org.openuss.lecture.University university) {
+		getUniversities().remove(university);
 	}
 
 	/**
