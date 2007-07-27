@@ -84,4 +84,38 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		
 		logger.info("----> END access to update(Department) test");
 	}
+	
+	public void testRemoveDepartment() {
+		logger.info("----> BEGIN access to remove(Department) test");
+		
+		//Create University
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		flush();
+		
+		//Create department
+		DepartmentInfo departmentInfo = new DepartmentInfo();
+		departmentInfo.setName("Wirtschaftswissenschaften - FB 4");
+		departmentInfo.setDescription("Testdescription");
+		departmentInfo.setShortcut("FB4");
+		departmentInfo.setUniversityId(university.getId());
+		departmentInfo.setDepartmentType(DepartmentType.OFFICIAL);
+		
+		Long departmentId = 
+			this.getDepartmentService().create(departmentInfo, testUtility.createUserInDB().getId());
+		flush();
+		
+		DepartmentDao departmentDao = (DepartmentDao)this.getApplicationContext().getBean("departmentDao");
+		Department department = departmentDao.load(departmentId);
+		assertNotNull(department);
+		
+		//Remove department
+		this.getDepartmentService().removeDepartment(department.getId());
+		flush();
+		
+		//Test	
+		department = departmentDao.load(departmentId);
+		assertNull(department);
+		
+		logger.info("----> END access to remove(Department) test");
+	}
 }

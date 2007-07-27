@@ -75,8 +75,13 @@ public class DepartmentServiceImpl
     protected void handleRemoveDepartment(java.lang.Long departmentId)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleRemoveDepartment(java.lang.Long departmentId)
-        throw new java.lang.UnsupportedOperationException("org.openuss.lecture.DepartmentService.handleRemoveDepartment(java.lang.Long departmentId) Not implemented!");
+    	// TODO: Security
+    	
+    	Validate.notNull(departmentId, "DepartmentService.handleRemove - the DepartmentId cannot be null");
+    	
+    	// Remove department
+    	this.getDepartmentDao().remove(departmentId);
+    	
     }
 
     /**
