@@ -5,6 +5,7 @@
  */
 package org.openuss.lecture;
 
+import org.openuss.security.Membership;
 import org.openuss.security.User;
 
 /**
@@ -117,5 +118,32 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		assertNull(department);
 		
 		logger.info("----> END access to remove(Department) test");
+	}
+	
+	public void testFindDepartment() {
+		
+		//Create University
+		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		flush();
+		
+		//Create department with departmentDao
+		Department department = Department.Factory.newInstance();
+		department.setName("Wirtschaftswissenschaften - FB 4");
+		department.setDescription("Testdescription");
+		department.setShortcut("FB4");
+		department.setUniversity(university);
+		department.setDepartmentType(DepartmentType.OFFICIAL);
+		department.setMembership(Membership.Factory.newInstance());
+		
+		DepartmentDao departmentDao =
+			(DepartmentDao) this.getApplicationContext().getBean("departmentDao");
+		departmentDao.create(department);
+		flush();
+		
+		//Test
+		DepartmentInfo departmentInfo =
+			this.getDepartmentService().findDepartment(department.getId());
+		assertNotNull(departmentInfo);
+		assertEquals(departmentInfo.getName(), department.getName());
 	}
 }

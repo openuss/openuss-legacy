@@ -80,15 +80,19 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 	}
 
-	/**
-	 * @see org.openuss.lecture.DepartmentService#findDepartment(java.lang.Long)
-	 */
-	protected org.openuss.lecture.DepartmentInfo handleFindDepartment(java.lang.Long departmentId)
-			throws java.lang.Exception {
-		// @todo implement protected org.openuss.lecture.DepartmentInfo handleFindDepartment(java.lang.Long
-		// departmentId)
-		return null;
-	}
+    /**
+     * @see org.openuss.lecture.DepartmentService#findDepartment(java.lang.Long)
+     */
+    protected org.openuss.lecture.DepartmentInfo handleFindDepartment(java.lang.Long departmentId)
+        throws java.lang.Exception
+    {
+    	// TODO: Security
+    	
+    	Validate.notNull(departmentId, "DepartmentService.handleFindDepartment - the DepartmentId cannot be null");
+    	
+    	Department department = (Department) this.getDepartmentDao().load(departmentId);
+    	return this.getDepartmentDao().toDepartmentInfo(department); 
+    }
 
 	/**
 	 * @see org.openuss.lecture.DepartmentService#findDepartmentsByUniversity(java.lang.Long)
