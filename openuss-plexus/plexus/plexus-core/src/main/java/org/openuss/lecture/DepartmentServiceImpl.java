@@ -59,10 +59,11 @@ public class DepartmentServiceImpl
     	// TODO: Security
     	
     	Validate.notNull(department, "DepartmentService.handleUpdate - the Department cannot be null");
-		Validate.isTrue(department.getId() != null, "DepartmentService.handleUpdate - the Department should have an valid ID");
+		Validate.isTrue(department.getId() != null, "DepartmentService.handleUpdate - the Department must have a valid ID");
 		
 		//Transform departmentInfo to departmentEntity
-		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(department);
+		Department departmentEntity = 
+			this.getDepartmentDao().departmentInfoToEntity(department);
 		
 		//Update department
 		this.getDepartmentDao().update(departmentEntity);
