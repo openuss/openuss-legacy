@@ -7,12 +7,15 @@ package org.openuss.lecture;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
+import org.openuss.desktop.Desktop;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
+import org.openuss.security.User;
 
 /**
  * @see org.openuss.lecture.UniversityService
@@ -167,8 +170,41 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 */
 	@SuppressWarnings( { "unchecked" })
 	protected java.util.List handleFindUniversitiesByUser(java.lang.Long userId) throws java.lang.Exception {
-		// @todo implement protected java.util.List handleFindOrganisationsByUser(java.lang.Long userId)
-		return null;
+		
+		Validate.notNull(userId, "UniversityService.handleFindUniversitiesByUser - the User must have a valid ID");
+		
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user, "UniversityService.handleFindUniversitiesByUser - no User found corresponding to the ID "+userId);
+		
+		List universities = new ArrayList();
+		
+		//Check whether a User is Member of a University
+		List allUniversities = this.findAllUniversities();
+		Iterator iter1 = allUniversities.iterator();
+		University university = null;
+		while (iter1.hasNext()) {
+			university = (University) iter1.next();
+			if ((university.getMembership().getMembers().contains(user)) && (!universities.contains(university))) {
+				universities.add(university);
+			}
+		}
+		
+		//Check whether a User has a Desktop Link to the University
+		Desktop desktop = this.getDesktopService().getDesktopByUser(user);
+		List<University> desktopUnis = desktop.getUniversities();
+		for(University desktopUni: desktopUnis) {
+			if (!universities.contains(desktopUni)) {
+				universities.add(desktopUni);
+			}
+		}
+
+		//Transformation
+		List universityInfos = new ArrayList(universities.size());
+		for (int i = 0; i < universities.size(); i++) {
+			universityInfos.add(this.getUniversityDao().toUniversityInfo((University) universities.get(i)));
+		}
+		
+		return universityInfos;
 	}
 
 }
