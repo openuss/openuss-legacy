@@ -19,6 +19,7 @@ public class ApplicationStartup implements ApplicationListener {
 	private LectureIndexImpl lectureIndex;
 
 	public void onApplicationEvent(ApplicationEvent event) {
+		logger.info("in onApplicationEvent method");
 		if (event instanceof ContextRefreshedEvent) {
 			try {
 				performInitialization();

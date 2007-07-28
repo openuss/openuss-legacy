@@ -21,8 +21,10 @@ public class InstituteIndexingAspect {
 	 * @param institute
 	 */
 	public void createInstituteIndex(Institute institute) {
+		logger.debug("Starting method createInstituteIndex");
 		try {
 			if (institute.isEnabled()) {
+				logger.debug("method createInstituteIndex: createIndex");
 				indexerService.createIndex(institute);
 			};
 		} catch (IndexerApplicationException e) {
@@ -35,8 +37,10 @@ public class InstituteIndexingAspect {
 	 * @param institute
 	 */
 	public void updateInstituteIndex(Institute institute) {
+		logger.debug("Starting method updateInstituteIndex");
 		try {
 			if (institute.isEnabled()) {
+				logger.debug("method updateInstituteIndex: updateIndex");
 				indexerService.updateIndex(institute);
 				for(Course course:institute.getCourses()) {
 					if (course.getAccessType() != AccessType.CLOSED) {
@@ -45,6 +49,7 @@ public class InstituteIndexingAspect {
 					
 				}
 			} else {
+				logger.debug("method updateInstituteIndex: deleteIndex");
 				indexerService.deleteIndex(institute);
 				for (Course course:institute.getCourses()) {
 					indexerService.deleteIndex(course);
@@ -60,7 +65,9 @@ public class InstituteIndexingAspect {
 	 * @param institute
 	 */
 	public void deleteInstituteIndex(Long instituteId) {
+		logger.debug("Starting method deleteInstituteIndex");
 		try {
+			logger.debug("method deleteInstituteIndex: deleteIndex");
 			Institute institute = Institute.Factory.newInstance();
 			institute.setId(instituteId);
 			indexerService.deleteIndex(institute);

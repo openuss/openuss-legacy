@@ -41,6 +41,7 @@ public class CourseIndexer extends DomainIndexer {
 	}
 
 	public void update() {
+		logger.debug("Starting method update");
 		final Course course = getCourse();
 		if (course != null) {
 			logger.debug("update new index for course "+course.getName()+" ("+course.getId()+")");
