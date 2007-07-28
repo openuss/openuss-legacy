@@ -7,8 +7,10 @@ import java.util.ResourceBundle;
 
 import javax.faces.model.SelectItem;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.View;
 import org.openuss.search.DomainResult;
 import org.openuss.web.Constants;
 
@@ -18,10 +20,13 @@ import org.openuss.web.Constants;
  * @author Kai Stettner
  * @author Malte Stockmann
  */
+
 @Bean(name="extended_search_results", scope=Scope.SESSION)
 public class ExtendedSearchResults implements Serializable {
 	
 	private static final long serialVersionUID = 2703663293293922929L;
+	
+	private static final Logger logger = Logger.getLogger(ExtendedSearchResults.class);
 
 	private List<DomainResult> hits;
 	
@@ -183,6 +188,32 @@ public class ExtendedSearchResults implements Serializable {
 				rb.getString("extended_search_course_"+extension)));
 		return resultTypes;
 	}
+	
+	/**
+	 * generates the CSS tag which determines whether the result data table is displayed
+	 * @return
+	 */
+	public String getVisibilityResultTable(){
+		logger.debug("test"+this.getHitCounts());
+		if(this.getHitCounts() > 0){
+			return "display:inline;";
+		} else {
+			return "display:none;";
+		}
+	}
+	
+	/**
+	 * generates the CSS tag which determines whether the result data table is displayed
+	 * @return
+	 */
+	public String getVisibilityNotificationZero(){
+		logger.debug("test"+this.getHitCounts());
+		if(this.getHitCounts() == 0){
+			return "display:inline;";
+		} else {
+			return "display:none;";
+		}
+	}
 
 	public List<SelectItem> getOrganisations() {
 		return organisations;
@@ -227,5 +258,5 @@ public class ExtendedSearchResults implements Serializable {
 	public int getHitCounts() {
 		return hits != null ? hits.size() : 0;
 	}
-
+	
 }

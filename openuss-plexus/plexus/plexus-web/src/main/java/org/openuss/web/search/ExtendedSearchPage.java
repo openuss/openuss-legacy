@@ -209,7 +209,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 * @return
 	 */
 	public String getVisibilityOrganisation(){
-		if( extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION
+		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION
 				&& extendedSearchResults.getOrganisations().size() > 0){
 			return "display:inline;";
 		} else {
@@ -268,7 +268,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 			return "display:none;";
 		}
 	}
-	
+
 	// TODO: really required?
 	private List<SelectItem> getEmptyComboBox(){
 		List<SelectItem> items = new ArrayList<SelectItem>();

@@ -9,32 +9,34 @@
       xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:c="http://java.sun.com/jstl/core">
       
-	<plexus:dataTable 
-		id="institutes" 
-		label="#{msg.search_result_header}" 
-		value="views$public$search$search.resultProvider" 
-		var="result" 
-		columnClasses="col_max_left, col_commands"
-		rows="15">
-		<t:column rendered="#{result.domainType == 'Course'}">
-			<img src="#{theme.imagesPath}/course.png" alt="#{result.name}" title="#{result.name}" />
-		</t:column>
-		<t:column rendered="#{result.domainType == 'INSTITUTE'}" >
-			<img src="#{theme.imagesPath}/institute.png" alt="#{result.name}" title="#{result.name}" />
-		</t:column>
-		<t:column>
-			<div  class="institute_info">
-	    		<o:link value="/views/secured/lecture/institute.faces" rendered="#{result.domainType == 'INSTITUTE'}">
-	    			<f:param name="institute" value="#{result.id}"/>
-				 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
-					<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
-	    		</o:link>
-	    		<o:link value="/views/secured/course/main.faces" rendered="#{result.domainType == 'Course'}">
-	    			<f:param name="course" value="#{result.id}"/>
-				 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
-					<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
-	    		</o:link>
-    		</div>
-		</t:column>
-	</plexus:dataTable>
+    <t:div style="#{views$public$search$search.visibilityResultTable}">  
+		<plexus:dataTable 
+			id="institutes" 
+			label="#{msg.search_result_header}" 
+			value="views$public$search$search.resultProvider" 
+			var="result" 
+			columnClasses="col_max_left, col_commands"
+			rows="15">
+			<t:column rendered="#{result.domainType == 'Course'}">
+				<img src="#{theme.imagesPath}/course.png" alt="#{result.name}" title="#{result.name}" />
+			</t:column>
+			<t:column rendered="#{result.domainType == 'INSTITUTE'}" >
+				<img src="#{theme.imagesPath}/institute.png" alt="#{result.name}" title="#{result.name}" />
+			</t:column>
+			<t:column>
+				<div  class="institute_info">
+		    		<o:link value="/views/secured/lecture/institute.faces" rendered="#{result.domainType == 'INSTITUTE'}">
+		    			<f:param name="institute" value="#{result.id}"/>
+					 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
+						<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
+		    		</o:link>
+		    		<o:link value="/views/secured/course/main.faces" rendered="#{result.domainType == 'Course'}">
+		    			<f:param name="course" value="#{result.id}"/>
+					 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
+						<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
+		    		</o:link>
+	    		</div>
+			</t:column>
+		</plexus:dataTable>
+	</t:div>
 </ui:composition>

@@ -55,6 +55,19 @@ public class SearchPage extends BasePage{
 		return Constants.SEARCH_RESULT;
 	}
 	
+	/**
+	 * generates the CSS tag which determines whether the result data table is displayed
+	 * @return
+	 */
+	public String getVisibilityResultTable(){
+		logger.debug("test"+searchResults.getHitCounts());
+		if(searchResults.getHitCounts() > 0){
+			return "display:inline;";
+		} else {
+			return "display:none;";
+		}
+	}
+	
 	
 	private class SearchResultDataProvider extends AbstractPagedTable<DomainResult> {
 

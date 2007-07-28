@@ -9,9 +9,8 @@
       xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:c="http://java.sun.com/jstl/core">
      
- 
-    <c:if test="${!empty views$public$search$extendedsearch.resultProvider}"> 
-		<plexus:dataTable 
+    <t:div style="#{extended_search_results.visibilityResultTable}">
+		<plexus:dataTable  
 			id="institutes" 
 			label="#{msg.search_result_header}" 
 			value="views$public$search$extendedsearch.resultProvider" 
@@ -39,5 +38,5 @@
 	    		</div>
 			</t:column>
 		</plexus:dataTable>
-	</c:if>
+	</t:div>	
 </ui:composition>

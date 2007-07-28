@@ -36,8 +36,10 @@ public class CourseIndexingAspect {
 	}
 
 	public void updateCourseIndex(Course course) {
+		logger.info("Starting method updateCourseIndex");
 		try {
 			if (course.getAccessType() == AccessType.CLOSED) {
+				logger.info("Deleting CourseIndex");
 				indexerService.deleteIndex(course);
 			} else {
 				indexerService.updateIndex(course);
