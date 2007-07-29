@@ -5,25 +5,26 @@
  */
 package org.openuss.desktop;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.openuss.TestUtility;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.Department;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.LectureBuilder;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
 import org.openuss.security.Membership;
-import org.openuss.security.User;
 
 
 /**
  * JUnit Test for Spring Hibernate DesktopDao class.
  * @see org.openuss.desktop.DesktopDao
+ * @author Ingo Dueppe, Ron Haus
  */
 public class DesktopDaoTest extends DesktopDaoTestBase {
-	
-	private User defaultUser;
 	
 	private TestUtility testUtility;
 	
@@ -32,14 +33,82 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 	private UniversityDao universityDao;
 	
 	private LectureBuilder lectureBuilder;
+
+	
+	
 	
 	public void testDesktopDaoCreate() {
 		Desktop desktop = createDesktop();
 		assertNotNull(desktop.getId());
-		desktopDao.remove(desktop);
+		
+		//Synchronize with Database
+		flush();
 	}
 	
+	@SuppressWarnings( { "unchecked" })
+	public void testFindByUniversity() {
+		
+		//Create a default University
+		University university = testUtility.createUniqueUniversityInDB();
+		assertNotNull(university.getId());
+		
+		//Create 3 Desktops
+		List<Desktop> desktops = new ArrayList<Desktop>(3);
+		for(int i = 0; i<3; i++) {
+			desktops.add(createDesktop());
+		}
+		
+		//Create Desktop-University Link for 2 Desktops
+		for(int i = 0; i<desktops.size()-1; i++) {
+			desktops.get(i).getUniversities().add(university);
+		}
+		
+		//Synchronize with Database
+		flush();
+		
+		//Test findByUniversity
+		Collection desktops2 = desktopDao.findByUniversity(university);
+		assertEquals(2, desktops2.size());
+	}
+
+	@SuppressWarnings( { "unchecked" })
+	public void testFindByDepartment() {
+		
+		
+		//Create a default Department
+		Department department = testUtility.createUniqueDepartmentInDB();
+		assertNotNull(department.getId());
+		
+		//Create 3 Desktops
+		List<Desktop> desktops = new ArrayList<Desktop>(3);
+		for(int i = 0; i<3; i++) {
+			desktops.add(createDesktop());
+		}
+		
+		//Create Desktop-Department Link for 2 Desktops
+		for(int i = 0; i<desktops.size()-1; i++) {
+			desktops.get(i).getDepartments().add(department);
+		}
+		
+		//Synchronize with Database
+		flush();
+		
+		//Test findByDepartment
+		Collection desktops2 = desktopDao.findByDepartment(department);
+		assertEquals(2, desktops2.size());
+	}
 	
+	@SuppressWarnings( { "unchecked" })
+	public void testFindByInstitute() {
+		
+	}
+	
+	@SuppressWarnings( { "unchecked" })
+	public void testFindByCourseType() {
+		
+	}
+	
+	@SuppressWarnings( { "unchecked" })
 	public void testFindByCourse() {
 		// create courses
 		Course course = lectureBuilder
@@ -71,17 +140,107 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		commit();
 		
 		// clean up
-		removeDesktop(desktopThree);
-		removeDesktop(desktopTwo);
-		removeDesktop(desktopOne);
+		removeDesktopAndUser(desktopThree);
+		removeDesktopAndUser(desktopTwo);
+		removeDesktopAndUser(desktopOne);
 		commit();
 		
 		lectureBuilder.remove();
 		testUtility.removeUser();
 		commit();
 	}
+
 	
-	private void removeDesktop(Desktop desktop) {
+	public void testDesktopDaoToDesktopInfo() {
+		
+		// Create a complete Desktop
+		Desktop desktop = Desktop.Factory.newInstance();
+		
+		desktop.setUser(testUtility.createUniqueUserInDB());
+		
+		Department department = testUtility.createUniqueDepartmentInDB();
+		Department department2 = testUtility.createUniqueDepartmentInDB();
+		desktop.getUniversities().add(department.getUniversity());
+		desktop.getUniversities().add(department2.getUniversity());
+		desktop.getDepartments().add(department);
+		desktop.getDepartments().add(department2);
+		
+		desktopDao.create(desktop);
+		
+		//Synchronize with Database
+		flush();		
+		
+		// Test ValueObject
+		DesktopInfo desktopInfo = desktopDao.toDesktopInfo(desktop);
+		
+		assertEquals(desktop.getId(), desktopInfo.getId());
+		assertEquals(desktop.getUser().getId(), desktopInfo.getUserId());
+		assertEquals(desktop.getUniversities().get(0).getId(), (Long) desktopInfo.getUniversityIds().get(0));
+		assertEquals(desktop.getUniversities().get(1).getId(), (Long) desktopInfo.getUniversityIds().get(1));
+		assertEquals(desktop.getDepartments().get(0).getId(), (Long) desktopInfo.getDepartmentIds().get(0));
+		assertEquals(desktop.getDepartments().get(1).getId(), (Long) desktopInfo.getDepartmentIds().get(1));
+	}
+	
+	@SuppressWarnings( { "unchecked" })
+	public void testDesktopDaoDesktopInfoToEntity() {
+		
+		// Create a complete Desktop
+		Desktop desktop = Desktop.Factory.newInstance();
+		
+		desktop.setUser(testUtility.createUniqueUserInDB());
+		
+		Department department = testUtility.createUniqueDepartmentInDB();
+		Department department2 = testUtility.createUniqueDepartmentInDB();
+		desktop.getUniversities().add(department.getUniversity());
+		desktop.getUniversities().add(department2.getUniversity());
+		desktop.getDepartments().add(department);
+		desktop.getDepartments().add(department2);
+		
+		desktopDao.create(desktop);
+		
+		//Synchronize with Database
+		flush();
+		
+		// Create the corresponding ValueObject
+		DesktopInfo desktopInfo = new DesktopInfo();
+		desktopInfo.setId(desktop.getId());
+		
+		// Test toEntity
+		Desktop desktop2 = desktopDao.desktopInfoToEntity(desktopInfo);
+
+		assertEquals(desktop.getId(), desktop2.getId());
+		assertEquals(desktop.getUser().getId(), desktop2.getUser().getId());
+		assertEquals(desktop.getUniversities().get(0).getId(), desktop2.getUniversities().get(0).getId());
+		assertEquals(desktop.getUniversities().get(1).getId(), desktop2.getUniversities().get(1).getId());
+		assertEquals(desktop.getDepartments().get(0).getId(), desktop2.getDepartments().get(0).getId());
+		assertEquals(desktop.getDepartments().get(1).getId(), desktop2.getDepartments().get(1).getId());
+		
+		// Create a new ValueObject
+		DesktopInfo desktopInfo2 = new DesktopInfo();
+		desktopInfo2.setUserId(testUtility.createUniqueUserInDB().getId());
+		List universityIds = new ArrayList();
+		universityIds.add(department.getUniversity().getId());
+		universityIds.add(department2.getUniversity().getId());
+		desktopInfo2.setUniversityIds(universityIds);
+		List departmentIds = new ArrayList();
+		departmentIds.add(department.getId());
+		departmentIds.add(department2.getId());
+		desktopInfo2.setDepartmentIds(departmentIds);
+		
+		// Test toEntity
+		Desktop desktop3 = desktopDao.desktopInfoToEntity(desktopInfo2);
+
+		assertEquals(desktopInfo2.getUserId(), desktop3.getUser().getId());
+		assertEquals(desktopInfo2.getUniversityIds().get(0), desktop3.getUniversities().get(0).getId());
+		assertEquals(desktopInfo2.getUniversityIds().get(1), desktop3.getUniversities().get(1).getId());
+		assertEquals(desktopInfo2.getDepartmentIds().get(0), desktop3.getDepartments().get(0).getId());
+		assertEquals(desktopInfo2.getDepartmentIds().get(1), desktop3.getDepartments().get(1).getId());
+		
+	}
+	
+	
+	
+	private void removeDesktopAndUser(Desktop desktop) {
 		desktopDao.remove(desktop);
 		testUtility.removeUser(desktop.getUser());
 	}
@@ -92,14 +251,8 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		desktopDao.create(desktopOne);
 		return desktopOne;
 	}
-
-	public User getDefaultUser() {
-		return defaultUser;
-	}
-
-	public void setDefaultUser(User defaultUser) {
-		this.defaultUser = defaultUser;
-	}
+	
+	
 
 	public TestUtility getTestUtility() {
 		return testUtility;
@@ -131,78 +284,5 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 
 	public void setLectureBuilder(LectureBuilder lectureBuilder) {
 		this.lectureBuilder = lectureBuilder;
-	}
-	
-	public void testDesktopDaoToDesktopInfo() {
-		
-		// Create a complete Desktop
-		Desktop desktop = Desktop.Factory.newInstance();
-		
-		desktop.setUser(testUtility.createUserInDB());
-		
-		University university = University.Factory.newInstance();
-		university.setName(testUtility.unique("testUniversity"));
-		university.setShortcut(testUtility.unique("testU"));
-		desktop.getUniversities().add(university);
-
-		University university2 = University.Factory.newInstance();
-		university2.setName(testUtility.unique("testUniversity"));
-		university2.setShortcut(testUtility.unique("testU"));
-		desktop.getUniversities().add(university2);
-		
-		desktopDao.create(desktop);
-		
-		// Test ValueObject
-		DesktopInfo desktopInfo = desktopDao.toDesktopInfo(desktop);
-		
-		assertEquals(desktop.getId(), desktopInfo.getId());
-		assertEquals(desktop.getUser().getId(), desktopInfo.getUserId());
-		assertEquals(desktop.getUniversities().get(0).getId(), (Long) desktopInfo.getUniversityIds().get(0));
-		assertEquals(desktop.getUniversities().get(1).getId(), (Long) desktopInfo.getUniversityIds().get(1));
-	}
-	
-	public void testDesktopDaoDesktopInfoToEntity() {
-		
-		// Create a complete Desktop
-		Desktop desktop = Desktop.Factory.newInstance();
-		
-		desktop.setUser(testUtility.createUserInDB());
-		
-		University university = University.Factory.newInstance();
-		university.setName(testUtility.unique("testUniversity"));
-		university.setShortcut(testUtility.unique("testU"));
-		university.setDescription("This is a test University");
-		Membership membership = Membership.Factory.newInstance();
-		membership.getMembers().add(testUtility.createUserInDB());
-		university.setMembership(membership);
-		desktop.getUniversities().add(university);
-
-		University university2 = University.Factory.newInstance();
-		university2.setName(testUtility.unique("testUniversity2"));
-		university2.setShortcut(testUtility.unique("testU2"));
-		university2.setDescription("This is a test University2");
-		Membership membership2 = Membership.Factory.newInstance();
-		membership2.getMembers().add(testUtility.createUserInDB());
-		university2.setMembership(membership2);
-		desktop.getUniversities().add(university2);
-		
-		universityDao.create(university);
-		universityDao.create(university2);
-		
-		desktopDao.create(desktop);
-		
-		// Create the corresponding ValueObject
-		DesktopInfo desktopInfo = new DesktopInfo();
-		desktopInfo.setId(desktop.getId());
-		
-		// Test toEntity
-		Desktop desktop2 = desktopDao.desktopInfoToEntity(desktopInfo);
-
-		assertEquals(desktop.getId(), desktop2.getId());
-		assertEquals(desktop.getUser().getId(), desktop2.getUser().getId());
-		assertEquals(desktop.getUniversities().get(0).getId(), desktop2.getUniversities().get(0).getId());
-		assertEquals(desktop.getUniversities().get(1).getId(), desktop2.getUniversities().get(1).getId());
-		
-	}
-	
+	}	
 }

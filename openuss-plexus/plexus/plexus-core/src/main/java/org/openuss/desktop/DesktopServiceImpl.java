@@ -12,13 +12,12 @@ import org.apache.log4j.Logger;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Institute;
-import org.openuss.lecture.University;
 import org.openuss.security.User;
 
 /**
  * @see org.openuss.desktop.DesktopService
  * 
- * @author Ingo Dueppe, Ron Haus
+ * @author Ingo Dueppe
  */
 public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 
@@ -72,18 +71,6 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 			saveDesktop(desktop);
 		}
 	}
-
-	@Override
-	protected void handleLinkUniversity(Desktop desktop, University university) throws Exception {
-		if (university == null) {
-			throw new NullPointerException("University must not be null!");
-		}
-		desktop = getDesktop(desktop);
-		if (!desktop.getUniversities().contains(university)) {
-			desktop.linkUniversity(university);
-			saveDesktop(desktop);
-		}
-	}
 	
 	@Override
 	protected void handleLinkCourseType(Desktop desktop, CourseType courseType) throws Exception {
@@ -119,13 +106,6 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 		desktop.unlinkInstitute(institute);
 		saveDesktop(desktop);
 	}
-	
-	@Override
-	protected void handleUnlinkUniversity(Desktop desktop, University university) throws Exception {
-		desktop = getDesktop(desktop);
-		desktop.unlinkUniversity(university);
-		saveDesktop(desktop);
-	}
 
 	@Override
 	protected void handleUnlinkCourseType(Desktop desktop, CourseType courseType) throws Exception {
@@ -152,14 +132,6 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 		Collection<Desktop> desktops = getDesktopDao().findByInstitute(institute);
 		for (Desktop desktop : desktops) {
 			unlinkInstitute(desktop, institute);
-		}
-	}
-	
-	@Override
-	protected void handleUnlinkAllFromUniversity(University university) throws Exception {
-		Collection<Desktop> desktops = getDesktopDao().findByUniversity(university);
-		for (Desktop desktop : desktops) {
-			unlinkUniversity(desktop, university);
 		}
 	}
 
