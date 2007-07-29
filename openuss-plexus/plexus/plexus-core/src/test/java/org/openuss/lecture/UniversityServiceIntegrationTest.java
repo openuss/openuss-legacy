@@ -12,7 +12,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.openuss.security.Membership;
 import org.openuss.security.User;
-import org.openuss.security.UserInfo;
 
 /**
  * JUnit Test for Spring Hibernate UniversityService class.
@@ -140,6 +139,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> END access to findUniversity test");		
 	}
 	
+	@SuppressWarnings( { "unchecked" })
 	public void testFindAllUniversities() {
 		logger.info("----> BEGIN access to findAllUniversities test");
 		
