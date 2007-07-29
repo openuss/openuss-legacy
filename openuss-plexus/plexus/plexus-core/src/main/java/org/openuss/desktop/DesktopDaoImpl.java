@@ -29,6 +29,16 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 						"select d from org.openuss.desktop.Desktop as d, org.openuss.lecture.University e where e=:university and e in elements(d.universities)",
 						university);
 	}
+	
+	@Override
+	@SuppressWarnings( { "unchecked" })
+	public java.util.Collection findByDepartment(final int transform, final org.openuss.lecture.Department department) {
+		return this
+				.findByDepartment(
+						transform,
+						"select d from org.openuss.desktop.Desktop as d, org.openuss.lecture.Department e where e=:department and e in elements(d.departments)",
+						department);
+	}
 
 	@Override
 	@SuppressWarnings( { "unchecked" })
@@ -162,6 +172,8 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 				targetEntity.getDepartments().add(this.getDepartmentDao().load((Long) iter2.next()));
 			}
 		}
+		
+		//TODO Implement me!
 
 		// Institutes
 

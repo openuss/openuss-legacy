@@ -8,23 +8,25 @@ package org.openuss.desktop;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
+import org.openuss.lecture.Department;
 import org.openuss.lecture.University;
 import org.openuss.security.User;
 
 /**
  * JUnit Test for Spring Hibernate DesktopService2 class.
+ * 
  * @see org.openuss.desktop.DesktopService2
  * @author Ron Haus
  */
-public class DesktopService2IntegrationTest extends DesktopService2IntegrationTestBase {	
+public class DesktopService2IntegrationTest extends DesktopService2IntegrationTestBase {
 
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = Logger.getLogger(DesktopService2IntegrationTest.class);
-	
+
 	private DesktopDao desktopDao;
-	
+
 	public DesktopDao getDesktopDao() {
 		return desktopDao;
 	}
@@ -39,80 +41,316 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		this.desktopDao.create(desktop);
 		return desktop;
 	}
-	
-	
-	
+
 	public void testFindDesktop() throws Exception {
 		logger.info("----> BEGIN access to findDesktop test");
-		
-		//Create Desktop
+
+		// Create Desktop
 		Desktop desktop = this.createDesktop();
-		
-		//Find Desktop
+
+		// Find Desktop
 		DesktopInfo desktopInfo = this.getDesktopService2().findDesktop(desktop.getId());
-		assertNotNull(desktopInfo);		
-		assertEquals(desktop.getId(), desktopInfo.getId());		
-		
+		assertNotNull(desktopInfo);
+		assertEquals(desktop.getId(), desktopInfo.getId());
+
 		logger.info("----> END access to findDesktop test");
 	}
-	
+
 	public void testFindDesktopByUser() throws Exception {
 		logger.info("----> BEGIN access to findDesktopByUser test");
-		
-		//Create Desktop
+
+		// Create Desktop
 		Desktop desktop = this.createDesktop();
-		
-		//Find Desktop
+
+		// Find Desktop
 		DesktopInfo desktopInfo = this.getDesktopService2().findDesktopByUser(desktop.getUser().getId());
-		assertNotNull(desktopInfo);		
-		assertEquals(desktop.getId(), desktopInfo.getId());		
-		
+		assertNotNull(desktopInfo);
+		assertEquals(desktop.getId(), desktopInfo.getId());
+
 		logger.info("----> END access to findDesktopByUser test");
 	}
-	
+
 	public void testCreateDesktop() throws Exception {
 		logger.info("----> BEGIN access to createDesktop test");
-		
-		//Create User
+
+		// Create User
 		User user = testUtility.createUniqueUserInDB();
-		
-		//Create Desktop
+
+		// Create Desktop
 		Long desktopId = this.getDesktopService2().createDesktop(user.getId());
 		assertNotNull(desktopId);
-		
-		//Synchronize with Database
+
+		// Synchronize with Database
 		flush();
-		
-		//Find just created Desktop
+
+		// Find just created Desktop
 		Desktop desktop = this.getDesktopDao().load(desktopId);
-		assertNotNull(desktop);		
-		assertEquals(desktopId, desktop.getId());	
-		
+		assertNotNull(desktop);
+		assertEquals(desktopId, desktop.getId());
+
 		logger.info("----> END access to createDesktop test");
 	}
-	
+
 	@SuppressWarnings( { "unchecked" })
 	public void testUpdateDesktop() throws Exception {
 		logger.info("----> BEGIN access to updateDesktop test");
-		
-		//Create Desktop
+
+		// Create Desktop
 		Desktop desktop = this.createDesktop();
-		
-		//Create DesktopInfo
+
+		// Create DesktopInfo
 		DesktopInfo desktopInfo = this.getDesktopDao().toDesktopInfo(desktop);
-		University university = testUtility.createUniqueUniversityInDB();	
+		University university = testUtility.createUniqueUniversityInDB();
 		desktopInfo.setUniversityIds(new ArrayList());
 		desktopInfo.getUniversityIds().add(university.getId());
-		
-		//Update Desktop
+
+		// Update Desktop
 		this.getDesktopService2().updateDesktop(desktopInfo);
+
+		// Synchronize with Database
+		flush();
+
+		assertNotNull(desktop.getUniversities());
+		assertTrue(desktop.getUniversities().contains(university));
+
+		logger.info("----> END access to updateDesktop test");
+	}
+
+	public void testLinkUniversity() throws Exception {
+		logger.info("----> BEGIN access to linkUniversity test");
+
+		// Create Desktop
+		Desktop desktop = this.createDesktop();
+		int sizeBefore = desktop.getUniversities().size();
+
+		// Create University
+		University university = testUtility.createUniqueUniversityInDB();
+
+		// Link
+		this.getDesktopService2().linkUniversity(desktop.getId(), university.getId());
+
+		// Synchronize with Database
+		flush();
+
+		// Test
+		assertEquals(sizeBefore + 1, desktop.getUniversities().size());
+		assertTrue(desktop.getUniversities().contains(university));
+
+		logger.info("----> END access to linkUniversity test");
+	}
+
+	public void testLinkDepartment() throws Exception {
+		logger.info("----> BEGIN access to linkDepartment test");
+
+		// Create Desktop
+		Desktop desktop = this.createDesktop();
+		int sizeBefore = desktop.getDepartments().size();
+
+		// Create Department
+		Department department = testUtility.createUniqueDepartmentInDB();
+
+		// Link
+		this.getDesktopService2().linkDepartment(desktop.getId(), department.getId());
+
+		// Synchronize with Database
+		flush();
+
+		// Test
+		assertEquals(sizeBefore + 1, desktop.getDepartments().size());
+		assertTrue(desktop.getDepartments().contains(department));
+
+		logger.info("----> END access to linkDepartment test");
+	}
+
+	public void testLinkInstitute() throws Exception {
+		logger.info("----> BEGIN access to linkInstitute test");
+
+		// TODO Implement me!
+
+		logger.info("----> END access to linkInstitute test");
+	}
+
+	public void testLinkCourseType() throws Exception {
+		logger.info("----> BEGIN access to linkCourseType test");
+
+		// TODO Implement me!
+
+		logger.info("----> END access to linkCourseType test");
+	}
+
+	public void testLinkCourse() throws Exception {
+		logger.info("----> BEGIN access to unlinkCourse test");
+
+		// TODO Implement me!
+
+		logger.info("----> END access to unlinkCourse test");
+	}
+
+	public void testUnlinkUniversity() throws Exception {
+		logger.info("----> BEGIN access to unlinkUniversity test");
+
+		// Create Desktop
+		Desktop desktop = this.createDesktop();
+
+		// Create University
+		University university = testUtility.createUniqueUniversityInDB();
+
+		// Link
+		desktop.getUniversities().add(university);
+		int sizeBefore = desktop.getUniversities().size();
+
+		// Synchronize with Database
+		flush();
+
+		// Unlink
+		this.getDesktopService2().unlinkUniversity(desktop.getId(), university.getId());
+
+		// Test
+		assertEquals(sizeBefore - 1, desktop.getUniversities().size());
+		assertFalse(desktop.getUniversities().contains(university));
+
+		logger.info("----> END access to unlinkUniversity test");
+	}
+
+	public void testUnlinkDepartment() throws Exception {
+		logger.info("----> BEGIN access to unlinkDepartment test");
+
+		// Create Desktop
+		Desktop desktop = this.createDesktop();
 		
-		//Synchronize with Database
+		// Create Department
+		Department department = testUtility.createUniqueDepartmentInDB();
+
+		// Link
+		desktop.getDepartments().add(department);
+		int sizeBefore = desktop.getDepartments().size();
+		
+		// Synchronize with Database
 		flush();
 		
-		assertNotNull(desktop.getUniversities());
-		assertTrue(desktop.getUniversities().contains(university));		
-		
-		logger.info("----> END access to updateDesktop test");
+		// Unlink
+		this.getDesktopService2().unlinkDepartment(desktop.getId(), department.getId());
+
+		// Test
+		assertEquals(sizeBefore - 1, desktop.getDepartments().size());
+		assertFalse(desktop.getDepartments().contains(department));
+
+		logger.info("----> END access to unlinkDepartment test");
+	}
+
+	public void testUnlinkInstitute() throws Exception {
+		logger.info("----> BEGIN access to unlinkInstitute test");
+
+		// TODO Implement me!
+
+		logger.info("----> END access to unlinkInstitute test");
+	}
+
+	public void testUnlinkCourseType() throws Exception {
+		logger.info("----> BEGIN access to unlinkCourseType test");
+
+		// TODO Implement me!
+
+		logger.info("----> END access to unlinkCourseType test");
+	}
+
+	public void testUnlinkCourse() throws Exception {
+		logger.info("----> BEGIN access to unlinkCourse test");
+
+		// TODO Implement me!
+
+		logger.info("----> END access to unlinkCourse test");
+	}
+	
+	public void testUnlinkAllFromUniversity() throws Exception {
+		logger.info("----> BEGIN access to unlinkAllFromUniversity test");
+
+		// Create two Desktops
+		Desktop desktop = this.createDesktop();
+		Desktop desktop2 = this.createDesktop();
+
+		// Create two Universities
+		University university = testUtility.createUniqueUniversityInDB();
+		University university2 = testUtility.createUniqueUniversityInDB();
+
+		// Link
+		desktop.getUniversities().add(university);
+		desktop.getUniversities().add(university2);
+		int sizeBefore = desktop.getUniversities().size();
+		desktop2.getUniversities().add(university);
+		desktop2.getUniversities().add(university2);
+		int sizeBefore2 = desktop2.getUniversities().size();
+
+		// Synchronize with Database
+		flush();
+
+		// Unlink
+		this.getDesktopService2().unlinkAllFromUniversity(university.getId());
+
+		// Test
+		assertEquals(sizeBefore - 1, desktop.getUniversities().size());
+		assertEquals(sizeBefore2 - 1, desktop2.getUniversities().size());
+		assertFalse(desktop.getUniversities().contains(university));
+		assertFalse(desktop2.getUniversities().contains(university));
+
+		logger.info("----> END access to unlinkAllFromUniversity test");
+	}
+
+	public void testUnlinkAllFromDepartment() throws Exception {
+		logger.info("----> BEGIN access to unlinkAllFromDepartment test");
+
+		// Create two Desktops
+		Desktop desktop = this.createDesktop();
+		Desktop desktop2 = this.createDesktop();
+
+		// Create two Departments
+		Department department = testUtility.createUniqueDepartmentInDB();
+		Department department2 = testUtility.createUniqueDepartmentInDB();
+
+		// Link
+		desktop.getDepartments().add(department);
+		desktop.getDepartments().add(department2);
+		int sizeBefore = desktop.getDepartments().size();
+		desktop2.getDepartments().add(department);
+		desktop2.getDepartments().add(department2);
+		int sizeBefore2 = desktop2.getDepartments().size();
+
+		// Synchronize with Database
+		flush();
+
+		// Unlink
+		this.getDesktopService2().unlinkAllFromDepartment(department.getId());
+
+		// Test
+		assertEquals(sizeBefore - 1, desktop.getDepartments().size());
+		assertEquals(sizeBefore2 - 1, desktop2.getDepartments().size());
+		assertFalse(desktop.getDepartments().contains(department));
+		assertFalse(desktop2.getDepartments().contains(department));
+
+		logger.info("----> END access to unlinkAllFromDepartment test");
+	}
+
+	public void testUnlinkAllFromInstitute() throws Exception {
+		logger.info("----> BEGIN access to unlinkAllFromInstitute test");
+
+		// TODO Implement me!
+
+		logger.info("----> END access to unlinkAllFromInstitute test");
+	}
+
+	public void testUnlinkAllFromCourseType() throws Exception {
+		logger.info("----> BEGIN access to unlinkAllFromCourseType test");
+
+		// TODO Implement me!
+
+		logger.info("----> END access to unlinkAllFromCourseType test");
+	}
+
+	public void testUnlinkAllFromCourse() throws Exception {
+		logger.info("----> BEGIN access to unlinkAllFromCourse test");
+
+		// TODO Implement me!
+
+		logger.info("----> END access to unlinkAllFromCourse test");
 	}
 }

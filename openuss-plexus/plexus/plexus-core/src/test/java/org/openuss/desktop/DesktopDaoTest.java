@@ -73,7 +73,6 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 	@SuppressWarnings( { "unchecked" })
 	public void testFindByDepartment() {
 		
-		
 		//Create a default Department
 		Department department = testUtility.createUniqueDepartmentInDB();
 		assertNotNull(department.getId());
