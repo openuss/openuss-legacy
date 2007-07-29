@@ -32,7 +32,7 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		//		Error was insert, update = false.
 		
 		//Create University
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 		flush();
 		
 		//Create Departments
@@ -65,7 +65,7 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 	public void testDepartmentDaotoDepartmentInfo() {
 		
 		//Create university
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 		flush();
 		
 		//Create Entity
@@ -94,7 +94,7 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 	public void testDepartmentDaoDepartmentInfoToEntity() {
 
 		//Create university
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 		flush();
 		
 		//Create Info-Object

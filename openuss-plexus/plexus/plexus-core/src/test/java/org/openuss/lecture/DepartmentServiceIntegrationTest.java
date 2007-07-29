@@ -20,7 +20,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		logger.info("----> BEGIN access to create(Department) test");
 		
 		// Create university with user
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 		flush();
 		
 		// Create departmentInfo
@@ -49,7 +49,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		logger.info("----> BEGIN access to update(Department) test");
 		
 		//Create university
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 		flush();
 		
 		//Create department
@@ -93,7 +93,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		logger.info("----> BEGIN access to remove(Department) test");
 		
 		//Create University
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 		flush();
 		
 		//Create department
@@ -126,7 +126,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 	public void testFindDepartment() {
 		
 		//Create University
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 		flush();
 		
 		//Create department with departmentDao
@@ -155,7 +155,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 	public void testFindDepartmentsByUniversity () {
 		
 		//Create University
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 		flush();
 		
 		//Create DepartmentDao
@@ -200,7 +200,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 	public void testFindDepartmentsByUserAndUniversity () {
 		
 		//Create University
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 		flush();
 		
 		User user = testUtility.createDefaultUserInDB();
