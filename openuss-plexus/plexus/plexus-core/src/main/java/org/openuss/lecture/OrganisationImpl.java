@@ -5,8 +5,6 @@
 //
 package org.openuss.lecture;
 
-import org.openuss.security.Membership;
-
 /**
  * @see org.openuss.lecture.Organisation
  */
@@ -17,19 +15,6 @@ public abstract class OrganisationImpl
     /**
      * The serial version UID of this class. Needed for serialization.
      */
-    private static final long serialVersionUID = -1208147996320435736L;
-    
-    public java.util.List getMembers() {
-    	if (getMembership() == null) {
-    		setMembership(Membership.Factory.newInstance());
-    	}
-    	return this.getMembership().getMembers();
-    }
-    
-    public java.util.List getAspirants() {
-    	if (getMembership() == null) {
-    		setMembership(Membership.Factory.newInstance());
-    	}
-    	return this.getMembership().getAspirants();
-    }
+    private static final long serialVersionUID = 391078913590423980L;
+
 }
