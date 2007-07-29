@@ -60,6 +60,9 @@
 		<property name="universityDao">
 			<ref bean="universityDao" />
 		</property>
+		<property name="departmentDao">
+			<ref bean="departmentDao" />
+		</property>
 	</bean>
 
 	<bean id="lectureBuilder"
