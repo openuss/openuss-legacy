@@ -36,11 +36,9 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		
 		//Test
 		Long departmentId = departmentService.create(departmentInfo, owner.getId());
+		flush();
 		assertNotNull(departmentId);
 		assertEquals(1, university.getDepartments().size());
-		
-		//Synchronize with Database
-		flush();
 		
 		logger.info("----> END access to create(Department) test");
 	}
@@ -197,6 +195,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		logger.info("----> END access to findDepartmentsByUniversity(Department) test");
 	}
 	
+	/*
 	public void testFindDepartmentsByUserAndUniversity () {
 		
 		//Create University
@@ -246,4 +245,5 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		
 		logger.info("----> END access to findDepartmentsByUserAndUniversity(Department) test");
 	}
+	*/
 }

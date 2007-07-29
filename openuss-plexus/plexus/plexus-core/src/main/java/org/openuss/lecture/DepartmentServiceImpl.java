@@ -115,48 +115,4 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		return university.getDepartments();
 	}
 
-	/**
-	 * @see org.openuss.lecture.DepartmentService#acceptApplication(java.lang.Long)
-	 */
-	protected void handleAcceptApplication(java.lang.Long applicationId) throws java.lang.Exception {
-		// @todo implement protected void handleAcceptApplication(java.lang.Long applicationId)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.lecture.DepartmentService.handleAcceptApplication(java.lang.Long applicationId) Not implemented!");
-	}
-
-	/**
-	 * @see org.openuss.lecture.DepartmentService#rejectApplication(java.lang.Long)
-	 */
-	protected void handleRejectApplication(java.lang.Long applicationId) throws java.lang.Exception {
-		// @todo implement protected void handleRejectApplication(java.lang.Long applicationId)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.lecture.DepartmentService.handleRejectApplication(java.lang.Long applicationId) Not implemented!");
-	}
-
-	/**
-	 * @see org.openuss.lecture.DepartmentService#findByUserAndUniversity(java.lang.Long, java.lang.Long)
-	 */
-	protected java.util.List handleFindByUserAndUniversity(java.lang.Long userId, java.lang.Long universityId)
-			throws java.lang.Exception {
-		// TODO: Security
-    	
-    	Validate.notNull(userId, "DepartmentService.handleFindByUserAndUniversity - the userId cannot be null");
-    	Validate.notNull(universityId, "DepartmentService.handleFindByUserAndUniversity - the universityId cannot be null");
-    	
-    	User user = this.getUserDao().load(userId);
-    	
-    	List<Department> allDepartments = (List<Department>)this.getDepartmentDao().loadAll();
-    	List<Department> selectedDepartments = new ArrayList<Department>();
-    	Iterator iter = allDepartments.iterator();
-    	while (iter.hasNext()) {
-    		Department department = (Department) iter.next();
-    		if (department.getUniversity().getId() == universityId &&
-    				department.getMembership().getMembers().contains(user)) {
-    			selectedDepartments.add(department);
-    		}
-    	}
-    	
-		return selectedDepartments;
-	}
-
 }
