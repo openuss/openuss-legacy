@@ -16,7 +16,6 @@ import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.LectureBuilder;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
-import org.openuss.security.Membership;
 
 
 /**
