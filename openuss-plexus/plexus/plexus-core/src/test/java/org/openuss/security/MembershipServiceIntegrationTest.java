@@ -35,7 +35,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		logger.info("----> BEGIN access to acceptAspirant test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		// Create a User
 		User user1 = testUtility.createUserInDB();
@@ -75,7 +75,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		logger.info("----> BEGIN access to rejectAspirant test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		// Create a User
 		User user1 = testUtility.createUserInDB();
@@ -115,7 +115,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		logger.info("----> BEGIN access to addMember test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		// Create a User
 		User user1 = testUtility.createUserInDB();
@@ -163,7 +163,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		logger.info("----> BEGIN access to addAspirant test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		// Try to add Member as an Aspirant
 		try {
@@ -208,7 +208,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		logger.info("----> BEGIN access to createGroup test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		//Create a GroupItem
 		GroupItem groupItem = new GroupItem();

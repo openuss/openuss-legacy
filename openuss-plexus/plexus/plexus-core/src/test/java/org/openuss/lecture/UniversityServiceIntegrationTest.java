@@ -54,7 +54,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> BEGIN access to update(University) test");
 
 		//Create a default University
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 		assertNotNull(university.getId());
 		
 		//Create new UniversityInfo object
@@ -99,7 +99,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> BEGIN access to removeUniversity test");
 		
 		//Create a University
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 		assertNotNull(university.getId());
 		
 		//Save UniversityID
@@ -126,7 +126,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> BEGIN access to findUniversity test");
 		
 		//Create a University
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 		assertNotNull(university.getId());
 		
 		//Synchronize with Database

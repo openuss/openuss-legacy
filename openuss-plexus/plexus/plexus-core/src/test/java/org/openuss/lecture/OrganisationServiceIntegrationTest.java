@@ -34,7 +34,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		logger.info("----> BEGIN access to addMember test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		// Get List of Members
 		List members = university.getMembership().getMembers();
@@ -63,7 +63,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		logger.info("----> BEGIN access to addAspirant test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		// Get List of Aspirants
 		List aspirants = university.getMembership().getAspirants();
@@ -92,7 +92,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		logger.info("----> BEGIN access to findAllMembers test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		// Create 3 User
 		List<User> users = new ArrayList<User>();
@@ -133,7 +133,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		logger.info("----> BEGIN access to findAllAspirants test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		// Create 3 User
 		List<User> users = new ArrayList<User>();
@@ -174,7 +174,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		logger.info("----> BEGIN access to acceptAspirants test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		// Create a User
 		User user = testUtility.createUserInDB();
@@ -209,7 +209,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		logger.info("----> BEGIN access to rejectAspirants test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		// Create a User
 		User user = testUtility.createUserInDB();
@@ -244,7 +244,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		logger.info("----> BEGIN access to createGroup test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		// Get List of Groups
 		List groups = university.getMembership().getGroups();
@@ -273,7 +273,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		logger.info("----> BEGIN access to removeGroup test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		// Add a Group
 		Group group = Group.Factory.newInstance();
@@ -306,7 +306,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		logger.info("----> BEGIN access to addUserToGroup test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		// Add a Group
 		Group group = Group.Factory.newInstance();
@@ -342,7 +342,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		logger.info("----> BEGIN access to removeUserFromGroup test");
 
 		// Create University with DefaultUser as Owner
-		University university = testUtility.createDefaultUniversityWithDefaultUser();
+		University university = testUtility.createUniqueUniversityInDB();
 
 		// Add a Group
 		Group group = Group.Factory.newInstance();
