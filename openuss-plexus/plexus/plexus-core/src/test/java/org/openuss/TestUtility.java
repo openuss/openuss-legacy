@@ -6,6 +6,8 @@ import java.util.TimeZone;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
+import org.openuss.lecture.Department;
+import org.openuss.lecture.DepartmentDao;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.University;
@@ -38,6 +40,8 @@ public class TestUtility {
 	private InstituteDao instituteDao;
 	
 	private UniversityDao universityDao;
+	
+	private DepartmentDao departmentDao;
 
 	private User defaultUser;
 
@@ -82,7 +86,7 @@ public class TestUtility {
 		return defaultInstitute;
 	}
 	
-	public University createDefaultUniversityWithDefaultUser() {
+	public User createUniqueUserInDB() {
 		// Create a unique User
 		UserPreferences userPreferences = UserPreferences.Factory.newInstance();
 		userPreferences.setLocale("de");
@@ -112,26 +116,60 @@ public class TestUtility {
 		
 		userDao.create(user);
 		
+		return user;
+	}
+	
+	public Membership createUniqueMembershipInDB() {
+		// Create a unique User
+		User user = this.createUniqueUserInDB();
+		
 		// Create a unique Membership
 		Membership membership = Membership.Factory.newInstance();
 		membership.getMembers().add(user);
-		Group group = Group.Factory.newInstance(unique("Group"), GroupType.ADMINISTRATOR);
+		Group group = Group.Factory.newInstance();
+		group.setName(unique("MEMBERSHIP_TestGroup"));
+		group.setLabel(unique("autogroup_testgroup_label"));
+		group.setGroupType(GroupType.ADMINISTRATOR);
 		group.addMember(user);
 		membership.getGroups().add(group);
 		
 		membershipDao.create(membership);
 		
+		return membership;
+	}
+	
+	public University createUniqueUniversityInDB() {		
 		// Create a unique University
 		University university = University.Factory.newInstance();
 		university.setName(unique("University"));
 		university.setShortcut(unique("Uni"));
 		university.setDescription("A unique University");
-		university.setMembership(membership);
+		university.setMembership(this.createUniqueMembershipInDB());
 		
 		universityDao.create(university);
 		
 		return university;
 	}
+	
+	public Department createUniqueDepartmentInDB() {
+		// Create a unique University
+		University university = this.createUniqueUniversityInDB();
+		
+		// Create a unique Department
+		Department department =  Department.Factory.newInstance();
+		department.setName(unique("Department"));
+		department.setShortcut(unique("Dep"));
+		department.setDescription("A unique Department");
+		department.setMembership(this.createUniqueMembershipInDB());
+		
+		university.getDepartments().add(department);
+		department.setUniversity(university);
+		
+		departmentDao.create(department);
+		
+		return department;		
+	}
+	
 
 	public void removePersistInstituteAndDefaultUser() {
 		instituteDao.remove(defaultInstitute);
@@ -250,6 +288,14 @@ public class TestUtility {
 		this.universityDao = universityDao;
 	}
 
+	public DepartmentDao getDepartmentDao() {
+		return departmentDao;
+	}
+
+	public void setDepartmentDao(DepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
+	}
+	
 	public GroupDao getGroupDao() {
 		return groupDao;
 	}
