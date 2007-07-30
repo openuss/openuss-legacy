@@ -63,6 +63,15 @@
 		<property name="departmentDao">
 			<ref bean="departmentDao" />
 		</property>
+		<property name="courseTypeDao">
+			<ref bean="courseTypeDao" />
+		</property>
+		<property name="courseDao">
+			<ref bean="courseDao" />
+		</property>
+		<property name="periodDao">
+			<ref bean="periodDao" />
+		</property>
 	</bean>
 
 	<bean id="lectureBuilder"

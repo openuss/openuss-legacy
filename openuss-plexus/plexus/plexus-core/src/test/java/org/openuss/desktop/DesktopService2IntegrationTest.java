@@ -6,9 +6,13 @@
 package org.openuss.desktop;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.openuss.lecture.Course;
 import org.openuss.lecture.Department;
+import org.openuss.lecture.LectureService;
+import org.openuss.lecture.Period;
 import org.openuss.lecture.University;
 import org.openuss.security.User;
 
@@ -262,6 +266,38 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		logger.info("----> END access to unlinkCourse test");
 	}
 	
+	@SuppressWarnings( { "unchecked" })
+	public void testFindCoursesOfCurrentPeriodByUser () {
+		logger.info("----> BEGIN access to findCompleteDesktopByUser(userId) test");
+		
+		//Create Desktop
+		Desktop desktop = this.createDesktop();
+		
+		//Create Department
+		Department department = testUtility.createUniqueDepartmentInDB();
+		
+		//Link
+		desktop.getDepartments().add(department);
+		int sizeBefore = desktop.getDepartments().size();
+		
+		//Create Course
+		Course course = testUtility.createUniqueCourseInDB();
+		course.setPeriod(testUtility.createUniquePeriodInDB());
+		
+		//Link
+		desktop.getCourses().add(course);
+		flush();
+		
+		//Test
+		try {
+			List<Course> courses = this.getDesktopService2().findCoursesOfCurrentPeriodByUser(desktop.getUser().getId());
+			assertNotNull(courses);
+			assertEquals(1, courses.size());
+			
+		} catch (DesktopException dexc) {}
+		
+		logger.info("----> END access to findCompleteDesktopByUser(userId) test");
+	}
 	public void testUnlinkAllFromUniversity() throws Exception {
 		logger.info("----> BEGIN access to unlinkAllFromUniversity test");
 

@@ -35,8 +35,8 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		// Create Department
 		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(department);
-		this.getDepartmentDao().create(departmentEntity);
 		departmentEntity.getUniversity().getDepartments().add(departmentEntity);
+		this.getDepartmentDao().create(departmentEntity);
 		
 		Validate.notNull(departmentEntity.getId(), "DepartmentService.handleCreate - Couldn't create Department");
 

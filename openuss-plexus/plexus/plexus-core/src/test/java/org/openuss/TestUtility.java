@@ -6,10 +6,17 @@ import java.util.TimeZone;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
+import org.openuss.lecture.AccessType;
+import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseDao;
+import org.openuss.lecture.CourseType;
+import org.openuss.lecture.CourseTypeDao;
 import org.openuss.lecture.Department;
 import org.openuss.lecture.DepartmentDao;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
+import org.openuss.lecture.Period;
+import org.openuss.lecture.PeriodDao;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
 import org.openuss.security.Group;
@@ -42,6 +49,12 @@ public class TestUtility {
 	private UniversityDao universityDao;
 	
 	private DepartmentDao departmentDao;
+	
+	private CourseTypeDao courseTypeDao;
+	
+	private CourseDao courseDao;
+	
+	private PeriodDao periodDao;
 
 	private User defaultUser;
 
@@ -170,6 +183,58 @@ public class TestUtility {
 		return department;		
 	}
 	
+	public CourseType createUniqueCourseTypeInDB() {
+
+		// Create a unique CourseType
+		CourseType courseType =  CourseType.Factory.newInstance();
+		courseType.setName(unique("CourseType"));
+		courseType.setShortcut(unique("CT"));
+		courseType.setDescription("A unique CourseType");
+		courseType.setInstitute(this.createdDefaultInstituteWithStoredUser());
+		
+		courseTypeDao.create(courseType);
+		
+		return courseType;		
+	}
+	
+	public Course createUniqueCourseInDB() {
+		
+		// Create a unique CourseType
+		Course course =  Course.Factory.newInstance();
+		course.setShortcut(unique("cou"));
+		course.setDescription("A unique Course");
+		course.setInstitute(this.createdDefaultInstituteWithStoredUser());
+		course.setAccessType(AccessType.OPEN);
+		course.setDocuments(false);
+		course.setDiscussion(false);
+		course.setNewsletter(false);
+		course.setChat(false);
+		course.setWiki(false);
+		course.setFreestylelearning(false);
+		course.setBraincontest(false);
+		course.setInstitute(this.createdDefaultInstituteWithStoredUser());
+		course.setCourseType(this.createUniqueCourseTypeInDB());
+		
+		courseDao.create(course);
+		
+		return course;		
+	}
+	
+	public Period createUniquePeriodInDB () {
+		
+		//Create a unique Period
+		Period period = Period.Factory.newInstance();
+		period.setName(unique("Period"));
+		period.setInstitute(this.createdDefaultInstituteWithStoredUser());
+		period.setDescription("A unique Period");
+		period.setCourses(new ArrayList<Course>());
+		period.getInstitute().setActivePeriod(period);
+		
+		periodDao.create(period);
+		
+		return period;
+	}
+
 
 	public void removePersistInstituteAndDefaultUser() {
 		instituteDao.remove(defaultInstitute);
@@ -303,4 +368,30 @@ public class TestUtility {
 	public void setGroupDao(GroupDao groupDao) {
 		this.groupDao = groupDao;
 	}
+
+	public void setCourseTypeDao(CourseTypeDao courseTypeDao) {
+		this.courseTypeDao = courseTypeDao;
+	}
+
+	public void setCourseDao(CourseDao courseDao) {
+		this.courseDao = courseDao;
+	}
+
+	public void setPeriodDao(PeriodDao periodDao) {
+		this.periodDao = periodDao;
+	}
+
+	public CourseTypeDao getCourseTypeDao() {
+		return courseTypeDao;
+	}
+
+	public CourseDao getCourseDao() {
+		return courseDao;
+	}
+
+	public PeriodDao getPeriodDao() {
+		return periodDao;
+	}
+	
+	
 }
