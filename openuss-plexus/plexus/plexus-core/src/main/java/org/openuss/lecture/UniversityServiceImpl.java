@@ -94,6 +94,8 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		
 		Validate.notNull(universityId, "UniversityService.handleRemoveUniversity - the UniversityID cannot be null");
 		
+		//All Bookmarks need to be removed before
+		
 		this.getUniversityDao().remove(universityId);
 
 	}
