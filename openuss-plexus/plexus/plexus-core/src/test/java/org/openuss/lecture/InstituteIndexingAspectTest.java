@@ -4,6 +4,7 @@ import org.openuss.TestUtility;
 import org.openuss.foundation.DomainObject;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
+import org.openuss.security.User;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
 /**
@@ -30,13 +31,18 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 
 	public void testLectureIndex() throws Exception {
 		//FIXME on creation faculties are disabled now, fix indexing according to this. 
-		/*
+		
 		 
 		User user = testUtility.createSecureContext();
 		Institute institute = new LectureBuilder().createInstitute(user).getInstitute();
+		// create institute
 		lectureService.createInstitute(institute);
-		assertEquals(1, indexerMock.create);
+		// activate institute
+		institute.setEnabled(true);
 		lectureService.persist(institute);
+		
+		assertEquals(1, indexerMock.create);
+		/*lectureService.persist(institute);
 		assertEquals(1, indexerMock.update);
 		lectureService.removeInstitute(institute.getId());
 		assertEquals(1, indexerMock.delete);

@@ -13,7 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
- * Cluster Comand Executor
+ * Cluster Command Executor
  * 
  * @author Ingo Dueppe
  */

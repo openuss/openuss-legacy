@@ -69,6 +69,7 @@ public class CourseIndexer extends DomainIndexer {
 	}
 
 	private void setFields(final Course course, Document document) {
+		
 		document.add(new Field(IDENTIFIER, String.valueOf(course.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(DOMAINTYPE, DOMAINTYPE_VALUE, Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(MODIFIED, 
@@ -77,6 +78,18 @@ public class CourseIndexer extends DomainIndexer {
 		document.add(new Field(CONTENT, content(course), Field.Store.YES, Field.Index.TOKENIZED));
 		document.add(new Field(DETAILS, details(course), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(NAME, name(course), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		
+		
+		
+		document.add(new Field(COURSE_TYPE_IDENTIFIER, String.valueOf(course.getCourseType().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(INSTITUTE_IDENTIFIER, String.valueOf(course.getInstitute().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		// TODO to be changed (Primary key vs. Object)
+		document.add(new Field(DEPARTMENT_IDENTIFIER, String.valueOf(course.getInstitute()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(UNIVERSITY_IDENTIFIER, String.valueOf(course.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		// TODO to be changed (Primary key vs. Object)
+		document.add(new Field(PERIOD_IDENTIFIER, String.valueOf(course.getPeriod().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(OFFICIAL_FLAG, String.valueOf(course.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		
 	}
 	
 	private String name(final Course course) {

@@ -68,6 +68,7 @@ public class UniversityIndexer extends DomainIndexer {
 	}
 
 	private void setFields(final University university, Document document) {
+			
 		document.add(new Field(IDENTIFIER, String.valueOf(university.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(DOMAINTYPE, DOMAINTYPE_VALUE, Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(MODIFIED, 
@@ -85,7 +86,7 @@ public class UniversityIndexer extends DomainIndexer {
 	private String details(final University university) {
 		StringBuilder details = new StringBuilder();
 		details.append(StringUtils.trimToEmpty(university.getDescription()));
-	
+		
 		return details.toString();
 	}
 	

@@ -119,7 +119,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 	@Override
 	protected void handlePersist(Institute institute) throws Exception {
 		if (logger.isDebugEnabled())
-			logger.debug("Save institute " + institute.getName());
+			logger.debug("Method handlePersist: Save institute " + institute.getName());
 
 		if (institute.getId() != null) {
 			getInstituteDao().update(institute);

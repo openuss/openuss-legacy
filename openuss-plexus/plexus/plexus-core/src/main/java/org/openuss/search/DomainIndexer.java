@@ -23,6 +23,15 @@ public abstract class DomainIndexer extends LuceneIndexSupport {
 	
 	public static final String CONTENT = "CONTENT";
 	
+	public static final String COURSE_TYPE_IDENTIFIER = "COURSE_TYPE_IDENTIFIER";
+	public static final String INSTITUTE_IDENTIFIER = "INSTITUTE_IDENTIFIER";
+	public static final String DEPARTMENT_IDENTIFIER = "DEPARTMENT_IDENTIFIER";
+	public static final String UNIVERSITY_IDENTIFIER = "UNIVERSITY_IDENTIFIER";
+	public static final String PERIOD_IDENTIFIER = "PERIOD_IDENTIFIER";
+	public static final String OFFICIAL_FLAG = "OFFICIAL_FLAG";
+	
+	
+
 	private DomainObject domainObject;
 	
 	/**
