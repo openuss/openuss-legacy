@@ -7,6 +7,7 @@ package org.openuss.lecture;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -58,8 +59,12 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#create(org.openuss.lecture.PeriodInfo)
 	 */
 	protected java.lang.Long handleCreate(org.openuss.lecture.PeriodInfo period) throws java.lang.Exception {
-		// @todo implement protected java.lang.Long handleCreate(org.openuss.lecture.PeriodInfo period)
-		return null;
+		
+		Validate.notNull(period, "UniversityService.handleCreate - the period cannot be null");
+		Period periodEntity = this.getPeriodDao().create(this.getPeriodDao().periodInfoToEntity(period));
+		periodEntity.getUniversity().getPeriods().add(periodEntity);
+		
+		return periodEntity.getId();
 	}
 
 	/**
@@ -82,9 +87,14 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#update(org.openuss.lecture.PeriodInfo)
 	 */
 	protected void handleUpdate(org.openuss.lecture.PeriodInfo period) throws java.lang.Exception {
-		// @todo implement protected void handleUpdate(org.openuss.lecture.PeriodInfo period)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.lecture.UniversityService.handleUpdate(org.openuss.lecture.PeriodInfo period) Not implemented!");
+		
+		Validate.notNull(period, "UniversityService.handleUpdate - the Period cannot be null");
+		
+		//Transform ValueObject into Entity
+		Period periodEntity = this.getPeriodDao().periodInfoToEntity(period);
+		
+		//Update Entity
+		this.getPeriodDao().update(periodEntity);
 	}
 
 	/**
@@ -104,9 +114,10 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#removePeriod(java.lang.Long)
 	 */
 	protected void handleRemovePeriod(java.lang.Long periodId) throws java.lang.Exception {
-		// @todo implement protected void handleRemovePeriod(java.lang.Long periodId)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.lecture.UniversityService.handleRemovePeriod(java.lang.Long periodId) Not implemented!");
+
+		Validate.notNull(periodId, "UniversityService.handleRemovePeriod - the PeriodID cannot be null");
+		
+		this.getPeriodDao().remove(periodId);
 	}
 
 	/**
@@ -143,8 +154,13 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#findPeriod(java.lang.Long)
 	 */
 	protected org.openuss.lecture.PeriodInfo handleFindPeriod(java.lang.Long periodId) throws java.lang.Exception {
-		// @todo implement protected org.openuss.lecture.PeriodInfo handleFindPeriod(java.lang.Long periodId)
-		return null;
+
+		Validate.notNull(periodId, "UniversityService.handleFindPeriod - the PeriodID cannot be null");
+		
+		Period periodEntity = this.getPeriodDao().load(periodId);
+		Validate.notNull(periodEntity, "UniversityService.handleFindPeriod - no Period found corresponding to the ID "+periodId);
+		
+		return this.getPeriodDao().toPeriodInfo(periodEntity);
 	}
 
 	/**
@@ -152,8 +168,13 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 */
 	@SuppressWarnings( { "unchecked" })
 	protected java.util.List handleFindPeriodsByUniversity(java.lang.Long universityId) throws java.lang.Exception {
-		// @todo implement protected java.util.List handleFindAllPeriods(java.lang.Long universityId)
-		return null;
+
+		Validate.notNull(universityId, "UniversityService.handleFindPeriodsByUniversity - the universityID cannot be null");
+		
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university, "UniversityService.handleFindPeriodsByUniversity - no University found corresponding to the ID "+universityId);
+		
+		return university.getPeriods();
 	}
 
 	/**
@@ -161,7 +182,20 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 */
 	protected org.openuss.lecture.PeriodInfo handleFindActivePeriodByUniversity(java.lang.Long universityId)
 			throws java.lang.Exception {
-		// @todo implement protected org.openuss.lecture.PeriodInfo handleFindActivePeriod(java.lang.Long universityId)
+		
+		Validate.notNull(universityId, "UniversityService.handleFindActivePeriodByUniversity - the universityID cannot be null");
+		
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university, "UniversityService.handleFindActivePeriodsByUniversity - no University found corresponding to the ID "+universityId);
+		
+		List<Period> allPeriods = university.getPeriods();
+		Iterator<Period> iter = allPeriods.iterator();
+		while (iter.hasNext()) {
+			Period period = iter.next();
+			if (period.isActive()) {
+				return this.getPeriodDao().toPeriodInfo(period);
+			}
+		}
 		return null;
 	}
 }
