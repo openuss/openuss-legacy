@@ -106,6 +106,8 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 	@Override
 	protected Institute handleAdd(Long instituteId, Period period) throws Exception {
+		throw new UnsupportedOperationException("Adding periods to institutes is no longer valid.");
+		/*
 		Institute institute = getInstitute(instituteId);
 		institute.add(period);
 		period.setInstitute(institute);
@@ -114,6 +116,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		}
 		persist(institute);
 		return institute;
+		*/
 	}
 
 	@Override
@@ -269,6 +272,8 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 	@Override
 	protected void handleRemovePeriod(Long periodId) throws Exception {
+		throw new UnsupportedOperationException("Removing periods in institutes is no longer valid. Use UniversityService.handleRemove().");
+		/*
 		if (logger.isDebugEnabled())
 			logger.debug("Remove period " + periodId);
 		Period period = getPeriod(periodId);
@@ -296,6 +301,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 		// delete period
 		getPeriodDao().remove(period);
+		*/
 	}
 
 	@Override
@@ -326,8 +332,11 @@ public class LectureServiceImpl extends LectureServiceBase{
 		CourseType courseType = getCourseType(courseTypeId);
 		Period period = getPeriod(periodId);
 
+		//TODO: Change this functionality
+		/*
 		if (!ObjectUtils.equals(courseType.getInstitute(), period.getInstitute()))
 			throw new LectureServiceException("CourseType and period must be associated to the same institute!");
+		*/
 
 		Institute institute = courseType.getInstitute();
 
@@ -355,10 +364,13 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 	@Override
 	protected void handleSetActivePeriod(Long instituteId, Period period) throws Exception {
+		throw new UnsupportedOperationException("Setting active periods in LectureService is no longer valid. Periods are automatically active or not due to their date.");
+		/*
 		// refresh instances
 		Institute institute = getInstitute(instituteId);
 		institute.setActivePeriod(period);
 		persist(institute);
+		*/
 	}
 
 	@Override
