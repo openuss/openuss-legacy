@@ -1,6 +1,9 @@
 package org.openuss;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 import org.acegisecurity.context.SecurityContextHolder;
@@ -222,13 +225,26 @@ public class TestUtility {
 	
 	public Period createUniquePeriodInDB () {
 		
+		//Create Startdate
+		Calendar cal = new GregorianCalendar();
+		cal.set(2007, 3, 1);
+		Date startdate = new Date(cal.getTimeInMillis());
+		
+		//Create Enddate
+		cal = new GregorianCalendar();
+		cal.set(2008, 8, 31);
+		Date enddate = new Date(cal.getTimeInMillis());
+		
 		//Create a unique Period
 		Period period = Period.Factory.newInstance();
 		period.setName(unique("Period"));
-		period.setInstitute(this.createdDefaultInstituteWithStoredUser());
+		period.setUniversity(this.createUniqueUniversityInDB());
 		period.setDescription("A unique Period");
 		period.setCourses(new ArrayList<Course>());
-		period.getInstitute().setActivePeriod(period);
+		period.setStartdate(startdate);
+		period.setEnddate(enddate);
+		
+		period.getUniversity().getPeriods().add(period);
 		
 		periodDao.create(period);
 		
