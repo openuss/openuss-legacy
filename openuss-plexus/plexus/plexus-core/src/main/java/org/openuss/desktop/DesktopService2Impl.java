@@ -367,5 +367,51 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		
 		return currentCourses;
 	}
+	
+	/**
+	 * @see org.openuss.desktop.DesktopService2#handleFindCoursesOfPastPeriodsByUser(java.lang.Long)
+	 */
+	@SuppressWarnings( { "unchecked" })
+	protected List handleFindCoursesOfPastPeriodsByUser(java.lang.Long userId) throws java.lang.Exception {
+		
+		Validate.notNull(userId, "DesktopService2.handleFindCoursesOfCurrentPeriodByUser - userId cannot be null!");
+		
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user, "DesktopService2.handleFindCoursesOfCurrentPeriodByUser - No user found corresponding to the userId");
+		
+		List<Course> pastCourses = new ArrayList<Course>();
+		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
+		Iterator iter = desktopInfo.getCourseIds().iterator();
+		while (iter.hasNext()) {
+			Long courseId = (Long) iter.next();
+			Course course = (Course) this.getCourseDao().load(courseId);
+			if (!course.getPeriod().isActive()) {
+				pastCourses.add(this.getCourseDao().load(courseId));
+			}
+		}
+		
+		return pastCourses;
+	}
 
+	/**
+	 * @see org.openuss.desktop.DesktopService2#handleFindInstitutesOfCurrentCoursesByUser(java.lang.Long)
+	 */
+	@SuppressWarnings( { "unchecked" })
+	protected List handleFindInstitutesOfCurrentCoursesByUser(java.lang.Long userId) throws java.lang.Exception {
+		
+		Validate.notNull(userId, "DesktopService2.handleFindCoursesOfCurrentPeriodByUser - userId cannot be null!");
+		
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user, "DesktopService2.handleFindInstitutesOfCurrentCoursesByUser - No user found corresponding to the userId");
+		
+		List<Institute> institutes = new ArrayList<Institute>();
+		List<Course> courses = this.findCoursesOfCurrentPeriodByUser(userId);
+		Iterator iter = courses.iterator();
+		while (iter.hasNext()) {
+			Course course = (Course) iter.next();
+			institutes.add(course.getInstitute());
+		}
+		
+		return institutes;
+	}
 }
