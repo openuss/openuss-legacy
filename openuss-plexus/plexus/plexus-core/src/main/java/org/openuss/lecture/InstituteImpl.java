@@ -5,7 +5,6 @@
 //
 package org.openuss.lecture;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -45,7 +44,8 @@ public class InstituteImpl extends org.openuss.lecture.InstituteBase implements 
 
 	@Override
 	public void add(Period period) {
-		getPeriods().add(period);
+		throw new UnsupportedOperationException("Adding periods in Institut is no longer valid. Use University.");
+		//getPeriods().add(period);
 	}
 
 	@Override
@@ -60,16 +60,20 @@ public class InstituteImpl extends org.openuss.lecture.InstituteBase implements 
 
 	@Override
 	public void remove(Period period) {
-		getPeriods().remove(period);
+		throw new UnsupportedOperationException("Remove period in institute is no longer valid.");
+		//getPeriods().remove(period);
 	}
 
 	@Override
 	public List getActiveCourses() {
+		throw new UnsupportedOperationException("GetActiveCourses in Institute is no longer valid. Use UniversityService.findActiveCoursesByUniversity.");
+		/*
 		if (getActivePeriod() == null) {
 			return new ArrayList();
 		} else {
 			return getActivePeriod().getCourses();
 		}
+		*/
 	}
 
 }
