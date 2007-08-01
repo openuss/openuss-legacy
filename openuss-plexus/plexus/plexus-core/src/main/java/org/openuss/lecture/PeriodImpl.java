@@ -5,6 +5,8 @@
 //
 package org.openuss.lecture;
 
+import java.util.Date;
+
 /**
  * @see org.openuss.lecture.Period
  */
@@ -26,7 +28,17 @@ public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.op
 
 	@Override
 	public boolean isActive() {
-		return getInstitute() != null && equals(getInstitute().getActivePeriod());
+		Date now = new Date();
+		if (this.getStartdate().before((now)) &&
+				this.getEnddate().after(now))
+			return true;
+		else return false;
 	}
 
+	@Override
+	public boolean isRemovable() {
+		if (this.getCourses().size() <= 1)
+			return true;
+		else return false;
+	}
 }
