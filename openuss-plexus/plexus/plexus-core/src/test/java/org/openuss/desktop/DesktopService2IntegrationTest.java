@@ -295,7 +295,7 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		Course course1 = testUtility.createUniqueCourseInDB();
 		Period period1 = testUtility.createUniquePeriodInDB();
 		course1.setPeriod(period1);
-		course1.getPeriod().getInstitute().setActivePeriod(period1);
+		//course1.getPeriod().getInstitute().setActivePeriod(period1);
 		
 		Course course2 = testUtility.createUniqueCourseInDB();
 		Period period2 = testUtility.createUniquePeriodInDB();
@@ -344,7 +344,7 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		//Create Courses
 		Course course1 = testUtility.createUniqueCourseInDB();
 		course1.setPeriod(period1);
-		course1.getInstitute().setActivePeriod(period1);
+		//course1.getInstitute().setActivePeriod(period1);
 		
 		Course course2 = testUtility.createUniqueCourseInDB();
 		course2.setPeriod(period2);
@@ -385,15 +385,15 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		//Create Courses
 		Course course1 = testUtility.createUniqueCourseInDB();
 		course1.setPeriod(period);
-		course1.getInstitute().setActivePeriod(period);
+		//course1.getInstitute().setActivePeriod(period);
 
 		Course course2 = testUtility.createUniqueCourseInDB();
 		course2.setPeriod(period);
-		course2.getInstitute().setActivePeriod(period);
+		//course2.getInstitute().setActivePeriod(period);
 		
 		Course course3 = testUtility.createUniqueCourseInDB();
 		course3.setPeriod(period);
-		course3.getInstitute().setActivePeriod(period);
+		//course3.getInstitute().setActivePeriod(period);
 		
 		//Link
 		desktop.getCourses().add(course1);

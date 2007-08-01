@@ -1,5 +1,6 @@
 package org.openuss.lecture;
 
+import org.openuss.TestUtility;
 import org.openuss.security.User;
 
 /**
@@ -11,11 +12,31 @@ public class LectureBuilder {
 	
 	private User owner;
 	
+	private TestUtility testUtility;
+	
+	private University university;
+	
+	private UniversityDao universityDao;
+	
+	private Department department;
+	
+	private DepartmentDao departmentDao;
+	
 	private Institute institute;
 	
 	private InstituteDao instituteDao;
 	
 	private static int code = 0;
+	
+	public LectureBuilder createUniversity() {
+		university = testUtility.createUniqueUniversityInDB();
+		return this;
+	}
+	
+	public LectureBuilder createDepartment() {
+		department = testUtility.createUniqueDepartmentInDB();
+		return this;
+	}
 	
 	public LectureBuilder createInstitute(User owner) {
 		institute = Institute.Factory.newInstance();
@@ -46,8 +67,8 @@ public class LectureBuilder {
 		Period period = Period.Factory.newInstance();
 		period.setName("test-period");
 		period.setDescription("description");
-		institute.add(period);
-		period.setInstitute(institute);
+		university.getPeriods().add(period);
+		period.setUniversity(university);
 		return this;
 	}
 	
@@ -57,7 +78,7 @@ public class LectureBuilder {
 	
 	public LectureBuilder addCourse(int indexCourseType, int indexPeriod ) {
 		CourseType courseType = institute.getCourseTypes().get(indexCourseType);
-		Period period = institute.getPeriods().get(indexPeriod);
+		Period period = university.getPeriods().get(indexPeriod);
 		addCourse(institute, courseType, period);
 		return this;
 	}
@@ -96,10 +117,10 @@ public class LectureBuilder {
 		return courseType;
 	}
 	
-	public Period addPeriod(Institute institute) {
+	public Period addPeriod(University university) {
 		Period period = LectureFactory.createPeriod();
-		period.setInstitute(institute);
-		institute.add(period);
+		period.setUniversity(university);
+		university.getPeriods().add(period);
 		return period;
 	}
 	
@@ -137,5 +158,45 @@ public class LectureBuilder {
 
 	public void setInstituteDao(InstituteDao instituteDao) {
 		this.instituteDao = instituteDao;
+	}
+
+	public University getUniversity() {
+		return university;
+	}
+
+	public void setUniversity(University university) {
+		this.university = university;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public UniversityDao getUniversityDao() {
+		return universityDao;
+	}
+
+	public void setUniversityDao(UniversityDao universityDao) {
+		this.universityDao = universityDao;
+	}
+
+	public DepartmentDao getDepartmentDao() {
+		return departmentDao;
+	}
+
+	public void setDepartmentDao(DepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
+	}
+
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
 	}
 }
