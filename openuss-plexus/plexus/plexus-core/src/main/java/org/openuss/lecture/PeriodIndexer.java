@@ -90,10 +90,13 @@ public class PeriodIndexer extends DomainIndexer {
 	}
 	
 	private String content(final Period period) {
+		//TODO: Implement me correctly!
+		
 		StringBuilder content = new StringBuilder();
 		content.append(period.getId()+SPACE);
 		content.append(StringUtils.trimToEmpty(period.getName())+SPACE);
 		content.append(StringUtils.trimToEmpty(period.getDescription())+SPACE);
+		/*
 		content.append(StringUtils.trimToEmpty(period.getInstitute().getAddress())+SPACE);
 		content.append(StringUtils.trimToEmpty(period.getInstitute().getCity())+SPACE);
 		content.append(StringUtils.trimToEmpty(period.getInstitute().getDescription())+SPACE);
@@ -107,7 +110,7 @@ public class PeriodIndexer extends DomainIndexer {
 		content.append(StringUtils.trimToEmpty(period.getInstitute().getTelephone())+SPACE);
 		content.append(StringUtils.trimToEmpty(period.getInstitute().getTheme())+SPACE);
 		content.append(StringUtils.trimToEmpty(period.getInstitute().getWebsite())+SPACE);
-		
+		*/
 		return content.toString();
 	}
 

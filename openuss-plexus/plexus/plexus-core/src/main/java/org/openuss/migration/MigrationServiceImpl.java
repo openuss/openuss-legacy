@@ -426,6 +426,8 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 	 * @param courseTypes
 	 */
 	private void transformInstituteSemesters(Faculty2 faculty2, Institute institute, Map<String, CourseType> subjects) {
+		//TODO: Implement me correctly!
+		/*
 		// migrating semesters
 		Collection<Semester2> semesters2 = faculty2.getSemesters();
 		for (Semester2 semester2 : semesters2) {
@@ -437,6 +439,7 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 				course.setInstitute(institute);
 			}
 		}
+		*/
 	}
 	
 	
