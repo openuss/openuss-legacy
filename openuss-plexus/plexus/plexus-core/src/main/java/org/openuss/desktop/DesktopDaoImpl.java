@@ -11,8 +11,10 @@ import java.util.Iterator;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Department;
+import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.University;
+import org.openuss.lecture.UniversityInfo;
 
 /**
  * @see org.openuss.desktop.Desktop
@@ -77,39 +79,38 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 	public void toDesktopInfo(org.openuss.desktop.Desktop sourceEntity, org.openuss.desktop.DesktopInfo targetVO) {
 		super.toDesktopInfo(sourceEntity, targetVO);
 
-		// UserID
+		// User
 		if (sourceEntity.getUser() != null) {
-			targetVO.setUserId(sourceEntity.getUser().getId());
+			targetVO.setUserInfo(this.getUserDao().toUserInfo(sourceEntity.getUser()));
 		}
 
-		// UniversityIDs
-		targetVO.setUniversityIds(new ArrayList(sourceEntity.getUniversities().size()));
+		// Universities
+		targetVO.setUniversityInfos(new ArrayList(sourceEntity.getUniversities().size()));
 		for (University university : sourceEntity.getUniversities()) {
-			targetVO.getUniversityIds().add(university.getId());
+			targetVO.getUniversityInfos().add(this.getUniversityDao().toUniversityInfo(university));
 		}
 
-		// DepartmentIDs
-		targetVO.setDepartmentIds(new ArrayList(sourceEntity.getDepartments().size()));
+		// Departments
+		targetVO.setDepartmentInfos(new ArrayList(sourceEntity.getDepartments().size()));
 		for (Department department : sourceEntity.getDepartments()) {
-			targetVO.getDepartmentIds().add(department.getId());
+			targetVO.getDepartmentInfos().add(this.getDepartmentDao().toDepartmentInfo(department));
 		}
 		
-		// InstituteIDs
-		targetVO.setInstituteIds(new ArrayList(sourceEntity.getInstitutes().size()));
+		// Institutes
+		targetVO.setInstituteDetails(new ArrayList(sourceEntity.getInstitutes().size()));
 		for (Institute institute : sourceEntity.getInstitutes()) {
-			targetVO.getInstituteIds().add(institute.getId());
+			targetVO.getInstituteDetails().add(this.getInstituteDao().toInstituteDetails(institute));
+			//TODO Rename InstitueDetails in InstitueInfo
 		}
 
-		// CourseTypeIDs
-		targetVO.setCourseTypeIds(new ArrayList(sourceEntity.getCourseTypes().size()));
-		for (CourseType courseType : sourceEntity.getCourseTypes()) {
-			targetVO.getCourseTypeIds().add(courseType.getId());
-		}
+		// CourseTypes
+		targetVO.setCourseTypeInfos(new ArrayList(sourceEntity.getCourseTypes().size()));
+		//TODO Implement me!
 
-		// CourseIDs
-		targetVO.setCourseIds(new ArrayList(sourceEntity.getCourses().size()));
+		// Courses
+		targetVO.setCourseInfos(new ArrayList(sourceEntity.getCourses().size()));
 		for (Course course : sourceEntity.getCourses()) {
-			targetVO.getCourseIds().add(course.getId());
+			targetVO.getCourseInfos().add(this.getCourseDao().toCourseInfo(course));
 		}
 
 	}
@@ -153,23 +154,23 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 		super.desktopInfoToEntity(sourceVO, targetEntity, copyIfNull);
 
 		// User
-		if (copyIfNull && (sourceVO.getUserId() != null)) {
-			targetEntity.setUser(this.getUserDao().load(sourceVO.getUserId()));
+		if (copyIfNull && (sourceVO.getUserInfo() != null)) {
+			targetEntity.setUser(this.getUserDao().load(sourceVO.getUserInfo().getId()));
 		}
 
 		// Universities
-		if (copyIfNull && (sourceVO.getUniversityIds() != null)) {
-			Iterator iter1 = sourceVO.getUniversityIds().iterator();
+		if (copyIfNull && (sourceVO.getUniversityInfos() != null)) {
+			Iterator iter1 = sourceVO.getUniversityInfos().iterator();
 			while (iter1.hasNext()) {
-				targetEntity.getUniversities().add(this.getUniversityDao().load((Long) iter1.next()));
+				targetEntity.getUniversities().add(this.getUniversityDao().load(((UniversityInfo) iter1.next()).getId()));
 			}
 		}
 
 		// Departments
-		if (copyIfNull && (sourceVO.getDepartmentIds() != null)) {
-			Iterator iter2 = sourceVO.getDepartmentIds().iterator();
+		if (copyIfNull && (sourceVO.getDepartmentInfos() != null)) {
+			Iterator iter2 = sourceVO.getDepartmentInfos().iterator();
 			while (iter2.hasNext()) {
-				targetEntity.getDepartments().add(this.getDepartmentDao().load((Long) iter2.next()));
+				targetEntity.getDepartments().add(this.getDepartmentDao().load(((DepartmentInfo) iter2.next()).getId()));
 			}
 		}
 		

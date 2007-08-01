@@ -13,6 +13,7 @@ import java.util.List;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Department;
 import org.openuss.lecture.Institute;
@@ -354,14 +355,14 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		User user = this.getUserDao().load(userId);
 		Validate.notNull(user, "DesktopService2.handleFindCoursesOfCurrentPeriodByUser - No user found corresponding to the userId");
 		
-		List<Course> currentCourses = new ArrayList<Course>();
 		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
-		Iterator iter = desktopInfo.getCourseIds().iterator();
+		List<CourseInfo> currentCourses = desktopInfo.getCourseInfos();		
+		Iterator iter = currentCourses.iterator();
 		while (iter.hasNext()) {
-			Long courseId = (Long) iter.next();
-			Course course = (Course) this.getCourseDao().load(courseId);
-			if (course.getPeriod().isActive()) {
-				currentCourses.add(this.getCourseDao().load(courseId));
+			CourseInfo courseInfo = (CourseInfo) iter.next();
+			Course course = (Course) this.getCourseDao().load(courseInfo.getId());
+			if (!course.getPeriod().isActive()) {
+				currentCourses.remove(courseInfo);
 			}
 		}
 		
@@ -379,14 +380,14 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		User user = this.getUserDao().load(userId);
 		Validate.notNull(user, "DesktopService2.handleFindCoursesOfCurrentPeriodByUser - No user found corresponding to the userId");
 		
-		List<Course> pastCourses = new ArrayList<Course>();
 		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
-		Iterator iter = desktopInfo.getCourseIds().iterator();
+		List<CourseInfo> pastCourses = desktopInfo.getCourseInfos();
+		Iterator iter = pastCourses.iterator();
 		while (iter.hasNext()) {
-			Long courseId = (Long) iter.next();
-			Course course = (Course) this.getCourseDao().load(courseId);
-			if (!course.getPeriod().isActive()) {
-				pastCourses.add(this.getCourseDao().load(courseId));
+			CourseInfo courseInfo = (CourseInfo) iter.next();
+			Course course = (Course) this.getCourseDao().load(courseInfo.getId());
+			if (course.getPeriod().isActive()) {
+				pastCourses.remove(courseInfo);
 			}
 		}
 		

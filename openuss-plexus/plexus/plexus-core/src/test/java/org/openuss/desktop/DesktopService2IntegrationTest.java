@@ -14,6 +14,7 @@ import org.openuss.lecture.Department;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.Period;
 import org.openuss.lecture.University;
+import org.openuss.lecture.UniversityDao;
 import org.openuss.security.User;
 
 /**
@@ -30,7 +31,17 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 	private static final Logger logger = Logger.getLogger(DesktopService2IntegrationTest.class);
 
 	private DesktopDao desktopDao;
+	
+	private UniversityDao universityDao;
 
+	public UniversityDao getUniversityDao() {
+		return universityDao;
+	}
+
+	public void setUniversityDao(UniversityDao universityDao) {
+		this.universityDao = universityDao;
+	}
+	
 	public DesktopDao getDesktopDao() {
 		return desktopDao;
 	}
@@ -105,8 +116,8 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		// Create DesktopInfo
 		DesktopInfo desktopInfo = this.getDesktopDao().toDesktopInfo(desktop);
 		University university = testUtility.createUniqueUniversityInDB();
-		desktopInfo.setUniversityIds(new ArrayList());
-		desktopInfo.getUniversityIds().add(university.getId());
+		desktopInfo.setUniversityInfos(new ArrayList());
+		desktopInfo.getUniversityInfos().add(this.getUniversityDao().toUniversityInfo(university));
 
 		// Update Desktop
 		this.getDesktopService2().updateDesktop(desktopInfo);
@@ -492,4 +503,5 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 
 		logger.info("----> END access to unlinkAllFromCourse test");
 	}
+
 }

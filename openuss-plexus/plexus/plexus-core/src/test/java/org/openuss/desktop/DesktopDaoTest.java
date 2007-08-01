@@ -12,10 +12,14 @@ import java.util.List;
 import org.openuss.TestUtility;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.Department;
+import org.openuss.lecture.DepartmentDao;
+import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.LectureBuilder;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
+import org.openuss.lecture.UniversityInfo;
+import org.openuss.security.UserDao;
 
 
 /**
@@ -29,7 +33,11 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 	
 	private InstituteDao instituteDao;
 	
+	private UserDao userDao;
+	
 	private UniversityDao universityDao;
+	
+	private DepartmentDao departmentDao;
 	
 	private LectureBuilder lectureBuilder;
 
@@ -172,11 +180,12 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		DesktopInfo desktopInfo = desktopDao.toDesktopInfo(desktop);
 		
 		assertEquals(desktop.getId(), desktopInfo.getId());
-		assertEquals(desktop.getUser().getId(), desktopInfo.getUserId());
-		assertEquals(desktop.getUniversities().get(0).getId(), (Long) desktopInfo.getUniversityIds().get(0));
-		assertEquals(desktop.getUniversities().get(1).getId(), (Long) desktopInfo.getUniversityIds().get(1));
-		assertEquals(desktop.getDepartments().get(0).getId(), (Long) desktopInfo.getDepartmentIds().get(0));
-		assertEquals(desktop.getDepartments().get(1).getId(), (Long) desktopInfo.getDepartmentIds().get(1));
+		assertEquals(desktop.getUser().getId(), desktopInfo.getUserInfo().getId());
+		assertEquals(desktop.getUniversities().get(0).getId(), ((UniversityInfo) desktopInfo.getUniversityInfos().get(0)).getId());
+		assertEquals(desktop.getUniversities().get(1).getId(), ((UniversityInfo) desktopInfo.getUniversityInfos().get(1)).getId());
+		assertEquals(desktop.getDepartments().get(0).getId(), ((DepartmentInfo) desktopInfo.getDepartmentInfos().get(0)).getId());
+		assertEquals(desktop.getDepartments().get(1).getId(), ((DepartmentInfo) desktopInfo.getDepartmentInfos().get(1)).getId());
+		//TODO Test also Institutes, CourseTypes and Courses
 	}
 	
 	@SuppressWarnings( { "unchecked" })
@@ -215,24 +224,24 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		
 		// Create a new ValueObject
 		DesktopInfo desktopInfo2 = new DesktopInfo();
-		desktopInfo2.setUserId(testUtility.createUniqueUserInDB().getId());
-		List universityIds = new ArrayList();
-		universityIds.add(department.getUniversity().getId());
-		universityIds.add(department2.getUniversity().getId());
-		desktopInfo2.setUniversityIds(universityIds);
-		List departmentIds = new ArrayList();
-		departmentIds.add(department.getId());
-		departmentIds.add(department2.getId());
-		desktopInfo2.setDepartmentIds(departmentIds);
+		desktopInfo2.setUserInfo(this.getUserDao().toUserInfo(testUtility.createUniqueUserInDB()));
+		List universities = new ArrayList();
+		universities.add(this.getUniversityDao().toUniversityInfo(department.getUniversity()));
+		universities.add(this.getUniversityDao().toUniversityInfo(department2.getUniversity()));
+		desktopInfo2.setUniversityInfos(universities);
+		List departments = new ArrayList();
+		departments.add(this.getDepartmentDao().toDepartmentInfo(department));
+		departments.add(this.getDepartmentDao().toDepartmentInfo(department2));
+		desktopInfo2.setDepartmentInfos(departments);
 		
 		// Test toEntity
 		Desktop desktop3 = desktopDao.desktopInfoToEntity(desktopInfo2);
 
-		assertEquals(desktopInfo2.getUserId(), desktop3.getUser().getId());
-		assertEquals(desktopInfo2.getUniversityIds().get(0), desktop3.getUniversities().get(0).getId());
-		assertEquals(desktopInfo2.getUniversityIds().get(1), desktop3.getUniversities().get(1).getId());
-		assertEquals(desktopInfo2.getDepartmentIds().get(0), desktop3.getDepartments().get(0).getId());
-		assertEquals(desktopInfo2.getDepartmentIds().get(1), desktop3.getDepartments().get(1).getId());
+		assertEquals(desktopInfo2.getUserInfo().getId(), desktop3.getUser().getId());
+		assertEquals(((UniversityInfo) desktopInfo2.getUniversityInfos().get(0)).getId(), desktop3.getUniversities().get(0).getId());
+		assertEquals(((UniversityInfo) desktopInfo2.getUniversityInfos().get(1)).getId(), desktop3.getUniversities().get(1).getId());
+		assertEquals(((DepartmentInfo) desktopInfo2.getDepartmentInfos().get(0)).getId(), desktop3.getDepartments().get(0).getId());
+		assertEquals(((DepartmentInfo) desktopInfo2.getDepartmentInfos().get(1)).getId(), desktop3.getDepartments().get(1).getId());
 		
 	}
 	
@@ -268,12 +277,28 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		this.instituteDao = instituteDao;
 	}
 	
+	public UserDao getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+
 	public UniversityDao getUniversityDao() {
 		return universityDao;
 	}
 
 	public void setUniversityDao(UniversityDao universityDao) {
 		this.universityDao = universityDao;
+	}
+	
+	public DepartmentDao getDepartmentDao() {
+		return departmentDao;
+	}
+
+	public void setDepartmentDao(DepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
 	}
 
 	public LectureBuilder getLectureBuilder() {
