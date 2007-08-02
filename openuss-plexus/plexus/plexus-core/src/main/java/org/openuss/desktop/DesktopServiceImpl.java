@@ -100,9 +100,10 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 	protected void handleUnlinkInstitute(Desktop desktop, Institute institute) throws Exception {
 		desktop = getDesktop(desktop);
 		institute = getInstituteDao().load(institute.getId());
+		/*
 		if (desktop.getUser().equals(institute.getOwner())) {
 			throw new DesktopException("error_must_not_remove_owned_institute");
-		}
+		}*/
 		desktop.unlinkInstitute(institute);
 		saveDesktop(desktop);
 	}

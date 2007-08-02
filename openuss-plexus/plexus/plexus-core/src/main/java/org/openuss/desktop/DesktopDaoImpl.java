@@ -97,9 +97,9 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 		}
 		
 		// Institutes
-		targetVO.setInstituteDetails(new ArrayList(sourceEntity.getInstitutes().size()));
+		targetVO.setInstituteInfos(new ArrayList(sourceEntity.getInstitutes().size()));
 		for (Institute institute : sourceEntity.getInstitutes()) {
-			targetVO.getInstituteDetails().add(this.getInstituteDao().toInstituteDetails(institute));
+			targetVO.getInstituteInfos().add(this.getInstituteDao().toInstituteInfo(institute));
 			//TODO Rename InstitueDetails in InstitueInfo
 		}
 

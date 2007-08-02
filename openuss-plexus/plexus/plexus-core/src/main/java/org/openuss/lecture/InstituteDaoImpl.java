@@ -20,12 +20,12 @@ import org.openuss.security.User;
  */
 public class InstituteDaoImpl extends org.openuss.lecture.InstituteDaoBase {
 
-	public Institute instituteDetailsToEntity(InstituteDetails instituteDetails) {
-		Institute institute = load(instituteDetails.getId());
+	public Institute instituteInfoToEntity(InstituteInfo instituteInfo) {
+		Institute institute = load(instituteInfo.getId());
 		if (institute == null) {
 			institute = Institute.Factory.newInstance();
 		}
-		instituteDetailsToEntity(instituteDetails, institute, false);
+		instituteInfoToEntity(instituteInfo, institute, false);
 		return institute;
 	}
 
@@ -48,7 +48,7 @@ public class InstituteDaoImpl extends org.openuss.lecture.InstituteDaoBase {
 	}
 
 	private void traverseAdditionalMembers(Institute institute, Map<Long, InstituteMember> members) {
-		for (Authority authority: institute.getMembers()) {
+		for (Authority authority: institute.getMembership().getMembers()) {
 			if (authority instanceof User && !members.containsKey(authority.getId())) {
 				InstituteMember member = new InstituteMember();
 				member.setGroups(new ArrayList<InstituteGroup>());
@@ -59,7 +59,7 @@ public class InstituteDaoImpl extends org.openuss.lecture.InstituteDaoBase {
 	}
 
 	private void traverseGroups(Institute institute, Map<Long, InstituteMember> members, Collection groups) {
-		for (Group group : institute.getGroups()) {
+		for (Group group : institute.getMembership().getGroups()) {
 			InstituteGroup instituteGroup = groupToInstituteGroup(group);
 			groups.add(instituteGroup);
 			
@@ -101,9 +101,6 @@ public class InstituteDaoImpl extends org.openuss.lecture.InstituteDaoBase {
 		member.setUsername(user.getUsername());
 		member.setFirstName(user.getFirstName());
 		member.setLastName(user.getLastName());
-		if (institute != null) {
-			member.setOwner((institute.getOwner().equals(user)));
-		}
 	}
 
 }

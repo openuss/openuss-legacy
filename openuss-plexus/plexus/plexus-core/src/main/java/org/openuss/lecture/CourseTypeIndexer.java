@@ -99,9 +99,9 @@ public class CourseTypeIndexer extends DomainIndexer {
 		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getCity())+SPACE);
 		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getDescription())+SPACE);
 		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getLocale())+SPACE);
-		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getLand())+SPACE);
+		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getCountry())+SPACE);
 		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getName())+SPACE);
-		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getOwnername())+SPACE);
+		//content.append(StringUtils.trimToEmpty(courseType.getInstitute().getOwnername())+SPACE);
 		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getPostcode())+SPACE);
 		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getShortcut())+SPACE);
 		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getTelefax())+SPACE);

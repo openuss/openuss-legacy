@@ -410,7 +410,7 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		Iterator iter = courses.iterator();
 		while (iter.hasNext()) {
 			Course course = (Course) iter.next();
-			institutes.add(course.getInstitute());
+			institutes.add(course.getCourseType().getInstitute());
 		}
 		
 		return institutes;

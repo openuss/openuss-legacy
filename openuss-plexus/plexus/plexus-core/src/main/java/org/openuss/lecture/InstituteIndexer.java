@@ -84,7 +84,7 @@ public class InstituteIndexer extends DomainIndexer {
 	
 	private String details(final Institute institute) {
 		StringBuilder details = new StringBuilder();
-		details.append(StringUtils.trimToEmpty(institute.getOwnername()));
+		//details.append(StringUtils.trimToEmpty(institute.getOwnername()));
 		details.append(StringUtils.trimToEmpty(institute.getAddress()));
 		return details.toString();
 	}
@@ -99,8 +99,8 @@ public class InstituteIndexer extends DomainIndexer {
 		content.append(" ");
 		content.append(institute.getDescription());
 		content.append(" ");
-		content.append(institute.getOwnername());
-		content.append(" ");
+		//content.append(institute.getOwnername());
+		//content.append(" ");
 		content.append(institute.getAddress());
 		content.append(" ");
 		content.append(institute.getEmail());

@@ -23,7 +23,7 @@ public class InstituteIndexingAspect {
 	public void createInstituteIndex(Institute institute) {
 		logger.debug("Starting method createInstituteIndex");
 		try {
-			if (institute.isEnabled()) {
+			if (institute.getEnabled()) {
 				logger.debug("method createInstituteIndex: createIndex");
 				indexerService.createIndex(institute);
 			};
@@ -39,21 +39,21 @@ public class InstituteIndexingAspect {
 	public void updateInstituteIndex(Institute institute) {
 		logger.debug("Starting method updateInstituteIndex");
 		try {
-			if (institute.isEnabled()) {
+			if (institute.getEnabled()) {
 				logger.debug("method updateInstituteIndex: updateIndex");
 				indexerService.updateIndex(institute);
-				for(Course course:institute.getCourses()) {
+				/*for(Course course:institute.getCourses()) {
 					if (course.getAccessType() != AccessType.CLOSED) {
 						indexerService.updateIndex(course);
 					}
 					
-				}
+				}*/
 			} else {
 				logger.debug("method updateInstituteIndex: deleteIndex");
 				indexerService.deleteIndex(institute);
-				for (Course course:institute.getCourses()) {
+				/*for (Course course:institute.getCourses()) {
 					indexerService.deleteIndex(course);
-				}
+				}*/
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);

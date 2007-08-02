@@ -87,7 +87,7 @@ public class DesktopLectureAdapter implements LectureListener{
 
 	public void createdInstitute(Institute institute) throws LectureException {
 		try {
-			User user = institute.getOwner();
+			User user = (User) institute.getMembership().getMembers().get(0);
 			Desktop desktop = desktopService.getDesktopByUser(user);
 			desktopService.linkInstitute(desktop, institute);
 		} catch (DesktopException e) {

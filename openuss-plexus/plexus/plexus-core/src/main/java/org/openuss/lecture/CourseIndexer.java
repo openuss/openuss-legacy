@@ -82,9 +82,9 @@ public class CourseIndexer extends DomainIndexer {
 		
 		
 		document.add(new Field(COURSE_TYPE_IDENTIFIER, String.valueOf(course.getCourseType().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
-		document.add(new Field(INSTITUTE_IDENTIFIER, String.valueOf(course.getInstitute().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		//document.add(new Field(INSTITUTE_IDENTIFIER, String.valueOf(course.getInstitute().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		// TODO to be changed (Primary key vs. Object)
-		document.add(new Field(DEPARTMENT_IDENTIFIER, String.valueOf(course.getInstitute()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		//document.add(new Field(DEPARTMENT_IDENTIFIER, String.valueOf(course.getInstitute()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(UNIVERSITY_IDENTIFIER, String.valueOf(course.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		// TODO to be changed (Primary key vs. Object)
 		document.add(new Field(PERIOD_IDENTIFIER, String.valueOf(course.getPeriod().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
@@ -97,9 +97,11 @@ public class CourseIndexer extends DomainIndexer {
 	}
 	
 	private String details(final Course course) {
-		return course.getInstitute().getName()+SPACE
+		/*return course.getInstitute().getName()+SPACE
 				+course.getInstitute().getOwnername()+SPACE
 				+StringUtils.abbreviate(course.getDescription(), 100);
+				*/
+		return null;
 	}
 
 	private String content(final Course course) {
@@ -110,10 +112,10 @@ public class CourseIndexer extends DomainIndexer {
 		content.append(StringUtils.trimToEmpty(course.getDescription())+SPACE);
 		content.append(StringUtils.trimToEmpty(course.getPeriod().getName())+SPACE);
 		content.append(StringUtils.trimToEmpty(course.getPeriod().getDescription())+SPACE);
-		content.append(StringUtils.trimToEmpty(course.getInstitute().getDescription())+SPACE);
-		content.append(StringUtils.trimToEmpty(course.getInstitute().getName())+SPACE);
-		content.append(StringUtils.trimToEmpty(course.getInstitute().getOwnername())+SPACE);
-		content.append(StringUtils.trimToEmpty(course.getInstitute().getAddress())+SPACE);
+		//content.append(StringUtils.trimToEmpty(course.getInstitute().getDescription())+SPACE);
+		//content.append(StringUtils.trimToEmpty(course.getInstitute().getName())+SPACE);
+		//content.append(StringUtils.trimToEmpty(course.getInstitute().getOwnername())+SPACE);
+		//content.append(StringUtils.trimToEmpty(course.getInstitute().getAddress())+SPACE);
 		return content.toString();
 	}
 
