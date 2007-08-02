@@ -22,7 +22,7 @@ import org.openuss.security.User;
 
 /**
  * @see org.openuss.desktop.DesktopService2
- * @author Ron Haus
+ * @author Ron Haus, Florian Dondorf
  */
 public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base {
 
