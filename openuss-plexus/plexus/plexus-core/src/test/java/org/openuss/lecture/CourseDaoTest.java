@@ -178,6 +178,7 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		course.setAccessType(AccessType.OPEN);
 		course.setCourseType(testUtility.createUniqueCourseTypeInDB());
 		course.setPeriod(testUtility.createUniquePeriodInDB());
+		course.setPassword(testUtility.unique("passwd"));
 		
 		courseDao.create(course);
 		assertNotNull(course.getId());
@@ -192,6 +193,7 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		courseInfo.setCourseTypeDescription(course.getCourseType().getDescription());
 		courseInfo.setPeriodId(course.getPeriod().getId());
 		courseInfo.setPeriodName(course.getPeriod().getName());
+		courseInfo.setPassword(course.getPassword());
 		
 		// Test toEntity
 		Course course2 = courseDao.courseInfoToEntity(courseInfo);
@@ -201,6 +203,7 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		assertEquals(course2.getShortcut(), courseInfo.getShortcut());
 		assertEquals(course2.getDescription(), courseInfo.getDescription());
 		assertEquals(course2.getAccessType(), courseInfo.getAccessType());
+		assertEquals(course2.getPassword(), courseInfo.getPassword());
 		assertEquals(course2.getCourseType().getId(), courseInfo.getCourseTypeId());
 		assertEquals(course2.getCourseType().getDescription(), courseInfo.getCourseTypeDescription());
 		assertEquals(course2.getPeriod().getId(), courseInfo.getPeriodId());
