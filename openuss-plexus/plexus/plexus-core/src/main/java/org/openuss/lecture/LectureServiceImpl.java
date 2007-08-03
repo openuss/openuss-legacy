@@ -35,9 +35,9 @@ public class LectureServiceImpl extends LectureServiceBase{
 	@Override
 	protected Collection<InstituteDetails> handleGetInstitutes(boolean enabledOnly) throws Exception {
 		if (enabledOnly) {
-			return getInstituteDao().loadAllEnabled(InstituteDao.TRANSFORM_INSTITUTEDETAILS);
+			return getInstituteDao().loadAllEnabled(InstituteDao.TRANSFORM_INSTITUTEINFO);
 		} else {
-			return getInstituteDao().loadAll(InstituteDao.TRANSFORM_INSTITUTEDETAILS);
+			return getInstituteDao().loadAll(InstituteDao.TRANSFORM_INSTITUTEINFO);
 		}
 	}
 
@@ -142,6 +142,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		institute = getInstituteDao().create(institute);
 		
 
+		/*
 		// define the security
 		SecurityService securityService = getSecurityService();
 
@@ -179,7 +180,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		
 		//send activation mail
 		sendActivationCode(institute);
-		
+		*/
 	}
 
 	protected void handleSendActivationCode(Institute institute) throws RegistrationException {
@@ -238,9 +239,10 @@ public class LectureServiceImpl extends LectureServiceBase{
 			throw new LectureServiceException("Institute not found " + instituteId);
 
 		// fire events
+		/*
 		for (Course course : institute.getCourses()) {
 			fireRemovingCourse(course);
-		}
+		}*/
 
 		for (CourseType courseType : institute.getCourseTypes()) {
 			fireRemovingCourseType(courseType);
@@ -313,6 +315,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		fireRemovingCourse(course);
 
 		// remove associations
+		/*
 		Institute institute = course.getInstitute();
 		Period period = course.getPeriod();
 		period.remove(course);
@@ -322,7 +325,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		persist(courseType);
 		institute.remove(course);
 
-		persist(institute);
+		persist(institute);*/
 		getCourseDao().remove(course);
 	}
 
@@ -343,9 +346,9 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Course course = Course.Factory.newInstance();
 		courseType.add(course);
 		period.add(course);
-		institute.add(course);
+		//institute.add(course);
 
-		course.setInstitute(institute);
+		//course.setInstitute(institute);
 		course.setCourseType(courseType);
 		course.setPeriod(period);
 
@@ -385,7 +388,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 	protected List handleGetInstituteAspirants(Long instituteId) throws Exception {
 		Institute institute = getInstituteDao().load(instituteId);
 		// need to get ride of persistent back so use a new ArrayList
-		List aspirants = new ArrayList<User>(institute.getAspirants());
+		List aspirants = new ArrayList<User>(institute.getMembership().getAspirants());
 		getUserDao().toUserInfoCollection(aspirants);
 		return aspirants;
 	}
@@ -406,8 +409,8 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Institute institute = getInstitute(instituteId);
 		User user = getUser(userId);
 
-		if (!institute.getMembers().contains(user)) {
-			institute.getAspirants().add(user);
+		if (!institute.getMembership().getMembers().contains(user)) {
+			institute.getMembership().getAspirants().add(user);
 			getInstituteDao().update(institute);
 		} else {
 			throw new LectureException("user_is_already_a_member_of_the_institute");
@@ -421,7 +424,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 	private List<User> getInstituteAdmins(Institute institute){
 		// XXX Polish me!
-		Collection<Group> groups = institute.getGroups();
+		Collection<Group> groups = institute.getMembership().getGroups();
 		Iterator i = groups.iterator();
 		Group adminGroup = null;
 		Group group;
@@ -436,7 +439,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 			}
 		}
 		//add members of administrator group to list of administrators
-		instituteMembers = institute.getMembers();
+		instituteMembers = institute.getMembership().getMembers();
 		i = instituteMembers.iterator();
 		while (i.hasNext()){
 			member = (User) i.next();
@@ -455,13 +458,13 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Institute institute = getInstitute(instituteId);
 		User user = getUser(userId);
 
-		if (institute.getMembers().contains(user)) {
+		if (institute.getMembership().getMembers().contains(user)) {
 			throw new LectureException("user_is_already_a_member_of_the_institute");
 		}
 
-		institute.getMembers().add(user);
+		institute.getMembership().getMembers().add(user);
 		// if user was an aspirant remove him from the list
-		institute.getAspirants().remove(user);
+		institute.getMembership().getAspirants().remove(user);
 		persist(institute);
 	}
 
@@ -472,7 +475,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 	protected void handleRejectInstituteAspirant(Long userId, Long instituteId) throws Exception {
 		Institute institute = getInstitute(instituteId);
 		User user = getUser(userId);
-		institute.getAspirants().remove(user);
+		institute.getMembership().getAspirants().remove(user);
 		persist(institute);
 		
 		Map<String, String> parameters = new HashMap<String, String>();
@@ -489,10 +492,10 @@ public class LectureServiceImpl extends LectureServiceBase{
 		User user = getUser(userId);
 
 		final SecurityService securityService = getSecurityService();
-		for (Group group : institute.getGroups()) {
+		for (Group group : institute.getMembership().getGroups()) {
 			securityService.removeAuthorityFromGroup(user, group);
 		}
-		institute.getMembers().remove(user);
+		institute.getMembership().getMembers().remove(user);
 		persist(institute);
 	}
 
@@ -502,7 +505,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Institute institute = getInstituteDao().load(instituteId);
 		User user = getUser(member.getId());
 
-		if (!institute.getMembers().contains(user)) {
+		if (!institute.getMembership().getMembers().contains(user)) {
 			throw new LectureException("User is not a member of the institute!");
 		}
 
@@ -514,7 +517,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 		// remove and add user to the new groups
 		final SecurityService securityService = getSecurityService();
-		for (Group group : institute.getGroups()) {
+		for (Group group : institute.getMembership().getGroups()) {
 			if (group.getMembers().contains(user) && !(groupIds.contains(group.getId()))) {
 				securityService.removeAuthorityFromGroup(user, group);
 			} else if (!group.getMembers().contains(user) && (groupIds.contains(group.getId()))) {
@@ -528,9 +531,9 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Institute institute = getInstitute(instituteId);
 		User user = getUser(userId);
 		// check if user was really an aspirant of the institute
-		if (institute.getAspirants().contains(user)) {
-			institute.getAspirants().remove(user);
-			institute.getMembers().add(user);
+		if (institute.getMembership().getAspirants().contains(user)) {
+			institute.getMembership().getAspirants().remove(user);
+			institute.getMembership().getMembers().add(user);
 			getInstituteDao().update(institute);
 		}
 		Map<String, String> parameters = new HashMap<String, String>();
@@ -628,10 +631,9 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	@Override
-	protected InstituteDetails handleGetInstitute(Institute institute) throws Exception {
-		institute = handleGetInstitute(institute.getId());
-		InstituteDetails instituteDetails = getInstituteDao().toInstituteDetails(institute);
-		return instituteDetails;
+	protected InstituteInfo handleGetInstitute(Institute institute) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
-
+	
 }

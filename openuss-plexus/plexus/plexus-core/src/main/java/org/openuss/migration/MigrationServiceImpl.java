@@ -115,8 +115,7 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 			Institute institute = faculty2ToInstitute(faculty2);
 			// define owner 
 			User owner = users.get(faculty2.getAssistant().getId());
-			institute.setOwner(owner);
-			institute.getMembers().add(owner);
+			institute.getMembership().getMembers().add(owner);
 			
 			institutes.put(faculty2.getId(),institute);
 		}
@@ -135,9 +134,9 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 		List<ObjectIdentity> groupObjIds = new ArrayList<ObjectIdentity>(); 
 		for(Institute institute : institutes.values()) {
 			ObjectIdentity instituteObjId = instituteObjIds.get(institute);
-			for(Group group : institute.getGroups()) {
+			/*for(Group group : institute.getGroups()) {
 				groupObjIds.add(createObjectIdentity(group.getId(), instituteObjId));
-			}
+			}*/
 		}
 		logger.debug("persisting institute group grant permissions.");
 		getObjectIdentityDao().create(groupObjIds);
@@ -214,9 +213,9 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 			if (user != null) {
 				// aspirant or member?
 				if (toBoolean(assistant.getAactive())) {
-					if (!institute.getOwner().equals(user)) {
+					/*if (!institute.getOwner().equals(user)) {
 						institute.getMembers().add(user);
-					}
+					}*/
 					// is admin or owner?
 					if (toBoolean(assistant.getIsadmin()) || faculty2.getAssistant().getId().equals(assistant.getAssistant().getId())) {
 						groupAdmins.addMember(user);
@@ -225,7 +224,7 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 					groupAssistants.addMember(user);
 					user.addGroup(groupAssistants);
 				} else {
-					institute.getAspirants().add(user);
+					institute.getMembership().getAspirants().add(user);
 				}
 			} else {
 				logger.error("user not found "+assistant.getAssistant().getId());
@@ -249,11 +248,11 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 	 * @param groupTutors
 	 */
 	private void buildInstituteSecurity(Collection<ObjectIdentity> objIds, Collection<Group> groups, Institute institute, Group groupAdmins, Group groupAssistants, Group groupTutors) {
-		institute.getGroups().add(groupAdmins);
-		institute.getGroups().add(groupAssistants);
-		institute.getGroups().add(groupTutors);
+		institute.getMembership().getGroups().add(groupAdmins);
+		institute.getMembership().getGroups().add(groupAssistants);
+		institute.getMembership().getGroups().add(groupTutors);
 		
-		groups.addAll(institute.getGroups());
+		groups.addAll(institute.getMembership().getGroups());
 		
 		// create object identity structure institute <-(parent)---- course
 		ObjectIdentity instituteObjId = createObjectIdentity(institute.getId(), null);
@@ -262,9 +261,9 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 		// cache institute <--> objId dependency
 		instituteObjIds.put(institute, instituteObjId);
 		
-		for (Course course: institute.getCourses()) {
+		/*for (Course course: institute.getCourses()) {
 			objIds.add(createObjectIdentity(course.getId(),instituteObjId));
-		}
+		}*/
 		// create group permissions
 		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_ADMINISTRATION, instituteObjId, groupAdmins ));
 		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_ASSIST, instituteObjId, groupAssistants ));
@@ -391,7 +390,7 @@ public class MigrationServiceImpl extends org.openuss.migration.MigrationService
 		institute.setDescription(faculty2.getRemark());
 		institute.setWebsite(faculty2.getWebsite());
 		institute.setLocale(faculty2.getLocale());
-		institute.setOwnername(faculty2.getOwner());
+		institute.setOwnerName(faculty2.getOwner());
 		institute.setEnabled(toBoolean(faculty2.getAactive()));
 
 		Map<String, CourseType> courseTypes = transformInstituteSubjects(faculty2, institute);
