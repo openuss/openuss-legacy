@@ -33,7 +33,7 @@ public class MembershipDaoTest extends MembershipDaoTestBase {
 		// Create users
 		List<User> users = new ArrayList<User>(5);
 		for(int i=0;i<5;i++) {
-			users.add(testUtility.createUserInDB());
+			users.add(testUtility.createUniqueUserInDB());
 		}
 		
 		// Create Groups

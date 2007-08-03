@@ -13,8 +13,6 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.context.SecurityContextImpl;
 import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.openuss.lecture.University;
 
 /**
@@ -38,7 +36,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		University university = testUtility.createUniqueUniversityInDB();
 
 		// Create a User
-		User user1 = testUtility.createUserInDB();
+		User user1 = testUtility.createUniqueUserInDB();
 
 		// Try to accept the User
 		try {
@@ -78,7 +76,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		University university = testUtility.createUniqueUniversityInDB();
 
 		// Create a User
-		User user1 = testUtility.createUserInDB();
+		User user1 = testUtility.createUniqueUserInDB();
 
 		// Try to accept the User
 		try {
@@ -118,7 +116,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		University university = testUtility.createUniqueUniversityInDB();
 
 		// Create a User
-		User user1 = testUtility.createUserInDB();
+		User user1 = testUtility.createUniqueUserInDB();
 
 		// Try to add a Aspirant as a Member
 		try {
@@ -135,7 +133,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		int sizeBefore = members.size();
 
 		// Create a 2nd User
-		User user2 = testUtility.createUserInDB();
+		User user2 = testUtility.createUniqueUserInDB();
 
 		// Add a User
 		membershipService.addMember(university.getMembership(), user2, null);
@@ -180,7 +178,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		int sizeBefore = aspirants.size();
 
 		// Create a 2nd User
-		User user2 = testUtility.createUserInDB();
+		User user2 = testUtility.createUniqueUserInDB();
 
 		// Add a user
 		membershipService.addAspirant(university.getMembership(), user2, null);
@@ -229,16 +227,6 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		flush();
 
 		logger.info("----> END access to createGroup test");
-	}
-
-	private static void createSecureContext(String roleName) {
-		TestingAuthenticationToken authentication = new TestingAuthenticationToken("principal", "credentials",
-				new GrantedAuthority[] { new GrantedAuthorityImpl(roleName) });
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-	}
-
-	private static void destroySecureContext() {
-		SecurityContextHolder.setContext(new SecurityContextImpl());
 	}
 
 }
