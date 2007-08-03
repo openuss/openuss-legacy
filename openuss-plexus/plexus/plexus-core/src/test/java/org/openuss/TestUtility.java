@@ -86,14 +86,23 @@ public class TestUtility {
 		return user;
 	}
 
+	/**
+	 * @deprecated As of OpenUSS 3.1  
+	 */
 	public void removeUser() {
 		removeUser(defaultUser);
 	}
 	
+	/**
+	 * @deprecated As of OpenUSS 3.1  
+	 */
 	public void updateUser(User user) {
 		userDao.update(user);
 	}
 	
+	/**
+	 * @deprecated As of OpenUSS 3.1  
+	 */
 	public void removeUser(User user) {
 		user = userDao.load(user.getId());
 		userDao.remove(user);
