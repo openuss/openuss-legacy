@@ -22,6 +22,7 @@ import org.openuss.lecture.Period;
 import org.openuss.lecture.PeriodDao;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
+import org.openuss.lecture.UniversityType;
 import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
 import org.openuss.security.GroupType;
@@ -170,7 +171,9 @@ public class TestUtility {
 		university.setShortcut(unique("Uni"));
 		university.setDescription("A unique University");
 		university.setOwnerName("Administrator");
+		university.setUniversityType(UniversityType.UNIVERSITY);
 		university.setMembership(this.createUniqueMembershipInDB());
+		university.setEnabled(true);
 		
 		universityDao.create(university);
 		
@@ -187,9 +190,10 @@ public class TestUtility {
 		department.setShortcut(unique("Dep"));
 		department.setDescription("A unique Department");
 		department.setOwnerName("Administrator");
+		department.setEnabled(true);
 		department.setMembership(this.createUniqueMembershipInDB());
 		
-		university.getDepartments().add(department);
+		university.add(department);
 		department.setUniversity(university);
 		
 		departmentDao.create(department);
@@ -207,8 +211,10 @@ public class TestUtility {
 		institute.setShortcut(unique("Inst"));
 		institute.setDescription("A unique Insitute");
 		institute.setOwnerName("Administrator");
+		institute.setEnabled(true);
 		institute.setMembership(this.createUniqueMembershipInDB());
 		
+		//department.add(institute);
 		department.getInstitutes().add(institute);
 		institute.setDepartment(department);
 		
@@ -227,6 +233,7 @@ public class TestUtility {
 		courseType.setShortcut(unique("CT"));
 		courseType.setDescription("A unique CourseType");
 		courseType.setInstitute(institute);
+		//institute.add(courseType);
 		institute.getCourseTypes().add(courseType);
 		
 		courseTypeDao.create(courseType);
@@ -237,7 +244,6 @@ public class TestUtility {
 	public Course createUniqueCourseInDB() {
 		// Create a unique CourseType
 		CourseType courseType = this.createUniqueCourseTypeInDB();
-		
 		
 		// Create a unique CourseType
 		Course course =  Course.Factory.newInstance();
@@ -252,6 +258,8 @@ public class TestUtility {
 		course.setFreestylelearning(false);
 		course.setBraincontest(false);
 		course.setCourseType(courseType);
+		course.setPeriod(this.createUniquePeriodInDB());
+		//courseType.add(course);
 		courseType.getCourses().add(course);
 		
 		courseDao.create(course);
@@ -281,6 +289,7 @@ public class TestUtility {
 		period.setStartdate(startdate);
 		period.setEnddate(enddate);
 		period.setUniversity(university);
+		//university.add(period);
 		university.getPeriods().add(period);
 		
 		periodDao.create(period);
