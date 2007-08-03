@@ -38,7 +38,7 @@ public class InstituteIndexerTest extends AbstractDependencyInjectionSpringConte
 	
 	public void testIndexingAndSearching() {
 		Institute institute = new LectureBuilder().createInstitute(User.Factory.newInstance()).getInstitute();
-		institute.setOwnername("test owner name grob");
+		institute.setOwnerName("test owner name grob");
 		instituteDao.create(institute);
 		
 		instituteIndexer.setDomainObject(institute);

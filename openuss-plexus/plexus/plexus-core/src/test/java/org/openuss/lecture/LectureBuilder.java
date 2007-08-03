@@ -1,5 +1,7 @@
 package org.openuss.lecture;
 
+import java.util.List;
+
 import org.openuss.TestUtility;
 import org.openuss.security.User;
 
@@ -7,6 +9,7 @@ import org.openuss.security.User;
  * Builds institute, periods, courseType, and course structures.
  *  
  * @author Ingo Dueppe
+ * @deprecated Use testUtility instead
  */
 public class LectureBuilder {
 	
@@ -41,7 +44,7 @@ public class LectureBuilder {
 	public LectureBuilder createInstitute(User owner) {
 		institute = Institute.Factory.newInstance();
 		institute.setName(unique());
-		institute.setOwnername("institute owner");
+		institute.setOwnerName("institute owner");
 		institute.setShortcut(unique());
 		institute.setEmail("email@email.com");
 		institute.setAddress("Leonardo-Campus 3");
@@ -50,7 +53,7 @@ public class LectureBuilder {
 		institute.setLocale("de");
 		institute.setTheme("plexus");
 		institute.setWebsite("www.openuss.org");
-		institute.setOwner(owner);
+		//institute.setOwner(owner);
 		return this;
 	}
 	
@@ -97,7 +100,7 @@ public class LectureBuilder {
 	}
 	
 	public Course getCourse(int index) {
-		return institute.getCourses().get(index);
+		return (Course) institute.getAllCourses().get(index);
 	}
 	
 	public LectureBuilder remove() {
@@ -131,8 +134,8 @@ public class LectureBuilder {
 		course.setShortcut(unique());
 		period.add(course);
 		course.setPeriod(period);
-		institute.add(course);
-		course.setInstitute(institute);
+		//institute.add(course);
+		//course.setInstitute(institute);
 		return course;
 	}
 	
