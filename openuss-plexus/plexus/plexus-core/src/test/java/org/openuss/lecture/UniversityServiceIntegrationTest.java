@@ -36,11 +36,13 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		UniversityInfo universityInfo = new UniversityInfo();
 		universityInfo.setName(testUtility.unique("testUniversity"));
 		universityInfo.setShortcut(testUtility.unique("testU"));
+		universityInfo.setOwnerName("Administrator");
+		universityInfo.setEnabled(true);
 		universityInfo.setDescription("This is a test University");
 		universityInfo.setUniversityType(UniversityType.MISC);
 		
 		//Create a User as Owner
-		User owner = testUtility.createUserInDB();
+		User owner = testUtility.createUniqueUserInDB();
 		
 		//Create Entity
 		Long universityId = universityService.create(universityInfo, owner.getId());
@@ -104,6 +106,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		universityInfo.setId(university.getId());
 		universityInfo.setName(testUtility.unique("testUniversity"));
 		universityInfo.setShortcut(testUtility.unique("testU"));
+		universityInfo.setOwnerName("Administrator");
+		universityInfo.setEnabled(true);
 		universityInfo.setDescription("This is a test University at "+testUtility.unique("time"));
 		if (university.getUniversityType().compareTo(UniversityType.MISC) == 0) {
 			universityInfo.setUniversityType(UniversityType.UNIVERSITY);
@@ -277,20 +281,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		
 		// Create complete Universities
 		List<University> universities = new ArrayList<University>();
-		University university = null;
-		Membership membership = null;
-		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
 		for (int i = 0; i < 3; i++) {
-			university = University.Factory.newInstance();
-			university.setName(testUtility.unique("testUniversity"+i));
-			university.setShortcut(testUtility.unique("testU"+i));
-			university.setDescription("This is a test University"+i);
-			membership = Membership.Factory.newInstance();
-			membership.getMembers().add(testUtility.createUserInDB());
-			university.setMembership(membership);
-			universityDao.create(university);
-			assertNotNull(university.getId());
-			universities.add(university);
+			universities.add(testUtility.createUniqueUniversityInDB());
 		}
 		
 		//Synchronize with Database

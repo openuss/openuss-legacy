@@ -42,7 +42,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		int sizeBefore = members.size();
 
 		// Create a User
-		User user = testUtility.createUserInDB();
+		User user = testUtility.createUniqueUserInDB();
 
 		// Add a User
 		organisationService.addMember(university.getId(), user.getId());
@@ -71,7 +71,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		int sizeBefore = aspirants.size();
 
 		// Create a User
-		User user = testUtility.createUserInDB();
+		User user = testUtility.createUniqueUserInDB();
 
 		// Add a user
 		organisationService.addAspirant(university.getId(), user.getId());
@@ -97,7 +97,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		// Create 3 User
 		List<User> users = new ArrayList<User>();
 		for (int i = 0; i < 3; i++) {
-			users.add(testUtility.createUserInDB());
+			users.add(testUtility.createUniqueUserInDB());
 		}
 
 		// Add users as members
@@ -138,7 +138,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		// Create 3 User
 		List<User> users = new ArrayList<User>();
 		for (int i = 0; i < 3; i++) {
-			users.add(testUtility.createUserInDB());
+			users.add(testUtility.createUniqueUserInDB());
 		}
 
 		// Add users as Aspirants
@@ -177,7 +177,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		University university = testUtility.createUniqueUniversityInDB();
 
 		// Create a User
-		User user = testUtility.createUserInDB();
+		User user = testUtility.createUniqueUserInDB();
 
 		// Add user as Aspirant
 		university.getMembership().getAspirants().add(user);
@@ -212,7 +212,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		University university = testUtility.createUniqueUniversityInDB();
 
 		// Create a User
-		User user = testUtility.createUserInDB();
+		User user = testUtility.createUniqueUserInDB();
 
 		// Add user as Aspirant
 		university.getMembership().getAspirants().add(user);
@@ -316,7 +316,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		university.getMembership().getGroups().add(group);
 		
 		// Create a User
-		User user = testUtility.createUserInDB();
+		User user = testUtility.createUniqueUserInDB();
 		
 		// Get List of Users of the Group
 		List users = group.getMembers();
@@ -352,7 +352,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		university.getMembership().getGroups().add(group);
 		
 		// Create a User
-		User user = testUtility.createUserInDB();
+		User user = testUtility.createUniqueUserInDB();
 		
 		// Add user to Group
 		group.addMember(user);
