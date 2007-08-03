@@ -39,6 +39,8 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		Department department1 = Department.Factory.newInstance();
 		department1.setName("Rechtswissenschaften - FB 3");
 		department1.setShortcut("FB3");
+		department1.setOwnerName("Administrator");
+		department1.setEnabled(true);
 		department1.setDescription("Testdescription1");
 		department1.setDepartmentType(DepartmentType.OFFICIAL);
 		department1.setUniversity(university);
@@ -48,6 +50,8 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		Department department2 = Department.Factory.newInstance();
 		department2.setName("Wirtschaftswissenschaften - FB 4");
 		department2.setShortcut("FB4");
+		department2.setOwnerName("Administrator");
+		department2.setEnabled(true);
 		department2.setDescription("Testdescription2");
 		department2.setDepartmentType(DepartmentType.NONOFFICIAL);
 		department2.setUniversity(university);

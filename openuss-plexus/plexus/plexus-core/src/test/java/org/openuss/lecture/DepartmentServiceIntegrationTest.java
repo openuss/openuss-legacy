@@ -28,11 +28,13 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		departmentInfo.setName("Wirtschaftswissenschaften - FB 4");
 		departmentInfo.setDescription("Testdescription");
 		departmentInfo.setShortcut("FB4");
+		departmentInfo.setOwnerName("Administrator");
+		departmentInfo.setEnabled(true);
 		departmentInfo.setUniversityId(university.getId());
 		departmentInfo.setDepartmentType(DepartmentType.OFFICIAL);
 		
 		//Create a User as Owner
-		User owner = testUtility.createUserInDB();
+		User owner = testUtility.createUniqueUserInDB();
 		
 		//Test
 		Long departmentId = departmentService.create(departmentInfo, owner.getId());
@@ -54,12 +56,14 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		DepartmentInfo departmentInfo = new DepartmentInfo();
 		departmentInfo.setName("Wirtschaftswissenschaften - FB 4");
 		departmentInfo.setDescription("Testdescription");
+		departmentInfo.setOwnerName("Administrator");
+		departmentInfo.setEnabled(true);
 		departmentInfo.setShortcut("FB4");
 		departmentInfo.setUniversityId(university.getId());
 		departmentInfo.setDepartmentType(DepartmentType.OFFICIAL);
 		
 		//Create a User as Owner
-		User owner = testUtility.createUserInDB();
+		User owner = testUtility.createUniqueUserInDB();
 		
 		Long departmentId = this.getDepartmentService().create(departmentInfo, owner.getId());
 		flush();
@@ -98,12 +102,14 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		DepartmentInfo departmentInfo = new DepartmentInfo();
 		departmentInfo.setName("Wirtschaftswissenschaften - FB 4");
 		departmentInfo.setDescription("Testdescription");
+		departmentInfo.setOwnerName("Administrator");
+		departmentInfo.setEnabled(true);
 		departmentInfo.setShortcut("FB4");
 		departmentInfo.setUniversityId(university.getId());
 		departmentInfo.setDepartmentType(DepartmentType.OFFICIAL);
 		
 		Long departmentId = 
-			this.getDepartmentService().create(departmentInfo, testUtility.createUserInDB().getId());
+			this.getDepartmentService().create(departmentInfo, testUtility.createUniqueUserInDB().getId());
 		flush();
 		
 		DepartmentDao departmentDao = (DepartmentDao)this.getApplicationContext().getBean("departmentDao");
@@ -131,6 +137,8 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		Department department = Department.Factory.newInstance();
 		department.setName("Wirtschaftswissenschaften - FB 4");
 		department.setDescription("Testdescription");
+		department.setOwnerName("Administrator");
+		department.setEnabled(true);
 		department.setShortcut("FB4");
 		department.setUniversity(university);
 		department.setDepartmentType(DepartmentType.OFFICIAL);
@@ -164,6 +172,8 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		department1.setName("Wirtschaftswissenschaften - FB 4");
 		department1.setDescription("Testdescription1");
 		department1.setShortcut("FB4");
+		department1.setOwnerName("Administrator");
+		department1.setEnabled(true);
 		department1.setUniversity(university);
 		department1.setDepartmentType(DepartmentType.OFFICIAL);
 		department1.setMembership(Membership.Factory.newInstance());
@@ -175,6 +185,8 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		department2.setName("Rechtsswissenschaften - FB 3");
 		department2.setDescription("Testdescription2");
 		department2.setShortcut("FB3");
+		department2.setOwnerName("Administrator");
+		department2.setEnabled(true);
 		department2.setUniversity(university);
 		department2.setDepartmentType(DepartmentType.NONOFFICIAL);
 		department2.setMembership(Membership.Factory.newInstance());
