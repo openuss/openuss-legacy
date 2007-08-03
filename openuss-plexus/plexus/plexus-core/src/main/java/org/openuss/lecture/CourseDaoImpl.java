@@ -16,8 +16,10 @@ public class CourseDaoImpl extends org.openuss.lecture.CourseDaoBase {
 	public void toCourseInfo(Course sourceEntity, CourseInfo targetVO) {
 		super.toCourseInfo(sourceEntity, targetVO);
 		targetVO.setName(sourceEntity.getName());
-		targetVO.setInstituteId(sourceEntity.getInstitute().getId());
-		targetVO.setInstituteName(sourceEntity.getInstitute().getName());
+		targetVO.setDescription(sourceEntity.getDescription());
+		targetVO.setShortcut(sourceEntity.getShortcut());
+		targetVO.setPassword(sourceEntity.getPassword());
+		targetVO.setAccessType(sourceEntity.getAccessType());
 		targetVO.setPeriodId(sourceEntity.getPeriod().getId());
 		targetVO.setPeriodName(sourceEntity.getPeriod().getName());
 		targetVO.setCourseTypeDescription(sourceEntity.getCourseType().getDescription());
@@ -39,9 +41,10 @@ public class CourseDaoImpl extends org.openuss.lecture.CourseDaoBase {
 	 * object store, a new, blank entity is created
 	 */
 	private Course loadCourseFromCourseInfo(CourseInfo courseInfo) {
-		Course course = this.load(courseInfo.getId());
-		if (course == null) {
-			course = Course.Factory.newInstance();
+		
+		Course course = Course.Factory.newInstance();
+		if (courseInfo.getId() != null) {
+			course = this.load(courseInfo.getId());
 		}
 		return course;
 	}
