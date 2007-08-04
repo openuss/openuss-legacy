@@ -72,7 +72,7 @@ public class InstitutesPage extends BasePage{
 			Institute institute = lectureService.getInstitute(instituteDetails.getId());
 			institute.setEnabled(instituteDetails.isEnabled());
 			lectureService.persist(institute);
-			if (institute.isEnabled())
+			if (institute.getEnabled())
 				addMessage(i18n("system_message_institute_enabled", new Object[]{ institute.getName()}));
 			else
 				addMessage(i18n("system_message_institute_disabled", new Object[]{ institute.getName()}));
