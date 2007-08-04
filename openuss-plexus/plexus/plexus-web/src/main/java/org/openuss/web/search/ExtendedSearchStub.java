@@ -6,7 +6,7 @@ import java.util.List;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.CourseTypeImpl;
 import org.openuss.lecture.DepartmentInfo;
-import org.openuss.lecture.InstituteDetails;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.lecture.UniversityInfo;
 
@@ -134,12 +134,12 @@ public class ExtendedSearchStub {
 		List instituteDetails = new ArrayList();
 		
 		if( departmentId.longValue() % 2 == 0){
-			InstituteDetails institute1 = new InstituteDetails();
+			InstituteInfo institute1 = new InstituteInfo();
 			institute1.setId(new Long(10000+departmentId.longValue()));
 			institute1.setName("Lehrstuhl 1");
 			institute1.setShortcut("LS1");
 			
-			InstituteDetails institute2 = new InstituteDetails();
+			InstituteInfo institute2 = new InstituteInfo();
 			institute2.setId(new Long(10000+departmentId.longValue()));
 			institute2.setName("Lehrstuhl 2");
 			institute2.setShortcut("LS2");
@@ -147,12 +147,12 @@ public class ExtendedSearchStub {
 			instituteDetails.add(institute1);
 			instituteDetails.add(institute2);
 		} else {
-			InstituteDetails institute1 = new InstituteDetails();
+			InstituteInfo institute1 = new InstituteInfo();
 			institute1.setId(new Long(10000+departmentId.longValue()));
 			institute1.setName("Lehrstuhl A");
 			institute1.setShortcut("LSA");
 			
-			InstituteDetails institute2 = new InstituteDetails();
+			InstituteInfo institute2 = new InstituteInfo();
 			institute2.setId(new Long(10000+departmentId.longValue()));
 			institute2.setName("Lehrstuhl B");
 			institute2.setShortcut("LSB");
