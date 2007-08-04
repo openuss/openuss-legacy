@@ -17,6 +17,7 @@ import org.openuss.security.User;
 
 /**
  * @see org.openuss.lecture.Institute
+ * @author Ingo Dueppe, Ron Haus
  */
 public class InstituteDaoImpl extends org.openuss.lecture.InstituteDaoBase {
 

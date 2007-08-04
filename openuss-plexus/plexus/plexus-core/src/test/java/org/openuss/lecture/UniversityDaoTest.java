@@ -93,8 +93,17 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		assertEquals(university.getOwnerName(), universityInfo.getOwnerName());
 		assertEquals(university.getEnabled(), universityInfo.getEnabled());
 		assertEquals(university.getDescription(), universityInfo.getDescription());
-		assertEquals(university.getUniversityType(), universityInfo.getUniversityType());
-		
+		assertEquals(university.getUniversityType(), universityInfo.getUniversityType());		
+		assertEquals(university.getAddress(), universityInfo.getAddress());
+		assertEquals(university.getCity(), universityInfo.getCity());
+		assertEquals(university.getCountry(), universityInfo.getCountry());
+		assertEquals(university.getEmail(), universityInfo.getEmail());
+		assertEquals(university.getLocale(), universityInfo.getLocale());
+		assertEquals(university.getPostcode(), universityInfo.getPostcode());
+		assertEquals(university.getTelefax(), universityInfo.getTelefax());
+		assertEquals(university.getTelephone(), universityInfo.getTelephone());
+		assertEquals(university.getWebsite(), universityInfo.getWebsite());
+		assertEquals(university.getTheme(), universityInfo.getTheme());
 	}
 	
 	public void testUniversityDaoUniversityInfoToEntity() {
@@ -117,6 +126,16 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		assertEquals(universityInfo1.getEnabled(), university1.getEnabled());
 		assertEquals(universityInfo1.getDescription(), university1.getDescription());
 		assertEquals(universityInfo1.getUniversityType(), university1.getUniversityType());
+		assertEquals(universityInfo1.getAddress(), university1.getAddress());
+		assertEquals(universityInfo1.getCity(), university1.getCity());
+		assertEquals(universityInfo1.getCountry(), university1.getCountry());
+		assertEquals(universityInfo1.getEmail(), university1.getEmail());
+		assertEquals(universityInfo1.getLocale(), university1.getLocale());
+		assertEquals(universityInfo1.getPostcode(), university1.getPostcode());
+		assertEquals(universityInfo1.getTelefax(), university1.getTelefax());
+		assertEquals(universityInfo1.getTelephone(), university1.getTelephone());
+		assertEquals(universityInfo1.getWebsite(), university1.getWebsite());
+		assertEquals(universityInfo1.getTheme(), university1.getTheme());
 		
 		
 		// Create a new ValueObject (no Entity available)
@@ -138,5 +157,15 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		assertEquals(universityInfo2.getEnabled(), university2.getEnabled());
 		assertEquals(universityInfo2.getDescription(), university2.getDescription());
 		assertEquals(universityInfo2.getUniversityType(), university2.getUniversityType());
+		assertEquals(universityInfo2.getAddress(), university2.getAddress());
+		assertEquals(universityInfo2.getCity(), university2.getCity());
+		assertEquals(universityInfo2.getCountry(), university2.getCountry());
+		assertEquals(universityInfo2.getEmail(), university2.getEmail());
+		assertEquals(universityInfo2.getLocale(), university2.getLocale());
+		assertEquals(universityInfo2.getPostcode(), university2.getPostcode());
+		assertEquals(universityInfo2.getTelefax(), university2.getTelefax());
+		assertEquals(universityInfo2.getTelephone(), university2.getTelephone());
+		assertEquals(universityInfo2.getWebsite(), university2.getWebsite());
+		assertEquals(universityInfo2.getTheme(), university2.getTheme());
 	}
 }

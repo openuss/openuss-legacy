@@ -12,7 +12,7 @@ import org.openuss.security.Membership;
  * JUnit Test for Spring Hibernate DepartmentDao class.
  * 
  * @see org.openuss.lecture.DepartmentDao
- * @author Florian Dondorf
+ * @author Florian Dondorf, Ron Haus
  */
 public class DepartmentDaoTest extends DepartmentDaoTestBase {
 
@@ -92,6 +92,16 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		assertEquals(departmentEntity.getDepartmentType(), departmentInfo.getDepartmentType());
 		assertEquals(departmentEntity.getShortcut(), departmentInfo.getShortcut());
 		assertEquals(departmentEntity.getUniversity().getId(), departmentInfo.getUniversityId());
+		assertEquals(departmentEntity.getAddress(), departmentInfo.getAddress());
+		assertEquals(departmentEntity.getCity(), departmentInfo.getCity());
+		assertEquals(departmentEntity.getCountry(), departmentInfo.getCountry());
+		assertEquals(departmentEntity.getEmail(), departmentInfo.getEmail());
+		assertEquals(departmentEntity.getLocale(), departmentInfo.getLocale());
+		assertEquals(departmentEntity.getPostcode(), departmentInfo.getPostcode());
+		assertEquals(departmentEntity.getTelefax(), departmentInfo.getTelefax());
+		assertEquals(departmentEntity.getTelephone(), departmentInfo.getTelephone());
+		assertEquals(departmentEntity.getWebsite(), departmentInfo.getWebsite());
+		assertEquals(departmentEntity.getTheme(), departmentInfo.getTheme());
 
 	}
 
@@ -120,6 +130,16 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		assertEquals(departmentInfo.getDepartmentType(), departmentEntity.getDepartmentType());
 		assertEquals(departmentInfo.getShortcut(), departmentEntity.getShortcut());
 		assertEquals(departmentInfo.getUniversityId(), departmentEntity.getUniversity().getId());
+		assertEquals(departmentInfo.getAddress(), departmentEntity.getAddress());
+		assertEquals(departmentInfo.getCity(), departmentEntity.getCity());
+		assertEquals(departmentInfo.getCountry(), departmentEntity.getCountry());
+		assertEquals(departmentInfo.getEmail(), departmentEntity.getEmail());
+		assertEquals(departmentInfo.getLocale(), departmentEntity.getLocale());
+		assertEquals(departmentInfo.getPostcode(), departmentEntity.getPostcode());
+		assertEquals(departmentInfo.getTelefax(), departmentEntity.getTelefax());
+		assertEquals(departmentInfo.getTelephone(), departmentEntity.getTelephone());
+		assertEquals(departmentInfo.getWebsite(), departmentEntity.getWebsite());
+		assertEquals(departmentInfo.getTheme(), departmentEntity.getTheme());
 
 	}
 }

@@ -183,6 +183,16 @@ public class TestUtility {
 		university.setUniversityType(UniversityType.UNIVERSITY);
 		university.setMembership(this.createUniqueMembershipInDB());
 		university.setEnabled(true);
+		university.setAddress("Leo 18");
+		university.setCity("Münster");
+		university.setCountry("Germany");
+		university.setEmail("openuss@uni-muenster.de");
+		university.setLocale("de");
+		university.setPostcode("48149");
+		university.setTelefax("0251-telefax");
+		university.setTelephone("0251-telephone");
+		university.setTheme("plexus");
+		university.setWebsite("www.openuss.de");
 		
 		universityDao.create(university);
 		
@@ -201,6 +211,16 @@ public class TestUtility {
 		department.setOwnerName("Administrator");
 		department.setEnabled(true);
 		department.setMembership(this.createUniqueMembershipInDB());
+		department.setAddress("Leo 18");
+		department.setCity("Münster");
+		department.setCountry("Germany");
+		department.setEmail("openuss@uni-muenster.de");
+		department.setLocale("de");
+		department.setPostcode("48149");
+		department.setTelefax("0251-telefax");
+		department.setTelephone("0251-telephone");
+		department.setTheme("plexus");
+		department.setWebsite("www.openuss.de");
 		
 		university.add(department);
 		department.setUniversity(university);
@@ -222,6 +242,16 @@ public class TestUtility {
 		institute.setOwnerName("Administrator");
 		institute.setEnabled(true);
 		institute.setMembership(this.createUniqueMembershipInDB());
+		institute.setAddress("Leo 18");
+		institute.setCity("Münster");
+		institute.setCountry("Germany");
+		institute.setEmail("openuss@uni-muenster.de");
+		institute.setLocale("de");
+		institute.setPostcode("48149");
+		institute.setTelefax("0251-telefax");
+		institute.setTelephone("0251-telephone");
+		institute.setTheme("plexus");
+		institute.setWebsite("www.openuss.de");
 		
 		//department.add(institute);
 		department.getInstitutes().add(institute);
