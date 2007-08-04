@@ -29,16 +29,17 @@ public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.op
 	@Override
 	public Boolean isActive() {
 		Date now = new Date();
-		if (this.getStartdate().before((now)) &&
-				this.getEnddate().after(now))
+		if (this.getStartdate().before((now)) && this.getEnddate().after(now))
 			return true;
-		else return false;
+		else
+			return false;
 	}
 
 	@Override
 	public Boolean isRemovable() {
 		if (this.getCourses().size() <= 1)
 			return true;
-		else return false;
+		else
+			return false;
 	}
 }

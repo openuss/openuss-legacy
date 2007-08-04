@@ -7,7 +7,6 @@ package org.openuss.lecture;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -188,14 +187,11 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		University university = this.getUniversityDao().load(universityId);
 		Validate.notNull(university, "UniversityService.handleFindActivePeriodsByUniversity - no University found corresponding to the ID "+universityId);
 		
-		List<Period> allPeriods = university.getPeriods();
-		Iterator<Period> iter = allPeriods.iterator();
-		while (iter.hasNext()) {
-			Period period = iter.next();
-			if (period.isActive()) {
-				return this.getPeriodDao().toPeriodInfo(period);
-			}
+		Period activePeriod = university.getActivePeriod();
+		if (activePeriod == null) {
+			return null;
+		} else {
+			return this.getPeriodDao().toPeriodInfo(activePeriod);
 		}
-		return null;
 	}
 }
