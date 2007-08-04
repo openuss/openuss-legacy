@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.openuss.registration.RegistrationException;
 import org.openuss.security.Group;
@@ -33,7 +32,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 	private static final Logger logger = Logger.getLogger(LectureServiceImpl.class);
 	
 	@Override
-	protected Collection<InstituteDetails> handleGetInstitutes(boolean enabledOnly) throws Exception {
+	protected Collection<InstituteInfo> handleGetInstitutes(boolean enabledOnly) throws Exception {
 		if (enabledOnly) {
 			return getInstituteDao().loadAllEnabled(InstituteDao.TRANSFORM_INSTITUTEINFO);
 		} else {
