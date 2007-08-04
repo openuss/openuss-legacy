@@ -16,7 +16,7 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Institute;
-import org.openuss.lecture.InstituteDetails;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -63,28 +63,29 @@ public class InstitutesPage extends BasePage{
 	}
 
 	private Institute currentInstitute() {
-		InstituteDetails details = institutes.getRowData();
+		
+		InstituteInfo details = institutes.getRowData();
 		Institute institute = Institute.Factory.newInstance();
 		institute.setId(details.getId());
 		return institute;
 	}
 	
-	private DataPage<InstituteDetails> dataPage;
+	private DataPage<InstituteInfo> dataPage;
 	
-	public DataPage<InstituteDetails> fetchDataPage(int startRow, int pageSize) {
+	public DataPage<InstituteInfo> fetchDataPage(int startRow, int pageSize) {
 		
 		if (dataPage == null) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+institutes.getSortColumn());
 			}
-			List<InstituteDetails> instituteList = new ArrayList<InstituteDetails>(getLectureService().getInstitutes(true));
+			List<InstituteInfo> instituteList = new ArrayList<InstituteInfo>(getLectureService().getInstitutes(true));
 			sort(instituteList);
-			dataPage = new DataPage<InstituteDetails>(instituteList.size(),0,instituteList);
+			dataPage = new DataPage<InstituteInfo>(instituteList.size(),0,instituteList);
 	}
 		return dataPage;
 	}
 
-	private void sort(List<InstituteDetails> instituteList) {
+	private void sort(List<InstituteInfo> instituteList) {
 		if (StringUtils.equals("shortcut", institutes.getSortColumn())) {
 			Collections.sort(instituteList, new ShortcutComparator());
 		} else if (StringUtils.equals("owner", institutes.getSortColumn())){
@@ -98,13 +99,13 @@ public class InstitutesPage extends BasePage{
 		return institutes;
 	}
 
-	private class InstituteTable extends AbstractPagedTable<InstituteDetails> {
+	private class InstituteTable extends AbstractPagedTable<InstituteInfo> {
 
 		private static final long serialVersionUID = -6072435481342714879L;
 
 		@Override
-		public DataPage<InstituteDetails> getDataPage(int startRow, int pageSize) {
-			return fetchDataPage(startRow, pageSize);
+		public DataPage<InstituteInfo> getDataPage(int startRow, int pageSize) {
+			return getDataPage(startRow, pageSize);
 		}
 		
 	}
@@ -120,8 +121,8 @@ public class InstitutesPage extends BasePage{
 	
 	/* ----------- institute sorting comparators -------------*/
 	
-	private class NameComparator implements Comparator<InstituteDetails> {
-		public int compare(InstituteDetails f1, InstituteDetails f2) {
+	private class NameComparator implements Comparator<InstituteInfo> {
+		public int compare(InstituteInfo f1, InstituteInfo f2) {
 			if (institutes.isAscending()) {
 				return f1.getName().compareToIgnoreCase(f2.getName());
 			} else {
@@ -130,8 +131,8 @@ public class InstitutesPage extends BasePage{
 		}
 	}
 
-	private class OwnerComparator implements Comparator<InstituteDetails> {
-		public int compare(InstituteDetails f1, InstituteDetails f2) {
+	private class OwnerComparator implements Comparator<InstituteInfo> {
+		public int compare(InstituteInfo f1, InstituteInfo f2) {
 			if (institutes.isAscending()) {
 				return f1.getOwnername().compareToIgnoreCase(f2.getOwnername());
 			} else {
@@ -140,8 +141,8 @@ public class InstitutesPage extends BasePage{
 		}
 	}
 
-	private class ShortcutComparator implements Comparator<InstituteDetails> {
-		public int compare(InstituteDetails f1, InstituteDetails f2) {
+	private class ShortcutComparator implements Comparator<InstituteInfo> {
+		public int compare(InstituteInfo f1, InstituteInfo f2) {
 			if (institutes.isAscending()) {
 				return f1.getShortcut().compareToIgnoreCase(f2.getShortcut());
 			} else {

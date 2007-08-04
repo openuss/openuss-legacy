@@ -16,7 +16,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Institute;
-import org.openuss.lecture.InstituteDetails;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
@@ -35,7 +35,7 @@ public class InstitutesPage extends BasePage{
 	@Property (value="#{lectureService}")
 	private LectureService lectureService;
 	
-	private Set<InstituteDetails> changedInstitutes = new HashSet<InstituteDetails>();
+	private Set<InstituteInfo> changedInstitutes = new HashSet<InstituteInfo>();
 
 	private InstituteDataProvider provider = new InstituteDataProvider();
 
@@ -51,14 +51,14 @@ public class InstitutesPage extends BasePage{
 	}
 	
 	private Institute currentInstitute() {
-		InstituteDetails details = provider.getRowData();
+		InstituteInfo details = provider.getRowData();
 		Institute institute = Institute.Factory.newInstance();
 		institute.setId(details.getId());
 		return institute;
 	}
 	
 	public void changedInstitute(ValueChangeEvent event) throws LectureException {
-		InstituteDetails instituteDetails = provider.getRowData();
+		InstituteInfo instituteDetails = provider.getRowData();
 		logger.debug("changed state of " + instituteDetails.getName() + " from " + event.getOldValue() + " to " + event.getNewValue());
 		changedInstitutes.add(instituteDetails);
 	}
@@ -68,7 +68,7 @@ public class InstitutesPage extends BasePage{
 	 * @return outcome
 	 */
 	public String save() {
-		for (InstituteDetails instituteDetails : changedInstitutes) {
+		for (InstituteInfo instituteDetails : changedInstitutes) {
 			Institute institute = lectureService.getInstitute(instituteDetails.getId());
 			institute.setEnabled(instituteDetails.isEnabled());
 			lectureService.persist(institute);
@@ -80,18 +80,18 @@ public class InstitutesPage extends BasePage{
 		return Constants.SUCCESS;
 	}
 	
-	private class InstituteDataProvider extends AbstractPagedTable<InstituteDetails> {
+	private class InstituteDataProvider extends AbstractPagedTable<InstituteInfo> {
 		
 		private static final long serialVersionUID = 8894509911074086603L;
 		
-		private DataPage<InstituteDetails> page;
+		private DataPage<InstituteInfo> page;
 		
 		@Override
-		public DataPage<InstituteDetails> getDataPage(int startRow, int pageSize) {
+		public DataPage<InstituteInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null){
-				List<InstituteDetails> institutes = new ArrayList<InstituteDetails>(lectureService.getInstitutes(false));
+				List<InstituteInfo> institutes = new ArrayList<InstituteInfo>(lectureService.getInstitutes(false));
 				sort(institutes);
-				page = new DataPage<InstituteDetails>(institutes.size(), 0, institutes);
+				page = new DataPage<InstituteInfo>(institutes.size(), 0, institutes);
 			}
 			return page;
 		}
