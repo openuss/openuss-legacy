@@ -26,7 +26,7 @@ public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.op
 		getCourses().remove(course);
 	}
 
-	@Override
+	@Override 
 	public Boolean isActive() {
 		Date now = new Date();
 		if (this.getStartdate().before((now)) && this.getEnddate().after(now))

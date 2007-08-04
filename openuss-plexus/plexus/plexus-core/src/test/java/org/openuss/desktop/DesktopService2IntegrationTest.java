@@ -11,7 +11,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.Department;
-import org.openuss.lecture.Institute;
+import org.openuss.lecture.DepartmentDao;
+import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.Period;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
@@ -278,18 +279,47 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 	}
 	
 	@SuppressWarnings( { "unchecked" })
-	public void testFindCoursesOfCurrentPeriodByUser () {
-		logger.info("----> BEGIN access to findCoursesOfCurrentPeriodsByUser(userId) test");
+	public void testFindLinkedDepartmentsByUserAndUniversity () {
+		logger.info("----> BEGIN access to findLinkedDepartmentsByUserAndUniversity(userId, universityId) test");
+		
+		//Create Universities
+		University university1 = testUtility.createUniqueUniversityInDB();
+		University university2 = testUtility.createUniqueUniversityInDB();
 		
 		//Create Desktop
 		Desktop desktop = this.createDesktop();
 		
-		//Create Department
-		Department department = testUtility.createUniqueDepartmentInDB();
+		//Create Departments
+		Department department1 = testUtility.createUniqueDepartmentInDB();
+		department1.setUniversity(university1);
+		
+		Department department2 = testUtility.createUniqueDepartmentInDB();
+		department2.setUniversity(university2);
+		
+		Department department3 = testUtility.createUniqueDepartmentInDB();
+		department3.setUniversity(university1);
 		
 		//Link
-		desktop.getDepartments().add(department);
-		int sizeBefore = desktop.getDepartments().size();
+		desktop.getDepartments().add(department1);
+		desktop.getDepartments().add(department2);
+		desktop.getDepartments().add(department3);
+		flush();
+		
+		//Test
+		try {
+			List<DepartmentInfo> linkedDepartments = 
+				this.getDesktopService2().findLinkedDepartmentsByUserAndUniversity(desktop.getUser().getId(), university1.getId());
+			assertNotNull(linkedDepartments);
+			assertEquals(2, linkedDepartments.size());
+			
+		} catch (DesktopException dexc) {}
+		
+		logger.info("----> END access to findLinkedDepartmentsByUserAndUniversity(userId, universityId) test");
+	}
+	
+	@SuppressWarnings( { "unchecked" })
+	public void testFindAdditionalDepartmentsByUserAndUniversity () {
+		logger.info("----> BEGIN access to findLinkedInstitutesByUserAndUniversity(userId, universityId) test");
 		
 		//Create Courses
 		Course course1 = testUtility.createUniqueCourseInDB();
@@ -305,111 +335,15 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		Period period3 = testUtility.createUniquePeriodInDB();
 		course3.setPeriod(period3);
 		
-		//Link
-		desktop.getCourses().add(course1);
-		desktop.getCourses().add(course2);
-		desktop.getCourses().add(course3);
-		flush();
-		
-		//Test
-		try {
-			List<Course> courses = this.getDesktopService2().findCoursesOfCurrentPeriodByUser(desktop.getUser().getId());
-			assertNotNull(courses);
-			assertEquals(1, courses.size());
-			
-		} catch (DesktopException dexc) {}
-		
-		logger.info("----> END access to findCoursesOfCurrentPeriodsByUser(userId) test");
+		logger.info("----> END access to findLinkedInstitutesByUserAndUniversity(userId, universityId) test");
 	}
 	
 	@SuppressWarnings( { "unchecked" })
-	public void testFindCoursesOfPastPeriodsByUser () {
-		logger.info("----> BEGIN access to findCoursesOfPastPeriodsByUser(userId) test");
+	public void testFindLinkedInstitutesByUserAndUniversity () {
+		logger.info("----> BEGIN access to findLinkedInstitutesByUserAndUniversity(userId, universityId) test");
 		
-		//Create Desktop
-		Desktop desktop = this.createDesktop();
 		
-		//Create Department
-		Department department = testUtility.createUniqueDepartmentInDB();
-		
-		//Link
-		desktop.getDepartments().add(department);
-		int sizeBefore = desktop.getDepartments().size();
-		
-		//Create Periods
-		Period period1 = testUtility.createUniquePeriodInDB();
-		Period period2 = testUtility.createUniquePeriodInDB();
-		Period period3 = testUtility.createUniquePeriodInDB();
-		
-		//Create Courses
-		Course course1 = testUtility.createUniqueCourseInDB();
-		course1.setPeriod(period1);
-		//course1.getInstitute().setActivePeriod(period1);
-		
-		Course course2 = testUtility.createUniqueCourseInDB();
-		course2.setPeriod(period2);
-		
-		Course course3 = testUtility.createUniqueCourseInDB();
-		course3.setPeriod(period3);
-		
-		//Link
-		desktop.getCourses().add(course1);
-		desktop.getCourses().add(course2);
-		desktop.getCourses().add(course3);
-		flush();
-		
-		//Test
-		try {
-			List<Course> courses = this.getDesktopService2().findCoursesOfPastPeriodsByUser(desktop.getUser().getId());
-			assertNotNull(courses);
-			assertEquals(2, courses.size());
-			
-		} catch (DesktopException dexc) {}
-		
-		logger.info("----> END access to findCoursesOfPastPeriodsByUser(userId) test");
-	}
-	
-	@SuppressWarnings( { "unchecked" })
-	public void testFindInstitutesOfCurrentCoursesByUser () {
-		logger.info("----> BEGIN access to findInstitutesOfCurrentCoursesByUser(userId) test");
-		
-		//Create Desktop
-		Desktop desktop = this.createDesktop();
-		
-		//Create user
-		User user = desktop.getUser();
-		
-		//Create Period
-		Period period = testUtility.createUniquePeriodInDB();
-		
-		//Create Courses
-		Course course1 = testUtility.createUniqueCourseInDB();
-		course1.setPeriod(period);
-		//course1.getInstitute().setActivePeriod(period);
-
-		Course course2 = testUtility.createUniqueCourseInDB();
-		course2.setPeriod(period);
-		//course2.getInstitute().setActivePeriod(period);
-		
-		Course course3 = testUtility.createUniqueCourseInDB();
-		course3.setPeriod(period);
-		//course3.getInstitute().setActivePeriod(period);
-		
-		//Link
-		desktop.getCourses().add(course1);
-		desktop.getCourses().add(course2);
-		desktop.getCourses().add(course3);
-		flush();
-		
-		//Test
-		try {
-			List<Institute> institutes = this.getDesktopService2().findInstitutesOfCurrentCoursesByUser(user.getId());
-			assertNotNull(institutes);
-			assertEquals(3, institutes.size());
-			
-		} catch (DesktopException dexc) {}
-		
-		logger.info("----> END access to findInstitutesOfCurrentCoursesByUser(userId) test");
+		logger.info("----> END access to findLinkedInstitutesByUserAndUniversity(userId, universityId) test");
 	}
 	
 	public void testUnlinkAllFromUniversity() throws Exception {

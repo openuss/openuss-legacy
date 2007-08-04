@@ -9,7 +9,7 @@ import org.apache.commons.lang.Validate;
 
 /**
  * @see org.openuss.lecture.Department
- * @author Ron Haus
+ * @author Ron Haus, Florian Dondorf
  */
 public class DepartmentImpl
     extends org.openuss.lecture.DepartmentBase
@@ -25,6 +25,8 @@ public class DepartmentImpl
      */
     public void add(org.openuss.lecture.Institute institute)
     {
+        if (institute != null)
+        	this.getInstitutes().add(institute);
 		Validate.notNull(institute, "Department.add(Institute) - institute cannot be null");
 
 		if (!this.getInstitutes().contains(institute)) {

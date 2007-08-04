@@ -13,9 +13,9 @@ import java.util.List;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Course;
-import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Department;
+import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.University;
 import org.openuss.security.User;
@@ -49,7 +49,7 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		Validate.notNull(user, "DesktopService2.handleFindDesktopByUser - No user found corresponding to the userId "+userId);
 		
 		Desktop desktop = getDesktopDao().findByUser(user);
-		
+	
 		if (desktop == null) {
 			// create new desktop
 			logger.debug("DesktopService2.handleFindDesktopByUser - desktop doesn't exist for user, create new one");
@@ -345,74 +345,76 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 	}
 	
 	/**
-	 * @see org.openuss.desktop.DesktopService2#handleFindCoursesOfCurrentPeriodByUser(java.lang.Long)
+	 * @see org.openuss.desktop.DesktopService2#handleFindLinkedDepartmentsByUserAndUniversity(java.lang.Long, java.lang.Long universityId)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindCoursesOfCurrentPeriodByUser(java.lang.Long userId) throws java.lang.Exception {
+	protected List handleFindLinkedDepartmentsByUserAndUniversity(java.lang.Long userId, 
+			java.lang.Long universityId) throws java.lang.Exception {
 		
-		Validate.notNull(userId, "DesktopService2.handleFindCoursesOfCurrentPeriodByUser - userId cannot be null!");
+		Validate.notNull(userId, "DesktopService2.handleFindLinkedDEpartmentsByUserAndUniversity - userId cannot be null!");
+		Validate.notNull(universityId, "DesktopService2.handleFindLinkedDEpartmentsByUserAndUniversity - universityId cannot be null!");
 		
 		User user = this.getUserDao().load(userId);
-		Validate.notNull(user, "DesktopService2.handleFindCoursesOfCurrentPeriodByUser - No user found corresponding to the userId");
+		Validate.notNull(user, "DesktopService2.handleFindLinkedDepartmentsByUserAndUniversity - No user found corresponding to the userId "+userId);
 		
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university, "DesktopService2.handleFindLinkedDepartmentsByUserAndUniversity - No university found corresponding to the universityId "+universityId);
+		
+		// Get linked departments of user for given university
 		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
-		List<CourseInfo> currentCourses = desktopInfo.getCourseInfos();		
-		Iterator iter = currentCourses.iterator();
+		List<DepartmentInfo> linkedDepartments = new ArrayList<DepartmentInfo>();
+		Iterator iter = desktopInfo.getDepartmentInfos().iterator();
 		while (iter.hasNext()) {
-			CourseInfo courseInfo = (CourseInfo) iter.next();
-			Course course = (Course) this.getCourseDao().load(courseInfo.getId());
-			if (!course.getPeriod().isActive()) {
-				currentCourses.remove(courseInfo);
+			DepartmentInfo departmentInfo = (DepartmentInfo) iter.next();
+			if (departmentInfo.getUniversityId() == university.getId()) {
+				linkedDepartments.add(departmentInfo);
 			}
 		}
 		
-		return currentCourses;
+		return linkedDepartments;
 	}
 	
 	/**
-	 * @see org.openuss.desktop.DesktopService2#handleFindCoursesOfPastPeriodsByUser(java.lang.Long)
+	 * @see org.openuss.desktop.DesktopService2#handleFindAdditionalDepartmentsByUserAndUniversity(java.lang.Long, java.lang.Long universityId)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindCoursesOfPastPeriodsByUser(java.lang.Long userId) throws java.lang.Exception {
+	protected List handleFindAdditionalDepartmentsByUserAndUniversity(java.lang.Long userId, 
+			java.lang.Long universityId) throws java.lang.Exception {
 		
-		Validate.notNull(userId, "DesktopService2.handleFindCoursesOfCurrentPeriodByUser - userId cannot be null!");
-		
-		User user = this.getUserDao().load(userId);
-		Validate.notNull(user, "DesktopService2.handleFindCoursesOfCurrentPeriodByUser - No user found corresponding to the userId");
-		
-		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
-		List<CourseInfo> pastCourses = desktopInfo.getCourseInfos();
-		Iterator iter = pastCourses.iterator();
-		while (iter.hasNext()) {
-			CourseInfo courseInfo = (CourseInfo) iter.next();
-			Course course = (Course) this.getCourseDao().load(courseInfo.getId());
-			if (course.getPeriod().isActive()) {
-				pastCourses.remove(courseInfo);
-			}
-		}
-		
-		return pastCourses;
+		//TODO: Implement this method!
+		throw new UnsupportedOperationException("Operation not implemented.");
 	}
 
 	/**
-	 * @see org.openuss.desktop.DesktopService2#handleFindInstitutesOfCurrentCoursesByUser(java.lang.Long)
+	 * @see org.openuss.desktop.DesktopService2#handleFindLinkedInstitutesByUserAndUniversity(java.lang.Long, java.lang.Long universityId)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindInstitutesOfCurrentCoursesByUser(java.lang.Long userId) throws java.lang.Exception {
+	protected List handleFindLinkedInstitutesByUserAndUniversity(java.lang.Long userId,
+			java.lang.Long universityId) throws java.lang.Exception {
 		
-		Validate.notNull(userId, "DesktopService2.handleFindCoursesOfCurrentPeriodByUser - userId cannot be null!");
+		//TODO: Implement this method!
+		throw new UnsupportedOperationException("Operation not implemented.");
+	}
+	
+	/**
+	 * @see org.openuss.desktop.DesktopService2#handleFindAdditionalInstitutesByUserAndUniversity(java.lang.Long, java.lang.Long universityId)
+	 */
+	@SuppressWarnings( { "unchecked" })
+	protected List handleFindAdditionalInstitutesByUserAndUniversity(java.lang.Long userId,
+			java.lang.Long universityId) throws java.lang.Exception {
 		
-		User user = this.getUserDao().load(userId);
-		Validate.notNull(user, "DesktopService2.handleFindInstitutesOfCurrentCoursesByUser - No user found corresponding to the userId");
+		//TODO: Implement this method!
+		throw new UnsupportedOperationException("Operation not implemented.");
+	}
+	
+	/**
+	 * @see org.openuss.desktop.DesktopService2#handleFindCoursesByUserAndUniversity(java.lang.Long, java.lang.Long universityId)
+	 */
+	@SuppressWarnings( { "unchecked" })
+	protected List handleFindLinkedCoursesByUserAndUniversity(java.lang.Long userId,
+			java.lang.Long universityId) throws java.lang.Exception {
 		
-		List<Institute> institutes = new ArrayList<Institute>();
-		List<Course> courses = this.findCoursesOfCurrentPeriodByUser(userId);
-		Iterator iter = courses.iterator();
-		while (iter.hasNext()) {
-			Course course = (Course) iter.next();
-			institutes.add(course.getCourseType().getInstitute());
-		}
-		
-		return institutes;
+		//TODO: Implement this method!
+		throw new UnsupportedOperationException("Operation not implemented.");
 	}
 }
