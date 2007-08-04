@@ -50,10 +50,10 @@ public class InstitutePage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
-		if (period == null && institute != null || institute != null && !institute.getPeriods().contains(period)) {
-			period = institute.getActivePeriod();
-			if (period == null && institute.getPeriods().size() > 0) {
-				period = institute.getPeriods().get(0);
+		if (period == null && institute != null || institute != null && !institute.getDepartment().getUniversity().getPeriods().contains(period)) {
+			period = institute.getDepartment().getUniversity().getActivePeriod();
+			if (period == null && institute.getDepartment().getUniversity().getPeriods().size() > 0) {
+				period = institute.getDepartment().getUniversity().getPeriods().get(0);
 			}
 		} else {
 			period = lectureService.getPeriod(period.getId());

@@ -57,7 +57,7 @@ public abstract class AbstractLecturePage extends BasePage {
 			addError(i18n("message_error_no_institute_selected"));
 			redirect(Constants.DESKTOP);
 		} else { 
-			if (!institute.isEnabled()) {
+			if (!institute.getEnabled()) {
 				addMessage(i18n("institute_not_activated"));
 			}
 			generateCrumbs();

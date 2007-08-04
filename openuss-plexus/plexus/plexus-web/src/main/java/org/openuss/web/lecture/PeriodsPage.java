@@ -56,7 +56,7 @@ public class PeriodsPage extends AbstractLecturePage {
 		if (institute != null) {
 			// refresh period list
 			// TODO ask the lectureService instead of institute and use value objects
-			List<Period> periods = institute.getPeriods();
+			List<Period> periods = institute.getDepartment().getUniversity().getPeriods();
 			
 			period = (Period) getSessionBean(Constants.PERIOD);
 			if (period != null) {
@@ -300,7 +300,7 @@ public class PeriodsPage extends AbstractLecturePage {
 		@Override
 		public DataPage<Period> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<Period> periods = new ArrayList<Period>(institute.getPeriods());
+				List<Period> periods = new ArrayList<Period>(institute.getDepartment().getUniversity().getPeriods());
 				sort(periods);
 				page = new DataPage<Period>(periods.size(),0,periods);
 			}

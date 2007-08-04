@@ -25,6 +25,7 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 	
 	public String registrate() throws DesktopException, LectureException {
 		// connect institute to user
+		//FIXME:setOwnerName?
 		institute.setOwner(user);
 		// create institute
 		lectureService.createInstitute(institute);

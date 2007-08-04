@@ -29,7 +29,7 @@ public class AbstractPeriodPage extends AbstractLecturePage {
 			// check security constraint
 			// TODO acegi should check this method if user is allow to read or
 			// update the period
-			if (!institute.getPeriods().contains(period)) {
+			if (!institute.getDepartment().getUniversity().getPeriods().contains(period)) {
 				period = null;
 				addMessage(i18n("message_error_period_does_not_belong_to_selected_institute"));
 				redirect(Constants.INSTITUTE_PERIODS_PAGE);
