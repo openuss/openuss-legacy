@@ -13,10 +13,12 @@ import java.util.List;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Department;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.Institute;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.University;
 import org.openuss.security.User;
 
@@ -381,8 +383,50 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 	protected List handleFindAdditionalDepartmentsByUserAndUniversity(java.lang.Long userId, 
 			java.lang.Long universityId) throws java.lang.Exception {
 		
-		//TODO: Implement this method!
-		throw new UnsupportedOperationException("Operation not implemented.");
+		Validate.notNull(userId, "DesktopService2.handleFindAdditionalDepartmentsByUserAndUniversity - userId cannot be null!");
+		Validate.notNull(universityId, "DesktopService2.handleFindAdditionalDepartmentsByUserAndUniversity - universityId cannot be null!");
+		
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user, "DesktopService2.handleFindAdditionalDepartmentsByUserAndUniversity - No user found corresponding to the userId "+userId);
+		
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university, "DesktopService2.handleFindAdditionalDepartmentsByUserAndUniversity - No university found corresponding to the universityId "+universityId);
+		
+		// Get additional departments of user for given university
+		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
+		
+		// Get additional institutes
+		List<DepartmentInfo> additionalDepartments = new ArrayList<DepartmentInfo>();
+		List<InstituteInfo> additionalInstitutes = new ArrayList<InstituteInfo>();
+		Iterator iter = desktopInfo.getCourseInfos().iterator();
+		while (iter.hasNext()) {
+			CourseInfo courseInfo = (CourseInfo) iter.next();
+			CourseType courseType = (CourseType) this.getCourseTypeDao().load(courseInfo.getCourseTypeId());
+			InstituteInfo instituteInfo = this.getInstituteDao().toInstituteInfo(
+					this.getInstituteDao().load(courseType.getInstitute().getId()));
+			if (!desktopInfo.getInstituteInfos().contains(instituteInfo)) {
+				additionalInstitutes.add(instituteInfo);
+			}
+		}
+		
+		// Create list of all institutes (linked + additional)
+		List<InstituteInfo> allInstitutes = new ArrayList<InstituteInfo>();
+		allInstitutes.addAll(additionalInstitutes);
+		allInstitutes.addAll(desktopInfo.getInstituteInfos());
+		
+		// Get additional departments
+		iter = allInstitutes.iterator();
+		while (iter.hasNext()) {
+			InstituteInfo instituteInfo = (InstituteInfo) iter.next();
+			Institute institute = this.getInstituteDao().load(instituteInfo.getId());
+			DepartmentInfo departmentInfo = this.getDepartmentDao().toDepartmentInfo(institute.getDepartment());
+			if (!desktopInfo.getDepartmentInfos().contains(departmentInfo) &&
+					!additionalDepartments.contains(departmentInfo)) {
+				additionalDepartments.add(departmentInfo);
+			}
+		}
+		
+		return additionalDepartments;
 	}
 
 	/**
@@ -392,8 +436,29 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 	protected List handleFindLinkedInstitutesByUserAndUniversity(java.lang.Long userId,
 			java.lang.Long universityId) throws java.lang.Exception {
 		
-		//TODO: Implement this method!
-		throw new UnsupportedOperationException("Operation not implemented.");
+		Validate.notNull(userId, "DesktopService2.handleFindLinkedInstitutesByUserAndUniversity - userId cannot be null!");
+		Validate.notNull(universityId, "DesktopService2.handleFindLinkedInstitutesByUserAndUniversity - universityId cannot be null!");
+		
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user, "DesktopService2.handleFindLinkedInstitutesByUserAndUniversity - No user found corresponding to the userId "+userId);
+		
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university, "DesktopService2.handleFindLinkedInstitutesByUserAndUniversity - No university found corresponding to the universityId "+universityId);
+		
+		// Get linked institutes of user for given university
+		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
+		List<InstituteInfo> linkedInstitutes = new ArrayList<InstituteInfo>();
+		Iterator iter = desktopInfo.getInstituteInfos().iterator();
+		while (iter.hasNext()) {
+			InstituteInfo instituteInfo = (InstituteInfo) iter.next();
+			Institute institute = this.getInstituteDao().load(instituteInfo.getId());
+			//Department department = this.getDepartmentDao().load(instituteInfo.getDepartmentId());
+			if (institute.getDepartment().getUniversity().getId() == university.getId()) {
+				linkedInstitutes.add(instituteInfo);
+			}
+		}
+		
+		return linkedInstitutes;
 	}
 	
 	/**
@@ -414,7 +479,27 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 	protected List handleFindLinkedCoursesByUserAndUniversity(java.lang.Long userId,
 			java.lang.Long universityId) throws java.lang.Exception {
 		
-		//TODO: Implement this method!
-		throw new UnsupportedOperationException("Operation not implemented.");
+		Validate.notNull(userId, "DesktopService2.handleFindCoursesByUserAndUniversity - userId cannot be null!");
+		Validate.notNull(universityId, "DesktopService2.handleFindCoursesByUserAndUniversity - universityId cannot be null!");
+		
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user, "DesktopService2.handleFindCoursesByUserAndUniversity - No user found corresponding to the userId "+userId);
+		
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university, "DesktopService2.handleFindCoursesByUserAndUniversity - No university found corresponding to the universityId "+universityId);
+		
+		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
+		List<CourseInfo> linkedCourses = new ArrayList<CourseInfo>();
+		
+		Iterator iter = desktopInfo.getCourseInfos().iterator();
+		while (iter.hasNext()) {
+			CourseInfo courseInfo = (CourseInfo) iter.next();
+			Course course = this.getCourseDao().courseInfoToEntity(courseInfo);
+			if (course.getCourseType().getInstitute().getDepartment().getUniversity().getId() == universityId) {
+				linkedCourses.add(courseInfo);
+			}
+		}
+		
+		return linkedCourses;
 	}
 }
