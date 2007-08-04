@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.Validate;
+
 /**
  * @see org.openuss.lecture.Institute
  * @author Ron Haus
@@ -24,18 +26,32 @@ public class InstituteImpl extends org.openuss.lecture.InstituteBase implements 
 	 * @see org.openuss.lecture.Institute#add(org.openuss.lecture.CourseType)
 	 */
 	public void add(org.openuss.lecture.CourseType courseType) {
-		// @todo implement public void add(org.openuss.lecture.CourseType courseType)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.lecture.Institute.add(org.openuss.lecture.CourseType courseType) Not implemented!");
+		Validate.notNull(courseType, "Institute.add(CourseType) - courseType cannot be null");
+
+		if (!this.getCourseTypes().contains(courseType)) {
+			this.getCourseTypes().add(courseType);
+			courseType.setInstitute(this);
+		} else {
+			courseType.setInstitute(this);
+			throw new IllegalArgumentException(
+					"Institute.add(CourseType) - the CourseType has already been in the List");
+		}
 	}
 
 	/**
 	 * @see org.openuss.lecture.Institute#remove(org.openuss.lecture.CourseType)
 	 */
 	public void remove(org.openuss.lecture.CourseType courseType) {
-		// @todo implement public void remove(org.openuss.lecture.CourseType courseType)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.lecture.Institute.remove(org.openuss.lecture.CourseType courseType) Not implemented!");
+		Validate.notNull(courseType, "Institute.remove(CourseType) - courseType cannot be null");
+
+		if (!this.getCourseTypes().remove(courseType)) {
+			if (courseType.getInstitute().equals(this)) {
+				courseType.setInstitute(null);
+			}
+			throw new IllegalArgumentException(
+					"Institute.remove(CourseType) - the CourseType has not been in the List");
+		}
+		courseType.setInstitute(null);
 	}
 
 	/**

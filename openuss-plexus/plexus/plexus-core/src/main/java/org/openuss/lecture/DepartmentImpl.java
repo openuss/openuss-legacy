@@ -5,8 +5,11 @@
  */
 package org.openuss.lecture;
 
+import org.apache.commons.lang.Validate;
+
 /**
  * @see org.openuss.lecture.Department
+ * @author Ron Haus
  */
 public class DepartmentImpl
     extends org.openuss.lecture.DepartmentBase
@@ -22,8 +25,16 @@ public class DepartmentImpl
      */
     public void add(org.openuss.lecture.Institute institute)
     {
-        // @todo implement public void add(org.openuss.lecture.Institute institute)
-        throw new java.lang.UnsupportedOperationException("org.openuss.lecture.Department.add(org.openuss.lecture.Institute institute) Not implemented!");
+		Validate.notNull(institute, "Department.add(Institute) - institute cannot be null");
+
+		if (!this.getInstitutes().contains(institute)) {
+			this.getInstitutes().add(institute);
+			institute.setDepartment(this);
+		} else {
+			institute.setDepartment(this);
+			throw new IllegalArgumentException(
+					"Department.add(Institute) - the Institute has already been in the List");
+		}
     }
 
     /**
@@ -31,8 +42,16 @@ public class DepartmentImpl
      */
     public void remove(org.openuss.lecture.Institute institute)
     {
-        // @todo implement public void remove(org.openuss.lecture.Institute institute)
-        throw new java.lang.UnsupportedOperationException("org.openuss.lecture.Department.remove(org.openuss.lecture.Institute institute) Not implemented!");
+    	Validate.notNull(institute, "Department.remove(Institute) - institute cannot be null");
+
+		if (!this.getInstitutes().remove(institute)) {
+			if (institute.getDepartment().equals(this)) {
+				institute.setDepartment(null);
+			}
+			throw new IllegalArgumentException(
+					"Department.remove(Institute) - the Institute has not been in the List");
+		}
+		institute.setDepartment(null);
     }
 
 }
