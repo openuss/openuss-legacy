@@ -201,6 +201,16 @@ public class LectureServiceImpl extends LectureServiceBase {
 
 	@Override
 	protected void handlePersist(Institute institute) throws Exception {
+		if (logger.isDebugEnabled())
+			logger.debug("Method handlePersist: Save institute " + institute.getName());
+
+		if (institute.getId() != null) {
+			logger.debug("Method handlePersist: Update institute " + institute.getName());
+			getInstituteDao().update(institute);
+		} else {
+			logger.error("Institute object without id, use createInstitute method instead!!!");
+			throw new LectureServiceException("Use createInstitute method instead!");
+		}
 		throw new UnsupportedOperationException("This method is deprecated!");
 		/*
 		 * if (logger.isDebugEnabled()) logger.debug("Method handlePersist: Save institute " + institute.getName());

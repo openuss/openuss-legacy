@@ -48,6 +48,7 @@ public abstract class DomainIndexer extends LuceneIndexSupport {
 	 * Delete the index entry of the domain object
 	 */
 	public void delete() {
+		logger.debug("Method delete: delete index entry for domain object");
 		Validate.notNull(getDomainObject(),"Field domainObject must not be null");
 		logger.debug("deleting domain object ["+getDomainObject().getId()+"] from index");
 		Term term = new Term(IDENTIFIER, String.valueOf(getDomainObject().getId()));
