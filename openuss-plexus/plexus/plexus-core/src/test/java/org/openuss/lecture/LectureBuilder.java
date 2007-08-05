@@ -29,6 +29,14 @@ public class LectureBuilder {
 	
 	private InstituteDao instituteDao;
 	
+	private Course course;
+	
+	private CourseDao courseDao;
+	
+    private CourseType courseType;
+	
+	private CourseTypeDao courseTypeDao;
+	
 	private static int code = 0;
 	
 	public LectureBuilder createUniversity() {
@@ -54,6 +62,24 @@ public class LectureBuilder {
 		institute.setTheme("plexus");
 		institute.setWebsite("www.openuss.org");
 		//institute.setOwner(owner);
+		return this;
+	}
+	
+	public LectureBuilder createCourse(Institute institute, CourseType courseType) {
+		course = Course.Factory.newInstance();
+		course.setCourseType(courseType);
+		course.setDescription("A pretty good course");
+		course.setInstitute(institute);
+		course.setShortcut("PJS ALM");
+		course.setId(15l);
+		return this;
+	}
+	
+	public LectureBuilder createCourseType(Institute institute) {
+		courseType = CourseType.Factory.newInstance();
+		courseType.setInstitute(institute);
+		courseType.setDescription("A pretty good courseType");
+		courseType.setName("PJS ALM CourseType");
 		return this;
 	}
 	
@@ -96,7 +122,7 @@ public class LectureBuilder {
 	}
 	
 	public Course getCourse() {
-		return getCourse(0);
+		return this.course;
 	}
 	
 	public Course getCourse(int index) {
@@ -120,7 +146,15 @@ public class LectureBuilder {
 		return courseType;
 	}
 	
-	public Period addPeriod(University university) {
+	public CourseType getCourseType() {
+		return this.courseType;
+	}
+	
+	public CourseType getCourseType(int index) {
+		return institute.getCourseTypes().get(index);
+	}
+	
+	public Period addPeriod(Institute institute) {
 		Period period = LectureFactory.createPeriod();
 		period.setUniversity(university);
 		university.getPeriods().add(period);
