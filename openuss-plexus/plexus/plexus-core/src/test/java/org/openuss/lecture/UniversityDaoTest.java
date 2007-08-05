@@ -118,6 +118,22 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		// Create the corresponding ValueObject
 		UniversityInfo universityInfo1 = new UniversityInfo();
 		universityInfo1.setId(universityDefault.getId());
+		universityInfo1.setAddress(universityDefault.getAddress());
+		universityInfo1.setCity(universityDefault.getCity());
+		universityInfo1.setCountry(universityDefault.getCountry());
+		universityInfo1.setDescription(universityDefault.getDescription());
+		universityInfo1.setEmail(universityDefault.getEmail());
+		universityInfo1.setEnabled(universityDefault.getEnabled());
+		universityInfo1.setLocale(universityDefault.getLocale());
+		universityInfo1.setName(universityDefault.getName());
+		universityInfo1.setOwnerName(universityDefault.getOwnerName());
+		universityInfo1.setPostcode(universityDefault.getPostcode());
+		universityInfo1.setShortcut(universityDefault.getShortcut());
+		universityInfo1.setTelefax(universityDefault.getTelefax());
+		universityInfo1.setTelephone(universityDefault.getTelephone());
+		universityInfo1.setTheme(universityDefault.getTheme());
+		universityInfo1.setUniversityType(universityDefault.getUniversityType());
+		universityInfo1.setWebsite(universityDefault.getWebsite());
 		
 		// Test toEntity
 		University university1 = universityDao.universityInfoToEntity(universityInfo1);

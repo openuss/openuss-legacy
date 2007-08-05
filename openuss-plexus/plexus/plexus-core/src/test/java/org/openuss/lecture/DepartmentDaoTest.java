@@ -75,7 +75,7 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		
 	}
 
-	public void testDepartmentDaotoDepartmentInfo() {
+	public void testDepartmentDaoToDepartmentInfo() {
 		
 		//Create university
 		University university = testUtility.createUniqueUniversityInDB();

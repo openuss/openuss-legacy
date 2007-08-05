@@ -51,7 +51,7 @@ public class UniversityDaoImpl extends org.openuss.lecture.UniversityDaoBase {
 
 	/**
 	 * @see org.openuss.lecture.UniversityDao#universityInfoToEntity(org.openuss.lecture.UniversityInfo,
-	 *      org.openuss.lecture.University)
+	 *      org.openuss.lecture.University, boolean)
 	 */
 	public void universityInfoToEntity(org.openuss.lecture.UniversityInfo sourceVO,
 			org.openuss.lecture.University targetEntity, boolean copyIfNull) {

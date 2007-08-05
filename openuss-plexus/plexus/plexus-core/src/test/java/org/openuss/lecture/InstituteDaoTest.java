@@ -9,99 +9,16 @@ import java.util.List;
 
 import org.openuss.TestUtility;
 import org.openuss.security.Membership;
-import org.springframework.dao.DataAccessException;
 
 /**
  * JUnit Test for Spring Hibernate InstituteDao class.
+ * 
  * @see org.openuss.lecture.InstituteDao
  * @author Ron Haus, Ingo Dueppe
  */
 public class InstituteDaoTest extends InstituteDaoTestBase {
-	
+
 	private TestUtility testUtility;
-	
-	public void testInstituteDaoCreate() {	
-		//Create Department
-		Department department = testUtility.createUniqueDepartmentInDB();
-		flush();
-		
-		//Create Institutes
-		Institute institute1 = Institute.Factory.newInstance();
-		institute1.setName("Lehrstuhl WI");
-		institute1.setShortcut("LSWI");
-		institute1.setOwnerName("Administrator");
-		institute1.setEnabled(true);
-		institute1.setDescription("Testdescription1");
-		institute1.setMembership(Membership.Factory.newInstance());
-		department.add(institute1);
-		
-		Institute institute2 = Institute.Factory.newInstance();
-		institute2.setName("Lehrstuhl Finanzierung");
-		institute2.setShortcut("LSF");
-		institute2.setOwnerName("Administrator");
-		institute2.setEnabled(true);
-		institute2.setDescription("Testdescription2");
-		institute2.setMembership(Membership.Factory.newInstance());
-		department.add(institute2);
-		
-		assertNull(institute1.getId());
-		instituteDao.create(institute1);
-		assertNotNull(institute1.getId());
-		
-		assertNull(institute2.getId());
-		instituteDao.create(institute2);
-		assertNotNull(institute2.getId());
-		
-		//Synchronize with Database
-		flush();
-	}
-	
-	public void testUniqueShortcut() {
-		Institute institute = createTestInstitute();
-		institute.setShortcut("xxxx");
-		assertNull(institute.getId());
-		instituteDao.create(institute);
-		assertNotNull(institute.getId());
-		
-		Institute institute2 = createTestInstitute();
-		institute2.setShortcut("xxxx");
-		assertNull(institute2.getId());
-		instituteDao.create(institute2);
-		assertNotNull(institute2.getId());
-
-		try {
-			setComplete();
-			endTransaction();
-			fail();
-		} catch (DataAccessException e) {
-			// success - remove the first one
-		}
-	}
-	
-	public void testLoadAllEnabled() {
-		Institute institute1 = createTestInstitute();
-		institute1.setEnabled(false);
-		instituteDao.create(institute1);
-
-		Institute institute2 = createTestInstitute();
-		institute2.setEnabled(true);
-		instituteDao.create(institute2);
-		
-		setComplete();
-		endTransaction();
-		
-		List<Institute> institutes = instituteDao.loadAllEnabled();
-		assertTrue(institutes.contains(institute2));
-		institutes.contains(institute1);
-		assertFalse(institutes.contains(institute1));
-		
-	}
-
-	private Institute createTestInstitute() {
-		LectureBuilder builder = new LectureBuilder().createInstitute(testUtility.createUserInDB());
-		return builder.getInstitute();
-	}
-	
 
 	public TestUtility getTestUtility() {
 		return testUtility;
@@ -110,5 +27,207 @@ public class InstituteDaoTest extends InstituteDaoTestBase {
 	public void setTestUtility(TestUtility testUtility) {
 		this.testUtility = testUtility;
 	}
+
+	public void testInstituteDaoCreate() {
+		// Create Department
+		Department department = testUtility.createUniqueDepartmentInDB();
+		flush();
+
+		// Create Institutes
+		Institute institute1 = Institute.Factory.newInstance();
+		institute1.setName("Lehrstuhl WI");
+		institute1.setShortcut("LSWI");
+		institute1.setOwnerName("Administrator");
+		institute1.setEnabled(true);
+		institute1.setDescription("Testdescription1");
+		institute1.setMembership(Membership.Factory.newInstance());
+		department.add(institute1);
+
+		Institute institute2 = Institute.Factory.newInstance();
+		institute2.setName("Lehrstuhl Finanzierung");
+		institute2.setShortcut("LSF");
+		institute2.setOwnerName("Administrator");
+		institute2.setEnabled(true);
+		institute2.setDescription("Testdescription2");
+		institute2.setMembership(Membership.Factory.newInstance());
+		department.add(institute2);
+
+		assertNull(institute1.getId());
+		instituteDao.create(institute1);
+		assertNotNull(institute1.getId());
+
+		assertNull(institute2.getId());
+		instituteDao.create(institute2);
+		assertNotNull(institute2.getId());
+
+		// Synchronize with Database
+		flush();
+	}
+
+	public void testUniqueShortcut() {
+		// Create Institutes
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		institute1.setShortcut("xxxx");
+		instituteDao.update(institute1);
+		assertNotNull(institute1.getId());
+
+		Institute institute2 = testUtility.createUniqueInstituteInDB();
+		institute2.setShortcut("xxxx");
+		instituteDao.update(institute2);
+		assertNotNull(institute2.getId());
+
+		try {
+			instituteDao.update(institute2);
+
+			// Synchronize with Database
+			flush();
+
+			fail();
+		} catch (Exception e) {
+			// Success
+		}
+	}
+
+	@SuppressWarnings( { "unchecked" })
+	public void testLoadAllEnabled() {
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		Institute institute2 = testUtility.createUniqueInstituteInDB();
+
+		// Synchronize with Database
+		flush();
+
+		institute1.setEnabled(false);
+		instituteDao.update(institute1);
+
+		institute2.setEnabled(true);
+		instituteDao.update(institute2);
+
+		// Synchronize with Database
+		flush();
+
+		List<Institute> institutes = (List<Institute>) instituteDao.loadAllEnabled();
+		assertTrue(institutes.contains(institute2));
+		institutes.contains(institute1);
+		assertFalse(institutes.contains(institute1));
+
+	}
 	
+public void testInstituteDaoToInstituteInfo() {
+		
+	// Create a complete Institute
+	Institute institute = testUtility.createUniqueInstituteInDB();
+	assertNotNull(institute.getId());
+	
+	// Test ValueObject
+	InstituteInfo instituteInfo = instituteDao.toInstituteInfo(institute);
+	
+	assertEquals(institute.getId(), instituteInfo.getId());
+	assertEquals(institute.getName(), instituteInfo.getName());
+	assertEquals(institute.getShortcut(), instituteInfo.getShortcut());
+	assertEquals(institute.getOwnerName(), instituteInfo.getOwnerName());
+	assertEquals(institute.getEnabled(), instituteInfo.getEnabled());
+	assertEquals(institute.getDescription(), instituteInfo.getDescription());	
+	assertEquals(institute.getAddress(), instituteInfo.getAddress());
+	assertEquals(institute.getCity(), instituteInfo.getCity());
+	assertEquals(institute.getCountry(), instituteInfo.getCountry());
+	assertEquals(institute.getEmail(), instituteInfo.getEmail());
+	assertEquals(institute.getLocale(), instituteInfo.getLocale());
+	assertEquals(institute.getPostcode(), instituteInfo.getPostcode());
+	assertEquals(institute.getTelefax(), instituteInfo.getTelefax());
+	assertEquals(institute.getTelephone(), instituteInfo.getTelephone());
+	assertEquals(institute.getWebsite(), instituteInfo.getWebsite());
+	assertEquals(institute.getTheme(), instituteInfo.getTheme());
+	assertEquals(institute.getDepartment().getId(), instituteInfo.getDepartmentId());
+
+	}
+
+	public void testInstituteDaoInstituteInfoToEntity() {
+
+		// Create a complete Institute
+		Institute instituteDefault = testUtility.createUniqueInstituteInDB();
+		assertNotNull(instituteDefault.getId());
+		
+		// Create the corresponding ValueObject
+		InstituteInfo instituteInfo1 = new InstituteInfo();
+		instituteInfo1.setId(instituteDefault.getId());
+		instituteInfo1.setAddress(instituteDefault.getAddress());
+		instituteInfo1.setCity(instituteDefault.getCity());
+		instituteInfo1.setCountry(instituteDefault.getCountry());
+		instituteInfo1.setDescription(instituteDefault.getDescription());
+		instituteInfo1.setEmail(instituteDefault.getEmail());
+		instituteInfo1.setEnabled(instituteDefault.getEnabled());
+		instituteInfo1.setLocale(instituteDefault.getLocale());
+		instituteInfo1.setName(instituteDefault.getName());
+		instituteInfo1.setOwnerName(instituteDefault.getOwnerName());
+		instituteInfo1.setPostcode(instituteDefault.getPostcode());
+		instituteInfo1.setShortcut(instituteDefault.getShortcut());
+		instituteInfo1.setTelefax(instituteDefault.getTelefax());
+		instituteInfo1.setTelephone(instituteDefault.getTelephone());
+		instituteInfo1.setTheme(instituteDefault.getTheme());
+		instituteInfo1.setWebsite(instituteDefault.getWebsite());
+		instituteInfo1.setDepartmentId(instituteDefault.getDepartment().getId());
+		
+		// Test toEntity
+		Institute institute1 = instituteDao.instituteInfoToEntity(instituteInfo1);
+		
+		assertEquals(instituteInfo1.getId(), institute1.getId());
+		assertEquals(instituteInfo1.getName(), institute1.getName());
+		assertEquals(instituteInfo1.getShortcut(), institute1.getShortcut());
+		assertEquals(instituteInfo1.getOwnerName(), institute1.getOwnerName());
+		assertEquals(instituteInfo1.getEnabled(), institute1.getEnabled());
+		assertEquals(instituteInfo1.getDescription(), institute1.getDescription());
+		assertEquals(instituteInfo1.getAddress(), institute1.getAddress());
+		assertEquals(instituteInfo1.getCity(), institute1.getCity());
+		assertEquals(instituteInfo1.getCountry(), institute1.getCountry());
+		assertEquals(instituteInfo1.getEmail(), institute1.getEmail());
+		assertEquals(instituteInfo1.getLocale(), institute1.getLocale());
+		assertEquals(instituteInfo1.getPostcode(), institute1.getPostcode());
+		assertEquals(instituteInfo1.getTelefax(), institute1.getTelefax());
+		assertEquals(instituteInfo1.getTelephone(), institute1.getTelephone());
+		assertEquals(instituteInfo1.getWebsite(), institute1.getWebsite());
+		assertEquals(instituteInfo1.getTheme(), institute1.getTheme());
+		assertEquals(instituteInfo1.getDepartmentId(), institute1.getDepartment().getId());
+		
+		
+		// Create a new ValueObject (no Entity available)
+		InstituteInfo instituteInfo2 = new InstituteInfo();
+		instituteInfo2.setName(testUtility.unique("testUniversity2"));
+		instituteInfo2.setShortcut(testUtility.unique("testU2"));
+		instituteInfo2.setDescription("This is a test University2");
+		instituteInfo2.setEnabled(true);
+		instituteInfo2.setAddress("Leo 18");
+		instituteInfo2.setCity("Münster");
+		instituteInfo2.setCountry("Germany");
+		instituteInfo2.setEmail("openuss@uni-muenster.de");
+		instituteInfo2.setLocale("de");
+		instituteInfo2.setPostcode("48149");
+		instituteInfo2.setTelefax("0251-telefax");
+		instituteInfo2.setTelephone("0251-telephone");
+		instituteInfo2.setTheme("plexus");
+		instituteInfo2.setWebsite("www.openuss.de");
+		instituteInfo2.setDepartmentId(instituteDefault.getDepartment().getId());
+		
+		
+		// Test toEntity
+		Institute institute2 = instituteDao.instituteInfoToEntity(instituteInfo2);
+		
+		assertEquals(instituteInfo2.getId(), institute2.getId());
+		assertEquals(instituteInfo2.getName(), institute2.getName());
+		assertEquals(instituteInfo2.getShortcut(), institute2.getShortcut());
+		assertEquals(instituteInfo2.getOwnerName(), institute2.getOwnerName());
+		assertEquals(instituteInfo2.getEnabled(), institute2.getEnabled());
+		assertEquals(instituteInfo2.getDescription(), institute2.getDescription());
+		assertEquals(instituteInfo2.getAddress(), institute2.getAddress());
+		assertEquals(instituteInfo2.getCity(), institute2.getCity());
+		assertEquals(instituteInfo2.getCountry(), institute2.getCountry());
+		assertEquals(instituteInfo2.getEmail(), institute2.getEmail());
+		assertEquals(instituteInfo2.getLocale(), institute2.getLocale());
+		assertEquals(instituteInfo2.getPostcode(), institute2.getPostcode());
+		assertEquals(instituteInfo2.getTelefax(), institute2.getTelefax());
+		assertEquals(instituteInfo2.getTelephone(), institute2.getTelephone());
+		assertEquals(instituteInfo2.getWebsite(), institute2.getWebsite());
+		assertEquals(instituteInfo2.getTheme(), institute2.getTheme());
+		assertEquals(instituteInfo2.getDepartmentId(), institute2.getDepartment().getId());
+	}
+
 }
