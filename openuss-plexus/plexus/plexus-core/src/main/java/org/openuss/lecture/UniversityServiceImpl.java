@@ -199,7 +199,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#findAllUniversitiesByEnabled(java.lang.Boolean)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindAllUniversitiesByEnabled(Boolean enabled) throws Exception {
+	protected List handleFindUniversitiesByEnabled(Boolean enabled) throws Exception {
 		
 		return this.getUniversityDao().findByEnabled(UniversityDao.TRANSFORM_UNIVERSITYINFO, enabled);
 	}

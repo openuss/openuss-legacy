@@ -82,7 +82,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Validate.notNull(department,
 				"DepartmentService.handleRemoveDepartment - no Department found corresponding to the ID "
 						+ departmentId);
-		
+
 		department.getMembership().getGroups().clear(); // due to problems of cascade
 		this.getDepartmentDao().remove(department);
 
@@ -98,9 +98,8 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		Department department = (Department) this.getDepartmentDao().load(departmentId);
 		Validate.notNull(department,
-				"DepartmentService.handleFindDepartment - no Department found corresponding to the ID "
-						+ departmentId);
-		
+				"DepartmentService.handleFindDepartment - no Department found corresponding to the ID " + departmentId);
+
 		return this.getDepartmentDao().toDepartmentInfo(department);
 	}
 
@@ -122,12 +121,22 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	}
 
 	/**
-	 * @see org.openuss.lecture.DepartmentService#findAllDepartmentsByEnabled(java.lang.Long, java.lang.Boolean)
+	 * @see org.openuss.lecture.DepartmentService#findDepartmentsByUniversityAndEnabled(java.lang.Long,
+	 *      org.openuss.lecture.University, java.lang.Boolean)
 	 */
 	@SuppressWarnings( { "unchecked" })
 	protected List handleFindDepartmentsByUniversityAndEnabled(Long universityId, Boolean enabled) throws Exception {
 
-		return this.getDepartmentDao().findByEnabled(DepartmentDao.TRANSFORM_DEPARTMENTINFO, enabled);
+		Validate.notNull(universityId,
+				"DepartmentService.handleFindDepartmentsByUniversityAndEnabled - the universityId cannot be null");
+
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university,
+				"DepartmentService.handleFindDepartmentsByUniversityAndEnabled - no University found corresponding to the ID "
+						+ universityId);
+
+		return this.getDepartmentDao().findByUniversityAndEnabled(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university,
+				enabled);
 	}
 
 }

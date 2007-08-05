@@ -5,6 +5,8 @@
  */
 package org.openuss.lecture;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.openuss.security.Membership;
@@ -160,6 +162,8 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 	
 	public void testFindDepartmentsByUniversity () {
 		
+		logger.info("----> BEGIN access to findDepartmentsByUniversity(Department) test");
+		
 		//Create University
 		University university = testUtility.createUniqueUniversityInDB();
 		flush();
@@ -205,5 +209,36 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		//assertEquals(departmentInfo2.getName(), departments.get(1).getName());
 		
 		logger.info("----> END access to findDepartmentsByUniversity(Department) test");
+	}
+	
+	public void testFindDepartmentsByUniversityAndEnabled() {
+		logger.info("----> BEGIN access to findDepartmentsByUniversityAndEnabled test");
+		
+		// Create 2 Universities
+		University university1 = testUtility.createUniqueUniversityInDB();
+		University university2 = testUtility.createUniqueUniversityInDB();
+		
+		// Create 3 Departments		
+		Department department1 = testUtility.createUniqueDepartmentInDB();
+		university1.add(department1);
+		department1.setEnabled(true);
+		Department department2 = testUtility.createUniqueDepartmentInDB();
+		university1.add(department2);
+		department2.setEnabled(false);
+		Department department3 = testUtility.createUniqueDepartmentInDB();
+		university2.add(department3);
+		department3.setEnabled(true);
+
+		// Synchronize with Database
+		flush();
+
+		// Test
+		List departmentsEnabled = this.departmentService.findDepartmentsByUniversityAndEnabled(university1.getId(), true);
+		assertEquals(1, departmentsEnabled.size());
+
+		List departmentsDisabled = this.departmentService.findDepartmentsByUniversityAndEnabled(university2.getId(), true);
+		assertEquals(1, departmentsDisabled.size());
+		
+		logger.info("----> END access to findDepartmentsByUniversityAndEnabled test");
 	}
 }
