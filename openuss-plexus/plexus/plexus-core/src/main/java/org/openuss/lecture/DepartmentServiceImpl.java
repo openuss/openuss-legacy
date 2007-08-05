@@ -5,14 +5,9 @@
  */
 package org.openuss.lecture;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.Validate;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
-import org.openuss.security.User;
 
 /**
  * @see org.openuss.lecture.DepartmentService

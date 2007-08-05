@@ -25,8 +25,8 @@ public class DepartmentImpl
      */
     public void add(org.openuss.lecture.Institute institute)
     {
-        if (institute != null)
-        	this.getInstitutes().add(institute);
+        //if (institute != null)
+        //	this.getInstitutes().add(institute);
 		Validate.notNull(institute, "Department.add(Institute) - institute cannot be null");
 
 		if (!this.getInstitutes().contains(institute)) {

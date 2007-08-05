@@ -76,6 +76,9 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		assertNull(university2.getId());
 		universityDao.create(university2);
 		assertNotNull(university2.getId());
+		
+		//Synchronize with Database
+		flush();
 	}
 	
 	public void testUniversityDaoToUniversityInfo() {

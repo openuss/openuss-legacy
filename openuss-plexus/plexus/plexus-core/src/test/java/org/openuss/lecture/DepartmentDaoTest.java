@@ -33,6 +33,8 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		
 		//Create University
 		University university = testUtility.createUniqueUniversityInDB();
+		
+		//Synchronize with Database
 		flush();
 		
 		//Create Departments
@@ -59,9 +61,16 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		university.getDepartments().add(department2);
 		
 		//Association between departments and a university 
-		//must be maintained by the university. 
+		//must be maintained by the university. 		
+		assertNull(department1.getId());
 		departmentDao.create(department1);
+		assertNotNull(department1.getId());
+		
+		assertNull(department2.getId());
 		departmentDao.create(department2);
+		assertNotNull(department2.getId());
+		
+		//Synchronize with Database
 		flush();
 		
 	}
