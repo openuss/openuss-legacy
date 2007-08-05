@@ -89,26 +89,30 @@ public class InstituteDaoTest extends InstituteDaoTestBase {
 	}
 
 	@SuppressWarnings( { "unchecked" })
-	public void testLoadAllEnabled() {
+	public void testInstituteDaoLoadAllEnabled() {
+		// Create 3 Institutes
 		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		institute1.setEnabled(true);
 		Institute institute2 = testUtility.createUniqueInstituteInDB();
-
-		// Synchronize with Database
-		flush();
-
-		institute1.setEnabled(false);
-		instituteDao.update(institute1);
-
 		institute2.setEnabled(true);
-		instituteDao.update(institute2);
+		Institute institute3 = testUtility.createUniqueInstituteInDB();
+		institute3.setEnabled(false);
 
 		// Synchronize with Database
 		flush();
 
-		List<Institute> institutes = (List<Institute>) instituteDao.loadAllEnabled();
-		assertTrue(institutes.contains(institute2));
-		institutes.contains(institute1);
-		assertFalse(institutes.contains(institute1));
+		// Test
+		List institutesEnabled = this.instituteDao.loadAllByEnabled(true);
+		assertEquals(2, institutesEnabled.size());
+		assertTrue(institutesEnabled.contains(institute1));
+		assertTrue(institutesEnabled.contains(institute2));
+		assertFalse(institutesEnabled.contains(institute3));
+
+		List institutesDisabled = this.instituteDao.loadAllByEnabled(false);
+		assertEquals(1, institutesDisabled.size());
+		assertFalse(institutesDisabled.contains(institute1));
+		assertFalse(institutesDisabled.contains(institute2));
+		assertTrue(institutesDisabled.contains(institute3));
 
 	}
 	

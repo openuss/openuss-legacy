@@ -84,22 +84,22 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		
 	}
 
-	public List loadAllEnabled() {
+	public List loadAllByEnabled(Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List loadAllEnabled(int transform, String queryString) {
+	public List loadAllByEnabled(int transform, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List loadAllEnabled(int transform) {
+	public List loadAllByEnabled(int transform, String queryString, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List loadAllEnabled(String queryString) {
+	public List loadAllByEnabled(String queryString, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -133,5 +133,7 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		// TODO Auto-generated method stub
 		
 	}
+
+
 	
 }

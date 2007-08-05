@@ -187,4 +187,30 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		assertEquals(universityInfo2.getWebsite(), university2.getWebsite());
 		assertEquals(universityInfo2.getTheme(), university2.getTheme());
 	}
+	
+	public void testUniversityDaoLoadAllByEnabled() {
+		// Create 3 Universities
+		University university1 = testUtility.createUniqueUniversityInDB();
+		university1.setEnabled(true);
+		University university2 = testUtility.createUniqueUniversityInDB();
+		university2.setEnabled(true);
+		University university3 = testUtility.createUniqueUniversityInDB();
+		university3.setEnabled(false);
+
+		// Synchronize with Database
+		flush();
+
+		// Test
+		List universitiesEnabled = this.universityDao.loadAllByEnabled(true);
+		assertEquals(2, universitiesEnabled.size());
+		assertTrue(universitiesEnabled.contains(university1));
+		assertTrue(universitiesEnabled.contains(university2));
+		assertFalse(universitiesEnabled.contains(university3));
+
+		List universitiesDisabled = this.universityDao.loadAllByEnabled(false);
+		assertEquals(1, universitiesDisabled.size());
+		assertFalse(universitiesDisabled.contains(university1));
+		assertFalse(universitiesDisabled.contains(university2));
+		assertTrue(universitiesDisabled.contains(university3));
+	}
 }
