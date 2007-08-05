@@ -5,6 +5,8 @@
  */
 package org.openuss.lecture;
 
+import java.util.List;
+
 import org.openuss.TestUtility;
 import org.openuss.security.Membership;
 
@@ -28,16 +30,16 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 
 	public void testDepartmentDaoCreate() {
 
-		//TODO: Change cardinality of departments from 0..1 to 1
-		//		Error was insert, update = false.
-		
-		//Create University
+		// TODO: Change cardinality of departments from 0..1 to 1
+		// Error was insert, update = false.
+
+		// Create University
 		University university = testUtility.createUniqueUniversityInDB();
-		
-		//Synchronize with Database
+
+		// Synchronize with Database
 		flush();
-		
-		//Create Departments
+
+		// Create Departments
 		Department department1 = Department.Factory.newInstance();
 		department1.setName("Rechtswissenschaften - FB 3");
 		department1.setShortcut("FB3");
@@ -48,7 +50,7 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		department1.setUniversity(university);
 		department1.setMembership(Membership.Factory.newInstance());
 		university.getDepartments().add(department1);
-		
+
 		Department department2 = Department.Factory.newInstance();
 		department2.setName("Wirtschaftswissenschaften - FB 4");
 		department2.setShortcut("FB4");
@@ -59,29 +61,29 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		department2.setUniversity(university);
 		department2.setMembership(Membership.Factory.newInstance());
 		university.getDepartments().add(department2);
-		
-		//Association between departments and a university 
-		//must be maintained by the university. 		
+
+		// Association between departments and a university
+		// must be maintained by the university.
 		assertNull(department1.getId());
 		departmentDao.create(department1);
 		assertNotNull(department1.getId());
-		
+
 		assertNull(department2.getId());
 		departmentDao.create(department2);
 		assertNotNull(department2.getId());
-		
-		//Synchronize with Database
+
+		// Synchronize with Database
 		flush();
-		
+
 	}
 
 	public void testDepartmentDaoToDepartmentInfo() {
-		
-		//Create university
+
+		// Create university
 		University university = testUtility.createUniqueUniversityInDB();
 		flush();
-		
-		//Create Entity
+
+		// Create Entity
 		Department departmentEntity = Department.Factory.newInstance();
 		departmentEntity.setName("testname");
 		departmentEntity.setDescription("testdescription");
@@ -89,12 +91,11 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		departmentEntity.setMembership(Membership.Factory.newInstance());
 		departmentEntity.setShortcut("test");
 		departmentEntity.setUniversity(university);
-		
-		//Create Info-object
-		DepartmentInfo departmentInfo =
-			departmentDao.toDepartmentInfo(departmentEntity);
-		
-		//Test
+
+		// Create Info-object
+		DepartmentInfo departmentInfo = departmentDao.toDepartmentInfo(departmentEntity);
+
+		// Test
 		assertEquals(departmentEntity.getId(), departmentInfo.getId());
 		assertEquals(departmentEntity.getName(), departmentInfo.getName());
 		assertEquals(departmentEntity.getDescription(), departmentInfo.getDescription());
@@ -116,23 +117,22 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 
 	public void testDepartmentDaoDepartmentInfoToEntity() {
 
-		//Create university
+		// Create university
 		University university = testUtility.createUniqueUniversityInDB();
 		flush();
-		
-		//Create Info-Object
+
+		// Create Info-Object
 		DepartmentInfo departmentInfo = new DepartmentInfo();
 		departmentInfo.setName("testname");
 		departmentInfo.setDescription("testdescription");
 		departmentInfo.setShortcut("test");
 		departmentInfo.setDepartmentType(DepartmentType.OFFICIAL);
 		departmentInfo.setUniversityId(university.getId());
-		
-		//Create Entity
-		Department departmentEntity =
-			departmentDao.departmentInfoToEntity(departmentInfo);
-		
-		//Test
+
+		// Create Entity
+		Department departmentEntity = departmentDao.departmentInfoToEntity(departmentInfo);
+
+		// Test
 		assertEquals(departmentInfo.getId(), departmentEntity.getId());
 		assertEquals(departmentInfo.getName(), departmentEntity.getName());
 		assertEquals(departmentInfo.getDescription(), departmentEntity.getDescription());
@@ -150,5 +150,31 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		assertEquals(departmentInfo.getWebsite(), departmentEntity.getWebsite());
 		assertEquals(departmentInfo.getTheme(), departmentEntity.getTheme());
 
+	}
+
+	public void testDepartmentDaoLoadAllByEnabled() {
+		// Create 3 Departments
+		Department department1 = testUtility.createUniqueDepartmentInDB();
+		department1.setEnabled(true);
+		Department department2 = testUtility.createUniqueDepartmentInDB();
+		department2.setEnabled(true);
+		Department department3 = testUtility.createUniqueDepartmentInDB();
+		department3.setEnabled(false);
+
+		// Synchronize with Database
+		flush();
+
+		// Test
+		List departmentsEnabled = this.departmentDao.loadAllByEnabled(true);
+		assertEquals(2, departmentsEnabled.size());
+		assertTrue(departmentsEnabled.contains(department1));
+		assertTrue(departmentsEnabled.contains(department2));
+		assertFalse(departmentsEnabled.contains(department3));
+
+		List departmentsDisabled = this.departmentDao.loadAllByEnabled(false);
+		assertEquals(1, departmentsDisabled.size());
+		assertFalse(departmentsDisabled.contains(department1));
+		assertFalse(departmentsDisabled.contains(department2));
+		assertTrue(departmentsDisabled.contains(department3));
 	}
 }
