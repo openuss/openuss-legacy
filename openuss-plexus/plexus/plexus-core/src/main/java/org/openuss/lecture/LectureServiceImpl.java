@@ -14,10 +14,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.registration.RegistrationException;
 import org.openuss.security.Group;
+import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
+import org.openuss.security.Membership;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
@@ -26,11 +29,94 @@ import org.openuss.system.SystemProperties;
 
 /**
  * @see org.openuss.lecture.LectureService
+ * @author Ingo Dueppe, Ron Haus
  */
-public class LectureServiceImpl extends LectureServiceBase{
+public class LectureServiceImpl extends LectureServiceBase {
 
 	private static final Logger logger = Logger.getLogger(LectureServiceImpl.class);
-	
+
+	@Override
+	protected Long handleCreate(InstituteInfo instituteInfo, Long ownerId) throws Exception {
+
+		Validate.notNull(instituteInfo, "LectureService.handleCreate - the Institute cannot be null");
+		Validate.notNull(ownerId, "LectureService.handleCreate - the Owner must have a valid ID");
+		Validate.isTrue(instituteInfo.getId() == null,
+				"LectureService.handleCreate - the Institute shouldn't have an ID yet");
+
+		// Transform ValueObject into Entity
+		Institute institute = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
+
+		// Create a default Membership for the University
+		Membership membership = Membership.Factory.newInstance();
+		institute.setMembership(membership);
+
+		// Create the University
+		this.getInstituteDao().create(institute);
+		Validate.notNull(institute.getId(), "LectureService.handleCreate - Couldn't create Institute");
+
+		// Create default Groups for Institute
+		GroupItem admins = new GroupItem();
+		admins.setName("INSTITUTE_" + institute.getId() + "_ADMINS");
+		admins.setLabel("autogroup_administrator_label");
+		admins.setGroupType(GroupType.ADMINISTRATOR);
+		Long adminsId = this.getOrganisationService().createGroup(institute.getId(), admins);
+
+		GroupItem assistants = new GroupItem();
+		assistants.setName("INSTITUTE_" + institute.getId() + "_ASSISTANTS");
+		assistants.setLabel("autogroup_assistant_label");
+		assistants.setGroupType(GroupType.ASSISTANT);
+		this.getOrganisationService().createGroup(institute.getId(), assistants);
+
+		GroupItem tutors = new GroupItem();
+		tutors.setName("INSTITUTE_" + institute.getId() + "_TUTORS");
+		tutors.setLabel("autogroup_tutor_label");
+		tutors.setGroupType(GroupType.TUTOR);
+		this.getOrganisationService().createGroup(institute.getId(), tutors);
+
+		// TODO Set Security for Groups
+
+		// Add Owner to Members and Group of Administrators
+		this.getOrganisationService().addMember(institute.getId(), ownerId);
+		this.getOrganisationService().addUserToGroup(ownerId, adminsId);
+
+		return institute.getId();
+	}
+
+	@Override
+	protected void handleUpdate(InstituteInfo instituteInfo) throws Exception {
+
+		Validate.notNull(instituteInfo, "LectureService.handleUpdate - the Institute cannot be null");
+		Validate.notNull(instituteInfo.getId(), "LectureService.handleUpdate - the Institute must have a valid ID");
+
+		// Transform ValueObject into Entity
+		Institute institute = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
+
+		// Update Entity
+		this.getInstituteDao().update(institute);
+
+	}
+
+	@Override
+	protected void handleRemoveInstitute(Long instituteId) throws Exception {
+
+		Validate.notNull(instituteId, "LectureService.handleRemoveInstitute - the InstituteID cannot be null");
+
+		// TODO All Bookmarks need to be removed before
+
+		this.getInstituteDao().remove(instituteId);
+
+		// fire events
+		/*
+		 * for (Course course : institute.getCourses()) { fireRemovingCourse(course); }
+		 * 
+		 * for (CourseType courseType : institute.getCourseTypes()) { fireRemovingCourseType(courseType); }
+		 * 
+		 * fireRemovingInstitute(institute);
+		 */
+		// TODO InstituteCodes need to be removed before
+		//getRegistrationService().removeInstituteCodes(institute);
+	}
+
 	@Override
 	protected Collection<InstituteInfo> handleGetInstitutes(boolean enabledOnly) throws Exception {
 		if (enabledOnly) {
@@ -107,90 +193,62 @@ public class LectureServiceImpl extends LectureServiceBase{
 	protected Institute handleAdd(Long instituteId, Period period) throws Exception {
 		throw new UnsupportedOperationException("Adding periods to institutes is no longer valid.");
 		/*
-		Institute institute = getInstitute(instituteId);
-		institute.add(period);
-		period.setInstitute(institute);
-		if (institute.getActivePeriod() == null) {
-			institute.setActivePeriod(period);
-		}
-		persist(institute);
-		return institute;
-		*/
+		 * Institute institute = getInstitute(instituteId); institute.add(period); period.setInstitute(institute); if
+		 * (institute.getActivePeriod() == null) { institute.setActivePeriod(period); } persist(institute); return
+		 * institute;
+		 */
 	}
 
 	@Override
 	protected void handlePersist(Institute institute) throws Exception {
-		if (logger.isDebugEnabled())
-			logger.debug("Method handlePersist: Save institute " + institute.getName());
-
-		if (institute.getId() != null) {
-			getInstituteDao().update(institute);
-		} else {
-			logger.error("Institute object without id, use createInstitute method instead!!!");
-			throw new LectureServiceException("Use createInstitute method instead!");
-		}
+		throw new UnsupportedOperationException("This method is deprecated!");
+		/*
+		 * if (logger.isDebugEnabled()) logger.debug("Method handlePersist: Save institute " + institute.getName());
+		 * 
+		 * if (institute.getId() != null) { getInstituteDao().update(institute); } else { logger.error("Institute object
+		 * without id, use createInstitute method instead!!!"); throw new LectureServiceException("Use createInstitute
+		 * method instead!"); }
+		 */
 	}
 
 	@Override
 	protected void handleCreateInstitute(Institute institute) throws Exception {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Creating new institute " + institute.getName());
-		}
-		institute.setEnabled(false);
-
-		institute = getInstituteDao().create(institute);
-		
+		throw new UnsupportedOperationException("This method is deprecated!");
 
 		/*
-		// define the security
-		SecurityService securityService = getSecurityService();
-
-		// create object identity
-		securityService.createObjectIdentity(institute, null);
-
-		// create system defined groups for institute
-		Group admins = securityService.createGroup(
-					"INSTITUTE_" + institute.getId() + "_ADMINS", 
-					"autogroup_administrator_label", null, GroupType.ADMINISTRATOR);
-		Group assistants = securityService.createGroup(
-					"INSTITUTE_" + institute.getId() + "_ASSISTANTS", 
-					"autogroup_assistant_label", null, GroupType.ASSISTANT);
-		Group tutors = securityService.createGroup(
-					"INSTITUTE_" + institute.getId() + "_TUTORS", 
-					"autogroup_tutor_label", null,GroupType.TUTOR);
-
-		securityService.addAuthorityToGroup(institute.getOwner(), admins);
-
-		securityService.setPermissions(admins, institute, LectureAclEntry.INSTITUTE_ADMINISTRATION);
-		securityService.setPermissions(assistants, institute, LectureAclEntry.INSTITUTE_ASSIST);
-		securityService.setPermissions(tutors, institute, LectureAclEntry.INSTITUTE_TUTOR);
-
-		institute.getGroups().add(admins);
-		institute.getGroups().add(assistants);
-		institute.getGroups().add(tutors);
-
-		institute.getMembers().add(institute.getOwner());
-
-		// save changes
-		getInstituteDao().update(institute);
-
-		// define security rights of institute
-		fireCreatedInstitute(institute);
-		
-		//send activation mail
-		sendActivationCode(institute);
-		*/
+		 * // define the security SecurityService securityService = getSecurityService(); // create object identity
+		 * securityService.createObjectIdentity(institute, null); // create system defined groups for institute Group
+		 * admins = securityService.createGroup( "INSTITUTE_" + institute.getId() + "_ADMINS",
+		 * "autogroup_administrator_label", null, GroupType.ADMINISTRATOR); Group assistants =
+		 * securityService.createGroup( "INSTITUTE_" + institute.getId() + "_ASSISTANTS", "autogroup_assistant_label",
+		 * null, GroupType.ASSISTANT); Group tutors = securityService.createGroup( "INSTITUTE_" + institute.getId() +
+		 * "_TUTORS", "autogroup_tutor_label", null,GroupType.TUTOR);
+		 * 
+		 * securityService.addAuthorityToGroup(institute.getOwner(), admins);
+		 * 
+		 * securityService.setPermissions(admins, institute, LectureAclEntry.INSTITUTE_ADMINISTRATION);
+		 * securityService.setPermissions(assistants, institute, LectureAclEntry.INSTITUTE_ASSIST);
+		 * securityService.setPermissions(tutors, institute, LectureAclEntry.INSTITUTE_TUTOR);
+		 * 
+		 * institute.getGroups().add(admins); institute.getGroups().add(assistants); institute.getGroups().add(tutors);
+		 * 
+		 * institute.getMembers().add(institute.getOwner()); // save changes getInstituteDao().update(institute); //
+		 * define security rights of institute fireCreatedInstitute(institute);
+		 * 
+		 * //send activation mail sendActivationCode(institute);
+		 */
 	}
 
 	protected void handleSendActivationCode(Institute institute) throws RegistrationException {
 		String activationCode = getRegistrationService().generateInstituteActivationCode(institute);
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("institutename", institute.getName()+"("+institute.getShortcut()+")");
-		parameters.put("institutelink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"actions/public/lecture/instituteactivation.faces?code="+activationCode);
-		getMessageService().sendMessage(institute.getShortcut(), "institute.activation.subject", "instituteactivation", parameters, institute.getEmail(), institute.getLocale());
+		parameters.put("institutename", institute.getName() + "(" + institute.getShortcut() + ")");
+		parameters.put("institutelink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
+				+ "actions/public/lecture/instituteactivation.faces?code=" + activationCode);
+		getMessageService().sendMessage(institute.getShortcut(), "institute.activation.subject", "instituteactivation",
+				parameters, institute.getEmail(), institute.getLocale());
 	}
 
-	
 	@Override
 	protected void handlePersist(CourseType courseType) throws Exception {
 		if (courseType.getId() == null) {
@@ -232,28 +290,6 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	@Override
-	protected void handleRemoveInstitute(Long instituteId) throws Exception {
-		Institute institute = getInstitute(instituteId);
-		if (institute == null)
-			throw new LectureServiceException("Institute not found " + instituteId);
-
-		// fire events
-		/*
-		for (Course course : institute.getCourses()) {
-			fireRemovingCourse(course);
-		}*/
-
-		for (CourseType courseType : institute.getCourseTypes()) {
-			fireRemovingCourseType(courseType);
-		}
-
-		fireRemovingInstitute(institute);
-
-		getRegistrationService().removeInstituteCodes(institute);
-		getInstituteDao().remove(institute);
-	}
-
-	@Override
 	protected void handleRemoveCourseType(Long courseTypeId) throws Exception {
 		if (logger.isDebugEnabled())
 			logger.debug("Remove CourseType " + courseTypeId);
@@ -273,36 +309,17 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 	@Override
 	protected void handleRemovePeriod(Long periodId) throws Exception {
-		throw new UnsupportedOperationException("Removing periods in institutes is no longer valid. Use UniversityService.handleRemove().");
+		throw new UnsupportedOperationException(
+				"Removing periods in institutes is no longer valid. Use UniversityService.handleRemove().");
 		/*
-		if (logger.isDebugEnabled())
-			logger.debug("Remove period " + periodId);
-		Period period = getPeriod(periodId);
-
-		// fire course delete
-		for (Course course : period.getCourses()) {
-			fireRemovingCourse(course);
-		}
-
-		// remove associated courses
-		getCourseDao().remove(period.getCourses());
-
-		Institute institute = period.getInstitute();
-
-		// check active period settings
-		if (institute != null) {
-			if (period.equals(institute.getActivePeriod())) {
-				institute.setActivePeriod(null);
-				persist(institute);
-			}
-
-			// remove period from institute
-			institute.remove(period);
-		}
-
-		// delete period
-		getPeriodDao().remove(period);
-		*/
+		 * if (logger.isDebugEnabled()) logger.debug("Remove period " + periodId); Period period = getPeriod(periodId); //
+		 * fire course delete for (Course course : period.getCourses()) { fireRemovingCourse(course); } // remove
+		 * associated courses getCourseDao().remove(period.getCourses());
+		 * 
+		 * Institute institute = period.getInstitute(); // check active period settings if (institute != null) { if
+		 * (period.equals(institute.getActivePeriod())) { institute.setActivePeriod(null); persist(institute); } //
+		 * remove period from institute institute.remove(period); } // delete period getPeriodDao().remove(period);
+		 */
 	}
 
 	@Override
@@ -315,16 +332,12 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 		// remove associations
 		/*
-		Institute institute = course.getInstitute();
-		Period period = course.getPeriod();
-		period.remove(course);
-		persist(period);
-		CourseType courseType = course.getCourseType();
-		courseType.remove(course);
-		persist(courseType);
-		institute.remove(course);
-
-		persist(institute);*/
+		 * Institute institute = course.getInstitute(); Period period = course.getPeriod(); period.remove(course);
+		 * persist(period); CourseType courseType = course.getCourseType(); courseType.remove(course);
+		 * persist(courseType); institute.remove(course);
+		 * 
+		 * persist(institute);
+		 */
 		getCourseDao().remove(course);
 	}
 
@@ -334,20 +347,20 @@ public class LectureServiceImpl extends LectureServiceBase{
 		CourseType courseType = getCourseType(courseTypeId);
 		Period period = getPeriod(periodId);
 
-		//TODO: Change this functionality
+		// TODO: Change this functionality
 		/*
-		if (!ObjectUtils.equals(courseType.getInstitute(), period.getInstitute()))
-			throw new LectureServiceException("CourseType and period must be associated to the same institute!");
-		*/
+		 * if (!ObjectUtils.equals(courseType.getInstitute(), period.getInstitute())) throw new
+		 * LectureServiceException("CourseType and period must be associated to the same institute!");
+		 */
 
 		Institute institute = courseType.getInstitute();
 
 		Course course = Course.Factory.newInstance();
 		courseType.add(course);
 		period.add(course);
-		//institute.add(course);
+		// institute.add(course);
 
-		//course.setInstitute(institute);
+		// course.setInstitute(institute);
 		course.setCourseType(courseType);
 		course.setPeriod(period);
 
@@ -366,13 +379,12 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 	@Override
 	protected void handleSetActivePeriod(Long instituteId, Period period) throws Exception {
-		throw new UnsupportedOperationException("Setting active periods in LectureService is no longer valid. Periods are automatically active or not due to their date.");
+		throw new UnsupportedOperationException(
+				"Setting active periods in LectureService is no longer valid. Periods are automatically active or not due to their date.");
 		/*
-		// refresh instances
-		Institute institute = getInstitute(instituteId);
-		institute.setActivePeriod(period);
-		persist(institute);
-		*/
+		 * // refresh instances Institute institute = getInstitute(instituteId); institute.setActivePeriod(period);
+		 * persist(institute);
+		 */
 	}
 
 	@Override
@@ -414,14 +426,17 @@ public class LectureServiceImpl extends LectureServiceBase{
 		} else {
 			throw new LectureException("user_is_already_a_member_of_the_institute");
 		}
-		//send mail to administrators
+		// send mail to administrators
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("institutename", institute.getName()+"("+institute.getShortcut()+")");
-		parameters.put("instituteapplicantlink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/auth/aspirants.faces?institute="+institute.getId());
-		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject", "instituteapplication", parameters, getInstituteAdmins(institute));
+		parameters.put("institutename", institute.getName() + "(" + institute.getShortcut() + ")");
+		parameters.put("instituteapplicantlink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL)
+				.getValue()
+				+ "views/secured/lecture/auth/aspirants.faces?institute=" + institute.getId());
+		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject",
+				"instituteapplication", parameters, getInstituteAdmins(institute));
 	}
 
-	private List<User> getInstituteAdmins(Institute institute){
+	private List<User> getInstituteAdmins(Institute institute) {
 		// XXX Polish me!
 		Collection<Group> groups = institute.getMembership().getGroups();
 		Iterator i = groups.iterator();
@@ -430,25 +445,25 @@ public class LectureServiceImpl extends LectureServiceBase{
 		List instituteMembers;
 		User member;
 		List<User> administrators = new ArrayList<User>();
-		//find administrator group of institute
-		while (i.hasNext()){
+		// find administrator group of institute
+		while (i.hasNext()) {
 			group = (Group) i.next();
-			if (group.getGroupType()==GroupType.ADMINISTRATOR){
+			if (group.getGroupType() == GroupType.ADMINISTRATOR) {
 				adminGroup = group;
 			}
 		}
-		//add members of administrator group to list of administrators
+		// add members of administrator group to list of administrators
 		instituteMembers = institute.getMembership().getMembers();
 		i = instituteMembers.iterator();
-		while (i.hasNext()){
+		while (i.hasNext()) {
 			member = (User) i.next();
 			if (member.getGroups().contains(adminGroup)) {
-				administrators.add(member); 
+				administrators.add(member);
 			}
 		}
 		return administrators;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -476,10 +491,11 @@ public class LectureServiceImpl extends LectureServiceBase{
 		User user = getUser(userId);
 		institute.getMembership().getAspirants().remove(user);
 		persist(institute);
-		
+
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("institutename", institute.getName()+"("+institute.getShortcut()+")");
-		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject", "instituteapplicationreject", parameters, user);
+		parameters.put("institutename", institute.getName() + "(" + institute.getShortcut() + ")");
+		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject",
+				"instituteapplicationreject", parameters, user);
 	}
 
 	/**
@@ -536,9 +552,11 @@ public class LectureServiceImpl extends LectureServiceBase{
 			getInstituteDao().update(institute);
 		}
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("institutename", institute.getName()+"("+institute.getShortcut()+")");
-		parameters.put("institutelink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/institute.faces?institute="+institute.getId());
-		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject", "instituteapplicationapply", parameters, user);
+		parameters.put("institutename", institute.getName() + "(" + institute.getShortcut() + ")");
+		parameters.put("institutelink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
+				+ "views/secured/lecture/institute.faces?institute=" + institute.getId());
+		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject",
+				"instituteapplicationapply", parameters, user);
 	}
 
 	@Override
@@ -556,8 +574,8 @@ public class LectureServiceImpl extends LectureServiceBase{
 		}
 	}
 
-	// FIXME use event handler instead 
-	
+	// FIXME use event handler instead
+
 	private void fireRemovingCourse(Course course) throws LectureException {
 		if (listeners != null) {
 			logger.debug("fire removing course event");
@@ -605,8 +623,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	/**
-	 * Convenience method for isNonExisting methods.<br/> Checks wheter or not
-	 * the found record is equal to self entry.
+	 * Convenience method for isNonExisting methods.<br/> Checks wheter or not the found record is equal to self entry.
 	 * <ul>
 	 * <li>self == null AND found == null => <b>true</b></li>
 	 * <li>self == null AND found <> null => <b>false</b></li>
@@ -634,5 +651,5 @@ public class LectureServiceImpl extends LectureServiceBase{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }
