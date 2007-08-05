@@ -1,5 +1,6 @@
 package org.openuss.lecture;
 
+import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
 import org.openuss.foundation.DomainObject;
 import org.openuss.search.IndexerApplicationException;
@@ -8,12 +9,16 @@ import org.openuss.security.User;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
 /**
- * Test case for recreating lecture index command
+ * Test case for the spring aspect initiating the create, update and delete 
+ * process of the institute indexing.
  * 
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 public class InstituteIndexingAspectTest extends AbstractTransactionalDataSourceSpringContextTests {
 
+	private static final Logger logger = Logger.getLogger(InstituteIndexingAspectTest.class);
+	
 	private LectureService lectureService;
 	
 	private InstituteIndexingAspect instituteIndexAspectBean;
@@ -21,7 +26,7 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 	private IndexerServiceMock indexerMock ;
 	
 	private TestUtility testUtility;
-
+	
 	@Override
 	protected void onSetUp() throws Exception {
 		super.onSetUp();
@@ -41,13 +46,14 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 		institute.setEnabled(true);
 		lectureService.persist(institute);
 		
-		assertEquals(1, indexerMock.create);
-		/*lectureService.persist(institute);
+		// indexerMockCreate should be 0 due to the fact that institutes are initiated
+		// disabled. Therefore they are activated via the updateIndex-method --> indexerMockUpdate should be 1.
+		assertEquals(0, indexerMock.create);
 		assertEquals(1, indexerMock.update);
+		// delete institute
+		// indexMockDelete should be 1 --> Deleting institute index works properly
 		lectureService.removeInstitute(institute.getId());
 		assertEquals(1, indexerMock.delete);
-		
-		*/
 	}
 	
 	protected String[] getConfigLocations() {
@@ -79,15 +85,20 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 		private int delete;
 		private int update;
 		
+		
+		
 		public void createIndex(DomainObject domainObject) throws IndexerApplicationException {
+			logger.debug("method createIndex: Increment testCreateIndex");
 			create++;
 		}
 		
 		public void deleteIndex(DomainObject domainObject) throws IndexerApplicationException {
+			logger.debug("method deleteIndex: Increment testDeleteIndex");
 			delete++;
 		}
 		
 		public void updateIndex(DomainObject domainObject) throws IndexerApplicationException {
+			logger.debug("method updateIndex: Increment testUpdateIndex");
 			update++;
 		}
 	}
