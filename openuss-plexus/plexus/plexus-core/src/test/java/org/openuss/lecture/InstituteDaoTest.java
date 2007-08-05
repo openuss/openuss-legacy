@@ -102,13 +102,13 @@ public class InstituteDaoTest extends InstituteDaoTestBase {
 		flush();
 
 		// Test
-		List institutesEnabled = this.instituteDao.loadAllByEnabled(true);
+		List institutesEnabled = this.instituteDao.findByEnabled(true);
 		assertEquals(2, institutesEnabled.size());
 		assertTrue(institutesEnabled.contains(institute1));
 		assertTrue(institutesEnabled.contains(institute2));
 		assertFalse(institutesEnabled.contains(institute3));
 
-		List institutesDisabled = this.instituteDao.loadAllByEnabled(false);
+		List institutesDisabled = this.instituteDao.findByEnabled(false);
 		assertEquals(1, institutesDisabled.size());
 		assertFalse(institutesDisabled.contains(institute1));
 		assertFalse(institutesDisabled.contains(institute2));

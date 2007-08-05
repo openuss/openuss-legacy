@@ -152,7 +152,7 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 
 	}
 
-	public void testDepartmentDaoLoadAllByEnabled() {
+	public void testDepartmentDaoFindByEnabled() {
 		// Create 3 Departments
 		Department department1 = testUtility.createUniqueDepartmentInDB();
 		department1.setEnabled(true);
@@ -165,13 +165,46 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		flush();
 
 		// Test
-		List departmentsEnabled = this.departmentDao.loadAllByEnabled(true);
+		List departmentsEnabled = this.departmentDao.findByEnabled(true);
 		assertEquals(2, departmentsEnabled.size());
 		assertTrue(departmentsEnabled.contains(department1));
 		assertTrue(departmentsEnabled.contains(department2));
 		assertFalse(departmentsEnabled.contains(department3));
 
-		List departmentsDisabled = this.departmentDao.loadAllByEnabled(false);
+		List departmentsDisabled = this.departmentDao.findByEnabled(false);
+		assertEquals(1, departmentsDisabled.size());
+		assertFalse(departmentsDisabled.contains(department1));
+		assertFalse(departmentsDisabled.contains(department2));
+		assertTrue(departmentsDisabled.contains(department3));
+	}
+	
+	public void testDepartmentDaoFindByUniversityAndEnabled() {
+		// Create 2 Universities
+		University university1 = testUtility.createUniqueUniversityInDB();
+		University university2 = testUtility.createUniqueUniversityInDB();
+		
+		// Create 3 Departments
+		Department department1 = testUtility.createUniqueDepartmentInDB();
+		university1.add(department1);
+		department1.setEnabled(true);
+		Department department2 = testUtility.createUniqueDepartmentInDB();
+		university1.add(department2);
+		department2.setEnabled(false);
+		Department department3 = testUtility.createUniqueDepartmentInDB();
+		university2.add(department3);
+		department3.setEnabled(true);
+
+		// Synchronize with Database
+		flush();
+
+		// Test
+		List departmentsEnabled = this.departmentDao.findByUniversityAndEnabled(university1, true);
+		assertEquals(1, departmentsEnabled.size());
+		assertTrue(departmentsEnabled.contains(department1));
+		assertFalse(departmentsEnabled.contains(department2));
+		assertFalse(departmentsEnabled.contains(department3));
+
+		List departmentsDisabled = this.departmentDao.findByUniversityAndEnabled(university2, true);
 		assertEquals(1, departmentsDisabled.size());
 		assertFalse(departmentsDisabled.contains(department1));
 		assertFalse(departmentsDisabled.contains(department2));

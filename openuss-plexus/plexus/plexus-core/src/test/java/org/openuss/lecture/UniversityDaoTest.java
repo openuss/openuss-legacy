@@ -188,7 +188,7 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		assertEquals(universityInfo2.getTheme(), university2.getTheme());
 	}
 	
-	public void testUniversityDaoLoadAllByEnabled() {
+	public void testUniversityDaoFindByEnabled() {
 		// Create 3 Universities
 		University university1 = testUtility.createUniqueUniversityInDB();
 		university1.setEnabled(true);
@@ -201,13 +201,13 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		flush();
 
 		// Test
-		List universitiesEnabled = this.universityDao.loadAllByEnabled(true);
+		List universitiesEnabled = this.universityDao.findByEnabled(true);
 		assertEquals(2, universitiesEnabled.size());
 		assertTrue(universitiesEnabled.contains(university1));
 		assertTrue(universitiesEnabled.contains(university2));
 		assertFalse(universitiesEnabled.contains(university3));
 
-		List universitiesDisabled = this.universityDao.loadAllByEnabled(false);
+		List universitiesDisabled = this.universityDao.findByEnabled(false);
 		assertEquals(1, universitiesDisabled.size());
 		assertFalse(universitiesDisabled.contains(university1));
 		assertFalse(universitiesDisabled.contains(university2));

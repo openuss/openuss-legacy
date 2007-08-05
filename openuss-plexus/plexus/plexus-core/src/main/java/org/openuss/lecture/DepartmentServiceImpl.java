@@ -5,6 +5,8 @@
  */
 package org.openuss.lecture;
 
+import java.util.List;
+
 import org.apache.commons.lang.Validate;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
@@ -32,7 +34,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(department);
 		departmentEntity.getUniversity().getDepartments().add(departmentEntity);
 		this.getDepartmentDao().create(departmentEntity);
-		
+
 		Validate.notNull(departmentEntity.getId(), "DepartmentService.handleCreate - Couldn't create Department");
 
 		// Create Groups for Department
@@ -77,37 +79,55 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		// Remove department
 		Department department = this.getDepartmentDao().load(departmentId);
-		department.getMembership().getGroups().clear(); //due to problems of cascade
+		Validate.notNull(department,
+				"DepartmentService.handleRemoveDepartment - no Department found corresponding to the ID "
+						+ departmentId);
+		
+		department.getMembership().getGroups().clear(); // due to problems of cascade
 		this.getDepartmentDao().remove(department);
 
 	}
 
-    /**
-     * @see org.openuss.lecture.DepartmentService#findDepartment(java.lang.Long)
-     */
-    protected org.openuss.lecture.DepartmentInfo handleFindDepartment(java.lang.Long departmentId)
-        throws java.lang.Exception
-    {
-    	// TODO: Security
-    	
-    	Validate.notNull(departmentId, "DepartmentService.handleFindDepartment - the DepartmentId cannot be null");
-    	
-    	Department department = (Department) this.getDepartmentDao().load(departmentId);
-    	return this.getDepartmentDao().toDepartmentInfo(department); 
-    }
+	/**
+	 * @see org.openuss.lecture.DepartmentService#findDepartment(java.lang.Long)
+	 */
+	protected org.openuss.lecture.DepartmentInfo handleFindDepartment(java.lang.Long departmentId)
+			throws java.lang.Exception {
+
+		Validate.notNull(departmentId, "DepartmentService.handleFindDepartment - the DepartmentId cannot be null");
+
+		Department department = (Department) this.getDepartmentDao().load(departmentId);
+		Validate.notNull(department,
+				"DepartmentService.handleFindDepartment - no Department found corresponding to the ID "
+						+ departmentId);
+		
+		return this.getDepartmentDao().toDepartmentInfo(department);
+	}
 
 	/**
 	 * @see org.openuss.lecture.DepartmentService#findDepartmentsByUniversity(java.lang.Long)
 	 */
+	@SuppressWarnings( { "unchecked" })
 	protected java.util.List handleFindDepartmentsByUniversity(java.lang.Long universityId) throws java.lang.Exception {
-		
-		// TODO: Security
-    	
-    	Validate.notNull(universityId, "DepartmentService.handleFindDepartmentsByUniversity - the universityId cannot be null");
-    	
-    	University university = this.getUniversityDao().load(universityId);
-    	
+
+		Validate.notNull(universityId,
+				"DepartmentService.handleFindDepartmentsByUniversity - the universityId cannot be null");
+
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university,
+				"DepartmentService.handleFindDepartmentsByUniversity - no University found corresponding to the ID "
+						+ universityId);
+
 		return university.getDepartments();
+	}
+
+	/**
+	 * @see org.openuss.lecture.DepartmentService#findAllDepartmentsByEnabled(java.lang.Long, java.lang.Boolean)
+	 */
+	@SuppressWarnings( { "unchecked" })
+	protected List handleFindDepartmentsByUniversityAndEnabled(Long universityId, Boolean enabled) throws Exception {
+
+		return this.getDepartmentDao().findByEnabled(DepartmentDao.TRANSFORM_DEPARTMENTINFO, enabled);
 	}
 
 }

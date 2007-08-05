@@ -177,7 +177,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	}
 
 	/**
-	 * @see org.openuss.lecture.UniversityService#findctivePeriodByUniversity(java.lang.Long)
+	 * @see org.openuss.lecture.UniversityService#findActivePeriodByUniversity(java.lang.Long)
 	 */
 	protected org.openuss.lecture.PeriodInfo handleFindActivePeriodByUniversity(java.lang.Long universityId)
 			throws java.lang.Exception {
@@ -194,4 +194,15 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 			return this.getPeriodDao().toPeriodInfo(activePeriod);
 		}
 	}
+
+	/**
+	 * @see org.openuss.lecture.UniversityService#findAllUniversitiesByEnabled(java.lang.Boolean)
+	 */
+	@SuppressWarnings( { "unchecked" })
+	protected List handleFindAllUniversitiesByEnabled(Boolean enabled) throws Exception {
+		
+		return this.getUniversityDao().findByEnabled(UniversityDao.TRANSFORM_UNIVERSITYINFO, enabled);
+	}
+	
+	
 }

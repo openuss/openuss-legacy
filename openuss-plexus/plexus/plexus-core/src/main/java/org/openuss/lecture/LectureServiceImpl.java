@@ -34,7 +34,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 	@Override
 	protected Collection<InstituteInfo> handleGetInstitutes(boolean enabledOnly) throws Exception {
 		if (enabledOnly) {
-			return getInstituteDao().loadAllByEnabled(InstituteDao.TRANSFORM_INSTITUTEINFO, true);
+			return getInstituteDao().findByEnabled(InstituteDao.TRANSFORM_INSTITUTEINFO, true);
 		} else {
 			return getInstituteDao().loadAll(InstituteDao.TRANSFORM_INSTITUTEINFO);
 		}
