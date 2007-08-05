@@ -134,9 +134,9 @@ public class InstitutesPage extends BasePage{
 	private class OwnerComparator implements Comparator<InstituteInfo> {
 		public int compare(InstituteInfo f1, InstituteInfo f2) {
 			if (institutes.isAscending()) {
-				return f1.getOwnername().compareToIgnoreCase(f2.getOwnername());
+				return f1.getOwnerName().compareToIgnoreCase(f2.getOwnerName());
 			} else {
-				return f2.getOwnername().compareToIgnoreCase(f1.getOwnername());
+				return f2.getOwnerName().compareToIgnoreCase(f1.getOwnerName());
 			}
 		}
 	}

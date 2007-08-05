@@ -70,7 +70,7 @@ public class InstitutesPage extends BasePage{
 	public String save() {
 		for (InstituteInfo instituteDetails : changedInstitutes) {
 			Institute institute = lectureService.getInstitute(instituteDetails.getId());
-			institute.setEnabled(instituteDetails.isEnabled());
+			institute.setEnabled(instituteDetails.getEnabled());
 			lectureService.persist(institute);
 			if (institute.getEnabled())
 				addMessage(i18n("system_message_institute_enabled", new Object[]{ institute.getName()}));
