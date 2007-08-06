@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
+import org.openuss.TestUtility;
 import org.openuss.search.DomainResult;
 import org.openuss.security.User;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
@@ -29,6 +30,8 @@ public class InstituteIndexerTest extends AbstractDependencyInjectionSpringConte
 	private LectureSearcher lectureSearcher;
 	
 	private Institute institute;
+	
+	private TestUtility testUtility;
 						   	
 	@Override
 	protected void onSetUp() throws Exception {
@@ -37,9 +40,8 @@ public class InstituteIndexerTest extends AbstractDependencyInjectionSpringConte
 		
 		instituteIndexer.setInstituteDao(instituteDao);
 		
-		institute = new LectureBuilder().createInstitute(User.Factory.newInstance()).getInstitute();
-		// set owner to common owner "Mustermann"
-		institute.setOwnername("Mustermann");
+		institute = testUtility.createUniqueInstituteInDB();
+
 		instituteDao.create(institute);
 		
 		instituteIndexer.setDomainObject(institute);
@@ -59,7 +61,7 @@ public class InstituteIndexerTest extends AbstractDependencyInjectionSpringConte
 	public void testIndexingAndSearching() {
 		logger.debug("Method testIndexingAndSearching: Started");
 		
-		List<DomainResult> results = lectureSearcher.search("Mustermann");
+		List<DomainResult> results = lectureSearcher.search("A unique Insitute");
 		DomainResult[] resultObjs = (DomainResult[]) results.toArray(new DomainResult[results.size()]);
 		logger.debug("--- RESULTS ---> "+ArrayUtils.toString(resultObjs));
 		logger.debug(" Result size is: "+results.size());
@@ -70,12 +72,12 @@ public class InstituteIndexerTest extends AbstractDependencyInjectionSpringConte
 	
 	public void testIndexerUpdatingAndSearching() {
 		logger.debug("Method testIndexerUpdatingAndSearching: Started");
-		// set owner to new owner "Musterfrau"
-		institute.setOwnername("Musterfrau");
+		// set description to new description "A pathetic institute"
+		institute.setDescription("A pathetic institute");
 		
 		instituteIndexer.update();
 		
-		List<DomainResult> results = lectureSearcher.search("Musterfrau");
+		List<DomainResult> results = lectureSearcher.search("pathetic");
 		DomainResult[] resultObjs = (DomainResult[]) results.toArray(new DomainResult[results.size()]);
 		logger.debug("--- RESULTS ---> "+ArrayUtils.toString(resultObjs));
 		logger.debug(" Result size is: "+results.size());
@@ -111,6 +113,14 @@ public class InstituteIndexerTest extends AbstractDependencyInjectionSpringConte
 
 	public void setLectureSearcher(LectureSearcher lectureSearcher) {
 		this.lectureSearcher = lectureSearcher;
+	}
+	
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
 	}
 
 }
