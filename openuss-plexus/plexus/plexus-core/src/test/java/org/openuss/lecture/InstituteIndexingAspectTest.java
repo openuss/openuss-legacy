@@ -35,16 +35,18 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 	}
 
 	public void testLectureIndex() throws Exception {
-		//FIXME on creation faculties are disabled now, fix indexing according to this. 
-		
-		 
-		User user = testUtility.createSecureContext();
-		Institute institute = new LectureBuilder().createInstitute(user).getInstitute();
+	 
+		//User user = testUtility.createSecureContext();
+		//Institute institute = new LectureBuilder().createInstitute(user).getInstitute();
+		Institute institute = new LectureBuilder().createInstitute(User.Factory.newInstance()).getInstitute();
+		logger.debug(institute.getDescription());
 		// create institute
-		lectureService.createInstitute(institute);
+		//lectureService.createInstitute(institute);
+		InstituteInfo info = new InstituteInfo(null,"dfd","fd","dfd","df",false);
+		lectureService.create(info, 212l);
 		// activate institute
-		institute.setEnabled(true);
-		lectureService.persist(institute);
+		//institute.setEnabled(true);
+		//lectureService.persist(institute);
 		
 		// indexerMockCreate should be 0 due to the fact that institutes are initiated
 		// disabled. Therefore they are activated via the updateIndex-method --> indexerMockUpdate should be 1.

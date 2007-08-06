@@ -16,6 +16,7 @@ public class LectureIndexImpl implements LectureIndex{
 	private UniversityDao universityDao;
 	private DepartmentDao departmentDao;
 	private InstituteDao instituteDao;
+	private CourseTypeDao courseTypeDao;
 	private CourseDao courseDao;
 	
 	private Directory directory;
@@ -23,6 +24,7 @@ public class LectureIndexImpl implements LectureIndex{
 	private UniversityIndexer universityIndexer;
 	private DepartmentIndexer departmentIndexer;
 	private InstituteIndexer instituteIndexer;
+	private CourseTypeIndexer courseTypeIndexer;
 	private CourseIndexer courseIndexer;
 
 	/**
@@ -35,6 +37,7 @@ public class LectureIndexImpl implements LectureIndex{
 		indexUniversities();
 		indexDepartments();
 		indexInstitutes();
+		indexCourseTypes();
 		indexCourses();
 		
 		logger.debug("recreated lecture index.");
@@ -67,6 +70,16 @@ public class LectureIndexImpl implements LectureIndex{
 		for(Institute institute: institutes) {
 			instituteIndexer.setDomainObject(institute);
 			instituteIndexer.create();
+		}
+	}
+	
+	private void indexCourseTypes() {
+		logger.debug("indexing course types...");
+		Collection<CourseType> courseTypes = courseTypeDao.loadAll();
+		
+		for(CourseType courseType: courseTypes) {
+			courseTypeIndexer.setDomainObject(courseType);
+			courseTypeIndexer.create();
 		}
 	}
 
@@ -134,6 +147,22 @@ public class LectureIndexImpl implements LectureIndex{
 
 	public void setDirectory(Directory directory) {
 		this.directory = directory;
+	}
+	
+	public CourseTypeDao getCourseTypeDao() {
+		return courseTypeDao;
+	}
+
+	public void setCourseTypeDao(CourseTypeDao courseTypeDao) {
+		this.courseTypeDao = courseTypeDao;
+	}
+
+	public CourseTypeIndexer getCourseTypeIndexer() {
+		return courseTypeIndexer;
+	}
+
+	public void setCourseTypeIndexer(CourseTypeIndexer courseTypeIndexer) {
+		this.courseTypeIndexer = courseTypeIndexer;
 	}
 
 	public CourseDao getCourseDao() {
