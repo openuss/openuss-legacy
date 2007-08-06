@@ -356,19 +356,13 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		Validate.notNull(userId, "DesktopService2.handleFindLinkedDEpartmentsByUserAndUniversity - userId cannot be null!");
 		Validate.notNull(universityId, "DesktopService2.handleFindLinkedDEpartmentsByUserAndUniversity - universityId cannot be null!");
 		
-		User user = this.getUserDao().load(userId);
-		Validate.notNull(user, "DesktopService2.handleFindLinkedDepartmentsByUserAndUniversity - No user found corresponding to the userId "+userId);
-		
-		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university, "DesktopService2.handleFindLinkedDepartmentsByUserAndUniversity - No university found corresponding to the universityId "+universityId);
-		
 		// Get linked departments of user for given university
 		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
 		List<DepartmentInfo> linkedDepartments = new ArrayList<DepartmentInfo>();
 		Iterator iter = desktopInfo.getDepartmentInfos().iterator();
 		while (iter.hasNext()) {
 			DepartmentInfo departmentInfo = (DepartmentInfo) iter.next();
-			if (departmentInfo.getUniversityId() == university.getId()) {
+			if (departmentInfo.getUniversityId() == universityId) {
 				linkedDepartments.add(departmentInfo);
 			}
 		}
@@ -439,12 +433,6 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		Validate.notNull(userId, "DesktopService2.handleFindLinkedInstitutesByUserAndUniversity - userId cannot be null!");
 		Validate.notNull(universityId, "DesktopService2.handleFindLinkedInstitutesByUserAndUniversity - universityId cannot be null!");
 		
-		User user = this.getUserDao().load(userId);
-		Validate.notNull(user, "DesktopService2.handleFindLinkedInstitutesByUserAndUniversity - No user found corresponding to the userId "+userId);
-		
-		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university, "DesktopService2.handleFindLinkedInstitutesByUserAndUniversity - No university found corresponding to the universityId "+universityId);
-		
 		// Get linked institutes of user for given university
 		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
 		List<InstituteInfo> linkedInstitutes = new ArrayList<InstituteInfo>();
@@ -452,8 +440,7 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		while (iter.hasNext()) {
 			InstituteInfo instituteInfo = (InstituteInfo) iter.next();
 			Institute institute = this.getInstituteDao().load(instituteInfo.getId());
-			//Department department = this.getDepartmentDao().load(instituteInfo.getDepartmentId());
-			if (institute.getDepartment().getUniversity().getId() == university.getId()) {
+			if (institute.getDepartment().getUniversity().getId() == universityId) {
 				linkedInstitutes.add(instituteInfo);
 			}
 		}
@@ -468,8 +455,25 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 	protected List handleFindAdditionalInstitutesByUserAndUniversity(java.lang.Long userId,
 			java.lang.Long universityId) throws java.lang.Exception {
 		
-		//TODO: Implement this method!
-		throw new UnsupportedOperationException("Operation not implemented.");
+		Validate.notNull(userId, "DesktopService2.handleFindAdditionalInstitutesByUserAndUniversity - userId cannot be null!");
+		Validate.notNull(universityId, "DesktopService2.handleFindAdditionalInstitutesByUserAndUniversity - universityId cannot be null!");
+		
+		// Get Courses
+		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
+		List<InstituteInfo> additionalInstitutes = new ArrayList<InstituteInfo>();
+		List<InstituteInfo> linkedInstitutes = desktopInfo.getInstituteInfos();
+		Iterator iter = desktopInfo.getCourseInfos().iterator();
+		while (iter.hasNext()) {
+			CourseInfo courseInfo = (CourseInfo) iter.next();
+			Course course = this.getCourseDao().load(courseInfo.getId());
+			Institute institute = course.getCourseType().getInstitute();
+			if (!linkedInstitutes.contains(this.getInstituteDao().toInstituteInfo(institute)) && 
+					institute.getDepartment().getUniversity().getId() == universityId) {
+				additionalInstitutes.add(this.getInstituteDao().toInstituteInfo(institute));
+			}
+		}
+		
+		return additionalInstitutes;
 	}
 	
 	/**

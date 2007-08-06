@@ -25,7 +25,7 @@ import org.openuss.security.User;
  * JUnit Test for Spring Hibernate DesktopService2 class.
  * 
  * @see org.openuss.desktop.DesktopService2
- * @author Ron Haus
+ * @author Ron Haus, Florian Dondorf
  */
 public class DesktopService2IntegrationTest extends DesktopService2IntegrationTestBase {
 
@@ -402,7 +402,7 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 	public void testFindLinkedInstitutesByUserAndUniversity () {
 		logger.info("----> BEGIN access to findLinkedInstitutesByUserAndUniversity(userId, universityId) test");
 		
-		//Create Universities
+		//Create University
 		University university = testUtility.createUniqueUniversityInDB();
 		
 		//Create Departments
@@ -447,6 +447,74 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		
 		logger.info("----> END access to findLinkedInstitutesByUserAndUniversity(userId, universityId) test");
 	}
+	
+	@SuppressWarnings( { "unchecked" })
+	public void testFindAdditionalInstitutesByUserAndUniversity () {
+		logger.info("----> BEGIN access to findAdditionalInstitutesByUserAndUniversity(userId, universityId) test");
+		
+		//Create University
+		University university = testUtility.createUniqueUniversityInDB();
+		
+		//Create department
+		Department department1 = testUtility.createUniqueDepartmentInDB();
+		department1.setUniversity(university);
+		
+		Department department2 = testUtility.createUniqueDepartmentInDB();
+		
+		// Create Institutes
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		institute1.setDepartment(department1);
+		
+		Institute institute2 = testUtility.createUniqueInstituteInDB();
+		institute2.setDepartment(department1);
+		
+		Institute institute3 = testUtility.createUniqueInstituteInDB();
+		institute3.setDepartment(department2);
+		
+		// Create CourseTypes
+		CourseType courseType1 = testUtility.createUniqueCourseTypeInDB();
+		courseType1.setInstitute(institute1);
+		
+		CourseType courseType2 = testUtility.createUniqueCourseTypeInDB();
+		courseType2.setInstitute(institute2);
+		
+		CourseType courseType3 = testUtility.createUniqueCourseTypeInDB();
+		courseType3.setInstitute(institute3);
+		
+		// Create Courses
+		Course course1 = testUtility.createUniqueCourseInDB();
+		course1.setCourseType(courseType1);
+		
+		Course course2 = testUtility.createUniqueCourseInDB();
+		course2.setCourseType(courseType2);
+		
+		Course course3 = testUtility.createUniqueCourseInDB();
+		course3.setCourseType(courseType3);
+		
+		// Create Desktop
+		Desktop desktop = this.createDesktop();
+		
+		// Link
+		desktop.getInstitutes().add(institute1);
+		desktop.getCourses().add(course1);
+		desktop.getCourses().add(course2);
+		desktop.getCourses().add(course3);
+		flush();
+		
+		// Test
+		try {
+			List<InstituteInfo> additionalInstitutes = 
+				this.getDesktopService2().findAdditionalInstitutesByUserAndUniversity(desktop.getUser().getId(), university.getId());
+			assertNotNull(additionalInstitutes);
+			assertEquals(1, additionalInstitutes.size());
+			
+		} catch (DesktopException dexc) {
+			fail("No DesktopException should have been thrown.");
+		}
+		
+		logger.info("----> END access to findAdditionalInstitutesByUserAndUniversity(userId, universityId) test");
+	}
+	
 	
 	@SuppressWarnings( { "unchecked" })
 	public void testFindLinkedCoursesByUserAndUniversity () {
