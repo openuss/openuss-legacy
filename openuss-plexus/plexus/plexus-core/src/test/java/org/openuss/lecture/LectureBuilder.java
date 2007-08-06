@@ -52,6 +52,7 @@ public class LectureBuilder {
 	public LectureBuilder createInstitute(User owner) {
 		institute = Institute.Factory.newInstance();
 		institute.setName(unique());
+		institute.setDescription("A pretty good institute");
 		institute.setOwnerName("institute owner");
 		institute.setShortcut(unique());
 		institute.setEmail("email@email.com");
@@ -61,7 +62,6 @@ public class LectureBuilder {
 		institute.setLocale("de");
 		institute.setTheme("plexus");
 		institute.setWebsite("www.openuss.org");
-		//institute.setOwner(owner);
 		return this;
 	}
 	
@@ -69,7 +69,6 @@ public class LectureBuilder {
 		course = Course.Factory.newInstance();
 		course.setCourseType(courseType);
 		course.setDescription("A pretty good course");
-		course.setInstitute(institute);
 		course.setShortcut("PJS ALM");
 		course.setId(15l);
 		return this;
