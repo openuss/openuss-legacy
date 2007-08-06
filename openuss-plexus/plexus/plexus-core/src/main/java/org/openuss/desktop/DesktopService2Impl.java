@@ -380,42 +380,24 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		Validate.notNull(userId, "DesktopService2.handleFindAdditionalDepartmentsByUserAndUniversity - userId cannot be null!");
 		Validate.notNull(universityId, "DesktopService2.handleFindAdditionalDepartmentsByUserAndUniversity - universityId cannot be null!");
 		
-		User user = this.getUserDao().load(userId);
-		Validate.notNull(user, "DesktopService2.handleFindAdditionalDepartmentsByUserAndUniversity - No user found corresponding to the userId "+userId);
-		
-		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university, "DesktopService2.handleFindAdditionalDepartmentsByUserAndUniversity - No university found corresponding to the universityId "+universityId);
-		
-		// Get additional departments of user for given university
 		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
 		
-		// Get additional institutes
-		List<DepartmentInfo> additionalDepartments = new ArrayList<DepartmentInfo>();
-		List<InstituteInfo> additionalInstitutes = new ArrayList<InstituteInfo>();
-		Iterator iter = desktopInfo.getCourseInfos().iterator();
-		while (iter.hasNext()) {
-			CourseInfo courseInfo = (CourseInfo) iter.next();
-			CourseType courseType = (CourseType) this.getCourseTypeDao().load(courseInfo.getCourseTypeId());
-			InstituteInfo instituteInfo = this.getInstituteDao().toInstituteInfo(
-					this.getInstituteDao().load(courseType.getInstitute().getId()));
-			if (!desktopInfo.getInstituteInfos().contains(instituteInfo)) {
-				additionalInstitutes.add(instituteInfo);
-			}
-		}
+		// Get additional institutes of university
+		List<InstituteInfo> additionalInstitutes = this.findAdditionalInstitutesByUserAndUniversity(userId, universityId);
 		
-		// Create list of all institutes (linked + additional)
+		// Generate list of all institutes
 		List<InstituteInfo> allInstitutes = new ArrayList<InstituteInfo>();
 		allInstitutes.addAll(additionalInstitutes);
 		allInstitutes.addAll(desktopInfo.getInstituteInfos());
 		
 		// Get additional departments
-		iter = allInstitutes.iterator();
+		List<DepartmentInfo> additionalDepartments = new ArrayList<DepartmentInfo>();
+		Iterator iter = allInstitutes.iterator();
 		while (iter.hasNext()) {
 			InstituteInfo instituteInfo = (InstituteInfo) iter.next();
 			Institute institute = this.getInstituteDao().load(instituteInfo.getId());
 			DepartmentInfo departmentInfo = this.getDepartmentDao().toDepartmentInfo(institute.getDepartment());
-			if (!desktopInfo.getDepartmentInfos().contains(departmentInfo) &&
-					!additionalDepartments.contains(departmentInfo)) {
+			if (!desktopInfo.getDepartmentInfos().contains(departmentInfo) && departmentInfo.getUniversityId() == universityId) {
 				additionalDepartments.add(departmentInfo);
 			}
 		}
@@ -467,9 +449,10 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 			CourseInfo courseInfo = (CourseInfo) iter.next();
 			Course course = this.getCourseDao().load(courseInfo.getId());
 			Institute institute = course.getCourseType().getInstitute();
-			if (!linkedInstitutes.contains(this.getInstituteDao().toInstituteInfo(institute)) && 
+			InstituteInfo instituteInfo = this.getInstituteDao().toInstituteInfo(institute);
+			if (!linkedInstitutes.contains(instituteInfo) && 
 					institute.getDepartment().getUniversity().getId() == universityId) {
-				additionalInstitutes.add(this.getInstituteDao().toInstituteInfo(institute));
+				additionalInstitutes.add(instituteInfo);
 			}
 		}
 		

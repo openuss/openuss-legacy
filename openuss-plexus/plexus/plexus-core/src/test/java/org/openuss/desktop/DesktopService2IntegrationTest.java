@@ -348,7 +348,7 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		institute2.setDepartment(department2);
 		
 		Institute institute3 = testUtility.createUniqueInstituteInDB();
-		institute2.setDepartment(department3);
+		institute3.setDepartment(department3);
 		
 		// Create CourseTypes
 		CourseType courseType1 = testUtility.createUniqueCourseTypeInDB();
@@ -362,18 +362,12 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		
 		// Create Courses
 		Course course1 = testUtility.createUniqueCourseInDB();
-		Period period1 = testUtility.createUniquePeriodInDB();
-		course1.setPeriod(period1);
 		course1.setCourseType(courseType1);
 		
 		Course course2 = testUtility.createUniqueCourseInDB();
-		Period period2 = testUtility.createUniquePeriodInDB();
-		course2.setPeriod(period2);
-		course2.setCourseType(courseType3);
+		course2.setCourseType(courseType2);
 		
 		Course course3 = testUtility.createUniqueCourseInDB();
-		Period period3 = testUtility.createUniquePeriodInDB();
-		course3.setPeriod(period3);
 		course3.setCourseType(courseType3);
 		
 		// Link
@@ -455,21 +449,33 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		//Create University
 		University university = testUtility.createUniqueUniversityInDB();
 		
-		//Create department
+		//Create departments
 		Department department1 = testUtility.createUniqueDepartmentInDB();
 		department1.setUniversity(university);
 		
 		Department department2 = testUtility.createUniqueDepartmentInDB();
 		
+		Department department3 = testUtility.createUniqueDepartmentInDB();
+		department3.setUniversity(university);
+		flush();
+		
 		// Create Institutes
 		Institute institute1 = testUtility.createUniqueInstituteInDB();
 		institute1.setDepartment(department1);
+		department1.getInstitutes().add(institute1);
 		
 		Institute institute2 = testUtility.createUniqueInstituteInDB();
 		institute2.setDepartment(department1);
+		department1.getInstitutes().add(institute2);
 		
 		Institute institute3 = testUtility.createUniqueInstituteInDB();
 		institute3.setDepartment(department2);
+		department2.getInstitutes().add(institute3);
+		
+		Institute institute4 = testUtility.createUniqueInstituteInDB();
+		institute4.setDepartment(department3);
+		department3.getInstitutes().add(institute4);
+		flush();
 		
 		// Create CourseTypes
 		CourseType courseType1 = testUtility.createUniqueCourseTypeInDB();
@@ -481,6 +487,13 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		CourseType courseType3 = testUtility.createUniqueCourseTypeInDB();
 		courseType3.setInstitute(institute3);
 		
+		CourseType courseType4 = testUtility.createUniqueCourseTypeInDB();
+		courseType3.setInstitute(institute4);
+		
+		CourseType courseType5 = testUtility.createUniqueCourseTypeInDB();
+		courseType3.setInstitute(institute4);
+		flush();
+		
 		// Create Courses
 		Course course1 = testUtility.createUniqueCourseInDB();
 		course1.setCourseType(courseType1);
@@ -491,14 +504,28 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		Course course3 = testUtility.createUniqueCourseInDB();
 		course3.setCourseType(courseType3);
 		
+		Course course4 = testUtility.createUniqueCourseInDB();
+		course4.setCourseType(courseType4);
+		
+		Course course5 = testUtility.createUniqueCourseInDB();
+		course5.setCourseType(courseType5);
+		
+		Course course6 = testUtility.createUniqueCourseInDB();
+		course6.setCourseType(courseType5);
+		flush();
+		
 		// Create Desktop
 		Desktop desktop = this.createDesktop();
 		
 		// Link
 		desktop.getInstitutes().add(institute1);
+		desktop.getInstitutes().add(institute4);
 		desktop.getCourses().add(course1);
 		desktop.getCourses().add(course2);
 		desktop.getCourses().add(course3);
+		desktop.getCourses().add(course4);
+		desktop.getCourses().add(course5);
+		desktop.getCourses().add(course6);
 		flush();
 		
 		// Test
