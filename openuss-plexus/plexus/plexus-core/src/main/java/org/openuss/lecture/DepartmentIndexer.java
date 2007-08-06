@@ -20,7 +20,7 @@ public class DepartmentIndexer extends DomainIndexer {
 	
 	private static final String SPACE = " ";
 
-	private static final String DOMAINTYPE_VALUE = "Department";
+	private static final String DOMAINTYPE_VALUE = "DEPARTMENT";
 
 	private static final Logger logger = Logger.getLogger(DepartmentIndexer.class);
 

@@ -14,12 +14,14 @@ public class LectureIndexImpl implements LectureIndex{
 	private static final Logger logger = Logger.getLogger(LectureIndexImpl.class);
 	
 	private UniversityDao universityDao;
+	private DepartmentDao departmentDao;
 	private InstituteDao instituteDao;
 	private CourseDao courseDao;
 	
 	private Directory directory;
 	
 	private UniversityIndexer universityIndexer;
+	private DepartmentIndexer departmentIndexer;
 	private InstituteIndexer instituteIndexer;
 	private CourseIndexer courseIndexer;
 
@@ -31,6 +33,7 @@ public class LectureIndexImpl implements LectureIndex{
 		logger.debug("start to recreate lecture index.");
 
 		indexUniversities();
+		indexDepartments();
 		indexInstitutes();
 		indexCourses();
 		
@@ -44,6 +47,16 @@ public class LectureIndexImpl implements LectureIndex{
 		for(University university: universities) {
 			universityIndexer.setDomainObject(university);
 			universityIndexer.create();
+		}
+	}
+	
+	private void indexDepartments() {
+		logger.debug("indexing departments...");
+		Collection<Department> departments = departmentDao.loadAll();
+		
+		for(Department department: departments) {
+			departmentIndexer.setDomainObject(department);
+			departmentIndexer.create();
 		}
 	}
 
@@ -81,6 +94,22 @@ public class LectureIndexImpl implements LectureIndex{
 
 	public void setUniversityIndexer(UniversityIndexer universityIndexer) {
 		this.universityIndexer = universityIndexer;
+	}
+	
+	public DepartmentDao getDepartmentDao() {
+		return departmentDao;
+	}
+
+	public void setDepartmentDao(DepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
+	}
+
+	public DepartmentIndexer getDepartmentIndexer() {
+		return departmentIndexer;
+	}
+
+	public void setDepartmentIndexer(DepartmentIndexer departmentIndexer) {
+		this.departmentIndexer = departmentIndexer;
 	}
 
 	public InstituteDao getInstituteDao() {
