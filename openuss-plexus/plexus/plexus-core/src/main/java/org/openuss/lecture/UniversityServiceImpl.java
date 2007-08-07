@@ -172,8 +172,13 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		
 		University university = this.getUniversityDao().load(universityId);
 		Validate.notNull(university, "UniversityService.handleFindPeriodsByUniversity - no University found corresponding to the ID "+universityId);
-		
-		return university.getPeriods();
+
+		List periodInfos = new ArrayList();
+		for (Period period : university.getPeriods()) {
+			periodInfos.add(this.getPeriodDao().toPeriodInfo(period));
+		}
+
+		return periodInfos;
 	}
 
 	/**
