@@ -5,6 +5,7 @@
  */
 package org.openuss.lecture;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -20,12 +21,12 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	/**
 	 * @see org.openuss.lecture.DepartmentService#create(org.openuss.lecture.DepartmentInfo, java.lang.Long)
 	 */
-	protected java.lang.Long handleCreate(org.openuss.lecture.DepartmentInfo department, java.lang.Long ownerId)
+	protected java.lang.Long handleCreate(org.openuss.lecture.DepartmentInfo department, java.lang.Long userId)
 			throws java.lang.Exception {
 		// TODO: Security
 
 		Validate.notNull(department, "DepartmentService.handleCreate - the Department cannot be null");
-		Validate.notNull(ownerId, "DepartmentService.handleCreate - the Owner must have a valid ID");
+		Validate.notNull(userId, "DepartmentService.handleCreate - the User must have a valid ID");
 
 		Validate.isTrue(department.getId() == null,
 				"DepartmentService.handleCreate - the Department shouldn't have an ID yet");
@@ -45,8 +46,8 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Long groupId = this.getOrganisationService().createGroup(departmentEntity.getId(), groupItem);
 
 		// Add Owner to Members and Group of Administrators
-		this.getOrganisationService().addMember(departmentEntity.getId(), ownerId);
-		this.getOrganisationService().addUserToGroup(ownerId, groupId);
+		this.getOrganisationService().addMember(departmentEntity.getId(), userId);
+		this.getOrganisationService().addUserToGroup(userId, groupId);
 
 		return departmentEntity.getId();
 
@@ -116,8 +117,13 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Validate.notNull(university,
 				"DepartmentService.handleFindDepartmentsByUniversity - no University found corresponding to the ID "
 						+ universityId);
+		
+		List departmentInfos = new ArrayList();
+		for (Department department : university.getDepartments()) {
+			departmentInfos.add(this.getDepartmentDao().toDepartmentInfo(department));
+		}
 
-		return university.getDepartments();
+		return departmentInfos;
 	}
 
 	/**
