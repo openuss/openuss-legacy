@@ -23,10 +23,10 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	/**
 	 * @see org.openuss.lecture.UniversityService#create(org.openuss.lecture.UniversityInfo, java.lang.Long)
 	 */
-	protected java.lang.Long handleCreate(org.openuss.lecture.UniversityInfo university, java.lang.Long ownerId) {
+	protected java.lang.Long handleCreate(org.openuss.lecture.UniversityInfo university, java.lang.Long userId) {
 
 		Validate.notNull(university, "UniversityService.handleCreate - the University cannot be null");
-		Validate.notNull(ownerId, "UniversityService.handleCreate - the Owner must have a valid ID");
+		Validate.notNull(userId, "UniversityService.handleCreate - the User must have a valid ID");
 		Validate.isTrue(university.getId() == null, "UniversityService.handleCreate - the University shouldn't have an ID yet");
 
 		// Transform ValueObject into Entity
@@ -48,8 +48,8 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		Long groupId = this.getOrganisationService().createGroup(universityEntity.getId(), groupItem);
 		
 		//Add Owner to Members and Group of Administrators
-		this.getOrganisationService().addMember(universityEntity.getId(), ownerId);
-		this.getOrganisationService().addUserToGroup(ownerId, groupId);
+		this.getOrganisationService().addMember(universityEntity.getId(), userId);
+		this.getOrganisationService().addUserToGroup(userId, groupId);
 		
 		return universityEntity.getId();
 	}
