@@ -29,7 +29,7 @@ import org.openuss.system.SystemProperties;
 
 /**
  * @see org.openuss.lecture.LectureService
- * @author Ingo Dueppe, Ron Haus
+ * @author Ingo Dueppe, Ron Haus, Florian Dondorf
  */
 public class LectureServiceImpl extends LectureServiceBase {
 
@@ -123,6 +123,15 @@ public class LectureServiceImpl extends LectureServiceBase {
 	}
 
 	@Override
+	protected List<InstituteInfo> handleFindInstitutes(boolean enabledOnly) throws Exception {
+		if (enabledOnly) {
+			return (List<InstituteInfo>) getInstituteDao().findByEnabled(InstituteDao.TRANSFORM_INSTITUTEINFO, true);
+		} else {
+			return (List<InstituteInfo>) getInstituteDao().loadAll(InstituteDao.TRANSFORM_INSTITUTEINFO);
+		}
+	}
+	
+	@Override
 	protected Collection<InstituteInfo> handleGetInstitutes(boolean enabledOnly) throws Exception {
 		if (enabledOnly) {
 			return getInstituteDao().findByEnabled(InstituteDao.TRANSFORM_INSTITUTEINFO, true);
@@ -132,6 +141,15 @@ public class LectureServiceImpl extends LectureServiceBase {
 	}
 
 	@Override
+	protected InstituteInfo handleFindInstitute(Long instituteId) throws Exception {
+		Institute institute = getInstituteDao().load(instituteId);
+		if (institute == null && logger.isInfoEnabled()) {
+			logger.info("Institute with id" + instituteId + " cannot be found!");
+		}
+		return this.getInstituteDao().toInstituteInfo(institute);
+	}
+	
+	@Override
 	protected Institute handleGetInstitute(Long instituteId) throws Exception {
 		Institute institute = getInstituteDao().load(instituteId);
 		if (institute == null && logger.isInfoEnabled()) {
@@ -139,7 +157,7 @@ public class LectureServiceImpl extends LectureServiceBase {
 		}
 		return institute;
 	}
-
+	
 	@Override
 	protected CourseType handleGetCourseType(Long courseTypeId) throws Exception {
 		return getCourseTypeDao().load(courseTypeId);
@@ -153,6 +171,12 @@ public class LectureServiceImpl extends LectureServiceBase {
 			return null;
 	}
 
+	@Override
+	protected CourseInfo handleFindCourse(Long courseId) throws Exception {
+		Course courseEntity = this.getCourseDao().load(courseId);
+		return this.getCourseDao().toCourseInfo(courseEntity);
+	}
+	
 	@Override
 	protected Course handleGetCourse(Long courseId) throws Exception {
 		return getCourseDao().load(courseId);

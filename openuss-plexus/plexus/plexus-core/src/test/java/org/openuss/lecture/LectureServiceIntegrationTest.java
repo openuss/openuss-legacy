@@ -133,6 +133,33 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		logger.info("----> END access to removeInstitute test");		
 	}
 
+	public void testFindInstitutes () {
+		logger.debug("----> BEGIN access to findInstitutes test <---- ");
+		
+		//Create institutes
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		institute1.setEnabled(true);
+		
+		Institute institute2 = testUtility.createUniqueInstituteInDB();
+		institute2.setEnabled(true);
+		
+		Institute institute3 = testUtility.createUniqueInstituteInDB();
+		institute3.setEnabled(false);
+		flush();
+		
+		//Test
+		List<InstituteInfo> instituteInfos = this.getLectureService().findInstitutes(true);
+		assertNotNull(instituteInfos);
+		assertEquals(2, instituteInfos.size());
+		
+		instituteInfos = this.getLectureService().findInstitutes(false);
+		assertNotNull(instituteInfos);
+		assertEquals(3, instituteInfos.size());
+		
+		
+		logger.debug("----> END access to findInstitutes test <---- ");
+	}
+	
 	public void testGetInstitutes () {
 		logger.debug("----> BEGIN access to getInstitutes test <---- ");
 		
@@ -169,6 +196,25 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		logger.debug("----> END access to getInstitutes test <---- ");
 	}
 	
+	public void testFindInstitute () {
+		logger.debug("----> BEGIN access to findInstitute test <---- ");
+		
+		//Create institutes
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		flush();
+		
+		//Test
+		InstituteInfo instituteInfo = this.getLectureService().findInstitute(institute1.getId());
+		assertNotNull(instituteInfo);
+		assertEquals(instituteInfo.getId(), institute1.getId());
+		assertEquals(instituteInfo.getName(), institute1.getName());
+		assertEquals(instituteInfo.getDescription(), institute1.getDescription());
+		assertEquals(instituteInfo.getDepartmentId(), institute1.getDepartment().getId());
+		
+		
+		logger.debug("----> END access to findInstitute test <---- ");
+	}
+	
 	public void testGetInstitute () {
 		logger.debug("----> BEGIN access to getInstitute test <---- ");
 		
@@ -200,6 +246,24 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		assertNotNull(courseTypeTest);
 		
 		logger.debug("----> END access to getCourseType test <---- ");
+	}
+	
+	public void testFindCourse () {
+		logger.debug("----> BEGIN access to findCourse test <---- ");
+		
+		//Create Course
+		Course course = testUtility.createUniqueCourseInDB();
+		flush();
+		
+		//Test
+		CourseInfo courseInfo = this.getLectureService().findCourse(course.getId());
+		assertNotNull(courseInfo);
+		assertEquals(courseInfo.getId(), course.getId());
+		assertEquals(courseInfo.getName(), course.getName());
+		assertEquals(courseInfo.getDescription(), course.getDescription());
+		assertEquals(courseInfo.getCourseTypeId(), course.getCourseType().getId());
+		
+		logger.debug("----> END access to findCourse test <---- ");
 	}
 	
 	public void testGetCourse () {
@@ -244,6 +308,87 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		assertFalse(result);
 		
 		logger.debug("----> END access to isNoneExistingInstituteShortcut test <---- ");
+	}
+	
+	public void testIsNoneExistingCourseShortcut () {
+		logger.debug("----> BEGIN access to isNoneExistingCourseShortcut test <---- ");
+		
+		//Create Secure Context
+		User user = testUtility.createSecureContext();
+		
+		// Create CourseTypes
+		Course course1= testUtility.createUniqueCourseInDB();
+		Course course2= testUtility.createUniqueCourseInDB();
+		flush();
+		
+		// Test
+		Boolean result = this.getLectureService().isNoneExistingCourseShortcut(course1, course1.getShortcut());
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getLectureService().isNoneExistingCourseShortcut(course1, testUtility.unique("shortcut"));
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getLectureService().isNoneExistingCourseShortcut(course1, course2.getShortcut());
+		assertNotNull(result);
+		assertFalse(result);
+		
+		logger.debug("----> END access to isNoneExistingCourseShortcut test <---- ");
+	}
+	
+	public void testIsNoneExistingCourseTypeShortcut () {
+		logger.debug("----> BEGIN access to isNoneExistingCourseTypeShortcut test <---- ");
+		
+		//Create Secure Context
+		User user = testUtility.createSecureContext();
+		
+		// Create CourseTypes
+		CourseType courseType1= testUtility.createUniqueCourseTypeInDB();
+		CourseType courseType2= testUtility.createUniqueCourseTypeInDB();
+		flush();
+		
+		// Test
+		Boolean result = this.getLectureService().isNoneExistingCourseTypeShortcut(courseType1, courseType1.getShortcut());
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getLectureService().isNoneExistingCourseTypeShortcut(courseType1, testUtility.unique("shortcut"));
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getLectureService().isNoneExistingCourseTypeShortcut(courseType1, courseType2.getShortcut());
+		assertNotNull(result);
+		assertFalse(result);
+		
+		logger.debug("----> END access to isNoneExistingCourseTypeShortcut test <---- ");
+	}
+	
+	public void testIsNoneExistingCourseTypeName () {
+		logger.debug("----> BEGIN access to isNoneExistingCourseTypeName test <---- ");
+		
+		//Create Secure Context
+		User user = testUtility.createSecureContext();
+		
+		// Create CourseTypes
+		CourseType courseType1= testUtility.createUniqueCourseTypeInDB();
+		CourseType courseType2= testUtility.createUniqueCourseTypeInDB();
+		flush();
+		
+		// Test
+		Boolean result = this.getLectureService().isNoneExistingCourseTypeName(courseType1, courseType1.getName());
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getLectureService().isNoneExistingCourseTypeName(courseType1, testUtility.unique("name"));
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getLectureService().isNoneExistingCourseTypeName(courseType1, courseType2.getName());
+		assertNotNull(result);
+		assertFalse(result);
+		
+		logger.debug("----> END access to isNoneExistingCourseTypeName test <---- ");
 	}
 	
 	public void testAddCourseTypeToInstitute() throws LectureException{
