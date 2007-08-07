@@ -34,102 +34,6 @@ import org.openuss.system.SystemProperties;
 public class LectureServiceImpl extends LectureServiceBase {
 
 	private static final Logger logger = Logger.getLogger(LectureServiceImpl.class);
-
-	@Override
-	protected Long handleCreate(InstituteInfo instituteInfo, Long ownerId) throws Exception {
-
-		Validate.notNull(instituteInfo, "LectureService.handleCreate - the Institute cannot be null");
-		Validate.notNull(ownerId, "LectureService.handleCreate - the Owner must have a valid ID");
-		Validate.isTrue(instituteInfo.getId() == null,
-				"LectureService.handleCreate - the Institute shouldn't have an ID yet");
-
-		// Transform ValueObject into Entity
-		Institute institute = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
-
-		// Create a default Membership for the University
-		Membership membership = Membership.Factory.newInstance();
-		institute.setMembership(membership);
-
-		// Create the University
-		this.getInstituteDao().create(institute);
-		Validate.notNull(institute.getId(), "LectureService.handleCreate - Couldn't create Institute");
-
-		// Create default Groups for Institute
-		GroupItem admins = new GroupItem();
-		admins.setName("INSTITUTE_" + institute.getId() + "_ADMINS");
-		admins.setLabel("autogroup_administrator_label");
-		admins.setGroupType(GroupType.ADMINISTRATOR);
-		Long adminsId = this.getOrganisationService().createGroup(institute.getId(), admins);
-
-		GroupItem assistants = new GroupItem();
-		assistants.setName("INSTITUTE_" + institute.getId() + "_ASSISTANTS");
-		assistants.setLabel("autogroup_assistant_label");
-		assistants.setGroupType(GroupType.ASSISTANT);
-		this.getOrganisationService().createGroup(institute.getId(), assistants);
-
-		GroupItem tutors = new GroupItem();
-		tutors.setName("INSTITUTE_" + institute.getId() + "_TUTORS");
-		tutors.setLabel("autogroup_tutor_label");
-		tutors.setGroupType(GroupType.TUTOR);
-		this.getOrganisationService().createGroup(institute.getId(), tutors);
-
-		// TODO Set Security for Groups
-
-		// Add Owner to Members and Group of Administrators
-		this.getOrganisationService().addMember(institute.getId(), ownerId);
-		this.getOrganisationService().addUserToGroup(ownerId, adminsId);
-
-		return institute.getId();
-	}
-
-	@Override
-	protected void handleUpdate(InstituteInfo instituteInfo) throws Exception {
-
-		Validate.notNull(instituteInfo, "LectureService.handleUpdate - the Institute cannot be null");
-		Validate.notNull(instituteInfo.getId(), "LectureService.handleUpdate - the Institute must have a valid ID");
-
-		// Transform ValueObject into Entity
-		Institute institute = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
-
-		// Update Entity
-		this.getInstituteDao().update(institute);
-
-	}
-
-	@Override
-	protected void handleRemoveInstitute(Long instituteId) throws Exception {
-
-		Validate.notNull(instituteId, "LectureService.handleRemoveInstitute - the InstituteID cannot be null");
-
-		// Get Institute entity
-		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute, "LectureService.handleRemoveInstitute - no institute found to the corresponding id "+instituteId);
-		
-		// TODO All Bookmarks need to be removed before
-		
-
-		this.getInstituteDao().remove(instituteId);
-
-		// fire events
-		/*
-		 * for (Course course : institute.getCourses()) { fireRemovingCourse(course); }
-		 * 
-		 * for (CourseType courseType : institute.getCourseTypes()) { fireRemovingCourseType(courseType); }
-		 * 
-		 * fireRemovingInstitute(institute);
-		 */
-		// TODO InstituteCodes need to be removed before
-		//getRegistrationService().removeInstituteCodes(institute);
-	}
-
-	@Override
-	protected List<InstituteInfo> handleFindInstitutes(boolean enabledOnly) throws Exception {
-		if (enabledOnly) {
-			return (List<InstituteInfo>) getInstituteDao().findByEnabled(InstituteDao.TRANSFORM_INSTITUTEINFO, true);
-		} else {
-			return (List<InstituteInfo>) getInstituteDao().loadAll(InstituteDao.TRANSFORM_INSTITUTEINFO);
-		}
-	}
 	
 	@Override
 	protected Collection<InstituteInfo> handleGetInstitutes(boolean enabledOnly) throws Exception {
@@ -138,15 +42,6 @@ public class LectureServiceImpl extends LectureServiceBase {
 		} else {
 			return getInstituteDao().loadAll(InstituteDao.TRANSFORM_INSTITUTEINFO);
 		}
-	}
-
-	@Override
-	protected InstituteInfo handleFindInstitute(Long instituteId) throws Exception {
-		Institute institute = getInstituteDao().load(instituteId);
-		if (institute == null && logger.isInfoEnabled()) {
-			logger.info("Institute with id" + instituteId + " cannot be found!");
-		}
-		return this.getInstituteDao().toInstituteInfo(institute);
 	}
 	
 	@Override
@@ -169,12 +64,6 @@ public class LectureServiceImpl extends LectureServiceBase {
 			return getPeriodDao().load(periodId);
 		else
 			return null;
-	}
-
-	@Override
-	protected CourseInfo handleFindCourse(Long courseId) throws Exception {
-		Course courseEntity = this.getCourseDao().load(courseId);
-		return this.getCourseDao().toCourseInfo(courseEntity);
 	}
 	
 	@Override
@@ -380,6 +269,32 @@ public class LectureServiceImpl extends LectureServiceBase {
 		getCourseDao().remove(course);
 	}
 
+	@Override
+	protected void handleRemoveInstitute(Long instituteId) throws Exception {
+		Validate.notNull(instituteId, "InstituteService.handleRemoveInstitute - the InstituteID cannot be null");
+
+		// Get Institute entity
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute,
+				"InstituteService.handleRemoveInstitute - no Institute found to the corresponding ID " + instituteId);
+
+		// TODO All Bookmarks need to be removed before
+
+		this.getInstituteDao().remove(instituteId);
+
+		// fire events
+		/*
+		 * for (Course course : institute.getCourses()) { fireRemovingCourse(course); }
+		 * 
+		 * for (CourseType courseType : institute.getCourseTypes()) { fireRemovingCourseType(courseType); }
+		 * 
+		 * fireRemovingInstitute(institute);
+		 */
+		// TODO InstituteCodes need to be removed before
+		// getRegistrationService().removeInstituteCodes(institute);
+		
+	}
+	
 	@Override
 	protected Course handleCreateCourse(Long courseTypeId, Long periodId) throws Exception {
 		// refresh instances

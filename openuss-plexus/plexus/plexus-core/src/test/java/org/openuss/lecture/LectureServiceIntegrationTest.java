@@ -39,127 +39,6 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		assertNotNull(authorityDao);
 	}
 	
-	public void testCreateInstitute() {
-		logger.info("----> BEGIN access to create(Institute) test");
-
-		//Create new UniversityInfo object
-		InstituteInfo instituteInfo = new InstituteInfo();
-		instituteInfo.setName(testUtility.unique("testInstitute"));
-		instituteInfo.setShortcut(testUtility.unique("testI"));
-		instituteInfo.setOwnerName("Administrator");
-		instituteInfo.setEnabled(true);
-		instituteInfo.setDescription("This is a test Institute");
-		
-		//Create a User as Owner
-		User owner = testUtility.createUniqueUserInDB();
-		
-		//Create Entity
-		Long instituteId = lectureService.create(instituteInfo, owner.getId());
-		assertNotNull(instituteId);
-		
-		//Synchronize with Database
-		flush();
-
-		logger.info("----> END access to create(Institute) test");
-	}
-	
-	public void testUpdateInstitute() {
-		logger.info("----> BEGIN access to update(Institute) test");
-
-		//Create a default University
-		Institute institute = testUtility.createUniqueInstituteInDB();
-		assertNotNull(institute.getId());
-		
-		//Create new UniversityInfo object
-		InstituteInfo instituteInfo = new InstituteInfo();
-		instituteInfo.setId(institute.getId());
-		instituteInfo.setName(testUtility.unique("testInstitute"));
-		instituteInfo.setShortcut(testUtility.unique("testI"));
-		instituteInfo.setOwnerName("Administrator");
-		instituteInfo.setEnabled(true);
-		instituteInfo.setDescription("This is a test Institute at "+testUtility.unique("time"));
-		
-		// Check
-		assertTrue(instituteInfo.getId().longValue() == institute.getId().longValue());
-		assertFalse(instituteInfo.getName().compareTo(institute.getName()) == 0);
-		assertFalse(instituteInfo.getShortcut().compareTo(institute.getShortcut()) == 0);
-		assertFalse(instituteInfo.getDescription().compareTo(institute.getDescription()) == 0);
-
-		//Synchronize with Database
-		flush();
-		
-		//Update University
-		lectureService.update(instituteInfo);
-
-		//Check
-		assertTrue(instituteInfo.getId().longValue() == institute.getId().longValue());
-		assertTrue(instituteInfo.getName().compareTo(institute.getName()) == 0);
-		assertTrue(instituteInfo.getShortcut().compareTo(institute.getShortcut()) == 0);
-		assertTrue(instituteInfo.getDescription().compareTo(institute.getDescription()) == 0);
-		
-		//Synchronize with Database
-		flush();
-		
-		logger.info("----> END access to update(Institute) test");
-	}
-	
-	public void testRemoveInstitute() {
-		logger.info("----> BEGIN access to removeInstitute test");
-		
-		//Create Secure context
-		User user = testUtility.createSecureContext();
-		
-		//Create an Institute
-		Institute institute = testUtility.createUniqueInstituteInDB();
-		assertNotNull(institute.getId());
-		
-		//Get Institute id
-		Long id = institute.getId();
-		
-		//Synchronize with Database
-		flush();
-
-		//Remove Institute
-		this.getLectureService().removeInstitute(id);
-		
-		//Synchronize with Database
-		flush();
-		
-		//Try to load Institute again
-		InstituteDao instituteDao = (InstituteDao) this.applicationContext.getBean("instituteDao");
-		Institute institute2 = instituteDao.load(id);
-		assertNull(institute2);
-
-		logger.info("----> END access to removeInstitute test");		
-	}
-
-	public void testFindInstitutes () {
-		logger.debug("----> BEGIN access to findInstitutes test <---- ");
-		
-		//Create institutes
-		Institute institute1 = testUtility.createUniqueInstituteInDB();
-		institute1.setEnabled(true);
-		
-		Institute institute2 = testUtility.createUniqueInstituteInDB();
-		institute2.setEnabled(true);
-		
-		Institute institute3 = testUtility.createUniqueInstituteInDB();
-		institute3.setEnabled(false);
-		flush();
-		
-		//Test
-		List<InstituteInfo> instituteInfos = this.getLectureService().findInstitutes(true);
-		assertNotNull(instituteInfos);
-		assertEquals(2, instituteInfos.size());
-		
-		instituteInfos = this.getLectureService().findInstitutes(false);
-		assertNotNull(instituteInfos);
-		assertEquals(3, instituteInfos.size());
-		
-		
-		logger.debug("----> END access to findInstitutes test <---- ");
-	}
-	
 	public void testGetInstitutes () {
 		logger.debug("----> BEGIN access to getInstitutes test <---- ");
 		
@@ -196,25 +75,6 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		logger.debug("----> END access to getInstitutes test <---- ");
 	}
 	
-	public void testFindInstitute () {
-		logger.debug("----> BEGIN access to findInstitute test <---- ");
-		
-		//Create institutes
-		Institute institute1 = testUtility.createUniqueInstituteInDB();
-		flush();
-		
-		//Test
-		InstituteInfo instituteInfo = this.getLectureService().findInstitute(institute1.getId());
-		assertNotNull(instituteInfo);
-		assertEquals(instituteInfo.getId(), institute1.getId());
-		assertEquals(instituteInfo.getName(), institute1.getName());
-		assertEquals(instituteInfo.getDescription(), institute1.getDescription());
-		assertEquals(instituteInfo.getDepartmentId(), institute1.getDepartment().getId());
-		
-		
-		logger.debug("----> END access to findInstitute test <---- ");
-	}
-	
 	public void testGetInstitute () {
 		logger.debug("----> BEGIN access to getInstitute test <---- ");
 		
@@ -246,24 +106,6 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		assertNotNull(courseTypeTest);
 		
 		logger.debug("----> END access to getCourseType test <---- ");
-	}
-	
-	public void testFindCourse () {
-		logger.debug("----> BEGIN access to findCourse test <---- ");
-		
-		//Create Course
-		Course course = testUtility.createUniqueCourseInDB();
-		flush();
-		
-		//Test
-		CourseInfo courseInfo = this.getLectureService().findCourse(course.getId());
-		assertNotNull(courseInfo);
-		assertEquals(courseInfo.getId(), course.getId());
-		assertEquals(courseInfo.getName(), course.getName());
-		assertEquals(courseInfo.getDescription(), course.getDescription());
-		assertEquals(courseInfo.getCourseTypeId(), course.getCourseType().getId());
-		
-		logger.debug("----> END access to findCourse test <---- ");
 	}
 	
 	public void testGetCourse () {

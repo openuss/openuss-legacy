@@ -21,6 +21,8 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 	
 	private LectureService lectureService;
 	
+	private InstituteService instituteService;
+	
 	private InstituteIndexingAspect instituteIndexAspectBean;
 
 	private IndexerServiceMock indexerMock ;
@@ -43,7 +45,7 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 		// create institute
 		//lectureService.createInstitute(institute);
 		InstituteInfo info = new InstituteInfo(null,"dfd","fd","dfd","df",false);
-		lectureService.create(info, 212l);
+		instituteService.create(info, 212l);
 		// activate institute
 		//institute.setEnabled(true);
 		//lectureService.persist(institute);
@@ -54,7 +56,7 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 		assertEquals(1, indexerMock.update);
 		// delete institute
 		// indexMockDelete should be 1 --> Deleting institute index works properly
-		lectureService.removeInstitute(institute.getId());
+		instituteService.removeInstitute(institute.getId());
 		assertEquals(1, indexerMock.delete);
 	}
 	
@@ -120,6 +122,14 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 
 	public void setTestUtility(TestUtility testUtility) {
 		this.testUtility = testUtility;
+	}
+
+	public InstituteService getInstituteService() {
+		return instituteService;
+	}
+
+	public void setInstituteService(InstituteService instituteService) {
+		this.instituteService = instituteService;
 	}
 }
 

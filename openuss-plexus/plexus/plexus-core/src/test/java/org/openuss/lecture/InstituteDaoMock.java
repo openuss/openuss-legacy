@@ -9,6 +9,26 @@ import org.openuss.security.Membership;
 
 public class InstituteDaoMock extends AbstractMockDao<Institute> implements InstituteDao {
 
+	public List findByDepartmentAndEnabled(Department department, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByDepartmentAndEnabled(int transform, Department department, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByDepartmentAndEnabled(int transform, String queryString, Department department, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByDepartmentAndEnabled(String queryString, Department department, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public Institute create(Boolean enabled, Membership membership, String name, String ownerName, String shortcut) {
 		// TODO Auto-generated method stub
 		return null;
