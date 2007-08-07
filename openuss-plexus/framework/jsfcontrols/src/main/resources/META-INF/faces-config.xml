@@ -19,7 +19,7 @@
 	</component>
 	
 	<component>
-		<component-type>flexlist</component-type>
+		<component-type>org.openuss.framework.jsfcontrols.components.flexlist</component-type>
 		<component-class>org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList</component-class>
 	</component>
    

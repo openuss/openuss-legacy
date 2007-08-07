@@ -3,6 +3,8 @@ package org.openuss.web.desktop;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.model.SelectItem;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -56,7 +58,7 @@ public class DesktopPage extends BasePage {
 			}
 		}
 	}
-
+	
 	/**
 	 * Show selected institute
 	 * 
