@@ -5,6 +5,8 @@
  */
 package org.openuss.lecture;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.openuss.security.AuthorityDao;
 import org.openuss.security.User;
@@ -23,11 +25,13 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 	private UserDao userDao;
 
 	private AuthorityDao authorityDao;
+	
+	private CourseTypeDao courseTypeDao;
 
 	private User user;
 
 	public LectureServiceIntegrationTest() {
-		setDefaultRollback(false);
+		setDefaultRollback(true);
 	}
 
 	public void testUserDaoInjections() {
@@ -102,23 +106,26 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 	public void testRemoveInstitute() {
 		logger.info("----> BEGIN access to removeInstitute test");
 		
-		//Create a University
+		//Create Secure context
+		User user = testUtility.createSecureContext();
+		
+		//Create an Institute
 		Institute institute = testUtility.createUniqueInstituteInDB();
 		assertNotNull(institute.getId());
 		
-		//Save UniversityID
+		//Get Institute id
 		Long id = institute.getId();
 		
 		//Synchronize with Database
 		flush();
 
-		//Remove University
-		lectureService.removeInstitute(id);
+		//Remove Institute
+		this.getLectureService().removeInstitute(id);
 		
 		//Synchronize with Database
 		flush();
 		
-		//Try to load University again
+		//Try to load Institute again
 		InstituteDao instituteDao = (InstituteDao) this.applicationContext.getBean("instituteDao");
 		Institute institute2 = instituteDao.load(id);
 		assertNull(institute2);
@@ -126,6 +133,119 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		logger.info("----> END access to removeInstitute test");		
 	}
 
+	public void testGetInstitutes () {
+		logger.debug("----> BEGIN access to getInstitutes test <---- ");
+		
+		//Create Secure context
+		User user = testUtility.createSecureContext();
+		
+		//Create institutes
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		institute1.setEnabled(true);
+		
+		Institute institute2 = testUtility.createUniqueInstituteInDB();
+		institute1.setEnabled(true);
+		
+		Institute institute3 = testUtility.createUniqueInstituteInDB();
+		institute1.setEnabled(true);
+		
+		Institute institute4 = testUtility.createUniqueInstituteInDB();
+		institute1.setEnabled(false);
+		
+		//Synchronize with Database
+		flush();
+		
+		// Test
+		Institute instituteTest = this.getLectureService().getInstitute(institute2.getId());
+		assertNotNull(instituteTest);
+		assertEquals(institute2.getId(), instituteTest.getId());
+		assertEquals(institute2.getName(), instituteTest.getName());
+		assertEquals(institute2.getDescription(), instituteTest.getDescription());
+		assertEquals(institute2.getDepartment(), instituteTest.getDepartment());
+		assertEquals(institute2.getCourseTypes().size(), instituteTest.getCourseTypes().size());
+		assertEquals(institute2.getActiveCourses().size(), instituteTest.getActiveCourses().size());
+		assertEquals(institute2.getEnabled(), instituteTest.getEnabled());
+		
+		logger.debug("----> END access to getInstitutes test <---- ");
+	}
+	
+	public void testGetInstitute () {
+		logger.debug("----> BEGIN access to getInstitute test <---- ");
+		
+		//Create institutes
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		institute1.setEnabled(true);
+		
+		Institute institute2 = testUtility.createUniqueInstituteInDB();
+		institute1.setEnabled(true);
+		
+		Institute institute3 = testUtility.createUniqueInstituteInDB();
+		institute1.setEnabled(true);
+		
+		logger.debug("----> END access to getInstitute test <---- ");
+	}
+	
+	public void testGetCourseType () {
+		logger.debug("----> BEGIN access to getCourseType test <---- ");
+		
+		//Create Secure context
+		User user = testUtility.createSecureContext();
+		
+		//Create CourseType
+		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
+		flush();
+		
+		// Test
+		CourseType courseTypeTest = this.getLectureService().getCourseType(courseType.getId());
+		assertNotNull(courseTypeTest);
+		
+		logger.debug("----> END access to getCourseType test <---- ");
+	}
+	
+	public void testGetCourse () {
+		logger.debug("----> BEGIN access to getCourse test <---- ");
+		
+		//Create Secure context
+		User user = testUtility.createSecureContext();
+		
+		//Create Course
+		Course course= testUtility.createUniqueCourseInDB();
+		flush();
+		
+		// Test
+		Course courseTest = this.getLectureService().getCourse(course.getId());
+		assertNotNull(courseTest);
+		
+		logger.debug("----> END access to getCourse test <---- ");
+	}
+	
+	public void testIsNoneExistingInstituteShortcut () {
+		logger.debug("----> BEGIN access to isNoneExistingInstituteShortcut test <---- ");
+		
+		//Create Secure Context
+		User user = testUtility.createSecureContext();
+		
+		// Create institutes
+		Institute institute1= testUtility.createUniqueInstituteInDB();
+		Institute institute2= testUtility.createUniqueInstituteInDB();
+		flush();
+		
+		// Test
+		Boolean result = this.getLectureService().isNoneExistingInstituteShortcut(institute1, institute1.getShortcut());
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getLectureService().isNoneExistingInstituteShortcut(institute1, testUtility.unique("shortcut"));
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getLectureService().isNoneExistingInstituteShortcut(institute1, institute2.getShortcut());
+		assertNotNull(result);
+		assertFalse(result);
+		
+		logger.debug("----> END access to isNoneExistingInstituteShortcut test <---- ");
+	}
+	
 	public void testAddCourseTypeToInstitute() throws LectureException{
 		logger.debug("----> add courseType <---- ");
 		user = testUtility.createSecureContext();
@@ -202,6 +322,14 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
+	}
+
+	public void setCourseTypeDao(CourseTypeDao courseTypeDao) {
+		this.courseTypeDao = courseTypeDao;
+	}
+
+	public CourseTypeDao getCourseTypeDao() {
+		return courseTypeDao;
 	}
 
 }

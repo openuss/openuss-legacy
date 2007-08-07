@@ -101,7 +101,12 @@ public class LectureServiceImpl extends LectureServiceBase {
 
 		Validate.notNull(instituteId, "LectureService.handleRemoveInstitute - the InstituteID cannot be null");
 
+		// Get Institute entity
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute, "LectureService.handleRemoveInstitute - no institute found to the corresponding id "+instituteId);
+		
 		// TODO All Bookmarks need to be removed before
+		
 
 		this.getInstituteDao().remove(instituteId);
 
@@ -633,7 +638,7 @@ public class LectureServiceImpl extends LectureServiceBase {
 	}
 
 	/**
-	 * Convenience method for isNonExisting methods.<br/> Checks wheter or not the found record is equal to self entry.
+	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self entry.
 	 * <ul>
 	 * <li>self == null AND found == null => <b>true</b></li>
 	 * <li>self == null AND found <> null => <b>false</b></li>
