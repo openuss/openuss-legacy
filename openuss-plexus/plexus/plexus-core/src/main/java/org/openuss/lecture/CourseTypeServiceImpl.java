@@ -7,8 +7,11 @@ package org.openuss.lecture;
 
 import java.util.List;
 
+import org.apache.commons.lang.Validate;
+
 /**
  * @see org.openuss.lecture.CourseTypeService
+ * @author Florian Dondorf
  */
 public class CourseTypeServiceImpl
     extends org.openuss.lecture.CourseTypeServiceBase
@@ -16,8 +19,14 @@ public class CourseTypeServiceImpl
 
 	@Override
 	protected Long handleCreate(CourseTypeInfo courseTypeInfo) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Validate.notNull(courseTypeInfo, "CourseTypeServiceImpl.handleCreate - courseTypeInfo must not be null.");
+		
+		//Transform ValueObject to Entity
+		CourseType courseType = this.getCourseTypeDao().courseTypeInfoToEntity(courseTypeInfo);
+		Validate.notNull(courseType, "CourseTypeServiceImpl.handleCreate - could not transform courseTypeInfo to entity.");
+		
+		return this.getCourseTypeDao().create(courseType).getId();
 	}
 
 	@Override

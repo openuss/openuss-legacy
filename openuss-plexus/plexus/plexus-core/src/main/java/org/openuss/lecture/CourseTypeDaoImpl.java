@@ -75,7 +75,6 @@ public class CourseTypeDaoImpl
         org.openuss.lecture.CourseType targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of courseTypeInfoToEntity
         super.courseTypeInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 
