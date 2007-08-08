@@ -21,6 +21,25 @@ import org.openuss.system.SystemProperties;
  */
 public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
+	public Long handleCreate (CourseInfo courseInfo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void handleRemoveCourse (Long courseId) {
+		// TODO Auto-generated method stub
+	}
+	
+	public List handleFindCoursesByCourseType (Long courseTypeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public CourseInfo handleFindCourse (Long courseId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	/**
 	 * @see org.openuss.lecture.CourseService#getAssistants(org.openuss.lecture.Course)
 	 */
