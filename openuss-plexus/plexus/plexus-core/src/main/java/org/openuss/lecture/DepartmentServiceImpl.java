@@ -164,4 +164,10 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		
 	}
 
+	@Override
+	protected ApplicationInfo handleFindApplication(Long applicationId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

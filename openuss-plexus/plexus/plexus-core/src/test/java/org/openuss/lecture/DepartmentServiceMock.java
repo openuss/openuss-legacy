@@ -187,4 +187,9 @@ public class DepartmentServiceMock implements DepartmentService {
 		
 	}
 
+	public ApplicationInfo findApplication(Long applicationId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
