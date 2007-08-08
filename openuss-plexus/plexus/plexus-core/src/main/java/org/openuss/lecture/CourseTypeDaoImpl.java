@@ -41,17 +41,12 @@ public class CourseTypeDaoImpl
      */
     private org.openuss.lecture.CourseType loadCourseTypeFromCourseTypeInfo(org.openuss.lecture.CourseTypeInfo courseTypeInfo)
     {
-        // @todo implement loadCourseTypeFromCourseTypeInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.lecture.loadCourseTypeFromCourseTypeInfo(org.openuss.lecture.CourseTypeInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.lecture.CourseType courseType = this.load(courseTypeInfo.getId());
-        if (courseType == null)
+    	CourseType courseType = CourseType.Factory.newInstance();
+        if (courseTypeInfo.getId() != null)
         {
-            courseType = org.openuss.lecture.CourseType.Factory.newInstance();
+            courseType = this.load(courseTypeInfo.getId());
         }
         return courseType;
-        */
     }
 
     
@@ -60,9 +55,14 @@ public class CourseTypeDaoImpl
      */
     public org.openuss.lecture.CourseType courseTypeInfoToEntity(org.openuss.lecture.CourseTypeInfo courseTypeInfo)
     {
-        // @todo verify behavior of courseTypeInfoToEntity
         org.openuss.lecture.CourseType entity = this.loadCourseTypeFromCourseTypeInfo(courseTypeInfo);
         this.courseTypeInfoToEntity(courseTypeInfo, entity, true);
+        
+        if (courseTypeInfo.getInstituteId() != null) {
+        	Institute institute = this.getInstituteDao().load(courseTypeInfo.getInstituteId());
+        	entity.setInstitute(institute);
+        }
+        
         return entity;
     }
 

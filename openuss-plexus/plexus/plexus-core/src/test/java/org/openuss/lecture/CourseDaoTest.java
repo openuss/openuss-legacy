@@ -171,43 +171,37 @@ public class CourseDaoTest extends CourseDaoTestBase {
 	
 	public void testCourseInfoToEntity () {
 	
-		// Create a complete Course
-		Course course = Course.Factory.newInstance();
-		course.setShortcut(testUtility.unique("testC"));
-		course.setDescription("This is a test Course");
-		course.setAccessType(AccessType.OPEN);
-		course.setCourseType(testUtility.createUniqueCourseTypeInDB());
-		course.setPeriod(testUtility.createUniquePeriodInDB());
-		course.setPassword(testUtility.unique("passwd"));
+		//Create Period
+		Period period = testUtility.createUniquePeriodInDB();
 		
-		courseDao.create(course);
-		assertNotNull(course.getId());
+		//Create CourseType
+		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
 		
-		// Create the corresponding ValueObject
+		// Create a complete CourseInfo
 		CourseInfo courseInfo = new CourseInfo();
-		courseInfo.setId(course.getId());
-		courseInfo.setName(course.getName());
-		courseInfo.setDescription(course.getDescription());
-		courseInfo.setAccessType(course.getAccessType());
-		courseInfo.setCourseTypeId(course.getCourseType().getId());
-		courseInfo.setCourseTypeDescription(course.getCourseType().getDescription());
-		courseInfo.setPeriodId(course.getPeriod().getId());
-		courseInfo.setPeriodName(course.getPeriod().getName());
-		courseInfo.setPassword(course.getPassword());
+		courseInfo.setName(courseType.getName());
+		courseInfo.setShortcut(testUtility.unique("testC"));
+		courseInfo.setDescription("This is a test Course");
+		courseInfo.setAccessType(AccessType.OPEN);
+		courseInfo.setCourseTypeId(courseType.getId());
+		courseInfo.setCourseTypeDescription(courseType.getDescription());
+		courseInfo.setPeriodId(period.getId());
+		courseInfo.setPeriodName(period.getName());
+		courseInfo.setPassword(testUtility.unique("passwd"));
 		
 		// Test toEntity
-		Course course2 = courseDao.courseInfoToEntity(courseInfo);
+		Course course = this.getCourseDao().courseInfoToEntity(courseInfo);
 		
-		assertEquals(course2.getId(), courseInfo.getId());
-		assertEquals(course2.getName(), courseInfo.getName());
-		assertEquals(course2.getShortcut(), courseInfo.getShortcut());
-		assertEquals(course2.getDescription(), courseInfo.getDescription());
-		assertEquals(course2.getAccessType(), courseInfo.getAccessType());
-		assertEquals(course2.getPassword(), courseInfo.getPassword());
-		assertEquals(course2.getCourseType().getId(), courseInfo.getCourseTypeId());
-		assertEquals(course2.getCourseType().getDescription(), courseInfo.getCourseTypeDescription());
-		assertEquals(course2.getPeriod().getId(), courseInfo.getPeriodId());
-		assertEquals(course2.getPeriod().getName(), courseInfo.getPeriodName());
+		assertEquals(courseInfo.getId(), course.getId());
+		assertEquals(courseInfo.getName(), course.getName());
+		assertEquals(courseInfo.getShortcut(), course.getShortcut());
+		assertEquals(courseInfo.getDescription(), course.getDescription());
+		assertEquals(courseInfo.getAccessType(), course.getAccessType());
+		assertEquals(courseInfo.getPassword(), course.getPassword());
+		assertEquals(courseInfo.getCourseTypeId(), course.getCourseType().getId());
+		assertEquals(courseInfo.getCourseTypeDescription(), course.getCourseType().getDescription());
+		assertEquals(courseInfo.getPeriodId(), course.getPeriod().getId());
+		assertEquals(courseInfo.getPeriodName(), course.getPeriod().getName());
 	}
 
 	private Period createPeriod() {

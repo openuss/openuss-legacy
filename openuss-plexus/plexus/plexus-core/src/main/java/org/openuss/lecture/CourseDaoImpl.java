@@ -55,6 +55,15 @@ public class CourseDaoImpl extends org.openuss.lecture.CourseDaoBase {
 	public Course courseInfoToEntity(CourseInfo courseInfo) {
 		Course entity = this.loadCourseFromCourseInfo(courseInfo);
 		this.courseInfoToEntity(courseInfo, entity, true);
+		if (courseInfo.getCourseTypeId() != null) {
+			CourseType courseType = this.getCourseTypeDao().load(courseInfo.getCourseTypeId());
+			entity.setCourseType(courseType);
+		}
+		
+		if (courseInfo.getPeriodId() != null) {
+			Period period = this.getPeriodDao().load(courseInfo.getPeriodId());
+			entity.setPeriod(period);
+		}
 		return entity;
 	}
 

@@ -84,6 +84,26 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 		assertEquals(courseType.getInstitute().getId(), courseTypeInfo.getInstituteId());
 	}
 	
+	public void testCourseTypeInfoToEntity () {
+		
+		//Create CoursTypeInfo
+		CourseTypeInfo courseTypeInfo = new CourseTypeInfo();
+		courseTypeInfo.setShortcut(testUtility.unique("shortcut"));
+		courseTypeInfo.setName(testUtility.unique("name"));
+		courseTypeInfo.setDescription(testUtility.unique("description"));
+		courseTypeInfo.setInstituteId(testUtility.createUniqueInstituteInDB().getId());
+		
+		//Test
+		CourseType courseType = this.getCourseTypeDao().courseTypeInfoToEntity(courseTypeInfo);
+		assertNotNull(courseType);
+		assertEquals(courseTypeInfo.getId(), courseType.getId());
+		assertEquals(courseTypeInfo.getName(), courseType.getName());
+		assertEquals(courseTypeInfo.getShortcut(), courseType.getShortcut());
+		assertEquals(courseTypeInfo.getDescription(), courseType.getDescription());
+		assertEquals(courseTypeInfo.getInstituteId(), courseType.getInstitute().getId());
+		
+	}
+	
 	public TestUtility getTestUtility() {
 		return testUtility;
 	}
