@@ -19,6 +19,7 @@ public class SolarplexusServiceMockTest extends TestCase {
 	private UniversityServiceMock universityMock = new UniversityServiceMock();
 	private DepartmentServiceMock departmentMock = new DepartmentServiceMock();
 	private InstituteServiceMock instituteMock = new InstituteServiceMock();
+	private CourseTypeServiceMock courseTypeService = new CourseTypeServiceMock();
 							   	
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -82,6 +83,23 @@ public class SolarplexusServiceMockTest extends TestCase {
 		List institutes = instituteMock.findInstitutesByDepartmentAndEnabled(new Long(1102), false);
 
 		assertEquals(0, institutes.size());
+	}
+	
+	public void testFindCourseTypeByInstitute(){
+		logger.debug("Method testFindCourseTypeByInstitute: Started");
+		
+		List courseTypes1 = courseTypeService.findCourseTypesByInstitute(new Long(11101));
+		List courseTypes2 = courseTypeService.findCourseTypesByInstitute(new Long(11102));
+		CourseTypeInfo courseTypeInfo;
+		Iterator iter;
+		
+		iter = courseTypes1.iterator();
+		courseTypeInfo = (CourseTypeInfo) iter.next();
+		assertEquals("Einführung", courseTypeInfo.getName());
+		
+		iter = courseTypes2.iterator();
+		courseTypeInfo = (CourseTypeInfo) iter.next();
+		assertEquals("Grundlagen", courseTypeInfo.getName());		
 	}
 
 }
