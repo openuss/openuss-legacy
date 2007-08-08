@@ -1,5 +1,6 @@
 package org.openuss.lecture;
 
+import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -17,6 +18,7 @@ public class SolarplexusServiceMockTest extends TestCase {
 	
 	private UniversityServiceMock universityMock = new UniversityServiceMock();
 	private DepartmentServiceMock departmentMock = new DepartmentServiceMock();
+	private InstituteServiceMock instituteMock = new InstituteServiceMock();
 							   	
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -33,7 +35,7 @@ public class SolarplexusServiceMockTest extends TestCase {
 
 		List allUniversities = universityMock.findAllUniversities();
 		
-		assertTrue(allUniversities.size() == 5);		
+		assertEquals(5, allUniversities.size());
 	}
 	
 	public void testFindUniversitiesByEnabled(){
@@ -42,8 +44,8 @@ public class SolarplexusServiceMockTest extends TestCase {
 		List universitiesEnabled = universityMock.findUniversitiesByEnabled(true);
 		List universitiesDisabled = universityMock.findUniversitiesByEnabled(false);
 		
-		assertTrue(universitiesEnabled.size() == 4);
-		assertTrue(universitiesDisabled.size() == 1);
+		assertEquals(4, universitiesEnabled.size());
+		assertEquals(1, universitiesDisabled.size());
 		
 	}
 	
@@ -52,15 +54,34 @@ public class SolarplexusServiceMockTest extends TestCase {
 		
 		List departments = departmentMock.findDepartmentsByUniversityAndEnabled(new Long(100), true);
 		
-		assertTrue(departments.size() == 3);
+		assertEquals(3, departments.size());
 	}
 	
-	public void testfindDepartment(){
-		logger.debug("Method testfindDepartment: Started");
+	public void testFindDepartment(){
+		logger.debug("Method testFindDepartment: Started");
 		
 		DepartmentInfo departmentInfo = departmentMock.findDepartment(new Long(1101));
 		
-		assertTrue(departmentInfo.getName().equals("Fachbereich 3 (Jura)"));
+		assertEquals("Fachbereich 3 (Jura)", departmentInfo.getName());
+	}
+	
+	public void testFindInstitutesByDepartment(){
+		logger.debug("Method testFindInstitutesByDepartment: Started");
+				
+		List institutes = instituteMock.findInstitutesByDepartmentAndEnabled(new Long(1102), true);
+		Iterator iter = institutes.iterator();
+		InstituteInfo instituteInfo = (InstituteInfo) iter.next();
+		
+		assertEquals(2, institutes.size());
+		assertEquals("Lehrstuhl 1", instituteInfo.getName());
+	}
+	
+	public void testFindInstitutesByDepartmentAndEnabled(){
+		logger.debug("Method testFindInstitutesByDepartmentAndEnabled: Started");
+				
+		List institutes = instituteMock.findInstitutesByDepartmentAndEnabled(new Long(1102), false);
+
+		assertEquals(0, institutes.size());
 	}
 
 }
