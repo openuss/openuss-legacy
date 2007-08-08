@@ -3,6 +3,7 @@ package org.openuss.web.security.profile;
 import java.io.IOException;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -17,7 +18,6 @@ import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserContact;
 import org.openuss.security.UserPreferences;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.BasePage;
@@ -89,6 +89,7 @@ public class UserProfilePage extends BasePage{
 			uploadFileManager.removeDocument(uploaded);
 		}
 		securityService.saveUser(user);
+		securityService.saveUserContact(user.getContact());
 		addMessage(i18n("user_message_saved_profile_successfully"));
 	}
 
@@ -114,23 +115,11 @@ public class UserProfilePage extends BasePage{
 	}		
 	
 	/**
-	 * Persist User Contact Data
-	 */
-	@SuppressWarnings("deprecation")
-	public void saveContact(ActionEvent event) {
-		UserContact contact = user.getContact();
-		securityService.saveUserContact(contact);
-		addMessage(i18n("userprofile_message_saved_contact_data"));
-	}
-	
-	
-	/**
 	 * Persist User Preferences
 	 */
-	@SuppressWarnings("deprecation")
 	public void savePreferences(ActionEvent event) {
 		UserPreferences preferences = user.getPreferences();
-		securityService.saveUserPreferences(preferences);
+		securityService.saveUserPreferences(preferences);		
 		addMessage(i18n("userprofile_message_saved_preferences"));
 	}
 	
@@ -153,8 +142,7 @@ public class UserProfilePage extends BasePage{
 		
 		setSessionBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
 	}
-	
-	
+
 	public SecurityService getSecurityService() {
 		return securityService;
 	}

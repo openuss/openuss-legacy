@@ -8,7 +8,8 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:c="http://java.sun.com/jstl/core"
-      xmlns:news="http://www.openuss.org/news/jsf">
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:fck="http://www.fck-faces.org/fck-faces">
       
  	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -39,7 +40,100 @@
   		<ui:define name="content">
 			<h:form id="profileForm" enctype="multipart/form-data">
 				<o:block label="#{msg['user_profile_heading_config']}" styleClass="form_box">
-   			 		<ui:include src="/views/commons/user/profileData.xhtml"/>
+
+				<!-- public profile information -->
+					<!-- photo -->
+						<h:outputText value="#{msg.profile_public_header}" styleClass="field_label"/> <br />
+						<h:outputText value="#{msg.profile_public_explain}" styleClass="conten_font_normal"/>
+						<br /><br />
+					
+						<h:outputLabel id="avatarSelectLabel" value="${msg.user_profile_image}" for="avatarSelect" styleClass="fieldLabel"/>
+					
+						<h:panelGrid columns="2">
+							<h:panelGroup>
+								
+								<c:if test="#{not empty user.imageId}">
+									<h:graphicImage styleClass="userphoto"
+										renderer="${not empty user.imageId}"
+										value="/files?fileid=#{user.imageId}"
+										alt="#{user.contact.firstName} #{user.contact.lastName}"
+										title="#{user.contact.firstName} #{user.contact.lastName}"/> 
+									&#160;
+							  		<h:commandLink 
+							  			actionListener="#{views$secured$user$profile.removeImage}" 
+							  			immediate="true" 
+							  			title="#{msg.user_profile_command_remove_image}">
+							  			<h:graphicImage value="/images/icons/remove.gif" alt="delete"/>
+							  		</h:commandLink>
+								</c:if>
+										
+								<c:if test="#{empty user.imageId}">
+									<h:graphicImage 
+										styleClass="userphoto" 
+										value="/images/icons/no_pic.gif" 
+										alt="#{msg.user_profile_no_image}" 
+										title="#{msg.user_profile_no_image}"/>
+								</c:if>
+							</h:panelGroup>
+					
+							<h:panelGroup>
+								<h:outputLabel value="#{msg.user_profile_image}" for="image"/>
+								<br/>
+							  	<t:inputFileUpload id="image" storage="file" accept="image/*" immediate="true" styleClass="uploadField" >
+					  				<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
+					  			</t:inputFileUpload>
+							  	<h:message for="image" styleClass="fieldError" showDetail="true" showSummary="false"/>
+							</h:panelGroup>
+						</h:panelGrid>
+					<!-- open information -->
+						<o:input entity="user.contact" property="firstName" maxlength="100" required="true"/>
+						<o:input entity="user.contact" property="lastName" maxlength="100" required="true"/>
+						<o:input entity="user.contact" property="title" maxlength="100"/>
+						<o:input entity="user.contact" property="profession" maxlength="100"/>
+				
+				<!-- hidden profile information -->
+					<hr />
+					<h:outputText value="#{msg.profile_hidden_header}" styleClass="field_label"/> <br />
+					<h:outputText value="#{msg.profile_hidden_explain}" styleClass="conten_font_normal"/>
+					<br /><br />
+				
+					<o:input entity="user.profile" property="ageGroup" maxlength="50"/>
+					<o:input entity="user.profile" property="matriculation" maxlength="50"/>
+					<o:input entity="user.profile" property="studies" maxlength="50"/>
+					<o:input entity="user.contact" property="smsEmail" maxlength="100">
+						<t:validateEmail/>
+					</o:input>
+					
+				
+				<!-- adress information -->
+					<hr />
+					<h:outputText value="#{msg.profile_address_header}" styleClass="field_label"/> <br />
+
+					<o:input entity="user.profile" property="addressPublic" required="false" /> 
+					<o:input entity="user.contact" property="address" maxlength="100" required="true"/>
+					<o:input entity="user.contact" property="postcode" maxlength="50" required="true"/>
+					<o:input entity="user.contact" property="city" maxlength="100" required="true"/>
+					<o:input entity="user.contact" property="country" maxlength="100" required="false"/>
+				
+				<!-- telephone information -->
+					<hr />
+					<h:outputText value="#{msg.profile_tel_header}" styleClass="field_label" /><br />
+					<o:input entity="user.profile" property="telephonePublic"/>
+					
+					<o:input entity="user.contact" property="telephone" maxlength="100"/>
+				<!-- email adress -->
+					<hr />
+					<h:outputText value="#{msg.profile_email_config}" styleClass="field_label"/> <br />
+				
+					<o:input entity="user.profile" property="emailPublic"/>
+				
+				<!-- user portrait -->
+					<hr/><br />
+				  	<h:outputLabel value="#{msg.user_profile_portrait}" for="portraitEditor" styleClass="field_label"/>
+				  	<div class="content_iframe">
+						<fck:editor value="#{user.profile.portrait}" id="portraitEditor" toolbarSet="Portrait" width="100%"  height="200px"/>
+					</div>
+
    			 	</o:block>
    			 	<o:block>
 	   			 	<h:commandButton actionListener="#{views$secured$user$profile.saveProfile}" value="#{msg.save}" styleClass="button_save"/>
