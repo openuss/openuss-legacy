@@ -8,8 +8,36 @@
 	<h:form id="search">
 		<o:block label="#{msg.search}">
 			<p class="content_font_normal">
-				<h:inputText id="searchText" value="#{search_results.textToSearch}" styleClass="field_search"/>
+				<script>
+					function enterPressed(evt) {
+					    var keycode;
+					 
+					    if (evt)
+					        ;
+					    else if (window.event)
+					        evt = window.event;
+					    else if (event)
+					        evt = event;
+					    else
+					        return true;
+					 
+					    if (evt.charCode)
+					        keycode = evt.charCode;
+					    else if (evt.keyCode)
+					        keycode = evt.keyCode;
+					    else if (evt.which)
+					        keycode = evt.which;
+					    else
+					        keycode = 0;
+					 
+					 	if (keycode==13) this.form.submit();
+					 	return true
+					 }
+				</script>
+				<h:inputText id="searchText" value="#{search_results.textToSearch}" styleClass="field_search"
+				 onkeypress="return enterPressed(event)"/>
 				<h:commandLink 
+					id="searchlink"
 					styleClass="button_search" 
 					action="#{views$public$search$search.search}">
 					<img src="#{theme.imagesPath}/search.jpg" title="search" alt="go"/>
