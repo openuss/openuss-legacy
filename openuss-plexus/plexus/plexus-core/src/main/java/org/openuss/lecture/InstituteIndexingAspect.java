@@ -16,15 +16,15 @@ public class InstituteIndexingAspect {
 	private IndexerService indexerService;
 	
 	/**
-	 * Create index entry of institute if it is enabled. UserId not necessary! Just for AOP, otherwise it is not working.
-	 * @param institute, userId
+	 * Create index entry of an institute if it is enabled. UserId not necessary! Just for AOP, otherwise it is not working.
+	 * @param instituteInfo, userId
 	 */
-	public void createInstituteIndex(InstituteInfo institute,Long userId) {
+	public void createInstituteIndex(InstituteInfo instituteInfo,Long userId) {
 		logger.debug("Starting method createInstituteIndex");
 		try {
-			if (institute.getEnabled()) {
+			if (instituteInfo.getEnabled()) {
 				logger.debug("method createInstituteIndex: createIndex");
-				indexerService.createIndex(institute);
+				indexerService.createIndex(instituteInfo);
 			};
 		} catch (IndexerApplicationException e) {
 			logger.error(e);

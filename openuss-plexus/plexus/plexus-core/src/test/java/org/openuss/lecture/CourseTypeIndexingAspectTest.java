@@ -10,20 +10,22 @@ import org.springframework.test.AbstractTransactionalDataSourceSpringContextTest
 
 /**
  * Test case for the spring aspect initiating the create, update and delete 
- * process of the institute indexing.
+ * process of the course type indexing.
  * 
  * @author Ingo Dueppe
  * @author Kai Stettner
  */
-public class InstituteIndexingAspectTest extends AbstractTransactionalDataSourceSpringContextTests {
-
-	private static final Logger logger = Logger.getLogger(InstituteIndexingAspectTest.class);
-		
+public class CourseTypeIndexingAspectTest extends AbstractTransactionalDataSourceSpringContextTests {
+	
+	private static final Logger logger = Logger.getLogger(CourseTypeIndexingAspectTest.class);
+	
+	private CourseTypeService courseTypeService;
+	
+	private CourseTypeDao courseTypeDao;
+	
 	private InstituteService instituteService;
 	
-	private InstituteDao instituteDao;
-	
-	private InstituteIndexingAspect instituteIndexAspectBean;
+	private CourseTypeIndexingAspect courseTypeIndexAspectBean;
 
 	private IndexerServiceMock indexerMock ;
 	
@@ -33,7 +35,7 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 	protected void onSetUp() throws Exception {
 		super.onSetUp();
 		indexerMock = new IndexerServiceMock();
-		instituteIndexAspectBean.setIndexerService(indexerMock);
+		courseTypeIndexAspectBean.setIndexerService(indexerMock);
 	}
 
 	public void testLectureIndex() throws Exception {
@@ -41,23 +43,21 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 		// create dummy user
 		User user = testUtility.createSecureContext();
 		// create dummy institute info
-		InstituteInfo info = new InstituteInfo(null,"The Superb Institute","TSI","Institute Owner xyz","Germany",false);
+		InstituteInfo instituteInfo = new InstituteInfo(null,"The Superb Institute","TSI","Institute Owner xyz","Germany",false);
+		Long instituteId = instituteService.create(instituteInfo, user.getId());
+		// create dummy course type info
+		CourseTypeInfo courseTypeInfo = new CourseTypeInfo(null,"A superb CourseType","ASCT",instituteId);
 		
-		Long instituteId = instituteService.create(info, user.getId());
+		Long courseTypeId = courseTypeService.create(courseTypeInfo);
 		
-		// activate institute
-		info = this.getInstituteService().findInstitute(instituteId);
-		info.setEnabled(true);
-		// update institute
-		instituteService.update(info);
+		// update course type
+		courseTypeService.update(courseTypeInfo);
 		
-		// indexerMockCreate should be 0 due to the fact that institutes are initiated
-		// disabled. Therefore they are activated via the updateIndex-method --> indexerMockUpdate should be 1.
-		assertEquals(0, indexerMock.create);
+		assertEquals(1, indexerMock.create);
 		assertEquals(1, indexerMock.update);
-		// delete institute
-		// indexMockDelete should be 1 --> Deleting institute index works properly
-		instituteService.removeInstitute(info.getId());
+		// delete course type
+		// indexMockDelete should be 1 --> Deleting course type index works properly
+		courseTypeService.removeCourseType(courseTypeInfo.getId());
 		assertEquals(1, indexerMock.delete);
 	}
 	
@@ -75,12 +75,12 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 				"classpath*:testDataSource.xml"};
 	}
 
-	public InstituteIndexingAspect getInstituteIndexAspectBean() {
-		return instituteIndexAspectBean;
+	public CourseTypeIndexingAspect getCourseTypeIndexAspectBean() {
+		return courseTypeIndexAspectBean;
 	}
 
-	public void setInstituteIndexAspectBean(InstituteIndexingAspect instituteIndexAspectBean) {
-		this.instituteIndexAspectBean = instituteIndexAspectBean;
+	public void setCourseTypeIndexAspectBean(CourseTypeIndexingAspect courseTypeIndexAspectBean) {
+		this.courseTypeIndexAspectBean = courseTypeIndexAspectBean;
 	}
 
 	
@@ -124,14 +124,19 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 		this.instituteService = instituteService;
 	}
 
-	public InstituteDao getInstituteDao() {
-		return instituteDao;
+	public CourseTypeDao getCourseTypeDao() {
+		return courseTypeDao;
 	}
 
-	public void setInstituteDao(InstituteDao instituteDao) {
-		this.instituteDao = instituteDao;
+	public void setCourseTypeDao(CourseTypeDao courseTypeDao) {
+		this.courseTypeDao = courseTypeDao;
 	}
-	
-	
+
+	public CourseTypeService getCourseTypeService() {
+		return courseTypeService;
+	}
+
+	public void setCourseTypeService(CourseTypeService courseTypeService) {
+		this.courseTypeService = courseTypeService;
+	}	
 }
-

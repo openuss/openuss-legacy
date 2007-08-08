@@ -23,6 +23,21 @@
 				arg-names="instituteId"/>
 		</aop:aspect>
 		
+		<aop:aspect id="courseTypeIndexAspect" ref="courseTypeIndexAspectBean">
+			<aop:after-returning
+				method="createCourseTypeIndex" 
+				pointcut="execution(* org..CourseTypeServiceBase.create(org.openuss.lecture.CourseTypeInfo)) and args(courseType)"
+				arg-names="courseType"/>
+			<aop:after-returning
+				method="updateCourseTypeIndex"
+				pointcut="execution(* org..CourseTypeServiceBase.update(org.openuss.lecture.CourseTypeInfo)) and args(courseType)"
+				arg-names="courseType"/>
+			<aop:after-returning
+				method="deleteCourseTypeIndex"
+				pointcut="execution(* org..CourseTypeServiceBase.removeCourseType(java.lang.Long)) and args(courseTypeId)"
+				arg-names="courseTypeId"/>
+		</aop:aspect>
+		
 		<aop:aspect id="courseIndexAspect" ref="courseIndexAspectBean">
 			<aop:after-returning
 				method="updateCourseIndexOnPeriodUpdate" 
@@ -55,12 +70,18 @@
 		<property name="mailDao" ref="mailDao"/>
 	</bean>
 	
+	<bean id="instituteIndexAspectBean" class="org.openuss.lecture.InstituteIndexingAspect">
+		<property name="indexerService" ref="indexerService"/>
+	</bean>
+	
+	<bean id="courseTypeIndexAspectBean" class="org.openuss.lecture.CourseTypeIndexingAspect">
+		<property name="indexerService" ref="indexerService"/>
+	</bean>
+	
 	<bean id="courseIndexAspectBean" class="org.openuss.lecture.CourseIndexingAspect">
 		<property name="lectureService" ref="lectureService"/>
 		<property name="indexerService" ref="indexerService"/>
 	</bean>
 	
-	<bean id="instituteIndexAspectBean" class="org.openuss.lecture.InstituteIndexingAspect">
-		<property name="indexerService" ref="indexerService"/>
-	</bean>
+	
 </beans>

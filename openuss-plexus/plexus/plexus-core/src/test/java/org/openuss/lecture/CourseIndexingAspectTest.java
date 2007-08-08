@@ -10,20 +10,20 @@ import org.springframework.test.AbstractTransactionalDataSourceSpringContextTest
 
 /**
  * Test case for the spring aspect initiating the create, update and delete 
- * process of the institute indexing.
+ * process of the course indexing.
  * 
  * @author Ingo Dueppe
  * @author Kai Stettner
  */
-public class InstituteIndexingAspectTest extends AbstractTransactionalDataSourceSpringContextTests {
+public class CourseIndexingAspectTest extends AbstractTransactionalDataSourceSpringContextTests  {
 
-	private static final Logger logger = Logger.getLogger(InstituteIndexingAspectTest.class);
-		
-	private InstituteService instituteService;
+	private static final Logger logger = Logger.getLogger(CourseIndexingAspectTest.class);
 	
-	private InstituteDao instituteDao;
+	private CourseService courseService;
 	
-	private InstituteIndexingAspect instituteIndexAspectBean;
+	private CourseDao courseDao;
+	
+	private CourseIndexingAspect courseIndexAspectBean;
 
 	private IndexerServiceMock indexerMock ;
 	
@@ -33,7 +33,7 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 	protected void onSetUp() throws Exception {
 		super.onSetUp();
 		indexerMock = new IndexerServiceMock();
-		instituteIndexAspectBean.setIndexerService(indexerMock);
+		courseIndexAspectBean.setIndexerService(indexerMock);
 	}
 
 	public void testLectureIndex() throws Exception {
@@ -48,7 +48,7 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 		// activate institute
 		info = this.getInstituteService().findInstitute(instituteId);
 		info.setEnabled(true);
-		// update institute
+		// update instituteInfo
 		instituteService.update(info);
 		
 		// indexerMockCreate should be 0 due to the fact that institutes are initiated
@@ -131,7 +131,4 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 	public void setInstituteDao(InstituteDao instituteDao) {
 		this.instituteDao = instituteDao;
 	}
-	
-	
 }
-
