@@ -11,15 +11,15 @@
 		<aop:aspect id="instituteIndexAspect" ref="instituteIndexAspectBean">
 			<aop:after-returning
 				method="createInstituteIndex" 
-				pointcut="execution(* org..LectureServiceBase.createInstitute(org.openuss.lecture.Institute)) and args(institute)"
-				arg-names="institute"/>
+				pointcut="execution(* org..InstituteServiceBase.create(org.openuss.lecture.InstituteInfo, java.lang.Long)) and args(instituteInfo, userId))"
+				arg-names="instituteInfo, userId"/>
 			<aop:after-returning
 				method="updateInstituteIndex"
-				pointcut="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Institute)) and args(institute)"
-				arg-names="institute"/>
+				pointcut="execution(* org..InstituteServiceBase.update(org.openuss.lecture.InstituteInfo)) and args(instituteInfo)"
+				arg-names="instituteInfo"/>
 			<aop:after-returning
 				method="deleteInstituteIndex"
-				pointcut="execution(* org..LectureServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)"
+				pointcut="execution(* org..InstituteServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)"
 				arg-names="instituteId"/>
 		</aop:aspect>
 		
@@ -61,7 +61,6 @@
 	</bean>
 	
 	<bean id="instituteIndexAspectBean" class="org.openuss.lecture.InstituteIndexingAspect">
-		<property name="lectureService" ref="lectureService"/>
 		<property name="indexerService" ref="indexerService"/>
 	</bean>
 </beans>

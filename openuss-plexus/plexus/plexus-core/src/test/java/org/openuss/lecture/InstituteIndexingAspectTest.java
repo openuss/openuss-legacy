@@ -18,10 +18,10 @@ import org.springframework.test.AbstractTransactionalDataSourceSpringContextTest
 public class InstituteIndexingAspectTest extends AbstractTransactionalDataSourceSpringContextTests {
 
 	private static final Logger logger = Logger.getLogger(InstituteIndexingAspectTest.class);
-	
-	private LectureService lectureService;
-	
+		
 	private InstituteService instituteService;
+	
+	private InstituteDao instituteDao;
 	
 	private InstituteIndexingAspect instituteIndexAspectBean;
 
@@ -38,17 +38,18 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 
 	public void testLectureIndex() throws Exception {
 	 
-		//User user = testUtility.createSecureContext();
-		//Institute institute = new LectureBuilder().createInstitute(user).getInstitute();
-		Institute institute = new LectureBuilder().createInstitute(User.Factory.newInstance()).getInstitute();
-		logger.debug(institute.getDescription());
-		// create institute
-		//lectureService.createInstitute(institute);
-		InstituteInfo info = new InstituteInfo(null,"dfd","fd","dfd","df",false);
-		instituteService.create(info, 212l);
+		// create dummy user
+		User user = testUtility.createSecureContext();
+		// create dummy institute info
+		InstituteInfo info = new InstituteInfo(null,"The Superb Institute","TSI","Institute Owner xyz","Germany",false);
+		
+		Long instituteId = instituteService.create(info, user.getId());
+		
 		// activate institute
-		//institute.setEnabled(true);
-		//lectureService.persist(institute);
+		info = this.getInstituteService().findInstitute(instituteId);
+		info.setEnabled(true);
+		// update instituteInfo
+		instituteService.update(info);
 		
 		// indexerMockCreate should be 0 due to the fact that institutes are initiated
 		// disabled. Therefore they are activated via the updateIndex-method --> indexerMockUpdate should be 1.
@@ -56,7 +57,7 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 		assertEquals(1, indexerMock.update);
 		// delete institute
 		// indexMockDelete should be 1 --> Deleting institute index works properly
-		instituteService.removeInstitute(institute.getId());
+		instituteService.removeInstitute(info.getId());
 		assertEquals(1, indexerMock.delete);
 	}
 	
@@ -107,15 +108,6 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 		}
 	}
 
-
-	public LectureService getLectureService() {
-		return lectureService;
-	}
-
-	public void setLectureService(LectureService lectureService) {
-		this.lectureService = lectureService;
-	}
-
 	public TestUtility getTestUtility() {
 		return testUtility;
 	}
@@ -131,5 +123,15 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 	public void setInstituteService(InstituteService instituteService) {
 		this.instituteService = instituteService;
 	}
+
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
+	}
+
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
+	}
+	
+	
 }
 

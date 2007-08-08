@@ -7,6 +7,7 @@ import org.openuss.search.IndexerService;
 /**
  * Aspect for Institute Indexing 
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 public class InstituteIndexingAspect {
 
@@ -14,13 +15,11 @@ public class InstituteIndexingAspect {
 
 	private IndexerService indexerService;
 	
-	private LectureService lectureService;
-	
 	/**
-	 * Create index entry of institute if it is enabled. 
-	 * @param institute
+	 * Create index entry of institute if it is enabled. UserId not necessary! Just for AOP, otherwise it is not working.
+	 * @param institute, userId
 	 */
-	public void createInstituteIndex(Institute institute) {
+	public void createInstituteIndex(InstituteInfo institute,Long userId) {
 		logger.debug("Starting method createInstituteIndex");
 		try {
 			if (institute.getEnabled()) {
@@ -34,14 +33,14 @@ public class InstituteIndexingAspect {
 	
 	/**
 	 * Update institute index. If the institute is disabled it will be deleted from the search index.
-	 * @param institute
+	 * @param instituteInfo
 	 */
-	public void updateInstituteIndex(Institute institute) {
+	public void updateInstituteIndex(InstituteInfo instituteInfo) {
 		logger.debug("Starting method updateInstituteIndex");
 		try {
-			if (institute.getEnabled()) {
+			if (instituteInfo.getEnabled()) {
 				logger.debug("method updateInstituteIndex: updateIndex");
-				indexerService.updateIndex(institute);
+				indexerService.updateIndex(instituteInfo);
 				/*for(Course course:institute.getCourses()) {
 					if (course.getAccessType() != AccessType.CLOSED) {
 						indexerService.updateIndex(course);
@@ -50,7 +49,7 @@ public class InstituteIndexingAspect {
 				}*/
 			} else {
 				logger.debug("method updateInstituteIndex: deleteIndex");
-				indexerService.deleteIndex(institute);
+				indexerService.deleteIndex(instituteInfo);
 				/*for (Course course:institute.getCourses()) {
 					indexerService.deleteIndex(course);
 				}*/
@@ -62,7 +61,7 @@ public class InstituteIndexingAspect {
 
 	/**
 	 * Delete institute from lecture index.
-	 * @param institute
+	 * @param instituteId
 	 */
 	public void deleteInstituteIndex(Long instituteId) {
 		logger.debug("Starting method deleteInstituteIndex");
@@ -82,13 +81,5 @@ public class InstituteIndexingAspect {
 
 	public void setIndexerService(IndexerService indexerService) {
 		this.indexerService = indexerService;
-	}
-
-	public LectureService getLectureService() {
-		return lectureService;
-	}
-
-	public void setLectureService(LectureService lectureService) {
-		this.lectureService = lectureService;
 	}
 }

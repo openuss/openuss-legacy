@@ -14,7 +14,7 @@ import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
  * Tests:
  * 	-	Normal Indexing and Searching
  * 	- 	Updating of the index and new search
- * Creating and Deleting of the index is testes via the Callback methods.
+ * Creating and Deleting of the index is tested via the Callback methods.
  * 
  * @author Ingo Dueppe
  * @author Kai Stettner

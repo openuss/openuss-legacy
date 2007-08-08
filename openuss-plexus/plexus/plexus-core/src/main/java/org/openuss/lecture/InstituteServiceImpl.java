@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
@@ -17,12 +18,16 @@ import org.openuss.security.Membership;
  * @see org.openuss.lecture.InstituteService
  */
 public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBase {
+	
+	private static final Logger logger = Logger.getLogger(InstituteServiceImpl.class);
 
 	/**
 	 * @see org.openuss.lecture.InstituteService#create(org.openuss.lecture.InstituteInfo)
 	 */
 	protected java.lang.Long handleCreate(InstituteInfo instituteInfo, Long userId) throws java.lang.Exception {
 
+		logger.debug("Starting method handleCreate");
+		
 		Validate.notNull(instituteInfo, "InstituteService.handleCreate - the Institute cannot be null");
 		Validate.notNull(userId, "InstituteService.handleCreate - the User must have a valid ID");
 		Validate.isTrue(instituteInfo.getId() == null,
@@ -71,6 +76,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	 * @see org.openuss.lecture.InstituteService#update(org.openuss.lecture.InstituteInfo)
 	 */
 	protected void handleUpdate(org.openuss.lecture.InstituteInfo instituteInfo) throws java.lang.Exception {
+		
+		logger.debug("Starting method handleUpdate");
 
 		Validate.notNull(instituteInfo, "InstituteService.handleUpdate - the Institute cannot be null");
 		Validate.notNull(instituteInfo.getId(), "InstituteService.handleUpdate - the Institute must have a valid ID");
@@ -80,12 +87,15 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 
 		// Update Entity
 		this.getInstituteDao().update(institute);
+	
 	}
 
 	/**
 	 * @see org.openuss.lecture.InstituteService#removeInstitute(java.lang.Long)
 	 */
 	protected void handleRemoveInstitute(java.lang.Long instituteId) throws java.lang.Exception {
+		
+		logger.debug("Starting method handleRemoveInstitute");
 
 		Validate.notNull(instituteId, "InstituteService.handleRemoveInstitute - the InstituteID cannot be null");
 
