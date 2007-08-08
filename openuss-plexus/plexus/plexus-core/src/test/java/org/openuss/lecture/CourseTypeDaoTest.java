@@ -25,7 +25,7 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 	
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
-		institute = testUtility.createPersistInstituteWithDefaultUser();
+		institute = testUtility.createUniqueInstituteInDB();
 		commit();
 	}
 	
@@ -65,6 +65,25 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 		commit();
 	}
 
+	public void testToCourseTypeInfo () {
+		
+		// Create a complete CourseType
+		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
+		courseType.setName(testUtility.unique("name"));
+		courseType.setDescription(testUtility.unique("description"));
+		courseType.setShortcut(testUtility.unique("shortcut"));
+		courseType.setInstitute(testUtility.createUniqueInstituteInDB());
+		courseType.getCourses().add(testUtility.createUniqueCourseInDB());
+		
+		// Test
+		CourseTypeInfo courseTypeInfo = this.getCourseTypeDao().toCourseTypeInfo(courseType);
+		assertNotNull(courseTypeInfo);
+		assertEquals(courseType.getName(), courseTypeInfo.getName());
+		assertEquals(courseType.getDescription(), courseTypeInfo.getDescription());
+		assertEquals(courseType.getShortcut(), courseTypeInfo.getShortcut());
+		assertEquals(courseType.getInstitute().getId(), courseTypeInfo.getInstituteId());
+	}
+	
 	public TestUtility getTestUtility() {
 		return testUtility;
 	}

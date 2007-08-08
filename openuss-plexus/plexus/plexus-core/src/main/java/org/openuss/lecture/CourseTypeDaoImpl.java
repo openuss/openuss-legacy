@@ -17,8 +17,10 @@ public class CourseTypeDaoImpl
         org.openuss.lecture.CourseType sourceEntity,
         org.openuss.lecture.CourseTypeInfo targetVO)
     {
-        // @todo verify behavior of toCourseTypeInfo
         super.toCourseTypeInfo(sourceEntity, targetVO);
+        if (sourceEntity.getInstitute() != null) {
+        	targetVO.setInstituteId(sourceEntity.getInstitute().getId());
+        }
     }
 
 
