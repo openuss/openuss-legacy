@@ -1,5 +1,6 @@
 package org.openuss.framework.web.jsf.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,8 +15,13 @@ import java.util.List;
  * @author Ingo Düppe
  * 
  */
-public class DataPage<T> {
+public class DataPage<T> implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7635256923773083387L;
+	
 	private int datasetSize;
 	private int startRow;
 	private List<T> data;
