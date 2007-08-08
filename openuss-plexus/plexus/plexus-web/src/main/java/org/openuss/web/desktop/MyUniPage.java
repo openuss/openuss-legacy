@@ -55,7 +55,7 @@ import org.openuss.security.User;
  * @author Peter Grosskopf
  * @author Julian Reimann
  */
-@Bean(name = "views$secured$myuni$myuni", scope = Scope.SESSION)
+@Bean(name = "views$secured$myuni$myuni", scope = Scope.REQUEST)
 public class MyUniPage extends BasePage {
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
 
@@ -67,14 +67,6 @@ public class MyUniPage extends BasePage {
 	private MyUniDataSet myUniDataSet;
 
 	
-	
-	public MyUniPage()
-	{
-		super();
-		
-		setCurrentUniversity("2");
-//		departmentsController = new DepartmentsFlexlistController();
-	}
 	
 	@Prerender
 	public void prerender() {
@@ -119,17 +111,17 @@ public class MyUniPage extends BasePage {
 	
 	public List<SelectItem> getUniversities()
 	{
-		ArrayList<SelectItem> resultTypes = new ArrayList<SelectItem>();
-		resultTypes.add(new SelectItem(
+		ArrayList<SelectItem> result = new ArrayList<SelectItem>();
+		result.add(new SelectItem(
 				"1", 
 				"text1"));
-		resultTypes.add(new SelectItem(
+		result.add(new SelectItem(
 				"2", 
 				"text2"));
-		resultTypes.add(new SelectItem(
+		result.add(new SelectItem(
 				"3", 
 				"text3"));
-		return resultTypes;
+		return result;
 	}
 	
 	public String getUniversityName()
@@ -164,11 +156,13 @@ public class MyUniPage extends BasePage {
 	
 	private void initValues()
 	{
+		ArrayList<ListItemDAO> visibleList = this.getVisibleItems();
 		flexlist.getAttributes().put("title", getTitle());
 		flexlist.getAttributes().put("showButtonTitle", getShowButtonTitle());
 		flexlist.getAttributes().put("hideButtonTitle", getHideButtonTitle());
-		flexlist.getAttributes().put("visibleItems", getVisibleItems());
+		flexlist.getAttributes().put("visibleItems", visibleList);
 		flexlist.getAttributes().put("hiddenItems", getHiddenItems());
+	//	flexlist.getAttributes().put("abc", new ArrayList<Long>());
 	}
 	
 
@@ -180,6 +174,7 @@ public class MyUniPage extends BasePage {
 	public String getShowButtonTitle() {
 		return "Mehr...";
 	}
+	
 
 	public String getTitle() {
 		return "Test-Liste";
@@ -189,7 +184,7 @@ public class MyUniPage extends BasePage {
 	public ArrayList getVisibleItems() {
 		ArrayList list = new ArrayList();
 		ListItemDAO newItem;
-		
+		try {
 		newItem = new ListItemDAO();
 		newItem.setTitle("Item 1");
 		newItem.setMetaInformation("Info 1");
@@ -199,7 +194,9 @@ public class MyUniPage extends BasePage {
 		newItem.setTitle("Item 2");
 		newItem.setMetaInformation("Info 2");
 		list.add(newItem);
-		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return list;
 	}
 
@@ -211,6 +208,7 @@ public class MyUniPage extends BasePage {
 		newItem.setTitle("Item 1");
 		newItem.setMetaInformation("Info 1");
 		list.add(newItem);
+		
 		
 		newItem = new ListItemDAO();
 		newItem.setTitle("Item 2");

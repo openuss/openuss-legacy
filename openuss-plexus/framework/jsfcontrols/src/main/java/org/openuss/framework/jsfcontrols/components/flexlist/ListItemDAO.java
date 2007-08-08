@@ -1,6 +1,8 @@
 package org.openuss.framework.jsfcontrols.components.flexlist;
 
-public class ListItemDAO {
+import java.io.Serializable;
+
+public class ListItemDAO implements Serializable {
 	private String title;
 	private String url;
 	private String metaInformation;
