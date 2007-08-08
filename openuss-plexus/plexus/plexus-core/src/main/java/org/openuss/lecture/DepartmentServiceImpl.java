@@ -144,5 +144,24 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		return this.getDepartmentDao().findByUniversityAndEnabled(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university,
 				enabled);
 	}
+	
+
+	@Override
+	protected void handleAcceptApplication(Long applicationId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleRejectApplication(Long applicationId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleSignoffInstitute(Long instituteId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

@@ -92,4 +92,14 @@ public class InstituteServiceMock implements InstituteService {
 
 	}
 
+	public Long applyAtDepartment(Long instituteId, Long departmentId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void removeUnconfirmedApplication(Long applicationId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

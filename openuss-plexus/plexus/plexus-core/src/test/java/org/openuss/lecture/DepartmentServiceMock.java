@@ -172,4 +172,19 @@ public class DepartmentServiceMock implements DepartmentService {
 		return departments;
 	}
 
+	public void acceptApplication(Long applicationId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void rejectApplication(Long applicationId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void signoffInstitute(Long instituteId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

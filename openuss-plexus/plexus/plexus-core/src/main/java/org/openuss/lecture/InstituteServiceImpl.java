@@ -176,4 +176,16 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				enabled);
 	}
 
+	@Override
+	protected Long handleApplyAtDepartment(Long instituteId, Long departmentId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void handleRemoveUnconfirmedApplication(Long applicationId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
