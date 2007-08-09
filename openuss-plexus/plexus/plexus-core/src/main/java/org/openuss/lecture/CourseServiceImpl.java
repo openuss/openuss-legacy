@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.system.SystemProperties;
@@ -20,6 +21,8 @@ import org.openuss.system.SystemProperties;
  * @see org.openuss.lecture.CourseService
  */
 public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
+	
+	private static final Logger logger = Logger.getLogger(CourseServiceImpl.class);
 
 	public Long handleCreate (CourseInfo courseInfo) {
 		// TODO Auto-generated method stub
@@ -256,6 +259,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	@Override
 	protected void handleUpdateCourse(CourseInfo courseInfo) throws Exception {
+		logger.debug("Starting method handleUpdateCourse");
 		Validate.notNull(courseInfo, "Parameter course must not be null.");
 		Validate.notNull(courseInfo.getId(), "Parameter course must contain a valid course id.");
 		Course course = getCourseDao().courseInfoToEntity(courseInfo);

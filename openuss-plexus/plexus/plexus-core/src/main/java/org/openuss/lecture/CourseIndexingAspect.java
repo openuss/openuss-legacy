@@ -14,20 +14,21 @@ public class CourseIndexingAspect {
 	private static final Logger logger = Logger.getLogger(CourseIndexingAspect.class);
 
 	private IndexerService indexerService;
-
-	private LectureService lectureService;
+	
+	private CourseDao courseDao;
 
 	public void updateCourseIndexOnPeriodUpdate(Period period) {
 		Validate.notNull(period, "Parameter period must not be null");
 		for (Course course : period.getCourses()) {
-			updateCourseIndex(course);
+			CourseInfo courseInfo = courseDao.toCourseInfo(course);
+			updateCourseIndex(courseInfo);
 		}
 	}
 
-	public void createCourseIndex(Course course) {
+	public void createCourseIndex(CourseInfo courseInfo) {
 		try {
-			if (course.getAccessType() != AccessType.CLOSED) {
-				indexerService.createIndex(course);
+			if (courseInfo.getAccessType() != AccessType.CLOSED) {
+				indexerService.createIndex(courseInfo);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -35,14 +36,14 @@ public class CourseIndexingAspect {
 
 	}
 
-	public void updateCourseIndex(Course course) {
+	public void updateCourseIndex(CourseInfo courseInfo) {
 		logger.info("Starting method updateCourseIndex");
 		try {
-			if (course.getAccessType() == AccessType.CLOSED) {
+			if (courseInfo.getAccessType() == AccessType.CLOSED) {
 				logger.info("Deleting CourseIndex");
-				indexerService.deleteIndex(course);
+				indexerService.deleteIndex(courseInfo);
 			} else {
-				indexerService.updateIndex(course);
+				indexerService.updateIndex(courseInfo);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -59,14 +60,6 @@ public class CourseIndexingAspect {
 		}
 	}
 
-	public LectureService getLectureService() {
-		return lectureService;
-	}
-
-	public void setLectureService(LectureService lectureService) {
-		this.lectureService = lectureService;
-	}
-
 	public IndexerService getIndexerService() {
 		return indexerService;
 	}
@@ -74,5 +67,15 @@ public class CourseIndexingAspect {
 	public void setIndexerService(IndexerService indexerService) {
 		this.indexerService = indexerService;
 	}
+
+	public CourseDao getCourseDao() {
+		return courseDao;
+	}
+
+	public void setCourseDao(CourseDao courseDao) {
+		this.courseDao = courseDao;
+	}
+	
+	
 
 }

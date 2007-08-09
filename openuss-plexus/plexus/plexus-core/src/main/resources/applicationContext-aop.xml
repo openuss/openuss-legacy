@@ -45,15 +45,15 @@
 				arg-names="period"/>
 			<aop:after-returning
 				method="createCourseIndex" 
-				pointcut="execution(* org..LectureServiceBase.createCourse(org.openuss.lecture.Institute)) and args(course)"
-				arg-names="course"/>
+				pointcut="execution(* org..CourseServiceBase.create(org.openuss.lecture.CourseInfo)) and args(courseInfo)"
+				arg-names="courseInfo"/>
 			<aop:after-returning
 				method="updateCourseIndex"
-				pointcut="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Course)) and args(course)"
-				arg-names="course"/>
+				pointcut="execution(* org..CourseServiceBase.updateCourse(org.openuss.lecture.CourseInfo)) and args(courseInfo)"
+				arg-names="courseInfo"/>
 			<aop:after-returning
 				method="deleteCourseIndex"
-				pointcut="execution(* org..LectureServiceBase.removeCourse(java.lang.Long)) and args(courseId)"
+				pointcut="execution(* org..CourseServiceBase.removeCourse(java.lang.Long)) and args(courseId)"
 				arg-names="courseId"/>
 		</aop:aspect>
 		
@@ -79,8 +79,8 @@
 	</bean>
 	
 	<bean id="courseIndexAspectBean" class="org.openuss.lecture.CourseIndexingAspect">
-		<property name="lectureService" ref="lectureService"/>
 		<property name="indexerService" ref="indexerService"/>
+		<property name="courseDao" ref="courseDao"/>
 	</bean>
 	
 	

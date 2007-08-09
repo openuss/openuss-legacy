@@ -38,26 +38,20 @@ public class CourseIndexingAspectTest extends AbstractTransactionalDataSourceSpr
 
 	public void testLectureIndex() throws Exception {
 	 
-		// create dummy user
-		User user = testUtility.createSecureContext();
-		// create dummy institute info
-		InstituteInfo info = new InstituteInfo(null,"The Superb Institute","TSI","Institute Owner xyz","Germany",false);
+		// create dummy course info
+		Course course = testUtility.createUniqueCourseInDB();
+		CourseInfo courseInfo = courseDao.toCourseInfo(course);
 		
-		Long instituteId = instituteService.create(info, user.getId());
+		Long courseId = courseService.create(courseInfo);
 		
-		// activate institute
-		info = this.getInstituteService().findInstitute(instituteId);
-		info.setEnabled(true);
-		// update instituteInfo
-		instituteService.update(info);
+		// update courseInfo
+		courseService.updateCourse(courseInfo);
 		
-		// indexerMockCreate should be 0 due to the fact that institutes are initiated
-		// disabled. Therefore they are activated via the updateIndex-method --> indexerMockUpdate should be 1.
-		assertEquals(0, indexerMock.create);
+		assertEquals(1, indexerMock.create);
 		assertEquals(1, indexerMock.update);
-		// delete institute
+		// delete course
 		// indexMockDelete should be 1 --> Deleting institute index works properly
-		instituteService.removeInstitute(info.getId());
+		courseService.removeCourse(courseId);
 		assertEquals(1, indexerMock.delete);
 	}
 	
@@ -75,12 +69,12 @@ public class CourseIndexingAspectTest extends AbstractTransactionalDataSourceSpr
 				"classpath*:testDataSource.xml"};
 	}
 
-	public InstituteIndexingAspect getInstituteIndexAspectBean() {
-		return instituteIndexAspectBean;
+	public CourseIndexingAspect getCourseIndexAspectBean() {
+		return courseIndexAspectBean;
 	}
 
-	public void setInstituteIndexAspectBean(InstituteIndexingAspect instituteIndexAspectBean) {
-		this.instituteIndexAspectBean = instituteIndexAspectBean;
+	public void setCourseIndexAspectBean(CourseIndexingAspect courseIndexAspectBean) {
+		this.courseIndexAspectBean = courseIndexAspectBean;
 	}
 
 	
@@ -116,19 +110,19 @@ public class CourseIndexingAspectTest extends AbstractTransactionalDataSourceSpr
 		this.testUtility = testUtility;
 	}
 
-	public InstituteService getInstituteService() {
-		return instituteService;
+	public CourseService getCourseService() {
+		return courseService;
 	}
 
-	public void setInstituteService(InstituteService instituteService) {
-		this.instituteService = instituteService;
+	public void setCourseService(CourseService courseService) {
+		this.courseService = courseService;
 	}
 
-	public InstituteDao getInstituteDao() {
-		return instituteDao;
+	public CourseDao getCourseDao() {
+		return courseDao;
 	}
 
-	public void setInstituteDao(InstituteDao instituteDao) {
-		this.instituteDao = instituteDao;
+	public void setCourseDao(CourseDao courseDao) {
+		this.courseDao = courseDao;
 	}
 }
