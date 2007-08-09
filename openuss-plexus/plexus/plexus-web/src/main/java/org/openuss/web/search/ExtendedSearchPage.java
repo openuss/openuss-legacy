@@ -16,7 +16,20 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.CourseTypeInfo;
+import org.openuss.lecture.CourseTypeService;
+import org.openuss.lecture.CourseTypeServiceMock;
+import org.openuss.lecture.DepartmentInfo;
+import org.openuss.lecture.DepartmentService;
+import org.openuss.lecture.DepartmentServiceMock;
+import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.InstituteService;
+import org.openuss.lecture.InstituteServiceMock;
 import org.openuss.lecture.LectureSearcher;
+import org.openuss.lecture.PeriodInfo;
+import org.openuss.lecture.UniversityInfo;
+import org.openuss.lecture.UniversityService;
+import org.openuss.lecture.UniversityServiceMock;
 import org.openuss.search.DomainResult;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -41,6 +54,11 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	private ExtendedSearchResults extendedSearchResults;
 	
 	private ExtendedSearchResultDataProvider resultProvider = new ExtendedSearchResultDataProvider();
+	
+	private UniversityService universityService = new UniversityServiceMock();
+	private DepartmentService departmentService = new DepartmentServiceMock();
+	private InstituteService instituteService = new InstituteServiceMock();
+	private CourseTypeService courseTypeService = new CourseTypeServiceMock(); 
 	
 	@Prerender
 	public void prerender(){
@@ -94,23 +112,30 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 * @param vce
 	 */
 	public void resultTypeChanged(ValueChangeEvent vce){
+		logger.debug(">>> resultTypeChanged");
+		logger.debug("new value: "+vce.getNewValue().toString());
+		
+		List<SelectItem> universitiesToDisplay = new ArrayList<SelectItem>();
+		UniversityInfo universityInfo;
+		
 		// set possible organisations
-		ArrayList<SelectItem> dummy = new ArrayList<SelectItem>();
-		dummy.add(new SelectItem(
-				new Integer(1), 
-				"Uni Münster"));
-		dummy.add(new SelectItem(
-				new Integer(2), 
-				"Uni Paderborn"));
-		dummy.add(new SelectItem(
-				new Integer(3), 
-				"Uni Duisburg-Essen"));
-		extendedSearchResults.setOrganisations(dummy);
+		List universities = universityService.findUniversitiesByEnabled(true);
+		for(Object universityTemp : universities){
+			universityInfo = (UniversityInfo) universityTemp;
+			universitiesToDisplay.add(
+					new SelectItem(
+							universityInfo.getId().intValue(), 
+							universityInfo.getName()));
+		}
+		extendedSearchResults.setOrganisations(universitiesToDisplay);
+		
 		// reset all other combo boxes
 		extendedSearchResults.setSuborganisations(new ArrayList<SelectItem>());
 		extendedSearchResults.setInstitutions(new ArrayList<SelectItem>());
 		extendedSearchResults.setCourseTypes(new ArrayList<SelectItem>());
 		extendedSearchResults.setPeriods(new ArrayList<SelectItem>());
+		
+		logger.debug("<<< resultTypeChanged");
 	}
 	
 	/**
@@ -118,22 +143,30 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 * @param vce
 	 */
 	public void organisationChanged(ValueChangeEvent vce){
+		logger.debug(">>> organisationChanged");
+		logger.debug("new value: "+vce.getNewValue().toString());
+		
+		List<SelectItem> departmentsToDisplay = new ArrayList<SelectItem>();
+		DepartmentInfo departmentInfo;
+		
 		// determine the departments which belong to the given university
-		ArrayList<SelectItem> dummy = new ArrayList<SelectItem>();
-		dummy.add(new SelectItem(
-				new Integer(4), 
-				"BWL"));
-		dummy.add(new SelectItem(
-				new Integer(5), 
-				"Jura"));
-		dummy.add(new SelectItem(
-				new Integer(6), 
-				"Theologie"));
-		extendedSearchResults.setSuborganisations(dummy);
+		Long selectedOrganisation = (Long) vce.getNewValue();
+		List departments = departmentService.findDepartmentsByUniversityAndEnabled(selectedOrganisation, true);
+		for(Object departmentTemp : departments){
+			departmentInfo = (DepartmentInfo) departmentTemp;
+			departmentsToDisplay.add(
+					new SelectItem(
+							departmentInfo.getId().intValue(), 
+							departmentInfo.getName()));
+		}
+		extendedSearchResults.setSuborganisations(departmentsToDisplay);
+
 		// reset the all other more detailed combo boxes
 		extendedSearchResults.setInstitutions(new ArrayList<SelectItem>());
 		extendedSearchResults.setCourseTypes(new ArrayList<SelectItem>());
 		extendedSearchResults.setPeriods(new ArrayList<SelectItem>());
+		
+		logger.debug("<<< organisationChanged");
 	}
 	
 	/**
@@ -141,21 +174,29 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 * @param vce
 	 */
 	public void suborganisationChanged(ValueChangeEvent vce){
+		logger.debug(">>> suborganisationChanged");
+		logger.debug("new value: "+vce.getNewValue().toString());
+		
+		List<SelectItem> institutesToDisplay = new ArrayList<SelectItem>();
+		InstituteInfo instituteInfo;
+		
 		// determine the institutions which belong to the given department
-		ArrayList<SelectItem> dummy = new ArrayList<SelectItem>();
-		dummy.add(new SelectItem(
-				new Integer(7), 
-				"LS 1"));
-		dummy.add(new SelectItem(
-				new Integer(8), 
-				"LS 2"));
-		dummy.add(new SelectItem(
-				new Integer(9), 
-				"LS 3"));
-		extendedSearchResults.setInstitutions(dummy);
+		Long selectedSuborganisation = (Long) vce.getNewValue();
+		List institutes = instituteService.findInstitutesByDepartmentAndEnabled(selectedSuborganisation, true);
+		for(Object instituteTemp : institutes){
+			instituteInfo = (InstituteInfo) instituteTemp;
+			institutesToDisplay.add(
+					new SelectItem(
+							instituteInfo.getId().intValue(), 
+							instituteInfo.getName()));
+		}
+		extendedSearchResults.setInstitutions(institutesToDisplay);
+		
 		// reset the all other more detailed combo boxes
 		extendedSearchResults.setCourseTypes(new ArrayList<SelectItem>());
 		extendedSearchResults.setPeriods(new ArrayList<SelectItem>());
+		
+		logger.debug("<<< suborganisationChanged");
 	}
 	
 	/**
@@ -163,29 +204,38 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 * @param vce
 	 */
 	public void institutionChanged(ValueChangeEvent vce){
+		logger.debug(">>> institutionChanged");
+		logger.debug("new value: "+vce.getNewValue().toString());
+		
+		List<SelectItem> courseTypesToDisplay = new ArrayList<SelectItem>();
+		List<SelectItem> periodToDisplay = new ArrayList<SelectItem>();
+		CourseTypeInfo courseTypeInfo;
+		PeriodInfo periodInfo;
+		
 		// determine the course types offered by the given institution
-		ArrayList<SelectItem> dummy = new ArrayList<SelectItem>();
-		dummy.add(new SelectItem(
-				new Integer(10), 
-				"VL 1"));
-		dummy.add(new SelectItem(
-				new Integer(11), 
-				"VL 2"));
-		dummy.add(new SelectItem(
-				new Integer(12), 
-				"VL 3"));
-		extendedSearchResults.setCourseTypes(dummy);
-		ArrayList<SelectItem> dummy2 = new ArrayList<SelectItem>();
-		dummy2.add(new SelectItem(
-				new Integer(13), 
-				"SS 2007"));
-		dummy2.add(new SelectItem(
-				new Integer(14), 
-				"WS 2007/2008"));
-		dummy2.add(new SelectItem(
-				new Integer(15), 
-				"SS 2008"));
-		extendedSearchResults.setPeriods(dummy2);
+		Long selectedInstitute = (Long) vce.getNewValue();
+		List courseTypes = courseTypeService.findCourseTypesByInstitute(selectedInstitute); 
+		for(Object courseTypeTemp : courseTypes){
+			courseTypeInfo = (CourseTypeInfo) courseTypeTemp;
+			courseTypesToDisplay.add(
+					new SelectItem(
+							courseTypeInfo.getId().intValue(), 
+							courseTypeInfo.getName()));
+		}
+		extendedSearchResults.setCourseTypes(courseTypesToDisplay);
+
+		// determine periods in which the institute offers courses
+		List periods = universityService.findPeriodsByUniversity(extendedSearchResults.getOrganisationId());
+		for(Object periodTemp : periods){
+			periodInfo = (PeriodInfo) periodTemp;
+			periodToDisplay.add(
+					new SelectItem(
+							periodInfo.getId().intValue(), 
+							periodInfo.getName()));
+		}
+		extendedSearchResults.setPeriods(periodToDisplay);
+		
+		logger.debug("<<< institutionChanged");
 	}
 	
 	/**
@@ -261,7 +311,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 * @return
 	 */
 	public String getVisibilityPeriod(){
-		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE
+		if(extendedSearchResults.getResultTypeId().intValue() > Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE
 				&& extendedSearchResults.getPeriods().size() > 0){
 			return "display:inline;";
 		} else {
@@ -278,8 +328,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	
 	public String getOrganisationLabel(){
 		ResourceBundle rb = ExtendedSearchUtil.getResourceBundle();
-		int scope = extendedSearchResults.getSearchScopeId();
-		switch(scope){
+		switch(extendedSearchResults.getSearchScopeId().intValue()){
 			case Constants.EXTENDED_SEARCH_SCOPE_UNIVERSITIES:
 				return rb.getString("extended_search_organisation_univ");
 			case Constants.EXTENDED_SEARCH_SCOPE_COMPANIES:
@@ -293,8 +342,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	
 	public String getSuborganisationLabel(){
 		ResourceBundle rb = ExtendedSearchUtil.getResourceBundle();
-		int scope = extendedSearchResults.getSearchScopeId();
-		switch(scope){
+		switch(extendedSearchResults.getSearchScopeId().intValue()){
 			case Constants.EXTENDED_SEARCH_SCOPE_UNIVERSITIES:
 				return rb.getString("extended_search_suborganisation_univ");
 			case Constants.EXTENDED_SEARCH_SCOPE_COMPANIES:
@@ -308,8 +356,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	
 	public String getInstitutionLabel(){
 		ResourceBundle rb = ExtendedSearchUtil.getResourceBundle();
-		int scope = extendedSearchResults.getSearchScopeId();
-		switch(scope){
+		switch(extendedSearchResults.getSearchScopeId().intValue()){
 			case Constants.EXTENDED_SEARCH_SCOPE_UNIVERSITIES:
 				return rb.getString("extended_search_institution_univ");
 			case Constants.EXTENDED_SEARCH_SCOPE_COMPANIES:
@@ -323,8 +370,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	
 	public String getCourseTypeLabel(){
 		ResourceBundle rb = ExtendedSearchUtil.getResourceBundle();
-		int scope = extendedSearchResults.getSearchScopeId();
-		switch(scope){
+		switch(extendedSearchResults.getSearchScopeId().intValue()){
 			case Constants.EXTENDED_SEARCH_SCOPE_UNIVERSITIES:
 				return rb.getString("extended_search_course_type_univ");
 			case Constants.EXTENDED_SEARCH_SCOPE_COMPANIES:
@@ -338,8 +384,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	
 	public String getPeriodLabel(){
 		ResourceBundle rb = ExtendedSearchUtil.getResourceBundle();
-		int scope = extendedSearchResults.getSearchScopeId();
-		switch(scope){
+		switch(extendedSearchResults.getSearchScopeId().intValue()){
 			case Constants.EXTENDED_SEARCH_SCOPE_UNIVERSITIES:
 				return rb.getString("extended_search_period_univ");
 			case Constants.EXTENDED_SEARCH_SCOPE_COMPANIES:
