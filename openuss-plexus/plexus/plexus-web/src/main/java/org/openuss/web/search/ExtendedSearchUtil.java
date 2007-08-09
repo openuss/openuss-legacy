@@ -21,9 +21,9 @@ public class ExtendedSearchUtil {
 		return rb;
 	}
 	
-	public static String getResourceExtensionString(Integer searchScopeId){
+	public static String getResourceExtensionString(Long searchScopeId){
 		String extension = "";
-		switch(searchScopeId){
+		switch(searchScopeId.intValue()){
 			case Constants.EXTENDED_SEARCH_SCOPE_UNIVERSITIES:
 				extension = "univ";
 				break;

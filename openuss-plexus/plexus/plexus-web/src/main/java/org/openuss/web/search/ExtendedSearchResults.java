@@ -33,13 +33,13 @@ public class ExtendedSearchResults implements Serializable {
 	private String textToSearch;
 	private boolean titleOnly;
 	private boolean officialOnly;
-	private Integer searchScopeId;
-	private Integer resultTypeId;
-	private Integer organisationId;
-	private Integer suborganisationId;
-	private Integer institutionId;
-	private Integer courseTypeId;
-	private Integer periodId;
+	private Long searchScopeId;
+	private Long resultTypeId;
+	private Long organisationId;
+	private Long suborganisationId;
+	private Long institutionId;
+	private Long courseTypeId;
+	private Long periodId;
 	private List<SelectItem> organisations;
 	private List<SelectItem> suborganisations;
 	private List<SelectItem> institutions;
@@ -49,13 +49,13 @@ public class ExtendedSearchResults implements Serializable {
 	public ExtendedSearchResults(){
 		titleOnly = false;
 		officialOnly = false;
-		searchScopeId = Constants.EXTENDED_SEARCH_SCOPE_UNIVERSITIES;
-		resultTypeId = Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION;
-		organisationId = new Integer(0);
-		suborganisationId = new Integer(0);
-		institutionId = new Integer(0);
-		courseTypeId = new Integer(0);
-		periodId = new Integer(0);
+		searchScopeId = new Long(Constants.EXTENDED_SEARCH_SCOPE_UNIVERSITIES);
+		resultTypeId = new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION);
+		organisationId = new Long(0);
+		suborganisationId = new Long(0);
+		institutionId = new Long(0);
+		courseTypeId = new Long(0);
+		periodId = new Long(0);
 		organisations = new ArrayList<SelectItem>();
 		suborganisations = new ArrayList<SelectItem>();
 		institutions = new ArrayList<SelectItem>();
@@ -96,59 +96,59 @@ public class ExtendedSearchResults implements Serializable {
 		this.officialOnly = officialOnly;
 	}
 
-	public Integer getSearchScopeId() {
+	public Long getSearchScopeId() {
 		return searchScopeId;
 	}
 
-	public void setSearchScopeId(Integer searchScopeId) {
+	public void setSearchScopeId(Long searchScopeId) {
 		this.searchScopeId = searchScopeId;
 	}
 
-	public Integer getResultTypeId() {
+	public Long getResultTypeId() {
 		return resultTypeId;
 	}
 
-	public void setResultTypeId(Integer resultTypeId) {
+	public void setResultTypeId(Long resultTypeId) {
 		this.resultTypeId = resultTypeId;
 	}
 
-	public Integer getOrganisationId() {
+	public Long getOrganisationId() {
 		return organisationId;
 	}
 
-	public void setOrganisationId(Integer organisationId) {
+	public void setOrganisationId(Long organisationId) {
 		this.organisationId = organisationId;
 	}
 	
-	public Integer getSuborganisationId() {
+	public Long getSuborganisationId() {
 		return suborganisationId;
 	}
 
-	public void setSuborganisationId(Integer suborganisationId) {
+	public void setSuborganisationId(Long suborganisationId) {
 		this.suborganisationId = suborganisationId;
 	}
 
-	public Integer getInstitutionId() {
+	public Long getInstitutionId() {
 		return institutionId;
 	}
 
-	public void setInstitutionId(Integer institutionId) {
+	public void setInstitutionId(Long institutionId) {
 		this.institutionId = institutionId;
 	}
 
-	public Integer getCourseTypeId() {
+	public Long getCourseTypeId() {
 		return courseTypeId;
 	}
 
-	public void setCourseTypeId(Integer courseTypeId) {
+	public void setCourseTypeId(Long courseTypeId) {
 		this.courseTypeId = courseTypeId;
 	}
 
-	public Integer getPeriodId() {
+	public Long getPeriodId() {
 		return periodId;
 	}
 
-	public void setPeriodId(Integer periodId) {
+	public void setPeriodId(Long periodId) {
 		this.periodId = periodId;
 	}
 
@@ -156,13 +156,13 @@ public class ExtendedSearchResults implements Serializable {
 		ResourceBundle rb = ExtendedSearchUtil.getResourceBundle();
 		ArrayList<SelectItem> scopes = new ArrayList<SelectItem>();
 		scopes.add(new SelectItem(
-				new Integer(Constants.EXTENDED_SEARCH_SCOPE_UNIVERSITIES), 
+				new Long(Constants.EXTENDED_SEARCH_SCOPE_UNIVERSITIES), 
 				rb.getString("extended_search_scope_universities")));
 		scopes.add(new SelectItem(
-				new Integer(Constants.EXTENDED_SEARCH_SCOPE_COMPANIES), 
+				new Long(Constants.EXTENDED_SEARCH_SCOPE_COMPANIES), 
 				rb.getString("extended_search_scope_companies")));
 		scopes.add(new SelectItem(
-				new Integer(Constants.EXTENDED_SEARCH_SCOPE_OTHER), 
+				new Long(Constants.EXTENDED_SEARCH_SCOPE_OTHER), 
 				rb.getString("extended_search_scope_other")));
 		return scopes;
 	}
@@ -172,19 +172,19 @@ public class ExtendedSearchResults implements Serializable {
 		String extension = ExtendedSearchUtil.getResourceExtensionString(getSearchScopeId());
 		ArrayList<SelectItem> resultTypes = new ArrayList<SelectItem>();
 		resultTypes.add(new SelectItem(
-				new Integer(Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION), 
+				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION), 
 				rb.getString("extended_search_organisation_"+extension)));
 		resultTypes.add(new SelectItem(
-				new Integer(Constants.EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION), 
+				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION), 
 				rb.getString("extended_search_suborganisation_"+extension)));
 		resultTypes.add(new SelectItem(
-				new Integer(Constants.EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION), 
+				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION), 
 				rb.getString("extended_search_institution_"+extension)));
 		resultTypes.add(new SelectItem(
-				new Integer(Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE), 
+				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE), 
 				rb.getString("extended_search_course_type_"+extension)));
 		resultTypes.add(new SelectItem(
-				new Integer(Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE), 
+				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE), 
 				rb.getString("extended_search_course_"+extension)));
 		return resultTypes;
 	}
