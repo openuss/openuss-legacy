@@ -309,6 +309,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> END access to findAllUniversities test");		
 	}
 	
+	@SuppressWarnings( { "unchecked" })
 	public void testFindPeriodsByUniversity () {
 		logger.info("----> BEGIN access to findPeriodsByUniversity test");
 		
@@ -330,7 +331,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		periodDao.update(period2);
 		
 		//Test
-		List<Period> periods = this.getUniversityService().findPeriodsByUniversity(university.getId());
+		List<PeriodInfo> periods = this.getUniversityService().findPeriodsByUniversity(university.getId());
 		assertNotNull(periods);
 		assertEquals(2, periods.size());
 		assertEquals(period1.getName(), periods.get(0).getName());

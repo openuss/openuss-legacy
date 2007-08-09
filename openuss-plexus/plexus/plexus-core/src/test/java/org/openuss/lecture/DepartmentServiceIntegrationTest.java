@@ -5,8 +5,6 @@
  */
 package org.openuss.lecture;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.openuss.security.Membership;
@@ -160,6 +158,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		logger.info("----> END access to findDepartment(Department) test");
 	}
 	
+	@SuppressWarnings( { "unchecked" })
 	public void testFindDepartmentsByUniversity () {
 		
 		logger.info("----> BEGIN access to findDepartmentsByUniversity(Department) test");
@@ -201,7 +200,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		flush();
 		
 		//Test
-		List<Department> departments = this.getDepartmentService().findDepartmentsByUniversity(university.getId());
+		List<DepartmentInfo> departments = this.getDepartmentService().findDepartmentsByUniversity(university.getId());
 		assertNotNull(departments);
 		//assertEquals(1, departments.size());
 		assertEquals(2, departments.size());
