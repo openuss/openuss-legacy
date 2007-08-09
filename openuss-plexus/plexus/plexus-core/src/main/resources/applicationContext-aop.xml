@@ -26,16 +26,31 @@
 		<aop:aspect id="courseTypeIndexAspect" ref="courseTypeIndexAspectBean">
 			<aop:after-returning
 				method="createCourseTypeIndex" 
-				pointcut="execution(* org..CourseTypeServiceBase.create(org.openuss.lecture.CourseTypeInfo)) and args(courseType)"
-				arg-names="courseType"/>
+				pointcut="execution(* org..CourseTypeServiceBase.create(org.openuss.lecture.CourseTypeInfo)) and args(courseTypeInfo)"
+				arg-names="courseTypeInfo"/>
 			<aop:after-returning
 				method="updateCourseTypeIndex"
-				pointcut="execution(* org..CourseTypeServiceBase.update(org.openuss.lecture.CourseTypeInfo)) and args(courseType)"
-				arg-names="courseType"/>
+				pointcut="execution(* org..CourseTypeServiceBase.update(org.openuss.lecture.CourseTypeInfo)) and args(courseTypeInfo)"
+				arg-names="courseTypeInfo"/>
 			<aop:after-returning
 				method="deleteCourseTypeIndex"
 				pointcut="execution(* org..CourseTypeServiceBase.removeCourseType(java.lang.Long)) and args(courseTypeId)"
 				arg-names="courseTypeId"/>
+		</aop:aspect>
+		
+		<aop:aspect id="departmentIndexAspect" ref="departmentIndexAspectBean">
+			<aop:after-returning
+				method="createDepartmentIndex" 
+				pointcut="execution(* org..DepartmentServiceBase.create(org.openuss.lecture.DepartmentInfo, java.lang.Long)) and args(departmentInfo, userId)"
+				arg-names="departmentInfo, userId"/>
+			<aop:after-returning
+				method="updateDepartmentIndex"
+				pointcut="execution(* org..DepartmentServiceBase.update(org.openuss.lecture.DepartmentInfo)) and args(departmentInfo)"
+				arg-names="departmentInfo"/>
+			<aop:after-returning
+				method="deleteDepartmentIndex"
+				pointcut="execution(* org..DepartmentServiceBase.removeDepartment(java.lang.Long)) and args(departmentId)"
+				arg-names="departmentId"/>
 		</aop:aspect>
 		
 		<aop:aspect id="courseIndexAspect" ref="courseIndexAspectBean">
@@ -68,6 +83,10 @@
 	
 	<bean id="mailingStatusAspectBean" class="org.openuss.newsletter.MailingStatusAspect">
 		<property name="mailDao" ref="mailDao"/>
+	</bean>
+	
+	<bean id="departmentIndexAspectBean" class="org.openuss.lecture.DepartmentIndexingAspect">
+		<property name="indexerService" ref="indexerService"/>
 	</bean>
 	
 	<bean id="instituteIndexAspectBean" class="org.openuss.lecture.InstituteIndexingAspect">

@@ -5,9 +5,10 @@ import org.apache.log4j.Logger;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
 
-/**
+/** Aspect for the indexing of courses.
  * 
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 public class CourseIndexingAspect {
 
@@ -75,7 +76,4 @@ public class CourseIndexingAspect {
 	public void setCourseDao(CourseDao courseDao) {
 		this.courseDao = courseDao;
 	}
-	
-	
-
 }
