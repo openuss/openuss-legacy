@@ -210,6 +210,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		logger.info("----> END access to findDepartmentsByUniversity(Department) test");
 	}
 	
+	@SuppressWarnings( { "unchecked" })
 	public void testFindDepartmentsByUniversityAndEnabled() {
 		logger.info("----> BEGIN access to findDepartmentsByUniversityAndEnabled test");
 		
@@ -239,5 +240,117 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		assertEquals(1, departmentsDisabled.size());
 		
 		logger.info("----> END access to findDepartmentsByUniversityAndEnabled test");
+	}
+	
+	public void testFindApplication() {
+		logger.info("----> BEGIN access to findApplication test");
+
+		// Create Application
+		Application application = this.getTestUtility().createUniqueApplicationInDB();
+		
+		// Synchronize with Database
+		flush();
+		
+		ApplicationInfo applicationInfo = this.getDepartmentService().findApplication(application.getId());
+		assertNotNull(applicationInfo);
+		assertEquals(application.getId(), applicationInfo.getId());
+		
+		logger.info("----> END access to findApplication test");
+	}
+	
+	public void testSignoffInstitute() {
+		logger.info("----> BEGIN access to signoffInstitute test");
+
+		// Create Application
+		Application application = this.getTestUtility().createUniqueApplicationInDB();
+		User user = this.getTestUtility().createUniqueUserInDB();
+		Long applicationId = application.getId();
+		
+		Department department = application.getDepartment();
+		Institute institute = application.getInstitute();
+		
+		// Accept Application
+		this.getDepartmentService().acceptApplication(application.getId(), user.getId());
+		
+		// Synchronize with Database
+		flush();
+		
+		assertTrue(application.getConfirmed());
+		assertTrue(department.getInstitutes().contains(institute));
+		
+		// Signoff Institute
+		assertNotNull(institute.getApplication());
+		this.getDepartmentService().signoffInstitute(institute.getId());
+		
+		// Synchronize with Database
+		flush();
+
+		// Test
+		assertTrue(!department.getInstitutes().contains(institute));
+		ApplicationDao applicationDao = (ApplicationDao) this.getApplicationContext().getBean("applicationDao");
+		Application application2 = applicationDao.load(applicationId);
+		assertNull(application2);
+		
+		logger.info("----> END access to signoffInstitute test");
+	}
+	
+	public void testRejectApplication() {
+		logger.info("----> BEGIN access to rejectApplication test");
+
+		// Create Application
+		Application application = this.getTestUtility().createUniqueApplicationInDB();
+		Long applicationId = application.getId();
+		
+		// Synchronize with Database
+		flush();
+		
+		Department department = application.getDepartment();
+		Institute institute = application.getInstitute();
+		
+		assertTrue(!application.getConfirmed());
+		assertTrue(!department.getInstitutes().contains(institute));
+		
+		// Reject Application
+		this.getDepartmentService().rejectApplication(application.getId());
+		
+		// Synchronize with Database
+		flush();
+
+		// Test
+		assertTrue(!department.getInstitutes().contains(institute));
+		ApplicationDao applicationDao = (ApplicationDao) this.getApplicationContext().getBean("applicationDao");
+		Application application2 = applicationDao.load(applicationId);
+		assertNull(application2);
+		
+		logger.info("----> END access to rejectApplication test");
+	}
+	
+	public void testAcceptApplication() {
+		logger.info("----> BEGIN access to acceptApplication test");
+
+		// Create Application and User
+		Application application = this.getTestUtility().createUniqueApplicationInDB();
+		User user = this.getTestUtility().createUniqueUserInDB();
+		
+		// Synchronize with Database
+		flush();
+		
+		Department department = application.getDepartment();
+		Institute institute = application.getInstitute();
+		
+		assertTrue(!application.getConfirmed());
+		assertTrue(!department.getInstitutes().contains(institute));
+		
+		// Accept Application
+		this.getDepartmentService().acceptApplication(application.getId(), user.getId());
+		
+		// Synchronize with Database
+		flush();
+
+		// Test
+		assertTrue(application.getConfirmed());
+		assertTrue(department.getInstitutes().contains(institute));
+		
+		logger.info("----> END access to acceptApplication test");
 	}
 }

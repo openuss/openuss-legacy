@@ -18,7 +18,7 @@ import org.openuss.security.Membership;
  * @see org.openuss.lecture.InstituteService
  */
 public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBase {
-	
+
 	private static final Logger logger = Logger.getLogger(InstituteServiceImpl.class);
 
 	/**
@@ -27,11 +27,13 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	protected java.lang.Long handleCreate(InstituteInfo instituteInfo, Long userId) throws java.lang.Exception {
 
 		logger.debug("Starting method handleCreate");
-		
+
 		Validate.notNull(instituteInfo, "InstituteService.handleCreate - the Institute cannot be null");
 		Validate.notNull(userId, "InstituteService.handleCreate - the User must have a valid ID");
 		Validate.isTrue(instituteInfo.getId() == null,
 				"InstituteService.handleCreate - the Institute shouldn't have an ID yet");
+		Validate.isTrue(instituteInfo.getDepartmentId() == null,
+				"InstituteService.handleCreate - You cannot set the DepartmentID, you must apply first");
 
 		// Transform ValueObject into Entity
 		Institute institute = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
@@ -76,7 +78,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	 * @see org.openuss.lecture.InstituteService#update(org.openuss.lecture.InstituteInfo)
 	 */
 	protected void handleUpdate(org.openuss.lecture.InstituteInfo instituteInfo) throws java.lang.Exception {
-		
+
 		logger.debug("Starting method handleUpdate");
 
 		Validate.notNull(instituteInfo, "InstituteService.handleUpdate - the Institute cannot be null");
@@ -87,14 +89,14 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 
 		// Update Entity
 		this.getInstituteDao().update(institute);
-	
+
 	}
 
 	/**
 	 * @see org.openuss.lecture.InstituteService#removeInstitute(java.lang.Long)
 	 */
 	protected void handleRemoveInstitute(java.lang.Long instituteId) throws java.lang.Exception {
-		
+
 		logger.debug("Starting method handleRemoveInstitute");
 
 		Validate.notNull(instituteId, "InstituteService.handleRemoveInstitute - the InstituteID cannot be null");
@@ -185,7 +187,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	@Override
 	protected void handleRemoveUnconfirmedApplication(Long applicationId) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

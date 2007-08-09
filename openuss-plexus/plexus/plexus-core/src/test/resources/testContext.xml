@@ -62,6 +62,9 @@
 		<property name="courseTypeDao">
 			<ref bean="courseTypeDao" />
 		</property>
+		<property name="applicationDao">
+			<ref bean="applicationDao" />
+		</property>
 		<property name="courseDao">
 			<ref bean="courseDao" />
 		</property>

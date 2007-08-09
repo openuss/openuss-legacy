@@ -7,14 +7,24 @@ package org.openuss.lecture;
 
 /**
  * @see org.openuss.lecture.Application
+ * @author Ron Haus
  */
-public class ApplicationImpl
-    extends org.openuss.lecture.ApplicationBase
-	implements org.openuss.lecture.Application
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = -3892436410768766673L;
+public class ApplicationImpl extends org.openuss.lecture.ApplicationBase implements org.openuss.lecture.Application {
 
+	/**
+	 * The serial version UID of this class. Needed for serialization.
+	 */
+	private static final long serialVersionUID = -3892436410768766673L;
+
+	@Override
+	public void add(Department department) {
+		this.setDepartment(department);
+		department.getApplication().add(this);
+	}
+
+	@Override
+	public void add(Institute institute) {
+		this.setInstitute(institute);
+		institute.setApplication(this);
+	}
 }

@@ -8,8 +8,9 @@
 		Aspect Configuration
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<aop:config>
-	
+	<!--
 		<aop:aspect id="universityIndexAspect" ref="universityIndexAspectBean">
+		 
 			<aop:after-returning
 				method="createUniversityIndex" 
 				pointcut="execution(* org..UniversityServiceBase.create(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)"
@@ -22,6 +23,7 @@
 				method="deleteUniversityIndex"
 				pointcut="execution(* org..UniversityServiceBase.removeUniversity(java.lang.Long)) and args(universityId)"
 				arg-names="universityId"/>
+		
 		</aop:aspect>
 	
 		<aop:aspect id="departmentIndexAspect" ref="departmentIndexAspectBean">
@@ -96,7 +98,7 @@
 				pointcut="execution(* org..MessageJobDaoBase.update(org.openuss.messaging.MessageJob)) and args(messageJob)"
 				arg-names="messageJob"/>
 		</aop:aspect>
-		
+		 -->
 	</aop:config>
 	
 	<bean id="mailingStatusAspectBean" class="org.openuss.newsletter.MailingStatusAspect">

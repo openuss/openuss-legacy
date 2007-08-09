@@ -10,6 +10,8 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
 import org.openuss.lecture.AccessType;
+import org.openuss.lecture.Application;
+import org.openuss.lecture.ApplicationDao;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseType;
@@ -57,6 +59,8 @@ public class TestUtility {
 	private CourseTypeDao courseTypeDao;
 	
 	private CourseDao courseDao;
+	
+	private ApplicationDao applicationDao;
 	
 	private PeriodDao periodDao;
 
@@ -336,6 +340,23 @@ public class TestUtility {
 		return period;
 	}
 
+	public Application createUniqueApplicationInDB () {
+		// Create a complete Application
+		Application application = Application.Factory.newInstance();
+		application.setApplicationDate(new Date());
+		application.add(this.createUniqueDepartmentInDB());
+		application.add(this.createUniqueInstituteInDB());
+		application.setConfirmed(false);
+		application.setDescription("A unique Application");
+		application.setApplyingUser(this.createUniqueUserInDB());
+		application.setConfirmingUser(this.createUniqueUserInDB());
+		application.setApplicationDate(new Date());
+		application.setConfirmationDate(new Date());
+		applicationDao.create(application);
+		
+		return application;
+	}
+	
 
 	public void removePersistInstituteAndDefaultUser() {
 		instituteDao.remove(defaultInstitute);
@@ -493,6 +514,14 @@ public class TestUtility {
 
 	public CourseDao getCourseDao() {
 		return courseDao;
+	}
+	
+	public ApplicationDao getApplicationDao() {
+		return applicationDao;
+	}
+
+	public void setApplicationDao(ApplicationDao applicationDao) {
+		this.applicationDao = applicationDao;
 	}
 
 	public PeriodDao getPeriodDao() {

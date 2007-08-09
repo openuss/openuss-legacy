@@ -6,11 +6,13 @@
 package org.openuss.lecture;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
+import org.openuss.security.User;
 
 /**
  * @see org.openuss.lecture.DepartmentService
@@ -117,7 +119,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Validate.notNull(university,
 				"DepartmentService.handleFindDepartmentsByUniversity - no University found corresponding to the ID "
 						+ universityId);
-		
+
 		List departmentInfos = new ArrayList();
 		for (Department department : university.getDepartments()) {
 			departmentInfos.add(this.getDepartmentDao().toDepartmentInfo(department));
@@ -144,30 +146,69 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		return this.getDepartmentDao().findByUniversityAndEnabled(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university,
 				enabled);
 	}
-	
 
 	@Override
-	protected void handleAcceptApplication(Long applicationId) throws Exception {
-		// TODO Auto-generated method stub
+	protected void handleAcceptApplication(Long applicationId, Long userId) throws Exception {
+
+		Validate.notNull(applicationId, "DepartmentService.handleAcceptApplication - the applicationId cannot be null");
+
+		Application application = this.getApplicationDao().load(applicationId);
+		Validate.notNull(application,
+				"DepartmentService.handleAcceptApplication - no Application found corresponding to the ID "+applicationId);
+		Validate.isTrue(!application.getConfirmed(),
+				"DepartmentService.handleAcceptApplication - the Application is already confirmed");
 		
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(application,
+		"DepartmentService.handleAcceptApplication - no User found corresponding to the ID "+userId);
+		
+		Department department = application.getDepartment();
+		Institute institute = application.getInstitute();
+		department.add(institute);
+		
+		application.setConfirmationDate(new Date());
+		application.setConfirmingUser(user);		
+		application.setConfirmed(true);
 	}
 
 	@Override
 	protected void handleRejectApplication(Long applicationId) throws Exception {
-		// TODO Auto-generated method stub
 		
+		Validate.notNull(applicationId, "DepartmentService.handleRejectApplication - the applicationId cannot be null");
+
+		Application application = this.getApplicationDao().load(applicationId);
+		Validate.notNull(application,
+				"DepartmentService.handleRejectApplication - no Application found corresponding to the ID "+applicationId);
+		Validate.isTrue(!application.getConfirmed(),
+				"DepartmentService.handleRejectApplication - the Application is already confirmed");
+		
+		this.getApplicationDao().remove(application);
 	}
 
 	@Override
 	protected void handleSignoffInstitute(Long instituteId) throws Exception {
-		// TODO Auto-generated method stub
 		
+		Validate.notNull(instituteId, "DepartmentService.handleSignoffInstitute - the instituteId cannot be null");
+
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute,
+				"DepartmentService.handleSignoffInstitute - no Institute found corresponding to the ID "+instituteId);
+		
+		Department department = institute.getDepartment();
+		Validate.notNull(department,
+				"DepartmentService.handleSignoffInstitute - no Department found corresponding to the Institute");
+		
+		this.getApplicationDao().remove(institute.getApplication());
+		department.remove(institute);
+
 	}
 
 	@Override
 	protected ApplicationInfo handleFindApplication(Long applicationId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+
+		Validate.notNull(applicationId, "DepartmentService.handleFindApplication - the applicationId cannot be null");
+
+		return (ApplicationInfo) this.getApplicationDao().load(ApplicationDao.TRANSFORM_APPLICATIONINFO, applicationId);
 	}
 
 }

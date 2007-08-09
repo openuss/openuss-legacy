@@ -172,7 +172,7 @@ public class DepartmentServiceMock implements DepartmentService {
 		return departments;
 	}
 
-	public void acceptApplication(Long applicationId) {
+	public void acceptApplication(Long applicationId, Long userId) {
 		// TODO Auto-generated method stub
 		
 	}
