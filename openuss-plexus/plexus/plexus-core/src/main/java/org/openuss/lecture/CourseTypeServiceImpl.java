@@ -5,6 +5,8 @@
  */
 package org.openuss.lecture;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -32,19 +34,34 @@ public class CourseTypeServiceImpl
 	@Override
 	protected CourseTypeInfo handleFindCourseType(Long courseTypeId) throws Exception {
 		
-		Validate.notNull(courseTypeId, "CourseTypeServiceImpl - the courseTypeId cannot be null.");
+		Validate.notNull(courseTypeId, "CourseTypeServiceImpl.handleFindCourseType - the courseTypeId cannot be null.");
 		
 		//Load CourseType entity
 		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
-		Validate.notNull(courseType, "CourseTypeServiceImpl - can not find courseType with the corresponfing id "+courseTypeId);
+		Validate.notNull(courseType, "CourseTypeServiceImpl.handleFindCourseType - can not find courseType with the corresponfing id "+courseTypeId);
 		
 		return this.getCourseTypeDao().toCourseTypeInfo(courseType);
 	}
 
+	/**
+	 * @see org.openuss.lecture.CourseTypeService#findCourseTypesByInstitute(java.lang.Long)
+	 */
 	@Override
+	@SuppressWarnings( { "unchecked" })
 	protected List handleFindCourseTypesByInstitute(Long instituteId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Validate.notNull(instituteId, "CourseTypeServiceImpl.handleFindCourseTypesByInstitutes - the instituteId cannot be null.");
+		
+		//Load Institute
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute, "CourseTypeServiceImpl.handleFindCourseTypesByInstitutes - can not find institute with corresponding id "+instituteId);
+		
+		List courseTypeInfos = new ArrayList();
+		for (CourseType courseType : institute.getCourseTypes()) {
+			courseTypeInfos.add(this.getCourseTypeDao().toCourseTypeInfo(courseType));
+		}
+
+		return courseTypeInfos;
 	}
 
 	@Override

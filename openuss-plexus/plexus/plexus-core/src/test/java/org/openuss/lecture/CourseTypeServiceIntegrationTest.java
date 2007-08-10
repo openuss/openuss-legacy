@@ -5,6 +5,8 @@
  */
 package org.openuss.lecture;
 
+import java.util.List;
+
 import org.openuss.TestUtility;
 
 /**
@@ -65,6 +67,43 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 		assertEquals(courseType.getShortcut(), courseTypeInfo.getShortcut());
 		
 		logger.info("----> END access to findCourseType test");
+	}
+	
+	public void testFindCourseTypesByInstitute () {
+		logger.info("----> BEGIN access to findCourseTypesByInstitute test");
+		
+		//Create Institutes
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		Institute institute2 = testUtility.createUniqueInstituteInDB();
+		
+		//Create CourseTypes
+		CourseType courseType1 = testUtility.createUniqueCourseTypeInDB();
+		courseType1.setInstitute(institute1);
+		
+		CourseType courseType2 = testUtility.createUniqueCourseTypeInDB();
+		courseType2.setInstitute(institute2);
+		
+		CourseType courseType3 = testUtility.createUniqueCourseTypeInDB();
+		courseType3.setInstitute(institute1);
+		
+		CourseType courseType4 = testUtility.createUniqueCourseTypeInDB();
+		courseType4.setInstitute(institute2);
+		
+		CourseType courseType5 = testUtility.createUniqueCourseTypeInDB();
+		courseType5.setInstitute(institute1);
+		
+		flush();
+		
+		//Test
+		List<CourseTypeInfo> foundCourseTypes = this.getCourseTypeService().findCourseTypesByInstitute(institute1.getId());
+		assertNotNull(foundCourseTypes);
+		assertEquals(3, foundCourseTypes.size());
+		
+		foundCourseTypes = this.getCourseTypeService().findCourseTypesByInstitute(institute2.getId());
+		assertNotNull(foundCourseTypes);
+		assertEquals(2, foundCourseTypes.size());
+		
+		logger.info("----> END access to findCourseTypesByInstitutes test");
 	}
 	
 	public TestUtility getTestUtility() {
