@@ -106,4 +106,9 @@ public class InstituteServiceMock implements InstituteService {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public List findInstitutesByEnabled (Boolean enabledOnly) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
