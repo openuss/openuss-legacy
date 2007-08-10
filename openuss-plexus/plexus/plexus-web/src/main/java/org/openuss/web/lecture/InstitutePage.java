@@ -1,12 +1,13 @@
 package org.openuss.web.lecture;
 
+import static org.openuss.web.lecture.AbstractLecturePage.logger;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import javax.faces.event.ValueChangeEvent;
 
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -18,6 +19,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.Period;
+import org.openuss.lecture.PeriodInfo;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
 import org.openuss.web.Constants;
@@ -25,12 +27,12 @@ import org.openuss.web.Constants;
 /**
  * @author Ingo Dueppe
  * @author Sebastian Roekens
+ * @author Malte Stockmann
+ * @author Kai Stettner
  */
 @View
 @Bean(name = "views$secured$lecture$institute", scope = Scope.REQUEST)
 public class InstitutePage extends AbstractLecturePage {
-
-	private static final Logger logger = Logger.getLogger(InstitutePage.class);
 
 	private static final long serialVersionUID = -1982354759705300093L;
 
@@ -50,15 +52,30 @@ public class InstitutePage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
-		if (period == null && institute != null || institute != null && !institute.getDepartment().getUniversity().getPeriods().contains(period)) {
-			period = institute.getDepartment().getUniversity().getActivePeriod();
-			if (period == null && institute.getDepartment().getUniversity().getPeriods().size() > 0) {
-				period = institute.getDepartment().getUniversity().getPeriods().get(0);
+		
+		List periods = null;
+		Long universityId = 0l;
+		Long departmentId = 0l;
+		
+		if (instituteInfo != null) {
+			departmentId = instituteInfo.getDepartmentId();
+			departmentInfo = departmentService.findDepartment(departmentId);
+			universityId = departmentInfo.getUniversityId();
+			universityService.findActivePeriodByUniversity(universityId);
+			periods = universityService.findPeriodsByUniversity(universityId);
+		} 
+		
+		
+		if (periodInfo == null && instituteInfo != null || instituteInfo != null && !periods.contains(period)) {
+			periodInfo = universityService.findActivePeriodByUniversity(universityId);
+			if (periodInfo == null && periods.size() > 0) {
+				periodInfo = (PeriodInfo)periods.get(0);
 			}
 		} else {
-			period = lectureService.getPeriod(period.getId());
+			//periodInfo = lectureService.getPeriod(period.getId());
+			
 		}
-		setSessionBean(Constants.PERIOD, period);
+		setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		//breadcrumbs shall not be displayed here
 		crumbs.clear();
 	}

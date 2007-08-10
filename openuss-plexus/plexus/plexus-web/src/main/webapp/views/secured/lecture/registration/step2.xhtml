@@ -29,19 +29,19 @@
  					<p class="content_font_normal">
 	 					<h:outputText value="#{msg.institute_registration_step2_confirm_text}" escape="false"/><br/>
 						<h:outputFormat value="#{msg.institute_registration_step2_confirm_email}" escape="false">
-							<f:param value="#{institute.email}" />
+							<f:param value="#{instituteInfo.email}" />
 						</h:outputFormat>
 					</p>
 					<p class="content_font_normal">
-		    			<f:param name="institute" value="#{institute.id}"/>
-					 	<h:outputText value="#{institute.name}" styleClass="header_font_normal"/>
-						<h:outputText value="#{institute.address}" styleClass="content_font_normal"/>
-						<h:outputText value="#{institute.postcode} #{institute.city}" styleClass="content_font_normal"/>
-						<h:outputFormat value="#{msg.institute_information_telephone}" rendered="#{!empty institute.telephone}" styleClass="content_font_normal">
-							<f:param value="#{institute.telephone}" styleClass="content_font_normal"/>
+		    			<f:param name="instituteInfo" value="#{instituteInfo.id}"/>
+					 	<h:outputText value="#{instituteInfo.name}" styleClass="header_font_normal"/>
+						<h:outputText value="#{instituteInfo.address}" styleClass="content_font_normal"/>
+						<h:outputText value="#{instituteInfo.postcode} #{instituteInfo.city}" styleClass="content_font_normal"/>
+						<h:outputFormat value="#{msg.institute_information_telephone}" rendered="#{!empty instituteInfo.telephone}" styleClass="content_font_normal">
+							<f:param value="#{instituteInfo.telephone}" styleClass="content_font_normal"/>
 						</h:outputFormat>
-						<h:outputFormat value="#{msg.institute_information_telefax}" rendered="#{!empty institute.telefax}" styleClass="content_font_normal">
-							<f:param value="#{institute.telefax}" />
+						<h:outputFormat value="#{msg.institute_information_telefax}" rendered="#{!empty instituteInfo.telefax}" styleClass="content_font_normal">
+							<f:param value="#{instituteInfo.telefax}" />
 						</h:outputFormat>
 					</p>
 				</o:block>

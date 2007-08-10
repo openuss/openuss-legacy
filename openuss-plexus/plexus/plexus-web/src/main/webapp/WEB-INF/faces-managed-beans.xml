@@ -59,6 +59,30 @@
  		<managed-bean-class>org.openuss.lecture.InstituteImpl</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>periodInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.PeriodInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>departmentInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.DepartmentInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>universityInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.UniversityInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>instituteInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.InstituteInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
 
  	<managed-bean>
  		<managed-bean-name>course</managed-bean-name>

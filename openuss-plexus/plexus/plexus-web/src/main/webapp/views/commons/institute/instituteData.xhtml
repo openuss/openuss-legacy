@@ -7,29 +7,29 @@
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols">
       
-	<o:input entity="institute" property="name" maxlength="250" required="true"/>
-	<o:input entity="institute" property="shortcut" maxlength="30" required="true">
+	<o:input entity="instituteInfo" property="name" maxlength="250" required="true"/>
+	<o:input entity="instituteInfo" property="shortcut" maxlength="30" required="true">
 		<f:validator validatorId="instituteShortcutValidator"/>
 	</o:input>
-	<o:input entity="institute" property="ownername" maxlength="100" required="true"/>
-	<o:input entity="institute" property="email" maxlength="100" required="true">
+	<o:input entity="instituteInfo" property="ownerName" maxlength="100" required="true"/>
+	<o:input entity="instituteInfo" property="email" maxlength="100" required="true">
 		<t:validateEmail/>
 	</o:input>
-	<o:input entity="institute" property="address" maxlength="100"/>
-	<o:input entity="institute" property="postcode" maxlength="50"/>
-	<o:input entity="institute" property="city" maxlength="50"/>
-	<o:input entity="institute" property="land" maxlength="50"/>
-	<o:input entity="institute" property="telephone" maxlength="50"/>
-	<o:input entity="institute" property="telefax" maxlength="50"/>
-	<o:input entity="institute" property="website" maxlength="200"/>
+	<o:input entity="instituteInfo" property="address" maxlength="100"/>
+	<o:input entity="instituteInfo" property="postcode" maxlength="50"/>
+	<o:input entity="instituteInfo" property="city" maxlength="50"/>
+	<o:input entity="instituteInfo" property="country" maxlength="50"/>
+	<o:input entity="instituteInfo" property="telephone" maxlength="50"/>
+	<o:input entity="instituteInfo" property="telefax" maxlength="50"/>
+	<o:input entity="instituteInfo" property="website" maxlength="200"/>
 	
 	<h:outputLabel value="#{msg.institute_locale}" for="languageSelect" styleClass="field_label"/>
-	<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{institute.locale}">
+	<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{instituteInfo.locale}">
 	    <f:selectItems value="#{visit.supportedLocaleItems}"/>
 	</h:selectOneListbox>
 	
 	<h:outputLabel value="#{msg.institute_theme}" for="themeSelect" styleClass="field_label"/>
-	<h:selectOneListbox id="themeSelect" size="1" value="#{institute.theme}" styleClass="pulldown" >
+	<h:selectOneListbox id="themeSelect" size="1" value="#{instituteInfo.theme}" styleClass="pulldown" >
 	    <f:selectItems value="#{applicationScope.themeManager.selectableThemes}"/>
 	</h:selectOneListbox>
 </ui:composition>

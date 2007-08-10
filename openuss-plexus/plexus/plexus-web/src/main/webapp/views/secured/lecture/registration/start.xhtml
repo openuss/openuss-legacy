@@ -22,7 +22,7 @@
 	<ui:composition template="/views/layout/dialog.xhtml">
   		<ui:define name="content">
   			<h:form id="registration_form">
-                <t:saveState value="#{institute}" id="instituteState"/>
+                <t:saveState value="#{instituteInfo}" id="instituteState"/>
   				<o:block label="#{msg.institute_registration_start_headline}">
 					<div class="content_font_normal"> 
 						<h:outputText value="#{msg.institute_registration_start_text}" escape="false"/>

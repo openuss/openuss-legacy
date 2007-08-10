@@ -12,11 +12,13 @@ public class Constants {
 	// Session Entity Beans
 	
 	public static final String INSTITUTE = "institute";
+	public static final String INSTITUTE_INFO = "instituteInfo";
 	public static final String COURSE_TYPE = "courseType";
 	public static final String COURSE = "course";
 	public static final String COURSE_INFO = "course_info";
 
 	public static final String PERIOD = "period";
+	public static final String PERIOD_INFO = "periodInfo";
 	public static final String PERIODS = "periods";
 	
 	public static final String USER = "user";
@@ -28,6 +30,7 @@ public class Constants {
 	public static final String UPLOADED_FILE = "LAST_UPLOADED_FILE";
 	
 	// service beans
+	public static final String INSTITUTE_SERVICE = "instituteService";
 	public static final String LECTURE_SERVICE = "lectureService";
 	public static final String SECURITY_SERVICE ="securityService";
 	public static final String ONLINE_STATISTIC_SERVICE = "onlineStatisticService";

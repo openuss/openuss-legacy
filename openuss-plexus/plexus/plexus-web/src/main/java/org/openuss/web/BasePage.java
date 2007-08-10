@@ -8,6 +8,7 @@ import org.apache.shale.tiger.view.Preprocess;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopService;
+import org.openuss.desktop.DesktopService2;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.security.User;
@@ -25,6 +26,9 @@ public abstract class BasePage extends BaseBean {
 	
 	@Property(value = "#{desktopService}")
 	protected DesktopService desktopService;
+	
+	@Property(value = "#{desktopService2}")
+	protected DesktopService2 desktopService2;
 	
 	@Property(value = "#{sessionScope.user}")
 	protected User user;
@@ -69,6 +73,14 @@ public abstract class BasePage extends BaseBean {
 
 	public void setDesktopService(DesktopService desktopService) {
 		this.desktopService = desktopService;
+	}
+	
+	public DesktopService2 getDesktopService2() {
+		return desktopService2;
+	}
+
+	public void setDesktopService2(DesktopService2 desktopService2) {
+		this.desktopService2 = desktopService2;
 	}
 
 	public User getUser() {
