@@ -31,13 +31,68 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	protected void onSetUp() throws Exception {
 		super.onSetUp();
 
-		LectureBuilder lectureBuilder = createInstituteStructure(AccessType.APPLICATION);
+		//LectureBuilder lectureBuilder = createInstituteStructure(AccessType.APPLICATION);
 		
-		user = testUtility.createUserInDB();
-		Course course = lectureBuilder.getCourse();
+		//user = testUtility.createUserInDB();
+		user = testUtility.createUniqueUserInDB();
+
+		//Course course = lectureBuilder.getCourse();
+		Course course = testUtility.createUniqueCourseInDB();
 		courseInfo = courseService.getCourseInfo(course.getId());
 	}
 
+	public void testCreate () {
+		logger.debug("----> BEGIN access to create test <---- ");
+		
+		//Create CourseType
+		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
+		
+		//Create Period
+		Period period = testUtility.createUniquePeriodInDB();
+		
+		//Synchronize with DB
+		flush();
+		
+		//Create CourseInfo
+		CourseInfo courseInfo = new CourseInfo();
+		courseInfo.setName(testUtility.unique("name"));
+		courseInfo.setShortcut(testUtility.unique("course"));
+		courseInfo.setDescription(testUtility.unique("description"));
+		courseInfo.setPassword(testUtility.unique("password"));
+		courseInfo.setCourseTypeId(courseType.getId());
+		courseInfo.setCourseTypeDescription(courseType.getDescription());
+		courseInfo.setPeriodId(period.getId());
+		courseInfo.setPeriodName(period.getName());
+		courseInfo.setAccessType(AccessType.OPEN);
+		courseInfo.setBraincontest(true);
+		courseInfo.setChat(true);
+		courseInfo.setDiscussion(true);
+		courseInfo.setDocuments(true);
+		courseInfo.setFreestylelearning(true);
+		courseInfo.setNewsletter(true);
+		courseInfo.setWiki(true);
+		
+		//Test
+		Long courseId = this.getCourseService().create(courseInfo);
+		assertNotNull(courseId);
+		
+		CourseDao courseDao = (CourseDao) this.getApplicationContext().getBean("courseDao");
+		Course courseTest = courseDao.load(courseId);
+		assertNotNull(courseTest);
+		assertEquals(courseId, courseTest.getId());
+		assertEquals(courseType.getName(), courseTest.getName());
+		assertEquals(courseInfo.getDescription(), courseTest.getDescription());
+		assertEquals(courseInfo.getShortcut(), courseTest.getShortcut());
+		assertEquals(courseInfo.getPassword(), courseTest.getPassword());
+		assertEquals(courseInfo.getAccessType(), courseTest.getAccessType());
+		assertEquals(courseInfo.getCourseTypeDescription(), courseTest.getCourseType().getDescription());
+		assertEquals(courseInfo.getCourseTypeId(), courseTest.getCourseType().getId());
+		assertEquals(courseInfo.getPeriodId(), courseTest.getPeriod().getId());
+		assertEquals(courseInfo.getPeriodName(), courseTest.getPeriod().getName());
+		
+		logger.debug("----> END access to create test <---- ");
+	}
+	
 	public void testAspirantToParticipant() {
 
 		courseService.applyUser(courseInfo, user);

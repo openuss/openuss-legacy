@@ -24,9 +24,20 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	
 	private static final Logger logger = Logger.getLogger(CourseServiceImpl.class);
 
+	/**
+	 * @see org.openuss.lecture.CourseService#create(org.openuss.lecture.CourseInfo)
+	 */
 	public Long handleCreate (CourseInfo courseInfo) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		//TODO: Security
+		
+		Validate.notNull(courseInfo, "CourseServiceImpl.handleCreate - courseInfo cannot be null.");
+		
+		//Transform VO to entity
+		Course course = this.getCourseDao().courseInfoToEntity(courseInfo);
+		Validate.notNull(course, "CourseServiceImpl.handleCreate - cannot transform courseInfo to entity.");
+		
+		return this.getCourseDao().create(course).getId();
 	}
 	
 	public void handleRemoveCourse (Long courseId) {
