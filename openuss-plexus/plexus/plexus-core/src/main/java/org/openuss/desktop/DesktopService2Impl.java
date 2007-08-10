@@ -302,7 +302,7 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 	 * @see org.openuss.desktop.DesktopService2#unlinkAllFromInstitue(java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleUnlinkAllFromInstitue(java.lang.Long instituteId) throws java.lang.Exception {
+	protected void handleUnlinkAllFromInstitute(java.lang.Long instituteId) throws java.lang.Exception {
 		
 		Validate.notNull(instituteId, "DesktopService2.handleUnlinkAllFromInstitue - instituteId cannot be null!");
 		Institute institute = this.getInstituteDao().load(instituteId);
