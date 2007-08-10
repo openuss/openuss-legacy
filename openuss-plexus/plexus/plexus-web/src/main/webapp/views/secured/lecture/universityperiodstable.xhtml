@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+     <plexus:dataTable 
+     	id="periods" 
+     	label="#{msg.period_header}"  
+     	value="views$public$institute$institutes.institutes" 
+     	var="period" 
+     	columnClasses="col_max_left, col_min_center, col_commands_two"
+     	rows="5">  
+
+		<t:column>
+			<plexus:commandSortHeader columnName="name">#{msg.period_colheader_name}</plexus:commandSortHeader> 
+			
+		</t:column>
+		
+		<t:column>
+			
+			
+			<h:graphicImage 
+				value="/images/icons/active.gif" 
+				title="#{msg.period_command_active_hint}" 
+				alt="#{msg.period_command_active}" 
+				/>
+		</t:column>
+		
+		<t:column header="#{msg.commands_header}">
+			<h:commandButton 
+				action="university_period_edit"
+				styleClass="button_edit"
+				value="#{msg.period_command_edit}"
+				hint="#{msg.period_command_edit_hint}">
+			</h:commandButton>
+			<h:commandButton
+				action="university_period_remove"
+				styleClass="button_remove"
+				value="#{msg.period_command_remove}"
+				hint="#{msg.period_command_remove_hint}">
+			</h:commandButton>
+		</t:column>
+	</plexus:dataTable>
+</ui:composition>
