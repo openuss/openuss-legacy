@@ -31,8 +31,14 @@ public class CourseTypeServiceImpl
 
 	@Override
 	protected CourseTypeInfo handleFindCourseType(Long courseTypeId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Validate.notNull(courseTypeId, "CourseTypeServiceImpl - the courseTypeId cannot be null.");
+		
+		//Load CourseType entity
+		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
+		Validate.notNull(courseType, "CourseTypeServiceImpl - can not find courseType with the corresponfing id "+courseTypeId);
+		
+		return this.getCourseTypeDao().toCourseTypeInfo(courseType);
 	}
 
 	@Override

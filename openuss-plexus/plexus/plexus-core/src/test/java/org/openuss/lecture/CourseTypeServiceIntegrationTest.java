@@ -17,6 +17,7 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 	private TestUtility testUtility;
 	
 	public void testCreateCourseType () {
+		logger.info("----> BEGIN access to createCourseType test");
 		
 		//Create Institute
 		Institute institute = testUtility.createUniqueInstituteInDB();
@@ -42,9 +43,30 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 		assertEquals(courseTypeInfo.getName(), courseType.getName());
 		assertEquals(courseTypeInfo.getShortcut(), courseType.getShortcut());
 		assertEquals(courseTypeInfo.getDescription(), courseType.getDescription());
-
+		
+		logger.info("----> END access to createCourseType test");
 	}
 
+	public void testFindCourseType () {
+		logger.info("----> BEGIN access to findCourseType test");
+		
+		//Create CourseType
+		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
+		flush();
+		assertNotNull(courseType.getId());
+		
+		//Test
+		CourseTypeInfo courseTypeInfo = this.getCourseTypeService().findCourseType(courseType.getId());
+		assertNotNull(courseTypeInfo);
+		assertEquals(courseType.getName(), courseTypeInfo.getName());
+		assertEquals(courseType.getDescription(), courseTypeInfo.getDescription());
+		assertEquals(courseType.getId(), courseTypeInfo.getId());
+		assertEquals(courseType.getInstitute().getId(), courseTypeInfo.getInstituteId());
+		assertEquals(courseType.getShortcut(), courseTypeInfo.getShortcut());
+		
+		logger.info("----> END access to findCourseType test");
+	}
+	
 	public TestUtility getTestUtility() {
 		return testUtility;
 	}
