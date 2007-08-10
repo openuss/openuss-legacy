@@ -43,6 +43,11 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		return null;
 	}
 	
+	public boolean handleIsNoneExistingCourseShortcut (CourseInfo self, String shortcut) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	/**
 	 * @see org.openuss.lecture.CourseService#getAssistants(org.openuss.lecture.Course)
 	 */

@@ -189,5 +189,11 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public boolean handleIsNoneExistingInstituteShortcut(InstituteInfo self, String shortcut) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

@@ -6,10 +6,11 @@
 package org.openuss.lecture;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * @see org.openuss.lecture.CourseTypeService
@@ -19,6 +20,8 @@ public class CourseTypeServiceImpl
     extends org.openuss.lecture.CourseTypeServiceBase
 {
 
+	private static final Logger logger = Logger.getLogger(CourseTypeServiceImpl.class);
+	
 	@Override
 	protected Long handleCreate(CourseTypeInfo courseTypeInfo) throws Exception {
 		
@@ -66,7 +69,18 @@ public class CourseTypeServiceImpl
 
 	@Override
 	protected void handleRemoveCourseType(Long courseTypeId) throws Exception {
-		// TODO Auto-generated method stub
+
+		Validate.notNull(courseTypeId, "CourseTypeServiceImpl.handleRemoveCourseType - the courseTypeId cannot be null.");
+		
+		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
+		Validate.notNull(courseType, "CourseTypeServiceImpl.handleRemoveCourseType - cannot fin CourseType to the corresponding courseTypeId "+courseTypeId);
+		
+		// fire course delete
+		for (Course course : courseType.getCourses()) {
+			fireRemovingCourse(course);
+		}
+		fireRemovingCourseType(courseType);
+		this.getCourseTypeDao().remove(courseTypeId);
 		
 	}
 
@@ -74,6 +88,66 @@ public class CourseTypeServiceImpl
 	protected void handleUpdate(CourseTypeInfo courseTypeInfo) throws Exception {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public boolean handleIsNoneExistingCourseTypeShortcut(CourseTypeInfo self, String shortcut) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public boolean handleIsNoneExistingCourseTypeName(CourseTypeInfo self, String name) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	/*------------------- private methods -------------------- */
+
+	private Set<LectureListener> listeners;
+
+	protected void handleUnregisterListener(LectureListener listener) throws Exception {
+		if (listeners != null) {
+			listeners.remove(listener);
+		}
+	}
+
+	// FIXME use event handler instead
+
+	private void fireRemovingCourse(Course course) throws LectureException {
+		if (listeners != null) {
+			logger.debug("fire removing course event");
+			for (LectureListener listener : listeners) {
+				listener.removingCourse(course);
+			}
+		}
+	}
+
+	private void fireRemovingCourseType(CourseType courseType) throws LectureException {
+		if (listeners != null) {
+			logger.debug("fire removing courseType event");
+			for (LectureListener listener : listeners) {
+				listener.removingCourseType(courseType);
+			}
+		}
+	}
+
+	private void fireRemovingInstitute(Institute institute) throws LectureException {
+		if (listeners != null) {
+			logger.debug("fire removing institute event");
+			for (LectureListener listener : listeners) {
+				listener.removingInstitute(institute);
+			}
+		}
+	}
+
+	private void fireCreatedInstitute(Institute institute) throws LectureException {
+		if (listeners != null) {
+			logger.debug("fire created institute event");
+			for (LectureListener listener : listeners) {
+				listener.createdInstitute(institute);
+			}
+		}
 	}
 
 }
