@@ -82,8 +82,8 @@ public class InstitutesPage extends BasePage{
 			if (logger.isDebugEnabled()) {
 				logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+institutes.getSortColumn());
 			}
+	
 			List<InstituteInfo> instituteList = new ArrayList<InstituteInfo>(getLectureService().getInstitutes(true));
-			
 			sort(instituteList);
 			dataPage = new DataPage<InstituteInfo>(instituteList.size(),0,instituteList);
 
