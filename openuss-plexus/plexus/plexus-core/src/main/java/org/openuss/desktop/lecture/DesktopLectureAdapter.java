@@ -1,9 +1,9 @@
 package org.openuss.desktop.lecture;
 
 import org.apache.log4j.Logger;
+import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopException;
-import org.openuss.desktop.DesktopInfo;
-import org.openuss.desktop.DesktopService2;
+import org.openuss.desktop.DesktopService;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseType;
@@ -25,7 +25,7 @@ public class DesktopLectureAdapter implements LectureListener{
 
 	private static final Logger logger = Logger.getLogger(DesktopLectureAdapter.class);
 	
-	private DesktopService2 desktopService;
+	private DesktopService desktopService;
 	
 	private LectureService lectureService;
 	
@@ -38,7 +38,7 @@ public class DesktopLectureAdapter implements LectureListener{
 			throw new IllegalStateException("desktopService property must not be null!");
 		}
 		try {
-			desktopService.unlinkAllFromCourse(course.getId());
+			desktopService.unlinkAllFromCourse(course);
 		} catch (DesktopException e) {
 			throw new LectureException("Desktop Lecture Adapter couldn't unlink course", e);
 		}
@@ -49,7 +49,7 @@ public class DesktopLectureAdapter implements LectureListener{
 			throw new IllegalStateException("desktopService property must not be null!");
 		}
 		try {
-			desktopService.unlinkAllFromInstitute(institute.getId());
+			desktopService.unlinkAllFromInstitute(institute);
 		} catch (DesktopException e) {
 			throw new LectureException("Desktop Lecture Adapter couldn't unlink institute", e);
 		}
@@ -61,18 +61,18 @@ public class DesktopLectureAdapter implements LectureListener{
 			throw new IllegalStateException("desktopService property must not be null!");
 		}
 		try {
-			desktopService.unlinkAllFromCourseType(courseType.getId());
+			desktopService.unlinkAllFromCourseType(courseType);
 		} catch (DesktopException e) {
 			throw new LectureException("Desktop Lecture Adapter couldn't unlink courseType",e);
 		}
 		
 	}
 
-	public DesktopService2 getDesktopService() {
+	public DesktopService getDesktopService() {
 		return desktopService;
 	}
 	
-	public void setDesktopService(DesktopService2 desktopService) {
+	public void setDesktopService(DesktopService desktopService) {
 		this.desktopService = desktopService;
 	}
 	
@@ -127,8 +127,8 @@ public class DesktopLectureAdapter implements LectureListener{
 	public void createdInstitute(Institute institute) throws LectureException {
 		try {
 			User user = (User) institute.getMembership().getMembers().get(0);
-			DesktopInfo desktopInfo = desktopService.findDesktopByUser(user.getId());
-			desktopService.linkInstitute(desktopInfo.getId(), institute.getId());
+			Desktop desktop = desktopService.getDesktopByUser(user);
+			desktopService.linkInstitute(desktop, institute);
 		} catch (DesktopException e) {
 			logger.error("Desktop adapter couldn't create new institute link on user desktop",e);
 			throw new LectureException(e);
