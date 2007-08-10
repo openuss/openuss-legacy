@@ -75,18 +75,27 @@ public class CourseTypeServiceImpl
 		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
 		Validate.notNull(courseType, "CourseTypeServiceImpl.handleRemoveCourseType - cannot fin CourseType to the corresponding courseTypeId "+courseTypeId);
 		
-		// fire course delete
+		// Fire course delete - all courses of courseType are deleted before
 		for (Course course : courseType.getCourses()) {
 			fireRemovingCourse(course);
 		}
 		fireRemovingCourseType(courseType);
+		
 		this.getCourseTypeDao().remove(courseTypeId);
 		
 	}
 
 	@Override
 	protected void handleUpdate(CourseTypeInfo courseTypeInfo) throws Exception {
-		// TODO Auto-generated method stub
+
+		Validate.notNull(courseTypeInfo, "CourseTypeServiceImpl.handleUpdate - courseTypeInfo cannot be null.");
+		Validate.notNull(courseTypeInfo.getId(), "CourseTypeServiceImpl.handleUpdate - the courseTypeInfoId cannot be null.");
+		
+		//Transform VO to entity
+		CourseType courseType = this.getCourseTypeDao().courseTypeInfoToEntity(courseTypeInfo);
+		
+		//TODO: Should it be able to set new institute of courseType???
+		this.getCourseTypeDao().update(courseType);
 		
 	}
 	

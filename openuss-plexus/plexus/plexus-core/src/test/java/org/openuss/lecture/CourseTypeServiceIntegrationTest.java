@@ -79,18 +79,23 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 		//Create CourseTypes
 		CourseType courseType1 = testUtility.createUniqueCourseTypeInDB();
 		courseType1.setInstitute(institute1);
+		institute1.getCourseTypes().add(courseType1);
 		
 		CourseType courseType2 = testUtility.createUniqueCourseTypeInDB();
 		courseType2.setInstitute(institute2);
+		institute2.getCourseTypes().add(courseType2);
 		
 		CourseType courseType3 = testUtility.createUniqueCourseTypeInDB();
 		courseType3.setInstitute(institute1);
+		institute1.getCourseTypes().add(courseType3);
 		
 		CourseType courseType4 = testUtility.createUniqueCourseTypeInDB();
 		courseType4.setInstitute(institute2);
+		institute2.getCourseTypes().add(courseType4);
 		
 		CourseType courseType5 = testUtility.createUniqueCourseTypeInDB();
 		courseType5.setInstitute(institute1);
+		institute1.getCourseTypes().add(courseType5);
 		
 		flush();
 		
@@ -104,6 +109,75 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 		assertEquals(2, foundCourseTypes.size());
 		
 		logger.info("----> END access to findCourseTypesByInstitutes test");
+	}
+	
+	public void testRemoveCourseType () {
+		logger.info("----> BEGIN access to removeCourseType test");
+		
+		//Create Courses
+		Course course1 = testUtility.createUniqueCourseInDB();
+		Course course2 = testUtility.createUniqueCourseInDB();
+		Course course3 = testUtility.createUniqueCourseInDB();
+		
+		//Create CourseType
+		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
+		courseType.getCourses().add(course1);
+		courseType.getCourses().add(course2);
+		courseType.getCourses().add(course3);
+	
+		flush();
+		
+		//Test
+		assertNotNull(courseType.getId());
+		this.getCourseTypeService().removeCourseType(courseType.getId());
+		
+		CourseTypeDao courseTypeDao = (CourseTypeDao) this.getApplicationContext().getBean("courseTypeDao");
+		CourseType courseTypeTest = courseTypeDao.load(courseType.getId());
+		assertNull(courseTypeTest);
+		
+		CourseDao courseDao = (CourseDao) this.getApplicationContext().getBean("courseDao");
+		Course courseTest1 = courseDao.load(course1.getId());
+		assertNull(courseTest1);
+		
+		Course courseTest2 = courseDao.load(course2.getId());
+		assertNull(courseTest2);
+		
+		Course courseTest3 = courseDao.load(course3.getId());
+		assertNull(courseTest3);
+		
+		logger.info("----> END access to removeCourseType test");
+	}
+	
+	public void testUpdateCourseType () {
+		logger.info("----> BEGIN access to updateCourseType test");
+		
+		//Create CourseType
+		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
+		flush();
+		
+		//Test
+		assertNotNull(courseType);
+		CourseTypeInfo courseTypeInfo = this.getCourseTypeService().findCourseType(courseType.getId());
+		assertNotNull(courseTypeInfo);
+		
+		courseTypeInfo.setName(testUtility.unique("name"));
+		courseTypeInfo.setDescription(testUtility.unique("description"));
+		courseTypeInfo.setShortcut(testUtility.unique("shortcut"));
+		courseTypeInfo.setInstituteId(testUtility.createUniqueInstituteInDB().getId());
+		
+		this.getCourseTypeService().update(courseTypeInfo);
+		flush();
+		
+		CourseTypeDao courseTypeDao = (CourseTypeDao) this.getApplicationContext().getBean("courseTypeDao");
+		CourseType courseTypeTest = courseTypeDao.load(courseTypeInfo.getId());
+		assertNotNull(courseTypeTest);
+		assertEquals(courseTypeInfo.getId(), courseTypeTest.getId());
+		assertEquals(courseTypeInfo.getName(), courseTypeTest.getName());
+		assertEquals(courseTypeInfo.getDescription(), courseTypeTest.getDescription());
+		assertEquals(courseTypeInfo.getShortcut(), courseTypeTest.getShortcut());
+		assertEquals(courseTypeInfo.getInstituteId(), courseTypeTest.getInstitute().getId());
+		
+		logger.info("----> END access to updateCourseType test");
 	}
 	
 	public TestUtility getTestUtility() {
