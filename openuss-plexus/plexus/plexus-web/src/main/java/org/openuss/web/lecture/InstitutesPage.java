@@ -1,5 +1,7 @@
 package org.openuss.web.lecture;
 
+import static org.openuss.web.lecture.InstitutesPage.logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,14 +11,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
-import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -25,13 +28,14 @@ import org.openuss.web.Constants;
  * 
  * @author Ingo Dueppe
  * @author Sebastian Roekens
+ * @author Kai Stettner
  *
  */
 @Bean(name = "views$public$institute$institutes", scope = Scope.REQUEST)
 @View
 public class InstitutesPage extends BasePage{
 
-	private static final Logger logger = Logger.getLogger(InstitutesPage.class);
+	protected static final Logger logger = Logger.getLogger(InstitutesPage.class);
 
 	private static final long serialVersionUID = 5069935782478432045L;
 	
@@ -39,7 +43,7 @@ public class InstitutesPage extends BasePage{
 	
 	@Property(value = "#{lectureService}")
 	private LectureService lectureService;
-	
+		
 	@Prerender
 	public void prerender() throws Exception {
 		crumbs.clear();
@@ -79,11 +83,15 @@ public class InstitutesPage extends BasePage{
 				logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+institutes.getSortColumn());
 			}
 			List<InstituteInfo> instituteList = new ArrayList<InstituteInfo>(getLectureService().getInstitutes(true));
+			
 			sort(instituteList);
 			dataPage = new DataPage<InstituteInfo>(instituteList.size(),0,instituteList);
-	}
+
+		}
 		return dataPage;
 	}
+	
+	
 
 	private void sort(List<InstituteInfo> instituteList) {
 		if (StringUtils.equals("shortcut", institutes.getSortColumn())) {
@@ -102,23 +110,22 @@ public class InstitutesPage extends BasePage{
 	private class InstituteTable extends AbstractPagedTable<InstituteInfo> {
 
 		private static final long serialVersionUID = -6072435481342714879L;
-
+	
 		@Override
 		public DataPage<InstituteInfo> getDataPage(int startRow, int pageSize) {
-			return getDataPage(startRow, pageSize);
+			logger.debug("Starting method getDataPage");
+			return fetchDataPage(startRow, pageSize);
 		}
-		
 	}
-	
+
 	public LectureService getLectureService() {
 		return lectureService;
 	}
-	
+
 	public void setLectureService(LectureService lectureService) {
 		this.lectureService = lectureService;
 	}
 
-	
 	/* ----------- institute sorting comparators -------------*/
 	
 	private class NameComparator implements Comparator<InstituteInfo> {
@@ -149,7 +156,5 @@ public class InstitutesPage extends BasePage{
 				return f2.getShortcut().compareToIgnoreCase(f1.getShortcut());
 			}
 		}
-	}
-
-	
+	}	
 }
