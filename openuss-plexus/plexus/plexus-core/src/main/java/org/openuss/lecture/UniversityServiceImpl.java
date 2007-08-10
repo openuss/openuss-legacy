@@ -209,5 +209,12 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		return this.getUniversityDao().findByEnabled(UniversityDao.TRANSFORM_UNIVERSITYINFO, enabled);
 	}
 	
-	
+	/**
+	 * @see org.openuss.lecture.UniversityService#findUniversitiesByType(UniversityType type)
+	 */
+	@SuppressWarnings( { "unchecked" })
+	protected List handleFindUniversitiesByType(UniversityType type) throws Exception {
+		//TODO: Implement me!
+		throw new UnsupportedOperationException("Operation is not implemented yet.");
+	}
 }
