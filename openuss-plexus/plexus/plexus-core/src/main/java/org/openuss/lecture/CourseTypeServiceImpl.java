@@ -6,6 +6,7 @@
 package org.openuss.lecture;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -123,6 +124,14 @@ public class CourseTypeServiceImpl
 
 	private Set<LectureListener> listeners;
 
+	@Override
+	protected void handleRegisterListener(LectureListener listener) throws Exception {
+		if (listeners == null) {
+			listeners = new HashSet<LectureListener>();
+		}
+		listeners.add(listener);
+	}
+	
 	protected void handleUnregisterListener(LectureListener listener) throws Exception {
 		if (listeners != null) {
 			listeners.remove(listener);

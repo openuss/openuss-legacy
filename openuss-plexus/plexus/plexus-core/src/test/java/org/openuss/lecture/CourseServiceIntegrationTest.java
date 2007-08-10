@@ -8,6 +8,8 @@ package org.openuss.lecture;
 import java.util.Collection;
 import java.util.List;
 
+import org.openuss.desktop.Desktop;
+import org.openuss.desktop.DesktopDao;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
@@ -91,6 +93,45 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		assertEquals(courseInfo.getPeriodName(), courseTest.getPeriod().getName());
 		
 		logger.debug("----> END access to create test <---- ");
+	}
+	
+	public void testRemoveCourse () {
+		logger.debug("----> BEGIN access to removeCourse test <---- ");
+		
+		//Create User
+		User user = testUtility.createUniqueUserInDB();
+		
+		//Create Courses
+		Course course1 = testUtility.createUniqueCourseInDB();
+		Course course2 = testUtility.createUniqueCourseInDB();
+		
+		//Create desktop
+		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		Desktop desktop = Desktop.Factory.newInstance();
+		desktop.setUser(user);
+		desktopDao.create(desktop);
+		
+		
+		//Link
+		desktop.getCourses().add(course1);
+		desktop.getCourses().add(course2);
+		
+		//Synchronize with DB
+		flush();
+		
+		//Test
+		CourseDao courseDao = (CourseDao) this.getApplicationContext().getBean("courseDao");
+		Course courseTest = courseDao.load(course1.getId());
+		assertNotNull(courseTest);
+		assertEquals(2, desktop.getCourses().size());
+		
+		this.getCourseService().removeCourse(course1.getId());
+		courseTest = courseDao.load(course1.getId());
+		assertNull(courseTest);
+		desktop = desktopDao.load(desktop.getId());
+		assertEquals(1, desktop.getCourses().size());
+		
+		logger.debug("----> END access to removeCourse test <---- ");
 	}
 	
 	public void testAspirantToParticipant() {

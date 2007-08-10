@@ -7,9 +7,11 @@ package org.openuss.lecture;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -27,6 +29,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#create(org.openuss.lecture.CourseInfo)
 	 */
+	@Override
 	public Long handleCreate (CourseInfo courseInfo) {
 		
 		//TODO: Security
@@ -40,8 +43,22 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		return this.getCourseDao().create(course).getId();
 	}
 	
-	public void handleRemoveCourse (Long courseId) {
-		// TODO Auto-generated method stub
+	/**
+	 * @see org.openuss.lecture.CourseService#create(org.openuss.lecture.CourseInfo)
+	 */
+	@Override
+	public void handleRemoveCourse (Long courseId) throws Exception {
+		
+		// TODO: Security
+		
+		Validate.notNull(courseId, "CourseServiceImpl.handleRemoveCourse - courseId cannot be null.");
+		Course course = (Course) this.getCourseDao().load(courseId);
+		Validate.notNull(course, "CourseServiceImpl.handleRemoveCourse - no course entity found with the corresponding courseId "+courseId);
+		
+		fireRemovingCourse(course);
+		
+		// Remove course
+		this.getCourseDao().remove(courseId);
 	}
 	
 	public List handleFindCoursesByCourseType (Long courseTypeId) {
@@ -281,6 +298,87 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		Course course = getCourseDao().courseInfoToEntity(courseInfo);
 		getCourseDao().update(course);
 
+	}
+	
+	
+	/*------------------- private methods -------------------- */
+
+	private Set<LectureListener> listeners;
+
+	@Override
+	protected void handleRegisterListener(LectureListener listener) throws Exception {
+		if (listeners == null) {
+			listeners = new HashSet<LectureListener>();
+		}
+		listeners.add(listener);
+	}
+	
+	protected void handleUnregisterListener(LectureListener listener) throws Exception {
+		if (listeners != null) {
+			listeners.remove(listener);
+		}
+	}
+
+	// FIXME use event handler instead
+
+	private void fireRemovingCourse(Course course) throws LectureException {
+		if (listeners != null) {
+			logger.debug("fire removing course event");
+			for (LectureListener listener : listeners) {
+				listener.removingCourse(course);
+			}
+		}
+	}
+
+	private void fireRemovingCourseType(CourseType courseType) throws LectureException {
+		if (listeners != null) {
+			logger.debug("fire removing courseType event");
+			for (LectureListener listener : listeners) {
+				listener.removingCourseType(courseType);
+			}
+		}
+	}
+
+	private void fireRemovingInstitute(Institute institute) throws LectureException {
+		if (listeners != null) {
+			logger.debug("fire removing institute event");
+			for (LectureListener listener : listeners) {
+				listener.removingInstitute(institute);
+			}
+		}
+	}
+
+	private void fireCreatedInstitute(Institute institute) throws LectureException {
+		if (listeners != null) {
+			logger.debug("fire created institute event");
+			for (LectureListener listener : listeners) {
+				listener.createdInstitute(institute);
+			}
+		}
+	}
+	
+	/**
+	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self entry.
+	 * <ul>
+	 * <li>self == null AND found == null => <b>true</b></li>
+	 * <li>self == null AND found <> null => <b>false</b></li>
+	 * <li>self <> null AND found == null => <b>true</b></li>
+	 * <li>self <> null AND found <> null AND self == found => <b>true</b></li>
+	 * <li>self <> null AND found <> null AND self <> found => <b>false</b></li>
+	 * </ul>
+	 * 
+	 * @param self
+	 *            current record
+	 * @param found
+	 *            in database
+	 * @return true or false
+	 */
+	private boolean isEqualOrNull(Object self, Object found) {
+		if (self == null || found == null) {
+			return found == null;
+		} else {
+			return self.equals(found);
+		}
 	}
 
 }
