@@ -8,6 +8,7 @@ package org.openuss.lecture;
 import java.util.List;
 
 import org.openuss.TestUtility;
+import org.openuss.security.User;
 
 /**
  * JUnit Test for Spring Hibernate CourseTypeService class.
@@ -178,6 +179,68 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 		assertEquals(courseTypeInfo.getInstituteId(), courseTypeTest.getInstitute().getId());
 		
 		logger.info("----> END access to updateCourseType test");
+	}
+	
+	public void testIsNoneExistingCourseTypeShortcut () {
+		logger.debug("----> BEGIN access to isNoneExistingCourseTypeShortcut test <---- ");
+		
+		//Create Secure Context
+		User user = testUtility.createSecureContext();
+		
+		// Create CourseTypes
+		CourseType courseType1= testUtility.createUniqueCourseTypeInDB();
+		CourseType courseType2= testUtility.createUniqueCourseTypeInDB();
+		flush();
+		
+		// Test
+		CourseTypeDao courseTypeDao = (CourseTypeDao) this.getApplicationContext().getBean("courseTypeDao");
+		Boolean result = this.getCourseTypeService().isNoneExistingCourseTypeShortcut(
+				courseTypeDao.toCourseTypeInfo(courseType1), courseType1.getShortcut());
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getCourseTypeService().isNoneExistingCourseTypeShortcut(
+				courseTypeDao.toCourseTypeInfo(courseType1), testUtility.unique("shortcut"));
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getCourseTypeService().isNoneExistingCourseTypeShortcut(
+				courseTypeDao.toCourseTypeInfo(courseType1), courseType2.getShortcut());
+		assertNotNull(result);
+		assertFalse(result);
+		
+		logger.debug("----> END access to isNoneExistingCourseTypeShortcut test <---- ");
+	}
+	
+	public void testIsNoneExistingCourseTypeName () {
+		logger.debug("----> BEGIN access to isNoneExistingCourseTypeName test <---- ");
+		
+		//Create Secure Context
+		User user = testUtility.createSecureContext();
+		
+		// Create CourseTypes
+		CourseType courseType1= testUtility.createUniqueCourseTypeInDB();
+		CourseType courseType2= testUtility.createUniqueCourseTypeInDB();
+		flush();
+		
+		// Test
+		CourseTypeDao courseTypeDao = (CourseTypeDao) this.getApplicationContext().getBean("courseTypeDao");
+		Boolean result = this.getCourseTypeService().isNoneExistingCourseTypeName(
+				courseTypeDao.toCourseTypeInfo(courseType1), courseType1.getName());
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getCourseTypeService().isNoneExistingCourseTypeName(
+				courseTypeDao.toCourseTypeInfo(courseType1), testUtility.unique("name"));
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getCourseTypeService().isNoneExistingCourseTypeName(
+				courseTypeDao.toCourseTypeInfo(courseType1), courseType2.getName());
+		assertNotNull(result);
+		assertFalse(result);
+		
+		logger.debug("----> END access to isNoneExistingCourseTypeName test <---- ");
 	}
 	
 	public TestUtility getTestUtility() {

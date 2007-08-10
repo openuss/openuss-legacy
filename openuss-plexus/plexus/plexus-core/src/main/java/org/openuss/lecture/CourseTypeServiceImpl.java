@@ -101,14 +101,22 @@ public class CourseTypeServiceImpl
 	
 	@Override
 	public boolean handleIsNoneExistingCourseTypeShortcut(CourseTypeInfo self, String shortcut) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		CourseType found = this.getCourseTypeDao().findByShortcut(shortcut);
+		CourseTypeInfo foundInfo = null;
+		if (found != null) {
+			foundInfo = this.getCourseTypeDao().toCourseTypeInfo(found);
+		}
+		return isEqualOrNull(self, foundInfo);
 	}
 	
 	@Override
 	public boolean handleIsNoneExistingCourseTypeName(CourseTypeInfo self, String name) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		CourseType found = getCourseTypeDao().findByName(name);
+		CourseTypeInfo foundInfo = null;
+		if (found != null) {
+			foundInfo = this.getCourseTypeDao().toCourseTypeInfo(found);
+		}
+		return isEqualOrNull(self, foundInfo);
 	}
 	
 	/*------------------- private methods -------------------- */
@@ -156,6 +164,30 @@ public class CourseTypeServiceImpl
 			for (LectureListener listener : listeners) {
 				listener.createdInstitute(institute);
 			}
+		}
+	}
+	
+	/**
+	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self entry.
+	 * <ul>
+	 * <li>self == null AND found == null => <b>true</b></li>
+	 * <li>self == null AND found <> null => <b>false</b></li>
+	 * <li>self <> null AND found == null => <b>true</b></li>
+	 * <li>self <> null AND found <> null AND self == found => <b>true</b></li>
+	 * <li>self <> null AND found <> null AND self <> found => <b>false</b></li>
+	 * </ul>
+	 * 
+	 * @param self
+	 *            current record
+	 * @param found
+	 *            in database
+	 * @return true or false
+	 */
+	private boolean isEqualOrNull(Object self, Object found) {
+		if (self == null || found == null) {
+			return found == null;
+		} else {
+			return self.equals(found);
 		}
 	}
 
