@@ -87,6 +87,11 @@ public class UniversityServiceMock implements UniversityService {
 	public UniversityInfo findUniversity(Long universityId) {
 		return this.getMockUniversities().get(universityId);
 	}
+	
+	public List findUniversitiesByType (UniversityType type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	public void removePeriod(Long periodId) {
 		// TODO Auto-generated method stub

@@ -58,5 +58,19 @@ public class CourseTypeServiceMock implements CourseTypeService {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public boolean isNoneExistingCourseTypeShortcut (CourseTypeInfo self, String shortcut) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
+	public boolean isNoneExistingCourseTypeName (CourseTypeInfo self, String name) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	public void registerListener (LectureListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
 }

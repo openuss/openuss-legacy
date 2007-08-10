@@ -102,4 +102,8 @@ public class InstituteServiceMock implements InstituteService {
 		
 	}
 
+	public boolean isNoneExistingInstituteShortcut (InstituteInfo self, String shortcut) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
