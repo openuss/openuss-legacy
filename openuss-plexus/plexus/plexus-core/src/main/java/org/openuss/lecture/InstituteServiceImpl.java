@@ -180,8 +180,10 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 
 	@Override
 	protected List handleFindInstitutesByEnabled(Boolean enabledOnly) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Validate.notNull(enabledOnly, "InstituteServiceImpl.handleFindInstitutesByEnabled - enabledOnly cannot be null.");
+		
+		return this.getInstituteDao().findByEnabled(enabledOnly);
 	}
 	
 	@Override
