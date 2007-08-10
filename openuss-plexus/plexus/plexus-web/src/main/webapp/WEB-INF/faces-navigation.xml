@@ -120,6 +120,23 @@
 			<from-outcome>extended_search_result</from-outcome>
 			<to-view-id>/views/public/search/extendedsearch.xhtml</to-view-id>
 		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>manage_university</from-outcome>
+			<to-view-id>/views/secured/lecture/universities.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>manage_department</from-outcome>
+			<to-view-id>/views/secured/lecture/university.xhtml</to-view-id>
+		</navigation-case>		
+  
+		
+		<navigation-case>
+			<from-outcome>manage_institute</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentinstitutes.xhtml</to-view-id>
+		</navigation-case>	
+		
 	</navigation-rule>
 	
 	
@@ -231,6 +248,14 @@
 		<navigation-case>
 			<from-outcome>institute_create</from-outcome>
 			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>university_create</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/universityStart.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>department_create</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/departmentStart.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	
@@ -595,6 +620,109 @@
 		</navigation-case>
 
 	</navigation-rule>
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      U n i v e r s i t y  - R e g i s t r a t i o n 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<navigation-rule>
+		<from-view-id>/views/secured/lecture/registration/*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>university_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/universityStart.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_registration_step1</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/universityStep1.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>university_registration_step2</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/universityStep2.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      D e p a r t m e n t  - R e g i s t r a t i o n 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<navigation-rule>
+		<from-view-id>/views/secured/lecture/registration/*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>department_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/departmentStart.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>department_registration_step1</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/departmentStep1.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>department_registration_step2</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/departmentStep2.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      U n i v e r s i t y  - P a g e 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->		
+	<navigation-rule>
+		<from-view-id>/views/secured/lecture/*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>university_command_edit</from-outcome>
+			<to-view-id>/views/secured/lecture/universityoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_periods</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiods.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_period_edit</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiodedit.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_period_remove</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiodremove.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_data</from-outcome>
+			<to-view-id>/views/secured/lecture/universityoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_members</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/universityMembers.xhtml</to-view-id>
+		</navigation-case>
+
+	</navigation-rule>
+ <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+             D e p a r t m e n t  - P a g e 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+    <navigation-rule>
+		<from-view-id>/views/secured/*</from-view-id>	
+		
+		<navigation-case>
+			<from-outcome>department_data</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>department_members</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/departmentMembers.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	
+	
+		
 </faces-config>
 
