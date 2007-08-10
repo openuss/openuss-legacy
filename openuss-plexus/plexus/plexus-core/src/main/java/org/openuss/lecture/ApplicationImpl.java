@@ -17,7 +17,7 @@ public class ApplicationImpl extends org.openuss.lecture.ApplicationBase impleme
 	private static final long serialVersionUID = -3892436410768766673L;
 
 	@Override
-	public void add(Department department) {
+	public void add(Department department) { 
 		this.setDepartment(department);
 		department.getApplication().add(this);
 	}

@@ -128,7 +128,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	protected org.openuss.lecture.InstituteInfo handleFindInstitute(java.lang.Long instituteId)
 			throws java.lang.Exception {
 
-		Validate.notNull(instituteId, "InstituteService.handleFindInstitute - the DepartmentId cannot be null");
+		Validate.notNull(instituteId, "InstituteService.handleFindInstitute - the instituteId cannot be null");
 
 		Institute institute = (Institute) this.getInstituteDao().load(instituteId);
 		Validate.notNull(institute,
@@ -193,7 +193,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	@Override
 	public boolean handleIsNoneExistingInstituteShortcut(InstituteInfo self, String shortcut) throws Exception {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

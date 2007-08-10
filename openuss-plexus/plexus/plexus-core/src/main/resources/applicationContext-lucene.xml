@@ -10,11 +10,29 @@
 	<bean id="domainIndexerFactory"	class="org.openuss.search.DomainIndexerFactory" scope="singleton">
 		<property name="indexer">
 			<map>
+			    <entry>
+					<key>
+						<value>org.openuss.lecture.University</value>
+					</key>
+					<value>universityIndexerCommand</value>
+				</entry>
+			    <entry>
+					<key>
+						<value>org.openuss.lecture.Department</value>
+					</key>
+					<value>departmentIndexerCommand</value>
+				</entry>
 				<entry>
 					<key>
 						<value>org.openuss.lecture.Institute</value>
 					</key>
 					<value>instituteIndexerCommand</value>
+				</entry>
+				<entry>
+					<key>
+						<value>org.openuss.lecture.CourseType</value>
+					</key>
+					<value>courseTypeIndexerCommand</value>
 				</entry>
 				<entry>
 					<key>
@@ -116,8 +134,20 @@
 		</property>
 	</bean>
 	
+	<bean id="universityIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
+		<property name="domainIndexer" ref="universityIndexer"/>
+	</bean>
+	
+	<bean id="departmentIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
+		<property name="domainIndexer" ref="departmentIndexer"/>
+	</bean>
+	
 	<bean id="instituteIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
 		<property name="domainIndexer" ref="instituteIndexer"/>
+	</bean>
+	
+	<bean id="courseTypeIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
+		<property name="domainIndexer" ref="courseTypeIndexer"/>
 	</bean>
 
 	<bean id="courseIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
