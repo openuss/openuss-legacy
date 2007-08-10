@@ -16,6 +16,9 @@
 						<s:authorize ifAllGranted="ROLE_USER">
 							<t:commandNavigation2 value="#{msg['desktop_command_bookmarks']}" activeOnViewIds="/views/secured/desktop/desktop.xhtml" action="desktop"/>
 						</s:authorize>
+						<t:commandNavigation2 value="#{msg['desktop_system_admin']}" action="manage_university" activeOnViewIds="/views/secured/lecture/universities.xhtml"/>
+						<t:commandNavigation2 value="#{msg['desktop_university_admin']}" action="manage_department" activeOnViewIds="/views/secured/lecture/university.xhtml"/>
+						<t:commandNavigation2 value="#{msg['desktop_department_admin']}" action="manage_institute" activeOnViewIds="/views/secured/lecture/departmentinstitutes.xhtml"/>
 						<t:commandNavigation2 value="#{msg['desktop_search_institute']}" action="search_institutes" activeOnViewIds="/views/public/institute/institutes.xhtml"/>
 						<s:authorize ifAllGranted="ROLE_USER">
 							<t:commandNavigation2 value="#{msg['desktop_command_userprofile']}" action="user_logindata" >

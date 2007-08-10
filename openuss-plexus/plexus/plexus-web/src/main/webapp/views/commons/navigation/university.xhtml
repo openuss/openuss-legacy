@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:include src="/views/commons/navigation/desktop.xhtml" />
+	
+		<h:form id="universityNavigationForm">
+			<t:panelNavigation2 id="university_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
+				<t:commandNavigation2 value="#{msg['university_navigation_header']}">
+			
+							<t:commandNavigation2 action="manage_department" activeOnViewIds="/views/secured/lecture/university.xhtml">
+								<h:outputText value="#{msg['university_command_departments']}" ></h:outputText>
+							</t:commandNavigation2>
+							<t:commandNavigation2 action="university_periods" activeOnViewIds="/views/secured/lecture/universityperiods.xhtml">
+								<h:outputText value="#{msg['university_command_periods']}" ></h:outputText>
+							</t:commandNavigation2>
+							<t:commandNavigation2 action="university_data" activeOnViewIds="/views/secured/lecture/universityoptions.xhtml">
+								<h:outputText value="#{msg['university_command_university']}" ></h:outputText>
+							</t:commandNavigation2>
+							<t:commandNavigation2 value="#{msg['university_command_authorisations']}" action="university_members">
+								<t:commandNavigation2 action="university_members" activeOnViewIds="/views/secured/lecture/auth/universityMembers.xhtml">
+									<h:outputText value="#{msg['university_command_members']}" ></h:outputText>
+								</t:commandNavigation2>
+								<t:commandNavigation2 action="university_aspirants" activeOnViewIds="/views/secured/lecture/auth/universityaspirants.xhtml">
+									<h:outputText value="#{msg['university_command_aspirants']}" ></h:outputText>
+								</t:commandNavigation2>
+							</t:commandNavigation2>
+					</t:commandNavigation2>
+			</t:panelNavigation2>	
+		</h:form>
+</ui:composition>
