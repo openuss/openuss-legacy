@@ -12,7 +12,7 @@
 	<plexus:dataTable 
 		id="university" 
 		label="#{msg.universityList_header}"
-		value="views$public$institute$institutes.institutes" 
+		value="views$public$university$universities.universities" 
 		var="bean" 
 		columnClasses="col_max_left, col_max_left, col_min_left, col_min_left"
 		rows="15">
@@ -20,30 +20,31 @@
 			<plexus:commandSortHeader columnName="name">
 				#{msg['university_name']}
 	        </plexus:commandSortHeader>
-
+			<h:outputText value="#{bean.name}"/>
 		</t:column>
 		
 		<t:column>
 			<plexus:commandSortHeader columnName="owner">
 				#{msg['university_ownername']}
 			</plexus:commandSortHeader>
-
+			<h:outputText value="#{bean.ownerName}"/>
 		</t:column>
 
 		<t:column>
 			<plexus:commandSortHeader columnName="shortcut">
 				#{msg['institute_shortcut_header']}
 			</plexus:commandSortHeader>
-	
+			<h:outputText value="#{bean.shortcut}"/>
 		</t:column>
 
 		<s:authorize ifAllGranted="ROLE_USER">
 			<plexus:column header="#{msg.commands_header}">
-			<h:commandButton 
-				styleClass="button_edit"
-				action = "university_command_edit"
-				value="#{msg.university_command_edit}"
-				hint="#{msg.university_command_edit_hint}"/>
+			<plexus:command
+				bean="#{views$public$university$universities}"
+				action = "editUniversity"		
+				label="#{msg.university_command_edit}"
+				title="#{msg.university_command_edit_hint}"
+				styleClass="button_edit"/>
 			
 			<h:commandButton 
 				action = "department_create"
