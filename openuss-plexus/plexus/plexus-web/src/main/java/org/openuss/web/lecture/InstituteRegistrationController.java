@@ -44,6 +44,8 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		logger.debug(instituteInfo.getEmail());
 		Long instituteId = instituteService.create(instituteInfo, user.getId());
 		instituteInfo.setId(instituteId);
+		logger.debug(instituteInfo.getId());
+		logger.debug(user.getId());
 		
 		
 		//TODO send notification email

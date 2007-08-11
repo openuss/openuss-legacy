@@ -18,8 +18,8 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Institute;
+import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.InstituteInfo;
-import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -54,24 +54,37 @@ public class InstitutesPage extends BasePage{
 	 * @return Outcome
 	 */
 	public String selectInstitute() {
-		Institute institute = currentInstitute();
-		setSessionBean(Constants.INSTITUTE, institute);
+		logger.debug("Starting method selectInstitute");
+		InstituteInfo currentInstitute = currentInstitute();
+		logger.debug("Returning to method selectInstitute");
+		logger.debug(currentInstitute.getId());	
+		//setSessionBean(Constants.INSTITUTE, institute);
+		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
+		
 		return Constants.INSTITUTE_PAGE;
 	}
 	
 	public String shortcutInstitute() throws DesktopException {
-		Institute institute = currentInstitute();
-		desktopService.linkInstitute(desktop, institute);
+		logger.debug("Starting method shortcutInstitute");
+		InstituteInfo currentInstitute = currentInstitute();
+		//desktopService.linkInstitute(desktop, currentInstitute);
+		desktopService2.linkInstitute(desktop.getId(), currentInstitute.getId() );
+		
 		addMessage(i18n("message_institute_shortcut_created"));
 		return Constants.SUCCESS;
 	}
 
-	private Institute currentInstitute() {
-		
-		InstituteInfo details = institutes.getRowData();
-		Institute institute = Institute.Factory.newInstance();
-		institute.setId(details.getId());
-		return institute;
+	private InstituteInfo currentInstitute() {
+		logger.debug("Starting method currentInstitute");
+		InstituteInfo instituteDetails = institutes.getRowData();
+		logger.debug(instituteDetails.getName());
+		logger.debug(instituteDetails.getOwnerName());
+		logger.debug(instituteDetails.getId());
+		//Institute institute = Institute.Factory.newInstance();
+		InstituteInfo newInstituteInfo = new InstituteInfo();
+		//institute.setId(details.getId());
+		newInstituteInfo.setId(instituteDetails.getId());
+		return newInstituteInfo;
 	}
 	
 	private DataPage<InstituteInfo> dataPage;

@@ -53,7 +53,9 @@ public class InstitutePage extends AbstractLecturePage {
 	public void prerender() throws LectureException {
 		super.prerender();
 		
-		List periods = null;
+		// temporär auskommentiert
+		// KStettner 11.08.07
+		/*List periods = null;
 		Long universityId = 0l;
 		Long departmentId = 0l;
 		
@@ -75,7 +77,7 @@ public class InstitutePage extends AbstractLecturePage {
 			//periodInfo = lectureService.getPeriod(period.getId());
 			
 		}
-		setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		setSessionBean(Constants.PERIOD_INFO, periodInfo);*/
 		//breadcrumbs shall not be displayed here
 		crumbs.clear();
 	}

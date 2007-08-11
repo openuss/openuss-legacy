@@ -45,16 +45,42 @@ public class InstitutesPage extends BasePage{
 	}
 	
 	public String selectInstitute() {
-		Institute institute = currentInstitute();
+		// alter code
+		/*Institute institute = currentInstitute();
 		setSessionBean(Constants.INSTITUTE, institute);
+		return Constants.INSTITUTE_PAGE;*/
+		
+		//neuer code
+		logger.debug("Starting method selectInstitute");
+		InstituteInfo currentInstitute = currentInstitute();
+		logger.debug("Returning to method selectInstitute");
+		logger.debug(currentInstitute.getId());	
+		//setSessionBean(Constants.INSTITUTE, institute);
+		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
+		
 		return Constants.INSTITUTE_PAGE;
+		
+		
 	}
-	
-	private Institute currentInstitute() {
-		InstituteInfo details = provider.getRowData();
+	// neu: zu instituteInfo geschwitcht
+	private InstituteInfo currentInstitute() {
+		//alter code
+		/*InstituteInfo details = provider.getRowData();
 		Institute institute = Institute.Factory.newInstance();
 		institute.setId(details.getId());
-		return institute;
+		return institute;*/
+		
+		//neuer code
+		logger.debug("Starting method currentInstitute");
+		InstituteInfo instituteDetails = provider.getRowData();
+		logger.debug(instituteDetails.getName());
+		logger.debug(instituteDetails.getOwnerName());
+		logger.debug(instituteDetails.getId());
+		//Institute institute = Institute.Factory.newInstance();
+		InstituteInfo newInstituteInfo = new InstituteInfo();
+		//institute.setId(details.getId());
+		newInstituteInfo.setId(instituteDetails.getId());
+		return newInstituteInfo;
 	}
 	
 	public void changedInstitute(ValueChangeEvent event) throws LectureException {

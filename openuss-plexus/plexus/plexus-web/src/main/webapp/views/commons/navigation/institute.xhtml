@@ -10,34 +10,34 @@
 	<ui:include src="/views/commons/institute/instituteInfo.xhtml" />
 	
 	<ui:include src="/views/commons/navigation/desktop.xhtml" />
-	<s:acl domainObject="#{institute}" hasPermission="#{ACL.INSTITUTE_TUTOR}">
+	<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.INSTITUTE_TUTOR}">
 		<h:form id="instituteNavigationForm">
 			<t:panelNavigation2 id="institute_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
 				<t:commandNavigation2 value="#{msg['institute_navigation_header']}">
 					<t:commandNavigation2 action="institute" activeOnViewIds="/views/secured/lecture/institute.xhtml" >
 						<h:outputText value="#{msg['institute_command_main']}" ></h:outputText>
 					</t:commandNavigation2>
-						<s:acl domainObject="#{institute}" hasPermission="#{ACL.MANAGE_NEWS}">
+						<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_NEWS}">
 							<t:commandNavigation2 action="institute_news" activeOnViewIds="/views/secured/lecture/news.xhtml">
 								<h:outputText value="#{msg['institute_command_news']}" ></h:outputText>
 							</t:commandNavigation2>
 						</s:acl>
-						<s:acl domainObject="#{institute}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}">
+						<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}">
 							<t:commandNavigation2 action="institute_coursetypes" activeOnViewIds="/views/secured/lecture/coursetypes.xhtml">
 								<h:outputText value="#{msg['institute_command_coursetypes']}" ></h:outputText>
 							</t:commandNavigation2>
 						</s:acl>
-						<s:acl domainObject="#{institute}" hasPermission="#{ACL.MANAGE_PERIODS}">
+						<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_PERIODS}">
 							<t:commandNavigation2 action="institute_periods" activeOnViewIds="/views/secured/lecture/periods.xhtml,/views/secured/lecture/periodedit.xhtml,/views/secured/lecture/periodremove.xhtml">
 								<h:outputText value="#{msg['institute_command_periods']}" ></h:outputText>
 							</t:commandNavigation2>
 						</s:acl>
-						<s:acl domainObject="#{institute}" hasPermission="#{ACL.GRANT}">
+						<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.GRANT}">
 							<t:commandNavigation2 action="institute_data" activeOnViewIds="/views/secured/lecture/instituteoptions.xhtml">
 								<h:outputText value="#{msg['institute_command_institute']}" ></h:outputText>
 							</t:commandNavigation2>
 						</s:acl>
-						<s:acl domainObject="#{institute}" hasPermission="#{ACL.GRANT}">
+						<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.GRANT}">
 							<t:commandNavigation2 value="#{msg['institute_command_authorisations']}" action="institute_members">
 								<t:commandNavigation2 action="institute_members" activeOnViewIds="/views/secured/lecture/auth/members.xhtml">
 									<h:outputText value="#{msg['institute_command_members']}" ></h:outputText>

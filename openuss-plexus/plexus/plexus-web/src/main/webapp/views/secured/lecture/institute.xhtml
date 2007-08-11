@@ -20,21 +20,24 @@
 	<body>      
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
-		<ui:define name="header">
-			<link type="application/rss+xml" title="RSS-#{institute.name}" rel="alternate" href="../../../rss/public/institute.xml?institute=#{institute.id}"/>
+	<ui:define name="header">
+			<link type="application/rss+xml" title="RSS-#{instituteInfo.name}" rel="alternate" href="../../../rss/public/institute.xml?institute=#{instituteInfo.id}"/>
 		</ui:define>	
   		<ui:define name="title">
   			<h:outputText value="#{msg.institute_maintitle}"/>
   		</ui:define>
+  		
 		<ui:define name="navigation">
 			<ui:include src="/views/commons/navigation/institute.xhtml" />
 		</ui:define>
+			
+ 			
 		<ui:define name="sidebar"> 		
 			<ui:include src="/views/commons/sidebar/instituteoptions.xhtml" />
 			<ui:include src="/views/commons/sidebar/feeds/institutefeed.xhtml" />
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
-		</ui:define>	
-  		<ui:define name="content">
+		</ui:define>
+		<ui:define name="content">
   			<ui:include src="/views/commons/sidebar/instituteactivation.xhtml" />
   			<h:form id="instituteMainForm">
 				<o:block>
@@ -46,7 +49,7 @@
 						onchange="this.form.submit();"
 						immediate="true" 
 						styleClass="pulldown_inline">
-						<t:selectItems value="#{institute.periods}" var="period" itemLabel="#{period.name}" itemValue="#{period.id}"/>
+						<!-- <t:selectItems value="#{instituteInfo.periods}" var="period" itemLabel="#{period.name}" itemValue="#{period.id}"/>  --> 
 					</h:selectOneMenu>
 				</o:block>
 				
@@ -57,8 +60,8 @@
 			     	value="views$secured$lecture$institute.courseData" 
 			     	columnClasses="col_max_left, col_commands"
 					styleClass="table"
-			     	rows="10"
-			     	rendered="${!empty institute.periods}">       
+			     	rows="10">
+			     	<!--  rendered="${!empty instituteInfo.periods}">    -->   
 				       
 					<t:column>
 						<plexus:commandSortHeader columnName="courseType.name">
