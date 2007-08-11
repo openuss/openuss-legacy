@@ -38,7 +38,7 @@
 		<ui:define name="content">
   			<ui:include src="/views/commons/sidebar/instituteactivation.xhtml" />
   			<h:form id="instituteMainForm">
-				<o:block>
+  				<o:block>
 					<h:outputText value="#{msg.institute_period_selection}" styleClass="header_font_normal"/>
 					<h:selectOneMenu id="periodSelection" 
 						layout="pageDirection"  
@@ -47,11 +47,11 @@
 						onchange="this.form.submit();"
 						immediate="true" 
 						styleClass="pulldown_inline">
-						<!-- <t:selectItems value="#{instituteInfo.periods}" var="period" itemLabel="#{period.name}" itemValue="#{period.id}"/>  --> 
+	
 					</h:selectOneMenu>
 				</o:block>
 				
-			    <plexus:dataTable 
+				<plexus:dataTable 
 			     	id="courses" 
 			     	var="course" 
 			     	label="#{period.name}"
@@ -59,7 +59,7 @@
 			     	columnClasses="col_max_left, col_commands"
 					styleClass="table"
 			     	rows="10">
-			     	<!--  rendered="${!empty instituteInfo.periods}">    -->   
+			  
 				       
 					<t:column>
 						<plexus:commandSortHeader columnName="courseType.name">
@@ -83,9 +83,15 @@
 						</plexus:column>
 					</s:authorize>
 				</plexus:dataTable>
-			</h:form>
-		<br/>
-	  	<plexus:newsTable value="#{views$secured$lecture$institute.currentNewsItems}" headline="${msg.news_header}"/>
+  			
+  			
+  			</h:form>
+  			
+  			<br/>
+	  		<plexus:newsTable value="#{views$secured$lecture$institute.currentNewsItems}" headline="${msg.news_header}"/>
+				
+			
+			
   		</ui:define>
   		
 	</ui:composition>
