@@ -23,6 +23,7 @@ public class UniversityServiceMock implements UniversityService {
 		return null;
 	}
 
+	@SuppressWarnings( { "unchecked" })
 	public List findAllUniversities() {
 		Map<Long, UniversityInfo> universities = this.getMockUniversities();
 		UniversityInfo tempUniversity;
@@ -38,10 +39,17 @@ public class UniversityServiceMock implements UniversityService {
 		return result;
 	}
 
+	@SuppressWarnings( { "unchecked" })
+	public java.util.List findUniversitiesByUser(Long userId) {
+		//TODO: Implement me!
+		return null;
+	}
+	
 	public PeriodInfo findPeriod(Long periodId) {
 		return this.getMockPeriods().get(periodId);
 	}
 
+	@SuppressWarnings( { "unchecked" })
 	public List findPeriodsByUniversity(Long universityId) {
 		Map<Long, PeriodInfo> allPeriods = this.getMockPeriods();
 		List periodInfos = new ArrayList(); 
@@ -67,6 +75,7 @@ public class UniversityServiceMock implements UniversityService {
 		return periodInfos;
 	}
 
+	@SuppressWarnings( { "unchecked" })
 	public List findUniversitiesByEnabled(Boolean enabled) {
 		Map<Long, UniversityInfo> universities = this.getMockUniversities();
 		UniversityInfo tempUniversity;
@@ -88,6 +97,7 @@ public class UniversityServiceMock implements UniversityService {
 		return this.getMockUniversities().get(universityId);
 	}
 	
+	@SuppressWarnings( { "unchecked" })
 	public List findUniversitiesByType (UniversityType type) {
 		// TODO Auto-generated method stub
 		return null;

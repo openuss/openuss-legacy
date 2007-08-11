@@ -148,6 +148,15 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		
 		return universityInfos;
 	}
+	
+	/**
+	 * @see org.openuss.lecture.UniversityService#findUniversitiesByUser()
+	 */
+	@SuppressWarnings( { "unchecked" })
+	protected java.util.List handleFindUniversitiesByUser(Long userId) throws java.lang.Exception {
+		//TODO: Implement me!
+		return null;
+	}
 
 	/**
 	 * @see org.openuss.lecture.UniversityService#findPeriod(java.lang.Long)
