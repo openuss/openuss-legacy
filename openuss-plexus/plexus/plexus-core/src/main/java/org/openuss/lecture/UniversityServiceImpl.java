@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
@@ -49,11 +50,11 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		groupItem.setName("UNIVERSITY_"+universityEntity.getId()+"_ADMINS");
 		groupItem.setLabel("autogroup_administrator_label");
 		groupItem.setGroupType(GroupType.ADMINISTRATOR);
-		Long groupId = this.getOrganisationService().createGroup(universityEntity.getId(), groupItem);
+		Group admins = this.getOrganisationService().createGroup(universityEntity.getId(), groupItem);
 		
 		//Add Owner to Members and Group of Administrators
 		this.getOrganisationService().addMember(universityEntity.getId(), userId);
-		this.getOrganisationService().addUserToGroup(userId, groupId);
+		this.getOrganisationService().addUserToGroup(userId, admins.getId());
 		
 		return universityEntity.getId();
 	}

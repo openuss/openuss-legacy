@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
+import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.User;
@@ -25,7 +26,6 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	 */
 	protected java.lang.Long handleCreate(org.openuss.lecture.DepartmentInfo department, java.lang.Long userId)
 			throws java.lang.Exception {
-		// TODO: Security
 
 		Validate.notNull(department, "DepartmentService.handleCreate - the Department cannot be null");
 		Validate.notNull(userId, "DepartmentService.handleCreate - the User must have a valid ID");
@@ -45,11 +45,14 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		groupItem.setName("DEPARTMENT_" + department.getId() + "_ADMINS");
 		groupItem.setLabel("autogroup_administrator_label");
 		groupItem.setGroupType(GroupType.ADMINISTRATOR);
-		Long groupId = this.getOrganisationService().createGroup(departmentEntity.getId(), groupItem);
+		Group admins = this.getOrganisationService().createGroup(departmentEntity.getId(), groupItem);
 
+		// TODO: Security
+		
+		
 		// Add Owner to Members and Group of Administrators
 		this.getOrganisationService().addMember(departmentEntity.getId(), userId);
-		this.getOrganisationService().addUserToGroup(userId, groupId);
+		this.getOrganisationService().addUserToGroup(userId, admins.getId());
 
 		return departmentEntity.getId();
 

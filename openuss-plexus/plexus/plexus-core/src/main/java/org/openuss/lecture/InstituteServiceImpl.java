@@ -10,9 +10,11 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
+import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @see org.openuss.lecture.InstituteService
@@ -34,15 +36,15 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				"InstituteService.handleCreate - the Institute shouldn't have an ID yet");
 		Validate.isTrue(instituteInfo.getDepartmentId() == null,
 				"InstituteService.handleCreate - You cannot set the DepartmentID, you must apply first");
-
+		
 		// Transform ValueObject into Entity
 		Institute institute = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
-
+		
 		// Create a default Membership for the University
 		Membership membership = Membership.Factory.newInstance();
 		institute.setMembership(membership);
 
-		// Create the University
+		// Create the Institute
 		this.getInstituteDao().create(institute);
 		Validate.notNull(institute.getId(), "InstituteService.handleCreate - Couldn't create Institute");
 
@@ -51,25 +53,32 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		admins.setName("INSTITUTE_" + institute.getId() + "_ADMINS");
 		admins.setLabel("autogroup_administrator_label");
 		admins.setGroupType(GroupType.ADMINISTRATOR);
-		Long adminsId = this.getOrganisationService().createGroup(institute.getId(), admins);
+		Group adminsGroup = this.getOrganisationService().createGroup(institute.getId(), admins);
 
 		GroupItem assistants = new GroupItem();
 		assistants.setName("INSTITUTE_" + institute.getId() + "_ASSISTANTS");
 		assistants.setLabel("autogroup_assistant_label");
 		assistants.setGroupType(GroupType.ASSISTANT);
-		this.getOrganisationService().createGroup(institute.getId(), assistants);
+		Group assistantsGroup = this.getOrganisationService().createGroup(institute.getId(), assistants);
 
 		GroupItem tutors = new GroupItem();
 		tutors.setName("INSTITUTE_" + institute.getId() + "_TUTORS");
 		tutors.setLabel("autogroup_tutor_label");
 		tutors.setGroupType(GroupType.TUTOR);
-		this.getOrganisationService().createGroup(institute.getId(), tutors);
+		Group tutorsGroup = this.getOrganisationService().createGroup(institute.getId(), tutors);
 
 		// TODO Set Security for Groups
+		// Create Object Identity
+		this.getSecurityService().createObjectIdentity(institute, null);
+		
+		// Add permissions -> ACL Entry for each group
+		this.getSecurityService().setPermissions(adminsGroup, institute, LectureAclEntry.INSTITUTE_ADMINISTRATION);
+		this.getSecurityService().setPermissions(assistantsGroup, institute, LectureAclEntry.INSTITUTE_ASSIST);
+		this.getSecurityService().setPermissions(tutorsGroup, institute, LectureAclEntry.INSTITUTE_TUTOR);
 
 		// Add Owner to Members and Group of Administrators
 		this.getOrganisationService().addMember(institute.getId(), userId);
-		this.getOrganisationService().addUserToGroup(userId, adminsId);
+		this.getOrganisationService().addUserToGroup(userId, adminsGroup.getId());
 
 		return institute.getId();
 	}

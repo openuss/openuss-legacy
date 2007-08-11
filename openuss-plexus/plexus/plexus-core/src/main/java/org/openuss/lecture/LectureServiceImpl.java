@@ -144,12 +144,17 @@ public class LectureServiceImpl extends LectureServiceBase {
 		throw new UnsupportedOperationException("This method is deprecated!");
 
 		/*
-		 * // define the security SecurityService securityService = getSecurityService(); // create object identity
-		 * securityService.createObjectIdentity(institute, null); // create system defined groups for institute Group
-		 * admins = securityService.createGroup( "INSTITUTE_" + institute.getId() + "_ADMINS",
-		 * "autogroup_administrator_label", null, GroupType.ADMINISTRATOR); Group assistants =
+		 * // define the security SecurityService 
+		 * securityService = getSecurityService();
+		 * // create object identity
+		 * securityService.createObjectIdentity(institute, null); 
+		 * // create system defined groups for institute 
+		 * Group admins = securityService.createGroup( "INSTITUTE_" + institute.getId() + "_ADMINS",
+		 * "autogroup_administrator_label", null, GroupType.ADMINISTRATOR); 
+		 * Group assistants =
 		 * securityService.createGroup( "INSTITUTE_" + institute.getId() + "_ASSISTANTS", "autogroup_assistant_label",
-		 * null, GroupType.ASSISTANT); Group tutors = securityService.createGroup( "INSTITUTE_" + institute.getId() +
+		 * null, GroupType.ASSISTANT); 
+		 * Group tutors = securityService.createGroup( "INSTITUTE_" + institute.getId() +
 		 * "_TUTORS", "autogroup_tutor_label", null,GroupType.TUTOR);
 		 * 
 		 * securityService.addAuthorityToGroup(institute.getOwner(), admins);

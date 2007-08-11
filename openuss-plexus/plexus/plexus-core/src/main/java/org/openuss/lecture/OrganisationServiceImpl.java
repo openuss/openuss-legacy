@@ -121,7 +121,7 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 	/**
 	 * @see org.openuss.lecture.OrganisationService#createGroup(java.lang.Long, org.openuss.security.GroupItem)
 	 */
-	protected java.lang.Long handleCreateGroup(java.lang.Long organisationId, org.openuss.security.GroupItem groupItem)
+	protected Group handleCreateGroup(java.lang.Long organisationId, org.openuss.security.GroupItem groupItem)
 			throws java.lang.Exception {
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		Validate
@@ -129,7 +129,7 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 						"MembershipService.handleCreateGroup - no Organisation found corresponding to the ID "
 								+ organisationId);
 
-		return this.getMembershipService().createGroup(organisation.getMembership(), groupItem).getId();
+		return this.getMembershipService().createGroup(organisation.getMembership(), groupItem);
 	}
 
 	/**
