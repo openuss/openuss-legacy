@@ -12,7 +12,7 @@
     xmlns:x="http://myfaces.apache.org/extensions">
 	
 	<s:authorize ifAllGranted="ROLE_USER">
-		<s:acl domainObject="#{institute}" hasNotPermission="#{ACL.INSTITUTE_TUTOR}">
+		<s:acl domainObject="#{instituteInfo}" hasNotPermission="#{ACL.INSTITUTE_TUTOR}">
 			<h:form>
 				<o:block label="#{msg.options}" styleClass="option_box">
 					<ul class="int">
