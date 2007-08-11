@@ -13,6 +13,7 @@ import org.apache.commons.lang.Validate;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
+import org.openuss.security.User;
 
 /**
  * @see org.openuss.lecture.UniversityService
@@ -154,8 +155,25 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 */
 	@SuppressWarnings( { "unchecked" })
 	protected java.util.List handleFindUniversitiesByUser(Long userId) throws java.lang.Exception {
-		//TODO: Implement me!
-		return null;
+
+		Validate.notNull(userId, "UniversityServiceImpl.findUniversitiesByUser - userId cannot be null.");
+		
+		// Load user
+		User user = this.getUserDao().load(userId);
+		
+		//Load all universities
+		Collection<University> universities = this.getUniversityDao().loadAll();
+		
+		//Get universities of user
+		List universityInfos = new ArrayList();
+		for(University university : universities) {
+			if (university.getMembership().getMembers().contains(user) &&
+					university.getOwnerName().equals(user.getName())) {
+				universityInfos.add(this.getUniversityDao().toUniversityInfo(university));
+			}
+		}
+		
+		return universityInfos;
 	}
 
 	/**

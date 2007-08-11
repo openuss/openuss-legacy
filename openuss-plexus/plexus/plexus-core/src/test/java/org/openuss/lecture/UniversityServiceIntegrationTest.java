@@ -369,4 +369,34 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		
 		logger.info("----> END access to findActivePeriodByUniversity test");
 	}
+	
+	public void testFindUniversitiesByUser () {
+		logger.info("----> BEGIN access to findUniversitiesByUser test");
+		
+		//Create User
+		User user = testUtility.createUniqueUserInDB();
+		
+		//Create Universities
+		University university1 = testUtility.createUniqueUniversityInDB();
+		university1.getMembership().getMembers().add(user);
+		university1.setOwnerName(user.getName());
+		
+		University university2 = testUtility.createUniqueUniversityInDB();
+		
+		University university3 = testUtility.createUniqueUniversityInDB();
+		university3.getMembership().getMembers().add(user);
+		university3.setOwnerName(user.getName());
+		
+		flush();
+		
+		//Test
+		List<UniversityInfo> universitiesByUser = this.getUniversityService().findUniversitiesByUser(user.getId());
+		assertNotNull(universitiesByUser);
+		assertEquals(2, universitiesByUser.size());
+		assertEquals(university1.getName(), universitiesByUser.get(0).getName());
+		assertEquals(university3.getName(), universitiesByUser.get(1).getName());
+		
+		logger.info("----> END access to findUniversitiesByUser test");
+	}
+	
 }
