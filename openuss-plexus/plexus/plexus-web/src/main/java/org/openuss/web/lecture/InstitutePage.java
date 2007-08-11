@@ -83,7 +83,7 @@ public class InstitutePage extends AbstractLecturePage {
 	}
 
 	/**
-	 * Value Change Listener to swithc password input text on and off.
+	 * Value Change Listener to switch password input text on and off.
 	 * 
 	 * @param event
 	 */

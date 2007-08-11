@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
@@ -21,11 +22,13 @@ import org.openuss.security.User;
  */
 public class UniversityServiceImpl extends org.openuss.lecture.UniversityServiceBase {
 
+	private static final Logger logger = Logger.getLogger(UniversityServiceImpl.class);
 	/**
 	 * @see org.openuss.lecture.UniversityService#create(org.openuss.lecture.UniversityInfo, java.lang.Long)
 	 */
 	protected java.lang.Long handleCreate(org.openuss.lecture.UniversityInfo university, java.lang.Long userId) {
 
+		logger.debug("Starting method handleCreate");
 		Validate.notNull(university, "UniversityService.handleCreate - the University cannot be null");
 		Validate.notNull(userId, "UniversityService.handleCreate - the User must have a valid ID");
 		Validate.isTrue(university.getId() == null, "UniversityService.handleCreate - the University shouldn't have an ID yet");

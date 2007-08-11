@@ -1,27 +1,27 @@
 <pages>
 	<page view-id="/views/secured/lecture/*">
-		<parameter name="institute" value="#{institute.id}" converterId="javax.faces.Long"/>
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<page view-id="/views/secured/lecture/auth/*">
-		<securityConstraint domainObject="#{institute}" permissions="#{ACL.GRANT}"/> 
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.GRANT}"/> 
 	</page>
 
 	<page view-id="/views/secured/lecture/news*">
-		<securityConstraint domainObject="#{institute}" permissions="#{ACL.MANAGE_NEWS}"/> 
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_NEWS}"/> 
 	</page>
 
 	<page view-id="/views/secured/lecture/instituteoptions*">
-		<securityConstraint domainObject="#{institute}" permissions="#{ACL.GRANT}"/> 
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.GRANT}"/> 
 	</page>
 	
 	<page view-id="/views/secured/lecture/period*">
-		<securityConstraint domainObject="#{institute}" permissions="#{ACL.MANAGE_PERIODS}"/> 
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_PERIODS}"/> 
 		<parameter name="period" value="#{period.id}" converterId="javax.faces.Long"/>
 	</page>
 
 	<page view-id="/views/secured/lecture/course*">
-		<securityConstraint domainObject="#{institute}" permissions="#{ACL.MANAGE_COURSE_TYPES}"/> 
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_COURSE_TYPES}"/> 
 		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
 	</page>
 	
