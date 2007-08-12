@@ -11,6 +11,7 @@ import org.openuss.web.Constants;
 /**
  * 
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 @Bean(name = "views$secured$lecture$instituteoptions", scope = Scope.REQUEST)
 @View
@@ -39,7 +40,8 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	 * @throws LectureException
 	 */
 	public String saveInstitute() throws LectureException {
-		lectureService.persist(institute);
+		//lectureService.persist(institute);
+		instituteService.update(instituteInfo);
 		addMessage(i18n("institute_message_command_save_succeed"));
 		return Constants.SUCCESS;
 	}

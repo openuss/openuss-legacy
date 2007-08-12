@@ -33,6 +33,7 @@ import org.openuss.web.Constants;
  * Members page to define members of a institute and configure group memberships
  * 
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 @Bean(name = "views$secured$lecture$auth$members", scope = Scope.REQUEST)
 @View
@@ -74,7 +75,7 @@ public class MembersPage extends AbstractLecturePage {
 	private InstituteSecurity getInstituteSecurity() {
 		if (instituteSecurity == null) {
 			logger.debug("fetching institute security informations");
-			instituteSecurity = getLectureService().getInstituteSecurity(institute.getId());
+			instituteSecurity = getLectureService().getInstituteSecurity(instituteInfo.getId());
 			sortMembers(instituteSecurity.getMembers(),members.getSortColumn(),members.isAscending());
 		}
 		return instituteSecurity;
@@ -106,7 +107,7 @@ public class MembersPage extends AbstractLecturePage {
 	public String save() {
 		for(InstituteMember member : changedMembers) {
 			try {
-				getLectureService().setGroupOfMember(member, institute.getId());
+				getLectureService().setGroupOfMember(member, instituteInfo.getId());
 				addMessage(i18n("institute_auth_message_changed_member", member.getUsername()));
 			} catch (LectureException e) {
 				addError(i18n(e.getMessage()));
@@ -118,13 +119,13 @@ public class MembersPage extends AbstractLecturePage {
 	public String removeMember() throws LectureException {
 		logger.debug("remove member");
 		InstituteMember member = members.getRowData();
-		lectureService.removeInstituteMember(member.getId(), institute.getId());
+		lectureService.removeInstituteMember(member.getId(), instituteInfo.getId());
 		addMessage(i18n("institute_auth_message_removed_member",new Object[]{member.getFirstName(),member.getLastName(),member.getUsername()}));
 		return Constants.SUCCESS;
 	}
 
 	/**
-	 * Lockup the user name and add the member
+	 * Lookup the user name and add the member
 	 * 
 	 * @param event
 	 * @throws LectureException
@@ -134,7 +135,7 @@ public class MembersPage extends AbstractLecturePage {
 			logger.debug("add a member to institute");
 		}
 		User user = securityService.getUserByName(username);
-		lectureService.addInstituteMember(user.getId(), institute.getId());
+		lectureService.addInstituteMember(user.getId(), instituteInfo.getId());
 		addMessage(i18n("institute_add_member_to_institute", username));
 	}
 
