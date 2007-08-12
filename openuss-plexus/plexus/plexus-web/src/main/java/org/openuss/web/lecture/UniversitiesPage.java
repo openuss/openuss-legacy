@@ -149,5 +149,11 @@ public class UniversitiesPage extends BasePage{
 		return "removed";
 	}
 
+	public String manageUniversity(){
+		UniversityInfo university = currentUniversity();
+		setSessionBean(Constants.UNIVERSITY, university);
+		
+		return Constants.DEPARTMENT_MANAGEMENT;
+	}
 
 }

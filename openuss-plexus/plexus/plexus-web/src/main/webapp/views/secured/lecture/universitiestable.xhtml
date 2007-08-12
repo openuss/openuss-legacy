@@ -46,6 +46,13 @@
 				title="#{msg.university_command_edit_hint}"
 				styleClass="button_edit"/>
 			
+			<plexus:command
+				bean="#{views$public$university$universities}"
+				action = "manageUniversity"		
+				label="#{msg.university_command_manage}"
+				title="#{msg.university_command_manage_hint}"
+				styleClass="button_edit"/>
+				
 			<h:commandButton 
 				action = "department_create"
 				styleClass="button_remove"

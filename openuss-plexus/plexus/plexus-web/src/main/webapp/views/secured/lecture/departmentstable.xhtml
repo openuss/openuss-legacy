@@ -14,7 +14,7 @@
 	<plexus:dataTable 
 		id="department" 
 		label="#{msg.departmentList_header}" 
-		value="views$public$institute$institutes.institutes" 
+		value="views$public$department$departments.departments" 
 		var="bean" 
 		columnClasses="col_max_left, col_max_left, col_min_left, col_min_left"
 		rows="15">
@@ -22,21 +22,21 @@
 			<plexus:commandSortHeader columnName="name">
 				#{msg['department_name']}
 			</plexus:commandSortHeader>
-
+			<h:outputText value="#{bean.name}"/>
 		</t:column>
 		
 		<t:column>
 			<plexus:commandSortHeader columnName="owner">
 				#{msg['department_ownername']}
 			</plexus:commandSortHeader>
-	
+			<h:outputText value="#{bean.ownerName}"/>
 		</t:column>
 
 		<t:column>
 			<plexus:commandSortHeader columnName="shortcut">
 				#{msg['institute_shortcut_header']}
 			</plexus:commandSortHeader>
-	
+			<h:outputText value="#{bean.shortcut}"/>
 		</t:column>
 
 		<s:authorize ifAllGranted="ROLE_USER">
