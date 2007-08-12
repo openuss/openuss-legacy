@@ -6,6 +6,7 @@ import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.DepartmentInfo;
+
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.DepartmentService;
 import org.openuss.web.BasePage;
@@ -27,6 +28,8 @@ public abstract class AbstractDepartmentPage extends BasePage {
 
 	@Property(value = "#{departmentService}")
 	protected DepartmentService departmentService;
+	
+	
 
 		/**
 	 * Refreshing institute entity

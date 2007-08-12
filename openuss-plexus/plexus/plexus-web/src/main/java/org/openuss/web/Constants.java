@@ -173,4 +173,5 @@ public class Constants {
 	public static final String UNIVERSITY = "university";
 	public static final String DEPARTMENT = "department";
 	public static final String DEPARTMENT_PAGE = "department";
+	public static final String DEPARTMENT_MANAGEMENT = "manage_department";
 }
