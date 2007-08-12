@@ -70,12 +70,15 @@ public abstract class AbstractLecturePage extends BasePage {
 	public void preprocess() throws Exception {
 		super.preprocess();
 		logger.debug("preprocess - refreshing institute session object");
-		if (institute != null) {
-			institute = lectureService.getInstitute(institute.getId());
+		if (instituteInfo != null) {
+			//institute = lectureService.getInstitute(institute.getId());
+			instituteInfo = instituteService.findInstitute(instituteInfo.getId());
 		} else {
-			institute = (Institute) getSessionBean(Constants.INSTITUTE);
+			//institute = (Institute) getSessionBean(Constants.INSTITUTE);
+			instituteInfo = (InstituteInfo) getSessionBean(Constants.INSTITUTE_INFO);
 		}
-		setSessionBean(Constants.INSTITUTE, institute);
+		//setSessionBean(Constants.INSTITUTE, institute);
+		setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
 	}
 
 	@Prerender

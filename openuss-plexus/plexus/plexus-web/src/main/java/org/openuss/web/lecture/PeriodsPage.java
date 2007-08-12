@@ -30,6 +30,7 @@ import org.openuss.web.Constants;
  * Periods Page Controller
  * 
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 @Bean(name = "views$secured$lecture$periods", scope = Scope.REQUEST)
 @View
