@@ -8,7 +8,6 @@
 		Aspect Configuration
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<aop:config>
-	<!--
 		<aop:aspect id="universityIndexAspect" ref="universityIndexAspectBean">
 		 
 			<aop:after-returning
@@ -98,7 +97,6 @@
 				pointcut="execution(* org..MessageJobDaoBase.update(org.openuss.messaging.MessageJob)) and args(messageJob)"
 				arg-names="messageJob"/>
 		</aop:aspect>
-		 -->
 	</aop:config>
 	
 	<bean id="mailingStatusAspectBean" class="org.openuss.newsletter.MailingStatusAspect">
