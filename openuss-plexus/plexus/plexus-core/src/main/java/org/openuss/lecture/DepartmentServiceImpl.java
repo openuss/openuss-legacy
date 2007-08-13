@@ -162,7 +162,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 				"DepartmentService.handleAcceptApplication - the Application is already confirmed");
 		
 		User user = this.getUserDao().load(userId);
-		Validate.notNull(application,
+		Validate.notNull(user,
 		"DepartmentService.handleAcceptApplication - no User found corresponding to the ID "+userId);
 		
 		Department department = application.getDepartment();

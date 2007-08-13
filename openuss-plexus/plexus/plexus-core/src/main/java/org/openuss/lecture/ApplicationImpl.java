@@ -8,6 +8,7 @@ package org.openuss.lecture;
 /**
  * @see org.openuss.lecture.Application
  * @author Ron Haus
+ * @author Florian Dondorf
  */
 public class ApplicationImpl extends org.openuss.lecture.ApplicationBase implements org.openuss.lecture.Application {
 
@@ -19,7 +20,7 @@ public class ApplicationImpl extends org.openuss.lecture.ApplicationBase impleme
 	@Override
 	public void add(Department department) { 
 		this.setDepartment(department);
-		department.getApplication().add(this);
+		department.getApplications().add(this);
 	}
 
 	@Override

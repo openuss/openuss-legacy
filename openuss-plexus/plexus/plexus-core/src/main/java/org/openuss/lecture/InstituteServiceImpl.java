@@ -43,6 +43,10 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		// Create a default Membership for the University
 		Membership membership = Membership.Factory.newInstance();
 		institute.setMembership(membership);
+		
+		// Create a default Application for the University
+		Application application = Application.Factory.newInstance();
+		institute.setApplication(application);
 
 		// Create the Institute
 		this.getInstituteDao().create(institute);
@@ -76,7 +80,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		this.getSecurityService().setPermissions(assistantsGroup, institute, LectureAclEntry.INSTITUTE_ASSIST);
 		this.getSecurityService().setPermissions(tutorsGroup, institute, LectureAclEntry.INSTITUTE_TUTOR);
 
-		// Add Owner to Members and Group of Administrators
+		// Add Owner to Members and the group of Administrators
 		this.getOrganisationService().addMember(institute.getId(), userId);
 		this.getOrganisationService().addUserToGroup(userId, adminsGroup.getId());
 
@@ -205,8 +209,20 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	
 	@Override
 	protected Long handleApplyAtDepartment(Long instituteId, Long departmentId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+
+		Validate.notNull(instituteId, "InstituteService.applyAtDepartment - the instituteId cannot be null.");
+		Validate.notNull(departmentId, "InstituteService.applyAtDepartment - the dapartmentId cannot be null.");
+		
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute, "InstituteService.applyAtDepartment - cannot find an institute with the instituteId "+instituteId);
+		
+		Department department = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(departmentId, "InstituteService.applyAtDepartment - cannot find a department with the departmentId "+departmentId);
+		
+		// Apply at department
+		institute.getApplication().add(department);
+		
+		return institute.getApplication().getId();
 	}
 
 	@Override
@@ -217,8 +233,36 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	
 	@Override
 	public boolean handleIsNoneExistingInstituteShortcut(InstituteInfo self, String shortcut) throws Exception {
-		// TODO Auto-generated method stub
-		return true;
+		Institute found = getInstituteDao().findByShortcut(shortcut);
+		return isEqualOrNull(self, found);
+	}
+	
+	
+	
+	/*------------------- private methods -------------------- */
+	
+	/**
+	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self entry.
+	 * <ul>
+	 * <li>self == null AND found == null => <b>true</b></li>
+	 * <li>self == null AND found <> null => <b>false</b></li>
+	 * <li>self <> null AND found == null => <b>true</b></li>
+	 * <li>self <> null AND found <> null AND self == found => <b>true</b></li>
+	 * <li>self <> null AND found <> null AND self <> found => <b>false</b></li>
+	 * </ul>
+	 * 
+	 * @param self
+	 *            current record
+	 * @param found
+	 *            in database
+	 * @return true or false
+	 */
+	private boolean isEqualOrNull(Object self, Object found) {
+		if (self == null || found == null) {
+			return found == null;
+		} else {
+			return self.equals(found);
+		}
 	}
 
 }
