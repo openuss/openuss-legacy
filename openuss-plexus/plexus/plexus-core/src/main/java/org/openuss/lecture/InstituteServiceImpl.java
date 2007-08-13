@@ -6,6 +6,8 @@
 package org.openuss.lecture;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -14,6 +16,7 @@ import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
+import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
@@ -43,10 +46,6 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		// Create a default Membership for the University
 		Membership membership = Membership.Factory.newInstance();
 		institute.setMembership(membership);
-		
-		// Create a default Application for the University
-		Application application = Application.Factory.newInstance();
-		institute.setApplication(application);
 
 		// Create the Institute
 		this.getInstituteDao().create(institute);
@@ -208,21 +207,38 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	}
 	
 	@Override
-	protected Long handleApplyAtDepartment(Long instituteId, Long departmentId) throws Exception {
+	protected Long handleApplyAtDepartment(Long instituteId, Long departmentId, Long userId) throws Exception {
 
+		/*
 		Validate.notNull(instituteId, "InstituteService.applyAtDepartment - the instituteId cannot be null.");
 		Validate.notNull(departmentId, "InstituteService.applyAtDepartment - the dapartmentId cannot be null.");
+		Validate.notNull(userId, "InstituteService.applyAtDepartment - the userId cannot be null.");
 		
 		Institute institute = this.getInstituteDao().load(instituteId);
 		Validate.notNull(institute, "InstituteService.applyAtDepartment - cannot find an institute with the instituteId "+instituteId);
 		
 		Department department = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(departmentId, "InstituteService.applyAtDepartment - cannot find a department with the departmentId "+departmentId);
+		Validate.notNull(department, "InstituteService.applyAtDepartment - cannot find a department with the departmentId "+departmentId);
+		
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user, "InstituteService.applyAtDepartment - cannot find a user with the userId "+userId);
+		
+		// Create Application object
+		Application application = Application.Factory.newInstance();
+		application.setApplicationDate(new Date(new GregorianCalendar().getTimeInMillis()));
+		application.setApplyingUser(user);
+		application.setConfirmed(false);
+		application.add(department);
+		application.add(institute);
+		
+		this.get
 		
 		// Apply at department
 		institute.getApplication().add(department);
 		
 		return institute.getApplication().getId();
+		*/
+		return null;
 	}
 
 	@Override

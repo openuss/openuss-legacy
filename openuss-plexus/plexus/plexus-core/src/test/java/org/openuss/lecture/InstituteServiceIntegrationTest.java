@@ -128,4 +128,26 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		logger.debug("----> END access to findInstitute test <---- ");
 	}
 	
+	public void testApplyAtDepartment () {
+		logger.debug("----> BEGIN access to applyAtDepartment test <---- ");
+		/*
+		// Create Department
+		Department department = testUtility.createUniqueDepartmentInDB();
+		
+		// Create Institute
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		
+		flush();
+		
+		// Test
+		ApplicationDao applicationDao = (ApplicationDao) this.getApplicationContext().getBean("applicationDao");
+		Long applicationId = this.getInstituteService().applyAtDepartment(institute.getId(), department.getId());
+		assertNotNull(applicationId);
+		Application application = applicationDao.load(applicationId);
+		assertEquals(department, application.getDepartment());
+		assertEquals(institute, application.getInstitute());
+		*/
+		
+		logger.debug("----> END access to applyAtDepartment test <---- ");
+	}
 }
