@@ -29,11 +29,11 @@
 				<ui:include src="universityperiodstable.xhtml"/>
 						
 				<o:block>
-				<o:input entity="period" property="name" maxlength="100"/>
-				<t:inputCalendar id="startDate" renderAsPopup="true"></t:inputCalendar>
-				<t:inputCalendar id="endDate" renderAsPopup="true"></t:inputCalendar>
+				
+				
 					<h:commandButton 
 					    id="addPeriod"
+					    action="university_period_add"
 						value="#{msg.period_command_add_period}" 
 						title="#{msg.period_command_add_period_hint}"
 						styleClass="button_add"/>

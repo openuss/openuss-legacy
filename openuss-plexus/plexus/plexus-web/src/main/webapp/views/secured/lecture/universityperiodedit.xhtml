@@ -29,8 +29,10 @@
 	
 			<h:form id="periodForm">
 	  			<o:block label="#{msg.period_heading}" styleClass="form_box">
-					<o:input entity="period" property="name" maxlength="100" required="true"/>
-					<o:input entity="period" property="description" maxlength="250" type="textarea"/>
+					<o:input entity="periodInfo" property="name" maxlength="100" required="true"/>
+					<o:input entity="periodInfo" property="description" maxlength="250" type="textarea"/>
+					<t:inputCalendar id="startDate" renderAsPopup="true"></t:inputCalendar>
+					<t:inputCalendar id="endDate" renderAsPopup="true"></t:inputCalendar>
 				</o:block>
 				<o:block>
 					<h:commandButton value="${msg.save}" action="#{views$secured$lecture$periodedit.savePeriod}" styleClass="button_save"/>
