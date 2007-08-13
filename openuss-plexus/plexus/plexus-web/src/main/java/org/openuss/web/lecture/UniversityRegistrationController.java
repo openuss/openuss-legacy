@@ -8,7 +8,6 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityType;
-
 import org.openuss.web.Constants;
 
 
@@ -21,8 +20,8 @@ public class UniversityRegistrationController extends AbstractUniversityPage{
 	public String start() {
 		
 		logger.debug("start registration process");
-		university = new UniversityInfo();
-		setSessionBean(Constants.UNIVERSITY, university);
+		universityInfo = new UniversityInfo();
+		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
 		
 		
 		return Constants.UNIVERSITY_REGISTRATION_STEP1_PAGE;
@@ -30,14 +29,12 @@ public class UniversityRegistrationController extends AbstractUniversityPage{
 	
 	public String registrate() throws DesktopException, LectureException {
 		
-		
-		
-		
-		university.setOwnerName(user.getName());
-		university.setEnabled(true);
+		universityInfo.setOwnerName(user.getName());
+		universityInfo.setEnabled(true);
 	
-		university.setUniversityType(UniversityType.MISC);
-		universityService.create(university, user.getId());
+		universityInfo.setUniversityType(UniversityType.MISC);
+		Long universityId = universityService.create(universityInfo, user.getId());
+		universityInfo.setId(universityId);
 		//TODO send notification email
 		//FIXME this should be part of the business layer
 		//desktopService.linkUniversity(desktop.getId(), organisation.getId());

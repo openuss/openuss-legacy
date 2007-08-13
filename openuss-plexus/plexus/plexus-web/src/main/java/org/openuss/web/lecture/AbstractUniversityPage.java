@@ -18,21 +18,20 @@ import org.openuss.web.PageLinks;
  * 
  * @author Tianyu Wang
  * @author Weijun Chen
+ * @author Kai Stettner
  */
 public abstract class AbstractUniversityPage extends BasePage {
 
 	private static final Logger logger = Logger.getLogger(AbstractUniversityPage.class);
 
-	@Property(value = "#{university}")
-	protected UniversityInfo university;
+	@Property(value = "#{universityInfo}")
+	protected UniversityInfo universityInfo;
 
 	@Property(value = "#{universityService}")
 	protected UniversityService universityService;
 
-
-
 	/**
-	 * Refreshing university
+	 * Refreshing universityInfo
 	 * 
 	 * @throws Exception
 	 */
@@ -40,19 +39,19 @@ public abstract class AbstractUniversityPage extends BasePage {
 	public void preprocess() throws Exception {
 		super.preprocess();
 		logger.debug("preprocess - refreshing institute session object");
-		if (university != null) {
-			university = universityService.findUniversity(university.getId());
+		if (universityInfo != null) {
+			universityInfo = universityService.findUniversity(universityInfo.getId());
 		} else {
-			university = (UniversityInfo) getSessionBean(Constants.UNIVERSITY);
+			universityInfo = (UniversityInfo) getSessionBean(Constants.UNIVERSITY_INFO);
 		}
-		setSessionBean(Constants.UNIVERSITY, university);
+		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
 	}
 
 	@Prerender
 	public void prerender() throws LectureException {
 		logger.debug("prerender - refreshing institute session object");
 		refreshUniversity();
-		if (university == null) {
+		if (universityInfo == null) {
 			addError(i18n("message_error_no_institute_selected"));
 			redirect(Constants.DESKTOP);
 		} 
@@ -61,9 +60,9 @@ public abstract class AbstractUniversityPage extends BasePage {
 	}
 
 	private void refreshUniversity() {
-		if (university != null) {
-			university = universityService.findUniversity(university.getId());
-			setSessionBean(Constants.UNIVERSITY, university);
+		if (universityInfo != null) {
+			universityInfo = universityService.findUniversity(universityInfo.getId());
+			setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
 		}
 	}
 /*
@@ -77,12 +76,12 @@ public abstract class AbstractUniversityPage extends BasePage {
 		crumbs.add(instituteCrumb);
 	}
 */
-	public UniversityInfo getUniversity() {
-		return university;
+	public UniversityInfo getUniversityInfo() {
+		return universityInfo;
 	}
 
-	public void setUniversity(UniversityInfo university) {
-		this.university = university;
+	public void setUniversityInfo(UniversityInfo universityInfo) {
+		this.universityInfo = universityInfo;
 	}
 
 	public UniversityService getUniversityService() {
