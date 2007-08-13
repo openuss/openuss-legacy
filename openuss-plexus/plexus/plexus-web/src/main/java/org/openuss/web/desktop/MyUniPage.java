@@ -223,6 +223,7 @@ public class MyUniPage extends BasePage {
 		myUniDataSet = new MyUniDataSet();
 		Iterator iterator;
 		
+		
 		List<Course> courses = desktop.getCourses();
 		List<Institute> instituteBookmarks = desktop.getInstitutes();
 		List<Department> departmentBookmarks = desktop.getDepartments();
