@@ -17,8 +17,11 @@ public class CourseIndexingAspect {
 	private IndexerService indexerService;
 	
 	private CourseDao courseDao;
+	
+	private Course course;
 
 	public void updateCourseIndexOnPeriodUpdate(Period period) {
+		logger.info("Starting method updateCourseIndexOnPeriodUpdate(");
 		Validate.notNull(period, "Parameter period must not be null");
 		for (Course course : period.getCourses()) {
 			CourseInfo courseInfo = courseDao.toCourseInfo(course);
@@ -27,9 +30,11 @@ public class CourseIndexingAspect {
 	}
 
 	public void createCourseIndex(CourseInfo courseInfo) {
+		logger.info("Starting method createCourseIndex");
 		try {
 			if (courseInfo.getAccessType() != AccessType.CLOSED) {
-				indexerService.createIndex(courseInfo);
+				course = courseDao.courseInfoToEntity(courseInfo);
+				indexerService.createIndex(course);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -42,9 +47,11 @@ public class CourseIndexingAspect {
 		try {
 			if (courseInfo.getAccessType() == AccessType.CLOSED) {
 				logger.info("Deleting CourseIndex");
-				indexerService.deleteIndex(courseInfo);
+				course = courseDao.courseInfoToEntity(courseInfo);
+				indexerService.deleteIndex(course);
 			} else {
-				indexerService.updateIndex(courseInfo);
+				course = courseDao.courseInfoToEntity(courseInfo);
+				indexerService.updateIndex(course);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -52,6 +59,7 @@ public class CourseIndexingAspect {
 	}
 
 	public void deleteCourseIndex(Long courseId) {
+		logger.info("Starting method deleteCourseIndex");
 		try {
 			Course course = Course.Factory.newInstance();
 			course.setId(courseId);

@@ -12,31 +12,31 @@
 			<map>
 			    <entry>
 					<key>
-						<value>org.openuss.lecture.UniversityInfo</value>
+						<value>org.openuss.lecture.University</value>
 					</key>
 					<value>universityIndexerCommand</value>
 				</entry>
 			    <entry>
 					<key>
-						<value>org.openuss.lecture.DepartmentInfo</value>
+						<value>org.openuss.lecture.Department</value>
 					</key>
 					<value>departmentIndexerCommand</value>
 				</entry>
 				<entry>
 					<key>
-						<value>org.openuss.lecture.InstituteInfo</value>
+						<value>org.openuss.lecture.Institute</value>
 					</key>
 					<value>instituteIndexerCommand</value>
 				</entry>
 				<entry>
 					<key>
-						<value>org.openuss.lecture.CourseTypeInfo</value>
+						<value>org.openuss.lecture.CourseType</value>
 					</key>
 					<value>courseTypeIndexerCommand</value>
 				</entry>
 				<entry>
 					<key>
-						<value>org.openuss.lecture.CourseInfo</value>
+						<value>org.openuss.lecture.Course</value>
 					</key>
 					<value>courseIndexerCommand</value>
 				</entry>

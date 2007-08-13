@@ -22,7 +22,6 @@
 				method="deleteUniversityIndex"
 				pointcut="execution(* org..UniversityServiceBase.removeUniversity(java.lang.Long)) and args(universityId)"
 				arg-names="universityId"/>
-		
 		</aop:aspect>
 	
 		<aop:aspect id="departmentIndexAspect" ref="departmentIndexAspectBean">
@@ -70,8 +69,6 @@
 				arg-names="courseTypeId"/>
 		</aop:aspect>
 		
-		
-		
 		<aop:aspect id="courseIndexAspect" ref="courseIndexAspectBean">
 			<aop:after-returning
 				method="updateCourseIndexOnPeriodUpdate" 
@@ -105,18 +102,22 @@
 	
 	<bean id="universityIndexAspectBean" class="org.openuss.lecture.UniversityIndexingAspect">
 		<property name="indexerService" ref="indexerService"/>
+		<property name="universityDao" ref="universityDao"/>
 	</bean>
 	
 	<bean id="departmentIndexAspectBean" class="org.openuss.lecture.DepartmentIndexingAspect">
 		<property name="indexerService" ref="indexerService"/>
+		<property name="departmentDao" ref="departmentDao"/>
 	</bean>
 	
 	<bean id="instituteIndexAspectBean" class="org.openuss.lecture.InstituteIndexingAspect">
 		<property name="indexerService" ref="indexerService"/>
+		<property name="instituteDao" ref="instituteDao"/>
 	</bean>
 	
 	<bean id="courseTypeIndexAspectBean" class="org.openuss.lecture.CourseTypeIndexingAspect">
 		<property name="indexerService" ref="indexerService"/>
+		<property name="courseTypeDao" ref="courseTypeDao"/>
 	</bean>
 	
 	<bean id="courseIndexAspectBean" class="org.openuss.lecture.CourseIndexingAspect">

@@ -22,8 +22,7 @@
 	<bean id="courseType" class="org.openuss.lecture.CourseTypeImpl" scope="singleton"/>
 	<bean id="period" class="org.openuss.lecture.PeriodImpl" scope="singleton"/>
 	<bean id="course" class="org.openuss.lecture.CourseImpl"  scope="singleton"/>
-
-
+	
    	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		      News
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    

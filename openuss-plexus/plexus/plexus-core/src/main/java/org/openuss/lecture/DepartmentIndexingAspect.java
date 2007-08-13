@@ -1,6 +1,5 @@
 package org.openuss.lecture;
 
-import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
@@ -15,28 +14,37 @@ public class DepartmentIndexingAspect {
 
 	private IndexerService indexerService;
 	
+	private DepartmentDao departmentDao;
+	
+	private Department department;
+	
 	// userId normally not necessary. Just using due to the configuration in the aop spring context.
 	public void createDepartmentIndex(DepartmentInfo departmentInfo, Long userId) {
+		logger.info("Starting method createDepartmentIndex");
 		try {
-			indexerService.createIndex(departmentInfo);
+			logger.info("Creating DepartmentIndex");
+			department = departmentDao.departmentInfoToEntity(departmentInfo);
+			indexerService.createIndex(department);
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}
-
 	}
 
 	public void updateDepartmentIndex(DepartmentInfo departmentInfo) {
 		logger.info("Starting method updateDepartmentIndex");
 		try {
-				logger.info("Updating DepartmentIndex");
-				indexerService.updateIndex(departmentInfo);
+			logger.info("Updating DepartmentIndex");
+			department = departmentDao.departmentInfoToEntity(departmentInfo);
+			indexerService.updateIndex(department);
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}
 	}
 
 	public void deleteDepartmentIndex(Long departmentId) {
+		logger.info("Starting method deleteDepartmentIndex");
 		try {
+			logger.info("Deleting DepartmentIndex");
 			Department department = Department.Factory.newInstance();
 			department.setId(departmentId);
 			indexerService.deleteIndex(department);
@@ -52,4 +60,13 @@ public class DepartmentIndexingAspect {
 	public void setIndexerService(IndexerService indexerService) {
 		this.indexerService = indexerService;
 	}
+
+	public DepartmentDao getDepartmentDao() {
+		return departmentDao;
+	}
+
+	public void setDepartmentDao(DepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
+	}
+	
 }

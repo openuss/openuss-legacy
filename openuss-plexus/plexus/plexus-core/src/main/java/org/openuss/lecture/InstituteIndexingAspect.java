@@ -15,6 +15,10 @@ public class InstituteIndexingAspect {
 
 	private IndexerService indexerService;
 	
+	private InstituteDao instituteDao;
+	
+	private Institute institute;
+	
 	/**
 	 * Create index entry of an institute if it is enabled. UserId not necessary! Just for AOP, otherwise it is not working.
 	 * @param instituteInfo, userId
@@ -24,7 +28,8 @@ public class InstituteIndexingAspect {
 		try {
 			if (instituteInfo.getEnabled()) {
 				logger.debug("method createInstituteIndex: createIndex");
-				indexerService.createIndex(instituteInfo);
+				institute = instituteDao.instituteInfoToEntity(instituteInfo);
+				indexerService.createIndex(institute);
 			};
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -40,7 +45,8 @@ public class InstituteIndexingAspect {
 		try {
 			if (instituteInfo.getEnabled()) {
 				logger.debug("method updateInstituteIndex: updateIndex");
-				indexerService.updateIndex(instituteInfo);
+				institute = instituteDao.instituteInfoToEntity(instituteInfo);
+				indexerService.updateIndex(institute);
 				/*for(Course course:institute.getCourses()) {
 					if (course.getAccessType() != AccessType.CLOSED) {
 						indexerService.updateIndex(course);
@@ -49,7 +55,8 @@ public class InstituteIndexingAspect {
 				}*/
 			} else {
 				logger.debug("method updateInstituteIndex: deleteIndex");
-				indexerService.deleteIndex(instituteInfo);
+				institute = instituteDao.instituteInfoToEntity(instituteInfo);
+				indexerService.deleteIndex(institute);
 				/*for (Course course:institute.getCourses()) {
 					indexerService.deleteIndex(course);
 				}*/
@@ -82,4 +89,14 @@ public class InstituteIndexingAspect {
 	public void setIndexerService(IndexerService indexerService) {
 		this.indexerService = indexerService;
 	}
+
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
+	}
+
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
+	}
+	
+	
 }

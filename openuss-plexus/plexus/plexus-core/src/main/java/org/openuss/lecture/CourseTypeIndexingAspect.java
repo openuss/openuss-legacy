@@ -15,6 +15,10 @@ public class CourseTypeIndexingAspect {
 
 	private IndexerService indexerService;
 	
+	private CourseTypeDao courseTypeDao;
+	
+	private CourseType courseType;
+	
 	/**
 	 * Create index entry of a course type.
 	 * @param courseTypeInfo
@@ -23,7 +27,8 @@ public class CourseTypeIndexingAspect {
 		logger.debug("Starting method createCourseTypeIndex");
 		try {
 			logger.debug("method createCourseTypeIndex: createIndex");
-			indexerService.createIndex(courseTypeInfo);
+			courseType = courseTypeDao.courseTypeInfoToEntity(courseTypeInfo);
+			indexerService.createIndex(courseType);
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}
@@ -37,7 +42,8 @@ public class CourseTypeIndexingAspect {
 		logger.debug("Starting method updateCourseTypeIndex");
 		try {
 			logger.debug("method updateCourseTypeIndex: updateIndex");
-			indexerService.updateIndex(courseTypeInfo);
+			courseType = courseTypeDao.courseTypeInfoToEntity(courseTypeInfo);
+			indexerService.updateIndex(courseType);
 			/*for(Course course:institute.getCourses()) {
 				if (course.getAccessType() != AccessType.CLOSED) {
 					indexerService.updateIndex(course);
@@ -72,4 +78,13 @@ public class CourseTypeIndexingAspect {
 	public void setIndexerService(IndexerService indexerService) {
 		this.indexerService = indexerService;
 	}
+
+	public CourseTypeDao getCourseTypeDao() {
+		return courseTypeDao;
+	}
+
+	public void setCourseTypeDao(CourseTypeDao courseTypeDao) {
+		this.courseTypeDao = courseTypeDao;
+	}
+	
 }

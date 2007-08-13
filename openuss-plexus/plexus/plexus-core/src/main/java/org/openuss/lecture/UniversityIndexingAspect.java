@@ -16,6 +16,10 @@ public class UniversityIndexingAspect {
 
 	private IndexerService indexerService;
 	
+	private UniversityDao universityDao;
+	
+	private University university;
+	
 	/**
 	 * Create index entry of an university.
 	 * @param universityInfo
@@ -24,7 +28,8 @@ public class UniversityIndexingAspect {
 		logger.debug("Starting method createUniversityIndex");
 		try {
 			logger.debug("method createUniversityIndex: createIndex");
-			indexerService.createIndex(universityInfo);
+			university = universityDao.universityInfoToEntity(universityInfo);
+			indexerService.createIndex(university);
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}
@@ -38,7 +43,8 @@ public class UniversityIndexingAspect {
 		logger.debug("Starting method updateUniversityIndex");
 		try {
 			logger.debug("method updateUniversityIndex: updateIndex");
-			indexerService.updateIndex(universityInfo);
+			university = universityDao.universityInfoToEntity(universityInfo);
+			indexerService.updateIndex(university);
 			/*for(Course course:institute.getCourses()) {
 				if (course.getAccessType() != AccessType.CLOSED) {
 					indexerService.updateIndex(course);
@@ -73,5 +79,14 @@ public class UniversityIndexingAspect {
 	public void setIndexerService(IndexerService indexerService) {
 		this.indexerService = indexerService;
 	}
+
+	public UniversityDao getUniversityDao() {
+		return universityDao;
+	}
+
+	public void setUniversityDao(UniversityDao universityDao) {
+		this.universityDao = universityDao;
+	}
+	
 
 }
