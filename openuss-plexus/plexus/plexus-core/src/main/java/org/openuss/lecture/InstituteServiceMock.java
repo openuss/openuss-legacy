@@ -111,4 +111,9 @@ public class InstituteServiceMock implements InstituteService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public InstituteSecurity getInstituteSecurity(Long instituteId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

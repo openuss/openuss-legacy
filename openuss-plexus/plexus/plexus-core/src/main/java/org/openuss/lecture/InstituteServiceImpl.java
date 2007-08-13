@@ -195,6 +195,14 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		return this.getInstituteDao().findByEnabled(enabledOnly);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected InstituteSecurity handleGetInstituteSecurity(Long instituteId) throws Exception {
+		return (InstituteSecurity) getInstituteDao().load(InstituteDao.TRANSFORM_INSTITUTESECURITY, instituteId);
+	}
+	
 	@Override
 	protected Long handleApplyAtDepartment(Long instituteId, Long departmentId) throws Exception {
 		// TODO Auto-generated method stub
