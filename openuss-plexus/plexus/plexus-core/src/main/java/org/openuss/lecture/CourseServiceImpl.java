@@ -36,11 +36,18 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		
 		Validate.notNull(courseInfo, "CourseServiceImpl.handleCreate - courseInfo cannot be null.");
 		
-		//Transform VO to entity
-		Course course = this.getCourseDao().courseInfoToEntity(courseInfo);
-		Validate.notNull(course, "CourseServiceImpl.handleCreate - cannot transform courseInfo to entity.");
+		// Transform VO to entity
+		Course courseEntity = this.getCourseDao().courseInfoToEntity(courseInfo);
+		Validate.notNull(courseEntity, "CourseServiceImpl.handleCreate - cannot transform courseInfo to entity.");
 		
-		return this.getCourseDao().create(course).getId();
+		// Save entity
+		this.getCourseDao().create(courseEntity);
+		Validate.notNull(courseEntity, "CourseServiceImpl.handleCreate - id of course cannot be null.");
+		
+		// do not delete this!!! Set id of courseInfo for indexing.
+		courseInfo.setId(courseEntity.getId());
+		
+		return courseEntity.getId();
 	}
 	
 	/**

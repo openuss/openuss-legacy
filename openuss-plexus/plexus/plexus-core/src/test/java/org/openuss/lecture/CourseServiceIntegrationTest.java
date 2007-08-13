@@ -18,6 +18,8 @@ import org.openuss.security.acl.Permission;
 /**
  * JUnit Test for Spring Hibernate CourseService class.
  * @see org.openuss.lecture.CourseService
+ * @author Florian Dondorf
+ * @author Ron Haus
  */
 public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBase {
 	

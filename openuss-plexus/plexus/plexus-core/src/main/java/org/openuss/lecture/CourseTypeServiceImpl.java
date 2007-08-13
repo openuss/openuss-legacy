@@ -28,11 +28,18 @@ public class CourseTypeServiceImpl
 		
 		Validate.notNull(courseTypeInfo, "CourseTypeServiceImpl.handleCreate - courseTypeInfo must not be null.");
 		
-		//Transform ValueObject to Entity
-		CourseType courseType = this.getCourseTypeDao().courseTypeInfoToEntity(courseTypeInfo);
-		Validate.notNull(courseType, "CourseTypeServiceImpl.handleCreate - could not transform courseTypeInfo to entity.");
+		// Transform ValueObject to Entity
+		CourseType courseTypeEntity = this.getCourseTypeDao().courseTypeInfoToEntity(courseTypeInfo);
+		Validate.notNull(courseTypeEntity, "CourseTypeServiceImpl.handleCreate - could not transform courseTypeInfo to entity.");
 		
-		return this.getCourseTypeDao().create(courseType).getId();
+		// Save entity
+		this.getCourseTypeDao().create(courseTypeEntity);
+		Validate.notNull(courseTypeEntity.getId(), "CourseTypeServiceImpl.handleCreate - id of courseType cannot be null.");
+		
+		// Do not delete this!!! Set id of courseType VO for indexing.
+		courseTypeInfo.setId(courseTypeEntity.getId());
+		
+		return courseTypeEntity.getId();
 	}
 
 	@Override
