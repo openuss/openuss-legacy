@@ -1,6 +1,7 @@
 package org.openuss.web.desktop;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -62,7 +63,9 @@ public class MyUniPage extends BasePage {
 	private String	currentUniversity;
 	private Long	longCurrentUniversity;
 //	private DepartmentsFlexlistController	departmentsController;
-	private UIFlexList flexlist;
+	private UIFlexList departmentsList;
+	private UIFlexList institutesList;
+	private UIFlexList coursesList;
 	
 	private MyUniDataSet myUniDataSet;
 
@@ -72,6 +75,7 @@ public class MyUniPage extends BasePage {
 	public void prerender() {
 //		logger.debug("prerender desktop");
 		refreshDesktop();
+		prepareData();
 //		crumbs.clear();
 	}
 	
@@ -142,27 +146,67 @@ public class MyUniPage extends BasePage {
 	
 
 			
-	public UIFlexList getFlexlist()
+	public UIFlexList getDepartmentsList()
 	{
-		return flexlist;
+		return departmentsList;
 	}
 	
-	public void setFlexlist(UIFlexList flexlist)
+	public void setDepartmentsList(UIFlexList departmentsList)
 	{
-		this.flexlist = flexlist;
-		
-		initValues();
+		this.departmentsList = departmentsList;
+		initTitles(departmentsList);
+		loadValues(1L);
 	}
 	
-	private void initValues()
+	public UIFlexList getInstitutesList()
 	{
-		ArrayList<ListItemDAO> visibleList = this.getVisibleItems();
+		return institutesList;
+	}
+	
+	public void setInstitutesList(UIFlexList institutesList)
+	{
+		this.institutesList = institutesList;
+		initTitles(institutesList);
+		loadValues(1L);
+	}
+	
+	public UIFlexList getCoursesList()
+	{
+		return coursesList;
+	}
+	
+	public void setCoursesList(UIFlexList coursesList)
+	{
+		this.coursesList = coursesList;
+		initTitles(coursesList);
+		loadValues(1L);
+	}
+	
+	private void initTitles(UIFlexList flexlist)
+	{
 		flexlist.getAttributes().put("title", getTitle());
 		flexlist.getAttributes().put("showButtonTitle", getShowButtonTitle());
 		flexlist.getAttributes().put("hideButtonTitle", getHideButtonTitle());
-		flexlist.getAttributes().put("visibleItems", visibleList);
-		flexlist.getAttributes().put("hiddenItems", getHiddenItems());
-	//	flexlist.getAttributes().put("abc", new ArrayList<Long>());
+	}
+	
+	private void loadValues(Long universityId)
+	{
+		if(departmentsList != null)
+		{
+			departmentsList.getAttributes().put("visibleList", myUniDataSet.getDepartments(universityId));
+		}
+		
+		if(institutesList != null)
+		{
+			institutesList.getAttributes().put("visibleList", myUniDataSet.getInstitutes(universityId));
+			institutesList.getAttributes().put("hiddenList", myUniDataSet.getAdditionalInstitutes(universityId));
+		}
+		
+		if(coursesList != null)
+		{
+			coursesList.getAttributes().put("visibleList", myUniDataSet.getCourses(universityId));
+			coursesList.getAttributes().put("hiddenList", myUniDataSet.getAdditionalCourses(universityId));
+		}
 	}
 	
 
@@ -181,49 +225,16 @@ public class MyUniPage extends BasePage {
 	}
 
 
-	public ArrayList getVisibleItems() {
-		ArrayList list = new ArrayList();
-		ListItemDAO newItem;
-		try {
-		newItem = new ListItemDAO();
-		newItem.setTitle("Item 1");
-		newItem.setMetaInformation("Info 1");
-		list.add(newItem);
-		
-		newItem = new ListItemDAO();
-		newItem.setTitle("Item 2");
-		newItem.setMetaInformation("Info 2");
-		list.add(newItem);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
-
-	public ArrayList getHiddenItems() {
-		ArrayList list = new ArrayList();
-		ListItemDAO newItem;
-		
-		newItem = new ListItemDAO();
-		newItem.setTitle("Item 1");
-		newItem.setMetaInformation("Info 1");
-		list.add(newItem);
-		
-		
-		newItem = new ListItemDAO();
-		newItem.setTitle("Item 2");
-		newItem.setMetaInformation("Info 2");
-		list.add(newItem);
-		
-		return list;
-	}
+	
 	
 	public void prepareData()
 	{
 		myUniDataSet = new MyUniDataSet();
-		Iterator iterator;
+		myUniDataSet.loadTestData();
 		
-/*		
+/*		Iterator iterator;
+		
+		
 		List<Course> courses = desktop.getCourses();
 		List<Institute> instituteBookmarks = desktop.getInstitutes();
 		List<Department> departmentBookmarks = desktop.getDepartments();
@@ -246,9 +257,7 @@ public class MyUniPage extends BasePage {
 			Department department = (Department)iterator.next();
 			myUniDataSet.processDepartmentBookmark(department);
 		}
-*/
-		myUniDataSet.loadTestData();
-		
+*/	
 	}
 
 	
@@ -502,6 +511,106 @@ public class MyUniPage extends BasePage {
 			
 			uniDataSets.put(3L, uniDataSet);
 			
+		}
+		
+		public List<ListItemDAO> getDepartments(Long universityId)
+		{
+			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
+			Collection<DepartmentInfo> departments = uniDataSets.get(universityId).departments.values();
+			Iterator<DepartmentInfo> i = departments.iterator();
+			
+			while(i.hasNext())
+			{
+				DepartmentInfo currentDepartment = i.next();
+				ListItemDAO newListItem = new ListItemDAO();
+				newListItem.setTitle(currentDepartment.getName());
+				listItems.add(newListItem);
+			}
+			
+			return listItems;
+		}
+		
+		public List<ListItemDAO> getInstitutes(Long universityId)
+		{
+			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
+			Collection<InstituteInfo> institutes = uniDataSets.get(universityId).currentInstitutes.values();
+			Iterator<InstituteInfo> i = institutes.iterator();
+			
+			while(i.hasNext())
+			{
+				InstituteInfo currentInstitute = i.next();
+				ListItemDAO newListItem = new ListItemDAO();
+				newListItem.setTitle(currentInstitute.getName());
+				listItems.add(newListItem);
+			}
+			
+			return listItems;
+		}
+		
+		public List<ListItemDAO> getAdditionalInstitutes(Long universityId)
+		{
+			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
+			Collection<InstituteInfo> institutes = uniDataSets.get(universityId).pastInstitutes.values();
+			Iterator<InstituteInfo> i = institutes.iterator();
+			
+			while(i.hasNext())
+			{
+				InstituteInfo currentInstitute = i.next();
+				ListItemDAO newListItem = new ListItemDAO();
+				newListItem.setTitle(currentInstitute.getName());
+				listItems.add(newListItem);
+			}
+			
+			return listItems;
+		}
+		
+		public List<ListItemDAO> getCourses(Long universityId)
+		{
+			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
+			Collection<CourseInfo> institutes = uniDataSets.get(universityId).currentCourses.values();
+			Iterator<CourseInfo> i = institutes.iterator();
+			
+			while(i.hasNext())
+			{
+				CourseInfo currentCourse = i.next();
+				ListItemDAO newListItem = new ListItemDAO();
+				newListItem.setTitle(currentCourse.getName());
+				listItems.add(newListItem);
+			}
+			
+			return listItems;
+		}
+		
+		public List<ListItemDAO> getAdditionalCourses(Long universityId)
+		{
+			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
+			Collection<CourseInfo> institutes = uniDataSets.get(universityId).currentCourses.values();
+			Iterator<CourseInfo> i = institutes.iterator();
+			
+			while(i.hasNext())
+			{
+				CourseInfo currentCourse = i.next();
+				ListItemDAO newListItem = new ListItemDAO();
+				newListItem.setTitle(currentCourse.getName());
+				listItems.add(newListItem);
+			}
+			
+			return listItems;
+		}
+		
+		public List<UniversityInfo> getUniversities()
+		{
+			List<UniversityInfo> universities = new ArrayList<UniversityInfo>();
+			Collection<UniversityDataSet> universityDataSetList = uniDataSets.values();
+			Iterator<UniversityDataSet> i = universityDataSetList.iterator();
+			
+			while(i.hasNext())
+			{
+				UniversityDataSet currentUniDataSet = i.next();
+				universities.add(currentUniDataSet.getUniversity());
+			}
+			
+			return universities;
 		}
 		
 		
