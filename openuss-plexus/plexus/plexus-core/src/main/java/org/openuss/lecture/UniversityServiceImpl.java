@@ -158,10 +158,10 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	}
 	
 	/**
-	 * @see org.openuss.lecture.UniversityService#findUniversitiesByUser()
+	 * @see org.openuss.lecture.UniversityService#findUniversitiesByUser(Long, Boolean)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected java.util.List handleFindUniversitiesByUser(Long userId) throws java.lang.Exception {
+	protected java.util.List handleFindUniversitiesByMemberAndEnabled(Long userId, Boolean enabled) throws java.lang.Exception {
 
 		Validate.notNull(userId, "UniversityServiceImpl.findUniversitiesByUser - userId cannot be null.");
 		
@@ -169,13 +169,12 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		User user = this.getUserDao().load(userId);
 		
 		//Load all universities
-		Collection<University> universities = this.getUniversityDao().loadAll();
+		Collection<University> universities = this.getUniversityDao().findByEnabled(enabled);
 		
 		//Get universities of user
 		List universityInfos = new ArrayList();
 		for(University university : universities) {
-			if (university.getMembership().getMembers().contains(user) &&
-					university.getOwnerName().equals(user.getName())) {
+			if (university.getMembership().getMembers().contains(user)) {
 				universityInfos.add(this.getUniversityDao().toUniversityInfo(university));
 			}
 		}
@@ -244,23 +243,15 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	}
 	
 	/**
-	 * @see org.openuss.lecture.UniversityService#findUniversitiesByType(UniversityType type)
+	 * @see org.openuss.lecture.UniversityService#findUniversitiesByType(UniversityType, Boolean)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindUniversitiesByType(UniversityType type) throws Exception {
+	protected List handleFindUniversitiesByTypeAndEnabled(UniversityType universityType, Boolean enabled) throws Exception {
 
-		Validate.notNull(type, "UniversityService.findUNiversitiesByType");
+		Validate.notNull(universityType, "UniversityService.handleFindUniversitiesByTypeAndEnabled - UniversityType cannot be null.");
+		Validate.notNull(enabled, "UniversityService.handleFindUniversitiesByTypeAndEnabled - enabled cannot be null.");
 		
-		List<University> enabledUniversities = this.getUniversityDao().findByEnabled(true);
-		
-		List universityInfos = new ArrayList();
-		for (University university : enabledUniversities) {
-			if (university.getUniversityType() == type) {
-				universityInfos.add(this.getUniversityDao().toUniversityInfo(university));
-			}
-		}
-		
-		return universityInfos;
+		return this.getUniversityDao().findByTypeAndEnabled(UniversityDao.TRANSFORM_UNIVERSITYINFO, universityType, enabled);
 	}
 	
 	

@@ -79,4 +79,24 @@ public class UniversityDaoMock extends AbstractMockDao<University> implements Un
 		
 	}
 
+	public List findByTypeAndEnabled(int transform, String queryString, UniversityType universityType, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByTypeAndEnabled(int transform, UniversityType universityType, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByTypeAndEnabled(String queryString, UniversityType universityType, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByTypeAndEnabled(UniversityType universityType, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

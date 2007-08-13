@@ -244,4 +244,14 @@ public class UniversityServiceMock implements UniversityService {
 		return periods;
 	}
 
+	public List findUniversitiesByMemberAndEnabled(Long userId, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findUniversitiesByTypeAndEnabled(UniversityType universityType, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

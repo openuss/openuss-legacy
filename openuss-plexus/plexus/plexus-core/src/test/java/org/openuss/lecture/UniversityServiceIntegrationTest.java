@@ -371,7 +371,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> END access to findActivePeriodByUniversity test");
 	}
 	
-	public void testFindUniversitiesByUser () {
+	@SuppressWarnings( { "unchecked" })
+	public void testFindUniversitiesByUserAndEnabled () {
 		logger.info("----> BEGIN access to findUniversitiesByUser test");
 		
 		//Create User
@@ -382,7 +383,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		university1.getMembership().getMembers().add(user);
 		university1.setOwnerName(user.getName());
 		
-		University university2 = testUtility.createUniqueUniversityInDB();
+		testUtility.createUniqueUniversityInDB();
 		
 		University university3 = testUtility.createUniqueUniversityInDB();
 		university3.getMembership().getMembers().add(user);
@@ -391,16 +392,17 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		flush();
 		
 		//Test
-		List<UniversityInfo> universitiesByUser = this.getUniversityService().findUniversitiesByUser(user.getId());
+		List universitiesByUser = this.getUniversityService().findUniversitiesByMemberAndEnabled(user.getId(), true);
 		assertNotNull(universitiesByUser);
 		assertEquals(2, universitiesByUser.size());
-		assertEquals(university1.getName(), universitiesByUser.get(0).getName());
-		assertEquals(university3.getName(), universitiesByUser.get(1).getName());
+		assertEquals(university1.getName(), ((UniversityInfo) universitiesByUser.get(0)).getName());
+		assertEquals(university3.getName(), ((UniversityInfo) universitiesByUser.get(1)).getName());
 		
 		logger.info("----> END access to findUniversitiesByUser test");
 	}
 	
-	public void testFindUniversitiesByType () {
+	@SuppressWarnings( { "unchecked" })
+	public void testFindUniversitiesByTypeAndEnabled () {
 		logger.info("----> BEGIN access to findUniversitiesByType test");
 		
 		// Create Universities
@@ -425,17 +427,17 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		flush();
 		
 		//Test
-		List<UniversityInfo> universities = this.getUniversityService().findUniversitiesByType(UniversityType.UNIVERSITY);
+		List<UniversityInfo> universities = this.getUniversityService().findUniversitiesByTypeAndEnabled(UniversityType.UNIVERSITY, true);
 		assertNotNull(universities);
 		assertEquals(2, universities.size());
 		assertEquals(university1.getName(), universities.get(0).getName());
 		
-		universities = this.getUniversityService().findUniversitiesByType(UniversityType.COMPANY);
+		universities = this.getUniversityService().findUniversitiesByTypeAndEnabled(UniversityType.COMPANY, true);
 		assertNotNull(universities);
 		assertEquals(3, universities.size());
 		assertEquals(university5.getName(), universities.get(1).getName());
 		
-		universities = this.getUniversityService().findUniversitiesByType(UniversityType.MISC);
+		universities = this.getUniversityService().findUniversitiesByTypeAndEnabled(UniversityType.MISC, true);
 		assertNotNull(universities);
 		assertEquals(1, universities.size());
 		assertEquals(university3.getName(), universities.get(0).getName());

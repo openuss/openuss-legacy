@@ -188,6 +188,7 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		assertEquals(universityInfo2.getTheme(), university2.getTheme());
 	}
 	
+	@SuppressWarnings( { "unchecked" })
 	public void testUniversityDaoFindByEnabled() {
 		// Create 3 Universities
 		University university1 = testUtility.createUniqueUniversityInDB();
@@ -212,5 +213,32 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		assertFalse(universitiesDisabled.contains(university1));
 		assertFalse(universitiesDisabled.contains(university2));
 		assertTrue(universitiesDisabled.contains(university3));
+	}
+	
+	@SuppressWarnings( { "unchecked" })
+	public void testUniversityDaoFindByTypeAndEnabled() {
+		// Create 4 Universities
+		University university1 = testUtility.createUniqueUniversityInDB();
+		university1.setUniversityType(UniversityType.UNIVERSITY);
+		university1.setEnabled(true);
+		University university2 = testUtility.createUniqueUniversityInDB();
+		university2.setUniversityType(UniversityType.UNIVERSITY);
+		university2.setEnabled(true);
+		University university3 = testUtility.createUniqueUniversityInDB();
+		university3.setUniversityType(UniversityType.COMPANY);
+		university3.setEnabled(true);
+		University university4 = testUtility.createUniqueUniversityInDB();
+		university4.setUniversityType(UniversityType.UNIVERSITY);
+		university4.setEnabled(false);
+
+		// Synchronize with Database
+		flush();
+
+		// Test
+		List universities = this.universityDao.findByTypeAndEnabled(UniversityType.UNIVERSITY, true);
+		assertEquals(2, universities.size());
+		assertTrue(universities.contains(university1));
+		assertTrue(universities.contains(university2));
+		assertFalse(universities.contains(university3));
 	}
 }
