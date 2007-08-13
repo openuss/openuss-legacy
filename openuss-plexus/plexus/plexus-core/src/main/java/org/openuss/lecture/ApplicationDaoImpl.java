@@ -42,7 +42,7 @@ public class ApplicationDaoImpl extends org.openuss.lecture.ApplicationDaoBase {
 	 * entity object exists in the object store, a new, blank entity is created
 	 */
 	private Application loadApplicationFromApplicationInfo(ApplicationInfo applicationInfo) {
-		
+
 		Application application = Application.Factory.newInstance();
 		if (applicationInfo.getId() != null) {
 			application = this.load(applicationInfo.getId());
@@ -53,7 +53,7 @@ public class ApplicationDaoImpl extends org.openuss.lecture.ApplicationDaoBase {
 	/**
 	 * @see org.openuss.lecture.ApplicationDao#applicationInfoToEntity(org.openuss.lecture.ApplicationInfo)
 	 */
-	public Application applicationInfoToEntity(ApplicationInfo applicationInfo) {		
+	public Application applicationInfoToEntity(ApplicationInfo applicationInfo) {
 		if (applicationInfo.getDepartmentId() == null) {
 			throw new IllegalArgumentException(
 					"ApplicationDaoImpl.applicationInfoToEntity - the DepartmentID cannot be null");
@@ -71,8 +71,9 @@ public class ApplicationDaoImpl extends org.openuss.lecture.ApplicationDaoBase {
 		entity.setDepartment(this.getDepartmentDao().load(applicationInfo.getDepartmentId()));
 		entity.setInstitute(this.getInstituteDao().load(applicationInfo.getInstituteId()));
 		entity.setApplyingUser(this.getUserDao().load(applicationInfo.getApplyingUserId()));
-		entity.setConfirmingUser(this.getUserDao().load(applicationInfo.getConfirmingUserId()));
-
+		if (applicationInfo.getConfirmingUserId() != null) {
+			entity.setConfirmingUser(this.getUserDao().load(applicationInfo.getConfirmingUserId()));
+		}
 		return entity;
 	}
 
