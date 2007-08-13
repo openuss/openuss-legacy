@@ -39,6 +39,9 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		this.getDepartmentDao().create(departmentEntity);
 
 		Validate.notNull(departmentEntity.getId(), "DepartmentService.handleCreate - Couldn't create Department");
+		
+		// Do not delete this!!! Set id of department VO for indexing
+		department.setId(departmentEntity.getId());
 
 		// Create Groups for Department
 		GroupItem groupItem = new GroupItem();

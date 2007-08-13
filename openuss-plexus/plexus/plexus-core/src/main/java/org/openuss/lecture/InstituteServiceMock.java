@@ -117,7 +117,7 @@ public class InstituteServiceMock implements InstituteService {
 		return null;
 	}
 	
-	public Long applyAtDepartment(Long instituteId, Long departmentId, Long userId) {
+	public Long applyAtDepartment(ApplicationInfo applicationInfo) {
 		// TODO Auto-generated method stub
 		return null;
 	}

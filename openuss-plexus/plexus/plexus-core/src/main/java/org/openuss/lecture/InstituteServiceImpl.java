@@ -6,8 +6,6 @@
 package org.openuss.lecture;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -16,7 +14,6 @@ import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
-import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
@@ -41,49 +38,52 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				"InstituteService.handleCreate - You cannot set the DepartmentID, you must apply first");
 		
 		// Transform ValueObject into Entity
-		Institute institute = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
+		Institute instituteEntity = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
 		
 		// Create a default Membership for the University
 		Membership membership = Membership.Factory.newInstance();
-		institute.setMembership(membership);
+		instituteEntity.setMembership(membership);
 
 		// Create the Institute
-		this.getInstituteDao().create(institute);
-		Validate.notNull(institute.getId(), "InstituteService.handleCreate - Couldn't create Institute");
+		this.getInstituteDao().create(instituteEntity);
+		Validate.notNull(instituteEntity.getId(), "InstituteService.handleCreate - Couldn't create Institute");
+		
+		// Do not delete this!!! Set id of institute VO for indexing
+		instituteInfo.setId(instituteEntity.getId());
 
 		// Create default Groups for Institute
 		GroupItem admins = new GroupItem();
-		admins.setName("INSTITUTE_" + institute.getId() + "_ADMINS");
+		admins.setName("INSTITUTE_" + instituteEntity.getId() + "_ADMINS");
 		admins.setLabel("autogroup_administrator_label");
 		admins.setGroupType(GroupType.ADMINISTRATOR);
-		Group adminsGroup = this.getOrganisationService().createGroup(institute.getId(), admins);
+		Group adminsGroup = this.getOrganisationService().createGroup(instituteEntity.getId(), admins);
 
 		GroupItem assistants = new GroupItem();
-		assistants.setName("INSTITUTE_" + institute.getId() + "_ASSISTANTS");
+		assistants.setName("INSTITUTE_" + instituteEntity.getId() + "_ASSISTANTS");
 		assistants.setLabel("autogroup_assistant_label");
 		assistants.setGroupType(GroupType.ASSISTANT);
-		Group assistantsGroup = this.getOrganisationService().createGroup(institute.getId(), assistants);
+		Group assistantsGroup = this.getOrganisationService().createGroup(instituteEntity.getId(), assistants);
 
 		GroupItem tutors = new GroupItem();
-		tutors.setName("INSTITUTE_" + institute.getId() + "_TUTORS");
+		tutors.setName("INSTITUTE_" + instituteEntity.getId() + "_TUTORS");
 		tutors.setLabel("autogroup_tutor_label");
 		tutors.setGroupType(GroupType.TUTOR);
-		Group tutorsGroup = this.getOrganisationService().createGroup(institute.getId(), tutors);
+		Group tutorsGroup = this.getOrganisationService().createGroup(instituteEntity.getId(), tutors);
 
 		// TODO Set Security for Groups
 		// Create Object Identity
-		this.getSecurityService().createObjectIdentity(institute, null);
+		this.getSecurityService().createObjectIdentity(instituteEntity, null);
 		
 		// Add permissions -> ACL Entry for each group
-		this.getSecurityService().setPermissions(adminsGroup, institute, LectureAclEntry.INSTITUTE_ADMINISTRATION);
-		this.getSecurityService().setPermissions(assistantsGroup, institute, LectureAclEntry.INSTITUTE_ASSIST);
-		this.getSecurityService().setPermissions(tutorsGroup, institute, LectureAclEntry.INSTITUTE_TUTOR);
+		this.getSecurityService().setPermissions(adminsGroup, instituteEntity, LectureAclEntry.INSTITUTE_ADMINISTRATION);
+		this.getSecurityService().setPermissions(assistantsGroup, instituteEntity, LectureAclEntry.INSTITUTE_ASSIST);
+		this.getSecurityService().setPermissions(tutorsGroup, instituteEntity, LectureAclEntry.INSTITUTE_TUTOR);
 
 		// Add Owner to Members and the group of Administrators
-		this.getOrganisationService().addMember(institute.getId(), userId);
+		this.getOrganisationService().addMember(instituteEntity.getId(), userId);
 		this.getOrganisationService().addUserToGroup(userId, adminsGroup.getId());
 
-		return institute.getId();
+		return instituteEntity.getId();
 	}
 
 	/**
@@ -190,6 +190,10 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				enabled);
 	}
 
+	/**
+	 * @see org.openuss.lecture.InstituteService#findInstitutesByEnabled(java.lang.Boolean)
+	 */
+	@SuppressWarnings( { "unchecked" })
 	@Override
 	protected List handleFindInstitutesByEnabled(Boolean enabledOnly) throws Exception {
 		
@@ -207,38 +211,18 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	}
 	
 	@Override
-	protected Long handleApplyAtDepartment(Long instituteId, Long departmentId, Long userId) throws Exception {
+	protected Long handleApplyAtDepartment(ApplicationInfo applicationInfo) throws Exception {
 
-		/*
-		Validate.notNull(instituteId, "InstituteService.applyAtDepartment - the instituteId cannot be null.");
-		Validate.notNull(departmentId, "InstituteService.applyAtDepartment - the dapartmentId cannot be null.");
-		Validate.notNull(userId, "InstituteService.applyAtDepartment - the userId cannot be null.");
+
+		Validate.notNull(applicationInfo, "InstituteService.applyAtDepartment - the applicationInfo cannot be null.");
 		
-		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute, "InstituteService.applyAtDepartment - cannot find an institute with the instituteId "+instituteId);
+		// Transform VO to entity
+		Application application = this.getApplicationDao().applicationInfoToEntity(applicationInfo);
+		Validate.notNull(application, "InstituteService.applyAtDepartment - cannot transform value object to entity");
 		
-		Department department = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(department, "InstituteService.applyAtDepartment - cannot find a department with the departmentId "+departmentId);
+		this.getApplicationDao().create(application);
 		
-		User user = this.getUserDao().load(userId);
-		Validate.notNull(user, "InstituteService.applyAtDepartment - cannot find a user with the userId "+userId);
-		
-		// Create Application object
-		Application application = Application.Factory.newInstance();
-		application.setApplicationDate(new Date(new GregorianCalendar().getTimeInMillis()));
-		application.setApplyingUser(user);
-		application.setConfirmed(false);
-		application.add(department);
-		application.add(institute);
-		
-		this.get
-		
-		// Apply at department
-		institute.getApplication().add(department);
-		
-		return institute.getApplication().getId();
-		*/
-		return null;
+		return application.getId();
 	}
 
 	@Override

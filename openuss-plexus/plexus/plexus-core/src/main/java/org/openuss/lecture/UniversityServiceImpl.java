@@ -45,6 +45,9 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		this.getUniversityDao().create(universityEntity);
 		Validate.notNull(universityEntity.getId(), "UniversityService.handleCreate - Couldn't create University");
 		
+		// Do not delete this!!! Set id of university VO for indexing
+		university.setId(universityEntity.getId());
+		
 		//Create default Groups for the University
 		GroupItem groupItem = new GroupItem();
 		groupItem.setName("UNIVERSITY_"+universityEntity.getId()+"_ADMINS");
