@@ -84,7 +84,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		logger.info("----> BEGIN access to removeInstitute test");
 		
 		//Create Secure context
-		User user = testUtility.createSecureContext();
+		testUtility.createSecureContext();
 		
 		//Create an Institute
 		Institute institute = testUtility.createUniqueInstituteInDB();
@@ -130,7 +130,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 	
 	public void testApplyAtDepartment () {
 		logger.debug("----> BEGIN access to applyAtDepartment test <---- ");
-		/*
+		
 		// Create Department
 		Department department = testUtility.createUniqueDepartmentInDB();
 		
@@ -139,14 +139,20 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		
 		flush();
 		
+		// Create Application
+		ApplicationInfo applicationInfo = new ApplicationInfo();
+		applicationInfo.setDepartmentId(department.getId());
+		applicationInfo.setInstituteId(institute.getId());
+		applicationInfo.setApplyingUserId(testUtility.createUniqueUserInDB().getId());
+		
 		// Test
-		ApplicationDao applicationDao = (ApplicationDao) this.getApplicationContext().getBean("applicationDao");
-		Long applicationId = this.getInstituteService().applyAtDepartment(institute.getId(), department.getId());
+		Long applicationId = this.getInstituteService().applyAtDepartment(applicationInfo);
 		assertNotNull(applicationId);
+		
+		ApplicationDao applicationDao = (ApplicationDao) this.getApplicationContext().getBean("applicationDao");
 		Application application = applicationDao.load(applicationId);
 		assertEquals(department, application.getDepartment());
-		assertEquals(institute, application.getInstitute());
-		*/
+		assertEquals(institute, application.getInstitute());		
 		
 		logger.debug("----> END access to applyAtDepartment test <---- ");
 	}

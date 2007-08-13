@@ -219,16 +219,20 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(applicationInfo, "InstituteService.applyAtDepartment - the applicationInfo cannot be null.");
 		Validate.isTrue(applicationInfo.getConfirmationDate() == null,
 				"InstituteService.applyAtDepartment - you cannot set the Confirmation Date yet.");
-		Validate.isTrue(!applicationInfo.getConfirmed(),
-		"InstituteService.applyAtDepartment - you Application cannot be confirmed yet.");
+		if (applicationInfo.getConfirmed() == null) {
+			applicationInfo.setConfirmed(false);
+		} else {
+			Validate.isTrue(!applicationInfo.getConfirmed(),
+					"InstituteService.applyAtDepartment - you Application cannot be confirmed yet.");
+		}
 		Validate.isTrue(applicationInfo.getConfirmingUserId() == null,
-		"InstituteService.applyAtDepartment - you cannot set the confirming User yet.");
+				"InstituteService.applyAtDepartment - you cannot set the confirming User yet.");
 
 		if ((applicationInfo.getApplicationDate() == null)) {
 			applicationInfo.setApplicationDate(new Date());
 		} else {
 			Validate.isTrue(!applicationInfo.getApplicationDate().after(new Date()),
-			"InstituteService.applyAtDepartment - Application Date is in the Future.");
+					"InstituteService.applyAtDepartment - Application Date is in the Future.");
 		}
 
 		// Transform VO to entity
@@ -252,7 +256,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 						+ applicationId);
 		Validate.isTrue(!application.getConfirmed(),
 				"DepartmentService.handleRemoveUnconfirmedApplication - the Application is already confirmed");
-		
+
 		application.getDepartment().getApplications().remove(application);
 		application.getInstitute().setApplication(null);
 		this.getApplicationDao().remove(application);
