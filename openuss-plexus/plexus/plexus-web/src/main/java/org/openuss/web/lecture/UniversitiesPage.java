@@ -137,21 +137,21 @@ public class UniversitiesPage extends BasePage{
 
 	
 	public String editUniversity(){
-		UniversityInfo university = currentUniversity();
-		setSessionBean(Constants.UNIVERSITY, university);
+		UniversityInfo universityInfo = currentUniversity();
+		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
 		
 		return Constants.UNIVERSITY_PAGE;
 	}
 	
 	public String confirmRemoveUniversity(){
-		UniversityInfo university = currentUniversity();
-		setSessionBean(Constants.UNIVERSITY, university);
+		UniversityInfo universityInfo = currentUniversity();
+		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
 		return "removed";
 	}
 
 	public String manageUniversity(){
-		UniversityInfo university = currentUniversity();
-		setSessionBean(Constants.UNIVERSITY, university);
+		UniversityInfo universityInfo = currentUniversity();
+		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
 		
 		return Constants.DEPARTMENT_MANAGEMENT;
 	}

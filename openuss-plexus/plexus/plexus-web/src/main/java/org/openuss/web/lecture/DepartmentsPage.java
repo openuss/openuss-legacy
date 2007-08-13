@@ -42,6 +42,9 @@ public class DepartmentsPage extends BasePage{
 	
 	private DepartmentTable departments = new DepartmentTable();
 	
+	@Property(value = "#{universityInfo}")
+	protected UniversityInfo universityInfo;
+
 	@Property(value = "#{departmentService}")
 	private DepartmentService departmentService;
 	
@@ -65,10 +68,9 @@ public class DepartmentsPage extends BasePage{
 			if (logger.isDebugEnabled()) {
 				logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+departments.getSortColumn());
 			}
-			//List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>(getDepartmentService().findDepartmentsByUniversity(7L));
-			DepartmentInfo department = new DepartmentInfo(20L,"d2","d2",DepartmentType.OFFICIAL,"d2",true);
 			List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>();
-			departmentList.add(department);
+		
+			
 			//sort(instituteList);
 			dataPage = new DataPage<DepartmentInfo>(departmentList.size(),0,departmentList);
 	}
@@ -108,6 +110,13 @@ public class DepartmentsPage extends BasePage{
 		this.departmentService = departmentService;
 	}
 
+	public UniversityInfo getUniversityInfo() {
+		return universityInfo;
+	}
+
+	public void setUniversityInfo(UniversityInfo universityInfo) {
+		this.universityInfo = universityInfo;
+	}
 	
 	/* ----------- institute sorting comparators -------------*/
 	

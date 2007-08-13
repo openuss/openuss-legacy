@@ -23,8 +23,8 @@ public abstract class AbstractDepartmentPage extends BasePage {
 
 	private static final Logger logger = Logger.getLogger(AbstractDepartmentPage.class);
 
-	@Property(value = "#{department}")
-	protected DepartmentInfo department;
+	@Property(value = "#{departmentInfo}")
+	protected DepartmentInfo departmentInfo;
 
 	@Property(value = "#{departmentService}")
 	protected DepartmentService departmentService;
@@ -40,19 +40,19 @@ public abstract class AbstractDepartmentPage extends BasePage {
 	public void preprocess() throws Exception {
 		super.preprocess();
 		logger.debug("preprocess - refreshing institute session object");
-		if (department != null) {
-			department = departmentService.findDepartment(department.getId());
+		if (departmentInfo != null) {
+			departmentInfo = departmentService.findDepartment(departmentInfo.getId());
 		} else {
-			department = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT);
+			departmentInfo = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT_INFO);
 		}
-		setSessionBean(Constants.DEPARTMENT, department);
+		setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);
 	}
 
 	@Prerender
 	public void prerender() throws LectureException {
 		logger.debug("prerender - refreshing department session object");
 		refreshDepartment();
-		if (department == null) {
+		if (departmentInfo == null) {
 			addError(i18n("message_error_no_department_selected"));
 			redirect(Constants.DESKTOP);
 		} 
@@ -61,28 +61,28 @@ public abstract class AbstractDepartmentPage extends BasePage {
 	}
 
 	private void refreshDepartment() {
-		if (department != null) {
-			department = departmentService.findDepartment(department.getId());
-			setSessionBean(Constants.DEPARTMENT, department);
+		if (departmentInfo != null) {
+			departmentInfo = departmentService.findDepartment(departmentInfo.getId());
+			setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);
 		}
 	}
 
 	private void generateCrumbs() {
 		crumbs.clear();
 		BreadCrumb departmentCrumb = new BreadCrumb();
-		departmentCrumb.setName(department.getShortcut());
+		departmentCrumb.setName(departmentInfo.getShortcut());
 		departmentCrumb.setLink(PageLinks.DEPARTMENT_PAGE);
-		departmentCrumb.addParameter("department", department.getId());
-		departmentCrumb.setHint(department.getName());
+		departmentCrumb.addParameter("departmentInfo", departmentInfo.getId());
+		departmentCrumb.setHint(departmentInfo.getName());
 		crumbs.add(departmentCrumb);
 	}
 
-	public DepartmentInfo getDepartment() {
-		return department;
+	public DepartmentInfo getDepartmentInfo() {
+		return departmentInfo;
 	}
 
-	public void setDepartment(DepartmentInfo department) {
-		this. department = department;
+	public void setDepartmentInfo(DepartmentInfo departmentInfo) {
+		this. departmentInfo = departmentInfo;
 	}
 
 	public DepartmentService getDepartmentService() {

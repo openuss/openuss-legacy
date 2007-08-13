@@ -17,25 +17,26 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 
 	private static final Logger logger = Logger.getLogger(InstituteRegistrationController.class);
 
-	protected UniversityInfo university = (UniversityInfo)this.getSessionBean(Constants.UNIVERSITY);
+	protected UniversityInfo universityInfo = (UniversityInfo)this.getSessionBean(Constants.UNIVERSITY_INFO);
 	
 	public String start() {
 		
 		logger.debug("start registration process");
-		department = new DepartmentInfo() ;
-		setSessionBean(Constants.DEPARTMENT, department);
+		departmentInfo = new DepartmentInfo() ;
+		setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);
 		
 		return Constants.DEPARTMENT_REGISTRATION_STEP1_PAGE;
 	}
 	
 	public String registrate() throws DesktopException, LectureException {
 		
-		// create department
-		department.setUniversityId(university.getId());
-		department.setDepartmentType(DepartmentType.OFFICIAL);
-		department.setOwnerName(user.getName());
-		department.setEnabled(true);
-		departmentService.create(department, user.getId());
+		//create department
+		departmentInfo.setUniversityId(universityInfo.getId());
+		departmentInfo.setDepartmentType(DepartmentType.OFFICIAL);
+		departmentInfo.setOwnerName(user.getName());
+		departmentInfo.setEnabled(true);
+		departmentService.create(departmentInfo, user.getId());
+	
 		//TODO send notification email
 		//FIXME this should be part of the business layer
 		//desktopService.linkDepartment(desktop, department);

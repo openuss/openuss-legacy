@@ -12,6 +12,8 @@ public class Constants {
 	// Session Entity Beans
 	public static final String UNIVERSITY = "university";
 	public static final String UNIVERSITY_INFO = "universityInfo";
+	public static final String DEPARTMENT = "department";
+	public static final String DEPARTMENT_INFO = "departmentInfo";
 	public static final String INSTITUTE = "institute";
 	public static final String INSTITUTE_INFO = "instituteInfo";
 	public static final String COURSE_TYPE = "courseType";
@@ -172,7 +174,7 @@ public class Constants {
 	public static final String DEPARTMENT_REGISTRATION_STEP2_PAGE = "department_registration_step1";
 	public static final String UNIVERSITY_PAGE = "university_command_edit";
 	public static final String UNIVERSITIES_PAGE = "manage_university";
-	public static final String DEPARTMENT = "department";
+	
 	public static final String DEPARTMENT_PAGE = "department";
 	public static final String DEPARTMENT_MANAGEMENT = "manage_department";
 }
