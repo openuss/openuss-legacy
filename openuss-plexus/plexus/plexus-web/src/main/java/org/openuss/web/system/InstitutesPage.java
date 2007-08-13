@@ -17,6 +17,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
@@ -25,6 +26,7 @@ import org.openuss.web.Constants;
 /**
  * 
  * @author Ingo Dueppe
+ * @author Malte Stockmann
  */
 @Bean(name="views$secured$system$institutes", scope=Scope.REQUEST)
 @View
@@ -34,6 +36,9 @@ public class InstitutesPage extends BasePage{
 
 	@Property (value="#{lectureService}")
 	private LectureService lectureService;
+	
+	@Property (value="#{instituteService}")
+	private InstituteService instituteService;
 	
 	private Set<InstituteInfo> changedInstitutes = new HashSet<InstituteInfo>();
 
@@ -94,14 +99,12 @@ public class InstitutesPage extends BasePage{
 	 * @return outcome
 	 */
 	public String save() {
-		for (InstituteInfo instituteDetails : changedInstitutes) {
-			Institute institute = lectureService.getInstitute(instituteDetails.getId());
-			institute.setEnabled(instituteDetails.getEnabled());
-			lectureService.persist(institute);
-			if (institute.getEnabled())
-				addMessage(i18n("system_message_institute_enabled", new Object[]{ institute.getName()}));
+		for (InstituteInfo instituteInfo : changedInstitutes) {
+			instituteService.update(instituteInfo);
+			if (instituteInfo.getEnabled())
+				addMessage(i18n("system_message_institute_enabled", new Object[]{ instituteInfo.getName()}));
 			else
-				addMessage(i18n("system_message_institute_disabled", new Object[]{ institute.getName()}));
+				addMessage(i18n("system_message_institute_disabled", new Object[]{ instituteInfo.getName()}));
 		}
 		return Constants.SUCCESS;
 	}
@@ -141,6 +144,14 @@ public class InstitutesPage extends BasePage{
 
 	public void setProvider(InstituteDataProvider provider) {
 		this.provider = provider;
+	}
+
+	public InstituteService getInstituteService() {
+		return instituteService;
+	}
+
+	public void setInstituteService(InstituteService instituteService) {
+		this.instituteService = instituteService;
 	}
 
 }
