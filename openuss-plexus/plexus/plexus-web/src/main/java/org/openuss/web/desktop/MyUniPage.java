@@ -223,7 +223,7 @@ public class MyUniPage extends BasePage {
 		myUniDataSet = new MyUniDataSet();
 		Iterator iterator;
 		
-		
+/*		
 		List<Course> courses = desktop.getCourses();
 		List<Institute> instituteBookmarks = desktop.getInstitutes();
 		List<Department> departmentBookmarks = desktop.getDepartments();
@@ -246,7 +246,8 @@ public class MyUniPage extends BasePage {
 			Department department = (Department)iterator.next();
 			myUniDataSet.processDepartmentBookmark(department);
 		}
-		
+*/
+		myUniDataSet.loadTestData();
 		
 	}
 
@@ -355,6 +356,152 @@ public class MyUniPage extends BasePage {
 			Long uniID = processInstitute(course.getCourseType().getInstitute(), isCurrent);
 			uniDataSets.get(uniID).addCourse(courseDao.toCourseInfo(course), isCurrent);
 			return uniID;
+		}
+		
+		public void loadTestData()
+		{
+			UniversityInfo uniInfo;
+			DepartmentInfo departmentInfo;
+			CourseInfo courseInfo;
+			UniversityDataSet uniDataSet;
+			
+			
+			// Create Uni 1 and Subitems
+			uniInfo = new UniversityInfo();
+			uniInfo.setId(1L);
+			uniInfo.setName("Uni 1");
+			uniDataSet = new UniversityDataSet(uniInfo);
+			
+			departmentInfo = new DepartmentInfo();
+			departmentInfo.setId(1L);
+			departmentInfo.setName("Department 1");
+			departmentInfo.setUniversityId(1L);
+			uniDataSet.addDepartment(departmentInfo);
+			
+			departmentInfo = new DepartmentInfo();
+			departmentInfo.setId(2L);
+			departmentInfo.setName("Department 2");
+			departmentInfo.setUniversityId(1L);
+			uniDataSet.addDepartment(departmentInfo);
+			
+			departmentInfo = new DepartmentInfo();
+			departmentInfo.setId(3L);
+			departmentInfo.setName("Department 3");
+			departmentInfo.setUniversityId(1L);
+			uniDataSet.addDepartment(departmentInfo);
+			
+			courseInfo = new CourseInfo();
+			courseInfo.setId(1L);
+			courseInfo.setName("Course 1");
+			uniDataSet.addCourse(courseInfo, true);
+			
+			courseInfo = new CourseInfo();
+			courseInfo.setId(2L);
+			courseInfo.setName("Course 2");
+			uniDataSet.addCourse(courseInfo, true);
+			
+			courseInfo = new CourseInfo();
+			courseInfo.setId(3L);
+			courseInfo.setName("Course 3");
+			uniDataSet.addCourse(courseInfo, false);
+			
+			courseInfo = new CourseInfo();
+			courseInfo.setId(4L);
+			courseInfo.setName("Course 4");
+			uniDataSet.addCourse(courseInfo, false);
+
+			uniDataSets.put(1L, uniDataSet);
+		
+			// Create Uni 2 and subitems
+			uniInfo = new UniversityInfo();
+			uniInfo.setId(2L);
+			uniInfo.setName("Uni 2");
+			uniDataSet = new UniversityDataSet(uniInfo);
+			
+			
+			departmentInfo = new DepartmentInfo();
+			departmentInfo.setId(4L);
+			departmentInfo.setName("Department 4");
+			departmentInfo.setUniversityId(2L);
+			uniDataSet.addDepartment(departmentInfo);
+			
+			departmentInfo = new DepartmentInfo();
+			departmentInfo.setId(5L);
+			departmentInfo.setName("Department 5");
+			departmentInfo.setUniversityId(2L);
+			uniDataSet.addDepartment(departmentInfo);
+			
+			
+			courseInfo = new CourseInfo();
+			courseInfo.setId(1L);
+			courseInfo.setName("Course 1");
+			uniDataSet.addCourse(courseInfo, true);
+			
+			courseInfo = new CourseInfo();
+			courseInfo.setId(2L);
+			courseInfo.setName("Course 2");
+			uniDataSet.addCourse(courseInfo, true);
+			
+			courseInfo = new CourseInfo();
+			courseInfo.setId(3L);
+			courseInfo.setName("Course 3");
+			uniDataSet.addCourse(courseInfo, true);
+			
+			courseInfo = new CourseInfo();
+			courseInfo.setId(4L);
+			courseInfo.setName("Course 4");
+			uniDataSet.addCourse(courseInfo, false);
+			
+			uniDataSets.put(2L, uniDataSet);
+			
+			// Create Uni 3 and subitems
+			uniInfo = new UniversityInfo();
+			uniInfo.setId(3L);
+			uniInfo.setName("Uni 3");
+			uniDataSet = new UniversityDataSet(uniInfo);
+			
+			departmentInfo = new DepartmentInfo();
+			departmentInfo.setId(6L);
+			departmentInfo.setName("Department 6");
+			departmentInfo.setUniversityId(3L);
+			uniDataSet.addDepartment(departmentInfo);
+			
+			departmentInfo = new DepartmentInfo();
+			departmentInfo.setId(7L);
+			departmentInfo.setName("Department 7");
+			departmentInfo.setUniversityId(3L);
+			uniDataSet.addDepartment(departmentInfo);
+			
+			departmentInfo = new DepartmentInfo();
+			departmentInfo.setId(8L);
+			departmentInfo.setName("Department 8");
+			departmentInfo.setUniversityId(8L);
+			uniDataSet.addDepartment(departmentInfo);
+			
+			
+			courseInfo = new CourseInfo();
+			courseInfo.setId(1L);
+			courseInfo.setName("Course 1");
+			uniDataSet.addCourse(courseInfo, true);
+			
+			courseInfo = new CourseInfo();
+			courseInfo.setId(2L);
+			courseInfo.setName("Course 2");
+			uniDataSet.addCourse(courseInfo, false);
+			
+			courseInfo = new CourseInfo();
+			courseInfo.setId(3L);
+			courseInfo.setName("Course 3");
+			uniDataSet.addCourse(courseInfo, false);
+			
+			courseInfo = new CourseInfo();
+			courseInfo.setId(4L);
+			courseInfo.setName("Course 4");
+			uniDataSet.addCourse(courseInfo, false);
+			
+			
+			uniDataSets.put(3L, uniDataSet);
+			
 		}
 		
 		
