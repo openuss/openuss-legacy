@@ -31,6 +31,7 @@ import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
 import org.openuss.security.MembershipDao;
 import org.openuss.security.Roles;
+import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserContact;
 import org.openuss.security.UserDao;
@@ -41,6 +42,8 @@ import org.openuss.security.UserPreferences;
  * Test Utility to generate default database structures
  * 
  * @author Ingo Dueppe
+ * @author Ron Haus
+ * @author Florian Dondorf
  */
 public class TestUtility {
 
@@ -63,6 +66,8 @@ public class TestUtility {
 	private ApplicationDao applicationDao;
 	
 	private PeriodDao periodDao;
+	
+	private SecurityService securityService;
 
 	private User defaultUser;
 
@@ -200,6 +205,8 @@ public class TestUtility {
 		
 		universityDao.create(university);
 		
+		this.getSecurityService().createObjectIdentity(university, null);
+		
 		return university;
 	}
 	
@@ -231,6 +238,8 @@ public class TestUtility {
 		
 		departmentDao.create(department);
 		
+		this.getSecurityService().createObjectIdentity(department, university);
+		
 		return department;		
 	}
 	
@@ -257,11 +266,12 @@ public class TestUtility {
 		institute.setTheme("plexus");
 		institute.setWebsite("www.openuss.de");
 		
-		//department.add(institute);
-		department.getInstitutes().add(institute);
+		department.add(institute);
 		institute.setDepartment(department);
 		
 		instituteDao.create(institute);
+		
+		this.getSecurityService().createObjectIdentity(institute, department);
 		
 		return institute;		
 	}
@@ -276,15 +286,17 @@ public class TestUtility {
 		courseType.setShortcut(unique("CT"));
 		courseType.setDescription("A unique CourseType");
 		courseType.setInstitute(institute);
-		//institute.add(courseType);
-		institute.getCourseTypes().add(courseType);
+		institute.add(courseType);
 		
 		courseTypeDao.create(courseType);
+		
+		this.getSecurityService().createObjectIdentity(courseType, institute);
 		
 		return courseType;		
 	}
 	
 	public Course createUniqueCourseInDB() {
+
 		// Create a unique CourseType
 		CourseType courseType = this.createUniqueCourseTypeInDB();
 		
@@ -292,7 +304,7 @@ public class TestUtility {
 		Course course =  Course.Factory.newInstance();
 		course.setShortcut(unique("cou"));
 		course.setDescription("A unique Course");
-		course.setAccessType(AccessType.OPEN);
+		course.setAccessType(AccessType.APPLICATION);
 		course.setDocuments(false);
 		course.setDiscussion(false);
 		course.setNewsletter(false);
@@ -302,10 +314,10 @@ public class TestUtility {
 		course.setBraincontest(false);
 		course.setCourseType(courseType);
 		course.setPeriod(this.createUniquePeriodInDB());
-		//courseType.add(course);
-		courseType.getCourses().add(course);
+		courseType.add(course);
 		
 		courseDao.create(course);
+		this.getSecurityService().createObjectIdentity(course, courseType);
 		
 		return course;		
 	}
@@ -526,6 +538,14 @@ public class TestUtility {
 
 	public PeriodDao getPeriodDao() {
 		return periodDao;
+	}
+
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
 	}
 	
 	

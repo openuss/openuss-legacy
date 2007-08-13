@@ -32,13 +32,13 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	@Override
 	public Long handleCreate (CourseInfo courseInfo) {
 		
-		//TODO: Security
-		
 		Validate.notNull(courseInfo, "CourseServiceImpl.handleCreate - courseInfo cannot be null.");
 		
 		// Transform VO to entity
 		Course courseEntity = this.getCourseDao().courseInfoToEntity(courseInfo);
 		Validate.notNull(courseEntity, "CourseServiceImpl.handleCreate - cannot transform courseInfo to entity.");
+		
+		Institute institute = courseEntity.getCourseType().getInstitute();
 		
 		// Save entity
 		this.getCourseDao().create(courseEntity);
@@ -46,6 +46,9 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		
 		// do not delete this!!! Set id of courseInfo for indexing.
 		courseInfo.setId(courseEntity.getId());
+		
+		//TODO: Security
+		this.getSecurityService().createObjectIdentity(courseEntity, institute);
 		
 		return courseEntity.getId();
 	}

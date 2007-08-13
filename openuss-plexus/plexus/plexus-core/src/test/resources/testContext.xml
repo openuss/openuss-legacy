@@ -71,6 +71,9 @@
 		<property name="periodDao">
 			<ref bean="periodDao" />
 		</property>
+		<property name="securityService">
+			<ref bean="securityService" />
+		</property>
 	</bean>
 
 	<bean id="lectureBuilder"
