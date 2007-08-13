@@ -698,13 +698,24 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>university_period_add</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiodedit.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>university_data</from-outcome>
 			<to-view-id>/views/secured/lecture/universityoptions.xhtml</to-view-id>
 		</navigation-case>
 		
+
 		<navigation-case>
 			<from-outcome>university_members</from-outcome>
 			<to-view-id>/views/secured/lecture/auth/universityMembers.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_aspirants</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/universityAspirants.xhtml</to-view-id>
 		</navigation-case>
 
 	</navigation-rule>
@@ -722,6 +733,21 @@
 		<navigation-case>
 			<from-outcome>department_members</from-outcome>
 			<to-view-id>/views/secured/lecture/auth/departmentMembers.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_departments</from-outcome>
+			<to-view-id>/views/secured/lecture/instituteDepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>manage_institute</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentinstitutes.xhtml</to-view-id>
+		</navigation-case>		
+				
+		<navigation-case>
+			<from-outcome>department_aspirants</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/departmentaspirants.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	
