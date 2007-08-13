@@ -29,6 +29,8 @@ public class UniversityIndexingAspect {
 		try {
 			logger.debug("method createUniversityIndex: createIndex");
 			university = universityDao.universityInfoToEntity(universityInfo);
+			logger.debug("University Entity Id:");
+			logger.debug(university.getId());
 			indexerService.createIndex(university);
 		} catch (IndexerApplicationException e) {
 			logger.error(e);

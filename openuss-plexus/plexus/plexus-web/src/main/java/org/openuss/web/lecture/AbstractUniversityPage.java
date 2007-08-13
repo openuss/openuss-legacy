@@ -91,6 +91,7 @@ public abstract class AbstractUniversityPage extends BasePage {
 	public void setUniversityService(UniversityService universityService) {
 		this.universityService = universityService;
 	}
+	
 
 
 }
