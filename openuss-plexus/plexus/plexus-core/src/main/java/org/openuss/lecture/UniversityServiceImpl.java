@@ -245,7 +245,22 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 */
 	@SuppressWarnings( { "unchecked" })
 	protected List handleFindUniversitiesByType(UniversityType type) throws Exception {
-		//TODO: Implement me!
-		throw new UnsupportedOperationException("Operation is not implemented yet.");
+
+		Validate.notNull(type, "UniversityService.findUNiversitiesByType");
+		
+		List<University> enabledUniversities = this.getUniversityDao().findByEnabled(true);
+		
+		List universityInfos = new ArrayList();
+		for (University university : enabledUniversities) {
+			if (university.getUniversityType() == type) {
+				universityInfos.add(this.getUniversityDao().toUniversityInfo(university));
+			}
+		}
+		
+		return universityInfos;
 	}
+	
+	
+	
+	
 }

@@ -19,6 +19,7 @@ import org.openuss.security.User;
  * JUnit Test for Spring Hibernate UniversityService class.
  * @see org.openuss.lecture.UniversityService
  * @author Ron Haus
+ * @author Florian Dondorf
  */
 public class UniversityServiceIntegrationTest extends UniversityServiceIntegrationTestBase {
 	
@@ -397,6 +398,50 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertEquals(university3.getName(), universitiesByUser.get(1).getName());
 		
 		logger.info("----> END access to findUniversitiesByUser test");
+	}
+	
+	public void testFindUniversitiesByType () {
+		logger.info("----> BEGIN access to findUniversitiesByType test");
+		
+		// Create Universities
+		University university1 = testUtility.createUniqueUniversityInDB();
+		university1.setUniversityType(UniversityType.UNIVERSITY);
+		
+		University university2 = testUtility.createUniqueUniversityInDB();
+		university2.setUniversityType(UniversityType.COMPANY);
+		
+		University university3 = testUtility.createUniqueUniversityInDB();
+		university3.setUniversityType(UniversityType.MISC);
+		
+		University university4 = testUtility.createUniqueUniversityInDB();
+		university4.setUniversityType(UniversityType.UNIVERSITY);
+		
+		University university5 = testUtility.createUniqueUniversityInDB();
+		university5.setUniversityType(UniversityType.COMPANY);
+
+		University university6 = testUtility.createUniqueUniversityInDB();
+		university6.setUniversityType(UniversityType.COMPANY);
+		
+		flush();
+		
+		//Test
+		List<UniversityInfo> universities = this.getUniversityService().findUniversitiesByType(UniversityType.UNIVERSITY);
+		assertNotNull(universities);
+		assertEquals(2, universities.size());
+		assertEquals(university1.getName(), universities.get(0).getName());
+		
+		universities = this.getUniversityService().findUniversitiesByType(UniversityType.COMPANY);
+		assertNotNull(universities);
+		assertEquals(3, universities.size());
+		assertEquals(university5.getName(), universities.get(1).getName());
+		
+		universities = this.getUniversityService().findUniversitiesByType(UniversityType.MISC);
+		assertNotNull(universities);
+		assertEquals(1, universities.size());
+		assertEquals(university3.getName(), universities.get(0).getName());
+		
+		
+		logger.info("----> END access to findUniversitiesByType test");
 	}
 	
 }
