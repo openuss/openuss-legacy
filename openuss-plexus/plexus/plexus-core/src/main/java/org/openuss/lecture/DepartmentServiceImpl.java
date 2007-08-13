@@ -42,13 +42,16 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		// Create Groups for Department
 		GroupItem groupItem = new GroupItem();
-		groupItem.setName("DEPARTMENT_" + department.getId() + "_ADMINS");
+		groupItem.setName("DEPARTMENT_" + departmentEntity.getId() + "_ADMINS");
 		groupItem.setLabel("autogroup_administrator_label");
 		groupItem.setGroupType(GroupType.ADMINISTRATOR);
 		Group admins = this.getOrganisationService().createGroup(departmentEntity.getId(), groupItem);
 
 		// TODO: Security
+		// Create Object Identity
+		this.getSecurityService().createObjectIdentity(departmentEntity, null);
 		
+		//this.getSecurityService().setPermissions(admins, object, );
 		
 		// Add Owner to Members and Group of Administrators
 		this.getOrganisationService().addMember(departmentEntity.getId(), userId);
