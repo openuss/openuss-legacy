@@ -113,7 +113,6 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 */
 	public void resultTypeChanged(ValueChangeEvent vce){
 		logger.debug(">>> resultTypeChanged");
-		logger.debug("new value: "+vce.getNewValue().toString());
 		
 		List<SelectItem> universitiesToDisplay = new ArrayList<SelectItem>();
 		UniversityInfo universityInfo;
@@ -144,7 +143,6 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 */
 	public void organisationChanged(ValueChangeEvent vce){
 		logger.debug(">>> organisationChanged");
-		logger.debug("new value: "+vce.getNewValue().toString());
 		
 		List<SelectItem> departmentsToDisplay = new ArrayList<SelectItem>();
 		DepartmentInfo departmentInfo;
@@ -175,7 +173,6 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 */
 	public void suborganisationChanged(ValueChangeEvent vce){
 		logger.debug(">>> suborganisationChanged");
-		logger.debug("new value: "+vce.getNewValue().toString());
 		
 		List<SelectItem> institutesToDisplay = new ArrayList<SelectItem>();
 		InstituteInfo instituteInfo;
@@ -205,7 +202,6 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 */
 	public void institutionChanged(ValueChangeEvent vce){
 		logger.debug(">>> institutionChanged");
-		logger.debug("new value: "+vce.getNewValue().toString());
 		
 		List<SelectItem> courseTypesToDisplay = new ArrayList<SelectItem>();
 		List<SelectItem> periodToDisplay = new ArrayList<SelectItem>();
