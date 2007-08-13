@@ -6,6 +6,7 @@
 package org.openuss.lecture;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -36,10 +37,10 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				"InstituteService.handleCreate - the Institute shouldn't have an ID yet");
 		Validate.isTrue(instituteInfo.getDepartmentId() == null,
 				"InstituteService.handleCreate - You cannot set the DepartmentID, you must apply first");
-		
+
 		// Transform ValueObject into Entity
 		Institute instituteEntity = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
-		
+
 		// Create a default Membership for the University
 		Membership membership = Membership.Factory.newInstance();
 		instituteEntity.setMembership(membership);
@@ -47,7 +48,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		// Create the Institute
 		this.getInstituteDao().create(instituteEntity);
 		Validate.notNull(instituteEntity.getId(), "InstituteService.handleCreate - Couldn't create Institute");
-		
+
 		// Do not delete this!!! Set id of institute VO for indexing
 		instituteInfo.setId(instituteEntity.getId());
 
@@ -73,9 +74,10 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		// TODO Set Security for Groups
 		// Create Object Identity
 		this.getSecurityService().createObjectIdentity(instituteEntity, null);
-		
+
 		// Add permissions -> ACL Entry for each group
-		this.getSecurityService().setPermissions(adminsGroup, instituteEntity, LectureAclEntry.INSTITUTE_ADMINISTRATION);
+		this.getSecurityService()
+				.setPermissions(adminsGroup, instituteEntity, LectureAclEntry.INSTITUTE_ADMINISTRATION);
 		this.getSecurityService().setPermissions(assistantsGroup, instituteEntity, LectureAclEntry.INSTITUTE_ASSIST);
 		this.getSecurityService().setPermissions(tutorsGroup, instituteEntity, LectureAclEntry.INSTITUTE_TUTOR);
 
@@ -196,12 +198,13 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	@SuppressWarnings( { "unchecked" })
 	@Override
 	protected List handleFindInstitutesByEnabled(Boolean enabledOnly) throws Exception {
-		
-		Validate.notNull(enabledOnly, "InstituteServiceImpl.handleFindInstitutesByEnabled - enabledOnly cannot be null.");
-		
+
+		Validate.notNull(enabledOnly,
+				"InstituteServiceImpl.handleFindInstitutesByEnabled - enabledOnly cannot be null.");
+
 		return this.getInstituteDao().findByEnabled(enabledOnly);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -209,40 +212,64 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	protected InstituteSecurity handleGetInstituteSecurity(Long instituteId) throws Exception {
 		return (InstituteSecurity) getInstituteDao().load(InstituteDao.TRANSFORM_INSTITUTESECURITY, instituteId);
 	}
-	
+
 	@Override
 	protected Long handleApplyAtDepartment(ApplicationInfo applicationInfo) throws Exception {
 
-
 		Validate.notNull(applicationInfo, "InstituteService.applyAtDepartment - the applicationInfo cannot be null.");
-		
+		Validate.isTrue(applicationInfo.getConfirmationDate() == null,
+				"InstituteService.applyAtDepartment - you cannot set the Confirmation Date yet.");
+		Validate.isTrue(!applicationInfo.getConfirmed(),
+		"InstituteService.applyAtDepartment - you Application cannot be confirmed yet.");
+		Validate.isTrue(applicationInfo.getConfirmingUserId() == null,
+		"InstituteService.applyAtDepartment - you cannot set the confirming User yet.");
+
+		if ((applicationInfo.getApplicationDate() == null)) {
+			applicationInfo.setApplicationDate(new Date());
+		} else {
+			Validate.isTrue(!applicationInfo.getApplicationDate().after(new Date()),
+			"InstituteService.applyAtDepartment - Application Date is in the Future.");
+		}
+
 		// Transform VO to entity
 		Application application = this.getApplicationDao().applicationInfoToEntity(applicationInfo);
 		Validate.notNull(application, "InstituteService.applyAtDepartment - cannot transform value object to entity");
-		
+
 		this.getApplicationDao().create(application);
-		
+
 		return application.getId();
 	}
 
 	@Override
 	protected void handleRemoveUnconfirmedApplication(Long applicationId) throws Exception {
-		// TODO Auto-generated method stub
+
+		Validate.notNull(applicationId,
+				"DepartmentService.handleRemoveUnconfirmedApplication - the applicationId cannot be null");
+
+		Application application = this.getApplicationDao().load(applicationId);
+		Validate.notNull(application,
+				"DepartmentService.handleRemoveUnconfirmedApplication - no Application found corresponding to the ID "
+						+ applicationId);
+		Validate.isTrue(!application.getConfirmed(),
+				"DepartmentService.handleRemoveUnconfirmedApplication - the Application is already confirmed");
+		
+		application.getDepartment().getApplications().remove(application);
+		application.getInstitute().setApplication(null);
+		this.getApplicationDao().remove(application);
 
 	}
-	
+
 	@Override
 	public boolean handleIsNoneExistingInstituteShortcut(InstituteInfo self, String shortcut) throws Exception {
 		Institute found = getInstituteDao().findByShortcut(shortcut);
 		return isEqualOrNull(self, found);
 	}
-	
-	
-	
+
 	/*------------------- private methods -------------------- */
-	
+
 	/**
-	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self entry.
+	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self
+	 * entry.
 	 * <ul>
 	 * <li>self == null AND found == null => <b>true</b></li>
 	 * <li>self == null AND found <> null => <b>false</b></li>

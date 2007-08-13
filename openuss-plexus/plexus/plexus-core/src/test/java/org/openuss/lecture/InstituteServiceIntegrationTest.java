@@ -5,7 +5,7 @@
  */
 package org.openuss.lecture;
 
-import java.util.List;
+import java.util.Date;
 
 import org.openuss.security.User;
 
@@ -149,5 +149,41 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		*/
 		
 		logger.debug("----> END access to applyAtDepartment test <---- ");
+	}
+	
+	public void testRemoveUnconfirmedApplication () {
+		logger.debug("----> BEGIN access to removeUnconfirmedDepartment test <---- ");
+
+		// Create Department
+		Department department = testUtility.createUniqueDepartmentInDB();
+		
+		// Create Institute
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		
+		//Apply
+		Application application = Application.Factory.newInstance();
+		application.setDepartment(department);
+		application.setInstitute(institute);
+		application.setApplyingUser(testUtility.createUniqueUserInDB());
+		application.setApplicationDate(new Date());
+		
+		
+		department.getApplications().add(application);
+		institute.setApplication(application);
+		ApplicationDao applicationDao = (ApplicationDao) this.getApplicationContext().getBean("applicationDao");
+		applicationDao.create(application);
+		assertNotNull(application.getId());
+		
+		//Synchronize with Database
+		flush();
+		
+		// Test
+		this.getInstituteService().removeUnconfirmedApplication(application.getId());
+		Application application2 = applicationDao.load(application.getId());
+		assertNull(application2);
+		assertFalse(department.getApplications().contains(application));
+		assertNull(institute.getApplication());
+		
+		logger.debug("----> END access to removeUnconfirmedDepartment test <---- ");
 	}
 }
