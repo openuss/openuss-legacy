@@ -200,7 +200,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		flush();
 		
 		//Test
-		List<DepartmentInfo> departments = this.getDepartmentService().findDepartmentsByUniversity(university.getId());
+		List<DepartmentInfo> departments = this.getDepartmentService().findDepartmentsByUniversity(191L);
 		assertNotNull(departments);
 		//assertEquals(1, departments.size());
 		assertEquals(2, departments.size());

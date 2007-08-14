@@ -14,6 +14,7 @@ import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.User;
+import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @see org.openuss.lecture.DepartmentService
@@ -53,6 +54,9 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		// TODO: Security
 		// Create Object Identity
 		this.getSecurityService().createObjectIdentity(departmentEntity, null);
+		
+		// Add permissions -> ACL Entry for each group
+		this.getSecurityService().setPermissions(admins, departmentEntity, LectureAclEntry.DEPARTMENT_ADMINISTRATION);
 		
 		//this.getSecurityService().setPermissions(admins, object, );
 		
@@ -125,10 +129,14 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 				"DepartmentService.handleFindDepartmentsByUniversity - the universityId cannot be null");
 
 		University university = this.getUniversityDao().load(universityId);
+		/*
 		Validate.notNull(university,
 				"DepartmentService.handleFindDepartmentsByUniversity - no University found corresponding to the ID "
 						+ universityId);
-
+		*/
+		if (university == null) {
+			return new ArrayList();
+		}
 		List departmentInfos = new ArrayList();
 		for (Department department : university.getDepartments()) {
 			departmentInfos.add(this.getDepartmentDao().toDepartmentInfo(department));

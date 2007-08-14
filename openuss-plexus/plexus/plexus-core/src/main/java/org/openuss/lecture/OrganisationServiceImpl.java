@@ -6,15 +6,19 @@
 package org.openuss.lecture;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.Validate;
+import org.openuss.registration.RegistrationException;
 import org.openuss.security.Group;
 import org.openuss.security.User;
+import org.openuss.system.SystemProperties;
 
 /**
  * @see org.openuss.lecture.OrganisationService
- * @author Ron Haus
+ * @author Ron Haus, Florian Dondorf
  */
 public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationServiceBase {
 
@@ -179,6 +183,21 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 				+ groupId);
 		
 		this.getSecurityService().removeAuthorityFromGroup(user, group);
+	}
+	
+	/**
+	 * @see org.openuss.lecture.OrganisationService#sendActivationCode(org.openuss.lecture.Organisation)
+	 */
+	protected void handleSendActivationCode(Organisation organisation) throws RegistrationException {
+		/*
+		String activationCode = getRegistrationService().generateInstituteActivationCode(institute);
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("institutename", institute.getName() + "(" + institute.getShortcut() + ")");
+		parameters.put("institutelink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
+				+ "actions/public/lecture/instituteactivation.faces?code=" + activationCode);
+		getMessageService().sendMessage(institute.getShortcut(), "institute.activation.subject", "instituteactivation",
+				parameters, institute.getEmail(), institute.getLocale());
+		*/
 	}
 
 }

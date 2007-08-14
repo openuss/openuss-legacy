@@ -16,6 +16,7 @@ import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
 import org.openuss.security.User;
+import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @see org.openuss.lecture.UniversityService
@@ -54,6 +55,11 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		groupItem.setLabel("autogroup_administrator_label");
 		groupItem.setGroupType(GroupType.ADMINISTRATOR);
 		Group admins = this.getOrganisationService().createGroup(universityEntity.getId(), groupItem);
+		
+		//Security
+		this.getSecurityService().createObjectIdentity(universityEntity, null);
+		
+		this.getSecurityService().setPermissions(admins, universityEntity, LectureAclEntry.UNIVERSITY_ADMINISTRATION);
 		
 		//Add Owner to Members and Group of Administrators
 		this.getOrganisationService().addMember(universityEntity.getId(), userId);
