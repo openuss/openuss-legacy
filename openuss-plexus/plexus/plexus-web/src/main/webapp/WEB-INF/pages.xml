@@ -1,6 +1,10 @@
 <pages>
-	<page view-id="/views/secured/lecture/*">
+	<page view-id="/views/secured/lecture/institute.xhtml">
 		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/lecture/university.xhtml">
+		<parameter name="university" value="#{universityInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<page view-id="/views/secured/lecture/auth/*">

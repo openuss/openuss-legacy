@@ -60,8 +60,11 @@ public abstract class AbstractUniversityPage extends BasePage {
 	}
 
 	private void refreshUniversity() {
+		logger.debug("Starting method refresh university");
 		if (universityInfo != null) {
+			logger.debug(universityInfo.getId());
 			universityInfo = universityService.findUniversity(universityInfo.getId());
+			logger.debug(universityInfo.getId());
 			setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
 		}
 	}

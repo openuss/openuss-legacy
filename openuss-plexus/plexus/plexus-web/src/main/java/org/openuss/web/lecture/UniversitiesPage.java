@@ -27,6 +27,7 @@ import org.openuss.web.Constants;
  * @author Tianyu Wang
  * @author Weijun Chen
  * @author Kai Stettner
+ * 
  */
 @Bean(name = "views$public$university$universities", scope = Scope.REQUEST)
 @View
