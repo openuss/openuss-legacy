@@ -3,7 +3,7 @@
 		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
-	<page view-id="/views/secured/lecture/university.xhtml">
+	<page view-id="/views/public/university/university.xhtml">
 		<parameter name="university" value="#{universityInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
