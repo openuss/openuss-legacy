@@ -18,6 +18,7 @@ import org.openuss.web.Constants;
  * Periods Remove Page Controller
  * 
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 @Bean(name = "views$secured$lecture$periodremove", scope = Scope.REQUEST)
 @View
@@ -29,9 +30,9 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 	@Override
 	public void preprocess() throws Exception {
 		super.preprocess();
-		if (period != null) {
-			period = lectureService.getPeriod(period.getId());
-			setSessionBean(Constants.PERIOD, period);
+		if (periodInfo != null) {
+			periodInfo = universityService.findPeriod(periodInfo.getId());
+			setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		}
 	}
 
@@ -39,9 +40,9 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 	@Override
 	public void prerender() throws LectureException {
 		super.prerender();
-		if (period != null) {
-			period = lectureService.getPeriod(period.getId());
-			setSessionBean(Constants.PERIOD, period);
+		if (periodInfo != null) {
+			periodInfo = universityService.findPeriod(periodInfo.getId());
+			setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		}
 		addPageCrumb();
 	}
@@ -64,8 +65,8 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 	public String removePeriod() throws LectureException {
 		if (logger.isDebugEnabled())
 			logger.debug("Remove Period");
-		lectureService.removePeriod(period.getId());
-		removeSessionBean(Constants.PERIOD);
+		universityService.removePeriod(periodInfo.getId());
+		removeSessionBean(Constants.PERIOD_INFO);
 		return Constants.INSTITUTE_PERIODS_PAGE;
 	}
 
