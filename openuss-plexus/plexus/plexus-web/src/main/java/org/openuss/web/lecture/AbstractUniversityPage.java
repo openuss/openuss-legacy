@@ -38,7 +38,7 @@ public abstract class AbstractUniversityPage extends BasePage {
 	@Preprocess
 	public void preprocess() throws Exception {
 		super.preprocess();
-		logger.debug("preprocess - refreshing institute session object");
+		logger.debug("preprocess - refreshing university session object");
 		if (universityInfo != null) {
 			universityInfo = universityService.findUniversity(universityInfo.getId());
 		} else {
@@ -49,10 +49,10 @@ public abstract class AbstractUniversityPage extends BasePage {
 
 	@Prerender
 	public void prerender() throws LectureException {
-		logger.debug("prerender - refreshing institute session object");
+		logger.debug("prerender - refreshing university session object");
 		refreshUniversity();
 		if (universityInfo == null) {
-			addError(i18n("message_error_no_institute_selected"));
+			addError(i18n("message_error_no_university_selected"));
 			redirect(Constants.DESKTOP);
 		} 
 			//generateCrumbs();

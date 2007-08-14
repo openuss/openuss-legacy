@@ -131,6 +131,11 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>university_create</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/universityStart.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>manage_department</from-outcome>
 			<to-view-id>/views/secured/lecture/university.xhtml</to-view-id>
 		</navigation-case>		
@@ -251,10 +256,6 @@
 		<navigation-case>
 			<from-outcome>institute_create</from-outcome>
 			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>university_create</from-outcome>
-			<to-view-id>/views/secured/lecture/registration/universityStart.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>department_create</from-outcome>

@@ -67,9 +67,9 @@
     NAME="output15" PATH="/views/secured/user/userprofile.xhtml"
     TARGET="rules:#views#secured#user#userprofile.xhtml" TITLE="user_profile_view"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="administration::#views#secured#system#properties.xhtml"
-    NAME="output16" PATH="/views/secured/system/properties.xhtml"
-    TARGET="rules:#views#secured#system#properties.xhtml" TITLE="administration"/>
+    ID="closePopupFrame::#views#public#popup#closePopupFrame.xhtml"
+    NAME="output16" PATH="/views/public/popup/closePopupFrame.xhtml"
+    TARGET="rules:#views#public#popup#closePopupFrame.xhtml" TITLE="closePopupFrame"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="secure_password_change::#views#secured#user#newPassword.xhtml"
     NAME="output17" PATH="/views/secured/user/newPassword.xhtml"
@@ -95,9 +95,15 @@
     NAME="output22" PATH="/views/public/university/universities.xhtml"
     TARGET="rules:#views#public#university#universities.xhtml" TITLE="manage_university"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="manage_department::#views#secured#lecture#university.xhtml"
-    NAME="output23" PATH="/views/secured/lecture/university.xhtml"
-    TARGET="rules:#views#secured#lecture#university.xhtml" TITLE="manage_department"/>
+    ID="university_create::#views#secured#lecture#registration#universityStart.xhtml"
+    NAME="output23"
+    PATH="/views/secured/lecture/registration/universityStart.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#universityStart.xhtml" TITLE="university_create"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="manage_institute::#views#secured#lecture#departmentinstitutes.xhtml"
+    NAME="output24"
+    PATH="/views/secured/lecture/departmentinstitutes.xhtml"
+    TARGET="rules:#views#secured#lecture#departmentinstitutes.xhtml" TITLE="manage_institute"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -210,11 +216,6 @@
     NAME="output1"
     PATH="/views/secured/lecture/registration/start.xhtml"
     TARGET="rules:#views#secured#lecture#registration#start.xhtml" TITLE="institute_create"/>
-   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="university_create::#views#secured#lecture#registration#universityStart.xhtml"
-    NAME="output2"
-    PATH="/views/secured/lecture/registration/universityStart.xhtml"
-    TARGET="rules:#views#secured#lecture#registration#universityStart.xhtml" TITLE="university_create"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="department_create::#views#secured#lecture#registration#departmentStart.xhtml"
     NAME="output3"
