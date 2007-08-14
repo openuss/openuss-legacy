@@ -2,21 +2,23 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
-	  xmlns:ui="http://java.sun.com/jsf/facelets"
-	  xmlns:h="http://java.sun.com/jsf/html"
-	  xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://java.sun.com/jstl/core"
-      xmlns:fn="http://java.sun.com/jsp/jstl/functions"	  
-	  xmlns:t="http://myfaces.apache.org/tomahawk"
-  	  xmlns:o="http://www.openuss.org/jsfcontrols"
-  	  xmlns:p="http://www.openuss.org/plexus/jsf"
-      xmlns:news="http://www.openuss.org/news/jsf">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:p="http://www.openuss.org/plexus/jsf"
+	xmlns:news="http://www.openuss.org/news/jsf">
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title><ui:insert name="title" /></title>
-	<link href="../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
-	<link href="../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<link href="../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
 </head>
 
 <body>
@@ -29,41 +31,46 @@
 			<f:param value="#{user.contact.firstName} #{user.contact.lastName}" />
 		</h:outputFormat>
 	</ui:define>
-	<ui:define name="navigation"> 
+	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/desktop.xhtml" />
 	</ui:define>
-	<ui:define name="sidebar"> 
+	<ui:define name="sidebar">
 		<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
 		<ui:include src="/views/commons/sidebar/whoisonline.xhtml" />
 	</ui:define>
 	<ui:define name="content">
 		<o:block>
-			<h:outputFormat value="#{msg.desktop_heading}" styleClass="header_font_normal">
+			<h:outputFormat value="#{msg.desktop_heading}"
+				styleClass="header_font_normal">
 				<f:param value="#{user.contact.firstName} #{user.contact.lastName}" />
 			</h:outputFormat>
 		</o:block>
-		<h:form id="universitySelectionForm">
-		<h:selectOneMenu
-			id="universityDropDownBox"
-			value="#{views$secured$myuni$myuni.currentUniversity}"
-			onchange="this.form.submit()">
-			<f:selectItems value="#{views$secured$myuni$myuni.universities}"/>
-		</h:selectOneMenu>
-		</h:form>
-		<o:flexlist binding="#{views$secured$myuni$myuni.departmentsList}" >
-		</o:flexlist>
-		<o:flexlist binding="#{views$secured$myuni$myuni.institutesList}" >
-		</o:flexlist>
-		<o:flexlist binding="#{views$secured$myuni$myuni.coursesList}" >
-		</o:flexlist>
-		<h:outputText value="#{views$secured$myuni$myuni.universityName}">
-			
-		</h:outputText>
-		
+		<div class="content_box">
+		<div class="header_normal">
+		<div class="header_normal_left_bg" />
+		<div class="header_normal_right_bg" />
+		<p class="header_font_normal"><h:form id="universitySelectionForm">
+			<h:selectOneMenu id="universityDropDownBox"
+				value="#{views$secured$myuni$myuni.currentUniversity}"
+				onchange="this.form.submit()">
+				<f:selectItems value="#{views$secured$myuni$myuni.universities}" />
+			</h:selectOneMenu>
+		</h:form></p>
+		</div>
+		<div class="content_normal"><o:flexlist
+			binding="#{views$secured$myuni$myuni.departmentsList}">
+		</o:flexlist> <o:flexlist binding="#{views$secured$myuni$myuni.institutesList}">
+		</o:flexlist> <o:flexlist binding="#{views$secured$myuni$myuni.coursesList}">
+		</o:flexlist></div>
+		<div class="footer_normal">
+		<div class="footer_normal_left_bg" />
+		<div class="footer_normal_right_bg" />
+		</div>
+		</div>
+
 		<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->
 </body>
 </html>
-	
