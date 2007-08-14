@@ -172,9 +172,14 @@ public class Constants {
 	public static final String DEPARTMENT_REGISTRATION_START_PAGE= "department_registration_start";
 	public static final String DEPARTMENT_REGISTRATION_STEP1_PAGE = "department_registration_step1";
 	public static final String DEPARTMENT_REGISTRATION_STEP2_PAGE = "department_registration_step1";
-	public static final String UNIVERSITY_PAGE = "university_command_edit";
-	public static final String UNIVERSITIES_PAGE = "manage_university";
+	
+	public static final String UNIVERSITIES_PAGE = "universities";
+	public static final String UNIVERSITY_PAGE = "university";
+	public static final String UNIVERSITY_EDIT_PAGE = "university_edit";
+	public static final String UNIVERSITY_DEPARTMENTS_PAGE = "university_departments";
+	public static final String UNIVERSITY_PERIODS_PAGE = "university_periods";
+	public static final String UNIVERSITY_PRIVILEGES_PAGE = "university_privileges";
 	
 	public static final String DEPARTMENT_PAGE = "department";
-	public static final String DEPARTMENT_MANAGEMENT = "manage_department";
+	public static final String DEPARTMENT_EDIT = "department_edit";
 }
