@@ -755,6 +755,11 @@
 			<to-view-id>/views/secured/lecture/auth/universityAspirants.xhtml</to-view-id>
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>university_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/universityremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
 	</navigation-rule>
  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
              D e p a r t m e n t  - P a g e 
