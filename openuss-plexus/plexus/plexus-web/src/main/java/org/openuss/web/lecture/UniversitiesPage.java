@@ -57,7 +57,7 @@ public class UniversitiesPage extends BasePage{
 		logger.debug(currentUniversity.getId());	
 		setSessionBean(Constants.UNIVERSITY_INFO, currentUniversity);
 		
-		return Constants.UNIVERSITY;
+		return Constants.UNIVERSITY_PAGE;
 	}
 	
 	public String shortcutUniversity() throws DesktopException {

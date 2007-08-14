@@ -126,7 +126,7 @@
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>manage_university</from-outcome>
+			<from-outcome>universities</from-outcome>
 			<to-view-id>/views/public/university/universities.xhtml</to-view-id>
 		</navigation-case>
 		

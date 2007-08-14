@@ -13,7 +13,7 @@
 			<t:panelNavigation2 id="university_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
 				<t:commandNavigation2 value="#{msg['university_navigation_header']}">
 			
-							<t:commandNavigation2 action="manage_department" activeOnViewIds="/views/secured/lecture/university.xhtml">
+							<t:commandNavigation2 action="university_departments" activeOnViewIds="/views/secured/lecture/universitydepartments.xhtml">
 								<h:outputText value="#{msg['university_command_departments']}" ></h:outputText>
 							</t:commandNavigation2>
 							<t:commandNavigation2 action="university_periods" activeOnViewIds="/views/secured/lecture/universityperiods.xhtml">
