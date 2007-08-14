@@ -122,7 +122,7 @@
 		
 		<navigation-case>
 			<from-outcome>university</from-outcome>
-			<to-view-id>/views/secured/lecture/university.xhtml</to-view-id>
+			<to-view-id>/views/public/university/university.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
@@ -679,6 +679,11 @@
 		<from-view-id>/views/secured/lecture/*</from-view-id>
 
 		<navigation-case>
+			<from-outcome>university_departments</from-outcome>
+			<to-view-id>/views/secured/lecture/universitydepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>university_command_edit</from-outcome>
 			<to-view-id>/views/secured/lecture/universityoptions.xhtml</to-view-id>
 		</navigation-case>
@@ -719,6 +724,37 @@
 			<to-view-id>/views/secured/lecture/auth/universityAspirants.xhtml</to-view-id>
 		</navigation-case>
 
+	</navigation-rule>
+	
+	<navigation-rule>
+	
+	<from-view-id>/views/public/university/*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>university_departments</from-outcome>
+			<to-view-id>/views/secured/lecture/universitydepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_command_edit</from-outcome>
+			<to-view-id>/views/secured/lecture/universityoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_periods</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiods.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_members</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/universityMembers.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_aspirants</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/universityAspirants.xhtml</to-view-id>
+		</navigation-case>
+		
 	</navigation-rule>
  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
              D e p a r t m e n t  - P a g e 
