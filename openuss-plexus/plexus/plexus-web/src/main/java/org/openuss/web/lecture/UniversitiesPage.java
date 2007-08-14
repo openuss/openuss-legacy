@@ -98,8 +98,10 @@ public class UniversitiesPage extends BasePage{
 	private void sort(List<UniversityInfo> universityList) {
 		if (StringUtils.equals("shortcut", universities.getSortColumn())) {
 			Collections.sort(universityList, new ShortcutComparator());
-		} else if (StringUtils.equals("owner", universities.getSortColumn())){
-			Collections.sort(universityList, new OwnerComparator());
+		} else if (StringUtils.equals("city", universities.getSortColumn())){
+			Collections.sort(universityList, new CityComparator());
+		} else if (StringUtils.equals("country", universities.getSortColumn())){
+			Collections.sort(universityList, new CountryComparator());
 		} else {
 			Collections.sort(universityList, new NameComparator());
 		}
@@ -141,12 +143,22 @@ public class UniversitiesPage extends BasePage{
 		}
 	}
 
-	private class OwnerComparator implements Comparator<UniversityInfo> {
+	private class CityComparator implements Comparator<UniversityInfo> {
 		public int compare(UniversityInfo f1, UniversityInfo f2) {
 			if (universities.isAscending()) {
-				return f1.getOwnername().compareToIgnoreCase(f2.getOwnername());
+				return f1.getCity().compareToIgnoreCase(f2.getCity());
 			} else {
-				return f2.getOwnername().compareToIgnoreCase(f1.getOwnername());
+				return f2.getCity().compareToIgnoreCase(f1.getCity());
+			}
+		}
+	}
+	
+	private class CountryComparator implements Comparator<UniversityInfo> {
+		public int compare(UniversityInfo f1, UniversityInfo f2) {
+			if (universities.isAscending()) {
+				return f1.getCountry().compareToIgnoreCase(f2.getCountry());
+			} else {
+				return f2.getCountry().compareToIgnoreCase(f1.getCountry());
 			}
 		}
 	}

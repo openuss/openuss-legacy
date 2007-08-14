@@ -104,8 +104,6 @@ public class InstitutesPage extends BasePage{
 		return dataPage;
 	}
 	
-	
-
 	private void sort(List<InstituteInfo> instituteList) {
 		if (StringUtils.equals("shortcut", institutes.getSortColumn())) {
 			Collections.sort(instituteList, new ShortcutComparator());
