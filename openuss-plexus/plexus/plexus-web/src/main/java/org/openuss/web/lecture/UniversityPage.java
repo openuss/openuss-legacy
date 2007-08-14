@@ -23,9 +23,6 @@ public class UniversityPage extends AbstractUniversityPage {
 	@Property(value = "#{newsService}")
 	private NewsService newsService;
 
-	@Property(value = "#{sessionScope.period}")
-	private Period period;
-
 	/**
 	 * Refreshing university entity
 	 * 
@@ -35,5 +32,14 @@ public class UniversityPage extends AbstractUniversityPage {
 	public void prerender() throws LectureException {
 		super.prerender();
 	}
+
+	public NewsService getNewsService() {
+		return newsService;
+	}
+
+	public void setNewsService(NewsService newsService) {
+		this.newsService = newsService;
+	}
+
 
 }

@@ -86,10 +86,10 @@ public class UniversitiesPage extends BasePage{
 		
 		if (dataPage == null) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+universities.getSortColumn());
+				logger.debug("fetch universities data page at " + startRow + ", "+ pageSize+" sorted by "+universities.getSortColumn());
 			}
 			List<UniversityInfo> universityList = new ArrayList<UniversityInfo>(getUniversityService().findAllUniversities());
-			//sort(instituteList);
+			sort(universityList);
 			dataPage = new DataPage<UniversityInfo>(universityList.size(),0,universityList);
 	}
 		return dataPage;
@@ -190,11 +190,11 @@ public class UniversitiesPage extends BasePage{
 		return "removed";
 	}
 
-	public String manageUniversity(){
+	/*public String manageUniversity(){
 		UniversityInfo universityInfo = currentUniversity();
 		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
 		
 		return Constants.DEPARTMENT_MANAGEMENT;
-	}
+	}*/
 
 }
