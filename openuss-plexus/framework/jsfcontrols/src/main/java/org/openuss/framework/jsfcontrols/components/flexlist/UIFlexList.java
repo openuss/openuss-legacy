@@ -61,7 +61,10 @@ public class UIFlexList extends UIOutput {
 							writer.endElement("div");
 							writer.startElement("div", this);
 							writer.writeAttribute("class", "flexListItemLeft", null);
-								writer.write( listItem.getMetaInformation());
+								String metaInfo = listItem.getMetaInformation();
+								if(metaInfo != null)
+									writer.write( listItem.getMetaInformation());
+								else writer.write("bla");
 							writer.endElement("div");
 						writer.endElement("li");
 					}
@@ -91,7 +94,9 @@ public class UIFlexList extends UIOutput {
 							
 							writer.startElement("div", this);
 								writer.writeAttribute("class", "flexListItemLeft", null);
-								writer.write( listItem.getMetaInformation());
+								String metaInfo = listItem.getMetaInformation();
+								if(metaInfo != null)
+									writer.write( listItem.getMetaInformation());
 							writer.endElement("div");
 							
 						writer.endElement("li");

@@ -191,21 +191,24 @@ public class MyUniPage extends BasePage {
 	
 	private void loadValues(Long universityId)
 	{
+		if(myUniDataSet == null)
+			prepareData();
+		
 		if(departmentsList != null)
 		{
-			departmentsList.getAttributes().put("visibleList", myUniDataSet.getDepartments(universityId));
+			departmentsList.getAttributes().put("visibleItems", myUniDataSet.getDepartments(universityId));
 		}
 		
 		if(institutesList != null)
 		{
-			institutesList.getAttributes().put("visibleList", myUniDataSet.getInstitutes(universityId));
-			institutesList.getAttributes().put("hiddenList", myUniDataSet.getAdditionalInstitutes(universityId));
+			institutesList.getAttributes().put("visibleItems", myUniDataSet.getInstitutes(universityId));
+			institutesList.getAttributes().put("hiddenItems", myUniDataSet.getAdditionalInstitutes(universityId));
 		}
 		
 		if(coursesList != null)
 		{
-			coursesList.getAttributes().put("visibleList", myUniDataSet.getCourses(universityId));
-			coursesList.getAttributes().put("hiddenList", myUniDataSet.getAdditionalCourses(universityId));
+			coursesList.getAttributes().put("visibleItems", myUniDataSet.getCourses(universityId));
+			coursesList.getAttributes().put("hiddenItems", myUniDataSet.getAdditionalCourses(universityId));
 		}
 	}
 	

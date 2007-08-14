@@ -50,7 +50,11 @@
 			<f:selectItems value="#{views$secured$myuni$myuni.universities}"/>
 		</h:selectOneMenu>
 		</h:form>
-		<o:flexlist binding="#{views$secured$myuni$myuni.flexlist}" >
+		<o:flexlist binding="#{views$secured$myuni$myuni.departmentsList}" >
+		</o:flexlist>
+		<o:flexlist binding="#{views$secured$myuni$myuni.institutesList}" >
+		</o:flexlist>
+		<o:flexlist binding="#{views$secured$myuni$myuni.coursesList}" >
 		</o:flexlist>
 		<h:outputText value="#{views$secured$myuni$myuni.universityName}">
 			
