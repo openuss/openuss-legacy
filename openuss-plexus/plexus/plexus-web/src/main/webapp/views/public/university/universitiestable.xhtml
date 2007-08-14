@@ -20,12 +20,21 @@
 			<plexus:commandSortHeader columnName="name">
 				#{msg['university_name']}
 	        </plexus:commandSortHeader>
-			<h:outputText value="#{bean.name}"/>
+	        <h:commandLink action="#{views$public$university$universities.selectUniversity}" styleClass="command">
+				<h:outputText value="#{bean.name}"/>
+			</h:commandLink> 	
 		</t:column>
 		
 		<t:column>
-			<plexus:commandSortHeader columnName="owner">
-				#{msg['university_ownername']}
+			<plexus:commandSortHeader columnName="city">
+				#{msg['university_city']}
+			</plexus:commandSortHeader>
+			<h:outputText value="#{bean.ownerName}"/>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="country">
+				#{msg['university_ciun']}
 			</plexus:commandSortHeader>
 			<h:outputText value="#{bean.ownerName}"/>
 		</t:column>

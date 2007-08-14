@@ -16,18 +16,17 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Institute;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
-
-
 /**
  * 
  * @author Tianyu Wang
  * @author Weijun Chen
- *
+ * @author Kai Stettner
  */
 @Bean(name = "views$public$university$universities", scope = Scope.REQUEST)
 @View
@@ -45,13 +44,40 @@ public class UniversitiesPage extends BasePage{
 	@Prerender
 	public void prerender() throws Exception {
 		crumbs.clear();
-	}	
+	}
+	
+	/**
+	 * Store the selected university into session scope and go to university main page.
+	 * @return Outcome
+	 */
+	public String selectUniversity() {
+		logger.debug("Starting method selectUniversity");
+		UniversityInfo currentUniversity = currentUniversity();
+		logger.debug("Returning to method selectUniversity");
+		logger.debug(currentUniversity.getId());	
+		setSessionBean(Constants.UNIVERSITY_INFO, currentUniversity);
+		
+		return Constants.UNIVERSITY;
+	}
+	
+	public String shortcutUniversity() throws DesktopException {
+		logger.debug("Starting method shortcutUniversity");
+		UniversityInfo currentUniversity = currentUniversity();
+		desktopService2.linkInstitute(desktop.getId(), currentUniversity.getId() );
+		
+		addMessage(i18n("message_university_shortcut_created"));
+		return Constants.SUCCESS;
+	}
 	
 	private UniversityInfo currentUniversity() {
-		
-		UniversityInfo university = universities.getRowData();
-		
-		return university;
+		logger.debug("Starting method currentUniversity");
+		UniversityInfo universityDetails = universities.getRowData();
+		logger.debug(universityDetails.getName());
+		logger.debug(universityDetails.getOwnerName());
+		logger.debug(universityDetails.getId());
+		UniversityInfo newUniversityInfo = new UniversityInfo();
+		newUniversityInfo.setId(universityDetails.getId());
+		return newUniversityInfo;
 	}
 	
 	private DataPage<UniversityInfo> dataPage;
@@ -69,15 +95,15 @@ public class UniversitiesPage extends BasePage{
 		return dataPage;
 	}
 
-/*private void sort(List<InstituteDetails> instituteList) {
+	private void sort(List<UniversityInfo> universityList) {
 		if (StringUtils.equals("shortcut", universities.getSortColumn())) {
-			Collections.sort(instituteList, new ShortcutComparator());
+			Collections.sort(universityList, new ShortcutComparator());
 		} else if (StringUtils.equals("owner", universities.getSortColumn())){
-			Collections.sort(instituteList, new OwnerComparator());
+			Collections.sort(universityList, new OwnerComparator());
 		} else {
-			Collections.sort(instituteList, new NameComparator());
+			Collections.sort(universityList, new NameComparator());
 		}
-	}*/
+	}
 
 	public UniversityTable getUniversities() {
 		return universities;
@@ -103,10 +129,10 @@ public class UniversitiesPage extends BasePage{
 	}
 
 	
-	/* ----------- institute sorting comparators -------------*/
+	/* ----------- university sorting comparators -------------*/
 	
-	/*private class NameComparator implements Comparator<UniversityInfo> {
-		public int compare(InstituteDetails f1, InstituteDetails f2) {
+	private class NameComparator implements Comparator<UniversityInfo> {
+		public int compare(UniversityInfo f1, UniversityInfo f2) {
 			if (universities.isAscending()) {
 				return f1.getName().compareToIgnoreCase(f2.getName());
 			} else {
@@ -115,8 +141,8 @@ public class UniversitiesPage extends BasePage{
 		}
 	}
 
-	private class OwnerComparator implements Comparator<InstituteDetails> {
-		public int compare(InstituteDetails f1, InstituteDetails f2) {
+	private class OwnerComparator implements Comparator<UniversityInfo> {
+		public int compare(UniversityInfo f1, UniversityInfo f2) {
 			if (universities.isAscending()) {
 				return f1.getOwnername().compareToIgnoreCase(f2.getOwnername());
 			} else {
@@ -125,15 +151,18 @@ public class UniversitiesPage extends BasePage{
 		}
 	}
 
-	private class ShortcutComparator implements Comparator<InstituteDetails> {
-		public int compare(InstituteDetails f1, InstituteDetails f2) {
+	private class ShortcutComparator implements Comparator<UniversityInfo> {
+		public int compare(UniversityInfo f1, UniversityInfo f2) {
 			if (universities.isAscending()) {
 				return f1.getShortcut().compareToIgnoreCase(f2.getShortcut());
 			} else {
 				return f2.getShortcut().compareToIgnoreCase(f1.getShortcut());
 			}
 		}
-	}*/
+	}
+	
+	
+	
 
 	
 	public String editUniversity(){
