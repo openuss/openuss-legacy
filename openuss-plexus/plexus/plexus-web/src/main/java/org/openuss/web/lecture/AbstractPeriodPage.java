@@ -13,7 +13,7 @@ import org.openuss.web.PageLinks;
  * @author Tianyu Wang
  * @author Weijun Chen
  */
-public class AbstractPeriodPage extends AbstractLecturePage {
+public class AbstractPeriodPage extends AbstractUniversityPage {
 
 	private static final long serialVersionUID = -6389099727200151245L;
 	@Property(value = "#{periodInfo}")

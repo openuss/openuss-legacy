@@ -182,4 +182,8 @@ public class Constants {
 	
 	public static final String DEPARTMENT_PAGE = "department";
 	public static final String DEPARTMENT_EDIT = "department_edit";
+	
+	/******************************university period*****************/
+	public static final String UNIVERSITY_PERIOD_EDIT_PAGE = "university_period_edit";
+	public static final String UNIVERSITY_PERIOD_ADD_PAGE = "university_period_add";
 }

@@ -15,6 +15,7 @@ import java.util.GregorianCalendar;
  * Period Edit Page Controller
  * 
  * @author Ingo Dueppe
+ * @author Weijun Chen
  */
 @Bean(name = "views$secured$lecture$periodedit", scope = Scope.REQUEST)
 @View

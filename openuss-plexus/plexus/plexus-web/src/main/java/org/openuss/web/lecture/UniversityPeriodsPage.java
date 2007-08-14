@@ -118,7 +118,7 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 	public String addPeriod() {
 		PeriodInfo period = new PeriodInfo();
 		setSessionBean(Constants.PERIOD, period);
-		return Constants.INSTITUTE_PERIOD_PAGE;
+		return Constants.UNIVERSITY_PERIOD_ADD_PAGE;
 	}
 
 	/**
@@ -128,9 +128,11 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 	 * @return outcome
 	 */
 	public String editPeriod() {
-		PeriodInfo period = periodData.getRowData();
-		setSessionBean(Constants.PERIOD, period);
-		return Constants.INSTITUTE_PERIOD_PAGE;
+		logger.debug("edit period");
+		PeriodInfo periodInfo = periodData.getRowData();
+		logger.debug("set sessionBean");
+		setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		return Constants.UNIVERSITY_PERIOD_EDIT_PAGE;
 	}
 
 	/**
