@@ -105,6 +105,7 @@ public class MyUniPage extends BasePage {
 	{
 		currentUniversity = id;
 		longCurrentUniversity = Long.valueOf(id);
+		loadValues();
 	}
 	
 	
@@ -115,34 +116,19 @@ public class MyUniPage extends BasePage {
 	
 	public List<SelectItem> getUniversities()
 	{
+		if(myUniDataSet == null)
+			prepareData();
 		ArrayList<SelectItem> result = new ArrayList<SelectItem>();
-		result.add(new SelectItem(
-				"1", 
-				"text1"));
-		result.add(new SelectItem(
-				"2", 
-				"text2"));
-		result.add(new SelectItem(
-				"3", 
-				"text3"));
+		Iterator<UniversityInfo> i = myUniDataSet.getUniversities().iterator();
+		
+		while(i.hasNext())
+		{
+			UniversityInfo currentUni = i.next();
+			result.add(new SelectItem(currentUni.getId().toString(), currentUni.getName()));
+		}
+		
 		return result;
 	}
-	
-	public String getUniversityName()
-	{
-		if(longCurrentUniversity != null)
-			switch(longCurrentUniversity.intValue())
-			{
-				case 1: return "abc";
-				case 2: return "cde";
-				case 3: return "fgh";
-				default: return "keine angabe";
-			}
-		else return "keine Auswahl";
-	}
-	
-
-	
 	
 
 			
@@ -154,8 +140,10 @@ public class MyUniPage extends BasePage {
 	public void setDepartmentsList(UIFlexList departmentsList)
 	{
 		this.departmentsList = departmentsList;
-		initTitles(departmentsList);
-		loadValues(1L);
+		departmentsList.getAttributes().put("title", "Fachbereiche");
+		departmentsList.getAttributes().put("showButtonTitle", "Weitere Fachbereiche...");
+		departmentsList.getAttributes().put("hideButtonTitle", "Weniger Fachbereiche...");
+		loadValues();
 	}
 	
 	public UIFlexList getInstitutesList()
@@ -166,8 +154,10 @@ public class MyUniPage extends BasePage {
 	public void setInstitutesList(UIFlexList institutesList)
 	{
 		this.institutesList = institutesList;
-		initTitles(institutesList);
-		loadValues(1L);
+		institutesList.getAttributes().put("title", "Institute");
+		institutesList.getAttributes().put("showButtonTitle", "Weitere Institute...");
+		institutesList.getAttributes().put("hideButtonTitle", "Weniger Institute...");
+		loadValues();
 	}
 	
 	public UIFlexList getCoursesList()
@@ -178,21 +168,24 @@ public class MyUniPage extends BasePage {
 	public void setCoursesList(UIFlexList coursesList)
 	{
 		this.coursesList = coursesList;
-		initTitles(coursesList);
-		loadValues(1L);
+		coursesList.getAttributes().put("title", "Veranstaltungen");
+		coursesList.getAttributes().put("showButtonTitle", "Weitere Veranstaltungen...");
+		coursesList.getAttributes().put("hideButtonTitle", "Weniger Veranstaltungen...");
+		loadValues();
 	}
+
 	
-	private void initTitles(UIFlexList flexlist)
+	private void loadValues()
 	{
-		flexlist.getAttributes().put("title", getTitle());
-		flexlist.getAttributes().put("showButtonTitle", getShowButtonTitle());
-		flexlist.getAttributes().put("hideButtonTitle", getHideButtonTitle());
-	}
-	
-	private void loadValues(Long universityId)
-	{
+		Long universityId;
+
 		if(myUniDataSet == null)
 			prepareData();
+		
+		if(longCurrentUniversity == null)
+			universityId = myUniDataSet.getUniversities().get(0).getId();
+		else
+			universityId = longCurrentUniversity;
 		
 		if(departmentsList != null)
 		{

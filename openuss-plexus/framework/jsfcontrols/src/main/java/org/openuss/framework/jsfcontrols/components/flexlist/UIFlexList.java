@@ -57,14 +57,13 @@ public class UIFlexList extends UIOutput {
 						writer.startElement("li", this);
 							writer.startElement("div", this);
 							writer.writeAttribute("class", "flexListItemRight", null);
-								writer.write( listItem.getTitle());
+							String metaInfo = listItem.getMetaInformation();
+							if(metaInfo != null)
+								writer.write( listItem.getMetaInformation());
 							writer.endElement("div");
 							writer.startElement("div", this);
 							writer.writeAttribute("class", "flexListItemLeft", null);
-								String metaInfo = listItem.getMetaInformation();
-								if(metaInfo != null)
-									writer.write( listItem.getMetaInformation());
-								else writer.write("bla");
+								writer.write( listItem.getTitle());						
 							writer.endElement("div");
 						writer.endElement("li");
 					}
@@ -89,14 +88,14 @@ public class UIFlexList extends UIOutput {
 						
 							writer.startElement("div", this);
 								writer.writeAttribute("class", "flexListItemRight", null);
-								writer.write( listItem.getTitle());
+								String metaInfo = listItem.getMetaInformation();
+								if(metaInfo != null)
+									writer.write( listItem.getMetaInformation());
 							writer.endElement("div");
 							
 							writer.startElement("div", this);
 								writer.writeAttribute("class", "flexListItemLeft", null);
-								String metaInfo = listItem.getMetaInformation();
-								if(metaInfo != null)
-									writer.write( listItem.getMetaInformation());
+									writer.write( listItem.getTitle());
 							writer.endElement("div");
 							
 						writer.endElement("li");
@@ -120,9 +119,13 @@ public class UIFlexList extends UIOutput {
 								writer.writeAttribute("href", "javascript:void(0)", null);
 								writer.writeAttribute("style", "color: #5493D4;", null);
 								String javascript = "" +
-								"new Effect.toggle('show_hidden_items" + this.getId() + "', 'blind', {duration:0.001}); " +
-								"new Effect.toggle('hide_hidden_items" + this.getId() + "', 'blind', {duration:0.001}); " +
-								"new Effect.toggle('hidden_items" + this.getId() + "', 'blind', {duration:0.001});";	
+								"Element.toggle('show_hidden_items" + this.getId() + "'); " +
+								"Element.toggle('hide_hidden_items" + this.getId() + "'); " +
+								"Element.toggle('hidden_items" + this.getId() + "');";
+								//For sliding-animation-effect uncomment this ...
+								//"new Effect.toggle('show_hidden_items" + this.getId() + "', 'blind', {duration:1.0}); " +
+								//"new Effect.toggle('hide_hidden_items" + this.getId() + "', 'blind', {duration:1.0}); " +
+								//"new Effect.toggle('hidden_items" + this.getId() + "', 'blind', {duration:1.0});";
 								writer.writeAttribute("onclick", javascript, null);
 								
 								writer.startElement("span", this);
