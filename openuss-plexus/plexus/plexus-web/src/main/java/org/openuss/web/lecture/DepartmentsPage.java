@@ -68,9 +68,14 @@ public class DepartmentsPage extends BasePage{
 			if (logger.isDebugEnabled()) {
 				logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+departments.getSortColumn());
 			}
-			List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>();
-		
-			
+			//List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByUniversity(universityInfo.getId()));
+			List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByUniversity(7L));
+			logger.info("Departments:"+departmentList);
+			if (departmentList != null) {
+				logger.info("Size:"+departmentList.size());
+			}
+			//List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>();
+			//departmentList.add(departmentService.findDepartment(12L));
 			//sort(instituteList);
 			dataPage = new DataPage<DepartmentInfo>(departmentList.size(),0,departmentList);
 	}
