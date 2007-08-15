@@ -67,7 +67,7 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 			logger.debug("Remove Period");
 		universityService.removePeriod(periodInfo.getId());
 		removeSessionBean(Constants.PERIOD_INFO);
-		return Constants.INSTITUTE_PERIODS_PAGE;
+		return Constants.UNIVERSITY_PERIODS_PAGE;
 	}
 
 	/**

@@ -142,9 +142,9 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 	 * @return outcome
 	 */
 	public String confirmRemovePeriod() {
-		PeriodInfo period = periodData.getRowData();
-		setSessionBean(Constants.PERIOD, period);
-		return Constants.INSTITUTE_PERIOD_REMOVE_PAGE;
+		PeriodInfo periodInfo = periodData.getRowData();
+		setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		return Constants.UNIVERSITY_PERIOD_REMOVE_PAGE;
 	}
 
 	/**
