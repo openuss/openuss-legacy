@@ -18,7 +18,8 @@ import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @see org.openuss.lecture.DepartmentService
- * @author Florian Dondorf, Ron Haus
+ * @author Florian Dondorf
+ * @author Ron Haus
  */
 public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentServiceBase {
 
@@ -168,6 +169,20 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		return this.getDepartmentDao().findByUniversityAndEnabled(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university,
 				enabled);
 	}
+	
+	/**
+	 * @see org.openuss.lecture.DepartmentService#findDepartmentsByType(org.openuss.lecture DepartmentType)
+	 */
+	@SuppressWarnings( { "unchecked" })
+	protected List handleFindDepartmentsByType(DepartmentType type) throws Exception {
+
+		Validate.notNull(type,
+				"DepartmentService.handleFindDepartmentsByType - the type cannot be null");
+
+		
+		return this.getDepartmentDao().findByType(DepartmentDao.TRANSFORM_DEPARTMENTINFO, type);
+	}
+	
 
 	@Override
 	protected void handleAcceptApplication(Long applicationId, Long userId) throws Exception {

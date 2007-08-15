@@ -353,4 +353,48 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		
 		logger.info("----> END access to acceptApplication test");
 	}
+	
+	public void testFindDepartmentsByType() {
+		logger.info("----> BEGIN access to findDepartmentsByType test");
+		
+		// Create University
+		University university = testUtility.createUniqueUniversityInDB();
+		
+		// Create Departments
+		Department department1 = testUtility.createUniqueDepartmentInDB();
+		department1.setUniversity(university);
+		department1.setDepartmentType(DepartmentType.NONOFFICIAL);
+		
+		Department department2 = testUtility.createUniqueDepartmentInDB();
+		department2.setUniversity(university);
+		department2.setDepartmentType(DepartmentType.OFFICIAL);
+		
+		Department department3 = testUtility.createUniqueDepartmentInDB();
+		department3.setUniversity(university);
+		department3.setDepartmentType(DepartmentType.OFFICIAL);
+		
+		Department department4 = testUtility.createUniqueDepartmentInDB();
+		department4.setUniversity(university);
+		department4.setDepartmentType(DepartmentType.NONOFFICIAL);
+		
+		Department department5 = testUtility.createUniqueDepartmentInDB();
+		department5.setUniversity(university);
+		department5.setDepartmentType(DepartmentType.NONOFFICIAL);
+		
+		// Synchronize with DB
+		flush();
+		
+		// Test
+		List<DepartmentInfo> departments = this.getDepartmentService().findDepartmentsByType(DepartmentType.OFFICIAL);
+		assertNotNull(departments);
+		assertEquals(2, departments.size());
+		assertEquals(department2.getName(), departments.get(0).getName());
+
+		departments = this.getDepartmentService().findDepartmentsByType(DepartmentType.NONOFFICIAL);
+		assertNotNull(departments);
+		assertEquals(3, departments.size());
+		assertEquals(department5.getName(), departments.get(2).getName());
+		
+		logger.info("----> END access to findDepartmentsByType test");
+	}
 }

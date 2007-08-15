@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.Validate;
+
 public class DepartmentServiceMock implements DepartmentService {
 
 	public Long create(DepartmentInfo departmentInfo, Long ownerId) {
@@ -17,6 +19,7 @@ public class DepartmentServiceMock implements DepartmentService {
 		return this.getMockDepartments().get(departmentId);
 	}
 
+	@SuppressWarnings( { "unchecked" })
 	public List findDepartmentsByUniversity(Long universityId) {
 		Map<Long, DepartmentInfo> allDepartments = this.getMockDepartments();
 		List departmentInfos = new ArrayList(); 
@@ -42,6 +45,7 @@ public class DepartmentServiceMock implements DepartmentService {
 		return departmentInfos;
 	}
 
+	@SuppressWarnings( { "unchecked" })
 	public List findDepartmentsByUniversityAndEnabled(Long universityId,
 			Boolean enabled) {
 		List departments = findDepartmentsByUniversity(universityId);
@@ -188,6 +192,12 @@ public class DepartmentServiceMock implements DepartmentService {
 	}
 
 	public ApplicationInfo findApplication(Long applicationId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@SuppressWarnings( { "unchecked" })
+	public List findDepartmentsByType(DepartmentType type) {
 		// TODO Auto-generated method stub
 		return null;
 	}

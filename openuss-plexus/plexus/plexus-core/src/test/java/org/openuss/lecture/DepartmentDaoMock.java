@@ -53,7 +53,7 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	public List findByEnabled(int transform, String queryString, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
@@ -64,6 +64,26 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 		return null;
 	}
 
+	public List findByType(DepartmentType type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public List findByType(int transform, DepartmentType type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public List findByType(int transform, String queryString, DepartmentType type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public List findByType(String queryString, DepartmentType type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public List findByUniversityAndEnabled(int transform, String queryString, University university, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
