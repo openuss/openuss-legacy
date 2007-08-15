@@ -31,7 +31,7 @@ import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.framework.jsfcontrols.components.flexlist.ListItemDAO;
 import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
-
+import org.openuss.framework.jsfcontrols.components.flexlist.UITabs;
 
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseDao;
@@ -66,6 +66,7 @@ public class MyUniPage extends BasePage {
 	private UIFlexList departmentsList;
 	private UIFlexList institutesList;
 	private UIFlexList coursesList;
+	private UITabs tabs;
 	
 	private MyUniDataSet myUniDataSet;
 
@@ -99,6 +100,15 @@ public class MyUniPage extends BasePage {
 				addError(i18n(e.getMessage()));
 			}
 		}
+	}
+	
+	public UITabs getTabs() {
+		return tabs;
+	}
+
+	public void setTabs(UITabs tabs) {
+		this.tabs = tabs;
+		loadValues();
 	}
 
 	public void setCurrentUniversity(String id)
@@ -202,6 +212,29 @@ public class MyUniPage extends BasePage {
 		{
 			coursesList.getAttributes().put("visibleItems", myUniDataSet.getCourses(universityId));
 			coursesList.getAttributes().put("hiddenItems", myUniDataSet.getAdditionalCourses(universityId));
+		}
+		
+		if(tabs != null)
+		{
+			ListItemDAO newItem;
+			
+			newItem = new ListItemDAO();
+			newItem.setTitle("Hier bin ich");
+			newItem.setUrl("www.google.de");
+			tabs.getAttributes().put("currentItem", newItem);
+			
+			List<ListItemDAO> newList = new ArrayList<ListItemDAO>();
+			newItem = new ListItemDAO();
+			newItem.setTitle("ABC");
+			newItem.setUrl("www.abc.de");
+			newList.add(newItem);
+			
+			newItem = new ListItemDAO();
+			newItem.setTitle("locahost");
+			newItem.setUrl("www.locahost.com");
+			newList.add(newItem);
+			
+			tabs.getAttributes().put("items", newList);
 		}
 	}
 	
@@ -702,4 +735,5 @@ public class MyUniPage extends BasePage {
 		
 		
 	}
+
 }

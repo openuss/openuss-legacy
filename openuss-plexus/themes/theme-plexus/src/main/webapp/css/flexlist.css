@@ -68,6 +68,13 @@
 
 #flexlist_tabs {}
 
+#flexlist_tabs .header_normal {
+  padding: 0;
+  height: 28px;
+  background-image: url(../img/headline_grey_bg.jpg);
+  background-repeat: repeat-x;
+}
+
 #flexlist_tabs .header_normal_right_bg {
   float: right;
   width: 9px;
@@ -82,14 +89,14 @@
 	margin-top: 1px;
 }
 
-.tabs #tab_selected_university a{
+.tabs #tab_selected {
 	font-size: 13px !important; 
 	float:left;  
 	height: 27px; 
 	background-color: white;
 }
 
-.tabs .tab_deselected a {
+.tabs .tab_deselected {
 	font-size: 13px !important; 
 	float:left; 
 	height: 27px; 
