@@ -26,7 +26,6 @@ public class TemplateMessagePreparator extends MessagePreparator implements Mess
 	
 	private static final String TEMPLATE_PREFIX = "templates/emails/";
 	private static final String TEMPLATE_SUFFIX = ".vsl";
-//	private static final String LOCALE_SEPARATOR = "_";
 
 	public void prepare(MimeMessage mimeMessage) throws Exception {
 		MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");

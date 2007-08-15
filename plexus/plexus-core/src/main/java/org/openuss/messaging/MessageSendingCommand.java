@@ -18,6 +18,7 @@ import org.openuss.commands.AbstractDomainCommand;
 import org.openuss.commands.CommandApplicationService;
 import org.openuss.commands.CommandService;
 import org.openuss.commands.DomainCommand;
+import org.openuss.system.SystemService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.mail.MailSendException;
@@ -40,7 +41,7 @@ public class MessageSendingCommand extends AbstractDomainCommand implements Doma
 	private CommandService commandService;
 
 	private ApplicationContext applicationContext;
-
+	
 	public void execute() throws Exception {
 		if (getDomainObject() != null) {
 			MessageJob job = messageJobDao.load(getDomainObject().getId());
@@ -96,7 +97,7 @@ public class MessageSendingCommand extends AbstractDomainCommand implements Doma
 	}
 
 	/**
-	 * A mail server connection error ocured, setting retry command.
+	 * A mail server connection error occurred, setting retry command.
 	 * @param job
 	 * @param mse
 	 */
@@ -175,5 +176,4 @@ public class MessageSendingCommand extends AbstractDomainCommand implements Doma
 	public void setCommandService(CommandService commandService) {
 		this.commandService = commandService;
 	}
-
 }

@@ -16,7 +16,7 @@ insert into SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) values (4, 'mail.host.na
 insert into SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) values (5, 'mail.host.user', 'plexus@openuss-plexus.org');
 insert into SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) values (6, 'mail.host.password', 'plexus');
 insert into SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) values (7, 'openuss.server.url', 'http://localhost:8080/');
-insert into SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) values (8, 'openuss.copyright', '(c) Copyright OpenUSS 2000 - 2005');
+insert into SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) values (8, 'openuss.copyright', '(c) Copyright OpenUSS 2000 - 2007');
 
 INSERT INTO SECURITY_AUTHORITY (ID) VALUES (-10);
 INSERT INTO SECURITY_USER_CONTACT (ID, FIRST_NAME, LAST_NAME, TITLE, PROFESSION, ADDRESS, CITY, COUNTRY, TELEPHONE, POSTCODE, SMS_EMAIL) VALUES (-10, 'Admin', 'Administrator', '', '', 'Leonardo-Campus 3', 'Münster', NULL, '', '48149', '');

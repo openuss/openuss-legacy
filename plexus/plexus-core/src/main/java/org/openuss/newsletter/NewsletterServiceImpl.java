@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.Validate;
+import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.foundation.DomainObject;
 import org.openuss.messaging.JobInfo;
 import org.openuss.security.User;
@@ -124,7 +125,7 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 		Validate.notNull(newsLetterInfo.getId(), "Parameter NewsLetterInfo must contain a valid id.");
 		List<User> recipients = new ArrayList<User>();
 		recipients.add(getSecurityService().getCurrentUser());
-		newsLetterInfo = getNewsletter(newsLetterInfo);
+		newsLetterInfo = getNewsletter(new DefaultDomainObject(newsLetterInfo.getDomainIdentifier()));
 		if (newsLetterInfo != null) {
 			getMessageService().sendMessage(newsLetterInfo.getName(),				
 					"[" + newsLetterInfo.getName() + "]" + mail.getSubject(), mail.getText(), mail.isSms(),	recipients);
