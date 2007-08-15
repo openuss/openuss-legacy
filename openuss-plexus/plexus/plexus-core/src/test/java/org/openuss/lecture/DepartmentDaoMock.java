@@ -103,6 +103,26 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public List findByUniversity(int transform, String queryString, University university) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByUniversity(int transform, University university) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByUniversity(String queryString, University university) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByUniversity(University university) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	public void toDepartmentInfo(Department sourceEntity, DepartmentInfo targetVO) {
 		// TODO Auto-generated method stub

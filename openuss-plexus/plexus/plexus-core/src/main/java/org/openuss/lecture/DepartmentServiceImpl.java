@@ -135,11 +135,11 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 				"DepartmentService.handleFindDepartmentsByUniversity - the universityId cannot be null");
 
 		University university = this.getUniversityDao().load(universityId);
-		/*
+		
 		Validate.notNull(university,
 				"DepartmentService.handleFindDepartmentsByUniversity - no University found corresponding to the ID "
 						+ universityId);
-		*/
+		/*
 		if (university == null) {
 			return new ArrayList();
 		}
@@ -147,8 +147,9 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		for (Department department : university.getDepartments()) {
 			departmentInfos.add(this.getDepartmentDao().toDepartmentInfo(department));
 		}
-
-		return departmentInfos;
+		*/
+		
+		return this.getDepartmentDao().findByUniversity(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university);
 	}
 
 	/**
