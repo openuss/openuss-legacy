@@ -611,6 +611,7 @@ public class MyUniPage extends BasePage {
 		{
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
 			Collection<DepartmentInfo> departments = uniDataSets.get(universityId).departments.values();
+			Map<Long, Boolean> departmentBookmarks = uniDataSets.get(universityId).departmentBookmarks;
 			Iterator<DepartmentInfo> i = departments.iterator();
 			
 			while(i.hasNext())
@@ -618,6 +619,7 @@ public class MyUniPage extends BasePage {
 				DepartmentInfo currentDepartment = i.next();
 				ListItemDAO newListItem = new ListItemDAO();
 				newListItem.setTitle(currentDepartment.getName());
+				newListItem.setIsBookmark(instituteBookmarks.get(currentInstitute.getId()) == true);
 				listItems.add(newListItem);
 			}
 			
@@ -631,6 +633,7 @@ public class MyUniPage extends BasePage {
 			if(universityId != null && uniDataSets.containsKey(universityId))
 			{
 				Collection<InstituteInfo> institutes = uniDataSets.get(universityId).currentInstitutes.values();
+				Map<Long, Boolean> instituteBookmarks = uniDataSets.get(universityId).instituteBookmarks;
 				Iterator<InstituteInfo> i = institutes.iterator();
 				
 				while(i.hasNext())
@@ -638,6 +641,8 @@ public class MyUniPage extends BasePage {
 					InstituteInfo currentInstitute = i.next();
 					ListItemDAO newListItem = new ListItemDAO();
 					newListItem.setTitle(currentInstitute.getName());
+					newListItem.setIsBookmark(instituteBookmarks.get(currentInstitute.getId()) == true);
+					
 					listItems.add(newListItem);
 				}
 			}
@@ -680,6 +685,8 @@ public class MyUniPage extends BasePage {
 					CourseInfo currentCourse = i.next();
 					ListItemDAO newListItem = new ListItemDAO();
 					newListItem.setTitle(currentCourse.getName());
+					// Set bookmark flag as courses are always bookmarked
+					newListItem.setIsBookmark(true);
 					listItems.add(newListItem);
 				}
 			}
@@ -701,6 +708,8 @@ public class MyUniPage extends BasePage {
 					CourseInfo currentCourse = i.next();
 					ListItemDAO newListItem = new ListItemDAO();
 					newListItem.setTitle(currentCourse.getName());
+					// Set bookmark flag as courses are always bookmarked
+					newListItem.setIsBookmark(true);
 					listItems.add(newListItem);
 				}
 			}
