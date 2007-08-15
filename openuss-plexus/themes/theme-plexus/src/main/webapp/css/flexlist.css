@@ -121,4 +121,6 @@
 	background-image: url(../img/arrow_grey_to_grey.jpg);
 }
 
-
+.tabs a:focus {
+	outline-style: none;
+}
