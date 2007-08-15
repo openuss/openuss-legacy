@@ -51,13 +51,13 @@ public class UIFlexList extends UIOutput {
 								writer.writeAttribute("class", "flexListItemLeft", null);
 								
 								writer.startElement("img", this);
-									writer.writeAttribute("src", "img/collapsed_triangle_white.jpg", null);
+									writer.writeAttribute("src", "/theme-plexus/img/collapsed_triangle_white.jpg", null);
 									writer.writeAttribute("style", "display: none;", null);
 									writer.writeAttribute("id", "flexlist_arrow_collapsed" + this.getId(), null);
 								writer.endElement("img");
 								
 								writer.startElement("img", this);
-									writer.writeAttribute("src", "img/expanded_triangle_white.jpg", null);
+									writer.writeAttribute("src", "/theme-plexus/img/expanded_triangle_white.jpg", null);
 									writer.writeAttribute("id", "flexlist_arrow_expanded" + this.getId(), null);
 								writer.endElement("img");
 							

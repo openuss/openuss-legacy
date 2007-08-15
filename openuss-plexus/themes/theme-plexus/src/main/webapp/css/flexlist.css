@@ -51,13 +51,25 @@
 	padding: 3px 0px 3px 0px;
 }
 
+.flexList .header .flexListItemLeft {
+	padding-left: 5px;
+}
+
+.flexList .header a{
+	color:white !important;
+}
+
+.flexList .header a:hover{
+	text-decoration:none !important;
+}
+
 .flexListItemRight {
 	float:right;
 	padding-right: 10px;
 }
 
 .flexListItemLeft {
-	padding-left: 10px;
+	padding-left: 18px;
 }
 
 .flexList .highlight {
