@@ -78,6 +78,7 @@ public class UniversitiesPage extends BasePage{
 		logger.debug(universityDetails.getId());
 		UniversityInfo newUniversityInfo = new UniversityInfo();
 		newUniversityInfo.setId(universityDetails.getId());
+		logger.debug(newUniversityInfo.getId());
 		return newUniversityInfo;
 	}
 	
