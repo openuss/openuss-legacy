@@ -65,7 +65,8 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		Course course = (Course) this.getCourseDao().load(courseId);
 		Validate.notNull(course, "CourseServiceImpl.handleRemoveCourse - no course entity found with the corresponding courseId "+courseId);
 		
-		fireRemovingCourse(course);
+		// TODO: Fire removedCourse event
+		//fireRemovingCourse(course);
 		
 		// Remove course
 		this.getCourseDao().remove(courseId);
@@ -256,12 +257,14 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List<CourseMemberInfo> handleGetAspirants(CourseInfo course) throws Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
 				getCourseDao().courseInfoToEntity(course), CourseMemberType.ASPIRANT);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List<CourseMemberInfo> handleGetAssistants(CourseInfo course) throws Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
@@ -280,12 +283,14 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 				user, getCourseDao().courseInfoToEntity(course));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List<CourseMemberInfo> handleGetParticipants(CourseInfo course) throws Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
 				getCourseDao().courseInfoToEntity(course), CourseMemberType.PARTICIPANT);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void handleRemoveAspirants(CourseInfo course) throws Exception {
 		Course courseDao = getCourseDao().load(course.getId());
@@ -310,62 +315,26 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List handleFindCoursesByPeriodAndInstitute (Long periodId, Long instituteId) throws Exception {
+		// TODO: Implement this method.
+		return null;
+	}
 	
-	/*------------------- private methods -------------------- */
-
-	private Set<LectureListener> listeners;
-
 	@Override
 	protected void handleRegisterListener(LectureListener listener) throws Exception {
-		if (listeners == null) {
-			listeners = new HashSet<LectureListener>();
-		}
-		listeners.add(listener);
+		//TODO: Implement this method.
 	}
 	
-	protected void handleUnregisterListener(LectureListener listener) throws Exception {
-		if (listeners != null) {
-			listeners.remove(listener);
-		}
-	}
-
-	// FIXME use event handler instead
-
-	private void fireRemovingCourse(Course course) throws LectureException {
-		if (listeners != null) {
-			logger.debug("fire removing course event");
-			for (LectureListener listener : listeners) {
-				listener.removingCourse(course);
-			}
-		}
-	}
-
-	private void fireRemovingCourseType(CourseType courseType) throws LectureException {
-		if (listeners != null) {
-			logger.debug("fire removing courseType event");
-			for (LectureListener listener : listeners) {
-				listener.removingCourseType(courseType);
-			}
-		}
-	}
-
-	private void fireRemovingInstitute(Institute institute) throws LectureException {
-		if (listeners != null) {
-			logger.debug("fire removing institute event");
-			for (LectureListener listener : listeners) {
-				listener.removingInstitute(institute);
-			}
-		}
-	}
-
-	private void fireCreatedInstitute(Institute institute) throws LectureException {
-		if (listeners != null) {
-			logger.debug("fire created institute event");
-			for (LectureListener listener : listeners) {
-				listener.createdInstitute(institute);
-			}
-		}
-	}
+	
+	/*------------------- private methods -------------------- */
+	
+	// TODO: Add Set of listeners
+	
+	// TODO: Method unregisterListener
+	
+	// TODO: Method fireRemovingCourseType (CourseType courseType)
 	
 	/**
 	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self entry.

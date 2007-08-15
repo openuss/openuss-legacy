@@ -83,11 +83,14 @@ public class CourseTypeServiceImpl
 		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
 		Validate.notNull(courseType, "CourseTypeServiceImpl.handleRemoveCourseType - cannot fin CourseType to the corresponding courseTypeId "+courseTypeId);
 		
-		// Fire course delete - all courses of courseType are deleted before
+		// TODO: Fire removedCourse event to delete all bookmarks
+		//		 Fire removedCourseType event to delete all bookmarks
+		/*
 		for (Course course : courseType.getCourses()) {
 			fireRemovingCourse(course);
 		}
 		fireRemovingCourseType(courseType);
+		*/
 		
 		this.getCourseTypeDao().remove(courseTypeId);
 		
@@ -127,61 +130,18 @@ public class CourseTypeServiceImpl
 		return isEqualOrNull(self, foundInfo);
 	}
 	
-	/*------------------- private methods -------------------- */
-
-	private Set<LectureListener> listeners;
-
 	@Override
-	protected void handleRegisterListener(LectureListener listener) throws Exception {
-		if (listeners == null) {
-			listeners = new HashSet<LectureListener>();
-		}
-		listeners.add(listener);
+	public void handleRegisterListener (LectureListener listener) throws Exception {
+		// TODO: Implement this method.
 	}
 	
-	protected void handleUnregisterListener(LectureListener listener) throws Exception {
-		if (listeners != null) {
-			listeners.remove(listener);
-		}
-	}
+	/*------------------- private methods -------------------- */
 
-	// FIXME use event handler instead
-
-	private void fireRemovingCourse(Course course) throws LectureException {
-		if (listeners != null) {
-			logger.debug("fire removing course event");
-			for (LectureListener listener : listeners) {
-				listener.removingCourse(course);
-			}
-		}
-	}
-
-	private void fireRemovingCourseType(CourseType courseType) throws LectureException {
-		if (listeners != null) {
-			logger.debug("fire removing courseType event");
-			for (LectureListener listener : listeners) {
-				listener.removingCourseType(courseType);
-			}
-		}
-	}
-
-	private void fireRemovingInstitute(Institute institute) throws LectureException {
-		if (listeners != null) {
-			logger.debug("fire removing institute event");
-			for (LectureListener listener : listeners) {
-				listener.removingInstitute(institute);
-			}
-		}
-	}
-
-	private void fireCreatedInstitute(Institute institute) throws LectureException {
-		if (listeners != null) {
-			logger.debug("fire created institute event");
-			for (LectureListener listener : listeners) {
-				listener.createdInstitute(institute);
-			}
-		}
-	}
+	// TODO: Add Set of listeners
+	
+	// TODO: Method unregisterListener
+	
+	// TODO: Method fireRemovingCourseType (CourseType courseType)
 	
 	/**
 	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self entry.

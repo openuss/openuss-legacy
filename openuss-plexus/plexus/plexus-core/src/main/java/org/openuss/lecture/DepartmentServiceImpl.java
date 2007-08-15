@@ -58,12 +58,12 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		// Add permissions -> ACL Entry for each group
 		this.getSecurityService().setPermissions(admins, departmentEntity, LectureAclEntry.DEPARTMENT_ADMINISTRATION);
 		
-		//this.getSecurityService().setPermissions(admins, object, );
-		
 		// Add Owner to Members and Group of Administrators
 		this.getOrganisationService().addMember(departmentEntity.getId(), userId);
 		this.getOrganisationService().addUserToGroup(userId, admins.getId());
 
+		//TODO: Fire departmentCreated event to bookmark department to 
+		
 		return departmentEntity.getId();
 
 	}
@@ -100,6 +100,11 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 						+ departmentId);
 
 		department.getMembership().getGroups().clear(); // due to problems of cascade
+		
+		//TODO: fireRemovedDepartment event to delete all bookmarks and open applications
+		//		existing institutes have no longer an association to a department and are set to an open department
+		
+		
 		this.getDepartmentDao().remove(department);
 
 	}
@@ -227,5 +232,15 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		return (ApplicationInfo) this.getApplicationDao().load(ApplicationDao.TRANSFORM_APPLICATIONINFO, applicationId);
 	}
+	
+	/*------------------- private methods -------------------- */
+	
+	// TODO: Add Set of listeners
+	
+	// TODO: Method unregisterListener
+	
+	// TODO: Method fireRemovingDepartment (Department department)
+	
+	// TODO: Method fireCreatedDepartment (Department department)
 
 }

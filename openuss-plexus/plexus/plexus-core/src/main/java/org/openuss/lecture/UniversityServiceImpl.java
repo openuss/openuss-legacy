@@ -67,6 +67,8 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		this.getOrganisationService().addMember(universityEntity.getId(), userId);
 		this.getOrganisationService().addUserToGroup(userId, admins.getId());
 		
+		// TODO: Fire createdUniversity event to bookmark university to user who created it
+		
 		return universityEntity.getId();
 	}
 
@@ -119,7 +121,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		
 		Validate.notNull(universityId, "UniversityService.handleRemoveUniversity - the UniversityID cannot be null");
 		
-		//TODO All Bookmarks need to be removed before
+		//TODO: Fire removedUniversity event to delete all bookmarks
 		
 		this.getUniversityDao().remove(universityId);
 
@@ -320,5 +322,15 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		this.getUniversityDao().remove(university);
 	}
 	
+	
+	/*------------------- private methods -------------------- */
+	
+	// TODO: Add Set of listeners
+	
+	// TODO: Method unregisterListener
+	
+	// TODO: Method fireRemovingUniversity (University university)
+	
+	// TODO: Method fireCreatedUniversity (University university)
 	
 }

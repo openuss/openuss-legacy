@@ -85,6 +85,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		this.getOrganisationService().addMember(instituteEntity.getId(), userId);
 		this.getOrganisationService().addUserToGroup(userId, adminsGroup.getId());
 
+		// TODO: Fire createdInstitute event to bookmark the institute for the user who created it 
+		
 		return instituteEntity.getId();
 	}
 
@@ -120,7 +122,9 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(institute,
 				"InstituteService.handleRemoveInstitute - no Institute found to the corresponding ID " + instituteId);
 
-		// TODO All Bookmarks need to be removed before
+		// TODO: Fire removedInstitute event to delete all bookmarks
+		//		 Fire removedCourseTypes event to delete all bookmarks
+		//		 Fire removedCourses event to delete all bookmarks
 
 		this.getInstituteDao().remove(instituteId);
 
@@ -295,5 +299,15 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 			return self.equals(found);
 		}
 	}
+	
+	/*------------------- private methods -------------------- */
+	
+	// TODO: Add Set of listeners
+	
+	// TODO: Method unregisterListener
+	
+	// TODO: Method fireRemovingInstitute (Institute institute)
+	
+	// TODO: Method fireCreatedInstitute (Institute institute)
 
 }
