@@ -77,6 +77,7 @@ public class MyUniPage extends BasePage {
 //		logger.debug("prerender desktop");
 		refreshDesktop();
 		prepareData();
+		loadParams();
 //		crumbs.clear();
 	}
 	
@@ -102,6 +103,14 @@ public class MyUniPage extends BasePage {
 		}
 	}
 	
+	private void loadParams()
+	{
+		Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		String stringUniversity = (String)params.get("university");
+		setCurrentUniversity(stringUniversity);
+		
+	}
+	
 	public UITabs getTabs() {
 		return tabs;
 	}
@@ -113,8 +122,27 @@ public class MyUniPage extends BasePage {
 
 	public void setCurrentUniversity(String id)
 	{
-		currentUniversity = id;
-		longCurrentUniversity = Long.valueOf(id);
+		boolean useDefault = false;
+		
+		if(id == null)
+			useDefault = true;
+		else
+		{
+			try {
+				currentUniversity = id;
+				longCurrentUniversity = Long.valueOf(id);
+			} catch (NumberFormatException e) {
+				useDefault = true;
+			}
+		}
+		
+		if(useDefault == true)
+		{
+			List<UniversityInfo> uniList = myUniDataSet.getUniversities();
+			
+			currentUniversity = uniList.get(0).getId().toString();
+			longCurrentUniversity = Long.valueOf(currentUniversity);
+		}
 		loadValues();
 	}
 	
