@@ -35,15 +35,17 @@
 		</ui:define>
   		<ui:define name="content">
   			<h:form id="departmentForm">
-				<!--<ui:include src="departmentstable.xhtml"/>-->
-				<o:block>
-				<h:commandButton 
-					    id="addDepartment"
-						action="department_create" 
-						value="#{msg.department_command_add_department}" 
-						title="#{msg.department_command_add_department_hint}"
-						styleClass="button"/>
+				<o:block label="#{universityInfo.name} - #{msg['university_profile']}" styleClass="form_box">
+					<h:panelGrid border="0" columns="2">
+						<h:panelGroup>
+							<h:outputText value="#{universityInfo.description}" escape="false"/>
+						</h:panelGroup>
+						<h:outputText value="Bild hier anzeigen" styleClass="field_label" style="width:150px; text-align:right; "/>
+					</h:panelGrid>
 				</o:block>
+				
+				<!--<ui:include src="departmentstable.xhtml"/>-->
+				
 			</h:form>
 		</ui:define>
 	</ui:composition>

@@ -3,13 +3,17 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:fck="http://www.fck-faces.org/fck-faces"
       xmlns:news="http://www.openuss.org/news/jsf"
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols">
       
 	<o:input entity="universityInfo" property="name" maxlength="100"/>
 	<o:input entity="universityInfo" property="shortcut" maxlength="50"/>
-	<o:input entity="universityInfo" property="description" maxlength="50"/>
+	<h:outputLabel value="#{msg.universityinfo_description}" for="descriptionEditor" styleClass="fieldLabel"/>
+  	<div class="content_iframe">
+		<fck:editor value="#{universityInfo.description}" id="descriptionEditor" toolbarSet="Description" width="100%"  height="200px"/>
+	</div>
 	<o:input entity="universityInfo" property="universityType" maxlength="50"/>
 	<o:input entity="universityInfo" property="address" maxlength="100"/>
 	<o:input entity="universityInfo" property="country" maxlength="100"/>
