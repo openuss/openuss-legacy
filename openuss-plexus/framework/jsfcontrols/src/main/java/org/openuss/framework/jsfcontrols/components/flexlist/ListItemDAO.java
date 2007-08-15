@@ -6,6 +6,8 @@ public class ListItemDAO implements Serializable {
 	private String title;
 	private String url;
 	private String metaInformation;
+	private Boolean isBookmark;
+	private String removeBookmarkUrl;
 	
 	
 	public String getMetaInformation() {
@@ -29,6 +31,22 @@ public class ListItemDAO implements Serializable {
 	public String getUrl()
 	{
 		return url;
+	}
+	
+	public String getRemoveBookmarkUrl() {
+		return removeBookmarkUrl;
+	}
+	
+	public void setRemoveBookmarkUrl(String removeBookmarkUrl) {
+		this.removeBookmarkUrl = removeBookmarkUrl;
+	}
+	
+	public Boolean getIsBookmark() {
+		return isBookmark;
+	}
+	
+	public void setIsBookmark(Boolean isBookmark) {
+		this.isBookmark = isBookmark;
 	}
 	
 	
