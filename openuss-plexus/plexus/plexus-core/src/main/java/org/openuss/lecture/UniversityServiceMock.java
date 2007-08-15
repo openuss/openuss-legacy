@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.Validate;
+
 public class UniversityServiceMock implements UniversityService {
 
 	public Long create(UniversityInfo universityInfo, Long ownerId) {
@@ -252,6 +254,10 @@ public class UniversityServiceMock implements UniversityService {
 	public List findUniversitiesByTypeAndEnabled(UniversityType universityType, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public void removeCompleteUniversityTree(Long universityId) {
+		// TODO Auto-generated method stub
 	}
 
 }

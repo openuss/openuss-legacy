@@ -7,6 +7,7 @@ package org.openuss.lecture;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -20,7 +21,8 @@ import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @see org.openuss.lecture.UniversityService
- * @author Ron Haus, Florian Dondorf
+ * @author Ron Haus
+ * @author Florian Dondorf
  */
 public class UniversityServiceImpl extends org.openuss.lecture.UniversityServiceBase {
 
@@ -260,7 +262,63 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		return this.getUniversityDao().findByTypeAndEnabled(UniversityDao.TRANSFORM_UNIVERSITYINFO, universityType, enabled);
 	}
 	
-	
+	/**
+	 * @see org.openuss.lecture.UniversityService#removeCompleteUniversityTree(java.lang.Long)
+	 */
+	@SuppressWarnings( { "unchecked" })
+	protected void handleRemoveCompleteUniversityTree(Long universityId) throws Exception {
+
+		Validate.notNull(universityId, "UniversityService.removeCompleteUniversityTree - universityId cannot be null.");
+		
+		// Find University
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university, "UniversityService.removeCompleteUniversityTree - cannot find a university with the corresponding universityId "+universityId);
+		
+		// Get Departments
+		List<Department> departmentsOfUni = university.getDepartments();
+		
+		Iterator iter = departmentsOfUni.iterator();
+		while (iter.hasNext()) {
+			Department department = (Department) iter.next();
+			// TODO: Fire removing department event
+			
+			Iterator instIter = department.getInstitutes().iterator();
+			while (instIter.hasNext()) {
+				Institute institute = (Institute) instIter.next();
+				// TODO: Fire removing institute event
+				
+				Iterator courseTypeIter = institute.getCourseTypes().iterator();
+				while (courseTypeIter.hasNext()) {
+					CourseType courseType = (CourseType) courseTypeIter.next();
+					// TODO: Fire removing courseType event
+					
+					Iterator courseIter = courseType.getCourses().iterator();
+					while (courseIter.hasNext()) {
+						Course course = (Course) courseIter.next();
+						// TODO: Fire removing course event
+					}
+					
+					// remove courses
+					this.getCourseDao().remove(courseType.getCourses());
+					
+					// remove courseType
+					this.getCourseTypeDao().remove(courseType);
+				}
+				
+				// remove institute
+				this.getInstituteDao().remove(institute);
+			}
+			
+			// remove department
+			this.getDepartmentDao().remove(department);
+		}
+		
+		// remove periods
+		//this.getPeriodDao().remove(university.getPeriods());
+		
+		// remove university
+		this.getUniversityDao().remove(university);
+	}
 	
 	
 }
