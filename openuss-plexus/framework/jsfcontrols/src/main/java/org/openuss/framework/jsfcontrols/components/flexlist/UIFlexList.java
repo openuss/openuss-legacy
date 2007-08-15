@@ -4,14 +4,22 @@ import javax.faces.component.UIOutput;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ResourceBundle;
+import java.util.Locale;
+
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.el.ValueBinding;;
 
 public class UIFlexList extends UIOutput {
 	public void encodeBegin(FacesContext context) throws IOException {
 		Iterator i;
 		ListItemDAO listItem;
 		ResponseWriter writer = context.getResponseWriter();
+		ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
+		String locale = (String)binding.getValue(getFacesContext());
+		ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
+		
 		
 		writer.startElement("div", this);
 			writer.writeAttribute("class", "flexList", null);
@@ -31,10 +39,7 @@ public class UIFlexList extends UIOutput {
 						
 						writer.startElement("div", this);
 							writer.writeAttribute("class", "flexListItemLeft", null);
-							if(title != null)
 								writer.write( title );
-							else
-								writer.write("No title");
 						writer.endElement("div");
 						
 					writer.endElement("li");
@@ -46,7 +51,11 @@ public class UIFlexList extends UIOutput {
 				if(visibleItems == null || visibleItems.isEmpty())
 				{
 					writer.startElement("li", this);
-						writer.write( "No Items" );
+						writer.startElement("div", this);
+						writer.writeAttribute("class", "flexListItemLeft", null);
+						writer.writeAttribute("style", "font-style: italic;", null);
+							writer.write( bundle.getString("flexlist_no_items") );
+						writer.endElement("div");
 					writer.endElement("li");
 				}
 				else
@@ -135,7 +144,7 @@ public class UIFlexList extends UIOutput {
 									if(showButtonTitle != null)
 										writer.write( showButtonTitle );
 									else
-										writer.write( "More Items...");
+										writer.write(bundle.getString("flexlist_more_items"));
 								writer.endElement("span");
 								
 								writer.startElement("span", this);
@@ -146,7 +155,7 @@ public class UIFlexList extends UIOutput {
 									if(hideButtonTitle != null)
 										writer.write( hideButtonTitle );
 									else
-										writer.write("Fewer Items...");
+										writer.write(bundle.getString("flexlist_less_items"));
 								writer.endElement("span");
 								
 							writer.endElement("a");

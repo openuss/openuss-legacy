@@ -5,11 +5,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Vector;
 
+import javax.faces.el.ValueBinding;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -57,6 +61,7 @@ import org.openuss.security.User;
  * @author Julian Reimann
  */
 @Bean(name = "views$secured$myuni$myuni", scope = Scope.REQUEST)
+@View
 public class MyUniPage extends BasePage {
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
 
@@ -78,8 +83,17 @@ public class MyUniPage extends BasePage {
 		refreshDesktop();
 		prepareData();
 		loadParams();
+		loadValuesForDepartmentList();
+		loadValuesForInstituteList();
+		loadValuesForCourseList();
+		loadValuesForTabs();
 //		crumbs.clear();
 	}
+	
+	ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
+	String locale = (String)binding.getValue(getFacesContext());
+	ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
+
 	
 	private void refreshDesktop() {
 		if (user != null) {
@@ -109,16 +123,77 @@ public class MyUniPage extends BasePage {
 		String stringUniversity = (String)params.get("university");
 		setCurrentUniversity(stringUniversity);
 		
+		
 	}
 	
-	public UITabs getTabs() {
-		return tabs;
+	private void loadValuesForDepartmentList()
+	{
+		prepareData();
+		Long universityId = getLongCurrentUniversity();
+		
+		
+		if(myUniDataSet != null && departmentsList != null)
+			departmentsList.getAttributes().put("visibleItems", myUniDataSet.getDepartments(universityId));
 	}
-
-	public void setTabs(UITabs tabs) {
-		this.tabs = tabs;
-		loadValues();
+	
+	private void loadValuesForInstituteList()
+	{
+		prepareData();
+		Long universityId = getLongCurrentUniversity();
+		
+		
+		if(myUniDataSet != null && institutesList != null)
+		{
+			institutesList.getAttributes().put("visibleItems", myUniDataSet.getInstitutes(universityId));
+			institutesList.getAttributes().put("hiddenItems", myUniDataSet.getAdditionalInstitutes(universityId));
+		}
 	}
+	
+	private void loadValuesForCourseList()
+	{
+		prepareData();
+		Long universityId = getLongCurrentUniversity();
+		
+		
+		if(myUniDataSet != null && coursesList != null)
+		{
+			coursesList.getAttributes().put("visibleItems", myUniDataSet.getCourses(universityId));
+			coursesList.getAttributes().put("hiddenItems", myUniDataSet.getAdditionalCourses(universityId));
+		}
+	}
+	
+	private void loadValuesForTabs()
+	{
+		prepareData();
+		Long universityId = getLongCurrentUniversity();
+		
+		
+		if(myUniDataSet != null && tabs != null)
+		{
+			ListItemDAO newItem;
+			ListItemDAO currentItem = null;
+			List<ListItemDAO> items = new ArrayList<ListItemDAO>();
+			Iterator<UniversityInfo> i = myUniDataSet.getUniversities().iterator();
+			
+			
+			while(i.hasNext())
+			{
+				UniversityInfo currentUni = i.next();
+				newItem = new ListItemDAO();
+				newItem.setTitle(currentUni.getName());
+				newItem.setUrl("myuni.faces?university=" + currentUni.getId().toString());
+				
+				if(universityId != null && universityId.longValue() == currentUni.getId().longValue())
+					currentItem = newItem;
+				else
+					items.add(newItem);
+			}
+			
+			tabs.getAttributes().put("currentItem", currentItem);
+			tabs.getAttributes().put("items", items);
+		}
+	}
+	
 
 	public void setCurrentUniversity(String id)
 	{
@@ -129,8 +204,14 @@ public class MyUniPage extends BasePage {
 		else
 		{
 			try {
-				currentUniversity = id;
-				longCurrentUniversity = Long.valueOf(id);
+				if(myUniDataSet != null && myUniDataSet.getUniversityDataSets().containsKey(Long.valueOf(id)))
+				{
+					currentUniversity = id;
+					longCurrentUniversity = Long.valueOf(id);
+				}	
+				else
+					useDefault = true;
+				
 			} catch (NumberFormatException e) {
 				useDefault = true;
 			}
@@ -138,36 +219,42 @@ public class MyUniPage extends BasePage {
 		
 		if(useDefault == true)
 		{
-			List<UniversityInfo> uniList = myUniDataSet.getUniversities();
-			
-			currentUniversity = uniList.get(0).getId().toString();
-			longCurrentUniversity = Long.valueOf(currentUniversity);
+			longCurrentUniversity = getDefaultUniversity();
+			currentUniversity = longCurrentUniversity.toString();
 		}
-		loadValues();
 	}
 	
 	
 	public String getCurrentUniversity()
 	{
+		if(currentUniversity == null)
+			setCurrentUniversity(null);
+		
 		return currentUniversity;
 	}
 	
-	public List<SelectItem> getUniversities()
+	public Long getLongCurrentUniversity()
 	{
-		if(myUniDataSet == null)
-			prepareData();
-		ArrayList<SelectItem> result = new ArrayList<SelectItem>();
-		Iterator<UniversityInfo> i = myUniDataSet.getUniversities().iterator();
+		if(longCurrentUniversity == null)
+			setCurrentUniversity(null);
 		
-		while(i.hasNext())
-		{
-			UniversityInfo currentUni = i.next();
-			result.add(new SelectItem(currentUni.getId().toString(), currentUni.getName()));
-		}
-		
-		return result;
+		return longCurrentUniversity;
 	}
 	
+	public Long getDefaultUniversity()
+	{
+		if(myUniDataSet != null)
+		{
+			List<UniversityInfo> uniList = myUniDataSet.getUniversities();
+			
+			if(uniList.size() > 0)
+				return uniList.get(0).getId();
+		}
+		
+		return null;
+	}
+	
+
 
 			
 	public UIFlexList getDepartmentsList()
@@ -178,10 +265,11 @@ public class MyUniPage extends BasePage {
 	public void setDepartmentsList(UIFlexList departmentsList)
 	{
 		this.departmentsList = departmentsList;
-		departmentsList.getAttributes().put("title", "Fachbereiche");
-		departmentsList.getAttributes().put("showButtonTitle", "Weitere Fachbereiche...");
-		departmentsList.getAttributes().put("hideButtonTitle", "Weniger Fachbereiche...");
-		loadValues();
+		departmentsList.getAttributes().put("title", bundle.getString("flexlist_departments"));
+		departmentsList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_departments"));
+		departmentsList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_departments"));
+		
+		loadValuesForDepartmentList();
 	}
 	
 	public UIFlexList getInstitutesList()
@@ -192,10 +280,11 @@ public class MyUniPage extends BasePage {
 	public void setInstitutesList(UIFlexList institutesList)
 	{
 		this.institutesList = institutesList;
-		institutesList.getAttributes().put("title", "Institute");
-		institutesList.getAttributes().put("showButtonTitle", "Weitere Institute...");
-		institutesList.getAttributes().put("hideButtonTitle", "Weniger Institute...");
-		loadValues();
+		institutesList.getAttributes().put("title", bundle.getString("flexlist_institutes"));
+		institutesList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_institutes"));
+		institutesList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_institutes"));
+		
+		loadValuesForInstituteList();
 	}
 	
 	public UIFlexList getCoursesList()
@@ -206,88 +295,32 @@ public class MyUniPage extends BasePage {
 	public void setCoursesList(UIFlexList coursesList)
 	{
 		this.coursesList = coursesList;
-		coursesList.getAttributes().put("title", "Veranstaltungen");
-		coursesList.getAttributes().put("showButtonTitle", "Weitere Veranstaltungen...");
-		coursesList.getAttributes().put("hideButtonTitle", "Weniger Veranstaltungen...");
-		loadValues();
-	}
-
-	
-	private void loadValues()
-	{
-		Long universityId;
-
-		if(myUniDataSet == null)
-			prepareData();
+		coursesList.getAttributes().put("title", bundle.getString("flexlist_courses"));
+		coursesList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_courses"));
+		coursesList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_courses"));
 		
-		if(longCurrentUniversity == null)
-			universityId = myUniDataSet.getUniversities().get(0).getId();
-		else
-			universityId = longCurrentUniversity;
-		
-		if(departmentsList != null)
-		{
-			departmentsList.getAttributes().put("visibleItems", myUniDataSet.getDepartments(universityId));
-		}
-		
-		if(institutesList != null)
-		{
-			institutesList.getAttributes().put("visibleItems", myUniDataSet.getInstitutes(universityId));
-			institutesList.getAttributes().put("hiddenItems", myUniDataSet.getAdditionalInstitutes(universityId));
-		}
-		
-		if(coursesList != null)
-		{
-			coursesList.getAttributes().put("visibleItems", myUniDataSet.getCourses(universityId));
-			coursesList.getAttributes().put("hiddenItems", myUniDataSet.getAdditionalCourses(universityId));
-		}
-		
-		if(tabs != null)
-		{
-			ListItemDAO newItem;
-			
-			newItem = new ListItemDAO();
-			newItem.setTitle("Hier bin ich");
-			newItem.setUrl("www.google.de");
-			tabs.getAttributes().put("currentItem", newItem);
-			
-			List<ListItemDAO> newList = new ArrayList<ListItemDAO>();
-			newItem = new ListItemDAO();
-			newItem.setTitle("ABC");
-			newItem.setUrl("www.abc.de");
-			newList.add(newItem);
-			
-			newItem = new ListItemDAO();
-			newItem.setTitle("locahost");
-			newItem.setUrl("www.locahost.com");
-			newList.add(newItem);
-			
-			tabs.getAttributes().put("items", newList);
-		}
+		loadValuesForCourseList();
 	}
 	
-
-
-	public String getHideButtonTitle() {
-		return "Weniger...";
+	public UITabs getTabs() {
+		return tabs;
 	}
 
-	public String getShowButtonTitle() {
-		return "Mehr...";
+	public void setTabs(UITabs tabs) {
+		this.tabs = tabs;
+		
+		loadValuesForTabs();
 	}
-	
-
-	public String getTitle() {
-		return "Test-Liste";
-	}
-
-
 	
 	
 	public void prepareData()
 	{
-		myUniDataSet = new MyUniDataSet();
-		myUniDataSet.loadTestData();
+		if(myUniDataSet == null)
+		{
+			myUniDataSet = new MyUniDataSet();
+			myUniDataSet.loadTestData();
+			setCurrentUniversity(null);
+		}
 		
 /*		Iterator iterator;
 		
@@ -366,6 +399,10 @@ public class MyUniPage extends BasePage {
 			this.universityDao = universityDao;
 		}
 		
+		public Map<Long, UniversityDataSet> getUniversityDataSets()
+		{
+			return uniDataSets;
+		}
 		
 		
 		
@@ -435,45 +472,45 @@ public class MyUniPage extends BasePage {
 			// Create Uni 1 and Subitems
 			uniInfo = new UniversityInfo();
 			uniInfo.setId(1L);
-			uniInfo.setName("Uni 1");
+			uniInfo.setName("Uni Münster");
 			uniDataSet = new UniversityDataSet(uniInfo);
 			
 			departmentInfo = new DepartmentInfo();
 			departmentInfo.setId(1L);
-			departmentInfo.setName("Department 1");
+			departmentInfo.setName("Fachbereich 4");
 			departmentInfo.setUniversityId(1L);
 			uniDataSet.addDepartment(departmentInfo);
 			
 			departmentInfo = new DepartmentInfo();
 			departmentInfo.setId(2L);
-			departmentInfo.setName("Department 2");
+			departmentInfo.setName("Fachbereich 5");
 			departmentInfo.setUniversityId(1L);
 			uniDataSet.addDepartment(departmentInfo);
 			
 			departmentInfo = new DepartmentInfo();
 			departmentInfo.setId(3L);
-			departmentInfo.setName("Department 3");
+			departmentInfo.setName("Fachbereich 6");
 			departmentInfo.setUniversityId(1L);
 			uniDataSet.addDepartment(departmentInfo);
 			
 			courseInfo = new CourseInfo();
 			courseInfo.setId(1L);
-			courseInfo.setName("Course 1");
+			courseInfo.setName("KLR");
 			uniDataSet.addCourse(courseInfo, true);
 			
 			courseInfo = new CourseInfo();
 			courseInfo.setId(2L);
-			courseInfo.setName("Course 2");
+			courseInfo.setName("BWL1");
 			uniDataSet.addCourse(courseInfo, true);
 			
 			courseInfo = new CourseInfo();
 			courseInfo.setId(3L);
-			courseInfo.setName("Course 3");
+			courseInfo.setName("BWL2");
 			uniDataSet.addCourse(courseInfo, false);
 			
 			courseInfo = new CourseInfo();
 			courseInfo.setId(4L);
-			courseInfo.setName("Course 4");
+			courseInfo.setName("BWL3");
 			uniDataSet.addCourse(courseInfo, false);
 
 			uniDataSets.put(1L, uniDataSet);
@@ -481,41 +518,41 @@ public class MyUniPage extends BasePage {
 			// Create Uni 2 and subitems
 			uniInfo = new UniversityInfo();
 			uniInfo.setId(2L);
-			uniInfo.setName("Uni 2");
+			uniInfo.setName("Uni Bonn");
 			uniDataSet = new UniversityDataSet(uniInfo);
 			
 			
 			departmentInfo = new DepartmentInfo();
 			departmentInfo.setId(4L);
-			departmentInfo.setName("Department 4");
+			departmentInfo.setName("Fachbereich 4");
 			departmentInfo.setUniversityId(2L);
 			uniDataSet.addDepartment(departmentInfo);
 			
 			departmentInfo = new DepartmentInfo();
 			departmentInfo.setId(5L);
-			departmentInfo.setName("Department 5");
+			departmentInfo.setName("Fachbereich 8");
 			departmentInfo.setUniversityId(2L);
 			uniDataSet.addDepartment(departmentInfo);
 			
 			
 			courseInfo = new CourseInfo();
 			courseInfo.setId(1L);
-			courseInfo.setName("Course 1");
+			courseInfo.setName("Kosten- und Leistungsrechnung");
 			uniDataSet.addCourse(courseInfo, true);
 			
 			courseInfo = new CourseInfo();
 			courseInfo.setId(2L);
-			courseInfo.setName("Course 2");
+			courseInfo.setName("Informatik 1");
 			uniDataSet.addCourse(courseInfo, true);
 			
 			courseInfo = new CourseInfo();
 			courseInfo.setId(3L);
-			courseInfo.setName("Course 3");
+			courseInfo.setName("Informatik 2");
 			uniDataSet.addCourse(courseInfo, true);
 			
 			courseInfo = new CourseInfo();
 			courseInfo.setId(4L);
-			courseInfo.setName("Course 4");
+			courseInfo.setName("Unternehmensgründung Märkte und Branchen");
 			uniDataSet.addCourse(courseInfo, false);
 			
 			uniDataSets.put(2L, uniDataSet);
@@ -523,46 +560,46 @@ public class MyUniPage extends BasePage {
 			// Create Uni 3 and subitems
 			uniInfo = new UniversityInfo();
 			uniInfo.setId(3L);
-			uniInfo.setName("Uni 3");
+			uniInfo.setName("Uni Köln");
 			uniDataSet = new UniversityDataSet(uniInfo);
 			
 			departmentInfo = new DepartmentInfo();
 			departmentInfo.setId(6L);
-			departmentInfo.setName("Department 6");
+			departmentInfo.setName("Fachbereich 1");
 			departmentInfo.setUniversityId(3L);
 			uniDataSet.addDepartment(departmentInfo);
 			
 			departmentInfo = new DepartmentInfo();
 			departmentInfo.setId(7L);
-			departmentInfo.setName("Department 7");
+			departmentInfo.setName("Fachbereich 7");
 			departmentInfo.setUniversityId(3L);
 			uniDataSet.addDepartment(departmentInfo);
 			
 			departmentInfo = new DepartmentInfo();
 			departmentInfo.setId(8L);
-			departmentInfo.setName("Department 8");
+			departmentInfo.setName("Fachbereich 8");
 			departmentInfo.setUniversityId(8L);
 			uniDataSet.addDepartment(departmentInfo);
 			
 			
 			courseInfo = new CourseInfo();
 			courseInfo.setId(1L);
-			courseInfo.setName("Course 1");
+			courseInfo.setName("Einführung in die WI");
 			uniDataSet.addCourse(courseInfo, true);
 			
 			courseInfo = new CourseInfo();
 			courseInfo.setId(2L);
-			courseInfo.setName("Course 2");
+			courseInfo.setName("Datenbanken");
 			uniDataSet.addCourse(courseInfo, false);
 			
 			courseInfo = new CourseInfo();
 			courseInfo.setId(3L);
-			courseInfo.setName("Course 3");
+			courseInfo.setName("Einführung in die Java Framework-Theorie");
 			uniDataSet.addCourse(courseInfo, false);
 			
 			courseInfo = new CourseInfo();
 			courseInfo.setId(4L);
-			courseInfo.setName("Course 4");
+			courseInfo.setName("OpenUSS Projektseminar");
 			uniDataSet.addCourse(courseInfo, false);
 			
 			
@@ -590,15 +627,19 @@ public class MyUniPage extends BasePage {
 		public List<ListItemDAO> getInstitutes(Long universityId)
 		{
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
-			Collection<InstituteInfo> institutes = uniDataSets.get(universityId).currentInstitutes.values();
-			Iterator<InstituteInfo> i = institutes.iterator();
 			
-			while(i.hasNext())
+			if(universityId != null && uniDataSets.containsKey(universityId))
 			{
-				InstituteInfo currentInstitute = i.next();
-				ListItemDAO newListItem = new ListItemDAO();
-				newListItem.setTitle(currentInstitute.getName());
-				listItems.add(newListItem);
+				Collection<InstituteInfo> institutes = uniDataSets.get(universityId).currentInstitutes.values();
+				Iterator<InstituteInfo> i = institutes.iterator();
+				
+				while(i.hasNext())
+				{
+					InstituteInfo currentInstitute = i.next();
+					ListItemDAO newListItem = new ListItemDAO();
+					newListItem.setTitle(currentInstitute.getName());
+					listItems.add(newListItem);
+				}
 			}
 			
 			return listItems;
@@ -607,15 +648,19 @@ public class MyUniPage extends BasePage {
 		public List<ListItemDAO> getAdditionalInstitutes(Long universityId)
 		{
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
-			Collection<InstituteInfo> institutes = uniDataSets.get(universityId).pastInstitutes.values();
-			Iterator<InstituteInfo> i = institutes.iterator();
 			
-			while(i.hasNext())
+			if(universityId != null && uniDataSets.containsKey(universityId))
 			{
-				InstituteInfo currentInstitute = i.next();
-				ListItemDAO newListItem = new ListItemDAO();
-				newListItem.setTitle(currentInstitute.getName());
-				listItems.add(newListItem);
+				Collection<InstituteInfo> institutes = uniDataSets.get(universityId).pastInstitutes.values();
+				Iterator<InstituteInfo> i = institutes.iterator();
+				
+				while(i.hasNext())
+				{
+					InstituteInfo currentInstitute = i.next();
+					ListItemDAO newListItem = new ListItemDAO();
+					newListItem.setTitle(currentInstitute.getName());
+					listItems.add(newListItem);
+				}
 			}
 			
 			return listItems;
@@ -624,15 +669,19 @@ public class MyUniPage extends BasePage {
 		public List<ListItemDAO> getCourses(Long universityId)
 		{
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
-			Collection<CourseInfo> institutes = uniDataSets.get(universityId).currentCourses.values();
-			Iterator<CourseInfo> i = institutes.iterator();
 			
-			while(i.hasNext())
+			if(universityId != null && uniDataSets.containsKey(universityId))
 			{
-				CourseInfo currentCourse = i.next();
-				ListItemDAO newListItem = new ListItemDAO();
-				newListItem.setTitle(currentCourse.getName());
-				listItems.add(newListItem);
+				Collection<CourseInfo> institutes = uniDataSets.get(universityId).currentCourses.values();
+				Iterator<CourseInfo> i = institutes.iterator();
+				
+				while(i.hasNext())
+				{
+					CourseInfo currentCourse = i.next();
+					ListItemDAO newListItem = new ListItemDAO();
+					newListItem.setTitle(currentCourse.getName());
+					listItems.add(newListItem);
+				}
 			}
 			
 			return listItems;
@@ -641,15 +690,19 @@ public class MyUniPage extends BasePage {
 		public List<ListItemDAO> getAdditionalCourses(Long universityId)
 		{
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
-			Collection<CourseInfo> institutes = uniDataSets.get(universityId).currentCourses.values();
-			Iterator<CourseInfo> i = institutes.iterator();
 			
-			while(i.hasNext())
+			if(universityId != null && uniDataSets.containsKey(universityId))
 			{
-				CourseInfo currentCourse = i.next();
-				ListItemDAO newListItem = new ListItemDAO();
-				newListItem.setTitle(currentCourse.getName());
-				listItems.add(newListItem);
+				Collection<CourseInfo> courses = uniDataSets.get(universityId).pastCourses.values();
+				Iterator<CourseInfo> i = courses.iterator();
+				
+				while(i.hasNext())
+				{
+					CourseInfo currentCourse = i.next();
+					ListItemDAO newListItem = new ListItemDAO();
+					newListItem.setTitle(currentCourse.getName());
+					listItems.add(newListItem);
+				}
 			}
 			
 			return listItems;
@@ -658,6 +711,7 @@ public class MyUniPage extends BasePage {
 		public List<UniversityInfo> getUniversities()
 		{
 			List<UniversityInfo> universities = new ArrayList<UniversityInfo>();
+			
 			Collection<UniversityDataSet> universityDataSetList = uniDataSets.values();
 			Iterator<UniversityDataSet> i = universityDataSetList.iterator();
 			

@@ -10,8 +10,8 @@ import java.util.List;
 
 public class UITabs extends UIOutput {
 	public void encodeBegin(FacesContext context) throws IOException {
-		Iterator<ListItemDAO> i;
-		ListItemDAO listItem;
+		Iterator<ListItemDAO> i = null;
+		ListItemDAO listItem = null;
 		ResponseWriter writer = context.getResponseWriter();
 		
 		writer.startElement("div", this);
@@ -56,34 +56,38 @@ public class UITabs extends UIOutput {
 					}
 					
 					
-					i = ((List<ListItemDAO>)(getAttributes().get("items"))).iterator();
-				
-					while(i.hasNext())
+					List<ListItemDAO> items = (List<ListItemDAO>)(getAttributes().get("items"));
+					if(items != null && items.size() > 0)
 					{
-						listItem = i.next();
-						
-						// Render deselected university
-						writer.startElement("a", this);
-							writer.writeAttribute("class", "tab_deselected", null);
+						i = items.iterator();
+				
+						while(i.hasNext())
+						{
+							listItem = i.next();
 							
-							String url = listItem.getUrl();
-							if(url != null)
-								writer.writeAttribute("href", url, null);
+							// Render deselected university
+							writer.startElement("a", this);
+								writer.writeAttribute("class", "tab_deselected", null);
+								
+								String url = listItem.getUrl();
+								if(url != null)
+									writer.writeAttribute("href", url, null);
+								
+								writer.startElement("div", this);
+									writer.writeAttribute("class", "tab_content", null);
+									
+									String title = listItem.getTitle();
+									if(title != null)
+										writer.write(title);
+									
+								writer.endElement("div");
+							writer.endElement("a");
 							
+							// Render deselected separator
 							writer.startElement("div", this);
-								writer.writeAttribute("class", "tab_content", null);
-								
-								String title = listItem.getTitle();
-								if(title != null)
-									writer.write(title);
-								
+								writer.writeAttribute("class", "tab_arrow", null);
 							writer.endElement("div");
-						writer.endElement("a");
-						
-						// Render deselected separator
-						writer.startElement("div", this);
-							writer.writeAttribute("class", "tab_arrow", null);
-						writer.endElement("div");
+						}
 					}
 					
 				writer.endElement("div");
