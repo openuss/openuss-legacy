@@ -14,11 +14,9 @@
 				<t:panelNavigation2 id="desktop" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator" >
 					<t:commandNavigation2 value="#{msg['desktop_navigation_header']}">
 						<s:authorize ifAllGranted="ROLE_USER">
-							<!--  TO BE UPDATED TO MY UNI -->
 							<t:commandNavigation2 value="#{msg['desktop_command_myuni']}" activeOnViewIds="/views/secured/myuni/myuni.xhtml" action="desktop"/>
 						</s:authorize>
 						<t:commandNavigation2 value="#{msg['desktop_system_admin']}" action="universities" activeOnViewIds="/views/public/university/universities.xhtml"/>
-						<t:commandNavigation2 value="#{msg['desktop_university_admin']}" action="university" activeOnViewIds="/views/public/university/university.xhtml"/>
 						<t:commandNavigation2 value="#{msg['desktop_department_admin']}" action="manage_institute" activeOnViewIds="/views/secured/lecture/departmentinstitutes.xhtml"/>
 						<t:commandNavigation2 value="#{msg['desktop_search_institute']}" action="search_institutes" activeOnViewIds="/views/public/institute/institutes.xhtml"/>
 						<s:authorize ifAllGranted="ROLE_USER">
