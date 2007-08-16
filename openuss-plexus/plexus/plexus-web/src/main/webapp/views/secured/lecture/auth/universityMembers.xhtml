@@ -31,17 +31,13 @@
  
 			<h:form id="membersForm"> 
 				<ui:include src="universityMemberstable.xhtml" />
-				<o:block>
-					<h:commandButton value="${msg.save}" title="#{msg.save_hint}" styleClass="button_save"/>
-					<h:commandButton value="${msg.reset}" title="#{msg.reset_hint}" styleClass="button_cancel" immediate="true"/>
-				</o:block>
-	  		</h:form>
+			</h:form>
 	  		<h:form id="newMemberForm">
 	  			<o:block label="#{msg['university_members_add_subheading']}" styleClass="form_box">
-					<o:input entity="views$secured$lecture$auth$members" property="username" required="true" label="#{msg['user_username']}">
+					<o:input entity="views$secured$lecture$auth$universitymembers" property="username" required="true" label="#{msg['user_username']}">
 						<f:validator validatorId="usernameExistValidator" />
 					</o:input>
-					<h:commandButton value="#{msg['university_members_command_add']}" title="#{msg['university_members_command_add_hint']}" styleClass="button_save"/>
+					<h:commandButton value="#{msg['university_members_command_add']}" actionListener="#{views$secured$lecture$auth$universitymembers.addMember}" title="#{msg['university_members_command_add_hint']}" styleClass="button_save"/>
 				</o:block>
 			</h:form>	
   		</ui:define>
