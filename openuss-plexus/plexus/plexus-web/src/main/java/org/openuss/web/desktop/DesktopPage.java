@@ -42,7 +42,7 @@ public class DesktopPage extends BasePage {
 	private void refreshDesktop() {
 		if (user != null) {
 			try {
-				if (desktop == null) {
+				if (desktop == null || desktop.getId() == null) {
 					logger.error("No desktop found for user " + user.getUsername() + ". Create new one.");
 					desktop = desktopService.getDesktopByUser(user);
 				} else {
