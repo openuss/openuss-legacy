@@ -729,7 +729,12 @@
 	<navigation-rule>
 	
 	<from-view-id>/views/public/university/*</from-view-id>
-
+		
+		<navigation-case>
+			<from-outcome>university_data</from-outcome>
+			<to-view-id>/views/secured/lecture/universityoptions.xhtml</to-view-id>
+		</navigation-case>
+		
 		<navigation-case>
 			<from-outcome>university_departments</from-outcome>
 			<to-view-id>/views/secured/lecture/universitydepartments.xhtml</to-view-id>
