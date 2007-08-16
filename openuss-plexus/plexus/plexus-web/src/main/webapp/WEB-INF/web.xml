@@ -192,22 +192,26 @@
 	</context-param>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - -
-	   Session In View Filter
+	   Debbug Filter
 	- - - - - - - - - - - - - - - - - - - - - - - - -->
 	<filter>
 		<filter-name>EarlyWarningFilter</filter-name>
 		<filter-class>org.openuss.web.servlets.EarlyWarningFilter</filter-class>
 	</filter>
 	
-	<filter>
-		<filter-name>openSessionInViewFilter</filter-name>
-		<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
-	</filter>
-	
 	<filter-mapping>
 		<filter-name>EarlyWarningFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - -
+	   Session In View Filter
+	- - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<filter>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+	</filter>
     
 	<filter-mapping>
 		<filter-name>openSessionInViewFilter</filter-name>
@@ -342,6 +346,19 @@
 	<filter-mapping>
 		<filter-name>MyFacesExtensionsFilter</filter-name>
 		<url-pattern>/faces/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - -
+	   Security: Cross-Scripting Filter
+	- - - - - - - - - - - - - - - - - - - - - - - - -->
+	<filter>
+		<filter-name>xssfilter</filter-name>
+		<filter-class>org.openuss.web.servlets.xss.XssServletFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>xssfilter</filter-name>
+		<url-pattern>/*</url-pattern>
 	</filter-mapping>    
 	
 	<!-- - - - - - - - - - - - - - - - - - - - - -

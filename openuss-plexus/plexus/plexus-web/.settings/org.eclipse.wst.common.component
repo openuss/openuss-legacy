@@ -256,7 +256,9 @@
     </dependent-module>
 	<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/openuss/framework/wtp-facelets-hack/3.0-SNAPSHOT/wtp-facelets-hack-3.0-SNAPSHOT.jar">
 		<dependency-type>uses</dependency-type>
-	</dependent-module>		
-    
+	</dependent-module>
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/jregex/jregex/1.2_01/jregex-1.2_01.jar">
+        <dependency-type>uses</dependency-type>
+    </dependent-module>		
     </wb-module>
 </project-modules>
