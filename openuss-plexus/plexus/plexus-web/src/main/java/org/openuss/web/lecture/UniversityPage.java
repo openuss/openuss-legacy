@@ -15,7 +15,7 @@ import org.openuss.news.NewsService;
  * @author Kai Stettner
  */
 @View
-@Bean(name = "views$secured$lecture$university", scope = Scope.REQUEST)
+@Bean(name = "views$public$university$university", scope = Scope.REQUEST)
 public class UniversityPage extends AbstractUniversityPage {
 	
 	private static final long serialVersionUID = -1982354759705358593L;
