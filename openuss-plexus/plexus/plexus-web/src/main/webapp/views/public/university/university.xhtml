@@ -7,6 +7,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:p="http://www.openuss.org/plexus/jsf"
 	  xmlns:c="http://java.sun.com/jstl/core"      
       xmlns:plexus="ttp://www.openuss.org/plexus/jsf">
       
@@ -34,19 +35,22 @@
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
 		</ui:define>
   		<ui:define name="content">
-  			<h:form id="departmentForm">
-				<o:block label="#{universityInfo.name} - #{msg['university_profile']}" styleClass="form_box">
-					<h:panelGrid border="0" columns="2">
-						<h:panelGroup>
-							<h:outputText value="#{universityInfo.description}" escape="false"/>
-						</h:panelGroup>
-						<h:outputText value="Bild hier anzeigen" styleClass="field_label" style="width:150px; text-align:right; "/>
-					</h:panelGrid>
+	  			
+	  			<o:block styleClass="teaser_blue_right" label="Logo">
+			  		<h:graphicImage styleClass="organisation_logo"
+					value="/images/university_logo_dummy.jpg"
+					alt="university logo dummy"
+					title="university logo dummy"/>
+			  	</o:block>
+	  			
+	  			<o:block styleClass="teaser_blue" label="#{universityInfo.name} - #{msg['university_profile']}">
+				  		<h:outputText value="#{universityInfo.description}" styleClass="content_font_normal" escape="false"/>
 				</o:block>
-				
-				<!--<ui:include src="departmentstable.xhtml"/>-->
-				
-			</h:form>
+	  			
+			  	<div class="clear_both"/>
+
+				<ui:include src="departmentstable.xhtml"/>
+
 		</ui:define>
 	</ui:composition>
 	<!-- text above will be ignored -->
