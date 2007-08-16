@@ -1032,6 +1032,12 @@ p.header_font_normal, span.header_font_normal {
 	height: 60px;
 }
 
+.organisation_logo {
+	display: run-in;
+	width: 240px;
+	height: 240px;
+}
+
 .content_normal .userimage .userphoto{
 	border: 0;
 	margin: 10px;
