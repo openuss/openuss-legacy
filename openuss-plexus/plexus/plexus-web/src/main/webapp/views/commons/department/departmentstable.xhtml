@@ -23,34 +23,24 @@
 	        <h:commandLink action="#{views$public$department$departments.selectDepartment}" styleClass="command">
 				<h:outputText value="#{bean.name}"/>
 			</h:commandLink> 
-			
 		</t:column>
 		
-		<t:column>
-			<plexus:commandSortHeader columnName="city">
-				#{msg['university_city']}
-			</plexus:commandSortHeader>
-			<h:outputText value="#{bean.city}"/>
-		</t:column>
-		
-		<t:column>
-			<plexus:commandSortHeader columnName="country">
-				#{msg['university_country']}
-			</plexus:commandSortHeader>
-			<h:outputText value="#{bean.country}"/>
-		</t:column>
-
 		<t:column>
 			<plexus:commandSortHeader columnName="shortcut">
-				#{msg['institute_shortcut_header']}
+				#{msg['department_shortcut']}
 			</plexus:commandSortHeader>
 			<h:outputText value="#{bean.shortcut}"/>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="ownerName">
+				#{msg['department_ownername']}
+			</plexus:commandSortHeader>
+			<h:outputText value="#{bean.ownerName}"/>
 		</t:column>
 
 		<s:authorize ifAllGranted="ROLE_USER">
 			<plexus:column header="#{msg.commands_header}">
-			
-					
 			<h:commandButton
 				styleClass="button_remove"
 				value="#{msg.department_command_remove}"
@@ -58,5 +48,6 @@
 			</h:commandButton>		
 			</plexus:column>
 		</s:authorize>
+		
 	</plexus:dataTable>
 </ui:composition>
