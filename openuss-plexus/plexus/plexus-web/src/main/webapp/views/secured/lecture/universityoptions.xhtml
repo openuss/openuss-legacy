@@ -32,7 +32,7 @@
 					<ui:include src="/views/commons/university/universityData.xhtml" />
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.save}"  styleClass="button_save"/>
+					<h:commandButton value="${msg.save}" action="#{views$secured$lecture$universityoptions.saveUniversity}" styleClass="button_save"/>
 					<h:commandButton value="${msg.cancel}"  styleClass="button_cancel" immediate="true"/>
 		  		</o:block>
 	  		</h:form>
