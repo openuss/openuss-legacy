@@ -18,7 +18,6 @@ import org.openuss.commands.AbstractDomainCommand;
 import org.openuss.commands.CommandApplicationService;
 import org.openuss.commands.CommandService;
 import org.openuss.commands.DomainCommand;
-import org.openuss.system.SystemService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.mail.MailSendException;
