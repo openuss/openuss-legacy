@@ -15,7 +15,7 @@
 					<t:commandNavigation2 value="#{msg['desktop_navigation_header']}">
 						<s:authorize ifAllGranted="ROLE_USER">
 							<!--  TO BE UPDATED TO MY UNI -->
-							<t:commandNavigation2 value="#{msg['desktop_command_myuni']}" activeOnViewIds="/views/secured/desktop/desktop.xhtml" action="desktop"/>
+							<t:commandNavigation2 value="#{msg['desktop_command_myuni']}" activeOnViewIds="/views/secured/myuni/myuni.xhtml" action="desktop"/>
 						</s:authorize>
 						<t:commandNavigation2 value="#{msg['desktop_system_admin']}" action="universities" activeOnViewIds="/views/public/university/universities.xhtml"/>
 						<t:commandNavigation2 value="#{msg['desktop_university_admin']}" action="university" activeOnViewIds="/views/public/university/university.xhtml"/>

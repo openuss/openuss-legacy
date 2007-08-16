@@ -609,6 +609,7 @@ public class MyUniPage extends BasePage {
 		
 		public List<ListItemDAO> getDepartments(Long universityId)
 		{
+			Boolean isBookmark;
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
 			Collection<DepartmentInfo> departments = uniDataSets.get(universityId).departments.values();
 			Map<Long, Boolean> departmentBookmarks = uniDataSets.get(universityId).departmentBookmarks;
@@ -619,7 +620,8 @@ public class MyUniPage extends BasePage {
 				DepartmentInfo currentDepartment = i.next();
 				ListItemDAO newListItem = new ListItemDAO();
 				newListItem.setTitle(currentDepartment.getName());
-				newListItem.setIsBookmark(instituteBookmarks.get(currentInstitute.getId()) == true);
+				isBookmark = departmentBookmarks.get(currentDepartment.getId());
+				newListItem.setIsBookmark(isBookmark != null && isBookmark.booleanValue() == true);
 				listItems.add(newListItem);
 			}
 			
@@ -628,6 +630,7 @@ public class MyUniPage extends BasePage {
 		
 		public List<ListItemDAO> getInstitutes(Long universityId)
 		{
+			Boolean isBookmark;
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
 			
 			if(universityId != null && uniDataSets.containsKey(universityId))
@@ -641,8 +644,8 @@ public class MyUniPage extends BasePage {
 					InstituteInfo currentInstitute = i.next();
 					ListItemDAO newListItem = new ListItemDAO();
 					newListItem.setTitle(currentInstitute.getName());
-					newListItem.setIsBookmark(instituteBookmarks.get(currentInstitute.getId()) == true);
-					
+					isBookmark = instituteBookmarks.get(currentInstitute.getId());
+					newListItem.setIsBookmark(isBookmark != null && isBookmark.booleanValue() == true);
 					listItems.add(newListItem);
 				}
 			}
