@@ -39,7 +39,7 @@ import org.openuss.web.statistics.OnlineSessionTracker;
 
 
 /**
- * AuthenticationController handels all processes around user login, logout, and forgotten passwords. 
+ * AuthenticationController handles all processes around user login, logout, and forgotten passwords. 
  * @author Ingo Dueppe
  *
  */
