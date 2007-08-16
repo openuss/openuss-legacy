@@ -248,7 +248,7 @@ public class PeriodsPage extends AbstractLecturePage {
 	
 	public String shortcutCourse() throws DesktopException {
 		Course course = courseData.getRowData();
-		getDesktopService().linkCourse(getDesktop(), course);
+		//getDesktopService().linkCourse(getDesktop(), course);
 		addMessage(i18n("message_course_shortcut_created"));
 		return Constants.INSTITUTE_PERIODS_PAGE; 
 	}

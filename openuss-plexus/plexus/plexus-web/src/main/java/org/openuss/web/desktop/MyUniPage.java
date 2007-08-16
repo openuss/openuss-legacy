@@ -98,14 +98,15 @@ public class MyUniPage extends BasePage {
 	private void refreshDesktop() {
 		if (user != null) {
 			try {
-				if (desktop == null) {
+				if (desktopInfo == null) {
 					logger.error("No desktop found for user " + user.getUsername() + ". Create new one.");
-					desktop = desktopService.getDesktopByUser(user);
+					desktopInfo = desktopService2.findDesktopByUser(user.getId());
+					
 				} else {
 					logger.debug("refreshing desktop data");
-					desktop = desktopService.getDesktop(desktop);
+					desktopInfo = desktopService2.findDesktop(desktopInfo.getId());
 				}
-				setSessionBean(Constants.DESKTOP, desktop);
+				setSessionBean(Constants.DESKTOP_INFO, desktopInfo);
 				
 				
 				

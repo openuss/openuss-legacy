@@ -4,8 +4,11 @@ package org.openuss.web;
  * PageLinks contains all needed links to pages.
  * @author Sebastian Roekens
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 public class PageLinks{
+	public static final String UNIVERSITY_PAGE = "/views/public/university/university.faces";
+	
 	public static final String INSTITUTE_PAGE = "/views/secured/lecture/institute.faces";
 	
 	public static final String COURSE_PAGE = "/views/secured/course/main.faces";

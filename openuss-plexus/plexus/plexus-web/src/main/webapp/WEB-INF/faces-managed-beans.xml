@@ -95,6 +95,14 @@
  		<managed-bean-class>org.openuss.lecture.CourseInfo</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>courseTypeInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.CourseTypeInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	
+
 
  	<managed-bean>
  		<managed-bean-name>documents_current_folder</managed-bean-name>

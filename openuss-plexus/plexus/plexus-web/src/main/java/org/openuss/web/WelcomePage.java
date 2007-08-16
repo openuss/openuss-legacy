@@ -1,5 +1,6 @@
 package org.openuss.web;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
@@ -10,10 +11,13 @@ import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.statistics.OnlineStatisticService;
 import org.openuss.statistics.SystemStatisticInfo;
+import org.openuss.web.security.AuthenticationController;
 
 @Bean(name="views$welcome", scope=Scope.REQUEST)
 @View
 public class WelcomePage extends BasePage{
+	
+	private static final Logger logger = Logger.getLogger(WelcomePage.class);
 
 	@Property (value="#{"+Constants.USER+"}")
 	private User user;
@@ -32,7 +36,10 @@ public class WelcomePage extends BasePage{
 	
 	@Prerender
 	public void prerender() {
+		logger.debug("starting method prerender");
+		
 		if (user != null && user.getId()==null) {
+				logger.debug("in user if clause");
 				user = User.Factory.newInstance();
 				user.setPreferences(null);
 				user.setContact(null);

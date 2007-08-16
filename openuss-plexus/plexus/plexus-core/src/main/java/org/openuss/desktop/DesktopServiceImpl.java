@@ -25,6 +25,7 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 	
 	@Override
 	protected Desktop handleCreateDesktop(final User user) throws Exception {
+		logger.debug("Starting method handleCreateDesktop");
 		Desktop desktop = new DesktopImpl();
 		desktop.setUser(user);
 		getDesktopDao().create(desktop);

@@ -12,16 +12,17 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.LectureException;
-import org.openuss.lecture.CourseType;
 import org.openuss.web.Constants;
 
 /**
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 @Bean(name = "views$secured$lecture$coursetypes", scope = Scope.REQUEST)
 @View
-public class CourseTypesPage extends AbstractLecturePage {
+public class CourseTypesPage extends AbstractCourseTypePage {
 
 	private static final Logger logger = Logger.getLogger(CourseTypesPage.class);
 
@@ -49,18 +50,18 @@ public class CourseTypesPage extends AbstractLecturePage {
 	 * @throws LectureException 
 	 */
 	public String editCourseType() throws LectureException {
-		courseType = data.getRowData();
-		if (courseType == null) {
+		courseTypeInfo = data.getRowData();
+		if (courseTypeInfo == null) {
 			return Constants.FAILURE;
 		}
-		courseType = lectureService.getCourseType(courseType.getId());
-		setSessionBean(Constants.COURSE_TYPE, courseType);
-		if (courseType == null) {
-			addWarning(i18n("error_coursetype_not_found"));
+		courseTypeInfo = courseTypeService.findCourseType(courseTypeInfo.getId());
+		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
+		if (courseTypeInfo == null) {
+			addWarning(i18n("error_course_type_not_found"));
 			return Constants.FAILURE;
 			
 		} else {
-			logger.debug("selected courseType "+courseType.getName());
+			logger.debug("selected courseType "+courseTypeInfo.getName());
 			return Constants.SUCCESS;
 		}
 	}
@@ -71,16 +72,18 @@ public class CourseTypesPage extends AbstractLecturePage {
 	 * @return outcome
 	 */
 	public String addCourseType() {
-		courseType = CourseType.Factory.newInstance();
-		courseType.setInstitute(institute);
-		setSessionBean(Constants.COURSE_TYPE, courseType);
+		//courseType = CourseType.Factory.newInstance();
+		courseTypeInfo = new CourseTypeInfo();
+		courseTypeInfo.setInstituteId(instituteInfo.getId());
+		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
 		return Constants.SUCCESS;
 	}
 
 	public String shortcutCourseType() {
-		courseType = data.getRowData();;
+		courseTypeInfo = data.getRowData();;
 		try {
-			desktopService.linkCourseType(desktop, courseType);
+			// desktopService.linkCourseType(desktop, courseType);
+			desktopService2.linkCourseType(desktopInfo.getId(), courseTypeInfo.getId());
 			addMessage(i18n("desktop_command_add_coursetype_succeed"));
 			return Constants.SUCCESS;
 		} catch (DesktopException e) {
@@ -97,8 +100,8 @@ public class CourseTypesPage extends AbstractLecturePage {
 	 * @return outcome
 	 */
 	public String confirmRemoveCourseType() {
-		courseType = data.getRowData();;
-		setSessionBean(Constants.COURSE_TYPE, courseType);
+		courseTypeInfo = data.getRowData();;
+		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
 		return Constants.INSTITUTE_COURSE_TYPE_REMOVE_PAGE;
 	}
 
@@ -107,19 +110,20 @@ public class CourseTypesPage extends AbstractLecturePage {
 	 * selection from session scope
 	 * @return outcome 
 	 */
-	public String saveCourseType() {
+	/*public String saveCourseType() {
 		logger.debug("saveCourseType()");
-		if (courseType.getId() == null) {
+		if (courseTypeInfo.getId() == null) {
 			lectureService.add(institute.getId(), courseType);
+			
 			addMessage(i18n("institute_message_add_coursetype_succeed"));
 		} else {
 			lectureService.persist(courseType);
 			addMessage(i18n("institute_message_persist_coursetype_succeed"));
 		}
 		removeSessionBean(Constants.COURSE_TYPE);
-		courseType = null;
+		courseTypeInfo = null;
 		return Constants.SUCCESS;
-	}
+	}*/
 
 	/**
 	 * Cancel editing or adding of current courseType
@@ -127,22 +131,22 @@ public class CourseTypesPage extends AbstractLecturePage {
 	 */
 	public String cancelCourseType() {
 		logger.debug("cancelCourseType()");
-		removeSessionBean(Constants.COURSE_TYPE);
+		removeSessionBean(Constants.COURSE_TYPE_INFO);
 		return Constants.SUCCESS;
 	}
 
-	private class LocalDataModel extends AbstractPagedTable<CourseType> {
+	private class LocalDataModel extends AbstractPagedTable<CourseTypeInfo> {
 		
 		private static final long serialVersionUID = -6289875618529435428L;
 		
-		private DataPage<CourseType> page;
+		private DataPage<CourseTypeInfo> page;
 
 		@Override
-		public DataPage<CourseType> getDataPage(int startRow, int pageSize) {
+		public DataPage<CourseTypeInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<CourseType> courseTypes = new ArrayList<CourseType>(institute.getCourseTypes());
+				List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService.findCourseTypesByInstitute(instituteInfo.getId()));
 				sort(courseTypes);
-				page = new DataPage<CourseType>(courseTypes.size(),0,courseTypes);
+				page = new DataPage<CourseTypeInfo>(courseTypes.size(),0,courseTypes);
 			}
 			return page;
 		}

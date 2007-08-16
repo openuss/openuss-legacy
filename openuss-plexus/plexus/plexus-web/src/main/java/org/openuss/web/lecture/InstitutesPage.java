@@ -68,7 +68,7 @@ public class InstitutesPage extends BasePage{
 		logger.debug("Starting method shortcutInstitute");
 		InstituteInfo currentInstitute = currentInstitute();
 		//desktopService.linkInstitute(desktop, currentInstitute);
-		desktopService2.linkInstitute(desktop.getId(), currentInstitute.getId() );
+		desktopService2.linkInstitute(desktopInfo.getId(), currentInstitute.getId() );
 		
 		addMessage(i18n("message_institute_shortcut_created"));
 		return Constants.SUCCESS;

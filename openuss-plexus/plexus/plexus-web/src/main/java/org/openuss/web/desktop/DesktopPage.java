@@ -3,8 +3,6 @@ package org.openuss.web.desktop;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.model.SelectItem;
-
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -14,8 +12,11 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseType;
+import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.Institute;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -23,6 +24,7 @@ import org.openuss.web.Constants;
  * DesktopViewController is the mvc bean to handle the desktop view.
  * 
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 @Bean(name = "views$secured$desktop$desktop", scope = Scope.REQUEST)
 @View
@@ -44,14 +46,14 @@ public class DesktopPage extends BasePage {
 	private void refreshDesktop() {
 		if (user != null) {
 			try {
-				if (desktop == null) {
+				if (desktopInfo == null || desktopInfo.getId() == null) {
 					logger.error("No desktop found for user " + user.getUsername() + ". Create new one.");
-					desktop = desktopService.getDesktopByUser(user);
+					desktopInfo = desktopService2.findDesktopByUser(user.getId());
 				} else {
 					logger.debug("refreshing desktop data");
-					desktop = desktopService.getDesktop(desktop);
+					desktopInfo = desktopService2.findDesktop(desktopInfo.getId());
 				}
-				setSessionBean(Constants.DESKTOP, desktop);
+				setSessionBean(Constants.DESKTOP_INFO, desktopInfo);
 			} catch (DesktopException e) {
 				logger.error(e);
 				addError(i18n(e.getMessage()));
@@ -65,9 +67,9 @@ public class DesktopPage extends BasePage {
 	 * @return outcome
 	 */
 	public String showInstitute() {
-		logger.debug("showInstitute");
-		Institute institute = institutesProvider.getRowData();
-		setSessionBean(Constants.INSTITUTE, institute);
+		logger.debug("starting method showInstitute");
+		InstituteInfo instituteInfo = institutesProvider.getRowData();
+		setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
 		return Constants.INSTITUTE;
 	}
 
@@ -77,10 +79,11 @@ public class DesktopPage extends BasePage {
 	 * @return outcome = DESKTOP
 	 */
 	public String removeInstitute() throws DesktopException {
-		logger.debug("remove institute");
-		Institute institute = institutesProvider.getRowData();
-		desktopService.unlinkInstitute(desktop, institute);
-		addMessage(i18n("desktop_message_removed_institute_succeed", institute.getName()));
+		logger.debug("starting method remove institute");
+		InstituteInfo instituteInfo = institutesProvider.getRowData();
+		//desktopService.unlinkInstitute(desktop, institute);
+		desktopService2.unlinkInstitute(desktopInfo.getId(), instituteInfo.getId());
+		addMessage(i18n("desktop_message_removed_institute_succeed", instituteInfo.getName()));
 		return Constants.DESKTOP;
 	}
 
@@ -90,9 +93,9 @@ public class DesktopPage extends BasePage {
 	 * @return outcome
 	 */
 	public String showCourse() {
-		logger.debug("showCourse");
-		Course course = coursesProvider.getRowData();
-		setSessionBean(Constants.COURSE, course);
+		logger.debug("starting method showCourse");
+		CourseInfo courseInfo = coursesProvider.getRowData();
+		setSessionBean(Constants.COURSE_INFO, courseInfo);
 		return Constants.COURSE_PAGE;
 	}
 
@@ -102,11 +105,12 @@ public class DesktopPage extends BasePage {
 	 * @return outcome
 	 */
 	public String removeCourse() {
-		logger.debug("remove course");
-		Course course = coursesProvider.getRowData();
+		logger.debug("starting method remove course");
+		CourseInfo courseInfo = coursesProvider.getRowData();
 		try {
-			desktopService.unlinkCourse(desktop, course);
-			addMessage(i18n("desktop_mesage_removed_course_succeed", course.getShortcut()));
+			//desktopService.unlinkCourse(desktop, course);
+			desktopService2.unlinkCourse(desktopInfo.getId(), courseInfo.getId());
+			addMessage(i18n("desktop_mesage_removed_course_succeed", courseInfo.getShortcut()));
 		} catch (DesktopException e) {
 			logger.debug(e);
 			addError(i18n(e.getMessage()));
@@ -120,18 +124,19 @@ public class DesktopPage extends BasePage {
 	 * @return outcome
 	 */
 	public String showCourseType() {
-		logger.debug("showCourseType");
-		CourseType courseType = courseTypesProvider.getRowData();
-		setSessionBean(Constants.COURSE_TYPE, courseType);
+		logger.debug("starting method showCourseType");
+		CourseTypeInfo courseTypeInfo = courseTypesProvider.getRowData();
+		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
 		return Constants.COURSE_TYPE_COURSE_SELECTION_PAGE;
 	}
 
 	public String removeCourseType() {
-		logger.debug("remove courseType");
-		CourseType courseType = courseTypesProvider.getRowData();
+		logger.debug("starting method remove courseType");
+		CourseTypeInfo courseTypeInfo = courseTypesProvider.getRowData();
 		try {
-			desktopService.unlinkCourseType(desktop, courseType);
-			addMessage(i18n("desktop_message_removed_coursetype_succeed", courseType.getName()));
+			//desktopService.unlinkCourseType(desktop, courseType);
+			desktopService2.unlinkCourseType(desktopInfo.getId(), courseTypeInfo.getId());
+			addMessage(i18n("desktop_message_removed_coursetype_succeed", courseTypeInfo.getName()));
 		} catch (DesktopException e) {
 			logger.debug(e);
 			addError(i18n(e.getMessage()));
@@ -140,48 +145,48 @@ public class DesktopPage extends BasePage {
 	}
 
 	/* ------------------ data models ------------------- */
-	private class CourseDataProvider extends AbstractPagedTable<Course> {
+	private class CourseDataProvider extends AbstractPagedTable<CourseInfo> {
 
 		private static final long serialVersionUID = 255073655670856663L;
 
-		private DataPage<Course> page;
+		private DataPage<CourseInfo> page;
 
 		@Override
-		public DataPage<Course> getDataPage(int startRow, int pageSize) {
-			if (desktop != null) {
-				List<Course> courses = new ArrayList<Course>(desktop.getCourses());
+		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
+			if (desktopInfo != null) {
+				List<CourseInfo> courses = new ArrayList<CourseInfo>(desktopInfo.getCourseInfos());
 				sort(courses);
-				page = new DataPage<Course>(courses.size(), 0, courses);
+				page = new DataPage<CourseInfo>(courses.size(), 0, courses);
 			}
 			return page;
 		}
 	}
 
-	private class CourseTypeDataProvider extends AbstractPagedTable<CourseType> {
+	private class CourseTypeDataProvider extends AbstractPagedTable<CourseTypeInfo> {
 
 		private static final long serialVersionUID = -932405920082089168L;
 
-		private DataPage<CourseType> page;
+		private DataPage<CourseTypeInfo> page;
 
 		@Override
-		public DataPage<CourseType> getDataPage(int startRow, int pageSize) {
-			List<CourseType> courseTypes = new ArrayList<CourseType>(desktop.getCourseTypes());
+		public DataPage<CourseTypeInfo> getDataPage(int startRow, int pageSize) {
+			List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(desktopInfo.getCourseTypeInfos());
 			sort(courseTypes);
-			page = new DataPage<CourseType>(courseTypes.size(), 0, courseTypes);
+			page = new DataPage<CourseTypeInfo>(courseTypes.size(), 0, courseTypes);
 			return page;
 		}
 	}
 
-	private class InstituteDataProvider extends AbstractPagedTable<Institute> {
+	private class InstituteDataProvider extends AbstractPagedTable<InstituteInfo> {
 		private static final long serialVersionUID = 2146461373793139193L;
 
-		private DataPage<Institute> page;
+		private DataPage<InstituteInfo> page;
 
 		@Override
-		public DataPage<Institute> getDataPage(int startRow, int pageSize) {
-			List<Institute> institutes = new ArrayList<Institute>(desktop.getInstitutes());
+		public DataPage<InstituteInfo> getDataPage(int startRow, int pageSize) {
+			List<InstituteInfo> institutes = new ArrayList<InstituteInfo>(desktopInfo.getInstituteInfos());
 			sort(institutes);
-			page = new DataPage<Institute>(institutes.size(), 0, institutes);
+			page = new DataPage<InstituteInfo>(institutes.size(), 0, institutes);
 			return page;
 		}
 	}

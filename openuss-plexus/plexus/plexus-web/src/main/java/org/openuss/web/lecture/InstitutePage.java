@@ -1,7 +1,5 @@
 package org.openuss.web.lecture;
 
-import static org.openuss.web.lecture.AbstractLecturePage.logger;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,9 +15,9 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.Period;
-import org.openuss.lecture.PeriodInfo;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
 import org.openuss.web.Constants;
@@ -99,24 +97,24 @@ public class InstitutePage extends AbstractLecturePage {
 		return Constants.SUCCESS;
 	}
 	
-	private class CourseDataModel extends AbstractPagedTable<Course> {
+	private class CourseDataModel extends AbstractPagedTable<CourseInfo> {
 
 		private static final long serialVersionUID = 3682383483634321520L;
 
-		private DataPage<Course> page;
+		private DataPage<CourseInfo> page;
 
 		@Override
-		public DataPage<Course> getDataPage(int startRow, int pageSize) {
+		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<Course> courses = new ArrayList<Course>();
-				if (period != null) {
+				List<CourseInfo> courses = new ArrayList<CourseInfo>();
+				/*if (period != null) {
 					period = lectureService.getPeriod(period.getId());
 					courses.addAll(period.getCourses());
 				} else {
 					logger.error("institute page - no period selected!");
-				}
+				}*/
 				sort(courses);
-				page = new DataPage<Course>(courses.size(), 0, courses);
+				page = new DataPage<CourseInfo>(courses.size(), 0, courses);
 			}
 			return page;
 		}
@@ -166,8 +164,9 @@ public class InstitutePage extends AbstractLecturePage {
 	}
 
 	public String shortcutCourse() throws DesktopException {
-		Course course = courseData.getRowData();
-		desktopService.linkCourse(desktop, course);
+		CourseInfo courseInfo = courseData.getRowData();
+		//desktopService.linkCourse(desktop, course);
+		desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());
 		addMessage(i18n("message_course_shortcut_created"));
 		return Constants.INSTITUTE_PAGE;
 	}

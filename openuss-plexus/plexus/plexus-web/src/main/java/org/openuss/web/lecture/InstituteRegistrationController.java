@@ -51,7 +51,7 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		//TODO send notification email
 		//FIXME this should be part of the business layer
 		//desktopService.linkInstitute(desktop, institute);
-		desktopService2.linkInstitute(desktop.getId(), instituteId);
+		desktopService2.linkInstitute(desktopInfo.getId(), instituteId);
 		return Constants.INSTITUTE;
 	}
 	

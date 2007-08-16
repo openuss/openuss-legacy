@@ -67,6 +67,8 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 	 */
 	protected java.lang.Long handleCreateDesktop(java.lang.Long userId) throws java.lang.Exception {
 		
+		logger.debug("Starting method handleCreateDesktop");
+		
 		Validate.notNull(userId, "DesktopService2.handleCreateDesktop - userId cannot be null!");
 		
 		User user = this.getUserDao().load(userId);

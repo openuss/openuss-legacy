@@ -17,8 +17,10 @@ public class Constants {
 	public static final String INSTITUTE = "institute";
 	public static final String INSTITUTE_INFO = "instituteInfo";
 	public static final String COURSE_TYPE = "courseType";
+	public static final String COURSE_TYPE_INFO = "courseTypeInfo";
 	public static final String COURSE = "course";
-	public static final String COURSE_INFO = "course_info";
+	public static final String COURSE_INFO = "courseInfo";
+	public static final String DESKTOP_INFO = "desktopInfo";
 
 	public static final String PERIOD = "period";
 	public static final String PERIOD_INFO = "periodInfo";

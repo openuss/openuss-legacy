@@ -7,6 +7,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopException;
+import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService;
 import org.openuss.desktop.DesktopService2;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
@@ -16,16 +17,14 @@ import org.openuss.security.User;
 /**
  * Abstract BasePage  
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 public abstract class BasePage extends BaseBean {
 
 	private static final Logger logger = Logger.getLogger(BasePage.class);
 
-	@Property(value = "#{desktop}")
-	protected Desktop desktop;
-	
-	@Property(value = "#{desktopService}")
-	protected DesktopService desktopService;
+	@Property(value = "#{desktopInfo}")
+	protected DesktopInfo desktopInfo;
 	
 	@Property(value = "#{desktopService2}")
 	protected DesktopService2 desktopService2;
@@ -37,42 +36,36 @@ public abstract class BasePage extends BaseBean {
 	protected List<BreadCrumb> crumbs;
 	
 	/**
-	 * Refreshing institute entity 
+	 * Refreshing organisation entity 
 	 * @throws DesktopException 
 	 */
 	@Preprocess
 	public void preprocess() throws Exception {
+		logger.debug("Starting method preprocess");
 		crumbs.clear();
 		
-		if (desktop == null) {
+		if (desktopInfo == null) {
 			if (user != null && user.getId() != null) {
 				logger.debug("preprocess - getting desktop session object");
-				desktop = desktopService.getDesktopByUser(user);
-				setSessionBean(Constants.DESKTOP, desktop);
+				desktopInfo = desktopService2.findDesktopByUser(user.getId());
+				logger.debug(desktopInfo.getId());
+				setSessionBean(Constants.DESKTOP_INFO, desktopInfo);
 			} 
 			
-			if (desktop != null) {
-				logger.error("could not find desktor for user "+user);
+			if (desktopInfo != null) {
+				logger.error("could not find desktop for user "+user);
 				addError("message_error_no_desktop_found");
 				redirect(Constants.HOME);
 			}
 		}
 	}
 
-	public Desktop getDesktop() {
-		return desktop;
+	public DesktopInfo getDesktopInfo() {
+		return desktopInfo;
 	}
-
-	public void setDesktop(Desktop desktop) {
-		this.desktop = desktop;
-	}
-
-	public DesktopService getDesktopService() {
-		return desktopService;
-	}
-
-	public void setDesktopService(DesktopService desktopService) {
-		this.desktopService = desktopService;
+	
+	public void setDesktopInfo(DesktopInfo desktopInfo) {
+		this.desktopInfo = desktopInfo;
 	}
 	
 	public DesktopService2 getDesktopService2() {
