@@ -40,26 +40,9 @@ public abstract class AbstractUniversityPage extends BasePage {
 		super.preprocess();
 		logger.debug("preprocess - refreshing university session object");
 		if (universityInfo != null) {
-			if(universityInfo != null){
-				logger.debug("preprocess - university info is NOT null");
-			} else {
-				logger.debug("preprocess - university info is null");
-			}
-			if(universityInfo.getId() != null){
-				logger.debug("preprocess - getId is NOT null");
-			} else {
-				logger.debug("preprocess - getId info is null");
-			}
-			if(universityInfo.getName() != null){
-				logger.debug("preprocess - getName is "+universityInfo.getName());
-			} else {
-				logger.debug("preprocess - getName info is null");
-			}
 			universityInfo = universityService.findUniversity(universityInfo.getId());
-			logger.debug("preprocess - read university info from db");
 		} else {
 			universityInfo = (UniversityInfo) getSessionBean(Constants.UNIVERSITY_INFO);
-			logger.debug("preprocess - read university info from session");
 		}
 		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
 	}
