@@ -130,6 +130,16 @@
 			<arg value="-Dpackaging=jar"/>
 		</exec>
 	</target>
+	<target name="jregex">
+		<exec executable="mvn.bat">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./jregex/jregex1.2_01.jar"/>
+			<arg value="-DgroupId=jregex"/>
+			<arg value="-DartifactId=jregex"/>
+			<arg value="-Dversion=1.2_01"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
 	
 	
 </project>
