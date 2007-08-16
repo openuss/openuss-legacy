@@ -60,6 +60,20 @@ public class DepartmentsPage extends BasePage{
 		return department;
 	}
 	
+	/**
+	 * Store the selected university into session scope and go to university main page.
+	 * @return Outcome
+	 */
+	public String selectDepartment() {
+		logger.debug("Starting method selectDepartment");
+		DepartmentInfo department = currentDepartment();
+		logger.debug("Returning to method selectDepartment");
+		logger.debug(department.getId());	
+		setSessionBean(Constants.DEPARTMENT_INFO, department);
+		
+		return Constants.DEPARTMENT_PAGE;
+	}
+	
 	private DataPage<DepartmentInfo> dataPage;
 	
 	public DataPage<DepartmentInfo> fetchDataPage(int startRow, int pageSize) {
@@ -68,29 +82,30 @@ public class DepartmentsPage extends BasePage{
 			if (logger.isDebugEnabled()) {
 				logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+departments.getSortColumn());
 			}
-			//List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByUniversity(universityInfo.getId()));
-			List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByUniversity(7L));
+			List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByUniversity(universityInfo.getId()));
+
 			logger.info("Departments:"+departmentList);
 			if (departmentList != null) {
 				logger.info("Size:"+departmentList.size());
 			}
-			//List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>();
-			//departmentList.add(departmentService.findDepartment(12L));
-			//sort(instituteList);
+			
+			sort(departmentList);
 			dataPage = new DataPage<DepartmentInfo>(departmentList.size(),0,departmentList);
 	}
 		return dataPage;
 	}
 
-/*private void sort(List<InstituteDetails> instituteList) {
+	private void sort(List<DepartmentInfo> departmentList) {
 		if (StringUtils.equals("shortcut", departments.getSortColumn())) {
-			Collections.sort(instituteList, new ShortcutComparator());
-		} else if (StringUtils.equals("owner", departments.getSortColumn())){
-			Collections.sort(instituteList, new OwnerComparator());
+			Collections.sort(departmentList, new ShortcutComparator());
+		} else if (StringUtils.equals("city", departments.getSortColumn())){
+			Collections.sort(departmentList, new CityComparator());
+		} else if (StringUtils.equals("country", departments.getSortColumn())){
+			Collections.sort(departmentList, new CountryComparator());
 		} else {
-			Collections.sort(instituteList, new NameComparator());
+			Collections.sort(departmentList, new NameComparator());
 		}
-	}*/
+	}
 
 	public DepartmentTable getDepartments() {
 		return departments;
@@ -123,10 +138,10 @@ public class DepartmentsPage extends BasePage{
 		this.universityInfo = universityInfo;
 	}
 	
-	/* ----------- institute sorting comparators -------------*/
+	/* ----------- departments sorting comparators -------------*/
 	
-	/*private class NameComparator implements Comparator<DepartmentInfo> {
-		public int compare(InstituteDetails f1, InstituteDetails f2) {
+	private class NameComparator implements Comparator<DepartmentInfo> {
+		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
 			if (departments.isAscending()) {
 				return f1.getName().compareToIgnoreCase(f2.getName());
 			} else {
@@ -135,45 +150,44 @@ public class DepartmentsPage extends BasePage{
 		}
 	}
 
-	private class OwnerComparator implements Comparator<InstituteDetails> {
-		public int compare(InstituteDetails f1, InstituteDetails f2) {
+	private class CityComparator implements Comparator<DepartmentInfo> {
+		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
 			if (departments.isAscending()) {
-				return f1.getOwnername().compareToIgnoreCase(f2.getOwnername());
+				return f1.getCity().compareToIgnoreCase(f2.getCity());
 			} else {
-				return f2.getOwnername().compareToIgnoreCase(f1.getOwnername());
+				return f2.getCity().compareToIgnoreCase(f1.getCity());
+			}
+		}
+	}
+	
+	private class CountryComparator implements Comparator<DepartmentInfo> {
+		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
+			if (departments.isAscending()) {
+				return f1.getCountry().compareToIgnoreCase(f2.getCountry());
+			} else {
+				return f2.getCountry().compareToIgnoreCase(f1.getCountry());
 			}
 		}
 	}
 
-	private class ShortcutComparator implements Comparator<InstituteDetails> {
-		public int compare(InstituteDetails f1, InstituteDetails f2) {
+	private class ShortcutComparator implements Comparator<DepartmentInfo> {
+		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
 			if (departments.isAscending()) {
 				return f1.getShortcut().compareToIgnoreCase(f2.getShortcut());
 			} else {
 				return f2.getShortcut().compareToIgnoreCase(f1.getShortcut());
 			}
 		}
-	}*/
-
-	/*
-	public String editDepartment(){
-		DepartmentInfo Department = currentDepartment();
-		setSessionBean(Constants.Department, Department);
-		
-		return Constants.Department_PAGE;
 	}
+
+
+
 	
 	public String confirmRemoveDepartment(){
-		DepartmentInfo Department = currentDepartment();
-		setSessionBean(Constants.Department, Department);
+		DepartmentInfo departmentInfo = currentDepartment();
+		setSessionBean(Constants.DEPARTMENT, departmentInfo);
 		return "removed";
 	}
 
-	public String manageDepartment(){
-		DepartmentInfo Department = currentDepartment();
-		setSessionBean(Constants.Department, Department);
-		
-		return Constants.DEPARTMENT_MANAGEMENT;
-	}
-*/
+
 }

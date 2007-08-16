@@ -20,14 +20,24 @@
 			<plexus:commandSortHeader columnName="name">
 				#{msg['department_name']}
 			</plexus:commandSortHeader>
-			<h:outputText value="#{bean.name}"/>
+	        <h:commandLink action="#{views$public$department$departments.selectDepartment}" styleClass="command">
+				<h:outputText value="#{bean.name}"/>
+			</h:commandLink> 
+			
 		</t:column>
 		
 		<t:column>
-			<plexus:commandSortHeader columnName="owner">
-				#{msg['department_ownername']}
+			<plexus:commandSortHeader columnName="city">
+				#{msg['university_city']}
 			</plexus:commandSortHeader>
-			<h:outputText value="#{bean.ownerName}"/>
+			<h:outputText value="#{bean.city}"/>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="country">
+				#{msg['university_country']}
+			</plexus:commandSortHeader>
+			<h:outputText value="#{bean.country}"/>
 		</t:column>
 
 		<t:column>
@@ -39,11 +49,7 @@
 
 		<s:authorize ifAllGranted="ROLE_USER">
 			<plexus:column header="#{msg.commands_header}">
-			<h:commandButton
-				styleClass="button_edit"
-				action = "department_data"
-				value="#{msg.department_command_edit}"
-				hint="#{msg.department_command_edit_hint}"/>
+			
 					
 			<h:commandButton
 				styleClass="button_remove"
