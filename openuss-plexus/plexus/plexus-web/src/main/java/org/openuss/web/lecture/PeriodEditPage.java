@@ -44,17 +44,7 @@ public class PeriodEditPage extends AbstractPeriodPage {
 	 */
 	public String savePeriod() throws LectureException {
 		if (periodInfo.getId() == null) {
-			//Create Startdate
-			Calendar cal = new GregorianCalendar();
-			cal.set(2007, 10, 1);
-			Date startdate = new Date(cal.getTimeInMillis());
 			
-			//Create Enddate
-			cal = new GregorianCalendar();
-			cal.set(2008, 3, 31);
-			Date enddate = new Date(cal.getTimeInMillis());
-			periodInfo.setStartdate(startdate);
-			periodInfo.setEnddate(enddate);
 			periodInfo.setUniversityId(universityInfo.getId());
 			universityService.create(periodInfo);
 			addMessage(i18n("message_created_new_period_succeed"));
@@ -62,7 +52,7 @@ public class PeriodEditPage extends AbstractPeriodPage {
 			universityService.update(periodInfo);
 			addMessage(i18n("message_save_period_succeed"));
 		}
-		return Constants.SUCCESS;
+		return Constants.UNIVERSITY_PERIODS_PAGE;
 	}
 
 }
