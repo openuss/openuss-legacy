@@ -60,6 +60,25 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		period.setEnddate(new Date(cal.getTimeInMillis()));
 		universityEntity.add(period);
 
+		// Create a default Department
+		Department department = Department.Factory.newInstance();
+		department.setDepartmentType(DepartmentType.NONOFFICIAL);
+		department.setName("Standard Department");
+		department.setShortcut("StandDepart");
+		department.setDescription("Dies ist das Standard Department. Es ist als Auffangbehälter für Institutionen gedacht, die noch keinem anderen Department zugeordnet werden können.");
+		department.setAddress(universityEntity.getAddress());
+		department.setPostcode(universityEntity.getPostcode());
+		department.setCity(universityEntity.getCity());
+		department.setCountry(universityEntity.getCountry());
+		department.setEmail(universityEntity.getEmail());
+		department.setEnabled(true);
+		department.setLocale(universityEntity.getLocale());
+		department.setOwnerName(universityEntity.getOwnerName());
+		department.setTelefax(universityEntity.getTelefax());
+		department.setTelephone(universityEntity.getTelephone());
+		department.setWebsite(universityEntity.getWebsite());
+		universityEntity.add(department);
+
 		// Create the University
 		this.getUniversityDao().create(universityEntity);
 		Validate.notNull(universityEntity.getId(), "UniversityService.handleCreate - Couldn't create University");
