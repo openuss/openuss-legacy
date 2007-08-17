@@ -26,6 +26,7 @@ import org.openuss.news.PublisherType;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
+import org.openuss.web.servlets.xss.HtmlInputFilter;
 import org.openuss.web.upload.UploadFileManager;
 
 /**
@@ -96,6 +97,7 @@ public class NewsEditPage extends AbstractLecturePage {
 		}
 		newsItem.setAuthor(getAuthorName());
 		newsItem.setPublisherType(PublisherType.INSTITUTE);
+		newsItem.setText(new HtmlInputFilter(true).filter(newsItem.getText()));
 		newsService.saveNewsItem(newsItem);
 
 		return Constants.INSTITUTE_NEWS_PAGE;
