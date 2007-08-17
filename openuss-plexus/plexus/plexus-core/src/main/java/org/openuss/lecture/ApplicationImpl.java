@@ -28,4 +28,17 @@ public class ApplicationImpl extends org.openuss.lecture.ApplicationBase impleme
 		this.setInstitute(institute);
 		institute.setApplication(this);
 	}
+
+	@Override
+	public void remove(Department department) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remove(Institute institute) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

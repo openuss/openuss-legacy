@@ -202,4 +202,9 @@ public class DepartmentServiceMock implements DepartmentService {
 		return null;
 	}
 
+	public List findDepartmentsByUniversityAndType(Long universityId, DepartmentType departmentType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

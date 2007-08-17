@@ -6,6 +6,7 @@
 package org.openuss.lecture;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -25,7 +26,7 @@ import org.openuss.security.acl.LectureAclEntry;
 public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentServiceBase {
 
 	private static final Logger logger = Logger.getLogger(DepartmentServiceImpl.class);
-	
+
 	/**
 	 * @see org.openuss.lecture.DepartmentService#create(org.openuss.lecture.DepartmentInfo, java.lang.Long)
 	 */
@@ -33,7 +34,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 			throws java.lang.Exception {
 
 		logger.debug("Starting method handleCreate");
-		
+
 		Validate.notNull(department, "DepartmentService.handleCreate - the Department cannot be null");
 		Validate.notNull(userId, "DepartmentService.handleCreate - the User must have a valid ID");
 
@@ -42,16 +43,16 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		// Transform ValueObject into Entity
 		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(department);
-		
+
 		// Create a default Membership for the University
 		Membership membership = Membership.Factory.newInstance();
 		departmentEntity.setMembership(membership);
-		
+
 		// Create the Department and add it to the Univesity
 		departmentEntity.getUniversity().getDepartments().add(departmentEntity);
 		this.getDepartmentDao().create(departmentEntity);
 		Validate.notNull(departmentEntity.getId(), "DepartmentService.handleCreate - Couldn't create Department");
-		
+
 		// FIXME - Kai, Indexing should not base on VOs!
 		// Kai: Do not delete this!!! Set id of department VO for indexing
 		department.setId(departmentEntity.getId());
@@ -63,16 +64,16 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		groupItem.setGroupType(GroupType.ADMINISTRATOR);
 		Group admins = this.getOrganisationService().createGroup(departmentEntity.getId(), groupItem);
 
-		//Security
-		this.getSecurityService().createObjectIdentity(departmentEntity, null);		
+		// Security
+		this.getSecurityService().createObjectIdentity(departmentEntity, null);
 		this.getSecurityService().setPermissions(admins, departmentEntity, LectureAclEntry.DEPARTMENT_ADMINISTRATION);
-		
+
 		// Add Owner to Members and Group of Administrators
 		this.getOrganisationService().addMember(departmentEntity.getId(), userId);
 		this.getOrganisationService().addUserToGroup(userId, admins.getId());
 
-		//TODO: Fire departmentCreated event to bookmark Department to User who created it
-		
+		// TODO: Fire departmentCreated event to bookmark Department to User who created it
+
 		return departmentEntity.getId();
 	}
 
@@ -108,11 +109,10 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 						+ departmentId);
 
 		department.getMembership().getGroups().clear(); // due to problems of cascade
-		
-		//TODO: fireRemovedDepartment event to delete all bookmarks and open applications
-		//		existing institutes have no longer an association to a department and are set to an open department
-		
-		
+
+		// TODO: fireRemovedDepartment event to delete all bookmarks and open applications
+		// existing institutes have no longer an association to a department and are set to an open department
+
 		this.getDepartmentDao().remove(department);
 
 	}
@@ -142,20 +142,16 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 				"DepartmentService.handleFindDepartmentsByUniversity - the universityId cannot be null");
 
 		University university = this.getUniversityDao().load(universityId);
-		
+
 		Validate.notNull(university,
 				"DepartmentService.handleFindDepartmentsByUniversity - no University found corresponding to the ID "
 						+ universityId);
 		/*
-		if (university == null) {
-			return new ArrayList();
-		}
-		List departmentInfos = new ArrayList();
-		for (Department department : university.getDepartments()) {
-			departmentInfos.add(this.getDepartmentDao().toDepartmentInfo(department));
-		}
-		*/
-		
+		 * if (university == null) { return new ArrayList(); } List departmentInfos = new ArrayList(); for (Department
+		 * department : university.getDepartments()) {
+		 * departmentInfos.add(this.getDepartmentDao().toDepartmentInfo(department)); }
+		 */
+
 		return this.getDepartmentDao().findByUniversity(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university);
 	}
 
@@ -177,20 +173,24 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		return this.getDepartmentDao().findByUniversityAndEnabled(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university,
 				enabled);
 	}
-	
+
 	/**
 	 * @see org.openuss.lecture.DepartmentService#findDepartmentsByType(org.openuss.lecture DepartmentType)
 	 */
 	@SuppressWarnings( { "unchecked" })
 	protected List handleFindDepartmentsByType(DepartmentType type) throws Exception {
 
-		Validate.notNull(type,
-				"DepartmentService.handleFindDepartmentsByType - the type cannot be null");
+		Validate.notNull(type, "DepartmentService.handleFindDepartmentsByType - the type cannot be null");
 
-		
 		return this.getDepartmentDao().findByType(DepartmentDao.TRANSFORM_DEPARTMENTINFO, type);
 	}
-	
+
+	@Override
+	protected List handleFindDepartmentsByUniversityAndType(Long universityId, DepartmentType departmentType)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	protected void handleAcceptApplication(Long applicationId, Long userId) throws Exception {
@@ -199,53 +199,65 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		Application application = this.getApplicationDao().load(applicationId);
 		Validate.notNull(application,
-				"DepartmentService.handleAcceptApplication - no Application found corresponding to the ID "+applicationId);
+				"DepartmentService.handleAcceptApplication - no Application found corresponding to the ID "
+						+ applicationId);
 		Validate.isTrue(!application.getConfirmed(),
 				"DepartmentService.handleAcceptApplication - the Application is already confirmed");
-		
+
 		User user = this.getUserDao().load(userId);
-		Validate.notNull(user,
-		"DepartmentService.handleAcceptApplication - no User found corresponding to the ID "+userId);
-		
+		Validate.notNull(user, "DepartmentService.handleAcceptApplication - no User found corresponding to the ID "
+				+ userId);
+
 		Department department = application.getDepartment();
 		Institute institute = application.getInstitute();
 		department.add(institute);
-		
+
 		application.setConfirmationDate(new Date());
-		application.setConfirmingUser(user);		
+		application.setConfirmingUser(user);
 		application.setConfirmed(true);
 	}
 
 	@Override
 	protected void handleRejectApplication(Long applicationId) throws Exception {
-		
+
 		Validate.notNull(applicationId, "DepartmentService.handleRejectApplication - the applicationId cannot be null");
 
 		Application application = this.getApplicationDao().load(applicationId);
 		Validate.notNull(application,
-				"DepartmentService.handleRejectApplication - no Application found corresponding to the ID "+applicationId);
+				"DepartmentService.handleRejectApplication - no Application found corresponding to the ID "
+						+ applicationId);
 		Validate.isTrue(!application.getConfirmed(),
 				"DepartmentService.handleRejectApplication - the Application is already confirmed");
-		
+
 		this.getApplicationDao().remove(application);
 	}
 
 	@Override
 	protected void handleSignoffInstitute(Long instituteId) throws Exception {
-		
+
 		Validate.notNull(instituteId, "DepartmentService.handleSignoffInstitute - the instituteId cannot be null");
 
 		Institute institute = this.getInstituteDao().load(instituteId);
 		Validate.notNull(institute,
-				"DepartmentService.handleSignoffInstitute - no Institute found corresponding to the ID "+instituteId);
-		
+				"DepartmentService.handleSignoffInstitute - no Institute found corresponding to the ID " + instituteId);
+
 		Department department = institute.getDepartment();
 		Validate.notNull(department,
 				"DepartmentService.handleSignoffInstitute - no Department found corresponding to the Institute");
-		
-		this.getApplicationDao().remove(institute.getApplication());
+
+		// Remove obsolete Application
+		Application application = this.getApplicationDao().findByInstituteAndDepartment(institute, department);
+		application.remove(department);
+		application.remove(institute);
+		this.getApplicationDao().remove(application);
+
+		// Remove Institute from old Department
 		department.remove(institute);
 
+		// Assign Institute to (any) Standard non-official Department (without Application)
+		Department departmentNew = (Department) this.getDepartmentDao().findByUniversityAndType(department.getUniversity(), DepartmentType.NONOFFICIAL).get(0);
+		Validate.notNull(departmentNew, "DepartmentService.handleSignoffInstitute - no NONOFFICIAL Department found, cannot signoff");
+		departmentNew.add(institute);
 	}
 
 	@Override
@@ -255,15 +267,11 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		return (ApplicationInfo) this.getApplicationDao().load(ApplicationDao.TRANSFORM_APPLICATIONINFO, applicationId);
 	}
-	
-	/*------------------- private methods -------------------- */
-	
-	// TODO: Add Set of listeners
-	
-	// TODO: Method unregisterListener
-	
-	// TODO: Method fireRemovingDepartment (Department department)
-	
-	// TODO: Method fireCreatedDepartment (Department department)
 
+	/*------------------- private methods -------------------- */
+
+	// TODO: Add Set of listeners
+	// TODO: Method unregisterListener
+	// TODO: Method fireRemovingDepartment (Department department)
+	// TODO: Method fireCreatedDepartment (Department department)
 }

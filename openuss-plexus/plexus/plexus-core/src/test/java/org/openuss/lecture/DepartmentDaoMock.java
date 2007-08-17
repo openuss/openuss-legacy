@@ -144,4 +144,40 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 		
 	}
 
+	public Department create(DepartmentType departmentType, String shortcut, String name, String description,
+			String ownerName, String address, String postcode, String city, String country, String telephone,
+			String telefax, String website, String email, String locale, String theme, Blob logo, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object create(int transform, DepartmentType departmentType, String shortcut, String name,
+			String description, String ownerName, String address, String postcode, String city, String country,
+			String telephone, String telefax, String website, String email, String locale, String theme, Blob logo,
+			Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByUniversityAndType(int transform, String queryString, University university,
+			DepartmentType departmentType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByUniversityAndType(int transform, University university, DepartmentType departmentType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByUniversityAndType(String queryString, University university, DepartmentType departmentType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByUniversityAndType(University university, DepartmentType departmentType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
