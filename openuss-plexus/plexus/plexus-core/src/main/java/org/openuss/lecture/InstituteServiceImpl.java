@@ -19,6 +19,7 @@ import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @see org.openuss.lecture.InstituteService
+ * @author Ron Haus
  */
 public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBase {
 
@@ -30,7 +31,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	protected java.lang.Long handleCreate(InstituteInfo instituteInfo, Long userId) throws java.lang.Exception {
 
 		logger.debug("Starting method handleCreate");
-
+		
 		Validate.notNull(instituteInfo, "InstituteService.handleCreate - the Institute cannot be null");
 		Validate.notNull(userId, "InstituteService.handleCreate - the User must have a valid ID");
 		Validate.isTrue(instituteInfo.getId() == null,
@@ -49,7 +50,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		this.getInstituteDao().create(instituteEntity);
 		Validate.notNull(instituteEntity.getId(), "InstituteService.handleCreate - Couldn't create Institute");
 
-		// Do not delete this!!! Set id of institute VO for indexing
+		// FIXME - Kai, Indexing should not base on VOs!
+		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		instituteInfo.setId(instituteEntity.getId());
 
 		// Create default Groups for Institute
@@ -71,11 +73,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		tutors.setGroupType(GroupType.TUTOR);
 		Group tutorsGroup = this.getOrganisationService().createGroup(instituteEntity.getId(), tutors);
 
-		// TODO Set Security for Groups
-		// Create Object Identity
+		// Security
 		this.getSecurityService().createObjectIdentity(instituteEntity, null);
-
-		// Add permissions -> ACL Entry for each group
 		this.getSecurityService()
 				.setPermissions(adminsGroup, instituteEntity, LectureAclEntry.INSTITUTE_ADMINISTRATION);
 		this.getSecurityService().setPermissions(assistantsGroup, instituteEntity, LectureAclEntry.INSTITUTE_ASSIST);
@@ -85,7 +84,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		this.getOrganisationService().addMember(instituteEntity.getId(), userId);
 		this.getOrganisationService().addUserToGroup(userId, adminsGroup.getId());
 
-		// TODO: Fire createdInstitute event to bookmark the institute for the user who created it 
+		// TODO: Fire createdInstitute event to bookmark the Institute for the User who created it 
 		
 		return instituteEntity.getId();
 	}
@@ -105,7 +104,6 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 
 		// Update Entity
 		this.getInstituteDao().update(institute);
-
 	}
 
 	/**

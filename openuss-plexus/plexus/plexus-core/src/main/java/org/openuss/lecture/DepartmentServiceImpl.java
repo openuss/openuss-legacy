@@ -5,14 +5,15 @@
  */
 package org.openuss.lecture;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
+import org.openuss.security.Membership;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 
@@ -23,50 +24,56 @@ import org.openuss.security.acl.LectureAclEntry;
  */
 public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentServiceBase {
 
+	private static final Logger logger = Logger.getLogger(DepartmentServiceImpl.class);
+	
 	/**
 	 * @see org.openuss.lecture.DepartmentService#create(org.openuss.lecture.DepartmentInfo, java.lang.Long)
 	 */
 	protected java.lang.Long handleCreate(org.openuss.lecture.DepartmentInfo department, java.lang.Long userId)
 			throws java.lang.Exception {
 
+		logger.debug("Starting method handleCreate");
+		
 		Validate.notNull(department, "DepartmentService.handleCreate - the Department cannot be null");
 		Validate.notNull(userId, "DepartmentService.handleCreate - the User must have a valid ID");
 
 		Validate.isTrue(department.getId() == null,
 				"DepartmentService.handleCreate - the Department shouldn't have an ID yet");
 
-		// Create Department
+		// Transform ValueObject into Entity
 		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(department);
+		
+		// Create a default Membership for the University
+		Membership membership = Membership.Factory.newInstance();
+		departmentEntity.setMembership(membership);
+		
+		// Create the Department and add it to the Univesity
 		departmentEntity.getUniversity().getDepartments().add(departmentEntity);
 		this.getDepartmentDao().create(departmentEntity);
-
 		Validate.notNull(departmentEntity.getId(), "DepartmentService.handleCreate - Couldn't create Department");
 		
-		// Do not delete this!!! Set id of department VO for indexing
+		// FIXME - Kai, Indexing should not base on VOs!
+		// Kai: Do not delete this!!! Set id of department VO for indexing
 		department.setId(departmentEntity.getId());
 
-		// Create Groups for Department
+		// Create default Groups for Department
 		GroupItem groupItem = new GroupItem();
 		groupItem.setName("DEPARTMENT_" + departmentEntity.getId() + "_ADMINS");
 		groupItem.setLabel("autogroup_administrator_label");
 		groupItem.setGroupType(GroupType.ADMINISTRATOR);
 		Group admins = this.getOrganisationService().createGroup(departmentEntity.getId(), groupItem);
 
-		// TODO: Security
-		// Create Object Identity
-		this.getSecurityService().createObjectIdentity(departmentEntity, null);
-		
-		// Add permissions -> ACL Entry for each group
+		//Security
+		this.getSecurityService().createObjectIdentity(departmentEntity, null);		
 		this.getSecurityService().setPermissions(admins, departmentEntity, LectureAclEntry.DEPARTMENT_ADMINISTRATION);
 		
 		// Add Owner to Members and Group of Administrators
 		this.getOrganisationService().addMember(departmentEntity.getId(), userId);
 		this.getOrganisationService().addUserToGroup(userId, admins.getId());
 
-		//TODO: Fire departmentCreated event to bookmark department to 
+		//TODO: Fire departmentCreated event to bookmark Department to User who created it
 		
 		return departmentEntity.getId();
-
 	}
 
 	/**

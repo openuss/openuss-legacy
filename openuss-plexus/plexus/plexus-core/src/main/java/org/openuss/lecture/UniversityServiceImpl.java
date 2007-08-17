@@ -33,6 +33,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	protected java.lang.Long handleCreate(org.openuss.lecture.UniversityInfo university, java.lang.Long userId) {
 
 		logger.debug("Starting method handleCreate");
+		
 		Validate.notNull(university, "UniversityService.handleCreate - the University cannot be null");
 		Validate.notNull(userId, "UniversityService.handleCreate - the User must have a valid ID");
 		Validate.isTrue(university.getId() == null, "UniversityService.handleCreate - the University shouldn't have an ID yet");
@@ -48,7 +49,8 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		this.getUniversityDao().create(universityEntity);
 		Validate.notNull(universityEntity.getId(), "UniversityService.handleCreate - Couldn't create University");
 		
-		// Do not delete this!!! Set id of university VO for indexing
+		// FIXME - Kai, Indexing should not base on VOs!
+		//KAI: Do not delete this!!! Set id of university VO for indexing
 		university.setId(universityEntity.getId());
 		
 		//Create default Groups for the University
@@ -59,15 +61,14 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		Group admins = this.getOrganisationService().createGroup(universityEntity.getId(), groupItem);
 		
 		//Security
-		this.getSecurityService().createObjectIdentity(universityEntity, null);
-		
+		this.getSecurityService().createObjectIdentity(universityEntity, null);		
 		this.getSecurityService().setPermissions(admins, universityEntity, LectureAclEntry.UNIVERSITY_ADMINISTRATION);
 		
 		//Add Owner to Members and Group of Administrators
 		this.getOrganisationService().addMember(universityEntity.getId(), userId);
 		this.getOrganisationService().addUserToGroup(userId, admins.getId());
 		
-		// TODO: Fire createdUniversity event to bookmark university to user who created it
+		// TODO: Fire createdUniversity event to bookmark University to User who created it
 		
 		return universityEntity.getId();
 	}
@@ -296,7 +297,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 					
 					Iterator courseIter = courseType.getCourses().iterator();
 					while (courseIter.hasNext()) {
-						Course course = (Course) courseIter.next();
+						// Course course = (Course) courseIter.next();
 						// TODO: Fire removing course event
 					}
 					
