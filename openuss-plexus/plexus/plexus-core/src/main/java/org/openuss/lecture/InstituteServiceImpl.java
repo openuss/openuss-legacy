@@ -7,7 +7,6 @@ package org.openuss.lecture;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -16,7 +15,6 @@ import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
-import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
@@ -38,16 +36,9 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(userId, "InstituteService.handleCreate - the User must have a valid ID");
 		Validate.isTrue(instituteInfo.getId() == null,
 				"InstituteService.handleCreate - the Institute shouldn't have an ID yet");
-		Validate.isTrue(instituteInfo.getDepartmentId() != null,
-				"InstituteService.handleCreate - the departmentId cannot be null.");
+		Validate.isTrue(instituteInfo.getDepartmentId() == null,
+				"InstituteService.handleCreate - You cannot set the DepartmentID, you must apply first");
 
-		// Load user entity
-		User user = this.getUserDao().load(userId);
-		Validate.notNull(user, "InstituteService.handleCreate - no user can be found with the corresponding userId "+userId);
-		
-		// Load departmentEntity
-		Department departmentEntity = this.getDepartmentDao().load(instituteInfo.getDepartmentId());
-		
 		// Transform ValueObject into Entity
 		Institute instituteEntity = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
 
@@ -55,16 +46,6 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Membership membership = Membership.Factory.newInstance();
 		instituteEntity.setMembership(membership);
 
-		// Create a default application object
-		Application application = Application.Factory.newInstance();
-		application.setApplicationDate(new Date(new GregorianCalendar().getTimeInMillis()));
-		application.setApplyingUser(user);
-		application.setConfirmationDate(new Date(new GregorianCalendar().getTimeInMillis()));
-		application.setConfirmed(true);
-		application.setConfirmingUser(user);
-		application.add(departmentEntity);
-		application.add(instituteEntity);
-		
 		// Create the Institute
 		this.getInstituteDao().create(instituteEntity);
 		Validate.notNull(instituteEntity.getId(), "InstituteService.handleCreate - Couldn't create Institute");
@@ -259,6 +240,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		// Transform VO to entity
 		Application application = this.getApplicationDao().applicationInfoToEntity(applicationInfo);
 		Validate.notNull(application, "InstituteService.applyAtDepartment - cannot transform value object to entity");
+		Validate.isTrue(application.getDepartment().getDepartmentType().equals(DepartmentType.OFFICIAL), "InstituteService.applyAtDepartment - an Application is only necessary for official Departments");
 
 		this.getApplicationDao().create(application);
 
