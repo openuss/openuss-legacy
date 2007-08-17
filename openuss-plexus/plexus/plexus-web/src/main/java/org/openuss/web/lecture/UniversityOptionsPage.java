@@ -28,8 +28,8 @@ public class UniversityOptionsPage extends AbstractUniversityPage {
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
-		crumb.setName(i18n("university_command_institute"));
-		crumb.setHint(i18n("university_command_institute"));
+		crumb.setName(i18n("university_command_settings"));
+		crumb.setHint(i18n("university_command_settings"));
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	
