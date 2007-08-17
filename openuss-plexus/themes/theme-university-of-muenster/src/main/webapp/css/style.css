@@ -1427,6 +1427,17 @@ td {
 	text-decoration: none;
 }
 
+div.university_info{
+	margin-bottom: 10px;
+	overflow: auto;
+}
+
+div.university_info span{
+  display:block;
+  padding-bottom: 0;
+  padding-top:0;
+}
+
 div.institute_info{
 	margin-bottom: 10px;
 	overflow: auto;
