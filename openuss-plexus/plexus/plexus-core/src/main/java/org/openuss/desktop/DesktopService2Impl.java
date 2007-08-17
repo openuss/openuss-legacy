@@ -198,7 +198,11 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		University university = this.getUniversityDao().load(universityId);
 		Validate.notNull(university, "DesktopService2.handleUnlinkUniversity - No University found corresponding to the universityId "+universityId);
 		
-		desktop.getUniversities().remove(university);
+		if (university.getMembership().getMembers().contains(desktop.getUser())) {
+			throw new IllegalArgumentException("DesktopService2.handleUnlinkUniversity - You cannot unlink, your are still a Member!");
+		} else {		
+			desktop.getUniversities().remove(university);
+		}
 	}
 
 	/**
@@ -215,7 +219,12 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		Department department = this.getDepartmentDao().load(departmentId);
 		Validate.notNull(department, "DesktopService2.handleUnlinkDepartment - No Department found corresponding to the departmentId "+departmentId);
 		
-		desktop.getDepartments().remove(department);
+		if (department.getMembership().getMembers().contains(desktop.getUser())) {
+			throw new IllegalArgumentException("DesktopService2.handleUnlinkDepartment - You cannot unlink, your are still a Member!");
+		} else {		
+			desktop.getDepartments().remove(department);
+		}		
+		
 	}
 
 	/**
@@ -232,7 +241,12 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		Institute institute = this.getInstituteDao().load(instituteId);
 		Validate.notNull(institute, "DesktopService2.handleUnlinkInstitute - No Institute found corresponding to the instituteId "+instituteId);
 		
-		desktop.getInstitutes().remove(institute);
+		if (institute.getMembership().getMembers().contains(desktop.getUser())) {
+			throw new IllegalArgumentException("DesktopService2.handleUnlinkDepartment - You cannot unlink, your are still a Member!");
+		} else {		
+			desktop.getInstitutes().remove(institute);
+		}	
+
 	}
 
 	/**
@@ -280,7 +294,11 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		
 		Collection<Desktop> desktops = getDesktopDao().findByUniversity(university);
 		for (Desktop desktop : desktops) {
-			desktop.getUniversities().remove(university);
+			if (university.getMembership().getMembers().contains(desktop.getUser())) {
+				throw new IllegalArgumentException("DesktopService2.handleUnlinkAllUniversity - You cannot unlink, your are still a Member at University "+university.getId());
+			} else {		
+				desktop.getUniversities().remove(university);
+			}
 		}
 	}
 
@@ -296,7 +314,11 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		
 		Collection<Desktop> desktops = getDesktopDao().findByDepartment(department);
 		for (Desktop desktop : desktops) {
-			desktop.getDepartments().remove(department);
+			if (department.getMembership().getMembers().contains(desktop.getUser())) {
+				throw new IllegalArgumentException("DesktopService2.handleUnlinkAllDepartment - You cannot unlink, your are still a Member at Department "+department.getId());
+			} else {		
+				desktop.getDepartments().remove(department);
+			}	
 		}
 	}
 
@@ -312,7 +334,11 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		
 		Collection<Desktop> desktops = getDesktopDao().findByInstitute(institute);
 		for (Desktop desktop : desktops) {
-			desktop.getInstitutes().remove(institute);
+			if (institute.getMembership().getMembers().contains(desktop.getUser())) {
+				throw new IllegalArgumentException("DesktopService2.handleUnlinkAllDepartment - You cannot unlink, your are still a Member at Institute "+institute.getId());
+			} else {		
+				desktop.getInstitutes().remove(institute);
+			}
 		}
 	}
 
