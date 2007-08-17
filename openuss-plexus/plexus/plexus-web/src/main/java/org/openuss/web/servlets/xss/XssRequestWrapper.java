@@ -57,26 +57,18 @@ public class XssRequestWrapper extends HttpServletRequestWrapper {
 		return getParameterMap().get(name);
 	}
 
-	@Override
-	public Object getAttribute(String name) {
-		Object result = super.getAttribute(name);
-		if (result instanceof String) {
-			result = SafeHtmlUtil.sanitize((String)result);
-		}
-		return result;
-	}
-
 	private  Map<String, String[]> sanitizeParamMap(Map<String, String[]> raw) {		
 		Map<String, String[]> res = new HashMap<String, String[]>();
-		if (raw==null)
+		if (raw==null) {
 			return res;
+		}
 	
 		for (String key : (Set<String>) raw.keySet()) {			
 			String[] rawVals = raw.get(key);
 			String[] snzVals = new String[rawVals.length];
 			for (int i=0; i < rawVals.length; i++) 
 			{
-				snzVals[i] = SafeHtmlUtil.sanitize(rawVals[i]);
+				snzVals[i] = new HtmlInputFilter().filter(rawVals[i]); 
 			}
 			res.put(key, snzVals);
 		}			
