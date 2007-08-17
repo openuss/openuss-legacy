@@ -1,17 +1,9 @@
 package org.openuss.web.lecture;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Transformer;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -21,7 +13,6 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.InstituteMember;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.OrganisationService;
 import org.openuss.security.SecurityService;
@@ -33,6 +24,7 @@ import org.openuss.web.Constants;
  * 
  * @author Tianyu Wang	
  * @author Weijun Chen
+ * @author Kai Stettner
  */
 @Bean(name = "views$secured$lecture$auth$universitymembers", scope = Scope.REQUEST)
 @View
@@ -46,14 +38,8 @@ public class UniversityMembersPage extends AbstractUniversityPage{
 	@Property(value = "#{organisationService}")
 	private OrganisationService organisationService;
 	
-	
 	private MembersTable members = new MembersTable();
 
-
-
-
-	
-	
 	private String username;
 
 	@Prerender
@@ -65,8 +51,8 @@ public class UniversityMembersPage extends AbstractUniversityPage{
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
-		crumb.setName(i18n("institute_command_members"));
-		crumb.setHint(i18n("institute_command_members"));
+		crumb.setName(i18n("university_command_authorisations"));
+		crumb.setHint(i18n("university_command_authorisations"));
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
