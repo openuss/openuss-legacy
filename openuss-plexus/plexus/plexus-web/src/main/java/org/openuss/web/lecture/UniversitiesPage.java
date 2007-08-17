@@ -61,6 +61,20 @@ public class UniversitiesPage extends BasePage{
 		return Constants.UNIVERSITY_PAGE;
 	}
 	
+	/**
+	 * Store the selected university into session scope and go to university remove confirmation page.
+	 * @return Outcome
+	 */
+	public String selectUniversityAndConfirmRemove() {
+		logger.debug("Starting method selectUniversityAndConfirmRemove");
+		UniversityInfo currentUniversity = currentUniversity();
+		logger.debug("Returning to method selectUniversityAndConfirmRemove");
+		logger.debug(currentUniversity.getId());	
+		setSessionBean(Constants.UNIVERSITY_INFO, currentUniversity);
+		
+		return Constants.UNIVERSITY_CONFIRM_REMOVE_PAGE;
+	}
+	
 	public String shortcutUniversity() throws DesktopException {
 		logger.debug("Starting method shortcutUniversity");
 		UniversityInfo currentUniversity = currentUniversity();
