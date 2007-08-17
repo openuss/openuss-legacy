@@ -229,6 +229,8 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Validate.isTrue(!application.getConfirmed(),
 				"DepartmentService.handleRejectApplication - the Application is already confirmed");
 
+		application.remove(application.getDepartment());
+		application.remove(application.getInstitute());
 		this.getApplicationDao().remove(application);
 	}
 
@@ -247,16 +249,20 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		// Remove obsolete Application
 		Application application = this.getApplicationDao().findByInstituteAndDepartment(institute, department);
-		application.remove(department);
-		application.remove(institute);
-		this.getApplicationDao().remove(application);
+		if (application != null) {
+			application.remove(department);
+			application.remove(institute);
+			this.getApplicationDao().remove(application);
+		}
 
 		// Remove Institute from old Department
 		department.remove(institute);
 
 		// Assign Institute to (any) Standard non-official Department (without Application)
-		Department departmentNew = (Department) this.getDepartmentDao().findByUniversityAndType(department.getUniversity(), DepartmentType.NONOFFICIAL).get(0);
-		Validate.notNull(departmentNew, "DepartmentService.handleSignoffInstitute - no NONOFFICIAL Department found, cannot signoff");
+		Department departmentNew = (Department) this.getDepartmentDao().findByUniversityAndType(
+				department.getUniversity(), DepartmentType.NONOFFICIAL).get(0);
+		Validate.notNull(departmentNew,
+				"DepartmentService.handleSignoffInstitute - no NONOFFICIAL Department found, cannot signoff");
 		departmentNew.add(institute);
 	}
 
