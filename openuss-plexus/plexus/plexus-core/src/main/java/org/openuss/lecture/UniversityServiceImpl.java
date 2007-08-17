@@ -150,7 +150,23 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 		Validate.notNull(periodId, "UniversityService.handleRemovePeriod - the PeriodID cannot be null");
 
-		this.getPeriodDao().remove(periodId);
+		Period period = this.getPeriodDao().load(periodId);
+		
+		if (period.getCourses().size()==0) {
+			this.getPeriodDao().remove(periodId);
+		} else {
+			throw new IllegalArgumentException("The Period "+periodId+" contains at least one Courses. Remove Courses before!");
+		}
+	}
+
+	/**
+	 * @see org.openuss.lecture.UniversityService#removePeriodAndCourses(java.lang.Long)
+	 */
+	protected void handleRemovePeriodAndCourses(Long periodId) throws Exception {
+		
+		Validate.notNull(periodId, "UniversityService.handleRemovePeriod - the PeriodID cannot be null");
+
+		this.getPeriodDao().remove(periodId);		
 	}
 
 	/**
@@ -326,7 +342,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 					Iterator courseIter = courseType.getCourses().iterator();
 					while (courseIter.hasNext()) {
-						// Course course = (Course) courseIter.next();
+						courseIter.next();
 						// TODO: Fire removing course event
 					}
 

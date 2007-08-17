@@ -58,13 +58,12 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 
 		// Create Entity
 		testUtility.createAdminSecureContext();
-		
 		Long universityId = universityService.createUniversity(universityInfo, owner.getId());
 		assertNotNull(universityId);
 
 		// Synchronize with Database
 		flush();
-		
+
 		testUtility.destroySecureContext();
 		logger.info("----> END access to create(University) test");
 	}
@@ -215,7 +214,19 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		// Synchronize with Database
 		flush();
 
+		// Test Security
+		testUtility.createUserSecureContext();
+		try {
+			universityService.removeUniversity(id);
+			fail("AccessDeniedException should have been thrown");
+		} catch (AccessDeniedException ade) {
+			;
+		} finally {
+			testUtility.destroySecureContext();
+		}
+		
 		// Remove University
+		testUtility.createAdminSecureContext();
 		universityService.removeUniversity(id);
 
 		// Synchronize with Database
@@ -226,10 +237,49 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		University university2 = universityDao.load(id);
 		assertNull(university2);
 
+		testUtility.destroySecureContext();
 		logger.info("----> END access to removeUniversity test");
 	}
 
 	public void testRemovePeriod() {
+		logger.info("----> BEGIN access to removePeriod test");
+
+		// Create a Period
+		Period period = testUtility.createUniquePeriodInDB();
+		assertNotNull(period.getId());
+
+		// Save PeriodID
+		Long periodId = period.getId();
+
+		// Synchronize with Database
+		flush();
+
+		// Remove Period
+		this.getUniversityService().removePeriod(periodId);
+
+		// Synchronize with Database
+		flush();
+
+		// Try to load Period again
+		PeriodDao periodDao = (PeriodDao) this.applicationContext.getBean("periodDao");
+		Period periodTest = periodDao.load(periodId);
+		assertNull(periodTest);
+
+		// Create an Course (this includes creating of a Period)
+		Course course = testUtility.createUniqueCourseInDB();
+		Period period2 = course.getPeriod();
+
+		try {
+			this.getUniversityService().removePeriod(period2.getId());
+			fail("Exception should have been thrown since the Period contains still a Course");
+		} catch (UniversityServiceException iae) {
+			;
+		}
+
+		logger.info("----> END access to removePeriod test");
+	}
+
+	public void testRemovePeriodAndCourses() {
 		logger.info("----> BEGIN access to removePeriod test");
 
 		// Create a Period
@@ -571,6 +621,19 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertNotNull(courseDao.load(course6.getId()));
 		assertNotNull(courseDao.load(course7.getId()));
 
+		// Test Security
+		testUtility.createUserSecureContext();
+		try {
+			this.getUniversityService().removeCompleteUniversityTree(university1.getId());
+			fail("AccessDeniedException should have been thrown");
+		} catch (AccessDeniedException ade) {
+			;
+		} finally {
+			testUtility.destroySecureContext();
+		}
+		
+		// Test
+		testUtility.createAdminSecureContext();
 		this.getUniversityService().removeCompleteUniversityTree(university1.getId());
 
 		assertNull(universityDao.load(university1.getId()));
@@ -593,6 +656,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertNull(courseDao.load(course6.getId()));
 		assertNull(courseDao.load(course7.getId()));
 
+		testUtility.destroySecureContext();
 		logger.info("----> END access to removeCompleteUniversityTree test");
 	}
 

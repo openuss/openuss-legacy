@@ -297,8 +297,9 @@ public class TestUtility {
 	
 	public Course createUniqueCourseInDB() {
 
-		// Create a unique CourseType
+		// Create a unique CourseType and Period
 		CourseType courseType = this.createUniqueCourseTypeInDB();
+		Period period = this.createUniquePeriodInDB();
 		
 		// Create a unique CourseType
 		Course course =  Course.Factory.newInstance();
@@ -312,8 +313,7 @@ public class TestUtility {
 		course.setWiki(false);
 		course.setFreestylelearning(false);
 		course.setBraincontest(false);
-		course.setCourseType(courseType);
-		course.setPeriod(this.createUniquePeriodInDB());
+		period.add(course);
 		courseType.add(course);
 		
 		courseDao.create(course);
@@ -343,9 +343,7 @@ public class TestUtility {
 		period.setCourses(new ArrayList<Course>());
 		period.setStartdate(startdate);
 		period.setEnddate(enddate);
-		period.setUniversity(university);
-		//university.add(period);
-		university.getPeriods().add(period);
+		university.add(period);
 		
 		periodDao.create(period);
 		

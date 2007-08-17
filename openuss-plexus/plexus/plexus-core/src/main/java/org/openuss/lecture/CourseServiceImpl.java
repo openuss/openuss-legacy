@@ -7,11 +7,9 @@ package org.openuss.lecture;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -29,25 +27,31 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#create(org.openuss.lecture.CourseInfo)
 	 */
-	@Override
-	public Long handleCreate (CourseInfo courseInfo) {
+	public Long handleCreate(CourseInfo courseInfo) {
 		
 		Validate.notNull(courseInfo, "CourseServiceImpl.handleCreate - courseInfo cannot be null.");
+		Validate.notNull(courseInfo.getCourseTypeId(), "CourseServiceImpl.handleCreate - getCourseTypeId cannot be null.");
+		Validate.notNull(courseInfo.getPeriodId(), "CourseServiceImpl.handleCreate - PeriodId cannot be null.");
 		
 		// Transform VO to entity
 		Course courseEntity = this.getCourseDao().courseInfoToEntity(courseInfo);
 		Validate.notNull(courseEntity, "CourseServiceImpl.handleCreate - cannot transform courseInfo to entity.");
 		
-		Institute institute = courseEntity.getCourseType().getInstitute();
+		// Add Course to CourseType and Period
+		this.getCourseTypeDao().load (courseInfo.getCourseTypeId()).add(courseEntity);
+		this.getPeriodDao().load (courseInfo.getPeriodId()).add(courseEntity);
 		
-		// Save entity
+		// Save Entity
 		this.getCourseDao().create(courseEntity);
-		Validate.notNull(courseEntity, "CourseServiceImpl.handleCreate - id of course cannot be null.");
+		Validate.notNull(courseEntity, "CourseServiceImpl.handleCreate - ID of course cannot be null.");
 		
-		// do not delete this!!! Set id of courseInfo for indexing.
+		// FIXME - Kai, Indexing should not base on VOs!
+		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		courseInfo.setId(courseEntity.getId());
 		
 		//TODO: Security
+		//FIXME: Shouldn't this be CourseType? And we don't want that!
+		Institute institute = courseEntity.getCourseType().getInstitute();
 		this.getSecurityService().createObjectIdentity(courseEntity, institute);
 		
 		return courseEntity.getId();

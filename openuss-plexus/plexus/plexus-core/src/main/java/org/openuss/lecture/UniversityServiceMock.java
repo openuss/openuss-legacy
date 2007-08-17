@@ -110,6 +110,11 @@ public class UniversityServiceMock implements UniversityService {
 
 	}
 
+	public void removePeriodAndCourses(Long periodId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void removeUniversity(Long universityId) {
 		// TODO Auto-generated method stub
 

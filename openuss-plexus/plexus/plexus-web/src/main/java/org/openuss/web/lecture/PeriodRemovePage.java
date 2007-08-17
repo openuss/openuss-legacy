@@ -62,6 +62,8 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 	 * @return outcome
 	 * @throws LectureException
 	 */
+	//FIXME This is only possible, if no Course had been added to the Period
+	// You don't have the right to remove Courses!
 	public String removePeriod() throws LectureException {
 		if (logger.isDebugEnabled())
 			logger.debug("Remove Period");
@@ -71,7 +73,7 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 	}
 
 	/**
-	 * Validator to check wether the user has accepted the user agreement or
+	 * Validator to check weather the user has accepted the user agreement or
 	 * not.
 	 * 
 	 * @param context
