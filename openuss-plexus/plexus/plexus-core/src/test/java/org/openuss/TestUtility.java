@@ -387,9 +387,20 @@ public class TestUtility {
 		return defaultInstitute;
 	}
 
+	/**
+	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUserSecureContext()</code>.  
+	 */
 	public User createSecureContext() {
 		return createSecureContext(Roles.USER_ID);
-	} 
+	}
+	
+	public User createAnonymousSecureContext() {
+		return createSecureContext(Roles.ANONYMOUS_ID);
+	}
+	
+	public User createUserSecureContext() {
+		return createSecureContext(Roles.USER_ID);
+	}
 	
 	public User createAdminSecureContext() {
 		return createSecureContext(Roles.ADMINISTRATOR_ID);
@@ -418,6 +429,10 @@ public class TestUtility {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		return user;
 	} 
+	
+	public void destroySecureContext() {
+		SecurityContextHolder.getContext().setAuthentication(null);
+	}
 	
 	/**
 	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.  

@@ -182,6 +182,8 @@
                 org.openuss.repository.RepositoryService.loadContent=ROLE_USER, ROLE_ADMIN
                 org.openuss.repository.RepositoryService.setRepositoryLocation=ROLE_USER, ROLE_ADMIN
                 org.openuss.repository.RepositoryService.getRepositoryLocation=ROLE_USER, ROLE_ADMIN
+                
+                org.openuss.lecture.UniversityService.create=ROLE_ADMIN
             </value>
         </property>
     </bean>

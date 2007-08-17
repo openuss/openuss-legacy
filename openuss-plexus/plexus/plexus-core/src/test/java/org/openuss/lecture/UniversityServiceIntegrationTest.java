@@ -12,27 +12,28 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
+import org.acegisecurity.AccessDeniedException;
 import org.apache.log4j.Logger;
 import org.openuss.security.User;
 
 /**
  * JUnit Test for Spring Hibernate UniversityService class.
+ * 
  * @see org.openuss.lecture.UniversityService
  * @author Ron Haus
  * @author Florian Dondorf
  */
 public class UniversityServiceIntegrationTest extends UniversityServiceIntegrationTestBase {
-	
+
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = Logger.getLogger(UniversityServiceIntegrationTest.class);
-	
-	
+
 	public void testCreateUniversity() {
 		logger.info("----> BEGIN access to create(University) test");
 
-		//Create new UniversityInfo object
+		// Create new UniversityInfo object
 		UniversityInfo universityInfo = new UniversityInfo();
 		universityInfo.setName(testUtility.unique("testUniversity"));
 		universityInfo.setShortcut(testUtility.unique("testU"));
@@ -40,46 +41,60 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		universityInfo.setEnabled(true);
 		universityInfo.setDescription("This is a test University");
 		universityInfo.setUniversityType(UniversityType.MISC);
-		
-		//Create a User as Owner
+
+		// Create a User as Owner
 		User owner = testUtility.createUniqueUserInDB();
+
+		// Test Security
+		testUtility.createUserSecureContext();
+		try {
+			universityService.create(universityInfo, owner.getId());
+			fail("AccessDeniedException should have been thrown");
+		} catch (AccessDeniedException ade) {
+			;
+		} finally {
+			testUtility.destroySecureContext();
+		}
+
+		// Create Entity
+		testUtility.createAdminSecureContext();
 		
-		//Create Entity
 		Long universityId = universityService.create(universityInfo, owner.getId());
 		assertNotNull(universityId);
-		
-		//Synchronize with Database
-		flush();
 
+		// Synchronize with Database
+		flush();
+		
+		testUtility.destroySecureContext();
 		logger.info("----> END access to create(University) test");
 	}
-	
-	public void testCreatePeriod () {
+
+	public void testCreatePeriod() {
 		logger.info("----> BEGIN access to create(Period) test");
-		
-		//Create university
+
+		// Create university
 		University university = testUtility.createUniqueUniversityInDB();
 		flush();
-		
-		//Create Startdate
+
+		// Create Startdate
 		Calendar cal = new GregorianCalendar();
 		cal.set(2007, 10, 1);
 		Date startdate = new Date(cal.getTimeInMillis());
-		
-		//Create Enddate
+
+		// Create Enddate
 		cal = new GregorianCalendar();
 		cal.set(2008, 3, 31);
 		Date enddate = new Date(cal.getTimeInMillis());
-		
-		//Create Period
+
+		// Create Period
 		PeriodInfo periodInfo = new PeriodInfo();
 		periodInfo.setUniversityId(university.getId());
 		periodInfo.setName("WS 07/08");
 		periodInfo.setDescription("A new period");
 		periodInfo.setStartdate(startdate);
 		periodInfo.setEnddate(enddate);
-		
-		//Test
+
+		// Test
 		Long periodId = this.getUniversityService().create(periodInfo);
 		assertNotNull(periodId);
 
@@ -88,75 +103,77 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertNotNull(period);
 		assertEquals(periodId, period.getId());
 		assertEquals(periodInfo.getName(), period.getName());
-		
+
 		assertEquals(1, period.getUniversity().getPeriods().size());
-		
+
 		logger.info("----> END access to create(Period) test");
 	}
-	
+
 	public void testUpdateUniversity() {
 		logger.info("----> BEGIN access to update(University) test");
 
-		//Create a default University
+		// Create a default University
 		University university = testUtility.createUniqueUniversityInDB();
 		assertNotNull(university.getId());
-		
-		//Create new UniversityInfo object
+
+		// Create new UniversityInfo object
 		UniversityInfo universityInfo = new UniversityInfo();
 		universityInfo.setId(university.getId());
 		universityInfo.setName(testUtility.unique("testUniversity"));
 		universityInfo.setShortcut(testUtility.unique("testU"));
 		universityInfo.setOwnerName("Administrator");
 		universityInfo.setEnabled(true);
-		universityInfo.setDescription("This is a test University at "+testUtility.unique("time"));
+		universityInfo.setDescription("This is a test University at " + testUtility.unique("time"));
 		if (university.getUniversityType().compareTo(UniversityType.MISC) == 0) {
 			universityInfo.setUniversityType(UniversityType.UNIVERSITY);
 		} else {
 			universityInfo.setUniversityType(UniversityType.MISC);
 		}
-		
+
 		// Check
 		assertTrue(universityInfo.getId().longValue() == university.getId().longValue());
 		assertFalse(universityInfo.getName().compareTo(university.getName()) == 0);
 		assertFalse(universityInfo.getShortcut().compareTo(university.getShortcut()) == 0);
 		assertFalse(universityInfo.getDescription().compareTo(university.getDescription()) == 0);
-		assertFalse(universityInfo.getUniversityType().getValue().intValue() == university.getUniversityType().getValue().intValue());
+		assertFalse(universityInfo.getUniversityType().getValue().intValue() == university.getUniversityType()
+				.getValue().intValue());
 
-		//Synchronize with Database
+		// Synchronize with Database
 		flush();
-		
-		//Update University
+
+		// Update University
 		universityService.update(universityInfo);
 
-		//Check
+		// Check
 		assertTrue(universityInfo.getId().longValue() == university.getId().longValue());
 		assertTrue(universityInfo.getName().compareTo(university.getName()) == 0);
 		assertTrue(universityInfo.getShortcut().compareTo(university.getShortcut()) == 0);
 		assertTrue(universityInfo.getDescription().compareTo(university.getDescription()) == 0);
-		assertTrue(universityInfo.getUniversityType().getValue().intValue() == university.getUniversityType().getValue().intValue());
-		
-		//Synchronize with Database
+		assertTrue(universityInfo.getUniversityType().getValue().intValue() == university.getUniversityType()
+				.getValue().intValue());
+
+		// Synchronize with Database
 		flush();
-		
+
 		logger.info("----> END access to update(University) test");
 	}
-	
-	public void testUpdatePeriod () {
+
+	public void testUpdatePeriod() {
 		logger.info("----> BEGIN access to update(Period) test");
-		
-		//Create a default Period
+
+		// Create a default Period
 		Period period = testUtility.createUniquePeriodInDB();
 		assertNotNull(period.getId());
-		
-		//Create new PeriodInfo object
+
+		// Create new PeriodInfo object
 		PeriodInfo periodInfo = new PeriodInfo();
 		periodInfo.setId(period.getId());
 		periodInfo.setName(testUtility.unique("testPeriod"));
-		periodInfo.setDescription("This is a test Period at "+testUtility.unique("time"));
+		periodInfo.setDescription("This is a test Period at " + testUtility.unique("time"));
 		periodInfo.setUniversityId(testUtility.createUniqueUniversityInDB().getId());
 		periodInfo.setStartdate(new Date(new GregorianCalendar(2008, 4, 1).getTimeInMillis()));
 		periodInfo.setEnddate(new Date(new GregorianCalendar(2008, 9, 30).getTimeInMillis()));
-		
+
 		// Check
 		assertTrue(periodInfo.getId().longValue() == period.getId().longValue());
 		assertFalse(periodInfo.getName().compareTo(period.getName()) == 0);
@@ -165,132 +182,132 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertFalse(periodInfo.getStartdate().getTime() == period.getStartdate().getTime());
 		assertFalse(periodInfo.getEnddate().getTime() == period.getEnddate().getTime());
 
-		//Synchronize with Database
+		// Synchronize with Database
 		flush();
-		
-		//Update University
+
+		// Update University
 		this.getUniversityService().update(periodInfo);
 
-		//Check
+		// Check
 		assertTrue(periodInfo.getId().longValue() == period.getId().longValue());
 		assertTrue(periodInfo.getName().compareTo(period.getName()) == 0);
 		assertTrue(periodInfo.getDescription().compareTo(period.getDescription()) == 0);
 		assertTrue(periodInfo.getUniversityId().longValue() == period.getUniversity().getId().longValue());
 		assertTrue(periodInfo.getStartdate().getTime() == period.getStartdate().getTime());
 		assertTrue(periodInfo.getEnddate().getTime() == period.getEnddate().getTime());
-		
-		//Synchronize with Database
-		flush();
-		
-		logger.info("----> END access to update(Period) test");
-	}
-	
-	public void testRemoveUniversity() {
-		logger.info("----> BEGIN access to removeUniversity test");
-		
-		//Create a University
-		University university = testUtility.createUniqueUniversityInDB();
-		assertNotNull(university.getId());
-		
-		//Save UniversityID
-		Long id = university.getId();
-		
-		//Synchronize with Database
+
+		// Synchronize with Database
 		flush();
 
-		//Remove University
-		universityService.removeUniversity(id);
-		
-		//Synchronize with Database
+		logger.info("----> END access to update(Period) test");
+	}
+
+	public void testRemoveUniversity() {
+		logger.info("----> BEGIN access to removeUniversity test");
+
+		// Create a University
+		University university = testUtility.createUniqueUniversityInDB();
+		assertNotNull(university.getId());
+
+		// Save UniversityID
+		Long id = university.getId();
+
+		// Synchronize with Database
 		flush();
-		
-		//Try to load University again
+
+		// Remove University
+		universityService.removeUniversity(id);
+
+		// Synchronize with Database
+		flush();
+
+		// Try to load University again
 		UniversityDao universityDao = (UniversityDao) this.applicationContext.getBean("universityDao");
 		University university2 = universityDao.load(id);
 		assertNull(university2);
 
-		logger.info("----> END access to removeUniversity test");		
+		logger.info("----> END access to removeUniversity test");
 	}
-	
+
 	public void testRemovePeriod() {
 		logger.info("----> BEGIN access to removePeriod test");
-		
-		//Create a Period
+
+		// Create a Period
 		Period period = testUtility.createUniquePeriodInDB();
 		assertNotNull(period.getId());
-		
-		//Save UniversityID
+
+		// Save UniversityID
 		Long periodId = period.getId();
-		
-		//Synchronize with Database
+
+		// Synchronize with Database
 		flush();
 
-		//Remove Period
+		// Remove Period
 		this.getUniversityService().removePeriod(periodId);
-		
-		//Synchronize with Database
+
+		// Synchronize with Database
 		flush();
-		
-		//Try to load Period again
+
+		// Try to load Period again
 		PeriodDao periodDao = (PeriodDao) this.applicationContext.getBean("periodDao");
 		Period periodTest = periodDao.load(periodId);
 		assertNull(periodTest);
 
-		logger.info("----> END access to removePeriod test");		
+		logger.info("----> END access to removePeriod test");
 	}
-	
+
 	public void testFindUniversity() {
 		logger.info("----> BEGIN access to findUniversity test");
-		
-		//Create a University
+
+		// Create a University
 		University university = testUtility.createUniqueUniversityInDB();
 		assertNotNull(university.getId());
-		
-		//Synchronize with Database
+
+		// Synchronize with Database
 		flush();
 
-		//Find University
+		// Find University
 		UniversityInfo universityInfo = universityService.findUniversity(university.getId());
-		
-		assertEquals(university.getId(),universityInfo.getId());
 
-		logger.info("----> END access to findUniversity test");		
+		assertEquals(university.getId(), universityInfo.getId());
+
+		logger.info("----> END access to findUniversity test");
 	}
-	
+
 	public void testFindPeriod() {
 		logger.info("----> BEGIN access to findPeriod test");
-		
-		//Create a Period
+
+		// Create a Period
 		Period period = testUtility.createUniquePeriodInDB();
 		assertNotNull(period.getId());
-		
-		//Synchronize with Database
+
+		// Synchronize with Database
 		flush();
 
-		//Find University
+		// Find University
 		PeriodInfo periodInfo = this.getUniversityService().findPeriod(period.getId());
-		
-		assertEquals(period.getId(),periodInfo.getId());
 
-		logger.info("----> END access to findPeriod test");		
+		assertEquals(period.getId(), periodInfo.getId());
+
+		logger.info("----> END access to findPeriod test");
 	}
-	
+
 	@SuppressWarnings( { "unchecked" })
 	public void testFindAllUniversities() {
 		logger.info("----> BEGIN access to findAllUniversities test");
-		
+
 		// Create complete Universities
 		List<University> universities = new ArrayList<University>();
 		for (int i = 0; i < 3; i++) {
 			universities.add(testUtility.createUniqueUniversityInDB());
 		}
-		
-		//Synchronize with Database
+
+		// Synchronize with Database
 		flush();
 
-		//Find all University
+		// Find all University
 		List universityInfos = universityService.findAllUniversities();
-		
+
 		assertEquals(universities.size(), universityInfos.size());
 
 		Iterator iterator = null;
@@ -306,233 +323,233 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 			}
 		}
 		assertEquals(universities.size(), count);
-		
-		logger.info("----> END access to findAllUniversities test");		
+
+		logger.info("----> END access to findAllUniversities test");
 	}
-	
+
 	@SuppressWarnings( { "unchecked" })
-	public void testFindPeriodsByUniversity () {
+	public void testFindPeriodsByUniversity() {
 		logger.info("----> BEGIN access to findPeriodsByUniversity test");
-		
-		//Create University
+
+		// Create University
 		University university = testUtility.createUniqueUniversityInDB();
 		flush();
-		
-		//Create Periods with university
+
+		// Create Periods with university
 		Period period1 = testUtility.createUniquePeriodInDB();
 		period1.setUniversity(university);
 		university.getPeriods().add(period1);
-		
+
 		Period period2 = testUtility.createUniquePeriodInDB();
 		period2.setUniversity(university);
 		university.getPeriods().add(period2);
-		
+
 		PeriodDao periodDao = (PeriodDao) this.getApplicationContext().getBean("periodDao");
 		periodDao.update(period1);
 		periodDao.update(period2);
-		
-		//Test
+
+		// Test
 		List<PeriodInfo> periods = this.getUniversityService().findPeriodsByUniversity(university.getId());
 		assertNotNull(periods);
 		assertEquals(2, periods.size());
 		assertEquals(period1.getName(), periods.get(0).getName());
 		assertEquals(period2.getName(), periods.get(1).getName());
-		
+
 		logger.info("----> END access to findPeriodsByUniversity test");
 	}
-	
-	public void testFindActivePeriodByUniversity () {
+
+	public void testFindActivePeriodByUniversity() {
 		logger.info("----> BEGIN access to findActivePeriodByUniversity test");
-		
-		//Create University
+
+		// Create University
 		University university = testUtility.createUniqueUniversityInDB();
 		flush();
-		
-		//Create Periods with university
+
+		// Create Periods with university
 		Period period1 = testUtility.createUniquePeriodInDB();
 		period1.setUniversity(university);
 		period1.setStartdate(new Date(new GregorianCalendar(2004, 10, 1).getTimeInMillis()));
 		period1.setEnddate(new Date(new GregorianCalendar(2005, 3, 31).getTimeInMillis()));
 		university.getPeriods().add(period1);
-		
+
 		Period period2 = testUtility.createUniquePeriodInDB();
 		period2.setUniversity(university);
 		university.getPeriods().add(period2);
-		
+
 		PeriodDao periodDao = (PeriodDao) this.getApplicationContext().getBean("periodDao");
 		periodDao.update(period1);
 		periodDao.update(period2);
-		
-		//Test
+
+		// Test
 		PeriodInfo periodInfo = this.getUniversityService().findActivePeriodByUniversity(university.getId());
 		assertNotNull(periodInfo);
 		assertEquals(period2.getName(), periodInfo.getName());
-		
+
 		logger.info("----> END access to findActivePeriodByUniversity test");
 	}
-	
+
 	@SuppressWarnings( { "unchecked" })
-	public void testFindUniversitiesByUserAndEnabled () {
+	public void testFindUniversitiesByUserAndEnabled() {
 		logger.info("----> BEGIN access to findUniversitiesByUser test");
-		
-		//Create User
+
+		// Create User
 		User user = testUtility.createUniqueUserInDB();
-		
-		//Create Universities
+
+		// Create Universities
 		University university1 = testUtility.createUniqueUniversityInDB();
 		university1.getMembership().getMembers().add(user);
 		university1.setOwnerName(user.getName());
-		
+
 		testUtility.createUniqueUniversityInDB();
-		
+
 		University university3 = testUtility.createUniqueUniversityInDB();
 		university3.getMembership().getMembers().add(user);
 		university3.setOwnerName(user.getName());
-		
+
 		flush();
-		
-		//Test
+
+		// Test
 		List universitiesByUser = this.getUniversityService().findUniversitiesByMemberAndEnabled(user.getId(), true);
 		assertNotNull(universitiesByUser);
 		assertEquals(2, universitiesByUser.size());
 		assertEquals(university1.getName(), ((UniversityInfo) universitiesByUser.get(0)).getName());
 		assertEquals(university3.getName(), ((UniversityInfo) universitiesByUser.get(1)).getName());
-		
+
 		logger.info("----> END access to findUniversitiesByUser test");
 	}
-	
+
 	@SuppressWarnings( { "unchecked" })
-	public void testFindUniversitiesByTypeAndEnabled () {
+	public void testFindUniversitiesByTypeAndEnabled() {
 		logger.info("----> BEGIN access to findUniversitiesByType test");
-		
+
 		// Create Universities
 		University university1 = testUtility.createUniqueUniversityInDB();
 		university1.setUniversityType(UniversityType.UNIVERSITY);
-		
+
 		University university2 = testUtility.createUniqueUniversityInDB();
 		university2.setUniversityType(UniversityType.COMPANY);
-		
+
 		University university3 = testUtility.createUniqueUniversityInDB();
 		university3.setUniversityType(UniversityType.MISC);
-		
+
 		University university4 = testUtility.createUniqueUniversityInDB();
 		university4.setUniversityType(UniversityType.UNIVERSITY);
-		
+
 		University university5 = testUtility.createUniqueUniversityInDB();
 		university5.setUniversityType(UniversityType.COMPANY);
 
 		University university6 = testUtility.createUniqueUniversityInDB();
 		university6.setUniversityType(UniversityType.COMPANY);
-		
+
 		flush();
-		
-		//Test
-		List<UniversityInfo> universities = this.getUniversityService().findUniversitiesByTypeAndEnabled(UniversityType.UNIVERSITY, true);
+
+		// Test
+		List<UniversityInfo> universities = this.getUniversityService().findUniversitiesByTypeAndEnabled(
+				UniversityType.UNIVERSITY, true);
 		assertNotNull(universities);
 		assertEquals(2, universities.size());
 		assertEquals(university1.getName(), universities.get(0).getName());
-		
+
 		universities = this.getUniversityService().findUniversitiesByTypeAndEnabled(UniversityType.COMPANY, true);
 		assertNotNull(universities);
 		assertEquals(3, universities.size());
 		assertEquals(university5.getName(), universities.get(1).getName());
-		
+
 		universities = this.getUniversityService().findUniversitiesByTypeAndEnabled(UniversityType.MISC, true);
 		assertNotNull(universities);
 		assertEquals(1, universities.size());
 		assertEquals(university3.getName(), universities.get(0).getName());
-		
-		
+
 		logger.info("----> END access to findUniversitiesByType test");
 	}
-	
-	public void testRemoveCompleteUniversityTree () {
+
+	public void testRemoveCompleteUniversityTree() {
 		logger.info("----> BEGIN access to removeCompleteUniversityTree test");
-		
+
 		// Create universities
 		University university1 = testUtility.createUniqueUniversityInDB();
 		University university2 = testUtility.createUniqueUniversityInDB();
-		
+
 		// Create departments
 		Department department1 = testUtility.createUniqueDepartmentInDB();
 		university1.getDepartments().add(department1);
-		
+
 		Department department2 = testUtility.createUniqueDepartmentInDB();
 		university2.getDepartments().add(department2);
-		
+
 		Department department3 = testUtility.createUniqueDepartmentInDB();
 		university1.getDepartments().add(department3);
-		
+
 		Department department4 = testUtility.createUniqueDepartmentInDB();
 		university1.getDepartments().add(department4);
-		
+
 		// Create institutes
 		Institute institute1 = testUtility.createUniqueInstituteInDB();
 		department1.getInstitutes().add(institute1);
-		
+
 		Institute institute2 = testUtility.createUniqueInstituteInDB();
 		department1.getInstitutes().add(institute2);
-		
+
 		Institute institute3 = testUtility.createUniqueInstituteInDB();
 		department2.getInstitutes().add(institute3);
-		
+
 		Institute institute4 = testUtility.createUniqueInstituteInDB();
 		department3.getInstitutes().add(institute4);
-		
+
 		Institute institute5 = testUtility.createUniqueInstituteInDB();
 		department3.getInstitutes().add(institute5);
-		
+
 		Institute institute6 = testUtility.createUniqueInstituteInDB();
 		department4.getInstitutes().add(institute6);
 
 		// Create courseTypes
 		CourseType courseType1 = testUtility.createUniqueCourseTypeInDB();
 		institute1.getCourseTypes().add(courseType1);
-		
+
 		CourseType courseType2 = testUtility.createUniqueCourseTypeInDB();
 		institute1.getCourseTypes().add(courseType2);
-		
+
 		CourseType courseType3 = testUtility.createUniqueCourseTypeInDB();
 		institute2.getCourseTypes().add(courseType3);
-		
+
 		CourseType courseType4 = testUtility.createUniqueCourseTypeInDB();
 		institute3.getCourseTypes().add(courseType4);
-		
+
 		// Create courses
 		Course course1 = testUtility.createUniqueCourseInDB();
 		courseType1.getCourses().add(course1);
-		
+
 		Course course2 = testUtility.createUniqueCourseInDB();
 		courseType1.getCourses().add(course2);
-		
+
 		Course course3 = testUtility.createUniqueCourseInDB();
 		courseType1.getCourses().add(course3);
-		
+
 		Course course4 = testUtility.createUniqueCourseInDB();
 		courseType2.getCourses().add(course4);
-		
+
 		Course course5 = testUtility.createUniqueCourseInDB();
 		courseType3.getCourses().add(course5);
-		
+
 		Course course6 = testUtility.createUniqueCourseInDB();
 		courseType3.getCourses().add(course6);
-		
+
 		Course course7 = testUtility.createUniqueCourseInDB();
 		courseType3.getCourses().add(course7);
-		
+
 		Course course8 = testUtility.createUniqueCourseInDB();
 		courseType4.getCourses().add(course8);
-		
+
 		// Synchronize with DB
 		flush();
-		
+
 		// Test
 		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
 		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
 		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
 		CourseTypeDao courseTypeDao = (CourseTypeDao) this.getApplicationContext().getBean("courseTypeDao");
 		CourseDao courseDao = (CourseDao) this.getApplicationContext().getBean("courseDao");
-		
+
 		assertNotNull(universityDao.load(university1.getId()));
 		assertNotNull(departmentDao.load(department1.getId()));
 		assertNotNull(departmentDao.load(department2.getId()));
@@ -553,10 +570,9 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertNotNull(courseDao.load(course5.getId()));
 		assertNotNull(courseDao.load(course6.getId()));
 		assertNotNull(courseDao.load(course7.getId()));
-		
+
 		this.getUniversityService().removeCompleteUniversityTree(university1.getId());
-		
-		
+
 		assertNull(universityDao.load(university1.getId()));
 		assertNull(departmentDao.load(department1.getId()));
 		assertNull(departmentDao.load(department3.getId()));
@@ -576,9 +592,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertNull(courseDao.load(course5.getId()));
 		assertNull(courseDao.load(course6.getId()));
 		assertNull(courseDao.load(course7.getId()));
-	
-		
+
 		logger.info("----> END access to removeCompleteUniversityTree test");
 	}
-	
+
 }
