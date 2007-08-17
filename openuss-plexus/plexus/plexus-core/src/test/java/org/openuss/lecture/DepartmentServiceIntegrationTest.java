@@ -41,6 +41,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		flush();
 		assertNotNull(departmentId);
 		assertEquals(1, university.getDepartments().size());
+		assertEquals(departmentId, university.getDepartments().get(0).getId());
 		
 		logger.info("----> END access to create(Department) test");
 	}

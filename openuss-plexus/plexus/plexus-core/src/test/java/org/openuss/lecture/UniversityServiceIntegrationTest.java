@@ -525,6 +525,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		University university1 = testUtility.createUniqueUniversityInDB();
 		University university2 = testUtility.createUniqueUniversityInDB();
 
+		
 		// Create departments
 		Department department1 = testUtility.createUniqueDepartmentInDB();
 		university1.getDepartments().add(department1);
@@ -606,6 +607,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		CourseDao courseDao = (CourseDao) this.getApplicationContext().getBean("courseDao");
 
 		assertNotNull(universityDao.load(university1.getId()));
+		
 		assertNotNull(departmentDao.load(department1.getId()));
 		assertNotNull(departmentDao.load(department2.getId()));
 		assertNotNull(departmentDao.load(department3.getId()));
@@ -626,6 +628,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertNotNull(courseDao.load(course6.getId()));
 		assertNotNull(courseDao.load(course7.getId()));
 
+
 		// Test Security
 		testUtility.createUserSecureContext();
 		try {
@@ -642,6 +645,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		this.getUniversityService().removeCompleteUniversityTree(university1.getId());
 
 		assertNull(universityDao.load(university1.getId()));
+		
 		assertNull(departmentDao.load(department1.getId()));
 		assertNull(departmentDao.load(department3.getId()));
 		assertNull(departmentDao.load(department4.getId()));

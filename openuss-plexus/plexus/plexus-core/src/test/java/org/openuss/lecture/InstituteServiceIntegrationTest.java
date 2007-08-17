@@ -13,6 +13,7 @@ import org.openuss.security.User;
  * JUnit Test for Spring Hibernate InstituteService class.
  * @see org.openuss.lecture.InstituteService
  * @author Ron Haus
+ * @author Florian Dondorf
  */
 public class InstituteServiceIntegrationTest extends InstituteServiceIntegrationTestBase {
 	
@@ -33,6 +34,10 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		//Create Entity
 		Long instituteId = this.getInstituteService().create(instituteInfo, owner.getId());
 		assertNotNull(instituteId);
+		
+		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
+		Institute instituteTest = instituteDao.load(instituteId);
+		assertNotNull(instituteTest.getDepartment());
 		
 		//Synchronize with Database
 		flush();
