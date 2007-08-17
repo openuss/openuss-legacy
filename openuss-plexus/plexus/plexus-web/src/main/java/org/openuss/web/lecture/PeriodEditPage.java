@@ -46,7 +46,7 @@ public class PeriodEditPage extends AbstractPeriodPage {
 		if (periodInfo.getId() == null) {
 			
 			periodInfo.setUniversityId(universityInfo.getId());
-			universityService.create(periodInfo);
+			universityService.createPeriod(periodInfo);
 			addMessage(i18n("message_created_new_period_succeed"));
 		} else {
 			universityService.update(periodInfo);

@@ -83,6 +83,7 @@ public class UniversityMembersPage extends AbstractUniversityPage{
 		organisationService.removeMember(universityInfo.getId(),user.getId());
 		return Constants.SUCCESS;
 		*/
+		return null;
 	}
 
 	/**

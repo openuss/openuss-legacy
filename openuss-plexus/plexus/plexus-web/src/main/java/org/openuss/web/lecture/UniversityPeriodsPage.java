@@ -170,7 +170,7 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 	 */
 	public String savePeriod() throws LectureException {
 		if (period.getId() == null) {
-			universityService.create(period);
+			universityService.createPeriod(period);
 		} else {
 			universityService.update(period);
 		}

@@ -48,7 +48,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		// Test Security
 		testUtility.createUserSecureContext();
 		try {
-			universityService.create(universityInfo, owner.getId());
+			universityService.createUniversity(universityInfo, owner.getId());
 			fail("AccessDeniedException should have been thrown");
 		} catch (AccessDeniedException ade) {
 			;
@@ -59,7 +59,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		// Create Entity
 		testUtility.createAdminSecureContext();
 		
-		Long universityId = universityService.create(universityInfo, owner.getId());
+		Long universityId = universityService.createUniversity(universityInfo, owner.getId());
 		assertNotNull(universityId);
 
 		// Synchronize with Database
@@ -95,7 +95,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		periodInfo.setEnddate(enddate);
 
 		// Test
-		Long periodId = this.getUniversityService().create(periodInfo);
+		Long periodId = this.getUniversityService().createPeriod(periodInfo);
 		assertNotNull(periodId);
 
 		PeriodDao periodDao = (PeriodDao) this.getApplicationContext().getBean("periodDao");

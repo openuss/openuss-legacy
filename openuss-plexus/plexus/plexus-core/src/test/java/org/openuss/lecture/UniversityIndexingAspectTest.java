@@ -45,7 +45,7 @@ private static final Logger logger = Logger.getLogger(UniversityIndexingAspectTe
 		// universityId is set to NULL before creation
 		universityInfo.setId(null);
 		
-		Long universityId = universityService.create(universityInfo, user.getId());
+		Long universityId = universityService.createUniversity(universityInfo, user.getId());
 		
 		// update universityInfo
 		// university id is set after the creation manually

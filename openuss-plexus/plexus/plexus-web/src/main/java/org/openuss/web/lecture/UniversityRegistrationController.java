@@ -33,7 +33,7 @@ public class UniversityRegistrationController extends AbstractUniversityPage{
 		universityInfo.setEnabled(true);
 	
 		universityInfo.setUniversityType(UniversityType.MISC);
-		Long universityId = universityService.create(universityInfo, user.getId());
+		Long universityId = universityService.createUniversity(universityInfo, user.getId());
 		universityInfo.setId(universityId);
 		//TODO send notification email
 		//FIXME this should be part of the business layer

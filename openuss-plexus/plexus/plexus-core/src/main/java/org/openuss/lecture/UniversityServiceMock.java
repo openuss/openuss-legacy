@@ -10,12 +10,12 @@ import org.apache.commons.lang.Validate;
 
 public class UniversityServiceMock implements UniversityService {
 
-	public Long create(UniversityInfo universityInfo, Long ownerId) {
+	public Long createUniversity(UniversityInfo universityInfo, Long ownerId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Long create(PeriodInfo periodInfo) {
+	public Long createPeriod(PeriodInfo periodInfo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
