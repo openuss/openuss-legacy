@@ -60,6 +60,11 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		testUtility.createAdminSecureContext();
 		Long universityId = universityService.createUniversity(universityInfo, owner.getId());
 		assertNotNull(universityId);
+		
+		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
+		University universityTest = universityDao.load(universityId);
+		assertEquals(1, universityTest.getDepartments().size());
+		assertEquals(1, universityTest.getPeriods().size());
 
 		// Synchronize with Database
 		flush();

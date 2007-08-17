@@ -14,17 +14,22 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 		return null;
 	}
 
-	public Department create(DepartmentType departmentType, String shortcut, String name, String description, String ownerName, String address, String postcode, String city, String country, String telephone, String telefax, String website, String email, String locale, String theme, Blob logo, Boolean enabled) {
+	public Department create(DepartmentType departmentType, String shortcut, String name, String description, 
+			String ownerName, String address, String postcode, String city, String country, String telephone, 
+			String telefax, String website, String email, String locale, String theme, Long imageId, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Object create(int transform, DepartmentType departmentType, Boolean enabled, Membership membership, String name, String ownerName, String shortcut) {
+	public Object create(int transform, DepartmentType departmentType, Boolean enabled, Membership membership, 
+			String name, String ownerName, String shortcut) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Object create(int transform, DepartmentType departmentType, String shortcut, String name, String description, String ownerName, String address, String postcode, String city, String country, String telephone, String telefax, String website, String email, String locale, String theme, Blob logo, Boolean enabled) {
+	public Object create(int transform, DepartmentType departmentType, String shortcut, String name, String description, 
+			String ownerName, String address, String postcode, String city, String country, String telephone, 
+			String telefax, String website, String email, String locale, String theme, Long imageId, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
