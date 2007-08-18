@@ -247,7 +247,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		logger.info("----> BEGIN access to findApplication test");
 
 		// Create Application
-		Application application = this.getTestUtility().createUniqueApplicationInDB();
+		Application application = this.getTestUtility().createUniqueUnconfirmedApplicationInDB();
 		
 		// Synchronize with Database
 		flush();
@@ -263,15 +263,20 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		logger.info("----> BEGIN access to signoffInstitute test");
 
 		// Create Application
-		Application application = this.getTestUtility().createUniqueApplicationInDB();
+		Application application = this.getTestUtility().createUniqueUnconfirmedApplicationInDB();
 		User user = this.getTestUtility().createUniqueUserInDB();
 		Long applicationId = application.getId();
 		
 		Department department = application.getDepartment();
 		Institute institute = application.getInstitute();
 		
+		University university = department.getUniversity();
+		
 		// Accept Application
+		assertFalse(department.getInstitutes().contains(institute));
 		this.getDepartmentService().acceptApplication(application.getId(), user.getId());
+		assertTrue(application.getConfirmed());
+		assertTrue(department.getInstitutes().contains(institute));
 		
 		// Synchronize with Database
 		flush();
@@ -299,7 +304,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		logger.info("----> BEGIN access to rejectApplication test");
 
 		// Create Application
-		Application application = this.getTestUtility().createUniqueApplicationInDB();
+		Application application = this.getTestUtility().createUniqueUnconfirmedApplicationInDB();
 		Long applicationId = application.getId();
 		
 		// Synchronize with Database
@@ -330,7 +335,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		logger.info("----> BEGIN access to acceptApplication test");
 
 		// Create Application and User
-		Application application = this.getTestUtility().createUniqueApplicationInDB();
+		Application application = this.getTestUtility().createUniqueUnconfirmedApplicationInDB();
 		User user = this.getTestUtility().createUniqueUserInDB();
 		
 		// Synchronize with Database

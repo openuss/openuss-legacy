@@ -18,6 +18,7 @@ import org.openuss.lecture.CourseType;
 import org.openuss.lecture.CourseTypeDao;
 import org.openuss.lecture.Department;
 import org.openuss.lecture.DepartmentDao;
+import org.openuss.lecture.DepartmentType;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.Period;
@@ -205,6 +206,35 @@ public class TestUtility {
 		
 		universityDao.create(university);
 		
+		// Add a default NONOFFICIAL Department
+		Department department = Department.Factory.newInstance();
+		department.setDepartmentType(DepartmentType.NONOFFICIAL);
+		department.setName("Standard Department");
+		department.setShortcut("StandDepart");
+		department.setDescription("Dies ist das Standard Department. Es ist als Auffangbehälter für Institutionen gedacht, die noch keinem anderen Department zugeordnet werden können.");
+		department.setAddress(university.getAddress());
+		department.setPostcode(university.getPostcode());
+		department.setCity(university.getCity());
+		department.setCountry(university.getCountry());
+		department.setEmail(university.getEmail());
+		department.setEnabled(true);
+		department.setLocale(university.getLocale());
+		department.setOwnerName(university.getOwnerName());
+		department.setTelefax(university.getTelefax());
+		department.setTelephone(university.getTelephone());
+		department.setWebsite(university.getWebsite());
+		university.add(department);
+		
+		// Create a default Period
+		Period period = Period.Factory.newInstance();
+		period.setName("Standard Period");
+		period.setDescription("Dies ist die Standard Period. Sie ist als Auffangbehälter für Veranstaltungen gedacht, die keiner anderen Periode zugeordnet werden können.");
+		period.setStartdate(new Date(0)); //1. January 1970, 00:00:00 GMT
+		Calendar cal = new GregorianCalendar();
+		cal.set(2050, 11, 31);//31. December 2050, 00:00:00 GMT
+		period.setEnddate(new Date(cal.getTimeInMillis()));
+		university.add(period);
+		
 		this.getSecurityService().createObjectIdentity(university, null);
 		
 		return university;
@@ -350,11 +380,13 @@ public class TestUtility {
 		return period;
 	}
 
-	public Application createUniqueApplicationInDB () {
+	public Application createUniqueUnconfirmedApplicationInDB () {
 		// Create a complete Application
 		Application application = Application.Factory.newInstance();
 		application.setApplicationDate(new Date());
-		application.add(this.createUniqueDepartmentInDB());
+		Department department = this.createUniqueDepartmentInDB();
+		department.setDepartmentType(DepartmentType.OFFICIAL);
+		application.add(department);
 		application.add(this.createUniqueInstituteInDB());
 		application.setConfirmed(false);
 		application.setDescription("A unique Application");

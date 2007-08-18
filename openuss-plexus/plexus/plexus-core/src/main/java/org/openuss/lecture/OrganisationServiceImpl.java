@@ -6,15 +6,12 @@
 package org.openuss.lecture;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.registration.RegistrationException;
 import org.openuss.security.Group;
 import org.openuss.security.User;
-import org.openuss.system.SystemProperties;
 
 /**
  * @see org.openuss.lecture.OrganisationService

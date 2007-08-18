@@ -286,10 +286,9 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.isTrue(!application.getConfirmed(),
 				"DepartmentService.handleRemoveUnconfirmedApplication - the Application is already confirmed");
 
-		application.getDepartment().getApplications().remove(application);
-		application.getInstitute().setApplication(null);
+		application.remove(application.getDepartment());
+		application.remove(application.getInstitute());
 		this.getApplicationDao().remove(application);
-
 	}
 
 	@Override

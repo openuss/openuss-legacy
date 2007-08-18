@@ -31,14 +31,14 @@ public class ApplicationImpl extends org.openuss.lecture.ApplicationBase impleme
 
 	@Override
 	public void remove(Department department) {
-		// TODO Auto-generated method stub
-		
+		this.setDepartment(null);
+		department.getApplications().remove(this);
 	}
 
 	@Override
 	public void remove(Institute institute) {
-		// TODO Auto-generated method stub
-		
+		this.setInstitute(null);
+		institute.setApplication(null);
 	}
 	
 }
