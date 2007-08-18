@@ -216,31 +216,45 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		University university1 = testUtility.createUniqueUniversityInDB();
 		University university2 = testUtility.createUniqueUniversityInDB();
 		
-		// Create 3 Departments
+		// Create 5 Departments
 		Department department1 = testUtility.createUniqueDepartmentInDB();
 		university1.add(department1);
 		department1.setDepartmentType(DepartmentType.OFFICIAL);
+		
 		Department department2 = testUtility.createUniqueDepartmentInDB();
 		university1.add(department2);
 		department2.setDepartmentType(DepartmentType.NONOFFICIAL);
+		
 		Department department3 = testUtility.createUniqueDepartmentInDB();
-		university2.add(department3);
+		university1.add(department3);
 		department3.setDepartmentType(DepartmentType.NONOFFICIAL);
+		
+		Department department4 = testUtility.createUniqueDepartmentInDB();
+		university1.add(department4);
+		department4.setDepartmentType(DepartmentType.OFFICIAL);
+		
+		Department department5 = testUtility.createUniqueDepartmentInDB();
+		university2.add(department5);
+		department5.setDepartmentType(DepartmentType.NONOFFICIAL);
 
 		// Synchronize with Database
 		flush();
 
 		// Test
 		List departmentsOfficial = this.departmentDao.findByUniversityAndType(university1, DepartmentType.OFFICIAL);
-		assertEquals(1, departmentsOfficial.size());
+		assertEquals(2, departmentsOfficial.size());
 		assertTrue(departmentsOfficial.contains(department1));
 		assertFalse(departmentsOfficial.contains(department2));
 		assertFalse(departmentsOfficial.contains(department3));
+		assertTrue(departmentsOfficial.contains(department4));
+		assertFalse(departmentsOfficial.contains(department5));
 
-		List departmentsNonOfficial = this.departmentDao.findByUniversityAndType(university2, DepartmentType.NONOFFICIAL);
-		assertEquals(1, departmentsNonOfficial.size());
+		List departmentsNonOfficial = this.departmentDao.findByUniversityAndType(university1, DepartmentType.NONOFFICIAL);
+		assertEquals(2, departmentsNonOfficial.size());
 		assertFalse(departmentsNonOfficial.contains(department1));
-		assertFalse(departmentsNonOfficial.contains(department2));
+		assertTrue(departmentsNonOfficial.contains(department2));
 		assertTrue(departmentsNonOfficial.contains(department3));
+		assertFalse(departmentsNonOfficial.contains(department4));
+		assertFalse(departmentsNonOfficial.contains(department5));
 	}
 }

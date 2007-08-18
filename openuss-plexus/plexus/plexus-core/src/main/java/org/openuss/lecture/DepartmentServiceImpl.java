@@ -259,10 +259,9 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		department.remove(institute);
 
 		// Assign Institute to (any) Standard non-official Department (without Application)
-		List<Department> departments = this.getDepartmentDao().findByUniversityAndType(department.getUniversity(),
-				DepartmentType.NONOFFICIAL);
+		List<Department> departments = this.getDepartmentDao().findByUniversityAndType(department.getUniversity(), DepartmentType.NONOFFICIAL);
 		Validate.isTrue(!departments.isEmpty(),
-				"DepartmentService.handleSignoffInstitute - no NONOFFICIAL Department found, cannot signoff");
+				"DepartmentService.handleSignoffInstitute - no NONOFFICIAL Department found, cannot signoff");	
 		departments.get(0).add(institute);
 	}
 

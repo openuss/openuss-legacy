@@ -21,6 +21,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		
 		// Create university with user
 		University university = testUtility.createUniqueUniversityInDB();
+		int sizeBefore = university.getDepartments().size();
 		flush();
 		
 		// Create departmentInfo
@@ -40,8 +41,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		Long departmentId = departmentService.create(departmentInfo, owner.getId());
 		flush();
 		assertNotNull(departmentId);
-		assertEquals(1, university.getDepartments().size());
-		assertEquals(departmentId, university.getDepartments().get(0).getId());
+		assertEquals(sizeBefore+1, university.getDepartments().size());
 		
 		logger.info("----> END access to create(Department) test");
 	}
@@ -168,8 +168,10 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		University university = testUtility.createUniqueUniversityInDB();
 		flush();
 		
+		int sizeBefore = university.getDepartments().size();
+		
 		//Create DepartmentDao
-		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
+		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");		
 		
 		//Create departments
 		Department department1 = Department.Factory.newInstance();
@@ -203,10 +205,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		//Test
 		List<DepartmentInfo> departments = this.getDepartmentService().findDepartmentsByUniversity(university.getId());
 		assertNotNull(departments);
-		//assertEquals(1, departments.size());
-		assertEquals(2, departments.size());
-		assertEquals(department1.getName(), departments.get(0).getName());
-		//assertEquals(departmentInfo2.getName(), departments.get(1).getName());
+		assertEquals(sizeBefore+2, departments.size());
 		
 		logger.info("----> END access to findDepartmentsByUniversity(Department) test");
 	}
@@ -218,6 +217,8 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		// Create 2 Universities
 		University university1 = testUtility.createUniqueUniversityInDB();
 		University university2 = testUtility.createUniqueUniversityInDB();
+		int sizeBefore1 = university1.getDepartments().size();
+		int sizeBefore2 = university2.getDepartments().size();
 		
 		// Create 3 Departments		
 		Department department1 = testUtility.createUniqueDepartmentInDB();
@@ -235,10 +236,10 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 
 		// Test
 		List departmentsEnabled = this.departmentService.findDepartmentsByUniversityAndEnabled(university1.getId(), true);
-		assertEquals(1, departmentsEnabled.size());
+		assertEquals(sizeBefore1+1, departmentsEnabled.size());
 
 		List departmentsDisabled = this.departmentService.findDepartmentsByUniversityAndEnabled(university2.getId(), true);
-		assertEquals(1, departmentsDisabled.size());
+		assertEquals(sizeBefore2+1, departmentsDisabled.size());
 		
 		logger.info("----> END access to findDepartmentsByUniversityAndEnabled test");
 	}
@@ -286,6 +287,11 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		
 		// Signoff Institute
 		assertNotNull(institute.getApplication());
+		assertTrue(university.getDepartments().size()==2);
+		
+		// Synchronize with Database
+		flush();
+		
 		this.getDepartmentService().signoffInstitute(institute.getId());
 		
 		// Synchronize with Database
@@ -365,6 +371,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		
 		// Create University
 		University university = testUtility.createUniqueUniversityInDB();
+		int sizeBefore = university.getDepartments().size();
 		
 		// Create Departments
 		Department department1 = testUtility.createUniqueDepartmentInDB();
@@ -393,12 +400,12 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		// Test
 		List<DepartmentInfo> departments = this.getDepartmentService().findDepartmentsByType(DepartmentType.OFFICIAL);
 		assertNotNull(departments);
-		assertEquals(2, departments.size());
+		assertEquals(sizeBefore+2, departments.size());
 		assertEquals(department2.getName(), departments.get(0).getName());
 
 		departments = this.getDepartmentService().findDepartmentsByType(DepartmentType.NONOFFICIAL);
 		assertNotNull(departments);
-		assertEquals(3, departments.size());
+		assertEquals(sizeBefore+2, departments.size());
 		assertEquals(department5.getName(), departments.get(2).getName());
 		
 		logger.info("----> END access to findDepartmentsByType test");

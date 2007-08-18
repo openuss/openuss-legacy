@@ -208,22 +208,25 @@ public class TestUtility {
 		
 		// Add a default NONOFFICIAL Department
 		Department department = Department.Factory.newInstance();
-		department.setDepartmentType(DepartmentType.NONOFFICIAL);
 		department.setName("Standard Department");
-		department.setShortcut("StandDepart");
+		department.setDepartmentType(DepartmentType.NONOFFICIAL);
+		department.setShortcut(unique("StandDepart"));
 		department.setDescription("Dies ist das Standard Department. Es ist als Auffangbehälter für Institutionen gedacht, die noch keinem anderen Department zugeordnet werden können.");
+		department.setOwnerName(university.getOwnerName());
+		department.setEnabled(true);
+		department.setMembership(this.createUniqueMembershipInDB());
 		department.setAddress(university.getAddress());
-		department.setPostcode(university.getPostcode());
 		department.setCity(university.getCity());
 		department.setCountry(university.getCountry());
 		department.setEmail(university.getEmail());
-		department.setEnabled(true);
 		department.setLocale(university.getLocale());
-		department.setOwnerName(university.getOwnerName());
+		department.setPostcode(university.getPostcode());
 		department.setTelefax(university.getTelefax());
 		department.setTelephone(university.getTelephone());
-		department.setWebsite(university.getWebsite());
+		department.setTheme(university.getTheme());
+		department.setWebsite(university.getWebsite());		
 		university.add(department);
+		
 		
 		// Create a default Period
 		Period period = Period.Factory.newInstance();
@@ -235,7 +238,13 @@ public class TestUtility {
 		period.setEnddate(new Date(cal.getTimeInMillis()));
 		university.add(period);
 		
+		departmentDao.create(department);
+		periodDao.create(period);
+		universityDao.update(university);
+		
 		this.getSecurityService().createObjectIdentity(university, null);
+		this.getSecurityService().createObjectIdentity(department, university);
+		this.getSecurityService().createObjectIdentity(period, university);
 		
 		return university;
 	}
@@ -247,6 +256,7 @@ public class TestUtility {
 		// Create a unique Department
 		Department department =  Department.Factory.newInstance();
 		department.setName(unique("Department"));
+		department.setDepartmentType(DepartmentType.NONOFFICIAL);
 		department.setShortcut(unique("Dep"));
 		department.setDescription("A unique Department");
 		department.setOwnerName("Administrator");
@@ -264,7 +274,6 @@ public class TestUtility {
 		department.setWebsite("www.openuss.de");
 		
 		university.add(department);
-		department.setUniversity(university);
 		
 		departmentDao.create(department);
 		
