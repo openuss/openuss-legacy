@@ -22,14 +22,14 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 
 	public Object create(int transform, String shortcut, String name, String description, String ownerName,
 			String address, String postcode, String city, String country, String telephone, String telefax,
-			String website, String email, String locale, String theme, Blob logo, Boolean enabled) {
+			String website, String email, String locale, String theme, Long imageId, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public Institute create(String shortcut, String name, String description, String ownerName, String address,
 			String postcode, String city, String country, String telephone, String telefax, String website,
-			String email, String locale, String theme, Blob logo, Boolean enabled) {
+			String email, String locale, String theme, Long imageId, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -155,5 +155,4 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 	}
 
 
-	
 }

@@ -23,7 +23,7 @@ public class UniversityDaoMock extends AbstractMockDao<University> implements Un
 
 	public Object create(int transform, UniversityType universityType, String shortcut, String name,
 			String description, String ownerName, String address, String postcode, String city, String country,
-			String telephone, String telefax, String website, String email, String locale, String theme, Blob logo,
+			String telephone, String telefax, String website, String email, String locale, String theme, Long imageId,
 			Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
@@ -31,7 +31,7 @@ public class UniversityDaoMock extends AbstractMockDao<University> implements Un
 
 	public University create(UniversityType universityType, String shortcut, String name, String description,
 			String ownerName, String address, String postcode, String city, String country, String telephone,
-			String telefax, String website, String email, String locale, String theme, Blob logo, Boolean enabled) {
+			String telefax, String website, String email, String locale, String theme, Long imageId, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}

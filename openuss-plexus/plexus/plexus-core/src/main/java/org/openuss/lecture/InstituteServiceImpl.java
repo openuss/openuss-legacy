@@ -74,7 +74,9 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 			
 			application.add(department);
 			application.add(instituteEntity);
+			this.getDepartmentDao().update(department);
 		}
+
 		
 		// Create default Groups for Institute
 		GroupItem admins = new GroupItem();
@@ -264,6 +266,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(application, "InstituteService.applyAtDepartment - cannot transform value object to entity");
 		Validate.isTrue(application.getDepartment().getDepartmentType().equals(DepartmentType.OFFICIAL),
 				"InstituteService.applyAtDepartment - an Application is only necessary for official Departments");
+		Validate.isTrue(application.getInstitute().getApplication()==null, "InstituteService.applyAtDepartment - the Institue already has an application, remove/signoff before");
 
 		this.getApplicationDao().create(application);
 
