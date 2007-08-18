@@ -9,6 +9,31 @@ import org.openuss.security.Membership;
 
 public class InstituteDaoMock extends AbstractMockDao<Institute> implements InstituteDao {
 
+	public Institute create(Boolean enabled, Membership membership, String name, String ownerName, String shortcut) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object create(int transform, Boolean enabled, Membership membership, String name, String ownerName,
+			String shortcut) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object create(int transform, String shortcut, String name, String description, String ownerName,
+			String address, String postcode, String city, String country, String telephone, String telefax,
+			String website, String email, String locale, String theme, Blob logo, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Institute create(String shortcut, String name, String description, String ownerName, String address,
+			String postcode, String city, String country, String telephone, String telefax, String website,
+			String email, String locale, String theme, Blob logo, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public List findByDepartmentAndEnabled(Department department, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
@@ -29,27 +54,22 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		return null;
 	}
 
-	public Institute create(Boolean enabled, Membership membership, String name, String ownerName, String shortcut) {
+	public List findByEnabled(Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Object create(int transform, Boolean enabled, Membership membership, String name, String ownerName,
-			String shortcut) {
+	public List findByEnabled(int transform, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Object create(int transform, String shortcut, String name, String description, String ownerName,
-			String address, String postcode, String city, String country, String telephone, String telefax,
-			String website, String email, String locale, String theme, Long imageId, Boolean enabled) {
+	public List findByEnabled(int transform, String queryString, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Institute create(String shortcut, String name, String description, String ownerName, String address,
-			String postcode, String city, String country, String telephone, String telefax, String website,
-			String email, String locale, String theme, Long imageId, Boolean enabled) {
+	public List findByEnabled(String queryString, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -102,26 +122,6 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 	public void instituteSecurityToEntityCollection(Collection instances) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	public List findByEnabled(Boolean enabled) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List findByEnabled(int transform, Boolean enabled) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List findByEnabled(int transform, String queryString, Boolean enabled) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List findByEnabled(String queryString, Boolean enabled) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public void toInstituteInfo(Institute sourceEntity, InstituteInfo targetVO) {

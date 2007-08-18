@@ -9,28 +9,29 @@ import org.openuss.security.Membership;
 
 public class UniversityDaoMock extends AbstractMockDao<University> implements UniversityDao {
 
-	public University create(Boolean enabled, Membership membership, String name, String ownerName, String shortcut, UniversityType universityType) {
+	public University create(Boolean enabled, Membership membership, String name, String ownerName, String shortcut,
+			UniversityType universityType) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Object create(int transform, Boolean enabled, Membership membership, String name, 
-			String ownerName, String shortcut, UniversityType universityType) {
+	public Object create(int transform, Boolean enabled, Membership membership, String name, String ownerName,
+			String shortcut, UniversityType universityType) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Object create(int transform, UniversityType universityType, String shortcut, String name, 
-			String description, String ownerName, String address, String postcode, String city, 
-			String country, String telephone, String telefax, String website, String email, String locale, 
-			String theme, Long imageId, Boolean enabled) {
+	public Object create(int transform, UniversityType universityType, String shortcut, String name,
+			String description, String ownerName, String address, String postcode, String city, String country,
+			String telephone, String telefax, String website, String email, String locale, String theme, Blob logo,
+			Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public University create(UniversityType universityType, String shortcut, String name, String description, 
-			String ownerName, String address, String postcode, String city, String country, String telephone, 
-			String telefax, String website, String email, String locale, String theme, Long imageId, Boolean enabled) {
+	public University create(UniversityType universityType, String shortcut, String name, String description,
+			String ownerName, String address, String postcode, String city, String country, String telephone,
+			String telefax, String website, String email, String locale, String theme, Blob logo, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -51,6 +52,26 @@ public class UniversityDaoMock extends AbstractMockDao<University> implements Un
 	}
 
 	public List findByEnabled(String queryString, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByTypeAndEnabled(int transform, String queryString, UniversityType universityType, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByTypeAndEnabled(int transform, UniversityType universityType, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByTypeAndEnabled(String queryString, UniversityType universityType, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByTypeAndEnabled(UniversityType universityType, Boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -83,26 +104,6 @@ public class UniversityDaoMock extends AbstractMockDao<University> implements Un
 	public void universityInfoToEntityCollection(Collection instances) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	public List findByTypeAndEnabled(int transform, String queryString, UniversityType universityType, Boolean enabled) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List findByTypeAndEnabled(int transform, UniversityType universityType, Boolean enabled) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List findByTypeAndEnabled(String queryString, UniversityType universityType, Boolean enabled) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List findByTypeAndEnabled(UniversityType universityType, Boolean enabled) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
