@@ -30,6 +30,14 @@
   		<ui:define name="content">
   			<h:form id="facultiesForm">
 				<ui:include src="institutestable.xhtml"/>
+				<o:block>
+					<h:commandButton 
+					    id="addInstitute"
+						action="institute_create" 
+						value="#{msg.institute_command_add_institute}" 
+						title="#{msg.institute_command_add_institute_hint}"
+						styleClass="button"/>
+				</o:block>
 			</h:form>
 		</ui:define>
 	</ui:composition>

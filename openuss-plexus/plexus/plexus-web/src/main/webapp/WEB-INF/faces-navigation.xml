@@ -261,10 +261,6 @@
 			<to-view-id>/views/sercured/user/profile.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>institute_create</from-outcome>
-			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>department_create</from-outcome>
 			<to-view-id>/views/secured/lecture/registration/departmentStart.xhtml</to-view-id>
 		</navigation-case>
@@ -286,7 +282,7 @@
     	</navigation-case>
     </navigation-rule>
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
-       F a c u l t y  - R e g i s t r a t i o n 
+       I n s t i t u t e  - R e g i s t r a t i o n 
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
 	<navigation-rule>
 		<from-view-id>/views/secured/lecture/registration/*</from-view-id>
@@ -308,7 +304,7 @@
 	</navigation-rule>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
-       F a c u l t y  - P a g e
+       I n s t i t u t e   - P a g e
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
 
 	<navigation-rule>
@@ -374,11 +370,21 @@
 			<to-view-id>/views/secured/lecture/courseremove.xhtml</to-view-id>
 		</navigation-case>
 		
+	</navigation-rule>
+	
+	<navigation-rule>
+	
+		<from-view-id>/views/public/*</from-view-id>
+		
+		<navigation-case>
+			<from-outcome>institute_create</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
+		</navigation-case>
 		
 	</navigation-rule>
 	
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
-       E n r o l l m e n t - P a g e
+       C o u r s e - P a g e
     - - - - - - - - - - - - - - - - - - - - - - - - - -->		
 		<navigation-rule>
 			<from-view-id>/views/secured/*</from-view-id>
