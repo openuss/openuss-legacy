@@ -20,6 +20,10 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 	public void testCreateInstitute() {
 		logger.info("----> BEGIN access to create(Institute) test");
 
+		//Create an OFFICIAL Department
+		Department departmentOfficial = testUtility.createUniqueDepartmentInDB();
+		departmentOfficial.setDepartmentType(DepartmentType.OFFICIAL);
+		
 		//Create new UniversityInfo object
 		InstituteInfo instituteInfo = new InstituteInfo();
 		instituteInfo.setName(testUtility.unique("testInstitute"));
@@ -27,6 +31,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		instituteInfo.setOwnerName("Administrator");
 		instituteInfo.setEnabled(true);
 		instituteInfo.setDescription("This is a test Institute");
+		instituteInfo.setDepartmentId(departmentOfficial.getId());
 		
 		//Create a User as Owner
 		User owner = testUtility.createUniqueUserInDB();
@@ -35,9 +40,39 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		Long instituteId = this.getInstituteService().create(instituteInfo, owner.getId());
 		assertNotNull(instituteId);
 		
+		// Test
 		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
 		Institute instituteTest = instituteDao.load(instituteId);
 		assertNotNull(instituteTest.getDepartment());
+		assertNotNull(instituteTest.getApplication());
+		assertTrue(instituteTest.getDepartment().getApplications().contains(instituteTest.getApplication()));
+		
+		//Synchronize with Database
+		flush();
+		
+		
+		
+		//Create an NONOFFICIAL Department
+		Department departmentNonOfficial = testUtility.createUniqueDepartmentInDB();
+		departmentNonOfficial.setDepartmentType(DepartmentType.NONOFFICIAL);
+		
+		//Create new UniversityInfo object
+		InstituteInfo instituteInfo2 = new InstituteInfo();
+		instituteInfo2.setName(testUtility.unique("testInstitute"));
+		instituteInfo2.setShortcut(testUtility.unique("testI"));
+		instituteInfo2.setOwnerName("Administrator");
+		instituteInfo2.setEnabled(true);
+		instituteInfo2.setDescription("This is a test Institute");
+		instituteInfo2.setDepartmentId(departmentNonOfficial.getId());
+		
+		//Create Entity
+		Long instituteId2 = this.getInstituteService().create(instituteInfo2, owner.getId());
+		assertNotNull(instituteId2);
+		
+		// Test
+		Institute instituteTest2 = instituteDao.load(instituteId2);
+		assertNotNull(instituteTest2.getDepartment());
+		assertNull(instituteTest2.getApplication());
 		
 		//Synchronize with Database
 		flush();

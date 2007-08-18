@@ -15,6 +15,7 @@ import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
+import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
@@ -31,22 +32,29 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	protected java.lang.Long handleCreate(InstituteInfo instituteInfo, Long userId) throws java.lang.Exception {
 
 		logger.debug("Starting method handleCreate");
-		
+
 		Validate.notNull(instituteInfo, "InstituteService.handleCreate - the Institute cannot be null");
 		Validate.notNull(userId, "InstituteService.handleCreate - the User must have a valid ID");
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user, "InstituteService.handleCreate - no valid User found corresponding to the ID "+userId);
 		Validate.isTrue(instituteInfo.getId() == null,
 				"InstituteService.handleCreate - the Institute shouldn't have an ID yet");
-		Validate.isTrue(instituteInfo.getDepartmentId() == null,
-				"InstituteService.handleCreate - You cannot set the DepartmentID, you must apply first");
+		Validate.isTrue(instituteInfo.getDepartmentId() != null,
+				"InstituteService.handleCreate - the DepartmentID cannot be null");
 
+		
+		
 		// Transform ValueObject into Entity
 		Institute instituteEntity = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
+		Department department = instituteEntity.getDepartment();
+		Validate.notNull(department, "InstituteService.handleCreate - no valid Department found corresponding to the ID "+instituteInfo.getDepartmentId());
 
 		// Create a default Membership for the University
 		Membership membership = Membership.Factory.newInstance();
 		instituteEntity.setMembership(membership);
 
 		// Create the Institute
+		department.add(instituteEntity);
 		this.getInstituteDao().create(instituteEntity);
 		Validate.notNull(instituteEntity.getId(), "InstituteService.handleCreate - Couldn't create Institute");
 
@@ -54,6 +62,20 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		instituteInfo.setId(instituteEntity.getId());
 
+		//Create Application for OFFICIAL Departments
+		if (department.getDepartmentType().equals(DepartmentType.OFFICIAL)) {
+			Application application = Application.Factory.newInstance();
+			application.setApplicationDate(new Date());
+			application.setDepartment(department);
+			application.setInstitute(instituteEntity);
+			application.setConfirmed(true);
+			application.setApplyingUser(user);
+			application.setConfirmingUser(user);
+			
+			application.add(department);
+			application.add(instituteEntity);
+		}
+		
 		// Create default Groups for Institute
 		GroupItem admins = new GroupItem();
 		admins.setName("INSTITUTE_" + instituteEntity.getId() + "_ADMINS");
@@ -84,8 +106,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		this.getOrganisationService().addMember(instituteEntity.getId(), userId);
 		this.getOrganisationService().addUserToGroup(userId, adminsGroup.getId());
 
-		// TODO: Fire createdInstitute event to bookmark the Institute for the User who created it 
-		
+		// TODO: Fire createdInstitute event to bookmark the Institute for the User who created it
+
 		return instituteEntity.getId();
 	}
 
@@ -121,8 +143,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				"InstituteService.handleRemoveInstitute - no Institute found to the corresponding ID " + instituteId);
 
 		// TODO: Fire removedInstitute event to delete all bookmarks
-		//		 Fire removedCourseTypes event to delete all bookmarks
-		//		 Fire removedCourses event to delete all bookmarks
+		// Fire removedCourseTypes event to delete all bookmarks
+		// Fire removedCourses event to delete all bookmarks
 
 		this.getInstituteDao().remove(instituteId);
 
@@ -240,7 +262,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		// Transform VO to entity
 		Application application = this.getApplicationDao().applicationInfoToEntity(applicationInfo);
 		Validate.notNull(application, "InstituteService.applyAtDepartment - cannot transform value object to entity");
-		Validate.isTrue(application.getDepartment().getDepartmentType().equals(DepartmentType.OFFICIAL), "InstituteService.applyAtDepartment - an Application is only necessary for official Departments");
+		Validate.isTrue(application.getDepartment().getDepartmentType().equals(DepartmentType.OFFICIAL),
+				"InstituteService.applyAtDepartment - an Application is only necessary for official Departments");
 
 		this.getApplicationDao().create(application);
 
@@ -298,15 +321,11 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 			return self.equals(found);
 		}
 	}
-	
-	/*------------------- private methods -------------------- */
-	
-	// TODO: Add Set of listeners
-	
-	// TODO: Method unregisterListener
-	
-	// TODO: Method fireRemovingInstitute (Institute institute)
-	
-	// TODO: Method fireCreatedInstitute (Institute institute)
 
+	/*------------------- private methods -------------------- */
+
+	// TODO: Add Set of listeners
+	// TODO: Method unregisterListener
+	// TODO: Method fireRemovingInstitute (Institute institute)
+	// TODO: Method fireCreatedInstitute (Institute institute)
 }
