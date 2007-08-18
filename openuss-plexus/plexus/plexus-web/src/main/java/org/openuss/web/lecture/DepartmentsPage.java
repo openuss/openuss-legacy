@@ -74,6 +74,19 @@ public class DepartmentsPage extends BasePage{
 		return Constants.DEPARTMENT_PAGE;
 	}
 	
+	/**
+	 * Bookmarks the chosen department and therefore sets a link on the MyUni Page for the department.
+	 * @return Outcome
+	 */
+	public String shortcutDepartment() throws DesktopException {
+		logger.debug("Starting method shortcutDepartment");
+		DepartmentInfo currentDepartment = currentDepartment();
+		desktopService2.linkDepartment(desktopInfo.getId(), currentDepartment.getId());
+
+		addMessage(i18n("message_university_shortcut_created"));
+		return Constants.SUCCESS;
+	}
+	
 	private DataPage<DepartmentInfo> dataPage;
 	
 	public DataPage<DepartmentInfo> fetchDataPage(int startRow, int pageSize) {
