@@ -21,6 +21,7 @@ import org.openuss.security.acl.LectureAclEntry;
 /**
  * @see org.openuss.lecture.InstituteService
  * @author Ron Haus
+ * @author Florian Dondorf
  */
 public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBase {
 
@@ -123,6 +124,13 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(instituteInfo, "InstituteService.handleUpdate - the Institute cannot be null");
 		Validate.notNull(instituteInfo.getId(), "InstituteService.handleUpdate - the Institute must have a valid ID");
 
+		// Check changes of department
+		Institute instituteEntity = this.getInstituteDao().load(instituteInfo.getId());
+		Department department = this.getDepartmentDao().load(instituteInfo.getDepartmentId());
+		if (!instituteEntity.getDepartment().equals(department)){
+			throw new InstituteServiceException("The department can not be changed. You have to apply first.");
+		}
+		
 		// Transform ValueObject into Entity
 		Institute institute = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
 

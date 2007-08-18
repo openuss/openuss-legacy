@@ -94,6 +94,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		instituteInfo.setOwnerName("Administrator");
 		instituteInfo.setEnabled(true);
 		instituteInfo.setDescription("This is a test Institute at " + testUtility.unique("time"));
+		instituteInfo.setDepartmentId(institute.getDepartment().getId());
 
 		// Check
 		assertTrue(instituteInfo.getId().longValue() == institute.getId().longValue());
@@ -115,6 +116,26 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 
 		// Synchronize with Database
 		flush();
+		
+		// Test for Exception
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		assertNotNull(institute1.getId());
+		
+		// Create official Department
+		Department department = testUtility.createUniqueDepartmentInDB();
+		department.setDepartmentType(DepartmentType.OFFICIAL);
+		
+		// Create new UniversityInfo object
+		InstituteInfo instituteInfo1 = new InstituteInfo();
+		instituteInfo1.setId(institute1.getId());
+		instituteInfo1.setDepartmentId(department.getId());
+		
+		try {
+			this.getInstituteService().update(instituteInfo1);
+			fail("InstituteServiceException must have been thrown.");
+		} catch (InstituteServiceException ise) {
+			
+		}
 
 		logger.info("----> END access to update(Institute) test");
 	}
