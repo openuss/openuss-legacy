@@ -65,7 +65,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		Department department = Department.Factory.newInstance();
 		department.setName("Standard Department");
 		department.setDepartmentType(DepartmentType.NONOFFICIAL);
-		department.setShortcut("StandDepart");
+		department.setShortcut("StDep_"+university.getShortcut());
 		department
 				.setDescription("Dies ist das Standard Department. Es ist als Auffangbehälter für Institutionen gedacht, die noch keinem anderen Department zugeordnet werden können.");
 		department.setOwnerName(university.getOwnerName());
