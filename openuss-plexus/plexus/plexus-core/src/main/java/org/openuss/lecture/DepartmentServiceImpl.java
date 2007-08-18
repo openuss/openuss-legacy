@@ -189,8 +189,13 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	@Override
 	protected List handleFindDepartmentsByUniversityAndType(Long universityId, DepartmentType departmentType)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Validate.notNull(universityId, "DepartmentService.handleFindDepartmentsByUniversityAndType - the universityId cannot be null");
+		Validate.notNull(departmentType, "DepartmentService.handleFindDepartmentsByUniversityAndType - the departmentType cannot be null");
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university, "DepartmentService.handleFindDepartmentsByUniversityAndType - no University found corresponding to the ID "
+				+ universityId);
+		
+		return this.getDepartmentDao().findByUniversityAndType(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university, departmentType);
 	}
 
 	@Override
