@@ -14,6 +14,7 @@ import org.apache.commons.lang.Validate;
 /**
  * @see org.openuss.lecture.Institute
  * @author Ron Haus
+ * @author Florian Dondorf
  */
 public class InstituteImpl extends org.openuss.lecture.InstituteBase implements org.openuss.lecture.Institute {
 

@@ -53,11 +53,10 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		// Create a default Period
 		Period period = Period.Factory.newInstance();
 		period.setName("Standard Period");
-		period
-				.setDescription("Dies ist die Standard Period. Sie ist als Auffangbehälter für Veranstaltungen gedacht, die keiner anderen Periode zugeordnet werden können.");
-		period.setStartdate(new Date(0)); // 1. January 1970, 00:00:00 GMT
+		period.setDescription("Dies ist die Standard Period. Sie ist als Auffangbehälter für Veranstaltungen gedacht, die keiner anderen Periode zugeordnet werden können.");
+		period.setStartdate(new Date(0)); //1. January 1970, 00:00:00 GMT
 		Calendar cal = new GregorianCalendar();
-		cal.set(2050, 11, 31);// 31. December 2050, 00:00:00 GMT
+		cal.set(2050, 11, 31);//31. December 2050, 00:00:00 GMT
 		period.setEnddate(new Date(cal.getTimeInMillis()));
 		universityEntity.add(period);
 
@@ -65,7 +64,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		Department department = Department.Factory.newInstance();
 		department.setName("Standard Department");
 		department.setDepartmentType(DepartmentType.NONOFFICIAL);
-		department.setShortcut("StDep_"+university.getShortcut());
+		department.setShortcut("StandDepart");
 		department
 				.setDescription("Dies ist das Standard Department. Es ist als Auffangbehälter für Institutionen gedacht, die noch keinem anderen Department zugeordnet werden können.");
 		department.setOwnerName(university.getOwnerName());
@@ -186,13 +185,12 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		Validate.notNull(periodId, "UniversityService.handleRemovePeriod - the PeriodID cannot be null");
 
 		Period period = this.getPeriodDao().load(periodId);
-
-		if (period.getCourses().size() == 0) {
-			period.getUniversity().remove(period);
+		
+		if (period.getCourses().size()==0) {
 			this.getPeriodDao().remove(periodId);
+			period.getUniversity().remove(period);
 		} else {
-			throw new IllegalArgumentException("UniversityService.handleRemovePeriod - The Period " + periodId
-					+ " contains at least one Courses. Remove Courses before!");
+			throw new IllegalArgumentException("The Period "+periodId+" contains at least one Courses. Remove Courses before!");
 		}
 	}
 
@@ -200,12 +198,10 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#removePeriodAndCourses(java.lang.Long)
 	 */
 	protected void handleRemovePeriodAndCourses(Long periodId) throws Exception {
-
+		
 		Validate.notNull(periodId, "UniversityService.handleRemovePeriod - the PeriodID cannot be null");
 
-		Period period = this.getPeriodDao().load(periodId);
-		period.getUniversity().remove(period);
-		this.getPeriodDao().remove(period);
+		this.getPeriodDao().remove(periodId);		
 	}
 
 	/**

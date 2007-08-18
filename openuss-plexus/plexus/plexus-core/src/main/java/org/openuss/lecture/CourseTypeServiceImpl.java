@@ -33,6 +33,7 @@ public class CourseTypeServiceImpl
 		Validate.notNull(courseTypeEntity, "CourseTypeServiceImpl.handleCreate - could not transform courseTypeInfo to entity.");
 		
 		// Save entity
+		courseTypeEntity.getInstitute().add(courseTypeEntity);
 		this.getCourseTypeDao().create(courseTypeEntity);
 		Validate.notNull(courseTypeEntity.getId(), "CourseTypeServiceImpl.handleCreate - id of courseType cannot be null.");
 		

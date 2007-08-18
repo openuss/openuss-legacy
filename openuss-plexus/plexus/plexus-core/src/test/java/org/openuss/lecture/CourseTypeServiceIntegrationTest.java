@@ -47,6 +47,10 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 		assertEquals(courseTypeInfo.getShortcut(), courseType.getShortcut());
 		assertEquals(courseTypeInfo.getDescription(), courseType.getDescription());
 		
+		assertNotNull(institute.getCourseTypes());
+		assertEquals(1, institute.getCourseTypes().size());
+		assertEquals(courseTypeInfo.getName(), institute.getCourseTypes().get(0).getName());
+		
 		logger.info("----> END access to createCourseType test");
 	}
 

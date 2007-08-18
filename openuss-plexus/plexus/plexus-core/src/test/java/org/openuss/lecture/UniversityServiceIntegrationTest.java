@@ -78,6 +78,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 
 		// Create university
 		University university = testUtility.createUniqueUniversityInDB();
+		assertEquals(1, university.getPeriods().size());
 		flush();
 
 		int sizeBefore = university.getPeriods().size();
@@ -255,6 +256,11 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		Period period = testUtility.createUniquePeriodInDB();
 		assertNotNull(period.getId());
 
+		// Get University
+		University university = period.getUniversity();
+		assertNotNull(university);
+		assertEquals(2, university.getPeriods().size());
+		
 		// Save PeriodID
 		Long periodId = period.getId();
 
@@ -271,6 +277,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		PeriodDao periodDao = (PeriodDao) this.applicationContext.getBean("periodDao");
 		Period periodTest = periodDao.load(periodId);
 		assertNull(periodTest);
+		
+		assertEquals(1, university.getPeriods().size());
 
 		// Create an Course (this includes creating of a Period)
 		Course course = testUtility.createUniqueCourseInDB();
@@ -422,8 +430,6 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		University university = testUtility.createUniqueUniversityInDB();
 		flush();
 
-		int sizeBefore = university.getPeriods().size();
-		
 		// Create Periods with university
 		Period period1 = testUtility.createUniquePeriodInDB();
 		period1.setUniversity(university);
@@ -442,6 +448,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		// Test
 		PeriodInfo periodInfo = this.getUniversityService().findActivePeriodByUniversity(university.getId());
 		assertNotNull(periodInfo);
+		assertEquals(period2.getName(), periodInfo.getName());
 
 		logger.info("----> END access to findActivePeriodByUniversity test");
 	}

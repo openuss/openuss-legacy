@@ -97,6 +97,10 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		assertEquals(courseInfo.getId(), courseTest.getPeriod().getCourses().get(0).getId());
 		assertEquals(courseInfo.getId(), courseTest.getCourseType().getCourses().get(0).getId());
 		
+		assertEquals(1, courseType.getCourses().size());
+		assertEquals(courseType.getName(), courseType.getCourses().get(0).getName());
+		assertEquals(courseInfo.getDescription(), courseType.getCourses().get(0).getDescription());
+		
 		logger.debug("----> END access to create test <---- ");
 	}
 	

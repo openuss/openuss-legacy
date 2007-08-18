@@ -49,7 +49,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		departmentEntity.setMembership(membership);
 
 		// Create the Department and add it to the Univesity
-		departmentEntity.getUniversity().getDepartments().add(departmentEntity);
+		departmentEntity.getUniversity().add(departmentEntity);
 		this.getDepartmentDao().create(departmentEntity);
 		Validate.notNull(departmentEntity.getId(), "DepartmentService.handleCreate - Couldn't create Department");
 
