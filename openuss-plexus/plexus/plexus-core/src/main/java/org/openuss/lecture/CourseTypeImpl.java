@@ -35,7 +35,8 @@ public class CourseTypeImpl extends org.openuss.lecture.CourseTypeBase implement
 
 	@Override
 	public void remove(Course course) {
-		getCourses().remove(course);
+		Validate.notNull(course, "CourseType.remove(course) - the course cannot be null.");
+		
 		if (!this.getCourses().remove(course)) {
 			if (course.getCourseType().equals(this)) {
 				course.setCourseType(null);

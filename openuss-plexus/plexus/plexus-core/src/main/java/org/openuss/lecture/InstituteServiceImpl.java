@@ -148,6 +148,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		// Fire removedCourseTypes event to delete all bookmarks
 		// Fire removedCourses event to delete all bookmarks
 
+		institute.getDepartment().remove(institute);
 		this.getInstituteDao().remove(instituteId);
 
 		// fire events

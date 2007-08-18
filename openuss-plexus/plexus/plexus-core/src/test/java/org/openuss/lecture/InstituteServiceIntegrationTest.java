@@ -128,6 +128,9 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		// Create an Institute
 		Institute institute = testUtility.createUniqueInstituteInDB();
 		assertNotNull(institute.getId());
+		Department department = institute.getDepartment();
+		assertNotNull(department);
+		assertEquals(1, department.getInstitutes().size());
 
 		// Get Institute id
 		Long id = institute.getId();
@@ -145,6 +148,8 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		InstituteDao instituteDao = (InstituteDao) this.applicationContext.getBean("instituteDao");
 		Institute institute2 = instituteDao.load(id);
 		assertNull(institute2);
+		
+		assertEquals(0, department.getInstitutes().size());
 
 		logger.info("----> END access to removeInstitute test");
 	}

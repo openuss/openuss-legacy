@@ -73,6 +73,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		//fireRemovingCourse(course);
 		
 		// Remove course
+		course.getCourseType().remove(course);
 		this.getCourseDao().remove(courseId);
 	}
 	

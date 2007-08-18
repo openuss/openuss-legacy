@@ -126,6 +126,7 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 		
 		//Create CourseType
 		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
+		Institute institute = courseType.getInstitute();
 		courseType.getCourses().add(course1);
 		courseType.getCourses().add(course2);
 		courseType.getCourses().add(course3);
@@ -149,6 +150,8 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 		
 		Course courseTest3 = courseDao.load(course3.getId());
 		assertNull(courseTest3);
+		
+		assertEquals(0, institute.getCourseTypes().size());
 		
 		logger.info("----> END access to removeCourseType test");
 	}

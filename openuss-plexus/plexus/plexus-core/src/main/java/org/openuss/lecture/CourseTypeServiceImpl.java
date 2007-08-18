@@ -92,7 +92,7 @@ public class CourseTypeServiceImpl
 		}
 		fireRemovingCourseType(courseType);
 		*/
-		
+		courseType.getInstitute().remove(courseType);
 		this.getCourseTypeDao().remove(courseTypeId);
 		
 	}

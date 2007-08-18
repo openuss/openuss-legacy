@@ -112,7 +112,10 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		
 		//Create Courses
 		Course course1 = testUtility.createUniqueCourseInDB();
+		CourseType courseType1 = course1.getCourseType(); 
+		
 		Course course2 = testUtility.createUniqueCourseInDB();
+		CourseType courseType2 = course2.getCourseType(); 
 		
 		//Create desktop
 		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
@@ -138,7 +141,9 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		courseTest = courseDao.load(course1.getId());
 		assertNull(courseTest);
 		desktop = desktopDao.load(desktop.getId());
-		assertEquals(1, desktop.getCourses().size());
+		//assertEquals(1, desktop.getCourses().size());
+		
+		assertEquals(0, courseType1.getCourses().size());
 		
 		logger.debug("----> END access to removeCourse test <---- ");
 	}

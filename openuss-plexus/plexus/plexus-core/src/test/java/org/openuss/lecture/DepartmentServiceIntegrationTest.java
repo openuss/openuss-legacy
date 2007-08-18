@@ -97,6 +97,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		
 		//Create University
 		University university = testUtility.createUniqueUniversityInDB();
+		assertEquals(1, university.getDepartments().size());
 		flush();
 		
 		//Create department
@@ -111,6 +112,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		
 		Long departmentId = 
 			this.getDepartmentService().create(departmentInfo, testUtility.createUniqueUserInDB().getId());
+		assertEquals(2, university.getDepartments().size());
 		flush();
 		
 		DepartmentDao departmentDao = (DepartmentDao)this.getApplicationContext().getBean("departmentDao");
@@ -124,6 +126,8 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		//Test	
 		department = departmentDao.load(departmentId);
 		assertNull(department);
+		
+		assertEquals(1, university.getDepartments().size());
 		
 		logger.info("----> END access to remove(Department) test");
 	}

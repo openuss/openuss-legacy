@@ -9,7 +9,8 @@ import org.apache.commons.lang.Validate;
 
 /**
  * @see org.openuss.lecture.Department
- * @author Ron Haus, Florian Dondorf
+ * @author Ron Haus
+ * @author Florian Dondorf
  */
 public class DepartmentImpl
     extends org.openuss.lecture.DepartmentBase
