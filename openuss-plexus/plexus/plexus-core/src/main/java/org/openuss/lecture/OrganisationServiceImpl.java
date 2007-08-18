@@ -185,8 +185,15 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 	/**
 	 * @see org.openuss.lecture.OrganisationService#setOrganisationStatus(boolean status)
 	 */
-	protected void handleSetOrganisationStatus(boolean status) throws java.lang.Exception {
-		//TODO: Implement me!
+	protected void handleSetOrganisationStatus(boolean status, Long organisationId) throws java.lang.Exception {
+		Validate.notNull(organisationId, "OrganisationService.setOrganisationStatus - organisationId cannot be null.");
+		
+		// Load Organisation
+		Organisation organisation = this.getOrganisationDao().load(organisationId);
+		
+		// Set Organisation status
+		organisation.setEnabled(status);
+		this.getOrganisationDao().update(organisation);
 	}
 	
 	/**

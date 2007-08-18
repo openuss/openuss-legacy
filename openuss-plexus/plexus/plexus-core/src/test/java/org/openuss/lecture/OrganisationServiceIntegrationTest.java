@@ -21,6 +21,7 @@ import org.openuss.security.UserInfo;
  * 
  * @see org.openuss.lecture.OrganisationService
  * @author Ron Haus
+ * @author Florian Dondorf
  */
 public class OrganisationServiceIntegrationTest extends OrganisationServiceIntegrationTestBase {
 
@@ -374,5 +375,35 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		flush();
 		
 		logger.info("----> END access to removeUserFromGroup test");
+	}
+	
+	public void testSetOrganisationStatus () {
+		logger.info("----> BEGIN access to setOrganisationStatus test");
+		
+		// Create university
+		University university = testUtility.createUniqueUniversityInDB();
+		assertNotNull(university);
+		assertTrue(university.getEnabled());
+		
+		// Synchronize with DB
+		flush();
+		
+		this.getOrganisationService().setOrganisationStatus(false, university.getId());
+		
+		// Load university
+		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
+		University universityTest = universityDao.load(university.getId());
+		
+		assertFalse(universityTest.getEnabled());
+		
+		this.getOrganisationService().setOrganisationStatus(true, university.getId());
+		
+		// Load university
+		universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
+		University universityTest1 = universityDao.load(university.getId());
+		
+		assertTrue(universityTest1.getEnabled());
+		
+		logger.info("----> END access to setOrganisationStatus test");
 	}
 }
