@@ -132,7 +132,7 @@
 		
 		<navigation-case>
 			<from-outcome>university_create</from-outcome>
-			<to-view-id>/views/secured/lecture/registration/universityStart.xhtml</to-view-id>
+			<to-view-id>/views/secured/lecture/registration/universityStep1.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>

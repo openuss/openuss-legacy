@@ -75,11 +75,15 @@ public class UniversitiesPage extends BasePage{
 		return Constants.UNIVERSITY_CONFIRM_REMOVE_PAGE;
 	}
 	
+	/**
+	 * Bookmarks the chosen university and therefore sets a link on the MyUni Page for the university.
+	 * @return Outcome
+	 */
 	public String shortcutUniversity() throws DesktopException {
 		logger.debug("Starting method shortcutUniversity");
 		UniversityInfo currentUniversity = currentUniversity();
-		desktopService2.linkInstitute(desktopInfo.getId(), currentUniversity.getId() );
-		
+		desktopService2.linkUniversity(desktopInfo.getId(), currentUniversity.getId());
+
 		addMessage(i18n("message_university_shortcut_created"));
 		return Constants.SUCCESS;
 	}
