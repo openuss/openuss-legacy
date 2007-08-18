@@ -183,6 +183,13 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 	}
 	
 	/**
+	 * @see org.openuss.lecture.OrganisationService#setOrganisationStatus(boolean status)
+	 */
+	protected void handleSetOrganisationStatus(boolean status) throws java.lang.Exception {
+		//TODO: Implement me!
+	}
+	
+	/**
 	 * @see org.openuss.lecture.OrganisationService#sendActivationCode(org.openuss.lecture.Organisation)
 	 */
 	protected void handleSendActivationCode(Organisation organisation) throws RegistrationException {
