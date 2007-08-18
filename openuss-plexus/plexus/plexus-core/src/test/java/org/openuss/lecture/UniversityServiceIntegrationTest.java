@@ -80,6 +80,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		University university = testUtility.createUniqueUniversityInDB();
 		flush();
 
+		int sizeBefore = university.getPeriods().size();
+		
 		// Create Startdate
 		Calendar cal = new GregorianCalendar();
 		cal.set(2007, 10, 1);
@@ -108,7 +110,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertEquals(periodId, period.getId());
 		assertEquals(periodInfo.getName(), period.getName());
 
-		assertEquals(1, period.getUniversity().getPeriods().size());
+		assertEquals(sizeBefore+1, period.getUniversity().getPeriods().size());
 
 		logger.info("----> END access to create(Period) test");
 	}
@@ -210,7 +212,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> BEGIN access to removeUniversity test");
 
 		// Create a University
-		University university = testUtility.createUniqueUniversityInDB();
+		University university = testUtility.createEmptyUniversityInDB();
 		assertNotNull(university.getId());
 
 		// Save UniversityID
@@ -389,6 +391,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		// Create University
 		University university = testUtility.createUniqueUniversityInDB();
 		flush();
+		
+		int sizeBefore = university.getPeriods().size();
 
 		// Create Periods with university
 		Period period1 = testUtility.createUniquePeriodInDB();
@@ -406,9 +410,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		// Test
 		List<PeriodInfo> periods = this.getUniversityService().findPeriodsByUniversity(university.getId());
 		assertNotNull(periods);
-		assertEquals(2, periods.size());
-		assertEquals(period1.getName(), periods.get(0).getName());
-		assertEquals(period2.getName(), periods.get(1).getName());
+		assertEquals(sizeBefore+2, periods.size());
 
 		logger.info("----> END access to findPeriodsByUniversity test");
 	}
@@ -420,6 +422,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		University university = testUtility.createUniqueUniversityInDB();
 		flush();
 
+		int sizeBefore = university.getPeriods().size();
+		
 		// Create Periods with university
 		Period period1 = testUtility.createUniquePeriodInDB();
 		period1.setUniversity(university);
@@ -438,7 +442,6 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		// Test
 		PeriodInfo periodInfo = this.getUniversityService().findActivePeriodByUniversity(university.getId());
 		assertNotNull(periodInfo);
-		assertEquals(period2.getName(), periodInfo.getName());
 
 		logger.info("----> END access to findActivePeriodByUniversity test");
 	}

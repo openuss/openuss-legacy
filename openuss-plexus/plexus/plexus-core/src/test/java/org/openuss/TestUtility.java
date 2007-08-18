@@ -183,6 +183,34 @@ public class TestUtility {
 		return membership;
 	}
 	
+	public University createEmptyUniversityInDB() {		
+		// Create a unique University
+		University university = University.Factory.newInstance();
+		university.setName(unique("University"));
+		university.setShortcut(unique("Uni"));
+		university.setDescription("A unique University");
+		university.setOwnerName("Administrator");
+		university.setUniversityType(UniversityType.UNIVERSITY);
+		university.setMembership(this.createUniqueMembershipInDB());
+		university.setEnabled(true);
+		university.setAddress("Leo 18");
+		university.setCity("Münster");
+		university.setCountry("Germany");
+		university.setEmail("openuss@uni-muenster.de");
+		university.setLocale("de");
+		university.setPostcode("48149");
+		university.setTelefax("0251-telefax");
+		university.setTelephone("0251-telephone");
+		university.setTheme("plexus");
+		university.setWebsite("www.openuss.de");
+		
+		universityDao.create(university);
+		
+		this.getSecurityService().createObjectIdentity(university, null);
+		
+		return university;
+	}
+	
 	public University createUniqueUniversityInDB() {		
 		// Create a unique University
 		University university = University.Factory.newInstance();

@@ -112,7 +112,8 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		// TODO: fireRemovedDepartment event to delete all bookmarks and open applications
 		// existing institutes have no longer an association to a department and are set to an open department
-
+		
+		department.getUniversity().remove(department);
 		this.getDepartmentDao().remove(department);
 
 	}

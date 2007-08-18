@@ -49,38 +49,44 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		// Create a default Membership for the University
 		Membership membership = Membership.Factory.newInstance();
 		universityEntity.setMembership(membership);
-		
+
 		// Create a default Period
 		Period period = Period.Factory.newInstance();
 		period.setName("Standard Period");
-		period.setDescription("Dies ist die Standard Period. Sie ist als Auffangbehälter für Veranstaltungen gedacht, die keiner anderen Periode zugeordnet werden können.");
-		period.setStartdate(new Date(0)); //1. January 1970, 00:00:00 GMT
+		period
+				.setDescription("Dies ist die Standard Period. Sie ist als Auffangbehälter für Veranstaltungen gedacht, die keiner anderen Periode zugeordnet werden können.");
+		period.setStartdate(new Date(0)); // 1. January 1970, 00:00:00 GMT
 		Calendar cal = new GregorianCalendar();
-		cal.set(2050, 11, 31);//31. December 2050, 00:00:00 GMT
+		cal.set(2050, 11, 31);// 31. December 2050, 00:00:00 GMT
 		period.setEnddate(new Date(cal.getTimeInMillis()));
 		universityEntity.add(period);
 
 		// Create a default Department
 		Department department = Department.Factory.newInstance();
-		department.setDepartmentType(DepartmentType.NONOFFICIAL);
 		department.setName("Standard Department");
+		department.setDepartmentType(DepartmentType.NONOFFICIAL);
 		department.setShortcut("StandDepart");
-		department.setDescription("Dies ist das Standard Department. Es ist als Auffangbehälter für Institutionen gedacht, die noch keinem anderen Department zugeordnet werden können.");
-		department.setAddress(universityEntity.getAddress());
-		department.setPostcode(universityEntity.getPostcode());
-		department.setCity(universityEntity.getCity());
-		department.setCountry(universityEntity.getCountry());
-		department.setEmail(universityEntity.getEmail());
+		department
+				.setDescription("Dies ist das Standard Department. Es ist als Auffangbehälter für Institutionen gedacht, die noch keinem anderen Department zugeordnet werden können.");
+		department.setOwnerName(university.getOwnerName());
 		department.setEnabled(true);
-		department.setLocale(universityEntity.getLocale());
-		department.setOwnerName(universityEntity.getOwnerName());
-		department.setTelefax(universityEntity.getTelefax());
-		department.setTelephone(universityEntity.getTelephone());
-		department.setWebsite(universityEntity.getWebsite());
+		department.setMembership(Membership.Factory.newInstance());
+		department.setAddress(university.getAddress());
+		department.setCity(university.getCity());
+		department.setCountry(university.getCountry());
+		department.setEmail(university.getEmail());
+		department.setLocale(university.getLocale());
+		department.setPostcode(university.getPostcode());
+		department.setTelefax(university.getTelefax());
+		department.setTelephone(university.getTelephone());
+		department.setTheme(university.getTheme());
+		department.setWebsite(university.getWebsite());
 		universityEntity.add(department);
 
 		// Create the University
 		this.getUniversityDao().create(universityEntity);
+		this.getDepartmentDao().create(department);
+		this.getPeriodDao().create(period);
 		Validate.notNull(universityEntity.getId(), "UniversityService.handleCreate - Couldn't create University");
 
 		// FIXME - Kai, Indexing should not base on VOs!
@@ -96,6 +102,8 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 		// Security
 		this.getSecurityService().createObjectIdentity(universityEntity, null);
+		this.getSecurityService().createObjectIdentity(department, universityEntity);
+		this.getSecurityService().createObjectIdentity(period, universityEntity);
 		this.getSecurityService().setPermissions(admins, universityEntity, LectureAclEntry.UNIVERSITY_ADMINISTRATION);
 
 		// Add Owner to Members and Group of Administrators
@@ -158,7 +166,15 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 		// TODO: Fire removedUniversity event to delete all bookmarks
 
-		this.getUniversityDao().remove(universityId);
+		University university = this.getUniversityDao().load(universityId);
+
+		Validate
+				.isTrue(university.getDepartments().isEmpty(),
+						"UniversityService.handleRemoveUniversity - the University contains at least one Department. Delete before.");
+		Validate
+				.isTrue(university.getPeriods().isEmpty(),
+						"UniversityService.handleRemoveUniversity - the University contains at least one Period. Delete before.");
+		this.getUniversityDao().remove(university);
 
 	}
 
@@ -170,11 +186,13 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		Validate.notNull(periodId, "UniversityService.handleRemovePeriod - the PeriodID cannot be null");
 
 		Period period = this.getPeriodDao().load(periodId);
-		
-		if (period.getCourses().size()==0) {
+
+		if (period.getCourses().size() == 0) {
+			period.getUniversity().remove(period);
 			this.getPeriodDao().remove(periodId);
 		} else {
-			throw new IllegalArgumentException("The Period "+periodId+" contains at least one Courses. Remove Courses before!");
+			throw new IllegalArgumentException("UniversityService.handleRemovePeriod - The Period " + periodId
+					+ " contains at least one Courses. Remove Courses before!");
 		}
 	}
 
@@ -182,10 +200,12 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#removePeriodAndCourses(java.lang.Long)
 	 */
 	protected void handleRemovePeriodAndCourses(Long periodId) throws Exception {
-		
+
 		Validate.notNull(periodId, "UniversityService.handleRemovePeriod - the PeriodID cannot be null");
 
-		this.getPeriodDao().remove(periodId);		
+		Period period = this.getPeriodDao().load(periodId);
+		period.getUniversity().remove(period);
+		this.getPeriodDao().remove(period);
 	}
 
 	/**
