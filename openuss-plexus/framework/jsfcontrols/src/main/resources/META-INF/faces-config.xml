@@ -36,6 +36,13 @@
     </converter>
     
     <converter>
+    	<description>Converts a DepartmentType object to a string representation and vice versa</description>
+    	<display-name>DepartmentTypeConverter</display-name>
+    	<converter-for-class>org.openuss.lecture.DepartmentType</converter-for-class>
+    	<converter-class>org.openuss.framework.jsfcontrols.converter.DepartmentTypeConverter</converter-class>
+    </converter>
+    
+    <converter>
     	<description>Converts a UniversityType object to a string representation and vice versa</description>
     	<display-name>UniversityTypeConverter</display-name>
     	<converter-for-class>org.openuss.lecture.UniversityType</converter-for-class>

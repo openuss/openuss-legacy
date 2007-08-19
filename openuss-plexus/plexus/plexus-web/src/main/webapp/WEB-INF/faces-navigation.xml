@@ -260,10 +260,6 @@
 			<from-outcome>user_bookmarks</from-outcome>
 			<to-view-id>/views/sercured/user/profile.xhtml</to-view-id>
 		</navigation-case>
-		<navigation-case>
-			<from-outcome>department_create</from-outcome>
-			<to-view-id>/views/secured/lecture/registration/departmentStart.xhtml</to-view-id>
-		</navigation-case>
 	</navigation-rule>
 	
 	<navigation-rule>
@@ -665,23 +661,44 @@
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
       D e p a r t m e n t  - R e g i s t r a t i o n 
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+    
+    
+    
+		
 	<navigation-rule>
+	
+		<from-view-id>/views/secured/lecture/*</from-view-id>
+	
+			<navigation-case>
+					<from-outcome>department_create</from-outcome>
+					<to-view-id>/views/secured/lecture/registration/departmentStart.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>department_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/lecture/registration/departmentStep1.xhtml</to-view-id>
+			</navigation-case>
+		
+	</navigation-rule>
+	
+	<navigation-rule>
+		
 		<from-view-id>/views/secured/lecture/registration/*</from-view-id>
 
-		<navigation-case>
-			<from-outcome>department_registration_start</from-outcome>
-			<to-view-id>/views/secured/lecture/registration/departmentStart.xhtml</to-view-id>
-		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>department_registration_step1</from-outcome>		
-			<to-view-id>/views/secured/lecture/registration/departmentStep1.xhtml</to-view-id>
-		</navigation-case>
-
-		<navigation-case>
-			<from-outcome>department_registration_step2</from-outcome>		
-			<to-view-id>/views/secured/lecture/registration/departmentStep2.xhtml</to-view-id>
-		</navigation-case>
+			<navigation-case>
+				<from-outcome>department_registration_start</from-outcome>
+				<to-view-id>/views/secured/lecture/registration/departmentStart.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>department_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/lecture/registration/departmentStep1.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>department_registration_step2</from-outcome>		
+				<to-view-id>/views/secured/lecture/registration/departmentStep2.xhtml</to-view-id>
+			</navigation-case>
 	</navigation-rule>
 
 

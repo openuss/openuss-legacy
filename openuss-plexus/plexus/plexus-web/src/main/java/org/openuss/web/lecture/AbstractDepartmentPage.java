@@ -16,6 +16,7 @@ import org.openuss.web.PageLinks;
 /**
  * Abstract Department Page
  * 
+ * @author Kai Stettner
  * @author Tianyu Wang
  * @author Weijun Chen
  */
@@ -32,14 +33,14 @@ public abstract class AbstractDepartmentPage extends BasePage {
 	
 
 		/**
-	 * Refreshing institute entity
+	 * Refreshing department VO
 	 * 
 	 * @throws Exception
 	 */
 	@Preprocess
 	public void preprocess() throws Exception {
 		super.preprocess();
-		logger.debug("preprocess - refreshing institute session object");
+		logger.debug("preprocess - refreshing department session object");
 		if (departmentInfo != null) {
 			departmentInfo = departmentService.findDepartment(departmentInfo.getId());
 		} else {

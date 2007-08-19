@@ -20,6 +20,9 @@ import org.openuss.web.Constants;
 
 
 /**
+ * Backing bean for the university registration. Is responsible starting the wizard, binding the values and registrating
+ * the university.
+ * 
  * @author Kai Stettner
  *
  */
@@ -73,9 +76,9 @@ public class UniversityRegistrationController extends AbstractUniversityPage{
 		universityInfo.setId(universityId);
 		//TODO send notification email
 		//FIXME this should be part of the business layer
-		//desktopService.linkUniversity(desktop.getId(), organisation.getId());
+		desktopService2.linkUniversity(desktopInfo.getId(), universityInfo.getId());
 				
-		return Constants.UNIVERSITY;
+		return Constants.UNIVERSITY_PAGE;
 	}
 	
 }
