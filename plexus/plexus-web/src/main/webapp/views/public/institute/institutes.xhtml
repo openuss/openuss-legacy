@@ -3,6 +3,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:t="http://myfaces.apache.org/tomahawk"
@@ -30,6 +31,11 @@
   		<ui:define name="content">
   			<h:form id="facultiesForm">
 				<ui:include src="institutestable.xhtml"/>
+				<s:authorize ifAllGranted="ROLE_USER"> 
+					<o:block>
+						<h:commandButton title = "#{msg['desktop_command_institute_create']}" value="#{msg['desktop_command_institute_create']}" action="institute_create" styleClass="button"/>
+					</o:block>
+				</s:authorize>
 			</h:form>
 		</ui:define>
 	</ui:composition>
