@@ -17,14 +17,30 @@
 			var="result" 
 			columnClasses="col_max_left, col_commands"
 			rows="15">
-			<t:column rendered="#{result.domainType == 'Course'}">
-				<img src="#{theme.imagesPath}/course.png" alt="#{result.name}" title="#{result.name}" />
+			<t:column rendered="#{result.domainType == 'UNIVERSITY'}" >
+				<img src="#{theme.imagesPath}/institute.png" alt="#{result.name}" title="#{result.name}" />
+			</t:column>
+			<t:column rendered="#{result.domainType == 'DEPARTMENT'}" >
+				<img src="#{theme.imagesPath}/institute.png" alt="#{result.name}" title="#{result.name}" />
 			</t:column>
 			<t:column rendered="#{result.domainType == 'INSTITUTE'}" >
 				<img src="#{theme.imagesPath}/institute.png" alt="#{result.name}" title="#{result.name}" />
 			</t:column>
+				<t:column rendered="#{result.domainType == 'Course'}">
+				<img src="#{theme.imagesPath}/course.png" alt="#{result.name}" title="#{result.name}" />
+			</t:column>
 			<t:column>
-				<div  class="institute_info">
+				<div class="institute_info">
+					<o:link value="/views/public/university/university.faces" rendered="#{result.domainType == 'UNIVERSITY'}">
+		    			<f:param name="university" value="#{result.id}"/>
+					 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
+						<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
+		    		</o:link>
+		    		<o:link value="/views/public/department/department.faces" rendered="#{result.domainType == 'DEPARTMENT'}">
+		    			<f:param name="department" value="#{result.id}"/>
+					 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
+						<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
+		    		</o:link>
 		    		<o:link value="/views/secured/lecture/institute.faces" rendered="#{result.domainType == 'INSTITUTE'}">
 		    			<f:param name="institute" value="#{result.id}"/>
 					 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>

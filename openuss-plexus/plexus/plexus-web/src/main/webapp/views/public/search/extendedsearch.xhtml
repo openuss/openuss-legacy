@@ -69,7 +69,7 @@
 							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.resultTypeChanged}">
 							<f:selectItems value="#{extended_search_results.resultTypes}"/>
 						</h:selectOneMenu>
-						<h:outputText value=" "/>
+						 <h:outputText value=" "/>
 						<h:panelGroup>
 							<t:htmlTag value="hr" style="width:500px; margin-left:0; text-align:left;" />
 						</h:panelGroup>
@@ -87,7 +87,7 @@
 							style="#{views$public$search$extendedsearch.visibilitySuborganisation}">
 							<f:selectItems value="#{extended_search_results.suborganisations}"/>
 						</h:selectOneMenu>
-				s		<h:outputText value="#{views$public$search$extendedsearch.institutionLabel}" 
+						<h:outputText value="#{views$public$search$extendedsearch.institutionLabel}" 
 							style="#{views$public$search$extendedsearch.visibilityInstitution}" styleClass="field_label"/>
 						<h:selectOneMenu id="institution" value="#{extended_search_results.institutionId}" styleClass="pulldown_inline" 
 							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.institutionChanged}"
@@ -109,11 +109,10 @@
 							<f:selectItems value="#{extended_search_results.periods}"/>
 						</h:selectOneMenu>
 						<f:facet name="footer">
-							<h:commandButton action="#{views$public$search$extendedsearch.extendedSearch}" value="${msg.extended_search_search}" styleClass="button_save" />
-		  					<h:commandButton action="#{views$public$search$extendedsearch.extendedSearchCriteriaUpdate}" id="updateButton" value="selection_update" style="display:none;" />
+							<h:commandButton action="#{views$public$search$extendedsearch.extendedSearchCriteriaUpdate}" id="updateButton" value="selection_update" style="display:none;" />
 						</f:facet>
 					</h:panelGrid>
-		  			
+					<h:commandButton action="#{views$public$search$extendedsearch.extendedSearch}" value="${msg.extended_search_search}" styleClass="button_save" />
 				</o:block>
 				<ui:include src="extendedsearchresults.xhtml" />
 			</h:form>

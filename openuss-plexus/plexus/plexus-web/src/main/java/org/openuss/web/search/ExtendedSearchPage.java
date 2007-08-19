@@ -49,6 +49,8 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	@Property(value="#{lectureSearcher}")
 	private LectureSearcher lectureSearcher;
 	
+	@Property(value="#{departmentService}")
+	private DepartmentService departmentService;
 	
 	@Property(value="#{extended_search_results}")
 	private ExtendedSearchResults extendedSearchResults;
@@ -56,7 +58,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	private ExtendedSearchResultDataProvider resultProvider = new ExtendedSearchResultDataProvider();
 	
 	private UniversityService universityService = new UniversityServiceMock();
-	private DepartmentService departmentService = new DepartmentServiceMock();
+	//private DepartmentService departmentService = new DepartmentServiceMock();
 	private InstituteService instituteService = new InstituteServiceMock();
 	private CourseTypeService courseTypeService = new CourseTypeServiceMock(); 
 	
@@ -314,7 +316,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 			return "display:none;";
 		}
 	}
-
+	
 	// TODO: really required?
 	private List<SelectItem> getEmptyComboBox(){
 		List<SelectItem> items = new ArrayList<SelectItem>();
@@ -392,27 +394,6 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		}
 	}
 	
-	
-	private class ExtendedSearchResultDataProvider extends AbstractPagedTable<DomainResult> {
-
-		private static final long serialVersionUID = -2279124332432432432L;
-		
-		private DataPage<DomainResult> page; 
-		
-		@SuppressWarnings("unchecked")
-		@Override 
-		public DataPage<DomainResult> getDataPage(int startRow, int pageSize) {
-			if (page == null) {
-				if (extendedSearchResults.getHits() == null) {
-					page = new DataPage<DomainResult>(0,0,null);
-				} else {
-					page = new DataPage<DomainResult>(extendedSearchResults.getHitCounts(),0,extendedSearchResults.getHits());
-				}
-			}
-			return page;
-		}
-	}
-
 	public LectureSearcher getLectureSearcher() {
 		return lectureSearcher;
 	}
@@ -436,5 +417,43 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	public void setExtendedSearchResults(ExtendedSearchResults extendedSearchResults) {
 		this.extendedSearchResults = extendedSearchResults;
 	}
+	
+	public DepartmentService getDepartmentService() {
+		return departmentService;
+	}
+
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+	
+	
+	
+	
+	private class ExtendedSearchResultDataProvider extends AbstractPagedTable<DomainResult> {
+
+		private static final long serialVersionUID = -2279124332432432432L;
+		
+		private DataPage<DomainResult> page; 
+		
+		@SuppressWarnings("unchecked")
+		@Override 
+		public DataPage<DomainResult> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				if (extendedSearchResults.getHits() == null) {
+					page = new DataPage<DomainResult>(0,0,null);
+				} else {
+					page = new DataPage<DomainResult>(extendedSearchResults.getHitCounts(),0,extendedSearchResults.getHits());
+				}
+			}
+			return page;
+		}
+	}
+
+
+
+
+	
+
+	
 
 }
