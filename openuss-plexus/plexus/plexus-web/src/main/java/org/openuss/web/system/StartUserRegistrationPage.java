@@ -1,5 +1,8 @@
 package org.openuss.web.system;
 
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -19,7 +22,12 @@ public class StartUserRegistrationPage extends BasePage{
 		super.prerender();
 		user = User.Factory.newInstance();
 		user.setPreferences(UserPreferences.Factory.newInstance());
+		user.getPreferences().setLocale(((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getLocale().toString());
 		user.setContact(UserContact.Factory.newInstance());
 		setSessionBean(Constants.USER, user);		
+	}
+	
+	public String lastStepRegistration(){
+		return Constants.STEP3;
 	}
 }

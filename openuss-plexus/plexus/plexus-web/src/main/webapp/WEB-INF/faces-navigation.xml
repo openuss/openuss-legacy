@@ -71,21 +71,6 @@
 		</navigation-case>
 
 		<navigation-case>
-			<from-outcome>user_logindata</from-outcome>
-			<to-view-id>/views/secured/user/logindata.xhtml</to-view-id>
-		</navigation-case>
-
-		<navigation-case>
-			<from-outcome>user_contactdata</from-outcome>
-			<to-view-id>/views/secured/user/contactdata.xhtml</to-view-id>
-		</navigation-case>
-
-		<navigation-case>
-			<from-outcome>user_preferences</from-outcome>
-			<to-view-id>/views/secured/user/preferences.xhtml</to-view-id>
-		</navigation-case>
-
-		<navigation-case>
 			<from-outcome>user_profile_view</from-outcome>
 			<to-view-id>/views/secured/user/userprofile.xhtml</to-view-id>
 		</navigation-case>
@@ -149,19 +134,11 @@
     	</navigation-case>
 	   	<navigation-case>
     		<from-outcome>step2</from-outcome>
-    		<to-view-id>/views/public/user/registration/step2LoginData.xhtml</to-view-id>
+    		<to-view-id>/views/public/user/registration/step2Preferences.xhtml</to-view-id>
     	</navigation-case>
 	   	<navigation-case>
     		<from-outcome>step3</from-outcome>
-    		<to-view-id>/views/public/user/registration/step3ContactData.xhtml</to-view-id>
-    	</navigation-case>
-	   	<navigation-case>
-    		<from-outcome>step4</from-outcome>
-    		<to-view-id>/views/public/user/registration/step4Preferences.xhtml</to-view-id>
-    	</navigation-case>
-	   	<navigation-case>
-    		<from-outcome>step5</from-outcome>
-    		<to-view-id>/views/public/user/registration/step5Confirmation.xhtml</to-view-id>
+    		<to-view-id>/views/public/user/registration/step3Confirmation.xhtml</to-view-id>
     	</navigation-case>
     </navigation-rule>
 
@@ -219,7 +196,7 @@
 		<from-view-id>/views/secured/*</from-view-id>
 		<navigation-case>
 			<from-outcome>user_bookmarks</from-outcome>
-			<to-view-id>/views/sercured/user/profile.xhtml</to-view-id>
+			<to-view-id>/views/secured/user/profile.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	
@@ -580,7 +557,7 @@
 		
 		<navigation-case>
 			<from-outcome>user_profile_view</from-outcome>
-			<to-view-id>/views/public/user/userprofile.xhtml</to-view-id>
+			<to-view-id>/views/secured/user/userprofile.xhtml</to-view-id>
 		</navigation-case>
 
 	</navigation-rule>

@@ -18,19 +18,7 @@
 						</s:authorize>
 						<t:commandNavigation2 value="#{msg['desktop_search_institute']}" action="search_institutes" activeOnViewIds="/views/public/institute/institutes.xhtml"/>
 						<s:authorize ifAllGranted="ROLE_USER">
-							<t:commandNavigation2 value="#{msg['desktop_command_userprofile']}" action="user_logindata" >
-								<t:commandNavigation2 action="user_logindata" activeOnViewIds="/views/secured/user/logindata.xhtml" >
-									<h:outputText value="#{msg['user_profile_login_header']}" />
-								</t:commandNavigation2>
-								<t:commandNavigation2 action="user_preferences" activeOnViewIds="/views/secured/user/preferences.xhtml">
-									<h:outputText value="#{msg['user_profile_preferences_header']}" />
-								</t:commandNavigation2>
-								<t:commandNavigation2 action="user_profile" activeOnViewIds="/views/secured/user/profile.xhtml">
-									<h:outputText value="#{msg['user_profile_profile_header']}" />
-								</t:commandNavigation2>
-								<t:commandNavigation2 action="#{views$secured$user$profile.showProfile}" activeOnViewIds="/views/secured/user/userprofile.xhtml"> 
-									<h:outputText value="#{msg['user_profile_command_preview']}" />
-								</t:commandNavigation2>
+							<t:commandNavigation2 value="#{msg['desktop_command_userprofile']}" action="user_profile" activeOnViewIds="/views/secured/user/profileData.xhtml">
 							</t:commandNavigation2>
 						</s:authorize>
 					</t:commandNavigation2>
