@@ -77,7 +77,7 @@ public abstract class AbstractDepartmentPage extends BasePage {
 		BreadCrumb departmentCrumb = new BreadCrumb();
 		departmentCrumb.setName(departmentInfo.getShortcut());
 		departmentCrumb.setLink(PageLinks.DEPARTMENT_PAGE);
-		departmentCrumb.addParameter("departmentInfo", departmentInfo.getId());
+		departmentCrumb.addParameter("department", departmentInfo.getId());
 		departmentCrumb.setHint(departmentInfo.getName());
 		crumbs.add(departmentCrumb);
 	}

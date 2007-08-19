@@ -26,13 +26,14 @@
 			<ui:include src="/views/commons/navigation/department.xhtml" />
 		</ui:define>
   		<ui:define name="content">
+ 			<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.UPDATE}" ifNot="error" /> 
 			<h:form id="reg1Form"> 
 				<o:block label="#{msg.department_data_subheading}" styleClass="form_box">
 					<ui:include src="/views/commons/department/departmentData.xhtml" />
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.save}" styleClass="button_save"/>
-					<h:commandButton value="${msg.cancel}" styleClass="button_cancel" immediate="true"/>
+					<h:commandButton value="${msg.cancel}" action="department" styleClass="button_cancel" immediate="true"/>
+					<h:commandButton value="${msg.save}" action = "#{views$secured$lecture$departmentoptions.saveDepartment}" styleClass="button_save"/>
 		  		</o:block>
 	  		</h:form>
   		</ui:define>
