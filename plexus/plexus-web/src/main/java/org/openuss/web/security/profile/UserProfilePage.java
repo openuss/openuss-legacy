@@ -63,6 +63,8 @@ public class UserProfilePage extends BasePage{
 	 * @throws IOException 
 	 */
 	public void saveProfile(ActionEvent event) throws DocumentApplicationException, IOException {
+		saveLogin(event);
+		savePreferences(event);
 		// fetch uploaded files and remove it from upload manager
 		UploadedDocument uploaded = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 		if (uploaded != null) {

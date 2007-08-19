@@ -17,7 +17,7 @@
 				<f:param value="#{user.contact.lastName}"/>
 			</h:outputFormat>
 			&#160;|&#160;
-			<h:commandLink action="user_logindata" value="#{msg.user_portlet_command_profile}"/>
+			<h:commandLink action="user_profile" value="#{msg.user_portlet_command_profile}"/>
 			&#160;|&#160;
 			<h:commandLink id="logout" action="#{authenticationController.logout}" value="#{msg.user_portlet_command_logout}"/>
 		</h:form>

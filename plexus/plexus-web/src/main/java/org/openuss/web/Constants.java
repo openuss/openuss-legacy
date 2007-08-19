@@ -142,4 +142,6 @@ public class Constants {
 	public static final String SYSTEM_STATISTIC = "systemStatistic";
 	
 	public static final String VISIT = "visit";
+	
+	public static final String STEP3 = "step3";
 }
