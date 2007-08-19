@@ -759,6 +759,11 @@
 	<navigation-rule>
 	
 	<from-view-id>/views/public/university/*</from-view-id>
+	
+		<navigation-case>
+			<from-outcome>university_registration_step1</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/universityStep1.xhtml</to-view-id>
+		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>university_data</from-outcome>

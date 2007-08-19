@@ -9,6 +9,7 @@ import org.openuss.lecture.DepartmentInfo;
 
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.DepartmentService;
+import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
@@ -29,6 +30,9 @@ public abstract class AbstractDepartmentPage extends BasePage {
 
 	@Property(value = "#{departmentService}")
 	protected DepartmentService departmentService;
+	
+	@Property(value = "#{universityService}")
+	protected UniversityService universityService;
 	
 	
 
@@ -93,4 +97,13 @@ public abstract class AbstractDepartmentPage extends BasePage {
 	public void setDepartmentService(DepartmentService departmentService) {
 		this.departmentService = departmentService;
 	}
+
+	public UniversityService getUniversityService() {
+		return universityService;
+	}
+
+	public void setUniversityService(UniversityService universityService) {
+		this.universityService = universityService;
+	}
+	
 }

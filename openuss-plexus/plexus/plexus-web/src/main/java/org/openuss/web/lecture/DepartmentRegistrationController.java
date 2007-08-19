@@ -1,10 +1,13 @@
 package org.openuss.web.lecture;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.faces.application.Application;
+import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.model.SelectItem;
 
@@ -13,12 +16,14 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
+import org.openuss.lecture.CourseMember;
+import org.openuss.lecture.CourseMemberType;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentType;
 import org.openuss.lecture.LectureException;
-import org.openuss.lecture.UniversityType;
-import org.openuss.web.Constants;
+import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityInfo;
+import org.openuss.web.Constants;
 
 
 /**
@@ -39,7 +44,12 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 	
 	private List<SelectItem> localeItems;
 	
+	private List<SelectItem> universityItems;
+	private List<UniversityInfo> allUniversities;
+	
 	private DepartmentType departmentType;
+	
+	
 	
 	public String start() {
 		
@@ -67,10 +77,27 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 		return localeItems;
 	}
 	
+	public List<SelectItem> getAllUniversities() {
+		
+		universityItems = new ArrayList<SelectItem>();
+		
+		allUniversities = universityService.findAllUniversities();
+		
+		Iterator<UniversityInfo> iter =  allUniversities.iterator();
+		UniversityInfo university;
+		
+		while (iter.hasNext()) {
+			university = iter.next();
+			SelectItem item = new SelectItem(university.getId(),university.getName());
+			universityItems.add(item);
+		}
+		
+		return universityItems;
+	}
+	
 	public String registrate() throws DesktopException, LectureException {
 		
 		//create department
-		departmentInfo.setUniversityId(universityInfo.getId());
 		departmentInfo.setOwnerName(user.getName());
 		departmentInfo.setEnabled(true);
 		departmentService.create(departmentInfo, user.getId());
