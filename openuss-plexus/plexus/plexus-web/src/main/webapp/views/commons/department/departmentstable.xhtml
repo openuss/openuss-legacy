@@ -39,22 +39,26 @@
 			<h:outputText value="#{bean.ownerName}"/>
 		</t:column>
 
-		<s:authorize ifAllGranted="ROLE_USER">
+		
 			<plexus:column header="#{msg.commands_header}">
-				<h:commandButton
-					styleClass="button_remove"
-					value="#{msg.department_command_remove}"
-					hint="#{msg.department_command_remove_hint}">
-				</h:commandButton>	
-				<plexus:command 
+				<s:authorize ifAllGranted="ROLE_USER">
+					<plexus:command 
 						bean="#{views$public$department$departments}"
 						action="shortcutDepartment"
 						label="#{msg.university_command_shortcut}"
 						title="#{msg.university_command_shortcut_hint}"
 						styleClass="button_link">
 					</plexus:command>	
+				</s:authorize>
+				<s:authorize ifAllGranted="ROLE_ADMIN">
+					<h:commandButton
+						styleClass="button_remove"
+						value="#{msg.department_command_remove}"
+						hint="#{msg.department_command_remove_hint}">
+					</h:commandButton>	
+				</s:authorize>
 			</plexus:column>
-		</s:authorize>
+		
 		
 	</plexus:dataTable>
 </ui:composition>

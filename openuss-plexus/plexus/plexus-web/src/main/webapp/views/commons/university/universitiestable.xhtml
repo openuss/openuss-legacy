@@ -46,14 +46,8 @@
 			<h:outputText value="#{bean.shortcut}"/>
 		</t:column>
 
-		<s:authorize ifAllGranted="ROLE_USER">
-			<plexus:column header="#{msg.commands_header}">
-				<h:commandButton 
-					action = "#{views$public$university$universities.selectUniversityAndConfirmRemove}"
-					styleClass="button_remove"
-					value="#{msg.university_command_remove}"
-					hint="#{msg.university_command_remove_hint}">
-				</h:commandButton>
+		<plexus:column header="#{msg.commands_header}">
+			<s:authorize ifAllGranted="ROLE_USER">
 				<plexus:command 
 					bean="#{views$public$university$universities}"
 					action="shortcutUniversity"
@@ -61,7 +55,16 @@
 					title="#{msg.university_command_shortcut_hint}"
 					styleClass="button_link">
 				</plexus:command>		
-			</plexus:column>
-		</s:authorize>
+			</s:authorize>
+			<s:authorize ifAllGranted="ROLE_ADMIN">
+				<h:commandButton 
+					action = "#{views$public$university$universities.selectUniversityAndConfirmRemove}"
+					styleClass="button_remove"
+					value="#{msg.university_command_remove}"
+					hint="#{msg.university_command_remove_hint}">
+				</h:commandButton>
+			</s:authorize>
+		</plexus:column>
+			
 	</plexus:dataTable>
 </ui:composition>

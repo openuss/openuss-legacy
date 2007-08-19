@@ -17,23 +17,31 @@
 							<t:commandNavigation2 action="university" activeOnViewIds="/views/public/university/university.xhtml">
 								<h:outputText value="#{msg['university_profile']}" ></h:outputText>
 							</t:commandNavigation2>
-							<t:commandNavigation2 action="university_departments" activeOnViewIds="/views/secured/lecture/universitydepartments.xhtml">
-								<h:outputText value="#{msg['university_command_departments']}" ></h:outputText>
-							</t:commandNavigation2>
-							<t:commandNavigation2 action="university_periods" activeOnViewIds="/views/secured/lecture/universityperiods.xhtml">
-								<h:outputText value="#{msg['university_command_periods']}" ></h:outputText>
-							</t:commandNavigation2>
-							<t:commandNavigation2 value="#{msg['university_command_authorisations']}" action="university_members">
-								<t:commandNavigation2 action="university_members" activeOnViewIds="/views/secured/lecture/auth/universitymembers.xhtml">
-									<h:outputText value="#{msg['university_command_members']}" ></h:outputText>
+							<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.GRANT}">
+								<t:commandNavigation2 action="university_departments" activeOnViewIds="/views/secured/lecture/universitydepartments.xhtml">
+									<h:outputText value="#{msg['university_command_departments']}" ></h:outputText>
 								</t:commandNavigation2>
-								<t:commandNavigation2 action="university_aspirants" activeOnViewIds="/views/secured/lecture/auth/universityaspirants.xhtml">
-									<h:outputText value="#{msg['university_command_aspirants']}" ></h:outputText>
+							</s:acl>
+							<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.GRANT}">
+								<t:commandNavigation2 action="university_periods" activeOnViewIds="/views/secured/lecture/universityperiods.xhtml">
+									<h:outputText value="#{msg['university_command_periods']}" ></h:outputText>
 								</t:commandNavigation2>
-							</t:commandNavigation2>
-							<t:commandNavigation2 action="university_data" activeOnViewIds="/views/secured/lecture/universityoptions.xhtml">
-								<h:outputText value="#{msg['university_command_settings']}" ></h:outputText>
-							</t:commandNavigation2>
+							</s:acl>
+							<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.GRANT}">
+								<t:commandNavigation2 value="#{msg['university_command_authorisations']}" action="university_members">
+									<t:commandNavigation2 action="university_members" activeOnViewIds="/views/secured/lecture/auth/universitymembers.xhtml">
+										<h:outputText value="#{msg['university_command_members']}" ></h:outputText>
+									</t:commandNavigation2>
+									<t:commandNavigation2 action="university_aspirants" activeOnViewIds="/views/secured/lecture/auth/universityaspirants.xhtml">
+										<h:outputText value="#{msg['university_command_aspirants']}" ></h:outputText>
+									</t:commandNavigation2>
+								</t:commandNavigation2>
+							</s:acl>
+							<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.GRANT}">
+								<t:commandNavigation2 action="university_data" activeOnViewIds="/views/secured/lecture/universityoptions.xhtml">
+									<h:outputText value="#{msg['university_command_settings']}" ></h:outputText>
+								</t:commandNavigation2>
+							</s:acl>
 					</t:commandNavigation2>
 			</t:panelNavigation2>	
 		</h:form>

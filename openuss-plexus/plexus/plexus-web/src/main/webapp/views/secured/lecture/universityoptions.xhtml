@@ -26,7 +26,7 @@
 			<ui:include src="/views/commons/navigation/university.xhtml" />
 		</ui:define>
   		<ui:define name="content">
-			<!-- <s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UPDATE}" ifNot="error"/> -->
+			<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UPDATE}" ifNot="error" /> 
 			<h:form id="reg1Form"> 
 				<o:block label="#{msg.university_data_subheading}" styleClass="form_box">
 					<ui:include src="/views/commons/university/universityData.xhtml" />
