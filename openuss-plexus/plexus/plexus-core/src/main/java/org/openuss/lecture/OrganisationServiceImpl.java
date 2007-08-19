@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.registration.RegistrationException;
+import org.openuss.security.Authority;
 import org.openuss.security.Group;
 import org.openuss.security.User;
 
@@ -137,19 +138,27 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 	 * @see org.openuss.lecture.OrganisationService#removeGroup(java.lang.Long)
 	 */
 	protected void handleRemoveGroup(java.lang.Long organisationId, java.lang.Long groupId) throws java.lang.Exception {
+		
 		Group group = this.getGroupDao().load(groupId);
 		Validate.notNull(group, "MembershipService.handleRemoveGroup - no Group found corresponding to the ID "
 				+ groupId);
-
-		// Not using the following code because of inverse cascade
-		// this.getSecurityService().removeGroup(group);
 		
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		Validate.notNull(organisation, "MembershipService.handleRemoveGroup - no Organisation found corresponding to the ID "
 				+ organisationId);
 		
-		boolean removed = organisation.getMembership().getGroups().remove(group);	
+		// Remove all Authorities from Group
+		List<Authority> authorities = group.getMembers();
+		for (Authority authority:authorities) {
+			authority.removeGroup(group);
+		}
+		
+		// Remove the Group from its Organisation
+		boolean removed = organisation.getMembership().getGroups().remove(group);
 		Validate.isTrue(removed, "MembershipService.handleRemoveGroup - Group "+groupId+" couldn't be removed");
+		
+		// Delete Group
+		this.getSecurityService().removeGroup(group);
 	}
 
 	/**
