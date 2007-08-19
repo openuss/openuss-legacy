@@ -197,7 +197,8 @@ public abstract class BaseBean {
 	/**
 	 * @return ResoureBundle
 	 */
-	public ResourceBundle getBundle() {
+	public ResourceBundle getBundle() {		
+		//FIXME return bundle for user specified locale instead of browser locale
 		return ResourceBundle.getBundle(getBundleName(), getRequest().getLocale());
 	}
 
