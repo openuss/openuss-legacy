@@ -101,29 +101,16 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		flush();
 		
 		//Create department
-		DepartmentInfo departmentInfo = new DepartmentInfo();
-		departmentInfo.setName("Wirtschaftswissenschaften - FB 4");
-		departmentInfo.setDescription("Testdescription");
-		departmentInfo.setOwnerName("Administrator");
-		departmentInfo.setEnabled(true);
-		departmentInfo.setShortcut("FB4");
-		departmentInfo.setUniversityId(university.getId());
-		departmentInfo.setDepartmentType(DepartmentType.OFFICIAL);
-		
-		Long departmentId = 
-			this.getDepartmentService().create(departmentInfo, testUtility.createUniqueUserInDB().getId());
-		assertEquals(2, university.getDepartments().size());
+		Department department = testUtility.createUniqueDepartmentInDB();
+		Long departmentId = department.getId();
 		flush();
-		
-		DepartmentDao departmentDao = (DepartmentDao)this.getApplicationContext().getBean("departmentDao");
-		Department department = departmentDao.load(departmentId);
-		assertNotNull(department);
 		
 		//Remove department
 		this.getDepartmentService().removeDepartment(department.getId());
 		flush();
 		
 		//Test	
+		DepartmentDao departmentDao = (DepartmentDao)this.getApplicationContext().getBean("departmentDao");
 		department = departmentDao.load(departmentId);
 		assertNull(department);
 		

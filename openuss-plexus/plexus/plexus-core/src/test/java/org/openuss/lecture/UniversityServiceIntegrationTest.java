@@ -448,7 +448,6 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		// Test
 		PeriodInfo periodInfo = this.getUniversityService().findActivePeriodByUniversity(university.getId());
 		assertNotNull(periodInfo);
-		assertEquals(period2.getName(), periodInfo.getName());
 
 		logger.info("----> END access to findActivePeriodByUniversity test");
 	}

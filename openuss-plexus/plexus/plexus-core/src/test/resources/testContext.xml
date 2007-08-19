@@ -74,6 +74,9 @@
 		<property name="securityService">
 			<ref bean="securityService" />
 		</property>
+		<property name="organisationService">
+			<ref bean="organisationService" />
+		</property>
 	</bean>
 
 	<bean id="lectureBuilder"
