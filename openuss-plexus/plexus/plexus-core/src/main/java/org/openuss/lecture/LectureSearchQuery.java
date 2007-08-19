@@ -14,6 +14,7 @@ import org.springmodules.lucene.search.object.SimpleLuceneSearchQuery;
 /**
  * Lecture Search
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 public class LectureSearchQuery extends SimpleLuceneSearchQuery implements LectureSearcher {
 
@@ -26,10 +27,14 @@ public class LectureSearchQuery extends SimpleLuceneSearchQuery implements Lectu
 
 	@Override
 	protected Query constructSearchQuery(String textToSearch) throws ParseException {
+		
 		QueryParser parser = new QueryParser("CONTENT", getTemplate().getAnalyzer());
+		// allows wildcards at the beginning of a search phrase
+		parser.setAllowLeadingWildcard(true);
+		
 		return parser.parse(textToSearch);
 	}
-
+	
 	@Override
 	protected Object extractResultHit(int id, Document document, float score) {
 		DomainResultBean domainResult = new DomainResultBean();
