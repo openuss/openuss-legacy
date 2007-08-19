@@ -71,16 +71,15 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 		
 		//create department
 		departmentInfo.setUniversityId(universityInfo.getId());
-		departmentInfo.setDepartmentType(DepartmentType.OFFICIAL);
 		departmentInfo.setOwnerName(user.getName());
 		departmentInfo.setEnabled(true);
 		departmentService.create(departmentInfo, user.getId());
 	
 		//TODO send notification email
 		//FIXME this should be part of the business layer
-		//desktopService.linkDepartment(desktop, department);
+		desktopService2.linkDepartment(desktopInfo.getId(), departmentInfo.getId());
 		
-		return Constants.DEPARTMENT;
+		return Constants.DEPARTMENT_PAGE;
 	}
 	
 }
