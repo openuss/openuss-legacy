@@ -40,7 +40,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		universityInfo.setOwnerName("Administrator");
 		universityInfo.setEnabled(true);
 		universityInfo.setDescription("This is a test University");
-		universityInfo.setUniversityType(UniversityType.MISC);
+		universityInfo.setUniversityType(UniversityType.UNIVERSITY);
 
 		// Create a User as Owner
 		User owner = testUtility.createUniqueUserInDB();
@@ -49,7 +49,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		testUtility.createUserSecureContext();
 		try {
 			universityService.createUniversity(universityInfo, owner.getId());
-			fail("AccessDeniedException should have been thrown");
+			fail("AccessDeniedException should have been thrown - only for ROLE_ADMIN");
 		} catch (AccessDeniedException ade) {
 			;
 		} finally {
@@ -213,7 +213,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> BEGIN access to removeUniversity test");
 
 		// Create a University
-		University university = testUtility.createEmptyUniversityInDB();
+		University university = testUtility.createUniqueUniversityInDB();
 		assertNotNull(university.getId());
 
 		// Save UniversityID
@@ -446,8 +446,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		periodDao.update(period2);
 
 		// Test
-		PeriodInfo periodInfo = this.getUniversityService().findActivePeriodByUniversity(university.getId());
-		assertNotNull(periodInfo);
+		List<PeriodInfo> periodInfos = this.getUniversityService().findActivePeriodsByUniversity(university.getId());
+		assertNotNull(periodInfos);
 
 		logger.info("----> END access to findActivePeriodByUniversity test");
 	}

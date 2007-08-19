@@ -20,7 +20,7 @@ public class UniversityServiceMock implements UniversityService {
 		return null;
 	}
 
-	public PeriodInfo findActivePeriodByUniversity(Long universityId) {
+	public List findActivePeriodsByUniversity(Long universityId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

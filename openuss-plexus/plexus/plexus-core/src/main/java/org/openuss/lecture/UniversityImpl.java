@@ -5,6 +5,9 @@
  */
 package org.openuss.lecture;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -80,22 +83,22 @@ public class UniversityImpl extends org.openuss.lecture.UniversityBase implement
 	}
 
 	/**
-	 * @see org.openuss.lecture.University#getActivePeriod()
+	 * @see org.openuss.lecture.University#getActivePeriods()
 	 */
-	public Period getActivePeriod() {
-		Period activePeriod = null;
+	public List getActivePeriods() {
+
+		List<Period> activePeriods = new ArrayList<Period>();
 		
 		if (this.getPeriods().isEmpty()) {
-			activePeriod = null;
+			activePeriods = null;
 		} else {
 			for(Period period:this.getPeriods()) {
 				if (period.isActive()) {
-					activePeriod = period;
-					break;
+					activePeriods.add(period);
 				}
 			}
 		}
-		return activePeriod;
+		return activePeriods;
 	}
 	
 	

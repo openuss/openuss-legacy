@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.security.Authority;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
@@ -32,11 +33,11 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	private static final Logger logger = Logger.getLogger(UniversityServiceImpl.class);
 
 	/**
-	 * @see org.openuss.lecture.UniversityService#create(org.openuss.lecture.UniversityInfo, java.lang.Long)
+	 * @see org.openuss.lecture.UniversityService#createUniversity(org.openuss.lecture.UniversityInfo, java.lang.Long)
 	 */
 	protected java.lang.Long handleCreateUniversity(org.openuss.lecture.UniversityInfo university, java.lang.Long userId) {
 
-		logger.debug("Starting method handleCreate");
+		logger.debug("Starting method handleCreateUniversity(UniversityInfo, Long)");
 
 		Validate.notNull(university, "UniversityService.handleCreate - the University cannot be null");
 		Validate.notNull(userId, "UniversityService.handleCreate - the User must have a valid ID");
@@ -52,21 +53,28 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 		// Create a default Period
 		Period period = Period.Factory.newInstance();
-		period.setName("Standard Period");
-		period.setDescription("Dies ist die Standard Period. Sie ist als Auffangbehälter für Veranstaltungen gedacht, die keiner anderen Periode zugeordnet werden können.");
-		period.setStartdate(new Date(0)); //1. January 1970, 00:00:00 GMT
+		period.setName("Standard Zeitraum");
+		period.setDefaultPeriod(true);
+		period
+				.setDescription("Dies ist der Standard-Zeitraum der "
+						+ university.getName()
+						+ ". Er ist als Auffangbehälter für Veranstaltungen gedacht, die keinem anderen Zeitraum zugeordnet werden können.");
+		period.setStartdate(new Date(0)); // 1. January 1970, 00:00:00 GMT
 		Calendar cal = new GregorianCalendar();
-		cal.set(2050, 11, 31);//31. December 2050, 00:00:00 GMT
+		cal.set(2050, 11, 31);// 31. December 2050, 00:00:00 GMT
 		period.setEnddate(new Date(cal.getTimeInMillis()));
 		universityEntity.add(period);
 
 		// Create a default Department
 		Department department = Department.Factory.newInstance();
-		department.setName("Standard Department");
+		department.setName("Standard Fachbereich");
+		department.setDefaultDepartment(true);
 		department.setDepartmentType(DepartmentType.NONOFFICIAL);
-		department.setShortcut("StdDep_"+university.getShortcut());
+		department.setShortcut("StdDep_" + university.getShortcut());
 		department
-				.setDescription("Dies ist das Standard Department. Es ist als Auffangbehälter für Institutionen gedacht, die noch keinem anderen Department zugeordnet werden können.");
+				.setDescription("Dies ist das (inoffizielle) Standard-Fachbereich der "
+						+ university.getName()
+						+ ". Es ist als Auffangbehälter für Institutionen gedacht, die noch keinem anderen Fachbereich zugeordnet werden können.");
 		department.setOwnerName(university.getOwnerName());
 		department.setEnabled(true);
 		department.setMembership(Membership.Factory.newInstance());
@@ -92,24 +100,37 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		// KAI: Do not delete this!!! Set id of university VO for indexing
 		university.setId(universityEntity.getId());
 
-		// Create default Groups for the University
-		GroupItem groupItem = new GroupItem();
-		groupItem.setName("UNIVERSITY_" + universityEntity.getId() + "_ADMINS");
-		groupItem.setLabel("autogroup_administrator_label");
-		groupItem.setGroupType(GroupType.ADMINISTRATOR);
-		Group admins = this.getOrganisationService().createGroup(universityEntity.getId(), groupItem);
+		// Create default Groups for the University and it's Department
+		GroupItem groupItemUni = new GroupItem();
+		groupItemUni.setName("UNIVERSITY_" + universityEntity.getId() + "_ADMINS");
+		groupItemUni.setLabel("autogroup_administrator_label");
+		groupItemUni.setGroupType(GroupType.ADMINISTRATOR);
+		Group adminsUni = this.getOrganisationService().createGroup(universityEntity.getId(), groupItemUni);
 
-		// Security
+		GroupItem groupItemDepart = new GroupItem();
+		groupItemDepart.setName("DEPARTMENT_" + department.getId() + "_ADMINS");
+		groupItemDepart.setLabel("autogroup_administrator_label");
+		groupItemDepart.setGroupType(GroupType.ADMINISTRATOR);
+		Group adminsDepart = this.getOrganisationService().createGroup(department.getId(), groupItemDepart);
+
+		// Set ObjectIdentity for Security
 		this.getSecurityService().createObjectIdentity(universityEntity, null);
 		this.getSecurityService().createObjectIdentity(department, universityEntity);
 		this.getSecurityService().createObjectIdentity(period, universityEntity);
-		this.getSecurityService().setPermissions(admins, universityEntity, LectureAclEntry.UNIVERSITY_ADMINISTRATION);
+
+		// Set ACL permissions
+		this.getSecurityService()
+				.setPermissions(adminsUni, universityEntity, LectureAclEntry.UNIVERSITY_ADMINISTRATION);
+		this.getSecurityService().setPermissions(adminsDepart, department, LectureAclEntry.DEPARTMENT_ADMINISTRATION);
 
 		// Add Owner to Members and Group of Administrators
 		this.getOrganisationService().addMember(universityEntity.getId(), userId);
-		this.getOrganisationService().addUserToGroup(userId, admins.getId());
+		this.getOrganisationService().addMember(department.getId(), userId);
+		this.getOrganisationService().addUserToGroup(userId, adminsUni.getId());
+		this.getOrganisationService().addUserToGroup(userId, adminsDepart.getId());
 
-		// TODO: Fire createdUniversity event to bookmark University to User who created it
+		// TODO: Fire createdUniversity and createdDepartment to bookmark University and Department to User who created
+		// it
 
 		return universityEntity.getId();
 	}
@@ -120,6 +141,11 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	protected java.lang.Long handleCreatePeriod(org.openuss.lecture.PeriodInfo period) throws java.lang.Exception {
 
 		Validate.notNull(period, "UniversityService.handleCreate - the period cannot be null");
+		if (period.getDefaultPeriod() == null) {
+			period.setDefaultPeriod(false);
+		}
+		Validate.isTrue(!period.getDefaultPeriod(),
+				"UniversityService.handleCreate - You cannot create a default Period!");
 		Period periodEntity = this.getPeriodDao().create(this.getPeriodDao().periodInfoToEntity(period));
 		periodEntity.getUniversity().getPeriods().add(periodEntity);
 
@@ -140,6 +166,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		// Update Entity
 		this.getUniversityDao().update(universityEntity);
 
+		// It is not intended to use this method to change the status of enabled!
 	}
 
 	/**
@@ -149,11 +176,17 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 		Validate.notNull(period, "UniversityService.handleUpdate - the Period cannot be null");
 
+		// It is not intended to use this method to change the status of defaultPeriod!
+		if (period.getDefaultPeriod() == null) {
+			period.setDefaultPeriod(false);
+		}
+
 		// Transform ValueObject into Entity
 		Period periodEntity = this.getPeriodDao().periodInfoToEntity(period);
 
 		// Update Entity
 		this.getPeriodDao().update(periodEntity);
+
 	}
 
 	/**
@@ -161,18 +194,77 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 */
 	protected void handleRemoveUniversity(java.lang.Long universityId) throws java.lang.Exception {
 
-		Validate.notNull(universityId, "UniversityService.handleRemoveUniversity - the UniversityID cannot be null");
+		/*
+		 * Validate.notNull(universityId, "UniversityService.handleRemoveUniversity - the UniversityID cannot be null"); //
+		 * TODO: Fire removedUniversity event to delete all bookmarks
+		 * 
+		 * University university = this.getUniversityDao().load(universityId);
+		 * 
+		 * Validate .isTrue(university.getDepartments().isEmpty(), "UniversityService.handleRemoveUniversity - the
+		 * University contains at least one Department. Delete before."); Validate
+		 * .isTrue(university.getPeriods().isEmpty(), "UniversityService.handleRemoveUniversity - the University
+		 * contains at least one Period. Delete before."); this.getUniversityDao().remove(university);
+		 * 
+		 * 
+		 */
+
+		Validate.notNull(universityId, "UniversityService.handleRemoveUniversity - universityId cannot be null.");
+
+		// Find University
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university,
+				"UniversityService.handleRemoveUniversity - cannot find a university with the corresponding ID "
+						+ universityId);
 
 		// TODO: Fire removedUniversity event to delete all bookmarks
 
-		University university = this.getUniversityDao().load(universityId);
+		// Get Departments
+		List<Department> departments = university.getDepartments();
+		for (Department department : departments) {
 
-		Validate
-				.isTrue(university.getDepartments().isEmpty(),
-						"UniversityService.handleRemoveUniversity - the University contains at least one Department. Delete before.");
-		Validate
-				.isTrue(university.getPeriods().isEmpty(),
-						"UniversityService.handleRemoveUniversity - the University contains at least one Period. Delete before.");
+			// TODO: Fire removedDepartment event to delete all bookmarks
+
+			List<Institute> institutes = department.getInstitutes();
+			for (Institute institute : institutes) {
+
+				// TODO: Fire removedInstitute event to delete all bookmarks
+
+				List<CourseType> courseTypes = institute.getCourseTypes();
+				for (CourseType courseType : courseTypes) {
+
+					// TODO: Fire removedCourseType event to delete all bookmarks
+
+					List<Course> courses = courseType.getCourses();
+					for (Course course : courses) {
+						// TODO: Fire removedCourse event to delete all bookmarks
+					}
+					// remove Courses
+					this.getCourseDao().remove(courseType.getCourses());
+				}
+				// remove CourseTypes
+				this.getCourseTypeDao().remove(courseTypes);
+				institute.setMembership(null);
+			}
+			// remove Institutes
+			this.getInstituteDao().remove(institutes);
+			department.setMembership(null);
+
+		}
+		// remove Departments
+		this.getDepartmentDao().remove(departments);
+
+		// remove Periods
+		this.getPeriodDao().remove(university.getPeriods());
+
+		// remove University (including its Groups)
+		List<Group> groups = university.getMembership().getGroups();
+		List<Group> groups2 = new ArrayList<Group>();
+		for (Group group:groups) {
+			groups2.add(group);
+		}
+		for (Group group:groups2) {
+			this.getOrganisationService().removeGroup(university.getId(), group.getId());
+		}
 		this.getUniversityDao().remove(university);
 
 	}
@@ -185,12 +277,13 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		Validate.notNull(periodId, "UniversityService.handleRemovePeriod - the PeriodID cannot be null");
 
 		Period period = this.getPeriodDao().load(periodId);
-		
-		if (period.getCourses().size()==0) {
+
+		if (period.getCourses().size() == 0) {
 			this.getPeriodDao().remove(periodId);
 			period.getUniversity().remove(period);
 		} else {
-			throw new IllegalArgumentException("The Period "+periodId+" contains at least one Courses. Remove Courses before!");
+			throw new IllegalArgumentException("The Period " + periodId
+					+ " contains at least one Courses. Remove Courses before!");
 		}
 	}
 
@@ -198,10 +291,10 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#removePeriodAndCourses(java.lang.Long)
 	 */
 	protected void handleRemovePeriodAndCourses(Long periodId) throws Exception {
-		
+
 		Validate.notNull(periodId, "UniversityService.handleRemovePeriod - the PeriodID cannot be null");
 
-		this.getPeriodDao().remove(periodId);		
+		this.getPeriodDao().remove(periodId);
 	}
 
 	/**
@@ -298,10 +391,9 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	}
 
 	/**
-	 * @see org.openuss.lecture.UniversityService#findActivePeriodByUniversity(java.lang.Long)
+	 * @see org.openuss.lecture.UniversityService#findActivePeriodsByUniversity(java.lang.Long)
 	 */
-	protected org.openuss.lecture.PeriodInfo handleFindActivePeriodByUniversity(java.lang.Long universityId)
-			throws java.lang.Exception {
+	protected List handleFindActivePeriodsByUniversity(java.lang.Long universityId) throws java.lang.Exception {
 
 		Validate.notNull(universityId,
 				"UniversityService.handleFindActivePeriodByUniversity - the universityID cannot be null");
@@ -311,11 +403,12 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 				"UniversityService.handleFindActivePeriodsByUniversity - no University found corresponding to the ID "
 						+ universityId);
 
-		Period activePeriod = university.getActivePeriod();
-		if (activePeriod == null) {
+		List activePeriods = university.getActivePeriods();
+		if (activePeriods == null) {
 			return null;
 		} else {
-			return this.getPeriodDao().toPeriodInfo(activePeriod);
+			this.getPeriodDao().toPeriodInfoCollection(activePeriods);
+			return activePeriods;
 		}
 	}
 
