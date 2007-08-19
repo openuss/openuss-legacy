@@ -12,7 +12,7 @@
 		 
 			<aop:after-returning
 				method="createUniversityIndex" 
-				pointcut="execution(* org..UniversityServiceBase.create(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)"
+				pointcut="execution(* org..UniversityServiceBase.createUniversity(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)"
 				arg-names="universityInfo, userId"/>
 			<aop:after-returning
 				method="updateUniversityIndex"
