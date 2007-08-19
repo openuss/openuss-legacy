@@ -283,6 +283,13 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		group.setGroupType(GroupType.ADMINISTRATOR);
 		university.getMembership().getGroups().add(group);
 		
+		//Add Members to the Group
+		User user1 = testUtility.createUniqueUserInDB();
+		User user2 = testUtility.createUniqueUserInDB();
+		flush();
+		organisationService.addUserToGroup(user1.getId(), group.getId());
+		organisationService.addUserToGroup(user2.getId(), group.getId());
+		
 		// Get List of Groups
 		List groups = university.getMembership().getGroups();
 		assertNotNull(groups);

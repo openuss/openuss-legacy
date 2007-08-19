@@ -52,37 +52,37 @@ import org.openuss.security.acl.LectureAclEntry;
 public class TestUtility {
 
 	private UserDao userDao;
-	
+
 	private GroupDao groupDao;
-	
+
 	private MembershipDao membershipDao;
 
 	private InstituteDao instituteDao;
-	
+
 	private UniversityDao universityDao;
-	
+
 	private DepartmentDao departmentDao;
-	
+
 	private CourseTypeDao courseTypeDao;
-	
+
 	private CourseDao courseDao;
-	
+
 	private ApplicationDao applicationDao;
-	
+
 	private PeriodDao periodDao;
-	
+
 	private SecurityService securityService;
-	
+
 	private OrganisationService organisationService;
 
 	private User defaultUser;
 
 	private Institute defaultInstitute;
-	
+
 	private static long uniqueId = System.currentTimeMillis();
 
 	/**
-	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.  
+	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
 	 */
 	public User createDefaultUserInDB() {
 		defaultUser.setUsername(unique("username"));
@@ -91,9 +91,9 @@ public class TestUtility {
 		userDao.create(defaultUser);
 		return defaultUser;
 	}
-	
+
 	/**
-	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.  
+	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
 	 */
 	public User createUserInDB() {
 		User user = createDefaultUser();
@@ -102,21 +102,21 @@ public class TestUtility {
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.1  
+	 * @deprecated As of OpenUSS 3.1
 	 */
 	public void removeUser() {
 		removeUser(defaultUser);
 	}
-	
+
 	/**
-	 * @deprecated As of OpenUSS 3.1  
+	 * @deprecated As of OpenUSS 3.1
 	 */
 	public void updateUser(User user) {
 		userDao.update(user);
 	}
-	
+
 	/**
-	 * @deprecated As of OpenUSS 3.1  
+	 * @deprecated As of OpenUSS 3.1
 	 */
 	public void removeUser(User user) {
 		user = userDao.load(user.getId());
@@ -124,7 +124,7 @@ public class TestUtility {
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueInstituteInDB()</code>.  
+	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueInstituteInDB()</code>.
 	 */
 	public Institute createPersistInstituteWithDefaultUser() {
 		defaultUser.setUsername(unique("username"));
@@ -135,14 +135,14 @@ public class TestUtility {
 		instituteDao.create(defaultInstitute);
 		return defaultInstitute;
 	}
-	
+
 	public User createUniqueUserInDB() {
 		// Create a unique User
 		UserPreferences userPreferences = UserPreferences.Factory.newInstance();
 		userPreferences.setLocale("de");
 		userPreferences.setTheme("plexus");
 		userPreferences.setTimezone(TimeZone.getDefault().getID());
-		
+
 		UserContact userContact = UserContact.Factory.newInstance();
 		userContact.setFirstName("Unique");
 		userContact.setLastName("User");
@@ -150,29 +150,29 @@ public class TestUtility {
 		userContact.setCity("Münster");
 		userContact.setCountry("Germany");
 		userContact.setPostcode("48149");
-		
+
 		User user = User.Factory.newInstance();
 		user.setUsername(unique("username"));
 		user.setPassword("masterkey");
-		user.setEmail(unique("openuss")+"@e-learning.uni-muenster.de");
+		user.setEmail(unique("openuss") + "@e-learning.uni-muenster.de");
 		user.setEnabled(true);
 		user.setAccountExpired(false);
 		user.setCredentialsExpired(false);
 		user.setAccountLocked(false);
-		
+
 		user.setPreferences(userPreferences);
 		user.setContact(userContact);
 		user.setGroups(new ArrayList<Group>());
-		
+
 		userDao.create(user);
-		
+
 		return user;
 	}
-	
+
 	public Membership createUniqueMembershipInDB() {
 		// Create a unique User
 		User user = this.createUniqueUserInDB();
-		
+
 		// Create a unique Membership
 		Membership membership = Membership.Factory.newInstance();
 		membership.getMembers().add(user);
@@ -182,16 +182,16 @@ public class TestUtility {
 		group.setGroupType(GroupType.ADMINISTRATOR);
 		group.addMember(user);
 		membership.getGroups().add(group);
-		
+
 		membershipDao.create(membership);
-		
+
 		return membership;
 	}
-	
-	public University createEmptyUniversityInDB() {		
-		//Create a User
+
+	public University createUniqueUniversityInDB() {
+		// Create a User
 		User user = this.createUniqueUserInDB();
-		
+
 		// Create a unique University
 		University university = University.Factory.newInstance();
 		university.setName(unique("University"));
@@ -211,61 +211,15 @@ public class TestUtility {
 		university.setTelephone("0251-telephone");
 		university.setTheme("plexus");
 		university.setWebsite("www.openuss.de");
-		
-		universityDao.create(university);
-		
-		// Create default Groups for the University
-		GroupItem groupItem = new GroupItem();
-		groupItem.setName("UNIVERSITY_" + university.getId() + "_ADMINS");
-		groupItem.setLabel("autogroup_administrator_label");
-		groupItem.setGroupType(GroupType.ADMINISTRATOR);
-		Group admins = this.getOrganisationService().createGroup(university.getId(), groupItem);
-		
-		// Security
-		this.getSecurityService().createObjectIdentity(university, null);
-		this.getSecurityService().setPermissions(admins, university, LectureAclEntry.UNIVERSITY_ADMINISTRATION);
-		
-		// Add Owner to Members and Group of Administrators
-		this.getOrganisationService().addMember(university.getId(), user.getId());
-		this.getOrganisationService().addUserToGroup(user.getId(), admins.getId());
-		
-		this.getSecurityService().createObjectIdentity(university, null);
-		
-		return university;
-	}
-	
-	public University createUniqueUniversityInDB() {		
-		//Create a User
-		User user = this.createUniqueUserInDB();
-		
-		// Create a unique University
-		University university = University.Factory.newInstance();
-		university.setName(unique("University"));
-		university.setShortcut(unique("Uni"));
-		university.setDescription("A unique University");
-		university.setOwnerName("Administrator");
-		university.setUniversityType(UniversityType.UNIVERSITY);
-		university.setMembership(Membership.Factory.newInstance());
-		university.setEnabled(true);
-		university.setAddress("Leo 18");
-		university.setCity("Münster");
-		university.setCountry("Germany");
-		university.setEmail("openuss@uni-muenster.de");
-		university.setLocale("de");
-		university.setPostcode("48149");
-		university.setTelefax("0251-telefax");
-		university.setTelephone("0251-telephone");
-		university.setTheme("plexus");
-		university.setWebsite("www.openuss.de");
-		
-		universityDao.create(university);
-		
+
 		// Add a default NONOFFICIAL Department
 		Department department = Department.Factory.newInstance();
 		department.setName("Standard Department");
+		department.setDefaultDepartment(true);
 		department.setDepartmentType(DepartmentType.NONOFFICIAL);
 		department.setShortcut(unique("StandDepart"));
-		department.setDescription("Dies ist das Standard Department. Es ist als Auffangbehälter für Institutionen gedacht, die noch keinem anderen Department zugeordnet werden können.");
+		department
+				.setDescription("Dies ist das Standard Department. Es ist als Auffangbehälter für Institutionen gedacht, die noch keinem anderen Department zugeordnet werden können.");
 		department.setOwnerName(university.getOwnerName());
 		department.setEnabled(true);
 		department.setMembership(Membership.Factory.newInstance());
@@ -278,63 +232,72 @@ public class TestUtility {
 		department.setTelefax(university.getTelefax());
 		department.setTelephone(university.getTelephone());
 		department.setTheme(university.getTheme());
-		department.setWebsite(university.getWebsite());		
+		department.setWebsite(university.getWebsite());
 		university.add(department);
-		
-		// Create default Groups for Department
+
+		// Create a default Period
+		Period period = Period.Factory.newInstance();
+		period.setName("Standard Period");
+		period.setDefaultPeriod(true);
+		period
+				.setDescription("Dies ist die Standard Period. Sie ist als Auffangbehälter für Veranstaltungen gedacht, die keiner anderen Periode zugeordnet werden können.");
+		period.setStartdate(new Date(0)); // 1. January 1970, 00:00:00 GMT
+		Calendar cal = new GregorianCalendar();
+		cal.set(2050, 11, 31);// 31. December 2050, 00:00:00 GMT
+		period.setEnddate(new Date(cal.getTimeInMillis()));
+		university.add(period);
+
+		periodDao.create(period);
+
+		// Create the University
+		this.getUniversityDao().create(university);
+		this.getDepartmentDao().create(department);
+		this.getPeriodDao().create(period);
+
+		// FIXME - Kai, Indexing should not base on VOs!
+		// KAI: Do not delete this!!! Set id of university VO for indexing
+		university.setId(university.getId());
+
+		// Create default Groups for the University and it's Department
+		GroupItem groupItemUni = new GroupItem();
+		groupItemUni.setName("UNIVERSITY_" + university.getId() + "_ADMINS");
+		groupItemUni.setLabel("autogroup_administrator_label");
+		groupItemUni.setGroupType(GroupType.ADMINISTRATOR);
+		Group adminsUni = this.getOrganisationService().createGroup(university.getId(), groupItemUni);
+
 		GroupItem groupItemDepart = new GroupItem();
 		groupItemDepart.setName("DEPARTMENT_" + department.getId() + "_ADMINS");
 		groupItemDepart.setLabel("autogroup_administrator_label");
 		groupItemDepart.setGroupType(GroupType.ADMINISTRATOR);
 		Group adminsDepart = this.getOrganisationService().createGroup(department.getId(), groupItemDepart);
-		
-		// Create a default Period
-		Period period = Period.Factory.newInstance();
-		period.setName("Standard Period");
-		period.setDescription("Dies ist die Standard Period. Sie ist als Auffangbehälter für Veranstaltungen gedacht, die keiner anderen Periode zugeordnet werden können.");
-		period.setStartdate(new Date(0)); //1. January 1970, 00:00:00 GMT
-		Calendar cal = new GregorianCalendar();
-		cal.set(2050, 11, 31);//31. December 2050, 00:00:00 GMT
-		period.setEnddate(new Date(cal.getTimeInMillis()));
-		university.add(period);
-		
-		departmentDao.create(department);
-		periodDao.create(period);
-		universityDao.update(university);
-		
-		// Create default Groups for the University
-		GroupItem groupItem = new GroupItem();
-		groupItem.setName("UNIVERSITY_" + university.getId() + "_ADMINS");
-		groupItem.setLabel("autogroup_administrator_label");
-		groupItem.setGroupType(GroupType.ADMINISTRATOR);
-		Group admins = this.getOrganisationService().createGroup(university.getId(), groupItem);
-		
-		// Security
+
+		// Set ObjectIdentity for Security
 		this.getSecurityService().createObjectIdentity(university, null);
 		this.getSecurityService().createObjectIdentity(department, university);
 		this.getSecurityService().createObjectIdentity(period, university);
-		this.getSecurityService().setPermissions(admins, university, LectureAclEntry.UNIVERSITY_ADMINISTRATION);
+
+		// Set ACL permissions
+		this.getSecurityService().setPermissions(adminsUni, university, LectureAclEntry.UNIVERSITY_ADMINISTRATION);
 		this.getSecurityService().setPermissions(adminsDepart, department, LectureAclEntry.DEPARTMENT_ADMINISTRATION);
-		this.getSecurityService().setPermissions(admins, period, LectureAclEntry.UNIVERSITY_ADMINISTRATION);
-		
+
 		// Add Owner to Members and Group of Administrators
 		this.getOrganisationService().addMember(university.getId(), user.getId());
-		this.getOrganisationService().addUserToGroup(user.getId(), admins.getId());
 		this.getOrganisationService().addMember(department.getId(), user.getId());
+		this.getOrganisationService().addUserToGroup(user.getId(), adminsUni.getId());
 		this.getOrganisationService().addUserToGroup(user.getId(), adminsDepart.getId());
-		
+
 		return university;
 	}
-	
+
 	public Department createUniqueDepartmentInDB() {
-		//Create a User
+		// Create a User
 		User user = this.createUniqueUserInDB();
-		
+
 		// Create a unique University
 		University university = this.createUniqueUniversityInDB();
-		
+
 		// Create a unique Department
-		Department department =  Department.Factory.newInstance();
+		Department department = Department.Factory.newInstance();
 		department.setName(unique("Department"));
 		department.setDepartmentType(DepartmentType.NONOFFICIAL);
 		department.setShortcut(unique("Dep"));
@@ -352,11 +315,11 @@ public class TestUtility {
 		department.setTelephone("0251-telephone");
 		department.setTheme("plexus");
 		department.setWebsite("www.openuss.de");
-		
+
 		university.add(department);
-		
+
 		departmentDao.create(department);
-		
+
 		// Create default Groups for Department
 		GroupItem groupItem = new GroupItem();
 		groupItem.setName("DEPARTMENT_" + department.getId() + "_ADMINS");
@@ -371,21 +334,21 @@ public class TestUtility {
 		// Add Owner to Members and Group of Administrators
 		this.getOrganisationService().addMember(department.getId(), user.getId());
 		this.getOrganisationService().addUserToGroup(user.getId(), admins.getId());
-		
+
 		this.getSecurityService().createObjectIdentity(department, university);
-		
-		return department;		
+
+		return department;
 	}
-	
+
 	public Institute createUniqueInstituteInDB() {
-		//Create a User
+		// Create a User
 		User user = this.createUniqueUserInDB();
-		
+
 		// Create a unique Department
 		Department department = this.createUniqueDepartmentInDB();
-		
+
 		// Create a unique Institute
-		Institute institute =  Institute.Factory.newInstance();
+		Institute institute = Institute.Factory.newInstance();
 		institute.setName(unique("Institute"));
 		institute.setShortcut(unique("Inst"));
 		institute.setDescription("A unique Insitute");
@@ -402,12 +365,12 @@ public class TestUtility {
 		institute.setTelephone("0251-telephone");
 		institute.setTheme("plexus");
 		institute.setWebsite("www.openuss.de");
-		
+
 		department.add(institute);
 		institute.setDepartment(department);
-		
+
 		instituteDao.create(institute);
-		
+
 		// Create default Groups for Institute
 		GroupItem admins = new GroupItem();
 		admins.setName("INSTITUTE_" + institute.getId() + "_ADMINS");
@@ -429,45 +392,44 @@ public class TestUtility {
 
 		// Security
 		this.getSecurityService().createObjectIdentity(institute, null);
-		this.getSecurityService()
-				.setPermissions(adminsGroup, institute, LectureAclEntry.INSTITUTE_ADMINISTRATION);
+		this.getSecurityService().setPermissions(adminsGroup, institute, LectureAclEntry.INSTITUTE_ADMINISTRATION);
 		this.getSecurityService().setPermissions(assistantsGroup, institute, LectureAclEntry.INSTITUTE_ASSIST);
 		this.getSecurityService().setPermissions(tutorsGroup, institute, LectureAclEntry.INSTITUTE_TUTOR);
 
 		// Add Owner to Members and the group of Administrators
-		this.getOrganisationService().addMember(institute.getId(),  user.getId());
-		this.getOrganisationService().addUserToGroup( user.getId(), adminsGroup.getId());
-		
-		return institute;		
+		this.getOrganisationService().addMember(institute.getId(), user.getId());
+		this.getOrganisationService().addUserToGroup(user.getId(), adminsGroup.getId());
+
+		return institute;
 	}
-	
+
 	public CourseType createUniqueCourseTypeInDB() {
 		// Create a unique Institute
 		Institute institute = this.createUniqueInstituteInDB();
-		
+
 		// Create a unique CourseType
-		CourseType courseType =  CourseType.Factory.newInstance();
+		CourseType courseType = CourseType.Factory.newInstance();
 		courseType.setName(unique("CourseType"));
 		courseType.setShortcut(unique("CT"));
 		courseType.setDescription("A unique CourseType");
 		courseType.setInstitute(institute);
 		institute.add(courseType);
-		
+
 		courseTypeDao.create(courseType);
-		
+
 		this.getSecurityService().createObjectIdentity(courseType, institute);
-		
-		return courseType;		
+
+		return courseType;
 	}
-	
+
 	public Course createUniqueCourseInDB() {
 
 		// Create a unique CourseType and Period
 		CourseType courseType = this.createUniqueCourseTypeInDB();
 		Period period = this.createUniquePeriodInDB();
-		
+
 		// Create a unique CourseType
-		Course course =  Course.Factory.newInstance();
+		Course course = Course.Factory.newInstance();
 		course.setShortcut(unique("cou"));
 		course.setDescription("A unique Course");
 		course.setAccessType(AccessType.APPLICATION);
@@ -480,42 +442,43 @@ public class TestUtility {
 		course.setBraincontest(false);
 		period.add(course);
 		courseType.add(course);
-		
+
 		courseDao.create(course);
 		this.getSecurityService().createObjectIdentity(course, courseType);
-		
-		return course;		
+
+		return course;
 	}
-	
-	public Period createUniquePeriodInDB () {
+
+	public Period createUniquePeriodInDB() {
 		// Create a unique University
-		University university = this.createUniqueUniversityInDB();		
-		
-		//Create Startdate
+		University university = this.createUniqueUniversityInDB();
+
+		// Create Startdate
 		Calendar cal = new GregorianCalendar();
 		cal.set(2007, 3, 1);
 		Date startdate = new Date(cal.getTimeInMillis());
-		
-		//Create Enddate
+
+		// Create Enddate
 		cal = new GregorianCalendar();
 		cal.set(2008, 8, 31);
 		Date enddate = new Date(cal.getTimeInMillis());
-		
-		//Create a unique Period
+
+		// Create a unique Period
 		Period period = Period.Factory.newInstance();
-		period.setName(unique("Period"));		
+		period.setName(unique("Period"));
 		period.setDescription("A unique Period");
 		period.setCourses(new ArrayList<Course>());
 		period.setStartdate(startdate);
 		period.setEnddate(enddate);
+		period.setDefaultPeriod(false);
 		university.add(period);
-		
+
 		periodDao.create(period);
-		
+
 		return period;
 	}
 
-	public Application createUniqueUnconfirmedApplicationInDB () {
+	public Application createUniqueUnconfirmedApplicationInDB() {
 		// Create a complete Application
 		Application application = Application.Factory.newInstance();
 		application.setApplicationDate(new Date());
@@ -530,18 +493,17 @@ public class TestUtility {
 		application.setApplicationDate(new Date());
 		application.setConfirmationDate(new Date());
 		applicationDao.create(application);
-		
+
 		return application;
 	}
-	
 
 	public void removePersistInstituteAndDefaultUser() {
 		instituteDao.remove(defaultInstitute);
-		//userDao.remove(defaultInstitute.getOwner());
+		// userDao.remove(defaultInstitute.getOwner());
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueInstituteInDB()</code>.  
+	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueInstituteInDB()</code>.
 	 */
 	public Institute createdDefaultInstituteWithStoredUser() {
 		defaultUser.setUsername(unique("username"));
@@ -553,20 +515,20 @@ public class TestUtility {
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUserSecureContext()</code>.  
+	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUserSecureContext()</code>.
 	 */
 	public User createSecureContext() {
 		return createSecureContext(Roles.USER_ID);
 	}
-	
+
 	public User createAnonymousSecureContext() {
 		return createSecureContext(Roles.ANONYMOUS_ID);
 	}
-	
+
 	public User createUserSecureContext() {
 		return createSecureContext(Roles.USER_ID);
 	}
-	
+
 	public User createAdminSecureContext() {
 		return createSecureContext(Roles.ADMINISTRATOR_ID);
 	}
@@ -588,19 +550,19 @@ public class TestUtility {
 		groupDao.update(group);
 
 		final UsernamePasswordAuthenticationToken authentication;
-		authentication = new UsernamePasswordAuthenticationToken(user, "[Protected]", ((UserImpl) user).getAuthorities());
+		authentication = new UsernamePasswordAuthenticationToken(user, "[Protected]", ((UserImpl) user)
+				.getAuthorities());
 
-		
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		return user;
-	} 
-	
+	}
+
 	public void destroySecureContext() {
 		SecurityContextHolder.getContext().setAuthentication(null);
 	}
-	
+
 	/**
-	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.  
+	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
 	 */
 	public User createDefaultUser() {
 		User user = User.Factory.newInstance();
@@ -619,7 +581,7 @@ public class TestUtility {
 			return ++uniqueId;
 		}
 	}
-	
+
 	public String unique(String str) {
 		return str + "-" + unique();
 	}
@@ -631,7 +593,7 @@ public class TestUtility {
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
-	
+
 	public MembershipDao getMembershipDao() {
 		return membershipDao;
 	}
@@ -679,7 +641,7 @@ public class TestUtility {
 	public void setDepartmentDao(DepartmentDao departmentDao) {
 		this.departmentDao = departmentDao;
 	}
-	
+
 	public GroupDao getGroupDao() {
 		return groupDao;
 	}
@@ -707,7 +669,7 @@ public class TestUtility {
 	public CourseDao getCourseDao() {
 		return courseDao;
 	}
-	
+
 	public ApplicationDao getApplicationDao() {
 		return applicationDao;
 	}
@@ -735,5 +697,5 @@ public class TestUtility {
 	public void setOrganisationService(OrganisationService organisationService) {
 		this.organisationService = organisationService;
 	}
-	
+
 }
