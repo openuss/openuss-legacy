@@ -16,6 +16,7 @@ import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
+import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserPreferences;
@@ -90,6 +91,7 @@ public class UserProfilePage extends BasePage{
 			removeSessionBean(Constants.UPLOADED_FILE);
 			uploadFileManager.removeDocument(uploaded);
 		}
+		user.getProfile().setPortrait(new HtmlInputFilter().filter(user.getProfile().getPortrait()) );
 		securityService.saveUser(user);
 		securityService.saveUserContact(user.getContact());
 		addMessage(i18n("user_message_saved_profile_successfully"));
