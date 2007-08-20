@@ -18,7 +18,7 @@ public class HtmlInputFilterConverter implements Converter {
 	}
 
 	public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
-		return value.toString();
+		return (value == null) ? "" : value.toString();
 	}
 
 }
