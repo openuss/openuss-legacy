@@ -10,21 +10,24 @@ import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
 
+/**
+ * Backing bean for the institute registration. Is responsible starting the wizard, binding the values and registrating
+ * the institute.
+ * 
+ * @author Kai Stettner
+ *
+ */
+
 @Bean(name=Constants.INSTITUTE_REGISTRATION_CONTROLLER, scope=Scope.REQUEST)
 @View
 public class InstituteRegistrationController extends AbstractLecturePage{
 
 	private static final Logger logger = Logger.getLogger(InstituteRegistrationController.class);
 	
-	//private InstituteInfo instituteInfo;
-	
-	//private InstituteDao instituteDao;
-	
 
 	public String start() {
 		logger.debug("start registration process2");
-		//institute = Institute.Factory.newInstance();
-		//instituteInfo = instituteDao.toInstituteInfo(institute);
+
 		instituteInfo = new InstituteInfo();
 		setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
 		return Constants.INSTITUTE_REGISTRATION_STEP1_PAGE;

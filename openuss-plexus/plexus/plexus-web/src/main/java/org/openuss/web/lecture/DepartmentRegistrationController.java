@@ -49,8 +49,7 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 	
 	private DepartmentType departmentType;
 	
-	
-	
+
 	public String start() {
 		
 		logger.debug("start registration process");
@@ -98,12 +97,14 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 	public String registrate() throws DesktopException, LectureException {
 		
 		//create department
-		departmentInfo.setOwnerName(user.getName());
+		
+		//by default set department enabled
 		departmentInfo.setEnabled(true);
+		// by default set to false
+		departmentInfo.setDefaultDepartment(false);
 		departmentService.create(departmentInfo, user.getId());
 	
-		//TODO send notification email
-		//FIXME this should be part of the business layer
+		// bookmark department to myuni page
 		desktopService2.linkDepartment(desktopInfo.getId(), departmentInfo.getId());
 		
 		return Constants.DEPARTMENT_PAGE;
