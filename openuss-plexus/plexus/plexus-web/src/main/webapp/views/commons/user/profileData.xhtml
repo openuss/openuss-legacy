@@ -126,7 +126,7 @@
 						<br />
 					  	<h:outputText value="#{msg.user_profile_portrait}" styleClass="header_font_normal"/>
 					  	<div class="content_iframe">
-							<fck:editor value="#{user.profile.portrait}" id="portraitEditor" toolbarSet="Portrait" width="100%"  height="200px"/>
+							<fck:editor value="#{user.profile.portrait}" id="portraitEditor" toolbarSet="Portrait" width="100%"  height="200px">
 								<f:converter converterId="xssFilter"/>
 							</fck:editor>
 						</div>
