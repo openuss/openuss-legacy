@@ -38,7 +38,7 @@
 	</h:selectOneListbox>
 	
 	<h:panelGroup>
-		  	<h:outputLabel value="#{msg.universityinfo_description_image}" for="image" styleClass="field_label" />
+		  	<h:outputLabel value="#{msg.universityinfo_logo}" for="image" styleClass="field_label" />
 		  	<t:inputFileUpload id="image" storage="file" accept="image/*" immediate="true" styleClass="uploadField" >
   				<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
   			</t:inputFileUpload>
@@ -62,10 +62,10 @@
 				
 		<c:if test="#{empty universityInfo.imageId}">
 			<h:graphicImage 
-				styleClass="userphoto" 
+				styleClass="logo_preview" 
 				value="/images/icons/no_pic.gif" 
-				alt="#{msg.user_profile_no_image}" 
-				title="#{msg.user_profile_no_image}"/>
+				alt="#{msg.organisation_no_image}" 
+				title="#{msg.organisation_no_image}"/>
 		</c:if>
 	</h:panelGroup>
 

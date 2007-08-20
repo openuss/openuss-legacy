@@ -27,7 +27,7 @@
 		</ui:define>
   		<ui:define name="content">
  			<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.UPDATE}" ifNot="error" /> 
-			<h:form id="reg1Form"> 
+			<h:form id="reg1Form" enctype="multipart/form-data"> 
 				<o:block label="#{msg.department_data_subheading}" styleClass="form_box">
 					<ui:include src="/views/commons/department/departmentData.xhtml" />
 				</o:block>
