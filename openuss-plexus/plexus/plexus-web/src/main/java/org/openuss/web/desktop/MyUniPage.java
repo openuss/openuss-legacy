@@ -51,8 +51,11 @@ import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
+import org.openuss.lecture.Period;
 import org.openuss.lecture.LectureService;
 import org.openuss.security.User;
+import org.openuss.desktop.DesktopDao;
+
 
 /**
  * Display of the Startpage, after the user logged in.
@@ -65,16 +68,77 @@ import org.openuss.security.User;
 public class MyUniPage extends BasePage {
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
 
-	private String	currentUniversity;
-	private Long	longCurrentUniversity;
-//	private DepartmentsFlexlistController	departmentsController;
+	private Long	paramUniversity;
 	private UIFlexList departmentsList;
 	private UIFlexList institutesList;
 	private UIFlexList coursesList;
 	private UITabs tabs;
+	private Desktop desktop;
 	
 	private MyUniDataSet myUniDataSet;
 
+	
+	@Property(value="#{universityService}")
+	UniversityService universityService;
+	
+	@Property(value="#{departmentDao}")
+	DepartmentDao departmentDao;
+	
+	@Property(value="#{courseDao}")
+	CourseDao courseDao;
+	
+	@Property(value="#{instituteDao}")
+	InstituteDao instituteDao;
+	
+	@Property(value="#{universityDao}")
+	UniversityDao universityDao;
+	
+	
+	
+	public void setUniversityService(UniversityService universityService)
+	{
+		this.universityService = universityService;
+	}
+	
+	public void setDepartmentDao(DepartmentDao departmentDao)
+	{
+		this.departmentDao = departmentDao;
+	}
+	
+	public void setInstituteDao(InstituteDao instituteDao)
+	{
+		this.instituteDao = instituteDao;
+	}
+	
+	public void setCourseDao(CourseDao courseDao)
+	{
+		this.courseDao = courseDao;
+	}
+	
+	public void setUniversityDao(UniversityDao universityDao)
+	{
+		this.universityDao = universityDao;
+	}
+	
+	public UniversityService getUniversityService() {
+		return universityService;
+	}
+
+	public DepartmentDao getDepartmentDao() {
+		return departmentDao;
+	}
+
+	public CourseDao getCourseDao() {
+		return courseDao;
+	}
+
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
+	}
+
+	public UniversityDao getUniversityDao() {
+		return universityDao;
+	}
 	
 	
 	@Prerender
@@ -107,9 +171,10 @@ public class MyUniPage extends BasePage {
 					desktopInfo = desktopService2.findDesktop(desktopInfo.getId());
 				}
 				setSessionBean(Constants.DESKTOP_INFO, desktopInfo);
-				
-				
-				
+			
+				assert desktopDao != null;
+				desktop = desktopDao.desktopInfoToEntity(desktopInfo);
+				assert desktop != null;
 				
 			} catch (DesktopException e) {
 				logger.error(e);
@@ -121,29 +186,32 @@ public class MyUniPage extends BasePage {
 	private void loadParams()
 	{
 		Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-		String stringUniversity = (String)params.get("university");
-		setCurrentUniversity(stringUniversity);
 		
-		
+		try {
+			String stringParamUniversity = (String)params.get("university");
+			paramUniversity = Long.valueOf(stringParamUniversity);
+		} catch (Exception e) {
+			paramUniversity = null;
+		}
 	}
 	
 	private void loadValuesForDepartmentList()
 	{
 		prepareData();
-		Long universityId = getLongCurrentUniversity();
+		Long universityId = chooseUniversity();
 		
 		
-		if(myUniDataSet != null && departmentsList != null)
+		if(universityId != null && myUniDataSet != null && departmentsList != null)
 			departmentsList.getAttributes().put("visibleItems", myUniDataSet.getDepartments(universityId));
 	}
 	
 	private void loadValuesForInstituteList()
 	{
 		prepareData();
-		Long universityId = getLongCurrentUniversity();
+		Long universityId = chooseUniversity();
 		
 		
-		if(myUniDataSet != null && institutesList != null)
+		if(universityId != null && myUniDataSet != null && institutesList != null)
 		{
 			institutesList.getAttributes().put("visibleItems", myUniDataSet.getInstitutes(universityId));
 			institutesList.getAttributes().put("hiddenItems", myUniDataSet.getAdditionalInstitutes(universityId));
@@ -153,10 +221,10 @@ public class MyUniPage extends BasePage {
 	private void loadValuesForCourseList()
 	{
 		prepareData();
-		Long universityId = getLongCurrentUniversity();
+		Long universityId = chooseUniversity();
 		
 		
-		if(myUniDataSet != null && coursesList != null)
+		if(universityId != null && myUniDataSet != null && coursesList != null)
 		{
 			coursesList.getAttributes().put("visibleItems", myUniDataSet.getCourses(universityId));
 			coursesList.getAttributes().put("hiddenItems", myUniDataSet.getAdditionalCourses(universityId));
@@ -166,10 +234,10 @@ public class MyUniPage extends BasePage {
 	private void loadValuesForTabs()
 	{
 		prepareData();
-		Long universityId = getLongCurrentUniversity();
+		Long universityId = chooseUniversity();
 		
 		
-		if(myUniDataSet != null && tabs != null)
+		if(universityId != null && myUniDataSet != null && tabs != null)
 		{
 			ListItemDAO newItem;
 			ListItemDAO currentItem = null;
@@ -196,63 +264,24 @@ public class MyUniPage extends BasePage {
 	}
 	
 
-	public void setCurrentUniversity(String id)
-	{
-		boolean useDefault = false;
-		
-		if(id == null)
-			useDefault = true;
-		else
-		{
-			try {
-				if(myUniDataSet != null && myUniDataSet.getUniversityDataSets().containsKey(Long.valueOf(id)))
-				{
-					currentUniversity = id;
-					longCurrentUniversity = Long.valueOf(id);
-				}	
-				else
-					useDefault = true;
-				
-			} catch (NumberFormatException e) {
-				useDefault = true;
-			}
-		}
-		
-		if(useDefault == true)
-		{
-			longCurrentUniversity = getDefaultUniversity();
-			currentUniversity = longCurrentUniversity.toString();
-		}
-	}
-	
-	
-	public String getCurrentUniversity()
-	{
-		if(currentUniversity == null)
-			setCurrentUniversity(null);
-		
-		return currentUniversity;
-	}
-	
-	public Long getLongCurrentUniversity()
-	{
-		if(longCurrentUniversity == null)
-			setCurrentUniversity(null);
-		
-		return longCurrentUniversity;
-	}
-	
-	public Long getDefaultUniversity()
+	private Long chooseUniversity()
 	{
 		if(myUniDataSet != null)
 		{
-			List<UniversityInfo> uniList = myUniDataSet.getUniversities();
-			
-			if(uniList.size() > 0)
-				return uniList.get(0).getId();
+			if(paramUniversity != null)
+			{
+				if(myUniDataSet.containsUniversity(paramUniversity))
+					return paramUniversity;
+				else
+					return myUniDataSet.chooseDefaultUniversity();
+			}
+			else
+			{
+				return myUniDataSet.chooseDefaultUniversity();
+			}
 		}
-		
-		return null;
+		else 
+			return null;
 	}
 	
 
@@ -316,58 +345,40 @@ public class MyUniPage extends BasePage {
 	
 	public void prepareData()
 	{
-		if(myUniDataSet == null)
+/*		if(myUniDataSet == null)
 		{
 			myUniDataSet = new MyUniDataSet();
 			myUniDataSet.loadTestData();
-			setCurrentUniversity(null);
 		}
+*/		
 		
-/*		Iterator iterator;
-		
-		
-		List<Course> courses = desktop.getCourses();
-		List<Institute> instituteBookmarks = desktop.getInstitutes();
-		List<Department> departmentBookmarks = desktop.getDepartments();
-		
-		
-		iterator = courses.iterator();
-		while (iterator.hasNext()) {
-			Course course = (Course)iterator.next();
-			myUniDataSet.processCourse(course);
+		if(myUniDataSet == null)
+		{
+			myUniDataSet = new MyUniDataSet();
+			myUniDataSet.setCourseDao(courseDao);
+			myUniDataSet.setDepartmentDao(departmentDao);
+			myUniDataSet.setInstituteDao(instituteDao);
+			myUniDataSet.setUniversityDao(universityDao);
+			myUniDataSet.setUniversityService(universityService);
+			myUniDataSet.setDesktop(desktop);
+			
+			try {
+				myUniDataSet.loadData();
+			} catch (Exception e) {
+				myUniDataSet = null;
+			}
 		}
-		
-		iterator = instituteBookmarks.iterator();
-		while (iterator.hasNext()) {
-			Institute institute = (Institute)iterator.next();
-			myUniDataSet.processInstituteBookmark(institute);
-		}
-		
-		iterator = departmentBookmarks.iterator();
-		while (iterator.hasNext()) {
-			Department department = (Department)iterator.next();
-			myUniDataSet.processDepartmentBookmark(department);
-		}
-*/	
 	}
 
 	
-	public class MyUniDataSet {
-		
-		@Property(value="#{universityService}")
-		UniversityService universityService;
-		
-		@Property(value="#{departmentDao}")
-		DepartmentDao departmentDao;
-		
-		@Property(value="#{courseDao}")
-		CourseDao courseDao;
-		
-		@Property(value="#{instituteDao}")
-		InstituteDao instituteDao;
-		
-		@Property(value="#{universityDao}")
-		UniversityDao universityDao;
+	public class MyUniDataSet
+	{
+		private UniversityService universityService;
+		private Desktop desktop;
+		private DepartmentDao departmentDao;
+		private CourseDao courseDao;
+		private InstituteDao instituteDao;
+		private UniversityDao universityDao;
 		
 		private Map<Long, UniversityDataSet> uniDataSets;
 		
@@ -399,68 +410,248 @@ public class MyUniPage extends BasePage {
 		{
 			this.universityDao = universityDao;
 		}
-		
-		public Map<Long, UniversityDataSet> getUniversityDataSets()
+			
+		public boolean containsUniversity(Long id)
 		{
-			return uniDataSets;
+			if(uniDataSets != null)
+				return uniDataSets.containsKey(id);
+			else
+				return false;
+		}
+		
+		
+		public UniversityService getUniversityService() {
+			return universityService;
+		}
+
+		public DepartmentDao getDepartmentDao() {
+			return departmentDao;
+		}
+
+		public CourseDao getCourseDao() {
+			return courseDao;
+		}
+
+		public InstituteDao getInstituteDao() {
+			return instituteDao;
+		}
+
+		public UniversityDao getUniversityDao() {
+			return universityDao;
+		}
+		
+		public Desktop getDesktop() {
+			return desktop;
+		}
+
+		public void setDesktop(Desktop desktop) {
+			this.desktop = desktop;
 		}
 		
 		
 		
-		
-		public Long processDepartment(Department department)
+		private Long processDepartment(Department department)
 		{
-			University uni = department.getUniversity();
-			Long uniID = uni.getId();
+			if(department == null)
+				return null;
 			
+			University uni = department.getUniversity();
+			if(uni == null)
+				return null;
+
+			
+			Long uniID = uni.getId();
+			if(uniID == null)
+				return null;
+			
+			// Create a new data set for the uni if it does not exist yet
+			assert uniDataSets != null;
 			if(!uniDataSets.containsKey(uniID))
 			{
-				uniDataSets.put(uniID, new UniversityDataSet(universityDao.toUniversityInfo(uni)));
+				assert universityDao != null;
+				UniversityInfo uniInfo = universityDao.toUniversityInfo(uni);
+				if(uniInfo == null)
+					return null;
+				uniDataSets.put(uniID, new UniversityDataSet(uniInfo));
 			}
 			
-			uniDataSets.get(uniID).addDepartment(departmentDao.toDepartmentInfo(department));
+			// Add the department to the university data set
+			assert departmentDao != null;
+			DepartmentInfo departmentInfo = departmentDao.toDepartmentInfo(department);
+
+			if(departmentInfo == null)
+				return uniID;
+			
+			uniDataSets.get(uniID).addDepartment(departmentInfo);
 			
 			return uniID;
 		}
 		
-		public Long processDepartmentBookmark(Department department)
+		
+		private Long processDepartmentBookmark(Department department)
 		{
-			University uni = department.getUniversity();
-			Long uniID = uni.getId();
+			if(department == null)
+				return null;
 			
+			University uni = department.getUniversity();
+			if(uni == null)
+				return null;
+			
+			Long uniID = uni.getId();
+			if(uniID == null)
+				return null;
+			
+			// Create a new data set for the uni if it does not exist yet
+			assert uniDataSets != null;
 			if(!uniDataSets.containsKey(uniID))
 			{
-				uniDataSets.put(uniID, new UniversityDataSet(universityDao.toUniversityInfo(uni)));
+				assert universityDao != null;
+				UniversityInfo uniInfo = universityDao.toUniversityInfo(uni);
+				if(uniInfo == null)
+					return null;
+				uniDataSets.put(uniID, new UniversityDataSet(uniInfo));
 			}
 			
-			uniDataSets.get(uniID).addDepartmentBookmark(departmentDao.toDepartmentInfo(department));
+			// Add the department to the university data set as a bookmark
+			assert departmentDao != null;
+			DepartmentInfo departmentInfo = departmentDao.toDepartmentInfo(department);
 			
+			if(departmentInfo == null)
+				return uniID;
+			
+			uniDataSets.get(uniID).addDepartmentBookmark(departmentInfo);
+			
+			// return the uni id
 			return uniID;
 		}
 		
-		public Long processInstitute(Institute institute, boolean isCurrent)
+		private Long processInstitute(Institute institute, boolean isCurrent)
 		{	
-			Long uniID = processDepartment(institute.getDepartment());
-			uniDataSets.get(uniID).addInstitute(instituteDao.toInstituteInfo(institute), isCurrent);
+			if(institute == null)
+				return null;
 			
+			// process the department of the institute
+			Department department = institute.getDepartment();
+			if(department == null)
+				return null;
+
+			Long uniID = processDepartment(department);
+			if(uniID == null)
+				return null;
+			
+			// Add the instititute to the corresponding university data set
+			assert uniDataSets != null;
+			UniversityDataSet currentDataSet = uniDataSets.get(uniID);
+			assert currentDataSet != null;
+			
+			assert instituteDao != null;
+			InstituteInfo instituteInfo = instituteDao.toInstituteInfo(institute);
+			if(instituteInfo == null)
+				return uniID;
+			
+			currentDataSet.addInstitute(instituteInfo, isCurrent);
+			
+			// return the uni id
 			return uniID;
+			
 		}
 		
-		public Long processInstituteBookmark(Institute institute)
+		private Long processInstituteBookmark(Institute institute)
 		{	
-			Long uniID = processDepartment(institute.getDepartment());
-			uniDataSets.get(uniID).addInstituteBookmark(instituteDao.toInstituteInfo(institute));
+			if(institute == null)
+				return null;
+			
+			Department department = institute.getDepartment();
+			if(department == null)
+				return null;
+			
+			Long uniID = processDepartment(department);
+			if(uniID == null)
+				return null;
+			
+			InstituteInfo instituteInfo = instituteDao.toInstituteInfo(institute);
+			if(instituteInfo == null)
+				return uniID;
+			
+			UniversityDataSet currentDataSet = uniDataSets.get(uniID);
+			assert currentDataSet != null;
+			
+			currentDataSet.addInstituteBookmark(instituteInfo);
 			
 			return uniID;
+		
 		}
 		
-		public Long processCourse(Course course)
+		private Long processCourse(Course course)
 		{
-			boolean isCurrent = course.getPeriod().isActive();
+			if(course == null)
+				return null;
+			
+			Period coursePeriod = course.getPeriod();
+			boolean isCurrent;
+			
+			if(coursePeriod == null)
+				isCurrent = false;
+			else
+				isCurrent = coursePeriod.isActive();
+			
 			Long uniID = processInstitute(course.getCourseType().getInstitute(), isCurrent);
-			uniDataSets.get(uniID).addCourse(courseDao.toCourseInfo(course), isCurrent);
+			if(uniID == null)
+				return null;
+			
+			UniversityDataSet currentDataSet = uniDataSets.get(uniID);
+			assert currentDataSet != null;
+			currentDataSet.addCourse(courseDao.toCourseInfo(course), isCurrent);
+			
 			return uniID;
+	
 		}
+		
+		public void loadData() throws Exception
+		{
+			if(desktop == null)
+				throw new Exception("Desktop not set");
+			
+			if(universityService == null)
+				throw new Exception("UniversityService not set");
+			
+			if(departmentDao == null)
+				throw new Exception("DepartmentDao not set");
+			
+			if(courseDao == null)
+				throw new Exception("CourseDao not set");
+			
+			if(instituteDao == null)
+				throw new Exception("InstituteDao not set");
+			
+			if(universityDao == null)
+				throw new Exception("UniversityDao not set");
+			
+			
+			List<Course> courses = desktop.getCourses();
+			List<Institute> instituteBookmarks = desktop.getInstitutes();
+			List<Department> departmentBookmarks = desktop.getDepartments();
+			
+			
+			Iterator<Course> courseIterator = courses.iterator();
+			while (courseIterator.hasNext()) {
+				Course course = (Course)courseIterator.next();
+				myUniDataSet.processCourse(course);
+			}
+			
+			Iterator<Institute> instituteIterator = instituteBookmarks.iterator();
+			while (instituteIterator.hasNext()) {
+				Institute institute = (Institute)instituteIterator.next();
+				myUniDataSet.processInstituteBookmark(institute);
+			}
+			
+			Iterator<Department> departmentIterator = departmentBookmarks.iterator();
+			while (departmentIterator.hasNext()) {
+				Department department = (Department)departmentIterator.next();
+				myUniDataSet.processDepartmentBookmark(department);
+			}
+		}
+		
 		
 		public void loadTestData()
 		{
@@ -608,20 +799,55 @@ public class MyUniPage extends BasePage {
 			
 		}
 		
+		public Long chooseDefaultUniversity()
+		{
+			List<UniversityInfo> unis = getUniversities();
+				
+			if(unis != null && unis.size() > 0)
+			{
+				return unis.get(0).getId();
+			}
+			else
+				return null;
+		}
+		
 		public List<ListItemDAO> getDepartments(Long universityId)
 		{
-			Boolean isBookmark;
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
-			Collection<DepartmentInfo> departments = uniDataSets.get(universityId).departments.values();
-			Map<Long, Boolean> departmentBookmarks = uniDataSets.get(universityId).departmentBookmarks;
+			
+			if(universityId == null)
+				return listItems;
+			
+			if(uniDataSets == null)
+				return listItems;
+				
+			UniversityDataSet currentDataSet = uniDataSets.get(universityId);
+			
+			if(currentDataSet == null)
+				return listItems;
+			
+			Collection<DepartmentInfo> departments = currentDataSet.departments.values();
+			Map<Long, Boolean> departmentBookmarks = currentDataSet.departmentBookmarks;
+			
+			if(departments == null)
+				return listItems;
+			
 			Iterator<DepartmentInfo> i = departments.iterator();
+			DepartmentInfo currentDepartment;
+			ListItemDAO newListItem;
+			Boolean isBookmark;
+			Long departmentId;
 			
 			while(i.hasNext())
 			{
-				DepartmentInfo currentDepartment = i.next();
-				ListItemDAO newListItem = new ListItemDAO();
+				currentDepartment = i.next();
+				newListItem = new ListItemDAO();
 				newListItem.setTitle(currentDepartment.getName());
-				isBookmark = departmentBookmarks.get(currentDepartment.getId());
+				departmentId = currentDepartment.getId();
+				if(departmentBookmarks != null && departmentId != null)
+					isBookmark = departmentBookmarks.get(departmentId);
+				else
+					isBookmark = false;
 				newListItem.setIsBookmark(isBookmark != null && isBookmark.booleanValue() == true);
 				listItems.add(newListItem);
 			}
@@ -631,24 +857,44 @@ public class MyUniPage extends BasePage {
 		
 		public List<ListItemDAO> getInstitutes(Long universityId)
 		{
-			Boolean isBookmark;
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
 			
-			if(universityId != null && uniDataSets.containsKey(universityId))
+			if(universityId == null)
+				return listItems;
+			
+			if(uniDataSets == null)
+				return listItems;
+			
+			UniversityDataSet currentDataSet = uniDataSets.get(universityId);
+			if(currentDataSet == null)
+				return listItems;
+			
+		
+			Collection<InstituteInfo> institutes = currentDataSet.currentInstitutes.values();
+			if(institutes == null)
+				return listItems;
+			
+			Map<Long, Boolean> instituteBookmarks = currentDataSet.instituteBookmarks;
+			
+			Iterator<InstituteInfo> i = institutes.iterator();
+			InstituteInfo currentInstitute;
+			Boolean isBookmark;
+			ListItemDAO newListItem;
+			Long instituteId;
+			
+			while(i.hasNext())
 			{
-				Collection<InstituteInfo> institutes = uniDataSets.get(universityId).currentInstitutes.values();
-				Map<Long, Boolean> instituteBookmarks = uniDataSets.get(universityId).instituteBookmarks;
-				Iterator<InstituteInfo> i = institutes.iterator();
+				currentInstitute = i.next();
+				newListItem = new ListItemDAO();
+				newListItem.setTitle(currentInstitute.getName());
+				instituteId = currentInstitute.getId();
 				
-				while(i.hasNext())
-				{
-					InstituteInfo currentInstitute = i.next();
-					ListItemDAO newListItem = new ListItemDAO();
-					newListItem.setTitle(currentInstitute.getName());
-					isBookmark = instituteBookmarks.get(currentInstitute.getId());
-					newListItem.setIsBookmark(isBookmark != null && isBookmark.booleanValue() == true);
-					listItems.add(newListItem);
-				}
+				if(instituteBookmarks != null && instituteId != null)
+					isBookmark = instituteBookmarks.get(instituteId);
+				else
+					isBookmark = false;
+				newListItem.setIsBookmark(isBookmark != null && isBookmark.booleanValue() == true);
+				listItems.add(newListItem);
 			}
 			
 			return listItems;
@@ -657,19 +903,31 @@ public class MyUniPage extends BasePage {
 		public List<ListItemDAO> getAdditionalInstitutes(Long universityId)
 		{
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
+		
+			if(universityId == null)
+				return listItems;
 			
-			if(universityId != null && uniDataSets.containsKey(universityId))
+			if(uniDataSets == null)
+				return listItems;
+			
+			UniversityDataSet currentDataSet = uniDataSets.get(universityId);
+			if(currentDataSet == null)
+				return listItems;
+			
+			Collection<InstituteInfo> institutes = currentDataSet.pastInstitutes.values();
+			if(institutes == null)
+				return listItems;
+			
+			Iterator<InstituteInfo> i = institutes.iterator();
+			InstituteInfo currentInstitute;
+			ListItemDAO newListItem;
+			
+			while(i.hasNext())
 			{
-				Collection<InstituteInfo> institutes = uniDataSets.get(universityId).pastInstitutes.values();
-				Iterator<InstituteInfo> i = institutes.iterator();
-				
-				while(i.hasNext())
-				{
-					InstituteInfo currentInstitute = i.next();
-					ListItemDAO newListItem = new ListItemDAO();
-					newListItem.setTitle(currentInstitute.getName());
-					listItems.add(newListItem);
-				}
+				currentInstitute = i.next();
+				newListItem = new ListItemDAO();
+				newListItem.setTitle(currentInstitute.getName());
+				listItems.add(newListItem);
 			}
 			
 			return listItems;
@@ -679,20 +937,33 @@ public class MyUniPage extends BasePage {
 		{
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
 			
-			if(universityId != null && uniDataSets.containsKey(universityId))
+			if(universityId == null)
+				return listItems;
+			
+			if(uniDataSets == null)
+				return listItems;
+			
+			UniversityDataSet currentDataSet = uniDataSets.get(universityId);
+			if(currentDataSet == null)
+				return listItems;
+			
+			Collection<CourseInfo> courses = currentDataSet.currentCourses.values();
+			if(courses == null)
+				return listItems;
+			
+			Iterator<CourseInfo> i = courses.iterator();
+			CourseInfo currentCourse;
+			ListItemDAO newListItem;
+			
+			while(i.hasNext())
 			{
-				Collection<CourseInfo> institutes = uniDataSets.get(universityId).currentCourses.values();
-				Iterator<CourseInfo> i = institutes.iterator();
+				currentCourse = i.next();
+				newListItem = new ListItemDAO();
+				newListItem.setTitle(currentCourse.getName());
 				
-				while(i.hasNext())
-				{
-					CourseInfo currentCourse = i.next();
-					ListItemDAO newListItem = new ListItemDAO();
-					newListItem.setTitle(currentCourse.getName());
-					// Set bookmark flag as courses are always bookmarked
-					newListItem.setIsBookmark(true);
-					listItems.add(newListItem);
-				}
+				// Set bookmark flag as courses are always bookmarked
+				newListItem.setIsBookmark(true);
+				listItems.add(newListItem);
 			}
 			
 			return listItems;
@@ -702,20 +973,34 @@ public class MyUniPage extends BasePage {
 		{
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
 			
-			if(universityId != null && uniDataSets.containsKey(universityId))
+			if(universityId == null)
+				return listItems;
+			
+			if(uniDataSets == null)
+				return listItems;
+			
+			UniversityDataSet currentDataSet = uniDataSets.get(universityId);
+			if(currentDataSet == null)
+				return listItems;
+			
+	
+			Collection<CourseInfo> courses = currentDataSet.pastCourses.values();
+			if(courses == null)
+				return listItems;
+			
+			Iterator<CourseInfo> i = courses.iterator();
+			CourseInfo currentCourse;
+			ListItemDAO newListItem;
+			
+			while(i.hasNext())
 			{
-				Collection<CourseInfo> courses = uniDataSets.get(universityId).pastCourses.values();
-				Iterator<CourseInfo> i = courses.iterator();
+				currentCourse = i.next();
+				newListItem = new ListItemDAO();
+				newListItem.setTitle(currentCourse.getName());
 				
-				while(i.hasNext())
-				{
-					CourseInfo currentCourse = i.next();
-					ListItemDAO newListItem = new ListItemDAO();
-					newListItem.setTitle(currentCourse.getName());
-					// Set bookmark flag as courses are always bookmarked
-					newListItem.setIsBookmark(true);
-					listItems.add(newListItem);
-				}
+				// Set bookmark flag as courses are always bookmarked
+				newListItem.setIsBookmark(true);
+				listItems.add(newListItem);
 			}
 			
 			return listItems;
@@ -725,13 +1010,23 @@ public class MyUniPage extends BasePage {
 		{
 			List<UniversityInfo> universities = new ArrayList<UniversityInfo>();
 			
+			if(uniDataSets == null)
+				return universities;
+			
 			Collection<UniversityDataSet> universityDataSetList = uniDataSets.values();
+			
+			if(universityDataSetList == null)
+				return universities;
+			
 			Iterator<UniversityDataSet> i = universityDataSetList.iterator();
+			UniversityDataSet currentUniDataSet;
+			UniversityInfo currentUniInfo;
 			
 			while(i.hasNext())
 			{
-				UniversityDataSet currentUniDataSet = i.next();
-				universities.add(currentUniDataSet.getUniversity());
+				currentUniDataSet = i.next();
+				currentUniInfo = currentUniDataSet.getUniversity();
+				universities.add(currentUniInfo);
 			}
 			
 			return universities;
@@ -827,8 +1122,6 @@ public class MyUniPage extends BasePage {
 				}
 			}
 		}
-		
-		
 	}
 
 }

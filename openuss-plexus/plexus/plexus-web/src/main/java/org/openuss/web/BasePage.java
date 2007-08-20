@@ -10,6 +10,7 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService;
 import org.openuss.desktop.DesktopService2;
+import org.openuss.desktop.DesktopDao;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.security.User;
@@ -28,6 +29,9 @@ public abstract class BasePage extends BaseBean {
 	
 	@Property(value = "#{desktopService2}")
 	protected DesktopService2 desktopService2;
+	
+	@Property(value ="#{desktopDao}")
+	protected DesktopDao desktopDao;
 	
 	@Property(value = "#{sessionScope.user}")
 	protected User user;
@@ -90,6 +94,14 @@ public abstract class BasePage extends BaseBean {
 
 	public void setCrumbs(List<BreadCrumb> crumbs) {
 		this.crumbs = crumbs;
+	}
+
+	public DesktopDao getDesktopDao() {
+		return desktopDao;
+	}
+
+	public void setDesktopDao(DesktopDao desktopDao) {
+		this.desktopDao = desktopDao;
 	}
 
 }
