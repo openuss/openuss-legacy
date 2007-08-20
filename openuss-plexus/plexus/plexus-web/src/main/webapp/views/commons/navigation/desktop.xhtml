@@ -18,8 +18,8 @@
 							<t:commandNavigation2 value="#{msg['desktop_command_myuni']}" activeOnViewIds="/views/secured/myuni/myuni.xhtml" action="desktop"/>
 						</s:authorize>
 						<t:commandNavigation2 value="#{msg['desktop_system_admin']}" action="universities" activeOnViewIds="/views/public/university/universities.xhtml"/>
-						<t:commandNavigation2 value="#{msg['desktop_department_admin']}" action="manage_institute" activeOnViewIds="/views/secured/lecture/departmentinstitutes.xhtml"/>
-						<t:commandNavigation2 value="#{msg['desktop_search_institute']}" action="search_institutes" activeOnViewIds="/views/public/institute/institutes.xhtml"/>
+						<!--<t:commandNavigation2 value="#{msg['desktop_department_admin']}" action="manage_institute" activeOnViewIds="/views/secured/lecture/departmentinstitutes.xhtml"/>
+						<t:commandNavigation2 value="#{msg['desktop_search_institute']}" action="search_institutes" activeOnViewIds="/views/public/institute/institutes.xhtml"/>-->
 						<s:authorize ifAllGranted="ROLE_USER">
 							<t:commandNavigation2 value="#{msg['desktop_command_userprofile']}" action="user_logindata" >
 								<t:commandNavigation2 action="user_logindata" activeOnViewIds="/views/secured/user/logindata.xhtml" >
