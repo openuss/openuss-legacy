@@ -19,7 +19,15 @@
 	<page view-id="/views/secured/lecture/news*">
 		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_NEWS}"/> 
 	</page>
-
+	
+	<page view-id="/views/secured/lecture/universityoptions*">
+		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.GRANT}"/> 
+	</page>
+	
+	<page view-id="/views/secured/lecture/departmentoptions*">
+		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.GRANT}"/> 
+	</page>
+	
 	<page view-id="/views/secured/lecture/instituteoptions*">
 		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.GRANT}"/> 
 	</page>
