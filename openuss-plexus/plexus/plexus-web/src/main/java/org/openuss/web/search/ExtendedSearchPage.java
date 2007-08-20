@@ -73,6 +73,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 * @return outcome of action (used for navigation)
 	 */
 	public String extendedSearch() {
+		logger.debug("Starting method extendedSearch");
 		if (StringUtils.isNotBlank(extendedSearchResults.getTextToSearch())) {
 			logger.debug("Extended Search for "+extendedSearchResults.getTextToSearch());
 			try {
