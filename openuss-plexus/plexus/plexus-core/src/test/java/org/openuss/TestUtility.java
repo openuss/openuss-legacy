@@ -304,6 +304,7 @@ public class TestUtility {
 		department.setDescription("A unique Department");
 		department.setOwnerName("Administrator");
 		department.setEnabled(true);
+		department.setDefaultDepartment(false);
 		department.setMembership(Membership.Factory.newInstance());
 		department.setAddress("Leo 18");
 		department.setCity("Münster");
@@ -328,14 +329,13 @@ public class TestUtility {
 		Group admins = this.getOrganisationService().createGroup(department.getId(), groupItem);
 
 		// Security
-		this.getSecurityService().createObjectIdentity(department, null);
+		this.getSecurityService().createObjectIdentity(department, university);
 		this.getSecurityService().setPermissions(admins, department, LectureAclEntry.DEPARTMENT_ADMINISTRATION);
 
 		// Add Owner to Members and Group of Administrators
 		this.getOrganisationService().addMember(department.getId(), user.getId());
 		this.getOrganisationService().addUserToGroup(user.getId(), admins.getId());
 
-		this.getSecurityService().createObjectIdentity(department, university);
 
 		return department;
 	}

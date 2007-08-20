@@ -7,7 +7,8 @@ package org.openuss.lecture;
 
 /**
  * @see org.openuss.lecture.Department
- * @author Ron Haus, Florian Dondorf
+ * @author Ron Haus
+ * @author Florian Dondorf
  */
 public class DepartmentDaoImpl extends org.openuss.lecture.DepartmentDaoBase {
 	/**

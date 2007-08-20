@@ -265,4 +265,8 @@ public class UniversityServiceMock implements UniversityService {
 		// TODO Auto-generated method stub
 	}
 
+	public boolean isNoneExistingUniversityShortcut(UniversityInfo self, String shortcut) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

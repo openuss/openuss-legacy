@@ -32,6 +32,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		departmentInfo.setOwnerName("Administrator");
 		departmentInfo.setEnabled(true);
 		departmentInfo.setUniversityId(university.getId());
+		departmentInfo.setDefaultDepartment(false);
 		departmentInfo.setDepartmentType(DepartmentType.OFFICIAL);
 		
 		//Create a User as Owner
@@ -61,6 +62,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		departmentInfo.setEnabled(true);
 		departmentInfo.setShortcut("FB4");
 		departmentInfo.setUniversityId(university.getId());
+		departmentInfo.setDefaultDepartment(false);
 		departmentInfo.setDepartmentType(DepartmentType.OFFICIAL);
 		
 		//Create a User as Owner

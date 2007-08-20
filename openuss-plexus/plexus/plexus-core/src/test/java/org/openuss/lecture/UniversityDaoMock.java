@@ -105,5 +105,25 @@ public class UniversityDaoMock extends AbstractMockDao<University> implements Un
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public University findByShortcut(String shortcut) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public University findByShortcut(int transform, String shortcut) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public University findByShortcut(int transform, String queryString, String shortcut) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public University findByShortcut(String queryString, String shortcut) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

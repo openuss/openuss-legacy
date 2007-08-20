@@ -495,6 +495,43 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		// remove university
 		this.getUniversityDao().remove(university);
 	}
+	
+	@Override
+	public boolean handleIsNoneExistingUniversityShortcut(UniversityInfo self, String shortcut) throws Exception {
+		University found = getUniversityDao().findByShortcut(shortcut);
+		UniversityInfo foundInfo = null;
+		if (found != null) {
+			foundInfo = this.getUniversityDao().toUniversityInfo(found);
+		}
+		return isEqualOrNull(self, foundInfo);
+	}
+
+	/*------------------- private methods -------------------- */
+
+	/**
+	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self
+	 * entry.
+	 * <ul>
+	 * <li>self == null AND found == null => <b>true</b></li>
+	 * <li>self == null AND found <> null => <b>false</b></li>
+	 * <li>self <> null AND found == null => <b>true</b></li>
+	 * <li>self <> null AND found <> null AND self == found => <b>true</b></li>
+	 * <li>self <> null AND found <> null AND self <> found => <b>false</b></li>
+	 * </ul>
+	 * 
+	 * @param self
+	 *            current record
+	 * @param found
+	 *            in database
+	 * @return true or false
+	 */
+	private boolean isEqualOrNull(Object self, Object found) {
+		if (self == null || found == null) {
+			return found == null;
+		} else {
+			return self.equals(found);
+		}
+	}
 
 	/*------------------- private methods -------------------- */
 

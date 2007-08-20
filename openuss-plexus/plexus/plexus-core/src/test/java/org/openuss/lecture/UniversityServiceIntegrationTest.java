@@ -677,5 +677,36 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		testUtility.destroySecureContext();
 		logger.info("----> END access to removeCompleteUniversityTree test");
 	}
+	
+	public void testIsNoneExistingUniversityShortcut () {
+		logger.debug("----> BEGIN access to isNoneExistingUniversityShortcut test <---- ");
+		
+		//Create Secure Context
+		User user = testUtility.createSecureContext();
+		
+		// Create Universities
+		University university1 = testUtility.createUniqueUniversityInDB();
+		University university2 = testUtility.createUniqueUniversityInDB();
+		flush();
+		
+		// Test
+		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
+		Boolean result = this.getUniversityService().isNoneExistingUniversityShortcut(
+				universityDao.toUniversityInfo(university1), university1.getShortcut());
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getUniversityService().isNoneExistingUniversityShortcut(
+				universityDao.toUniversityInfo(university1), testUtility.unique("uni"));
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getUniversityService().isNoneExistingUniversityShortcut(
+				universityDao.toUniversityInfo(university1), university2.getShortcut());
+		assertNotNull(result);
+		assertFalse(result);
+		
+		logger.debug("----> END access to isNoneExistingUniversityShortcut test <---- ");
+	}
 
 }
