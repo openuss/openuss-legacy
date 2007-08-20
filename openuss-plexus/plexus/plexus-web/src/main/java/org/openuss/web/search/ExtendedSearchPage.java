@@ -18,18 +18,14 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.CourseTypeService;
-import org.openuss.lecture.CourseTypeServiceMock;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentService;
-import org.openuss.lecture.DepartmentServiceMock;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
-import org.openuss.lecture.InstituteServiceMock;
 import org.openuss.lecture.LectureSearcher;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
-import org.openuss.lecture.UniversityServiceMock;
 import org.openuss.search.DomainResult;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -46,21 +42,25 @@ public class ExtendedSearchPage extends BasePage {
 	
 private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	
-	@Property(value="#{lectureSearcher}")
-	private LectureSearcher lectureSearcher;
-	
+	@Property(value="#{universityService}")
+	private UniversityService universityService;
+
 	@Property(value="#{departmentService}")
 	private DepartmentService departmentService;
+	
+	@Property(value="#{instituteService}")
+	private InstituteService instituteService;
+	
+	@Property(value="#{courseTypeService}")
+	private CourseTypeService courseTypeService;
+	
+	@Property(value="#{lectureSearcher}")
+	private LectureSearcher lectureSearcher;
 	
 	@Property(value="#{extended_search_results}")
 	private ExtendedSearchResults extendedSearchResults;
 	
-	private ExtendedSearchResultDataProvider resultProvider = new ExtendedSearchResultDataProvider();
-	
-	private UniversityService universityService = new UniversityServiceMock();
-	//private DepartmentService departmentService = new DepartmentServiceMock();
-	private InstituteService instituteService = new InstituteServiceMock();
-	private CourseTypeService courseTypeService = new CourseTypeServiceMock(); 
+	private ExtendedSearchResultDataProvider resultProvider = new ExtendedSearchResultDataProvider();	 
 	
 	@Prerender
 	public void prerender(){
@@ -146,6 +146,10 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	public void organisationChanged(ValueChangeEvent vce){
 		logger.debug(">>> organisationChanged");
 		
+		if(vce.getNewValue() == null){
+			return;
+		}
+		
 		List<SelectItem> departmentsToDisplay = new ArrayList<SelectItem>();
 		DepartmentInfo departmentInfo;
 		
@@ -176,6 +180,10 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	public void suborganisationChanged(ValueChangeEvent vce){
 		logger.debug(">>> suborganisationChanged");
 		
+		if(vce.getNewValue() == null){
+			return;
+		}
+		
 		List<SelectItem> institutesToDisplay = new ArrayList<SelectItem>();
 		InstituteInfo instituteInfo;
 		
@@ -204,6 +212,10 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 */
 	public void institutionChanged(ValueChangeEvent vce){
 		logger.debug(">>> institutionChanged");
+		
+		if(vce.getNewValue() == null){
+			return;
+		}
 		
 		List<SelectItem> courseTypesToDisplay = new ArrayList<SelectItem>();
 		List<SelectItem> periodToDisplay = new ArrayList<SelectItem>();
@@ -425,10 +437,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	public void setDepartmentService(DepartmentService departmentService) {
 		this.departmentService = departmentService;
 	}
-	
-	
-	
-	
+		
 	private class ExtendedSearchResultDataProvider extends AbstractPagedTable<DomainResult> {
 
 		private static final long serialVersionUID = -2279124332432432432L;
@@ -447,6 +456,30 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 			}
 			return page;
 		}
+	}
+
+	public UniversityService getUniversityService() {
+		return universityService;
+	}
+
+	public void setUniversityService(UniversityService universityService) {
+		this.universityService = universityService;
+	}
+
+	public InstituteService getInstituteService() {
+		return instituteService;
+	}
+
+	public void setInstituteService(InstituteService instituteService) {
+		this.instituteService = instituteService;
+	}
+
+	public CourseTypeService getCourseTypeService() {
+		return courseTypeService;
+	}
+
+	public void setCourseTypeService(CourseTypeService courseTypeService) {
+		this.courseTypeService = courseTypeService;
 	}
 
 
