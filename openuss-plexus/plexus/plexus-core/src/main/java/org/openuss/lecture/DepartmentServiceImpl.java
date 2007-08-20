@@ -41,6 +41,13 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Validate.isTrue(department.getId() == null,
 				"DepartmentService.handleCreate - the Department shouldn't have an ID yet");
 
+		if (department.getDefaultDepartment() == null) {
+			department.setDefaultDepartment(false);
+		}
+		Validate.isTrue(!department.getDefaultDepartment(),
+				"DepartmentService.handleCreate - You cannot create a default Department!");
+		
+		
 		// Transform ValueObject into Entity
 		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(department);
 
