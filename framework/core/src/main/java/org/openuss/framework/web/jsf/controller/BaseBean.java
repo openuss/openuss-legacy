@@ -197,9 +197,12 @@ public abstract class BaseBean {
 	/**
 	 * @return ResoureBundle
 	 */
-	public ResourceBundle getBundle() {		
-		//FIXME return bundle for user specified locale instead of browser locale
-		return ResourceBundle.getBundle(getBundleName(), getRequest().getLocale());
+	public ResourceBundle getBundle() {
+		if (getFacesContext().getViewRoot() == null) {
+			return ResourceBundle.getBundle(getBundleName(), getRequest().getLocale());
+		} else {
+			return ResourceBundle.getBundle(getBundleName(), getFacesContext().getViewRoot().getLocale());
+		}
 	}
 
 	/**
