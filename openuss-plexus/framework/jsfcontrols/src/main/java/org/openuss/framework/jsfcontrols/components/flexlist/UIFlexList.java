@@ -15,6 +15,7 @@ public class UIFlexList extends UIOutput {
 	public void encodeBegin(FacesContext context) throws IOException {
 		Iterator i;
 		ListItemDAO listItem;
+		String title;
 		ResponseWriter writer = context.getResponseWriter();
 		ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
 		String locale = (String)binding.getValue(getFacesContext());
@@ -25,7 +26,7 @@ public class UIFlexList extends UIOutput {
 			writer.writeAttribute("class", "flexList", null);
 			
 			// render title if specified as attribute
-			String title = (String)getAttributes().get("title");
+			title = (String)getAttributes().get("title");
 			if(title != null) {
 				
 				writer.startElement("ul", this);
@@ -104,7 +105,24 @@ public class UIFlexList extends UIOutput {
 								writer.endElement("div");
 								writer.startElement("div", this);
 								writer.writeAttribute("class", "flexListItemLeft", null);
-									writer.write( listItem.getTitle());						
+									title = listItem.getTitle();
+									
+									if(title != null)
+									{
+										String url = listItem.getUrl();
+										
+										if(url != null)
+										{
+											writer.startElement("a", this);
+												writer.writeAttribute("href", url, null);
+												writer.write(title);
+											writer.endElement("a");
+										}
+										else
+										{
+											writer.write(title);
+										}
+									}
 								writer.endElement("div");
 							writer.endElement("li");
 						}
@@ -136,7 +154,24 @@ public class UIFlexList extends UIOutput {
 								
 								writer.startElement("div", this);
 									writer.writeAttribute("class", "flexListItemLeft", null);
-										writer.write( listItem.getTitle());
+										title = listItem.getTitle();
+										
+										if(title != null)
+										{
+											String url = listItem.getUrl();
+											
+											if(url != null)
+											{
+												writer.startElement("a", this);
+													writer.writeAttribute("href", url, null);
+													writer.write(title);
+												writer.endElement("a");
+											}
+											else
+											{
+												writer.write(title);
+											}
+										}
 								writer.endElement("div");
 								
 							writer.endElement("li");

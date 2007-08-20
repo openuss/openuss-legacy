@@ -382,6 +382,9 @@ public class MyUniPage extends BasePage {
 		
 		private Map<Long, UniversityDataSet> uniDataSets;
 		
+		private static final String departmentsBasePath = "/openuss-plexus/views/public/department/department.faces?department=";
+		private static final String institutesBasePath = "/openuss-plexus/views/public/institute/isntitute.faces?institute=";
+
 		public MyUniDataSet() {
 			uniDataSets = new HashMap<Long, UniversityDataSet>();
 		}
@@ -844,10 +847,13 @@ public class MyUniPage extends BasePage {
 				newListItem = new ListItemDAO();
 				newListItem.setTitle(currentDepartment.getName());
 				departmentId = currentDepartment.getId();
-				if(departmentBookmarks != null && departmentId != null)
-					isBookmark = departmentBookmarks.get(departmentId);
-				else
-					isBookmark = false;
+				isBookmark = null;
+				if(departmentId != null)
+				{
+					newListItem.setUrl(departmentsBasePath + departmentId);
+					if(departmentBookmarks != null)
+						isBookmark = departmentBookmarks.get(departmentId);
+				}
 				newListItem.setIsBookmark(isBookmark != null && isBookmark.booleanValue() == true);
 				listItems.add(newListItem);
 			}
@@ -888,11 +894,14 @@ public class MyUniPage extends BasePage {
 				newListItem = new ListItemDAO();
 				newListItem.setTitle(currentInstitute.getName());
 				instituteId = currentInstitute.getId();
+				isBookmark = null;
 				
-				if(instituteBookmarks != null && instituteId != null)
-					isBookmark = instituteBookmarks.get(instituteId);
-				else
-					isBookmark = false;
+				if(instituteId != null)
+				{
+					newListItem.setUrl(institutesBasePath + instituteId);
+					if(instituteBookmarks != null)
+						isBookmark = instituteBookmarks.get(instituteId);
+				}
 				newListItem.setIsBookmark(isBookmark != null && isBookmark.booleanValue() == true);
 				listItems.add(newListItem);
 			}
@@ -921,12 +930,17 @@ public class MyUniPage extends BasePage {
 			Iterator<InstituteInfo> i = institutes.iterator();
 			InstituteInfo currentInstitute;
 			ListItemDAO newListItem;
+			Long instituteId;
 			
 			while(i.hasNext())
 			{
 				currentInstitute = i.next();
 				newListItem = new ListItemDAO();
 				newListItem.setTitle(currentInstitute.getName());
+				instituteId = currentInstitute.getId();
+				if(instituteId != null)
+					newListItem.setUrl(institutesBasePath + instituteId);
+				
 				listItems.add(newListItem);
 			}
 			
