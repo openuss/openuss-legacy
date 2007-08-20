@@ -23,6 +23,10 @@
 	        <h:commandLink action="#{views$public$department$departments.selectDepartment}" styleClass="command">
 				<h:outputText value="#{bean.name}"/>
 			</h:commandLink> 
+			<h:graphicImage 
+					value="/images/pool/icons/delete2.png" 
+					title="#{msg.default_department_donot_delete}" 
+					rendered="#{bean.defaultDepartment}"/>
 		</t:column>
 		
 		<t:column>
