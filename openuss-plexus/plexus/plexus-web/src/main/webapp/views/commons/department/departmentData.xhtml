@@ -9,7 +9,7 @@
       
 
 	<o:input entity="departmentInfo" property="name" maxlength="50" required="true"/>
-	<o:input entity="departmentInfo" property="shortcut" maxlength="50" required="true"
+	<o:input entity="departmentInfo" property="shortcut" maxlength="50" required="true">
 		<f:validator validatorId="departmentShortcutValidator"/>
 	</o:input>
 	<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" />

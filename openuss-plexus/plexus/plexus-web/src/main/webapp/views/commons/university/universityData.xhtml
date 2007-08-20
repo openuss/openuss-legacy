@@ -10,7 +10,7 @@
       xmlns:o="http://www.openuss.org/jsfcontrols">
       
 	<o:input entity="universityInfo" property="name" maxlength="100" required="true"/>
-	<o:input entity="universityInfo" property="shortcut" maxlength="50" required="true"
+	<o:input entity="universityInfo" property="shortcut" maxlength="50" required="true">
 		<f:validator validatorId="universityShortcutValidator"/>
 	</o:input>
 	<h:outputLabel value="#{msg.university_preferences_university}" for="universityTypeSelect" styleClass="field_label" />

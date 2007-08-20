@@ -101,7 +101,7 @@ public class DepartmentsPage extends BasePage{
 		logger.debug("Starting method disableDepartment");
 		DepartmentInfo currentDepartment = currentDepartment();
 		// setOrganisationStatus(true) = Enabled
-		// setOrganisationStatus(false) = Disbled
+		// setOrganisationStatus(false) = Disabled
 		organisationService.setOrganisationStatus(false, currentDepartment.getId());
 		
 		addMessage(i18n("message_department_disabled"));
@@ -116,7 +116,7 @@ public class DepartmentsPage extends BasePage{
 		logger.debug("Starting method enableDepartment");
 		DepartmentInfo currentDepartment = currentDepartment();
 		// setOrganisationStatus(true) = Enabled
-		// setOrganisationStatus(false) = Disbled
+		// setOrganisationStatus(false) = Disabled
 		organisationService.setOrganisationStatus(true, currentDepartment.getId());
 		
 		addMessage(i18n("message_department_enabled"));
