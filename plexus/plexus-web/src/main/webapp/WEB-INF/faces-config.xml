@@ -59,6 +59,13 @@
 		<converter-id>instituteGroupConverter</converter-id>
 		<converter-class>org.openuss.web.lecture.InstituteGroupConverter</converter-class>
 	</converter>
+	
+	<converter>
+		<description>Sanitize text inputs against cross scripting attacks</description>
+		<display-name>HtmlInputFilterConverter</display-name>
+		<converter-id>xssFilter</converter-id>
+		<converter-class>org.openuss.web.utils.HtmlInputFilterConverter</converter-class>
+	</converter>
 
 	<validator>
 		<validator-id>org.openuss.web.lecture.validators.CourseTypeShortcutValidator</validator-id>
