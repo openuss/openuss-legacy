@@ -32,8 +32,8 @@
 					<ui:include src="/views/commons/department/departmentData.xhtml" />
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.cancel}" action="department" styleClass="button_cancel" immediate="true"/>
 					<h:commandButton value="${msg.save}" action = "#{views$secured$lecture$departmentoptions.saveDepartment}" styleClass="button_save"/>
+					<h:commandButton value="${msg.cancel}" action="department" styleClass="button_cancel" immediate="true"/>
 		  		</o:block>
 	  		</h:form>
   		</ui:define>
