@@ -185,28 +185,35 @@ public class MyUniPage extends BasePage {
 	
 	private void loadParams()
 	{
+		logger.debug("Loading request parameters");
 		Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		
 		try {
 			String stringParamUniversity = (String)params.get("university");
 			paramUniversity = Long.valueOf(stringParamUniversity);
 		} catch (Exception e) {
+			logger.error("Error while parsing university parameter");
 			paramUniversity = null;
 		}
 	}
 	
 	private void loadValuesForDepartmentList()
 	{
+		logger.debug("Setting values for departments flexlist");
 		prepareData();
 		Long universityId = chooseUniversity();
 		
 		
 		if(universityId != null && myUniDataSet != null && departmentsList != null)
+		{
 			departmentsList.getAttributes().put("visibleItems", myUniDataSet.getDepartments(universityId));
+		}
+			
 	}
 	
 	private void loadValuesForInstituteList()
 	{
+		logger.debug("Setting values for institutes flexlist");
 		prepareData();
 		Long universityId = chooseUniversity();
 		
@@ -220,6 +227,7 @@ public class MyUniPage extends BasePage {
 	
 	private void loadValuesForCourseList()
 	{
+		logger.debug("Setting values for courses flexlist");
 		prepareData();
 		Long universityId = chooseUniversity();
 		
@@ -233,6 +241,7 @@ public class MyUniPage extends BasePage {
 	
 	private void loadValuesForTabs()
 	{
+		logger.debug("Setting values for MyUni-Tabs");
 		prepareData();
 		Long universityId = chooseUniversity();
 		
@@ -253,7 +262,10 @@ public class MyUniPage extends BasePage {
 				newItem.setUrl("myuni.faces?university=" + currentUni.getId().toString());
 				
 				if(universityId != null && universityId.longValue() == currentUni.getId().longValue())
+				{
 					currentItem = newItem;
+					// TODO set url of currentItem to university details page
+				}
 				else
 					items.add(newItem);
 			}
@@ -294,6 +306,7 @@ public class MyUniPage extends BasePage {
 	
 	public void setDepartmentsList(UIFlexList departmentsList)
 	{
+		logger.debug("Setting departments flexlist component");
 		this.departmentsList = departmentsList;
 		departmentsList.getAttributes().put("title", bundle.getString("flexlist_departments"));
 		departmentsList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_departments"));
@@ -309,6 +322,7 @@ public class MyUniPage extends BasePage {
 	
 	public void setInstitutesList(UIFlexList institutesList)
 	{
+		logger.debug("Setting institutes flexlist component");
 		this.institutesList = institutesList;
 		institutesList.getAttributes().put("title", bundle.getString("flexlist_institutes"));
 		institutesList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_institutes"));
@@ -324,6 +338,7 @@ public class MyUniPage extends BasePage {
 	
 	public void setCoursesList(UIFlexList coursesList)
 	{
+		logger.debug("Setting courses flexlist component");
 		this.coursesList = coursesList;
 		coursesList.getAttributes().put("title", bundle.getString("flexlist_courses"));
 		coursesList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_courses"));
@@ -337,6 +352,7 @@ public class MyUniPage extends BasePage {
 	}
 
 	public void setTabs(UITabs tabs) {
+		logger.debug("Setting MyUni-tabs component");
 		this.tabs = tabs;
 		
 		loadValuesForTabs();
@@ -345,6 +361,7 @@ public class MyUniPage extends BasePage {
 	
 	public void prepareData()
 	{
+		logger.debug("Preparing MyUni data");
 /*		if(myUniDataSet == null)
 		{
 			myUniDataSet = new MyUniDataSet();
@@ -354,6 +371,7 @@ public class MyUniPage extends BasePage {
 		
 		if(myUniDataSet == null)
 		{
+			logger.debug("MyUni data not initialized, reating new data set");
 			myUniDataSet = new MyUniDataSet();
 			myUniDataSet.setCourseDao(courseDao);
 			myUniDataSet.setDepartmentDao(departmentDao);
@@ -365,6 +383,7 @@ public class MyUniPage extends BasePage {
 			try {
 				myUniDataSet.loadData();
 			} catch (Exception e) {
+				logger.error("Loading MyUni data failed");
 				myUniDataSet = null;
 			}
 		}
@@ -455,8 +474,9 @@ public class MyUniPage extends BasePage {
 		
 		private Long processDepartment(Department department)
 		{
-			if(department == null)
+			if(department == null) 
 				return null;
+			
 			
 			University uni = department.getUniversity();
 			if(uni == null)
@@ -631,33 +651,44 @@ public class MyUniPage extends BasePage {
 				throw new Exception("UniversityDao not set");
 			
 			
-			List<Course> courses = desktop.getCourses();
+			List<Course> courseBookmarks = desktop.getCourses();
 			List<Institute> instituteBookmarks = desktop.getInstitutes();
 			List<Department> departmentBookmarks = desktop.getDepartments();
 			
 			
-			Iterator<Course> courseIterator = courses.iterator();
-			while (courseIterator.hasNext()) {
-				Course course = (Course)courseIterator.next();
-				myUniDataSet.processCourse(course);
+			if(courseBookmarks != null)
+			{
+				Iterator<Course> courseIterator = courseBookmarks.iterator();
+				while (courseIterator.hasNext()) {
+					Course course = (Course)courseIterator.next();
+					myUniDataSet.processCourse(course);
+				}
 			}
 			
-			Iterator<Institute> instituteIterator = instituteBookmarks.iterator();
-			while (instituteIterator.hasNext()) {
-				Institute institute = (Institute)instituteIterator.next();
-				myUniDataSet.processInstituteBookmark(institute);
+			if(instituteBookmarks != null)
+			{
+				Iterator<Institute> instituteIterator = instituteBookmarks.iterator();
+				while (instituteIterator.hasNext()) {
+					Institute institute = (Institute)instituteIterator.next();
+					myUniDataSet.processInstituteBookmark(institute);
+				}
 			}
 			
-			Iterator<Department> departmentIterator = departmentBookmarks.iterator();
-			while (departmentIterator.hasNext()) {
-				Department department = (Department)departmentIterator.next();
-				myUniDataSet.processDepartmentBookmark(department);
+			if(departmentBookmarks != null)
+			{
+				Iterator<Department> departmentIterator = departmentBookmarks.iterator();
+				while (departmentIterator.hasNext()) {
+					Department department = (Department)departmentIterator.next();
+					myUniDataSet.processDepartmentBookmark(department);
+				}
 			}
 		}
 		
 		
 		public void loadTestData()
 		{
+			logger.debug("Loading MyUni test data");
+			
 			UniversityInfo uniInfo;
 			DepartmentInfo departmentInfo;
 			CourseInfo courseInfo;
@@ -816,24 +847,33 @@ public class MyUniPage extends BasePage {
 		
 		public List<ListItemDAO> getDepartments(Long universityId)
 		{
+			logger.debug("Retrieving list of departments from MyUni data set");
+			
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
 			
-			if(universityId == null)
+			if(universityId == null) {
+				logger.error("universitId is null, returning empty list");
 				return listItems;
+			}
 			
-			if(uniDataSets == null)
+			if(uniDataSets == null) {
+				logger.error("MyUni data sets are null, returning empty list");
 				return listItems;
+			}
 				
 			UniversityDataSet currentDataSet = uniDataSets.get(universityId);
-			
-			if(currentDataSet == null)
+			if(currentDataSet == null) {
+				logger.error("University data set does not exist for the given university, returning empty list");
 				return listItems;
+			}
 			
 			Collection<DepartmentInfo> departments = currentDataSet.departments.values();
 			Map<Long, Boolean> departmentBookmarks = currentDataSet.departmentBookmarks;
 			
-			if(departments == null)
+			if(departments == null) {
+				logger.error("Conversion of departments map to collection object failed");
 				return listItems;
+			}
 			
 			Iterator<DepartmentInfo> i = departments.iterator();
 			DepartmentInfo currentDepartment;
@@ -863,22 +903,33 @@ public class MyUniPage extends BasePage {
 		
 		public List<ListItemDAO> getInstitutes(Long universityId)
 		{
+			logger.debug("Retrieving list of visible institutes from MyUni data set");
+			
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
 			
-			if(universityId == null)
+			if(universityId == null) {
+				logger.error("universitId is null, returning empty list");
 				return listItems;
+			}
 			
-			if(uniDataSets == null)
+			if(uniDataSets == null) {
+				logger.error("MyUni data sets are null, returning empty list");
 				return listItems;
+			}
 			
 			UniversityDataSet currentDataSet = uniDataSets.get(universityId);
-			if(currentDataSet == null)
+			if(currentDataSet == null) {
+				logger.error("University data set does not exist for the given university, returning empty list");
 				return listItems;
+			}
 			
 		
 			Collection<InstituteInfo> institutes = currentDataSet.currentInstitutes.values();
-			if(institutes == null)
+			if(institutes == null) {
+				logger.error("Conversion of institutes map to collection object failed");
 				return listItems;
+			}
+			
 			
 			Map<Long, Boolean> instituteBookmarks = currentDataSet.instituteBookmarks;
 			
@@ -911,21 +962,31 @@ public class MyUniPage extends BasePage {
 		
 		public List<ListItemDAO> getAdditionalInstitutes(Long universityId)
 		{
+			logger.debug("Retrieving list of hidden institutes from MyUni data set");
+			
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
 		
-			if(universityId == null)
+			if(universityId == null) {
+				logger.error("universitId is null, returning empty list");
 				return listItems;
+			}
 			
-			if(uniDataSets == null)
+			if(uniDataSets == null) {
+				logger.error("MyUni data sets are null, returning empty list");
 				return listItems;
+			}
 			
 			UniversityDataSet currentDataSet = uniDataSets.get(universityId);
-			if(currentDataSet == null)
+			if(currentDataSet == null) {
+				logger.error("University data set does not exist for the given university, returning empty list");
 				return listItems;
+			}
 			
 			Collection<InstituteInfo> institutes = currentDataSet.pastInstitutes.values();
-			if(institutes == null)
+			if(institutes == null) {
+				logger.error("Conversion of institutes map to collection object failed");
 				return listItems;
+			}
 			
 			Iterator<InstituteInfo> i = institutes.iterator();
 			InstituteInfo currentInstitute;
@@ -949,21 +1010,31 @@ public class MyUniPage extends BasePage {
 		
 		public List<ListItemDAO> getCourses(Long universityId)
 		{
+			logger.debug("Retrieving list of visible courses from MyUni data set");
+			
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
 			
-			if(universityId == null)
+			if(universityId == null) {
+				logger.error("universitId is null, returning empty list");
 				return listItems;
+			}
 			
-			if(uniDataSets == null)
+			if(uniDataSets == null)  {
+				logger.error("MyUni data sets are null, returning empty list");
 				return listItems;
+			}
 			
 			UniversityDataSet currentDataSet = uniDataSets.get(universityId);
-			if(currentDataSet == null)
+			if(currentDataSet == null) {
+				logger.error("University data set does not exist for the given university, returning empty list");
 				return listItems;
+			}
 			
 			Collection<CourseInfo> courses = currentDataSet.currentCourses.values();
-			if(courses == null)
+			if(courses == null) {
+				logger.error("Conversion of courses map to collection object failed");
 				return listItems;
+			}
 			
 			Iterator<CourseInfo> i = courses.iterator();
 			CourseInfo currentCourse;
@@ -985,22 +1056,32 @@ public class MyUniPage extends BasePage {
 		
 		public List<ListItemDAO> getAdditionalCourses(Long universityId)
 		{
+			logger.debug("Retrieving list of hidden courses from MyUni data set");
+			
 			List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
 			
-			if(universityId == null)
+			if(universityId == null) {
+				logger.error("universitId is null, returning empty list");
 				return listItems;
+			}
 			
-			if(uniDataSets == null)
+			if(uniDataSets == null) {
+				logger.error("MyUni data sets are null, returning empty list");
 				return listItems;
+			}
 			
 			UniversityDataSet currentDataSet = uniDataSets.get(universityId);
-			if(currentDataSet == null)
+			if(currentDataSet == null) {
+				logger.error("University data set does not exist for the given university, returning empty list");
 				return listItems;
+			}
 			
 	
 			Collection<CourseInfo> courses = currentDataSet.pastCourses.values();
-			if(courses == null)
+			if(courses == null) {
+				logger.error("Conversion of courses map to collection object failed");
 				return listItems;
+			}
 			
 			Iterator<CourseInfo> i = courses.iterator();
 			CourseInfo currentCourse;
@@ -1022,15 +1103,19 @@ public class MyUniPage extends BasePage {
 		
 		public List<UniversityInfo> getUniversities()
 		{
+			logger.debug("Retrieving list of universities from MyUni data set");
 			List<UniversityInfo> universities = new ArrayList<UniversityInfo>();
 			
-			if(uniDataSets == null)
+			if(uniDataSets == null) {
+				logger.error("MyUni data sets are null, returning empty list");
 				return universities;
+			}
 			
 			Collection<UniversityDataSet> universityDataSetList = uniDataSets.values();
-			
-			if(universityDataSetList == null)
+			if(universityDataSetList == null) {
+				logger.error("Conversion of universities map to collection object failed");
 				return universities;
+			}
 			
 			Iterator<UniversityDataSet> i = universityDataSetList.iterator();
 			UniversityDataSet currentUniDataSet;
