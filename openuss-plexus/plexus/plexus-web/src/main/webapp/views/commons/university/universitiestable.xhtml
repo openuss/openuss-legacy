@@ -57,6 +57,24 @@
 				</plexus:command>		
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">
+					<h:commandButton 
+						action = "#{views$public$university$universities.disableUniversity}"
+						styleClass="button_remove"
+						value="#{msg.university_command_disable}"
+						hint="#{msg.university_command_disable_hint}"
+						rendered="#{bean.enabled}">
+					</h:commandButton>
+			</s:authorize>
+			<s:authorize ifAllGranted="ROLE_ADMIN">
+					<h:commandButton 
+						action = "#{views$public$university$universities.enableUniversity}"
+						styleClass="button_remove"
+						value="#{msg.university_command_enable}"
+						hint="#{msg.university_command_enable_hint}"
+						rendered="#{not bean.enabled}">
+					</h:commandButton>
+			</s:authorize>
+			<s:authorize ifAllGranted="ROLE_ADMIN">
 				<h:commandButton 
 					action = "#{views$public$university$universities.selectUniversityAndConfirmRemove}"
 					styleClass="button_remove"

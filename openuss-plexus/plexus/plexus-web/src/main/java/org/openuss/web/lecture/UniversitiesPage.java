@@ -9,14 +9,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
-import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.Institute;
-import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.OrganisationService;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
@@ -41,6 +40,9 @@ public class UniversitiesPage extends BasePage{
 	
 	@Property(value = "#{universityService}")
 	private UniversityService universityService;
+	
+	@Property(value = "#{organisationService}")
+	private OrganisationService organisationService;
 	
 	@Prerender
 	public void prerender() throws Exception {
@@ -73,6 +75,36 @@ public class UniversitiesPage extends BasePage{
 		setSessionBean(Constants.UNIVERSITY_INFO, currentUniversity);
 		
 		return Constants.UNIVERSITY_CONFIRM_REMOVE_PAGE;
+	}
+	
+	/**
+	 * Disables the chosen university. This is just evident for the search indexing.
+	 * @return Outcome
+	 */
+	public String disableUniversity() {
+		logger.debug("Starting method disableUniversity");
+		UniversityInfo currentUniversity = currentUniversity();
+		// setOrganisationStatus(true) = Enabled
+		// setOrganisationStatus(false) = Disbled
+		organisationService.setOrganisationStatus(false, currentUniversity.getId());
+		
+		addMessage(i18n("message_university_disabled"));
+		return Constants.SUCCESS;
+	}
+	
+	/**
+	 * Enables the chosen university. This is just evident for the search indexing.
+	 * @return Outcome
+	 */
+	public String enableUniversity() {
+		logger.debug("Starting method enableUniversity");
+		UniversityInfo currentUniversity = currentUniversity();
+		// setOrganisationStatus(true) = Enabled
+		// setOrganisationStatus(false) = Disbled
+		organisationService.setOrganisationStatus(true, currentUniversity.getId());
+		
+		addMessage(i18n("message_university_enabled"));
+		return Constants.SUCCESS;
 	}
 	
 	/**
@@ -130,17 +162,6 @@ public class UniversitiesPage extends BasePage{
 	public UniversityTable getUniversities() {
 		return universities;
 	}
-
-	private class UniversityTable extends AbstractPagedTable<UniversityInfo> {
-
-		private static final long serialVersionUID = -6072435481342714879L;
-
-		@Override
-		public DataPage<UniversityInfo> getDataPage(int startRow, int pageSize) {
-			return fetchDataPage(startRow, pageSize);
-		}
-		
-	}
 	
 	public UniversityService getUniversityService() {
 		return universityService;
@@ -149,9 +170,16 @@ public class UniversitiesPage extends BasePage{
 	public void setUniversityService(UniversityService universityService) {
 		this.universityService = universityService;
 	}
-
 	
-	/* ----------- university sorting comparators -------------*/
+	public OrganisationService getOrganisationService() {
+		return organisationService;
+	}
+
+	public void setOrganisationService(OrganisationService organisationService) {
+		this.organisationService = organisationService;
+	}
+	
+/* ----------- university sorting comparators -------------*/
 	
 	private class NameComparator implements Comparator<UniversityInfo> {
 		public int compare(UniversityInfo f1, UniversityInfo f2) {
@@ -198,5 +226,19 @@ public class UniversitiesPage extends BasePage{
 		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
 		return "removed";
 	}
+	
+	
+
+	private class UniversityTable extends AbstractPagedTable<UniversityInfo> {
+
+		private static final long serialVersionUID = -6072435481342714879L;
+
+		@Override
+		public DataPage<UniversityInfo> getDataPage(int startRow, int pageSize) {
+			return fetchDataPage(startRow, pageSize);
+		}
+		
+	}
+		
 
 }
