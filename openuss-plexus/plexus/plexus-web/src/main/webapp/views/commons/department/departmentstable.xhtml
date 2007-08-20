@@ -58,7 +58,7 @@
 					rendered="#{bean.enabled}">
 				</h:commandButton>
 			</s:authorize>
-			<s:authorize ifAllGranted="ROLE_ADMIN">
+			<s:authorize ifAlRlGranted="ROLE_ADMIN">
 				<h:commandButton 
 					action = "#{views$public$department$departments.enableDepartment}"
 					styleClass="button_remove"
