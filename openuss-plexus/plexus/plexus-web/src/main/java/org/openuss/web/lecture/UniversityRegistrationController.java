@@ -63,19 +63,16 @@ public class UniversityRegistrationController extends AbstractUniversityPage{
 		universityInfo = new UniversityInfo();
 		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
 		
-		
 		return Constants.UNIVERSITY_REGISTRATION_STEP1_PAGE;
 	}
 	
 	public String registrate() throws DesktopException, LectureException {
-		
-		universityInfo.setOwnerName(user.getName());
+		//set University by default enabled
 		universityInfo.setEnabled(true);
-	
+		// create university
 		Long universityId = universityService.createUniversity(universityInfo, user.getId());
 		universityInfo.setId(universityId);
-		//TODO send notification email
-		//FIXME this should be part of the business layer
+		// bookmark university for myuni page
 		desktopService2.linkUniversity(desktopInfo.getId(), universityInfo.getId());
 				
 		return Constants.UNIVERSITY_PAGE;

@@ -16,7 +16,7 @@
 	</h:selectOneListbox>
 	<h:outputLabel value="#{msg.universityinfo_description}" for="descriptionEditor" styleClass="field_label"/>
 	<h:inputTextarea styleClass="pulldown" value="#{universityInfo.description}" id="descriptionTextField" />
-	<o:input entity="universityInfo" property="universityType" maxlength="50"/>
+	<o:input entity="universityInfo" property="ownerName" maxlength="50" required="true"/>
 	<o:input entity="universityInfo" property="address" maxlength="100"/>
 	<o:input entity="universityInfo" property="country" maxlength="100"/>
 	<o:input entity="universityInfo" property="postcode" maxlength="100"/>
