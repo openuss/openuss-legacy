@@ -139,20 +139,20 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	/**
 	 * @see org.openuss.security.MembershipService#findAllAspirants(org.openuss.security.Membership, org.openuss.security.GroupItem)
 	 */
-	protected org.openuss.security.Group handleCreateGroup(org.openuss.security.Membership membership, org.openuss.security.GroupItem groupItem)
+	protected org.openuss.security.Group handleCreateGroup(org.openuss.security.Membership membership, org.openuss.security.Group group)
 			throws java.lang.Exception {
 		
 		Validate.notNull(membership, "MembershipService.handleCreateGroup - Membership cannot be null");
 		Validate.notNull(membership.getId(), "MembershipService.handleCreateGroup - Membership must have a valid ID");
-		Validate.notNull(groupItem, "MembershipService.handleCreateGroup - GroupItem cannot be null");
+		Validate.notNull(group, "MembershipService.handleCreateGroup - Group cannot be null");
 		
-		Group group = this.getSecurityService().createGroup(groupItem.getName(), groupItem.getLabel(), groupItem.getPassword(), groupItem.getGroupType());
-		Validate.notNull(group, "MembershipService.handleCreateGroup - Group couldn't be created");
-		Validate.notNull(group.getId(), "MembershipService.handleCreateGroup - Group couldn't be created");
+		Group group2 = this.getSecurityService().createGroup(group.getName(), group.getLabel(), group.getPassword(), group.getGroupType());
+		Validate.notNull(group2, "MembershipService.handleCreateGroup - Group couldn't be created");
+		Validate.notNull(group2.getId(), "MembershipService.handleCreateGroup - Group couldn't be created");
 		
-		membership.getGroups().add(group);
+		membership.getGroups().add(group2);
 		
-		return group;
+		return group2;
 
 	}
 }

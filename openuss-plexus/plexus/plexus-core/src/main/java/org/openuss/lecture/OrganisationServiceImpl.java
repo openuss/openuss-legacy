@@ -12,6 +12,7 @@ import org.apache.commons.lang.Validate;
 import org.openuss.registration.RegistrationException;
 import org.openuss.security.Authority;
 import org.openuss.security.Group;
+import org.openuss.security.GroupItem;
 import org.openuss.security.User;
 
 /**
@@ -40,13 +41,15 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 	 */
 	protected void handleAddAspirant(java.lang.Long organisationId, java.lang.Long userId) throws java.lang.Exception {
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
-		Validate.notNull(organisation,
-				"MembershipService.handleAddAspirant - no Organisation found corresponding to the ID " + organisationId);
+		Validate
+				.notNull(organisation,
+						"MembershipService.handleAddAspirant - no Organisation found corresponding to the ID "
+								+ organisationId);
 
 		User user = this.getUserDao().load(userId);
 		Validate.notNull(organisation, "MembershipService.handleAddAspirant - no User found corresponding to the ID "
 				+ userId);
-		
+
 		this.getMembershipService().addAspirant(organisation.getMembership(), user, null);
 	}
 
@@ -57,12 +60,13 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 	protected java.util.List handleFindAllMembers(java.lang.Long organisationId) throws java.lang.Exception {
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		Validate.notNull(organisation,
-				"MembershipService.handleFindAllMembers - no Organisation found corresponding to the ID " + organisationId);
-		
+				"MembershipService.handleFindAllMembers - no Organisation found corresponding to the ID "
+						+ organisationId);
+
 		List<User> members = organisation.getMembership().getMembers();
-		
+
 		List memberInfos = new ArrayList();
-		for(User user: members) {
+		for (User user : members) {
 			memberInfos.add(this.getUserDao().toUserInfo(user));
 		}
 
@@ -76,12 +80,13 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 	protected java.util.List handleFindAllAspirants(java.lang.Long organisationId) throws java.lang.Exception {
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		Validate.notNull(organisation,
-				"MembershipService.handleFindAllAspirants - no Organisation found corresponding to the ID " + organisationId);
-		
+				"MembershipService.handleFindAllAspirants - no Organisation found corresponding to the ID "
+						+ organisationId);
+
 		List<User> aspirants = organisation.getMembership().getAspirants();
-		
+
 		List aspirantInfos = new ArrayList();
-		for(User user: aspirants) {
+		for (User user : aspirants) {
 			aspirantInfos.add(this.getUserDao().toUserInfo(user));
 		}
 
@@ -95,12 +100,13 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 			throws java.lang.Exception {
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		Validate.notNull(organisation,
-				"MembershipService.handleAcceptAspirant - no Organisation found corresponding to the ID " + organisationId);
+				"MembershipService.handleAcceptAspirant - no Organisation found corresponding to the ID "
+						+ organisationId);
 
 		User user = this.getUserDao().load(userId);
-		Validate.notNull(organisation, "MembershipService.handleAcceptAspirant - no User found corresponding to the ID "
-				+ userId);
-		
+		Validate.notNull(organisation,
+				"MembershipService.handleAcceptAspirant - no User found corresponding to the ID " + userId);
+
 		this.getMembershipService().acceptAspirant(organisation.getMembership(), user, null);
 	}
 
@@ -111,12 +117,13 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 			throws java.lang.Exception {
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		Validate.notNull(organisation,
-				"MembershipService.handleRejectAspirant - no Organisation found corresponding to the ID " + organisationId);
+				"MembershipService.handleRejectAspirant - no Organisation found corresponding to the ID "
+						+ organisationId);
 
 		User user = this.getUserDao().load(userId);
-		Validate.notNull(organisation, "MembershipService.handleRejectAspirant - no User found corresponding to the ID "
-				+ userId);
-		
+		Validate.notNull(organisation,
+				"MembershipService.handleRejectAspirant - no User found corresponding to the ID " + userId);
+
 		this.getMembershipService().rejectAspirant(organisation.getMembership(), user, null);
 	}
 
@@ -131,32 +138,38 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 						"MembershipService.handleCreateGroup - no Organisation found corresponding to the ID "
 								+ organisationId);
 
-		return this.getMembershipService().createGroup(organisation.getMembership(), groupItem);
+		Group group = this.getGroupDao().groupItemToEntity(groupItem);
+		group = this.getMembershipService().createGroup(organisation.getMembership(), group);
+		Validate.notNull(group.getId(), "MembershipService.handleCreateGroup - Group couldn't be created");
+
+		return group;
 	}
 
 	/**
 	 * @see org.openuss.lecture.OrganisationService#removeGroup(java.lang.Long)
 	 */
 	protected void handleRemoveGroup(java.lang.Long organisationId, java.lang.Long groupId) throws java.lang.Exception {
-		
+
 		Group group = this.getGroupDao().load(groupId);
 		Validate.notNull(group, "MembershipService.handleRemoveGroup - no Group found corresponding to the ID "
 				+ groupId);
-		
+
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
-		Validate.notNull(organisation, "MembershipService.handleRemoveGroup - no Organisation found corresponding to the ID "
-				+ organisationId);
-		
+		Validate
+				.notNull(organisation,
+						"MembershipService.handleRemoveGroup - no Organisation found corresponding to the ID "
+								+ organisationId);
+
 		// Remove all Authorities from Group
 		List<Authority> authorities = group.getMembers();
-		for (Authority authority:authorities) {
+		for (Authority authority : authorities) {
 			authority.removeGroup(group);
 		}
-		
+
 		// Remove the Group from its Organisation
 		boolean removed = organisation.getMembership().getGroups().remove(group);
-		Validate.isTrue(removed, "MembershipService.handleRemoveGroup - Group "+groupId+" couldn't be removed");
-		
+		Validate.isTrue(removed, "MembershipService.handleRemoveGroup - Group " + groupId + " couldn't be removed");
+
 		// Delete Group
 		this.getSecurityService().removeGroup(group);
 	}
@@ -168,11 +181,11 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 		Group group = this.getGroupDao().load(groupId);
 		Validate.notNull(group, "MembershipService.handleAddUserToGroup - no Group found corresponding to the ID "
 				+ groupId);
-		
+
 		User user = this.getUserDao().load(userId);
 		Validate.notNull(user, "MembershipService.handleAddUserToGroup - no User found corresponding to the ID "
 				+ groupId);
-		
+
 		this.getSecurityService().addAuthorityToGroup(user, group);
 	}
 
@@ -183,41 +196,63 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 		Group group = this.getGroupDao().load(groupId);
 		Validate.notNull(group, "MembershipService.handleRemoveUserFromGroup - no Group found corresponding to the ID "
 				+ groupId);
-		
+
 		User user = this.getUserDao().load(userId);
 		Validate.notNull(user, "MembershipService.handleRemoveUserFromGroup - no User found corresponding to the ID "
 				+ groupId);
-		
+
 		this.getSecurityService().removeAuthorityFromGroup(user, group);
 	}
-	
+
 	/**
 	 * @see org.openuss.lecture.OrganisationService#setOrganisationStatus(boolean status)
 	 */
 	protected void handleSetOrganisationStatus(boolean status, Long organisationId) throws java.lang.Exception {
 		Validate.notNull(organisationId, "OrganisationService.setOrganisationStatus - organisationId cannot be null.");
-		
+
 		// Load Organisation
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
-		
+
 		// Set Organisation status
 		organisation.setEnabled(status);
 		this.getOrganisationDao().update(organisation);
 	}
-	
+
 	/**
 	 * @see org.openuss.lecture.OrganisationService#sendActivationCode(org.openuss.lecture.Organisation)
 	 */
 	protected void handleSendActivationCode(Organisation organisation) throws RegistrationException {
 		/*
-		String activationCode = getRegistrationService().generateInstituteActivationCode(institute);
-		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("institutename", institute.getName() + "(" + institute.getShortcut() + ")");
-		parameters.put("institutelink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
-				+ "actions/public/lecture/instituteactivation.faces?code=" + activationCode);
-		getMessageService().sendMessage(institute.getShortcut(), "institute.activation.subject", "instituteactivation",
-				parameters, institute.getEmail(), institute.getLocale());
-		*/
+		 * String activationCode = getRegistrationService().generateInstituteActivationCode(institute); Map<String,
+		 * String> parameters = new HashMap<String, String>(); parameters.put("institutename", institute.getName() +
+		 * "(" + institute.getShortcut() + ")"); parameters.put("institutelink",
+		 * getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() +
+		 * "actions/public/lecture/instituteactivation.faces?code=" + activationCode);
+		 * getMessageService().sendMessage(institute.getShortcut(), "institute.activation.subject",
+		 * "instituteactivation", parameters, institute.getEmail(), institute.getLocale());
+		 */
+	}
+
+	/**
+	 * @see org.openuss.lecture.OrganisationService#findGroupsByOrganisation(Long)
+	 */
+	protected List handleFindGroupsByOrganisation(Long organisationId) throws Exception {
+
+		Validate.notNull(organisationId,
+				"OrganisationService.handleFindGroupsByOrganisation - organisationId cannot be null.");
+
+		// Load Organisation
+		Organisation organisation = this.getOrganisationDao().load(organisationId);
+		Validate.notNull(organisation,
+				"OrganisationService.handleFindGroupsByOrganisation - no Organisation found corresponding to the ID "
+						+ organisationId);
+
+		// Find Groups
+		List<GroupItem> groupItems = new ArrayList<GroupItem>(organisation.getMembership().getGroups().size());
+		for(Group group:organisation.getMembership().getGroups()) {
+			groupItems.add(this.getGroupDao().toGroupItem(group));
+		}
+		return groupItems;
 	}
 
 }

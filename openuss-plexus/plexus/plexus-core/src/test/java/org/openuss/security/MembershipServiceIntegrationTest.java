@@ -209,19 +209,20 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		University university = testUtility.createUniqueUniversityInDB();
 
 		//Create a GroupItem
-		GroupItem groupItem = new GroupItem();
-		groupItem.setName("Administrators");
-		groupItem.setLabel("Admins");
-		groupItem.setPassword("feelfree");
-		groupItem.setGroupType(GroupType.ADMINISTRATOR);
+		Group group = Group.Factory.newInstance();
+		group.setName("Administrators");
+		group.setLabel("Admins");
+		group.setPassword("feelfree");
+		group.setGroupType(GroupType.ADMINISTRATOR);
 		
 		assertNotNull(university.getMembership().getGroups());
 		int sizeBefore = university.getMembership().getGroups().size();
 		
 		// Create the Group
-		membershipService.createGroup(university.getMembership(), groupItem);
+		membershipService.createGroup(university.getMembership(), group);
 		
 		assertEquals(sizeBefore + 1, university.getMembership().getGroups().size());
+		assertTrue(university.getMembership().getGroups().get(0) instanceof Group);
 		
 		// Synchronize with Database
 		flush();
