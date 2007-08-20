@@ -100,8 +100,6 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 		
 		//by default set department enabled
 		departmentInfo.setEnabled(true);
-		// by default set to false
-		departmentInfo.setDefaultDepartment(false);
 		departmentService.create(departmentInfo, user.getId());
 	
 		// bookmark department to myuni page
