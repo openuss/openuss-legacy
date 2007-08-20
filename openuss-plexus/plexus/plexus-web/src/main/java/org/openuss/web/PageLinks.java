@@ -7,7 +7,10 @@ package org.openuss.web;
  * @author Kai Stettner
  */
 public class PageLinks{
+	
 	public static final String UNIVERSITY_PAGE = "/views/public/university/university.faces";
+	
+	public static final String DEPARTMENT_PAGE = "/views/public/department/department.faces";
 	
 	public static final String INSTITUTE_PAGE = "/views/secured/lecture/institute.faces";
 	
@@ -27,5 +30,5 @@ public class PageLinks{
 
 	public static final String DOCUMENTS_MAIN = "/views/secured/documents/documents.faces";
 	
-	public static final String DEPARTMENT_PAGE = "/views/secured/lecture/department.faces";
+	
 }
