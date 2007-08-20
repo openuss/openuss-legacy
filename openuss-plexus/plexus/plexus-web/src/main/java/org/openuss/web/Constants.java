@@ -122,6 +122,8 @@ public class Constants {
 	
 	public static final String USER_IMAGE_NAME = "useravartar";
 	
+	public static final String ORGANISATION_IMAGE_NAME = "organisationlogo";
+	
 	public static final String UPLOAD_FILE_MANAGER = "uploadFileManager";
 
 	public static final String BRAINCONTEST_ATTACHMENTS = "braincontest_attachments";
