@@ -58,7 +58,8 @@
 				action="confirmRemovePeriod"
 				styleClass="button_remove"
 				label="#{msg.period_command_remove}"
-				hint="#{msg.period_command_remove_hint}">
+				hint="#{msg.period_command_remove_hint}"
+				rendered="#{not period.defaultPeriod}">
 			</plexus:command>
 		</plexus:column>
 	</plexus:dataTable>

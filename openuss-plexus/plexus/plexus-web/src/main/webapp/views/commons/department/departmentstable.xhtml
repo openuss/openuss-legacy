@@ -71,7 +71,8 @@
 				<h:commandButton
 					styleClass="button_remove"
 					value="#{msg.department_command_remove}"
-					hint="#{msg.department_command_remove_hint}">
+					hint="#{msg.department_command_remove_hint}"
+					rendered="#{not bean.defaultDepartment}">
 				</h:commandButton>	
 			</s:authorize>
 		</plexus:column>
