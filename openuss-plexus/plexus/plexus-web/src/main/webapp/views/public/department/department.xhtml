@@ -37,10 +37,22 @@
 		<ui:define name="content">
 	  			
 	  			<o:block styleClass="teaser_blue_right" label="Logo">
-			  		<h:graphicImage styleClass="organisation_logo"
-					value="/images/university_logo_dummy.jpg"
-					alt="university logo dummy"
-					title="university logo dummy"/>
+			  		<h:panelGroup>
+						<c:if test="#{not empty departmentInfo.imageId}">
+							<h:graphicImage styleClass="organisation_logo"
+								renderer="${not empty departmentInfo.imageId}"
+								value="/files?fileid=#{departmentInfo.imageId}"
+								alt="#{msg.logo} #{departmentInfo.name}"
+								title="#{msg.logo} #{departmentInfo.name}"/> 
+						</c:if>
+								
+						<c:if test="#{empty departmentInfo.imageId}">
+							<h:graphicImage styleClass="organisation_logo"
+								value="/images/department_logo_dummy.JPG"
+								alt="department logo dummy"
+								title="department logo dummy"/>
+						</c:if>
+					</h:panelGroup>
 			  	</o:block>
 	  			
 	  			<o:block styleClass="teaser_blue" label="#{departmentInfo.name} - #{msg['university_profile']}">
