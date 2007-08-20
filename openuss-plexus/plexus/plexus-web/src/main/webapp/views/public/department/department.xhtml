@@ -33,21 +33,28 @@
  		<ui:define name="sidebar"> 
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
 		</ui:define>
-  		<ui:define name="content">
-  			<h:form id="institutForm">
-				<o:block label="#{departmentInfo.name} - #{msg['university_profile']}" styleClass="form_box">
-					<h:panelGrid border="0" columns="2">
-						<h:panelGroup>
-							<h:outputText value="#{departmentInfo.description}" escape="false"/>
-						</h:panelGroup>
-						<h:outputText value="Bild hier anzeigen" styleClass="field_label" style="width:150px; text-align:right; "/>
-					</h:panelGrid>
+		
+		<ui:define name="content">
+	  			
+	  			<o:block styleClass="teaser_blue_right" label="Logo">
+			  		<h:graphicImage styleClass="organisation_logo"
+					value="/images/university_logo_dummy.jpg"
+					alt="university logo dummy"
+					title="university logo dummy"/>
+			  	</o:block>
+	  			
+	  			<o:block styleClass="teaser_blue" label="#{departmentInfo.name} - #{msg['university_profile']}">
+				  		<h:outputText value="#{departmentInfo.description}" styleClass="content_font_normal" escape="false"/>
 				</o:block>
+	  			
+			  	<div class="clear_both"/>
 				
-				<!--<ui:include src="institutestable.xhtml"/>-->
-				
-			</h:form>
+				<h:form>
+					<ui:include src="/views/public/institute/institutestable.xhtml"/>
+				</h:form>
+
 		</ui:define>
+				
 	</ui:composition>
 	<!-- text above will be ignored -->
 	</body>
