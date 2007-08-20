@@ -9,7 +9,9 @@
       
 
 	<o:input entity="departmentInfo" property="name" maxlength="50" required="true"/>
-	<o:input entity="departmentInfo" property="shortcut" maxlength="50" required="true"/>
+	<o:input entity="departmentInfo" property="shortcut" maxlength="50" required="true"
+		<f:validator validatorId="departmentShortcutValidator"/>
+	</o:input>
 	<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" />
 	<h:selectOneListbox id="department_preferences_university" size="1" styleClass="pulldown" value="#{departmentInfo.universityId}">
 	    <f:selectItems value="#{departmentRegistration.allUniversities}"/>
@@ -20,7 +22,7 @@
 	</h:selectOneListbox>
 	<h:outputLabel value="#{msg.departmentinfo_description}" for="descriptionEditor" styleClass="field_label"/>
 	<h:inputTextarea styleClass="pulldown" value="#{departmentInfo.description}" id="descriptionTextField" />
-	<o:input entity="departmentInfo" property="departmentType" maxlength="50"/>
+	<o:input entity="departmentInfo" property="ownerName" maxlength="50" required="true"/>
 	<o:input entity="departmentInfo" property="address" maxlength="100"/>
 	<o:input entity="departmentInfo" property="country" maxlength="100"/>
 	<o:input entity="departmentInfo" property="postcode" maxlength="100"/>

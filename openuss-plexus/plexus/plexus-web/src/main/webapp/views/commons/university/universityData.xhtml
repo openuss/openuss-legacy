@@ -9,7 +9,9 @@
       xmlns:o="http://www.openuss.org/jsfcontrols">
       
 	<o:input entity="universityInfo" property="name" maxlength="100" required="true"/>
-	<o:input entity="universityInfo" property="shortcut" maxlength="50" required="true"/>
+	<o:input entity="universityInfo" property="shortcut" maxlength="50" required="true"
+		<f:validator validatorId="universityShortcutValidator"/>
+	</o:input>
 	<h:outputLabel value="#{msg.university_preferences_university}" for="universityTypeSelect" styleClass="field_label" />
 	<h:selectOneListbox id="university_preferences_university" size="1" styleClass="pulldown" value="#{universityInfo.universityType}">
 	    <f:selectItems value="#{universityRegistration.supportedOrganizationTypes}"/>

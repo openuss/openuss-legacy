@@ -59,7 +59,7 @@
 		<converter-id>instituteGroupConverter</converter-id>
 		<converter-class>org.openuss.web.lecture.InstituteGroupConverter</converter-class>
 	</converter>
-
+	
 	<validator>
 		<validator-id>org.openuss.web.lecture.validators.CourseTypeShortcutValidator</validator-id>
 		<validator-class>org.openuss.web.lecture.validators.CourseTypeShortcutValidator</validator-class>
@@ -68,6 +68,8 @@
 			<property-class>org.openuss.lecture.CourseType</property-class>
 		</property>
 	</validator>
+	
+	
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - 
 	    S H A L E  -  C O N F I G U R A T I O N 
