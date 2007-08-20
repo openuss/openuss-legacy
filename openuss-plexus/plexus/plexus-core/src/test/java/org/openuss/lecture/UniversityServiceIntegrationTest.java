@@ -14,6 +14,8 @@ import java.util.List;
 
 import org.acegisecurity.AccessDeniedException;
 import org.apache.log4j.Logger;
+import org.openuss.security.Group;
+import org.openuss.security.GroupDao;
 import org.openuss.security.User;
 
 /**
@@ -215,6 +217,9 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		// Create a University
 		University university = testUtility.createUniqueUniversityInDB();
 		assertNotNull(university.getId());
+		assertNotNull(university.getMembership().getGroups());
+		assertEquals(1, university.getMembership().getGroups().size());
+		Group group = university.getMembership().getGroups().get(0);
 
 		// Save UniversityID
 		Long id = university.getId();
@@ -244,6 +249,12 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		UniversityDao universityDao = (UniversityDao) this.applicationContext.getBean("universityDao");
 		University university2 = universityDao.load(id);
 		assertNull(university2);
+		
+		GroupDao groupDao = (GroupDao) this.getApplicationContext().getBean("groupDao");
+		Group groupTest = groupDao.load(group.getId());
+		//groupDao.remove(groupTest);
+		//groupTest = groupDao.load(group.getId());
+		assertNull(groupTest);
 
 		testUtility.destroySecureContext();
 		logger.info("----> END access to removeUniversity test");

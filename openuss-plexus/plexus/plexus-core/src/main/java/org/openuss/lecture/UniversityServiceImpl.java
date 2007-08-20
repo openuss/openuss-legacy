@@ -218,6 +218,8 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 		// TODO: Fire removedUniversity event to delete all bookmarks
 
+		//university.getMembership().getGroups().clear(); // due to problems of cascade
+		
 		// Get Departments
 		List<Department> departments = university.getDepartments();
 		for (Department department : departments) {
@@ -257,6 +259,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		this.getPeriodDao().remove(university.getPeriods());
 
 		// remove University (including its Groups)
+		
 		List<Group> groups = university.getMembership().getGroups();
 		List<Group> groups2 = new ArrayList<Group>();
 		for (Group group:groups) {
@@ -265,6 +268,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		for (Group group:groups2) {
 			this.getOrganisationService().removeGroup(university.getId(), group.getId());
 		}
+		
 		this.getUniversityDao().remove(university);
 
 	}

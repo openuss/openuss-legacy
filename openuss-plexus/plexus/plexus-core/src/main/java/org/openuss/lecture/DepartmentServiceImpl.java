@@ -278,6 +278,43 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		return (ApplicationInfo) this.getApplicationDao().load(ApplicationDao.TRANSFORM_APPLICATIONINFO, applicationId);
 	}
+	
+	@Override
+	public boolean handleIsNoneExistingDepartmentShortcut(DepartmentInfo self, String shortcut) throws Exception {
+		Department found = getDepartmentDao().findByShortcut(shortcut);
+		DepartmentInfo foundInfo = null;
+		if (found != null) {
+			foundInfo = this.getDepartmentDao().toDepartmentInfo(found);
+		}
+		return isEqualOrNull(self, foundInfo);
+	}
+
+	/*------------------- private methods -------------------- */
+
+	/**
+	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self
+	 * entry.
+	 * <ul>
+	 * <li>self == null AND found == null => <b>true</b></li>
+	 * <li>self == null AND found <> null => <b>false</b></li>
+	 * <li>self <> null AND found == null => <b>true</b></li>
+	 * <li>self <> null AND found <> null AND self == found => <b>true</b></li>
+	 * <li>self <> null AND found <> null AND self <> found => <b>false</b></li>
+	 * </ul>
+	 * 
+	 * @param self
+	 *            current record
+	 * @param found
+	 *            in database
+	 * @return true or false
+	 */
+	private boolean isEqualOrNull(Object self, Object found) {
+		if (self == null || found == null) {
+			return found == null;
+		} else {
+			return self.equals(found);
+		}
+	}
 
 	/*------------------- private methods -------------------- */
 

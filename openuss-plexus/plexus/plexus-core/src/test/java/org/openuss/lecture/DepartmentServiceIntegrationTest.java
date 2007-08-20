@@ -108,6 +108,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		flush();
 		
 		//Remove department
+		testUtility.createAdminSecureContext();
 		this.getDepartmentService().removeDepartment(department.getId());
 		flush();
 		
@@ -413,5 +414,36 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		assertEquals(department5.getName(), departments.get(2).getName());
 		
 		logger.info("----> END access to findDepartmentsByType test");
+	}
+	
+	public void testIsNoneExistingDepartmentShortcut () {
+		logger.debug("----> BEGIN access to isNoneExistingUniversityShortcut test <---- ");
+		
+		//Create Secure Context
+		User user = testUtility.createSecureContext();
+		
+		// Create Departments
+		Department department1 = testUtility.createUniqueDepartmentInDB();
+		Department department2 = testUtility.createUniqueDepartmentInDB();
+		flush();
+		
+		// Test
+		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
+		Boolean result = this.getDepartmentService().isNoneExistingDepartmentShortcut(
+				departmentDao.toDepartmentInfo(department1), department1.getShortcut());
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getDepartmentService().isNoneExistingDepartmentShortcut(
+				departmentDao.toDepartmentInfo(department1), testUtility.unique("department"));
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getDepartmentService().isNoneExistingDepartmentShortcut(
+				departmentDao.toDepartmentInfo(department1), department2.getShortcut());
+		assertNotNull(result);
+		assertFalse(result);
+		
+		logger.debug("----> END access to isNoneExistingUniversityShortcut test <---- ");
 	}
 }

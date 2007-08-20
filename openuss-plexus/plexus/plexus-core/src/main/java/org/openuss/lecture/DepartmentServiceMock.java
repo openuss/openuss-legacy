@@ -207,4 +207,8 @@ public class DepartmentServiceMock implements DepartmentService {
 		return null;
 	}
 
+	public boolean isNoneExistingDepartmentShortcut(DepartmentInfo self, String shortcut) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

@@ -152,6 +152,26 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public Department findByShortcut(int transform, String queryString, String shortcut) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Department findByShortcut(int transform, String shortcut) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Department findByShortcut(String queryString, String shortcut) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Department findByShortcut(String shortcut) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	public void toDepartmentInfo(Department sourceEntity, DepartmentInfo targetVO) {
 		// TODO Auto-generated method stub
