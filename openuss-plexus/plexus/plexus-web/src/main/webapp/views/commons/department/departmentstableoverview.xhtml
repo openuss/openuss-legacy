@@ -49,32 +49,7 @@
 					styleClass="button_link">
 				</plexus:command>	
 			</s:authorize>
-			<s:authorize ifAllGranted="ROLE_ADMIN">
-				<h:commandButton 
-					action = "#{views$public$department$departments.disableDepartment}"
-					styleClass="button_remove"
-					value="#{msg.department_command_disable}"
-					hint="#{msg.department_command_disable_hint}"
-					rendered="#{bean.enabled}">
-				</h:commandButton>
-			</s:authorize>
-			<s:authorize ifAllGranted="ROLE_ADMIN">
-				<h:commandButton 
-					action = "#{views$public$department$departments.enableDepartment}"
-					styleClass="button_remove"
-					value="#{msg.department_command_enable}"
-					hint="#{msg.department_command_enable_hint}"
-					rendered="#{not bean.enabled}">
-				</h:commandButton>
-			</s:authorize>
-			<s:authorize ifAllGranted="ROLE_ADMIN">
-				<h:commandButton
-					styleClass="button_remove"
-					value="#{msg.department_command_remove}"
-					hint="#{msg.department_command_remove_hint}">
-				</h:commandButton>	
-			</s:authorize>
 		</plexus:column>
-		
+	
 	</plexus:dataTable>
 </ui:composition>

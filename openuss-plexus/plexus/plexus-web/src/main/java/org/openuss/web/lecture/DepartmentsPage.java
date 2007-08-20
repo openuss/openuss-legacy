@@ -17,6 +17,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentType;
+import org.openuss.lecture.OrganisationService;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.lecture.DepartmentService;
@@ -30,6 +31,7 @@ import org.openuss.web.Constants;
  * 
  * @author Tianyu Wang
  * @author Weijun Chen
+ * @author Kai Stettner
  *
  */
 @Bean(name = "views$public$department$departments", scope = Scope.REQUEST)
@@ -47,6 +49,9 @@ public class DepartmentsPage extends BasePage{
 
 	@Property(value = "#{departmentService}")
 	private DepartmentService departmentService;
+	
+	@Property(value = "#{organisationService}")
+	private OrganisationService organisationService;
 	
 	@Prerender
 	public void prerender() throws Exception {
@@ -72,6 +77,50 @@ public class DepartmentsPage extends BasePage{
 		setSessionBean(Constants.DEPARTMENT_INFO, department);
 		
 		return Constants.DEPARTMENT_PAGE;
+	}
+	
+	/**
+	 * Store the selected department into session scope and go to department remove confirmation page.
+	 * @return Outcome
+	 */
+	public String selectDepartmentAndConfirmRemove() {
+		logger.debug("Starting method selectDepartmentAndConfirmRemove");
+		DepartmentInfo currentDepartment = currentDepartment();
+		logger.debug("Returning to method selectDepartmentAndConfirmRemove");
+		logger.debug(currentDepartment.getId());	
+		setSessionBean(Constants.DEPARTMENT_INFO, currentDepartment);
+		
+		return Constants.DEPARTMENT_CONFIRM_REMOVE_PAGE;
+	}
+	
+	/**
+	 * Disables the chosen department. This is just evident for the search indexing.
+	 * @return Outcome
+	 */
+	public String disableDepartment() {
+		logger.debug("Starting method disableDepartment");
+		DepartmentInfo currentDepartment = currentDepartment();
+		// setOrganisationStatus(true) = Enabled
+		// setOrganisationStatus(false) = Disbled
+		organisationService.setOrganisationStatus(false, currentDepartment.getId());
+		
+		addMessage(i18n("message_department_disabled"));
+		return Constants.SUCCESS;
+	}
+	
+	/**
+	 * Enables the chosen department. This is just evident for the search indexing.
+	 * @return Outcome
+	 */
+	public String enableDepartment() {
+		logger.debug("Starting method enableDepartment");
+		DepartmentInfo currentDepartment = currentDepartment();
+		// setOrganisationStatus(true) = Enabled
+		// setOrganisationStatus(false) = Disbled
+		organisationService.setOrganisationStatus(true, currentDepartment.getId());
+		
+		addMessage(i18n("message_department_enabled"));
+		return Constants.SUCCESS;
 	}
 	
 	/**
@@ -118,21 +167,6 @@ public class DepartmentsPage extends BasePage{
 		} else {
 			Collections.sort(departmentList, new NameComparator());
 		}
-	}
-
-	public DepartmentTable getDepartments() {
-		return departments;
-	}
-
-	private class DepartmentTable extends AbstractPagedTable<DepartmentInfo> {
-
-		private static final long serialVersionUID = -6077435481342714879L;
-
-		@Override
-		public DataPage<DepartmentInfo> getDataPage(int startRow, int pageSize) {
-			return fetchDataPage(startRow, pageSize);
-		}
-		
 	}
 	
 	public DepartmentService getDepartmentService() {
@@ -193,13 +227,37 @@ public class DepartmentsPage extends BasePage{
 		}
 	}
 
-
-
-	
 	public String confirmRemoveDepartment(){
 		DepartmentInfo departmentInfo = currentDepartment();
 		setSessionBean(Constants.DEPARTMENT, departmentInfo);
 		return "removed";
+	}
+
+	public DepartmentTable getDepartments() {
+		return departments;
+	}
+	
+	public OrganisationService getOrganisationService() {
+		return organisationService;
+	}
+
+	public void setOrganisationService(OrganisationService organisationService) {
+		this.organisationService = organisationService;
+	}
+	
+	
+	
+	
+
+	private class DepartmentTable extends AbstractPagedTable<DepartmentInfo> {
+
+		private static final long serialVersionUID = -6077435481342714879L;
+
+		@Override
+		public DataPage<DepartmentInfo> getDataPage(int startRow, int pageSize) {
+			return fetchDataPage(startRow, pageSize);
+		}
+		
 	}
 
 
