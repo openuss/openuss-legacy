@@ -143,7 +143,7 @@ public class MyUniPage extends BasePage {
 	
 	@Prerender
 	public void prerender() {
-//		logger.debug("prerender desktop");
+		logger.debug("Prerender MyUni-Page");
 		refreshDesktop();
 		prepareData();
 		loadParams();
@@ -173,7 +173,7 @@ public class MyUniPage extends BasePage {
 				setSessionBean(Constants.DESKTOP_INFO, desktopInfo);
 			
 				assert desktopDao != null;
-				desktop = desktopDao.desktopInfoToEntity(desktopInfo);
+				desktop = desktopDao.load(desktopInfo.getId());
 				assert desktop != null;
 				
 			} catch (DesktopException e) {
@@ -386,7 +386,7 @@ public class MyUniPage extends BasePage {
 				logger.error("Loading MyUni data failed");
 				myUniDataSet = null;
 			}
-		}
+		} 
 	}
 
 	
