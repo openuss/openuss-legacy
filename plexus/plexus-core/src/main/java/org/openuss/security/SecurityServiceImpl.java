@@ -67,6 +67,9 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		if (StringUtils.isBlank(user.getEmail())) {
 			throw new SecurityServiceException("Email must be defined");
 		}
+		if (user.getProfile() == null) {
+			user.setProfile(UserProfile.Factory.newInstance());
+		}
 		user = getUserDao().create(user);
 		
 		// define object identity
