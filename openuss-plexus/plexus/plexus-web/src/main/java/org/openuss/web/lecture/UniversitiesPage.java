@@ -86,7 +86,7 @@ public class UniversitiesPage extends BasePage{
 		UniversityInfo currentUniversity = currentUniversity();
 		// setOrganisationStatus(true) = Enabled
 		// setOrganisationStatus(false) = Disbled
-		organisationService.setOrganisationStatus(false, currentUniversity.getId());
+		universityService.setUniversityStatus(currentUniversity.getId(), false);
 		
 		addMessage(i18n("message_university_disabled"));
 		return Constants.SUCCESS;
@@ -101,7 +101,7 @@ public class UniversitiesPage extends BasePage{
 		UniversityInfo currentUniversity = currentUniversity();
 		// setOrganisationStatus(true) = Enabled
 		// setOrganisationStatus(false) = Disbled
-		organisationService.setOrganisationStatus(true, currentUniversity.getId());
+		universityService.setUniversityStatus(currentUniversity.getId(), true);
 		
 		addMessage(i18n("message_university_enabled"));
 		return Constants.SUCCESS;

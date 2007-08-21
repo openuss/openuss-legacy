@@ -102,7 +102,7 @@ public class DepartmentsPage extends BasePage{
 		DepartmentInfo currentDepartment = currentDepartment();
 		// setOrganisationStatus(true) = Enabled
 		// setOrganisationStatus(false) = Disabled
-		organisationService.setOrganisationStatus(false, currentDepartment.getId());
+		departmentService.setDepartmentStatus(currentDepartment.getId(), false);
 		
 		addMessage(i18n("message_department_disabled"));
 		return Constants.SUCCESS;
@@ -117,7 +117,7 @@ public class DepartmentsPage extends BasePage{
 		DepartmentInfo currentDepartment = currentDepartment();
 		// setOrganisationStatus(true) = Enabled
 		// setOrganisationStatus(false) = Disabled
-		organisationService.setOrganisationStatus(true, currentDepartment.getId());
+		departmentService.setDepartmentStatus(currentDepartment.getId(), true);
 		
 		addMessage(i18n("message_department_enabled"));
 		return Constants.SUCCESS;
