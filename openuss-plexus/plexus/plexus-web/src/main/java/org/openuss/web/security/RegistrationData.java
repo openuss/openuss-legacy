@@ -28,7 +28,6 @@ public class RegistrationData extends BaseBean {
 	private static final Logger logger = Logger.getLogger(RegistrationData.class);
 
 	private boolean userAgreementAccepted;
-	private boolean enableAssistantRole;
 	private String username;
 
 	/**
@@ -60,14 +59,6 @@ public class RegistrationData extends BaseBean {
 		}
 	}
 	
-	public boolean isEnableAssistantRole() {
-		return enableAssistantRole;
-	}
-
-	public void setEnableAssistantRole(boolean enableAssistantRole) {
-		this.enableAssistantRole = enableAssistantRole;
-	}
-
 	public boolean isUserAgreementAccepted() {
 		return userAgreementAccepted;
 	}

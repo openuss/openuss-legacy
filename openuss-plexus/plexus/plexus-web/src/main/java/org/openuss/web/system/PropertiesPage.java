@@ -9,7 +9,6 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.lecture.LectureIndex;
-import org.openuss.migration.MigrationService;
 import org.openuss.system.SystemProperty;
 import org.openuss.system.SystemService;
 import org.openuss.web.BasePage;
@@ -59,12 +58,6 @@ public class PropertiesPage extends BasePage  {
 	public String saveProperties() {
 		Collection<SystemProperty> properties = propertyList.getData();
 		systemService.persistProperties(properties);
-		return Constants.SUCCESS;
-	}
-	
-	public String migrate() {
-		MigrationService service = (MigrationService) getBean("migrationService");
-		service.performMigration();
 		return Constants.SUCCESS;
 	}
 	

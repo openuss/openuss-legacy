@@ -57,9 +57,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	
 	@Override
 	protected User handleCreateUser(User user) throws Exception {
-		if (user.getId() != null) {
-			throw new IllegalArgumentException("user must not have an identifier!");
-		}
+		Validate.isTrue(user.getId() == null,"User must not have an identifier!");
 		if (!isValidUserName(null, user.getUsername())) {
 			throw new SecurityServiceException("Invalid username.");
 		}
@@ -69,17 +67,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		if (StringUtils.isBlank(user.getEmail())) {
 			throw new SecurityServiceException("Email must be defined");
 		}
-		if (user.getProfile() == null) {
-			user.setProfile(UserProfile.Factory.newInstance());
-		}
-		
 		user = getUserDao().create(user);
-		
-		Group roleAdmin = getGroupDao().load(Roles.ADMINISTRATOR_ID);
-		if (roleAdmin.getMembers().size() == 0) {
-			logger.info("User "+user.getUsername()+" is the first user and achieve administrator role!");
-			handleAddAuthorityToGroup(user, roleAdmin);
-		}
 		
 		// define object identity
 		createObjectIdentity(user, null);

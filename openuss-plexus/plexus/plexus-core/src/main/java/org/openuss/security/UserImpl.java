@@ -177,4 +177,24 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		return StringUtils.isNotBlank(getSmsEmail());
 	}
 
+	@Override
+	@Deprecated
+	public UserContact getContact() {
+		if (super.getContact() == null) {
+			return UserContact.Factory.newInstance();
+		} else {
+			return super.getContact();
+		}
+	}
+
+	@Override
+	@Deprecated
+	public UserProfile getProfile() {
+		if (super.getProfile() == null) {
+			return UserProfile.Factory.newInstance();
+		} else {
+			return super.getProfile();
+		}
+	}
+	
 }

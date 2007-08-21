@@ -57,7 +57,7 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 	}
 	
 	public void testUserRegistration() throws RegistrationException {
-		registrationService.registrateUser(user, true);
+		registrationService.registrateUser(user);
 		
 		assertNotNull(user.getId());
 		assertEquals(false, user.isEnabled());

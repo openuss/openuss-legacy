@@ -84,7 +84,6 @@ public class CourseNewsPage extends AbstractCoursePage implements Serializable{
 		newsItem.setExpireDate(new Date(System.currentTimeMillis()+1000L*60L*60L*24L*28L));
 		
 		newsItem.setPublisherIdentifier(courseInfo.getId());
-		// FIXME BEWARE OF LAZYEXCEPTION HERE
 		newsItem.setPublisherName(courseInfo.getInstituteName());
 		
 		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
