@@ -205,20 +205,6 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 	}
 
 	/**
-	 * @see org.openuss.lecture.OrganisationService#setOrganisationStatus(boolean status)
-	 */
-	protected void handleSetOrganisationStatus(boolean status, Long organisationId) throws java.lang.Exception {
-		Validate.notNull(organisationId, "OrganisationService.setOrganisationStatus - organisationId cannot be null.");
-
-		// Load Organisation
-		Organisation organisation = this.getOrganisationDao().load(organisationId);
-
-		// Set Organisation status
-		organisation.setEnabled(status);
-		this.getOrganisationDao().update(organisation);
-	}
-
-	/**
 	 * @see org.openuss.lecture.OrganisationService#sendActivationCode(org.openuss.lecture.Organisation)
 	 */
 	protected void handleSendActivationCode(Organisation organisation) throws RegistrationException {
@@ -249,10 +235,24 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 
 		// Find Groups
 		List<GroupItem> groupItems = new ArrayList<GroupItem>(organisation.getMembership().getGroups().size());
-		for(Group group:organisation.getMembership().getGroups()) {
+		for (Group group : organisation.getMembership().getGroups()) {
 			groupItems.add(this.getGroupDao().toGroupItem(group));
 		}
 		return groupItems;
+	}
+
+	@Override
+	protected void handleSetOrganisationEnabled(Long organisationId, Boolean enabled) throws Exception {
+		Validate.notNull(organisationId,
+				"OrganisationService.handleSetOrganisationEnabled - organisationId cannot be null.");
+		Validate.notNull(enabled, "OrganisationService.handleSetOrganisationEnabled - enabled cannot be null.");
+
+		// Load Organisation
+		Organisation organisation = this.getOrganisationDao().load(organisationId);
+
+		// Set Organisation status
+		organisation.setEnabled(enabled);
+		this.getOrganisationDao().update(organisation);
 	}
 
 }

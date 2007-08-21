@@ -192,6 +192,7 @@
                 org.openuss.lecture.UniversityService.setUniversityStatus=ROLE_ADMIN
                 org.openuss.lecture.DepartmentService.setDepartmentStatus=ROLE_ADMIN
                 org.openuss.lecture.InstituteService.setInstituteStatus=ROLE_ADMIN
+                org.openuss.lecture.OrganisationService.setOrganisationEnabled=ROLE_ADMIN
             </value>
         </property>
     </bean>

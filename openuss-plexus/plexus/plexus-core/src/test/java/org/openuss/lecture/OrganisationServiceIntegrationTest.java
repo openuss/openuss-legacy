@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.acegisecurity.AccessDeniedException;
 import org.apache.log4j.Logger;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
@@ -384,7 +385,6 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		logger.info("----> END access to removeUserFromGroup test");
 	}
 
-
 	public void testFindGroupsByOrganisation() {
 		logger.info("----> BEGIN access to findGroupsByOrganisation test");
 
@@ -399,7 +399,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		groupItem1.setLabel("autogroup_tutors_label");
 		groupItem1.setGroupType(GroupType.ADMINISTRATOR);
 		Group group1 = this.getOrganisationService().createGroup(university.getId(), groupItem1);
-		
+
 		GroupItem groupItem2 = new GroupItem();
 		groupItem2.setName("UNIVERSITY_" + university.getId() + "_ASSISTENT");
 		groupItem2.setLabel("autogroup_assistent_label");
@@ -412,7 +412,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		// Test
 		List groups = this.getOrganisationService().findGroupsByOrganisation(university.getId());
 
-		//assertEquals(sizeBefore+2, groups.size());
+		// assertEquals(sizeBefore+2, groups.size());
 		assertTrue(groups.get(0) instanceof GroupItem);
 		assertTrue(university.getMembership().getGroups().get(0) instanceof Group);
 
@@ -431,5 +431,50 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		assertEquals(university.getMembership().getGroups().size(), count);
 
 		logger.info("----> END access to findGroupsByOrganisation test");
+	}
+
+	public void testSetOrganisationEnabled() {
+		logger.info("----> BEGIN access to setOrganisationEnabled test");
+
+		// Create university
+		University university = testUtility.createUniqueUniversityInDB();
+		assertNotNull(university);
+		assertTrue(university.getEnabled());
+
+		// Synchronize with DB
+		flush();
+
+		testUtility.createUserSecureContext();
+		try {
+			this.getOrganisationService().setOrganisationEnabled(university.getId(), false);
+			fail("AccessDeniedException should have been thrown.");
+
+		} catch (AccessDeniedException ade) {
+			;
+		} finally {
+			testUtility.destroySecureContext();
+		}
+
+		testUtility.createAdminSecureContext();
+		this.getOrganisationService().setOrganisationEnabled(university.getId(), false);
+
+		// Load university
+		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
+		University universityTest = universityDao.load(university.getId());
+
+		assertFalse(universityTest.getEnabled());
+		testUtility.destroySecureContext();
+
+		testUtility.createAdminSecureContext();
+		this.getOrganisationService().setOrganisationEnabled(university.getId(), true);
+
+		// Load university
+		universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
+		University universityTest1 = universityDao.load(university.getId());
+
+		assertTrue(universityTest1.getEnabled());
+		testUtility.destroySecureContext();
+
+		logger.info("----> END access to setOrganisationEnabled test");
 	}
 }
