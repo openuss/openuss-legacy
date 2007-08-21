@@ -8,7 +8,8 @@
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:p="http://www.openuss.org/plexus/jsf"
-	  xmlns:c="http://java.sun.com/jstl/core"      
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:s="http://www.openuss.org/jsf-security"      
       xmlns:plexus="ttp://www.openuss.org/plexus/jsf">
       
  	<head>
@@ -59,8 +60,29 @@
 			  	</o:block>
 	  			
 	  			<o:block styleClass="teaser_blue" label="#{universityInfo.name} - #{msg['university_profile']}">
-				  		<h:outputText value="#{universityInfo.description}" styleClass="content_font_normal" escape="false"/>
+				  		<h:outputText value="#{universityInfo.description}" styleClass="content_font_normal" escape="true"/>
 				</o:block>
+				
+				<s:authorize ifAllGranted="ROLE_USER">
+					<!-- spacer -->
+					<div>
+						<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
+					</div>
+					<h:form id="actionsForm">
+						<o:block styleClass="teaser_blue" label="#{msg.organisation_command_actions}">
+						  		<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UPDATE}">
+									<h:commandLink action="department_registration_step1">
+										<h:outputText value="#{msg.department_command_add_department}"  styleClass="content_font_normal"/>
+									</h:commandLink>
+									<t:htmlTag value="br"/>
+									<t:htmlTag value="br"/>
+								</s:acl>
+						  		<h:commandLink action="institute_create">
+									<h:outputText value="#{msg.institute_command_add_institute}"  styleClass="content_font_normal"/>
+								</h:commandLink>
+						</o:block>
+					</h:form>
+				</s:authorize>
 	  			
 			  	<div class="clear_both"/>
 				
