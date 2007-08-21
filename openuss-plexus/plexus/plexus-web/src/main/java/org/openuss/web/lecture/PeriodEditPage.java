@@ -7,15 +7,14 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
-import java.util.Date;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import org.openuss.web.PageLinks;
 
 /**
  * Period Edit Page Controller
  * 
  * @author Ingo Dueppe
  * @author Weijun Chen
+ * @author Kai Stettner
  */
 @Bean(name = "views$secured$lecture$periodedit", scope = Scope.REQUEST)
 @View
@@ -29,11 +28,24 @@ public class PeriodEditPage extends AbstractPeriodPage {
 	
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
-		crumb.setName(i18n("period_heading"));
-		crumb.setHint(i18n("period_heading"));
+		crumb.setLink(PageLinks.UNIVERSITY_PERIODS);
+		crumb.setName(i18n("period_command_edit"));
+		crumb.setHint(i18n("period_command_edit"));
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
+	}
+		
+	/**
+	 * Set session bean null and direct to next view.
+	 * 
+	 * @return outcome
+	 * @throws LectureException
+	 */
+	public String addPeriod() throws LectureException {
+		
+		setSessionBean(Constants.PERIOD_INFO, null);
+		
+		return Constants.UNIVERSITY_PERIOD_ADD_PAGE;
 	}
 	
 	/**
@@ -44,7 +56,6 @@ public class PeriodEditPage extends AbstractPeriodPage {
 	 */
 	public String savePeriod() throws LectureException {
 		if (periodInfo.getId() == null) {
-			
 			periodInfo.setUniversityId(universityInfo.getId());
 			universityService.createPeriod(periodInfo);
 			addMessage(i18n("message_created_new_period_succeed"));

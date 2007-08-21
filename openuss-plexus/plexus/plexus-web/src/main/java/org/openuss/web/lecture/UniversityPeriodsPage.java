@@ -3,29 +3,23 @@ package org.openuss.web.lecture;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
-import org.openuss.lecture.UniversityService;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.web.Constants;
 
 /**
  * Periods Page Controller
  * 
+ * @author Kai Stettner
  * @author Tianyu Wang
  * @author Weijun Chen
  */
@@ -37,13 +31,10 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 
 	private PeriodDataModel periodData = new PeriodDataModel();
 	
+	@Property(value = "#{sessionScope.periodInfo}")
+	private PeriodInfo periodInfo;
 	
-	
-	
-
-	
-	@Property(value = "#{sessionScope.period}")
-	private PeriodInfo period;
+	private List<PeriodInfo> periods;
 	
 	@Prerender
 	@Override
@@ -52,19 +43,19 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 		if (universityInfo != null) {
 			// refresh period list
 			// TODO ask the lectureService instead of institute and use value objects
-			List<PeriodInfo> periods = universityService.findPeriodsByUniversity(universityInfo.getId());
+			periods = universityService.findPeriodsByUniversity(universityInfo.getId());
 			
-			period = (PeriodInfo) getSessionBean(Constants.PERIOD);
-			if (period != null) {
-				if (period.getId() != null && periods.contains(period)) {
-					period = universityService.findPeriod(period.getId());
+			periodInfo = (PeriodInfo) getSessionBean(Constants.PERIOD_INFO);
+			if (periodInfo != null) {
+				if (periodInfo.getId() != null && periods.contains(periodInfo)) {
+					periodInfo = universityService.findPeriod(periodInfo.getId());
 				} else {
-					period = null;
+					periodInfo = null;
 				}
 			}
 		}
 		
-		setSessionBean(Constants.PERIOD, period);
+		setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		
 	
 		addPageCrumb();
@@ -80,44 +71,26 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 	}	
 
 	/**
-	 * Change the actual active period.
+	 * Is selected period active?
 	 * 
 	 * @return outcome
-	 * @throws LectureException 
 	 */
-	public String periodToActive() throws LectureException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("change active period of line " + periodData.getRowIndex());
-		}
+	public boolean getIsActivePeriod() {
+		logger.debug("Starting method isActivePeriod");
+		PeriodInfo periodInfo = periodData.getRowData();
+		boolean active = universityService.isActivePeriod(periodInfo.getId());
+		logger.debug("Active? "+active);
 		
-		PeriodInfo period = periodData.getRowData();
-		//universityService.setActivePeriod(university.getId(), period);
-
-		return Constants.SUCCESS;
+		return active;
 	}
-
-	/**
-	 * Select a period
-	 * 
-	 * @return outcome
-	 */
-	public String selectPeriod() {
-		if (logger.isDebugEnabled()) {
-			logger.debug("select period of line " + periodData.getRowIndex());
-		}
-		PeriodInfo period = periodData.getRowData();
-		setSessionBean(Constants.PERIOD, period);
-
-		return Constants.SUCCESS;
-	}
-
+	
 	/**
 	 * Adds a new period to institute
 	 * @return
 	 */
 	public String addPeriod() {
-		PeriodInfo period = new PeriodInfo();
-		setSessionBean(Constants.PERIOD, period);
+		PeriodInfo periodInfo = new PeriodInfo();
+		setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		return Constants.UNIVERSITY_PERIOD_ADD_PAGE;
 	}
 
@@ -157,8 +130,8 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Remove Period");
 		}
-		universityService.removePeriod(period.getId());
-		removeSessionBean(Constants.PERIOD);
+		universityService.removePeriod(periodInfo.getId());
+		removeSessionBean(Constants.PERIOD_INFO);
 		return Constants.INSTITUTE_PERIODS_PAGE;
 	}
 
@@ -169,12 +142,12 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 	 * @throws LectureException
 	 */
 	public String savePeriod() throws LectureException {
-		if (period.getId() == null) {
-			universityService.createPeriod(period);
+		if (periodInfo.getId() == null) {
+			universityService.createPeriod(periodInfo);
 		} else {
-			universityService.update(period);
+			universityService.update(periodInfo);
 		}
-			
+		
 		return Constants.INSTITUTE_PERIODS_PAGE;
 	}
 
@@ -226,15 +199,14 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 	public void setPeriodData(PeriodDataModel periodData) {
 		this.periodData = periodData;
 	}
-
 	
-	public PeriodInfo getPeriod() {
-		return period;
+	public PeriodInfo getPeriodInfo() {
+		return periodInfo;
 	}
-	
-	public void setPeriod(PeriodInfo period) {
-		logger.trace("setPeriod " + period);
-		this.period = period;
+
+	public void setPeriodInfo(PeriodInfo periodInfo) {
+		logger.trace("setPeriodInfo " + periodInfo);
+		this.periodInfo = periodInfo;
 	}
 }
 	

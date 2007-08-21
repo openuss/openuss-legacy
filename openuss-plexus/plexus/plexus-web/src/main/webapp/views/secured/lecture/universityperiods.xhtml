@@ -20,7 +20,7 @@
 	<body>      
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
-  		<ui:define name="title"><h:outputText value="#{msg.institute_maintitle} - #{institute.name}"/></ui:define>
+  		<ui:define name="title"><h:outputText value="#{msg.university_maintitle} - #{universityInfo.name}"/></ui:define>
  		<ui:define name="navigation">
 			<ui:include src="/views/commons/navigation/university.xhtml" />
 		</ui:define>
@@ -30,7 +30,7 @@
 				<o:block>
 					<h:commandButton 
 					    id="addPeriod"
-					    action="university_period_add"
+					    action="#{views$secured$lecture$periodedit.addPeriod}"
 						value="#{msg.period_command_add_period}" 
 						title="#{msg.period_command_add_period_hint}"
 						styleClass="button_add"/>

@@ -23,8 +23,8 @@ public class PageLinks{
 	public static final String DISCUSSION_MAIN = "/views/secured/discussion/discussions.faces";
 	
 	public static final String INSTITUTE_NEWS =  "/views/secured/lecture/news.faces";
-	
-	public static final String INSTITUTE_PERIODS = "/views/secured/lecture/periods.faces";
+		
+	public static final String UNIVERSITY_PERIODS = "/views/secured/lecture/universityperiods.faces";
 	
 	public static final String COURSE_NEWSLETTER = "/views/secured/newsletter/newsletter.faces";
 

@@ -12,6 +12,7 @@ import org.openuss.web.PageLinks;
  * @author Ingo Dueppe
  * @author Tianyu Wang
  * @author Weijun Chen
+ * @author Kai Stettner
  */
 public class AbstractPeriodPage extends AbstractUniversityPage {
 
@@ -33,21 +34,21 @@ public class AbstractPeriodPage extends AbstractUniversityPage {
 			// update the period
 			
 			}
-			setBean("periodInfo", periodInfo);
+		setBean("periodInfo", periodInfo);
 		
-//		addPeriodCrumb();
+		addPeriodCrumb();
 	}
 
-	/*
+	
 	private void addPeriodCrumb() {
 		BreadCrumb periodCrumb = new BreadCrumb();
-		periodCrumb.setName(i18n("institute_command_periods"));
-		periodCrumb.setHint(i18n("institute_command_periods"));
-		periodCrumb.setLink(PageLinks.INSTITUTE_PERIODS);
-		periodCrumb.addParameter("institute", institute.getId());
+		periodCrumb.setName(i18n("university_command_periods"));
+		periodCrumb.setHint(i18n("university_command_periods"));
+		periodCrumb.setLink(PageLinks.UNIVERSITY_PAGE);
+		periodCrumb.addParameter("university", universityInfo.getId());
 		crumbs.add(periodCrumb);
 	}
-*/
+
 	public PeriodInfo getPeriodInfo() {
 		return periodInfo;
 	}
