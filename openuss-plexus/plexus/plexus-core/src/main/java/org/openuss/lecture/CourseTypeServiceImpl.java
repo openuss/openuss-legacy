@@ -130,6 +130,7 @@ public class CourseTypeServiceImpl
 		}
 		return isEqualOrNull(self, foundInfo);
 	}
+
 	
 	@Override
 	public void handleRegisterListener (LectureListener listener) throws Exception {

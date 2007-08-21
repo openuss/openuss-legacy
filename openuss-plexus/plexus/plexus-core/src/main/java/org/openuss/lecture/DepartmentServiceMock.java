@@ -188,7 +188,6 @@ public class DepartmentServiceMock implements DepartmentService {
 
 	public void signoffInstitute(Long instituteId) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public ApplicationInfo findApplication(Long applicationId) {
@@ -210,5 +209,9 @@ public class DepartmentServiceMock implements DepartmentService {
 	public boolean isNoneExistingDepartmentShortcut(DepartmentInfo self, String shortcut) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public void setDepartmentStatus(Long departmentId, boolean status) {
+		// TODO Auto-generated method stub
 	}
 }

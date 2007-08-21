@@ -7,6 +7,7 @@ package org.openuss.lecture;
 
 import java.util.List;
 
+import org.acegisecurity.AccessDeniedException;
 import org.openuss.security.Membership;
 import org.openuss.security.User;
 
@@ -445,5 +446,52 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		assertFalse(result);
 		
 		logger.debug("----> END access to isNoneExistingUniversityShortcut test <---- ");
+	}
+	
+	public void testSetDepartmentStatus() {
+		logger.info("----> BEGIN access to setDepartmentStatus test");
+
+		// Create department
+		Department department = testUtility.createUniqueDepartmentInDB();
+		assertNotNull(department);
+		assertTrue(department.getEnabled());
+
+		// Synchronize with DB
+		flush();
+
+		testUtility.createUserSecureContext();
+		try {
+			this.getDepartmentService().setDepartmentStatus(department.getId(), false);
+			fail("AccessDeniedException should have been thrown.");
+			
+		} catch (AccessDeniedException ade) {
+			;
+		} finally {
+			testUtility.destroySecureContext();
+		}
+		
+		// Set status
+		testUtility.createAdminSecureContext();
+		this.getDepartmentService().setDepartmentStatus(department.getId(), false);
+
+		// Load department
+		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
+		Department departmentTest = departmentDao.load(department.getId());
+
+		assertFalse(departmentTest.getEnabled());
+		testUtility.destroySecureContext();
+
+		// Set status
+		testUtility.createAdminSecureContext();
+		this.getDepartmentService().setDepartmentStatus(department.getId(), true);
+
+		// Load department
+		departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
+		Department departmentTest1 = departmentDao.load(department.getId());
+
+		assertTrue(departmentTest1.getEnabled());
+		testUtility.destroySecureContext();
+
+		logger.info("----> END access to setDepartmentStatus test");
 	}
 }

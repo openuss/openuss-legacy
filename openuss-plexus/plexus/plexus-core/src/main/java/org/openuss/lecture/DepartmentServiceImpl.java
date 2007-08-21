@@ -287,6 +287,21 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	}
 	
 	@Override
+	public void handleSetDepartmentStatus (Long departmentId, boolean status) {
+		Validate.notNull(departmentId, "DepartmentService.setDepartmentStatus - the departmentId cannot be null.");
+		Validate.notNull(status, "DepartmentService.setDepartmentStatus - status cannot be null.");
+		
+		// Load department
+		Department department = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(department, "DepartmentService.setDepartmentStatus - " +
+				"department cannot be found with the corresponding departmentId "+departmentId);
+		
+		// Set status
+		department.setEnabled(status);
+		this.update(this.getDepartmentDao().toDepartmentInfo(department));
+	}
+	
+	@Override
 	public boolean handleIsNoneExistingDepartmentShortcut(DepartmentInfo self, String shortcut) throws Exception {
 		Department found = getDepartmentDao().findByShortcut(shortcut);
 		DepartmentInfo foundInfo = null;

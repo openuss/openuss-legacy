@@ -7,6 +7,7 @@ package org.openuss.lecture;
 
 import java.util.Date;
 
+import org.acegisecurity.AccessDeniedException;
 import org.openuss.security.User;
 
 /**
@@ -263,5 +264,49 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		assertNull(institute.getApplication());
 
 		logger.debug("----> END access to removeUnconfirmedDepartment test <---- ");
+	}
+	
+	public void testSetInstituteStatus() {
+		logger.info("----> BEGIN access to setInstituteStatus test");
+
+		// Create institute
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		assertNotNull(institute);
+		assertTrue(institute.getEnabled());
+
+		// Synchronize with DB
+		flush();
+
+		testUtility.createUserSecureContext();
+		try {
+			this.getInstituteService().setInstituteStatus(institute.getId(), false);
+			fail("AccessDeniedException should have been thrown.");
+			
+		} catch (AccessDeniedException ade) {
+			;
+		} finally {
+			testUtility.destroySecureContext();
+		}
+		
+		testUtility.createAdminSecureContext();
+		this.getInstituteService().setInstituteStatus(institute.getId(), false);
+
+		// Load Institute
+		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
+		Institute instituteTest = instituteDao.load(institute.getId());
+
+		assertFalse(instituteTest.getEnabled());
+		testUtility.destroySecureContext();
+
+		testUtility.createAdminSecureContext();
+		this.getInstituteService().setInstituteStatus(institute.getId(), true);
+
+		// Load Institute
+		Institute instituteTest1 = instituteDao.load(institute.getId());
+
+		assertTrue(instituteTest1.getEnabled());
+		testUtility.destroySecureContext();
+
+		logger.info("----> END access to setInstituteStatus test");
 	}
 }

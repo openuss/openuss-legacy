@@ -299,6 +299,20 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		application.remove(application.getInstitute());
 		this.getApplicationDao().remove(application);
 	}
+	
+	@Override
+	public void handleSetInstituteStatus (Long instituteId, boolean status) {
+		Validate.notNull(instituteId, "InstituteService.setInstituteStatus - the instituteId cannot be null.");
+		Validate.notNull(status, "InstituteService.setInstituteStatus - status cannot be null.");
+		
+		// Load institute
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute, "InstiuteService.setInstituteStatus - instiute cannot be found with the corresponding instituteId "+instituteId);
+		
+		// Set status
+		institute.setEnabled(status);
+		this.update(this.getInstituteDao().toInstituteInfo(institute));
+	}
 
 	@Override
 	public boolean handleIsNoneExistingInstituteShortcut(InstituteInfo self, String shortcut) throws Exception {

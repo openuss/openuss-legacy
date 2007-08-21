@@ -269,4 +269,9 @@ public class UniversityServiceMock implements UniversityService {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public void setUniversityStatus(Long universityId, boolean status) {
+		// TODO Auto-generated method stub
+
+	}
 }

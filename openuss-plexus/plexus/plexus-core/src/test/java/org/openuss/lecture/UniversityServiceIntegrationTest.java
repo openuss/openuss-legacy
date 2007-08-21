@@ -719,5 +719,50 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		
 		logger.debug("----> END access to isNoneExistingUniversityShortcut test <---- ");
 	}
+	
+	public void testSetUniversityStatus() {
+		logger.info("----> BEGIN access to setUniversityStatus test");
+
+		// Create university
+		University university = testUtility.createUniqueUniversityInDB();
+		assertNotNull(university);
+		assertTrue(university.getEnabled());
+
+		// Synchronize with DB
+		flush();
+
+		testUtility.createUserSecureContext();
+		try {
+			this.getUniversityService().setUniversityStatus(university.getId(), false);
+			fail("AccessDeniedException should have been thrown.");
+			
+		} catch (AccessDeniedException ade) {
+			;
+		} finally {
+			testUtility.destroySecureContext();
+		}
+		
+		testUtility.createAdminSecureContext();
+		this.getUniversityService().setUniversityStatus(university.getId(), false);
+
+		// Load university
+		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
+		University universityTest = universityDao.load(university.getId());
+
+		assertFalse(universityTest.getEnabled());
+		testUtility.destroySecureContext();
+
+		testUtility.createAdminSecureContext();
+		this.getUniversityService().setUniversityStatus(university.getId(), true);
+
+		// Load university
+		universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
+		University universityTest1 = universityDao.load(university.getId());
+
+		assertTrue(universityTest1.getEnabled());
+		testUtility.destroySecureContext();
+
+		logger.info("----> END access to setUniversityStatus test");
+	}
 
 }

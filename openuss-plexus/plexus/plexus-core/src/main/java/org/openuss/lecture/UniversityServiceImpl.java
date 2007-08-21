@@ -501,6 +501,20 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	}
 	
 	@Override
+	public void handleSetUniversityStatus (Long universityId, boolean status) {
+		Validate.notNull(universityId, "UniversityService.setUniversityStatus - the universityId cannot be null.");
+		Validate.notNull(status, "UniversityService.setUniversityStatus - status cannot be null.");
+		
+		// Load university
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university, "UniversityService.setUniversityStatus - university cannot be found with the corresponding universityId "+universityId);
+		
+		// Set status
+		university.setEnabled(status);
+		this.update(this.getUniversityDao().toUniversityInfo(university));
+	}
+	
+	@Override
 	public boolean handleIsNoneExistingUniversityShortcut(UniversityInfo self, String shortcut) throws Exception {
 		University found = getUniversityDao().findByShortcut(shortcut);
 		UniversityInfo foundInfo = null;

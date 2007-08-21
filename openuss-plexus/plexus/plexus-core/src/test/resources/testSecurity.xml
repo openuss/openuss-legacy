@@ -187,6 +187,9 @@
                 org.openuss.lecture.UniversityService.removeUniversity=ROLE_ADMIN
                 org.openuss.lecture.UniversityService.removePeriodAndCourses=ROLE_ADMIN
                 org.openuss.lecture.UniversityService.removeCompleteUniversityTree=ROLE_ADMIN
+                org.openuss.lecture.UniversityService.setUniversityStatus=ROLE_ADMIN
+                org.openuss.lecture.DepartmentService.setDepartmentStatus=ROLE_ADMIN
+                org.openuss.lecture.InstituteService.setInstituteStatus=ROLE_ADMIN
             </value>
         </property>
     </bean>
