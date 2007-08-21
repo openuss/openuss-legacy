@@ -211,7 +211,7 @@ public class DepartmentServiceMock implements DepartmentService {
 		return false;
 	}
 	
-	public void setDepartmentStatus(Long departmentId, boolean status) {
+	public void setDepartmentStatus(Long departmentId, Boolean status) {
 		// TODO Auto-generated method stub
 	}
 }

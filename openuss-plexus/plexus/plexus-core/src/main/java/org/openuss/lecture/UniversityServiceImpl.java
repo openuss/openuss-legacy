@@ -501,7 +501,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	}
 	
 	@Override
-	public void handleSetUniversityStatus (Long universityId, boolean status) {
+	public void handleSetUniversityStatus (Long universityId, Boolean status) {
 		Validate.notNull(universityId, "UniversityService.setUniversityStatus - the universityId cannot be null.");
 		Validate.notNull(status, "UniversityService.setUniversityStatus - status cannot be null.");
 		

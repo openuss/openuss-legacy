@@ -287,7 +287,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	}
 	
 	@Override
-	public void handleSetDepartmentStatus (Long departmentId, boolean status) {
+	public void handleSetDepartmentStatus(Long departmentId, Boolean status) {
 		Validate.notNull(departmentId, "DepartmentService.setDepartmentStatus - the departmentId cannot be null.");
 		Validate.notNull(status, "DepartmentService.setDepartmentStatus - status cannot be null.");
 		

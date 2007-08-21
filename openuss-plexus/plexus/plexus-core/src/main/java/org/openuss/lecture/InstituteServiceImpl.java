@@ -301,7 +301,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	}
 	
 	@Override
-	public void handleSetInstituteStatus (Long instituteId, boolean status) {
+	public void handleSetInstituteStatus (Long instituteId, Boolean status) {
 		Validate.notNull(instituteId, "InstituteService.setInstituteStatus - the instituteId cannot be null.");
 		Validate.notNull(status, "InstituteService.setInstituteStatus - status cannot be null.");
 		

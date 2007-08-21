@@ -122,7 +122,7 @@ public class InstituteServiceMock implements InstituteService {
 		return null;
 	}
 	
-	public void setInstituteStatus(Long instituteId, boolean status) {
+	public void setInstituteStatus(Long instituteId, Boolean status) {
 		// TODO Auto-generated method stub
 	}
 }
