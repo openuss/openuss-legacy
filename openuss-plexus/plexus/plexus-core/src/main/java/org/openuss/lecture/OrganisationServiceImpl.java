@@ -10,8 +10,8 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.registration.RegistrationException;
-import org.openuss.security.Authority;
 import org.openuss.security.Group;
+import org.openuss.security.GroupDao;
 import org.openuss.security.GroupItem;
 import org.openuss.security.User;
 
@@ -130,7 +130,7 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 	/**
 	 * @see org.openuss.lecture.OrganisationService#createGroup(java.lang.Long, org.openuss.security.GroupItem)
 	 */
-	protected Group handleCreateGroup(java.lang.Long organisationId, org.openuss.security.GroupItem groupItem)
+	protected Long handleCreateGroup(java.lang.Long organisationId, org.openuss.security.GroupItem groupItem)
 			throws java.lang.Exception {
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		Validate
@@ -142,7 +142,15 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 		group = this.getMembershipService().createGroup(organisation.getMembership(), group);
 		Validate.notNull(group.getId(), "MembershipService.handleCreateGroup - Group couldn't be created");
 
-		return group;
+		return group.getId();
+	}
+
+	@Override
+	protected GroupItem handleFindGroup(Long groupId) throws Exception {
+		Validate.notNull(groupId, "OrganisationService.handleFindGroup - groupId cannot be null.");
+
+		// Find Group
+		return (GroupItem) this.getGroupDao().load(GroupDao.TRANSFORM_GROUPITEM, groupId);
 	}
 
 	/**
@@ -160,18 +168,8 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 						"MembershipService.handleRemoveGroup - no Organisation found corresponding to the ID "
 								+ organisationId);
 
-		// Remove all Authorities from Group
-		List<Authority> authorities = group.getMembers();
-		for (Authority authority : authorities) {
-			authority.removeGroup(group);
-		}
-
-		// Remove the Group from its Organisation
-		boolean removed = organisation.getMembership().getGroups().remove(group);
-		Validate.isTrue(removed, "MembershipService.handleRemoveGroup - Group " + groupId + " couldn't be removed");
-
 		// Delete Group
-		this.getSecurityService().removeGroup(group);
+		this.getMembershipService().removeGroup(organisation.getMembership(), group);
 	}
 
 	/**

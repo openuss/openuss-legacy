@@ -398,13 +398,13 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		groupItem1.setName("UNIVERSITY_" + university.getId() + "_TUTORS");
 		groupItem1.setLabel("autogroup_tutors_label");
 		groupItem1.setGroupType(GroupType.ADMINISTRATOR);
-		Group group1 = this.getOrganisationService().createGroup(university.getId(), groupItem1);
+		this.getOrganisationService().createGroup(university.getId(), groupItem1);
 
 		GroupItem groupItem2 = new GroupItem();
 		groupItem2.setName("UNIVERSITY_" + university.getId() + "_ASSISTENT");
 		groupItem2.setLabel("autogroup_assistent_label");
 		groupItem2.setGroupType(GroupType.ADMINISTRATOR);
-		Group group2 = this.getOrganisationService().createGroup(university.getId(), groupItem2);
+		this.getOrganisationService().createGroup(university.getId(), groupItem2);
 
 		// Synchronize with DB
 		flush();
@@ -476,5 +476,31 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		testUtility.destroySecureContext();
 
 		logger.info("----> END access to setOrganisationEnabled test");
+	}
+
+	public void testFindGroup() {
+		logger.info("----> BEGIN access to findGroup test");
+
+		// Create university
+		University university = testUtility.createUniqueUniversityInDB();
+		assertNotNull(university);
+
+		// Create 1 Group
+		GroupItem groupItem1 = new GroupItem();
+		groupItem1.setName("UNIVERSITY_" + university.getId() + "_TUTORS");
+		groupItem1.setLabel("autogroup_tutors_label");
+		groupItem1.setGroupType(GroupType.ADMINISTRATOR);
+		Long groupId = this.getOrganisationService().createGroup(university.getId(), groupItem1);
+
+		// Synchronize with DB
+		flush();
+
+		// Test
+		GroupItem groupItem = this.getOrganisationService().findGroup(groupId);
+
+		// assertEquals(sizeBefore+2, groups.size());
+		assertEquals(groupId, groupItem.getId());
+
+		logger.info("----> END access to findGroup test");
 	}
 }

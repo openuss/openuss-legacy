@@ -69,7 +69,8 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		groupItem.setName("DEPARTMENT_" + departmentEntity.getId() + "_ADMINS");
 		groupItem.setLabel("autogroup_administrator_label");
 		groupItem.setGroupType(GroupType.ADMINISTRATOR);
-		Group admins = this.getOrganisationService().createGroup(departmentEntity.getId(), groupItem);
+		Long adminsId = this.getOrganisationService().createGroup(departmentEntity.getId(), groupItem);
+		Group admins = this.getGroupDao().load(adminsId);
 
 		// Security
 		this.getSecurityService().createObjectIdentity(departmentEntity, null);

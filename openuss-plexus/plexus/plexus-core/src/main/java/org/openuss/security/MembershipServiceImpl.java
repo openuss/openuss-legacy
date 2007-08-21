@@ -8,6 +8,7 @@ package org.openuss.security;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
+import org.openuss.lecture.Organisation;
 
 /**
  * @see org.openuss.security.MembershipService
@@ -154,5 +155,24 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		
 		return group2;
 
+	}
+
+	@Override
+	protected void handleRemoveGroup(Membership membership, Group group) throws Exception {
+		Validate.notNull(group, "MembershipService.handleRemoveGroup - Group cannot be null");
+		Validate.notNull(group, "MembershipService.handleRemoveGroup - Membership cannot be null");
+
+		// Remove all Authorities from Group
+		List<Authority> authorities = group.getMembers();
+		for (Authority authority : authorities) {
+			authority.removeGroup(group);
+		}
+
+		// Remove the Group from its Membership
+		boolean removed = membership.getGroups().remove(group);
+		Validate.isTrue(removed, "MembershipService.handleRemoveGroup - Group couldn't be removed");
+
+		// Delete Group
+		this.getSecurityService().removeGroup(group);		
 	}
 }

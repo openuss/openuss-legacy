@@ -84,19 +84,22 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		admins.setName("INSTITUTE_" + instituteEntity.getId() + "_ADMINS");
 		admins.setLabel("autogroup_administrator_label");
 		admins.setGroupType(GroupType.ADMINISTRATOR);
-		Group adminsGroup = this.getOrganisationService().createGroup(instituteEntity.getId(), admins);
+		Long adminsId = this.getOrganisationService().createGroup(instituteEntity.getId(), admins);
+		Group adminsGroup = this.getGroupDao().load(adminsId);
 
 		GroupItem assistants = new GroupItem();
 		assistants.setName("INSTITUTE_" + instituteEntity.getId() + "_ASSISTANTS");
 		assistants.setLabel("autogroup_assistant_label");
 		assistants.setGroupType(GroupType.ASSISTANT);
-		Group assistantsGroup = this.getOrganisationService().createGroup(instituteEntity.getId(), assistants);
+		Long assistantsId = this.getOrganisationService().createGroup(instituteEntity.getId(), assistants);
+		Group assistantsGroup = this.getGroupDao().load(assistantsId);
 
 		GroupItem tutors = new GroupItem();
 		tutors.setName("INSTITUTE_" + instituteEntity.getId() + "_TUTORS");
 		tutors.setLabel("autogroup_tutor_label");
 		tutors.setGroupType(GroupType.TUTOR);
-		Group tutorsGroup = this.getOrganisationService().createGroup(instituteEntity.getId(), tutors);
+		Long tutorsId = this.getOrganisationService().createGroup(instituteEntity.getId(), tutors);
+		Group tutorsGroup = this.getGroupDao().load(tutorsId);
 
 		// Security
 		this.getSecurityService().createObjectIdentity(instituteEntity, null);

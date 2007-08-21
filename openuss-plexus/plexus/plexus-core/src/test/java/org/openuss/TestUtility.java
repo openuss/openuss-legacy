@@ -263,13 +263,15 @@ public class TestUtility {
 		groupItemUni.setName("UNIVERSITY_" + university.getId() + "_ADMINS");
 		groupItemUni.setLabel("autogroup_administrator_label");
 		groupItemUni.setGroupType(GroupType.ADMINISTRATOR);
-		Group adminsUni = this.getOrganisationService().createGroup(university.getId(), groupItemUni);
+		Long adminsUniId = this.getOrganisationService().createGroup(university.getId(), groupItemUni);
+		Group adminsUni = this.getGroupDao().load(adminsUniId);
 
 		GroupItem groupItemDepart = new GroupItem();
 		groupItemDepart.setName("DEPARTMENT_" + department.getId() + "_ADMINS");
 		groupItemDepart.setLabel("autogroup_administrator_label");
 		groupItemDepart.setGroupType(GroupType.ADMINISTRATOR);
-		Group adminsDepart = this.getOrganisationService().createGroup(department.getId(), groupItemDepart);
+		Long adminsDepartId = this.getOrganisationService().createGroup(department.getId(), groupItemDepart);
+		Group adminsDepart = this.getGroupDao().load(adminsDepartId);
 
 		// Set ObjectIdentity for Security
 		this.getSecurityService().createObjectIdentity(university, null);
@@ -326,7 +328,8 @@ public class TestUtility {
 		groupItem.setName("DEPARTMENT_" + department.getId() + "_ADMINS");
 		groupItem.setLabel("autogroup_administrator_label");
 		groupItem.setGroupType(GroupType.ADMINISTRATOR);
-		Group admins = this.getOrganisationService().createGroup(department.getId(), groupItem);
+		Long adminsId = this.getOrganisationService().createGroup(department.getId(), groupItem);
+		Group admins = this.getGroupDao().load(adminsId);
 
 		// Security
 		this.getSecurityService().createObjectIdentity(department, university);
@@ -376,19 +379,22 @@ public class TestUtility {
 		admins.setName("INSTITUTE_" + institute.getId() + "_ADMINS");
 		admins.setLabel("autogroup_administrator_label");
 		admins.setGroupType(GroupType.ADMINISTRATOR);
-		Group adminsGroup = this.getOrganisationService().createGroup(institute.getId(), admins);
-
+		Long adminsId = this.getOrganisationService().createGroup(institute.getId(), admins);
+		Group adminsGroup = this.getGroupDao().load(adminsId);
+		
 		GroupItem assistants = new GroupItem();
 		assistants.setName("INSTITUTE_" + institute.getId() + "_ASSISTANTS");
 		assistants.setLabel("autogroup_assistant_label");
 		assistants.setGroupType(GroupType.ASSISTANT);
-		Group assistantsGroup = this.getOrganisationService().createGroup(institute.getId(), assistants);
+		Long assistantsId = this.getOrganisationService().createGroup(institute.getId(), assistants);
+		Group assistantsGroup = this.getGroupDao().load(assistantsId);
 
 		GroupItem tutors = new GroupItem();
 		tutors.setName("INSTITUTE_" + institute.getId() + "_TUTORS");
 		tutors.setLabel("autogroup_tutor_label");
 		tutors.setGroupType(GroupType.TUTOR);
-		Group tutorsGroup = this.getOrganisationService().createGroup(institute.getId(), tutors);
+		Long tutorsId = this.getOrganisationService().createGroup(institute.getId(), tutors);
+		Group tutorsGroup = this.getGroupDao().load(tutorsId);
 
 		// Security
 		this.getSecurityService().createObjectIdentity(institute, null);

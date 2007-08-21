@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-import org.openuss.security.Authority;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
@@ -105,13 +104,15 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		groupItemUni.setName("UNIVERSITY_" + universityEntity.getId() + "_ADMINS");
 		groupItemUni.setLabel("autogroup_administrator_label");
 		groupItemUni.setGroupType(GroupType.ADMINISTRATOR);
-		Group adminsUni = this.getOrganisationService().createGroup(universityEntity.getId(), groupItemUni);
+		Long adminsUniId = this.getOrganisationService().createGroup(universityEntity.getId(), groupItemUni);
+		Group adminsUni = this.getGroupDao().load(adminsUniId);
 
 		GroupItem groupItemDepart = new GroupItem();
 		groupItemDepart.setName("DEPARTMENT_" + department.getId() + "_ADMINS");
 		groupItemDepart.setLabel("autogroup_administrator_label");
 		groupItemDepart.setGroupType(GroupType.ADMINISTRATOR);
-		Group adminsDepart = this.getOrganisationService().createGroup(department.getId(), groupItemDepart);
+		Long adminsDepartId = this.getOrganisationService().createGroup(department.getId(), groupItemDepart);
+		Group adminsDepart = this.getGroupDao().load(adminsDepartId);
 
 		// Set ObjectIdentity for Security
 		this.getSecurityService().createObjectIdentity(universityEntity, null);
@@ -217,8 +218,6 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 						+ universityId);
 
 		// TODO: Fire removedUniversity event to delete all bookmarks
-
-		//university.getMembership().getGroups().clear(); // due to problems of cascade
 		
 		// Get Departments
 		List<Department> departments = university.getDepartments();
@@ -258,8 +257,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		// remove Periods
 		this.getPeriodDao().remove(university.getPeriods());
 
-		// remove University (including its Groups)
-		
+		// remove University (including its Groups and SecuritySettings)		
 		List<Group> groups = university.getMembership().getGroups();
 		List<Group> groups2 = new ArrayList<Group>();
 		for (Group group:groups) {
