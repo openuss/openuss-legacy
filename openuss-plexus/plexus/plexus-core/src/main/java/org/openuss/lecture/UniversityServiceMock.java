@@ -278,4 +278,9 @@ public class UniversityServiceMock implements UniversityService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public boolean isActivePeriod(Long periodId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

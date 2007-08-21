@@ -524,6 +524,17 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		return isEqualOrNull(self, foundInfo);
 	}
 	
+	@Override
+	public boolean handleIsActivePeriod(Long periodId) throws Exception {
+		Validate.notNull(periodId, "UniversityService.isActivePeriod - the periodId cannot be null.");
+		
+		// Load Period
+		Period period = this.getPeriodDao().load(periodId);
+		Validate.notNull(period, "UniversityService.isActivePeriod - cannot find period with the given periodId "+periodId);
+		
+		return period.isActive();
+	}
+	
 	
 	/**
 	 * @see org.openuss.lecture.UniversityService#findPeriodsByUniversityWithActiveCourses(java.lang.Long)
