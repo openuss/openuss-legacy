@@ -351,7 +351,7 @@
 		
 		<navigation-case>
 			<from-outcome>institute_periods</from-outcome>
-			<to-view-id>/views/secured/lecture/periods.xhtml</to-view-id>
+			<to-view-id>/views/secured/lecture/universityperiods.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>

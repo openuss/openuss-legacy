@@ -41,11 +41,11 @@
 				<o:input entity="periodInfo" property="enddate" required="true" />
 			</o:block>
 			<o:block>
+				<h:commandButton value="${msg.cancel}" action="institute_periods"
+					styleClass="button_cancel" immediate="true" />
 				<h:commandButton value="${msg.save}"
 					action="#{views$secured$lecture$periodedit.savePeriod}"
 					styleClass="button_save" />
-				<h:commandButton value="${msg.cancel}" action="institute_periods"
-					styleClass="button_cancel" immediate="true" />
 			</o:block>
 		</h:form>
 	</ui:define>

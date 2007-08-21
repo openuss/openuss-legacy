@@ -21,6 +21,10 @@
 			<t:commandLink id="selectPeriod" action="#{views$secured$lecture$universityperiods.selectPeriod}" styleClass="command" title="#{period.description}">
 				<h:outputText value="#{period.name}"/>
 			</t:commandLink>
+			<h:graphicImage 
+				value="/images/pool/icons/document_stop.png" 
+				title="#{msg.default_period_donot_delete}" 
+				rendered="#{period.defaultPeriod}"/>
 		</t:column>
 		
 		<t:column>
