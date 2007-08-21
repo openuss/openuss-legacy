@@ -71,6 +71,17 @@
 							styleClass="button"/>
 					</o:block>
 				</s:authorize>
+				
+				<s:authorize ifAllGranted="ROLE_USER">
+	  				<o:block>
+						<h:commandButton 
+						    id="addInstitute"
+							action="#{instituteRegistration.start}"
+							value="#{msg.institute_command_add_institute}" 
+							title="#{msg.institute_command_add_institute_hint}"
+							styleClass="button"/>
+					</o:block>
+				</s:authorize>
 			</h:form>
 		  	<p:newsTable value="#{news_controller.currentGlobalNews}" headline="${msg.news_header}"/>
   		</ui:define>
