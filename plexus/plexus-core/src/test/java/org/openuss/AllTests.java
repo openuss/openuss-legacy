@@ -5,15 +5,14 @@ import junit.framework.TestSuite;
 
 import org.openuss.braincontest.BrainContestTests;
 import org.openuss.commands.CommandTests;
+import org.openuss.course.newsletter.CourseNewsletterTests;
 import org.openuss.desktop.DesktopTests;
 import org.openuss.discussion.DiscussionTests;
 import org.openuss.documents.DocumentTests;
-import org.openuss.course.newsletter.CourseNewsletterTests;
 import org.openuss.lecture.LectureTests;
-import org.openuss.newsletter.NewsletterTests;
 import org.openuss.messaging.MessagingTests;
-import org.openuss.migration.MigrationTests;
 import org.openuss.news.NewsTests;
+import org.openuss.newsletter.NewsletterTests;
 import org.openuss.registration.RegistrationTests;
 import org.openuss.repository.RepositoryTests;
 import org.openuss.search.SearchTests;
@@ -36,7 +35,6 @@ public class AllTests {
 		suite.addTest(LectureTests.suite());
 		suite.addTest(NewsletterTests.suite());
 		suite.addTest(MessagingTests.suite());
-		suite.addTest(MigrationTests.suite());
 		suite.addTest(NewsTests.suite());
 		suite.addTest(RegistrationTests.suite());
 		suite.addTest(RepositoryTests.suite());

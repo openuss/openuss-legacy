@@ -3,7 +3,6 @@ package org.openuss.web.security.profile;
 import java.io.IOException;
 
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;

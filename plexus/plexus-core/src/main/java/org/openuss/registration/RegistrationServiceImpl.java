@@ -13,14 +13,10 @@ import java.util.Date;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Institute;
-import org.openuss.registration.ActivationCode;
-import org.openuss.registration.RegistrationCodeExpiredException;
-import org.openuss.registration.RegistrationCodeNotFoundException;
-import org.openuss.registration.RegistrationException;
 import org.openuss.security.Roles;
-import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserImpl;
 
@@ -35,12 +31,9 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 	private static final Logger logger = Logger.getLogger(RegistrationServiceImpl.class);
 	
 	@Override
-	protected void handleRegistrateUser(User user, boolean assistant) throws RegistrationException {
-		// check arguments
-		if (user == null)
-			throw new IllegalArgumentException("User parameter must not be null!");
-		if (user.getContact() == null)
-			throw new IllegalArgumentException("Associated Contact must not be null!");
+	protected void handleRegistrateUser(User user) throws RegistrationException {
+		Validate.notNull(user, "User parameter must not be null!");
+
 		// ensure that user will not be activate
 		user.setEnabled(false);
 
@@ -85,11 +78,8 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 	 *            wether or not to asign the assistant role to the user
 	 */
 	private void asignRolesToUser(User user) {
-		// assign roles to user
-		final SecurityService securityService = getSecurityService();
-		
-		securityService.addAuthorityToGroup(user, Roles.USER);
-		securityService.saveUser(user);
+		getSecurityService().addAuthorityToGroup(user, Roles.USER);
+		getSecurityService().saveUser(user);
 	}
 
 	@Override
