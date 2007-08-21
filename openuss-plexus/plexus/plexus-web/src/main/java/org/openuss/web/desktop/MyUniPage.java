@@ -402,7 +402,7 @@ public class MyUniPage extends BasePage {
 		private Map<Long, UniversityDataSet> uniDataSets;
 		
 		private static final String departmentsBasePath = "/openuss-plexus/views/public/department/department.faces?department=";
-		private static final String institutesBasePath = "/openuss-plexus/views/public/institute/isntitute.faces?institute=";
+		private static final String institutesBasePath = "/openuss-plexus/views/public/institute/institute.faces?institute=";
 
 		public MyUniDataSet() {
 			uniDataSets = new HashMap<Long, UniversityDataSet>();
