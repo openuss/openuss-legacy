@@ -46,7 +46,7 @@ public class UniversityRegistrationController extends AbstractUniversityPage{
 	
 		localeItems = new ArrayList<SelectItem>();
 	
-		SelectItem item1 = new SelectItem( universityType.UNIVERSITY, bundle.getString("organizationtype_university"));
+		SelectItem item1 = new SelectItem(universityType.UNIVERSITY, bundle.getString("organizationtype_university"));
 		SelectItem item2 = new SelectItem(universityType.COMPANY, bundle.getString("organizationtype_company"));
 		SelectItem item3 = new SelectItem(universityType.MISC, bundle.getString("organizationtype_misc"));
 		
