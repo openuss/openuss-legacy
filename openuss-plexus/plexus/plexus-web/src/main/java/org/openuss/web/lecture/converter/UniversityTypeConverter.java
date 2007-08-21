@@ -1,4 +1,4 @@
-package org.openuss.framework.jsfcontrols.converter;
+package org.openuss.web.lecture.converter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

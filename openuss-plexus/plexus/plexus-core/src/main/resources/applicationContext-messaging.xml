@@ -5,9 +5,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="localhost"/>
-		<property name="username" value="no-reply@openuss.uni-muenster.de"/>
-		<property name="password" value="n/a"/>
+		<property name="host" value="smtp.googlemail.com"/>
+		<property name="username" value="kai.stettner@googlemail.com"/>
+		<property name="password" value="rageagainst"/>
 	</bean>
 
 	<bean id="messagePreparator"
