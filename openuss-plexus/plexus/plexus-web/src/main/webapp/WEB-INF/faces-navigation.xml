@@ -859,7 +859,24 @@
 			<from-outcome>department_aspirants</from-outcome>
 			<to-view-id>/views/secured/lecture/auth/departmentaspirants.xhtml</to-view-id>
 		</navigation-case>
-	</navigation-rule>	
+	</navigation-rule>
+	
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+             Welcome-Page 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+    <navigation-rule>
+		<from-view-id>/views/welcome.xhtml</from-view-id>	
+		
+		<navigation-case>
+			<from-outcome>university_registration_step1</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/universityStep1.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_registration_step1</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/step1.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 		
 </faces-config>
 

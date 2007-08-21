@@ -7,6 +7,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:p="http://www.openuss.org/plexus/jsf"
+      xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:sec="http://sourceforge.net/projects/jsf-comp/acegijsf"
       xmlns:fck="http://www.fck-faces.org/fck-faces">
@@ -58,6 +59,19 @@
 		  		</h:form>
 			</o:block>
 		  	<div class="clear_both"/>
+		  	<h:form id="universitiesForm">
+				<ui:include src="/views/commons/university/universitiestable.xhtml"/>
+				<s:authorize ifAllGranted="ROLE_ADMIN">
+	  				<o:block>
+						<h:commandButton 
+						    id="addUniversity"
+							action="#{universityRegistration.start}"
+							value="#{msg.university_command_add_university}" 
+							title="#{msg.university_command_add_university_hint}"
+							styleClass="button"/>
+					</o:block>
+				</s:authorize>
+			</h:form>
 		  	<p:newsTable value="#{news_controller.currentGlobalNews}" headline="${msg.news_header}"/>
   		</ui:define>
 	</ui:composition>
