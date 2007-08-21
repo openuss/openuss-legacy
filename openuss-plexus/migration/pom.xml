@@ -22,10 +22,10 @@
 	</organization>
 
 	<modules>
-		<module>migration-core</module>
+		<module>migration-legacy20</module>
+		<module>migration-20to30</module>
 	</modules>
 
-	
 	<reporting>
 		<plugins>
 			<plugin>
