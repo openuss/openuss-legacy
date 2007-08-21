@@ -13,6 +13,7 @@ import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Department;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.Institute;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityInfo;
 
@@ -160,6 +161,7 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 
 		// Universities
 		if (copyIfNull && (sourceVO.getUniversityInfos() != null)) {
+			targetEntity.getUniversities().clear();
 			Iterator iter1 = sourceVO.getUniversityInfos().iterator();
 			while (iter1.hasNext()) {
 				targetEntity.getUniversities().add(this.getUniversityDao().load(((UniversityInfo) iter1.next()).getId()));
@@ -168,6 +170,7 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 
 		// Departments
 		if (copyIfNull && (sourceVO.getDepartmentInfos() != null)) {
+			targetEntity.getDepartments().clear();
 			Iterator iter2 = sourceVO.getDepartmentInfos().iterator();
 			while (iter2.hasNext()) {
 				targetEntity.getDepartments().add(this.getDepartmentDao().load(((DepartmentInfo) iter2.next()).getId()));
@@ -177,10 +180,31 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 		//TODO Implement me!
 
 		// Institutes
+		if (copyIfNull && (sourceVO.getInstituteInfos() != null)) {
+			targetEntity.getInstitutes().clear();
+			Iterator iter2 = sourceVO.getInstituteInfos().iterator();
+			while (iter2.hasNext()) {
+				targetEntity.getInstitutes().add(this.getInstituteDao().load(((InstituteInfo) iter2.next()).getId()));
+			}
+		}
 
 		// CourseTypes
-
+		if (copyIfNull && (sourceVO.getCourseTypeInfos() != null)) {
+			targetEntity.getCourseTypes().clear();
+			Iterator iter2 = sourceVO.getCourseTypeInfos().iterator();
+			while (iter2.hasNext()) {
+				targetEntity.getCourseTypes().add(this.getCourseTypeDao().load(((CourseType) iter2.next()).getId()));
+			}
+		}
+		
 		// Courses
+		if (copyIfNull && (sourceVO.getCourseInfos() != null)) {
+			targetEntity.getCourses().clear();
+			Iterator iter2 = sourceVO.getCourseInfos().iterator();
+			while (iter2.hasNext()) {
+				targetEntity.getCourses().add(this.getCourseDao().load(((Course) iter2.next()).getId()));
+			}
+		}
 
 	}
 
