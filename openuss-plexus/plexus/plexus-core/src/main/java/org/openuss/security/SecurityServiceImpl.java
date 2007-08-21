@@ -25,6 +25,8 @@ import org.openuss.security.acl.Permission;
 
 /**
  * @see org.openuss.security.SecurityService
+ * @author Ron Haus
+ * @author Ingo Dueppe
  */
 public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBase {
 	/**
@@ -368,6 +370,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 			if (logger.isDebugEnabled()) {
 				logger.debug("removing permission for authority "+authority+" for "+object);
 			}
+			permission.setRecipient(null);
 			getPermissionDao().remove(permission);
 		} else {
 			logger.debug("Permission entity for authority "+authority+" for "+object+" not found!");

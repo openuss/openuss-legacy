@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.security.Authority;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
@@ -155,6 +156,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(institute,
 				"InstituteService.handleRemoveInstitute - no Institute found to the corresponding ID " + instituteId);
 
+		/*
 		// TODO: Fire removedInstitute event to delete all bookmarks
 		// Fire removedCourseTypes event to delete all bookmarks
 		// Fire removedCourses event to delete all bookmarks
@@ -163,15 +165,43 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		this.getInstituteDao().remove(instituteId);
 
 		// fire events
-		/*
+		
 		 * for (Course course : institute.getCourses()) { fireRemovingCourse(course); }
 		 * 
 		 * for (CourseType courseType : institute.getCourseTypes()) { fireRemovingCourseType(courseType); }
 		 * 
 		 * fireRemovingInstitute(institute);
-		 */
+		
 		// TODO InstituteCodes need to be removed before
 		// getRegistrationService().removeInstituteCodes(institute);
+		
+		*/
+		
+		// remove University (including its Groups and SecuritySettings)
+		List<Group> groups = institute.getMembership().getGroups();
+		
+		// remove Permissions
+		for (Group group:groups) {
+			List<Authority> authorities = group.getMembers();
+			for (Authority authority:authorities) {
+				this.getSecurityService().removePermission(authority, institute);
+			}
+		}
+		
+		//removeObjectIdentity
+		this.getSecurityService().removeObjectIdentity(institute);
+		
+		// remove Groups		
+		List<Group> groups2 = new ArrayList<Group>();
+		for (Group group:groups) {
+			groups2.add(group);
+		}
+		for (Group group:groups2) {
+			this.getOrganisationService().removeGroup(institute.getId(), group.getId());
+		}
+		
+		institute.getDepartment().remove(institute);
+		this.getInstituteDao().remove(institute);
 	}
 
 	/**

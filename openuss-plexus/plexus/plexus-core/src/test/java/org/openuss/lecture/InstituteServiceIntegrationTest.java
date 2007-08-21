@@ -154,11 +154,6 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		Department department = institute.getDepartment();
 		assertNotNull(department);
 		assertEquals(1, department.getInstitutes().size());
-		
-		// Get groups
-		List<Group> groups = institute.getMembership().getGroups();
-		assertNotNull(groups);
-		assertEquals(3, groups.size());
 
 		// Get Institute id
 		Long id = institute.getId();
@@ -181,12 +176,10 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		testUtility.createAdminSecureContext();
 
 		// Remove Institute
-		GroupDao groupDao = (GroupDao) this.getApplicationContext().getBean("groupDao");
-		//groupDao.remove(institute.getMembership().getGroups());
 		this.getInstituteService().removeInstitute(id);
 
 		// Synchronize with Database
-		//flush();
+		flush();
 
 		// Try to load Institute again
 		InstituteDao instituteDao = (InstituteDao) this.applicationContext.getBean("instituteDao");
@@ -194,10 +187,6 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		assertNull(institute2);
 		
 		assertEquals(0, department.getInstitutes().size());
-		
-		assertNull(groupDao.load(groups.get(0).getId()));
-		assertNull(groupDao.load(groups.get(1).getId()));
-		assertNull(groupDao.load(groups.get(2).getId()));
 
 		logger.info("----> END access to removeInstitute test");
 	}

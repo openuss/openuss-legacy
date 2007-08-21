@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.security.Authority;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
@@ -257,8 +258,21 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		// remove Periods
 		this.getPeriodDao().remove(university.getPeriods());
 
-		// remove University (including its Groups and SecuritySettings)		
+		// remove University (including its Groups and SecuritySettings)
 		List<Group> groups = university.getMembership().getGroups();
+		
+		// remove Permissions
+		for (Group group:groups) {
+			List<Authority> authorities = group.getMembers();
+			for (Authority authority:authorities) {
+				this.getSecurityService().removePermission(authority, university);
+			}
+		}
+		
+		//removeObjectIdentity
+		this.getSecurityService().removeObjectIdentity(university);
+		
+		// remove Groups		
 		List<Group> groups2 = new ArrayList<Group>();
 		for (Group group:groups) {
 			groups2.add(group);
