@@ -17,9 +17,11 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -43,7 +45,10 @@ public class InstitutesPage extends BasePage{
 	
 	@Property(value = "#{lectureService}")
 	private LectureService lectureService;
-		
+	
+	@Property(value = "#{instituteService}")
+	private InstituteService instituteService;
+
 	@Prerender
 	public void prerender() throws Exception {
 		crumbs.clear();
@@ -95,8 +100,10 @@ public class InstitutesPage extends BasePage{
 			if (logger.isDebugEnabled()) {
 				logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+institutes.getSortColumn());
 			}
-	
-			List<InstituteInfo> instituteList = new ArrayList<InstituteInfo>(getLectureService().getInstitutes(true));
+			
+			
+			DepartmentInfo departmentInfo = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT_INFO);			
+			List<InstituteInfo> instituteList = getInstituteService().findInstitutesByDepartmentAndEnabled(departmentInfo.getId(), true);
 			sort(instituteList);
 			dataPage = new DataPage<InstituteInfo>(instituteList.size(),0,instituteList);
 
@@ -135,6 +142,14 @@ public class InstitutesPage extends BasePage{
 
 	public void setLectureService(LectureService lectureService) {
 		this.lectureService = lectureService;
+	}
+	
+	public InstituteService getInstituteService() {
+		return instituteService;
+	}
+
+	public void setInstituteService(InstituteService instituteService) {
+		this.instituteService = instituteService;
 	}
 
 	/* ----------- institute sorting comparators -------------*/
