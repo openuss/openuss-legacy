@@ -28,7 +28,7 @@ public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.op
 		} else {
 			course.setPeriod(this);
 			throw new IllegalArgumentException(
-			"University.add(Department) - the Department has already been in the List");
+			"University.add(Course) - the Course has already been in the List");
 		}	
 	}
 

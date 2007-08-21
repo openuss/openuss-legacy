@@ -272,6 +272,10 @@ public class UniversityServiceMock implements UniversityService {
 	
 	public void setUniversityStatus(Long universityId, boolean status) {
 		// TODO Auto-generated method stub
-
+	}
+	
+	public List findPeriodsByUniversityWithCourses(Long universityId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

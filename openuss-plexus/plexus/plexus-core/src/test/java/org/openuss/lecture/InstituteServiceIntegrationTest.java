@@ -6,8 +6,12 @@
 package org.openuss.lecture;
 
 import java.util.Date;
+import java.util.List;
 
 import org.acegisecurity.AccessDeniedException;
+import org.openuss.security.Group;
+import org.openuss.security.GroupDao;
+import org.openuss.security.MembershipDao;
 import org.openuss.security.User;
 
 /**
@@ -144,27 +148,45 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 	public void testRemoveInstitute() {
 		logger.info("----> BEGIN access to removeInstitute test");
 
-		// Create Secure context
-		testUtility.createSecureContext();
-
 		// Create an Institute
 		Institute institute = testUtility.createUniqueInstituteInDB();
 		assertNotNull(institute.getId());
 		Department department = institute.getDepartment();
 		assertNotNull(department);
 		assertEquals(1, department.getInstitutes().size());
+		
+		// Get groups
+		List<Group> groups = institute.getMembership().getGroups();
+		assertNotNull(groups);
+		assertEquals(3, groups.size());
 
 		// Get Institute id
 		Long id = institute.getId();
 
 		// Synchronize with Database
 		flush();
+		
+		// Create user secure context
+		testUtility.createUserSecureContext();
+		try {
+			this.getInstituteService().removeInstitute(institute.getId());
+			fail("AccessDeniedException should have been thrown.");
+		} catch (AccessDeniedException ade) {
+			;
+		} finally {
+			testUtility.destroySecureContext();
+		}
+		
+		// Create admin secure context
+		testUtility.createAdminSecureContext();
 
 		// Remove Institute
+		GroupDao groupDao = (GroupDao) this.getApplicationContext().getBean("groupDao");
+		//groupDao.remove(institute.getMembership().getGroups());
 		this.getInstituteService().removeInstitute(id);
 
 		// Synchronize with Database
-		flush();
+		//flush();
 
 		// Try to load Institute again
 		InstituteDao instituteDao = (InstituteDao) this.applicationContext.getBean("instituteDao");
@@ -172,6 +194,10 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		assertNull(institute2);
 		
 		assertEquals(0, department.getInstitutes().size());
+		
+		assertNull(groupDao.load(groups.get(0).getId()));
+		assertNull(groupDao.load(groups.get(1).getId()));
+		assertNull(groupDao.load(groups.get(2).getId()));
 
 		logger.info("----> END access to removeInstitute test");
 	}

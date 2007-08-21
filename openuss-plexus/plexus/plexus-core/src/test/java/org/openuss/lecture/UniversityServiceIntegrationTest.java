@@ -764,5 +764,64 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 
 		logger.info("----> END access to setUniversityStatus test");
 	}
+	
+	public void testFindPeriodsByUniversityWithActiveCourses() {
+		logger.info("----> BEGIN access to findPeriodsByUniversityWithActiveCourses test");
+
+		// Create Universities
+		University university1 = testUtility.createUniqueUniversityInDB();
+		University university2 = testUtility.createUniqueUniversityInDB();
+		
+		// Create Periods
+		Period period1 = testUtility.createUniquePeriodInDB();
+		university1.add(period1);
+		assertEquals(2, university1.getPeriods().size());
+		
+		Period period2 = testUtility.createUniquePeriodInDB();
+		university2.add(period2);
+		assertEquals(2, university2.getPeriods().size());
+		
+		// Create Departments
+		Department department1 = testUtility.createUniqueDepartmentInDB();
+		department1.setUniversity(university1);
+		Department department2 = testUtility.createUniqueDepartmentInDB();
+		department2.setUniversity(university2);
+		
+		// Create Institutes
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		institute1.setDepartment(department1);
+		Institute institute2 = testUtility.createUniqueInstituteInDB();
+		institute1.setDepartment(department2);
+		
+		// Create CourseTypes
+		CourseType courseType1 = testUtility.createUniqueCourseTypeInDB();
+		institute1.getCourseTypes().add(courseType1);
+		CourseType courseType2 = testUtility.createUniqueCourseTypeInDB();
+		institute2.getCourseTypes().add(courseType2);
+		
+		// Create Courses for university1
+		Course course1 = testUtility.createUniqueCourseInDB();
+		course1.setPeriod(university1.getPeriods().get(0));
+		course1.getPeriod().add(course1);
+		courseType1.getCourses().add(course1);
+		Course course2 = testUtility.createUniqueCourseInDB();
+		course2.setPeriod(university1.getPeriods().get(1));
+		course2.getPeriod().add(course2);
+		courseType1.getCourses().add(course2);
+		
+		// Test
+		List<PeriodInfo> periods = this.getUniversityService().findPeriodsByUniversityWithCourses(university1.getId());
+		assertNotNull(periods);
+		assertEquals(2, periods.size());
+		assertEquals(university1.getPeriods().get(0).getName(), periods.get(0).getName());
+		
+		periods = this.getUniversityService().findPeriodsByUniversityWithCourses(university2.getId());
+		assertNotNull(periods);
+		assertEquals(0, periods.size());
+		
+		
+
+		logger.info("----> END access to findPeriodsByUniversityWithActiveCourses test");
+	}
 
 }

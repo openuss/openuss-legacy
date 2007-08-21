@@ -523,6 +523,35 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		}
 		return isEqualOrNull(self, foundInfo);
 	}
+	
+	
+	/**
+	 * @see org.openuss.lecture.UniversityService#findPeriodsByUniversityWithActiveCourses(java.lang.Long)
+	 */
+	@SuppressWarnings( { "unchecked" })
+	@Override
+	public List handleFindPeriodsByUniversityWithCourses(Long universityId) throws Exception {
+		Validate.notNull(universityId, "UniversityService.findPeriodsByUniversityWithActiveCourses -" +
+				"the universityId cannot be null.");
+		
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university, "UniversityService.findPeriodsByUniversityWithActiveCourses -" +
+				"cannot find a university with the given universityId "+universityId);
+		
+		List<Period> allPeriods = this.getPeriodDao().findByUniversity(university);
+		List<PeriodInfo> periodsWithActiveCourses = new ArrayList<PeriodInfo>();
+		Iterator iter = allPeriods.iterator();
+		while (iter.hasNext()) {
+			Period period = (Period) iter.next();
+			if (period.getCourses() != null) {
+				if (period.getCourses().size() > 0) {
+					periodsWithActiveCourses.add(this.getPeriodDao().toPeriodInfo(period));
+				}
+			}
+		}
+		
+		return periodsWithActiveCourses;
+	}
 
 	/*------------------- private methods -------------------- */
 
