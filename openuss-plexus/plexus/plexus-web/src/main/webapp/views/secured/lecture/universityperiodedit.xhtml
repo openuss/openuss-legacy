@@ -37,8 +37,8 @@
 					required="true" />
 				<o:input entity="periodInfo" property="description" maxlength="250"
 					type="textarea" />
-				<o:input entity="periodInfo" property="startdate" required="true" />
-				<o:input entity="periodInfo" property="enddate" required="true" />
+				<o:input entity="periodInfo" property="startdate" required="true" type="date" />
+				<o:input entity="periodInfo" property="enddate" required="true" type="date" />
 			</o:block>
 			<o:block>
 				<h:commandButton value="${msg.cancel}" action="institute_periods"
