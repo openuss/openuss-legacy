@@ -15,6 +15,7 @@
 					</o:input>
 					<o:input entity="user" property="email" required="true">
 						<t:validateEmail />
+						<f:validator validatorId="uniqueEmailValidator" />
 					</o:input>
 					<s:authorize ifNotGranted="ROLE_USER">
 						<o:input entity="user" property="password" required="true"
