@@ -48,7 +48,7 @@ public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.op
 
 	@Override
 	public Boolean isRemovable() {
-		if (this.getCourses().size() <= 1)
+		if (this.getCourses().size() < 1)
 			return true;
 		else
 			return false;

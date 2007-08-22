@@ -86,8 +86,9 @@ public class PeriodDaoTest extends PeriodDaoTestBase {
 		assertEquals(period.getEnddate().getTime(), periodInfo.getEnddate().getTime());
 		assertEquals(period.getUniversity().getId(), periodInfo.getUniversityId());
 		assertFalse(periodInfo.getIsActive());
+		assertTrue(periodInfo.getIsRemovable());
 		
-		// Test with active period
+		// Test with active period and courses in list
 		
 		//Create Startdate
 		cal = new GregorianCalendar();
@@ -103,8 +104,15 @@ public class PeriodDaoTest extends PeriodDaoTestBase {
 		activePeriod.setStartdate(startdate);
 		activePeriod.setEnddate(enddate);
 		
+		// Create Courses
+		Course course1 = testUtility.createUniqueCourseInDB();
+		activePeriod.getCourses().add(course1);
+		Course course2 = testUtility.createUniqueCourseInDB();
+		activePeriod.getCourses().add(course2);
+		
 		periodInfo = this.getPeriodDao().toPeriodInfo(activePeriod);
 		assertTrue(periodInfo.getIsActive());
+		assertFalse(periodInfo.getIsRemovable());
 		
 	}
 	
