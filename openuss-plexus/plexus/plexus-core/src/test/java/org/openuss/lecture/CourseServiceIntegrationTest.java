@@ -159,7 +159,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		try {
 			this.getCourseService().updateCourse(courseInfo);
 			fail("Exception should have been thrown!");
-		} catch (Exception exc) {
+		} catch (CourseServiceException cse) {
 			;
 		}
 		
@@ -172,7 +172,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		try {
 			this.getCourseService().updateCourse(courseInfo);
 			fail("Exception should have been thrown!");
-		} catch (Exception exc) {
+		} catch (CourseServiceException cse) {
 			;
 		}
 		
@@ -189,7 +189,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		try {
 			this.getCourseService().updateCourse(courseInfo);
 			fail("Exception should have been thrown!");
-		} catch (Exception exc) {
+		} catch (CourseServiceException cse) {
 			;
 		}
 		
