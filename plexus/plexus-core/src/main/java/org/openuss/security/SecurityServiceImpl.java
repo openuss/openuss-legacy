@@ -70,6 +70,9 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		if (user.getProfile() == null) {
 			user.setProfile(UserProfile.Factory.newInstance());
 		}
+		if (isNonExistingEmailAddress(user, user.getEmail())!=null){
+			throw new SecurityServiceException("Email adress already in use (shold not occur -> validator bypassed?)");
+		}
 		user = getUserDao().create(user);
 		
 		// define object identity
