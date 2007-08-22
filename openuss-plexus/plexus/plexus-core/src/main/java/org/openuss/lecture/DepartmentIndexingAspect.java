@@ -16,6 +16,8 @@ public class DepartmentIndexingAspect {
 	
 	private DepartmentDao departmentDao;
 	
+	private DepartmentService departmentService;
+	
 	private Department department;
 	
 	// userId normally not necessary. Just using due to the configuration in the aop spring context.
@@ -33,13 +35,44 @@ public class DepartmentIndexingAspect {
 	public void updateDepartmentIndex(DepartmentInfo departmentInfo) {
 		logger.info("Starting method updateDepartmentIndex");
 		try {
-			logger.info("Updating DepartmentIndex");
-			department = departmentDao.departmentInfoToEntity(departmentInfo);
-			indexerService.updateIndex(department);
+			if (departmentInfo.getEnabled()) {
+				logger.debug("method updateDepartmentIndex: updateIndex");
+				department = departmentDao.departmentInfoToEntity(departmentInfo);
+				indexerService.updateIndex(department);
+			} else {
+				logger.debug("method updateDepartmentIndex: deleteIndex");
+				department = departmentDao.departmentInfoToEntity(departmentInfo);
+				indexerService.deleteIndex(department);
+			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}
 	}
+	
+	
+	/**
+	 * Update department index By Id.
+	 * @param departmentId, status
+	 */
+	public void updateDepartmentIndexById(Long departmentId, Boolean status) {
+		logger.debug("Starting method updateDepartmentIndexById");
+		try {
+			DepartmentInfo departmentInfo = departmentService.findDepartment(departmentId);
+			if (departmentInfo.getEnabled()) {
+				logger.debug("method updateDepartmentIndex: updateIndex");
+				department = departmentDao.departmentInfoToEntity(departmentInfo);
+				indexerService.updateIndex(department);
+			} else {
+				logger.debug("method updateDepartmentIndex: deleteIndex");
+				department = departmentDao.departmentInfoToEntity(departmentInfo);
+				indexerService.deleteIndex(department);
+			}
+		} catch (IndexerApplicationException e) {
+			logger.error(e);
+		}
+	}
+	
+	
 
 	public void deleteDepartmentIndex(Long departmentId) {
 		logger.info("Starting method deleteDepartmentIndex");
@@ -68,5 +101,14 @@ public class DepartmentIndexingAspect {
 	public void setDepartmentDao(DepartmentDao departmentDao) {
 		this.departmentDao = departmentDao;
 	}
+
+	public DepartmentService getDepartmentService() {
+		return departmentService;
+	}
+
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+	
 	
 }

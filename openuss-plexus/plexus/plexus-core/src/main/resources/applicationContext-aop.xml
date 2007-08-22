@@ -38,6 +38,10 @@
 				pointcut="execution(* org..DepartmentServiceBase.update(org.openuss.lecture.DepartmentInfo)) and args(departmentInfo)"
 				arg-names="departmentInfo"/>
 			<aop:after-returning
+				method="updateDepartmentIndexById"
+				pointcut="execution(* org..DepartmentServiceBase.setDepartmentStatus(java.lang.Long, java.lang.Boolean)) and args(departmentId, status)"
+				arg-names="departmentId, status"/>
+			<aop:after-returning
 				method="deleteDepartmentIndex"
 				pointcut="execution(* org..DepartmentServiceBase.removeDepartment(java.lang.Long)) and args(departmentId)"
 				arg-names="departmentId"/>
@@ -113,6 +117,7 @@
 	<bean id="departmentIndexAspectBean" class="org.openuss.lecture.DepartmentIndexingAspect">
 		<property name="indexerService" ref="indexerService"/>
 		<property name="departmentDao" ref="departmentDao"/>
+		<property name="departmentService" ref="departmentService"/>
 	</bean>
 	
 	<bean id="instituteIndexAspectBean" class="org.openuss.lecture.InstituteIndexingAspect">

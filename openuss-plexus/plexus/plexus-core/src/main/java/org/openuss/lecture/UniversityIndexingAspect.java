@@ -62,7 +62,7 @@ public class UniversityIndexingAspect {
 	
 	/**
 	 * Update university index By Id.
-	 * @param universityInfo
+	 * @param universityId, status
 	 */
 	public void updateUniversityIndexById(Long universityId, Boolean status) {
 		logger.debug("Starting method updateUniversityIndexById");
