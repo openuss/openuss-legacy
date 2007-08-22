@@ -15,48 +15,48 @@
     	columnClasses="col_min_left, col_min_left, col_min_left, col_max_left, col_commands"
     	var="bean" 
     	rows="10">  
-      
 		<t:column>
 			<plexus:commandSortHeader columnName="username">
    				<h:outputText value="#{msg['user_username']}"/>
 			</plexus:commandSortHeader>
-			
+			<h:outputText value="#{bean.username}"/>
 		</t:column>
 		
 		<t:column sortable="true">
 			<plexus:commandSortHeader columnName="firstname">
 				<h:outputText value="#{msg['user_contact_firstname']}"/>
 			</plexus:commandSortHeader>
-
+			<h:outputText value="#{bean.firstName}"/>
 		</t:column>
 		 
 		<t:column>
 			<plexus:commandSortHeader columnName="lastname">
 				<h:outputText value="#{msg['user_contact_lastname']}"/>
 			</plexus:commandSortHeader>
+			<h:outputText value="#{bean.lastName}"/>
+		</t:column>      
 
-		</t:column>
+
 		
-		<t:column>
-			<f:facet name="header">
-				<h:outputText value="#{msg['university_auth_members_colheader_groups']}"/>
-			</f:facet> 
-			
-		</t:column>
+
 		
 		<plexus:column header="#{msg.commands_header}">
 			<plexus:command 
 				bean="#{views$secured$lecture$auth$universitymembers}"
+				action="showProfile"
 				label="#{msg['user_profile_command_show_profile']}"
 				title="#{msg['user_profile_command_show_profile_hint']}"
 				styleClass="button_profile" />
-			<plexus:command
 				
+			<plexus:command
+				bean="#{views$secured$lecture$auth$universitymembers}"
+				action="removeMember"
 				onclick="if (!confirm('#{msg.lecture_remove_universitymember_confirmation}')) return false"
 				label="#{msg.university_members_command_remove}"
 				title="#{msg.university_members_command_remove_hint}"
-			
+				
 				styleClass="button_remove"/>
+
 		</plexus:column>
 	</plexus:dataTable>
 </ui:composition>
