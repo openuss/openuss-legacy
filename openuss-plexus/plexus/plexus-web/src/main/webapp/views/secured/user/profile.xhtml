@@ -43,8 +43,9 @@
 					<ui:include src="/views/commons/user/profileData.xhtml" />
    			 	</o:block>
    			 	<o:block>
-	   			 	<h:commandButton actionListener="#{views$secured$user$profile.saveProfile}" value="#{msg.save}" styleClass="button_save"/>
-					<h:commandButton action="cancel_Profile" value="#{msg.cancel}" styleClass="button_cancel" immediate="true"/>
+	   			 	<h:commandButton actionListener="#{views$secured$user$profile.saveProfile}" value="#{msg.save}" styleClass="button"/>
+	   			 	<h:commandButton action="secure_password_change" value="#{msg.user_profile_new_password}" styleClass="button"/>
+					<h:commandButton action="#{views$secured$user$profile.profilePage}" value="#{msg.user_profile_preview}" styleClass="button" />
 		 		</o:block>
 	 		</h:form> 
   		</ui:define>
