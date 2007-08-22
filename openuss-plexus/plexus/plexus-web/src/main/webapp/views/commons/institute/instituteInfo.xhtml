@@ -11,7 +11,7 @@
       
     <div class="institute_info">
     	<h:form id="institute_link">
-    		<h:commandLink action="/views/secured/lecture/institute.faces" >
+    		<h:commandLink action="/views/public/institute/institute.faces" >
     			<f:param name="instituteInfo" value="#{instituteInfo.id}"/>
 			 	<h:outputText value="#{instituteInfo.name}" styleClass="header_font_normal"/>
 				<h:outputText value="#{instituteInfo.address}" styleClass="content_font_normal"/>

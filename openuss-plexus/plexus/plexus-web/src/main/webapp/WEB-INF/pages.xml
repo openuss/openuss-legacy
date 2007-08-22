@@ -8,7 +8,7 @@
 		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
-	<page view-id="/views/secured/lecture/institute.xhtml">
+	<page view-id="/views/public/institute/institute.xhtml">
 		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	

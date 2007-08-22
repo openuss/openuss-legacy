@@ -29,7 +29,7 @@ import org.openuss.web.Constants;
  * @author Kai Stettner
  */
 @View
-@Bean(name = "views$secured$lecture$institute", scope = Scope.REQUEST)
+@Bean(name = "views$public$institute$institute", scope = Scope.REQUEST)
 public class InstitutePage extends AbstractLecturePage {
 
 	private static final long serialVersionUID = -1982354759705300093L;

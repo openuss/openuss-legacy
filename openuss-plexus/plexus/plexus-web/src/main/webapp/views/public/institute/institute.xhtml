@@ -22,11 +22,11 @@
 	<ui:composition template="/views/layout/layout.xhtml">
 		<ui:define name="header">
 			<link type="application/rss+xml" title="RSS-#{instituteInfo.name}" rel="alternate" href="../../../rss/public/institute.xml?institute=#{instituteInfo.id}"/>
-		</ui:define>	
-  		<ui:define name="title">
+		</ui:define>
+		<ui:define name="title">
   			<h:outputText value="#{msg.institute_maintitle}"/>
   		</ui:define>
-		<ui:define name="navigation">
+  		<ui:define name="navigation">
 			<ui:include src="/views/commons/navigation/institute.xhtml" />
 		</ui:define>
 		<ui:define name="sidebar"> 		
@@ -36,14 +36,15 @@
 		</ui:define>
 			
 		<ui:define name="content">
-  			<ui:include src="/views/commons/sidebar/instituteactivation.xhtml" />
+		
+			<ui:include src="/views/commons/sidebar/instituteactivation.xhtml" />
   			<h:form id="instituteMainForm">
   				<o:block>
 					<h:outputText value="#{msg.institute_period_selection}" styleClass="header_font_normal"/>
 					<h:selectOneMenu id="periodSelection" 
 						layout="pageDirection"  
-						value="#{period.id}" 
-						valueChangeListener="#{views$secured$lecture$institute.processPeriodSelectChanged}" 
+						value="#{periodInfo.id}" 
+						valueChangeListener="#{views$public$institute$institute.processPeriodSelectChanged}" 
 						onchange="this.form.submit();"
 						immediate="true" 
 						styleClass="pulldown_inline">
@@ -56,8 +57,8 @@
 				<plexus:dataTable 
 			     	id="courses" 
 			     	var="course" 
-			     	label="#{period.name}"
-			     	value="views$secured$lecture$institute.courseData" 
+			     	label="#{periodInfo.name}"
+			     	value="views$public$institute$institute.courseData" 
 			     	columnClasses="col_max_left, col_commands"
 					styleClass="table"
 			     	rows="10">
@@ -78,7 +79,7 @@
 					<s:authorize ifAllGranted="ROLE_USER">
 						<plexus:column header="#{msg.commands_header}">		
 							<plexus:command  
-								bean="#{views$secured$lecture$institute}"
+								bean="#{views$public$institute$institute}"
 								action="shortcutCourse"
 								label="#{msg.course_command_shortcut}"
 								title="#{msg.course_command_shortcut_hint}"
@@ -92,9 +93,9 @@
   			</h:form>
   			
   			<br/>
-	  		<plexus:newsTable value="#{views$secured$lecture$institute.currentNewsItems}" headline="${msg.news_header}"/>
+	  		<plexus:newsTable value="#{views$public$institute$institute.currentNewsItems}" headline="${msg.news_header}"/>
+  			
 				
-			
 			
   		</ui:define>
   		
