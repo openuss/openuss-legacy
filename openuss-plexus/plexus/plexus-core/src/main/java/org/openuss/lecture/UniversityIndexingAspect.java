@@ -18,6 +18,8 @@ public class UniversityIndexingAspect {
 	
 	private UniversityDao universityDao;
 	
+	private UniversityService universityService;
+	
 	private University university;
 	
 	/**
@@ -44,15 +46,37 @@ public class UniversityIndexingAspect {
 	public void updateUniversityIndex(UniversityInfo universityInfo) {
 		logger.debug("Starting method updateUniversityIndex");
 		try {
-			logger.debug("method updateUniversityIndex: updateIndex");
-			university = universityDao.universityInfoToEntity(universityInfo);
-			indexerService.updateIndex(university);
-			/*for(Course course:institute.getCourses()) {
-				if (course.getAccessType() != AccessType.CLOSED) {
-					indexerService.updateIndex(course);
-				}
-				
-			}*/
+			if (universityInfo.getEnabled()) {
+				logger.debug("method updateUniversityIndex: updateIndex");
+				university = universityDao.universityInfoToEntity(universityInfo);
+				indexerService.updateIndex(university);
+			} else {
+				logger.debug("method updateUniversityIndex: deleteIndex");
+				university = universityDao.universityInfoToEntity(universityInfo);
+				indexerService.deleteIndex(university);
+			}
+		} catch (IndexerApplicationException e) {
+			logger.error(e);
+		}
+	}
+	
+	/**
+	 * Update university index By Id.
+	 * @param universityInfo
+	 */
+	public void updateUniversityIndexById(Long universityId, Boolean status) {
+		logger.debug("Starting method updateUniversityIndexById");
+		try {
+			UniversityInfo universityInfo = universityService.findUniversity(universityId);
+			if (universityInfo.getEnabled()) {
+				logger.debug("method updateUniversityIndex: updateIndex");
+				university = universityDao.universityInfoToEntity(universityInfo);
+				indexerService.updateIndex(university);
+			} else {
+				logger.debug("method updateUniversityIndex: deleteIndex");
+				university = universityDao.universityInfoToEntity(universityInfo);
+				indexerService.deleteIndex(university);
+			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}
@@ -89,6 +113,16 @@ public class UniversityIndexingAspect {
 	public void setUniversityDao(UniversityDao universityDao) {
 		this.universityDao = universityDao;
 	}
+
+	public UniversityService getUniversityService() {
+		return universityService;
+	}
+
+	public void setUniversityService(UniversityService universityService) {
+		this.universityService = universityService;
+	}
+	
+	
 	
 
 }

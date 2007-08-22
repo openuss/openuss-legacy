@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -16,6 +17,8 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.OrganisationService;
+import org.openuss.lecture.University;
+import org.openuss.lecture.UniversityDao;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
@@ -32,7 +35,7 @@ import org.openuss.web.Constants;
 @View
 public class UniversitiesPage extends BasePage{
 
-	private static final Logger logger = Logger.getLogger(InstitutesPage.class);
+	private static final Logger logger = Logger.getLogger(UniversitiesPage.class);
 
 	private static final long serialVersionUID = 5069935767478432045L;
 	
@@ -40,6 +43,9 @@ public class UniversitiesPage extends BasePage{
 	
 	@Property(value = "#{universityService}")
 	private UniversityService universityService;
+	
+	@Property(value = "#{universityDao}")
+	private UniversityDao universityDao;
 	
 	@Property(value = "#{organisationService}")
 	private OrganisationService organisationService;
@@ -102,6 +108,16 @@ public class UniversitiesPage extends BasePage{
 		// setOrganisationStatus(true) = Enabled
 		// setOrganisationStatus(false) = Disbled
 		universityService.setUniversityStatus(currentUniversity.getId(), true);
+		
+		
+		//		 Load university
+		/*University university = universityDao.load(currentUniversity.getId());
+		//Validate.notNull(university, "UniversityService.setUniversityStatus - university cannot be found with the corresponding universityId "+universityId);
+		
+		// Set status
+		university.setEnabled(true);
+		UniversityInfo universityInfo = this.getUniversityDao().toUniversityInfo(university);
+		universityService.update(universityInfo);*/
 		
 		addMessage(i18n("message_university_enabled"));
 		return Constants.SUCCESS;
@@ -239,6 +255,16 @@ public class UniversitiesPage extends BasePage{
 		}
 		
 	}
+
+	public UniversityDao getUniversityDao() {
+		return universityDao;
+	}
+
+	public void setUniversityDao(UniversityDao universityDao) {
+		this.universityDao = universityDao;
+	}
+	
+	
 		
 
 }

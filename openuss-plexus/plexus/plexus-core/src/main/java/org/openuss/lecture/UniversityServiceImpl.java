@@ -31,7 +31,7 @@ import org.openuss.security.acl.LectureAclEntry;
 public class UniversityServiceImpl extends org.openuss.lecture.UniversityServiceBase {
 
 	private static final Logger logger = Logger.getLogger(UniversityServiceImpl.class);
-
+	
 	/**
 	 * @see org.openuss.lecture.UniversityService#createUniversity(org.openuss.lecture.UniversityInfo, java.lang.Long)
 	 */
@@ -523,7 +523,10 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		
 		// Set status
 		university.setEnabled(status);
-		this.update(this.getUniversityDao().toUniversityInfo(university));
+		UniversityInfo universityInfo = this.getUniversityDao().toUniversityInfo(university);
+		this.update(universityInfo);
+
+		
 	}
 	
 	@Override

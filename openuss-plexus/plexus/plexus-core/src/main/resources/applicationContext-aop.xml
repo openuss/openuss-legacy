@@ -19,6 +19,10 @@
 				pointcut="execution(* org..UniversityServiceBase.update(org.openuss.lecture.UniversityInfo)) and args(universityInfo)"
 				arg-names="universityInfo"/>
 			<aop:after-returning
+				method="updateUniversityIndexById"
+				pointcut="execution(* org..UniversityServiceBase.setUniversityStatus(java.lang.Long, java.lang.Boolean)) and args(universityId, status)"
+				arg-names="universityId, status"/>
+			<aop:after-returning
 				method="deleteUniversityIndex"
 				pointcut="execution(* org..UniversityServiceBase.removeUniversity(java.lang.Long)) and args(universityId)"
 				arg-names="universityId"/>
@@ -103,6 +107,7 @@
 	<bean id="universityIndexAspectBean" class="org.openuss.lecture.UniversityIndexingAspect">
 		<property name="indexerService" ref="indexerService"/>
 		<property name="universityDao" ref="universityDao"/>
+		<property name="universityService" ref="universityService"/>
 	</bean>
 	
 	<bean id="departmentIndexAspectBean" class="org.openuss.lecture.DepartmentIndexingAspect">
