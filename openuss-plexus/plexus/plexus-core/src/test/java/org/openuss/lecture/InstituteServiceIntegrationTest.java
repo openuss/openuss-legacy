@@ -162,9 +162,18 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		Department department = institute.getDepartment();
 		assertNotNull(department);
 		assertEquals(1, department.getInstitutes().size());
-
+		flush();
+		
 		// Get Institute id
 		Long id = institute.getId();
+		
+		// Create Desktop
+		User user = testUtility.createUniqueUserInDB();
+		Desktop desktop = Desktop.Factory.newInstance(user);
+		desktop.getInstitutes().add(institute);
+		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		Desktop desktopCreated = desktopDao.create(desktop);
+		assertNotNull(desktopCreated);
 
 		// Synchronize with Database
 		flush();
@@ -184,7 +193,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		testUtility.createAdminSecureContext();
 
 		// Remove Institute
-		this.getInstituteService().removeInstitute(id);
+		this.getInstituteService().removeInstitute(institute.getId().longValue());
 
 		// Synchronize with Database
 		flush();
@@ -195,6 +204,10 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		assertNull(institute2);
 		
 		assertEquals(0, department.getInstitutes().size());
+		
+		Desktop desktopTest = desktopDao.load(desktop.getId());
+		assertNotNull(desktopTest);
+		assertEquals(0, desktopTest.getInstitutes().size());
 
 		logger.info("----> END access to removeInstitute test");
 	}
