@@ -103,7 +103,8 @@ public class InstitutesPage extends BasePage{
 			
 			
 			DepartmentInfo departmentInfo = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT_INFO);			
-			List<InstituteInfo> instituteList = getInstituteService().findInstitutesByDepartmentAndEnabled(departmentInfo.getId(), true);
+			// get all institutes. Does not depend whether it is enabled or disabled
+			List<InstituteInfo> instituteList = getInstituteService().findInstitutesByDepartment(departmentInfo.getId());
 			sort(instituteList);
 			dataPage = new DataPage<InstituteInfo>(instituteList.size(),0,instituteList);
 

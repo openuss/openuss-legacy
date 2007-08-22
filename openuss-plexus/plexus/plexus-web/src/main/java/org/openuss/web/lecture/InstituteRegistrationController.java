@@ -42,6 +42,7 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 	private List<DepartmentInfo> allDepartments;
 	
 	private DepartmentType departmentType;
+	
 	public String start() {
 		
 		logger.debug("start registration process2");
@@ -57,18 +58,12 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		instituteInfo.setOwnerName(user.getName());
 		// create institute
 		
-		//lectureService.createInstitute(institute);
 		instituteInfo.setEnabled(false);
-		logger.debug(instituteInfo.getEnabled());
-		logger.debug(instituteInfo.getOwnerName());
-		logger.debug(instituteInfo.getName());
-		logger.debug(instituteInfo.getEmail());
+
 		Long instituteId = instituteService.create(instituteInfo, user.getId());
 		instituteInfo.setId(instituteId);
-		logger.debug(instituteInfo.getId());
-		logger.debug(user.getId());
-		
-		
+
+
 		//TODO send notification email
 		//FIXME this should be part of the business layer
 		//desktopService.linkInstitute(desktop, institute);
