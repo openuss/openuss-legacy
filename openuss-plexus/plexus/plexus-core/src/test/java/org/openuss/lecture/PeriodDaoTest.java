@@ -52,7 +52,7 @@ public class PeriodDaoTest extends PeriodDaoTestBase {
 		assertNotNull(period.getId());
 	}
 	
-	public void testPeriodInfoToEntity () {
+	public void testEntityToPeriodInfo () {
 		
 		//Create university
 		University university = testUtility.createUniqueUniversityInDB();
@@ -76,7 +76,7 @@ public class PeriodDaoTest extends PeriodDaoTestBase {
 		period.setStartdate(startdate);
 		period.setEnddate(enddate);
 		
-		//Test
+		//Test with non active period
 		PeriodInfo periodInfo = this.getPeriodDao().toPeriodInfo(period);
 		assertNotNull(periodInfo);
 		assertEquals(period.getId(), periodInfo.getId());
@@ -85,9 +85,30 @@ public class PeriodDaoTest extends PeriodDaoTestBase {
 		assertEquals(period.getStartdate().getTime(), periodInfo.getStartdate().getTime());
 		assertEquals(period.getEnddate().getTime(), periodInfo.getEnddate().getTime());
 		assertEquals(period.getUniversity().getId(), periodInfo.getUniversityId());
+		assertFalse(periodInfo.getIsActive());
+		
+		// Test with active period
+		
+		//Create Startdate
+		cal = new GregorianCalendar();
+		cal.set(2007, 3, 1);
+		startdate = new Date(cal.getTimeInMillis());
+		
+		//Create Enddate
+		cal = new GregorianCalendar();
+		cal.set(2010, 9, 31);
+		enddate = new Date(cal.getTimeInMillis());
+		
+		Period activePeriod = testUtility.createUniquePeriodInDB();
+		activePeriod.setStartdate(startdate);
+		activePeriod.setEnddate(enddate);
+		
+		periodInfo = this.getPeriodDao().toPeriodInfo(activePeriod);
+		assertTrue(periodInfo.getIsActive());
+		
 	}
 	
-	public void testEntityToPeriodInfo () {
+	public void testPeriodInfoToEntity () {
 		
 		//Create university
 		University university = testUtility.createUniqueUniversityInDB();

@@ -30,6 +30,12 @@ public class PeriodDaoImpl
 		if (entity.getUniversity() != null) {
 			periodInfo.setUniversityId(entity.getUniversity().getId());
 		}
+		if (entity.isActive()) {
+			periodInfo.setIsActive(true);
+		}
+		else {
+			periodInfo.setIsActive(false);
+		}
 		return periodInfo;
 	}
 
