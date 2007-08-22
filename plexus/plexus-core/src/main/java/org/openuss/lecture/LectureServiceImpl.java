@@ -183,7 +183,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		String activationCode = getRegistrationService().generateInstituteActivationCode(institute);
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("institutename", institute.getName()+"("+institute.getShortcut()+")");
-		parameters.put("institutelink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"actions/public/lecture/instituteactivation.faces?code="+activationCode);
+		parameters.put("institutelink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"openuss-plexus/actions/public/lecture/instituteactivation.faces?code="+activationCode);
 		getMessageService().sendMessage(institute.getShortcut(), "institute.activation.subject", "instituteactivation", parameters, institute.getEmail(), institute.getLocale());
 	}
 
