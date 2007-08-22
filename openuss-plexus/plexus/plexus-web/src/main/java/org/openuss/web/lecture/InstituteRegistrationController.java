@@ -43,6 +43,7 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 	
 	private DepartmentType departmentType;
 	public String start() {
+		
 		logger.debug("start registration process2");
 
 		instituteInfo = new InstituteInfo();
@@ -72,7 +73,7 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		//FIXME this should be part of the business layer
 		//desktopService.linkInstitute(desktop, institute);
 		desktopService2.linkInstitute(desktopInfo.getId(), instituteId);
-		return Constants.INSTITUTE;
+		return Constants.INSTITUTE_PAGE;
 	}
 	
 	public List<SelectItem> getAllUniversities() {

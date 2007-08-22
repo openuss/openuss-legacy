@@ -283,9 +283,9 @@
   <PROCESS-ITEM ENTITY="JSFProcessItem" ID="rules:#views#secured#*:1"
    NAME="item" PATH="/views/secured/*">
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="institute::#views#secured#lecture#institute.xtml" NAME="output"
-    PATH="/views/secured/lecture/institute.xtml"
-    TARGET="rules:#views#secured#lecture#institute.xtml" TITLE="institute"/>
+    ID="institute::#views#public#institute#institute.xtml" NAME="output"
+    PATH="/views/public/institute/institute.xtml"
+    TARGET="rules:#views#public#institute#institute.xtml" TITLE="institute"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="institute_data::#views#secured#lecture#instituteoptions.xhtml"
     NAME="output1" PATH="/views/secured/lecture/instituteoptions.xhtml"
@@ -326,6 +326,11 @@
     ID="institute_course_remove::#views#secured#lecture#courseremove.xhtml"
     NAME="output11" PATH="/views/secured/lecture/courseremove.xhtml"
     TARGET="rules:#views#secured#lecture#courseremove.xhtml" TITLE="institute_course_remove"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="institute_registration_start::#views#secured#lecture#registration#start.xhtml"
+    NAME="output8"
+    PATH="/views/secured/lecture/registration/start.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#start.xhtml" TITLE="institute_registration_start"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup" NAME="rules:#views#secured#*:2"
@@ -734,9 +739,6 @@
   NAME="rules:#views#secured#course#courseaspirants.xhtml"
   PATH="/views/secured/course/courseaspirants.xhtml" SHAPE="304,1425,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#secured#lecture#institute.xtml"
-  PATH="/views/secured/lecture/institute.xtml" SHAPE="304,5265,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#documents#folderedit.xhtml"
   PATH="/views/secured/documents/folderedit.xhtml" SHAPE="304,1425,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -1052,9 +1054,9 @@
   <PROCESS-ITEM ENTITY="JSFProcessItem" ID="rules:#views#public#*:0"
    NAME="item" PATH="/views/public/*">
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="institute_create::#views#secured#lecture#registration#start.xhtml"
+    ID="institute_registration_start::#views#secured#lecture#registration#start.xhtml"
     NAME="output" PATH="/views/secured/lecture/registration/start.xhtml"
-    TARGET="rules:#views#secured#lecture#registration#start.xhtml" TITLE="institute_create"/>
+    TARGET="rules:#views#secured#lecture#registration#start.xhtml" TITLE="institute_registration_start"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -1077,4 +1079,7 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#lecture#departmentremoveconfirmation.xhtml"
   PATH="/views/secured/lecture/departmentremoveconfirmation.xhtml" SHAPE="304,16705,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#public#institute#institute.xtml"
+  PATH="/views/public/institute/institute.xtml" SHAPE="304,5313,0,0"/>
 </PROCESS>

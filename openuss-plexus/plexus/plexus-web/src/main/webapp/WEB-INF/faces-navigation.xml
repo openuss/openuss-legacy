@@ -316,7 +316,7 @@
 
 		<navigation-case>
 			<from-outcome>institute</from-outcome>
-			<to-view-id>/views/secured/lecture/institute.xtml</to-view-id>
+			<to-view-id>/views/public/institute/institute.xtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
@@ -369,6 +369,11 @@
 			<to-view-id>/views/secured/lecture/courseremove.xhtml</to-view-id>
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>institute_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
+		</navigation-case>
+		
 	</navigation-rule>
 	
 	<navigation-rule>
@@ -376,7 +381,7 @@
 		<from-view-id>/views/public/*</from-view-id>
 		
 		<navigation-case>
-			<from-outcome>institute_create</from-outcome>
+			<from-outcome>institute_registration_start</from-outcome>
 			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
 		</navigation-case>
 		
