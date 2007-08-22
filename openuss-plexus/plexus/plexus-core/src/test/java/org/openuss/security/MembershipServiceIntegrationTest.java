@@ -7,11 +7,6 @@ package org.openuss.security;
 
 import java.util.List;
 
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.context.SecurityContextImpl;
-import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.University;
 
@@ -155,6 +150,36 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		flush();
 
 		logger.info("----> END access to addMember test");
+	}
+	
+	public void testRemoveMember() {
+		logger.info("----> BEGIN access to removeMember test");
+
+		// Create University with DefaultUser as Owner
+		University university = testUtility.createUniqueUniversityInDB();
+
+		// Create a User
+		User user = testUtility.createUniqueUserInDB();
+
+		// Add a User
+		membershipService.addMember(university.getMembership(), user, null);
+		int sizeBefore = university.getMembership().getMembers().size();
+
+		// Synchronize with Database
+		flush();
+		
+		// Remove Member
+		membershipService.removeMember(university.getMembership(), user, null);
+		
+		// Get List of Members
+		List members2 = university.getMembership().getMembers();
+		assertNotNull(members2);
+		assertEquals(sizeBefore - 1, members2.size());
+
+		// Synchronize with Database
+		flush();
+
+		logger.info("----> END access to removeMember test");
 	}
 
 	public void testAddAspirant() {

@@ -106,6 +106,29 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	}
 
 	/**
+	 * @see org.openuss.security.MembershipService#removeMember(org.openuss.security.Membership, java.lang.Long)
+	 */
+	protected void handleRemoveMember(Membership membership, User user, MembershipParameters parameters)
+			throws Exception {
+		// TODO Check Security
+
+		Validate.notNull(user, "MembershipService.handleRemoveMember - User cannot be null");
+		Validate.notNull(user.getId(), "MembershipService.handleRemoveMember - User must have a valid ID");
+		Validate.notNull(membership, "MembershipService.handleRemoveMember - Membership cannot be null");
+		Validate.notNull(membership.getId(), "MembershipService.handleRemoveMember - Membership must have a valid ID");
+
+		// Remove User from the List of Members
+		boolean isRemoved = membership.getMembers().remove(user);
+		if (!isRemoved) {
+			throw new IllegalArgumentException("MembershipService.handleRemoveMember - the User " + user.getUsername()
+					+ " couldn't be removed.");
+		}
+
+		// TODO Send Email to inform the Members and the removed Member
+		
+	}
+	
+	/**
 	 * @see org.openuss.security.MembershipService#addAspirant(org.openuss.security.Membership, java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })

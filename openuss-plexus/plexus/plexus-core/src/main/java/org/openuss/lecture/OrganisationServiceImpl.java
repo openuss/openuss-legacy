@@ -35,6 +35,22 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 
 		this.getMembershipService().addMember(organisation.getMembership(), user, null);
 	}
+	
+	/**
+	 * @see org.openuss.lecture.OrganisationService#removeMember(java.lang.Long, java.lang.Long)
+	 */
+	protected void handleRemoveMember(Long organisationId, Long userId) throws Exception {
+		Organisation organisation = this.getOrganisationDao().load(organisationId);
+		Validate.notNull(organisation,
+				"MembershipService.handleRemoveMember - no Organisation found corresponding to the ID " + organisationId);
+
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(organisation, "MembershipService.handleRemoveMember - no User found corresponding to the ID "
+				+ userId);
+
+		this.getMembershipService().removeMember(organisation.getMembership(), user, null);
+		
+	}
 
 	/**
 	 * @see org.openuss.lecture.OrganisationService#addAspirant(java.lang.Long, java.lang.Long)
