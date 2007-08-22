@@ -45,11 +45,11 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				"InstituteService.handleCreate - the DepartmentID cannot be null");
 
 		
-		
 		// Transform ValueObject into Entity
 		Institute instituteEntity = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
 		Department department = instituteEntity.getDepartment();
-		Validate.notNull(department, "InstituteService.handleCreate - no valid Department found corresponding to the ID "+instituteInfo.getDepartmentId());
+		Validate.notNull(department, "InstituteService.handleCreate - " +
+				"no valid Department found corresponding to the ID "+instituteInfo.getDepartmentId());
 
 		// Create a default Membership for the University
 		Membership membership = Membership.Factory.newInstance();

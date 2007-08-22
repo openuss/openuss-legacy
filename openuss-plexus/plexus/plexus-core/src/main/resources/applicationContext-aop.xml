@@ -102,6 +102,14 @@
 				pointcut="execution(* org..MessageJobDaoBase.update(org.openuss.messaging.MessageJob)) and args(messageJob)"
 				arg-names="messageJob"/>
 		</aop:aspect>
+				
+		<aop:aspect id="instituteCreationAspect" ref="instituteCreationAspectBean">
+			<aop:after-returning 
+				method="bookmarkInstitute"
+				pointcut="execution(* org..InstituteServiceBase.create(org.openuss.lecture.InstituteInfo, java.lang.Long)) and args(instituteInfo, userId)"
+				arg-names="instituteInfo, userId" />
+		</aop:aspect>
+			
 	</aop:config>
 	
 	<bean id="mailingStatusAspectBean" class="org.openuss.newsletter.MailingStatusAspect">
@@ -135,5 +143,8 @@
 		<property name="courseDao" ref="courseDao"/>
 	</bean>
 	
+	<bean id="instituteCreationAspectBean" class="org.openuss.lecture.InstituteCreationAspect">
+		<property name="desktopService" ref="desktopService2"/>
+	</bean>
 	
 </beans>

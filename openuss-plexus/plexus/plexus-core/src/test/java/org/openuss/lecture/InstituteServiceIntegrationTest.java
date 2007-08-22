@@ -6,12 +6,10 @@
 package org.openuss.lecture;
 
 import java.util.Date;
-import java.util.List;
 
 import org.acegisecurity.AccessDeniedException;
-import org.openuss.security.Group;
-import org.openuss.security.GroupDao;
-import org.openuss.security.MembershipDao;
+import org.openuss.desktop.Desktop;
+import org.openuss.desktop.DesktopDao;
 import org.openuss.security.User;
 
 /**
@@ -53,6 +51,11 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		assertNotNull(instituteTest.getApplication());
 		assertTrue(instituteTest.getDepartment().getApplications().contains(instituteTest.getApplication()));
 
+		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		Desktop desktop = desktopDao.findByUser(owner);
+		assertNotNull(desktop);
+		assertEquals(1, desktop.getInstitutes().size());
+		
 		// Synchronize with Database
 		flush();
 
@@ -78,6 +81,11 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		assertNotNull(instituteTest2.getDepartment());
 		assertNull(instituteTest2.getApplication());
 
+		desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		desktop = desktopDao.findByUser(owner);
+		assertNotNull(desktop);
+		assertEquals(2, desktop.getInstitutes().size());
+		
 		// Synchronize with Database
 		flush();
 
@@ -87,11 +95,11 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 	public void testUpdateInstitute() {
 		logger.info("----> BEGIN access to update(Institute) test");
 
-		// Create a default University
+		// Create a default Institute
 		Institute institute = testUtility.createUniqueInstituteInDB();
 		assertNotNull(institute.getId());
 
-		// Create new UniversityInfo object
+		// Create new InstituteInfo object
 		InstituteInfo instituteInfo = new InstituteInfo();
 		instituteInfo.setId(institute.getId());
 		instituteInfo.setName(testUtility.unique("testInstitute"));
@@ -110,7 +118,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		// Synchronize with Database
 		flush();
 
-		// Update University
+		// Update Institute
 		this.getInstituteService().update(instituteInfo);
 
 		// Check
@@ -130,7 +138,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		Department department = testUtility.createUniqueDepartmentInDB();
 		department.setDepartmentType(DepartmentType.OFFICIAL);
 		
-		// Create new UniversityInfo object
+		// Create new InstituteInfo object
 		InstituteInfo instituteInfo1 = new InstituteInfo();
 		instituteInfo1.setId(institute1.getId());
 		instituteInfo1.setDepartmentId(department.getId());
@@ -139,7 +147,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 			this.getInstituteService().update(instituteInfo1);
 			fail("InstituteServiceException must have been thrown.");
 		} catch (InstituteServiceException ise) {
-			
+			;
 		}
 
 		logger.info("----> END access to update(Institute) test");

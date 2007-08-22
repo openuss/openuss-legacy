@@ -72,8 +72,6 @@ public class UniversityRegistrationController extends AbstractUniversityPage{
 		// create university
 		Long universityId = universityService.createUniversity(universityInfo, user.getId());
 		universityInfo.setId(universityId);
-		// bookmark university for myuni page
-		desktopService2.linkUniversity(desktopInfo.getId(), universityInfo.getId());
 				
 		return Constants.UNIVERSITY_PAGE;
 	}
