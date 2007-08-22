@@ -17,8 +17,9 @@ import org.openuss.web.Constants;
 /**
  * Periods Remove Page Controller
  * 
- * @author Ingo Dueppe
  * @author Kai Stettner
+ * @author Ingo Dueppe
+ * 
  */
 @Bean(name = "views$secured$lecture$periodremove", scope = Scope.REQUEST)
 @View
@@ -73,7 +74,7 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 	}
 
 	/**
-	 * Validator to check weather the user has accepted the user agreement or
+	 * Validator to check whether the user has accepted the user agreement or
 	 * not.
 	 * 
 	 * @param context

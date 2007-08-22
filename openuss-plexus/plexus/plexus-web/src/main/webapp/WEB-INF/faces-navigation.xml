@@ -350,11 +350,6 @@
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>institute_periods</from-outcome>
-			<to-view-id>/views/secured/lecture/universityperiods.xhtml</to-view-id>
-		</navigation-case>
-
-		<navigation-case>
 			<from-outcome>institute_period</from-outcome>
 			<to-view-id>/views/secured/lecture/periodedit.xhtml</to-view-id>
 		</navigation-case>

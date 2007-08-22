@@ -36,19 +36,6 @@ public class PeriodEditPage extends AbstractPeriodPage {
 	}
 		
 	/**
-	 * Set session bean null and direct to next view.
-	 * 
-	 * @return outcome
-	 * @throws LectureException
-	 */
-	public String addPeriod() throws LectureException {
-		
-		setSessionBean(Constants.PERIOD_INFO, null);
-		
-		return Constants.UNIVERSITY_PERIOD_ADD_PAGE;
-	}
-	
-	/**
 	 * Store changes in the business layer.
 	 * 
 	 * @return outcome

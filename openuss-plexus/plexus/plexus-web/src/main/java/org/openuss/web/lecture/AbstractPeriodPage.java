@@ -17,6 +17,7 @@ import org.openuss.web.PageLinks;
 public class AbstractPeriodPage extends AbstractUniversityPage {
 
 	private static final long serialVersionUID = -6389099727200151245L;
+	
 	@Property(value = "#{periodInfo}")
 	protected PeriodInfo periodInfo;
 

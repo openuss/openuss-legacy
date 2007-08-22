@@ -42,7 +42,6 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 		super.prerender();
 		if (universityInfo != null) {
 			// refresh period list
-			// TODO ask the lectureService instead of institute and use value objects
 			periods = universityService.findPeriodsByUniversity(universityInfo.getId());
 			
 			periodInfo = (PeriodInfo) getSessionBean(Constants.PERIOD_INFO);
@@ -85,7 +84,7 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 	}
 	
 	/**
-	 * Adds a new period to institute
+	 * Adds a new period to university
 	 * @return
 	 */
 	public String addPeriod() {
@@ -93,6 +92,7 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 		setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		return Constants.UNIVERSITY_PERIOD_ADD_PAGE;
 	}
+	
 
 	/**
 	 * Sets the selected period into session scope and forward to the period
@@ -119,57 +119,25 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 		setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		return Constants.UNIVERSITY_PERIOD_REMOVE_PAGE;
 	}
-
-	/**
-	 * Forwards to an additional security question
-	 * 
-	 * @return outcome
-	 * @throws LectureException
-	 */
-	public String removePeriod() throws LectureException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Remove Period");
-		}
-		universityService.removePeriod(periodInfo.getId());
-		removeSessionBean(Constants.PERIOD_INFO);
-		return Constants.INSTITUTE_PERIODS_PAGE;
-	}
-
-	/**
-	 * Store changes in the business layer.
-	 * 
-	 * @return outcome
-	 * @throws LectureException
-	 */
-	public String savePeriod() throws LectureException {
-		if (periodInfo.getId() == null) {
-			universityService.createPeriod(periodInfo);
-		} else {
-			universityService.update(periodInfo);
-		}
-		
-		return Constants.INSTITUTE_PERIODS_PAGE;
-	}
-
 	
+	/* -------- properties ---------- */
 
-	/**
-	 * Validator to check whether the user has accepted the user agreement or
-	 * not.
-	 * 
-	 * @param context
-	 * @param toValidate
-	 * @param value
-	 */
-	/*
-	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
-		boolean accept = (Boolean) value;
-		if (!accept) {
-			((UIInput) toValidate).setValid(false);
-			addError(toValidate.getClientId(context), i18n("error_need_to_confirm_removement"), null);
-		}
+	public PeriodDataModel getPeriodData() {
+		return periodData;
 	}
-*/
+
+	public void setPeriodData(PeriodDataModel periodData) {
+		this.periodData = periodData;
+	}
+	
+	public PeriodInfo getPeriodInfo() {
+		return periodInfo;
+	}
+
+	public void setPeriodInfo(PeriodInfo periodInfo) {
+		logger.trace("setPeriodInfo " + periodInfo);
+		this.periodInfo = periodInfo;
+	}
 
 	/* ------------------ data models ------------------- */
 	
@@ -190,23 +158,6 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 		}
 	}
 	
-	/* -------- properties ---------- */
 
-	public PeriodDataModel getPeriodData() {
-		return periodData;
-	}
-
-	public void setPeriodData(PeriodDataModel periodData) {
-		this.periodData = periodData;
-	}
-	
-	public PeriodInfo getPeriodInfo() {
-		return periodInfo;
-	}
-
-	public void setPeriodInfo(PeriodInfo periodInfo) {
-		logger.trace("setPeriodInfo " + periodInfo);
-		this.periodInfo = periodInfo;
-	}
 }
 	
