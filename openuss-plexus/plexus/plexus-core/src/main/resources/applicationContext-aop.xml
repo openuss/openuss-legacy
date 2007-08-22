@@ -103,6 +103,20 @@
 				arg-names="messageJob"/>
 		</aop:aspect>
 		
+		<aop:aspect id="universityCreationAspect" ref="universityCreationAndDeletionAspectBean">
+			<aop:after-returning
+				method="bookmarkUniversity"
+				pointcut="execution(* org..UniversityServiceBase.create(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)"
+				arg-names="universityInfo, userId" />
+		</aop:aspect>
+		
+		<aop:aspect id="universityDeletionAspect" ref="universityCreationAndDeletionAspectBean">
+			<aop:before
+				method="deleteBookmarksOfUniversity"
+				pointcut="execution(* org..UniversityServiceBase.removeUniversity(java.lang.Long)) and args(universityId)"
+				arg-names="universityId" />
+		</aop:aspect>
+		
 		<aop:aspect id="departmentCreationAspect" ref="departmentCreationAndDeletionAspectBean">
 			<aop:after-returning
 				method="bookmarkDepartment"
@@ -183,4 +197,7 @@
 		<property name="desktopService" ref="desktopService2"/>
 	</bean>
 	
+	<bean id="universityCreationAndDeletionAspectBean" class="org.openuss.lecture.UniversityCreationAndDeletionAspect">
+		<property name="desktopService" ref="desktopService2"/>
+	</bean>
 </beans>
