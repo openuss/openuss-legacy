@@ -315,7 +315,20 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		logger.debug("Starting method handleUpdateCourse");
 		Validate.notNull(courseInfo, "Parameter course must not be null.");
 		Validate.notNull(courseInfo.getId(), "Parameter course must contain a valid course id.");
+		
+		// Load Course
 		Course course = getCourseDao().courseInfoToEntity(courseInfo);
+		
+		// Check period
+		Validate.notNull(course.getPeriod(), "CourseService.updateCourse - A Course must be associated with a valid period.");
+		
+		// Check CourseType
+		Validate.notNull(course.getCourseType(), "CourseService.updateCourse - A Course must be associated with a valid courseType.");
+		
+		// Check Institute
+		Validate.notNull(course.getCourseType().getInstitute(), "CourseService.updateCourse - " +
+				"The CourseType of a Course must be associated with a valid institute.");
+		
 		getCourseDao().update(course);
 
 	}

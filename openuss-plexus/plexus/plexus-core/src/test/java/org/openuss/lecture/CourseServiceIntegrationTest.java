@@ -104,6 +104,98 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		logger.debug("----> END access to create test <---- ");
 	}
 	
+	public void testUpdateCourse () {
+		logger.debug("----> BEGIN access to updateCourse test <---- ");
+		
+		// Create Course
+		Course course = testUtility.createUniqueCourseInDB();
+		assertNotNull(course);
+		
+		// Create CourseType
+		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
+		assertNotNull(courseType);
+		
+		// Create Period
+		Period period = testUtility.createUniquePeriodInDB();
+		assertNotNull(period);
+		
+		// Synchronize with DB
+		flush();
+		
+		// Create CourseInfo
+		CourseInfo courseInfo = new CourseInfo();
+		courseInfo.setId(course.getId());
+		courseInfo.setName(testUtility.unique("name"));
+		courseInfo.setShortcut(testUtility.unique("course"));
+		courseInfo.setDescription(testUtility.unique("description"));
+		courseInfo.setPassword(testUtility.unique("password"));
+		courseInfo.setCourseTypeId(courseType.getId());
+		courseInfo.setCourseTypeDescription(courseType.getDescription());
+		courseInfo.setPeriodId(period.getId());
+		courseInfo.setPeriodName(period.getName());
+		courseInfo.setAccessType(AccessType.OPEN);
+		courseInfo.setBraincontest(true);
+		courseInfo.setChat(true);
+		courseInfo.setDiscussion(true);
+		courseInfo.setDocuments(true);
+		courseInfo.setFreestylelearning(true);
+		courseInfo.setNewsletter(true);
+		courseInfo.setWiki(true);
+		
+		// Test
+		this.getCourseService().updateCourse(courseInfo);
+		
+		// Load Course
+		CourseDao courseDao = (CourseDao) this.getApplicationContext().getBean("courseDao");
+		Course courseTest = courseDao.load(courseInfo.getId());
+		assertNotNull(courseTest);
+		assertEquals(courseInfo.getDescription(), courseTest.getDescription());
+		
+		// Create CourseInfo with wrong Period
+		courseInfo = new CourseInfo();
+		courseInfo.setPeriodId(null);
+		
+		// Test
+		try {
+			this.getCourseService().updateCourse(courseInfo);
+			fail("Exception should have been thrown!");
+		} catch (Exception exc) {
+			;
+		}
+		
+		// Create info with wrong courseType
+		courseInfo = new CourseInfo();
+		courseInfo.setPeriodId(period.getId());
+		courseInfo.setCourseTypeId(null);
+		
+		// Test
+		try {
+			this.getCourseService().updateCourse(courseInfo);
+			fail("Exception should have been thrown!");
+		} catch (Exception exc) {
+			;
+		}
+		
+		// Create info with courseType with wrong institute
+		CourseType courseTypeTest = testUtility.createUniqueCourseTypeInDB();
+		flush();
+		courseTypeTest.setInstitute(null);
+		
+		courseInfo = new CourseInfo();
+		courseInfo.setPeriodId(period.getId());
+		courseInfo.setCourseTypeId(courseTypeTest.getId());
+		
+		// Test
+		try {
+			this.getCourseService().updateCourse(courseInfo);
+			fail("Exception should have been thrown!");
+		} catch (Exception exc) {
+			;
+		}
+		
+		logger.debug("----> END access to updateCourse test <---- ");
+	}
+	
 	public void testRemoveCourse () {
 		logger.debug("----> BEGIN access to removeCourse test <---- ");
 		
