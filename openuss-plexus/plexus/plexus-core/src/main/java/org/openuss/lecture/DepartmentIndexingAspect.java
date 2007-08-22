@@ -35,7 +35,7 @@ public class DepartmentIndexingAspect {
 	public void updateDepartmentIndex(DepartmentInfo departmentInfo) {
 		logger.info("Starting method updateDepartmentIndex");
 		try {
-			if (departmentInfo.getEnabled()) {
+			if (departmentInfo.isEnabled()) {
 				logger.debug("method updateDepartmentIndex: updateIndex");
 				department = departmentDao.departmentInfoToEntity(departmentInfo);
 				indexerService.updateIndex(department);
@@ -58,7 +58,7 @@ public class DepartmentIndexingAspect {
 		logger.debug("Starting method updateDepartmentIndexById");
 		try {
 			DepartmentInfo departmentInfo = departmentService.findDepartment(departmentId);
-			if (departmentInfo.getEnabled()) {
+			if (departmentInfo.isEnabled()) {
 				logger.debug("method updateDepartmentIndex: updateIndex");
 				department = departmentDao.departmentInfoToEntity(departmentInfo);
 				indexerService.updateIndex(department);

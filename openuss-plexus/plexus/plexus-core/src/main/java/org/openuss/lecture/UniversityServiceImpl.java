@@ -143,10 +143,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	protected java.lang.Long handleCreatePeriod(org.openuss.lecture.PeriodInfo period) throws java.lang.Exception {
 
 		Validate.notNull(period, "UniversityService.handleCreate - the period cannot be null");
-		if (period.getDefaultPeriod() == null) {
-			period.setDefaultPeriod(false);
-		}
-		Validate.isTrue(!period.getDefaultPeriod(),
+		Validate.isTrue(!period.isDefaultPeriod(),
 				"UniversityService.handleCreate - You cannot create a default Period!");
 		Period periodEntity = this.getPeriodDao().create(this.getPeriodDao().periodInfoToEntity(period));
 		periodEntity.getUniversity().getPeriods().add(periodEntity);
@@ -177,11 +174,6 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	protected void handleUpdate(org.openuss.lecture.PeriodInfo period) throws java.lang.Exception {
 
 		Validate.notNull(period, "UniversityService.handleUpdate - the Period cannot be null");
-
-		// It is not intended to use this method to change the status of defaultPeriod!
-		if (period.getDefaultPeriod() == null) {
-			period.setDefaultPeriod(false);
-		}
 
 		// Transform ValueObject into Entity
 		Period periodEntity = this.getPeriodDao().periodInfoToEntity(period);
@@ -348,7 +340,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#findUniversitiesByUser(Long, Boolean)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected java.util.List handleFindUniversitiesByMemberAndEnabled(Long userId, Boolean enabled)
+	protected java.util.List handleFindUniversitiesByMemberAndEnabled(Long userId, boolean enabled)
 			throws java.lang.Exception {
 
 		Validate.notNull(userId, "UniversityServiceImpl.findUniversitiesByUser - userId cannot be null.");
@@ -432,7 +424,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#findAllUniversitiesByEnabled(java.lang.Boolean)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindUniversitiesByEnabled(Boolean enabled) throws Exception {
+	protected List handleFindUniversitiesByEnabled(boolean enabled) throws Exception {
 
 		return this.getUniversityDao().findByEnabled(UniversityDao.TRANSFORM_UNIVERSITYINFO, enabled);
 	}
@@ -441,7 +433,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#findUniversitiesByType(UniversityType, Boolean)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindUniversitiesByTypeAndEnabled(UniversityType universityType, Boolean enabled)
+	protected List handleFindUniversitiesByTypeAndEnabled(UniversityType universityType, boolean enabled)
 			throws Exception {
 
 		Validate.notNull(universityType,
@@ -513,7 +505,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	}
 	
 	@Override
-	public void handleSetUniversityStatus (Long universityId, Boolean status) {
+	public void handleSetUniversityStatus (Long universityId, boolean status) {
 		Validate.notNull(universityId, "UniversityService.setUniversityStatus - the universityId cannot be null.");
 		Validate.notNull(status, "UniversityService.setUniversityStatus - status cannot be null.");
 		

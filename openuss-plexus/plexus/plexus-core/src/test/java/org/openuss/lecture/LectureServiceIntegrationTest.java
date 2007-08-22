@@ -70,7 +70,7 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		assertEquals(institute2.getDepartment(), instituteTest.getDepartment());
 		assertEquals(institute2.getCourseTypes().size(), instituteTest.getCourseTypes().size());
 		assertEquals(institute2.getActiveCourses().size(), instituteTest.getActiveCourses().size());
-		assertEquals(institute2.getEnabled(), instituteTest.getEnabled());
+		assertEquals(institute2.isEnabled(), instituteTest.isEnabled());
 		
 		logger.debug("----> END access to getInstitutes test <---- ");
 	}

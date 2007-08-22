@@ -40,11 +40,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		Validate.isTrue(department.getId() == null,
 				"DepartmentService.handleCreate - the Department shouldn't have an ID yet");
-
-		if (department.getDefaultDepartment() == null) {
-			department.setDefaultDepartment(false);
-		}
-		Validate.isTrue(!department.getDefaultDepartment(),
+		Validate.isTrue(!department.isDefaultDepartment(),
 				"DepartmentService.handleCreate - You cannot create a default Department!");
 		
 		
@@ -169,7 +165,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	 *      org.openuss.lecture.University, java.lang.Boolean)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindDepartmentsByUniversityAndEnabled(Long universityId, Boolean enabled) throws Exception {
+	protected List handleFindDepartmentsByUniversityAndEnabled(Long universityId, boolean enabled) throws Exception {
 
 		Validate.notNull(universityId,
 				"DepartmentService.handleFindDepartmentsByUniversityAndEnabled - the universityId cannot be null");
@@ -215,7 +211,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Validate.notNull(application,
 				"DepartmentService.handleAcceptApplication - no Application found corresponding to the ID "
 						+ applicationId);
-		Validate.isTrue(!application.getConfirmed(),
+		Validate.isTrue(!application.isConfirmed(),
 				"DepartmentService.handleAcceptApplication - the Application is already confirmed");
 
 		User user = this.getUserDao().load(userId);
@@ -240,7 +236,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Validate.notNull(application,
 				"DepartmentService.handleRejectApplication - no Application found corresponding to the ID "
 						+ applicationId);
-		Validate.isTrue(!application.getConfirmed(),
+		Validate.isTrue(!application.isConfirmed(),
 				"DepartmentService.handleRejectApplication - the Application is already confirmed");
 
 		application.remove(application.getDepartment());
@@ -288,7 +284,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	}
 	
 	@Override
-	public void handleSetDepartmentStatus(Long departmentId, Boolean status) {
+	public void handleSetDepartmentStatus(Long departmentId, boolean status) {
 		Validate.notNull(departmentId, "DepartmentService.setDepartmentStatus - the departmentId cannot be null.");
 		Validate.notNull(status, "DepartmentService.setDepartmentStatus - status cannot be null.");
 		

@@ -101,7 +101,7 @@ public class InstitutesPage extends BasePage{
 	public String save() {
 		for (InstituteInfo instituteInfo : changedInstitutes) {
 			instituteService.update(instituteInfo);
-			if (instituteInfo.getEnabled())
+			if (instituteInfo.isEnabled())
 				addMessage(i18n("system_message_institute_enabled", new Object[]{ instituteInfo.getName()}));
 			else
 				addMessage(i18n("system_message_institute_disabled", new Object[]{ instituteInfo.getName()}));

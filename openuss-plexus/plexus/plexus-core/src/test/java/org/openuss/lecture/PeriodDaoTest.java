@@ -85,8 +85,8 @@ public class PeriodDaoTest extends PeriodDaoTestBase {
 		assertEquals(period.getStartdate().getTime(), periodInfo.getStartdate().getTime());
 		assertEquals(period.getEnddate().getTime(), periodInfo.getEnddate().getTime());
 		assertEquals(period.getUniversity().getId(), periodInfo.getUniversityId());
-		assertFalse(periodInfo.getIsActive());
-		assertTrue(periodInfo.getIsRemovable());
+		assertFalse(periodInfo.isActive());
+		assertTrue(periodInfo.isRemovable());
 		
 		// Test with active period and courses in list
 		
@@ -111,8 +111,8 @@ public class PeriodDaoTest extends PeriodDaoTestBase {
 		activePeriod.getCourses().add(course2);
 		
 		periodInfo = this.getPeriodDao().toPeriodInfo(activePeriod);
-		assertTrue(periodInfo.getIsActive());
-		assertFalse(periodInfo.getIsRemovable());
+		assertTrue(periodInfo.isActive());
+		assertFalse(periodInfo.isRemovable());
 		
 	}
 	

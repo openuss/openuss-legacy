@@ -129,7 +129,7 @@ public void testInstituteDaoToInstituteInfo() {
 	assertEquals(institute.getName(), instituteInfo.getName());
 	assertEquals(institute.getShortcut(), instituteInfo.getShortcut());
 	assertEquals(institute.getOwnerName(), instituteInfo.getOwnerName());
-	assertEquals(institute.getEnabled(), instituteInfo.getEnabled());
+	assertEquals(institute.isEnabled(), instituteInfo.isEnabled());
 	assertEquals(institute.getDescription(), instituteInfo.getDescription());	
 	assertEquals(institute.getAddress(), instituteInfo.getAddress());
 	assertEquals(institute.getCity(), instituteInfo.getCity());
@@ -159,7 +159,7 @@ public void testInstituteDaoToInstituteInfo() {
 		instituteInfo1.setCountry(instituteDefault.getCountry());
 		instituteInfo1.setDescription(instituteDefault.getDescription());
 		instituteInfo1.setEmail(instituteDefault.getEmail());
-		instituteInfo1.setEnabled(instituteDefault.getEnabled());
+		instituteInfo1.setEnabled(instituteDefault.isEnabled());
 		instituteInfo1.setLocale(instituteDefault.getLocale());
 		instituteInfo1.setName(instituteDefault.getName());
 		instituteInfo1.setOwnerName(instituteDefault.getOwnerName());
@@ -178,7 +178,7 @@ public void testInstituteDaoToInstituteInfo() {
 		assertEquals(instituteInfo1.getName(), institute1.getName());
 		assertEquals(instituteInfo1.getShortcut(), institute1.getShortcut());
 		assertEquals(instituteInfo1.getOwnerName(), institute1.getOwnerName());
-		assertEquals(instituteInfo1.getEnabled(), institute1.getEnabled());
+		assertEquals(instituteInfo1.isEnabled(), institute1.isEnabled());
 		assertEquals(instituteInfo1.getDescription(), institute1.getDescription());
 		assertEquals(instituteInfo1.getAddress(), institute1.getAddress());
 		assertEquals(instituteInfo1.getCity(), institute1.getCity());
@@ -219,7 +219,7 @@ public void testInstituteDaoToInstituteInfo() {
 		assertEquals(instituteInfo2.getName(), institute2.getName());
 		assertEquals(instituteInfo2.getShortcut(), institute2.getShortcut());
 		assertEquals(instituteInfo2.getOwnerName(), institute2.getOwnerName());
-		assertEquals(instituteInfo2.getEnabled(), institute2.getEnabled());
+		assertEquals(instituteInfo2.isEnabled(), institute2.isEnabled());
 		assertEquals(instituteInfo2.getDescription(), institute2.getDescription());
 		assertEquals(instituteInfo2.getAddress(), institute2.getAddress());
 		assertEquals(instituteInfo2.getCity(), institute2.getCity());

@@ -71,7 +71,7 @@ public class InstituteServiceMock implements InstituteService {
 	}
 
 	public List findInstitutesByDepartmentAndEnabled(Long departmentId,
-			Boolean enabled) {
+			boolean enabled) {
 		// for testing purposes: return the same data as method findInstitutesByDepartment
 		// (all institutes there are enabled)
 		if( enabled ){
@@ -107,7 +107,7 @@ public class InstituteServiceMock implements InstituteService {
 		return false;
 	}
 	
-	public List findInstitutesByEnabled (Boolean enabledOnly) {
+	public List findInstitutesByEnabled (boolean enabledOnly) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -122,7 +122,7 @@ public class InstituteServiceMock implements InstituteService {
 		return null;
 	}
 	
-	public void setInstituteStatus(Long instituteId, Boolean status) {
+	public void setInstituteStatus(Long instituteId, boolean status) {
 		// TODO Auto-generated method stub
 	}
 }

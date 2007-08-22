@@ -94,7 +94,7 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		assertEquals(university.getName(), universityInfo.getName());
 		assertEquals(university.getShortcut(), universityInfo.getShortcut());
 		assertEquals(university.getOwnerName(), universityInfo.getOwnerName());
-		assertEquals(university.getEnabled(), universityInfo.getEnabled());
+		assertEquals(university.isEnabled(), universityInfo.isEnabled());
 		assertEquals(university.getDescription(), universityInfo.getDescription());
 		assertEquals(university.getUniversityType(), universityInfo.getUniversityType());		
 		assertEquals(university.getAddress(), universityInfo.getAddress());
@@ -123,7 +123,7 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		universityInfo1.setCountry(universityDefault.getCountry());
 		universityInfo1.setDescription(universityDefault.getDescription());
 		universityInfo1.setEmail(universityDefault.getEmail());
-		universityInfo1.setEnabled(universityDefault.getEnabled());
+		universityInfo1.setEnabled(universityDefault.isEnabled());
 		universityInfo1.setLocale(universityDefault.getLocale());
 		universityInfo1.setName(universityDefault.getName());
 		universityInfo1.setOwnerName(universityDefault.getOwnerName());
@@ -142,7 +142,7 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		assertEquals(universityInfo1.getName(), university1.getName());
 		assertEquals(universityInfo1.getShortcut(), university1.getShortcut());
 		assertEquals(universityInfo1.getOwnerName(), university1.getOwnerName());
-		assertEquals(universityInfo1.getEnabled(), university1.getEnabled());
+		assertEquals(universityInfo1.isEnabled(), university1.isEnabled());
 		assertEquals(universityInfo1.getDescription(), university1.getDescription());
 		assertEquals(universityInfo1.getUniversityType(), university1.getUniversityType());
 		assertEquals(universityInfo1.getAddress(), university1.getAddress());
@@ -173,7 +173,7 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		assertEquals(universityInfo2.getName(), university2.getName());
 		assertEquals(universityInfo2.getShortcut(), university2.getShortcut());
 		assertEquals(universityInfo2.getOwnerName(), university2.getOwnerName());
-		assertEquals(universityInfo2.getEnabled(), university2.getEnabled());
+		assertEquals(universityInfo2.isEnabled(), university2.isEnabled());
 		assertEquals(universityInfo2.getDescription(), university2.getDescription());
 		assertEquals(universityInfo2.getUniversityType(), university2.getUniversityType());
 		assertEquals(universityInfo2.getAddress(), university2.getAddress());

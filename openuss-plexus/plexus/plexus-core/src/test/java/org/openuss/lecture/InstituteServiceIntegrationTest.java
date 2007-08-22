@@ -308,7 +308,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		// Create institute
 		Institute institute = testUtility.createUniqueInstituteInDB();
 		assertNotNull(institute);
-		assertTrue(institute.getEnabled());
+		assertTrue(institute.isEnabled());
 
 		// Synchronize with DB
 		flush();
@@ -331,7 +331,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
 		Institute instituteTest = instituteDao.load(institute.getId());
 
-		assertFalse(instituteTest.getEnabled());
+		assertFalse(instituteTest.isEnabled());
 		testUtility.destroySecureContext();
 
 		testUtility.createAdminSecureContext();
@@ -340,7 +340,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		// Load Institute
 		Institute instituteTest1 = instituteDao.load(institute.getId());
 
-		assertTrue(instituteTest1.getEnabled());
+		assertTrue(instituteTest1.isEnabled());
 		testUtility.destroySecureContext();
 
 		logger.info("----> END access to setInstituteStatus test");

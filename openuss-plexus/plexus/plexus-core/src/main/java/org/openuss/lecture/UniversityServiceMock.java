@@ -78,7 +78,7 @@ public class UniversityServiceMock implements UniversityService {
 	}
 
 	@SuppressWarnings( { "unchecked" })
-	public List findUniversitiesByEnabled(Boolean enabled) {
+	public List findUniversitiesByEnabled(boolean enabled) {
 		Map<Long, UniversityInfo> universities = this.getMockUniversities();
 		UniversityInfo tempUniversity;
 		List result = new ArrayList();
@@ -87,7 +87,7 @@ public class UniversityServiceMock implements UniversityService {
 		while(iterator.hasNext()){
 			Long key = iterator.next();
 			tempUniversity = universities.get(key);
-			if(tempUniversity.getEnabled() == enabled){
+			if(tempUniversity.isEnabled() == enabled){
 				result.add(tempUniversity);
 			}
 		}
@@ -251,12 +251,12 @@ public class UniversityServiceMock implements UniversityService {
 		return periods;
 	}
 
-	public List findUniversitiesByMemberAndEnabled(Long userId, Boolean enabled) {
+	public List findUniversitiesByMemberAndEnabled(Long userId, boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List findUniversitiesByTypeAndEnabled(UniversityType universityType, Boolean enabled) {
+	public List findUniversitiesByTypeAndEnabled(UniversityType universityType, boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -270,7 +270,7 @@ public class UniversityServiceMock implements UniversityService {
 		return false;
 	}
 	
-	public void setUniversityStatus(Long universityId, Boolean status) {
+	public void setUniversityStatus(Long universityId, boolean status) {
 		// TODO Auto-generated method stub
 	}
 	

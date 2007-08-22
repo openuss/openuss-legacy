@@ -78,7 +78,7 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 		logger.debug("Starting method isActivePeriod");
 		PeriodInfo periodInfo = periodData.getRowData();
 		
-		return periodInfo.getIsActive();
+		return periodInfo.isActive();
 	}
 	
 	/**

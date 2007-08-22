@@ -26,7 +26,7 @@ public class InstituteIndexingAspect {
 	public void createInstituteIndex(InstituteInfo instituteInfo,Long userId) {
 		logger.debug("Starting method createInstituteIndex");
 		try {
-			if (instituteInfo.getEnabled()) {
+			if (instituteInfo.isEnabled()) {
 				logger.debug("method createInstituteIndex: createIndex");
 				institute = instituteDao.instituteInfoToEntity(instituteInfo);
 				indexerService.createIndex(institute);
@@ -43,7 +43,7 @@ public class InstituteIndexingAspect {
 	public void updateInstituteIndex(InstituteInfo instituteInfo) {
 		logger.debug("Starting method updateInstituteIndex");
 		try {
-			if (instituteInfo.getEnabled()) {
+			if (instituteInfo.isEnabled()) {
 				logger.debug("method updateInstituteIndex: updateIndex");
 				institute = instituteDao.instituteInfoToEntity(instituteInfo);
 				indexerService.updateIndex(institute);

@@ -439,7 +439,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		// Create university
 		University university = testUtility.createUniqueUniversityInDB();
 		assertNotNull(university);
-		assertTrue(university.getEnabled());
+		assertTrue(university.isEnabled());
 
 		// Synchronize with DB
 		flush();
@@ -462,7 +462,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
 		University universityTest = universityDao.load(university.getId());
 
-		assertFalse(universityTest.getEnabled());
+		assertFalse(universityTest.isEnabled());
 		testUtility.destroySecureContext();
 
 		testUtility.createAdminSecureContext();
@@ -472,7 +472,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
 		University universityTest1 = universityDao.load(university.getId());
 
-		assertTrue(universityTest1.getEnabled());
+		assertTrue(universityTest1.isEnabled());
 		testUtility.destroySecureContext();
 
 		logger.info("----> END access to setOrganisationEnabled test");

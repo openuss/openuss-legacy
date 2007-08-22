@@ -47,7 +47,7 @@ public class DepartmentServiceMock implements DepartmentService {
 
 	@SuppressWarnings( { "unchecked" })
 	public List findDepartmentsByUniversityAndEnabled(Long universityId,
-			Boolean enabled) {
+			boolean enabled) {
 		List departments = findDepartmentsByUniversity(universityId);
 		List result = new ArrayList(); 
 		DepartmentInfo tempDepartment;
@@ -55,7 +55,7 @@ public class DepartmentServiceMock implements DepartmentService {
 		Iterator iterator = departments.iterator();
 		while(iterator.hasNext()){
 			tempDepartment = (DepartmentInfo) iterator.next();
-			if(tempDepartment.getEnabled()){
+			if(tempDepartment.isEnabled()){
 				result.add(tempDepartment);
 			}
 		}
@@ -211,7 +211,7 @@ public class DepartmentServiceMock implements DepartmentService {
 		return false;
 	}
 	
-	public void setDepartmentStatus(Long departmentId, Boolean status) {
+	public void setDepartmentStatus(Long departmentId, boolean status) {
 		// TODO Auto-generated method stub
 	}
 }

@@ -271,13 +271,13 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		// Accept Application
 		assertFalse(department.getInstitutes().contains(institute));
 		this.getDepartmentService().acceptApplication(application.getId(), user.getId());
-		assertTrue(application.getConfirmed());
+		assertTrue(application.isConfirmed());
 		assertTrue(department.getInstitutes().contains(institute));
 		
 		// Synchronize with Database
 		flush();
 		
-		assertTrue(application.getConfirmed());
+		assertTrue(application.isConfirmed());
 		assertTrue(department.getInstitutes().contains(institute));
 		
 		// Signoff Institute
@@ -314,7 +314,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		Department department = application.getDepartment();
 		Institute institute = application.getInstitute();
 		
-		assertTrue(!application.getConfirmed());
+		assertTrue(!application.isConfirmed());
 		assertTrue(!department.getInstitutes().contains(institute));
 		
 		// Reject Application
@@ -345,7 +345,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		Department department = application.getDepartment();
 		Institute institute = application.getInstitute();
 		
-		assertTrue(!application.getConfirmed());
+		assertTrue(!application.isConfirmed());
 		assertTrue(!department.getInstitutes().contains(institute));
 		
 		// Accept Application
@@ -355,7 +355,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		flush();
 
 		// Test
-		assertTrue(application.getConfirmed());
+		assertTrue(application.isConfirmed());
 		assertTrue(department.getInstitutes().contains(institute));
 		
 		logger.info("----> END access to acceptApplication test");
@@ -454,7 +454,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		// Create department
 		Department department = testUtility.createUniqueDepartmentInDB();
 		assertNotNull(department);
-		assertTrue(department.getEnabled());
+		assertTrue(department.isEnabled());
 
 		// Synchronize with DB
 		flush();
@@ -478,7 +478,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
 		Department departmentTest = departmentDao.load(department.getId());
 
-		assertFalse(departmentTest.getEnabled());
+		assertFalse(departmentTest.isEnabled());
 		testUtility.destroySecureContext();
 
 		// Set status
@@ -489,7 +489,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
 		Department departmentTest1 = departmentDao.load(department.getId());
 
-		assertTrue(departmentTest1.getEnabled());
+		assertTrue(departmentTest1.isEnabled());
 		testUtility.destroySecureContext();
 
 		logger.info("----> END access to setDepartmentStatus test");

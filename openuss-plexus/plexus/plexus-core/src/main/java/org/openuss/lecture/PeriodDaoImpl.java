@@ -32,17 +32,17 @@ public class PeriodDaoImpl
 		}
 		
 		if (entity.isActive()) {
-			periodInfo.setIsActive(true);
+			periodInfo.setActive(true);
 		}
 		else {
-			periodInfo.setIsActive(false);
+			periodInfo.setActive(false);
 		}
 		
 		if (entity.isRemovable()) {
-			periodInfo.setIsRemovable(true);
+			periodInfo.setRemovable(true);
 		}
 		else {
-			periodInfo.setIsRemovable(false);
+			periodInfo.setRemovable(false);
 		}
 		return periodInfo;
 	}

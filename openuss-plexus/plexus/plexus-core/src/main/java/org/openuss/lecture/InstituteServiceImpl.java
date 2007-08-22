@@ -38,18 +38,17 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(instituteInfo, "InstituteService.handleCreate - the Institute cannot be null");
 		Validate.notNull(userId, "InstituteService.handleCreate - the User must have a valid ID");
 		User user = this.getUserDao().load(userId);
-		Validate.notNull(user, "InstituteService.handleCreate - no valid User found corresponding to the ID "+userId);
+		Validate.notNull(user, "InstituteService.handleCreate - no valid User found corresponding to the ID " + userId);
 		Validate.isTrue(instituteInfo.getId() == null,
 				"InstituteService.handleCreate - the Institute shouldn't have an ID yet");
 		Validate.isTrue(instituteInfo.getDepartmentId() != null,
 				"InstituteService.handleCreate - the DepartmentID cannot be null");
 
-		
 		// Transform ValueObject into Entity
 		Institute instituteEntity = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
 		Department department = instituteEntity.getDepartment();
-		Validate.notNull(department, "InstituteService.handleCreate - " +
-				"no valid Department found corresponding to the ID "+instituteInfo.getDepartmentId());
+		Validate.notNull(department, "InstituteService.handleCreate - "
+				+ "no valid Department found corresponding to the ID " + instituteInfo.getDepartmentId());
 
 		// Create a default Membership for the University
 		Membership membership = Membership.Factory.newInstance();
@@ -64,7 +63,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		instituteInfo.setId(instituteEntity.getId());
 
-		//Create Application for OFFICIAL Departments
+		// Create Application for OFFICIAL Departments
 		if (department.getDepartmentType().equals(DepartmentType.OFFICIAL)) {
 			Application application = Application.Factory.newInstance();
 			application.setApplicationDate(new Date());
@@ -73,13 +72,12 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 			application.setConfirmed(true);
 			application.setApplyingUser(user);
 			application.setConfirmingUser(user);
-			
+
 			application.add(department);
 			application.add(instituteEntity);
 			this.getDepartmentDao().update(department);
 		}
 
-		
 		// Create default Groups for Institute
 		GroupItem admins = new GroupItem();
 		admins.setName("INSTITUTE_" + instituteEntity.getId() + "_ADMINS");
@@ -131,10 +129,10 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		// Check changes of department
 		Institute instituteEntity = this.getInstituteDao().load(instituteInfo.getId());
 		Department department = this.getDepartmentDao().load(instituteInfo.getDepartmentId());
-		if (!instituteEntity.getDepartment().equals(department)){
+		if (!instituteEntity.getDepartment().equals(department)) {
 			throw new InstituteServiceException("The department can not be changed. You have to apply first.");
 		}
-		
+
 		// Transform ValueObject into Entity
 		Institute institute = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
 
@@ -157,49 +155,43 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				"InstituteService.handleRemoveInstitute - no Institute found to the corresponding ID " + instituteId);
 
 		/*
-		// TODO: Fire removedInstitute event to delete all bookmarks
-		// Fire removedCourseTypes event to delete all bookmarks
-		// Fire removedCourses event to delete all bookmarks
-
-		institute.getDepartment().remove(institute);
-		this.getInstituteDao().remove(instituteId);
-
-		// fire events
-		
+		 * // TODO: Fire removedInstitute event to delete all bookmarks // Fire removedCourseTypes event to delete all
+		 * bookmarks // Fire removedCourses event to delete all bookmarks
+		 * 
+		 * institute.getDepartment().remove(institute); this.getInstituteDao().remove(instituteId); // fire events
+		 * 
 		 * for (Course course : institute.getCourses()) { fireRemovingCourse(course); }
 		 * 
 		 * for (CourseType courseType : institute.getCourseTypes()) { fireRemovingCourseType(courseType); }
 		 * 
-		 * fireRemovingInstitute(institute);
-		
-		// TODO InstituteCodes need to be removed before
-		// getRegistrationService().removeInstituteCodes(institute);
-		
-		*/
-		
+		 * fireRemovingInstitute(institute); // TODO InstituteCodes need to be removed before //
+		 * getRegistrationService().removeInstituteCodes(institute);
+		 * 
+		 */
+
 		// remove University (including its Groups and SecuritySettings)
 		List<Group> groups = institute.getMembership().getGroups();
-		
+
 		// remove Permissions
-		for (Group group:groups) {
+		for (Group group : groups) {
 			List<Authority> authorities = group.getMembers();
-			for (Authority authority:authorities) {
+			for (Authority authority : authorities) {
 				this.getSecurityService().removePermission(authority, institute);
 			}
 		}
-		
-		//removeObjectIdentity
+
+		// removeObjectIdentity
 		this.getSecurityService().removeObjectIdentity(institute);
-		
-		// remove Groups		
+
+		// remove Groups
 		List<Group> groups2 = new ArrayList<Group>();
-		for (Group group:groups) {
+		for (Group group : groups) {
 			groups2.add(group);
 		}
-		for (Group group:groups2) {
+		for (Group group : groups2) {
 			this.getOrganisationService().removeGroup(institute.getId(), group.getId());
 		}
-		
+
 		institute.getDepartment().remove(institute);
 		this.getInstituteDao().remove(institute);
 	}
@@ -245,8 +237,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	 * @see org.openuss.lecture.InstituteService#findInstitutesByDepartmentAndEnabled(java.lang.Long, java.lang.Boolean)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected java.util.List handleFindInstitutesByDepartmentAndEnabled(java.lang.Long departmentId,
-			java.lang.Boolean enabled) throws java.lang.Exception {
+	protected java.util.List handleFindInstitutesByDepartmentAndEnabled(java.lang.Long departmentId, boolean enabled)
+			throws java.lang.Exception {
 
 		Validate.notNull(departmentId,
 				"InstituteService.handleFindInstitutesByDepartmentAndEnabled - the departmentId cannot be null");
@@ -265,7 +257,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	 */
 	@SuppressWarnings( { "unchecked" })
 	@Override
-	protected List handleFindInstitutesByEnabled(Boolean enabledOnly) throws Exception {
+	protected List handleFindInstitutesByEnabled(boolean enabledOnly) throws Exception {
 
 		Validate.notNull(enabledOnly,
 				"InstituteServiceImpl.handleFindInstitutesByEnabled - enabledOnly cannot be null.");
@@ -287,12 +279,10 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(applicationInfo, "InstituteService.applyAtDepartment - the applicationInfo cannot be null.");
 		Validate.isTrue(applicationInfo.getConfirmationDate() == null,
 				"InstituteService.applyAtDepartment - you cannot set the Confirmation Date yet.");
-		if (applicationInfo.getConfirmed() == null) {
-			applicationInfo.setConfirmed(false);
-		} else {
-			Validate.isTrue(!applicationInfo.getConfirmed(),
-					"InstituteService.applyAtDepartment - you Application cannot be confirmed yet.");
-		}
+
+		Validate.isTrue(!applicationInfo.isConfirmed(),
+				"InstituteService.applyAtDepartment - you Application cannot be confirmed yet.");
+
 		Validate.isTrue(applicationInfo.getConfirmingUserId() == null,
 				"InstituteService.applyAtDepartment - you cannot set the confirming User yet.");
 
@@ -308,7 +298,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(application, "InstituteService.applyAtDepartment - cannot transform value object to entity");
 		Validate.isTrue(application.getDepartment().getDepartmentType().equals(DepartmentType.OFFICIAL),
 				"InstituteService.applyAtDepartment - an Application is only necessary for official Departments");
-		Validate.isTrue(application.getInstitute().getApplication()==null, "InstituteService.applyAtDepartment - the Institue already has an application, remove/signoff before");
+		Validate.isTrue(application.getInstitute().getApplication() == null,
+				"InstituteService.applyAtDepartment - the Institue already has an application, remove/signoff before");
 
 		this.getApplicationDao().create(application);
 
@@ -325,23 +316,25 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(application,
 				"DepartmentService.handleRemoveUnconfirmedApplication - no Application found corresponding to the ID "
 						+ applicationId);
-		Validate.isTrue(!application.getConfirmed(),
+		Validate.isTrue(!application.isConfirmed(),
 				"DepartmentService.handleRemoveUnconfirmedApplication - the Application is already confirmed");
 
 		application.remove(application.getDepartment());
 		application.remove(application.getInstitute());
 		this.getApplicationDao().remove(application);
 	}
-	
+
 	@Override
-	public void handleSetInstituteStatus (Long instituteId, Boolean status) {
+	public void handleSetInstituteStatus(Long instituteId, boolean status) {
 		Validate.notNull(instituteId, "InstituteService.setInstituteStatus - the instituteId cannot be null.");
 		Validate.notNull(status, "InstituteService.setInstituteStatus - status cannot be null.");
-		
+
 		// Load institute
 		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute, "InstiuteService.setInstituteStatus - instiute cannot be found with the corresponding instituteId "+instituteId);
-		
+		Validate.notNull(institute,
+				"InstiuteService.setInstituteStatus - instiute cannot be found with the corresponding instituteId "
+						+ instituteId);
+
 		// Set status
 		institute.setEnabled(status);
 		this.update(this.getInstituteDao().toInstituteInfo(institute));

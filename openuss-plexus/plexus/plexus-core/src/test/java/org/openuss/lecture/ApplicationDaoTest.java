@@ -66,7 +66,7 @@ public class ApplicationDaoTest extends ApplicationDaoTestBase {
 		assertEquals(application.getDescription(), applicationInfo.getDescription());
 		assertEquals(application.getConfirmationDate(), applicationInfo.getConfirmationDate());
 		assertEquals(application.getApplicationDate(), applicationInfo.getApplicationDate());
-		assertEquals(application.getConfirmed(), applicationInfo.getConfirmed());
+		assertEquals(application.isConfirmed(), applicationInfo.isConfirmed());
 		assertEquals(application.getConfirmingUser().getId(), applicationInfo.getConfirmingUserId());
 		assertEquals(application.getApplyingUser().getId(), applicationInfo.getApplyingUserId());
 		assertEquals(application.getDepartment().getId(), applicationInfo.getDepartmentId());
@@ -93,7 +93,7 @@ public class ApplicationDaoTest extends ApplicationDaoTestBase {
 		ApplicationInfo applicationInfo1 = new ApplicationInfo();
 		applicationInfo1.setId(applicationDefault.getId());
 		applicationInfo1.setDescription(applicationDefault.getDescription());
-		applicationInfo1.setConfirmed(applicationDefault.getConfirmed());
+		applicationInfo1.setConfirmed(applicationDefault.isConfirmed());
 		applicationInfo1.setApplicationDate(applicationDefault.getApplicationDate());
 		applicationInfo1.setConfirmationDate(applicationDefault.getConfirmationDate());
 		applicationInfo1.setConfirmingUserId(applicationDefault.getConfirmingUser().getId());
@@ -108,7 +108,7 @@ public class ApplicationDaoTest extends ApplicationDaoTestBase {
 		assertEquals(applicationInfo1.getDescription(), application1.getDescription());
 		assertEquals(applicationInfo1.getConfirmationDate(), application1.getConfirmationDate());
 		assertEquals(applicationInfo1.getApplicationDate(), application1.getApplicationDate());
-		assertEquals(applicationInfo1.getConfirmed(), application1.getConfirmed());
+		assertEquals(applicationInfo1.isConfirmed(), application1.isConfirmed());
 		assertEquals(applicationInfo1.getConfirmingUserId(), application1.getConfirmingUser().getId());
 		assertEquals(applicationInfo1.getApplyingUserId(), application1.getApplyingUser().getId());
 		assertEquals(applicationInfo1.getDepartmentId(), application1.getDepartment().getId());
@@ -133,7 +133,7 @@ public class ApplicationDaoTest extends ApplicationDaoTestBase {
 		assertEquals(applicationInfo2.getDescription(), application2.getDescription());
 		assertEquals(applicationInfo2.getConfirmationDate(), application2.getConfirmationDate());
 		assertEquals(applicationInfo2.getApplicationDate(), application2.getApplicationDate());
-		assertEquals(applicationInfo2.getConfirmed(), application2.getConfirmed());
+		assertEquals(applicationInfo2.isConfirmed(), application2.isConfirmed());
 		assertEquals(applicationInfo2.getConfirmingUserId(), application2.getConfirmingUser().getId());
 		assertEquals(applicationInfo2.getApplyingUserId(), application2.getApplyingUser().getId());
 		assertEquals(applicationInfo2.getDepartmentId(), application2.getDepartment().getId());

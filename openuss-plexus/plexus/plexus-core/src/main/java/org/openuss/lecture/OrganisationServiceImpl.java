@@ -240,7 +240,7 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 	}
 
 	@Override
-	protected void handleSetOrganisationEnabled(Long organisationId, Boolean enabled) throws Exception {
+	protected void handleSetOrganisationEnabled(Long organisationId, boolean enabled) throws Exception {
 		Validate.notNull(organisationId,
 				"OrganisationService.handleSetOrganisationEnabled - organisationId cannot be null.");
 		Validate.notNull(enabled, "OrganisationService.handleSetOrganisationEnabled - enabled cannot be null.");

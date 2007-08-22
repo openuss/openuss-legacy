@@ -46,7 +46,7 @@ public class UniversityIndexingAspect {
 	public void updateUniversityIndex(UniversityInfo universityInfo) {
 		logger.debug("Starting method updateUniversityIndex");
 		try {
-			if (universityInfo.getEnabled()) {
+			if (universityInfo.isEnabled()) {
 				logger.debug("method updateUniversityIndex: updateIndex");
 				university = universityDao.universityInfoToEntity(universityInfo);
 				indexerService.updateIndex(university);
@@ -68,7 +68,7 @@ public class UniversityIndexingAspect {
 		logger.debug("Starting method updateUniversityIndexById");
 		try {
 			UniversityInfo universityInfo = universityService.findUniversity(universityId);
-			if (universityInfo.getEnabled()) {
+			if (universityInfo.isEnabled()) {
 				logger.debug("method updateUniversityIndex: updateIndex");
 				university = universityDao.universityInfoToEntity(universityInfo);
 				indexerService.updateIndex(university);

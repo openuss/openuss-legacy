@@ -9,30 +9,30 @@ import org.openuss.security.Membership;
 
 public class DepartmentDaoMock extends AbstractMockDao<Department> implements DepartmentDao {
 
-	public Department create(Boolean defaultDepartment, DepartmentType departmentType, Boolean enabled,
+	public Department create(boolean defaultDepartment, DepartmentType departmentType, boolean enabled,
 			Membership membership, String name, String ownerName, String shortcut) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Department create(DepartmentType departmentType, Boolean defaultDepartment, String shortcut, String name,
+	public Department create(DepartmentType departmentType, boolean defaultDepartment, String shortcut, String name,
 			String description, String ownerName, String address, String postcode, String city, String country,
 			String telephone, String telefax, String website, String email, String locale, String theme, Long imageId,
-			Boolean enabled) {
+			boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Object create(int transform, Boolean defaultDepartment, DepartmentType departmentType, Boolean enabled,
+	public Object create(int transform, boolean defaultDepartment, DepartmentType departmentType, boolean enabled,
 			Membership membership, String name, String ownerName, String shortcut) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Object create(int transform, DepartmentType departmentType, Boolean defaultDepartment, String shortcut,
+	public Object create(int transform, DepartmentType departmentType, boolean defaultDepartment, String shortcut,
 			String name, String description, String ownerName, String address, String postcode, String city,
 			String country, String telephone, String telefax, String website, String email, String locale,
-			String theme, Long imageId, Boolean enabled) {
+			String theme, Long imageId, boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -52,22 +52,42 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 		
 	}
 
-	public List findByEnabled(Boolean enabled) {
+	public List findByEnabled(boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List findByEnabled(int transform, Boolean enabled) {
+	public List findByEnabled(int transform, boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List findByEnabled(int transform, String queryString, Boolean enabled) {
+	public List findByEnabled(int transform, String queryString, boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List findByEnabled(String queryString, Boolean enabled) {
+	public List findByEnabled(String queryString, boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object findByShortcut(int transform, String queryString, String shortcut) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object findByShortcut(int transform, String shortcut) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Department findByShortcut(String queryString, String shortcut) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Department findByShortcut(String shortcut) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -112,22 +132,22 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 		return null;
 	}
 
-	public List findByUniversityAndEnabled(int transform, String queryString, University university, Boolean enabled) {
+	public List findByUniversityAndEnabled(int transform, String queryString, University university, boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List findByUniversityAndEnabled(int transform, University university, Boolean enabled) {
+	public List findByUniversityAndEnabled(int transform, University university, boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List findByUniversityAndEnabled(String queryString, University university, Boolean enabled) {
+	public List findByUniversityAndEnabled(String queryString, University university, boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List findByUniversityAndEnabled(University university, Boolean enabled) {
+	public List findByUniversityAndEnabled(University university, boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -152,26 +172,6 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	public Department findByShortcut(int transform, String queryString, String shortcut) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Department findByShortcut(int transform, String shortcut) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Department findByShortcut(String queryString, String shortcut) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Department findByShortcut(String shortcut) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public void toDepartmentInfo(Department sourceEntity, DepartmentInfo targetVO) {
 		// TODO Auto-generated method stub
@@ -188,4 +188,5 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 		
 	}
 
+	
 }
