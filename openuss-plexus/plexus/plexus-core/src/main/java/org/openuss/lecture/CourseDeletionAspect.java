@@ -29,4 +29,13 @@ public class CourseDeletionAspect {
 		
 		logger.debug("----------> End method deleteBookmarksOfCourses <----------");
 	}
+
+	public DesktopService2 getDesktopService() {
+		return desktopService;
+	}
+
+	public void setDesktopService(DesktopService2 desktopService) {
+		this.desktopService = desktopService;
+	}
+
 }
