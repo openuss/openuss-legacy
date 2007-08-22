@@ -44,18 +44,17 @@ public class InstituteCreationAndDeletionAspect {
 	 * @param instituteId
 	 */
 	public void deleteBookmarksOfInstitute (Long instituteId) {
-		logger.debug("----------> BEGIN method bookmarkInstitute <----------");
+		logger.debug("----------> BEGIN method deleteBookmarksOfInstitute <----------");
 		
 		Validate.notNull(instituteId, "InstituteCreationAndDeletionAspect.deleteBookmarksOfInstitute - the instituteId cannot be null.");
 		
-		// Get DesktopInfo
 		try {
 			desktopService.unlinkAllFromInstitute(instituteId);
 		} catch (DesktopException de) {
 			logger.error(de.getMessage());
 		}
 		
-		logger.debug("----------> End method bookmarkInstitute <----------");
+		logger.debug("----------> End method deleteBookmarksOfInstitute <----------");
 	}
 	
 	

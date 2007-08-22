@@ -3,7 +3,6 @@ package org.openuss.lecture;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.desktop.DesktopException;
-import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
 
 /**

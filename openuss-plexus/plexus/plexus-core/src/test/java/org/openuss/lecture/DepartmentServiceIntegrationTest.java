@@ -8,6 +8,8 @@ package org.openuss.lecture;
 import java.util.List;
 
 import org.acegisecurity.AccessDeniedException;
+import org.openuss.desktop.Desktop;
+import org.openuss.desktop.DesktopDao;
 import org.openuss.security.Membership;
 import org.openuss.security.User;
 
@@ -25,6 +27,9 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		int sizeBefore = university.getDepartments().size();
 		flush();
 		
+		//Create a User as Owner
+		User owner = testUtility.createUniqueUserInDB();
+		
 		// Create departmentInfo
 		DepartmentInfo departmentInfo = new DepartmentInfo();
 		departmentInfo.setName("Wirtschaftswissenschaften - FB 4");
@@ -36,14 +41,16 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		departmentInfo.setDefaultDepartment(false);
 		departmentInfo.setDepartmentType(DepartmentType.OFFICIAL);
 		
-		//Create a User as Owner
-		User owner = testUtility.createUniqueUserInDB();
-		
 		//Test
 		Long departmentId = departmentService.create(departmentInfo, owner.getId());
 		flush();
 		assertNotNull(departmentId);
 		assertEquals(sizeBefore+1, university.getDepartments().size());
+		
+		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		Desktop desktopTest = desktopDao.findByUser(owner);
+		assertNotNull(desktopTest);
+		assertEquals(1, desktopTest.getDepartments().size());
 		
 		logger.info("----> END access to create(Department) test");
 	}
@@ -108,6 +115,15 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		Long departmentId = department.getId();
 		flush();
 		
+		// Create Desktop
+		User user = testUtility.createUniqueUserInDB();
+		Desktop desktop = Desktop.Factory.newInstance(user);
+		desktop.getDepartments().add(department);
+		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		Desktop desktopCreated = desktopDao.create(desktop);
+		assertNotNull(desktopCreated);
+		assertEquals(1, desktop.getDepartments().size());
+		
 		//Remove department
 		testUtility.createAdminSecureContext();
 		this.getDepartmentService().removeDepartment(department.getId());
@@ -119,6 +135,10 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		assertNull(department);
 		
 		assertEquals(1, university.getDepartments().size());
+		
+		Desktop desktopTest = desktopDao.load(desktop.getId());
+		assertNotNull(desktopTest);
+		assertEquals(0, desktopTest.getDepartments().size());
 		
 		logger.info("----> END access to remove(Department) test");
 	}
