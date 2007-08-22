@@ -9,25 +9,23 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
-import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.DepartmentInfo;
-import org.openuss.lecture.DepartmentType;
+import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.OrganisationService;
 import org.openuss.lecture.UniversityInfo;
-import org.openuss.lecture.UniversityService;
-import org.openuss.lecture.DepartmentService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 
 
 
-/**
+/** Backing Bean for the views departments.xhtml and departmentstable.xhtml.
  * 
  * @author Tianyu Wang
  * @author Weijun Chen

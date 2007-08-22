@@ -141,6 +141,11 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>departments</from-outcome>
+			<to-view-id>/views/secured/lecture/universitydepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>manage_department</from-outcome>
 			<to-view-id>/views/secured/lecture/university.xhtml</to-view-id>
 		</navigation-case>		
@@ -825,6 +830,11 @@
 			<from-outcome>department_aspirants</from-outcome>
 			<to-view-id>/views/secured/lecture/auth/departmentaspirants.xhtml</to-view-id>
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>department_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
 	</navigation-rule>
 	
     <navigation-rule>
@@ -854,6 +864,8 @@
 			<from-outcome>department_aspirants</from-outcome>
 			<to-view-id>/views/secured/lecture/auth/departmentaspirants.xhtml</to-view-id>
 		</navigation-case>
+		
+		
 	</navigation-rule>
 	
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  

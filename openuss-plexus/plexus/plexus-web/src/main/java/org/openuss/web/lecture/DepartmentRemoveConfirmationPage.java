@@ -8,15 +8,15 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
-/** Backing bean for the universityremoveconfirmation.xhtml view.
+/** Backing bean for the departmentremoveconfirmation.xhtml view.
  * 
  * @author Kai Stettner
  */
-@Bean(name = "views$secured$lecture$universityremoveconfirmation", scope = Scope.REQUEST)
+@Bean(name = "views$secured$lecture$departmentremoveconfirmation", scope = Scope.REQUEST)
 @View
-public class UniversityRemoveConfirmationPage extends AbstractUniversityPage {
+public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 
-	private static final long serialVersionUID = -202776319652888870L;
+	private static final long serialVersionUID = -202671219652888870L;
 
 	@Prerender
 	public void prerender() throws LectureException {
@@ -29,13 +29,13 @@ public class UniversityRemoveConfirmationPage extends AbstractUniversityPage {
 	}
 	
 	/**
-	 * Delete complete university tree (including all belonging departments, institutes, course types and courses.
+	 * Delete complete department tree (including all belonging institutes, course types and courses.
 	 * @return outcome
 	 * @throws LectureException
 	 */
-	public String removeCompleteUniversityTree() throws LectureException {
-		universityService.removeCompleteUniversityTree(universityInfo.getId());
-		return Constants.UNIVERSITIES_PAGE;
+	public String removeCompleteDepartmentTree() throws LectureException {
+		//departmentService.removeCompleteDepartmentTree(departmentInfo.getId());
+		return Constants.DEPARTMENTS_PAGE;
 	}
 	
 }

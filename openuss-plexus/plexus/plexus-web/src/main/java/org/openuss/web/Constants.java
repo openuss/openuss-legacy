@@ -187,6 +187,7 @@ public class Constants {
 	public static final String UNIVERSITY_PRIVILEGES_PAGE = "university_privileges";
 	public static final String UNIVERSITY_CONFIRM_REMOVE_PAGE = "university_remove_confirmation";
 	
+	public static final String DEPARTMENTS_PAGE = "departments";
 	public static final String DEPARTMENT_PAGE = "department";
 	public static final String DEPARTMENT_EDIT = "department_edit";
 	public static final String DEPARTMENT_CONFIRM_REMOVE_PAGE = "department_remove_confirmation";

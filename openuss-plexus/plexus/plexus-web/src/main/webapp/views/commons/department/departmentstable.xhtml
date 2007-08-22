@@ -73,6 +73,7 @@
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">
 				<h:commandButton
+					action = "#{views$public$department$departments.selectDepartmentAndConfirmRemove}"
 					styleClass="button_remove"
 					value="#{msg.department_command_remove}"
 					hint="#{msg.department_command_remove_hint}"

@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -17,7 +16,6 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.OrganisationService;
-import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
@@ -25,6 +23,7 @@ import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
+ * Backing bean for the views universities.xhtml and universitiestable.xhtml.
  * 
  * @author Tianyu Wang
  * @author Weijun Chen
