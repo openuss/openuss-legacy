@@ -199,16 +199,16 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 
 		// Test
 		List departmentsEnabled = this.departmentDao.findByUniversityAndEnabled(university1, true);
-		assertEquals(1, departmentsEnabled.size());
+		assertEquals(2, departmentsEnabled.size());
 		assertTrue(departmentsEnabled.contains(department1));
 		assertFalse(departmentsEnabled.contains(department2));
 		assertFalse(departmentsEnabled.contains(department3));
 
-		List departmentsDisabled = this.departmentDao.findByUniversityAndEnabled(university2, true);
+		List departmentsDisabled = this.departmentDao.findByUniversityAndEnabled(university1, false);
 		assertEquals(1, departmentsDisabled.size());
 		assertFalse(departmentsDisabled.contains(department1));
-		assertFalse(departmentsDisabled.contains(department2));
-		assertTrue(departmentsDisabled.contains(department3));
+		assertTrue(departmentsDisabled.contains(department2));
+		assertFalse(departmentsDisabled.contains(department3));
 	}
 	
 	public void testDepartmentDaoFindByUniversityAndType() {
