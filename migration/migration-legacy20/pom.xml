@@ -10,8 +10,8 @@
 		<artifactId>migration</artifactId>
 		<version>3.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>migration-core</artifactId>
-	<name>Migration - Core</name>
+	<artifactId>migration-legacy20</artifactId>
+	<name>Migration - Legacy 2.0</name>
 	<packaging>jar</packaging>
 
 <!-- 

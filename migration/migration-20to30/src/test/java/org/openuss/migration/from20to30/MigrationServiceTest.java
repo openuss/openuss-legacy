@@ -4,7 +4,7 @@ import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 public class MigrationServiceTest extends AbstractDependencyInjectionSpringContextTests {
 
-//	private MigrationService migrationService;
+	private MigrationService migrationService;
 	
 
 	public void testMigration() {
@@ -12,13 +12,13 @@ public class MigrationServiceTest extends AbstractDependencyInjectionSpringConte
 	}
 	
 	
-//	public MigrationService getMigrationService() {
-//		return migrationService;
-//	}
-//
-//	public void setMigrationService(MigrationService migrationService) {
-//		this.migrationService = migrationService;
-//	}
+	public MigrationService getMigrationService() {
+		return migrationService;
+	}
+
+	public void setMigrationService(MigrationService migrationService) {
+		this.migrationService = migrationService;
+	}
 
 	protected String[] getConfigLocations() {
 		return new String[] {

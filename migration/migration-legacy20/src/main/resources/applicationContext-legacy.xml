@@ -5,31 +5,15 @@
 
     <!-- ========================= GENERAL DEFINITIONS ========================= -->
     
-    <!-- Local DataSource that works in any environment 
-    <bean id="legacyDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName"><value>org.firebirdsql.jdbc.FBDriver</value></property>
-        <property name="username"><value>sysdba</value></property>
-        <property name="password"><value>masterkey</value></property>
-        <property name="url"><value>jdbc:firebirdsql:localhost:openuss</value></property>
-    </bean>
-    -->
-    
     <!-- applicationContext merge-point -->
     <!-- Hibernate SessionFactory -->
     <bean id="legacySessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-        <property name="dataSource">
-        	<!-- JNDI DataSource for J2EE environments -->
+        <property name="dataSource" ref="legacyDataSource">
+        	<!-- JNDI DataSource for J2EE environments 
             <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		        <property name="jndiName"><value>java:comp/env/jdbc/openuss</value></property>
 		    </bean>
-		    <!-- Local DataSource that works in any environment 
-		    <bean id="legacyDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		        <property name="driverClassName"><value>org.firebirdsql.jdbc.FBDriver</value></property>
-		        <property name="username"><value>sysdba</value></property>
-		        <property name="password"><value>masterkey</value></property>
-		        <property name="url"><value>jdbc:firebirdsql:localhost:openuss</value></property>
-		    </bean>
-		    -->
+        	-->
         </property>
         <property name="mappingResources">
             <list>

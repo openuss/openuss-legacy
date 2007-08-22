@@ -22,8 +22,19 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openuss.plexus</groupId>
+			<artifactId>plexus-api</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openuss.plexus</groupId>
 			<artifactId>plexus-core</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+		</dependency>
+		
 	</dependencies>
 </project>
