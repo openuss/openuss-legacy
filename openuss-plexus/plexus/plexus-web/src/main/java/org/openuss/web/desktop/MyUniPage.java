@@ -68,6 +68,8 @@ import org.openuss.desktop.DesktopDao;
 @View
 public class MyUniPage extends BasePage {
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
+	
+	private static final String universityBasePath = "/openuss-plexus/views/public/university/university.faces?university=";
 
 	private Long	paramUniversity = null;
 	private Long	paramRemoveDepartment = null;
@@ -359,7 +361,7 @@ public class MyUniPage extends BasePage {
 				if(universityId != null && universityId.longValue() == currentUni.getId().longValue())
 				{
 					currentItem = newItem;
-					// TODO set url of currentItem to university details page
+					currentItem.setUrl(universityBasePath + universityId);
 				}
 				else
 					items.add(newItem);

@@ -46,7 +46,23 @@ public class UITabs extends UIOutput {
 								if(title != null)
 									writer.write(title);
 								
+								String url = listItem.getUrl();
+								if(url != null && url != "")
+								{
+									writer.write(" (");
+									writer.startElement("a", this);
+										writer.writeAttribute("class", "tab_details", null);
+										writer.writeAttribute("style", "size: small; color: #5493D4;", null);
+										writer.writeAttribute("href", url, null);
+										
+										writer.write("Details");
+									writer.endElement("a");
+									writer.write(")");
+								}
+								
 							writer.endElement("div");
+							
+							
 						writer.endElement("div");
 						
 						// Render selection separator
