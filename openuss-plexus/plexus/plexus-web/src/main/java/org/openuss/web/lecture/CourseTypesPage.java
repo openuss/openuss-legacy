@@ -110,20 +110,23 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 	 * selection from session scope
 	 * @return outcome 
 	 */
-	/*public String saveCourseType() {
-		logger.debug("saveCourseType()");
+	public String saveCourseType() {
+		logger.debug("Starting method saveCourseType()");
 		if (courseTypeInfo.getId() == null) {
-			lectureService.add(institute.getId(), courseType);
+			
+			//lectureService.add(instituteInfo.getId(), courseTypeInfo);
+			courseTypeInfo.setInstituteId(instituteInfo.getId());
 			
 			addMessage(i18n("institute_message_add_coursetype_succeed"));
 		} else {
-			lectureService.persist(courseType);
+			//lectureService.persist(courseType);
+			courseTypeService.update(courseTypeInfo);
 			addMessage(i18n("institute_message_persist_coursetype_succeed"));
 		}
 		removeSessionBean(Constants.COURSE_TYPE);
 		courseTypeInfo = null;
 		return Constants.SUCCESS;
-	}*/
+	}
 
 	/**
 	 * Cancel editing or adding of current courseType

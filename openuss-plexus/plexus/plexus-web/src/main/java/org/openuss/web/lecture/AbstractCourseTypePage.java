@@ -7,7 +7,9 @@ import org.apache.shale.tiger.view.Prerender;
 import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.CourseTypeService;
 import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -25,7 +27,7 @@ public abstract class AbstractCourseTypePage extends BasePage {
 	
 	@Property(value = "#{instituteInfo}")
 	protected InstituteInfo instituteInfo;
-
+	
 	@Property(value = "#{courseTypeInfo}")
 	protected CourseTypeInfo courseTypeInfo;
 
