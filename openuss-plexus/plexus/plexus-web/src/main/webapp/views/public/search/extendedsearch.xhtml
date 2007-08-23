@@ -59,58 +59,89 @@
 						<h:panelGroup>
 							<t:htmlTag value="hr" style="width:500px; margin-left:0; text-align:left;" />
 						</h:panelGroup>
+						
 						<h:outputText value="#{msg.extended_search_scope}" styleClass="field_label"/>
-						<h:selectOneMenu id="search_scope" value="#{extended_search_results.searchScopeId}" styleClass="pulldown_inline" 
-							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.searchScopeChanged}">
+						<h:selectOneMenu id="search_scope" 
+							value="#{extended_search_results.searchScopeId}" 
+							styleClass="pulldown_inline" 
+							onchange="this.form.submit();"
+							immediate="true" 
+							valueChangeListener="#{views$public$search$extendedsearch.searchScopeChanged}">
 							<f:selectItems value="#{extended_search_results.searchScopes}"/>
 						</h:selectOneMenu>
+
 						<h:outputText value="#{msg.extended_search_result_type} " styleClass="field_label"/>
-						<h:selectOneMenu id="search_for" value="#{extended_search_results.resultTypeId}" styleClass="pulldown_inline" 
-							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.resultTypeChanged}">
+						<h:selectOneMenu id="search_for" 
+							value="#{extended_search_results.resultTypeId}" 
+							styleClass="pulldown_inline" 
+							onchange="this.form.submit();"
+							immediate="true" 
+							valueChangeListener="#{views$public$search$extendedsearch.resultTypeChanged}">
 							<f:selectItems value="#{extended_search_results.resultTypes}"/>
 						</h:selectOneMenu>
-						 <h:outputText value=" "/>
+
+						<h:outputText value=" "/>
 						<h:panelGroup>
 							<t:htmlTag value="hr" style="width:500px; margin-left:0; text-align:left;" />
 						</h:panelGroup>
-						<h:outputText value="#{views$public$search$extendedsearch.organisationLabel}" styleClass="field_label"
-							style="#{views$public$search$extendedsearch.visibilityOrganisation}"/>
-						<h:selectOneMenu id="organisation" value="#{extended_search_results.organisationId}" styleClass="pulldown_inline" 
-							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.organisationChanged}"
-							style="#{views$public$search$extendedsearch.visibilityOrganisation}">
+						
+						<h:outputText value="#{views$public$search$extendedsearch.organisationLabel}" 
+							styleClass="field_label"/>
+						<h:selectOneMenu id="organisation" 
+							value="#{extended_search_results.organisationId}" 
+							styleClass="pulldown_inline" 
+							onchange="this.form.submit();"
+							immediate="true" 
+							valueChangeListener="#{views$public$search$extendedsearch.organisationChanged}">
 							<f:selectItems value="#{extended_search_results.organisations}"/>
 						</h:selectOneMenu>
+
 						<h:outputText value="#{views$public$search$extendedsearch.suborganisationLabel}"
 							style="#{views$public$search$extendedsearch.visibilitySuborganisation}" styleClass="field_label"/>
-						<h:selectOneMenu id="suborganisation" value="#{extended_search_results.suborganisationId}" styleClass="pulldown_inline" 
-							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.suborganisationChanged}"
+						<h:selectOneMenu id="suborganisation" 
+							value="#{extended_search_results.suborganisationId}" 
+							styleClass="pulldown_inline" 
+							onchange="this.form.submit();"
+							immediate="true" 
+							valueChangeListener="#{views$public$search$extendedsearch.suborganisationChanged}"
 							style="#{views$public$search$extendedsearch.visibilitySuborganisation}">
 							<f:selectItems value="#{extended_search_results.suborganisations}"/>
 						</h:selectOneMenu>
+
 						<h:outputText value="#{views$public$search$extendedsearch.institutionLabel}" 
 							style="#{views$public$search$extendedsearch.visibilityInstitution}" styleClass="field_label"/>
-						<h:selectOneMenu id="institution" value="#{extended_search_results.institutionId}" styleClass="pulldown_inline" 
-							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.institutionChanged}"
+						<h:selectOneMenu id="institution" 
+							value="#{extended_search_results.institutionId}" 
+							styleClass="pulldown_inline" 
+							onchange="this.form.submit();"
+							immediate="true" 
+							valueChangeListener="#{views$public$search$extendedsearch.institutionChanged}"
 							style="#{views$public$search$extendedsearch.visibilityInstitution}">
 							<f:selectItems value="#{extended_search_results.institutions}"/>
 						</h:selectOneMenu>
+
 						<h:outputText value="#{views$public$search$extendedsearch.courseTypeLabel}" 
 							style="#{views$public$search$extendedsearch.visibilityCourseType}" styleClass="field_label"/>
-						<h:selectOneMenu id="course_type" value="#{extended_search_results.courseTypeId}" styleClass="pulldown_inline" 
-							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.courseTypeChanged}"
+						<h:selectOneMenu id="course_type" 
+							value="#{extended_search_results.courseTypeId}" 
+							styleClass="pulldown_inline" 
+							onchange="this.form.submit();"
+							immediate="true" 
+							valueChangeListener="#{views$public$search$extendedsearch.courseTypeChanged}"
 							style="#{views$public$search$extendedsearch.visibilityCourseType}">
 							<f:selectItems value="#{extended_search_results.courseTypes}"/>
 						</h:selectOneMenu>
+
 						<h:outputText value="#{views$public$search$extendedsearch.periodLabel}" 
 							style="#{views$public$search$extendedsearch.visibilityPeriod}" styleClass="field_label"/>
-						<h:selectOneMenu id="period" value="#{extended_search_results.periodId}" styleClass="pulldown_inline" 
-							onchange="pulldownChanged()" valueChangeListener="#{views$public$search$extendedsearch.periodChanged}"
+						<h:selectOneMenu id="period" value="#{extended_search_results.periodId}" 
+							styleClass="pulldown_inline" 
+							onchange="this.form.submit();"
+							immediate="true" 
+							valueChangeListener="#{views$public$search$extendedsearch.periodChanged}"
 							style="#{views$public$search$extendedsearch.visibilityPeriod}">
 							<f:selectItems value="#{extended_search_results.periods}"/>
 						</h:selectOneMenu>
-						<f:facet name="footer">
-							<h:commandButton action="#{views$public$search$extendedsearch.extendedSearchCriteriaUpdate}" id="updateButton" value="selection_update" style="display:none;" />
-						</f:facet>
 					</h:panelGrid>
 					<h:commandButton action="#{views$public$search$extendedsearch.extendedSearch}" value="${msg.extended_search_search}" styleClass="button_save" />
 				</o:block>

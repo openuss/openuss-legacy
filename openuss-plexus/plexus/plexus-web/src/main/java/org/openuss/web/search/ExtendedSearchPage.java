@@ -26,6 +26,7 @@ import org.openuss.lecture.LectureSearcher;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
+import org.openuss.lecture.UniversityType;
 import org.openuss.search.DomainResult;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -95,41 +96,48 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		return Constants.EXTENDED_SEARCH;
 	}
 	
+	/*** "ON CHANGE" EVENT HANDLER ***/
+	
 	/**
 	 * event handler which is called when the "search scope" combo box is changed
 	 * @param vce
 	 */
 	public void searchScopeChanged(ValueChangeEvent vce){
+		if(vce == null){
+			return;
+		}
+		
 		// "result type" combo box is not required to be filled here because it is always generated dynamically
 		
-		// reset all other combo boxes
+		// clear all other combo boxes
 		extendedSearchResults.setOrganisations(new ArrayList<SelectItem>());
 		extendedSearchResults.setSuborganisations(new ArrayList<SelectItem>());
 		extendedSearchResults.setInstitutions(new ArrayList<SelectItem>());
 		extendedSearchResults.setCourseTypes(new ArrayList<SelectItem>());
 		extendedSearchResults.setPeriods(new ArrayList<SelectItem>());
+		
 	}
 	
+	
+		
 	/**
 	 * event handler which is called when the "result type" combo box is changed
 	 * @param vce
 	 */
 	public void resultTypeChanged(ValueChangeEvent vce){
 		logger.debug(">>> resultTypeChanged");
-		
-		List<SelectItem> universitiesToDisplay = new ArrayList<SelectItem>();
-		UniversityInfo universityInfo;
-		
-		// set possible organisations
-		List universities = universityService.findUniversitiesByEnabled(true);
-		for(Object universityTemp : universities){
-			universityInfo = (UniversityInfo) universityTemp;
-			universitiesToDisplay.add(
-					new SelectItem(
-							universityInfo.getId().intValue(), 
-							universityInfo.getName()));
+
+		if(vce == null){
+			return;
 		}
-		extendedSearchResults.setOrganisations(universitiesToDisplay);
+		
+		// set content of combo box "organisation" if this is necessary for the selected result type
+		Long resultTypeId = (Long) vce.getNewValue();
+		if(resultTypeId > Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION){
+			resetOrganisations(extendedSearchResults.getSearchScopeId());
+		} else {
+			extendedSearchResults.setOrganisations(new ArrayList<SelectItem>());
+		}
 		
 		// reset all other combo boxes
 		extendedSearchResults.setSuborganisations(new ArrayList<SelectItem>());
@@ -151,20 +159,13 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 			return;
 		}
 		
-		List<SelectItem> departmentsToDisplay = new ArrayList<SelectItem>();
-		DepartmentInfo departmentInfo;
-		
-		// determine the departments which belong to the given university
+		// set content of combo box "suborganisation" if this is necessary for the selected result type
 		Long selectedOrganisation = (Long) vce.getNewValue();
-		List departments = departmentService.findDepartmentsByUniversityAndEnabled(selectedOrganisation, true);
-		for(Object departmentTemp : departments){
-			departmentInfo = (DepartmentInfo) departmentTemp;
-			departmentsToDisplay.add(
-					new SelectItem(
-							departmentInfo.getId().intValue(), 
-							departmentInfo.getName()));
+		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION){
+			resetSuborganisations(selectedOrganisation);
+		} else {
+			extendedSearchResults.setSuborganisations(new ArrayList<SelectItem>());
 		}
-		extendedSearchResults.setSuborganisations(departmentsToDisplay);
 
 		// reset the all other more detailed combo boxes
 		extendedSearchResults.setInstitutions(new ArrayList<SelectItem>());
@@ -185,20 +186,13 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 			return;
 		}
 		
-		List<SelectItem> institutesToDisplay = new ArrayList<SelectItem>();
-		InstituteInfo instituteInfo;
-		
-		// determine the institutions which belong to the given department
+		// set content of combo box "institute" if this is necessary for the selected result type
 		Long selectedSuborganisation = (Long) vce.getNewValue();
-		List institutes = instituteService.findInstitutesByDepartmentAndEnabled(selectedSuborganisation, true);
-		for(Object instituteTemp : institutes){
-			instituteInfo = (InstituteInfo) instituteTemp;
-			institutesToDisplay.add(
-					new SelectItem(
-							instituteInfo.getId().intValue(), 
-							instituteInfo.getName()));
+		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION){
+			resetInstitutes(selectedSuborganisation);
+		} else {
+			extendedSearchResults.setInstitutions(new ArrayList<SelectItem>());
 		}
-		extendedSearchResults.setInstitutions(institutesToDisplay);
 		
 		// reset the all other more detailed combo boxes
 		extendedSearchResults.setCourseTypes(new ArrayList<SelectItem>());
@@ -206,6 +200,8 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		
 		logger.debug("<<< suborganisationChanged");
 	}
+	
+	
 	
 	/**
 	 * event handler which is called when the "institution" combo box is changed
@@ -218,33 +214,9 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 			return;
 		}
 		
-		List<SelectItem> courseTypesToDisplay = new ArrayList<SelectItem>();
-		List<SelectItem> periodToDisplay = new ArrayList<SelectItem>();
-		CourseTypeInfo courseTypeInfo;
-		PeriodInfo periodInfo;
-		
 		// determine the course types offered by the given institution
 		Long selectedInstitute = (Long) vce.getNewValue();
-		List courseTypes = courseTypeService.findCourseTypesByInstitute(selectedInstitute); 
-		for(Object courseTypeTemp : courseTypes){
-			courseTypeInfo = (CourseTypeInfo) courseTypeTemp;
-			courseTypesToDisplay.add(
-					new SelectItem(
-							courseTypeInfo.getId().intValue(), 
-							courseTypeInfo.getName()));
-		}
-		extendedSearchResults.setCourseTypes(courseTypesToDisplay);
-
-		// determine periods in which the institute offers courses
-		List periods = universityService.findPeriodsByUniversity(extendedSearchResults.getOrganisationId());
-		for(Object periodTemp : periods){
-			periodInfo = (PeriodInfo) periodTemp;
-			periodToDisplay.add(
-					new SelectItem(
-							periodInfo.getId().intValue(), 
-							periodInfo.getName()));
-		}
-		extendedSearchResults.setPeriods(periodToDisplay);
+		resetCourseTypesAndPeriods(selectedInstitute);		
 		
 		logger.debug("<<< institutionChanged");
 	}
@@ -264,6 +236,154 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	public void periodChanged(ValueChangeEvent vce){
 		// nothing to do
 	}
+	
+	/*** RESET METHODS FOR COMBO BOXES ***/
+	
+	private void resetOrganisations(Long searchScopeId){
+		// initialize
+		List<SelectItem> universitiesToDisplay = new ArrayList<SelectItem>();
+		UniversityInfo universityInfo;
+		// set possible organisations
+		UniversityType universityType = null;
+		switch(searchScopeId.intValue()){
+			case Constants.EXTENDED_SEARCH_SCOPE_UNIVERSITIES:
+				universityType = UniversityType.UNIVERSITY;
+				break;
+			case Constants.EXTENDED_SEARCH_SCOPE_COMPANIES:
+				universityType = UniversityType.COMPANY;
+				break;
+			case Constants.EXTENDED_SEARCH_SCOPE_OTHER:
+				universityType = UniversityType.MISC;
+				break;
+		}
+		List universities = universityService.findUniversitiesByTypeAndEnabled(universityType, true);
+		if(universities.size() > 0){
+			universitiesToDisplay.add(pleaseChooseSelectItem());
+		} else {
+			universitiesToDisplay.add(notFoundSelectItem());
+		}
+		for(Object universityTemp : universities){
+			universityInfo = (UniversityInfo) universityTemp;
+			universitiesToDisplay.add(
+					new SelectItem(
+							universityInfo.getId(), 
+							universityInfo.getName()));
+		}
+		extendedSearchResults.setOrganisations(universitiesToDisplay);
+	}
+	
+	private void resetSuborganisations(Long organisationId){
+		List<SelectItem> departmentsToDisplay = new ArrayList<SelectItem>();
+		DepartmentInfo departmentInfo;
+		
+		// determine the departments which belong to the given university
+		if(organisationId > 0){
+			List departments = departmentService.findDepartmentsByUniversityAndEnabled(organisationId, true);
+			if(departments.size() > 0){
+				departmentsToDisplay.add(pleaseChooseSelectItem());
+			} else {
+				departmentsToDisplay.add(notFoundSelectItem());
+			}
+			for(Object departmentTemp : departments){
+				departmentInfo = (DepartmentInfo) departmentTemp;
+				departmentsToDisplay.add(
+						new SelectItem(
+								departmentInfo.getId(), 
+								departmentInfo.getName()));
+			}
+		} else if (organisationId == 0){
+			departmentsToDisplay.add(pleaseChooseSelectItem());
+		} else {
+			departmentsToDisplay.add(notFoundSelectItem());
+		}
+		extendedSearchResults.setSuborganisations(departmentsToDisplay);
+	}
+	
+	private void resetInstitutes(Long suborganisationId){
+		List<SelectItem> institutesToDisplay = new ArrayList<SelectItem>();
+		InstituteInfo instituteInfo;
+		
+		if(suborganisationId > 0){
+			List institutes = instituteService.findInstitutesByDepartmentAndEnabled(suborganisationId, true);
+			if(institutes.size() > 0){
+				institutesToDisplay.add(pleaseChooseSelectItem());
+			} else {
+				institutesToDisplay.add(notFoundSelectItem());
+			}
+			for(Object instituteTemp : institutes){
+				instituteInfo = (InstituteInfo) instituteTemp;
+				institutesToDisplay.add(
+						new SelectItem(
+								instituteInfo.getId(), 
+								instituteInfo.getName()));
+			}
+		} else if (suborganisationId == 0){
+			institutesToDisplay.add(pleaseChooseSelectItem());
+		} else {
+			institutesToDisplay.add(notFoundSelectItem());
+		}
+		extendedSearchResults.setInstitutions(institutesToDisplay);
+	}
+	
+	private void resetCourseTypesAndPeriods(Long instituteId){
+		List<SelectItem> courseTypesToDisplay = new ArrayList<SelectItem>();
+		List<SelectItem> periodToDisplay = new ArrayList<SelectItem>();
+		CourseTypeInfo courseTypeInfo;
+		PeriodInfo periodInfo;
+		
+		if(instituteId > 0){
+			List courseTypes = courseTypeService.findCourseTypesByInstitute(instituteId);
+			if(courseTypes.size() > 0){
+				courseTypesToDisplay.add(pleaseChooseSelectItem());
+			} else {
+				courseTypesToDisplay.add(notFoundSelectItem());
+			}
+			for(Object courseTypeTemp : courseTypes){
+				courseTypeInfo = (CourseTypeInfo) courseTypeTemp;
+				courseTypesToDisplay.add(
+						new SelectItem(
+								courseTypeInfo.getId(), 
+								courseTypeInfo.getName()));
+			}
+		} else if (instituteId == 0){
+			courseTypesToDisplay.add(pleaseChooseSelectItem());
+		} else {
+			courseTypesToDisplay.add(notFoundSelectItem());
+		}
+		extendedSearchResults.setCourseTypes(courseTypesToDisplay);
+
+		// determine periods in which the institute offers courses
+		if(extendedSearchResults.getOrganisationId() > 0){
+			List periods = universityService.findPeriodsByUniversity(extendedSearchResults.getOrganisationId());
+			if(periods.size() > 0){
+				periodToDisplay.add(pleaseChooseSelectItem());
+			} else {
+				periodToDisplay.add(notFoundSelectItem());
+			}
+			for(Object periodTemp : periods){
+				periodInfo = (PeriodInfo) periodTemp;
+				periodToDisplay.add(
+						new SelectItem(
+								periodInfo.getId(), 
+								periodInfo.getName()));
+			}
+		} else if (extendedSearchResults.getOrganisationId() == 0){
+			periodToDisplay.add(pleaseChooseSelectItem());
+		} else {
+			periodToDisplay.add(notFoundSelectItem());
+		}	
+		extendedSearchResults.setPeriods(periodToDisplay);
+	}
+	
+	private SelectItem pleaseChooseSelectItem(){
+		return new SelectItem(0L, "<< bitte angeben >>");
+	}
+	
+	private SelectItem notFoundSelectItem(){
+		return new SelectItem(-1L, "<< nicht gefunden >>");
+	}
+		
+	/*** CHECK VISIBILITY METHODS ***/
 	
 	/**
 	 * generates the CSS tag which determines whether the "organisation" combo box is displayed
@@ -483,7 +603,12 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		this.courseTypeService = courseTypeService;
 	}
 
-
+	private List<SelectItem> getDummyData(){
+		List<SelectItem> list = new ArrayList<SelectItem>();
+		list.add(new SelectItem(1, "Eintrag 1"));
+		list.add(new SelectItem(2, "Eintrag 2"));
+		return list;
+	}
 
 
 	
