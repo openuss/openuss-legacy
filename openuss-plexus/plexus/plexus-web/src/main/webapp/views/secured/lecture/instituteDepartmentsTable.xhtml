@@ -14,24 +14,40 @@
 	<plexus:dataTable 
 		id="department" 
 		label="#{msg.institute_departmentList_header}" 
-		value="views$public$institute$institutes.institutes" 
+		value="views$secured$lecture$instituteDepartments.departments" 
 		var="bean" 
 		columnClasses="col_max_left, col_max_left, col_min_left, col_min_left"
 		rows="15">
 		
 		<t:column>
-			<plexus:commandSortHeader columnName="shortcut">
-				#{msg['department_shortcut_header']}
+			<plexus:commandSortHeader columnName="name">
+				#{msg['department_name']}
 			</plexus:commandSortHeader>
+			<h:outputText value="#{bean.name}"/>
+		</t:column>
+		<t:column>
+			<plexus:commandSortHeader columnName="shortcut">
+				#{msg['department_shortcut']}
+			</plexus:commandSortHeader>
+			<h:outputText value="#{bean.shortcut}"/>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="ownerName">
+				#{msg['department_ownername']}
+			</plexus:commandSortHeader>
+			<h:outputText value="#{bean.ownerName}"/>
 		</t:column>
 
 		<s:authorize ifAllGranted="ROLE_USER">
 			<plexus:column header="#{msg.commands_header}">
-			<h:commandButton
-				styleClass="button_remove"
-				value="#{msg.department_command_remove}"
-				hint="#{msg.department_command_remove_hint}">
-			</h:commandButton>		
+						<plexus:command 
+				bean="#{views$secured$lecture$instituteDepartments}"
+				action="signoffInstitute"
+				label="#{msg['department_command_remove']}"
+				title="#{msg['department_command_remove_hint']}"
+				styleClass="button_remove" />
+			
 			</plexus:column>
 		</s:authorize>
 	</plexus:dataTable>

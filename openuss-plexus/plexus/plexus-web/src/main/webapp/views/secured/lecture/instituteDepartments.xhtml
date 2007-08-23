@@ -35,15 +35,18 @@
 			<h:form id="instituteDepartment">
 				<o:block label="#{msg.institute_departments_subheading}" styleClass="form_box">
 					<h:outputText value="#{msg.department_selection}" styleClass="header_font_normal"/>
-					<h:selectOneMenu id="departmentSelection" 
-						layout="pageDirection"  
-						immediate="true" 
+					<h:selectOneListbox id="departmentSelection" 
+						size="1" 
+						value="#{applicationInfo.departmentId}"
+						layout="pageDirection" 
 						styleClass="pulldown_inline">
-						<t:selectItems />
-					</h:selectOneMenu>
+						<f:selectItems value="#{views$secured$lecture$instituteDepartments.allDepartments}"/>
+					</h:selectOneListbox>
 									
-					<o:input entity="views$secured$lecture$auth$members" property="username" label="#{msg['institute_department_description']}" type="textarea" rows="5"></o:input>
-					<h:commandButton value="${msg.department_members_command_add}" styleClass="button_cancel" immediate="true"/>
+					<o:input entity="applicationInfo" property="description" label="#{msg['institute_department_description']}" type="textarea" rows="5"></o:input>
+					<h:commandButton  value="${msg.department_members_command_add}" 
+										styleClass="button_cancel" 
+										action="#{views$secured$lecture$instituteDepartments.apply}"/>
 				</o:block>
 			</h:form>
 		</ui:define>
