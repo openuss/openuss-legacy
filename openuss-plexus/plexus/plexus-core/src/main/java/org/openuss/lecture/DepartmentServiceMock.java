@@ -214,4 +214,9 @@ public class DepartmentServiceMock implements DepartmentService {
 	public void setDepartmentStatus(Long departmentId, boolean status) {
 		// TODO Auto-generated method stub
 	}
+	
+	public List findApplicationsByDepartment(Long departmentId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

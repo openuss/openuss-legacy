@@ -283,6 +283,14 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		return (ApplicationInfo) this.getApplicationDao().load(ApplicationDao.TRANSFORM_APPLICATIONINFO, applicationId);
 	}
 	
+	
+	@Override
+	public List handleFindApplicationsByDepartment(Long departmentId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	@Override
 	public void handleSetDepartmentStatus(Long departmentId, boolean status) {
 		Validate.notNull(departmentId, "DepartmentService.setDepartmentStatus - the departmentId cannot be null.");
