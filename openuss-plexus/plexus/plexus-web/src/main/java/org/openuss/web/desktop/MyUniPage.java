@@ -548,7 +548,7 @@ public class MyUniPage extends BasePage {
 			return uniID;
 		}
 		
-		private Long processInstitute(Institute institute, boolean isCurrent)
+		private Long processInstitute(Institute institute, boolean hasCorrespondingCurrentCourse)
 		{	
 			if(institute == null)
 				return null;
@@ -572,7 +572,7 @@ public class MyUniPage extends BasePage {
 			if(instituteInfo == null)
 				return uniID;
 			
-			currentDataSet.addInstitute(instituteInfo, isCurrent);
+			currentDataSet.addInstitute(instituteInfo, hasCorrespondingCurrentCourse);
 			
 			// return the uni id
 			return uniID;
@@ -930,6 +930,16 @@ public class MyUniPage extends BasePage {
 				return listItems;
 			}
 			
+			ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
+			String locale = (String)binding.getValue(getFacesContext());
+			ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
+			String institutesMetaInfoString = "";
+			if(bundle != null)
+				institutesMetaInfoString = bundle.getString(Constants.MYUNI_INSTITUTE_COURSECOUNT_STRING);
+
+			if(bundle == null || institutesMetaInfoString == "")
+				institutesMetaInfoString = "current courses";
+			
 			
 			Map<Long, Boolean> instituteBookmarks = currentDataSet.instituteBookmarks;
 			
@@ -938,6 +948,7 @@ public class MyUniPage extends BasePage {
 			Boolean isBookmark;
 			ListItemDAO newListItem;
 			Long instituteId;
+			Integer courseCount;
 			
 			while(i.hasNext())
 			{
@@ -946,12 +957,19 @@ public class MyUniPage extends BasePage {
 				newListItem.setTitle(currentInstitute.getName());
 				instituteId = currentInstitute.getId();
 				isBookmark = null;
+				courseCount = null;
 				
 				if(instituteId != null)
 				{
 					newListItem.setUrl(institutesBasePath + instituteId);
 					if(instituteBookmarks != null)
 						isBookmark = instituteBookmarks.get(instituteId);
+					
+					if(currentDataSet.instituteCurrentCoursesCount != null)
+						courseCount = currentDataSet.instituteCurrentCoursesCount.get(instituteId);
+					
+					if(courseCount != null)
+						newListItem.setMetaInformation(courseCount.toString() + " " + institutesMetaInfoString);
 				}
 				newListItem.setIsBookmark(isBookmark != null && isBookmark.booleanValue() == true);
 				listItems.add(newListItem);
@@ -1138,6 +1156,7 @@ public class MyUniPage extends BasePage {
 			Map<Long, CourseInfo> pastCourses;
 			Map<Long, InstituteInfo> currentInstitutes;
 			Map<Long, Boolean> instituteBookmarks;
+			Map<Long, Integer> instituteCurrentCoursesCount;
 			Map<Long, InstituteInfo> pastInstitutes;
 			Map<Long, DepartmentInfo> departments;
 			Map<Long, Boolean> departmentBookmarks;
@@ -1151,6 +1170,7 @@ public class MyUniPage extends BasePage {
 				pastCourses = new HashMap<Long, CourseInfo>();
 				currentInstitutes = new HashMap<Long, InstituteInfo>();
 				instituteBookmarks = new HashMap<Long, Boolean>();
+				instituteCurrentCoursesCount = new HashMap<Long, Integer>();
 				pastInstitutes = new HashMap<Long, InstituteInfo>();
 				departments = new HashMap<Long, DepartmentInfo>();
 				departmentBookmarks = new HashMap<Long, Boolean>();			
@@ -1212,13 +1232,25 @@ public class MyUniPage extends BasePage {
 					if(pastCourses.containsKey(id))
 						pastCourses.remove(id);
 					
-					currentCourses.put(id, course);
+					if(!currentCourses.containsKey(id))
+					{
+						currentCourses.put(id, course);
+						
+						Long instituteId = course.getInstituteId();
+						Integer courseCount;
+						courseCount = instituteCurrentCoursesCount.get(id);
+						
+						if(courseCount == null)
+							courseCount = 0;
+						courseCount++;
+						instituteCurrentCoursesCount.put(instituteId, courseCount);
+					}
 				}
 				else
 				{
 					if(!currentCourses.containsKey(id))
 						pastCourses.put(id, course);
-				}
+				}	
 			}
 		}
 	}
