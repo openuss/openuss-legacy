@@ -96,7 +96,6 @@ public abstract class AbstractLecturePage extends BasePage {
 	private void refreshInstitute() {
 		logger.debug("Starting method refresh institute");
 		if (instituteInfo != null) {
-			//institute = lectureService.getInstitute(institute.getId());
 			instituteInfo = instituteService.findInstitute(instituteInfo.getId());
 			setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
 		}

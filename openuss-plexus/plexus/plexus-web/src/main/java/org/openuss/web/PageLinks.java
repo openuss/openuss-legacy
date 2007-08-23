@@ -12,7 +12,7 @@ public class PageLinks{
 	
 	public static final String DEPARTMENT_PAGE = "/views/public/department/department.faces";
 	
-	public static final String INSTITUTE_PAGE = "/views/secured/lecture/institute.faces";
+	public static final String INSTITUTE_PAGE = "/views/public/institute/institute.faces";
 	
 	public static final String COURSE_PAGE = "/views/secured/course/main.faces";
 	

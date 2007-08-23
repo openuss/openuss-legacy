@@ -28,8 +28,8 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
-		crumb.setName(i18n("institute_command_institute"));
-		crumb.setHint(i18n("institute_command_institute"));
+		crumb.setName(i18n("institute_command_settings"));
+		crumb.setHint(i18n("institute_command_settings"));
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	
@@ -40,7 +40,6 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	 * @throws LectureException
 	 */
 	public String saveInstitute() throws LectureException {
-		//lectureService.persist(institute);
 		instituteService.update(instituteInfo);
 		addMessage(i18n("institute_message_command_save_succeed"));
 		return Constants.SUCCESS;
