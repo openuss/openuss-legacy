@@ -23,6 +23,11 @@
 	
 	
 	<!-- DataTableModels -->
+ 	<managed-bean>
+ 		<managed-bean-name>applicationInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.ApplicationInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
 
  	<managed-bean>
  		<managed-bean-name>instituteSecurity</managed-bean-name>

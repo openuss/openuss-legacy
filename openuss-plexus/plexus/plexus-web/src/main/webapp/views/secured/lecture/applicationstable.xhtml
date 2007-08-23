@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+	<plexus:dataTable   
+     	id="applicationstable" 
+     	value="views$secured$lecture$departmentapplicationspage.applications" 
+		var="bean" 
+     	label="Bewerbungen" 
+       	columnClasses="col_max_left, col_commands"
+       	rows="5">  
+   
+		<t:column>
+			<plexus:commandSortHeader columnName="name">#{msg.instituteList_colheader_name}</plexus:commandSortHeader> 
+			<h:outputText value="#{bean.id}"/>
+		</t:column>
+		
+		<plexus:column header="#{msg.commands_header}">
+
+			<plexus:command 
+				bean= "#{views$secured$lecture$departmentapplicationspage}"  
+				action ="accept"
+				label="#{msg.institute_aspirant_accept}"
+				
+				styleClass="button_add">
+			</plexus:command>
+			<plexus:command   
+				bean= "#{views$secured$lecture$departmentapplicationspage}"  
+				action ="reject"
+				label="#{msg.institute_aspirant_reject}"
+				
+				styleClass="button_remove">
+			</plexus:command>
+		</plexus:column>
+	</plexus:dataTable>
+	
+
+	
+	
+</ui:composition>
