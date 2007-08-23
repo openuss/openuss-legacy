@@ -709,7 +709,7 @@
 		<from-view-id>/*</from-view-id>
 	
 			<navigation-case>
-					<from-outcome>department_create</from-outcome>
+					<from-outcome>department_registration_start</from-outcome>
 					<to-view-id>/views/secured/lecture/registration/departmentStart.xhtml</to-view-id>
 			</navigation-case>
 			
