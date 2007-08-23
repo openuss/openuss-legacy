@@ -28,7 +28,7 @@
 						</t:commandNavigation2>
 					</s:acl>
 					<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}">
-						<t:commandNavigation2 action="institute_coursetypes"
+						 <t:commandNavigation2 action="institute_coursetypes"
 							activeOnViewIds="/views/secured/lecture/coursetypes.xhtml">
 							<h:outputText value="#{msg['institute_command_coursetypes']}"></h:outputText>
 						</t:commandNavigation2>
@@ -54,7 +54,7 @@
 					<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.GRANT}">
 						<t:commandNavigation2 action="institute_data"
 							activeOnViewIds="/views/secured/lecture/instituteoptions.xhtml">
-							<h:outputText value="#{msg['institute_command_institute']}"></h:outputText>
+							<h:outputText value="#{msg['institute_command_settings']}"></h:outputText>
 						</t:commandNavigation2>
 					</s:acl>
 				</t:commandNavigation2>
