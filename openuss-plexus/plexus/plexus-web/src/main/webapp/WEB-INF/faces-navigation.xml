@@ -84,7 +84,6 @@
 			<from-outcome>administration</from-outcome>
 			<to-view-id>/views/secured/system/properties.xhtml</to-view-id>
 		</navigation-case>
-		
 	
 		<navigation-case>
 			<from-outcome>secure_password_change</from-outcome>
