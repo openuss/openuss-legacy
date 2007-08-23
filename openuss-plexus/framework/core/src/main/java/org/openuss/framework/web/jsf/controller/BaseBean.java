@@ -198,7 +198,11 @@ public abstract class BaseBean {
 	 * @return ResoureBundle
 	 */
 	public ResourceBundle getBundle() {
-		return ResourceBundle.getBundle(getBundleName(), getRequest().getLocale());
+		if (getFacesContext().getViewRoot() == null) {
+			return ResourceBundle.getBundle(getBundleName(), getRequest().getLocale());
+		} else {
+			return ResourceBundle.getBundle(getBundleName(), getFacesContext().getViewRoot().getLocale());
+		}
 	}
 
 	/**

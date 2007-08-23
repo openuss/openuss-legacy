@@ -71,7 +71,7 @@ public class ConversationUtil {
 			url = ConversationUtil.encodeParameters(url, parameters);
 			logger.debug(url);
 			if (url.length() > 1024) {
-				logger.error("url "+url+"is longer then 1024 bytes");
+				logger.error("url "+url+"is longer than 1024 bytes");
 			}
 		}
 		try {

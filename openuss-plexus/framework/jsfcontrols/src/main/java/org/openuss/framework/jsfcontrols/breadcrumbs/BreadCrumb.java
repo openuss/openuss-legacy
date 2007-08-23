@@ -1,5 +1,6 @@
 package org.openuss.framework.jsfcontrols.breadcrumbs;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,8 +12,13 @@ import org.openuss.framework.web.jsf.util.ConversationUtil;
  * @author Ingo Dueppe
  * 
  */
-public class BreadCrumb {
+public class BreadCrumb implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7288616777708885608L;
+	
 	private String link;
 	private String name;
 	private String hint;

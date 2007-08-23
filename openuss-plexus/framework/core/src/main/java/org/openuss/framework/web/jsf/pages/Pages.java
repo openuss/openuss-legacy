@@ -113,6 +113,9 @@ public class Pages {
 				Object value = parameter.getValueFromRequest(facesContext, requestParameters);
 				if (value != null) {
 					ValueBinding valueBinding = parameter.getValueBinding();
+					if (logger.isDebugEnabled()) {
+						logger.debug("Apply "+valueBinding.getExpressionString()+" = "+value);
+					}
 					valueBinding.setValue(facesContext, value);
 				}
 			}
