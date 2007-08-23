@@ -74,7 +74,7 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 	public String addCourseType() {
 		//courseType = CourseType.Factory.newInstance();
 		courseTypeInfo = new CourseTypeInfo();
-		courseTypeInfo.setInstituteId(instituteInfo.getId());
+		//courseTypeInfo.setInstituteId(instituteInfo.getId());
 		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
 		return Constants.SUCCESS;
 	}
@@ -116,6 +116,7 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 			
 			//lectureService.add(instituteInfo.getId(), courseTypeInfo);
 			courseTypeInfo.setInstituteId(instituteInfo.getId());
+			courseTypeService.create(courseTypeInfo);
 			
 			addMessage(i18n("institute_message_add_coursetype_succeed"));
 		} else {
@@ -123,7 +124,7 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 			courseTypeService.update(courseTypeInfo);
 			addMessage(i18n("institute_message_persist_coursetype_succeed"));
 		}
-		removeSessionBean(Constants.COURSE_TYPE);
+		removeSessionBean(Constants.COURSE_TYPE_INFO);
 		courseTypeInfo = null;
 		return Constants.SUCCESS;
 	}
