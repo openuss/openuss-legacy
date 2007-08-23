@@ -20,7 +20,7 @@ import org.openuss.web.Constants;
  * @author Ingo Dueppe
  * @author Kai Stettner
  */
-@Bean(name = "views$secured$lecture$coursetypes", scope = Scope.REQUEST)
+@Bean(name = "views$public$coursetype$coursetypes", scope = Scope.REQUEST)
 @View
 public class CourseTypesPage extends AbstractCourseTypePage {
 
@@ -43,7 +43,7 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
-	/**
+	/*/**
 	 * Set selected courseType into session scope
 	 * 
 	 * @return outcome

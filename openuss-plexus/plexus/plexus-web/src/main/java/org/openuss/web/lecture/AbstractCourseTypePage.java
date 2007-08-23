@@ -26,11 +26,11 @@ public abstract class AbstractCourseTypePage extends BasePage {
 	@Property(value = "#{instituteInfo}")
 	protected InstituteInfo instituteInfo;
 
-	@Property(value = "#{sessionScope.courseTypeInfo}")
+	@Property(value = "#{courseTypeInfo}")
 	protected CourseTypeInfo courseTypeInfo;
 
 	/**
-	 * Refreshing courseType entity
+	 * Refreshing courseType VO
 	 * 
 	 * @throws Exception
 	 */
