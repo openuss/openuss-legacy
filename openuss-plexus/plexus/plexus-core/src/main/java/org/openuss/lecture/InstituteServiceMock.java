@@ -125,4 +125,12 @@ public class InstituteServiceMock implements InstituteService {
 	public void setInstituteStatus(Long instituteId, boolean status) {
 		// TODO Auto-generated method stub
 	}
+
+	public ApplicationInfo findApplicationByInstitute(Long instituteId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
 }
