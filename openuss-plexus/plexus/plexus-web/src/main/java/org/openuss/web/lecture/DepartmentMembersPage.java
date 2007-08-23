@@ -93,6 +93,7 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		  logger.debug(departmentGroups.get(0).getName());
 		  
 		  organisationService.removeUserFromGroup(member.getId(),departmentGroups.get(0).getId());
+		  organisationService.removeMember(departmentInfo.getId(), user.getId());
 		  logger.debug("return");
 		  return Constants.SUCCESS;
 		 
