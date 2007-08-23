@@ -1,10 +1,12 @@
 package org.openuss.web.lecture;
 
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
+
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -18,33 +20,37 @@ import org.openuss.lecture.ApplicationInfo;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.UniversityInfo;
 import org.openuss.web.Constants;
+
 
 /**
  * 
  * @author Tianyu Wang
  * @author Weijun Chen
  */
-@Bean(name = "views$secured$lecture$instituteApplicationPage", scope = Scope.REQUEST)
+@Bean(name = "views$secured$lecture$instituteDepartments", scope = Scope.REQUEST)
 @View
-public class InstituteApplicationPage extends AbstractLecturePage {
+public class InstituteApplicationPage extends AbstractLecturePage{
 	private static final long serialVersionUID = 20278675452385870L;
-
+	
 	@Property(value = "#{applicationInfo}")
 	protected ApplicationInfo applicationInfo;
-
+	
 	private DepartmentsTable departments = new DepartmentsTable();
-
+	
+		
 	private List<SelectItem> departmentItems;
 
 	private List<DepartmentInfo> allDepartments;
+	
 
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
 		addPageCrumb();
 	}
-
+	
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
@@ -52,8 +58,8 @@ public class InstituteApplicationPage extends AbstractLecturePage {
 		crumb.setHint(i18n("department_command_institutes"));
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
-	}
-
+	}	
+	
 	/**
 	 * @param startRow
 	 *            row to start from
@@ -65,18 +71,20 @@ public class InstituteApplicationPage extends AbstractLecturePage {
 		if (logger.isDebugEnabled()) {
 			logger.debug("getDataPage(" + startRow + "," + pageSize + ")");
 		}
-
-		logger.debug("instituteId:" + instituteInfo.getId());
-		InstituteInfo institute = instituteService.findInstitute(instituteInfo.getId());
-		logger.debug("departmentId" + institute.getDepartmentId());
-		List<DepartmentInfo> departments = new ArrayList<DepartmentInfo>();
-
-		logger.debug("Debug findDepartment");
-		DepartmentInfo d = departmentService.findDepartment(institute.getDepartmentId());
-		logger.debug("department name:" + d.getName());
-		departments.add(d);
-
-		return new DataPage<DepartmentInfo>(departments.size(), 0, departments);
+		
+		 
+		 
+		 logger.debug("instituteId:"+instituteInfo.getId());
+		 InstituteInfo institute = instituteService.findInstitute(instituteInfo.getId());
+		 logger.debug("departmentId"+institute.getDepartmentId());
+		 List<DepartmentInfo> departments = new ArrayList<DepartmentInfo>();
+		 
+		 logger.debug("Debug findDepartment");
+		 DepartmentInfo d= departmentService.findDepartment(institute.getDepartmentId());
+		 logger.debug("department name:"+d.getName());		 
+		 departments.add(d);
+		
+		 return new DataPage<DepartmentInfo>(departments.size(), 0, departments);
 	}
 
 	/**
@@ -88,59 +96,67 @@ public class InstituteApplicationPage extends AbstractLecturePage {
 
 		@Override
 		public DataPage<DepartmentInfo> getDataPage(int startRow, int pageSize) {
-
+			
 			return fetchDataPage(startRow, pageSize);
 		}
 	}
-
-	private Long getUniversityId() {
+	
+	private Long getUniversityId(){
 		Long departmentId = instituteService.findInstitute(instituteInfo.getId()).getDepartmentId();
-		return departmentService.findDepartment(departmentId).getUniversityId();
+		Long  universityId= departmentService.findDepartment(departmentId).getUniversityId();
+		UniversityInfo universityInfo = universityService.findUniversity(universityId); 
+		return universityInfo.getId();
 	}
-
-	public List<SelectItem> getAllDepartments() {
+	public List<SelectItem> getAllDepartments(){
 		departmentItems = new ArrayList<SelectItem>();
-
-		logger.info("universityId:" + getUniversityId());
+		
+			
+		logger.info("universityId:"+getUniversityId());
 		allDepartments = departmentService.findDepartmentsByUniversity(getUniversityId());
 		Iterator<DepartmentInfo> iter = allDepartments.iterator();
 		DepartmentInfo department;
-
-		while (iter.hasNext()) {
+		
+		while (iter.hasNext()){
 			department = iter.next();
 			SelectItem item = new SelectItem(department.getId(), department.getName());
 			departmentItems.add(item);
 		}
-
+		
 		logger.info("DepartmentId:" + allDepartments.get(0).getId());
 		return departmentItems;
-
+	
 	}
-
-	public String apply() {
+	
+	public String apply(){
 		logger.debug("Debug apply");
-		/*
-		 * 
-		 * 
-		 * logger.debug("DepartmentId"+ applicationInfo.getDepartmentId());
-		 * 
-		 * logger.debug("Descriptiony"+applicationInfo.getDescription());
-		 */
-
-		logger.debug("InstituteI" + instituteInfo.getId());
+	
+		
+		
+		logger.debug("DepartmentId"+ applicationInfo.getDepartmentId());
+		
+		logger.debug("Descriptiony"+applicationInfo.getDescription());
+	    
+		
+		logger.debug("InstituteI"+instituteInfo.getId());
 		applicationInfo.setApplyingUserId(user.getId());
 		applicationInfo.setInstituteId(instituteInfo.getId());
-		applicationInfo.setDepartmentId(7L);
+		try{
 		Long appId = instituteService.applyAtDepartment(applicationInfo);
-		return Constants.SUCCESS;
+			}
+		catch(Exception e){;}
+		
+		
+		return Constants.INSTITUTE_DEPARTMENTS_PAGE;
 	}
-
-	public String signoffInstitute() {
-
-		departmentService.signoffInstitute(instituteInfo.getId());
-		return Constants.SUCCESS;
-	}
-
+	
+  
+    	
+    public String signoffInstitute(){
+    	
+    	departmentService.signoffInstitute(instituteInfo.getId());
+    	return Constants.SUCCESS;
+    }
+    
 	public DepartmentsTable getDepartments() {
 		return departments;
 	}
