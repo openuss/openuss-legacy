@@ -25,10 +25,11 @@ public class UIFlexList extends UIOutput {
 		writer.startElement("div", this);
 			writer.writeAttribute("class", "flexList", null);
 			
-			// render title if specified as attribute
+			// Begin flexlist title
+			// Render only if the title is specified as an attribute
 			title = (String)getAttributes().get("title");
-			if(title != null) {
-				
+			if(title != null)
+			{	
 				writer.startElement("ul", this);
 				writer.writeAttribute("class", "flexListItems", null);
 			
@@ -69,20 +70,21 @@ public class UIFlexList extends UIOutput {
 					writer.endElement("li");
 				writer.endElement("ul");
 			}
-				
+			// End flexlist title
+			
+			// Begin flexlist content
 			writer.startElement("div", this);
 				writer.writeAttribute("id", "flexlist_content" + this.getId(), null);
 				
-				// Begin flexlist content
-				// render list of visible items
+				// Render list of visible items
 				writer.startElement("ul", this);
 				writer.writeAttribute("class", "flexListItems", null);
 				
-					
 					ArrayList visibleItems = (ArrayList)(getAttributes().get("visibleItems"));
 					
 					if(visibleItems == null || visibleItems.isEmpty())
 					{
+						// Render a predefined string if the list is empty
 						writer.startElement("li", this);
 							writer.startElement("div", this);
 							writer.writeAttribute("class", "flexListItemLeft", null);
@@ -93,24 +95,45 @@ public class UIFlexList extends UIOutput {
 					}
 					else
 					{
+						// Iterate over the list of visible items
 						i = visibleItems.iterator();
 						while(i.hasNext()) {
 							listItem = (ListItemDAO)i.next();
 							writer.startElement("li", this);
+								// Render the "meta info" on the right side of the list
 								writer.startElement("div", this);
-								writer.writeAttribute("class", "flexListItemRight", null);
-								String metaInfo = listItem.getMetaInformation();
-								if(metaInfo != null)
-									writer.write( listItem.getMetaInformation());
+									writer.writeAttribute("class", "flexListItemRight", null);
+									
+									// Show the "remove bookmark link" if the url is set
+									String removeBookmarkUrl = listItem.getRemoveBookmarkUrl();
+									if(removeBookmarkUrl != null && removeBookmarkUrl != "")
+									{
+										writer.write("(");
+										writer.startElement("a", this);
+											writer.writeAttribute("href", removeBookmarkUrl, null);
+											writer.write("Bookmark entfernen");
+										writer.endElement("a");
+										writer.write(")");
+									}
+									
+									// Render separating space between remove bookmark url and meta text
+									writer.write(" ");
+									
+									String metaInfo = listItem.getMetaInformation();
+									if(metaInfo != null)
+										writer.write( listItem.getMetaInformation());	
 								writer.endElement("div");
+								
+								// Render the left side of the item
 								writer.startElement("div", this);
-								writer.writeAttribute("class", "flexListItemLeft", null);
+									writer.writeAttribute("class", "flexListItemLeft", null);
+									
 									title = listItem.getTitle();
 									
 									if(title != null)
 									{
 										String url = listItem.getUrl();
-										
+										// If the url is set, render an a tag, otherwise just plain text
 										if(url != null)
 										{
 											writer.startElement("a", this);
@@ -129,7 +152,8 @@ public class UIFlexList extends UIOutput {
 					}
 				writer.endElement("ul");
 	
-				// render list of hidden items
+				// Render list of hidden items
+				// Attribute "hiddenItems" is set by the backingbean and contains a list of items of type ArrayList
 				ArrayList hiddenItems = (ArrayList)getAttributes().get("hiddenItems");
 				
 				if(hiddenItems != null && !hiddenItems.isEmpty())
@@ -139,7 +163,7 @@ public class UIFlexList extends UIOutput {
 						writer.writeAttribute("id", "hidden_items" + this.getId(), null);
 						writer.writeAttribute("style", "display:none;", null);
 					
-						// attribute "hiddenItems" is set by the backingbean and contains a list of items of type ArrayList
+						// Iterate over the list of hidden items
 						i = hiddenItems.iterator();
 						while(i.hasNext()) {
 							listItem = (ListItemDAO)i.next();
@@ -179,7 +203,7 @@ public class UIFlexList extends UIOutput {
 					writer.endElement("ul");
 				
 				
-					// render the list footer containing the buttons for showing and hiding the hidden items
+					// Render the list footer containing the buttons for showing and hiding the hidden items
 					writer.startElement("ul", this);
 						writer.writeAttribute("class", "flexListBottom", null);
 						
@@ -230,10 +254,10 @@ public class UIFlexList extends UIOutput {
 						writer.endElement("li");
 					writer.endElement("ul");
 				}
-				
-				// End flexlist content
-							
+						
 			writer.endElement("div");
+			// End flexlist content
+			
 		writer.endElement("div");
 	}
 	public void encodeEnd(FacesContext context) throws IOException {

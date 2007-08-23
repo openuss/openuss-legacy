@@ -21,6 +21,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
+import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopException;
@@ -68,7 +69,9 @@ import org.openuss.desktop.DesktopDao;
 public class MyUniPage extends BasePage {
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
 
-	private Long	paramUniversity;
+	private Long	paramUniversity = null;
+	private Long	paramRemoveDepartment = null;
+	private Long	paramRemoveInstitute = null;
 	private UIFlexList departmentsList;
 	private UIFlexList institutesList;
 	private UIFlexList coursesList;
@@ -76,6 +79,10 @@ public class MyUniPage extends BasePage {
 	private Desktop desktop;
 	
 	private MyUniDataSet myUniDataSet;
+
+	ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
+	String locale = (String)binding.getValue(getFacesContext());
+	ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
 
 	
 	@Property(value="#{universityService}")
@@ -141,23 +148,26 @@ public class MyUniPage extends BasePage {
 	}
 	
 	
+	@Preprocess
+	public void preprocess()
+	{
+		String s = "";
+		s = s + " ";
+	}
+	
 	@Prerender
 	public void prerender() {
 		logger.debug("Prerender MyUni-Page");
 		refreshDesktop();
-		prepareData();
 		loadParams();
+		removeBookmarks();
+		prepareData();
 		loadValuesForDepartmentList();
 		loadValuesForInstituteList();
 		loadValuesForCourseList();
 		loadValuesForTabs();
 //		crumbs.clear();
 	}
-	
-	ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
-	String locale = (String)binding.getValue(getFacesContext());
-	ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
-
 	
 	private void refreshDesktop() {
 		if (user != null) {
@@ -183,6 +193,75 @@ public class MyUniPage extends BasePage {
 		}
 	}
 	
+	public void removeBookmarks()
+	{
+		if(user != null && desktopService2 != null)
+		{
+			Long desktopId = null;
+			
+			try {
+				DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId());
+				desktopId = desktopInfo.getId();
+			} catch (Exception e) {
+			}
+			
+			if(desktopId != null)
+			{
+				if(paramRemoveDepartment != null)
+				{
+					try {
+						desktopService2.unlinkDepartment(desktopId, paramRemoveDepartment);
+					} catch (Exception e) {
+						
+					}
+				}
+
+				if(paramRemoveInstitute != null)
+				{
+					try {
+						desktopService2.unlinkInstitute(desktopId, paramRemoveInstitute);
+					} catch (Exception e) {
+						
+					}
+				}
+			}
+		}
+	}
+	
+	
+	public void prepareData()
+	{
+		logger.debug("Preparing MyUni data");
+/*		if(myUniDataSet == null)
+		{
+			myUniDataSet = new MyUniDataSet();
+			myUniDataSet.loadTestData();
+		}
+*/		
+		
+		
+		if(myUniDataSet == null)
+		{
+			logger.debug("MyUni data not initialized, reating new data set");
+			myUniDataSet = new MyUniDataSet();
+			myUniDataSet.setCourseDao(courseDao);
+			myUniDataSet.setDepartmentDao(departmentDao);
+			myUniDataSet.setInstituteDao(instituteDao);
+			myUniDataSet.setUniversityDao(universityDao);
+			myUniDataSet.setUniversityService(universityService);
+			myUniDataSet.setDesktop(desktop);
+			
+			try {
+				myUniDataSet.loadData();
+			} catch (Exception e) {
+				logger.error("Loading MyUni data failed");
+				myUniDataSet = null;
+			}
+		} 
+	}
+
+	
+	
 	private void loadParams()
 	{
 		logger.debug("Loading request parameters");
@@ -194,6 +273,22 @@ public class MyUniPage extends BasePage {
 		} catch (Exception e) {
 			logger.error("Error while parsing university parameter");
 			paramUniversity = null;
+		}
+		
+		try {
+			String stringParamRemoveDepartment = (String)params.get("remove_department");
+			paramRemoveDepartment = Long.valueOf(stringParamRemoveDepartment);
+		} catch (Exception e) {
+			logger.error("Error while parsing remove_department parameter");
+			paramRemoveDepartment = null;
+		}
+		
+		try {
+			String stringParamRemoveDepartment = (String)params.get("remove_institute");
+			paramRemoveInstitute = Long.valueOf(stringParamRemoveDepartment);
+		} catch (Exception e) {
+			logger.error("Error while parsing remove_institute parameter");
+			paramRemoveInstitute = null;
 		}
 	}
 	
@@ -357,37 +452,6 @@ public class MyUniPage extends BasePage {
 		
 		loadValuesForTabs();
 	}
-	
-	
-	public void prepareData()
-	{
-		logger.debug("Preparing MyUni data");
-/*		if(myUniDataSet == null)
-		{
-			myUniDataSet = new MyUniDataSet();
-			myUniDataSet.loadTestData();
-		}
-*/		
-		
-		if(myUniDataSet == null)
-		{
-			logger.debug("MyUni data not initialized, reating new data set");
-			myUniDataSet = new MyUniDataSet();
-			myUniDataSet.setCourseDao(courseDao);
-			myUniDataSet.setDepartmentDao(departmentDao);
-			myUniDataSet.setInstituteDao(instituteDao);
-			myUniDataSet.setUniversityDao(universityDao);
-			myUniDataSet.setUniversityService(universityService);
-			myUniDataSet.setDesktop(desktop);
-			
-			try {
-				myUniDataSet.loadData();
-			} catch (Exception e) {
-				logger.error("Loading MyUni data failed");
-				myUniDataSet = null;
-			}
-		} 
-	}
 
 	
 	public class MyUniDataSet
@@ -401,6 +465,7 @@ public class MyUniPage extends BasePage {
 		
 		private Map<Long, UniversityDataSet> uniDataSets;
 		
+		private static final String myuniBasePath = "/openuss-plexus/views/secured/myuni/myuni.faces";
 		private static final String departmentsBasePath = "/openuss-plexus/views/public/department/department.faces?department=";
 		private static final String institutesBasePath = "/openuss-plexus/views/public/institute/institute.faces?institute=";
 
@@ -894,7 +959,10 @@ public class MyUniPage extends BasePage {
 					if(departmentBookmarks != null)
 						isBookmark = departmentBookmarks.get(departmentId);
 				}
-				newListItem.setIsBookmark(isBookmark != null && isBookmark.booleanValue() == true);
+				
+				if(isBookmark != null && isBookmark.booleanValue() == true)
+					newListItem.setRemoveBookmarkUrl(myuniBasePath + "?university=" + universityId + "&remove_department=" + departmentId);
+				
 				listItems.add(newListItem);
 			}
 			
@@ -971,7 +1039,10 @@ public class MyUniPage extends BasePage {
 					if(courseCount != null)
 						newListItem.setMetaInformation(courseCount.toString() + " " + institutesMetaInfoString);
 				}
-				newListItem.setIsBookmark(isBookmark != null && isBookmark.booleanValue() == true);
+				
+				if(isBookmark != null && isBookmark.booleanValue() == true)
+					newListItem.setRemoveBookmarkUrl(myuniBasePath + "?university=" + universityId + "&remove_institute=" + instituteId);
+				
 				listItems.add(newListItem);
 			}
 			
@@ -1064,8 +1135,6 @@ public class MyUniPage extends BasePage {
 				newListItem = new ListItemDAO();
 				newListItem.setTitle(currentCourse.getName());
 				
-				// Set bookmark flag as courses are always bookmarked
-				newListItem.setIsBookmark(true);
 				listItems.add(newListItem);
 			}
 			
@@ -1111,8 +1180,6 @@ public class MyUniPage extends BasePage {
 				newListItem = new ListItemDAO();
 				newListItem.setTitle(currentCourse.getName());
 				
-				// Set bookmark flag as courses are always bookmarked
-				newListItem.setIsBookmark(true);
 				listItems.add(newListItem);
 			}
 			
