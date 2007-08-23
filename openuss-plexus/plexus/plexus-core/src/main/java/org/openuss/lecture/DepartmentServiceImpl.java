@@ -190,6 +190,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		return this.getDepartmentDao().findByType(DepartmentDao.TRANSFORM_DEPARTMENTINFO, type);
 	}
 
+	@SuppressWarnings( { "unchecked" })
 	@Override
 	protected List handleFindDepartmentsByUniversityAndType(Long universityId, DepartmentType departmentType)
 			throws Exception {
@@ -244,6 +245,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		this.getApplicationDao().remove(application);
 	}
 
+	@SuppressWarnings( { "unchecked" })
 	@Override
 	protected void handleSignoffInstitute(Long instituteId) throws Exception {
 
@@ -283,11 +285,22 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		return (ApplicationInfo) this.getApplicationDao().load(ApplicationDao.TRANSFORM_APPLICATIONINFO, applicationId);
 	}
 	
-	
+	/**
+	 * @see org.openuss.lecture.DepartmentService#findApplicationsByDepartment(org.openuss.lecture.Department)
+	 */
+	@SuppressWarnings( { "unchecked" })
 	@Override
 	public List handleFindApplicationsByDepartment(Long departmentId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+
+		Validate.notNull(departmentId, "DepartmentService.findApplicationsByDepartment - " +
+				"the departmentId cannot be null.");
+		
+		// Load Department
+		Department departmentEntity = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(departmentEntity, "DepartmentService.findApplicationsByDepartment - " +
+				"no department can be found with teh departmentId "+departmentId);
+		
+		return this.getApplicationDao().findByDepartment(ApplicationDao.TRANSFORM_APPLICATIONINFO, departmentEntity);
 	}
 	
 	

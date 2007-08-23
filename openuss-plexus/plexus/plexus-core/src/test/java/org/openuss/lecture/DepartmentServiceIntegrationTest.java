@@ -275,6 +275,37 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		logger.info("----> END access to findApplication test");
 	}
 	
+	public void testFindApplicationsByDepartment() {
+		logger.info("----> BEGIN access to findApplicationsByDepartment test");
+
+		// Create Department
+		Department department1 = testUtility.createUniqueDepartmentInDB();
+		Department department2 = testUtility.createUniqueDepartmentInDB();
+		
+		// Create Applications
+		Application application1 = this.getTestUtility().createUniqueUnconfirmedApplicationInDB();
+		application1.setDepartment(department1);
+		Application application2 = this.getTestUtility().createUniqueUnconfirmedApplicationInDB();
+		application2.setDepartment(department1);
+		Application application3 = this.getTestUtility().createUniqueUnconfirmedApplicationInDB();
+		application3.setDepartment(department2);
+		
+		// Synchronize with Database
+		flush();
+		
+		List<ApplicationInfo> applicationInfos = this.getDepartmentService().findApplicationsByDepartment(department1.getId());
+		assertNotNull(applicationInfos);
+		assertEquals(2, applicationInfos.size());
+		assertEquals(department1.getId(), applicationInfos.get(0).getDepartmentId());
+		
+		applicationInfos = this.getDepartmentService().findApplicationsByDepartment(department2.getId());
+		assertNotNull(applicationInfos);
+		assertEquals(1, applicationInfos.size());
+		assertEquals(department2.getId(), applicationInfos.get(0).getDepartmentId());
+		
+		logger.info("----> END access to findApplicationsByDepartment test");
+	}
+	
 	public void testSignoffInstitute() {
 		logger.info("----> BEGIN access to signoffInstitute test");
 
