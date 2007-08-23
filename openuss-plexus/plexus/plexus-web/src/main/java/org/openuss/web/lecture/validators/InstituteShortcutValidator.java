@@ -29,7 +29,6 @@ public class InstituteShortcutValidator extends BaseBean implements Validator {
 
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		final String shortcut = (String) value;
-		//LectureService service = (LectureService) getBean(Constants.LECTURE_SERVICE);
 		InstituteService instituteService = (InstituteService) getBean(Constants.INSTITUTE_SERVICE);
 		try {
 			// TODO institute should be defined by attribute 
