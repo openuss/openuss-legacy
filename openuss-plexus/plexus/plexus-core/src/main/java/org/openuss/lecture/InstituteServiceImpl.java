@@ -342,8 +342,13 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 
 	@Override
 	public boolean handleIsNoneExistingInstituteShortcut(InstituteInfo self, String shortcut) throws Exception {
+		
 		Institute found = getInstituteDao().findByShortcut(shortcut);
-		return isEqualOrNull(self, found);
+		InstituteInfo foundInfo = null;
+		if (found != null) {
+			foundInfo = this.getInstituteDao().toInstituteInfo(found);
+		}
+		return isEqualOrNull(self, foundInfo);
 	}
 
 	/*------------------- private methods -------------------- */
