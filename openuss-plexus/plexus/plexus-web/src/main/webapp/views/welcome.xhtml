@@ -31,19 +31,20 @@
   				<h:outputText value="#{msg.welcome_headline}" styleClass="header_font_normal"/>
   			</o:block> 
   			<o:block styleClass="teaser_blue_right" label="#{msg.welcome_barometer_header}">
-		  		<h:panelGrid columns="2">
-		  			<h:outputText value="#{msg.welcome_barometer_institutes}" styleClass="content_font_normal"/>
-		  			<h:outputText value="#{systemStatistic.institutes}" styleClass="content_font_normal"/>
-		  			<h:outputText value="#{msg.welcome_barometer_courses}" styleClass="content_font_normal"/>
-		  			<h:outputText value="#{systemStatistic.courses}" styleClass="content_font_normal"/>
-		  			<h:outputText value="#{msg.welcome_barometer_users}" styleClass="content_font_normal"/>
-		  			<h:outputText value="#{systemStatistic.users}" styleClass="content_font_normal"/>
-		  			<h:outputText value="#{msg.welcome_barometer_documents}" styleClass="content_font_normal"/>
-		  			<h:outputText value="#{systemStatistic.documents}" styleClass="content_font_normal"/>
-		  			<h:outputText value="#{msg.welcome_barometer_posts}" styleClass="content_font_normal"/>
-		  			<h:outputText value="#{systemStatistic.posts}" styleClass="content_font_normal"/>
-		  		</h:panelGrid>
+			  		<h:panelGrid columns="2">
+			  			<h:outputText value="#{msg.welcome_barometer_institutes}" styleClass="content_font_normal"/>
+			  			<h:outputText value="#{systemStatistic.institutes}" styleClass="content_font_normal"/>
+			  			<h:outputText value="#{msg.welcome_barometer_courses}" styleClass="content_font_normal"/>
+			  			<h:outputText value="#{systemStatistic.courses}" styleClass="content_font_normal"/>
+			  			<h:outputText value="#{msg.welcome_barometer_users}" styleClass="content_font_normal"/>
+			  			<h:outputText value="#{systemStatistic.users}" styleClass="content_font_normal"/>
+			  			<h:outputText value="#{msg.welcome_barometer_documents}" styleClass="content_font_normal"/>
+			  			<h:outputText value="#{systemStatistic.documents}" styleClass="content_font_normal"/>
+			  			<h:outputText value="#{msg.welcome_barometer_posts}" styleClass="content_font_normal"/>
+			  			<h:outputText value="#{systemStatistic.posts}" styleClass="content_font_normal"/>
+			  		</h:panelGrid>
 		  	</o:block>
+		  	
 		  	<o:block styleClass="teaser_blue" label="#{msg.welcome_teaser_header}">
   				<h:form>
 			  		<p class="content_font_normal">
@@ -55,30 +56,36 @@
 				  	</p>
 		  		</h:form>
 			</o:block>
-		  	<div class="clear_both"/>
+			
+			<s:authorize ifAllGranted="ROLE_USER">
+					<!-- spacer -->
+					<div>
+						<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
+					</div>
+					<h:form id="actionsForm">
+						<o:block styleClass="teaser_blue" label="#{msg.organisation_command_actions}">
+						  		<s:authorize ifAllGranted="ROLE_ADMIN">
+							  		<h:commandLink action="university_registration_start">
+										<h:outputText value="#{msg.university_command_add_university}"  styleClass="content_font_normal"/>
+									</h:commandLink>
+									<t:htmlTag value="br"/>
+									<t:htmlTag value="br"/>
+								</s:authorize>
+						  		
+						  		<h:commandLink action="institute_create">
+									<h:outputText value="#{msg.institute_command_add_institute}"  styleClass="content_font_normal"/>
+								</h:commandLink>
+								
+						</o:block>
+					</h:form>
+				</s:authorize>
+			<div>
+				<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
+			</div>
+			<div class="clear_both"/>
+		  	
 		  	<h:form id="universitiesForm">
 				<ui:include src="/views/commons/university/universitiestable.xhtml"/>
-				<s:authorize ifAllGranted="ROLE_ADMIN">
-	  				<o:block>
-						<h:commandButton 
-						    id="addUniversity"
-							action="#{universityRegistration.start}"
-							value="#{msg.university_command_add_university}" 
-							title="#{msg.university_command_add_university_hint}"
-							styleClass="button"/>
-					</o:block>
-				</s:authorize>
-				
-				<s:authorize ifAllGranted="ROLE_USER">
-	  				<o:block>
-						<h:commandButton 
-						    id="addInstitute"
-							action="#{instituteRegistration.start}"
-							value="#{msg.institute_command_add_institute}" 
-							title="#{msg.institute_command_add_institute_hint}"
-							styleClass="button"/>
-					</o:block>
-				</s:authorize>
 			</h:form>
 		  	<p:newsTable value="#{news_controller.currentGlobalNews}" headline="${msg.news_header}"/>
   		</ui:define>
