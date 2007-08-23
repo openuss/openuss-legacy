@@ -4,7 +4,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
@@ -25,12 +24,9 @@ public class PagePhaseListener implements PhaseListener {
 			FacesContext facesContext = event.getFacesContext();
 			
 			if (facesContext.getViewRoot() != null ) {
-				final HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-				if ( "GET".equals(request.getMethod())) {
-					logger.debug("GET-Request: apply request parameter values...");
-					Pages.instance().applyRequestParameterValues(facesContext);
-				}
-				logger.debug("perform security constraints check...");
+				logger.debug("Request: apply request parameter values...");
+				Pages.instance().applyRequestParameterValues(facesContext);
+    			logger.debug("perform security constraints check...");
 				Pages.instance().performSecurityConstraints(facesContext);
 			}
 		}
