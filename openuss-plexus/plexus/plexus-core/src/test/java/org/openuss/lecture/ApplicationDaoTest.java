@@ -8,6 +8,7 @@ package org.openuss.lecture;
 import java.util.Date;
 
 import org.openuss.TestUtility;
+import org.openuss.security.UserDao;
 
 /**
  * JUnit Test for Spring Hibernate ApplicationDao class.
@@ -67,10 +68,10 @@ public class ApplicationDaoTest extends ApplicationDaoTestBase {
 		assertEquals(application.getConfirmationDate(), applicationInfo.getConfirmationDate());
 		assertEquals(application.getApplicationDate(), applicationInfo.getApplicationDate());
 		assertEquals(application.isConfirmed(), applicationInfo.isConfirmed());
-		assertEquals(application.getConfirmingUser().getId(), applicationInfo.getConfirmingUserId());
-		assertEquals(application.getApplyingUser().getId(), applicationInfo.getApplyingUserId());
-		assertEquals(application.getDepartment().getId(), applicationInfo.getDepartmentId());
-		assertEquals(application.getInstitute().getId(), applicationInfo.getInstituteId());
+		assertEquals(application.getConfirmingUser().getId(), applicationInfo.getConfirmingUserInfo().getId());
+		assertEquals(application.getApplyingUser().getId(), applicationInfo.getApplyingUserInfo().getId());
+		assertEquals(application.getDepartment().getId(), applicationInfo.getDepartmentInfo().getId());
+		assertEquals(application.getInstitute().getId(), applicationInfo.getInstituteInfo().getId());
 	}
 
 	public void testApplicationDaoApplicationInfoToEntity() {
@@ -89,6 +90,10 @@ public class ApplicationDaoTest extends ApplicationDaoTestBase {
 		applicationDao.create(applicationDefault);
 		assertNotNull(applicationDefault.getId());
 
+		UserDao userDao = (UserDao) this.getApplicationContext().getBean("userDao");
+		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
+		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
+		
 		// Create the corresponding ValueObject
 		ApplicationInfo applicationInfo1 = new ApplicationInfo();
 		applicationInfo1.setId(applicationDefault.getId());
@@ -96,10 +101,10 @@ public class ApplicationDaoTest extends ApplicationDaoTestBase {
 		applicationInfo1.setConfirmed(applicationDefault.isConfirmed());
 		applicationInfo1.setApplicationDate(applicationDefault.getApplicationDate());
 		applicationInfo1.setConfirmationDate(applicationDefault.getConfirmationDate());
-		applicationInfo1.setConfirmingUserId(applicationDefault.getConfirmingUser().getId());
-		applicationInfo1.setApplyingUserId(applicationDefault.getApplyingUser().getId());
-		applicationInfo1.setDepartmentId(applicationDefault.getDepartment().getId());
-		applicationInfo1.setInstituteId(applicationDefault.getInstitute().getId());
+		applicationInfo1.setConfirmingUserInfo(userDao.toUserInfo(applicationDefault.getConfirmingUser()));
+		applicationInfo1.setApplyingUserInfo(userDao.toUserInfo(applicationDefault.getApplyingUser()));
+		applicationInfo1.setDepartmentInfo(departmentDao.toDepartmentInfo(applicationDefault.getDepartment()));
+		applicationInfo1.setInstituteInfo(instituteDao.toInstituteInfo(applicationDefault.getInstitute()));
 
 		// Test toEntity
 		Application application1 = applicationDao.applicationInfoToEntity(applicationInfo1);
@@ -109,20 +114,20 @@ public class ApplicationDaoTest extends ApplicationDaoTestBase {
 		assertEquals(applicationInfo1.getConfirmationDate(), application1.getConfirmationDate());
 		assertEquals(applicationInfo1.getApplicationDate(), application1.getApplicationDate());
 		assertEquals(applicationInfo1.isConfirmed(), application1.isConfirmed());
-		assertEquals(applicationInfo1.getConfirmingUserId(), application1.getConfirmingUser().getId());
-		assertEquals(applicationInfo1.getApplyingUserId(), application1.getApplyingUser().getId());
-		assertEquals(applicationInfo1.getDepartmentId(), application1.getDepartment().getId());
-		assertEquals(applicationInfo1.getInstituteId(), application1.getInstitute().getId());
+		assertEquals(applicationInfo1.getConfirmingUserInfo().getId(), application1.getConfirmingUser().getId());
+		assertEquals(applicationInfo1.getApplyingUserInfo().getId(), application1.getApplyingUser().getId());
+		assertEquals(applicationInfo1.getDepartmentInfo().getId(), application1.getDepartment().getId());
+		assertEquals(applicationInfo1.getInstituteInfo().getId(), application1.getInstitute().getId());
 
 		// Create a new ValueObject (no Entity available)
 		ApplicationInfo applicationInfo2 = new ApplicationInfo();
 		applicationInfo2.setApplicationDate(new Date());
-		applicationInfo2.setDepartmentId(testUtility.createUniqueDepartmentInDB().getId());
-		applicationInfo2.setInstituteId(testUtility.createUniqueInstituteInDB().getId());
+		applicationInfo2.setDepartmentInfo(departmentDao.toDepartmentInfo(testUtility.createUniqueDepartmentInDB()));
+		applicationInfo2.setInstituteInfo(instituteDao.toInstituteInfo(testUtility.createUniqueInstituteInDB()));
 		applicationInfo2.setConfirmed(false);
 		applicationInfo2.setDescription("A unique Application");
-		applicationInfo2.setApplyingUserId(testUtility.createUniqueUserInDB().getId());
-		applicationInfo2.setConfirmingUserId(testUtility.createUniqueUserInDB().getId());
+		applicationInfo2.setApplyingUserInfo(userDao.toUserInfo(testUtility.createUniqueUserInDB()));
+		applicationInfo2.setConfirmingUserInfo(userDao.toUserInfo(testUtility.createUniqueUserInDB()));
 		applicationInfo2.setApplicationDate(new Date());
 		applicationInfo2.setConfirmationDate(new Date());
 
@@ -134,9 +139,9 @@ public class ApplicationDaoTest extends ApplicationDaoTestBase {
 		assertEquals(applicationInfo2.getConfirmationDate(), application2.getConfirmationDate());
 		assertEquals(applicationInfo2.getApplicationDate(), application2.getApplicationDate());
 		assertEquals(applicationInfo2.isConfirmed(), application2.isConfirmed());
-		assertEquals(applicationInfo2.getConfirmingUserId(), application2.getConfirmingUser().getId());
-		assertEquals(applicationInfo2.getApplyingUserId(), application2.getApplyingUser().getId());
-		assertEquals(applicationInfo2.getDepartmentId(), application2.getDepartment().getId());
-		assertEquals(applicationInfo2.getInstituteId(), application2.getInstitute().getId());
+		assertEquals(applicationInfo2.getConfirmingUserInfo().getId(), application2.getConfirmingUser().getId());
+		assertEquals(applicationInfo2.getApplyingUserInfo().getId(), application2.getApplyingUser().getId());
+		assertEquals(applicationInfo2.getDepartmentInfo().getId(), application2.getDepartment().getId());
+		assertEquals(applicationInfo2.getInstituteInfo().getId(), application2.getInstitute().getId());
 	}
 }

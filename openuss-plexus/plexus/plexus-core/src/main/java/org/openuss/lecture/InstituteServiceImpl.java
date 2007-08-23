@@ -283,7 +283,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.isTrue(!applicationInfo.isConfirmed(),
 				"InstituteService.applyAtDepartment - you Application cannot be confirmed yet.");
 
-		Validate.isTrue(applicationInfo.getConfirmingUserId() == null,
+		Validate.isTrue(applicationInfo.getConfirmingUserInfo() == null,
 				"InstituteService.applyAtDepartment - you cannot set the confirming User yet.");
 
 		if ((applicationInfo.getApplicationDate() == null)) {

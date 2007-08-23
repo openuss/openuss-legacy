@@ -17,16 +17,16 @@ public class ApplicationDaoImpl extends org.openuss.lecture.ApplicationDaoBase {
 	public void toApplicationInfo(Application sourceEntity, ApplicationInfo targetVO) {
 		super.toApplicationInfo(sourceEntity, targetVO);
 		if (sourceEntity.getDepartment() != null) {
-			targetVO.setDepartmentId(sourceEntity.getDepartment().getId());
+			targetVO.setDepartmentInfo(this.getDepartmentDao().toDepartmentInfo(sourceEntity.getDepartment()));
 		}
 		if (sourceEntity.getInstitute() != null) {
-			targetVO.setInstituteId(sourceEntity.getInstitute().getId());
+			targetVO.setInstituteInfo(this.getInstituteDao().toInstituteInfo(sourceEntity.getInstitute()));
 		}
 		if (sourceEntity.getApplyingUser() != null) {
-			targetVO.setApplyingUserId(sourceEntity.getApplyingUser().getId());
+			targetVO.setApplyingUserInfo(this.getUserDao().toUserInfo(sourceEntity.getApplyingUser()));
 		}
 		if (sourceEntity.getConfirmingUser() != null) {
-			targetVO.setConfirmingUserId(sourceEntity.getConfirmingUser().getId());
+			targetVO.setConfirmingUserInfo(this.getUserDao().toUserInfo(sourceEntity.getConfirmingUser()));
 		}
 	}
 
@@ -54,25 +54,25 @@ public class ApplicationDaoImpl extends org.openuss.lecture.ApplicationDaoBase {
 	 * @see org.openuss.lecture.ApplicationDao#applicationInfoToEntity(org.openuss.lecture.ApplicationInfo)
 	 */
 	public Application applicationInfoToEntity(ApplicationInfo applicationInfo) {
-		if (applicationInfo.getDepartmentId() == null) {
+		if (applicationInfo.getDepartmentInfo() == null) {
 			throw new IllegalArgumentException(
 					"ApplicationDaoImpl.applicationInfoToEntity - the DepartmentID cannot be null");
 		}
-		if (applicationInfo.getInstituteId() == null) {
+		if (applicationInfo.getInstituteInfo() == null) {
 			throw new IllegalArgumentException(
 					"ApplicationDaoImpl.applicationInfoToEntity - the InstituteID cannot be null");
 		}
-		if (applicationInfo.getApplyingUserId() == null) {
+		if (applicationInfo.getApplyingUserInfo() == null) {
 			throw new IllegalArgumentException(
 					"ApplicationDaoImpl.applicationInfoToEntity - the ApplyingUserID cannot be null");
 		}
 		Application entity = this.loadApplicationFromApplicationInfo(applicationInfo);
 		this.applicationInfoToEntity(applicationInfo, entity, true);
-		entity.setDepartment(this.getDepartmentDao().load(applicationInfo.getDepartmentId()));
-		entity.setInstitute(this.getInstituteDao().load(applicationInfo.getInstituteId()));
-		entity.setApplyingUser(this.getUserDao().load(applicationInfo.getApplyingUserId()));
-		if (applicationInfo.getConfirmingUserId() != null) {
-			entity.setConfirmingUser(this.getUserDao().load(applicationInfo.getConfirmingUserId()));
+		entity.setDepartment(this.getDepartmentDao().load(applicationInfo.getDepartmentInfo().getId()));
+		entity.setInstitute(this.getInstituteDao().load(applicationInfo.getInstituteInfo().getId()));
+		entity.setApplyingUser(this.getUserDao().load(applicationInfo.getApplyingUserInfo().getId()));
+		if (applicationInfo.getConfirmingUserInfo() != null) {
+			entity.setConfirmingUser(this.getUserDao().load(applicationInfo.getConfirmingUserInfo().getId()));
 		}
 		return entity;
 	}

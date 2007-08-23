@@ -11,6 +11,7 @@ import org.acegisecurity.AccessDeniedException;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopDao;
 import org.openuss.security.User;
+import org.openuss.security.UserDao;
 
 /**
  * JUnit Test for Spring Hibernate InstituteService class.
@@ -242,10 +243,14 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		flush();
 
 		// Create Application
+		UserDao userDao = (UserDao) this.getApplicationContext().getBean("userDao");
+		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
+		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
+		
 		ApplicationInfo applicationInfo = new ApplicationInfo();
-		applicationInfo.setDepartmentId(department.getId());
-		applicationInfo.setInstituteId(institute.getId());
-		applicationInfo.setApplyingUserId(testUtility.createUniqueUserInDB().getId());
+		applicationInfo.setDepartmentInfo(departmentDao.toDepartmentInfo(department));
+		applicationInfo.setInstituteInfo(instituteDao.toInstituteInfo(institute));
+		applicationInfo.setApplyingUserInfo(userDao.toUserInfo(testUtility.createUniqueUserInDB()));
 
 		// Test
 		try {
