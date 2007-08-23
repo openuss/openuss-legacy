@@ -296,12 +296,12 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		List<ApplicationInfo> applicationInfos = this.getDepartmentService().findApplicationsByDepartment(department1.getId());
 		assertNotNull(applicationInfos);
 		assertEquals(2, applicationInfos.size());
-		assertEquals(department1.getId(), applicationInfos.get(0).getDepartmentId());
+		assertEquals(department1.getId(), applicationInfos.get(0).getDepartmentInfo().getId());
 		
 		applicationInfos = this.getDepartmentService().findApplicationsByDepartment(department2.getId());
 		assertNotNull(applicationInfos);
 		assertEquals(1, applicationInfos.size());
-		assertEquals(department2.getId(), applicationInfos.get(0).getDepartmentId());
+		assertEquals(department2.getId(), applicationInfos.get(0).getDepartmentInfo().getId());
 		
 		logger.info("----> END access to findApplicationsByDepartment test");
 	}
