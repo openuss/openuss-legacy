@@ -263,6 +263,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		department.setDepartmentType(DepartmentType.OFFICIAL);
 		Long applicationId = this.getInstituteService().applyAtDepartment(applicationInfo);
 		assertNotNull(applicationId);
+		assertNotNull(institute.getApplication());
 
 		ApplicationDao applicationDao = (ApplicationDao) this.getApplicationContext().getBean("applicationDao");
 		Application application = applicationDao.load(applicationId);
@@ -349,5 +350,38 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		testUtility.destroySecureContext();
 
 		logger.info("----> END access to setInstituteStatus test");
+	}
+	
+	public void testFindApplicationByInstitute() {
+		logger.info("----> BEGIN access to findApplicationByInstitute test");
+
+		// Create Department
+		Department department = testUtility.createUniqueDepartmentInDB();
+		department.setDepartmentType(DepartmentType.OFFICIAL);
+
+		// Create Institute
+		Institute institute = testUtility.createUniqueInstituteInDB();
+
+		flush();
+
+		// Create Application
+		UserDao userDao = (UserDao) this.getApplicationContext().getBean("userDao");
+		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
+		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
+		
+		ApplicationInfo applicationInfo = new ApplicationInfo();
+		applicationInfo.setDepartmentInfo(departmentDao.toDepartmentInfo(department));
+		applicationInfo.setInstituteInfo(instituteDao.toInstituteInfo(institute));
+		applicationInfo.setApplyingUserInfo(userDao.toUserInfo(testUtility.createUniqueUserInDB()));
+
+		Long applicationId = this.getInstituteService().applyAtDepartment(applicationInfo);
+		assertNotNull(applicationId);
+		
+		// Test
+		ApplicationInfo applicationInfo2 = this.getInstituteService().findApplicationByInstitute(institute.getId());
+		assertNotNull(applicationInfo2);
+		assertEquals(applicationId, applicationInfo2.getId());
+
+		logger.info("----> END access to findApplicationByInstitute test");
 	}
 }

@@ -301,6 +301,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.isTrue(application.getInstitute().getApplication() == null,
 				"InstituteService.applyAtDepartment - the Institue already has an application, remove/signoff before");
 
+		application.add(application.getDepartment());
+		application.add(application.getInstitute());
 		this.getApplicationDao().create(application);
 
 		return application.getId();
