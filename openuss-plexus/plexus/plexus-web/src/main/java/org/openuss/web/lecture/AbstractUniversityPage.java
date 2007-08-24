@@ -70,6 +70,7 @@ public abstract class AbstractUniversityPage extends BasePage {
 	}
 
 	private void generateCrumbs() {
+		
 		crumbs.clear();
 		BreadCrumb universityCrumb = new BreadCrumb();
 		universityCrumb.setName(universityInfo.getShortcut());

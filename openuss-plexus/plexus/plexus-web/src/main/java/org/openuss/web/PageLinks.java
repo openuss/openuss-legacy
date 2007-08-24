@@ -8,6 +8,10 @@ package org.openuss.web;
  */
 public class PageLinks{
 	
+	public static final String START_PAGE = "/views/welcome.faces";
+	
+	public static final String MYUNI_PAGE = "/views/secured/myuni/myuni.faces";
+	
 	public static final String UNIVERSITY_PAGE = "/views/public/university/university.faces";
 	
 	public static final String DEPARTMENT_PAGE = "/views/public/department/department.faces";

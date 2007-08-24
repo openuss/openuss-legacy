@@ -33,6 +33,8 @@ public class UniversityPage extends AbstractUniversityPage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		
+		breadcrumbs.setCrumbs(breadcrumbs.getUniversityCrumbs(universityInfo.getId()));
 		addPageCrumb();
 	}
 	

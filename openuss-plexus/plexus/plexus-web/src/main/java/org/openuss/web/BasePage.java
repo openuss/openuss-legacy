@@ -1,7 +1,6 @@
 package org.openuss.web;
 
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
@@ -17,6 +16,7 @@ import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.security.User;
 import org.openuss.security.UserContact;
 import org.openuss.security.UserPreferences;
+import org.openuss.web.BreadCrumbs;
 
 
 /**
@@ -42,6 +42,9 @@ public abstract class BasePage extends BaseBean {
 	
 	@Property(value = "#{"+Constants.BREADCRUMBS+"}")
 	protected List<BreadCrumb> crumbs;
+	
+	@Property(value = "#{breadcrumbs}")
+	protected BreadCrumbs breadcrumbs;
 	
 	/**
 	 * Refreshing organisation entity 
@@ -117,6 +120,14 @@ public abstract class BasePage extends BaseBean {
 
 	public void setDesktopDao(DesktopDao desktopDao) {
 		this.desktopDao = desktopDao;
+	}
+
+	public BreadCrumbs getBreadcrumbs() {
+		return breadcrumbs;
+	}
+
+	public void setBreadcrumbs(BreadCrumbs breadcrumbs) {
+		this.breadcrumbs = breadcrumbs;
 	}
 
 }

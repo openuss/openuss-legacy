@@ -182,4 +182,9 @@
  	
  	</managed-bean>
  	
+ 	<managed-bean>
+ 		<managed-bean-name>breadcrumbs</managed-bean-name>
+ 		<managed-bean-class>org.openuss.web.BreadCrumbs</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope> 	
+ 	</managed-bean>
 </faces-config>
