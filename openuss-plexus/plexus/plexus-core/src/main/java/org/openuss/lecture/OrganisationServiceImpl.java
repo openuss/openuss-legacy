@@ -35,21 +35,22 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 
 		this.getMembershipService().addMember(organisation.getMembership(), user, null);
 	}
-	
+
 	/**
 	 * @see org.openuss.lecture.OrganisationService#removeMember(java.lang.Long, java.lang.Long)
 	 */
 	protected void handleRemoveMember(Long organisationId, Long userId) throws Exception {
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		Validate.notNull(organisation,
-				"MembershipService.handleRemoveMember - no Organisation found corresponding to the ID " + organisationId);
+				"MembershipService.handleRemoveMember - no Organisation found corresponding to the ID "
+						+ organisationId);
 
 		User user = this.getUserDao().load(userId);
 		Validate.notNull(organisation, "MembershipService.handleRemoveMember - no User found corresponding to the ID "
 				+ userId);
 
 		this.getMembershipService().removeMember(organisation.getMembership(), user, null);
-		
+
 	}
 
 	/**
@@ -267,6 +268,57 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 		// Set Organisation status
 		organisation.setEnabled(enabled);
 		this.getOrganisationDao().update(organisation);
+	}
+
+	@Override
+	protected OrganisationHierarchy handleFindCourseHierarchy(Long courseId) throws Exception {
+		Validate.notNull(courseId, "OrganisationService.handleFindCourseHierarchy - courseId cannot be null.");
+
+		Course course = this.getCourseDao().load(courseId);
+		Validate.notNull(course,
+				"OrganisationService.handleFindCourseHierarchy - no Institute found corresponding to the ID "
+						+ courseId);
+
+		OrganisationHierarchy hierarchy = new OrganisationHierarchy();
+		hierarchy.setInstituteInfo(this.getInstituteDao().toInstituteInfo(course.getCourseType().getInstitute()));
+		hierarchy.setDepartmentInfo(this.getDepartmentDao().toDepartmentInfo(
+				course.getCourseType().getInstitute().getDepartment()));
+		hierarchy.setUniversityInfo(this.getUniversityDao().toUniversityInfo(
+				course.getCourseType().getInstitute().getDepartment().getUniversity()));
+		return hierarchy;
+	}
+
+	@Override
+	protected OrganisationHierarchy handleFindDepartmentHierarchy(Long departmentId) throws Exception {
+		Validate.notNull(departmentId,
+				"OrganisationService.handleFindDepartmentHierarchy - departmentId cannot be null.");
+
+		Department department = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(department,
+				"OrganisationService.handleFindDepartmentHierarchy - no Department found corresponding to the ID "
+						+ departmentId);
+
+		OrganisationHierarchy hierarchy = new OrganisationHierarchy();
+		// hierarchy.setDepartmentInfo(this.getDepartmentDao().toDepartmentInfo(department));
+		hierarchy.setUniversityInfo(this.getUniversityDao().toUniversityInfo(department.getUniversity()));
+		return hierarchy;
+	}
+
+	@Override
+	protected OrganisationHierarchy handleFindInstituteHierarchy(Long instituteId) throws Exception {
+		Validate.notNull(instituteId, "OrganisationService.handleFindInstituteHierarchy - instituteId cannot be null.");
+
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute,
+				"OrganisationService.handleFindInstituteHierarchy - no Institute found corresponding to the ID "
+						+ instituteId);
+
+		OrganisationHierarchy hierarchy = new OrganisationHierarchy();
+		// hierarchy.setInstituteInfo(this.getInstituteDao().toInstituteInfo(institute));
+		hierarchy.setDepartmentInfo(this.getDepartmentDao().toDepartmentInfo(institute.getDepartment()));
+		hierarchy
+				.setUniversityInfo(this.getUniversityDao().toUniversityInfo(institute.getDepartment().getUniversity()));
+		return hierarchy;
 	}
 
 }
