@@ -41,7 +41,7 @@ public class InstitutesPage extends BasePage{
 
 	@Prerender
 	public void prerender() {
-		setSessionBean(Constants.BREADCRUMBS, null);
+		setRequestBean(Constants.BREADCRUMBS, null);
 	}
 	
 	public String selectInstitute() {

@@ -60,7 +60,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		crumb.setName(i18n("course_command_options_assistants"));
 		crumb.setHint(i18n("course_command_options_assistants"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
 	private class AssistantsDataProvider extends AbstractPagedTable<CourseMemberInfo> {

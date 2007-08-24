@@ -68,7 +68,7 @@ public class MembersPage extends AbstractLecturePage {
 		crumb.setName(i18n("institute_command_members"));
 		crumb.setHint(i18n("institute_command_members"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	private InstituteSecurity getInstituteSecurity() {

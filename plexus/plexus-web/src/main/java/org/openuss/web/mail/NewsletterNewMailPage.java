@@ -31,7 +31,7 @@ public class NewsletterNewMailPage extends AbstractNewsletterPage{
 		super.prerender();
 		newsletter = getCourseNewsletterService().getNewsletter(courseInfo);
 		setSessionBean(Constants.NEWSLETTER_NEWSLETTER, newsletter);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 		addPageCrumb();
 	}	
 	
@@ -41,7 +41,7 @@ public class NewsletterNewMailPage extends AbstractNewsletterPage{
 		crumb.setName(i18n("newsletter_newmail_header"));
 		crumb.setHint(i18n("newsletter_newmail_header"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 
 	public String saveDraft(){

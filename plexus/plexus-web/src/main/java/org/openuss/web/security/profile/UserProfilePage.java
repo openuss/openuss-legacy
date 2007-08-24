@@ -54,7 +54,7 @@ public class UserProfilePage extends BasePage{
 			user = securityService.getUser(user.getId());
 			setSessionBean(Constants.USER, user);
 		}
-		setSessionBean(Constants.BREADCRUMBS, null);
+		setRequestBean(Constants.BREADCRUMBS, null);
 	}
 	
 	/**

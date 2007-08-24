@@ -52,7 +52,7 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 		crumb.setName(i18n("period_remove_header"));
 		crumb.setHint(i18n("period_remove_header"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}	
 
 	/**

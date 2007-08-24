@@ -46,7 +46,7 @@ public class NewsPage extends AbstractLecturePage {
 		crumb.setName(i18n("institute_command_news"));
 		crumb.setHint(i18n("institute_command_news"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	private class NewsDataProvider extends AbstractPagedTable<NewsItemInfo> {

@@ -64,7 +64,7 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		crumb.setName(topic.getTitle());
 		crumb.setHint(topic.getTitle());
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
 	private class DiscussionThreadDataProvider extends AbstractPagedTable<PostInfo> {

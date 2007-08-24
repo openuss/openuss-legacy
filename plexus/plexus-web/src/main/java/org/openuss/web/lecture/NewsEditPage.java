@@ -77,7 +77,7 @@ public class NewsEditPage extends AbstractLecturePage {
 		newsEditCrumb.setLink("");
 		crumbs.add(newsEditCrumb);
 		
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	/**

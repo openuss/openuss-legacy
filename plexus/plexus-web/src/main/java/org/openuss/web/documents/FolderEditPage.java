@@ -31,7 +31,7 @@ public class FolderEditPage extends AbstractDocumentPage{
 		crumb.setName(i18n("document_folder_edit_header"));
 		crumb.setHint(i18n("document_folder_edit_header"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 
 	public String save() throws DocumentApplicationException{
