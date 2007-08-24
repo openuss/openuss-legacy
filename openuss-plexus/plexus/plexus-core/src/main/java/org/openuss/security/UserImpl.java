@@ -176,5 +176,5 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	public boolean hasSmsNotification() {
 		return StringUtils.isNotBlank(getSmsEmail());
 	}
-
+	
 }

@@ -40,7 +40,7 @@ public class MessageSendingCommand extends AbstractDomainCommand implements Doma
 	private CommandService commandService;
 
 	private ApplicationContext applicationContext;
-
+	
 	public void execute() throws Exception {
 		if (getDomainObject() != null) {
 			MessageJob job = messageJobDao.load(getDomainObject().getId());
@@ -96,7 +96,7 @@ public class MessageSendingCommand extends AbstractDomainCommand implements Doma
 	}
 
 	/**
-	 * A mail server connection error ocured, setting retry command.
+	 * A mail server connection error occurred, setting retry command.
 	 * @param job
 	 * @param mse
 	 */
@@ -175,5 +175,4 @@ public class MessageSendingCommand extends AbstractDomainCommand implements Doma
 	public void setCommandService(CommandService commandService) {
 		this.commandService = commandService;
 	}
-
 }

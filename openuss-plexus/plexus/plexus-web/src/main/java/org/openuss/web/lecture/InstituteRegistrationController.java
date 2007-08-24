@@ -70,7 +70,7 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		desktopService2.linkInstitute(desktopInfo.getId(), instituteId);
 		return Constants.INSTITUTE_PAGE;
 	}
-	
+
 	public List<SelectItem> getAllUniversities() {
 		
 		universityItems = new ArrayList<SelectItem>();

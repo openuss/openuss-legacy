@@ -12,6 +12,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.LectureException;
@@ -78,6 +79,7 @@ public class CourseOptionsPage extends AbstractCoursePage {
 		if (courseOld.getAccessType() == AccessType.APPLICATION && courseInfo.getAccessType() != AccessType.APPLICATION) {
 			getCourseService().removeAspirants(courseOld);
 		}
+		// XSS Filter Content
 		courseService.updateCourse(courseInfo);
 		addMessage(i18n("message_course_options_saved"));
 		return Constants.COURSE_OPTIONS_PAGE;

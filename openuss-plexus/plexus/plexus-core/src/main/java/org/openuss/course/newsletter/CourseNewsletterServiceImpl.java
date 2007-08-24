@@ -25,7 +25,7 @@ public class CourseNewsletterServiceImpl extends CourseNewsletterServiceBase {
 			addNewsletter(course);
 			newsletter = getNewsletterService().getNewsletter(course);
 		}
-		if (newsletter.getName().equals(course.getName())) {
+		if (!newsletter.getName().equals(course.getName())) {
 			newsletter.setName(course.getName());
 			getNewsletterService().updateNewsletter(newsletter);
 		}

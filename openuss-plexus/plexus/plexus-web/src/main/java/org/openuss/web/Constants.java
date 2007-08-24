@@ -158,6 +158,9 @@ public class Constants {
 	
 	public static final String SYSTEM_STATISTIC = "systemStatistic";
 	
+	public static final String VISIT = "visit";
+	public static final String STEP3 = "step3";
+	
 	// extended search criteria
 	public static final int EXTENDED_SEARCH_SCOPE_UNIVERSITIES = 1;
 	public static final int EXTENDED_SEARCH_SCOPE_COMPANIES = 2;

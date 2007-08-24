@@ -67,7 +67,7 @@ public class RegistrationController extends BaseBean {
 		// set default user time zone
 		user.setTimezone(TimeZone.getDefault().getID());
 
-		registrationService.registrateUser(user, registrationData.isEnableAssistantRole());
+		registrationService.registrateUser(user);
 		String activationCode = registrationService.generateActivationCode(user);
 		// send verification email
 		sendVerificationEmail(user, activationCode);
@@ -151,7 +151,7 @@ public class RegistrationController extends BaseBean {
 
 	private String applicationAddress() {
 		final HttpServletRequest request = getRequest();
-		return "http://"+systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL)+request.getContextPath();
+		return systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+request.getContextPath();
 	}
 
 	/**

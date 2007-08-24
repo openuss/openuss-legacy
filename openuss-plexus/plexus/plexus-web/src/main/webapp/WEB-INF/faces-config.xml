@@ -67,6 +67,14 @@
     	<converter-class>org.openuss.web.lecture.converter.DepartmentTypeConverter</converter-class>
     </converter>
     
+	
+	<converter>
+		<description>Sanitize text inputs against cross scripting attacks</description>
+		<display-name>HtmlInputFilterConverter</display-name>
+		<converter-id>xssFilter</converter-id>
+		<converter-class>org.openuss.web.utils.HtmlInputFilterConverter</converter-class>
+	</converter>
+
     <converter>
     	<description>Converts a UniversityType object to a string representation and vice versa</description>
     	<display-name>UniversityTypeConverter</display-name>

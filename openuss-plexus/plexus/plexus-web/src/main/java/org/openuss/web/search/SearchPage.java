@@ -41,7 +41,6 @@ public class SearchPage extends BasePage{
 		crumbs.clear();
 	}
 	
-	
 	public String search() {
 		if (StringUtils.isNotBlank(searchResults.getTextToSearch())) {
 			logger.debug("searching for "+searchResults.getTextToSearch());

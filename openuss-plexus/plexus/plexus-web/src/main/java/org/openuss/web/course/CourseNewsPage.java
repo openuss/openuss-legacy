@@ -1,5 +1,6 @@
 package org.openuss.web.course;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,7 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$course$coursenews", scope = Scope.REQUEST)
 @View
-public class CourseNewsPage extends AbstractCoursePage {
+public class CourseNewsPage extends AbstractCoursePage implements Serializable{
 
 	private static final Logger logger = Logger.getLogger(CourseNewsPage.class);
 
@@ -83,7 +84,6 @@ public class CourseNewsPage extends AbstractCoursePage {
 		newsItem.setExpireDate(new Date(System.currentTimeMillis()+1000L*60L*60L*24L*28L));
 		
 		newsItem.setPublisherIdentifier(courseInfo.getId());
-		// FIXME BEWARE OF LAZYEXCEPTION HERE
 		newsItem.setPublisherName(courseInfo.getInstituteName());
 		
 		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);

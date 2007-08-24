@@ -41,7 +41,7 @@
 			<f:facet name="header">
 				<h:outputText value="#{msg['institute_auth_members_colheader_groups']}"/>
 			</f:facet> 
-			<h:selectManyCheckbox value="#{bean.groups}" valueChangeListener="#{views$secured$lecture$auth$members.changedGroups}">
+			<h:selectManyCheckbox value="#{bean.groups}" valueChangeListener="#{views$secured$lecture$auth$members.changedGroups}" disabled="#{bean.username==institute.owner.username}">
 				<f:converter converterId="instituteGroupConverter" />
 				<f:selectItems value="#{views$secured$lecture$auth$members.instituteGroups}"/>
 			</h:selectManyCheckbox>

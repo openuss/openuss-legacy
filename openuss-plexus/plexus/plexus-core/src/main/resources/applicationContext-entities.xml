@@ -28,19 +28,6 @@
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
     <bean id="newsItem" class="org.openuss.news.NewsItemImpl" scope="singleton"/>
 
-	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
-        <property name="locations">
-            <list>
-                <value>openuss.properties</value>
-            </list>
-        </property>
-    </bean>
-    
-    <!-- Beans for Mail initialize and editing  
-    <bean id="mailingMessage" class="org.openuss.mail.MailMessageImpl" />
-    <bean id="mailingJob" class="org.openuss.mail.MailingJobImpl" />
-    -->
-    
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     				BrainContest
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

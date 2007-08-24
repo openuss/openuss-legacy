@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javax.faces.event.ActionEvent;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -15,9 +14,10 @@ import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
+import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserContact;
+import org.openuss.security.User;
 import org.openuss.security.UserPreferences;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.BasePage;
@@ -58,11 +58,24 @@ public class UserProfilePage extends BasePage{
 	}
 	
 	/**
+	 * Puts user object into session and redirects to profile page
+	 * 
+	 */
+	public String profilePage(){
+		User profile = User.Factory.newInstance();
+		profile.setId(this.user.getId());
+		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
+		return Constants.USER_PROFILE_VIEW_PAGE;
+	}	
+	
+	/**
 	 * Persist User Profile
 	 * @throws DocumentApplicationException 
 	 * @throws IOException 
 	 */
 	public void saveProfile(ActionEvent event) throws DocumentApplicationException, IOException {
+		saveLogin(event);
+		savePreferences(event);
 		// fetch uploaded files and remove it from upload manager
 		UploadedDocument uploaded = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 		if (uploaded != null) {
@@ -88,7 +101,9 @@ public class UserProfilePage extends BasePage{
 			removeSessionBean(Constants.UPLOADED_FILE);
 			uploadFileManager.removeDocument(uploaded);
 		}
+		user.getProfile().setPortrait(new HtmlInputFilter().filter(user.getProfile().getPortrait()) );
 		securityService.saveUser(user);
+		securityService.saveUserContact(user.getContact());
 		addMessage(i18n("user_message_saved_profile_successfully"));
 	}
 
@@ -101,37 +116,19 @@ public class UserProfilePage extends BasePage{
 	/**
 	 * Persist User Login Data
 	 */
-	public void saveLogin(ActionEvent event) {
+	private void saveLogin(ActionEvent event) {
 		logger.debug("save login data");
 		logger.debug("user password"+user.getPassword());
 		// persist user
 		securityService.saveUser(user);
-
-		// if password is not null then the password was changed
-		if (StringUtils.isNotBlank(user.getPassword())) {
-			addMessage(i18n("user_profile_message_password_changed"));
-		}
 	}		
-	
-	/**
-	 * Persist User Contact Data
-	 */
-	@SuppressWarnings("deprecation")
-	public void saveContact(ActionEvent event) {
-		UserContact contact = user.getContact();
-		securityService.saveUserContact(contact);
-		addMessage(i18n("userprofile_message_saved_contact_data"));
-	}
-	
 	
 	/**
 	 * Persist User Preferences
 	 */
-	@SuppressWarnings("deprecation")
-	public void savePreferences(ActionEvent event) {
+	private void savePreferences(ActionEvent event) {
 		UserPreferences preferences = user.getPreferences();
-		securityService.saveUserPreferences(preferences);
-		addMessage(i18n("userprofile_message_saved_preferences"));
+		securityService.saveUserPreferences(preferences);		
 	}
 	
 	/**
@@ -153,8 +150,7 @@ public class UserProfilePage extends BasePage{
 		
 		setSessionBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
 	}
-	
-	
+
 	public SecurityService getSecurityService() {
 		return securityService;
 	}

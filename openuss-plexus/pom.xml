@@ -270,8 +270,8 @@
 	<modules>
 		<module>framework</module>
 		<module>themes</module>
-		<module>migration</module>
 		<module>plexus</module>
+		<module>migration</module>
 	</modules>
 	<repositories>
 		<repository>

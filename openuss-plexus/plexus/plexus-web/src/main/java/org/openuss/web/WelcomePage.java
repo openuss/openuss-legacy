@@ -19,9 +19,6 @@ public class WelcomePage extends BasePage{
 	
 	private static final Logger logger = Logger.getLogger(WelcomePage.class);
 
-	@Property (value="#{"+Constants.USER+"}")
-	private User user;
-	
 	@Property (value="#{"+Constants.LECTURE_SERVICE+"}")
 	private LectureService lectureService;
 	
@@ -35,7 +32,8 @@ public class WelcomePage extends BasePage{
 	private OnlineStatisticService onlineStatisticService;
 	
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception{
+		super.prerender();
 		logger.debug("starting method prerender");
 		
 		if (user != null && user.getId()==null) {

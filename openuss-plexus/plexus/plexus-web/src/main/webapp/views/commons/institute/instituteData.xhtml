@@ -10,6 +10,7 @@
 	<o:input entity="instituteInfo" property="name" maxlength="250" required="true"/>
 	<o:input entity="instituteInfo" property="shortcut" maxlength="30" required="true">
 		<f:validator validatorId="instituteShortcutValidator"/>
+		<f:validator validatorId="filenameValidator"/>
 	</o:input>
 	<h:outputLabel value="#{msg.instituteinfo_description}" for="descriptionEditor" styleClass="field_label"/>
 	<h:inputTextarea styleClass="pulldown" value="#{instituteInfo.description}" id="descriptionTextField" />

@@ -102,11 +102,6 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.openuss.migration</groupId>
-			<artifactId>migration-core</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate</artifactId>
 		</dependency>
@@ -133,6 +128,10 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jca</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>

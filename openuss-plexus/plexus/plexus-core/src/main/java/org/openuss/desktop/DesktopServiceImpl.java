@@ -35,6 +35,7 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 	@Override
 	protected Desktop handleGetDesktop(Desktop desktop) throws Exception {
 		Validate.notNull(desktop, "Parameter desktop must not be null!");
+		Validate.notNull(desktop.getId(),"Parameter desktop must provide a valid id.");
 		desktop = getDesktopDao().load(desktop.getId());
 		return desktop;
 	}
