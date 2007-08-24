@@ -503,4 +503,64 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 
 		logger.info("----> END access to findGroup test");
 	}
+	
+	public void testFindDepartmentHierarchy() {
+		logger.info("----> BEGIN access to findDepartmentHierarchy test");
+
+		// Create university
+		Department department = testUtility.createUniqueDepartmentInDB();
+		assertNotNull(department);
+
+		// Synchronize with DB
+		flush();
+
+		// Test
+		OrganisationHierarchy hierarchy = this.getOrganisationService().findDepartmentHierarchy(department.getId());
+
+		assertEquals(department.getUniversity().getId(), hierarchy.getUniversityInfo().getId());
+		assertNull(hierarchy.getDepartmentInfo());
+		assertNull(hierarchy.getInstituteInfo());
+
+		logger.info("----> END access to findDepartmentHierarchy test");
+	}
+	
+	public void testFindInstituteHierarchy() {
+		logger.info("----> BEGIN access to findInstituteHierarchy test");
+
+		// Create university
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		assertNotNull(institute);
+
+		// Synchronize with DB
+		flush();
+
+		// Test
+		OrganisationHierarchy hierarchy = this.getOrganisationService().findInstituteHierarchy(institute.getId());
+
+		assertEquals(institute.getDepartment().getId(), hierarchy.getDepartmentInfo().getId());
+		assertEquals(institute.getDepartment().getUniversity().getId(), hierarchy.getUniversityInfo().getId());
+		assertNull(hierarchy.getInstituteInfo());
+
+		logger.info("----> END access to findInstituteHierarchy test");
+	}
+	
+	public void testFindCourseHierarchy() {
+		logger.info("----> BEGIN access to findCourseHierarchy test");
+
+		// Create university
+		Course course = testUtility.createUniqueCourseInDB();
+		assertNotNull(course);
+
+		// Synchronize with DB
+		flush();
+
+		// Test
+		OrganisationHierarchy hierarchy = this.getOrganisationService().findCourseHierarchy(course.getId());
+
+		assertEquals(course.getCourseType().getInstitute().getDepartment().getUniversity().getId(), hierarchy.getUniversityInfo().getId());
+		assertEquals(course.getCourseType().getInstitute().getDepartment().getId(), hierarchy.getDepartmentInfo().getId());
+		assertEquals(course.getCourseType().getInstitute().getId(), hierarchy.getInstituteInfo().getId());
+
+		logger.info("----> END access to findCourseHierarchy test");
+	}
 }
