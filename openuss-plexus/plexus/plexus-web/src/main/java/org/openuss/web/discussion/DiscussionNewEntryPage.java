@@ -76,7 +76,7 @@ public class DiscussionNewEntryPage extends AbstractDiscussionPage{
 		crumb.setName(i18n("discussion_new_discussion_entry"));
 		crumb.setHint(i18n("discussion_new_discussion_entry"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	public String removeAttachment() {

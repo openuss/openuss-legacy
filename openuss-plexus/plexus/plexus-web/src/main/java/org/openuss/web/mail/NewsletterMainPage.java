@@ -38,7 +38,7 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 		newsletter = getCourseNewsletterService().getNewsletter(courseInfo);
 		setSessionBean(Constants.NEWSLETTER_NEWSLETTER, newsletter);
 		//remove last element, beccause current page is main
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
 	private class NewsletterDataProvider extends AbstractPagedTable<MailInfo> {

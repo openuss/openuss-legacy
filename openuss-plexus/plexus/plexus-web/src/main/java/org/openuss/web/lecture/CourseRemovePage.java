@@ -48,7 +48,7 @@ public class CourseRemovePage extends AbstractCoursePage {
 		crumb.setName(i18n("course_remove_header"));
 		crumb.setHint(i18n("course_remove_header"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	/**

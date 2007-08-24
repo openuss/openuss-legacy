@@ -27,7 +27,7 @@ public class ChatMainPage extends AbstractCoursePage {
 		crumb.setName(i18n("course_command_chat"));
 		crumb.setHint(i18n("course_command_chat"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 
 }

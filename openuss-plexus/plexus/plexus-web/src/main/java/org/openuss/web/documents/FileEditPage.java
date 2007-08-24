@@ -49,7 +49,7 @@ public class FileEditPage extends AbstractDocumentPage{
 		crumb.setName(i18n("documents_file"));
 		crumb.setHint(i18n("documents_file"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 
 	public String save() throws DocumentApplicationException, IOException{

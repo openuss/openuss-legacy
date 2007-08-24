@@ -30,7 +30,7 @@ public class RemoveThreadPage extends AbstractDiscussionPage{
 		crumb.setName(i18n("discussion_remove_topic_header"));
 		crumb.setHint(i18n("discussion_remove_topic_header"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	public String removeThread(){

@@ -72,7 +72,7 @@ public class UserBrowserPage extends BasePage{
 	@Prerender
 	public void prerender() {
 		logger.debug("prerender - refreshing users list");
-		setSessionBean(Constants.BREADCRUMBS, null);
+		setRequestBean(Constants.BREADCRUMBS, null);
 	}
 
 	public String showProfile() {

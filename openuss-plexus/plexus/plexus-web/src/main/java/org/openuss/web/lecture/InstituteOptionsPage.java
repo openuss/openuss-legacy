@@ -30,7 +30,7 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		crumb.setName(i18n("institute_command_institute"));
 		crumb.setHint(i18n("institute_command_institute"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
 	/**

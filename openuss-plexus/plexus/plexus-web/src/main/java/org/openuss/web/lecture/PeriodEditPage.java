@@ -29,7 +29,7 @@ public class PeriodEditPage extends AbstractPeriodPage {
 		crumb.setName(i18n("period_heading"));
 		crumb.setHint(i18n("period_heading"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	/**

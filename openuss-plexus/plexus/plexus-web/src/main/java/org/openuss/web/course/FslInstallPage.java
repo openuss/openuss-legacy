@@ -23,6 +23,6 @@ public class FslInstallPage extends AbstractCoursePage{
 		crumb.setName(i18n("freestyle_learning"));
 		crumb.setHint(i18n("freestyle_learning"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 }

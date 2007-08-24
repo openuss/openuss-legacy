@@ -39,7 +39,7 @@ public class CourseTypesPage extends AbstractLecturePage {
 		crumb.setName(i18n("coursetype_coursetypestable_header"));
 		crumb.setHint(i18n("coursetype_coursetypestable_header"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
 	/**

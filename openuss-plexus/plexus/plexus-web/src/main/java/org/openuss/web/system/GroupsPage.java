@@ -30,7 +30,7 @@ public class GroupsPage extends BasePage{
 
 	@Prerender
 	public void prerender() {
-		setSessionBean(Constants.BREADCRUMBS, null);
+		setRequestBean(Constants.BREADCRUMBS, null);
 	}		
 	
 	private class GroupTable extends AbstractPagedTable<GroupItem> {

@@ -20,7 +20,7 @@ public class DocumentationPage extends BasePage{
 	@Prerender
 	public void prerender(){
 		//breadcrumbs shall not be displayed here
-		setSessionBean(Constants.BREADCRUMBS, null);
+//		setRequestBean(Constants.BREADCRUMBS, null);
 	}
 
 
