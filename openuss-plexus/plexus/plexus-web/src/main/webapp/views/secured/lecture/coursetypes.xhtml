@@ -31,7 +31,7 @@
 	  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}" ifNot="error"/>
   			<h:form id="courseTypesForm">
 				<ui:include src="coursetypestable.xhtml"/>
-				<c:if test="#{empty sessionScope.courseTypeInfo}">
+				<c:if test="#{!(views$public$coursetype$coursetypes.renderCourseTypeEditNew)}">
 					<o:block>
 						<h:commandButton 
 						    id="addCourseType"
@@ -43,9 +43,14 @@
 				</c:if>
 			</h:form>
 			
-			<c:if test="#{!(empty sessionScope.courseTypeInfo)}">
+			<c:if test="#{views$public$coursetype$coursetypes.renderCourseTypeEditNew}">
 				<ui:include src="coursetypeedit.xhtml"/>
 			</c:if>
+			
+			<c:if test="#{views$public$coursetype$coursetypes.renderCourseTypeAssignToPeriod}">
+				<ui:include src="coursetypeassigntoperiod.xhtml"/>
+			</c:if>
+			
   		</ui:define>
 	</ui:composition>
 	<!-- text above will be ignored -->

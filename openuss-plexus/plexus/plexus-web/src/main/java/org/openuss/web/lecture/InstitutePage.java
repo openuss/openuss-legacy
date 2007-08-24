@@ -2,9 +2,10 @@ package org.openuss.web.lecture;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
-import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -14,10 +15,10 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.LectureException;
-import org.openuss.lecture.Period;
+import org.openuss.lecture.PeriodInfo;
+import org.openuss.lecture.UniversityInfo;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
 import org.openuss.web.Constants;
@@ -37,9 +38,9 @@ public class InstitutePage extends AbstractLecturePage {
 	@Property(value = "#{newsService}")
 	private NewsService newsService;
 
-	@Property(value = "#{sessionScope.period}")
-	private Period period;
-
+	@Property(value = "#{periodInfo}")
+	private PeriodInfo periodInfo;
+	
 	private CourseDataModel courseData = new CourseDataModel();
 
 	/**
@@ -61,8 +62,9 @@ public class InstitutePage extends AbstractLecturePage {
 			departmentId = instituteInfo.getDepartmentId();
 			departmentInfo = departmentService.findDepartment(departmentId);
 			universityId = departmentInfo.getUniversityId();
-			universityService.findActivePeriodByUniversity(universityId);
-			periods = universityService.findPeriodsByUniversity(universityId);
+			universityInfo = universityService.findUniversity(universityId);
+			//universityService.findActivePeriodByUniversity(universityId);
+			//periods = universityService.findPeriodsByUniversity(universityId);
 		} 
 		
 		
@@ -85,7 +87,7 @@ public class InstitutePage extends AbstractLecturePage {
 	 * 
 	 * @param event
 	 */
-	public void processPeriodSelectChanged(ValueChangeEvent event) {
+	/*public void processPeriodSelectChanged(ValueChangeEvent event) {
 		final Long periodId = (Long) event.getNewValue();
 		period = lectureService.getPeriod(periodId);
 		setSessionBean(Constants.PERIOD, period);
@@ -95,7 +97,7 @@ public class InstitutePage extends AbstractLecturePage {
 		getLectureService().sendActivationCode(institute);
 		addMessage(i18n("institute_activationcode_send"));
 		return Constants.SUCCESS;
-	}
+	}*/
 	
 	private class CourseDataModel extends AbstractPagedTable<CourseInfo> {
 
@@ -171,11 +173,11 @@ public class InstitutePage extends AbstractLecturePage {
 		return Constants.INSTITUTE_PAGE;
 	}
 
-	public Period getPeriod() {
-		return period;
+	public PeriodInfo getPeriodInfo() {
+		return periodInfo;
 	}
 
-	public void setPeriod(Period period) {
-		this.period = period;
+	public void setPeriodInfo(PeriodInfo periodInfo) {
+		this.periodInfo = periodInfo;
 	}
 }

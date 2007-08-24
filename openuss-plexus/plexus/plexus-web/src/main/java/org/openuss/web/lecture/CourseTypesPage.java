@@ -1,7 +1,10 @@
 package org.openuss.web.lecture;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -12,8 +15,10 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.PeriodInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -27,6 +32,12 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 	private static final Logger logger = Logger.getLogger(CourseTypesPage.class);
 
 	private LocalDataModel data = new LocalDataModel();
+	
+	private List<SelectItem> institutePeriodItems;
+	private List<PeriodInfo> institutePeriods;
+	
+	private Boolean renderCourseTypeEditNew = false;
+	private Boolean renderCourseTypeAssignToPeriod = false;
 	
 	@Prerender
 	public void prerender() throws LectureException {
@@ -42,6 +53,168 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	
+	
+	
+	/**
+	 * Creates a new CourseTypeInfo object and sets it into session scope
+	 * 
+	 * @return outcome
+	 */
+	public String addCourseType() {
+		
+		courseTypeInfo = new CourseTypeInfo();
+		this.renderCourseTypeEditNew = true;
+		
+		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
+		return Constants.SUCCESS;
+	}
+	
+	/**
+	 * Cancels editing or adding of current courseType
+	 * @return outcome 
+	 */
+	public String cancelCourseType() {
+		logger.debug("cancelCourseType()");
+		this.renderCourseTypeEditNew = false;
+		removeSessionBean(Constants.COURSE_TYPE_INFO);
+		return Constants.SUCCESS;
+	}
+	
+	/**
+	 * Cancels editing or adding of current courseType
+	 * @return outcome 
+	 */
+	public String cancelCourseTypeAssignToPeriod() {
+		logger.debug("cancelCourseType()");
+		this.renderCourseTypeAssignToPeriod = false;
+		removeSessionBean(Constants.COURSE_TYPE_INFO);
+		return Constants.SUCCESS;
+	}
+	
+	/**
+	 * Creates a new CourseTypeInfo object and sets it into session scope
+	 * 
+	 * @return outcome
+	 */
+	public String assignCourseTypeToPeriod() {
+		
+		courseTypeInfo = data.getRowData();
+		if (courseTypeInfo == null) {
+			return Constants.FAILURE;
+		}
+		
+		courseTypeInfo = courseTypeService.findCourseType(courseTypeInfo.getId());
+		
+		//instantiate new CourseInfo Object
+		courseInfo = new CourseInfo();
+		
+		setSessionBean(Constants.COURSE_INFO, courseInfo);
+		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
+		
+		if (courseTypeInfo == null) {
+			addWarning(i18n("error_course_type_not_found"));
+			return Constants.FAILURE;
+			
+		} else {
+			this.renderCourseTypeAssignToPeriod = true;
+			logger.debug("selected courseType "+courseTypeInfo.getName());
+			return Constants.SUCCESS;
+		}
+		
+	}
+	
+	/**
+	 * Saves new courseType or updates changes to courseType Removed current courseType
+	 * selection from session scope
+	 * @return outcome 
+	 */
+	public String saveCourseType() {
+		logger.debug("Starting method saveCourseType()");
+		if (courseTypeInfo.getId() == null) {
+			
+			courseTypeInfo.setInstituteId(instituteInfo.getId());
+			courseTypeService.create(courseTypeInfo);
+			
+			addMessage(i18n("institute_message_add_coursetype_succeed"));
+		} else {
+			courseTypeService.update(courseTypeInfo);
+			addMessage(i18n("institute_message_persist_coursetype_succeed"));
+		}
+		removeSessionBean(Constants.COURSE_TYPE_INFO);
+		courseTypeInfo = null;
+		this.renderCourseTypeEditNew = false;
+		return Constants.SUCCESS;
+	}
+	
+	/**
+	 * Saves new courseType or updates changes to courseType Removed current courseType
+	 * selection from session scope
+	 * @return outcome 
+	 */
+	public String saveCourseTypeAssignToPeriod() {
+		logger.debug("Starting method saveCourseTypeAssignToPeriod()");
+	/*	if (courseTypeInfo.getId() == null) {
+			
+			courseTypeInfo.setInstituteId(instituteInfo.getId());
+			courseTypeService.create(courseTypeInfo);
+			
+			addMessage(i18n("institute_message_add_coursetype_succeed"));
+		} else {
+			courseTypeService.update(courseTypeInfo);
+			
+			courseInfo.setCourseTypeDescription(courseTypeInfo.getDescription());
+			courseInfo.setCourseTypeId(courseTypeInfo.getId());
+			courseInfo.setDescription(courseTypeInfo.getDescription());
+			courseInfo.setInstituteId(courseTypeInfo.getInstituteId());
+			//courseInfo.setInstituteName(courseTypeInfo.ge)
+			courseInfo.setName(courseTypeInfo.getName());
+			courseInfo.setShortcut(courseTypeInfo.getShortcut());
+			
+			Long courseId = courseService.create(courseInfo);
+			
+			
+			addMessage(i18n("institute_message_persist_coursetype_succeed"));
+		}
+		
+		removeSessionBean(Constants.COURSE_TYPE_INFO);
+		courseTypeInfo = null;
+		this.renderCourseTypeAssignToPeriod = false;
+		return Constants.SUCCESS;
+	}*/
+	
+		return Constants.SUCCESS;
+	}
+	
+	
+	
+	
+	
+	
+	public List<SelectItem> getBelongingInstitutePeriods() {
+		
+		institutePeriodItems = new ArrayList<SelectItem>();
+		
+		if (instituteInfo != null) {
+			Long departmentId = instituteInfo.getDepartmentId();
+			departmentInfo = departmentService.findDepartment(departmentId);
+			Long universityId = departmentInfo.getUniversityId();
+			universityInfo = universityService.findUniversity(universityId);
+			//universityService.findActivePeriodByUniversity(universityId);
+			institutePeriods = universityService.findPeriodsByUniversity(universityId);
+			
+			Iterator<PeriodInfo> iter =  institutePeriods.iterator();
+			PeriodInfo periodInfo;
+			
+			while (iter.hasNext()) {
+				periodInfo = iter.next();
+				SelectItem item = new SelectItem(periodInfo.getId(),periodInfo.getName());
+				institutePeriodItems.add(item);
+			}
+			
+		} 
+		
+		return institutePeriodItems;
+	}
 	
 	/*/**
 	 * Set selected courseType into session scope
@@ -66,18 +239,7 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 		}
 	}
 
-	/**
-	 * Create new courseType object and set it into session scope
-	 * 
-	 * @return outcome
-	 */
-	public String addCourseType() {
-		//courseType = CourseType.Factory.newInstance();
-		courseTypeInfo = new CourseTypeInfo();
-		//courseTypeInfo.setInstituteId(instituteInfo.getId());
-		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
-		return Constants.SUCCESS;
-	}
+	
 
 	public String shortcutCourseType() {
 		courseTypeInfo = data.getRowData();;
@@ -105,39 +267,11 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 		return Constants.INSTITUTE_COURSE_TYPE_REMOVE_PAGE;
 	}
 
-	/**
-	 * Save new courseType or update changes to courseType Removed current courseType
-	 * selection from session scope
-	 * @return outcome 
-	 */
-	public String saveCourseType() {
-		logger.debug("Starting method saveCourseType()");
-		if (courseTypeInfo.getId() == null) {
-			
-			//lectureService.add(instituteInfo.getId(), courseTypeInfo);
-			courseTypeInfo.setInstituteId(instituteInfo.getId());
-			courseTypeService.create(courseTypeInfo);
-			
-			addMessage(i18n("institute_message_add_coursetype_succeed"));
-		} else {
-			//lectureService.persist(courseType);
-			courseTypeService.update(courseTypeInfo);
-			addMessage(i18n("institute_message_persist_coursetype_succeed"));
-		}
-		removeSessionBean(Constants.COURSE_TYPE_INFO);
-		courseTypeInfo = null;
-		return Constants.SUCCESS;
-	}
+	
 
-	/**
-	 * Cancel editing or adding of current courseType
-	 * @return outcome 
-	 */
-	public String cancelCourseType() {
-		logger.debug("cancelCourseType()");
-		removeSessionBean(Constants.COURSE_TYPE_INFO);
-		return Constants.SUCCESS;
-	}
+	
+	
+	
 
 	private class LocalDataModel extends AbstractPagedTable<CourseTypeInfo> {
 		
@@ -163,5 +297,22 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 
 	public void setData(LocalDataModel data) {
 		this.data = data;
+	}
+
+	public Boolean getRenderCourseTypeEditNew() {
+		return renderCourseTypeEditNew;
+	}
+
+	public void setRenderCourseTypeEditNew(Boolean renderCourseTypeEditNew) {
+		this.renderCourseTypeEditNew = renderCourseTypeEditNew;
+	}
+
+	public Boolean getRenderCourseTypeAssignToPeriod() {
+		return renderCourseTypeAssignToPeriod;
+	}
+
+	public void setRenderCourseTypeAssignToPeriod(
+			Boolean renderCourseTypeAssignToPeriod) {
+		this.renderCourseTypeAssignToPeriod = renderCourseTypeAssignToPeriod;
 	}	
 }
