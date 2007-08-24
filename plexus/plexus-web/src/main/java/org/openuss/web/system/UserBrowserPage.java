@@ -19,6 +19,7 @@ import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserCriteria;
 import org.openuss.security.UserInfo;
+import org.openuss.statistics.OnlineStatisticService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -35,6 +36,9 @@ public class UserBrowserPage extends BasePage{
 
 	@Property (value="#{securityService}")
 	private SecurityService securityService;
+	
+	@Property (value="#{"+Constants.ONLINE_STATISTIC_SERVICE+"}")
+	private OnlineStatisticService onlineStatisticService;
 	
 	private LocalDataModel dataModel = new LocalDataModel();
 	
@@ -91,13 +95,9 @@ public class UserBrowserPage extends BasePage{
 			criteria.setMaximumResultSize(pageSize * 4);
 			List<UserInfo> users = securityService.getUsers(criteria);
 			logger.debug("got "+users.size()+" users");
-			// FIXME - total size should be fetched from database instead of guessing
-			int size = 0;
-			if (users.size() < criteria.getMaximumResultSize()) {
-				size = criteria.getFirstResult() + users.size();
-			} else {
-				size = 1600;
-			}
+			
+			// FIXME user size should be a method of security service!
+			int size = onlineStatisticService.getSystemStatistics().getUsers().intValue();
 			dataPage = new DataPage<UserInfo>(size,startRow,users);
 		}
 		return dataPage;
@@ -131,5 +131,13 @@ public class UserBrowserPage extends BasePage{
 
 	public void setDataModel(LocalDataModel dataModel) {
 		this.dataModel = dataModel;
+	}
+
+	public OnlineStatisticService getOnlineStatisticService() {
+		return onlineStatisticService;
+	}
+
+	public void setOnlineStatisticService(OnlineStatisticService onlineStatisticService) {
+		this.onlineStatisticService = onlineStatisticService;
 	}
 }
