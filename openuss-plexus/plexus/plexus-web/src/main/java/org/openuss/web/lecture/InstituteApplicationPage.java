@@ -21,6 +21,8 @@ import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.UniversityInfo;
+import org.openuss.security.SecurityService;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 
@@ -34,8 +36,14 @@ import org.openuss.web.Constants;
 public class InstituteApplicationPage extends AbstractLecturePage{
 	private static final long serialVersionUID = 20278675452385870L;
 	
+
+	
 	@Property(value = "#{applicationInfo}")
 	protected ApplicationInfo applicationInfo;
+	
+	private Long departmentId;
+	
+	
 	
 	private DepartmentsTable departments = new DepartmentsTable();
 	
@@ -132,14 +140,23 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 	
 		
 		
-		logger.debug("DepartmentId"+ applicationInfo.getDepartmentId());
+		logger.debug("DepartmentId"+ departmentId);
 		
 		logger.debug("Descriptiony"+applicationInfo.getDescription());
 	    
 		
 		logger.debug("InstituteI"+instituteInfo.getId());
-		applicationInfo.setApplyingUserId(user.getId());
-		applicationInfo.setInstituteId(instituteInfo.getId());
+		
+		UserInfo userInfo = new UserInfo();
+		userInfo.setId(user.getId());
+		applicationInfo.setApplyingUserInfo(userInfo);
+		
+		DepartmentInfo departmentInfo = new DepartmentInfo();
+		departmentInfo.setId(departmentId);
+		applicationInfo.setDepartmentInfo(departmentInfo);
+		
+		applicationInfo.setInstituteInfo(instituteInfo);
+		
 		try{
 		Long appId = instituteService.applyAtDepartment(applicationInfo);
 			}
@@ -168,5 +185,15 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 	public void setApplicationInfo(ApplicationInfo applicationInfo) {
 		this.applicationInfo = applicationInfo;
 	}
+
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
+	}
+
+
 
 }
