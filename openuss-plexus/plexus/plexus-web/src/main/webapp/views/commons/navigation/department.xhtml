@@ -11,45 +11,44 @@
 
 	<ui:include src="/views/commons/navigation/desktop.xhtml" />
 
-	<h:form id="departmentNavigationForm">
-		<t:panelNavigation2 id="department_navigation" styleClass="navigation"
-			layout="list" itemClass="nav_item" openItemClass="open_item"
-			activeItemClass="active_item" separatorClass="item_separator">
-			<t:commandNavigation2 value="#{msg['department_navigation_header']}">
-				<t:commandNavigation2 action="department" activeOnViewIds="/views/public/department/department.xhtml">
-						<h:outputText value="#{msg['department_profile']}" ></h:outputText>
+	<s:authorize ifAllGranted="ROLE_USER">
+		<h:form id="departmentNavigationForm">
+			<t:panelNavigation2 id="department_navigation" styleClass="navigation"
+				layout="list" itemClass="nav_item" openItemClass="open_item"
+				activeItemClass="active_item" separatorClass="item_separator">
+				<t:commandNavigation2 value="#{msg['department_navigation_header']}">
+					<t:commandNavigation2 action="department" activeOnViewIds="/views/public/department/department.xhtml">
+							<h:outputText value="#{msg['department_profile']}" ></h:outputText>
+					</t:commandNavigation2>
+					<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.GRANT}">				
+						<t:commandNavigation2 action="manage_institute"
+							activeOnViewIds="/views/secured/lecture/departmentinstitutes.xhtml">
+							<h:outputText value="#{msg['department_command_institutes']}"></h:outputText>
+						</t:commandNavigation2>
+					</s:acl>
+					<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.GRANT}">	
+						<t:commandNavigation2
+							value="#{msg['department_command_authorisations']}"
+							action="department_members">
+							<t:commandNavigation2 action="department_members"
+								activeOnViewIds="/views/secured/lecture/auth/departmentMembers.xhtml">
+								<h:outputText value="#{msg['department_command_members']}"></h:outputText>
+							</t:commandNavigation2>
+							<t:commandNavigation2 action="department_aspirants"
+								activeOnViewIds="/views/secured/lecture/auth/universityaspirants.xhtml">
+								<h:outputText value="#{msg['department_command_aspirants']}"></h:outputText>
+							</t:commandNavigation2>
+						</t:commandNavigation2>
+					</s:acl>
+					<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.GRANT}">
+						<t:commandNavigation2 action="department_data"
+							activeOnViewIds="/views/secured/lecture/departmentoptions.xhtml">
+							<h:outputText value="#{msg['department_command_settings']}"></h:outputText>
+						</t:commandNavigation2>
+					</s:acl>
 				</t:commandNavigation2>
-				<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.GRANT}">				
-					<t:commandNavigation2 action="manage_institute"
-						activeOnViewIds="/views/secured/lecture/departmentinstitutes.xhtml">
-						<h:outputText value="#{msg['department_command_institutes']}"></h:outputText>
-					</t:commandNavigation2>
-				</s:acl>
-				<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.GRANT}">	
-					<t:commandNavigation2
-						value="#{msg['department_command_authorisations']}"
-						action="department_members">
-						<t:commandNavigation2 action="department_members"
-							activeOnViewIds="/views/secured/lecture/auth/departmentMembers.xhtml">
-							<h:outputText value="#{msg['department_command_members']}"></h:outputText>
-						</t:commandNavigation2>
-						<t:commandNavigation2 action="department_aspirants"
-							activeOnViewIds="/views/secured/lecture/auth/universityaspirants.xhtml">
-							<h:outputText value="#{msg['department_command_aspirants']}"></h:outputText>
-						</t:commandNavigation2>
-					</t:commandNavigation2>
-				</s:acl>
-				<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.GRANT}">
-					<t:commandNavigation2 action="department_data"
-						activeOnViewIds="/views/secured/lecture/departmentoptions.xhtml">
-						<h:outputText value="#{msg['department_command_settings']}"></h:outputText>
-					</t:commandNavigation2>
-				</s:acl>
-			</t:commandNavigation2>
-		</t:panelNavigation2>
-	</h:form>
-
-
-
+			</t:panelNavigation2>
+		</h:form>
+	</s:authorize>
 
 </ui:composition>
