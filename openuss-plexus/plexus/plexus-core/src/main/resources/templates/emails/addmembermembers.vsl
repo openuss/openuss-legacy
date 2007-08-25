@@ -1,0 +1,20 @@
+<html>
+	<body>
+		<h3><font color="#003366">OpenUSS User Administration</font></h3>
+			The user <i>${username} (${userfirstname} ${userlastname})</i> has been added to your organisation 
+			<i>${organisationname}</i>,
+			Please click on the following link to administrate your organisation:<br/>
+		<p>
+		<a href="${courseapplicantlink}">${organisationlink}</a>
+		</p>
+		<p>
+			If clicking the link above does not work, copy and paste the URL in a new browser window instead.
+		</p>
+		<p>
+			Thank you for using OpenUSS.
+		</p>
+		<p>
+			<small>This is a post-only mailing. Replies to this message are not monitored or answered.</small>
+		</p>
+	</body>
+</html>
