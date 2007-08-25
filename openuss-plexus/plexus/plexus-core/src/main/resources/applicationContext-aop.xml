@@ -6,198 +6,223 @@
     					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 		Aspect Configuration
-	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<aop:config>
-		<aop:aspect id="universityIndexAspect" ref="universityIndexAspectBean">
-		 
-			<aop:after-returning
-				method="createUniversityIndex" 
+		<!-- Pointcut Definitions -->
+		<aop:pointcut id="addMemberPointcut"
+			expression="execution(* org..OrganisationServiceBase.addMember(java.lang.Long, java.lang.Long)) and args(organisationId, userId)" />
+		<aop:pointcut id="removeMemberPointcut"
+			expression="execution(* org..OrganisationServiceBase.removeMember(java.lang.Long, java.lang.Long)) and args(organisationId, userId)" />
+
+		<!-- Aspect Definitions -->
+		<aop:aspect id="mailSenderAspect" ref="mailSenderAspectBean">
+			<aop:after-returning method="sendAddMemberMail"
+				pointcut-ref="addMemberPointcut" arg-names="organisationId, userId" />
+			<aop:after-returning method="sendRemoveMemberMail"
+				pointcut-ref="removeMemberPointcut"
+				arg-names="organisationId, userId" />
+		</aop:aspect>
+
+		<aop:aspect id="universityIndexAspect"
+			ref="universityIndexAspectBean">
+
+			<aop:after-returning method="createUniversityIndex"
 				pointcut="execution(* org..UniversityServiceBase.createUniversity(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)"
-				arg-names="universityInfo, userId"/>
-			<aop:after-returning
-				method="updateUniversityIndex"
-				pointcut="execution(* org..UniversityServiceBase.update(org.openuss.lecture.UniversityInfo)) and args(universityInfo)"
-				arg-names="universityInfo"/>
-			<aop:after-returning
-				method="updateUniversityIndexById"
-				pointcut="execution(* org..UniversityServiceBase.setUniversityStatus(java.lang.Long, java.lang.Boolean)) and args(universityId, status)"
-				arg-names="universityId, status"/>
-			<aop:after-returning
-				method="deleteUniversityIndex"
-				pointcut="execution(* org..UniversityServiceBase.removeUniversity(java.lang.Long)) and args(universityId)"
-				arg-names="universityId"/>
-		</aop:aspect>
-	
-		<aop:aspect id="departmentIndexAspect" ref="departmentIndexAspectBean">
-			<aop:after-returning
-				method="createDepartmentIndex" 
-				pointcut="execution(* org..DepartmentServiceBase.create(org.openuss.lecture.DepartmentInfo, java.lang.Long)) and args(departmentInfo, userId)"
-				arg-names="departmentInfo, userId"/>
-			<aop:after-returning
-				method="updateDepartmentIndex"
-				pointcut="execution(* org..DepartmentServiceBase.update(org.openuss.lecture.DepartmentInfo)) and args(departmentInfo)"
-				arg-names="departmentInfo"/>
-			<aop:after-returning
-				method="updateDepartmentIndexById"
-				pointcut="execution(* org..DepartmentServiceBase.setDepartmentStatus(java.lang.Long, java.lang.Boolean)) and args(departmentId, status)"
-				arg-names="departmentId, status"/>
-			<aop:after-returning
-				method="deleteDepartmentIndex"
-				pointcut="execution(* org..DepartmentServiceBase.removeDepartment(java.lang.Long)) and args(departmentId)"
-				arg-names="departmentId"/>
-		</aop:aspect>
-		
-		<aop:aspect id="instituteIndexAspect" ref="instituteIndexAspectBean">
-			<aop:after-returning
-				method="createInstituteIndex" 
-				pointcut="execution(* org..InstituteServiceBase.create(org.openuss.lecture.InstituteInfo, java.lang.Long)) and args(instituteInfo, userId))"
-				arg-names="instituteInfo, userId"/>
-			<aop:after-returning
-				method="updateInstituteIndex"
-				pointcut="execution(* org..InstituteServiceBase.update(org.openuss.lecture.InstituteInfo)) and args(instituteInfo)"
-				arg-names="instituteInfo"/>
-			<aop:after-returning
-				method="deleteInstituteIndex"
-				pointcut="execution(* org..InstituteServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)"
-				arg-names="instituteId"/>
-		</aop:aspect>
-		
-		<aop:aspect id="courseTypeIndexAspect" ref="courseTypeIndexAspectBean">
-			<aop:after-returning
-				method="createCourseTypeIndex" 
-				pointcut="execution(* org..CourseTypeServiceBase.create(org.openuss.lecture.CourseTypeInfo)) and args(courseTypeInfo)"
-				arg-names="courseTypeInfo"/>
-			<aop:after-returning
-				method="updateCourseTypeIndex"
-				pointcut="execution(* org..CourseTypeServiceBase.update(org.openuss.lecture.CourseTypeInfo)) and args(courseTypeInfo)"
-				arg-names="courseTypeInfo"/>
-			<aop:after-returning
-				method="deleteCourseTypeIndex"
-				pointcut="execution(* org..CourseTypeServiceBase.removeCourseType(java.lang.Long)) and args(courseTypeId)"
-				arg-names="courseTypeId"/>
-		</aop:aspect>
-		
-		<aop:aspect id="courseIndexAspect" ref="courseIndexAspectBean">
-			<aop:after-returning
-				method="updateCourseIndexOnPeriodUpdate" 
-				pointcut="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Period)) and args(period)"
-				arg-names="period"/>
-			<aop:after-returning
-				method="createCourseIndex" 
-				pointcut="execution(* org..CourseServiceBase.create(org.openuss.lecture.CourseInfo)) and args(courseInfo)"
-				arg-names="courseInfo"/>
-			<aop:after-returning
-				method="updateCourseIndex"
-				pointcut="execution(* org..CourseServiceBase.updateCourse(org.openuss.lecture.CourseInfo)) and args(courseInfo)"
-				arg-names="courseInfo"/>
-			<aop:after-returning
-				method="deleteCourseIndex"
-				pointcut="execution(* org..CourseServiceBase.removeCourse(java.lang.Long)) and args(courseId)"
-				arg-names="courseId"/>
-		</aop:aspect>
-		
-		<aop:aspect id="mailingStatusAspect" ref="mailingStatusAspectBean">
-			<aop:after-returning
-				method="updateMailingStatus"
-				pointcut="execution(* org..MessageJobDaoBase.update(org.openuss.messaging.MessageJob)) and args(messageJob)"
-				arg-names="messageJob"/>
-		</aop:aspect>
-		
-		<aop:aspect id="universityCreationAspect" ref="universityCreationAndDeletionAspectBean">
-			<aop:after-returning
-				method="bookmarkUniversity"
-				pointcut="execution(* org..UniversityServiceBase.create(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)"
 				arg-names="universityInfo, userId" />
-		</aop:aspect>
-		
-		<aop:aspect id="universityDeletionAspect" ref="universityCreationAndDeletionAspectBean">
-			<aop:before
-				method="deleteBookmarksOfUniversity"
+			<aop:after-returning method="updateUniversityIndex"
+				pointcut="execution(* org..UniversityServiceBase.update(org.openuss.lecture.UniversityInfo)) and args(universityInfo)"
+				arg-names="universityInfo" />
+			<aop:after-returning method="updateUniversityIndexById"
+				pointcut="execution(* org..UniversityServiceBase.setUniversityStatus(java.lang.Long, java.lang.Boolean)) and args(universityId, status)"
+				arg-names="universityId, status" />
+			<aop:after-returning method="deleteUniversityIndex"
 				pointcut="execution(* org..UniversityServiceBase.removeUniversity(java.lang.Long)) and args(universityId)"
 				arg-names="universityId" />
 		</aop:aspect>
-		
-		<aop:aspect id="departmentCreationAspect" ref="departmentCreationAndDeletionAspectBean">
-			<aop:after-returning
-				method="bookmarkDepartment"
+
+		<aop:aspect id="departmentIndexAspect"
+			ref="departmentIndexAspectBean">
+			<aop:after-returning method="createDepartmentIndex"
 				pointcut="execution(* org..DepartmentServiceBase.create(org.openuss.lecture.DepartmentInfo, java.lang.Long)) and args(departmentInfo, userId)"
 				arg-names="departmentInfo, userId" />
-		</aop:aspect>
-		
-		<aop:aspect id="departmentDeletionAspect" ref="departmentCreationAndDeletionAspectBean">
-			<aop:before
-				method="deleteBookmarksOfDepartment"
+			<aop:after-returning method="updateDepartmentIndex"
+				pointcut="execution(* org..DepartmentServiceBase.update(org.openuss.lecture.DepartmentInfo)) and args(departmentInfo)"
+				arg-names="departmentInfo" />
+			<aop:after-returning method="updateDepartmentIndexById"
+				pointcut="execution(* org..DepartmentServiceBase.setDepartmentStatus(java.lang.Long, java.lang.Boolean)) and args(departmentId, status)"
+				arg-names="departmentId, status" />
+			<aop:after-returning method="deleteDepartmentIndex"
 				pointcut="execution(* org..DepartmentServiceBase.removeDepartment(java.lang.Long)) and args(departmentId)"
 				arg-names="departmentId" />
 		</aop:aspect>
-				
-		<aop:aspect id="instituteCreationAspect" ref="instituteCreationAndDeletionAspectBean">
-			<aop:after-returning 
-				method="bookmarkInstitute"
-				pointcut="execution(* org..InstituteServiceBase.create(org.openuss.lecture.InstituteInfo, java.lang.Long)) and args(instituteInfo, userId)"
+
+		<aop:aspect id="instituteIndexAspect"
+			ref="instituteIndexAspectBean">
+			<aop:after-returning method="createInstituteIndex"
+				pointcut="execution(* org..InstituteServiceBase.create(org.openuss.lecture.InstituteInfo, java.lang.Long)) and args(instituteInfo, userId))"
 				arg-names="instituteInfo, userId" />
-		</aop:aspect>
-		
-		<aop:aspect id="instituteDeletionAspect" ref="instituteCreationAndDeletionAspectBean">
-			<aop:before
-				method="deleteBookmarksOfInstitute"
+			<aop:after-returning method="updateInstituteIndex"
+				pointcut="execution(* org..InstituteServiceBase.update(org.openuss.lecture.InstituteInfo)) and args(instituteInfo)"
+				arg-names="instituteInfo" />
+			<aop:after-returning method="deleteInstituteIndex"
 				pointcut="execution(* org..InstituteServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)"
 				arg-names="instituteId" />
 		</aop:aspect>
-		
-		<aop:aspect id="courseDeletionAspect" ref="courseDeletionAspectBean">
-			<aop:before
-				method="deleteBookmarksOfCourse"
+
+		<aop:aspect id="courseTypeIndexAspect"
+			ref="courseTypeIndexAspectBean">
+			<aop:after-returning method="createCourseTypeIndex"
+				pointcut="execution(* org..CourseTypeServiceBase.create(org.openuss.lecture.CourseTypeInfo)) and args(courseTypeInfo)"
+				arg-names="courseTypeInfo" />
+			<aop:after-returning method="updateCourseTypeIndex"
+				pointcut="execution(* org..CourseTypeServiceBase.update(org.openuss.lecture.CourseTypeInfo)) and args(courseTypeInfo)"
+				arg-names="courseTypeInfo" />
+			<aop:after-returning method="deleteCourseTypeIndex"
+				pointcut="execution(* org..CourseTypeServiceBase.removeCourseType(java.lang.Long)) and args(courseTypeId)"
+				arg-names="courseTypeId" />
+		</aop:aspect>
+
+		<aop:aspect id="courseIndexAspect"
+			ref="courseIndexAspectBean">
+			<aop:after-returning
+				method="updateCourseIndexOnPeriodUpdate"
+				pointcut="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Period)) and args(period)"
+				arg-names="period" />
+			<aop:after-returning method="createCourseIndex"
+				pointcut="execution(* org..CourseServiceBase.create(org.openuss.lecture.CourseInfo)) and args(courseInfo)"
+				arg-names="courseInfo" />
+			<aop:after-returning method="updateCourseIndex"
+				pointcut="execution(* org..CourseServiceBase.updateCourse(org.openuss.lecture.CourseInfo)) and args(courseInfo)"
+				arg-names="courseInfo" />
+			<aop:after-returning method="deleteCourseIndex"
+				pointcut="execution(* org..CourseServiceBase.removeCourse(java.lang.Long)) and args(courseId)"
+				arg-names="courseId" />
+		</aop:aspect>
+
+		<aop:aspect id="mailingStatusAspect"
+			ref="mailingStatusAspectBean">
+			<aop:after-returning method="updateMailingStatus"
+				pointcut="execution(* org..MessageJobDaoBase.update(org.openuss.messaging.MessageJob)) and args(messageJob)"
+				arg-names="messageJob" />
+		</aop:aspect>
+
+		<aop:aspect id="universityCreationAspect"
+			ref="universityCreationAndDeletionAspectBean">
+			<aop:after-returning method="bookmarkUniversity"
+				pointcut="execution(* org..UniversityServiceBase.create(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)"
+				arg-names="universityInfo, userId" />
+		</aop:aspect>
+
+		<aop:aspect id="universityDeletionAspect"
+			ref="universityCreationAndDeletionAspectBean">
+			<aop:before method="deleteBookmarksOfUniversity"
+				pointcut="execution(* org..UniversityServiceBase.removeUniversity(java.lang.Long)) and args(universityId)"
+				arg-names="universityId" />
+		</aop:aspect>
+
+		<aop:aspect id="departmentCreationAspect"
+			ref="departmentCreationAndDeletionAspectBean">
+			<aop:after-returning method="bookmarkDepartment"
+				pointcut="execution(* org..DepartmentServiceBase.create(org.openuss.lecture.DepartmentInfo, java.lang.Long)) and args(departmentInfo, userId)"
+				arg-names="departmentInfo, userId" />
+		</aop:aspect>
+
+		<aop:aspect id="departmentDeletionAspect"
+			ref="departmentCreationAndDeletionAspectBean">
+			<aop:before method="deleteBookmarksOfDepartment"
+				pointcut="execution(* org..DepartmentServiceBase.removeDepartment(java.lang.Long)) and args(departmentId)"
+				arg-names="departmentId" />
+		</aop:aspect>
+
+		<aop:aspect id="instituteCreationAspect"
+			ref="instituteCreationAndDeletionAspectBean">
+			<aop:after-returning method="bookmarkInstitute"
+				pointcut="execution(* org..InstituteServiceBase.create(org.openuss.lecture.InstituteInfo, java.lang.Long)) and args(instituteInfo, userId)"
+				arg-names="instituteInfo, userId" />
+		</aop:aspect>
+
+		<aop:aspect id="instituteDeletionAspect"
+			ref="instituteCreationAndDeletionAspectBean">
+			<aop:before method="deleteBookmarksOfInstitute"
+				pointcut="execution(* org..InstituteServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)"
+				arg-names="instituteId" />
+		</aop:aspect>
+
+		<aop:aspect id="courseDeletionAspect"
+			ref="courseDeletionAspectBean">
+			<aop:before method="deleteBookmarksOfCourse"
 				pointcut="execution(* org..CourseServiceBase.remove(java.lang.Long)) and args(courseId)"
 				arg-names="courseId" />
 		</aop:aspect>
-			
+
 	</aop:config>
-	
-	<bean id="mailingStatusAspectBean" class="org.openuss.newsletter.MailingStatusAspect">
-		<property name="mailDao" ref="mailDao"/>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+		Aspect Bean Definitions
+		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<bean id="mailSenderAspectBean"
+		class="org.openuss.aop.MailSenderAspectImpl">
+		<property name="userDao" ref="userDao" />
+		<property name="organisationDao" ref="organisationDao" />
+		<property name="universityDao" ref="universityDao" />
+		<property name="departmentDao" ref="departmentDao" />
+		<property name="instituteDao" ref="instituteDao" />
 	</bean>
-	
-	<bean id="universityIndexAspectBean" class="org.openuss.lecture.UniversityIndexingAspect">
-		<property name="indexerService" ref="indexerService"/>
-		<property name="universityDao" ref="universityDao"/>
-		<property name="universityService" ref="universityService"/>
+
+	<bean id="mailingStatusAspectBean"
+		class="org.openuss.newsletter.MailingStatusAspect">
+		<property name="mailDao" ref="mailDao" />
 	</bean>
-	
-	<bean id="departmentIndexAspectBean" class="org.openuss.lecture.DepartmentIndexingAspect">
-		<property name="indexerService" ref="indexerService"/>
-		<property name="departmentDao" ref="departmentDao"/>
-		<property name="departmentService" ref="departmentService"/>
+
+	<bean id="universityIndexAspectBean"
+		class="org.openuss.lecture.UniversityIndexingAspect">
+		<property name="indexerService" ref="indexerService" />
+		<property name="universityDao" ref="universityDao" />
+		<property name="universityService" ref="universityService" />
 	</bean>
-	
-	<bean id="instituteIndexAspectBean" class="org.openuss.lecture.InstituteIndexingAspect">
-		<property name="indexerService" ref="indexerService"/>
-		<property name="instituteDao" ref="instituteDao"/>
+
+	<bean id="departmentIndexAspectBean"
+		class="org.openuss.lecture.DepartmentIndexingAspect">
+		<property name="indexerService" ref="indexerService" />
+		<property name="departmentDao" ref="departmentDao" />
+		<property name="departmentService" ref="departmentService" />
 	</bean>
-	
-	<bean id="courseTypeIndexAspectBean" class="org.openuss.lecture.CourseTypeIndexingAspect">
-		<property name="indexerService" ref="indexerService"/>
-		<property name="courseTypeDao" ref="courseTypeDao"/>
+
+	<bean id="instituteIndexAspectBean"
+		class="org.openuss.lecture.InstituteIndexingAspect">
+		<property name="indexerService" ref="indexerService" />
+		<property name="instituteDao" ref="instituteDao" />
 	</bean>
-	
-	<bean id="courseIndexAspectBean" class="org.openuss.lecture.CourseIndexingAspect">
-		<property name="indexerService" ref="indexerService"/>
-		<property name="courseDao" ref="courseDao"/>
+
+	<bean id="courseTypeIndexAspectBean"
+		class="org.openuss.lecture.CourseTypeIndexingAspect">
+		<property name="indexerService" ref="indexerService" />
+		<property name="courseTypeDao" ref="courseTypeDao" />
 	</bean>
-	
-	<bean id="instituteCreationAndDeletionAspectBean" class="org.openuss.lecture.InstituteCreationAndDeletionAspect">
-		<property name="desktopService" ref="desktopService2"/>
+
+	<bean id="courseIndexAspectBean"
+		class="org.openuss.lecture.CourseIndexingAspect">
+		<property name="indexerService" ref="indexerService" />
+		<property name="courseDao" ref="courseDao" />
 	</bean>
-	
-	<bean id="courseDeletionAspectBean" class="org.openuss.lecture.CourseDeletionAspect">
-		<property name="desktopService" ref="desktopService2"/>
+
+	<bean id="instituteCreationAndDeletionAspectBean"
+		class="org.openuss.lecture.InstituteCreationAndDeletionAspect">
+		<property name="desktopService" ref="desktopService2" />
 	</bean>
-	
-	<bean id="departmentCreationAndDeletionAspectBean" class="org.openuss.lecture.DepartmentCreationAndDeletionAspect">
-		<property name="desktopService" ref="desktopService2"/>
+
+	<bean id="courseDeletionAspectBean"
+		class="org.openuss.lecture.CourseDeletionAspect">
+		<property name="desktopService" ref="desktopService2" />
 	</bean>
-	
-	<bean id="universityCreationAndDeletionAspectBean" class="org.openuss.lecture.UniversityCreationAndDeletionAspect">
-		<property name="desktopService" ref="desktopService2"/>
+
+	<bean id="departmentCreationAndDeletionAspectBean"
+		class="org.openuss.lecture.DepartmentCreationAndDeletionAspect">
+		<property name="desktopService" ref="desktopService2" />
+	</bean>
+
+	<bean id="universityCreationAndDeletionAspectBean"
+		class="org.openuss.lecture.UniversityCreationAndDeletionAspect">
+		<property name="desktopService" ref="desktopService2" />
 	</bean>
 </beans>
