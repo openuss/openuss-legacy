@@ -16,6 +16,7 @@ import org.openuss.lecture.LectureService;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
+import org.openuss.lecture.CourseTypeService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
@@ -57,6 +58,9 @@ public abstract class AbstractLecturePage extends BasePage {
 	
 	@Property(value = "#{instituteService}")
 	protected InstituteService instituteService;
+	
+	@Property(value = "#{courseTypeService}")
+	protected CourseTypeService courseTypeService;
 
 	@Property(value = "#{sessionScope.courseType}")
 	protected CourseType courseType;
@@ -182,6 +186,22 @@ public abstract class AbstractLecturePage extends BasePage {
 
 	public void setInstituteService(InstituteService instituteService) {
 		this.instituteService = instituteService;
+	}
+
+	public CourseTypeService getCourseTypeService() {
+		return courseTypeService;
+	}
+
+	public void setCourseTypeService(CourseTypeService courseTypeService) {
+		this.courseTypeService = courseTypeService;
+	}
+
+	public UniversityService getUniversityService() {
+		return universityService;
+	}
+
+	public DepartmentService getDepartmentService() {
+		return departmentService;
 	}
 	
 	

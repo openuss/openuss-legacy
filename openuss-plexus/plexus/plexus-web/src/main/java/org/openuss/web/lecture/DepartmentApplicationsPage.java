@@ -43,8 +43,14 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
-		crumb.setName(i18n(""));
-		crumb.setHint(i18n(""));
+		crumb.setName(i18n("department_manage_institute_applications_header"));
+		crumb.setHint(i18n("department_manage_institute_applications_header"));
+		
+		breadcrumbs.loadDepartmentCrumbs(departmentInfo);
+		breadcrumbs.addCrumb(crumb);
+		
+
+		// TODO Remove old crumb code
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}

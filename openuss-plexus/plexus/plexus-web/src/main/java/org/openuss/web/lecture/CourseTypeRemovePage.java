@@ -42,6 +42,11 @@ public class CourseTypeRemovePage extends AbstractLecturePage {
 		crumb.setLink("");
 		crumb.setName(i18n("coursetype_remove_header"));
 		crumb.setHint(i18n("coursetype_remove_header"));
+		
+		breadcrumbs.loadCourseTypeCrumbs(courseTypeService.findCourseType(courseType.getId()));
+		breadcrumbs.addCrumb(crumb);
+		
+		// TODO Remove old crumb code
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}

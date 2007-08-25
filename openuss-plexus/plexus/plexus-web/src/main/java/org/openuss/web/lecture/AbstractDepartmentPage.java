@@ -60,8 +60,9 @@ public abstract class AbstractDepartmentPage extends BasePage {
 		if (departmentInfo == null) {
 			addError(i18n("message_error_no_department_selected"));
 			redirect(Constants.DESKTOP);
-		} 
-			generateCrumbs();
+		}
+		
+		generateCrumbs();
 		
 	}
 
@@ -72,7 +73,9 @@ public abstract class AbstractDepartmentPage extends BasePage {
 		}
 	}
 
+
 	private void generateCrumbs() {
+		// TODO Remove old crumb code
 		crumbs.clear();
 		BreadCrumb departmentCrumb = new BreadCrumb();
 		departmentCrumb.setName(departmentInfo.getShortcut());
@@ -82,6 +85,7 @@ public abstract class AbstractDepartmentPage extends BasePage {
 		crumbs.add(departmentCrumb);
 	}
 
+	
 	public DepartmentInfo getDepartmentInfo() {
 		return departmentInfo;
 	}

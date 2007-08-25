@@ -53,6 +53,8 @@ public abstract class BasePage extends BaseBean {
 	@Preprocess
 	public void preprocess() throws Exception {
 		logger.debug("Starting method preprocess");
+		
+		// TODO Remove old crumb code
 		crumbs.clear();
 		
 		if (desktopInfo == null) {

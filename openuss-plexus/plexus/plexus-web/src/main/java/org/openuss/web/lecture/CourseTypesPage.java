@@ -50,6 +50,11 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 		crumb.setLink("");
 		crumb.setName(i18n("coursetype_coursetypestable_header"));
 		crumb.setHint(i18n("coursetype_coursetypestable_header"));
+		
+		breadcrumbs.loadCourseCrumbs(courseInfo);
+		breadcrumbs.addCrumb(crumb);
+		
+		// TODO Remove old crumb code
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	
