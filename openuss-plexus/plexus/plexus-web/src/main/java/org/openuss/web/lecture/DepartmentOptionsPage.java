@@ -53,6 +53,11 @@ public class DepartmentOptionsPage extends AbstractDepartmentPage {
 		crumb.setLink("");
 		crumb.setName(i18n("department_command_settings"));
 		crumb.setHint(i18n("department_command_settings"));
+		
+		breadcrumbs.loadDepartmentCrumbs(departmentInfo);
+		breadcrumbs.addCrumb(crumb);
+		
+		// TODO Remove old crumb code
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	

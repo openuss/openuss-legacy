@@ -9,6 +9,7 @@ import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
 /**
+ * View for the course types of an institution
  * @author Ingo Dueppe
  * @author Kai Stettner
  */
@@ -29,6 +30,11 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 		crumb.setLink("");
 		crumb.setName(i18n("coursetype_coursetypestable_header"));
 		crumb.setHint(i18n("coursetype_coursetypestable_header"));
+		
+		breadcrumbs.loadInstituteCrumbs(instituteInfo);
+		breadcrumbs.addCrumb(crumb);
+		
+		// TODO Remove old crumb code
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	

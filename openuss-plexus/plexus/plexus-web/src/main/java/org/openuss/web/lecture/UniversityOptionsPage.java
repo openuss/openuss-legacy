@@ -54,6 +54,11 @@ public class UniversityOptionsPage extends AbstractUniversityPage {
 		crumb.setLink("");
 		crumb.setName(i18n("university_command_settings"));
 		crumb.setHint(i18n("university_command_settings"));
+		
+		breadcrumbs.loadUniversityCrumbs(universityInfo);
+		breadcrumbs.addCrumb(crumb);
+		
+		// TODO Remove old crumb code
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	

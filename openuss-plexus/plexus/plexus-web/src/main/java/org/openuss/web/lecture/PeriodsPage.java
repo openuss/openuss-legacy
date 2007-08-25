@@ -84,6 +84,12 @@ public class PeriodsPage extends AbstractLecturePage {
 		crumb.setLink("");
 		crumb.setName(i18n("period_heading"));
 		crumb.setHint(i18n("period_heading"));
+		
+		breadcrumbs.loadUniversityCrumbs(universityInfo);
+		breadcrumbs.addCrumb(crumb);
+		
+		
+		// TODO Remove old crumb code
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	

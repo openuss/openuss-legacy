@@ -13,6 +13,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseInfo;
@@ -51,6 +52,7 @@ public class InstitutePage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		addBreadCrumbs();
 		
 		// temporär auskommentiert
 		// KStettner 11.08.07
@@ -79,7 +81,11 @@ public class InstitutePage extends AbstractLecturePage {
 		}
 		setSessionBean(Constants.PERIOD_INFO, periodInfo);*/
 		//breadcrumbs shall not be displayed here
-		crumbs.clear();
+	}
+	
+	public void addBreadCrumbs()
+	{	
+		breadcrumbs.loadInstituteCrumbs(instituteInfo);
 	}
 
 	/**

@@ -53,6 +53,11 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 		crumb.setLink("");
 		crumb.setName(i18n("period_remove_header"));
 		crumb.setHint(i18n("period_remove_header"));
+		
+		breadcrumbs.loadUniversityCrumbs(universityInfo);
+		breadcrumbs.addCrumb(crumb);
+		
+		// TODO Remove old crumb code
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	

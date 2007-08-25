@@ -27,7 +27,7 @@ import org.openuss.web.Constants;
 
 
 /**
- * 
+ * This page should be moved to the "Stammdaten view"
  * @author Tianyu Wang
  * @author Weijun Chen
  */

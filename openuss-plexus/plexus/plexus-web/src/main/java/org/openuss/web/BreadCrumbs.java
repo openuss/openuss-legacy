@@ -154,6 +154,20 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		return crumbs;
 	}
 	
+	private List<BreadCrumb> getUniversityCrumbs(UniversityInfo info)
+	{
+		if(info == null)
+			return getEmptyList();
+		
+		List<BreadCrumb> crumbs = getBaseCrumbs();
+		BreadCrumb universityCrumb = getUniversityCrumb(info);
+		
+		
+		assert crumbs != null;
+		crumbs.add(universityCrumb);
+		return crumbs;
+	}
+	
 	private BreadCrumb getUniversityCrumb(UniversityInfo info)
 	{
 		assert info != null;
@@ -233,6 +247,19 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 			return getEmptyList();
 		
 		InstituteInfo info = instituteService.findInstitute(instituteId);
+		if(info == null)
+			return getEmptyList();
+		
+		List<BreadCrumb> crumbs = getDepartmentCrumbs(info.getDepartmentId());
+		BreadCrumb instituteCrumb = getInstituteCrumb(info);
+		
+		assert crumbs != null;
+		crumbs.add(instituteCrumb);
+		return crumbs;
+	}
+	
+	private List<BreadCrumb> getInstituteCrumbs(InstituteInfo info)
+	{
 		if(info == null)
 			return getEmptyList();
 		
@@ -356,19 +383,29 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		setCrumbs(getUniversityCrumbs(universityId));
 	}
 	
+	public void loadUniversityCrumbs(UniversityInfo universityInfo)
+	{
+		setCrumbs(getUniversityCrumbs(universityInfo));
+	}
+	
 	public void loadDepartmentCrumbs(Long departmentId)
 	{
 		setCrumbs(getDepartmentCrumbs(departmentId));
 	}
 	
-	public void loadDepartmentCrumbs(DepartmentInfo info)
+	public void loadDepartmentCrumbs(DepartmentInfo departmentInfo)
 	{
-		setCrumbs(getDepartmentCrumbs(info));
+		setCrumbs(getDepartmentCrumbs(departmentInfo));
 	}
 	
 	public void loadInstituteCrumbs(Long instituteId)
 	{
 		setCrumbs(getInstituteCrumbs(instituteId));
+	}
+	
+	public void loadInstituteCrumbs(InstituteInfo instituteInfo)
+	{
+		setCrumbs(getInstituteCrumbs(instituteInfo));
 	}
 	
 	public void loadCourseCrumbs(CourseInfo courseInfo)

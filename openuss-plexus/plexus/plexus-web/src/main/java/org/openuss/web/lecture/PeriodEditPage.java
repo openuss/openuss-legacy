@@ -31,6 +31,11 @@ public class PeriodEditPage extends AbstractPeriodPage {
 		crumb.setLink(PageLinks.UNIVERSITY_PERIODS);
 		crumb.setName(i18n("period_command_edit"));
 		crumb.setHint(i18n("period_command_edit"));
+		
+		breadcrumbs.loadUniversityCrumbs(universityInfo);
+		breadcrumbs.addCrumb(crumb);
+		
+		// TODO Remove old crumb code
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}

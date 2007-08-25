@@ -66,13 +66,12 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 		crumb.setName(i18n("period_heading"));
 		crumb.setHint(i18n("period_heading"));
 		
-		// Old crumb code
+		breadcrumbs.loadUniversityCrumbs(universityInfo);
+		breadcrumbs.addCrumb(crumb);
+		
+		// TODO Remove old crumb code
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
-		
-		// New crumb code
-		breadcrumbs.loadUniversityCrumbs(universityInfo.getId());
-		breadcrumbs.addCrumb(crumb);
 	}	
 
 	/**

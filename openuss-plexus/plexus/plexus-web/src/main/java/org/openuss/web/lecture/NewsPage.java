@@ -45,6 +45,11 @@ public class NewsPage extends AbstractLecturePage {
 		crumb.setLink("");
 		crumb.setName(i18n("institute_command_news"));
 		crumb.setHint(i18n("institute_command_news"));
+		
+		breadcrumbs.loadInstituteCrumbs(instituteInfo);
+		breadcrumbs.addCrumb(crumb);
+		
+		// TODO Remove old crumb code
 		crumbs.add(crumb);
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}

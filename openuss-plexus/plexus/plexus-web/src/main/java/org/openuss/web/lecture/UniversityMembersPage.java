@@ -68,13 +68,12 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 		crumb.setName(i18n("university_command_authorisations"));
 		crumb.setHint(i18n("university_command_authorisations"));
 		
-		// Old crumb code
-		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
-		
-		// New crumb code
 		breadcrumbs.loadUniversityCrumbs(universityInfo.getId());
 		breadcrumbs.addCrumb(crumb);
+		
+		// TODO Remove old crumb code
+		crumbs.add(crumb);
+		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 
 	public List<GroupItem> getUniversityGroups() {
