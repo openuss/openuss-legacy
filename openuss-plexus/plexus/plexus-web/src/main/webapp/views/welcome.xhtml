@@ -52,7 +52,7 @@
 					</p>
 					<p class="content_font_normal">
 						 <img src="/theme-plexus/img/icons/arrow_right_blue.png" title="arrow" alt="go" />
-						 <h:outputLink value="http://www.wi.uni-muenster.de/aw"><h:outputText value="#{msg.welcome_provider_information}"/></h:outputLink>
+						 <h:outputLink value="http://www.wi.uni-muenster.de/aw"><h:outputText value=" #{msg.welcome_provider_information}"/></h:outputLink>
 				  	</p>
 		  		</h:form>
 			</o:block>
@@ -62,22 +62,23 @@
 					<div>
 						<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
 					</div>
-					<h:form id="actionsForm">
+					
 						<o:block styleClass="teaser_blue" label="#{msg.organisation_command_actions}">
+						  	<h:form id="actionsForm">
 						  		<s:authorize ifAllGranted="ROLE_ADMIN">
-							  		<h:commandLink action="university_registration_start">
-										<h:outputText value="#{msg.university_command_add_university}"  styleClass="content_font_normal"/>
-									</h:commandLink>
-									<t:htmlTag value="br"/>
-									<t:htmlTag value="br"/>
+							  		<p class="content_font_normal">
+								  		<h:commandLink action="university_registration_start">
+											<h:outputText value="#{msg.university_command_add_university}"/>
+										</h:commandLink>
+									</p>
 								</s:authorize>
-						  		
-						  		<h:commandLink action="institute_registration_start">
-									<h:outputText value="#{msg.institute_command_add_institute}"  styleClass="content_font_normal"/>
-								</h:commandLink>
-								
+						  		<p class="content_font_normal">
+							  		<h:commandLink action="institute_registration_start">
+										<h:outputText value="#{msg.institute_command_add_institute}"/>
+									</h:commandLink>
+								</p>
+							</h:form>
 						</o:block>
-					</h:form>
 				</s:authorize>
 			<div>
 				<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
