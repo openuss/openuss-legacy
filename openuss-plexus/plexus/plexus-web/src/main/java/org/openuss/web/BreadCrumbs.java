@@ -3,6 +3,7 @@ package org.openuss.web;
 import java.io.Serializable;
 
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
@@ -36,23 +37,63 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 	private boolean rendered;
 	private List<BreadCrumb> myCrumbs;
 	
+	@Property(value="#{courseService}")
+	private CourseService courseService;
+	
+	@Property(value="#{courseTypeService}")
+	private CourseTypeService courseTypeService;
+	
+	@Property(value="#{instituteService}")
+	private InstituteService instituteService;
+	
+	@Property(value="#{departmentService}")
+	private DepartmentService departmentService;
+	
+	@Property(value="#{universityService}")
+	private UniversityService universityService;
+	
+	
 	public BreadCrumbs()
 	{
 		super();
+		init();
+		
+	}
+	
+	/*
+	 * Clears the crumbs and hides them
+	 */
+	public void clear()
+	{
+		rendered = false;
+		myCrumbs = getEmptyList();
+	}
+	
+	/*
+	 * Sets the crumbs to point to the Startpage
+	 */
+	public void init()
+	{
 		rendered = true;
 		myCrumbs = getBaseCrumbs();
 	}
 	
+	/*
+	 * Returns the current list of bread crumbs
+	 */
 	public List<BreadCrumb> getCrumbs()
 	{
 		return myCrumbs;
 	}
 	
-	public void setCrumbs(List<BreadCrumb> newCrumbs)
+	private void setCrumbs(List<BreadCrumb> newCrumbs)
 	{
 		myCrumbs = newCrumbs;
 	}
 	
+	/*
+	 * Defines if the crumbs should be rendered or not
+	 */
 	public boolean isRendered()
 	{
 		return rendered;
@@ -63,6 +104,9 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		this.rendered = rendered;
 	}
 	
+	/*
+	 * Returns an empty list of bread crumbs
+	 */
 	private List<BreadCrumb> getEmptyList()
 	{
 		return new ArrayList<BreadCrumb>();
@@ -88,11 +132,12 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 	
 	private List<BreadCrumb> getUniversityCrumbs(Long universityId)
 	{
-		ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{universityService}");
+/*		ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{universityService}");
 		if(binding == null)
 			return getEmptyList();
 		
 		UniversityService universityService = (UniversityService)binding.getValue(getFacesContext());
+*/
 		if(universityService == null)
 			return getEmptyList();
 		
@@ -125,11 +170,13 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 	
 	private List<BreadCrumb> getDepartmentCrumbs(Long departmentId)
 	{
+/*
 		ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{departmentService}");
 		if(binding == null)
 			return getEmptyList();
 		
 		DepartmentService departmentService = (DepartmentService)binding.getValue(getFacesContext());
+*/
 		if(departmentService == null)
 			return getEmptyList();
 		
@@ -174,11 +221,14 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 	
 	private List<BreadCrumb> getInstituteCrumbs(Long instituteId)
 	{
+/*
 		ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{instituteService}");
 		if(binding == null)
 			return getEmptyList();
 		
 		InstituteService instituteService = (InstituteService)binding.getValue(getFacesContext());
+*/
+		
 		if(instituteService == null)
 			return getEmptyList();
 		
@@ -209,11 +259,13 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 	
 	private List<BreadCrumb> getCourseCrumbs(Long courseId)
 	{
-		ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{instituteService}");
+/*
+		ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{courseService}");
 		if(binding == null)
 			return getEmptyList();
 		
 		CourseService courseService = (CourseService)binding.getValue(getFacesContext());
+*/
 		if(courseService == null)
 			return getEmptyList();
 		
@@ -338,6 +390,50 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 	{
 		if(newCrumb != null)
 			myCrumbs.add(newCrumb);
+	}
+
+	
+	// Getters and Setters
+	
+
+	public CourseService getCourseService() {
+		return courseService;
+	}
+
+	public void setCourseService(CourseService courseService) {
+		this.courseService = courseService;
+	}
+
+	public CourseTypeService getCourseTypeService() {
+		return courseTypeService;
+	}
+
+	public void setCourseTypeService(CourseTypeService courseTypeService) {
+		this.courseTypeService = courseTypeService;
+	}
+
+	public InstituteService getInstituteService() {
+		return instituteService;
+	}
+
+	public void setInstituteService(InstituteService instituteService) {
+		this.instituteService = instituteService;
+	}
+
+	public DepartmentService getDepartmentService() {
+		return departmentService;
+	}
+
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+
+	public UniversityService getUniversityService() {
+		return universityService;
+	}
+
+	public void setUniversityService(UniversityService universityService) {
+		this.universityService = universityService;
 	}
 	
 }
