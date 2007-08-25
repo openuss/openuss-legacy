@@ -167,6 +167,8 @@
 		<property name="universityDao" ref="universityDao" />
 		<property name="departmentDao" ref="departmentDao" />
 		<property name="instituteDao" ref="instituteDao" />
+		<property name="messageService" ref="messageService" />
+		<property name="systemService" ref="systemService" />
 	</bean>
 
 	<bean id="mailingStatusAspectBean"

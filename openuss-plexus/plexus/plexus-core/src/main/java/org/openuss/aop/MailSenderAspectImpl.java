@@ -1,5 +1,10 @@
 package org.openuss.aop;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Department;
 import org.openuss.lecture.DepartmentDao;
@@ -8,8 +13,11 @@ import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.OrganisationDao;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
+import org.openuss.messaging.MessageService;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
+import org.openuss.system.SystemProperties;
+import org.openuss.system.SystemService;
 
 /**
  * Aspect for Sending Mails.
@@ -26,6 +34,8 @@ public class MailSenderAspectImpl {
 	private UniversityDao universityDao;
 	private DepartmentDao departmentDao;
 	private InstituteDao instituteDao;
+	private MessageService messageService;
+	private SystemService systemService;
 
 	public UserDao getUserDao() {
 		return userDao;
@@ -67,6 +77,22 @@ public class MailSenderAspectImpl {
 		this.instituteDao = instituteDao;
 	}
 
+	public MessageService getMessageService() {
+		return messageService;
+	}
+
+	public void setMessageService(MessageService messageService) {
+		this.messageService = messageService;
+	}
+
+	public SystemService getSystemService() {
+		return systemService;
+	}
+
+	public void setSystemService(SystemService systemService) {
+		this.systemService = systemService;
+	}
+
 	/**
 	 * Sends Emails whenever a Member is added to an Organisation.
 	 */
@@ -97,8 +123,41 @@ public class MailSenderAspectImpl {
 	}
 
 	private void sendAddMemberMailForUniversity(University university, User user) {
-		logger.debug("sendAddMemberMailForUniversity - Sending Email to User " + user.getUsername()
-				+ " and Members of University " + university.getName());
+		logger.debug("sendAddMemberMailForUniversity - Sending Email to User " + user.getUsername() + " ("
+				+ user.getEmail() + ") and Members of University " + university.getName());
+
+		// Create Link to University
+		String link = "/views/public/university/university.faces?university=" + university.getId();
+		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
+
+		// Prepare Parameters for EMail
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("username", user.getUsername());
+		parameters.put("userfirstname", user.getFirstName());
+		parameters.put("userlastname", user.getLastName());
+		parameters.put("organisationname", university.getName());
+		parameters.put("organisationlink", link);
+		
+		// Determine Recipients (Members of the University)
+		List<User> recipients1 = new ArrayList<User>();
+		for (User member : university.getMembership().getMembers()) {
+			recipients1.add(member);
+		}
+		recipients1.remove(user);
+
+		if (recipients1.size() > 0) {
+			// Send Email to Members
+			messageService.sendMessage("user.membership.sender", "user.membership.addmember.members.subject",
+					"addmembermembers", parameters, recipients1);
+		}
+
+		// Determine Recipient (the new User)
+		List<User> recipients2 = new ArrayList<User>(1);
+		recipients2.add(user);
+		
+		// Send Email to new User
+		messageService.sendMessage("user.membership.sender", "user.membership.addmember.user.subject",
+				"addmemberuser", parameters, recipients2);
 	}
 
 	private void sendAddMemberMailForDepartment(Department department, User user) {

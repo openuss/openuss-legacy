@@ -4,6 +4,8 @@ import org.hibernate.SessionFactory;
 import org.openuss.TestUtility;
 import org.openuss.lecture.OrganisationService;
 import org.openuss.lecture.University;
+import org.openuss.messaging.MessageJobDaoMock;
+import org.openuss.messaging.MessageSendingCommand;
 import org.openuss.security.User;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
@@ -36,14 +38,40 @@ public class MailSenderAspectTest extends AbstractTransactionalDataSourceSpringC
 	public void setTestUtility(TestUtility testUtility) {
 		this.testUtility = testUtility;
 	}
+	
+	private MessageSendingCommand messageSendingCommand;
+
+	public MessageSendingCommand getMessageSendingCommand() {
+		return messageSendingCommand;
+	}
+
+	public void setMessageSendingCommand(MessageSendingCommand messageSendingCommand) {
+		this.messageSendingCommand = messageSendingCommand;
+	}
+	private MessageJobDaoMock jobDao;
+
+	@Override
+	protected void onSetUp() throws Exception {
+		super.onSetUp();
+		jobDao = new MessageJobDaoMock();
+		messageSendingCommand.setMessageJobDao(jobDao);
+	}
 
 	public void testSendAddMemberMail() {
 		University university = testUtility.createUniqueUniversityInDB();
 		User user = testUtility.createUniqueUserInDB();
+		user.setEmail("ronhaus@arcor.de");
 
 		OrganisationService organisationService = (OrganisationService) this.applicationContext
 				.getBean("organisationService");
 		organisationService.addMember(university.getId(), user.getId());
+		
+		try {
+			messageSendingCommand.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
