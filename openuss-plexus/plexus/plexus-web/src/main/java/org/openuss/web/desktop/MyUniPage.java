@@ -160,7 +160,7 @@ public class MyUniPage extends BasePage {
 	@Prerender
 	public void prerender() {
 		logger.debug("Prerender MyUni-Page");
-		breadcrumbs.setCrumbs(breadcrumbs.getMyUniCrumbs());
+		breadcrumbs.loadMyUniCrumbs();
 		refreshDesktop();
 		loadParams();
 		removeBookmarks();

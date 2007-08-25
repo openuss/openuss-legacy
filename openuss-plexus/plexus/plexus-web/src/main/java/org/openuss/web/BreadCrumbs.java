@@ -1,6 +1,9 @@
 package org.openuss.web;
 
 import java.io.Serializable;
+
+import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Scope;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.PageLinks;
@@ -27,15 +30,16 @@ import javax.faces.el.ValueBinding;
  * 
  * @author Julian Reimann
  */
+@Bean(name = "breadcrumbs", scope = Scope.REQUEST)
 public class BreadCrumbs extends BaseBean implements Serializable {
 	private static final long serialVersionUID = 7747345698483117871L;
-	private boolean isRendered;
+	private boolean rendered;
 	private List<BreadCrumb> myCrumbs;
 	
 	public BreadCrumbs()
 	{
 		super();
-		isRendered = true;
+		rendered = true;
 		myCrumbs = getBaseCrumbs();
 	}
 	
@@ -49,14 +53,14 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		myCrumbs = newCrumbs;
 	}
 	
-	public boolean getIsRendered()
+	public boolean isRendered()
 	{
-		return isRendered;
+		return rendered;
 	}
 	
-	public void setIsRendered(boolean newIsRendered)
+	public void setRendered(boolean rendered)
 	{
-		isRendered = newIsRendered;
+		this.rendered = rendered;
 	}
 	
 	private List<BreadCrumb> getEmptyList()
@@ -323,6 +327,11 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 	public void loadCourseTypeCrumbs(CourseTypeInfo courseTypeInfo)
 	{
 		setCrumbs(getCourseTypeCrumbs(courseTypeInfo));
+	}
+	
+	public void loadMyUniCrumbs()
+	{
+		setCrumbs(getMyUniCrumbs());
 	}
 	
 	public void addCrumb(BreadCrumb newCrumb)
