@@ -219,4 +219,11 @@ public class DepartmentServiceMock implements DepartmentService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public List findOpenApplicationsByDepartment(Long departmentId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

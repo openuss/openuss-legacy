@@ -42,8 +42,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 				"DepartmentService.handleCreate - the Department shouldn't have an ID yet");
 		Validate.isTrue(!department.isDefaultDepartment(),
 				"DepartmentService.handleCreate - You cannot create a default Department!");
-		
-		
+
 		// Transform ValueObject into Entity
 		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(department);
 
@@ -116,7 +115,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		// TODO: fireRemovedDepartment event to delete all bookmarks and open applications
 		// existing institutes have no longer an association to a department and are set to an open department
-		
+
 		department.getUniversity().remove(department);
 		this.getDepartmentDao().remove(department);
 
@@ -194,13 +193,17 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	@Override
 	protected List handleFindDepartmentsByUniversityAndType(Long universityId, DepartmentType departmentType)
 			throws Exception {
-		Validate.notNull(universityId, "DepartmentService.handleFindDepartmentsByUniversityAndType - the universityId cannot be null");
-		Validate.notNull(departmentType, "DepartmentService.handleFindDepartmentsByUniversityAndType - the departmentType cannot be null");
+		Validate.notNull(universityId,
+				"DepartmentService.handleFindDepartmentsByUniversityAndType - the universityId cannot be null");
+		Validate.notNull(departmentType,
+				"DepartmentService.handleFindDepartmentsByUniversityAndType - the departmentType cannot be null");
 		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university, "DepartmentService.handleFindDepartmentsByUniversityAndType - no University found corresponding to the ID "
-				+ universityId);
-		
-		return this.getDepartmentDao().findByUniversityAndType(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university, departmentType);
+		Validate.notNull(university,
+				"DepartmentService.handleFindDepartmentsByUniversityAndType - no University found corresponding to the ID "
+						+ universityId);
+
+		return this.getDepartmentDao().findByUniversityAndType(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university,
+				departmentType);
 	}
 
 	@Override
@@ -271,9 +274,10 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		department.remove(institute);
 
 		// Assign Institute to (any) Standard non-official Department (without Application)
-		List<Department> departments = this.getDepartmentDao().findByUniversityAndType(department.getUniversity(), DepartmentType.NONOFFICIAL);
+		List<Department> departments = this.getDepartmentDao().findByUniversityAndType(department.getUniversity(),
+				DepartmentType.NONOFFICIAL);
 		Validate.isTrue(!departments.isEmpty(),
-				"DepartmentService.handleSignoffInstitute - no NONOFFICIAL Department found, cannot signoff");	
+				"DepartmentService.handleSignoffInstitute - no NONOFFICIAL Department found, cannot signoff");
 		departments.get(0).add(institute);
 	}
 
@@ -284,7 +288,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		return (ApplicationInfo) this.getApplicationDao().load(ApplicationDao.TRANSFORM_APPLICATIONINFO, applicationId);
 	}
-	
+
 	/**
 	 * @see org.openuss.lecture.DepartmentService#findApplicationsByDepartment(org.openuss.lecture.Department)
 	 */
@@ -292,33 +296,32 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	@Override
 	public List handleFindApplicationsByDepartment(Long departmentId) throws Exception {
 
-		Validate.notNull(departmentId, "DepartmentService.findApplicationsByDepartment - " +
-				"the departmentId cannot be null.");
-		
+		Validate.notNull(departmentId, "DepartmentService.findApplicationsByDepartment - "
+				+ "the departmentId cannot be null.");
+
 		// Load Department
 		Department departmentEntity = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(departmentEntity, "DepartmentService.findApplicationsByDepartment - " +
-				"no department can be found with teh departmentId "+departmentId);
-		
+		Validate.notNull(departmentEntity, "DepartmentService.findApplicationsByDepartment - "
+				+ "no department can be found with teh departmentId " + departmentId);
+
 		return this.getApplicationDao().findByDepartment(ApplicationDao.TRANSFORM_APPLICATIONINFO, departmentEntity);
 	}
-	
-	
+
 	@Override
 	public void handleSetDepartmentStatus(Long departmentId, boolean status) {
 		Validate.notNull(departmentId, "DepartmentService.setDepartmentStatus - the departmentId cannot be null.");
 		Validate.notNull(status, "DepartmentService.setDepartmentStatus - status cannot be null.");
-		
+
 		// Load department
 		Department department = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(department, "DepartmentService.setDepartmentStatus - " +
-				"department cannot be found with the corresponding departmentId "+departmentId);
-		
+		Validate.notNull(department, "DepartmentService.setDepartmentStatus - "
+				+ "department cannot be found with the corresponding departmentId " + departmentId);
+
 		// Set status
 		department.setEnabled(status);
 		this.update(this.getDepartmentDao().toDepartmentInfo(department));
 	}
-	
+
 	@Override
 	public boolean handleIsNoneExistingDepartmentShortcut(DepartmentInfo self, String shortcut) throws Exception {
 		Department found = getDepartmentDao().findByShortcut(shortcut);
@@ -327,6 +330,19 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 			foundInfo = this.getDepartmentDao().toDepartmentInfo(found);
 		}
 		return isEqualOrNull(self, foundInfo);
+	}
+
+	@Override
+	protected List handleFindOpenApplicationsByDepartment(Long departmentId) throws Exception {
+		Validate.notNull(departmentId, "DepartmentService.findOpenApplicationsByDepartment - "
+				+ "the departmentId cannot be null.");
+
+		// Load Department
+		Department departmentEntity = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(departmentEntity, "DepartmentService.findOpenApplicationsByDepartment - "
+				+ "no department can be found with teh departmentId " + departmentId);
+
+		return this.getApplicationDao().findByDepartment(ApplicationDao.TRANSFORM_APPLICATIONINFO, departmentEntity);
 	}
 
 	/*------------------- private methods -------------------- */
