@@ -20,6 +20,8 @@ import org.openuss.lecture.CourseTypeService;
 import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.OrganisationService;
+import org.openuss.lecture.OrganisationHierarchy;
 import javax.faces.el.ValueBinding;
 
 
@@ -52,12 +54,17 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 	@Property(value="#{universityService}")
 	private UniversityService universityService;
 	
+	@Property(value="#{organisationService}")
+	private OrganisationService organisationService;
+	
+	private OrganisationHierarchy organisationHierarchy;
+	
 	
 	public BreadCrumbs()
 	{
 		super();
+		organisationHierarchy = new OrganisationHierarchy();
 		init();
-		
 	}
 	
 	/*
@@ -138,6 +145,7 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		
 		UniversityService universityService = (UniversityService)binding.getValue(getFacesContext());
 */
+		
 		if(universityService == null)
 			return getEmptyList();
 		
@@ -198,7 +206,13 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		if(info == null)
 			return getEmptyList();
 		
-		List<BreadCrumb> crumbs = getUniversityCrumbs(info.getUniversityId());
+		List<BreadCrumb> crumbs;
+		
+		if(organisationHierarchy.getUniversityInfo() != null)
+			crumbs = getUniversityCrumbs(organisationHierarchy.getUniversityInfo());
+		else
+			crumbs = getUniversityCrumbs(info.getUniversityId());
+		
 		BreadCrumb departmentCrumb = getDepartmentCrumb(info);
 		
 		assert crumbs != null;
@@ -211,7 +225,13 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		if(info == null)
 			return getEmptyList();
 		
-		List<BreadCrumb> crumbs = getUniversityCrumbs(info.getUniversityId());
+		List<BreadCrumb> crumbs;
+		
+		if(organisationHierarchy.getUniversityInfo() != null)
+			crumbs = getUniversityCrumbs(organisationHierarchy.getUniversityInfo());
+		else
+			crumbs = getUniversityCrumbs(info.getUniversityId());
+		
 		BreadCrumb departmentCrumb = getDepartmentCrumb(info);
 		
 		assert crumbs != null;
@@ -250,7 +270,13 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		if(info == null)
 			return getEmptyList();
 		
-		List<BreadCrumb> crumbs = getDepartmentCrumbs(info.getDepartmentId());
+		List<BreadCrumb> crumbs;
+		
+		if(organisationHierarchy.getDepartmentInfo() != null)
+			crumbs = getDepartmentCrumbs(organisationHierarchy.getDepartmentInfo());
+		else
+			crumbs = getDepartmentCrumbs(info.getDepartmentId());
+		
 		BreadCrumb instituteCrumb = getInstituteCrumb(info);
 		
 		assert crumbs != null;
@@ -263,7 +289,13 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		if(info == null)
 			return getEmptyList();
 		
-		List<BreadCrumb> crumbs = getDepartmentCrumbs(info.getDepartmentId());
+		List<BreadCrumb> crumbs;
+		
+		if(organisationHierarchy.getDepartmentInfo() != null)
+			crumbs = getDepartmentCrumbs(organisationHierarchy.getDepartmentInfo());
+		else
+			crumbs = getDepartmentCrumbs(info.getDepartmentId());
+		
 		BreadCrumb instituteCrumb = getInstituteCrumb(info);
 		
 		assert crumbs != null;
@@ -300,7 +332,12 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		if(info == null)
 			return getEmptyList();
 		
-		List<BreadCrumb> crumbs = getInstituteCrumbs(info.getInstituteId());
+		List<BreadCrumb> crumbs;
+		
+		if(organisationHierarchy.getInstituteInfo() != null)
+			crumbs = getInstituteCrumbs(organisationHierarchy.getInstituteInfo());
+		else
+			crumbs = getInstituteCrumbs(info.getInstituteId());
 		BreadCrumb courseCrumb = getCourseCrumb(info);
 		
 		assert crumbs != null;
@@ -313,7 +350,13 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		if(info == null)
 			return getEmptyList();
 		
-		List<BreadCrumb> crumbs = getInstituteCrumbs(info.getInstituteId());
+		List<BreadCrumb> crumbs;
+		
+		if(organisationHierarchy.getInstituteInfo() != null)
+			crumbs = getInstituteCrumbs(organisationHierarchy.getInstituteInfo());
+		else
+			crumbs = getInstituteCrumbs(info.getInstituteId());
+		
 		BreadCrumb courseCrumb = getCourseCrumb(info);
 		
 		assert crumbs != null;
@@ -356,7 +399,13 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		if(info == null)
 			return getEmptyList();
 		
-		List<BreadCrumb> crumbs = getInstituteCrumbs(info.getInstituteId());
+		List<BreadCrumb> crumbs;
+		
+		if(organisationHierarchy.getInstituteInfo() != null)
+			crumbs = getInstituteCrumbs(organisationHierarchy.getInstituteInfo());
+		else
+			crumbs = getInstituteCrumbs(info.getInstituteId());
+		
 		BreadCrumb courseTypeCrumb = getCourseTypeCrumb(info);
 		
 		assert crumbs != null;
@@ -400,21 +449,25 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 	
 	public void loadInstituteCrumbs(Long instituteId)
 	{
+		setOrganisationHierarchy(organisationService.findInstituteHierarchy(instituteId));
 		setCrumbs(getInstituteCrumbs(instituteId));
 	}
 	
 	public void loadInstituteCrumbs(InstituteInfo instituteInfo)
 	{
+		setOrganisationHierarchy(organisationService.findInstituteHierarchy(instituteInfo.getId()));
 		setCrumbs(getInstituteCrumbs(instituteInfo));
 	}
 	
 	public void loadCourseCrumbs(CourseInfo courseInfo)
 	{
+		setOrganisationHierarchy(organisationService.findCourseHierarchy(courseInfo.getId()));
 		setCrumbs(getCourseCrumbs(courseInfo));
 	}
 	
 	public void loadCourseTypeCrumbs(CourseTypeInfo courseTypeInfo)
 	{
+		// setOrganisationHierarchy(organisationService.findCourseTypeHierarchy(courseTypeInfo.getId()));
 		setCrumbs(getCourseTypeCrumbs(courseTypeInfo));
 	}
 	
@@ -471,6 +524,26 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 
 	public void setUniversityService(UniversityService universityService) {
 		this.universityService = universityService;
+	}
+
+	public OrganisationService getOrganisationService() {
+		return organisationService;
+	}
+
+	public void setOrganisationService(OrganisationService organisationService) {
+		this.organisationService = organisationService;
+	}
+
+	private OrganisationHierarchy getOrganisationHierarchy() {
+		return organisationHierarchy;
+	}
+
+	private void setOrganisationHierarchy(
+			OrganisationHierarchy organisationHierarchy) {
+		if(organisationHierarchy != null)
+			this.organisationHierarchy = organisationHierarchy;
+		else
+			organisationHierarchy = new OrganisationHierarchy();
 	}
 	
 }
