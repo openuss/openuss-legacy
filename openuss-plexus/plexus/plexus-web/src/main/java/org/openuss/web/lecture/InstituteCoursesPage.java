@@ -18,6 +18,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseTypeInfo;
+import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.web.Constants;
@@ -100,12 +101,36 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		
 	}
 	
+	private CourseInfo currentCourse() {
+		
+		CourseInfo course = data.getRowData();
+		
+		return course;
+	}
+	
+	/**
+	 * Store the selected course into session scope and go to course main page.
+	 * @return Outcome
+	 */
+	public String selectCourse() {
+		logger.debug("Starting method selectCourse");
+		CourseInfo course = currentCourse();
+		logger.debug("Returning to method selectCourse");
+		logger.debug(course.getId());	
+		setSessionBean(Constants.COURSE_INFO, course);
+		
+		return Constants.COURSE_PAGE;
+	}
+	
+	/**
+	 * Bookmarks the selected course on the MyUni Page.
+	 * @return Outcome
+	 */
 	public String shortcutCourse() {
-		courseInfo = data.getRowData();;
+		courseInfo = data.getRowData();
 		try {
-			// desktopService.linkCourseType(desktop, courseType);
-			desktopService2.linkCourseType(desktopInfo.getId(), courseTypeInfo.getId());
-			addMessage(i18n("desktop_command_add_coursetype_succeed"));
+			desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());
+			addMessage(i18n("desktop_command_add_course_succeed"));
 			return Constants.SUCCESS;
 		} catch (DesktopException e) {
 			logger.error(e);
@@ -131,9 +156,9 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		@Override
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				//List<CourseInfo> courses = new ArrayList<CourseInfo>(courseService.findCoursesByCourseType(courseTypeInfo.getId()));
-				List<CourseInfo> coursesTest = new ArrayList<CourseInfo>();
-				List<CourseInfo> courses = new ArrayList<CourseInfo>(coursesTest);
+				List<CourseInfo> courses = new ArrayList<CourseInfo>(courseService.findCoursesByCourseType(courseTypeInfo.getId()));
+				//List<CourseInfo> coursesTest = new ArrayList<CourseInfo>();
+				//List<CourseInfo> courses = new ArrayList<CourseInfo>(coursesTest);
 				sort(courses);
 				page = new DataPage<CourseInfo>(courses.size(),0,courses);
 			}

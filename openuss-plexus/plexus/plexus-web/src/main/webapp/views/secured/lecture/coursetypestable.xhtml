@@ -17,13 +17,12 @@
      	rows="5">  
    
 		<t:column>
+		
 			<plexus:commandSortHeader columnName="name">#{msg.coursetype_colheader_name}</plexus:commandSortHeader> 
 			<h:commandLink action="#{views$public$coursetype$coursetypes.selectCourseTypeAndRedirectToCourses}" styleClass="command">
 				<b><h:outputText value="#{bean.name} (#{bean.shortcut})"/></b>
 			</h:commandLink>
-			<h:commandLink action="#{views$public$coursetype$coursetypes.assignCourseTypeToPeriod}">
-				<b><h:outputText value="#{msg.coursetype_command_assign_to_period}"  styleClass="content_font_normal"/></b>
-			</h:commandLink><br/>
+			<br></br>
 			<small><h:outputText value="#{bean.description}"/></small>
 			
 		</t:column>
@@ -47,6 +46,7 @@
 			</plexus:command>
 		
 		</plexus:column>
+		
 	</plexus:dataTable>
 	
 	
