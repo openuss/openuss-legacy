@@ -691,12 +691,12 @@
 	
 			<navigation-case>
 					<from-outcome>department_registration_start</from-outcome>
-					<to-view-id>/views/secured/lecture/registration/departmentStart.xhtml</to-view-id>
+					<to-view-id>/views/secured/lecture/registration/departmentstart.xhtml</to-view-id>
 			</navigation-case>
 			
 			<navigation-case>
 				<from-outcome>department_registration_step1</from-outcome>		
-				<to-view-id>/views/secured/lecture/registration/departmentStep1.xhtml</to-view-id>
+				<to-view-id>/views/secured/lecture/registration/departmentstep1.xhtml</to-view-id>
 			</navigation-case>
 		
 	</navigation-rule>
@@ -707,17 +707,17 @@
 
 			<navigation-case>
 				<from-outcome>department_registration_start</from-outcome>
-				<to-view-id>/views/secured/lecture/registration/departmentStart.xhtml</to-view-id>
+				<to-view-id>/views/secured/lecture/registration/departmentstart.xhtml</to-view-id>
 			</navigation-case>
 			
 			<navigation-case>
 				<from-outcome>department_registration_step1</from-outcome>		
-				<to-view-id>/views/secured/lecture/registration/departmentStep1.xhtml</to-view-id>
+				<to-view-id>/views/secured/lecture/registration/departmentstep1.xhtml</to-view-id>
 			</navigation-case>
 	
 			<navigation-case>
 				<from-outcome>department_registration_step2</from-outcome>		
-				<to-view-id>/views/secured/lecture/registration/departmentStep2.xhtml</to-view-id>
+				<to-view-id>/views/secured/lecture/registration/departmentstep2.xhtml</to-view-id>
 			</navigation-case>
 	</navigation-rule>
 
