@@ -1,11 +1,13 @@
 <html>
 	<body>
-		<h3><font color="#003366">OpenUSS User Administration</font></h3>
-			You, Username <i>${username} (${userfirstname} ${userlastname})</i> have been added to the organisation 
-			<i>${organisationname}</i>,
-			Please click on the following link to administrate your organisation:<br/>
 		<p>
-		<a href="${courseapplicantlink}">${organisationlink}</a>
+			<h3><font color="#003366">OpenUSS User Administration</font></h3>
+			You, <i>${username} (${userfirstname} ${userlastname})</i>, have been added to the Organisation 
+			<i>${organisationname}</i>.
+		</p>
+		<p>
+			You may click on the following link to administrate your organisation:<br/>
+			<a href="${organisationlink}">${organisationlink}</a>
 		</p>
 		<p>
 			If clicking the link above does not work, copy and paste the URL in a new browser window instead.

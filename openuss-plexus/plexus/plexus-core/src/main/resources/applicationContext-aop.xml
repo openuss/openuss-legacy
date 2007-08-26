@@ -9,17 +9,17 @@
 		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<aop:config>
 		<!-- Pointcut Definitions -->
-		<aop:pointcut id="addMemberPointcut"
+		<aop:pointcut id="OrganisationServiceAddMemberPointcut"
 			expression="execution(* org..OrganisationServiceBase.addMember(java.lang.Long, java.lang.Long)) and args(organisationId, userId)" />
-		<aop:pointcut id="removeMemberPointcut"
+		<aop:pointcut id="OrganisationServiceRemoveMemberPointcut"
 			expression="execution(* org..OrganisationServiceBase.removeMember(java.lang.Long, java.lang.Long)) and args(organisationId, userId)" />
 
 		<!-- Aspect Definitions -->
 		<aop:aspect id="mailSenderAspect" ref="mailSenderAspectBean">
 			<aop:after-returning method="sendAddMemberMail"
-				pointcut-ref="addMemberPointcut" arg-names="organisationId, userId" />
+				pointcut-ref="OrganisationServiceAddMemberPointcut" arg-names="organisationId, userId" />
 			<aop:after-returning method="sendRemoveMemberMail"
-				pointcut-ref="removeMemberPointcut"
+				pointcut-ref="OrganisationServiceRemoveMemberPointcut"
 				arg-names="organisationId, userId" />
 		</aop:aspect>
 
