@@ -29,7 +29,7 @@ import org.openuss.web.Constants;
  * @author Weijun Chen
  * @author Kai Stettner
  */
-@Bean(name = "views$secured$lecture$auth$departmentmembers", scope = Scope.REQUEST)
+@Bean(name = "views$secured$lecture$auth$departmentMembers", scope = Scope.REQUEST)
 @View
 public class DepartmentMembersPage extends AbstractDepartmentPage {
 

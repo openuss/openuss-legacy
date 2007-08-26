@@ -33,10 +33,10 @@
 			</h:form>
 	  		<h:form id="newMemberForm">
 	  			<o:block label="#{msg['department_members_add_subheading']}" styleClass="form_box">
-					<o:input entity="views$secured$lecture$auth$departmentmembers" property="username" required="true" label="#{msg['user_username']}">
+					<o:input entity="views$secured$lecture$auth$departmentMembers" property="username" required="true" label="#{msg['user_username']}">
 						<f:validator validatorId="usernameExistValidator" />
 					</o:input>
-					<h:commandButton value="#{msg['department_members_command_add']}" actionListener="#{views$secured$lecture$auth$departmentmembers.addMember}" title="#{msg['department_members_command_add_hint']}" styleClass="button_save"/>
+					<h:commandButton value="#{msg['department_members_command_add']}" actionListener="#{views$secured$lecture$auth$departmentMembers.addMember}" title="#{msg['department_members_command_add_hint']}" styleClass="button_save"/>
 				</o:block>
 			</h:form>	
   		</ui:define>
