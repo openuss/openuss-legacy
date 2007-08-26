@@ -409,6 +409,7 @@ public class MyUniPage extends BasePage {
 		departmentsList.getAttributes().put("title", bundle.getString("flexlist_departments"));
 		departmentsList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_departments"));
 		departmentsList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_departments"));
+		departmentsList.getAttributes().put("alternateRemoveBookmarkLinkTitle", bundle.getString("flexlist_remove_bookmark"));
 		
 		loadValuesForDepartmentList();
 	}
@@ -425,6 +426,8 @@ public class MyUniPage extends BasePage {
 		institutesList.getAttributes().put("title", bundle.getString("flexlist_institutes"));
 		institutesList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_institutes"));
 		institutesList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_institutes"));
+		institutesList.getAttributes().put("alternateRemoveBookmarkLinkTitle", bundle.getString("flexlist_remove_bookmark"));
+		
 		
 		loadValuesForInstituteList();
 	}
@@ -441,6 +444,7 @@ public class MyUniPage extends BasePage {
 		coursesList.getAttributes().put("title", bundle.getString("flexlist_courses"));
 		coursesList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_courses"));
 		coursesList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_courses"));
+		coursesList.getAttributes().put("alternateRemoveBookmarkLinkTitle", bundle.getString("flexlist_remove_bookmark"));
 		
 		loadValuesForCourseList();
 	}
@@ -452,6 +456,8 @@ public class MyUniPage extends BasePage {
 	public void setTabs(UITabs tabs) {
 		logger.debug("Setting MyUni-tabs component");
 		this.tabs = tabs;
+		tabs.getAttributes().put("alternateLinkTitle", bundle.getString("flexlist_tabs_details"));
+		
 		
 		loadValuesForTabs();
 	}

@@ -108,12 +108,26 @@ public class UIFlexList extends UIOutput {
 									String removeBookmarkUrl = listItem.getRemoveBookmarkUrl();
 									if(removeBookmarkUrl != null && removeBookmarkUrl != "")
 									{
-										writer.write("(");
+									
 										writer.startElement("a", this);
 											writer.writeAttribute("href", removeBookmarkUrl, null);
-											writer.write("Bookmark entfernen");
+											
+											writer.write("(");
+											String linkTitle;
+											try {
+												linkTitle = (String)this.getAttributes().get("alternateRemoveBookmarkLinkTitle");
+											} catch (Exception e) {
+												linkTitle = null;
+											}
+											
+											if(linkTitle != null && linkTitle != "")
+												writer.write(linkTitle);
+											else
+												writer.write("Remove Bookmark");
+											writer.write(")");
+											
 										writer.endElement("a");
-										writer.write(")");
+										
 									}
 									
 									// Render separating space between remove bookmark url and meta text
