@@ -333,7 +333,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	}
 
 	@Override
-	protected List handleFindOpenApplicationsByDepartment(Long departmentId) throws Exception {
+	protected List handleFindApplicationsByDepartmentAndConfirmed(Long departmentId, boolean confirmed) throws Exception {
 		Validate.notNull(departmentId, "DepartmentService.findOpenApplicationsByDepartment - "
 				+ "the departmentId cannot be null.");
 
@@ -341,8 +341,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Department departmentEntity = this.getDepartmentDao().load(departmentId);
 		Validate.notNull(departmentEntity, "DepartmentService.findOpenApplicationsByDepartment - "
 				+ "no department can be found with teh departmentId " + departmentId);
-
-		return this.getApplicationDao().findByDepartment(ApplicationDao.TRANSFORM_APPLICATIONINFO, departmentEntity);
+		return this.getApplicationDao().findByDepartmentAndConfirmed(ApplicationDao.TRANSFORM_APPLICATIONINFO, departmentEntity, confirmed);
 	}
 
 	/*------------------- private methods -------------------- */

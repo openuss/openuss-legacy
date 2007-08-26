@@ -220,7 +220,7 @@ public class DepartmentServiceMock implements DepartmentService {
 		return null;
 	}
 
-	public List findOpenApplicationsByDepartment(Long departmentId) {
+	public List findApplicationsByDepartmentAndConfirmed(Long departmentId, boolean confirmed) {
 		// TODO Auto-generated method stub
 		return null;
 	}
