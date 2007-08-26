@@ -249,19 +249,127 @@ public class MailSenderAspectImpl {
 		University university = universityDao.load(organisationId);
 		if (university != null) {
 			logger.debug("sendRemoveMemberMail - Organisation of type University identified");
-			this.sendAddMemberMailForUniversity(university, user);
+			this.sendRemoveMemberMailForUniversity(university, user);
 		} else {
 			Department department = departmentDao.load(organisationId);
 			if (department != null) {
 				logger.debug("sendRemoveMemberMail - Organisation of type Department identified");
-				this.sendAddMemberMailForDepartment(department, user);
+				this.sendRemoveMemberMailForDepartment(department, user);
 			} else {
 				Institute institute = instituteDao.load(organisationId);
 				if (institute != null) {
 					logger.debug("sendRemoveMemberMail - Organisation of type Institute identified");
-					this.sendAddMemberMailForInstitute(institute, user);
+					this.sendRemoveMemberMailForInstitute(institute, user);
 				}
 			}
 		}
+	}
+	
+	private void sendRemoveMemberMailForUniversity(University university, User user) {
+		logger.debug("sendAddMemberMailForUniversity - Sending Email to User " + user.getUsername() + " ("
+				+ user.getEmail() + ") and Members of University " + university.getName());
+
+		// Create Link to University
+		String link = "openuss-plexus/views/public/university/university.faces?university=" + university.getId();
+		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
+
+		// Prepare Parameters for EMail
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("username", user.getUsername());
+		parameters.put("userfirstname", user.getFirstName());
+		parameters.put("userlastname", user.getLastName());
+		
+		// Determine Recipients (Members of the University)
+		List<User> recipients1 = new ArrayList<User>();
+		for (User member : university.getMembership().getMembers()) {
+			recipients1.add(member);
+		}
+		recipients1.remove(user);
+
+		if (recipients1.size() > 0) {
+			// Send Email to Members
+			messageService.sendMessage("user.membership.sender", "user.membership.addmember.members.subject",
+					"removemembermembers", parameters, recipients1);
+		}
+
+		// Determine Recipient (the new User)
+		List<User> recipients2 = new ArrayList<User>(1);
+		recipients2.add(user);
+		
+		// Send Email to new User
+		messageService.sendMessage("user.membership.sender", "user.membership.addmember.user.subject",
+				"removememberuser", parameters, recipients2);
+	}
+
+	private void sendRemoveMemberMailForDepartment(Department department, User user) {
+		logger.debug("sendAddMemberMailForDepartment - Sending Email to User " + user.getUsername()
+				+ " and Members of Department " + department.getName());
+		
+		// Create Link to Department
+		String link = "openuss-plexus/views/public/department/department.faces?department=" + department.getId();
+		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
+
+		// Prepare Parameters for EMail
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("username", user.getUsername());
+		parameters.put("userfirstname", user.getFirstName());
+		parameters.put("userlastname", user.getLastName());
+		
+		// Determine Recipients (Members of the Department)
+		List<User> recipients1 = new ArrayList<User>();
+		for (User member : department.getMembership().getMembers()) {
+			recipients1.add(member);
+		}
+		recipients1.remove(user);
+
+		if (recipients1.size() > 0) {
+			// Send Email to Members
+			messageService.sendMessage("user.membership.sender", "user.membership.addmember.members.subject",
+					"removemembermembers", parameters, recipients1);
+		}
+
+		// Determine Recipient (the new User)
+		List<User> recipients2 = new ArrayList<User>(1);
+		recipients2.add(user);
+		
+		// Send Email to new User
+		messageService.sendMessage("user.membership.sender", "user.membership.addmember.user.subject",
+				"removememberuser", parameters, recipients2);
+	}
+
+	private void sendRemoveMemberMailForInstitute(Institute institute, User user) {
+		logger.debug("sendAddMemberMailForInstitute - Sending Email to User " + user.getUsername()
+				+ " and Members of Institute " + institute.getName());
+		
+		// Create Link to Institute
+		String link = "openuss-plexus/views/public/institute/institute.faces?institute=" + institute.getId();
+		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
+
+		// Prepare Parameters for EMail
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("username", user.getUsername());
+		parameters.put("userfirstname", user.getFirstName());
+		parameters.put("userlastname", user.getLastName());
+		
+		// Determine Recipients (Members of the Institute)
+		List<User> recipients1 = new ArrayList<User>();
+		for (User member : institute.getMembership().getMembers()) {
+			recipients1.add(member);
+		}
+		recipients1.remove(user);
+
+		if (recipients1.size() > 0) {
+			// Send Email to Members
+			messageService.sendMessage("user.membership.sender", "user.membership.addmember.members.subject",
+					"removemembermembers", parameters, recipients1);
+		}
+
+		// Determine Recipient (the new User)
+		List<User> recipients2 = new ArrayList<User>(1);
+		recipients2.add(user);
+		
+		// Send Email to new User
+		messageService.sendMessage("user.membership.sender", "user.membership.addmember.user.subject",
+				"removememberuser", parameters, recipients2);
 	}
 }
