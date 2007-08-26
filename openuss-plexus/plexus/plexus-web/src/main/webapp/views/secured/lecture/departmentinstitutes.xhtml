@@ -21,32 +21,38 @@
 
 	<body>      
 	<!-- text above will be ignored -->
-	<ui:composition template="/views/layout/layout.xhtml">
-  		<ui:define name="navigation"> 
-			<ui:include src="/views/commons/navigation/department.xhtml" />
-		</ui:define>
- 		<ui:define name="sidebar"> 
-			<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
-		</ui:define>
-  		<ui:define name="content">
-			<h:form id="institutesForm">
-				<ui:include src="/views/commons/institute/institutestable.xhtml"/>
-				<o:block>
-				<h:commandButton 
-					    id="addInstitute"
-						action="institute_registration_start" 
-						value="#{msg.institute_command_add_institute}" 
-						title="#{msg.institute_command_add_institute_hint}"
-						styleClass="button"/>
-				</o:block>
-			</h:form>
-			<h:form id="applicationsForm">
-				<ui:include src="applicationstable.xhtml"/>
+	
+		<ui:composition template="/views/layout/layout.xhtml">
+		
+	  		<ui:define name="navigation"> 
+				<ui:include src="/views/commons/navigation/department.xhtml" />
+			</ui:define>
+			
+	 		<ui:define name="sidebar"> 
+				<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
+			</ui:define>
+			
+	  		<ui:define name="content">
+	  			
+				<h:form id="institutesForm">
+					<ui:include src="/views/commons/institute/institutestable.xhtml"/>
+					<o:block>
+					<h:commandButton 
+						    id="addInstitute"
+							action="institute_registration_start" 
+							value="#{msg.institute_command_add_institute}" 
+							title="#{msg.institute_command_add_institute_hint}"
+							styleClass="button"/>
+					</o:block>
+				</h:form>
 				
-			</h:form>
-		</ui:define>
-				
-	</ui:composition>
-	<!-- text above will be ignored -->
+				<h:form id="applicationsForm">
+					<ui:include src="/views/secured/lecture/applicationstable.xhtml"/>
+				</h:form>
+			</ui:define>
+					
+		</ui:composition>
+		
+	<!-- text below will be ignored -->
 	</body>
 </html>

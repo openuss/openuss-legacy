@@ -10,7 +10,7 @@
       
 	<plexus:dataTable   
      	id="applicationstable" 
-     	value="views$secured$lecture$departmentapplicationspage.applications" 
+     	value="views$secured$lecture$departmentinstitutes.applicationsTable" 
 		var="bean" 
      	label="Bewerbungen" 
        	columnClasses="col_max_left, col_commands"
@@ -18,29 +18,41 @@
    
 		<t:column>
 			<plexus:commandSortHeader columnName="name">#{msg.instituteList_colheader_name}</plexus:commandSortHeader> 
+			<h:outputText value="#{bean.instituteInfo.name}"/>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="description">#{msg.instituteList_colheader_name}</plexus:commandSortHeader> 
 			<h:outputText value="#{bean.id}"/>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="date">#{msg.instituteList_colheader_name}</plexus:commandSortHeader> 
+			<h:outputText value="#{bean.applicationDate}"/>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="confirmed">#{msg.instituteList_colheader_name}</plexus:commandSortHeader> 
+			<h:outputText value="#{bean.confirmed}"/>
 		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">
 
 			<plexus:command 
-				bean= "#{views$secured$lecture$departmentapplicationspage}"  
-				action ="accept"
+				bean= "#{views$secured$lecture$departmentinstitutes}"  
+				action ="acceptApplication"
 				label="#{msg.institute_aspirant_accept}"
 				
 				styleClass="button_add">
 			</plexus:command>
 			<plexus:command   
-				bean= "#{views$secured$lecture$departmentapplicationspage}"  
-				action ="reject"
+				bean= "#{views$secured$lecture$departmentinstitutes}"  
+				action ="rejectApplication"
 				label="#{msg.institute_aspirant_reject}"
 				
 				styleClass="button_remove">
 			</plexus:command>
 		</plexus:column>
 	</plexus:dataTable>
-	
-
-	
 	
 </ui:composition>

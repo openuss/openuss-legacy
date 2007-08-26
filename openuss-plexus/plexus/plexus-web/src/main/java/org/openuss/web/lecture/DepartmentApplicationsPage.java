@@ -78,13 +78,23 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 
 	public String accept(){
 		ApplicationInfo app = applications.getRowData();
-		departmentService.acceptApplication(app.getId(), user.getId());
+		try {
+			departmentService.acceptApplication(app.getId(), user.getId());
+		} catch (Exception e) {
+			// TODO Do something reasonable here to process the exception
+			return Constants.FAILURE;
+		}
 		return Constants.SUCCESS;
 	}
 	
 	public String reject(){
 		ApplicationInfo app = applications.getRowData();
-		departmentService.rejectApplication(app.getId());
+		try {
+			departmentService.rejectApplication(app.getId());
+		} catch (Exception e) {
+			// TODO Do something reasonable here to process the exception
+			return Constants.FAILURE;
+		}
 		return Constants.SUCCESS;
 	}
 	
