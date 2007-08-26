@@ -63,8 +63,8 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
-		crumb.setName(i18n("period_heading"));
-		crumb.setHint(i18n("period_heading"));
+		crumb.setName(i18n("university_command_periods"));
+		crumb.setHint(i18n("university_command_periods"));
 		
 		breadcrumbs.loadUniversityCrumbs(universityInfo);
 		breadcrumbs.addCrumb(crumb);
