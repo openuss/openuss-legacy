@@ -57,7 +57,9 @@
 			  	</o:block>
 	  			
 	  			<o:block styleClass="teaser_blue" label="#{departmentInfo.name} - #{msg['university_profile']}">
+				  	<p class="content_font_normal">
 				  		<h:outputText value="#{departmentInfo.description}" styleClass="content_font_normal" escape="false"/>
+					</p>
 				</o:block>
 				
 				<s:authorize ifAllGranted="ROLE_USER">
