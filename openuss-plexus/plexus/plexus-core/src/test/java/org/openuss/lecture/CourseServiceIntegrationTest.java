@@ -317,6 +317,21 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		assertEquals(0, emptyParticipants.size());
 	}
 	
+	public void testFindCourse () {
+		
+		// Create Courses
+		Course course1 = testUtility.createUniqueCourseInDB();
+		assertNotNull(course1);
+		
+		// Synchronize with DB
+		flush();
+		
+		// Test
+		CourseInfo courseInfo = this.getCourseService().findCourse(course1.getId());
+		assertNotNull(courseInfo);
+		assertEquals(course1.getDescription(), courseInfo.getDescription());
+	}
+	
 	public void testFindCoursesByCourseType () {
 		
 		// Create CourseTypes

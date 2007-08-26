@@ -88,8 +88,11 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	}
 	
 	public CourseInfo handleFindCourse (Long courseId) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Validate.notNull(courseId, "CourseService.findCourse - courseId cannot be null.");
+
+		return this.getCourseDao().toCourseInfo(
+				this.getCourseDao().load(courseId));
 	}
 	
 	public boolean handleIsNoneExistingCourseShortcut (CourseInfo self, String shortcut) {
