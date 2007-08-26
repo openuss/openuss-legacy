@@ -7,17 +7,21 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 import org.apache.log4j.Logger;
+import org.apache.shale.tiger.register.FacesValidator;
 import org.openuss.framework.web.jsf.controller.BaseBean;
-import org.openuss.lecture.LectureService;
-import org.openuss.lecture.LectureServiceException;
-import org.openuss.lecture.CourseType;
+import org.openuss.lecture.CourseTypeInfo;
+import org.openuss.lecture.CourseTypeService;
+import org.openuss.lecture.CourseTypeServiceException;
 import org.openuss.web.Constants;
 
 /**
  * Checks whether or not the entered shortcut is already in use or not.
  * 
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
+
+@FacesValidator(value="courseTypeShortcutValidator")
 public class CourseTypeShortcutValidator extends BaseBean implements Validator {
 
 	private static final Logger logger = Logger.getLogger(CourseTypeShortcutValidator.class);
@@ -26,19 +30,19 @@ public class CourseTypeShortcutValidator extends BaseBean implements Validator {
 	
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		final String shortcut = (String) value;
-		LectureService service = (LectureService) getBean(Constants.LECTURE_SERVICE);
+		CourseTypeService courseTypeService = (CourseTypeService) getBean(Constants.COURSE_TYPE_SERVICE);
 		try {
 			// TODO courseType parameter should be defined through property of validator
-			CourseType courseType = (CourseType) getSessionBean(Constants.COURSE_TYPE);
-			boolean unique = service.isNoneExistingCourseTypeShortcut(courseType, shortcut);
+			CourseTypeInfo courseTypeInfo = (CourseTypeInfo) getSessionBean(Constants.COURSE_TYPE_INFO);
+			boolean unique = courseTypeService.isNoneExistingCourseTypeShortcut(courseTypeInfo, shortcut);
 			if (!unique) {
 				((UIInput) component).setValid(false);
 				addError(component.getClientId(context), i18n(SHORTCUT_MESSAGE_ID),null);
 			}
-		} catch (LectureServiceException e) {
+		} catch (CourseTypeServiceException e) {
 			logger.error(e);
-			addError(i18n(e.getMessage()));
 			((UIInput) component).setValid(false);
+			addError(i18n(e.getMessage()));	
 		}
 		
 	}

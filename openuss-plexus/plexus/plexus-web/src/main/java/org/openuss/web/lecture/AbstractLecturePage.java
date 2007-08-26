@@ -5,7 +5,9 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseType;
+import org.openuss.lecture.CourseTypeService;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.Institute;
@@ -16,7 +18,6 @@ import org.openuss.lecture.LectureService;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
-import org.openuss.lecture.CourseTypeService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
@@ -64,6 +65,9 @@ public abstract class AbstractLecturePage extends BasePage {
 
 	@Property(value = "#{sessionScope.courseType}")
 	protected CourseType courseType;
+	
+	@Property(value = "#{courseService}")
+	protected CourseService courseService;
 
 	/**
 	 * Refreshing institute entity
@@ -202,6 +206,14 @@ public abstract class AbstractLecturePage extends BasePage {
 
 	public DepartmentService getDepartmentService() {
 		return departmentService;
+	}
+
+	public CourseService getCourseService() {
+		return courseService;
+	}
+
+	public void setCourseService(CourseService courseService) {
+		this.courseService = courseService;
 	}
 	
 	

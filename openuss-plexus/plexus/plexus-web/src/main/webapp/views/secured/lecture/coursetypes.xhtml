@@ -30,27 +30,25 @@
   		<ui:define name="content">
 	  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}" ifNot="error"/>
   			<h:form id="courseTypesForm">
-				<ui:include src="coursetypestable.xhtml"/>
-				<c:if test="#{!(views$public$coursetype$coursetypes.renderCourseTypeEditNew)}">
-					<o:block>
-						<h:commandButton 
-						    id="addCourseType"
-							action="#{views$public$coursetype$coursetypes.addCourseType}" 
-							value="#{msg.coursetype_command_add}" 
-							title="#{msg.coursetype_command_add_hint}"
-							styleClass="button_big"/>
-					</o:block>
+  				<c:if test="#{!(views$public$coursetype$coursetypes.renderCourseTypeEditNew)}">
+					<c:if test="#{!(views$public$coursetype$coursetypes.renderCourseTypeAssignToPeriod)}">
+						<ui:include src="coursetypestable.xhtml"/>
+						<o:block>
+							<h:commandButton 
+							    id="addCourseType"
+								action="#{views$public$coursetype$coursetypes.addCourseType}" 
+								value="#{msg.coursetype_command_add}" 
+								title="#{msg.coursetype_command_add_hint}"
+								styleClass="button_big"/>
+						</o:block>
+					</c:if>
 				</c:if>
 			</h:form>
 			
-			<c:if test="#{views$public$coursetype$coursetypes.renderCourseTypeEditNew}">
+			<c:if test="#{(views$public$coursetype$coursetypes.renderCourseTypeEditNew) || (views$public$coursetype$coursetypes.renderCourseTypeAssignToPeriod)}">
 				<ui:include src="coursetypeedit.xhtml"/>
 			</c:if>
-			
-			<c:if test="#{views$public$coursetype$coursetypes.renderCourseTypeAssignToPeriod}">
-				<ui:include src="coursetypeassigntoperiod.xhtml"/>
-			</c:if>
-			
+				
   		</ui:define>
 	</ui:composition>
 	<!-- text above will be ignored -->

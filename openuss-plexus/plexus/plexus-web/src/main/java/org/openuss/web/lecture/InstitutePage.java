@@ -1,11 +1,12 @@
 package org.openuss.web.lecture;
 
+import static org.openuss.web.lecture.AbstractLecturePage.logger;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.faces.model.SelectItem;
+import javax.faces.event.ValueChangeEvent;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -19,7 +20,6 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
-import org.openuss.lecture.UniversityInfo;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
 import org.openuss.web.Constants;
@@ -54,9 +54,7 @@ public class InstitutePage extends AbstractLecturePage {
 		super.prerender();
 		addBreadCrumbs();
 		
-		// temporär auskommentiert
-		// KStettner 11.08.07
-		/*List periods = null;
+		List<PeriodInfo> periodInfos = null;
 		Long universityId = 0l;
 		Long departmentId = 0l;
 		
@@ -65,21 +63,22 @@ public class InstitutePage extends AbstractLecturePage {
 			departmentInfo = departmentService.findDepartment(departmentId);
 			universityId = departmentInfo.getUniversityId();
 			universityInfo = universityService.findUniversity(universityId);
-			//universityService.findActivePeriodByUniversity(universityId);
-			//periods = universityService.findPeriodsByUniversity(universityId);
+			periodInfos = universityService.findActivePeriodsByUniversity(universityId);
 		} 
 		
-		
-		if (periodInfo == null && instituteInfo != null || instituteInfo != null && !periods.contains(period)) {
-			periodInfo = universityService.findActivePeriodByUniversity(universityId);
-			if (periodInfo == null && periods.size() > 0) {
-				periodInfo = (PeriodInfo)periods.get(0);
+		if (periodInfo == null && instituteInfo != null || instituteInfo != null && !periodInfos.contains(periodInfo)) {
+			//periodInfo = universityService.findActivePeriodByUniversity(universityId);
+			if (periodInfo == null && periodInfos.size() > 0) {
+				periodInfo = periodInfos.get(0);
 			}
 		} else {
-			//periodInfo = lectureService.getPeriod(period.getId());
+			periodInfo = universityService.findPeriod(periodInfo.getId());
 			
 		}
-		setSessionBean(Constants.PERIOD_INFO, periodInfo);*/
+		
+		//periodInfo = periodInfos.get(0);
+		
+		setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		//breadcrumbs shall not be displayed here
 	}
 	
@@ -93,13 +92,13 @@ public class InstitutePage extends AbstractLecturePage {
 	 * 
 	 * @param event
 	 */
-	/*public void processPeriodSelectChanged(ValueChangeEvent event) {
+	public void processPeriodSelectChanged(ValueChangeEvent event) {
 		final Long periodId = (Long) event.getNewValue();
-		period = lectureService.getPeriod(periodId);
-		setSessionBean(Constants.PERIOD, period);
+		periodInfo = universityService.findPeriod(periodId);
+		setSessionBean(Constants.PERIOD_INFO, periodInfo);
 	}
 
-	public String resendActivationMail(){
+	/*public String resendActivationMail(){
 		getLectureService().sendActivationCode(institute);
 		addMessage(i18n("institute_activationcode_send"));
 		return Constants.SUCCESS;
@@ -115,12 +114,15 @@ public class InstitutePage extends AbstractLecturePage {
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<CourseInfo> courses = new ArrayList<CourseInfo>();
-				/*if (period != null) {
-					period = lectureService.getPeriod(period.getId());
-					courses.addAll(period.getCourses());
+				if (periodInfo != null) {
+					//period = lectureService.getPeriod(period.getId());
+					List<CourseInfo> coursesByPeriodAndInstitute = courseService.findCoursesByPeriodAndInstitute(periodInfo.getId(), instituteInfo.getId());
+					if (coursesByPeriodAndInstitute != null) {
+						courses.addAll(coursesByPeriodAndInstitute);
+					}
 				} else {
 					logger.error("institute page - no period selected!");
-				}*/
+				}
 				sort(courses);
 				page = new DataPage<CourseInfo>(courses.size(), 0, courses);
 			}
