@@ -33,7 +33,7 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 		Validate.notNull(organisation, "MembershipService.handleAddMember - no User found corresponding to the ID "
 				+ userId);
 
-		this.getMembershipService().addMember(organisation.getMembership(), user, null);
+		this.getMembershipService().addMember(organisation.getMembership(), user);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 		Validate.notNull(organisation, "MembershipService.handleRemoveMember - no User found corresponding to the ID "
 				+ userId);
 
-		this.getMembershipService().removeMember(organisation.getMembership(), user, null);
+		this.getMembershipService().removeMember(organisation.getMembership(), user);
 
 	}
 
@@ -67,7 +67,7 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 		Validate.notNull(organisation, "MembershipService.handleAddAspirant - no User found corresponding to the ID "
 				+ userId);
 
-		this.getMembershipService().addAspirant(organisation.getMembership(), user, null);
+		this.getMembershipService().addAspirant(organisation.getMembership(), user);
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 		Validate.notNull(organisation,
 				"MembershipService.handleAcceptAspirant - no User found corresponding to the ID " + userId);
 
-		this.getMembershipService().acceptAspirant(organisation.getMembership(), user, null);
+		this.getMembershipService().acceptAspirant(organisation.getMembership(), user);
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 		Validate.notNull(organisation,
 				"MembershipService.handleRejectAspirant - no User found corresponding to the ID " + userId);
 
-		this.getMembershipService().rejectAspirant(organisation.getMembership(), user, null);
+		this.getMembershipService().rejectAspirant(organisation.getMembership(), user);
 	}
 
 	/**

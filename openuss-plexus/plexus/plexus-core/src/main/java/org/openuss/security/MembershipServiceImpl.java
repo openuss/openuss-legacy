@@ -21,8 +21,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 *      org.openuss.security.User, org.openuss.security.MembershipParameters)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleAcceptAspirant(org.openuss.security.Membership membership, org.openuss.security.User user,
-			org.openuss.security.MembershipParameters parameters) throws java.lang.Exception {
+	protected void handleAcceptAspirant(org.openuss.security.Membership membership, org.openuss.security.User user) throws java.lang.Exception {
 		// TODO Check Security
 
 		Validate.notNull(user, "MembershipService.handleAcceptAspirant - User cannot be null");
@@ -43,7 +42,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		// care of that
 
 		// Add Aspirant to List of Members
-		this.addMember(membership, user, parameters);
+		this.addMember(membership, user);
 
 	}
 
@@ -52,8 +51,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 *      org.openuss.security.MembershipParameters)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleRejectAspirant(org.openuss.security.Membership membership, org.openuss.security.User user,
-			org.openuss.security.MembershipParameters parameters) throws java.lang.Exception {
+	protected void handleRejectAspirant(org.openuss.security.Membership membership, org.openuss.security.User user) throws java.lang.Exception {
 		
 		// TODO Check Security
 
@@ -77,8 +75,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 * @see org.openuss.security.MembershipService#addMember(org.openuss.security.Membership, java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleAddMember(org.openuss.security.Membership membership, org.openuss.security.User user,
-			org.openuss.security.MembershipParameters parameters) throws java.lang.Exception {
+	protected void handleAddMember(org.openuss.security.Membership membership, org.openuss.security.User user) throws java.lang.Exception {
 		
 		// TODO Check Security
 
@@ -108,7 +105,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	/**
 	 * @see org.openuss.security.MembershipService#removeMember(org.openuss.security.Membership, java.lang.Long)
 	 */
-	protected void handleRemoveMember(Membership membership, User user, MembershipParameters parameters)
+	protected void handleRemoveMember(Membership membership, User user)
 			throws Exception {
 		// TODO Check Security
 
@@ -132,8 +129,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 * @see org.openuss.security.MembershipService#addAspirant(org.openuss.security.Membership, java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleAddAspirant(org.openuss.security.Membership membership, org.openuss.security.User user,
-			org.openuss.security.MembershipParameters parameters) throws java.lang.Exception {
+	protected void handleAddAspirant(org.openuss.security.Membership membership, org.openuss.security.User user) throws java.lang.Exception {
 		
 		// TODO Check Security
 

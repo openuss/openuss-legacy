@@ -35,7 +35,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Try to accept the User
 		try {
-			membershipService.acceptAspirant(university.getMembership(), user1, null);
+			membershipService.acceptAspirant(university.getMembership(), user1);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
@@ -50,7 +50,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		flush();
 
 		// Accept Aspirant
-		membershipService.acceptAspirant(university.getMembership(), user1, null);
+		membershipService.acceptAspirant(university.getMembership(), user1);
 		List aspirants = university.getMembership().getAspirants();
 		assertNotNull(aspirants);
 		assertEquals(sizeAspirantsBefore - 1, aspirants.size());
@@ -75,7 +75,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Try to accept the User
 		try {
-			membershipService.rejectAspirant(university.getMembership(), user1, null);
+			membershipService.rejectAspirant(university.getMembership(), user1);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
@@ -90,7 +90,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		flush();
 
 		// Reject Aspirant
-		membershipService.rejectAspirant(university.getMembership(), user1, null);
+		membershipService.rejectAspirant(university.getMembership(), user1);
 		List aspirants = university.getMembership().getAspirants();
 		assertNotNull(aspirants);
 		assertEquals(sizeAspirantsBefore - 1, aspirants.size());
@@ -116,7 +116,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		// Try to add a Aspirant as a Member
 		try {
 			university.getMembership().getAspirants().add(user1);
-			membershipService.addMember(university.getMembership(), user1, null);
+			membershipService.addMember(university.getMembership(), user1);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
@@ -131,7 +131,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		User user2 = testUtility.createUniqueUserInDB();
 
 		// Add a User
-		membershipService.addMember(university.getMembership(), user2, null);
+		membershipService.addMember(university.getMembership(), user2);
 
 		// Get List of Members again
 		List members2 = university.getMembership().getMembers();
@@ -140,7 +140,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Try to add Member again
 		try {
-			membershipService.addMember(university.getMembership(), user2, null);
+			membershipService.addMember(university.getMembership(), user2);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
@@ -162,14 +162,14 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		User user = testUtility.createUniqueUserInDB();
 
 		// Add a User
-		membershipService.addMember(university.getMembership(), user, null);
+		membershipService.addMember(university.getMembership(), user);
 		int sizeBefore = university.getMembership().getMembers().size();
 
 		// Synchronize with Database
 		flush();
 		
 		// Remove Member
-		membershipService.removeMember(university.getMembership(), user, null);
+		membershipService.removeMember(university.getMembership(), user);
 		
 		// Get List of Members
 		List members2 = university.getMembership().getMembers();
@@ -191,7 +191,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		// Try to add Member as an Aspirant
 		try {
 			membershipService.addAspirant(university.getMembership(), university.getMembership().getMembers()
-					.get(0), null);
+					.get(0));
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}
@@ -206,7 +206,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 		User user2 = testUtility.createUniqueUserInDB();
 
 		// Add a user
-		membershipService.addAspirant(university.getMembership(), user2, null);
+		membershipService.addAspirant(university.getMembership(), user2);
 
 		// Get List of Aspirants again
 		List aspirants2 = university.getMembership().getAspirants();
@@ -215,7 +215,7 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		// Try to add Aspirant again
 		try {
-			membershipService.addAspirant(university.getMembership(), user2, null);
+			membershipService.addAspirant(university.getMembership(), user2);
 			fail("Exception should have been thrown");
 		} catch (MembershipServiceException mse) {
 		}

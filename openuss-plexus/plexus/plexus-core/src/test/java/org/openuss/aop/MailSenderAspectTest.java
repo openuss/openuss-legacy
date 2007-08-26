@@ -60,18 +60,11 @@ public class MailSenderAspectTest extends AbstractTransactionalDataSourceSpringC
 	public void testSendAddMemberMail() {
 		University university = testUtility.createUniqueUniversityInDB();
 		User user = testUtility.createUniqueUserInDB();
-		user.setEmail("ronhaus@arcor.de");
+		user.setEmail("plexus@openuss-plexus.org");
 
 		OrganisationService organisationService = (OrganisationService) this.applicationContext
 				.getBean("organisationService");
 		organisationService.addMember(university.getId(), user.getId());
-		
-		try {
-			messageSendingCommand.execute();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }
