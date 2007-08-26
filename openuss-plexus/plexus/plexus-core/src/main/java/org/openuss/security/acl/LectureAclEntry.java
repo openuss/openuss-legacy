@@ -57,16 +57,22 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	public static final int READ 				= 1 << 4;
 	public static final int UPDATE 				= 1 << 5;
 	public static final int DELETE 				= 1 << 6;
-
+	
 	// Additional permissions to institutes
 	public static final int MANAGE_COURSE_TYPES 	= 1 << 7;
-	public static final int MANAGE_PERIODS 			= 1 << 8;
-	public static final int MANAGE_COURSES 			= 1 << 9;
-	public static final int MANAGE_NEWS 			= 1 << 10;
+	public static final int MANAGE_COURSES 			= 1 << 8;
+	public static final int MANAGE_NEWS 			= 1 << 9;
 
 	// Additional permissions to courses
-	public static final int PARTICIPATE 		= 1 << 11;
-	public static final int ASSIST 				= 1 << 12;
+	public static final int PARTICIPATE 		= 1 << 10;
+	public static final int ASSIST 				= 1 << 11;
+	
+	// Additional permissions to universities
+	public static final int MANAGE_UNIVERSITY		= 1 << 12;
+	public static final int MANAGE_PERIODS 			= 1 << 13;
+	
+	// Additional permissions to departments
+	public static final int MANAGE_DEPARTMENT		= 1 << 14;
 
 	// Default combinations of base permissions
 	public static final int INSTITUTE_TUTOR = PARTICIPATE | ASSIST | READ;
@@ -74,8 +80,8 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	public static final int INSTITUTE_ADMINISTRATION = GRANT | INSTITUTE_ASSIST;
 	public static final int INSTITUTE_OWN = DELETE | INSTITUTE_ADMINISTRATION;
 	
-	public static final int UNIVERSITY_ADMINISTRATION = PARTICIPATE | ASSIST | READ | CREATE | UPDATE | DELETE | MANAGE_NEWS | MANAGE_PERIODS | GRANT;
-	public static final int DEPARTMENT_ADMINISTRATION = PARTICIPATE | ASSIST | READ | CREATE | UPDATE | DELETE | MANAGE_NEWS | MANAGE_PERIODS | GRANT;
+	public static final int UNIVERSITY_ADMINISTRATION = PARTICIPATE | ASSIST | READ | CREATE | UPDATE | DELETE | MANAGE_NEWS | MANAGE_UNIVERSITY | MANAGE_PERIODS | GRANT;
+	public static final int DEPARTMENT_ADMINISTRATION = PARTICIPATE | ASSIST | READ | CREATE | UPDATE | DELETE | MANAGE_NEWS | MANAGE_DEPARTMENT | GRANT;
 	
 	// Default combinations of base course permissions
 	public static final int COURSE_PARTICIPANT = READ | PARTICIPATE;
