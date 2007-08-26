@@ -317,6 +317,40 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		assertEquals(0, emptyParticipants.size());
 	}
 	
+	public void testFindCoursesByCourseType () {
+		
+		// Create CourseTypes
+		CourseType courseType1 = testUtility.createUniqueCourseTypeInDB();
+		CourseType courseType2 = testUtility.createUniqueCourseTypeInDB();
+		
+		// Create Courses
+		Course course1 = testUtility.createUniqueCourseInDB();
+		course1.setCourseType(courseType1);
+		Course course2 = testUtility.createUniqueCourseInDB();
+		course2.setCourseType(courseType2);
+		Course course3 = testUtility.createUniqueCourseInDB();
+		course3.setCourseType(courseType1);
+		Course course4 = testUtility.createUniqueCourseInDB();
+		course4.setCourseType(courseType2);
+		Course course5 = testUtility.createUniqueCourseInDB();
+		course5.setCourseType(courseType1);
+		
+		// Synchronize with DB
+		flush();
+		
+		// Test
+		List<CourseInfo> courses = this.getCourseService().findCoursesByCourseType(courseType1.getId());
+		assertNotNull(courses);
+		assertEquals(3, courses.size());
+		assertEquals(course1.getDescription(), courses.get(0).getDescription());
+		
+		courses = this.getCourseService().findCoursesByCourseType(courseType2.getId());
+		assertNotNull(courses);
+		assertEquals(2, courses.size());
+		assertEquals(course4.getDescription(), courses.get(1).getDescription());
+		
+	}
+	
 
 	private LectureBuilder createInstituteStructure(AccessType accessType) {
 		LectureBuilder lectureBuilder = new LectureBuilder();

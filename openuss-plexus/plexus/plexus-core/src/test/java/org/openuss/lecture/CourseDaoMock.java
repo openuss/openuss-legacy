@@ -1,6 +1,7 @@
 package org.openuss.lecture;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.openuss.foundation.AbstractMockDao;
 
@@ -61,6 +62,26 @@ public class CourseDaoMock extends AbstractMockDao<Course> implements CourseDao 
 		return null;
 	}
 
+	public List findByCourseType(int transform, String queryString, CourseType courseType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByCourseType(int transform, CourseType courseType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByCourseType(String queryString, CourseType courseType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByCourseType(CourseType courseType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public void remove(Course course) {
 		// TODO Auto-generated method stub
 		

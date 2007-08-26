@@ -78,8 +78,13 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	}
 	
 	public List handleFindCoursesByCourseType (Long courseTypeId) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Validate.notNull(courseTypeId, "CourseService.findCoursesByCourseType -" +
+				"courseTypeId cannot be null.");
+		
+		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
+		
+		 return this.getCourseDao().findByCourseType(CourseDao.TRANSFORM_COURSEINFO, courseType);
 	}
 	
 	public CourseInfo handleFindCourse (Long courseId) {
