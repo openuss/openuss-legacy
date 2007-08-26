@@ -18,6 +18,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseTypeInfo;
+import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.web.Constants;
@@ -35,7 +36,9 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 	private LocalDataModel data = new LocalDataModel();
 	
 	private List<SelectItem> institutePeriodItems;
+	private List<SelectItem> instituteCourseTypeItems;
 	private List<PeriodInfo> institutePeriods;
+	private List<CourseTypeInfo> instituteCourseTypes;
 	
 	private Boolean renderCourseTypeEditNew = false;
 	private Boolean renderCourseTypeAssignToPeriod = false;
@@ -122,6 +125,27 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 	}
 	
 	/**
+	 * Store the selected department into session scope and go to department remove confirmation page.
+	 * @return Outcome
+	 */
+	public String selectCourseTypeAndRedirectToCourses() {
+		logger.debug("Starting method selectCourseTypeAndRedirectToCourses");
+		CourseTypeInfo currentCourseType = currentCourseType();
+		logger.debug("Returning to method selectCourseTypeAndRedirectToCourses");
+		logger.debug(currentCourseType.getId());	
+		setSessionBean(Constants.COURSE_TYPE_INFO, currentCourseType);
+		
+		return Constants.INSTITUTE_COURSES_PAGE;
+	}
+	
+	private CourseTypeInfo currentCourseType() {
+		
+		CourseTypeInfo courseType = data.getRowData();
+		
+		return courseType;
+	}
+	
+	/**
 	 * Creates a new CourseTypeInfo object and sets it into session scope
 	 * 
 	 * @return outcome
@@ -172,11 +196,12 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 			courseTypeService.update(courseTypeInfo);
 			addMessage(i18n("institute_message_persist_coursetype_succeed"));
 		}
+		
 		removeSessionBean(Constants.COURSE_TYPE_INFO);
 		courseTypeInfo = null;
 		this.renderCourseTypeEditNew = false;
 		
-		return Constants.INSTITUTE_PAGE;
+		return Constants.SUCCESS;
 	}
 	
 	/**
@@ -220,8 +245,8 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 		removeSessionBean(Constants.COURSE_TYPE_INFO);
 		courseTypeInfo = null;
 		this.renderCourseTypeAssignToPeriod = false;
-		//return Constants.SUCCESS;
-		return Constants.INSTITUTE_PAGE;
+		
+		return Constants.SUCCESS;
 	}
 	
 		
@@ -256,6 +281,28 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 		} 
 		
 		return institutePeriodItems;
+	}
+	
+	public List<SelectItem> getCourseTypesOfInstitute() {
+		
+		instituteCourseTypeItems = new ArrayList<SelectItem>();
+		
+		if (instituteInfo != null) {
+	
+			instituteCourseTypes = courseTypeService.findCourseTypesByInstitute(instituteInfo.getId());
+			
+			Iterator<CourseTypeInfo> iter =  instituteCourseTypes.iterator();
+			CourseTypeInfo courseTypeInfo;
+			
+			while (iter.hasNext()) {
+				courseTypeInfo = iter.next();
+				SelectItem item = new SelectItem(courseTypeInfo.getId(),courseTypeInfo.getName());
+				instituteCourseTypeItems.add(item);
+			}
+			
+		} 
+		
+		return instituteCourseTypeItems;
 	}
 	
 	

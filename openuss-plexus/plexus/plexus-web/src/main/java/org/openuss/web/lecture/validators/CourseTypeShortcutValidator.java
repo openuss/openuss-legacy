@@ -37,6 +37,7 @@ public class CourseTypeShortcutValidator extends BaseBean implements Validator {
 			boolean unique = courseTypeService.isNoneExistingCourseTypeShortcut(courseTypeInfo, shortcut);
 			if (!unique) {
 				((UIInput) component).setValid(false);
+				addMessage(i18n(SHORTCUT_MESSAGE_ID),null);
 				addError(component.getClientId(context), i18n(SHORTCUT_MESSAGE_ID),null);
 			}
 		} catch (CourseTypeServiceException e) {

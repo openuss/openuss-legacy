@@ -142,7 +142,14 @@
 		<navigation-case>
 			<from-outcome>manage_institute</from-outcome>
 			<to-view-id>/views/secured/lecture/departmentinstitutes.xhtml</to-view-id>
-		</navigation-case>	
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_courses	</from-outcome>
+			<to-view-id>/views/secured/lecture/institutecourses.xhtml</to-view-id>
+		</navigation-case>
+		
+		
 		
 	</navigation-rule>
 	

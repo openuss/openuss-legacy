@@ -113,6 +113,7 @@ public class CourseTypeServiceImpl
 	
 	@Override
 	public boolean handleIsNoneExistingCourseTypeShortcut(CourseTypeInfo self, String shortcut) throws Exception {
+		logger.debug("Starting method handleIsNoneExistingCourseTypeShortcut");
 		CourseType found = this.getCourseTypeDao().findByShortcut(shortcut);
 		CourseTypeInfo foundInfo = null;
 		if (found != null) {

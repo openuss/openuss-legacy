@@ -31,30 +31,41 @@
 	  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}" ifNot="error"/>
 	  		<o:block>
 	  			<p class="content_font_normal">
-			  		Die unten stehende Tabelle ist eine Auflistung aller dem Institut zugeordneten Veranstaltungen. Um diesen einen konkreten Zeitraum zuzuordnen, klicken
-			  		Sie bitte auf die zutreffende Veranstaltung. Sie erhalten außerdem eine Darstellung aller bereits angelegten, einem Zeitraum zugeordneten
-			  		Veranstaltungen.
+			  		Diese Seite listet alle Veranstaltungen auf, die konkreten Zeiträumen zugeordnet wurden. Sie kommen in die einzelnen Veranstaltungen durch einfaches
+			  		Klicken auf die Veranstaltung. Zusätzlich haben Sie die Möglichkeit, Veranstaltungen neuen Zeiträumem zuzuweisen.
 	  			</p>
 	  		</o:block>
-  			<h:form id="courseTypesForm">
-  				<c:if test="#{!(views$public$coursetype$coursetypes.renderCourseTypeEditNew)}">
-					<c:if test="#{!(views$public$coursetype$coursetypes.renderCourseTypeAssignToPeriod)}">
-						<ui:include src="coursetypestable.xhtml"/>
+  			<h:form id="coursesForm">
+  				<c:if test="#{!(views$public$coursetype$courses.renderCourseNew)}">
+						<ui:include src="coursetypecoursestable.xhtml"/>
 						<o:block>
 							<h:commandButton 
-							    id="addCourseType"
-								action="#{views$public$coursetype$coursetypes.addCourseType}" 
+							    id="addCourse"
+								action="#{views$public$coursetype$courses.addCourse}" 
 								value="#{msg.coursetype_command_add}" 
 								title="#{msg.coursetype_command_add_hint}"
 								styleClass="button_big"/>
 						</o:block>
-					</c:if>
+				</c:if>
+				<c:if test="#{views$public$coursetype$courses.renderCourseNew}">
+					<h:outputLabel value="#{msg.coursetype_preferences_periods}" for="coursePeriodSelect" styleClass="field_label" />
+					<h:selectOneListbox id="institutePeriods" size="1" styleClass="pulldown" value="#{courseInfo.periodId}">
+			    		<f:selectItems value="#{views$public$coursetype$coursetypes.belongingInstitutePeriods}"/>
+					</h:selectOneListbox>
+					<h:outputLabel value="#{msg.coursetype_preferences_periods}" for="courseCourseTypeSelect" styleClass="field_label" />
+					<h:selectOneListbox id="instituteCourseTypes" size="1" styleClass="pulldown" value="#{courseInfo.courseTypeId}">
+			    		<f:selectItems value="#{views$public$coursetype$coursetypes.courseTypesOfInstitute}"/>
+					</h:selectOneListbox>
+					<h:commandButton 
+					    id="SaveCourse"
+						action="#{views$public$coursetype$courses.saveCourse}" 
+						value="#{msg.coursetype_command_add}" 
+						title="#{msg.coursetype_command_add_hint}"
+						styleClass="button_big"/>
 				</c:if>
 			</h:form>
 			
-			<c:if test="#{(views$public$coursetype$coursetypes.renderCourseTypeEditNew) || (views$public$coursetype$coursetypes.renderCourseTypeAssignToPeriod)}">
-				<ui:include src="coursetypeedit.xhtml"/>
-			</c:if>
+			
 				
   		</ui:define>
 	</ui:composition>

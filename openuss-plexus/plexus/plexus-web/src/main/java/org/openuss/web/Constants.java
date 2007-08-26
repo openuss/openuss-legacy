@@ -198,6 +198,8 @@ public class Constants {
 	public static final String DEPARTMENT_EDIT = "department_edit";
 	public static final String DEPARTMENT_CONFIRM_REMOVE_PAGE = "department_remove_confirmation";
 	
+	public static final String INSTITUTE_COURSES_PAGE = "institute_courses";
+	
 	/******************************university period*****************/
 	public static final String UNIVERSITY_PERIOD_EDIT_PAGE = "university_period_edit";
 	public static final String UNIVERSITY_PERIOD_ADD_PAGE = "university_period_add";

@@ -3,17 +3,17 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup" NAME="rules:#*" PATH="/*" SHAPE="32,17,0,0">
   <PROCESS-ITEM ENTITY="JSFProcessItem" ID="rules:#*:0" NAME="item" PATH="/*">
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="desktop::#views#secured#myuni#myuni.xhtml" NAME="output"
+    ID="institute_create::#views#secured#lecture#registration#start.xhtml"
+    NAME="output" PATH="/views/secured/lecture/registration/start.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#start.xhtml" TITLE="institute_create"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="desktop::#views#secured#myuni#myuni.xhtml" NAME="output1"
     PATH="/views/secured/myuni/myuni.xhtml"
     TARGET="rules:#views#secured#myuni#myuni.xhtml" TITLE="desktop"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="search::#views#public#search#search.xhtml" NAME="output1"
+    ID="search::#views#public#search#search.xhtml" NAME="output2"
     PATH="/views/public/search/search.xhtml"
     TARGET="rules:#views#public#search#search.xhtml" TITLE="search"/>
-   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="extendedSearch::#views#public#search#extendedsearch.xhtml"
-    NAME="output2" PATH="/views/public/search/extendedsearch.xhtml"
-    TARGET="rules:#views#public#search#extendedsearch.xhtml" TITLE="extendedSearch"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="home::#views#welcome.xhtml" NAME="output4"
     PATH="/views/welcome.xhtml" TARGET="rules:#views#welcome.xhtml" TITLE="home"/>
@@ -51,18 +51,6 @@
     PATH="/views/secured/user/profile.xhtml"
     TARGET="rules:#views#secured#user#profile.xhtml" TITLE="user_profile"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="user_logindata::#views#secured#user#logindata.xhtml"
-    NAME="output12" PATH="/views/secured/user/logindata.xhtml"
-    TARGET="rules:#views#secured#user#logindata.xhtml" TITLE="user_logindata"/>
-   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="user_contactdata::#views#secured#user#contactdata.xhtml"
-    NAME="output13" PATH="/views/secured/user/contactdata.xhtml"
-    TARGET="rules:#views#secured#user#contactdata.xhtml" TITLE="user_contactdata"/>
-   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="user_preferences::#views#secured#user#preferences.xhtml"
-    NAME="output14" PATH="/views/secured/user/preferences.xhtml"
-    TARGET="rules:#views#secured#user#preferences.xhtml" TITLE="user_preferences"/>
-   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="user_profile_view::#views#secured#user#userprofile.xhtml"
     NAME="output15" PATH="/views/secured/user/userprofile.xhtml"
     TARGET="rules:#views#secured#user#userprofile.xhtml" TITLE="user_profile_view"/>
@@ -99,10 +87,10 @@
     NAME="output23" PATH="/views/public/university/universities.xhtml"
     TARGET="rules:#views#public#university#universities.xhtml" TITLE="universities"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="university_create::#views#secured#lecture#registration#universityStep1.xhtml"
-    NAME="output24"
-    PATH="/views/secured/lecture/registration/universityStep1.xhtml"
-    TARGET="rules:#views#secured#lecture#registration#universityStep1.xhtml" TITLE="university_create"/>
+    ID="university_create::#views#secured#lecture#registration#universitystep1.xhtml"
+    NAME="output12"
+    PATH="/views/secured/lecture/registration/universitystep1.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#universitystep1.xhtml" TITLE="university_create"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="department::#views#public#department#department.xhtml"
     NAME="output25" PATH="/views/public/department/department.xhtml"
@@ -121,6 +109,10 @@
     NAME="output28"
     PATH="/views/secured/lecture/departmentinstitutes.xhtml"
     TARGET="rules:#views#secured#lecture#departmentinstitutes.xhtml" TITLE="manage_institute"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="institute_courses::#views#secured#lecture#institutecourses.xhtml"
+    NAME="output13" PATH="/views/secured/lecture/institutecourses.xhtml"
+    TARGET="rules:#views#secured#lecture#institutecourses.xhtml" TITLE="institute_courses"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -153,25 +145,15 @@
     PATH="/views/public/user/registration/step1UserAgreement.xhtml"
     TARGET="rules:#views#public#user#registration#step1UserAgreement.xhtml" TITLE="step1"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="step2::#views#public#user#registration#step2LoginData.xhtml"
+    ID="step2::#views#public#user#registration#step2Preferences.xhtml"
     NAME="output2"
-    PATH="/views/public/user/registration/step2LoginData.xhtml"
-    TARGET="rules:#views#public#user#registration#step2LoginData.xhtml" TITLE="step2"/>
+    PATH="/views/public/user/registration/step2Preferences.xhtml"
+    TARGET="rules:#views#public#user#registration#step2Preferences.xhtml" TITLE="step2"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="step3::#views#public#user#registration#step3ContactData.xhtml"
+    ID="step3::#views#public#user#registration#step3Confirmation.xhtml"
     NAME="output3"
-    PATH="/views/public/user/registration/step3ContactData.xhtml"
-    TARGET="rules:#views#public#user#registration#step3ContactData.xhtml" TITLE="step3"/>
-   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="step4::#views#public#user#registration#step4Preferences.xhtml"
-    NAME="output4"
-    PATH="/views/public/user/registration/step4Preferences.xhtml"
-    TARGET="rules:#views#public#user#registration#step4Preferences.xhtml" TITLE="step4"/>
-   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="step5::#views#public#user#registration#step5Confirmation.xhtml"
-    NAME="output5"
-    PATH="/views/public/user/registration/step5Confirmation.xhtml"
-    TARGET="rules:#views#public#user#registration#step5Confirmation.xhtml" TITLE="step5"/>
+    PATH="/views/public/user/registration/step3Confirmation.xhtml"
+    TARGET="rules:#views#public#user#registration#step3Confirmation.xhtml" TITLE="step3"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -225,9 +207,9 @@
   <PROCESS-ITEM ENTITY="JSFProcessItem" ID="rules:#views#secured#*:0"
    NAME="item" PATH="/views/secured/*">
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="user_bookmarks::#views#sercured#user#profile.xhtml"
-    NAME="output" PATH="/views/sercured/user/profile.xhtml"
-    TARGET="rules:#views#sercured#user#profile.xhtml" TITLE="user_bookmarks"/>
+    ID="user_bookmarks::#views#secured#user#profile.xhtml" NAME="output"
+    PATH="/views/secured/user/profile.xhtml"
+    TARGET="rules:#views#secured#user#profile.xhtml" TITLE="user_bookmarks"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -292,9 +274,9 @@
     PATH="/views/secured/lecture/instituteDepartments.xhtml"
     TARGET="rules:#views#secured#lecture#instituteDepartments.xhtml" TITLE="institute_departments"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="institute_members::#views#secured#lecture#auth#members.xhtml"
-    NAME="output2" PATH="/views/secured/lecture/auth/members.xhtml"
-    TARGET="rules:#views#secured#lecture#auth#members.xhtml" TITLE="institute_members"/>
+    ID="institute_data::#views#secured#lecture#instituteoptions.xhtml"
+    NAME="output2" PATH="/views/secured/lecture/instituteoptions.xhtml"
+    TARGET="rules:#views#secured#lecture#instituteoptions.xhtml" TITLE="institute_data"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="institute_aspirants::#views#secured#lecture#auth#aspirants.xhtml"
     NAME="output3" PATH="/views/secured/lecture/auth/aspirants.xhtml"
@@ -541,9 +523,9 @@
     NAME="output3" PATH="/views/secured/system/institutes.xhtml"
     TARGET="rules:#views#secured#system#institutes.xhtml" TITLE="admin_institutes"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="user_profile_view::#views#public#user#userprofile.xhtml"
-    NAME="output4" PATH="/views/public/user/userprofile.xhtml"
-    TARGET="rules:#views#public#user#userprofile.xhtml" TITLE="user_profile_view"/>
+    ID="user_profile_view::#views#secured#user#userprofile.xhtml"
+    NAME="output4" PATH="/views/secured/user/userprofile.xhtml"
+    TARGET="rules:#views#secured#user#userprofile.xhtml" TITLE="user_profile_view"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -557,15 +539,15 @@
     PATH="/views/secured/lecture/registration/universityStart.xhtml"
     TARGET="rules:#views#secured#lecture#registration#universityStart.xhtml" TITLE="university_registration_start"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="university_registration_step1::#views#secured#lecture#registration#universityStep1.xhtml"
+    ID="university_registration_step1::#views#secured#lecture#registration#universitystep1.xhtml"
     NAME="output1"
-    PATH="/views/secured/lecture/registration/universityStep1.xhtml"
-    TARGET="rules:#views#secured#lecture#registration#universityStep1.xhtml" TITLE="university_registration_step1"/>
+    PATH="/views/secured/lecture/registration/universitystep1.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#universitystep1.xhtml" TITLE="university_registration_step1"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="university_registration_step2::#views#secured#lecture#registration#universityStep2.xhtml"
+    ID="university_registration_step2::#views#secured#lecture#registration#universitystep2.xhtml"
     NAME="output2"
-    PATH="/views/secured/lecture/registration/universityStep2.xhtml"
-    TARGET="rules:#views#secured#lecture#registration#universityStep2.xhtml" TITLE="university_registration_step2"/>
+    PATH="/views/secured/lecture/registration/universitystep2.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#universitystep2.xhtml" TITLE="university_registration_step2"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -574,20 +556,20 @@
   <PROCESS-ITEM ENTITY="JSFProcessItem"
    ID="rules:#views#secured#lecture#registration#*:2" NAME="item" PATH="/views/secured/lecture/registration/*">
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="department_registration_start::#views#secured#lecture#registration#departmentStart.xhtml"
+    ID="department_registration_start::#views#secured#lecture#registration#departmentstart.xhtml"
     NAME="output"
-    PATH="/views/secured/lecture/registration/departmentStart.xhtml"
-    TARGET="rules:#views#secured#lecture#registration#departmentStart.xhtml" TITLE="department_registration_start"/>
+    PATH="/views/secured/lecture/registration/departmentstart.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#departmentstart.xhtml" TITLE="department_registration_start"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="department_registration_step1::#views#secured#lecture#registration#departmentStep1.xhtml"
+    ID="department_registration_step1::#views#secured#lecture#registration#departmentstep1.xhtml"
     NAME="output1"
-    PATH="/views/secured/lecture/registration/departmentStep1.xhtml"
-    TARGET="rules:#views#secured#lecture#registration#departmentStep1.xhtml" TITLE="department_registration_step1"/>
+    PATH="/views/secured/lecture/registration/departmentstep1.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#departmentstep1.xhtml" TITLE="department_registration_step1"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="department_registration_step2::#views#secured#lecture#registration#departmentStep2.xhtml"
+    ID="department_registration_step2::#views#secured#lecture#registration#departmentstep2.xhtml"
     NAME="output2"
-    PATH="/views/secured/lecture/registration/departmentStep2.xhtml"
-    TARGET="rules:#views#secured#lecture#registration#departmentStep2.xhtml" TITLE="department_registration_step2"/>
+    PATH="/views/secured/lecture/registration/departmentstep2.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#departmentstep2.xhtml" TITLE="department_registration_step2"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -644,10 +626,10 @@
   <PROCESS-ITEM ENTITY="JSFProcessItem"
    ID="rules:#views#public#university#*:0" NAME="item" PATH="/views/public/university/*">
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="university_registration_step1::#views#secured#lecture#registration#universityStep1.xhtml"
+    ID="university_registration_step1::#views#secured#lecture#registration#universitystep1.xhtml"
     NAME="output"
-    PATH="/views/secured/lecture/registration/universityStep1.xhtml"
-    TARGET="rules:#views#secured#lecture#registration#universityStep1.xhtml" TITLE="university_registration_step1"/>
+    PATH="/views/secured/lecture/registration/universitystep1.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#universitystep1.xhtml" TITLE="university_registration_step1"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="university_data::#views#secured#lecture#universityoptions.xhtml"
     NAME="output1" PATH="/views/secured/lecture/universityoptions.xhtml"
@@ -666,10 +648,10 @@
     NAME="output4" PATH="/views/secured/lecture/universityperiods.xhtml"
     TARGET="rules:#views#secured#lecture#universityperiods.xhtml" TITLE="university_periods"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="university_aspirants::#views#secured#lecture#auth#universityaspirants.xhtml"
+    ID="university_members::#views#secured#lecture#auth#universitymembers.xhtml"
     NAME="output5"
-    PATH="/views/secured/lecture/auth/universityaspirants.xhtml"
-    TARGET="rules:#views#secured#lecture#auth#universityaspirants.xhtml" TITLE="university_aspirants"/>
+    PATH="/views/secured/lecture/auth/universitymembers.xhtml"
+    TARGET="rules:#views#secured#lecture#auth#universitymembers.xhtml" TITLE="university_members"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="university_remove_confirmation::#views#secured#lecture#universityremoveconfirmation.xhtml"
     NAME="output6"
@@ -717,9 +699,6 @@
   NAME="rules:#views#public#search#extendedsearch.xhtml"
   PATH="/views/public/search/extendedsearch.xhtml" SHAPE="304,753,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#secured#lecture#registration#departmentStep2.xhtml"
-  PATH="/views/secured/lecture/registration/departmentStep2.xhtml" SHAPE="288,9617,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#public#user#activate#request.xhtml"
   PATH="/views/public/user/activate/request.xhtml" SHAPE="304,753,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -740,9 +719,6 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#lecture#universityperiods.xhtml"
   PATH="/views/secured/lecture/universityperiods.xhtml" SHAPE="304,9841,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#public#user#userprofile.xhtml"
-  PATH="/views/public/user/userprofile.xhtml" SHAPE="304,5041,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#lecture#auth#members.xhtml"
   PATH="/views/secured/lecture/auth/members.xhtml" SHAPE="304,2625,0,0"/>
@@ -780,9 +756,6 @@
   NAME="rules:#views#secured#lecture#departmentinstitutes.xhtml"
   PATH="/views/secured/lecture/departmentinstitutes.xhtml" SHAPE="304,993,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#sercured#user#profile.xhtml"
-  PATH="/views/sercured/user/profile.xhtml" SHAPE="272,5377,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#newsletter#showmail.xhtml"
   PATH="/views/secured/newsletter/showmail.xhtml" SHAPE="304,1425,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -794,9 +767,6 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#braincontest#braincontestsolved.xhtml"
   PATH="/views/secured/braincontest/braincontestsolved.xhtml" SHAPE="304,1425,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#secured#lecture#registration#departmentStep1.xhtml"
-  PATH="/views/secured/lecture/registration/departmentStep1.xhtml" SHAPE="288,9505,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#system#properties.xhtml"
   PATH="/views/secured/system/properties.xhtml" SHAPE="304,33,0,0"/>
@@ -810,9 +780,6 @@
   NAME="rules:#views#secured#course#fslinstall.xhtml"
   PATH="/views/secured/course/fslinstall.xhtml" SHAPE="304,1425,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#public#user#registration#step2LoginData.xhtml"
-  PATH="/views/public/user/registration/step2LoginData.xhtml" SHAPE="304,3473,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#public#popup#closePopupFrame.xhtml"
   PATH="/views/public/popup/closePopupFrame.xhtml" SHAPE="304,33,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -822,25 +789,24 @@
   NAME="rules:#views#secured#lecture#universitydepartments.xhtml"
   PATH="/views/secured/lecture/universitydepartments.xhtml" SHAPE="304,11857,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#secured#lecture#registration#departmentStart.xhtml"
-  PATH="/views/secured/lecture/registration/departmentStart.xhtml" SHAPE="288,9329,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#public#user#registration#step4Preferences.xhtml"
-  PATH="/views/public/user/registration/step4Preferences.xhtml" SHAPE="304,3697,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#welcome.xhtml" PATH="/views/welcome.xhtml" SHAPE="544,881,0,0">
   <PROCESS-ITEM ENTITY="JSFProcessItem"
    ID="rules:#views#welcome.xhtml:0" NAME="item" PATH="/views/welcome.xhtml">
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="university_registration_step1::#views#secured#lecture#registration#universityStep1.xhtml"
+    ID="university_registration_start::#views#secured#lecture#registration#universitystart.xhtml"
     NAME="output"
-    PATH="/views/secured/lecture/registration/universityStep1.xhtml"
-    TARGET="rules:#views#secured#lecture#registration#universityStep1.xhtml" TITLE="university_registration_step1"/>
+    PATH="/views/secured/lecture/registration/universitystart.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#universitystart.xhtml" TITLE="university_registration_start"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="institute_registration_step1::#views#secured#lecture#registration#step1.xhtml"
+    ID="university_registration_step1::#views#secured#lecture#registration#universitystep1.xhtml"
     NAME="output1"
-    PATH="/views/secured/lecture/registration/step1.xhtml"
-    TARGET="rules:#views#secured#lecture#registration#step1.xhtml" TITLE="institute_registration_step1"/>
+    PATH="/views/secured/lecture/registration/universitystep1.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#universitystep1.xhtml" TITLE="university_registration_step1"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="institute_registration_start::#views#secured#lecture#registration#start.xhtml"
+    NAME="output2"
+    PATH="/views/secured/lecture/registration/start.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#start.xhtml" TITLE="institute_registration_start"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -892,9 +858,6 @@
   NAME="rules:#views#secured#course#courseassistants.xhtml"
   PATH="/views/secured/course/courseassistants.xhtml" SHAPE="304,1425,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#secured#user#logindata.xhtml"
-  PATH="/views/secured/user/logindata.xhtml" SHAPE="304,4257,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#discussion#removethread.xhtml"
   PATH="/views/secured/discussion/removethread.xhtml" SHAPE="304,1425,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -913,17 +876,11 @@
   NAME="rules:#views#secured#newsletter#newsletter.xhtml"
   PATH="/views/secured/newsletter/newsletter.xhtml" SHAPE="304,1425,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#secured#lecture#registration#universityStep1.xhtml"
-  PATH="/views/secured/lecture/registration/universityStep1.xhtml" SHAPE="288,9105,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#documents#remove.xhtml"
   PATH="/views/secured/documents/remove.xhtml" SHAPE="304,1425,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#newsletter#exportedsubscribers.xhtml"
   PATH="/views/secured/newsletter/exportedsubscribers.xhtml" SHAPE="304,1425,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#public#user#registration#step3ContactData.xhtml"
-  PATH="/views/public/user/registration/step3ContactData.xhtml" SHAPE="304,3585,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#public#login#login.xhtml"
   PATH="/views/public/login/login.xhtml" SHAPE="304,1425,0,0"/>
@@ -946,9 +903,6 @@
   NAME="rules:#views#secured#braincontest#braincontestmain.xhtml"
   PATH="/views/secured/braincontest/braincontestmain.xhtml" SHAPE="304,1425,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#secured#user#preferences.xhtml"
-  PATH="/views/secured/user/preferences.xhtml" SHAPE="304,4481,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#braincontest#braincontestsolve.xhtml"
   PATH="/views/secured/braincontest/braincontestsolve.xhtml" SHAPE="304,1425,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -960,9 +914,6 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#course#quiz.xhtml"
   PATH="/views/secured/course/quiz.xhtml" SHAPE="304,1425,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#secured#user#contactdata.xhtml"
-  PATH="/views/secured/user/contactdata.xhtml" SHAPE="304,4369,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#lecture#newsedit.xhtml"
   PATH="/views/secured/lecture/newsedit.xhtml" SHAPE="304,2625,0,0"/>
@@ -988,9 +939,6 @@
   NAME="rules:#views#public#university#university.xhtml"
   PATH="/views/public/university/university.xhtml" SHAPE="304,945,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#public#user#registration#step5Confirmation.xhtml"
-  PATH="/views/public/user/registration/step5Confirmation.xhtml" SHAPE="304,3809,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#newsletter#newmail.xhtml"
   PATH="/views/secured/newsletter/newmail.xhtml" SHAPE="304,1425,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -999,9 +947,6 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#public#messagebox.xhtml"
   PATH="/views/public/messagebox.xhtml" SHAPE="544,737,0,0"/>
- <PROCESS-ITEM ENTITY="JSFProcessGroup"
-  NAME="rules:#views#secured#lecture#registration#universityStep2.xhtml"
-  PATH="/views/secured/lecture/registration/universityStep2.xhtml" SHAPE="288,9217,0,0"/>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#public#department#department.xhtml"
   PATH="/views/public/department/department.xhtml" SHAPE="304,977,0,0"/>
@@ -1064,9 +1009,9 @@
     PATH="/views/secured/lecture/instituteDepartments.xhtml"
     TARGET="rules:#views#secured#lecture#instituteDepartments.xhtml" TITLE="institute_departments"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="institute_members::#views#secured#lecture#auth#members.xhtml"
-    NAME="output4" PATH="/views/secured/lecture/auth/members.xhtml"
-    TARGET="rules:#views#secured#lecture#auth#members.xhtml" TITLE="institute_members"/>
+    ID="institute_data::#views#secured#lecture#instituteoptions.xhtml"
+    NAME="output4" PATH="/views/secured/lecture/instituteoptions.xhtml"
+    TARGET="rules:#views#secured#lecture#instituteoptions.xhtml" TITLE="institute_data"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="institute_aspirants::#views#secured#lecture#auth#aspirants.xhtml"
     NAME="output5" PATH="/views/secured/lecture/auth/aspirants.xhtml"
@@ -1079,15 +1024,15 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup" NAME="rules:#*:1" PATH="/*" SHAPE="32,12529,0,0">
   <PROCESS-ITEM ENTITY="JSFProcessItem" ID="rules:#*:1" NAME="item" PATH="/*">
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="department_create::#views#secured#lecture#registration#departmentStart.xhtml"
+    ID="department_registration_start::#views#secured#lecture#registration#departmentstart.xhtml"
     NAME="output"
-    PATH="/views/secured/lecture/registration/departmentStart.xhtml"
-    TARGET="rules:#views#secured#lecture#registration#departmentStart.xhtml" TITLE="department_create"/>
+    PATH="/views/secured/lecture/registration/departmentstart.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#departmentstart.xhtml" TITLE="department_registration_start"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="department_registration_step1::#views#secured#lecture#registration#departmentStep1.xhtml"
+    ID="department_registration_step1::#views#secured#lecture#registration#departmentstep1.xhtml"
     NAME="output1"
-    PATH="/views/secured/lecture/registration/departmentStep1.xhtml"
-    TARGET="rules:#views#secured#lecture#registration#departmentStep1.xhtml" TITLE="department_registration_step1"/>
+    PATH="/views/secured/lecture/registration/departmentstep1.xhtml"
+    TARGET="rules:#views#secured#lecture#registration#departmentstep1.xhtml" TITLE="department_registration_step1"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -1099,4 +1044,31 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#public#institute#institute.xhtml"
   PATH="/views/public/institute/institute.xhtml" SHAPE="304,1041,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#secured#lecture#registration#universitystep1.xhtml"
+  PATH="/views/secured/lecture/registration/universitystep1.xhtml" SHAPE="800,1857,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#secured#lecture#registration#universitystep2.xhtml"
+  PATH="/views/secured/lecture/registration/universitystep2.xhtml" SHAPE="304,11409,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#secured#lecture#registration#departmentstart.xhtml"
+  PATH="/views/secured/lecture/registration/departmentstart.xhtml" SHAPE="272,12497,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#public#user#registration#step3Confirmation.xhtml"
+  PATH="/views/public/user/registration/step3Confirmation.xhtml" SHAPE="304,5505,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#secured#lecture#registration#universitystart.xhtml"
+  PATH="/views/secured/lecture/registration/universitystart.xhtml" SHAPE="800,1681,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#secured#lecture#registration#departmentstep2.xhtml"
+  PATH="/views/secured/lecture/registration/departmentstep2.xhtml" SHAPE="272,12673,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#public#user#registration#step2Preferences.xhtml"
+  PATH="/views/public/user/registration/step2Preferences.xhtml" SHAPE="304,5825,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#secured#lecture#registration#departmentstep1.xhtml"
+  PATH="/views/secured/lecture/registration/departmentstep1.xhtml" SHAPE="272,16017,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#secured#lecture#institutecourses.xhtml"
+  PATH="/views/secured/lecture/institutecourses.xhtml" SHAPE="304,977,0,0"/>
 </PROCESS>
