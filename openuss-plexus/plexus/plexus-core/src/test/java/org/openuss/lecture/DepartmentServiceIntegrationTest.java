@@ -468,6 +468,42 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		logger.info("----> END access to findDepartmentsByType test");
 	}
 	
+	
+	public void testFindApplicationsByDepartmentAndConfirmed () {
+		logger.info("----> BEGIN access to findApplicationsByDepartmentAndConfirmed test");
+		
+		// Create Applications
+		Application application1 = testUtility.createUniqueUnconfirmedApplicationInDB();
+		assertNotNull(application1);
+		assertNotNull(application1.getDepartment());
+		assertNotNull(application1.getDepartment().getId());
+		
+		Application application2 = testUtility.createUniqueUnconfirmedApplicationInDB();
+		
+		// Synchronitze with DB
+		flush();
+		
+		// Test
+		List<ApplicationInfo> applications = 
+			this.getDepartmentService().findApplicationsByDepartmentAndConfirmed(application1.getDepartment().getId(), false);
+		assertNotNull(applications);
+		assertEquals(1, applications.size());
+		assertEquals(application1.getId(), applications.get(0).getId());
+		
+		applications = 
+			this.getDepartmentService().findApplicationsByDepartmentAndConfirmed(application2.getDepartment().getId(), true);
+		assertNotNull(applications);
+		assertEquals(0, applications.size());
+
+		applications = 
+			this.getDepartmentService().findApplicationsByDepartmentAndConfirmed(application2.getDepartment().getId(), false);
+		assertNotNull(applications);
+		assertEquals(1, applications.size());
+		assertEquals(application2.getId(), applications.get(0).getId());
+		
+		logger.info("----> END access to findApplicationsByDepartmentAndConfirmed test");
+	}
+	
 	public void testIsNoneExistingDepartmentShortcut () {
 		logger.debug("----> BEGIN access to isNoneExistingUniversityShortcut test <---- ");
 		

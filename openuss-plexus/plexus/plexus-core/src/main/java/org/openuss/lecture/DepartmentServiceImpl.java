@@ -340,15 +340,10 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		// Load Department
 		Department departmentEntity = this.getDepartmentDao().load(departmentId);
 		Validate.notNull(departmentEntity, "DepartmentService.findOpenApplicationsByDepartment - "
-				+ "no department can be found with teh departmentId " + departmentId);
+				+ "no department can be found with the departmentId " + departmentId);
 		return this.getApplicationDao().findByDepartmentAndConfirmed(ApplicationDao.TRANSFORM_APPLICATIONINFO, departmentEntity, confirmed);
 	}
 
-	
-	public List handleFindOpenApplicationsByDepartment(Long departmentId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	/*------------------- private methods -------------------- */
 
 	/**
@@ -376,10 +371,4 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		}
 	}
 
-	/*------------------- private methods -------------------- */
-
-	// TODO: Add Set of listeners
-	// TODO: Method unregisterListener
-	// TODO: Method fireRemovingDepartment (Department department)
-	// TODO: Method fireCreatedDepartment (Department department)
 }
