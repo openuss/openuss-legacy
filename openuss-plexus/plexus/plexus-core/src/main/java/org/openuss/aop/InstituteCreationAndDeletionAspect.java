@@ -1,10 +1,11 @@
-package org.openuss.lecture;
+package org.openuss.aop;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
+import org.openuss.lecture.InstituteInfo;
 
 /**
  * Aspect for Institute Creation and Deletion.

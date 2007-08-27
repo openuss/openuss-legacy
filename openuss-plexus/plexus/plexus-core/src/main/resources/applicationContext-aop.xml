@@ -233,22 +233,22 @@
 	</bean>
 
 	<bean id="instituteCreationAndDeletionAspectBean"
-		class="org.openuss.lecture.InstituteCreationAndDeletionAspect">
+		class="org.openuss.aop.InstituteCreationAndDeletionAspect">
 		<property name="desktopService" ref="desktopService2" />
 	</bean>
 
 	<bean id="courseDeletionAspectBean"
-		class="org.openuss.lecture.CourseDeletionAspect">
+		class="org.openuss.aop.CourseDeletionAspect">
 		<property name="desktopService" ref="desktopService2" />
 	</bean>
 
 	<bean id="departmentCreationAndDeletionAspectBean"
-		class="org.openuss.lecture.DepartmentCreationAndDeletionAspect">
+		class="org.openuss.aop.DepartmentCreationAndDeletionAspect">
 		<property name="desktopService" ref="desktopService2" />
 	</bean>
 
 	<bean id="universityCreationAndDeletionAspectBean"
-		class="org.openuss.lecture.UniversityCreationAndDeletionAspect">
+		class="org.openuss.aop.UniversityCreationAndDeletionAspect">
 		<property name="desktopService" ref="desktopService2" />
 	</bean>
 </beans>
