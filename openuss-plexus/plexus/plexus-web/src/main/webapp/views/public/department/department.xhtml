@@ -71,17 +71,25 @@
 					<o:block styleClass="teaser_blue" label="#{msg.organisation_command_actions}">
 					  	<h:form id="actionsForm">
 					  		<p class="content_font_normal">
-					  			<h:commandLink action="views$public$department$department.shortcutDepartment">
-					  				<h:outputText value="{#msg.department_command_shortcut}" />
+					  			<h:commandLink
+					  				action="#{views$public$department$department.addShortcut}">
+					  				<h:outputText value="Bookmark setzen" />
 					  			</h:commandLink>
-					  			
-					  			<h:commandLink action="views$public$department$department.removeShortcutDepartment">
-					  				<h:outputText value="#{msg.department_command_remove_shortcut}" />
+					  		</p>
+					  		<p class="content_font_normal">
+					  			<h:commandLink 
+					  				action="#{views$public$department$department.removeShortcut}">
+					  				<h:outputText value="Boomark entfernen" />
 					  			</h:commandLink>
+					  		</p>
+					  		
+					
+					  		<p class="content_font_normal">
 						  		<h:commandLink action="institute_registration_start">
 									<h:outputText value="#{msg.institute_command_add_institute}"/>
 								</h:commandLink>
 							</p>
+							
 						</h:form>
 					</o:block>
 				</s:authorize>
