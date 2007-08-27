@@ -27,18 +27,40 @@
 		<aop:pointcut id="InstituteServiceDeletePointcut"
 			expression="execution(* org..InstituteServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)" />
 		<aop:pointcut id="CourseServiceDeletePointcut"
-			expression="execution(* org..CourseServiceBase.remove(java.lang.Long)) and args(courseId)" />	
-			
+			expression="execution(* org..CourseServiceBase.remove(java.lang.Long)) and args(courseId)" />
+
 		<!-- Aspect Definitions -->
-		<aop:aspect id="mailSenderAspect" ref="mailSenderAspectBean">
-			<aop:after-returning 
-				method="sendAddMemberMail"
-				pointcut-ref="OrganisationServiceAddMemberPointcut" 
+		<aop:aspect id="userAdministrationMailSenderAspect" ref="userAdministrationMailSenderAspectBean">
+			<aop:after-returning method="sendAddMemberMail"
+				pointcut-ref="OrganisationServiceAddMemberPointcut"
 				arg-names="organisationId, userId" />
-			<aop:after-returning 
-				method="sendRemoveMemberMail"
+			<aop:after-returning method="sendRemoveMemberMail"
 				pointcut-ref="OrganisationServiceRemoveMemberPointcut"
 				arg-names="organisationId, userId" />
+		</aop:aspect>
+
+		<aop:aspect id="bookmarkMaintenanceAspect"
+			ref="bookmarkMaintenanceAspectBean">
+			<aop:after-returning method="bookmarkUniversity"
+				pointcut-ref="UniversityServiceCreatePointcut"
+				arg-names="universityInfo, userId" />
+			<aop:before method="deleteBookmarksOfUniversity"
+				pointcut-ref="UniversityServiceDeletePointcut"
+				arg-names="universityId" />
+			<aop:after-returning method="bookmarkDepartment"
+				pointcut-ref="DepartmentServiceCreatePointcut"
+				arg-names="departmentInfo, userId" />
+			<aop:before method="deleteBookmarksOfDepartment"
+				pointcut-ref="DepartmentServiceDeletePointcut"
+				arg-names="departmentId" />
+			<aop:after-returning method="bookmarkInstitute"
+				pointcut-ref="InstituteServiceCreatePointcut"
+				arg-names="instituteInfo, userId" />
+			<aop:before method="deleteBookmarksOfInstitute"
+				pointcut-ref="InstituteServiceDeletePointcut"
+				arg-names="instituteId" />
+			<aop:before method="deleteBookmarksOfCourse"
+				pointcut-ref="CourseServiceDeletePointcut" arg-names="courseId" />
 		</aop:aspect>
 
 		<aop:aspect id="universityIndexAspect"
@@ -124,67 +146,12 @@
 				arg-names="messageJob" />
 		</aop:aspect>
 
-		<aop:aspect id="universityCreationAspect"
-			ref="universityCreationAndDeletionAspectBean">
-			<aop:after-returning 
-				method="bookmarkUniversity"
-				pointcut-ref="UniversityServiceCreatePointcut"
-				arg-names="universityInfo, userId" />
-		</aop:aspect>
-
-		<aop:aspect id="universityDeletionAspect"
-			ref="universityCreationAndDeletionAspectBean">
-			<aop:before method="deleteBookmarksOfUniversity"
-				pointcut-ref="UniversityServiceDeletePointcut"
-				arg-names="universityId" />
-		</aop:aspect>
-
-		<aop:aspect id="departmentCreationAspect"
-			ref="departmentCreationAndDeletionAspectBean">
-			<aop:after-returning 
-				method="bookmarkDepartment"
-				pointcut-ref="DepartmentServiceCreatePointcut"
-				arg-names="departmentInfo, userId" />
-		</aop:aspect>
-
-		<aop:aspect id="departmentDeletionAspect"
-			ref="departmentCreationAndDeletionAspectBean">
-			<aop:before 
-				method="deleteBookmarksOfDepartment"
-				pointcut-ref="DepartmentServiceDeletePointcut"
-				arg-names="departmentId" />
-		</aop:aspect>
-
-		<aop:aspect id="instituteCreationAspect"
-			ref="instituteCreationAndDeletionAspectBean">
-			<aop:after-returning 
-				method="bookmarkInstitute"
-				pointcut-ref="InstituteServiceCreatePointcut"
-				arg-names="instituteInfo, userId" />
-		</aop:aspect>
-
-		<aop:aspect id="instituteDeletionAspect"
-			ref="instituteCreationAndDeletionAspectBean">
-			<aop:before 
-				method="deleteBookmarksOfInstitute"
-				pointcut-ref="InstituteServiceDeletePointcut"
-				arg-names="instituteId" />
-		</aop:aspect>
-
-		<aop:aspect id="courseDeletionAspect"
-			ref="courseDeletionAspectBean">
-			<aop:before 
-				method="deleteBookmarksOfCourse"
-				pointcut-ref="CourseServiceDeletePointcut"
-				arg-names="courseId" />
-		</aop:aspect>
-
 	</aop:config>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 		Aspect Bean Definitions
 		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<bean id="mailSenderAspectBean"
+	<bean id="userAdministrationMailSenderAspectBean"
 		class="org.openuss.aop.MailSenderAspectImpl">
 		<property name="userDao" ref="userDao" />
 		<property name="organisationDao" ref="organisationDao" />
@@ -193,6 +160,11 @@
 		<property name="instituteDao" ref="instituteDao" />
 		<property name="messageService" ref="messageService" />
 		<property name="systemService" ref="systemService" />
+	</bean>
+
+	<bean id="bookmarkMaintenanceAspectBean"
+		class="org.openuss.aop.BookmarkMaintenanceAspectImpl">
+		<property name="desktopService" ref="desktopService2" />
 	</bean>
 
 	<bean id="mailingStatusAspectBean"
@@ -232,23 +204,4 @@
 		<property name="courseDao" ref="courseDao" />
 	</bean>
 
-	<bean id="instituteCreationAndDeletionAspectBean"
-		class="org.openuss.aop.InstituteCreationAndDeletionAspect">
-		<property name="desktopService" ref="desktopService2" />
-	</bean>
-
-	<bean id="courseDeletionAspectBean"
-		class="org.openuss.aop.CourseDeletionAspect">
-		<property name="desktopService" ref="desktopService2" />
-	</bean>
-
-	<bean id="departmentCreationAndDeletionAspectBean"
-		class="org.openuss.aop.DepartmentCreationAndDeletionAspect">
-		<property name="desktopService" ref="desktopService2" />
-	</bean>
-
-	<bean id="universityCreationAndDeletionAspectBean"
-		class="org.openuss.aop.UniversityCreationAndDeletionAspect">
-		<property name="desktopService" ref="desktopService2" />
-	</bean>
 </beans>
