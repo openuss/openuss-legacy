@@ -17,6 +17,12 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.openuss.plexus</groupId>
+			<artifactId>plexus-api</artifactId>
+			<version>${project.version}</version>
+			<scope>compiled</scope>
+		</dependency>
+		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 		</dependency>
