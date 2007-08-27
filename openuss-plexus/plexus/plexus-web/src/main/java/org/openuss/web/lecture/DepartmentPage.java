@@ -19,6 +19,30 @@ public class DepartmentPage extends AbstractDepartmentPage {
 	
 	private void addBreadCrumbs()
 	{
-		breadcrumbs.loadDepartmentCrumbs(departmentInfo);	
+		breadcrumbs.loadDepartmentCrumbs(departmentInfo);
+	}
+	
+	public boolean isBookmarked()
+	{
+		return true;
+		// TODO Ask service layer if the department is bookmarked
+	}
+	
+	public void shortcutDepartment()
+	{
+		try {
+			desktopService2.linkDepartment(desktopInfo.getId(), departmentInfo.getId());
+		} catch (Exception e) {
+			addError(i18n("DEPARTMENT_ERROR_SHORTCUT"), e.getMessage());
+		}
+	}
+	
+	public void removeShortcurDepartment()
+	{
+		try {
+			desktopService2.unlinkDepartment(desktopInfo.getId(), departmentInfo.getId());
+		} catch (Exception e) {
+			addError(i18n("department_error_remove_shortcut"), e.getMessage());
+		}
 	}
 }
