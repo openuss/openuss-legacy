@@ -63,6 +63,15 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 			testUtility.destroySecureContext();
 		}
 
+		// Aspect test
+		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		Desktop desktop = Desktop.Factory.newInstance();
+		desktop.setUser(owner);
+		desktopDao.create(desktop);
+		Desktop desktopTest = desktopDao.findByUser(owner);
+		assertNotNull(desktopTest);
+		assertEquals(0, desktopTest.getUniversities().size());
+		
 		// Create Entity
 		testUtility.createAdminSecureContext();
 		Long universityId = universityService.createUniversity(universityInfo, owner.getId());
@@ -76,8 +85,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		// Synchronize with Database
 		flush();
 		
-		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
-		Desktop desktopTest = desktopDao.findByUser(owner);
+		// Aspect test
+		desktopTest = desktopDao.findByUser(owner);
 		assertNotNull(desktopTest);
 		assertEquals(1, desktopTest.getUniversities().size());
 		

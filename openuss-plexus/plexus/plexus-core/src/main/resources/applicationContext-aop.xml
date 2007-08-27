@@ -15,7 +15,7 @@
 			expression="execution(* org..OrganisationServiceBase.removeMember(java.lang.Long, java.lang.Long)) and args(organisationId, userId)" />
 
 		<aop:pointcut id="UniversityServiceCreatePointcut"
-			expression="execution(* org..UniversityServiceBase.create(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)" />
+			expression="execution(* org..UniversityServiceBase.createUniversity(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)" />
 		<aop:pointcut id="UniversityServiceDeletePointcut"
 			expression="execution(* org..UniversityServiceBase.removeUniversity(java.lang.Long)) and args(universityId)" />
 		<aop:pointcut id="DepartmentServiceCreatePointcut"
