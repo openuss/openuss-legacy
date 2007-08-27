@@ -31,33 +31,33 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	 * Logger for this class
 	 */
 	private static final Logger logger = Logger.getLogger(SecurityServiceImpl.class);
-	
+
 	private static final String GROUP_PREFIX = "GROUP_";
 	private static final String ROLE_PREFIX = "ROLE_";
 
 	@Override
-	protected Collection handleGetAllUsers() throws Exception{
+	protected Collection handleGetAllUsers() throws Exception {
 		return getUserDao().loadAll();
 	}
-	
+
 	@Override
 	protected User handleGetUser(Long userId) throws Exception {
 		return getUserDao().load(userId);
 	}
-	
+
 	@Override
 	protected User handleGetUserByName(String name) throws Exception {
 		return getUserDao().findUserByUsername(name.toLowerCase());
 	}
-	
+
 	@Override
-	protected User handleGetUserByEmail(String email) throws Exception{
+	protected User handleGetUserByEmail(String email) throws Exception {
 		return getUserDao().findUserByEmail(email);
 	}
-	
+
 	@Override
 	protected User handleCreateUser(User user) throws Exception {
-		Validate.isTrue(user.getId() == null,"User must not have an identifier!");
+		Validate.isTrue(user.getId() == null, "User must not have an identifier!");
 		if (!isValidUserName(null, user.getUsername())) {
 			throw new SecurityServiceException("Invalid username.");
 		}
@@ -70,14 +70,14 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		if (user.getProfile() == null) {
 			user.setProfile(UserProfile.Factory.newInstance());
 		}
-		if (isNonExistingEmailAddress(user, user.getEmail())!=null){
-			throw new SecurityServiceException("Email adress already in use (shold not occur -> validator bypassed?)");
+		if (isNonExistingEmailAddress(user, user.getEmail()) != null) {
+			throw new SecurityServiceException("Email adress already in use (shold not occur -> validator bypassed?) "+user.getEmail());
 		}
 		user = getUserDao().create(user);
-		
+
 		// define object identity
 		createObjectIdentity(user, null);
-		
+
 		return user;
 	}
 
@@ -90,7 +90,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		}
 		getUserDao().update(user);
 	}
-	
+
 	@Override
 	protected void handleSaveUserProfile(UserProfile profile) throws Exception {
 		if (profile.getId() == null) {
@@ -107,9 +107,9 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		} else {
 			getUserContactDao().update(contact);
 		}
-		
+
 	}
-	
+
 	@Override
 	protected void handleSaveUserPreferences(UserPreferences preferences) throws Exception {
 		if (preferences.getId() == null) {
@@ -124,25 +124,24 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		getUserDao().remove(user.getId());
 	}
 
-
 	@Override
 	protected void handleAddAuthorityToGroup(Authority authority, Group group) throws Exception {
 		Validate.notNull(authority, "Authority must not be null");
 		Validate.notNull(authority.getId(), " Authority must provide a valid id.");
 		Validate.notNull(group, "Group must not be null");
-		Validate.isTrue(!authority.equals(group),"Authority cannot become a member of itself");
-		
+		Validate.isTrue(!authority.equals(group), "Authority cannot become a member of itself");
+
 		group = forceGroupLoad(group);
 		authority = forceAuthorityLoad(authority);
 
 		checkInheritanceConstraints(authority, group);
-		
+
 		authority.addGroup(group);
 		group.addMember(authority);
 		getGroupDao().update(group);
 
 		updateSecurityContext(authority);
-		
+
 		removeAuthorityFromUserCache(authority);
 	}
 
@@ -153,12 +152,13 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 			if (auth != null && ObjectUtils.equals(authority, auth.getPrincipal())) {
 				logger.debug("refresing current user security context.");
 				final UsernamePasswordAuthenticationToken authentication;
-				authentication = new UsernamePasswordAuthenticationToken((UserImpl) authority, "[Protected]", ((UserImpl) authority).getAuthorities());
+				authentication = new UsernamePasswordAuthenticationToken((UserImpl) authority, "[Protected]",
+						((UserImpl) authority).getAuthorities());
 				securityContext.setAuthentication(authentication);
 			}
 		}
 	}
-	
+
 	private Authority forceAuthorityLoad(Authority authority) {
 		authority = getAuthorityDao().load(authority.getId());
 		if (authority == null) {
@@ -177,14 +177,14 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 
 	private void checkInheritanceConstraints(Authority authority, Group group) {
 		List grantedGroups = group.getGrantedGroups();
-		if (grantedGroups.contains(authority) ) {
+		if (grantedGroups.contains(authority)) {
 			throw new SecurityServiceException("Circular dependencies between authorities is not supported");
 		}
 	}
 
 	private void removeAuthorityFromUserCache(Authority authority) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("removing authority "+authority.getName()+" from cache!");
+			logger.debug("removing authority " + authority.getName() + " from cache!");
 		}
 		if (getUserCache() != null) {
 			getUserCache().removeUserFromCache(authority.getName());
@@ -194,18 +194,18 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	@Override
 	protected void handleRemoveAuthorityFromGroup(Authority authority, Group group) throws Exception {
 		Validate.notNull(authority, "Authority must not be null.");
-		Validate.notNull(authority.getId(),"Authority mut provide a valid id.");
+		Validate.notNull(authority.getId(), "Authority mut provide a valid id.");
 		Validate.notNull(group, "Group must not be null.");
-		
+
 		group = forceGroupLoad(group);
 		authority = forceAuthorityLoad(authority);
-		
+
 		authority.removeGroup(group);
 		group.removeMember(authority);
 		getGroupDao().update(group);
-		
+
 		updateSecurityContext(authority);
-		
+
 		removeAuthorityFromUserCache(authority);
 	}
 
@@ -233,16 +233,16 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		}
 	}
 
-	@Override 
+	@Override
 	protected Group handleGetGroupByName(String name) {
 		return getGroupDao().findGroupByName(name);
 	}
-	
+
 	@Override
 	protected Group handleGetGroup(Group group) {
 		return getGroupDao().load(group.getId());
 	}
-	
+
 	@Override
 	protected Group handleCreateGroup(String name, String label, String password, GroupType groupType) throws Exception {
 		if (!name.startsWith(GROUP_PREFIX) && !name.startsWith(ROLE_PREFIX)) {
@@ -256,22 +256,22 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		getGroupDao().create(group);
 		return group;
 	}
-	
+
 	@Override
 	protected void handleRemoveGroup(Group group) throws Exception {
 		getGroupDao().remove(group);
 	}
-	
+
 	@Override
 	protected void handleSaveGroup(Group group) throws Exception {
 		String name = group.getName();
 		if (!name.startsWith(GROUP_PREFIX) && !name.startsWith(ROLE_PREFIX)) {
-			group.setName( GROUP_PREFIX + name);
+			group.setName(GROUP_PREFIX + name);
 		}
-		
+
 		getGroupDao().update(group);
 	}
-	
+
 	@Override
 	protected ObjectIdentity handleCreateObjectIdentity(Object object, Object parent) throws Exception {
 		// check parent object
@@ -279,22 +279,22 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		if (parent != null) {
 			EntityObjectIdentity parentOI = new EntityObjectIdentity(parent);
 			parentObjectIdentity = getObjectIdentityDao().load(parentOI.getIdentifier());
-			
+
 			if (parentObjectIdentity == null) {
-				throw new SecurityServiceException("Object Identity to Object "+parent+" does not exist!");
+				throw new SecurityServiceException("Object Identity to Object " + parent + " does not exist!");
 			}
 		}
-		
+
 		// analyse object if it is an entity object with an id
 		EntityObjectIdentity entityOI = new EntityObjectIdentity(object);
-		
+
 		// define ObjectIdentity entity
 		ObjectIdentity objectIdentity = ObjectIdentity.Factory.newInstance();
 		objectIdentity.setId(entityOI.getIdentifier());
 		objectIdentity.setParent(parentObjectIdentity);
 
 		getObjectIdentityDao().create(objectIdentity);
-		
+
 		return objectIdentity;
 	}
 
@@ -304,7 +304,6 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		getObjectIdentityDao().remove(oi);
 		removeAclsFromCache(object);
 	}
-
 
 	@Override
 	protected void handleSetPermissions(Authority authority, Object object, Integer mask) throws Exception {
@@ -319,14 +318,14 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 			permission.setMask(mask);
 			getPermissionDao().update(permission);
 		}
-		
+
 		removeAclsFromCache(object);
 		removeAuthorityFromUserCache(authority);
 	}
 
 	private void removeAclsFromCache(Object object) throws IllegalAccessException, InvocationTargetException {
 		if (getAclCache() != null) {
-			logger.debug("removing acls from cache for "+object);
+			logger.debug("removing acls from cache for " + object);
 			getAclCache().removeEntriesFromCache(new EntityObjectIdentity(object));
 		}
 	}
@@ -348,8 +347,8 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	protected void handleSetLoginTime(User user) throws Exception {
 		User usr = getUserDao().load(user.getId());
 		if (usr == null) {
-			logger.error("couldn't find user with id "+user.getId());
-			throw new SecurityServiceException("Couldn't find user with id "+user.getId());
+			logger.error("couldn't find user with id " + user.getId());
+			throw new SecurityServiceException("Couldn't find user with id " + user.getId());
 		}
 		usr.setLastLogin(new Date());
 		getUserDao().update(usr);
@@ -360,19 +359,19 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		Permission permission = getPermissions(authority, object);
 		if (permission != null) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("removing permission for authority "+authority+" for "+object);
+				logger.debug("removing permission for authority " + authority + " for " + object);
 			}
 			getPermissionDao().remove(permission);
 		} else {
-			logger.debug("Permission entity for authority "+authority+" for "+object+" not found!");
+			logger.debug("Permission entity for authority " + authority + " for " + object + " not found!");
 		}
 	}
 
 	private ObjectIdentity getObjectIdentity(Object object) throws IllegalAccessException, InvocationTargetException {
-		
+
 		ObjectIdentity objectIdentity = getObjectIdentityDao().load(new EntityObjectIdentity(object).getIdentifier());
 		if (objectIdentity == null) {
-			throw new SecurityServiceException("ObjectIdentity doesn't exist for object "+object);
+			throw new SecurityServiceException("ObjectIdentity doesn't exist for object " + object);
 		}
 		return objectIdentity;
 	}
@@ -397,7 +396,7 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 
 	@Override
 	protected boolean handleHasPermission(Object domainObject, Integer[] permissions) throws Exception {
-		//FIXME make SecurityService independent from AcegiUtils
+		// FIXME make SecurityService independent from AcegiUtils
 		return AcegiUtils.hasPermission(domainObject, permissions);
 	}
 

@@ -12,13 +12,6 @@ package org.openuss.security;
  */
 public class UserDaoImpl extends org.openuss.security.UserDaoBase {
 	
-	@Override
-	public Object create(int transform, User user) {
-		// garantee that each username is lowercase
-		user.setUsername(user.getUsername().toLowerCase());
-		return super.create(transform, user);
-	}
-
 	/**
 	 * @see org.openuss.security.UserDao#getPassword(int, java.lang.Long)
 	 */
