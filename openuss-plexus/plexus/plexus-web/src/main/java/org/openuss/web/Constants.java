@@ -39,6 +39,7 @@ public class Constants {
 	public static final String DEPARTMENT_SERVICE = "departmentService";
 	public static final String INSTITUTE_SERVICE = "instituteService";
 	public static final String COURSE_TYPE_SERVICE = "courseTypeService";
+	public static final String COURSE_SERVICE = "courseService";
 	public static final String LECTURE_SERVICE = "lectureService";
 	public static final String SECURITY_SERVICE ="securityService";
 	public static final String ONLINE_STATISTIC_SERVICE = "onlineStatisticService";

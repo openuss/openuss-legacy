@@ -29,14 +29,14 @@
 		</ui:define>
   		<ui:define name="content">
 	  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}" ifNot="error"/>
-	  		<o:block>
-	  			<p class="content_font_normal">
-			  		Diese Seite listet alle Veranstaltungen auf, die konkreten Zeiträumen zugeordnet wurden. Sie kommen in die einzelnen Veranstaltungen durch einfaches
-			  		Klicken auf die Veranstaltung. Zusätzlich haben Sie die Möglichkeit, Veranstaltungen neuen Zeiträumem zuzuweisen.
-	  			</p>
-	  		</o:block>
   			<h:form id="coursesForm">
   				<c:if test="#{!(views$public$coursetype$courses.renderCourseNew)}">
+						<o:block>
+				  			<p class="content_font_normal">
+						  		Diese Seite listet alle Veranstaltungen auf, die konkreten Zeiträumen zugeordnet wurden. Sie kommen in die einzelnen Veranstaltungen durch einfaches
+						  		Klicken auf die Veranstaltung. Zusätzlich haben Sie die Möglichkeit, Veranstaltungen neuen Zeiträumem zuzuweisen.
+				  			</p>
+				  		</o:block>
 						<ui:include src="coursetypecoursestable.xhtml"/>
 						<o:block>
 							<h:commandButton 
@@ -48,20 +48,25 @@
 						</o:block>
 				</c:if>
 				<c:if test="#{views$public$coursetype$courses.renderCourseNew}">
-					<h:outputLabel value="#{msg.coursetype_preferences_periods}" for="coursePeriodSelect" styleClass="field_label" />
-					<h:selectOneListbox id="institutePeriods" size="1" styleClass="pulldown" value="#{courseInfo.periodId}">
-			    		<f:selectItems value="#{views$public$coursetype$coursetypes.belongingInstitutePeriods}"/>
-					</h:selectOneListbox>
-					<h:outputLabel value="#{msg.coursetype_preferences_periods}" for="courseCourseTypeSelect" styleClass="field_label" />
-					<h:selectOneListbox id="instituteCourseTypes" size="1" styleClass="pulldown" value="#{courseInfo.courseTypeId}">
-			    		<f:selectItems value="#{views$public$coursetype$coursetypes.courseTypesOfInstitute}"/>
-					</h:selectOneListbox>
-					<h:commandButton 
-					    id="SaveCourse"
-						action="#{views$public$coursetype$courses.saveCourse}" 
-						value="#{msg.coursetype_command_add}" 
-						title="#{msg.coursetype_command_add_hint}"
-						styleClass="button_big"/>
+					<o:block>
+						<o:input entity="courseInfo" property="shortcut" required="true" maxlength="30">
+							<f:validator validatorId="courseShortcutValidator"/>
+						</o:input>
+						<o:input entity="courseInfo" property="description" maxlength="250" type="textarea"/>
+						<h:outputLabel value="#{msg.coursetype_preferences_periods}" for="coursePeriodSelect" styleClass="field_label" />
+						<h:selectOneListbox id="institutePeriods" size="1" styleClass="pulldown" value="#{courseInfo.periodId}">
+				    		<f:selectItems value="#{views$public$coursetype$coursetypes.belongingInstitutePeriods}"/>
+						</h:selectOneListbox>
+					</o:block>
+					<div class="clear_both"/>
+					<o:block>
+						<h:commandButton 
+						    id="saveCourse"
+							action="#{views$public$coursetype$courses.saveCourse}" 
+							value="#{msg.coursetype_command_add}" 
+							title="#{msg.coursetype_command_add_hint}"
+							styleClass="button_big"/>
+					</o:block>
 				</c:if>
 			</h:form>
 			

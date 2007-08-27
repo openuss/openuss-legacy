@@ -31,7 +31,7 @@ import org.openuss.web.course.AbstractCoursePage;
 @View
 public class InstituteCoursesPage extends AbstractCoursePage {
 
-	private static final Logger logger = Logger.getLogger(CourseTypesPage.class);
+	private static final Logger logger = Logger.getLogger(InstituteCoursesPage.class);
 
 	private LocalDataModel data = new LocalDataModel();
 	
@@ -75,13 +75,9 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		
 		logger.debug("Starting method saveCourse");
 					
-		//courseInfo.setCourseTypeDescription(courseTypeInfo.getDescription());
-		//courseInfo.setCourseTypeId(courseTypeInfo.getId());
-		courseInfo.setDescription(courseTypeInfo.getDescription());
+		courseInfo.setCourseTypeDescription(courseTypeInfo.getDescription());
+		courseInfo.setCourseTypeId(courseTypeInfo.getId());
 		courseInfo.setInstituteId(courseTypeInfo.getInstituteId());
-		//courseInfo.setInstituteName(courseTypeInfo.geti
-		courseInfo.setName(courseTypeInfo.getName());
-		courseInfo.setShortcut(courseTypeInfo.getShortcut());
 		
 		courseInfo.setAccessType(AccessType.OPEN);
 		
@@ -157,8 +153,6 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<CourseInfo> courses = new ArrayList<CourseInfo>(courseService.findCoursesByCourseType(courseTypeInfo.getId()));
-				//List<CourseInfo> coursesTest = new ArrayList<CourseInfo>();
-				//List<CourseInfo> courses = new ArrayList<CourseInfo>(coursesTest);
 				sort(courses);
 				page = new DataPage<CourseInfo>(courses.size(),0,courses);
 			}

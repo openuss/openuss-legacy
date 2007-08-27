@@ -9,16 +9,16 @@ import javax.faces.validator.ValidatorException;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.register.FacesValidator;
 import org.openuss.framework.web.jsf.controller.BaseBean;
-import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.LectureService;
-import org.openuss.lecture.LectureServiceException;
+import org.openuss.lecture.CourseService;
+import org.openuss.lecture.CourseServiceException;
 import org.openuss.web.Constants;
 
 /**
  * Checks whether or not the entered shortcut is already in use or not.
  * 
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 @FacesValidator(value="courseShortcutValidator")
 public class CourseShortcutValidator extends BaseBean implements Validator {
@@ -29,17 +29,15 @@ public class CourseShortcutValidator extends BaseBean implements Validator {
 
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		final String shortcut = (String) value;
-		LectureService service = (LectureService) getBean(Constants.LECTURE_SERVICE);
+		CourseService courseService = (CourseService) getBean(Constants.COURSE_SERVICE);
 		try {
-			// TODO fixme - isNoneExistingCourseShorcut should also work with courseInfo objects.
-			CourseInfo courseInfo = (CourseInfo) getSessionBean(Constants.COURSE);
-			Course course = service.getCourse(courseInfo.getId()); 
-			boolean unique = service.isNoneExistingCourseShortcut(course, shortcut);
+			CourseInfo courseInfo = (CourseInfo) getSessionBean(Constants.COURSE_INFO);
+			boolean unique = courseService.isNoneExistingCourseShortcut(courseInfo, shortcut);
 			if (!unique) {
 				((UIInput) component).setValid(false);
 				addError(component.getClientId(context), i18n(SHORTCUT_MESSAGE_ID),null);
 			}
-		} catch (LectureServiceException e) {
+		} catch (CourseServiceException e) {
 			logger.error(e);
 			addError(i18n(e.getMessage()));
 			((UIInput) component).setValid(false);

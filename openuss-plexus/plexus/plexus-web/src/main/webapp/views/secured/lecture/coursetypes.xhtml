@@ -29,16 +29,16 @@
 		</ui:define>
   		<ui:define name="content">
 	  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}" ifNot="error"/>
-	  		<o:block>
-	  			<p class="content_font_normal">
-			  		Die unten stehende Tabelle ist eine Auflistung aller dem Institut zugeordneten Veranstaltungen. Um diesen einen konkreten Zeitraum zuzuordnen, klicken
-			  		Sie bitte auf die zutreffende Veranstaltung. Sie erhalten außerdem eine Darstellung aller bereits angelegten, einem Zeitraum zugeordneten
-			  		Veranstaltungen.
-	  			</p>
-	  		</o:block>
   			<h:form id="courseTypesForm">
   				<c:if test="#{!(views$public$coursetype$coursetypes.renderCourseTypeEditNew)}">
 					<c:if test="#{!(views$public$coursetype$coursetypes.renderCourseTypeAssignToPeriod)}">
+						<o:block>
+				  			<p class="content_font_normal">
+						  		Die unten stehende Tabelle ist eine Auflistung aller dem Institut zugeordneten Veranstaltungen. Um diesen einen konkreten Zeitraum zuzuordnen, klicken
+						  		Sie bitte auf die zutreffende Veranstaltung. Sie erhalten außerdem eine Darstellung aller bereits angelegten, einem Zeitraum zugeordneten
+						  		Veranstaltungen.
+				  			</p>
+				  		</o:block>
 						<ui:include src="coursetypestable.xhtml"/>
 						<o:block>
 							<h:commandButton 

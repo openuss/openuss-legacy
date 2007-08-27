@@ -95,11 +95,17 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 				this.getCourseDao().load(courseId));
 	}
 	
+	@Override
 	public boolean handleIsNoneExistingCourseShortcut (CourseInfo self, String shortcut) {
-		// TODO Auto-generated method stub
-		return false;
+		Course found = getCourseDao().findByShortcut(shortcut);
+		CourseInfo foundInfo = null;
+		if (found != null) {
+			foundInfo = this.getCourseDao().toCourseInfo(found);
+		}
+		return isEqualOrNull(self, foundInfo);
 	}
 	
+
 	/**
 	 * @see org.openuss.lecture.CourseService#getAssistants(org.openuss.lecture.Course)
 	 */
