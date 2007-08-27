@@ -33,10 +33,10 @@
 			
 			</c:if>
 			
-			<c:if test="#{views$public$coursetype$coursetypes.renderCourseTypeEditNew}">
+			<c:if test="#{views$secured$lecture$institutecourses.renderCourseTypeEditNew}">
 			
-				<h:commandButton id="saveCourseType"   action="#{views$public$coursetype$coursetypes.saveCourseType}" value="#{msg.save}" styleClass="button_save" />
-				<h:commandButton id="cancelCourseType" action="#{views$public$coursetype$coursetypes.cancelCourseType}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
+				<h:commandButton id="saveCourseType"   action="#{views$secured$lecture$institutecourses.saveCourseType}" value="#{msg.save}" styleClass="button_save" />
+				<h:commandButton id="cancelCourseType" action="#{views$secured$lecture$institutecourses.cancelCourseType}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
 			
 			</c:if>
 			

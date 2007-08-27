@@ -6,11 +6,13 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseTypeInfo;
+import org.openuss.lecture.CourseTypeService;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.LectureService;
+import org.openuss.lecture.PeriodInfo;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
@@ -49,11 +51,17 @@ public class AbstractCoursePage extends BasePage {
 	@Property(value = "#{courseTypeInfo}")
 	protected CourseTypeInfo courseTypeInfo;
 	
+	@Property(value = "#{courseTypeService}")
+	protected CourseTypeService courseTypeService;
+	
 	@Property(value = "#{courseInfo}")
 	protected CourseInfo courseInfo;
 	
 	@Property(value = "#{courseService}")
 	protected CourseService courseService;
+	
+	@Property(value = "#{periodInfo}")
+	protected PeriodInfo periodInfo;
 
 	
 	
@@ -61,19 +69,18 @@ public class AbstractCoursePage extends BasePage {
 
 	@Prerender
 	public void prerender() throws Exception {
-		if (courseInfo != null) {
-			courseInfo = courseService.getCourseInfo(courseInfo.getId());
-			//institute = lectureService.getInstitute(courseInfo.getInstituteId());
+		if (courseInfo.getId() != null) {
+			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
+			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
 		}
 		if (courseInfo == null) {
 			addMessage(i18n("message_error_course_page"));
 			redirect(Constants.OUTCOME_BACKWARD);
 			return;
 		} else {
-			setSessionBean(Constants.COURSE, courseInfo);
 			setSessionBean(Constants.COURSE_INFO, courseInfo);
-			//setSessionBean(Constants.INSTITUTE, institute);
-			generateBreadCrumbs();
+			setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
+			//generateBreadCrumbs();
 		}
 	}
 
@@ -187,6 +194,22 @@ public class AbstractCoursePage extends BasePage {
 
 	public void setUniversityService(UniversityService universityService) {
 		this.universityService = universityService;
+	}
+
+	public CourseTypeService getCourseTypeService() {
+		return courseTypeService;
+	}
+
+	public void setCourseTypeService(CourseTypeService courseTypeService) {
+		this.courseTypeService = courseTypeService;
+	}
+
+	public PeriodInfo getPeriodInfo() {
+		return periodInfo;
+	}
+
+	public void setPeriodInfo(PeriodInfo periodInfo) {
+		this.periodInfo = periodInfo;
 	}
 
 	

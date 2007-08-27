@@ -33,12 +33,8 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 
 	private static final Logger logger = Logger.getLogger(CourseTypesPage.class);
 
-	private LocalDataModel data = new LocalDataModel();
+
 	
-	private List<SelectItem> institutePeriodItems;
-	private List<SelectItem> instituteCourseTypeItems;
-	private List<PeriodInfo> institutePeriods;
-	private List<CourseTypeInfo> instituteCourseTypes;
 	
 	private Boolean renderCourseTypeEditNew = false;
 	private Boolean renderCourseTypeAssignToPeriod = false;
@@ -64,71 +60,28 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 	}	
 	
 	
-	/**
-	 * Creates a new CourseTypeInfo object and sets it into session scope
-	 * 
-	 * @return outcome
-	 */
-	public String addCourseType() {
-		
-		courseTypeInfo = new CourseTypeInfo();
-		this.renderCourseTypeEditNew = true;
-		
-		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
-		return Constants.SUCCESS;
-	}
 	
-	/**
-	 * Set selected courseType into session scope
-	 * 
-	 * @return outcome
-	 * @throws LectureException 
-	 */
-	public String editCourseType() throws LectureException {
-		courseTypeInfo = data.getRowData();
-		if (courseTypeInfo == null) {
-			return Constants.FAILURE;
-		}
-		courseTypeInfo = courseTypeService.findCourseType(courseTypeInfo.getId());
-		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
-		if (courseTypeInfo == null) {
-			addWarning(i18n("error_course_type_not_found"));
-			return Constants.FAILURE;
-			
-		} else {
-			logger.debug("selected courseType "+courseTypeInfo.getName());
-			this.renderCourseTypeEditNew = true;
-			return Constants.SUCCESS;
-		}
-	}
+	
+	
+	
+	
 	
 	/**
 	 * Cancels editing or adding of current courseType
 	 * @return outcome 
 	 */
-	public String cancelCourseType() {
-		logger.debug("cancelCourseType()");
-		this.renderCourseTypeEditNew = false;
-		removeSessionBean(Constants.COURSE_TYPE_INFO);
-		return Constants.SUCCESS;
-	}
-	
-	/**
-	 * Cancels editing or adding of current courseType
-	 * @return outcome 
-	 */
-	public String cancelCourseTypeAssignToPeriod() {
+	/*public String cancelCourseTypeAssignToPeriod() {
 		logger.debug("cancelCourseType()");
 		this.renderCourseTypeAssignToPeriod = false;
 		removeSessionBean(Constants.COURSE_TYPE_INFO);
 		return Constants.SUCCESS;
-	}
+	}*/
 	
 	/**
 	 * Store the selected department into session scope and go to department remove confirmation page.
 	 * @return Outcome
 	 */
-	public String selectCourseTypeAndRedirectToCourses() {
+	/*public String selectCourseTypeAndRedirectToCourses() {
 		logger.debug("Starting method selectCourseTypeAndRedirectToCourses");
 		CourseTypeInfo currentCourseType = currentCourseType();
 		logger.debug("Returning to method selectCourseTypeAndRedirectToCourses");
@@ -136,21 +89,21 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 		setSessionBean(Constants.COURSE_TYPE_INFO, currentCourseType);
 		
 		return Constants.INSTITUTE_COURSES_PAGE;
-	}
+	}*/
 	
-	private CourseTypeInfo currentCourseType() {
+	/*private CourseTypeInfo currentCourseType() {
 		
 		CourseTypeInfo courseType = data.getRowData();
 		
 		return courseType;
-	}
+	}*/
 	
 	/**
 	 * Creates a new CourseTypeInfo object and sets it into session scope
 	 * 
 	 * @return outcome
 	 */
-	public String assignCourseTypeToPeriod() {
+	/*public String assignCourseTypeToPeriod() {
 		
 		courseTypeInfo = data.getRowData();
 		if (courseTypeInfo == null) {
@@ -174,35 +127,9 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 			this.renderCourseTypeAssignToPeriod = true;
 			return Constants.SUCCESS;
 		}	
-	}
+	}*/
 	
-	/**
-	 * Saves new courseType or updates changes to courseType Removed current courseType
-	 * selection from session scope
-	 * @return outcome 
-	 */
-	public String saveCourseType() throws DesktopException, LectureException {
-		logger.debug("Starting method saveCourseType()");
-		if (courseTypeInfo.getId() == null) {
-			
-			courseTypeInfo.setInstituteId(instituteInfo.getId());
-			Long courseTypeId = courseTypeService.create(courseTypeInfo);
-			
-			// bookmark course type to myuni page
-			desktopService2.linkCourseType(desktopInfo.getId(), courseTypeId);
-			
-			addMessage(i18n("institute_message_add_coursetype_succeed"));
-		} else {
-			courseTypeService.update(courseTypeInfo);
-			addMessage(i18n("institute_message_persist_coursetype_succeed"));
-		}
-		
-		removeSessionBean(Constants.COURSE_TYPE_INFO);
-		courseTypeInfo = null;
-		this.renderCourseTypeEditNew = false;
-		
-		return Constants.SUCCESS;
-	}
+	
 	
 	/**
 	 * Saves new courseType or updates changes to courseType Removed current courseType
@@ -259,90 +186,9 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 	
 	
 	
-	public List<SelectItem> getCourseTypesOfInstitute() {
-		
-		instituteCourseTypeItems = new ArrayList<SelectItem>();
-		
-		if (instituteInfo != null) {
-	
-			instituteCourseTypes = courseTypeService.findCourseTypesByInstitute(instituteInfo.getId());
-			
-			Iterator<CourseTypeInfo> iter =  instituteCourseTypes.iterator();
-			CourseTypeInfo courseTypeInfo;
-			
-			while (iter.hasNext()) {
-				courseTypeInfo = iter.next();
-				SelectItem item = new SelectItem(courseTypeInfo.getId(),courseTypeInfo.getName());
-				instituteCourseTypeItems.add(item);
-			}
-			
-		} 
-		
-		return instituteCourseTypeItems;
-	}
-	
-	
-
-	
-
-	public String shortcutCourseType() {
-		courseTypeInfo = data.getRowData();;
-		try {
-			// desktopService.linkCourseType(desktop, courseType);
-			desktopService2.linkCourseType(desktopInfo.getId(), courseTypeInfo.getId());
-			addMessage(i18n("desktop_command_add_coursetype_succeed"));
-			return Constants.SUCCESS;
-		} catch (DesktopException e) {
-			logger.error(e);
-			addError(i18n(e.getMessage()));
-			return Constants.FAILURE;
-		}
-	}
-
-	/**
-	 * Sets the selected period into session scope and forward to the period
-	 * remove view
-	 * 
-	 * @return outcome
-	 */
-	public String confirmRemoveCourseType() {
-		courseTypeInfo = data.getRowData();;
-		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
-		return Constants.INSTITUTE_COURSE_TYPE_REMOVE_PAGE;
-	}
-
-	
-
 	
 	
 	
-
-	private class LocalDataModel extends AbstractPagedTable<CourseTypeInfo> {
-		
-		private static final long serialVersionUID = -6289875618529435428L;
-		
-		private DataPage<CourseTypeInfo> page;
-
-		@Override
-		public DataPage<CourseTypeInfo> getDataPage(int startRow, int pageSize) {
-			if (page == null) {
-				List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService.findCourseTypesByInstitute(instituteInfo.getId()));
-				sort(courseTypes);
-				page = new DataPage<CourseTypeInfo>(courseTypes.size(),0,courseTypes);
-			}
-			return page;
-		}
-
-	}
-
-	public LocalDataModel getData() {
-		return data;
-	}
-
-	public void setData(LocalDataModel data) {
-		this.data = data;
-	}
-
 	public Boolean getRenderCourseTypeEditNew() {
 		return renderCourseTypeEditNew;
 	}

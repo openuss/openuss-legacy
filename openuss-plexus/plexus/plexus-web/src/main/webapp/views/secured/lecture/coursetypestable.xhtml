@@ -11,7 +11,7 @@
      <plexus:dataTable   
      	id="courseTypes" 
      	label="#{msg['coursetype_coursetypestable_header']}" 
-     	value="views$public$coursetype$coursetypes.data" 
+     	value="views$secured$lecture$institutecourses.dataCourseTypes" 
      	columnClasses="col_max_left, col_commands"
      	var="bean" 
      	rows="4">  
@@ -19,9 +19,7 @@
 		<t:column>
 		
 			<plexus:commandSortHeader columnName="name">#{msg.coursetype_colheader_name}</plexus:commandSortHeader> 
-			<h:commandLink action="#{views$public$coursetype$coursetypes.selectCourseTypeAndRedirectToCourses}" styleClass="command">
-				<b><h:outputText value="#{bean.name} (#{bean.shortcut})"/></b>
-			</h:commandLink>
+			<b><h:outputText value="#{bean.name} (#{bean.shortcut})"/></b>
 			<br></br>
 			<small><h:outputText value="#{bean.description}"/></small>
 			
@@ -30,7 +28,7 @@
 		<plexus:column header="#{msg.commands_header}">
 			 
 			<plexus:command 
-				bean="#{views$public$coursetype$coursetypes}"
+				bean="#{views$secured$lecture$institutecourses}"
 				action="editCourseType"
 				label="#{msg.coursetype_command_edit}"
 				hint="#{msg.coursetype_command_edit_hint}"
@@ -38,7 +36,7 @@
 			</plexus:command>
 				
 			<plexus:command   
-				bean="#{views$public$coursetype$coursetypes}"
+				bean="#{views$secured$lecture$institutecourses}"
 				action="confirmRemoveCourseType"
 				label="#{msg.coursetype_command_remove}"
 				hint="#{msg.coursetype_command_remove_hint}"

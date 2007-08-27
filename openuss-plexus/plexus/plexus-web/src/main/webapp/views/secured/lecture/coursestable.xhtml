@@ -9,30 +9,15 @@
       xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:c="http://java.sun.com/jstl/core">
       
-      
-    <o:block>
-		<h:outputText value="#{msg.institute_period_selection}" styleClass="header_font_normal"/>
-		<h:selectOneMenu id="periodSelection" 
-			layout="pageDirection"  
-			value="#{periodInfo.id}" 
-			onchange="this.form.submit();"
-			valueChangeListener="#{views$public$institute$institute.processPeriodSelectChanged}" 
-			immediate="true" 
-			styleClass="pulldown_inline">  
-			<f:selectItems value="#{views$public$institute$institute.belongingInstitutePeriods}"/>
-		</h:selectOneMenu>
-	</o:block>  
-	
-      
-	<plexus:dataTable 
+     <plexus:dataTable 
 	    	id="courses" 
 	    	var="courseInfo" 
 	    	label="#{periodInfo.name}"
 	    	value="views$public$institute$institute.courseData" 
-	    	columnClasses="col_max_left, col_min_left, col_min_left, col_min_commands"
+	    	columnClasses="col_max_left, col_min_left, col_min_commands"
 			styleClass="table"
-	    	rows="10">
-   	
+	    	rows="4">
+	  	
 		<t:column>
 			<plexus:commandSortHeader columnName="courseInfo.name">
 				<h:outputText value="#{msg.course_colheader_name}"/>
@@ -71,4 +56,6 @@
 			</plexus:column>
 		</s:authorize>
 	</plexus:dataTable>
+	
+	
 </ui:composition>
