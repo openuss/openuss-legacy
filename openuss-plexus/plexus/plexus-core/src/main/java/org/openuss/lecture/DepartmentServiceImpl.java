@@ -344,6 +344,11 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		return this.getApplicationDao().findByDepartmentAndConfirmed(ApplicationDao.TRANSFORM_APPLICATIONINFO, departmentEntity, confirmed);
 	}
 
+	
+	public List handleFindOpenApplicationsByDepartment(Long departmentId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	/*------------------- private methods -------------------- */
 
 	/**

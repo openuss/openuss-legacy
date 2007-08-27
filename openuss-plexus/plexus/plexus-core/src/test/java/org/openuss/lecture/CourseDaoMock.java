@@ -82,6 +82,26 @@ public class CourseDaoMock extends AbstractMockDao<Course> implements CourseDao 
 		return null;
 	}
 	
+	public List findByPeriod(int transform, String queryString, Period period) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByPeriod(int transform, Period period) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByPeriod(String queryString, Period period) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByPeriod(Period period) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public void remove(Course course) {
 		// TODO Auto-generated method stub
 		
