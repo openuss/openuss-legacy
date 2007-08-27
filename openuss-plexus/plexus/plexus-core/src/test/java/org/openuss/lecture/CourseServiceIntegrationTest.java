@@ -366,6 +366,75 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		
 	}
 	
+	
+	public void testFindCoursesByPeriodAndInstitute () {
+		logger.debug("----> BEGIN access to findCoursesByPeriodAndInstitute test <---- ");
+		
+		// Create Periods
+		Period period1 = testUtility.createUniquePeriodInDB();
+		Period period2 = testUtility.createUniquePeriodInDB();
+		
+		// Create Institutes
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		Institute institute2 = testUtility.createUniqueInstituteInDB();
+		
+		// Create CourseTypes
+		CourseType courseType1 = testUtility.createUniqueCourseTypeInDB();
+		courseType1.setInstitute(institute1);
+		CourseType courseType2 = testUtility.createUniqueCourseTypeInDB();
+		courseType2.setInstitute(institute2);
+		
+		// Create Courses
+		Course course1 = testUtility.createUniqueCourseInDB();
+		course1.setCourseType(courseType1);
+		course1.setPeriod(period1);
+		Course course2 = testUtility.createUniqueCourseInDB();
+		course2.setCourseType(courseType1);
+		course2.setPeriod(period2);
+		Course course3 = testUtility.createUniqueCourseInDB();
+		course3.setCourseType(courseType1);
+		course3.setPeriod(period1);
+		Course course4 = testUtility.createUniqueCourseInDB();
+		course4.setCourseType(courseType2);
+		course4.setPeriod(period2);
+		Course course5 = testUtility.createUniqueCourseInDB();
+		course5.setCourseType(courseType2);
+		course5.setPeriod(period1);
+		Course course6 = testUtility.createUniqueCourseInDB();
+		course6.setCourseType(courseType2);
+		course6.setPeriod(period2);
+		
+		// Synchronize with DB
+		flush();
+		
+		// Test
+		List<CourseInfo> courses = this.getCourseService().findCoursesByPeriodAndInstitute(
+				period1.getId(), institute1.getId());
+		assertNotNull(courses);
+		assertEquals(2, courses.size());
+		assertEquals(course1.getDescription(), courses.get(0).getDescription());
+		
+		courses = this.getCourseService().findCoursesByPeriodAndInstitute(
+				period2.getId(), institute2.getId());
+		assertNotNull(courses);
+		assertEquals(2, courses.size());
+		assertEquals(course6.getDescription(), courses.get(1).getDescription());
+		
+		courses = this.getCourseService().findCoursesByPeriodAndInstitute(
+				period1.getId(), institute2.getId());
+		assertNotNull(courses);
+		assertEquals(1, courses.size());
+		assertEquals(course5.getDescription(), courses.get(0).getDescription());
+		
+		courses = this.getCourseService().findCoursesByPeriodAndInstitute(
+				period2.getId(), institute1.getId());
+		assertNotNull(courses);
+		assertEquals(1, courses.size());
+		assertEquals(course2.getDescription(), courses.get(0).getDescription());
+		
+		logger.debug("----> END access to findCoursesByPeriodAndInstitute test <---- ");
+	}
+
 
 	private LectureBuilder createInstituteStructure(AccessType accessType) {
 		LectureBuilder lectureBuilder = new LectureBuilder();

@@ -344,8 +344,28 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List handleFindCoursesByPeriodAndInstitute (Long periodId, Long instituteId) throws Exception {
-		// TODO: Implement this method.
-		return null;
+		
+		Validate.notNull(periodId, "CourseService.findCoursesByPeriodAndInstitute -" +
+				"periodId cannot be null.");
+		Validate.notNull(instituteId, "CourseService.findCoursesByPeriodAndInstitute -" +
+				"instituteId cannot be null.");
+		
+		Period period = this.getPeriodDao().load(periodId);
+		Validate.notNull(period, "CourseService.findCoursesByPeriodAndInstitute -" +
+			"no period found with the corresponding periodId "+periodId);
+		
+		List<Course> allCourses = this.getCourseDao().findByPeriod(period);
+		List<CourseInfo> courseInfos = new ArrayList<CourseInfo>();
+		Iterator iter = allCourses.iterator();
+		while (iter.hasNext()) {
+			Course course = (Course) iter.next();
+			if (course.getCourseType().getInstitute().getId() == instituteId) {
+				courseInfos.add(this.getCourseDao().toCourseInfo(course));
+			}
+			
+		}
+		
+		return courseInfos;
 	}
 	
 	@Override
