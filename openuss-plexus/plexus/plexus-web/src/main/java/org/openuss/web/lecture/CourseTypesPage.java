@@ -257,30 +257,7 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 	
 	
 	
-	public List<SelectItem> getBelongingInstitutePeriods() {
-		
-		institutePeriodItems = new ArrayList<SelectItem>();
-		
-		if (instituteInfo != null) {
-			Long departmentId = instituteInfo.getDepartmentId();
-			departmentInfo = departmentService.findDepartment(departmentId);
-			Long universityId = departmentInfo.getUniversityId();
-			universityInfo = universityService.findUniversity(universityId);
-			institutePeriods = universityService.findPeriodsByUniversity(universityId);
-			
-			Iterator<PeriodInfo> iter =  institutePeriods.iterator();
-			PeriodInfo periodInfo;
-			
-			while (iter.hasNext()) {
-				periodInfo = iter.next();
-				SelectItem item = new SelectItem(periodInfo.getId(),periodInfo.getName());
-				institutePeriodItems.add(item);
-			}
-			
-		} 
-		
-		return institutePeriodItems;
-	}
+	
 	
 	public List<SelectItem> getCourseTypesOfInstitute() {
 		

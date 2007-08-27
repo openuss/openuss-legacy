@@ -5,6 +5,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.CourseTypeService;
@@ -65,6 +66,9 @@ public abstract class AbstractLecturePage extends BasePage {
 
 	@Property(value = "#{sessionScope.courseType}")
 	protected CourseType courseType;
+	
+	@Property(value = "#{courseInfo}")
+	protected CourseInfo courseInfo;
 	
 	@Property(value = "#{courseService}")
 	protected CourseService courseService;
@@ -214,6 +218,14 @@ public abstract class AbstractLecturePage extends BasePage {
 
 	public void setCourseService(CourseService courseService) {
 		this.courseService = courseService;
+	}
+
+	public CourseInfo getCourseInfo() {
+		return courseInfo;
+	}
+
+	public void setCourseInfo(CourseInfo courseInfo) {
+		this.courseInfo = courseInfo;
 	}
 	
 	

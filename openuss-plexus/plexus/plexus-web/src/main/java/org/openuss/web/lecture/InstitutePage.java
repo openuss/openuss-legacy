@@ -1,12 +1,12 @@
 package org.openuss.web.lecture;
 
-import static org.openuss.web.lecture.AbstractLecturePage.logger;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -14,7 +14,6 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
-import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseInfo;
@@ -25,11 +24,14 @@ import org.openuss.news.NewsService;
 import org.openuss.web.Constants;
 
 /**
+ * Backing bean for the institute page.
+ * 
  * @author Ingo Dueppe
  * @author Sebastian Roekens
  * @author Malte Stockmann
  * @author Kai Stettner
  */
+
 @View
 @Bean(name = "views$public$institute$institute", scope = Scope.REQUEST)
 public class InstitutePage extends AbstractLecturePage {
@@ -43,50 +45,95 @@ public class InstitutePage extends AbstractLecturePage {
 	private PeriodInfo periodInfo;
 	
 	private CourseDataModel courseData = new CourseDataModel();
+	
+	private List<PeriodInfo> periodInfos = null;
+	private Long universityId = 0l;
+	private Long departmentId = 0l;
+	private List<SelectItem> institutePeriodItems;
+	private List<PeriodInfo> institutePeriods;
 
-	/**
-	 * Refreshing institute entity
-	 * 
-	 * @throws Exception
-	 */
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
-		addBreadCrumbs();
 		
-		List<PeriodInfo> periodInfos = null;
-		Long universityId = 0l;
-		Long departmentId = 0l;
+		//	add bread crumbs to institute page
+		addBreadCrumbs();
 		
 		if (instituteInfo != null) {
 			departmentId = instituteInfo.getDepartmentId();
 			departmentInfo = departmentService.findDepartment(departmentId);
 			universityId = departmentInfo.getUniversityId();
 			universityInfo = universityService.findUniversity(universityId);
-			periodInfos = universityService.findActivePeriodsByUniversity(universityId);
+			periodInfos = universityService.findPeriodsByInstituteWithCoursesOrActive(instituteInfo);
 		} 
 		
 		if (periodInfo == null && instituteInfo != null || instituteInfo != null && !periodInfos.contains(periodInfo)) {
-			periodInfo = periodInfos.get(0);
-			if (periodInfo == null && periodInfos.size() > 0) {
+			if (periodInfos.size() > 0) {
 				periodInfo = periodInfos.get(0);
+			} else {
+				// normally this should never happen due to the fact that each university has a standard period!
+				periodInfo = new PeriodInfo();
 			}
-		} else {
-			periodInfo = universityService.findPeriod(periodInfo.getId());
-			
-		}
+		} 
 			
 		setSessionBean(Constants.PERIOD_INFO, periodInfo);
-		//breadcrumbs shall not be displayed here
 	}
+	
 	
 	public void addBreadCrumbs()
 	{	
 		breadcrumbs.loadInstituteCrumbs(instituteInfo);
 	}
-
+	
 	/**
-	 * Value Change Listener to switch password input text on and off.
+	 * Bookmarks the selected course on the MyUni Page.
+	 * @return Outcome
+	 */
+	public String shortcutCourse() {
+		courseInfo = courseData.getRowData();
+		try {
+			desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());
+			addMessage(i18n("desktop_command_add_course_succeed"));
+			return Constants.SUCCESS;
+		} catch (DesktopException e) {
+			logger.error(e);
+			addError(i18n(e.getMessage()));
+			return Constants.FAILURE;
+		}
+	}
+	
+	public List<SelectItem> getBelongingInstitutePeriods() {
+		
+		institutePeriodItems = new ArrayList<SelectItem>();
+		
+		if (instituteInfo != null) {
+			Long departmentId = instituteInfo.getDepartmentId();
+			departmentInfo = departmentService.findDepartment(departmentId);
+			Long universityId = departmentInfo.getUniversityId();
+			universityInfo = universityService.findUniversity(universityId);
+			//get all Period which are active and/or assigned to a course of the institute
+			institutePeriods = universityService.findPeriodsByInstituteWithCoursesOrActive(instituteInfo);
+
+			Iterator<PeriodInfo> iter =  institutePeriods.iterator();
+			PeriodInfo periodInfo;
+			
+			//create item in combobox displaying all periods
+			SelectItem itemAllPeriods = new SelectItem(institutePeriods.get(0).getId()," -ALLE ZEITRÄUME- ");
+			institutePeriodItems.add(itemAllPeriods);
+			
+			while (iter.hasNext()) {
+				periodInfo = iter.next();
+				SelectItem item = new SelectItem(periodInfo.getId(),periodInfo.getName());
+				institutePeriodItems.add(item);
+			}
+			
+		} 
+		
+		return institutePeriodItems;
+	}
+	
+	/**
+	 * Value Change Listener to change name of data table.
 	 * 
 	 * @param event
 	 */
@@ -169,14 +216,6 @@ public class InstitutePage extends AbstractLecturePage {
 
 	public void setCourseData(CourseDataModel courseData) {
 		this.courseData = courseData;
-	}
-
-	public String shortcutCourse() throws DesktopException {
-		CourseInfo courseInfo = courseData.getRowData();
-		//desktopService.linkCourse(desktop, course);
-		desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());
-		addMessage(i18n("message_course_shortcut_created"));
-		return Constants.INSTITUTE_PAGE;
 	}
 
 	public PeriodInfo getPeriodInfo() {

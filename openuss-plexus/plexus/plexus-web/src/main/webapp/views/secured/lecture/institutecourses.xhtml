@@ -55,7 +55,7 @@
 						<o:input entity="courseInfo" property="description" maxlength="250" type="textarea"/>
 						<h:outputLabel value="#{msg.coursetype_preferences_periods}" for="coursePeriodSelect" styleClass="field_label" />
 						<h:selectOneListbox id="institutePeriods" size="1" styleClass="pulldown" value="#{courseInfo.periodId}">
-				    		<f:selectItems value="#{views$public$coursetype$coursetypes.belongingInstitutePeriods}"/>
+				    		<f:selectItems value="#{views$public$coursetype$courses.allPeriodsOfInstitute}"/>
 						</h:selectOneListbox>
 					</o:block>
 					<div class="clear_both"/>

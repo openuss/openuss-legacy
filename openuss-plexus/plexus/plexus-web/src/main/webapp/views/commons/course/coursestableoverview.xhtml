@@ -15,11 +15,11 @@
 		<h:selectOneMenu id="periodSelection" 
 			layout="pageDirection"  
 			value="#{periodInfo.id}" 
-			valueChangeListener="#{views$public$institute$institute.processPeriodSelectChanged}" 
 			onchange="this.form.submit();"
+			valueChangeListener="#{views$public$institute$institute.processPeriodSelectChanged}" 
 			immediate="true" 
 			styleClass="pulldown_inline">  
-			<f:selectItems value="#{views$public$coursetype$coursetypes.belongingInstitutePeriods}"/>
+			<f:selectItems value="#{views$public$institute$institute.belongingInstitutePeriods}"/>
 		</h:selectOneMenu>
 	</o:block>  
 	
@@ -32,8 +32,7 @@
 	    	columnClasses="col_max_left, col_min_left, col_min_commands"
 			styleClass="table"
 	    	rows="10">
-	    	<!--  To be included Zeile 2 -->
-	    	
+   	
 		<t:column>
 			<plexus:commandSortHeader columnName="courseInfo.name">
 				<h:outputText value="#{msg.course_colheader_name}"/>
@@ -45,8 +44,8 @@
 		</t:column>
 		
 		<t:column>
-			<plexus:commandSortHeader columnName="courseInfo.name">
-				<h:outputText value="#{msg.course_colheader_name}"/>
+			<plexus:commandSortHeader columnName="courseInfo.periodName">
+				<h:outputText value="#{msg.course_colheader_period}"/>
 			</plexus:commandSortHeader>
 		
 			<h:outputText value="#{courseInfo.periodName}"/>

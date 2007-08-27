@@ -1,7 +1,0 @@
-Zeile 1:
-
-<t:selectItems value="#{instituteInfo.periods}" var="period" itemLabel="#{period.name}" itemValue="#{period.id}"/>  
-
-Zeile 2:
-
-<!--  rendered="${!empty instituteInfo.periods}">    --> 

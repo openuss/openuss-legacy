@@ -6,10 +6,13 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseTypeInfo;
-import org.openuss.lecture.Institute;
+import org.openuss.lecture.DepartmentInfo;
+import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.LectureService;
+import org.openuss.lecture.UniversityInfo;
+import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
@@ -20,25 +23,41 @@ import org.openuss.web.PageLinks;
 public class AbstractCoursePage extends BasePage {
 	private static final long serialVersionUID = 1394531398550932611L;
 
-
-
-	@Property(value = "#{courseInfo}")
-	protected CourseInfo courseInfo;
-
 	@Property(value = "#{lectureService}")
 	protected LectureService lectureService;
-
-	@Property(value = "#{instituteService}")
-	protected InstituteService instituteService;
 	
-	@Property(value = "#{courseService}")
-	protected CourseService courseService;
+	
+	
+	@Property(value = "#{universityInfo}")
+	protected UniversityInfo universityInfo;
+	
+	@Property(value = "#{universityService}")
+	protected UniversityService universityService;
+	
+	@Property(value = "#{departmentInfo}")
+	protected DepartmentInfo departmentInfo;
+	
+	@Property(value = "#{departmentService}")
+	protected DepartmentService departmentService;
 
 	@Property(value = "#{instituteInfo}")
 	protected InstituteInfo instituteInfo;
 	
+	@Property(value = "#{instituteService}")
+	protected InstituteService instituteService;
+	
 	@Property(value = "#{courseTypeInfo}")
 	protected CourseTypeInfo courseTypeInfo;
+	
+	@Property(value = "#{courseInfo}")
+	protected CourseInfo courseInfo;
+	
+	@Property(value = "#{courseService}")
+	protected CourseService courseService;
+
+	
+	
+	
 
 	@Prerender
 	public void prerender() throws Exception {
@@ -136,6 +155,38 @@ public class AbstractCoursePage extends BasePage {
 
 	public LectureService getLectureService() {
 		return lectureService;
+	}
+
+	public DepartmentService getDepartmentService() {
+		return departmentService;
+	}
+
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+
+	public DepartmentInfo getDepartmentInfo() {
+		return departmentInfo;
+	}
+
+	public void setDepartmentInfo(DepartmentInfo departmentInfo) {
+		this.departmentInfo = departmentInfo;
+	}
+
+	public UniversityInfo getUniversityInfo() {
+		return universityInfo;
+	}
+
+	public void setUniversityInfo(UniversityInfo universityInfo) {
+		this.universityInfo = universityInfo;
+	}
+
+	public UniversityService getUniversityService() {
+		return universityService;
+	}
+
+	public void setUniversityService(UniversityService universityService) {
+		this.universityService = universityService;
 	}
 
 	

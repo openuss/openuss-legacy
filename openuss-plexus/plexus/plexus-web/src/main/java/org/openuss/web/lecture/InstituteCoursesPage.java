@@ -35,6 +35,8 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 
 	private LocalDataModel data = new LocalDataModel();
 	
+	private List<SelectItem> institutePeriodItems;
+	private List<PeriodInfo> institutePeriods;
 	private Boolean renderCourseNew = false;
 	
 	@Prerender
@@ -133,6 +135,36 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 			addError(i18n(e.getMessage()));
 			return Constants.FAILURE;
 		}
+	}
+	
+	/**
+	 * Gets all periods of the institute.
+	 * @return outcome 
+	 */
+	public List<SelectItem> getAllPeriodsOfInstitute() {
+		
+		institutePeriodItems = new ArrayList<SelectItem>();
+		
+		if (instituteInfo != null) {
+			Long departmentId = instituteInfo.getDepartmentId();
+			departmentInfo = departmentService.findDepartment(departmentId);
+			Long universityId = departmentInfo.getUniversityId();
+			universityInfo = universityService.findUniversity(universityId);
+			//gets all periods of the institute (resp. the university)
+			institutePeriods = universityService.findPeriodsByUniversity(universityId);
+
+			Iterator<PeriodInfo> iter =  institutePeriods.iterator();
+			PeriodInfo periodInfo;
+			
+			while (iter.hasNext()) {
+				periodInfo = iter.next();
+				SelectItem item = new SelectItem(periodInfo.getId(),periodInfo.getName());
+				institutePeriodItems.add(item);
+			}
+			
+		} 
+		
+		return institutePeriodItems;
 	}
 
 
