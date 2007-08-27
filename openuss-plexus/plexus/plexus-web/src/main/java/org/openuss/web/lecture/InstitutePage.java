@@ -111,11 +111,11 @@ public class InstitutePage extends AbstractLecturePage {
 		try {
 			desktopService2.linkInstitute(desktopInfo.getId(), instituteInfo.getId());
 		} catch (Exception e) {
-			addError(i18n("INSITUTE_ERROR_SHORTCUT"), e.getMessage());
+			addError(i18n("institute_error_shortcut"), e.getMessage());
 			return Constants.FAILURE;
 		}
 		
-		this.addMessage(i18n("INSTITUTE_SUCESS_SHORTCUT"));
+		this.addMessage(i18n("institute_success_shortcut"));
 		return Constants.SUCCESS;
 	}
 	
@@ -132,7 +132,7 @@ public class InstitutePage extends AbstractLecturePage {
 			return Constants.FAILURE;
 		}
 		
-		addMessage(i18n("INSTITUTE_SUCCESS_REMOVE_SHORTCUT"));
+		addMessage(i18n("institute_success_remove_shortcut"));
 		return Constants.SUCCESS;
 	}
 	

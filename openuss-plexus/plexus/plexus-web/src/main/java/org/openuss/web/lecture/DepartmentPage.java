@@ -38,11 +38,11 @@ public class DepartmentPage extends AbstractDepartmentPage {
 		try {
 			desktopService2.linkDepartment(desktopInfo.getId(), departmentInfo.getId());
 		} catch (Exception e) {
-			addError(i18n("DEPARTMENT_ERROR_SHORTCUT"), e.getMessage());
+			addError(i18n("department_error_shortcut"), e.getMessage());
 			return Constants.FAILURE;
 		}
 		
-		this.addMessage(i18n("DEPARTMENT_SUCESS_SHORTCUT"));
+		this.addMessage(i18n("department_success_shortcut"));
 		return Constants.SUCCESS;
 	}
 	
@@ -59,7 +59,7 @@ public class DepartmentPage extends AbstractDepartmentPage {
 			return Constants.FAILURE;
 		}
 		
-		addMessage(i18n("DEPARTMENT_SUCCESS_REMOVE_SHORTCUT"));
+		addMessage(i18n("department_success_remove_shortcut"));
 		return Constants.SUCCESS;
 	}
 }
