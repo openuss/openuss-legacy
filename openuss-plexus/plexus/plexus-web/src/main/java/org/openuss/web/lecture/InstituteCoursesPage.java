@@ -243,6 +243,50 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	}
 	
 	/**
+	 * Disables the chosen course. This is just evident for the search indexing.
+	 * @return Outcome
+	 */
+	public String disableCourse() {
+		logger.debug("Starting method disableCourse");
+		CourseInfo currentCourse = currentCourse();
+		// setOrganisationStatus(true) = Enabled
+		// setOrganisationStatus(false) = Disabled
+		//courseService.setCourseStatus(currentCourse.getId(), false);
+		
+		addMessage(i18n("message_course_disabled"));
+		return Constants.SUCCESS;
+	}
+	
+	/**
+	 * Enables the chosen course. This is just evident for the search indexing.
+	 * @return Outcome
+	 */
+	public String enableCourse() {
+		logger.debug("Starting method enableCourse");
+		CourseInfo currentCourse = currentCourse();
+		// setOrganisationStatus(true) = Enabled
+		// setOrganisationStatus(false) = Disabled
+		//courseService.setCourseStatus(currentCourse.getId(), true);
+		
+		addMessage(i18n("message_course_enabled"));
+		return Constants.SUCCESS;
+	}
+	
+	/**
+	 * Store the selected course into session scope and go to course remove confirmation page.
+	 * @return Outcome
+	 */
+	public String selectCourseAndConfirmRemove() {
+		logger.debug("Starting method selectCourseAndConfirmRemove");
+		CourseInfo currentCourse = currentCourse();
+		logger.debug("Returning to method selectCourseAndConfirmRemove");
+		logger.debug(currentCourse.getId());	
+		setSessionBean(Constants.COURSE_INFO, currentCourse);
+		
+		return Constants.COURSE_CONFIRM_REMOVE_PAGE;
+	}
+	
+	/**
 	 * Sets the selected period into session scope and forward to the period
 	 * remove view
 	 * 

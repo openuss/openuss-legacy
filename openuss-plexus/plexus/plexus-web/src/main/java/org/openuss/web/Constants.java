@@ -201,6 +201,8 @@ public class Constants {
 	
 	public static final String INSTITUTE_COURSES_PAGE = "institute_courses";
 	
+	public static final String COURSE_CONFIRM_REMOVE_PAGE = "course_remove_confirmation";
+	
 	/******************************university period*****************/
 	public static final String UNIVERSITY_PERIOD_EDIT_PAGE = "university_period_edit";
 	public static final String UNIVERSITY_PERIOD_ADD_PAGE = "university_period_add";

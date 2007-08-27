@@ -34,10 +34,9 @@
     PATH="/views/public/messagebox.xhtml"
     TARGET="rules:#views#public#messagebox.xhtml" TITLE="messagebox"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="register_user::#views#public#user#registration#startProcess.xhtml"
-    NAME="output8"
-    PATH="/views/public/user/registration/startProcess.xhtml"
-    TARGET="rules:#views#public#user#registration#startProcess.xhtml" TITLE="register_user"/>
+    ID="forgot_password::#views#public#login#forgotPassword.xhtml"
+    NAME="output8" PATH="/views/public/login/forgotPassword.xhtml"
+    TARGET="rules:#views#public#login#forgotPassword.xhtml" TITLE="forgot_password"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="search_institutes::#views#public#institute#institutes.xhtml"
     NAME="output9" PATH="/views/public/institute/institutes.xhtml"
@@ -286,9 +285,9 @@
     NAME="output4" PATH="/views/secured/lecture/auth/aspirants.xhtml"
     TARGET="rules:#views#secured#lecture#auth#aspirants.xhtml" TITLE="institute_aspirants"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="institute_news_edit::#views#secured#lecture#newsedit.xhtml"
-    NAME="output5" PATH="/views/secured/lecture/newsedit.xhtml"
-    TARGET="rules:#views#secured#lecture#newsedit.xhtml" TITLE="institute_news_edit"/>
+    ID="institute_news::#views#secured#lecture#news.xhtml"
+    NAME="output5" PATH="/views/secured/lecture/news.xhtml"
+    TARGET="rules:#views#secured#lecture#news.xhtml" TITLE="institute_news"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="institute_courses::#views#secured#lecture#institutecourses.xhtml"
     NAME="output6" PATH="/views/secured/lecture/institutecourses.xhtml"
@@ -382,9 +381,10 @@
     NAME="output14" PATH="/views/secured/lecture/news.xhtml"
     TARGET="rules:#views#secured#lecture#news.xhtml" TITLE="course_options_news"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="newsletter_newmail::#views#secured#newsletter#newmail.xhtml"
-    NAME="output15" PATH="/views/secured/newsletter/newmail.xhtml"
-    TARGET="rules:#views#secured#newsletter#newmail.xhtml" TITLE="newsletter_newmail"/>
+    ID="course_remove_confirmation::#views#secured#lecture#courseremoveconfirmation.xhtml"
+    NAME="output15"
+    PATH="/views/secured/lecture/courseremoveconfirmation.xhtml"
+    TARGET="rules:#views#secured#lecture#courseremoveconfirmation.xhtml" TITLE="course_remove_confirmation"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="newsletter_subscribers::#views#secured#newsletter#newslettersubscribers.xhtml"
     NAME="output16"
@@ -657,6 +657,11 @@
     NAME="output6"
     PATH="/views/secured/lecture/auth/universityaspirants.xhtml"
     TARGET="rules:#views#secured#lecture#auth#universityaspirants.xhtml" TITLE="university_aspirants"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="university_remove_confirmation::#views#secured#lecture#universityremoveconfirmation.xhtml"
+    NAME="output7"
+    PATH="/views/secured/lecture/universityremoveconfirmation.xhtml"
+    TARGET="rules:#views#secured#lecture#universityremoveconfirmation.xhtml" TITLE="university_remove_confirmation"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup" NAME="rules:#views#secured#*:3"
@@ -1077,4 +1082,7 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#lecture#institutecourses.xhtml"
   PATH="/views/secured/lecture/institutecourses.xhtml" SHAPE="304,977,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#secured#lecture#courseremoveconfirmation.xhtml"
+  PATH="/views/secured/lecture/courseremoveconfirmation.xhtml" SHAPE="304,3729,0,0"/>
 </PROCESS>
