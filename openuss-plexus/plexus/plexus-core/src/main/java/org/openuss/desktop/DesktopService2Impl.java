@@ -559,4 +559,34 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 
 		return linkedCourses;
 	}
+	
+	
+	protected boolean handleIsUniversityBookmarked (Long universityId, Long userId) {
+		
+		Validate.notNull(universityId, "DesktopService2.handleIsUniversityBookmarked - the universityId cannot be null");
+		Validate.notNull(userId, "DesktopService2.handleIsUniversityBookmarked - the userId cannot be null");
+		
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university, "DesktopService2.handleIsUniversityBookmarked - " +
+				"no university found with the universityId "+universityId);
+		
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user, "DesktopService2.handleIsUniversityBookmarked - no user found with the userId "+userId);
+		
+		//Desktop desktop = this.getDesktopDao().findByUniversityAndUser(university, user);
+		Desktop desktop = this.getDesktopDao().findByUser(user);
+		if (desktop != null) {
+			if (desktop.getUniversities().contains(university)) {
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	
+	
+	
+	
+	
 }

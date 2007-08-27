@@ -704,5 +704,47 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 
 		logger.info("----> END access to unlinkAllFromCourse test");
 	}
+	
+	public void testIsUniversityBookmarked () {
+		logger.info("----> BEGIN access to isUniversityBookmarked test");
+		
+		// Create university
+		University university = testUtility.createUniqueUniversityInDB();
+		
+		// Create User
+		User user = testUtility.createUniqueUserInDB();
+		
+		// Create Desktop
+		Desktop desktop = Desktop.Factory.newInstance(user);
+		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		desktopDao.create(desktop);
+		
+		// Synchronize with DB
+		flush();
+		
+		// Test
+		try {
+			assertFalse(this.getDesktopService2().isUniversityBookmarked(university.getId(), user.getId()));
+		} catch (DesktopException de) {
+			fail("No DesktopException should have been thrown.");
+		}
+		
+		// Bookmark university
+		desktop.getUniversities().add(university);
+		desktopDao.update(desktop);
+		
+		// Synchronize with DB
+		flush();
+		
+		
+		// Test
+		try {
+			assertTrue(this.getDesktopService2().isUniversityBookmarked(university.getId(), user.getId()));
+		} catch (DesktopException de) {
+			fail("No DesktopException should have been thrown.");
+		}
+		
+		logger.info("----> END access to isUniversityBookmarked test");
+	}
 
 }
