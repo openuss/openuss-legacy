@@ -349,6 +349,30 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	public List handleFindAllCoursesByInstitute (Long instituteId) throws Exception {
+		
+		Validate.notNull(instituteId, "CourseService.findAllCoursesByInstitute -" +
+				"instituteId cannot be null.");
+		
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute, "CourseService.findAllCoursesByInstitute - " +
+				"no institute could be found with the instituteId "+instituteId);
+		
+		List<CourseInfo> courses = new ArrayList<CourseInfo>();
+		Iterator iter = institute.getCourseTypes().iterator();
+		while (iter.hasNext()) {
+			CourseType courseType = (CourseType) iter.next();
+			Iterator courseIter = courseType.getCourses().iterator();
+			while (courseIter.hasNext()) {
+				Course course = (Course) courseIter.next();
+				courses.add(this.getCourseDao().toCourseInfo(course));
+			}
+		}
+		return courses;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
 	public List handleFindCoursesByPeriodAndInstitute (Long periodId, Long instituteId) throws Exception {
 		
 		Validate.notNull(periodId, "CourseService.findCoursesByPeriodAndInstitute -" +
