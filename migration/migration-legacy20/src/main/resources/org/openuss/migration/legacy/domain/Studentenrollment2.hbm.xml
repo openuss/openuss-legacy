@@ -17,7 +17,7 @@
             <column name="STUDENTPK" length="30" />
         </many-to-one>
         <property name="withpassword" type="string">
-            <column name="WITHPASSWORD" length="1" />
+            <column name="PPASSWORD" length="1" />
         </property>
     </class>
 </hibernate-mapping>

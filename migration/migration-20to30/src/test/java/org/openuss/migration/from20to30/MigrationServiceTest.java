@@ -1,23 +1,32 @@
 package org.openuss.migration.from20to30;
 
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+import org.springframework.test.AbstractTransactionalSpringContextTests;
 
-public class MigrationServiceTest extends AbstractDependencyInjectionSpringContextTests {
+public class MigrationServiceTest extends AbstractTransactionalSpringContextTests{
 
-	private MigrationService migrationService;
+	private UserImport userImport;
 	
-
+	private LectureImport lectureImport;
+	
+	private DesktopImport desktopImport;
+	
 	public void testMigration() {
-//		migrationService.migrateStudents();
+//		userImport.importUsers();
+//		lectureImport.importLecture();
+//		desktopImport.importDesktops();
+//		
+//		setComplete();
+//		endTransaction();
+//		startNewTransaction();
 	}
 	
 	
-	public MigrationService getMigrationService() {
-		return migrationService;
+	public UserImport getUserImport() {
+		return userImport;
 	}
 
-	public void setMigrationService(MigrationService migrationService) {
-		this.migrationService = migrationService;
+	public void setUserImport(UserImport migrationService) {
+		this.userImport = migrationService;
 	}
 
 	protected String[] getConfigLocations() {
@@ -37,5 +46,25 @@ public class MigrationServiceTest extends AbstractDependencyInjectionSpringConte
 			"classpath*:applicationContext-aop.xml",
 			"classpath*:applicationContext-migration.xml",
 			"classpath*:testSecurity.xml"};
+	}
+
+
+	public LectureImport getLectureImport() {
+		return lectureImport;
+	}
+
+
+	public void setLectureImport(LectureImport lectureImport) {
+		this.lectureImport = lectureImport;
+	}
+
+
+	public DesktopImport getDesktopImport() {
+		return desktopImport;
+	}
+
+
+	public void setDesktopImport(DesktopImport desktopImport) {
+		this.desktopImport = desktopImport;
 	}
 }
