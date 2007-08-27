@@ -26,22 +26,31 @@
       
 	<plexus:dataTable 
 	    	id="courses" 
-	    	var="course" 
+	    	var="courseInfo" 
 	    	label="#{periodInfo.name}"
 	    	value="views$public$institute$institute.courseData" 
-	    	columnClasses="col_max_left, col_commands"
-		styleClass="table"
+	    	columnClasses="col_max_left, col_min_left, col_min_commands"
+			styleClass="table"
 	    	rows="10">
 	    	<!--  To be included Zeile 2 -->
 	    	
 		<t:column>
-			<plexus:commandSortHeader columnName="courseType.name">
+			<plexus:commandSortHeader columnName="courseInfo.name">
 				<h:outputText value="#{msg.course_colheader_name}"/>
 			</plexus:commandSortHeader>
-			<o:link value="/views/secured/course/main.faces" title="#{course.courseType.description}">
-				<f:param value="#{course.id}" name="course" />
-				<h:outputText value="#{course.courseType.name} (#{course.shortcut})"/>
+			<o:link value="/views/secured/course/main.faces" title="#{courseInfo.description}">
+				<f:param value="#{courseInfo.id}" name="course" />
+				<h:outputText value="#{courseInfo.name} (#{courseInfo.shortcut})"/>
 			</o:link>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="courseInfo.name">
+				<h:outputText value="#{msg.course_colheader_name}"/>
+			</plexus:commandSortHeader>
+		
+			<h:outputText value="#{courseInfo.periodName}"/>
+			
 		</t:column>
 		  
 		<s:authorize ifAllGranted="ROLE_USER">

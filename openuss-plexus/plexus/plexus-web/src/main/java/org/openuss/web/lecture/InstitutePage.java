@@ -67,7 +67,7 @@ public class InstitutePage extends AbstractLecturePage {
 		} 
 		
 		if (periodInfo == null && instituteInfo != null || instituteInfo != null && !periodInfos.contains(periodInfo)) {
-			//periodInfo = universityService.findActivePeriodByUniversity(universityId);
+			periodInfo = periodInfos.get(0);
 			if (periodInfo == null && periodInfos.size() > 0) {
 				periodInfo = periodInfos.get(0);
 			}
@@ -75,9 +75,7 @@ public class InstitutePage extends AbstractLecturePage {
 			periodInfo = universityService.findPeriod(periodInfo.getId());
 			
 		}
-		
-		//periodInfo = periodInfos.get(0);
-		
+			
 		setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		//breadcrumbs shall not be displayed here
 	}
