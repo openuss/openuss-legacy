@@ -222,12 +222,12 @@ public class MigrationServiceOld {
 			User user = users.get(assistant.getAssistant().getId());
 			if (user != null) {
 				// aspirant or member?
-				if (Util.toBoolean(assistant.getAactive())) {
+				if (ImportUtil.toBoolean(assistant.getAactive())) {
 					if (!institute.getOwner().equals(user)) {
 						institute.getMembers().add(user);
 					}
 					// is admin or owner?
-					if (Util.toBoolean(assistant.getIsadmin()) || faculty2.getAssistant().getId().equals(assistant.getAssistant().getId())) {
+					if (ImportUtil.toBoolean(assistant.getIsadmin()) || faculty2.getAssistant().getId().equals(assistant.getAssistant().getId())) {
 						groupAdmins.addMember(user);
 						user.addGroup(groupAdmins);
 					}
@@ -325,7 +325,7 @@ public class MigrationServiceOld {
 		user.setUsername(assistant.getUusername());
 		user.setPassword(assistant.getPpassword());
 		user.setEmail(assistant.getEmailaddress());
-		user.setEnabled(Util.toBoolean(assistant.getAactive()));
+		user.setEnabled(ImportUtil.toBoolean(assistant.getAactive()));
 		user.setContact(assistantToUserContact(assistant));
 		user.setPreferences(assistantToUserPreferences(assistant));
 		user.setProfile(assistantToUserProfile(assistant));
@@ -342,12 +342,12 @@ public class MigrationServiceOld {
 
 		if (!assistant.getAssistantinformations().isEmpty()) {
 			Assistantinformation2 info = assistant.getAssistantinformations().iterator().next();
-			profile.setEmailPublic(Util.toBoolean(info.getEmail()));
-			profile.setAddressPublic(Util.toBoolean(info.getAddress()));
-			profile.setImagePublic(Util.toBoolean(info.getImage()));
-			profile.setPortraitPublic(Util.toBoolean(info.getDescription()));
-			profile.setProfilePublic(Util.toBoolean(info.getIspublic()));
-			profile.setTelephonePublic(Util.toBoolean(info.getTelephone()));
+			profile.setEmailPublic(ImportUtil.toBoolean(info.getEmail()));
+			profile.setAddressPublic(ImportUtil.toBoolean(info.getAddress()));
+			profile.setImagePublic(ImportUtil.toBoolean(info.getImage()));
+			profile.setPortraitPublic(ImportUtil.toBoolean(info.getDescription()));
+			profile.setProfilePublic(ImportUtil.toBoolean(info.getIspublic()));
+			profile.setTelephonePublic(ImportUtil.toBoolean(info.getTelephone()));
 			
 			profile.setPortrait(info.getTtext());
 		}
@@ -401,7 +401,7 @@ public class MigrationServiceOld {
 		institute.setWebsite(faculty2.getWebsite());
 		institute.setLocale(faculty2.getLocale());
 		institute.setOwnername(faculty2.getOwner());
-		institute.setEnabled(Util.toBoolean(faculty2.getAactive()));
+		institute.setEnabled(ImportUtil.toBoolean(faculty2.getAactive()));
 
 		Map<String, CourseType> courseTypes = transformInstituteSubjects(faculty2, institute);
 		
@@ -490,15 +490,15 @@ public class MigrationServiceOld {
 	private Course enrollment2ToCourse(Enrollment2 enrollment2) {
 		Course course = Course.Factory.newInstance();
 		// TODO check if the shortcut can be generated from the institute and subject name instead of the previous guid
-		course.setShortcut(enrollment2.getId());
+		//	course.setShortcut(enrollment2.getId());
 		course.setDescription(enrollment2.getSubject().getRemark());
 
-		course.setBraincontest(Util.toBoolean(enrollment2.getQuiz()));
-		course.setChat(Util.toBoolean(enrollment2.getChat()));
-		course.setDiscussion(Util.toBoolean(enrollment2.getDiscussion()));
-		course.setDocuments(Util.toBoolean(enrollment2.getLecturematerials()));
-		course.setNewsletter(Util.toBoolean(enrollment2.getMailinglist()));
-		course.setFreestylelearning(Util.toBoolean(enrollment2.getFslinstall()));
+		course.setBraincontest(ImportUtil.toBoolean(enrollment2.getQuiz()));
+		course.setChat(ImportUtil.toBoolean(enrollment2.getChat()));
+		course.setDiscussion(ImportUtil.toBoolean(enrollment2.getDiscussion()));
+		course.setDocuments(ImportUtil.toBoolean(enrollment2.getLecturematerials()));
+		course.setNewsletter(ImportUtil.toBoolean(enrollment2.getMailinglist()));
+		course.setFreestylelearning(ImportUtil.toBoolean(enrollment2.getFslinstall()));
 		course.setWiki(false);
 		return course;
 	}

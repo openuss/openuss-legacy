@@ -5,10 +5,25 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 	
-	<bean id="migrationService" class="org.openuss.migration.from20to30.MigrationService">
+	<bean id="userImport" class="org.openuss.migration.from20to30.UserImport" scope="singleton">
 		<property name="legacyDao" ref="legacyDao"/>
-		<property name="registrationService" ref="registrationService"/>
-		<property name="securityService" ref="securityService"/>
+		<property name="userDao" ref="userDao"/>
+		<property name="groupDao" ref="groupDao"/>
+		<property name="objectIdentityDao" ref="objectIdentityDao"/>
+	</bean>
+
+	<bean id="lectureImport" class="org.openuss.migration.from20to30.LectureImport" scope="singleton">
+		<property name="legacyDao" ref="legacyDao"/>
+		<property name="groupDao" ref="groupDao"/>
+		<property name="objectIdentityDao" ref="objectIdentityDao"/>
+		<property name="instituteDao" ref="instituteDao"/>
+		<property name="userImport" ref="userImport"/>
+	</bean>
+	
+	<bean id="desktopImport" class="org.openuss.migration.from20to30.DesktopImport" scope="singleton">
+		<property name="userImport" ref="userImport"/>
+		<property name="lectureImport" ref="lectureImport"/>
+		<property name="desktopDao" ref="desktopDao"/>
 	</bean>
 	
 	<!-- Local DataSource that works in any environment --> 
