@@ -1,5 +1,7 @@
 package org.openuss.web.lecture;
 
+import static org.openuss.web.lecture.AbstractLecturePage.logger;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,6 +49,26 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	@Prerender
 	public void prerender() throws LectureException, Exception {
 		super.prerender();
+		
+		/*if (instituteInfo != null) {
+			
+			instituteCourseTypes = courseTypeService.findCourseTypesByInstitute(instituteInfo.getId());
+			
+			
+		} 
+		
+		if (instituteInfo != null && !instituteCourseTypes.contains(courseTypeInfo)) {
+			if (periodInfos.size() > 0) {
+				periodInfo = periodInfos.get(0);
+			} else {
+				// normally this should never happen due to the fact that each university has a standard period!
+				periodInfo = new PeriodInfo();
+			}
+		} */
+		
+		
+			
+		setSessionBean(Constants.PERIOD_INFO, periodInfo);
 	}
 
 	private void addPageCrumb() {
@@ -365,9 +387,17 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		@Override
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<CourseInfo> courses = new ArrayList<CourseInfo>(courseService.findCoursesByCourseType(courseTypeInfo.getId()));
+				List<CourseInfo> courses = new ArrayList<CourseInfo>();
+				if (periodInfo != null) {
+					List<CourseInfo> coursesByPeriodAndInstitute = courseService.findCoursesByPeriodAndInstitute(periodInfo.getId(), instituteInfo.getId());
+					if (coursesByPeriodAndInstitute != null) {
+						courses.addAll(coursesByPeriodAndInstitute);
+					}
+				} else {
+					logger.error("institute page - no period selected!");
+				}
 				sort(courses);
-				page = new DataPage<CourseInfo>(courses.size(),0,courses);
+				page = new DataPage<CourseInfo>(courses.size(), 0, courses);
 			}
 			return page;
 		}

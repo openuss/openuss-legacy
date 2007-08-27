@@ -160,7 +160,6 @@ public class InstitutePage extends AbstractLecturePage {
 			if (page == null) {
 				List<CourseInfo> courses = new ArrayList<CourseInfo>();
 				if (periodInfo != null) {
-					//period = lectureService.getPeriod(period.getId());
 					List<CourseInfo> coursesByPeriodAndInstitute = courseService.findCoursesByPeriodAndInstitute(periodInfo.getId(), instituteInfo.getId());
 					if (coursesByPeriodAndInstitute != null) {
 						courses.addAll(coursesByPeriodAndInstitute);
