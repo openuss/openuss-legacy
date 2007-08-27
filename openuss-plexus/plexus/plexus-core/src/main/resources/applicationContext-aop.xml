@@ -14,11 +14,29 @@
 		<aop:pointcut id="OrganisationServiceRemoveMemberPointcut"
 			expression="execution(* org..OrganisationServiceBase.removeMember(java.lang.Long, java.lang.Long)) and args(organisationId, userId)" />
 
+		<aop:pointcut id="UniversityServiceCreatePointcut"
+			expression="execution(* org..UniversityServiceBase.create(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)" />
+		<aop:pointcut id="UniversityServiceDeletePointcut"
+			expression="execution(* org..UniversityServiceBase.removeUniversity(java.lang.Long)) and args(universityId)" />
+		<aop:pointcut id="DepartmentServiceCreatePointcut"
+			expression="execution(* org..DepartmentServiceBase.create(org.openuss.lecture.DepartmentInfo, java.lang.Long)) and args(departmentInfo, userId)" />
+		<aop:pointcut id="DepartmentServiceDeletePointcut"
+			expression="execution(* org..DepartmentServiceBase.removeDepartment(java.lang.Long)) and args(departmentId)" />
+		<aop:pointcut id="InstituteServiceCreatePointcut"
+			expression="execution(* org..InstituteServiceBase.create(org.openuss.lecture.InstituteInfo, java.lang.Long)) and args(instituteInfo, userId)" />
+		<aop:pointcut id="InstituteServiceDeletePointcut"
+			expression="execution(* org..InstituteServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)" />
+		<aop:pointcut id="CourseServiceDeletePointcut"
+			expression="execution(* org..CourseServiceBase.remove(java.lang.Long)) and args(courseId)" />	
+			
 		<!-- Aspect Definitions -->
 		<aop:aspect id="mailSenderAspect" ref="mailSenderAspectBean">
-			<aop:after-returning method="sendAddMemberMail"
-				pointcut-ref="OrganisationServiceAddMemberPointcut" arg-names="organisationId, userId" />
-			<aop:after-returning method="sendRemoveMemberMail"
+			<aop:after-returning 
+				method="sendAddMemberMail"
+				pointcut-ref="OrganisationServiceAddMemberPointcut" 
+				arg-names="organisationId, userId" />
+			<aop:after-returning 
+				method="sendRemoveMemberMail"
 				pointcut-ref="OrganisationServiceRemoveMemberPointcut"
 				arg-names="organisationId, userId" />
 		</aop:aspect>
@@ -108,50 +126,56 @@
 
 		<aop:aspect id="universityCreationAspect"
 			ref="universityCreationAndDeletionAspectBean">
-			<aop:after-returning method="bookmarkUniversity"
-				pointcut="execution(* org..UniversityServiceBase.create(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)"
+			<aop:after-returning 
+				method="bookmarkUniversity"
+				pointcut-ref="UniversityServiceCreatePointcut"
 				arg-names="universityInfo, userId" />
 		</aop:aspect>
 
 		<aop:aspect id="universityDeletionAspect"
 			ref="universityCreationAndDeletionAspectBean">
 			<aop:before method="deleteBookmarksOfUniversity"
-				pointcut="execution(* org..UniversityServiceBase.removeUniversity(java.lang.Long)) and args(universityId)"
+				pointcut-ref="UniversityServiceDeletePointcut"
 				arg-names="universityId" />
 		</aop:aspect>
 
 		<aop:aspect id="departmentCreationAspect"
 			ref="departmentCreationAndDeletionAspectBean">
-			<aop:after-returning method="bookmarkDepartment"
-				pointcut="execution(* org..DepartmentServiceBase.create(org.openuss.lecture.DepartmentInfo, java.lang.Long)) and args(departmentInfo, userId)"
+			<aop:after-returning 
+				method="bookmarkDepartment"
+				pointcut-ref="DepartmentServiceCreatePointcut"
 				arg-names="departmentInfo, userId" />
 		</aop:aspect>
 
 		<aop:aspect id="departmentDeletionAspect"
 			ref="departmentCreationAndDeletionAspectBean">
-			<aop:before method="deleteBookmarksOfDepartment"
-				pointcut="execution(* org..DepartmentServiceBase.removeDepartment(java.lang.Long)) and args(departmentId)"
+			<aop:before 
+				method="deleteBookmarksOfDepartment"
+				pointcut-ref="DepartmentServiceDeletePointcut"
 				arg-names="departmentId" />
 		</aop:aspect>
 
 		<aop:aspect id="instituteCreationAspect"
 			ref="instituteCreationAndDeletionAspectBean">
-			<aop:after-returning method="bookmarkInstitute"
-				pointcut="execution(* org..InstituteServiceBase.create(org.openuss.lecture.InstituteInfo, java.lang.Long)) and args(instituteInfo, userId)"
+			<aop:after-returning 
+				method="bookmarkInstitute"
+				pointcut-ref="InstituteServiceCreatePointcut"
 				arg-names="instituteInfo, userId" />
 		</aop:aspect>
 
 		<aop:aspect id="instituteDeletionAspect"
 			ref="instituteCreationAndDeletionAspectBean">
-			<aop:before method="deleteBookmarksOfInstitute"
-				pointcut="execution(* org..InstituteServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)"
+			<aop:before 
+				method="deleteBookmarksOfInstitute"
+				pointcut-ref="InstituteServiceDeletePointcut"
 				arg-names="instituteId" />
 		</aop:aspect>
 
 		<aop:aspect id="courseDeletionAspect"
 			ref="courseDeletionAspectBean">
-			<aop:before method="deleteBookmarksOfCourse"
-				pointcut="execution(* org..CourseServiceBase.remove(java.lang.Long)) and args(courseId)"
+			<aop:before 
+				method="deleteBookmarksOfCourse"
+				pointcut-ref="CourseServiceDeletePointcut"
 				arg-names="courseId" />
 		</aop:aspect>
 

@@ -436,6 +436,37 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	}
 
 
+	public void testIsNoneExistingCourseShortcut () {
+		logger.debug("----> BEGIN access to isNoneExistingCourseShortcut test <---- ");
+		
+		//Create Secure Context
+		User user = testUtility.createUserSecureContext();
+		
+		// Create Courses
+		Course course1= testUtility.createUniqueCourseInDB();
+		Course course2= testUtility.createUniqueCourseInDB();
+		flush();
+		
+		// Test
+		CourseDao courseDao = (CourseDao) this.getApplicationContext().getBean("courseDao");
+		Boolean result = this.getCourseService().isNoneExistingCourseShortcut(
+				courseDao.toCourseInfo(course1), course1.getShortcut());
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getCourseService().isNoneExistingCourseShortcut(
+				courseDao.toCourseInfo(course1), testUtility.unique("shortcut"));
+		assertNotNull(result);
+		assertTrue(result);
+		
+		result = this.getCourseService().isNoneExistingCourseShortcut(
+				courseDao.toCourseInfo(course1), course2.getShortcut());
+		assertNotNull(result);
+		assertFalse(result);
+		
+		logger.debug("----> END access to isNoneExistingCourseShortcut test <---- ");
+	}
+	
 	private LectureBuilder createInstituteStructure(AccessType accessType) {
 		LectureBuilder lectureBuilder = new LectureBuilder();
 		User owner = testUtility.createUserInDB();

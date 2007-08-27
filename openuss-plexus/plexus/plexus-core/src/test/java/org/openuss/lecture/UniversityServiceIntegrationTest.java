@@ -14,6 +14,8 @@ import java.util.List;
 
 import org.acegisecurity.AccessDeniedException;
 import org.apache.log4j.Logger;
+import org.openuss.desktop.Desktop;
+import org.openuss.desktop.DesktopDao;
 import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
 import org.openuss.security.User;
@@ -59,8 +61,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		}
 
 		// Create Entity
-		testUtility.createAdminSecureContext();
-		Long universityId = universityService.createUniversity(universityInfo, owner.getId());
+		User user = testUtility.createAdminSecureContext();
+		Long universityId = universityService.createUniversity(universityInfo, user.getId());
 		assertNotNull(universityId);
 		
 		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
@@ -70,7 +72,12 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 
 		// Synchronize with Database
 		flush();
-
+		
+		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		Desktop desktopTest = desktopDao.findByUser(user);
+		assertNotNull(desktopTest);
+		assertEquals(1, desktopTest.getUniversities().size());
+		
 		testUtility.destroySecureContext();
 		logger.info("----> END access to create(University) test");
 	}
