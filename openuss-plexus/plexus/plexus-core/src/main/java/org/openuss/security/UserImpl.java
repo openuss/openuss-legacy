@@ -18,6 +18,12 @@ import org.apache.commons.lang.StringUtils;
 public class UserImpl extends UserBase implements User, UserDetails {
 
 	private static final long serialVersionUID = 4562337137383225187L;
+
+	@Override
+	public void setUsername(String username) {
+		super.setUsername(username.toLowerCase().trim());
+	}
+
 	
 	/**
 	 * @see org.openuss.security.User#getGrantedAuthorities()
