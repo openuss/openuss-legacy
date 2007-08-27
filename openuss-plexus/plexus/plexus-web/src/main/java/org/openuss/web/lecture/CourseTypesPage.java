@@ -266,7 +266,6 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 			departmentInfo = departmentService.findDepartment(departmentId);
 			Long universityId = departmentInfo.getUniversityId();
 			universityInfo = universityService.findUniversity(universityId);
-			//universityService.findActivePeriodByUniversity(universityId);
 			institutePeriods = universityService.findPeriodsByUniversity(universityId);
 			
 			Iterator<PeriodInfo> iter =  institutePeriods.iterator();
