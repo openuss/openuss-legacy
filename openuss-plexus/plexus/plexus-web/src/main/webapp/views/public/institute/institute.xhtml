@@ -70,8 +70,24 @@
 				<div>
 					<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
 				</div>
+				
 				<o:block styleClass="teaser_blue" label="#{msg.organisation_command_actions}">
 					<h:form id="actionsForm">
+					
+						<p class="content_font_normal">
+					  			<h:commandLink
+					  				action="#{views$public$institute$institute.addShortcut}">
+					  				<h:outputText value="Bookmark setzen" />
+					  			</h:commandLink>
+				  		</p>
+				  		
+				  		<p class="content_font_normal">
+				  			<h:commandLink 
+				  				action="#{views$public$institute$institute.removeShortcut}">
+				  				<h:outputText value="Boomark entfernen" />
+				  			</h:commandLink>
+				  		</p>
+					  		
 				  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.UPDATE}">
 					  		<p class="content_font_normal">
 						  		<h:commandLink action="institute_registration_start">

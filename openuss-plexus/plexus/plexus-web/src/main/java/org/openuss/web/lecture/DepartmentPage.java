@@ -42,9 +42,14 @@ public class DepartmentPage extends AbstractDepartmentPage {
 			return Constants.FAILURE;
 		}
 		
+		this.addMessage(i18n("DEPARTMENT_SUCESS_SHORTCUT"));
 		return Constants.SUCCESS;
 	}
 	
+	/**
+	 * Removes the shortcut to the department
+	 * @return
+	 */
 	public String removeShortcut()
 	{
 		try {
@@ -54,6 +59,7 @@ public class DepartmentPage extends AbstractDepartmentPage {
 			return Constants.FAILURE;
 		}
 		
+		addMessage(i18n("DEPARTMENT_SUCCESS_REMOVE_SHORTCUT"));
 		return Constants.SUCCESS;
 	}
 }

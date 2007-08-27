@@ -102,6 +102,40 @@ public class InstitutePage extends AbstractLecturePage {
 		}
 	}
 	
+	/**
+	 * Adds a shortcut to the institute
+	 * @return
+	 */
+	public String addShortcut()
+	{
+		try {
+			desktopService2.linkInstitute(desktopInfo.getId(), instituteInfo.getId());
+		} catch (Exception e) {
+			addError(i18n("INSITUTE_ERROR_SHORTCUT"), e.getMessage());
+			return Constants.FAILURE;
+		}
+		
+		this.addMessage(i18n("INSTITUTE_SUCESS_SHORTCUT"));
+		return Constants.SUCCESS;
+	}
+	
+	/**
+	 * Removes the shortcut to the isntitute
+	 * @return
+	 */
+	public String removeShortcut()
+	{
+		try {
+			desktopService2.unlinkInstitute(desktopInfo.getId(), instituteInfo.getId());
+		} catch (Exception e) {
+			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
+			return Constants.FAILURE;
+		}
+		
+		addMessage(i18n("INSTITUTE_SUCCESS_REMOVE_SHORTCUT"));
+		return Constants.SUCCESS;
+	}
+	
 	public List<SelectItem> getBelongingInstitutePeriods() {
 		
 		institutePeriodItems = new ArrayList<SelectItem>();
