@@ -823,5 +823,61 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 
 		logger.info("----> END access to findPeriodsByUniversityWithActiveCourses test");
 	}
+	
+	public void testFindPeriodsByInstituteWithCoursesOrActive() {
+		logger.info("----> BEGIN access to findPeriodsByInstituteWithCoursesOrActive test");
+
+		// Create University
+		University university1 = testUtility.createUniqueUniversityInDB();
+		University university2 = testUtility.createUniqueUniversityInDB();
+		
+		// Create Periods
+		Period period1 = testUtility.createUniquePeriodInDB();
+		university1.add(period1);
+		assertEquals(2, university1.getPeriods().size());
+		
+		Period period2 = testUtility.createUniqueInactivePeriodInDB();
+		university1.add(period2);
+		assertEquals(3, university1.getPeriods().size());
+		
+		Period period3 = testUtility.createUniquePeriodInDB();
+		university1.add(period3);
+		assertEquals(4, university1.getPeriods().size());
+		
+		// Create Departments
+		Department department1 = testUtility.createUniqueDepartmentInDB();
+		department1.setUniversity(university1);
+		Department department2 = testUtility.createUniqueDepartmentInDB();
+		department2.setUniversity(university1);
+		
+		// Create Institute
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		institute1.setDepartment(department1);
+		
+		// Create CourseType
+		CourseType courseType1 = testUtility.createUniqueCourseTypeInDB();
+		institute1.getCourseTypes().add(courseType1);	
+		
+		// Create Courses for university1
+		Course course1 = testUtility.createUniqueCourseInDB();
+		course1.setPeriod(university1.getPeriods().get(0));
+		course1.getPeriod().add(course1);
+		courseType1.getCourses().add(course1);
+		Course course2 = testUtility.createUniqueCourseInDB();
+		course2.setPeriod(university1.getPeriods().get(1));
+		course2.getPeriod().add(course2);
+		courseType1.getCourses().add(course2);
+		
+		// Test
+		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
+		List<PeriodInfo> periods = this.getUniversityService().findPeriodsByInstituteWithCoursesOrActive(
+				instituteDao.toInstituteInfo(institute1));
+		assertNotNull(periods);
+		assertEquals(3, periods.size());
+		assertEquals(university1.getPeriods().get(0).getName(), periods.get(0).getName());
+		
+
+		logger.info("----> END access to findPeriodsByInstituteWithCoursesOrActive test");
+	}
 
 }

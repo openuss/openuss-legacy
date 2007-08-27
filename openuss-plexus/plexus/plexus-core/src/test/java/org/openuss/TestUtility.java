@@ -483,6 +483,36 @@ public class TestUtility {
 
 		return period;
 	}
+	
+	
+	public Period createUniqueInactivePeriodInDB() {
+		// Create a unique University
+		University university = this.createUniqueUniversityInDB();
+
+		// Create Startdate
+		Calendar cal = new GregorianCalendar();
+		cal.set(2005, 3, 1);
+		Date startdate = new Date(cal.getTimeInMillis());
+
+		// Create Enddate
+		cal = new GregorianCalendar();
+		cal.set(2006, 8, 31);
+		Date enddate = new Date(cal.getTimeInMillis());
+
+		// Create a unique Period
+		Period period = Period.Factory.newInstance();
+		period.setName(unique("Period"));
+		period.setDescription("A unique Period");
+		period.setCourses(new ArrayList<Course>());
+		period.setStartdate(startdate);
+		period.setEnddate(enddate);
+		period.setDefaultPeriod(false);
+		university.add(period);
+
+		periodDao.create(period);
+
+		return period;
+	}
 
 	public Application createUniqueUnconfirmedApplicationInDB() {
 		// Create a complete Application

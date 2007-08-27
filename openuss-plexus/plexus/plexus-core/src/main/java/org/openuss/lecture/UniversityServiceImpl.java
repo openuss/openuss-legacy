@@ -401,6 +401,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	/**
 	 * @see org.openuss.lecture.UniversityService#findActivePeriodsByUniversity(java.lang.Long)
 	 */
+	@SuppressWarnings( { "unchecked" })
 	protected List handleFindActivePeriodsByUniversity(java.lang.Long universityId) throws java.lang.Exception {
 
 		Validate.notNull(universityId,
@@ -418,6 +419,36 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 			this.getPeriodDao().toPeriodInfoCollection(activePeriods);
 			return activePeriods;
 		}
+	}
+	
+	
+	@SuppressWarnings( { "unchecked" })
+	public List handleFindPeriodsByInstituteWithCoursesOrActive(InstituteInfo instituteInfo) {
+		
+		Validate.notNull(instituteInfo, "UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - " +
+				"instituteInfo cannot be null.");
+		Validate.notNull(instituteInfo.getId(), "UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - " +
+				"the id of instituteInfo cannot be null.");
+		
+		Institute instituteEntity = this.getInstituteDao().load(instituteInfo.getId());
+		Validate.notNull(instituteEntity, "UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - " +
+				"no instituteEntity could be found with the corresponding instituteId "+instituteInfo.getId());
+		
+		Validate.notNull(instituteEntity.getDepartment(), "UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - " +
+				"no department is associated with the given institute.");
+		Validate.notNull(instituteEntity.getDepartment().getUniversity(), "UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - " +
+				"no university is associated with the department of the given institute.");
+		
+		List<Period> periods = this.getPeriodDao().findByUniversity(instituteEntity.getDepartment().getUniversity());
+		List<PeriodInfo> periodInfos = new ArrayList<PeriodInfo>();
+		Iterator iter = periods.iterator();
+		while (iter.hasNext()) {
+			Period period = (Period) iter.next();
+			if ( period.isActive() || period.getCourses().size() > 0 ) {
+				periodInfos.add(this.getPeriodDao().toPeriodInfo(period));
+			}
+		}
+		return periodInfos;
 	}
 
 	/**

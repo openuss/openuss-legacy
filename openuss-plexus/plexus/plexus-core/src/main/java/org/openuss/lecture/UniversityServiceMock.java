@@ -261,6 +261,11 @@ public class UniversityServiceMock implements UniversityService {
 		return null;
 	}
 	
+	public List findPeriodsByInstituteWithCoursesOrActive(InstituteInfo instituteInfo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public void removeCompleteUniversityTree(Long universityId) {
 		// TODO Auto-generated method stub
 	}
