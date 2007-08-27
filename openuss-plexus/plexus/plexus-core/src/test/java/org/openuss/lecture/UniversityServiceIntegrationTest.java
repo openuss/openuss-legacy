@@ -48,7 +48,10 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 
 		// Create a User as Owner
 		User owner = testUtility.createUniqueUserInDB();
-
+		
+		// Synchronize with Database
+		flush();
+		
 		// Test Security
 		testUtility.createUserSecureContext();
 		try {
@@ -61,8 +64,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		}
 
 		// Create Entity
-		User user = testUtility.createAdminSecureContext();
-		Long universityId = universityService.createUniversity(universityInfo, user.getId());
+		testUtility.createAdminSecureContext();
+		Long universityId = universityService.createUniversity(universityInfo, owner.getId());
 		assertNotNull(universityId);
 		
 		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
@@ -74,7 +77,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		flush();
 		
 		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
-		Desktop desktopTest = desktopDao.findByUser(user);
+		Desktop desktopTest = desktopDao.findByUser(owner);
 		assertNotNull(desktopTest);
 		assertEquals(1, desktopTest.getUniversities().size());
 		
