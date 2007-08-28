@@ -1,10 +1,15 @@
 package org.openuss.migration.legacy.dao;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.openuss.migration.legacy.domain.Assistant2;
+import org.openuss.migration.legacy.domain.Assistantenrollment2;
+import org.openuss.migration.legacy.domain.Assistantfaculty2;
 import org.openuss.migration.legacy.domain.Faculty2;
 import org.openuss.migration.legacy.domain.Student2;
+import org.openuss.migration.legacy.domain.Studentenrollment2;
+import org.openuss.migration.legacy.domain.Studentfaculty2;
+import org.openuss.migration.legacy.domain.Studentsubject2;
 
 /**
  * 
@@ -22,8 +27,8 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 	/**
 	 * {@inheritDoc}
 	 */
-	public Collection<Assistant2> loadAllAssistants() {
-		return (Collection<Assistant2>) this.getHibernateTemplate().loadAll(Assistant2.class);
+	public List<Assistant2> loadAllAssistants() {
+		return (List<Assistant2>) this.getHibernateTemplate().loadAll(Assistant2.class);
 	}
 
 	/**
@@ -36,27 +41,46 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 	/**
 	 * {@inheritDoc}
 	 */
-	public Collection<Student2> loadAllStudents() {
-//		query.setReadOnly(true);
-//		query.setFetchSize(4);
-//		ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
-//		return results;
-		return (Collection<Student2>) this.getHibernateTemplate().loadAll(Student2.class);
+	public List<Student2> loadAllStudents() {
+		return (List<Student2>) this.getHibernateTemplate().loadAll(Student2.class);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Collection<Faculty2> loadAllInstitutes() {
-		return (Collection<Faculty2>) this.getHibernateTemplate().loadAll(Faculty2.class);
+	public List<Faculty2> loadAllInstitutes() {
+		return (List<Faculty2>) this.getHibernateTemplate().loadAll(Faculty2.class);
 	}
 
 	
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
 	public Faculty2 loadFaculty(String id) {
 		return (Faculty2) this.getHibernateTemplate().load(Faculty2.class, id);
+	}
+
+	/** {@inheritDoc} */
+	public List<Assistantenrollment2> loadAllAssistantEnrollments() {
+		return (List<Assistantenrollment2>) this.getHibernateTemplate().loadAll(Assistantenrollment2.class);
+	}
+
+	/** {@inheritDoc} */
+	public List<Assistantfaculty2> loadAllAssistantFaculty() {
+		return (List<Assistantfaculty2>) this.getHibernateTemplate().loadAll(Assistantfaculty2.class);
+	}
+
+	/** {@inheritDoc} */
+	public List<Studentenrollment2> loadAllStudentEnrollments() {
+		return (List<Studentenrollment2>) this.getHibernateTemplate().loadAll(Studentenrollment2.class);
+	}
+
+	/** {@inheritDoc} */
+	public List<Studentfaculty2> loadAllStudentFaculty() {
+		return (List<Studentfaculty2>) this.getHibernateTemplate().loadAll(Studentfaculty2.class);
+	}
+
+	/** {@inheritDoc} */
+	public List<Studentsubject2> loadAllStudentSubject() {
+		return (List<Studentsubject2>) this.getHibernateTemplate().loadAll(Studentsubject2.class);
 	}
 
 }
