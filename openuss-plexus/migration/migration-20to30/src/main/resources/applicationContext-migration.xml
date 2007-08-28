@@ -26,6 +26,18 @@
 		<property name="lectureImport" ref="lectureImport"/>
 		<property name="desktopDao" ref="desktopDao"/>
 	</bean>
+
+	<bean id="newsImport" class="org.openuss.migration.from20to30.NewsImport" scope="singleton">
+		<property name="legacyDao" ref="legacyDao"/>
+		<property name="lectureImport" ref="lectureImport"/>
+		<property name="newsService" ref="newsService"/>
+	</bean>
+
+	<bean id="documentImport" class="org.openuss.migration.from20to30.DocumentImport" scope="singleton">
+		<property name="legacyDao" ref="legacyDao"/>
+		<property name="lectureImport" ref="lectureImport"/>
+		<property name="documentService" ref="documentService"/>
+	</bean>
 	
 	<!-- Local DataSource that works in any environment --> 
     <bean id="legacyDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">

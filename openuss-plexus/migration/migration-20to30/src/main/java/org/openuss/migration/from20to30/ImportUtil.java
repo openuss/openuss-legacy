@@ -37,4 +37,13 @@ public class ImportUtil {
 		map.clear();
 		map.putAll(x);
 	}
+
+	public static String extension(String fileName) {
+		if (fileName != null) {
+			int index = fileName.lastIndexOf('.');
+			return fileName.substring(index+1);
+		} else {
+			return "";
+		}
+	}
 }

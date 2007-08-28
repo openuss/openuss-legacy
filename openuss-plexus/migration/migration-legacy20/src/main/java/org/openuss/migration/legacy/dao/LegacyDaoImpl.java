@@ -5,7 +5,11 @@ import java.util.List;
 import org.openuss.migration.legacy.domain.Assistant2;
 import org.openuss.migration.legacy.domain.Assistantenrollment2;
 import org.openuss.migration.legacy.domain.Assistantfaculty2;
+import org.openuss.migration.legacy.domain.Enrollmentinformation2;
 import org.openuss.migration.legacy.domain.Faculty2;
+import org.openuss.migration.legacy.domain.Facultyinformation2;
+import org.openuss.migration.legacy.domain.Filebase2;
+import org.openuss.migration.legacy.domain.Lecture2;
 import org.openuss.migration.legacy.domain.Student2;
 import org.openuss.migration.legacy.domain.Studentenrollment2;
 import org.openuss.migration.legacy.domain.Studentfaculty2;
@@ -81,6 +85,22 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 	/** {@inheritDoc} */
 	public List<Studentsubject2> loadAllStudentSubject() {
 		return (List<Studentsubject2>) this.getHibernateTemplate().loadAll(Studentsubject2.class);
+	}
+
+	public List<Facultyinformation2> loadAllFacultyInformation() {
+		return (List<Facultyinformation2>) this.getHibernateTemplate().loadAll(Facultyinformation2.class);
+	}
+
+	public Filebase2 loadFileBase(String id) {
+		return (Filebase2) this.getHibernateTemplate().load(Filebase2.class, id);
+	}
+
+	public List<Enrollmentinformation2> loadAllEnrollmentInformation() {
+		return (List<Enrollmentinformation2>) this.getHibernateTemplate().loadAll(Enrollmentinformation2.class);
+	}
+
+	public List<Lecture2> loadAllLectures() {
+		return (List<Lecture2>) this.getHibernateTemplate().loadAll(Lecture2.class);
 	}
 
 }
