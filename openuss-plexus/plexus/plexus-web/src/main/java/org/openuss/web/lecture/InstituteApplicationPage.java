@@ -45,8 +45,8 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 	
 	
 	
-	private DepartmentsTable departments = new DepartmentsTable();
-	
+
+	private  ApplicationInfo appAnDepartment;
 		
 	private List<SelectItem> departmentItems;
 
@@ -68,45 +68,15 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
-	/**
-	 * @param startRow
-	 *            row to start from
-	 * @param pageSize
-	 *            number of rows on each page
-	 * @return
-	 */
-	private DataPage<DepartmentInfo> fetchDataPage(int startRow, int pageSize) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("getDataPage(" + startRow + "," + pageSize + ")");
-		}
-		
-		 
-		 
-		 logger.debug("instituteId:"+instituteInfo.getId());
-		 InstituteInfo institute = instituteService.findInstitute(instituteInfo.getId());
-		 logger.debug("departmentId"+institute.getDepartmentId());
-		 List<DepartmentInfo> departments = new ArrayList<DepartmentInfo>();
-		 
-		 logger.debug("Debug findDepartment");
-		 DepartmentInfo d= departmentService.findDepartment(institute.getDepartmentId());
-		 logger.debug("department name:"+d.getName());		 
-		 departments.add(d);
-		
-		 return new DataPage<DepartmentInfo>(departments.size(), 0, departments);
-	}
 
 	/**
-	 * LocalDataModel of Universitry Members
+	 * find application 
 	 */
-	private class DepartmentsTable extends AbstractPagedTable<DepartmentInfo> {
-
-		private static final long serialVersionUID = 449438778521068451L;
-
-		@Override
-		public DataPage<DepartmentInfo> getDataPage(int startRow, int pageSize) {
-			
-			return fetchDataPage(startRow, pageSize);
-		}
+	private ApplicationInfo getAppAnDepartment(){
+		
+		appAnDepartment = instituteService.findApplicationByInstitute(instituteInfo.getId());
+		logger.info(appAnDepartment.getId());
+		return appAnDepartment;
 	}
 	
 	private Long getUniversityId(){
@@ -152,10 +122,11 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 		applicationInfo.setApplyingUserInfo(userInfo);
 		
 		DepartmentInfo departmentInfo = new DepartmentInfo();
-		departmentInfo.setId(departmentId);
+		departmentInfo.setId(applicationInfo.getId());
 		applicationInfo.setDepartmentInfo(departmentInfo);
 		
 		applicationInfo.setInstituteInfo(instituteInfo);
+		applicationInfo.setId(null);
 		
 		try{
 		Long appId = instituteService.applyAtDepartment(applicationInfo);
@@ -174,9 +145,6 @@ public class InstituteApplicationPage extends AbstractLecturePage{
     	return Constants.SUCCESS;
     }
     
-	public DepartmentsTable getDepartments() {
-		return departments;
-	}
 
 	public ApplicationInfo getApplicationInfo() {
 		return applicationInfo;
