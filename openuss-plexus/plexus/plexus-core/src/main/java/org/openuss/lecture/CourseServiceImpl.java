@@ -54,8 +54,8 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		// TODO: Update AccessTypePermissions
 		
 		//FIXME: Shouldn't this be CourseType? And we don't want that!
-		Institute institute = courseEntity.getCourseType().getInstitute();
-		this.getSecurityService().createObjectIdentity(courseEntity, institute);
+		//Institute institute = courseEntity.getCourseType().getInstitute();
+		//this.getSecurityService().createObjectIdentity(courseEntity, institute);
 		
 		return courseEntity.getId();
 	}
