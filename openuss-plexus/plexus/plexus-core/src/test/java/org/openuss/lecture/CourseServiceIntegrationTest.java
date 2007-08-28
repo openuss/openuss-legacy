@@ -480,6 +480,53 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		logger.debug("----> END access to findAllCoursesByInstitute test <---- ");
 	}
 
+	
+	public void testFindCoursesByActivePeriods () {
+		logger.debug("----> BEGIN access to findCoursesByActivePeriods test <---- ");
+		
+		// Create Periods
+		Period activePeriod = testUtility.createUniquePeriodInDB();
+		Period inActivePeriod = testUtility.createUniqueInactivePeriodInDB();
+		
+		// Create University
+		University university = testUtility.createUniqueUniversityInDB();
+		university.add(activePeriod);
+		university.add(inActivePeriod);
+		
+		// Create Department
+		Department department = testUtility.createUniqueDepartmentInDB();
+		university.add(department);
+		
+		// Create Institute
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		department.add(institute);
+		
+		// Create CourseType
+		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
+		institute.add(courseType);
+		
+		// Create Courses
+		Course course1 = testUtility.createUniqueCourseInDB();
+		activePeriod.add(course1);
+		courseType.add(course1);
+		Course course2 = testUtility.createUniqueCourseInDB();
+		activePeriod.add(course2);
+		courseType.add(course2);
+		Course course3 = testUtility.createUniqueCourseInDB();
+		inActivePeriod.add(course3);
+		courseType.add(course3);
+		Course course4 = testUtility.createUniqueCourseInDB();
+		university.getPeriods().get(0).add(course4);
+		courseType.add(course4);
+		
+		// Test
+		List<CourseInfo> courses = this.getCourseService().findCoursesByActivePeriods(
+				this.getInstituteDao().toInstituteInfo(institute));
+		assertNotNull(courses);
+		assertEquals(3, courses.size());
+		
+		logger.debug("----> END access to findCoursesByActivePeriods test <---- ");
+	}
 
 	public void testIsNoneExistingCourseShortcut () {
 		logger.debug("----> BEGIN access to isNoneExistingCourseShortcut test <---- ");

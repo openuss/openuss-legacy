@@ -417,9 +417,19 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		Validate.notNull(institute.getDepartment().getUniversity(), "CourseService.findCoursesByPeriodAndInstitute -" +
 			"university cannot be null.");
 		
-		List<PeriodInfo> activePeriods = this.getPeriodDao().findByUniversity(institute.getDepartment().getUniversity());
-		
-		return null;
+		List<Period> periods = this.getPeriodDao().findByUniversity(institute.getDepartment().getUniversity());
+		List<CourseInfo> courses = new ArrayList<CourseInfo>();
+		Iterator iter = periods.iterator();
+		while (iter.hasNext()) {
+			Period period = (Period) iter.next();
+			if (period.isActive()) {
+				Iterator courseIter = period.getCourses().iterator();
+				while (courseIter.hasNext()) {
+					courses.add(this.getCourseDao().toCourseInfo((Course)courseIter.next()));
+				}
+			}
+		}
+		return courses;
 	}
 	
 	
