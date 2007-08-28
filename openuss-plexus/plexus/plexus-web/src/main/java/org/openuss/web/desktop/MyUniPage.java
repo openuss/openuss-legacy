@@ -477,7 +477,8 @@ public class MyUniPage extends BasePage {
 		private static final String myuniBasePath = "/openuss-plexus/views/secured/myuni/myuni.faces";
 		private static final String departmentsBasePath = "/openuss-plexus/views/public/department/department.faces?department=";
 		private static final String institutesBasePath = "/openuss-plexus/views/public/institute/institute.faces?institute=";
-
+		private static final String coursesBasePath = "/openuss-plexus/views/secured/course/main.faces?course=";
+		
 		public MyUniDataSet() {
 			uniDataSets = new HashMap<Long, UniversityDataSet>();
 		}
@@ -1143,6 +1144,7 @@ public class MyUniPage extends BasePage {
 				currentCourse = i.next();
 				newListItem = new ListItemDAO();
 				newListItem.setTitle(currentCourse.getName());
+				newListItem.setUrl(coursesBasePath + currentCourse.getId());
 				
 				listItems.add(newListItem);
 			}
@@ -1188,6 +1190,7 @@ public class MyUniPage extends BasePage {
 				currentCourse = i.next();
 				newListItem = new ListItemDAO();
 				newListItem.setTitle(currentCourse.getName());
+				newListItem.setUrl(coursesBasePath + currentCourse.getId());
 				
 				listItems.add(newListItem);
 			}
