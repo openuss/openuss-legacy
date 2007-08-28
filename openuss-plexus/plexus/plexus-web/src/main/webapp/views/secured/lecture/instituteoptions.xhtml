@@ -41,11 +41,17 @@
 			  		<h:outputText value="#{departmentInfo.name}" styleClass="content_font_normal"/>
 			  	</o:block>
 			  	
-			  	<o:block label="#{msg.institute_applicationList_header}" styleClass="form_box">
-			  		<h:outputText value="#{views$secured$lecture$instituteDepartments.appAnDepartment.departmentInfo.name}" styleClass="content_font_normal"/>
+			  	<o:block label="#{msg.institute_applicationList_header}" 
+			  	
+			  	styleClass="form_box">
+			  		<h:outputText value="#{views$secured$lecture$instituteDepartments.appStatusDescription}" 
+			  		rendered = "#{appStatus}"
+			  		styleClass="content_font_normal"/>
 			  	</o:block>
 			  	
-				<o:block label="#{msg.institute_departments_subheading}" styleClass="form_box">
+				<o:block label="#{msg.institute_departments_subheading}" 
+				rendered = "#{!appStatus}"
+				styleClass="form_box">
 					<h:outputText value="#{msg.department_selection}" styleClass="header_font_normal"/>
 		
 					<h:selectOneListbox

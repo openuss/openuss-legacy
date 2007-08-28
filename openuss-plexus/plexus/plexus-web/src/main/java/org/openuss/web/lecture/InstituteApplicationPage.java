@@ -4,7 +4,9 @@ package org.openuss.web.lecture;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ResourceBundle;
 
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 
@@ -43,7 +45,9 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 	
 	private Long departmentId;
 	
+	private String appStatusDescription;
 	
+	private boolean appStatus;
 	
 
 	private  ApplicationInfo appAnDepartment;
@@ -69,16 +73,14 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 	}	
 	
 
-	/**
-	 * find application 
-	 */
-	public ApplicationInfo getAppAnDepartment(){
-		
-		appAnDepartment = instituteService.findApplicationByInstitute(instituteInfo.getId());
-		logger.info("application id:" + appAnDepartment.getId());
-		return appAnDepartment;
+
+	private static ResourceBundle getResourceBundle(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		ResourceBundle rb = ResourceBundle.getBundle(
+				context.getApplication().getMessageBundle(), 
+				context.getViewRoot().getLocale());
+		return rb;
 	}
-	
 	private Long getUniversityId(){
 		Long departmentId = instituteService.findInstitute(instituteInfo.getId()).getDepartmentId();
 		Long  universityId= departmentService.findDepartment(departmentId).getUniversityId();
@@ -167,6 +169,35 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 
 	public void setDepartmentId(Long departmentId) {
 		this.departmentId = departmentId;
+	}
+
+	public String getAppStatusDescription() {
+		String status;
+		ResourceBundle rb = getResourceBundle();
+		ApplicationInfo app = instituteService.findApplicationByInstitute(instituteInfo.getId());
+		if (app == null)
+			appStatus = false;
+		else{
+		appStatusDescription = app.getDepartmentInfo().getName();
+		appStatus = true;
+			if (app.isConfirmed())
+				appStatusDescription  = appStatusDescription + rb.getString("application_accept_info");
+			else
+				appStatusDescription  = appStatusDescription + rb.getString("application_working_info");
+		}
+		return appStatusDescription;
+	}
+
+	public void setAppStatusDescription(String appStatusDescription) {
+		this.appStatusDescription = appStatusDescription;
+	}
+
+	public boolean isAppStatus() {
+		return appStatus;
+	}
+
+	public void setAppStatus(boolean appStatus) {
+		this.appStatus = appStatus;
 	}
 
 
