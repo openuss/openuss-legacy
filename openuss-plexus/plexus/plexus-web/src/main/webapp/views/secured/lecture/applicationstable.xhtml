@@ -12,29 +12,30 @@
      	id="applicationstable" 
      	value="views$secured$lecture$departmentinstitutes.applicationsTable" 
 		var="bean" 
-     	label="Bewerbungen" 
+     	label="#{msg.institute_applicationList_header}"
        	columnClasses="col_max_left, col_commands"
        	rows="5">  
    
 		<t:column>
-			<plexus:commandSortHeader columnName="name">#{msg.instituteList_colheader_name}</plexus:commandSortHeader> 
+			<plexus:commandSortHeader columnName="name">#{msg.institute_name}</plexus:commandSortHeader> 
 			<h:outputText value="#{bean.instituteInfo.name}"/>
 		</t:column>
 		
-		<t:column>
-			<plexus:commandSortHeader columnName="description">#{msg.instituteList_colheader_name}</plexus:commandSortHeader> 
-			<h:outputText value="#{bean.id}"/>
-		</t:column>
+
+				
 		
 		<t:column>
-			<plexus:commandSortHeader columnName="date">#{msg.instituteList_colheader_name}</plexus:commandSortHeader> 
+			<plexus:commandSortHeader columnName="confirmed">#{msg.application_confirmed}</plexus:commandSortHeader> 
+			<h:outputText value="#{bean.confirmed}"/>
+		</t:column>
+		
+
+		<t:column>
+			<plexus:commandSortHeader columnName="date">#{msg.application_applied_date}</plexus:commandSortHeader> 
 			<h:outputText value="#{bean.applicationDate}"/>
 		</t:column>
 		
-		<t:column>
-			<plexus:commandSortHeader columnName="confirmed">#{msg.instituteList_colheader_name}</plexus:commandSortHeader> 
-			<h:outputText value="#{bean.confirmed}"/>
-		</t:column>
+
 		
 		<plexus:column header="#{msg.commands_header}">
 
@@ -43,7 +44,7 @@
 				action ="acceptApplication"
 				label="#{msg.institute_aspirant_accept}"
 				
-				styleClass="button_add">
+				styleClass="button_remove">
 			</plexus:command>
 			<plexus:command   
 				bean= "#{views$secured$lecture$departmentinstitutes}"  
