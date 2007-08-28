@@ -202,6 +202,8 @@ public class Constants {
 	public static final String INSTITUTE_COURSES_PAGE = "institute_courses";
 	
 	public static final String COURSE_CONFIRM_REMOVE_PAGE = "course_remove_confirmation";
+	public static final Long COURSES_ALL_PERIODS = -111L;
+	public static final Long COURSES_ALL_ACTIVE_PERIODS = -112L;
 	
 	/******************************university period*****************/
 	public static final String UNIVERSITY_PERIOD_EDIT_PAGE = "university_period_edit";

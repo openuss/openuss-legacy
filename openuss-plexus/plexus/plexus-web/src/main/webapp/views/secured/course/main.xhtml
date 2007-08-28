@@ -22,8 +22,8 @@
 <!-- text above will be ignored -->
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="header">
-		<s:acl domainObject="#{course}" hasPermission="#{ACL.READ}">
-			<link type="application/rss+xml" title="RSS-#{course.name}" rel="alternate" href="../../../rss/secured/course.xml?course=#{course.id}"/>
+		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
+			<link type="application/rss+xml" title="RSS-#{courseInfo.name}" rel="alternate" href="../../../rss/secured/course.xml?course=#{courseInfo.id}"/>
 		</s:acl>			
 	</ui:define>
 	<ui:define name="title">
@@ -38,13 +38,13 @@
 	<ui:define name="content" styleClass="footer_normal">
 			<o:block>
 				<p class="header_font_normal">
-					<h:outputText value="#{course.name} (#{course.shortcut})"/>
+					<h:outputText value="#{courseInfo.name} (#{courseInfo.shortcut})"/>
 				</p>
 				<p class="content_font_normal">
-					<h:outputText value="#{course.courseTypeDescription}"/>
+					<h:outputText value="#{courseInfo.courseTypeDescription}"/>
 				</p>
 				<div class="content_font_normal">
-					<h:outputText value="#{course.description}" escape="false"/>
+					<h:outputText value="#{courseInfo.description}" escape="false"/>
 				</div>
 				<h:outputText value="#{msg.course_main_assistants}" styleClass="field_label" rendered="#{not empty views$secured$course$main.assistants}"/>
 				<span class="content_font_normal">
@@ -62,9 +62,9 @@
 			</o:block>
 
 			<s:authorize ifAllGranted="ROLE_USER">
-				<s:acl domainObject="#{course}" hasNotPermission="#{ACL.READ}">
+				<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.READ}">
 					<!-- check if access type is AccessType.CLOSED -->
-					<c:if test="#{course.accessType.value == 1}">
+					<c:if test="#{courseInfo.accessType.value == 1}">
 						<o:block label="#{msg.course_main_access}" styleClass="form_box">
 							<h:outputText value="#{msg.course_main_access_closed_text}" styleClass="content_font_normal"/>
 						</o:block>
@@ -72,7 +72,7 @@
 					</c:if>
 				
 					<!-- check if access type is AccessType.PASSWORD -->
-					<c:if test="#{course.accessType.value == 2}">
+					<c:if test="#{courseInfo.accessType.value == 2}">
 						<h:form id="course_main_apply_password_form">
 							<o:block label="#{msg.course_main_access}" styleClass="form_box">
 								<h:outputText value="#{msg.course_main_access_passtext}" styleClass="content_font_normal"/> 
@@ -96,7 +96,7 @@
 					</c:if>
 	
 					<!-- check if access type is AccessType.APPLICATION -->
-					<c:if test="#{course.accessType.value == 3}">
+					<c:if test="#{courseInfo.accessType.value == 3}">
 						<c:if test="#{views$secured$course$main.aspirant}">
 							<o:block label="#{msg.course_main_access}">
 								<p class="content_font_normal">
@@ -123,7 +123,7 @@
 					</c:if> 
 				</s:acl>
 		</s:authorize>
-		<s:acl domainObject="#{course}" hasPermission="#{ACL.READ}">
+		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
 			<c:if test="#{not empty views$secured$course$coursenews.currentNews}">
 			<o:block label="#{msg.news_header}" styleClass="news_box">
 				<h:form id="news_tables">

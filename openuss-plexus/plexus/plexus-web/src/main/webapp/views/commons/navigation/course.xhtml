@@ -11,11 +11,11 @@
 	<ui:include src="/views/commons/navigation/institute.xhtml" />
 	
 	<s:authorize ifAllGranted="ROLE_USER">
-		<s:acl domainObject="#{course}" hasPermission="#{ACL.READ}">
+		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
 			<h:form id="courseNavigationForm">
 				<t:panelNavigation2 id="course_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
 					<t:commandNavigation2 value="#{msg['course_navigation_header']}">
-						<s:acl domainObject="#{course}" hasPermission="#{ACL.READ}">
+						<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
 							<t:commandNavigation2 
 								action="course_main" 
 								activeOnViewIds="/views/secured/course/main.xhtml" >
@@ -67,7 +67,7 @@
 							</t:commandNavigation2>					
 						</s:acl>
 	
-						<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}">
+						<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 	<!-- 						<t:commandNavigation2 value="#{msg['course_command_options']}" action="course_options_config" >-->
 								<t:commandNavigation2 
 									action="course_news"

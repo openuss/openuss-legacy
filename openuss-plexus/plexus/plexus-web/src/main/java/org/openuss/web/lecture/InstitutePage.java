@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
+import javax.faces.el.ValueBinding;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -51,6 +54,10 @@ public class InstitutePage extends AbstractLecturePage {
 	private Long departmentId = 0l;
 	private List<SelectItem> institutePeriodItems;
 	private List<PeriodInfo> institutePeriods;
+	
+	private ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
+	private String locale = (String)binding.getValue(getFacesContext());
+	private ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
 
 	@Prerender
 	public void prerender() throws LectureException {
@@ -68,12 +75,20 @@ public class InstitutePage extends AbstractLecturePage {
 		} 
 		
 		if (periodInfo == null && instituteInfo != null || instituteInfo != null && !periodInfos.contains(periodInfo)) {
-			if (periodInfos.size() > 0) {
-				periodInfo = periodInfos.get(0);
-			} else {
-				// normally this should never happen due to the fact that each university has a standard period!
-				periodInfo = new PeriodInfo();
+			if (periodInfo.getId() != null) {
+				if((periodInfo.getId().longValue() == Constants.COURSES_ALL_PERIODS) || (periodInfo.getId().longValue() == Constants.COURSES_ALL_ACTIVE_PERIODS)) {
+				// do nothing
+				}
 			}
+			if ((periodInfo.getId() == null) && (periodInfos.size() > 0)) {
+				periodInfo = periodInfos.get(0);
+			}
+			
+			if (periodInfos.size() < 1) {
+				// normally this should never happen due to the fact that each university has a standard period!
+				periodInfo = new PeriodInfo();	
+			}
+	
 		} 
 			
 		setSessionBean(Constants.PERIOD_INFO, periodInfo);
@@ -83,6 +98,27 @@ public class InstitutePage extends AbstractLecturePage {
 	public void addBreadCrumbs()
 	{	
 		breadcrumbs.loadInstituteCrumbs(instituteInfo);
+	}
+	
+	private CourseInfo currentCourse() {
+		
+		CourseInfo course = courseData.getRowData();
+		
+		return course;
+	}
+	
+	/**
+	 * Store the selected course into session scope and go to course main page.
+	 * @return Outcome
+	 */
+	public String selectCourse() {
+		logger.debug("Starting method selectCourse");
+		CourseInfo course = currentCourse();
+		logger.debug("Returning to method selectCourse");
+		logger.debug(course.getId());	
+		setSessionBean(Constants.COURSE_INFO, course);
+		
+		return Constants.COURSE_PAGE;
 	}
 	
 	/**
@@ -151,8 +187,11 @@ public class InstitutePage extends AbstractLecturePage {
 			Iterator<PeriodInfo> iter =  institutePeriods.iterator();
 			PeriodInfo periodInfo;
 			
+			//create item in combobox displaying all active periods
+			SelectItem itemAllActivePeriods = new SelectItem(Constants.COURSES_ALL_ACTIVE_PERIODS, bundle.getString("all_active_periods"));
+			institutePeriodItems.add(itemAllActivePeriods);
 			//create item in combobox displaying all periods
-			SelectItem itemAllPeriods = new SelectItem(institutePeriods.get(0).getId()," -ALLE ZEITRÄUME- ");
+			SelectItem itemAllPeriods = new SelectItem(Constants.COURSES_ALL_PERIODS, bundle.getString("all_periods"));
 			institutePeriodItems.add(itemAllPeriods);
 			
 			while (iter.hasNext()) {
@@ -173,8 +212,11 @@ public class InstitutePage extends AbstractLecturePage {
 	 */
 	public void processPeriodSelectChanged(ValueChangeEvent event) {
 		final Long periodId = (Long) event.getNewValue();
-		periodInfo = universityService.findPeriod(periodId);
-		setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		if ((periodId.longValue() != Constants.COURSES_ALL_PERIODS) && (periodId.longValue() != Constants.COURSES_ALL_ACTIVE_PERIODS)) {
+			periodInfo = universityService.findPeriod(periodId);
+			setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		}
+		
 	}
 
 	/*public String resendActivationMail(){
@@ -188,13 +230,21 @@ public class InstitutePage extends AbstractLecturePage {
 		private static final long serialVersionUID = 3682383483634321520L;
 
 		private DataPage<CourseInfo> page;
+		
+		private List<CourseInfo> courses = new ArrayList<CourseInfo>();
+		private List<CourseInfo> coursesByPeriodAndInstitute = null;
 
 		@Override
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<CourseInfo> courses = new ArrayList<CourseInfo>();
 				if (periodInfo != null) {
-					List<CourseInfo> coursesByPeriodAndInstitute = courseService.findCoursesByPeriodAndInstitute(periodInfo.getId(), instituteInfo.getId());
+					if ((periodInfo.getId() != null) && (periodInfo.getId().longValue() == Constants.COURSES_ALL_PERIODS)) {
+						coursesByPeriodAndInstitute = courseService.findAllCoursesByInstitute(instituteInfo.getId());
+					} else if ((periodInfo.getId() != null) && (periodInfo.getId().longValue() == Constants.COURSES_ALL_ACTIVE_PERIODS)) {
+						coursesByPeriodAndInstitute = courseService.findCoursesByActivePeriods(instituteInfo);
+					} else {
+						coursesByPeriodAndInstitute = courseService.findCoursesByPeriodAndInstitute(periodInfo.getId(), instituteInfo.getId());
+					}		
 					if (coursesByPeriodAndInstitute != null) {
 						courses.addAll(coursesByPeriodAndInstitute);
 					}

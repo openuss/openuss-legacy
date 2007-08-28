@@ -34,7 +34,7 @@
 	    	rows="10">
    	
 		<t:column>
-			<plexus:commandSortHeader columnName="courseInfo.name">
+			<plexus:commandSortHeader columnName="name">
 				<h:outputText value="#{msg.course_colheader_name}"/>
 			</plexus:commandSortHeader>
 			<o:link value="/views/secured/course/main.faces" title="#{courseInfo.description}">
@@ -44,7 +44,7 @@
 		</t:column>
 		
 		<t:column>
-			<plexus:commandSortHeader columnName="courseInfo.periodName">
+			<plexus:commandSortHeader columnName="periodName">
 				<h:outputText value="#{msg.course_colheader_period}"/>
 			</plexus:commandSortHeader>
 		
