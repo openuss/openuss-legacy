@@ -247,7 +247,7 @@ public class TestUtility {
 		period.setEnddate(new Date(cal.getTimeInMillis()));
 		university.add(period);
 
-		periodDao.create(period);
+		//periodDao.create(period);
 
 		// Create the University
 		this.getUniversityDao().create(university);
