@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.system.SystemProperties;
@@ -51,7 +52,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		
 		// Security
 		this.getSecurityService().createObjectIdentity(courseEntity, courseEntity.getCourseType());
-		// TODO: Update AccessTypePermissions
+		updateAccessTypePermission(courseEntity);
 		
 		//FIXME: Shouldn't this be CourseType? And we don't want that!
 		//Institute institute = courseEntity.getCourseType().getInstitute();
@@ -453,11 +454,13 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	
 	/*------------------- private methods -------------------- */
 	
-	// TODO: Add Set of listeners
-	
-	// TODO: Method unregisterListener
-	
-	// TODO: Method fireRemovingCourseType (CourseType courseType)
+	private void updateAccessTypePermission(Course course) {
+		if (course.getAccessType() != AccessType.OPEN) {
+			getSecurityService().setPermissions(Roles.USER, course, LectureAclEntry.NOTHING);
+		} else if (course.getAccessType() == AccessType.OPEN) {
+			getSecurityService().setPermissions(Roles.USER, course, LectureAclEntry.COURSE_PARTICIPANT);
+		}
+	}
 	
 	/**
 	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self entry.
