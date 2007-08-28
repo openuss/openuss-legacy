@@ -72,10 +72,10 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 	/**
 	 * find application 
 	 */
-	private ApplicationInfo getAppAnDepartment(){
+	public ApplicationInfo getAppAnDepartment(){
 		
 		appAnDepartment = instituteService.findApplicationByInstitute(instituteInfo.getId());
-		logger.info(appAnDepartment.getId());
+		logger.info("application id:" + appAnDepartment.getId());
 		return appAnDepartment;
 	}
 	
@@ -141,8 +141,14 @@ public class InstituteApplicationPage extends AbstractLecturePage{
   
     	
     public String signoffInstitute(){
-    	
+    	try{
     	departmentService.signoffInstitute(instituteInfo.getId());
+    	Long departmentId = instituteService.findInstitute(instituteInfo.getId()).getDepartmentId();
+    	DepartmentInfo departmentInfo = departmentService.findDepartment(departmentId);
+    	setSessionBean(Constants.DEPARTMENT_INFO,departmentInfo);}
+    	catch(Exception e){;}
+    	
+    	  	
     	return Constants.SUCCESS;
     }
     
