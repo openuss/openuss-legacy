@@ -107,6 +107,17 @@ public class InstitutePage extends AbstractLecturePage {
 		return course;
 	}
 	
+	public Boolean getBookmarked()
+	{
+		try {
+			return desktopService2.isInstituteBookmarked(instituteInfo.getId(), user.getId());
+		} catch (Exception e) {
+			
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * Store the selected course into session scope and go to course main page.
 	 * @return Outcome

@@ -23,11 +23,7 @@ public class DepartmentPage extends AbstractDepartmentPage {
 		breadcrumbs.loadDepartmentCrumbs(departmentInfo);
 	}
 	
-	public boolean isBookmarked()
-	{
-		return true;
-		// TODO Ask service layer if the department is bookmarked
-	}
+
 	
 	/**
 	 * Adds a shortcut to the department

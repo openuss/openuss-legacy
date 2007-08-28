@@ -84,6 +84,19 @@ public abstract class AbstractDepartmentPage extends BasePage {
 		departmentCrumb.setHint(departmentInfo.getName());
 		crumbs.add(departmentCrumb);
 	}
+	
+
+	
+	public Boolean getBookmarked()
+	{
+		try {
+			return desktopService2.isDepartmentBookmarked(departmentInfo.getId(), user.getId());
+		} catch (Exception e) {
+			
+		}
+		
+		return false;
+	}
 
 	
 	public DepartmentInfo getDepartmentInfo() {

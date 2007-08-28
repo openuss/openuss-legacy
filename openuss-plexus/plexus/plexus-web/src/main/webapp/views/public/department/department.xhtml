@@ -70,18 +70,23 @@
 					
 					<o:block styleClass="teaser_blue" label="#{msg.organisation_command_actions}">
 					  	<h:form id="actionsForm">
-					  		<p class="content_font_normal">
-					  			<h:commandLink
-					  				action="#{views$public$department$department.addShortcut}">
-					  				<h:outputText value="Bookmark setzen" />
-					  			</h:commandLink>
-					  		</p>
-					  		<p class="content_font_normal">
-					  			<h:commandLink 
-					  				action="#{views$public$department$department.removeShortcut}">
-					  				<h:outputText value="Boomark entfernen" />
-					  			</h:commandLink>
-					  		</p>
+					  		<c:if test="#{not views$public$department$department.bookmarked}">
+						  		<p class="content_font_normal">
+						  			<h:commandLink
+						  				action="#{views$public$department$department.addShortcut}">
+						  				<h:outputText value="Bookmark setzen" />
+						  			</h:commandLink>
+						  		</p>
+						  	</c:if>
+						  	
+						  	<c:if test="#{views$public$department$department.bookmarked}">
+						  		<p class="content_font_normal">
+						  			<h:commandLink 
+						  				action="#{views$public$department$department.removeShortcut}">
+						  				<h:outputText value="Boomark entfernen" />
+						  			</h:commandLink>
+						  		</p>
+						  	</c:if>
 					  		
 					
 					  		<p class="content_font_normal">
