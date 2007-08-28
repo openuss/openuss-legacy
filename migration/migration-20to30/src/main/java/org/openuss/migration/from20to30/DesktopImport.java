@@ -11,10 +11,9 @@ import org.openuss.desktop.DesktopDao;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Institute;
-import org.openuss.migration.legacy.domain.Assistant2;
+import org.openuss.migration.legacy.dao.LegacyDao;
 import org.openuss.migration.legacy.domain.Assistantenrollment2;
 import org.openuss.migration.legacy.domain.Assistantfaculty2;
-import org.openuss.migration.legacy.domain.Student2;
 import org.openuss.migration.legacy.domain.Studentenrollment2;
 import org.openuss.migration.legacy.domain.Studentfaculty2;
 import org.openuss.migration.legacy.domain.Studentsubject2;
@@ -39,9 +38,15 @@ public class DesktopImport {
 
 	/** DesktopDao */
 	private DesktopDao desktopDao;
+	
+	/** LegacyDao */
+	private LegacyDao legacyDao;
 
 	/** Map legacy id to desktop */
 	private Map<String, Desktop> id2desktop = new HashMap<String, Desktop>(36000);
+	
+	/** Map user to desktop */
+	private Map<User, Desktop> user2desktop = new HashMap<User, Desktop>(36000);
 
 	/** List of desktop objects */
 	private Set<Desktop> desktops = new HashSet<Desktop>();
@@ -53,11 +58,15 @@ public class DesktopImport {
 	public void importDesktops(){
 		logger.info("parsing desktops...");
 		parseDesktops();
-		logger.info("parsing desktop links...");
-		importLinksForAssistants();
-		importLinksForStudents();
-		logger.info("saving desktop objects...");
+		logger.debug("persisting user desktops");
 		desktopDao.create(desktops);
+		
+		ImportUtil.refresh(user2desktop);
+		
+		logger.info("parsing desktop links...");
+		importLinks();
+		logger.info("updating user desktops");
+		desktopDao.update(desktops);
 	}
 	
 	private void parseDesktops() {
@@ -66,66 +75,53 @@ public class DesktopImport {
 			Desktop desktop = Desktop.Factory.newInstance();
 			desktop.setUser(user);
 			id2desktop.put(userImport.legacyIdOfUser(user), desktop);
+			user2desktop.put(user, desktop);
+			desktops.add(desktop);
 		}
-		logger.debug("persisting user desktops");
-		getDesktopDao().create(desktops);
 	}
 	
-	private void importLinksForAssistants() {
-		logger.debug("creating assistant desktop links for courses and institutes");
-		for (Assistant2 assistant: userImport.getAssistants2()) {
-			Desktop desktop = id2desktop.get(assistant.getId());
+	private void importLinks() {
+		logger.debug("creating assistant desktop links for courses...");
+		for (Assistantenrollment2 assistEnrollment: legacyDao.loadAllAssistantEnrollments() ) {
+			Desktop desktop = user2desktop.get(userImport.getUserByLegacyId(assistEnrollment.getAssistant().getId()));
 			if (desktop != null) {
-				logger.trace("creating desktop links for "+assistant.getUusername());
-				for (Assistantenrollment2 assistEnrollment: assistant.getAssistantenrollments()) {
-					Course course = lectureImport.getCourseById(assistEnrollment.getEnrollment().getId());
-					if (course != null) {
-						desktop.getCourses().add(course);
-					}
-				}
-				for (Assistantfaculty2 facultyLink: assistant.getAssistantinstitutes()) {
-					Institute institute = lectureImport.getInstituteById(facultyLink.getFaculty().getId());
-					if (institute != null) {
-						desktop.getInstitutes().add(institute);
-					}
-				}
-			} else {
-				logger.trace("desktop for user "+assistant.getUusername()+" not found!");
+				Course course = lectureImport.getCourseById(assistEnrollment.getEnrollment().getId());
+				desktop.getCourses().add(course);
 			}
 		}
-	}
-	
-	private void importLinksForStudents() {
-		logger.debug("creating students desktop links for institutes, coursetypes and courses");
+		logger.debug("creating assistant desktop links for faculties...");
+		for (Assistantfaculty2 assistFaculty: legacyDao.loadAllAssistantFaculty() ) {
+			Desktop desktop = user2desktop.get(userImport.getUserByLegacyId(assistFaculty.getAssistant().getId()));
+			if (desktop != null) {
+				Institute institute = lectureImport.getInstituteById(assistFaculty.getFaculty().getId());
+				desktop.getInstitutes().add(institute);
+			}
+		}
+		logger.debug("creating student desktop links for courses...");
+		for (Studentenrollment2 studentEnrollment: legacyDao.loadAllStudentEnrollments() ) {
+			Desktop desktop = user2desktop.get(userImport.getUserByLegacyId(studentEnrollment.getStudent().getId()));
+			if (desktop != null) {
+				Course course = lectureImport.getCourseById(studentEnrollment.getEnrollment().getId());
+				desktop.getCourses().add(course);
+			}
+		}
+		logger.debug("creating student desktop links for subjects...");
+		for (Studentsubject2 studentSubject: legacyDao.loadAllStudentSubject() ) {
+			Desktop desktop = user2desktop.get(userImport.getUserByLegacyId(studentSubject.getStudent().getId()));
+			if (desktop != null) {
+				CourseType courseType = lectureImport.getCourseTypeById(studentSubject.getSubject().getId());
+				desktop.getCourseTypes().add(courseType);
+			}
+		}
+		logger.debug("creating student desktop links for faculties...");
+		for (Studentfaculty2 studentFaculty: legacyDao.loadAllStudentFaculty() ) {
+			Desktop desktop = id2desktop.get(studentFaculty.getStudent().getId());
+			if (desktop != null) {
+				Institute institute = lectureImport.getInstituteById(studentFaculty.getFaculty().getId());
+				desktop.getInstitutes().add(institute);
+			}
+		}
 		
-		for (Student2 student : userImport.getStudents2()) {
-			Desktop desktop = id2desktop.get(student.getId());
-			if (desktop != null) {
-				logger.trace("creating desktop links for "+student.getUusername());
-				for (Studentfaculty2 facultyLink : student.getStudentinstitutes()) {
-					Institute institute = lectureImport.getInstituteById(facultyLink.getFaculty().getId());
-					if (institute != null) {
-						desktop.getInstitutes().add(institute);
-					} 
-				}
-				for (Studentsubject2 subjectLink : student.getStudentsubjects()) {
-					CourseType courseType = lectureImport.getCourseTypeById(subjectLink.getSubject().getId());
-					if (courseType != null) {
-						desktop.getCourseTypes().add(courseType);
-					}
-				}
-				
-				for (Studentenrollment2 enrollmentLink : student.getStudentenrollments()) {
-					Course course = lectureImport.getCourseById(enrollmentLink.getEnrollment().getId());
-					if (course != null) {
-						desktop.getCourses().add(course);
-					}
-				}
-				
-			} else {
-				logger.trace("desktop for user "+student.getUusername()+" not found!");
-			}
-		}
 	}
 
 	public void setUserImport(UserImport userImport) {
@@ -146,6 +142,14 @@ public class DesktopImport {
 
 	public void setLectureImport(LectureImport lectureImport) {
 		this.lectureImport = lectureImport;
+	}
+
+	public LegacyDao getLegacyDao() {
+		return legacyDao;
+	}
+
+	public void setLegacyDao(LegacyDao legacyDao) {
+		this.legacyDao = legacyDao;
 	}
 
 }

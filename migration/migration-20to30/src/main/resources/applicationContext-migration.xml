@@ -21,6 +21,7 @@
 	</bean>
 	
 	<bean id="desktopImport" class="org.openuss.migration.from20to30.DesktopImport" scope="singleton">
+		<property name="legacyDao" ref="legacyDao"/>
 		<property name="userImport" ref="userImport"/>
 		<property name="lectureImport" ref="lectureImport"/>
 		<property name="desktopDao" ref="desktopDao"/>
