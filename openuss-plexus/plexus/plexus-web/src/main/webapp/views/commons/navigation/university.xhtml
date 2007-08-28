@@ -29,14 +29,11 @@
 								</t:commandNavigation2>
 							</s:acl>
 							<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.GRANT}">
-								<t:commandNavigation2 value="#{msg['university_command_authorisations']}" action="university_members">
+								
 									<t:commandNavigation2 action="university_members" activeOnViewIds="/views/secured/lecture/auth/universitymembers.xhtml">
-										<h:outputText value="#{msg['university_command_members']}" ></h:outputText>
+										<h:outputText value="#{msg['university_command_authorisations']}" ></h:outputText>
 									</t:commandNavigation2>
-									<t:commandNavigation2 action="university_aspirants" activeOnViewIds="/views/secured/lecture/auth/universityaspirants.xhtml">
-										<h:outputText value="#{msg['university_command_aspirants']}" ></h:outputText>
-									</t:commandNavigation2>
-								</t:commandNavigation2>
+								
 							</s:acl>
 							<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.GRANT}">
 								<t:commandNavigation2 action="university_data" activeOnViewIds="/views/secured/lecture/universityoptions.xhtml">

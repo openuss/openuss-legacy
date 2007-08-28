@@ -27,18 +27,12 @@
 						</t:commandNavigation2>
 					</s:acl>
 					<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.GRANT}">	
-						<t:commandNavigation2
-							value="#{msg['department_command_authorisations']}"
-							action="department_members">
+						
 							<t:commandNavigation2 action="department_members"
 								activeOnViewIds="/views/secured/lecture/auth/departmentMembers.xhtml">
-								<h:outputText value="#{msg['department_command_members']}"></h:outputText>
+								<h:outputText value="#{msg['department_command_authorisations']}"></h:outputText>
 							</t:commandNavigation2>
-							<t:commandNavigation2 action="department_aspirants"
-								activeOnViewIds="/views/secured/lecture/auth/universityaspirants.xhtml">
-								<h:outputText value="#{msg['department_command_aspirants']}"></h:outputText>
-							</t:commandNavigation2>
-						</t:commandNavigation2>
+						
 					</s:acl>
 					<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.GRANT}">
 						<t:commandNavigation2 action="department_data"
