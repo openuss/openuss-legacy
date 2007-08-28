@@ -67,7 +67,8 @@ public class AspirantsPage extends AbstractLecturePage {
 	private void rejectAspirants() {
 		for (UserInfo userInfo : rejectAspirants) {
 			try {
-				lectureService.rejectInstituteAspirant(userInfo.getId(), institute.getId());
+				
+				lectureService.rejectInstituteAspirant(userInfo.getId(), instituteInfo.getId());
 				addMessage(i18n("institute_reject_aspirants",userInfo.getUsername()));
 			} catch (LectureException e) {
 				logger.error(e);
@@ -79,7 +80,7 @@ public class AspirantsPage extends AbstractLecturePage {
 	private void acceptAspirants() {
 		for (UserInfo userInfo : acceptAspirants) {
 			try {
-				lectureService.acceptInstituteAspirant(userInfo.getId(), institute.getId());
+				lectureService.acceptInstituteAspirant(userInfo.getId(), instituteInfo.getId());
 				addMessage(i18n("institute_add_member_to_institute", userInfo.getUsername()));
 			} catch (LectureException e) {
 				logger.error(e);
@@ -120,7 +121,7 @@ public class AspirantsPage extends AbstractLecturePage {
 		@Override 
 		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<UserInfo> aspirants = lectureService.getInstituteAspirants(institute.getId());
+				List<UserInfo> aspirants = lectureService.getInstituteAspirants(instituteInfo.getId());
 				page = new DataPage<UserInfo>(aspirants.size(),0,aspirants);
 				sort(aspirants);
 			}
