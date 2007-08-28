@@ -66,18 +66,18 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 			}
 		} */
 		
-		
+		addPageCrumbs();
 			
 		setSessionBean(Constants.PERIOD_INFO, periodInfo);
 	}
 
-	private void addPageCrumb() {
+	private void addPageCrumbs() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
 		crumb.setName(i18n("coursetype_coursetypestable_header"));
 		crumb.setHint(i18n("coursetype_coursetypestable_header"));
 		
-		breadcrumbs.loadCourseCrumbs(courseInfo);
+		breadcrumbs.loadInstituteCrumbs(instituteInfo);
 		breadcrumbs.addCrumb(crumb);
 		
 		// TODO Remove old crumb code
