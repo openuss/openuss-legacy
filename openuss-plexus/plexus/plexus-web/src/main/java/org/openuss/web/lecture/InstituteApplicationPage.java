@@ -106,6 +106,7 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 	}
 	
 	public String apply(){
+		signoffInstitute();
 		logger.debug("Debug apply");
 	
 		
@@ -134,7 +135,7 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 		catch(Exception e){;}
 		
 		
-		return Constants.INSTITUTE_DEPARTMENTS_PAGE;
+		return Constants.SUCCESS;
 	}
 	
   
