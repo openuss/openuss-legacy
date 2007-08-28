@@ -7,27 +7,10 @@
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols">
      
-     <div class="institute_info">
-    	<h:form id="institute_link">
-    		<h:commandLink action="/views/public/department/department.faces" >
-    			<f:param name="department" value="#{departmentInfo.id}"/>
-			 	<h:outputText value="#{departmentInfo.name}" styleClass="header_font_normal"/>
-			 	<h:outputText value="#{departmentInfo.address}" styleClass="content_font_normal"/>
-			 	<h:outputText value="#{departmentInfo.postcode} #{departmentInfo.city}" styleClass="content_font_normal"/>
-			 	<h:outputFormat value="#{msg.institute_information_telephone}" rendered="#{!emptydepartmentInfo.telephone}" styleClass="content_font_normal">
-					<f:param value="#{departmentInfo.telephone}" styleClass="content_font_normal"/>
-				</h:outputFormat>
-				<h:outputFormat value="#{msg.institute_information_telefax}" rendered="#{!empty departmentInfo.telefax}" styleClass="content_font_normal">
-					<f:param value="#{departmentInfo.telefax}" />
-				</h:outputFormat>
-			
-    		</h:commandLink>
-    		
-    	</h:form>
-	</div>
+     
 	
 	
-     <!--h:panelGrid border="0" columns="2" footerClass="footer_right">
+     <h:panelGrid border="0" columns="2" footerClass="footer_right">
 		<h:outputText value="#{msg.departmentinfo_name}" styleClass="field_label" />
 		<h:outputText value="#{departmentInfo.name}" styleClass="field_label" />
 	 	
@@ -76,6 +59,6 @@
 		<h:outputText value="#{msg.departmentinfo_theme}" styleClass="field_label" />
 		<h:outputText value="#{departmentInfo.theme}" styleClass="field_label" />
 	 	
-	</h:panelGrid-->
+	</h:panelGrid>
     
 </ui:composition>
