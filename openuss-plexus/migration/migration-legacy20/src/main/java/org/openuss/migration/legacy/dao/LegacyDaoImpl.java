@@ -5,6 +5,7 @@ import java.util.List;
 import org.openuss.migration.legacy.domain.Assistant2;
 import org.openuss.migration.legacy.domain.Assistantenrollment2;
 import org.openuss.migration.legacy.domain.Assistantfaculty2;
+import org.openuss.migration.legacy.domain.Enrollmentaccesslist2;
 import org.openuss.migration.legacy.domain.Enrollmentinformation2;
 import org.openuss.migration.legacy.domain.Faculty2;
 import org.openuss.migration.legacy.domain.Facultyinformation2;
@@ -101,6 +102,10 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 
 	public List<Lecture2> loadAllLectures() {
 		return (List<Lecture2>) this.getHibernateTemplate().loadAll(Lecture2.class);
+	}
+
+	public List<Enrollmentaccesslist2> loadAllEnrollmentAccessList() {
+		return (List<Enrollmentaccesslist2>)this.getHibernateTemplate().loadAll(Enrollmentaccesslist2.class);
 	}
 
 }

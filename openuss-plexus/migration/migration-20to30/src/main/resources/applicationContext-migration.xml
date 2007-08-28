@@ -38,6 +38,14 @@
 		<property name="lectureImport" ref="lectureImport"/>
 		<property name="documentService" ref="documentService"/>
 	</bean>
+
+	<bean id="courseMemberImport" class="org.openuss.migration.from20to30.CourseMemberImport" scope="singleton">
+		<property name="legacyDao" ref="legacyDao"/>
+		<property name="userImport" ref="userImport"/>
+		<property name="lectureImport" ref="lectureImport"/>
+		<property name="securityService" ref="securityService"/>
+		<property name="courseMemberDao" ref="courseMemberDao"/>
+	</bean>
 	
 	<!-- Local DataSource that works in any environment --> 
     <bean id="legacyDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
