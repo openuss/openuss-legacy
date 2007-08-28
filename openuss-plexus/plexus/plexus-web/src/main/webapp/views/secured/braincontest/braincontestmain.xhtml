@@ -23,7 +23,7 @@
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="title">
 		<h:outputText
-			value="#{msg.course_main_title} - #{course.shortcut}" />
+			value="#{msg.course_main_title} - #{courseInfo.shortcut}" />
 	</ui:define>
 	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/course.xhtml" />
@@ -46,7 +46,7 @@
 				<t:column>
 					<plexus:commandSortHeader columnName="title"> #{msg['braincontest_main_column_title']}</plexus:commandSortHeader>
 					<o:link value="/views/secured/braincontest/braincontestsolve.faces" title="#{braincontest.title}" >
-						<f:param value="#{course.id}" name="course" />
+						<f:param value="#{courseInfo.id}" name="course" />
 						<f:param value="#{braincontest.id}" name="braincontest"/>
 						<h:outputText value="#{braincontest.title}" />
 					</o:link>
@@ -63,7 +63,7 @@
 						action="topList" label="#{msg.braincontest_main_button_top}"
 						title="#{msg.braincontest_main_button_top}" 
 						rendered="#{braincontest.released}"/>
-					<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}" >
+					<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 						<plexus:command						
 							bean="#{views$secured$braincontest$braincontestmain}"
 							onclick="if (!confirm('#{msg.braincontest_confirm_delete_post}')) return false"
@@ -76,7 +76,7 @@
 					</s:acl>	
 				</plexus:column>
 			</plexus:dataTable>
-			<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}">
+			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 				<o:block>
 					<plexus:command
 						bean="#{views$secured$braincontest$braincontestmain}"

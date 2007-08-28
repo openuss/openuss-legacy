@@ -24,31 +24,31 @@
 							<t:commandNavigation2 
 								action="course_newsletter" 
 								activeOnViewIds="/views/secured/newsletter/newsletter.xhtml,/views/secured/newsletter/newslettersubscribers.xhtml,/views/secured/newsletter/showmail.xhtml,/views/secured/newsletter/newmail.xhtml"
-								rendered="#{course.newsletter}">
+								rendered="#{courseInfo.newsletter}">
 								<h:outputText value="#{msg['course_command_newsletter']}"/>
 							</t:commandNavigation2>
 							<t:commandNavigation2 
 								action="documents_main" 
 								activeOnViewIds="/views/secured/documents/documents.xhtml,/views/secured/documents/fileedit.xhtml,/views/secured/documents/addzip.xhtml,/views/secured/documents/folderedit.xhtml,/views/secured/documents/remove.faces" 
-								rendered="#{course.documents}">
+								rendered="#{courseInfo.documents}">
 								<h:outputText value="#{msg['course_command_documents']}" />
 							</t:commandNavigation2>
 							<t:commandNavigation2 
 								action="course_discussion" 
 								activeOnViewIds="/views/secured/discussion/discussions.xhtml,/views/secured/discussion/discussionnew.xhtml,/views/secured/discussion/discussionthread.xhtml"
-								rendered="#{course.discussion}">
+								rendered="#{courseInfo.discussion}">
 								<h:outputText value="#{msg['course_command_discussion']}"/>
 							</t:commandNavigation2>
 							<t:commandNavigation2 
 								action="braincontest_main" 
 								activeOnViewIds="/views/secured/braincontest/braincontestmain.xhtml,/views/secured/braincontest/braincontestnew.xhtml,/views/secured/braincontest/braincontestsolve.xhtml,/views/secured/braincontest/braincontestsolved.xhtml,/views/secured/braincontest/braincontesttop.xhtml,/views/secured/braincontest/braincontestwrong.xhtml"
-								rendered="#{course.braincontest}">
+								rendered="#{courseInfo.braincontest}">
 								<h:outputText value="#{msg['course_command_quiz']}" />
 							</t:commandNavigation2>
 							<t:commandNavigation2 
 								action="course_chat" 
 								activeOnViewIds="/views/secured/course/chatmain.xhtml"
-								rendered="#{course.chat}">
+								rendered="#{courseInfo.chat}">
 								<h:outputText value="#{msg['course_command_chat']}"/>
 							</t:commandNavigation2>
 	<!--
@@ -62,7 +62,7 @@
 							<t:commandNavigation2 
 								action="freestyle_learning" 
 								activeOnViewIds="/views/secured/course/fslinstall.xhtml"
-								rendered="#{course.freestylelearning}">
+								rendered="#{courseInfo.freestylelearning}">
 								<h:outputText value="Freestyle Learning"/>
 							</t:commandNavigation2>					
 						</s:acl>
@@ -84,7 +84,7 @@
 									activeOnViewIds="/views/secured/course/courseparticipants.xhtml">
 									<h:outputText value="#{msg['course_command_options_participants']}" />
 								</t:commandNavigation2>
-								<c:if test="#{sessionScope.course.accessType.value == 3}">
+								<c:if test="#{sessionScope.courseInfo.accessType.value == 3}">
 									<t:commandNavigation2 
 										action="course_options_aspirants" 
 										activeOnViewIds="/views/secured/course/courseaspirants.xhtml">

@@ -60,7 +60,7 @@
 						styleClass="button_remove"
 						value="#{msg.course_command_disable}"
 						hint="#{msg.course_command_disable_hint}"
-						rendered="#{bean.enabled}">
+						rendered="#{courseInfo.enabled}">
 					</h:commandButton>
 				</s:authorize>
 				<s:authorize ifAlRlGranted="ROLE_ADMIN">
@@ -69,7 +69,7 @@
 						styleClass="button_remove"
 						value="#{msg.course_command_enable}"
 						hint="#{msg.course_command_enable_hint}"
-						rendered="#{not bean.enabled}">
+						rendered="#{not courseInfo.enabled}">
 					</h:commandButton>
 				</s:authorize>
 				<s:authorize ifAllGranted="ROLE_ADMIN">

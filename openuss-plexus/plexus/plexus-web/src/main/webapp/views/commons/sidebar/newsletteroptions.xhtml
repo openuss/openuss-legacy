@@ -12,7 +12,7 @@
     xmlns:x="http://myfaces.apache.org/extensions">
 	
 		<h:form>
-			<s:acl domainObject="#{course}" hasPermission="#{ACL.PARTICIPATE}">
+			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.PARTICIPATE}">
 				<o:block label="#{msg['newsletter_status']}" styleClass="option_box">
 					<h:outputText value="#{msg['newsletter_subscribe']}" styleClass="content_font_normal" rendered="#{not newsletter_newsletter.subscribed}" escape="false"></h:outputText>
 					<h:outputText value="#{msg['newsletter_unsubscribe']}" styleClass="content_font_normal" rendered="#{newsletter_newsletter.subscribed}" escape="false"></h:outputText>
@@ -25,7 +25,7 @@
 				</o:block>
 			</s:acl>					
 		
-			<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}">
+			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 				<o:block label="#{msg['newsletter_options']}" styleClass="option_box">
 					<ul class="int">
 						<li class="sidebar_listPoint" >
