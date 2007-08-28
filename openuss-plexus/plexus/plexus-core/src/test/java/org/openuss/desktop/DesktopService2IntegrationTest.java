@@ -16,7 +16,6 @@ import org.openuss.lecture.Department;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteInfo;
-import org.openuss.lecture.Period;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
 import org.openuss.security.User;
@@ -740,6 +739,132 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		// Test
 		try {
 			assertTrue(this.getDesktopService2().isUniversityBookmarked(university.getId(), user.getId()));
+		} catch (DesktopException de) {
+			fail("No DesktopException should have been thrown.");
+		}
+		
+		logger.info("----> END access to isUniversityBookmarked test");
+	}
+	
+	public void testIsDepartmentBookmarked () {
+		logger.info("----> BEGIN access to isDepartmentBookmarked test");
+		
+		// Create department
+		Department department = testUtility.createUniqueDepartmentInDB();
+		
+		// Create User
+		User user = testUtility.createUniqueUserInDB();
+		
+		// Create Desktop
+		Desktop desktop = Desktop.Factory.newInstance(user);
+		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		desktopDao.create(desktop);
+		
+		// Synchronize with DB
+		flush();
+		
+		// Test
+		try {
+			assertFalse(this.getDesktopService2().isDepartmentBookmarked(department.getId(), user.getId()));
+		} catch (DesktopException de) {
+			fail("No DesktopException should have been thrown.");
+		}
+		
+		// Bookmark department
+		desktop.getDepartments().add(department);
+		desktopDao.update(desktop);
+		
+		// Synchronize with DB
+		flush();
+		
+		
+		// Test
+		try {
+			assertTrue(this.getDesktopService2().isDepartmentBookmarked(department.getId(), user.getId()));
+		} catch (DesktopException de) {
+			fail("No DesktopException should have been thrown.");
+		}
+		
+		logger.info("----> END access to isDepartmentBookmarked test");
+	}
+	
+	public void testIsInstituteBookmarked () {
+		logger.info("----> BEGIN access to isInstituteBookmarked test");
+		
+		// Create institute
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		
+		// Create User
+		User user = testUtility.createUniqueUserInDB();
+		
+		// Create Desktop
+		Desktop desktop = Desktop.Factory.newInstance(user);
+		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		desktopDao.create(desktop);
+		
+		// Synchronize with DB
+		flush();
+		
+		// Test
+		try {
+			assertFalse(this.getDesktopService2().isInstituteBookmarked(institute.getId(), user.getId()));
+		} catch (DesktopException de) {
+			fail("No DesktopException should have been thrown.");
+		}
+		
+		// Bookmark institute
+		desktop.getInstitutes().add(institute);
+		desktopDao.update(desktop);
+		
+		// Synchronize with DB
+		flush();
+		
+		
+		// Test
+		try {
+			assertTrue(this.getDesktopService2().isInstituteBookmarked(institute.getId(), user.getId()));
+		} catch (DesktopException de) {
+			fail("No DesktopException should have been thrown.");
+		}
+		
+		logger.info("----> END access to isInstituteBookmarked test");
+	}
+	
+	public void testIsCourseBookmarked () {
+		logger.info("----> BEGIN access to isCourseBookmarked test");
+		
+		// Create Course
+		Course course = testUtility.createUniqueCourseInDB();
+		
+		// Create User
+		User user = testUtility.createUniqueUserInDB();
+		
+		// Create Desktop
+		Desktop desktop = Desktop.Factory.newInstance(user);
+		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		desktopDao.create(desktop);
+		
+		// Synchronize with DB
+		flush();
+		
+		// Test
+		try {
+			assertFalse(this.getDesktopService2().isCourseBookmarked(course.getId(), user.getId()));
+		} catch (DesktopException de) {
+			fail("No DesktopException should have been thrown.");
+		}
+		
+		// Bookmark Course
+		desktop.getCourses().add(course);
+		desktopDao.update(desktop);
+		
+		// Synchronize with DB
+		flush();
+		
+		
+		// Test
+		try {
+			assertTrue(this.getDesktopService2().isCourseBookmarked(course.getId(), user.getId()));
 		} catch (DesktopException de) {
 			fail("No DesktopException should have been thrown.");
 		}

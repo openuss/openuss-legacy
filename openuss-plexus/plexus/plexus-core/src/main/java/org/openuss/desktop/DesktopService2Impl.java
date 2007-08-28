@@ -24,7 +24,8 @@ import org.openuss.security.User;
 
 /**
  * @see org.openuss.desktop.DesktopService2
- * @author Ron Haus, Florian Dondorf
+ * @author Ron Haus
+ * @author Florian Dondorf
  */
 public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base {
 
@@ -584,9 +585,71 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		
 	}
 	
+	protected boolean handleIsDepartmentBookmarked (Long departmentId, Long userId) {
+		
+		Validate.notNull(departmentId, "DesktopService2.handleIsUniversityBookmarked - the departmentId cannot be null");
+		Validate.notNull(userId, "DesktopService2.handleIsUniversityBookmarked - the userId cannot be null");
+		
+		Department department = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(department, "DesktopService2.handleIsUniversityBookmarked - " +
+				"no department found with the departmentId "+departmentId);
+		
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user, "DesktopService2.handleIsUniversityBookmarked - no user found with the userId "+userId);
+		
+		//Desktop desktop = this.getDesktopDao().findByUniversityAndUser(university, user);
+		Desktop desktop = this.getDesktopDao().findByUser(user);
+		if (desktop != null) {
+			if (desktop.getDepartments().contains(department)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
+	protected boolean handleIsInstituteBookmarked (Long instituteId, Long userId) {
+		
+		Validate.notNull(instituteId, "DesktopService2.handleIsUniversityBookmarked - the instituteId cannot be null");
+		Validate.notNull(userId, "DesktopService2.handleIsUniversityBookmarked - the userId cannot be null");
+		
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute, "DesktopService2.handleIsUniversityBookmarked - " +
+				"no institute found with the instituteId "+instituteId);
+		
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user, "DesktopService2.handleIsUniversityBookmarked - no user found with the userId "+userId);
+		
+		//Desktop desktop = this.getDesktopDao().findByUniversityAndUser(university, user);
+		Desktop desktop = this.getDesktopDao().findByUser(user);
+		if (desktop != null) {
+			if (desktop.getInstitutes().contains(institute)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
-	
+	protected boolean handleIsCourseBookmarked (Long courseId, Long userId) {
+		
+		Validate.notNull(courseId, "DesktopService2.handleIsUniversityBookmarked - the instituteId cannot be null");
+		Validate.notNull(userId, "DesktopService2.handleIsUniversityBookmarked - the userId cannot be null");
+		
+		Course course = this.getCourseDao().load(courseId);
+		Validate.notNull(course, "DesktopService2.handleIsUniversityBookmarked - " +
+				"no course found with the courseId "+courseId);
+		
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user, "DesktopService2.handleIsUniversityBookmarked - no user found with the userId "+userId);
+		
+		//Desktop desktop = this.getDesktopDao().findByUniversityAndUser(university, user);
+		Desktop desktop = this.getDesktopDao().findByUser(user);
+		if (desktop != null) {
+			if (desktop.getCourses().contains(course)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	
 }
