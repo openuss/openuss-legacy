@@ -49,7 +49,10 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		courseInfo.setId(courseEntity.getId());
 		
-		//TODO: Security
+		// Security
+		this.getSecurityService().createObjectIdentity(courseEntity, courseEntity.getCourseType());
+		// TODO: Update AccessTypePermissions
+		
 		//FIXME: Shouldn't this be CourseType? And we don't want that!
 		Institute institute = courseEntity.getCourseType().getInstitute();
 		this.getSecurityService().createObjectIdentity(courseEntity, institute);
@@ -396,6 +399,23 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		}
 		
 		return courseInfos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List handleFindCoursesByActivePeriods (InstituteInfo instituteInfo) throws Exception {
+		
+		Validate.notNull(instituteInfo, "CourseService.findCoursesByPeriodAndInstitute -" +
+				"instituteInfo cannot be null.");
+		
+		// Load entity
+		Institute institute = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
+		Validate.notNull(institute, "CourseService.findCoursesByPeriodAndInstitute -" +
+			"instituteInfo cannot be transformed to institute.");
+		
+		//List<PeriodInfo> activePeriods = this.per 
+		
+		return null;
 	}
 	
 	

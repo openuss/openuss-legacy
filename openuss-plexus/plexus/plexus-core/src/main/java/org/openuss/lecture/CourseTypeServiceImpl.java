@@ -40,6 +40,9 @@ public class CourseTypeServiceImpl
 		// Do not delete this!!! Set id of courseType VO for indexing.
 		courseTypeInfo.setId(courseTypeEntity.getId());
 		
+		// Security
+		this.getSecurityService().createObjectIdentity(courseTypeEntity, courseTypeEntity.getInstitute());
+		
 		return courseTypeEntity.getId();
 	}
 
