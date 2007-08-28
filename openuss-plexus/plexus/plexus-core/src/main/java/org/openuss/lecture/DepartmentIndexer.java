@@ -15,6 +15,7 @@ import org.springmodules.lucene.index.core.DocumentCreator;
 /**
 *
 * @author Kai Stettner
+* @author Malte Stockmann
 */
 public class DepartmentIndexer extends DomainIndexer {
 	
@@ -46,18 +47,6 @@ public class DepartmentIndexer extends DomainIndexer {
 			logger.debug("update new index for department "+department.getName()+" ("+department.getId()+")");
 			delete();
 			create();
-//			try {
-//				Term instituteTerm = new Term(IDENTIFIER, String.valueOf(course.getId()));
-//				getLuceneIndexTemplate().updateDocument(instituteTerm, new DocumentModifier() {
-//					public Document updateDocument(Document document) throws Exception {
-//						Document newDocument = new Document();
-//						setFields(course, document);
-//						return newDocument;
-//					}
-//				});
-//			} catch (LuceneIndexAccessException ex) {
-//				create();				
-//			}
 		}
 	}
 
@@ -68,6 +57,13 @@ public class DepartmentIndexer extends DomainIndexer {
 	}
 
 	private void setFields(final Department department, Document document) {
+		boolean isOfficial; 
+		if(department.getDepartmentType().equals(DepartmentType.OFFICIAL)){
+			isOfficial = true;
+		} else {
+			isOfficial = false;
+		}
+		
 		document.add(new Field(IDENTIFIER, String.valueOf(department.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(DOMAINTYPE, DOMAINTYPE_VALUE, Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(MODIFIED, 
@@ -76,6 +72,13 @@ public class DepartmentIndexer extends DomainIndexer {
 		document.add(new Field(CONTENT, content(department), Field.Store.YES, Field.Index.TOKENIZED));
 		document.add(new Field(DETAILS, details(department), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(NAME, name(department), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		
+		document.add(new Field(COURSE_TYPE_IDENTIFIER, "", Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(INSTITUTE_IDENTIFIER, "", Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(DEPARTMENT_IDENTIFIER, String.valueOf(department.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(UNIVERSITY_IDENTIFIER, String.valueOf(department.getUniversity().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(PERIOD_IDENTIFIER, "", Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(OFFICIAL_FLAG, String.valueOf(isOfficial), Field.Store.YES, Field.Index.UN_TOKENIZED));
 	}
 	
 	private String name(final Department department) {
@@ -95,9 +98,9 @@ public class DepartmentIndexer extends DomainIndexer {
 		content.append(StringUtils.trimToEmpty(department.getName())+SPACE);
 		content.append(StringUtils.trimToEmpty(department.getShortcut())+SPACE);
 		content.append(StringUtils.trimToEmpty(department.getDescription())+SPACE);
-		content.append(StringUtils.trimToEmpty(department.getUniversity().getDescription())+SPACE);
-		content.append(StringUtils.trimToEmpty(department.getUniversity().getName())+SPACE);
-		content.append(StringUtils.trimToEmpty(department.getUniversity().getShortcut())+SPACE);
+//		content.append(StringUtils.trimToEmpty(department.getUniversity().getDescription())+SPACE);
+//		content.append(StringUtils.trimToEmpty(department.getUniversity().getName())+SPACE);
+//		content.append(StringUtils.trimToEmpty(department.getUniversity().getShortcut())+SPACE);
 
 		return content.toString();
 	}

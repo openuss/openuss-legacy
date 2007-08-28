@@ -15,6 +15,7 @@ import org.springmodules.lucene.index.core.DocumentCreator;
 /**
 *
 * @author Kai Stettner
+* @author Malte Stockmann
 */
 public class UniversityIndexer extends DomainIndexer {
 	
@@ -46,18 +47,6 @@ public class UniversityIndexer extends DomainIndexer {
 			logger.debug("update new index for university "+university.getName()+" ("+university.getId()+")");
 			delete();
 			create();
-//			try {
-//				Term instituteTerm = new Term(IDENTIFIER, String.valueOf(course.getId()));
-//				getLuceneIndexTemplate().updateDocument(instituteTerm, new DocumentModifier() {
-//					public Document updateDocument(Document document) throws Exception {
-//						Document newDocument = new Document();
-//						setFields(course, document);
-//						return newDocument;
-//					}
-//				});
-//			} catch (LuceneIndexAccessException ex) {
-//				create();				
-//			}
 		}
 	}
 
@@ -68,7 +57,6 @@ public class UniversityIndexer extends DomainIndexer {
 	}
 
 	private void setFields(final University university, Document document) {
-			
 		document.add(new Field(IDENTIFIER, String.valueOf(university.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(DOMAINTYPE, DOMAINTYPE_VALUE, Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(MODIFIED, 
@@ -77,6 +65,13 @@ public class UniversityIndexer extends DomainIndexer {
 		document.add(new Field(CONTENT, content(university), Field.Store.YES, Field.Index.TOKENIZED));
 		document.add(new Field(DETAILS, details(university), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(NAME, name(university), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		
+		document.add(new Field(COURSE_TYPE_IDENTIFIER, "", Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(INSTITUTE_IDENTIFIER, "", Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(DEPARTMENT_IDENTIFIER, "", Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(UNIVERSITY_IDENTIFIER, String.valueOf(university.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(PERIOD_IDENTIFIER, "", Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(OFFICIAL_FLAG, String.valueOf(true), Field.Store.YES, Field.Index.UN_TOKENIZED));
 	}
 	
 	private String name(final University university) {

@@ -44,22 +44,9 @@ public class InstituteIndexer extends DomainIndexer {
 		final Institute institute = getInstitute();
 		if (institute != null) {
 			logger.debug("Method update: update new index for institute " + institute.getName() + " (" + institute.getId() + ")");
-			// update doesn't work properly, so deleting and create does the same.
+			// update doesn't work properly, so deleting and create does the same
 			delete();
 			create();
-			//	Term instituteTerm = new Term(IDENTIFIER, String.valueOf(institute.getId().longValue()));
-			//	try {
-			//		getLuceneIndexTemplate().updateDocument(instituteTerm, new DocumentModifier() {
-			//			public Document updateDocument(Document document) throws Exception {
-			//				Document newDocument = new Document();
-			//				setFields(institute, document);
-			//				return newDocument;
-			//			}
-			//		});
-			//	} catch (LuceneIndexAccessException ex) {
-			//		logger.debug("Exception during update, trying to create...",ex);
-			//		create();
-			//	}
 		}
 	}
 
@@ -70,6 +57,13 @@ public class InstituteIndexer extends DomainIndexer {
 	}
 
 	private void setFields(final Institute institute, Document document) {
+		boolean isOfficial; 
+		if(institute.getDepartment().getDepartmentType().equals(DepartmentType.OFFICIAL)){
+			isOfficial = true;
+		} else {
+			isOfficial = false;
+		}
+		
 		document.add(new Field(IDENTIFIER, String.valueOf(institute.getId().longValue()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(DOMAINTYPE, DOMAINTYPE_VALUE, Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(MODIFIED, DateTools.dateToString(new Date(), Resolution.MINUTE), Field.Store.YES,
@@ -78,6 +72,13 @@ public class InstituteIndexer extends DomainIndexer {
 		
 		document.add(new Field(NAME, name(institute), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(DETAILS, details(institute), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		
+		document.add(new Field(COURSE_TYPE_IDENTIFIER, "", Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(INSTITUTE_IDENTIFIER, String.valueOf(institute.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(DEPARTMENT_IDENTIFIER, String.valueOf(institute.getDepartment().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(UNIVERSITY_IDENTIFIER, String.valueOf(institute.getDepartment().getUniversity().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(PERIOD_IDENTIFIER, "", Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(OFFICIAL_FLAG, String.valueOf(isOfficial), Field.Store.YES, Field.Index.UN_TOKENIZED));
 	}
 	
 	private String name(final Institute institute) {
@@ -86,7 +87,7 @@ public class InstituteIndexer extends DomainIndexer {
 	
 	private String details(final Institute institute) {
 		StringBuilder details = new StringBuilder();
-		//details.append(StringUtils.trimToEmpty(institute.getOwnername()));
+		details.append(StringUtils.trimToEmpty(institute.getOwnerName()));
 		details.append(StringUtils.trimToEmpty(institute.getAddress()));
 		return details.toString();
 	}
@@ -101,8 +102,8 @@ public class InstituteIndexer extends DomainIndexer {
 		content.append(" ");
 		content.append(institute.getDescription());
 		content.append(" ");
-		//content.append(institute.getOwnername());
-		//content.append(" ");
+		content.append(institute.getOwnerName());
+		content.append(" ");
 		content.append(institute.getAddress());
 		content.append(" ");
 		content.append(institute.getEmail());

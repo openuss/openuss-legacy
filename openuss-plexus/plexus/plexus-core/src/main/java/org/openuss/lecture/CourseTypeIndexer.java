@@ -15,6 +15,7 @@ import org.springmodules.lucene.index.core.DocumentCreator;
 /**
 *
 * @author Kai Stettner
+* @author Malte Stockmann
 */
 public class CourseTypeIndexer extends DomainIndexer {
 
@@ -46,18 +47,6 @@ public class CourseTypeIndexer extends DomainIndexer {
 			logger.debug("update new index forcourseType "+courseType.getName()+" ("+courseType.getId()+")");
 			delete();
 			create();
-//			try {
-//				Term instituteTerm = new Term(IDENTIFIER, String.valueOf(course.getId()));
-//				getLuceneIndexTemplate().updateDocument(instituteTerm, new DocumentModifier() {
-//					public Document updateDocument(Document document) throws Exception {
-//						Document newDocument = new Document();
-//						setFields(course, document);
-//						return newDocument;
-//					}
-//				});
-//			} catch (LuceneIndexAccessException ex) {
-//				create();				
-//			}
 		}
 	}
 
@@ -68,6 +57,13 @@ public class CourseTypeIndexer extends DomainIndexer {
 	}
 
 	private void setFields(final CourseType courseType, Document document) {
+		boolean isOfficial; 
+		if(courseType.getInstitute().getDepartment().getDepartmentType().equals(DepartmentType.OFFICIAL)){
+			isOfficial = true;
+		} else {
+			isOfficial = false;
+		}
+		
 		document.add(new Field(IDENTIFIER, String.valueOf(courseType.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(DOMAINTYPE, DOMAINTYPE_VALUE, Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(MODIFIED, 
@@ -76,6 +72,13 @@ public class CourseTypeIndexer extends DomainIndexer {
 		document.add(new Field(CONTENT, content(courseType), Field.Store.YES, Field.Index.TOKENIZED));
 		document.add(new Field(DETAILS, details(courseType), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(NAME, name(courseType), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		
+		document.add(new Field(COURSE_TYPE_IDENTIFIER, String.valueOf(courseType.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(INSTITUTE_IDENTIFIER, String.valueOf(String.valueOf(courseType.getInstitute().getId())), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(DEPARTMENT_IDENTIFIER, String.valueOf(courseType.getInstitute().getDepartment().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(UNIVERSITY_IDENTIFIER, String.valueOf(courseType.getInstitute().getDepartment().getUniversity().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(PERIOD_IDENTIFIER, "", Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(OFFICIAL_FLAG, String.valueOf(isOfficial), Field.Store.YES, Field.Index.UN_TOKENIZED));
 	}
 	
 	private String name(final CourseType courseType) {
@@ -95,19 +98,19 @@ public class CourseTypeIndexer extends DomainIndexer {
 		content.append(StringUtils.trimToEmpty(courseType.getName())+SPACE);
 		content.append(StringUtils.trimToEmpty(courseType.getShortcut())+SPACE);
 		content.append(StringUtils.trimToEmpty(courseType.getDescription())+SPACE);
-		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getAddress())+SPACE);
-		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getCity())+SPACE);
-		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getDescription())+SPACE);
-		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getLocale())+SPACE);
-		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getCountry())+SPACE);
-		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getName())+SPACE);
-		//content.append(StringUtils.trimToEmpty(courseType.getInstitute().getOwnername())+SPACE);
-		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getPostcode())+SPACE);
-		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getShortcut())+SPACE);
-		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getTelefax())+SPACE);
-		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getTelephone())+SPACE);
-		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getTheme())+SPACE);
-		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getWebsite())+SPACE);
+//		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getAddress())+SPACE);
+//		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getCity())+SPACE);
+//		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getDescription())+SPACE);
+//		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getLocale())+SPACE);
+//		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getCountry())+SPACE);
+//		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getName())+SPACE);
+//		//content.append(StringUtils.trimToEmpty(courseType.getInstitute().getOwnername())+SPACE);
+//		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getPostcode())+SPACE);
+//		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getShortcut())+SPACE);
+//		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getTelefax())+SPACE);
+//		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getTelephone())+SPACE);
+//		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getTheme())+SPACE);
+//		content.append(StringUtils.trimToEmpty(courseType.getInstitute().getWebsite())+SPACE);
 		
 		return content.toString();
 	}
