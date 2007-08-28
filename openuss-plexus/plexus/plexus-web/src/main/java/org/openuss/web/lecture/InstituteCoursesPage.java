@@ -251,7 +251,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		CourseInfo currentCourse = currentCourse();
 		// setOrganisationStatus(true) = Enabled
 		// setOrganisationStatus(false) = Disabled
-		//courseService.setCourseStatus(currentCourse.getId(), false);
+		courseService.setCourseStatus(currentCourse.getId(), false);
 		
 		addMessage(i18n("message_course_disabled"));
 		return Constants.SUCCESS;
@@ -266,7 +266,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		CourseInfo currentCourse = currentCourse();
 		// setOrganisationStatus(true) = Enabled
 		// setOrganisationStatus(false) = Disabled
-		//courseService.setCourseStatus(currentCourse.getId(), true);
+		courseService.setCourseStatus(currentCourse.getId(), true);
 		
 		addMessage(i18n("message_course_enabled"));
 		return Constants.SUCCESS;
@@ -432,7 +432,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<CourseInfo> courses = new ArrayList<CourseInfo>();
-				if (periodInfo != null) {
+				if ((periodInfo.getId() != null) && (periodInfo.getId().longValue() != Constants.COURSES_ALL_PERIODS) && (periodInfo.getId().longValue() != Constants.COURSES_ALL_ACTIVE_PERIODS)) {
 					List<CourseInfo> coursesByPeriodAndInstitute = courseService.findCoursesByPeriodAndInstitute(periodInfo.getId(), instituteInfo.getId());
 					if (coursesByPeriodAndInstitute != null) {
 						courses.addAll(coursesByPeriodAndInstitute);

@@ -223,11 +223,14 @@ public class InstitutePage extends AbstractLecturePage {
 	 */
 	public void processPeriodSelectChanged(ValueChangeEvent event) {
 		final Long periodId = (Long) event.getNewValue();
-		if ((periodId.longValue() != Constants.COURSES_ALL_PERIODS) && (periodId.longValue() != Constants.COURSES_ALL_ACTIVE_PERIODS)) {
+		if (periodId.longValue() == Constants.COURSES_ALL_PERIODS) {
+			periodInfo.setName(bundle.getString("all_periods"));
+		} else if (periodId.longValue() == Constants.COURSES_ALL_ACTIVE_PERIODS) {
+			periodInfo.setName(bundle.getString("all_active_periods"));
+		} else {
 			periodInfo = universityService.findPeriod(periodId);
 			setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		}
-		
 	}
 
 	/*public String resendActivationMail(){
