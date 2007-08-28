@@ -34,9 +34,7 @@
 								<h:outputText value="#{msg['institute_command_coursetypes']}"></h:outputText>
 							</t:commandNavigation2>
 						</s:acl>
-						<t:commandNavigation2 action="institute_departments"
-							activeOnViewIds="/views/secured/lecture/instituteDepartments.xhtml">
-							<h:outputText value="#{msg['institute_command_departments']}"></h:outputText>
+
 						</t:commandNavigation2>
 						<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.GRANT}">
 							<t:commandNavigation2
