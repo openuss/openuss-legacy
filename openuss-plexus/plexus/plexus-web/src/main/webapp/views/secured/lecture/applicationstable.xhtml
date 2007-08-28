@@ -16,12 +16,15 @@
        	columnClasses="col_max_left, col_commands"
        	rows="5">  
    
+			
 		<t:column>
-			<plexus:commandSortHeader columnName="name">#{msg.institute_name}</plexus:commandSortHeader> 
-			<h:outputText value="#{bean.instituteInfo.name}"/>
+			<plexus:commandSortHeader columnName="name">
+				#{msg['institute_name']}
+			</plexus:commandSortHeader>
+				<h:commandLink action="#{views$public$institute$institutes.selectInstitute}" styleClass="command">
+					<h:outputText value="#{bean.instituteInfo.name}"/>
+				</h:commandLink> 
 		</t:column>
-		
-
 				
 		
 		<t:column>
@@ -36,24 +39,26 @@
 		</t:column>
 		
 
-		
-		<plexus:column header="#{msg.commands_header}">
+	
+		<plexus:column header="#{msg.commands_header}"  >
 
 			<plexus:command 
 				bean= "#{views$secured$lecture$departmentinstitutes}"  
 				action ="acceptApplication"
 				label="#{msg.institute_aspirant_accept}"
-				
+				rendered="#{!bean.confirmed}"
 				styleClass="button_remove">
 			</plexus:command>
 			<plexus:command   
 				bean= "#{views$secured$lecture$departmentinstitutes}"  
 				action ="rejectApplication"
 				label="#{msg.institute_aspirant_reject}"
-				
+				rendered="#{!bean.confirmed}"
 				styleClass="button_remove">
 			</plexus:command>
+			
 		</plexus:column>
+	
 	</plexus:dataTable>
 	
 </ui:composition>
