@@ -398,6 +398,19 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		return courseInfos;
 	}
 	
+	
+	@Override
+	public void handleSetCourseStatus (Long courseId, boolean status) {
+		Validate.notNull(courseId, "CourseService.setCourseStatus -" +
+			"courseId cannot be null.");
+		Validate.notNull(status, "CourseService.setCourseStatus -" +
+			"status cannot be null.");
+		
+		Course course = this.getCourseDao().load(courseId);
+		course.setEnabled(status);
+		this.getCourseDao().update(course);
+	}
+	
 	@Override
 	protected void handleRegisterListener(LectureListener listener) throws Exception {
 		//TODO: Implement this method.

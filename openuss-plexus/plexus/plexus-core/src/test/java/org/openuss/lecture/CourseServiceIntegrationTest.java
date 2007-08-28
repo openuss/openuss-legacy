@@ -512,6 +512,31 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		logger.debug("----> END access to isNoneExistingCourseShortcut test <---- ");
 	}
 	
+	
+	public void testSetCourseStatus () {
+		logger.debug("----> BEGIN access to setCourseStatus test <---- ");
+		
+		// Create course
+		Course course = testUtility.createUniqueCourseInDB();
+		
+		// Set status
+		this.getCourseService().setCourseStatus(course.getId(), false);
+		
+		// Test
+		CourseDao courseDao = (CourseDao) this.getApplicationContext().getBean("courseDao");
+		Course courseTest = courseDao.load(course.getId());
+		assertFalse(courseTest.isEnabled());
+		
+		// Set status
+		this.getCourseService().setCourseStatus(course.getId(), false);
+		
+		// Test
+		courseTest = courseDao.load(course.getId());
+		assertFalse(courseTest.isEnabled());
+		
+		logger.debug("----> END access to setCourseStatus test <---- ");
+	}
+	
 	private LectureBuilder createInstituteStructure(AccessType accessType) {
 		LectureBuilder lectureBuilder = new LectureBuilder();
 		User owner = testUtility.createUserInDB();
