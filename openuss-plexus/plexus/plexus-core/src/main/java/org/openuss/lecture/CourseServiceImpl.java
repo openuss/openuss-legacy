@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.desktop.MyUniInfo;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
@@ -57,7 +58,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		//FIXME: Shouldn't this be CourseType? And we don't want that!
 		//Institute institute = courseEntity.getCourseType().getInstitute();
 		//this.getSecurityService().createObjectIdentity(courseEntity, institute);
-		
+
 		return courseEntity.getId();
 	}
 	

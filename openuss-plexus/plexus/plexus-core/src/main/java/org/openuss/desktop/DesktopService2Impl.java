@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -651,5 +652,10 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		return false;
 	}
 	
+	
+	protected Map handleGetMyUniInfo (Long userId) {
+		//TODO: Implement me!
+		return null;
+	}
 	
 }
