@@ -11,6 +11,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.desktop.DesktopInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -58,7 +59,7 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
-		
+		username=null;
 		addPageCrumb();
 	}
 
@@ -96,10 +97,12 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 		  logger.debug(member.getUsername());
 		  logger.debug("removeUserFromGroup");
 		  logger.debug(universityGroups.get(0).getName());
-		  
+		  try{
 		  organisationService.removeUserFromGroup(member.getId(),universityGroups.get(0).getId());
 		  organisationService.removeMember(universityInfo.getId(), user.getId());
-		  logger.debug("return");
+		  logger.debug("return");}
+		  catch(Exception e){;}
+		  
 		  return Constants.SUCCESS;
 		 
 		
@@ -116,6 +119,8 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 		if (logger.isDebugEnabled()) {
 			logger.debug("add a member to university");
 		}
+		
+		try{
 		logger.debug(username);
 		user = securityService.getUserByName(username);
 		logger.debug(universityInfo.getId());
@@ -125,6 +130,13 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 		logger.info(universityGroups.get(0).getId());
 		logger.debug(universityGroups.get(0).getName());
 		organisationService.addUserToGroup(user.getId(), universityGroups.get(0).getId());
+		}
+		catch(Exception e){;}
+		//link university to desktop
+		try{
+		DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId());
+		desktopService2.linkUniversity(desktopInfo.getId(), universityInfo.getId());}
+		catch(Exception e){;}
 		
 
 	}
@@ -164,7 +176,7 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 	}
 
 	/**
-	 * LocalDataModel of Universitry Members
+	 * LocalDataModel of University Members
 	 */
 	private class MembersTable extends AbstractPagedTable<UserInfo> {
 
