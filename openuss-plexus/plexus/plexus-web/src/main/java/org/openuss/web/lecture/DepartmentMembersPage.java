@@ -11,6 +11,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.desktop.DesktopInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -58,8 +59,8 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
-		
 		addPageCrumb();
+		username= null;
 	}
 
 	private void addPageCrumb() {
@@ -96,9 +97,10 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		  logger.debug(member.getUsername());
 		  logger.debug("removeUserFromGroup");
 		  logger.debug(departmentGroups.get(0).getName());
-		  
+		  try{
 		  organisationService.removeUserFromGroup(member.getId(),departmentGroups.get(0).getId());
 		  organisationService.removeMember(departmentInfo.getId(), user.getId());
+		  }catch(Exception e){;}
 		  logger.debug("return");
 		  return Constants.SUCCESS;
 		 
@@ -116,6 +118,7 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		if (logger.isDebugEnabled()) {
 			logger.debug("add a member to university");
 		}
+		try{
 		logger.debug(username);
 		user = securityService.getUserByName(username);
 		logger.debug(departmentInfo.getId());
@@ -125,7 +128,11 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		logger.info(departmentGroups.get(0).getId());
 		logger.debug(departmentGroups.get(0).getName());
 		organisationService.addUserToGroup(user.getId(), departmentGroups.get(0).getId());
-		
+		}catch(Exception e){;}
+		try{
+			DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId());
+			desktopService2.linkDepartment(desktopInfo.getId(), departmentInfo.getId());}
+			catch(Exception e){;}
 
 	}
 
