@@ -412,8 +412,12 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		Institute institute = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
 		Validate.notNull(institute, "CourseService.findCoursesByPeriodAndInstitute -" +
 			"instituteInfo cannot be transformed to institute.");
+		Validate.notNull(institute.getDepartment(), "CourseService.findCoursesByPeriodAndInstitute -" +
+			"department cannot be null.");
+		Validate.notNull(institute.getDepartment().getUniversity(), "CourseService.findCoursesByPeriodAndInstitute -" +
+			"university cannot be null.");
 		
-		//List<PeriodInfo> activePeriods = this.per 
+		List<PeriodInfo> activePeriods = this.getPeriodDao().findByUniversity(institute.getDepartment().getUniversity());
 		
 		return null;
 	}
