@@ -24,6 +24,14 @@ public class CourseDaoImpl extends org.openuss.lecture.CourseDaoBase {
 		targetVO.setPeriodName(sourceEntity.getPeriod().getName());
 		targetVO.setCourseTypeDescription(sourceEntity.getCourseType().getDescription());
 		targetVO.setCourseTypeId(sourceEntity.getCourseType().getId());
+		
+		if (sourceEntity.getCourseType() != null) {
+			Institute institute = sourceEntity.getCourseType().getInstitute();
+			if (institute != null) {
+				targetVO.setInstituteId(institute.getId());
+				targetVO.setInstituteName(institute.getName());
+			}
+		}
 	}
 
 	/**
