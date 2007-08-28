@@ -5,6 +5,7 @@ import java.util.List;
 import org.openuss.migration.legacy.domain.Assistant2;
 import org.openuss.migration.legacy.domain.Assistantenrollment2;
 import org.openuss.migration.legacy.domain.Assistantfaculty2;
+import org.openuss.migration.legacy.domain.Enrollmentaccesslist2;
 import org.openuss.migration.legacy.domain.Enrollmentinformation2;
 import org.openuss.migration.legacy.domain.Faculty2;
 import org.openuss.migration.legacy.domain.Facultyinformation2;
@@ -49,5 +50,7 @@ public interface LegacyDao {
 	public abstract List<Enrollmentinformation2> loadAllEnrollmentInformation();
 
 	public abstract List<Lecture2> loadAllLectures();
+
+	public abstract List<Enrollmentaccesslist2> loadAllEnrollmentAccessList();
 
 }

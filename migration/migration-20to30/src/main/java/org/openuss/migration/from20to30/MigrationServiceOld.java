@@ -40,6 +40,7 @@ import org.openuss.security.acl.Permission;
 
 /**
  * @see org.openuss.migration.MigrationServiceOld
+ * @deprecated
  */
 public class MigrationServiceOld {
 
