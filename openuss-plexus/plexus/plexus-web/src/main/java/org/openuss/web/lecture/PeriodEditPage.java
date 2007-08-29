@@ -16,7 +16,7 @@ import org.openuss.web.PageLinks;
  * @author Weijun Chen
  * @author Kai Stettner
  */
-@Bean(name = "views$secured$lecture$periodedit", scope = Scope.REQUEST)
+@Bean(name = "views$secured$lecture$universityperiodedit", scope = Scope.REQUEST)
 @View
 public class PeriodEditPage extends AbstractPeriodPage {
 
@@ -29,8 +29,7 @@ public class PeriodEditPage extends AbstractPeriodPage {
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink(PageLinks.UNIVERSITY_PERIODS);
-		crumb.setName(i18n("period_command_edit"));
-		crumb.setHint(i18n("period_command_edit"));
+		crumb.setName(i18n("university_command_periods"));
 		
 		breadcrumbs.loadUniversityCrumbs(universityInfo);
 		breadcrumbs.addCrumb(crumb);
