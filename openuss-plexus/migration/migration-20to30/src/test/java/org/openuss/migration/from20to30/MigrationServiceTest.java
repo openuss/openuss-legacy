@@ -10,10 +10,19 @@ public class MigrationServiceTest extends AbstractTransactionalSpringContextTest
 	
 	private DesktopImport desktopImport;
 	
+	private NewsImport newsImport;
+	
+	private DocumentImport documentImport;
+	
+	private CourseMemberImport courseMemberImport;
+
 	public void testMigration() {
 //		userImport.importUsers();
 //		lectureImport.importLecture();
 //		desktopImport.importDesktops();
+//		newsImport.importNewsItems();
+//		courseMemberImport.importMembers();
+//		documentImport.importDocuments();
 //		
 //		setComplete();
 //		endTransaction();
@@ -45,7 +54,7 @@ public class MigrationServiceTest extends AbstractTransactionalSpringContextTest
 			"classpath*:applicationContext-resources.xml",
 			"classpath*:applicationContext-aop.xml",
 			"classpath*:applicationContext-migration.xml",
-			"classpath*:testSecurity.xml"};
+			"classpath*:migrationSecurity.xml"};
 	}
 
 
@@ -66,5 +75,33 @@ public class MigrationServiceTest extends AbstractTransactionalSpringContextTest
 
 	public void setDesktopImport(DesktopImport desktopImport) {
 		this.desktopImport = desktopImport;
+	}
+
+	public void setNewsImport(NewsImport newsImport) {
+		this.newsImport = newsImport;
+	}
+
+	public NewsImport getNewsImport() {
+		return newsImport;
+	}
+
+
+	public DocumentImport getDocumentImport() {
+		return documentImport;
+	}
+
+
+	public void setDocumentImport(DocumentImport documentImport) {
+		this.documentImport = documentImport;
+	}
+
+
+	public CourseMemberImport getCourseMemberImport() {
+		return courseMemberImport;
+	}
+
+
+	public void setCourseMemberImport(CourseMemberImport courseMemberImport) {
+		this.courseMemberImport = courseMemberImport;
 	}
 }
