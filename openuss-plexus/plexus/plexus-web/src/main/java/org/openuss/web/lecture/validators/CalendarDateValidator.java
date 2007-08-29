@@ -30,22 +30,27 @@ public class CalendarDateValidator extends BaseBean implements Validator {
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		try {
 			
-			Object startDate = ((UIOutput) component.findComponent("startdate")).getValue();
-			Object endDate = value;
+			Date startDate = (Date)((UIOutput) component.findComponent("startdate")).getValue();
+			Date endDate = (Date)value;
 			
-			logger.debug(startDate.getClass().toString());
-			logger.debug(endDate.getClass().toString());
-			logger.debug(startDate);
-			logger.debug(endDate);
-			
-			Date enddate = (Date) endDate;
-			Date startdate = (Date) startDate;
-			
-			logger.debug(startdate.after(enddate));
-			
-			if (startdate.after(enddate)) {
-				((UIInput) component).setValid(false);
-				context.addMessage(null, new FacesMessage("Das Enddatum muss nach dem Startdatum liegen.") );
+			if(startDate != null)
+			{
+				if(endDate == null)
+				{
+					((UIInput) component).setValid(false);
+					context.addMessage(null, new FacesMessage("Das Enddatum darf nicht null sein.") );
+				}
+					
+				logger.debug(startDate.getClass().toString());
+				logger.debug(endDate.getClass().toString());
+				logger.debug(startDate);
+				logger.debug(endDate);
+				logger.debug(startDate.after(endDate));
+				
+				if (startDate.after(endDate)) {
+					((UIInput) component).setValid(false);
+					context.addMessage(null, new FacesMessage("Das Enddatum muss nach dem Startdatum liegen.") );
+				}
 			}
 			
 		} catch (UniversityServiceException e) {

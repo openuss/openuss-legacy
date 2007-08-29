@@ -32,17 +32,50 @@
 	<ui:define name="content">
 
 		<h:form id="periodForm">
+		
 			<o:block label="#{msg.period_heading}" styleClass="form_box">
-				<o:input entity="periodInfo" property="name" maxlength="100"
+				
+				<o:input
+					entity="periodInfo"
+					property="name"
+					maxlength="100"
 					required="true" />
-				<o:input entity="periodInfo" property="description" maxlength="250"
+				
+				
+					
+				<o:input
+					entity="periodInfo"
+					property="description"
+					maxlength="250"
 					type="textarea" />
-				<o:input entity="periodInfo" property="startdate" required="true" type="date"> 
+					
+				<o:input
+					entity="periodInfo"
+					property="startdate"
+					required="true"
+					type="date"> 	
 				</o:input>
-				<o:input entity="periodInfo" property="enddate" required="true" type="date">
-					<f:validator validatorId="calendarDateValidator"/>
+				
+				<h:message
+					for="startdate"
+					style="errorCssClass" />
+				
+				<o:input
+					entity="periodInfo"
+					property="enddate"
+					required="true"
+					type="date">
+					
+					<f:validator
+						validatorId="calendarDateValidator"/>
 				</o:input>
+				
+				<h:message
+					for="endate"
+					style="errorCssClass" />
+				
 			</o:block>
+			
 			<o:block>
 				<h:commandButton value="${msg.cancel}" action="university_periods"
 					styleClass="button_cancel" immediate="true" />
@@ -50,7 +83,9 @@
 					action="#{views$secured$lecture$periodedit.savePeriod}"
 					styleClass="button_save" />
 			</o:block>
+			
 		</h:form>
+		
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->
