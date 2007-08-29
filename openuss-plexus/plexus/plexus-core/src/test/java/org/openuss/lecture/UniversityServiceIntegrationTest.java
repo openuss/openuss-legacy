@@ -81,6 +81,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		University universityTest = universityDao.load(universityId);
 		assertEquals(1, universityTest.getDepartments().size());
 		assertEquals(1, universityTest.getPeriods().size());
+		assertEquals(1, universityTest.getMembership().getMembers().size());
 
 		// Synchronize with Database
 		flush();

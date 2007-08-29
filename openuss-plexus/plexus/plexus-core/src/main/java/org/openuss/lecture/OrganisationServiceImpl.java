@@ -45,8 +45,9 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 				"MembershipService.handleRemoveMember - no Organisation found corresponding to the ID "
 						+ organisationId);
 
-		Validate.isTrue(organisation.getMembership().getMembers().size()<2, "MembershipService.handleRemoveMember - You cannot remove the last Member!");
-		
+		Validate.isTrue(organisation.getMembership().getMembers().size() > 1,
+				"MembershipService.handleRemoveMember - You cannot remove the last Member!");
+
 		User user = this.getUserDao().load(userId);
 		Validate.notNull(organisation, "MembershipService.handleRemoveMember - no User found corresponding to the ID "
 				+ userId);

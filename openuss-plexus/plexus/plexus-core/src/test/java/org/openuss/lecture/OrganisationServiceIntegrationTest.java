@@ -60,6 +60,50 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		logger.info("----> END access to addMember test");
 	}
 
+	public void testRemoveMember() {
+		logger.info("----> BEGIN access to removeMember test");
+
+		// Create University with DefaultUser as Owner
+		University university = testUtility.createUniqueUniversityInDB();
+
+		// Get List of Members
+		List members = university.getMembership().getMembers();
+		assertNotNull(members);
+		int sizeBefore = members.size();
+
+		// Create a User
+		User user = testUtility.createUniqueUserInDB();
+
+		// Add a User
+		organisationService.addMember(university.getId(), user.getId());
+
+		// Synchronize with Database
+		flush();
+		
+		// Get List of Members again
+		List members2 = university.getMembership().getMembers();
+		assertNotNull(members2);
+		assertEquals(sizeBefore + 1, members2.size());
+
+		// Synchronize with Database
+		flush();
+
+		// Remove Member
+		organisationService.removeMember(university.getId(), user.getId());
+		assertEquals(sizeBefore, members2.size());
+
+		if (sizeBefore == 1) {
+			try {
+				logger.info("----> Test for Exception in removeMember test");
+				organisationService.removeMember(university.getId(), user.getId());
+				fail("Exception should have been thrown!");
+			} catch (Exception e) {
+				;
+			}
+		}
+		logger.info("----> END access to removeMember test");
+	}
+
 	@SuppressWarnings( { "unchecked" })
 	public void testAddAspirant() {
 		logger.info("----> BEGIN access to addAspirant test");
@@ -503,7 +547,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 
 		logger.info("----> END access to findGroup test");
 	}
-	
+
 	public void testFindDepartmentHierarchy() {
 		logger.info("----> BEGIN access to findDepartmentHierarchy test");
 
@@ -523,7 +567,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 
 		logger.info("----> END access to findDepartmentHierarchy test");
 	}
-	
+
 	public void testFindInstituteHierarchy() {
 		logger.info("----> BEGIN access to findInstituteHierarchy test");
 
@@ -543,7 +587,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 
 		logger.info("----> END access to findInstituteHierarchy test");
 	}
-	
+
 	public void testFindCourseHierarchy() {
 		logger.info("----> BEGIN access to findCourseHierarchy test");
 
@@ -557,8 +601,10 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		// Test
 		OrganisationHierarchy hierarchy = this.getOrganisationService().findCourseHierarchy(course.getId());
 
-		assertEquals(course.getCourseType().getInstitute().getDepartment().getUniversity().getId(), hierarchy.getUniversityInfo().getId());
-		assertEquals(course.getCourseType().getInstitute().getDepartment().getId(), hierarchy.getDepartmentInfo().getId());
+		assertEquals(course.getCourseType().getInstitute().getDepartment().getUniversity().getId(), hierarchy
+				.getUniversityInfo().getId());
+		assertEquals(course.getCourseType().getInstitute().getDepartment().getId(), hierarchy.getDepartmentInfo()
+				.getId());
 		assertEquals(course.getCourseType().getInstitute().getId(), hierarchy.getInstituteInfo().getId());
 
 		logger.info("----> END access to findCourseHierarchy test");
