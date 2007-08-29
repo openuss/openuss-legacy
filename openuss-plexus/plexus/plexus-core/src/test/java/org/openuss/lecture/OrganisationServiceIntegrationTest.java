@@ -139,7 +139,9 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 
 		// Create University with DefaultUser as Owner
 		University university = testUtility.createUniqueUniversityInDB();
-
+		assertEquals(1, university.getMembership().getMembers().size());
+		assertEquals(1, organisationService.findAllMembers(university.getId()).size());
+		
 		// Create 3 User
 		List<User> users = new ArrayList<User>();
 		for (int i = 0; i < 3; i++) {
