@@ -42,9 +42,6 @@ public class DesktopImport {
 	/** LegacyDao */
 	private LegacyDao legacyDao;
 
-	/** Map legacy id to desktop */
-	private Map<String, Desktop> id2desktop = new HashMap<String, Desktop>(36000);
-	
 	/** Map user to desktop */
 	private Map<User, Desktop> user2desktop = new HashMap<User, Desktop>(36000);
 
@@ -67,6 +64,10 @@ public class DesktopImport {
 		importLinks();
 		logger.info("updating user desktops");
 		desktopDao.update(desktops);
+
+		logger.debug("clearing data");
+		user2desktop.clear();
+		desktops.clear();
 	}
 	
 	private void parseDesktops() {
@@ -74,7 +75,6 @@ public class DesktopImport {
 		for (User user: userImport.getImportedUsers()) {
 			Desktop desktop = Desktop.Factory.newInstance();
 			desktop.setUser(user);
-			id2desktop.put(userImport.legacyIdOfUser(user), desktop);
 			user2desktop.put(user, desktop);
 			desktops.add(desktop);
 		}
@@ -115,7 +115,7 @@ public class DesktopImport {
 		}
 		logger.debug("creating student desktop links for faculties...");
 		for (Studentfaculty2 studentFaculty: legacyDao.loadAllStudentFaculty() ) {
-			Desktop desktop = id2desktop.get(studentFaculty.getStudent().getId());
+			Desktop desktop = user2desktop.get(userImport.getUserByLegacyId(studentFaculty.getStudent().getId()));
 			if (desktop != null) {
 				Institute institute = lectureImport.getInstituteById(studentFaculty.getFaculty().getId());
 				desktop.getInstitutes().add(institute);
