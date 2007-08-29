@@ -27,8 +27,18 @@
  		<managed-bean-name>applicationInfo</managed-bean-name>
  		<managed-bean-class>org.openuss.lecture.ApplicationInfo</managed-bean-class>
  		<managed-bean-scope>request</managed-bean-scope>
+ 		<managed-property>
+ 			<property-name>departmentInfo</property-name>
+ 			<value>#{applicationDeparment}</value>
+ 		</managed-property>
  	</managed-bean>
 
+ 	<managed-bean>
+ 		<managed-bean-name>applicationDeparment</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.DepartmentInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	
  	<managed-bean>
  		<managed-bean-name>instituteSecurity</managed-bean-name>
  		<managed-bean-class>org.openuss.lecture.InstituteSecurity</managed-bean-class>

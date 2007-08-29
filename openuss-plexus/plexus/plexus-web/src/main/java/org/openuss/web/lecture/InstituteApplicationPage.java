@@ -124,12 +124,11 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 		userInfo.setId(user.getId());
 		applicationInfo.setApplyingUserInfo(userInfo);
 		
-		DepartmentInfo departmentInfo = new DepartmentInfo();
-		departmentInfo.setId(applicationInfo.getId());
-		applicationInfo.setDepartmentInfo(departmentInfo);
+		
+	
 		
 		applicationInfo.setInstituteInfo(instituteInfo);
-		applicationInfo.setId(null);
+		
 		
 		try{
 		Long appId = instituteService.applyAtDepartment(applicationInfo);
