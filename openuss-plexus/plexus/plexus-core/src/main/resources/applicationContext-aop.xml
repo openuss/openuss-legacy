@@ -29,6 +29,47 @@
 		<aop:pointcut id="CourseServiceDeletePointcut"
 			expression="execution(* org..CourseServiceBase.remove(java.lang.Long)) and args(courseId)" />
 
+		<aop:pointcut id="CreateUniversityIndexPointcut"
+			expression="execution(* org..UniversityServiceBase.createUniversity(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)" />
+		<aop:pointcut id="RemoveUniversityIndexPointcut"
+			expression="execution(* org..UniversityServiceBase.removeUniversity(java.lang.Long)) and args(universityId)" />
+		<aop:pointcut id="UpdateUniversityIndexPointcut"
+			expression="execution(* org..UniversityServiceBase.update(org.openuss.lecture.UniversityInfo)) and args(universityInfo)" />
+		<aop:pointcut id="SetUniversityStatusIndexPointcut"
+			expression="execution(* org..UniversityServiceBase.setUniversityStatus(java.lang.Long, java.lang.Boolean)) and args(universityId, status)" />
+			
+		<aop:pointcut id="CreateDepartmentIndexPointcut"
+			expression="execution(* org..DepartmentServiceBase.create(org.openuss.lecture.DepartmentInfo, java.lang.Long)) and args(departmentInfo, userId)" />
+		<aop:pointcut id="RemoveDepartmentIndexPointcut"
+			expression="execution(* org..DepartmentServiceBase.removeDepartment(java.lang.Long)) and args(departmentId)" />
+		<aop:pointcut id="UpdateDepartmentIndexPointcut"
+			expression="execution(* org..DepartmentServiceBase.update(org.openuss.lecture.DepartmentInfo)) and args(departmentInfo)" />
+		<aop:pointcut id="SetDepartmentStatusIndexPointcut"
+			expression="execution(* org..DepartmentServiceBase.setDepartmentStatus(java.lang.Long, java.lang.Boolean)) and args(departmentId, status)" />
+			
+		<aop:pointcut id="CreateInstituteIndexPointcut"
+			expression="execution(* org..InstituteServiceBase.create(org.openuss.lecture.InstituteInfo, java.lang.Long)) and args(instituteInfo, userId))" />
+		<aop:pointcut id="RemoveInstituteIndexPointcut"
+			expression="execution(* org..InstituteServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)" />
+		<aop:pointcut id="UpdateInstituteIndexPointcut"
+			expression="execution(* org..InstituteServiceBase.update(org.openuss.lecture.InstituteInfo)) and args(instituteInfo)" />
+			
+		<aop:pointcut id="CreateCourseTypeIndexPointcut"
+			expression="execution(* org..CourseTypeServiceBase.create(org.openuss.lecture.CourseTypeInfo)) and args(courseTypeInfo)" />
+		<aop:pointcut id="RemoveCourseTypeIndexPointcut"
+			expression="execution(* org..CourseTypeServiceBase.removeCourseType(java.lang.Long)) and args(courseTypeId)" />
+		<aop:pointcut id="UpdateCourseTypeIndexPointcut"
+			expression="execution(* org..CourseTypeServiceBase.update(org.openuss.lecture.CourseTypeInfo)) and args(courseTypeInfo)" />
+			
+		<aop:pointcut id="CreateCourseIndexPointcut"
+			expression="execution(* org..CourseServiceBase.create(org.openuss.lecture.CourseInfo)) and args(courseInfo)" />
+		<aop:pointcut id="RemoveCourseIndexPointcut"
+			expression="execution(* org..CourseServiceBase.removeCourse(java.lang.Long)) and args(courseId)" />
+		<aop:pointcut id="UpdateCourseIndexPointcut"
+			expression="execution(* org..CourseServiceBase.updateCourse(org.openuss.lecture.CourseInfo)) and args(courseInfo)" />
+		<aop:pointcut id="UpdateCourseIndexOnPeriodPointcut"
+			expression="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Period)) and args(period)" />
+		
 		<!-- Aspect Definitions -->
 		<aop:aspect id="userAdministrationMailSenderAspect" ref="userAdministrationMailSenderAspectBean">
 			<aop:after-returning method="sendAddMemberMail"
@@ -66,59 +107,69 @@
 		<aop:aspect id="universityIndexAspect"
 			ref="universityIndexAspectBean">
 
-			<aop:after-returning method="createUniversityIndex"
-				pointcut="execution(* org..UniversityServiceBase.createUniversity(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)"
+			<aop:after-returning 
+				method="createUniversityIndex"
+				pointcut-ref="CreateUniversityIndexPointcut"
 				arg-names="universityInfo, userId" />
-			<aop:after-returning method="updateUniversityIndex"
-				pointcut="execution(* org..UniversityServiceBase.update(org.openuss.lecture.UniversityInfo)) and args(universityInfo)"
+			<aop:after-returning 
+				method="updateUniversityIndex"
+				pointcut-ref="UpdateUniversityIndexPointcut"
 				arg-names="universityInfo" />
-			<aop:after-returning method="updateUniversityIndexById"
-				pointcut="execution(* org..UniversityServiceBase.setUniversityStatus(java.lang.Long, java.lang.Boolean)) and args(universityId, status)"
+			<aop:after-returning 
+				method="updateUniversityIndexById"
+				pointcut-ref="SetUniversityStatusIndexPointcut"
 				arg-names="universityId, status" />
-			<aop:after-returning method="deleteUniversityIndex"
-				pointcut="execution(* org..UniversityServiceBase.removeUniversity(java.lang.Long)) and args(universityId)"
+			<aop:after-returning 
+				method="deleteUniversityIndex"
+				pointcut-ref="RemoveUniversityIndexPointcut"
 				arg-names="universityId" />
 		</aop:aspect>
 
 		<aop:aspect id="departmentIndexAspect"
 			ref="departmentIndexAspectBean">
 			<aop:after-returning method="createDepartmentIndex"
-				pointcut="execution(* org..DepartmentServiceBase.create(org.openuss.lecture.DepartmentInfo, java.lang.Long)) and args(departmentInfo, userId)"
+				pointcut-ref="CreateDepartmentIndexPointcut"
 				arg-names="departmentInfo, userId" />
 			<aop:after-returning method="updateDepartmentIndex"
-				pointcut="execution(* org..DepartmentServiceBase.update(org.openuss.lecture.DepartmentInfo)) and args(departmentInfo)"
+				pointcut-ref="UpdateDepartmentIndexPointcut"
 				arg-names="departmentInfo" />
 			<aop:after-returning method="updateDepartmentIndexById"
-				pointcut="execution(* org..DepartmentServiceBase.setDepartmentStatus(java.lang.Long, java.lang.Boolean)) and args(departmentId, status)"
+				pointcut-ref="SetDepartmentStatusIndexPointcut"
 				arg-names="departmentId, status" />
 			<aop:after-returning method="deleteDepartmentIndex"
-				pointcut="execution(* org..DepartmentServiceBase.removeDepartment(java.lang.Long)) and args(departmentId)"
+				pointcut-ref="RemoveDepartmentIndexPointcut"
 				arg-names="departmentId" />
 		</aop:aspect>
 
 		<aop:aspect id="instituteIndexAspect"
 			ref="instituteIndexAspectBean">
-			<aop:after-returning method="createInstituteIndex"
-				pointcut="execution(* org..InstituteServiceBase.create(org.openuss.lecture.InstituteInfo, java.lang.Long)) and args(instituteInfo, userId))"
+			<aop:after-returning 
+				method="createInstituteIndex"
+				pointcut-ref="CreateInstituteIndexPointcut"
 				arg-names="instituteInfo, userId" />
-			<aop:after-returning method="updateInstituteIndex"
-				pointcut="execution(* org..InstituteServiceBase.update(org.openuss.lecture.InstituteInfo)) and args(instituteInfo)"
+			<aop:after-returning 
+				method="updateInstituteIndex"
+				pointcut-ref="UpdateInstituteIndexPointcut"
 				arg-names="instituteInfo" />
-			<aop:after-returning method="deleteInstituteIndex"
-				pointcut="execution(* org..InstituteServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)"
+			<aop:after-returning 
+				method="deleteInstituteIndex"
+				pointcut-ref="RemoveInstituteIndexPointcut"
 				arg-names="instituteId" />
 		</aop:aspect>
 
 		<aop:aspect id="courseTypeIndexAspect"
 			ref="courseTypeIndexAspectBean">
-			<aop:after-returning method="createCourseTypeIndex"
-				pointcut="execution(* org..CourseTypeServiceBase.create(org.openuss.lecture.CourseTypeInfo)) and args(courseTypeInfo)"
+			<aop:after-returning 
+				method="createCourseTypeIndex"
+				pointcut-ref="CreateCourseTypeIndexPointcut"
 				arg-names="courseTypeInfo" />
-			<aop:after-returning method="updateCourseTypeIndex"
-				pointcut="execution(* org..CourseTypeServiceBase.update(org.openuss.lecture.CourseTypeInfo)) and args(courseTypeInfo)"
+			<aop:after-returning 
+				method="updateCourseTypeIndex"
+				pointcut-ref="UpdateCourseTypeIndexPointcut"
 				arg-names="courseTypeInfo" />
-			<aop:after-returning method="deleteCourseTypeIndex"
-				pointcut="execution(* org..CourseTypeServiceBase.removeCourseType(java.lang.Long)) and args(courseTypeId)"
+			<aop:after-returning 
+				method="deleteCourseTypeIndex"
+				pointcut-ref="RemoveCourseTypeIndexPointcut"
 				arg-names="courseTypeId" />
 		</aop:aspect>
 
@@ -126,16 +177,16 @@
 			ref="courseIndexAspectBean">
 			<aop:after-returning
 				method="updateCourseIndexOnPeriodUpdate"
-				pointcut="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Period)) and args(period)"
+				pointcut-ref="UpdateCourseIndexOnPeriodPointcut"
 				arg-names="period" />
 			<aop:after-returning method="createCourseIndex"
-				pointcut="execution(* org..CourseServiceBase.create(org.openuss.lecture.CourseInfo)) and args(courseInfo)"
+				pointcut-ref="CreateCourseIndexPointcut"
 				arg-names="courseInfo" />
 			<aop:after-returning method="updateCourseIndex"
-				pointcut="execution(* org..CourseServiceBase.updateCourse(org.openuss.lecture.CourseInfo)) and args(courseInfo)"
+				pointcut-ref="UpdateCourseIndexPointcut"
 				arg-names="courseInfo" />
 			<aop:after-returning method="deleteCourseIndex"
-				pointcut="execution(* org..CourseServiceBase.removeCourse(java.lang.Long)) and args(courseId)"
+				pointcut-ref="RemoveCourseIndexPointcut"
 				arg-names="courseId" />
 		</aop:aspect>
 
@@ -201,6 +252,18 @@
 	<bean id="courseIndexAspectBean"
 		class="org.openuss.lecture.CourseIndexingAspect">
 		<property name="indexerService" ref="indexerService" />
+		<property name="courseDao" ref="courseDao" />
+	</bean>
+	
+	<bean id="indexAspectBean"
+		class="org.openuss.aop.IndexAspectImpl">
+		<property name="indexerService" ref="indexerService" />
+		<property name="universityDao" ref="universityDao" />
+		<property name="universityService" ref="universityService" />
+		<property name="departmentDao" ref="departmentDao" />
+		<property name="departmentService" ref="departmentService" />
+		<property name="instituteDao" ref="instituteDao" />
+		<property name="courseTypeDao" ref="courseTypeDao" />
 		<property name="courseDao" ref="courseDao" />
 	</bean>
 
