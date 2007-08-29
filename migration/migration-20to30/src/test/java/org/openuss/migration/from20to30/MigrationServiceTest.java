@@ -26,7 +26,7 @@ public class MigrationServiceTest extends AbstractTransactionalSpringContextTest
 //		
 //		setComplete();
 //		endTransaction();
-//		startNewTransaction();
+//		startNewTransaction(); 
 	}
 	
 	
