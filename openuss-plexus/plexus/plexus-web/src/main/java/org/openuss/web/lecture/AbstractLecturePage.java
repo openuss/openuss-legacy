@@ -94,6 +94,7 @@ public abstract class AbstractLecturePage extends BasePage {
 	public void prerender() throws LectureException {
 		logger.debug("prerender - refreshing institute session object");
 		refreshInstitute();
+		refreshDepartment();
 		if (instituteInfo == null) {
 			addError(i18n("message_error_no_institute_selected"));
 			redirect(Constants.DESKTOP);
@@ -113,6 +114,12 @@ public abstract class AbstractLecturePage extends BasePage {
 		}
 	}
 
+	private void refreshDepartment(){
+		logger.debug("Starting method refresh department");
+		if (instituteInfo != null) {
+			 departmentInfo = departmentService.findDepartment(instituteInfo.getDepartmentId());
+			setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);}
+	}
 	private void generateCrumbs() {
 		logger.debug("Starting method generate crumbs");
 		crumbs.clear();
