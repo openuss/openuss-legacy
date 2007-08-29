@@ -7,20 +7,32 @@ package org.openuss.desktop;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
+
+import javax.faces.el.ValueBinding;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Department;
+import org.openuss.lecture.DepartmentDao;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.Institute;
+import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.Period;
 import org.openuss.lecture.University;
+import org.openuss.lecture.UniversityDao;
+import org.openuss.lecture.UniversityInfo;
+import org.openuss.lecture.UniversityService;
 import org.openuss.security.User;
 
 /**
@@ -658,4 +670,632 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		return null;
 	}
 	
+	
+	public class MyUniDataSet
+	{
+		private Desktop desktop;
+		private Map<Long, UniversityDataSet> uniDataSets;
+		
+		public MyUniDataSet(Desktop desktop) {
+			this.desktop = desktop;
+		}
+
+		public void setDesktop(Desktop desktop) {
+			this.desktop = desktop;
+		}
+
+		
+		public void loadData() throws Exception
+		{
+			if(desktop == null)
+				return;
+			
+			uniDataSets = new HashMap<Long, UniversityDataSet>();
+			
+			List<Course> courseBookmarks = desktop.getCourses();
+			List<Institute> instituteBookmarks = desktop.getInstitutes();
+			List<Department> departmentBookmarks = desktop.getDepartments();
+			
+			
+			if(courseBookmarks != null)
+			{
+				Iterator<Course> courseIterator = courseBookmarks.iterator();
+				while (courseIterator.hasNext()) {
+					Course course = (Course)courseIterator.next();
+					processCourse(course);
+				}
+			}
+			
+			if(instituteBookmarks != null)
+			{
+				Iterator<Institute> instituteIterator = instituteBookmarks.iterator();
+				while (instituteIterator.hasNext()) {
+					Institute institute = (Institute)instituteIterator.next();
+					processInstituteBookmark(institute);
+				}
+			}
+			
+			if(departmentBookmarks != null)
+			{
+				Iterator<Department> departmentIterator = departmentBookmarks.iterator();
+				while (departmentIterator.hasNext()) {
+					Department department = (Department)departmentIterator.next();
+					processDepartmentBookmark(department);
+				}
+			}
+		}
+		
+		public Map<Long, MyUniInfo> getMyUniInfo()
+		{
+			Map<Long, MyUniInfo> myUniInfo = new HashMap<Long, MyUniInfo>();
+			
+			if(uniDataSets == null)
+				return myUniInfo;
+			
+			MyUniUniversityInfo currentUniversityInfo;
+			
+			for(UniversityDataSet uniDataSet : uniDataSets.values())
+			{
+				currentUniversityInfo = uniDataSet.getUnversity();
+				if(currentUniversityInfo != null)
+				{
+					myUniInfo.put(currentUniversityInfo.getId(), uniDataSet.toInfo());
+				}
+			}
+			
+			return myUniInfo;
+		}
+		
+		/*
+		public Long chooseDefaultUniversity()
+		{
+			List<UniversityInfo> unis = getUniversities();
+				
+			if(unis != null && unis.size() > 0)
+			{
+				return unis.get(0).getId();
+			}
+			else
+				return null;
+		}
+		*/	
+		
+		private Long processDepartment(Department department)
+		{
+			// Process as not bookmarked
+			return processDepartment(department, false);
+		}
+		
+		private Long processDepartmentBookmark(Department department)
+		{
+			// Process as bookmarked
+			return processDepartment(department, true);
+		}
+		
+		private Long processDepartment(Department department, boolean bookmarked)
+		{
+			if(department == null) 
+				return null;
+			
+			University university = department.getUniversity();
+			if(university == null)
+				return null;
+
+			Long universityID = university.getId();
+			if(universityID == null)
+				return null;
+			
+			// Create a new data set for the university if it does not exist yet
+			assert uniDataSets != null;
+			if(!uniDataSets.containsKey(universityID))
+			{
+				UniversityDataSet universityDataSet = new UniversityDataSet(university);
+				uniDataSets.put(universityID, universityDataSet);
+			}
+			
+			// Add the department to the university data set
+			uniDataSets.get(universityID).addDepartment(department, bookmarked);
+			
+			// Return the university id
+			return universityID;
+		}
+		
+		
+		private Long processInstitute(Institute institute, boolean hasCurrentCourse)
+		{
+			// Process as not bookmarked
+			return processInstitute(institute, hasCurrentCourse, false);
+		}
+		
+		private Long processInstituteBookmark(Institute institute)
+		{
+			// Process as bookmarked
+			return processInstitute(institute, false, true);
+		}
+		
+		private Long processInstitute(Institute institute, boolean hasCurrentCourse, boolean bookmarked)
+		{	
+			if(institute == null)
+				return null;
+			
+			// Process the department of the institute
+			Department department = institute.getDepartment();
+			if(department == null)
+				return null;
+			
+			// Process the corresponding department
+			Long universityID = processDepartment(department);
+			if(universityID == null)
+				return null;
+			
+			// Add the instititute to the corresponding university data set
+			assert uniDataSets != null;
+			UniversityDataSet currentDataSet = uniDataSets.get(universityID);
+			assert currentDataSet != null;
+			
+			currentDataSet.addInstitute(institute, hasCurrentCourse, bookmarked);
+			
+			// Return the university id
+			return universityID;
+			
+		}
+		
+		
+		private Long processCourse(Course course)
+		{
+			if(course == null)
+				return null;
+			
+			Period coursePeriod = course.getPeriod();
+			boolean isCurrent;
+			
+			if(coursePeriod == null)
+				isCurrent = false;
+			else
+				isCurrent = coursePeriod.isActive();
+			
+			CourseType courseType = course.getCourseType();
+			if(courseType == null)
+				return null;
+			
+			Institute institute = courseType.getInstitute();
+			if(institute == null)
+				return null;
+			
+			// Process the corresponding institute
+			Long universityID = processInstitute(institute, isCurrent);
+			if(universityID == null)
+				return null;
+			
+			// Add the course to the corresponding data set
+			assert uniDataSets != null;
+			UniversityDataSet currentDataSet = uniDataSets.get(universityID);
+			assert currentDataSet != null;
+			
+			currentDataSet.addCourse(course, isCurrent);
+			
+			return universityID;
+	
+		}
+		
+		
+		
+		
+		// Test data not working any longer because of entity objects in add*-Methods in UniversityDataSet
+		/*	
+		public void loadTestData()
+		{
+			logger.debug("Loading MyUni test data");
+			
+			MyUniUniversityInfo uniInfo;
+			MyUniDepartmentInfo departmentInfo;
+			MyUniCourseInfo courseInfo;
+			UniversityDataSet uniDataSet;
+			
+			
+			// Create Uni 1 and Subitems
+			uniInfo = new MyUniUniversityInfo();
+			uniInfo.setId(1L);
+			uniInfo.setName("Uni Münster");
+			uniDataSet = new UniversityDataSet(uniInfo);
+			
+			departmentInfo = new MyUniDepartmentInfo();
+			departmentInfo.setId(1L);
+			departmentInfo.setName("Fachbereich 4");
+			uniDataSet.addDepartment(departmentInfo);
+			
+			departmentInfo = new MyUniDepartmentInfo();
+			departmentInfo.setId(2L);
+			departmentInfo.setName("Fachbereich 5");
+			uniDataSet.addDepartment(departmentInfo);
+			
+			departmentInfo = new MyUniDepartmentInfo();
+			departmentInfo.setId(3L);
+			departmentInfo.setName("Fachbereich 6");
+			uniDataSet.addDepartment(departmentInfo);
+			
+			courseInfo = new MyUniCourseInfo();
+			courseInfo.setId(1L);
+			courseInfo.setName("KLR");
+			uniDataSet.addCourse(courseInfo, true);
+			
+			courseInfo = new MyUniCourseInfo();
+			courseInfo.setId(2L);
+			courseInfo.setName("BWL1");
+			uniDataSet.addCourse(courseInfo, true);
+			
+			courseInfo = new MyUniCourseInfo();
+			courseInfo.setId(3L);
+			courseInfo.setName("BWL2");
+			uniDataSet.addCourse(courseInfo, false);
+			
+			courseInfo = new MyUniCourseInfo();
+			courseInfo.setId(4L);
+			courseInfo.setName("BWL3");
+			uniDataSet.addCourse(courseInfo, false);
+
+			uniDataSets.put(1L, uniDataSet);
+		
+			// Create Uni 2 and subitems
+			uniInfo = new MyUniUniversityInfo();
+			uniInfo.setId(2L);
+			uniInfo.setName("Uni Bonn");
+			uniDataSet = new UniversityDataSet(uniInfo);
+			
+			
+			departmentInfo = new MyUniDepartmentInfo();
+			departmentInfo.setId(4L);
+			departmentInfo.setName("Fachbereich 4");
+			uniDataSet.addDepartment(departmentInfo);
+			
+			departmentInfo = new MyUniDepartmentInfo();
+			departmentInfo.setId(5L);
+			departmentInfo.setName("Fachbereich 8");
+			uniDataSet.addDepartment(departmentInfo);
+			
+			
+			courseInfo = new MyUniCourseInfo();
+			courseInfo.setId(1L);
+			courseInfo.setName("Kosten- und Leistungsrechnung");
+			uniDataSet.addCourse(courseInfo, true);
+			
+			courseInfo = new MyUniCourseInfo();
+			courseInfo.setId(2L);
+			courseInfo.setName("Informatik 1");
+			uniDataSet.addCourse(courseInfo, true);
+			
+			courseInfo = new MyUniCourseInfo();
+			courseInfo.setId(3L);
+			courseInfo.setName("Informatik 2");
+			uniDataSet.addCourse(courseInfo, true);
+			
+			courseInfo = new MyUniCourseInfo();
+			courseInfo.setId(4L);
+			courseInfo.setName("Unternehmensgründung Märkte und Branchen");
+			uniDataSet.addCourse(courseInfo, false);
+			
+			uniDataSets.put(2L, uniDataSet);
+			
+			// Create Uni 3 and subitems
+			uniInfo = new UniversityInfo();
+			uniInfo.setId(3L);
+			uniInfo.setName("Uni Köln");
+			uniDataSet = new UniversityDataSet(uniInfo);
+			
+			departmentInfo = new MyUniDepartmentInfo();
+			departmentInfo.setId(6L);
+			departmentInfo.setName("Fachbereich 1");
+			departmentInfo.setUniversityId(3L);
+			uniDataSet.addDepartment(departmentInfo);
+			
+			departmentInfo = new MyUniDepartmentInfo();
+			departmentInfo.setId(7L);
+			departmentInfo.setName("Fachbereich 7");
+			departmentInfo.setUniversityId(3L);
+			uniDataSet.addDepartment(departmentInfo);
+			
+			departmentInfo = new MyUniDepartmentInfo();
+			departmentInfo.setId(8L);
+			departmentInfo.setName("Fachbereich 8");
+			departmentInfo.setUniversityId(8L);
+			uniDataSet.addDepartment(departmentInfo);
+			
+			
+			courseInfo = new MyUniCourseInfo();
+			courseInfo.setId(1L);
+			courseInfo.setName("Einführung in die WI");
+			uniDataSet.addCourse(courseInfo, true);
+			
+			courseInfo = new MyUniCourseInfo();
+			courseInfo.setId(2L);
+			courseInfo.setName("Datenbanken");
+			uniDataSet.addCourse(courseInfo, false);
+			
+			courseInfo = new MyUniCourseInfo();
+			courseInfo.setId(3L);
+			courseInfo.setName("Einführung in die Java Framework-Theorie");
+			uniDataSet.addCourse(courseInfo, false);
+			
+			courseInfo = new MyUniCourseInfo();
+			courseInfo.setId(4L);
+			courseInfo.setName("OpenUSS Projektseminar");
+			uniDataSet.addCourse(courseInfo, false);
+			
+			
+			uniDataSets.put(3L, uniDataSet);
+		}
+		 */	
+		
+		
+		private class UniversityDataSet
+		{
+			Map<Long, MyUniCourseInfo> currentCourses;
+			Map<Long, MyUniCourseInfo> pastCourses;
+			Map<Long, MyUniInstituteInfo> currentInstitutes;
+			Map<Long, MyUniInstituteInfo> pastInstitutes;
+			Map<Long, MyUniDepartmentInfo> departments;
+			Map<Long, Integer> instituteCurrentCoursesCount;
+			MyUniUniversityInfo university;
+			
+			public UniversityDataSet(University university)
+			{
+				currentCourses = new HashMap<Long, MyUniCourseInfo>();
+				pastCourses = new HashMap<Long, MyUniCourseInfo>();
+				currentInstitutes = new HashMap<Long, MyUniInstituteInfo>();
+				pastInstitutes = new HashMap<Long, MyUniInstituteInfo>();
+				departments = new HashMap<Long, MyUniDepartmentInfo>();
+				instituteCurrentCoursesCount = new HashMap<Long, Integer>();
+				
+				this.university = universityEntityToInfo(university);
+			}
+			
+			
+			public MyUniInfo toInfo()
+			{
+				MyUniInfo newInfo = new MyUniInfo();
+				
+				// Set the number of current courses for each current institute
+				MyUniInstituteInfo currentInstituteInfo;
+				Integer numberOfCurrentCourses;
+				Iterator<MyUniInstituteInfo> iterator = currentInstitutes.values().iterator();
+				while(iterator.hasNext())
+				{
+					currentInstituteInfo = iterator.next();
+					numberOfCurrentCourses = instituteCurrentCoursesCount.get(currentInstituteInfo.getId());
+					
+					if(numberOfCurrentCourses != null)
+						currentInstituteInfo.setNumberOfCurrentCourses(numberOfCurrentCourses);
+				}
+				
+				// Copy the data to the info object
+				newInfo.setCurrentCourses(currentCourses.values());
+				newInfo.setPastCourses(pastCourses.values());
+				newInfo.setCurrentInstitutes(currentInstitutes.values());
+				newInfo.setPastInstitutes(pastInstitutes.values());
+				newInfo.setDepartments(departments.values());
+				newInfo.setMyUniUniversityInfo(university);
+			
+				return newInfo;
+			}
+			
+			public MyUniUniversityInfo getUnversity()
+			{
+				return university;
+			}
+	
+			public void addDepartment(Department department, boolean bookmarked)
+			{
+				// Convert entity to info object
+				MyUniDepartmentInfo departmentInfo = departmentEntityToInfo(department);
+				
+				if(departmentInfo != null)
+				{
+					Long departmentId = departmentInfo.getId();
+					
+					if(departments.containsKey(departmentId))
+					{
+						departmentInfo = departments.get(departmentId);
+						
+						if(bookmarked == true)
+							departmentInfo.setBookmarked(true);
+					}
+					else
+					{
+						departmentInfo.setBookmarked(bookmarked);
+						departments.put(departmentId, departmentInfo);
+					}
+				}
+			}
+			
+			
+			public void addInstitute(Institute institute, boolean isCurrent, boolean bookmarked)
+			{
+				// Convert entity to info object
+				MyUniInstituteInfo instituteInfo = instituteEntityToInfo(institute);
+				
+				if(instituteInfo != null)
+				{
+					Long instituteId = instituteInfo.getId();
+					
+					if(isCurrent == true || bookmarked == true)
+					{
+						// Remove institute from the list of past institutes
+						if(pastInstitutes.containsKey(instituteId))
+							pastInstitutes.remove(instituteId);
+						
+						// Check if institute is already in the list of current institutes
+						if(currentInstitutes.containsKey(instituteId))
+						{
+							// Institute is already in the list
+							// Get the old InstituteInfo from the list of current institutes
+							instituteInfo = currentInstitutes.get(instituteId);
+							
+							// If bookmarked, set the flag
+							// (If not, leave the flag as it is,
+							// because it might have been marked
+							// as bookmarked in another iteration)
+							if(bookmarked == true)
+								instituteInfo.setBookmarked(true);
+						}
+						else
+						{
+							// Institute is not in the list
+							// If bookmarked, set the flag
+							if(bookmarked == true)
+								instituteInfo.setBookmarked(true);
+							
+							// Add institute to the list
+							currentInstitutes.put(instituteId, instituteInfo);
+						}
+					}
+					else // institute is not current and not bookmarked
+					{
+						// Add institute to the list of past institutes
+						// only if it is not already contained
+						// in the list of current institutes
+						if(!currentInstitutes.containsKey(instituteId))
+							pastInstitutes.put(instituteId, instituteInfo);
+					}
+				}
+			}
+			
+			
+			
+			public void addCourse(Course course, boolean isCurrent)
+			{
+				// Convert entity to info object
+				MyUniCourseInfo courseInfo = courseEntityToInfo(course);
+				
+				if(courseInfo != null)
+				{
+					Long id = courseInfo.getId();
+				
+					if(isCurrent == true)
+					{
+						if(pastCourses.containsKey(id))
+							pastCourses.remove(id);
+						
+						if(!currentCourses.containsKey(id))
+						{
+							currentCourses.put(id, courseInfo);
+							
+							// Increase the counter of the current courses for the corresponding institute
+							CourseType courseType = course.getCourseType();
+							if(courseType != null)
+							{
+								Institute institute = courseType.getInstitute();
+								if(institute != null)
+								{
+									Long instituteId = course.getId();
+									if(instituteId != null)
+									{
+										Integer courseCount;
+										courseCount = instituteCurrentCoursesCount.get(id);
+										
+										if(courseCount == null)
+											courseCount = 0;
+										
+										courseCount++;
+										instituteCurrentCoursesCount.put(instituteId, courseCount);
+									}
+								}
+							}
+						}
+					}
+					else // (isCurrent is false)
+					{
+						// Add course to the list of past courses
+						// only if it is not already contained
+						// in the list of current courses
+						if(!currentCourses.containsKey(id))
+							pastCourses.put(id, courseInfo);
+					}
+				}
+			}
+			
+			private MyUniUniversityInfo universityEntityToInfo(University university)
+			{
+				if(university != null)
+				{
+					Long uniId = university.getId();
+					
+					if(uniId == null)
+						return null;
+					
+					MyUniUniversityInfo uniInfo = new MyUniUniversityInfo();
+					uniInfo.setId(university.getId());
+					uniInfo.setName(university.getName());
+					return uniInfo;
+				}
+				else
+				{
+					return null;
+				}
+			}
+			private MyUniDepartmentInfo departmentEntityToInfo(Department department)
+			{
+				if(department != null)
+				{
+					Long departmentId = department.getId();
+					
+					if(departmentId == null)
+						return null;
+					
+					MyUniDepartmentInfo departmentInfo = new MyUniDepartmentInfo();
+					departmentInfo.setId(departmentId);
+					departmentInfo.setName(department.getName());
+					departmentInfo.setBookmarked(false);
+					return departmentInfo;
+				}
+				else
+				{
+					return null;
+				}
+			}
+			
+			private MyUniInstituteInfo instituteEntityToInfo(Institute institute)
+			{
+				if(institute != null)
+				{
+					Long instituteId = institute.getId();
+					
+					if(instituteId == null)
+						return null;
+					
+					MyUniInstituteInfo instituteInfo = new MyUniInstituteInfo();
+					instituteInfo.setId(instituteId);
+					instituteInfo.setName(institute.getName());
+					instituteInfo.setBookmarked(false);
+					instituteInfo.setNumberOfCurrentCourses(0);
+					
+					return instituteInfo;
+				}
+				else
+				{
+					return null;
+				}
+			}
+			
+			private MyUniCourseInfo courseEntityToInfo(Course course)
+			{
+				if(course != null)
+				{
+					Long courseId = course.getId();
+					
+					if(courseId == null)
+						return null;
+					
+					MyUniCourseInfo courseInfo = new MyUniCourseInfo();
+					courseInfo.setId(courseId);
+					courseInfo.setName(course.getName());
+					
+					return courseInfo;
+				}
+				else
+				{
+					return null;
+				}
+			}
+		}
+	}
 }
