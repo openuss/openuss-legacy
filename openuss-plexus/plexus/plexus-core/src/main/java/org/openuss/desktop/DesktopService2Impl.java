@@ -666,8 +666,25 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 	
 	
 	protected Map handleGetMyUniInfo (Long userId) {
-		//TODO: Implement me!
-		return null;
+		Validate.notNull(userId, "DesktopService2.handleFindDesktopByUser - userId cannot be null!");
+
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user, "DesktopService2.handleFindDesktopByUser - No user found corresponding to the userId "
+				+ userId);
+
+		Desktop desktop = getDesktopDao().findByUser(user);
+
+		if (desktop == null) {
+			// create new desktop
+			logger.debug("DesktopService2.handleFindDesktopByUser - desktop doesn't exist for user, create new one");
+			desktop = new DesktopImpl();
+			desktop.setUser(user);
+			this.getDesktopDao().create(desktop);
+		}
+		
+		MyUniDataSet myUniDataSet = new MyUniDataSet(desktop);
+		myUniDataSet.loadData();
+		return myUniDataSet.getMyUniInfo();
 	}
 	
 	
@@ -685,7 +702,7 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		}
 
 		
-		public void loadData() throws Exception
+		public void loadData()
 		{
 			if(desktop == null)
 				return;
