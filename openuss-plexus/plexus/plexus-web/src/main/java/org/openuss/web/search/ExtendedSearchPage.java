@@ -210,22 +210,6 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		logger.debug("<<< instituteChanged");
 	}
 	
-	/**
-	 * event handler which is called when the "course type" combo box is changed
-	 * @param vce
-	 */
-	public void courseTypeChanged(ValueChangeEvent vce){
-		// nothing to do
-	}
-	
-	/**
-	 * event handler which is called when the "period" combo box is changed
-	 * @param vce
-	 */
-	public void periodChanged(ValueChangeEvent vce){
-		// nothing to do
-	}
-	
 	/*** RESET METHODS FOR COMBO BOXES ***/
 	
 	private void resetUniversities(){
