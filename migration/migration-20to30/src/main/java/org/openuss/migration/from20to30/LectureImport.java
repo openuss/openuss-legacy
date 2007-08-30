@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.openuss.lecture.AccessType;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Institute;
@@ -57,10 +58,10 @@ public class LectureImport {
 	private Map<String, Institute> id2Institute = new HashMap<String, Institute>();
 
 	/** List of institutes */
-	private Collection<Institute> institutes = new ArrayList<Institute>(2000);
+	private Collection<Institute> institutes = new ArrayList<Institute>(1500);
 
 	/** Map faculty to institute */
-	private Map<Faculty2, Institute> faculty2Institute = new HashMap<Faculty2, Institute>(2000);
+	private Map<Faculty2, Institute> faculty2Institute = new HashMap<Faculty2, Institute>(1500);
 
 	/** Map legacy id of enrollment to couse object */
 	private Map<String, Course> id2Course = new HashMap<String, Course>(1500);
@@ -101,7 +102,7 @@ public class LectureImport {
 			if (ImportUtil.toBoolean(faculty.getAactive())) {
 				Institute institute = createInstitute(faculty);
 				// FIXME OWNER IS NOT ACTIVE
-				User owner = userImport.getUserByLegacyId(faculty.getAssistant().getId());
+				User owner = userImport.loadUserByLegacyId(faculty.getAssistant().getId());
 				if (owner != null) {
 					institute.setOwner(owner);
 					institute.getMembers().add(owner);
@@ -200,8 +201,7 @@ public class LectureImport {
 		return group;
 	}
 
-	private void buildInstituteSecurity(Collection<ObjectIdentity> objIds, Collection<Group> groups,
-			Institute institute, Group groupAdmins, Group groupAssistants, Group groupTutors) {
+	private void buildInstituteSecurity(Collection<ObjectIdentity> objIds, Collection<Group> groups, Institute institute, Group groupAdmins, Group groupAssistants, Group groupTutors) {
 		institute.getGroups().add(groupAdmins);
 		institute.getGroups().add(groupAssistants);
 		institute.getGroups().add(groupTutors);
@@ -219,19 +219,16 @@ public class LectureImport {
 			objIds.add(ImportUtil.createObjectIdentity(course.getId(), instituteObjId));
 		}
 		// create group permissions
-		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_ADMINISTRATION,
-				instituteObjId, groupAdmins));
-		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_ASSIST, instituteObjId,
-				groupAssistants));
-		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_TUTOR, instituteObjId,
-				groupTutors));
+		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_ADMINISTRATION, instituteObjId, groupAdmins));
+		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_ASSIST, instituteObjId, groupAssistants));
+		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_TUTOR, instituteObjId, groupTutors));
 	}
 
 	private void buildInstituteMembers(Faculty2 faculty2, Institute institute, Group groupAdmins, Group groupAssistants) {
 		// analyse institute members and aspirants
 		if (faculty2.getAssistantinstitutes() != null && !faculty2.getAssistantinstitutes().isEmpty()) {
 			for (Assistantfaculty2 assistantFaculty : faculty2.getAssistantinstitutes()) {
-				User user = userImport.getUserByLegacyId(assistantFaculty.getAssistant().getId());
+				User user = userImport.loadUserByLegacyId(assistantFaculty.getAssistant().getId());
 				if (user != null) {
 					// aspirant or member?
 					if (ImportUtil.toBoolean(assistantFaculty.getAactive())) {
@@ -247,7 +244,7 @@ public class LectureImport {
 						groupAssistants.addMember(user);
 						user.addGroup(groupAssistants);
 					} else {
-						institute.getAspirants().add(user);
+						logger.debug("skip faculty assistant aspirant "+user.getDisplayName());
 					}
 				} else {
 					logger.error("user not found " + assistantFaculty.getAssistant().getId());
@@ -346,11 +343,19 @@ public class LectureImport {
 
 	private Course createCourse(Enrollment2 enrollment2) {
 		Course course = Course.Factory.newInstance();
-		// TODO check if the shortcut can be generated from the institute and
 		// subject name instead of the previous guid
 		course.setShortcut(enrollment2.getId());
 		course.setDescription(enrollment2.getSubject().getRemark());
-
+		
+		if (ImportUtil.toBoolean(enrollment2.getWithPassword())) {
+			course.setPassword(enrollment2.getPassword());
+			course.setAccessType(AccessType.PASSWORD);
+		} else if (ImportUtil.toBoolean(enrollment2.getForpublic())) {
+			course.setAccessType(AccessType.OPEN);
+		} else {
+			course.setAccessType(AccessType.CLOSED);
+		}
+		
 		course.setBraincontest(ImportUtil.toBoolean(enrollment2.getQuiz()));
 		course.setChat(ImportUtil.toBoolean(enrollment2.getChat()));
 		course.setDiscussion(ImportUtil.toBoolean(enrollment2.getDiscussion()));

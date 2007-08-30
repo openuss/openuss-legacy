@@ -14,6 +14,10 @@ import org.openuss.migration.legacy.domain.Student2;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
+import org.openuss.security.acl.ObjectIdentity;
+import org.openuss.security.acl.ObjectIdentityDao;
+import org.openuss.security.acl.Permission;
+import org.openuss.security.acl.PermissionDao;
 
 /**
  * Import Course Members from Enrollment Access List
@@ -21,7 +25,7 @@ import org.openuss.security.acl.LectureAclEntry;
  * @author Ingo Dueppe
  *
  */
-public class CourseMemberImport {
+public class CourseMemberImport  {
 
 	private static final Logger logger = Logger.getLogger(CourseMemberImport.class);
 	
@@ -30,6 +34,9 @@ public class CourseMemberImport {
 	
 	/** CourseMemberDao */
 	private CourseMemberDao courseMemberDao;
+	
+	/** PermissionDao */
+	private PermissionDao permissionDao;
 	
 	/** UserImport */
 	private UserImport userImport;
@@ -40,6 +47,9 @@ public class CourseMemberImport {
 	/** SecurityService */
 	private SecurityService securityService;
 	
+	/** ObjectIdentityDao */
+	private ObjectIdentityDao objectIdentityDao;
+	
 	public void importMembers() {
 		logger.debug("loading course member data");
 		List<Enrollmentaccesslist2> accesslist = legacyDao.loadAllEnrollmentAccessList();
@@ -48,7 +58,7 @@ public class CourseMemberImport {
 			Student2 student = access.getStudent();
 			if (enrollment != null && student != null) {
 				Course course = lectureImport.getCourseById(enrollment.getId());
-				User user = userImport.getUserByLegacyId(student.getId());
+				User user = userImport.loadUserByLegacyId(student.getId());
 				if (course != null && user != null) {
 					createMembership(access, course, user);
 				} else {
@@ -63,12 +73,18 @@ public class CourseMemberImport {
 		member.setCourse(course);
 		member.setUser(user);
 		if (ImportUtil.toBoolean(access.getAccepted())) {
-			securityService.setPermissions(user, course, LectureAclEntry.COURSE_PARTICIPANT);
+			storePermission(course, user);
 			member.setMemberType(CourseMemberType.PARTICIPANT);
 		} else {
 			member.setMemberType(CourseMemberType.ASPIRANT);
 		}
 		courseMemberDao.create(member);
+	}
+
+	private void storePermission(Course course, User user) {
+		ObjectIdentity objectIdentity = objectIdentityDao.load(course.getId());
+		Permission permission = Permission.Factory.newInstance(LectureAclEntry.COURSE_PARTICIPANT,objectIdentity,user);
+		permissionDao.create(permission);
 	}
 
 	public LegacyDao getLegacyDao() {
@@ -113,6 +129,22 @@ public class CourseMemberImport {
 
 	public static Logger getLogger() {
 		return logger;
+	}
+
+	public PermissionDao getPermissionDao() {
+		return permissionDao;
+	}
+
+	public void setPermissionDao(PermissionDao permissionDao) {
+		this.permissionDao = permissionDao;
+	}
+
+	public ObjectIdentityDao getObjectIdentityDao() {
+		return objectIdentityDao;
+	}
+
+	public void setObjectIdentityDao(ObjectIdentityDao objectIdentityDao) {
+		this.objectIdentityDao = objectIdentityDao;
 	}
 	
 	

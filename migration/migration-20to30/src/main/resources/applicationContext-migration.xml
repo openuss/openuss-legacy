@@ -5,7 +5,20 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 	
-	<bean id="userImport" class="org.openuss.migration.from20to30.UserImport" scope="singleton">
+	
+	<bean abstract="true" id="service" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="newsServiceAbstract"/>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+	
+	<bean id="userImport" class="org.openuss.migration.from20to30.UserImport">
 		<property name="legacyDao" ref="legacyDao"/>
 		<property name="userDao" ref="userDao"/>
 		<property name="groupDao" ref="groupDao"/>
@@ -45,8 +58,48 @@
 		<property name="lectureImport" ref="lectureImport"/>
 		<property name="securityService" ref="securityService"/>
 		<property name="courseMemberDao" ref="courseMemberDao"/>
+		<property name="permissionDao" ref="permissionDao"/>
+		<property name="objectIdentityDao" ref="objectIdentityDao"/>
+		
 	</bean>
 	
+	<bean id="userImportTx" parent="service">
+		<property name="target">
+			<ref bean="userImport"/>
+		</property>
+	</bean>
+
+	<bean id="lectureImportTx" parent="service">
+		<property name="target">
+			<ref bean="lectureImport"/>
+		</property>
+	</bean>
+
+	<bean id="newsImportTx" parent="service">
+		<property name="target">
+			<ref bean="newsImport"/>
+		</property>
+	</bean>
+
+	<bean id="documentImportTx" parent="service">
+		<property name="target">
+			<ref bean="documentImport"/>
+		</property>
+	</bean>
+	
+	<bean id="desktopImportTx" parent="service">
+		<property name="target">
+			<ref bean="desktopImport"/>
+		</property>
+	</bean>
+
+	<bean id="courseMemberImportTx" parent="service">
+		<property name="target">
+			<ref bean="courseMemberImport"/>
+		</property>
+	</bean>
+	
+
 	<!-- Local DataSource that works in any environment --> 
     <bean id="legacyDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName"><value>org.firebirdsql.jdbc.FBDriver</value></property>
@@ -55,5 +108,56 @@
         <property name="url"><value>jdbc:firebirdsql:localhost:openuss</value></property>
     </bean>
 
+
+	<bean id="migrationService" class="org.openuss.migration.from20to30.MigrationService" >
+		<property name="legacySessionFactory" ref="legacySessionFactory"/>
+		<property name="plexusSessionFactory" ref="sessionFactory"/>
+		<property name="userImport" ref="userImportTx"/>
+		<property name="lectureImport" ref="lectureImportTx"/>
+		<property name="desktopImport" ref="desktopImportTx"/>
+		<property name="courseMemberImport" ref="courseMemberImportTx"/>
+		<property name="newsImport" ref="newsImportTx"/>
+		<property name="documentImport" ref="documentImportTx"/>
+	</bean>
+	
+	<!-- Spring Cache Manager Configuration  -->
+	<bean id="cacheManager"	class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation"><value>classpath:ehcache-migration.xml</value></property>
+		<property name="shared" value="true"></property>
+	</bean>
+	
+	<!-- Cache Region -->  
+	<bean id="userCacheBackend"
+		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager" />
+		</property>
+		<property name="cacheName">
+			<value>user</value>
+		</property>
+	</bean>
+	
+	<bean id="userCache"
+		class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
+		<property name="cache">
+			<ref local="userCacheBackend" /> 
+		</property>
+	</bean>
+	
+	<bean id="aclCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="cacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>acls</value>
+		</property>
+	</bean>
+	
+	<bean id="ehCacheBasedAclEntryCache" class="org.acegisecurity.acl.basic.cache.EhCacheBasedAclEntryCache">
+		<property name="cache"><ref local="aclCacheBackend"/></property>
+	</bean>
+
+	<bean id="passwordEncoder"
+		class="org.acegisecurity.providers.encoding.Md5PasswordEncoder" />
 	
 </beans>

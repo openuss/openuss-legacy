@@ -27,7 +27,7 @@
   		<ui:define name="content">			
 			<h:form>
 				<o:block label="#{msg.impressum_header}">
-					<h:outputText value="#{msg.impressum_text}" styleClass="content_font_normal" /> 
+					<h:outputText value="#{msg.impressum_text}" styleClass="content_font_normal" escape="false"/> 
 				</o:block>
 				<o:block>
 					<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_back"/>
