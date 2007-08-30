@@ -10,7 +10,7 @@
             <column name="ID" length="30" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="faculty" class="org.openuss.migration.legacy.domain.Faculty2" fetch="select">
+        <many-to-one name="faculty" class="org.openuss.migration.legacy.domain.Faculty2" fetch="join" >
             <column name="FACULTYPK" length="30" />
         </many-to-one>
         <property name="ddate" type="date">

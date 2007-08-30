@@ -89,7 +89,7 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 	}
 
 	public List<Facultyinformation2> loadAllFacultyInformation() {
-		return (List<Facultyinformation2>) this.getHibernateTemplate().loadAll(Facultyinformation2.class);
+		return (List<Facultyinformation2>) this.getHibernateTemplate().find("from Facultyinformation2 order by faculty");
 	}
 
 	public Filebase2 loadFileBase(String id) {
@@ -97,7 +97,7 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 	}
 
 	public List<Enrollmentinformation2> loadAllEnrollmentInformation() {
-		return (List<Enrollmentinformation2>) this.getHibernateTemplate().loadAll(Enrollmentinformation2.class);
+		return (List<Enrollmentinformation2>) this.getHibernateTemplate().find("from Enrollmentinformation2 info order by enrollmentpk");
 	}
 
 	public List<Lecture2> loadAllLectures() {
@@ -105,7 +105,8 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 	}
 
 	public List<Enrollmentaccesslist2> loadAllEnrollmentAccessList() {
-		return (List<Enrollmentaccesslist2>)this.getHibernateTemplate().loadAll(Enrollmentaccesslist2.class);
+		return (List<Enrollmentaccesslist2>)this.getHibernateTemplate().find("from Enrollmentaccesslist2 order by enrollment ");
+		
 	}
 
 }

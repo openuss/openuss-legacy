@@ -32,16 +32,16 @@
         -->
     <defaultCache
         maxElementsInMemory="10000"
-        eternal="false"
-        timeToIdleSeconds="60"
-        timeToLiveSeconds="60"
-        overflowToDisk="true" />
+        eternal="true"
+        timeToIdleSeconds="320"
+        timeToLiveSeconds="320"
+        overflowToDisk="false" />
         
      
 	<cache
         name="legacy"
         maxElementsInMemory="10000"
-        eternal="false"
+        eternal="true"
         timeToIdleSeconds="120"
         timeToLiveSeconds="120"
         overflowToDisk="false"

@@ -42,12 +42,7 @@ public class NewsImport {
 	/** NewsService */
 	private NewsService newsService;
 	
-	public void importNewsItems() {
-		importFacultyInformations();
-		importCourseInformations();
-	}
-	
-	private void importCourseInformations() {
+	public void importCourseInformations() {
 		logger.debug("load course informations ...");
 		List<Enrollmentinformation2> informations = legacyDao.loadAllEnrollmentInformation();
 		for (Enrollmentinformation2 info : informations) {
@@ -71,7 +66,6 @@ public class NewsImport {
 				logger.debug("Could' find instute for news item...");
 			} else {
 				NewsItemInfo item = createNewsItem(info, institute);
-				
 				newsService.saveNewsItem(item);
 			}
 		}
@@ -81,8 +75,9 @@ public class NewsImport {
 		assert course != null;
 		NewsItemInfo item = new NewsItemInfo();
 		
-		item.setAuthor(course.getName());
+		item.setAuthor(StringUtils.abbreviate(course.getName(),64));
 		item.setPublishDate(info.getDdate());
+		item.setTitle(StringUtils.abbreviate(course.getName(),250));
 		item.setText(info.getTtext());
 		
 		item.setPublisherName(course.getName());
@@ -100,8 +95,8 @@ public class NewsImport {
 		item.setAuthor(info.getFaculty().getName());
 		item.setPublishDate(info.getDdate());
 		item.setExpireDate(DateUtils.addMonths(info.getDdate(),2));
-		item.setText(info.getContent());
-		item.setTitle(info.getTtext());
+		item.setText(StringUtils.trimToEmpty(info.getContent()));
+		item.setTitle(StringUtils.trimToEmpty(info.getTtext()));
 		
 		item.setPublisherName(info.getFaculty().getName());
 		item.setPublisherIdentifier(institute.getId());

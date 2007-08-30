@@ -52,26 +52,30 @@ public class DocumentImport {
 					documentService.createFolder(folder, root);
 					logger.debug("loading files for folder "+folder.getPath()+"/"+folder.getName());
 					for (Lecturefile2 lectureFile : lecture.getLecturefiles() ) {
-						try {
-							FileInfo fileInfo = new FileInfo();
-							fileInfo.setFileName(lectureFile.getLecturefilename());
-							fileInfo.setCreated(lectureFile.getDdate());
-							fileInfo.setExtension(ImportUtil.extension(lectureFile.getLecturefilename()));
-							fileInfo.setContentType("application/octet-stream");
-
-							ByteArrayInputStream bis = new ByteArrayInputStream(lectureFile.getLecturefilebase().getBasefile());
-							ObjectInputStream ois = new ObjectInputStream(bis);
-							LectureFileObject fileObject = (LectureFileObject) ois.readObject();
-							fileInfo.setFileSize(fileObject.getData().length);
-							fileInfo.setInputStream(new ByteArrayInputStream(fileObject.getData()));
-
-							documentService.createFileEntry(fileInfo, folder);
-						} catch (IOException e) {
-							logger.error(e);
-						} catch (ClassNotFoundException e) {
-							logger.error(e);
-						}	
-						break;
+						if (lectureFile != null && lectureFile.getLecturefilebase() != null) {
+							try {
+								logger.debug("process "+lectureFile.getLecturefilename());
+								FileInfo fileInfo = new FileInfo();
+								fileInfo.setFileName(lectureFile.getLecturefilename());
+								fileInfo.setCreated(lectureFile.getDdate());
+								fileInfo.setExtension(ImportUtil.extension(lectureFile.getLecturefilename()));
+								fileInfo.setContentType("application/octet-stream");
+	
+								ByteArrayInputStream bis = new ByteArrayInputStream(lectureFile.getLecturefilebase().getBasefile());
+								ObjectInputStream ois = new ObjectInputStream(bis);
+								LectureFileObject fileObject = (LectureFileObject) ois.readObject();
+								fileInfo.setFileSize(fileObject.getData().length);
+								fileInfo.setInputStream(new ByteArrayInputStream(fileObject.getData()));
+	
+								documentService.createFileEntry(fileInfo, folder);
+							} catch (IOException e) {
+								logger.error(e);
+							} catch (ClassNotFoundException e) {
+								logger.error(e);
+							} catch (Exception e) {
+								logger.error(e);
+							}
+						}
 					}
 				} catch (DocumentApplicationException e) {
 					logger.debug(e);

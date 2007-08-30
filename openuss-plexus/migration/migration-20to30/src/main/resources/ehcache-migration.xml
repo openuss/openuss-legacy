@@ -9,7 +9,7 @@
          user.home - User's home directory
          user.dir - User's current working directory
          java.io.tmpdir - Default temp file path -->
-    <diskStore path="java.io.tmpdir\security"/>
+    <diskStore path="java.io.tmpdir\legacy"/>
 
     <!--Default Cache configuration. These will applied to caches programmatically created through
         the CacheManager.
@@ -31,28 +31,8 @@
 
         -->
     <defaultCache
-        maxElementsInMemory="100000"
-        eternal="false"
-        timeToIdleSeconds="60"
-        timeToLiveSeconds="60"
+        maxElementsInMemory="0"
+        eternal="true"
         overflowToDisk="false" />
-
-	<cache
-        name="user"
-        maxElementsInMemory="10000"
-        eternal="false"
-        timeToIdleSeconds="120"
-        timeToLiveSeconds="120"
-        overflowToDisk="false"
-    />
-
-	<cache
-        name="acls"
-        maxElementsInMemory="10000"
-        eternal="false"
-        timeToIdleSeconds="120"
-        timeToLiveSeconds="120"
-        overflowToDisk="false"
-    />
 
 </ehcache>
