@@ -59,16 +59,6 @@
 						<h:panelGroup>
 							<t:htmlTag value="hr" style="width:500px; margin-left:0; text-align:left;" />
 						</h:panelGroup>
-						
-						<h:outputText value="#{msg.extended_search_scope}" styleClass="field_label"/>
-						<h:selectOneMenu id="search_scope" 
-							value="#{extended_search_results.searchScopeId}" 
-							styleClass="pulldown_inline" 
-							onchange="this.form.submit();"
-							immediate="true" 
-							valueChangeListener="#{views$public$search$extendedsearch.searchScopeChanged}">
-							<f:selectItems value="#{extended_search_results.searchScopes}"/>
-						</h:selectOneMenu>
 
 						<h:outputText value="#{msg.extended_search_result_type} " styleClass="field_label"/>
 						<h:selectOneMenu id="search_for" 
@@ -85,39 +75,40 @@
 							<t:htmlTag value="hr" style="width:500px; margin-left:0; text-align:left;" />
 						</h:panelGroup>
 						
-						<h:outputText value="#{views$public$search$extendedsearch.organisationLabel}" 
-							styleClass="field_label"/>
+						<h:outputText value="#{views$public$search$extendedsearch.universityLabel}" 
+							style="#{views$public$search$extendedsearch.visibilityUniversity}" styleClass="field_label"/>
 						<h:selectOneMenu id="organisation" 
-							value="#{extended_search_results.organisationId}" 
+							value="#{extended_search_results.universityId}" 
 							styleClass="pulldown_inline" 
 							onchange="this.form.submit();"
 							immediate="true" 
-							valueChangeListener="#{views$public$search$extendedsearch.organisationChanged}">
-							<f:selectItems value="#{extended_search_results.organisations}"/>
+							valueChangeListener="#{views$public$search$extendedsearch.universityChanged}" 
+							style="#{views$public$search$extendedsearch.visibilityUniversity}">
+							<f:selectItems value="#{extended_search_results.universities}"/>
 						</h:selectOneMenu>
 
-						<h:outputText value="#{views$public$search$extendedsearch.suborganisationLabel}"
-							style="#{views$public$search$extendedsearch.visibilitySuborganisation}" styleClass="field_label"/>
+						<h:outputText value="#{views$public$search$extendedsearch.departmentLabel}"
+							style="#{views$public$search$extendedsearch.visibilityDepartment}" styleClass="field_label"/>
 						<h:selectOneMenu id="suborganisation" 
-							value="#{extended_search_results.suborganisationId}" 
+							value="#{extended_search_results.departmentId}" 
 							styleClass="pulldown_inline" 
 							onchange="this.form.submit();"
 							immediate="true" 
-							valueChangeListener="#{views$public$search$extendedsearch.suborganisationChanged}"
-							style="#{views$public$search$extendedsearch.visibilitySuborganisation}">
-							<f:selectItems value="#{extended_search_results.suborganisations}"/>
+							valueChangeListener="#{views$public$search$extendedsearch.departmentChanged}"
+							style="#{views$public$search$extendedsearch.visibilityDepartment}">
+							<f:selectItems value="#{extended_search_results.departments}"/>
 						</h:selectOneMenu>
 
-						<h:outputText value="#{views$public$search$extendedsearch.institutionLabel}" 
-							style="#{views$public$search$extendedsearch.visibilityInstitution}" styleClass="field_label"/>
+						<h:outputText value="#{views$public$search$extendedsearch.instituteLabel}" 
+							style="#{views$public$search$extendedsearch.visibilityInstitute}" styleClass="field_label"/>
 						<h:selectOneMenu id="institution" 
-							value="#{extended_search_results.institutionId}" 
+							value="#{extended_search_results.instituteId}" 
 							styleClass="pulldown_inline" 
 							onchange="this.form.submit();"
 							immediate="true" 
-							valueChangeListener="#{views$public$search$extendedsearch.institutionChanged}"
-							style="#{views$public$search$extendedsearch.visibilityInstitution}">
-							<f:selectItems value="#{extended_search_results.institutions}"/>
+							valueChangeListener="#{views$public$search$extendedsearch.instituteChanged}"
+							style="#{views$public$search$extendedsearch.visibilityInstitute}">
+							<f:selectItems value="#{extended_search_results.institutes}"/>
 						</h:selectOneMenu>
 
 						<h:outputText value="#{views$public$search$extendedsearch.courseTypeLabel}" 
