@@ -167,7 +167,12 @@
 	<bean id="lectureSearcher" class="org.openuss.lecture.LectureSearchQuery" scope="prototype">
 		<constructor-arg ref="searcherFactory"/>
 		<constructor-arg ref="analyzer" />
-	</bean>	
+	</bean>
+	
+	<bean id="extendedSearcher" class="org.openuss.search.ExtendedSearchQuery" scope="prototype">
+		<constructor-arg ref="searcherFactory"/>
+		<constructor-arg ref="analyzer" />
+	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 		Lucene Support Configuration
