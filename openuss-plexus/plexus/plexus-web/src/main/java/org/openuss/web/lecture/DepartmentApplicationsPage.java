@@ -18,6 +18,7 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.ApplicationInfo;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
@@ -66,9 +67,8 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 		public DataPage<ApplicationInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<ApplicationInfo> applications = new ArrayList<ApplicationInfo>();
-				ApplicationInfo a = new ApplicationInfo();
-				a.setId(1L);
-				applications.add(a);
+				applications = departmentService.findApplicationsByDepartment(departmentInfo.getId());
+				
 				page = new DataPage<ApplicationInfo>(applications.size(),0,applications);
 				sort(applications);
 			}
@@ -76,7 +76,35 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 		}
 	}
 
-	public String accept(){
+	/**
+	 * Store the selected institute into session scope and go to institute main page.
+	 * @return Outcome
+	 */
+	public String selectInstitute() {
+		logger.debug("Starting method selectInstitute");
+		InstituteInfo currentInstitute = currentInstitute();
+		logger.debug("Returning to method selectInstitute");
+		logger.debug(currentInstitute.getId());	
+		//setSessionBean(Constants.INSTITUTE, institute);
+		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
+		
+		return Constants.INSTITUTE_PAGE;
+	}
+	
+	private InstituteInfo currentInstitute() {
+		logger.debug("Starting method currentInstitute");
+		InstituteInfo instituteDetails = applications.getRowData().getInstituteInfo();
+		logger.debug(instituteDetails.getName());
+		logger.debug(instituteDetails.getOwnerName());
+		logger.debug(instituteDetails.getId());
+		//Institute institute = Institute.Factory.newInstance();
+		InstituteInfo newInstituteInfo = new InstituteInfo();
+		//institute.setId(details.getId());
+		newInstituteInfo.setId(instituteDetails.getId());
+		return newInstituteInfo;
+	}
+	
+	public String acceptApplication(){
 		ApplicationInfo app = applications.getRowData();
 		try {
 			departmentService.acceptApplication(app.getId(), user.getId());
@@ -87,7 +115,7 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 		return Constants.SUCCESS;
 	}
 	
-	public String reject(){
+	public String rejectApplication(){
 		ApplicationInfo app = applications.getRowData();
 		try {
 			departmentService.rejectApplication(app.getId());
