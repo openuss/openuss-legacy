@@ -11,7 +11,7 @@ import org.openuss.lecture.UniversityInfo;
 
 public class BookmarkMaintenanceAspectImpl {
 
-	private static final Logger logger = Logger.getLogger(UniversityCreationAndDeletionAspect.class);
+	private static final Logger logger = Logger.getLogger(BookmarkMaintenanceAspectImpl.class);
 	private DesktopService2 desktopService;
 
 	public DesktopService2 getDesktopService() {
