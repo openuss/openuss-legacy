@@ -53,15 +53,15 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 
 		Membership membership = Membership.Factory.newInstance();
 		membership.getMembers().add(users.get(0));
-		membership.getAspirants().add(users.get(1));
-		membership.getAspirants().add(users.get(2));
+		membership.getMembershipAspirants().add(users.get(1));
+		membership.getMembershipAspirants().add(users.get(2));
 		membership.getMembers().add(users.get(3));
 		membership.getMembers().add(users.get(4));
 
 		Membership membership2 = Membership.Factory.newInstance();
 		membership.getMembers().add(users.get(0));
-		membership2.getAspirants().add(users.get(1));
-		membership2.getAspirants().add(users.get(2));
+		membership2.getMembershipAspirants().add(users.get(1));
+		membership2.getMembershipAspirants().add(users.get(2));
 		membership2.getMembers().add(users.get(3));
 		membership2.getMembers().add(users.get(4));
 
