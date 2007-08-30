@@ -279,7 +279,7 @@ public class InstitutePage extends AbstractLecturePage {
 	 */
 	public String applyForMembership() throws LectureException {
 		if (user != null && institute != null) {
-			lectureService.addInstituteAspirant(user.getId(), institute.getId());
+			lectureService.addInstituteAspirant(user.getId(), instituteInfo.getId());
 			addMessage(i18n("institute_message_application_of_membership_send"));
 		}
 		return Constants.SUCCESS;
