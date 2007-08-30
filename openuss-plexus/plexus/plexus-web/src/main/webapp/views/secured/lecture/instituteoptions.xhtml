@@ -28,35 +28,35 @@
 		</ui:define>
   		<ui:define name="content">
 	  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.UPDATE}" ifNot="error"/>  		
-			<h:form id="reg1Form"> 
+			
+			<h:form id="reg1Form" enctype="multipart/form-data"> 
 				<o:block label="#{msg.institute_data_subheading}" styleClass="form_box">
 					<ui:include src="/views/commons/institute/instituteData.xhtml" />
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.cancel}" action="institute" styleClass="button_cancel" immediate="true"/>
 					<h:commandButton value="${msg.save}" action="#{views$secured$lecture$instituteoptions.saveInstitute}" styleClass="button_save"/>
+					<h:commandButton value="${msg.cancel}" action="institute" styleClass="button_cancel" immediate="true"/>
 		  		</o:block>
 		  	</h:form>
+		  	
 		  	<h:form id="instituteDepartment">
+			  	
 			  	<o:block label="#{msg.institute_departmentList_header}" styleClass="form_box">
-			  		<h:outputText value="#{departmentInfo.name}" styleClass="content_font_normal"/>
+			  		<h:outputText 
+			  			value="#{departmentInfo.name}" 
+			  			styleClass="content_font_normal"/>
 			  	</o:block>
-			  	
 			 
-			  	<o:block label="#{msg.institute_applicationList_header}" 
-			  	
-			  	styleClass="form_box">
-			  		<h:outputText value="#{views$secured$lecture$instituteDepartments.appStatusDescription}" 
-			  		
-			  		styleClass="content_font_normal"/>
+			  	<o:block label="#{msg.institute_applicationList_header}" styleClass="form_box">
+			  		<h:outputText 
+			  			value="#{views$secured$lecture$instituteDepartments.appStatusDescription}" 
+			  			styleClass="content_font_normal"/>
 			  	</o:block>
-			
 			  	
-			  
-				<o:block label="#{msg.institute_departments_subheading}" 
-				
-				styleClass="form_box">
-					<h:outputText value="#{msg.department_selection}" styleClass="header_font_normal"/>
+				<o:block label="#{msg.institute_departments_subheading}" styleClass="form_box">
+					<h:outputText 
+						value="#{msg.department_selection}" 
+						styleClass="header_font_normal"/>
 		
 					<h:selectOneListbox
 	    				id="departmentSelection" 
@@ -66,11 +66,11 @@
 						styleClass="pulldown_inline">
 						<f:selectItems value="#{views$secured$lecture$instituteDepartments.allDepartments}"/>
 					</h:selectOneListbox>
-					<h:commandButton  value="${msg.department_members_command_add}" 
-										styleClass="button_cancel" 
-										action="#{views$secured$lecture$instituteDepartments.apply}"/>
+					<h:commandButton 
+						value="${msg.department_members_command_add}" 
+						styleClass="button_cancel" 
+						action="#{views$secured$lecture$instituteDepartments.apply}"/>
 				</o:block>
-				
 			</h:form>
 	  		
   		</ui:define>

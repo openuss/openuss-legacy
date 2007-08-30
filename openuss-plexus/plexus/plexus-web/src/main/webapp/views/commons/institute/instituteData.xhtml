@@ -5,6 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:news="http://www.openuss.org/news/jsf"
       xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:c="http://java.sun.com/jstl/core"
       xmlns:o="http://www.openuss.org/jsfcontrols">
       
 	<o:input entity="instituteInfo" property="name" maxlength="250" required="true"/>
@@ -35,4 +36,37 @@
 	<h:selectOneListbox id="themeSelect" size="1" value="#{instituteInfo.theme}" styleClass="pulldown" >
 	    <f:selectItems value="#{applicationScope.themeManager.selectableThemes}"/>
 	</h:selectOneListbox>
+	
+	<h:panelGroup>
+		  	<h:outputLabel value="#{msg.instituteinfo_logo}" for="image" styleClass="field_label" />
+		  	<t:inputFileUpload id="image" storage="file" accept="image/*" immediate="true" styleClass="uploadField" >
+  				<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
+  			</t:inputFileUpload>
+		  	<h:message for="image" styleClass="fieldError" showDetail="true" showSummary="false"/>
+	</h:panelGroup>
+	<t:htmlTag value="br" />
+	<h:panelGroup styleClass="field_label">
+		<c:if test="#{not empty instituteInfo.imageId}">
+			<h:graphicImage styleClass="logo_preview"
+				renderer="${not empty instituteInfo.imageId}"
+				value="/files?fileid=#{instituteInfo.imageId}"
+				alt="#{msg.logo} #{instituteInfo.name}"
+				title="#{msg.logo} #{instituteInfo.name}"/> 
+	  		<h:commandLink 
+	  			actionListener="#{views$public$institute$institute.removeImage}" 
+	  			immediate="true" 
+	  			title="#{msg.command_remove_logo}">
+	  			<h:graphicImage value="/images/icons/remove.gif" alt="delete"/>
+	  		</h:commandLink>
+		</c:if>
+				
+		<c:if test="#{empty instituteInfo.imageId}">
+			<h:graphicImage 
+				styleClass="userphoto" 
+				value="/images/icons/no_pic.gif" 
+				alt="#{msg.organisation_no_image}" 
+				title="#{msg.organisation_no_image}"/>
+		</c:if>
+	</h:panelGroup>
+	
 </ui:composition>
