@@ -47,10 +47,10 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 	
 	private String appStatusDescription;
 	
-	private boolean appStatus;
+
 	
 
-	private  ApplicationInfo appAnDepartment;
+
 		
 	private List<SelectItem> departmentItems;
 
@@ -171,18 +171,19 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 	}
 
 	public String getAppStatusDescription() {
-		String status;
+		
 		ResourceBundle rb = getResourceBundle();
 		ApplicationInfo app = instituteService.findApplicationByInstitute(instituteInfo.getId());
-		if (app == null)
-			appStatus = false;
-		else{
+		if (app!=null)
+		{
 		appStatusDescription = app.getDepartmentInfo().getName();
-		appStatus = true;
-			if (app.isConfirmed())
-				appStatusDescription  = appStatusDescription + rb.getString("application_accept_info");
+		
+			if (app.isConfirmed())			
+				appStatusDescription  = appStatusDescription+":        "+ rb.getString("application_accept_info");
 			else
-				appStatusDescription  = appStatusDescription + rb.getString("application_working_info");
+			{
+				appStatusDescription  = appStatusDescription+":        "+ rb.getString("application_working_info");
+			}
 		}
 		return appStatusDescription;
 	}
@@ -191,13 +192,7 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 		this.appStatusDescription = appStatusDescription;
 	}
 
-	public boolean isAppStatus() {
-		return appStatus;
-	}
 
-	public void setAppStatus(boolean appStatus) {
-		this.appStatus = appStatus;
-	}
 
 
 

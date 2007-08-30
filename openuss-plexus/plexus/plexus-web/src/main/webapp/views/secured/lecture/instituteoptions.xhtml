@@ -8,7 +8,8 @@
       xmlns:news="http://www.openuss.org/news/jsf"
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:s="http://www.openuss.org/jsf-security"
-      xmlns:o="http://www.openuss.org/jsfcontrols">
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core">
       
  	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -41,16 +42,19 @@
 			  		<h:outputText value="#{departmentInfo.name}" styleClass="content_font_normal"/>
 			  	</o:block>
 			  	
+			 
 			  	<o:block label="#{msg.institute_applicationList_header}" 
 			  	
 			  	styleClass="form_box">
 			  		<h:outputText value="#{views$secured$lecture$instituteDepartments.appStatusDescription}" 
-			  		rendered = "#{appStatus}"
+			  		
 			  		styleClass="content_font_normal"/>
 			  	</o:block>
+			
 			  	
+			  
 				<o:block label="#{msg.institute_departments_subheading}" 
-				rendered = "#{!appStatus}"
+				
 				styleClass="form_box">
 					<h:outputText value="#{msg.department_selection}" styleClass="header_font_normal"/>
 		
@@ -66,6 +70,7 @@
 										styleClass="button_cancel" 
 										action="#{views$secured$lecture$instituteDepartments.apply}"/>
 				</o:block>
+				
 			</h:form>
 	  		
   		</ui:define>
