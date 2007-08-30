@@ -30,8 +30,7 @@
   		<ui:define name="navigation">
 			<ui:include src="/views/commons/navigation/institute.xhtml" />
 		</ui:define>
-		<ui:define name="sidebar"> 		
-			<ui:include src="/views/commons/sidebar/instituteoptions.xhtml" />
+		<ui:define name="sidebar"> 
 			<ui:include src="/views/commons/sidebar/feeds/institutefeed.xhtml" />
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
 		</ui:define>
@@ -73,6 +72,8 @@
 				
 				<o:block styleClass="teaser_blue" label="#{msg.organisation_command_actions}">
 					<h:form id="actionsForm">
+						
+						
 						<c:if test="#{not views$public$institute$institute.bookmarked}">
 							<p class="content_font_normal">
 						  			<h:commandLink
@@ -90,6 +91,14 @@
 					  			</h:commandLink>
 					  		</p>
 					  	</c:if>
+					  	
+					  	<s:authorize ifAllGranted="ROLE_USER">
+							<s:acl domainObject="#{instituteInfo}" hasNotPermission="#{ACL.INSTITUTE_TUTOR}">
+								<p class="content_font_normal">
+									<h:commandLink value="#{msg['institute_command_assistant_application']}" action="#{views$secured$lecture$institute.applyForMembership}"/>
+								</p>
+							</s:acl>
+						</s:authorize>
 					  		
 				  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.UPDATE}">
 					  		<p class="content_font_normal">
@@ -98,6 +107,9 @@
 								</h:commandLink>
 							</p>
 						</s:acl>
+						
+						
+						
 					</h:form>
 				</o:block>
 			</s:authorize>
