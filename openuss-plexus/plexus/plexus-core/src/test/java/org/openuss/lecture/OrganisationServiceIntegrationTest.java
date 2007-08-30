@@ -112,7 +112,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		University university = testUtility.createUniqueUniversityInDB();
 
 		// Get List of Aspirants
-		List aspirants = university.getMembership().getMembershipAspirants();
+		List aspirants = university.getMembership().getAspirants();
 		assertNotNull(aspirants);
 		int sizeBefore = aspirants.size();
 
@@ -123,7 +123,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		organisationService.addAspirant(university.getId(), user.getId());
 
 		// Get List of Aspirants again
-		List aspirants2 = university.getMembership().getMembershipAspirants();
+		List aspirants2 = university.getMembership().getAspirants();
 		assertNotNull(aspirants2);
 		assertEquals(sizeBefore + 1, aspirants2.size());
 
@@ -191,7 +191,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 
 		// Add users as Aspirants
 		for (User user : users) {
-			university.getMembership().getMembershipAspirants().add(user);
+			university.getMembership().getAspirants().add(user);
 		}
 
 		// Synchronize with Database
@@ -199,7 +199,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 
 		List userInfos = organisationService.findAllAspirants(university.getId());
 
-		assertEquals(university.getMembership().getMembershipAspirants().size(), userInfos.size());
+		assertEquals(university.getMembership().getAspirants().size(), userInfos.size());
 		Iterator iterator = null;
 		UserInfo userInfo = null;
 		int count = 0;
@@ -228,10 +228,10 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		User user = testUtility.createUniqueUserInDB();
 
 		// Add user as Aspirant
-		university.getMembership().getMembershipAspirants().add(user);
+		university.getMembership().getAspirants().add(user);
 
 		// Get List of Aspirants
-		List aspirants = university.getMembership().getMembershipAspirants();
+		List aspirants = university.getMembership().getAspirants();
 		assertNotNull(aspirants);
 		int sizeAspBefore = aspirants.size();
 
@@ -246,7 +246,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		// Accept Aspirant
 		organisationService.acceptAspirant(university.getId(), user.getId());
 
-		assertEquals(sizeAspBefore - 1, university.getMembership().getMembershipAspirants().size());
+		assertEquals(sizeAspBefore - 1, university.getMembership().getAspirants().size());
 		assertEquals(sizeMemBefore + 1, university.getMembership().getMembers().size());
 
 		logger.info("----> END access to acceptAspirants test");
@@ -263,10 +263,10 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		User user = testUtility.createUniqueUserInDB();
 
 		// Add user as Aspirant
-		university.getMembership().getMembershipAspirants().add(user);
+		university.getMembership().getAspirants().add(user);
 
 		// Get List of Aspirants
-		List aspirants = university.getMembership().getMembershipAspirants();
+		List aspirants = university.getMembership().getAspirants();
 		assertNotNull(aspirants);
 		int sizeAspBefore = aspirants.size();
 
@@ -281,7 +281,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		// Reject Aspirant
 		organisationService.rejectAspirant(university.getId(), user.getId());
 
-		assertEquals(sizeAspBefore - 1, university.getMembership().getMembershipAspirants().size());
+		assertEquals(sizeAspBefore - 1, university.getMembership().getAspirants().size());
 		assertEquals(sizeMemBefore, university.getMembership().getMembers().size());
 
 		logger.info("----> END access to rejectAspirants test");

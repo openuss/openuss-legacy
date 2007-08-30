@@ -46,8 +46,8 @@ public class MembershipDaoTest extends MembershipDaoTestBase {
 		// Create Memberships
 		Membership membership = Membership.Factory.newInstance();
 		membership.getMembers().add(users.get(0));
-		membership.getMembershipAspirants().add(users.get(1));
-		membership.getMembershipAspirants().add(users.get(2));
+		membership.getAspirants().add(users.get(1));
+		membership.getAspirants().add(users.get(2));
 		membership.getMembers().add(users.get(3));
 		membership.getMembers().add(users.get(4));
 		membership.getGroups().add(groups.get(0));
@@ -59,8 +59,8 @@ public class MembershipDaoTest extends MembershipDaoTestBase {
 		
 		Membership membership2 = Membership.Factory.newInstance();
 		membership.getMembers().add(users.get(0));
-		membership2.getMembershipAspirants().add(users.get(1));
-		membership2.getMembershipAspirants().add(users.get(2));
+		membership2.getAspirants().add(users.get(1));
+		membership2.getAspirants().add(users.get(2));
 		membership2.getMembers().add(users.get(3));
 		membership2.getMembers().add(users.get(4));
 		membership2.getGroups().add(groups.get(2));

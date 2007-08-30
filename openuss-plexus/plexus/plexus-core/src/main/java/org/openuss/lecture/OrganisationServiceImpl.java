@@ -103,7 +103,7 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 				"MembershipService.handleFindAllAspirants - no Organisation found corresponding to the ID "
 						+ organisationId);
 
-		List<User> aspirants = organisation.getMembership().getMembershipAspirants();
+		List<User> aspirants = organisation.getMembership().getAspirants();
 
 		List aspirantInfos = new ArrayList();
 		for (User user : aspirants) {

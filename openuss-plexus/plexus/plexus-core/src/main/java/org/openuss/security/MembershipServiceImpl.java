@@ -31,7 +31,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 				.notNull(membership.getId(), "MembershipService.handleAcceptAspirant - Membership must have a valid ID");
 
 		// Remove Aspirant from List of Aspirants
-		List aspirants = membership.getMembershipAspirants();
+		List aspirants = membership.getAspirants();
 		boolean wasFound = aspirants.remove(user);
 		if (!wasFound) {
 			throw new IllegalArgumentException("MembershipService.handleAcceptAspirant - the User "
@@ -62,7 +62,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 				.notNull(membership.getId(), "MembershipService.handleRejectAspirant - Membership must have a valid ID");
 
 		// Remove Aspirant from List of Aspirants
-		List aspirants = membership.getMembershipAspirants();
+		List aspirants = membership.getAspirants();
 		boolean wasFound = aspirants.remove(user);
 		if (!wasFound) {
 			throw new IllegalArgumentException("MembershipService.handleRejectAspirant - the User "
@@ -90,7 +90,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 			throw new IllegalArgumentException("MembershipService.handleAddMember - the User " + user.getUsername()
 					+ " is already a Member");
 		}
-		List aspirants = membership.getMembershipAspirants();
+		List aspirants = membership.getAspirants();
 		if (aspirants.contains(user)) {
 			throw new IllegalArgumentException("MembershipService.handleAddMember - the User " + user.getUsername()
 					+ " is already an Aspirant");
@@ -144,7 +144,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 			throw new IllegalArgumentException("MembershipService.handleAddAspirant - the User " + user.getUsername()
 					+ " is already a Member");
 		}
-		List aspirants = membership.getMembershipAspirants();
+		List aspirants = membership.getAspirants();
 		if (aspirants.contains(user)) {
 			throw new IllegalArgumentException("MembershipService.handleAddAspirant - the User " + user.getUsername()
 					+ " is already an Aspirant");

@@ -356,7 +356,7 @@ public class LectureServiceImpl extends LectureServiceBase {
 	protected List handleGetInstituteAspirants(Long instituteId) throws Exception {
 		Institute institute = getInstituteDao().load(instituteId);
 		// need to get ride of persistent back so use a new ArrayList
-		List aspirants = new ArrayList<User>(institute.getMembership().getMembershipAspirants());
+		List aspirants = new ArrayList<User>(institute.getMembership().getAspirants());
 		getUserDao().toUserInfoCollection(aspirants);
 		return aspirants;
 	}
@@ -378,7 +378,7 @@ public class LectureServiceImpl extends LectureServiceBase {
 		User user = getUser(userId);
 
 		if (!institute.getMembership().getMembers().contains(user)) {
-			institute.getMembership().getMembershipAspirants().add(user);
+			institute.getMembership().getAspirants().add(user);
 			getInstituteDao().update(institute);
 		} else {
 			throw new LectureException("user_is_already_a_member_of_the_institute");
@@ -435,7 +435,7 @@ public class LectureServiceImpl extends LectureServiceBase {
 
 		institute.getMembership().getMembers().add(user);
 		// if user was an aspirant remove him from the list
-		institute.getMembership().getMembershipAspirants().remove(user);
+		institute.getMembership().getAspirants().remove(user);
 		persist(institute);
 	}
 
@@ -446,7 +446,7 @@ public class LectureServiceImpl extends LectureServiceBase {
 	protected void handleRejectInstituteAspirant(Long userId, Long instituteId) throws Exception {
 		Institute institute = getInstitute(instituteId);
 		User user = getUser(userId);
-		institute.getMembership().getMembershipAspirants().remove(user);
+		institute.getMembership().getAspirants().remove(user);
 		persist(institute);
 
 		Map<String, String> parameters = new HashMap<String, String>();
@@ -503,8 +503,8 @@ public class LectureServiceImpl extends LectureServiceBase {
 		Institute institute = getInstitute(instituteId);
 		User user = getUser(userId);
 		// check if user was really an aspirant of the institute
-		if (institute.getMembership().getMembershipAspirants().contains(user)) {
-			institute.getMembership().getMembershipAspirants().remove(user);
+		if (institute.getMembership().getAspirants().contains(user)) {
+			institute.getMembership().getAspirants().remove(user);
 			institute.getMembership().getMembers().add(user);
 			getInstituteDao().update(institute);
 		}
