@@ -151,6 +151,9 @@ public class Constants {
 	
 	public static final String EXTENDED_SEARCH = "extended_search";
 	public static final String EXTENDED_SEARCH_RESULT = "extended_search_result";
+	
+	public static final Long EXTENDED_SEARCH_GET_ALL = -1L;
+	public static final Long EXTENDED_SEARCH_NO_RECORDS_FOUND = -2L;
 
 	public static final String NEWSLETTER_EXPORT = "newsletter_export";
 	
