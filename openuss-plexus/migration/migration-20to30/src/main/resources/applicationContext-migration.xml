@@ -6,10 +6,11 @@
     					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 	
 	
-	<bean abstract="true" id="service" class="org.springframework.aop.framework.ProxyFactoryBean">
-        <property name="target">
-			<bean parent="newsServiceAbstract"/>
-        </property>
+	<bean id="identifierDao" class="org.openuss.migration.from20to30.LegacyIdentifierDao">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<bean id="template_tx" abstract="true" class="org.springframework.aop.framework.ProxyFactoryBean">
         <property name="interceptorNames">
             <list>
                 <value>serviceTransactionInterceptor</value>
@@ -17,12 +18,13 @@
             </list>
         </property>
     </bean>
-	
+    
 	<bean id="userImport" class="org.openuss.migration.from20to30.UserImport">
 		<property name="legacyDao" ref="legacyDao"/>
 		<property name="userDao" ref="userDao"/>
 		<property name="groupDao" ref="groupDao"/>
 		<property name="objectIdentityDao" ref="objectIdentityDao"/>
+		<property name="identifierDao" ref="identifierDao"/>
 	</bean>
 
 	<bean id="lectureImport" class="org.openuss.migration.from20to30.LectureImport" scope="singleton">
@@ -30,6 +32,7 @@
 		<property name="groupDao" ref="groupDao"/>
 		<property name="objectIdentityDao" ref="objectIdentityDao"/>
 		<property name="instituteDao" ref="instituteDao"/>
+		<property name="identifierDao" ref="identifierDao"/>
 		<property name="userImport" ref="userImport"/>
 	</bean>
 	
@@ -63,37 +66,37 @@
 		
 	</bean>
 	
-	<bean id="userImportTx" parent="service">
+	<bean id="userImportTx" parent="template_tx">
 		<property name="target">
 			<ref bean="userImport"/>
 		</property>
 	</bean>
 
-	<bean id="lectureImportTx" parent="service">
+	<bean id="lectureImportTx" parent="template_tx">
 		<property name="target">
 			<ref bean="lectureImport"/>
 		</property>
 	</bean>
 
-	<bean id="newsImportTx" parent="service">
+	<bean id="newsImportTx" parent="template_tx">
 		<property name="target">
 			<ref bean="newsImport"/>
 		</property>
 	</bean>
 
-	<bean id="documentImportTx" parent="service">
+	<bean id="documentImportTx" parent="template_tx">
 		<property name="target">
 			<ref bean="documentImport"/>
 		</property>
 	</bean>
 	
-	<bean id="desktopImportTx" parent="service">
+	<bean id="desktopImportTx" parent="template_tx">
 		<property name="target">
 			<ref bean="desktopImport"/>
 		</property>
 	</bean>
 
-	<bean id="courseMemberImportTx" parent="service">
+	<bean id="courseMemberImportTx" parent="template_tx">
 		<property name="target">
 			<ref bean="courseMemberImport"/>
 		</property>
