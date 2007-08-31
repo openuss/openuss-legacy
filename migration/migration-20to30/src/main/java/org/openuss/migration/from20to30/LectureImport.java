@@ -50,6 +50,9 @@ public class LectureImport {
 
 	/** ObjectIdentityDao */
 	private ObjectIdentityDao objectIdentityDao;
+	
+	/** identifierDao */
+	private LegacyIdentifierDao identifierDao;
 
 	/** UserImport */
 	private UserImport userImport;
@@ -106,7 +109,6 @@ public class LectureImport {
 				if (owner != null) {
 					institute.setOwner(owner);
 					institute.getMembers().add(owner);
-
 					id2Institute.put(faculty.getId(), institute);
 					institutes.add(institute);
 					faculty2Institute.put(faculty, institute);
@@ -416,6 +418,14 @@ public class LectureImport {
 
 	public CourseType getCourseTypeById(String id) {
 		return id2CourseType.get(id);
+	}
+
+	public LegacyIdentifierDao getIdentifierDao() {
+		return identifierDao;
+	}
+
+	public void setIdentifierDao(LegacyIdentifierDao identifierDao) {
+		this.identifierDao = identifierDao;
 	}
 
 }
