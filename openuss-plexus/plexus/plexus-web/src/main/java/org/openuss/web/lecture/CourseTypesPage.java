@@ -33,8 +33,6 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 
 	private static final Logger logger = Logger.getLogger(CourseTypesPage.class);
 
-
-	
 	
 	private Boolean renderCourseTypeEditNew = false;
 	private Boolean renderCourseTypeAssignToPeriod = false;
@@ -53,10 +51,6 @@ public class CourseTypesPage extends AbstractCourseTypePage {
 		
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		breadcrumbs.addCrumb(crumb);
-		
-		// TODO Remove old crumb code
-		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
 	

@@ -102,7 +102,6 @@ public abstract class AbstractLecturePage extends BasePage {
 			if (!instituteInfo.isEnabled()) {
 				addMessage(i18n("institute_not_activated"));
 			}
-			generateCrumbs();
 		}
 	}
 
@@ -120,16 +119,7 @@ public abstract class AbstractLecturePage extends BasePage {
 			 departmentInfo = departmentService.findDepartment(instituteInfo.getDepartmentId());
 			setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);}
 	}
-	private void generateCrumbs() {
-		logger.debug("Starting method generate crumbs");
-		crumbs.clear();
-		BreadCrumb instituteCrumb = new BreadCrumb();
-		instituteCrumb.setName(instituteInfo.getShortcut());
-		instituteCrumb.setLink(PageLinks.INSTITUTE_PAGE);
-		instituteCrumb.addParameter("institute", instituteInfo.getId());
-		instituteCrumb.setHint(instituteInfo.getName());
-		crumbs.add(instituteCrumb);
-	}
+	
 
 	public Institute getInstitute() {
 		return institute;

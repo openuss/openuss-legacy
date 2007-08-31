@@ -48,13 +48,8 @@ public class AspirantsPage extends AbstractLecturePage {
 		crumb.setName(i18n("institute_command_aspirants"));
 		crumb.setHint(i18n("institute_command_aspirants"));
 		
-		
 		// TODO check if further crumbs are necessary for this page
 		breadcrumbs.addCrumb(crumb);
-		
-		// TODO Remove old crumb code
-		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	public String save() {

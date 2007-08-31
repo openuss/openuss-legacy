@@ -63,9 +63,6 @@ public class InstitutePage extends AbstractLecturePage {
 	public void prerender() throws LectureException {
 		super.prerender();
 		
-		//	add bread crumbs to institute page
-		addBreadCrumbs();
-		
 		if (instituteInfo != null) {
 			departmentId = instituteInfo.getDepartmentId();
 			departmentInfo = departmentService.findDepartment(departmentId);
@@ -92,6 +89,7 @@ public class InstitutePage extends AbstractLecturePage {
 		} 
 			
 		setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		addBreadCrumbs();
 	}
 	
 	

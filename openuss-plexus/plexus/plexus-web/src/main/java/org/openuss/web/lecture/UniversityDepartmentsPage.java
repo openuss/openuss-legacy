@@ -22,8 +22,6 @@ public class UniversityDepartmentsPage extends AbstractUniversityPage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
-		
-		
 		addPageCrumb();
 	}
 	
@@ -35,10 +33,6 @@ public class UniversityDepartmentsPage extends AbstractUniversityPage {
 		
 		breadcrumbs.loadUniversityCrumbs(universityInfo);
 		breadcrumbs.addCrumb(crumb);
-		
-		// TODO Remove old crumb code
-		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	
 
 }

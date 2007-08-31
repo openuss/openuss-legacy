@@ -61,9 +61,6 @@ public abstract class AbstractDepartmentPage extends BasePage {
 			addError(i18n("message_error_no_department_selected"));
 			redirect(Constants.DESKTOP);
 		}
-		
-		generateCrumbs();
-		
 	}
 
 	private void refreshDepartment() {
@@ -72,20 +69,6 @@ public abstract class AbstractDepartmentPage extends BasePage {
 			setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);
 		}
 	}
-
-
-	private void generateCrumbs() {
-		// TODO Remove old crumb code
-		crumbs.clear();
-		BreadCrumb departmentCrumb = new BreadCrumb();
-		departmentCrumb.setName(departmentInfo.getShortcut());
-		departmentCrumb.setLink(PageLinks.DEPARTMENT_PAGE);
-		departmentCrumb.addParameter("department", departmentInfo.getId());
-		departmentCrumb.setHint(departmentInfo.getName());
-		crumbs.add(departmentCrumb);
-	}
-	
-
 	
 	public Boolean getBookmarked()
 	{

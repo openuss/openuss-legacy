@@ -53,13 +53,10 @@ public class DepartmentsPage extends BasePage{
 	
 	@Prerender
 	public void prerender() throws Exception {
-		crumbs.clear();
 	}	
 	
 	private DepartmentInfo currentDepartment() {
-		
 		DepartmentInfo department = departments.getRowData();
-		
 		return department;
 	}
 	

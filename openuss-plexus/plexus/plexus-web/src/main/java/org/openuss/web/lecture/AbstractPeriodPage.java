@@ -36,19 +36,8 @@ public class AbstractPeriodPage extends AbstractUniversityPage {
 			
 			}
 		setBean("periodInfo", periodInfo);
-		
-		addPeriodCrumb();
 	}
 
-	
-	private void addPeriodCrumb() {
-		BreadCrumb periodCrumb = new BreadCrumb();
-		periodCrumb.setName(i18n("university_command_periods"));
-		periodCrumb.setHint(i18n("university_command_periods"));
-		periodCrumb.setLink(PageLinks.UNIVERSITY_PAGE);
-		periodCrumb.addParameter("university", universityInfo.getId());
-		crumbs.add(periodCrumb);
-	}
 
 	public PeriodInfo getPeriodInfo() {
 		return periodInfo;

@@ -38,22 +38,13 @@ import org.openuss.web.Constants;
 public class InstituteApplicationPage extends AbstractLecturePage{
 	private static final long serialVersionUID = 20278675452385870L;
 	
-
-	
 	@Property(value = "#{applicationInfo}")
 	protected ApplicationInfo applicationInfo;
 	
 	private Long departmentId;
-	
 	private String appStatusDescription;
 	
-
-	
-
-
-		
 	private List<SelectItem> departmentItems;
-
 	private List<DepartmentInfo> allDepartments;
 	
 
@@ -68,8 +59,9 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 		crumb.setLink("");
 		crumb.setName(i18n("department_command_institutes"));
 		crumb.setHint(i18n("department_command_institutes"));
-		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		
+		breadcrumbs.loadInstituteCrumbs(instituteInfo);
+		breadcrumbs.addCrumb(crumb);
 	}	
 	
 

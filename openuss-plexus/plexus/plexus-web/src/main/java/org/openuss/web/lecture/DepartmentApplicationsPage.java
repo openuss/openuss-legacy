@@ -49,11 +49,6 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 		
 		breadcrumbs.loadDepartmentCrumbs(departmentInfo);
 		breadcrumbs.addCrumb(crumb);
-		
-
-		// TODO Remove old crumb code
-		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	

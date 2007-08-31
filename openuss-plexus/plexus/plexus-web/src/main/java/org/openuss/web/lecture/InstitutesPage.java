@@ -51,7 +51,6 @@ public class InstitutesPage extends BasePage{
 
 	@Prerender
 	public void prerender() throws Exception {
-		crumbs.clear();
 	}	
 	
 	/**

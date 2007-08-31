@@ -55,8 +55,6 @@ public abstract class AbstractUniversityPage extends BasePage {
 			addError(i18n("message_error_no_university_selected"));
 			redirect(Constants.DESKTOP);
 		} 
-		generateCrumbs();
-		
 	}
 
 	private void refreshUniversity() {
@@ -67,17 +65,6 @@ public abstract class AbstractUniversityPage extends BasePage {
 			logger.debug(universityInfo.getId());
 			setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
 		}
-	}
-
-	private void generateCrumbs() {
-		
-		crumbs.clear();
-		BreadCrumb universityCrumb = new BreadCrumb();
-		universityCrumb.setName(universityInfo.getShortcut());
-		universityCrumb.setLink(PageLinks.UNIVERSITY_PAGE);
-		universityCrumb.addParameter("university", universityInfo.getId());
-		universityCrumb.setHint(universityInfo.getName());
-		crumbs.add(universityCrumb);
 	}
 
 	public UniversityInfo getUniversityInfo() {

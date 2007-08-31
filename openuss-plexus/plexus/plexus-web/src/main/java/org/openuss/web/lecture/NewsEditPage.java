@@ -60,8 +60,8 @@ public class NewsEditPage extends AbstractLecturePage {
 				setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
 			} 
 		}
-		addNewsCrumbs();
 		
+		addNewsCrumbs();
 	}
 
 	private void addNewsCrumbs() {
@@ -79,11 +79,6 @@ public class NewsEditPage extends AbstractLecturePage {
 		breadcrumbs.loadInstituteCrumbs(instituteInfo);
 		breadcrumbs.addCrumb(courseNewsCrumb);
 		breadcrumbs.addCrumb(newsEditCrumb);
-		
-		// TODO Remove old crumb code
-		crumbs.add(courseNewsCrumb);
-		crumbs.add(newsEditCrumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	/**

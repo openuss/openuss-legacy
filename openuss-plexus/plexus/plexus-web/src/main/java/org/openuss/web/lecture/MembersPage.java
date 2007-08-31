@@ -71,10 +71,6 @@ public class MembersPage extends AbstractLecturePage {
 		
 		breadcrumbs.loadInstituteCrumbs(instituteInfo);
 		breadcrumbs.addCrumb(crumb);
-		
-		// TODO Remove old crumb code
-		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	private InstituteSecurity getInstituteSecurity() {

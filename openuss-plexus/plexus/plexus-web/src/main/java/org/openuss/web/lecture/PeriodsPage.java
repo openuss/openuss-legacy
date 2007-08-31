@@ -87,11 +87,6 @@ public class PeriodsPage extends AbstractLecturePage {
 		
 		breadcrumbs.loadUniversityCrumbs(universityInfo);
 		breadcrumbs.addCrumb(crumb);
-		
-		
-		// TODO Remove old crumb code
-		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
 	}	
 
 	/**
