@@ -52,12 +52,11 @@
 			
 		</t:column>
 		
-		<t:column>
-			<plexus:commandSortHeader columnName="accessType">#{msg.course_options_access_headline}</plexus:commandSortHeader>
+		<plexus:column header="#{msg.course_options_access_headline}">
 			<h:outputText value="#{courseInfo.accessType}">
 					<f:converter converterId="accessTypeLabelConverter" />
 			</h:outputText>
-		</t:column>
+		</plexus:column>
 		  
 		<s:authorize ifAllGranted="ROLE_USER">
 			<plexus:column header="#{msg.commands_header}">		
