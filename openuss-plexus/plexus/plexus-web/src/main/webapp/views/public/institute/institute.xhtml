@@ -95,7 +95,7 @@
 					  	<s:authorize ifAllGranted="ROLE_USER">
 							<s:acl domainObject="#{instituteInfo}" hasNotPermission="#{ACL.INSTITUTE_TUTOR}">
 								<p class="content_font_normal">
-									<h:commandLink value="#{msg['institute_command_assistant_application']}" action="#{views$secured$lecture$institute.applyForMembership}"/>
+									<h:commandLink value="#{msg['institute_command_assistant_application']}" action="#{views$public$institute$institute.applyForMembership}"/>
 								</p>
 							</s:acl>
 						</s:authorize>
