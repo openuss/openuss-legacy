@@ -17,39 +17,48 @@
 			var="result" 
 			columnClasses="col_max_left, col_commands"
 			rows="15">
-			<t:column rendered="#{result.domainType == 'UNIVERSITY'}" >
+			<t:column rendered="#{result.domainType == 'university'}" >
 				<img src="#{theme.imagesPath}/university.png" alt="#{result.name}" title="#{result.name}" />
 			</t:column>
-			<t:column rendered="#{result.domainType == 'DEPARTMENT'}" >
+			<t:column rendered="#{result.domainType == 'department'}" >
 				<img src="#{theme.imagesPath}/department.png" alt="#{result.name}" title="#{result.name}" />
 			</t:column>
-			<t:column rendered="#{result.domainType == 'INSTITUTE'}" >
+			<t:column rendered="#{result.domainType == 'institute'}" >
 				<img src="#{theme.imagesPath}/institute.png" alt="#{result.name}" title="#{result.name}" />
 			</t:column>
-			<t:column rendered="#{result.domainType == 'Course'}">
+			<t:column rendered="#{result.domainType == 'course'}">
 				<img src="#{theme.imagesPath}/course.png" alt="#{result.name}" title="#{result.name}" />
 			</t:column>
 			<t:column>
 				<div class="institute_info">
-					<o:link value="/views/public/university/university.faces" rendered="#{result.domainType == 'UNIVERSITY'}">
+					<o:link value="/views/public/university/university.faces" rendered="#{result.domainType == 'university'}">
 		    			<f:param name="university" value="#{result.id}"/>
 					 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
 						<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
+						<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
+						<h:outputText value="#{msg.search_result_score}: #{result.score}" styleClass="header_font_normal"/>
+						<h:outputText value="#{result.debugInfo}" styleClass="content_font_normal" escape="false"/>
 		    		</o:link>
-		    		<o:link value="/views/public/department/department.faces" rendered="#{result.domainType == 'DEPARTMENT'}">
+		    		<o:link value="/views/public/department/department.faces" rendered="#{result.domainType == 'department'}">
 		    			<f:param name="department" value="#{result.id}"/>
 					 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
 						<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
+						<h:outputText value="#{msg.search_result_score}: #{result.score}" styleClass="header_font_normal"/>
+						<h:outputText value="#{result.debugInfo}" styleClass="content_font_normal" escape="false"/>
 		    		</o:link>
-		    		<o:link value="/views/secured/lecture/institute.faces" rendered="#{result.domainType == 'INSTITUTE'}">
+		    		<o:link value="/views/secured/lecture/institute.faces" rendered="#{result.domainType == 'institute'}">
 		    			<f:param name="institute" value="#{result.id}"/>
 					 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
 						<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
+						<h:outputText value="#{msg.search_result_score}: #{result.score}" styleClass="header_font_normal"/>
+						<h:outputText value="#{result.debugInfo}" styleClass="content_font_normal" escape="false"/>
 		    		</o:link>
-		    		<o:link value="/views/secured/course/main.faces" rendered="#{result.domainType == 'Course'}">
+		    		<o:link value="/views/secured/course/main.faces" rendered="#{result.domainType == 'course'}">
 		    			<f:param name="course" value="#{result.id}"/>
 					 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
 						<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
+						<h:outputText value="#{msg.search_result_score}: #{result.score}" styleClass="header_font_normal"/>
+						<h:outputText value="#{result.debugInfo}" styleClass="content_font_normal" escape="false"/>
 		    		</o:link>
 	    		</div>
 			</t:column>
