@@ -2,7 +2,6 @@ package org.openuss.migration.from20to30;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-
 import org.hibernate.CacheMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
