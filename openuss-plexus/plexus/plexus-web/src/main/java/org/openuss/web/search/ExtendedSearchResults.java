@@ -152,19 +152,16 @@ public class ExtendedSearchResults implements Serializable {
 		ArrayList<SelectItem> resultTypes = new ArrayList<SelectItem>();
 		resultTypes.add(new SelectItem(
 				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION), 
-				rb.getString("extended_search_organisation_univ")));
+				rb.getString("extended_search_university")));
 		resultTypes.add(new SelectItem(
 				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION), 
-				rb.getString("extended_search_suborganisation_univ")));
+				rb.getString("extended_search_department")));
 		resultTypes.add(new SelectItem(
 				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION), 
-				rb.getString("extended_search_institution_univ")));
-		resultTypes.add(new SelectItem(
-				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE), 
-				rb.getString("extended_search_course_type_univ")));
+				rb.getString("extended_search_institute")));
 		resultTypes.add(new SelectItem(
 				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE), 
-				rb.getString("extended_search_course_univ")));
+				rb.getString("extended_search_course")));
 		return resultTypes;
 	}
 	

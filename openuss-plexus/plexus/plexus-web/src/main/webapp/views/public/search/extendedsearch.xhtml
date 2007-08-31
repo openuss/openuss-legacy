@@ -33,11 +33,6 @@
 		</ui:define>
   		<ui:define name="content">
   			<h:form id="extendedSearchForm"> 
-  				<script language="javascript">
-					function pulldownChanged(){
-						document.getElementById("_id6:extendedSearchForm:updateButton").click();
-					}
-				</script>
 				<o:block label="#{msg.extended_search_headline}">
 					<h:panelGrid border="0" columns="2" footerClass="footer_right">
 						<h:outputText value="#{msg.extended_search_search_term} " styleClass="field_label" style="vertical-align:top;" />
@@ -72,7 +67,7 @@
 							<t:htmlTag value="hr" style="width:500px; margin-left:0; text-align:left;" />
 						</h:panelGroup>
 						
-						<h:outputText value="#{views$public$search$extendedsearch.universityLabel}" 
+						<h:outputText value="#{msg.extended_search_university}" 
 							style="#{views$public$search$extendedsearch.visibilityUniversity}" styleClass="field_label"/>
 						<h:selectOneMenu id="university" 
 							value="#{extended_search_results.universityId}" 
@@ -83,8 +78,16 @@
 							style="#{views$public$search$extendedsearch.visibilityUniversity}">
 							<f:selectItems value="#{extended_search_results.universities}"/>
 						</h:selectOneMenu>
-
-						<h:outputText value="#{views$public$search$extendedsearch.departmentLabel}"
+						
+						<h:outputText value="#{msg.extended_search_period}" 
+							style="#{views$public$search$extendedsearch.visibilityPeriod}" styleClass="field_label"/>
+						<h:selectOneMenu id="period" value="#{extended_search_results.periodId}" 
+							styleClass="pulldown_inline" 
+							style="#{views$public$search$extendedsearch.visibilityPeriod}">
+							<f:selectItems value="#{extended_search_results.periods}"/>
+						</h:selectOneMenu>
+						
+						<h:outputText value="#{msg.extended_search_department}"
 							style="#{views$public$search$extendedsearch.visibilityDepartment}" styleClass="field_label"/>
 						<h:selectOneMenu id="department" 
 							value="#{extended_search_results.departmentId}" 
@@ -96,7 +99,7 @@
 							<f:selectItems value="#{extended_search_results.departments}"/>
 						</h:selectOneMenu>
 
-						<h:outputText value="#{views$public$search$extendedsearch.instituteLabel}" 
+						<h:outputText value="#{msg.extended_search_institute}" 
 							style="#{views$public$search$extendedsearch.visibilityInstitute}" styleClass="field_label"/>
 						<h:selectOneMenu id="institute" 
 							value="#{extended_search_results.instituteId}" 
@@ -108,7 +111,7 @@
 							<f:selectItems value="#{extended_search_results.institutes}"/>
 						</h:selectOneMenu>
 
-						<h:outputText value="#{views$public$search$extendedsearch.courseTypeLabel}" 
+						<h:outputText value="#{msg.extended_search_course_type}" 
 							style="#{views$public$search$extendedsearch.visibilityCourseType}" styleClass="field_label"/>
 						<h:selectOneMenu id="course_type" 
 							value="#{extended_search_results.courseTypeId}" 
@@ -117,13 +120,6 @@
 							<f:selectItems value="#{extended_search_results.courseTypes}"/>
 						</h:selectOneMenu>
 
-						<h:outputText value="#{views$public$search$extendedsearch.periodLabel}" 
-							style="#{views$public$search$extendedsearch.visibilityPeriod}" styleClass="field_label"/>
-						<h:selectOneMenu id="period" value="#{extended_search_results.periodId}" 
-							styleClass="pulldown_inline" 
-							style="#{views$public$search$extendedsearch.visibilityPeriod}">
-							<f:selectItems value="#{extended_search_results.periods}"/>
-						</h:selectOneMenu>
 					</h:panelGrid>
 					<h:commandButton action="#{views$public$search$extendedsearch.extendedSearch}" value="${msg.extended_search_search}" styleClass="button_save" />
 				</o:block>
