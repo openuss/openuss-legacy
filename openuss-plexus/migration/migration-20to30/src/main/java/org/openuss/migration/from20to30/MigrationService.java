@@ -1,11 +1,9 @@
 package org.openuss.migration.from20to30;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.CacheMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -47,82 +45,19 @@ public class MigrationService {
 	/** Legacy hibernate session */
 	private Session legacySession;
 
-	/** Plexus transaction */
-	private Transaction plexusTx;
-
-	/** Plexus hibernate session */
-	private Session plexusSession;
-	
 	public void importData() {
 		logger.info("initialize databses");
-		
-		
+
 		legacySession = openAndBindNewSession(legacySessionFactory);
-		userImport.importUsers();
+//		userImport.performImportOfUserData();
+		lectureImport.performImportOfLectureData();
+//		newsImport.importCourseInformations();
+//		newsImport.importFacultyInformations();
+//		desktopImport.importDesktops();
+//		courseMemberImport.importMembers();
+//		documentImport.importDocuments();
 		
-		lectureImport.importLecture();
-		
-		newsImport.importCourseInformations();
-		
-		newsImport.importFacultyInformations();
-		
-		desktopImport.importDesktops();
-		
-		courseMemberImport.importMembers();
-		
-		documentImport.importDocuments();
 		legacySession.close();
-	}
-
-	private void refreshTransaction() {
-		commitTransaction();
-		startTransaction();
-	}
-	
-	private void openSessions() {
-		logger.debug("open new sessions");
-		legacySession = openAndBindNewSession(legacySessionFactory);
-		plexusSession = openAndBindNewSession(plexusSessionFactory);
-	}
-	
-	private void closeSessions() {
-		legacySession.close();
-		plexusSession.close();
-		TransactionSynchronizationManager.unbindResource(legacySessionFactory);
-		TransactionSynchronizationManager.unbindResource(plexusSessionFactory);
-	}
-	
-	private void startTransaction() {
-		logger.debug("open transaction");
-		openSessions();
-		logger.debug("start transaction");
-		plexusTx = plexusSession.beginTransaction();
-		plexusTx.setTimeout(3600);
-	}
-	
-	private void commitTransaction() {
-		printMemory();
-		logger.debug("commit transaction");
-		plexusTx.commit();
-		logger.debug("close session");
-		closeSessions();
-		logger.debug("perform garbage collection!");
-		performGC();
-	}
-
-	private void performGC() {
-		long last = Runtime.getRuntime().freeMemory();
-		int count = 0;
-		do {
-			count ++;
-			System.gc();
-		} while (last < Runtime.getRuntime().freeMemory() && count < 10);
-		printMemory();
-	}
-
-	private void printMemory() {
-		logger.info("Max Memory: "+ FileUtils.byteCountToDisplaySize( Runtime.getRuntime().maxMemory()));
-		logger.info("Free Memory: "+ FileUtils.byteCountToDisplaySize( Runtime.getRuntime().freeMemory()));
 	}
 
 	private Session openAndBindNewSession(SessionFactory sessionFactory) {

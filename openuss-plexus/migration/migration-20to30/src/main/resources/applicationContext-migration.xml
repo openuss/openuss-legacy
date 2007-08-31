@@ -30,8 +30,10 @@
 	<bean id="lectureImport" class="org.openuss.migration.from20to30.LectureImport" scope="singleton">
 		<property name="legacyDao" ref="legacyDao"/>
 		<property name="groupDao" ref="groupDao"/>
-		<property name="objectIdentityDao" ref="objectIdentityDao"/>
+		<property name="courseDao" ref="courseDao"/>
+		<property name="courseTypeDao" ref="courseTypeDao"/>
 		<property name="instituteDao" ref="instituteDao"/>
+		<property name="objectIdentityDao" ref="objectIdentityDao"/>
 		<property name="identifierDao" ref="identifierDao"/>
 		<property name="userImport" ref="userImport"/>
 	</bean>

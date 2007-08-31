@@ -9,7 +9,9 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseType;
+import org.openuss.lecture.CourseTypeDao;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.Period;
@@ -47,6 +49,12 @@ public class LectureImport {
 
 	/** GroupDao */
 	private GroupDao groupDao;
+	
+	/** CourseDao */
+	private CourseDao courseDao;
+	
+	/** CourseTypeDao */
+	private CourseTypeDao courseTypeDao;
 
 	/** ObjectIdentityDao */
 	private ObjectIdentityDao objectIdentityDao;
@@ -56,9 +64,6 @@ public class LectureImport {
 
 	/** UserImport */
 	private UserImport userImport;
-
-	/** Maps legacy ids to Institutes */
-	private Map<String, Institute> id2Institute = new HashMap<String, Institute>();
 
 	/** List of institutes */
 	private Collection<Institute> institutes = new ArrayList<Institute>(1500);
@@ -80,7 +85,7 @@ public class LectureImport {
 	 * These objects will be transformed to institute, period, coursetype and
 	 * course objects.
 	 */
-	public void importLecture() {
+	public void performImportOfLectureData() {
 		logger.info("loading institutes structures...");
 		loadFaculties();
 		loadSubjectsSemesterEnrollments();
@@ -96,6 +101,23 @@ public class LectureImport {
 		logger.info("saving institutes ...");
 		instituteDao.create(institutes);
 		ImportUtil.refresh(institute2ObjectIdentity);
+		logger.info("saving legacy id mapping");
+		
+		logger.info("saving legacy ids of institues");
+		for(Map.Entry<Faculty2, Institute> entry : faculty2Institute.entrySet()) {
+			identifierDao.insertLegacyId(entry.getKey().getId(), entry.getValue().getId());
+		}
+
+		logger.info("saving legacy ids of courses");
+		for(Map.Entry<String, Course> entry : id2Course.entrySet()) {
+			identifierDao.insertLegacyId(entry.getKey(), entry.getValue().getId());
+		}
+		
+		logger.info("saving legacy ids of course types");
+		for(Map.Entry<String, CourseType> entry: id2CourseType.entrySet()) {
+			identifierDao.insertLegacyId(entry.getKey(), entry.getValue().getId());
+		}
+		
 	}
 
 	private void loadFaculties() {
@@ -109,7 +131,7 @@ public class LectureImport {
 				if (owner != null) {
 					institute.setOwner(owner);
 					institute.getMembers().add(owner);
-					id2Institute.put(faculty.getId(), institute);
+					
 					institutes.add(institute);
 					faculty2Institute.put(faculty, institute);
 				} else {
@@ -368,64 +390,63 @@ public class LectureImport {
 		return course;
 	}
 
-	public InstituteDao getInstituteDao() {
-		return instituteDao;
-	}
-
 	public void setInstituteDao(InstituteDao instituteDao) {
 		this.instituteDao = instituteDao;
-	}
-
-	public LegacyDao getLegacyDao() {
-		return legacyDao;
 	}
 
 	public void setLegacyDao(LegacyDao legacyDao) {
 		this.legacyDao = legacyDao;
 	}
 
-	public UserImport getUserImport() {
-		return userImport;
-	}
-
 	public void setUserImport(UserImport userImport) {
 		this.userImport = userImport;
-	}
-
-	public GroupDao getGroupDao() {
-		return groupDao;
 	}
 
 	public void setGroupDao(GroupDao groupDao) {
 		this.groupDao = groupDao;
 	}
 
-	public ObjectIdentityDao getObjectIdentityDao() {
-		return objectIdentityDao;
-	}
-
 	public void setObjectIdentityDao(ObjectIdentityDao objectIdentityDao) {
 		this.objectIdentityDao = objectIdentityDao;
 	}
 
-	public Course getCourseById(String id) {
-		return id2Course.get(id);
+	public Course getCourseByLegacyId(String legacyId) {
+		Long id = identifierDao.getId(legacyId);
+		if (id != null) {
+			return courseDao.load(id);
+		} else {
+			return null;
+		}
 	}
 
-	public Institute getInstituteById(String id) {
-		return id2Institute.get(id);
+	public CourseType getCourseTypeByLegacyId(String legacyId) {
+		Long id = identifierDao.getId(legacyId);
+		if (id != null) {
+			return courseTypeDao.load(id);
+		} else {
+			return null;
+		}
 	}
 
-	public CourseType getCourseTypeById(String id) {
-		return id2CourseType.get(id);
-	}
-
-	public LegacyIdentifierDao getIdentifierDao() {
-		return identifierDao;
+	public Institute getInstituteByLegacyId(String legacyId) {
+		Long id = identifierDao.getId(legacyId);
+		if (id != null) {
+			return instituteDao.load(id);
+		} else {
+			return null;
+		}
 	}
 
 	public void setIdentifierDao(LegacyIdentifierDao identifierDao) {
 		this.identifierDao = identifierDao;
+	}
+
+	public void setCourseDao(CourseDao courseDao) {
+		this.courseDao = courseDao;
+	}
+
+	public void setCourseTypeDao(CourseTypeDao courseTypeDao) {
+		this.courseTypeDao = courseTypeDao;
 	}
 
 }

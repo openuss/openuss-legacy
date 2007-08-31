@@ -51,17 +51,8 @@ public class UserImport {
 	/** List of users to be imported */
 	private List<User> importedUsers = new ArrayList<User>(36000);
 	
-	/** List of user ids */
-	private List<Long> newUserIds = new ArrayList<Long>(36000);
-	
 	/** List of student or assistants that are invalid */
 	private List<Object> invalidEmails = new ArrayList<Object>();
-
-	/** Inactive users*/
-	private List<Object> inactives = new ArrayList<Object>();
-	
-	/** List of renamed users */
-	private List<Long> renamedUsers = new ArrayList();
 
 	/** Referenz to legacyDao */
 	private LegacyDao legacyDao;
@@ -78,16 +69,14 @@ public class UserImport {
 	/** identifierDao */
 	private LegacyIdentifierDao identifierDao; 
 	
-	public void importUsers() {
+	public void performImportOfUserData() {
 		initializeUsers();
 		loadStudents();
 		loadAssistants();
 
 		logger.debug("found users               " + importedUsers.size());
-		logger.debug("found renamed users       " + renamedUsers.size());
 		logger.debug("found consolidated users  " + consolidatedUsernames.size());
 		logger.debug("found invalid users       " + invalidEmails.size());
-		logger.debug("found inactive users      " + inactives.size());
 
 		saveUserObjectIdentites();
 		saveUserRoles();
@@ -106,7 +95,7 @@ public class UserImport {
 			roleUser.addMember(user);
 			user.addGroup(roleUser);
 		}
-		getGroupDao().update(roleUser);
+		groupDao.update(roleUser);
 	}
 	
 	private void initializeUsers() {
@@ -126,7 +115,6 @@ public class UserImport {
 		for (Student2 student2 : students2) {
 			if (!ImportUtil.toBoolean(student2.getAactive())) {
 				logger.debug("student not actived " + student2.getUusername() + " - " + student2.getEmailaddress());
-				inactives.add(student2);
 				continue;
 			}
 			String email = student2.getEmailaddress().toLowerCase();
@@ -136,7 +124,7 @@ public class UserImport {
 				logger.trace("email already in use " + email);
 				Long userId = email2UserMap.get(email);
 				id2UserMap.put(student2.getId(), userId);
-				identifierDao.insert(student2.getId(), userId);
+				identifierDao.insertUserId(student2.getId(), userId);
 				consolidatedUsernames.put(userId, student2.getUusername());
 			} else {
 				storeUser(email, transformStudent2User(student2), student2.getId());
@@ -155,7 +143,6 @@ public class UserImport {
 		for (Assistant2 assistant : assistants2) {
 			if (!ImportUtil.toBoolean(assistant.getAactive())) {
 				logger.debug("assistant not actived " + assistant.getUusername() + " - " + assistant.getEmailaddress());
-				inactives.add(assistant);
 				continue;
 			}
 			String email = assistant.getEmailaddress().toLowerCase();
@@ -164,7 +151,8 @@ public class UserImport {
 			} else if (email2UserMap.containsKey(email)) {
 				logger.debug("email already in use " + email);
 				Long userId = email2UserMap.get(email);
-				identifierDao.insert(assistant.getId(), userId);
+				identifierDao.insertUserId(assistant.getId(), userId);
+				identifierDao.insertConsolidated(userId, assistant.getUusername());
 				id2UserMap.put(assistant.getId(), userId);
 				consolidatedUsernames.put(userId, assistant.getUusername());
 			} else {
@@ -175,20 +163,19 @@ public class UserImport {
 	}
 
 
-	private void storeUser(String email, User user, String id) {
-		checkUserName(user);
+	private void storeUser(String email, User user, String legacyId) {
+		checkUserName(user, legacyId);
 		userDao.create(user);
 		
-		identifierDao.insert(id, user.getId());
+		identifierDao.insertUserId(legacyId, user.getId());
 		
 		usernames.add(user.getUsername().toLowerCase().trim());
 		importedUsers.add(user);
-		newUserIds.add(user.getId());
 		email2UserMap.put(email, user.getId());
-		id2UserMap.put(id, user.getId());
+		id2UserMap.put(legacyId, user.getId());
 	}
 
-	private void checkUserName(User user) {
+	private void checkUserName(User user, String legacyId) {
 		if (existingUserName(user)) {
 			String oldName = user.getUsername();
 			user.setUsername(user.getEmail());
@@ -196,7 +183,7 @@ public class UserImport {
 				logger.error("found conflict...");
 				user.setUsername(oldName + "-" + System.currentTimeMillis());
 			}
-			renamedUsers.add(user.getId());
+			identifierDao.insertRenamed(legacyId, oldName);
 			logger.debug("rename user " + user.getDisplayName() + "(" + user.getUsername() + ")");
 		}
 	}
@@ -341,25 +328,14 @@ public class UserImport {
 		}
 	}
 
-	public LegacyDao getLegacyDao() {
-		return legacyDao;
-	}
-
-	public void setLegacyDao(LegacyDao legacyDao) {
-		this.legacyDao = legacyDao;
-	}
-
-	public UserDao getUserDao() {
-		return userDao;
-	}
-
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
 
-	public User loadUserByLegacyId(String id) {
-		if (id2UserMap.containsKey(id)) {
-			return loadUser(id2UserMap.get(id));
+	public User loadUserByLegacyId(String legacyId) {
+		Long id = identifierDao.getUserId(legacyId);
+		if (id != null) {
+			return loadUser(id);
 		} else {
 			return null;
 		}
@@ -372,33 +348,25 @@ public class UserImport {
 			return null;
 		}
 	}
-
-	public GroupDao getGroupDao() {
-		return groupDao;
+	
+	public List<Long> loadAllNewUserIds() {
+		return identifierDao.loadAllNewUserIds();
 	}
 
 	public void setGroupDao(GroupDao groupDao) {
 		this.groupDao = groupDao;
 	}
 
-	public ObjectIdentityDao getObjectIdentityDao() {
-		return objectIdentityDao;
-	}
-
 	public void setObjectIdentityDao(ObjectIdentityDao objectIdentityDao) {
 		this.objectIdentityDao = objectIdentityDao;
 	}
 
-	public List<Long> getNewUserIds() {
-		return newUserIds;
-	}
-
-	public LegacyIdentifierDao getIdentifierDao() {
-		return identifierDao;
-	}
-
 	public void setIdentifierDao(LegacyIdentifierDao identifierDao) {
 		this.identifierDao = identifierDao;
+	}
+
+	public void setLegacyDao(LegacyDao legacyDao) {
+		this.legacyDao = legacyDao;
 	}
 
 }

@@ -57,7 +57,7 @@ public class CourseMemberImport  {
 			Enrollment2 enrollment = access.getEnrollment();
 			Student2 student = access.getStudent();
 			if (enrollment != null && student != null) {
-				Course course = lectureImport.getCourseById(enrollment.getId());
+				Course course = lectureImport.getCourseByLegacyId(enrollment.getId());
 				User user = userImport.loadUserByLegacyId(student.getId());
 				if (course != null && user != null) {
 					createMembership(access, course, user);
