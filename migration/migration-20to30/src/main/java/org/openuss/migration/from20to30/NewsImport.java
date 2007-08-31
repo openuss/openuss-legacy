@@ -46,7 +46,7 @@ public class NewsImport {
 		logger.debug("load course informations ...");
 		List<Enrollmentinformation2> informations = legacyDao.loadAllEnrollmentInformation();
 		for (Enrollmentinformation2 info : informations) {
-			Course course = lectureImport.getCourseById(info.getEnrollmentpk());
+			Course course = lectureImport.getCourseByLegacyId(info.getEnrollmentpk());
 			if (course == null) {
 				logger.debug("skip news item - couldn't find course for news item...");
 			} else {
@@ -61,7 +61,7 @@ public class NewsImport {
 		List<Facultyinformation2> informations = legacyDao.loadAllFacultyInformation();
 		
 		for (Facultyinformation2 info : informations) {
-			Institute institute = lectureImport.getInstituteById(info.getFaculty().getId());
+			Institute institute = lectureImport.getInstituteByLegacyId(info.getFaculty().getId());
 			if (institute == null) {
 				logger.debug("Could' find instute for news item...");
 			} else {

@@ -42,7 +42,7 @@ public class DocumentImport {
 
 		for (Lecture2 lecture : lectures) {
 			Enrollment2 enrollment = lecture.getEnrollment();
-			Course course = lectureImport.getCourseById(enrollment.getId());
+			Course course = lectureImport.getCourseByLegacyId(enrollment.getId());
 			if (course != null) {
 				try {
 					FolderInfo root = documentService.getFolder(course);
