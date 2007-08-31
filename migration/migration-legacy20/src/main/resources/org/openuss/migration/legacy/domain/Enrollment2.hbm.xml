@@ -55,9 +55,6 @@
         <property name="withPassword" type="java.lang.Character">
             <column name="WITHPASSWORD" length="1" />
         </property>
-        <property name="forPublic" type="java.lang.Character">
-            <column name="FORPUBLIC" length="1" />
-        </property>
         <property name="password" type="java.lang.String">
             <column name="PPASSWORD" length="1" />
         </property>
