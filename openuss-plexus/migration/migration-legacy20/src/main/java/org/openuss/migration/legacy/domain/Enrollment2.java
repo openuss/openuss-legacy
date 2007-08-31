@@ -297,8 +297,8 @@ public class Enrollment2 implements java.io.Serializable {
 		return forPublic;
 	}
 
-	public void setForPublic(Character isPublic) {
-		this.forPublic = isPublic;
+	public void setForPublic(Character forPublic) {
+		this.forPublic = forPublic;
 	}
 
 }
