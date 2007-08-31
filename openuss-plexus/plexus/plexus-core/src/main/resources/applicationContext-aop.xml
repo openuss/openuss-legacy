@@ -60,14 +60,7 @@
 			expression="execution(* org..InstituteServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)" />
 		<aop:pointcut id="UpdateInstituteIndexPointcut"
 			expression="execution(* org..InstituteServiceBase.update(org.openuss.lecture.InstituteInfo)) and args(instituteInfo)" />
-			
-		<aop:pointcut id="CreateCourseTypeIndexPointcut"
-			expression="execution(* org..CourseTypeServiceBase.create(org.openuss.lecture.CourseTypeInfo)) and args(courseTypeInfo)" />
-		<aop:pointcut id="RemoveCourseTypeIndexPointcut"
-			expression="execution(* org..CourseTypeServiceBase.removeCourseType(java.lang.Long)) and args(courseTypeId)" />
-		<aop:pointcut id="UpdateCourseTypeIndexPointcut"
-			expression="execution(* org..CourseTypeServiceBase.update(org.openuss.lecture.CourseTypeInfo)) and args(courseTypeInfo)" />
-			
+						
 		<aop:pointcut id="CreateCourseIndexPointcut"
 			expression="execution(* org..CourseServiceBase.create(org.openuss.lecture.CourseInfo)) and args(courseInfo)" />
 		<aop:pointcut id="RemoveCourseIndexPointcut"
@@ -192,22 +185,6 @@
 				arg-names="instituteId" />
 		</aop:aspect>
 
-		<aop:aspect id="courseTypeIndexAspect"
-			ref="courseTypeIndexAspectBean">
-			<aop:after-returning 
-				method="createCourseTypeIndex"
-				pointcut-ref="CreateCourseTypeIndexPointcut"
-				arg-names="courseTypeInfo" />
-			<aop:after-returning 
-				method="updateCourseTypeIndex"
-				pointcut-ref="UpdateCourseTypeIndexPointcut"
-				arg-names="courseTypeInfo" />
-			<aop:after-returning 
-				method="deleteCourseTypeIndex"
-				pointcut-ref="RemoveCourseTypeIndexPointcut"
-				arg-names="courseTypeId" />
-		</aop:aspect>
-
 		<aop:aspect id="courseIndexAspect"
 			ref="courseIndexAspectBean">
 			<aop:after-returning
@@ -296,12 +273,6 @@
 		class="org.openuss.lecture.InstituteIndexingAspect">
 		<property name="indexerService" ref="indexerService" />
 		<property name="instituteDao" ref="instituteDao" />
-	</bean>
-
-	<bean id="courseTypeIndexAspectBean"
-		class="org.openuss.lecture.CourseTypeIndexingAspect">
-		<property name="indexerService" ref="indexerService" />
-		<property name="courseTypeDao" ref="courseTypeDao" />
 	</bean>
 
 	<bean id="courseIndexAspectBean"

@@ -92,9 +92,6 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 				case Constants.EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION:
 					domainType = "institute";
 					break;
-				case Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE:
-					domainType = "coursetype";
-					break;
 				case Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE:
 					domainType = "course";
 					break;

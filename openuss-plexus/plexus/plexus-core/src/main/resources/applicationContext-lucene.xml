@@ -30,12 +30,6 @@
 				</entry>
 				<entry>
 					<key>
-						<value>org.openuss.lecture.CourseType</value>
-					</key>
-					<value>courseTypeIndexerCommand</value>
-				</entry>
-				<entry>
-					<key>
 						<value>org.openuss.lecture.Course</value>
 					</key>
 					<value>courseIndexerCommand</value>
@@ -80,18 +74,6 @@
 		</property>
 	</bean>
 	
-	<bean id="courseTypeIndexer" class="org.openuss.lecture.CourseTypeIndexer">
-		<property name="analyzer">
-			<ref bean="analyzer" />
-		</property>
-		<property name="courseTypeDao">
-			<ref bean="courseTypeDao" />
-		</property>
-		<property name="indexFactory">
-			<ref bean="indexFactory" />
-		</property>
-	</bean>
-
 	<bean name="courseIndexer" class="org.openuss.lecture.CourseIndexer">
 		<property name="analyzer">
 			<ref bean="analyzer" />
@@ -115,8 +97,6 @@
 		<property name="departmentIndexer" ref="departmentIndexer"/>
 		<property name="instituteDao" ref="instituteDao"/>
 		<property name="instituteIndexer" ref="instituteIndexer"/>
-		<property name="courseTypeDao" ref="courseTypeDao"/>
-		<property name="courseTypeIndexer" ref="courseTypeIndexer"/>
 		<property name="courseDao" ref="courseDao"/>
 		<property name="courseIndexer" ref="courseIndexer"/>
 	</bean>
@@ -146,10 +126,6 @@
 		<property name="domainIndexer" ref="instituteIndexer"/>
 	</bean>
 	
-	<bean id="courseTypeIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
-		<property name="domainIndexer" ref="courseTypeIndexer"/>
-	</bean>
-
 	<bean id="courseIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
 		<property name="domainIndexer" ref="courseIndexer"/>
 	</bean>
