@@ -13,7 +13,7 @@
      	label="#{msg.period_header}"  
      	value="views$secured$lecture$universityperiods.periodData" 
      	var="periodInfo" 
-     	columnClasses="col_max_center, col_max_left, col_min_center, col_min_center"
+     	columnClasses="col_max_center, col_max_left, col_min_center, col_min_center, col_min_center, col_min_center"
      	rows="5">  
 
 		<t:column>
@@ -30,6 +30,16 @@
 		<t:column>
 			<plexus:commandSortHeader columnName="description">#{msg.period_colheader_description}</plexus:commandSortHeader> 
 			<h:outputText value="#{periodInfo.description}"/>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="startdate">#{msg.period_colheader_start}</plexus:commandSortHeader> 
+			<h:outputText value="#{periodInfo.startdate}"/>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="enddate">#{msg.period_colheader_end}</plexus:commandSortHeader> 
+			<h:outputText value="#{periodInfo.enddate}"/>
 		</t:column>
 		
 		<t:column>
