@@ -10,6 +10,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.DateTools.Resolution;
 import org.openuss.search.DomainIndexer;
+
 import org.springmodules.lucene.index.core.DocumentCreator;
 
 /**
@@ -22,7 +23,7 @@ public class CourseIndexer extends DomainIndexer {
 
 	private static final String SPACE = " ";
 
-	private static final String DOMAINTYPE_VALUE = "Course";
+	private static final String DOMAINTYPE_VALUE = "course";
 
 	private static final Logger logger = Logger.getLogger(CourseIndexer.class);
 
@@ -92,7 +93,7 @@ public class CourseIndexer extends DomainIndexer {
 		document.add(new Field(DEPARTMENT_IDENTIFIER, String.valueOf(course.getCourseType().getInstitute().getDepartment().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(UNIVERSITY_IDENTIFIER, String.valueOf(course.getCourseType().getInstitute().getDepartment().getUniversity().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(PERIOD_IDENTIFIER, String.valueOf(course.getPeriod().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
-		document.add(new Field(OFFICIAL_FLAG, String.valueOf(isOfficial), Field.Store.YES, Field.Index.UN_TOKENIZED));		
+		document.add(new Field(OFFICIAL_FLAG, String.valueOf(isOfficial), Field.Store.YES, Field.Index.UN_TOKENIZED));
 	}
 	
 	private String name(final Course course) {

@@ -21,7 +21,7 @@ public class CourseTypeIndexer extends DomainIndexer {
 
 	private static final String SPACE = " ";
 
-	private static final String DOMAINTYPE_VALUE = "COURSETYPE";
+	private static final String DOMAINTYPE_VALUE = "coursetype";
 
 	private static final Logger logger = Logger.getLogger(CourseTypeIndexer.class);
 

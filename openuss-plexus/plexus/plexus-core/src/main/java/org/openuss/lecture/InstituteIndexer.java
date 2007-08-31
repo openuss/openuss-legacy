@@ -15,10 +15,11 @@ import org.springmodules.lucene.index.core.DocumentCreator;
 /**
  * 
  * @author Ingo Dueppe
+ * @author Malte Stockmann
  */
 public class InstituteIndexer extends DomainIndexer {
 
-	private static final String DOMAINTYPE_VALUE = "INSTITUTE";
+	private static final String DOMAINTYPE_VALUE = "institute";
 
 	private static final Logger logger = Logger.getLogger(InstituteIndexer.class);
 
