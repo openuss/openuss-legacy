@@ -365,6 +365,10 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 				logger.debug("removing permission for authority "+authority+" for "+object);
 			}
 			permission.setRecipient(null);
+			permission.setAclObjectIdentity(null);
+			ObjectIdentity objectIdentity = permission.getAclObjectIdentity();
+			objectIdentity.removePermission(permission);
+			getObjectIdentityDao().update(objectIdentity);
 			getPermissionDao().remove(permission);
 		} else {
 			logger.debug("Permission entity for authority "+authority+" for "+object+" not found!");

@@ -263,7 +263,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		universityService.removeUniversity(id);
 
 		// Synchronize with Database
-		flush();
+		//flush();
 
 		// Try to load University again
 		UniversityDao universityDao = (UniversityDao) this.applicationContext.getBean("universityDao");

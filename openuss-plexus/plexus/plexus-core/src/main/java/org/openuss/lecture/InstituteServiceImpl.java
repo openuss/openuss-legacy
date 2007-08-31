@@ -193,6 +193,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		}
 
 		institute.getDepartment().remove(institute);
+		// Remove CourseTypes and Courses
+		
 		this.getInstituteDao().remove(institute);
 	}
 

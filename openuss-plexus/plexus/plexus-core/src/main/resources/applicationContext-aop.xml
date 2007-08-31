@@ -14,6 +14,13 @@
 		<aop:pointcut id="OrganisationServiceRemoveMemberPointcut"
 			expression="execution(* org..OrganisationServiceBase.removeMember(java.lang.Long, java.lang.Long)) and args(organisationId, userId)" />
 
+		<aop:pointcut id="OrganisationServiceAddAspirantPointcut"
+			expression="execution(* org..OrganisationServiceBase.addAspirant(java.lang.Long, java.lang.Long)) and args(organisationId, userId)" />
+		<aop:pointcut id="OrganisationServiceAcceptAspirantPointcut"
+			expression="execution(* org..OrganisationServiceBase.acceptAspirant(java.lang.Long, java.lang.Long)) and args(organisationId, userId)" />
+		<aop:pointcut id="OrganisationServiceRejectAspirantPointcut"
+			expression="execution(* org..OrganisationServiceBase.rejectAspirant(java.lang.Long, java.lang.Long)) and args(organisationId, userId)" />
+		
 		<aop:pointcut id="UniversityServiceCreatePointcut"
 			expression="execution(* org..UniversityServiceBase.createUniversity(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)" />
 		<aop:pointcut id="UniversityServiceDeletePointcut"
@@ -77,6 +84,27 @@
 				arg-names="organisationId, userId" />
 			<aop:after-returning method="sendRemoveMemberMail"
 				pointcut-ref="OrganisationServiceRemoveMemberPointcut"
+				arg-names="organisationId, userId" />
+		</aop:aspect>
+		
+		<aop:aspect id="addAspirantMailSenderAspect" ref="aspirantMailSenderAspectBean">
+			<aop:after-returning 
+				method="sendAddAspirantMail"
+				pointcut-ref="OrganisationServiceAddAspirantPointcut"
+				arg-names="organisationId, userId" />
+		</aop:aspect>
+		
+		<aop:aspect id="rejectAspirantMailSenderAspect" ref="aspirantMailSenderAspectBean">
+			<aop:after-returning 
+				method="sendRejectAspirantMail"
+				pointcut-ref="OrganisationServiceRejectAspirantPointcut"
+				arg-names="organisationId, userId" />
+		</aop:aspect>
+		
+		<aop:aspect id="acceptAspirantMailSenderAspect" ref="aspirantMailSenderAspectBean">
+			<aop:after-returning 
+				method="sendAcceptAspirantMail"
+				pointcut-ref="OrganisationServiceAcceptAspirantPointcut"
 				arg-names="organisationId, userId" />
 		</aop:aspect>
 
@@ -204,6 +232,17 @@
 		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<bean id="userAdministrationMailSenderAspectBean"
 		class="org.openuss.aop.MailSenderAspectImpl">
+		<property name="userDao" ref="userDao" />
+		<property name="organisationDao" ref="organisationDao" />
+		<property name="universityDao" ref="universityDao" />
+		<property name="departmentDao" ref="departmentDao" />
+		<property name="instituteDao" ref="instituteDao" />
+		<property name="messageService" ref="messageService" />
+		<property name="systemService" ref="systemService" />
+	</bean>
+
+	<bean id="aspirantMailSenderAspectBean"
+		class="org.openuss.aop.AspirantMailSenderAspectImpl">
 		<property name="userDao" ref="userDao" />
 		<property name="organisationDao" ref="organisationDao" />
 		<property name="universityDao" ref="universityDao" />

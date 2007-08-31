@@ -37,61 +37,6 @@ public class MailSenderAspectImpl {
 	private MessageService messageService;
 	private SystemService systemService;
 
-	public UserDao getUserDao() {
-		return userDao;
-	}
-
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
-
-	public OrganisationDao getOrganisationDao() {
-		return organisationDao;
-	}
-
-	public void setOrganisationDao(OrganisationDao organisationDao) {
-		this.organisationDao = organisationDao;
-	}
-
-	public UniversityDao getUniversityDao() {
-		return universityDao;
-	}
-
-	public void setUniversityDao(UniversityDao universityDao) {
-		this.universityDao = universityDao;
-	}
-
-	public DepartmentDao getDepartmentDao() {
-		return departmentDao;
-	}
-
-	public void setDepartmentDao(DepartmentDao departmentDao) {
-		this.departmentDao = departmentDao;
-	}
-
-	public InstituteDao getInstituteDao() {
-		return instituteDao;
-	}
-
-	public void setInstituteDao(InstituteDao instituteDao) {
-		this.instituteDao = instituteDao;
-	}
-
-	public MessageService getMessageService() {
-		return messageService;
-	}
-
-	public void setMessageService(MessageService messageService) {
-		this.messageService = messageService;
-	}
-
-	public SystemService getSystemService() {
-		return systemService;
-	}
-
-	public void setSystemService(SystemService systemService) {
-		this.systemService = systemService;
-	}
 
 	/**
 	 * Sends Emails whenever a Member is added to an Organisation.
@@ -371,5 +316,62 @@ public class MailSenderAspectImpl {
 		// Send Email to new User
 		messageService.sendMessage("user.membership.sender", "user.membership.addmember.user.subject",
 				"removememberuser", parameters, recipients2);
+	}
+	
+	
+	public UserDao getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+
+	public OrganisationDao getOrganisationDao() {
+		return organisationDao;
+	}
+
+	public void setOrganisationDao(OrganisationDao organisationDao) {
+		this.organisationDao = organisationDao;
+	}
+
+	public UniversityDao getUniversityDao() {
+		return universityDao;
+	}
+
+	public void setUniversityDao(UniversityDao universityDao) {
+		this.universityDao = universityDao;
+	}
+
+	public DepartmentDao getDepartmentDao() {
+		return departmentDao;
+	}
+
+	public void setDepartmentDao(DepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
+	}
+
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
+	}
+
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
+	}
+
+	public MessageService getMessageService() {
+		return messageService;
+	}
+
+	public void setMessageService(MessageService messageService) {
+		this.messageService = messageService;
+	}
+
+	public SystemService getSystemService() {
+		return systemService;
+	}
+
+	public void setSystemService(SystemService systemService) {
+		this.systemService = systemService;
 	}
 }
