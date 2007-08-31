@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -76,12 +77,34 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 */
 	public String extendedSearch() {
 		logger.debug("Starting method extendedSearch");
+		List<DomainResult> searchResult = null;
 		if (StringUtils.isNotBlank(extendedSearchResults.getTextToSearch())) {
 			logger.debug("Extended Search for "+extendedSearchResults.getTextToSearch());
 			try {
-				List<DomainResult> searchResult = extendedSearcher.search(
+				String domainType;
+				switch(extendedSearchResults.getResultTypeId().intValue()){
+				case Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION:
+					domainType = "university";
+					break;
+				case Constants.EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION:
+					domainType = "department";
+					break;
+				case Constants.EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION:
+					domainType = "institute";
+					break;
+				case Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE:
+					domainType = "coursetype";
+					break;
+				case Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE:
+					domainType = "course";
+					break;
+				default:
+					throw new IllegalArgumentException("invalid result type id!");
+				}
+				
+				searchResult = extendedSearcher.search(
 						extendedSearchResults.getTextToSearch(),
-						extendedSearchResults.getResultTypeId(),
+						domainType,
 						extendedSearchResults.getUniversityId(),
 						extendedSearchResults.getDepartmentId(),
 						extendedSearchResults.getInstituteId(),
@@ -90,6 +113,10 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 						extendedSearchResults.isTitleOnly()
 						);
 				extendedSearchResults.setHits(searchResult);
+				if(searchResult == null || searchResult.size() == 0){
+					getFacesContext().addMessage(null, new FacesMessage(i18n("extended_search_no_matches_found")) );
+				}
+				
 			} catch (LuceneSearchException ex) {
 				logger.error(ex);
 				addError(i18n("search_text_error"));

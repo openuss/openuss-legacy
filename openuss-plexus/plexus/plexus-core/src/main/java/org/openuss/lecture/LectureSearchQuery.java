@@ -46,6 +46,10 @@ public class LectureSearchQuery extends SimpleLuceneSearchQuery implements Lectu
 			domainResult.setId(Long.parseLong(document.get(DomainIndexer.IDENTIFIER)));
 			domainResult.setModified(DateTools.stringToDate(document.get(DomainIndexer.MODIFIED)));
 			domainResult.setDomainType(domainType);
+			domainResult.setUniversityId(document.get(DomainIndexer.UNIVERSITY_IDENTIFIER));
+			domainResult.setDepartmentId(document.get(DomainIndexer.DEPARTMENT_IDENTIFIER));
+			domainResult.setInstituteId(document.get(DomainIndexer.INSTITUTE_IDENTIFIER));
+			domainResult.setCourseTypeId(document.get(DomainIndexer.COURSE_TYPE_IDENTIFIER));
 		} catch (java.text.ParseException e) {
 			logger.error(e);
 		}
