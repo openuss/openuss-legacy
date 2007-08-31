@@ -29,7 +29,7 @@
  			<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.UPDATE}" ifNot="error" /> 
 			<h:form id="reg1Form" enctype="multipart/form-data"> 
 				<o:block label="#{msg.department_data_subheading}" styleClass="form_box">
-					<ui:include src="/views/commons/department/departmentData.xhtml" />
+					<ui:include src="/views/commons/department/departmentdatasettings.xhtml" />
 				</o:block>
 				<o:block>
 					<h:commandButton value="${msg.save}" action = "#{views$secured$lecture$departmentoptions.saveDepartment}" styleClass="button_save"/>
