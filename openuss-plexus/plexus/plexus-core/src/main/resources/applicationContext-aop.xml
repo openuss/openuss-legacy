@@ -107,6 +107,13 @@
 				pointcut-ref="OrganisationServiceAcceptAspirantPointcut"
 				arg-names="organisationId, userId" />
 		</aop:aspect>
+		
+		<aop:aspect id="instituteActivationMailSenderAspect" ref="instituteActivationMailSenderAspectBean">
+			<aop:after-returning 
+				method="sendInstituteActivationMail"
+				pointcut-ref="InstituteServiceCreatePointcut"
+				arg-names="instituteInfo, userId" />
+		</aop:aspect>
 
 		<aop:aspect id="bookmarkMaintenanceAspect"
 			ref="bookmarkMaintenanceAspectBean">
@@ -248,6 +255,15 @@
 		<property name="universityDao" ref="universityDao" />
 		<property name="departmentDao" ref="departmentDao" />
 		<property name="instituteDao" ref="instituteDao" />
+		<property name="messageService" ref="messageService" />
+		<property name="systemService" ref="systemService" />
+	</bean>
+	
+	<bean id="instituteActivationMailSenderAspectBean"
+		class="org.openuss.aop.InstituteActivationMailSenderAspectImpl">
+		<property name="userDao" ref="userDao" />
+		<property name="instituteDao" ref="instituteDao" />
+		<property name="registrationService" ref="registrationService" />
 		<property name="messageService" ref="messageService" />
 		<property name="systemService" ref="systemService" />
 	</bean>
