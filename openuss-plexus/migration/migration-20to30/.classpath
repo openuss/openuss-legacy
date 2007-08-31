@@ -28,7 +28,7 @@
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-jca/2.0.3/spring-jca-2.0.3.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/easymock/easymockclassextension/2.2/easymockclassextension-2.2.jar" sourcepath="M2_REPO/org/easymock/easymockclassextension/2.2/easymockclassextension-2.2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/asm/asm-attrs/1.5.3/asm-attrs-1.5.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-jdbc/2.0.5/spring-jdbc-2.0.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-jdbc/2.0.5/spring-jdbc-2.0.5.jar" sourcepath="/M2_REPO/org/springframework/spring/2.0.5/spring-2.0.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-hibernate3/2.0.5/spring-hibernate3-2.0.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate/3.2.4.sp1/hibernate-3.2.4.sp1.jar" sourcepath="M2_REPO/org/hibernate/hibernate/3.2.4.sp1/hibernate-3.2.4.sp1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-el/commons-el/1.0/commons-el-1.0.jar" sourcepath="M2_REPO/commons-el/commons-el/1.0/commons-el-1.0-sources.jar"/>
