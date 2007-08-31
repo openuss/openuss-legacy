@@ -33,16 +33,18 @@
 						</h:outputFormat>
 					</p>
 					<p class="content_font_normal">
-		    			<f:param name="instituteInfo" value="#{instituteInfo.id}"/>
-					 	<h:outputText value="#{instituteInfo.name}" styleClass="header_font_normal"/>
-						<h:outputText value="#{instituteInfo.address}" styleClass="content_font_normal"/>
-						<h:outputText value="#{instituteInfo.postcode} #{instituteInfo.city}" styleClass="content_font_normal"/>
-						<h:outputFormat value="#{msg.institute_information_telephone}" rendered="#{!empty instituteInfo.telephone}" styleClass="content_font_normal">
-							<f:param value="#{instituteInfo.telephone}" styleClass="content_font_normal"/>
-						</h:outputFormat>
-						<h:outputFormat value="#{msg.institute_information_telefax}" rendered="#{!empty instituteInfo.telefax}" styleClass="content_font_normal">
-							<f:param value="#{instituteInfo.telefax}" />
-						</h:outputFormat>
+					<f:param name="instituteInfo" value="#{instituteInfo.id}"/>
+						<h:panelGrid border="0" columns="1" footerClass="footer_right">
+						 	<h:outputText value="#{instituteInfo.name}" styleClass="header_font_normal"/>
+							<h:outputText value="#{instituteInfo.address}" styleClass="content_font_normal"/>
+							<h:outputText value="#{instituteInfo.postcode} #{instituteInfo.city}" styleClass="content_font_normal"/>
+							<h:outputFormat value="#{msg.institute_information_telephone}" rendered="#{!empty instituteInfo.telephone}" styleClass="content_font_normal">
+								<f:param value="#{instituteInfo.telephone}" styleClass="content_font_normal"/>
+							</h:outputFormat>
+							<h:outputFormat value="#{msg.institute_information_telefax}" rendered="#{!empty instituteInfo.telefax}" styleClass="content_font_normal">
+								<f:param value="#{instituteInfo.telefax}" />
+							</h:outputFormat>
+						</h:panelGrid>
 					</p>
 				</o:block>
 				<o:block>
