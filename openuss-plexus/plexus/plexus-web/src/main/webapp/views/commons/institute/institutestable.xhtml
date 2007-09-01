@@ -60,7 +60,7 @@
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">
 				<h:commandButton 
-					action = "#{views$public$institute$institutes.enableInstitutes}"
+					action = "#{views$public$institute$institutes.enableInstitute}"
 					styleClass="button_remove"
 					value="#{msg.institute_command_enable}"
 					hint="#{msg.institute_command_enable_hint}"
@@ -69,7 +69,7 @@
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">
 				<h:commandButton
-					action = "#{views$public$institutes$institutes.selectInstitutesAndConfirmRemove}"
+					action = "#{views$public$institutes$institutes.selectInstituteAndConfirmRemove}"
 					styleClass="button_remove"
 					value="#{msg.institute_command_remove}"
 					hint="#{msg.institute_command_remove_hint}">

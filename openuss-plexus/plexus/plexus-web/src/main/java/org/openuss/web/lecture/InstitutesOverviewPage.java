@@ -1,6 +1,6 @@
 package org.openuss.web.lecture;
 
-import static org.openuss.web.lecture.InstitutesPage.logger;
+import static org.openuss.web.lecture.InstitutesOverviewPage.logger;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,20 +25,18 @@ import org.openuss.web.Constants;
 
 /**
  * 
- * @author Ingo Dueppe
- * @author Sebastian Roekens
  * @author Kai Stettner
  *
  */
-@Bean(name = "views$public$institute$institutes", scope = Scope.REQUEST)
+@Bean(name = "views$public$institute$institutesoverview", scope = Scope.REQUEST)
 @View
-public class InstitutesPage extends BasePage{
+public class InstitutesOverviewPage extends BasePage{
 
-	protected static final Logger logger = Logger.getLogger(InstitutesPage.class);
+	protected static final Logger logger = Logger.getLogger(InstitutesOverviewPage.class);
 
-	private static final long serialVersionUID = 5069935782478432045L;
+	private static final long serialVersionUID = 5069930000478432045L;
 	
-	private InstituteTable institutes = new InstituteTable();
+	private InstituteTable institutesOverview = new InstituteTable();
 	
 	@Property(value = "#{lectureService}")
 	private LectureService lectureService;
@@ -77,7 +75,7 @@ public class InstitutesPage extends BasePage{
 
 	private InstituteInfo currentInstitute() {
 		logger.debug("Starting method currentInstitute");
-		InstituteInfo instituteDetails = institutes.getRowData();
+		InstituteInfo instituteDetails = institutesOverview.getRowData();
 		logger.debug(instituteDetails.getName());
 		logger.debug(instituteDetails.getOwnerName());
 		logger.debug(instituteDetails.getId());
@@ -124,13 +122,13 @@ public class InstitutesPage extends BasePage{
 		
 		if (dataPage == null) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+institutes.getSortColumn());
+				logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+institutesOverview.getSortColumn());
 			}
 			
 			
 			DepartmentInfo departmentInfo = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT_INFO);			
 			// get all institutes. Does not depend whether it is enabled or disabled
-			List<InstituteInfo> instituteList = getInstituteService().findInstitutesByDepartment(departmentInfo.getId());
+			List<InstituteInfo> instituteList = getInstituteService().findInstitutesByDepartmentAndEnabled(departmentInfo.getId(),true);
 			sort(instituteList);
 			dataPage = new DataPage<InstituteInfo>(instituteList.size(),0,instituteList);
 
@@ -139,17 +137,13 @@ public class InstitutesPage extends BasePage{
 	}
 	
 	private void sort(List<InstituteInfo> instituteList) {
-		if (StringUtils.equals("shortcut", institutes.getSortColumn())) {
+		if (StringUtils.equals("shortcut", institutesOverview.getSortColumn())) {
 			Collections.sort(instituteList, new ShortcutComparator());
-		} else if (StringUtils.equals("owner", institutes.getSortColumn())){
+		} else if (StringUtils.equals("owner", institutesOverview.getSortColumn())){
 			Collections.sort(instituteList, new OwnerComparator());
 		} else {
 			Collections.sort(instituteList, new NameComparator());
 		}
-	}
-
-	public InstituteTable getInstitutes() {
-		return institutes;
 	}
 
 	private class InstituteTable extends AbstractPagedTable<InstituteInfo> {
@@ -178,12 +172,20 @@ public class InstitutesPage extends BasePage{
 	public void setInstituteService(InstituteService instituteService) {
 		this.instituteService = instituteService;
 	}
+	
+	public InstituteTable getInstitutesOverview() {
+		return institutesOverview;
+	}
+
+	public void setInstitutesOverview(InstituteTable institutesOverview) {
+		this.institutesOverview = institutesOverview;
+	}	
 
 	/* ----------- institute sorting comparators -------------*/
 	
 	private class NameComparator implements Comparator<InstituteInfo> {
 		public int compare(InstituteInfo f1, InstituteInfo f2) {
-			if (institutes.isAscending()) {
+			if (institutesOverview.isAscending()) {
 				return f1.getName().compareToIgnoreCase(f2.getName());
 			} else {
 				return f2.getName().compareToIgnoreCase(f1.getName());
@@ -193,7 +195,7 @@ public class InstitutesPage extends BasePage{
 
 	private class OwnerComparator implements Comparator<InstituteInfo> {
 		public int compare(InstituteInfo f1, InstituteInfo f2) {
-			if (institutes.isAscending()) {
+			if (institutesOverview.isAscending()) {
 				return f1.getOwnerName().compareToIgnoreCase(f2.getOwnerName());
 			} else {
 				return f2.getOwnerName().compareToIgnoreCase(f1.getOwnerName());
@@ -203,11 +205,11 @@ public class InstitutesPage extends BasePage{
 
 	private class ShortcutComparator implements Comparator<InstituteInfo> {
 		public int compare(InstituteInfo f1, InstituteInfo f2) {
-			if (institutes.isAscending()) {
+			if (institutesOverview.isAscending()) {
 				return f1.getShortcut().compareToIgnoreCase(f2.getShortcut());
 			} else {
 				return f2.getShortcut().compareToIgnoreCase(f1.getShortcut());
 			}
 		}
-	}	
+	}
 }
