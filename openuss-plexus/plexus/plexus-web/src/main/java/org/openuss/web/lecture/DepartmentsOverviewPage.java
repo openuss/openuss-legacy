@@ -25,22 +25,20 @@ import org.openuss.web.Constants;
 
 
 
-/** Backing Bean for the views departments.xhtml and departmentstable.xhtml.
+/** Backing Bean for the views departments.xhtml and departmentstable.xhtml on the overview page.
  * 
- * @author Tianyu Wang
- * @author Weijun Chen
  * @author Kai Stettner
  *
  */
-@Bean(name = "views$public$department$departments", scope = Scope.REQUEST)
+@Bean(name = "views$public$department$departmentsoverview", scope = Scope.REQUEST)
 @View
-public class DepartmentsPage extends BasePage{
+public class DepartmentsOverviewPage extends BasePage{
 
-	private static final Logger logger = Logger.getLogger(DepartmentsPage.class);
+	private static final Logger logger = Logger.getLogger(DepartmentsOverviewPage.class);
 
-	private static final long serialVersionUID = 5069635767478432045L;
+	private static final long serialVersionUID = 5060000767478432045L;
 	
-	private DepartmentTable departments = new DepartmentTable();
+	private DepartmentTable departmentsOverview = new DepartmentTable();
 	
 	@Property(value = "#{universityInfo}")
 	protected UniversityInfo universityInfo;
@@ -56,7 +54,7 @@ public class DepartmentsPage extends BasePage{
 	}	
 	
 	private DepartmentInfo currentDepartment() {
-		DepartmentInfo department = departments.getRowData();
+		DepartmentInfo department = departmentsOverview.getRowData();
 		return department;
 	}
 	
@@ -137,10 +135,9 @@ public class DepartmentsPage extends BasePage{
 		
 		if (dataPage == null) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+departments.getSortColumn());
+				logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+departmentsOverview.getSortColumn());
 			}
-			List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByUniversity(universityInfo.getId()));
-
+			List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByUniversityAndEnabled(universityInfo.getId(), true));
 			logger.info("Departments:"+departmentList);
 			if (departmentList != null) {
 				logger.info("Size:"+departmentList.size());
@@ -153,11 +150,11 @@ public class DepartmentsPage extends BasePage{
 	}
 
 	private void sort(List<DepartmentInfo> departmentList) {
-		if (StringUtils.equals("shortcut", departments.getSortColumn())) {
+		if (StringUtils.equals("shortcut", departmentsOverview.getSortColumn())) {
 			Collections.sort(departmentList, new ShortcutComparator());
-		} else if (StringUtils.equals("city", departments.getSortColumn())){
+		} else if (StringUtils.equals("city", departmentsOverview.getSortColumn())){
 			Collections.sort(departmentList, new CityComparator());
-		} else if (StringUtils.equals("country", departments.getSortColumn())){
+		} else if (StringUtils.equals("country", departmentsOverview.getSortColumn())){
 			Collections.sort(departmentList, new CountryComparator());
 		} else {
 			Collections.sort(departmentList, new NameComparator());
@@ -184,7 +181,7 @@ public class DepartmentsPage extends BasePage{
 	
 	private class NameComparator implements Comparator<DepartmentInfo> {
 		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
-			if (departments.isAscending()) {
+			if (departmentsOverview.isAscending()) {
 				return f1.getName().compareToIgnoreCase(f2.getName());
 			} else {
 				return f2.getName().compareToIgnoreCase(f1.getName());
@@ -194,7 +191,7 @@ public class DepartmentsPage extends BasePage{
 
 	private class CityComparator implements Comparator<DepartmentInfo> {
 		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
-			if (departments.isAscending()) {
+			if (departmentsOverview.isAscending()) {
 				return f1.getCity().compareToIgnoreCase(f2.getCity());
 			} else {
 				return f2.getCity().compareToIgnoreCase(f1.getCity());
@@ -204,7 +201,7 @@ public class DepartmentsPage extends BasePage{
 	
 	private class CountryComparator implements Comparator<DepartmentInfo> {
 		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
-			if (departments.isAscending()) {
+			if (departmentsOverview.isAscending()) {
 				return f1.getCountry().compareToIgnoreCase(f2.getCountry());
 			} else {
 				return f2.getCountry().compareToIgnoreCase(f1.getCountry());
@@ -214,7 +211,7 @@ public class DepartmentsPage extends BasePage{
 
 	private class ShortcutComparator implements Comparator<DepartmentInfo> {
 		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
-			if (departments.isAscending()) {
+			if (departmentsOverview.isAscending()) {
 				return f1.getShortcut().compareToIgnoreCase(f2.getShortcut());
 			} else {
 				return f2.getShortcut().compareToIgnoreCase(f1.getShortcut());
@@ -228,10 +225,14 @@ public class DepartmentsPage extends BasePage{
 		return "removed";
 	}
 
-	public DepartmentTable getDepartments() {
-		return departments;
+	public DepartmentTable getDepartmentsOverview() {
+		return departmentsOverview;
 	}
-	
+
+	public void setDepartmentsOverview(DepartmentTable departmentsOverview) {
+		this.departmentsOverview = departmentsOverview;
+	}
+
 	public OrganisationService getOrganisationService() {
 		return organisationService;
 	}
@@ -246,7 +247,7 @@ public class DepartmentsPage extends BasePage{
 
 	private class DepartmentTable extends AbstractPagedTable<DepartmentInfo> {
 
-		private static final long serialVersionUID = -6077435481342714879L;
+		private static final long serialVersionUID = -6000035481342714879L;
 
 		@Override
 		public DataPage<DepartmentInfo> getDataPage(int startRow, int pageSize) {

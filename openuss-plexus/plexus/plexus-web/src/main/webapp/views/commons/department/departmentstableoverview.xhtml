@@ -12,7 +12,7 @@
 	<plexus:dataTable 
 		id="department" 
 		label="#{msg.departmentList_header}" 
-		value="views$public$department$departments.departments" 
+		value="views$public$department$departmentsoverview.departmentsOverview" 
 		var="bean" 
 		columnClasses="col_max_left, col_max_left, col_min_left, col_min_left"
 		rows="15">
@@ -20,7 +20,7 @@
 			<plexus:commandSortHeader columnName="name">
 				#{msg['department_name']}
 			</plexus:commandSortHeader>
-	        <h:commandLink action="#{views$public$department$departments.selectDepartment}" styleClass="command">
+	        <h:commandLink action="#{views$public$department$departmentsoverview.selectDepartment}" styleClass="command">
 				<h:outputText value="#{bean.name}"/>
 			</h:commandLink>
 			<h:graphicImage 
@@ -46,7 +46,7 @@
 		<plexus:column header="#{msg.commands_header}">
 			<s:authorize ifAllGranted="ROLE_USER">
 				<plexus:command 
-					bean="#{views$public$department$departments}"
+					bean="#{views$public$department$departmentsoverview}"
 					action="shortcutDepartment"
 					label="#{msg.university_command_shortcut}"
 					title="#{msg.university_command_shortcut_hint}"
