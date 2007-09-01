@@ -657,6 +657,11 @@
 			<from-outcome>admin_groups</from-outcome>
 			<to-view-id>/views/secured/system/groups.xhtml</to-view-id>
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>admin_universities</from-outcome>
+			<to-view-id>/views/secured/system/universities.xhtml</to-view-id>
+		</navigation-case>
 
 		<navigation-case>
 			<from-outcome>admin_institutes</from-outcome>

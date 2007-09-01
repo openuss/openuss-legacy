@@ -23,23 +23,21 @@ import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
- * Backing bean for the views universities.xhtml and universitiestable.xhtml.
+ * Backing bean for the views universities.xhtml and universitiestable.xhtml in the welcome page.
  * 
- * @author Tianyu Wang
- * @author Weijun Chen
  * @author Kai Stettner
  * 
  */
-@Bean(name = "views$public$university$universities", scope = Scope.REQUEST)
+@Bean(name = "views$public$university$universitieswelcome", scope = Scope.REQUEST)
 @View
-public class UniversitiesPage extends BasePage{
+public class UniversitiesWelcomePage extends BasePage{
 
-	private static final Logger logger = Logger.getLogger(UniversitiesPage.class);
+	private static final Logger logger = Logger.getLogger(UniversitiesWelcomePage.class);
 
-	private static final long serialVersionUID = 5069935767478432045L;
+	private static final long serialVersionUID = 5069930000478432045L;
 	
-	private UniversityTable universities = new UniversityTable();
-
+	private UniversityTableWelcome universitiesWelcome = new UniversityTableWelcome();
+	
 	@Property(value = "#{universityService}")
 	private UniversityService universityService;
 	
@@ -127,7 +125,7 @@ public class UniversitiesPage extends BasePage{
 	
 	private UniversityInfo currentUniversity() {
 		logger.debug("Starting method currentUniversity");
-		UniversityInfo universityDetails = universities.getRowData();
+		UniversityInfo universityDetails = universitiesWelcome.getRowData();
 		logger.debug(universityDetails.getName());
 		logger.debug(universityDetails.getOwnerName());
 		logger.debug(universityDetails.getId());
@@ -137,37 +135,42 @@ public class UniversitiesPage extends BasePage{
 		return newUniversityInfo;
 	}
 	
-	private DataPage<UniversityInfo> dataPage;
+
+	private DataPage<UniversityInfo> dataPageWelcome;
 	
-	public DataPage<UniversityInfo> fetchDataPage(int startRow, int pageSize) {
+	public DataPage<UniversityInfo> fetchDataPageWelcome(int startRow, int pageSize) {
 		
-		if (dataPage == null) {
+		if (dataPageWelcome == null) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("fetch universities data page at " + startRow + ", "+ pageSize+" sorted by "+universities.getSortColumn());
+				logger.debug("fetch universities data page at " + startRow + ", "+ pageSize+" sorted by "+universitiesWelcome.getSortColumn());
 			}
-			List<UniversityInfo> universityList = new ArrayList<UniversityInfo>(getUniversityService().findAllUniversities());
+			List<UniversityInfo> universityList = new ArrayList<UniversityInfo>(getUniversityService().findUniversitiesByEnabled(true));
 			sort(universityList);
-			dataPage = new DataPage<UniversityInfo>(universityList.size(),0,universityList);
+			dataPageWelcome = new DataPage<UniversityInfo>(universityList.size(),0,universityList);
 	}
-		return dataPage;
+		return dataPageWelcome;
 	}
-	
+
 	private void sort(List<UniversityInfo> universityList) {
-		if (StringUtils.equals("shortcut", universities.getSortColumn())) {
+		if (StringUtils.equals("shortcut", universitiesWelcome.getSortColumn())) {
 			Collections.sort(universityList, new ShortcutComparator());
-		} else if (StringUtils.equals("city", universities.getSortColumn())){
+		} else if (StringUtils.equals("city", universitiesWelcome.getSortColumn())){
 			Collections.sort(universityList, new CityComparator());
-		} else if (StringUtils.equals("country", universities.getSortColumn())){
+		} else if (StringUtils.equals("country", universitiesWelcome.getSortColumn())){
 			Collections.sort(universityList, new CountryComparator());
 		} else {
 			Collections.sort(universityList, new NameComparator());
 		}
 	}
 
-	public UniversityTable getUniversities() {
-		return universities;
+	public UniversityTableWelcome getUniversitiesWelcome() {
+		return universitiesWelcome;
 	}
-	
+
+	public void setUniversitiesWelcome(UniversityTableWelcome universitiesWelcome) {
+		this.universitiesWelcome = universitiesWelcome;
+	}
+
 	public UniversityService getUniversityService() {
 		return universityService;
 	}
@@ -184,11 +187,19 @@ public class UniversitiesPage extends BasePage{
 		this.organisationService = organisationService;
 	}
 	
+	public UniversityDao getUniversityDao() {
+		return universityDao;
+	}
+
+	public void setUniversityDao(UniversityDao universityDao) {
+		this.universityDao = universityDao;
+	}
+	
 /* ----------- university sorting comparators -------------*/
 	
 	private class NameComparator implements Comparator<UniversityInfo> {
 		public int compare(UniversityInfo f1, UniversityInfo f2) {
-			if (universities.isAscending()) {
+			if (universitiesWelcome.isAscending()) {
 				return f1.getName().compareToIgnoreCase(f2.getName());
 			} else {
 				return f2.getName().compareToIgnoreCase(f1.getName());
@@ -198,7 +209,7 @@ public class UniversitiesPage extends BasePage{
 
 	private class CityComparator implements Comparator<UniversityInfo> {
 		public int compare(UniversityInfo f1, UniversityInfo f2) {
-			if (universities.isAscending()) {
+			if (universitiesWelcome.isAscending()) {
 				return f1.getCity().compareToIgnoreCase(f2.getCity());
 			} else {
 				return f2.getCity().compareToIgnoreCase(f1.getCity());
@@ -208,7 +219,7 @@ public class UniversitiesPage extends BasePage{
 	
 	private class CountryComparator implements Comparator<UniversityInfo> {
 		public int compare(UniversityInfo f1, UniversityInfo f2) {
-			if (universities.isAscending()) {
+			if (universitiesWelcome.isAscending()) {
 				return f1.getCountry().compareToIgnoreCase(f2.getCountry());
 			} else {
 				return f2.getCountry().compareToIgnoreCase(f1.getCountry());
@@ -218,7 +229,7 @@ public class UniversitiesPage extends BasePage{
 
 	private class ShortcutComparator implements Comparator<UniversityInfo> {
 		public int compare(UniversityInfo f1, UniversityInfo f2) {
-			if (universities.isAscending()) {
+			if (universitiesWelcome.isAscending()) {
 				return f1.getShortcut().compareToIgnoreCase(f2.getShortcut());
 			} else {
 				return f2.getShortcut().compareToIgnoreCase(f1.getShortcut());
@@ -232,27 +243,21 @@ public class UniversitiesPage extends BasePage{
 		return "removed";
 	}
 	
-	public UniversityDao getUniversityDao() {
-		return universityDao;
-	}
-
-	public void setUniversityDao(UniversityDao universityDao) {
-		this.universityDao = universityDao;
-	}
 	
-	
+	private class UniversityTableWelcome extends AbstractPagedTable<UniversityInfo> {
 
-	private class UniversityTable extends AbstractPagedTable<UniversityInfo> {
-
-		private static final long serialVersionUID = -6072435481342714879L;
+		private static final long serialVersionUID = -6072435481349000879L;
 
 		@Override
 		public DataPage<UniversityInfo> getDataPage(int startRow, int pageSize) {
-			return fetchDataPage(startRow, pageSize);
+			return fetchDataPageWelcome(startRow, pageSize);
 		}
 		
 	}
+
 	
 	
+	
+		
 
 }
