@@ -7,9 +7,9 @@
     xmlns:c="http://java.sun.com/jstl/core"  
     xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-
-	<ui:include src="/views/commons/navigation/institute.xhtml" />
 	
+	<ui:include src="/views/commons/navigation/desktop.xhtml" />
+
 	<s:authorize ifAllGranted="ROLE_USER">
 		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
 			<h:form id="courseNavigationForm">
