@@ -343,6 +343,9 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		Validate.notNull(course.getCourseType().getInstitute(), "CourseService.updateCourse - " +
 				"The CourseType of a Course must be associated with a valid institute.");
 		
+		// Update Rights
+		updateAccessTypePermission(course);
+		
 		getCourseDao().update(course);
 
 	}
