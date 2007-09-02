@@ -34,7 +34,7 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 	 * @throws LectureException
 	 */
 	public String removeCompleteDepartmentTree() throws LectureException {
-		departmentService.removeDepartment(departmentInfo.getId());
+		departmentService.removeCompleteDepartmentTree(departmentInfo.getId());
 		addMessage(i18n("message_department_removed"));
 		return Constants.DEPARTMENTS_PAGE;
 	}

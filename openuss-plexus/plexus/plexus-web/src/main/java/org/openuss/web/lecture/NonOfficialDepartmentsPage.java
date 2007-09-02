@@ -143,7 +143,7 @@ public class NonOfficialDepartmentsPage extends BasePage{
 			if (logger.isDebugEnabled()) {
 				logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+departments.getSortColumn());
 			}
-			List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByUniversityAndType(universityInfo.getId(), DepartmentType.NONOFFICIAL));
+			List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByUniversityAndTypeAndEnabled(universityInfo.getId(), DepartmentType.NONOFFICIAL, true));
 
 			logger.info("Departments:"+departmentList);
 			if (departmentList != null) {
