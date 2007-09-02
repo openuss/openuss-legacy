@@ -76,7 +76,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 						+ university.getName()
 						+ ". Es ist als Auffangbehälter für Institutionen gedacht, die noch keinem anderen Fachbereich zugeordnet werden können.");
 		department.setOwnerName(university.getOwnerName());
-		department.setEnabled(true);
+		department.setEnabled(false);
 		department.setMembership(Membership.Factory.newInstance());
 		department.setAddress(university.getAddress());
 		department.setCity(university.getCity());
