@@ -15,30 +15,30 @@ import org.apache.log4j.Logger;
  * @see org.openuss.lecture.CourseTypeService
  * @author Florian Dondorf
  */
-public class CourseTypeServiceImpl
-    extends org.openuss.lecture.CourseTypeServiceBase
-{
+public class CourseTypeServiceImpl extends org.openuss.lecture.CourseTypeServiceBase {
 
 	private static final Logger logger = Logger.getLogger(CourseTypeServiceImpl.class);
-	
+
 	@Override
 	protected Long handleCreate(CourseTypeInfo courseTypeInfo) throws Exception {
-		
+
 		Validate.notNull(courseTypeInfo, "CourseTypeServiceImpl.handleCreate - courseTypeInfo must not be null.");
-		
+
 		// Transform ValueObject to Entity
 		CourseType courseTypeEntity = this.getCourseTypeDao().courseTypeInfoToEntity(courseTypeInfo);
-		Validate.notNull(courseTypeEntity, "CourseTypeServiceImpl.handleCreate - could not transform courseTypeInfo to entity.");
-		
+		Validate.notNull(courseTypeEntity,
+				"CourseTypeServiceImpl.handleCreate - could not transform courseTypeInfo to entity.");
+
 		// Save entity
 		courseTypeEntity.getInstitute().add(courseTypeEntity);
 		this.getCourseTypeDao().create(courseTypeEntity);
-		Validate.notNull(courseTypeEntity.getId(), "CourseTypeServiceImpl.handleCreate - id of courseType cannot be null.");
-		
+		Validate.notNull(courseTypeEntity.getId(),
+				"CourseTypeServiceImpl.handleCreate - id of courseType cannot be null.");
+
 		// FIXME - Kai, Indexing should not base on VOs!
 		// Kai: Do not delete this!!! Set id of courseType VO for indexing.
 		courseTypeInfo.setId(courseTypeEntity.getId());
-		
+
 		// Security
 		this.getSecurityService().createObjectIdentity(courseTypeEntity, courseTypeEntity.getInstitute());
 
@@ -47,13 +47,15 @@ public class CourseTypeServiceImpl
 
 	@Override
 	protected CourseTypeInfo handleFindCourseType(Long courseTypeId) throws Exception {
-		
+
 		Validate.notNull(courseTypeId, "CourseTypeServiceImpl.handleFindCourseType - the courseTypeId cannot be null.");
-		
-		//Load CourseType entity
+
+		// Load CourseType entity
 		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
-		Validate.notNull(courseType, "CourseTypeServiceImpl.handleFindCourseType - can not find courseType with the corresponfing id "+courseTypeId);
-		
+		Validate.notNull(courseType,
+				"CourseTypeServiceImpl.handleFindCourseType - can not find courseType with the corresponfing id "
+						+ courseTypeId);
+
 		return this.getCourseTypeDao().toCourseTypeInfo(courseType);
 	}
 
@@ -63,13 +65,16 @@ public class CourseTypeServiceImpl
 	@Override
 	@SuppressWarnings( { "unchecked" })
 	protected List handleFindCourseTypesByInstitute(Long instituteId) throws Exception {
-		
-		Validate.notNull(instituteId, "CourseTypeServiceImpl.handleFindCourseTypesByInstitutes - the instituteId cannot be null.");
-		
-		//Load Institute
+
+		Validate.notNull(instituteId,
+				"CourseTypeServiceImpl.handleFindCourseTypesByInstitutes - the instituteId cannot be null.");
+
+		// Load Institute
 		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute, "CourseTypeServiceImpl.handleFindCourseTypesByInstitutes - can not find institute with corresponding id "+instituteId);
-		
+		Validate.notNull(institute,
+				"CourseTypeServiceImpl.handleFindCourseTypesByInstitutes - can not find institute with corresponding id "
+						+ instituteId);
+
 		List courseTypeInfos = new ArrayList();
 		for (CourseType courseType : institute.getCourseTypes()) {
 			courseTypeInfos.add(this.getCourseTypeDao().toCourseTypeInfo(courseType));
@@ -81,35 +86,46 @@ public class CourseTypeServiceImpl
 	@Override
 	protected void handleRemoveCourseType(Long courseTypeId) throws Exception {
 
-		Validate.notNull(courseTypeId, "CourseTypeServiceImpl.handleRemoveCourseType - the courseTypeId cannot be null.");
-		
+		Validate.notNull(courseTypeId,
+				"CourseTypeServiceImpl.handleRemoveCourseType - the courseTypeId cannot be null.");
 		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
-		Validate.notNull(courseType, "CourseTypeServiceImpl.handleRemoveCourseType - cannot fin CourseType to the corresponding courseTypeId "+courseTypeId);
-		
+		Validate.notNull(courseType,
+				"CourseTypeServiceImpl.handleRemoveCourseType - cannot find CourseType to the corresponding courseTypeId "
+						+ courseTypeId);
+
+		// Remove Courses
+		List<Course> coursesNew = new ArrayList<Course>();
+		for (Course course : courseType.getCourses()) {
+			coursesNew.add(course);
+		}
+		for (Course course : coursesNew) {
+			this.getCourseService().removeCourse(course.getId());
+		}
+
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(courseType);
 		this.getSecurityService().removeObjectIdentity(courseType);
-		
+
 		// Remove CourseType
 		courseType.getInstitute().remove(courseType);
 		this.getCourseTypeDao().remove(courseTypeId);
-		
 	}
 
 	@Override
 	protected void handleUpdate(CourseTypeInfo courseTypeInfo) throws Exception {
 
 		Validate.notNull(courseTypeInfo, "CourseTypeServiceImpl.handleUpdate - courseTypeInfo cannot be null.");
-		Validate.notNull(courseTypeInfo.getId(), "CourseTypeServiceImpl.handleUpdate - the courseTypeInfoId cannot be null.");
-		
-		//Transform VO to entity
+		Validate.notNull(courseTypeInfo.getId(),
+				"CourseTypeServiceImpl.handleUpdate - the courseTypeInfoId cannot be null.");
+
+		// Transform VO to entity
 		CourseType courseType = this.getCourseTypeDao().courseTypeInfoToEntity(courseTypeInfo);
-		
-		//TODO: Should it be able to set new institute of courseType???
+
+		// TODO: Should it be able to set new institute of courseType???
 		this.getCourseTypeDao().update(courseType);
-		
+
 	}
-	
+
 	@Override
 	public boolean handleIsNoneExistingCourseTypeShortcut(CourseTypeInfo self, String shortcut) throws Exception {
 		logger.debug("Starting method handleIsNoneExistingCourseTypeShortcut");
@@ -120,7 +136,7 @@ public class CourseTypeServiceImpl
 		}
 		return isEqualOrNull(self, foundInfo);
 	}
-	
+
 	@Override
 	public boolean handleIsNoneExistingCourseTypeName(CourseTypeInfo self, String name) throws Exception {
 		CourseType found = getCourseTypeDao().findByName(name);
@@ -131,22 +147,19 @@ public class CourseTypeServiceImpl
 		return isEqualOrNull(self, foundInfo);
 	}
 
-	
 	@Override
-	public void handleRegisterListener (LectureListener listener) throws Exception {
+	public void handleRegisterListener(LectureListener listener) throws Exception {
 		// TODO: Implement this method.
 	}
-	
+
 	/*------------------- private methods -------------------- */
 
 	// TODO: Add Set of listeners
-	
 	// TODO: Method unregisterListener
-	
 	// TODO: Method fireRemovingCourseType (CourseType courseType)
-	
 	/**
-	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self entry.
+	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self
+	 * entry.
 	 * <ul>
 	 * <li>self == null AND found == null => <b>true</b></li>
 	 * <li>self == null AND found <> null => <b>false</b></li>

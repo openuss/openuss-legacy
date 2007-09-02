@@ -16,8 +16,6 @@ import org.acegisecurity.AccessDeniedException;
 import org.apache.log4j.Logger;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopDao;
-import org.openuss.security.Group;
-import org.openuss.security.GroupDao;
 import org.openuss.security.User;
 
 /**

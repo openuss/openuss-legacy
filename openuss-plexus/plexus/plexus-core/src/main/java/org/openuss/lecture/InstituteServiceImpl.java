@@ -340,7 +340,29 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 
 	@Override
 	protected void handleRemoveCompleteInstituteTree(Long instituteId) throws Exception {
-		// TODO Auto-generated method stub
+		logger.debug("Starting method handleRemoveCompleteInstituteTree for InstituteID "+instituteId);
+
+		Validate.notNull(instituteId, "InstituteService.handleRemoveCompleteInstituteTree - the InstituteID cannot be null");
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute,
+				"InstituteService.handleRemoveCompleteInstituteTree - no Institute found to the corresponding ID " + instituteId);
+		
+		if (institute.getCourseTypes().isEmpty()) {
+			this.removeInstitute(instituteId);
+			return;
+		}
+		
+		
+		// Remove Security
+		this.getSecurityService().removeAllPermissions(institute);
+		this.getSecurityService().removeObjectIdentity(institute);
+		
+		// Clear Membership
+		this.getMembershipService().clearMembership(institute.getMembership());
+
+		// Remove Institute
+		institute.getDepartment().remove(institute);		
+		this.getInstituteDao().remove(institute);
 		
 	}
 

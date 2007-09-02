@@ -183,6 +183,12 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 	}
 
+	@Override
+	protected void handleRemoveUniversity(Long universityId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/**
 	 * @see org.openuss.lecture.UniversityService#removeCompleteUniversityTree(java.lang.Long)
 	 */
