@@ -190,6 +190,7 @@ public class Constants {
 	public static final String DEPARTMENT_REGISTRATION_STEP2_PAGE = "department_registration_step1";
 	
 	public static final String UNIVERSITIES_PAGE = "universities";
+	public static final String UNIVERSITIES_ADMIN_PAGE = "admin_universities";
 	public static final String UNIVERSITY_PAGE = "university";
 	public static final String UNIVERSITY_EDIT_PAGE = "university_edit";
 	public static final String UNIVERSITY_DEPARTMENTS_PAGE = "university_departments";

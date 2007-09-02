@@ -98,7 +98,6 @@ public class DepartmentsPage extends BasePage{
 		// setOrganisationStatus(true) = Enabled
 		// setOrganisationStatus(false) = Disabled
 		departmentService.setDepartmentStatus(currentDepartment.getId(), false);
-		
 		addMessage(i18n("message_department_disabled"));
 		return Constants.SUCCESS;
 	}

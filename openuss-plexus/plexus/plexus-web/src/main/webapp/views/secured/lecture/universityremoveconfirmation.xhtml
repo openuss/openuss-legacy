@@ -20,7 +20,7 @@
 
 	<body>      
 	<!-- text above will be ignored -->
-	<ui:composition template="/views/layout/layout.xhtml">
+	<ui:composition template="/views/layout/dialog.xhtml">
 		<ui:define name="header">
 			<link type="application/rss+xml" title="RSS-#{universityInfo.name}" rel="alternate" href="../../../rss/public/university.xml?university=#{universityInfo.id}"/>
 		</ui:define>
@@ -43,7 +43,7 @@
 					</p>
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.cancel}" action="universities" styleClass="button_cancel" immediate="true"/>
+					<h:commandButton value="${msg.cancel}" action="admin_universities" styleClass="button_cancel" immediate="true"/>
 					<h:commandButton value="${msg.remove}" action="#{views$secured$lecture$universityremoveconfirmation.removeCompleteUniversityTree}" styleClass="button_warning"/>
 				</o:block>
 			</h:form>
