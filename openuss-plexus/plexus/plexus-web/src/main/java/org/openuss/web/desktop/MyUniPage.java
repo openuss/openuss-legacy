@@ -78,6 +78,7 @@ public class MyUniPage extends BasePage {
 	private Long	paramUniversity = null;
 	private Long	paramRemoveDepartment = null;
 	private Long	paramRemoveInstitute = null;
+	private Long	paramRemoveCourse = null;
 	private UIFlexList departmentsList;
 	private UIFlexList institutesList;
 	private UIFlexList coursesList;
@@ -141,7 +142,41 @@ public class MyUniPage extends BasePage {
 		}
 	}
 	
-	public void removeBookmarks()
+	private void loadParams()
+	{
+		logger.debug("Loading request parameters");
+		Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		
+		try {
+			String stringParamUniversity = (String)params.get("university");
+			paramUniversity = Long.valueOf(stringParamUniversity);
+		} catch (Exception e) {
+			paramUniversity = null;
+		}
+		
+		try {
+			String stringParamRemoveCourse = (String)params.get("remove_course");
+			paramRemoveCourse = Long.valueOf(stringParamRemoveCourse);
+		} catch (Exception e) {
+			paramRemoveCourse = null;
+		}
+		
+		try {
+			String stringParamRemoveDepartment = (String)params.get("remove_department");
+			paramRemoveDepartment = Long.valueOf(stringParamRemoveDepartment);
+		} catch (Exception e) {
+			paramRemoveDepartment = null;
+		}
+		
+		try {
+			String stringParamRemoveInstitute = (String)params.get("remove_institute");
+			paramRemoveInstitute = Long.valueOf(stringParamRemoveInstitute);
+		} catch (Exception e) {
+			paramRemoveInstitute = null;
+		}
+	}
+	
+	private void removeBookmarks()
 	{
 		if(user != null && desktopService2 != null)
 		{
@@ -172,39 +207,20 @@ public class MyUniPage extends BasePage {
 						
 					}
 				}
+				
+				if(paramRemoveCourse != null)
+				{
+					try {
+						desktopService2.unlinkCourse(desktopId, paramRemoveCourse);
+					} catch (Exception e) {
+						
+					}
+				}
 			}
 		}
 	}
 	
-	private void loadParams()
-	{
-		logger.debug("Loading request parameters");
-		Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-		
-		try {
-			String stringParamUniversity = (String)params.get("university");
-			paramUniversity = Long.valueOf(stringParamUniversity);
-		} catch (Exception e) {
-			logger.error("Error while parsing university parameter");
-			paramUniversity = null;
-		}
-		
-		try {
-			String stringParamRemoveDepartment = (String)params.get("remove_department");
-			paramRemoveDepartment = Long.valueOf(stringParamRemoveDepartment);
-		} catch (Exception e) {
-			logger.error("Error while parsing remove_department parameter");
-			paramRemoveDepartment = null;
-		}
-		
-		try {
-			String stringParamRemoveDepartment = (String)params.get("remove_institute");
-			paramRemoveInstitute = Long.valueOf(stringParamRemoveDepartment);
-		} catch (Exception e) {
-			logger.error("Error while parsing remove_institute parameter");
-			paramRemoveInstitute = null;
-		}
-	}
+	
 	
 	
 	public void prepareData()
@@ -468,6 +484,8 @@ public class MyUniPage extends BasePage {
 					newItem = new ListItemDAO();
 					newItem.setTitle(courseInfo.getName());
 					newItem.setUrl(coursesBasePath + "?course=" + courseInfo.getId());
+					newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId + "&remove_course=" + courseInfo.getId());
+
 					listItems.add(newItem);
 				}
 			}
@@ -493,6 +511,8 @@ public class MyUniPage extends BasePage {
 					newItem = new ListItemDAO();
 					newItem.setTitle(courseInfo.getName());
 					newItem.setUrl(coursesBasePath + "?course=" + courseInfo.getId());
+					newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId + "&remove_course=" + courseInfo.getId());
+
 					listItems.add(newItem);
 				}
 			}

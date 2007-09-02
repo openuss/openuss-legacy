@@ -128,11 +128,10 @@ public class UIFlexList extends UIOutput {
 											
 										writer.endElement("a");
 										
+										// Render separating space between remove bookmark url and meta text
+										writer.write(" ");
 									}
-									
-									// Render separating space between remove bookmark url and meta text
-									writer.write(" ");
-									
+
 									String metaInfo = listItem.getMetaInformation();
 									if(metaInfo != null)
 										writer.write( listItem.getMetaInformation());	
@@ -183,12 +182,42 @@ public class UIFlexList extends UIOutput {
 							listItem = (ListItemDAO)i.next();
 							writer.startElement("li", this);
 							
-								writer.startElement("div", this);
-									writer.writeAttribute("class", "flexListItemRight", null);
-									String metaInfo = listItem.getMetaInformation();
-									if(metaInfo != null)
-										writer.write(metaInfo);
-								writer.endElement("div");
+							// Render the "meta info" on the right side of the list
+							writer.startElement("div", this);
+								writer.writeAttribute("class", "flexListItemRight", null);
+								
+								// Show the "remove bookmark link" if the url is set
+								String removeBookmarkUrl = listItem.getRemoveBookmarkUrl();
+								if(removeBookmarkUrl != null && removeBookmarkUrl != "")
+								{
+								
+									writer.startElement("a", this);
+										writer.writeAttribute("href", removeBookmarkUrl, null);
+										
+										writer.write("(");
+										String linkTitle;
+										try {
+											linkTitle = (String)this.getAttributes().get("alternateRemoveBookmarkLinkTitle");
+										} catch (Exception e) {
+											linkTitle = null;
+										}
+										
+										if(linkTitle != null && linkTitle != "")
+											writer.write(linkTitle);
+										else
+											writer.write("Remove Bookmark");
+										writer.write(")");
+										
+									writer.endElement("a");
+									
+									// Render separating space between remove bookmark url and meta text
+									writer.write(" ");
+								}
+
+								String metaInfo = listItem.getMetaInformation();
+								if(metaInfo != null)
+									writer.write( listItem.getMetaInformation());	
+							writer.endElement("div");
 								
 								writer.startElement("div", this);
 									writer.writeAttribute("class", "flexListItemLeft", null);
