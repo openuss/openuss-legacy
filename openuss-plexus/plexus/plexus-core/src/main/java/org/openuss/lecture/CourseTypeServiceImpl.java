@@ -35,7 +35,8 @@ public class CourseTypeServiceImpl
 		this.getCourseTypeDao().create(courseTypeEntity);
 		Validate.notNull(courseTypeEntity.getId(), "CourseTypeServiceImpl.handleCreate - id of courseType cannot be null.");
 		
-		// Do not delete this!!! Set id of courseType VO for indexing.
+		// FIXME - Kai, Indexing should not base on VOs!
+		// Kai: Do not delete this!!! Set id of courseType VO for indexing.
 		courseTypeInfo.setId(courseTypeEntity.getId());
 		
 		// Security
@@ -85,14 +86,11 @@ public class CourseTypeServiceImpl
 		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
 		Validate.notNull(courseType, "CourseTypeServiceImpl.handleRemoveCourseType - cannot fin CourseType to the corresponding courseTypeId "+courseTypeId);
 		
-		// TODO: Fire removedCourse event to delete all bookmarks
-		//		 Fire removedCourseType event to delete all bookmarks
-		/*
-		for (Course course : courseType.getCourses()) {
-			fireRemovingCourse(course);
-		}
-		fireRemovingCourseType(courseType);
-		*/
+		// Remove Security
+		this.getSecurityService().removeAllPermissions(courseType);
+		this.getSecurityService().removeObjectIdentity(courseType);
+		
+		// Remove CourseType
 		courseType.getInstitute().remove(courseType);
 		this.getCourseTypeDao().remove(courseTypeId);
 		

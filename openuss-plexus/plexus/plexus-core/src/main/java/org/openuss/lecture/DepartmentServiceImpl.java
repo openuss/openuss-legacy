@@ -100,24 +100,26 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	 * @see org.openuss.lecture.DepartmentService#removeDepartment(java.lang.Long)
 	 */
 	protected void handleRemoveDepartment(java.lang.Long departmentId) throws java.lang.Exception {
-		// TODO: Security
+		logger.debug("Starting method handleRemoveDepartment for DepartmentID " + departmentId);
 
 		Validate.notNull(departmentId, "DepartmentService.handleRemove - the DepartmentId cannot be null");
-
-		// Remove department
 		Department department = this.getDepartmentDao().load(departmentId);
 		Validate.notNull(department,
 				"DepartmentService.handleRemoveDepartment - no Department found corresponding to the ID "
 						+ departmentId);
+		Validate.isTrue(department.getInstitutes().isEmpty(),
+				"DepartmentService.handleRemoveDepartment - the Department still contains Institutes");
 
-		department.getMembership().getGroups().clear(); // due to problems of cascade
+		// Remove Security
+		this.getSecurityService().removeAllPermissions(department);
+		this.getSecurityService().removeObjectIdentity(department);
 
-		// TODO: fireRemovedDepartment event to delete all bookmarks and open applications
-		// existing institutes have no longer an association to a department and are set to an open department
+		// Clear Membership
+		this.getMembershipService().clearMembership(department.getMembership());
 
+		// Remove Institute
 		department.getUniversity().remove(department);
 		this.getDepartmentDao().remove(department);
-
 	}
 
 	/**
@@ -332,7 +334,8 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	}
 
 	@Override
-	protected List handleFindApplicationsByDepartmentAndConfirmed(Long departmentId, boolean confirmed) throws Exception {
+	protected List handleFindApplicationsByDepartmentAndConfirmed(Long departmentId, boolean confirmed)
+			throws Exception {
 		Validate.notNull(departmentId, "DepartmentService.findOpenApplicationsByDepartment - "
 				+ "the departmentId cannot be null.");
 
@@ -340,10 +343,19 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Department departmentEntity = this.getDepartmentDao().load(departmentId);
 		Validate.notNull(departmentEntity, "DepartmentService.findOpenApplicationsByDepartment - "
 				+ "no department can be found with the departmentId " + departmentId);
-		return this.getApplicationDao().findByDepartmentAndConfirmed(ApplicationDao.TRANSFORM_APPLICATIONINFO, departmentEntity, confirmed);
+		return this.getApplicationDao().findByDepartmentAndConfirmed(ApplicationDao.TRANSFORM_APPLICATIONINFO,
+				departmentEntity, confirmed);
 	}
 
+	@Override
+	protected void handleRemoveCompleteDepartmentTree(Long departmentId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
 	/*------------------- private methods -------------------- */
+
 
 	/**
 	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self

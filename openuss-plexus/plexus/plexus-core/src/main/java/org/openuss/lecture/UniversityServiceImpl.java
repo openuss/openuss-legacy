@@ -184,97 +184,35 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	}
 
 	/**
-	 * @see org.openuss.lecture.UniversityService#removeUniversity(java.lang.Long)
+	 * @see org.openuss.lecture.UniversityService#removeCompleteUniversityTree(java.lang.Long)
 	 */
-	protected void handleRemoveUniversity(java.lang.Long universityId) throws java.lang.Exception {
-
-		/*
-		 * Validate.notNull(universityId, "UniversityService.handleRemoveUniversity - the UniversityID cannot be null"); //
-		 * TODO: Fire removedUniversity event to delete all bookmarks
-		 * 
-		 * University university = this.getUniversityDao().load(universityId);
-		 * 
-		 * Validate .isTrue(university.getDepartments().isEmpty(), "UniversityService.handleRemoveUniversity - the
-		 * University contains at least one Department. Delete before."); Validate
-		 * .isTrue(university.getPeriods().isEmpty(), "UniversityService.handleRemoveUniversity - the University
-		 * contains at least one Period. Delete before."); this.getUniversityDao().remove(university);
-		 * 
-		 * 
-		 */
-
+	protected void handleRemoveCompleteUniversityTree(java.lang.Long universityId) throws java.lang.Exception {
+		logger.debug("Starting method handleRemoveUniversity for UniversityID " + universityId);
+		
 		Validate.notNull(universityId, "UniversityService.handleRemoveUniversity - universityId cannot be null.");
-
-		// Find University
 		University university = this.getUniversityDao().load(universityId);
 		Validate.notNull(university,
 				"UniversityService.handleRemoveUniversity - cannot find a university with the corresponding ID "
 						+ universityId);
-
-		// TODO: Fire removedUniversity event to delete all bookmarks
 		
-		// Get Departments
-		List<Department> departments = university.getDepartments();
-		for (Department department : departments) {
-
-			// TODO: Fire removedDepartment event to delete all bookmarks
-
-			List<Institute> institutes = department.getInstitutes();
-			for (Institute institute : institutes) {
-
-				// TODO: Fire removedInstitute event to delete all bookmarks
-
-				List<CourseType> courseTypes = institute.getCourseTypes();
-				for (CourseType courseType : courseTypes) {
-
-					// TODO: Fire removedCourseType event to delete all bookmarks
-
-					List<Course> courses = courseType.getCourses();
-					for (Course course : courses) {
-						// TODO: Fire removedCourse event to delete all bookmarks
-					}
-					// remove Courses
-					this.getCourseDao().remove(courseType.getCourses());
-				}
-				// remove CourseTypes
-				this.getCourseTypeDao().remove(courseTypes);
-				institute.setMembership(null);
-			}
-			// remove Institutes
-			this.getInstituteDao().remove(institutes);
-			department.setMembership(null);
-
+		// Remove Departments
+		for (Department department : university.getDepartments()) {
+			this.getDepartmentService().removeCompleteDepartmentTree(department.getId());
 		}
-		// remove Departments
-		this.getDepartmentDao().remove(departments);
-
-		// remove Periods
+		
+		// Remove Periods
 		this.getPeriodDao().remove(university.getPeriods());
-
-		// remove University (including its Groups and SecuritySettings)
-		List<Group> groups = university.getMembership().getGroups();
 		
-		// remove Permissions
-		for (Group group:groups) {
-			List<Authority> authorities = group.getMembers();
-			for (Authority authority:authorities) {
-				this.getSecurityService().removePermission(authority, university);
-			}
-		}
 		
-		//removeObjectIdentity
+		// Remove Security
+		this.getSecurityService().removeAllPermissions(university);
 		this.getSecurityService().removeObjectIdentity(university);
 		
-		// remove Groups		
-		List<Group> groups2 = new ArrayList<Group>();
-		for (Group group:groups) {
-			groups2.add(group);
-		}
-		for (Group group:groups2) {
-			this.getOrganisationService().removeGroup(university.getId(), group.getId());
-		}
+		// Clear Membership
+		this.getMembershipService().clearMembership(university.getMembership());
 		
+		// Remove University
 		this.getUniversityDao().remove(university);
-
 	}
 
 	/**
@@ -473,66 +411,6 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 		return this.getUniversityDao().findByTypeAndEnabled(UniversityDao.TRANSFORM_UNIVERSITYINFO, universityType,
 				enabled);
-	}
-
-	/**
-	 * @see org.openuss.lecture.UniversityService#removeCompleteUniversityTree(java.lang.Long)
-	 */
-	@SuppressWarnings( { "unchecked" })
-	protected void handleRemoveCompleteUniversityTree(Long universityId) throws Exception {
-
-		Validate.notNull(universityId, "UniversityService.removeCompleteUniversityTree - universityId cannot be null.");
-
-		// Find University
-		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university,
-				"UniversityService.removeCompleteUniversityTree - cannot find a university with the corresponding universityId "
-						+ universityId);
-
-		// Get Departments
-		List<Department> departmentsOfUni = university.getDepartments();
-
-		Iterator iter = departmentsOfUni.iterator();
-		while (iter.hasNext()) {
-			Department department = (Department) iter.next();
-			// TODO: Fire removing department event
-
-			Iterator instIter = department.getInstitutes().iterator();
-			while (instIter.hasNext()) {
-				Institute institute = (Institute) instIter.next();
-				// TODO: Fire removing institute event
-
-				Iterator courseTypeIter = institute.getCourseTypes().iterator();
-				while (courseTypeIter.hasNext()) {
-					CourseType courseType = (CourseType) courseTypeIter.next();
-					// TODO: Fire removing courseType event
-
-					Iterator courseIter = courseType.getCourses().iterator();
-					while (courseIter.hasNext()) {
-						courseIter.next();
-						// TODO: Fire removing course event
-					}
-
-					// remove courses
-					this.getCourseDao().remove(courseType.getCourses());
-
-					// remove courseType
-					this.getCourseTypeDao().remove(courseType);
-				}
-
-				// remove institute
-				this.getInstituteDao().remove(institute);
-			}
-
-			// remove department
-			this.getDepartmentDao().remove(department);
-		}
-
-		// remove periods
-		// this.getPeriodDao().remove(university.getPeriods());
-
-		// remove university
-		this.getUniversityDao().remove(university);
 	}
 	
 	@Override

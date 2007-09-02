@@ -144,57 +144,23 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	 * @see org.openuss.lecture.InstituteService#removeInstitute(java.lang.Long)
 	 */
 	protected void handleRemoveInstitute(java.lang.Long instituteId) throws java.lang.Exception {
-
-		logger.debug("Starting method handleRemoveInstitute");
+		logger.debug("Starting method handleRemoveInstitute for InstituteID "+instituteId);
 
 		Validate.notNull(instituteId, "InstituteService.handleRemoveInstitute - the InstituteID cannot be null");
-
-		// Get Institute entity
 		Institute institute = this.getInstituteDao().load(instituteId);
 		Validate.notNull(institute,
 				"InstituteService.handleRemoveInstitute - no Institute found to the corresponding ID " + instituteId);
-
-		/*
-		 * // TODO: Fire removedInstitute event to delete all bookmarks // Fire removedCourseTypes event to delete all
-		 * bookmarks // Fire removedCourses event to delete all bookmarks
-		 * 
-		 * institute.getDepartment().remove(institute); this.getInstituteDao().remove(instituteId); // fire events
-		 * 
-		 * for (Course course : institute.getCourses()) { fireRemovingCourse(course); }
-		 * 
-		 * for (CourseType courseType : institute.getCourseTypes()) { fireRemovingCourseType(courseType); }
-		 * 
-		 * fireRemovingInstitute(institute); // TODO InstituteCodes need to be removed before //
-		 * getRegistrationService().removeInstituteCodes(institute);
-		 * 
-		 */
-
-		// remove University (including its Groups and SecuritySettings)
-		List<Group> groups = institute.getMembership().getGroups();
-
-		// remove Permissions
-		for (Group group : groups) {
-			List<Authority> authorities = group.getMembers();
-			for (Authority authority : authorities) {
-				this.getSecurityService().removePermission(authority, institute);
-			}
-		}
-
-		// removeObjectIdentity
+		Validate.isTrue(institute.getCourseTypes().isEmpty(), "InstituteService.handleRemoveInstitute - the Institute still contains CourseTypes");
+				
+		// Remove Security
+		this.getSecurityService().removeAllPermissions(institute);
 		this.getSecurityService().removeObjectIdentity(institute);
-
-		// remove Groups
-		List<Group> groups2 = new ArrayList<Group>();
-		for (Group group : groups) {
-			groups2.add(group);
-		}
-		for (Group group : groups2) {
-			this.getOrganisationService().removeGroup(institute.getId(), group.getId());
-		}
-
-		institute.getDepartment().remove(institute);
-		// Remove CourseTypes and Courses
 		
+		// Clear Membership
+		this.getMembershipService().clearMembership(institute.getMembership());
+
+		// Remove Institute
+		institute.getDepartment().remove(institute);		
 		this.getInstituteDao().remove(institute);
 	}
 
@@ -372,7 +338,14 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		}
 	}
 
+	@Override
+	protected void handleRemoveCompleteInstituteTree(Long instituteId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/*------------------- private methods -------------------- */
+
 
 	/**
 	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self

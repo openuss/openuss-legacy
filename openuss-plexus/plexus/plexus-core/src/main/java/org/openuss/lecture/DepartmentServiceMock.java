@@ -19,6 +19,12 @@ public class DepartmentServiceMock implements DepartmentService {
 		return this.getMockDepartments().get(departmentId);
 	}
 
+
+	public void removeCompleteDepartmentTree(Long departmentId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	@SuppressWarnings( { "unchecked" })
 	public List findDepartmentsByUniversity(Long universityId) {
 		Map<Long, DepartmentInfo> allDepartments = this.getMockDepartments();

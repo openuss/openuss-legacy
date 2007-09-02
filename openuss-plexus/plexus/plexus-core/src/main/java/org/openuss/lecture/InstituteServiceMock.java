@@ -15,6 +15,11 @@ public class InstituteServiceMock implements InstituteService {
 		return null;
 	}
 
+	public void removeCompleteInstituteTree(Long instituteId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public List findInstitutesByDepartment(Long departmentId) {
 		List institutes = new ArrayList();
 		

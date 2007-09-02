@@ -5,10 +5,10 @@
  */
 package org.openuss.security;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.openuss.lecture.Organisation;
 
 /**
  * @see org.openuss.security.MembershipService
@@ -21,7 +21,8 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 *      org.openuss.security.User, org.openuss.security.MembershipParameters)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleAcceptAspirant(org.openuss.security.Membership membership, org.openuss.security.User user) throws java.lang.Exception {
+	protected void handleAcceptAspirant(org.openuss.security.Membership membership, org.openuss.security.User user)
+			throws java.lang.Exception {
 		// TODO Check Security
 
 		Validate.notNull(user, "MembershipService.handleAcceptAspirant - User cannot be null");
@@ -47,12 +48,13 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	}
 
 	/**
-	 * @see org.openuss.security.MembershipService#rejectAspirant(org.openuss.security.Membership, org.openuss.security.User,
-	 *      org.openuss.security.MembershipParameters)
+	 * @see org.openuss.security.MembershipService#rejectAspirant(org.openuss.security.Membership,
+	 *      org.openuss.security.User, org.openuss.security.MembershipParameters)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleRejectAspirant(org.openuss.security.Membership membership, org.openuss.security.User user) throws java.lang.Exception {
-		
+	protected void handleRejectAspirant(org.openuss.security.Membership membership, org.openuss.security.User user)
+			throws java.lang.Exception {
+
 		// TODO Check Security
 
 		Validate.notNull(user, "MembershipService.handleRejectAspirant - User cannot be null");
@@ -75,8 +77,9 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 * @see org.openuss.security.MembershipService#addMember(org.openuss.security.Membership, java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleAddMember(org.openuss.security.Membership membership, org.openuss.security.User user) throws java.lang.Exception {
-		
+	protected void handleAddMember(org.openuss.security.Membership membership, org.openuss.security.User user)
+			throws java.lang.Exception {
+
 		// TODO Check Security
 
 		Validate.notNull(user, "MembershipService.handleAddMember - User cannot be null");
@@ -105,8 +108,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	/**
 	 * @see org.openuss.security.MembershipService#removeMember(org.openuss.security.Membership, java.lang.Long)
 	 */
-	protected void handleRemoveMember(Membership membership, User user)
-			throws Exception {
+	protected void handleRemoveMember(Membership membership, User user) throws Exception {
 		// TODO Check Security
 
 		Validate.notNull(user, "MembershipService.handleRemoveMember - User cannot be null");
@@ -122,15 +124,16 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		}
 
 		// TODO Send Email to inform the Members and the removed Member
-		
+
 	}
-	
+
 	/**
 	 * @see org.openuss.security.MembershipService#addAspirant(org.openuss.security.Membership, java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleAddAspirant(org.openuss.security.Membership membership, org.openuss.security.User user) throws java.lang.Exception {
-		
+	protected void handleAddAspirant(org.openuss.security.Membership membership, org.openuss.security.User user)
+			throws java.lang.Exception {
+
 		// TODO Check Security
 
 		Validate.notNull(user, "MembershipService.handleAddAspirant - User cannot be null");
@@ -157,21 +160,23 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	}
 
 	/**
-	 * @see org.openuss.security.MembershipService#findAllAspirants(org.openuss.security.Membership, org.openuss.security.GroupItem)
+	 * @see org.openuss.security.MembershipService#findAllAspirants(org.openuss.security.Membership,
+	 *      org.openuss.security.GroupItem)
 	 */
-	protected org.openuss.security.Group handleCreateGroup(org.openuss.security.Membership membership, org.openuss.security.Group group)
-			throws java.lang.Exception {
-		
+	protected org.openuss.security.Group handleCreateGroup(org.openuss.security.Membership membership,
+			org.openuss.security.Group group) throws java.lang.Exception {
+
 		Validate.notNull(membership, "MembershipService.handleCreateGroup - Membership cannot be null");
 		Validate.notNull(membership.getId(), "MembershipService.handleCreateGroup - Membership must have a valid ID");
 		Validate.notNull(group, "MembershipService.handleCreateGroup - Group cannot be null");
-		
-		Group group2 = this.getSecurityService().createGroup(group.getName(), group.getLabel(), group.getPassword(), group.getGroupType());
+
+		Group group2 = this.getSecurityService().createGroup(group.getName(), group.getLabel(), group.getPassword(),
+				group.getGroupType());
 		Validate.notNull(group2, "MembershipService.handleCreateGroup - Group couldn't be created");
 		Validate.notNull(group2.getId(), "MembershipService.handleCreateGroup - Group couldn't be created");
-		
+
 		membership.getGroups().add(group2);
-		
+
 		return group2;
 
 	}
@@ -192,6 +197,40 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		Validate.isTrue(removed, "MembershipService.handleRemoveGroup - Group couldn't be removed");
 
 		// Delete Group
-		this.getSecurityService().removeGroup(group);		
+		this.getSecurityService().removeGroup(group);
+	}
+
+	@Override
+	protected void handleClearMembership(Membership membership) throws Exception {
+		Validate.notNull(membership, "MembershipService.handleClearMembership - Membership cannot be null");
+
+		// Remove Groups
+		if (membership.getGroups() != null) {
+			List<Group> groupsNew = new ArrayList<Group>();
+			for (Group group : membership.getGroups()) {
+				groupsNew.add(group);
+			}
+			for (Group group : groupsNew) {
+				this.removeGroup(membership, group);
+			}
+			groupsNew.clear();
+			membership.getGroups().clear();
+		} else {
+			membership.setGroups(new ArrayList<Group>());
+		}
+
+		// Remove Aspirants
+		if (membership.getAspirants() != null) {
+			membership.getAspirants().clear();
+		} else {
+			membership.setAspirants(new ArrayList<User>());
+		}
+
+		// Remove Members
+		if (membership.getMembers() != null) {
+			membership.getMembers().clear();
+		} else {
+			membership.setMembers(new ArrayList<User>());
+		}
 	}
 }

@@ -231,55 +231,6 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> END access to update(Period) test");
 	}
 
-	public void testRemoveUniversity() {
-		logger.info("----> BEGIN access to removeUniversity test");
-
-		// Create a University
-		University university = testUtility.createUniqueUniversityInDB();
-		assertNotNull(university.getId());
-		assertNotNull(university.getMembership().getGroups());
-		assertEquals(1, university.getMembership().getGroups().size());
-		Group group = university.getMembership().getGroups().get(0);
-
-		// Save UniversityID
-		Long id = university.getId();
-
-		// Synchronize with Database
-		flush();
-
-		// Test Security
-		testUtility.createUserSecureContext();
-		try {
-			universityService.removeUniversity(id);
-			fail("AccessDeniedException should have been thrown");
-		} catch (AccessDeniedException ade) {
-			;
-		} finally {
-			testUtility.destroySecureContext();
-		}
-		
-		// Remove University
-		testUtility.createAdminSecureContext();
-		universityService.removeUniversity(id);
-
-		// Synchronize with Database
-		//flush();
-
-		// Try to load University again
-		UniversityDao universityDao = (UniversityDao) this.applicationContext.getBean("universityDao");
-		University university2 = universityDao.load(id);
-		assertNull(university2);
-		
-		GroupDao groupDao = (GroupDao) this.getApplicationContext().getBean("groupDao");
-		Group groupTest = groupDao.load(group.getId());
-		//groupDao.remove(groupTest);
-		//groupTest = groupDao.load(group.getId());
-		assertNull(groupTest);
-
-		testUtility.destroySecureContext();
-		logger.info("----> END access to removeUniversity test");
-	}
-
 	public void testRemovePeriod() {
 		logger.info("----> BEGIN access to removePeriod test");
 

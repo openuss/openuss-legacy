@@ -24,12 +24,14 @@ public class ObjectIdentityImpl extends ObjectIdentityBase implements ObjectIden
 
 	public void addPermission(Permission permission) {
 		getPermissions().add(permission);
+		permission.setAclObjectIdentity(this);
 	}
 
 	public void removePermission(Permission permission) {
 		if (permission != null) {
-			getPermissions().add(permission);
+			getPermissions().remove(permission);
 		}
+		permission.setAclObjectIdentity(null);
 	}
 
 	@Override
