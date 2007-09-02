@@ -100,11 +100,11 @@ public class MyUniPage extends BasePage {
 	@Prerender
 	public void prerender() {
 		logger.debug("Prerender MyUni-Page");
-		breadcrumbs.loadMyUniCrumbs();
 		refreshDesktop();
 		loadParams();
 		removeBookmarks();
-//		crumbs.clear();
+		prepareData();
+		breadcrumbs.loadMyUniCrumbs();
 	}
 	
 	private void refreshDesktop() {
@@ -324,6 +324,9 @@ public class MyUniPage extends BasePage {
 					newItem = new ListItemDAO();
 					newItem.setTitle(departmentInfo.getName());
 					newItem.setUrl(departmentsBasePath + "?department=" + departmentInfo.getId());
+					if(departmentInfo.isBookmarked())
+						newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId + "&remove_department=" + departmentInfo.getId());
+
 					listItems.add(newItem);
 				}
 			}
@@ -344,11 +347,14 @@ public class MyUniPage extends BasePage {
 				ListItemDAO newItem;
 				Collection<MyUniInstituteInfo> instituteCollection = myUniInfo.getCurrentInstitutes();
 
-				for(MyUniInstituteInfo isntituteInfo : instituteCollection)
+				for(MyUniInstituteInfo instituteInfo : instituteCollection)
 				{
 					newItem = new ListItemDAO();
-					newItem.setTitle(isntituteInfo.getName());
-					newItem.setUrl(institutesBasePath + "?institute=" + isntituteInfo.getId());
+					newItem.setTitle(instituteInfo.getName());
+					newItem.setUrl(institutesBasePath + "?institute=" + instituteInfo.getId());
+					if(instituteInfo.isBookmarked())
+						newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId + "&remove_institute=" + instituteInfo.getId());
+
 					listItems.add(newItem);
 				}
 			}
@@ -369,11 +375,14 @@ public class MyUniPage extends BasePage {
 				ListItemDAO newItem;
 				Collection<MyUniInstituteInfo> instituteCollection = myUniInfo.getPastInstitutes();
 
-				for(MyUniInstituteInfo isntituteInfo : instituteCollection)
+				for(MyUniInstituteInfo instituteInfo : instituteCollection)
 				{
 					newItem = new ListItemDAO();
-					newItem.setTitle(isntituteInfo.getName());
-					newItem.setUrl(institutesBasePath + "?institute=" + isntituteInfo.getId());
+					newItem.setTitle(instituteInfo.getName());
+					newItem.setUrl(institutesBasePath + "?institute=" + instituteInfo.getId());
+					if(instituteInfo.isBookmarked())
+						newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId + "&remove_institute=" + instituteInfo.getId());
+
 					listItems.add(newItem);
 				}
 			}
