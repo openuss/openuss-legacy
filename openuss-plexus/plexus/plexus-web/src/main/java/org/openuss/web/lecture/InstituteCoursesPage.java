@@ -1,7 +1,5 @@
 package org.openuss.web.lecture;
 
-import static org.openuss.web.lecture.AbstractLecturePage.logger;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,7 +19,6 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseTypeInfo;
-import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.web.Constants;
@@ -45,26 +42,38 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	private List<CourseTypeInfo> instituteCourseTypes;
 	private Boolean renderCourseNew = false;
 	private Boolean renderCourseTypeEditNew = false;
+	private List<PeriodInfo> periodInfos = null;
+	private Long universityId = 0l;
+	private Long departmentId = 0l;
 	
 	@Prerender
 	public void prerender() throws LectureException, Exception {
 		super.prerender();
 		
-		/*if (instituteInfo != null) {
-			
-			instituteCourseTypes = courseTypeService.findCourseTypesByInstitute(instituteInfo.getId());
-			
-			
+		if (instituteInfo != null) {
+			departmentId = instituteInfo.getDepartmentId();
+			departmentInfo = departmentService.findDepartment(departmentId);
+			universityId = departmentInfo.getUniversityId();
+			universityInfo = universityService.findUniversity(universityId);
+			periodInfos = universityService.findPeriodsByInstituteWithCoursesOrActive(instituteInfo);
 		} 
 		
-		if (instituteInfo != null && !instituteCourseTypes.contains(courseTypeInfo)) {
-			if (periodInfos.size() > 0) {
+		if (periodInfo == null && instituteInfo != null || instituteInfo != null && !periodInfos.contains(periodInfo)) {
+			if (periodInfo.getId() != null) {
+				if((periodInfo.getId().longValue() == Constants.COURSES_ALL_PERIODS) || (periodInfo.getId().longValue() == Constants.COURSES_ALL_ACTIVE_PERIODS)) {
 				periodInfo = periodInfos.get(0);
-			} else {
-				// normally this should never happen due to the fact that each university has a standard period!
-				periodInfo = new PeriodInfo();
+				}
 			}
-		} */
+			if ((periodInfo.getId() == null) && (periodInfos.size() > 0)) {
+				periodInfo = periodInfos.get(0);
+			}
+			
+			if (periodInfos.size() < 1) {
+				// normally this should never happen due to the fact that each university has a standard period!
+				periodInfo = new PeriodInfo();	
+			}
+	
+		} 
 		
 		addPageCrumbs();
 			

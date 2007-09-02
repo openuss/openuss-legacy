@@ -29,7 +29,7 @@ public class UniversityRemoveConfirmationPage extends AbstractUniversityPage {
 	}
 	
 	/**
-	 * Delete complete university tree (including all belonging departments, institutes, course types and courses.
+	 * Delete complete university tree (including all belonging departments, institutes, course types and courses)
 	 * @return outcome
 	 * @throws LectureException
 	 */

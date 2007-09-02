@@ -28,8 +28,6 @@ public class AbstractCoursePage extends BasePage {
 	@Property(value = "#{lectureService}")
 	protected LectureService lectureService;
 	
-	
-	
 	@Property(value = "#{universityInfo}")
 	protected UniversityInfo universityInfo;
 	
@@ -105,22 +103,6 @@ public class AbstractCoursePage extends BasePage {
 		crumbs.add(courseCrumb);
 	}
 
-//	public Course getCourse() {
-//		return course;
-//	}
-//
-//	public void setCourse(Course course) {
-//		this.course = course;
-//	}
-//
-//	public LectureService getLectureService() {
-//		return lectureService;
-//	}
-
-	public void setLectureService(LectureService lectureService) {
-		this.lectureService = lectureService;
-	}
-
 	public CourseService getCourseService() {
 		return courseService;
 	}
@@ -159,10 +141,6 @@ public class AbstractCoursePage extends BasePage {
 
 	public void setInstituteService(InstituteService instituteService) {
 		this.instituteService = instituteService;
-	}
-
-	public LectureService getLectureService() {
-		return lectureService;
 	}
 
 	public DepartmentService getDepartmentService() {
@@ -211,6 +189,14 @@ public class AbstractCoursePage extends BasePage {
 
 	public void setPeriodInfo(PeriodInfo periodInfo) {
 		this.periodInfo = periodInfo;
+	}
+
+	public LectureService getLectureService() {
+		return lectureService;
+	}
+
+	public void setLectureService(LectureService lectureService) {
+		this.lectureService = lectureService;
 	}
 
 	

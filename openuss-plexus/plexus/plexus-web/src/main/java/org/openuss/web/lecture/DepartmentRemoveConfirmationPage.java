@@ -29,7 +29,7 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 	}
 	
 	/**
-	 * Delete complete department tree (including all belonging institutes, course types and courses.
+	 * Delete complete department tree (including all belonging institutes, course types and courses)
 	 * @return outcome
 	 * @throws LectureException
 	 */

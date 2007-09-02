@@ -29,7 +29,7 @@ public class InstituteRemoveConfirmationPage extends AbstractLecturePage {
 	}
 	
 	/**
-	 * Delete complete institute tree (including all belonging course types and courses.
+	 * Delete complete institute tree (including all belonging course types and courses)
 	 * @return outcome
 	 * @throws LectureException
 	 */
