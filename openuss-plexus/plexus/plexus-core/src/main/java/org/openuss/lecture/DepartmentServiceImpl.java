@@ -294,7 +294,6 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	 * @see org.openuss.lecture.DepartmentService#findApplicationsByDepartment(org.openuss.lecture.Department)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	@Override
 	public List handleFindApplicationsByDepartment(Long departmentId) throws Exception {
 
 		Validate.notNull(departmentId, "DepartmentService.findApplicationsByDepartment - "
@@ -334,6 +333,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	}
 
 	@Override
+	@SuppressWarnings( { "unchecked" })
 	protected List handleFindApplicationsByDepartmentAndConfirmed(Long departmentId, boolean confirmed)
 			throws Exception {
 		Validate.notNull(departmentId, "DepartmentService.findOpenApplicationsByDepartment - "
@@ -345,6 +345,21 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 				+ "no department can be found with the departmentId " + departmentId);
 		return this.getApplicationDao().findByDepartmentAndConfirmed(ApplicationDao.TRANSFORM_APPLICATIONINFO,
 				departmentEntity, confirmed);
+	}
+
+	@Override
+	@SuppressWarnings( { "unchecked" })
+	protected List handleFindDepartmentsByUniversityAndTypeAndEnabled(Long universityId, DepartmentType type,
+			boolean enabled) throws Exception {
+		
+		Validate.notNull(type, "DepartmentService.handleFindDepartmentsByUniversityAndTypeAndEnabled - the type cannot be null");
+		Validate.notNull(universityId, "DepartmentService.handleFindDepartmentsByUniversityAndTypeAndEnabled - the universityId cannot be null");
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university,
+				"DepartmentService.handleFindDepartmentsByUniversityAndTypeAndEnabled - no University found corresponding to the ID "
+						+ universityId);
+		
+		return this.getDepartmentDao().findByUniversityAndTypeAndEnabled(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university, type, enabled);
 	}
 
 	@Override

@@ -25,6 +25,11 @@ public class DepartmentServiceMock implements DepartmentService {
 		
 	}
 
+	public List findDepartmentsByUniversityAndTypeAndEnabled(Long universityId, DepartmentType type, boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@SuppressWarnings( { "unchecked" })
 	public List findDepartmentsByUniversity(Long universityId) {
 		Map<Long, DepartmentInfo> allDepartments = this.getMockDepartments();
