@@ -363,6 +363,11 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>institute_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/instituteremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>institute_registration_start</from-outcome>
 			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
 		</navigation-case>

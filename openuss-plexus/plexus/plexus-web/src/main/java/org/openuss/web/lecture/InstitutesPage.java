@@ -118,6 +118,20 @@ public class InstitutesPage extends BasePage{
 		return Constants.SUCCESS;
 	}
 	
+	/**
+	 * Store the selected institute into session scope and go to institute remove confirmation page.
+	 * @return Outcome
+	 */
+	public String selectInstituteAndConfirmRemove() {
+		logger.debug("Starting method selectInstituteAndConfirmRemove");
+		InstituteInfo currentInstitute = currentInstitute();
+		logger.debug("Returning to method selectInstituteAndConfirmRemove");
+		logger.debug(currentInstitute.getId());	
+		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
+		
+		return Constants.INSTITUTE_CONFIRM_REMOVE_PAGE;
+	}
+	
 	private DataPage<InstituteInfo> dataPage;
 	
 	public DataPage<InstituteInfo> fetchDataPage(int startRow, int pageSize) {

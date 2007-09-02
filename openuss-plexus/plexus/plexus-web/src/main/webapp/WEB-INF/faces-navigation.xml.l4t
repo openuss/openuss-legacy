@@ -298,6 +298,10 @@
     NAME="output7" PATH="/views/secured/lecture/institutecourses.xhtml"
     TARGET="rules:#views#secured#lecture#institutecourses.xhtml" TITLE="institute_courses"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="institute_coursetype_remove::#views#secured#lecture#coursetyperemove.xhtml"
+    NAME="output8" PATH="/views/secured/lecture/coursetyperemove.xhtml"
+    TARGET="rules:#views#secured#lecture#coursetyperemove.xhtml" TITLE="institute_coursetype_remove"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="institute_period::#views#secured#lecture#periodedit.xhtml"
     NAME="output9" PATH="/views/secured/lecture/periodedit.xhtml"
     TARGET="rules:#views#secured#lecture#periodedit.xhtml" TITLE="institute_period"/>
@@ -310,10 +314,10 @@
     NAME="output11" PATH="/views/secured/lecture/courseremove.xhtml"
     TARGET="rules:#views#secured#lecture#courseremove.xhtml" TITLE="institute_course_remove"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="institute_registration_start::#views#secured#lecture#registration#start.xhtml"
-    NAME="output8"
-    PATH="/views/secured/lecture/registration/start.xhtml"
-    TARGET="rules:#views#secured#lecture#registration#start.xhtml" TITLE="institute_registration_start"/>
+    ID="institute_remove_confirmation::#views#secured#lecture#instituteremoveconfirmation.xhtml"
+    NAME="output12"
+    PATH="/views/secured/lecture/instituteremoveconfirmation.xhtml"
+    TARGET="rules:#views#secured#lecture#instituteremoveconfirmation.xhtml" TITLE="institute_remove_confirmation"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup" NAME="rules:#views#secured#*:2"
@@ -1101,4 +1105,7 @@
     TARGET="rules:#views#secured#lecture#universityremoveconfirmation.xhtml" TITLE="university_remove_confirmation"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#secured#lecture#instituteremoveconfirmation.xhtml"
+  PATH="/views/secured/lecture/instituteremoveconfirmation.xhtml" SHAPE="304,5345,0,0"/>
 </PROCESS>
