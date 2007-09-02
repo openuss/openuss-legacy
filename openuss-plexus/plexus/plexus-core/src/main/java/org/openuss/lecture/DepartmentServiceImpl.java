@@ -5,6 +5,7 @@
  */
 package org.openuss.lecture;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -351,26 +352,64 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	@SuppressWarnings( { "unchecked" })
 	protected List handleFindDepartmentsByUniversityAndTypeAndEnabled(Long universityId, DepartmentType type,
 			boolean enabled) throws Exception {
-		
-		Validate.notNull(type, "DepartmentService.handleFindDepartmentsByUniversityAndTypeAndEnabled - the type cannot be null");
-		Validate.notNull(universityId, "DepartmentService.handleFindDepartmentsByUniversityAndTypeAndEnabled - the universityId cannot be null");
+
+		Validate.notNull(type,
+				"DepartmentService.handleFindDepartmentsByUniversityAndTypeAndEnabled - the type cannot be null");
+		Validate
+				.notNull(universityId,
+						"DepartmentService.handleFindDepartmentsByUniversityAndTypeAndEnabled - the universityId cannot be null");
 		University university = this.getUniversityDao().load(universityId);
 		Validate.notNull(university,
 				"DepartmentService.handleFindDepartmentsByUniversityAndTypeAndEnabled - no University found corresponding to the ID "
 						+ universityId);
-		
-		return this.getDepartmentDao().findByUniversityAndTypeAndEnabled(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university, type, enabled);
+
+		return this.getDepartmentDao().findByUniversityAndTypeAndEnabled(DepartmentDao.TRANSFORM_DEPARTMENTINFO,
+				university, type, enabled);
 	}
 
 	@Override
 	protected void handleRemoveCompleteDepartmentTree(Long departmentId) throws Exception {
-		// TODO Auto-generated method stub
-		
+		logger.debug("Starting method handleRemoveCompleteDepartmentTree for DepartmentID " + departmentId);
+
+		Validate.notNull(departmentId, "DepartmentService.handleRemove - the DepartmentId cannot be null");
+		Department department = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(department,
+				"DepartmentService.handleRemoveDepartment - no Department found corresponding to the ID "
+						+ departmentId);
+		Validate.isTrue(department.getInstitutes().isEmpty(),
+				"DepartmentService.handleRemoveDepartment - the Department still contains Institutes");
+
+		if (department.getInstitutes().isEmpty()) {
+
+			this.removeDepartment(departmentId);
+			return;
+
+		} else {
+
+			// Remove Institutes
+			List<Institute> institutes = new ArrayList<Institute>();
+			for (Institute institute:department.getInstitutes()) {
+				institutes.add(institute);
+			}
+			for (Institute institute:institutes) {
+				this.getInstituteService().removeInstitute(institute.getId());
+			}
+			
+			// Remove Security
+			this.getSecurityService().removeAllPermissions(department);
+			this.getSecurityService().removeObjectIdentity(department);
+
+			// Clear Membership
+			this.getMembershipService().clearMembership(department.getMembership());
+
+			// Remove Institute
+			department.getUniversity().remove(department);
+			this.getDepartmentDao().remove(department);
+		}
+
 	}
-	
 
 	/*------------------- private methods -------------------- */
-
 
 	/**
 	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self

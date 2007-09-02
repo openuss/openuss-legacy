@@ -144,23 +144,24 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	 * @see org.openuss.lecture.InstituteService#removeInstitute(java.lang.Long)
 	 */
 	protected void handleRemoveInstitute(java.lang.Long instituteId) throws java.lang.Exception {
-		logger.debug("Starting method handleRemoveInstitute for InstituteID "+instituteId);
+		logger.debug("Starting method handleRemoveInstitute for InstituteID " + instituteId);
 
 		Validate.notNull(instituteId, "InstituteService.handleRemoveInstitute - the InstituteID cannot be null");
 		Institute institute = this.getInstituteDao().load(instituteId);
 		Validate.notNull(institute,
 				"InstituteService.handleRemoveInstitute - no Institute found to the corresponding ID " + instituteId);
-		Validate.isTrue(institute.getCourseTypes().isEmpty(), "InstituteService.handleRemoveInstitute - the Institute still contains CourseTypes");
-				
+		Validate.isTrue(institute.getCourseTypes().isEmpty(),
+				"InstituteService.handleRemoveInstitute - the Institute still contains CourseTypes");
+
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(institute);
 		this.getSecurityService().removeObjectIdentity(institute);
-		
+
 		// Clear Membership
 		this.getMembershipService().clearMembership(institute.getMembership());
 
 		// Remove Institute
-		institute.getDepartment().remove(institute);		
+		institute.getDepartment().remove(institute);
 		this.getInstituteDao().remove(institute);
 	}
 
@@ -340,34 +341,46 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 
 	@Override
 	protected void handleRemoveCompleteInstituteTree(Long instituteId) throws Exception {
-		logger.debug("Starting method handleRemoveCompleteInstituteTree for InstituteID "+instituteId);
+		logger.debug("Starting method handleRemoveCompleteInstituteTree for InstituteID " + instituteId);
 
-		Validate.notNull(instituteId, "InstituteService.handleRemoveCompleteInstituteTree - the InstituteID cannot be null");
+		Validate.notNull(instituteId,
+				"InstituteService.handleRemoveCompleteInstituteTree - the InstituteID cannot be null");
 		Institute institute = this.getInstituteDao().load(instituteId);
 		Validate.notNull(institute,
-				"InstituteService.handleRemoveCompleteInstituteTree - no Institute found to the corresponding ID " + instituteId);
-		
+				"InstituteService.handleRemoveCompleteInstituteTree - no Institute found to the corresponding ID "
+						+ instituteId);
+
 		if (institute.getCourseTypes().isEmpty()) {
+			
 			this.removeInstitute(instituteId);
 			return;
-		}
-		
-		
-		// Remove Security
-		this.getSecurityService().removeAllPermissions(institute);
-		this.getSecurityService().removeObjectIdentity(institute);
-		
-		// Clear Membership
-		this.getMembershipService().clearMembership(institute.getMembership());
+			
+		} else {
 
-		// Remove Institute
-		institute.getDepartment().remove(institute);		
-		this.getInstituteDao().remove(institute);
-		
+			// Remove CourseTypes
+			List<CourseType> courseTypes = new ArrayList<CourseType>();
+			for (CourseType courseType:institute.getCourseTypes()) {
+				courseTypes.add(courseType);
+			}
+			for (CourseType courseType:courseTypes) {
+				this.getCourseTypeService().removeCourseType(courseType.getId());
+			}
+			
+			// Remove Security
+			this.getSecurityService().removeAllPermissions(institute);
+			this.getSecurityService().removeObjectIdentity(institute);
+
+			// Clear Membership
+			this.getMembershipService().clearMembership(institute.getMembership());
+
+			// Remove Institute
+			institute.getDepartment().remove(institute);
+			this.getInstituteDao().remove(institute);
+		}
+
 	}
 
 	/*------------------- private methods -------------------- */
-
 
 	/**
 	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self
