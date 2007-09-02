@@ -13,7 +13,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-import org.openuss.security.Group;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
@@ -29,7 +28,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#create(org.openuss.lecture.CourseInfo)
 	 */
-	public Long handleCreate(CourseInfo courseInfo) {
+	protected Long handleCreate(CourseInfo courseInfo) {
 
 		Validate.notNull(courseInfo, "CourseServiceImpl.handleCreate - courseInfo cannot be null.");
 		Validate.notNull(courseInfo.getCourseTypeId(),
@@ -62,7 +61,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#create(org.openuss.lecture.CourseInfo)
 	 */
-	public void handleRemoveCourse(Long courseId) throws Exception {
+	protected void handleRemoveCourse(Long courseId) throws Exception {
 
 		Validate.notNull(courseId, "CourseServiceImpl.handleRemoveCourse - courseId cannot be null.");
 		Course course = (Course) this.getCourseDao().load(courseId);
@@ -81,7 +80,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	}
 
 	@SuppressWarnings( { "unchecked" })
-	public List handleFindCoursesByCourseType(Long courseTypeId) {
+	protected List handleFindCoursesByCourseType(Long courseTypeId) {
 
 		Validate.notNull(courseTypeId, "CourseService.findCoursesByCourseType -" + "courseTypeId cannot be null.");
 
@@ -90,7 +89,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		return this.getCourseDao().findByCourseType(CourseDao.TRANSFORM_COURSEINFO, courseType);
 	}
 
-	public CourseInfo handleFindCourse(Long courseId) {
+	protected CourseInfo handleFindCourse(Long courseId) {
 
 		Validate.notNull(courseId, "CourseService.findCourse - courseId cannot be null.");
 
@@ -98,7 +97,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	}
 
 	@Override
-	public boolean handleIsNoneExistingCourseShortcut(CourseInfo self, String shortcut) {
+	protected boolean handleIsNoneExistingCourseShortcut(CourseInfo self, String shortcut) {
 		Course found = getCourseDao().findByShortcut(shortcut);
 		CourseInfo foundInfo = null;
 		if (found != null) {
@@ -354,7 +353,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List handleFindAllCoursesByInstitute(Long instituteId) throws Exception {
+	protected List handleFindAllCoursesByInstitute(Long instituteId) throws Exception {
 
 		Validate.notNull(instituteId, "CourseService.findAllCoursesByInstitute -" + "instituteId cannot be null.");
 
@@ -377,7 +376,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List handleFindCoursesByPeriodAndInstitute(Long periodId, Long instituteId) throws Exception {
+	protected List handleFindCoursesByPeriodAndInstitute(Long periodId, Long instituteId) throws Exception {
 
 		Validate.notNull(periodId, "CourseService.findCoursesByPeriodAndInstitute -" + "periodId cannot be null.");
 		Validate
@@ -403,7 +402,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List handleFindCoursesByActivePeriods(InstituteInfo instituteInfo) throws Exception {
+	protected List handleFindCoursesByActivePeriods(InstituteInfo instituteInfo) throws Exception {
 
 		Validate.notNull(instituteInfo, "CourseService.findCoursesByPeriodAndInstitute -"
 				+ "instituteInfo cannot be null.");
@@ -433,7 +432,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	}
 
 	@Override
-	public void handleSetCourseStatus(Long courseId, boolean status) {
+	protected void handleSetCourseStatus(Long courseId, boolean status) {
 		Validate.notNull(courseId, "CourseService.setCourseStatus -" + "courseId cannot be null.");
 		Validate.notNull(status, "CourseService.setCourseStatus -" + "status cannot be null.");
 
@@ -441,32 +440,100 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		course.setEnabled(status);
 		this.getCourseDao().update(course);
 	}
-	
+
 	@Override
+	@SuppressWarnings("unchecked")
 	protected List handleFindCoursesByActivePeriodsAndEnabled(Long instituteId, boolean enabled) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+
+		Validate.notNull(instituteId, "CourseService.handleFindCoursesByActivePeriodsAndEnabled -"
+				+ "instituteId cannot be null.");
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute, "CourseService.handleFindCoursesByActivePeriodsAndEnabled -"
+				+ "instituteInfo cannot be transformed to institute.");
+		Validate.notNull(institute.getDepartment(), "CourseService.handleFindCoursesByActivePeriodsAndEnabled -"
+				+ "department cannot be null.");
+		Validate.notNull(institute.getDepartment().getUniversity(),
+				"CourseService.handleFindCoursesByActivePeriodsAndEnabled -" + "university cannot be null.");
+
+		List<Period> periods = this.getPeriodDao().findByUniversity(institute.getDepartment().getUniversity());
+		List<CourseInfo> courses = new ArrayList<CourseInfo>();
+		Iterator iter = periods.iterator();
+		while (iter.hasNext()) {
+			Period period = (Period) iter.next();
+			if (period.isActive()) {
+				Iterator courseIter = period.getCourses().iterator();
+				while (courseIter.hasNext()) {
+					Course course = (Course) courseIter.next();
+					if (course.isEnabled() == enabled) {
+						courses.add(this.getCourseDao().toCourseInfo(course));
+					}
+				}
+			}
+		}
+		return courses;
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected List handleFindCoursesByInstituteAndEnabled(Long instituteId, boolean enabled) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Validate.notNull(instituteId, "CourseService.findAllCoursesByInstitute -" + "instituteId cannot be null.");
+
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute, "CourseService.findAllCoursesByInstitute - "
+				+ "no institute could be found with the instituteId " + instituteId);
+
+		List<CourseInfo> courses = new ArrayList<CourseInfo>();
+		Iterator iter = institute.getCourseTypes().iterator();
+		while (iter.hasNext()) {
+			CourseType courseType = (CourseType) iter.next();
+			Iterator courseIter = courseType.getCourses().iterator();
+			while (courseIter.hasNext()) {
+				Course course = (Course) courseIter.next();
+				if (course.isEnabled() == enabled) {
+					courses.add(this.getCourseDao().toCourseInfo(course));
+				}
+			}
+		}
+		return courses;
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected List handleFindCoursesByPeriodAndInstituteAndEnabled(Long periodId, Long instituteId, boolean enabled)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+
+		Validate.notNull(periodId, "CourseService.handleFindCoursesByPeriodAndInstituteAndEnabled -"
+				+ "periodId cannot be null.");
+		Validate.notNull(instituteId, "CourseService.handleFindCoursesByPeriodAndInstituteAndEnabled -"
+				+ "instituteId cannot be null.");
+
+		Period period = this.getPeriodDao().load(periodId);
+		Validate.notNull(period, "CourseService.handleFindCoursesByPeriodAndInstituteAndEnabled -"
+				+ "no period found with the corresponding periodId " + periodId);
+
+		List<Course> allCourses = this.getCourseDao().findByPeriod(period);
+		List<CourseInfo> courseInfos = new ArrayList<CourseInfo>();
+		Iterator iter = allCourses.iterator();
+		while (iter.hasNext()) {
+			Course course = (Course) iter.next();
+			if ((course.isEnabled() == enabled) && (course.getCourseType().getInstitute().getId() == instituteId)) {
+				courseInfos.add(this.getCourseDao().toCourseInfo(course));
+			}
+
+		}
+
+		return courseInfos;
 	}
+
 
 	@Override
 	protected void handleRegisterListener(LectureListener listener) throws Exception {
-		// TODO: Implement this method.
+		// TODO Auto-generated method stub
+		
 	}
-
+	
 	/*------------------- private methods -------------------- */
+
 
 	private void updateAccessTypePermission(Course course) {
 		if (course.getAccessType() != AccessType.OPEN) {
