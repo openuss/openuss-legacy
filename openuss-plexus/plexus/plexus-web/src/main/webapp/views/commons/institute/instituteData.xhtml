@@ -13,6 +13,24 @@
 		<f:validator validatorId="instituteShortcutValidator"/>
 		<f:validator validatorId="filenameValidator"/>
 	</o:input>
+	
+
+
+			 
+	<h:outputLabel value="#{msg.department_selection}"  	for="departmenSelection" styleClass="field_label"/>
+		
+	<h:selectOneListbox
+	    	     id="departmentSelection" 
+				 size="1" 
+				 value="#{views$secured$lecture$instituteoptions.departmentId}"
+				layout="pageDirection" 
+				styleClass="pulldown"
+				required="true">
+				<f:selectItems value="#{views$secured$lecture$instituteoptions.allDepartments}"/>
+	</h:selectOneListbox>
+
+	
+				
 	<h:outputLabel value="#{msg.instituteinfo_description}" for="descriptionEditor" styleClass="field_label"/>
 	<h:inputTextarea styleClass="pulldown" value="#{instituteInfo.description}" id="descriptionTextField" />
 	<o:input entity="instituteInfo" property="ownerName" maxlength="100" required="true"/>

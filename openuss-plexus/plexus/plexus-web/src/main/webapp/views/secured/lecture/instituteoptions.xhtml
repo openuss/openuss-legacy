@@ -38,41 +38,7 @@
 					<h:commandButton value="${msg.cancel}" action="institute" styleClass="button_cancel" immediate="true"/>
 		  		</o:block>
 		  	</h:form>
-		  	
-		  	<h:form id="instituteDepartment">
-			  	
-			  	<o:block label="#{msg.institute_departmentList_header}" styleClass="form_box">
-			  		<h:outputText 
-			  			value="#{departmentInfo.name}" 
-			  			styleClass="content_font_normal"/>
-			  	</o:block>
-			 
-			  	<o:block label="#{msg.institute_applicationList_header}" styleClass="form_box">
-			  		<h:outputText 
-			  			value="#{views$secured$lecture$instituteDepartments.appStatusDescription}" 
-			  			styleClass="content_font_normal"/>
-			  	</o:block>
-			  	
-				<o:block label="#{msg.institute_departments_subheading}" styleClass="form_box">
-					<h:outputText 
-						value="#{msg.department_selection}" 
-						styleClass="header_font_normal"/>
-		
-					<h:selectOneListbox
-	    				id="departmentSelection" 
-						size="1" 
-						value="#{applicationInfo.departmentInfo.id}"
-						layout="pageDirection" 
-						styleClass="pulldown_inline">
-						<f:selectItems value="#{views$secured$lecture$instituteDepartments.allDepartments}"/>
-					</h:selectOneListbox>
-					<h:commandButton 
-						value="${msg.department_members_command_add}" 
-						styleClass="button_cancel" 
-						action="#{views$secured$lecture$instituteDepartments.apply}"/>
-				</o:block>
-			</h:form>
-	  		
+	
   		</ui:define>
 	</ui:composition>
 	<!-- text above will be ignored -->

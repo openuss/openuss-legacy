@@ -22,11 +22,26 @@ import org.openuss.web.Constants;
 import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
+import org.openuss.lecture.ApplicationInfo;
+import org.openuss.lecture.DepartmentInfo;
+import org.openuss.lecture.LectureException;
+import org.openuss.lecture.UniversityInfo;
+import org.openuss.security.UserInfo;
 /**
  * 
  * @author Ingo Dueppe
  * @author Kai Stettner
  * @author Malte Stockmann
+ * @author Tianyu Wang
  */
 @Bean(name = "views$secured$lecture$instituteoptions", scope = Scope.REQUEST)
 @View
@@ -42,6 +57,14 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	
 	@Property(value = "#{uploadFileManager}")
 	private UploadFileManager uploadFileManager;
+	
+	private List<SelectItem> departmentItems;
+
+	private List<DepartmentInfo> allDepartments;
+	
+	private ApplicationInfo applicationInfo = new ApplicationInfo();
+	
+	private Long departmentId;
 	
 	@Prerender
 	public void prerender() throws LectureException {
@@ -94,6 +117,10 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		
 		instituteService.update(instituteInfo);
 		addMessage(i18n("institute_message_command_save_succeed"));
+	
+		if (departmentId!=departmentInfo.getId())
+			this.apply();
+		
 		return Constants.SUCCESS;
 	}
 	
@@ -113,6 +140,100 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		setSessionBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
 	}
 
+	/*******************************begin application*********************/ 	
+	private static ResourceBundle getResourceBundle(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		ResourceBundle rb = ResourceBundle.getBundle(
+				context.getApplication().getMessageBundle(), 
+				context.getViewRoot().getLocale());
+		return rb;
+	}
+	private Long getUniversityId(){
+		Long departmentId = instituteService.findInstitute(instituteInfo.getId()).getDepartmentId();
+		Long  universityId= departmentService.findDepartment(departmentId).getUniversityId();
+		UniversityInfo universityInfo = universityService.findUniversity(universityId); 
+		return universityInfo.getId();
+	}
+	public List<SelectItem> getAllDepartments(){
+		
+		ResourceBundle rb = getResourceBundle();
+		ApplicationInfo app = instituteService.findApplicationByInstitute(instituteInfo.getId());
+		String appStatusDescription="";
+		if (app!=null)
+		{
+			departmentId = app.getDepartmentInfo().getId();
+					
+			if (app.isConfirmed())			
+				appStatusDescription  =  rb.getString("application_accept_info");
+			else
+			appStatusDescription  =  rb.getString("application_working_info");
+			
+		}
+		else
+			departmentId=instituteInfo.getDepartmentId();
+		
+		
+		departmentItems = new ArrayList<SelectItem>();
+				
+		logger.info("universityId:"+getUniversityId());
+		allDepartments = departmentService.findDepartmentsByUniversity(getUniversityId());
+		Iterator<DepartmentInfo> iter = allDepartments.iterator();
+		DepartmentInfo department;
+		SelectItem item;
+		while (iter.hasNext()){
+			department = iter.next();
+			if (department.getId()==departmentId)
+				item = new SelectItem(department.getId(), department.getName()+ appStatusDescription);
+			else
+				item = new SelectItem(department.getId(), department.getName());
+			departmentItems.add(item);
+		}
+		
+		logger.info("DepartmentId:" + allDepartments.get(0).getId());
+		return departmentItems;
+	
+	}
+	
+	private String apply(){
+		signoffInstitute();
+		logger.debug("Debug apply");
+		
+		logger.debug("InstituteI"+instituteInfo.getId());
+		
+		UserInfo userInfo = new UserInfo();
+		userInfo.setId(user.getId());
+		DepartmentInfo appliedDepartment = new DepartmentInfo();
+		appliedDepartment.setId(departmentId);
+		applicationInfo.setApplyingUserInfo(userInfo);
+		applicationInfo.setInstituteInfo(instituteInfo);
+		applicationInfo.setDepartmentInfo(appliedDepartment);
+		
+		
+		try{
+			Long app = instituteService.applyAtDepartment(applicationInfo);
+			}
+		catch(Exception e){;}
+		
+		
+		return Constants.SUCCESS;
+	}
+	
+  
+    	
+    private String signoffInstitute(){
+    	try{
+    	departmentService.signoffInstitute(instituteInfo.getId());
+    	Long departmentId = instituteService.findInstitute(instituteInfo.getId()).getDepartmentId();
+    	DepartmentInfo departmentInfo = departmentService.findDepartment(departmentId);
+    	setSessionBean(Constants.DEPARTMENT_INFO,departmentInfo);}
+    	catch(Exception e){;}
+    	
+    	  	
+    	return Constants.SUCCESS;
+    }
+    /*******************************end application*********************/ 	
+    
+    
 	public SecurityService getSecurityService() {
 		return securityService;
 	}
@@ -136,5 +257,19 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	public void setUploadFileManager(UploadFileManager uploadFileManager) {
 		this.uploadFileManager = uploadFileManager;
 	}
-	
+	public ApplicationInfo getApplicationInfo() {
+		return applicationInfo;
+	}
+
+	public void setApplicationInfo(ApplicationInfo applicationInfo) {
+		this.applicationInfo = applicationInfo;
+	}
+
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
+	}
 }
