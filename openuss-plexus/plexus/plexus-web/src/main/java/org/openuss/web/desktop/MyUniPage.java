@@ -84,6 +84,12 @@ public class MyUniPage extends BasePage {
 	private UITabs tabs;
 	private Desktop desktop;
 	
+	private boolean prerenderCalled = false;
+	private boolean tabDataLoaded = false;
+	private boolean instituteListDataLoaded = false;
+	private boolean departmentListDataLoaded = false;
+	private boolean courseListDataLoaded = false;
+	
 	private Map<Long, MyUniInfo> myUniData;
 
 	private static final String myUniBasePath = "/openuss-plexus/views/secured/myuni/myuni.faces";
@@ -100,10 +106,14 @@ public class MyUniPage extends BasePage {
 	@Prerender
 	public void prerender() {
 		logger.debug("Prerender MyUni-Page");
+		prerenderCalled = true;
 		refreshDesktop();
+		
+		// Load paramenters from request
 		loadParams();
 		removeBookmarks();
 		prepareData();
+		loadValuesForComponents();
 		breadcrumbs.loadMyUniCrumbs();
 	}
 	
@@ -209,72 +219,118 @@ public class MyUniPage extends BasePage {
 			}
 		}
 	}
+	
+	/*
+	 * This is called by the prerender method after bookmarks
+	 * have been removed to make sure that the current state
+	 * of bookmarks is shown
+	 */
+	private void loadValuesForComponents()
+	{
+		if(tabs != null)
+			loadValuesForTabs(tabs);
+		
+		if(departmentsList != null)
+			loadValuesForDepartmentList(departmentsList);
+		
+		if(institutesList != null)
+			loadValuesForInstituteList(institutesList);
+		
+		if(coursesList != null)
+			loadValuesForCourseList(coursesList);
+	}
 
 
 	private void loadValuesForDepartmentList(UIFlexList departmentsList)
 	{
-		logger.debug("Setting values for departments flexlist");
-		if(departmentsList != null)
+		if(departmentListDataLoaded == false && 
+			prerenderCalled == true &&
+			departmentsList != null)
 		{
+			logger.debug("Loading data for departments flexlist");
+			// Make sure myUni-Data is loaded
 			prepareData();
+			
+			// Get the current university id
 			Long universityId = chooseUniversity();
 			
-			
-/*			if(universityId != null && myUniDataSet != null && departmentsList != null)
-			{
-				departmentsList.getAttributes().put("visibleItems", myUniDataSet.getDepartments(universityId));
-			}
-*/
+			// Put data in the component's attributes
 			if(universityId != null && myUniData != null)
 			{
 				departmentsList.getAttributes().put("visibleItems", getDepartmentListItems(universityId));
-			}
+			
+				// Make sure this isn't executed twice
+				departmentListDataLoaded = true;
+			}			
 		}
 	}
 
 	private void loadValuesForInstituteList(UIFlexList institutesList)
 	{
-		logger.debug("Setting values for institutes flexlist");
-		if(institutesList != null)
+		if(instituteListDataLoaded == false &&
+			prerenderCalled == true &&
+			institutesList != null)
 		{
+			logger.debug("Loading data for institutes flexlist");
+			// Make sure myUni-Data is loaded
 			prepareData();
+			
+			// Get the current university id
 			Long universityId = chooseUniversity();
-				
+			
+			// Put data in the component's attributes
 			if(universityId != null && myUniData != null)
 			{
 				institutesList.getAttributes().put("visibleItems", getVisibleInstituteListItems(universityId));
 				institutesList.getAttributes().put("hiddenItems", getHiddenInstituteListItems(universityId));
+			
+				// Make sure this isn't executed twice
+				instituteListDataLoaded = true;
 			}
 		}
 	}
 
 	private void loadValuesForCourseList(UIFlexList coursesList)
 	{
-		logger.debug("Setting values for courses flexlist");
-		if(coursesList != null)
+		if(courseListDataLoaded == false &&
+			prerenderCalled == true &&
+			coursesList != null)
 		{
+			logger.debug("Loading data for courses flexlist");
+			// Make sure myUni-Data is loaded
 			prepareData();
+			
+			// Get the current university id
 			Long universityId = chooseUniversity();
 			
+			// Put data in the component's attributes
 			if(universityId != null && myUniData != null)
 			{
 				coursesList.getAttributes().put("visibleItems", getVisibleCourseListItems(universityId));
 				coursesList.getAttributes().put("hiddenItems", getHiddenCourseListItems(universityId));
+				
+				// Make sure this isn't executed twice
+				courseListDataLoaded = true;
 			}
 		}
 	}
 
 	private void loadValuesForTabs(UITabs tabs)
 	{
-		logger.debug("Setting values for MyUni-Tabs");
-		if(tabs != null)
-			{
+		if(tabDataLoaded == false && 
+			prerenderCalled == true &&
+			tabs != null)
+		{
+			logger.debug("Loading data for MyUni-Tabs");
+			// Make sure myUni-Data is loaded
 			prepareData();
-			Long universityId = chooseUniversity();
 			
+			// Get the current university id
+			Long universityId = chooseUniversity();
 			
 			if(universityId != null && myUniData != null)
 			{
+				// Prepare list of ListItemDAOs for the tab component
 				MyUniUniversityInfo universityInfo;
 				ListItemDAO newItem;
 				ListItemDAO currentItem = null;
@@ -301,8 +357,12 @@ public class MyUniPage extends BasePage {
 					}
 				}
 				
+				// Put data in the component's attributes
 				tabs.getAttributes().put("currentItem", currentItem);
 				tabs.getAttributes().put("items", items);
+				
+				// Make sure this isn't executed twice
+				tabDataLoaded = true;
 			}
 		}
 	}
