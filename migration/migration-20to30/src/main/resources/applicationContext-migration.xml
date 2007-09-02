@@ -67,6 +67,16 @@
 		<property name="legacySessionFactory" ref="legacySessionFactory"/>
 	</bean>
 
+	<bean id="newsLetterImport" class="org.openuss.migration.from20to30.NewsLetterImport" scope="singleton">
+		<property name="legacyDao" ref="legacyDao"/>
+		<property name="legacySessionFactory" ref="legacySessionFactory"/>
+		<property name="courseDao" ref="courseDao"/>
+		<property name="mailDao" ref="mailDao"/>
+		<property name="newsletterDao" ref="newsletterDao"/>
+		<property name="newsletterService" ref="newsletterService"/>
+		<property name="identifierDao" ref="identifierDao"/>
+	</bean>
+
 	<bean id="courseMemberImport" class="org.openuss.migration.from20to30.CourseMemberImport" scope="singleton">
 		<property name="legacyDao" ref="legacyDao"/>
 		<property name="userImport" ref="userImport"/>
@@ -112,6 +122,12 @@
 		<property name="target">
 			<ref bean="courseMemberImport"/>
 		</property>
+
+	</bean>
+	<bean id="newsLetterImportTx" parent="template_tx">
+		<property name="target">
+			<ref bean="newsLetterImport"/>
+		</property>
 	</bean>
 	
 
@@ -126,6 +142,7 @@
 		<property name="courseMemberImport" ref="courseMemberImportTx"/>
 		<property name="newsImport" ref="newsImportTx"/>
 		<property name="documentImport" ref="documentImport"/>
+		<property name="newsLetterImport" ref="newsLetterImportTx"/>
 	</bean>
 	
 	<!-- Spring Cache Manager Configuration  -->

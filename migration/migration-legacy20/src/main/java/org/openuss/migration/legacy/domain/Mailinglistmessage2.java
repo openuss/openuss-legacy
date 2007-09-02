@@ -11,7 +11,7 @@ public class Mailinglistmessage2 implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1959115979172111433L;
 	private String id;
-	private Enrollment2 enrollment2;
+	private String enrollmentPk;
 	private Date ddate;
 	private String title;
 	private String body;
@@ -28,9 +28,9 @@ public class Mailinglistmessage2 implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Mailinglistmessage2(String id, Enrollment2 enrollment2, Date ddate, String title, String body) {
+	public Mailinglistmessage2(String id, String enrollment2, Date ddate, String title, String body) {
 		this.id = id;
-		this.enrollment2 = enrollment2;
+		this.enrollmentPk = enrollment2;
 		this.ddate = ddate;
 		this.title = title;
 		this.body = body;
@@ -45,12 +45,12 @@ public class Mailinglistmessage2 implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Enrollment2 getEnrollment() {
-		return this.enrollment2;
+	public String getEnrollmentPk() {
+		return this.enrollmentPk;
 	}
 
-	public void setEnrollment(Enrollment2 enrollment2) {
-		this.enrollment2 = enrollment2;
+	public void setEnrollmentPk(String enrollment2) {
+		this.enrollmentPk = enrollment2;
 	}
 
 	public Date getDdate() {

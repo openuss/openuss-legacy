@@ -71,6 +71,9 @@ public class LegacyIdentifierDao extends SimpleJdbcDaoSupport implements Initial
 
 	/** <code>SELECT USERNAME FROM LEGACY_CONSOLIDATED WHERE ID = ? </code> */
 	private static final String SQL_CONSOLIDATED_SELECT = "SELECT USERNAME FROM LEGACY_CONSOLIDATED WHERE ID = ?";
+	
+	/** <code>INSERT INTO NEWSLETTER_SUBSCRIBER (ID, BLOCKED, NEWSLETTER_FK, USER_FK) VALUES (GEN_ID(GLOBAL_SEQUENCE,0) , 0, ?, ?)</code> */
+	private static final String SQL_INSERT_NEWSLETTER_SUBSCRIBER = "INSERT INTO NEWSLETTER_SUBCRIBER (ID, BLOCKED, NEWSLETTER_FK, USER_FK) VALUES (GEN_ID(GLOBAL_SEQUENCE,1) , 0, ?, ?)";
 
 	/**
 	 * Retrieve all new imported user ids
@@ -174,6 +177,10 @@ public class LegacyIdentifierDao extends SimpleJdbcDaoSupport implements Initial
 			logger.debug("legacy id " + legacyId + " not found!");
 			return null;
 		}
+	}
+	
+	public void insertNewsletterSubscriber(Long newsLetterId, Long userId) {
+		getSimpleJdbcTemplate().update(SQL_INSERT_NEWSLETTER_SUBSCRIBER, newsLetterId, userId);
 	}
 
 	@Override

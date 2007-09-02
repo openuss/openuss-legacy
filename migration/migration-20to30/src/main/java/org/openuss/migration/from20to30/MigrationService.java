@@ -42,6 +42,9 @@ public class MigrationService {
 	
 	/** Course membership import */
 	private CourseMemberImport courseMemberImport;
+	
+	/** NewsLetterImport */
+	private NewsLetterImport newsLetterImport;
 
 	/** Legacy hibernate session */
 	private Session legacySession;
@@ -57,7 +60,8 @@ public class MigrationService {
 //		newsImport.perform(); 
 //		desktopImport.perform();
 //		courseMemberImport.perform();
-		documentImport.perform();
+//		documentImport.perform();
+		newsLetterImport.perform();
 		
 		legacyTx.rollback();
 		legacySession.close();
@@ -137,6 +141,10 @@ public class MigrationService {
 
 	public void setCourseMemberImport(CourseMemberImport courseMemberImport) {
 		this.courseMemberImport = courseMemberImport;
+	}
+
+	public void setNewsLetterImport(NewsLetterImport newsLetterImport) {
+		this.newsLetterImport = newsLetterImport;
 	}
 
 }

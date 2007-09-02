@@ -10,9 +10,9 @@
             <column name="ID" length="30" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="enrollment" class="org.openuss.migration.legacy.domain.Enrollment2" fetch="select">
+        <property name="enrollmentpk" type="string">
             <column name="ENROLLMENTPK" length="30" />
-        </many-to-one>
+        </property>
         <property name="memberpk" type="string">
             <column name="MEMBERPK" length="30" />
         </property>
