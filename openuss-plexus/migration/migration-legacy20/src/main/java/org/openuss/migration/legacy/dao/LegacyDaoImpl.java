@@ -111,17 +111,6 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 		return query("from Enrollmentaccesslist2 order by enrollment");
 	}
 	
-	private ScrollableResults query (final String hql) {
-		return (ScrollableResults) this.getHibernateTemplate().execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				Query query = session.createQuery(hql);
-				query.setFetchSize(20);
-				query.setCacheable(false);
-				query.setFlushMode(FlushMode.ALWAYS);
-				return query.scroll(ScrollMode.FORWARD_ONLY);
-			}
-		});
-	}
 
 	public byte[] loadLectureFileData(String id) {
 		Lecturefilebase2 base = (Lecturefilebase2) this.getHibernateTemplate().load(Lecturefilebase2.class, id);
@@ -142,6 +131,26 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 			}
 		}
 		return null;
+	}
+
+	public ScrollableResults loadAllMailingListSubscribers() {
+		return query("from Mailinglist2 order by enrollmentpk");
+	}
+
+	public ScrollableResults loadAllMailingListMessages() {
+		return query("from Mailinglistmessage2 order by enrollmentPk");
+	}
+
+	private ScrollableResults query (final String hql) {
+		return (ScrollableResults) this.getHibernateTemplate().execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				Query query = session.createQuery(hql);
+				query.setFetchSize(20);
+				query.setCacheable(false);
+				query.setFlushMode(FlushMode.ALWAYS);
+				return query.scroll(ScrollMode.FORWARD_ONLY);
+			}
+		});
 	}
 
 }
