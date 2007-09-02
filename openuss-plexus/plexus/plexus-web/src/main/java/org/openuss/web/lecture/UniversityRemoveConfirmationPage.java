@@ -34,7 +34,7 @@ public class UniversityRemoveConfirmationPage extends AbstractUniversityPage {
 	 * @throws LectureException
 	 */
 	public String removeCompleteUniversityTree() throws LectureException {
-		universityService.removeUniversity(universityInfo.getId());
+		universityService.removeCompleteUniversityTree(universityInfo.getId());
 		addMessage(i18n("message_university_removed"));
 		return Constants.UNIVERSITIES_ADMIN_PAGE;
 	}

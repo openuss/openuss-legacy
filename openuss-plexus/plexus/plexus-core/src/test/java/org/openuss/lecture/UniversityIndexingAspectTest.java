@@ -56,7 +56,7 @@ private static final Logger logger = Logger.getLogger(UniversityIndexingAspectTe
 		assertEquals(1, indexerMock.update);
 		// delete university
 		// indexMockDelete should be 1 --> Deleting institute index works properly
-		universityService.removeUniversity(universityId);
+		universityService.removeCompleteUniversityTree(universityId);
 		assertEquals(1, indexerMock.delete);
 	}
 	
