@@ -46,7 +46,7 @@
 				rows="10">
 
 				<t:column>
-					<plexus:commandSortHeader columnName="mailTitle"> #{msg['newsletter_mailtitle']} </plexus:commandSortHeader>
+					<plexus:commandSortHeader columnName="subject"> #{msg['newsletter_mailtitle']} </plexus:commandSortHeader>
 					<h:commandLink value="#{mail.subject}" action="#{views$secured$newsletter$newsletter.showMail}" title="#{mail.subject}" />
 				</t:column>
 
@@ -59,7 +59,7 @@
 				</t:column>
 
 				<t:column>
-					<plexus:commandSortHeader columnName="sendingTime">#{msg['newsletter_sendingtime']}</plexus:commandSortHeader>
+					<plexus:commandSortHeader columnName="sendDate">#{msg['newsletter_sendingtime']}</plexus:commandSortHeader>
 					<h:outputText id="sendDate" value="#{mail.sendDate}">
 						<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 					</h:outputText>					

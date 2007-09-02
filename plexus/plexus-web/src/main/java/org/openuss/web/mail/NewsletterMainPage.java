@@ -51,6 +51,7 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 		@Override 
 		public DataPage<MailInfo> getDataPage(int startRow, int pageSize) {		
 			List<MailInfo> al = courseNewsletterService.getMails(courseInfo);			
+			sort(al);
 			page = new DataPage<MailInfo>(al.size(),0,al);
 			return page;
 		}
