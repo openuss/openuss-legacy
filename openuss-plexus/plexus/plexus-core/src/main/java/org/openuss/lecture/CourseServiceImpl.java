@@ -441,6 +441,25 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		course.setEnabled(status);
 		this.getCourseDao().update(course);
 	}
+	
+	@Override
+	protected List handleFindCoursesByActivePeriodsAndEnabled(Long instituteId, boolean enabled) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List handleFindCoursesByInstituteAndEnabled(Long instituteId, boolean enabled) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List handleFindCoursesByPeriodAndInstituteAndEnabled(Long periodId, Long instituteId, boolean enabled)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	protected void handleRegisterListener(LectureListener listener) throws Exception {
