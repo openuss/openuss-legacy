@@ -21,14 +21,21 @@
 	<body>      
 	<f:loadBundle basename="resources" var="msg" />
 	<!-- text above will be ignored -->
-	<ui:composition template="/views/layout/layout.xhtml">
-  		<ui:define name="title"><h:outputText value="#{msg.welcome_headline}"/></ui:define>
+	<ui:composition template="/views/layout/welcome.xhtml">
+  		<ui:define name="title">
+  			<h:outputText value="#{msg.welcome_headline}"/>
+  		</ui:define>
 		<ui:define name="navigation"> 
 			<ui:include src="/views/commons/navigation/desktop.xhtml" />
 		</ui:define>
   		<ui:define name="content">
   			<o:block styleClass="empty_box"> 
-  				<h:outputText value="#{msg.welcome_headline}" styleClass="header_font_normal"/>
+  				<h:outputLink action="home">
+					<b><h:outputText value="#{msg.home} - "/></b>
+	  				<h:outputFormat value="#{msg.desktop_heading}" styleClass="header_font_normal">
+						<f:param value="#{user.contact.firstName} #{user.contact.lastName}" />
+					</h:outputFormat>
+				</h:outputLink>
   			</o:block> 
   			<o:block styleClass="teaser_blue_right" label="#{msg.welcome_barometer_header}">
 			  		<h:panelGrid columns="2">

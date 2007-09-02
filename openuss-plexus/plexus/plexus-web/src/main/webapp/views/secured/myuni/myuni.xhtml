@@ -27,9 +27,7 @@
 <f:loadBundle basename="resources" var="msg" />
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="title">
-		<h:outputFormat value="#{msg.desktop_heading}">
-			<f:param value="#{user.contact.firstName} #{user.contact.lastName}" />
-		</h:outputFormat>
+		<h:outputText value="#{msg.desktop_command_myuni}"/>
 	</ui:define>
 	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/desktop.xhtml" />
@@ -38,16 +36,9 @@
 		<ui:include src="/views/commons/sidebar/whoisonline.xhtml" />
 	</ui:define>
 	<ui:define name="content">
-		<o:block>
-			<h:outputFormat value="#{msg.desktop_heading}"
-				styleClass="header_font_normal">
-				<f:param value="#{user.contact.firstName} #{user.contact.lastName}" />
-			</h:outputFormat>
-		</o:block>
 		<div class="content_box">
 			<o:flexlist_tabs binding="#{views$secured$myuni$myuni.tabs}">
 			</o:flexlist_tabs>
-		
 		<div class="content_normal">
 			<o:flexlist binding="#{views$secured$myuni$myuni.departmentsList}">
 			</o:flexlist> 
