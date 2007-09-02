@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.CacheMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -45,24 +46,28 @@ public class MigrationService {
 	/** Legacy hibernate session */
 	private Session legacySession;
 
+	private Transaction legacyTx;
+
 	public void importData() {
 		logger.info("initialize databses");
 
 		legacySession = openAndBindNewSession(legacySessionFactory);
-//		userImport.performImportOfUserData();
-		lectureImport.performImportOfLectureData();
-//		newsImport.importCourseInformations();
-//		newsImport.importFacultyInformations();
-//		desktopImport.importDesktops();
-//		courseMemberImport.importMembers();
-//		documentImport.importDocuments();
+//		userImport.perform();
+//		lectureImport.perform();
+//		newsImport.perform(); 
+//		desktopImport.perform();
+//		courseMemberImport.perform();
+		documentImport.perform();
 		
+		legacyTx.rollback();
 		legacySession.close();
+		
 	}
 
 	private Session openAndBindNewSession(SessionFactory sessionFactory) {
 		Session session = sessionFactory.openSession();
 		session.setCacheMode(CacheMode.IGNORE);
+		legacyTx = session.beginTransaction();
 		TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
 		return session;
 	}

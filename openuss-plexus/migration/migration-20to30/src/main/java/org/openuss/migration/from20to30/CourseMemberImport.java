@@ -1,8 +1,7 @@
 package org.openuss.migration.from20to30;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
+import org.hibernate.ScrollableResults;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseMember;
 import org.openuss.lecture.CourseMemberDao;
@@ -50,10 +49,11 @@ public class CourseMemberImport  {
 	/** ObjectIdentityDao */
 	private ObjectIdentityDao objectIdentityDao;
 	
-	public void importMembers() {
+	public void perform() {
 		logger.debug("loading course member data");
-		List<Enrollmentaccesslist2> accesslist = legacyDao.loadAllEnrollmentAccessList();
-		for (Enrollmentaccesslist2 access : accesslist) {
+		ScrollableResults results = legacyDao.loadAllEnrollmentAccessList();
+		while (results.next()) {
+			Enrollmentaccesslist2 access = (Enrollmentaccesslist2) results.get()[0];
 			Enrollment2 enrollment = access.getEnrollment();
 			Student2 student = access.getStudent();
 			if (enrollment != null && student != null) {
@@ -66,6 +66,7 @@ public class CourseMemberImport  {
 				}
 			}
 		}
+		results.close();
 	}
 
 	private void createMembership(Enrollmentaccesslist2 access, Course course, User user) {

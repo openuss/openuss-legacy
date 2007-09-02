@@ -129,7 +129,7 @@ public class LegacyIdentifierDao extends SimpleJdbcDaoSupport implements Initial
 	 * @param user
 	 */
 	public void insertLegacyId(String legacyId, Long id) {
-		logger.debug("insert " + legacyId + " - " + id);
+		logger.trace("insert " + legacyId + " - " + id);
 		getSimpleJdbcTemplate().update(SQL_LEGACYIDS_INSERT_ID, legacyId, id);
 	}
 
@@ -140,7 +140,7 @@ public class LegacyIdentifierDao extends SimpleJdbcDaoSupport implements Initial
 	 * @param user
 	 */
 	public void insertUserId(String legacyId, Long id) {
-		logger.debug("insert " + legacyId + " - " + id);
+		logger.trace("insert " + legacyId + " - " + id);
 		getSimpleJdbcTemplate().update(SQL_USERIDS_INSERT_ID, legacyId, id);
 	}
 
@@ -151,7 +151,7 @@ public class LegacyIdentifierDao extends SimpleJdbcDaoSupport implements Initial
 	 * @return user id
 	 */
 	public Long getUserId(String legacyId) {
-		logger.debug("looking for " + legacyId);
+		logger.trace("looking for " + legacyId);
 		try {
 			return getSimpleJdbcTemplate().queryForLong(SQL_USERIDS_SELECT_ID, legacyId);
 		} catch (Throwable e) {
@@ -167,7 +167,7 @@ public class LegacyIdentifierDao extends SimpleJdbcDaoSupport implements Initial
 	 * @return user id
 	 */
 	public Long getId(String legacyId) {
-		logger.debug("looking for " + legacyId);
+		logger.trace("looking for " + legacyId);
 		try {
 			return getSimpleJdbcTemplate().queryForLong(SQL_LEGACYIDS_SELECT_ID, legacyId);
 		} catch (Throwable e) {

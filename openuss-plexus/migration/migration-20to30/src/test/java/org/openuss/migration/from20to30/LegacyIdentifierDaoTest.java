@@ -10,6 +10,7 @@ public class LegacyIdentifierDaoTest extends AbstractTransactionalDataSourceSpri
 	private LegacyIdentifierDao identifierDao;
 	
 	public void testInsertUserId() {
+		int size = identifierDao.loadAllNewUserIds().size();
 		assertNotNull(identifierDao.getDataSource());
 		String legacyId = generateString();
 		Long id = System.currentTimeMillis();
@@ -21,7 +22,7 @@ public class LegacyIdentifierDaoTest extends AbstractTransactionalDataSourceSpri
 		List<Long> newIds = identifierDao.loadAllNewUserIds();
 		assertTrue(newIds.contains(id));
 		assertTrue(newIds.contains(id+1));
-		assertEquals(2, newIds.size());
+		assertEquals(size+2, newIds.size());
 				
 		assertEquals(id, identifierDao.getUserId(legacyId));
 		assertNull(identifierDao.getUserId("NOTAVAILABLE"));

@@ -1,39 +1,43 @@
 package org.openuss.migration.legacy.dao;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.sql.SQLException;
 import java.util.List;
 
+import org.hibernate.FlushMode;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
+import org.hibernate.Session;
+import org.openuss.business.extension.lecture.file.filedescription.lecturefilebase.LectureFileObject;
 import org.openuss.migration.legacy.domain.Assistant2;
-import org.openuss.migration.legacy.domain.Assistantenrollment2;
-import org.openuss.migration.legacy.domain.Assistantfaculty2;
-import org.openuss.migration.legacy.domain.Enrollmentaccesslist2;
-import org.openuss.migration.legacy.domain.Enrollmentinformation2;
 import org.openuss.migration.legacy.domain.Faculty2;
-import org.openuss.migration.legacy.domain.Facultyinformation2;
 import org.openuss.migration.legacy.domain.Filebase2;
-import org.openuss.migration.legacy.domain.Lecture2;
+import org.openuss.migration.legacy.domain.Lecturefilebase2;
 import org.openuss.migration.legacy.domain.Student2;
-import org.openuss.migration.legacy.domain.Studentenrollment2;
-import org.openuss.migration.legacy.domain.Studentfaculty2;
-import org.openuss.migration.legacy.domain.Studentsubject2;
+import org.springframework.orm.hibernate3.HibernateCallback;
 
 /**
  * 
  * @author Ingo Dueppe
  */
 public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.HibernateDaoSupport implements LegacyDao {
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public Assistant2 loadAssistant(String id) {
 		return (Assistant2) this.getHibernateTemplate().get(Assistant2.class, id);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Assistant2> loadAllAssistants() {
-		return (List<Assistant2>) this.getHibernateTemplate().loadAll(Assistant2.class);
+	public ScrollableResults loadAllAssistants() {
+		return query("from Assistant2");
 	}
 
 	/**
@@ -46,8 +50,8 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Student2> loadAllStudents() {
-		return (List<Student2>) this.getHibernateTemplate().loadAll(Student2.class);
+	public ScrollableResults loadAllStudents() {
+		return query("from Student2");
 	}
 
 	/**
@@ -57,56 +61,87 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 		return (List<Faculty2>) this.getHibernateTemplate().loadAll(Faculty2.class);
 	}
 
-	
 	/** {@inheritDoc} */
 	public Faculty2 loadFaculty(String id) {
 		return (Faculty2) this.getHibernateTemplate().load(Faculty2.class, id);
 	}
 
 	/** {@inheritDoc} */
-	public List<Assistantenrollment2> loadAllAssistantEnrollments() {
-		return (List<Assistantenrollment2>) this.getHibernateTemplate().loadAll(Assistantenrollment2.class);
+	public ScrollableResults loadAllAssistantEnrollments() {
+		return query("from Assistantenrollment2");
 	}
 
 	/** {@inheritDoc} */
-	public List<Assistantfaculty2> loadAllAssistantFaculty() {
-		return (List<Assistantfaculty2>) this.getHibernateTemplate().loadAll(Assistantfaculty2.class);
+	public ScrollableResults loadAllAssistantFaculty() {
+		return query("from Assistantfaculty2");
 	}
 
 	/** {@inheritDoc} */
-	public List<Studentenrollment2> loadAllStudentEnrollments() {
-		return (List<Studentenrollment2>) this.getHibernateTemplate().loadAll(Studentenrollment2.class);
+	public ScrollableResults loadAllStudentEnrollments() {
+		return query("from Studentenrollment2");
 	}
 
 	/** {@inheritDoc} */
-	public List<Studentfaculty2> loadAllStudentFaculty() {
-		return (List<Studentfaculty2>) this.getHibernateTemplate().loadAll(Studentfaculty2.class);
+	public ScrollableResults loadAllStudentFaculty() {
+		return query("from Studentfaculty2");
 	}
 
 	/** {@inheritDoc} */
-	public List<Studentsubject2> loadAllStudentSubject() {
-		return (List<Studentsubject2>) this.getHibernateTemplate().loadAll(Studentsubject2.class);
+	public ScrollableResults loadAllStudentSubject() {
+		return query("from Studentsubject2");
 	}
 
-	public List<Facultyinformation2> loadAllFacultyInformation() {
-		return (List<Facultyinformation2>) this.getHibernateTemplate().find("from Facultyinformation2 order by faculty");
+	public ScrollableResults loadAllFacultyInformation() {
+		return query("from Facultyinformation2 order by faculty");
 	}
 
 	public Filebase2 loadFileBase(String id) {
 		return (Filebase2) this.getHibernateTemplate().load(Filebase2.class, id);
 	}
 
-	public List<Enrollmentinformation2> loadAllEnrollmentInformation() {
-		return (List<Enrollmentinformation2>) this.getHibernateTemplate().find("from Enrollmentinformation2 info order by enrollmentpk");
+	public ScrollableResults loadAllEnrollmentInformation() {
+		return query("from Enrollmentinformation2 info order by enrollmentpk");
 	}
 
-	public List<Lecture2> loadAllLectures() {
-		return (List<Lecture2>) this.getHibernateTemplate().loadAll(Lecture2.class);
+	public ScrollableResults loadAllLectures() {
+		return query ("from Lecture2 ");
 	}
 
-	public List<Enrollmentaccesslist2> loadAllEnrollmentAccessList() {
-		return (List<Enrollmentaccesslist2>)this.getHibernateTemplate().find("from Enrollmentaccesslist2 order by enrollment ");
-		
+	public ScrollableResults loadAllEnrollmentAccessList() {
+		return query("from Enrollmentaccesslist2 order by enrollment");
+	}
+	
+	private ScrollableResults query (final String hql) {
+		return (ScrollableResults) this.getHibernateTemplate().execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				Query query = session.createQuery(hql);
+				query.setFetchSize(20);
+				query.setCacheable(false);
+				query.setFlushMode(FlushMode.ALWAYS);
+				return query.scroll(ScrollMode.FORWARD_ONLY);
+			}
+		});
+	}
+
+	public byte[] loadLectureFileData(String id) {
+		Lecturefilebase2 base = (Lecturefilebase2) this.getHibernateTemplate().load(Lecturefilebase2.class, id);
+		if (base != null) {
+			try {
+				ByteArrayInputStream bis = new ByteArrayInputStream(base.getBasefile());
+				ObjectInputStream ois = new ObjectInputStream(bis);
+				LectureFileObject fileObject = (LectureFileObject) ois.readObject();
+				ois.close();
+				bis.close();
+				byte[] data = fileObject.getData();
+				getSession().evict(base);
+				return data;
+			} catch (ClassNotFoundException e) {
+				logger.error(e);
+			} catch (IOException e) {
+				logger.error(e);
+			}
+		}
+		return null;
 	}
 
 }

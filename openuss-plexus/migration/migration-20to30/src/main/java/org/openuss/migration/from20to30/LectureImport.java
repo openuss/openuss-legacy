@@ -85,7 +85,7 @@ public class LectureImport {
 	 * These objects will be transformed to institute, period, coursetype and
 	 * course objects.
 	 */
-	public void performImportOfLectureData() {
+	public void perform() {
 		logger.info("loading institutes structures...");
 		loadFaculties();
 		loadSubjectsSemesterEnrollments();

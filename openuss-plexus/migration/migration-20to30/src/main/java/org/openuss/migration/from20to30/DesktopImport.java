@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.hibernate.ScrollableResults;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopDao;
 import org.openuss.lecture.Course;
@@ -32,13 +33,13 @@ public class DesktopImport {
 
 	/** UserImport */
 	private UserImport userImport;
-	
+
 	/** LectureImport */
 	private LectureImport lectureImport;
 
 	/** DesktopDao */
 	private DesktopDao desktopDao;
-	
+
 	/** LegacyDao */
 	private LegacyDao legacyDao;
 
@@ -48,18 +49,14 @@ public class DesktopImport {
 	/** List of desktop objects */
 	private Set<Desktop> desktops = new HashSet<Desktop>();
 
-	public UserImport getUserImport() {
-		return userImport;
-	}
-
-	public void importDesktops(){
+	public void perform() {
 		logger.info("parsing desktops...");
 		parseDesktops();
 		logger.debug("persisting user desktops");
 		desktopDao.create(desktops);
-		
+
 		ImportUtil.refresh(user2desktop);
-		
+
 		logger.info("parsing desktop links...");
 		importLinks();
 		logger.info("updating user desktops");
@@ -69,10 +66,10 @@ public class DesktopImport {
 		user2desktop = null;
 		desktops = null;
 	}
-	
+
 	private void parseDesktops() {
 		logger.info("creating desktops for users");
-		for (Long userId: userImport.loadAllNewUserIds()) {
+		for (Long userId : userImport.loadAllNewUserIds()) {
 			Desktop desktop = Desktop.Factory.newInstance();
 			User user = userImport.loadUser(userId);
 			desktop.setUser(user);
@@ -80,73 +77,76 @@ public class DesktopImport {
 			desktops.add(desktop);
 		}
 	}
-	
+
 	private void importLinks() {
 		logger.debug("creating assistant desktop links for courses...");
-		for (Assistantenrollment2 assistEnrollment: legacyDao.loadAllAssistantEnrollments() ) {
+		ScrollableResults results = legacyDao.loadAllAssistantEnrollments();
+		while (results.next()) {
+			Assistantenrollment2 assistEnrollment = (Assistantenrollment2) results.get()[0];
 			Desktop desktop = user2desktop.get(assistEnrollment.getAssistant().getId());
 			if (desktop != null) {
 				Course course = lectureImport.getCourseByLegacyId(assistEnrollment.getEnrollment().getId());
 				desktop.getCourses().add(course);
 			}
 		}
+		results.close();
 		logger.debug("creating assistant desktop links for faculties...");
-		for (Assistantfaculty2 assistFaculty: legacyDao.loadAllAssistantFaculty() ) {
+		results = legacyDao.loadAllAssistantFaculty();
+		while (results.next()) {
+			Assistantfaculty2 assistFaculty = (Assistantfaculty2) results.get()[0];
 			Desktop desktop = user2desktop.get(assistFaculty.getAssistant().getId());
 			if (desktop != null) {
 				Institute institute = lectureImport.getInstituteByLegacyId(assistFaculty.getFaculty().getId());
 				desktop.getInstitutes().add(institute);
 			}
 		}
+		results.close();
 		logger.debug("creating student desktop links for courses...");
-		for (Studentenrollment2 studentEnrollment: legacyDao.loadAllStudentEnrollments() ) {
+		results = legacyDao.loadAllStudentEnrollments();
+		while (results.next()) {
+			Studentenrollment2 studentEnrollment = (Studentenrollment2) results.get()[0];
 			Desktop desktop = user2desktop.get(studentEnrollment.getStudent().getId());
 			if (desktop != null) {
 				Course course = lectureImport.getCourseByLegacyId(studentEnrollment.getEnrollment().getId());
 				desktop.getCourses().add(course);
 			}
 		}
+		results.close();
 		logger.debug("creating student desktop links for subjects...");
-		for (Studentsubject2 studentSubject: legacyDao.loadAllStudentSubject() ) {
+		results = legacyDao.loadAllStudentSubject();
+		while (results.next()) {
+			Studentsubject2 studentSubject = (Studentsubject2) results.get()[0];
 			Desktop desktop = user2desktop.get(studentSubject.getStudent().getId());
 			if (desktop != null) {
 				CourseType courseType = lectureImport.getCourseTypeByLegacyId(studentSubject.getSubject().getId());
 				desktop.getCourseTypes().add(courseType);
 			}
 		}
+		results.close();
 		logger.debug("creating student desktop links for faculties...");
-		for (Studentfaculty2 studentFaculty: legacyDao.loadAllStudentFaculty() ) {
+		results = legacyDao.loadAllStudentFaculty();
+		while (results.next()) {
+			Studentfaculty2 studentFaculty = (Studentfaculty2) results.get()[0];
 			Desktop desktop = user2desktop.get(studentFaculty.getStudent().getId());
 			if (desktop != null) {
 				Institute institute = lectureImport.getInstituteByLegacyId(studentFaculty.getFaculty().getId());
 				desktop.getInstitutes().add(institute);
 			}
 		}
-		
+		results.close();
+
 	}
 
 	public void setUserImport(UserImport userImport) {
 		this.userImport = userImport;
 	}
 
-	public DesktopDao getDesktopDao() {
-		return desktopDao;
-	}
-
 	public void setDesktopDao(DesktopDao desktopDao) {
 		this.desktopDao = desktopDao;
 	}
 
-	public LectureImport getLectureImport() {
-		return lectureImport;
-	}
-
 	public void setLectureImport(LectureImport lectureImport) {
 		this.lectureImport = lectureImport;
-	}
-
-	public LegacyDao getLegacyDao() {
-		return legacyDao;
 	}
 
 	public void setLegacyDao(LegacyDao legacyDao) {

@@ -19,7 +19,7 @@
         <property name="title" type="string">
             <column name="TITLE" length="100" />
         </property>
-        <set name="lecturefiles" inverse="true">
+        <set name="lecturefiles" inverse="true" fetch="join" lazy="false">
             <key>
                 <column name="LECTUREPK" length="30" />
             </key>

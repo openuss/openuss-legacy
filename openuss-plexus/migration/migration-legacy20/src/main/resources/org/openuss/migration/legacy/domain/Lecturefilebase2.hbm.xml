@@ -12,11 +12,5 @@
         <property name="basefile" type="binary">
             <column name="BASEFILE" />
         </property>
-        <set name="lecturefiles" inverse="true">
-            <key>
-                <column name="LECTUREFILEID" length="30" />
-            </key>
-            <one-to-many class="org.openuss.migration.legacy.domain.Lecturefile2" />
-        </set>
     </class>
 </hibernate-mapping>

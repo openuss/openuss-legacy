@@ -10,6 +10,11 @@ import java.util.Set;
 
 import org.apache.commons.validator.GenericValidator;
 import org.apache.log4j.Logger;
+import org.hibernate.CacheMode;
+import org.hibernate.ScrollableResults;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.openuss.migration.legacy.dao.LegacyDao;
 import org.openuss.migration.legacy.domain.Assistant2;
 import org.openuss.migration.legacy.domain.Assistantinformation2;
@@ -25,6 +30,8 @@ import org.openuss.security.UserPreferences;
 import org.openuss.security.UserProfile;
 import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.ObjectIdentityDao;
+import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * This Service migrate data from openuss 2.0 to openuss-plexus 3.0
@@ -69,7 +76,7 @@ public class UserImport {
 	/** identifierDao */
 	private LegacyIdentifierDao identifierDao; 
 	
-	public void performImportOfUserData() {
+	public void perform() {
 		initializeUsers();
 		loadStudents();
 		loadAssistants();
@@ -108,39 +115,39 @@ public class UserImport {
 
 	private void loadStudents() {
 		logger.info("loading students...");
-		Collection<Student2> students2 = legacyDao.loadAllStudents();
-		logger.info("found " + students2.size() + " students.");
-
+		ScrollableResults results = legacyDao.loadAllStudents();
+		
 		int count = 0;
-		for (Student2 student2 : students2) {
-			if (!ImportUtil.toBoolean(student2.getAactive())) {
-				logger.debug("student not actived " + student2.getUusername() + " - " + student2.getEmailaddress());
+		while (results.next()) {
+			Student2 student = (Student2) results.get()[0];
+			if (!ImportUtil.toBoolean(student.getAactive())) {
+				logger.debug("student not actived " + student.getUusername() + " - " + student.getEmailaddress());
 				continue;
 			}
-			String email = student2.getEmailaddress().toLowerCase();
+			String email = student.getEmailaddress().toLowerCase();
 			if (!GenericValidator.isEmail(email)) {
-				invalidEmails.add(student2);
+				invalidEmails.add(student);
 			} else if (email2UserMap.containsKey(email)) {
 				logger.trace("email already in use " + email);
 				Long userId = email2UserMap.get(email);
-				id2UserMap.put(student2.getId(), userId);
-				identifierDao.insertUserId(student2.getId(), userId);
-				consolidatedUsernames.put(userId, student2.getUusername());
+				id2UserMap.put(student.getId(), userId);
+				identifierDao.insertUserId(student.getId(), userId);
+				consolidatedUsernames.put(userId, student.getUusername());
 			} else {
-				storeUser(email, transformStudent2User(student2), student2.getId());
+				storeUser(email, transformStudent2User(student), student.getId());
 			}
 			process(++count);
 		}
+		results.close();
 	}
 
 
 	private void loadAssistants() {
 		logger.info("loading assistants...");
-		Collection<Assistant2> assistants2 = legacyDao.loadAllAssistants();
-		logger.info("found " + assistants2.size() + " assistants.");
-
+		ScrollableResults results = legacyDao.loadAllAssistants();
 		int count = 0;
-		for (Assistant2 assistant : assistants2) {
+		while(results.next()) {
+			Assistant2 assistant = (Assistant2) results.get()[0];
 			if (!ImportUtil.toBoolean(assistant.getAactive())) {
 				logger.debug("assistant not actived " + assistant.getUusername() + " - " + assistant.getEmailaddress());
 				continue;
@@ -160,6 +167,7 @@ public class UserImport {
 			}
 			process(++count);
 		}
+		results.close();
 	}
 
 

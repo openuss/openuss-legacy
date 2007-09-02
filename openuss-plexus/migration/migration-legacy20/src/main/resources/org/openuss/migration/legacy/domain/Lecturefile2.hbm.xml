@@ -10,9 +10,9 @@
             <column name="ID" length="30" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="lecturefilebase" class="org.openuss.migration.legacy.domain.Lecturefilebase2" fetch="select">
+        <property name="lectureFileId" type="string">
             <column name="LECTUREFILEID" length="30" />
-        </many-to-one>
+        </property>
         <many-to-one name="lecture" class="org.openuss.migration.legacy.domain.Lecture2" fetch="select">
             <column name="LECTUREPK" length="30" />
         </many-to-one>
