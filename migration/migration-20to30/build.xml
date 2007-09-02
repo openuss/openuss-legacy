@@ -19,7 +19,7 @@
 	</target>
 	<target name="install">
 		<exec executable="mvn.bat">
-			<arg line="install" />
+			<arg line="-e install" />
 		</exec>
 	</target>
 	<target name="install w/o tests">

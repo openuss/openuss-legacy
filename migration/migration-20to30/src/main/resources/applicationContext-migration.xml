@@ -5,6 +5,15 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 	
+
+
+	<!-- Local DataSource that works in any environment --> 
+    <bean id="legacyDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName"><value>org.firebirdsql.jdbc.FBDriver</value></property>
+        <property name="username"><value>sysdba</value></property>
+        <property name="password"><value>masterkey</value></property>
+        <property name="url"><value>jdbc:firebirdsql:localhost:openuss</value></property>
+    </bean>
 	
 	<bean id="identifierDao" class="org.openuss.migration.from20to30.LegacyIdentifierDao">
 		<property name="dataSource" ref="dataSource"/>
@@ -55,6 +64,7 @@
 		<property name="legacyDao" ref="legacyDao"/>
 		<property name="lectureImport" ref="lectureImport"/>
 		<property name="documentService" ref="documentService"/>
+		<property name="legacySessionFactory" ref="legacySessionFactory"/>
 	</bean>
 
 	<bean id="courseMemberImport" class="org.openuss.migration.from20to30.CourseMemberImport" scope="singleton">
@@ -106,13 +116,6 @@
 	
 
 	<!-- Local DataSource that works in any environment --> 
-    <bean id="legacyDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName"><value>org.firebirdsql.jdbc.FBDriver</value></property>
-        <property name="username"><value>sysdba</value></property>
-        <property name="password"><value>masterkey</value></property>
-        <property name="url"><value>jdbc:firebirdsql:localhost:openuss</value></property>
-    </bean>
-
 
 	<bean id="migrationService" class="org.openuss.migration.from20to30.MigrationService" >
 		<property name="legacySessionFactory" ref="legacySessionFactory"/>
@@ -122,7 +125,7 @@
 		<property name="desktopImport" ref="desktopImportTx"/>
 		<property name="courseMemberImport" ref="courseMemberImportTx"/>
 		<property name="newsImport" ref="newsImportTx"/>
-		<property name="documentImport" ref="documentImportTx"/>
+		<property name="documentImport" ref="documentImport"/>
 	</bean>
 	
 	<!-- Spring Cache Manager Configuration  -->

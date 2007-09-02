@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.ScrollableResults;
 import org.openuss.business.foundation.filebase.FileObject;
 import org.openuss.documents.FileInfo;
 import org.openuss.lecture.Course;
@@ -42,10 +43,16 @@ public class NewsImport {
 	/** NewsService */
 	private NewsService newsService;
 	
-	public void importCourseInformations() {
+	public void perform() {
+		importCourseInformations();
+		importFacultyInformations();
+	}
+	
+	private void importCourseInformations() {
 		logger.debug("load course informations ...");
-		List<Enrollmentinformation2> informations = legacyDao.loadAllEnrollmentInformation();
-		for (Enrollmentinformation2 info : informations) {
+		ScrollableResults results = legacyDao.loadAllEnrollmentInformation();
+		while (results.next()) {
+			Enrollmentinformation2 info = (Enrollmentinformation2) results.get()[0];
 			Course course = lectureImport.getCourseByLegacyId(info.getEnrollmentpk());
 			if (course == null) {
 				logger.debug("skip news item - couldn't find course for news item...");
@@ -54,13 +61,14 @@ public class NewsImport {
 				newsService.saveNewsItem(item);
 			}
 		}
+		results.close();
 	}
 
-	public void importFacultyInformations() {
+	private void importFacultyInformations() {
 		logger.debug("load faculty informations ...");
-		List<Facultyinformation2> informations = legacyDao.loadAllFacultyInformation();
-		
-		for (Facultyinformation2 info : informations) {
+		ScrollableResults results = legacyDao.loadAllFacultyInformation();
+		while (results.next()) {
+			Facultyinformation2 info = (Facultyinformation2) results.get()[0];
 			Institute institute = lectureImport.getInstituteByLegacyId(info.getFaculty().getId());
 			if (institute == null) {
 				logger.debug("Could' find instute for news item...");
@@ -69,6 +77,7 @@ public class NewsImport {
 				newsService.saveNewsItem(item);
 			}
 		}
+		results.close();
 	}
 
 	private NewsItemInfo createNewsItem(Enrollmentinformation2 info, Course course) {

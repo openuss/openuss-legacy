@@ -1,4 +1,4 @@
-<project name="openuss :: migration :: core :: build" default="install" basedir=".">
+<project name="openuss :: migration :: legacy20 :: build" default="install" basedir=".">
 	<!-- 	In order to get this target under eclipse to work you need to define the variable
 			m2_repo which points to your maven2 repository -->
 	<target name="colver-view">

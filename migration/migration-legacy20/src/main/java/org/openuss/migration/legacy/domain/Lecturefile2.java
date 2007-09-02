@@ -11,7 +11,7 @@ public class Lecturefile2 implements java.io.Serializable {
 
 	private static final long serialVersionUID = -5983016684332737647L;
 	private String id;
-	private Lecturefilebase2 lecturefilebase2;
+	private String lectureFileId;
 	private Lecture2 lecture2;
 	private Date ddate;
 	private String title;
@@ -30,10 +30,10 @@ public class Lecturefile2 implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Lecturefile2(String id, Lecturefilebase2 lecturefilebase2, Lecture2 lecture2, Date ddate, String title,
+	public Lecturefile2(String id, String lectureFileId, Lecture2 lecture2, Date ddate, String title,
 			String lecturefilename, String lecturefilesize) {
 		this.id = id;
-		this.lecturefilebase2 = lecturefilebase2;
+		this.lectureFileId = lectureFileId;
 		this.lecture2 = lecture2;
 		this.ddate = ddate;
 		this.title = title;
@@ -48,14 +48,6 @@ public class Lecturefile2 implements java.io.Serializable {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public Lecturefilebase2 getLecturefilebase() {
-		return this.lecturefilebase2;
-	}
-
-	public void setLecturefilebase(Lecturefilebase2 lecturefilebase2) {
-		this.lecturefilebase2 = lecturefilebase2;
 	}
 
 	public Lecture2 getLecture() {
@@ -96,6 +88,14 @@ public class Lecturefile2 implements java.io.Serializable {
 
 	public void setLecturefilesize(String lecturefilesize) {
 		this.lecturefilesize = lecturefilesize;
+	}
+
+	public String getLectureFileId() {
+		return lectureFileId;
+	}
+
+	public void setLectureFileId(String lectureFileId) {
+		this.lectureFileId = lectureFileId;
 	}
 
 }
