@@ -533,12 +533,17 @@ public class MyUniPage extends BasePage {
 			
 			// Return the university id in our data set
 			Iterator<MyUniInfo> iterator = myUniData.values().iterator();
-			MyUniInfo firstUni = iterator.next();
-			if(firstUni != null)
-			{
-				MyUniUniversityInfo uniInfo = firstUni.getMyUniUniversityInfo();
-				if(uniInfo != null)
-					return uniInfo.getId();
+			
+			if(iterator.hasNext())
+			{			
+				MyUniInfo firstUni = iterator.next();
+			
+				if(firstUni != null)
+				{
+					MyUniUniversityInfo uniInfo = firstUni.getMyUniUniversityInfo();
+					if(uniInfo != null)
+						return uniInfo.getId();
+				}
 			}
 		}
 		
