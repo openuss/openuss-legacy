@@ -39,6 +39,10 @@
   			</o:block> 
   			<o:block styleClass="teaser_blue_right" label="#{msg.welcome_barometer_header}">
 			  		<h:panelGrid columns="2">
+			  			<h:outputText value="#{msg.welcome_barometer_universities}" styleClass="content_font_normal"/>
+			  			<h:outputText value="#{systemStatistic.universities}" styleClass="content_font_normal"/>
+			  			<h:outputText value="#{msg.welcome_barometer_departments}" styleClass="content_font_normal"/>
+			  			<h:outputText value="#{systemStatistic.departments}" styleClass="content_font_normal"/>
 			  			<h:outputText value="#{msg.welcome_barometer_institutes}" styleClass="content_font_normal"/>
 			  			<h:outputText value="#{systemStatistic.institutes}" styleClass="content_font_normal"/>
 			  			<h:outputText value="#{msg.welcome_barometer_courses}" styleClass="content_font_normal"/>
