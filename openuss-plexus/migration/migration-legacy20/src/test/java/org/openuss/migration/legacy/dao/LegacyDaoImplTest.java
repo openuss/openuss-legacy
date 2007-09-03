@@ -79,7 +79,7 @@ public class LegacyDaoImplTest extends AbstractTransactionalDataSourceSpringCont
 	protected String[] getConfigLocations() {
 		return new String[] {
 			"classpath*:applicationContext-legacy.xml",
-			"applicationContext-legacyTransactionManager.xml"
+			"classpath*:applicationContext-legacyDataSource.xml"
 		};
 	}
 
