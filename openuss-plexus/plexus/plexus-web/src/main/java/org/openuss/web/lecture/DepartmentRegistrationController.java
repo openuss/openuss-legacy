@@ -44,9 +44,14 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 	private List<SelectItem> localeItems;
 	
 	private List<SelectItem> universityItems;
-	private List<UniversityInfo> allUniversities;
+	private List<UniversityInfo> allEnabledUniversities;
+	private List<UniversityInfo> allDisabledUniversities;
 	
 	private DepartmentType departmentType;
+	
+	private ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
+	private String locale = (String)binding.getValue(getFacesContext());
+	private ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
 	
 
 
@@ -61,9 +66,7 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 	
 	public List<SelectItem> getSupportedDepartmentTypes() {
 		
-		ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
-		String locale = (String)binding.getValue(getFacesContext());
-		ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
+
 	
 		localeItems = new ArrayList<SelectItem>();
 	
@@ -76,21 +79,39 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 		return localeItems;
 	}
 	
+	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getAllUniversities() {
 		
 		universityItems = new ArrayList<SelectItem>();
 		
-		allUniversities = universityService.findAllUniversities();
+		allEnabledUniversities = universityService.findUniversitiesByEnabled(true);
+		allDisabledUniversities = universityService.findUniversitiesByEnabled(false);
 		
-		Iterator<UniversityInfo> iter =  allUniversities.iterator();
-		UniversityInfo university;
+		Iterator<UniversityInfo> iterEnabled =  allEnabledUniversities.iterator();
+		UniversityInfo universityEnabled;
 		
-		while (iter.hasNext()) {
-			university = iter.next();
-			SelectItem item = new SelectItem(university.getId(),university.getName());
+		if (iterEnabled.hasNext()) {
+			SelectItem item = new SelectItem(Constants.UNIVERSITIES_ENABLED,bundle.getString("universities_enabled"));
+			universityItems.add(item);
+		}
+		while (iterEnabled.hasNext()) {
+			universityEnabled = iterEnabled.next();
+			SelectItem item = new SelectItem(universityEnabled.getId(),universityEnabled.getName());
 			universityItems.add(item);
 		}
 		
+		Iterator<UniversityInfo> iterDisabled =  allDisabledUniversities.iterator();
+		UniversityInfo universityDisabled;
+		
+		if (iterDisabled.hasNext()) {
+			SelectItem item = new SelectItem(Constants.UNIVERSITIES_DISABLED,bundle.getString("universities_disabled"));
+			universityItems.add(item);
+		}
+		while (iterDisabled.hasNext()) {
+			universityDisabled = iterDisabled.next();
+			SelectItem item = new SelectItem(universityDisabled.getId(),universityDisabled.getName());
+			universityItems.add(item);
+		}
 		return universityItems;
 	}
 	

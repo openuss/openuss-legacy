@@ -16,6 +16,7 @@
 	<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" />
 	<h:selectOneListbox id="department_preferences_university" size="1" styleClass="pulldown" value="#{departmentInfo.universityId}">
 	    <f:selectItems value="#{departmentRegistration.allUniversities}"/>
+	   	<f:validator validatorId="universityDepartmentSelectValidator"/>
 	</h:selectOneListbox>
 	<h:outputLabel value="#{msg.department_preferences_department}" for="departmentTypeSelect" styleClass="field_label" />
 	<h:selectOneListbox id="department_preferences_department" size="1" styleClass="pulldown" value="#{departmentInfo.departmentType}">
