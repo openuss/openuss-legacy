@@ -45,6 +45,9 @@ public class MigrationService {
 	
 	/** NewsLetterImport */
 	private NewsLetterImport newsLetterImport;
+	
+	/** QuizImport */
+	private QuizImport quizImport;
 
 	/** Legacy hibernate session */
 	private Session legacySession;
@@ -61,7 +64,8 @@ public class MigrationService {
 //		desktopImport.perform();
 //		courseMemberImport.perform();
 //		documentImport.perform();
-		newsLetterImport.perform();
+//		newsLetterImport.perform();
+		quizImport.perform();
 		
 		legacyTx.rollback();
 		legacySession.close();
@@ -76,71 +80,40 @@ public class MigrationService {
 		return session;
 	}
 	
-	public SessionFactory getLegacySessionFactory() {
-		return legacySessionFactory;
-	}
-
-
 	public void setLegacySessionFactory(SessionFactory legacySessionFactory) {
 		this.legacySessionFactory = legacySessionFactory;
 	}
 
-
-	public SessionFactory getPlexusSessionFactory() {
-		return plexusSessionFactory;
-	}
-
-
 	public void setPlexusSessionFactory(SessionFactory plexusSessionFactory) {
 		this.plexusSessionFactory = plexusSessionFactory;
-	}
-
-	public UserImport getUserImport() {
-		return userImport;
 	}
 
 	public void setUserImport(UserImport userImport) {
 		this.userImport = userImport;
 	}
 
-	public LectureImport getLectureImport() {
-		return lectureImport;
-	}
-
 	public void setLectureImport(LectureImport lectureImport) {
 		this.lectureImport = lectureImport;
-	}
-
-	public DesktopImport getDesktopImport() {
-		return desktopImport;
 	}
 
 	public void setDesktopImport(DesktopImport desktopImport) {
 		this.desktopImport = desktopImport;
 	}
 
-	public NewsImport getNewsImport() {
-		return newsImport;
-	}
-
 	public void setNewsImport(NewsImport newsImport) {
 		this.newsImport = newsImport;
-	}
-
-	public DocumentImport getDocumentImport() {
-		return documentImport;
 	}
 
 	public void setDocumentImport(DocumentImport documentImport) {
 		this.documentImport = documentImport;
 	}
 
-	public CourseMemberImport getCourseMemberImport() {
-		return courseMemberImport;
-	}
-
 	public void setCourseMemberImport(CourseMemberImport courseMemberImport) {
 		this.courseMemberImport = courseMemberImport;
+	}
+
+	public void setQuizImport(QuizImport quizImport) {
+		this.quizImport = quizImport;
 	}
 
 	public void setNewsLetterImport(NewsLetterImport newsLetterImport) {

@@ -17,7 +17,9 @@ import org.openuss.migration.legacy.domain.Assistant2;
 import org.openuss.migration.legacy.domain.Faculty2;
 import org.openuss.migration.legacy.domain.Filebase2;
 import org.openuss.migration.legacy.domain.Lecturefilebase2;
+import org.openuss.migration.legacy.domain.Quizfile2;
 import org.openuss.migration.legacy.domain.Student2;
+import org.openuss.utility.FileObjectWrapper;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
 /**
@@ -151,6 +153,31 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 				return query.scroll(ScrollMode.FORWARD_ONLY);
 			}
 		});
+	}
+
+	public ScrollableResults loadAllQuiz() {
+		return query("from Quiz2 order by enrollmentpk");
+	}
+
+	public byte[] loadQuizFileData(String id) {
+		Quizfile2 base = (Quizfile2) this.getHibernateTemplate().load(Quizfile2.class, id);
+		if (base != null) {
+			try {
+				ByteArrayInputStream bis = new ByteArrayInputStream(base.getBasefile());
+				ObjectInputStream ois = new ObjectInputStream(bis);
+				FileObjectWrapper fileObject = (FileObjectWrapper) ois.readObject();
+				ois.close();
+				bis.close();
+				byte[] data = fileObject.getData();
+				getSession().evict(base);
+				return data;
+			} catch (ClassNotFoundException e) {
+				logger.error(e);
+			} catch (IOException e) {
+				logger.error(e);
+			}
+		}
+		return null;
 	}
 
 }

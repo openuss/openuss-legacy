@@ -29,13 +29,10 @@ import org.openuss.news.PublisherType;
  * @author Ingo Dueppe
  *
  */
-public class NewsImport {
+public class NewsImport extends DefaultImport {
 	
 	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(NewsImport.class);
-	
-	/** LegacyDao */
-	private LegacyDao legacyDao;
 	
 	/** LectureImport */
 	private LectureImport lectureImport;
@@ -51,8 +48,10 @@ public class NewsImport {
 	private void importCourseInformations() {
 		logger.debug("load course informations ...");
 		ScrollableResults results = legacyDao.loadAllEnrollmentInformation();
+		Enrollmentinformation2 info = null;
 		while (results.next()) {
-			Enrollmentinformation2 info = (Enrollmentinformation2) results.get()[0];
+			evict(info);
+			info = (Enrollmentinformation2) results.get()[0];
 			Course course = lectureImport.getCourseByLegacyId(info.getEnrollmentpk());
 			if (course == null) {
 				logger.debug("skip news item - couldn't find course for news item...");
@@ -159,10 +158,6 @@ public class NewsImport {
 
 	public LegacyDao getLegacyDao() {
 		return legacyDao;
-	}
-
-	public void setLegacyDao(LegacyDao legacyDao) {
-		this.legacyDao = legacyDao;
 	}
 
 	public LectureImport getLectureImport() {

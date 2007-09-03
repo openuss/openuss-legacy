@@ -6,11 +6,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseDao;
-import org.openuss.migration.legacy.dao.LegacyDao;
 import org.openuss.migration.legacy.domain.Mailinglist2;
 import org.openuss.migration.legacy.domain.Mailinglistmessage2;
 import org.openuss.newsletter.Mail;
@@ -26,14 +24,10 @@ import org.openuss.newsletter.NewsletterService;
  * 
  * @author Ingo Dueppe
  */
-public class NewsLetterImport {
-	/**
-	 * Logger for this class
-	 */
+public class NewsLetterImport extends DefaultImport {
+	
+	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(NewsLetterImport.class);
-
-	/** LegacyDao */
-	private LegacyDao legacyDao;
 
 	/** MailDao */
 	private MailDao mailDao;
@@ -44,14 +38,8 @@ public class NewsLetterImport {
 	/** NewsletterDao */
 	private NewsletterDao newsletterDao;
 
-	/** LegacyIdentityMap */
-	private LegacyIdentifierDao identifierDao;
-
 	/** CourseDao */
 	private CourseDao courseDao;
-
-	/** LegacySessionFactory */
-	private SessionFactory legacySessionFactory;
 
 	public void perform() {
 		importSubscribers();
@@ -59,7 +47,6 @@ public class NewsLetterImport {
 	}
 
 	private void importSubscribers() {
-		Session legacySession = legacySessionFactory.getCurrentSession();
 		ScrollableResults results = legacyDao.loadAllMailingListSubscribers();
 
 		Mailinglist2 subscription = null;
@@ -68,9 +55,7 @@ public class NewsLetterImport {
 		Long courseId = null;
 
 		while (results.next()) {
-			if (subscription != null) {
-				legacySession.evict(subscription);
-			}
+			evict(subscription);
 			subscription = (Mailinglist2) results.get()[0];
 
 			if (!StringUtils.equals(enrollmentPk, subscription.getEnrollmentpk())) {
@@ -81,8 +66,6 @@ public class NewsLetterImport {
 
 			Long userId = identifierDao.getUserId(subscription.getMemberpk());
 			if (userId != null && newsLetter != null) {
-				// User user = userDao.load(userId);
-				// newsletterService.subscribe(newsLetter, user);
 				identifierDao.insertNewsletterSubscriber(newsLetter.getId(), userId);
 			}
 		}
@@ -137,10 +120,6 @@ public class NewsLetterImport {
 		return mail;
 	}
 
-	public void setLegacyDao(LegacyDao legacyDao) {
-		this.legacyDao = legacyDao;
-	}
-
 	public void setNewsletterService(NewsletterService newsletterService) {
 		this.newsletterService = newsletterService;
 	}
@@ -149,20 +128,12 @@ public class NewsLetterImport {
 		this.courseDao = courseDao;
 	}
 
-	public void setLegacySessionFactory(SessionFactory sessionFactory) {
-		this.legacySessionFactory = sessionFactory;
-	}
-
 	public void setMailDao(MailDao mailDao) {
 		this.mailDao = mailDao;
 	}
 
 	public void setNewsletterDao(NewsletterDao newsletterDao) {
 		this.newsletterDao = newsletterDao;
-	}
-
-	public void setIdentifierDao(LegacyIdentifierDao identifierDao) {
-		this.identifierDao = identifierDao;
 	}
 
 }

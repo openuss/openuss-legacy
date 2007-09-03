@@ -49,6 +49,11 @@ public interface LegacyDao {
 	
 	public abstract ScrollableResults loadAllMailingListMessages();
 
+	public abstract ScrollableResults loadAllQuiz();
+
 	public abstract byte[] loadLectureFileData(String id);
+
+	public abstract byte[] loadQuizFileData(String id);
+
 
 }
