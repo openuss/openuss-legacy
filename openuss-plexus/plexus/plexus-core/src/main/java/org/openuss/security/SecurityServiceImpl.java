@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContext;
@@ -378,14 +379,12 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	 */
 	@SuppressWarnings( { "unchecked" })
 	protected void handleRemoveAllPermissions(Object object) throws Exception {
+
 		ObjectIdentity objectIdentity = getObjectIdentity(object);
-		List<Permission> permissions = getPermissionDao().findPermissions(objectIdentity);
+		Set<Permission> permissions = objectIdentity.getPermissions();
+		objectIdentity.getPermissions().clear();
 
 		for (Permission permission : permissions) {
-			ObjectIdentity aclObjectIdentity = permission.getAclObjectIdentity();
-			permission.setRecipient(null);
-			aclObjectIdentity.removePermission(permission);
-			getObjectIdentityDao().update(aclObjectIdentity);
 			getPermissionDao().remove(permission);
 		}
 	}

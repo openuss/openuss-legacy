@@ -119,39 +119,35 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 	public void testRemoveCourseType () {
 		logger.info("----> BEGIN access to removeCourseType test");
 		
-		//Create Courses
-		Course course1 = testUtility.createUniqueCourseInDB();
-		Course course2 = testUtility.createUniqueCourseInDB();
-		Course course3 = testUtility.createUniqueCourseInDB();
-		
-		//Create CourseType
+		//Create CourseType without Courses
 		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
+		Long courseTypeId = courseType.getId();
+		assertNotNull(courseTypeId);
 		Institute institute = courseType.getInstitute();
-		courseType.getCourses().add(course1);
-		courseType.getCourses().add(course2);
-		courseType.getCourses().add(course3);
+		int sizeBefore = institute.getCourseTypes().size();
 	
+		//Create CourseType with Courses
+		Course course = testUtility.createUniqueCourseInDB();
+		CourseType courseType2 = course.getCourseType();
+		Long courseTypeId2 = courseType2.getId();
+		assertNotNull(courseTypeId2);
+		Institute institute2 = courseType2.getInstitute();
+		int sizeBefore2 = institute2.getCourseTypes().size();
+		
 		flush();
 		
-		//Test
-		assertNotNull(courseType.getId());
+		//Remove CourseType2
 		this.getCourseTypeService().removeCourseType(courseType.getId());
+		this.getCourseTypeService().removeCourseType(courseType2.getId());
 		
 		CourseTypeDao courseTypeDao = (CourseTypeDao) this.getApplicationContext().getBean("courseTypeDao");
-		CourseType courseTypeTest = courseTypeDao.load(courseType.getId());
+		CourseType courseTypeTest = courseTypeDao.load(courseTypeId);
 		assertNull(courseTypeTest);
+		assertEquals(sizeBefore-1, institute.getCourseTypes().size());
 		
-		CourseDao courseDao = (CourseDao) this.getApplicationContext().getBean("courseDao");
-		Course courseTest1 = courseDao.load(course1.getId());
-		assertNull(courseTest1);
-		
-		Course courseTest2 = courseDao.load(course2.getId());
-		assertNull(courseTest2);
-		
-		Course courseTest3 = courseDao.load(course3.getId());
-		assertNull(courseTest3);
-		
-		assertEquals(0, institute.getCourseTypes().size());
+		CourseType courseTypeTest2 = courseTypeDao.load(courseTypeId2);
+		assertNull(courseTypeTest2);
+		assertEquals(sizeBefore2-1, institute2.getCourseTypes().size());
 		
 		logger.info("----> END access to removeCourseType test");
 	}

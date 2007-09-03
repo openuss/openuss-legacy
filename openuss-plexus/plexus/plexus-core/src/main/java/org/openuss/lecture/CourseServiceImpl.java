@@ -68,7 +68,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		Validate.notNull(course,
 				"CourseServiceImpl.handleRemoveCourse - no course entity found with the corresponding courseId "
 						+ courseId);
-
+		
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(course);
 		this.getSecurityService().removeObjectIdentity(course);
