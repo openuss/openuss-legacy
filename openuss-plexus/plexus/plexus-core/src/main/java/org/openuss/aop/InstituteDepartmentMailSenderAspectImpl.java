@@ -129,7 +129,7 @@ public class InstituteDepartmentMailSenderAspectImpl {
 		// Send Email to new User
 		messageService.sendMessage(
 				"OPENUSS - "+application.getDepartment().getShortcut(),
-				"department.rejectapplication.user.subject",
+				"department.reject.application.user.subject",
 				"departmentapplicationapply", 
 				parameters, 
 				recipients); 
