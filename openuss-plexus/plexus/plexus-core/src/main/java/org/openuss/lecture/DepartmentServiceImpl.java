@@ -118,7 +118,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		// Clear Membership
 		this.getMembershipService().clearMembership(department.getMembership());
 
-		// Remove Institute
+		// Remove Department
 		department.getUniversity().remove(department);
 		this.getDepartmentDao().remove(department);
 	}
@@ -376,36 +376,28 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Validate.notNull(department,
 				"DepartmentService.handleRemoveDepartment - no Department found corresponding to the ID "
 						+ departmentId);
-		Validate.isTrue(department.getInstitutes().isEmpty(),
-				"DepartmentService.handleRemoveDepartment - the Department still contains Institutes");
 
-		if (department.getInstitutes().isEmpty()) {
-
-			this.removeDepartment(departmentId);
-			return;
-
-		} else {
-
+		if (!department.getInstitutes().isEmpty()) {
 			// Remove Institutes
 			List<Institute> institutes = new ArrayList<Institute>();
-			for (Institute institute:department.getInstitutes()) {
+			for (Institute institute : department.getInstitutes()) {
 				institutes.add(institute);
 			}
-			for (Institute institute:institutes) {
-				this.getInstituteService().removeInstitute(institute.getId());
+			for (Institute institute : institutes) {
+				this.getInstituteService().removeCompleteInstituteTree(institute.getId());
 			}
-			
-			// Remove Security
-			this.getSecurityService().removeAllPermissions(department);
-			this.getSecurityService().removeObjectIdentity(department);
-
-			// Clear Membership
-			this.getMembershipService().clearMembership(department.getMembership());
-
-			// Remove Institute
-			department.getUniversity().remove(department);
-			this.getDepartmentDao().remove(department);
 		}
+
+		// Remove Security
+		this.getSecurityService().removeAllPermissions(department);
+		this.getSecurityService().removeObjectIdentity(department);
+
+		// Clear Membership
+		this.getMembershipService().clearMembership(department.getMembership());
+
+		// Remove Department
+		department.getUniversity().remove(department);
+		this.getDepartmentDao().remove(department);
 
 	}
 

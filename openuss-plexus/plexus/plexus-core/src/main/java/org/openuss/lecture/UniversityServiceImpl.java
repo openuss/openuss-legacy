@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-import org.openuss.security.Authority;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
@@ -31,7 +30,7 @@ import org.openuss.security.acl.LectureAclEntry;
 public class UniversityServiceImpl extends org.openuss.lecture.UniversityServiceBase {
 
 	private static final Logger logger = Logger.getLogger(UniversityServiceImpl.class);
-	
+
 	/**
 	 * @see org.openuss.lecture.UniversityService#createUniversity(org.openuss.lecture.UniversityInfo, java.lang.Long)
 	 */
@@ -142,11 +141,22 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 */
 	protected java.lang.Long handleCreatePeriod(org.openuss.lecture.PeriodInfo period) throws java.lang.Exception {
 
-		Validate.notNull(period, "UniversityService.handleCreate - the period cannot be null");
+		Validate.notNull(period, "UniversityService.handleCreatePeriod - the period cannot be null");
 		Validate.isTrue(!period.isDefaultPeriod(),
-				"UniversityService.handleCreate - You cannot create a default Period!");
+				"UniversityService.handleCreatePeriod - You cannot create a default Period!");
+		Validate.notNull(period.getUniversityId(),
+				"UniversityService.handleCreatePeriod - the UniversityID cannot be null");
+		University university = this.getUniversityDao().load(period.getUniversityId());
+		Validate.notNull(university,
+				"UniversityService.handleCreatePeriod - no University found corresponding to the UniversityID "
+						+ period.getUniversityId());
+
+		//Create Period
 		Period periodEntity = this.getPeriodDao().create(this.getPeriodDao().periodInfoToEntity(period));
 		periodEntity.getUniversity().getPeriods().add(periodEntity);
+		
+		// Set ObjectIdentity for Security
+		this.getSecurityService().createObjectIdentity(periodEntity, university);		
 
 		return periodEntity.getId();
 	}
@@ -185,8 +195,35 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 	@Override
 	protected void handleRemoveUniversity(Long universityId) throws Exception {
-		// TODO Auto-generated method stub
-		
+		logger.debug("Starting method handleRemoveUniversity for UniversityID " + universityId);
+
+		Validate.notNull(universityId, "UniversityService.handleRemove - the UniversityId cannot be null");
+		University university = this.getUniversityDao().load(universityId);
+		Validate.notNull(university,
+				"UniversityService.handleRemoveUniversity - no University found corresponding to the ID "
+						+ universityId);
+		Validate.isTrue(university.getDepartments().isEmpty(),
+				"UniversityService.handleRemoveUniversity - the University still contains Departments");
+
+		// Remove Periods
+		List<Period> periodsNew = new ArrayList<Period>();
+		for (Period period : university.getPeriods()) {
+			periodsNew.add(period);
+		}
+		for (Period period : periodsNew) {
+			this.removePeriod(period.getId());
+		}
+
+		// Remove Security
+		this.getSecurityService().removeAllPermissions(university);
+		this.getSecurityService().removeObjectIdentity(university);
+
+		// Clear Membership
+		this.getMembershipService().clearMembership(university.getMembership());
+
+		// Remove University
+		this.getUniversityDao().remove(university);
+
 	}
 
 	/**
@@ -194,29 +231,36 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 */
 	protected void handleRemoveCompleteUniversityTree(java.lang.Long universityId) throws java.lang.Exception {
 		logger.debug("Starting method handleRemoveUniversity for UniversityID " + universityId);
-		
+
 		Validate.notNull(universityId, "UniversityService.handleRemoveUniversity - universityId cannot be null.");
 		University university = this.getUniversityDao().load(universityId);
 		Validate.notNull(university,
 				"UniversityService.handleRemoveUniversity - cannot find a university with the corresponding ID "
 						+ universityId);
-		
-		// Remove Departments
-		for (Department department : university.getDepartments()) {
-			this.getDepartmentService().removeCompleteDepartmentTree(department.getId());
+
+		if (!university.getDepartments().isEmpty()) {
+			// Remove Departments
+			for (Department department : university.getDepartments()) {
+				this.getDepartmentService().removeCompleteDepartmentTree(department.getId());
+			}
 		}
-		
+
 		// Remove Periods
-		this.getPeriodDao().remove(university.getPeriods());
-		
-		
+		List<Period> periodsNew = new ArrayList<Period>();
+		for (Period period : university.getPeriods()) {
+			periodsNew.add(period);
+		}
+		for (Period period : periodsNew) {
+			this.removePeriod(period.getId());
+		}
+
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(university);
 		this.getSecurityService().removeObjectIdentity(university);
-		
+
 		// Clear Membership
 		this.getMembershipService().clearMembership(university.getMembership());
-		
+
 		// Remove University
 		this.getUniversityDao().remove(university);
 	}
@@ -227,26 +271,27 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	protected void handleRemovePeriod(java.lang.Long periodId) throws java.lang.Exception {
 
 		Validate.notNull(periodId, "UniversityService.handleRemovePeriod - the PeriodID cannot be null");
-
 		Period period = this.getPeriodDao().load(periodId);
+		Validate.notNull(period,
+				"UniversityService.handleRemovePeriod - no Period found corresponding to the PeriodID " + periodId);
+		Validate.isTrue(period.getCourses().isEmpty(),
+				"UniversityService.handleRemovePeriod - the Period still contains Courses");
 
-		if (period.getCourses().size() == 0) {
-			this.getPeriodDao().remove(periodId);
-			period.getUniversity().remove(period);
-		} else {
-			throw new IllegalArgumentException("The Period " + periodId
-					+ " contains at least one Courses. Remove Courses before!");
-		}
+		// Remove Security
+		this.getSecurityService().removeAllPermissions(period);
+		this.getSecurityService().removeObjectIdentity(period);
+
+		// Remove Period
+		period.getUniversity().remove(period);
+		this.getPeriodDao().remove(period);
+
 	}
 
 	/**
 	 * @see org.openuss.lecture.UniversityService#removePeriodAndCourses(java.lang.Long)
 	 */
 	protected void handleRemovePeriodAndCourses(Long periodId) throws Exception {
-
-		Validate.notNull(periodId, "UniversityService.handleRemovePeriod - the PeriodID cannot be null");
-
-		this.getPeriodDao().remove(periodId);
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -364,31 +409,32 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 			return activePeriods;
 		}
 	}
-	
-	
+
 	@SuppressWarnings( { "unchecked" })
 	public List handleFindPeriodsByInstituteWithCoursesOrActive(InstituteInfo instituteInfo) {
-		
-		Validate.notNull(instituteInfo, "UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - " +
-				"instituteInfo cannot be null.");
-		Validate.notNull(instituteInfo.getId(), "UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - " +
-				"the id of instituteInfo cannot be null.");
-		
+
+		Validate.notNull(instituteInfo, "UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - "
+				+ "instituteInfo cannot be null.");
+		Validate.notNull(instituteInfo.getId(), "UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - "
+				+ "the id of instituteInfo cannot be null.");
+
 		Institute instituteEntity = this.getInstituteDao().load(instituteInfo.getId());
-		Validate.notNull(instituteEntity, "UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - " +
-				"no instituteEntity could be found with the corresponding instituteId "+instituteInfo.getId());
-		
-		Validate.notNull(instituteEntity.getDepartment(), "UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - " +
-				"no department is associated with the given institute.");
-		Validate.notNull(instituteEntity.getDepartment().getUniversity(), "UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - " +
-				"no university is associated with the department of the given institute.");
-		
+		Validate.notNull(instituteEntity, "UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - "
+				+ "no instituteEntity could be found with the corresponding instituteId " + instituteInfo.getId());
+
+		Validate.notNull(instituteEntity.getDepartment(),
+				"UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - "
+						+ "no department is associated with the given institute.");
+		Validate.notNull(instituteEntity.getDepartment().getUniversity(),
+				"UniversityService.handleFindPeriodsByInstituteWithCoursesOrActive - "
+						+ "no university is associated with the department of the given institute.");
+
 		List<Period> periods = this.getPeriodDao().findByUniversity(instituteEntity.getDepartment().getUniversity());
 		List<PeriodInfo> periodInfos = new ArrayList<PeriodInfo>();
 		Iterator iter = periods.iterator();
 		while (iter.hasNext()) {
 			Period period = (Period) iter.next();
-			if ( period.isActive() || period.getCourses().size() > 0 ) {
+			if (period.isActive() || period.getCourses().size() > 0) {
 				periodInfos.add(this.getPeriodDao().toPeriodInfo(period));
 			}
 		}
@@ -418,24 +464,25 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		return this.getUniversityDao().findByTypeAndEnabled(UniversityDao.TRANSFORM_UNIVERSITYINFO, universityType,
 				enabled);
 	}
-	
+
 	@Override
-	public void handleSetUniversityStatus (Long universityId, boolean status) {
+	public void handleSetUniversityStatus(Long universityId, boolean status) {
 		Validate.notNull(universityId, "UniversityService.setUniversityStatus - the universityId cannot be null.");
 		Validate.notNull(status, "UniversityService.setUniversityStatus - status cannot be null.");
-		
+
 		// Load university
 		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university, "UniversityService.setUniversityStatus - university cannot be found with the corresponding universityId "+universityId);
-		
+		Validate.notNull(university,
+				"UniversityService.setUniversityStatus - university cannot be found with the corresponding universityId "
+						+ universityId);
+
 		// Set status
 		university.setEnabled(status);
 		UniversityInfo universityInfo = this.getUniversityDao().toUniversityInfo(university);
 		this.update(universityInfo);
 
-		
 	}
-	
+
 	@Override
 	public boolean handleIsNoneExistingUniversityShortcut(UniversityInfo self, String shortcut) throws Exception {
 		University found = getUniversityDao().findByShortcut(shortcut);
@@ -445,32 +492,32 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		}
 		return isEqualOrNull(self, foundInfo);
 	}
-	
+
 	@Override
 	public boolean handleIsActivePeriod(Long periodId) throws Exception {
 		Validate.notNull(periodId, "UniversityService.isActivePeriod - the periodId cannot be null.");
-		
+
 		// Load Period
 		Period period = this.getPeriodDao().load(periodId);
-		Validate.notNull(period, "UniversityService.isActivePeriod - cannot find period with the given periodId "+periodId);
-		
+		Validate.notNull(period, "UniversityService.isActivePeriod - cannot find period with the given periodId "
+				+ periodId);
+
 		return period.isActive();
 	}
-	
-	
+
 	/**
 	 * @see org.openuss.lecture.UniversityService#findPeriodsByUniversityWithActiveCourses(java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
 	@Override
 	public List handleFindPeriodsByUniversityWithCourses(Long universityId) throws Exception {
-		Validate.notNull(universityId, "UniversityService.findPeriodsByUniversityWithActiveCourses -" +
-				"the universityId cannot be null.");
-		
+		Validate.notNull(universityId, "UniversityService.findPeriodsByUniversityWithActiveCourses -"
+				+ "the universityId cannot be null.");
+
 		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university, "UniversityService.findPeriodsByUniversityWithActiveCourses -" +
-				"cannot find a university with the given universityId "+universityId);
-		
+		Validate.notNull(university, "UniversityService.findPeriodsByUniversityWithActiveCourses -"
+				+ "cannot find a university with the given universityId " + universityId);
+
 		List<Period> allPeriods = this.getPeriodDao().findByUniversity(university);
 		List<PeriodInfo> periodsWithActiveCourses = new ArrayList<PeriodInfo>();
 		Iterator iter = allPeriods.iterator();
@@ -482,7 +529,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 				}
 			}
 		}
-		
+
 		return periodsWithActiveCourses;
 	}
 

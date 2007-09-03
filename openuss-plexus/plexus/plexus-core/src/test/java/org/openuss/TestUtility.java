@@ -291,6 +291,58 @@ public class TestUtility {
 		return university;
 	}
 
+	public University createUniqueEmptyUniversityInDB() {
+		// Create a User
+		User user = this.createUniqueUserInDB();
+
+		// Create a unique University
+		University university = University.Factory.newInstance();
+		university.setName(unique("University"));
+		university.setShortcut(unique("Uni"));
+		university.setDescription("A unique University");
+		university.setOwnerName("Administrator");
+		university.setUniversityType(UniversityType.UNIVERSITY);
+		university.setMembership(Membership.Factory.newInstance());
+		university.setEnabled(true);
+		university.setAddress("Leo 18");
+		university.setCity("Münster");
+		university.setCountry("Germany");
+		university.setEmail("openuss@uni-muenster.de");
+		university.setLocale("de");
+		university.setPostcode("48149");
+		university.setTelefax("0251-telefax");
+		university.setTelephone("0251-telephone");
+		university.setTheme("plexus");
+		university.setWebsite("www.openuss.de");
+
+		// Create the University
+		this.getUniversityDao().create(university);
+
+		// FIXME - Kai, Indexing should not base on VOs!
+		// KAI: Do not delete this!!! Set id of university VO for indexing
+		university.setId(university.getId());
+
+		// Create default Groups for the University
+		GroupItem groupItemUni = new GroupItem();
+		groupItemUni.setName("UNIVERSITY_" + university.getId() + "_ADMINS");
+		groupItemUni.setLabel("autogroup_administrator_label");
+		groupItemUni.setGroupType(GroupType.ADMINISTRATOR);
+		Long adminsUniId = this.getOrganisationService().createGroup(university.getId(), groupItemUni);
+		Group adminsUni = this.getGroupDao().load(adminsUniId);
+
+		// Set ObjectIdentity for Security
+		this.getSecurityService().createObjectIdentity(university, null);
+
+		// Set ACL permissions
+		this.getSecurityService().setPermissions(adminsUni, university, LectureAclEntry.UNIVERSITY_ADMINISTRATION);
+
+		// Add Owner to Members and Group of Administrators
+		this.getOrganisationService().addMember(university.getId(), user.getId());
+		this.getOrganisationService().addUserToGroup(user.getId(), adminsUni.getId());
+
+		return university;
+	}
+	
 	public Department createUniqueDepartmentInDB() {
 		// Create a User
 		User user = this.createUniqueUserInDB();
@@ -480,6 +532,7 @@ public class TestUtility {
 		university.add(period);
 
 		periodDao.create(period);
+		this.getSecurityService().createObjectIdentity(period, university);
 
 		return period;
 	}

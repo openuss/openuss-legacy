@@ -237,6 +237,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 
 		assertEquals(sizeBefore - 1, department.getInstitutes().size());
 
+		testUtility.destroySecureContext();
 		logger.info("----> END access to removeInstitute test");
 	}
 

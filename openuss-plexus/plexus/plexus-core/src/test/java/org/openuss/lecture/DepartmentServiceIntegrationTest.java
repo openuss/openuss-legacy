@@ -105,25 +105,17 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 	public void testRemoveDepartment() {
 		logger.info("----> BEGIN access to remove(Department) test");
 
-		// Create department
+		// Create department without Institutes
 		Department department = testUtility.createUniqueDepartmentInDB();
 		Long departmentId = department.getId();
 		University university = department.getUniversity();
 		int sizeBefore = university.getDepartments().size();
+		
 		flush();
 
-		// Create Desktop
-		User user = testUtility.createUniqueUserInDB();
-		Desktop desktop = Desktop.Factory.newInstance(user);
-		desktop.getDepartments().add(department);
-		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
-		Desktop desktopCreated = desktopDao.create(desktop);
-		assertNotNull(desktopCreated);
-		assertEquals(1, desktop.getDepartments().size());
-
 		// Remove department
-		testUtility.createAdminSecureContext();
 		this.getDepartmentService().removeDepartment(department.getId());
+		
 		flush();
 
 		// Test
@@ -132,10 +124,49 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		assertNull(department);
 		assertEquals(sizeBefore - 1, university.getDepartments().size());
 
-		Desktop desktopTest = desktopDao.load(desktop.getId());
-		assertNotNull(desktopTest);
-		assertEquals(0, desktopTest.getDepartments().size());
+		logger.info("----> END access to remove(Department) test");
+	}
+	
+	public void testRemoveCompleteDepartmentTree() {
+		logger.info("----> BEGIN access to remove(Department) test");
 
+		// Create department with Institutes, CourseTypes and Courses
+		Course course = testUtility.createUniqueCourseInDB();
+		Department department = course.getCourseType().getInstitute().getDepartment();
+		Long departmentId = department.getId();
+		assertNotNull(departmentId);
+		University university = department.getUniversity();
+		assertNotNull(university);
+		int sizeBefore = university.getDepartments().size();
+		
+		flush();
+
+		// Create user secure context
+		testUtility.createUserSecureContext();
+		try {
+			this.getDepartmentService().removeCompleteDepartmentTree(departmentId);
+			fail("AccessDeniedException should have been thrown.");
+		} catch (AccessDeniedException ade) {
+			;
+		} finally {
+			testUtility.destroySecureContext();
+		}
+		
+		// Create admin secure context
+		testUtility.createAdminSecureContext();
+		
+		// Remove department
+		this.getDepartmentService().removeCompleteDepartmentTree(departmentId);
+		
+		flush();
+
+		// Test
+		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
+		department = departmentDao.load(departmentId);
+		assertNull(department);
+		assertEquals(sizeBefore - 1, university.getDepartments().size());
+		
+		testUtility.destroySecureContext();
 		logger.info("----> END access to remove(Department) test");
 	}
 

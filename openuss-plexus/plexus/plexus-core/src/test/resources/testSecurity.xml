@@ -184,7 +184,6 @@
                 org.openuss.repository.RepositoryService.setRepositoryLocation=ROLE_USER, ROLE_ADMIN
                 org.openuss.repository.RepositoryService.getRepositoryLocation=ROLE_USER, ROLE_ADMIN, ROLE_ANONYMOUS
                 org.openuss.lecture.UniversityService.createUniversity=ROLE_ADMIN
-                org.openuss.lecture.UniversityService.removeUniversity=ROLE_ADMIN
                 org.openuss.lecture.UniversityService.removePeriodAndCourses=ROLE_ADMIN
                 org.openuss.lecture.UniversityService.removeCompleteUniversityTree=ROLE_ADMIN
                 org.openuss.lecture.UniversityService.setUniversityStatus=ROLE_ADMIN

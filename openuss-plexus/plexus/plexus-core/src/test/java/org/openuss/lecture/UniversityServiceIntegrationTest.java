@@ -506,154 +506,66 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 
 		logger.info("----> END access to findUniversitiesByType test");
 	}
-
-	public void testRemoveCompleteUniversityTree() {
+	
+	public void testRemoveUniversity() {
 		logger.info("----> BEGIN access to removeCompleteUniversityTree test");
 
-		// Create universities
-		University university1 = testUtility.createUniqueUniversityInDB();
-		University university2 = testUtility.createUniqueUniversityInDB();
-
+		// Create University without Institutes, CourseTypes and Courses
+		University university = testUtility.createUniqueEmptyUniversityInDB();
+		Long universityId = university.getId();
+		assertNotNull(universityId);
 		
-		// Create departments
-		Department department1 = testUtility.createUniqueDepartmentInDB();
-		university1.getDepartments().add(department1);
-
-		Department department2 = testUtility.createUniqueDepartmentInDB();
-		university2.getDepartments().add(department2);
-
-		Department department3 = testUtility.createUniqueDepartmentInDB();
-		university1.getDepartments().add(department3);
-
-		Department department4 = testUtility.createUniqueDepartmentInDB();
-		university1.getDepartments().add(department4);
-
-		// Create institutes
-		Institute institute1 = testUtility.createUniqueInstituteInDB();
-		department1.getInstitutes().add(institute1);
-
-		Institute institute2 = testUtility.createUniqueInstituteInDB();
-		department1.getInstitutes().add(institute2);
-
-		Institute institute3 = testUtility.createUniqueInstituteInDB();
-		department2.getInstitutes().add(institute3);
-
-		Institute institute4 = testUtility.createUniqueInstituteInDB();
-		department3.getInstitutes().add(institute4);
-
-		Institute institute5 = testUtility.createUniqueInstituteInDB();
-		department3.getInstitutes().add(institute5);
-
-		Institute institute6 = testUtility.createUniqueInstituteInDB();
-		department4.getInstitutes().add(institute6);
-
-		// Create courseTypes
-		CourseType courseType1 = testUtility.createUniqueCourseTypeInDB();
-		institute1.getCourseTypes().add(courseType1);
-
-		CourseType courseType2 = testUtility.createUniqueCourseTypeInDB();
-		institute1.getCourseTypes().add(courseType2);
-
-		CourseType courseType3 = testUtility.createUniqueCourseTypeInDB();
-		institute2.getCourseTypes().add(courseType3);
-
-		CourseType courseType4 = testUtility.createUniqueCourseTypeInDB();
-		institute3.getCourseTypes().add(courseType4);
-
-		// Create courses
-		Course course1 = testUtility.createUniqueCourseInDB();
-		courseType1.getCourses().add(course1);
-
-		Course course2 = testUtility.createUniqueCourseInDB();
-		courseType1.getCourses().add(course2);
-
-		Course course3 = testUtility.createUniqueCourseInDB();
-		courseType1.getCourses().add(course3);
-
-		Course course4 = testUtility.createUniqueCourseInDB();
-		courseType2.getCourses().add(course4);
-
-		Course course5 = testUtility.createUniqueCourseInDB();
-		courseType3.getCourses().add(course5);
-
-		Course course6 = testUtility.createUniqueCourseInDB();
-		courseType3.getCourses().add(course6);
-
-		Course course7 = testUtility.createUniqueCourseInDB();
-		courseType3.getCourses().add(course7);
-
-		Course course8 = testUtility.createUniqueCourseInDB();
-		courseType4.getCourses().add(course8);
-
-		// Synchronize with DB
+		flush();
+		
+		// Remove department
+		this.getUniversityService().removeUniversity(universityId);
+		
 		flush();
 
 		// Test
 		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
-		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
-		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
-		CourseTypeDao courseTypeDao = (CourseTypeDao) this.getApplicationContext().getBean("courseTypeDao");
-		CourseDao courseDao = (CourseDao) this.getApplicationContext().getBean("courseDao");
-
-		assertNotNull(universityDao.load(university1.getId()));
+		University university2 = universityDao.load(universityId);
+		assertNull(university2);
 		
-		assertNotNull(departmentDao.load(department1.getId()));
-		assertNotNull(departmentDao.load(department2.getId()));
-		assertNotNull(departmentDao.load(department3.getId()));
-		assertNotNull(departmentDao.load(department4.getId()));
-		assertNotNull(instituteDao.load(institute1.getId()));
-		assertNotNull(instituteDao.load(institute2.getId()));
-		assertNotNull(instituteDao.load(institute4.getId()));
-		assertNotNull(instituteDao.load(institute5.getId()));
-		assertNotNull(instituteDao.load(institute6.getId()));
-		assertNotNull(courseTypeDao.load(courseType1.getId()));
-		assertNotNull(courseTypeDao.load(courseType2.getId()));
-		assertNotNull(courseTypeDao.load(courseType3.getId()));
-		assertNotNull(courseDao.load(course1.getId()));
-		assertNotNull(courseDao.load(course2.getId()));
-		assertNotNull(courseDao.load(course3.getId()));
-		assertNotNull(courseDao.load(course4.getId()));
-		assertNotNull(courseDao.load(course5.getId()));
-		assertNotNull(courseDao.load(course6.getId()));
-		assertNotNull(courseDao.load(course7.getId()));
+		testUtility.destroySecureContext();
+		logger.info("----> END access to removeCompleteUniversityTree test");
+	}
 
+	public void testRemoveCompleteUniversityTree() {
+		logger.info("----> BEGIN access to removeCompleteUniversityTree test");
 
-		// Test Security
+		// Create University with Institutes, CourseTypes and Courses
+		Course course = testUtility.createUniqueCourseInDB();
+		University university = course.getCourseType().getInstitute().getDepartment().getUniversity();
+		Long universityId = university.getId();
+		assertNotNull(universityId);
+		
+		flush();
+
+		// Create user secure context
 		testUtility.createUserSecureContext();
 		try {
-			this.getUniversityService().removeCompleteUniversityTree(university1.getId());
-			fail("AccessDeniedException should have been thrown");
+			this.getUniversityService().removeCompleteUniversityTree(universityId);
+			fail("AccessDeniedException should have been thrown.");
 		} catch (AccessDeniedException ade) {
 			;
 		} finally {
 			testUtility.destroySecureContext();
 		}
 		
-		// Test
+		// Create admin secure context
 		testUtility.createAdminSecureContext();
-		this.getUniversityService().removeCompleteUniversityTree(university1.getId());
-
-		assertNull(universityDao.load(university1.getId()));
 		
-		assertNull(departmentDao.load(department1.getId()));
-		assertNull(departmentDao.load(department3.getId()));
-		assertNull(departmentDao.load(department4.getId()));
-		assertNull(instituteDao.load(institute1.getId()));
-		assertNull(instituteDao.load(institute2.getId()));
-		assertNull(instituteDao.load(institute4.getId()));
-		assertNull(instituteDao.load(institute5.getId()));
-		assertNull(instituteDao.load(institute6.getId()));
-		assertNull(courseTypeDao.load(courseType1.getId()));
-		assertNull(courseTypeDao.load(courseType2.getId()));
-		assertNull(courseTypeDao.load(courseType3.getId()));
-		assertNull(courseDao.load(course1.getId()));
-		assertNull(courseDao.load(course2.getId()));
-		assertNull(courseDao.load(course3.getId()));
-		assertNull(courseDao.load(course4.getId()));
-		assertNull(courseDao.load(course5.getId()));
-		assertNull(courseDao.load(course6.getId()));
-		assertNull(courseDao.load(course7.getId()));
+		// Remove department
+		this.getUniversityService().removeCompleteUniversityTree(universityId);
+		
+		flush();
 
+		// Test
+		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
+		University university2 = universityDao.load(universityId);
+		assertNull(university2);
+		
 		testUtility.destroySecureContext();
 		logger.info("----> END access to removeCompleteUniversityTree test");
 	}
