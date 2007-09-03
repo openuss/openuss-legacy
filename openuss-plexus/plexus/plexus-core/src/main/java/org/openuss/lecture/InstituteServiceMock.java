@@ -136,6 +136,8 @@ public class InstituteServiceMock implements InstituteService {
 		return null;
 	}
 	
-	
+	public void setGroupOfMember(InstituteMember member, Long instituteId) {
+		// TODO Auto-generated method stub
+	}
 	
 }

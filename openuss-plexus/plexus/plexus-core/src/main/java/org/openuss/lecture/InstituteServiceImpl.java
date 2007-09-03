@@ -16,6 +16,7 @@ import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
+import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 
@@ -381,6 +382,37 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		}
 
 	}
+	
+	
+	public void handleSetGroupOfMember(InstituteMember member, Long instituteId) throws Exception{
+		logger.debug("Setting groups of member");
+		Institute institute = getInstituteDao().load(instituteId);
+		
+		User user = this.getUserDao().load(member.getId());
+		Validate.notNull(user, "InstituteServiceImpl.handleSetGroupOfMember -" +
+				"no user found with the userId "+member.getId());
+
+		if (!institute.getMembership().getMembers().contains(user)) {
+			throw new LectureException("User is not a member of the institute!");
+		}
+
+		// cache group ids
+		final List<Long> groupIds = new ArrayList<Long>();
+		for (InstituteGroup group : member.getGroups()) {
+			groupIds.add(group.getId());
+		}
+
+		// remove and add user to the new groups
+		final SecurityService securityService = getSecurityService();
+		for (Group group : institute.getMembership().getGroups()) {
+			if (group.getMembers().contains(user) && !(groupIds.contains(group.getId()))) {
+				securityService.removeAuthorityFromGroup(user, group);
+			} else if (!group.getMembers().contains(user) && (groupIds.contains(group.getId()))) {
+				securityService.addAuthorityToGroup(user, group);
+			}
+		}
+	}
+	
 
 	/*------------------- private methods -------------------- */
 

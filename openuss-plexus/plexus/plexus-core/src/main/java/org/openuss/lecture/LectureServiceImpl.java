@@ -436,7 +436,8 @@ public class LectureServiceImpl extends LectureServiceBase {
 		institute.getMembership().getMembers().add(user);
 		// if user was an aspirant remove him from the list
 		institute.getMembership().getAspirants().remove(user);
-		persist(institute);
+		//persist(institute);
+		this.getInstituteDao().update(institute);
 	}
 
 	/**
