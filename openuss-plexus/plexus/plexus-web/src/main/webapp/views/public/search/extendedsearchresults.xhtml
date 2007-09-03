@@ -45,7 +45,7 @@
 						<h:outputText value="#{msg.search_result_score}: #{result.score}" styleClass="header_font_normal"/>
 						<h:outputText value="#{result.debugInfo}" styleClass="content_font_normal" escape="false"/>
 		    		</o:link>
-		    		<o:link value="/views/secured/lecture/institute.faces" rendered="#{result.domainType == 'institute'}">
+		    		<o:link value="/views/public/institute/institute.faces" rendered="#{result.domainType == 'institute'}">
 		    			<f:param name="institute" value="#{result.id}"/>
 					 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
 						<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
