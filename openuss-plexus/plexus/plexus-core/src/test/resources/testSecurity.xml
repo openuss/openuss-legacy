@@ -177,22 +177,22 @@
                 org.openuss.lecture.LectureService.removeCourseType=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.removePeriod=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.removeCourse=ROLE_ADMIN, ROLE_USER
-                org.openuss.repository.RepositoryService.saveContent=ROLE_USER, ROLE_ADMIN
-                org.openuss.repository.RepositoryService.removeContent=ROLE_USER,ROLE_ADMIN
-                org.openuss.repository.RepositoryService.loadContent=ROLE_USER, ROLE_ADMIN
-                org.openuss.repository.RepositoryService.setRepositoryLocation=ROLE_USER, ROLE_ADMIN
-                org.openuss.repository.RepositoryService.getRepositoryLocation=ROLE_USER, ROLE_ADMIN
                 
+                org.openuss.repository.RepositoryService.saveContent=ROLE_USER, ROLE_ADMIN
+                org.openuss.repository.RepositoryService.loadContent=ROLE_USER, ROLE_ADMIN, ROLE_ANONYMOUS
+                org.openuss.repository.RepositoryService.removeContent=ROLE_USER, ROLE_ADMIN
+                org.openuss.repository.RepositoryService.setRepositoryLocation=ROLE_USER, ROLE_ADMIN
+                org.openuss.repository.RepositoryService.getRepositoryLocation=ROLE_USER, ROLE_ADMIN, ROLE_ANONYMOUS
                 org.openuss.lecture.UniversityService.createUniversity=ROLE_ADMIN
                 org.openuss.lecture.UniversityService.removeUniversity=ROLE_ADMIN
                 org.openuss.lecture.UniversityService.removePeriodAndCourses=ROLE_ADMIN
                 org.openuss.lecture.UniversityService.removeCompleteUniversityTree=ROLE_ADMIN
-                org.openuss.lecture.DepartmentService.removeDepartment=ROLE_ADMIN
-                org.openuss.lecture.InstituteService.removeInstitute=ROLE_ADMIN
                 org.openuss.lecture.UniversityService.setUniversityStatus=ROLE_ADMIN
                 org.openuss.lecture.DepartmentService.setDepartmentStatus=ROLE_ADMIN
-                org.openuss.lecture.InstituteService.setInstituteStatus=ROLE_ADMIN
+                org.openuss.lecture.DepartmentService.removeCompleteDepartmentTree=ROLE_ADMIN
                 org.openuss.lecture.OrganisationService.setOrganisationEnabled=ROLE_ADMIN
+                org.openuss.lecture.InstituteService.setInstituteStatus=ROLE_ADMIN
+                org.openuss.lecture.InstituteService.removeCompleteInstituteTree=ROLE_ADMIN
             </value>
         </property>
     </bean>

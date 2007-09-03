@@ -56,7 +56,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		Desktop desktop = desktopDao.findByUser(owner);
 		assertNotNull(desktop);
 		assertEquals(1, desktop.getInstitutes().size());
-		
+
 		// Synchronize with Database
 		flush();
 
@@ -86,7 +86,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		desktop = desktopDao.findByUser(owner);
 		assertNotNull(desktop);
 		assertEquals(2, desktop.getInstitutes().size());
-		
+
 		// Synchronize with Database
 		flush();
 
@@ -130,20 +130,20 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 
 		// Synchronize with Database
 		flush();
-		
+
 		// Test for Exception
 		Institute institute1 = testUtility.createUniqueInstituteInDB();
 		assertNotNull(institute1.getId());
-		
+
 		// Create official Department
 		Department department = testUtility.createUniqueDepartmentInDB();
 		department.setDepartmentType(DepartmentType.OFFICIAL);
-		
+
 		// Create new InstituteInfo object
 		InstituteInfo instituteInfo1 = new InstituteInfo();
 		instituteInfo1.setId(institute1.getId());
 		instituteInfo1.setDepartmentId(department.getId());
-		
+
 		try {
 			this.getInstituteService().update(instituteInfo1);
 			fail("InstituteServiceException must have been thrown.");
@@ -157,58 +157,85 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 	public void testRemoveInstitute() {
 		logger.info("----> BEGIN access to removeInstitute test");
 
-		// Create an Institute
+		// Create an Institute without Courses
 		Institute institute = testUtility.createUniqueInstituteInDB();
-		assertNotNull(institute.getId());
+		Long instituteId = institute.getId();
+		assertNotNull(instituteId);
 		Department department = institute.getDepartment();
 		assertNotNull(department);
-		assertEquals(1, department.getInstitutes().size());
-		flush();
-		
-		// Get Institute id
-		Long id = institute.getId();
-		
-		// Create Desktop
-		User user = testUtility.createUniqueUserInDB();
-		Desktop desktop = Desktop.Factory.newInstance(user);
-		desktop.getInstitutes().add(institute);
-		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
-		Desktop desktopCreated = desktopDao.create(desktop);
-		assertNotNull(desktopCreated);
+		int sizeBefore = department.getInstitutes().size();
+
+		// Create an Institute with CourseTypes and Courses
+		Course course = testUtility.createUniqueCourseInDB();
+		Institute institute2 = course.getCourseType().getInstitute();
+		Long instituteId2 = institute2.getId();
 
 		// Synchronize with Database
 		flush();
-		
-		// Create user secure context
-		testUtility.createUserSecureContext();
-		try {
-			this.getInstituteService().removeInstitute(institute.getId());
-			fail("AccessDeniedException should have been thrown.");
-		} catch (AccessDeniedException ade) {
-			;
-		} finally {
-			testUtility.destroySecureContext();
-		}
-		
-		// Create admin secure context
-		testUtility.createAdminSecureContext();
 
-		// Remove Institute
-		this.getInstituteService().removeInstitute(institute.getId().longValue());
+		// Remove Institutes
+		try {
+			this.getInstituteService().removeInstitute(instituteId2);
+			fail("Exception should have been thrown");
+		} catch (Exception e) {
+			;
+		}
+		this.getInstituteService().removeInstitute(instituteId);
 
 		// Synchronize with Database
 		flush();
 
 		// Try to load Institute again
 		InstituteDao instituteDao = (InstituteDao) this.applicationContext.getBean("instituteDao");
-		Institute institute2 = instituteDao.load(id);
+		Institute institute3 = instituteDao.load(instituteId);
+		assertNull(institute3);
+
+		assertEquals(sizeBefore - 1, department.getInstitutes().size());
+
+		logger.info("----> END access to removeInstitute test");
+	}
+
+	public void testRemoveCompleteInstituteTree() {
+		logger.info("----> BEGIN access to removeInstitute test");
+
+		// Create an Institute with CourseTypes and Courses
+		Course course = testUtility.createUniqueCourseInDB();
+		Institute institute = course.getCourseType().getInstitute();
+		Long instituteId = institute.getId();
+		assertNotNull(instituteId);
+		Department department = institute.getDepartment();
+		assertNotNull(department);
+		int sizeBefore = department.getInstitutes().size();
+
+		// Synchronize with Database
+		flush();
+
+		// Create user secure context
+		testUtility.createUserSecureContext();
+		try {
+			this.getInstituteService().removeCompleteInstituteTree(instituteId);
+			fail("AccessDeniedException should have been thrown.");
+		} catch (AccessDeniedException ade) {
+			;
+		} finally {
+			testUtility.destroySecureContext();
+		}
+
+		// Create admin secure context
+		testUtility.createAdminSecureContext();
+
+		// Remove Institute
+		this.getInstituteService().removeCompleteInstituteTree(instituteId);
+
+		// Synchronize with Database
+		flush();
+
+		// Try to load Institute again
+		InstituteDao instituteDao = (InstituteDao) this.applicationContext.getBean("instituteDao");
+		Institute institute2 = instituteDao.load(instituteId);
 		assertNull(institute2);
-		
-		assertEquals(0, department.getInstitutes().size());
-		
-		Desktop desktopTest = desktopDao.load(desktop.getId());
-		assertNotNull(desktopTest);
-		assertEquals(0, desktopTest.getInstitutes().size());
+
+		assertEquals(sizeBefore - 1, department.getInstitutes().size());
 
 		logger.info("----> END access to removeInstitute test");
 	}
@@ -246,7 +273,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		UserDao userDao = (UserDao) this.getApplicationContext().getBean("userDao");
 		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
 		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
-		
+
 		ApplicationInfo applicationInfo = new ApplicationInfo();
 		applicationInfo.setDepartmentInfo(departmentDao.toDepartmentInfo(department));
 		applicationInfo.setInstituteInfo(instituteDao.toInstituteInfo(institute));
@@ -307,7 +334,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 
 		logger.debug("----> END access to removeUnconfirmedDepartment test <---- ");
 	}
-	
+
 	public void testSetInstituteStatus() {
 		logger.info("----> BEGIN access to setInstituteStatus test");
 
@@ -323,13 +350,13 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		try {
 			this.getInstituteService().setInstituteStatus(institute.getId(), false);
 			fail("AccessDeniedException should have been thrown.");
-			
+
 		} catch (AccessDeniedException ade) {
 			;
 		} finally {
 			testUtility.destroySecureContext();
 		}
-		
+
 		testUtility.createAdminSecureContext();
 		this.getInstituteService().setInstituteStatus(institute.getId(), false);
 
@@ -351,7 +378,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 
 		logger.info("----> END access to setInstituteStatus test");
 	}
-	
+
 	public void testFindApplicationByInstitute() {
 		logger.info("----> BEGIN access to findApplicationByInstitute test");
 
@@ -368,7 +395,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		UserDao userDao = (UserDao) this.getApplicationContext().getBean("userDao");
 		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
 		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
-		
+
 		ApplicationInfo applicationInfo = new ApplicationInfo();
 		applicationInfo.setDepartmentInfo(departmentDao.toDepartmentInfo(department));
 		applicationInfo.setInstituteInfo(instituteDao.toInstituteInfo(institute));
@@ -376,7 +403,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 
 		Long applicationId = this.getInstituteService().applyAtDepartment(applicationInfo);
 		assertNotNull(applicationId);
-		
+
 		// Test
 		ApplicationInfo applicationInfo2 = this.getInstituteService().findApplicationByInstitute(institute.getId());
 		assertNotNull(applicationInfo2);

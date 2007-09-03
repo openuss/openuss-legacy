@@ -274,9 +274,9 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		application.add(application.getDepartment());
 		application.add(application.getInstitute());
 		this.getApplicationDao().create(application);
-		
+
 		applicationInfo.setId(application.getId());
-		
+
 		return application.getId();
 	}
 
@@ -353,44 +353,39 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				"InstituteService.handleRemoveCompleteInstituteTree - no Institute found to the corresponding ID "
 						+ instituteId);
 
-		if (institute.getCourseTypes().isEmpty()) {
-			
-			this.removeInstitute(instituteId);
-			return;
-			
-		} else {
+		if (!institute.getCourseTypes().isEmpty()) {
 
 			// Remove CourseTypes
 			List<CourseType> courseTypes = new ArrayList<CourseType>();
-			for (CourseType courseType:institute.getCourseTypes()) {
+			for (CourseType courseType : institute.getCourseTypes()) {
 				courseTypes.add(courseType);
 			}
-			for (CourseType courseType:courseTypes) {
+			for (CourseType courseType : courseTypes) {
 				this.getCourseTypeService().removeCourseType(courseType.getId());
 			}
-			
-			// Remove Security
-			this.getSecurityService().removeAllPermissions(institute);
-			this.getSecurityService().removeObjectIdentity(institute);
 
-			// Clear Membership
-			this.getMembershipService().clearMembership(institute.getMembership());
-
-			// Remove Institute
-			institute.getDepartment().remove(institute);
-			this.getInstituteDao().remove(institute);
 		}
 
+		// Remove Security
+		this.getSecurityService().removeAllPermissions(institute);
+		this.getSecurityService().removeObjectIdentity(institute);
+
+		// Clear Membership
+		this.getMembershipService().clearMembership(institute.getMembership());
+
+		// Remove Institute
+		institute.getDepartment().remove(institute);
+		this.getInstituteDao().remove(institute);
+
 	}
-	
-	
-	public void handleSetGroupOfMember(InstituteMember member, Long instituteId) throws Exception{
+
+	public void handleSetGroupOfMember(InstituteMember member, Long instituteId) throws Exception {
 		logger.debug("Setting groups of member");
 		Institute institute = getInstituteDao().load(instituteId);
-		
+
 		User user = this.getUserDao().load(member.getId());
-		Validate.notNull(user, "InstituteServiceImpl.handleSetGroupOfMember -" +
-				"no user found with the userId "+member.getId());
+		Validate.notNull(user, "InstituteServiceImpl.handleSetGroupOfMember -" + "no user found with the userId "
+				+ member.getId());
 
 		if (!institute.getMembership().getMembers().contains(user)) {
 			throw new LectureException("User is not a member of the institute!");
@@ -412,7 +407,6 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 			}
 		}
 	}
-	
 
 	/*------------------- private methods -------------------- */
 

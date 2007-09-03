@@ -379,12 +379,14 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 	 */
 	@SuppressWarnings( { "unchecked" })
 	protected void handleRemoveAllPermissions(Object object) throws Exception {
-
 		ObjectIdentity objectIdentity = getObjectIdentity(object);
-		Set<Permission> permissions = objectIdentity.getPermissions();
-		objectIdentity.getPermissions().clear();
+		List<Permission> permissions = getPermissionDao().findPermissions(objectIdentity);
 
 		for (Permission permission : permissions) {
+			ObjectIdentity aclObjectIdentity = permission.getAclObjectIdentity();
+			permission.setRecipient(null);
+			aclObjectIdentity.removePermission(permission);
+			getObjectIdentityDao().update(aclObjectIdentity);
 			getPermissionDao().remove(permission);
 		}
 	}
