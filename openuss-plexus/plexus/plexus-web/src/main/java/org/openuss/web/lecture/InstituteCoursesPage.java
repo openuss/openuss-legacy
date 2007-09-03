@@ -233,6 +233,14 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		return course;
 	}
 	
+	
+	private CourseTypeInfo currentCourseType() {
+		
+		CourseTypeInfo courseType = dataCourseTypes.getRowData();
+		
+		return courseType;
+	}
+	
 	/**
 	 * Store the selected course into session scope and go to course main page.
 	 * @return Outcome
@@ -292,15 +300,20 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	}
 	
 	/**
-	 * Sets the selected period into session scope and forward to the period
+	 * Store the selected course type into session scope and go to course type remove confirmation page.
 	 * remove view
 	 * 
 	 * @return outcome
 	 */
-	public String confirmRemoveCourseType() {
-		courseTypeInfo = dataCourseTypes.getRowData();;
-		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
-		return Constants.INSTITUTE_COURSE_TYPE_REMOVE_PAGE;
+	public String selectCourseTypeAndConfirmRemove() {		
+		logger.debug("Starting method selectCourseTypeAndConfirmRemove");
+		CourseTypeInfo currentCourseType = currentCourseType();
+		logger.debug("Returning to method selectCourseTypeAndConfirmRemove");
+		logger.debug(currentCourseType.getId());	
+		setSessionBean(Constants.COURSE_TYPE_INFO, currentCourseType);
+		
+		return Constants.COURSE_TYPE_CONFIRM_REMOVE_PAGE;
+		
 	}
 	
 	/**

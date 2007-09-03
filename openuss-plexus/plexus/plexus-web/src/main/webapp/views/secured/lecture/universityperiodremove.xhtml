@@ -36,20 +36,13 @@
 							 #{periodInfo.description}<br/>
 							<br/>
 							<h:outputText value="#{msg.period_remove_text_part_2}" styleClass="warning"/>
-							
-							<h:outputText value="#{msg.period_remove_text_part_3}" styleClass="warning"/>
-	   						<h:selectBooleanCheckbox id="checkConfirmation" 
-	   						validator="#{views$secured$lecture$periodremove.validateRemoveConfirmation}"
-	   						styleClass="checkbox" 
-	   						required="true"/>
-		   					<h:outputLabel value="#{msg.period_remove_confirmation_flag}" for="checkConfirmation"/>
-			   				<h:message for="checkConfirmation" styleClass="field_error"/>					
+							<h:outputText value="#{msg.period_remove_text_part_3}" styleClass="warning"/>					
 						</span>
 					</p>
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.cancel}" action="university_periods" immediate="true" styleClass="button_cancel"/>
 					<h:commandButton value="${msg.remove}" action="#{views$secured$lecture$periodremove.removePeriod}" styleClass="button_warning"/>
+					<h:commandButton value="${msg.cancel}" action="university_periods" immediate="true" styleClass="button_cancel"/>
 				</o:block>
 			
 	  		

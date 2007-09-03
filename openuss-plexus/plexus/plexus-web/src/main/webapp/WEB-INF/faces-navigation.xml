@@ -492,10 +492,14 @@
 				<to-view-id>/views/secured/course/coursenewsedit.xhtml</to-view-id>
 			</navigation-case>
      		
-
 			<navigation-case>
 				<from-outcome>course_options_news</from-outcome>
 				<to-view-id>/views/secured/lecture/news.xhtml</to-view-id>				
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>course_type_remove_confirmation</from-outcome>
+				<to-view-id>/views/secured/lecture/coursetyperemoveconfirmation.xhtml</to-view-id>				
 			</navigation-case>
 			
 			<navigation-case>

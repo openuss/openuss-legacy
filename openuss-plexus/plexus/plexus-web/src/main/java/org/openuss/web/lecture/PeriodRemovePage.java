@@ -1,9 +1,5 @@
 package org.openuss.web.lecture;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -12,6 +8,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.UniversityServiceException;
 import org.openuss.web.Constants;
 
 /**
@@ -66,28 +63,17 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 	 */
 	//FIXME This is only possible, if no Course had been added to the Period
 	// You don't have the right to remove Courses!
-	public String removePeriod() throws LectureException {
+	public String removePeriod() throws Exception {
 		if (logger.isDebugEnabled())
 			logger.debug("Remove Period");
-		universityService.removePeriod(periodInfo.getId());
-		removeSessionBean(Constants.PERIOD_INFO);
-		return Constants.UNIVERSITY_PERIODS_PAGE;
-	}
-
-	/**
-	 * Validator to check whether the user has accepted the user agreement or
-	 * not.
-	 * 
-	 * @param context
-	 * @param toValidate
-	 * @param value
-	 */
-	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
-		boolean accept = (Boolean) value;
-		if (!accept) {
-			((UIInput) toValidate).setValid(false);
-			addError(toValidate.getClientId(context), i18n("error_need_to_confirm_removement"), null);
+		try {
+			universityService.removePeriod(periodInfo.getId());
+			removeSessionBean(Constants.PERIOD_INFO);
+			addMessage(i18n("message_period_removed"));
+			return Constants.UNIVERSITY_PERIODS_PAGE;
+		} catch (UniversityServiceException e) {
+			addMessage(i18n("message_period_cannot_be_removed"));
+			return Constants.UNIVERSITY_PERIODS_PAGE;
 		}
 	}
-
 }
