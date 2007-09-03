@@ -6,7 +6,7 @@
 			Klicken Sie bitte auf den folgenden Link, um die Hauptseite des Fachbereichs zu öffnen:
 		</p>
 		<p>
-		<a href="${departmentlink}">${departmentlink}</a>
+		<a href="${departmentapplicantlink}">${departmentapplicantlink}</a>
 		</p>
 		<p>
 			Sollte das Anklicken des Links nicht funktionieren, so geben Sie die Addresse in die

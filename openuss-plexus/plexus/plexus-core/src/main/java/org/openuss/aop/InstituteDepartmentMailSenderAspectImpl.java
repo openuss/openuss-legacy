@@ -55,7 +55,7 @@ public class InstituteDepartmentMailSenderAspectImpl {
 				"department cannot be null.");
 		
 		// Create Link to Department
-		String link = "openuss-plexus/views/public/department/department.faces?department=" + application.getDepartment().getId();
+		String link = "/openuss-plexus/views/public/department/department.faces?department=" + application.getDepartment().getId();
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
 
 		// Prepare Parameters for EMail
@@ -111,7 +111,7 @@ public class InstituteDepartmentMailSenderAspectImpl {
 				"department cannot be null.");
 		
 		// Create Link to Department
-		String link = "openuss-plexus/views/public/department/department.faces?department=" + application.getDepartment().getId();
+		String link = "/openuss-plexus/views/public/department/department.faces?department=" + application.getDepartment().getId();
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
 
 		// Prepare Parameters for EMail

@@ -157,7 +157,7 @@ public class AspirantMailSenderAspectImpl {
 				+ " and Members of Institute " + institute.getName());
 		
 		// Create Link to Institute
-		String link = "openuss-plexus/views/public/institute/institute.faces?institute=" + institute.getId();
+		String link = "/openuss-plexus/views/public/institute/institute.faces?institute=" + institute.getId();
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
 
 		// Prepare Parameters for EMail
@@ -213,7 +213,7 @@ public class AspirantMailSenderAspectImpl {
 		logger.debug("sendAcceptAspirantMailForInstitute - Sending Email to User " + user.getUsername());
 		
 		// Create Link to Institute
-		String link = "openuss-plexus/views/public/institute/institute.faces?institute=" + institute.getId();
+		String link = "/openuss-plexus/views/public/institute/institute.faces?institute=" + institute.getId();
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
 
 		// Prepare Parameters for EMail
