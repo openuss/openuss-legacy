@@ -276,6 +276,7 @@
 	<bean id="instituteDepartmentMailSenderAspectBean"
 		class="org.openuss.aop.InstituteDepartmentMailSenderAspectImpl">
 		<property name="userDao" ref="userDao" />
+		<property name="applicationDao" ref="applicationDao" />
 		<property name="instituteDao" ref="instituteDao" />
 		<property name="departmentDao" ref="departmentDao" />
 		<property name="messageService" ref="messageService" />
