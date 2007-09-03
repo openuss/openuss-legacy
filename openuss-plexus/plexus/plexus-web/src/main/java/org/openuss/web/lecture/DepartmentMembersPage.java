@@ -94,8 +94,8 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		  logger.debug("removeUserFromGroup");
 		  logger.debug(departmentGroups.get(0).getName());
 		  try{
-		  organisationService.removeUserFromGroup(member.getId(),departmentGroups.get(0).getId());
-		  organisationService.removeMember(departmentInfo.getId(), user.getId());
+	
+		  organisationService.removeMember(departmentInfo.getId(), member.getId());
 		  }catch(Exception e){;}
 		  logger.debug("return");
 		  return Constants.SUCCESS;
@@ -128,7 +128,8 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		try{
 			DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId());
 			desktopService2.linkDepartment(desktopInfo.getId(), departmentInfo.getId());}
-			catch(Exception e){;}
+			catch(Exception e){
+				addError(i18n(e.getMessage()));}
 
 	}
 

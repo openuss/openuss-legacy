@@ -95,7 +95,7 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 		  logger.debug(universityGroups.get(0).getName());
 		  try{
 		  organisationService.removeUserFromGroup(member.getId(),universityGroups.get(0).getId());
-		  organisationService.removeMember(universityInfo.getId(), user.getId());
+		  organisationService.removeMember(universityInfo.getId(), member.getId());
 		  logger.debug("return");}
 		  catch(Exception e){;}
 		  
