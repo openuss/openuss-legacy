@@ -20,7 +20,7 @@
 	<h:outputLabel value="#{msg.department_selection}"  	
 					for="departmenSelection" 
 					styleClass="field_label"
-					rendered="#{!empty instituteInfo.name}"/>
+					rendered="#{!empty instituteInfo.id}"/>
 		
 	<h:selectOneListbox
 	    	     id="departmentSelection" 
@@ -28,7 +28,7 @@
 				 value="#{views$secured$lecture$instituteoptions.departmentId}"
 				layout="pageDirection" 
 				styleClass="pulldown"
-				rendered="#{!empty instituteInfo.name}">
+				rendered="#{!empty instituteInfo.id}">
 				<f:selectItems value="#{views$secured$lecture$instituteoptions.allDepartments}"/>
 	</h:selectOneListbox>
 
