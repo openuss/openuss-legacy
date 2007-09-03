@@ -231,11 +231,16 @@ public class InstitutePage extends AbstractLecturePage {
 		}
 	}
 
-	/*public String resendActivationMail(){
+	/**
+	 * Resends the activation mail for the institute again.
+	 * 
+	 * @param event
+	 */
+	public String resendActivationMail(){
 		getLectureService().sendActivationCode(institute);
 		addMessage(i18n("institute_activationcode_send"));
 		return Constants.SUCCESS;
-	}*/
+	}
 	
 	private class CourseDataModel extends AbstractPagedTable<CourseInfo> {
 
