@@ -80,8 +80,9 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	public static final int INSTITUTE_ADMINISTRATION = GRANT | INSTITUTE_ASSIST;
 	public static final int INSTITUTE_OWN = DELETE | INSTITUTE_ADMINISTRATION;
 	
-	public static final int UNIVERSITY_ADMINISTRATION = PARTICIPATE | ASSIST | READ | CREATE | UPDATE | DELETE | MANAGE_NEWS | MANAGE_UNIVERSITY | MANAGE_PERIODS | GRANT;
 	public static final int DEPARTMENT_ADMINISTRATION = PARTICIPATE | ASSIST | READ | CREATE | UPDATE | DELETE | MANAGE_NEWS | MANAGE_DEPARTMENT | GRANT;
+	public static final int UNIVERSITY_ADMINISTRATION = MANAGE_UNIVERSITY | MANAGE_PERIODS | DEPARTMENT_ADMINISTRATION;
+	
 	
 	// Default combinations of base course permissions
 	public static final int COURSE_PARTICIPANT = READ | PARTICIPATE;
@@ -96,6 +97,8 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	private static final int[] validPermissions = {
 		GRANT, CREATE, READ, UPDATE, DELETE, ASSIST, PARTICIPATE, 
 		RU, CRU, CRUD, GCRUD, OGCRUD,
+		UNIVERSITY_ADMINISTRATION, MANAGE_UNIVERSITY,
+		DEPARTMENT_ADMINISTRATION, MANAGE_DEPARTMENT,
 		INSTITUTE_TUTOR, INSTITUTE_ASSIST, INSTITUTE_ADMINISTRATION, INSTITUTE_OWN
 	};
 	
@@ -157,6 +160,22 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 
 	public int getDELETE() {
 		return DELETE;
+	}
+
+	public int getDEPARTMENT_ADMINISTRATION() {
+		return DEPARTMENT_ADMINISTRATION;
+	}
+
+	public int getMANAGE_DEPARTMENT() {
+		return MANAGE_DEPARTMENT;
+	}
+
+	public int getMANAGE_UNIVERSITY() {
+		return MANAGE_UNIVERSITY;
+	}
+
+	public int getUNIVERSITY_ADMINISTRATION() {
+		return UNIVERSITY_ADMINISTRATION;
 	}
 
 	public int getINSTITUTE_ADMINISTRATION() {

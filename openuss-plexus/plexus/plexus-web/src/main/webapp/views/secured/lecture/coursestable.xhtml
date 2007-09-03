@@ -62,7 +62,7 @@
 						rendered="#{courseInfo.enabled}">
 					</h:commandButton>
 				</s:authorize>
-				<s:authorize ifAlRlGranted="ROLE_ADMIN">
+				<s:authorize ifAllGranted="ROLE_ADMIN">
 					<h:commandButton 
 						action = "#{views$secured$lecture$institutecourses.enableCourse}"
 						styleClass="button_remove"
@@ -71,13 +71,15 @@
 						rendered="#{not courseInfo.enabled}">
 					</h:commandButton>
 				</s:authorize>
-				<s:authorize ifAllGranted="ROLE_ADMIN">
-					<h:commandButton
-						action = "#{views$secured$lecture$institutecourses.selectCourseAndConfirmRemove}"
-						styleClass="button_remove"
-						value="#{msg.course_command_remove}"
-						hint="#{msg.course_command_remove_hint}">
-					</h:commandButton>	
+				<s:authorize ifAllGranted="ROLE_USER">
+					<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.INSTITUTE_ASSIST}">
+						<h:commandButton
+							action = "#{views$secured$lecture$institutecourses.selectCourseAndConfirmRemove}"
+							styleClass="button_remove"
+							value="#{msg.course_command_remove}"
+							hint="#{msg.course_command_remove_hint}">
+						</h:commandButton>
+					</s:acl>	
 				</s:authorize>
 		</plexus:column>
 	</plexus:dataTable>

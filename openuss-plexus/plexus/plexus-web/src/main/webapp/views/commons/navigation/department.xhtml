@@ -23,13 +23,13 @@
 									<h:outputText value="#{msg['department_profile']}" ></h:outputText>
 							</t:commandNavigation2>
 						</s:acl>
-						<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.GRANT}">				
+						<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.DEPARTMENT_ADMINISTRATION}">				
 							<t:commandNavigation2 action="manage_institute"
 								activeOnViewIds="/views/secured/lecture/departmentinstitutes.xhtml">
 								<h:outputText value="#{msg['department_command_institutes']}"></h:outputText>
 							</t:commandNavigation2>
 						</s:acl>
-						<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.GRANT}">	
+						<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.DEPARTMENT_ADMINISTRATION}">	
 							
 								<t:commandNavigation2 action="department_members"
 									activeOnViewIds="/views/secured/lecture/auth/departmentMembers.xhtml">
@@ -37,7 +37,7 @@
 								</t:commandNavigation2>
 							
 						</s:acl>
-						<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.GRANT}">
+						<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.DEPARTMENT_ADMINISTRATION}">
 							<t:commandNavigation2 action="department_data"
 								activeOnViewIds="/views/secured/lecture/departmentoptions.xhtml">
 								<h:outputText value="#{msg['department_command_settings']}"></h:outputText>

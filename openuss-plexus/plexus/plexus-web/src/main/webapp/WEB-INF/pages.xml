@@ -1,5 +1,9 @@
 <pages>
 
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Universities
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
 	<page view-id="/views/public/university/university.xhtml">
 		<parameter name="university" value="#{universityInfo.id}" converterId="javax.faces.Long"/>
 	</page>
@@ -7,7 +11,15 @@
 	<page view-id="/views/secured/lecture/universityoptions*">
 		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.GRANT}"/> 
 	</page>
-	
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Departments
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+	 
+	 <page view-id="/views/secured/lecture/departmentinstitutes.xhtml">
+		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
+	</page>
+	 
 	<page view-id="/views/public/department/department.xhtml">
 		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
 	</page>
@@ -16,6 +28,10 @@
 		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.GRANT}"/> 
 	</page>
 	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Institutes
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+	
 	<page view-id="/views/public/institute/institute.xhtml">
 		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
 	</page>
@@ -23,6 +39,10 @@
 	<page view-id="/views/secured/lecture/instituteoptions*">
 		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.GRANT}"/> 
 	</page>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Courses
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 	
 	<page view-id="/views/secured/lecture/course*">
 		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_COURSE_TYPES}"/> 
@@ -38,11 +58,19 @@
 		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Periods
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+	
 	<page view-id="/views/secured/lecture/period*">
 		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_PERIODS}"/> 
 		<parameter name="period" value="#{period.id}" converterId="javax.faces.Long"/>
 	</page>
 	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Miscellaneous
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
 	<page view-id="/views/secured/lecture/auth/*">
 		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.GRANT}"/> 
 	</page>
