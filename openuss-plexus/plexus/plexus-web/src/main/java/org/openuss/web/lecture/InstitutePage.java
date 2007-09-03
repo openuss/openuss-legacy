@@ -251,11 +251,11 @@ public class InstitutePage extends AbstractLecturePage {
 			if (page == null) {
 				if (periodInfo != null) {
 					if ((periodInfo.getId() != null) && (periodInfo.getId().longValue() == Constants.COURSES_ALL_PERIODS)) {
-						coursesByPeriodAndInstitute = courseService.findAllCoursesByInstitute(instituteInfo.getId());
+						coursesByPeriodAndInstitute = courseService.findCoursesByInstituteAndEnabled(instituteInfo.getId(), true);
 					} else if ((periodInfo.getId() != null) && (periodInfo.getId().longValue() == Constants.COURSES_ALL_ACTIVE_PERIODS)) {
-						coursesByPeriodAndInstitute = courseService.findCoursesByActivePeriods(instituteInfo);
+						coursesByPeriodAndInstitute = courseService.findCoursesByActivePeriodsAndEnabled(instituteInfo.getId(), true);
 					} else {
-						coursesByPeriodAndInstitute = courseService.findCoursesByPeriodAndInstitute(periodInfo.getId(), instituteInfo.getId());
+						coursesByPeriodAndInstitute = courseService.findCoursesByPeriodAndInstituteAndEnabled(periodInfo.getId(), instituteInfo.getId(), true);
 					}		
 					if (coursesByPeriodAndInstitute != null) {
 						courses.addAll(coursesByPeriodAndInstitute);
