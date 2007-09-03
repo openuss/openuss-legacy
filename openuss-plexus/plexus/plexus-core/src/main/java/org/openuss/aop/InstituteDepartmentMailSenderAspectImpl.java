@@ -38,8 +38,6 @@ public class InstituteDepartmentMailSenderAspectImpl {
 	private SystemService systemService;
 	
 	public void sendApplyInstituteAtDepartmentMail (ApplicationInfo applicationInfo) {
-		// Confirmation Mail to user who applies.
-		// Mail to all admins of department to edit application
 		
 		logger.debug("sendApplyInstituteAtDepartmentMail - Sending Email to User who apllied at the department");
 		
@@ -53,48 +51,106 @@ public class InstituteDepartmentMailSenderAspectImpl {
 		Validate.notNull(application, "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
 				"no application found with the applicationInfo "+applicationInfo.getId());
 		
-		/*
+		Validate.notNull(application.getDepartment(), "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
+				"department cannot be null.");
+		
 		// Create Link to Department
-		String link = "openuss-plexus/views/public/department/department.faces?department=" + department.getId();
+		String link = "openuss-plexus/views/public/department/department.faces?department=" + application.getDepartment().getId();
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
 
 		// Prepare Parameters for EMail
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("institutename", institute.getName());
-		parameters.put("userfirstname", institute.getName());
-		parameters.put("userlastname", institute.getName());
-		parameters.put("username", institute.getName());
-		parameters.put("instituteapplicantlink", link);
+		parameters.put("institutename", application.getInstitute().getName());
+		parameters.put("departmentname", application.getDepartment().getName());
+		parameters.put("applyinguserfirstname", application.getApplyingUser().getFirstName());
+		parameters.put("applyingnuserlastname", application.getApplyingUser().getLastName());
+		parameters.put("departmentapplicantlink", link);
 		
-		// Determine Recipients (Members of the Institute)
+		// Determine Recipients (Members of the Department)
 		List<User> recipients1 = new ArrayList<User>();
-		for (User member : institute.getMembership().getMembers()) {
+		for (User member : application.getDepartment().getMembership().getMembers()) {
 			recipients1.add(member);
 		}
-		recipients1.remove(user);
+		recipients1.remove(application.getApplyingUser());
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("user.membership.sender", "user.membership.addmember.members.subject",
-					"instituteapplication", parameters, recipients1);
+			messageService.sendMessage("application.department.sender", "application.institute.applyatdepartment.members.subject",
+					"departmentapplication", parameters, recipients1);
 		}
 
 		// Determine Recipient (the new User)
 		List<User> recipients2 = new ArrayList<User>(1);
-		recipients2.add(user);
+		recipients2.add(application.getApplyingUser());
 		
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender", "user.membership.addmember.user.subject",
-				"instituteapplicationconfirmation", parameters, recipients2);
-				*/
+		messageService.sendMessage("application.applyingUser.sender", "application.institute.applyatdepartment.user.subject",
+				"departmentapplicationconfirmation", parameters, recipients2);
 	}
 	
-	public void sendAcceptApplicationAtDepartmentMail (InstituteInfo instiuteInfo, Long userId) {
-		// Mail to user who applies at the department 
+	public void sendAcceptApplicationAtDepartmentMail (Long applicationId, Long userId) {
+		logger.debug("sendAcceptApplicationAtDepartmentMail - Sending Email to User who apllied at the department");
+		
+		Validate.notNull(applicationId, "InstituteDepartmentMailSenderAspectImpl.sendAcceptApplicationAtDepartment -" +
+				"applicationd cannot be null.");
+		
+		// Get Application
+		Application application = (Application) this.getApplicationDao().load(applicationId);
+		Validate.notNull(application, "InstituteDepartmentMailSenderAspectImpl.sendAcceptApplicationAtDepartment -" +
+				"no application found with the applicationInfo "+applicationId);
+		
+		Validate.notNull(application.getDepartment(), "InstituteDepartmentMailSenderAspectImpl.sendAcceptApplicationAtDepartment -" +
+				"department cannot be null.");
+		
+		// Create Link to Department
+		String link = "openuss-plexus/views/public/department/department.faces?department=" + application.getDepartment().getId();
+		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
+
+		// Prepare Parameters for EMail
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("institutename", application.getInstitute().getName());
+		parameters.put("departmentname", application.getDepartment().getName());
+		parameters.put("applyinguserfirstname", application.getApplyingUser().getFirstName());
+		parameters.put("applyingnuserlastname", application.getApplyingUser().getLastName());
+		parameters.put("departmentapplicantlink", link);
+
+		// Determine Recipient (the user who created the application)
+		List<User> recipients = new ArrayList<User>(1);
+		recipients.add(application.getApplyingUser());
+		
+		// Send Email to new User
+		messageService.sendMessage("application.applyingUser.sender", "application.department.acceptInstitute.user.subject",
+				"departmentapplicationapply", parameters, recipients); 
 	}
 	
-	public void sendRejectApplicationAtDepartmentMail (InstituteInfo instiuteInfo, Long userId) {
-		// Mail to user who applied at the department
+	public void sendRejectApplicationAtDepartmentMail (Long applicationId, Long userId) {
+		logger.debug("sendAcceptApplicationAtDepartmentMail - Sending Email to User who apllied at the department");
+		
+		Validate.notNull(applicationId, "InstituteDepartmentMailSenderAspectImpl.sendRejectApplicationAtDepartmentMail -" +
+				"applicationd cannot be null.");
+		
+		// Get Application
+		Application application = (Application) this.getApplicationDao().load(applicationId);
+		Validate.notNull(application, "InstituteDepartmentMailSenderAspectImpl.sendRejectApplicationAtDepartmentMail -" +
+				"no application found with the applicationInfo "+applicationId);
+		
+		Validate.notNull(application.getDepartment(), "InstituteDepartmentMailSenderAspectImpl.sendRejectApplicationAtDepartmentMail -" +
+				"department cannot be null.");
+
+		// Prepare Parameters for EMail
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("institutename", application.getInstitute().getName());
+		parameters.put("departmentname", application.getDepartment().getName());
+		parameters.put("applyinguserfirstname", application.getApplyingUser().getFirstName());
+		parameters.put("applyingnuserlastname", application.getApplyingUser().getLastName());
+
+		// Determine Recipient (the user who created the application)
+		List<User> recipients = new ArrayList<User>(1);
+		recipients.add(application.getApplyingUser());
+		
+		// Send Email to new User
+		messageService.sendMessage("application.applyingUser.sender", "application.department.rejectInstitute.user.subject",
+				"departmentapplicationreject", parameters, recipients); 
 	}
 
 	public UserDao getUserDao() {
