@@ -527,7 +527,6 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		University university2 = universityDao.load(universityId);
 		assertNull(university2);
 		
-		testUtility.destroySecureContext();
 		logger.info("----> END access to removeCompleteUniversityTree test");
 	}
 

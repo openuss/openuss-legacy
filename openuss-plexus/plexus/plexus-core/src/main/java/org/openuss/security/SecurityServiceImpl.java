@@ -9,7 +9,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContext;
