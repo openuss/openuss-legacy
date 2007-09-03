@@ -8,24 +8,40 @@
 		<parameter name="university" value="#{universityInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
+	<page view-id="/views/secured/lecture/universitydepartments.xhtml">
+		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.UNIVERSITY_ADMINISTRATION}"/> 
+	</page>
+	
+	<page view-id="/views/secured/lecture/universityperiods.xhtml">
+		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.UNIVERSITY_ADMINISTRATION}"/> 
+	</page>
+	
+	<page view-id="/views/secured/lecture/auth/*.xhtml">
+		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.UNIVERSITY_ADMINISTRATION}"/> 
+	</page>
+	
 	<page view-id="/views/secured/lecture/universityoptions*">
-		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.GRANT}"/> 
+		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.UNIVERSITY_ADMINISTRATION}"/> 
 	</page>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			Departments
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 	 
-	 <page view-id="/views/secured/lecture/departmentinstitutes.xhtml">
+	<page view-id="/views/secured/lecture/departmentinstitutes.xhtml">
+		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
+	</page>
+	
+	<page view-id="/views/secured/lecture/departmentmembers.xhtml">
+		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
+	</page>
+	
+	<page view-id="/views/secured/lecture/departmentoptions.xhtml">
 		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
 	</page>
 	 
 	<page view-id="/views/public/department/department.xhtml">
 		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
-	</page>
-	
-	<page view-id="/views/secured/lecture/departmentoptions*">
-		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.GRANT}"/> 
 	</page>
 	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

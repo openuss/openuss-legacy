@@ -29,23 +29,23 @@
  				</o:block>
  				<o:block>
  					<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" />
- 					<h:selectOneListbox id="department_preferences_university" 
- 										size="1" 
- 										styleClass="pulldown" 
- 										value="#{departmentInfo.universityId}"
- 										valueChangeListener="#{instituteRegistration.processUniversitySelectChanged}" 
-										onchange="this.form.submit();"
-										immediate="true">
+ 					<h:selectOneListbox id="institute_preferences_university" 
+						size="1" 
+						styleClass="pulldown" 
+						value="#{departmentInfo.universityId}"
+						valueChangeListener="#{instituteRegistration.processUniversitySelectChanged}" 
+						onchange="this.form.submit();"
+						immediate="true">
 	    				<f:selectItems value="#{instituteRegistration.allUniversities}"/>
 					</h:selectOneListbox>
 					<h:outputLabel value="#{msg.institute_preferences_department}" for="departmentSelect" styleClass="field_label" />
  					<h:selectOneListbox id="institute_preferences_department" 
- 										size="1" 
- 										styleClass="pulldown" 
- 										value="#{instituteInfo.departmentId}"
- 										valueChangeListener="#{instituteRegistration.processDepartmentSelectChanged}" 
-										onchange="this.form.submit();"
-										immediate="true">
+						size="1" 
+						styleClass="pulldown" 
+						value="#{instituteInfo.departmentId}"
+						valueChangeListener="#{instituteRegistration.processDepartmentSelectChanged}" 
+						onchange="this.form.submit();"
+						immediate="true">
 	    				<f:selectItems value="#{instituteRegistration.allDepartments}"/>
 					</h:selectOneListbox>			
 				</o:block>
