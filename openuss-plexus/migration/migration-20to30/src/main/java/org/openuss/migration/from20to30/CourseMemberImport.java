@@ -2,7 +2,6 @@ package org.openuss.migration.from20to30;
 
 import org.apache.log4j.Logger;
 import org.hibernate.ScrollableResults;
-import org.hibernate.SessionFactory;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseMember;
 import org.openuss.lecture.CourseMemberDao;
@@ -25,12 +24,9 @@ import org.openuss.security.acl.PermissionDao;
  * @author Ingo Dueppe
  *
  */
-public class CourseMemberImport  {
+public class CourseMemberImport extends DefaultImport {
 
 	private static final Logger logger = Logger.getLogger(CourseMemberImport.class);
-	
-	/** LegacyDao */
-	private LegacyDao legacyDao;
 	
 	/** CourseMemberDao */
 	private CourseMemberDao courseMemberDao;
@@ -49,9 +45,6 @@ public class CourseMemberImport  {
 	
 	/** ObjectIdentityDao */
 	private ObjectIdentityDao objectIdentityDao;
-	
-	/** LegacySessionFactory */
-	private SessionFactory legacySessionFactory;
 	
 	public void perform() {
 		logger.debug("loading course member data");
@@ -77,10 +70,6 @@ public class CourseMemberImport  {
 		results.close();
 	}
 
-	protected void evict(Object object) {
-		legacySessionFactory.getCurrentSession().evict(object);
-	}
-
 	private void createMembership(Enrollmentaccesslist2 access, Course course, User user) {
 		CourseMember member = CourseMember.Factory.newInstance();
 		member.setCourse(course);
@@ -102,10 +91,6 @@ public class CourseMemberImport  {
 
 	public LegacyDao getLegacyDao() {
 		return legacyDao;
-	}
-
-	public void setLegacyDao(LegacyDao legacyDao) {
-		this.legacyDao = legacyDao;
 	}
 
 	public UserImport getUserImport() {

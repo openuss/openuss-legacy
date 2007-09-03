@@ -15,7 +15,6 @@ import org.openuss.lecture.CourseTypeDao;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.Period;
-import org.openuss.migration.legacy.dao.LegacyDao;
 import org.openuss.migration.legacy.domain.Assistantfaculty2;
 import org.openuss.migration.legacy.domain.Enrollment2;
 import org.openuss.migration.legacy.domain.Faculty2;
@@ -36,16 +35,13 @@ import org.openuss.security.acl.Permission;
  * @author Ingo Dueppe
  * 
  */
-public class LectureImport {
+public class LectureImport extends DefaultImport{
 
 	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(LectureImport.class);
 
 	/** InstituteDao */
 	private InstituteDao instituteDao;
-
-	/** LegacyDao */
-	private LegacyDao legacyDao;
 
 	/** GroupDao */
 	private GroupDao groupDao;
@@ -59,9 +55,6 @@ public class LectureImport {
 	/** ObjectIdentityDao */
 	private ObjectIdentityDao objectIdentityDao;
 	
-	/** identifierDao */
-	private LegacyIdentifierDao identifierDao;
-
 	/** UserImport */
 	private UserImport userImport;
 
@@ -394,10 +387,6 @@ public class LectureImport {
 		this.instituteDao = instituteDao;
 	}
 
-	public void setLegacyDao(LegacyDao legacyDao) {
-		this.legacyDao = legacyDao;
-	}
-
 	public void setUserImport(UserImport userImport) {
 		this.userImport = userImport;
 	}
@@ -435,10 +424,6 @@ public class LectureImport {
 		} else {
 			return null;
 		}
-	}
-
-	public void setIdentifierDao(LegacyIdentifierDao identifierDao) {
-		this.identifierDao = identifierDao;
 	}
 
 	public void setCourseDao(CourseDao courseDao) {

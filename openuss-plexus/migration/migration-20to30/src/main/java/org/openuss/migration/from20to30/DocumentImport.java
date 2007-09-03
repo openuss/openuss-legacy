@@ -6,7 +6,6 @@ import java.io.IOException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.ScrollableResults;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.DocumentService;
@@ -24,12 +23,9 @@ import org.openuss.migration.legacy.domain.Lecturefile2;
  * @author Ingo Dueppe
  * 
  */
-public class DocumentImport {
+public class DocumentImport extends DefaultImport {
 
 	private static final Logger logger = Logger.getLogger(DocumentImport.class);
-
-	/** LegacyDao */
-	private LegacyDao legacyDao;
 
 	/** DocumentService */
 	private DocumentService documentService;
@@ -37,22 +33,12 @@ public class DocumentImport {
 	/** LectureImport */
 	private LectureImport lectureImport;
 
-	/** SessionFactory */
-	private SessionFactory legacySessionFactory;
-	
-	private Session session;
-
 	public void perform() {
 		logger.info("loading lecture structure....");
-		
-		session = legacySessionFactory.getCurrentSession();
-
 		ScrollableResults results = legacyDao.loadAllLectures();
 		Lecture2 lecture = null;
 		while (results.next()) {
-			if (lecture != null) {
-				session.evict(lecture);
-			}
+			evict(lecture);
 			lecture = (Lecture2) results.get()[0];
 
 			Enrollment2 enrollment = lecture.getEnrollment();
@@ -140,10 +126,6 @@ public class DocumentImport {
 		return legacyDao;
 	}
 
-	public void setLegacyDao(LegacyDao legacyDao) {
-		this.legacyDao = legacyDao;
-	}
-
 	public DocumentService getDocumentService() {
 		return documentService;
 	}
@@ -162,10 +144,6 @@ public class DocumentImport {
 
 	public SessionFactory getLegacySessionFactory() {
 		return legacySessionFactory;
-	}
-
-	public void setLegacySessionFactory(SessionFactory legacySessionFactory) {
-		this.legacySessionFactory = legacySessionFactory;
 	}
 
 }

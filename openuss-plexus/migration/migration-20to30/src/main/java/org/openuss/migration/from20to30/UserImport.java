@@ -10,12 +10,7 @@ import java.util.Set;
 
 import org.apache.commons.validator.GenericValidator;
 import org.apache.log4j.Logger;
-import org.hibernate.CacheMode;
 import org.hibernate.ScrollableResults;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.openuss.migration.legacy.dao.LegacyDao;
 import org.openuss.migration.legacy.domain.Assistant2;
 import org.openuss.migration.legacy.domain.Assistantinformation2;
 import org.openuss.migration.legacy.domain.Student2;
@@ -30,8 +25,6 @@ import org.openuss.security.UserPreferences;
 import org.openuss.security.UserProfile;
 import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.ObjectIdentityDao;
-import org.springframework.orm.hibernate3.SessionHolder;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * This Service migrate data from openuss 2.0 to openuss-plexus 3.0
@@ -39,7 +32,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * @author Ingo Dueppe
  * 
  */
-public class UserImport {
+public class UserImport extends DefaultImport {
 
 	private static final Logger logger = Logger.getLogger(UserImport.class);
 
@@ -61,9 +54,6 @@ public class UserImport {
 	/** List of student or assistants that are invalid */
 	private List<Object> invalidEmails = new ArrayList<Object>();
 
-	/** Referenz to legacyDao */
-	private LegacyDao legacyDao;
-
 	/** UserDao */
 	private UserDao userDao;
 	
@@ -72,9 +62,6 @@ public class UserImport {
 	
 	/** ObjectIdentityDao */
 	private ObjectIdentityDao objectIdentityDao;
-	
-	/** identifierDao */
-	private LegacyIdentifierDao identifierDao; 
 	
 	public void perform() {
 		initializeUsers();
@@ -118,8 +105,13 @@ public class UserImport {
 		ScrollableResults results = legacyDao.loadAllStudents();
 		
 		int count = 0;
+		
+		Student2 student = null;
 		while (results.next()) {
-			Student2 student = (Student2) results.get()[0];
+			// remove last student from session
+			evict(student); 
+			// retrieve next student
+			student = (Student2) results.get()[0];
 			if (!ImportUtil.toBoolean(student.getAactive())) {
 				logger.debug("student not actived " + student.getUusername() + " - " + student.getEmailaddress());
 				continue;
@@ -145,9 +137,13 @@ public class UserImport {
 	private void loadAssistants() {
 		logger.info("loading assistants...");
 		ScrollableResults results = legacyDao.loadAllAssistants();
+		Assistant2 assistant = null;
 		int count = 0;
 		while(results.next()) {
-			Assistant2 assistant = (Assistant2) results.get()[0];
+			// remove last assistant from session
+			evict(assistant);
+			// retrieve next assistant;
+			assistant = (Assistant2) results.get()[0];
 			if (!ImportUtil.toBoolean(assistant.getAactive())) {
 				logger.debug("assistant not actived " + assistant.getUusername() + " - " + assistant.getEmailaddress());
 				continue;
@@ -367,14 +363,6 @@ public class UserImport {
 
 	public void setObjectIdentityDao(ObjectIdentityDao objectIdentityDao) {
 		this.objectIdentityDao = objectIdentityDao;
-	}
-
-	public void setIdentifierDao(LegacyIdentifierDao identifierDao) {
-		this.identifierDao = identifierDao;
-	}
-
-	public void setLegacyDao(LegacyDao legacyDao) {
-		this.legacyDao = legacyDao;
 	}
 
 }

@@ -12,7 +12,6 @@ import org.openuss.desktop.DesktopDao;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Institute;
-import org.openuss.migration.legacy.dao.LegacyDao;
 import org.openuss.migration.legacy.domain.Assistantenrollment2;
 import org.openuss.migration.legacy.domain.Assistantfaculty2;
 import org.openuss.migration.legacy.domain.Studentenrollment2;
@@ -26,7 +25,7 @@ import org.openuss.security.User;
  * @author Ingo Dueppe
  * 
  */
-public class DesktopImport {
+public class DesktopImport extends DefaultImport {
 
 	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(DesktopImport.class);
@@ -39,9 +38,6 @@ public class DesktopImport {
 
 	/** DesktopDao */
 	private DesktopDao desktopDao;
-
-	/** LegacyDao */
-	private LegacyDao legacyDao;
 
 	/** Map user to desktop */
 	private Map<Long, Desktop> user2desktop = new HashMap<Long, Desktop>(36000);
@@ -147,10 +143,6 @@ public class DesktopImport {
 
 	public void setLectureImport(LectureImport lectureImport) {
 		this.lectureImport = lectureImport;
-	}
-
-	public void setLegacyDao(LegacyDao legacyDao) {
-		this.legacyDao = legacyDao;
 	}
 
 }

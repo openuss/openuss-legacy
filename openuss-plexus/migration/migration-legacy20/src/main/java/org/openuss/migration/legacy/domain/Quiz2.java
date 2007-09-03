@@ -11,8 +11,8 @@ public class Quiz2 implements java.io.Serializable {
 
 	private static final long serialVersionUID = 2517151879295145466L;
 	private String id;
-	private Quizfile2 quizfile2;
-	private Enrollment2 enrollment2;
+	private String quizfilepk;
+	private String enrollmentpk;
 	private Date ddate;
 	private String quizfilename;
 	private String quizfilesize;
@@ -31,11 +31,11 @@ public class Quiz2 implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Quiz2(String id, Quizfile2 quizfile2, Enrollment2 enrollment2, Date ddate, String quizfilename,
+	public Quiz2(String id, String quizfile2, String enrollmentpk, Date ddate, String quizfilename,
 			String quizfilesize, String title, String answer) {
 		this.id = id;
-		this.quizfile2 = quizfile2;
-		this.enrollment2 = enrollment2;
+		this.quizfilepk = quizfile2;
+		this.enrollmentpk = enrollmentpk;
 		this.ddate = ddate;
 		this.quizfilename = quizfilename;
 		this.quizfilesize = quizfilesize;
@@ -52,20 +52,20 @@ public class Quiz2 implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Quizfile2 getQuizfile() {
-		return this.quizfile2;
+	public String getQuizfilepk() {
+		return this.quizfilepk;
 	}
 
-	public void setQuizfile(Quizfile2 quizfile2) {
-		this.quizfile2 = quizfile2;
+	public void setQuizfilepk(String quizfilepk) {
+		this.quizfilepk = quizfilepk;
 	}
 
-	public Enrollment2 getEnrollment() {
-		return this.enrollment2;
+	public String getEnrollmentpk() {
+		return this.enrollmentpk;
 	}
 
-	public void setEnrollment(Enrollment2 enrollment2) {
-		this.enrollment2 = enrollment2;
+	public void setEnrollmentpk(String enrollmentpk) {
+		this.enrollmentpk = enrollmentpk;
 	}
 
 	public Date getDdate() {
