@@ -375,22 +375,6 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		return courseCrumb;
 	}
 	
-	
-	// MyUni Crumb Generation
-	
-	private List<BreadCrumb> getMyUniCrumbs()
-	{
-		List<BreadCrumb> crumbs = getBaseCrumbs();
-		assert crumbs != null;
-		
-		BreadCrumb myUniCrumb = new BreadCrumb();
-		myUniCrumb.setName("MyUni");
-		myUniCrumb.setLink(PageLinks.MYUNI_PAGE);
-		
-		crumbs.add(myUniCrumb);
-		return crumbs;
-	}
-	
 	// Course Type Crumb Generation
 	
 	
@@ -424,6 +408,63 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		return courseTypeCrumb;
 	}
 	
+	// MyUni Crumb Generation
+	
+	private List<BreadCrumb> getMyUniCrumbs()
+	{
+		List<BreadCrumb> crumbs = getBaseCrumbs();
+		assert crumbs != null;
+		
+		BreadCrumb myUniCrumb = new BreadCrumb();
+		myUniCrumb.setName("MyUni");
+		myUniCrumb.setLink(PageLinks.MYUNI_PAGE);
+		
+		crumbs.add(myUniCrumb);
+		return crumbs;
+	}
+	
+	// Edit Profile Crumb Generation
+	
+	private List<BreadCrumb> getProfileCrumbs()
+	{
+		List<BreadCrumb> crumbs = getBaseCrumbs();
+		assert crumbs != null;
+		
+		BreadCrumb profileCrumb = new BreadCrumb();
+		profileCrumb.setName("Profil");
+		
+		crumbs.add(profileCrumb);
+		return crumbs;
+	}
+	
+	
+	// Extended Search Crumb Generation
+	
+	private List<BreadCrumb> getExtendedSearchCrumbs()
+	{
+		List<BreadCrumb> crumbs = getBaseCrumbs();
+		assert crumbs != null;
+		
+		BreadCrumb extendedSearchCrumb = new BreadCrumb();
+		extendedSearchCrumb.setName("Erweiterte Suche");
+		
+		crumbs.add(extendedSearchCrumb);
+		return crumbs;
+	}
+	
+	// Administration Crumb Generation
+	
+	private List<BreadCrumb> getAdministrationCrumbs()
+	{
+		List<BreadCrumb> crumbs = getBaseCrumbs();
+		assert crumbs != null;
+		
+		BreadCrumb administrationCrumb = new BreadCrumb();
+		administrationCrumb.setName("Administration");
+		
+		crumbs.add(administrationCrumb);
+		return crumbs;
+	}
 	
 	// Public loader methods to generate crumbs for the domain object types
 	
@@ -474,6 +515,21 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 	public void loadMyUniCrumbs()
 	{
 		setCrumbs(getMyUniCrumbs());
+	}
+	
+	public void loadProfileCrumbs()
+	{
+		setCrumbs(getProfileCrumbs());
+	}
+	
+	public void loadExtendedSearchCrumbs()
+	{
+		setCrumbs(getExtendedSearchCrumbs());
+	}
+	
+	public void loadAdministrationCrumbs()
+	{
+		setCrumbs(getAdministrationCrumbs());
 	}
 	
 	public void addCrumb(BreadCrumb newCrumb)

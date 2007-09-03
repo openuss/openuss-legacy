@@ -67,8 +67,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	
 	@Prerender
 	public void prerender(){
-		// TODO
-		crumbs.clear();
+		breadcrumbs.loadExtendedSearchCrumbs();
 	}
 	
 	/**

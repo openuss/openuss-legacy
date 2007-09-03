@@ -12,6 +12,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
@@ -21,6 +22,7 @@ import org.openuss.security.UserCriteria;
 import org.openuss.security.UserInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 
 /**
  * UserBrowser of System-Admin
@@ -41,6 +43,21 @@ public class UserBrowserPage extends BasePage{
 	private DataPage<UserInfo> dataPage;
 	
 	private Set<UserInfo> changedUsers = new HashSet<UserInfo>();
+	
+
+	@Prerender
+	public void prerender() {
+		logger.debug("prerender - refreshing users list");
+
+
+		BreadCrumb newCrumb = new BreadCrumb();
+		newCrumb.setName(i18n("admin_command_users"));
+		newCrumb.setLink(PageLinks.ADMIN_USERSBROWSER);
+		
+		breadcrumbs.loadAdministrationCrumbs();
+		breadcrumbs.addCrumb(newCrumb);
+	}
+	
 	
 	public void changedUserInfo(ValueChangeEvent event) throws LectureException {
 		UserInfo userInfo = dataModel.getRowData();
@@ -64,12 +81,6 @@ public class UserBrowserPage extends BasePage{
 		return Constants.SUCCESS;
 	}
 	
-	
-	@Prerender
-	public void prerender() {
-		logger.debug("prerender - refreshing users list");
-		setSessionBean(Constants.BREADCRUMBS, null);
-	}
 
 	public String showProfile() {
 		UserInfo userInfo = dataModel.getRowData();

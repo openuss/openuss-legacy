@@ -8,12 +8,13 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.GroupItem;
 import org.openuss.security.SecurityService;
 import org.openuss.web.BasePage;
-import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 
 /**
  * 
@@ -30,7 +31,12 @@ public class GroupsPage extends BasePage{
 
 	@Prerender
 	public void prerender() {
-		setSessionBean(Constants.BREADCRUMBS, null);
+		BreadCrumb newCrumb = new BreadCrumb();
+		newCrumb.setName(i18n("admin_command_groups"));
+		newCrumb.setLink(PageLinks.ADMIN_GROUPS);
+		
+		breadcrumbs.loadAdministrationCrumbs();
+		breadcrumbs.addCrumb(newCrumb);
 	}		
 	
 	private class GroupTable extends AbstractPagedTable<GroupItem> {

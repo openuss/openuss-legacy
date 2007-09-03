@@ -13,6 +13,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Institute;
@@ -22,6 +23,7 @@ import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 
 /**
  * 
@@ -46,7 +48,12 @@ public class InstitutesPage extends BasePage{
 
 	@Prerender
 	public void prerender() {
-		setSessionBean(Constants.BREADCRUMBS, null);
+		BreadCrumb newCrumb = new BreadCrumb();
+		newCrumb.setName(i18n("admin_command_institutes"));
+		newCrumb.setLink(PageLinks.ADMIN_INSTITUTES);
+		
+		breadcrumbs.loadAdministrationCrumbs();
+		breadcrumbs.addCrumb(newCrumb);
 	}
 	
 	public String selectInstitute() {
