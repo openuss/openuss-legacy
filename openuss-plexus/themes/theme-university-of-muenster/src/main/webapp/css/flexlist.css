@@ -76,6 +76,13 @@
 	color: #5DBF00;
 }
 
+.flexListItemRight .remove_bookmark {
+	background-image: url(../img/delete_button.png);
+	background-repeat: no-repeat;
+	padding: 1px 3px 0px 0px;
+	margin: 3px 1px 0px 0px;
+}
+
 /* Tabs CSS */
 
 #flexlist_tabs {}
