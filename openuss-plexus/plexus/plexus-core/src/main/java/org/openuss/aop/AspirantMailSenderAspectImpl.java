@@ -177,8 +177,12 @@ public class AspirantMailSenderAspectImpl {
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("user.membership.sender", "user.membership.addmember.members.subject",
-					"instituteapplication", parameters, recipients1);
+			messageService.sendMessage(
+					"OPENUSS - "+institute.getShortcut(),
+					"aspirant.addaspirant.members.subject",
+					"instituteapplication", 
+					parameters, 
+					recipients1);
 		}
 
 		// Determine Recipient (the new User)
@@ -186,8 +190,12 @@ public class AspirantMailSenderAspectImpl {
 		recipients2.add(user);
 		
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender", "user.membership.addmember.user.subject",
-				"instituteapplicationconfirmation", parameters, recipients2);
+		messageService.sendMessage(
+				"OPENUSS - "+institute.getShortcut(),
+				"aspirant.addaspirant.user.subject",
+				"instituteapplicationconfirmation", 
+				parameters, 
+				recipients2);
 	}
 	
 	
@@ -218,8 +226,12 @@ public class AspirantMailSenderAspectImpl {
 		recipients.add(user);
 		
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender", "user.membership.addmember.user.subject",
-				"instituteapplication", parameters, recipients);
+		messageService.sendMessage(
+				"OPENUSS - "+institute.getShortcut(),
+				"aspirant.acceptaspirant.user.subject",
+				"instituteapplication", 
+				parameters, 
+				recipients);
 	}
 	
 	
@@ -245,8 +257,12 @@ public class AspirantMailSenderAspectImpl {
 		recipients.add(user);
 		
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender", "user.membership.addmember.user.subject",
-				"instituteapplicationreject", parameters, recipients);
+		messageService.sendMessage(
+				"OPENUSS - "+institute.getShortcut(),
+				"aspirant.rejectaspirant.user.subject",
+				"instituteapplicationreject", 
+				parameters, 
+				recipients);
 	}
 
 	/*

@@ -75,8 +75,12 @@ public class InstituteDepartmentMailSenderAspectImpl {
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("application.department.sender", "application.institute.applyatdepartment.members.subject",
-					"departmentapplication", parameters, recipients1);
+			messageService.sendMessage(
+					"OPENUSS - "+application.getDepartment().getShortcut(),
+					"institute.application.members.subject",
+					"departmentapplication", 
+					parameters, 
+					recipients1);
 		}
 
 		// Determine Recipient (the new User)
@@ -84,8 +88,12 @@ public class InstituteDepartmentMailSenderAspectImpl {
 		recipients2.add(application.getApplyingUser());
 		
 		// Send Email to new User
-		messageService.sendMessage("application.applyingUser.sender", "application.institute.applyatdepartment.user.subject",
-				"departmentapplicationconfirmation", parameters, recipients2);
+		messageService.sendMessage(
+				"OPENUSS - "+application.getDepartment().getShortcut(),
+				"institute.application.user.subject",
+				"departmentapplicationconfirmation", 
+				parameters, 
+				recipients2);
 	}
 	
 	public void sendAcceptApplicationAtDepartmentMail (Long applicationId, Long userId) {
@@ -119,8 +127,12 @@ public class InstituteDepartmentMailSenderAspectImpl {
 		recipients.add(application.getApplyingUser());
 		
 		// Send Email to new User
-		messageService.sendMessage("application.applyingUser.sender", "application.department.acceptInstitute.user.subject",
-				"departmentapplicationapply", parameters, recipients); 
+		messageService.sendMessage(
+				"OPENUSS - "+application.getDepartment().getShortcut(),
+				"department.rejectapplication.user.subject",
+				"departmentapplicationapply", 
+				parameters, 
+				recipients); 
 	}
 	
 	public void sendRejectApplicationAtDepartmentMail (Long applicationId, Long userId) {
@@ -149,8 +161,12 @@ public class InstituteDepartmentMailSenderAspectImpl {
 		recipients.add(application.getApplyingUser());
 		
 		// Send Email to new User
-		messageService.sendMessage("application.applyingUser.sender", "application.department.rejectInstitute.user.subject",
-				"departmentapplicationreject", parameters, recipients); 
+		messageService.sendMessage(
+				"OPENUSS - "+application.getDepartment().getShortcut(),
+				"department.reject.application.user.subject",
+				"departmentapplicationreject", 
+				parameters, 
+				recipients); 
 	}
 
 	public UserDao getUserDao() {

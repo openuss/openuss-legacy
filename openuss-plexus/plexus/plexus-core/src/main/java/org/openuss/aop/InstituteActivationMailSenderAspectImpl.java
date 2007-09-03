@@ -70,7 +70,7 @@ public class InstituteActivationMailSenderAspectImpl {
 		
 		// Send mail
 		getMessageService().sendMessage(
-				institute.getShortcut(), 
+				"OPENUSS - "+institute.getShortcut(), 
 				"institute.activation.subject", 
 				"instituteactivation", 
 				parameters, 
