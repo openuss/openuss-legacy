@@ -20,6 +20,13 @@ import org.openuss.security.UserDao;
 import org.openuss.system.SystemProperties;
 import org.openuss.system.SystemService;
 
+/**
+ * Aspect for Sending Mails while 
+ * adding, accepting and rejecting aspirants .
+ * 
+ * @author Florian Dondorf
+ */
+
 public class AspirantMailSenderAspectImpl {
 
 	private static final Logger logger = Logger.getLogger(AspirantMailSenderAspectImpl.class);

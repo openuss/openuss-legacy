@@ -233,7 +233,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		courseTest = courseDao.load(course1.getId());
 		assertNull(courseTest);
 		desktop = desktopDao.load(desktop.getId());
-		//assertEquals(1, desktop.getCourses().size());
+		assertEquals(1, desktop.getCourses().size());
 		
 		assertEquals(0, courseType1.getCourses().size());
 		

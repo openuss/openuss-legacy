@@ -17,6 +17,13 @@ import org.openuss.security.UserDao;
 import org.openuss.system.SystemProperties;
 import org.openuss.system.SystemService;
 
+/**
+ * Aspect for Sending Mails while 
+ * creation of institutes.
+ * 
+ * @author Florian Dondorf
+ */
+
 public class InstituteActivationMailSenderAspectImpl {
 
 	private static final Logger logger = Logger.getLogger(InstituteActivationMailSenderAspectImpl.class);
