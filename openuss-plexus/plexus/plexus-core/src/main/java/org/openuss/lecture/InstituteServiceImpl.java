@@ -273,7 +273,9 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		application.add(application.getDepartment());
 		application.add(application.getInstitute());
 		this.getApplicationDao().create(application);
-
+		
+		applicationInfo.setId(application.getId());
+		
 		return application.getId();
 	}
 
