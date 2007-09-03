@@ -29,7 +29,14 @@ public class InstituteIndexer extends DomainIndexer {
 		logger.debug("Starting method create");
 		final Institute institute = getInstitute();
 		if (institute != null) {
-			logger.debug("method create: create new index for institute " + institute.getName() + " (" + institute.getId() + ")");
+			// institute will not be indexed if it is not enabled
+			if(!institute.isEnabled()){
+				logger.debug("method create: institute is disabled - skip index "
+						+"entry creation for institute " + institute.getName() 
+						+ " (" + institute.getId() + ")");
+				return;
+			}
+			logger.debug("method create: create new index entry for institute " + institute.getName() + " (" + institute.getId() + ")");
 			getLuceneIndexTemplate().addDocument(new DocumentCreator() {
 				public Document createDocument() throws Exception {
 					Document document = new Document();
@@ -44,8 +51,8 @@ public class InstituteIndexer extends DomainIndexer {
 		logger.debug("Starting method update");
 		final Institute institute = getInstitute();
 		if (institute != null) {
-			logger.debug("Method update: update new index for institute " + institute.getName() + " (" + institute.getId() + ")");
-			// update doesn't work properly, so deleting and create does the same
+			logger.debug("Method update: update index entry for institute " + institute.getName() + " (" + institute.getId() + ")");
+			// update doesn't work properly, so delete and create does the same
 			delete();
 			create();
 		}

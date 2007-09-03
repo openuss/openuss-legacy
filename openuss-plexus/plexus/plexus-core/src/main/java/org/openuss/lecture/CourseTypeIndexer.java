@@ -13,7 +13,7 @@ import org.openuss.search.DomainIndexer;
 import org.springmodules.lucene.index.core.DocumentCreator;
 
 /**
-*
+* @deprecated Course types are not indexed any longer! 
 * @author Kai Stettner
 * @author Malte Stockmann
 */
