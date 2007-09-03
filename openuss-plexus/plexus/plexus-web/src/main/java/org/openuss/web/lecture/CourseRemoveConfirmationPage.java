@@ -36,6 +36,7 @@ public class CourseRemoveConfirmationPage extends AbstractCoursePage {
 	 */
 	public String removeCourse() throws LectureException {
 		courseService.removeCourse(courseInfo.getId());
+		setSessionBean("courseInfo", null);
 		addMessage(i18n("institute_course_removed_succeed"));
 		return Constants.INSTITUTE_COURSES_PAGE;
 	}
