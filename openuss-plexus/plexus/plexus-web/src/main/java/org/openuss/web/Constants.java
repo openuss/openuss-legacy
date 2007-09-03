@@ -204,6 +204,8 @@ public class Constants {
 	public static final String DEPARTMENT_PAGE = "department";
 	public static final String DEPARTMENT_EDIT = "department_edit";
 	public static final String DEPARTMENT_CONFIRM_REMOVE_PAGE = "department_remove_confirmation";
+	public static final Long DEPARTMENTS_ENABLED = -115L;
+	public static final Long DEPARTMENTS_DISABLED = -116L;
 	
 	public static final String INSTITUTE_COURSES_PAGE = "institute_courses";
 	public static final String INSTITUTES_PAGE = "manage_institute";

@@ -3,7 +3,10 @@ package org.openuss.web.lecture;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
+import javax.faces.el.ValueBinding;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -36,12 +39,20 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 	
 	private List<SelectItem> universityItems;
 	private List<UniversityInfo> allUniversities;
+	private List<UniversityInfo> allEnabledUniversities;
+	private List<UniversityInfo> allDisabledUniversities;
 	
 	private List<SelectItem> departmentItems;
 
 	private List<DepartmentInfo> allDepartments;
+	private List<DepartmentInfo> allEnabledDepartments;
+	private List<DepartmentInfo> allDisabledDepartments;
 	
 	private DepartmentType departmentType;
+	
+	private ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
+	private String locale = (String)binding.getValue(getFacesContext());
+	private ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
 	
 	public String start() {
 		
@@ -71,23 +82,43 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		return Constants.INSTITUTE_PAGE;
 	}
 
+	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getAllUniversities() {
 		
 		universityItems = new ArrayList<SelectItem>();
 		
-		allUniversities = universityService.findAllUniversities();
+		allEnabledUniversities = universityService.findUniversitiesByEnabled(true);
+		allDisabledUniversities = universityService.findUniversitiesByEnabled(false);
 		
-		Iterator<UniversityInfo> iter =  allUniversities.iterator();
-		UniversityInfo university;
+		Iterator<UniversityInfo> iterEnabled =  allEnabledUniversities.iterator();
+		UniversityInfo universityEnabled;
 		
-		while (iter.hasNext()) {
-			university = iter.next();
-			SelectItem item = new SelectItem(university.getId(),university.getName());
+		if (iterEnabled.hasNext()) {
+			SelectItem item = new SelectItem(Constants.UNIVERSITIES_ENABLED,bundle.getString("universities_enabled"));
+			universityItems.add(item);
+		}
+		while (iterEnabled.hasNext()) {
+			universityEnabled = iterEnabled.next();
+			SelectItem item = new SelectItem(universityEnabled.getId(),universityEnabled.getName());
 			universityItems.add(item);
 		}
 		
+		Iterator<UniversityInfo> iterDisabled =  allDisabledUniversities.iterator();
+		UniversityInfo universityDisabled;
+		
+		if (iterDisabled.hasNext()) {
+			SelectItem item = new SelectItem(Constants.UNIVERSITIES_DISABLED,bundle.getString("universities_disabled"));
+			universityItems.add(item);
+		}
+		while (iterDisabled.hasNext()) {
+			universityDisabled = iterDisabled.next();
+			SelectItem item = new SelectItem(universityDisabled.getId(),universityDisabled.getName());
+			universityItems.add(item);
+		}
 		return universityItems;
 	}
+	
+	
 	
 	public List<SelectItem> getAllDepartments(){
 		departmentItems = new ArrayList<SelectItem>();
@@ -98,17 +129,37 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 			universityId = allUniversities.get(0).getId();
 			
 		logger.info("universityId:"+universityInfo.getId());
-		allDepartments = departmentService.findDepartmentsByUniversity(universityId);
-		Iterator<DepartmentInfo> iter = allDepartments.iterator();
-		DepartmentInfo department;
+
+		allEnabledDepartments = departmentService.findDepartmentsByUniversityAndEnabled(universityId, true);
+		allDisabledDepartments = departmentService.findDepartmentsByUniversityAndEnabled(universityId, false);
 		
-		while (iter.hasNext()){
-			department = iter.next();
-			SelectItem item = new SelectItem(department.getId(), department.getName());
+		Iterator<DepartmentInfo> iterEnabled =  allEnabledDepartments.iterator();
+		DepartmentInfo departmentEnabled;
+		
+		if (iterEnabled.hasNext()) {
+			SelectItem item = new SelectItem(Constants.DEPARTMENTS_ENABLED,bundle.getString("departments_enabled"));
+			departmentItems.add(item);
+		}
+		while (iterEnabled.hasNext()) {
+			departmentEnabled = iterEnabled.next();
+			SelectItem item = new SelectItem(departmentEnabled.getId(),departmentEnabled.getName());
 			departmentItems.add(item);
 		}
 		
-		logger.info("DepartmentId:" + allDepartments.get(0).getId());
+		
+		Iterator<DepartmentInfo> iterDisabled = allDisabledDepartments.iterator();
+		DepartmentInfo departmentDisabled;
+		
+		if (iterDisabled.hasNext()) {
+			SelectItem item = new SelectItem(Constants.DEPARTMENTS_DISABLED,bundle.getString("departments_disabled"));
+			departmentItems.add(item);
+		}
+		while (iterDisabled.hasNext()){
+			departmentDisabled = iterDisabled.next();
+			SelectItem item = new SelectItem(departmentDisabled.getId(), departmentDisabled.getName());
+			departmentItems.add(item);
+		}
+		
 		return departmentItems;
 	
 	}
