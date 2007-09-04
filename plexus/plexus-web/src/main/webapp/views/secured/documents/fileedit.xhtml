@@ -53,10 +53,11 @@
 					storage="file" 
 					accept="*" 
 					immediate="true" 
-					styleClass="uploadField">
+					styleClass="uploadField"
+					binding="#{views$secured$documents$fileedit.fileUpload}">
 					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
 				</t:inputFileUpload>
-				<h:message for="file" styleClass="field_error" />
+				<h:message id="fileError" for="file" styleClass="field_error" showDetail="true" showSummary="false" />
 
 				<o:input entity="documents_selected_file" property="fileName" maxlength="100"/>
 				
