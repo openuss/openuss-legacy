@@ -140,7 +140,7 @@ public class InstituteServiceMock implements InstituteService {
 		// TODO Auto-generated method stub
 	}
 	
-	public void resendActivationCode(Long instituteId) {
+	public void resendActivationCode(InstituteInfo instituteInfo, Long userId) {
 		// TODO Auto-generated method stub
 	}
 	

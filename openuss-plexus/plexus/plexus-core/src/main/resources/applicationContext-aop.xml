@@ -28,6 +28,9 @@
 		<aop:pointcut id="DepartmentServiceRejectInstituteApplicationPointcut"
 			expression="execution(* org..DepartmentServiceBase.rejectApplication(java.lang.Long, java.lang.Long)) and args(applicationId, userId)" />
 		
+		<aop:pointcut id="InstituteServiceResendActivationCodePointcut"
+			expression="execution(* org..InstituteServiceBase.resendActivationCode(java.lang.Long)) and args(instituteId)" />
+		
 		<aop:pointcut id="UniversityServiceCreatePointcut"
 			expression="execution(* org..UniversityServiceBase.createUniversity(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)" />
 		<aop:pointcut id="UniversityServiceDeletePointcut"
@@ -115,6 +118,10 @@
 				method="sendInstituteActivationMail"
 				pointcut-ref="InstituteServiceCreatePointcut"
 				arg-names="instituteInfo, userId" />
+			<aop:after-returning 
+				method="sendInstituteActivationMail"
+				pointcut-ref="InstituteServiceResendActivationCodePointcut"
+				arg-names="instituteInfo, userId" />
 		</aop:aspect>
 
 		<aop:aspect id="applyAtDepartmentMailSenderAspect" ref="instituteDepartmentMailSenderAspectBean">
@@ -164,7 +171,6 @@
 
 		<aop:aspect id="universityIndexAspect"
 			ref="universityIndexAspectBean">
-
 			<aop:after-returning 
 				method="createUniversityIndex"
 				pointcut-ref="CreateUniversityIndexPointcut"

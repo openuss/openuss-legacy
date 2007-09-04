@@ -408,8 +408,20 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		}
 	}
 	
-	public void handleResendActivationCode(Long instituteId) {
-		// TODO Auto-generated method stub
+	public void handleResendActivationCode(InstituteInfo instituteInfo, Long userId) {
+		
+		Validate.notNull(instituteInfo, "InstituteServiceImpl.handleResendActivationCode -"+
+				"instituteInfo cannot be null.");
+		
+		Validate.notNull(instituteInfo.getId(), "InstituteServiceImpl.handleResendActivationCode -"+
+			"id cannot be null.");
+		
+		Institute institute = this.getInstituteDao().load(instituteInfo.getId());
+		Validate.notNull(institute, "InstituteServiceImpl.handleResendActivationCode -"+
+			"no institute found with the instiuteId "+instituteInfo.getId());
+
+		// Do not delete this method although it seems that id does nothing.
+		// When this stub is called an aspect starts to send an email.
 	}
 
 	/*------------------- private methods -------------------- */
