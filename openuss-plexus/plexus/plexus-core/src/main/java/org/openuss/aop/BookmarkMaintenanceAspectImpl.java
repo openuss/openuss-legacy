@@ -12,14 +12,14 @@ import org.openuss.lecture.UniversityInfo;
 public class BookmarkMaintenanceAspectImpl {
 
 	private static final Logger logger = Logger.getLogger(BookmarkMaintenanceAspectImpl.class);
-	private DesktopService2 desktopService;
+	private DesktopService2 desktopService2;
 
 	public DesktopService2 getDesktopService() {
-		return desktopService;
+		return desktopService2;
 	}
 
 	public void setDesktopService(DesktopService2 desktopService) {
-		this.desktopService = desktopService;
+		this.desktopService2 = desktopService;
 	}
 
 	/**
@@ -32,15 +32,15 @@ public class BookmarkMaintenanceAspectImpl {
 		logger.debug("----------> BEGIN method bookmarkUniversity <----------");
 
 		Validate.notNull(universityInfo,
-				"UniversityCreationAndDeletionAspect.bookmarkUniversity - the universityInfo cannot be null.");
-		Validate.notNull(userId, "UniversityCreationAndDeletionAspect.bookmarkUniversity - the userId cannot be null.");
+				"BookmarkMaintenanceAspectImpl.bookmarkUniversity - the universityInfo cannot be null.");
+		Validate.notNull(userId, "BookmarkMaintenanceAspectImpl.bookmarkUniversity - the userId cannot be null.");
 
 		try {
 			// Get DesktopInfo
-			DesktopInfo desktopInfo = desktopService.findDesktopByUser(userId);
+			DesktopInfo desktopInfo = desktopService2.findDesktopByUser(userId);
 
 			// Link University
-			desktopService.linkUniversity(desktopInfo.getId(), universityInfo.getId());
+			desktopService2.linkUniversity(desktopInfo.getId(), universityInfo.getId());
 		} catch (DesktopException de) {
 			logger.error(de.getMessage());
 		}
@@ -57,10 +57,10 @@ public class BookmarkMaintenanceAspectImpl {
 		logger.debug("----------> BEGIN method deleteBookmarksOfUniversity <----------");
 
 		Validate.notNull(universityId,
-				"UniversityCreationAndDeletionAspect.deleteBookmarksOfUniversity - the universityId cannot be null.");
+				"BookmarkMaintenanceAspectImpl.deleteBookmarksOfUniversity - the universityId cannot be null.");
 
 		try {
-			desktopService.unlinkAllFromUniversity(universityId);
+			desktopService2.unlinkAllFromUniversity(universityId);
 		} catch (DesktopException de) {
 			logger.error(de.getMessage());
 		}
@@ -72,15 +72,15 @@ public class BookmarkMaintenanceAspectImpl {
 		logger.debug("----------> BEGIN method bookmarkDepartment <----------");
 
 		Validate.notNull(departmentInfo,
-				"DepartmentCreationAndDeletionAspect.bookmarkDepartment - the departmentInfo cannot be null.");
-		Validate.notNull(userId, "DepartmentCreationAndDeletionAspect.bookmarkDepartment - the userId cannot be null.");
+				"BookmarkMaintenanceAspectImpl.bookmarkDepartment - the departmentInfo cannot be null.");
+		Validate.notNull(userId, "BookmarkMaintenanceAspectImpl.bookmarkDepartment - the userId cannot be null.");
 
 		try {
 			// Get DesktopInfo
-			DesktopInfo desktopInfo = desktopService.findDesktopByUser(userId);
+			DesktopInfo desktopInfo = desktopService2.findDesktopByUser(userId);
 
 			// Link Department
-			desktopService.linkDepartment(desktopInfo.getId(), departmentInfo.getId());
+			desktopService2.linkDepartment(desktopInfo.getId(), departmentInfo.getId());
 		} catch (DesktopException de) {
 			logger.error(de.getMessage());
 		}
@@ -97,10 +97,10 @@ public class BookmarkMaintenanceAspectImpl {
 		logger.debug("----------> BEGIN method deleteBookmarksOfDepartment <----------");
 
 		Validate.notNull(departmentId,
-				"DepartmentCreationAndDeletionAspect.deleteBookmarksOfDepartment - the departmentId cannot be null.");
+				"BookmarkMaintenanceAspectImpl.deleteBookmarksOfDepartment - the departmentId cannot be null.");
 
 		try {
-			desktopService.unlinkAllFromDepartment(departmentId);
+			desktopService2.unlinkAllFromDepartment(departmentId);
 		} catch (DesktopException de) {
 			logger.error(de.getMessage());
 		}
@@ -118,15 +118,15 @@ public class BookmarkMaintenanceAspectImpl {
 		logger.debug("----------> BEGIN method bookmarkInstitute <----------");
 
 		Validate.notNull(instituteInfo,
-				"InstituteCreationAndDeletionAspect.bookmarkInstitute - the instituteInfo cannot be null.");
-		Validate.notNull(userId, "InstituteCreationAndDeletionAspect.bookmarkInstitute - the userId cannot be null.");
+				"BookmarkMaintenanceAspectImpl.bookmarkInstitute - the instituteInfo cannot be null.");
+		Validate.notNull(userId, "BookmarkMaintenanceAspectImpl.bookmarkInstitute - the userId cannot be null.");
 
 		try {
 			// Get DesktopInfo
-			DesktopInfo desktopInfo = desktopService.findDesktopByUser(userId);
+			DesktopInfo desktopInfo = desktopService2.findDesktopByUser(userId);
 
 			// Link Institute
-			desktopService.linkInstitute(desktopInfo.getId(), instituteInfo.getId());
+			desktopService2.linkInstitute(desktopInfo.getId(), instituteInfo.getId());
 		} catch (DesktopException de) {
 			logger.error(de.getMessage());
 		}
@@ -135,7 +135,7 @@ public class BookmarkMaintenanceAspectImpl {
 	}
 
 	/**
-	 * Delete bookmarks of the given institute from all users.
+	 * Delete Bookmarks of the given institute from all users.
 	 * 
 	 * @param instituteId
 	 */
@@ -143,10 +143,10 @@ public class BookmarkMaintenanceAspectImpl {
 		logger.debug("----------> BEGIN method deleteBookmarksOfInstitute <----------");
 
 		Validate.notNull(instituteId,
-				"InstituteCreationAndDeletionAspect.deleteBookmarksOfInstitute - the instituteId cannot be null.");
+				"BookmarkMaintenanceAspectImpl.deleteBookmarksOfInstitute - the instituteId cannot be null.");
 
 		try {
-			desktopService.unlinkAllFromInstitute(instituteId);
+			desktopService2.unlinkAllFromInstitute(instituteId);
 		} catch (DesktopException de) {
 			logger.error(de.getMessage());
 		}
@@ -157,11 +157,11 @@ public class BookmarkMaintenanceAspectImpl {
 	public void deleteBookmarksOfCourse(Long courseId) {
 		logger.debug("----------> BEGIN method deleteBookmarksOfCourses <----------");
 
-		Validate.notNull(courseId, "CourseCreationAspect.bookmarkCourse - the userId cannot be null.");
+		Validate.notNull(courseId, "BookmarkMaintenanceAspectImpl.bookmarkCourse - the courseId cannot be null.");
 
 		try {
 			// Unlink all
-			desktopService.unlinkAllFromCourse(courseId);
+			desktopService2.unlinkAllFromCourse(courseId);
 		} catch (DesktopException de) {
 			logger.error(de.getMessage());
 		}
