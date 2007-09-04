@@ -50,7 +50,7 @@
 		<aop:pointcut id="UpdateUniversityIndexPointcut"
 			expression="execution(* org..UniversityServiceBase.update(org.openuss.lecture.UniversityInfo)) and args(universityInfo)" />
 		<aop:pointcut id="SetUniversityStatusIndexPointcut"
-			expression="execution(* org..UniversityServiceBase.setUniversityStatus(java.lang.Long, java.lang.Boolean)) and args(universityId, status)" />
+			expression="execution(* org..UniversityServiceBase.setUniversityStatus(java.lang.Long, boolean)) and args(universityId, status)" />
 			
 		<aop:pointcut id="CreateDepartmentIndexPointcut"
 			expression="execution(* org..DepartmentServiceBase.create(org.openuss.lecture.DepartmentInfo, java.lang.Long)) and args(departmentInfo, userId)" />
@@ -59,7 +59,7 @@
 		<aop:pointcut id="UpdateDepartmentIndexPointcut"
 			expression="execution(* org..DepartmentServiceBase.update(org.openuss.lecture.DepartmentInfo)) and args(departmentInfo)" />
 		<aop:pointcut id="SetDepartmentStatusIndexPointcut"
-			expression="execution(* org..DepartmentServiceBase.setDepartmentStatus(java.lang.Long, java.lang.Boolean)) and args(departmentId, status)" />
+			expression="execution(* org..DepartmentServiceBase.setDepartmentStatus(java.lang.Long, boolean)) and args(departmentId, status)" />
 			
 		<aop:pointcut id="CreateInstituteIndexPointcut"
 			expression="execution(* org..InstituteServiceBase.create(org.openuss.lecture.InstituteInfo, java.lang.Long)) and args(instituteInfo, userId))" />
@@ -67,6 +67,8 @@
 			expression="execution(* org..InstituteServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)" />
 		<aop:pointcut id="UpdateInstituteIndexPointcut"
 			expression="execution(* org..InstituteServiceBase.update(org.openuss.lecture.InstituteInfo)) and args(instituteInfo)" />
+		<aop:pointcut id="SetInstituteStatusIndexPointcut"
+			expression="execution(* org..InstituteServiceBase.setInstituteStatus(java.lang.Long, boolean)) and args(instituteId, status)" />		
 						
 		<aop:pointcut id="CreateCourseIndexPointcut"
 			expression="execution(* org..CourseServiceBase.create(org.openuss.lecture.CourseInfo)) and args(courseInfo)" />
@@ -207,6 +209,9 @@
 				method="updateInstituteIndex"
 				pointcut-ref="UpdateInstituteIndexPointcut"
 				arg-names="instituteInfo" />
+			<aop:after-returning method="updateInstituteIndexById"
+				pointcut-ref="SetInstituteStatusIndexPointcut"
+				arg-names="instituteId, status" />
 			<aop:after-returning 
 				method="deleteInstituteIndex"
 				pointcut-ref="RemoveInstituteIndexPointcut"
@@ -311,6 +316,9 @@
 		class="org.openuss.lecture.InstituteIndexingAspect">
 		<property name="indexerService" ref="indexerService" />
 		<property name="instituteDao" ref="instituteDao" />
+		<property name="courseDao" ref="courseDao" />
+		<property name="instituteService" ref="instituteService" />
+		<property name="courseService" ref="courseService" />
 	</bean>
 
 	<bean id="courseIndexAspectBean"
