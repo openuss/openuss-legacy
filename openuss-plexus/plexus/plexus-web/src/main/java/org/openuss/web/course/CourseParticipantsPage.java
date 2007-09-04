@@ -41,11 +41,9 @@ public class CourseParticipantsPage extends AbstractCoursePage {
 	
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
 		crumb.setName(i18n("course_command_options_participants"));
 		crumb.setHint(i18n("course_command_options_participants"));
-		crumbs.add(crumb);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		breadcrumbs.addCrumb(crumb);
 	}
 	
 	private class ParticipantDataProvider extends AbstractPagedTable<CourseMemberInfo> {

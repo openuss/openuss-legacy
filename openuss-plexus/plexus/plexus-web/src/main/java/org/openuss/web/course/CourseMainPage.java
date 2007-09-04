@@ -13,6 +13,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.CourseApplicationException;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.CourseMemberType;
@@ -34,6 +35,11 @@ public class CourseMainPage extends AbstractCoursePage{
 	public void prerender() throws Exception {
 		super.prerender();
 		assistants = courseService.getAssistants(courseInfo);
+	
+		BreadCrumb newCrumb = new BreadCrumb();
+		newCrumb.setName(i18n("course_command_overview"));
+		newCrumb.setHint(i18n("course_command_overview"));
+		breadcrumbs.addCrumb(newCrumb);
 	}
 	
 	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {

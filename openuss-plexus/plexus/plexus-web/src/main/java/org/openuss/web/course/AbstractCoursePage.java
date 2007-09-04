@@ -71,7 +71,6 @@ public class AbstractCoursePage extends BasePage {
 			courseInfo = courseService.findCourse(courseInfo.getId());
 			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
 			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
-			breadcrumbs.loadCourseCrumbs(courseInfo);
 		}
 		if (courseInfo == null) {
 			addMessage(i18n("message_error_course_page"));
@@ -81,8 +80,11 @@ public class AbstractCoursePage extends BasePage {
 			setSessionBean(Constants.COURSE_INFO, courseInfo);
 			setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);	
 		}
+		
+		breadcrumbs.loadCourseCrumbs(courseInfo);
 	}
 
+	/*
 	public void generateBreadCrumbs() {
 		crumbs.clear();
 		BreadCrumb instituteCrumb = new BreadCrumb();
@@ -102,7 +104,8 @@ public class AbstractCoursePage extends BasePage {
 		crumbs.add(instituteCrumb);
 		crumbs.add(courseCrumb);
 	}
-
+*/
+	
 	public CourseService getCourseService() {
 		return courseService;
 	}
