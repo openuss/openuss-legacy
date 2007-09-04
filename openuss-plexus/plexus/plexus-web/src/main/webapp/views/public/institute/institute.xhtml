@@ -60,6 +60,8 @@
 					
 		  	</o:block>
 		  	
+		  	
+		  	
 		  	<o:block styleClass="teaser_blue" label="#{instituteInfo.name} - #{msg['institute_profile']}">
 		  		<p class="content_font_normal">
 		  			<h:outputText value="#{instituteInfo.description}" styleClass="content_font_normal" escape="true"/>
@@ -74,7 +76,6 @@
 				
 				<o:block styleClass="teaser_blue" label="#{msg.organisation_command_actions}">
 					<h:form id="actionsForm">
-						
 						
 						<c:if test="#{not views$public$institute$institute.bookmarked}">
 							<p class="content_font_normal">
@@ -108,10 +109,7 @@
 									<h:outputText value="#{msg.institute_command_add_institute}"/>
 								</h:commandLink>
 							</p>
-						</s:acl>
-						
-						
-						
+						</s:acl>	
 					</h:form>
 				</o:block>
 			</s:authorize>
@@ -119,6 +117,7 @@
 			<div>
 				<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
 			</div>
+			<div class="clear_both"/>
 				
   			<h:form id="instituteMainForm">
   				<ui:include src="/views/commons/course/coursestableoverview.xhtml"/>
