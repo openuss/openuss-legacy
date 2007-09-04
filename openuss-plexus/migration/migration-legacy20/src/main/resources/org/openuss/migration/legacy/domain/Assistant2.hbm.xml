@@ -66,25 +66,25 @@
             </key>
             <one-to-many class="org.openuss.migration.legacy.domain.Consultancy2" />
         </set>
-        <set name="institutes" inverse="true">
+        <set name="institutes" inverse="true" lazy="true">
             <key>
                 <column name="OWNERID" length="30" />
             </key>
             <one-to-many class="org.openuss.migration.legacy.domain.Faculty2" />
         </set>
-        <set name="assistantenrollments" inverse="true">
+        <set name="assistantenrollments" inverse="true" lazy="true">
             <key>
                 <column name="ASSISTANTPK" length="30" />
             </key>
             <one-to-many class="org.openuss.migration.legacy.domain.Assistantenrollment2" />
         </set>
-        <set name="assistantinformations" inverse="true" lazy="false">
+        <set name="assistantinformations" inverse="true" lazy="false" fetch="join">
             <key>
                 <column name="ASSISTANTPK" length="30" />
             </key>
             <one-to-many class="org.openuss.migration.legacy.domain.Assistantinformation2" />
         </set>
-        <set name="assistantinstitutes" inverse="true">
+        <set name="assistantinstitutes" inverse="true" lazy="true">
             <key>
                 <column name="ASSISTANTPK" length="30" />
             </key>

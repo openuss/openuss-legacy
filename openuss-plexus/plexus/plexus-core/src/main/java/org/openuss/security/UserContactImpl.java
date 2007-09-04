@@ -5,16 +5,29 @@
 //
 package org.openuss.security;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @see org.openuss.security.UserContact
  */
-public class UserContactImpl
-    extends org.openuss.security.UserContactBase
-	implements org.openuss.security.UserContact
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = 2656867061189152169L;
+public class UserContactImpl extends org.openuss.security.UserContactBase implements org.openuss.security.UserContact {
+	
+	/** The serial version UID of this class. Needed for serialization. */
+	private static final long serialVersionUID = 2656867061189152169L;
+
+	@Override
+	public String getFirstName() {
+		return StringUtils.trimToEmpty(super.getFirstName());
+	}
+
+	@Override
+	public String getLastName() {
+		return StringUtils.trimToEmpty(super.getLastName());
+	}
+
+	@Override
+	public String getTitle() {
+		return StringUtils.trimToEmpty(super.getTitle());
+	}
 
 }

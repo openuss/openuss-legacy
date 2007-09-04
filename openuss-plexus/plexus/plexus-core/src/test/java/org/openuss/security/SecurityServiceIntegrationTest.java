@@ -48,7 +48,7 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 
 	}
 
-	public void testGetPermission() {
+	public void testPermission() {
 		User user = testUtility.createUserInDB();
 		TestBean bean = new TestBean(testUtility.unique(), "test get permission");
 
@@ -59,8 +59,12 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 		commit();
 
 		Permission found = securityService.getPermissions(user, bean);
-
 		assertNotNull(found);
+		securityService.removePermission(user, bean);
+		
+		commit();
+
+		assertNull(securityService.getPermissions(user, bean));
 	}
 
 	public void testAclGrants() {

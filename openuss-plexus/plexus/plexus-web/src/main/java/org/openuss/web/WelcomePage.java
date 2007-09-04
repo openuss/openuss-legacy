@@ -43,7 +43,7 @@ public class WelcomePage extends BasePage{
 				user.setContact(null);
 				setSessionBean(Constants.USER, null);
 		}
-		setSessionBean(Constants.BREADCRUMBS, null);
+		setRequestBean(Constants.BREADCRUMBS, null);
 		setSystemStatistic(getOnlineStatisticService().getSystemStatistics());
 		setSessionBean(Constants.SYSTEM_STATISTIC, getSystemStatistic());
 	}

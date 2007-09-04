@@ -1,124 +1,123 @@
 package org.openuss.migration.from20to30;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
-import org.openuss.migration.legacy.dao.LegacyDao;
-import org.openuss.migration.legacy.domain.Student2;
-import org.openuss.migration.legacy.domain.Studentinformation2;
-import org.openuss.registration.RegistrationService;
-import org.openuss.security.SecurityService;
-import org.openuss.security.User;
+import org.hibernate.CacheMode;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
- * This Service migrate data from openuss 2.0 to openuss-plexus 3.0
- *  
+ * Migration Service to migrate openuss 2.0 legacy data to openuss 3.0 data.
+ * 
  * @author Ingo Dueppe
  *
  */
 public class MigrationService {
-
+	
+	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(MigrationService.class);
+
+	/** Hibernate SessionFactory for legacy database */
+	private SessionFactory legacySessionFactory;
 	
-	/**
-	 * Maps students legacy id to to new user objects
-	 */
-	private Map<String, User> id2users = new HashMap<String, User>();
-	private Map<String, User> email2users = new HashMap<String, User>();
+	/** Hibernate SessionFactory for the new plexus database */
+	private SessionFactory plexusSessionFactory;
 	
-	private LegacyDao legacyDao;
+	/** User data import */
+	private UserImport userImport;
 	
-	private SecurityService securityService;
-	private RegistrationService registrationService;
+	/** Lecture data import */
+	private LectureImport lectureImport;
 	
-	public void migrateStudents() {
-		Collection<Student2> students2 = legacyDao.loadAllStudents();
+	/** Desktop data import */
+	private DesktopImport desktopImport;
+	
+	/** News data import */
+	private NewsImport newsImport;
+	
+	/** Course documents import */
+	private DocumentImport documentImport;
+	
+	/** Course membership import */
+	private CourseMemberImport courseMemberImport;
+	
+	/** NewsLetterImport */
+	private NewsLetterImport newsLetterImport;
+	
+	/** QuizImport */
+	private QuizImport quizImport;
+
+	/** Legacy hibernate session */
+	private Session legacySession;
+
+	private Transaction legacyTx;
+
+	public void importData() {
+		logger.info("initialize databses");
+
+		legacySession = openAndBindNewSession(legacySessionFactory);
+//		userImport.perform();
+//		lectureImport.perform();
+//		newsImport.perform(); 
+//		desktopImport.perform();
+//		courseMemberImport.perform();
+//		documentImport.perform();
+//		newsLetterImport.perform();
+		quizImport.perform();
 		
-		for (Student2 student2 : students2) {
-			String email = student2.getEmailaddress();
-			if (email2users.containsKey(email)) {
-				logger.debug("email already in use "+email);
-				User user = email2users.get(email);
-				id2users.put(student2.getId(), user);
-			} else {
-				User user = transformStudent2User(student2);
-				email2users.put(email, user);
-				id2users.put(student2.getId(), user);
-			}
-		}
+		legacyTx.rollback();
+		legacySession.close();
+		
+	}
+
+	private Session openAndBindNewSession(SessionFactory sessionFactory) {
+		Session session = sessionFactory.openSession();
+		session.setCacheMode(CacheMode.IGNORE);
+		legacyTx = session.beginTransaction();
+		TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
+		return session;
 	}
 	
-	@SuppressWarnings({"deprecation" })
-	private User transformStudent2User(Student2 student) {
-		logger.trace("create "+student.getLastname()+"(" +student.getEmailaddress()+")");
-		Studentinformation2 info = student.getStudentinformations().iterator().next();
-		
-		// User
-		User user = User.Factory.newInstance();
-		user.setUsername(student.getUusername());
-		user.setPassword(student.getPpassword());
-		user.setEmail(student.getEmailaddress());
-		user.setEnabled(false);
-
-		// User Contact
-		user.getContact().setFirstName(student.getFirstname());
-		user.getContact().setLastName(student.getLastname());
-		user.getContact().setAddress(student.getAddress());
-		user.getContact().setCity(student.getCity());
-		user.getContact().setPostcode(student.getPostcode());
-		user.getContact().setCountry(student.getLand());
-		user.getContact().setSmsEmail(student.getEmailsmsgatewayaddress());
-		user.getContact().setTelephone(student.getTelephone());
-		
-		// User Preferences
-		user.getPreferences().setLocale(student.getLocale());
-		
-		// User Profile
-		user.getProfile().setAgeGroup(student.getYyear());
-		user.getProfile().setMatriculation(student.getPersonalid());
-		user.getProfile().setStudies(student.getStudies());
-		user.getProfile().setPortrait(info.getTtext());
-		
-		user.getProfile().setAddressPublic(Util.toBoolean(info.getAddress()));
-		user.getProfile().setTelephonePublic(Util.toBoolean(info.getTelephone()));
-		user.getProfile().setImagePublic(Util.toBoolean(info.getImage()));
-		user.getProfile().setEmailPublic(Util.toBoolean(info.getEmail()));
-		user.getProfile().setPortraitPublic(Util.toBoolean(info.getDescription()));
-		user.getProfile().setProfilePublic(Util.toBoolean(info.getIspublic()));
-		
-		return user;
-	}
-	
-
-	public LegacyDao getLegacyDao() {
-		return legacyDao;
+	public void setLegacySessionFactory(SessionFactory legacySessionFactory) {
+		this.legacySessionFactory = legacySessionFactory;
 	}
 
-	public void setLegacyDao(LegacyDao legacyDao) {
-		this.legacyDao = legacyDao;
+	public void setPlexusSessionFactory(SessionFactory plexusSessionFactory) {
+		this.plexusSessionFactory = plexusSessionFactory;
 	}
 
-
-	public SecurityService getSecurityService() {
-		return securityService;
+	public void setUserImport(UserImport userImport) {
+		this.userImport = userImport;
 	}
 
-
-	public void setSecurityService(SecurityService securityService) {
-		this.securityService = securityService;
+	public void setLectureImport(LectureImport lectureImport) {
+		this.lectureImport = lectureImport;
 	}
 
-
-	public RegistrationService getRegistrationService() {
-		return registrationService;
+	public void setDesktopImport(DesktopImport desktopImport) {
+		this.desktopImport = desktopImport;
 	}
 
-
-	public void setRegistrationService(RegistrationService registrationService) {
-		this.registrationService = registrationService;
+	public void setNewsImport(NewsImport newsImport) {
+		this.newsImport = newsImport;
 	}
-	
+
+	public void setDocumentImport(DocumentImport documentImport) {
+		this.documentImport = documentImport;
+	}
+
+	public void setCourseMemberImport(CourseMemberImport courseMemberImport) {
+		this.courseMemberImport = courseMemberImport;
+	}
+
+	public void setQuizImport(QuizImport quizImport) {
+		this.quizImport = quizImport;
+	}
+
+	public void setNewsLetterImport(NewsLetterImport newsLetterImport) {
+		this.newsLetterImport = newsLetterImport;
+	}
 
 }

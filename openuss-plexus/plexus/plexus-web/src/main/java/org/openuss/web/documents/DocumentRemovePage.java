@@ -39,7 +39,7 @@ public class DocumentRemovePage extends AbstractDocumentPage{
 		crumb.setName(i18n("documents_remove_header"));
 		crumb.setHint(i18n("documents_remove_header"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
 	/** 

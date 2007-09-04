@@ -48,7 +48,7 @@ public class CourseNewsPage extends AbstractCoursePage implements Serializable{
 		crumb.setName(i18n("course_command_options_news"));
 		crumb.setHint(i18n("course_command_options_news"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
 	private class NewsDataProvider extends AbstractPagedTable<NewsItemInfo> {

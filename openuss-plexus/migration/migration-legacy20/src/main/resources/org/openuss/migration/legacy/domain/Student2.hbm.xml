@@ -76,7 +76,7 @@
             </key>
             <one-to-many class="org.openuss.migration.legacy.domain.Enrollmentaccesslist2" />
         </set>
-        <set name="studentinformations" inverse="true">
+        <set name="studentinformations" inverse="true" fetch="join" lazy="false">
             <key>
                 <column name="STUDENTPK" length="30" />
             </key>

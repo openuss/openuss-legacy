@@ -46,7 +46,7 @@ public class DocumentAddZipPage extends AbstractDocumentPage{
 		crumb.setName(i18n("document_addzip_header"));
 		crumb.setHint(i18n("document_addzip_header"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
 	public String unzip() throws DocumentApplicationException{

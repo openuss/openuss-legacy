@@ -52,6 +52,12 @@
         <property name="vofi" type="java.lang.Character">
             <column name="VOFI" length="1" />
         </property>
+        <property name="withPassword" type="java.lang.Character">
+            <column name="WITHPASSWORD" length="1" />
+        </property>
+        <property name="password" type="java.lang.String">
+            <column name="PPASSWORD" length="1" />
+        </property>
         <set name="enrollmentaccesslists" inverse="true">
             <key>
                 <column name="ENROLLMENTPK" length="30" />

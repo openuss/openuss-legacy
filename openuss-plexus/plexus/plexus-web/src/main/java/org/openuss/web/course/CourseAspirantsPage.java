@@ -47,7 +47,7 @@ public class CourseAspirantsPage extends AbstractCoursePage {
 		crumb.setName(i18n("course_command_options_aspirants"));
 		crumb.setHint(i18n("course_command_options_aspirants"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}	
 	
 	public String save() {

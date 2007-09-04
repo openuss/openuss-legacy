@@ -64,7 +64,7 @@ public class CourseOptionsPage extends AbstractCoursePage {
 		crumb.setName(i18n("course_command_options_config"));
 		crumb.setHint(i18n("course_command_options_config"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 
 	/**

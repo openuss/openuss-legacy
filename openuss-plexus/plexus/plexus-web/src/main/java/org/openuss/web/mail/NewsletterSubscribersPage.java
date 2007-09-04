@@ -43,7 +43,7 @@ public class NewsletterSubscribersPage extends AbstractNewsletterPage{
 		crumb.setName(i18n("newsletter_subscribertable_header"));
 		crumb.setHint(i18n("newsletter_subscribertable_header"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	private class SubscriberDataProvider extends AbstractPagedTable<SubscriberInfo> {

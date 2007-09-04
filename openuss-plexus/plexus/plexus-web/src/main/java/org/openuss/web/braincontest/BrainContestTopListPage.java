@@ -52,7 +52,7 @@ public class BrainContestTopListPage extends AbstractBrainContestPage {
 		crumb.setName(i18n("braincontest_toplist_header"));
 		crumb.setHint(i18n("braincontest_toplist_header"));
 		crumbs.add(crumb);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 		
 	private class BrainContestTopListDataProvider extends AbstractPagedTable<AnswerInfo> {

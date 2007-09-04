@@ -31,7 +31,7 @@
 
         -->
     <defaultCache
-        maxElementsInMemory="10000"
+        maxElementsInMemory="100000"
         eternal="false"
         timeToIdleSeconds="60"
         timeToLiveSeconds="60"

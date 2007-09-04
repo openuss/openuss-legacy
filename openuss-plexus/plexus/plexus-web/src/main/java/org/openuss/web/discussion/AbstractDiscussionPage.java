@@ -68,7 +68,7 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 		discussionMain.setLink(PageLinks.DISCUSSION_MAIN);
 		discussionMain.addParameter("course",courseInfo.getId());
 		crumbs.add(discussionMain);
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
+		setRequestBean(Constants.BREADCRUMBS, crumbs);
 	}
 	
 	public PostInfo getPostInfo() {

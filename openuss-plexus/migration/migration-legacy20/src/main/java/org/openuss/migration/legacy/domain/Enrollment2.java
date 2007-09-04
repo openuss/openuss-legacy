@@ -26,6 +26,9 @@ public class Enrollment2 implements java.io.Serializable {
 	private Character fslinstall;
 	private Character consultancy;
 	private Character vofi;
+	private Character withPassword;
+	private Character forPublic;
+	private String password;
 	private Set<Enrollmentaccesslist2> enrollmentaccesslist2s = new HashSet<Enrollmentaccesslist2>(0);
 	private Set<Studentenrollment2> studentenrollment2s = new HashSet<Studentenrollment2>(0);
 	private Set<Lecture2> lecture2s = new HashSet<Lecture2>(0);
@@ -272,6 +275,30 @@ public class Enrollment2 implements java.io.Serializable {
 
 	public void setMailinglists(Set<Mailinglist2> mailinglist2s) {
 		this.mailinglist2s = mailinglist2s;
+	}
+
+	public Character getWithPassword() {
+		return withPassword;
+	}
+
+	public void setWithPassword(Character withPassword) {
+		this.withPassword = withPassword;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String ppassword) {
+		this.password = ppassword;
+	}
+
+	public Character getForPublic() {
+		return forPublic;
+	}
+
+	public void setForPublic(Character forPublic) {
+		this.forPublic = forPublic;
 	}
 
 }
