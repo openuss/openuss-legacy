@@ -71,6 +71,7 @@ public class AbstractCoursePage extends BasePage {
 			courseInfo = courseService.findCourse(courseInfo.getId());
 			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
 			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
+			breadcrumbs.loadCourseCrumbs(courseInfo);
 		}
 		if (courseInfo == null) {
 			addMessage(i18n("message_error_course_page"));
@@ -80,8 +81,6 @@ public class AbstractCoursePage extends BasePage {
 			setSessionBean(Constants.COURSE_INFO, courseInfo);
 			setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);	
 		}
-		
-		breadcrumbs.loadCourseCrumbs(courseInfo);
 	}
 
 	/*
