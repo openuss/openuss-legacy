@@ -165,7 +165,8 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 	private BreadCrumb getUniversityCrumb(UniversityInfo info) {
 		assert info != null;
 		BreadCrumb universityCrumb = new BreadCrumb();
-		universityCrumb.setName(info.getName());
+		universityCrumb.setName(info.getShortcut());
+		universityCrumb.setHint(info.getName());
 		universityCrumb.setLink(PageLinks.UNIVERSITY_PAGE);
 		universityCrumb.addParameter("university", info.getId());
 
@@ -226,8 +227,10 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 
 	private BreadCrumb getDepartmentCrumb(DepartmentInfo info) {
 		assert info != null;
+		
 		BreadCrumb departmentCrumb = new BreadCrumb();
-		departmentCrumb.setName(info.getName());
+		departmentCrumb.setName(info.getShortcut());
+		departmentCrumb.setHint(info.getName());
 		departmentCrumb.setLink(PageLinks.DEPARTMENT_PAGE);
 		departmentCrumb.addParameter("department", info.getId());
 
@@ -290,7 +293,8 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 	private BreadCrumb getInstituteCrumb(InstituteInfo info) {
 		assert info != null;
 		BreadCrumb instituteCrumb = new BreadCrumb();
-		instituteCrumb.setName(info.getName());
+		instituteCrumb.setName(info.getShortcut());
+		instituteCrumb.setHint(info.getName());
 		instituteCrumb.setLink(PageLinks.INSTITUTE_PAGE);
 		instituteCrumb.addParameter("institute", info.getId());
 
@@ -351,7 +355,8 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 	private BreadCrumb getCourseCrumb(CourseInfo info) {
 		assert info != null;
 		BreadCrumb courseCrumb = new BreadCrumb();
-		courseCrumb.setName(info.getName());
+		courseCrumb.setName(info.getShortcut());
+		courseCrumb.setHint(info.getName());
 		courseCrumb.setLink(PageLinks.COURSE_PAGE);
 		courseCrumb.addParameter("course", info.getId());
 
@@ -382,7 +387,8 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 	private BreadCrumb getCourseTypeCrumb(CourseTypeInfo info) {
 		assert info != null;
 		BreadCrumb courseTypeCrumb = new BreadCrumb();
-		courseTypeCrumb.setName(info.getName());
+		courseTypeCrumb.setName(info.getShortcut());
+		courseTypeCrumb.setHint(info.getName());
 		courseTypeCrumb.setLink(PageLinks.COURSE_PAGE);
 		courseTypeCrumb.addParameter("course", info.getId());
 
