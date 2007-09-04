@@ -67,8 +67,7 @@ public class BrainContestSolvePage extends AbstractBrainContestPage {
 		crumb.setLink("");
 		crumb.setName(getBrainContest().getTitle());
 		crumb.setName(getBrainContest().getTitle());
-		crumbs.add(crumb);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		breadcrumbs.addCrumb(crumb);
 	}
 
 	public String save() throws BrainContestApplicationException {
