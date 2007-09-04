@@ -108,7 +108,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Validate.notNull(department,
 				"DepartmentService.handleRemoveDepartment - no Department found corresponding to the ID "
 						+ departmentId);
-		Validate.isTrue(department.getInstitutes().isEmpty(),
+		Validate.isTrue(department.getInstitutes().size() == 0,
 				"DepartmentService.handleRemoveDepartment - the Department still contains Institutes");
 
 		// Remove Security

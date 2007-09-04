@@ -202,7 +202,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		Validate.notNull(university,
 				"UniversityService.handleRemoveUniversity - no University found corresponding to the ID "
 						+ universityId);
-		Validate.isTrue(university.getDepartments().isEmpty(),
+		Validate.isTrue(university.getDepartments().size() == 0,
 				"UniversityService.handleRemoveUniversity - the University still contains Departments");
 
 		// Remove Periods
@@ -274,7 +274,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		Period period = this.getPeriodDao().load(periodId);
 		Validate.notNull(period,
 				"UniversityService.handleRemovePeriod - no Period found corresponding to the PeriodID " + periodId);
-		Validate.isTrue(period.getCourses().isEmpty(),
+		Validate.isTrue(period.getCourses().size() == 0,
 				"UniversityService.handleRemovePeriod - the Period still contains Courses");
 
 		// Remove Security

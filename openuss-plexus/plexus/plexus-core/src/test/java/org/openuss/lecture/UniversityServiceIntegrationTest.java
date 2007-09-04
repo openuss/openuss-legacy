@@ -16,6 +16,8 @@ import org.acegisecurity.AccessDeniedException;
 import org.apache.log4j.Logger;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopDao;
+import org.openuss.security.MembershipService;
+import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 
 /**
@@ -189,7 +191,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> BEGIN access to update(Period) test");
 
 		// Create a default Period
-		Period period = testUtility.createUniquePeriodInDB();
+		University university = testUtility.createUniqueUniversityInDB();
+		Period period = testUtility.createUniquePeriodInDB(university);
 		assertNotNull(period.getId());
 
 		// Create new PeriodInfo object
@@ -233,7 +236,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> BEGIN access to removePeriod test");
 
 		// Create a Period
-		Period period = testUtility.createUniquePeriodInDB();
+		University universityTest = testUtility.createUniqueUniversityInDB();
+		Period period = testUtility.createUniquePeriodInDB(universityTest);
 		assertNotNull(period.getId());
 
 		// Get University
@@ -278,7 +282,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> BEGIN access to removePeriod test");
 
 		// Create a Period
-		Period period = testUtility.createUniquePeriodInDB();
+		University universityTest = testUtility.createUniqueUniversityInDB();
+		Period period = testUtility.createUniquePeriodInDB(universityTest);
 		assertNotNull(period.getId());
 
 		// Save UniversityID
@@ -323,7 +328,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> BEGIN access to findPeriod test");
 
 		// Create a Period
-		Period period = testUtility.createUniquePeriodInDB();
+		University universityTest = testUtility.createUniqueUniversityInDB();
+		Period period = testUtility.createUniquePeriodInDB(universityTest);
 		assertNotNull(period.getId());
 
 		// Synchronize with Database
@@ -383,12 +389,10 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		int sizeBefore = university.getPeriods().size();
 
 		// Create Periods with university
-		Period period1 = testUtility.createUniquePeriodInDB();
-		period1.setUniversity(university);
+		Period period1 = testUtility.createUniquePeriodInDB(university);
 		university.add(period1);
 
-		Period period2 = testUtility.createUniquePeriodInDB();
-		period2.setUniversity(university);
+		Period period2 = testUtility.createUniquePeriodInDB(university);
 		university.add(period2);
 		
 		Period period3 = testUtility.createUniqueInactivePeriodInDB();
@@ -427,12 +431,10 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		int passiveSizeBefore = passivePeriods.size();
 		
 		// Create Periods with university
-		Period period1 = testUtility.createUniquePeriodInDB();
-		period1.setUniversity(university);
+		Period period1 = testUtility.createUniquePeriodInDB(university);
 		university.add(period1);
 
-		Period period2 = testUtility.createUniquePeriodInDB();
-		period2.setUniversity(university);
+		Period period2 = testUtility.createUniquePeriodInDB(university);
 		university.add(period2);
 
 		Period period3 = testUtility.createUniqueInactivePeriodInDB();
@@ -565,7 +567,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		Long universityId = university.getId();
 		assertNotNull(universityId);
 		
-		flush();
+		commit();
 
 		// Create user secure context
 		testUtility.createUserSecureContext();
@@ -581,7 +583,17 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		// Create admin secure context
 		testUtility.createAdminSecureContext();
 		
+		flush();
+		
 		// Remove department
+		DepartmentService departmentService = (DepartmentService) this.getApplicationContext().getBean("departmentService");
+		if (!university.getDepartments().isEmpty()) {
+			// Remove Departments
+			for (Department department : university.getDepartments()) {
+				departmentService.removeCompleteDepartmentTree(department.getId());
+			}
+		}
+		flush();
 		this.getUniversityService().removeCompleteUniversityTree(universityId);
 		
 		flush();
@@ -679,12 +691,10 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		University university2 = testUtility.createUniqueUniversityInDB();
 		
 		// Create Periods
-		Period period1 = testUtility.createUniquePeriodInDB();
-		university1.add(period1);
+		Period period1 = testUtility.createUniquePeriodInDB(university1);
 		assertEquals(2, university1.getPeriods().size());
 		
-		Period period2 = testUtility.createUniquePeriodInDB();
-		university2.add(period2);
+		Period period2 = testUtility.createUniquePeriodInDB(university2);
 		assertEquals(2, university2.getPeriods().size());
 		
 		// Create Departments
@@ -738,16 +748,14 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		University university2 = testUtility.createUniqueUniversityInDB();
 		
 		// Create Periods
-		Period period1 = testUtility.createUniquePeriodInDB();
-		university1.add(period1);
+		Period period1 = testUtility.createUniquePeriodInDB(university1);
 		assertEquals(2, university1.getPeriods().size());
 		
 		Period period2 = testUtility.createUniqueInactivePeriodInDB();
 		university1.add(period2);
 		assertEquals(3, university1.getPeriods().size());
 		
-		Period period3 = testUtility.createUniquePeriodInDB();
-		university1.add(period3);
+		Period period3 = testUtility.createUniquePeriodInDB(university1);
 		assertEquals(4, university1.getPeriods().size());
 		
 		// Create Departments

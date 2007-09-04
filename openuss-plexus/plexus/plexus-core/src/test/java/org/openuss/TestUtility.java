@@ -247,7 +247,7 @@ public class TestUtility {
 		period.setEnddate(new Date(cal.getTimeInMillis()));
 		university.add(period);
 
-		//periodDao.create(period);
+		// periodDao.create(period);
 
 		// Create the University
 		this.getUniversityDao().create(university);
@@ -342,7 +342,7 @@ public class TestUtility {
 
 		return university;
 	}
-	
+
 	public Department createUniqueDepartmentInDB() {
 		// Create a User
 		User user = this.createUniqueUserInDB();
@@ -391,7 +391,6 @@ public class TestUtility {
 		this.getOrganisationService().addMember(department.getId(), user.getId());
 		this.getOrganisationService().addUserToGroup(user.getId(), admins.getId());
 
-
 		return department;
 	}
 
@@ -433,7 +432,7 @@ public class TestUtility {
 		admins.setGroupType(GroupType.ADMINISTRATOR);
 		Long adminsId = this.getOrganisationService().createGroup(institute.getId(), admins);
 		Group adminsGroup = this.getGroupDao().load(adminsId);
-		
+
 		GroupItem assistants = new GroupItem();
 		assistants.setName("INSTITUTE_" + institute.getId() + "_ASSISTANTS");
 		assistants.setLabel("autogroup_assistant_label");
@@ -484,7 +483,7 @@ public class TestUtility {
 
 		// Create a unique CourseType and Period
 		CourseType courseType = this.createUniqueCourseTypeInDB();
-		Period period = this.createUniquePeriodInDB();
+		Period period = this.createUniquePeriodInDB(courseType.getInstitute().getDepartment().getUniversity());
 
 		// Create a unique CourseType
 		Course course = Course.Factory.newInstance();
@@ -507,8 +506,36 @@ public class TestUtility {
 		return course;
 	}
 
+	public Period createUniquePeriodInDB(University university) {
+
+		// Create Startdate
+		Calendar cal = new GregorianCalendar();
+		cal.set(2007, 3, 1);
+		Date startdate = new Date(cal.getTimeInMillis());
+
+		// Create Enddate
+		cal = new GregorianCalendar();
+		cal.set(2008, 8, 31);
+		Date enddate = new Date(cal.getTimeInMillis());
+
+		// Create a unique Period
+		Period period = Period.Factory.newInstance();
+		period.setName(unique("Period"));
+		period.setDescription("A unique Period");
+		period.setCourses(new ArrayList<Course>());
+		period.setStartdate(startdate);
+		period.setEnddate(enddate);
+		period.setDefaultPeriod(false);
+		university.add(period);
+
+		periodDao.create(period);
+		this.getSecurityService().createObjectIdentity(period, university);
+
+		return period;
+	}
+
 	public Period createUniquePeriodInDB() {
-		// Create a unique University
+		// Create University
 		University university = this.createUniqueUniversityInDB();
 
 		// Create Startdate
@@ -536,8 +563,7 @@ public class TestUtility {
 
 		return period;
 	}
-	
-	
+
 	public Period createUniqueInactivePeriodInDB() {
 		// Create a unique University
 		University university = this.createUniqueUniversityInDB();

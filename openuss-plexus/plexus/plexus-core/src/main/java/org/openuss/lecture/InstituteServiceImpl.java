@@ -151,7 +151,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Institute institute = this.getInstituteDao().load(instituteId);
 		Validate.notNull(institute,
 				"InstituteService.handleRemoveInstitute - no Institute found to the corresponding ID " + instituteId);
-		Validate.isTrue(institute.getCourseTypes().isEmpty(),
+		Validate.isTrue(institute.getCourseTypes().size() == 0,
 				"InstituteService.handleRemoveInstitute - the Institute still contains CourseTypes");
 
 		// Remove Security
