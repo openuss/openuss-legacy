@@ -120,10 +120,6 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		
 		Long courseId = courseService.create(courseInfo);
 		
-		// bookmark course to myuni page
-		desktopService2.linkCourse(desktopInfo.getId(), courseId);
-		
-		
 		addMessage(i18n("institute_message_persist_coursetype_succeed"));
 		
 		return Constants.SUCCESS;
@@ -179,11 +175,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		courseInfo.setAccessType(AccessType.OPEN);
 		
 		Long courseId = courseService.create(courseInfo);
-		
-		// bookmark course to myuni page
-		desktopService2.linkCourse(desktopInfo.getId(), courseId);
-		
-		
+				
 		addMessage(i18n("institute_message_persist_coursetype_succeed"));
 		
 		
@@ -205,10 +197,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 			
 			courseTypeInfo.setInstituteId(instituteInfo.getId());
 			Long courseTypeId = courseTypeService.create(courseTypeInfo);
-			
-			// bookmark course type to myuni page
-			desktopService2.linkCourseType(desktopInfo.getId(), courseTypeId);
-			
+						
 			addMessage(i18n("institute_message_add_coursetype_succeed"));
 		} else {
 			courseTypeService.update(courseTypeInfo);
