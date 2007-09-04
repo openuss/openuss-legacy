@@ -12,14 +12,11 @@
 		<s:authorize ifAllGranted="ROLE_USER">
 			<h:form id="navigationDesktop">
 				<t:panelNavigation2 id="desktop" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator" >
-					<t:commandNavigation2 value="#{msg['desktop_navigation_header']}">
+					<t:commandNavigation2 value="#{msg['desktop_navigation_header']}" open="true">
 						<t:commandNavigation2  value="#{msg.mainmenu_command_home}" action="home" activeOnViewIds="/views/welcome.xhtml"/>
 						<s:authorize ifAllGranted="ROLE_USER">
 							<t:commandNavigation2 value="#{msg['desktop_command_myuni']}" activeOnViewIds="/views/secured/myuni/myuni.xhtml" action="desktop"/>
 						</s:authorize>
-						<!--<t:commandNavigation2 value="#{msg['desktop_system_admin']}" action="universities" activeOnViewIds="/views/public/university/universities.xhtml"/>
-						<t:commandNavigation2 value="#{msg['desktop_department_admin']}" action="manage_institute" activeOnViewIds="/views/secured/lecture/departmentinstitutes.xhtml"/>
-						<t:commandNavigation2 value="#{msg['desktop_search_institute']}" action="search_institutes" activeOnViewIds="/views/public/institute/institutes.xhtml"/>-->
 						<s:authorize ifAllGranted="ROLE_USER">
 							<t:commandNavigation2 value="#{msg['desktop_command_userprofile']}" action="user_profile" activeOnViewIds="/views/secured/user/profileData.xhtml">
 							</t:commandNavigation2>
