@@ -68,17 +68,11 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		// connect institute to user
 		instituteInfo.setOwnerName(user.getName());
 		// create institute
-		
 		instituteInfo.setEnabled(false);
 
 		Long instituteId = instituteService.create(instituteInfo, user.getId());
 		instituteInfo.setId(instituteId);
 
-
-		//TODO send notification email
-		//FIXME this should be part of the business layer
-		//desktopService.linkInstitute(desktop, institute);
-		desktopService2.linkInstitute(desktopInfo.getId(), instituteId);
 		return Constants.INSTITUTE_PAGE;
 	}
 

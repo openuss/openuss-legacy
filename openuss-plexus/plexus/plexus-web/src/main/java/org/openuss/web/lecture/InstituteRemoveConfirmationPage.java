@@ -35,6 +35,9 @@ public class InstituteRemoveConfirmationPage extends AbstractLecturePage {
 	 */
 	public String removeCompleteInstituteTree() throws LectureException {
 		instituteService.removeCompleteInstituteTree(instituteInfo.getId());
+		setSessionBean("instituteInfo", null);
+		setSessionBean("courseTypeInfo", null);
+		setSessionBean("courseInfo", null);
 		addMessage(i18n("message_institute_removed"));
 		return Constants.INSTITUTES_PAGE;
 	}
