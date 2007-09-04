@@ -50,6 +50,7 @@
 							immediate="true" 
 							styleClass="pulldown_inline">  
 							<f:selectItems value="#{views$secured$lecture$institutecourses.allPeriodsOfInstitute}"/>
+							<f:validator validatorId="coursePeriodSelectValidator"/>
 						</h:selectOneMenu>
 					</o:block>  
 					<ui:include src="coursestable.xhtml"/>

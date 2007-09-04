@@ -3,7 +3,10 @@ package org.openuss.web.lecture;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
+import javax.faces.el.ValueBinding;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -21,6 +24,7 @@ import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
+import org.openuss.lecture.UniversityInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 
@@ -37,7 +41,8 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	private LocalDataModelCourses dataCourses = new LocalDataModelCourses();
 	
 	private List<SelectItem> institutePeriodItems;
-	private List<PeriodInfo> institutePeriods;
+	private List<PeriodInfo> institutePeriodsActive;
+	private List<PeriodInfo> institutePeriodsPassive;
 	private List<SelectItem> instituteCourseTypeItems;
 	private List<CourseTypeInfo> instituteCourseTypes;
 	private Boolean renderCourseNew = false;
@@ -45,6 +50,10 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	private List<PeriodInfo> periodInfos = null;
 	private Long universityId = 0l;
 	private Long departmentId = 0l;
+	
+	private ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
+	private String locale = (String)binding.getValue(getFacesContext());
+	private ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
 	
 	@Prerender
 	public void prerender() throws LectureException, Exception {
@@ -353,6 +362,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	 * Gets all periods of the institute.
 	 * @return outcome 
 	 */
+	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getAllPeriodsOfInstitute() {
 		
 		institutePeriodItems = new ArrayList<SelectItem>();
@@ -363,14 +373,34 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 			Long universityId = departmentInfo.getUniversityId();
 			universityInfo = universityService.findUniversity(universityId);
 			//gets all periods of the institute (resp. the university)
-			institutePeriods = universityService.findPeriodsByUniversity(universityId);
-
-			Iterator<PeriodInfo> iter =  institutePeriods.iterator();
-			PeriodInfo periodInfo;
+			institutePeriodsActive = universityService.findPeriodsByUniversityAndActivation(universityId, true);
+			institutePeriodsPassive = universityService.findPeriodsByUniversityAndActivation(universityId, false);
 			
-			while (iter.hasNext()) {
-				periodInfo = iter.next();
-				SelectItem item = new SelectItem(periodInfo.getId(),periodInfo.getName());
+			Iterator<PeriodInfo> iterActive =  institutePeriodsActive.iterator();
+			PeriodInfo periodInfoActive;
+			
+			if (iterActive.hasNext()) {
+				SelectItem item = new SelectItem(Constants.PERIODS_ACTIVE, bundle.getString("periods_active"));
+				institutePeriodItems.add(item);
+			}
+			
+			while (iterActive.hasNext()) {
+				periodInfoActive = iterActive.next();
+				SelectItem item = new SelectItem(periodInfoActive.getId(),periodInfoActive.getName());
+				institutePeriodItems.add(item);
+			}
+			
+			Iterator<PeriodInfo> iterPassive =  institutePeriodsPassive.iterator();
+			PeriodInfo periodInfoPassive;
+			
+			if (iterPassive.hasNext()) {
+				SelectItem item = new SelectItem(Constants.PERIODS_PASSIVE, bundle.getString("periods_passive"));
+				institutePeriodItems.add(item);
+			}
+			
+			while (iterPassive.hasNext()) {
+				periodInfoPassive = iterPassive.next();
+				SelectItem item = new SelectItem(periodInfoPassive.getId(),periodInfoPassive.getName());
 				institutePeriodItems.add(item);
 			}
 			
