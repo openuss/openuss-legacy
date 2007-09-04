@@ -40,13 +40,14 @@ public class AbstractCoursePage extends BasePage {
 	public void prerender() throws Exception {
 		if (courseInfo != null) {
 			courseInfo = courseService.getCourseInfo(courseInfo.getId());
-			institute = lectureService.getInstitute(courseInfo.getInstituteId());
 		}
 		if (courseInfo == null) {
-			addMessage(i18n("message_error_course_page"));
+			addError(i18n("message_error_course_page"));
 			redirect(Constants.OUTCOME_BACKWARD);
 			return;
 		} else {
+			institute = lectureService.getInstitute(courseInfo.getInstituteId());
+
 			setSessionBean(Constants.COURSE, courseInfo);
 			setSessionBean(Constants.COURSE_INFO, courseInfo);
 			setSessionBean(Constants.INSTITUTE, institute);

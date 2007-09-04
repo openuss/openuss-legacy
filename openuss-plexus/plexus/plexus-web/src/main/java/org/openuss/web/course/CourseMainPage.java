@@ -33,7 +33,9 @@ public class CourseMainPage extends AbstractCoursePage{
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		assistants = courseService.getAssistants(courseInfo);
+		if (courseInfo != null) {
+			assistants = courseService.getAssistants(courseInfo);
+		}
 	}
 	
 	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {
