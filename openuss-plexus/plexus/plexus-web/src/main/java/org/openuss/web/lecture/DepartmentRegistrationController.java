@@ -118,6 +118,8 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 	public String registrate() throws DesktopException, LectureException {
 		
 		//create department
+		if (user.getId()!=-10 && departmentInfo.getUniversityId()== null)
+			departmentInfo.setUniversityId(universityInfo.getId());
 		
 		//by default set department enabled
 		departmentInfo.setEnabled(true);
