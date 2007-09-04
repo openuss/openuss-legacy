@@ -12,8 +12,7 @@
 	<ui:include src="/views/commons/navigation/desktop.xhtml" />
 	
 	<s:authorize ifAllGranted="ROLE_USER">
-		<s:acl domainObject="#{instituteInfo}"
-			hasPermission="#{ACL.INSTITUTE_TUTOR}">
+		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.INSTITUTE_TUTOR}">
 			<h:form id="instituteNavigationForm">
 				<t:panelNavigation2 id="institute_navigation" styleClass="navigation"
 					layout="list" itemClass="nav_item" openItemClass="open_item"

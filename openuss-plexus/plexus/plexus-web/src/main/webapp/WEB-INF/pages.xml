@@ -84,7 +84,7 @@
 	
 	<page view-id="/views/secured/lecture/period*">
 		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_PERIODS}"/> 
-		<parameter name="period" value="#{period.id}" converterId="javax.faces.Long"/>
+		<parameter name="period" value="#{periodInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

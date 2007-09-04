@@ -237,7 +237,7 @@ public class InstitutePage extends AbstractLecturePage {
 	 * @param event
 	 */
 	public String resendActivationMail(){
-		getLectureService().sendActivationCode(institute);
+		instituteService.resendActivationCode(instituteInfo, user.getId());
 		addMessage(i18n("institute_activationcode_send"));
 		return Constants.SUCCESS;
 	}
