@@ -29,7 +29,7 @@
 			expression="execution(* org..DepartmentServiceBase.rejectApplication(java.lang.Long, java.lang.Long)) and args(applicationId, userId)" />
 		
 		<aop:pointcut id="InstituteServiceResendActivationCodePointcut"
-			expression="execution(* org..InstituteServiceBase.resendActivationCode(java.lang.Long)) and args(instituteId)" />
+			expression="execution(* org..InstituteServiceBase.resendActivationCode(org.openuss.lecture.InstituteInfo, java.lang.Long)) and args(instituteInfo, userId)" />
 		
 		<aop:pointcut id="UniversityServiceCreatePointcut"
 			expression="execution(* org..UniversityServiceBase.createUniversity(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)" />
