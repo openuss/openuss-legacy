@@ -32,11 +32,9 @@ public class ExportedSubscribersPage extends AbstractNewsletterPage {
 	
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
 		crumb.setName(i18n("newsletter_subscribertable_header"));
 		crumb.setHint(i18n("newsletter_subscribertable_header"));
-		crumbs.add(crumb);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		breadcrumbs.addCrumb(crumb);
 	}
 
 	public String getSubscribersSemicolon() {
