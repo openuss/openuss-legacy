@@ -316,9 +316,7 @@
 		class="org.openuss.lecture.InstituteIndexingAspect">
 		<property name="indexerService" ref="indexerService" />
 		<property name="instituteDao" ref="instituteDao" />
-		<property name="courseDao" ref="courseDao" />
 		<property name="instituteService" ref="instituteService" />
-		<property name="courseService" ref="courseService" />
 	</bean>
 
 	<bean id="courseIndexAspectBean"
