@@ -38,7 +38,8 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		// Transform VO to entity
 		Course courseEntity = this.getCourseDao().courseInfoToEntity(courseInfo);
 		Validate.notNull(courseEntity, "CourseServiceImpl.handleCreate - cannot transform courseInfo to entity.");
-
+		courseEntity.setEnabled(true);
+		
 		// Add Course to CourseType and Period
 		this.getCourseTypeDao().load(courseInfo.getCourseTypeId()).add(courseEntity);
 		this.getPeriodDao().load(courseInfo.getPeriodId()).add(courseEntity);
@@ -361,16 +362,21 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		Validate.notNull(institute, "CourseService.findAllCoursesByInstitute - "
 				+ "no institute could be found with the instituteId " + instituteId);
 
+		
 		List<CourseInfo> courses = new ArrayList<CourseInfo>();
 		Iterator iter = institute.getCourseTypes().iterator();
 		while (iter.hasNext()) {
 			CourseType courseType = (CourseType) iter.next();
+			courses.addAll(this.getCourseDao().findByCourseType(CourseDao.TRANSFORM_COURSEINFO, courseType));
+			/*
 			Iterator courseIter = courseType.getCourses().iterator();
 			while (courseIter.hasNext()) {
 				Course course = (Course) courseIter.next();
 				courses.add(this.getCourseDao().toCourseInfo(course));
 			}
+			*/
 		}
+		
 		return courses;
 	}
 
@@ -385,7 +391,20 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		Period period = this.getPeriodDao().load(periodId);
 		Validate.notNull(period, "CourseService.findCoursesByPeriodAndInstitute -"
 				+ "no period found with the corresponding periodId " + periodId);
+		
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute, "CourseService.findCoursesByPeriodAndInstitute -"
+				+ "no institute found with the corresponding instiuteId " + instituteId);
 
+		/*
+		List<CourseInfo> courseInfos = new ArrayList<CourseInfo>();
+		List<CourseType> courseTypes = institute.getCourseTypes();
+		for (CourseType courseType : courseTypes) {
+			courseInfos.addAll(this.getCourseDao().
+					findByPeriodAndCourseType(CourseDao.TRANSFORM_COURSEINFO, period, courseType));
+		}
+		*/
+	
 		List<Course> allCourses = this.getCourseDao().findByPeriod(period);
 		List<CourseInfo> courseInfos = new ArrayList<CourseInfo>();
 		Iterator iter = allCourses.iterator();

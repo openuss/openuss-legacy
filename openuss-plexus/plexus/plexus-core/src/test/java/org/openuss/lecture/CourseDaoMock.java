@@ -95,7 +95,89 @@ public class CourseDaoMock extends AbstractMockDao<Course> implements CourseDao 
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	public List findByInstitute(int transform, String queryString, Institute institute) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	public List findByInstitute(int transform, Institute institute) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByInstitute(String queryString, Institute institute) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByInstitute(Institute institute) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	public List findByPeriodAndCourseType(int transform, String queryString, Period period, CourseType courseType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByPeriodAndCourseType(int transform, Period period, CourseType courseType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByPeriodAndCourseType(String queryString, Period period, CourseType courseType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByPeriodAndCourseType(Period period, CourseType courseType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public List findByPeriodAndEnabled(int transform, String queryString, Period period, boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByPeriodAndEnabled(int transform, Period period, boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByPeriodAndEnabled(String queryString, Period period, boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByPeriodAndEnabled(Period period, boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByEnabled(int transform, String queryString, boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByEnabled(int transform, boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByEnabled(String queryString, boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByEnabled(boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public void toCourseInfo(Course sourceEntity, CourseInfo targetVO) {
 		// TODO Auto-generated method stub
 		

@@ -16,6 +16,7 @@ import org.hibernate.classic.Lifecycle;
 /**
  * @see org.openuss.lecture.Course
  * @author Ron Haus
+ * @author Florian Dondorf
  */
 public class CourseImpl extends CourseBase implements Course, Lifecycle {
 
