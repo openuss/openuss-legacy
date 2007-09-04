@@ -16,9 +16,9 @@
 			<t:panelNavigation2 id="department_navigation" styleClass="navigation"
 				layout="list" itemClass="nav_item" openItemClass="open_item"
 				activeItemClass="active_item" separatorClass="item_separator">
-				<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.GRANT}">
+				<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.DEPARTMENT_ADMINISTRATION}">
 					<t:commandNavigation2 value="#{msg['department_navigation_header']}">
-						<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.GRANT}">
+						<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.DEPARTMENT_ADMINISTRATION}">
 							<t:commandNavigation2 action="department" activeOnViewIds="/views/public/department/department.xhtml">
 									<h:outputText value="#{msg['department_profile']}" ></h:outputText>
 							</t:commandNavigation2>

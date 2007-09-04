@@ -16,7 +16,7 @@
 		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.UNIVERSITY_ADMINISTRATION}"/> 
 	</page>
 	
-	<page view-id="/views/secured/lecture/auth/*.xhtml">
+	<page view-id="/views/secured/lecture/auth/universitymembers.xhtml">
 		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.UNIVERSITY_ADMINISTRATION}"/> 
 	</page>
 	
@@ -37,6 +37,10 @@
 	</page>
 	
 	<page view-id="/views/secured/lecture/departmentoptions.xhtml">
+		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
+	</page>
+	
+	<page view-id="/views/secured/lecture/auth/departmentMembers.xhtml">
 		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
 	</page>
 	 
