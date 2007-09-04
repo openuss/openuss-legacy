@@ -12,7 +12,7 @@
 		<s:authorize ifAllGranted="ROLE_USER">
 			<h:form id="navigationDesktop">
 				<t:panelNavigation2 id="desktop" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator" >
-					<t:commandNavigation2 value="#{msg['desktop_navigation_header']}">
+					<t:commandNavigation2 value="#{msg['desktop_navigation_header']}" open="true">
 						<s:authorize ifAllGranted="ROLE_USER">
 							<t:commandNavigation2 value="#{msg['desktop_command_bookmarks']}" activeOnViewIds="/views/secured/desktop/desktop.xhtml" action="desktop"/>
 						</s:authorize>
