@@ -52,7 +52,7 @@ public class UniversityServiceMock implements UniversityService {
 	}
 
 	@SuppressWarnings( { "unchecked" })
-	public List findPeriodsByUniversity(Long universityId) {
+	public List findPeriodsByUniversityAndActivation(Long universityId, boolean active) {
 		Map<Long, PeriodInfo> allPeriods = this.getMockPeriods();
 		List periodInfos = new ArrayList(); 
 		

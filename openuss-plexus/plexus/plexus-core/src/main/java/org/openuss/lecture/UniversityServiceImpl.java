@@ -369,7 +369,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#findPeriodsByUniversity(java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected java.util.List handleFindPeriodsByUniversity(java.lang.Long universityId) throws java.lang.Exception {
+	protected java.util.List handleFindPeriodsByUniversityAndActivation(java.lang.Long universityId, boolean active) throws java.lang.Exception {
 
 		Validate.notNull(universityId,
 				"UniversityService.handleFindPeriodsByUniversity - the universityID cannot be null");
@@ -381,7 +381,9 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 		List periodInfos = new ArrayList();
 		for (Period period : university.getPeriods()) {
-			periodInfos.add(this.getPeriodDao().toPeriodInfo(period));
+			if (period.isActive() == active) {
+				periodInfos.add(this.getPeriodDao().toPeriodInfo(period));
+			}
 		}
 
 		return periodInfos;

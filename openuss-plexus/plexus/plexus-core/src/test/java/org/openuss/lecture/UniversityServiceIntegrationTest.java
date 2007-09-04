@@ -381,24 +381,42 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		flush();
 		
 		int sizeBefore = university.getPeriods().size();
+		List<Period> passivePeriods = new ArrayList<Period>();
+		for (Period period : university.getPeriods()) {
+			if (!period.isActive()) {
+				passivePeriods.add(period);
+			}
+		}
+		int passiveSizeBefore = passivePeriods.size();
 
 		// Create Periods with university
 		Period period1 = testUtility.createUniquePeriodInDB();
 		period1.setUniversity(university);
-		university.getPeriods().add(period1);
+		university.add(period1);
 
 		Period period2 = testUtility.createUniquePeriodInDB();
 		period2.setUniversity(university);
-		university.getPeriods().add(period2);
+		university.add(period2);
+		
+		Period period3 = testUtility.createUniqueInactivePeriodInDB();
+		period3.setUniversity(university);
+		university.add(period3);
 
 		PeriodDao periodDao = (PeriodDao) this.getApplicationContext().getBean("periodDao");
 		periodDao.update(period1);
 		periodDao.update(period2);
+		periodDao.update(period3);
 
 		// Test
-		List<PeriodInfo> periods = this.getUniversityService().findPeriodsByUniversity(university.getId());
+		List<PeriodInfo> periods = this.getUniversityService().
+			findPeriodsByUniversityAndActivation(university.getId(), true);
 		assertNotNull(periods);
 		assertEquals(sizeBefore+2, periods.size());
+		
+		periods = this.getUniversityService().
+			findPeriodsByUniversityAndActivation(university.getId(), false);
+		assertNotNull(periods);
+		assertEquals(passiveSizeBefore+1, periods.size());
 
 		logger.info("----> END access to findPeriodsByUniversity test");
 	}
