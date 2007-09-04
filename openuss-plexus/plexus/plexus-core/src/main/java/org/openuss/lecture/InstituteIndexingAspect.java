@@ -20,11 +20,7 @@ public class InstituteIndexingAspect {
 	
 	private InstituteService instituteService;
 	
-	private CourseService courseService;
-	
 	private InstituteDao instituteDao;
-	
-	private CourseDao courseDao;
 	
 	private Institute institute;
 	
@@ -132,11 +128,10 @@ public class InstituteIndexingAspect {
 		try{
 			institute = instituteDao.instituteInfoToEntity(instituteInfo);
 			indexerService.deleteIndex(institute);
-			List allCourses = courseService.findAllCoursesByInstitute(instituteInfo.getId());
-			CourseInfo courseInfo;
-			for (Object courseTemp : allCourses) {
-				courseInfo = (CourseInfo) courseTemp;
-				indexerService.deleteIndex(courseDao.courseInfoToEntity(courseInfo));
+			Course course;
+			for (Object courseTemp : institute.getAllCourses()) {
+				course = (Course) courseTemp;
+				indexerService.deleteIndex(course);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -149,22 +144,6 @@ public class InstituteIndexingAspect {
 
 	public void setInstituteService(InstituteService instituteService) {
 		this.instituteService = instituteService;
-	}
-
-	public CourseService getCourseService() {
-		return courseService;
-	}
-
-	public void setCourseService(CourseService courseService) {
-		this.courseService = courseService;
-	}
-
-	public CourseDao getCourseDao() {
-		return courseDao;
-	}
-
-	public void setCourseDao(CourseDao courseDao) {
-		this.courseDao = courseDao;
 	}
 	
 }
