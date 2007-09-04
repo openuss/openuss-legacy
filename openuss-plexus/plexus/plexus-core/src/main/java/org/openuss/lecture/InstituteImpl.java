@@ -71,7 +71,7 @@ public class InstituteImpl extends org.openuss.lecture.InstituteBase implements 
 				}
 			}
 		}
-		return null;
+		return courses;
 
 	}
 
@@ -88,7 +88,7 @@ public class InstituteImpl extends org.openuss.lecture.InstituteBase implements 
 				courses.add((Course) iterCourses.next());
 			}
 		}
-		return null;
+		return courses;
 	}
 
 }
