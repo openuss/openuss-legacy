@@ -52,10 +52,6 @@ public class CourseTypeServiceImpl extends org.openuss.lecture.CourseTypeService
 
 		// Load CourseType entity
 		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
-		Validate.notNull(courseType,
-				"CourseTypeServiceImpl.handleFindCourseType - can not find courseType with the corresponfing id "
-						+ courseTypeId);
-
 		return this.getCourseTypeDao().toCourseTypeInfo(courseType);
 	}
 

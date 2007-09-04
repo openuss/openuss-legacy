@@ -303,9 +303,6 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		Validate.notNull(universityId, "UniversityService.handleFindUniversity - the UniversityID cannot be null");
 
 		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university,
-				"UniversityService.handleFindUniversity - no University found corresponding to the ID " + universityId);
-
 		return this.getUniversityDao().toUniversityInfo(university);
 	}
 
@@ -359,9 +356,6 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		Validate.notNull(periodId, "UniversityService.handleFindPeriod - the PeriodID cannot be null");
 
 		Period periodEntity = this.getPeriodDao().load(periodId);
-		Validate.notNull(periodEntity, "UniversityService.handleFindPeriod - no Period found corresponding to the ID "
-				+ periodId);
-
 		return this.getPeriodDao().toPeriodInfo(periodEntity);
 	}
 
@@ -387,6 +381,8 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		return periodInfos;
 	}
 
+	
+	
 	/**
 	 * @see org.openuss.lecture.UniversityService#findActivePeriodsByUniversity(java.lang.Long)
 	 */

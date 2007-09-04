@@ -132,9 +132,6 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Validate.notNull(departmentId, "DepartmentService.handleFindDepartment - the DepartmentId cannot be null");
 
 		Department department = (Department) this.getDepartmentDao().load(departmentId);
-		Validate.notNull(department,
-				"DepartmentService.handleFindDepartment - no Department found corresponding to the ID " + departmentId);
-
 		return this.getDepartmentDao().toDepartmentInfo(department);
 	}
 

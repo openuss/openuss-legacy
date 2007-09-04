@@ -175,9 +175,6 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(instituteId, "InstituteService.handleFindInstitute - the instituteId cannot be null");
 
 		Institute institute = (Institute) this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute,
-				"InstituteService.handleFindInstitute - no Institute found corresponding to the ID " + instituteId);
-
 		return this.getInstituteDao().toInstituteInfo(institute);
 	}
 

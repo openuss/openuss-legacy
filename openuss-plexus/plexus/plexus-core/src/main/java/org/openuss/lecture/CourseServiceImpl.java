@@ -35,6 +35,9 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 				"CourseServiceImpl.handleCreate - getCourseTypeId cannot be null.");
 		Validate.notNull(courseInfo.getPeriodId(), "CourseServiceImpl.handleCreate - PeriodId cannot be null.");
 
+		// Default is enabled
+		courseInfo.setEnabled(true);
+		
 		// Transform VO to entity
 		Course courseEntity = this.getCourseDao().courseInfoToEntity(courseInfo);
 		Validate.notNull(courseEntity, "CourseServiceImpl.handleCreate - cannot transform courseInfo to entity.");
@@ -93,7 +96,6 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	protected CourseInfo handleFindCourse(Long courseId) {
 
 		Validate.notNull(courseId, "CourseService.findCourse - courseId cannot be null.");
-
 		return this.getCourseDao().toCourseInfo(this.getCourseDao().load(courseId));
 	}
 
@@ -135,6 +137,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	 * @see org.openuss.lecture.CourseService#addAssistant(org.openuss.lecture.Course, org.openuss.security.User)
 	 * @deprecated
 	 */
+	@SuppressWarnings( { "unchecked" })
 	protected void handleAddAssistant(Course course, User user) throws Exception {
 		CourseMember assistant = retrieveCourseMember(course, user);
 		assistant.setMemberType(CourseMemberType.ASSISTANT);
