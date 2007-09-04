@@ -1,5 +1,6 @@
 package org.openuss.lecture;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -35,6 +36,11 @@ public class DomainResultBean implements DomainResult {
 
 	public void setScore(float score) {
 		this.score = score;
+	}
+	
+	public String getFormattedScore(){ 
+		DecimalFormat df = new DecimalFormat("###.##"); 
+		return df.format(this.score*100)+" %";
 	}
 
 	/**
@@ -163,7 +169,12 @@ public class DomainResultBean implements DomainResult {
 	}
 	
 	public String getDebugInfo(){
-		return "DomainType: "+domainType+"; Uni: "+universityId+"; Dept: "+departmentId+"; Inst: "+instituteId+"; CourseType: "+courseTypeId;
+		return "DEBUG: "
+			+"DomainType: "+domainType+"; "
+			+"Uni: "+universityId+"; "
+			+"Dept: "+departmentId+"; "
+			+"Inst: "+instituteId+"; "
+			+"CourseType: "+courseTypeId;
 	}
 
 }
