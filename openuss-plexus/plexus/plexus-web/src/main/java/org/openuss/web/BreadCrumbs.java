@@ -115,8 +115,9 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		List<BreadCrumb> crumbs = new ArrayList<BreadCrumb>();
 
 		BreadCrumb baseCrumb = new BreadCrumb();
-		baseCrumb.setName("Startseite");
-		baseCrumb.setHint("Die Openuss Startseite");
+		
+		baseCrumb.setName(i18n("home"));
+		baseCrumb.setHint(i18n("home"));
 		baseCrumb.setLink(PageLinks.START_PAGE);
 
 		crumbs.add(baseCrumb);
@@ -402,7 +403,8 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		assert crumbs != null;
 
 		BreadCrumb myUniCrumb = new BreadCrumb();
-		myUniCrumb.setName("MyUni");
+		myUniCrumb.setName(i18n("desktop_command_myuni"));
+		myUniCrumb.setHint(i18n("desktop_command_myuni"));
 		myUniCrumb.setLink(PageLinks.MYUNI_PAGE);
 
 		crumbs.add(myUniCrumb);
@@ -416,7 +418,8 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		assert crumbs != null;
 
 		BreadCrumb profileCrumb = new BreadCrumb();
-		profileCrumb.setName("Profil");
+		profileCrumb.setName(i18n("desktop_command_userprofile"));
+		profileCrumb.setHint(i18n("desktop_command_userprofile"));
 
 		crumbs.add(profileCrumb);
 		return crumbs;
@@ -429,7 +432,8 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		assert crumbs != null;
 
 		BreadCrumb extendedSearchCrumb = new BreadCrumb();
-		extendedSearchCrumb.setName("Erweiterte Suche");
+		extendedSearchCrumb.setName(i18n("extended_search_headline"));
+		extendedSearchCrumb.setHint(i18n("extended_search_headline"));
 
 		crumbs.add(extendedSearchCrumb);
 		return crumbs;
@@ -442,8 +446,9 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		assert crumbs != null;
 
 		BreadCrumb searchCrumb = new BreadCrumb();
-		searchCrumb.setName("Suche");
-
+		searchCrumb.setName(i18n("header_search"));
+		searchCrumb.setHint(i18n("header_search"));
+		
 		crumbs.add(searchCrumb);
 		return crumbs;
 	}
@@ -455,8 +460,10 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		assert crumbs != null;
 
 		BreadCrumb administrationCrumb = new BreadCrumb();
-		administrationCrumb.setName("Administration");
+		administrationCrumb.setName(i18n("mainmenu_command_administration"));
+		administrationCrumb.setHint(i18n("mainmenu_command_administration"));
 
+		
 		crumbs.add(administrationCrumb);
 		return crumbs;
 	}
