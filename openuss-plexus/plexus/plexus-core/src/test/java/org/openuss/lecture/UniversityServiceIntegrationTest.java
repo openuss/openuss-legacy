@@ -381,13 +381,6 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		flush();
 		
 		int sizeBefore = university.getPeriods().size();
-		List<Period> passivePeriods = new ArrayList<Period>();
-		for (Period period : university.getPeriods()) {
-			if (!period.isActive()) {
-				passivePeriods.add(period);
-			}
-		}
-		int passiveSizeBefore = passivePeriods.size();
 
 		// Create Periods with university
 		Period period1 = testUtility.createUniquePeriodInDB();
@@ -408,44 +401,59 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		periodDao.update(period3);
 
 		// Test
-		List<PeriodInfo> periods = this.getUniversityService().
-			findPeriodsByUniversityAndActivation(university.getId(), true);
+		List<PeriodInfo> periods = this.getUniversityService().findPeriodsByUniversity(university.getId());
 		assertNotNull(periods);
-		assertEquals(sizeBefore+2, periods.size());
-		
-		periods = this.getUniversityService().
-			findPeriodsByUniversityAndActivation(university.getId(), false);
-		assertNotNull(periods);
-		assertEquals(passiveSizeBefore+1, periods.size());
+		assertEquals(sizeBefore+3, periods.size());
 
 		logger.info("----> END access to findPeriodsByUniversity test");
 	}
 
-	public void testFindActivePeriodByUniversity() {
+	@SuppressWarnings( { "unchecked" })
+	public void testFindPeriodsByUniversityAndActivation() {
 		logger.info("----> BEGIN access to findActivePeriodByUniversity test");
 
 		// Create University
 		University university = testUtility.createUniqueUniversityInDB();
 		flush();
 
+		int sizeBefore = university.getPeriods().size();
+		
+		List<Period> passivePeriods = new ArrayList<Period>();
+		for (Period period : university.getPeriods()) {
+			if (!period.isActive()) {
+				passivePeriods.add(period);
+			}
+		}
+		int passiveSizeBefore = passivePeriods.size();
+		
 		// Create Periods with university
 		Period period1 = testUtility.createUniquePeriodInDB();
 		period1.setUniversity(university);
-		period1.setStartdate(new Date(new GregorianCalendar(2004, 10, 1).getTimeInMillis()));
-		period1.setEnddate(new Date(new GregorianCalendar(2005, 3, 31).getTimeInMillis()));
-		university.getPeriods().add(period1);
+		university.add(period1);
 
 		Period period2 = testUtility.createUniquePeriodInDB();
 		period2.setUniversity(university);
-		university.getPeriods().add(period2);
+		university.add(period2);
 
+		Period period3 = testUtility.createUniqueInactivePeriodInDB();
+		period3.setUniversity(university);
+		university.add(period3);
+		
 		PeriodDao periodDao = (PeriodDao) this.getApplicationContext().getBean("periodDao");
 		periodDao.update(period1);
 		periodDao.update(period2);
+		periodDao.update(period3);
 
 		// Test
-		List<PeriodInfo> periodInfos = this.getUniversityService().findActivePeriodsByUniversity(university.getId());
+		List<PeriodInfo> periodInfos = this.getUniversityService().
+			findPeriodsByUniversityAndActivation(university.getId(), true);
 		assertNotNull(periodInfos);
+		assertEquals(sizeBefore+2, periodInfos.size());
+		
+		periodInfos = this.getUniversityService().
+			findPeriodsByUniversityAndActivation(university.getId(), false);
+		assertNotNull(periodInfos);
+		assertEquals(passiveSizeBefore+1, periodInfos.size());
 
 		logger.info("----> END access to findActivePeriodByUniversity test");
 	}

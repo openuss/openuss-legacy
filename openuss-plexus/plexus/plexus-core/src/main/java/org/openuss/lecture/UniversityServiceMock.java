@@ -20,7 +20,7 @@ public class UniversityServiceMock implements UniversityService {
 		return null;
 	}
 
-	public List findActivePeriodsByUniversity(Long universityId) {
+	public List findPeriodsByUniversityAndActivation(Long universityId,  boolean active) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -52,7 +52,7 @@ public class UniversityServiceMock implements UniversityService {
 	}
 
 	@SuppressWarnings( { "unchecked" })
-	public List findPeriodsByUniversityAndActivation(Long universityId, boolean active) {
+	public List findPeriodsByUniversity(Long universityId) {
 		Map<Long, PeriodInfo> allPeriods = this.getMockPeriods();
 		List periodInfos = new ArrayList(); 
 		

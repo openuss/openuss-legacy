@@ -407,6 +407,10 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 			}
 		}
 	}
+	
+	public void handleResendActivationCode(Long instituteId) {
+		// TODO Auto-generated method stub
+	}
 
 	/*------------------- private methods -------------------- */
 
