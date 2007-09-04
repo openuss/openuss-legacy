@@ -4,9 +4,11 @@ import org.apache.log4j.Logger;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
 
-/** Aspect for the indexing of departments.
+/** 
+ * Aspect for the indexing of departments.
  * 
  * @author Kai Stettner
+ * @author Malte Stockmann
  */
 public class DepartmentIndexingAspect {
 	
@@ -24,9 +26,11 @@ public class DepartmentIndexingAspect {
 	public void createDepartmentIndex(DepartmentInfo departmentInfo, Long userId) {
 		logger.info("Starting method createDepartmentIndex");
 		try {
-			logger.info("Creating DepartmentIndex");
-			department = departmentDao.departmentInfoToEntity(departmentInfo);
-			indexerService.createIndex(department);
+			if(departmentInfo.isEnabled()){
+				logger.info("Creating DepartmentIndex");
+				department = departmentDao.departmentInfoToEntity(departmentInfo);
+				indexerService.createIndex(department);
+			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}
@@ -41,8 +45,7 @@ public class DepartmentIndexingAspect {
 				indexerService.updateIndex(department);
 			} else {
 				logger.debug("method updateDepartmentIndex: deleteIndex");
-				department = departmentDao.departmentInfoToEntity(departmentInfo);
-				indexerService.deleteIndex(department);
+				deleteDepartmentFromIndexCascade(departmentInfo);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -54,7 +57,7 @@ public class DepartmentIndexingAspect {
 	 * Update department index By Id.
 	 * @param departmentId, status
 	 */
-	public void updateDepartmentIndexById(Long departmentId, Boolean status) {
+	public void updateDepartmentIndexById(Long departmentId, boolean status) {
 		logger.debug("Starting method updateDepartmentIndexById");
 		try {
 			DepartmentInfo departmentInfo = departmentService.findDepartment(departmentId);
@@ -64,8 +67,7 @@ public class DepartmentIndexingAspect {
 				indexerService.updateIndex(department);
 			} else {
 				logger.debug("method updateDepartmentIndex: deleteIndex");
-				department = departmentDao.departmentInfoToEntity(departmentInfo);
-				indexerService.deleteIndex(department);
+				deleteDepartmentFromIndexCascade(departmentInfo);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -110,5 +112,25 @@ public class DepartmentIndexingAspect {
 		this.departmentService = departmentService;
 	}
 	
-	
+	private void deleteDepartmentFromIndexCascade(DepartmentInfo departmentInfo){
+		try {
+			department = departmentDao.departmentInfoToEntity(departmentInfo);
+			indexerService.deleteIndex(department);
+			Institute institute;
+			Course course;
+			// delete department's institutes from index
+			for(Object instituteTemp : department.getInstitutes()) {
+				// delete current institute from index
+				institute = (Institute) instituteTemp;
+				indexerService.deleteIndex(institute);
+				// delete institute's courses from index
+				for(Object courseTemp : institute.getAllCourses()){
+					course = (Course) courseTemp; 
+					indexerService.deleteIndex(course);
+				}
+			}
+		} catch (IndexerApplicationException e) {
+			logger.error(e);
+		}
+	}
 }

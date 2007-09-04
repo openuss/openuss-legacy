@@ -5,10 +5,10 @@ import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
 
 /**
- * Test case for the spring aspect initiating the create, update and delete 
- * process of the university indexing.
+ * Aspect for the indexing of universities.
  * 
  * @author Kai Stettner
+ * @author Malte Stockmann
  */
 public class UniversityIndexingAspect {
 	
@@ -52,8 +52,7 @@ public class UniversityIndexingAspect {
 				indexerService.updateIndex(university);
 			} else {
 				logger.debug("method updateUniversityIndex: deleteIndex");
-				university = universityDao.universityInfoToEntity(universityInfo);
-				indexerService.deleteIndex(university);
+				deleteUniversityFromIndexCascade(universityInfo);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -64,7 +63,7 @@ public class UniversityIndexingAspect {
 	 * Update university index By Id.
 	 * @param universityId, status
 	 */
-	public void updateUniversityIndexById(Long universityId, Boolean status) {
+	public void updateUniversityIndexById(Long universityId, boolean status) {
 		logger.debug("Starting method updateUniversityIndexById");
 		try {
 			UniversityInfo universityInfo = universityService.findUniversity(universityId);
@@ -74,8 +73,7 @@ public class UniversityIndexingAspect {
 				indexerService.updateIndex(university);
 			} else {
 				logger.debug("method updateUniversityIndex: deleteIndex");
-				university = universityDao.universityInfoToEntity(universityInfo);
-				indexerService.deleteIndex(university);
+				deleteUniversityFromIndexCascade(universityInfo);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -122,7 +120,34 @@ public class UniversityIndexingAspect {
 		this.universityService = universityService;
 	}
 	
-	
+	private void deleteUniversityFromIndexCascade(UniversityInfo universityInfo){
+		try{
+			university = universityDao.universityInfoToEntity(universityInfo);
+			indexerService.deleteIndex(university);
+			Department department;
+			Institute institute;
+			Course course;
+			// delete university's departments from index
+			for(Object departmentTemp : university.getDepartments()){
+				department = (Department) departmentTemp;
+				indexerService.deleteIndex(department);
+				// delete department's institutes from index
+				for(Object instituteTemp : department.getInstitutes()) {
+					// delete current institute from index
+					institute = (Institute) instituteTemp;
+					indexerService.deleteIndex(institute);
+					// delete institute's courses from index
+					for(Object courseTemp : institute.getAllCourses()){
+						course = (Course) courseTemp; 
+						indexerService.deleteIndex(course);
+					}
+				}
+			}
+			
+		} catch (IndexerApplicationException e) {
+			logger.error(e);
+		}
+	}
 	
 
 }

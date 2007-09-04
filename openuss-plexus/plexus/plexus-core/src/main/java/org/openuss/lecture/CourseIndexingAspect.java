@@ -32,7 +32,7 @@ public class CourseIndexingAspect {
 	public void createCourseIndex(CourseInfo courseInfo) {
 		logger.info("Starting method createCourseIndex");
 		try {
-			if (courseInfo.getAccessType() != AccessType.CLOSED) {
+			if (courseInfo.isEnabled() && courseInfo.getAccessType() != AccessType.CLOSED) {
 				course = courseDao.courseInfoToEntity(courseInfo);
 				indexerService.createIndex(course);
 			}
@@ -45,13 +45,13 @@ public class CourseIndexingAspect {
 	public void updateCourseIndex(CourseInfo courseInfo) {
 		logger.info("Starting method updateCourseIndex");
 		try {
-			if (courseInfo.getAccessType() == AccessType.CLOSED) {
+			if (courseInfo.isEnabled() && courseInfo.getAccessType() != AccessType.CLOSED) {
+				course = courseDao.courseInfoToEntity(courseInfo);
+				indexerService.updateIndex(course);
+			} else {
 				logger.info("Deleting CourseIndex");
 				course = courseDao.courseInfoToEntity(courseInfo);
 				indexerService.deleteIndex(course);
-			} else {
-				course = courseDao.courseInfoToEntity(courseInfo);
-				indexerService.updateIndex(course);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
