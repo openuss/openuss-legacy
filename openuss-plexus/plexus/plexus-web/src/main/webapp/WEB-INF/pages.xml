@@ -10,43 +10,53 @@
 	
 	<page view-id="/views/secured/lecture/universitydepartments.xhtml">
 		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.UNIVERSITY_ADMINISTRATION}"/> 
+		<parameter name="university" value="#{universityInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<page view-id="/views/secured/lecture/universityperiods.xhtml">
 		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.UNIVERSITY_ADMINISTRATION}"/> 
+		<parameter name="university" value="#{universityInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<page view-id="/views/secured/lecture/auth/universitymembers.xhtml">
 		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.UNIVERSITY_ADMINISTRATION}"/> 
+		<parameter name="university" value="#{universityInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<page view-id="/views/secured/lecture/universityoptions*">
 		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.UNIVERSITY_ADMINISTRATION}"/> 
+		<parameter name="university" value="#{universityInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			Departments
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 	 
+	 <page view-id="/views/public/department/department.xhtml">
+		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	 
 	<page view-id="/views/secured/lecture/departmentinstitutes.xhtml">
-		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
+		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/>
+		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/> 
 	</page>
 	
 	<page view-id="/views/secured/lecture/departmentmembers.xhtml">
 		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
+		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<page view-id="/views/secured/lecture/departmentoptions.xhtml">
 		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
+		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<page view-id="/views/secured/lecture/auth/departmentMembers.xhtml">
 		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
-	</page>
-	 
-	<page view-id="/views/public/department/department.xhtml">
 		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
 	</page>
+	 
+	
 	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			Institutes
@@ -56,7 +66,28 @@
 		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
-	<page view-id="/views/secured/lecture/instituteoptions*">
+	<page view-id="/views/secured/lecture/news.xhtml">
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_NEWS}"/> 
+	</page>
+	
+	<page view-id="/views/secured/lecture/institutecourses.xhtml">
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_COURSES}"/>
+	</page>
+	
+	<page view-id="/views/secured/lecture/auth/members.xhtml">
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.GRANT}"/> 
+	</page>
+	
+	<page view-id="/views/secured/lecture/auth/aspirants.xhtml">
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.GRANT}"/> 
+	</page>
+	
+	<page view-id="/views/secured/lecture/instituteoptions.xhtml">
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
 		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.GRANT}"/> 
 	</page>
 	
@@ -88,17 +119,8 @@
 	</page>
 	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-			Miscellaneous
+			User
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
-
-	<page view-id="/views/secured/lecture/auth/*">
-		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.GRANT}"/> 
-	</page>
-
-	<page view-id="/views/secured/lecture/news*">
-		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_NEWS}"/> 
-	</page>
-	
 	<page view-id="/views/secured/user/userprofile.xhtml">
 		<parameter name="showuser" value="#{showuser.id}" converterId="javax.faces.Long"/>
 	</page>

@@ -202,7 +202,7 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 		return GRANT;
 	}
 
-	public int getMANAGE_CourseS() {
+	public int getMANAGE_COURSES() {
 		return MANAGE_COURSES;
 	}
 
