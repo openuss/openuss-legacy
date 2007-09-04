@@ -1,9 +1,11 @@
 package org.openuss.web.lecture;
 
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -19,8 +21,8 @@ import org.openuss.lecture.LectureException;
 import org.openuss.lecture.OrganisationService;
 import org.openuss.security.GroupItem;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserInfo;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**

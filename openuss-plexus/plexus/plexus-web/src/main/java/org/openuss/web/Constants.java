@@ -53,6 +53,7 @@ public class Constants {
 	public static final String FAILURE = "failure";
 	public static final String SUCCESS = "success";
 	public static final String DESKTOP = "desktop";
+	public static final String ERROR = "error";
 	
 	public static final String MYUNI_INSTITUTE_COURSECOUNT_STRING = "MYUNI_INSITUTE_COURSECOUNT_STRING";
 

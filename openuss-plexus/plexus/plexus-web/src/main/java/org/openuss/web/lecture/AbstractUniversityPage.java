@@ -1,17 +1,19 @@
 package org.openuss.web.lecture;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
-import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-
-import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
+import org.openuss.lecture.UniversityServiceException;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-import org.openuss.web.PageLinks;
 
 /**
  * Abstract Organisation Page
@@ -49,12 +51,20 @@ public abstract class AbstractUniversityPage extends BasePage {
 
 	@Prerender
 	public void prerender() throws LectureException {
-		logger.debug("prerender - refreshing university session object");
-		refreshUniversity();
-		if (universityInfo == null) {
-			addError(i18n("message_error_no_university_selected"));
-			redirect(Constants.DESKTOP);
-		} 
+		try {
+			logger.debug("prerender - refreshing university session object");
+			refreshUniversity();
+			if (universityInfo == null) {
+				addError(i18n("message_error_no_university_selected"));
+				redirect(Constants.DESKTOP);
+			} 
+		} catch (Exception e) {
+			logger.debug(e.getStackTrace());
+			universityInfo = null;
+			addError(i18n("university_not_found"));
+			redirect(Constants.HOME);
+		}
+		
 	}
 
 	private void refreshUniversity() {

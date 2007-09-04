@@ -89,6 +89,7 @@
 			<from-outcome>administration</from-outcome>
 			<to-view-id>/views/secured/system/properties.xhtml</to-view-id>
 		</navigation-case>
+		
 		<navigation-case>
 			<from-outcome>secure_password_change</from-outcome>
 			<to-view-id>/views/secured/user/newPassword.xhtml</to-view-id>
@@ -145,8 +146,13 @@
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>institute_courses	</from-outcome>
+			<from-outcome>institute_courses</from-outcome>
 			<to-view-id>/views/secured/lecture/institutecourses.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>error</from-outcome>
+			<to-view-id>/views/errors/error.xhtml</to-view-id>
 		</navigation-case>
 		
 		

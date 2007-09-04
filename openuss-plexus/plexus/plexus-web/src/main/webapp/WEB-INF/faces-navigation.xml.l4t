@@ -51,6 +51,10 @@
     NAME="output11" PATH="/views/public/institute/institute.xhtml"
     TARGET="rules:#views#public#institute#institute.xhtml" TITLE="institute"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="user_profile::#views#secured#user#profile.xhtml" NAME="output12"
+    PATH="/views/secured/user/profile.xhtml"
+    TARGET="rules:#views#secured#user#profile.xhtml" TITLE="user_profile"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="user_profile_view::#views#secured#user#userprofile.xhtml"
     NAME="output15" PATH="/views/secured/user/userprofile.xhtml"
     TARGET="rules:#views#secured#user#userprofile.xhtml" TITLE="user_profile_view"/>
@@ -88,7 +92,7 @@
     TARGET="rules:#views#public#university#universities.xhtml" TITLE="universities"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="university_create::#views#secured#lecture#registration#universitystep1.xhtml"
-    NAME="output12"
+    NAME="output13"
     PATH="/views/secured/lecture/registration/universitystep1.xhtml"
     TARGET="rules:#views#secured#lecture#registration#universitystep1.xhtml" TITLE="university_create"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
@@ -111,8 +115,12 @@
     TARGET="rules:#views#secured#lecture#departmentinstitutes.xhtml" TITLE="manage_institute"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="institute_courses::#views#secured#lecture#institutecourses.xhtml"
-    NAME="output13" PATH="/views/secured/lecture/institutecourses.xhtml"
+    NAME="output14" PATH="/views/secured/lecture/institutecourses.xhtml"
     TARGET="rules:#views#secured#lecture#institutecourses.xhtml" TITLE="institute_courses"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="error::#views#errors#error.xhtml" NAME="output24"
+    PATH="/views/errors/error.xhtml"
+    TARGET="rules:#views#errors#error.xhtml" TITLE="error"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -396,9 +404,10 @@
     PATH="/views/secured/lecture/coursetyperemoveconfirmation.xhtml"
     TARGET="rules:#views#secured#lecture#coursetyperemoveconfirmation.xhtml" TITLE="course_type_remove_confirmation"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="newsletter_newmail::#views#secured#newsletter#newmail.xhtml"
-    NAME="output16" PATH="/views/secured/newsletter/newmail.xhtml"
-    TARGET="rules:#views#secured#newsletter#newmail.xhtml" TITLE="newsletter_newmail"/>
+    ID="course_remove_confirmation::#views#secured#lecture#courseremoveconfirmation.xhtml"
+    NAME="output16"
+    PATH="/views/secured/lecture/courseremoveconfirmation.xhtml"
+    TARGET="rules:#views#secured#lecture#courseremoveconfirmation.xhtml" TITLE="course_remove_confirmation"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="newsletter_subscribers::#views#secured#newsletter#newslettersubscribers.xhtml"
     NAME="output17"
@@ -414,10 +423,10 @@
     PATH="/views/secured/newsletter/exportedsubscribers.xhtml"
     TARGET="rules:#views#secured#newsletter#exportedsubscribers.xhtml" TITLE="newsletter_export"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="braincontest_new::#views#secured#braincontest#braincontestnew.xhtml"
+    ID="braincontest_main::#views#secured#braincontest#braincontestmain.xhtml"
     NAME="output20"
-    PATH="/views/secured/braincontest/braincontestnew.xhtml"
-    TARGET="rules:#views#secured#braincontest#braincontestnew.xhtml" TITLE="braincontest_new"/>
+    PATH="/views/secured/braincontest/braincontestmain.xhtml"
+    TARGET="rules:#views#secured#braincontest#braincontestmain.xhtml" TITLE="braincontest_main"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="braincontest_solve::#views#secured#braincontest#braincontestsolve.xhtml"
     NAME="output21"
@@ -1119,4 +1128,7 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#lecture#coursetyperemoveconfirmation.xhtml"
   PATH="/views/secured/lecture/coursetyperemoveconfirmation.xhtml" SHAPE="304,3761,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#errors#error.xhtml"
+  PATH="/views/errors/error.xhtml" SHAPE="304,1041,0,0"/>
 </PROCESS>

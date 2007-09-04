@@ -1,12 +1,12 @@
 package org.openuss.web.lecture;
 
+import java.io.IOException;
+
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
-import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.web.Constants;
-import org.openuss.web.PageLinks;
 
 /**
  * @author Ingo Dueppe
