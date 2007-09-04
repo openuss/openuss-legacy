@@ -30,14 +30,7 @@ public class DepartmentIndexer extends DomainIndexer {
 	public void create() {
 		final Department department = getDepartment();
 		if (department != null) {
-			// department will not be indexed if it is not enabled
-			if(!department.isEnabled()){
-				logger.debug("method create: department is disabled - skip index "
-						+"entry creation for department " + department.getName() 
-						+ " (" + department.getId() + ")");
-				return;
-			}
-			logger.debug("create new index extry for department "+department.getName()+" ("+department.getId()+")");
+			logger.debug("create new index for department "+department.getName()+" ("+department.getId()+")");
 			getLuceneIndexTemplate().addDocument(new DocumentCreator() {
 				public Document createDocument() throws Exception {
 					Document document = new Document();
@@ -51,8 +44,7 @@ public class DepartmentIndexer extends DomainIndexer {
 	public void update() {
 		final Department department = getDepartment();
 		if (department != null) {
-			logger.debug("update index entry for department "+department.getName()+" ("+department.getId()+")");
-			// update doesn't work properly, so delete and create does the same
+			logger.debug("update new index for department "+department.getName()+" ("+department.getId()+")");
 			delete();
 			create();
 		}
@@ -106,6 +98,9 @@ public class DepartmentIndexer extends DomainIndexer {
 		content.append(StringUtils.trimToEmpty(department.getName())+SPACE);
 		content.append(StringUtils.trimToEmpty(department.getShortcut())+SPACE);
 		content.append(StringUtils.trimToEmpty(department.getDescription())+SPACE);
+//		content.append(StringUtils.trimToEmpty(department.getUniversity().getDescription())+SPACE);
+//		content.append(StringUtils.trimToEmpty(department.getUniversity().getName())+SPACE);
+//		content.append(StringUtils.trimToEmpty(department.getUniversity().getShortcut())+SPACE);
 
 		return content.toString();
 	}

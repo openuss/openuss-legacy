@@ -30,14 +30,7 @@ public class UniversityIndexer extends DomainIndexer {
 	public void create() {
 		final University university = getUniversity();
 		if (university != null) {
-			// university will not be indexed if it is not enabled
-			if(!university.isEnabled()){
-				logger.debug("method create: university is disabled - skip index "
-						+"entry creation for university " + university.getName() 
-						+ " (" + university.getId() + ")");
-				return;
-			}
-			logger.debug("create new index entry for university "+university.getName()+" ("+university.getId()+")");
+			logger.debug("create new index for university "+university.getName()+" ("+university.getId()+")");
 			getLuceneIndexTemplate().addDocument(new DocumentCreator() {
 				public Document createDocument() throws Exception {
 					Document document = new Document();
@@ -51,8 +44,7 @@ public class UniversityIndexer extends DomainIndexer {
 	public void update() {
 		final University university = getUniversity();
 		if (university != null) {
-			logger.debug("update index entry for university "+university.getName()+" ("+university.getId()+")");
-			// update doesn't work properly, so delete and create does the same
+			logger.debug("update new index for university "+university.getName()+" ("+university.getId()+")");
 			delete();
 			create();
 		}

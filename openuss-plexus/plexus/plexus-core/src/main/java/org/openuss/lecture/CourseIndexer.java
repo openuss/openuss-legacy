@@ -32,14 +32,7 @@ public class CourseIndexer extends DomainIndexer {
 	public void create() {
 		final Course course = getCourse();
 		if (course != null) {
-			// course will not be indexed if it is not enabled
-			if(!course.isEnabled()){
-				logger.debug("method create: course is disabled - skip index "
-						+"entry creation for course " + course.getName() 
-						+ " (" + course.getId() + ")");
-				return;
-			}
-			logger.debug("create new index entry for course "+course.getName()+" ("+course.getId()+")");
+			logger.debug("create new index for course "+course.getName()+" ("+course.getId()+")");
 			getLuceneIndexTemplate().addDocument(new DocumentCreator() {
 				public Document createDocument() throws Exception {
 					Document document = new Document();
@@ -54,10 +47,21 @@ public class CourseIndexer extends DomainIndexer {
 		logger.debug("Starting method update");
 		final Course course = getCourse();
 		if (course != null) {
-			logger.debug("update index entry for course "+course.getName()+" ("+course.getId()+")");
-			// update doesn't work properly, so delete and create does the same
+			logger.debug("update new index for course "+course.getName()+" ("+course.getId()+")");
 			delete();
 			create();
+//			try {
+//				Term instituteTerm = new Term(IDENTIFIER, String.valueOf(course.getId()));
+//				getLuceneIndexTemplate().updateDocument(instituteTerm, new DocumentModifier() {
+//					public Document updateDocument(Document document) throws Exception {
+//						Document newDocument = new Document();
+//						setFields(course, document);
+//						return newDocument;
+//					}
+//				});
+//			} catch (LuceneIndexAccessException ex) {
+//				create();				
+//			}
 		}
 	}
 
@@ -110,6 +114,10 @@ public class CourseIndexer extends DomainIndexer {
 		content.append(StringUtils.trimToEmpty(course.getDescription())+SPACE);
 		content.append(StringUtils.trimToEmpty(course.getPeriod().getName())+SPACE);
 		content.append(StringUtils.trimToEmpty(course.getPeriod().getDescription())+SPACE);
+		//content.append(StringUtils.trimToEmpty(course.getInstitute().getDescription())+SPACE);
+		//content.append(StringUtils.trimToEmpty(course.getInstitute().getName())+SPACE);
+		//content.append(StringUtils.trimToEmpty(course.getInstitute().getOwnername())+SPACE);
+		//content.append(StringUtils.trimToEmpty(course.getInstitute().getAddress())+SPACE);
 		return content.toString();
 	}
 
