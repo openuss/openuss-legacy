@@ -1,5 +1,7 @@
 package org.openuss.lecture;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
@@ -8,6 +10,7 @@ import org.openuss.search.IndexerService;
  * Aspect for Institute Indexing 
  * @author Ingo Dueppe
  * @author Kai Stettner
+ * @author Malte Stockmann
  */
 public class InstituteIndexingAspect {
 
@@ -15,7 +18,13 @@ public class InstituteIndexingAspect {
 
 	private IndexerService indexerService;
 	
+	private InstituteService instituteService;
+	
+	private CourseService courseService;
+	
 	private InstituteDao instituteDao;
+	
+	private CourseDao courseDao;
 	
 	private Institute institute;
 	
@@ -30,7 +39,7 @@ public class InstituteIndexingAspect {
 				logger.debug("method createInstituteIndex: createIndex");
 				institute = instituteDao.instituteInfoToEntity(instituteInfo);
 				indexerService.createIndex(institute);
-			};
+			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}
@@ -47,24 +56,45 @@ public class InstituteIndexingAspect {
 				logger.debug("method updateInstituteIndex: updateIndex");
 				institute = instituteDao.instituteInfoToEntity(instituteInfo);
 				indexerService.updateIndex(institute);
-				/*for(Course course:institute.getCourses()) {
+				/*
+				Course course;
+				for(Object courseTemp : institute.getAllCourses()) {
+					course = (Course) courseTemp;
 					if (course.getAccessType() != AccessType.CLOSED) {
 						indexerService.updateIndex(course);
 					}
-					
-				}*/
+				}
+				*/
 			} else {
 				logger.debug("method updateInstituteIndex: deleteIndex");
-				institute = instituteDao.instituteInfoToEntity(instituteInfo);
-				indexerService.deleteIndex(institute);
-				/*for (Course course:institute.getCourses()) {
-					indexerService.deleteIndex(course);
-				}*/
+				deleteInstituteFromIndexCascade(instituteInfo);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}
 	}
+	
+	/**
+	 * Update institute index by ID.
+	 * @param institiuteId, status
+	 */
+	public void updateInstituteIndexById(Long institiuteId, Boolean status) {
+		logger.debug("Starting method updateInstituteIndexById");
+		try {
+			InstituteInfo instituteInfo = instituteService.findInstitute(institiuteId);
+			if (instituteInfo.isEnabled()) {
+				logger.debug("method updateInstituteIndexById: updateIndex");
+				institute = instituteDao.instituteInfoToEntity(instituteInfo);
+				indexerService.updateIndex(institute);
+			} else {
+				logger.debug("method updateInstituteIndexById: deleteIndex");
+				deleteInstituteFromIndexCascade(instituteInfo);
+			}
+		} catch (IndexerApplicationException e) {
+			logger.error(e);
+		}
+	}
+	
 
 	/**
 	 * Delete institute from lecture index.
@@ -98,5 +128,43 @@ public class InstituteIndexingAspect {
 		this.instituteDao = instituteDao;
 	}
 	
+	private void deleteInstituteFromIndexCascade(InstituteInfo instituteInfo){
+		try{
+			institute = instituteDao.instituteInfoToEntity(instituteInfo);
+			indexerService.deleteIndex(institute);
+			List allCourses = courseService.findAllCoursesByInstitute(instituteInfo.getId());
+			CourseInfo courseInfo;
+			for (Object courseTemp : allCourses) {
+				courseInfo = (CourseInfo) courseTemp;
+				indexerService.deleteIndex(courseDao.courseInfoToEntity(courseInfo));
+			}
+		} catch (IndexerApplicationException e) {
+			logger.error(e);
+		}
+	}
+
+	public InstituteService getInstituteService() {
+		return instituteService;
+	}
+
+	public void setInstituteService(InstituteService instituteService) {
+		this.instituteService = instituteService;
+	}
+
+	public CourseService getCourseService() {
+		return courseService;
+	}
+
+	public void setCourseService(CourseService courseService) {
+		this.courseService = courseService;
+	}
+
+	public CourseDao getCourseDao() {
+		return courseDao;
+	}
+
+	public void setCourseDao(CourseDao courseDao) {
+		this.courseDao = courseDao;
+	}
 	
 }
