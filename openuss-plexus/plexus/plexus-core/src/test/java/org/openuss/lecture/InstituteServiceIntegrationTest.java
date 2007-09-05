@@ -135,18 +135,15 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		Institute institute1 = testUtility.createUniqueInstituteInDB();
 		assertNotNull(institute1.getId());
 
-		// Create official Department
+		// Create a Department
 		Department department = testUtility.createUniqueDepartmentInDB();
-		department.setDepartmentType(DepartmentType.OFFICIAL);
 
 		// Create new InstituteInfo object
-		InstituteInfo instituteInfo1 = new InstituteInfo();
-		instituteInfo1.setId(institute1.getId());
-		instituteInfo1.setDepartmentId(department.getId());
+		instituteInfo.setDepartmentId(department.getId());
 
 		try {
-			this.getInstituteService().update(instituteInfo1);
-			fail("InstituteServiceException must have been thrown.");
+			this.getInstituteService().update(instituteInfo);
+			fail("InstituteServiceException should have been thrown.");
 		} catch (InstituteServiceException ise) {
 			;
 		}

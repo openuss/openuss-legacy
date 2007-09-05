@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-import org.openuss.security.Authority;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
@@ -127,9 +126,9 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(instituteInfo, "InstituteService.handleUpdate - the Institute cannot be null");
 		Validate.notNull(instituteInfo.getId(), "InstituteService.handleUpdate - the Institute must have a valid ID");
 
-		// Check changes of department
-		Institute instituteEntity = this.getInstituteDao().load(instituteInfo.getId());
+		// Check changes of Department
 		Department department = this.getDepartmentDao().load(instituteInfo.getDepartmentId());
+		Institute instituteEntity = this.getInstituteDao().load(instituteInfo.getId());
 		if (!instituteEntity.getDepartment().equals(department)) {
 			throw new InstituteServiceException("The department can not be changed. You have to apply first.");
 		}
