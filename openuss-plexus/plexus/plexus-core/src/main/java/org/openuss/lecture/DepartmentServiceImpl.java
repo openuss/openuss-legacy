@@ -83,15 +83,19 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	/**
 	 * @see org.openuss.lecture.DepartmentService#update(org.openuss.lecture.DepartmentInfo)
 	 */
-	protected void handleUpdate(org.openuss.lecture.DepartmentInfo department) throws java.lang.Exception {
+	protected void handleUpdate(org.openuss.lecture.DepartmentInfo departmentInfo) throws java.lang.Exception {
 		// TODO: Security
 
-		Validate.notNull(department, "DepartmentService.handleUpdate - the Department cannot be null");
-		Validate.isTrue(department.getId() != null,
+		Validate.notNull(departmentInfo, "DepartmentService.handleUpdate - the Department cannot be null");
+		Validate.isTrue(departmentInfo.getId() != null,
 				"DepartmentService.handleUpdate - the Department must have a valid ID");
 
-		// Transform departmentInfo to departmentEntity
-		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(department);
+		// Check changes of University
+		University university = this.getUniversityDao().load(departmentInfo.getUniversityId());
+		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(departmentInfo);
+		if (!departmentEntity.getUniversity().equals(university)) {
+			throw new DepartmentServiceException("DepartmentService.handleUpdate - The University can not be changed.");
+		}
 
 		// Update department
 		this.getDepartmentDao().update(departmentEntity);
