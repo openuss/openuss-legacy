@@ -5,6 +5,7 @@
  */
 package org.openuss.lecture;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.acegisecurity.AccessDeniedException;
@@ -445,8 +446,20 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 
 		// Create University
 		University university = testUtility.createUniqueUniversityInDB();
-		int sizeNonOfficials = 1;
-		int sizeOfficials = 0;
+		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
+		List<Department> allDepartments = (List<Department>)departmentDao.loadAll();
+		List<Department> officialDepartments = new ArrayList<Department>();
+		List<Department> nonOfficialDepartments = new ArrayList<Department>();
+		for (Department department : allDepartments) {
+			if (department.getDepartmentType() == DepartmentType.OFFICIAL) {
+				officialDepartments.add(department);
+			}
+			else {
+				nonOfficialDepartments.add(department);
+			}
+		}
+		int sizeNonOfficials = nonOfficialDepartments.size();
+		int sizeOfficials = officialDepartments.size();
 
 		// Create Departments
 		Department department1 = testUtility.createUniqueDepartmentInDB();
@@ -486,12 +499,11 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		List<DepartmentInfo> departments = this.getDepartmentService().findDepartmentsByType(DepartmentType.OFFICIAL);
 		assertNotNull(departments);
 		assertEquals(sizeOfficials, departments.size());
-		assertEquals(department2.getName(), departments.get(0).getName());
+		assertEquals(department3.getName(), departments.get(sizeOfficials - 1).getName());
 
 		departments = this.getDepartmentService().findDepartmentsByType(DepartmentType.NONOFFICIAL);
 		assertNotNull(departments);
 		assertEquals(sizeNonOfficials, departments.size());
-		assertEquals(department5.getName(), departments.get(2).getName());
 
 		logger.info("----> END access to findDepartmentsByType test");
 	}

@@ -25,14 +25,14 @@
 		<aop:pointcut id="UniversityServiceDeletePointcut"
 			expression="execution(* org..UniversityServiceBase.removeUniversity(java.lang.Long)) and args(universityId)" />
 		<aop:pointcut id="UniversityServiceDeleteCompleteUniversityTreePointcut"
-			expression="execution(* org..InstituteServiceBase.removeCompleteUniversityTree(java.lang.Long)) and args(universityId)" />
+			expression="execution(* org..UniversityServiceBase.removeCompleteUniversityTree(java.lang.Long)) and args(universityId)" />
 		
 		<aop:pointcut id="DepartmentServiceCreatePointcut"
 			expression="execution(* org..DepartmentServiceBase.create(org.openuss.lecture.DepartmentInfo, java.lang.Long)) and args(departmentInfo, userId)" />
 		<aop:pointcut id="DepartmentServiceDeletePointcut"
 			expression="execution(* org..DepartmentServiceBase.removeDepartment(java.lang.Long)) and args(departmentId)" />
 		<aop:pointcut id="DepartmentServiceDeleteCompleteDepartmentTreePointcut"
-			expression="execution(* org..InstituteServiceBase.removeCompleteDepartmentTree(java.lang.Long)) and args(departmentId)" />
+			expression="execution(* org..DepartmentServiceBase.removeCompleteDepartmentTree(java.lang.Long)) and args(departmentId)" />
 		<aop:pointcut
 			id="DepartmentServiceAcceptInstituteApplicationPointcut"
 			expression="execution(* org..DepartmentServiceBase.acceptApplication(java.lang.Long, java.lang.Long)) and args(applicationId, userId)" />
