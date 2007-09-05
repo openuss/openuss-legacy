@@ -57,7 +57,7 @@ public class InstituteActivationMailSenderAspectImpl {
 		// Create link
 		String link =
 			getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+
-				"/actions/public/lecture/instituteactivation.faces?code="+activationCode;
+				"/openuss-plexus/actions/public/lecture/instituteactivation.faces?code="+activationCode;
 		
 		// Create parameter map
 		Map<String, String> parameters = new HashMap<String, String>();

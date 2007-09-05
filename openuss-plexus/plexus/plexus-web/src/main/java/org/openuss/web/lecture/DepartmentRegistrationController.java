@@ -6,21 +6,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.model.SelectItem;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
-import org.openuss.lecture.CourseMember;
-import org.openuss.lecture.CourseMemberType;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentType;
 import org.openuss.lecture.LectureException;
-import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.web.Constants;
 
@@ -46,9 +42,7 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 	private List<SelectItem> universityItems;
 	private List<UniversityInfo> allEnabledUniversities;
 	private List<UniversityInfo> allDisabledUniversities;
-	
-	private DepartmentType departmentType;
-	
+		
 	private ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
 	private String locale = (String)binding.getValue(getFacesContext());
 	private ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
@@ -70,8 +64,8 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 	
 		localeItems = new ArrayList<SelectItem>();
 	
-		SelectItem item1 = new SelectItem(departmentType.OFFICIAL, bundle.getString("departmenttype_official"));
-		SelectItem item2 = new SelectItem(departmentType.NONOFFICIAL, bundle.getString("departmenttype_non_offical"));
+		SelectItem item1 = new SelectItem(DepartmentType.OFFICIAL, bundle.getString("departmenttype_official"));
+		SelectItem item2 = new SelectItem(DepartmentType.NONOFFICIAL, bundle.getString("departmenttype_non_offical"));
 		
 		localeItems.add(item1);
 		localeItems.add(item2);
@@ -118,16 +112,13 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 	public String registrate() throws DesktopException, LectureException {
 		
 		//create department
-		if (user.getId()!=-10 && departmentInfo.getUniversityId()== null)
+		if (user.getId().longValue()!= Constants.USER_SUPER_ADMIN && departmentInfo.getUniversityId()== null)
 			departmentInfo.setUniversityId(universityInfo.getId());
 		
 		//by default set department enabled
 		departmentInfo.setEnabled(true);
 		departmentService.create(departmentInfo, user.getId());
-	
-		// bookmark department to myuni page
-		desktopService2.linkDepartment(desktopInfo.getId(), departmentInfo.getId());
-		
+			
 		return Constants.DEPARTMENT_PAGE;
 	}
 	

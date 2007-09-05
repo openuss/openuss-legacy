@@ -1,7 +1,5 @@
 package org.openuss.web.lecture;
 
-import java.io.IOException;
-
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
