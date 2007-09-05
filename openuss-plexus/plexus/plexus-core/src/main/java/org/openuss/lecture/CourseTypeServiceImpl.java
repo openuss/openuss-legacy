@@ -114,8 +114,12 @@ public class CourseTypeServiceImpl extends org.openuss.lecture.CourseTypeService
 		Validate.notNull(courseTypeInfo.getId(),
 				"CourseTypeServiceImpl.handleUpdate - the courseTypeInfoId cannot be null.");
 
-		// Transform VO to entity
+		// Check changes of Institute
+		Institute institute = this.getInstituteDao().load(courseTypeInfo.getInstituteId());
 		CourseType courseType = this.getCourseTypeDao().courseTypeInfoToEntity(courseTypeInfo);
+		if (!courseType.getInstitute().equals(institute)) {
+			throw new DepartmentServiceException("CourseTypeServiceImpl.handleUpdate - The Institute cannot be changed.");
+		}
 
 		// TODO: Should it be able to set new institute of courseType???
 		this.getCourseTypeDao().update(courseType);
