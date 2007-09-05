@@ -424,7 +424,19 @@ public class TestUtility {
 		institute.setDepartment(department);
 
 		instituteDao.create(institute);
-
+		
+		// Create Application
+		Application application = Application.Factory.newInstance();
+		application.setApplicationDate(new Date());
+		application.setApplyingUser(user);
+		application.setConfirmationDate(new Date());
+		application.setConfirmed(true);
+		application.setConfirmingUser(user);
+		application.setDescription("Automatically created Application");
+		application.add(institute);
+		application.add(department);
+		this.getApplicationDao().create(application);
+		
 		// Create default Groups for Institute
 		GroupItem admins = new GroupItem();
 		admins.setName("INSTITUTE_" + institute.getId() + "_ADMINS");
@@ -593,6 +605,9 @@ public class TestUtility {
 		return period;
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public Application createUniqueUnconfirmedApplicationInDB() {
 		// Create a complete Application
 		Application application = Application.Factory.newInstance();

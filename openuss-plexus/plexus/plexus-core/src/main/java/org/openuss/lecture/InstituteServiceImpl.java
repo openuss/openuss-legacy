@@ -414,9 +414,10 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 			for (CourseType courseType : courseTypes) {
 				this.getCourseTypeService().removeCourseType(courseType.getId());
 			}
-
 		}
 
+		//TODO: Remove Applications
+		
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(institute);
 		this.getSecurityService().removeObjectIdentity(institute);

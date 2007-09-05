@@ -270,6 +270,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		// Remove obsolete Application
 		Application application = this.getApplicationDao().findByInstituteAndDepartment(institute, department);
+		Long userId = application.getApplyingUser().getId();
 		if (application != null) {
 			application.remove(department);
 			application.remove(institute);
@@ -279,12 +280,9 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		// Remove Institute from old Department
 		department.remove(institute);
 
-		// Assign Institute to (any) Standard non-official Department (without Application)
-		List<Department> departments = this.getDepartmentDao().findByUniversityAndType(department.getUniversity(),
-				DepartmentType.NONOFFICIAL);
-		Validate.isTrue(!departments.isEmpty(),
-				"DepartmentService.handleSignoffInstitute - no NONOFFICIAL Department found, cannot signoff");
-		departments.get(0).add(institute);
+		// Assign Institute to Standard non-official Department
+		Department departmentDefault = this.getDepartmentDao().findByUniversityAndDefault(department.getUniversity(), true);
+		this.getInstituteService().applyAtDepartment(instituteId, departmentDefault.getId(), userId);
 	}
 
 	@Override

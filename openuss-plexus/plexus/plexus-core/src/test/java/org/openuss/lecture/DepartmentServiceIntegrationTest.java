@@ -338,45 +338,19 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 	public void testSignoffInstitute() {
 		logger.info("----> BEGIN access to signoffInstitute test");
 
-		// Create Application
-		Application application = this.getTestUtility().createUniqueUnconfirmedApplicationInDB();
-		User user = this.getTestUtility().createUniqueUserInDB();
-		Long applicationId = application.getId();
-
-		Department department = application.getDepartment();
-		Institute institute = application.getInstitute();
-
-		University university = department.getUniversity();
-
-		// Accept Application
-		assertFalse(department.getInstitutes().contains(institute));
-		this.getDepartmentService().acceptApplication(application.getId(), user.getId());
-		assertTrue(application.isConfirmed());
-		assertTrue(department.getInstitutes().contains(institute));
+		// Create Institute
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		assertNotNull(institute);
+		Long departmentId = institute.getDepartment().getId();
+		assertEquals(departmentId, institute.getDepartment().getId());
 
 		// Synchronize with Database
 		flush();
-
-		assertTrue(application.isConfirmed());
-		assertTrue(department.getInstitutes().contains(institute));
 
 		// Signoff Institute
-		assertFalse(institute.getApplications().contains(application));
-		assertTrue(university.getDepartments().size() == 2);
-
-		// Synchronize with Database
-		flush();
-
 		this.getDepartmentService().signoffInstitute(institute.getId());
 
-		// Synchronize with Database
-		flush();
-
-		// Test
-		assertTrue(!department.getInstitutes().contains(institute));
-		ApplicationDao applicationDao = (ApplicationDao) this.getApplicationContext().getBean("applicationDao");
-		Application application2 = applicationDao.load(applicationId);
-		assertNull(application2);
+		assertNotSame(departmentId, institute.getDepartment().getId());
 
 		logger.info("----> END access to signoffInstitute test");
 	}
