@@ -18,6 +18,13 @@ import org.springmodules.lucene.index.object.database.DatabaseIndexer;
 import org.springmodules.lucene.index.object.database.DatabaseIndexingListener;
 import org.springmodules.lucene.index.object.database.DefaultDatabaseIndexer;
 
+/**
+ * <p>
+ * @deprecated since OpenUss 3.1.
+ * Not necessary for indexing.
+ * Just used for testing purposes.
+ * </p>
+ */
 public class SimpleDatabaseIndexingImpl implements InitializingBean, SimpleDatabaseIndexing {
 
 	private static final Logger logger = Logger.getLogger(SimpleDatabaseIndexingImpl.class);
