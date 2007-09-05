@@ -20,6 +20,7 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.news.NewsItemInfo;
@@ -114,7 +115,19 @@ public class InstitutePage extends AbstractLecturePage {
 		
 		return false;
 	}
-	
+
+	public Boolean getBookmarked2()
+	{
+		try {
+			CourseInfo currentCourse = currentCourse();
+			return desktopService2.isCourseBookmarked(currentCourse.getId(), user.getId());
+		} catch (Exception e) {
+			
+		}
+		
+		return false;
+	}
+
 	/**
 	 * Store the selected course into session scope and go to course main page.
 	 * @return Outcome
@@ -134,9 +147,10 @@ public class InstitutePage extends AbstractLecturePage {
 	 * @return Outcome
 	 */
 	public String shortcutCourse() {
-		courseInfo = courseData.getRowData();
+		//courseInfo = courseData.getRowData();
 		try {
-			desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());
+			CourseInfo currentCourse = currentCourse();
+			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
 			addMessage(i18n("desktop_command_add_course_succeed"));
 			return Constants.SUCCESS;
 		} catch (DesktopException e) {
@@ -145,7 +159,23 @@ public class InstitutePage extends AbstractLecturePage {
 			return Constants.FAILURE;
 		}
 	}
-	
+
+	public String removeCourseShortcut()
+	{
+		try {
+			//courseInfo = courseData.getRowData();
+			CourseInfo currentCourse = currentCourse();
+			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse.getId());
+		} catch (Exception e) {
+			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
+			return Constants.FAILURE;
+		}
+		
+		addMessage(i18n("institute_success_remove_shortcut"));
+		return Constants.SUCCESS;
+	}
+
+		
 	/**
 	 * Adds a shortcut to the institute
 	 * @return

@@ -18,6 +18,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.DepartmentType;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.OrganisationService;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.web.BasePage;
@@ -132,6 +133,32 @@ public class OfficialDepartmentsPage extends BasePage{
 		desktopService2.linkDepartment(desktopInfo.getId(), currentDepartment.getId());
 
 		addMessage(i18n("message_university_shortcut_created"));
+		return Constants.SUCCESS;
+	}
+	
+	public Boolean getBookmarked()
+	{
+		try {
+			DepartmentInfo currentDepartment = currentDepartment();
+			return desktopService2.isDepartmentBookmarked(currentDepartment.getId(), user.getId());
+		} catch (Exception e) {
+			
+		}
+		
+		return false;
+	}
+
+	public String removeShortcut()
+	{
+		try {
+			DepartmentInfo currentDepartment = currentDepartment();
+			desktopService2.unlinkDepartment(desktopInfo.getId(), currentDepartment.getId());
+		} catch (Exception e) {
+			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
+			return Constants.FAILURE;
+		}
+		
+		addMessage(i18n("institute_success_remove_shortcut"));
 		return Constants.SUCCESS;
 	}
 	

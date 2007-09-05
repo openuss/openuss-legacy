@@ -40,14 +40,23 @@
 		</t:column>
 
 		<s:authorize ifAllGranted="ROLE_USER">
-			<plexus:column header="#{msg.commands_header}">
-				<plexus:command 
-					bean="#{views$public$institute$institutesoverview}"
-					action="shortcutInstitute"
-					label="#{msg.institute_command_shortcut}"
-					title="#{msg.institute_command_shortcut_hint}"
-					styleClass="button_link">
-				</plexus:command>				
+			<plexus:column header="#{msg.commands_header}">				
+					<plexus:command 
+						bean="#{views$public$institute$institutesoverview}"
+						action="removeShortcut"
+						label="#{msg.institute_command_shortcut_remove}"
+						title="#{msg.institute_command_shortcut_hint_remove}"
+						styleClass="remove_shortcut_button"
+						rendered="#{views$public$institute$institutesoverview.bookmarked}">
+					</plexus:command>
+					<plexus:command 
+						bean="#{views$public$institute$institutesoverview}"
+						action="shortcutInstitute"
+						label="#{msg.institute_command_shortcut}"
+						title="#{msg.institute_command_shortcut_hint}"
+						styleClass="button_link"
+						rendered="#{not views$public$institute$institutesoverview.bookmarked}">
+					</plexus:command>
 			</plexus:column>
 		</s:authorize>
 	</plexus:dataTable>

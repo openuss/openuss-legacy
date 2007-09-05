@@ -72,7 +72,33 @@ public class InstitutesOverviewPage extends BasePage{
 		addMessage(i18n("message_institute_shortcut_created"));
 		return Constants.SUCCESS;
 	}
+	
+	public Boolean getBookmarked()
+	{
+		try {
+			InstituteInfo currentInstitute = currentInstitute();
+			return desktopService2.isInstituteBookmarked(currentInstitute.getId(), user.getId());
+		} catch (Exception e) {
+			
+		}
+		
+		return false;
+	}
 
+	public String removeShortcut()
+	{
+		try {
+			InstituteInfo currentInstitute = currentInstitute();
+			desktopService2.unlinkInstitute(desktopInfo.getId(), currentInstitute.getId());
+		} catch (Exception e) {
+			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
+			return Constants.FAILURE;
+		}
+		
+		addMessage(i18n("institute_success_remove_shortcut"));
+		return Constants.SUCCESS;
+	}
+	
 	private InstituteInfo currentInstitute() {
 		logger.debug("Starting method currentInstitute");
 		InstituteInfo instituteDetails = institutesOverview.getRowData();

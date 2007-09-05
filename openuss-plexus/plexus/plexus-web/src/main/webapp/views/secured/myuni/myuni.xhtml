@@ -36,23 +36,35 @@
 		<ui:include src="/views/commons/sidebar/whoisonline.xhtml" />
 	</ui:define>
 	<ui:define name="content">
+	<c:if test="#{not views$secured$myuni$myuni.data}">
 		<div class="content_box">
 			<o:flexlist_tabs binding="#{views$secured$myuni$myuni.tabs}">
 			</o:flexlist_tabs>
-		<div class="content_normal">
-			<o:flexlist binding="#{views$secured$myuni$myuni.departmentsList}">
-			</o:flexlist> 
-			<o:flexlist binding="#{views$secured$myuni$myuni.institutesList}">
-			</o:flexlist> 
-			<o:flexlist binding="#{views$secured$myuni$myuni.coursesList}">
-			</o:flexlist>
+			<div class="content_normal">
+				<o:flexlist binding="#{views$secured$myuni$myuni.departmentsList}">
+				</o:flexlist> 
+				<o:flexlist binding="#{views$secured$myuni$myuni.institutesList}">
+				</o:flexlist> 
+				<o:flexlist binding="#{views$secured$myuni$myuni.coursesList}">
+				</o:flexlist>
+			</div>
+			<div class="footer_normal">
+				<div class="footer_normal_left_bg" />
+				<div class="footer_normal_right_bg" />
+			</div>
 		</div>
-		<div class="footer_normal">
-			<div class="footer_normal_left_bg" />
-			<div class="footer_normal_right_bg" />
+	</c:if>
+	<c:if test="#{views$secured$myuni$myuni.data}">
+		<div class="content_box">
+			<div class="content_normal">		
+				Hier kommt ein kleines Flashtutorial hin, wenn ich wieder daheim bin ... ;-)
+			</div>
+			<div class="footer_normal">
+				<div class="footer_normal_left_bg" />
+				<div class="footer_normal_right_bg" />
+			</div>			
 		</div>
-	</div>
-
+	</c:if>
 		<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
 	</ui:define>
 </ui:composition>

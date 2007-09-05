@@ -220,7 +220,14 @@ public class MyUniPage extends BasePage {
 		}
 	}
 	
-	
+	public boolean getData(){
+		logger.debug("Checcking, if data available");		
+		if (myUniData.isEmpty()){
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	
 	public void prepareData()
@@ -482,7 +489,7 @@ public class MyUniPage extends BasePage {
 				for(MyUniCourseInfo courseInfo : courseCollection)
 				{
 					newItem = new ListItemDAO();
-					newItem.setTitle(courseInfo.getName());
+					newItem.setTitle(courseInfo.getName() + " (" + courseInfo.getPeriod() + ")");
 					newItem.setUrl(coursesBasePath + "?course=" + courseInfo.getId());
 					newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId + "&remove_course=" + courseInfo.getId());
 
