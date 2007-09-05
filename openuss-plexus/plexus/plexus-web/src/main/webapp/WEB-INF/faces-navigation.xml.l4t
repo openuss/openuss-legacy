@@ -201,9 +201,9 @@
    ID="rules:#actions#public#lecture#instituteactivation.xhtml:0"
    NAME="item" PATH="/actions/public/lecture/instituteactivation.xhtml">
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="success:instituteActivationAction.activateInstitute:#views#secured#myuni#myuni.xhtml"
-    NAME="output" PATH="/views/secured/myuni/myuni.xhtml"
-    TARGET="rules:#views#secured#myuni#myuni.xhtml" TITLE="instituteActivationAction.activateInstitute:success"/>
+    ID="success:instituteActivationAction.activateInstitute:#views#welcome.xhtml"
+    NAME="output" PATH="/views/welcome.xhtml"
+    TARGET="rules:#views#welcome.xhtml" TITLE="instituteActivationAction.activateInstitute:success"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="failure:instituteActivationAction.activateInstitute:#views#welcome.xhtml"
     NAME="output1" PATH="/views/welcome.xhtml"
@@ -409,10 +409,9 @@
     PATH="/views/secured/lecture/courseremoveconfirmation.xhtml"
     TARGET="rules:#views#secured#lecture#courseremoveconfirmation.xhtml" TITLE="course_remove_confirmation"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="newsletter_subscribers::#views#secured#newsletter#newslettersubscribers.xhtml"
-    NAME="output17"
-    PATH="/views/secured/newsletter/newslettersubscribers.xhtml"
-    TARGET="rules:#views#secured#newsletter#newslettersubscribers.xhtml" TITLE="newsletter_subscribers"/>
+    ID="newsletter_newmail::#views#secured#newsletter#newmail.xhtml"
+    NAME="output17" PATH="/views/secured/newsletter/newmail.xhtml"
+    TARGET="rules:#views#secured#newsletter#newmail.xhtml" TITLE="newsletter_newmail"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="newsletter_showmail::#views#secured#newsletter#showmail.xhtml"
     NAME="output18" PATH="/views/secured/newsletter/showmail.xhtml"
@@ -428,10 +427,10 @@
     PATH="/views/secured/braincontest/braincontestmain.xhtml"
     TARGET="rules:#views#secured#braincontest#braincontestmain.xhtml" TITLE="braincontest_main"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="braincontest_solve::#views#secured#braincontest#braincontestsolve.xhtml"
+    ID="braincontest_new::#views#secured#braincontest#braincontestnew.xhtml"
     NAME="output21"
-    PATH="/views/secured/braincontest/braincontestsolve.xhtml"
-    TARGET="rules:#views#secured#braincontest#braincontestsolve.xhtml" TITLE="braincontest_solve"/>
+    PATH="/views/secured/braincontest/braincontestnew.xhtml"
+    TARGET="rules:#views#secured#braincontest#braincontestnew.xhtml" TITLE="braincontest_new"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="braincontest_top::#views#secured#braincontest#braincontesttop.xhtml"
     NAME="output22"

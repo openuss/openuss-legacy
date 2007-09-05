@@ -37,6 +37,9 @@ public class NewsPage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (!instituteInfo.isEnabled()) {
+			addMessage(i18n("institute_not_activated"));
+		}
 		addPageCrumb();
 	}	
 	

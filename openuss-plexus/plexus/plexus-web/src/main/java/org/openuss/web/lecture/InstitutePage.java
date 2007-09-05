@@ -87,7 +87,6 @@ public class InstitutePage extends AbstractLecturePage {
 			}
 	
 		} 
-			
 		setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		addBreadCrumbs();
 	}

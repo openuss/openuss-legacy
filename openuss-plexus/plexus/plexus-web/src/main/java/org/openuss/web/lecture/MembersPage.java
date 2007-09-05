@@ -65,6 +65,11 @@ public class MembersPage extends AbstractLecturePage {
 		// force refreshing data on Render-Response-Phase
 		instituteSecurity = null;
 		instituteGroups = null;
+		if(instituteInfo != null) {
+			if (!instituteInfo.isEnabled()) {
+				addMessage(i18n("institute_not_activated"));
+			}
+		}
 		addPageCrumb();
 	}
 

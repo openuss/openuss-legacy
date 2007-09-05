@@ -39,6 +39,11 @@ public class AspirantsPage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if(instituteInfo != null) {
+			if (!instituteInfo.isEnabled()) {
+				addMessage(i18n("institute_not_activated"));
+			}
+		}
 		addPageCrumb();
 	}
 
