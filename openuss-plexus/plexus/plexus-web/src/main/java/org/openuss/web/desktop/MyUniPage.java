@@ -112,8 +112,11 @@ public class MyUniPage extends BasePage {
 		
 		// Load paramenters from request
 		loadParams();
+		// Remove bookmarks
 		removeBookmarks();
+		// Load myUni data
 		prepareData();
+		// Load data into the list components
 		loadValuesForComponents();
 		breadcrumbs.loadMyUniCrumbs();
 	}
@@ -142,6 +145,9 @@ public class MyUniPage extends BasePage {
 		}
 	}
 	
+	/*
+	 * Loads parameters from request object
+	 */
 	private void loadParams()
 	{
 		logger.debug("Loading request parameters");
@@ -176,12 +182,16 @@ public class MyUniPage extends BasePage {
 		}
 	}
 	
+	/*
+	 * Removes bookmarks if the corresponding parameters are set
+	 */
 	private void removeBookmarks()
 	{
 		if(user != null && desktopService2 != null)
 		{
 			Long desktopId = null;
 			
+			// Get the desktop id
 			try {
 				DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId());
 				desktopId = desktopInfo.getId();
@@ -190,6 +200,7 @@ public class MyUniPage extends BasePage {
 			
 			if(desktopId != null)
 			{
+				// Remove department bookmark
 				if(paramRemoveDepartment != null)
 				{
 					try {
@@ -199,6 +210,7 @@ public class MyUniPage extends BasePage {
 					}
 				}
 
+				// Remove institute bookmark
 				if(paramRemoveInstitute != null)
 				{
 					try {
@@ -208,6 +220,7 @@ public class MyUniPage extends BasePage {
 					}
 				}
 				
+				// Remove course bookmark
 				if(paramRemoveCourse != null)
 				{
 					try {
@@ -229,7 +242,9 @@ public class MyUniPage extends BasePage {
 		}
 	}
 	
-	
+	/*
+	 * Loads myUni data if myUniData is not already set
+	 */
 	public void prepareData()
 	{
 		logger.debug("Preparing MyUni data");		
@@ -244,9 +259,10 @@ public class MyUniPage extends BasePage {
 	}
 	
 	/*
-	 * This is called by the prerender method after bookmarks
+	 * Called by the prerender method after bookmarks
 	 * have been removed to make sure that the current state
-	 * of bookmarks is shown
+	 * of bookmarks is shown. Otherwise removed bookmarks only
+	 * disappear upon the next request.
 	 */
 	private void loadValuesForComponents()
 	{
@@ -390,6 +406,10 @@ public class MyUniPage extends BasePage {
 		}
 	}
 
+	/*
+	 * Returns a list of ListItemDAOs that contain the information
+	 * to be shown by the departments flexlist
+	 */
 	private List<ListItemDAO> getDepartmentListItems(Long universityId)
 	{
 		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
@@ -418,6 +438,10 @@ public class MyUniPage extends BasePage {
 		return listItems;
 	}
 
+	/*
+	 * Returns a list of ListItemDAOs that contain the information
+	 * to be shown by the institutes flexlist
+	 */
 	private List<ListItemDAO> getVisibleInstituteListItems(Long universityId)
 	{
 		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
@@ -446,6 +470,10 @@ public class MyUniPage extends BasePage {
 		return listItems;
 	}
 
+	/*
+	 * Returns a list of ListItemDAOs that contain the information
+	 * to be shown by the departments flexlist in the hidden list
+	 */
 	private List<ListItemDAO> getHiddenInstituteListItems(Long universityId)
 	{
 		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
@@ -474,6 +502,10 @@ public class MyUniPage extends BasePage {
 		return listItems;
 	}
 
+	/*
+	 * Returns a list of ListItemDAOs that contain the information
+	 * to be shown by the courses flexlist
+	 */
 	private List<ListItemDAO> getVisibleCourseListItems(Long universityId)
 	{
 		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
@@ -501,6 +533,10 @@ public class MyUniPage extends BasePage {
 		return listItems;
 	}
 
+	/*
+	 * Returns a list of ListItemDAOs that contain the information
+	 * to be shown by the courses flexlist in the hidden list
+	 */
 	private List<ListItemDAO> getHiddenCourseListItems(Long universityId)
 	{
 		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
@@ -529,6 +565,10 @@ public class MyUniPage extends BasePage {
 	}
 
 
+	/*
+	 * Selects a university to be shown on the MyUni page
+	 * if no university parameter is given
+	 */
 	private Long chooseUniversity()
 	{
 		if(myUniData != null)
@@ -572,6 +612,7 @@ public class MyUniPage extends BasePage {
 		departmentsList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_departments"));
 		departmentsList.getAttributes().put("alternateRemoveBookmarkLinkTitle", bundle.getString("flexlist_remove_bookmark"));
 		
+		// Load values into the component
 		loadValuesForDepartmentList(departmentsList);
 	}
 
@@ -589,7 +630,7 @@ public class MyUniPage extends BasePage {
 		institutesList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_institutes"));
 		institutesList.getAttributes().put("alternateRemoveBookmarkLinkTitle", bundle.getString("flexlist_remove_bookmark"));
 		
-		
+		// Load values into the component
 		loadValuesForInstituteList(institutesList);
 	}
 
@@ -607,6 +648,7 @@ public class MyUniPage extends BasePage {
 		coursesList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_courses"));
 		coursesList.getAttributes().put("alternateRemoveBookmarkLinkTitle", bundle.getString("flexlist_remove_bookmark"));
 		
+		// Load values into the component
 		loadValuesForCourseList(coursesList);
 	}
 
