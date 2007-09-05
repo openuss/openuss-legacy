@@ -36,8 +36,6 @@ public class UniversityRegistrationController extends AbstractUniversityPage{
 	
 	private List<SelectItem> localeItems;
 	
-	private UniversityType universityType;
-	
 	public List<SelectItem> getSupportedOrganizationTypes() {
 		
 		ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
@@ -46,9 +44,9 @@ public class UniversityRegistrationController extends AbstractUniversityPage{
 	
 		localeItems = new ArrayList<SelectItem>();
 	
-		SelectItem item1 = new SelectItem(universityType.UNIVERSITY, bundle.getString("organizationtype_university"));
-		SelectItem item2 = new SelectItem(universityType.COMPANY, bundle.getString("organizationtype_company"));
-		SelectItem item3 = new SelectItem(universityType.MISC, bundle.getString("organizationtype_misc"));
+		SelectItem item1 = new SelectItem(UniversityType.UNIVERSITY, bundle.getString("organizationtype_university"));
+		SelectItem item2 = new SelectItem(UniversityType.COMPANY, bundle.getString("organizationtype_company"));
+		SelectItem item3 = new SelectItem(UniversityType.MISC, bundle.getString("organizationtype_misc"));
 		
 		localeItems.add(item1);
 		localeItems.add(item2);
@@ -72,10 +70,7 @@ public class UniversityRegistrationController extends AbstractUniversityPage{
 		// create university
 		Long universityId = universityService.createUniversity(universityInfo, user.getId());
 		universityInfo.setId(universityId);
-		
-
-		desktopService2.linkUniversity(desktopInfo.getId(), universityId);
-				
+					
 		return Constants.UNIVERSITY_PAGE;
 	}
 	
