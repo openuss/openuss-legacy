@@ -25,6 +25,7 @@ import org.openuss.lecture.InstituteGroup;
 import org.openuss.lecture.InstituteMember;
 import org.openuss.lecture.InstituteSecurity;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.OrganisationService;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
@@ -34,6 +35,7 @@ import org.openuss.web.Constants;
  * 
  * @author Ingo Dueppe
  * @author Kai Stettner
+ * @author Tianyu Wang
  */
 @Bean(name = "views$secured$lecture$auth$members", scope = Scope.REQUEST)
 @View
@@ -43,6 +45,9 @@ public class MembersPage extends AbstractLecturePage {
 
 	@Property(value = "#{securityService}")
 	private SecurityService securityService;
+	
+	@Property(value = "#{organisationService}")
+	private OrganisationService organisationService;
 	
 	private MembersTable members = new MembersTable();
 
@@ -76,7 +81,7 @@ public class MembersPage extends AbstractLecturePage {
 	private InstituteSecurity getInstituteSecurity() {
 		if (instituteSecurity == null) {
 			logger.debug("fetching institute security informations");
-			instituteSecurity = getLectureService().getInstituteSecurity(instituteInfo.getId());
+			instituteSecurity = instituteService.getInstituteSecurity(instituteInfo.getId());
 			sortMembers(instituteSecurity.getMembers(),members.getSortColumn(),members.isAscending());
 		}
 		return instituteSecurity;
@@ -108,9 +113,9 @@ public class MembersPage extends AbstractLecturePage {
 	public String save() {
 		for(InstituteMember member : changedMembers) {
 			try {
-				getLectureService().setGroupOfMember(member, instituteInfo.getId());
+				instituteService.setGroupOfMember(member, instituteInfo.getId());
 				addMessage(i18n("institute_auth_message_changed_member", member.getUsername()));
-			} catch (LectureException e) {
+			} catch (Exception e) {
 				addError(i18n(e.getMessage()));
 			}
 		}
@@ -120,7 +125,7 @@ public class MembersPage extends AbstractLecturePage {
 	public String removeMember() throws LectureException {
 		logger.debug("remove member");
 		InstituteMember member = members.getRowData();
-		lectureService.removeInstituteMember(member.getId(), instituteInfo.getId());
+		organisationService.removeMember(instituteInfo.getId(),member.getId() );
 		addMessage(i18n("institute_auth_message_removed_member",new Object[]{member.getFirstName(),member.getLastName(),member.getUsername()}));
 		return Constants.SUCCESS;
 	}
@@ -136,7 +141,7 @@ public class MembersPage extends AbstractLecturePage {
 			logger.debug("add a member to institute");
 		}
 		User user = securityService.getUserByName(username);
-		lectureService.addInstituteMember(user.getId(), instituteInfo.getId());
+		organisationService.addMember(instituteInfo.getId(), user.getId());
 		addMessage(i18n("institute_add_member_to_institute", username));
 	}
 
@@ -229,5 +234,13 @@ public class MembersPage extends AbstractLecturePage {
 
 	public void setMembers(MembersTable members) {
 		this.members = members;
+	}
+
+	public OrganisationService getOrganisationService() {
+		return organisationService;
+	}
+
+	public void setOrganisationService(OrganisationService organisationService) {
+		this.organisationService = organisationService;
 	}
 }
