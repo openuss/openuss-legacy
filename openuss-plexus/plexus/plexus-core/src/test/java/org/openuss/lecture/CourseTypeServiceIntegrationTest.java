@@ -157,17 +157,16 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 		
 		//Create CourseType
 		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
+		assertNotNull(courseType);
+		
 		flush();
 		
-		//Test
-		assertNotNull(courseType);
-		CourseTypeInfo courseTypeInfo = this.getCourseTypeService().findCourseType(courseType.getId());
-		assertNotNull(courseTypeInfo);
-		
+		CourseTypeInfo courseTypeInfo = new CourseTypeInfo();
+		courseTypeInfo.setId(courseType.getId());
 		courseTypeInfo.setName(testUtility.unique("name"));
 		courseTypeInfo.setDescription(testUtility.unique("description"));
 		courseTypeInfo.setShortcut(testUtility.unique("shortcut"));
-		courseTypeInfo.setInstituteId(testUtility.createUniqueInstituteInDB().getId());
+		courseTypeInfo.setInstituteId(courseType.getInstitute().getId());
 		
 		this.getCourseTypeService().update(courseTypeInfo);
 		flush();
