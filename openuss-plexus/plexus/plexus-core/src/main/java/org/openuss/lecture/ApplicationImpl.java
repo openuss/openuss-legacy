@@ -39,7 +39,7 @@ public class ApplicationImpl extends org.openuss.lecture.ApplicationBase impleme
 		Validate.notNull(institute, "Application.add(institute) - institute cannot be null.");
 		
 		this.setInstitute(institute);
-		institute.setApplication(this);
+		institute.getApplications().add(this);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class ApplicationImpl extends org.openuss.lecture.ApplicationBase impleme
 	public void remove(Institute institute) {
 		if (this.getInstitute().equals(institute)) {
 			this.setInstitute(null);
-			institute.setApplication(null);
+			institute.getApplications().remove(this);
 		}
 		else {
 			throw new IllegalArgumentException(

@@ -127,6 +127,16 @@ public class InstituteServiceMock implements InstituteService {
 		return null;
 	}
 	
+	public Long applyAtDepartment(Long instituteId, Long departmentId, Long userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findApplicationsByInstitute(Long instituteId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public void setInstituteStatus(Long instituteId, boolean status) {
 		// TODO Auto-generated method stub
 	}

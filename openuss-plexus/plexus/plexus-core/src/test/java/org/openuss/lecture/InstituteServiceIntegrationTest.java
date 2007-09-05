@@ -6,6 +6,7 @@
 package org.openuss.lecture;
 
 import java.util.Date;
+import java.util.List;
 
 import org.acegisecurity.AccessDeniedException;
 import org.openuss.desktop.Desktop;
@@ -29,7 +30,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		Department departmentOfficial = testUtility.createUniqueDepartmentInDB();
 		departmentOfficial.setDepartmentType(DepartmentType.OFFICIAL);
 
-		// Create new UniversityInfo object
+		// Create new InstituteInfo object
 		InstituteInfo instituteInfo = new InstituteInfo();
 		instituteInfo.setName(testUtility.unique("testInstitute"));
 		instituteInfo.setShortcut(testUtility.unique("testI"));
@@ -45,26 +46,40 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		Long instituteId = this.getInstituteService().create(instituteInfo, owner.getId());
 		assertNotNull(instituteId);
 
-		// Test
-		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
-		Institute instituteTest = instituteDao.load(instituteId);
-		assertNotNull(instituteTest.getDepartment());
-		assertNotNull(instituteTest.getApplication());
-		assertTrue(instituteTest.getDepartment().getApplications().contains(instituteTest.getApplication()));
-
-		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
-		Desktop desktop = desktopDao.findByUser(owner);
-		assertNotNull(desktop);
-		assertEquals(1, desktop.getInstitutes().size());
-
 		// Synchronize with Database
 		flush();
-
+		
+		// Test
+		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
+		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
+		
+		Institute instituteTest = instituteDao.load(instituteId);
+		assertNotNull(instituteTest);
+		assertNotNull(instituteTest.getDepartment());
+		
+		Department departmentDefault = departmentDao.findByUniversityAndDefault(departmentOfficial.getUniversity(), true);
+		assertEquals(departmentDefault.getId(), instituteTest.getDepartment().getId());
+		assertTrue(departmentDefault.getInstitutes().contains(instituteTest));
+		assertEquals(2, instituteTest.getApplications().size());
+		int confirmed = 0;
+		int notconfirmed = 0;
+		for (Application application:instituteTest.getApplications()) {
+			if (application.isConfirmed()) {
+				assertEquals(departmentDefault.getId(), application.getDepartment().getId());
+				confirmed++;
+			} else {
+				assertEquals(departmentOfficial.getId(), application.getDepartment().getId());
+				notconfirmed++;
+			}
+		}
+		assertEquals(1,confirmed);
+		assertEquals(1,notconfirmed);
+		
 		// Create an NONOFFICIAL Department
 		Department departmentNonOfficial = testUtility.createUniqueDepartmentInDB();
 		departmentNonOfficial.setDepartmentType(DepartmentType.NONOFFICIAL);
 
-		// Create new UniversityInfo object
+		// Create another new InstituteInfo object
 		InstituteInfo instituteInfo2 = new InstituteInfo();
 		instituteInfo2.setName(testUtility.unique("testInstitute"));
 		instituteInfo2.setShortcut(testUtility.unique("testI"));
@@ -72,23 +87,32 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		instituteInfo2.setEnabled(true);
 		instituteInfo2.setDescription("This is a test Institute");
 		instituteInfo2.setDepartmentId(departmentNonOfficial.getId());
-
+		
 		// Create Entity
 		Long instituteId2 = this.getInstituteService().create(instituteInfo2, owner.getId());
 		assertNotNull(instituteId2);
-
-		// Test
-		Institute instituteTest2 = instituteDao.load(instituteId2);
-		assertNotNull(instituteTest2.getDepartment());
-		assertNull(instituteTest2.getApplication());
-
-		desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
-		desktop = desktopDao.findByUser(owner);
-		assertNotNull(desktop);
-		assertEquals(2, desktop.getInstitutes().size());
-
+		
 		// Synchronize with Database
 		flush();
+		
+		// Test		
+		Institute instituteTest2 = instituteDao.load(instituteId2);
+		assertNotNull(instituteTest2);
+		assertNotNull(instituteTest2.getDepartment());
+		
+		assertEquals(departmentNonOfficial.getId(), instituteTest2.getDepartment().getId());
+		assertTrue(departmentNonOfficial.getInstitutes().contains(instituteTest2));
+		assertEquals(1, instituteTest2.getApplications().size());
+		confirmed = 0;
+		notconfirmed = 0;
+		for (Application application:instituteTest2.getApplications()) {
+			if (application.isConfirmed()) {
+				assertEquals(departmentNonOfficial.getId(), application.getDepartment().getId());
+				confirmed++;
+			}
+		}
+		assertEquals(1,confirmed);
+		assertEquals(0,notconfirmed);
 
 		logger.info("----> END access to create(Institute) test");
 	}
@@ -257,7 +281,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 
 	public void testApplyAtDepartment() {
 		logger.debug("----> BEGIN access to applyAtDepartment test <---- ");
-
+/*
 		// Create Department
 		Department department = testUtility.createUniqueDepartmentInDB();
 		department.setDepartmentType(DepartmentType.NONOFFICIAL);
@@ -294,43 +318,8 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		Application application = applicationDao.load(applicationId);
 		assertEquals(department, application.getDepartment());
 		assertEquals(institute, application.getInstitute());
-
+*/
 		logger.debug("----> END access to applyAtDepartment test <---- ");
-	}
-
-	public void testRemoveUnconfirmedApplication() {
-		logger.debug("----> BEGIN access to removeUnconfirmedDepartment test <---- ");
-
-		// Create Department
-		Department department = testUtility.createUniqueDepartmentInDB();
-
-		// Create Institute
-		Institute institute = testUtility.createUniqueInstituteInDB();
-
-		// Apply
-		Application application = Application.Factory.newInstance();
-		application.setDepartment(department);
-		application.setInstitute(institute);
-		application.setApplyingUser(testUtility.createUniqueUserInDB());
-		application.setApplicationDate(new Date());
-
-		department.getApplications().add(application);
-		institute.setApplication(application);
-		ApplicationDao applicationDao = (ApplicationDao) this.getApplicationContext().getBean("applicationDao");
-		applicationDao.create(application);
-		assertNotNull(application.getId());
-
-		// Synchronize with Database
-		flush();
-
-		// Test
-		this.getInstituteService().removeUnconfirmedApplication(application.getId());
-		Application application2 = applicationDao.load(application.getId());
-		assertNull(application2);
-		assertFalse(department.getApplications().contains(application));
-		assertNull(institute.getApplication());
-
-		logger.debug("----> END access to removeUnconfirmedDepartment test <---- ");
 	}
 
 	public void testSetInstituteStatus() {
@@ -403,10 +392,11 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		assertNotNull(applicationId);
 
 		// Test
+		/*
 		ApplicationInfo applicationInfo2 = this.getInstituteService().findApplicationByInstitute(institute.getId());
 		assertNotNull(applicationInfo2);
 		assertEquals(applicationId, applicationInfo2.getId());
-
+*/
 		logger.info("----> END access to findApplicationByInstitute test");
 	}
 }

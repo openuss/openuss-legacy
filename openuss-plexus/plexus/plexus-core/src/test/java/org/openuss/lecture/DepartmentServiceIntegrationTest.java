@@ -361,7 +361,7 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		assertTrue(department.getInstitutes().contains(institute));
 
 		// Signoff Institute
-		assertNotNull(institute.getApplication());
+		assertFalse(institute.getApplications().contains(application));
 		assertTrue(university.getDepartments().size() == 2);
 
 		// Synchronize with Database

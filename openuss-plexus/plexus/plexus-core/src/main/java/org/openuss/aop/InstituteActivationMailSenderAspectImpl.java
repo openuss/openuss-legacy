@@ -60,7 +60,7 @@ public class InstituteActivationMailSenderAspectImpl extends BaseBean {
 		
 		String link = "/actions/public/lecture/instituteactivation.faces?code="+activationCode;
 
-		link = applicationAddress() + link;
+		//link = applicationAddress() + link;
 		
 		
 		// Create link

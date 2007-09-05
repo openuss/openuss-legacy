@@ -8,29 +8,6 @@ import org.openuss.security.Membership;
 
 public class DepartmentDaoMock extends AbstractMockDao<Department> implements DepartmentDao {
 
-	public List findByUniversityAndTypeAndEnabled(int transform, String queryString, University university,
-			DepartmentType departmentType, boolean enabled) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List findByUniversityAndTypeAndEnabled(int transform, University university, DepartmentType departmentType,
-			boolean enabled) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List findByUniversityAndTypeAndEnabled(String queryString, University university,
-			DepartmentType departmentType, boolean enabled) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List findByUniversityAndTypeAndEnabled(University university, DepartmentType departmentType, boolean enabled) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Department create(boolean defaultDepartment, DepartmentType departmentType, boolean enabled,
 			Membership membership, String name, String ownerName, String shortcut) {
 		// TODO Auto-generated method stub
@@ -154,6 +131,27 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 		return null;
 	}
 
+	public Object findByUniversityAndDefault(int transform, String queryString, University university,
+			boolean defaultDepartment) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object findByUniversityAndDefault(int transform, University university, boolean defaultDepartment) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Department findByUniversityAndDefault(String queryString, University university, boolean defaultDepartment) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Department findByUniversityAndDefault(University university, boolean defaultDepartment) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public List findByUniversityAndEnabled(int transform, String queryString, University university, boolean enabled) {
 		// TODO Auto-generated method stub
 		return null;
@@ -195,6 +193,29 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 		return null;
 	}
 
+	public List findByUniversityAndTypeAndEnabled(int transform, String queryString, University university,
+			DepartmentType departmentType, boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByUniversityAndTypeAndEnabled(int transform, University university, DepartmentType departmentType,
+			boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByUniversityAndTypeAndEnabled(String queryString, University university,
+			DepartmentType departmentType, boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByUniversityAndTypeAndEnabled(University university, DepartmentType departmentType, boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public void toDepartmentInfo(Department sourceEntity, DepartmentInfo targetVO) {
 		// TODO Auto-generated method stub
 		
@@ -209,6 +230,8 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 		// TODO Auto-generated method stub
 		
 	}
+
+
 
 	
 }

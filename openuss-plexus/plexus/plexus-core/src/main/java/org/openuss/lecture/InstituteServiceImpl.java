@@ -41,42 +41,27 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(user, "InstituteService.handleCreate - no valid User found corresponding to the ID " + userId);
 		Validate.isTrue(instituteInfo.getId() == null,
 				"InstituteService.handleCreate - the Institute shouldn't have an ID yet");
-		Validate.isTrue(instituteInfo.getDepartmentId() != null,
+		Validate.notNull(instituteInfo.getDepartmentId(),
 				"InstituteService.handleCreate - the DepartmentID cannot be null");
+		
+		// Save DepartmentID for Application
+		Long departmentId = instituteInfo.getDepartmentId();
+		instituteInfo.setDepartmentId(null);
 
 		// Transform ValueObject into Entity
 		Institute instituteEntity = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
-		Department department = instituteEntity.getDepartment();
-		Validate.notNull(department, "InstituteService.handleCreate - "
-				+ "no valid Department found corresponding to the ID " + instituteInfo.getDepartmentId());
 
-		// Create a default Membership for the University
+		// Create a default Membership for the Institute
 		Membership membership = Membership.Factory.newInstance();
 		instituteEntity.setMembership(membership);
 
 		// Create the Institute
-		department.add(instituteEntity);
 		this.getInstituteDao().create(instituteEntity);
 		Validate.notNull(instituteEntity.getId(), "InstituteService.handleCreate - Couldn't create Institute");
 
 		// FIXME - Kai, Indexing should not base on VOs!
 		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		instituteInfo.setId(instituteEntity.getId());
-
-		// Create Application for OFFICIAL Departments
-		if (department.getDepartmentType().equals(DepartmentType.OFFICIAL)) {
-			Application application = Application.Factory.newInstance();
-			application.setApplicationDate(new Date());
-			application.setDepartment(department);
-			application.setInstitute(instituteEntity);
-			application.setConfirmed(true);
-			application.setApplyingUser(user);
-			application.setConfirmingUser(user);
-
-			application.add(department);
-			application.add(instituteEntity);
-			this.getDepartmentDao().update(department);
-		}
 
 		// Create default Groups for Institute
 		GroupItem admins = new GroupItem();
@@ -111,7 +96,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		this.getOrganisationService().addMember(instituteEntity.getId(), userId);
 		this.getOrganisationService().addUserToGroup(userId, adminsGroup.getId());
 
-		// TODO: Fire createdInstitute event to bookmark the Institute for the User who created it
+		// Create Application
+		this.applyAtDepartment(instituteInfo.getId(), departmentId, userId);
 
 		return instituteEntity.getId();
 	}
@@ -264,8 +250,6 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(application, "InstituteService.applyAtDepartment - cannot transform value object to entity");
 		Validate.isTrue(application.getDepartment().getDepartmentType().equals(DepartmentType.OFFICIAL),
 				"InstituteService.applyAtDepartment - an Application is only necessary for official Departments");
-		Validate.isTrue(application.getInstitute().getApplication() == null,
-				"InstituteService.applyAtDepartment - the Institue already has an application, remove/signoff before");
 
 		application.add(application.getDepartment());
 		application.add(application.getInstitute());
@@ -277,21 +261,91 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	}
 
 	@Override
-	protected void handleRemoveUnconfirmedApplication(Long applicationId) throws Exception {
+	protected Long handleApplyAtDepartment(Long instituteId, Long departmentId, Long userId) throws Exception {
+		Validate.notNull(instituteId, "InstituteService.applyAtDepartment - the InstituteID cannot be null.");
+		Validate.notNull(departmentId, "InstituteService.applyAtDepartment - the DepartmentID cannot be null.");
+		Validate.notNull(userId, "InstituteService.applyAtDepartment - the UserID cannot be null.");
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute,
+				"InstituteService.applyAtDepartment - No Institute found corresponding to the InstituteID "
+						+ instituteId);
 
-		Validate.notNull(applicationId,
-				"DepartmentService.handleRemoveUnconfirmedApplication - the applicationId cannot be null");
+		// Delete old not-confirmed Applications
+		for (Application application : institute.getApplications()) {
+			if (!application.isConfirmed()) {
+				application.remove(application.getInstitute());
+				application.remove(application.getDepartment());
+				this.getApplicationDao().remove(application);
+			}
+		}
 
-		Application application = this.getApplicationDao().load(applicationId);
-		Validate.notNull(application,
-				"DepartmentService.handleRemoveUnconfirmedApplication - no Application found corresponding to the ID "
-						+ applicationId);
-		Validate.isTrue(!application.isConfirmed(),
-				"DepartmentService.handleRemoveUnconfirmedApplication - the Application is already confirmed");
+		// Load Department
+		Department department = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(department,
+				"InstituteService.applyAtDepartment - No Department found corresponding to the DepartmentID "
+						+ departmentId);
+		
+		// Load User
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user,
+				"InstituteService.applyAtDepartment - No User found corresponding to the UserID "
+						+ userId);
 
-		application.remove(application.getDepartment());
-		application.remove(application.getInstitute());
-		this.getApplicationDao().remove(application);
+		if (department.getDepartmentType() == DepartmentType.NONOFFICIAL) {
+			
+			// Create confirmed Application for non-official Department
+			Application application = Application.Factory.newInstance();
+			application.setApplicationDate(new Date());
+			application.setApplyingUser(user);
+			application.setConfirmationDate(new Date());
+			application.setConfirmed(true);
+			application.setConfirmingUser(user);
+			application.setDescription("Automatically created Application");
+			application.add(institute);
+			application.add(department);
+			this.getApplicationDao().create(application);
+			
+			// Add Institute to Department
+			department.add(institute);
+			
+			return application.getId();
+
+		} else {
+			
+			// Create not-confirmed Application for official Department
+			Application application = Application.Factory.newInstance();
+			application.setApplicationDate(new Date());
+			application.setApplyingUser(user);
+			application.setConfirmationDate(null);
+			application.setConfirmed(false);
+			application.setConfirmingUser(null);
+			application.setDescription("Automatically created Application");
+			application.add(institute);
+			application.add(department);
+			this.getApplicationDao().create(application);
+			
+			if (institute.getDepartment() == null) {
+				
+				// Add Institute to default Department of University including a confirmed Application
+				University university = department.getUniversity();
+				Department departmentDefault = this.getDepartmentDao().findByUniversityAndDefault(university, true);
+				
+				Application applicationDefault = Application.Factory.newInstance();
+				applicationDefault.setApplicationDate(new Date());
+				applicationDefault.setApplyingUser(user);
+				applicationDefault.setConfirmationDate(new Date());
+				applicationDefault.setConfirmed(true);
+				applicationDefault.setConfirmingUser(user);
+				applicationDefault.setDescription("Automatically created Application");
+				applicationDefault.add(institute);
+				applicationDefault.add(departmentDefault);
+				this.getApplicationDao().create(applicationDefault);
+				
+				departmentDefault.add(institute);
+			}
+			
+			return application.getId();
+		}
 	}
 
 	@Override
@@ -322,7 +376,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	}
 
 	@Override
-	protected ApplicationInfo handleFindApplicationByInstitute(Long instituteId) throws Exception {
+	protected List handleFindApplicationsByInstitute(Long instituteId) throws Exception {
 		Validate.notNull(instituteId, "InstituteService.findApplicationByInstitute - the instituteId cannot be null.");
 
 		// Load institute
@@ -331,11 +385,12 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				"InstiuteService.findApplicationByInstitute - instiute cannot be found with the corresponding instituteId "
 						+ instituteId);
 
-		if (institute.getApplication() == null) {
-			return null;
-		} else {
-			return this.getApplicationDao().toApplicationInfo(institute.getApplication());
+		List<ApplicationInfo> applicationInfos = new ArrayList<ApplicationInfo>();
+		for (Application application : institute.getApplications()) {
+			applicationInfos.add(this.getApplicationDao().toApplicationInfo(application));
 		}
+
+		return applicationInfos;
 	}
 
 	@Override
@@ -403,18 +458,18 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 			}
 		}
 	}
-	
+
 	public void handleResendActivationCode(InstituteInfo instituteInfo, Long userId) {
-		
-		Validate.notNull(instituteInfo, "InstituteServiceImpl.handleResendActivationCode -"+
-				"instituteInfo cannot be null.");
-		
-		Validate.notNull(instituteInfo.getId(), "InstituteServiceImpl.handleResendActivationCode -"+
-			"id cannot be null.");
-		
+
+		Validate.notNull(instituteInfo, "InstituteServiceImpl.handleResendActivationCode -"
+				+ "instituteInfo cannot be null.");
+
+		Validate.notNull(instituteInfo.getId(), "InstituteServiceImpl.handleResendActivationCode -"
+				+ "id cannot be null.");
+
 		Institute institute = this.getInstituteDao().load(instituteInfo.getId());
-		Validate.notNull(institute, "InstituteServiceImpl.handleResendActivationCode -"+
-			"no institute found with the instiuteId "+instituteInfo.getId());
+		Validate.notNull(institute, "InstituteServiceImpl.handleResendActivationCode -"
+				+ "no institute found with the instiuteId " + instituteInfo.getId());
 
 		// Do not delete this method although it seems that id does nothing.
 		// When this stub is called an aspect starts to send an email.
