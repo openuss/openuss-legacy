@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.InstituteInfo;
@@ -24,7 +27,7 @@ import org.openuss.system.SystemService;
  * @author Florian Dondorf
  */
 
-public class InstituteActivationMailSenderAspectImpl {
+public class InstituteActivationMailSenderAspectImpl extends BaseBean {
 
 	private static final Logger logger = Logger.getLogger(InstituteActivationMailSenderAspectImpl.class);
 	
@@ -54,10 +57,16 @@ public class InstituteActivationMailSenderAspectImpl {
 		// Create activationCode
 		String activationCode = getRegistrationService().generateInstituteActivationCode(institute);
 		
+		
+		String link = "/actions/public/lecture/instituteactivation.faces?code="+activationCode;
+
+		link = applicationAddress() + link;
+		
+		
 		// Create link
-		String link =
+		/*String link =
 			getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+
-				"/openuss-plexus/actions/public/lecture/instituteactivation.faces?code="+activationCode;
+				"/actions/public/lecture/instituteactivation.faces?code="+activationCode;*/
 		
 		// Create parameter map
 		Map<String, String> parameters = new HashMap<String, String>();
@@ -75,6 +84,11 @@ public class InstituteActivationMailSenderAspectImpl {
 				"instituteactivation", 
 				parameters, 
 				recipients);
+	}
+	
+	private String applicationAddress() {
+		final HttpServletRequest request = getRequest();
+		return systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+request.getContextPath();
 	}
 
 	public UserDao getUserDao() {
