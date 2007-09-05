@@ -10,6 +10,11 @@ public class InstituteServiceMock implements InstituteService {
 		return null;
 	}
 
+	public ApplicationInfo findApplicationByInstituteAndConfirmed(Long instituteId, boolean confirmed) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public InstituteInfo findInstitute(Long instituteId) {
 		// TODO Auto-generated method stub
 		return null;

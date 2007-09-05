@@ -394,6 +394,28 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	}
 
 	@Override
+	protected ApplicationInfo handleFindApplicationByInstituteAndConfirmed(Long instituteId, boolean confirmed)
+			throws Exception {
+		Validate.notNull(instituteId, "InstituteService.findApplicationByInstituteAndConfirmed - the instituteId cannot be null.");
+		Validate.notNull(confirmed, "InstituteService.findApplicationByInstituteAndConfirmed - the confirmed cannot be null.");
+		
+		// Load institute
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute,
+				"InstiuteService.findApplicationByInstituteAndConfirmed - instiute cannot be found with the corresponding instituteId "
+						+ instituteId);
+
+		List<ApplicationInfo> applicationInfos = new ArrayList<ApplicationInfo>();
+		for (Application application : institute.getApplications()) {
+			if (application.isConfirmed() == confirmed) {
+				return this.getApplicationDao().toApplicationInfo(application);
+			}
+		}
+
+		return null;
+	}
+
+	@Override
 	protected void handleRemoveCompleteInstituteTree(Long instituteId) throws Exception {
 		logger.debug("Starting method handleRemoveCompleteInstituteTree for InstituteID " + instituteId);
 
