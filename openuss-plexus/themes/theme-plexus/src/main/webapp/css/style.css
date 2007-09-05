@@ -1405,9 +1405,35 @@ td input.button,.button_unlink,.button_link,.button_remove,.button_edit,.button_
 	filter: DropShadow(color = #FFF, offx = 1, offy = 1)
 }
 
+td .remove_shortcut_button
+	{
+	width: 121px;
+	height: 17px;
+	margin: 2px 5px 2px 0;
+	padding: 0;
+	background: transparent url(../img/button_120_normal_remove.png) 0px 0px
+		no-repeat;
+	border: 0;
+	font-color: #313131;
+	font-size: 7pt;
+	text-decoration: none;
+	font-weight: normal;
+	overflow: hidden;
+	cursor: pointer;
+	cursor: hand;
+	outline-style: none;
+	filter: DropShadow(color = #FFF, offx = 1, offy = 1)
+}
+
 td input.button:hover,.button_unlink:hover,.button_link:hover,.button_remove:hover,.button_edit:hover,.button_remove:hover,.button_profile:hover
 	{
 	background: transparent url(../img/button_70_hover.png) 0px 0px
+		no-repeat;
+}
+
+td .remove_shortcut_button:hover
+	{
+	background: transparent url(../img/button_120_hover_remove.png) 0px 0px
 		no-repeat;
 }
 
