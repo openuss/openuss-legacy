@@ -1264,11 +1264,11 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 								Institute institute = courseType.getInstitute();
 								if(institute != null)
 								{
-									Long instituteId = course.getId();
+									Long instituteId = institute.getId();
 									if(instituteId != null)
 									{
 										Integer courseCount;
-										courseCount = instituteCurrentCoursesCount.get(id);
+										courseCount = instituteCurrentCoursesCount.get(instituteId);
 										
 										if(courseCount == null)
 											courseCount = 0;
