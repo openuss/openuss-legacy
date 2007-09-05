@@ -47,10 +47,19 @@
 			<s:authorize ifAllGranted="ROLE_USER">
 				<plexus:command 
 					bean="#{views$public$department$departments}"
+					action="removeShortcut"
+					label="#{msg.university_command_shortcut_remove}"
+					title="#{msg.university_command_shortcut_hint_remove}"
+					styleClass="remove_shortcut_button"
+					rendered="#{views$public$department$departments.bookmarked}">
+				</plexus:command>
+				<plexus:command 
+					bean="#{views$public$department$departments}"
 					action="shortcutDepartment"
 					label="#{msg.university_command_shortcut}"
 					title="#{msg.university_command_shortcut_hint}"
-					styleClass="button_link">
+					styleClass="button_link"
+					rendered="#{not views$public$department$departments.bookmarked}">
 				</plexus:command>	
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">

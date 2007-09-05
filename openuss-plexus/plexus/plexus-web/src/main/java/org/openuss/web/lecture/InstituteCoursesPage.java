@@ -323,9 +323,10 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	 * @return Outcome
 	 */
 	public String shortcutCourse() {
-		courseInfo = dataCourses.getRowData();
+		//courseInfo = dataCourses.getRowData();
 		try {
-			desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());
+			CourseInfo currentCourse = currentCourse();
+			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
 			addMessage(i18n("desktop_command_add_course_succeed"));
 			return Constants.SUCCESS;
 		} catch (DesktopException e) {
@@ -335,6 +336,33 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		}
 	}
 	
+	public String removeCourseShortcut()
+	{
+		try {
+			//courseInfo = courseData.getRowData();
+			CourseInfo currentCourse = currentCourse();
+			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse.getId());
+		} catch (Exception e) {
+			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
+			return Constants.FAILURE;
+		}
+		
+		addMessage(i18n("institute_success_remove_shortcut"));
+		return Constants.SUCCESS;
+	}
+		
+	public Boolean getBookmarked()
+	{
+		try {
+			CourseInfo currentCourse = currentCourse();
+			return desktopService2.isCourseBookmarked(currentCourse.getId(), user.getId());
+		} catch (Exception e) {
+			
+		}
+		
+		return false;
+	}
+
 	public LocalDataModelCourses getDataCourses() {
 		return dataCourses;
 	}

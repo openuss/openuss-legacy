@@ -45,12 +45,21 @@
 	
 		<plexus:column header="#{msg.commands_header}">	
 			<s:authorize ifAllGranted="ROLE_USER">
-				<plexus:command  
+				<plexus:command 
+					bean="#{views$secured$lecture$institutecourses}"
+					action="removeCourseShortcut"
+					label="#{msg.course_command_shortcut_remove}"
+					title="#{msg.course_command_shortcut_hint_remove}"
+					styleClass="remove_shortcut_button"
+					rendered="#{views$secured$lecture$institutecourses.bookmarked}">
+				</plexus:command>
+				<plexus:command 
 					bean="#{views$secured$lecture$institutecourses}"
 					action="shortcutCourse"
 					label="#{msg.course_command_shortcut}"
 					title="#{msg.course_command_shortcut_hint}"
-					styleClass="button_link">
+					styleClass="button_link"
+					rendered="#{not views$secured$lecture$institutecourses.bookmarked}">
 				</plexus:command>
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">

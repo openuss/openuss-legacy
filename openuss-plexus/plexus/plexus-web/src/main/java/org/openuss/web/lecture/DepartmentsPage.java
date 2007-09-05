@@ -130,6 +130,32 @@ public class DepartmentsPage extends BasePage{
 		return Constants.SUCCESS;
 	}
 	
+	public Boolean getBookmarked()
+	{
+		try {
+			DepartmentInfo currentDepartment = currentDepartment();
+			return desktopService2.isDepartmentBookmarked(currentDepartment.getId(), user.getId());
+		} catch (Exception e) {
+			
+		}
+		
+		return false;
+	}
+
+	public String removeShortcut()
+	{
+		try {
+			DepartmentInfo currentDepartment = currentDepartment();
+			desktopService2.unlinkDepartment(desktopInfo.getId(), currentDepartment.getId());
+		} catch (Exception e) {
+			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
+			return Constants.FAILURE;
+		}
+		
+		addMessage(i18n("institute_success_remove_shortcut"));
+		return Constants.SUCCESS;
+	}
+	
 	private DataPage<DepartmentInfo> dataPage;
 	
 	public DataPage<DepartmentInfo> fetchDataPage(int startRow, int pageSize) {
