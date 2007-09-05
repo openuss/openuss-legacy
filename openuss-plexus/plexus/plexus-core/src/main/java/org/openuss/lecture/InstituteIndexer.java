@@ -108,6 +108,7 @@ public class InstituteIndexer extends DomainIndexer {
 		
 		details.append(StringUtils.trimToEmpty(StringUtils.abbreviate(institute.getDescription(), 200)));
 		details.append(NEWLINE);
+		details.append(NEWLINE);
 		
 		return details.toString();
 	}

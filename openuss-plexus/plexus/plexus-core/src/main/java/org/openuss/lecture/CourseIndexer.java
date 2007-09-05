@@ -119,6 +119,7 @@ public class CourseIndexer extends DomainIndexer {
 		
 		details.append(StringUtils.trimToEmpty(StringUtils.abbreviate(course.getDescription(), 200)));
 		details.append(NEWLINE);
+		details.append(NEWLINE);
 		
 		return details.toString();
 	}

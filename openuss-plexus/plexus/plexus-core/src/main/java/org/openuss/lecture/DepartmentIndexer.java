@@ -105,6 +105,7 @@ public class DepartmentIndexer extends DomainIndexer {
 		
 		details.append(StringUtils.trimToEmpty(StringUtils.abbreviate(department.getDescription(), 200)));
 		details.append(NEWLINE);
+		details.append(NEWLINE);
 		
 		return details.toString();
 	}

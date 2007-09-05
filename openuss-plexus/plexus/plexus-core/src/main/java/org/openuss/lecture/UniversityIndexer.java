@@ -84,6 +84,7 @@ public class UniversityIndexer extends DomainIndexer {
 		StringBuilder details = new StringBuilder();
 		details.append(StringUtils.trimToEmpty(StringUtils.abbreviate(university.getDescription(), 200)));
 		details.append(NEWLINE);
+		details.append(NEWLINE);
 		
 		return details.toString();
 	}
