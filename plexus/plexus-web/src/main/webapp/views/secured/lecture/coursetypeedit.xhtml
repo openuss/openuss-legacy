@@ -12,9 +12,7 @@
 	<h:form id="courseTypeForm">
 		<o:block label="#{msg.coursetype_header}" styleClass="form_box">
 			<o:input entity="courseType" property="name" required="true" maxlength="100"/>
-			<o:input entity="courseType" property="shortcut" required="true" maxlength="30">
-				<f:validator validatorId="org.openuss.web.lecture.validators.CourseTypeShortcutValidator" />
-			</o:input>
+			<o:input entity="courseType" property="shortcut" required="true" maxlength="30" />
 			<o:input entity="courseType" property="description" maxlength="250" type="textarea"/>
 		</o:block> 
 		<o:block>

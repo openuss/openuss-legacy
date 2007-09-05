@@ -168,9 +168,6 @@
                 org.openuss.lecture.LectureService.getCourseType=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.getPeriod=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.getCourse=ROLE_ADMIN, ROLE_USER
-                org.openuss.lecture.LectureService.isNoneExistingInstituteShortcut=ROLE_ADMIN, ROLE_USER
-                org.openuss.lecture.LectureService.isNoneExistingCourseTypeShortcut=ROLE_ADMIN, ROLE_USER
-                org.openuss.lecture.LectureService.isNoneExistingCourseShortcut=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.persist=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.add=ROLE_ADMIN, ROLE_USER
                 org.openuss.lecture.LectureService.removeInstitute=ROLE_ADMIN, ROLE_USER

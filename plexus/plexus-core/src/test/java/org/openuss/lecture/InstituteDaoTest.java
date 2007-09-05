@@ -25,28 +25,6 @@ public class InstituteDaoTest extends InstituteDaoTestBase {
 		assertNotNull(institute.getId());
 	}
 	
-	public void testUniqueShortcut() {
-		Institute institute = createTestInstitute();
-		institute.setShortcut("xxxx");
-		assertNull(institute.getId());
-		instituteDao.create(institute);
-		assertNotNull(institute.getId());
-		
-		Institute institute2 = createTestInstitute();
-		institute2.setShortcut("xxxx");
-		assertNull(institute2.getId());
-		instituteDao.create(institute2);
-		assertNotNull(institute2.getId());
-
-		try {
-			setComplete();
-			endTransaction();
-			fail();
-		} catch (DataAccessException e) {
-			// success - remove the first one
-		}
-	}
-	
 	public void testLoadAllEnabled() {
 		Institute institute1 = createTestInstitute();
 		institute1.setEnabled(false);
