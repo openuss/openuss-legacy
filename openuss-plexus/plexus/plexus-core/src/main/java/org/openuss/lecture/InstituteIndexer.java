@@ -1,6 +1,9 @@
 package org.openuss.lecture;
 
 import java.util.Date;
+import java.util.ResourceBundle;
+
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -20,6 +23,10 @@ import org.springmodules.lucene.index.core.DocumentCreator;
 public class InstituteIndexer extends DomainIndexer {
 
 	private static final String DOMAINTYPE_VALUE = "institute";
+	
+	private static final String SPACE = " ";
+	private static final String NEWLINE = "<br/>";
+	private static final String ARROW = " -> ";
 
 	private static final Logger logger = Logger.getLogger(InstituteIndexer.class);
 
@@ -87,9 +94,21 @@ public class InstituteIndexer extends DomainIndexer {
 	}
 	
 	private String details(final Institute institute) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		ResourceBundle resourceBundle = ResourceBundle.getBundle(
+				context.getApplication().getMessageBundle(), 
+				context.getViewRoot().getLocale());
+		
 		StringBuilder details = new StringBuilder();
-		details.append(StringUtils.trimToEmpty(institute.getOwnerName()));
-		details.append(StringUtils.trimToEmpty(institute.getAddress()));
+		
+		details.append(resourceBundle.getString("university")+":"+SPACE+StringUtils.trimToEmpty(institute.getDepartment().getUniversity().getName()+NEWLINE));
+		details.append(resourceBundle.getString("department")+":"+SPACE+StringUtils.trimToEmpty(institute.getDepartment().getName()+NEWLINE));
+		details.append(resourceBundle.getString("institute_owner")+":"+SPACE+institute.getOwnerName()+NEWLINE);
+		details.append(NEWLINE);
+		
+		details.append(StringUtils.trimToEmpty(StringUtils.abbreviate(institute.getDescription(), 200)));
+		details.append(NEWLINE);
+		
 		return details.toString();
 	}
 

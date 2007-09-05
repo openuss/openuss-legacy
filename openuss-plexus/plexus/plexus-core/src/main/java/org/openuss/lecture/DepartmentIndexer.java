@@ -1,6 +1,9 @@
 package org.openuss.lecture;
 
 import java.util.Date;
+import java.util.ResourceBundle;
+
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -12,6 +15,8 @@ import org.apache.lucene.document.DateTools.Resolution;
 import org.openuss.search.DomainIndexer;
 import org.springmodules.lucene.index.core.DocumentCreator;
 
+import com.sun.org.apache.bcel.internal.Constants;
+
 /**
 *
 * @author Kai Stettner
@@ -20,6 +25,8 @@ import org.springmodules.lucene.index.core.DocumentCreator;
 public class DepartmentIndexer extends DomainIndexer {
 	
 	private static final String SPACE = " ";
+	private static final String NEWLINE = "<br/>";
+	private static final String ARROW = " -> ";
 
 	private static final String DOMAINTYPE_VALUE = "department";
 
@@ -86,9 +93,19 @@ public class DepartmentIndexer extends DomainIndexer {
 	}
 	
 	private String details(final Department department) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		ResourceBundle resourceBundle = ResourceBundle.getBundle(
+				context.getApplication().getMessageBundle(), 
+				context.getViewRoot().getLocale());
+		
 		StringBuilder details = new StringBuilder();
-		details.append(StringUtils.trimToEmpty(department.getDescription()));
-	
+		
+		details.append(resourceBundle.getString("university")+":"+SPACE+StringUtils.trimToEmpty(department.getUniversity().getName()+NEWLINE));
+		details.append(NEWLINE);
+		
+		details.append(StringUtils.trimToEmpty(StringUtils.abbreviate(department.getDescription(), 200)));
+		details.append(NEWLINE);
+		
 		return details.toString();
 	}
 	

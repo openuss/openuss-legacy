@@ -20,7 +20,9 @@ import org.springmodules.lucene.index.core.DocumentCreator;
 public class UniversityIndexer extends DomainIndexer {
 	
 	private static final String SPACE = " ";
-
+	private static final String NEWLINE = "<br/>";
+	private static final String ARROW = " -> ";
+	
 	private static final String DOMAINTYPE_VALUE = "university";
 
 	private static final Logger logger = Logger.getLogger(UniversityIndexer.class);
@@ -80,7 +82,8 @@ public class UniversityIndexer extends DomainIndexer {
 	
 	private String details(final University university) {
 		StringBuilder details = new StringBuilder();
-		details.append(StringUtils.trimToEmpty(university.getDescription()));
+		details.append(StringUtils.trimToEmpty(StringUtils.abbreviate(university.getDescription(), 200)));
+		details.append(NEWLINE);
 		
 		return details.toString();
 	}

@@ -1,6 +1,9 @@
 package org.openuss.lecture;
 
 import java.util.Date;
+import java.util.ResourceBundle;
+
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -22,6 +25,8 @@ import org.springmodules.lucene.index.core.DocumentCreator;
 public class CourseIndexer extends DomainIndexer {
 
 	private static final String SPACE = " ";
+	private static final String NEWLINE = "<br/>";
+	private static final String ARROW = " -> ";
 
 	private static final String DOMAINTYPE_VALUE = "course";
 
@@ -101,9 +106,21 @@ public class CourseIndexer extends DomainIndexer {
 	}
 	
 	private String details(final Course course) {
-		return course.getCourseType().getInstitute().getName()+SPACE
-				+course.getCourseType().getInstitute().getOwnerName()+SPACE
-				+StringUtils.abbreviate(course.getDescription(), 100);
+		FacesContext context = FacesContext.getCurrentInstance();
+		ResourceBundle resourceBundle = ResourceBundle.getBundle(
+				context.getApplication().getMessageBundle(), 
+				context.getViewRoot().getLocale());
+		StringBuilder details = new StringBuilder();
+		
+		details.append(resourceBundle.getString("university")+":"+SPACE+StringUtils.trimToEmpty(course.getCourseType().getInstitute().getDepartment().getUniversity().getName()+NEWLINE));
+		details.append(resourceBundle.getString("department")+":"+SPACE+StringUtils.trimToEmpty(course.getCourseType().getInstitute().getDepartment().getName()+NEWLINE));
+		details.append(resourceBundle.getString("institute")+":"+SPACE+StringUtils.trimToEmpty(course.getCourseType().getInstitute().getName()+NEWLINE));
+		details.append(NEWLINE);
+		
+		details.append(StringUtils.trimToEmpty(StringUtils.abbreviate(course.getDescription(), 200)));
+		details.append(NEWLINE);
+		
+		return details.toString();
 	}
 
 	private String content(final Course course) {
