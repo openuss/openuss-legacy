@@ -119,8 +119,8 @@ public class DataCreator {
 		userPreferences.setTimezone(TimeZone.getDefault().getID());
 
 		UserContact userContact = UserContact.Factory.newInstance();
-		userContact.setFirstName("Unique");
-		userContact.setLastName(unique("User"));
+		userContact.setFirstName("Frank");
+		userContact.setLastName(unique("Miller"));
 		userContact.setAddress("Leonardo Campus 5");
 		userContact.setCity("Münster");
 		userContact.setCountry("Germany");
@@ -129,7 +129,7 @@ public class DataCreator {
 		User user = User.Factory.newInstance();
 		user.setUsername(unique("user"));
 		user.setPassword("feelfree");
-		user.setEmail(unique("openuss") + "@e-learning.uni-muenster.de");
+		user.setEmail(unique("openuss") + "@openuss-plexus.com");
 		user.setEnabled(true);
 		user.setAccountExpired(false);
 		user.setCredentialsExpired(false);
