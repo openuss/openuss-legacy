@@ -459,6 +459,10 @@ public class MyUniPage extends BasePage {
 					newItem = new ListItemDAO();
 					newItem.setTitle(instituteInfo.getName());
 					newItem.setUrl(institutesBasePath + "?institute=" + instituteInfo.getId());
+					Integer numberOfCurrentCourses = instituteInfo.getNumberOfCurrentCourses();
+					if(numberOfCurrentCourses != null)
+						newItem.setMetaInformation(numberOfCurrentCourses.toString() + " " + i18n("MYUNI_INSITUTE_COURSECOUNT_STRING"));
+					
 					if(instituteInfo.isBookmarked())
 						newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId + "&remove_institute=" + instituteInfo.getId());
 
