@@ -202,4 +202,10 @@ public class Constants {
 	public static final String SYSTEM_STATISTIC = "systemStatistic";
 	public static final String VISIT = "visit";
 	public static final String STEP3 = "step3";	
+	
+	// strings used by string builder
+	private static final String SPACE = " ";
+	private static final String NEWLINE = "\r\n";
+	private static final String ARROW = " -> ";
+	
 }
