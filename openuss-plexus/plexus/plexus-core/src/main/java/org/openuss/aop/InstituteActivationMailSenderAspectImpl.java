@@ -56,7 +56,7 @@ public class InstituteActivationMailSenderAspectImpl extends BaseBean {
 		
 		// Create activationCode
 		String activationCode = getRegistrationService().generateInstituteActivationCode(institute);
-		
+				
 		
 		String link = "/actions/public/lecture/instituteactivation.faces?code="+activationCode;
 
