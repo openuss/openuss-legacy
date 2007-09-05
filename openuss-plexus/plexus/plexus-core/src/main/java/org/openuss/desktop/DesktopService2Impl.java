@@ -701,14 +701,18 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 			this.desktop = desktop;
 		}
 
-		
+		/*
+		 * Fills the MyUni data structure
+		 */
 		public void loadData()
 		{
 			if(desktop == null)
 				return;
 			
+			// Create a new hash map to hold the data for each university
 			uniDataSets = new HashMap<Long, UniversityDataSet>();
 			
+			// Get the bookmarks from the user's desktop
 			List<Course> courseBookmarks = desktop.getCourses();
 			List<Institute> instituteBookmarks = desktop.getInstitutes();
 			List<Department> departmentBookmarks = desktop.getDepartments();
@@ -716,6 +720,7 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 			
 			if(courseBookmarks != null)
 			{
+				// Process each course bookmark
 				Iterator<Course> courseIterator = courseBookmarks.iterator();
 				while (courseIterator.hasNext()) {
 					Course course = (Course)courseIterator.next();
@@ -725,6 +730,7 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 			
 			if(instituteBookmarks != null)
 			{
+				// Process each institute bookmark
 				Iterator<Institute> instituteIterator = instituteBookmarks.iterator();
 				while (instituteIterator.hasNext()) {
 					Institute institute = (Institute)instituteIterator.next();
@@ -734,6 +740,7 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 			
 			if(departmentBookmarks != null)
 			{
+				// Process each department bookmark
 				Iterator<Department> departmentIterator = departmentBookmarks.iterator();
 				while (departmentIterator.hasNext()) {
 					Department department = (Department)departmentIterator.next();
@@ -742,15 +749,23 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 			}
 		}
 		
+		/*
+		 * Returns a map of special info objects that hold the
+		 * information to be displayed by the MyUni page,
+		 * one for each university
+		 */
 		public Map<Long, MyUniInfo> getMyUniInfo()
 		{
+			// Create a new hash map of type MyUniInfo
 			Map<Long, MyUniInfo> myUniInfo = new HashMap<Long, MyUniInfo>();
 			
+			// Return empty map if there is no data
 			if(uniDataSets == null)
 				return myUniInfo;
 			
 			MyUniUniversityInfo currentUniversityInfo;
 			
+			// Convert each university data set to info object and add it to the map
 			for(UniversityDataSet uniDataSet : uniDataSets.values())
 			{
 				currentUniversityInfo = uniDataSet.getUnversity();
@@ -762,33 +777,24 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 			
 			return myUniInfo;
 		}
-		
-		/*
-		public Long chooseDefaultUniversity()
-		{
-			List<UniversityInfo> unis = getUniversities();
-				
-			if(unis != null && unis.size() > 0)
-			{
-				return unis.get(0).getId();
-			}
-			else
-				return null;
-		}
-		*/	
-		
+			
 		private Long processDepartment(Department department)
 		{
-			// Process as not bookmarked
+			// Process the department as not bookmarked
 			return processDepartment(department, false);
 		}
 		
 		private Long processDepartmentBookmark(Department department)
 		{
-			// Process as bookmarked
+			// Process the department as bookmarked
 			return processDepartment(department, true);
 		}
 		
+		/*
+		 * Adds a department to its corresponding university data set.
+		 * If there is no university data set for the department's
+		 * university a new one is created.
+		 */
 		private Long processDepartment(Department department, boolean bookmarked)
 		{
 			if(department == null) 
@@ -820,16 +826,24 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		
 		private Long processInstitute(Institute institute, boolean hasCurrentCourse)
 		{
-			// Process as not bookmarked
+			// Process the institute as not bookmarked
 			return processInstitute(institute, hasCurrentCourse, false);
 		}
 		
 		private Long processInstituteBookmark(Institute institute)
 		{
-			// Process as bookmarked
+			// Process the institute as bookmarked
+			// Argument for 'hasCurrentCourse' is false
+			// to make sure the counting of current courses
+			// for the institute is not increased by the bookmark
 			return processInstitute(institute, false, true);
 		}
 		
+		/*
+		 * Processes the institute's department and
+		 * adds the institute to the corresponding university data set
+		 * @return the id of the institute's university
+		 */
 		private Long processInstitute(Institute institute, boolean hasCurrentCourse, boolean bookmarked)
 		{	
 			if(institute == null)
@@ -840,16 +854,17 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 			if(department == null)
 				return null;
 			
-			// Process the corresponding department
+			// Process the corresponding department and get the university id
 			Long universityID = processDepartment(department);
 			if(universityID == null)
 				return null;
 			
-			// Add the instititute to the corresponding university data set
+			// Get the corresponding university data set
 			assert uniDataSets != null;
 			UniversityDataSet currentDataSet = uniDataSets.get(universityID);
 			assert currentDataSet != null;
 			
+			// Add the institute to the university data set
 			currentDataSet.addInstitute(institute, hasCurrentCourse, bookmarked);
 			
 			// Return the university id
@@ -857,7 +872,11 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 			
 		}
 		
-		
+		/*
+		 * Processes the course's institute and
+		 * adds the course to the corresponding university data set
+		 * @return the course's university id
+		 */
 		private Long processCourse(Course course)
 		{
 			if(course == null)
@@ -866,29 +885,34 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 			Period coursePeriod = course.getPeriod();
 			boolean isCurrent;
 			
+			// Determine if the course is in a current period
 			if(coursePeriod == null)
 				isCurrent = false;
 			else
 				isCurrent = coursePeriod.isActive();
 			
+			// Get the course's c ourse type
 			CourseType courseType = course.getCourseType();
 			if(courseType == null)
 				return null;
 			
+			// Get the course's institute
 			Institute institute = courseType.getInstitute();
 			if(institute == null)
 				return null;
 			
 			// Process the corresponding institute
+			// We are skipping the course type because course types don't show up on the MyUni page
 			Long universityID = processInstitute(institute, isCurrent);
 			if(universityID == null)
 				return null;
 			
-			// Add the course to the corresponding data set
+			// Get the corresponding university data set
 			assert uniDataSets != null;
 			UniversityDataSet currentDataSet = uniDataSets.get(universityID);
 			assert currentDataSet != null;
 			
+			// Add the course to the university data set
 			currentDataSet.addCourse(course, isCurrent);
 			
 			return universityID;
@@ -1043,7 +1067,10 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		}
 		 */	
 		
-		
+		/*
+		 * Holds all relevant information that is displayed
+		 * on the MyUni page for one university
+		 */
 		private class UniversityDataSet
 		{
 			Map<Long, MyUniCourseInfo> currentCourses;
@@ -1066,7 +1093,9 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 				this.university = universityEntityToInfo(university);
 			}
 			
-			
+			/*
+			 * Converts the UniversityDataSet object to MyUniInfo object
+			 */
 			public MyUniInfo toInfo()
 			{
 				MyUniInfo newInfo = new MyUniInfo();
@@ -1100,6 +1129,10 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 				return university;
 			}
 	
+			/*
+			 * Adds a department to the data set and ensures
+			 * proper handling of the department's bookmark flag
+			 */
 			public void addDepartment(Department department, boolean bookmarked)
 			{
 				// Convert entity to info object
@@ -1111,20 +1144,31 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 					
 					if(departments.containsKey(departmentId))
 					{
-						departmentInfo = departments.get(departmentId);
-						
+						// The department has been added before
+						// If this department is a bookmark
+						// get the former department object from the departments hash
+						// and set the bookmark flag to true,
+						// regardless of the former value
 						if(bookmarked == true)
+						{
+							departmentInfo = departments.get(departmentId);
 							departmentInfo.setBookmarked(true);
+						}
 					}
 					else
 					{
+						// The department is added to the set for the first time
 						departmentInfo.setBookmarked(bookmarked);
 						departments.put(departmentId, departmentInfo);
 					}
 				}
 			}
 			
-			
+			/*
+			 * Adds an institute to the data set and ensures
+			 * proper handling of the institutes current/past state
+			 * and bookmark flag
+			 */
 			public void addInstitute(Institute institute, boolean isCurrent, boolean bookmarked)
 			{
 				// Convert entity to info object
@@ -1136,6 +1180,9 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 					
 					if(isCurrent == true || bookmarked == true)
 					{
+						// The institute is either current or bookmark
+						// so it should appear in the visible list
+						
 						// Remove institute from the list of past institutes
 						if(pastInstitutes.containsKey(instituteId))
 							pastInstitutes.remove(instituteId);
@@ -1144,15 +1191,20 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 						if(currentInstitutes.containsKey(instituteId))
 						{
 							// Institute is already in the list
-							// Get the old InstituteInfo from the list of current institutes
-							instituteInfo = currentInstitutes.get(instituteId);
 							
-							// If bookmarked, set the flag
+							// If bookmarked,
+							// get the former institute info object from the map
+							// and set the bookmark flag to true,
+							// regardless of its former value
 							// (If not, leave the flag as it is,
 							// because it might have been marked
 							// as bookmarked in another iteration)
 							if(bookmarked == true)
+							{
+								// Get the old InstituteInfo from the list of current institutes
+								instituteInfo = currentInstitutes.get(instituteId);
 								instituteInfo.setBookmarked(true);
+							}
 						}
 						else
 						{
@@ -1177,7 +1229,10 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 			}
 			
 			
-			
+			/*
+			 * Adds a course to the data set and ensures
+			 * proper handling of the courses current/past state
+			 */
 			public void addCourse(Course course, boolean isCurrent)
 			{
 				// Convert entity to info object
@@ -1189,11 +1244,17 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 				
 					if(isCurrent == true)
 					{
+						// The course is current so it should
+						// appear only in the list of current courses
+						
+						// Remove the course from the list of past courses
 						if(pastCourses.containsKey(id))
 							pastCourses.remove(id);
 						
 						if(!currentCourses.containsKey(id))
 						{
+							// The course has not been added to the list of current courses yet
+							// Add it to the list
 							currentCourses.put(id, courseInfo);
 							
 							// Increase the counter of the current courses for the corresponding institute
