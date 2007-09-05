@@ -181,12 +181,16 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	/**
 	 * @see org.openuss.lecture.UniversityService#update(org.openuss.lecture.PeriodInfo)
 	 */
-	protected void handleUpdate(org.openuss.lecture.PeriodInfo period) throws java.lang.Exception {
+	protected void handleUpdate(org.openuss.lecture.PeriodInfo periodInfo) throws java.lang.Exception {
 
-		Validate.notNull(period, "UniversityService.handleUpdate - the Period cannot be null");
+		Validate.notNull(periodInfo, "UniversityService.handleUpdate - the Period cannot be null");
 
-		// Transform ValueObject into Entity
-		Period periodEntity = this.getPeriodDao().periodInfoToEntity(period);
+		// Check changes of University
+		University university = this.getUniversityDao().load(periodInfo.getUniversityId());
+		Period periodEntity = this.getPeriodDao().periodInfoToEntity(periodInfo);
+		if (!periodEntity.getUniversity().equals(university)) {
+			throw new DepartmentServiceException("UniversityService.handleUpdate - The University can not be changed.");
+		}
 
 		// Update Entity
 		this.getPeriodDao().update(periodEntity);
