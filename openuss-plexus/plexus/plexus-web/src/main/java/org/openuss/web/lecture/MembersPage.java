@@ -3,6 +3,7 @@ package org.openuss.web.lecture;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -21,11 +22,13 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.InstituteGroup;
 import org.openuss.lecture.InstituteMember;
 import org.openuss.lecture.InstituteSecurity;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.OrganisationService;
+import org.openuss.security.Group;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
@@ -130,7 +133,28 @@ public class MembersPage extends AbstractLecturePage {
 	public String removeMember() throws LectureException {
 		logger.debug("remove member");
 		InstituteMember member = members.getRowData();
-		organisationService.removeMember(instituteInfo.getId(),member.getId() );
+		
+		try{
+			organisationService.removeMember(instituteInfo.getId(),member.getId() );}
+		catch (Exception iae) {
+			addError(i18n("auth_message_error_removed_member"));
+			return Constants.SUCCESS;
+		}
+
+			
+		Iterator<InstituteGroup> iter = member.getGroups().iterator();
+		InstituteGroup group;
+	
+		while (iter.hasNext()){
+			group=iter.next();
+			try{
+			organisationService.removeUserFromGroup(member.getId(),group.getId());}
+			catch(Exception e){
+				addError(i18n(e.getMessage()));
+			}
+		}
+		
+
 		addMessage(i18n("institute_auth_message_removed_member",new Object[]{member.getFirstName(),member.getLastName(),member.getUsername()}));
 		return Constants.SUCCESS;
 	}

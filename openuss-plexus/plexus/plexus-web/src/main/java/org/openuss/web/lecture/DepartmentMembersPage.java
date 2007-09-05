@@ -93,15 +93,25 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		  logger.debug(member.getUsername());
 		  logger.debug("removeUserFromGroup");
 		  logger.debug(departmentGroups.get(0).getName());
+		  
+		  //remove an user from an organisation
 		  try{
-		  organisationService.removeUserFromGroup(member.getId(),departmentGroups.get(0).getId());
-		  organisationService.removeMember(departmentInfo.getId(), member.getId());
-		  organisationService.removeUserFromGroup(member.getId(), departmentGroups.get(0).getId());
-		  organisationService.removeMember(departmentInfo.getId(), member.getId());
-		  }catch(Exception e){;}
-		  logger.debug("return");
+			  organisationService.removeMember(departmentInfo.getId(), member.getId());
+			  }
+		  catch(Exception e){
+			  		addError(i18n("auth_message_error_removed_member"));
+					return Constants.SUCCESS;
+			  }
+		// remove an user from all his groups  
+		  try{
+			  organisationService.removeUserFromGroup(member.getId(),departmentGroups.get(0).getId());
+		  }
+		  catch(Exception e){
+				addError(i18n(e.getMessage()));
+				return Constants.SUCCESS;
+		  }
+		  		  
 		  return Constants.SUCCESS;
-		 
 		
 	}
 

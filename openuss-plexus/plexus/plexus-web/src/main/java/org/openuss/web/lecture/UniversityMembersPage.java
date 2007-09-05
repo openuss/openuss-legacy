@@ -95,12 +95,24 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 		  logger.debug(member.getUsername());
 		  logger.debug("removeUserFromGroup");
 		  logger.debug(universityGroups.get(0).getName());
+		  //remove an user from an organisation
 		  try{
-		  organisationService.removeUserFromGroup(member.getId(),universityGroups.get(0).getId());
-		  organisationService.removeMember(universityInfo.getId(), member.getId());
-		  logger.debug("return");}
-		  catch(Exception e){;}
-		  
+			  organisationService.removeMember(universityInfo.getId(), member.getId());
+			  }
+
+		  catch(Exception e){
+			  		addError(i18n("auth_message_error_removed_member"));
+					return Constants.SUCCESS;
+			  }
+		// remove an user from all his groups  
+		  try{
+			  organisationService.removeUserFromGroup(member.getId(),universityGroups.get(0).getId());
+		  }
+		  catch(Exception e){
+				addError(i18n(e.getMessage()));
+				return Constants.SUCCESS;
+		  }
+		  		  
 		  return Constants.SUCCESS;
 		 
 		
