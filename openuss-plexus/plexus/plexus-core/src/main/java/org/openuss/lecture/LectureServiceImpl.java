@@ -70,30 +70,6 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	@Override
-	protected boolean handleIsNoneExistingInstituteShortcut(Institute self, String shortcut) throws Exception {
-		Institute found = getInstituteDao().findByShortcut(shortcut);
-		return isEqualOrNull(self, found);
-	}
-
-	@Override
-	protected boolean handleIsNoneExistingCourseShortcut(Course self, String shortcut) throws Exception {
-		Course found = getCourseDao().findByShortcut(shortcut);
-		return isEqualOrNull(self, found);
-	}
-
-	@Override
-	protected boolean handleIsNoneExistingCourseTypeShortcut(CourseType self, String shortcut) throws Exception {
-		CourseType found = getCourseTypeDao().findByShortcut(shortcut);
-		return isEqualOrNull(self, found);
-	}
-
-	@Override
-	protected boolean handleIsNoneExistingCourseTypeName(CourseType self, String name) throws Exception {
-		CourseType found = getCourseTypeDao().findByName(name);
-		return isEqualOrNull(self, found);
-	}
-
-	@Override
 	protected Institute handleAdd(Long instituteId, CourseType courseType) throws Exception {
 		if (logger.isDebugEnabled())
 			logger.debug("Add CourseType " + courseType.getName() + " from institute " + instituteId);

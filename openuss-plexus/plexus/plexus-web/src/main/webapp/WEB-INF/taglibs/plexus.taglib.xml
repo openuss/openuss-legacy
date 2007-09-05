@@ -52,10 +52,4 @@
 		<source>../facelets/news/newsItemDetail.xhtml</source>
 	</tag>	
 	
-	<tag>
-        <tag-name>validateCourseTypeShortcut</tag-name>
-        <validator>
-            <validator-id>org.openuss.web.lecture.validators.CourseTypeShortcutValidator</validator-id>
-        </validator>
-    </tag>
 </facelet-taglib>
