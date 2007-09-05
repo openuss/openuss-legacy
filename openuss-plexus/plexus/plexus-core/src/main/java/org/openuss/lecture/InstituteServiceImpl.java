@@ -128,8 +128,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 
 		// Check changes of Department
 		Department department = this.getDepartmentDao().load(instituteInfo.getDepartmentId());
-		Institute instituteEntity = this.getInstituteDao().load(instituteInfo.getId());
-		if (!instituteEntity.getDepartment().equals(department)) {
+		Institute instituteOld = this.getInstituteDao().load(instituteInfo.getId());
+		if (!instituteOld.getDepartment().equals(department)) {
 			throw new InstituteServiceException("The department can not be changed. You have to apply first.");
 		}
 

@@ -191,16 +191,15 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> BEGIN access to update(Period) test");
 
 		// Create a default Period
-		University university = testUtility.createUniqueUniversityInDB();
-		Period period = testUtility.createUniquePeriodInDB(university);
+		Period period = testUtility.createUniquePeriodInDB();
 		assertNotNull(period.getId());
 
 		// Create new PeriodInfo object
 		PeriodInfo periodInfo = new PeriodInfo();
 		periodInfo.setId(period.getId());
+		periodInfo.setUniversityId(period.getUniversity().getId());
 		periodInfo.setName(testUtility.unique("testPeriod"));
 		periodInfo.setDescription("This is a test Period at " + testUtility.unique("time"));
-		periodInfo.setUniversityId(testUtility.createUniqueUniversityInDB().getId());
 		periodInfo.setStartdate(new Date(new GregorianCalendar(2008, 4, 1).getTimeInMillis()));
 		periodInfo.setEnddate(new Date(new GregorianCalendar(2008, 9, 30).getTimeInMillis()));
 
@@ -208,7 +207,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertTrue(periodInfo.getId().longValue() == period.getId().longValue());
 		assertFalse(periodInfo.getName().compareTo(period.getName()) == 0);
 		assertFalse(periodInfo.getDescription().compareTo(period.getDescription()) == 0);
-		assertFalse(periodInfo.getUniversityId().longValue() == period.getUniversity().getId().longValue());
+		assertTrue(periodInfo.getUniversityId().longValue() == period.getUniversity().getId().longValue());
 		assertFalse(periodInfo.getStartdate().getTime() == period.getStartdate().getTime());
 		assertFalse(periodInfo.getEnddate().getTime() == period.getEnddate().getTime());
 

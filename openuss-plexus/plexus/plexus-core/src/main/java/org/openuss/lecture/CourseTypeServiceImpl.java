@@ -116,13 +116,16 @@ public class CourseTypeServiceImpl extends org.openuss.lecture.CourseTypeService
 
 		// Check changes of Institute
 		Institute institute = this.getInstituteDao().load(courseTypeInfo.getInstituteId());
-		CourseType courseType = this.getCourseTypeDao().courseTypeInfoToEntity(courseTypeInfo);
-		if (!courseType.getInstitute().equals(institute)) {
+		CourseType courseTypeOld = this.getCourseTypeDao().load(courseTypeInfo.getId());
+		if (!courseTypeOld.getInstitute().equals(institute)) {
 			throw new DepartmentServiceException("CourseTypeServiceImpl.handleUpdate - The Institute cannot be changed.");
 		}
 
-		// TODO: Should it be able to set new institute of courseType???
-		this.getCourseTypeDao().update(courseType);
+		// Transform VO to Entity
+		CourseType courseTypeEntity = this.getCourseTypeDao().courseTypeInfoToEntity(courseTypeInfo);
+		
+		// Update CourseType
+		this.getCourseTypeDao().update(courseTypeEntity);
 
 	}
 

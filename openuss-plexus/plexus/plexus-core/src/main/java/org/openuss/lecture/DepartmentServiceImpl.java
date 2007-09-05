@@ -92,11 +92,14 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		// Check changes of University
 		University university = this.getUniversityDao().load(departmentInfo.getUniversityId());
-		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(departmentInfo);
-		if (!departmentEntity.getUniversity().equals(university)) {
+		Department departmentOld = this.getDepartmentDao().load(departmentInfo.getId());
+		if (!departmentOld.getUniversity().equals(university)) {
 			throw new DepartmentServiceException("DepartmentService.handleUpdate - The University can not be changed.");
 		}
 
+		// Transform VO to Entity
+		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(departmentInfo);
+		
 		// Update department
 		this.getDepartmentDao().update(departmentEntity);
 	}

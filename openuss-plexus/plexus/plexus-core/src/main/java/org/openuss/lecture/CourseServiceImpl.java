@@ -331,37 +331,30 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	protected void handleUpdateCourse(CourseInfo courseInfo) throws Exception {
 		logger.debug("Starting method handleUpdateCourse");
 		Validate.notNull(courseInfo, "CourseService.updateCourse - Parameter course must not be null.");
-		Validate.notNull(courseInfo.getId(), "CourseService.updateCourse - Parameter course must contain a valid course id.");
+		Validate.notNull(courseInfo.getId(),
+				"CourseService.updateCourse - Parameter course must contain a valid course id.");
 
 		// Check changes of CourseType
 		CourseType courseType = this.getCourseTypeDao().load(courseInfo.getCourseTypeId());
-		Course course = getCourseDao().courseInfoToEntity(courseInfo);
-		if (!course.getCourseType().equals(courseType)) {
+		Course courseOld = getCourseDao().load(courseInfo.getId());
+		if (!courseOld.getCourseType().equals(courseType)) {
 			throw new CourseServiceException("CourseService.updateCourse - The CourseType cannot be changed.");
 		}
-		
+
 		// Check changes of Period
 		Period period = this.getPeriodDao().load(courseInfo.getPeriodId());
-		if (!course.getPeriod().equals(period)) {
+		if (!courseOld.getPeriod().equals(period)) {
 			throw new CourseServiceException("CourseService.updateCourse - The Period cannot be changed.");
 		}
-		
-		// Check period
-		Validate.notNull(course.getPeriod(),
-				"CourseService.updateCourse - A Course must be associated with a valid period.");
 
-		// Check CourseType
-		Validate.notNull(course.getCourseType(),
-				"CourseService.updateCourse - A Course must be associated with a valid courseType.");
-
-		// Check Institute
-		Validate.notNull(course.getCourseType().getInstitute(), "CourseService.updateCourse - "
-				+ "The CourseType of a Course must be associated with a valid institute.");
+		// Transform VO to Entity
+		Course courseEntity = getCourseDao().courseInfoToEntity(courseInfo);
 
 		// Update Rights
-		updateAccessTypePermission(course);
+		updateAccessTypePermission(courseEntity);
 
-		getCourseDao().update(course);
+		// Update Course
+		getCourseDao().update(courseEntity);
 
 	}
 
