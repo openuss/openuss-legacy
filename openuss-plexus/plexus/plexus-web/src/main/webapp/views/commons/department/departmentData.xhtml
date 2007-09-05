@@ -7,6 +7,7 @@
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:c="http://java.sun.com/jstl/core"
       xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"
       >
       
 
@@ -15,18 +16,17 @@
 		<f:validator validatorId="departmentShortcutValidator"/>
 	</o:input>
 	
-	
-	<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" 
-	rendered="#{ user.username=='admin'}" />
-	<h:selectOneListbox id="department_preferences_university" size="1" styleClass="pulldown" value="#{departmentInfo.universityId}"
-	rendered="#{ user.username=='admin'}" >
+	<s:authorize ifAllGranted="ROLE_ADMIN">
+	<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" />
+	<h:selectOneListbox id="department_preferences_university" size="1" styleClass="pulldown" value="#{departmentInfo.universityId}">
 	    <f:selectItems value="#{departmentRegistration.allUniversities}"/>
 	   	<f:validator validatorId="universityDepartmentSelectValidator"/>
 	</h:selectOneListbox>
+	</s:authorize>
 	
-	
+	<s:authorize ifNotGranted="ROLE_ADMIN">
 	<o:input entity="universityInfo" property="name"  disabled ="true" rendered="#{!(user.username=='admin')}"/>
-	
+	</s:authorize>
 	
 	<h:outputLabel value="#{msg.department_preferences_department}" for="departmentTypeSelect" styleClass="field_label" />
 	<h:selectOneListbox id="department_preferences_department" size="1" styleClass="pulldown" value="#{departmentInfo.departmentType}">
