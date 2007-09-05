@@ -100,7 +100,12 @@ public class DepartmentIndexer extends DomainIndexer {
 		
 		StringBuilder details = new StringBuilder();
 		
-		details.append(resourceBundle.getString("university")+":"+SPACE+StringUtils.trimToEmpty(department.getUniversity().getName()+NEWLINE));
+		details.append(resourceBundle.getString("university")+":"+SPACE+StringUtils.trimToEmpty(department.getUniversity().getName()+SPACE));
+		if(department.getDepartmentType().equals(DepartmentType.OFFICIAL)){
+			details.append("("+resourceBundle.getString("official_department"+NEWLINE)+")");
+		} else {
+			details.append("("+resourceBundle.getString("inofficial_department"+NEWLINE)+")");
+		}
 		details.append(NEWLINE);
 		
 		details.append(StringUtils.trimToEmpty(StringUtils.abbreviate(department.getDescription(), 200)));
