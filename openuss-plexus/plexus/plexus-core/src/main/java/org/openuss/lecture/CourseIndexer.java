@@ -106,15 +106,11 @@ public class CourseIndexer extends DomainIndexer {
 	}
 	
 	private String details(final Course course) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		ResourceBundle resourceBundle = ResourceBundle.getBundle(
-				context.getApplication().getMessageBundle(), 
-				context.getViewRoot().getLocale());
 		StringBuilder details = new StringBuilder();
 		
-		details.append(resourceBundle.getString("university")+":"+SPACE+StringUtils.trimToEmpty(course.getCourseType().getInstitute().getDepartment().getUniversity().getName()+NEWLINE));
-		details.append(resourceBundle.getString("department")+":"+SPACE+StringUtils.trimToEmpty(course.getCourseType().getInstitute().getDepartment().getName()+NEWLINE));
-		details.append(resourceBundle.getString("institute")+":"+SPACE+StringUtils.trimToEmpty(course.getCourseType().getInstitute().getName()+NEWLINE));
+		details.append(StringUtils.trimToEmpty(course.getCourseType().getInstitute().getDepartment().getUniversity().getName()+NEWLINE));
+		details.append(StringUtils.trimToEmpty(course.getCourseType().getInstitute().getDepartment().getName()+NEWLINE));
+		details.append(StringUtils.trimToEmpty(course.getCourseType().getInstitute().getName()+NEWLINE));
 		details.append(NEWLINE);
 		
 		details.append(StringUtils.trimToEmpty(StringUtils.abbreviate(course.getDescription(), 200)));

@@ -94,16 +94,12 @@ public class InstituteIndexer extends DomainIndexer {
 	}
 	
 	private String details(final Institute institute) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		ResourceBundle resourceBundle = ResourceBundle.getBundle(
-				context.getApplication().getMessageBundle(), 
-				context.getViewRoot().getLocale());
 		
 		StringBuilder details = new StringBuilder();
 		
-		details.append(resourceBundle.getString("university")+":"+SPACE+StringUtils.trimToEmpty(institute.getDepartment().getUniversity().getName()+NEWLINE));
-		details.append(resourceBundle.getString("department")+":"+SPACE+StringUtils.trimToEmpty(institute.getDepartment().getName()+NEWLINE));
-		details.append(resourceBundle.getString("institute_owner")+":"+SPACE+institute.getOwnerName()+NEWLINE);
+		details.append(StringUtils.trimToEmpty(institute.getDepartment().getUniversity().getName()+NEWLINE));
+		details.append(StringUtils.trimToEmpty(institute.getDepartment().getName()+NEWLINE));
+		details.append(StringUtils.trimToEmpty(institute.getOwnerName()+NEWLINE));
 		details.append(NEWLINE);
 		
 		details.append(StringUtils.trimToEmpty(StringUtils.abbreviate(institute.getDescription(), 200)));

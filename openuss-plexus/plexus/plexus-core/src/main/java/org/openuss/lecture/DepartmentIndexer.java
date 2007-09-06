@@ -93,18 +93,14 @@ public class DepartmentIndexer extends DomainIndexer {
 	}
 	
 	private String details(final Department department) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		ResourceBundle resourceBundle = ResourceBundle.getBundle(
-				context.getApplication().getMessageBundle(), 
-				context.getViewRoot().getLocale());
 		
 		StringBuilder details = new StringBuilder();
 		
-		details.append(resourceBundle.getString("university")+":"+SPACE+StringUtils.trimToEmpty(department.getUniversity().getName()+SPACE));
+		details.append(StringUtils.trimToEmpty(department.getUniversity().getName()+SPACE));
 		if(department.getDepartmentType().equals(DepartmentType.OFFICIAL)){
-			details.append("("+resourceBundle.getString("official_department"+NEWLINE)+")");
+			details.append("(offizieller Fachbereich)"+NEWLINE);
 		} else {
-			details.append("("+resourceBundle.getString("inofficial_department"+NEWLINE)+")");
+			details.append("(inoffizieller Fachbereich)"+NEWLINE);
 		}
 		details.append(NEWLINE);
 		
