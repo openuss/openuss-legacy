@@ -244,6 +244,10 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	}
 	
 	public String getPendingApplicationInfo(){
+		// abort, when there is no instituteId set
+		if(instituteInfo == null || instituteInfo.getId() == null){
+			return null;
+		}
 		// check whether there is a pending application request
 		ApplicationInfo pendingApplication = instituteService.findApplicationByInstituteAndConfirmed(instituteInfo.getId(), false);
 		String appStatusDescription = "";
