@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
+import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
@@ -52,11 +55,16 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	
 	private List<SelectItem> departmentItems;
 
-	private List<DepartmentInfo> allDepartments;
+	private List<DepartmentInfo> allEnabledDepartments;
+	private List<DepartmentInfo> allDisabledDepartments;
 	
 	private ApplicationInfo applicationInfo = new ApplicationInfo();
 	
 	private Long departmentId;
+	
+	private ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
+	private String locale = (String)binding.getValue(getFacesContext());
+	private ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
 	
 	@Prerender
 	public void prerender() throws LectureException {
@@ -156,9 +164,10 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		return universityInfo.getId();
 	}
 	
+	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getAllDepartments(){
-		
-		// set departmentId according to the current department selection
+			
+		//set departmentId according to the current department selection
 		departmentId = instituteInfo.getDepartmentId();
 		
 		// get a list of the associated university's departments 
@@ -166,25 +175,66 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		// departments of the currently associated university must be displayed) 
 		Long universityId = getUniversityId();
 		logger.debug("getting departments for university:"+universityId);
-		allDepartments = departmentService.findDepartmentsByUniversity(universityId);
+
+		allEnabledDepartments = departmentService.findDepartmentsByUniversityAndEnabled(universityId, true);
+		allDisabledDepartments = departmentService.findDepartmentsByUniversityAndEnabled(universityId, false);
+		
 		departmentItems = new ArrayList<SelectItem>();
-		Iterator<DepartmentInfo> iter = allDepartments.iterator();
-		DepartmentInfo department;
-		SelectItem item;
-		while (iter.hasNext()){
-			department = iter.next();
-//			// if there is a pending application request for another department, 
-//			// then show a hint next to the combo box entry for the currently associated department   
-//			if (pendingApplication != null && department.getId().equals(departmentId)){
-//				item = new SelectItem(department.getId(), department.getName()+ appStatusDescription);
-//			} else {
-				item = new SelectItem(department.getId(), department.getName());
-//			}
+		
+		Iterator<DepartmentInfo> iterEnabled =  allEnabledDepartments.iterator();
+		DepartmentInfo departmentEnabled;
+		
+		if (iterEnabled.hasNext()) {
+			SelectItem item = new SelectItem(Constants.DEPARTMENTS_ENABLED,bundle.getString("departments_enabled"));
 			departmentItems.add(item);
+		}
+		while (iterEnabled.hasNext()) {
+			departmentEnabled = iterEnabled.next();
+			// if there is a pending application request for another department, 
+			// then show a hint next to the combo box entry for the currently associated department   
+			// if (pendingApplication != null && department.getId().equals(departmentId)){
+			//		item = new SelectItem(department.getId(), department.getName()+ appStatusDescription);
+			//	} else {
+			if(departmentEnabled.getDepartmentType().getValue() == 0) {
+				SelectItem item = new SelectItem(departmentEnabled.getId(),departmentEnabled.getName()+" - ("+bundle.getString("departmenttype_official")+")");
+				departmentItems.add(item);
+			} else if(departmentEnabled.getDepartmentType().getValue() == 1) {
+				SelectItem item = new SelectItem(departmentEnabled.getId(),departmentEnabled.getName()+" - ("+bundle.getString("departmenttype_non_offical")+")");
+				departmentItems.add(item);
+			} else {
+				// do nothing
+			}
+			
+		}
+		
+		Iterator<DepartmentInfo> iterDisabled = allDisabledDepartments.iterator();
+		DepartmentInfo departmentDisabled;
+		
+		if (iterDisabled.hasNext()) {
+			SelectItem item = new SelectItem(Constants.DEPARTMENTS_DISABLED,bundle.getString("departments_disabled"));
+			departmentItems.add(item);
+		}
+		while (iterDisabled.hasNext()){
+			departmentDisabled = iterDisabled.next();
+			// if there is a pending application request for another department, 
+			// then show a hint next to the combo box entry for the currently associated department   
+			//	if (pendingApplication != null && department.getId().equals(departmentId)){
+			//		item = new SelectItem(department.getId(), department.getName()+ appStatusDescription);
+			//	} else {
+			if(departmentDisabled.getDepartmentType().getValue() == 0) {
+				SelectItem item = new SelectItem(departmentDisabled.getId(),departmentDisabled.getName()+" - ("+bundle.getString("departmenttype_official")+")");
+				departmentItems.add(item);
+			} else if(departmentDisabled.getDepartmentType().getValue() == 1) {
+				SelectItem item = new SelectItem(departmentDisabled.getId(),departmentDisabled.getName()+" - ("+bundle.getString("departmenttype_non_offical")+")");
+				departmentItems.add(item);
+			} else {
+				// do nothing
+			}
 		}
 		
 		return departmentItems;
 	}
+	
 	
 	private void apply(){
 		logger.debug("entering apply method (backing bean)");
