@@ -38,10 +38,15 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 
 	public void testLectureIndex() throws Exception {
 	 
-		// create dummy user
-		User user = testUtility.createSecureContext();
-		// create dummy institute info
+		// create User
+		User user = testUtility.createUniqueUserInDB();
+		
+		// Create Department
+		Department department = testUtility.createUniqueDepartmentInDB();
+		
+		// create Institute info
 		InstituteInfo info = new InstituteInfo(null,"The Superb Institute","TSI","Institute Owner xyz","Germany",false);
+		info.setDepartmentId(department.getId());
 		
 		Long instituteId = instituteService.create(info, user.getId());
 		

@@ -107,17 +107,13 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	public void testUpdateCourse () {
 		logger.debug("----> BEGIN access to updateCourse test <---- ");
 		
-		// Create Course
-		Course course = testUtility.createUniqueCourseInDB();
-		assertNotNull(course);
-		
-		// Create CourseType
-		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
-		assertNotNull(courseType);
-		
 		// Create Period
 		Period period = testUtility.createUniquePeriodInDB();
 		assertNotNull(period);
+		
+		// Create Course
+		Course course = testUtility.createUniqueCourseInDB();
+		assertNotNull(course);
 		
 		// Synchronize with DB
 		flush();
@@ -129,10 +125,10 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		courseInfo.setShortcut(testUtility.unique("course"));
 		courseInfo.setDescription(testUtility.unique("description"));
 		courseInfo.setPassword(testUtility.unique("password"));
-		courseInfo.setCourseTypeId(courseType.getId());
-		courseInfo.setCourseTypeDescription(courseType.getDescription());
-		courseInfo.setPeriodId(period.getId());
-		courseInfo.setPeriodName(period.getName());
+		courseInfo.setCourseTypeId(course.getCourseType().getId());
+		courseInfo.setCourseTypeDescription(course.getCourseType().getDescription());
+		courseInfo.setPeriodId(course.getPeriod().getId());
+		courseInfo.setPeriodName(course.getPeriod().getName());
 		courseInfo.setAccessType(AccessType.OPEN);
 		courseInfo.setBraincontest(true);
 		courseInfo.setChat(true);

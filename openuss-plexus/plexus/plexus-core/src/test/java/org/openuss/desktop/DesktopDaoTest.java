@@ -117,14 +117,7 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 	@SuppressWarnings( { "unchecked" })
 	public void testFindByCourse() {
 		// create courses
-		Course course = lectureBuilder
-			.createInstitute(testUtility.createDefaultUserInDB())
-			.addPeriod()
-			.addCourseType()
-			.addCourse()
-			.persist()
-			.getCourse();
-		commit();
+		Course course = testUtility.createUniqueCourseInDB();
 		
 		// create desktops
 		Desktop desktopOne = createDesktop();
@@ -149,10 +142,6 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		removeDesktopAndUser(desktopThree);
 		removeDesktopAndUser(desktopTwo);
 		removeDesktopAndUser(desktopOne);
-		commit();
-		
-		lectureBuilder.remove();
-		testUtility.removeUser();
 		commit();
 	}
 
