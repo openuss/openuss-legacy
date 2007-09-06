@@ -112,6 +112,10 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 			uploadFileManager.removeDocument(uploaded);
 		}
 		
+		// save actual institute data
+		instituteService.update(instituteInfo);
+		addMessage(i18n("institute_message_command_save_succeed"));
+		
 		// start department application process if a department is selected 
 		// which differs from the current one 
 		if (!departmentId.equals(departmentInfo.getId())){
@@ -124,12 +128,6 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 				this.apply();
 			}
 		}
-		
-		// save actual institute data
-		instituteService.update(instituteInfo);
-		addMessage(i18n("institute_message_command_save_succeed"));
-		
-		
 		
 		return Constants.SUCCESS;
 	}
