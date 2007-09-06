@@ -116,7 +116,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Department department = this.getDepartmentDao().load(instituteInfo.getDepartmentId());
 		Institute instituteOld = this.getInstituteDao().load(instituteInfo.getId());
 		if (!instituteOld.getDepartment().equals(department)) {
-			throw new InstituteServiceException("The department can not be changed. You have to apply first.");
+			logger.debug("The department can not be changed. You have to apply first.");
+			instituteInfo.setDepartmentId(instituteOld.getDepartment().getId());
 		}
 
 		// Transform ValueObject into Entity

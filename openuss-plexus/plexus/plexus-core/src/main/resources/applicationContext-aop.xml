@@ -24,33 +24,38 @@
 			expression="execution(* org..UniversityServiceBase.createUniversity(org.openuss.lecture.UniversityInfo, java.lang.Long)) and args(universityInfo, userId)" />
 		<aop:pointcut id="UniversityServiceDeletePointcut"
 			expression="execution(* org..UniversityServiceBase.removeUniversity(java.lang.Long)) and args(universityId)" />
-		<aop:pointcut id="UniversityServiceDeleteCompleteUniversityTreePointcut"
+		<aop:pointcut
+			id="UniversityServiceDeleteCompleteUniversityTreePointcut"
 			expression="execution(* org..UniversityServiceBase.removeCompleteUniversityTree(java.lang.Long)) and args(universityId)" />
 		<aop:pointcut id="UniversityServiceUpdatePointcut"
 			expression="execution(* org..UniversityServiceBase.update(org.openuss.lecture.UniversityInfo)) and args(universityInfo)" />
 		<aop:pointcut id="UniversityServiceSetStatusPointcut"
 			expression="execution(* org..UniversityServiceBase.setUniversityStatus(java.lang.Long, boolean)) and args(universityId, status)" />
-		
+
 		<aop:pointcut id="DepartmentServiceCreatePointcut"
 			expression="execution(* org..DepartmentServiceBase.create(org.openuss.lecture.DepartmentInfo, java.lang.Long)) and args(departmentInfo, userId)" />
 		<aop:pointcut id="DepartmentServiceDeletePointcut"
 			expression="execution(* org..DepartmentServiceBase.removeDepartment(java.lang.Long)) and args(departmentId)" />
-		<aop:pointcut id="DepartmentServiceDeleteCompleteDepartmentTreePointcut"
+		<aop:pointcut
+			id="DepartmentServiceDeleteCompleteDepartmentTreePointcut"
 			expression="execution(* org..DepartmentServiceBase.removeCompleteDepartmentTree(java.lang.Long)) and args(departmentId)" />
-		<aop:pointcut id="DepartmentServiceAcceptInstituteApplicationPointcut"
+		<aop:pointcut
+			id="DepartmentServiceAcceptInstituteApplicationPointcut"
 			expression="execution(* org..DepartmentServiceBase.acceptApplication(java.lang.Long, java.lang.Long)) and args(applicationId, userId)" />
-		<aop:pointcut id="DepartmentServiceRejectInstituteApplicationPointcut"
-			expression="execution(* org..DepartmentServiceBase.rejectApplication(java.lang.Long, java.lang.Long)) and args(applicationId, userId)" />			
+		<aop:pointcut
+			id="DepartmentServiceRejectInstituteApplicationPointcut"
+			expression="execution(* org..DepartmentServiceBase.rejectApplication(java.lang.Long, java.lang.Long)) and args(applicationId, userId)" />
 		<aop:pointcut id="DepartmentServiceUpdatePointcut"
 			expression="execution(* org..DepartmentServiceBase.update(org.openuss.lecture.DepartmentInfo)) and args(departmentInfo)" />
 		<aop:pointcut id="DepartmentServiceSetStatusPointcut"
 			expression="execution(* org..DepartmentServiceBase.setDepartmentStatus(java.lang.Long, boolean)) and args(departmentId, status)" />
-		
+
 		<aop:pointcut id="InstituteServiceCreatePointcut"
 			expression="execution(* org..InstituteServiceBase.create(org.openuss.lecture.InstituteInfo, java.lang.Long)) and args(instituteInfo, userId)" />
 		<aop:pointcut id="InstituteServiceDeletePointcut"
 			expression="execution(* org..InstituteServiceBase.removeInstitute(java.lang.Long)) and args(instituteId)" />
-		<aop:pointcut id="InstituteServiceDeleteCompleteInstituteTreePointcut"
+		<aop:pointcut
+			id="InstituteServiceDeleteCompleteInstituteTreePointcut"
 			expression="execution(* org..InstituteServiceBase.removeCompleteInstituteTree(java.lang.Long)) and args(instituteId)" />
 		<aop:pointcut id="InstituteServiceApplyAtDepartmentPointcut"
 			expression="execution(* org..InstituteServiceBase.applyAtDepartment(org.openuss.lecture.ApplicationInfo)) and args(applicationInfo)" />
@@ -64,8 +69,8 @@
 			expression="execution(* org..InstituteServiceBase.setInstituteStatus(java.lang.Long, boolean)) and args(instituteId, status)" />
 
 		<aop:pointcut id="CourseTypeServiceRemoveCourseTypePointcut"
-			expression="execution(* org..CourseTypeServiceBase.removeCourseType(java.lang.Long)) and args(courseTypeId)" />		
-		
+			expression="execution(* org..CourseTypeServiceBase.removeCourseType(java.lang.Long)) and args(courseTypeId)" />
+
 		<aop:pointcut id="CourseServiceCreatePointcut"
 			expression="execution(* org..CourseServiceBase.create(org.openuss.lecture.CourseInfo)) and args(courseInfo)" />
 		<aop:pointcut id="CourseServiceDeletePointcut"
@@ -74,14 +79,15 @@
 			expression="execution(* org..CourseServiceBase.updateCourse(org.openuss.lecture.CourseInfo)) and args(courseInfo)" />
 		<aop:pointcut id="CourseServiceUpdateOnPeriodPointcut"
 			expression="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Period)) and args(period)" />
- 
+
 		<!-- Aspect Definitions -->
 		<aop:aspect id="applicationConfirmationAspect"
 			ref="applicationConfirmationAspectBean">
 			<aop:after-returning
 				method="checkApplicationForConfirmation"
 				pointcut-ref="InstituteServiceApplyAtDepartmentPointcut2"
-				arg-names="applicationId, instituteId, departmentId, userId" returning="applicationId"/>
+				arg-names="applicationId, instituteId, departmentId, userId"
+				returning="applicationId" />
 		</aop:aspect>
 
 
@@ -188,8 +194,7 @@
 			<aop:before method="removeInstituteCodes"
 				pointcut-ref="InstituteServiceDeletePointcut"
 				arg-names="instituteId" />
-			<aop:before 
-				method="removeInstituteCodes"
+			<aop:before method="removeInstituteCodes"
 				pointcut-ref="InstituteServiceDeleteCompleteInstituteTreePointcut"
 				arg-names="instituteId" />
 		</aop:aspect>
@@ -238,14 +243,16 @@
 				pointcut-ref="InstituteServiceSetStatusPointcut"
 				arg-names="instituteId, status" />
 			<aop:after-returning method="deleteInstituteIndex"
-				pointcut-ref="InstituteServiceDeletePointcut" arg-names="instituteId" />
+				pointcut-ref="InstituteServiceDeletePointcut"
+				arg-names="instituteId" />
 		</aop:aspect>
 
 		<aop:aspect id="courseIndexAspect"
 			ref="courseIndexAspectBean">
 			<aop:after-returning
 				method="updateCourseIndexOnPeriodUpdate"
-				pointcut-ref="CourseServiceUpdateOnPeriodPointcut" arg-names="period" />
+				pointcut-ref="CourseServiceUpdateOnPeriodPointcut"
+				arg-names="period" />
 			<aop:after-returning method="createCourseIndex"
 				pointcut-ref="CourseServiceCreatePointcut" arg-names="courseInfo" />
 			<aop:after-returning method="updateCourseIndex"
@@ -281,7 +288,8 @@
 		class="org.openuss.aop.ApplicationConfirmationAspectImpl">
 		<property name="userDao" ref="userDao" />
 		<property name="applicationDao" ref="applicationDao" />
-		<property name="instituteService" ref="instituteService" />
+		<property name="departmentService" ref="departmentService" />
+		<property name="securityService" ref="securityService" />
 	</bean>
 
 	<bean id="aspirantMailSenderAspectBean"
