@@ -23,25 +23,16 @@ public class CourseMemberDaoTest extends CourseMemberDaoTestBase {
 	private TestUtility testUtility;
 	
 	public void testCourseMemberDaoCreate() {
-		LectureBuilder lectureBuilder = new LectureBuilder();
-		User owner = testUtility.createUserInDB();
-
-		lectureBuilder.createInstitute(owner)
-			.addCourseType()
-			.addPeriod()
-			.addCourse();
 		
-		Institute institute = lectureBuilder.getInstitute();
-		
-		instituteDao.create(institute);
+		User owner = testUtility.createUniqueUserInDB();
 		commit();
 		
-		User user = testUtility.createUserInDB();
-		Course course = lectureBuilder.getCourse();
+		User user = testUtility.createUniqueUserInDB();//createUserInDB();
+		Course course = testUtility.createUniqueCourseInDB();//lectureBuilder.getCourse();
 		
 		CourseMember emAspirant = createAspirant(user, course);
 		CourseMember emAssistant = createAssistant(owner, course);
-		CourseMember emParticipant = createParticipant(testUtility.createUserInDB(), course);
+		CourseMember emParticipant = createParticipant(testUtility.createUniqueUserInDB(), course);
 		
 		commit();
 		

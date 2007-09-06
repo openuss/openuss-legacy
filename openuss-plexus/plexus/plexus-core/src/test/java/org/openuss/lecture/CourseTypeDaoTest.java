@@ -42,7 +42,7 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 		
 		// associate courseType with institute
 		institute.add(courseType);
-		courseType.setInstitute(institute);
+		//courseType.setInstitute(institute);
 		
 		// persist
 		assertNull(courseType.getId());

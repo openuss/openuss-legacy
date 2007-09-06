@@ -90,26 +90,33 @@ public class InstituteDaoTest extends InstituteDaoTestBase {
 
 	@SuppressWarnings( { "unchecked" })
 	public void testInstituteDaoLoadAllEnabled() {
+		// Get count of current institutes
+		int enabledCount = this.getInstituteDao().findByEnabled(true).size();
+		int disabledCount = this.getInstituteDao().findByEnabled(false).size();
+		
 		// Create 3 Institutes
 		Institute institute1 = testUtility.createUniqueInstituteInDB();
 		institute1.setEnabled(true);
+		enabledCount++;
 		Institute institute2 = testUtility.createUniqueInstituteInDB();
 		institute2.setEnabled(true);
+		enabledCount++;
 		Institute institute3 = testUtility.createUniqueInstituteInDB();
 		institute3.setEnabled(false);
+		disabledCount++;
 
 		// Synchronize with Database
 		flush();
 
 		// Test
 		List institutesEnabled = this.instituteDao.findByEnabled(true);
-		assertEquals(2, institutesEnabled.size());
+		assertEquals(enabledCount, institutesEnabled.size());
 		assertTrue(institutesEnabled.contains(institute1));
 		assertTrue(institutesEnabled.contains(institute2));
 		assertFalse(institutesEnabled.contains(institute3));
 
 		List institutesDisabled = this.instituteDao.findByEnabled(false);
-		assertEquals(1, institutesDisabled.size());
+		assertEquals(disabledCount, institutesDisabled.size());
 		assertFalse(institutesDisabled.contains(institute1));
 		assertFalse(institutesDisabled.contains(institute2));
 		assertTrue(institutesDisabled.contains(institute3));

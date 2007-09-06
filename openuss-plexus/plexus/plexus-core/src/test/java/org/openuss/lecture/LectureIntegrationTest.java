@@ -18,9 +18,15 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 
 	private LectureService lectureService;
 	
+	private InstituteService instituteService;
+	
+	private InstituteDao instituteDao;
+	
 	private User user;
 
 	private Institute institute;
+	
+	private Department department;
 
 	public LectureIntegrationTest() {
 		setDefaultRollback(false);
@@ -28,13 +34,18 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 	
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
-		user = testUtility.createAdminSecureContext();
+		user = testUtility.createUniqueUserInDB();
 		commit();
-		
+		department = testUtility.createUniqueDepartmentInDB();
 		institute = LectureFactory.createInstitute();
+		institute.setDepartment(department);
+		
 		//institute.setOwner(user);
 		assertNull(institute.getId());
-		lectureService.createInstitute(institute);
+		//lectureService.createInstitute(institute);
+		instituteService.create(
+				this.getInstituteDao().toInstituteInfo(institute), 
+				user.getId());
 		commit();
 	}
 
@@ -248,4 +259,20 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		this.testUtility = testUtility;
 	}
 
+	public InstituteService getInstituteService() {
+		return instituteService;
+	}
+
+	public void setInstituteService(InstituteService instituteService) {
+		this.instituteService = instituteService;
+	}
+
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
+	}
+
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
+	}
+	
 }

@@ -6,6 +6,8 @@
 package org.openuss.lecture;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.acegisecurity.AccessDeniedException;
@@ -131,6 +133,12 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 	public void testRemoveCompleteDepartmentTree() {
 		logger.info("----> BEGIN access to remove(Department) test");
 
+		// Create User
+		User user = testUtility.createUniqueUserInDB();
+		
+		// Create Institute
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		
 		// Create department with Institutes, CourseTypes and Courses
 		Course course = testUtility.createUniqueCourseInDB();
 		Department department = course.getCourseType().getInstitute().getDepartment();
@@ -139,6 +147,17 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		University university = department.getUniversity();
 		assertNotNull(university);
 		int sizeBefore = university.getDepartments().size();
+		
+		// Create Application
+		Application application = new ApplicationImpl();
+		application.setApplicationDate(new Date(new GregorianCalendar(12, 07, 2006).getTimeInMillis()));
+		application.setApplyingUser(user);
+		application.setConfirmed(false);
+		application.setDepartment(department);
+		application.setInstitute(institute);
+		
+		department.getApplications().add(application);
+		institute.getApplications().add(application);
 		
 		flush();
 
