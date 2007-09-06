@@ -16,7 +16,6 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.lecture.DepartmentInfo;
-import org.openuss.lecture.DepartmentType;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.UniversityInfo;
@@ -44,11 +43,8 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 	
 	private List<SelectItem> departmentItems;
 
-	private List<DepartmentInfo> allDepartments;
 	private List<DepartmentInfo> allEnabledDepartments;
 	private List<DepartmentInfo> allDisabledDepartments;
-	
-	private DepartmentType departmentType;
 	
 	private ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
 	private String locale = (String)binding.getValue(getFacesContext());
@@ -113,7 +109,7 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 	}
 	
 	
-	
+	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getAllDepartments(){
 		departmentItems = new ArrayList<SelectItem>();
 		
@@ -136,10 +132,17 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		}
 		while (iterEnabled.hasNext()) {
 			departmentEnabled = iterEnabled.next();
-			SelectItem item = new SelectItem(departmentEnabled.getId(),departmentEnabled.getName());
-			departmentItems.add(item);
+			if(departmentEnabled.getDepartmentType().getValue() == 0) {
+				SelectItem item = new SelectItem(departmentEnabled.getId(),departmentEnabled.getName()+" - ("+bundle.getString("departmenttype_official")+")");
+				departmentItems.add(item);
+			} else if(departmentEnabled.getDepartmentType().getValue() == 1) {
+				SelectItem item = new SelectItem(departmentEnabled.getId(),departmentEnabled.getName()+" - ("+bundle.getString("departmenttype_non_offical")+")");
+				departmentItems.add(item);
+			} else {
+				// do nothing
+			}
+			
 		}
-		
 		
 		Iterator<DepartmentInfo> iterDisabled = allDisabledDepartments.iterator();
 		DepartmentInfo departmentDisabled;
@@ -150,8 +153,15 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		}
 		while (iterDisabled.hasNext()){
 			departmentDisabled = iterDisabled.next();
-			SelectItem item = new SelectItem(departmentDisabled.getId(), departmentDisabled.getName());
-			departmentItems.add(item);
+			if(departmentDisabled.getDepartmentType().getValue() == 0) {
+				SelectItem item = new SelectItem(departmentDisabled.getId(),departmentDisabled.getName()+" - ("+bundle.getString("departmenttype_official")+")");
+				departmentItems.add(item);
+			} else if(departmentDisabled.getDepartmentType().getValue() == 1) {
+				SelectItem item = new SelectItem(departmentDisabled.getId(),departmentDisabled.getName()+" - ("+bundle.getString("departmenttype_non_offical")+")");
+				departmentItems.add(item);
+			} else {
+				// do nothing
+			}
 		}
 		
 		return departmentItems;
