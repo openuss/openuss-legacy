@@ -1,11 +1,16 @@
 package org.openuss.aop;
 
+import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.userdetails.UserDetails;
 import org.apache.log4j.Logger;
+import org.openuss.lecture.Application;
 import org.openuss.lecture.ApplicationDao;
-import org.openuss.lecture.InstituteService;
+import org.openuss.lecture.Department;
+import org.openuss.lecture.DepartmentService;
+import org.openuss.security.SecurityService;
 import org.openuss.security.UserDao;
+import org.openuss.security.acl.LectureAclEntry;
 
 public class ApplicationConfirmationAspectImpl {
 
@@ -13,7 +18,8 @@ public class ApplicationConfirmationAspectImpl {
 
 	private UserDao userDao;
 	private ApplicationDao applicationDao;
-	private InstituteService instituteService;
+	private DepartmentService departmentService;
+	private SecurityService securityService;
 
 	public UserDao getUserDao() {
 		return userDao;
@@ -31,26 +37,59 @@ public class ApplicationConfirmationAspectImpl {
 		this.applicationDao = applicationDao;
 	}
 
-	public InstituteService getInstituteService() {
-		return instituteService;
+	public DepartmentService getDepartmentService() {
+		return departmentService;
 	}
 
-	public void setInstituteService(InstituteService instituteService) {
-		this.instituteService = instituteService;
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
 	}
 
 	public void checkApplicationForConfirmation(Object applicationId, Long instituteId, Long departmentId, Long userId) {
 		logger.debug("----------> Begin method checkApplicationForConfirmation <----------");
 		if ((applicationId != null) && (applicationId instanceof Long)) {
-			logger.debug("----------> Checking Confirmation for Application " + applicationId + " <----------");
+			logger.debug("--> Checking Confirmation for Application " + applicationId + " <--");
 
-			// Get User
-			try {
-				UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-				logger.debug("----------> User " + user.getUsername() + " identified <----------");
-			} catch (Exception e) {
-				;
+			// Check User ACL Admin Right for Department
+			Application application = applicationDao.load((Long) applicationId);
+			
+			if ((application != null) && (!application.isConfirmed())) {
+				Department department = application.getDepartment();
+				if (department != null) {
+					logger.debug("--> Alles OK <--");
+
+					boolean hasPermission = false;
+
+					try {
+						hasPermission = securityService.hasPermission(department,
+								new Integer[] { LectureAclEntry.INSTITUTE_ADMINISTRATION });
+					} catch (Exception e) {
+						logger.debug("--> Problems during Permission validation, skipping Confirmation <--");
+					}
+					if (hasPermission) {
+						logger.debug("--> User has Admin Permissions, starting Confirmation <--");
+						departmentService.acceptApplication((Long) applicationId, userId);
+					} else {
+						logger.debug("--> User has NO Admin Permissions, skipping Confirmation <--");
+					}
+
+				} else {
+					logger.debug("--> No Department found corresponding to the ApplicationID " + applicationId
+							+ ", skipping Confirmation <--");
+				}
+			} else {
+				logger.debug("--> No non-confirmed Application found corresponding to the ApplicationID " + applicationId
+						+ ", skipping Confirmation <--");
 			}
+
 		}
 
 		logger.debug("----------> End method checkApplicationForConfirmation <----------");
