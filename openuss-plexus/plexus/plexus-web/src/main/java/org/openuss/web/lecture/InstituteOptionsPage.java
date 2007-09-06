@@ -1,8 +1,12 @@
 package org.openuss.web.lecture;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -14,28 +18,16 @@ import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.lecture.ApplicationInfo;
+import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.UniversityInfo;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.model.SelectItem;
-import org.openuss.lecture.ApplicationInfo;
-import org.openuss.lecture.DepartmentInfo;
-import org.openuss.lecture.LectureException;
-import org.openuss.lecture.UniversityInfo;
-import org.openuss.security.UserInfo;
 /**
  * 
  * @author Ingo Dueppe
@@ -95,7 +87,7 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	 * @throws IOException 
 	 */
 	public String saveInstitute() throws LectureException, DocumentApplicationException, IOException {
-		// fetch uploaded files and remove it from upload manager
+		// fetch uploaded file and remove it from upload manager
 		UploadedDocument uploaded = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 		if (uploaded != null) {
 			if (instituteInfo.getImageId() != null) {
@@ -120,11 +112,24 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 			uploadFileManager.removeDocument(uploaded);
 		}
 		
+		// start department application process if a department is selected 
+		// which differs from the current one 
+		if (departmentId != departmentInfo.getId()){
+			//ApplicationInfo pendingApplication = 
+			//		instituteService.findApplicationByInstituteAndConfirmed(instituteInfo.getId(), false);
+			// only apply when there is not already a pending application 
+			// for the same department
+			//if( !(pendingApplication != null 
+			//		&& departmentId == pendingApplication.getDepartmentInfo().getId()) ){
+				this.apply();
+			//}
+		}
+		
+		// save actual institute data
 		instituteService.update(instituteInfo);
 		addMessage(i18n("institute_message_command_save_succeed"));
-	
-		if (departmentId!=departmentInfo.getId())
-			this.apply();
+		
+		
 		
 		return Constants.SUCCESS;
 	}
@@ -145,98 +150,67 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		setSessionBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
 	}
 
-	/*******************************begin application*********************/ 	
-	private static ResourceBundle getResourceBundle(){
-		FacesContext context = FacesContext.getCurrentInstance();
-		ResourceBundle rb = ResourceBundle.getBundle(
-				context.getApplication().getMessageBundle(), 
-				context.getViewRoot().getLocale());
-		return rb;
-	}
+	/******************************* begin application *********************/ 	
 	private Long getUniversityId(){
 		Long departmentId = instituteService.findInstitute(instituteInfo.getId()).getDepartmentId();
 		Long  universityId= departmentService.findDepartment(departmentId).getUniversityId();
 		UniversityInfo universityInfo = universityService.findUniversity(universityId); 
 		return universityInfo.getId();
 	}
+	
 	public List<SelectItem> getAllDepartments(){
 		
-		ResourceBundle rb = getResourceBundle();
-		ApplicationInfo app = instituteService.findApplicationByInstitute(instituteInfo.getId());
-		String appStatusDescription="";
-		if (app!=null)
-		{
-			departmentId = app.getDepartmentInfo().getId();
-					
-			if (app.isConfirmed())			
-				appStatusDescription  =  rb.getString("application_accept_info");
-			else
-			appStatusDescription  =  rb.getString("application_working_info");
-			
+		// check whether there is a pending application request
+		ApplicationInfo pendingApplication = instituteService.findApplicationByInstituteAndConfirmed(instituteInfo.getId(), false);
+		String appStatusDescription = "";
+		if(pendingApplication != null){
+			appStatusDescription = i18n("application_pending_info", pendingApplication.getDepartmentInfo().getName());
 		}
-		else
-			departmentId=instituteInfo.getDepartmentId();
 		
+		// set departmentId according to the current department selection
+		departmentId = instituteInfo.getDepartmentId();
 		
+		// get a list of the associated university's departments 
+		// (the institute cannot be moved to another university, so only 
+		// departments of the currently associated university must be displayed) 
+		Long universityId = getUniversityId();
+		logger.debug("getting departments for university:"+universityId);
+		allDepartments = departmentService.findDepartmentsByUniversity(universityId);
 		departmentItems = new ArrayList<SelectItem>();
-				
-		logger.info("universityId:"+getUniversityId());
-		allDepartments = departmentService.findDepartmentsByUniversity(getUniversityId());
 		Iterator<DepartmentInfo> iter = allDepartments.iterator();
 		DepartmentInfo department;
 		SelectItem item;
 		while (iter.hasNext()){
 			department = iter.next();
-			if (department.getId()==departmentId)
+			// if there is a pending application request for another department, 
+			// then show a hint next to the combo box entry for the currently associated department   
+			if (pendingApplication != null && department.getId().equals(departmentId)){
 				item = new SelectItem(department.getId(), department.getName()+ appStatusDescription);
-			else
+			} else {
 				item = new SelectItem(department.getId(), department.getName());
+			}
 			departmentItems.add(item);
 		}
 		
-		logger.info("DepartmentId:" + allDepartments.get(0).getId());
 		return departmentItems;
-	
 	}
 	
-	private String apply(){
-		signoffInstitute();
-		logger.debug("Debug apply");
+	private void apply(){
+		logger.debug("entering apply method (backing bean)");
+		logger.debug("instituteId: "+instituteInfo.getId());
 		
-		logger.debug("InstituteI"+instituteInfo.getId());
-		
-		UserInfo userInfo = new UserInfo();
-		userInfo.setId(user.getId());
-		DepartmentInfo appliedDepartment = new DepartmentInfo();
-		appliedDepartment.setId(departmentId);
-		applicationInfo.setApplyingUserInfo(userInfo);
-		applicationInfo.setInstituteInfo(instituteInfo);
-		applicationInfo.setDepartmentInfo(appliedDepartment);
-		
-		
+		Long applicationId;
 		try{
-			Long app = instituteService.applyAtDepartment(applicationInfo);
-			}
-		catch(Exception e){;}
-		
-		
-		return Constants.SUCCESS;
+			applicationId = instituteService.applyAtDepartment(instituteInfo.getId(), departmentId, user.getId());
+			logger.debug("created department application: " + applicationId);
+		} catch(Exception e){
+			//logger.debug(e.);
+			e.printStackTrace();
+			addError(i18n("error_department_application_start"));
+		}
 	}
-	
-  
-    	
-    private String signoffInstitute(){
-    	try{
-    	departmentService.signoffInstitute(instituteInfo.getId());
-    	Long departmentId = instituteService.findInstitute(instituteInfo.getId()).getDepartmentId();
-    	DepartmentInfo departmentInfo = departmentService.findDepartment(departmentId);
-    	setSessionBean(Constants.DEPARTMENT_INFO,departmentInfo);}
-    	catch(Exception e){;}
-    	
-    	  	
-    	return Constants.SUCCESS;
-    }
-    /*******************************end application*********************/ 	
+    
+    /******************************* end application *********************/ 	
     
     
 	public SecurityService getSecurityService() {
@@ -269,7 +243,7 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	public void setApplicationInfo(ApplicationInfo applicationInfo) {
 		this.applicationInfo = applicationInfo;
 	}
-
+	
 	public Long getDepartmentId() {
 		return departmentId;
 	}
@@ -277,4 +251,5 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	public void setDepartmentId(Long departmentId) {
 		this.departmentId = departmentId;
 	}
+	
 }
