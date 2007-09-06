@@ -42,7 +42,8 @@
 					</o:block>
 				</h:form>
 				
-				<h:form id="applicationsForm">
+				<h:form id="applicationsForm" rendered="#{views$secured$lecture$departmentinstitutes.departmentType==0}">
+					
 					<ui:include src="/views/secured/lecture/applicationstable.xhtml"/>
 				</h:form>
 			</ui:define>
