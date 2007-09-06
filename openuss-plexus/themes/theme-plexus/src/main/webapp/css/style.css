@@ -2058,3 +2058,7 @@ table.jscalendar-DB-dropdown-style {
 .jscalendar-DB-title-background-style td {
 	background-color: #0000AA;
 }
+
+#extended_search_link_padding {
+	padding: 5px;
+}
