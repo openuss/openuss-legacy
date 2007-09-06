@@ -165,7 +165,7 @@ public class InstituteApplicationPage extends AbstractLecturePage{
 	public String getAppStatusDescription() {
 		
 		ResourceBundle rb = getResourceBundle();
-		ApplicationInfo app = instituteService.findApplicationByInstitute(instituteInfo.getId());
+		ApplicationInfo app = instituteService.findApplicationByInstituteAndConfirmed(instituteInfo.getId(), false);
 		if (app!=null)
 		{
 		appStatusDescription = app.getDepartmentInfo().getName();
