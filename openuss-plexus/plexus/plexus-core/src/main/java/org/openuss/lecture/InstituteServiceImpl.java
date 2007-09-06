@@ -271,14 +271,18 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 						+ instituteId);
 
 		// Delete old not-confirmed Applications
+		List<Application> applicationsOld = new ArrayList<Application>();
 		for (Application application : institute.getApplications()) {
+			applicationsOld.add(application);
+		}
+		for (Application application : applicationsOld) {
 			if (!application.isConfirmed()) {
 				application.remove(application.getInstitute());
 				application.remove(application.getDepartment());
 				this.getApplicationDao().remove(application);
 			}
 		}
-
+		
 		// Load Department
 		Department department = this.getDepartmentDao().load(departmentId);
 		Validate.notNull(department,
