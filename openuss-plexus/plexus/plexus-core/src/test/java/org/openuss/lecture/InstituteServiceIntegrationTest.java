@@ -281,6 +281,19 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 
 	public void testApplyAtDepartment() {
 		logger.debug("----> BEGIN access to applyAtDepartment test <---- ");
+		
+		User user = testUtility.createUniqueUserInDB();
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		DepartmentDao departmentDao = (DepartmentDao) this.applicationContext.getBean("departmentDao");
+		Department department = departmentDao.findByUniversityAndDefault(institute.getDepartment().getUniversity(), true);
+		
+		testUtility.createAdminSecureContext();
+		
+		Long applicationId = this.getInstituteService().applyAtDepartment(institute.getId(), department.getId(), user.getId());
+		assertNotNull(applicationId);
+		logger.debug("----> Application "+applicationId+" <---- ");
+		
+		testUtility.destroySecureContext();
 /*
 		// Create Department
 		Department department = testUtility.createUniqueDepartmentInDB();
