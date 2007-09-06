@@ -62,7 +62,7 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 		public DataPage<ApplicationInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<ApplicationInfo> applications = new ArrayList<ApplicationInfo>();
-				applications = departmentService.findApplicationsByDepartment(departmentInfo.getId());
+				applications = departmentService.findApplicationsByDepartmentAndConfirmed(departmentInfo.getId(),false);
 				
 				page = new DataPage<ApplicationInfo>(applications.size(),0,applications);
 				sort(applications);
