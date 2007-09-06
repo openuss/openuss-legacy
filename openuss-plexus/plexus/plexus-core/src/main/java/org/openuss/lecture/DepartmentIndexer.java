@@ -98,9 +98,9 @@ public class DepartmentIndexer extends DomainIndexer {
 		
 		details.append(StringUtils.trimToEmpty(department.getUniversity().getName()+SPACE));
 		if(department.getDepartmentType().equals(DepartmentType.OFFICIAL)){
-			details.append("(offizieller Fachbereich)"+NEWLINE);
+			details.append(" (offizieller Fachbereich)"+NEWLINE);
 		} else {
-			details.append("(inoffizieller Fachbereich)"+NEWLINE);
+			details.append(" (inoffizieller Fachbereich)"+NEWLINE);
 		}
 		details.append(NEWLINE);
 		
