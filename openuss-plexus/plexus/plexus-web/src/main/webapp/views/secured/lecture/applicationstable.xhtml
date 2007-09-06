@@ -29,7 +29,8 @@
 		
 		<t:column>
 			<plexus:commandSortHeader columnName="confirmed">#{msg.application_confirmed}</plexus:commandSortHeader> 
-			<h:outputText value="#{bean.confirmed}"/>
+			<h:outputText rendered="#{bean.confirmed}" value="#{msg.application_confirmed_yes}"/>
+			<h:outputText rendered="#!{bean.confirmed}" value="#{msg.application_confirmed_no}"/>
 		</t:column>
 		
 
