@@ -158,13 +158,6 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	
 	public List<SelectItem> getAllDepartments(){
 		
-		// check whether there is a pending application request
-		ApplicationInfo pendingApplication = instituteService.findApplicationByInstituteAndConfirmed(instituteInfo.getId(), false);
-		String appStatusDescription = "";
-		if(pendingApplication != null){
-			appStatusDescription = i18n("application_pending_info", pendingApplication.getDepartmentInfo().getName());
-		}
-		
 		// set departmentId according to the current department selection
 		departmentId = instituteInfo.getDepartmentId();
 		
@@ -180,13 +173,13 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		SelectItem item;
 		while (iter.hasNext()){
 			department = iter.next();
-			// if there is a pending application request for another department, 
-			// then show a hint next to the combo box entry for the currently associated department   
-			if (pendingApplication != null && department.getId().equals(departmentId)){
-				item = new SelectItem(department.getId(), department.getName()+ appStatusDescription);
-			} else {
+//			// if there is a pending application request for another department, 
+//			// then show a hint next to the combo box entry for the currently associated department   
+//			if (pendingApplication != null && department.getId().equals(departmentId)){
+//				item = new SelectItem(department.getId(), department.getName()+ appStatusDescription);
+//			} else {
 				item = new SelectItem(department.getId(), department.getName());
-			}
+//			}
 			departmentItems.add(item);
 		}
 		
@@ -248,6 +241,21 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 
 	public void setDepartmentId(Long departmentId) {
 		this.departmentId = departmentId;
+	}
+	
+	public String getPendingApplicationInfo(){
+		// check whether there is a pending application request
+		ApplicationInfo pendingApplication = instituteService.findApplicationByInstituteAndConfirmed(instituteInfo.getId(), false);
+		String appStatusDescription = "";
+		if(pendingApplication != null){
+			appStatusDescription = i18n("application_pending_info", pendingApplication.getDepartmentInfo().getName());
+		}
+		// return information string if there is a pending application
+		if(!appStatusDescription.equals("")){
+			return appStatusDescription;
+		} else {
+			return null;
+		}
 	}
 	
 }
