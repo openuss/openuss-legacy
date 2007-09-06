@@ -60,7 +60,7 @@ public class InstituteActivationMailSenderAspectImpl extends BaseBean {
 		
 		String link = "/actions/public/lecture/instituteactivation.faces?code="+activationCode;
 
-		//link = applicationAddress() + link;
+		link = applicationAddress() + link;
 		
 		
 		// Create link
@@ -88,7 +88,12 @@ public class InstituteActivationMailSenderAspectImpl extends BaseBean {
 	
 	private String applicationAddress() {
 		final HttpServletRequest request = getRequest();
-		return systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+request.getContextPath();
+		if (request != null) {
+			return systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+request.getContextPath();
+		}
+		else {
+			return systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"/openuss-plexus";
+		}
 	}
 
 	public UserDao getUserDao() {
