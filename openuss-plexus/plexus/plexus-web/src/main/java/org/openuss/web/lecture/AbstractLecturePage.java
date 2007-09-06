@@ -18,6 +18,7 @@ import org.openuss.lecture.LectureService;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
+import org.openuss.security.SecurityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -32,6 +33,9 @@ public abstract class AbstractLecturePage extends BasePage {
 
 	protected static final Logger logger = Logger.getLogger(AbstractLecturePage.class);
 
+	@Property(value = "#{securityService}")
+	protected SecurityService securityService;
+	
 	@Property(value = "#{institute}")
 	protected Institute institute;
 	
@@ -217,6 +221,14 @@ public abstract class AbstractLecturePage extends BasePage {
 
 	public void setCourseInfo(CourseInfo courseInfo) {
 		this.courseInfo = courseInfo;
+	}
+
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
 	}
 	
 	

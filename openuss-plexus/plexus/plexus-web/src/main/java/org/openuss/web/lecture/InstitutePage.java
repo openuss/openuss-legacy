@@ -1,5 +1,7 @@
 package org.openuss.web.lecture;
 
+import static org.openuss.web.lecture.AbstractLecturePage.logger;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -19,12 +21,13 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.ApplicationInfo;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 
 /**
@@ -61,6 +64,7 @@ public class InstitutePage extends AbstractLecturePage {
 	private ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
 
 	@Prerender
+	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws LectureException {
 		super.prerender();
 		
@@ -70,6 +74,19 @@ public class InstitutePage extends AbstractLecturePage {
 			universityId = departmentInfo.getUniversityId();
 			universityInfo = universityService.findUniversity(universityId);
 			periodInfos = universityService.findPeriodsByInstituteWithCoursesOrActive(instituteInfo);
+			
+			Boolean hasPermission = securityService.hasPermission(instituteInfo,
+					new Integer[] { LectureAclEntry.INSTITUTE_ADMINISTRATION });
+			if(hasPermission) {
+				List<ApplicationInfo> applications = instituteService.findApplicationsByInstitute(instituteInfo.getId());
+				Iterator<ApplicationInfo> iterApplication = applications.iterator();
+				while(iterApplication.hasNext()) {
+					ApplicationInfo currentApplication = iterApplication.next();
+					if (currentApplication.isConfirmed() == false) {
+						addMessage(i18n("application_pending_info", currentApplication.getDepartmentInfo().getName()));
+					}
+				}
+			}
 		} 
 		
 		if (periodInfo == null && instituteInfo != null || instituteInfo != null && !periodInfos.contains(periodInfo)) {
@@ -88,6 +105,10 @@ public class InstitutePage extends AbstractLecturePage {
 			}
 	
 		} 
+		
+		
+		
+		
 		setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		addBreadCrumbs();
 	}
