@@ -25,15 +25,7 @@
 					<h:outputText value="#{bean.instituteInfo.name}"/>
 				</h:commandLink> 
 		</t:column>
-				
-		
-		<t:column>
-			<plexus:commandSortHeader columnName="confirmed">#{msg.application_confirmed}</plexus:commandSortHeader> 
-			<h:outputText rendered="#{bean.confirmed}" value="#{msg.application_confirmed_yes}"/>
-			<h:outputText rendered="#!{bean.confirmed}" value="#{msg.application_confirmed_no}"/>
-		</t:column>
-		
-
+	
 		<t:column>
 			<plexus:commandSortHeader columnName="date">#{msg.application_applied_date}</plexus:commandSortHeader> 
 			<h:outputText value="#{bean.applicationDate}"/>
