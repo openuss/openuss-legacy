@@ -114,15 +114,15 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		
 		// start department application process if a department is selected 
 		// which differs from the current one 
-		if (departmentId != departmentInfo.getId()){
-			//ApplicationInfo pendingApplication = 
-			//		instituteService.findApplicationByInstituteAndConfirmed(instituteInfo.getId(), false);
-			// only apply when there is not already a pending application 
-			// for the same department
-			//if( !(pendingApplication != null 
-			//		&& departmentId == pendingApplication.getDepartmentInfo().getId()) ){
+		if (!departmentId.equals(departmentInfo.getId())){
+			ApplicationInfo pendingApplication = 
+					instituteService.findApplicationByInstituteAndConfirmed(instituteInfo.getId(), false);
+			 // only apply when there is not already a pending application 
+			 // for the same department
+			if( !(pendingApplication != null 
+					&& departmentId.equals(pendingApplication.getDepartmentInfo().getId())) ){
 				this.apply();
-			//}
+			}
 		}
 		
 		// save actual institute data
