@@ -10,7 +10,8 @@ import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
-/** Backing bean for the departmentdisableconfirmation.xhtml view.
+/** 
+ * Backing bean for the departmentdisableconfirmation.xhtml view.
  * 
  * @author Kai Stettner
  */
@@ -24,22 +25,21 @@ public class DepartmentDisableConfirmationPage extends AbstractDepartmentPage {
 
 	@Prerender
 	public void prerender() throws LectureException {
-			// prerender nothing
+		// prerender nothing
 	}
 	
 	@Preprocess
 	public void preprocess() throws Exception {
-			// preprocess nothing
+		// preprocess nothing
 	}
 	
 	/**
-	 * Disables the chosen department and belonging institutes, course types and course. This is just evident for the search indexing.
+	 * Disables the chosen department and belonging institutes, course types 
+	 * and course. This is just evident for the search indexing.
 	 * @return Outcome
 	 */
 	public String disableDepartment() {
 		logger.debug("Starting method disableDepartment");
-		// setOrganisationStatus(true) = Enabled
-		// setOrganisationStatus(false) = Disabled
 		departmentService.setDepartmentStatus(departmentInfo.getId(), false);
 		addMessage(i18n("message_department_disabled"));
 		return Constants.OUTCOME_BACKWARD;
