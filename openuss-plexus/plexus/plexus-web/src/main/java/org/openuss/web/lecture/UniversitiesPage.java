@@ -139,6 +139,7 @@ public class UniversitiesPage extends BasePage{
 	
 	private DataPage<UniversityInfo> dataPage;
 	
+	@SuppressWarnings( { "unchecked" })
 	public DataPage<UniversityInfo> fetchDataPage(int startRow, int pageSize) {
 		
 		if (dataPage == null) {

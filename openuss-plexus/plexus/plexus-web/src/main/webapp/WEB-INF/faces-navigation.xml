@@ -126,6 +126,16 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>university_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/universityremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_disable_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/universitydisableconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>department</from-outcome>
 			<to-view-id>/views/public/department/department.xhtml</to-view-id>
 		</navigation-case>

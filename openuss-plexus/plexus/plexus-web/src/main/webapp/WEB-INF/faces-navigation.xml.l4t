@@ -96,6 +96,11 @@
     PATH="/views/secured/lecture/registration/universitystep1.xhtml"
     TARGET="rules:#views#secured#lecture#registration#universitystep1.xhtml" TITLE="university_create"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="university_remove_confirmation::#views#secured#lecture#universityremoveconfirmation.xhtml"
+    NAME="output14"
+    PATH="/views/secured/lecture/universityremoveconfirmation.xhtml"
+    TARGET="rules:#views#secured#lecture#universityremoveconfirmation.xhtml" TITLE="university_remove_confirmation"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="department::#views#public#department#department.xhtml"
     NAME="output25" PATH="/views/public/department/department.xhtml"
     TARGET="rules:#views#public#department#department.xhtml" TITLE="department"/>
@@ -115,12 +120,8 @@
     TARGET="rules:#views#secured#lecture#departmentinstitutes.xhtml" TITLE="manage_institute"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="institute_courses::#views#secured#lecture#institutecourses.xhtml"
-    NAME="output14" PATH="/views/secured/lecture/institutecourses.xhtml"
+    NAME="output24" PATH="/views/secured/lecture/institutecourses.xhtml"
     TARGET="rules:#views#secured#lecture#institutecourses.xhtml" TITLE="institute_courses"/>
-   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="error::#views#errors#error.xhtml" NAME="output24"
-    PATH="/views/errors/error.xhtml"
-    TARGET="rules:#views#errors#error.xhtml" TITLE="error"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -413,9 +414,10 @@
     NAME="output17" PATH="/views/secured/newsletter/newmail.xhtml"
     TARGET="rules:#views#secured#newsletter#newmail.xhtml" TITLE="newsletter_newmail"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="newsletter_showmail::#views#secured#newsletter#showmail.xhtml"
-    NAME="output18" PATH="/views/secured/newsletter/showmail.xhtml"
-    TARGET="rules:#views#secured#newsletter#showmail.xhtml" TITLE="newsletter_showmail"/>
+    ID="newsletter_subscribers::#views#secured#newsletter#newslettersubscribers.xhtml"
+    NAME="output18"
+    PATH="/views/secured/newsletter/newslettersubscribers.xhtml"
+    TARGET="rules:#views#secured#newsletter#newslettersubscribers.xhtml" TITLE="newsletter_subscribers"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="newsletter_export::#views#secured#newsletter#exportedsubscribers.xhtml"
     NAME="output19"
@@ -432,10 +434,10 @@
     PATH="/views/secured/braincontest/braincontestnew.xhtml"
     TARGET="rules:#views#secured#braincontest#braincontestnew.xhtml" TITLE="braincontest_new"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
-    ID="braincontest_top::#views#secured#braincontest#braincontesttop.xhtml"
+    ID="braincontest_solve::#views#secured#braincontest#braincontestsolve.xhtml"
     NAME="output22"
-    PATH="/views/secured/braincontest/braincontesttop.xhtml"
-    TARGET="rules:#views#secured#braincontest#braincontesttop.xhtml" TITLE="braincontest_top"/>
+    PATH="/views/secured/braincontest/braincontestsolve.xhtml"
+    TARGET="rules:#views#secured#braincontest#braincontestsolve.xhtml" TITLE="braincontest_solve"/>
    <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
     ID="braincontest_solved::#views#secured#braincontest#braincontestsolved.xhtml"
     NAME="output23"
@@ -1130,4 +1132,7 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#errors#error.xhtml"
   PATH="/views/errors/error.xhtml" SHAPE="304,1041,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#secured#lecture#universitydisableconfirmation.xhtml"
+  PATH="/views/secured/lecture/universitydisableconfirmation.xhtml" SHAPE="304,1041,0,0"/>
 </PROCESS>
