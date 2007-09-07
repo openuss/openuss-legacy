@@ -12,6 +12,7 @@ import org.springframework.test.AbstractTransactionalDataSourceSpringContextTest
  * 
  * @author Ingo Dueppe
  */
+@Deprecated
 public class LectureIntegrationTest extends AbstractTransactionalDataSourceSpringContextTests {
 
 	private TestUtility testUtility;
@@ -43,9 +44,10 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		//institute.setOwner(user);
 		assertNull(institute.getId());
 		//lectureService.createInstitute(institute);
-		instituteService.create(
+		Long id = (Long)instituteService.create(
 				this.getInstituteDao().toInstituteInfo(institute), 
 				user.getId());
+		institute.setId(id);
 		commit();
 	}
 
@@ -54,7 +56,9 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 	 * 
 	 * @throws LectureException
 	 */
-	public void testAddCourseTypeToInstitute() throws LectureException{
+	public void testAddCourseTypeToInstitute() throws LectureException {
+		testUtility.createUserSecureContext();
+		
 		CourseType courseType = createAndCheckCourseType();
 
 		lectureService.removeInstitute(institute.getId());
@@ -67,6 +71,8 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		// check if courseType is removed
 		courseType = lectureService.getCourseType(courseType.getId());
 		assertNull(courseType);
+		
+		testUtility.destroySecureContext();
 	}
 
 	
@@ -76,6 +82,8 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 	 * @throws LectureException
 	 */
 	public void testAddPeriodToInstitute() throws LectureException {
+		testUtility.createUserSecureContext();
+		
 		Period period = createAndCheckPeriod();
 
 		lectureService.removePeriod(period.getId());
@@ -91,6 +99,8 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		// check if period is removed
 		period = lectureService.getPeriod(period.getId());
 		assertNull(period);
+		
+		testUtility.destroySecureContext();
 	}
 	
 	/**
@@ -98,6 +108,8 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 	 * @throws LectureException
 	 */
 	public void testAddActivePeriodToInstitute() throws LectureException {
+		testUtility.createUserSecureContext();
+		
 		Period period = createAndCheckPeriod();
 		commit();
 		lectureService.setActivePeriod(institute.getId(), period);
@@ -119,9 +131,13 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 
 		lectureService.removeInstitute(institute.getId());
 		commit();
+		
+		testUtility.destroySecureContext();
 	}
 	
 	public void testTwoActivePeriodToInstitute() throws LectureException {
+		testUtility.createUserSecureContext();
+		
 		Period activePeriod = createAndCheckPeriod();
 		Period period = createAndCheckPeriod();
 		
@@ -137,9 +153,13 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		
 		lectureService.removeInstitute(institute.getId());
 		commit();
+		
+		testUtility.destroySecureContext();
 	}
 	
 	public void testAddCourseToInstitute() throws LectureException {
+		testUtility.createUserSecureContext();
+		
 		Period period = createAndCheckPeriod();
 		CourseType courseType = createAndCheckCourseType();
 		
@@ -189,6 +209,8 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		commit();
 		
 		assertNull(lectureService.getCourse(course.getId()));
+		
+		testUtility.destroySecureContext();
 	}
 
 	/**
@@ -197,6 +219,7 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 	 * @throws LectureException
 	 */
 	private Period createAndCheckPeriod() throws LectureException {
+		
 		Period period = LectureFactory.createPeriod();
 		institute = lectureService.add(institute.getId(), period);
 		commit();
@@ -204,6 +227,7 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 		//assertTrue(institute.getPeriods().contains(period));
 		assertNotNull(period.getId());
 		return period;
+		
 	}
 	
 	/**
@@ -212,6 +236,7 @@ public class LectureIntegrationTest extends AbstractTransactionalDataSourceSprin
 	 * @throws LectureException
 	 */
 	private CourseType createAndCheckCourseType() throws LectureException {
+		
 		CourseType courseType = LectureFactory.createCourseType();
 		institute = lectureService.add(institute.getId(), courseType);
 		commit();

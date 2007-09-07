@@ -379,6 +379,17 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 				"DepartmentService.handleRemoveDepartment - no Department found corresponding to the ID "
 						+ departmentId);
 
+		if (!department.getApplications().isEmpty()) {
+			// Remove applications
+			List<Application> applications = new ArrayList<Application>();
+			for (Application application : department.getApplications()) {
+				application.remove(department);
+				department.setApplications(new ArrayList<Application>());
+				application.remove(application.getInstitute());
+				this.getApplicationDao().remove(application);
+			}
+		}
+		
 		if (!department.getInstitutes().isEmpty()) {
 			// Remove Institutes
 			List<Institute> institutes = new ArrayList<Institute>();

@@ -31,7 +31,7 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 	
 	@Override
 	protected void onTearDownInTransaction() throws Exception {
-		testUtility.removePersistInstituteAndDefaultUser();
+		//testUtility.removePersistInstituteAndDefaultUser();
 	}
 	
 	public void testCourseTypeDao() {

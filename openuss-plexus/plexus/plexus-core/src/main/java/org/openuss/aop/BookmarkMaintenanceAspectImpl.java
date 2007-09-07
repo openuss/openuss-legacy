@@ -5,23 +5,56 @@ import org.apache.log4j.Logger;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
+import org.openuss.lecture.Department;
+import org.openuss.lecture.DepartmentDao;
 import org.openuss.lecture.DepartmentInfo;
+import org.openuss.lecture.Institute;
+import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.Organisation;
+import org.openuss.lecture.OrganisationDao;
+import org.openuss.lecture.University;
+import org.openuss.lecture.UniversityDao;
 import org.openuss.lecture.UniversityInfo;
 
 public class BookmarkMaintenanceAspectImpl {
 
 	private static final Logger logger = Logger.getLogger(BookmarkMaintenanceAspectImpl.class);
 	private DesktopService2 desktopService2;
+	private OrganisationDao organisationDao;
+	private UniversityDao universityDao;
+	private DepartmentDao departmentDao;
+	private InstituteDao instituteDao;
 
-	public DesktopService2 getDesktopService() {
-		return desktopService2;
+	/**
+	 * Create bookmark for given organisation.
+	 * @param organisationId
+	 * @param userId
+	 */
+	public void bookmarkOrganisation (Long organisationId, Long userId) {
+		logger.debug("----------> BEGIN method bookmarkOrganisation <----------");
+		
+		Organisation organisation = this.getOrganisationDao().load(organisationId);
+		Validate.notNull(organisation, "BookmarkMaintenanceAspectImpl.bookmarkOrganisation -" +
+				"no organisation found with the given organisationId");
+		
+		if (organisation instanceof University) {
+			UniversityInfo universityInfo =
+				this.getUniversityDao().toUniversityInfo((University)organisation);
+			this.bookmarkUniversity(universityInfo, userId);
+		}
+		else if (organisation instanceof Department) {
+			DepartmentInfo departmentInfo =
+				this.getDepartmentDao().toDepartmentInfo((Department) organisation);
+			this.bookmarkDepartment(departmentInfo, userId);
+		}
+		else if (organisation instanceof Institute) {
+			InstituteInfo instituteInfo =
+				this.getInstituteDao().toInstituteInfo((Institute) organisation);
+			this.bookmarkInstitute(instituteInfo, userId);
+		}
 	}
-
-	public void setDesktopService(DesktopService2 desktopService) {
-		this.desktopService2 = desktopService;
-	}
-
+	
 	/**
 	 * Create bookmark of given university for the creating user.
 	 * 
@@ -168,4 +201,45 @@ public class BookmarkMaintenanceAspectImpl {
 
 		logger.debug("----------> End method deleteBookmarksOfCourses <----------");
 	}
+	
+	public DesktopService2 getDesktopService() {
+		return desktopService2;
+	}
+
+	public void setDesktopService(DesktopService2 desktopService) {
+		this.desktopService2 = desktopService;
+	}
+
+	public OrganisationDao getOrganisationDao() {
+		return organisationDao;
+	}
+
+	public void setOrganisationDao(OrganisationDao organisationDao) {
+		this.organisationDao = organisationDao;
+	}
+
+	public UniversityDao getUniversityDao() {
+		return universityDao;
+	}
+
+	public void setUniversityDao(UniversityDao universityDao) {
+		this.universityDao = universityDao;
+	}
+
+	public DepartmentDao getDepartmentDao() {
+		return departmentDao;
+	}
+
+	public void setDepartmentDao(DepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
+	}
+
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
+	}
+
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
+	}
+	
 }
