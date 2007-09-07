@@ -363,10 +363,27 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(institute,
 				"InstiuteService.setInstituteStatus - instiute cannot be found with the corresponding instituteId "
 						+ instituteId);
+		
+		// Only allow institute to be enabled when the super-ordinate department is enabled
+		if(status){
+			Validate.isTrue(institute.getDepartment().isEnabled(),
+			"DepartmentService.handleSetInstituteStatus - the institute cannot be enabled because the associated department is disabled.");
+		}
 
 		// Set status
 		institute.setEnabled(status);
 		this.update(this.getInstituteDao().toInstituteInfo(institute));
+		
+		// Set subordinate courses to "disabled" if the institution was just disabled
+		if(!status){
+			this.getInstituteDao().update(institute);
+			for(CourseType courseType : institute.getCourseTypes()){
+				for(Course course : courseType.getCourses()){
+					course.setEnabled(false);
+					this.getCourseDao().update(course);
+				}
+			}
+		}
 	}
 
 	@Override

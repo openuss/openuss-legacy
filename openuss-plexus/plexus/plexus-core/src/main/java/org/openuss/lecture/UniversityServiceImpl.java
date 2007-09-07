@@ -26,6 +26,7 @@ import org.openuss.security.acl.LectureAclEntry;
  * @see org.openuss.lecture.UniversityService
  * @author Ron Haus
  * @author Florian Dondorf
+ * @author Malte Stockmann
  */
 public class UniversityServiceImpl extends org.openuss.lecture.UniversityServiceBase {
 
@@ -489,7 +490,25 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		university.setEnabled(status);
 		UniversityInfo universityInfo = this.getUniversityDao().toUniversityInfo(university);
 		this.update(universityInfo);
-
+		
+		// Set subordinate organisations to "disabled" if the university was just disabled
+		if(!status){
+			for (Department department : university.getDepartments()){
+				department.setEnabled(false);
+				this.getDepartmentDao().update(department);
+				for(Institute institute : department.getInstitutes()){
+					institute.setEnabled(false);
+					this.getInstituteDao().update(institute);
+					for(CourseType courseType : institute.getCourseTypes()){
+						for(Course course : courseType.getCourses()){
+							course.setEnabled(false);
+							this.getCourseDao().update(course);
+						}
+					}
+				}
+			}
+		}
+		
 	}
 
 	@Override
