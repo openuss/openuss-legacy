@@ -104,6 +104,7 @@ public class Constants {
 	public static final String INSTITUTE_COURSE_TYPES_PAGE = "institute_coursetypes";
 	public static final String INSTITUTE_COURSE_REMOVE_PAGE = "institute_course_remove";
 	public static final String INSTITUTE_COURSE_TYPE_REMOVE_PAGE = "institute_coursetype_remove";
+	public static final String INSTITUTE_CONFIRM_DISABLE_PAGE = "institute_disable_confirmation";
 	public static final String INSTITUTE_MEMBERS_PAGE = "institute_members";
 	public static final String INSTITUTE_NEWS_PAGE = "institute_news";
 	public static final String INSTITUTE_NEWS_EDIT_PAGE = "institute_news_edit";

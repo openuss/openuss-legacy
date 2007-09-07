@@ -60,7 +60,7 @@
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">
 				<h:commandButton 
-					action = "#{views$public$institute$institutes.disableInstitute}"
+					action = "#{views$public$institute$institutes.selectInstituteAndConfirmDisable}"
 					styleClass="button_remove"
 					value="#{msg.institute_command_disable}"
 					hint="#{msg.institute_command_disable_hint}"

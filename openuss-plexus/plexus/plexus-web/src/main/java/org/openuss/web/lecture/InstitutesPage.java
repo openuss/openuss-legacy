@@ -115,18 +115,17 @@ public class InstitutesPage extends BasePage{
 	}
 	
 	/**
-	 * Disables the chosen institute. This is just evident for the search indexing.
+	 * Store the selected institute into session scope and go to institute disable confirmation page.
 	 * @return Outcome
 	 */
-	public String disableInstitute() {
-		logger.debug("Starting method disableInstitute");
+	public String selectInstituteAndConfirmDisable() {
+		logger.debug("Starting method selectInstituteAndConfirmDisable");
 		InstituteInfo currentInstitute = currentInstitute();
-		// setOrganisationStatus(true) = Enabled
-		// setOrganisationStatus(false) = Disabled
-		instituteService.setInstituteStatus(currentInstitute.getId(), false);
+		logger.debug("Returning to method selectInstituteAndConfirmDisable");
+		logger.debug(currentInstitute.getId());	
+		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
 		
-		addMessage(i18n("message_institute_disabled"));
-		return Constants.SUCCESS;
+		return Constants.INSTITUTE_CONFIRM_DISABLE_PAGE;
 	}
 	
 	/**

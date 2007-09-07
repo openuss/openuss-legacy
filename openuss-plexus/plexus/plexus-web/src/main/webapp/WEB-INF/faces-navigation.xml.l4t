@@ -332,6 +332,11 @@
     NAME="output13"
     PATH="/views/secured/lecture/registration/start.xhtml"
     TARGET="rules:#views#secured#lecture#registration#start.xhtml" TITLE="institute_registration_start"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="institute_disable_confirmation::#views#secured#lecture#institutedisableconfirmation.xhtml"
+    NAME="output14"
+    PATH="/views/secured/lecture/institutedisableconfirmation.xhtml"
+    TARGET="rules:#views#secured#lecture#institutedisableconfirmation.xhtml" TITLE="institute_disable_confirmation"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup" NAME="rules:#views#secured#*:2"
@@ -1143,4 +1148,7 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#lecture#departmentdisableconfirmation.xhtml"
   PATH="/views/secured/lecture/departmentdisableconfirmation.xhtml" SHAPE="304,14017,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#secured#lecture#institutedisableconfirmation.xhtml"
+  PATH="/views/secured/lecture/institutedisableconfirmation.xhtml" SHAPE="304,5505,0,0"/>
 </PROCESS>
