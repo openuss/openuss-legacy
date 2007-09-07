@@ -35,7 +35,7 @@
 		</ui:define>
   		<ui:define name="content">
   			<h:form id="removeDepartmentConfirmation">
-				<o:block label="#{msg.warning_attention_dataloss}- #{msg.department_disable_header}" styleClass="warning_box">
+				<o:block label="#{msg.warning_attention}- #{msg.department_disable_header}" styleClass="warning_box">
 	  				<p class="content_font_normal">
 	  					<span>
 							<h:outputText value="#{msg.department_disable_text}" styleClass="warning"/>
@@ -43,7 +43,7 @@
 					</p>
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.remove}" action="#{views$secured$lecture$departmentdisableconfirmation.disableDepartment}" styleClass="button_warning"/>
+					<h:commandButton value="${msg.department_command_disable}" action="#{views$secured$lecture$departmentdisableconfirmation.disableDepartment}" styleClass="button_warning"/>
 					<h:commandButton value="${msg.cancel}" action="view:backward" styleClass="button_cancel" immediate="true"/>				
 				</o:block>
 			</h:form>
