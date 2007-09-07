@@ -24,7 +24,7 @@
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
 		<ui:define name="header">
-			<link type="application/rss+xml" title="RSS-#{universityInfo.name}" rel="alternate" href="../../../rss/public/university.xml?university=#{universityInfo.id}"/>
+			
 		</ui:define>
 		<ui:define name="title">
   			<h:outputText value="#{msg.university_maintitle}"/>
@@ -33,7 +33,6 @@
 			<ui:include src="/views/commons/navigation/university.xhtml" />
 		</ui:define>
  		<ui:define name="sidebar"> 
- 			<ui:include src="/views/commons/sidebar/feeds/universityfeed.xhtml" />
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
 		</ui:define>
   		<ui:define name="content">
