@@ -59,6 +59,15 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		University university = testUtility.createUniqueUniversityInDB();
 		assertNotNull(university.getId());
 		
+		List<Desktop> allDesktops = (List<Desktop>)this.getDesktopDao().loadAll();
+		List<Desktop> desktopsByUni = new ArrayList<Desktop>();
+		for (Desktop desktop : allDesktops) {
+			if (desktop.getUniversities().contains(university)) {
+				desktopsByUni.add(desktop);
+			}
+		}
+		int sizeOfDesktops = desktopsByUni.size();
+		
 		//Create 3 Desktops
 		List<Desktop> desktops = new ArrayList<Desktop>(3);
 		for(int i = 0; i<3; i++) {
@@ -68,6 +77,7 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		//Create Desktop-University Link for 2 Desktops
 		for(int i = 0; i<desktops.size()-1; i++) {
 			desktops.get(i).getUniversities().add(university);
+			sizeOfDesktops++;
 		}
 		
 		//Synchronize with Database
@@ -75,7 +85,7 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		
 		//Test findByUniversity
 		Collection desktops2 = desktopDao.findByUniversity(university);
-		assertEquals(2, desktops2.size());
+		assertEquals(sizeOfDesktops, desktops2.size());
 	}
 
 	@SuppressWarnings( { "unchecked" })
@@ -84,6 +94,15 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		//Create a default Department
 		Department department = testUtility.createUniqueDepartmentInDB();
 		assertNotNull(department.getId());
+		
+		List<Desktop> allDesktops = (List<Desktop>)this.getDesktopDao().loadAll();
+		List<Desktop> desktopsByDep = new ArrayList<Desktop>();
+		for (Desktop desktop : allDesktops) {
+			if (desktop.getDepartments().contains(department)) {
+				desktopsByDep.add(desktop);
+			}
+		}
+		int sizeOfDesktops = desktopsByDep.size();
 		
 		//Create 3 Desktops
 		List<Desktop> desktops = new ArrayList<Desktop>(3);
@@ -94,6 +113,7 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		//Create Desktop-Department Link for 2 Desktops
 		for(int i = 0; i<desktops.size()-1; i++) {
 			desktops.get(i).getDepartments().add(department);
+			sizeOfDesktops++;
 		}
 		
 		//Synchronize with Database
@@ -101,7 +121,7 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		
 		//Test findByDepartment
 		Collection desktops2 = desktopDao.findByDepartment(department);
-		assertEquals(2, desktops2.size());
+		assertEquals(sizeOfDesktops, desktops2.size());
 	}
 	
 	@SuppressWarnings( { "unchecked" })
@@ -243,7 +263,7 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 
 	private Desktop createDesktop() {
 		Desktop desktopOne = Desktop.Factory.newInstance();
-		desktopOne.setUser(testUtility.createUserInDB());
+		desktopOne.setUser(testUtility.createUniqueUserInDB());
 		desktopDao.create(desktopOne);
 		return desktopOne;
 	}
