@@ -907,6 +907,11 @@
 			<from-outcome>department_remove_confirmation</from-outcome>
 			<to-view-id>/views/secured/lecture/departmentremoveconfirmation.xhtml</to-view-id>
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>department_disable_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentdisableconfirmation.xhtml</to-view-id>
+		</navigation-case>
 	</navigation-rule>
 	
     <navigation-rule>

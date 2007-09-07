@@ -89,17 +89,17 @@ public class DepartmentsPage extends BasePage{
 	}
 	
 	/**
-	 * Disables the chosen department. This is just evident for the search indexing.
+	 * Store the selected department into session scope and go to department disable confirmation page.
 	 * @return Outcome
 	 */
-	public String disableDepartment() {
-		logger.debug("Starting method disableDepartment");
+	public String selectDepartmentAndConfirmDisable() {
+		logger.debug("Starting method selectDepartmentAndConfirmDisable");
 		DepartmentInfo currentDepartment = currentDepartment();
-		// setOrganisationStatus(true) = Enabled
-		// setOrganisationStatus(false) = Disabled
-		departmentService.setDepartmentStatus(currentDepartment.getId(), false);
-		addMessage(i18n("message_department_disabled"));
-		return Constants.SUCCESS;
+		logger.debug("Returning to method selectDepartmentAndConfirmDisable");
+		logger.debug(currentDepartment.getId());	
+		setSessionBean(Constants.DEPARTMENT_INFO, currentDepartment);
+		
+		return Constants.DEPARTMENT_CONFIRM_DISABLE_PAGE;
 	}
 	
 	/**

@@ -714,6 +714,11 @@
     NAME="output5"
     PATH="/views/secured/lecture/departmentremoveconfirmation.xhtml"
     TARGET="rules:#views#secured#lecture#departmentremoveconfirmation.xhtml" TITLE="department_remove_confirmation"/>
+   <PROCESS-ITEM-OUTPUT ENTITY="JSFProcessItemOutput"
+    ID="department_disable_confirmation::#views#secured#lecture#departmentdisableconfirmation.xhtml"
+    NAME="output2"
+    PATH="/views/secured/lecture/departmentdisableconfirmation.xhtml"
+    TARGET="rules:#views#secured#lecture#departmentdisableconfirmation.xhtml" TITLE="department_disable_confirmation"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
@@ -1135,4 +1140,7 @@
  <PROCESS-ITEM ENTITY="JSFProcessGroup"
   NAME="rules:#views#secured#lecture#universitydisableconfirmation.xhtml"
   PATH="/views/secured/lecture/universitydisableconfirmation.xhtml" SHAPE="304,1041,0,0"/>
+ <PROCESS-ITEM ENTITY="JSFProcessGroup"
+  NAME="rules:#views#secured#lecture#departmentdisableconfirmation.xhtml"
+  PATH="/views/secured/lecture/departmentdisableconfirmation.xhtml" SHAPE="304,14017,0,0"/>
 </PROCESS>
