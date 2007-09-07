@@ -253,7 +253,11 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 		if (!university.getDepartments().isEmpty()) {
 			// Remove Departments
+			List<Department> departments = new ArrayList<Department>();
 			for (Department department : university.getDepartments()) {
+				departments.add(department);
+			}
+			for (Department department : departments) {
 				this.getDepartmentService().removeCompleteDepartmentTree(department.getId());
 			}
 		}
