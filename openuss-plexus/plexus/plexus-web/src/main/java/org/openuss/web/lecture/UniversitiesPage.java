@@ -83,18 +83,17 @@ public class UniversitiesPage extends BasePage{
 	}
 	
 	/**
-	 * Disables the chosen university. This is just evident for the search indexing.
+	 * Store the selected university into session scope and go to university disable confirmation page.
 	 * @return Outcome
 	 */
-	public String disableUniversity() {
-		logger.debug("Starting method disableUniversity");
+	public String selectUniversityAndConfirmDisable() {
+		logger.debug("Starting method selectUniversityAndConfirmDisable");
 		UniversityInfo currentUniversity = currentUniversity();
-		// setOrganisationStatus(true) = Enabled
-		// setOrganisationStatus(false) = Disbled
-		universityService.setUniversityStatus(currentUniversity.getId(), false);
+		logger.debug("Returning to method selectUniversityAndConfirmDisable");
+		logger.debug(currentUniversity.getId());	
+		setSessionBean(Constants.UNIVERSITY_INFO, currentUniversity);
 		
-		addMessage(i18n("message_university_disabled"));
-		return Constants.SUCCESS;
+		return Constants.UNIVERSITY_CONFIRM_DISABLE_PAGE;
 	}
 	
 	/**

@@ -49,7 +49,7 @@
 		<plexus:column header="#{msg.commands_header}">
 			<s:authorize ifAllGranted="ROLE_ADMIN">
 					<h:commandButton 
-						action = "#{views$public$university$universities.disableUniversity}"
+						action = "#{views$public$university$universities.selectUniversityAndConfirmDisable}"
 						styleClass="button_remove"
 						value="#{msg.university_command_disable}"
 						hint="#{msg.university_command_disable_hint}"
