@@ -30,10 +30,12 @@ import org.openuss.web.Constants;
  * @author Tianyu Wang
  * @author Weijun Chen
  * @author Kai Stettner
+ * @deprecated
  *
  */
 @Bean(name = "views$public$department$departments", scope = Scope.REQUEST)
 @View
+
 public class DepartmentsPage extends BasePage{
 
 	private static final Logger logger = Logger.getLogger(DepartmentsPage.class);

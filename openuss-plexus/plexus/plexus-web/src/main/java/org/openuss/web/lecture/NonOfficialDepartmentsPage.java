@@ -26,7 +26,8 @@ import org.openuss.web.Constants;
 
 
 
-/** Backing Bean for the views departments.xhtml and departmentstable.xhtml.
+/** 
+ * Backing Bean for the views nonofficialdepartmentstableoverview.xhtml
  * 
  * @author Tianyu Wang
  * @author Weijun Chen
