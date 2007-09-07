@@ -91,7 +91,7 @@ public class CourseIndexer extends DomainIndexer {
 				Field.Index.UN_TOKENIZED));
 		document.add(new Field(CONTENT, content(course), Field.Store.YES, Field.Index.TOKENIZED));
 		document.add(new Field(DETAILS, details(course), Field.Store.YES, Field.Index.UN_TOKENIZED));
-		document.add(new Field(NAME, name(course), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(NAME, name(course), Field.Store.YES, Field.Index.TOKENIZED));
 		
 		document.add(new Field(COURSE_TYPE_IDENTIFIER, String.valueOf(course.getCourseType().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(INSTITUTE_IDENTIFIER, String.valueOf(String.valueOf(course.getCourseType().getInstitute().getId())), Field.Store.YES, Field.Index.UN_TOKENIZED));

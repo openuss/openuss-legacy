@@ -66,7 +66,7 @@ public class UniversityIndexer extends DomainIndexer {
 				Field.Index.UN_TOKENIZED));
 		document.add(new Field(CONTENT, content(university), Field.Store.YES, Field.Index.TOKENIZED));
 		document.add(new Field(DETAILS, details(university), Field.Store.YES, Field.Index.UN_TOKENIZED));
-		document.add(new Field(NAME, name(university), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(NAME, name(university), Field.Store.YES, Field.Index.TOKENIZED));
 		
 		document.add(new Field(COURSE_TYPE_IDENTIFIER, "", Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(INSTITUTE_IDENTIFIER, "", Field.Store.YES, Field.Index.UN_TOKENIZED));
