@@ -1,5 +1,7 @@
 package org.openuss.web.search;
 
+import java.io.FileNotFoundException;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -47,7 +49,22 @@ public class SearchPage extends BasePage{
 				searchResults.setHits(lectureSearcher.search(searchResults.getTextToSearch()));
 			} catch (LuceneSearchException ex) {
 				logger.error(ex);
-				addError(i18n("search_text_error"));
+				// search index file is not available (maybe the index was not created)
+				if(ex.getCause().getClass().equals(FileNotFoundException.class)){
+					addError(i18n("search_error_index_not_found"));
+				// unspecified Lucene error
+				} else {
+					addError(i18n("search_text_error"));
+				}
+			} catch (Exception ex){
+				logger.error(ex);
+				// too many search results
+				if(ex.toString().equals("org.apache.lucene.search.BooleanQuery$TooManyClauses: maxClauseCount is set to 1024")){
+					addError(i18n("search_error_too_many_results"));
+				// unspecified error
+				} else {
+					addError(i18n("search_text_error"));
+				}
 			}
 		}
 		return Constants.SEARCH_RESULT;

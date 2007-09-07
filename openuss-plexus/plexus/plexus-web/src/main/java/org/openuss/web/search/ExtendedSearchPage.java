@@ -1,5 +1,6 @@
 package org.openuss.web.search;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -97,7 +98,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 				default:
 					throw new IllegalArgumentException("invalid result type id!");
 				}
-				
+				// TODO: Error handling
 				searchResult = extendedSearcher.search(
 						extendedSearchResults.getTextToSearch(),
 						domainType,
@@ -112,10 +113,24 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 				if(searchResult == null || searchResult.size() == 0){
 					getFacesContext().addMessage(null, new FacesMessage(i18n("extended_search_no_matches_found")) );
 				}
-				
 			} catch (LuceneSearchException ex) {
 				logger.error(ex);
-				addError(i18n("search_text_error"));
+				// search index file is not available (maybe the index was not created)
+				if(ex.getCause().getClass().equals(FileNotFoundException.class)){
+					addError(i18n("search_error_index_not_found"));
+				// unspecified Lucene error
+				} else {
+					addError(i18n("search_text_error"));
+				}
+			} catch (Exception ex){
+				logger.error(ex);
+				// too many search results
+				if(ex.toString().equals("org.apache.lucene.search.BooleanQuery$TooManyClauses: maxClauseCount is set to 1024")){
+					addError(i18n("search_error_too_many_results"));
+				// unspecified error
+				} else {
+					addError(i18n("search_text_error"));
+				}
 			}
 		}
 		return Constants.EXTENDED_SEARCH_RESULT;
