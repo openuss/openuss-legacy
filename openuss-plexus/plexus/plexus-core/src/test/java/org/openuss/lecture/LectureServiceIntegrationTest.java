@@ -43,7 +43,7 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		logger.debug("----> BEGIN access to getInstitutes test <---- ");
 		
 		//Create Secure context
-		User user = testUtility.createSecureContext();
+		User user = testUtility.createAdminSecureContext();
 		
 		//Create institutes
 		Institute institute1 = testUtility.createUniqueInstituteInDB();
@@ -235,14 +235,20 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 	
 	public void testAddCourseTypeToInstitute() throws LectureException{
 		logger.debug("----> add courseType <---- ");
-		user = testUtility.createSecureContext();
-		Institute institute = createInstitute();
-		lectureService.createInstitute(institute);
+		user = testUtility.createUserSecureContext();
+		Institute institute = testUtility.createUniqueInstituteInDB();//createInstitute();
+		//lectureService.createInstitute(institute);
 
 		commit();
 		
 		CourseType courseType = CourseType.Factory.newInstance(unique("name"), unique("courseType"));
-		institute = lectureService.add(institute.getId(), courseType);
+		try {
+			institute = lectureService.add(institute.getId(), courseType);
+			fail("LectreServiceException should have been thrown.");
+		} catch (LectureServiceException lse) {
+			;
+		}
+		/*
 		assertTrue(institute.getCourseTypes().contains(courseType));
 		
 		commit();
@@ -251,11 +257,23 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		
 		lectureService.removeInstitute(institute.getId());
 		setComplete();
+		*/
 	}
 	
 	
 	public void testAddPeriodToInstitute() throws LectureException {
 		logger.debug("add period to institute");
+		
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		Period period = testUtility.createUniquePeriodInDB();
+		
+		try {
+			this.getLectureService().add(institute.getId(), period);
+			fail("LectureServiceException must have been throen.");
+		} catch (LectureServiceException lse) {
+			;
+		}
+		/*
 		user = testUtility.createSecureContext();
 		
 		Institute institute = createInstitute();
@@ -277,6 +295,7 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		lectureService.removeInstitute(institute.getId());
 		
 		setComplete();
+		*/
 	}
 	
 	private Institute createInstitute() {
