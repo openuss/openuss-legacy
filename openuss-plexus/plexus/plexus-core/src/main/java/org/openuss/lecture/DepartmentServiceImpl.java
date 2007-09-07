@@ -383,6 +383,9 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 			// Remove applications
 			List<Application> applications = new ArrayList<Application>();
 			for (Application application : department.getApplications()) {
+				applications.add(application);
+			}
+			for (Application application : applications) {
 				application.remove(department);
 				department.setApplications(new ArrayList<Application>());
 				application.remove(application.getInstitute());
