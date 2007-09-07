@@ -319,10 +319,30 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Department department = this.getDepartmentDao().load(departmentId);
 		Validate.notNull(department, "DepartmentService.setDepartmentStatus - "
 				+ "department cannot be found with the corresponding departmentId " + departmentId);
-
+		
+		// Only allow department to be enabled when the super-ordinate university is enabled
+		if(status){
+			Validate.isTrue(department.getUniversity().isEnabled(),
+			"DepartmentService.handleSetDepartmentStatus - the department cannot be enabled because the associated university is disabled.");
+		}
+		
 		// Set status
 		department.setEnabled(status);
 		this.update(this.getDepartmentDao().toDepartmentInfo(department));
+		
+		// Set subordinate organisations to "disabled" if the department was just disabled
+		if(!status){
+			for(Institute institute : department.getInstitutes()){
+				institute.setEnabled(false);
+				this.getInstituteDao().update(institute);
+				for(CourseType courseType : institute.getCourseTypes()){
+					for(Course course : courseType.getCourses()){
+						course.setEnabled(false);
+						this.getCourseDao().update(course);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
