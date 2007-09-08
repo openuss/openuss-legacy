@@ -63,11 +63,14 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		logger.debug("Starting method registrate");
 		// connect institute to user
 		instituteInfo.setOwnerName(user.getName());
+		Long departmentId = instituteInfo.getDepartmentId();
 		// create institute
 		instituteInfo.setEnabled(false);
 
-		Long instituteId = instituteService.create(instituteInfo, user.getId());
+		Long instituteId = instituteService.create(instituteInfo, user.getId());		
 		instituteInfo.setId(instituteId);
+		
+		instituteService.applyAtDepartment(instituteId, departmentId, user.getId());
 
 		return Constants.INSTITUTE_PAGE;
 	}
