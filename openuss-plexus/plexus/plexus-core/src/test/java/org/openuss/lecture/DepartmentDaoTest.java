@@ -16,6 +16,7 @@ import org.openuss.security.Membership;
  * @see org.openuss.lecture.DepartmentDao
  * @author Florian Dondorf, Ron Haus
  */
+@SuppressWarnings( { "unchecked" })
 public class DepartmentDaoTest extends DepartmentDaoTestBase {
 
 	private TestUtility testUtility;

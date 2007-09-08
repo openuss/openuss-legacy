@@ -21,6 +21,7 @@ import org.openuss.security.User;
  * 
  * @see org.openuss.lecture.DepartmentService
  */
+@SuppressWarnings( { "unchecked" })
 public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrationTestBase {
 
 	public void testCreateDepartment() {
@@ -309,8 +310,9 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 	public void testFindApplication() {
 		logger.info("----> BEGIN access to findApplication test");
 
-		// Create Application
-		Application application = this.getTestUtility().createUniqueUnconfirmedApplicationInDB();
+		// Create Institute (Application is included)
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		Application application = institute.getApplications().get(0);
 
 		// Synchronize with Database
 		flush();

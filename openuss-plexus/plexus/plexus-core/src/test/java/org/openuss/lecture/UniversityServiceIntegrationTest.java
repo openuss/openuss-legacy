@@ -554,36 +554,12 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 
 	public void testRemoveCompleteUniversityTree() {
 		logger.info("----> BEGIN access to removeCompleteUniversityTree test");
-
-		// Create User
-		User user = testUtility.createUniqueUserInDB();
-		
-		// Create Departments
-		Department department1 = testUtility.createUniqueDepartmentInDB();
-		Department department2 = testUtility.createUniqueDepartmentInDB();
-		
-		// Create Institute
-		Institute institute = testUtility.createUniqueInstituteInDB();
 		
 		// Create University with Institutes, CourseTypes and Courses
 		Course course = testUtility.createUniqueCourseInDB();
 		University university = course.getCourseType().getInstitute().getDepartment().getUniversity();
-		university.add(department1);
-		university.add(department2);
-		department2.add(institute);
 		Long universityId = university.getId();
 		assertNotNull(universityId);
-		
-		// Create Application
-		Application application = new ApplicationImpl();
-		application.setApplicationDate(new Date(new GregorianCalendar(12, 07, 2006).getTimeInMillis()));
-		application.setApplyingUser(user);
-		application.setConfirmed(false);
-		application.add(department1);
-		application.add(institute);
-		
-		department1.getApplications().add(application);
-		institute.getApplications().add(application);
 		
 		flush();
 
