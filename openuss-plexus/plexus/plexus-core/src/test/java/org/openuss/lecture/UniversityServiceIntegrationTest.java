@@ -16,8 +16,6 @@ import org.acegisecurity.AccessDeniedException;
 import org.apache.log4j.Logger;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopDao;
-import org.openuss.security.MembershipService;
-import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 
 /**
@@ -27,6 +25,7 @@ import org.openuss.security.User;
  * @author Ron Haus
  * @author Florian Dondorf
  */
+@SuppressWarnings( { "unchecked" })
 public class UniversityServiceIntegrationTest extends UniversityServiceIntegrationTestBase {
 
 	/**
@@ -604,15 +603,6 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		
 		flush();
 		
-		// Remove department
-		DepartmentService departmentService = (DepartmentService) this.getApplicationContext().getBean("departmentService");
-		if (!university.getDepartments().isEmpty()) {
-			// Remove Departments
-			for (Department department : university.getDepartments()) {
-				departmentService.removeCompleteDepartmentTree(department.getId());
-			}
-		}
-		flush();
 		this.getUniversityService().removeCompleteUniversityTree(universityId);
 		
 		flush();
@@ -630,7 +620,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.debug("----> BEGIN access to isNoneExistingUniversityShortcut test <---- ");
 		
 		//Create Secure Context
-		User user = testUtility.createUserSecureContext();
+		testUtility.createUserSecureContext();
 		
 		// Create Universities
 		University university1 = testUtility.createUniqueUniversityInDB();
@@ -710,10 +700,10 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		University university2 = testUtility.createUniqueUniversityInDB();
 		
 		// Create Periods
-		Period period1 = testUtility.createUniquePeriodInDB(university1);
+		testUtility.createUniquePeriodInDB(university1);
 		assertEquals(2, university1.getPeriods().size());
 		
-		Period period2 = testUtility.createUniquePeriodInDB(university2);
+		testUtility.createUniquePeriodInDB(university2);
 		assertEquals(2, university2.getPeriods().size());
 		
 		// Create Departments
@@ -764,17 +754,17 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 
 		// Create University
 		University university1 = testUtility.createUniqueUniversityInDB();
-		University university2 = testUtility.createUniqueUniversityInDB();
+		testUtility.createUniqueUniversityInDB();
 		
 		// Create Periods
-		Period period1 = testUtility.createUniquePeriodInDB(university1);
+		testUtility.createUniquePeriodInDB(university1);
 		assertEquals(2, university1.getPeriods().size());
 		
 		Period period2 = testUtility.createUniqueInactivePeriodInDB();
 		university1.add(period2);
 		assertEquals(3, university1.getPeriods().size());
 		
-		Period period3 = testUtility.createUniquePeriodInDB(university1);
+		testUtility.createUniquePeriodInDB(university1);
 		assertEquals(4, university1.getPeriods().size());
 		
 		// Create Departments

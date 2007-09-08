@@ -153,7 +153,7 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 	}
 
 	public void testDepartmentDaoFindByEnabled() {
-		// Create 3 Departments
+		// Create 3 Departments (+ 3 automatically as enabled created Standard Departments by the University)
 		Department department1 = testUtility.createUniqueDepartmentInDB();
 		department1.setEnabled(true);
 		Department department2 = testUtility.createUniqueDepartmentInDB();
@@ -166,7 +166,7 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 
 		// Test
 		List departmentsEnabled = this.departmentDao.findByEnabled(true);
-		assertEquals(2, departmentsEnabled.size());
+		assertEquals(2+3, departmentsEnabled.size());
 		assertTrue(departmentsEnabled.contains(department1));
 		assertTrue(departmentsEnabled.contains(department2));
 		assertFalse(departmentsEnabled.contains(department3));
@@ -250,7 +250,7 @@ public class DepartmentDaoTest extends DepartmentDaoTestBase {
 		assertFalse(departmentsOfficial.contains(department5));
 
 		List departmentsNonOfficial = this.departmentDao.findByUniversityAndType(university1, DepartmentType.NONOFFICIAL);
-		assertEquals(2, departmentsNonOfficial.size());
+		assertEquals(2+1, departmentsNonOfficial.size()); // + 1 Default Department
 		assertFalse(departmentsNonOfficial.contains(department1));
 		assertTrue(departmentsNonOfficial.contains(department2));
 		assertTrue(departmentsNonOfficial.contains(department3));
