@@ -38,7 +38,7 @@ private static final Logger logger = Logger.getLogger(DepartmentIndexingAspectTe
 	public void testLectureIndex() throws Exception {
 	 
 		// create dummy user
-		User user = testUtility.createSecureContext();
+		User user = testUtility.createUserSecureContext();
 		// create dummy department info
 		Department department = testUtility.createUniqueDepartmentInDB();
 		DepartmentInfo departmentInfo = departmentDao.toDepartmentInfo(department);

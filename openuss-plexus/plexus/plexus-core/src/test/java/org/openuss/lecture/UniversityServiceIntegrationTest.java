@@ -389,10 +389,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 
 		// Create Periods with university
 		Period period1 = testUtility.createUniquePeriodInDB(university);
-		university.add(period1);
 
 		Period period2 = testUtility.createUniquePeriodInDB(university);
-		university.add(period2);
 		
 		Period period3 = testUtility.createUniqueInactivePeriodInDB();
 		period3.setUniversity(university);
@@ -431,10 +429,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		
 		// Create Periods with university
 		Period period1 = testUtility.createUniquePeriodInDB(university);
-		university.add(period1);
 
 		Period period2 = testUtility.createUniquePeriodInDB(university);
-		university.add(period2);
 
 		Period period3 = testUtility.createUniqueInactivePeriodInDB();
 		period3.setUniversity(university);
@@ -535,39 +531,16 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 	}
 	
 	public void testRemoveUniversity() {
-		logger.info("----> BEGIN access to removeCompleteUniversityTree test");
-
-		// Create User
-		User user = testUtility.createUniqueUserInDB();
-		
-		// Create Departments
-		Department department1 = testUtility.createUniqueDepartmentInDB();
-		Department department2 = testUtility.createUniqueDepartmentInDB();
-		
-		// Create Institute
-		Institute institute = testUtility.createUniqueInstituteInDB();
-		department2.add(institute);
+		logger.info("----> BEGIN access to removeUniversity test");
 		
 		// Create University without Institutes, CourseTypes and Courses
 		University university = testUtility.createUniqueEmptyUniversityInDB();
-		university.add(department1);
 		Long universityId = university.getId();
 		assertNotNull(universityId);
 		
-		// Create Application
-		Application application = new ApplicationImpl();
-		application.setApplicationDate(new Date(new GregorianCalendar(12, 07, 2006).getTimeInMillis()));
-		application.setApplyingUser(user);
-		application.setConfirmed(false);
-		application.setDepartment(department1);
-		application.setInstitute(institute);
-		
-		department1.getApplications().add(application);
-		institute.getApplications().add(application);
-		
 		flush();
 		
-		// Remove department
+		// Remove University
 		this.getUniversityService().removeUniversity(universityId);
 		
 		flush();
@@ -577,7 +550,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		University university2 = universityDao.load(universityId);
 		assertNull(university2);
 		
-		logger.info("----> END access to removeCompleteUniversityTree test");
+		logger.info("----> END access to removeUniversity test");
 	}
 
 	public void testRemoveCompleteUniversityTree() {
