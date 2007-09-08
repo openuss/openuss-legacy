@@ -70,7 +70,7 @@ public class InstituteActivationMailSenderAspectImpl extends BaseBean {
 		
 		// Create parameter map
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("institutename", institute.getName()+"("+institute.getShortcut()+")");
+		parameters.put("institutename", institute.getName()+" ("+institute.getShortcut()+")");
 		parameters.put("institutelink", link);
 		
 		// Create list of recipients (only user who created the institute)
