@@ -83,10 +83,10 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		institute1.setEnabled(true);
 		
 		Institute institute2 = testUtility.createUniqueInstituteInDB();
-		institute1.setEnabled(true);
+		institute2.setEnabled(true);
 		
 		Institute institute3 = testUtility.createUniqueInstituteInDB();
-		institute1.setEnabled(true);
+		institute3.setEnabled(true);
 		
 		logger.debug("----> END access to getInstitute test <---- ");
 	}
@@ -239,7 +239,7 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		Institute institute = testUtility.createUniqueInstituteInDB();//createInstitute();
 		//lectureService.createInstitute(institute);
 
-		commit();
+		flush();
 		
 		CourseType courseType = CourseType.Factory.newInstance(unique("name"), unique("courseType"));
 		try {
@@ -248,16 +248,6 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		} catch (LectureServiceException lse) {
 			;
 		}
-		/*
-		assertTrue(institute.getCourseTypes().contains(courseType));
-		
-		commit();
-		
-		assertNotNull(courseType.getId());
-		
-		lectureService.removeInstitute(institute.getId());
-		setComplete();
-		*/
 	}
 	
 	

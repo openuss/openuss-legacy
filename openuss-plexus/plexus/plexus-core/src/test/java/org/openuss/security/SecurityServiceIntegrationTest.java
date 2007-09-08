@@ -26,12 +26,7 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 	private AclManager aclManager;
 
 	public void testSaveLoadAndRemoveUser() {
-		User user = testUtility.createDefaultUser();
-
-		securityService.createUser(user);
-		assertNotNull(user.getId());
-		securityService.saveUser(user);
-
+		User user = testUtility.createUniqueUserInDB();
 		User user2 = securityService.getUserByName(user.getUsername());
 		assertEquals(user, user2);
 
@@ -39,40 +34,38 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 	}
 
 	public void testIsNonExistingUserName() {
-		User user = testUtility.createDefaultUser();
+		User user = testUtility.createUniqueUserInDB();
 
-		assertTrue(securityService.isValidUserName(null, user.getUsername()));
-		securityService.createUser(user);
+		assertTrue(securityService.isValidUserName(null, testUtility.unique("Name")));
 		assertFalse(securityService.isValidUserName(null, user.getUsername()));
 		assertTrue(securityService.isValidUserName(user, user.getUsername()));
 
 	}
 
 	public void testPermission() {
-		User user = testUtility.createUserInDB();
+		User user = testUtility.createUniqueUserInDB();
 		TestBean bean = new TestBean(testUtility.unique(), "test get permission");
 
 		securityService.createObjectIdentity(bean, null);
 
 		securityService.setPermissions(user, bean, LectureAclEntry.INSTITUTE_OWN);
 
-		commit();
+		flush();
 
 		Permission found = securityService.getPermissions(user, bean);
 		assertNotNull(found);
 		securityService.removePermission(user, bean);
 		
-		commit();
+		flush();
 
 		assertNull(securityService.getPermissions(user, bean));
 	}
 
 	public void testAclGrants() {
-		User user = testUtility.createDefaultUser();
 
 		Group group = securityService.createGroup(testUtility.unique("test-group"), "label", "password",
 				GroupType.ADMINISTRATOR);
-		user = securityService.createUser(user);
+		User user = testUtility.createUniqueUserInDB();
 		securityService.addAuthorityToGroup(user, group);
 		Object parent = new TestBean(testUtility.unique(), "parent");
 		Object child = new TestBean(testUtility.unique(), "child");

@@ -148,7 +148,7 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		// create desktop - course link
 		desktopTwo.linkCourse(course);
 		desktopDao.update(desktopTwo);
-		commit();
+		flush();
 		
 		assertNotNull(course.getId());
 		
@@ -156,13 +156,13 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		Collection<Desktop> desktops = desktopDao.findByCourse(course);
 		assertEquals(1, desktops.size());
 		assertEquals(desktopTwo,desktops.iterator().next());
-		commit();
+		flush();
 		
 		// clean up
 		removeDesktopAndUser(desktopThree);
 		removeDesktopAndUser(desktopTwo);
 		removeDesktopAndUser(desktopOne);
-		commit();
+		flush();
 	}
 
 	

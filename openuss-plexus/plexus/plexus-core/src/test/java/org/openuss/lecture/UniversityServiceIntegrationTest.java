@@ -613,7 +613,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		department1.getApplications().add(application);
 		institute.getApplications().add(application);
 		
-		commit();
+		flush();
 
 		// Create user secure context
 		testUtility.createUserSecureContext();

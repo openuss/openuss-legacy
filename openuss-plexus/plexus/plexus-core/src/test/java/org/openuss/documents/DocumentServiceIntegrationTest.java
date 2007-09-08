@@ -75,7 +75,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertNotNull(root);
 		assertEquals("",root.getName());
 		assertTrue(root.isRoot());
-		commit();
+		flush();
 		
 		FolderInfo folder = createSubFolder();
 
@@ -84,7 +84,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertNotNull(folder.getId());
 		assertEquals("",folder.getPath());
 		
-		commit();
+		flush();
 		entries = documentService.getFolderEntries(defaultDomainObject, root);
 		assertNotNull(entries);
 		assertEquals(1, entries.size());
@@ -114,7 +114,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		documentService.createFolder(subFolder2, subFolder1);
 		documentService.createFolder(subFolder3, subFolder2);
 		
-		commit();
+		flush();
 		
 		List<Folder> folderPath = documentService.getFolderPath(subFolder3);
 		
@@ -161,7 +161,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertTrue(infoA.getId().equals(subFolder3.getId()) || infoA.getId().equals(subFolder4.getId()));
 		assertTrue(infoB.getId().equals(subFolder3.getId()) || infoB.getId().equals(subFolder4.getId()));
 		
-		commit();
+		flush();
 		
 		FolderEntryInfo info = new FolderEntryInfo();
 		info.setId(subFolder2.getId());
@@ -187,7 +187,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		
 		info.getInputStream().close();
 		
-		commit();
+		flush();
 		
 		FileInfo loaded = documentService.getFileEntry(info.getId(), true);
 		
@@ -213,7 +213,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		
 		info.getInputStream().close();
 		
-		commit();
+		flush();
 		
 		List<FolderEntryInfo> entries = documentService.getFolderEntries(defaultDomainObject, null);
 		assertNotNull(entries);
@@ -245,7 +245,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		is.close();
 		
 		documentService.removeFolderEntry(entry.getId());
-		commit();
+		flush();
 
 		try {
 			getRepositoryService().loadContent(entry.getId());
@@ -273,7 +273,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		
 		documentService.createFileEntries(files, subfolder);
 		
-		commit();
+		flush();
 		
 		List<FolderEntryInfo> entries = documentService.getFolderEntries(defaultDomainObject, subfolder);
 		assertNotNull(entries);
@@ -298,7 +298,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		FileInfo info = createFileInfo("readme.txt");
 		
 		documentService.createFileEntry(info, root);
-		commit();
+		flush();
 
 		List<FolderEntryInfo> entries = documentService.getFolderEntries(defaultDomainObject, null);
 		FolderEntryInfo entry = entries.get(0);

@@ -25,7 +25,7 @@ public class CourseMemberDaoTest extends CourseMemberDaoTestBase {
 	public void testCourseMemberDaoCreate() {
 		
 		User owner = testUtility.createUniqueUserInDB();
-		commit();
+		flush();
 		
 		User user = testUtility.createUniqueUserInDB();//createUserInDB();
 		Course course = testUtility.createUniqueCourseInDB();//lectureBuilder.getCourse();
@@ -34,7 +34,7 @@ public class CourseMemberDaoTest extends CourseMemberDaoTestBase {
 		CourseMember emAssistant = createAssistant(owner, course);
 		CourseMember emParticipant = createParticipant(testUtility.createUniqueUserInDB(), course);
 		
-		commit();
+		flush();
 		
 		Collection<CourseMember> members = courseMemberDao.findByCourse(course);
 		assertEquals(3, members.size());

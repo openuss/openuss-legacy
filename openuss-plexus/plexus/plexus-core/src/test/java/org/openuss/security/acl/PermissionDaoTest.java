@@ -21,17 +21,17 @@ public class PermissionDaoTest extends PermissionDaoTestBase {
 	
 
 	public void testPermissionDaoCreate() {
-		User user = testUtility.createUserInDB();
+		User user = testUtility.createUniqueUserInDB();
 		ObjectIdentity objectIdentity = createAndTestObjectIdentityInDB();
 		createAndTestPermission(user, objectIdentity);
 	}
 
 	public void testFindPermission() {
-		User user = testUtility.createUserInDB();
+		User user = testUtility.createUniqueUserInDB();
 		ObjectIdentity objectIdentity = createAndTestObjectIdentityInDB();
 		Permission permission = createAndTestPermission(user, objectIdentity);
 		
-		commit();
+		flush();
 		
 		Permission found = permissionDao.findPermission(objectIdentity, user);
 		assertNotNull(found);

@@ -251,7 +251,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		List<CourseMemberInfo> participants = courseService.getParticipants(courseInfo);
 		assertEquals(1, participants.size());
 		
-		commit();
+		flush();
 		
 		Permission permission = securityService.getPermissions(user, courseInfo);
 		assertNotNull(permission);
@@ -598,7 +598,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		securityService.createObjectIdentity(institute, null);
 		securityService.createObjectIdentity(lectureBuilder.getCourse(), institute);
 		
-		commit();
+		flush();
 		return lectureBuilder;
 	}
 	

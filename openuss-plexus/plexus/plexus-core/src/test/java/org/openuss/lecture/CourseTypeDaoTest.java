@@ -26,7 +26,7 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
 		institute = testUtility.createUniqueInstituteInDB();
-		commit();
+		flush();
 	}
 	
 	@Override
@@ -47,8 +47,10 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 		// persist
 		assertNull(courseType.getId());
 		instituteDao.update(institute);
+		flush();
+		
 		assertNotNull(courseType.getId());
-		commit();
+
 		
 		// load 
 		CourseType s = courseTypeDao.load(courseType.getId());
@@ -57,12 +59,12 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 		// update
 		s.setDescription("description");
 		courseTypeDao.update(s);
-		commit();
+		flush();
 
 		// remove courseType from institute
 		institute.remove(s);
 		instituteDao.update(institute);
-		commit();
+		flush();
 	}
 
 	public void testToCourseTypeInfo () {

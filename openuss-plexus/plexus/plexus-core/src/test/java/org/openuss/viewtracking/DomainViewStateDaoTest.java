@@ -26,7 +26,7 @@ public class DomainViewStateDaoTest extends DomainViewStateDaoTestBase {
 	}
 
 	public void testViewStateDaoCreate() {
-		User user = testUtility.createSecureContext();
+		User user = testUtility.createAdminSecureContext();
 		Long id = testUtility.unique();
 		DomainViewState domainViewState = createDomainViewState(id, user.getId(), ViewState.NEW);
 		
@@ -35,7 +35,7 @@ public class DomainViewStateDaoTest extends DomainViewStateDaoTestBase {
 		assertEquals(id, domainViewState.getDomainViewStatePk().getDomainIdentifier());
 		assertEquals(user.getId(), domainViewState.getDomainViewStatePk().getUserIdentifier());
 		assertEquals(ViewState.NEW, domainViewState.getViewState());
-		commit();
+		flush();
 		domainViewState = domainViewStateDao.load(domainViewState.getDomainViewStatePk());
 		assertEquals(id, domainViewState.getDomainViewStatePk().getDomainIdentifier());
 		

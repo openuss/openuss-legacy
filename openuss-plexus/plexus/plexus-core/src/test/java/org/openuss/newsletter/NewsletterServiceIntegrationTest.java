@@ -41,11 +41,11 @@ public class NewsletterServiceIntegrationTest extends NewsletterServiceIntegrati
 		AcegiUtils.setAclManager(aclManager);
 		user = testUtility.createSecureContext();
 		DomainObject assistDO = generateDOAssist(user);
-		commit();
+		flush();
 		getNewsletterService().addNewsletter(assistDO, "assistML"); 
 		assist = getNewsletterService().getNewsletter(assistDO);
 		DomainObject noAssistDO = generateDomainObject();
-		commit();
+		flush();
 		getNewsletterService().addNewsletter(noAssistDO, "noAssistML"); 
 		noAssist = getNewsletterService().getNewsletter(noAssistDO);
 	}
@@ -55,8 +55,8 @@ public class NewsletterServiceIntegrationTest extends NewsletterServiceIntegrati
 		DomainObject domainObject = generateDomainObject();
 		getNewsletterService().addNewsletter(domainObject, "testName");		
 		NewsletterInfo newsletter = getNewsletterService().getNewsletter(domainObject);
-		User user = testUtility.createDefaultUserInDB();
-		commit();
+		User user = testUtility.createUniqueUserInDB();
+		flush();
 		//Init list of subscribers has to be empty
 		List<SubscriberInfo> subscribers = getNewsletterService().getSubscribers(newsletter);
 		assertEquals(0, subscribers.size());
@@ -96,7 +96,7 @@ public class NewsletterServiceIntegrationTest extends NewsletterServiceIntegrati
 		getNewsletterService().addNewsletter(domainObject, "testName");		
 		NewsletterInfo newsletter = getNewsletterService().getNewsletter(domainObject);
 		User user = testUtility.createDefaultUserInDB();
-		commit();
+		flush();
 		//Init list of subscribers has to be empty
 		List<SubscriberInfo> subscribers = getNewsletterService().getSubscribers(newsletter);
 		assertEquals(0, subscribers.size());
@@ -140,7 +140,7 @@ public class NewsletterServiceIntegrationTest extends NewsletterServiceIntegrati
 		MailInfo mailInfo = new MailInfo();
 		mailInfo.setId(mail.getId());
 		getNewsletterService().markAsSend(mailInfo);
-		commit();
+		flush();
 		List<MailInfo> mails = getNewsletterService().getMails(assist, false);
 		assertNotNull(mails);
 		assertEquals(1, mails.size());
@@ -159,7 +159,7 @@ public class NewsletterServiceIntegrationTest extends NewsletterServiceIntegrati
 		MailInfo mailInfo = new MailInfo();
 		mailInfo.setId(mail.getId());
 		getNewsletterService().markAsSend(mailInfo);
-		commit();
+		flush();
 		List<MailInfo> mails = getNewsletterService().getMails(assist, false);
 		assertNotNull(mails);
 		assertEquals(1, mails.size());
@@ -181,11 +181,11 @@ public class NewsletterServiceIntegrationTest extends NewsletterServiceIntegrati
 	public void testSendMail(){
 		MailDetail mail = generateMailToSend();		
 		getNewsletterService().sendMail(assist, mail);
-		commit();
+		flush();
 		MailInfo mailInfo = new MailInfo();
 		mailInfo.setId(mail.getId());
 		getNewsletterService().markAsSend(mailInfo);
-		commit();
+		flush();
 		List<MailInfo> mails = getNewsletterService().getMails(assist, false);
 		assertNotNull(mails);
 		assertEquals(1, mails.size());

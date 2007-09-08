@@ -27,7 +27,7 @@ public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrati
 
 
 	private void checkRepositoryRoundtrip(String fileName) throws IOException, FileNotFoundException {
-		testUtility.createSecureContext();
+		testUtility.createAdminSecureContext();
 		long fileId = testUtility.unique();
 		File testFile = new File(fileName);
 		long checksum = FileUtils.checksumCRC32(testFile);

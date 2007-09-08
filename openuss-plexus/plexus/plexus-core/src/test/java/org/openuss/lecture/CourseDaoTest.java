@@ -73,7 +73,7 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		assertNotNull(university);
 		
 		// create institute
-		Institute institute = createInstitute();
+		Institute institute = testUtility.createUniqueInstituteInDB();
 		instituteDao.create(institute);
 		assertNotNull(institute);
 		
@@ -96,7 +96,7 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		courseDao.create(course);
 		assertNotNull(course.getId());
 
-		commit();
+		flush();
 		
 		// create second course
 		Course course2 = new CourseImpl();
@@ -104,13 +104,14 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		course2.setPeriod(period);
 		course2.setShortcut(shortcut);
 		assertNull(course2.getId());
-		courseDao.create(course2);
-		assertNotNull(course2.getId());
+		
+		flush();
 		
 		try {
-			commit();
+			courseDao.create(course2);
+			flush();			
 			fail("Shortcut violation expected!");
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			// succeed - cannot create two or more courses with the same shortcut
 		}
 	}
@@ -221,7 +222,7 @@ public class CourseDaoTest extends CourseDaoTestBase {
 	}
 
 	private Institute createInstitute() {
-		user = testUtility.createDefaultUser();
+		user = testUtility.createUniqueUserInDB();
 		userDao.create(user);
 				
 		Institute institute = Institute.Factory.newInstance();
