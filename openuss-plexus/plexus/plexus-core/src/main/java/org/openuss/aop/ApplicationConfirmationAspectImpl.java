@@ -1,8 +1,5 @@
 package org.openuss.aop;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.userdetails.UserDetails;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Application;
 import org.openuss.lecture.ApplicationDao;
