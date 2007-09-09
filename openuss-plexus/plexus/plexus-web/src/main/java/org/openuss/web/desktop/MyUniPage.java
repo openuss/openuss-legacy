@@ -525,10 +525,10 @@ public class MyUniPage extends BasePage {
 				for(MyUniCourseInfo courseInfo : courseCollection)
 				{
 					newItem = new ListItemDAO();
-					newItem.setTitle(courseInfo.getName() + " (" + courseInfo.getPeriod() + ")");
+					newItem.setTitle(courseInfo.getName());
 					newItem.setUrl(coursesBasePath + "?course=" + courseInfo.getId());
 					newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId + "&remove_course=" + courseInfo.getId());
-
+					newItem.setMetaInformation(courseInfo.getPeriod());
 					listItems.add(newItem);
 				}
 			}
@@ -559,7 +559,7 @@ public class MyUniPage extends BasePage {
 					newItem.setTitle(courseInfo.getName());
 					newItem.setUrl(coursesBasePath + "?course=" + courseInfo.getId());
 					newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId + "&remove_course=" + courseInfo.getId());
-
+					newItem.setMetaInformation(courseInfo.getPeriod());
 					listItems.add(newItem);
 				}
 			}
