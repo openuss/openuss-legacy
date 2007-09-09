@@ -171,13 +171,16 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		assertNotNull(department);
 		int sizeBefore = department.getInstitutes().size();
 		
+		// Create Department
+		Department department1 = testUtility.createUniqueDepartmentInDB();
+		
 		// Create Application
 		Application application = new ApplicationImpl();
 		application.setApplicationDate(new Date(new GregorianCalendar(12, 07, 2006).getTimeInMillis()));
 		application.setApplyingUser(testUtility.createUniqueUserInDB());
 		application.setConfirmed(false);
-		application.setDepartment(testUtility.createUniqueDepartmentInDB());
-		application.setInstitute(institute);
+		application.add(department1);
+		application.add(institute);
 
 		flush();
 
