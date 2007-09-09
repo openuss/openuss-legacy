@@ -63,7 +63,7 @@ public class InstituteIndexingAspect {
 				*/
 			} else {
 				logger.debug("method updateInstituteIndex: deleteIndex");
-				deleteInstituteFromIndexCascade(instituteInfo);
+				deleteInstituteFromIndexCascade(instituteInfo.getId());
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -84,7 +84,7 @@ public class InstituteIndexingAspect {
 				indexerService.updateIndex(institute);
 			} else {
 				logger.debug("method updateInstituteIndexById: deleteIndex");
-				deleteInstituteFromIndexCascade(instituteInfo);
+				deleteInstituteFromIndexCascade(instituteInfo.getId());
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -108,6 +108,21 @@ public class InstituteIndexingAspect {
 		}
 	}
 	
+	private void deleteInstituteFromIndexCascade(Long instituteId){
+		try{
+			InstituteInfo instituteInfo = instituteService.findInstitute(instituteId);
+			institute = instituteDao.instituteInfoToEntity(instituteInfo);
+			indexerService.deleteIndex(institute);
+			Course course;
+			for (Object courseTemp : institute.getAllCourses()) {
+				course = (Course) courseTemp;
+				indexerService.deleteIndex(course);
+			}
+		} catch (IndexerApplicationException e) {
+			logger.error(e);
+		}
+	}
+	
 	public IndexerService getIndexerService() {
 		return indexerService;
 	}
@@ -124,19 +139,7 @@ public class InstituteIndexingAspect {
 		this.instituteDao = instituteDao;
 	}
 	
-	private void deleteInstituteFromIndexCascade(InstituteInfo instituteInfo){
-		try{
-			institute = instituteDao.instituteInfoToEntity(instituteInfo);
-			indexerService.deleteIndex(institute);
-			Course course;
-			for (Object courseTemp : institute.getAllCourses()) {
-				course = (Course) courseTemp;
-				indexerService.deleteIndex(course);
-			}
-		} catch (IndexerApplicationException e) {
-			logger.error(e);
-		}
-	}
+	
 
 	public InstituteService getInstituteService() {
 		return instituteService;

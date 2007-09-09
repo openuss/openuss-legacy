@@ -215,6 +215,9 @@
 				pointcut-ref="UniversityServiceSetStatusPointcut"
 				arg-names="universityId, status" />
 			<aop:after-returning method="deleteUniversityIndex"
+				pointcut-ref="UniversityServiceDeletePointcut"
+				arg-names="universityId" />
+			<aop:after-returning method="deleteUniversityFromIndexCascade"
 				pointcut-ref="UniversityServiceDeleteCompleteUniversityTreePointcut"
 				arg-names="universityId" />
 		</aop:aspect>
@@ -233,6 +236,9 @@
 			<aop:after-returning method="deleteDepartmentIndex"
 				pointcut-ref="DepartmentServiceDeletePointcut"
 				arg-names="departmentId" />
+			<aop:after-returning method="deleteDepartmentFromIndexCascade"
+				pointcut-ref="DepartmentServiceDeleteCompleteDepartmentTreePointcut"
+				arg-names="departmentId" />
 		</aop:aspect>
 
 		<aop:aspect id="instituteIndexAspect"
@@ -248,6 +254,9 @@
 				arg-names="instituteId, status" />
 			<aop:after-returning method="deleteInstituteIndex"
 				pointcut-ref="InstituteServiceDeletePointcut"
+				arg-names="instituteId" />
+			<aop:after-returning method="deleteInstituteFromIndexCascade"
+				pointcut-ref="InstituteServiceDeleteCompleteInstituteTreePointcut"
 				arg-names="instituteId" />
 		</aop:aspect>
 

@@ -52,7 +52,7 @@ public class UniversityIndexingAspect {
 				indexerService.updateIndex(university);
 			} else {
 				logger.debug("method updateUniversityIndex: deleteIndex");
-				deleteUniversityFromIndexCascade(universityInfo);
+				deleteUniversityFromIndexCascade(universityInfo.getId());
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -73,7 +73,7 @@ public class UniversityIndexingAspect {
 				indexerService.updateIndex(university);
 			} else {
 				logger.debug("method updateUniversityIndex: deleteIndex");
-				deleteUniversityFromIndexCascade(universityInfo);
+				deleteUniversityFromIndexCascade(universityInfo.getId());
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -91,6 +91,36 @@ public class UniversityIndexingAspect {
 			University university = University.Factory.newInstance();
 			university.setId(universityId);
 			indexerService.deleteIndex(university);
+		} catch (IndexerApplicationException e) {
+			logger.error(e);
+		}
+	}
+	
+	private void deleteUniversityFromIndexCascade(Long universityId){
+		try{
+			UniversityInfo universityInfo = universityService.findUniversity(universityId);
+			university = universityDao.universityInfoToEntity(universityInfo);
+			indexerService.deleteIndex(university);
+			Department department;
+			Institute institute;
+			Course course;
+			// delete university's departments from index
+			for(Object departmentTemp : university.getDepartments()){
+				department = (Department) departmentTemp;
+				indexerService.deleteIndex(department);
+				// delete department's institutes from index
+				for(Object instituteTemp : department.getInstitutes()) {
+					// delete current institute from index
+					institute = (Institute) instituteTemp;
+					indexerService.deleteIndex(institute);
+					// delete institute's courses from index
+					for(Object courseTemp : institute.getAllCourses()){
+						course = (Course) courseTemp; 
+						indexerService.deleteIndex(course);
+					}
+				}
+			}
+			
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}
@@ -120,34 +150,7 @@ public class UniversityIndexingAspect {
 		this.universityService = universityService;
 	}
 	
-	private void deleteUniversityFromIndexCascade(UniversityInfo universityInfo){
-		try{
-			university = universityDao.universityInfoToEntity(universityInfo);
-			indexerService.deleteIndex(university);
-			Department department;
-			Institute institute;
-			Course course;
-			// delete university's departments from index
-			for(Object departmentTemp : university.getDepartments()){
-				department = (Department) departmentTemp;
-				indexerService.deleteIndex(department);
-				// delete department's institutes from index
-				for(Object instituteTemp : department.getInstitutes()) {
-					// delete current institute from index
-					institute = (Institute) instituteTemp;
-					indexerService.deleteIndex(institute);
-					// delete institute's courses from index
-					for(Object courseTemp : institute.getAllCourses()){
-						course = (Course) courseTemp; 
-						indexerService.deleteIndex(course);
-					}
-				}
-			}
-			
-		} catch (IndexerApplicationException e) {
-			logger.error(e);
-		}
-	}
+	
 	
 
 }

@@ -45,7 +45,7 @@ public class DepartmentIndexingAspect {
 				indexerService.updateIndex(department);
 			} else {
 				logger.debug("method updateDepartmentIndex: deleteIndex");
-				deleteDepartmentFromIndexCascade(departmentInfo);
+				deleteDepartmentFromIndexCascade(departmentInfo.getId());
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -67,7 +67,7 @@ public class DepartmentIndexingAspect {
 				indexerService.updateIndex(department);
 			} else {
 				logger.debug("method updateDepartmentIndex: deleteIndex");
-				deleteDepartmentFromIndexCascade(departmentInfo);
+				deleteDepartmentFromIndexCascade(departmentInfo.getId());
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -83,6 +83,29 @@ public class DepartmentIndexingAspect {
 			Department department = Department.Factory.newInstance();
 			department.setId(departmentId);
 			indexerService.deleteIndex(department);
+		} catch (IndexerApplicationException e) {
+			logger.error(e);
+		}
+	}
+	
+	private void deleteDepartmentFromIndexCascade(Long departmentId){
+		try {
+			DepartmentInfo departmentInfo = departmentService.findDepartment(departmentId);
+			department = departmentDao.departmentInfoToEntity(departmentInfo);
+			indexerService.deleteIndex(department);
+			Institute institute;
+			Course course;
+			// delete department's institutes from index
+			for(Object instituteTemp : department.getInstitutes()) {
+				// delete current institute from index
+				institute = (Institute) instituteTemp;
+				indexerService.deleteIndex(institute);
+				// delete institute's courses from index
+				for(Object courseTemp : institute.getAllCourses()){
+					course = (Course) courseTemp; 
+					indexerService.deleteIndex(course);
+				}
+			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}
@@ -112,25 +135,5 @@ public class DepartmentIndexingAspect {
 		this.departmentService = departmentService;
 	}
 	
-	private void deleteDepartmentFromIndexCascade(DepartmentInfo departmentInfo){
-		try {
-			department = departmentDao.departmentInfoToEntity(departmentInfo);
-			indexerService.deleteIndex(department);
-			Institute institute;
-			Course course;
-			// delete department's institutes from index
-			for(Object instituteTemp : department.getInstitutes()) {
-				// delete current institute from index
-				institute = (Institute) instituteTemp;
-				indexerService.deleteIndex(institute);
-				// delete institute's courses from index
-				for(Object courseTemp : institute.getAllCourses()){
-					course = (Course) courseTemp; 
-					indexerService.deleteIndex(course);
-				}
-			}
-		} catch (IndexerApplicationException e) {
-			logger.error(e);
-		}
-	}
+	
 }
