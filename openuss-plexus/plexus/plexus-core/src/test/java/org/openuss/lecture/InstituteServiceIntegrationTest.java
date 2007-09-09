@@ -5,6 +5,9 @@
  */
 package org.openuss.lecture;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import org.acegisecurity.AccessDeniedException;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
@@ -167,6 +170,16 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		Department department = institute.getDepartment();
 		assertNotNull(department);
 		int sizeBefore = department.getInstitutes().size();
+		
+		// Create Application
+		Application application = new ApplicationImpl();
+		application.setApplicationDate(new Date(new GregorianCalendar(12, 07, 2006).getTimeInMillis()));
+		application.setApplyingUser(testUtility.createUniqueUserInDB());
+		application.setConfirmed(false);
+		application.setDepartment(testUtility.createUniqueDepartmentInDB());
+		application.setInstitute(institute);
+
+		flush();
 
 		// Create an Institute with CourseTypes and Courses
 		Course course = testUtility.createUniqueCourseInDB();

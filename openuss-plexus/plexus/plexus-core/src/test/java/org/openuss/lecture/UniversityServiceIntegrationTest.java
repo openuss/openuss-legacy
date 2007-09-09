@@ -345,10 +345,15 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 	public void testFindAllUniversities() {
 		logger.info("----> BEGIN access to findAllUniversities test");
 
+		// Count universities
+		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
+		int countUniversities = universityDao.loadAll().size();
+		
 		// Create complete Universities
 		List<University> universities = new ArrayList<University>();
 		for (int i = 0; i < 3; i++) {
 			universities.add(testUtility.createUniqueUniversityInDB());
+			countUniversities++;
 		}
 
 		// Synchronize with Database
@@ -357,8 +362,9 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		// Find all University
 		List universityInfos = universityService.findAllUniversities();
 
-		assertEquals(universities.size(), universityInfos.size());
+		assertEquals(countUniversities, universityInfos.size());
 
+		/*
 		Iterator iterator = null;
 		UniversityInfo universityInfo = null;
 		int count = 0;
@@ -372,6 +378,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 			}
 		}
 		assertEquals(universities.size(), count);
+		*/
 
 		logger.info("----> END access to findAllUniversities test");
 	}
@@ -488,24 +495,64 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 	public void testFindUniversitiesByTypeAndEnabled() {
 		logger.info("----> BEGIN access to findUniversitiesByType test");
 
+		// Count univeristies by type and enabled
+		List<UniversityInfo> allUniversities = this.getUniversityService().findAllUniversities();
+		List<UniversityInfo> enabledUniversities = new ArrayList<UniversityInfo>();
+		List<UniversityInfo> enabledCompanies = new ArrayList<UniversityInfo>();
+		List<UniversityInfo> disabledUniversities = new ArrayList<UniversityInfo>();
+		List<UniversityInfo> disabledCompanies = new ArrayList<UniversityInfo>();
+		for (UniversityInfo university : allUniversities) {
+			if (university.isEnabled()) {
+				if (university.getUniversityType() == UniversityType.UNIVERSITY) {
+					enabledUniversities.add(university);
+				}
+				else if (university.getUniversityType() == UniversityType.COMPANY) {
+					enabledCompanies.add(university);
+				}
+			}
+			else {
+				if (university.getUniversityType() == UniversityType.UNIVERSITY) {
+					disabledUniversities.add(university);
+				}
+				else if (university.getUniversityType() == UniversityType.COMPANY) {
+					disabledCompanies.add(university);
+				}
+			}
+		}
+		int enabledUniversitiesCount = enabledUniversities.size();
+		int enabledCompaniesiesCount = enabledCompanies.size();
+		int disabledUniversitiesCount = disabledUniversities.size();
+		int disabledCompaniesCount = disabledCompanies.size();
+		
 		// Create Universities
 		University university1 = testUtility.createUniqueUniversityInDB();
 		university1.setUniversityType(UniversityType.UNIVERSITY);
+		university1.setEnabled(true);
+		enabledUniversitiesCount++;
 
 		University university2 = testUtility.createUniqueUniversityInDB();
 		university2.setUniversityType(UniversityType.COMPANY);
+		university2.setEnabled(true);
+		enabledCompaniesiesCount++;
 
 		University university3 = testUtility.createUniqueUniversityInDB();
 		university3.setUniversityType(UniversityType.MISC);
+		university3.setEnabled(true);
 
 		University university4 = testUtility.createUniqueUniversityInDB();
 		university4.setUniversityType(UniversityType.UNIVERSITY);
+		university4.setEnabled(false);
+		disabledUniversitiesCount++;
 
 		University university5 = testUtility.createUniqueUniversityInDB();
 		university5.setUniversityType(UniversityType.COMPANY);
+		university5.setEnabled(true);
+		enabledCompaniesiesCount++;
 
 		University university6 = testUtility.createUniqueUniversityInDB();
 		university6.setUniversityType(UniversityType.COMPANY);
+		university6.setEnabled(false);
+		disabledCompaniesCount++;
 
 		flush();
 
@@ -513,18 +560,15 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		List<UniversityInfo> universities = this.getUniversityService().findUniversitiesByTypeAndEnabled(
 				UniversityType.UNIVERSITY, true);
 		assertNotNull(universities);
-		assertEquals(2, universities.size());
-		assertEquals(university1.getName(), universities.get(0).getName());
+		assertEquals(enabledUniversitiesCount, universities.size());
 
 		universities = this.getUniversityService().findUniversitiesByTypeAndEnabled(UniversityType.COMPANY, true);
 		assertNotNull(universities);
-		assertEquals(3, universities.size());
-		assertEquals(university5.getName(), universities.get(1).getName());
+		assertEquals(enabledCompaniesiesCount, universities.size());
 
-		universities = this.getUniversityService().findUniversitiesByTypeAndEnabled(UniversityType.MISC, true);
+		universities = this.getUniversityService().findUniversitiesByTypeAndEnabled(UniversityType.COMPANY, false);
 		assertNotNull(universities);
-		assertEquals(1, universities.size());
-		assertEquals(university3.getName(), universities.get(0).getName());
+		assertEquals(disabledCompaniesCount, universities.size());
 
 		logger.info("----> END access to findUniversitiesByType test");
 	}
