@@ -40,8 +40,12 @@ public class DepartmentDisableConfirmationPage extends AbstractDepartmentPage {
 	 */
 	public String disableDepartment() {
 		logger.debug("Starting method disableDepartment");
-		departmentService.setDepartmentStatus(departmentInfo.getId(), false);
-		addMessage(i18n("message_department_disabled"));
+		try{
+			departmentService.setDepartmentStatus(departmentInfo.getId(), false);
+			addMessage(i18n("message_department_disabled"));
+		} catch(Exception ex){
+			addMessage(i18n("message_department_disabled_failed"));
+		}
 		return Constants.OUTCOME_BACKWARD;
 	}
 	

@@ -19,6 +19,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
+import org.openuss.lecture.InstituteServiceException;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
@@ -107,11 +108,21 @@ public class InstitutesPage extends BasePage{
 	 */
 	public String save() {
 		for (InstituteInfo instituteInfo : changedInstitutes) {
-			instituteService.update(instituteInfo);
-			if (instituteInfo.isEnabled())
-				addMessage(i18n("system_message_institute_enabled", new Object[]{ instituteInfo.getName()}));
-			else
+			// activate institute - perform additional error checking because 
+			// depending on the activation state of the super-ordinate department 
+			// the activation might fail
+			if(instituteInfo.isEnabled()){
+				try {
+					instituteService.setInstituteStatus(instituteInfo.getId(), true);
+					addMessage(i18n("system_message_institute_enabled", new Object[]{ instituteInfo.getName()}));
+				} catch(InstituteServiceException iae) {
+					addMessage(i18n("message_institute_enabled_failed_department_disabled_detailed", new Object[]{ instituteInfo.getName()}));
+				}
+			// disable institute
+			} else {
+				instituteService.setInstituteStatus(instituteInfo.getId(), false);
 				addMessage(i18n("system_message_institute_disabled", new Object[]{ instituteInfo.getName()}));
+			}			
 		}
 		return Constants.SUCCESS;
 	}

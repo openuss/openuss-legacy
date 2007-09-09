@@ -19,6 +19,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
+import org.openuss.lecture.InstituteServiceException;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -135,11 +136,14 @@ public class InstitutesPage extends BasePage{
 	public String enableInstitute() {
 		logger.debug("Starting method enableInstitute");
 		InstituteInfo currentInstitute = currentInstitute();
-		// setOrganisationStatus(true) = Enabled
-		// setOrganisationStatus(false) = Disabled
-		instituteService.setInstituteStatus(currentInstitute.getId(), true);
-		
-		addMessage(i18n("message_institute_enabled"));
+		try {
+			instituteService.setInstituteStatus(currentInstitute.getId(), true);		
+			addMessage(i18n("message_institute_enabled"));
+		} catch(InstituteServiceException iae) {
+			addMessage(i18n("message_institute_enabled_failed_department_disabled"));
+		} catch(Exception ex){
+			addMessage(i18n("message_institute_enabled_failed"));
+		}
 		return Constants.SUCCESS;
 	}
 	

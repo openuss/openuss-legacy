@@ -14,6 +14,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentService;
+import org.openuss.lecture.DepartmentServiceException;
 import org.openuss.lecture.OrganisationService;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.web.BasePage;
@@ -108,9 +109,14 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	public String enableDepartment() {
 		logger.debug("Starting method enableDepartment");
 		DepartmentInfo currentDepartment = currentDepartment();
-		departmentService.setDepartmentStatus(currentDepartment.getId(), true);
-
-		addMessage(i18n("message_department_enabled"));
+		try {
+			departmentService.setDepartmentStatus(currentDepartment.getId(), true);
+			addMessage(i18n("message_department_enabled"));
+		} catch(DepartmentServiceException iae) {
+			addMessage(i18n("message_department_enabled_failed_university_disabled"));
+		} catch(Exception ex){
+			addMessage(i18n("message_department_enabled_failed"));
+		}
 		return Constants.SUCCESS;
 	}
 
