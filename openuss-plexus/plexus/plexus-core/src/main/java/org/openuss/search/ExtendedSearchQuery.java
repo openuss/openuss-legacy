@@ -82,9 +82,9 @@ public class ExtendedSearchQuery extends SimpleLuceneSearchQuery implements Exte
 			queryString.append(textToSearch);
 		} else {
 			queryString.append(DomainIndexer.NAME);
-			queryString.append(":\"");
+			queryString.append(":(");
 			queryString.append(textToSearch);
-			queryString.append("\"");
+			queryString.append(")");
 		}
 		
 		if(domainType != null && !domainType.equals("")){
