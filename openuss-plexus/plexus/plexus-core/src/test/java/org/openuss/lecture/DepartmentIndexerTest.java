@@ -6,9 +6,9 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
 import org.openuss.search.DomainResult;
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
-public class DepartmentIndexerTest extends AbstractDependencyInjectionSpringContextTests {
+public class DepartmentIndexerTest extends AbstractTransactionalDataSourceSpringContextTests {
 	
 private static final Logger logger = Logger.getLogger(DepartmentIndexerTest.class);
 	

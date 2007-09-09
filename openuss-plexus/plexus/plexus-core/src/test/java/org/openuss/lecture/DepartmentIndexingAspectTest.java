@@ -37,15 +37,25 @@ private static final Logger logger = Logger.getLogger(DepartmentIndexingAspectTe
 
 	public void testLectureIndex() throws Exception {
 	 
-		// create dummy user
-		User user = testUtility.createUserSecureContext();
-		// create dummy department info
-		Department department = testUtility.createUniqueDepartmentInDB();
-		DepartmentInfo departmentInfo = departmentDao.toDepartmentInfo(department);
-		// departmentId is set to NULL before creation
-		departmentInfo.setId(null);
-		
-		Long departmentId = departmentService.create(departmentInfo, user.getId());
+		// Create university with user
+		University university = testUtility.createUniqueUniversityInDB();
+
+		// Create a User as Owner
+		User owner = testUtility.createUniqueUserInDB();
+
+		// Create departmentInfo
+		DepartmentInfo departmentInfo = new DepartmentInfo();
+		departmentInfo.setName("Wirtschaftswissenschaften - FB 4");
+		departmentInfo.setDescription("Testdescription");
+		departmentInfo.setShortcut("FB4");
+		departmentInfo.setOwnerName("Administrator");
+		departmentInfo.setEnabled(true);
+		departmentInfo.setUniversityId(university.getId());
+		departmentInfo.setDefaultDepartment(false);
+		departmentInfo.setDepartmentType(DepartmentType.OFFICIAL);
+
+		// Test
+		Long departmentId = departmentService.create(departmentInfo, owner.getId());
 		
 		// update departmentInfo
 		// department id is set after the creation manually
@@ -56,7 +66,10 @@ private static final Logger logger = Logger.getLogger(DepartmentIndexingAspectTe
 		assertEquals(1, indexerMock.update);
 		// delete department
 		// indexMockDelete should be 1 --> Deleting institute index works properly
-		departmentService.removeDepartment(departmentId);
+		
+		// Create user secure context
+		testUtility.createAdminSecureContext();
+		departmentService.removeCompleteDepartmentTree(departmentId);
 		assertEquals(1, indexerMock.delete);
 	}
 	
