@@ -36,14 +36,11 @@
 			expression="execution(* org..DepartmentServiceBase.create(org.openuss.lecture.DepartmentInfo, java.lang.Long)) and args(departmentInfo, userId)" />
 		<aop:pointcut id="DepartmentServiceDeletePointcut"
 			expression="execution(* org..DepartmentServiceBase.removeDepartment(java.lang.Long)) and args(departmentId)" />
-		<aop:pointcut
-			id="DepartmentServiceDeleteCompleteDepartmentTreePointcut"
+		<aop:pointcut id="DepartmentServiceDeleteCompleteDepartmentTreePointcut"
 			expression="execution(* org..DepartmentServiceBase.removeCompleteDepartmentTree(java.lang.Long)) and args(departmentId)" />
-		<aop:pointcut
-			id="DepartmentServiceAcceptInstituteApplicationPointcut"
+		<aop:pointcut id="DepartmentServiceAcceptInstituteApplicationPointcut"
 			expression="execution(* org..DepartmentServiceBase.acceptApplication(java.lang.Long, java.lang.Long)) and args(applicationId, userId)" />
-		<aop:pointcut
-			id="DepartmentServiceRejectInstituteApplicationPointcut"
+		<aop:pointcut id="DepartmentServiceRejectInstituteApplicationPointcut"
 			expression="execution(* org..DepartmentServiceBase.rejectApplication(java.lang.Long, java.lang.Long)) and args(applicationId, userId)" />
 		<aop:pointcut id="DepartmentServiceUpdatePointcut"
 			expression="execution(* org..DepartmentServiceBase.update(org.openuss.lecture.DepartmentInfo)) and args(departmentInfo)" />
@@ -211,13 +208,13 @@
 			<aop:after-returning method="updateUniversityIndex"
 				pointcut-ref="UniversityServiceUpdatePointcut"
 				arg-names="universityInfo" />
-			<aop:after-returning method="updateUniversityIndexById"
+			<aop:after-returning method="updateUniversityIndexOnStatusChange"
 				pointcut-ref="UniversityServiceSetStatusPointcut"
 				arg-names="universityId, status" />
-			<aop:after-returning method="deleteUniversityIndex"
+			<aop:before method="deleteUniversityIndex"
 				pointcut-ref="UniversityServiceDeletePointcut"
 				arg-names="universityId" />
-			<aop:after-returning method="deleteUniversityFromIndexCascade"
+			<aop:before method="deleteUniversityIndexCascade"
 				pointcut-ref="UniversityServiceDeleteCompleteUniversityTreePointcut"
 				arg-names="universityId" />
 		</aop:aspect>
@@ -230,13 +227,13 @@
 			<aop:after-returning method="updateDepartmentIndex"
 				pointcut-ref="DepartmentServiceUpdatePointcut"
 				arg-names="departmentInfo" />
-			<aop:after-returning method="updateDepartmentIndexById"
+			<aop:after-returning method="updateDepartmentIndexOnStatusChange"
 				pointcut-ref="DepartmentServiceSetStatusPointcut"
 				arg-names="departmentId, status" />
-			<aop:after-returning method="deleteDepartmentIndex"
+			<aop:before method="deleteDepartmentIndex"
 				pointcut-ref="DepartmentServiceDeletePointcut"
 				arg-names="departmentId" />
-			<aop:after-returning method="deleteDepartmentFromIndexCascade"
+			<aop:before method="deleteDepartmentIndexCascade"
 				pointcut-ref="DepartmentServiceDeleteCompleteDepartmentTreePointcut"
 				arg-names="departmentId" />
 		</aop:aspect>
@@ -249,29 +246,31 @@
 			<aop:after-returning method="updateInstituteIndex"
 				pointcut-ref="InstituteServiceUpdatePointcut"
 				arg-names="instituteInfo" />
-			<aop:after-returning method="updateInstituteIndexById"
+			<aop:after-returning method="updateInstituteIndexOnStatusChange"
 				pointcut-ref="InstituteServiceSetStatusPointcut"
 				arg-names="instituteId, status" />
-			<aop:after-returning method="deleteInstituteIndex"
+			<aop:before method="deleteInstituteIndex"
 				pointcut-ref="InstituteServiceDeletePointcut"
 				arg-names="instituteId" />
-			<aop:after-returning method="deleteInstituteFromIndexCascade"
+			<aop:before method="deleteInstituteIndexCascade"
 				pointcut-ref="InstituteServiceDeleteCompleteInstituteTreePointcut"
 				arg-names="instituteId" />
 		</aop:aspect>
 
 		<aop:aspect id="courseIndexAspect"
 			ref="courseIndexAspectBean">
-			<aop:after-returning
-				method="updateCourseIndexOnPeriodUpdate"
+			<aop:after-returning method="createCourseIndex"
+				pointcut-ref="CourseServiceCreatePointcut" 
+				arg-names="courseInfo" />
+			<aop:after-returning method="updateCourseIndex"
+				pointcut-ref="CourseServiceUpdatePointcut" 
+				arg-names="courseInfo" />
+			<aop:after-returning method="updateCourseIndexOnPeriodUpdate"
 				pointcut-ref="CourseServiceUpdateOnPeriodPointcut"
 				arg-names="period" />
-			<aop:after-returning method="createCourseIndex"
-				pointcut-ref="CourseServiceCreatePointcut" arg-names="courseInfo" />
-			<aop:after-returning method="updateCourseIndex"
-				pointcut-ref="CourseServiceUpdatePointcut" arg-names="courseInfo" />
-			<aop:after-returning method="deleteCourseIndex"
-				pointcut-ref="CourseServiceDeletePointcut" arg-names="courseId" />
+			<aop:before method="deleteCourseIndex"
+				pointcut-ref="CourseServiceDeletePointcut" 
+				arg-names="courseId" />
 		</aop:aspect>
 
 		<aop:aspect id="mailingStatusAspect"

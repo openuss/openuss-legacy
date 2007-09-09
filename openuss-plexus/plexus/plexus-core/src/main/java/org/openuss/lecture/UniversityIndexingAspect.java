@@ -23,36 +23,17 @@ public class UniversityIndexingAspect {
 	private University university;
 	
 	/**
-	 * Create index entry of an university.
+	 * Creates index entry for an university
+	 * 
 	 * @param universityInfo
 	 */
 	public void createUniversityIndex(UniversityInfo universityInfo, Long userId) {
 		logger.debug("Starting method createUniversityIndex");
 		try {
-			logger.debug("method createUniversityIndex: createIndex");
-			university = universityDao.universityInfoToEntity(universityInfo);
-			logger.debug("University Entity Id:");
-			logger.debug(university.getId());
-			indexerService.createIndex(university);
-		} catch (IndexerApplicationException e) {
-			logger.error(e);
-		}
-	}
-	
-	/**
-	 * Update university index.
-	 * @param universityInfo
-	 */
-	public void updateUniversityIndex(UniversityInfo universityInfo) {
-		logger.debug("Starting method updateUniversityIndex");
-		try {
-			if (universityInfo.isEnabled()) {
-				logger.debug("method updateUniversityIndex: updateIndex");
+			if(universityInfo.isEnabled()){
+				logger.debug("method createUniversityIndex: createIndex");
 				university = universityDao.universityInfoToEntity(universityInfo);
-				indexerService.updateIndex(university);
-			} else {
-				logger.debug("method updateUniversityIndex: deleteIndex");
-				deleteUniversityFromIndexCascade(universityInfo.getId());
+				indexerService.createIndex(university);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -60,20 +41,44 @@ public class UniversityIndexingAspect {
 	}
 	
 	/**
-	 * Update university index By Id.
-	 * @param universityId, status
+	 * Updates university index entry
+	 * 
+	 * @param universityInfo
 	 */
-	public void updateUniversityIndexById(Long universityId, boolean status) {
-		logger.debug("Starting method updateUniversityIndexById");
+	public void updateUniversityIndex(UniversityInfo universityInfo) {
+		logger.debug("Starting method updateUniversityIndex");
 		try {
-			UniversityInfo universityInfo = universityService.findUniversity(universityId);
+			university = universityDao.universityInfoToEntity(universityInfo);
 			if (universityInfo.isEnabled()) {
 				logger.debug("method updateUniversityIndex: updateIndex");
-				university = universityDao.universityInfoToEntity(universityInfo);
 				indexerService.updateIndex(university);
 			} else {
 				logger.debug("method updateUniversityIndex: deleteIndex");
-				deleteUniversityFromIndexCascade(universityInfo.getId());
+				deleteUniversityFromIndexCascade(university);
+			}
+		} catch (IndexerApplicationException e) {
+			logger.error(e);
+		}
+	}
+	
+	/**
+	 * Updates university index entry when the activation status is changed. When 
+	 * the new state is "disabled", all subordinate departments, institutes and 
+	 * courses are removed from the index! 
+	 * 
+	 * @param universityId
+	 * @param status
+	 */
+	public void updateUniversityIndexOnStatusChange(Long universityId, boolean status) {
+		logger.debug("Starting method updateUniversityIndexOnStatusChange");
+		try {
+			university = universityDao.load(universityId);
+			if (university.isEnabled()) {
+				logger.debug("method updateUniversityIndexOnStatusChange: updateIndex");
+				indexerService.updateIndex(university);
+			} else {
+				logger.debug("method updateUniversityIndexOnStatusChange: deleteIndex");
+				deleteUniversityFromIndexCascade(university);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -81,7 +86,8 @@ public class UniversityIndexingAspect {
 	}
 
 	/**
-	 * Delete university from lecture index.
+	 * Deletes university from index
+	 * 
 	 * @param universityId
 	 */
 	public void deleteUniversityIndex(Long universityId) {
@@ -96,10 +102,30 @@ public class UniversityIndexingAspect {
 		}
 	}
 	
-	private void deleteUniversityFromIndexCascade(Long universityId){
-		try{
-			UniversityInfo universityInfo = universityService.findUniversity(universityId);
-			university = universityDao.universityInfoToEntity(universityInfo);
+	/**
+	 * Deletes university from index. Also removes all subordinate departments, 
+	 * institutes and courses from the index! 
+	 * 
+	 * @param universityId
+	 */
+	public void deleteUniversityIndexCascade(Long universityId) {
+		logger.debug("Starting method deleteUniversityIndexCascade");
+		try {
+			university = universityDao.load(universityId);
+			deleteUniversityFromIndexCascade(university);
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}
+	
+	/**
+	 * Helper method that encapsulates the removal of subordinate departments, 
+	 * institutes and courses from the index
+	 * 
+	 * @param university
+	 */
+	private void deleteUniversityFromIndexCascade(University university){
+		try {
 			indexerService.deleteIndex(university);
 			Department department;
 			Institute institute;
@@ -126,6 +152,7 @@ public class UniversityIndexingAspect {
 		}
 	}
 	
+	/* getter and setter */
 	public IndexerService getIndexerService() {
 		return indexerService;
 	}
@@ -150,7 +177,4 @@ public class UniversityIndexingAspect {
 		this.universityService = universityService;
 	}
 	
-	
-	
-
 }

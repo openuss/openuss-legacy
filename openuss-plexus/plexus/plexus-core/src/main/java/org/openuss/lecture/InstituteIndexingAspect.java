@@ -1,7 +1,5 @@
 package org.openuss.lecture;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
@@ -25,10 +23,13 @@ public class InstituteIndexingAspect {
 	private Institute institute;
 	
 	/**
-	 * Create index entry of an institute if it is enabled. UserId not necessary! Just for AOP, otherwise it is not working.
+	 * Creates index entry for an institute if it is enabled. 
+	 * 
+	 * ATTENTION: UserId not necessary! Just for AOP, otherwise it is not working.
+	 * 
 	 * @param instituteInfo, userId
 	 */
-	public void createInstituteIndex(InstituteInfo instituteInfo,Long userId) {
+	public void createInstituteIndex(InstituteInfo instituteInfo, Long userId) {
 		logger.debug("Starting method createInstituteIndex");
 		try {
 			if (instituteInfo.isEnabled()) {
@@ -42,15 +43,17 @@ public class InstituteIndexingAspect {
 	}
 	
 	/**
-	 * Update institute index. If the institute is disabled it will be deleted from the search index.
+	 * Updates institute index. If the institute is disabled it will be deleted 
+	 * from the search index.
+	 * 
 	 * @param instituteInfo
 	 */
 	public void updateInstituteIndex(InstituteInfo instituteInfo) {
 		logger.debug("Starting method updateInstituteIndex");
 		try {
+			institute = instituteDao.instituteInfoToEntity(instituteInfo);
 			if (instituteInfo.isEnabled()) {
 				logger.debug("method updateInstituteIndex: updateIndex");
-				institute = instituteDao.instituteInfoToEntity(instituteInfo);
 				indexerService.updateIndex(institute);
 				/*
 				Course course;
@@ -63,7 +66,7 @@ public class InstituteIndexingAspect {
 				*/
 			} else {
 				logger.debug("method updateInstituteIndex: deleteIndex");
-				deleteInstituteFromIndexCascade(instituteInfo.getId());
+				deleteInstituteFromIndexCascade(institute);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -71,20 +74,22 @@ public class InstituteIndexingAspect {
 	}
 	
 	/**
-	 * Update institute index by ID.
-	 * @param institiuteId, status
+	 * Updates institute index entry when the activation status is changed. When 
+	 * the new state is "disabled", all subordinate courses are removed from the index! 
+	 * 
+	 * @param institiuteId
+	 * @param status
 	 */
-	public void updateInstituteIndexById(Long institiuteId, Boolean status) {
-		logger.debug("Starting method updateInstituteIndexById");
+	public void updateInstituteIndexOnStatusChange(Long institiuteId, Boolean status) {
+		logger.debug("Starting method updateInstituteIndexOnStatusChange");
 		try {
-			InstituteInfo instituteInfo = instituteService.findInstitute(institiuteId);
-			if (instituteInfo.isEnabled()) {
-				logger.debug("method updateInstituteIndexById: updateIndex");
-				institute = instituteDao.instituteInfoToEntity(instituteInfo);
+			institute = instituteDao.load(institiuteId);
+			if (institute.isEnabled()) {
+				logger.debug("method updateInstituteIndexOnStatusChange: updateIndex");
 				indexerService.updateIndex(institute);
 			} else {
-				logger.debug("method updateInstituteIndexById: deleteIndex");
-				deleteInstituteFromIndexCascade(instituteInfo.getId());
+				logger.debug("method updateInstituteIndexOnStatusChange: deleteIndex");
+				deleteInstituteFromIndexCascade(institute);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -93,7 +98,7 @@ public class InstituteIndexingAspect {
 	
 
 	/**
-	 * Delete institute from lecture index.
+	 * Deletes institute from lecture index.
 	 * @param instituteId
 	 */
 	public void deleteInstituteIndex(Long instituteId) {
@@ -108,10 +113,30 @@ public class InstituteIndexingAspect {
 		}
 	}
 	
-	private void deleteInstituteFromIndexCascade(Long instituteId){
-		try{
-			InstituteInfo instituteInfo = instituteService.findInstitute(instituteId);
-			institute = instituteDao.instituteInfoToEntity(instituteInfo);
+	/**
+	 * Deletes institute from index. Also removes all subordinate courses 
+	 * from the index! 
+	 * 
+	 * @param instituteId
+	 */
+	public void deleteInstituteIndexCascade(Long instituteId) {
+		logger.debug("Starting method deleteInstituteIndexCascade");
+		try {
+			institute = instituteDao.load(instituteId);
+			deleteInstituteFromIndexCascade(institute);
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}
+	
+	/**
+	 * Helper method that encapsulates the removal of subordinate courses 
+	 * from the index
+	 * 
+	 * @param institute
+	 */
+	private void deleteInstituteFromIndexCascade(Institute institute){
+		try {
 			indexerService.deleteIndex(institute);
 			Course course;
 			for (Object courseTemp : institute.getAllCourses()) {
@@ -123,6 +148,7 @@ public class InstituteIndexingAspect {
 		}
 	}
 	
+	/* getter and setter */
 	public IndexerService getIndexerService() {
 		return indexerService;
 	}
@@ -138,8 +164,6 @@ public class InstituteIndexingAspect {
 	public void setInstituteDao(InstituteDao instituteDao) {
 		this.instituteDao = instituteDao;
 	}
-	
-	
 
 	public InstituteService getInstituteService() {
 		return instituteService;

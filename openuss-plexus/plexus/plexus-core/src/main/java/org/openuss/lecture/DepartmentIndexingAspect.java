@@ -21,8 +21,16 @@ public class DepartmentIndexingAspect {
 	private DepartmentService departmentService;
 	
 	private Department department;
-	
-	// userId normally not necessary. Just using due to the configuration in the aop spring context.
+	 
+	/**
+	 * Creates index entry for a department
+	 * 
+	 * ATTENTION: userId normally not necessary. Just used due to the 
+	 * configuration in the AOP spring context. 
+	 * 
+	 * @param departmentInfo
+	 * @param userId
+	 */
 	public void createDepartmentIndex(DepartmentInfo departmentInfo, Long userId) {
 		logger.info("Starting method createDepartmentIndex");
 		try {
@@ -35,17 +43,22 @@ public class DepartmentIndexingAspect {
 			logger.error(e);
 		}
 	}
-
+	
+	/**
+	 * Updates department index entry
+	 * 
+	 * @param departmentInfo
+	 */
 	public void updateDepartmentIndex(DepartmentInfo departmentInfo) {
 		logger.info("Starting method updateDepartmentIndex");
 		try {
+			department = departmentDao.departmentInfoToEntity(departmentInfo);
 			if (departmentInfo.isEnabled()) {
 				logger.debug("method updateDepartmentIndex: updateIndex");
-				department = departmentDao.departmentInfoToEntity(departmentInfo);
 				indexerService.updateIndex(department);
 			} else {
 				logger.debug("method updateDepartmentIndex: deleteIndex");
-				deleteDepartmentFromIndexCascade(departmentInfo.getId());
+				deleteDepartmentFromIndexCascade(department);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
@@ -54,28 +67,34 @@ public class DepartmentIndexingAspect {
 	
 	
 	/**
-	 * Update department index By Id.
-	 * @param departmentId, status
+	 * Updates department index entry when the activation status is changed. When 
+	 * the new state is "disabled", all subordinate institutes and courses are 
+	 * removed from the index! 
+	 * 
+	 * @param departmentId
+	 * @param status
 	 */
-	public void updateDepartmentIndexById(Long departmentId, boolean status) {
-		logger.debug("Starting method updateDepartmentIndexById");
+	public void updateDepartmentIndexOnStatusChange(Long departmentId, boolean status) {
+		logger.debug("Starting method updateDepartmentIndexOnStatusChange");
 		try {
-			DepartmentInfo departmentInfo = departmentService.findDepartment(departmentId);
-			if (departmentInfo.isEnabled()) {
-				logger.debug("method updateDepartmentIndex: updateIndex");
-				department = departmentDao.departmentInfoToEntity(departmentInfo);
+			department = departmentDao.load(departmentId);
+			if (department.isEnabled()) {
+				logger.debug("method updateDepartmentIndexOnStatusChange: updateIndex");
 				indexerService.updateIndex(department);
 			} else {
-				logger.debug("method updateDepartmentIndex: deleteIndex");
-				deleteDepartmentFromIndexCascade(departmentInfo.getId());
+				logger.debug("method updateDepartmentIndexOnStatusChange: deleteIndex");
+				deleteDepartmentFromIndexCascade(department);
 			}
 		} catch (IndexerApplicationException e) {
 			logger.error(e);
 		}
 	}
 	
-	
-
+	/**
+	 * Deletes department from index
+	 * 
+	 * @param departmentId
+	 */
 	public void deleteDepartmentIndex(Long departmentId) {
 		logger.info("Starting method deleteDepartmentIndex");
 		try {
@@ -88,10 +107,30 @@ public class DepartmentIndexingAspect {
 		}
 	}
 	
-	private void deleteDepartmentFromIndexCascade(Long departmentId){
+	/**
+	 * Deletes department from index. Also removes all subordinate institutes 
+	 * and courses from the index! 
+	 * 
+	 * @param departmentId
+	 */
+	public void deleteDepartmentIndexCascade(Long departmentId) {
+		logger.debug("Starting method deleteDepartmentIndexCascade");
 		try {
-			DepartmentInfo departmentInfo = departmentService.findDepartment(departmentId);
-			department = departmentDao.departmentInfoToEntity(departmentInfo);
+			department = departmentDao.load(departmentId);
+			deleteDepartmentFromIndexCascade(department);
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}
+	
+	/**
+	 * Helper method that encapsulates the removal of subordinate institutes 
+	 * and courses from the index
+	 * 
+	 * @param department
+	 */
+	private void deleteDepartmentFromIndexCascade(Department department){
+		try {
 			indexerService.deleteIndex(department);
 			Institute institute;
 			Course course;
@@ -110,7 +149,8 @@ public class DepartmentIndexingAspect {
 			logger.error(e);
 		}
 	}
-
+	
+	/* getter and setter */
 	public IndexerService getIndexerService() {
 		return indexerService;
 	}
@@ -134,6 +174,5 @@ public class DepartmentIndexingAspect {
 	public void setDepartmentService(DepartmentService departmentService) {
 		this.departmentService = departmentService;
 	}
-	
 	
 }

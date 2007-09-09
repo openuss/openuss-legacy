@@ -9,6 +9,7 @@ import org.openuss.search.IndexerService;
  * 
  * @author Ingo Dueppe
  * @author Kai Stettner
+ * @author Malte Stockmann
  */
 public class CourseIndexingAspect {
 
@@ -20,15 +21,11 @@ public class CourseIndexingAspect {
 	
 	private Course course;
 
-	public void updateCourseIndexOnPeriodUpdate(Period period) {
-		logger.info("Starting method updateCourseIndexOnPeriodUpdate(");
-		Validate.notNull(period, "Parameter period must not be null");
-		for (Course course : period.getCourses()) {
-			CourseInfo courseInfo = courseDao.toCourseInfo(course);
-			updateCourseIndex(courseInfo);
-		}
-	}
-
+	/**
+	 * Creates index entry for a course
+	 * 
+	 * @param courseInfo
+	 */
 	public void createCourseIndex(CourseInfo courseInfo) {
 		logger.info("Starting method createCourseIndex");
 		try {
@@ -42,6 +39,12 @@ public class CourseIndexingAspect {
 
 	}
 
+	/**
+	 * Updates course index entry. If the course is disabled it will be deleted 
+	 * from the search index.
+	 * 
+	 * @param instituteInfo
+	 */
 	public void updateCourseIndex(CourseInfo courseInfo) {
 		logger.info("Starting method updateCourseIndex");
 		try {
@@ -57,7 +60,26 @@ public class CourseIndexingAspect {
 			logger.error(e);
 		}
 	}
+	
+	/**
+	 * Updates course index entry when a period was changed. All index entries 
+	 * of courses in this period are updated. 
+	 * 
+	 * @param period
+	 */
+	public void updateCourseIndexOnPeriodUpdate(Period period) {
+		logger.info("Starting method updateCourseIndexOnPeriodUpdate(");
+		Validate.notNull(period, "Parameter period must not be null");
+		for (Course course : period.getCourses()) {
+			CourseInfo courseInfo = courseDao.toCourseInfo(course);
+			updateCourseIndex(courseInfo);
+		}
+	}
 
+	/**
+	 * Deletes course from lecture index.
+	 * @param courseId
+	 */
 	public void deleteCourseIndex(Long courseId) {
 		logger.info("Starting method deleteCourseIndex");
 		try {
@@ -69,6 +91,7 @@ public class CourseIndexingAspect {
 		}
 	}
 
+	/* getter and setter */
 	public IndexerService getIndexerService() {
 		return indexerService;
 	}
