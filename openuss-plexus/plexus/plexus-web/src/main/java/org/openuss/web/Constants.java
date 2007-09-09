@@ -101,6 +101,7 @@ public class Constants {
 	public static final String INSTITUTE_PERIOD_PAGE = "institute_period";
 	public static final String INSTITUTE_PERIODS_PAGE = "institute_periods";
 	public static final String INSTITUTE_PERIOD_REMOVE_PAGE = "institute_period_remove";
+	public static final String INSTITUTES_ADMIN_PAGE = "admin_institutes";
 	public static final String INSTITUTE_COURSE_TYPES_PAGE = "institute_coursetypes";
 	public static final String INSTITUTE_COURSE_REMOVE_PAGE = "institute_course_remove";
 	public static final String INSTITUTE_COURSE_TYPE_REMOVE_PAGE = "institute_coursetype_remove";

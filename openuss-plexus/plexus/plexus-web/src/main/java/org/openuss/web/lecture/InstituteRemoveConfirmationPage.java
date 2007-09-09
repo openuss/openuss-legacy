@@ -47,7 +47,6 @@ public class InstituteRemoveConfirmationPage extends AbstractLecturePage {
 		setSessionBean("courseTypeInfo", null);
 		setSessionBean("courseInfo", null);
 		addMessage(i18n("message_institute_removed"));
-		return Constants.INSTITUTES_PAGE;
-	}
-	
+		return Constants.OUTCOME_BACKWARD;
+	}	
 }

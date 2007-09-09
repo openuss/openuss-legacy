@@ -16,7 +16,6 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.InstituteServiceException;
@@ -30,6 +29,7 @@ import org.openuss.web.PageLinks;
  * 
  * @author Ingo Dueppe
  * @author Malte Stockmann
+ * @author Kai Stettner
  */
 @Bean(name="views$secured$system$institutes", scope=Scope.REQUEST)
 @View
@@ -58,42 +58,44 @@ public class InstitutesPage extends BasePage{
 	}
 	
 	public String selectInstitute() {
-		// alter code
-		/*Institute institute = currentInstitute();
-		setSessionBean(Constants.INSTITUTE, institute);
-		return Constants.INSTITUTE_PAGE;*/
-		
-		//neuer code
+
 		logger.debug("Starting method selectInstitute");
 		InstituteInfo currentInstitute = currentInstitute();
 		logger.debug("Returning to method selectInstitute");
 		logger.debug(currentInstitute.getId());	
-		//setSessionBean(Constants.INSTITUTE, institute);
+	
 		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
 		
 		return Constants.INSTITUTE_PAGE;
 		
 		
 	}
-	// neu: zu instituteInfo geschwitcht
+
 	private InstituteInfo currentInstitute() {
-		//alter code
-		/*InstituteInfo details = provider.getRowData();
-		Institute institute = Institute.Factory.newInstance();
-		institute.setId(details.getId());
-		return institute;*/
-		
-		//neuer code
 		logger.debug("Starting method currentInstitute");
 		InstituteInfo instituteDetails = provider.getRowData();
 		logger.debug(instituteDetails.getName());
 		logger.debug(instituteDetails.getOwnerName());
 		logger.debug(instituteDetails.getId());
-		//Institute institute = Institute.Factory.newInstance();
+
 		InstituteInfo newInstituteInfo = new InstituteInfo();
-		//institute.setId(details.getId());
+	
 		newInstituteInfo.setId(instituteDetails.getId());
 		return newInstituteInfo;
+	}
+	
+	/**
+	 * Store the selected institute into session scope and go to institute remove confirmation page.
+	 * @return Outcome
+	 */
+	public String selectInstituteAndConfirmRemove() {
+		logger.debug("Starting method selectInstituteAndConfirmRemove");
+		InstituteInfo currentInstitute = currentInstitute();
+		logger.debug("Returning to method selectInstituteAndConfirmRemove");
+		logger.debug(currentInstitute.getId());	
+		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
+		
+		return Constants.INSTITUTE_CONFIRM_REMOVE_PAGE;
 	}
 	
 	public void changedInstitute(ValueChangeEvent event) throws LectureException {
