@@ -36,7 +36,7 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 	}
 	
 	/**
-	 * Delete complete department tree (including all belonging institutes, course types and courses)
+	 * Deletes complete department tree (including all belonging institutes, course types and courses)
 	 * @return outcome
 	 * @throws LectureException
 	 */
@@ -44,6 +44,23 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 		departmentService.removeCompleteDepartmentTree(departmentInfo.getId());
 		addMessage(i18n("message_department_removed"));
 		return Constants.DEPARTMENTS_PAGE;
+	}
+	
+	/**
+	 * Deletes the selected department. Throws an exception if there are institutes, ecc. assigned to the department
+	 * @return outcome
+	 * @throws LectureException
+	 */
+	public String removeDepartment() throws Exception {
+		try {
+			departmentService.removeDepartment(departmentInfo.getId());
+			addMessage(i18n("message_department_removed"));
+			return Constants.DEPARTMENTS_PAGE;
+		} catch (Exception e) {
+			addMessage(i18n("message_department_cannot_be_removed"));
+			return Constants.UNIVERSITY_DEPARTMENTS_PAGE;
+		}
+		
 	}
 	
 }

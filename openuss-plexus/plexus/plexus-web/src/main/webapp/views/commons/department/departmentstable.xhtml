@@ -71,7 +71,7 @@
 					rendered="#{bean.enabled}">
 				</h:commandButton>
 			</s:authorize>
-			<s:authorize ifAlRlGranted="ROLE_ADMIN">
+			<s:authorize ifAllGranted="ROLE_ADMIN">
 				<h:commandButton 
 					action = "#{views$public$department$departments.enableDepartment}"
 					styleClass="button_remove"
@@ -80,7 +80,7 @@
 					rendered="#{not bean.enabled}">
 				</h:commandButton>
 			</s:authorize>
-			<s:authorize ifAllGranted="ROLE_ADMIN">
+			<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
 				<h:commandButton
 					action = "#{views$public$department$departments.selectDepartmentAndConfirmRemove}"
 					styleClass="button_remove"
@@ -88,7 +88,7 @@
 					hint="#{msg.department_command_remove_hint}"
 					rendered="#{not bean.defaultDepartment}">
 				</h:commandButton>	
-			</s:authorize>
+			</s:acl>
 		</plexus:column>
 		
 	</plexus:dataTable>

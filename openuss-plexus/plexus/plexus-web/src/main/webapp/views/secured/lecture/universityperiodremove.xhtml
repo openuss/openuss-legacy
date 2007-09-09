@@ -26,7 +26,7 @@
 			<ui:include src="/views/commons/navigation/university.xhtml" />
 		</ui:define>
   		<ui:define name="content"> 
-			
+			<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.MANAGE_PERIODS}" ifNot="error"/>
 			<h:form id="removePeriodForm">
 				<o:block label="#{msg.warning_attention_dataloss} - #{msg.period_remove_header}" styleClass="warning_box">
 	  				<p class="content_font_normal">
