@@ -190,26 +190,44 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 	
 	@SuppressWarnings( { "unchecked" })
 	public void testUniversityDaoFindByEnabled() {
+		// Count existing universities
+		List<University> allUniversities = (List<University>)this.getUniversityDao().loadAll();
+		List<University> enabledUniversities = new ArrayList<University>();
+		List<University> disabledUniversities = new ArrayList<University>();
+		for (University university : allUniversities) {
+			if (university.isEnabled()) {
+				enabledUniversities.add(university);
+			}
+			else {
+				disabledUniversities.add(university);
+			}
+		}
+		int countEnabledUniversities = enabledUniversities.size();
+		int countDisabledUniversities = disabledUniversities.size();
+		
 		// Create 3 Universities
 		University university1 = testUtility.createUniqueUniversityInDB();
 		university1.setEnabled(true);
+		countEnabledUniversities++;
 		University university2 = testUtility.createUniqueUniversityInDB();
 		university2.setEnabled(true);
+		countEnabledUniversities++;
 		University university3 = testUtility.createUniqueUniversityInDB();
 		university3.setEnabled(false);
+		countDisabledUniversities++;
 
 		// Synchronize with Database
 		flush();
 
 		// Test
 		List universitiesEnabled = this.universityDao.findByEnabled(true);
-		assertEquals(2, universitiesEnabled.size());
+		assertEquals(countEnabledUniversities, universitiesEnabled.size());
 		assertTrue(universitiesEnabled.contains(university1));
 		assertTrue(universitiesEnabled.contains(university2));
 		assertFalse(universitiesEnabled.contains(university3));
 
 		List universitiesDisabled = this.universityDao.findByEnabled(false);
-		assertEquals(1, universitiesDisabled.size());
+		assertEquals(countDisabledUniversities, universitiesDisabled.size());
 		assertFalse(universitiesDisabled.contains(university1));
 		assertFalse(universitiesDisabled.contains(university2));
 		assertTrue(universitiesDisabled.contains(university3));
@@ -217,28 +235,67 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 	
 	@SuppressWarnings( { "unchecked" })
 	public void testUniversityDaoFindByTypeAndEnabled() {
+		// Count existing universities
+		List<University> allUniversities = (List<University>)this.getUniversityDao().loadAll();
+		List<University> enabledUniversities = new ArrayList<University>();
+		List<University> disabledUniversities = new ArrayList<University>();
+		List<University> enabledCompanies = new ArrayList<University>();
+		List<University> disabledCompanies = new ArrayList<University>();
+		for (University university : allUniversities) {
+			if (university.isEnabled()) {
+				if (university.getUniversityType() == UniversityType.UNIVERSITY) {
+					enabledUniversities.add(university);
+				}
+				else {
+					enabledCompanies.add(university);
+				}
+			}
+			else {
+				if (university.getUniversityType() == UniversityType.UNIVERSITY) {
+					disabledUniversities.add(university);
+				}
+				else {
+					disabledCompanies.add(university);
+				}
+			}
+		}
+		int countEnabledUniversities = enabledUniversities.size();
+		int countDisabledUniversities = disabledUniversities.size();
+		int countEnabledCompanies = enabledCompanies.size();
+		int countDisabledCompanies = disabledCompanies.size();
+		
 		// Create 4 Universities
 		University university1 = testUtility.createUniqueUniversityInDB();
 		university1.setUniversityType(UniversityType.UNIVERSITY);
 		university1.setEnabled(true);
+		countEnabledUniversities++;
 		University university2 = testUtility.createUniqueUniversityInDB();
 		university2.setUniversityType(UniversityType.UNIVERSITY);
 		university2.setEnabled(true);
+		countEnabledUniversities++;
 		University university3 = testUtility.createUniqueUniversityInDB();
 		university3.setUniversityType(UniversityType.COMPANY);
 		university3.setEnabled(true);
+		countEnabledCompanies++;
 		University university4 = testUtility.createUniqueUniversityInDB();
 		university4.setUniversityType(UniversityType.UNIVERSITY);
 		university4.setEnabled(false);
+		countDisabledUniversities++;
 
 		// Synchronize with Database
 		flush();
 
 		// Test
 		List universities = this.universityDao.findByTypeAndEnabled(UniversityType.UNIVERSITY, true);
-		assertEquals(2, universities.size());
+		assertEquals(countEnabledUniversities, universities.size());
 		assertTrue(universities.contains(university1));
 		assertTrue(universities.contains(university2));
 		assertFalse(universities.contains(university3));
+		
+		universities = this.universityDao.findByTypeAndEnabled(UniversityType.UNIVERSITY, false);
+		assertEquals(countDisabledUniversities, universities.size());
+		
+		universities = this.universityDao.findByTypeAndEnabled(UniversityType.COMPANY, true);
+		assertEquals(countEnabledCompanies, universities.size());
 	}
 }
