@@ -215,7 +215,7 @@ public class InstitutePage extends AbstractLecturePage {
 	}
 	
 	/**
-	 * Removes the shortcut to the isntitute
+	 * Removes the shortcut to the institute
 	 * @return
 	 */
 	public String removeShortcut()
