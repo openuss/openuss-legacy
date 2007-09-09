@@ -75,6 +75,28 @@ public class CourseIndexingAspect {
 			updateCourseIndex(courseInfo);
 		}
 	}
+	
+	/**
+	 * Updates course index entry when the activation status is changed. 
+	 * 
+	 * @param courseId
+	 * @param status
+	 */
+	public void updateCourseIndexOnStatusChange(Long courseId, Boolean status) {
+		logger.debug("Starting method updateInstituteIndexOnStatusChange");
+		try {
+			course = courseDao.load(courseId);
+			if (course.isEnabled()&& course.getAccessType() != AccessType.CLOSED) {
+				logger.debug("method updateInstituteIndexOnStatusChange: updateIndex");
+				indexerService.updateIndex(course);
+			} else {
+				logger.debug("method updateInstituteIndexOnStatusChange: deleteIndex");
+				indexerService.deleteIndex(course);
+			}
+		} catch (IndexerApplicationException e) {
+			logger.error(e);
+		}
+	}
 
 	/**
 	 * Deletes course from lecture index.

@@ -76,6 +76,8 @@
 			expression="execution(* org..CourseServiceBase.updateCourse(org.openuss.lecture.CourseInfo)) and args(courseInfo)" />
 		<aop:pointcut id="CourseServiceUpdateOnPeriodPointcut"
 			expression="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Period)) and args(period)" />
+		<aop:pointcut id="CourseServiceSetStatusPointcut"
+			expression="execution(* org..CourseServiceBase.setCourseStatus(java.lang.Long, boolean)) and args(courseId, status)" />
 
 		<!-- Aspect Definitions -->
 		<aop:aspect id="applicationConfirmationAspect"
@@ -268,6 +270,9 @@
 			<aop:after-returning method="updateCourseIndexOnPeriodUpdate"
 				pointcut-ref="CourseServiceUpdateOnPeriodPointcut"
 				arg-names="period" />
+			<aop:after-returning method="updateCourseIndexOnStatusChange"
+				pointcut-ref="CourseServiceSetStatusPointcut"
+				arg-names="courseId, status" />
 			<aop:before method="deleteCourseIndex"
 				pointcut-ref="CourseServiceDeletePointcut" 
 				arg-names="courseId" />
