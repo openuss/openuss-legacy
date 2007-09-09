@@ -2,6 +2,8 @@ package org.openuss.lecture;
 
 import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
+import org.openuss.desktop.Desktop;
+import org.openuss.desktop.DesktopDao;
 import org.openuss.foundation.DomainObject;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
@@ -36,16 +38,30 @@ private static final Logger logger = Logger.getLogger(UniversityIndexingAspectTe
 	}
 
 	public void testLectureIndex() throws Exception {
-	 
-		// create dummy user
-		User user = testUtility.createAdminSecureContext();
-		// create dummy university info
-		University university = testUtility.createUniqueUniversityInDB();
-		UniversityInfo universityInfo = universityDao.toUniversityInfo(university);
-		// universityId is set to NULL before creation
-		universityInfo.setId(null);
 		
-		Long universityId = universityService.createUniversity(universityInfo, user.getId());
+		// Create new UniversityInfo object
+		UniversityInfo universityInfo = new UniversityInfo();
+		universityInfo.setName(testUtility.unique("testUniversity"));
+		universityInfo.setShortcut(testUtility.unique("testU"));
+		universityInfo.setOwnerName("Administrator");
+		universityInfo.setEnabled(true);
+		universityInfo.setDescription("This is a test University");
+		universityInfo.setUniversityType(UniversityType.UNIVERSITY);
+		
+		// Create a User as Owner
+		User owner = testUtility.createUniqueUserInDB();
+
+		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		Desktop desktop = Desktop.Factory.newInstance();
+		desktop.setUser(owner);
+		desktopDao.create(desktop);
+		Desktop desktopTest = desktopDao.findByUser(owner);
+		assertNotNull(desktopTest);
+		assertEquals(0, desktopTest.getUniversities().size());
+		
+		// Create Entity
+		testUtility.createAdminSecureContext();
+		Long universityId = universityService.createUniversity(universityInfo, owner.getId());
 		
 		// update universityInfo
 		// university id is set after the creation manually

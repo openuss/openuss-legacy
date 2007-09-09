@@ -215,7 +215,7 @@
 				pointcut-ref="UniversityServiceSetStatusPointcut"
 				arg-names="universityId, status" />
 			<aop:after-returning method="deleteUniversityIndex"
-				pointcut-ref="UniversityServiceDeletePointcut"
+				pointcut-ref="UniversityServiceDeleteCompleteUniversityTreePointcut"
 				arg-names="universityId" />
 		</aop:aspect>
 
