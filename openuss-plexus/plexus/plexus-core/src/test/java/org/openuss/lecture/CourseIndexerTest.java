@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
+import org.openuss.TestUtility;
 import org.openuss.search.DomainResult;
-import org.openuss.security.User;
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
 /**
  * Test case for the spring indexing and searching of institutes.
@@ -18,7 +18,7 @@ import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
  * @author Ingo Dueppe
  * @author Kai Stettner
  */
-public class CourseIndexerTest extends AbstractDependencyInjectionSpringContextTests {
+public class CourseIndexerTest extends AbstractTransactionalDataSourceSpringContextTests {
 	
 private static final Logger logger = Logger.getLogger(CourseIndexerTest.class);
 	
@@ -27,27 +27,21 @@ private static final Logger logger = Logger.getLogger(CourseIndexerTest.class);
 	private CourseDao courseDao = new CourseDaoMock();
 	
 	private LectureSearcher lectureSearcher;
-	
+	private TestUtility testUtility;
 	private Course course;
-	private Institute institute;
 	private CourseType courseType;
-	private Period period;
-	private LectureBuilder lectureBuilderInstance;
-						   	
+
 	@Override
 	protected void onSetUp() throws Exception {
 		super.onSetUp();
 		logger.debug("Method onSetUp: Started");
-		
-		lectureBuilderInstance = new LectureBuilder();
-		
+			
 		courseIndexer.setCourseDao(courseDao);
 	
-		courseType = lectureBuilderInstance.createCourseType(institute).getCourseType();
-
-		//period = lectureBuilderInstance.addPeriod(institute);
-		
-		course = lectureBuilderInstance.createCourse(institute,courseType).getCourse();
+		// Create CourseType
+		courseType = testUtility.createUniqueCourseTypeInDB();
+	
+		course = testUtility.createUniqueCourseInDB();
 		
 		// set description of course
 		course.setDescription("A pretty good course");
@@ -122,6 +116,14 @@ private static final Logger logger = Logger.getLogger(CourseIndexerTest.class);
 
 	public void setLectureSearcher(LectureSearcher lectureSearcher) {
 		this.lectureSearcher = lectureSearcher;
+	}
+
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
 	}
 
 }

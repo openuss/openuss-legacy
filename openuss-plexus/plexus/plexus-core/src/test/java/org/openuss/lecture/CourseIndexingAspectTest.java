@@ -5,7 +5,6 @@ import org.openuss.TestUtility;
 import org.openuss.foundation.DomainObject;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
-import org.openuss.security.User;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
 /**
@@ -20,13 +19,10 @@ public class CourseIndexingAspectTest extends AbstractTransactionalDataSourceSpr
 	private static final Logger logger = Logger.getLogger(CourseIndexingAspectTest.class);
 	
 	private CourseService courseService;
-	
 	private CourseDao courseDao;
-	
 	private CourseIndexingAspect courseIndexAspectBean;
-
 	private IndexerServiceMock indexerMock ;
-	
+
 	private TestUtility testUtility;
 	
 	@Override
@@ -38,9 +34,30 @@ public class CourseIndexingAspectTest extends AbstractTransactionalDataSourceSpr
 
 	public void testLectureIndex() throws Exception {
 	 
-		// create dummy course info
-		Course course = testUtility.createUniqueCourseInDB();
-		CourseInfo courseInfo = courseDao.toCourseInfo(course);
+		//Create CourseType
+		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
+		
+		//Create Period
+		Period period = testUtility.createUniquePeriodInDB();
+			
+		//Create CourseInfo
+		CourseInfo courseInfo = new CourseInfo();
+		courseInfo.setName(testUtility.unique("name"));
+		courseInfo.setShortcut(testUtility.unique("course"));
+		courseInfo.setDescription(testUtility.unique("description"));
+		courseInfo.setPassword(testUtility.unique("password"));
+		courseInfo.setCourseTypeId(courseType.getId());
+		courseInfo.setCourseTypeDescription(courseType.getDescription());
+		courseInfo.setPeriodId(period.getId());
+		courseInfo.setPeriodName(period.getName());
+		courseInfo.setAccessType(AccessType.OPEN);
+		courseInfo.setBraincontest(true);
+		courseInfo.setChat(true);
+		courseInfo.setDiscussion(true);
+		courseInfo.setDocuments(true);
+		courseInfo.setFreestylelearning(true);
+		courseInfo.setNewsletter(true);
+		courseInfo.setWiki(true);
 		
 		Long courseId = courseService.create(courseInfo);
 		
