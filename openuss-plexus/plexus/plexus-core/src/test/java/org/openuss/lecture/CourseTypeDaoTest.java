@@ -49,8 +49,9 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 		// persist
 		assertNull(courseType.getId());
 		instituteDao.update(institute);
-		assertNotNull(courseType.getId());
 		flush();
+		assertNotNull(courseType.getId());
+
 
 		// load
 		CourseType courseType2 = courseTypeDao.load(courseType.getId());
