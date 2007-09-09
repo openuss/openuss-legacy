@@ -12,7 +12,6 @@ import org.openuss.TestUtility;
 import org.openuss.security.Membership;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
-import org.springframework.dao.DataAccessException;
 
 
 /**
@@ -53,16 +52,8 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		return periodDao;
 	}
 	
-	public void testInstituteDaoInjection() {
-		assertNotNull(instituteDao);
-	}
-	
 	public void testCourseTypeDaoInjection() {
 		assertNotNull(courseTypeDao);
-	}
-	
-	public void testPeriodDaoInjection() {
-		assertNotNull(periodDao);
 	}
 	
 	public void testCourseUniqueShortcut() {
