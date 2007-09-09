@@ -37,7 +37,7 @@ public class DepartmentIndexer extends DomainIndexer {
 	public void create() {
 		final Department department = getDepartment();
 		if (department != null) {
-			logger.debug("create new index for department "+department.getName()+" ("+department.getId()+")");
+			logger.debug("create new index entry for department "+department.getName()+" ("+department.getId()+")");
 			getLuceneIndexTemplate().addDocument(new DocumentCreator() {
 				public Document createDocument() throws Exception {
 					Document document = new Document();
@@ -51,7 +51,7 @@ public class DepartmentIndexer extends DomainIndexer {
 	public void update() {
 		final Department department = getDepartment();
 		if (department != null) {
-			logger.debug("update new index for department "+department.getName()+" ("+department.getId()+")");
+			logger.debug("update index entry for department "+department.getName()+" ("+department.getId()+")");
 			delete();
 			create();
 		}

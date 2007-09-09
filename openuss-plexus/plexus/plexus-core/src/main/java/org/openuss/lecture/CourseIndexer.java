@@ -37,7 +37,7 @@ public class CourseIndexer extends DomainIndexer {
 	public void create() {
 		final Course course = getCourse();
 		if (course != null) {
-			logger.debug("create new index for course "+course.getName()+" ("+course.getId()+")");
+			logger.debug("create new index entry for course "+course.getName()+" ("+course.getId()+")");
 			getLuceneIndexTemplate().addDocument(new DocumentCreator() {
 				public Document createDocument() throws Exception {
 					Document document = new Document();
@@ -52,7 +52,7 @@ public class CourseIndexer extends DomainIndexer {
 		logger.debug("Starting method update");
 		final Course course = getCourse();
 		if (course != null) {
-			logger.debug("update new index for course "+course.getName()+" ("+course.getId()+")");
+			logger.debug("update index entry for course "+course.getName()+" ("+course.getId()+")");
 			delete();
 			create();
 //			try {

@@ -32,7 +32,7 @@ public class UniversityIndexer extends DomainIndexer {
 	public void create() {
 		final University university = getUniversity();
 		if (university != null) {
-			logger.debug("create new index for university "+university.getName()+" ("+university.getId()+")");
+			logger.debug("create index entry for university "+university.getName()+" ("+university.getId()+")");
 			getLuceneIndexTemplate().addDocument(new DocumentCreator() {
 				public Document createDocument() throws Exception {
 					Document document = new Document();
@@ -46,7 +46,7 @@ public class UniversityIndexer extends DomainIndexer {
 	public void update() {
 		final University university = getUniversity();
 		if (university != null) {
-			logger.debug("update new index for university "+university.getName()+" ("+university.getId()+")");
+			logger.debug("update index entry for university "+university.getName()+" ("+university.getId()+")");
 			delete();
 			create();
 		}
