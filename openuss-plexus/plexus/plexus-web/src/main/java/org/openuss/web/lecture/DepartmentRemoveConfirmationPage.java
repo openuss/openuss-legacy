@@ -5,6 +5,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
@@ -20,12 +21,18 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 
 	@Prerender
 	public void prerender() throws LectureException {
-			// prerender nothing
+		super.prerender();
+		breadcrumbs.loadDepartmentCrumbs(departmentInfo);
+		
+		BreadCrumb newCrumb = new BreadCrumb();
+		newCrumb.setName(i18n("department_command_remove"));
+		newCrumb.setHint(i18n("department_command_remove"));
+		breadcrumbs.addCrumb(newCrumb);
 	}
 	
 	@Preprocess
 	public void preprocess() throws Exception {
-			// preprocess nothing
+		super.preprocess();
 	}
 	
 	/**
