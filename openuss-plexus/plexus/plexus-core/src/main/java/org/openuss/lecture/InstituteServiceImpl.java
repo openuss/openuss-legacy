@@ -24,6 +24,7 @@ import org.openuss.security.acl.LectureAclEntry;
  * @author Ron Haus
  * @author Florian Dondorf
  */
+@SuppressWarnings( { "unchecked" })
 public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBase {
 
 	private static final Logger logger = Logger.getLogger(InstituteServiceImpl.class);
@@ -44,8 +45,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(instituteInfo.getDepartmentId(),
 				"InstituteService.handleCreate - the DepartmentID cannot be null");
 
-		// Save DepartmentID for Application
-		Long departmentId = instituteInfo.getDepartmentId();
+		// Ignore DepartmentID - one has to call applyAtDepartment right after
 		instituteInfo.setDepartmentId(null);
 
 		// Transform ValueObject into Entity
@@ -208,7 +208,6 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	/**
 	 * @see org.openuss.lecture.InstituteService#findInstitutesByEnabled(java.lang.Boolean)
 	 */
-	@SuppressWarnings( { "unchecked" })
 	@Override
 	protected List handleFindInstitutesByEnabled(boolean enabledOnly) throws Exception {
 
@@ -432,7 +431,6 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				"InstiuteService.findApplicationByInstituteAndConfirmed - instiute cannot be found with the corresponding instituteId "
 						+ instituteId);
 
-		List<ApplicationInfo> applicationInfos = new ArrayList<ApplicationInfo>();
 		for (Application application : institute.getApplications()) {
 			if (application.isConfirmed() == confirmed) {
 				return this.getApplicationDao().toApplicationInfo(application);

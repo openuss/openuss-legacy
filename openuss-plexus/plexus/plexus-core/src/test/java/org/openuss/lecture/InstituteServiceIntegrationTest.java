@@ -5,12 +5,7 @@
  */
 package org.openuss.lecture;
 
-import java.util.Date;
-import java.util.List;
-
 import org.acegisecurity.AccessDeniedException;
-import org.openuss.desktop.Desktop;
-import org.openuss.desktop.DesktopDao;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
 
@@ -37,13 +32,13 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		instituteInfo.setOwnerName("Administrator");
 		instituteInfo.setEnabled(true);
 		instituteInfo.setDescription("This is a test Institute");
-		instituteInfo.setDepartmentId(departmentOfficial.getId());
+		instituteInfo.setDepartmentId(departmentOfficial.getId()); //Should be ignored by createInstitute
 
 		// Create a User as Owner
 		User owner = testUtility.createUniqueUserInDB();
 
 		// Create Entity
-		Long instituteId = this.getInstituteService().create(instituteInfo, owner.getId());
+		Long instituteId = instituteService.create(instituteInfo, owner.getId());
 		assertNotNull(instituteId);
 
 		// Synchronize with Database
@@ -55,6 +50,8 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		
 		Institute instituteTest = instituteDao.load(instituteId);
 		assertNotNull(instituteTest);
+		assertNull(instituteTest.getDepartment()); // One needs to call applyAtUniversity right after
+		instituteService.applyAtDepartment(instituteId, departmentOfficial.getId(), owner.getId());
 		assertNotNull(instituteTest.getDepartment());
 		
 		Department departmentDefault = departmentDao.findByUniversityAndDefault(departmentOfficial.getUniversity(), true);
@@ -98,6 +95,8 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		// Test		
 		Institute instituteTest2 = instituteDao.load(instituteId2);
 		assertNotNull(instituteTest2);
+		assertNull(instituteTest2.getDepartment()); // One needs to call applyAtUniversity right after
+		instituteService.applyAtDepartment(instituteId2, departmentNonOfficial.getId(), owner.getId());
 		assertNotNull(instituteTest2.getDepartment());
 		
 		assertEquals(departmentNonOfficial.getId(), instituteTest2.getDepartment().getId());
@@ -154,23 +153,6 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 
 		// Synchronize with Database
 		flush();
-
-		// Test for Exception
-		Institute institute1 = testUtility.createUniqueInstituteInDB();
-		assertNotNull(institute1.getId());
-
-		// Create a Department
-		Department department = testUtility.createUniqueDepartmentInDB();
-
-		// Create new InstituteInfo object
-		instituteInfo.setDepartmentId(department.getId());
-
-		try {
-			this.getInstituteService().update(instituteInfo);
-			fail("InstituteServiceException should have been thrown.");
-		} catch (InstituteServiceException ise) {
-			;
-		}
 
 		logger.info("----> END access to update(Institute) test");
 	}
