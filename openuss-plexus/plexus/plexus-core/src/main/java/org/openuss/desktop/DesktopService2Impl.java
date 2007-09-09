@@ -1367,6 +1367,14 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 					courseInfo.setId(courseId);
 					courseInfo.setName(course.getName());
 					
+					Period coursePeriod = course.getPeriod();
+					
+					if(coursePeriod != null)
+					{
+						courseInfo.setPeriod(coursePeriod.getName());
+						courseInfo.setPeriodId(coursePeriod.getId());
+					}
+					
 					return courseInfo;
 				}
 				else
