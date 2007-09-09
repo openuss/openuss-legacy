@@ -38,23 +38,38 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 
 	public void testLectureIndex() throws Exception {
 	 
-		// create User
-		User user = testUtility.createUniqueUserInDB();
+		// Create an OFFICIAL Department
+		Department departmentOfficial = testUtility.createUniqueDepartmentInDB();
+		departmentOfficial.setDepartmentType(DepartmentType.OFFICIAL);
 		
-		// Create Department
-		Department department = testUtility.createUniqueDepartmentInDB();
+		// Create new InstituteInfo object
+		InstituteInfo instituteInfo = new InstituteInfo();
+		instituteInfo.setName(testUtility.unique("testInstitute"));
+		instituteInfo.setShortcut(testUtility.unique("testI"));
+		instituteInfo.setOwnerName("Administrator");
+		instituteInfo.setEnabled(false);
+		instituteInfo.setDescription("This is a test Institute");
+		instituteInfo.setDepartmentId(departmentOfficial.getId()); //Should be ignored by createInstitute
+
+		// Create a User as Owner
+		User owner = testUtility.createUniqueUserInDB();
 		
-		// create Institute info
-		InstituteInfo info = new InstituteInfo(null,"The Superb Institute","TSI","Institute Owner xyz","Germany",false);
-		info.setDepartmentId(department.getId());
+		instituteService.create(instituteInfo, owner.getId());
 		
-		Long instituteId = instituteService.create(info, user.getId());
+		//	Create a default Institute
+		Institute institute = testUtility.createUniqueInstituteInDB();
 		
-		// activate institute
-		info = this.getInstituteService().findInstitute(instituteId);
-		info.setEnabled(true);
-		// update institute
-		instituteService.update(info);
+		//	Create new InstituteInfo object
+		instituteInfo.setId(institute.getId());
+		instituteInfo.setName(testUtility.unique("testInstitute"));
+		instituteInfo.setShortcut(testUtility.unique("testI"));
+		instituteInfo.setOwnerName("Administrator");
+		instituteInfo.setEnabled(true);
+		instituteInfo.setDescription("This is a test Institute at " + testUtility.unique("time"));
+		instituteInfo.setDepartmentId(institute.getDepartment().getId());
+
+		// Update Institute
+		this.getInstituteService().update(instituteInfo);
 		
 		// indexerMockCreate should be 0 due to the fact that institutes are initiated
 		// disabled. Therefore they are activated via the updateIndex-method --> indexerMockUpdate should be 1.
@@ -62,7 +77,7 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 		assertEquals(1, indexerMock.update);
 		// delete institute
 		// indexMockDelete should be 1 --> Deleting institute index works properly
-		instituteService.removeInstitute(info.getId());
+		instituteService.removeInstitute(instituteInfo.getId());
 		assertEquals(1, indexerMock.delete);
 	}
 	

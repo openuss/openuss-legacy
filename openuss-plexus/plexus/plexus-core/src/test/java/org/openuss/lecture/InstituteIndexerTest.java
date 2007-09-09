@@ -6,8 +6,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
 import org.openuss.search.DomainResult;
-import org.openuss.security.User;
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
 /**
  * Test case for the spring indexing and searching of institutes.
@@ -19,7 +18,7 @@ import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
  * @author Ingo Dueppe
  * @author Kai Stettner
  */
-public class InstituteIndexerTest extends AbstractDependencyInjectionSpringContextTests {
+public class InstituteIndexerTest extends AbstractTransactionalDataSourceSpringContextTests {
 
 	private static final Logger logger = Logger.getLogger(InstituteIndexerTest.class);
 	
