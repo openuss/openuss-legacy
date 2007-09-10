@@ -7,6 +7,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:news="http://www.openuss.org/news/jsf"
       xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:o="http://www.openuss.org/jsfcontrols">
       
  	<head>
@@ -24,6 +25,11 @@
  			<h:form id="reg1appForm">
  				
  				<o:block>
+ 					<s:authorize ifNotGranted="ROLE_ADMIN">
+	 					<p class="content_font_normal">
+	 						<h:outputText value="#{msg.institute_registration_application_info_text}" escape="false"/>
+	 					</p>
+ 					</s:authorize>
  					<h:outputLabel value="#{msg.institute_preferences_university}" for="universitySelect" styleClass="field_label" />
  					<h:selectOneListbox id="institute_preferences_university" 
 						size="1" 
