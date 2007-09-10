@@ -22,6 +22,7 @@ import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.CourseTypeService;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentService;
+import org.openuss.lecture.DepartmentType;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.LectureSearcher;
@@ -83,22 +84,24 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 			try {
 				String domainType;
 				switch(extendedSearchResults.getResultTypeId().intValue()){
-				case Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION:
-					domainType = "university";
+				case Constants.EXTENDED_SEARCH_RESULT_TYPE_ALL:
+					domainType = null;
 					break;
-				case Constants.EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION:
-					domainType = "department";
-					break;
-				case Constants.EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION:
-					domainType = "institute";
-					break;
-				case Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE:
-					domainType = "course";
-					break;
-				default:
-					throw new IllegalArgumentException("invalid result type id!");
+					case Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION:
+						domainType = "university";
+						break;
+					case Constants.EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION:
+						domainType = "department";
+						break;
+					case Constants.EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION:
+						domainType = "institute";
+						break;
+					case Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE:
+						domainType = "course";
+						break;
+					default:
+						throw new IllegalArgumentException("invalid result type id!");
 				}
-				// TODO: Error handling
 				searchResult = extendedSearcher.search(
 						extendedSearchResults.getTextToSearch(),
 						domainType,
@@ -136,8 +139,40 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		return Constants.EXTENDED_SEARCH_RESULT;
 	}
 	
-	/*** "ON CHANGE" EVENT HANDLER ***/
+	/* "ON CHANGE" EVENT HANDLER */
+	
+	
+	/**
+	 * event handler which is called when the "only official" check box is changed
+	 * @param vce
+	 */
+	public void onlyOfficialFlagChanged(ValueChangeEvent vce){
+		logger.debug(">>> onlyOfficialFlagChanged");
+
+		if(vce == null){
+			return;
+		}
 		
+		Boolean onlyOfficial = (Boolean) vce.getNewValue();
+		extendedSearchResults.setOfficialOnly(onlyOfficial.booleanValue());
+		
+		// set content of combo box "organisation" if this is necessary for the selected result type
+		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION){
+			resetUniversities();
+		} else {
+			extendedSearchResults.setUniversities(new ArrayList<SelectItem>());
+		}
+		
+		// reset all other combo boxes
+		extendedSearchResults.setDepartments(new ArrayList<SelectItem>());
+		extendedSearchResults.setInstitutes(new ArrayList<SelectItem>());
+		extendedSearchResults.setCourseTypes(new ArrayList<SelectItem>());
+		extendedSearchResults.setPeriods(new ArrayList<SelectItem>());
+		
+		logger.debug("<<< resultTypeChanged");
+	}
+	
+	
 	/**
 	 * event handler which is called when the "result type" combo box is changed
 	 * @param vce
@@ -167,7 +202,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	}
 	
 	/**
-	 * event handler which is called when the "organisation" combo box is changed
+	 * event handler which is called when the "university" combo box is changed
 	 * @param vce
 	 */
 	public void universityChanged(ValueChangeEvent vce){
@@ -200,7 +235,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	}
 	
 	/**
-	 * event handler which is called when the "suborganisation" combo box is changed
+	 * event handler which is called when the "department" combo box is changed
 	 * @param vce
 	 */
 	public void departmentChanged(ValueChangeEvent vce){
@@ -227,7 +262,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	
 	
 	/**
-	 * event handler which is called when the "institution" combo box is changed
+	 * event handler which is called when the "institute" combo box is changed
 	 * @param vce
 	 */
 	public void instituteChanged(ValueChangeEvent vce){
@@ -237,7 +272,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 			return;
 		}
 		
-		// determine the course types offered by the given institution
+		// determine the course types offered by the given instutute
 		Long selectedInstitute = (Long) vce.getNewValue();
 		resetCourseTypes(selectedInstitute);		
 		
@@ -250,7 +285,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		// initialize
 		List<SelectItem> universitiesToDisplay = new ArrayList<SelectItem>();
 		UniversityInfo universityInfo;
-		// set possible organisations
+		// set possible universities
 		List universities = universityService.findUniversitiesByEnabled(true);
 		if(universities.size() > 0){
 			universitiesToDisplay.add(getAllSelectItem());
@@ -283,10 +318,15 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 			}
 			for(Object departmentTemp : departments){
 				departmentInfo = (DepartmentInfo) departmentTemp;
-				departmentsToDisplay.add(
-						new SelectItem(
-								departmentInfo.getId(), 
-								departmentInfo.getName()));
+				// only add the department to the list if it is either official 
+				// or non-official departments are allowed to be listed, too 
+				if(!extendedSearchResults.isOfficialOnly() 
+						|| departmentInfo.getDepartmentType().equals(DepartmentType.OFFICIAL)){
+					departmentsToDisplay.add(
+							new SelectItem(
+									departmentInfo.getId(), 
+									departmentInfo.getName()));
+				}
 			}
 		} else if (organisationId == Constants.EXTENDED_SEARCH_GET_ALL){
 			departmentsToDisplay.add(getAllSelectItem());
@@ -388,7 +428,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	/*** CHECK VISIBILITY METHODS ***/
 	
 	/**
-	 * generates the CSS tag which determines whether the "organisation" combo box is displayed
+	 * generates the CSS tag which determines whether the "university" combo box is displayed
 	 * @return
 	 */
 	public String getVisibilityUniversity(){
@@ -401,7 +441,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	}
 	
 	/**
-	 * generates the CSS tag which determines whether the "suborganisation" combo box is displayed
+	 * generates the CSS tag which determines whether the "department" combo box is displayed
 	 * @return
 	 */
 	public String getVisibilityDepartment(){
@@ -414,7 +454,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	}
 	
 	/**
-	 * generates the CSS tag which determines whether the "institution" combo box is displayed
+	 * generates the CSS tag which determines whether the "institute" combo box is displayed
 	 * @return
 	 */
 	public String getVisibilityInstitute(){

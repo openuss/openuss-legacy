@@ -43,7 +43,12 @@
 					 			<h:selectBooleanCheckbox id="title_only" value="#{extended_search_results.titleOnly}"/>
 								<h:outputText value="#{msg.extended_search_title_only}"/>
 								<t:htmlTag value="br" />
-								<h:selectBooleanCheckbox id="official_only" value="#{extended_search_results.officialOnly}"/>
+								<h:selectBooleanCheckbox id="official_only" 
+									value="#{extended_search_results.officialOnly}"
+									onchange="this.form.submit();"
+									immediate="true" 
+									valueChangeListener="#{views$public$search$extendedsearch.onlyOfficialFlagChanged}"
+								/>
 								<h:outputText value="#{msg.extended_search_official_only}"/>
 					 		</h:panelGroup>
 					 	</h:panelGrid>

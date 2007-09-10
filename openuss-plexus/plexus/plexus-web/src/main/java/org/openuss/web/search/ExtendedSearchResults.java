@@ -151,6 +151,9 @@ public class ExtendedSearchResults implements Serializable {
 		ResourceBundle rb = ExtendedSearchUtil.getResourceBundle();
 		ArrayList<SelectItem> resultTypes = new ArrayList<SelectItem>();
 		resultTypes.add(new SelectItem(
+				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_ALL), 
+				rb.getString("extended_search_get_all")));
+		resultTypes.add(new SelectItem(
 				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION), 
 				rb.getString("extended_search_university")));
 		resultTypes.add(new SelectItem(

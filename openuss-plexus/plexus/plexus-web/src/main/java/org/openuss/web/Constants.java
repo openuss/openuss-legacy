@@ -191,6 +191,7 @@ public class Constants {
 	public static final int EXTENDED_SEARCH_SCOPE_UNIVERSITIES = 1;
 	public static final int EXTENDED_SEARCH_SCOPE_COMPANIES = 2;
 	public static final int EXTENDED_SEARCH_SCOPE_OTHER = 3;
+	public static final int EXTENDED_SEARCH_RESULT_TYPE_ALL = 0;
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION = 1;
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION = 2;
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION = 3;
