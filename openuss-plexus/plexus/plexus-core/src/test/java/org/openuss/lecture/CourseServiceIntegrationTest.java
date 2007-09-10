@@ -5,6 +5,7 @@
  */
 package org.openuss.lecture;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -522,6 +523,189 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		assertEquals(3, courses.size());
 		
 		logger.debug("----> END access to findCoursesByActivePeriods test <---- ");
+	}
+	
+	public void testFindCoursesByInstituteAndEnabled () {
+		
+		// Create Institutes
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		Institute institute2 = testUtility.createUniqueInstituteInDB();
+		
+		// Count Courses
+		List<Course> coursesInstitute1Ênabled = new ArrayList<Course>();
+		List<Course> coursesInstitute1Disabled = new ArrayList<Course>();
+		for (CourseType courseType : institute1.getCourseTypes()) {
+			for (Course course : courseType.getCourses()) {
+				if (course.isEnabled()) {
+					coursesInstitute1Ênabled.add(course);
+				}
+				else {
+					coursesInstitute1Disabled.add(course);
+				}
+			}
+		}
+		int countInstitute1EnabledCourses = coursesInstitute1Ênabled.size();
+		int countInstitute1DisabledCourses = coursesInstitute1Disabled.size();
+		
+		List<Course> coursesInstitute2Disabled = new ArrayList<Course>();
+		List<Course> coursesInstitute2Ênabled = new ArrayList<Course>();
+		for (CourseType courseType : institute2.getCourseTypes()) {
+			for (Course course : courseType.getCourses()) {
+				if (course.isEnabled()) {
+					coursesInstitute2Ênabled.add(course);
+				}
+				else {
+					coursesInstitute2Disabled.add(course);
+				}
+			}
+		}
+		int countInstitute2EnabledCourses = coursesInstitute2Ênabled.size();
+		int countInstitute2DisabledCourses = coursesInstitute2Disabled.size();
+		
+		// Create Courses
+		Course course1 = testUtility.createUniqueCourseInDB();
+		institute1.add(course1.getCourseType());
+		course1.setEnabled(true);
+		countInstitute1EnabledCourses++;
+		Course course2 = testUtility.createUniqueCourseInDB();
+		course2.setEnabled(false);
+		institute1.add(course2.getCourseType());
+		countInstitute1DisabledCourses++;
+		Course course3 = testUtility.createUniqueCourseInDB();
+		course3.setEnabled(true);
+		institute2.add(course3.getCourseType());
+		countInstitute2EnabledCourses++;
+		
+		flush();
+		
+		// Test
+		List<Course> courses = this.getCourseService().findCoursesByInstituteAndEnabled(institute1.getId(), true);
+		assertNotNull(courses);
+		assertEquals(countInstitute1EnabledCourses, courses.size());
+		
+		courses = this.getCourseService().findCoursesByInstituteAndEnabled(institute1.getId(), false);
+		assertNotNull(courses);
+		assertEquals(countInstitute1DisabledCourses, courses.size());
+		
+		courses = this.getCourseService().findCoursesByInstituteAndEnabled(institute2.getId(), true);
+		assertNotNull(courses);
+		assertEquals(countInstitute2EnabledCourses, courses.size());
+	}
+	
+	public void testFindCoursesByPeriodAndInstituteAndEnabled () {
+		// Create University
+		University university = testUtility.createUniqueUniversityInDB();
+		
+		// Create Periods
+		Period period1 = testUtility.createUniquePeriodInDB();
+		university.add(period1);
+		Period period2 = testUtility.createUniquePeriodInDB();
+		university.add(period2);
+		
+		// Create Institutes
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		university.add(institute1.getDepartment());
+		Institute institute2 = testUtility.createUniqueInstituteInDB();
+		university.add(institute2.getDepartment());
+		
+		// Create Courses
+		Course course1 = testUtility.createUniqueCourseInDB();
+		course1.setEnabled(true);
+		period1.add(course1);
+		institute1.add(course1.getCourseType());
+		Course course2 = testUtility.createUniqueCourseInDB();
+		course2.setEnabled(true);
+		period1.add(course2);
+		institute1.add(course2.getCourseType());
+		Course course3 = testUtility.createUniqueCourseInDB();
+		course3.setEnabled(true);
+		period2.add(course3);
+		institute2.add(course3.getCourseType());
+		Course course4 = testUtility.createUniqueCourseInDB();
+		course4.setEnabled(false);
+		period2.add(course4);
+		institute2.add(course4.getCourseType());
+		
+		// Test
+		List<Course> courses = this.getCourseService().findCoursesByPeriodAndInstituteAndEnabled(
+				period1.getId(), 
+				institute1.getId(), 
+				true);
+		assertNotNull(courses);
+		assertEquals(2, courses.size());
+		
+		courses = this.getCourseService().findCoursesByPeriodAndInstituteAndEnabled(
+				period2.getId(), 
+				institute2.getId(), 
+				true);
+		assertNotNull(courses);
+		assertEquals(1, courses.size());
+		
+		courses = this.getCourseService().findCoursesByPeriodAndInstituteAndEnabled(
+				period2.getId(), 
+				institute2.getId(), 
+				false);
+		assertNotNull(courses);
+		assertEquals(1, courses.size());
+
+	}
+	
+	public void testFindCoursesByActivePeriodsAndEnabled () {
+		// Create University
+		University university = testUtility.createUniqueUniversityInDB();
+		
+		// Create Periods
+		Period periodActive = testUtility.createUniquePeriodInDB();
+		university.add(periodActive);
+		Period periodInactive = testUtility.createUniqueInactivePeriodInDB();
+		university.add(periodInactive);
+		
+		// Create Institutes
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		university.add(institute.getDepartment());
+		
+		// Count Courses
+		int countEnabledCourses = 
+			this.getCourseService().findCoursesByActivePeriodsAndEnabled(institute.getId(), true).size();
+		int countDisabledCourses= 
+			this.getCourseService().findCoursesByActivePeriodsAndEnabled(institute.getId(), false).size();
+		
+		
+		// Create Courses
+		Course course1 = testUtility.createUniqueCourseInDB();
+		course1.setEnabled(true);
+		periodActive.add(course1);
+		institute.add(course1.getCourseType());
+		countEnabledCourses++;
+		Course course2 = testUtility.createUniqueCourseInDB();
+		course2.setEnabled(true);
+		periodActive.add(course2);
+		institute.add(course2.getCourseType());
+		countEnabledCourses++;
+		Course course3 = testUtility.createUniqueCourseInDB();
+		course3.setEnabled(false);
+		periodActive.add(course3);
+		institute.add(course3.getCourseType());
+		countDisabledCourses++;
+		Course course4 = testUtility.createUniqueCourseInDB();
+		course4.setEnabled(false);
+		periodInactive.add(course4);
+		institute.add(course4.getCourseType());
+		
+		flush();
+		
+		// Test
+		List<Course> courses = this.getCourseService().findCoursesByActivePeriodsAndEnabled(
+				institute.getId(), 
+				true);
+		assertNotNull(courses);
+		assertEquals(countEnabledCourses, courses.size());
+		
+		courses = this.getCourseService().findCoursesByActivePeriodsAndEnabled(
+				institute.getId(), 
+				false);
+		assertNotNull(courses);
+		assertEquals(countDisabledCourses, courses.size());
 	}
 
 	public void testIsNoneExistingCourseShortcut () {
