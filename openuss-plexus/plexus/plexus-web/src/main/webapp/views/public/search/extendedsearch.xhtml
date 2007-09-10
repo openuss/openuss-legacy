@@ -84,14 +84,6 @@
 							<f:selectItems value="#{extended_search_results.universities}"/>
 						</h:selectOneMenu>
 						
-						<h:outputText value="#{msg.extended_search_period}" 
-							style="#{views$public$search$extendedsearch.visibilityPeriod}" styleClass="field_label"/>
-						<h:selectOneMenu id="period" value="#{extended_search_results.periodId}" 
-							styleClass="pulldown_inline" 
-							style="#{views$public$search$extendedsearch.visibilityPeriod}">
-							<f:selectItems value="#{extended_search_results.periods}"/>
-						</h:selectOneMenu>
-						
 						<h:outputText value="#{msg.extended_search_department}"
 							style="#{views$public$search$extendedsearch.visibilityDepartment}" styleClass="field_label"/>
 						<h:selectOneMenu id="department" 
@@ -123,6 +115,14 @@
 							styleClass="pulldown_inline" 
 							style="#{views$public$search$extendedsearch.visibilityCourseType}">
 							<f:selectItems value="#{extended_search_results.courseTypes}"/>
+						</h:selectOneMenu>
+						
+						<h:outputText value="#{msg.extended_search_period}" 
+							style="#{views$public$search$extendedsearch.visibilityPeriod}" styleClass="field_label"/>
+						<h:selectOneMenu id="period" value="#{extended_search_results.periodId}" 
+							styleClass="pulldown_inline" 
+							style="#{views$public$search$extendedsearch.visibilityPeriod}">
+							<f:selectItems value="#{extended_search_results.periods}"/>
 						</h:selectOneMenu>
 
 					</h:panelGrid>

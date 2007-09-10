@@ -10,6 +10,6 @@ import org.openuss.search.DomainResult;
  */
 public interface ExtendedSearcher {
 	
-	public List<DomainResult> search(String textToSearch, String domainType, Long universityId, Long departmentId, Long instituteId, Long courseTypeId, boolean onlyOfficial, boolean onlyInTitle);
+	public List<DomainResult> search(String textToSearch, String domainType, Long universityId, Long departmentId, Long instituteId, Long courseTypeId, Long periodId, boolean onlyOfficial, boolean onlyInTitle);
 
 }

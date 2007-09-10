@@ -109,6 +109,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 						extendedSearchResults.getDepartmentId(),
 						extendedSearchResults.getInstituteId(),
 						extendedSearchResults.getCourseTypeId(),
+						extendedSearchResults.getPeriodId(),
 						extendedSearchResults.isOfficialOnly(), 
 						extendedSearchResults.isTitleOnly()
 						);
@@ -160,16 +161,16 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION){
 			resetUniversities();
 		} else {
-			extendedSearchResults.setUniversities(new ArrayList<SelectItem>());
+			extendedSearchResults.setUniversities(defaultSelectItemList());
 		}
 		
 		// reset all other combo boxes
-		extendedSearchResults.setDepartments(new ArrayList<SelectItem>());
-		extendedSearchResults.setInstitutes(new ArrayList<SelectItem>());
-		extendedSearchResults.setCourseTypes(new ArrayList<SelectItem>());
-		extendedSearchResults.setPeriods(new ArrayList<SelectItem>());
+		extendedSearchResults.setDepartments(defaultSelectItemList());
+		extendedSearchResults.setInstitutes(defaultSelectItemList());
+		extendedSearchResults.setCourseTypes(defaultSelectItemList());
+		extendedSearchResults.setPeriods(defaultSelectItemList());
 		
-		logger.debug("<<< resultTypeChanged");
+		logger.debug("<<< onlyOfficialFlagChanged");
 	}
 	
 	
@@ -183,20 +184,22 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		if(vce == null){
 			return;
 		}
+		Long resultTypeId = (Long) vce.getNewValue();
+		extendedSearchResults.setResultTypeId(resultTypeId);
+		
 		
 		// set content of combo box "organisation" if this is necessary for the selected result type
-		Long resultTypeId = (Long) vce.getNewValue();
 		if(resultTypeId > Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION){
 			resetUniversities();
 		} else {
-			extendedSearchResults.setUniversities(new ArrayList<SelectItem>());
+			extendedSearchResults.setUniversities(defaultSelectItemList());
 		}
 		
 		// reset all other combo boxes
-		extendedSearchResults.setDepartments(new ArrayList<SelectItem>());
-		extendedSearchResults.setInstitutes(new ArrayList<SelectItem>());
-		extendedSearchResults.setCourseTypes(new ArrayList<SelectItem>());
-		extendedSearchResults.setPeriods(new ArrayList<SelectItem>());
+		extendedSearchResults.setDepartments(defaultSelectItemList());
+		extendedSearchResults.setInstitutes(defaultSelectItemList());
+		extendedSearchResults.setCourseTypes(defaultSelectItemList());
+		extendedSearchResults.setPeriods(defaultSelectItemList());
 		
 		logger.debug("<<< resultTypeChanged");
 	}
@@ -212,24 +215,25 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 			return;
 		}
 		Long selectedUniversity = (Long) vce.getNewValue();
+		extendedSearchResults.setUniversityId(selectedUniversity);
 		
 		// set content of combo box "period" if this is necessary for the selected result type
-		if(extendedSearchResults.getResultTypeId() == Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE){
+		if(extendedSearchResults.getResultTypeId().intValue() == Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE){
 			resetPeriods(selectedUniversity);
 		} else {
-			extendedSearchResults.setPeriods(new ArrayList<SelectItem>());
+			extendedSearchResults.setPeriods(defaultSelectItemList());
 		}
 		
 		// set content of combo box "department" if this is necessary for the selected result type
-		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION){
+		if(extendedSearchResults.getResultTypeId().intValue() > Constants.EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION){
 			resetDepartments(selectedUniversity);
 		} else {
-			extendedSearchResults.setDepartments(new ArrayList<SelectItem>());
+			extendedSearchResults.setDepartments(defaultSelectItemList());
 		}
 
 		// reset the all other more detailed combo boxes
-		extendedSearchResults.setInstitutes(new ArrayList<SelectItem>());
-		extendedSearchResults.setCourseTypes(new ArrayList<SelectItem>());
+		extendedSearchResults.setInstitutes(defaultSelectItemList());
+		extendedSearchResults.setCourseTypes(defaultSelectItemList());
 		
 		logger.debug("<<< universityChanged");
 	}
@@ -244,17 +248,18 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		if(vce.getNewValue() == null){
 			return;
 		}
+		Long selectedDepartment = (Long) vce.getNewValue();
+		extendedSearchResults.setDepartmentId(selectedDepartment);
 		
 		// set content of combo box "institute" if this is necessary for the selected result type
-		Long selectedDepartment = (Long) vce.getNewValue();
-		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION){
+		if(extendedSearchResults.getResultTypeId().intValue() > Constants.EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION){
 			resetInstitutes(selectedDepartment);
 		} else {
-			extendedSearchResults.setInstitutes(new ArrayList<SelectItem>());
+			extendedSearchResults.setInstitutes(defaultSelectItemList());
 		}
 		
 		// reset the all other more detailed combo boxes
-		extendedSearchResults.setCourseTypes(new ArrayList<SelectItem>());
+		extendedSearchResults.setCourseTypes(defaultSelectItemList());
 		
 		logger.debug("<<< departmentChanged");
 	}
@@ -271,9 +276,10 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		if(vce.getNewValue() == null){
 			return;
 		}
+		Long selectedInstitute = (Long) vce.getNewValue();
+		extendedSearchResults.setInstituteId(selectedInstitute);
 		
 		// determine the course types offered by the given instutute
-		Long selectedInstitute = (Long) vce.getNewValue();
 		resetCourseTypes(selectedInstitute);		
 		
 		logger.debug("<<< instituteChanged");
@@ -300,7 +306,6 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 							universityInfo.getName()));
 		}
 		extendedSearchResults.setUniversities(universitiesToDisplay);
-		//extendedSearchResults.setUniversityId(Constants.EXTENDED_SEARCH_GET_ALL);
 		extendedSearchResults.setUniversityId(null);
 	}
 	
@@ -309,7 +314,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		DepartmentInfo departmentInfo;
 		
 		// determine the departments which belong to the given university
-		if(organisationId > Constants.EXTENDED_SEARCH_GET_ALL){
+		if(organisationId.intValue() > 0){
 			List departments = departmentService.findDepartmentsByUniversityAndEnabled(organisationId, true);
 			if(departments.size() > 0){
 				departmentsToDisplay.add(getAllSelectItem());
@@ -328,7 +333,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 									departmentInfo.getName()));
 				}
 			}
-		} else if (organisationId == Constants.EXTENDED_SEARCH_GET_ALL){
+		} else if (organisationId.equals(Constants.EXTENDED_SEARCH_GET_ALL) ){
 			departmentsToDisplay.add(getAllSelectItem());
 		} else {
 			departmentsToDisplay.add(notFoundSelectItem());
@@ -340,7 +345,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		List<SelectItem> institutesToDisplay = new ArrayList<SelectItem>();
 		InstituteInfo instituteInfo;
 		
-		if(suborganisationId > Constants.EXTENDED_SEARCH_GET_ALL){
+		if(suborganisationId.intValue() > Constants.EXTENDED_SEARCH_GET_ALL.intValue()){
 			List institutes = instituteService.findInstitutesByDepartmentAndEnabled(suborganisationId, true);
 			if(institutes.size() > 0){
 				institutesToDisplay.add(getAllSelectItem());
@@ -354,7 +359,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 								instituteInfo.getId(), 
 								instituteInfo.getName()));
 			}
-		} else if (suborganisationId == Constants.EXTENDED_SEARCH_GET_ALL){
+		} else if (suborganisationId.equals(Constants.EXTENDED_SEARCH_GET_ALL)){
 			institutesToDisplay.add(getAllSelectItem());
 		} else {
 			institutesToDisplay.add(notFoundSelectItem());
@@ -366,7 +371,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		List<SelectItem> courseTypesToDisplay = new ArrayList<SelectItem>();
 		CourseTypeInfo courseTypeInfo;
 
-		if(instituteId > Constants.EXTENDED_SEARCH_GET_ALL){
+		if(instituteId.intValue() > 0){
 			List courseTypes = courseTypeService.findCourseTypesByInstitute(instituteId);
 			if(courseTypes.size() > 0){
 				courseTypesToDisplay.add(getAllSelectItem());
@@ -380,7 +385,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 								courseTypeInfo.getId(), 
 								courseTypeInfo.getName()));
 			}
-		} else if (instituteId == Constants.EXTENDED_SEARCH_GET_ALL){
+		} else if (instituteId.equals(Constants.EXTENDED_SEARCH_GET_ALL)){
 			courseTypesToDisplay.add(getAllSelectItem());
 		} else {
 			courseTypesToDisplay.add(notFoundSelectItem());
@@ -393,7 +398,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		PeriodInfo periodInfo;
 		
 		// determine periods in which the institute offers courses
-		if(universityId > Constants.EXTENDED_SEARCH_GET_ALL){
+		if(universityId.intValue() > 0){
 			List periods = universityService.findPeriodsByUniversity(universityId);
 			if(periods.size() > 0){
 				periodToDisplay.add(getAllSelectItem());
@@ -407,7 +412,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 								periodInfo.getId(), 
 								periodInfo.getName()));
 			}
-		} else if (universityId == Constants.EXTENDED_SEARCH_GET_ALL){
+		} else if (universityId.equals(Constants.EXTENDED_SEARCH_GET_ALL)){
 			periodToDisplay.add(getAllSelectItem());
 		} else {
 			periodToDisplay.add(notFoundSelectItem());
@@ -424,6 +429,12 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		ResourceBundle rb = ExtendedSearchUtil.getResourceBundle();
 		return new SelectItem(Constants.EXTENDED_SEARCH_NO_RECORDS_FOUND, rb.getString("extended_search_no_records_found"));
 	}
+	
+	private List<SelectItem> defaultSelectItemList(){
+		List<SelectItem> list = new ArrayList<SelectItem>();
+		list.add(getAllSelectItem());
+		return list;
+	}
 		
 	/*** CHECK VISIBILITY METHODS ***/
 	
@@ -432,8 +443,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 * @return
 	 */
 	public String getVisibilityUniversity(){
-		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION
-				&& extendedSearchResults.getUniversities().size() > 0){
+		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION){
 			return "display:inline;";
 		} else {
 			return "display:none;";
@@ -445,8 +455,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 * @return
 	 */
 	public String getVisibilityDepartment(){
-		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION
-				&& extendedSearchResults.getDepartments().size() > 0){
+		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION){
 			return "display:inline;";
 		} else {
 			return "display:none;";
@@ -458,8 +467,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 * @return
 	 */
 	public String getVisibilityInstitute(){
-		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION
-				&& extendedSearchResults.getInstitutes().size() > 0){
+		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION){
 			return "display:inline;";
 		} else {
 			return "display:none;";
@@ -471,8 +479,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 * @return
 	 */
 	public String getVisibilityCourseType(){
-		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE
-				&& extendedSearchResults.getCourseTypes().size() > 0){
+		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE){
 			return "display:inline;";
 		} else {
 			return "display:none;";
@@ -484,40 +491,12 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	 * @return
 	 */
 	public String getVisibilityPeriod(){
-		if(extendedSearchResults.getResultTypeId().intValue() > Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE
-				&& extendedSearchResults.getPeriods().size() > 0){
+		if(extendedSearchResults.getResultTypeId().intValue() > Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE){
 			return "display:inline;";
 		} else {
 			return "display:none;";
 		}
 	}
-	
-	public String getUniversityLabel(){
-		ResourceBundle rb = ExtendedSearchUtil.getResourceBundle();
-		return rb.getString("extended_search_organisation_univ");
-	}
-	
-	public String getDepartmentLabel(){
-		ResourceBundle rb = ExtendedSearchUtil.getResourceBundle();
-		return rb.getString("extended_search_suborganisation_univ");
-	}
-	
-	public String getInstituteLabel(){
-		ResourceBundle rb = ExtendedSearchUtil.getResourceBundle();
-		return rb.getString("extended_search_institution_univ");
-	}
-	
-	public String getCourseTypeLabel(){
-		ResourceBundle rb = ExtendedSearchUtil.getResourceBundle();
-		return rb.getString("extended_search_course_type_univ");
-	}
-	
-	public String getPeriodLabel(){
-		ResourceBundle rb = ExtendedSearchUtil.getResourceBundle();
-		return rb.getString("extended_search_period_univ");
-	}
-	
-	
 	
 	public ExtendedSearchResultDataProvider getResultProvider() {
 		return resultProvider;

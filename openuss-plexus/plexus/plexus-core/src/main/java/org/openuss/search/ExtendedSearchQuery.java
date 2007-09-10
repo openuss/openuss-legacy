@@ -73,7 +73,7 @@ public class ExtendedSearchQuery extends SimpleLuceneSearchQuery implements Exte
 	 * @param onlyInTitle
 	 */
 	public List<DomainResult> search(String textToSearch, String domainType, Long universityId,
-			Long departmentId, Long instituteId, Long courseTypeId,
+			Long departmentId, Long instituteId, Long courseTypeId, Long periodId, 
 			boolean onlyOfficial, boolean onlyInTitle) {
 		
 		StringBuilder queryString = new StringBuilder();
@@ -120,6 +120,13 @@ public class ExtendedSearchQuery extends SimpleLuceneSearchQuery implements Exte
 			queryString.append(DomainIndexer.COURSE_TYPE_IDENTIFIER);
 			queryString.append(":");
 			queryString.append(courseTypeId.toString());
+		}
+		
+		if(periodId != null && periodId > 0){
+			queryString.append(" ");
+			queryString.append(DomainIndexer.PERIOD_IDENTIFIER);
+			queryString.append(":");
+			queryString.append(periodId.toString());
 		}
 		
 		if(onlyOfficial){
