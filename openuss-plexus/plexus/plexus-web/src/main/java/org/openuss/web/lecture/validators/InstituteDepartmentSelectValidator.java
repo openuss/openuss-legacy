@@ -25,7 +25,10 @@ public class InstituteDepartmentSelectValidator extends BaseBean implements Vali
 
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		final Long departmentId = (Long) value;
-			if ((departmentId.longValue() == Constants.DEPARTMENTS_DISABLED) || (departmentId.longValue() == Constants.DEPARTMENTS_ENABLED)) {
+			if ((departmentId.longValue() == Constants.DEPARTMENTS_DISABLED) 
+					|| (departmentId.longValue() == Constants.DEPARTMENTS_ENABLED)
+					|| (departmentId.longValue() == Constants.DEPARTMENTS_NO_UNIVERSITY_SELECTED)
+			) {
 				((UIInput) component).setValid(false);
 				addError(i18n(INSTITUTE_DEPARTMENT_MESSAGE_ID), null);
 			}

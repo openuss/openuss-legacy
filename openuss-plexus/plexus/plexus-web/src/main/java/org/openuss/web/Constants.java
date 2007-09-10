@@ -91,6 +91,7 @@ public class Constants {
 	public static final String DEPARTMENT_CONFIRM_DISABLE_PAGE = "department_disable_confirmation";
 	public static final Long   DEPARTMENTS_ENABLED = -115L;
 	public static final Long   DEPARTMENTS_DISABLED = -116L;
+	public static final Long   DEPARTMENTS_NO_UNIVERSITY_SELECTED = -119L;
 	public static final String DEPARTMENT_REGISTRATION_CONTROLLER = "departmentRegistration";
 	public static final String DEPARTMENT_REGISTRATION_START_PAGE= "department_registration_start";
 	public static final String DEPARTMENT_REGISTRATION_STEP1_PAGE = "department_registration_step1";

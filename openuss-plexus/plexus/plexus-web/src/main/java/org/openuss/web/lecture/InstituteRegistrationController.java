@@ -118,8 +118,11 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		
 		Long universityId = universityInfo.getId();
 		allUniversities = universityService.findAllUniversities();
-		if (universityId == null)
-			universityId = allUniversities.get(0).getId();
+		if (universityId == null || universityId.intValue() < 0){
+			SelectItem item = new SelectItem(Constants.DEPARTMENTS_NO_UNIVERSITY_SELECTED, bundle.getString("institute_registration_choose_university"));
+			departmentItems.add(item);
+			return departmentItems;
+		}
 			
 		logger.info("universityId:"+universityInfo.getId());
 
@@ -187,6 +190,6 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		final Long departmentId = (Long) event.getNewValue();
 		departmentInfo = departmentService.findDepartment(departmentId);
 		setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);
-			}	
+	}	
 	
 }
