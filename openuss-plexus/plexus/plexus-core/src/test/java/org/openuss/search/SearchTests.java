@@ -10,6 +10,7 @@ public class SearchTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(IndexerServiceIntegrationTest.class);
 		suite.addTestSuite(DomainIndexerFactoryTest.class);
+		suite.addTestSuite(ExtendedSearchTest.class);
 		//$JUnit-END$
 		return suite;
 	}
