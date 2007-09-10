@@ -23,6 +23,7 @@ import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.ApplicationInfo;
 import org.openuss.lecture.DepartmentInfo;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.security.Roles;
@@ -69,11 +70,6 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
-		if(instituteInfo != null) {
-			if (!instituteInfo.isEnabled()) {
-				addMessage(i18n("institute_not_activated"));
-			}
-		}
 		addPageCrumb();
 	}
 	
@@ -233,6 +229,18 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		}
 		
 		return departmentItems;
+	}
+	
+	/**
+	 * Store the selected institute into session scope and go to institute disable confirmation page.
+	 * @return Outcome
+	 */
+	public String selectInstituteAndConfirmDisable() {
+		logger.debug("Starting method selectInstituteAndConfirmDisable");
+		logger.debug(instituteInfo.getId());	
+		setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
+		
+		return Constants.INSTITUTE_CONFIRM_DISABLE_PAGE;
 	}
 	
 	

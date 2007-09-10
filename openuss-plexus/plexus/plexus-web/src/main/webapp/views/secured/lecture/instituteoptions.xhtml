@@ -27,15 +27,23 @@
 			<ui:include src="/views/commons/navigation/institute.xhtml" />
 		</ui:define>
   		<ui:define name="content">
-	  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.UPDATE}" ifNot="error"/>  		
-			
+  		
+  			<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.UPDATE}" ifNot="error"/> 
+  			<ui:include src="/views/commons/sidebar/instituteactivation.xhtml" />
 			<h:form id="reg1Form" enctype="multipart/form-data"> 
 				<o:block label="#{msg.institute_data_subheading}" styleClass="form_box">
-					<ui:include src="/views/commons/institute/instituteDataSettings.xhtml" />
+					<ui:include src="/views/commons/institute/instituteData.xhtml" />
 				</o:block>
 				<o:block>
 					<h:commandButton value="${msg.save}" action="#{views$secured$lecture$instituteoptions.saveInstitute}" styleClass="button_save"/>
 					<h:commandButton value="${msg.cancel}" action="institute" styleClass="button_cancel" immediate="true"/>
+		  			<h:commandButton 
+					action = "#{views$secured$lecture$instituteoptions.selectInstituteAndConfirmDisable}"
+					styleClass="button_save"
+					value="#{msg.institute_command_disable}"
+					hint="#{msg.institute_command_disable_hint}"
+					rendered="#{instituteInfo.enabled}">
+					</h:commandButton>
 		  		</o:block>
 		  	</h:form>
 	
