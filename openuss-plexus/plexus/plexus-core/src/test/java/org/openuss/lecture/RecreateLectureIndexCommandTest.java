@@ -13,7 +13,7 @@ public class RecreateLectureIndexCommandTest extends AbstractDependencyInjection
 	
 	
 	public void testLectureIndex() throws Exception {
-//		lectureIndex.recreate();
+		//lectureIndex.recreate();
 	}
 	
 	protected String[] getConfigLocations() {
