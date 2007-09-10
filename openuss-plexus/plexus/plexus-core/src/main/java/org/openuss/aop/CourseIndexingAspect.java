@@ -1,7 +1,12 @@
-package org.openuss.lecture;
+package org.openuss.aop;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.lecture.AccessType;
+import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseDao;
+import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.Period;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
 

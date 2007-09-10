@@ -1,6 +1,11 @@
-package org.openuss.lecture;
+package org.openuss.aop;
 
 import org.apache.log4j.Logger;
+import org.openuss.lecture.Course;
+import org.openuss.lecture.Institute;
+import org.openuss.lecture.InstituteDao;
+import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.InstituteService;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
 

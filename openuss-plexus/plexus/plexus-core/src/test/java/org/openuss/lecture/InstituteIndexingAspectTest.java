@@ -2,6 +2,7 @@ package org.openuss.lecture;
 
 import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
+import org.openuss.aop.InstituteIndexingAspect;
 import org.openuss.foundation.DomainObject;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;

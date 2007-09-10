@@ -360,41 +360,29 @@
 	</bean>
 
 	<bean id="universityIndexAspectBean"
-		class="org.openuss.lecture.UniversityIndexingAspect">
+		class="org.openuss.aop.UniversityIndexingAspect">
 		<property name="indexerService" ref="indexerService" />
 		<property name="universityDao" ref="universityDao" />
 		<property name="universityService" ref="universityService" />
 	</bean>
 
 	<bean id="departmentIndexAspectBean"
-		class="org.openuss.lecture.DepartmentIndexingAspect">
+		class="org.openuss.aop.DepartmentIndexingAspect">
 		<property name="indexerService" ref="indexerService" />
 		<property name="departmentDao" ref="departmentDao" />
 		<property name="departmentService" ref="departmentService" />
 	</bean>
 
 	<bean id="instituteIndexAspectBean"
-		class="org.openuss.lecture.InstituteIndexingAspect">
+		class="org.openuss.aop.InstituteIndexingAspect">
 		<property name="indexerService" ref="indexerService" />
 		<property name="instituteDao" ref="instituteDao" />
 		<property name="instituteService" ref="instituteService" />
 	</bean>
 
 	<bean id="courseIndexAspectBean"
-		class="org.openuss.lecture.CourseIndexingAspect">
+		class="org.openuss.aop.CourseIndexingAspect">
 		<property name="indexerService" ref="indexerService" />
-		<property name="courseDao" ref="courseDao" />
-	</bean>
-
-	<bean id="indexAspectBean"
-		class="org.openuss.aop.IndexAspectImpl">
-		<property name="indexerService" ref="indexerService" />
-		<property name="universityDao" ref="universityDao" />
-		<property name="universityService" ref="universityService" />
-		<property name="departmentDao" ref="departmentDao" />
-		<property name="departmentService" ref="departmentService" />
-		<property name="instituteDao" ref="instituteDao" />
-		<property name="courseTypeDao" ref="courseTypeDao" />
 		<property name="courseDao" ref="courseDao" />
 	</bean>
 

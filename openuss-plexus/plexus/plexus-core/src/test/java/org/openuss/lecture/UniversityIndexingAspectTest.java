@@ -2,6 +2,7 @@ package org.openuss.lecture;
 
 import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
+import org.openuss.aop.UniversityIndexingAspect;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopDao;
 import org.openuss.foundation.DomainObject;
