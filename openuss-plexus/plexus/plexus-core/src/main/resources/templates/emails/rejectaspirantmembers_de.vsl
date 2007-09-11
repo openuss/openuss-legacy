@@ -1,0 +1,25 @@
+<html>
+	<body>
+		<p>
+		<h3><font color="#003366">OpenUSS Benutzerverwaltung</font></h3>
+			Die Bewerbung des Benutzers <i>${username} (${userfirstname} ${userlastname})</i> für Ihre Organisation 
+			<i>${organisationname}</i> wurde soeben abgelehnt.
+		</p>
+		<p>
+			Sie können auf den folgenden Link klicken, um die Bewerbung zu bearbeiten:<br/>
+			<a href="${organisationlink}">${organisationlink}</a>
+		</p>
+		<p>
+			Sollte das Anklicken des Links nicht funktionieren, so geben Sie die Addresse in die
+			Addressleiste Ihres Browser ein.
+		</p>
+		<p>
+			Viel Spaß mit OpenUSS
+		</p>
+		<p>
+			<small>
+				Auf diese E-Mail können Sie nicht anworten. Antwortungen auf diese Nachricht werden nicht kontrolliert noch beanwortet.
+			</small>
+		</p>
+	</body>
+</html>
