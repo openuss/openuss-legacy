@@ -49,8 +49,14 @@ public class InstitutesPage extends BasePage{
 
 	@Prerender
 	public void prerender() {
+		try {
+			super.prerender();
+		} catch (Exception e) {
+			
+		}
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("admin_command_institutes"));
+		newCrumb.setHint(i18n("admin_command_institutes"));
 		newCrumb.setLink(PageLinks.ADMIN_INSTITUTES);
 		
 		breadcrumbs.loadAdministrationCrumbs();

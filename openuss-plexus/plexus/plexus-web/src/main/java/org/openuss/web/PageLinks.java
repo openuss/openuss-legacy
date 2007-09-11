@@ -39,4 +39,5 @@ public class PageLinks{
 	public static final String ADMIN_GROUPS = "/views/secured/system/groups.faces";
 	public static final String ADMIN_UNIVERSITIES = "/views/secured/system/universities.faces";
 	public static final String ADMIN_INSTITUTES = "/views/secured/system/institutes.faces";
+	public static final String ADMIN_DEPARTMENTS = "/views/secured/system/departments.faces";
 }

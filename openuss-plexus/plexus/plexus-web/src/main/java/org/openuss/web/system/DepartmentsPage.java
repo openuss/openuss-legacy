@@ -5,10 +5,13 @@ import java.util.List;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentType;
+import org.openuss.web.PageLinks;
 import org.openuss.web.lecture.AbstractDepartmentsOverviewPage;
 
 /** 
@@ -21,6 +24,22 @@ import org.openuss.web.lecture.AbstractDepartmentsOverviewPage;
 @View
 
 public class DepartmentsPage extends AbstractDepartmentsOverviewPage{
+	
+	@Prerender
+	public void prerender() {
+		try {
+			super.prerender();
+		} catch (Exception e) {
+			
+		}
+		BreadCrumb newCrumb = new BreadCrumb();
+		newCrumb.setName(i18n("departmentList_header"));
+		newCrumb.setHint(i18n("departmentList_header"));
+		newCrumb.setLink(PageLinks.ADMIN_DEPARTMENTS);
+		
+		breadcrumbs.loadAdministrationCrumbs();
+		breadcrumbs.addCrumb(newCrumb);
+	}
 	
 	public DataPage<DepartmentInfo> fetchDataPage(int startRow, int pageSize) {
 		if (dataPage == null) {
