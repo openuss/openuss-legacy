@@ -40,11 +40,11 @@ import org.openuss.web.Constants;
  * @author Kai Stettner
  * @author Tianyu Wang
  */
-@Bean(name = "views$secured$lecture$auth$members", scope = Scope.REQUEST)
+@Bean(name = "views$secured$lecture$auth$institutemembers", scope = Scope.REQUEST)
 @View
-public class MembersPage extends AbstractLecturePage {
+public class InstituteMembersPage extends AbstractLecturePage {
 
-	private static final Logger logger = Logger.getLogger(MembersPage.class);
+	private static final Logger logger = Logger.getLogger(InstituteMembersPage.class);
 
 	@Property(value = "#{securityService}")
 	private SecurityService securityService;

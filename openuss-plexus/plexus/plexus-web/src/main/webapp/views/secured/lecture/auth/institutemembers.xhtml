@@ -30,18 +30,18 @@
   		<ui:define name="content">
   			<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.GRANT}" ifNot="error"/>
 			<h:form id="membersForm"> 
-				<ui:include src="memberstable.xhtml" />
+				<ui:include src="institutememberstable.xhtml" />
 				<o:block>
-					<h:commandButton value="${msg.save}" title="#{msg.save_hint}" action="#{views$secured$lecture$auth$members.save}" styleClass="button_save"/>
+					<h:commandButton value="${msg.save}" title="#{msg.save_hint}" action="#{views$secured$lecture$auth$institutemembers.save}" styleClass="button_save"/>
 					<h:commandButton value="${msg.reset}" title="#{msg.reset_hint}" action="institute_members" styleClass="button_cancel" immediate="true"/>
 				</o:block>
 	  		</h:form>
 	  		<h:form id="newMemberForm">
 	  			<o:block label="#{msg['institute_members_add_subheading']}" styleClass="form_box">
-					<o:input entity="views$secured$lecture$auth$members" property="username" required="true" label="#{msg['user_username']}">
+					<o:input entity="views$secured$lecture$auth$institutemembers" property="username" required="true" label="#{msg['user_username']}">
 						<f:validator validatorId="usernameExistValidator" />
 					</o:input>
-					<h:commandButton value="#{msg['institute_members_command_add']}" title="#{msg['institute_members_command_add_hint']}" actionListener="#{views$secured$lecture$auth$members.addMember}" styleClass="button_save"/>
+					<h:commandButton value="#{msg['institute_members_command_add']}" title="#{msg['institute_members_command_add_hint']}" actionListener="#{views$secured$lecture$auth$institutemembers.addMember}" styleClass="button_save"/>
 				</o:block>
 			</h:form>	
   		</ui:define>

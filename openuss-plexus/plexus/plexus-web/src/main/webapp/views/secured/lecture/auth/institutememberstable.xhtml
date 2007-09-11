@@ -11,7 +11,7 @@
     <plexus:dataTable 
     	id="members" 
     	label="#{msg.institute_members_subheading}" 
-    	value="views$secured$lecture$auth$members.members" 
+    	value="views$secured$lecture$auth$institutemembers.members" 
     	columnClasses="col_min_left, col_min_left, col_min_left, col_max_left, col_commands"
     	var="bean" 
     	rows="10">  
@@ -41,21 +41,21 @@
 			<f:facet name="header">
 				<h:outputText value="#{msg['institute_auth_members_colheader_groups']}"/>
 			</f:facet> 
-			<h:selectManyCheckbox value="#{bean.groups}" valueChangeListener="#{views$secured$lecture$auth$members.changedGroups}" disabled="#{bean.username==instituteInfo.ownerName}">
+			<h:selectManyCheckbox value="#{bean.groups}" valueChangeListener="#{views$secured$lecture$auth$institutemembers.changedGroups}" disabled="#{bean.username==instituteInfo.ownerName}">
 				<f:converter converterId="instituteGroupConverter" />
-				<f:selectItems value="#{views$secured$lecture$auth$members.instituteGroups}"/>
+				<f:selectItems value="#{views$secured$lecture$auth$institutemembers.instituteGroups}"/>
 			</h:selectManyCheckbox>
 		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">
 			<plexus:command 
-				bean="#{views$secured$lecture$auth$members}"
+				bean="#{views$secured$lecture$auth$institutemembers}"
 				action="showProfile"
 				label="#{msg['user_profile_command_show_profile']}"
 				title="#{msg['user_profile_command_show_profile_hint']}"
 				styleClass="button_profile" />
 			<plexus:command
-				bean="#{views$secured$lecture$auth$members}"
+				bean="#{views$secured$lecture$auth$institutemembers}"
 				action="removeMember"
 				onclick="if (!confirm('#{msg.lecture_remove_institutemember_confirmation}')) return false"
 				label="#{msg.institute_members_command_remove}"
