@@ -9,7 +9,8 @@
 		<a href="${topiclink}">${topiclink}</a>
 		</p>
 		<p>
-			if clicking the link above does not work, copy and paste the URL in a new browser window instead.</p>
+			If the link above does not work, copy and paste the URL in a new browser window instead.
+		</p>
 		<p>
 			Thank you for using OpenUSS
 		</p>

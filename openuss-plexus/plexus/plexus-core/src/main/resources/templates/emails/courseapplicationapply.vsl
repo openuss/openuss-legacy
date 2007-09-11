@@ -1,7 +1,8 @@
 <html>
 	<body>
-		<h3><font color="#003366">OpenUSS Email application notifier</font></h3>
-			Your request for applicationship for <i>${coursename}</i> was applied!
+		<p>
+			<h3><font color="#003366">OpenUSS User Administration</font></h3>
+			Your have succesfully applied for <i>${coursename}</i>.
 		<p>
 			Thank you for using OpenUSS.
 		</p>

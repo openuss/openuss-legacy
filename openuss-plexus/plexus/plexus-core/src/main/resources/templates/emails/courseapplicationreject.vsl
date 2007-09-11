@@ -1,7 +1,7 @@
 <html>
 	<body>
-		<h3><font color="#003366">OpenUSS Email application notifier</font></h3>
-			Your request for applicationship for <i>${coursename}</i> was rejected!
+		<h3><font color="#003366">OpenUSS Email Application Notifier</font></h3>
+			Unfortunately, your application for <i>${coursename}</i> has been rejected!
 		<p>
 			Thank you for using OpenUSS.
 		</p>

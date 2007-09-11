@@ -1,13 +1,12 @@
 <html>
 	<body>
-		<h3><font color="#003366">OpenUSS Email application notifier</font></h3>
-			A user has requested applicationship for <i>${coursename}</i>,
-			Please click on the following link to respond to this request:<br/>
 		<p>
-		<a href="${courseapplicantlink}">${courseapplicantlink}</a>
+			<h3><font color="#003366">OpenUSS User Administration</font></h3>
+			A user has applied for <i>${coursename}</i>, please click on the following link to respond to his application:<br/>
+			<a href="${courseapplicantlink}">${courseapplicantlink}</a>
 		</p>
 		<p>
-			If clicking the link above does not work, copy and paste the URL in a new browser window instead.
+			If the link above does not work, copy and paste the URL in a new browser window instead.
 		</p>
 		<p>
 			Thank you for using OpenUSS.
