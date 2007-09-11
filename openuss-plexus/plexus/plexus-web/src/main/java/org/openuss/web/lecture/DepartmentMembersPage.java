@@ -105,6 +105,7 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		// remove an user from all his groups  
 		  try{
 			  organisationService.removeUserFromGroup(member.getId(),departmentGroups.get(0).getId());
+			  addMessage(i18n("department_auth_message_removed_member", member.getUsername()));
 		  }
 		  catch(Exception e){
 				addError(i18n(e.getMessage()));
@@ -136,6 +137,7 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		logger.info(departmentGroups.get(0).getId());
 		logger.debug(departmentGroups.get(0).getName());
 		organisationService.addUserToGroup(user.getId(), departmentGroups.get(0).getId());
+		addMessage(i18n("department_add_member_to_department", username));		
 		}catch(Exception e){;}
 		try{
 			DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId());

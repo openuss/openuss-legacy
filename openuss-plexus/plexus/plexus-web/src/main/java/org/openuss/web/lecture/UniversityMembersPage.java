@@ -107,6 +107,7 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 		// remove an user from all his groups  
 		  try{
 			  organisationService.removeUserFromGroup(member.getId(),universityGroups.get(0).getId());
+			  addMessage(i18n("university_auth_message_removed_member", member.getUsername()));
 		  }
 		  catch(Exception e){
 				addError(i18n(e.getMessage()));
@@ -140,6 +141,7 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 		logger.info(universityGroups.get(0).getId());
 		logger.debug(universityGroups.get(0).getName());
 		organisationService.addUserToGroup(user.getId(), universityGroups.get(0).getId());
+		addMessage(i18n("university_add_member_to_university", username));
 		}
 		catch(Exception e){;}
 		//link university to desktop
