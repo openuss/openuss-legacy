@@ -1,8 +1,8 @@
 <html>
 	<body>
-		<h3><font color="#003366">OpenUSS Email application notifier</font></h3>
 		<p>
-			Your application for membership for <i>${institutename}</i> was rejected!
+			<h3><font color="#003366">OpenUSS User Administration</font></h3>
+			Unfortunately, your application for the Organisation <i>${organisationname}</i> has been rejected.
 		</p>
 		<p>
 			Thank you for using OpenUSS.
@@ -12,5 +12,3 @@
 		</p>
 	</body>
 </html>
-
-

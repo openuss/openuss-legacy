@@ -36,11 +36,14 @@
 			expression="execution(* org..DepartmentServiceBase.create(org.openuss.lecture.DepartmentInfo, java.lang.Long)) and args(departmentInfo, userId)" />
 		<aop:pointcut id="DepartmentServiceDeletePointcut"
 			expression="execution(* org..DepartmentServiceBase.removeDepartment(java.lang.Long)) and args(departmentId)" />
-		<aop:pointcut id="DepartmentServiceDeleteCompleteDepartmentTreePointcut"
+		<aop:pointcut
+			id="DepartmentServiceDeleteCompleteDepartmentTreePointcut"
 			expression="execution(* org..DepartmentServiceBase.removeCompleteDepartmentTree(java.lang.Long)) and args(departmentId)" />
-		<aop:pointcut id="DepartmentServiceAcceptInstituteApplicationPointcut"
+		<aop:pointcut
+			id="DepartmentServiceAcceptInstituteApplicationPointcut"
 			expression="execution(* org..DepartmentServiceBase.acceptApplication(java.lang.Long, java.lang.Long)) and args(applicationId, userId)" />
-		<aop:pointcut id="DepartmentServiceRejectInstituteApplicationPointcut"
+		<aop:pointcut
+			id="DepartmentServiceRejectInstituteApplicationPointcut"
 			expression="execution(* org..DepartmentServiceBase.rejectApplication(java.lang.Long, java.lang.Long)) and args(applicationId, userId)" />
 		<aop:pointcut id="DepartmentServiceUpdatePointcut"
 			expression="execution(* org..DepartmentServiceBase.update(org.openuss.lecture.DepartmentInfo)) and args(departmentInfo)" />
@@ -89,7 +92,6 @@
 				returning="applicationId" />
 		</aop:aspect>
 
-
 		<aop:aspect id="userAdministrationMailSenderAspect"
 			ref="userAdministrationMailSenderAspectBean">
 			<aop:after-returning method="sendAddMemberMail"
@@ -98,24 +100,12 @@
 			<aop:after-returning method="sendRemoveMemberMail"
 				pointcut-ref="OrganisationServiceRemoveMemberPointcut"
 				arg-names="organisationId, userId" />
-		</aop:aspect>
-
-		<aop:aspect id="addAspirantMailSenderAspect"
-			ref="aspirantMailSenderAspectBean">
 			<aop:after-returning method="sendAddAspirantMail"
 				pointcut-ref="OrganisationServiceAddAspirantPointcut"
 				arg-names="organisationId, userId" />
-		</aop:aspect>
-
-		<aop:aspect id="rejectAspirantMailSenderAspect"
-			ref="aspirantMailSenderAspectBean">
 			<aop:after-returning method="sendRejectAspirantMail"
 				pointcut-ref="OrganisationServiceRejectAspirantPointcut"
 				arg-names="organisationId, userId" />
-		</aop:aspect>
-
-		<aop:aspect id="acceptAspirantMailSenderAspect"
-			ref="aspirantMailSenderAspectBean">
 			<aop:after-returning method="sendAcceptAspirantMail"
 				pointcut-ref="OrganisationServiceAcceptAspirantPointcut"
 				arg-names="organisationId, userId" />
@@ -185,10 +175,9 @@
 				pointcut-ref="InstituteServiceDeleteCompleteInstituteTreePointcut"
 				arg-names="instituteId" />
 			<aop:before method="deleteBookmarksOfCourse"
-				pointcut-ref="CourseServiceDeletePointcut" 
-				arg-names="courseId" />
+				pointcut-ref="CourseServiceDeletePointcut" arg-names="courseId" />
 			<aop:before method="bookmarkOrganisation"
-				pointcut-ref="OrganisationServiceAddMemberPointcut" 
+				pointcut-ref="OrganisationServiceAddMemberPointcut"
 				arg-names="organisationId, userId" />
 		</aop:aspect>
 
@@ -210,7 +199,8 @@
 			<aop:after-returning method="updateUniversityIndex"
 				pointcut-ref="UniversityServiceUpdatePointcut"
 				arg-names="universityInfo" />
-			<aop:after-returning method="updateUniversityIndexOnStatusChange"
+			<aop:after-returning
+				method="updateUniversityIndexOnStatusChange"
 				pointcut-ref="UniversityServiceSetStatusPointcut"
 				arg-names="universityId, status" />
 			<aop:before method="deleteUniversityIndexCascade"
@@ -229,7 +219,8 @@
 			<aop:after-returning method="updateDepartmentIndex"
 				pointcut-ref="DepartmentServiceUpdatePointcut"
 				arg-names="departmentInfo" />
-			<aop:after-returning method="updateDepartmentIndexOnStatusChange"
+			<aop:after-returning
+				method="updateDepartmentIndexOnStatusChange"
 				pointcut-ref="DepartmentServiceSetStatusPointcut"
 				arg-names="departmentId, status" />
 			<aop:before method="deleteDepartmentIndexCascade"
@@ -248,7 +239,8 @@
 			<aop:after-returning method="updateInstituteIndex"
 				pointcut-ref="InstituteServiceUpdatePointcut"
 				arg-names="instituteInfo" />
-			<aop:after-returning method="updateInstituteIndexOnStatusChange"
+			<aop:after-returning
+				method="updateInstituteIndexOnStatusChange"
 				pointcut-ref="InstituteServiceSetStatusPointcut"
 				arg-names="instituteId, status" />
 			<aop:before method="deleteInstituteIndexCascade"
@@ -262,20 +254,19 @@
 		<aop:aspect id="courseIndexAspect"
 			ref="courseIndexAspectBean">
 			<aop:after-returning method="createCourseIndex"
-				pointcut-ref="CourseServiceCreatePointcut" 
-				arg-names="courseInfo" />
+				pointcut-ref="CourseServiceCreatePointcut" arg-names="courseInfo" />
 			<aop:after-returning method="updateCourseIndex"
-				pointcut-ref="CourseServiceUpdatePointcut" 
-				arg-names="courseInfo" />
-			<aop:after-returning method="updateCourseIndexOnPeriodUpdate"
+				pointcut-ref="CourseServiceUpdatePointcut" arg-names="courseInfo" />
+			<aop:after-returning
+				method="updateCourseIndexOnPeriodUpdate"
 				pointcut-ref="CourseServiceUpdateOnPeriodPointcut"
 				arg-names="period" />
-			<aop:after-returning method="updateCourseIndexOnStatusChange"
+			<aop:after-returning
+				method="updateCourseIndexOnStatusChange"
 				pointcut-ref="CourseServiceSetStatusPointcut"
 				arg-names="courseId, status" />
 			<aop:before method="deleteCourseIndex"
-				pointcut-ref="CourseServiceDeletePointcut" 
-				arg-names="courseId" />
+				pointcut-ref="CourseServiceDeletePointcut" arg-names="courseId" />
 		</aop:aspect>
 
 		<aop:aspect id="mailingStatusAspect"
@@ -291,7 +282,7 @@
 		Aspect Bean Definitions
 		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<bean id="userAdministrationMailSenderAspectBean"
-		class="org.openuss.aop.MailSenderAspectImpl">
+		class="org.openuss.aop.UserAdministrationMailSenderAspectImpl">
 		<property name="userDao" ref="userDao" />
 		<property name="organisationDao" ref="organisationDao" />
 		<property name="universityDao" ref="universityDao" />
@@ -307,17 +298,6 @@
 		<property name="applicationDao" ref="applicationDao" />
 		<property name="departmentService" ref="departmentService" />
 		<property name="securityService" ref="securityService" />
-	</bean>
-
-	<bean id="aspirantMailSenderAspectBean"
-		class="org.openuss.aop.AspirantMailSenderAspectImpl">
-		<property name="userDao" ref="userDao" />
-		<property name="organisationDao" ref="organisationDao" />
-		<property name="universityDao" ref="universityDao" />
-		<property name="departmentDao" ref="departmentDao" />
-		<property name="instituteDao" ref="instituteDao" />
-		<property name="messageService" ref="messageService" />
-		<property name="systemService" ref="systemService" />
 	</bean>
 
 	<bean id="instituteActivationMailSenderAspectBean"
