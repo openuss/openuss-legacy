@@ -13,7 +13,7 @@
 
 	<o:input entity="departmentInfo" property="name" maxlength="50" required="true"/>
 	<o:input entity="departmentInfo" property="shortcut" maxlength="50" required="true">
-		<f:validator validatorId="departmentShortcutValidator"/>
+		<f:validator validatorId="organizationShortcutValidator"/>
 	</o:input>
 	
 	<s:authorize ifAllGranted="ROLE_ADMIN">

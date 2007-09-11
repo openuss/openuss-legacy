@@ -36,6 +36,7 @@ public class Constants {
 	public static final String UPLOADED_FILE = "LAST_UPLOADED_FILE";
 	
 	// service beans
+	public static final String ORGANISATION_SERVICE = "organisationService";
 	public static final String UNIVERSITY_SERVICE = "universityService";
 	public static final String DEPARTMENT_SERVICE = "departmentService";
 	public static final String INSTITUTE_SERVICE = "instituteService";
