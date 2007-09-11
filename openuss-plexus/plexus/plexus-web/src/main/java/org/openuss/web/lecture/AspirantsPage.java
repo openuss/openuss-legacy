@@ -8,6 +8,7 @@ import javax.faces.event.ValueChangeEvent;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -15,6 +16,7 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.OrganisationService;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
@@ -29,6 +31,9 @@ import org.openuss.web.Constants;
 public class AspirantsPage extends AbstractLecturePage {
 	private static final Logger logger = Logger.getLogger(AspirantsPage.class);
 
+	@Property(value = "#{organisationService}")
+	private OrganisationService organisationService;
+	
 	private static final long serialVersionUID = 3577437988777775136L;
 
 	private AspirantDataProvider data = new AspirantDataProvider();
@@ -68,9 +73,9 @@ public class AspirantsPage extends AbstractLecturePage {
 		for (UserInfo userInfo : rejectAspirants) {
 			try {
 				
-				lectureService.rejectInstituteAspirant(userInfo.getId(), instituteInfo.getId());
+				organisationService.rejectAspirant(instituteInfo.getId(), userInfo.getId());
 				addMessage(i18n("institute_reject_aspirants",userInfo.getUsername()));
-			} catch (LectureException e) {
+			} catch (Exception e) {
 				logger.error(e);
 				addError(i18n(e.getMessage()));
 			}
@@ -80,9 +85,9 @@ public class AspirantsPage extends AbstractLecturePage {
 	private void acceptAspirants() {
 		for (UserInfo userInfo : acceptAspirants) {
 			try {
-				lectureService.acceptInstituteAspirant(userInfo.getId(), instituteInfo.getId());
+				organisationService.addAspirant(instituteInfo.getId(), userInfo.getId());
 				addMessage(i18n("institute_add_member_to_institute", userInfo.getUsername()));
-			} catch (LectureException e) {
+			} catch (Exception e) {
 				logger.error(e);
 				addError(i18n(e.getMessage()));
 			}
@@ -136,6 +141,14 @@ public class AspirantsPage extends AbstractLecturePage {
 	
 	public void setData(AspirantDataProvider data) {
 		this.data = data;
+	}
+
+	public OrganisationService getOrganisationService() {
+		return organisationService;
+	}
+
+	public void setOrganisationService(OrganisationService organisationService) {
+		this.organisationService = organisationService;
 	}
 	
 
