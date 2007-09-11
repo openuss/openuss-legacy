@@ -472,7 +472,7 @@ public class UserAdministrationMailSenderAspectImpl {
 				+ " and Members of Institute " + institute.getName());
 
 		// Create Link to Institute
-		String link = "openuss-plexus/views/secured/lecture/auth/institutemembers.faces?institute=" + institute.getId();
+		String link = "openuss-plexus/views/secured/lecture/auth/aspirants.faces?institute=" + institute.getId();
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
 
 		// Prepare Parameters for EMail
