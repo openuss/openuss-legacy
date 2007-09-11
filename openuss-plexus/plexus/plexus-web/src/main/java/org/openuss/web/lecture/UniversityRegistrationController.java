@@ -36,6 +36,10 @@ public class UniversityRegistrationController extends AbstractUniversityPage{
 	
 	private List<SelectItem> localeItems;
 	
+	private ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
+	private String locale = (String)binding.getValue(getFacesContext());
+	private ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
+	
 	public List<SelectItem> getSupportedOrganizationTypes() {
 		
 		ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
@@ -72,6 +76,30 @@ public class UniversityRegistrationController extends AbstractUniversityPage{
 		universityInfo.setId(universityId);
 					
 		return Constants.UNIVERSITY_PAGE;
+	}
+	
+	public String getTransformedLocale() {
+		if (universityInfo.getLocale().toString().equals("en")) {
+			return bundle.getString("transform_locale_en");
+		} else if (universityInfo.getLocale().toString().equals("de")) {
+			return bundle.getString("transform_locale_de");
+		} else if (universityInfo.getLocale().toString().equals("ru")) {
+			return bundle.getString("transform_locale_ru");
+		} else {
+			return "";
+		}
+	}
+	
+	public String getTransformedUniversityType() {
+		if (universityInfo.getUniversityType().getValue() == -1) {
+			return bundle.getString("organizationtype_misc");
+		} else if (universityInfo.getUniversityType().getValue() == 0) {
+			return bundle.getString("organizationtype_university");
+		} else if (universityInfo.getUniversityType().getValue() == 2) {
+			return bundle.getString("organizationtype_company");
+		} else {
+			return "";
+		}
 	}
 	
 }

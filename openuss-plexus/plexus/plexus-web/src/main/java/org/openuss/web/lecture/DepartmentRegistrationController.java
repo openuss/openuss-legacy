@@ -122,4 +122,26 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 		return Constants.DEPARTMENT_PAGE;
 	}
 	
+	public String getTransformedLocale() {
+		if (departmentInfo.getLocale().toString().equals("en")) {
+			return bundle.getString("transform_locale_en");
+		} else if (departmentInfo.getLocale().toString().equals("de")) {
+			return bundle.getString("transform_locale_de");
+		} else if (departmentInfo.getLocale().toString().equals("ru")) {
+			return bundle.getString("transform_locale_ru");
+		} else {
+			return "";
+		}
+	}
+	
+	public String getTransformedDepartmentType() {
+		if (departmentInfo.getDepartmentType().getValue() == 0) {
+			return bundle.getString("departmenttype_official");
+		} else if (departmentInfo.getDepartmentType().getValue() == 1) {
+			return bundle.getString("departmenttype_non_offical");
+		} else {
+			return "";
+		}
+	}
+	
 }
