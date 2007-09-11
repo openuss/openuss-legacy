@@ -372,6 +372,7 @@ public class LectureServiceImpl extends LectureServiceBase {
 	 */
 	@Override
 	protected void handleAddInstituteAspirant(Long userId, Long instituteId) throws Exception {
+		/*
 		Institute institute = getInstitute(instituteId);
 		User user = getUser(userId);
 
@@ -381,6 +382,7 @@ public class LectureServiceImpl extends LectureServiceBase {
 		} else {
 			throw new LectureException("user_is_already_a_member_of_the_institute");
 		}
+
 		// send mail to administrators
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("institutename", institute.getName() + "(" + institute.getShortcut() + ")");
@@ -389,6 +391,7 @@ public class LectureServiceImpl extends LectureServiceBase {
 				+ "views/secured/lecture/auth/aspirants.faces?institute=" + institute.getId());
 		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject",
 				"instituteapplication", parameters, getInstituteAdmins(institute));
+				*/
 	}
 
 	private List<User> getInstituteAdmins(Institute institute) {

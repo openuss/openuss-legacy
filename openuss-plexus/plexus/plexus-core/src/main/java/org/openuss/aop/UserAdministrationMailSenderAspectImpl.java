@@ -416,8 +416,8 @@ public class UserAdministrationMailSenderAspectImpl {
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("user.membership.sender" + university.getShortcut(),
-					"aspirant.addaspirant.members.subject", "addaspirantmembers", parameters, recipients1);
+			messageService.sendMessage("user.membership.sender", "user.membership.addaspirant.members.subject",
+					"addaspirantmembers", parameters, recipients1);
 		}
 
 		// Determine Recipient (the new User)
@@ -425,8 +425,8 @@ public class UserAdministrationMailSenderAspectImpl {
 		recipients2.add(user);
 
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender" + university.getShortcut(),
-				"aspirant.addaspirant.user.subject", "addaspirantuser", parameters, recipients2);
+		messageService.sendMessage("user.membership.sender", "user.membership.addaspirant.members.subject",
+				"addaspirantuser", parameters, recipients2);
 	}
 
 	private void sendAddAspirantMailForDepartment(Department department, User user) {
@@ -454,8 +454,8 @@ public class UserAdministrationMailSenderAspectImpl {
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("user.membership.sender" + department.getShortcut(),
-					"aspirant.addaspirant.members.subject", "addaspirantmembers", parameters, recipients1);
+			messageService.sendMessage("user.membership.sender", "user.membership.addaspirant.members.subject",
+					"addaspirantmembers", parameters, recipients1);
 		}
 
 		// Determine Recipient (the new User)
@@ -463,8 +463,8 @@ public class UserAdministrationMailSenderAspectImpl {
 		recipients2.add(user);
 
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender" + department.getShortcut(),
-				"aspirant.addaspirant.user.subject", "addaspirantuser", parameters, recipients2);
+		messageService.sendMessage("user.membership.sender", "user.membership.addaspirant.user.subject",
+				"addaspirantuser", parameters, recipients2);
 	}
 
 	private void sendAddAspirantMailForInstitute(Institute institute, User user) {
@@ -492,8 +492,8 @@ public class UserAdministrationMailSenderAspectImpl {
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("user.membership.sender" + institute.getShortcut(),
-					"aspirant.addaspirant.members.subject", "addaspirantmembers", parameters, recipients1);
+			messageService.sendMessage("user.membership.sender", "user.membership.addaspirant.members.subject",
+					"addaspirantmembers", parameters, recipients1);
 		}
 
 		// Determine Recipient (the new User)
@@ -501,8 +501,8 @@ public class UserAdministrationMailSenderAspectImpl {
 		recipients2.add(user);
 
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender" + institute.getShortcut(),
-				"aspirant.addaspirant.user.subject", "addaspirantuser", parameters, recipients2);
+		messageService.sendMessage("user.membership.sender", "user.membership.addaspirant.user.subject",
+				"addaspirantuser", parameters, recipients2);
 	}
 
 	private void sendRemoveMemberMailForUniversity(University university, User user) {
@@ -637,8 +637,8 @@ public class UserAdministrationMailSenderAspectImpl {
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("user.membership.sender" + university.getShortcut(),
-					"aspirant.rejectaspirant.user.subject", "acceptaspirantmembers", parameters, recipients1);
+			messageService.sendMessage("user.membership.sender", "user.membership.acceptaspirant.members.subject",
+					"acceptaspirantmembers", parameters, recipients1);
 		}
 
 		// Create Recipients list (contains only the accepted user)
@@ -646,8 +646,8 @@ public class UserAdministrationMailSenderAspectImpl {
 		recipients.add(user);
 
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender" + university.getShortcut(),
-				"aspirant.acceptaspirant.user.subject", "acceptaspirantuser", parameters, recipients);
+		messageService.sendMessage("user.membership.sender", "user.membership.acceptaspirant.user.subject",
+				"acceptaspirantuser", parameters, recipients);
 	}
 
 	private void sendAcceptAspirantMailForDepartment(Department department, User user) {
@@ -674,8 +674,8 @@ public class UserAdministrationMailSenderAspectImpl {
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("user.membership.sender" + department.getShortcut(),
-					"aspirant.rejectaspirant.user.subject", "acceptaspirantmembers", parameters, recipients1);
+			messageService.sendMessage("user.membership.sender", "user.membership.acceptaspirant.members.subject",
+					"acceptaspirantmembers", parameters, recipients1);
 		}
 
 		// Create Recipients list (contains only the accepted user)
@@ -683,8 +683,8 @@ public class UserAdministrationMailSenderAspectImpl {
 		recipients.add(user);
 
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender" + department.getShortcut(),
-				"aspirant.acceptaspirant.user.subject", "acceptaspirantuser", parameters, recipients);
+		messageService.sendMessage("user.membership.sender", "user.membership.acceptaspirant.user.subject",
+				"acceptaspirantuser", parameters, recipients);
 	}
 
 	private void sendAcceptAspirantMailForInstitute(Institute institute, User user) {
@@ -711,8 +711,8 @@ public class UserAdministrationMailSenderAspectImpl {
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("user.membership.sender" + institute.getShortcut(),
-					"aspirant.rejectaspirant.user.subject", "acceptaspirantmembers", parameters, recipients1);
+			messageService.sendMessage("user.membership.sender", "user.membership.acceptaspirant.members.subject",
+					"acceptaspirantmembers", parameters, recipients1);
 		}
 
 		// Create Recipients list (contains only the accepted user)
@@ -720,8 +720,8 @@ public class UserAdministrationMailSenderAspectImpl {
 		recipients.add(user);
 
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender" + institute.getShortcut(),
-				"aspirant.acceptaspirant.user.subject", "acceptaspirantuser", parameters, recipients);
+		messageService.sendMessage("user.membership.sender", "user.membership.acceptaspirant.user.subject",
+				"acceptaspirantuser", parameters, recipients);
 	}
 
 	private void sendRejectAspirantMailForUniversity(University university, User user) {
@@ -748,7 +748,7 @@ public class UserAdministrationMailSenderAspectImpl {
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("user.membership.sender", "aspirant.rejectaspirant.user.subject",
+			messageService.sendMessage("user.membership.sender", "user.membership.rejectaspirant.members.subject",
 					"rejectaspirantmembers", parameters, recipients1);
 		}
 
@@ -757,8 +757,8 @@ public class UserAdministrationMailSenderAspectImpl {
 		recipients2.add(user);
 
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender" + university.getShortcut(),
-				"aspirant.rejectaspirant.user.subject", "rejectaspirantuser", parameters, recipients2);
+		messageService.sendMessage("user.membership.sender", "user.membership.rejectaspirant.user.subject",
+				"rejectaspirantuser", parameters, recipients2);
 	}
 
 	private void sendRejectAspirantMailForDepartment(Department department, User user) {
@@ -785,7 +785,7 @@ public class UserAdministrationMailSenderAspectImpl {
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("user.membership.sender", "aspirant.rejectaspirant.user.subject",
+			messageService.sendMessage("user.membership.sender", "user.membership.rejectaspirant.members.subject",
 					"rejectaspirantmembers", parameters, recipients1);
 		}
 
@@ -794,8 +794,8 @@ public class UserAdministrationMailSenderAspectImpl {
 		recipients2.add(user);
 
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender" + department.getShortcut(),
-				"aspirant.rejectaspirant.user.subject", "rejectaspirantuser", parameters, recipients2);
+		messageService.sendMessage("user.membership.sender", "user.membership.rejectaspirant.user.subject",
+				"rejectaspirantuser", parameters, recipients2);
 	}
 
 	private void sendRejectAspirantMailForInstitute(Institute institute, User user) {
@@ -822,7 +822,7 @@ public class UserAdministrationMailSenderAspectImpl {
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("user.membership.sender", "aspirant.rejectaspirant.user.subject",
+			messageService.sendMessage("user.membership.sender", "user.membership.rejectaspirant.members.subject",
 					"rejectaspirantmembers", parameters, recipients1);
 		}
 
@@ -831,8 +831,8 @@ public class UserAdministrationMailSenderAspectImpl {
 		recipients2.add(user);
 
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender" + institute.getShortcut(),
-				"aspirant.rejectaspirant.user.subject", "rejectaspirantuser", parameters, recipients2);
+		messageService.sendMessage("user.membership.sender", "user.membership.rejectaspirant.user.subject",
+				"rejectaspirantuser", parameters, recipients2);
 	}
 
 }
