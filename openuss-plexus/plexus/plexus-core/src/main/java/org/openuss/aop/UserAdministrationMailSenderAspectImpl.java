@@ -528,7 +528,7 @@ public class UserAdministrationMailSenderAspectImpl {
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("user.membership.sender", "user.membership.addmember.members.subject",
+			messageService.sendMessage("user.membership.sender", "user.membership.removemember.members.subject",
 					"removemembermembers", parameters, recipients1);
 		}
 
@@ -564,7 +564,7 @@ public class UserAdministrationMailSenderAspectImpl {
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("user.membership.sender", "user.membership.addmember.members.subject",
+			messageService.sendMessage("user.membership.sender", "user.membership.removemember.members.subject",
 					"removemembermembers", parameters, recipients1);
 		}
 
@@ -600,7 +600,7 @@ public class UserAdministrationMailSenderAspectImpl {
 
 		if (recipients1.size() > 0) {
 			// Send Email to Members
-			messageService.sendMessage("user.membership.sender", "user.membership.addmember.members.subject",
+			messageService.sendMessage("user.membership.sender", "user.membership.removemember.members.subject",
 					"removemembermembers", parameters, recipients1);
 		}
 
