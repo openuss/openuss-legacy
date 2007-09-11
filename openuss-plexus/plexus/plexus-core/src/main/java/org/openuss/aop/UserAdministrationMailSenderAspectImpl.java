@@ -614,11 +614,77 @@ public class UserAdministrationMailSenderAspectImpl {
 	}
 
 	private void sendAcceptAspirantMailForUniversity(University university, User user) {
-		// TODO: Implement this method stub!
+		logger.debug("sendAcceptAspirantMailForUniversity - Sending Email to User " + user.getUsername());
+
+		// Create Link to University
+		String link = "openuss-plexus/views/public/university/university.faces?university=" + university.getId();
+		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
+
+		// Prepare Parameters for EMail
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("username", user.getUsername());
+		parameters.put("userfirstname", user.getFirstName());
+		parameters.put("userlastname", user.getLastName());
+		parameters.put("organisationname", university.getName());
+		parameters.put("organisationlink", link);
+
+		// Determine Recipients (Members of the University)
+		List<User> recipients1 = new ArrayList<User>();
+		for (User member : university.getMembership().getMembers()) {
+			recipients1.add(member);
+		}
+		recipients1.remove(user);
+
+		if (recipients1.size() > 0) {
+			// Send Email to Members
+			messageService.sendMessage("user.membership.sender" + university.getShortcut(),
+					"aspirant.rejectaspirant.user.subject", "acceptaspirantmembers", parameters, recipients1);
+		}
+
+		// Create Recipients list (contains only the accepted user)
+		List<User> recipients = new ArrayList<User>(1);
+		recipients.add(user);
+
+		// Send Email to new User
+		messageService.sendMessage("user.membership.sender" + university.getShortcut(),
+				"aspirant.acceptaspirant.user.subject", "acceptaspirantuser", parameters, recipients);
 	}
 
 	private void sendAcceptAspirantMailForDepartment(Department department, User user) {
-		// TODO: Implement this method stub!
+		logger.debug("sendAcceptAspirantMailForDepartment - Sending Email to User " + user.getUsername());
+
+		// Create Link to Department
+		String link = "openuss-plexus/views/public/department/department.faces?department=" + department.getId();
+		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
+
+		// Prepare Parameters for EMail
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("username", user.getUsername());
+		parameters.put("userfirstname", user.getFirstName());
+		parameters.put("userlastname", user.getLastName());
+		parameters.put("organisationname", department.getName());
+		parameters.put("organisationlink", link);
+
+		// Determine Recipients (Members of the University)
+		List<User> recipients1 = new ArrayList<User>();
+		for (User member : department.getMembership().getMembers()) {
+			recipients1.add(member);
+		}
+		recipients1.remove(user);
+
+		if (recipients1.size() > 0) {
+			// Send Email to Members
+			messageService.sendMessage("user.membership.sender" + department.getShortcut(),
+					"aspirant.rejectaspirant.user.subject", "acceptaspirantmembers", parameters, recipients1);
+		}
+
+		// Create Recipients list (contains only the accepted user)
+		List<User> recipients = new ArrayList<User>(1);
+		recipients.add(user);
+
+		// Send Email to new User
+		messageService.sendMessage("user.membership.sender" + department.getShortcut(),
+				"aspirant.acceptaspirant.user.subject", "acceptaspirantuser", parameters, recipients);
 	}
 
 	private void sendAcceptAspirantMailForInstitute(Institute institute, User user) {
@@ -630,8 +696,24 @@ public class UserAdministrationMailSenderAspectImpl {
 
 		// Prepare Parameters for EMail
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("institutename", institute.getName());
-		parameters.put("institutelink", link);
+		parameters.put("username", user.getUsername());
+		parameters.put("userfirstname", user.getFirstName());
+		parameters.put("userlastname", user.getLastName());
+		parameters.put("organisationname", institute.getName());
+		parameters.put("organisationlink", link);
+
+		// Determine Recipients (Members of the University)
+		List<User> recipients1 = new ArrayList<User>();
+		for (User member : institute.getMembership().getMembers()) {
+			recipients1.add(member);
+		}
+		recipients1.remove(user);
+
+		if (recipients1.size() > 0) {
+			// Send Email to Members
+			messageService.sendMessage("user.membership.sender" + institute.getShortcut(),
+					"aspirant.rejectaspirant.user.subject", "acceptaspirantmembers", parameters, recipients1);
+		}
 
 		// Create Recipients list (contains only the accepted user)
 		List<User> recipients = new ArrayList<User>(1);
@@ -639,7 +721,7 @@ public class UserAdministrationMailSenderAspectImpl {
 
 		// Send Email to new User
 		messageService.sendMessage("user.membership.sender" + institute.getShortcut(),
-				"aspirant.acceptaspirant.user.subject", "instituteapplication", parameters, recipients);
+				"aspirant.acceptaspirant.user.subject", "acceptaspirantuser", parameters, recipients);
 	}
 
 	private void sendRejectAspirantMailForUniversity(University university, User user) {
