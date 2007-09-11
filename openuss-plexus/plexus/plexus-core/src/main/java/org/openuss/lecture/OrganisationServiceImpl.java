@@ -324,4 +324,14 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 		return hierarchy;
 	}
 
+	@Override
+	protected boolean handleIsNonExistingOrganisationShortcut(String shortcut) throws Exception {
+		Organisation found = getOrganisationDao().findByShortcut(shortcut);
+		if (found == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }
