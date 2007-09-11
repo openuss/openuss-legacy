@@ -7,7 +7,7 @@
 		</p>
 		<p>
 			Sie können auf den folgenden Link klicken, um die Bewerbung zu bearbeiten:<br/>
-			<a href="${courseapplicantlink}">${organisationlink}</a>
+			<a href="${organisationlink}">${organisationlink}</a>
 		</p>
 		<p>
 			Sollte das Anklicken des Links nicht funktionieren, so geben Sie die Addresse in die

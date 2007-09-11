@@ -396,7 +396,7 @@ public class UserAdministrationMailSenderAspectImpl {
 				+ " and Members of University " + university.getName());
 
 		// Create Link to University
-		String link = "openuss-plexus/views/public/university/university.faces?university=" + university.getId();
+		String link = "openuss-plexus/views/secured/lecture/auth/universitymembers.faces?university=" + university.getId();
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
 
 		// Prepare Parameters for EMail
@@ -434,7 +434,7 @@ public class UserAdministrationMailSenderAspectImpl {
 				+ " and Members of Department " + department.getName());
 
 		// Create Link to Institute
-		String link = "openuss-plexus/views/public/department/department.faces?department=" + department.getId();
+		String link = "openuss-plexus/views/secured/lecture/auth/departmentMembers.faces?department=" + department.getId();
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
 
 		// Prepare Parameters for EMail
@@ -472,7 +472,7 @@ public class UserAdministrationMailSenderAspectImpl {
 				+ " and Members of Institute " + institute.getName());
 
 		// Create Link to Institute
-		String link = "openuss-plexus/views/public/institute/institute.faces?institute=" + institute.getId();
+		String link = "openuss-plexus/views/secured/lecture/auth/members.faces?institute=" + institute.getId();
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
 
 		// Prepare Parameters for EMail
