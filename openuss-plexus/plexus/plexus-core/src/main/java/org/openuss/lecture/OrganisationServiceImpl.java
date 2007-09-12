@@ -323,4 +323,16 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 				.setUniversityInfo(this.getUniversityDao().toUniversityInfo(institute.getDepartment().getUniversity()));
 		return hierarchy;
 	}
+
+	@Override
+	protected boolean handleIsNoneExistingOrganisationShortcut(Long organisationId, String shortcut) throws Exception {
+		Organisation organisationFound = getOrganisationDao().findByShortcut(shortcut);
+		if (organisationFound == null) {
+			return true;
+		} else {
+			return (organisationId == organisationFound.getId());
+		}
+	}
+	
+	
 }
