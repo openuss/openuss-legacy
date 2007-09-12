@@ -28,6 +28,7 @@ import org.openuss.lecture.InstituteMember;
 import org.openuss.lecture.InstituteSecurity;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.OrganisationService;
+import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.security.Group;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
@@ -170,8 +171,16 @@ public class InstituteMembersPage extends AbstractLecturePage {
 			logger.debug("add a member to institute");
 		}
 		User user = securityService.getUserByName(username);
-		organisationService.addMember(instituteInfo.getId(), user.getId());
-		addMessage(i18n("institute_add_member_to_institute", username));
+		try {
+			organisationService.addMember(instituteInfo.getId(), user.getId());
+			addMessage(i18n("institute_add_member_to_institute", username));
+		} catch (OrganisationServiceException e) {
+			logger.debug(e.getMessage());
+			addError(i18n("institute_error_apply_member_at_institute_already_applied"));
+		} catch (Exception e){
+			logger.debug(e.getMessage());
+			addError("institute_error_apply_member_at_institute");
+		}
 	}
 
 	/**

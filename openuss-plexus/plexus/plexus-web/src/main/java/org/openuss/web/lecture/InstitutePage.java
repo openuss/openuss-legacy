@@ -24,6 +24,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.ApplicationInfo;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
@@ -332,12 +333,16 @@ public class InstitutePage extends AbstractLecturePage {
 	 */
 	public String applyForMembership() throws LectureException {
 		if (user != null && institute != null) {
-			try{
-			organisationService.addAspirant(instituteInfo.getId(), user.getId());
-			addMessage(i18n("institute_message_application_of_membership_send"));
-			}catch(Exception e)
-			{addMessage(i18n("institute_error_apply_member_to_institute"));}
-			
+			try {
+				organisationService.addAspirant(instituteInfo.getId(), user.getId());
+				addMessage(i18n("institute_message_application_of_membership_send"));
+			} catch (OrganisationServiceException e) {
+				logger.debug(e.getMessage());
+				addError(i18n("institute_error_apply_member_at_institute_already_applied"));
+			} catch (Exception e){
+				logger.debug(e.getMessage());
+				addError("institute_error_apply_member_at_institute");
+			}
 		}
 		return Constants.SUCCESS;
 	}
