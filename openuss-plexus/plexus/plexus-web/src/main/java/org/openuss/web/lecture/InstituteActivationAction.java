@@ -34,6 +34,9 @@ public class InstituteActivationAction extends BaseBean {
 			} catch (RegistrationCodeExpiredException e){
 				addError(i18n("activation_error_code_expired"));
 				return Constants.FAILURE;	
+			} catch (Exception e){
+				addError(i18n("message_institute_enabled_failed_department_disabled"));
+				return Constants.FAILURE;
 			}
 		}
 		addError(i18n("activation_error_code_not_found"));
