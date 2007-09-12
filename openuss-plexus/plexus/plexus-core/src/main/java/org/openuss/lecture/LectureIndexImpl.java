@@ -46,8 +46,10 @@ public class LectureIndexImpl implements LectureIndex{
 		Collection<University> universities = universityDao.loadAll();
 		
 		for(University university: universities) {
-			universityIndexer.setDomainObject(university);
-			universityIndexer.create();
+			if(university.isEnabled()){
+				universityIndexer.setDomainObject(university);
+				universityIndexer.create();
+			}
 		}
 	}
 	
@@ -56,8 +58,10 @@ public class LectureIndexImpl implements LectureIndex{
 		Collection<Department> departments = departmentDao.loadAll();
 		
 		for(Department department: departments) {
-			departmentIndexer.setDomainObject(department);
-			departmentIndexer.create();
+			if(department.isEnabled()){
+				departmentIndexer.setDomainObject(department);
+				departmentIndexer.create();
+			}
 		}
 	}
 
@@ -66,8 +70,10 @@ public class LectureIndexImpl implements LectureIndex{
 		Collection<Institute> institutes = instituteDao.loadAll();
 		
 		for(Institute institute: institutes) {
-			instituteIndexer.setDomainObject(institute);
-			instituteIndexer.create();
+			if(institute.isEnabled()){
+				instituteIndexer.setDomainObject(institute);
+				instituteIndexer.create();
+			}
 		}
 	}
 
@@ -76,8 +82,12 @@ public class LectureIndexImpl implements LectureIndex{
 		Collection<Course> courses = courseDao.loadAll();
 		
 		for(Course course: courses) {
-			courseIndexer.setDomainObject(course);
-			courseIndexer.create();
+			if(course.isEnabled() 
+					&& course.getAccessType() != null && 
+					!course.getAccessType().equals(AccessType.CLOSED)){
+				courseIndexer.setDomainObject(course);
+				courseIndexer.create();
+			}
 		}
 	}
 	
