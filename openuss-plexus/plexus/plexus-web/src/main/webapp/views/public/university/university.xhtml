@@ -69,6 +69,7 @@
 					<div>
 						<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
 					</div>
+					
 					<o:block styleClass="teaser_blue" label="#{msg.organisation_command_actions}">
 						<h:form id="actionsForm">
 					  		<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UPDATE}">
@@ -88,6 +89,10 @@
 				</s:authorize>
 	  			
 			  	<div class="clear_both"/>
+				<!-- spacer -->
+				<div>
+					<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
+				</div>
 				
 				<h:form>
 					<ui:include src="/views/commons/department/officialdepartmentstableoverview.xhtml"/>
