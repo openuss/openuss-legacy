@@ -636,8 +636,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> END access to removeCompleteUniversityTree test");
 	}
 	
-	public void testIsNoneExistingUniversityShortcut () {
-		logger.debug("----> BEGIN access to isNoneExistingUniversityShortcut test <---- ");
+	public void testIsNoneExistingOrganisationShortcutByUniversity () {
+		logger.debug("----> BEGIN access to isNoneExistingOrganisationShortcutByUniversity test <---- ");
 		
 		//Create Secure Context
 		testUtility.createUserSecureContext();
@@ -649,22 +649,22 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		
 		// Test
 		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
-		Boolean result = this.getUniversityService().isNoneExistingUniversityShortcut(
+		Boolean result = this.getUniversityService().isNoneExistingOrganisationShortcutByUniversity(
 				universityDao.toUniversityInfo(university1), university1.getShortcut());
 		assertNotNull(result);
 		assertTrue(result);
 		
-		result = this.getUniversityService().isNoneExistingUniversityShortcut(
+		result = this.getUniversityService().isNoneExistingOrganisationShortcutByUniversity(
 				universityDao.toUniversityInfo(university1), testUtility.unique("uni"));
 		assertNotNull(result);
 		assertTrue(result);
 		
-		result = this.getUniversityService().isNoneExistingUniversityShortcut(
+		result = this.getUniversityService().isNoneExistingOrganisationShortcutByUniversity(
 				universityDao.toUniversityInfo(university1), university2.getShortcut());
 		assertNotNull(result);
 		assertFalse(result);
 		
-		logger.debug("----> END access to isNoneExistingUniversityShortcut test <---- ");
+		logger.debug("----> END access to isNoneExistingOrganisationShortcutByUniversity test <---- ");
 	}
 	
 	public void testSetUniversityStatus() {

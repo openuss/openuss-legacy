@@ -30,9 +30,8 @@ public class UniversityShortcutValidator extends BaseBean implements Validator {
 		final String shortcut = (String) value;
 		UniversityService universityService = (UniversityService) getBean(Constants.UNIVERSITY_SERVICE);
 		try {
-			// TODO university should be defined by attribute 
 			UniversityInfo universityInfo = (UniversityInfo) getSessionBean(Constants.UNIVERSITY_INFO);
-			boolean unique = universityService.isNoneExistingUniversityShortcut(universityInfo, shortcut);
+			boolean unique = universityService.isNoneExistingOrganisationShortcutByUniversity(universityInfo, shortcut);
 			if (!unique) {
 				((UIInput) component).setValid(false);
 				addError(component.getClientId(context), i18n(SHORTCUT_MESSAGE_ID),null);
