@@ -538,8 +538,8 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 		logger.info("----> END access to findApplicationsByDepartmentAndConfirmed test");
 	}
 
-	public void testIsNoneExistingDepartmentShortcut() {
-		logger.debug("----> BEGIN access to isNoneExistingUniversityShortcut test <---- ");
+	public void testIsNoneExistingOrganisationShortcutByDepartment() {
+		logger.debug("----> BEGIN access to isNoneExistingOrganisationShortcutByDepartment test <---- ");
 
 		// Create Secure Context
 		User user = testUtility.createSecureContext();
@@ -551,22 +551,22 @@ public class DepartmentServiceIntegrationTest extends DepartmentServiceIntegrati
 
 		// Test
 		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
-		Boolean result = this.getDepartmentService().isNoneExistingDepartmentShortcut(
+		Boolean result = this.getDepartmentService().isNoneExistingOrganisationShortcutByDepartment(
 				departmentDao.toDepartmentInfo(department1), department1.getShortcut());
 		assertNotNull(result);
 		assertTrue(result);
 
-		result = this.getDepartmentService().isNoneExistingDepartmentShortcut(
+		result = this.getDepartmentService().isNoneExistingOrganisationShortcutByDepartment(
 				departmentDao.toDepartmentInfo(department1), testUtility.unique("department"));
 		assertNotNull(result);
 		assertTrue(result);
 
-		result = this.getDepartmentService().isNoneExistingDepartmentShortcut(
+		result = this.getDepartmentService().isNoneExistingOrganisationShortcutByDepartment(
 				departmentDao.toDepartmentInfo(department1), department2.getShortcut());
 		assertNotNull(result);
 		assertFalse(result);
 
-		logger.debug("----> END access to isNoneExistingUniversityShortcut test <---- ");
+		logger.debug("----> END access to isNoneExistingOrganisationShortcutByDepartment test <---- ");
 	}
 
 	public void testSetDepartmentStatus() {

@@ -30,9 +30,8 @@ public class DepartmentShortcutValidator extends BaseBean implements Validator {
 		final String shortcut = (String) value;
 		DepartmentService departmentService = (DepartmentService) getBean(Constants.DEPARTMENT_SERVICE);
 		try {
-			// TODO department should be defined by attribute 
 			DepartmentInfo departmentInfo = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT_INFO);
-			boolean unique = departmentService.isNoneExistingDepartmentShortcut(departmentInfo, shortcut);
+			boolean unique = departmentService.isNoneExistingOrganisationShortcutByDepartment(departmentInfo, shortcut);
 			if (!unique) {
 				((UIInput) component).setValid(false);
 				addError(component.getClientId(context), i18n(SHORTCUT_MESSAGE_ID),null);
