@@ -190,12 +190,12 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		University university = this.getUniversityDao().load(periodInfo.getUniversityId());
 		Period periodOld = this.getPeriodDao().load(periodInfo.getId());
 		if (!periodOld.getUniversity().equals(university)) {
-			throw new DepartmentServiceException("UniversityService.handleUpdate - The University cannot be changed.");
+			throw new UniversityServiceException("UniversityService.handleUpdate - The University cannot be changed.");
 		}
 		
 		// Check changes of default Period
 		if (!periodOld.isDefaultPeriod() == periodInfo.isDefaultPeriod()) {
-			throw new DepartmentServiceException("UniversityService.handleUpdate - The default attribute cannot be changed.");
+			throw new UniversityServiceException("UniversityService.handleUpdate - The default attribute cannot be changed.");
 		}
 
 		// Transform VO to Entity
@@ -302,13 +302,6 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		period.getUniversity().remove(period);
 		this.getPeriodDao().remove(period);
 
-	}
-
-	/**
-	 * @see org.openuss.lecture.UniversityService#removePeriodAndCourses(java.lang.Long)
-	 */
-	protected void handleRemovePeriodAndCourses(Long periodId) throws Exception {
-		throw new UnsupportedOperationException();
 	}
 
 	/**
