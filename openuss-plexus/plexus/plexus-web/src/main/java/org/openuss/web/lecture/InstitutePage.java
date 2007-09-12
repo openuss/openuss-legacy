@@ -338,10 +338,10 @@ public class InstitutePage extends AbstractLecturePage {
 				addMessage(i18n("institute_message_application_of_membership_send"));
 			} catch (OrganisationServiceException e) {
 				logger.debug(e.getMessage());
-				addError(i18n("institute_error_apply_member_at_institute_already_applied"));
+				addError(i18n("institute_error_apply_member_at_institute_already_applied_personal"));
 			} catch (Exception e){
 				logger.debug(e.getMessage());
-				addError("institute_error_apply_member_at_institute");
+				addError("institute_error_apply_member_at_institute_personal");
 			}
 		}
 		return Constants.SUCCESS;
