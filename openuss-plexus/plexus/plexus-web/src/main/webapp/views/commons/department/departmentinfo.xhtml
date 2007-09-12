@@ -16,7 +16,7 @@
 			 	<h:outputText value="#{departmentInfo.name}" styleClass="header_font_normal"/>
 			 	<h:outputText value="#{departmentInfo.address}" styleClass="content_font_normal"/>
 			 	<h:outputText value="#{departmentInfo.postcode} #{departmentInfo.city}" styleClass="content_font_normal"/>
-			 	<h:outputFormat value="#{msg.institute_information_telephone}" rendered="#{!emptydepartmentInfo.telephone}" styleClass="content_font_normal">
+			 	<h:outputFormat value="#{msg.institute_information_telephone}" rendered="#{!empty departmentInfo.telephone}" styleClass="content_font_normal">
 					<f:param value="#{departmentInfo.telephone}" styleClass="content_font_normal"/>
 				</h:outputFormat>
 				<h:outputFormat value="#{msg.institute_information_telefax}" rendered="#{!empty departmentInfo.telefax}" styleClass="content_font_normal">
