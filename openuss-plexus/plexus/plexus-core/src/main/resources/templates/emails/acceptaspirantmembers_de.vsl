@@ -1,0 +1,16 @@
+<html>
+	<body>
+		<p>
+			<h3><font color="#003366">OpenUSS Benutzerverwaltung</font></h3>
+			Der Nutzer <i>${username} (${userfirstname} ${userlastname})</i> wurde in ihr Institut <i>${organisationname}</i> aufgenommen.
+		</p>
+		<p>
+			Viel Spaß mit OpenUSS
+		</p>
+		<p>
+			<small>
+				Auf diese E-Mail können Sie nicht anworten. Antworten auf diese Nachricht werden weder kontrolliert noch beanwortet.
+			</small>
+		</p>
+	</body>
+</html>

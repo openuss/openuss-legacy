@@ -2,7 +2,8 @@
 	<body>
 		<p>
 			<h3><font color="#003366">OpenUSS Benutzerverwaltung</font></h3>
-			Sie, <i>${username} (${userfirstname} ${userlastname})</i>, wurden soeben als Mitglied aus der Organisation  
+			Hallo <i>${username} (${userfirstname} ${userlastname})</i>,
+			sie wurden soeben als Mitglied aus der Organisation  
 			<i>${organisationname}</i> entfernt.
 		</p>
 		<p>
@@ -10,7 +11,7 @@
 		</p>
 		<p>
 			<small>
-				Auf diese E-Mail können Sie nicht anworten. Antwortungen auf diese Nachricht werden nicht kontrolliert noch beanwortet.
+				Auf diese E-Mail können Sie nicht anworten. Antworten auf diese Nachricht werden weder kontrolliert noch beanwortet.
 			</small>
 		</p>
 	</body>
