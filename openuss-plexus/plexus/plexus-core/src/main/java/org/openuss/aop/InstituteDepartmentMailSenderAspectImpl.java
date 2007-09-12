@@ -135,7 +135,7 @@ public class InstituteDepartmentMailSenderAspectImpl {
 				recipients); 
 	}
 	
-	public void sendRejectApplicationAtDepartmentMail (Long applicationId, Long userId) {
+	public void sendRejectApplicationAtDepartmentMail (Long applicationId) {
 		logger.debug("sendAcceptApplicationAtDepartmentMail - Sending Email to User who apllied at the department");
 		
 		Validate.notNull(applicationId, "InstituteDepartmentMailSenderAspectImpl.sendRejectApplicationAtDepartmentMail -" +

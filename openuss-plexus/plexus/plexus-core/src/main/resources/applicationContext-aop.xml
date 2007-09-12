@@ -44,7 +44,7 @@
 			expression="execution(* org..DepartmentServiceBase.acceptApplication(java.lang.Long, java.lang.Long)) and args(applicationId, userId)" />
 		<aop:pointcut
 			id="DepartmentServiceRejectInstituteApplicationPointcut"
-			expression="execution(* org..DepartmentServiceBase.rejectApplication(java.lang.Long, java.lang.Long)) and args(applicationId, userId)" />
+			expression="execution(* org..DepartmentServiceBase.rejectApplication(java.lang.Long)) and args(applicationId)" />
 		<aop:pointcut id="DepartmentServiceUpdatePointcut"
 			expression="execution(* org..DepartmentServiceBase.update(org.openuss.lecture.DepartmentInfo)) and args(departmentInfo)" />
 		<aop:pointcut id="DepartmentServiceSetStatusPointcut"
@@ -139,10 +139,10 @@
 
 		<aop:aspect id="rejectInstituteMailSenderAspect"
 			ref="instituteDepartmentMailSenderAspectBean">
-			<aop:after-returning
+			<aop:before
 				method="sendRejectApplicationAtDepartmentMail"
 				pointcut-ref="DepartmentServiceRejectInstituteApplicationPointcut"
-				arg-names="applicationId, userId" />
+				arg-names="applicationId" />
 		</aop:aspect>
 
 		<aop:aspect id="bookmarkMaintenanceAspect"
@@ -190,7 +190,7 @@
 				pointcut-ref="InstituteServiceDeleteCompleteInstituteTreePointcut"
 				arg-names="instituteId" />
 		</aop:aspect>
-
+<!--  
 		<aop:aspect id="universityIndexAspect"
 			ref="universityIndexAspectBean">
 			<aop:after-returning method="createUniversityIndex"
@@ -275,7 +275,7 @@
 				pointcut="execution(* org..MessageJobDaoBase.update(org.openuss.messaging.MessageJob)) and args(messageJob)"
 				arg-names="messageJob" />
 		</aop:aspect>
-
+-->
 	</aop:config>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
