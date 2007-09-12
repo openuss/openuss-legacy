@@ -33,7 +33,7 @@ public class InstituteShortcutValidator extends BaseBean implements Validator {
 		try {
 			// TODO institute should be defined by attribute 
 			InstituteInfo instituteInfo = (InstituteInfo) getSessionBean(Constants.INSTITUTE_INFO);
-			boolean unique = instituteService.isNoneExistingInstituteShortcut(instituteInfo, shortcut);
+			boolean unique = instituteService.isNoneExistingOrganisationShortcutByInstitute(instituteInfo, shortcut);
 			if (!unique) {
 				((UIInput) component).setValid(false);
 				addError(component.getClientId(context), i18n(SHORTCUT_MESSAGE_ID),null);

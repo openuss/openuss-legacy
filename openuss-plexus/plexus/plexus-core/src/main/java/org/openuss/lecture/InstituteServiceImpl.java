@@ -389,14 +389,35 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	}
 
 	@Override
-	public boolean handleIsNoneExistingInstituteShortcut(InstituteInfo self, String shortcut) throws Exception {
-
-		Institute found = getInstituteDao().findByShortcut(shortcut);
-		InstituteInfo foundInfo = null;
-		if (found != null) {
-			foundInfo = this.getInstituteDao().toInstituteInfo(found);
+	public boolean handleIsNoneExistingOrganisationShortcutByInstitute(InstituteInfo self, String shortcut) throws Exception {
+		Organisation organisationFound = getOrganisationDao().findByShortcut(shortcut);
+		if (organisationFound instanceof University) {
+			University found = (University) organisationFound;
+			UniversityInfo foundInfo = null;
+			if (found != null) {
+				foundInfo = this.getUniversityDao().toUniversityInfo(found);
+			}
+			return isEqualOrNull(self, foundInfo);
+			
+		} else if (organisationFound instanceof Department) {
+			
+			Department found = (Department) organisationFound;
+			DepartmentInfo foundInfo = null;
+			if (found != null) {
+				foundInfo = this.getDepartmentDao().toDepartmentInfo(found);
+			}
+			return isEqualOrNull(self, foundInfo);
+			
+		} else {
+			
+			Institute found = (Institute) organisationFound;
+			InstituteInfo foundInfo = null;
+			if (found != null) {
+				foundInfo = this.getInstituteDao().toInstituteInfo(found);
+			}
+			return isEqualOrNull(self, foundInfo);
+			
 		}
-		return isEqualOrNull(self, foundInfo);
 	}
 
 	@Override
