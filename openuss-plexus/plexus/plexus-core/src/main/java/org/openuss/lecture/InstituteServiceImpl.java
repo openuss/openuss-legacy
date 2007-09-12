@@ -43,7 +43,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.isTrue(instituteInfo.getId() == null,
 				"InstituteService.handleCreate - the Institute shouldn't have an ID yet");
 		
-		// No validation needed for department id since it is ignored anyway below
+		// No validation needed for department ID since it is ignored anyway below
 		// Validate.notNull(instituteInfo.getDepartmentId(),
 		//		"InstituteService.handleCreate - the DepartmentID cannot be null");
 
