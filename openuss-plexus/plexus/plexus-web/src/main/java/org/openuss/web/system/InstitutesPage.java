@@ -16,11 +16,14 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.DepartmentService;
+import org.openuss.lecture.DepartmentServiceException;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.InstituteServiceException;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureService;
+import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
@@ -42,6 +45,9 @@ public class InstitutesPage extends BasePage{
 	
 	@Property (value="#{instituteService}")
 	private InstituteService instituteService;
+	
+	@Property (value="#{departmentService}")
+	private DepartmentService departmentService;
 	
 	private Set<InstituteInfo> changedInstitutes = new HashSet<InstituteInfo>();
 
@@ -123,13 +129,19 @@ public class InstitutesPage extends BasePage{
 				try {
 					instituteService.setInstituteStatus(instituteInfo.getId(), true);
 					addMessage(i18n("system_message_institute_enabled", new Object[]{ instituteInfo.getName()}));
-				} catch(InstituteServiceException iae) {
-					addMessage(i18n("message_institute_enabled_failed_department_disabled_detailed", new Object[]{ instituteInfo.getName()}));
+				} catch(InstituteServiceException ise) {
+					String departmentName;
+					try{
+						departmentName = departmentService.findDepartment(instituteInfo.getDepartmentId()).getName();
+					} catch(DepartmentServiceException dse){
+						departmentName = "";
+					}
+					addMessage(i18n("message_institute_enabled_failed_department_disabled_detailed", new Object[]{ instituteInfo.getName(), departmentName }));
 				}
 			// disable institute
 			} else {
 				instituteService.setInstituteStatus(instituteInfo.getId(), false);
-				addMessage(i18n("system_message_institute_disabled", new Object[]{ instituteInfo.getName()}));
+				addMessage(i18n("system_message_institute_disabled", new Object[]{ instituteInfo.getName() }));
 			}			
 		}
 		return Constants.SUCCESS;
@@ -178,6 +190,14 @@ public class InstitutesPage extends BasePage{
 
 	public void setInstituteService(InstituteService instituteService) {
 		this.instituteService = instituteService;
+	}
+
+	public DepartmentService getDepartmentService() {
+		return departmentService;
+	}
+
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
 	}
 
 }

@@ -17,8 +17,11 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.DepartmentInfo;
+import org.openuss.lecture.DepartmentService;
+import org.openuss.lecture.DepartmentServiceException;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
+import org.openuss.lecture.InstituteServiceException;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -43,6 +46,9 @@ public class InstitutesOverviewPage extends BasePage{
 	
 	@Property(value = "#{instituteService}")
 	private InstituteService instituteService;
+
+	@Property(value = "#{departmentService}")
+	private DepartmentService departmentService;
 
 	@Prerender
 	public void prerender() throws Exception {
@@ -119,8 +125,6 @@ public class InstitutesOverviewPage extends BasePage{
 	public String disableInstitute() {
 		logger.debug("Starting method disableInstitute");
 		InstituteInfo currentInstitute = currentInstitute();
-		// setOrganisationStatus(true) = Enabled
-		// setOrganisationStatus(false) = Disabled
 		instituteService.setInstituteStatus(currentInstitute.getId(), false);
 		
 		addMessage(i18n("message_institute_disabled"));
@@ -134,12 +138,20 @@ public class InstitutesOverviewPage extends BasePage{
 	public String enableInstitute() {
 		logger.debug("Starting method enableInstitute");
 		InstituteInfo currentInstitute = currentInstitute();
-		// setOrganisationStatus(true) = Enabled
-		// setOrganisationStatus(false) = Disabled
-		instituteService.setInstituteStatus(currentInstitute.getId(), true);
-		
-		addMessage(i18n("message_institute_enabled"));
-		return Constants.SUCCESS;
+		try {
+			instituteService.setInstituteStatus(currentInstitute.getId(), true);
+			addMessage(i18n("message_institute_enabled"));
+			return Constants.SUCCESS;
+		} catch(InstituteServiceException ise) {
+			String departmentName;
+			try{
+				departmentName = departmentService.findDepartment(currentInstitute.getDepartmentId()).getName();
+			} catch(DepartmentServiceException dse){
+				departmentName = "";
+			}
+			addMessage(i18n("message_institute_enabled_failed_department_disabled_detailed", new Object[]{ currentInstitute.getName(), departmentName }));
+			return Constants.FAILURE;
+		}
 	}
 	
 	private DataPage<InstituteInfo> dataPage;
@@ -237,5 +249,13 @@ public class InstitutesOverviewPage extends BasePage{
 				return f2.getShortcut().compareToIgnoreCase(f1.getShortcut());
 			}
 		}
+	}
+
+	public DepartmentService getDepartmentService() {
+		return departmentService;
+	}
+
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
 	}
 }
