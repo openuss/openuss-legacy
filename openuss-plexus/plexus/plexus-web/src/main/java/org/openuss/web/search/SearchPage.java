@@ -1,6 +1,9 @@
 package org.openuss.web.search;
 
 import java.io.FileNotFoundException;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -43,10 +46,15 @@ public class SearchPage extends BasePage{
 	}
 	
 	public String search() {
+		List<DomainResult> searchResult = null;
 		if (StringUtils.isNotBlank(searchResults.getTextToSearch())) {
 			logger.debug("searching for "+searchResults.getTextToSearch());
 			try {
-				searchResults.setHits(lectureSearcher.search(searchResults.getTextToSearch()));
+				searchResult = lectureSearcher.search(searchResults.getTextToSearch());
+				searchResults.setHits(searchResult);
+				if(searchResult == null || searchResult.size() == 0){
+					getFacesContext().addMessage(null, new FacesMessage(i18n("search_no_matches_found")) );
+				}
 			} catch (LuceneSearchException ex) {
 				logger.error(ex);
 				// search index file is not available (maybe the index was not created)

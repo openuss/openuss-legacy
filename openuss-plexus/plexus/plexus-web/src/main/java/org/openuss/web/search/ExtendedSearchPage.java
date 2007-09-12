@@ -115,7 +115,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 						);
 				extendedSearchResults.setHits(searchResult);
 				if(searchResult == null || searchResult.size() == 0){
-					getFacesContext().addMessage(null, new FacesMessage(i18n("extended_search_no_matches_found")) );
+					getFacesContext().addMessage(null, new FacesMessage(i18n("search_no_matches_found")) );
 				}
 			} catch (LuceneSearchException ex) {
 				logger.error(ex);
