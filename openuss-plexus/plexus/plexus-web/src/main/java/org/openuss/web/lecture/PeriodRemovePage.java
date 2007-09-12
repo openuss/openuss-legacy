@@ -22,7 +22,7 @@ import org.openuss.web.Constants;
 @View
 public class PeriodRemovePage extends AbstractPeriodPage {
 
-	private static final Logger logger = Logger.getLogger(PeriodsPage.class);
+	private static final Logger logger = Logger.getLogger(PeriodRemovePage.class);
 
 	@Preprocess
 	@Override

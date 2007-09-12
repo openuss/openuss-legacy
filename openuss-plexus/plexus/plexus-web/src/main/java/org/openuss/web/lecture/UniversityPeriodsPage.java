@@ -27,7 +27,7 @@ import org.openuss.web.Constants;
 @View
 public class UniversityPeriodsPage extends AbstractUniversityPage {
 
-	private static final Logger logger = Logger.getLogger(PeriodsPage.class);
+	private static final Logger logger = Logger.getLogger(UniversityPeriodsPage.class);
 
 	private PeriodDataModel periodData = new PeriodDataModel();
 	
@@ -38,6 +38,7 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 	
 	@Prerender
 	@Override
+	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws LectureException {
 		super.prerender();
 		if (universityInfo != null) {
