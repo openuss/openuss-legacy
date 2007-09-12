@@ -40,14 +40,21 @@ public class UniversityRemoveConfirmationPage extends AbstractUniversityPage {
 	 * @throws LectureException
 	 */
 	public String removeCompleteUniversityTree() throws LectureException {
-		universityService.removeCompleteUniversityTree(universityInfo.getId());
-		setSessionBean("universityInfo", null);
-		setSessionBean("departmentInfo", null);
-		setSessionBean("instituteInfo", null);
-		setSessionBean("courseTypeInfo", null);
-		setSessionBean("courseInfo", null);
-		addMessage(i18n("message_university_removed"));
-		return Constants.UNIVERSITIES_ADMIN_PAGE;
+		try {
+			universityService.removeCompleteUniversityTree(universityInfo.getId());
+			setSessionBean("universityInfo", null);
+			setSessionBean("departmentInfo", null);
+			setSessionBean("instituteInfo", null);
+			setSessionBean("courseTypeInfo", null);
+			setSessionBean("courseInfo", null);
+			addMessage(i18n("message_university_removed"));
+			return Constants.UNIVERSITIES_ADMIN_PAGE;
+		} catch (Exception e) {
+			e.printStackTrace();
+			addMessage(i18n("message_university_cannot_be_removed"));
+			return Constants.UNIVERSITIES_ADMIN_PAGE;
+		}
+		
 	}
 	
 }

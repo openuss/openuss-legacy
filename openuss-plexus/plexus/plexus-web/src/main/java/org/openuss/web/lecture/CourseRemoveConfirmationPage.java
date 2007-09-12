@@ -46,10 +46,18 @@ public class CourseRemoveConfirmationPage extends AbstractCoursePage {
 	 * @throws LectureException
 	 */
 	public String removeCourse() throws LectureException {
-		courseService.removeCourse(courseInfo.getId());
-		setSessionBean("courseInfo", null);
-		addMessage(i18n("institute_course_removed_succeed"));
-		return Constants.INSTITUTE_COURSES_PAGE;
+		try {
+			courseService.removeCourse(courseInfo.getId());
+			setSessionBean("courseInfo", null);
+			addMessage(i18n("institute_course_removed_succeed"));
+			return Constants.INSTITUTE_COURSES_PAGE;
+		} catch (Exception e) {
+			e.printStackTrace();
+			addMessage(i18n("institute_course_cannot_be_removed"));
+			return Constants.INSTITUTE_COURSES_PAGE;
+			
+		}
+		
 	}
 	
 }

@@ -40,11 +40,17 @@ public class InstituteRemoveConfirmationPage extends AbstractLecturePage {
 	 * @throws LectureException
 	 */
 	public String removeCompleteInstituteTree() throws LectureException {
-		instituteService.removeCompleteInstituteTree(instituteInfo.getId());
-		setSessionBean("instituteInfo", null);
-		setSessionBean("courseTypeInfo", null);
-		setSessionBean("courseInfo", null);
-		addMessage(i18n("message_institute_removed"));
-		return Constants.OUTCOME_BACKWARD;
+		try {
+			instituteService.removeCompleteInstituteTree(instituteInfo.getId());
+			setSessionBean("instituteInfo", null);
+			setSessionBean("courseTypeInfo", null);
+			setSessionBean("courseInfo", null);
+			addMessage(i18n("message_institute_removed"));
+			return Constants.OUTCOME_BACKWARD;
+		} catch (Exception e) {
+			e.printStackTrace();
+			addMessage(i18n("message_institute_cannot_be_removed"));
+			return Constants.OUTCOME_BACKWARD;
+		}
 	}	
 }

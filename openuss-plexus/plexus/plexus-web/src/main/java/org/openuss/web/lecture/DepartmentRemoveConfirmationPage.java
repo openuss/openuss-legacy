@@ -40,13 +40,20 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 	 * @throws LectureException
 	 */
 	public String removeCompleteDepartmentTree() throws LectureException {
-		departmentService.removeCompleteDepartmentTree(departmentInfo.getId());
-		setSessionBean("departmentInfo", null);
-		setSessionBean("instituteInfo", null);
-		setSessionBean("courseTypeInfo", null);
-		setSessionBean("courseInfo", null);
-		addMessage(i18n("message_department_removed"));
-		return Constants.DEPARTMENTS_ADMIN_PAGE;
+		try {
+			departmentService.removeCompleteDepartmentTree(departmentInfo.getId());
+			setSessionBean("departmentInfo", null);
+			setSessionBean("instituteInfo", null);
+			setSessionBean("courseTypeInfo", null);
+			setSessionBean("courseInfo", null);
+			addMessage(i18n("message_department_removed"));
+			return Constants.DEPARTMENTS_ADMIN_PAGE;
+		} catch (Exception e) {
+			e.printStackTrace();
+			addMessage(i18n("message_department_cannot_be_removed"));
+			return Constants.OUTCOME_BACKWARD;
+		}
+		
 	}
 	
 	/**
@@ -65,7 +72,7 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 			return Constants.DEPARTMENTS_PAGE;
 		} catch (Exception e) {
 			addMessage(i18n("message_department_cannot_be_removed"));
-			return Constants.UNIVERSITY_DEPARTMENTS_PAGE;
+			return Constants.OUTCOME_BACKWARD;
 		}
 		
 	}
