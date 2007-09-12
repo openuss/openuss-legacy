@@ -1,5 +1,6 @@
 package org.openuss.migration.from20to30;
 
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -27,7 +28,9 @@ import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.ObjectIdentityDao;
-import org.openuss.security.acl.Permission;
+
+import sun.security.acl.PermissionImpl;
+
 
 /**
  * This Service migrate data from openuss 2.0 to openuss-plexus 3.0
