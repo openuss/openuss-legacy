@@ -39,61 +39,6 @@ public class UserAdministrationMailSenderAspectImpl {
 	private MessageService messageService;
 	private SystemService systemService;
 
-	public UserDao getUserDao() {
-		return userDao;
-	}
-
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
-
-	public OrganisationDao getOrganisationDao() {
-		return organisationDao;
-	}
-
-	public void setOrganisationDao(OrganisationDao organisationDao) {
-		this.organisationDao = organisationDao;
-	}
-
-	public UniversityDao getUniversityDao() {
-		return universityDao;
-	}
-
-	public void setUniversityDao(UniversityDao universityDao) {
-		this.universityDao = universityDao;
-	}
-
-	public DepartmentDao getDepartmentDao() {
-		return departmentDao;
-	}
-
-	public void setDepartmentDao(DepartmentDao departmentDao) {
-		this.departmentDao = departmentDao;
-	}
-
-	public InstituteDao getInstituteDao() {
-		return instituteDao;
-	}
-
-	public void setInstituteDao(InstituteDao instituteDao) {
-		this.instituteDao = instituteDao;
-	}
-
-	public MessageService getMessageService() {
-		return messageService;
-	}
-
-	public void setMessageService(MessageService messageService) {
-		this.messageService = messageService;
-	}
-
-	public SystemService getSystemService() {
-		return systemService;
-	}
-
-	public void setSystemService(SystemService systemService) {
-		this.systemService = systemService;
-	}
 
 	/**
 	 * Sends Emails to the new Member and all old Members of the Organisation whenever a new Member has been added to
@@ -518,6 +463,8 @@ public class UserAdministrationMailSenderAspectImpl {
 		parameters.put("username", user.getUsername());
 		parameters.put("userfirstname", user.getFirstName());
 		parameters.put("userlastname", user.getLastName());
+		parameters.put("organisationname", university.getName());
+		parameters.put("organisationlink", link);
 
 		// Determine Recipients (Members of the University)
 		List<User> recipients1 = new ArrayList<User>();
@@ -537,7 +484,7 @@ public class UserAdministrationMailSenderAspectImpl {
 		recipients2.add(user);
 
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender", "user.membership.addmember.user.subject",
+		messageService.sendMessage("user.membership.sender", "user.membership.removemember.user.subject",
 				"removememberuser", parameters, recipients2);
 	}
 
@@ -554,6 +501,8 @@ public class UserAdministrationMailSenderAspectImpl {
 		parameters.put("username", user.getUsername());
 		parameters.put("userfirstname", user.getFirstName());
 		parameters.put("userlastname", user.getLastName());
+		parameters.put("organisationname", department.getName());
+		parameters.put("organisationlink", link);
 
 		// Determine Recipients (Members of the Department)
 		List<User> recipients1 = new ArrayList<User>();
@@ -573,7 +522,7 @@ public class UserAdministrationMailSenderAspectImpl {
 		recipients2.add(user);
 
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender", "user.membership.addmember.user.subject",
+		messageService.sendMessage("user.membership.sender", "user.membership.removemember.user.subject",
 				"removememberuser", parameters, recipients2);
 	}
 
@@ -590,6 +539,8 @@ public class UserAdministrationMailSenderAspectImpl {
 		parameters.put("username", user.getUsername());
 		parameters.put("userfirstname", user.getFirstName());
 		parameters.put("userlastname", user.getLastName());
+		parameters.put("organisationname", institute.getName());
+		parameters.put("organisationlink", link);
 
 		// Determine Recipients (Members of the Institute)
 		List<User> recipients1 = new ArrayList<User>();
@@ -609,7 +560,7 @@ public class UserAdministrationMailSenderAspectImpl {
 		recipients2.add(user);
 
 		// Send Email to new User
-		messageService.sendMessage("user.membership.sender", "user.membership.addmember.user.subject",
+		messageService.sendMessage("user.membership.sender", "user.membership.removemember.user.subject",
 				"removememberuser", parameters, recipients2);
 	}
 
@@ -833,6 +784,62 @@ public class UserAdministrationMailSenderAspectImpl {
 		// Send Email to new User
 		messageService.sendMessage("user.membership.sender", "user.membership.rejectaspirant.user.subject",
 				"rejectaspirantuser", parameters, recipients2);
+	}
+	
+	public UserDao getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+
+	public OrganisationDao getOrganisationDao() {
+		return organisationDao;
+	}
+
+	public void setOrganisationDao(OrganisationDao organisationDao) {
+		this.organisationDao = organisationDao;
+	}
+
+	public UniversityDao getUniversityDao() {
+		return universityDao;
+	}
+
+	public void setUniversityDao(UniversityDao universityDao) {
+		this.universityDao = universityDao;
+	}
+
+	public DepartmentDao getDepartmentDao() {
+		return departmentDao;
+	}
+
+	public void setDepartmentDao(DepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
+	}
+
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
+	}
+
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
+	}
+
+	public MessageService getMessageService() {
+		return messageService;
+	}
+
+	public void setMessageService(MessageService messageService) {
+		this.messageService = messageService;
+	}
+
+	public SystemService getSystemService() {
+		return systemService;
+	}
+
+	public void setSystemService(SystemService systemService) {
+		this.systemService = systemService;
 	}
 
 }

@@ -2,7 +2,17 @@
 	<body>
 		<p>
 			<h3><font color="#003366">OpenUSS User Administration</font></h3>
-			Your have succesfully applied for <i>${organisationname}</i>.
+			Hallo <i>${username} (${userfirstname} ${userlastname})</i>, 
+			your application for the membership at the institute <i>${organisationname}</i> 
+			was accepted.
+		</p>
+		<p>
+			You may click on the following link to administrate your institute:<br/>
+			<a href="${organisationlink}">${organisationlink}</a>
+		</p>
+		<p>
+			If the link above does not work, copy and paste the URL in a new browser window instead.
+		</p>
 		<p>
 			Thank you for using OpenUSS.
 		</p>
