@@ -8,53 +8,33 @@
       xmlns:c="http://java.sun.com/jstl/core"
       xmlns:o="http://www.openuss.org/jsfcontrols">
       
-	<o:input entity="instituteInfo" property="name" maxlength="250" required="true"/>
-	<o:input entity="instituteInfo" property="shortcut" maxlength="30" required="true">
+	<o:input entity="instituteRegistration.instituteInfo" property="name" maxlength="250" required="true"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="shortcut" maxlength="30" required="true">
 		<f:validator validatorId="instituteShortcutValidator"/>
 		<f:validator validatorId="filenameValidator"/>
 	</o:input>
- 
-	<h:outputLabel value="#{msg.department_selection}"  	
-					for="departmenSelection" 
-					styleClass="field_label"
-					rendered="#{!empty instituteInfo.id}"/>
-		
-	<h:selectOneListbox
-	    	    id="departmentSelection" 
-				size="1" 
-				value="#{views$secured$lecture$instituteoptions.departmentId}"
-				layout="pageDirection" 
-				styleClass="pulldown"
-				rendered="#{!empty instituteInfo.id}">
-				<f:selectItems value="#{views$secured$lecture$instituteoptions.allDepartments}"/>
-				<f:validator validatorId="instituteDepartmentSelectValidator"/>
-	</h:selectOneListbox>
 	
-	<c:if test="#{!empty views$secured$lecture$instituteoptions.pendingApplicationInfo}">
-		<h:outputText value="#{views$secured$lecture$instituteoptions.pendingApplicationInfo}" styleClass="content_font_normal" escape="true"/>
-	</c:if>
-				
 	<h:outputLabel value="#{msg.instituteinfo_description}" for="descriptionEditor" styleClass="field_label"/>
-	<h:inputTextarea styleClass="pulldown" value="#{instituteInfo.description}" id="descriptionTextField" />
-	<o:input entity="instituteInfo" property="ownerName" maxlength="100" required="true"/>
-	<o:input entity="instituteInfo" property="email" maxlength="100" required="true">
+	<h:inputTextarea styleClass="pulldown" value="#{instituteRegistration.instituteInfo.description}" id="descriptionTextField" />
+	<o:input entity="instituteRegistration.instituteInfo" property="ownerName" maxlength="100" required="true"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="email" maxlength="100" required="true">
 		<t:validateEmail/>
 	</o:input>
-	<o:input entity="instituteInfo" property="address" maxlength="100"/>
-	<o:input entity="instituteInfo" property="postcode" maxlength="50"/>
-	<o:input entity="instituteInfo" property="city" maxlength="50"/>
-	<o:input entity="instituteInfo" property="country" maxlength="50"/>
-	<o:input entity="instituteInfo" property="telephone" maxlength="50"/>
-	<o:input entity="instituteInfo" property="telefax" maxlength="50"/>
-	<o:input entity="instituteInfo" property="website" maxlength="200"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="address" maxlength="100"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="postcode" maxlength="50"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="city" maxlength="50"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="country" maxlength="50"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="telephone" maxlength="50"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="telefax" maxlength="50"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="website" maxlength="200"/>
 	
 	<h:outputLabel value="#{msg.institute_locale}" for="languageSelect" styleClass="field_label"/>
-	<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{instituteInfo.locale}">
+	<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{instituteRegistration.instituteInfo.locale}">
 	    <f:selectItems value="#{visit.supportedLocaleItems}"/>
 	</h:selectOneListbox>
 	
 	<h:outputLabel value="#{msg.institute_theme}" for="themeSelect" styleClass="field_label"/>
-	<h:selectOneListbox id="themeSelect" size="1" value="#{instituteInfo.theme}" styleClass="pulldown" >
+	<h:selectOneListbox id="themeSelect" size="1" value="#{instituteRegistration.instituteInfo.theme}" styleClass="pulldown" >
 	    <f:selectItems value="#{applicationScope.themeManager.selectableThemes}"/>
 	</h:selectOneListbox>
 	

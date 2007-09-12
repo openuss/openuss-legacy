@@ -42,8 +42,10 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(user, "InstituteService.handleCreate - no valid User found corresponding to the ID " + userId);
 		Validate.isTrue(instituteInfo.getId() == null,
 				"InstituteService.handleCreate - the Institute shouldn't have an ID yet");
-		Validate.notNull(instituteInfo.getDepartmentId(),
-				"InstituteService.handleCreate - the DepartmentID cannot be null");
+		
+		// No validation needed for department id since it is ignored anyway below
+		// Validate.notNull(instituteInfo.getDepartmentId(),
+		//		"InstituteService.handleCreate - the DepartmentID cannot be null");
 
 		// Ignore DepartmentID - one has to call applyAtDepartment right after
 		instituteInfo.setDepartmentId(null);
