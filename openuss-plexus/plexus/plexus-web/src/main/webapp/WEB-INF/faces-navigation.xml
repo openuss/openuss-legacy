@@ -698,7 +698,6 @@
 			<to-view-id>/views/secured/system/departments.xhtml</to-view-id>
 		</navigation-case>
 		
-
 		<navigation-case>
 			<from-outcome>admin_institutes</from-outcome>
 			<to-view-id>/views/secured/system/institutes.xhtml</to-view-id>
@@ -709,6 +708,16 @@
 			<to-view-id>/views/secured/user/userprofile.xhtml</to-view-id>
 		</navigation-case>
 
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+	
+	<navigation-case>
+			<from-outcome>admin_departments</from-outcome>
+			<to-view-id>/views/secured/system/departments.xhtml</to-view-id>
+		</navigation-case>
+		
 	</navigation-rule>
 
 

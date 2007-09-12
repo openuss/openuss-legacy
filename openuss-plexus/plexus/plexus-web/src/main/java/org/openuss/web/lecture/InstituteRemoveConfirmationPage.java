@@ -22,12 +22,10 @@ public class InstituteRemoveConfirmationPage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
-		breadcrumbs.loadInstituteCrumbs(instituteInfo);
-		
+		breadcrumbs.loadInstituteCrumbs(instituteInfo);	
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("institute_remove_header"));
 		newCrumb.setHint(i18n("institute_remove_header"));
-		
 		breadcrumbs.addCrumb(newCrumb);
 	}
 	

@@ -23,7 +23,6 @@ public class UniversityRemoveConfirmationPage extends AbstractUniversityPage {
 	public void prerender() throws LectureException {
 		super.prerender();
 		breadcrumbs.loadUniversityCrumbs(universityInfo);
-		
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("university_command_remove"));
 		newCrumb.setHint(i18n("university_command_remove"));
@@ -42,6 +41,11 @@ public class UniversityRemoveConfirmationPage extends AbstractUniversityPage {
 	 */
 	public String removeCompleteUniversityTree() throws LectureException {
 		universityService.removeCompleteUniversityTree(universityInfo.getId());
+		setSessionBean("universityInfo", null);
+		setSessionBean("departmentInfo", null);
+		setSessionBean("instituteInfo", null);
+		setSessionBean("courseTypeInfo", null);
+		setSessionBean("courseInfo", null);
 		addMessage(i18n("message_university_removed"));
 		return Constants.UNIVERSITIES_ADMIN_PAGE;
 	}

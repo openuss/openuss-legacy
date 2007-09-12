@@ -4,15 +4,12 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
-import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.DepartmentInfo;
-
-import org.openuss.lecture.LectureException;
 import org.openuss.lecture.DepartmentService;
+import org.openuss.lecture.LectureException;
 import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-import org.openuss.web.PageLinks;
 
 /**
  * Abstract Department Page
@@ -35,8 +32,7 @@ public abstract class AbstractDepartmentPage extends BasePage {
 	protected UniversityService universityService;
 	
 	
-
-		/**
+	/**
 	 * Refreshing department VO
 	 * 
 	 * @throws Exception
@@ -45,11 +41,14 @@ public abstract class AbstractDepartmentPage extends BasePage {
 	public void preprocess() throws Exception {
 		super.preprocess();
 		logger.debug("preprocess - refreshing department session object");
-		if (departmentInfo != null) {
-			departmentInfo = departmentService.findDepartment(departmentInfo.getId());
-		} else {
-			departmentInfo = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT_INFO);
+		if(departmentInfo != null) {
+			if (departmentInfo.getId() != null) {
+				departmentInfo = departmentService.findDepartment(departmentInfo.getId());
+			} else {
+				departmentInfo = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT_INFO);
+			}
 		}
+		
 		setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);
 	}
 
@@ -58,15 +57,19 @@ public abstract class AbstractDepartmentPage extends BasePage {
 		logger.debug("prerender - refreshing department session object");
 		refreshDepartment();
 		if (departmentInfo == null) {
-			addError(i18n("message_error_no_department_selected"));
-			redirect(Constants.DESKTOP);
+			if (departmentInfo.getId() != null) {
+				addError(i18n("message_error_no_department_selected"));
+				redirect(Constants.DESKTOP);
+			}
 		}
 	}
 
 	private void refreshDepartment() {
 		if (departmentInfo != null) {
-			departmentInfo = departmentService.findDepartment(departmentInfo.getId());
-			setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);
+			if (departmentInfo.getId() != null) {
+				departmentInfo = departmentService.findDepartment(departmentInfo.getId());
+				setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);
+			}	
 		}
 	}
 	

@@ -37,7 +37,6 @@
   		<ui:define name="content">
   			<h:form id="removeDepartmentConfirmation">
   				<s:authorize ifAllGranted="ROLE_ADMIN">
-  					<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
 						<o:block label="#{msg.warning_attention_dataloss}- #{msg.department_remove_header}" styleClass="warning_box">
 			  				<p class="content_font_normal">
 			  					<span>
@@ -47,9 +46,8 @@
 						</o:block>
 						<o:block>
 							<h:commandButton value="${msg.remove}" action="#{views$secured$lecture$departmentremoveconfirmation.removeCompleteDepartmentTree}" styleClass="button_warning"/>
-							<h:commandButton value="${msg.cancel}" action="departments" styleClass="button_cancel" immediate="true"/>				
+							<h:commandButton value="${msg.cancel}" action="view:backward" styleClass="button_cancel" immediate="true"/>				
 						</o:block>
-					</s:acl>
 				</s:authorize>
 				<s:authorize ifNotGranted="ROLE_ADMIN">
   					<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
@@ -67,7 +65,7 @@
 						</o:block>
 						<o:block>
 							<h:commandButton value="${msg.remove}" action="#{views$secured$lecture$departmentremoveconfirmation.removeDepartment}" styleClass="button_warning"/>
-							<h:commandButton value="${msg.cancel}" action="departments" styleClass="button_cancel" immediate="true"/>				
+							<h:commandButton value="${msg.cancel}" action="view:backward" styleClass="button_cancel" immediate="true"/>				
 						</o:block>
 					</s:acl>
 				</s:authorize>

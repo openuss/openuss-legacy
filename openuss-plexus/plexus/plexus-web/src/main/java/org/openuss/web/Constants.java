@@ -88,6 +88,7 @@ public class Constants {
 	public static final String DEPARTMENTS_PAGE = "departments";
 	public static final String DEPARTMENT_PAGE = "department";
 	public static final String DEPARTMENT_EDIT = "department_edit";
+	public static final String DEPARTMENTS_ADMIN_PAGE = "admin_departments";
 	public static final String DEPARTMENT_CONFIRM_REMOVE_PAGE = "department_remove_confirmation";
 	public static final String DEPARTMENT_CONFIRM_DISABLE_PAGE = "department_disable_confirmation";
 	public static final Long   DEPARTMENTS_ENABLED = -115L;

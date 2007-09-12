@@ -23,7 +23,6 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 	public void prerender() throws LectureException {
 		super.prerender();
 		breadcrumbs.loadDepartmentCrumbs(departmentInfo);
-		
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("department_command_remove"));
 		newCrumb.setHint(i18n("department_command_remove"));
@@ -42,8 +41,12 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 	 */
 	public String removeCompleteDepartmentTree() throws LectureException {
 		departmentService.removeCompleteDepartmentTree(departmentInfo.getId());
+		setSessionBean("departmentInfo", null);
+		setSessionBean("instituteInfo", null);
+		setSessionBean("courseTypeInfo", null);
+		setSessionBean("courseInfo", null);
 		addMessage(i18n("message_department_removed"));
-		return Constants.DEPARTMENTS_PAGE;
+		return Constants.DEPARTMENTS_ADMIN_PAGE;
 	}
 	
 	/**
@@ -54,6 +57,10 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 	public String removeDepartment() throws Exception {
 		try {
 			departmentService.removeDepartment(departmentInfo.getId());
+			setSessionBean("departmentInfo", null);
+			setSessionBean("instituteInfo", null);
+			setSessionBean("courseTypeInfo", null);
+			setSessionBean("courseInfo", null);
 			addMessage(i18n("message_department_removed"));
 			return Constants.DEPARTMENTS_PAGE;
 		} catch (Exception e) {
