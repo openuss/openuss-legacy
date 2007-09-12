@@ -1,5 +1,6 @@
 package org.openuss.web.lecture;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,16 +16,22 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
+import org.openuss.documents.DocumentApplicationException;
+import org.openuss.documents.FileInfo;
+import org.openuss.documents.FolderInfo;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.UniversityInfo;
+import org.openuss.security.Roles;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
+import org.openuss.web.upload.UploadedDocument;
 
 
 /**
- * Backing bean for the institute registration. Is responsible starting the wizard, binding the values and registrating
- * the institute.
+ * Backing bean for the institute registration. Is responsible starting the 
+ * wizard, binding the values and registering the institute.
  * 
  * @author Kai Stettner
  *
@@ -59,7 +66,7 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		return Constants.INSTITUTE_REGISTRATION_STEP1_PAGE;
 	}
 	
-	public String registrate() throws DesktopException, LectureException {
+	public String registrate() throws DesktopException, LectureException, DocumentApplicationException, IOException {
 		logger.debug("Starting method registrate");
 		// connect institute to user
 		instituteInfo.setOwnerName(user.getName());
@@ -70,6 +77,7 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		Long instituteId = instituteService.create(instituteInfo, user.getId());		
 		instituteInfo.setId(instituteId);
 		
+		// automatically start the department application process
 		instituteService.applyAtDepartment(instituteId, departmentId, user.getId());
 
 		return Constants.INSTITUTE_PAGE;
@@ -173,8 +181,6 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		return departmentItems;
 	
 	}
-	
-
 	
 	public void processUniversitySelectChanged(ValueChangeEvent event) {
 		final Long universityId = (Long) event.getNewValue();

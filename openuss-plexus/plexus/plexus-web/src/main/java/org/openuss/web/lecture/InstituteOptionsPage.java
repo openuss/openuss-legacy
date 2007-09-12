@@ -17,20 +17,17 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.documents.DocumentApplicationException;
-import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.ApplicationInfo;
 import org.openuss.lecture.DepartmentInfo;
-import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
-import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
 /**
  * 
@@ -47,12 +44,6 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 
 	@Property (value="#{securityService}")
 	private SecurityService securityService;
-	
-	@Property (value="#{documentService}")
-	private DocumentService documentService;
-	
-	@Property(value = "#{uploadFileManager}")
-	private UploadFileManager uploadFileManager;
 	
 	private List<SelectItem> departmentItems;
 
@@ -95,7 +86,7 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		UploadedDocument uploaded = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 		if (uploaded != null) {
 			if (instituteInfo.getImageId() != null) {
-				documentService.removeFolderEntry(instituteInfo.getImageId());
+				getDocumentService().removeFolderEntry(instituteInfo.getImageId());
 			}
 			FileInfo imageFile = new FileInfo();
 				
@@ -105,15 +96,15 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 			imageFile.setFileSize(uploaded.getFileSize());
 			imageFile.setInputStream(uploaded.getInputStream());
 			
-			FolderInfo folder = documentService.getFolder(instituteInfo);
-			documentService.createFileEntry(imageFile, folder);
+			FolderInfo folder = getDocumentService().getFolder(instituteInfo);
+			getDocumentService().createFileEntry(imageFile, folder);
 			
 			permitRolesImageReadPermission(imageFile);
 			
 			instituteInfo.setImageId(imageFile.getId());
 
 			removeSessionBean(Constants.UPLOADED_FILE);
-			uploadFileManager.removeDocument(uploaded);
+			getUploadFileManager().removeDocument(uploaded);
 		}
 		
 		// save actual institute data
@@ -146,7 +137,7 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		if (instituteInfo.getImageId() != null) {
 			Long fileId = instituteInfo.getImageId();
 			instituteInfo.setImageId(null);
-			documentService.removeFolderEntry(fileId);
+			getDocumentService().removeFolderEntry(fileId);
 		}
 		instituteService.update(instituteInfo);
 		setSessionBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
@@ -270,21 +261,6 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		this.securityService = securityService;
 	}
 
-	public DocumentService getDocumentService() {
-		return documentService;
-	}
-
-	public void setDocumentService(DocumentService documentService) {
-		this.documentService = documentService;
-	}
-
-	public UploadFileManager getUploadFileManager() {
-		return uploadFileManager;
-	}
-
-	public void setUploadFileManager(UploadFileManager uploadFileManager) {
-		this.uploadFileManager = uploadFileManager;
-	}
 	public ApplicationInfo getApplicationInfo() {
 		return applicationInfo;
 	}
