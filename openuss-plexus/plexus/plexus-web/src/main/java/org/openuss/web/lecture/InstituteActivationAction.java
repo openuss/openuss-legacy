@@ -7,6 +7,7 @@ import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.lecture.LectureService;
 import org.openuss.registration.RegistrationCodeExpiredException;
 import org.openuss.registration.RegistrationCodeNotFoundException;
+import org.openuss.registration.RegistrationParentDepartmentDisabledException;
 import org.openuss.registration.RegistrationService;
 import org.openuss.web.Constants;
 
@@ -34,7 +35,7 @@ public class InstituteActivationAction extends BaseBean {
 			} catch (RegistrationCodeExpiredException e){
 				addError(i18n("activation_error_code_expired"));
 				return Constants.FAILURE;	
-			} catch (Exception e){
+			} catch (RegistrationParentDepartmentDisabledException e){
 				addError(i18n("message_institute_enabled_failed_department_disabled"));
 				return Constants.FAILURE;
 			}
