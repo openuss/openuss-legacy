@@ -3,7 +3,7 @@
 		<h3><font color="#003366">OpenUSS Bewerbungs Assistent</font></h3>
 		<p>
 			Das Institut <i>${institutename}</i> hat sich für die Mitgliedschaft bei dem 
-			Fachbereich <i>${departmentname}</i> beworben, 
+			Fachbereich <i>${departmentname}</i> beworben. 
 			Klicken Sie bitte auf den folgenden Link, um auf die Bewerbung zu reagieren:
 		</p>
 		<p>

@@ -75,7 +75,7 @@ public class InstituteDepartmentMailSenderAspectImpl {
 		parameters.put("institutename", application.getInstitute().getName());
 		parameters.put("departmentname", application.getDepartment().getName());
 		parameters.put("applyinguserfirstname", application.getApplyingUser().getFirstName());
-		parameters.put("applyingnuserlastname", application.getApplyingUser().getLastName());
+		parameters.put("applyinguserlastname", application.getApplyingUser().getLastName());
 		parameters.put("departmentapplicantlink", link);
 		
 		// Determine Recipients (Members of the Department)
@@ -131,7 +131,7 @@ public class InstituteDepartmentMailSenderAspectImpl {
 		parameters.put("institutename", application.getInstitute().getName());
 		parameters.put("departmentname", application.getDepartment().getName());
 		parameters.put("applyinguserfirstname", application.getApplyingUser().getFirstName());
-		parameters.put("applyingnuserlastname", application.getApplyingUser().getLastName());
+		parameters.put("applyinguserlastname", application.getApplyingUser().getLastName());
 		parameters.put("departmentapplicantlink", link);
 
 		// Determine Recipient (the user who created the application)
@@ -166,7 +166,7 @@ public class InstituteDepartmentMailSenderAspectImpl {
 		parameters.put("institutename", application.getInstitute().getName());
 		parameters.put("departmentname", application.getDepartment().getName());
 		parameters.put("applyinguserfirstname", application.getApplyingUser().getFirstName());
-		parameters.put("applyingnuserlastname", application.getApplyingUser().getLastName());
+		parameters.put("applyinguserlastname", application.getApplyingUser().getLastName());
 
 		// Determine Recipient (the user who created the application)
 		List<User> recipients = new ArrayList<User>(1);
