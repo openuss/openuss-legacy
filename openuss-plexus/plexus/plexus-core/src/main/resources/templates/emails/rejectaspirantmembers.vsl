@@ -6,13 +6,6 @@
 			<i>${organisationname}</i> has been rejected.
 		</p>
 		<p>
-			You may click on the following link to administrate your organisation:<br/>
-			<a href="${organisationlink}">${organisationlink}</a>
-		</p>
-		<p>
-			If the link above does not work, copy and paste the URL in a new browser window instead.
-		</p>
-		<p>
 			Thank you for using OpenUSS.
 		</p>
 		<p>

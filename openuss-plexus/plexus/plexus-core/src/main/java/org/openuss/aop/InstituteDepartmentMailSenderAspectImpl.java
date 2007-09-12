@@ -9,10 +9,10 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Application;
 import org.openuss.lecture.ApplicationDao;
-import org.openuss.lecture.ApplicationInfo;
+import org.openuss.lecture.Department;
 import org.openuss.lecture.DepartmentDao;
+import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
-import org.openuss.lecture.InstituteInfo;
 import org.openuss.messaging.MessageService;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
@@ -37,19 +37,31 @@ public class InstituteDepartmentMailSenderAspectImpl {
 	private MessageService messageService;
 	private SystemService systemService;
 	
-	public void sendApplyInstituteAtDepartmentMail (ApplicationInfo applicationInfo) {
+	public void sendApplyInstituteAtDepartmentMail (Long instituteId, Long departmentId, Long userId) {
 		
 		logger.debug("sendApplyInstituteAtDepartmentMail - Sending Email to User who apllied at the department");
 		
-		Validate.notNull(applicationInfo, "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
-				"applicationInfo cannot be null.");
-		Validate.notNull(applicationInfo.getId(), "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
-				"applicationInfo.id cannot be null.");
+		Validate.notNull(instituteId, "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
+				"instituteId cannot be null.");
+		Validate.notNull(departmentId, "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
+				"departmentId cannot be null.");
+		Validate.notNull(userId, "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
+				"userId cannot be null.");
+		
+		// Load Institute
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute, "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
+				"no institute found with the instituteId "+instituteId);
+		
+		// Load Department
+		Department department = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(department, "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
+				"no department found with the departmentId "+departmentId);
 		
 		// Get Application
-		Application application = (Application) this.getApplicationDao().load(applicationInfo.getId());
+		Application application = (Application) this.getApplicationDao().findByInstituteAndDepartment(institute, department);
 		Validate.notNull(application, "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
-				"no application found with the applicationInfo "+applicationInfo.getId());
+				"no application found with ths institute "+institute.getName()+" and the department "+department.getName());
 		
 		Validate.notNull(application.getDepartment(), "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
 				"department cannot be null.");

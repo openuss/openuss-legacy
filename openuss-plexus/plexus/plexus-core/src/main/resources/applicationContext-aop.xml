@@ -125,8 +125,8 @@
 			ref="instituteDepartmentMailSenderAspectBean">
 			<aop:after-returning
 				method="sendApplyInstituteAtDepartmentMail"
-				pointcut-ref="InstituteServiceApplyAtDepartmentPointcut"
-				arg-names="applicationInfo" />
+				pointcut-ref="InstituteServiceApplyAtDepartmentPointcut2"
+				arg-names="instituteId, departmentId, userId" />
 		</aop:aspect>
 
 		<aop:aspect id="acceptInstituteMailSenderAspect"
