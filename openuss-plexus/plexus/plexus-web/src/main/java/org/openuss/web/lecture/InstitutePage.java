@@ -332,8 +332,12 @@ public class InstitutePage extends AbstractLecturePage {
 	 */
 	public String applyForMembership() throws LectureException {
 		if (user != null && institute != null) {
+			try{
 			organisationService.addAspirant(instituteInfo.getId(), user.getId());
 			addMessage(i18n("institute_message_application_of_membership_send"));
+			}catch(Exception e)
+			{addMessage(i18n("institute_error_apply_member_to_institute"));}
+			
 		}
 		return Constants.SUCCESS;
 	}
