@@ -345,7 +345,7 @@ public class InstitutePage extends AbstractLecturePage {
 	 * @throws LectureException
 	 */
 	public Collection<NewsItemInfo> getCurrentNewsItems() {
-		return newsService.getCurrentNewsItems(institute, 10);
+		return newsService.getCurrentNewsItems(instituteInfo, 10);
 	}
 
 	public NewsService getNewsService() {
