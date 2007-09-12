@@ -85,7 +85,7 @@ public class AspirantsPage extends AbstractLecturePage {
 	private void acceptAspirants() {
 		for (UserInfo userInfo : acceptAspirants) {
 			try {
-				organisationService.addAspirant(instituteInfo.getId(), userInfo.getId());
+				organisationService.acceptAspirant(instituteInfo.getId(), userInfo.getId());
 				addMessage(i18n("institute_add_member_to_institute", userInfo.getUsername()));
 			} catch (Exception e) {
 				logger.error(e);
