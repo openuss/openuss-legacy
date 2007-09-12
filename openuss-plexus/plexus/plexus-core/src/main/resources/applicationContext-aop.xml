@@ -190,7 +190,7 @@
 				pointcut-ref="InstituteServiceDeleteCompleteInstituteTreePointcut"
 				arg-names="instituteId" />
 		</aop:aspect>
-<!--  
+
 		<aop:aspect id="universityIndexAspect"
 			ref="universityIndexAspectBean">
 			<aop:after-returning method="createUniversityIndex"
@@ -275,7 +275,7 @@
 				pointcut="execution(* org..MessageJobDaoBase.update(org.openuss.messaging.MessageJob)) and args(messageJob)"
 				arg-names="messageJob" />
 		</aop:aspect>
--->
+
 	</aop:config>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
