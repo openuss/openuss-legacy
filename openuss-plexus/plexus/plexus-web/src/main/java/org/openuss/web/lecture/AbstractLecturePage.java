@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
+import org.openuss.documents.DocumentService;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseType;
@@ -22,6 +23,7 @@ import org.openuss.lecture.UniversityService;
 import org.openuss.security.SecurityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.upload.UploadFileManager;
 
 /**
  * Abstract Lecture Page
@@ -69,6 +71,9 @@ public abstract class AbstractLecturePage extends BasePage {
 	
 	@Property(value = "#{courseTypeService}")
 	protected CourseTypeService courseTypeService;
+	
+	@Property (value="#{documentService}")
+	private DocumentService documentService;
 
 	@Property(value = "#{sessionScope.courseType}")
 	protected CourseType courseType;
@@ -78,6 +83,9 @@ public abstract class AbstractLecturePage extends BasePage {
 	
 	@Property(value = "#{courseService}")
 	protected CourseService courseService;
+	
+	@Property(value = "#{uploadFileManager}")
+	private UploadFileManager uploadFileManager;
 
 	/**
 	 * Refreshing institute entity
@@ -241,6 +249,21 @@ public abstract class AbstractLecturePage extends BasePage {
 
 	public void setOrganisationService(OrganisationService organisationService) {
 		this.organisationService = organisationService;
+	}	
+
+	public DocumentService getDocumentService() {
+		return documentService;
+	}
+
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
 	}
 	
+	public UploadFileManager getUploadFileManager() {
+		return uploadFileManager;
+	}
+
+	public void setUploadFileManager(UploadFileManager uploadFileManager) {
+		this.uploadFileManager = uploadFileManager;
+	}
 }
