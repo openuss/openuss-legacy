@@ -126,7 +126,7 @@ public class AspirantsPage extends AbstractLecturePage {
 		@Override 
 		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<UserInfo> aspirants = lectureService.getInstituteAspirants(instituteInfo.getId());
+				List<UserInfo> aspirants = organisationService.findAllAspirants(instituteInfo.getId());
 				page = new DataPage<UserInfo>(aspirants.size(),0,aspirants);
 				sort(aspirants);
 			}
