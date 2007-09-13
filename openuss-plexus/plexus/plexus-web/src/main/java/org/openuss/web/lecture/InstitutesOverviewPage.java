@@ -22,7 +22,6 @@ import org.openuss.lecture.DepartmentServiceException;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.InstituteServiceException;
-import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -41,9 +40,7 @@ public class InstitutesOverviewPage extends BasePage{
 	
 	private InstituteTable institutesOverview = new InstituteTable();
 	
-	@Property(value = "#{lectureService}")
-	private LectureService lectureService;
-	
+
 	@Property(value = "#{instituteService}")
 	private InstituteService instituteService;
 
@@ -195,14 +192,7 @@ public class InstitutesOverviewPage extends BasePage{
 		}
 	}
 
-	public LectureService getLectureService() {
-		return lectureService;
-	}
 
-	public void setLectureService(LectureService lectureService) {
-		this.lectureService = lectureService;
-	}
-	
 	public InstituteService getInstituteService() {
 		return instituteService;
 	}

@@ -15,7 +15,6 @@ import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.LectureException;
-import org.openuss.lecture.LectureService;
 import org.openuss.lecture.OrganisationService;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.lecture.UniversityInfo;
@@ -53,9 +52,6 @@ public abstract class AbstractLecturePage extends BasePage {
 	
 	@Property(value = "#{universityInfo}")
 	protected UniversityInfo universityInfo;
-
-	@Property(value = "#{lectureService}")
-	protected LectureService lectureService;
 	
 	@Property(value = "#{organisationService}")
 	protected OrganisationService organisationService;
@@ -147,14 +143,7 @@ public abstract class AbstractLecturePage extends BasePage {
 		this.instituteInfo = instituteInfo;
 	}
 
-	public LectureService getLectureService() {
-		return lectureService;
-	}
 
-	public void setLectureService(LectureService lectureService) {
-		this.lectureService = lectureService;
-	}
-	
 	public DepartmentInfo getDepartmentInfo() {
 		return departmentInfo;
 	}
