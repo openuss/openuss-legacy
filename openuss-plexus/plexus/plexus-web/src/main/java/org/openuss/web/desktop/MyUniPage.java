@@ -430,8 +430,10 @@ public class MyUniPage extends BasePage {
 					newItem.setUrl(institutesBasePath + "?institute=" + instituteInfo.getId());
 					Integer numberOfCurrentCourses = instituteInfo.getNumberOfCurrentCourses();
 					if(numberOfCurrentCourses != null && numberOfCurrentCourses > 0)
-						newItem.setMetaInformation(numberOfCurrentCourses.toString() + " " + i18n("MYUNI_INSITUTE_COURSECOUNT_STRING"));
-					
+						if (numberOfCurrentCourses.equals(1))
+							newItem.setMetaInformation(numberOfCurrentCourses.toString() + " " + i18n("MYUNI_INSITUTE_COURSECOUNT_STRING_SINGULAR"));
+						else
+							newItem.setMetaInformation(numberOfCurrentCourses.toString() + " " + i18n("MYUNI_INSITUTE_COURSECOUNT_STRING"));
 					if(instituteInfo.isBookmarked())
 						newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId + "&remove_institute=" + instituteInfo.getId());
 
