@@ -429,7 +429,7 @@ public class MyUniPage extends BasePage {
 					newItem.setTitle(instituteInfo.getName());
 					newItem.setUrl(institutesBasePath + "?institute=" + instituteInfo.getId());
 					Integer numberOfCurrentCourses = instituteInfo.getNumberOfCurrentCourses();
-					if(numberOfCurrentCourses != null)
+					if(numberOfCurrentCourses != null && numberOfCurrentCourses > 0)
 						newItem.setMetaInformation(numberOfCurrentCourses.toString() + " " + i18n("MYUNI_INSITUTE_COURSECOUNT_STRING"));
 					
 					if(instituteInfo.isBookmarked())
