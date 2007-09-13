@@ -72,6 +72,16 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 		if(selectedUniversity == null)
 			selectedUniversity = chooseUniversity();
 */	
+		// Preselect the first university
+		List<UniversityInfo> allEnabledUniversities;
+		allEnabledUniversities = universityService.findUniversitiesByEnabled(true);
+		
+		if(allEnabledUniversities != null && !allEnabledUniversities.isEmpty())
+		{
+			selectedUniversity = allEnabledUniversities.get(0).getId();
+		}
+		
+		
 		return Constants.INSTITUTE_REGISTRATION_STEP1_PAGE;
 	}
 	
