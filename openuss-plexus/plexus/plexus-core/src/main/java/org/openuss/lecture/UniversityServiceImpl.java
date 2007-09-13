@@ -579,6 +579,11 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 		return periodsWithActiveCourses;
 	}
+	
+	@Override
+	public void handleRemovePeriodAndCourses (Long periodId) {
+		// TODO Auto-generated method stub
+	}
 
 	/*------------------- private methods -------------------- */
 
