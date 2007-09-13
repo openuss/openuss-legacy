@@ -479,31 +479,12 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 			allCoursesOfInstitute.addAll(courseType.getCourses());
 		}
 		
-		List<Course> courses = new ArrayList<Course>();
+		List<CourseInfo> courses = new ArrayList<CourseInfo>();
 		for (Course course : allCoursesOfInstitute) {
 			if (course.getPeriod().isActive() && course.isEnabled() == enabled) {
-				courses.add(course);
+				courses.add(this.getCourseDao().toCourseInfo(course));
 			}
 		}
-		/*
-		List<Period> periods = this.getPeriodDao().findByUniversity(institute.getDepartment().getUniversity());
-		List<CourseInfo> courses = new ArrayList<CourseInfo>();
-		Iterator iter = periods.iterator();
-		while (iter.hasNext()) {
-			Period period = (Period) iter.next();
-			if (period.isActive()) {
-				Iterator courseIter = period.getCourses().iterator();
-				while (courseIter.hasNext()) {
-					Course course = (Course) courseIter.next();
-					if (course.isEnabled() == enabled) {
-						if (course.getCourseType().getInstitute().getId() == instituteId) {
-							courses.add(this.getCourseDao().toCourseInfo(course));
-						}
-					}
-				}
-			}
-		}
-		*/
 		return courses;
 		
 	}
