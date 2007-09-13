@@ -93,9 +93,6 @@ public class InstituteRegistrationController extends AbstractLecturePage{
 	public String registrate() throws DesktopException, LectureException, DocumentApplicationException, IOException {
 		logger.debug("Starting method registrate");
 		
-		// connect institute to user
-		instituteInfo.setOwnerName(user.getName());
-		
 		// create institute
 		instituteInfo.setEnabled(false);
 
