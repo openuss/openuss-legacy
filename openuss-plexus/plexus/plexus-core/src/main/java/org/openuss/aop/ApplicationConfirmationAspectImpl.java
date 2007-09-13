@@ -67,7 +67,7 @@ public class ApplicationConfirmationAspectImpl {
 
 					try {
 						hasPermission = securityService.hasPermission(department,
-								new Integer[] { LectureAclEntry.INSTITUTE_ADMINISTRATION });
+								new Integer[] { LectureAclEntry.DEPARTMENT_ADMINISTRATION });
 					} catch (Exception e) {
 						logger.debug("--> Problems during Permission validation, skipping Confirmation <--");
 					}
