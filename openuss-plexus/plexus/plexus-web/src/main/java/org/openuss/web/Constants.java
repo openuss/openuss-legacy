@@ -188,6 +188,7 @@ public class Constants {
 	// search and extended search navigation outcomes and combobox long constants
 	public static final String SEARCH_RESULT = "search_result";
 	public static final String EXTENDED_SEARCH = "extended_search";
+	public static final String EXTENDED_SEARCH_VIEW = "extendedSearch";
 	public static final String EXTENDED_SEARCH_RESULT = "extended_search_result";
 	public static final Long EXTENDED_SEARCH_GET_ALL = -1L;
 	public static final Long EXTENDED_SEARCH_NO_RECORDS_FOUND = -2L;

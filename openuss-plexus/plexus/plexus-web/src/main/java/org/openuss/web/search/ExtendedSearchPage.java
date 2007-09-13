@@ -140,6 +140,19 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		return Constants.EXTENDED_SEARCH_RESULT;
 	}
 	
+	public String initSearchForm(){
+		extendedSearchResults.setTextToSearch("");
+		extendedSearchResults.setTitleOnly(false);
+		extendedSearchResults.setOfficialOnly(false);
+		extendedSearchResults.setResultTypeId(new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE));
+		resetUniversities();
+		extendedSearchResults.setDepartments(defaultSelectItemList());
+		extendedSearchResults.setInstitutes(defaultSelectItemList());
+		extendedSearchResults.setCourseTypes(defaultSelectItemList());
+		extendedSearchResults.setPeriods(defaultSelectItemList());
+		return Constants.EXTENDED_SEARCH_VIEW;
+	}
+	
 	/* "ON CHANGE" EVENT HANDLER */
 	
 	
