@@ -128,7 +128,7 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 	public void addMember(ActionEvent event) throws LectureException {
 
 		if (logger.isDebugEnabled()) {
-			logger.debug("add a member to university");
+			logger.debug("add a member to department");
 		}
 		try{
 		logger.debug(username);
@@ -136,8 +136,8 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		logger.debug(departmentInfo.getId());
 		logger.debug(user.getId());
 		organisationService.addMember(departmentInfo.getId(), user.getId());
-		logger.info(departmentGroups.size());
-		logger.info(departmentGroups.get(0).getId());
+		logger.debug(departmentGroups.size());
+		logger.debug(departmentGroups.get(0).getId());
 		logger.debug(departmentGroups.get(0).getName());
 		organisationService.addUserToGroup(user.getId(), departmentGroups.get(0).getId());
 		addMessage(i18n("department_add_member_to_department", username));		
