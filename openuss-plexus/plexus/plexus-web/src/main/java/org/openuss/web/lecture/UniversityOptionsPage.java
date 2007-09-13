@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.faces.event.ActionEvent;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -15,6 +16,7 @@ import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.UniversityInfo;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.acl.LectureAclEntry;
@@ -31,6 +33,8 @@ import org.openuss.web.upload.UploadedDocument;
 @Bean(name = "views$secured$lecture$universityoptions", scope = Scope.REQUEST)
 @View
 public class UniversityOptionsPage extends AbstractUniversityPage {
+	
+	private static final Logger logger = Logger.getLogger(UniversityOptionsPage.class);
 
 	private static final long serialVersionUID = -202776319652385870L;
 	
@@ -111,6 +115,31 @@ public class UniversityOptionsPage extends AbstractUniversityPage {
 		}
 		universityService.update(universityInfo);
 		setSessionBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
+	}
+	
+	/**
+	 * Store the selected university into session scope and go to university disable confirmation page.
+	 * @return Outcome
+	 */
+	public String selectUniversityAndConfirmDisable() {
+		logger.debug("Starting method selectUniversityAndConfirmDisable");	
+		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
+		
+		return Constants.UNIVERSITY_CONFIRM_DISABLE_PAGE;
+	}
+	
+	/**
+	 * Enables the chosen university. This is just evident for the search indexing.
+	 * @return Outcome
+	 */
+	public String enableUniversity() {
+		logger.debug("Starting method enableUniversity");
+		// setOrganisationStatus(true) = Enabled
+		// setOrganisationStatus(false) = Disbled
+		universityService.setUniversityStatus(universityInfo.getId(), true);
+		
+		addMessage(i18n("message_university_enabled"));
+		return Constants.SUCCESS;
 	}
 
 	public DocumentService getDocumentService() {

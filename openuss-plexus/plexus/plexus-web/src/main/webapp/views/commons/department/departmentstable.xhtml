@@ -62,7 +62,7 @@
 					rendered="#{not views$public$department$departments.bookmarked}">
 				</plexus:command>	
 			</s:authorize>
-			<s:authorize ifAllGranted="ROLE_ADMIN">
+			<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
 				<h:commandButton 
 					action = "#{views$public$department$departments.selectDepartmentAndConfirmDisable}"
 					styleClass="button_remove"
@@ -70,8 +70,8 @@
 					hint="#{msg.department_command_disable_hint}"
 					rendered="#{bean.enabled}">
 				</h:commandButton>
-			</s:authorize>
-			<s:authorize ifAllGranted="ROLE_ADMIN">
+			</s:acl>
+			<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
 				<h:commandButton 
 					action = "#{views$public$department$departments.enableDepartment}"
 					styleClass="button_remove"
@@ -79,7 +79,7 @@
 					hint="#{msg.department_command_enable_hint}"
 					rendered="#{not bean.enabled}">
 				</h:commandButton>
-			</s:authorize>
+			</s:acl>
 			<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
 				<h:commandButton
 					action = "#{views$public$department$departments.selectDepartmentAndConfirmRemove}"

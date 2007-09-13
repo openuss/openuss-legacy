@@ -34,6 +34,20 @@
 				<o:block>
 					<h:commandButton value="${msg.save}" action = "#{views$secured$lecture$departmentoptions.saveDepartment}" styleClass="button_save"/>
 					<h:commandButton value="${msg.cancel}" action="department" styleClass="button_cancel" immediate="true"/>
+					<h:commandButton 
+					action = "#{views$secured$lecture$departmentoptions.selectDepartmentAndConfirmDisable}"
+					styleClass="button_save"
+					value="#{msg.department_command_disable}"
+					hint="#{msg.department_command_disable_hint}"
+					rendered="#{departmentInfo.enabled}">
+					</h:commandButton>
+					<h:commandButton 
+					action = "#{views$secured$lecture$departmentoptions.enableDepartment}"
+					styleClass="button_save"
+					value="#{msg.department_command_enable}"
+					hint="#{msg.department_command_enable_hint}"
+					rendered="#{!(departmentInfo.enabled)}">
+					</h:commandButton>
 		  		</o:block>
 	  		</h:form>
   		</ui:define>

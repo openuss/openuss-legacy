@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.faces.event.ActionEvent;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -14,6 +15,7 @@ import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.lecture.DepartmentServiceException;
 import org.openuss.lecture.LectureException;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
@@ -32,6 +34,8 @@ import org.openuss.web.upload.UploadedDocument;
 public class DepartmentOptionsPage extends AbstractDepartmentPage {
 
 	private static final long serialVersionUID = -202799999652385870L;
+	
+	private static final Logger logger = Logger.getLogger(DepartmentOptionsPage.class);
 	
 	@Property (value="#{securityService}")
 	private SecurityService securityService;
@@ -109,6 +113,38 @@ public class DepartmentOptionsPage extends AbstractDepartmentPage {
 		}
 		departmentService.update(departmentInfo);
 		setSessionBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
+	}
+	
+	/**
+	 * Store the selected department into session scope and go to department
+	 * disable confirmation page.
+	 * 
+	 * @return Outcome
+	 */
+	public String selectDepartmentAndConfirmDisable() {
+		logger.debug("Starting method selectDepartmentAndConfirmDisable");
+		setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);
+
+		return Constants.DEPARTMENT_CONFIRM_DISABLE_PAGE;
+	}
+
+	/**
+	 * Enables the chosen department. This is just evident for the search
+	 * indexing.
+	 * 
+	 * @return Outcome
+	 */
+	public String enableDepartment() {
+		logger.debug("Starting method enableDepartment");
+		try {
+			departmentService.setDepartmentStatus(departmentInfo.getId(), true);
+			addMessage(i18n("message_department_enabled"));
+		} catch(DepartmentServiceException iae) {
+			addMessage(i18n("message_department_enabled_failed_university_disabled"));
+		} catch(Exception ex){
+			addMessage(i18n("message_department_enabled_failed"));
+		}
+		return Constants.SUCCESS;
 	}
 	
 	public DocumentService getDocumentService() {
