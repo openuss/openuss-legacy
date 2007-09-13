@@ -2,7 +2,7 @@
 	<body>
 		<h3><font color="#003366">OpenUSS Email application notifier</font></h3>
 			The institute, <i>${institutename}</i> has requested applicationship for 
-			<i>${departmentename}</i>.
+			<i>${departmentname}</i>.
 			Please click on the following link to respond to this request:<br/>
 		<p>
 		<a href="${departmentapplicantlink}">${departmentapplicantlink}</a>
