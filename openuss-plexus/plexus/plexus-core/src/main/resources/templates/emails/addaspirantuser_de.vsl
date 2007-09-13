@@ -2,13 +2,14 @@
 	<body>
 		<p>
 			<h3><font color="#003366">OpenUSS Benutzerverwaltung</font></h3>
-			Sie, <i>${username} (${userfirstname} ${userlastname})</i>, haben sich erfolgreich bei der Organisation <i>${organisationname}</i> beworben.
+			Hallo <i>${username} (${userfirstname} ${userlastname})</i>,<br>
+			Sie haben sich erfolgreich bei der Organisation <i>${organisationname}</i> beworben.
 		</p>
 		<p>
 			Die Administratoren der Organisation werden Ihre Bewerbung nun prüfen.
 		</p>
 		<p>
-			Viel Spaß mit OpenUSS
+			Viel Spaß mit OpenUSS!
 		</p>
 		<p>
 			<small>

@@ -2,8 +2,8 @@
 	<body>
 		<p>
 			<h3><font color="#003366">OpenUSS User Administration</font></h3>
-			You, <i>${username} (${userfirstname} ${userlastname})</i>, have been added to the Organisation 
-			<i>${organisationname}</i>.
+			Hello <i>${username} (${userfirstname} ${userlastname})</i>,<br>
+			you have been added to the Organisation <i>${organisationname}</i>.
 		</p>
 		<p>
 			You may click on the following link to administrate your organisation:<br/>
@@ -13,7 +13,7 @@
 			If the link above does not work, copy and paste the URL in a new browser window instead.
 		</p>
 		<p>
-			Thank you for using OpenUSS.
+			Thank you for using OpenUSS!
 		</p>
 		<p>
 			<small>This is a post-only mailing. Replies to this message are not monitored or answered.</small>

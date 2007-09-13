@@ -1,19 +1,19 @@
 <html>
 	<body>
-		<h3><font color="#003366">OpenUSS Diskussions-Benachrichtigungs Assistent</font></h3>
+		<p>
+			<h3><font color="#003366">OpenUSS Diskussions-Benachrichtigungs Assistent</font></h3>
+		</p>
 		<p>
 			Sie bekommen diese Benachrichtigungsemail, weil es in dem Thema <i>${topicname}</i> eine Ver‰nderung gab. 
-			Klicken Sie bitte auf den folgenden Link:
+			Klicken Sie bitte auf den folgenden Link:<br/>
+			<a href="${topiclink}">${topiclink}</a>
 		</p>
 		<p>
-		<a href="${topiclink}">${topiclink}</a>
-		</p>
-		<p>
-			Sollte das Anklicken des Links nicht funktionieren, so geben Sie die Adresse in die
+			Sollte das Anklicken des Links nicht funktionieren, so geben Sie bitte die Adresse in die
 			Adressleiste Ihres Browser ein.
 		</p>
 		<p>
-			Viel Spaﬂ mit OpenUSS
+			Viel Spaﬂ mit OpenUSS!
 		</p>
 		<p>
 			<small>
