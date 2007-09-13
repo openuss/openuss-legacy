@@ -22,14 +22,12 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.InstituteGroup;
 import org.openuss.lecture.InstituteMember;
 import org.openuss.lecture.InstituteSecurity;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.OrganisationService;
 import org.openuss.lecture.OrganisationServiceException;
-import org.openuss.security.Group;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
@@ -177,13 +175,13 @@ public class InstituteMembersPage extends AbstractLecturePage {
 		User user = securityService.getUserByName(username);
 		try {
 			organisationService.addMember(instituteInfo.getId(), user.getId());
-			addMessage(i18n("institute_add_member_to_institute", username));
+			addMessage(i18n("organisation_add_member_to_institute", username));
 		} catch (OrganisationServiceException e) {
 			logger.debug(e.getMessage());
-			addError(i18n("institute_error_apply_member_at_institute_already_applied"));
+			addError(i18n("organisation_error_apply_member_at_institute_already_applied"));
 		} catch (Exception e){
 			logger.debug(e.getMessage());
-			addError("institute_error_apply_member_at_institute");
+			addError(i18n("organisation_error_apply_member_at_institute"));
 		}
 	}
 
