@@ -24,7 +24,6 @@ import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
-import org.openuss.lecture.UniversityInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 
@@ -35,7 +34,7 @@ import org.openuss.web.course.AbstractCoursePage;
 @View
 public class InstituteCoursesPage extends AbstractCoursePage {
 
-	private static final Logger logger = Logger.getLogger(InstituteCoursesPage.class);
+	public static final Logger logger = Logger.getLogger(InstituteCoursesPage.class);
 
 	private LocalDataModelCourseTypes dataCourseTypes = new LocalDataModelCourseTypes();
 	private LocalDataModelCourses dataCourses = new LocalDataModelCourses();
@@ -46,7 +45,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	private List<SelectItem> instituteCourseTypeItems;
 	private List<CourseTypeInfo> instituteCourseTypes;
 	private Boolean renderCourseNew = false;
-	private Boolean renderCourseTypeEditNew = false;
+	public static Boolean renderCourseTypeEditNew = false;
 	private List<PeriodInfo> periodInfos = null;
 	private Long universityId = 0l;
 	private Long departmentId = 0l;
@@ -56,6 +55,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	private ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
 	
 	@Prerender
+	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws LectureException, Exception {
 		super.prerender();
 		
@@ -122,7 +122,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		
 		courseInfo.setAccessType(AccessType.CLOSED);
 		
-		Long courseId = courseService.create(courseInfo);
+		courseService.create(courseInfo);
 		
 		addMessage(i18n("institute_message_persist_coursetype_succeed"));
 		
@@ -137,7 +137,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	public String addCourseType() {
 		
 		courseTypeInfo = new CourseTypeInfo();
-		this.renderCourseTypeEditNew = true;
+		renderCourseTypeEditNew = true;
 		
 		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
 		return Constants.SUCCESS;
@@ -163,7 +163,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 			
 		} else {
 			logger.debug("selected courseType "+courseTypeInfo.getName());
-			this.renderCourseTypeEditNew = true;
+			renderCourseTypeEditNew = true;
 			return Constants.SUCCESS;
 		}
 	}
@@ -178,7 +178,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		
 		courseInfo.setAccessType(AccessType.OPEN);
 		
-		Long courseId = courseService.create(courseInfo);
+		courseService.create(courseInfo);
 				
 		addMessage(i18n("institute_message_persist_coursetype_succeed"));
 		
@@ -200,7 +200,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		if (courseTypeInfo.getId() == null) {
 			
 			courseTypeInfo.setInstituteId(instituteInfo.getId());
-			Long courseTypeId = courseTypeService.create(courseTypeInfo);
+			courseTypeService.create(courseTypeInfo);
 						
 			addMessage(i18n("institute_message_add_coursetype_succeed"));
 		} else {
@@ -210,7 +210,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		
 		removeSessionBean(Constants.COURSE_TYPE_INFO);
 		courseTypeInfo = null;
-		this.renderCourseTypeEditNew = false;
+		renderCourseTypeEditNew = false;
 		
 		return Constants.SUCCESS;
 	}
@@ -222,7 +222,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	 */
 	public String cancelCourseType() {
 		logger.debug("cancelCourseType()");
-		this.renderCourseTypeEditNew = false;
+		renderCourseTypeEditNew = false;
 		removeSessionBean(Constants.COURSE_TYPE_INFO);
 		return Constants.SUCCESS;
 	}
@@ -434,6 +434,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	 * Gets all course types of the institute.
 	 * @return outcome 
 	 */
+	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getCourseTypesOfInstitute() {
 		
 		instituteCourseTypeItems = new ArrayList<SelectItem>();
@@ -479,6 +480,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		private DataPage<CourseTypeInfo> page;
 
 		@Override
+		@SuppressWarnings( { "unchecked" })
 		public DataPage<CourseTypeInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService.findCourseTypesByInstitute(instituteInfo.getId()));
@@ -498,6 +500,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		private DataPage<CourseInfo> page;
 
 		@Override
+		@SuppressWarnings( { "unchecked" })
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<CourseInfo> courses = new ArrayList<CourseInfo>();
@@ -531,7 +534,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	}
 
 	public void setRenderCourseTypeEditNew(Boolean renderCourseTypeEditNew) {
-		this.renderCourseTypeEditNew = renderCourseTypeEditNew;
+		InstituteCoursesPage.renderCourseTypeEditNew = renderCourseTypeEditNew;
 	}
 
 }

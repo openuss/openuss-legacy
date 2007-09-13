@@ -112,6 +112,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#getAssistants(org.openuss.lecture.Course)
 	 */
+	@SuppressWarnings( { "unchecked" })
 	private List<CourseMemberInfo> getAssistants(Course course) throws Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course,
 				CourseMemberType.ASSISTANT);
@@ -120,6 +121,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#getAspirants(org.openuss.lecture.Course)
 	 */
+	@SuppressWarnings( { "unchecked" })
 	protected List<CourseMemberInfo> handleGetAspirants(Course course) throws Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course,
 				CourseMemberType.ASPIRANT);
@@ -128,6 +130,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#getParticipants(org.openuss.lecture.Course)
 	 */
+	@SuppressWarnings( { "unchecked" })
 	protected List<CourseMemberInfo> handleGetParticipants(Course course) throws Exception {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course,
 				CourseMemberType.PARTICIPANT);

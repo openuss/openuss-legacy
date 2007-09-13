@@ -13,6 +13,7 @@ import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.CourseTypeService;
 import org.openuss.lecture.CourseTypeServiceException;
 import org.openuss.web.Constants;
+import org.openuss.web.lecture.InstituteCoursesPage;
 
 /**
  * Checks whether or not the entered shortcut is already in use or not.
@@ -32,7 +33,6 @@ public class CourseTypeShortcutValidator extends BaseBean implements Validator {
 		final String shortcut = (String) value;
 		CourseTypeService courseTypeService = (CourseTypeService) getBean(Constants.COURSE_TYPE_SERVICE);
 		try {
-			// TODO courseType parameter should be defined through property of validator
 			CourseTypeInfo courseTypeInfo = (CourseTypeInfo) getSessionBean(Constants.COURSE_TYPE_INFO);
 			boolean unique = courseTypeService.isNoneExistingCourseTypeShortcut(courseTypeInfo, shortcut);
 			if (!unique) {
@@ -42,6 +42,8 @@ public class CourseTypeShortcutValidator extends BaseBean implements Validator {
 			}
 		} catch (CourseTypeServiceException e) {
 			logger.error(e);
+			// reset renderBoolean --> courseTypeEdit form is still visible
+			InstituteCoursesPage.renderCourseTypeEditNew = true;
 			((UIInput) component).setValid(false);
 			addError(i18n(e.getMessage()));	
 		}
