@@ -473,7 +473,19 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 				+ "department cannot be null.");
 		Validate.notNull(institute.getDepartment().getUniversity(),
 				"CourseService.handleFindCoursesByActivePeriodsAndEnabled -" + "university cannot be null.");
-
+		
+		List<Course> allCoursesOfInstitute = new ArrayList<Course>();
+		for (CourseType courseType : institute.getCourseTypes()) {
+			allCoursesOfInstitute.addAll(courseType.getCourses());
+		}
+		
+		List<Course> courses = new ArrayList<Course>();
+		for (Course course : allCoursesOfInstitute) {
+			if (course.getPeriod().isActive() && course.isEnabled() == enabled) {
+				courses.add(course);
+			}
+		}
+		/*
 		List<Period> periods = this.getPeriodDao().findByUniversity(institute.getDepartment().getUniversity());
 		List<CourseInfo> courses = new ArrayList<CourseInfo>();
 		Iterator iter = periods.iterator();
@@ -484,12 +496,16 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 				while (courseIter.hasNext()) {
 					Course course = (Course) courseIter.next();
 					if (course.isEnabled() == enabled) {
-						courses.add(this.getCourseDao().toCourseInfo(course));
+						if (course.getCourseType().getInstitute().getId() == instituteId) {
+							courses.add(this.getCourseDao().toCourseInfo(course));
+						}
 					}
 				}
 			}
 		}
+		*/
 		return courses;
+		
 	}
 
 	@Override
