@@ -112,7 +112,10 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 				return Constants.SUCCESS;
 		  }
 		  		  
-		  return Constants.SUCCESS;
+		  if(member.getUsername()!=user.getUsername())
+			  return Constants.DEPARTMENT;
+		  else
+			   return Constants.SUCCESS;
 		
 	}
 

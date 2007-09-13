@@ -157,7 +157,11 @@ public class InstituteMembersPage extends AbstractLecturePage {
 		
 
 		addMessage(i18n("institute_auth_message_removed_member",new Object[]{member.getFirstName(),member.getLastName(),member.getUsername()}));
-		return Constants.SUCCESS;
+		  if(member.getUsername()!=user.getUsername())
+			  return Constants.INSTITUTE;
+		  else
+			   return Constants.SUCCESS;
+		
 	}
 
 	/**

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
+import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -96,6 +97,7 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 		  logger.debug("removeUserFromGroup");
 		  logger.debug(universityGroups.get(0).getName());
 		  //remove an user from an organisation
+		  
 		  try{
 			  organisationService.removeMember(universityInfo.getId(), member.getId());
 			  }
@@ -104,6 +106,7 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 			  		addError(i18n("auth_message_error_removed_member"));
 					return Constants.SUCCESS;
 			  }
+
 		// remove an user from all his groups  
 		  try{
 			  organisationService.removeUserFromGroup(member.getId(),universityGroups.get(0).getId());
@@ -113,8 +116,10 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 				addError(i18n(e.getMessage()));
 				return Constants.SUCCESS;
 		  }
-		  		  
-		  return Constants.SUCCESS;
+		  if(member.getUsername()!=user.getUsername())
+			  return Constants.UNIVERSITY;
+		  else
+			   return Constants.SUCCESS;
 		 
 		
 	}
