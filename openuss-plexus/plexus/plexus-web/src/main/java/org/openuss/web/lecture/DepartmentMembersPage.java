@@ -17,6 +17,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.OrganisationService;
+import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.security.GroupItem;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
@@ -141,8 +142,13 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		logger.debug(departmentGroups.get(0).getName());
 		organisationService.addUserToGroup(user.getId(), departmentGroups.get(0).getId());
 		addMessage(i18n("department_add_member_to_department", username));		
-		}catch(Exception e){;}
-		try{
+		} catch (OrganisationServiceException e) {
+			logger.debug(e.getMessage());
+			addError(i18n("organisation_error_apply_member_at_department_already_applied"));
+		} catch (Exception e){
+			logger.debug(e.getMessage());
+			addError(i18n("organisation_error_apply_member_at_department"));
+		} try{
 			DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId());
 			desktopService2.linkDepartment(desktopInfo.getId(), departmentInfo.getId());}
 			catch(Exception e){

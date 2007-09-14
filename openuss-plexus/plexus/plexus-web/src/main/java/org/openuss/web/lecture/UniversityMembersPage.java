@@ -20,6 +20,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.OrganisationService;
+import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.security.GroupItem;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
@@ -147,8 +148,13 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 		logger.debug(universityGroups.get(0).getName());
 		organisationService.addUserToGroup(user.getId(), universityGroups.get(0).getId());
 		addMessage(i18n("university_add_member_to_university", username));
+		} catch (OrganisationServiceException e) {
+			logger.debug(e.getMessage());
+			addError(i18n("organisation_error_apply_member_at_university_already_applied"));
+		} catch (Exception e){
+			logger.debug(e.getMessage());
+			addError(i18n("organisation_error_apply_member_at_university"));
 		}
-		catch(Exception e){;}
 		//link university to desktop
 		try{
 		DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId());
