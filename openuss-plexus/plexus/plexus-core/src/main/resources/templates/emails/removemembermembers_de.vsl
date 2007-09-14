@@ -2,7 +2,8 @@
 	<body>
 		<p>
 			<h3><font color="#003366">OpenUSS Benutzerverwaltung</font></h3>
-			Der Benutzer <i>${username} (${userfirstname} ${userlastname})</i> wurde soeben erfolgreich aus Ihrer Organisation  
+			Hallo <i>${organisationname}</i> - Administratoren,
+			der Benutzer <i>${username} (${userfirstname} ${userlastname})</i> wurde soeben erfolgreich aus Ihrer Organisation  
 			<i>${organisationname}</i> entfernt.
 		</p>
 		<p>

@@ -2,7 +2,8 @@
 	<body>
 		<p>
 			<h3><font color="#003366">OpenUSS User Administration</font></h3>
-			The user <i>${username} (${userfirstname} ${userlastname})</i> has been added to your organisation 
+			Dear <i>${organisationname}</i> - administrators,
+			the user <i>${username} (${userfirstname} ${userlastname})</i> has been added to your organisation 
 			<i>${organisationname}</i>.
 		</p>
 		<p>
@@ -10,10 +11,10 @@
 			<a href="${courseapplicantlink}">${organisationlink}</a>
 		</p>
 		<p>
-			If clicking the above link does not work, please copy and paste the URL in a new browser window instead.
+			If the link above does not work, copy and paste the URL in a new browser window instead.
 		</p>
 		<p>
-			Thank you for using OpenUSS!
+			Thank you for using OpenUSS.
 		</p>
 		<p>
 			<small>This is a post-only mailing. Replies to this message are not monitored or answered.</small>

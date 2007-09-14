@@ -2,8 +2,9 @@
 	<body>
 		<p>
 			<h3><font color="#003366">OpenUSS User Administration</font></h3>
-			Hallo <i>(${applyinguserfirstname} ${applyinguserlastname})</i>, your application for joining the institute ${institutename} to the department  
-			<i>${departmentname}</i> has been successfully send to the department administrators. You will get informed when your
+			Dear <i>${applyinguserfirstname} ${applyinguserlastname} (${institutename})</i>,
+			your application for joining the institute ${institutename} to the department  
+			<i>${departmentname}</i> has been successfully sent to the department administrators. You will get informed when your
 			application has been edited.
 		</p>
 		<p>

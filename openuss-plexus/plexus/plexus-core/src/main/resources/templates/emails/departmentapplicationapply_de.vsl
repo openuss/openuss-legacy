@@ -2,12 +2,13 @@
 	<body>
 		<h3><font color="#003366">OpenUSS Bewerbungs Assistent</font></h3>
 		<p>
-			Ihre Bewerbung zur Mitgliedschaft für den Fachbereich <i>${departmentname}</i> wurde akzeptiert! 
+			Hallo <i>${applyinguserfirstname} ${applyinguserlastname} (${institutename})</i>, <br> 
+			ihre Bewerbung zur Mitgliedschaft für den Fachbereich <i>${departmentname}</i> wurde akzeptiert! 
 			Klicken Sie bitte auf den folgenden Link, um die Hauptseite des Fachbereichs zu öffnen:<br>
 			<a href="${departmentapplicantlink}">${departmentapplicantlink}</a>
 		</p>
 		<p>
-			Sollte das Anklicken des Links nicht funktionieren, so geben Sie bitte die Adresse in die
+			Sollte das Anklicken des Links nicht funktionieren, so geben Sie die Adresse in die
 			Adressleiste Ihres Browser ein.
 		</p>
 		<p>

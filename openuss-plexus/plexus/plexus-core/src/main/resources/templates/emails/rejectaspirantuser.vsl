@@ -2,7 +2,8 @@
 	<body>
 		<p>
 			<h3><font color="#003366">OpenUSS User Administration</font></h3>
-			Unfortunately, your application for the Organisation <i>${organisationname}</i> has been rejected.
+			Dear <i>${userfirstname} ${userlastname}</i>,
+			unfortunately, your application for the Organisation <i>${organisationname}</i> has been rejected.
 		</p>
 		<p>
 			Thank you for using OpenUSS.

@@ -2,8 +2,8 @@
 	<body>
 		<p>
 			<h3><font color="#003366">OpenUSS Benutzerverwaltung</font></h3>
-			Hallo <i>(${applyinguserfirstname} ${applyinguserlastname})</i>,<br> 
-			Ihre Bewerbung für die Mitgliedschaft des Institutes ${institutename} im Fachbereich <i>${departmentname}</i> 
+			Hallo, <i>${applyinguserfirstname} ${applyinguserlastname} (${institutename})</i>,<br> 
+			ihre Bewerbung für die Mitgliedschaft des Institutes ${institutename} im Fachbereich <i>${departmentname}</i> 
 			wurde erfolgreich versandt. Sie werden informiert, sobald ihre Bewerbung bearbeitet wurde.
 		</p>
 		<p>

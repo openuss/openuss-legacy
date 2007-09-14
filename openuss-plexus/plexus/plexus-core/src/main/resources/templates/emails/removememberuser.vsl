@@ -2,7 +2,7 @@
 	<body>
 		<p>
 			<h3><font color="#003366">OpenUSS User Administration</font></h3>
-			You, <i>${username} (${userfirstname} ${userlastname})</i>, have been removed from the Organisation 
+			You, <i>${userfirstname} ${userlastname} (${username})</i>, have been removed from the organisation 
 			<i>${organisationname}</i>.
 		</p>
 		<p>

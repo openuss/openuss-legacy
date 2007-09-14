@@ -3,7 +3,7 @@
 		<p>
 			<h3><font color="#003366">OpenUSS Benutzerverwaltung</font></h3>
 			Hallo <i>${username} (${userfirstname} ${userlastname})</i>,<br>
-			Sie haben sich erfolgreich bei der Organisation <i>${organisationname}</i> beworben.
+			sie haben sich erfolgreich bei der Organisation <i>${organisationname}</i> beworben.
 		</p>
 		<p>
 			Die Administratoren der Organisation werden Ihre Bewerbung nun prüfen.

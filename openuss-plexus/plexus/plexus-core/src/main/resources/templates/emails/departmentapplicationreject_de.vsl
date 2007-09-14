@@ -2,7 +2,8 @@
 	<body>
 		<h3><font color="#003366">OpenUSS Bewerbungs Assistent</font></h3>
 		<p>
-			Ihre Bewerbung für die Mitgliedschaft des Fachberechs <i>${departmentname}</i> wurde abgelehnt! 
+			Hallo, <i>${applyinguserfirstname} ${applyinguserlastname} (${institutename})</i>, 
+			ihre Bewerbung für die Mitgliedschaft des Fachberechs <i>${departmentname}</i> wurde abgelehnt! 
 		</p>
 		<p>
 			Viel Spaß mit OpenUSS!

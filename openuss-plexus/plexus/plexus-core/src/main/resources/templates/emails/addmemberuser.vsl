@@ -2,8 +2,8 @@
 	<body>
 		<p>
 			<h3><font color="#003366">OpenUSS User Administration</font></h3>
-			Hello <i>${username} (${userfirstname} ${userlastname})</i>,<br>
-			you have been added to the Organisation <i>${organisationname}</i>.
+			Dear <i>${username} (${userfirstname} ${userlastname})</i>, <br>
+			you have been added to the organisation <i>${organisationname}</i>.
 		</p>
 		<p>
 			You may click on the following link to administrate your organisation:<br/>

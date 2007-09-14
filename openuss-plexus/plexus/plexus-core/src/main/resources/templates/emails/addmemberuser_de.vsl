@@ -2,8 +2,8 @@
 	<body>
 		<p>
 			<h3><font color="#003366">OpenUSS Benutzerverwaltung</font></h3>
-			Hallo <i>${username} (${userfirstname} ${userlastname})</i>,<br>
-			Sie wurden erfolgreich als Mitglied zur Organisation <i>${organisationname}</i> hinzugefügt.
+			Hallo <i>${username} (${userfirstname} ${userlastname})</i>,<br> 
+			sie wurden erfolgreich als Mitglied zur Organisation  <i>${organisationname}</i> hinzugefügt.
 		</p>
 		<p>
 			Sie können auf den folgenden Link klicken, um Ihre Organisation zu verwalten:<br/>
