@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.plaf.metal.MetalBorders.Flush3DBorder;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.security.Group;
@@ -281,9 +283,11 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		}
 		for (Application application : applicationsOld) {
 			if (!application.isConfirmed()) {
-				application.remove(application.getInstitute());
-				application.remove(application.getDepartment());
-				this.getApplicationDao().remove(application);
+				try {
+					application.remove(application.getInstitute());
+					application.remove(application.getDepartment());
+					this.getApplicationDao().remove(application);
+				} catch(Exception e) {}
 			}
 		}
 
@@ -299,7 +303,9 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				+ userId);
 
 		if (department.getDepartmentType() == DepartmentType.NONOFFICIAL) {
-
+			
+			// TODO: Delete all old applications
+			
 			// Create confirmed Application for non-official Department
 			Application application = Application.Factory.newInstance();
 			application.setApplicationDate(new Date());

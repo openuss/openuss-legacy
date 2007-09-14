@@ -231,10 +231,13 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Department department = application.getDepartment();
 		Institute institute = application.getInstitute();
 		department.add(institute);
-
+		
+		// mark application as confirmed
 		application.setConfirmationDate(new Date());
 		application.setConfirmingUser(user);
 		application.setConfirmed(true);
+		
+		// TODO: delete all other applications of the institute
 	}
 
 	@Override

@@ -83,6 +83,7 @@
 			expression="execution(* org..CourseServiceBase.setCourseStatus(java.lang.Long, boolean)) and args(courseId, status)" />
 
 		<!-- Aspect Definitions -->
+
 		<aop:aspect id="applicationConfirmationAspect"
 			ref="applicationConfirmationAspectBean">
 			<aop:after-returning
@@ -249,6 +250,16 @@
 			<aop:before method="deleteInstituteIndex"
 				pointcut-ref="InstituteServiceDeleteCompleteInstituteTreePointcut"
 				arg-names="instituteId" />
+			<aop:after-returning
+				method="updateInstituteIndexOnDepartmentApplication"
+				pointcut-ref="InstituteServiceApplyAtDepartmentPointcut2"
+				arg-names="applicationId, instituteId, departmentId, userId" 
+				returning="applicationId" />
+			<aop:after-returning
+				method="updateInstituteIndexOnDepartmentApplicationApproval"
+				pointcut-ref="DepartmentServiceAcceptInstituteApplicationPointcut"
+				arg-names="applicationId, userId" />
+
 		</aop:aspect>
 
 		<aop:aspect id="courseIndexAspect"
@@ -358,6 +369,7 @@
 		<property name="indexerService" ref="indexerService" />
 		<property name="instituteDao" ref="instituteDao" />
 		<property name="instituteService" ref="instituteService" />
+		<property name="applicationDao" ref="applicationDao" />
 	</bean>
 
 	<bean id="courseIndexAspectBean"

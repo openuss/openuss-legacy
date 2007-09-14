@@ -1,7 +1,10 @@
 package org.openuss.aop;
 
 import org.apache.log4j.Logger;
+import org.openuss.lecture.Application;
+import org.openuss.lecture.ApplicationDao;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.InstituteInfo;
@@ -27,6 +30,9 @@ public class InstituteIndexingAspect {
 	
 	private Institute institute;
 	
+	private ApplicationDao applicationDao;
+	
+
 	/**
 	 * Creates index entry for an institute if it is enabled. 
 	 * 
@@ -101,6 +107,52 @@ public class InstituteIndexingAspect {
 		}
 	}
 	
+	/**
+	 * Updates institute index entries an institute's department is changed. 
+	 * Index entries for subordinate courses are updated as well. 
+	 * 
+	 * @param applicationId
+	 */
+	public void updateInstituteIndexOnDepartmentApplication(Object applicationIdObject, Long instituteId, Long departmentId, Long userId) {
+		logger.debug("Starting method updateInstituteIndexOnDepartmentApplication");
+		if ((applicationIdObject != null) && (applicationIdObject instanceof Long)) {
+			Long applicationId = (Long) applicationIdObject;
+			try {
+				Application application = applicationDao.load(applicationId);
+				if (application.isConfirmed()) {
+					logger.debug("method updateInstituteIndexOnDepartmentApplication: updateIndex");
+					updateInstituteIndexEntriesCascade(application.getInstitute());
+				} 
+			} catch (Exception e) {
+				logger.error(e);
+			}
+		} else {
+			logger.debug("invalid applicationId - aborted!");
+		}
+	}
+	
+	/**
+	 * Updates institute index entries an institute's department is changed. 
+	 * Index entries for subordinate courses are updated as well. 
+	 * 
+	 * @param applicationId ID of the application which was accepted
+	 * @param userId ID of the user who accepted the application (not necessary 
+	 * for application logic; just present because due to AOP definition)
+	 */
+	public void updateInstituteIndexOnDepartmentApplicationApproval(Long applicationId, Long userId) {
+		logger.debug("Starting method updateInstituteIndexOnDepartmentApplicationApproval");
+
+		try {
+			Application application = applicationDao.load(applicationId);
+			if (application.isConfirmed()) {
+				logger.debug("method updateInstituteIndexOnDepartmentApplicationApproval: updateIndex");
+				updateInstituteIndexEntriesCascade(application.getInstitute());
+			} 
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}
+	
 
 	/**
 	 * Deletes institute from lecture index.
@@ -153,6 +205,24 @@ public class InstituteIndexingAspect {
 		}
 	}
 	
+	/**
+	 * Helper method that encapsulates the update of subordinate courses' index entries 
+	 * 
+	 * @param institute
+	 */
+	private void updateInstituteIndexEntriesCascade(Institute institute){
+		try {
+			indexerService.updateIndex(institute);
+			Course course;
+			for (Object courseTemp : institute.getAllCourses()) {
+				course = (Course) courseTemp;
+				indexerService.updateIndex(course);
+			}
+		} catch (IndexerApplicationException e) {
+			logger.error(e);
+		}
+	}
+	
 	/* getter and setter */
 	public IndexerService getIndexerService() {
 		return indexerService;
@@ -178,4 +248,11 @@ public class InstituteIndexingAspect {
 		this.instituteService = instituteService;
 	}
 	
+	public ApplicationDao getApplicationDao() {
+		return applicationDao;
+	}
+
+	public void setApplicationDao(ApplicationDao applicationDao) {
+		this.applicationDao = applicationDao;
+	}
 }
