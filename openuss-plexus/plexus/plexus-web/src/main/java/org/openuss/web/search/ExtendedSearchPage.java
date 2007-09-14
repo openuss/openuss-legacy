@@ -170,15 +170,28 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		Boolean onlyOfficial = (Boolean) vce.getNewValue();
 		extendedSearchResults.setOfficialOnly(onlyOfficial.booleanValue());
 		
+		// save old values
+		Long oldUniversityId = extendedSearchResults.getUniversityId();
+		Long oldDepartmentId = extendedSearchResults.getDepartmentId();
+		
+		
 		// set content of combo box "organisation" if this is necessary for the selected result type
 		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION){
 			resetUniversities();
+			extendedSearchResults.setUniversityId(oldUniversityId);
 		} else {
 			extendedSearchResults.setUniversities(defaultSelectItemList());
 		}
 		
+		// set content of combo box "departments" if departments were shown before
+		if(extendedSearchResults.getResultTypeId() > Constants.EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION
+				&& extendedSearchResults.getDepartmentId().intValue() > 0){
+			resetDepartments(extendedSearchResults.getUniversityId());
+		} else {
+			extendedSearchResults.setDepartments(defaultSelectItemList());
+		}
+		
 		// reset all other combo boxes
-		extendedSearchResults.setDepartments(defaultSelectItemList());
 		extendedSearchResults.setInstitutes(defaultSelectItemList());
 		extendedSearchResults.setCourseTypes(defaultSelectItemList());
 		extendedSearchResults.setPeriods(defaultSelectItemList());
