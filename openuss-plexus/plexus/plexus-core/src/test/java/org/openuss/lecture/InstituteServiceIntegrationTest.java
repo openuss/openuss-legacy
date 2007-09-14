@@ -35,7 +35,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		instituteInfo.setOwnerName("Administrator");
 		instituteInfo.setEnabled(true);
 		instituteInfo.setDescription("This is a test Institute");
-		instituteInfo.setDepartmentId(departmentOfficial.getId()); //Should be ignored by createInstitute
+		instituteInfo.setDepartmentId(departmentOfficial.getId()); // Should be ignored by createInstitute
 
 		// Create a User as Owner
 		User owner = testUtility.createUniqueUserInDB();
@@ -46,24 +46,25 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 
 		// Synchronize with Database
 		flush();
-		
+
 		// Test
 		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
 		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
-		
+
 		Institute instituteTest = instituteDao.load(instituteId);
 		assertNotNull(instituteTest);
 		assertNull(instituteTest.getDepartment()); // One needs to call applyAtUniversity right after
 		instituteService.applyAtDepartment(instituteId, departmentOfficial.getId(), owner.getId());
 		assertNotNull(instituteTest.getDepartment());
-		
-		Department departmentDefault = departmentDao.findByUniversityAndDefault(departmentOfficial.getUniversity(), true);
+
+		Department departmentDefault = departmentDao.findByUniversityAndDefault(departmentOfficial.getUniversity(),
+				true);
 		assertEquals(departmentDefault.getId(), instituteTest.getDepartment().getId());
 		assertTrue(departmentDefault.getInstitutes().contains(instituteTest));
 		assertEquals(2, instituteTest.getApplications().size());
 		int confirmed = 0;
 		int notconfirmed = 0;
-		for (Application application:instituteTest.getApplications()) {
+		for (Application application : instituteTest.getApplications()) {
 			if (application.isConfirmed()) {
 				assertEquals(departmentDefault.getId(), application.getDepartment().getId());
 				confirmed++;
@@ -72,9 +73,9 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 				notconfirmed++;
 			}
 		}
-		assertEquals(1,confirmed);
-		assertEquals(1,notconfirmed);
-		
+		assertEquals(1, confirmed);
+		assertEquals(1, notconfirmed);
+
 		// Create an NONOFFICIAL Department
 		Department departmentNonOfficial = testUtility.createUniqueDepartmentInDB();
 		departmentNonOfficial.setDepartmentType(DepartmentType.NONOFFICIAL);
@@ -87,34 +88,34 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		instituteInfo2.setEnabled(true);
 		instituteInfo2.setDescription("This is a test Institute");
 		instituteInfo2.setDepartmentId(departmentNonOfficial.getId());
-		
+
 		// Create Entity
 		Long instituteId2 = this.getInstituteService().create(instituteInfo2, owner.getId());
 		assertNotNull(instituteId2);
-		
+
 		// Synchronize with Database
 		flush();
-		
-		// Test		
+
+		// Test
 		Institute instituteTest2 = instituteDao.load(instituteId2);
 		assertNotNull(instituteTest2);
 		assertNull(instituteTest2.getDepartment()); // One needs to call applyAtUniversity right after
 		instituteService.applyAtDepartment(instituteId2, departmentNonOfficial.getId(), owner.getId());
 		assertNotNull(instituteTest2.getDepartment());
-		
+
 		assertEquals(departmentNonOfficial.getId(), instituteTest2.getDepartment().getId());
 		assertTrue(departmentNonOfficial.getInstitutes().contains(instituteTest2));
 		assertEquals(1, instituteTest2.getApplications().size());
 		confirmed = 0;
 		notconfirmed = 0;
-		for (Application application:instituteTest2.getApplications()) {
+		for (Application application : instituteTest2.getApplications()) {
 			if (application.isConfirmed()) {
 				assertEquals(departmentNonOfficial.getId(), application.getDepartment().getId());
 				confirmed++;
 			}
 		}
-		assertEquals(1,confirmed);
-		assertEquals(0,notconfirmed);
+		assertEquals(1, confirmed);
+		assertEquals(0, notconfirmed);
 
 		logger.info("----> END access to create(Institute) test");
 	}
@@ -170,10 +171,10 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		Department department = institute.getDepartment();
 		assertNotNull(department);
 		int sizeBefore = department.getInstitutes().size();
-		
+
 		// Create Department
 		Department department1 = testUtility.createUniqueDepartmentInDB();
-		
+
 		// Create Application
 		Application application = new ApplicationImpl();
 		application.setApplicationDate(new Date(new GregorianCalendar(12, 07, 2006).getTimeInMillis()));
@@ -279,57 +280,81 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 
 	public void testApplyAtDepartment() {
 		logger.debug("----> BEGIN access to applyAtDepartment test <---- ");
-		
-		User user = testUtility.createUniqueUserInDB();
-		Institute institute = testUtility.createUniqueInstituteInDB();
-		DepartmentDao departmentDao = (DepartmentDao) this.applicationContext.getBean("departmentDao");
-		Department department = departmentDao.findByUniversityAndDefault(institute.getDepartment().getUniversity(), true);
-		
-		testUtility.createAdminSecureContext();
-		
-		Long applicationId = this.getInstituteService().applyAtDepartment(institute.getId(), department.getId(), user.getId());
-		assertNotNull(applicationId);
-		logger.debug("----> Application "+applicationId+" <---- ");
-		
-		testUtility.destroySecureContext();
-/*
-		// Create Department
-		Department department = testUtility.createUniqueDepartmentInDB();
-		department.setDepartmentType(DepartmentType.NONOFFICIAL);
 
-		// Create Institute
+		DepartmentService departmentService = (DepartmentService) this.getApplicationContext().getBean(
+		"departmentService");
+		
+		// Create two OFFICIAL Department
+		Department departmentOfficial1 = testUtility.createUniqueDepartmentInDB();
+		departmentOfficial1.setDepartmentType(DepartmentType.OFFICIAL);
+		Department departmentOfficial2 = testUtility.createUniqueDepartmentInDB();
+		departmentOfficial2.setDepartmentType(DepartmentType.OFFICIAL);
+
+		// Create two NONOFFICIAL Department
+		Department departmentNonOfficial1 = testUtility.createUniqueDepartmentInDB();
+		departmentNonOfficial1.setDepartmentType(DepartmentType.NONOFFICIAL);
+		Department departmentNonOfficial2 = testUtility.createUniqueDepartmentInDB();
+		departmentNonOfficial2.setDepartmentType(DepartmentType.NONOFFICIAL);
+
+		// Create a User
+		User user = testUtility.createUniqueUserInDB();
+
+		// Create a Institute
 		Institute institute = testUtility.createUniqueInstituteInDB();
+		assertEquals(1, institute.getApplications().size());
 
 		flush();
 
-		// Create Application
-		UserDao userDao = (UserDao) this.getApplicationContext().getBean("userDao");
-		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
-		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
+		// Apply at OFFICIAL Department (No confirmation)
+		Long applicationId1 = this.getInstituteService().applyAtDepartment(institute.getId(),
+				departmentOfficial1.getId(), user.getId());
+		flush();
+		assertNotNull(applicationId1);
+		assertEquals(2, institute.getApplications().size());
 
-		ApplicationInfo applicationInfo = new ApplicationInfo();
-		applicationInfo.setDepartmentInfo(departmentDao.toDepartmentInfo(department));
-		applicationInfo.setInstituteInfo(instituteDao.toInstituteInfo(institute));
-		applicationInfo.setApplyingUserInfo(userDao.toUserInfo(testUtility.createUniqueUserInDB()));
+		// Apply again at OFFICIAL Department (No confirmation)
+		Long applicationId2 = this.getInstituteService().applyAtDepartment(institute.getId(),
+				departmentOfficial2.getId(), user.getId());
+		flush();
+		assertNotNull(applicationId2);
+		assertEquals(2, institute.getApplications().size());
 
-		// Test
-		try {
-			this.getInstituteService().applyAtDepartment(applicationInfo);
-			fail("Exception should have been thrown");
-		} catch (Exception e) {
-			;
-		}
+		testUtility.createAdminSecureContext();
 
-		department.setDepartmentType(DepartmentType.OFFICIAL);
-		Long applicationId = this.getInstituteService().applyAtDepartment(applicationInfo);
-		assertNotNull(applicationId);
-		assertNotNull(institute.getApplication());
+		// Apply again at OFFICIAL Department (Confirmation)
+		Long applicationId3 = this.getInstituteService().applyAtDepartment(institute.getId(),
+				departmentOfficial1.getId(), user.getId());
+		flush();
+		assertNotNull(applicationId3);
+		// Since Aspect is not working in local tests, accept manually
+		departmentService.acceptApplication(applicationId3, user.getId());
+		assertEquals(1, institute.getApplications().size());
 
-		ApplicationDao applicationDao = (ApplicationDao) this.getApplicationContext().getBean("applicationDao");
-		Application application = applicationDao.load(applicationId);
-		assertEquals(department, application.getDepartment());
-		assertEquals(institute, application.getInstitute());
-*/
+		// Apply again at OFFICIAL Department (Confirmation)
+		Long applicationId4 = this.getInstituteService().applyAtDepartment(institute.getId(),
+				departmentOfficial2.getId(), user.getId());
+		flush();
+		assertNotNull(applicationId4);
+		departmentService.acceptApplication(applicationId4, user.getId());
+		assertEquals(1, institute.getApplications().size());
+
+		testUtility.destroySecureContext();
+
+		// Apply again at OFFICIAL Department (No confirmation)
+		Long applicationId5 = this.getInstituteService().applyAtDepartment(institute.getId(),
+				departmentOfficial1.getId(), user.getId());
+		flush();
+		assertNotNull(applicationId5);
+		assertEquals(2, institute.getApplications().size());
+
+		testUtility.createAdminSecureContext();
+
+		// Apply at NONOFFICIAL Department (Confirmation)
+		Long applicationId6 = this.getInstituteService().applyAtDepartment(institute.getId(),
+				departmentNonOfficial1.getId(), user.getId());
+		assertNotNull(applicationId6);
+		assertEquals(1, institute.getApplications().size());
+
 		logger.debug("----> END access to applyAtDepartment test <---- ");
 	}
 
@@ -404,10 +429,9 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 
 		// Test
 		/*
-		ApplicationInfo applicationInfo2 = this.getInstituteService().findApplicationByInstitute(institute.getId());
-		assertNotNull(applicationInfo2);
-		assertEquals(applicationId, applicationInfo2.getId());
-*/
+		 * ApplicationInfo applicationInfo2 = this.getInstituteService().findApplicationByInstitute(institute.getId());
+		 * assertNotNull(applicationInfo2); assertEquals(applicationId, applicationInfo2.getId());
+		 */
 		logger.info("----> END access to findApplicationByInstitute test");
 	}
 }

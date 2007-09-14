@@ -117,7 +117,7 @@ public class InstituteDepartmentMailSenderAspectImpl {
 		// Get Application
 		Application application = (Application) this.getApplicationDao().load(applicationId);
 		Validate.notNull(application, "InstituteDepartmentMailSenderAspectImpl.sendAcceptApplicationAtDepartment -" +
-				"no application found with the applicationInfo "+applicationId);
+				"no Application found with the ID "+applicationId);
 		
 		Validate.notNull(application.getDepartment(), "InstituteDepartmentMailSenderAspectImpl.sendAcceptApplicationAtDepartment -" +
 				"department cannot be null.");

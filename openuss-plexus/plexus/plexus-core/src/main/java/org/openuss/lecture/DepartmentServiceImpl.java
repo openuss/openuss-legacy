@@ -99,7 +99,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		// Transform VO to Entity
 		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(departmentInfo);
-		
+
 		// Update department
 		this.getDepartmentDao().update(departmentEntity);
 	}
@@ -230,14 +230,31 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		Department department = application.getDepartment();
 		Institute institute = application.getInstitute();
+
+		// Add Institute to Department
 		department.add(institute);
-		
-		// mark application as confirmed
+
+		// Delete all old Applications of the Institute (should actually only be max 2)
+		List<Application> applicationsOld = new ArrayList<Application>();
+		for (Application applicationOld : institute.getApplications()) {
+			if (applicationOld.getId() != applicationId) {
+				applicationsOld.add(applicationOld);
+			}
+		}
+		for (Application applicationOld : applicationsOld) {
+			try {
+				applicationOld.remove(applicationOld.getInstitute());
+				applicationOld.remove(applicationOld.getDepartment());
+				this.getApplicationDao().remove(applicationOld);
+			} catch (Exception e) {
+			}
+		}
+
+		// Mark Application as confirmed
 		application.setConfirmationDate(new Date());
 		application.setConfirmingUser(user);
 		application.setConfirmed(true);
-		
-		// TODO: delete all other applications of the institute
+
 	}
 
 	@Override
@@ -284,7 +301,8 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		department.remove(institute);
 
 		// Assign Institute to Standard non-official Department
-		Department departmentDefault = this.getDepartmentDao().findByUniversityAndDefault(department.getUniversity(), true);
+		Department departmentDefault = this.getDepartmentDao().findByUniversityAndDefault(department.getUniversity(),
+				true);
 		this.getInstituteService().applyAtDepartment(instituteId, departmentDefault.getId(), userId);
 	}
 
@@ -322,24 +340,26 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		Department department = this.getDepartmentDao().load(departmentId);
 		Validate.notNull(department, "DepartmentService.setDepartmentStatus - "
 				+ "department cannot be found with the corresponding departmentId " + departmentId);
-		
+
 		// Only allow department to be enabled when the super-ordinate university is enabled
-		if(status){
-			Validate.isTrue(department.getUniversity().isEnabled(),
-			"DepartmentService.handleSetDepartmentStatus - the department cannot be enabled because the associated university is disabled.");
+		if (status) {
+			Validate
+					.isTrue(
+							department.getUniversity().isEnabled(),
+							"DepartmentService.handleSetDepartmentStatus - the department cannot be enabled because the associated university is disabled.");
 		}
-		
+
 		// Set status
 		department.setEnabled(status);
 		this.update(this.getDepartmentDao().toDepartmentInfo(department));
-		
+
 		// Set subordinate organisations to "disabled" if the department was just disabled
-		if(!status){
-			for(Institute institute : department.getInstitutes()){
+		if (!status) {
+			for (Institute institute : department.getInstitutes()) {
 				institute.setEnabled(false);
 				this.getInstituteDao().update(institute);
-				for(CourseType courseType : institute.getCourseTypes()){
-					for(Course course : courseType.getCourses()){
+				for (CourseType courseType : institute.getCourseTypes()) {
+					for (Course course : courseType.getCourses()) {
 						course.setEnabled(false);
 						this.getCourseDao().update(course);
 					}
@@ -349,7 +369,8 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	}
 
 	@Override
-	public boolean handleIsNoneExistingOrganisationShortcutByDepartment(DepartmentInfo self, String shortcut) throws Exception {
+	public boolean handleIsNoneExistingOrganisationShortcutByDepartment(DepartmentInfo self, String shortcut)
+			throws Exception {
 		Organisation organisationFound = getOrganisationDao().findByShortcut(shortcut);
 		if (organisationFound instanceof University) {
 			University found = (University) organisationFound;
@@ -358,25 +379,25 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 				foundInfo = this.getUniversityDao().toUniversityInfo(found);
 			}
 			return isEqualOrNull(self, foundInfo);
-			
+
 		} else if (organisationFound instanceof Department) {
-			
+
 			Department found = (Department) organisationFound;
 			DepartmentInfo foundInfo = null;
 			if (found != null) {
 				foundInfo = this.getDepartmentDao().toDepartmentInfo(found);
 			}
 			return isEqualOrNull(self, foundInfo);
-			
+
 		} else {
-			
+
 			Institute found = (Institute) organisationFound;
 			InstituteInfo foundInfo = null;
 			if (found != null) {
 				foundInfo = this.getInstituteDao().toInstituteInfo(found);
 			}
 			return isEqualOrNull(self, foundInfo);
-			
+
 		}
 	}
 
@@ -435,9 +456,9 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 				application.remove(application.getInstitute());
 				this.getApplicationDao().remove(application);
 			}
-			//department.setApplications(new ArrayList<Application>());
+			// department.setApplications(new ArrayList<Application>());
 		}
-		
+
 		if (!department.getInstitutes().isEmpty()) {
 			// Remove Institutes
 			List<Institute> institutes = new ArrayList<Institute>();

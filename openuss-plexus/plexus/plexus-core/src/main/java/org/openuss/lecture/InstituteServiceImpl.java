@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.plaf.metal.MetalBorders.Flush3DBorder;
-
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.security.Group;
@@ -44,10 +42,10 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		Validate.notNull(user, "InstituteService.handleCreate - no valid User found corresponding to the ID " + userId);
 		Validate.isTrue(instituteInfo.getId() == null,
 				"InstituteService.handleCreate - the Institute shouldn't have an ID yet");
-		
+
 		// No validation needed for department ID since it is ignored anyway below
 		// Validate.notNull(instituteInfo.getDepartmentId(),
-		//		"InstituteService.handleCreate - the DepartmentID cannot be null");
+		// "InstituteService.handleCreate - the DepartmentID cannot be null");
 
 		// Ignore DepartmentID - one has to call applyAtDepartment right after
 		instituteInfo.setDepartmentId(null);
@@ -101,7 +99,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 		this.getOrganisationService().addUserToGroup(userId, adminsGroup.getId());
 
 		// Create Application
-		//this.handleApplyAtDepartment(instituteInfo.getId(), departmentId, userId);
+		// this.handleApplyAtDepartment(instituteInfo.getId(), departmentId, userId);
 
 		return instituteEntity.getId();
 	}
@@ -267,7 +265,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	@Override
 	protected Long handleApplyAtDepartment(Long instituteId, Long departmentId, Long userId) throws Exception {
 		logger.debug("InstituteService.applyAtDepartment  - handleApplication started");
-		
+
 		Validate.notNull(instituteId, "InstituteService.applyAtDepartment - the InstituteID cannot be null.");
 		Validate.notNull(departmentId, "InstituteService.applyAtDepartment - the DepartmentID cannot be null.");
 		Validate.notNull(userId, "InstituteService.applyAtDepartment - the UserID cannot be null.");
@@ -276,19 +274,21 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				"InstituteService.applyAtDepartment - No Institute found corresponding to the InstituteID "
 						+ instituteId);
 
-		// Delete old not-confirmed Applications
-		List<Application> applicationsOld = new ArrayList<Application>();
+		// Delete all not-confirmed Applications of the Institute (should actually only be max 1)
+		List<Application> applicationsOldNotConfirmed = new ArrayList<Application>();
 		for (Application application : institute.getApplications()) {
-			applicationsOld.add(application);
-		}
-		for (Application application : applicationsOld) {
 			if (!application.isConfirmed()) {
-				try {
-					application.remove(application.getInstitute());
-					application.remove(application.getDepartment());
-					this.getApplicationDao().remove(application);
-				} catch(Exception e) {}
+				applicationsOldNotConfirmed.add(application);
 			}
+		}
+		for (Application application : applicationsOldNotConfirmed) {
+			try {
+				application.remove(application.getInstitute());
+				application.remove(application.getDepartment());
+				this.getApplicationDao().remove(application);
+			} catch (Exception e) {
+			}
+
 		}
 
 		// Load Department
@@ -303,9 +303,23 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				+ userId);
 
 		if (department.getDepartmentType() == DepartmentType.NONOFFICIAL) {
-			
-			// TODO: Delete all old applications
-			
+
+			// Delete all confirmed Applications of the Institute (should actually only be max 1)
+			List<Application> applicationsOldConfirmed = new ArrayList<Application>();
+			for (Application applicationOld : institute.getApplications()) {
+				if (applicationOld.isConfirmed()) {
+					applicationsOldConfirmed.add(applicationOld);
+				}
+			}
+			for (Application applicationOld : applicationsOldConfirmed) {
+				try {
+					applicationOld.remove(applicationOld.getInstitute());
+					applicationOld.remove(applicationOld.getDepartment());
+					this.getApplicationDao().remove(applicationOld);
+				} catch (Exception e) {
+				}
+			}
+
 			// Create confirmed Application for non-official Department
 			Application application = Application.Factory.newInstance();
 			application.setApplicationDate(new Date());
@@ -397,7 +411,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	}
 
 	@Override
-	public boolean handleIsNoneExistingOrganisationShortcutByInstitute(InstituteInfo self, String shortcut) throws Exception {
+	public boolean handleIsNoneExistingOrganisationShortcutByInstitute(InstituteInfo self, String shortcut)
+			throws Exception {
 		Organisation organisationFound = getOrganisationDao().findByShortcut(shortcut);
 		if (organisationFound instanceof University) {
 			University found = (University) organisationFound;
@@ -406,25 +421,25 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				foundInfo = this.getUniversityDao().toUniversityInfo(found);
 			}
 			return isEqualOrNull(self, foundInfo);
-			
+
 		} else if (organisationFound instanceof Department) {
-			
+
 			Department found = (Department) organisationFound;
 			DepartmentInfo foundInfo = null;
 			if (found != null) {
 				foundInfo = this.getDepartmentDao().toDepartmentInfo(found);
 			}
 			return isEqualOrNull(self, foundInfo);
-			
+
 		} else {
-			
+
 			Institute found = (Institute) organisationFound;
 			InstituteInfo foundInfo = null;
 			if (found != null) {
 				foundInfo = this.getInstituteDao().toInstituteInfo(found);
 			}
 			return isEqualOrNull(self, foundInfo);
-			
+
 		}
 	}
 
