@@ -84,5 +84,45 @@ public class ApplicationDaoImpl extends org.openuss.lecture.ApplicationDaoBase {
 	public void applicationInfoToEntity(ApplicationInfo sourceVO, Application targetEntity, boolean copyIfNull) {
 		super.applicationInfoToEntity(sourceVO, targetEntity, copyIfNull);
 	}
+	
+	/**
+     * @see org.openuss.lecture.ApplicationDao#findByDepartmentAndConfirmed(int, org.openuss.lecture.Department, boolean)
+     */
+    public java.util.List findByDepartmentAndConfirmed(final int transform, final org.openuss.lecture.Department department, final boolean confirmed)
+    {
+        return this.findByDepartmentAndConfirmed(transform, "from org.openuss.lecture.Application as f where f.confirmed = :confirmed and (f.department = :department) order by f.applicationDate desc", department, confirmed);
+    }
+    
+    /**
+     * @see org.openuss.lecture.ApplicationDao#findByInstituteAndDepartment(int, java.lang.String, org.openuss.lecture.Institute, org.openuss.lecture.Department)
+     */
+    @SuppressWarnings("unchecked")
+    public java.lang.Object findByInstituteAndDepartment(final int transform, final java.lang.String queryString, final org.openuss.lecture.Institute institute, final org.openuss.lecture.Department department)
+    {
+        try
+        {
+            org.hibernate.Query queryObject = super.getSession(false).createQuery(queryString);
+            queryObject.setParameter(0, institute);
+            queryObject.setParameter(1, department);
+            java.util.Set results = new java.util.LinkedHashSet(queryObject.list());
+            java.lang.Object result = null;
+            if (results != null)
+            {
+            	// even more than one result is ok: 
+            	// the applications are returned chronologically (latest first), 
+            	// so just use the latest application
+            	if(results.size() > 0){
+            		result = results.iterator().next();
+            	}
+            	
+            }
+            result = transformEntity(transform, (org.openuss.lecture.Application)result);
+            return result;
+        }
+        catch (org.hibernate.HibernateException ex)
+        {
+            throw super.convertHibernateAccessException(ex);
+        }
+    }
 
 }
