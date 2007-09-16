@@ -54,11 +54,10 @@
 						</h:selectOneMenu>
 						<div id="link_period_question" style="display:block; margin-top: 10px; font-size:11px;">
 							<h:outputText value="#{msg.period_selection_question}" /> 
-							<a href="javascript:void(0);" onclick="Effect.toggle($('linkperiod'));Effect.toggle($('link_period_question'));"><h:outputText value="#{msg.period_selection_question_yes}" /></a> 
-							<a href="javascript:void(0);" onclick="Effect.toggle($('link_period_question'));"><h:outputText value="#{msg.period_selection_question_no}" /></a>
+							<a href="javascript:void(0);" onclick="Effect.toggle($('linkperiod'));Effect.toggle($('link_period_question'));" style="color:green;"><h:outputText value="#{msg.period_selection_question_yes}" /></a> 
+							<!-- <a href="javascript:void(0);" onclick="Effect.toggle($('link_period_question'));"><h:outputText value="#{msg.period_selection_question_no}" /></a> -->
 						</div> 
-					</o:block>  
-					<ui:include src="coursestable.xhtml"/>
+					</o:block>
 					<div id="linkperiod" style="display:none;">
 						<o:block>
 						    <h:outputLabel value="#{msg['period_header_add_course']}" for="courseTypeSelect" styleClass="field_label"/>
@@ -72,7 +71,8 @@
 								title="#{msg.period_command_add_course_hint}"
 								styleClass="button_add"/>
 						</o:block>
-					</div>
+					</div>  
+					<ui:include src="coursestable.xhtml"/>
 				</c:if>
 			</h:form>
 			
