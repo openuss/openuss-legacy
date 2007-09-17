@@ -38,15 +38,14 @@ public class ChatMessageDaoImpl extends ChatMessageDaoBase {
 	 *      org.openuss.chat.ChatMessageInfo)
 	 */
 	public void toChatMessageInfo(ChatMessage sourceEntity, ChatMessageInfo targetVO) {
-		// @todo verify behavior of toChatMessageInfo
 		super.toChatMessageInfo(sourceEntity, targetVO);
+		targetVO.setDisplayName(sourceEntity.getSender().getDisplayName());
 	}
 
 	/**
 	 * @see org.openuss.chat.ChatMessageDao#toChatMessageInfo(org.openuss.chat.ChatMessage)
 	 */
 	public ChatMessageInfo toChatMessageInfo(final ChatMessage entity) {
-		// @todo verify behavior of toChatMessageInfo
 		return super.toChatMessageInfo(entity);
 	}
 
@@ -56,24 +55,17 @@ public class ChatMessageDaoImpl extends ChatMessageDaoBase {
 	 * object store, a new, blank entity is created
 	 */
 	private ChatMessage loadChatMessageFromChatMessageInfo(ChatMessageInfo chatMessageInfo) {
-		// @todo implement loadChatMessageFromChatMessageInfo
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.chat.loadChatMessageFromChatMessageInfo(org.openuss.chat.ChatMessageInfo) not yet implemented.");
-
-		/*
-		 * A typical implementation looks like this:
-		 * org.openuss.chat.ChatMessage chatMessage =
-		 * this.load(chatMessageInfo.getId()); if (chatMessage == null) {
-		 * chatMessage = org.openuss.chat.ChatMessage.Factory.newInstance(); }
-		 * return chatMessage;
-		 */
+		ChatMessage chatMessage = load(chatMessageInfo.getId());
+		if (chatMessage == null) {
+			chatMessage = ChatMessage.Factory.newInstance();
+		}
+		return chatMessage;
 	}
 
 	/**
 	 * @see org.openuss.chat.ChatMessageDao#chatMessageInfoToEntity(org.openuss.chat.ChatMessageInfo)
 	 */
 	public ChatMessage chatMessageInfoToEntity(ChatMessageInfo chatMessageInfo) {
-		// @todo verify behavior of chatMessageInfoToEntity
 		ChatMessage entity = this.loadChatMessageFromChatMessageInfo(chatMessageInfo);
 		this.chatMessageInfoToEntity(chatMessageInfo, entity, true);
 		return entity;
@@ -84,7 +76,6 @@ public class ChatMessageDaoImpl extends ChatMessageDaoBase {
 	 *      org.openuss.chat.ChatMessage)
 	 */
 	public void chatMessageInfoToEntity(ChatMessageInfo sourceVO, ChatMessage targetEntity, boolean copyIfNull) {
-		// @todo verify behavior of chatMessageInfoToEntity
 		super.chatMessageInfoToEntity(sourceVO, targetEntity, copyIfNull);
 	}
 

@@ -101,6 +101,9 @@ public class TestUtility {
 		User user = User.Factory.newInstance();
 		user.setUsername(username);
 		user.setPassword(password);
+		user.setFirstName("firstName");
+		user.setLastName("lastName");
+		user.setTitle("title");
 		user.setEmail("email");
 		user.setEnabled(true);
 		Group group = groupDao.load(roleId);
