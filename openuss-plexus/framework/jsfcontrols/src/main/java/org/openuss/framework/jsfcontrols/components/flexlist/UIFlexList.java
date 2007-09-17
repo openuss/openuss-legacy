@@ -117,7 +117,7 @@ public class UIFlexList extends UIOutput {
 										
 										writer.startElement("a", this);
 											writer.writeAttribute("href", removeBookmarkUrl, null);
-																						
+											
 											writer.startElement("span", this);
 												writer.writeAttribute("class", "remove_bookmark", null);
 												
@@ -132,8 +132,17 @@ public class UIFlexList extends UIOutput {
 													writer.writeAttribute("title", linkTitle, null);
 												else
 													writer.writeAttribute("title", "Remove Bookmark", null);
-												
+													
 												writer.write("&nbsp;&nbsp;&nbsp;");
+												
+												writer.startElement("span", this);
+												writer.writeAttribute("style", "display:none;", null);
+												if(linkTitle != null && linkTitle != "")
+													writer.write(linkTitle);
+												else
+													writer.write("Remove bookmark");	
+												writer.endElement("span");
+												
 											writer.endElement("span");
 							
 											
@@ -218,9 +227,18 @@ public class UIFlexList extends UIOutput {
 												if(linkTitle != null && linkTitle != "")
 													writer.writeAttribute("title", linkTitle, null);
 												else
-													writer.writeAttribute("title", "Remove Bookmark", null);
-										
+													writer.writeAttribute("title", "Remove Bookmark", null);					
+													
 												writer.write("&nbsp;&nbsp;&nbsp;");
+												
+												writer.startElement("span", this);
+												writer.writeAttribute("style", "display:none;", null);
+												if(linkTitle != null && linkTitle != "")
+													writer.write(linkTitle);
+												else
+													writer.write("Remove bookmark");	
+												writer.endElement("span");
+												
 											writer.endElement("span");
 										
 									writer.endElement("a");
