@@ -17,6 +17,7 @@ public class ChatUserDaoImpl
         org.openuss.chat.ChatUser sourceEntity,
         org.openuss.chat.ChatUserInfo targetVO)
     {
+        // @todo verify behavior of toChatUserInfo
         super.toChatUserInfo(sourceEntity, targetVO);
     }
 
@@ -26,6 +27,7 @@ public class ChatUserDaoImpl
      */
     public org.openuss.chat.ChatUserInfo toChatUserInfo(final org.openuss.chat.ChatUser entity)
     {
+        // @todo verify behavior of toChatUserInfo
         return super.toChatUserInfo(entity);
     }
 
@@ -37,15 +39,17 @@ public class ChatUserDaoImpl
      */
     private org.openuss.chat.ChatUser loadChatUserFromChatUserInfo(org.openuss.chat.ChatUserInfo chatUserInfo)
     {
-    	if (chatUserInfo==null || chatUserInfo.getId()==null){
-    		return ChatUser.Factory.newInstance();
-    	}
+        // @todo implement loadChatUserFromChatUserInfo
+        throw new java.lang.UnsupportedOperationException("org.openuss.chat.loadChatUserFromChatUserInfo(org.openuss.chat.ChatUserInfo) not yet implemented.");
+
+        /* A typical implementation looks like this:
         org.openuss.chat.ChatUser chatUser = this.load(chatUserInfo.getId());
         if (chatUser == null)
         {
             chatUser = org.openuss.chat.ChatUser.Factory.newInstance();
         }
         return chatUser;
+        */
     }
 
     
@@ -54,6 +58,7 @@ public class ChatUserDaoImpl
      */
     public org.openuss.chat.ChatUser chatUserInfoToEntity(org.openuss.chat.ChatUserInfo chatUserInfo)
     {
+        // @todo verify behavior of chatUserInfoToEntity
         org.openuss.chat.ChatUser entity = this.loadChatUserFromChatUserInfo(chatUserInfo);
         this.chatUserInfoToEntity(chatUserInfo, entity, true);
         return entity;
@@ -68,6 +73,7 @@ public class ChatUserDaoImpl
         org.openuss.chat.ChatUser targetEntity,
         boolean copyIfNull)
     {
+        // @todo verify behavior of chatUserInfoToEntity
         super.chatUserInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 

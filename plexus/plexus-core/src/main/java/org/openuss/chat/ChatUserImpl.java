@@ -15,6 +15,6 @@ public class ChatUserImpl
     /**
      * The serial version UID of this class. Needed for serialization.
      */
-    private static final long serialVersionUID = -2261887853606463791L;
+    private static final long serialVersionUID = -6995233571590067792L;
 
 }

@@ -5,26 +5,22 @@
 //
 package org.openuss.chat;
 
+import org.apache.commons.lang.Validate;
+
 /**
  * @see org.openuss.chat.ChatRoom
  */
-public class ChatRoomImpl
-    extends org.openuss.chat.ChatRoomBase
-	implements org.openuss.chat.ChatRoom
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = 8432147215173184941L;
+public class ChatRoomImpl extends ChatRoomBase implements ChatRoom {
+	/**
+	 * The serial version UID of this class. Needed for serialization.
+	 */
+	private static final long serialVersionUID = -8060974264066747959L;
 
 	@Override
-	public ChatUserInfo getSYSTEMUSER() {
-		ChatUserInfo system =  new ChatUserInfo();
-		system.setId(new Long(0));
-		system.setLastActive(System.currentTimeMillis());
-		system.setUsername("");
-		system.setDisplayName("System");
-		return system;
+	public void add(ChatMessage message) {
+		Validate.notNull(message, "Parameter message must not be null!");
+		getMessages().add(message);
+		message.setRoom(this);
 	}
 
 }
