@@ -1,7 +1,5 @@
 package org.openuss.web.lecture;
 
-import static org.openuss.web.lecture.AbstractLecturePage.logger;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -93,12 +91,21 @@ public class InstitutePage extends AbstractLecturePage {
 		
 		if (periodInfo == null && instituteInfo != null || instituteInfo != null && !periodInfos.contains(periodInfo)) {
 			if (periodInfo.getId() != null) {
+				// if id of period is ALL_ACTIVE_PERIODS or ALL_PERIODS do nothing. Remain selected!
 				if((periodInfo.getId().longValue() == Constants.COURSES_ALL_PERIODS) || (periodInfo.getId().longValue() == Constants.COURSES_ALL_ACTIVE_PERIODS)) {
 				// do nothing
+				// Suppose the case you switch the institute and in the old institute page there was a period selected which is not available
+				// in the new institute(this should be always!). --> The combobox value switches to ALL_ACTIVE_PERIODS
+				} else {
+					periodInfo.setId(Constants.COURSES_ALL_ACTIVE_PERIODS);
+					periodInfo.setName(bundle.getString("all_active_periods"));
 				}
 			}
+			// Suppose the case you initially starting the application no periods are selected --> no periodInfo VO was initiated.
+			// Set default selection to ALL_ACTIVE_PERIODS
 			if ((periodInfo.getId() == null) && (periodInfos.size() > 0)) {
-				periodInfo = periodInfos.get(0);
+				periodInfo.setId(Constants.COURSES_ALL_ACTIVE_PERIODS);
+				periodInfo.setName(bundle.getString("all_active_periods"));
 			}
 			
 			if (periodInfos.size() < 1) {
@@ -233,6 +240,7 @@ public class InstitutePage extends AbstractLecturePage {
 		return Constants.SUCCESS;
 	}
 	
+	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getBelongingInstitutePeriods() {
 		
 		institutePeriodItems = new ArrayList<SelectItem>();
@@ -304,6 +312,7 @@ public class InstitutePage extends AbstractLecturePage {
 		private List<CourseInfo> coursesByPeriodAndInstitute = null;
 
 		@Override
+		@SuppressWarnings( { "unchecked" })
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				if (periodInfo != null) {
@@ -354,6 +363,7 @@ public class InstitutePage extends AbstractLecturePage {
 	 * @return
 	 * @throws LectureException
 	 */
+	@SuppressWarnings( { "unchecked" })
 	public Collection<NewsItemInfo> getCurrentNewsItems() {
 		return newsService.getCurrentNewsItems(instituteInfo, 10);
 	}
