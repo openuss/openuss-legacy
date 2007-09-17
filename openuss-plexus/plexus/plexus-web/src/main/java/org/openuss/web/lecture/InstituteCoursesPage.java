@@ -119,6 +119,10 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 		courseInfo.setPeriodId(periodInfo.getId());
 		courseInfo.setPeriodName(periodInfo.getName());
 		courseInfo.setInstituteId(courseTypeInfo.getInstituteId());
+		//new course by default with the features newsletter, documents and discussion
+		courseInfo.setNewsletter(true);
+		courseInfo.setDocuments(true);
+		courseInfo.setDiscussion(true);
 		
 		courseInfo.setAccessType(AccessType.CLOSED);
 		
