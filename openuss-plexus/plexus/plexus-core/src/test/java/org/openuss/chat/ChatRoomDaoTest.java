@@ -5,6 +5,10 @@
  */
 package org.openuss.chat;
 
+import java.util.Date;
+
+import org.openuss.TestUtility;
+
 
 /**
  * JUnit Test for Spring Hibernate ChatRoomDao class.
@@ -12,15 +16,26 @@ package org.openuss.chat;
  */
 public class ChatRoomDaoTest extends ChatRoomDaoTestBase {
 	
+	private TestUtility testUtility;
+	
 	public void testChatRoomDaoCreate() {
-//		ChatRoom chatRoom = ChatRoom.Factory.newInstance();
-//		chatRoom.setDomainId(new Long(0));
-//		chatRoom.setRoomId(new Long(0));
-//		chatRoom.setDomainName(" ");
-//		chatRoom.setCurrentTopic(" ");
-//		chatRoom.setCLEANUPTIME(300000);
-//		assertNull(chatRoom.getId());
-//		chatRoomDao.create(chatRoom);
-//		assertNotNull(chatRoom.getId());
+		ChatRoom chatRoom = ChatRoom.Factory.newInstance();
+		chatRoom.setDomainId(testUtility.unique());
+		chatRoom.setName("Domain Name");
+		chatRoom.setTopic("Current Topic");
+		chatRoom.setCreated(new Date());
+		chatRoom.setOwner( ChatUser.Factory.newInstance("user", "test user"));
+		assertNull(chatRoom.getId());
+		chatRoomDao.create(chatRoom);
+		flush();
+		assertNotNull(chatRoom.getId());
+	}
+
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
 	}
 }
