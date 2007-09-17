@@ -24,23 +24,22 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		super.setUsername(username.toLowerCase().trim());
 	}
 
-	
 	/**
 	 * @see org.openuss.security.User#getGrantedAuthorities()
 	 */
 	public org.acegisecurity.GrantedAuthority[] getAuthorities() {
 		// expected that all groups beans implements GrantedAuthority interface
-		List<Group> authorities = getGrantedGroups(); 
-		
+		List<Group> authorities = getGrantedGroups();
+
 		return (GrantedAuthority[]) authorities.toArray(new GrantedAuthority[authorities.size()]);
 	}
-	
+
 	/**
 	 * Returns equals if it is compared to a string that represents the name of
 	 * the user.
 	 * 
 	 * @see org.acegisecurity.acl.basic.GrantedAuthorityEffectiveAclsResolver
-	 * {@inheritDoc}
+	 *      {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object object) {
@@ -49,7 +48,6 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		}
 		return super.equals(object);
 	}
-
 
 	/**
 	 * @see org.openuss.security.User#isAccountNonLocked()
@@ -71,14 +69,14 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	public boolean isCredentialsNonExpired() {
 		return !isCredentialsExpired();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public String toString() {
 		if (!StringUtils.isBlank(getUsername())) {
 			return getUsername();
-		} else  {
+		} else {
 			return super.toString();
 		}
 	}
@@ -109,7 +107,7 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		if (getContact() == null) {
 			return null;
 		} else {
-			return getContact().getTitle();			
+			return getContact().getTitle();
 		}
 	}
 
@@ -139,17 +137,18 @@ public class UserImpl extends UserBase implements User, UserDetails {
 
 	@Override
 	public String getDisplayName() {
-		return getTitle() + " " + getFirstName() + " " + getLastName();
+		return StringUtils.trimToEmpty(getTitle()) + " " + StringUtils.trimToEmpty(getFirstName()) + " "
+				+ StringUtils.trimToEmpty(getLastName());
 	}
-	
+
 	public String getTimezone() {
-		return getPreferences().getTimezone(); 
+		return getPreferences().getTimezone();
 	}
-	
+
 	public void setTimezone(String timezone) {
 		getPreferences().setTimezone(timezone);
 	}
-	
+
 	@Override
 	@SuppressWarnings("deprecation")
 	public UserPreferences getPreferences() {
@@ -182,5 +181,33 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	public boolean hasSmsNotification() {
 		return StringUtils.isNotBlank(getSmsEmail());
 	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public void setFirstName(String firstName) {
+		getContact().setFirstName(firstName);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public void setLastName(String lastName) {
+		getContact().setLastName(lastName);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public void setTitle(String title) {
+		getContact().setTitle(title);
+	}
 	
+	@SuppressWarnings("deprecation")
+	@Override
+	public UserContact getContact() {
+		if (super.getContact() == null) {
+			setContact(UserContact.Factory.newInstance());
+		}
+		return super.getContact();
+		
+	}
+
 }

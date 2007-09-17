@@ -31,6 +31,7 @@ public class ChatMessageDaoTest extends ChatMessageDaoTestBase {
 		super.onSetUpInTransaction();
 
 		chatUser = ChatUser.Factory.newInstance("user", "test user");
+		chatUser.setId(testUtility.unique());
 		chatUserDao.create(chatUser);
 		
 		chatRoom = createChatRoom();

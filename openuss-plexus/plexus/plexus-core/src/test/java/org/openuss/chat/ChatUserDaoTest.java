@@ -5,6 +5,8 @@
  */
 package org.openuss.chat;
 
+import org.openuss.TestUtility;
+
 
 /**
  * JUnit Test for Spring Hibernate ChatUserDao class.
@@ -12,12 +14,22 @@ package org.openuss.chat;
  */
 public class ChatUserDaoTest extends ChatUserDaoTestBase {
 	
+	private TestUtility testUtility;
+	
 	public void testChatUserDaoCreate() {
 		ChatUser chatUser = ChatUser.Factory.newInstance();
+		chatUser.setId(testUtility.unique());
 		chatUser.setDisplayName("DisplayName");
 		chatUser.setEmail("openuss@openuss.de");
-		assertNull(chatUser.getId());
 		chatUserDao.create(chatUser);
-		assertNotNull(chatUser.getId());
+		flush();
+	}
+
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
 	}
 }

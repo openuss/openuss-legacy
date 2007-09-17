@@ -43,6 +43,7 @@ public class ChatServiceImpl extends ChatServiceBase {
 		ChatUser chatUser = getChatUserDao().load(user.getId());
 		if (chatUser == null) {
 			chatUser = ChatUser.Factory.newInstance();
+			chatUser.setId(user.getId());
 			chatUser.setDisplayName(user.getDisplayName());
 			chatUser.setEmail(user.getEmail());
 			getChatUserDao().create(chatUser);
@@ -55,8 +56,13 @@ public class ChatServiceImpl extends ChatServiceBase {
 	 */
 	protected void handleDeleteRoom(Long roomId) throws Exception {
 		Validate.notNull(roomId, "Parameter roomId must not be null!");
-		// FIXME only delete chat if no user is online
-		getChatRoomDao().remove(roomId);
+		ChatRoom room = getChatRoomDao().load(roomId);
+		if (!room.getChatUsers().isEmpty()) {
+			// TODO throw application error here
+			throw new IllegalStateException("Cannot delete room as long users are online.");
+		} else {
+			getChatRoomDao().remove(roomId);
+		}
 	}
 
 	/**
@@ -143,6 +149,11 @@ public class ChatServiceImpl extends ChatServiceBase {
 	protected ChatRoomInfo handleGetRoom(Long roomId) throws Exception {
 		Validate.notNull(roomId, "Parameter roomId must not be null");
 		return (ChatRoomInfo) getChatRoomDao().load(ChatRoomDao.TRANSFORM_CHATROOMINFO, roomId);
+	}
+
+	@Override
+	protected List handleGetRecentMessages(Long roomId, Date since) throws Exception {
+		throw new UnsupportedOperationException("Methode is not implemented yet");
 	}
 
 }
