@@ -32,6 +32,8 @@
 	
 	<c:if test="#{!empty views$secured$lecture$instituteoptions.pendingApplicationInfo}">
 		<h:outputText value="#{views$secured$lecture$instituteoptions.pendingApplicationInfo}" styleClass="content_font_normal" escape="true"/>
+		<br></br>
+		<h:outputText value="#{views$secured$lecture$instituteoptions.pendingApplicationResponsibleInfo}" styleClass="content_font_normal" escape="true"/>
 	</c:if>
 				
 	<h:outputLabel value="#{msg.instituteinfo_description}" for="descriptionEditor" styleClass="field_label"/>

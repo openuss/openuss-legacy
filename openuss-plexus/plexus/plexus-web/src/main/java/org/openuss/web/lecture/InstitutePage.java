@@ -85,6 +85,7 @@ public class InstitutePage extends AbstractLecturePage {
 					ApplicationInfo currentApplication = iterApplication.next();
 					if (currentApplication.isConfirmed() == false) {
 						addMessage(i18n("application_pending_info", currentApplication.getDepartmentInfo().getName()));
+						addMessage(i18n("application_pending_responsible_info", currentApplication.getDepartmentInfo().getOwnerName()));
 					}
 				}
 			}

@@ -296,4 +296,23 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		}
 	}
 	
+	public String getPendingApplicationResponsibleInfo(){
+		// abort, when there is no instituteId set
+		if(instituteInfo == null || instituteInfo.getId() == null){
+			return null;
+		}
+		// check whether there is a pending application request
+		ApplicationInfo pendingApplication = instituteService.findApplicationByInstituteAndConfirmed(instituteInfo.getId(), false);
+		String appStatusDescription = "";
+		if(pendingApplication != null){
+			appStatusDescription = i18n("application_pending_responsible_info", pendingApplication.getDepartmentInfo().getOwnerName());
+		}
+		// return information string if there is a pending application
+		if(!appStatusDescription.equals("")){
+			return appStatusDescription;
+		} else {
+			return null;
+		}
+	}
+	
 }
