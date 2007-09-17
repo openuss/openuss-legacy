@@ -38,7 +38,7 @@
 	  		</h:form>
 	  		<h:form id="newMemberForm">
 	  			<o:block label="#{msg['institute_members_add_subheading']}" styleClass="form_box">
-					<o:input entity="views$secured$lecture$auth$institutemembers" property="username" required="true" label="#{msg['user_username']}">
+					<o:input entity="views$secured$lecture$auth$institutemembers" property="username" required="true" label="#{msg['user_username']}" styleClass="field_inline">
 						<f:validator validatorId="usernameExistValidator" />
 					</o:input>
 					<h:commandButton value="#{msg['institute_members_command_add']}" title="#{msg['institute_members_command_add_hint']}" actionListener="#{views$secured$lecture$auth$institutemembers.addMember}" styleClass="button_save"/>
