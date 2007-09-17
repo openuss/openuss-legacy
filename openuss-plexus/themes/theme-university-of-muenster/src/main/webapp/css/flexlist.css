@@ -93,6 +93,10 @@
 .flexListItemRight a {
 	text-decoration: none !important;
 }
+
+.remove_bookmark .remove_bookmark_hidden {
+	display:none !important;	
+}
 /* Tabs CSS */
 
 #flexlist_tabs {}

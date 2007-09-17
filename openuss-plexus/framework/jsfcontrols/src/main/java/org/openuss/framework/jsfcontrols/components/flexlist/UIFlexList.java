@@ -136,7 +136,7 @@ public class UIFlexList extends UIOutput {
 												writer.write("&nbsp;&nbsp;&nbsp;");
 												
 												writer.startElement("span", this);
-												writer.writeAttribute("style", "display:none;", null);
+												writer.writeAttribute("class", "remove_bookmark_hidden", null);
 												if(linkTitle != null && linkTitle != "")
 													writer.write(linkTitle);
 												else
@@ -232,7 +232,7 @@ public class UIFlexList extends UIOutput {
 												writer.write("&nbsp;&nbsp;&nbsp;");
 												
 												writer.startElement("span", this);
-												writer.writeAttribute("style", "display:none;", null);
+												writer.writeAttribute("class", "remove_bookmark_hidden", null);
 												if(linkTitle != null && linkTitle != "")
 													writer.write(linkTitle);
 												else
