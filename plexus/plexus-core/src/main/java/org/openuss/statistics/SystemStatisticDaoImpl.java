@@ -102,7 +102,7 @@ public class SystemStatisticDaoImpl
 
 	@Override
 	protected SystemStatistic handleFindNewest() throws Exception {
-		final String hqlCount = "select s from SystemStatisticImpl as s where s.createTime in (select max(s2.createTime) from SystemStatisticImpl as s2)";
+		final String hqlCount = "select s from SystemStatisticImpl as s where s.createTime = (select max(s2.createTime) from SystemStatisticImpl as s2)";
 		return (SystemStatistic) getHibernateTemplate().execute(new HibernateCallback(){
 		public Object doInHibernate(Session session) throws HibernateException, SQLException {
 			return session.createQuery(hqlCount).uniqueResult();

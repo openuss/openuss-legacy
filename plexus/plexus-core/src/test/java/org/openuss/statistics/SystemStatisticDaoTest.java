@@ -15,7 +15,7 @@ import java.util.Date;
 public class SystemStatisticDaoTest extends SystemStatisticDaoTestBase {
 	
 	public void testSystemStatisticsDaoCreate() {
-		SystemStatistic systemStatistic = new SystemStatisticImpl();
+		SystemStatistic systemStatistic = SystemStatistic.Factory.newInstance();
 		systemStatistic.setUsers(new Long(1));
 		systemStatistic.setInstitutes(new Long(1));
 		systemStatistic.setCourses(new Long(1));
@@ -25,5 +25,11 @@ public class SystemStatisticDaoTest extends SystemStatisticDaoTestBase {
 		assertNull(systemStatistic.getId());
 		systemStatisticDao.create(systemStatistic);
 		assertNotNull(systemStatistic.getId());
+	}
+	
+	public void testFindNewest() {
+		systemStatisticDao.create(systemStatisticDao.current());
+		SystemStatistic statistic = systemStatisticDao.findNewest();
+		assertNotNull(statistic);
 	}
 }
