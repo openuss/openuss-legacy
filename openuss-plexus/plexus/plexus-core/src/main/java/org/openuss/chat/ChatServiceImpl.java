@@ -18,6 +18,12 @@ import org.openuss.security.User;
  */
 public class ChatServiceImpl extends ChatServiceBase {
 
+	private static final String CHAT_USER_LEAVE_MESSAGE = "chatservice_user_leave_message";
+	
+	private static final String CHAT_USER_ENTER_MESSAGE = "chatservice_user_enter_message";
+	
+	private static final String CHAT_ROOM_CANNOT_DELETE_ERROR = "chatservice_room_contains_user_cannot_deleted_message";
+
 	/**
 	 * @see org.openuss.chat.ChatService#createRoom(org.openuss.foundation.DomainObject,
 	 *      java.lang.String, java.lang.String)
@@ -58,8 +64,7 @@ public class ChatServiceImpl extends ChatServiceBase {
 		Validate.notNull(roomId, "Parameter roomId must not be null!");
 		ChatRoom room = getChatRoomDao().load(roomId);
 		if (!room.getChatUsers().isEmpty()) {
-			// TODO throw application error here
-			throw new IllegalStateException("Cannot delete room as long users are online.");
+			throw new ChatRoomServiceException(CHAT_ROOM_CANNOT_DELETE_ERROR);
 		} else {
 			getChatRoomDao().remove(roomId);
 		}
@@ -82,6 +87,7 @@ public class ChatServiceImpl extends ChatServiceBase {
 		ChatUser user = retrieveCurrentChatUser();
 		ChatRoom room = getChatRoomDao().load(roomId);
 		room.getChatUsers().add(user);
+		room.add(ChatMessage.Factory.newInstance(CHAT_USER_ENTER_MESSAGE, new Date(), true , room, user));
 		getChatRoomDao().update(room);
 	}
 
@@ -93,6 +99,9 @@ public class ChatServiceImpl extends ChatServiceBase {
 		ChatUser user = retrieveCurrentChatUser();
 		ChatRoom room = getChatRoomDao().load(roomId);
 		room.getChatUsers().remove(user);
+		
+		room.add(ChatMessage.Factory.newInstance(CHAT_USER_LEAVE_MESSAGE, new Date(), true , room, user));
+		
 		getChatRoomDao().update(room);
 	}
 
@@ -119,10 +128,17 @@ public class ChatServiceImpl extends ChatServiceBase {
 	 * @see org.openuss.chat.ChatService#getRecentMessages(java.lang.Long,
 	 *      java.lang.Long)
 	 */
-	protected List handleGetRecentMessages(Long roomId, Long since)	throws Exception {
+	protected List handleGetRecentMessages(Long roomId, Long messageId)	throws Exception {
 		Validate.notNull(roomId, "Parameter roomId must not be null!");
-		Validate.notNull(since, "Parameter since must not be null!");
-		return getChatMessageDao().findByRoomAndAfter(ChatMessageDao.TRANSFORM_CHATMESSAGEINFO,roomId,since);
+		Validate.notNull(messageId, "Parameter messageId must not be null!");
+		return getChatMessageDao().findByRoomAfter(ChatMessageDao.TRANSFORM_CHATMESSAGEINFO,roomId,messageId);
+	}
+
+	@Override
+	protected List handleGetRecentMessages(Long roomId, Date since) throws Exception {
+		Validate.notNull(roomId, "Parameter roomId must not be null");
+		Validate.notNull(since, "Parameter since must not be null");
+		return getChatMessageDao().findByRoomSince(ChatMessageDao.TRANSFORM_CHATMESSAGEINFO, roomId, since);
 	}
 
 	/**
@@ -152,8 +168,10 @@ public class ChatServiceImpl extends ChatServiceBase {
 	}
 
 	@Override
-	protected List handleGetRecentMessages(Long roomId, Date since) throws Exception {
-		throw new UnsupportedOperationException("Methode is not implemented yet");
+	protected Long handleGetLastMessage(Long roomId) throws Exception {
+		Validate.notNull(roomId, "Parameter roomId must not be null");
+		return getChatMessageDao().lastMessageId(roomId);
 	}
+
 
 }

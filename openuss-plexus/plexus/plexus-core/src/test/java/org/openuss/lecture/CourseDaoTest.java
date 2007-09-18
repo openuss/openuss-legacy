@@ -8,7 +8,6 @@ package org.openuss.lecture;
 import org.openuss.TestUtility;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
-import org.springframework.dao.DataAccessException;
 
 
 /**

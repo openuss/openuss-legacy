@@ -11,6 +11,7 @@ import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
+import org.openuss.security.UserContact;
 import org.openuss.security.UserDao;
 import org.openuss.security.UserImpl;
 import org.openuss.security.UserPreferences;
@@ -37,6 +38,7 @@ public class TestUtility {
 	public User createDefaultUserInDB() {
 		defaultUser.setUsername(unique("username"));
 		defaultUser.setGroups(new ArrayList<Group>());
+		defaultUser.setContact(UserContact.Factory.newInstance());
 		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
 		userDao.create(defaultUser);
 		return defaultUser;
@@ -63,7 +65,13 @@ public class TestUtility {
 
 	public Institute createPersistInstituteWithDefaultUser() {
 		defaultUser.setUsername(unique("username"));
+		defaultUser.setContact(UserContact.Factory.newInstance());
+		defaultUser.setFirstName("firstName");
+		defaultUser.setLastName("lastName");
+		defaultUser.setTitle("title");
+		defaultUser.setEmail(unique("email"));
 		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
+		
 		userDao.create(defaultUser);
 		defaultInstitute.setName(unique("name"));
 		defaultInstitute.setShortcut(unique("shortcut"));

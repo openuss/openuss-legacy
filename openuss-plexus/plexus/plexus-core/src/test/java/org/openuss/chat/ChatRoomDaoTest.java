@@ -21,6 +21,23 @@ public class ChatRoomDaoTest extends ChatRoomDaoTestBase {
 	private ChatUserDao chatUserDao;
 	
 	public void testChatRoomDaoCreate() {
+		ChatRoom chatRoom = createChatRoom();
+		chatUserDao.create(chatRoom.getOwner());
+		chatRoomDao.create(chatRoom);
+		flush();
+		assertNotNull(chatRoom.getId());
+	}
+
+	public void testChatRoomDomainObject() {
+		ChatRoom chatRoom = createChatRoom();
+		chatUserDao.create(chatRoom.getOwner());
+		chatRoomDao.create(chatRoom);
+		flush();
+		assertNotNull(chatRoom.getId());
+		assertEquals("Numbers of rooms",1, chatRoomDao.findChatRoomByDomainId(chatRoom.getDomainId()).size());
+	}
+
+	private ChatRoom createChatRoom() {
 		ChatRoom chatRoom = ChatRoom.Factory.newInstance();
 		chatRoom.setDomainId(testUtility.unique());
 		chatRoom.setName("Domain Name");
@@ -28,10 +45,7 @@ public class ChatRoomDaoTest extends ChatRoomDaoTestBase {
 		chatRoom.setCreated(new Date());
 		chatRoom.setOwner( createChatUser());
 		assertNull(chatRoom.getId());
-		chatUserDao.create(chatRoom.getOwner());
-		chatRoomDao.create(chatRoom);
-		flush();
-		assertNotNull(chatRoom.getId());
+		return chatRoom;
 	}
 
 	private ChatUser createChatUser() {

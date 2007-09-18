@@ -23,7 +23,12 @@ import org.openuss.system.SystemTests;
 import org.openuss.viewtracking.ViewTrackingTests;
 import org.openuss.wiki.WikiTests;
 
+/**
+ * JUnit Testsuite for all core tests. 
+ * @author Ingo Dueppe
+ */
 public class AllTests {
+
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.openuss");
 		// $JUnit-BEGIN$
@@ -49,7 +54,6 @@ public class AllTests {
 		// $JUnit-END$
 		return suite;
 	}
-
 
 	public static void main(String[] args) {
 		suite();
