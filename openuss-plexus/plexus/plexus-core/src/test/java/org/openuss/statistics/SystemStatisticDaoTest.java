@@ -28,4 +28,10 @@ public class SystemStatisticDaoTest extends SystemStatisticDaoTestBase {
 		systemStatisticDao.create(systemStatistic);
 		assertNotNull(systemStatistic.getId());
 	}
+	
+	public void testFindNewest() {
+		systemStatisticDao.create(systemStatisticDao.current());
+		SystemStatistic statistic = systemStatisticDao.findNewest();
+		assertNotNull(statistic);
+	}
 }
