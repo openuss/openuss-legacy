@@ -5,7 +5,6 @@
  */
 package org.openuss.chat;
 
-
 /**
  * @see org.openuss.chat.ChatRoom
  */
@@ -17,14 +16,14 @@ public class ChatRoomDaoImpl extends ChatRoomDaoBase {
 	 */
 	public void toChatRoomInfo(ChatRoom sourceEntity, ChatRoomInfo targetVO) {
 		super.toChatRoomInfo(sourceEntity, targetVO);
-		
+		targetVO.setOnlineUsers(sourceEntity.getChatUsers().size());
+		targetVO.setMessages(sourceEntity.getMessages().size());
 	}
 
 	/**
 	 * @see org.openuss.chat.ChatRoomDao#toChatRoomInfo(org.openuss.chat.ChatRoom)
 	 */
-	public org.openuss.chat.ChatRoomInfo toChatRoomInfo(final org.openuss.chat.ChatRoom entity) {
-		// @todo verify behavior of toChatRoomInfo
+	public ChatRoomInfo toChatRoomInfo(final ChatRoom entity) {
 		return super.toChatRoomInfo(entity);
 	}
 
@@ -33,25 +32,20 @@ public class ChatRoomDaoImpl extends ChatRoomDaoBase {
 	 * object from the object store. If no such entity object exists in the
 	 * object store, a new, blank entity is created
 	 */
-	private org.openuss.chat.ChatRoom loadChatRoomFromChatRoomInfo(org.openuss.chat.ChatRoomInfo chatRoomInfo) {
-		// @todo implement loadChatRoomFromChatRoomInfo
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.chat.loadChatRoomFromChatRoomInfo(org.openuss.chat.ChatRoomInfo) not yet implemented.");
+	private ChatRoom loadChatRoomFromChatRoomInfo(ChatRoomInfo chatRoomInfo) {
+		ChatRoom chatRoom = this.load(chatRoomInfo.getId());
+		if (chatRoom == null) {
+			chatRoom = ChatRoom.Factory.newInstance();
+		}
+		return chatRoom;
 
-		/*
-		 * A typical implementation looks like this: org.openuss.chat.ChatRoom
-		 * chatRoom = this.load(chatRoomInfo.getId()); if (chatRoom == null) {
-		 * chatRoom = org.openuss.chat.ChatRoom.Factory.newInstance(); } return
-		 * chatRoom;
-		 */
 	}
 
 	/**
 	 * @see org.openuss.chat.ChatRoomDao#chatRoomInfoToEntity(org.openuss.chat.ChatRoomInfo)
 	 */
-	public org.openuss.chat.ChatRoom chatRoomInfoToEntity(org.openuss.chat.ChatRoomInfo chatRoomInfo) {
-		// @todo verify behavior of chatRoomInfoToEntity
-		org.openuss.chat.ChatRoom entity = this.loadChatRoomFromChatRoomInfo(chatRoomInfo);
+	public ChatRoom chatRoomInfoToEntity(ChatRoomInfo chatRoomInfo) {
+		ChatRoom entity = this.loadChatRoomFromChatRoomInfo(chatRoomInfo);
 		this.chatRoomInfoToEntity(chatRoomInfo, entity, true);
 		return entity;
 	}
@@ -60,10 +54,7 @@ public class ChatRoomDaoImpl extends ChatRoomDaoBase {
 	 * @see org.openuss.chat.ChatRoomDao#chatRoomInfoToEntity(org.openuss.chat.ChatRoomInfo,
 	 *      org.openuss.chat.ChatRoom)
 	 */
-	public void chatRoomInfoToEntity(org.openuss.chat.ChatRoomInfo sourceVO, org.openuss.chat.ChatRoom targetEntity,
-			boolean copyIfNull) {
-		// @todo verify behavior of chatRoomInfoToEntity
+	public void chatRoomInfoToEntity(ChatRoomInfo sourceVO, ChatRoom targetEntity, boolean copyIfNull) {
 		super.chatRoomInfoToEntity(sourceVO, targetEntity, copyIfNull);
 	}
-
 }

@@ -5,32 +5,63 @@
  */
 package org.openuss.chat;
 
+import java.util.Date;
 import java.util.List;
+
+import org.hibernate.HibernateException;
 
 /**
  * @see org.openuss.chat.ChatMessage
+ * @author Ingo Düppe
  */
 public class ChatMessageDaoImpl extends ChatMessageDaoBase {
+
+	@Override
+	protected Long handleLastMessageId(final Long roomId) throws Exception {
+		final String hqlSelect = "select max(m.id) from org.openuss.chat.ChatMessage as m where m.room.id = :roomId";
+		return (Long) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
+			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
+				List results = session.createQuery(hqlSelect).setLong("roomId", roomId).list();
+				Long msgId;
+				if (results.size() > 0) {
+					msgId = (Long) results.get(0);
+				} else {
+					msgId = 0L;
+				}
+				logger.debug("last "+msgId+" records.");
+				return msgId;
+			}
+		}, true);
+		
+	}
 
 	/**
 	 * @see org.openuss.chat.ChatMessageDao#findByRoomAndAfter(int,
 	 *      java.lang.Long, java.lang.Long)
 	 */
 	@Override
-	public List findByRoomAndAfter(final int transform, final Long roomId, final Long after) {
-		return this
-				.findByRoomAndAfter(
-						transform,
-						"from org.openuss.chat.ChatMessage as chatMessage where chatMessage.room.id = ? and chatMessage.id > ?",
-						roomId, after);
+	public List findByRoomAfter(final int transform, final Long roomId, final Long messageId) {
+		return findByRoomAfter(
+				transform,
+				"from org.openuss.chat.ChatMessage as chatMessage where chatMessage.room.id = ? and chatMessage.id > ?",
+				roomId, messageId);
 	}
 
 	/**
 	 * @see org.openuss.chat.ChatMessageDao#findByRoom(int, java.lang.Long)
 	 */
+	@Override
 	public List findByRoom(final int transform, final Long roomId) {
-		return this.findByRoom(transform,
+		return findByRoom(transform,
 				"from org.openuss.chat.ChatMessage as chatMessage where chatMessage.room.id = ? order by id", roomId);
+	}
+
+	@Override
+	public List findByRoomSince(int transform, Long roomId, Date since) {
+		return findByRoomSince(
+				transform,
+				"from org.openuss.chat.ChatMessage as chatMessage where chatMessage.room.id = ? and chatMessage.time > ?",
+				roomId, since);
 	}
 
 	/**
@@ -78,5 +109,4 @@ public class ChatMessageDaoImpl extends ChatMessageDaoBase {
 	public void chatMessageInfoToEntity(ChatMessageInfo sourceVO, ChatMessage targetEntity, boolean copyIfNull) {
 		super.chatMessageInfoToEntity(sourceVO, targetEntity, copyIfNull);
 	}
-
 }

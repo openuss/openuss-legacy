@@ -1,7 +1,7 @@
 var rewriteTitle = true;
 var userId = -1;
-var documentId = -1;
-var documentName = "";
+var roomId = -1;
+var roomName = "";
 var lastMessage = -1;
 var refreshRunning = false;
 var server_name = "";
@@ -38,7 +38,7 @@ function changeTopic(topic) {
 	req.open("POST", server_name, true);
 	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	var now = new Date(); // needed to prevent hashing, especially in IE
-	req.send("action=topic&documentId="+documentId+"&userId="+userId+"&topic="+enc(topic)+"&time="+now.getTime());
+	req.send("action=topic&roomId="+roomId+"&userId="+userId+"&topic="+enc(topic)+"&time="+now.getTime());
 }
 
 /*
@@ -57,7 +57,7 @@ function sendMessage(message) {
 		req.open("POST", server_name, true);
 		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		var now = new Date(); // needed to prevent hashing, especially in IE
-		req.send("action=send&documentId="+documentId+"&userId="+userId+"&message="+enc(message)+"&lastMessage="+lastMessage+"&time="+now.getTime());
+		req.send("action=send&roomId="+roomId+"&userId="+userId+"&message="+enc(message)+"&lastMessage="+lastMessage+"&time="+now.getTime());
 		refreshRunning = false;
 	}
 }
@@ -68,7 +68,7 @@ function sendMessage(message) {
 function register(s_name, docId) {
 
 	server_name = s_name;
-	documentId = docId;
+	roomId = docId;
 
 	var req = newXMLHttpRequest();
  
@@ -77,11 +77,11 @@ function register(s_name, docId) {
 	req.open("POST", server_name, false);
 	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	var now = new Date(); // needed to prevent hashing, especially in IE
-	req.send("action=enter&documentId="+documentId+"&time="+now.getTime());
+	req.send("action=enter&roomId="+roomId+"&time="+now.getTime());
  
 	var userXML = req.responseXML;
 	userId=userXML.getElementsByTagName("user")[0].firstChild.nodeValue;
-	lastMessage = userXML.getElementsByTagName("time")[0].firstChild.nodeValue - 1;
+	lastMessage = userXML.getElementsByTagName("last")[0].firstChild.nodeValue - 1;
 }
 
 /*
@@ -98,7 +98,7 @@ function leave() {
 		req.open("POST", server_name, false);
 		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		var now = new Date(); // needed to prevent hashing, especially in IE
-		req.send("action=leave&documentId="+documentId+"&userId="+userId+"&time="+now.getTime());  
+		req.send("action=leave&roomId="+roomId+"&userId="+userId+"&time="+now.getTime());  
 	}
 }
 
@@ -117,7 +117,7 @@ function refresh() {
 		req.open("POST", server_name, true);
 		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		var now = new Date(); // needed to prevent hashing, especially in IE
-		req.send("action=refresh&documentId="+documentId+"&userId="+userId+"&lastMessage="+lastMessage+"&time="+now.getTime());
+		req.send("action=refresh&roomId="+roomId+"&userId="+userId+"&lastMessage="+lastMessage+"&time="+now.getTime());
 		refreshRunning = false;
 	}
 }
@@ -126,18 +126,19 @@ function refresh() {
  * rebuilds view with refreshed data
  */
 function handleRefresh(refreshXML) {
-	if (lastMessage == refreshXML.getElementsByTagName("time")[0].firstChild.nodeValue) return;
+	if (lastMessage == refreshXML.getElementsByTagName("last")[0].firstChild.nodeValue) return;
 	if (rewriteTitle) {
 		document.title = document.title + ' - ' + refreshXML.getElementsByTagName("documentName")[0].firstChild.nodeValue; 
 		rewriteTitle = false;
 	}	
 
+	/*
 	if (refreshXML.getElementsByTagName("topic")[0].firstChild)
 		document.formular.topic.value = dec(refreshXML.getElementsByTagName("topic")[0].firstChild.nodeValue); 
- 
+ 	*/
 	userArray = refreshXML.getElementsByTagName("users")[0].getElementsByTagName("user");
 	newValue = "";
-	for (var i = 1; i < userArray.length; i++) {
+	for (var i = 0; i < userArray.length; i++) {
 		newValue += dec(userArray[i].firstChild.nodeValue) + "\n";
 	}
 	if (document.formular.usersonline.value != newValue) document.formular.usersonline.value = newValue;
@@ -151,13 +152,13 @@ function handleRefresh(refreshXML) {
 		else document.formular.messagefield.value += "\n";  
 	}
  
-	lastMessage = refreshXML.getElementsByTagName("time")[0].firstChild.nodeValue;
+	lastMessage = refreshXML.getElementsByTagName("last")[0].firstChild.nodeValue;
 	scrollToBottom(document.formular.messagefield);
 }
 
 // used when sending to quickly refresh
 function handleSend(refreshXML) {
-	if (lastMessage == refreshXML.getElementsByTagName("time")[0].firstChild.nodeValue) return;
+	if (lastMessage == refreshXML.getElementsByTagName("last")[0].firstChild.nodeValue) return;
 
 	msgArray = refreshXML.getElementsByTagName("messages")[0].getElementsByTagName("message");
 	for (var i = 0; i < msgArray.length; i++) {
@@ -169,7 +170,7 @@ function handleSend(refreshXML) {
 			document.formular.messagefield.value += "\n";
 	}
 
-	lastMessage = refreshXML.getElementsByTagName("time")[0].firstChild.nodeValue;
+	lastMessage = refreshXML.getElementsByTagName("last")[0].firstChild.nodeValue;
 	scrollToBottom(document.formular.messagefield);
 	refreshRunning = false;
 }

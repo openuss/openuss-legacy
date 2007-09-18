@@ -73,10 +73,10 @@ public class CourseParticipantsPage extends AbstractCoursePage {
 	}
 
 	public String delete() {
-		logger.error("course participant deleted");
+		logger.info("course participant deleted");
 		CourseMemberInfo participant = data.getRowData();
 		courseService.removeMember(participant.getId());
-		addMessage(i18n("message_course_removed_participant"),participant.getUsername());
+		addMessage(i18n("message_course_removed_participant",participant.getUsername()));
 		return Constants.SUCCESS;
 	}
 

@@ -566,31 +566,6 @@ public class LectureServiceImpl extends LectureServiceBase{
 		return user;
 	}
 
-	/**
-	 * Convenience method for isNonExisting methods.<br/> Checks wheter or not
-	 * the found record is equal to self entry.
-	 * <ul>
-	 * <li>self == null AND found == null => <b>true</b></li>
-	 * <li>self == null AND found <> null => <b>false</b></li>
-	 * <li>self <> null AND found == null => <b>true</b></li>
-	 * <li>self <> null AND found <> null AND self == found => <b>true</b></li>
-	 * <li>self <> null AND found <> null AND self <> found => <b>false</b></li>
-	 * </ul>
-	 * 
-	 * @param self
-	 *            current record
-	 * @param found
-	 *            in database
-	 * @return true or false
-	 */
-	private boolean isEqualOrNull(Object self, Object found) {
-		if (self == null || found == null) {
-			return found == null;
-		} else {
-			return self.equals(found);
-		}
-	}
-
 	@Override
 	protected InstituteDetails handleGetInstitute(Institute institute) throws Exception {
 		institute = handleGetInstitute(institute.getId());

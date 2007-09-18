@@ -8,6 +8,7 @@ package org.openuss.chat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.openuss.TestUtility;
 
 /**
@@ -43,15 +44,6 @@ public class ChatMessageDaoTest extends ChatMessageDaoTestBase {
 		return room;
 	}
 
-	public void testChatMessageDaoCreate() {
-		ChatMessage chatMessage = createMessage(chatUser, chatRoom);
-
-		assertNull(chatMessage.getId());
-		chatMessageDao.create(chatMessage);
-		flush();
-		assertNotNull(chatMessage.getId());
-	}
-
 	private ChatMessage createMessage(ChatUser user, ChatRoom room) {
 		ChatMessage chatMessage = ChatMessage.Factory.newInstance();
 		chatMessage.setText("Message Text");
@@ -60,8 +52,27 @@ public class ChatMessageDaoTest extends ChatMessageDaoTestBase {
 		chatMessage.setRoom(room);
 		return chatMessage;
 	}
+
+	public void testChatMessageDaoCreate() {
+		ChatMessage chatMessage = createMessage(chatUser, chatRoom);
+
+		assertNull(chatMessage.getId());
+		chatMessageDao.create(chatMessage);
+		flush();
+		assertNotNull(chatMessage.getId());
+	}
 	
-	public void testFinder() {
+	public void testLastMessageId() {
+		ChatMessage chatMessage = null;
+		for (int i = 0; i < 5; i++) {
+			chatMessage = createMessage(chatUser, chatRoom);
+			chatMessageDao.create(chatMessage);
+		}
+		assertEquals("Last messageId",chatMessage.getId(),chatMessageDao.lastMessageId(chatRoom.getId()));
+	}
+
+	
+	public void testFinderAfter() {
 		ChatRoom chatRoom2 = createChatRoom();
 		ChatMessage msg1 = createMessage(chatUser, chatRoom);
 		ChatMessage msg2 = createMessage(chatUser, chatRoom);
@@ -82,9 +93,41 @@ public class ChatMessageDaoTest extends ChatMessageDaoTestBase {
 		assertFalse(msgs.contains(msg3));
 		assertTrue(msgs.contains(msg4));
 		
-		List<ChatMessage> recently = chatMessageDao.findByRoomAndAfter(chatRoom.getId(), msg2.getId());
+		List<ChatMessage> recently = chatMessageDao.findByRoomAfter(chatRoom.getId(), msg2.getId());
 		assertEquals(1, recently.size());
+		assertTrue(recently.contains(msg4));
+	}
+
+	public void testFinderSince() {
+		ChatRoom chatRoom2 = createChatRoom();
+		ChatMessage msg1 = createMessage(chatUser, chatRoom);
+		ChatMessage msg2 = createMessage(chatUser, chatRoom);
+		ChatMessage msg3 = createMessage(chatUser, chatRoom2);
+		ChatMessage msg4 = createMessage(chatUser, chatRoom);
+		
+		Date now = new Date();
+		msg1.setTime(DateUtils.addMinutes(now, -40));
+		msg2.setTime(DateUtils.addMinutes(now, -20));
+		msg3.setTime(DateUtils.addMinutes(now, 0));
+		msg4.setTime(DateUtils.addMinutes(now, 20));
+		
+		chatMessageDao.create(msg1);
+		chatMessageDao.create(msg2);
+		chatMessageDao.create(msg3);
+		chatMessageDao.create(msg4);
+		
+		flush();
+		List<ChatMessage> msgs = chatMessageDao.findByRoom(chatRoom.getId());
+		
+		assertEquals(3, msgs.size());
+		assertTrue(msgs.contains(msg1));
+		assertTrue(msgs.contains(msg2));
+		assertFalse(msgs.contains(msg3));
 		assertTrue(msgs.contains(msg4));
+		
+		List<ChatMessage> recently = chatMessageDao.findByRoomSince(chatRoom.getId(), now);
+		assertEquals(1, recently.size());
+		assertTrue("wrong messsage ",recently.contains(msg4));
 	}
 
 	public TestUtility getTestUtility() {

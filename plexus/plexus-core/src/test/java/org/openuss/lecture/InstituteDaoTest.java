@@ -8,7 +8,6 @@ package org.openuss.lecture;
 import java.util.List;
 
 import org.openuss.TestUtility;
-import org.springframework.dao.DataAccessException;
 
 /**
  * JUnit Test for Spring Hibernate InstituteDao class.

@@ -47,8 +47,8 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 		// persist
 		assertNull(courseType.getId());
 		instituteDao.update(institute);
-		assertNotNull(courseType.getId());
-		commit();
+		assertNotNull("course type has id", courseType.getId());
+		flush();
 		
 		// load 
 		CourseType s = courseTypeDao.load(courseType.getId());
@@ -57,12 +57,12 @@ public class CourseTypeDaoTest extends CourseTypeDaoTestBase {
 		// update
 		s.setDescription("description");
 		courseTypeDao.update(s);
-		commit();
+		flush();
 
 		// remove courseType from institute
 		institute.remove(s);
 		instituteDao.update(institute);
-		commit();
+		flush();
 	}
 
 	public TestUtility getTestUtility() {
