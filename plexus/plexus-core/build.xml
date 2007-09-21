@@ -92,6 +92,7 @@
 			</classpath>
 			<transaction src="target/firebird_database_schema.sql"/>
 			<transaction src="src/main/data/init.sql"/>
+			<transaction src="src/main/data/quartz.sql"/>
 		</sql>
 		<echo message="INFO: Database schemas created" />
 	</target>
@@ -109,6 +110,7 @@
 			</classpath>
 			<transaction src="target/firebird_database_schema.sql"/>
 			<transaction src="src/main/data/init.sql"/>
+			<transaction src="src/main/data/quartz.sql"/>
 		</sql>
 		<echo message="INFO: Database schemas created" />
 	</target>
