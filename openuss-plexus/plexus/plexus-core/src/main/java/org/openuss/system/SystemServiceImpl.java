@@ -5,12 +5,34 @@
  */
 package org.openuss.system;
 
+import org.apache.log4j.Logger;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Collection;
 
 /**
  * @see org.openuss.system.SystemService
  */
 public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
+	
+	/** Logger for this class */
+	private static final Logger logger = Logger.getLogger(SystemServiceImpl.class);
+
+	/**  This is the system instance identity, that must be unique with the cluster */
+	private static volatile Long instanceIdentity = 1L;
+
+	public SystemServiceImpl() {
+		try {
+			instanceIdentity = ((long)InetAddress.getLocalHost().hashCode()) + System.currentTimeMillis(); 
+			
+		} catch (UnknownHostException e) {
+			logger.error(e);
+			instanceIdentity = System.currentTimeMillis();
+		}
+		instanceIdentity = new Long(0) + System.currentTimeMillis();
+
+	}
 
 	/**
 	 * @see org.openuss.system.SystemService#persistProperty(org.openuss.system.SystemProperty)
@@ -42,11 +64,6 @@ public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
 		getSystemPropertyDao().update(properties);
 	}
 	
-	/** 
-	 * This is the system instance identity, that must be unique with the cluster
-	 */
-	private static volatile Long instanceIdentity = 1L;
-
 	@Override
 	protected Long handleGetInstanceIdentity() throws Exception {
 		return instanceIdentity;
