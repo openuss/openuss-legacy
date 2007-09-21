@@ -132,7 +132,6 @@
 
 	<bean id="migrationService" class="org.openuss.migration.from20to30.MigrationService" >
 		<property name="legacySessionFactory" ref="legacySessionFactory"/>
-		<property name="plexusSessionFactory" ref="sessionFactory"/>
 		<property name="userImport" ref="userImportTx"/>
 		<property name="lectureImport" ref="lectureImportTx"/>
 		<property name="desktopImport" ref="desktopImportTx"/>
