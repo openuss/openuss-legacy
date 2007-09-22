@@ -73,7 +73,7 @@ public class LegacyIdentifierDaoTest extends AbstractTransactionalDataSourceSpri
 			"classpath*:applicationContext-localDataSource.xml",
 			"classpath*:applicationContext-legacy.xml",
 //			"classpath*:applicationContext-adapters.xml",
-//			"classpath*:applicationContext-commands.xml",
+			"classpath*:applicationContext-commands.xml",
 			"classpath*:applicationContext-messaging.xml",
 			"classpath*:applicationContext-newsletter.xml",
 //			"classpath*:applicationContext-lucene.xml",

@@ -11,12 +11,12 @@ public class ClusterCommand {
 	
 	private ClusterCommandProcessor clusterCommandProcessor;
 
-	public void processEachCommands() {
-		clusterCommandProcessor.processEachCommands();
+	public void processNodeCommands() {
+		clusterCommandProcessor.processNodeCommands();
 	}
 
-	public void processOnceCommand() {
-		clusterCommandProcessor.processOnceCommand();
+	public void processCommand(Long commandId) {
+		clusterCommandProcessor.processCommand(commandId);
 	}
 	
 	public ClusterCommandProcessor getClusterCommandProcessor() {

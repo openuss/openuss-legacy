@@ -5,10 +5,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
+
 	<bean id="clusterScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<property name="applicationContextSchedulerContextKey">
-			<value>applicationContext</value>
-		</property>
+		<property name="applicationContextSchedulerContextKey" value="applicationContext"/>
 		<property name="autoStartup" value="false"/>
 		<property name="waitForJobsToCompleteOnShutdown" value="true"/>
  		<property name="overwriteExistingJobs" value="true"/>
@@ -34,7 +33,6 @@
 				<prop key="org.quartz.jobStore.selectWithLockSQL">SELECT * FROM {0}LOCKS UPDLOCK WHERE LOCK_NAME = ? FOR UPDATE WITH LOCK</prop>
 			</props>
 		</property>
- 		
 	</bean>
 	
 	<bean id="exampleJob" class="org.springframework.scheduling.quartz.JobDetailBean" scope="prototype">
