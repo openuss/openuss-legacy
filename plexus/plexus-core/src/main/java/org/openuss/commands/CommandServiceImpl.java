@@ -9,6 +9,10 @@ import java.util.Date;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.foundation.DomainObject;
+import org.quartz.JobDataMap;
+import org.quartz.Scheduler;
+import org.quartz.SimpleTrigger;
+import org.quartz.Trigger;
 
 /**
  * @author Ingo Dueppe
@@ -29,7 +33,16 @@ public class CommandServiceImpl extends CommandServiceBase {
 	 *      java.lang.String, java.lang.String)
 	 */
 	protected Long handleCreateOnceCommand(DomainObject domainObject, String commandName, Date startTime, String commandType) throws java.lang.Exception {
-		return createCommand(domainObject, commandName, commandType, CommandState.ONCE, startTime);
+		Long commandId = createCommand(domainObject, commandName, commandType, CommandState.ONCE, startTime);
+
+		Trigger trigger = new SimpleTrigger("Command-"+commandId, Scheduler.DEFAULT_GROUP, startTime);
+		trigger.setJobName("cluster_command");
+		JobDataMap jdm = new JobDataMap();
+		jdm.put("commandId", commandId);
+		trigger.setJobDataMap(jdm);
+		getClusterScheduler().scheduleJob(trigger);
+		
+		return commandId;
 	}
 
 	private Long createCommand(DomainObject domainObject, String commandName, String commandType, CommandState state, Date startTime) {
@@ -37,7 +50,6 @@ public class CommandServiceImpl extends CommandServiceBase {
 		Validate.notNull(domainObject.getId(), "DomainObject must provide an id");
 		Validate.notEmpty(commandName, "CommandName must not be null.");
 		Validate.notNull(state, "State must not be null");
-		
 		if (startTime == null) {
 			startTime = new Date();
 		}

@@ -33,13 +33,13 @@ public class ClusterCommandProcessorTest extends AbstractDependencyInjectionSpri
 	public void testEachCommandExecution() {
 		List<Command> commands = createCommands(10, CommandState.EACH);
 		mockCommandDao.create(commands);
-		commandProcessor.processEachCommands();
+		commandProcessor.processNodeCommands();
 		assertEquals(commands.size(), mockCommand.getExecutionCount());
 
 		checkStateForAll(commands, CommandState.EACH);
 		assertEquals(commands.get(commands.size()-1),lastProcessedCommand());
 
-		commandProcessor.processEachCommands();
+		commandProcessor.processNodeCommands();
 		assertEquals(commands.size(), mockCommand.getExecutionCount());
 	}
 
@@ -47,19 +47,19 @@ public class ClusterCommandProcessorTest extends AbstractDependencyInjectionSpri
 		List<Command> commands = createCommands(10, CommandState.EACH);
 		mockCommandDao.create(commands);
 		mockCommand.setThrowException(true);
-		commandProcessor.processEachCommands();
+		commandProcessor.processNodeCommands();
 		assertEquals(commands.size(), mockCommand.getExecutionCount());
 
 		checkStateForAll(commands, CommandState.ERROR);
 		assertEquals(commands.get(commands.size()-1),lastProcessedCommand());
-		commandProcessor.processEachCommands();
+		commandProcessor.processNodeCommands();
 		assertEquals(commands.size(), mockCommand.getExecutionCount());
 	}
 
 	public void testOnceCommandExecution() {
 		List<Command> commands = createCommands(10, CommandState.ONCE);
 		mockCommandDao.create(commands);
-		commandProcessor.processOnceCommand();
+		commandProcessor.processCommand(commands.get(0).getId());
 		assertEquals(1, mockCommand.getExecutionCount());
 		Command commandFirst = commands.get(0);
 		assertEquals(CommandState.DONE, commandFirst.getState());
@@ -67,7 +67,7 @@ public class ClusterCommandProcessorTest extends AbstractDependencyInjectionSpri
 		assertEquals(CommandState.ONCE, commandSecond.getState());
 		
 		for(int i=0; i < 10; i++) {
-			commandProcessor.processOnceCommand();
+			commandProcessor.processCommand(commands.get(i).getId());
 		}
 		checkStateForAll(commands, CommandState.DONE);
 	}

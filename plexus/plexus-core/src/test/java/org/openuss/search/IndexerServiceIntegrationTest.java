@@ -47,19 +47,19 @@ public class IndexerServiceIntegrationTest extends IndexerServiceIntegrationTest
 
 	private void check(String command, String commandType, DomainObject domain) {
 		Collection<Command> commands = commandDao.loadAll();
-		assertFalse(commands.isEmpty());
-		Command cmd = last(commands);
-		assertEquals(domain.getId(), cmd.getDomainIdentifier());
-		assertEquals(command, cmd.getCommand());
-		assertEquals(commandType, cmd.getCommandType());
+		assertFalse("command empty", commands.isEmpty());
+		Command cmd = last(commands, domain.getId());
+		assertEquals("domainIdentifier", domain.getId(), cmd.getDomainIdentifier());
+		assertEquals("command", command, cmd.getCommand());
+		assertEquals("commandType", commandType, cmd.getCommandType());
 	}
 
-	private Command last(Collection<Command> commands) {
+	private Command last(Collection<Command> commands, Long domainId) {
 		Command command = null;
 		Iterator<Command> iter = commands.iterator();
-		while (iter.hasNext()) {
+		do {
 			command = iter.next();
-		}
+		} while (!command.getDomainIdentifier().equals(domainId) && iter.hasNext() );
 		return command;
 	}
 

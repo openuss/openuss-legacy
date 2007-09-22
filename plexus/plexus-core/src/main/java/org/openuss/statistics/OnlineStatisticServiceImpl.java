@@ -83,12 +83,11 @@ public class OnlineStatisticServiceImpl extends OnlineStatisticServiceBase {
 
 	@Override
 	protected SystemStatisticInfo handleGetSystemStatistics() throws Exception {
-		SystemStatisticInfo sysInfo = new SystemStatisticInfo();
-		sysInfo = getSystemStatisticDao().toSystemStatisticInfo(getSystemStatisticDao().findNewest());
-		if ((sysInfo==null)){			
-			sysInfo = getSystemStatisticDao().toSystemStatisticInfo(getSystemStatisticDao().current());
+		SystemStatistic statistic = getSystemStatisticDao().findNewest();
+		if (statistic == null) {
+			statistic = getSystemStatisticDao().current();
 		}
-		return sysInfo;
+		return getSystemStatisticDao().toSystemStatisticInfo(statistic);
 	}
 
 }
