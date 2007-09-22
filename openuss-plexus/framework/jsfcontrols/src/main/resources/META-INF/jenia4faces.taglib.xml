@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!DOCTYPE facelet-taglib PUBLIC
+  "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN"
+  "http://java.sun.com/dtd/facelet-taglib_1_0.dtd">
+
+<facelet-taglib>
+	<namespace>http://www.jenia.org/jsf/popup</namespace>
+	<!-- for jenia4faces 1.1 -->
+	<tag>
+		<tag-name>popupCalendar</tag-name>
+		<component>
+			<component-type>
+				org.jenia.faces.popup.HtmlPopupCalendar
+			</component-type>
+			<renderer-type>
+				org.jenia.faces.popup.PopupCalendar
+			</renderer-type>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>popupBox</tag-name>
+		<component>
+			<component-type>
+				org.jenia.faces.popup.HtmlPopupBox
+			</component-type>
+			<renderer-type>
+				org.jenia.faces.popup.PopupBox
+			</renderer-type>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>closePopupBox</tag-name>
+		<component>
+			<component-type>
+				org.jenia.faces.popup.HtmlClosePopupBox
+			</component-type>
+			<renderer-type>
+				org.jenia.faces.popup.ClosePopupBox
+			</renderer-type>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>popupFrame</tag-name>
+		<component>
+			<component-type>
+				org.jenia.faces.popup.HtmlPopupFrame
+			</component-type>
+			<renderer-type>
+				org.jenia.faces.popup.PopupFrame
+			</renderer-type>
+			<handler-class>
+				org.openuss.framework.jsfcontrols.components.PopupFrameComponentHandler
+			</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>closePopupFrame</tag-name>
+		<component>
+			<component-type>
+				org.jenia.faces.popup.HtmlClosePopupFrame
+			</component-type>
+			<renderer-type>
+				org.jenia.faces.popup.ClosePopupFrame
+			</renderer-type>
+		</component>
+	</tag>
+
+</facelet-taglib>

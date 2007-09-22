@@ -1,0 +1,45 @@
+<!-- Default Sidebar -->
+<f:subview
+	xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:o="http://www.openuss.org/jsfcontrols"
+    xmlns:s="http://www.openuss.org/jsf-security"
+    xmlns:x="http://myfaces.apache.org/extensions">
+    <ui:include src="whoisonline.xhtml"/>
+    <o:block label="${msg['useFulLinks_Headline']}">
+		<p class="content_font_normal">
+			<ul class="ext">
+				<li class="sidebar_listPoint">
+					<h:outputLink value="http://cgi.uni-muenster.de/exec/Rektorat/upm.php">
+						<h:outputText value="${msg.useFulLinks_L2}"/>
+					</h:outputLink>
+				</li>
+				 
+			</ul>
+		</p>
+	</o:block>
+	
+	<o:block label="${msg.topLinks_Headline}">
+		<p class="content_font_normal">
+			<ul class="int">
+				<li class="sidebar_listPoint">
+					<h:outputLink value="http://uvlsf.uni-muenster.de/qisserver/servlet/de.his.servlet.RequestDispatcherServlet">
+						<f:param name="state" value="wtree"/>
+						<f:param name="search" value="1"/>
+						<f:param name="menuid" value="lectureindex"/>
+						<h:outputText value="${msg.useFulLinks_L3}"/>
+					</h:outputLink>
+				</li>
+				<li class="sidebar_listPoint">
+					<h:outputLink value="http://www.uni-muenster.de/organisation/e_learning/index.html">
+						<h:outputText value="${msg.topLinks_L2}"/>
+					</h:outputLink>
+				</li>
+			</ul>
+		</p>
+	</o:block>
+</f:subview>

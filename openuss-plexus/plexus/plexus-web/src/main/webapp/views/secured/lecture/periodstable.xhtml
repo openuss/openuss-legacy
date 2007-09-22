@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+     <plexus:dataTable 
+     	id="periods" 
+     	label="#{msg.period_header}"  
+     	value="views$secured$lecture$periods.periodData" 
+     	var="period" 
+     	columnClasses="col_max_left, col_min_center, col_commands_two"
+     	rows="5">  
+
+		<t:column>
+			<plexus:commandSortHeader columnName="name">#{msg.period_colheader_name}</plexus:commandSortHeader> 
+			<t:commandLink id="selectPeriod" action="#{views$secured$lecture$periods.selectPeriod}" styleClass="command" title="#{period.description}">
+				<h:outputText value="#{period.name}"/>
+			</t:commandLink>
+		</t:column>
+		
+		<t:column>
+			<f:facet name="header">
+				<h:outputText value="#{msg.period_colheader_active}"/>
+			</f:facet> 
+			<h:commandLink 
+				rendered="#{!period.active}"
+				id="activePeriod" 
+				action="#{views$secured$lecture$periods.periodToActive}"  
+				styleClass="command" 
+				title="#{period.description}">
+				<h:graphicImage 
+					value="/images/icons/inactive.gif" 
+					title="#{msg.period_command_inactive_hint}" 
+					alt="#{msg.period_command_inactive}"/>
+			</h:commandLink>
+			<h:graphicImage 
+				value="/images/icons/active.gif" 
+				title="#{msg.period_command_active_hint}" 
+				alt="#{msg.period_command_active}" 
+				rendered="#{period.active}"/>
+		</t:column>
+		
+		<plexus:column header="#{msg.commands_header}">
+			<plexus:command 
+				bean="#{views$secured$lecture$periods}"
+				action="editPeriod"
+				styleClass="button_edit"
+				label="#{msg.period_command_edit}"
+				hint="#{msg.period_command_edit_hint}">
+			</plexus:command>
+			<plexus:command 
+				bean="#{views$secured$lecture$periods}"
+				action="confirmRemovePeriod"
+				styleClass="button_remove"
+				label="#{msg.period_command_remove}"
+				hint="#{msg.period_command_remove_hint}">
+			</plexus:command>
+		</plexus:column>
+	</plexus:dataTable>
+</ui:composition>

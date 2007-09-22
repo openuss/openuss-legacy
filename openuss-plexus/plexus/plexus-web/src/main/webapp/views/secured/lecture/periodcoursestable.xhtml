@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+	  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:oc="http://www.openuss.org/jsf-core"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+      
+    <plexus:dataTable 
+     	id="courses" 
+     	label="#{period.name}" 
+     	value="views$secured$lecture$periods.courseData" 
+     	var="course" 
+     	columnClasses="col_max_left, col_min_left, col_commands_two"
+     	rows="5">       
+      
+		<t:column>
+			<plexus:commandSortHeader columnName="courseType.name">#{msg.course_colheader_name}</plexus:commandSortHeader>
+			<o:link value="/views/secured/course/main.faces" title="#{course.courseType.description}">
+				<f:param value="#{course.id}" name="course" />
+				<h:outputText value="#{course.courseType.name} (#{course.shortcut})"/>
+			</o:link>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="accessType">#{msg.course_options_access_headline}</plexus:commandSortHeader>
+			<h:outputText value="#{course.accessType}">
+					<f:converter converterId="accessTypeLabelConverter" />
+			</h:outputText>
+		</t:column>
+		
+		<plexus:column header="#{msg.commands_header}">		
+			<plexus:command  
+				bean="#{views$secured$lecture$periods}"
+				action="shortcutCourse"
+				label="#{msg.course_command_shortcut}"
+				title="#{msg.course_command_shortcut_hint}"
+				styleClass="button_link">
+			</plexus:command>
+	
+			<plexus:command 
+				bean="#{views$secured$lecture$periods}"
+				action="confirmRemoveCourse"
+				label="#{msg.course_command_remove}"
+				title="#{msg.course_command_remove_hint}"
+				styleClass="button_remove">
+			</plexus:command>
+		</plexus:column>
+		
+	</plexus:dataTable>
+	
+</ui:composition>

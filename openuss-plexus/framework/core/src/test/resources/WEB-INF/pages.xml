@@ -1,0 +1,20 @@
+<pages>
+	<page view-id="/pages/*">
+		<parameter name="test2" value="#{testBean2}" converter="#{testConverter}"/>
+	</page>
+	<page view-id="/*">
+		<parameter name="test3" value="#{testBean3}" converter="#{testConverter}"/>
+	</page>
+	<page view-id="/pa/*">
+		<parameter name="test3" value="#{testBean3}"/>
+	</page>
+	<page view-id="/at/*">
+		<parameter name="test3" value="#{testBean3}"/>
+	</page>
+	<page view-id="/course/main.xhtml">
+		<securityConstraint domainObject="#{testBean}" permissions="#{ACL}" onDeniedAction="#{testBean.accessDenied}"/> 
+	</page>
+	<page view-id="/course/nodeniedaction.xhtml">
+		<securityConstraint domainObject="#{testBean}" permissions="#{ACL}" /> 
+	</page>
+</pages>
