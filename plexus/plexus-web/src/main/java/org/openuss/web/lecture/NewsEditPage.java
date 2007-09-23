@@ -31,6 +31,7 @@ import org.openuss.web.upload.UploadFileManager;
 /**
  * News Page Controller
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 @Bean(name = "views$secured$lecture$newsedit", scope = Scope.REQUEST)
 @View
@@ -59,25 +60,25 @@ public class NewsEditPage extends AbstractLecturePage {
 				setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
 			} 
 		}
-		addNewsCrumbs();
 		
+		addNewsCrumbs();
 	}
 
-	private void addNewsCrumbs(){
+	private void addNewsCrumbs() {
 		BreadCrumb courseNewsCrumb = new BreadCrumb();
 		courseNewsCrumb.setName(i18n("institute_command_news"));
 		courseNewsCrumb.setHint(i18n("institute_command_news"));
 		courseNewsCrumb.setLink(PageLinks.INSTITUTE_NEWS);
-		courseNewsCrumb.addParameter("institute",institute.getId());
-		crumbs.add(courseNewsCrumb);
-
+		courseNewsCrumb.addParameter("institute",instituteInfo.getId());
+		
 		BreadCrumb newsEditCrumb = new BreadCrumb();
 		newsEditCrumb.setName(i18n("mews_selected_newsitem_header"));
 		newsEditCrumb.setHint(i18n("mews_selected_newsitem_header"));
 		newsEditCrumb.setLink("");
-		crumbs.add(newsEditCrumb);
 		
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		breadcrumbs.loadInstituteCrumbs(instituteInfo);
+		breadcrumbs.addCrumb(courseNewsCrumb);
+		breadcrumbs.addCrumb(newsEditCrumb);
 	}
 	
 	/**

@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 /**
  * Chat-Room for the AJAX chat introduced in the Portlets Project of Herbie
  * 
+ * @deprecated
+ * 
  * @author Daniel Schulz
  * @author Pavel Saratchev
  * @author Ingo Dueppe

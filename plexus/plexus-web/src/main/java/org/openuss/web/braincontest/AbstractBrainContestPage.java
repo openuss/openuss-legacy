@@ -41,7 +41,8 @@ public class AbstractBrainContestPage extends AbstractCoursePage{
 	}
 
 	public void generateBreadCrumbs(){
-		super.generateBreadCrumbs();
+		breadcrumbs.loadCourseCrumbs(courseInfo);
+		
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setName(i18n("braincontest_main_header"));
 		crumb.setHint(i18n("braincontest_main_header"));
@@ -50,8 +51,7 @@ public class AbstractBrainContestPage extends AbstractCoursePage{
 		if (brainContest.getId() != null && brainContest.getId() != 0) {
 			crumb.addParameter("braincontest",brainContest.getId());
 		}
-
-		crumbs.add(crumb);
+		breadcrumbs.addCrumb(crumb);
 	}
 	
 	protected boolean isAssistant(){

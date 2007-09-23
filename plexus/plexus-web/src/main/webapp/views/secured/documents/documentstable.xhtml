@@ -37,7 +37,7 @@
 		<t:column>
 			<plexus:commandSortHeader columnName="name"> #{msg['documents_main_column_name']} </plexus:commandSortHeader>
 			<o:link value="/views/secured/documents/documents.faces" title="#{entry.description}" rendered="#{entry.folder}">
-				<f:param value="#{course.id}" name="course" />
+				<f:param value="#{courseInfo.id}" name="course" />
 				<f:param value="#{entry.id}" name="folder" />
 				<h:outputText value="#{entry.name}"/>
 			</o:link>
@@ -48,14 +48,14 @@
 			</o:link>
 		</t:column>
 
-		<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}">
+		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 			<t:column>
 				<plexus:commandSortHeader columnName="fileSize"> #{msg['documents_main_column_size']} </plexus:commandSortHeader>
 				<h:outputText value="#{entry.sizeAsString}"/>
 			</t:column>
 		</s:acl>
 
-		<s:acl domainObject="#{course}" hasNotPermission="#{ACL.ASSIST}">
+		<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}">
 			<t:column>
 				<plexus:commandSortHeader columnName="fileSize"> #{msg['documents_main_column_size']} </plexus:commandSortHeader>
 				<h:outputText value="#{entry.sizeAsString}" rendered="${!entry.folder}"/>
@@ -76,7 +76,7 @@
 			</h:outputText>
 		</t:column>
 		
-		<s:acl domainObject="#{course}" hasPermission="#{ACL.CREATE}">
+		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.CREATE}">
 			<plexus:column header="#{msg.documents_main_column_actions}">
 				<plexus:command 
 				    bean="#{views$secured$documents$documents}"

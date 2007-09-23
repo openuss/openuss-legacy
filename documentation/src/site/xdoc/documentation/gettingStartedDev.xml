@@ -47,7 +47,7 @@
 						including Internet Explorer 7 and Mozilla
 						Firefox 2.0.3
 					</li>
-					<li>Java JDK 6 Update 1</li>
+					<li>Java JDK 6 Update 2</li>
 					<li>Apache Maven 2.0.6</li>
 					<li>
 						Firebird Superserver/Classic 2.0.1.12855 and
@@ -118,8 +118,11 @@
 					<li><code>openuss</code> points to your old OpenUSS database (is only necessary for the migration)</li>
 				</ul>
 				The aliases specified above have to be defined in the <code>aliases.conf</code>	file in your firebird installation folder.
-				The databases <code>openuss30</code> and <code>openuss30-test</code> will created automatically during the Maven OpenUSS install process.
-				The path therefore indicates where those databases should be created by Maven.
+				The database <code>openuss30-test</code> will created automatically during the Maven OpenUSS install process.<br />
+				But, the database <code>openuss30</code> has to be created manually before running the application. This can be achieved by
+				running an Ant script found in the project plexus-core AFTER you had run Maven at least once (so that the Java class <code>DatabaseCreater</code>
+				has been compiled).
+				The path therefore indicates where those databases should be created by Maven/Ant.
 				<ul>
 					<li><code>openuss30=D:\Path_to_your_databases\OPENUSS-30.FDB</code></li>
 					<li><code>openuss30-test=D:\Path_to_your_databases\OPENUSS-30-TEST.FDB</code></li>
@@ -209,23 +212,9 @@
 					<li><code>framework-deployer.jar</code> - you can find it in also your <code>framework\deployer\target</code> folder</li>
 					<li><code>naming-factory.jar</code></li>
 					<li><code>naming-factory-dbcp.jar</code></li>
+					<li><code>naming-factory-resources.jar</code></li>
 				</ul>
 				Most libaries can be found in the <code>server\tomcat\commons\lib</code> folder of your project.
-			</p>
-			<p>
-				OpenUSS uses the Connection Pooling capability of Tomcat. For that Tomcat needs to define a JNDI database <code>jdbc/openuss</code>.
-				This can be defined in a context <code>openuss-plexus.xml</code> deposited in the <code>CATALINA_HOME/conf</code> folder.</br></br>
-				<code>
-					<Context path="/openuss-plexus" debug="0" reloadable="true">
-						<Resource name="jdbc/openuss" auth="Container"
-              					  type="javax.sql.DataSource"
-			  					  maxActive="150" maxIdle="50" maxWait="10000"
-              					  username="SYSDBA"
-			  					  password="masterkey"
-			  					  driverClassName="org.firebirdsql.jdbc.FBDriver"
-			  					  url="jdbc:firebirdsql:localhost:openuss30" />
-					</Context>
-				</code>
 			</p>
 			<div align="right"><a href="#top">Go to the top.</a></div>
 		</section>

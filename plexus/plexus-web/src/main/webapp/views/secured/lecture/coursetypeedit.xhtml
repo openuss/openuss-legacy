@@ -7,17 +7,22 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core"    
       xmlns:plexus="ttp://www.openuss.org/plexus/jsf">
       
 	<h:form id="courseTypeForm">
 		<o:block label="#{msg.coursetype_header}" styleClass="form_box">
-			<o:input entity="courseType" property="name" required="true" maxlength="100"/>
-			<o:input entity="courseType" property="shortcut" required="true" maxlength="30" />
-			<o:input entity="courseType" property="description" maxlength="250" type="textarea"/>
+			<o:input entity="courseTypeInfo" property="name" required="true" maxlength="100"/>
+			<o:input entity="courseTypeInfo" property="shortcut" required="true" maxlength="30">
+				<f:validator validatorId="courseTypeShortcutValidator"/>
+			</o:input>
+			<o:input entity="courseTypeInfo" property="description" maxlength="250" type="textarea"/>
 		</o:block> 
-		<o:block>
-			<h:commandButton id="saveCourseType" action="#{views$secured$lecture$coursetypes.saveCourseType}" value="#{msg.save}" styleClass="button_save"/>
-			<h:commandButton id="cancelCourseType" action="#{views$secured$lecture$coursetypes.cancelCourseType}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
+		<o:block>	
+		<c:if test="#{views$secured$lecture$institutecourses.renderCourseTypeEditNew}">
+			<h:commandButton id="saveCourseType"   action="#{views$secured$lecture$institutecourses.saveCourseType}" value="#{msg.save}" styleClass="button_save" />
+			<h:commandButton id="cancelCourseType" action="#{views$secured$lecture$institutecourses.cancelCourseType}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
+		</c:if>
 		</o:block>
 	</h:form>
 </ui:composition>

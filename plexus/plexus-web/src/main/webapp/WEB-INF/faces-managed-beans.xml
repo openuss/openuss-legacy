@@ -23,7 +23,22 @@
 	
 	
 	<!-- DataTableModels -->
+ 	<managed-bean>
+ 		<managed-bean-name>applicationInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.ApplicationInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 		<managed-property>
+ 			<property-name>departmentInfo</property-name>
+ 			<value>#{applicationDeparment}</value>
+ 		</managed-property>
+ 	</managed-bean>
 
+ 	<managed-bean>
+ 		<managed-bean-name>applicationDeparment</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.DepartmentInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	
  	<managed-bean>
  		<managed-bean-name>instituteSecurity</managed-bean-name>
  		<managed-bean-class>org.openuss.lecture.InstituteSecurity</managed-bean-class>
@@ -59,6 +74,30 @@
  		<managed-bean-class>org.openuss.lecture.InstituteImpl</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>periodInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.PeriodInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>departmentInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.DepartmentInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>universityInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.UniversityInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>instituteInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.InstituteInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
 
  	<managed-bean>
  		<managed-bean-name>course</managed-bean-name>
@@ -71,6 +110,14 @@
  		<managed-bean-class>org.openuss.lecture.CourseInfo</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>courseTypeInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.CourseTypeInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	
+
 
  	<managed-bean>
  		<managed-bean-name>documents_current_folder</managed-bean-name>
@@ -144,4 +191,5 @@
  		<managed-bean-scope>session</managed-bean-scope> 	 		
  	
  	</managed-bean>
+ 	
 </faces-config>

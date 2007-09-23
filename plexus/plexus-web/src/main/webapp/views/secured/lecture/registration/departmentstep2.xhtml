@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/dialog.xhtml">
+  		<ui:define name="content"> 
+ 			<h:form id="reg2Form">
+ 				<o:block label="#{msg.department_registration_step2_headline}" styleClass="form_box">
+					<ui:include src="/views/commons/department/departmentdatainfo.xhtml" />   
+				</o:block>
+				<o:block>
+		  			<h:commandButton value="${msg.back}" action="department_registration_step1" styleClass="button_back" immediate="true"/>
+		  			<h:commandButton value="#{msg.institute_registration_step2_confirm_button}" action="#{departmentRegistration.registrate}" styleClass="button_big"/>
+		  		</o:block>
+	  		</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

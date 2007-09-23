@@ -10,21 +10,17 @@
 	<bean id="defaultUser" class="org.openuss.security.UserImpl">
 		<property name="username" value="defaultuser" />
 		<property name="password" value="defaultpassword" />
-		<property name="email" value="defaultpassword" />
+		<property name="email" value="default@email.de" />
 		<property name="enabled" value="true" />
 		<property name="accountExpired" value="false" />
 		<property name="credentialsExpired" value="true" />
 		<property name="accountLocked" value="true" />
 	</bean>
-
+	
 	<bean id="defaultInstitute" class="org.openuss.lecture.InstituteImpl">
 		<property name="name" value="institutename" />
 		<property name="shortcut" value="shortcut" />
 		<property name="email" value="email" />
-		<property name="ownername" value="ownername" />
-		<property name="owner">
-			<ref local="defaultUser" />
-		</property>
 	</bean>
 
 	<bean id="testUtility" class="org.openuss.TestUtility">
@@ -40,8 +36,35 @@
 		<property name="groupDao">
 			<ref bean="groupDao" />
 		</property>
+		<property name="membershipDao">
+			<ref bean="membershipDao" />
+		</property>
 		<property name="instituteDao">
 			<ref bean="instituteDao" />
+		</property>
+		<property name="universityDao">
+			<ref bean="universityDao" />
+		</property>
+		<property name="departmentDao">
+			<ref bean="departmentDao" />
+		</property>
+		<property name="courseTypeDao">
+			<ref bean="courseTypeDao" />
+		</property>
+		<property name="applicationDao">
+			<ref bean="applicationDao" />
+		</property>
+		<property name="courseDao">
+			<ref bean="courseDao" />
+		</property>
+		<property name="periodDao">
+			<ref bean="periodDao" />
+		</property>
+		<property name="securityService">
+			<ref bean="securityService" />
+		</property>
+		<property name="organisationService">
+			<ref bean="organisationService" />
 		</property>
 	</bean>
 

@@ -58,7 +58,7 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>jstl</groupId>
+			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<scope>provided</scope>
 		</dependency>

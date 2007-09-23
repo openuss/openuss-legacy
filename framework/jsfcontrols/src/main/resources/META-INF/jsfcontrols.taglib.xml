@@ -8,6 +8,20 @@
             <component-type>org.openuss.framework.jsfcontrols.components.defaultAction</component-type>
         </component>
     </tag>
+    <tag>
+    	<tag-name>flexlist</tag-name>
+    	<component>
+    		<component-type>org.openuss.framework.jsfcontrols.components.flexlist</component-type>
+    	</component>
+    </tag>
+    
+    <tag>
+    	<tag-name>flexlist_tabs</tag-name>
+    	<component>
+    		<component-type>org.openuss.framework.jsfcontrols.components.flexlist_tabs</component-type>
+    	</component>
+    </tag>
+    
 	<tag>
         <tag-name>param</tag-name>
         <component>

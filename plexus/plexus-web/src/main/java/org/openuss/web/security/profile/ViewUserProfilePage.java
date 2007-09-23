@@ -39,6 +39,8 @@ public class ViewUserProfilePage extends BasePage{
 			addError(i18n("user_profile_notexisting"));
 			redirect(Constants.DESKTOP);			
 		}
+		
+		breadcrumbs.loadProfileCrumbs();
 	}
 
 	public SecurityService getSecurityService() {

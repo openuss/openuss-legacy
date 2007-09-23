@@ -41,4 +41,18 @@ public interface DomainResult extends DomainObject {
 	 */
 	public float getScore();
 	
+	public String getUniversityId();
+
+	public String getDepartmentId();
+
+	public String getInstituteId();
+
+	public String getCourseTypeId();
+
+	public String getCourseId();
+
+	public String getPeriodId();
+	
+	public String getDebugInfo();
+	
 }

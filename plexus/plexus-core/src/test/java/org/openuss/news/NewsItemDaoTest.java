@@ -29,7 +29,7 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		assertNull(newsItem.getId());
 		newsItemDao.create(newsItem);
 		assertNotNull(newsItem.getId());
-		commit();
+		flush();
 		
 		NewsItem loaded = newsItemDao.load(newsItem.getId());
 		assertNotNull(loaded);
@@ -77,7 +77,7 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		item4.setExpireDate(null);
 		newsItemDao.create(item4);
 
-		commit();
+		flush();
 		
 		NewsCriteria criteria = new NewsCriteria();
 		criteria.setCategory(NewsCategory.GLOBAL);
@@ -109,7 +109,7 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		NewsItem itemThree = createNewsItem();
 		newsItemDao.create(itemThree);
 		
-		commit();
+		flush();
 		
 		List<NewsItem> items = newsItemDao.findByPublisher(publisherId);
 		assertNotNull(items);
@@ -144,7 +144,7 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 		itemFive.setCategory(NewsCategory.DESKTOP);
 		newsItemDao.create(itemFive);
 		
-		commit();
+		flush();
 		
 		List<NewsItem> items = newsItemDao.findByCategory(NewsCategory.DESKTOP);
 		assertNotNull(items);

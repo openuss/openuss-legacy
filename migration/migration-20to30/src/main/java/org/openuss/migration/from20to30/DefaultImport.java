@@ -12,7 +12,7 @@ public abstract class DefaultImport {
 	/** LegacyDao */
 	protected LegacyDao legacyDao;
 	
-	/** LegacyIdentityMap */
+	/** LegacyIdentityMap */ 
 	protected LegacyIdentifierDao identifierDao;
 	
 	/** LegacySessionFactory */

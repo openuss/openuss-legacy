@@ -14,7 +14,6 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
 import org.openuss.news.NewsCategory;
-import org.openuss.news.NewsItem;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
 import org.openuss.web.Constants;
@@ -22,6 +21,7 @@ import org.openuss.web.Constants;
 /**
  * News Page Controller
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 @Bean(name = "views$secured$lecture$news", scope = Scope.REQUEST)
 @View
@@ -37,6 +37,9 @@ public class NewsPage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (!instituteInfo.isEnabled()) {
+			addMessage(i18n("institute_not_activated"));
+		}
 		addPageCrumb();
 	}	
 	
@@ -45,8 +48,9 @@ public class NewsPage extends AbstractLecturePage {
 		crumb.setLink("");
 		crumb.setName(i18n("institute_command_news"));
 		crumb.setHint(i18n("institute_command_news"));
-		crumbs.add(crumb);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		
+		breadcrumbs.loadInstituteCrumbs(instituteInfo);
+		breadcrumbs.addCrumb(crumb);
 	}
 	
 	private class NewsDataProvider extends AbstractPagedTable<NewsItemInfo> {
@@ -58,9 +62,9 @@ public class NewsPage extends AbstractLecturePage {
 		@Override 
 		public DataPage<NewsItemInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<NewsItemInfo> news = newsService.getNewsItems(institute);
-				page = new DataPage<NewsItemInfo>(news.size(),0,news);
-				sort(news);
+				List<NewsItemInfo> newsInfo = newsService.getNewsItems(instituteInfo);
+				page = new DataPage<NewsItemInfo>(newsInfo.size(),0,newsInfo);
+				sort(newsInfo);
 			}
 			return page;
 		}
@@ -71,16 +75,16 @@ public class NewsPage extends AbstractLecturePage {
 	 * @return outcome
 	 */
 	public String addNewsItem() {
-		NewsItemInfo newsItem = new NewsItemInfo();
+		NewsItemInfo newsItemInfo = new NewsItemInfo();
 		// define initial values
-		newsItem.setCategory(NewsCategory.GLOBAL);
-		newsItem.setPublishDate(new Date());
-		newsItem.setExpireDate(new Date(System.currentTimeMillis()+1000L*60L*60L*24L*28L));
+		newsItemInfo.setCategory(NewsCategory.GLOBAL);
+		newsItemInfo.setPublishDate(new Date());
+		newsItemInfo.setExpireDate(new Date(System.currentTimeMillis()+1000L*60L*60L*24L*28L));
 		
-		newsItem.setPublisherIdentifier(institute.getId());
-		newsItem.setPublisherName(institute.getName());
+		newsItemInfo.setPublisherIdentifier(instituteInfo.getId());
+		newsItemInfo.setPublisherName(instituteInfo.getName());
 		
-		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
+		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItemInfo);
 		return Constants.INSTITUTE_NEWS_EDIT_PAGE;
 	}
 	
@@ -90,8 +94,8 @@ public class NewsPage extends AbstractLecturePage {
 	 */
 	public String editNewsItem() {
 		logger.debug("edit news item");
-		NewsItemInfo newsItem = data.getRowData();
-		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
+		NewsItemInfo newsItemInfo = data.getRowData();
+		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItemInfo);
 		return Constants.INSTITUTE_NEWS_EDIT_PAGE;
 	}
 	
@@ -101,15 +105,15 @@ public class NewsPage extends AbstractLecturePage {
 	 */
 	public String removeNewsItem() {
 		logger.debug("edit removing newsitem");
-		NewsItemInfo newsItem = data.getRowData();
-		newsService.deleteNewsItem(newsItem);
+		NewsItemInfo newsItemInfo = data.getRowData();
+		newsService.deleteNewsItem(newsItemInfo);
 		addMessage(i18n("message_newsitem_removed_succeed"));
 		return Constants.INSTITUTE_NEWS_PAGE;
 	}
 
-	public List<NewsItem> getNewsItems() {
-		logger.debug("getting newsitems for institute " + institute);
-		return newsService.getNewsItems(institute);
+	public List<NewsItemInfo> getNewsItems() {
+		logger.debug("getting newsitems for institute " + instituteInfo);
+		return newsService.getNewsItems(instituteInfo);
 	}
 
 	/* --------------- properties -------------- */

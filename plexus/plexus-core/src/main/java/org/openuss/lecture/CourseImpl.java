@@ -15,6 +15,8 @@ import org.hibernate.classic.Lifecycle;
 
 /**
  * @see org.openuss.lecture.Course
+ * @author Ron Haus
+ * @author Florian Dondorf
  */
 public class CourseImpl extends CourseBase implements Course, Lifecycle {
 
@@ -42,7 +44,7 @@ public class CourseImpl extends CourseBase implements Course, Lifecycle {
 	}
 
 	@Override
-	public boolean isPasswordCorrect(String password) {
+	public Boolean isPasswordCorrect(String password) {
 		return StringUtils.equalsIgnoreCase(getPassword(), password);
 	}
 
@@ -67,6 +69,11 @@ public class CourseImpl extends CourseBase implements Course, Lifecycle {
 
 	public boolean onUpdate(Session session) throws CallbackException {
 		return false;
+	}
+	
+	@Override
+	public Boolean isActive() {
+		return this.getPeriod().isActive();
 	}
 
 }

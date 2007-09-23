@@ -1,26 +1,35 @@
 package org.openuss.lecture;
 
+import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
+import org.openuss.aop.InstituteIndexingAspect;
 import org.openuss.foundation.DomainObject;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
+import org.openuss.security.User;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
 /**
- * Test case for recreating lecture index command
+ * Test case for the spring aspect initiating the create, update and delete 
+ * process of the institute indexing.
  * 
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 public class InstituteIndexingAspectTest extends AbstractTransactionalDataSourceSpringContextTests {
 
-	private LectureService lectureService;
+	private static final Logger logger = Logger.getLogger(InstituteIndexingAspectTest.class);
+		
+	private InstituteService instituteService;
+	
+	private InstituteDao instituteDao;
 	
 	private InstituteIndexingAspect instituteIndexAspectBean;
 
 	private IndexerServiceMock indexerMock ;
 	
 	private TestUtility testUtility;
-
+	
 	@Override
 	protected void onSetUp() throws Exception {
 		super.onSetUp();
@@ -29,19 +38,48 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 	}
 
 	public void testLectureIndex() throws Exception {
-		//FIXME on creation faculties are disabled now, fix indexing according to this. 
-		/*
-		 
-		User user = testUtility.createSecureContext();
-		Institute institute = new LectureBuilder().createInstitute(user).getInstitute();
-		lectureService.createInstitute(institute);
-		assertEquals(1, indexerMock.create);
-		lectureService.persist(institute);
-		assertEquals(1, indexerMock.update);
-		lectureService.removeInstitute(institute.getId());
-		assertEquals(1, indexerMock.delete);
+	 
+		// Create an OFFICIAL Department
+		Department departmentOfficial = testUtility.createUniqueDepartmentInDB();
+		departmentOfficial.setDepartmentType(DepartmentType.OFFICIAL);
 		
-		*/
+		// Create new InstituteInfo object
+		InstituteInfo instituteInfo = new InstituteInfo();
+		instituteInfo.setName(testUtility.unique("testInstitute"));
+		instituteInfo.setShortcut(testUtility.unique("testI"));
+		instituteInfo.setOwnerName("Administrator");
+		instituteInfo.setEnabled(false);
+		instituteInfo.setDescription("This is a test Institute");
+		instituteInfo.setDepartmentId(departmentOfficial.getId()); //Should be ignored by createInstitute
+
+		// Create a User as Owner
+		User owner = testUtility.createUniqueUserInDB();
+		
+		instituteService.create(instituteInfo, owner.getId());
+		
+		//	Create a default Institute
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		
+		//	Create new InstituteInfo object
+		instituteInfo.setId(institute.getId());
+		instituteInfo.setName(testUtility.unique("testInstitute"));
+		instituteInfo.setShortcut(testUtility.unique("testI"));
+		instituteInfo.setOwnerName("Administrator");
+		instituteInfo.setEnabled(true);
+		instituteInfo.setDescription("This is a test Institute at " + testUtility.unique("time"));
+		instituteInfo.setDepartmentId(institute.getDepartment().getId());
+
+		// Update Institute
+		this.getInstituteService().update(instituteInfo);
+		
+		// indexerMockCreate should be 0 due to the fact that institutes are initiated
+		// disabled. Therefore they are activated via the updateIndex-method --> indexerMockUpdate should be 1.
+		assertEquals(0, indexerMock.create);
+		assertEquals(1, indexerMock.update);
+		// delete institute
+		// indexMockDelete should be 1 --> Deleting institute index works properly
+		instituteService.removeInstitute(instituteInfo.getId());
+		assertEquals(1, indexerMock.delete);
 	}
 	
 	protected String[] getConfigLocations() {
@@ -68,32 +106,26 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 	}
 
 	
-	private class IndexerServiceMock implements IndexerService {
+	private static class IndexerServiceMock implements IndexerService {
 		
 		private int create;
 		private int delete;
 		private int update;
 		
 		public void createIndex(DomainObject domainObject) throws IndexerApplicationException {
+			logger.debug("method createIndex: Increment testCreateIndex");
 			create++;
 		}
 		
 		public void deleteIndex(DomainObject domainObject) throws IndexerApplicationException {
+			logger.debug("method deleteIndex: Increment testDeleteIndex");
 			delete++;
 		}
 		
 		public void updateIndex(DomainObject domainObject) throws IndexerApplicationException {
+			logger.debug("method updateIndex: Increment testUpdateIndex");
 			update++;
 		}
-	}
-
-
-	public LectureService getLectureService() {
-		return lectureService;
-	}
-
-	public void setLectureService(LectureService lectureService) {
-		this.lectureService = lectureService;
 	}
 
 	public TestUtility getTestUtility() {
@@ -103,5 +135,23 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 	public void setTestUtility(TestUtility testUtility) {
 		this.testUtility = testUtility;
 	}
+
+	public InstituteService getInstituteService() {
+		return instituteService;
+	}
+
+	public void setInstituteService(InstituteService instituteService) {
+		this.instituteService = instituteService;
+	}
+
+	public InstituteDao getInstituteDao() {
+		return instituteDao;
+	}
+
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
+	}
+	
+	
 }
 

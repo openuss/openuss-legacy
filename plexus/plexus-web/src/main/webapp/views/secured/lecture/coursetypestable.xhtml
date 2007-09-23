@@ -11,29 +11,24 @@
      <plexus:dataTable   
      	id="courseTypes" 
      	label="#{msg['coursetype_coursetypestable_header']}" 
-     	value="views$secured$lecture$coursetypes.data" 
+     	value="views$secured$lecture$institutecourses.dataCourseTypes" 
      	columnClasses="col_max_left, col_commands"
      	var="bean" 
-     	rows="5">  
+     	rows="4">  
    
 		<t:column>
+		
 			<plexus:commandSortHeader columnName="name">#{msg.coursetype_colheader_name}</plexus:commandSortHeader> 
-			<b><h:outputText value="#{bean.name} (#{bean.shortcut})"/></b><br/>
+			<b><h:outputText value="#{bean.name} (#{bean.shortcut})"/></b>
+			<br></br>
 			<small><h:outputText value="#{bean.description}"/></small>
+			
 		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">
-			
-			<plexus:command
-				bean="#{views$secured$lecture$coursetypes}"
-				action="shortcutCourseType"
-				label="#{msg.period_command_shortcut}"
-				hint="#{msg.period_command_shortcut_hint}"
-				styleClass="button_link">
-			</plexus:command>
-				 
+			 
 			<plexus:command 
-				bean="#{views$secured$lecture$coursetypes}"
+				bean="#{views$secured$lecture$institutecourses}"
 				action="editCourseType"
 				label="#{msg.coursetype_command_edit}"
 				hint="#{msg.coursetype_command_edit_hint}"
@@ -41,13 +36,15 @@
 			</plexus:command>
 				
 			<plexus:command   
-				bean="#{views$secured$lecture$coursetypes}"
-				action="confirmRemoveCourseType"
+				bean="#{views$secured$lecture$institutecourses}"
+				action="selectCourseTypeAndConfirmRemove"
 				label="#{msg.coursetype_command_remove}"
 				hint="#{msg.coursetype_command_remove_hint}"
 				styleClass="button_remove">
 			</plexus:command>
+		
 		</plexus:column>
+		
 	</plexus:dataTable>
 	
 	

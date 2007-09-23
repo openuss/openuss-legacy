@@ -1,9 +1,5 @@
 package org.openuss.web.lecture;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -12,26 +8,29 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.UniversityServiceException;
 import org.openuss.web.Constants;
 
 /**
  * Periods Remove Page Controller
  * 
+ * @author Kai Stettner
  * @author Ingo Dueppe
+ * 
  */
 @Bean(name = "views$secured$lecture$periodremove", scope = Scope.REQUEST)
 @View
 public class PeriodRemovePage extends AbstractPeriodPage {
 
-	private static final Logger logger = Logger.getLogger(PeriodsPage.class);
+	private static final Logger logger = Logger.getLogger(PeriodRemovePage.class);
 
 	@Preprocess
 	@Override
 	public void preprocess() throws Exception {
 		super.preprocess();
-		if (period != null) {
-			period = lectureService.getPeriod(period.getId());
-			setSessionBean(Constants.PERIOD, period);
+		if (periodInfo != null) {
+			periodInfo = universityService.findPeriod(periodInfo.getId());
+			setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		}
 	}
 
@@ -39,9 +38,9 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 	@Override
 	public void prerender() throws LectureException {
 		super.prerender();
-		if (period != null) {
-			period = lectureService.getPeriod(period.getId());
-			setSessionBean(Constants.PERIOD, period);
+		if (periodInfo != null) {
+			periodInfo = universityService.findPeriod(periodInfo.getId());
+			setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		}
 		addPageCrumb();
 	}
@@ -51,8 +50,9 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 		crumb.setLink("");
 		crumb.setName(i18n("period_remove_header"));
 		crumb.setHint(i18n("period_remove_header"));
-		crumbs.add(crumb);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		
+		breadcrumbs.loadUniversityCrumbs(universityInfo);
+		breadcrumbs.addCrumb(crumb);
 	}	
 
 	/**
@@ -61,28 +61,17 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 	 * @return outcome
 	 * @throws LectureException
 	 */
-	public String removePeriod() throws LectureException {
+	public String removePeriod() throws Exception {
 		if (logger.isDebugEnabled())
 			logger.debug("Remove Period");
-		lectureService.removePeriod(period.getId());
-		removeSessionBean(Constants.PERIOD);
-		return Constants.INSTITUTE_PERIODS_PAGE;
-	}
-
-	/**
-	 * Validator to check wether the user has accepted the user agreement or
-	 * not.
-	 * 
-	 * @param context
-	 * @param toValidate
-	 * @param value
-	 */
-	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
-		boolean accept = (Boolean) value;
-		if (!accept) {
-			((UIInput) toValidate).setValid(false);
-			addError(toValidate.getClientId(context), i18n("error_need_to_confirm_removement"), null);
+		try {
+			universityService.removePeriod(periodInfo.getId());
+			removeSessionBean(Constants.PERIOD_INFO);
+			addMessage(i18n("message_period_removed"));
+			return Constants.UNIVERSITY_PERIODS_PAGE;
+		} catch (UniversityServiceException e) {
+			addMessage(i18n("message_period_cannot_be_removed"));
+			return Constants.UNIVERSITY_PERIODS_PAGE;
 		}
 	}
-
 }

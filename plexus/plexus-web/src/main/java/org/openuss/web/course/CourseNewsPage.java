@@ -44,11 +44,9 @@ public class CourseNewsPage extends AbstractCoursePage implements Serializable{
 	
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
 		crumb.setName(i18n("course_command_options_news"));
 		crumb.setHint(i18n("course_command_options_news"));
-		crumbs.add(crumb);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		breadcrumbs.addCrumb(crumb);
 	}	
 	
 	private class NewsDataProvider extends AbstractPagedTable<NewsItemInfo> {

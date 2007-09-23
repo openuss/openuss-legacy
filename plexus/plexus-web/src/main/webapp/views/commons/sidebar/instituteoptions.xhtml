@@ -12,12 +12,12 @@
     xmlns:x="http://myfaces.apache.org/extensions">
 	
 	<s:authorize ifAllGranted="ROLE_USER">
-		<s:acl domainObject="#{institute}" hasNotPermission="#{ACL.INSTITUTE_TUTOR}">
+		<s:acl domainObject="#{instituteInfo}" hasNotPermission="#{ACL.INSTITUTE_TUTOR}">
 			<h:form>
 				<o:block label="#{msg.options}" styleClass="option_box">
 					<ul class="int">
 						<li>
-							<h:commandLink value="#{msg['institute_command_assistant_application']}" action="#{views$secured$lecture$institute.applyForMembership}"/>
+							<h:commandLink value="#{msg['institute_command_assistant_application']}" action="#{views$public$institute$institute.applyForMembership}"/>
 						</li>
 					</ul>
 				</o:block>

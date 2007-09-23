@@ -1,21 +1,25 @@
 package org.openuss.security;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-public class UserComparator implements Comparator{
+/**
+ * User Comparator 
+ * @author Ingo Dueppe
+ */
+public class UserComparator implements Comparator<User>, Serializable{
+
+	private static final long serialVersionUID = 5540642549247630562L;
 
 	/**
 	 * compares last name of user
 	 */
-	public int compare(Object o1, Object o2) {		
-		if (o1 instanceof User){
-			if (o2 instanceof User){
-				User u1 = (User) o1;
-				User u2 = (User) o2;
-				return u1.getLastName().toLowerCase().compareTo(u2.getLastName().toLowerCase());
-			}
+	public int compare(User user1, User user2) {
+		if (user1 != null && user1.getLastName() != null && user2 != null && user2.getLastName() != null) {
+			return user1.getLastName().toLowerCase().compareTo(user2.getLastName().toLowerCase());
+		} else {
+			return 0;
 		}
-		return 0;
 	}
 	
 }

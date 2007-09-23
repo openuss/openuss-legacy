@@ -4,132 +4,155 @@ import java.util.Collection;
 import java.util.List;
 
 import org.openuss.foundation.AbstractMockDao;
-import org.openuss.security.User;
+import org.openuss.security.Membership;
 
 public class InstituteDaoMock extends AbstractMockDao<Institute> implements InstituteDao {
 
-	public Institute create(String name, String shortcut, String ownername, String address, String postcode, String city, String telephone, String telefax, String website, String locale, String description, String email, String theme, boolean enabled) {
+	public Institute create(boolean enabled, Membership membership, String name, String ownerName, String shortcut) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Object create(int transform, String name, String shortcut, String ownername, String address, String postcode, String city, String telephone, String telefax, String website, String locale, String description, String email, String theme, boolean enabled) {
+	public Object create(int transform, boolean enabled, Membership membership, String name, String ownerName,
+			String shortcut) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Institute create(boolean enabled, String name, User owner, String ownername, String shortcut) {
+	public Object create(int transform, String shortcut, String name, String description, String ownerName,
+			String address, String postcode, String city, String country, String telephone, String telefax,
+			String website, String email, String locale, String theme, Long imageId, boolean enabled) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Object create(int transform, boolean enabled, String name, User owner, String ownername, String shortcut) {
+	public Institute create(String shortcut, String name, String description, String ownerName, String address,
+			String postcode, String city, String country, String telephone, String telefax, String website,
+			String email, String locale, String theme, Long imageId, boolean enabled) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void instituteDetailsToEntity(InstituteDetails sourceVO, Institute targetEntity, boolean copyIfNull) {
-	}
-
-	public Institute instituteDetailsToEntity(InstituteDetails instituteDetails) {
+	public List findByDepartmentAndEnabled(Department department, Boolean enabled) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void instituteDetailsToEntityCollection(Collection instances) {
-	}
-
-	public void instituteSecurityToEntity(InstituteSecurity sourceVO, Institute targetEntity, boolean copyIfNull) {
-	}
-
-	public Institute instituteSecurityToEntity(InstituteSecurity instituteSecurity) {
+	public List findByDepartmentAndEnabled(int transform, Department department, Boolean enabled) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void instituteSecurityToEntityCollection(Collection instances) {
-	}
-
-	public Institute findByShortcut(String shortcut) {
+	public List findByDepartmentAndEnabled(int transform, String queryString, Department department, Boolean enabled) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Institute findByShortcut(String queryString, String shortcut) {
+	public List findByDepartmentAndEnabled(String queryString, Department department, Boolean enabled) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Object findByShortcut(int transform, String shortcut) {
+	public List findByEnabled(Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByEnabled(int transform, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByEnabled(int transform, String queryString, Boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List findByEnabled(String queryString, Boolean enabled) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public Object findByShortcut(int transform, String queryString, String shortcut) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<Institute> loadAllEnabled() {
+	public Object findByShortcut(int transform, String shortcut) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<Institute> loadAllEnabled(String queryString) {
+	public Institute findByShortcut(String queryString, String shortcut) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<?> loadAllEnabled(int transform) {
+	public Institute findByShortcut(String shortcut) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<?> loadAllEnabled(int transform, String queryString) {
+	public void instituteInfoToEntity(InstituteInfo sourceVO, Institute targetEntity, boolean copyIfNull) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Institute instituteInfoToEntity(InstituteInfo instituteInfo) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void toInstituteDetails(Institute sourceEntity, InstituteDetails targetVO) {
+	public void instituteInfoToEntityCollection(Collection instances) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public InstituteDetails toInstituteDetails(Institute entity) {
+	public void instituteSecurityToEntity(InstituteSecurity sourceVO, Institute targetEntity, boolean copyIfNull) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Institute instituteSecurityToEntity(InstituteSecurity instituteSecurity) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void toInstituteDetailsCollection(Collection entities) {
+	public void instituteSecurityToEntityCollection(Collection instances) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void toInstituteInfo(Institute sourceEntity, InstituteInfo targetVO) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public InstituteInfo toInstituteInfo(Institute entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void toInstituteInfoCollection(Collection entities) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void toInstituteSecurity(Institute sourceEntity, InstituteSecurity targetVO) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public InstituteSecurity toInstituteSecurity(Institute entity) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void toInstituteSecurityCollection(Collection entities) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public Long getInstituteCount() {
-		return null;
-	}
 
-	public Long getInstituteCount(String queryString) {
-		return null;
-	}
 
-	public Object getInstituteCount(int transform) {
-		return null;
-	}
-
-	public Object getInstituteCount(int transform, String queryString) {
-		return null;
-	}
-
-	public Institute create(String name, String shortcut, String ownername,
-			String address, String postcode, String city, String telephone,
-			String telefax, String website, String locale, String description,
-			String email, String theme, String land, boolean enabled) {
-		return null;
-	}
-
-	public Object create(int transform, String name, String shortcut,
-			String ownername, String address, String postcode, String city,
-			String telephone, String telefax, String website, String locale,
-			String description, String email, String theme, String land,
-			boolean enabled) {
-		return null;
-	}
-
-	
 }

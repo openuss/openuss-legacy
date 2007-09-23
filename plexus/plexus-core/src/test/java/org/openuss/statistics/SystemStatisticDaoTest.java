@@ -17,6 +17,8 @@ public class SystemStatisticDaoTest extends SystemStatisticDaoTestBase {
 	public void testSystemStatisticsDaoCreate() {
 		SystemStatistic systemStatistic = SystemStatistic.Factory.newInstance();
 		systemStatistic.setUsers(new Long(1));
+		systemStatistic.setUniversities(new Long(1));
+		systemStatistic.setDepartments(new Long(1));
 		systemStatistic.setInstitutes(new Long(1));
 		systemStatistic.setCourses(new Long(1));
 		systemStatistic.setDocuments(new Long(1));

@@ -60,11 +60,9 @@ public class CourseOptionsPage extends AbstractCoursePage {
 
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
 		crumb.setName(i18n("course_command_options_config"));
 		crumb.setHint(i18n("course_command_options_config"));
-		crumbs.add(crumb);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		breadcrumbs.addCrumb(crumb);
 	}
 
 	/**

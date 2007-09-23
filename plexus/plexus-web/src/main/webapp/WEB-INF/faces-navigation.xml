@@ -17,14 +17,19 @@
 
 		<navigation-case>
 			<from-outcome>desktop</from-outcome>
-			<to-view-id>/views/secured/desktop/desktop.xhtml</to-view-id>
+			<to-view-id>/views/secured/myuni/myuni.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
 			<from-outcome>search</from-outcome>
 			<to-view-id>/views/public/search/search.xhtml</to-view-id>
 		</navigation-case>
-
+			
+		<navigation-case>
+			<from-outcome>extendedSearch</from-outcome>
+			<to-view-id>/views/public/search/extendedsearch.xhtml</to-view-id>
+		</navigation-case>
+		
 		<navigation-case>
 			<from-outcome>home</from-outcome>
 			<to-view-id>/views/welcome.xhtml</to-view-id>
@@ -62,7 +67,7 @@
 		
 		<navigation-case>
 			<from-outcome>institute</from-outcome>
-			<to-view-id>/views/secured/lecture/institute.xhtml</to-view-id>
+			<to-view-id>/views/public/institute/institute.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
@@ -84,7 +89,7 @@
 			<from-outcome>administration</from-outcome>
 			<to-view-id>/views/secured/system/properties.xhtml</to-view-id>
 		</navigation-case>
-	
+		
 		<navigation-case>
 			<from-outcome>secure_password_change</from-outcome>
 			<to-view-id>/views/secured/user/newPassword.xhtml</to-view-id>
@@ -99,7 +104,72 @@
 			<from-outcome>search_result</from-outcome>
 			<to-view-id>/views/public/search/search.xhtml</to-view-id>
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>extended_search_result</from-outcome>
+			<to-view-id>/views/public/search/extendedsearch.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university</from-outcome>
+			<to-view-id>/views/public/university/university.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>universities</from-outcome>
+			<to-view-id>/views/public/university/universities.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_create</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/universitystep1.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/universityremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_disable_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/universitydisableconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>department</from-outcome>
+			<to-view-id>/views/public/department/department.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>departments</from-outcome>
+			<to-view-id>/views/secured/lecture/universitydepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>manage_department</from-outcome>
+			<to-view-id>/views/secured/lecture/university.xhtml</to-view-id>
+		</navigation-case>		
+  
+		<navigation-case>
+			<from-outcome>manage_institute</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentinstitutes.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_courses</from-outcome>
+			<to-view-id>/views/secured/lecture/institutecourses.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>error</from-outcome>
+			<to-view-id>/views/errors/error.xhtml</to-view-id>
+		</navigation-case>
+		
+		
+		
 	</navigation-rule>
+	
+	
 	
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
     	L o g i n / L o g o u t  - R u l e s
@@ -150,7 +220,7 @@
     	<navigation-case>
     		<from-action>userActivate.activate</from-action>
     		<from-outcome>success</from-outcome>
-    		<to-view-id>/views/secured/desktop/desktop.xhtml</to-view-id>
+    		<to-view-id>/views/secured/myuni/myuni.xhtml</to-view-id>
     	</navigation-case>
     	<navigation-case>
     		<from-action>userActivate.activate</from-action>
@@ -178,7 +248,7 @@
     	<navigation-case>
     		<from-action>instituteActivationAction.activateInstitute</from-action>
     		<from-outcome>success</from-outcome>
-    		<to-view-id>/views/secured/desktop/desktop.xhtml</to-view-id>
+    		<to-view-id>/views/welcome.xhtml</to-view-id>
     	</navigation-case>
     	<navigation-case>
     		<from-action>instituteActivationAction.activateInstitute</from-action>
@@ -215,7 +285,7 @@
     	</navigation-case>
     </navigation-rule>
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
-       F a c u l t y  - R e g i s t r a t i o n 
+       I n s t i t u t e  - R e g i s t r a t i o n 
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
 	<navigation-rule>
 		<from-view-id>/views/secured/lecture/registration/*</from-view-id>
@@ -229,7 +299,12 @@
 			<from-outcome>institute_registration_step1</from-outcome>		
 			<to-view-id>/views/secured/lecture/registration/step1.xhtml</to-view-id>
 		</navigation-case>
-
+		
+		<navigation-case>
+			<from-outcome>institute_registration_step1application</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/step1application.xhtml</to-view-id>
+		</navigation-case>
+		
 		<navigation-case>
 			<from-outcome>institute_registration_step2</from-outcome>		
 			<to-view-id>/views/secured/lecture/registration/step2.xhtml</to-view-id>
@@ -237,7 +312,7 @@
 	</navigation-rule>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
-       F a c u l t y  - P a g e
+       I n s t i t u t e   - P a g e
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
 
 	<navigation-rule>
@@ -245,7 +320,12 @@
 
 		<navigation-case>
 			<from-outcome>institute</from-outcome>
-			<to-view-id>/views/secured/lecture/institute.xtml</to-view-id>
+			<to-view-id>/views/public/institute/institute.xtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_departments</from-outcome>
+			<to-view-id>/views/secured/lecture/instituteDepartments.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
@@ -255,7 +335,7 @@
 		
 		<navigation-case>
 			<from-outcome>institute_members</from-outcome>
-			<to-view-id>/views/secured/lecture/auth/members.xhtml</to-view-id>
+			<to-view-id>/views/secured/lecture/auth/institutemembers.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
@@ -274,8 +354,8 @@
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>institute_coursetypes</from-outcome>
-			<to-view-id>/views/secured/lecture/coursetypes.xhtml</to-view-id>
+			<from-outcome>institute_courses</from-outcome>
+			<to-view-id>/views/secured/lecture/institutecourses.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
@@ -283,11 +363,6 @@
 			<to-view-id>/views/secured/lecture/coursetyperemove.xhtml</to-view-id>
 		</navigation-case>
 		
-		<navigation-case>
-			<from-outcome>institute_periods</from-outcome>
-			<to-view-id>/views/secured/lecture/periods.xhtml</to-view-id>
-		</navigation-case>
-
 		<navigation-case>
 			<from-outcome>institute_period</from-outcome>
 			<to-view-id>/views/secured/lecture/periodedit.xhtml</to-view-id>
@@ -303,11 +378,66 @@
 			<to-view-id>/views/secured/lecture/courseremove.xhtml</to-view-id>
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>institute_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/instituteremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_disable_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/institutedisableconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+	</navigation-rule>
+	
+	<navigation-rule>
+	
+		<from-view-id>/views/public/*</from-view-id>
+		
+		<navigation-case>
+			<from-outcome>institute_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_news</from-outcome>
+			<to-view-id>/views/secured/lecture/news.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_courses</from-outcome>
+			<to-view-id>/views/secured/lecture/institutecourses.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_departments</from-outcome>
+			<to-view-id>/views/secured/lecture/instituteDepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_data</from-outcome>
+			<to-view-id>/views/secured/lecture/instituteoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_members</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/institutemembers.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>institute_aspirants</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/aspirants.xhtml</to-view-id>
+		</navigation-case>
 		
 	</navigation-rule>
 	
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
-       E n r o l l m e n t - P a g e
+       C o u r s e - P a g e
     - - - - - - - - - - - - - - - - - - - - - - - - - -->		
 		<navigation-rule>
 			<from-view-id>/views/secured/*</from-view-id>
@@ -383,10 +513,19 @@
 				<to-view-id>/views/secured/course/coursenewsedit.xhtml</to-view-id>
 			</navigation-case>
      		
-
 			<navigation-case>
 				<from-outcome>course_options_news</from-outcome>
 				<to-view-id>/views/secured/lecture/news.xhtml</to-view-id>				
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>course_type_remove_confirmation</from-outcome>
+				<to-view-id>/views/secured/lecture/coursetyperemoveconfirmation.xhtml</to-view-id>				
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>course_remove_confirmation</from-outcome>
+				<to-view-id>/views/secured/lecture/courseremoveconfirmation.xhtml</to-view-id>
 			</navigation-case>
 
 			<navigation-case>
@@ -548,7 +687,17 @@
 			<from-outcome>admin_groups</from-outcome>
 			<to-view-id>/views/secured/system/groups.xhtml</to-view-id>
 		</navigation-case>
-
+		
+		<navigation-case>
+			<from-outcome>admin_universities</from-outcome>
+			<to-view-id>/views/secured/system/universities.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>admin_departments</from-outcome>
+			<to-view-id>/views/secured/system/departments.xhtml</to-view-id>
+		</navigation-case>
+		
 		<navigation-case>
 			<from-outcome>admin_institutes</from-outcome>
 			<to-view-id>/views/secured/system/institutes.xhtml</to-view-id>
@@ -561,5 +710,287 @@
 
 	</navigation-rule>
 	
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+	
+	<navigation-case>
+			<from-outcome>admin_departments</from-outcome>
+			<to-view-id>/views/secured/system/departments.xhtml</to-view-id>
+		</navigation-case>
+		
+	</navigation-rule>
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      U n i v e r s i t y  - R e g i s t r a t i o n 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<navigation-rule>
+		<from-view-id>/views/secured/lecture/registration/*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>university_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/universitystart.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_registration_step1</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/universitystep1.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>university_registration_step2</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/universitystep2.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/views/secured/system/*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>university_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/universitystart.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/universityremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+	</navigation-rule>
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      D e p a r t m e n t  - R e g i s t r a t i o n 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<navigation-rule>
+	
+		<from-view-id>/*</from-view-id>
+	
+			<navigation-case>
+					<from-outcome>department_registration_start</from-outcome>
+					<to-view-id>/views/secured/lecture/registration/departmentstart.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>department_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/lecture/registration/departmentstep1.xhtml</to-view-id>
+			</navigation-case>
+		
+	</navigation-rule>
+	
+	<navigation-rule>
+		
+		<from-view-id>/views/secured/lecture/registration/*</from-view-id>
+
+			<navigation-case>
+				<from-outcome>department_registration_start</from-outcome>
+				<to-view-id>/views/secured/lecture/registration/departmentstart.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>department_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/lecture/registration/departmentstep1.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>department_registration_step2</from-outcome>		
+				<to-view-id>/views/secured/lecture/registration/departmentstep2.xhtml</to-view-id>
+			</navigation-case>
+	</navigation-rule>
+
+
+   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      U n i v e r s i t y  - P a g e 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->		
+	<navigation-rule>
+		<from-view-id>/views/secured/lecture/*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>university_departments</from-outcome>
+			<to-view-id>/views/secured/lecture/universitydepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_command_edit</from-outcome>
+			<to-view-id>/views/secured/lecture/universityoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_periods</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiods.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_period_edit</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiodedit.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_period_remove</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiodremove.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_period_add</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiodedit.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_data</from-outcome>
+			<to-view-id>/views/secured/lecture/universityoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_members</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/universitymembers.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_aspirants</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/universityaspirants.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>admin_universities</from-outcome>
+			<to-view-id>/views/secured/system/universities.xhtml</to-view-id>
+		</navigation-case>
+
+	</navigation-rule>
+	
+	<navigation-rule>
+	
+	<from-view-id>/views/public/university/*</from-view-id>
+	
+		<navigation-case>
+			<from-outcome>university_registration_step1</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/universitystep1.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_data</from-outcome>
+			<to-view-id>/views/secured/lecture/universityoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_departments</from-outcome>
+			<to-view-id>/views/secured/lecture/universitydepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_command_edit</from-outcome>
+			<to-view-id>/views/secured/lecture/universityoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_periods</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiods.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_members</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/universitymembers.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_aspirants</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/universityaspirants.xhtml</to-view-id>
+		</navigation-case>
+			
+	</navigation-rule>
+ <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+             D e p a r t m e n t  - P a g e 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+    <navigation-rule>
+		<from-view-id>/views/secured/*</from-view-id>	
+		
+		<navigation-case>
+			<from-outcome>department_data</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>department_members</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/departmentMembers.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>manage_institute</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentinstitutes.xhtml</to-view-id>
+		</navigation-case>		
+				
+		<navigation-case>
+			<from-outcome>department_aspirants</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/departmentaspirants.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>department_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>department_disable_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentdisableconfirmation.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+    <navigation-rule>
+		<from-view-id>/views/public/department/*</from-view-id>	
+		
+		<navigation-case>
+			<from-outcome>department_data</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>department_members</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/departmentMembers.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_departments</from-outcome>
+			<to-view-id>/views/secured/lecture/instituteDepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>manage_institute</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentinstitutes.xhtml</to-view-id>
+		</navigation-case>		
+				
+		<navigation-case>
+			<from-outcome>department_aspirants</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/departmentaspirants.xhtml</to-view-id>
+		</navigation-case>
+		
+		
+	</navigation-rule>
+	
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+             Welcome-Page 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+    <navigation-rule>
+		<from-view-id>/views/welcome.xhtml</from-view-id>	
+		
+		<navigation-case>
+			<from-outcome>university_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/universitystart.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_registration_step1</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/universitystep1.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_registration_step1</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/step1.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+		
 </faces-config>
 

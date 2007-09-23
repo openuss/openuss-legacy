@@ -23,7 +23,7 @@ public class InstituteActivationCodeDaoTest extends InstituteActivationCodeDaoTe
 		InstituteActivationCode code = InstituteActivationCode.Factory.newInstance();
 		code.setCode(RandomStringUtils.random(40));
 		code.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		code.setInstitute(testUtility.createPersistInstituteWithDefaultUser());
+		code.setInstitute(testUtility.createUniqueInstituteInDB());//createPersistInstituteWithDefaultUser());
 		
 		assertNull(code.getId());
 		instituteActivationCodeDao.create(code);

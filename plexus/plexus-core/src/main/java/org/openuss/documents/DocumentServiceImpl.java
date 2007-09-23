@@ -84,10 +84,10 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	@Override
-	protected List handleGetFileEntries(DomainObject domainObject) throws Exception {
+	protected List<?> handleGetFileEntries(DomainObject domainObject) throws Exception {
 		Validate.notNull(domainObject, "Parameter domainObject must not be null!");
 		Folder root = getRootFolderForDomainObject(domainObject);
-		List entries = new ArrayList(root.getEntries());
+		List<?> entries = new ArrayList<FolderEntry>(root.getEntries());
 
 		CollectionUtils.filter(entries, new Predicate() {
 			public boolean evaluate(Object object) {

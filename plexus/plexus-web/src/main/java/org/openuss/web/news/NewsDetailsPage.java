@@ -50,7 +50,7 @@ public class NewsDetailsPage extends BasePage {
 				addNewsCrumb();
 			}else if (newsItem.getPublisherType()==PublisherType.COURSE){
 				Course course = getLectureService().getCourse(newsItem.getPublisherIdentifier());
-				Institute institute = course.getInstitute();
+				Institute institute = course.getCourseType().getInstitute();
 				addInstituteCrumb(institute);
 				addCourseCrumb(course);
 				setSessionBean(Constants.INSTITUTE, institute);

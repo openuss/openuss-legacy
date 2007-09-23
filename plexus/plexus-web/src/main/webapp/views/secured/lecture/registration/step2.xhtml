@@ -29,25 +29,27 @@
  					<p class="content_font_normal">
 	 					<h:outputText value="#{msg.institute_registration_step2_confirm_text}" escape="false"/><br/>
 						<h:outputFormat value="#{msg.institute_registration_step2_confirm_email}" escape="false">
-							<f:param value="#{institute.email}" />
+							<f:param value="#{instituteRegistration.instituteInfo.email}" />
 						</h:outputFormat>
 					</p>
 					<p class="content_font_normal">
-		    			<f:param name="institute" value="#{institute.id}"/>
-					 	<h:outputText value="#{institute.name}" styleClass="header_font_normal"/>
-						<h:outputText value="#{institute.address}" styleClass="content_font_normal"/>
-						<h:outputText value="#{institute.postcode} #{institute.city}" styleClass="content_font_normal"/>
-						<h:outputFormat value="#{msg.institute_information_telephone}" rendered="#{!empty institute.telephone}" styleClass="content_font_normal">
-							<f:param value="#{institute.telephone}" styleClass="content_font_normal"/>
-						</h:outputFormat>
-						<h:outputFormat value="#{msg.institute_information_telefax}" rendered="#{!empty institute.telefax}" styleClass="content_font_normal">
-							<f:param value="#{institute.telefax}" />
-						</h:outputFormat>
+					<f:param name="instituteInfo" value="#{instituteRegistration.instituteInfo.id}"/>
+						<h:panelGrid border="0" columns="1" footerClass="footer_right">
+						 	<h:outputText value="#{instituteRegistration.instituteInfo.name}" styleClass="header_font_normal"/>
+							<h:outputText value="#{instituteRegistration.instituteInfo.address}" styleClass="content_font_normal"/>
+							<h:outputText value="#{instituteRegistration.instituteInfo.postcode} #{instituteRegistration.instituteInfo.city}" styleClass="content_font_normal"/>
+							<h:outputFormat value="#{msg.institute_information_telephone}" rendered="#{!empty instituteRegistration.instituteInfo.telephone}" styleClass="content_font_normal">
+								<f:param value="#{instituteRegistration.instituteInfo.telephone}" styleClass="content_font_normal"/>
+							</h:outputFormat>
+							<h:outputFormat value="#{msg.institute_information_telefax}" rendered="#{!empty instituteRegistration.instituteInfo.telefax}" styleClass="content_font_normal">
+								<f:param value="#{instituteRegistration.instituteInfo.telefax}" />
+							</h:outputFormat>
+						</h:panelGrid>
 					</p>
 				</o:block>
 				<o:block>
+					<h:commandButton value="${msg.back}" action="institute_registration_step1application" styleClass="button_back" immediate="true"/>
 					<h:commandButton value="#{msg.institute_registration_step2_confirm_button}" action="#{instituteRegistration.registrate}" styleClass="button_big"/>
-					<h:commandButton value="${msg.back}" action="institute_registration_step1" styleClass="button_back" immediate="true"/>
 		  		</o:block>
 	  		</h:form>
   		</ui:define>

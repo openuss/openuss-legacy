@@ -49,8 +49,7 @@ public class BrainContestNewPage extends AbstractBrainContestPage {
 		newBrainContest.setLink("");
 		newBrainContest.setName(i18n("braincontest_new"));
 		newBrainContest.setHint(i18n("braincontest_new"));
-		crumbs.add(newBrainContest);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		breadcrumbs.addCrumb(newBrainContest);
 	}
 
 	public String save() throws BrainContestApplicationException {

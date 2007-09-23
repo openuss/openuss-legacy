@@ -1,5 +1,10 @@
 package org.openuss.web.search;
 
+import java.io.FileNotFoundException;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -37,21 +42,53 @@ public class SearchPage extends BasePage{
 	
 	@Prerender
 	public void prerender(){
-		//bread crumbs shall not be displayed on search pages
-		crumbs.clear();
+		breadcrumbs.loadSearchCrumbs();
 	}
 	
 	public String search() {
+		List<DomainResult> searchResult = null;
 		if (StringUtils.isNotBlank(searchResults.getTextToSearch())) {
 			logger.debug("searching for "+searchResults.getTextToSearch());
 			try {
-				searchResults.setHits(lectureSearcher.search(searchResults.getTextToSearch()));
+				searchResult = lectureSearcher.search(searchResults.getTextToSearch());
+				searchResults.setHits(searchResult);
+				if(searchResult == null || searchResult.size() == 0){
+					getFacesContext().addMessage(null, new FacesMessage(i18n("search_no_matches_found")) );
+				}
 			} catch (LuceneSearchException ex) {
 				logger.error(ex);
-				addError(i18n("search_text_error"));
+				// search index file is not available (maybe the index was not created)
+				if(ex.getCause().getClass().equals(FileNotFoundException.class)){
+					addError(i18n("search_error_index_not_found"));
+				// unspecified Lucene error
+				} else {
+					addError(i18n("search_text_error"));
+				}
+			} catch (Exception ex){
+				logger.error(ex);
+				// too many search results
+				if(ex.toString().equals("org.apache.lucene.search.BooleanQuery$TooManyClauses: maxClauseCount is set to 1024")){
+					addError(i18n("search_error_too_many_results"));
+				// unspecified error
+				} else {
+					addError(i18n("search_text_error"));
+				}
 			}
 		}
 		return Constants.SEARCH_RESULT;
+	}
+	
+	/**
+	 * generates the CSS tag which determines whether the result data table is displayed
+	 * @return
+	 */
+	public String getVisibilityResultTable(){
+		logger.debug("test"+searchResults.getHitCounts());
+		if(searchResults.getHitCounts() > 0){
+			return "display:inline;";
+		} else {
+			return "display:none;";
+		}
 	}
 	
 	

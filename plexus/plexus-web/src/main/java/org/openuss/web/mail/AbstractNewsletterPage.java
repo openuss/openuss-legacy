@@ -35,12 +35,14 @@ public class AbstractNewsletterPage extends AbstractCoursePage {
 	}
 
 	private void addNewsletterCrumb() {
+		breadcrumbs.loadCourseCrumbs(courseInfo);
+		
 		BreadCrumb newsletterCrumb = new BreadCrumb();
 		newsletterCrumb.setHint(i18n("course_command_newsletter"));
 		newsletterCrumb.setName(i18n("course_command_newsletter"));
 		newsletterCrumb.setLink(PageLinks.COURSE_NEWSLETTER);
 		newsletterCrumb.addParameter("course", courseInfo.getId());
-		crumbs.add(newsletterCrumb);
+		breadcrumbs.addCrumb(newsletterCrumb);
 	}
 
 	public CourseNewsletterService getCourseNewsletterService() {

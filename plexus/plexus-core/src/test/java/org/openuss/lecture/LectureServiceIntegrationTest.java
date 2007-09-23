@@ -14,6 +14,7 @@ import org.openuss.security.UserDao;
  * JUnit Test for Spring Hibernate LectureService class.
  * 
  * @see org.openuss.lecture.LectureService
+ * @author Ron Haus
  */
 public class LectureServiceIntegrationTest extends LectureServiceIntegrationTestBase {
 
@@ -22,41 +23,134 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 	private UserDao userDao;
 
 	private AuthorityDao authorityDao;
-
-	private User user;
+	
+	private CourseTypeDao courseTypeDao;
 
 	public LectureServiceIntegrationTest() {
-		setDefaultRollback(false);
+		setDefaultRollback(true);
 	}
 
 	public void testUserDaoInjections() {
 		assertNotNull(userDao);
 		assertNotNull(authorityDao);
 	}
-
-	public void testAddCourseTypeToInstitute() throws LectureException{
-		logger.debug("----> add courseType <---- ");
-		user = testUtility.createSecureContext();
-		Institute institute = createInstitute();
-		lectureService.createInstitute(institute);
-
-		commit();
+	
+	public void testGetInstitutes () {
+		logger.debug("----> BEGIN access to getInstitutes test <---- ");
 		
-		CourseType courseType = CourseType.Factory.newInstance(unique("name"), unique("courseType"));
-		institute = lectureService.add(institute.getId(), courseType);
-		assertTrue(institute.getCourseTypes().contains(courseType));
+		//Create Secure context
+		User user = testUtility.createAdminSecureContext();
 		
-		commit();
+		//Create institutes
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		institute1.setEnabled(true);
 		
-		assertNotNull(courseType.getId());
+		Institute institute2 = testUtility.createUniqueInstituteInDB();
+		institute1.setEnabled(true);
 		
-		lectureService.removeInstitute(institute.getId());
-		setComplete();
+		Institute institute3 = testUtility.createUniqueInstituteInDB();
+		institute1.setEnabled(true);
+		
+		Institute institute4 = testUtility.createUniqueInstituteInDB();
+		institute1.setEnabled(false);
+		
+		//Synchronize with Database
+		flush();
+		
+		// Test
+		Institute instituteTest = this.getLectureService().getInstitute(institute2.getId());
+		assertNotNull(instituteTest);
+		assertEquals(institute2.getId(), instituteTest.getId());
+		assertEquals(institute2.getName(), instituteTest.getName());
+		assertEquals(institute2.getDescription(), instituteTest.getDescription());
+		assertEquals(institute2.getDepartment(), instituteTest.getDepartment());
+		assertEquals(institute2.getCourseTypes().size(), instituteTest.getCourseTypes().size());
+		assertEquals(institute2.getActiveCourses().size(), instituteTest.getActiveCourses().size());
+		assertEquals(institute2.isEnabled(), instituteTest.isEnabled());
+		
+		logger.debug("----> END access to getInstitutes test <---- ");
 	}
 	
+	public void testGetInstitute () {
+		logger.debug("----> BEGIN access to getInstitute test <---- ");
+		
+		//Create institutes
+		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		institute1.setEnabled(true);
+		
+		Institute institute2 = testUtility.createUniqueInstituteInDB();
+		institute2.setEnabled(true);
+		
+		Institute institute3 = testUtility.createUniqueInstituteInDB();
+		institute3.setEnabled(true);
+		
+		logger.debug("----> END access to getInstitute test <---- ");
+	}
+	
+	public void testGetCourseType () {
+		logger.debug("----> BEGIN access to getCourseType test <---- ");
+		
+		//Create Secure context
+		User user = testUtility.createSecureContext();
+		
+		//Create CourseType
+		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
+		flush();
+		
+		// Test
+		CourseType courseTypeTest = this.getLectureService().getCourseType(courseType.getId());
+		assertNotNull(courseTypeTest);
+		
+		logger.debug("----> END access to getCourseType test <---- ");
+	}
+	
+	public void testGetCourse () {
+		logger.debug("----> BEGIN access to getCourse test <---- ");
+		
+		//Create Secure context
+		User user = testUtility.createSecureContext();
+		
+		//Create Course
+		Course course= testUtility.createUniqueCourseInDB();
+		flush();
+		
+		// Test
+		Course courseTest = this.getLectureService().getCourse(course.getId());
+		assertNotNull(courseTest);
+		
+		logger.debug("----> END access to getCourse test <---- ");
+	}
+	
+	public void testAddCourseTypeToInstitute() throws LectureException{
+		logger.debug("----> add courseType <---- ");
+		testUtility.createUserSecureContext();
+		Institute institute = testUtility.createUniqueInstituteInDB();//createInstitute();
+		//lectureService.createInstitute(institute);
+
+		flush();
+		
+		CourseType courseType = CourseType.Factory.newInstance(unique("name"), unique("courseType"));
+		try {
+			institute = lectureService.add(institute.getId(), courseType);
+			fail("LectreServiceException should have been thrown.");
+		} catch (LectureServiceException lse) {
+			;
+		}
+	}
 	
 	public void testAddPeriodToInstitute() throws LectureException {
 		logger.debug("add period to institute");
+		
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		Period period = testUtility.createUniquePeriodInDB();
+		
+		try {
+			this.getLectureService().add(institute.getId(), period);
+			fail("LectureServiceException must have been throen.");
+		} catch (LectureServiceException lse) {
+			;
+		}
+		/*
 		user = testUtility.createSecureContext();
 		
 		Institute institute = createInstitute();
@@ -70,7 +164,7 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		
 		institute = lectureService.add(institute.getId(), period);
 		
-		assertTrue(institute.getPeriods().contains(period));
+		//assertTrue(institute.getPeriods().contains(period));
 		commit();
 		
 		assertNotNull(period.getId());
@@ -78,17 +172,7 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		lectureService.removeInstitute(institute.getId());
 		
 		setComplete();
-	}
-	
-	private Institute createInstitute() {
-		Institute institute = Institute.Factory.newInstance();
-		institute.setName(unique("institute name"));
-		institute.setShortcut(unique("institute"));
-		institute.setOwnername("ownername");
-		institute.setEmail("email@institute");
-		institute.setOwner(user);
-		institute.setLocale("de");
-		return institute;
+		*/
 	}
 	
 	private String unique(String name) {
@@ -110,6 +194,14 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
+	}
+
+	public void setCourseTypeDao(CourseTypeDao courseTypeDao) {
+		this.courseTypeDao = courseTypeDao;
+	}
+
+	public CourseTypeDao getCourseTypeDao() {
+		return courseTypeDao;
 	}
 
 }

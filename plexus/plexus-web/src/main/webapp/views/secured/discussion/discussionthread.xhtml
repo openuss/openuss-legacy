@@ -27,7 +27,7 @@
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="title">
 		<h:outputText
-			value="#{msg.course_main_title} - #{course.shortcut}" />
+			value="#{msg.course_main_title} - #{courseInfo.shortcut}" />
 	</ui:define>
 	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/course.xhtml" />
@@ -40,7 +40,7 @@
 		<h:form id="discussionThreadTableView">
 			<ui:include src="discussionthreadtable.xhtml" />
 			<o:block>
-				<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}" >
+				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 					<h:commandButton 
 						id="addPostButtonUser"
 					    action="#{views$secured$discussion$discussionthread.addPost}"
@@ -53,7 +53,7 @@
 						title="#{msg['discussion_new']}"
 						styleClass="button"/>	
 				</s:acl>
-				<s:acl domainObject="#{course}" hasNotPermission="#{ACL.ASSIST}" >
+				<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}" >
 					<h:commandButton 
 						id="addPostButtonUser"
 					    action="#{views$secured$discussion$discussionthread.addPost}"

@@ -6,7 +6,9 @@ import java.util.List;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.statistics.OnlineStatisticService;
@@ -40,6 +42,18 @@ public class WhoIsOnlinePage extends BasePage {
 			}
 			return page;
 		}
+	}
+	
+	@Prerender
+	public void prerender() {
+		breadcrumbs.init();
+		BreadCrumb newCrumb = new BreadCrumb();
+		
+		newCrumb.setName(i18n("whoisonline_header"));
+		newCrumb.setHint(i18n("whoisonline_header"));
+		
+		breadcrumbs.addCrumb(newCrumb);
+		
 	}
 
 	public OnlineSessionDataProvider getData() {

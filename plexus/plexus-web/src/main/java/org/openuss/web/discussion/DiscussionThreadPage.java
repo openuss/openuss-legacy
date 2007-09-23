@@ -60,11 +60,9 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
 		crumb.setName(topic.getTitle());
 		crumb.setHint(topic.getTitle());
-		crumbs.add(crumb);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		breadcrumbs.addCrumb(crumb);
 	}	
 	
 	private class DiscussionThreadDataProvider extends AbstractPagedTable<PostInfo> {

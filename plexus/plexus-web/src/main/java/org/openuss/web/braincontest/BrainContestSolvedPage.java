@@ -25,7 +25,6 @@ public class BrainContestSolvedPage extends AbstractBrainContestPage {
 		crumb.setLink("");
 		crumb.setName(i18n("braincontest_result_header"));
 		crumb.setHint(i18n("braincontest_result_header"));
-		crumbs.add(crumb);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		breadcrumbs.addCrumb(crumb);
 	}
 }

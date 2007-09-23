@@ -22,7 +22,7 @@ public class MessageServiceIntegrationTest extends MessageServiceIntegrationTest
 		List<User> recipients = createUsers(50);
 		Long messageId = messageService.sendMessage("sender", "courseType", "text", true, recipients);
 		assertNotNull(messageId);
-		commit();
+		flush();
 		JobInfo state = messageService.getJobState(messageId);
 		assertEquals(recipients.size(), state.getTosend());
 		assertEquals(0, state.getError());
@@ -39,7 +39,7 @@ public class MessageServiceIntegrationTest extends MessageServiceIntegrationTest
 		Long messageId = messageService.sendMessage("sender", "courseType", "templatename", parameters , recipients);
 		
 		assertNotNull(messageId);
-		commit();
+		flush();
 		JobInfo state = messageService.getJobState(messageId);
 		assertEquals(recipients.size(), state.getTosend());
 		assertEquals(0, state.getError());

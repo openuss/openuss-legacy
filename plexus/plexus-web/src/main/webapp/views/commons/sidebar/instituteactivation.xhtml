@@ -12,12 +12,12 @@
     xmlns:x="http://myfaces.apache.org/extensions">
 	
 		<h:form>
-			<s:acl domainObject="#{institute}" hasPermission="#{ACL.INSTITUTE_ADMINISTRATION}" >
-				<o:block styleClass="warning_box" label="#{msg.institute_activation_sidebox}" rendered="#{not institute.enabled}">
+			<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.INSTITUTE_ADMINISTRATION}" >
+				<o:block styleClass="warning_box" label="#{msg.institute_activation_sidebox}" rendered="#{not instituteInfo.enabled}">
 					<p class="content_font_normal">
 						<h:outputText value="#{msg.institute_not_activated_message}" styleClass="content_font_normal" escape="false"/>					
 					</p>
-					<h:commandButton action="#{views$secured$lecture$institute.resendActivationMail}"
+					<h:commandButton action="#{views$public$institute$institute.resendActivationMail}"
 							value="#{msg['institute_activate_button']}"
 							title="#{msg['institute_activate_button']}" styleClass="button_save"/>
 				</o:block>

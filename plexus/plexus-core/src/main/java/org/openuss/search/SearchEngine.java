@@ -14,6 +14,13 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Searcher;
 
+/**
+ * <p>
+ * @deprecated since OpenUss 3.0 RC1.
+ * Not necessary for searching.
+ * Just used for testing purposes.
+ * </p>
+ */
 public class SearchEngine {
 	/**
 	 * Logger for this class

@@ -9,16 +9,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.registration.RegistrationException;
 import org.openuss.security.Group;
-import org.openuss.security.GroupType;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
@@ -27,20 +25,21 @@ import org.openuss.system.SystemProperties;
 
 /**
  * @see org.openuss.lecture.LectureService
+ * @author Ingo Dueppe, Ron Haus, Florian Dondorf
  */
-public class LectureServiceImpl extends LectureServiceBase{
+public class LectureServiceImpl extends LectureServiceBase {
 
 	private static final Logger logger = Logger.getLogger(LectureServiceImpl.class);
 	
 	@Override
-	protected Collection<InstituteDetails> handleGetInstitutes(boolean enabledOnly) throws Exception {
+	protected Collection<InstituteInfo> handleGetInstitutes(boolean enabledOnly) throws Exception {
 		if (enabledOnly) {
-			return getInstituteDao().loadAllEnabled(InstituteDao.TRANSFORM_INSTITUTEDETAILS);
+			return getInstituteDao().findByEnabled(InstituteDao.TRANSFORM_INSTITUTEINFO, true);
 		} else {
-			return getInstituteDao().loadAll(InstituteDao.TRANSFORM_INSTITUTEDETAILS);
+			return getInstituteDao().loadAll(InstituteDao.TRANSFORM_INSTITUTEINFO);
 		}
 	}
-
+	
 	@Override
 	protected Institute handleGetInstitute(Long instituteId) throws Exception {
 		Institute institute = getInstituteDao().load(instituteId);
@@ -49,7 +48,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		}
 		return institute;
 	}
-
+	
 	@Override
 	protected CourseType handleGetCourseType(Long courseTypeId) throws Exception {
 		return getCourseTypeDao().load(courseTypeId);
@@ -62,7 +61,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		else
 			return null;
 	}
-
+	
 	@Override
 	protected Course handleGetCourse(Long courseId) throws Exception {
 		return getCourseDao().load(courseId);
@@ -82,77 +81,67 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 	@Override
 	protected Institute handleAdd(Long instituteId, Period period) throws Exception {
-		Institute institute = getInstitute(instituteId);
-		institute.add(period);
-		period.setInstitute(institute);
-		if (institute.getActivePeriod() == null) {
-			institute.setActivePeriod(period);
-		}
-		persist(institute);
-		return institute;
+		throw new UnsupportedOperationException("Adding periods to institutes is no longer valid.");
+		/*
+		 * Institute institute = getInstitute(instituteId); institute.add(period); period.setInstitute(institute); if
+		 * (institute.getActivePeriod() == null) { institute.setActivePeriod(period); } persist(institute); return
+		 * institute;
+		 */
 	}
 
 	@Override
 	protected void handlePersist(Institute institute) throws Exception {
 		if (logger.isDebugEnabled())
-			logger.debug("Save institute " + institute.getName());
+			logger.debug("Method handlePersist: Save institute " + institute.getName());
 
 		if (institute.getId() != null) {
+			logger.debug("Method handlePersist: Update institute " + institute.getName());
 			getInstituteDao().update(institute);
 		} else {
 			logger.error("Institute object without id, use createInstitute method instead!!!");
 			throw new LectureServiceException("Use createInstitute method instead!");
 		}
+		throw new UnsupportedOperationException("This method is deprecated!");
+		/*
+		 * if (logger.isDebugEnabled()) logger.debug("Method handlePersist: Save institute " + institute.getName());
+		 * 
+		 * if (institute.getId() != null) { getInstituteDao().update(institute); } else { logger.error("Institute object
+		 * without id, use createInstitute method instead!!!"); throw new LectureServiceException("Use createInstitute
+		 * method instead!"); }
+		 */
 	}
 
 	@Override
 	protected void handleCreateInstitute(Institute institute) throws Exception {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Creating new institute " + institute.getName());
-		}
-		institute.setEnabled(false);
+		throw new UnsupportedOperationException("This method is deprecated!");
 
-		institute = getInstituteDao().create(institute);
-		
-
-		// define the security
-		SecurityService securityService = getSecurityService();
-
-		// create object identity
-		securityService.createObjectIdentity(institute, null);
-
-		// create system defined groups for institute
-		Group admins = securityService.createGroup(
-					"INSTITUTE_" + institute.getId() + "_ADMINS", 
-					"autogroup_administrator_label", null, GroupType.ADMINISTRATOR);
-		Group assistants = securityService.createGroup(
-					"INSTITUTE_" + institute.getId() + "_ASSISTANTS", 
-					"autogroup_assistant_label", null, GroupType.ASSISTANT);
-		Group tutors = securityService.createGroup(
-					"INSTITUTE_" + institute.getId() + "_TUTORS", 
-					"autogroup_tutor_label", null,GroupType.TUTOR);
-
-		securityService.addAuthorityToGroup(institute.getOwner(), admins);
-
-		securityService.setPermissions(admins, institute, LectureAclEntry.INSTITUTE_ADMINISTRATION);
-		securityService.setPermissions(assistants, institute, LectureAclEntry.INSTITUTE_ASSIST);
-		securityService.setPermissions(tutors, institute, LectureAclEntry.INSTITUTE_TUTOR);
-
-		institute.getGroups().add(admins);
-		institute.getGroups().add(assistants);
-		institute.getGroups().add(tutors);
-
-		institute.getMembers().add(institute.getOwner());
-
-		// save changes
-		getInstituteDao().update(institute);
-
-		// define security rights of institute
-		fireCreatedInstitute(institute);
-		
-		//send activation mail
-		sendActivationCode(institute);
-		
+		/*
+		 * // define the security SecurityService 
+		 * securityService = getSecurityService();
+		 * // create object identity
+		 * securityService.createObjectIdentity(institute, null); 
+		 * // create system defined groups for institute 
+		 * Group admins = securityService.createGroup( "INSTITUTE_" + institute.getId() + "_ADMINS",
+		 * "autogroup_administrator_label", null, GroupType.ADMINISTRATOR); 
+		 * Group assistants =
+		 * securityService.createGroup( "INSTITUTE_" + institute.getId() + "_ASSISTANTS", "autogroup_assistant_label",
+		 * null, GroupType.ASSISTANT); 
+		 * Group tutors = securityService.createGroup( "INSTITUTE_" + institute.getId() +
+		 * "_TUTORS", "autogroup_tutor_label", null,GroupType.TUTOR);
+		 * 
+		 * securityService.addAuthorityToGroup(institute.getOwner(), admins);
+		 * 
+		 * securityService.setPermissions(admins, institute, LectureAclEntry.INSTITUTE_ADMINISTRATION);
+		 * securityService.setPermissions(assistants, institute, LectureAclEntry.INSTITUTE_ASSIST);
+		 * securityService.setPermissions(tutors, institute, LectureAclEntry.INSTITUTE_TUTOR);
+		 * 
+		 * institute.getGroups().add(admins); institute.getGroups().add(assistants); institute.getGroups().add(tutors);
+		 * 
+		 * institute.getMembers().add(institute.getOwner()); // save changes getInstituteDao().update(institute); //
+		 * define security rights of institute fireCreatedInstitute(institute);
+		 * 
+		 * //send activation mail sendActivationCode(institute);
+		 */
 	}
 
 	protected void handleSendActivationCode(Institute institute) throws RegistrationException {
@@ -163,7 +152,6 @@ public class LectureServiceImpl extends LectureServiceBase{
 		getMessageService().sendMessage(institute.getShortcut(), "institute.activation.subject", "instituteactivation", parameters, institute.getEmail(), institute.getLocale());
 	}
 
-	
 	@Override
 	protected void handlePersist(CourseType courseType) throws Exception {
 		if (courseType.getId() == null) {
@@ -205,27 +193,6 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	@Override
-	protected void handleRemoveInstitute(Long instituteId) throws Exception {
-		Institute institute = getInstitute(instituteId);
-		if (institute == null)
-			throw new LectureServiceException("Institute not found " + instituteId);
-
-		// fire events
-		for (Course course : institute.getCourses()) {
-			fireRemovingCourse(course);
-		}
-
-		for (CourseType courseType : institute.getCourseTypes()) {
-			fireRemovingCourseType(courseType);
-		}
-
-		fireRemovingInstitute(institute);
-
-		getRegistrationService().removeInstituteCodes(institute);
-		getInstituteDao().remove(institute);
-	}
-
-	@Override
 	protected void handleRemoveCourseType(Long courseTypeId) throws Exception {
 		if (logger.isDebugEnabled())
 			logger.debug("Remove CourseType " + courseTypeId);
@@ -245,33 +212,17 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 	@Override
 	protected void handleRemovePeriod(Long periodId) throws Exception {
-		if (logger.isDebugEnabled())
-			logger.debug("Remove period " + periodId);
-		Period period = getPeriod(periodId);
-
-		// fire course delete
-		for (Course course : period.getCourses()) {
-			fireRemovingCourse(course);
-		}
-
-		// remove associated courses
-		getCourseDao().remove(period.getCourses());
-
-		Institute institute = period.getInstitute();
-
-		// check active period settings
-		if (institute != null) {
-			if (period.equals(institute.getActivePeriod())) {
-				institute.setActivePeriod(null);
-				persist(institute);
-			}
-
-			// remove period from institute
-			institute.remove(period);
-		}
-
-		// delete period
-		getPeriodDao().remove(period);
+		throw new UnsupportedOperationException(
+				"Removing periods in institutes is no longer valid. Use UniversityService.handleRemove().");
+		/*
+		 * if (logger.isDebugEnabled()) logger.debug("Remove period " + periodId); Period period = getPeriod(periodId); //
+		 * fire course delete for (Course course : period.getCourses()) { fireRemovingCourse(course); } // remove
+		 * associated courses getCourseDao().remove(period.getCourses());
+		 * 
+		 * Institute institute = period.getInstitute(); // check active period settings if (institute != null) { if
+		 * (period.equals(institute.getActivePeriod())) { institute.setActivePeriod(null); persist(institute); } //
+		 * remove period from institute institute.remove(period); } // delete period getPeriodDao().remove(period);
+		 */
 	}
 
 	@Override
@@ -283,36 +234,62 @@ public class LectureServiceImpl extends LectureServiceBase{
 		fireRemovingCourse(course);
 
 		// remove associations
-		Institute institute = course.getInstitute();
-		Period period = course.getPeriod();
-		period.remove(course);
-		persist(period);
-		CourseType courseType = course.getCourseType();
-		courseType.remove(course);
-		persist(courseType);
-		institute.remove(course);
-
-		persist(institute);
+		/*
+		 * Institute institute = course.getInstitute(); Period period = course.getPeriod(); period.remove(course);
+		 * persist(period); CourseType courseType = course.getCourseType(); courseType.remove(course);
+		 * persist(courseType); institute.remove(course);
+		 * 
+		 * persist(institute);
+		 */
 		getCourseDao().remove(course);
 	}
 
+	@Override
+	protected void handleRemoveInstitute(Long instituteId) throws Exception {
+		Validate.notNull(instituteId, "InstituteService.handleRemoveInstitute - the InstituteID cannot be null");
+
+		// Get Institute entity
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute,
+				"InstituteService.handleRemoveInstitute - no Institute found to the corresponding ID " + instituteId);
+
+		// TODO All Bookmarks need to be removed before
+
+		this.getInstituteDao().remove(instituteId);
+
+		// fire events
+		/*
+		 * for (Course course : institute.getCourses()) { fireRemovingCourse(course); }
+		 * 
+		 * for (CourseType courseType : institute.getCourseTypes()) { fireRemovingCourseType(courseType); }
+		 * 
+		 * fireRemovingInstitute(institute);
+		 */
+		// TODO InstituteCodes need to be removed before
+		// getRegistrationService().removeInstituteCodes(institute);
+		
+	}
+	
 	@Override
 	protected Course handleCreateCourse(Long courseTypeId, Long periodId) throws Exception {
 		// refresh instances
 		CourseType courseType = getCourseType(courseTypeId);
 		Period period = getPeriod(periodId);
 
-		if (!ObjectUtils.equals(courseType.getInstitute(), period.getInstitute()))
-			throw new LectureServiceException("CourseType and period must be associated to the same institute!");
+		// TODO: Change this functionality
+		/*
+		 * if (!ObjectUtils.equals(courseType.getInstitute(), period.getInstitute())) throw new
+		 * LectureServiceException("CourseType and period must be associated to the same institute!");
+		 */
 
 		Institute institute = courseType.getInstitute();
 
 		Course course = Course.Factory.newInstance();
 		courseType.add(course);
 		period.add(course);
-		institute.add(course);
+		// institute.add(course);
 
-		course.setInstitute(institute);
+		// course.setInstitute(institute);
 		course.setCourseType(courseType);
 		course.setPeriod(period);
 
@@ -331,10 +308,12 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 	@Override
 	protected void handleSetActivePeriod(Long instituteId, Period period) throws Exception {
-		// refresh instances
-		Institute institute = getInstitute(instituteId);
-		institute.setActivePeriod(period);
-		persist(institute);
+		throw new UnsupportedOperationException(
+				"Setting active periods in LectureService is no longer valid. Periods are automatically active or not due to their date.");
+		/*
+		 * // refresh instances Institute institute = getInstitute(instituteId); institute.setActivePeriod(period);
+		 * persist(institute);
+		 */
 	}
 
 	@Override
@@ -346,10 +325,10 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	@Override
-	protected List handleGetInstituteAspirants(Long instituteId) throws Exception {
+	protected List<?> handleGetInstituteAspirants(Long instituteId) throws Exception {
 		Institute institute = getInstituteDao().load(instituteId);
 		// need to get ride of persistent back so use a new ArrayList
-		List aspirants = new ArrayList<User>(institute.getAspirants());
+		List<?> aspirants = new ArrayList<User>(institute.getMembership().getAspirants());
 		getUserDao().toUserInfoCollection(aspirants);
 		return aspirants;
 	}
@@ -367,50 +346,29 @@ public class LectureServiceImpl extends LectureServiceBase{
 	 */
 	@Override
 	protected void handleAddInstituteAspirant(Long userId, Long instituteId) throws Exception {
+		/*
 		Institute institute = getInstitute(instituteId);
 		User user = getUser(userId);
 
-		if (!institute.getMembers().contains(user)) {
-			institute.getAspirants().add(user);
+		if (!institute.getMembership().getMembers().contains(user)) {
+			institute.getMembership().getAspirants().add(user);
 			getInstituteDao().update(institute);
 		} else {
 			throw new LectureException("user_is_already_a_member_of_the_institute");
 		}
-		//send mail to administrators
+
+		// send mail to administrators
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("institutename", institute.getName()+"("+institute.getShortcut()+")");
-		parameters.put("instituteapplicantlink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/auth/aspirants.faces?institute="+institute.getId());
-		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject", "instituteapplication", parameters, getInstituteAdmins(institute));
+		parameters.put("institutename", institute.getName() + "(" + institute.getShortcut() + ")");
+		parameters.put("instituteapplicantlink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL)
+				.getValue()
+				+ "views/secured/lecture/auth/aspirants.faces?institute=" + institute.getId());
+		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject",
+				"instituteapplication", parameters, getInstituteAdmins(institute));
+				*/
 	}
 
-	private List<User> getInstituteAdmins(Institute institute){
-		// XXX Polish me!
-		Collection<Group> groups = institute.getGroups();
-		Iterator i = groups.iterator();
-		Group adminGroup = null;
-		Group group;
-		List instituteMembers;
-		User member;
-		List<User> administrators = new ArrayList<User>();
-		//find administrator group of institute
-		while (i.hasNext()){
-			group = (Group) i.next();
-			if (group.getGroupType()==GroupType.ADMINISTRATOR){
-				adminGroup = group;
-			}
-		}
-		//add members of administrator group to list of administrators
-		instituteMembers = institute.getMembers();
-		i = instituteMembers.iterator();
-		while (i.hasNext()){
-			member = (User) i.next();
-			if (member.getGroups().contains(adminGroup)) {
-				administrators.add(member); 
-			}
-		}
-		return administrators;
-	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -419,14 +377,15 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Institute institute = getInstitute(instituteId);
 		User user = getUser(userId);
 
-		if (institute.getMembers().contains(user)) {
+		if (institute.getMembership().getMembers().contains(user)) {
 			throw new LectureException("user_is_already_a_member_of_the_institute");
 		}
 
-		institute.getMembers().add(user);
+		institute.getMembership().getMembers().add(user);
 		// if user was an aspirant remove him from the list
-		institute.getAspirants().remove(user);
-		persist(institute);
+		institute.getMembership().getAspirants().remove(user);
+		//persist(institute);
+		this.getInstituteDao().update(institute);
 	}
 
 	/**
@@ -436,12 +395,13 @@ public class LectureServiceImpl extends LectureServiceBase{
 	protected void handleRejectInstituteAspirant(Long userId, Long instituteId) throws Exception {
 		Institute institute = getInstitute(instituteId);
 		User user = getUser(userId);
-		institute.getAspirants().remove(user);
+		institute.getMembership().getAspirants().remove(user);
 		persist(institute);
-		
+
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("institutename", institute.getName()+"("+institute.getShortcut()+")");
-		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject", "instituteapplicationreject", parameters, user);
+		parameters.put("institutename", institute.getName() + "(" + institute.getShortcut() + ")");
+		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject",
+				"instituteapplicationreject", parameters, user);
 	}
 
 	/**
@@ -453,10 +413,10 @@ public class LectureServiceImpl extends LectureServiceBase{
 		User user = getUser(userId);
 
 		final SecurityService securityService = getSecurityService();
-		for (Group group : institute.getGroups()) {
+		for (Group group : institute.getMembership().getGroups()) {
 			securityService.removeAuthorityFromGroup(user, group);
 		}
-		institute.getMembers().remove(user);
+		institute.getMembership().getMembers().remove(user);
 		persist(institute);
 	}
 
@@ -466,7 +426,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Institute institute = getInstituteDao().load(instituteId);
 		User user = getUser(member.getId());
 
-		if (!institute.getMembers().contains(user)) {
+		if (!institute.getMembership().getMembers().contains(user)) {
 			throw new LectureException("User is not a member of the institute!");
 		}
 
@@ -478,7 +438,7 @@ public class LectureServiceImpl extends LectureServiceBase{
 
 		// remove and add user to the new groups
 		final SecurityService securityService = getSecurityService();
-		for (Group group : institute.getGroups()) {
+		for (Group group : institute.getMembership().getGroups()) {
 			if (group.getMembers().contains(user) && !(groupIds.contains(group.getId()))) {
 				securityService.removeAuthorityFromGroup(user, group);
 			} else if (!group.getMembers().contains(user) && (groupIds.contains(group.getId()))) {
@@ -492,15 +452,17 @@ public class LectureServiceImpl extends LectureServiceBase{
 		Institute institute = getInstitute(instituteId);
 		User user = getUser(userId);
 		// check if user was really an aspirant of the institute
-		if (institute.getAspirants().contains(user)) {
-			institute.getAspirants().remove(user);
-			institute.getMembers().add(user);
+		if (institute.getMembership().getAspirants().contains(user)) {
+			institute.getMembership().getAspirants().remove(user);
+			institute.getMembership().getMembers().add(user);
 			getInstituteDao().update(institute);
 		}
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("institutename", institute.getName()+"("+institute.getShortcut()+")");
-		parameters.put("institutelink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+"views/secured/lecture/institute.faces?institute="+institute.getId());
-		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject", "instituteapplicationapply", parameters, user);
+		parameters.put("institutename", institute.getName() + "(" + institute.getShortcut() + ")");
+		parameters.put("institutelink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
+				+ "views/secured/lecture/institute.faces?institute=" + institute.getId());
+		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject",
+				"instituteapplicationapply", parameters, user);
 	}
 
 	@Override
@@ -518,8 +480,8 @@ public class LectureServiceImpl extends LectureServiceBase{
 		}
 	}
 
-	// FIXME use event handler instead 
-	
+	// FIXME use event handler instead
+
 	private void fireRemovingCourse(Course course) throws LectureException {
 		if (listeners != null) {
 			logger.debug("fire removing course event");
@@ -538,24 +500,6 @@ public class LectureServiceImpl extends LectureServiceBase{
 		}
 	}
 
-	private void fireRemovingInstitute(Institute institute) throws LectureException {
-		if (listeners != null) {
-			logger.debug("fire removing institute event");
-			for (LectureListener listener : listeners) {
-				listener.removingInstitute(institute);
-			}
-		}
-	}
-
-	private void fireCreatedInstitute(Institute institute) throws LectureException {
-		if (listeners != null) {
-			logger.debug("fire created institute event");
-			for (LectureListener listener : listeners) {
-				listener.createdInstitute(institute);
-			}
-		}
-	}
-
 	private User getUser(Long userId) throws LectureException {
 		User user = User.Factory.newInstance();
 		user = getSecurityService().getUser(userId);
@@ -567,10 +511,9 @@ public class LectureServiceImpl extends LectureServiceBase{
 	}
 
 	@Override
-	protected InstituteDetails handleGetInstitute(Institute institute) throws Exception {
-		institute = handleGetInstitute(institute.getId());
-		InstituteDetails instituteDetails = getInstituteDao().toInstituteDetails(institute);
-		return instituteDetails;
+	protected InstituteInfo handleGetInstitute(Institute institute) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

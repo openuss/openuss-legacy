@@ -99,7 +99,14 @@ public abstract class BaseBean {
 	 * @return HttpServletRequest
 	 */
 	protected HttpServletRequest getRequest() {
-		return (HttpServletRequest) getFacesContext().getExternalContext().getRequest();
+		if (getFacesContext() != null) {
+			if (getFacesContext().getExternalContext() != null) {
+				if (getFacesContext().getExternalContext().getRequest() != null) {
+					return (HttpServletRequest) getFacesContext().getExternalContext().getRequest();
+				}
+			}
+		}
+		return null;
 	}
 
 	/**

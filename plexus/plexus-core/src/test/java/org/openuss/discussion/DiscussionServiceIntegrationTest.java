@@ -124,7 +124,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		assertEquals(domainObject.getId(), loadedForum.getDomainIdentifier());
 		//test delete 
 		//test correct creation of a example topic
-		commit();
+		flush();
 		PostInfo firstPost = generatePost();
 		discussionService.createTopic(firstPost, loadedForum);
 		List<TopicInfo> topics = discussionService.getTopics(discussionService.getForum(domainObject));
@@ -140,16 +140,16 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		//test correct adding of a post
 		PostInfo newPost = generatePost();
 		discussionService.addPost(newPost, addedTopic);
-		commit();
+		flush();
 		topics = discussionService.getTopics(discussionService.getForum(domainObject));
 		assertNotNull(topics);
 		assertEquals(1, topics.size());
 		addedTopic = topics.get(0); 
 		assertEquals(1, addedTopic.getAnswerCount().intValue());
 		PostInfo addedPost = discussionService.getPost(newPost);
-		commit();
+		flush();
 		discussionService.deletePost(addedPost);
-		commit();
+		flush();
 		topics = discussionService.getTopics(loadedForum);
 		assertNotNull(topics);
 		assertEquals(1, topics.size());

@@ -12,6 +12,7 @@ import org.openuss.foundation.DomainObject;
 /**
  * Factory to manage DomainIndexerCommands and associated DomainObjects
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 public class DomainIndexerFactory {
 	private static final Logger logger = Logger.getLogger(DomainIndexerFactory.class);
@@ -19,17 +20,29 @@ public class DomainIndexerFactory {
 	private Map<String, String> indexer = new HashMap<String, String>();
 
 	public String getIndexerName(DomainObject domainObject) {
+		logger.debug("Starting method getIndexerName");
 		Validate.notNull(domainObject, "Parameter domainObject must not be null.");
+		//Just for debugging
+		logger.debug(domainObject.getId());
+		logger.debug(domainObject.getClass());
+		logger.debug(domainObject.getClass().getInterfaces());
 		Class[] interfaces = domainObject.getClass().getInterfaces();
 		for (Class interfaceClass : interfaces) {
+			logger.debug("test loop");
+			logger.debug(interfaceClass.getName());
 			String name = indexer.get(interfaceClass.getName());
+			logger.debug(name);
 			if (StringUtils.isNotBlank(name)) {
+				logger.debug("In loop");
 				return name;
 			}
 		}
-		// TODO - looks urgly...
+		// TODO - looks ugly...
 		// Maybe the domainObject is wrapped by a proxy - some trying the other way around.
 		for (String name : indexer.keySet()) {
+			//Just for debugging
+			logger.debug("test loop 2");
+			logger.debug(name);
 			try {
 				if (Class.forName(name).isAssignableFrom(domainObject.getClass())) {
 					return name;
