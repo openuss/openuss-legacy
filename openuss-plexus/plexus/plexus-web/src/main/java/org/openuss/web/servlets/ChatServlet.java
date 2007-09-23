@@ -34,10 +34,10 @@ public class ChatServlet extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(ChatServlet.class);
 
 	/** ChatService */
-	private ChatService chatService;
+	private transient ChatService chatService;
 	
 	/** SecurityService */
-	private SecurityService securityService;
+	private transient SecurityService securityService;
 
 	/**
 	 * @return XML representation of the room, starting with first new message

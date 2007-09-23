@@ -1,3 +1,4 @@
+@import url(flexlist.css);
 
 html, body {
   font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -1240,8 +1241,36 @@ td input.button, .button_unlink, .button_link, .button_remove, .button_edit, .bu
 	filter:DropShadow(color=#FFF, offx=1, offy=1)
 }
 
-td input.button:hover, .button_unlink:hover, .button_link:hover, .button_remove:hover, .button_edit:hover, .button_remove:hover, .button_profile:hover {
-  	background: transparent url(../img/button_70_hover.png) 0px 0px no-repeat;
+td .remove_shortcut_button
+	{
+	width: 121px;
+	height: 17px;
+	margin: 2px 5px 2px 0;
+	padding: 0;
+	background: transparent url(../img/button_120_normal_remove.png) 0px 0px
+		no-repeat;
+	border: 0;
+	font-color: #313131;
+	font-size: 7pt;
+	text-decoration: none;
+	font-weight: normal;
+	overflow: hidden;
+	cursor: pointer;
+	cursor: hand;
+	outline-style: none;
+	filter: DropShadow(color = #FFF, offx = 1, offy = 1)
+}
+
+td input.button:hover,.button_unlink:hover,.button_link:hover,.button_remove:hover,.button_edit:hover,.button_remove:hover,.button_profile:hover
+	{
+	background: transparent url(../img/button_70_hover.png) 0px 0px
+		no-repeat;
+}
+
+td .remove_shortcut_button:hover
+	{
+	background: transparent url(../img/button_120_hover_remove.png) 0px 0px
+		no-repeat;
 }
 
 .button_save, .button_send, .button_cancel, .button_back, .button_continue {
@@ -1424,6 +1453,17 @@ td {
 	font-weight: bold;
 	color: #505050;
 	text-decoration: none;
+}
+
+div.university_info{
+	margin-bottom: 10px;
+	overflow: auto;
+}
+
+div.university_info span{
+  display:block;
+  padding-bottom: 0;
+  padding-top:0;
 }
 
 div.institute_info{
@@ -1846,4 +1886,8 @@ table.jscalendar-DB-dropdown-style{
 
 .jscalendar-DB-title-background-style td{
 	background-color: #0000AA;
+}
+
+#extended_search_link_padding {
+	padding: 5px;
 }

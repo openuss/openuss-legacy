@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Institute;
-import org.openuss.lecture.InstituteDetails;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureService;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
@@ -25,7 +25,7 @@ public class InstituteFeed extends AbstractFeed {
 
 	public static final Logger logger = Logger.getLogger(CourseFeed.class);
 
-	private FeedWrapper buildFeedArray(InstituteDetails institute) {
+	private FeedWrapper buildFeedArray(InstituteInfo institute) {
 		final List<SyndEntry> entries = new ArrayList<SyndEntry>();
 
 		List<NewsItemInfo> newsEntries = getNewsService().getNewsItems(institute);
@@ -65,7 +65,7 @@ public class InstituteFeed extends AbstractFeed {
 		}
 		Institute f = Institute.Factory.newInstance();
 		f.setId(instituteId);
-		InstituteDetails institute = lectureService.getInstitute(f);
+		InstituteInfo institute = lectureService.getInstitute(f);
 		if (institute == null) {
 			return null;
 		} else  {

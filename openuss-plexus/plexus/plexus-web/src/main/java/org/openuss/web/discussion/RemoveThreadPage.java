@@ -26,11 +26,9 @@ public class RemoveThreadPage extends AbstractDiscussionPage{
 
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
 		crumb.setName(i18n("discussion_remove_topic_header"));
 		crumb.setHint(i18n("discussion_remove_topic_header"));
-		crumbs.add(crumb);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		breadcrumbs.addCrumb(crumb);
 	}
 	
 	public String removeThread(){

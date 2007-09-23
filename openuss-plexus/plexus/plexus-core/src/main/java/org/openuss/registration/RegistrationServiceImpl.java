@@ -154,7 +154,11 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 		if (isExpired(activateCode)){
 			logger.debug("Activation code expired!");
 			throw new RegistrationCodeExpiredException("activation code expired: " + activateCode);
-		}	
+		}
+		if (!activateCode.getInstitute().getDepartment().isEnabled()) {
+			logger.debug("Activation not possible because super-ordinate department is disabled!");
+			throw new RegistrationParentDepartmentDisabledException("Activation not possible because super-ordinate department is disabled!");
+		}
 		getCommandService().createOnceCommand(activateCode.getInstitute(), INSTITUTE_ACTIVATION_COMMAND, new Date(System.currentTimeMillis()), null);
 	}
 

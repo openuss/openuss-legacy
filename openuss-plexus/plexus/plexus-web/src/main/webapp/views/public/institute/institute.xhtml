@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+		<ui:define name="header">
+			<link type="application/rss+xml" title="RSS-#{instituteInfo.name}" rel="alternate" href="../../../rss/public/institute.xml?institute=#{instituteInfo.id}"/>
+		</ui:define>
+		<ui:define name="title">
+  			<h:outputText value="#{msg.institute_maintitle}"/>
+  		</ui:define>
+  		<ui:define name="navigation">
+			<ui:include src="/views/commons/navigation/institute.xhtml" />
+		</ui:define>
+		<ui:define name="sidebar"> 
+			<ui:include src="/views/commons/sidebar/feeds/institutefeed.xhtml" />
+			<ui:include src="/views/commons/sidebar/default.xhtml" />
+		</ui:define>
+			
+		<ui:define name="content">
+		
+			<ui:include src="/views/commons/sidebar/instituteactivation.xhtml" />
+			
+			<o:block styleClass="teaser_blue_right" label="Logo">
+			  		
+		  		<h:panelGroup>
+					<c:if test="#{not empty instituteInfo.imageId}">
+						<h:graphicImage styleClass="organisation_logo"
+							renderer="${not empty instituteInfo.imageId}"
+							value="/files?fileid=#{instituteInfo.imageId}"
+							alt="#{msg.logo} #{instituteInfo.name}"
+							title="#{msg.logo} #{instituteInfo.name}"/> 
+					</c:if>
+							
+					<c:if test="#{empty instituteInfo.imageId}">
+						<h:graphicImage styleClass="organisation_logo"
+							value="/images/institute_logo_dummy.jpg"
+							alt="institute logo dummy"
+							title="institute logo dummy"/>
+					</c:if>
+				</h:panelGroup>
+					
+		  	</o:block>
+	
+		  	<o:block styleClass="teaser_blue" label="#{instituteInfo.name} - #{msg['institute_profile']}">
+		  		<p class="content_font_normal">
+		  			<h:outputText value="#{instituteInfo.description}" styleClass="content_font_normal" escape="true"/>
+		  		</p>
+			</o:block>
+			
+			<s:authorize ifAllGranted="ROLE_USER">
+				<!-- spacer -->
+				<div>
+					<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
+				</div>
+				
+				<o:block styleClass="teaser_blue" label="#{msg.organisation_command_actions}">
+					<h:form id="actionsForm">
+						
+						<c:if test="#{not views$public$institute$institute.bookmarked}">
+							<p class="content_font_normal">
+						  			<h:commandLink
+						  				action="#{views$public$institute$institute.addShortcut}">
+						  				<h:outputText value="#{msg.institute_command_shortcut}" />
+						  			</h:commandLink>
+					  		</p>
+					  	</c:if>
+					  	
+					  	<c:if test="#{views$public$institute$institute.bookmarked}">	
+					  		<p class="content_font_normal">
+					  			<h:commandLink 
+					  				action="#{views$public$institute$institute.removeShortcut}">
+					  				<h:outputText value="#{msg.institute_command_remove_shortcut}" />
+					  			</h:commandLink>
+					  		</p>
+					  	</c:if>
+					  	
+					  	<s:authorize ifAllGranted="ROLE_USER">
+							<s:acl domainObject="#{instituteInfo}" hasNotPermission="#{ACL.INSTITUTE_TUTOR}">
+								<p class="content_font_normal">
+									<h:commandLink value="#{msg['institute_command_assistant_application']}" action="#{views$public$institute$institute.applyForMembership}"/>
+								</p>
+							</s:acl>
+						</s:authorize>
+					  		
+				  		<!-- 
+				  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.UPDATE}">
+					  		<p class="content_font_normal">
+						  		<h:commandLink action="institute_registration_start">
+									<h:outputText value="#{msg.institute_command_add_institute}"/>
+								</h:commandLink>
+							</p>
+						</s:acl>
+				  		 -->
+							
+					</h:form>
+				</o:block>
+			</s:authorize>
+			
+			<div>
+				<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
+			</div>
+			<div class="clear_both"/>
+				
+  			<h:form id="instituteMainForm">
+  				<ui:include src="/views/commons/course/coursestableoverview.xhtml"/>
+  			</h:form>
+  			
+  			<br/>
+	  		<plexus:newsTable value="#{views$public$institute$institute.currentNewsItems}" headline="${msg.news_header}"/>
+  			
+  		</ui:define>
+  		
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

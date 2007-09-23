@@ -15,19 +15,25 @@ import org.springmodules.lucene.index.core.DocumentCreator;
 /**
  * 
  * @author Ingo Dueppe
+ * @author Malte Stockmann
  */
 public class InstituteIndexer extends DomainIndexer {
 
-	private static final String DOMAINTYPE_VALUE = "INSTITUTE";
+	private static final String DOMAINTYPE_VALUE = "institute";
+	
+	private static final String SPACE = " ";
+	private static final String NEWLINE = "<br/>";
+	private static final String ARROW = " -> ";
 
 	private static final Logger logger = Logger.getLogger(InstituteIndexer.class);
 
 	private InstituteDao instituteDao;
 
 	public void create() {
+		logger.debug("Starting method create");
 		final Institute institute = getInstitute();
 		if (institute != null) {
-			logger.debug("create new index for institute " + institute.getName() + " (" + institute.getId() + ")");
+			logger.debug("method create: create new index entry for institute " + institute.getName() + " (" + institute.getId() + ")");
 			getLuceneIndexTemplate().addDocument(new DocumentCreator() {
 				public Document createDocument() throws Exception {
 					Document document = new Document();
@@ -39,25 +45,13 @@ public class InstituteIndexer extends DomainIndexer {
 	}
 
 	public void update() {
+		logger.debug("Starting method update");
 		final Institute institute = getInstitute();
 		if (institute != null) {
-			logger.debug("update new index for institute " + institute.getName() + " (" + institute.getId() + ")");
-			// update doesn't work properly, so deleting and create does the same.
+			logger.debug("method update: update index entry for institute " + institute.getName() + " (" + institute.getId() + ")");
+			// update doesn't work properly, so deleting and create does the same
 			delete();
 			create();
-			//	Term instituteTerm = new Term(IDENTIFIER, String.valueOf(institute.getId().longValue()));
-			//	try {
-			//		getLuceneIndexTemplate().updateDocument(instituteTerm, new DocumentModifier() {
-			//			public Document updateDocument(Document document) throws Exception {
-			//				Document newDocument = new Document();
-			//				setFields(institute, document);
-			//				return newDocument;
-			//			}
-			//		});
-			//	} catch (LuceneIndexAccessException ex) {
-			//		logger.debug("Exception during update, trying to create...",ex);
-			//		create();
-			//	}
 		}
 	}
 
@@ -68,14 +62,28 @@ public class InstituteIndexer extends DomainIndexer {
 	}
 
 	private void setFields(final Institute institute, Document document) {
+		boolean isOfficial; 
+		if(institute.getDepartment().getDepartmentType().equals(DepartmentType.OFFICIAL)){
+			isOfficial = true;
+		} else {
+			isOfficial = false;
+		}
+		
 		document.add(new Field(IDENTIFIER, String.valueOf(institute.getId().longValue()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(DOMAINTYPE, DOMAINTYPE_VALUE, Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(MODIFIED, DateTools.dateToString(new Date(), Resolution.MINUTE), Field.Store.YES,
 				Field.Index.UN_TOKENIZED));
 		document.add(new Field(CONTENT, content(institute), Field.Store.YES, Field.Index.TOKENIZED));
 		
-		document.add(new Field(NAME, name(institute), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(NAME, name(institute), Field.Store.YES, Field.Index.TOKENIZED));
 		document.add(new Field(DETAILS, details(institute), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		
+		document.add(new Field(COURSE_TYPE_IDENTIFIER, "", Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(INSTITUTE_IDENTIFIER, String.valueOf(institute.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(DEPARTMENT_IDENTIFIER, String.valueOf(institute.getDepartment().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(UNIVERSITY_IDENTIFIER, String.valueOf(institute.getDepartment().getUniversity().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(PERIOD_IDENTIFIER, "", Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(OFFICIAL_FLAG, String.valueOf(isOfficial), Field.Store.YES, Field.Index.UN_TOKENIZED));
 	}
 	
 	private String name(final Institute institute) {
@@ -83,9 +91,18 @@ public class InstituteIndexer extends DomainIndexer {
 	}
 	
 	private String details(final Institute institute) {
+		
 		StringBuilder details = new StringBuilder();
-		details.append(StringUtils.trimToEmpty(institute.getOwnername()));
-		details.append(StringUtils.trimToEmpty(institute.getAddress()));
+		
+		details.append(StringUtils.trimToEmpty(institute.getDepartment().getUniversity().getName()+NEWLINE));
+		details.append(StringUtils.trimToEmpty(institute.getDepartment().getName()+NEWLINE));
+		details.append(StringUtils.trimToEmpty(institute.getOwnerName()+NEWLINE));
+		details.append(NEWLINE);
+		
+		details.append(StringUtils.trimToEmpty(StringUtils.abbreviate(institute.getDescription(), 200)));
+		details.append(NEWLINE);
+		details.append(NEWLINE);
+		
 		return details.toString();
 	}
 
@@ -99,7 +116,7 @@ public class InstituteIndexer extends DomainIndexer {
 		content.append(" ");
 		content.append(institute.getDescription());
 		content.append(" ");
-		content.append(institute.getOwnername());
+		content.append(institute.getOwnerName());
 		content.append(" ");
 		content.append(institute.getAddress());
 		content.append(" ");

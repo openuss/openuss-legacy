@@ -67,75 +67,75 @@ public class RedirectNavigationHandler extends NavigationHandler {
 			}
 		}
 
-		if (isViewId(outcome)) {
-			ConversationUtil.interpolateAndRedirect(facesContext, outcome);
-			return;
-		} else {
-			originalNavigationHandler.handleNavigation(facesContext, fromAction, outcome);
-		}
-		checkForRedirect(facesContext, currentViewId);
-	}
+  if (isViewId(outcome)) {
+   ConversationUtil.interpolateAndRedirect(facesContext, outcome);
+   return;
+  } else {
+   originalNavigationHandler.handleNavigation(facesContext, fromAction, outcome);
+  }
+  checkForRedirect(facesContext, currentViewId);
+ }
 
 
-	private boolean isBackward(String outcome) {
-		return outcome != null && outcome.startsWith(VIEW_BACKWARD);
-	}
-	
-	/**
-	 * If the outcome starts with a <tt>/</tt> it defines a view id. 
-	 * @param outcome 
-	 * @return true, if the outcome starts with a <tt>/</tt>
-	 */
-	private boolean isViewId(String outcome) {
-		return outcome != null && outcome.startsWith("/");
-	}
-	
-	/**
-	 * Checks if the viewId has changed and a redirect must be performed.
-	 * @param context
-	 * @param currentViewId
-	 */
-	private void checkForRedirect(FacesContext context, String currentViewId) {
-		/*
-		 * Due to action processing based on GET-methods we must check for redirect if processing a GET-Request 
-		 * like it was previously done just for POST-methods. 
-		 * 
-		 * Check if the viewId has changed. If it has changed then perform a redirect so that the
-		 * browser will display the right url and the security filter can do its work.
-		 */
-		final String newViewId = context.getViewRoot().getViewId();
-		if (!StringUtils.equals(newViewId, currentViewId)) {
-			redirectToViewId(context, newViewId);
-		}
-	}
+ private boolean isBackward(String outcome) {
+  return outcome != null && outcome.startsWith(VIEW_BACKWARD);
+ }
+ 
+ /**
+  * If the outcome starts with a <tt>/</tt> it defines a view id. 
+  * @param outcome 
+  * @return true, if the outcome starts with a <tt>/</tt>
+  */
+ private boolean isViewId(String outcome) {
+  return outcome != null && outcome.startsWith("/");
+ }
+ 
+ /**
+  * Checks if the viewId has changed and a redirect must be performed.
+  * @param context
+  * @param currentViewId
+  */
+ private void checkForRedirect(FacesContext context, String currentViewId) {
+  /*
+   * Due to action processing based on GET-methods we must check for redirect if processing a GET-Request 
+   * like it was previously done just for POST-methods. 
+   * 
+   * Check if the viewId has changed. If it has changed then perform a redirect so that the
+   * browser will display the right url and the security filter can do its work.
+   */
+  final String newViewId = context.getViewRoot().getViewId();
+  if (!StringUtils.equals(newViewId, currentViewId)) {
+   redirectToViewId(context, newViewId);
+  }
+ }
 
-	/**
-	 * Performs a PRG-Redirect to ViewId. 
-	 * @param facesContext
-	 * @param viewId
-	 */
-	private void redirectToViewId(FacesContext facesContext, final String viewId) {
-		logger.debug("Perform redirect to view " + viewId);
-		final ExternalContext externalContext = facesContext.getExternalContext();
-		externalContext.getSessionMap().put(PostRedirectGetPhaseListener.POST_REDIRECT_GET_KEY,	viewId);
-		ConversationUtil.redirect(facesContext, viewId, null);
-		facesContext.responseComplete();
-	}
-	
-	/**
-	 * Returns the view stack for the current user.
-	 * @param facesContext
-	 * @return A Stack representing the views that have been visited during the user sessions.
-	 */
-	private Stack<String> getViewStack(FacesContext facesContext) {
-		Stack<String> viewStack = (Stack<String>) facesContext.getExternalContext().getSessionMap().get(VIEW_STACK_KEY);
-		if (viewStack == null) {
-			logger.debug("Init session view stack");
-			viewStack = new Stack<String>();
-			facesContext.getExternalContext().getSessionMap().put(VIEW_STACK_KEY, viewStack);
-		}
-		return viewStack;
-	}
-	
+ /**
+  * Performs a PRG-Redirect to ViewId. 
+  * @param facesContext
+  * @param viewId
+  */
+ private void redirectToViewId(FacesContext facesContext, final String viewId) {
+  logger.debug("Perform redirect to view " + viewId);
+  final ExternalContext externalContext = facesContext.getExternalContext();
+  externalContext.getSessionMap().put(PostRedirectGetPhaseListener.POST_REDIRECT_GET_KEY, viewId);
+  ConversationUtil.redirect(facesContext, viewId, null);
+  facesContext.responseComplete();
+ }
+ 
+ /**
+  * Returns the view stack for the current user.
+  * @param facesContext
+  * @return A Stack representing the views that have been visited during the user sessions.
+  */
+ private Stack<String> getViewStack(FacesContext facesContext) {
+  Stack<String> viewStack = (Stack<String>) facesContext.getExternalContext().getSessionMap().get(VIEW_STACK_KEY);
+  if (viewStack == null) {
+   logger.debug("Init session view stack");
+   viewStack = new Stack<String>();
+   facesContext.getExternalContext().getSessionMap().put(VIEW_STACK_KEY, viewStack);
+  }
+  return viewStack;
+ }
+ 
 
 }

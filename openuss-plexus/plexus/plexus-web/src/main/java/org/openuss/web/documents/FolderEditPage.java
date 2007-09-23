@@ -27,11 +27,9 @@ public class FolderEditPage extends AbstractDocumentPage{
 	
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
 		crumb.setName(i18n("document_folder_edit_header"));
 		crumb.setHint(i18n("document_folder_edit_header"));
-		crumbs.add(crumb);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		breadcrumbs.addCrumb(crumb);
 	}
 
 	public String save() throws DocumentApplicationException{

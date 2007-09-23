@@ -35,11 +35,9 @@ public class DocumentRemovePage extends AbstractDocumentPage{
 	
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
 		crumb.setName(i18n("documents_remove_header"));
 		crumb.setHint(i18n("documents_remove_header"));
-		crumbs.add(crumb);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		breadcrumbs.addCrumb(crumb);
 	}	
 	
 	/** 

@@ -25,7 +25,7 @@
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="title">
 		<h:outputText
-			value="#{msg.course_main_title} - #{course.shortcut}" />
+			value="#{msg.course_main_title} - #{courseInfo.shortcut}" />
 	</ui:define>
 	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/course.xhtml" />
@@ -34,7 +34,7 @@
 		<ui:include src="/views/commons/sidebar/discussionoptions.xhtml" />
 	</ui:define>
   		<ui:define name="content"> 
-			<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}" ifNot="error"/>
+			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" ifNot="error"/>
 			<h:form id="removeThreadForm">
 	  			<o:block label="#{msg.warning_attention_dataloss} - #{msg.discussion_remove_topic_header}" styleClass="warning_box">
 	  				<p class="content_font_normal">

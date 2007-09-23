@@ -5,6 +5,13 @@
  */
 package org.openuss.news;
 
+import static org.hibernate.criterion.Restrictions.conjunction;
+import static org.hibernate.criterion.Restrictions.eq;
+import static org.hibernate.criterion.Restrictions.ge;
+import static org.hibernate.criterion.Restrictions.isNull;
+import static org.hibernate.criterion.Restrictions.le;
+import static org.hibernate.criterion.Restrictions.or;
+
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -13,7 +20,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Order;
-import static org.hibernate.criterion.Restrictions.*;
 
 /**
  * @author ingo dueppe

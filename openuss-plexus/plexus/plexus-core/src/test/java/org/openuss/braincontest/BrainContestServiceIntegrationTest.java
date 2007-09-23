@@ -148,7 +148,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertNull(brainContest.getId());
 		
 		brainContestService.createContest(brainContest);
-		commit();
+		flush();
 		
 		assertNotNull(brainContest.getId());
 		assertEquals("testDescription", brainContest.getDescription());
@@ -297,7 +297,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertNull(brainContest.getId());
 		
 		brainContestService.createContest(brainContest);		
-		commit();
+		flush();
 
 		assertNotNull(brainContest.getId());
 		assertEquals("testDescription", brainContest.getDescription());
@@ -336,7 +336,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		//check case right answer + adding to top list		
 
 		assertTrue("Right answer handled as wrong",brainContestService.answer("testSolution", user, addedContest, true));
-		commit();
+		flush();
 
 		answers = brainContestService.getAnswers(addedContest);		
 		assertNotNull(answers);

@@ -1,39 +1,126 @@
 <pages>
-	<page view-id="/views/secured/lecture/*">
-		<parameter name="institute" value="#{institute.id}" converterId="javax.faces.Long"/>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Universities
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+	<page view-id="/views/public/university/university.xhtml">
+		<parameter name="university" value="#{universityInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
-	<page view-id="/views/secured/lecture/auth/*">
-		<securityConstraint domainObject="#{institute}" permissions="#{ACL.GRANT}"/> 
+	<page view-id="/views/secured/lecture/universitydepartments.xhtml">
+		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.UNIVERSITY_ADMINISTRATION}"/> 
+		<parameter name="university" value="#{universityInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/lecture/universityperiods.xhtml">
+		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.UNIVERSITY_ADMINISTRATION}"/> 
+		<parameter name="university" value="#{universityInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/lecture/auth/universitymembers.xhtml">
+		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.UNIVERSITY_ADMINISTRATION}"/> 
+		<parameter name="university" value="#{universityInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/lecture/universityoptions*">
+		<securityConstraint domainObject="#{universityInfo}" permissions="#{ACL.UNIVERSITY_ADMINISTRATION}"/> 
+		<parameter name="university" value="#{universityInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 
-	<page view-id="/views/secured/lecture/news*">
-		<securityConstraint domainObject="#{institute}" permissions="#{ACL.MANAGE_NEWS}"/> 
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Departments
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+	 
+	 <page view-id="/views/public/department/department.xhtml">
+		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	 
+	<page view-id="/views/secured/lecture/departmentinstitutes.xhtml">
+		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/>
+		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/> 
+	</page>
+	
+	<page view-id="/views/secured/lecture/departmentmembers.xhtml">
+		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
+		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/lecture/departmentoptions.xhtml">
+		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
+		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/lecture/auth/departmentMembers.xhtml">
+		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
+		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	 
+	
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Institutes
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+	
+	<page view-id="/views/public/institute/institute.xhtml">
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/lecture/news.xhtml">
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_NEWS}"/> 
+	</page>
+	
+	<page view-id="/views/secured/lecture/institutecourses.xhtml">
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_COURSES}"/>
+	</page>
+	
+	<page view-id="/views/secured/lecture/auth/members.xhtml">
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.GRANT}"/> 
+	</page>
+	
+	<page view-id="/views/secured/lecture/auth/aspirants.xhtml">
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.GRANT}"/> 
+	</page>
+	
+	<page view-id="/views/secured/lecture/instituteoptions.xhtml">
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.GRANT}"/> 
+	</page>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Courses
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+	
+	<page view-id="/views/secured/lecture/course*">
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_COURSE_TYPES}"/> 
+		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 
-	<page view-id="/views/secured/lecture/instituteoptions*">
-		<securityConstraint domainObject="#{institute}" permissions="#{ACL.GRANT}"/> 
+	<page view-id="/views/secured/course/*">
+		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
 	</page>
+	
+	<page view-id="/views/secured/course/course*">
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.ASSIST}"/>
+		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			Periods
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 	
 	<page view-id="/views/secured/lecture/period*">
-		<securityConstraint domainObject="#{institute}" permissions="#{ACL.MANAGE_PERIODS}"/> 
-		<parameter name="period" value="#{period.id}" converterId="javax.faces.Long"/>
-	</page>
-
-	<page view-id="/views/secured/lecture/course*">
-		<securityConstraint domainObject="#{institute}" permissions="#{ACL.MANAGE_COURSE_TYPES}"/> 
-		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_PERIODS}"/> 
+		<parameter name="period" value="#{periodInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
-	<page view-id="/views/secured/course/*">
-		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
-	</page>
-
-	<page view-id="/views/secured/course/course*">
-		<securityConstraint domainObject="#{course}" permissions="#{ACL.ASSIST}"/>
-		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
-	</page>
-	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			User
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 	<page view-id="/views/secured/user/userprofile.xhtml">
 		<parameter name="showuser" value="#{showuser.id}" converterId="javax.faces.Long"/>
 	</page>
@@ -44,9 +131,9 @@
 
 	<page view-id="/views/secured/documents/*">
 	 	<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.READ}"/>
-		<securityConstraint domainObject="#{course}" permissions="#{ACL.READ}"/>
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
 		<parameter name="folder" value="#{documents_current_folder.id}" converterId="javax.faces.Long"/>
-		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
+		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 
 	<page view-id="/views/secured/documents/folderedit.xhtml">
@@ -70,13 +157,13 @@
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
 	<page view-id="/views/secured/braincontest/*">
-		<securityConstraint domainObject="#{course}" permissions="#{ACL.READ}"/>
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
 		<parameter name="braincontest" value="#{braincontest_contest.id}" converterId="javax.faces.Long"/>
-		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
+		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<page view-id="/views/secured/braincontest/braincontestnew.xhtml">
-		<securityConstraint domainObject="#{course}" permissions="#{ACL.ASSIST}"/>
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.ASSIST}"/>
 	</page>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -84,8 +171,8 @@
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
 	<page view-id="/views/secured/discussion/*">
-		<securityConstraint domainObject="#{course}" permissions="#{ACL.READ}"/>
-		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
+		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
 		<parameter name="topic" value="#{discussion_topic.id}" converterId="javax.faces.Long"/>
 	</page>
 	
@@ -99,13 +186,13 @@
 	</page>
 
 	<page view-id="/views/secured/newsletter/newmail.xhtml">
-		<securityConstraint domainObject="#{course}" permissions="#{ACL.ASSIST}"/>
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.ASSIST}"/>
 		<parameter name="mail" value="#{newsletter_mail.id}" converterId="javax.faces.Long"/>
 	</page>
 
 	<page view-id="/views/secured/newsletter/*">
-		<securityConstraint domainObject="#{course}" permissions="#{ACL.READ}"/>
-		<parameter name="course" value="#{course.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
+		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 
 	

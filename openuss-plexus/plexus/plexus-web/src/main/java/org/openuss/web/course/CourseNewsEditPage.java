@@ -60,23 +60,19 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 				setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
 			} 
 		}
-		addNewsCrumbs();
-	}
 
-	private void addNewsCrumbs() {
-		BreadCrumb courseNewsCrumb = new BreadCrumb();
-		courseNewsCrumb.setName(i18n("course_command_options_news"));
-		courseNewsCrumb.setHint(i18n("course_command_options_news"));
-		courseNewsCrumb.setLink(PageLinks.COURSE_NEWS);
-		courseNewsCrumb.addParameter("course",courseInfo.getId());
-		crumbs.add(courseNewsCrumb);
-
-		BreadCrumb newsEditCrumb = new BreadCrumb();
-		newsEditCrumb.setName(i18n("mews_selected_newsitem_header"));
-		newsEditCrumb.setHint(i18n("mews_selected_newsitem_header"));
-		newsEditCrumb.setLink("");
-		crumbs.add(courseNewsCrumb);
+		BreadCrumb newCrumb;
 		
+		newCrumb = new BreadCrumb();
+		newCrumb.setName(i18n("course_command_options_news"));
+		newCrumb.setHint(i18n("course_command_options_news"));
+		newCrumb.setLink(PageLinks.COURSE_NEWS);
+		breadcrumbs.addCrumb(newCrumb);
+		
+		newCrumb = new BreadCrumb();
+		newCrumb.setName(i18n("mews_selected_newsitem_header"));
+		newCrumb.setHint(i18n("mews_selected_newsitem_header"));
+		breadcrumbs.addCrumb(newCrumb);
 	}
 
 	/**

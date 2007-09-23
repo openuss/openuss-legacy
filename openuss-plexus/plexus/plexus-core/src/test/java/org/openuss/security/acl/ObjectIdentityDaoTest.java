@@ -20,7 +20,7 @@ public class ObjectIdentityDaoTest extends ObjectIdentityDaoTestBase {
 		ObjectIdentity objectIdentity = createObjectIdentity(null);
 		objectIdentityDao.create(objectIdentity);
 
-		commit();
+		flush();
 		
 		// load objectIdentity from db
 		ObjectIdentity oid = objectIdentityDao.load(objectIdentity.getId());
@@ -30,7 +30,7 @@ public class ObjectIdentityDaoTest extends ObjectIdentityDaoTestBase {
 		// remove objectIdentity from db
 		objectIdentityDao.remove(oid);
 		
-		commit();
+		flush();
 		
 		ObjectIdentity noid = objectIdentityDao.load(objectIdentity.getId());
 		assertNull(noid);

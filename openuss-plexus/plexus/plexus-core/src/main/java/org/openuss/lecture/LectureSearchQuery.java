@@ -14,6 +14,7 @@ import org.springmodules.lucene.search.object.SimpleLuceneSearchQuery;
 /**
  * Lecture Search
  * @author Ingo Dueppe
+ * @author Kai Stettner
  */
 public class LectureSearchQuery extends SimpleLuceneSearchQuery implements LectureSearcher {
 
@@ -26,10 +27,14 @@ public class LectureSearchQuery extends SimpleLuceneSearchQuery implements Lectu
 
 	@Override
 	protected Query constructSearchQuery(String textToSearch) throws ParseException {
+		
 		QueryParser parser = new QueryParser("CONTENT", getTemplate().getAnalyzer());
+		// allows wildcards at the beginning of a search phrase
+		parser.setAllowLeadingWildcard(true);
+		
 		return parser.parse(textToSearch);
 	}
-
+	
 	@Override
 	protected Object extractResultHit(int id, Document document, float score) {
 		DomainResultBean domainResult = new DomainResultBean();
@@ -41,6 +46,10 @@ public class LectureSearchQuery extends SimpleLuceneSearchQuery implements Lectu
 			domainResult.setId(Long.parseLong(document.get(DomainIndexer.IDENTIFIER)));
 			domainResult.setModified(DateTools.stringToDate(document.get(DomainIndexer.MODIFIED)));
 			domainResult.setDomainType(domainType);
+			domainResult.setUniversityId(document.get(DomainIndexer.UNIVERSITY_IDENTIFIER));
+			domainResult.setDepartmentId(document.get(DomainIndexer.DEPARTMENT_IDENTIFIER));
+			domainResult.setInstituteId(document.get(DomainIndexer.INSTITUTE_IDENTIFIER));
+			domainResult.setCourseTypeId(document.get(DomainIndexer.COURSE_TYPE_IDENTIFIER));
 		} catch (java.text.ParseException e) {
 			logger.error(e);
 		}

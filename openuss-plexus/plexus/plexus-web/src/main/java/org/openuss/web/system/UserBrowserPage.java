@@ -12,6 +12,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
@@ -19,9 +20,9 @@ import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserCriteria;
 import org.openuss.security.UserInfo;
-import org.openuss.statistics.OnlineStatisticService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 
 /**
  * UserBrowser of System-Admin
@@ -37,14 +38,26 @@ public class UserBrowserPage extends BasePage{
 	@Property (value="#{securityService}")
 	private SecurityService securityService;
 	
-	@Property (value="#{"+Constants.ONLINE_STATISTIC_SERVICE+"}")
-	private OnlineStatisticService onlineStatisticService;
-	
 	private LocalDataModel dataModel = new LocalDataModel();
 	
 	private DataPage<UserInfo> dataPage;
 	
 	private Set<UserInfo> changedUsers = new HashSet<UserInfo>();
+	
+
+	@Prerender
+	public void prerender() {
+		logger.debug("prerender - refreshing users list");
+
+
+		BreadCrumb newCrumb = new BreadCrumb();
+		newCrumb.setName(i18n("admin_command_users"));
+		newCrumb.setLink(PageLinks.ADMIN_USERSBROWSER);
+		
+		breadcrumbs.loadAdministrationCrumbs();
+		breadcrumbs.addCrumb(newCrumb);
+	}
+	
 	
 	public void changedUserInfo(ValueChangeEvent event) throws LectureException {
 		UserInfo userInfo = dataModel.getRowData();
@@ -68,12 +81,6 @@ public class UserBrowserPage extends BasePage{
 		return Constants.SUCCESS;
 	}
 	
-	
-	@Prerender
-	public void prerender() {
-		logger.debug("prerender - refreshing users list");
-		setRequestBean(Constants.BREADCRUMBS, null);
-	}
 
 	public String showProfile() {
 		UserInfo userInfo = dataModel.getRowData();
@@ -95,9 +102,13 @@ public class UserBrowserPage extends BasePage{
 			criteria.setMaximumResultSize(pageSize * 4);
 			List<UserInfo> users = securityService.getUsers(criteria);
 			logger.debug("got "+users.size()+" users");
-			
-			// FIXME user size should be a method of security service!
-			int size = onlineStatisticService.getSystemStatistics().getUsers().intValue();
+			// FIXME - total size should be fetched from database instead of guessing
+			int size = 0;
+			if (users.size() < criteria.getMaximumResultSize()) {
+				size = criteria.getFirstResult() + users.size();
+			} else {
+				size = 1600;
+			}
 			dataPage = new DataPage<UserInfo>(size,startRow,users);
 		}
 		return dataPage;
@@ -131,13 +142,5 @@ public class UserBrowserPage extends BasePage{
 
 	public void setDataModel(LocalDataModel dataModel) {
 		this.dataModel = dataModel;
-	}
-
-	public OnlineStatisticService getOnlineStatisticService() {
-		return onlineStatisticService;
-	}
-
-	public void setOnlineStatisticService(OnlineStatisticService onlineStatisticService) {
-		this.onlineStatisticService = onlineStatisticService;
 	}
 }

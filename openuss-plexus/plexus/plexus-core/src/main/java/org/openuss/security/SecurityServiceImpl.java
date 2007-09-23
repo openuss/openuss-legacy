@@ -25,6 +25,8 @@ import org.openuss.security.acl.Permission;
 
 /**
  * @see org.openuss.security.SecurityService
+ * @author Ron Haus
+ * @author Ingo Dueppe
  */
 public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBase {
 	/**
@@ -361,9 +363,30 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 			if (logger.isDebugEnabled()) {
 				logger.debug("removing permission for authority " + authority + " for " + object);
 			}
+			ObjectIdentity objectIdentity = permission.getAclObjectIdentity();
+			permission.setRecipient(null);
+			objectIdentity.removePermission(permission);
+			getObjectIdentityDao().update(objectIdentity);
 			getPermissionDao().remove(permission);
 		} else {
 			logger.debug("Permission entity for authority " + authority + " for " + object + " not found!");
+		}
+	}
+
+	/**
+	 * @see org.openuss.lecture.SecurityService#removeAllPermissions(Object)
+	 */
+	@SuppressWarnings( { "unchecked" })
+	protected void handleRemoveAllPermissions(Object object) throws Exception {
+		ObjectIdentity objectIdentity = getObjectIdentity(object);
+		List<Permission> permissions = getPermissionDao().findPermissions(objectIdentity);
+
+		for (Permission permission : permissions) {
+			ObjectIdentity aclObjectIdentity = permission.getAclObjectIdentity();
+			permission.setRecipient(null);
+			aclObjectIdentity.removePermission(permission);
+			getObjectIdentityDao().update(aclObjectIdentity);
+			getPermissionDao().remove(permission);
 		}
 	}
 

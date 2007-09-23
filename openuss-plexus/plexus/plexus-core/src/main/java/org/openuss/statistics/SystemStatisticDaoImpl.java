@@ -63,10 +63,15 @@ public class SystemStatisticDaoImpl extends SystemStatisticDaoBase {
 
 	@Override
 	protected SystemStatistic handleCurrent() throws Exception {
-		final String hqlCount = "select count(*), " + "(select count(*) from CourseImpl as c), "
-				+ "(select count(*) from UserImpl as u), " + "(select count(*) from FileEntryImpl as f), "
-				+ "(select count(*) from PostImpl as p) " + "from InstituteImpl as i";
-		return (SystemStatistic) getHibernateTemplate().execute(new HibernateCallback() {
+		final String hqlCount = "select count(*), " +
+				"(select count(*) from CourseImpl as c), " +
+				"(select count(*) from UserImpl as u), " +
+				"(select count(*) from FileEntryImpl as f), " +
+				"(select count(*) from PostImpl as p), " +
+				"(select count(*) from UniversityImpl as o), " +
+				"(select count(*) from DepartmentImpl as d) " +
+				"from InstituteImpl as i";
+		return (SystemStatistic) getHibernateTemplate().execute(new HibernateCallback(){
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				Object[] result = (Object[]) session.createQuery(hqlCount).uniqueResult();
 				SystemStatistic systemStatistic = SystemStatistic.Factory.newInstance();
@@ -75,6 +80,8 @@ public class SystemStatisticDaoImpl extends SystemStatisticDaoBase {
 				systemStatistic.setUsers((Long) result[2]);
 				systemStatistic.setDocuments((Long) result[3]);
 				systemStatistic.setPosts((Long) result[4]);
+				systemStatistic.setUniversities((Long) result[5]);
+				systemStatistic.setDepartments((Long) result[6]);
 				systemStatistic.setCreateTime(new Date(System.currentTimeMillis()));
 				create(systemStatistic);
 				return systemStatistic;

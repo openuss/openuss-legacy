@@ -8,7 +8,7 @@ public class MockCommand extends AbstractDomainCommand {
 	
 	private Exception mockException = new MockException();
 	
-	public class MockException extends Exception{
+	public static class MockException extends Exception{
 
 		private static final long serialVersionUID = -1009697074693508307L;
 		

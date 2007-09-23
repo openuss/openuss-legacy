@@ -203,6 +203,14 @@
 		</pluginManagement>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<forkMode>once</forkMode>
+					<argLine>-Xmx256M</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.andromda.maven.plugins</groupId>
 				<artifactId>andromda-multi-source-plugin</artifactId>
 				<version>3.2</version>
@@ -837,11 +845,6 @@
 				<groupId>javax.servlet</groupId>
 				<artifactId>jstl</artifactId>
 				<version>1.1.2</version>
-			</dependency>
-			<dependency>
-				<groupId>jstl</groupId>
-				<artifactId>jstl</artifactId>
-				<version>1.2</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet.jsp</groupId>

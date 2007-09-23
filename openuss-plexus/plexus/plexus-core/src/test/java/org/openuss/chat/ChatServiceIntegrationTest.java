@@ -34,7 +34,7 @@ public class ChatServiceIntegrationTest extends ChatServiceIntegrationTestBase {
 	public void testCreateAndDeleteRoom() {
 		assertNotNull("room is null", room);
 		assertNotNull("room id isn't set", roomId());
-		assertEquals("domain id isn't set", new Long(1), room.getDomainId());
+		assertEquals("domain id isn't set", Long.valueOf(1L), room.getDomainId());
 		assertEquals("name isn't correct", "name", room.getName());
 		assertEquals("topic isn't correct", "topic", room.getTopic());
 		assertNotNull(room.getCreated());

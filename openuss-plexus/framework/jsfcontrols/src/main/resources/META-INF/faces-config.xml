@@ -17,6 +17,16 @@
 		<component-type>org.openuss.framework.jsfcontrols.components.param</component-type>
 		<component-class>org.openuss.framework.jsfcontrols.components.UIParam</component-class>
 	</component>
+	
+	<component>
+		<component-type>org.openuss.framework.jsfcontrols.components.flexlist</component-type>
+		<component-class>org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList</component-class>
+	</component>
+	
+	<component>
+		<component-type>org.openuss.framework.jsfcontrols.components.flexlist_tabs</component-type>
+		<component-class>org.openuss.framework.jsfcontrols.components.flexlist.UITabs</component-class>
+	</component>
    
     <converter>
     	<description>Converts a TimeZone object to a string representation and vice versa</description>
@@ -24,7 +34,7 @@
     	<converter-for-class>java.util.TimeZone</converter-for-class>
     	<converter-class>org.openuss.framework.jsfcontrols.converter.TimeZoneConverter</converter-class>
     </converter>
-
+    
     <converter>
     	<description>Converts a Locale object to a string representation and vice versa</description>
     	<display-name>LocaleConverter</display-name>

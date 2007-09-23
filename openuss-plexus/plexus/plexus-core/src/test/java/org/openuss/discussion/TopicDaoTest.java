@@ -55,7 +55,7 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		
 		createTopic(user, forum);
 		
-		commit();
+		flush();
 		
 		List<TopicInfo> topics = topicDao.loadTopicsWithViewState(forum, user);
 		assertEquals(3, topics.size());
@@ -103,9 +103,9 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		dw.setTopic(topic1);
 		dw.setUser(user);
 		getDiscussionWatchDao().create(dw);
-		commit();
+		flush();
 		getTrackingService().setRead(topic1);
-		commit();
+		flush();
 		List<User> list = getTopicDao().findUsersToNotifyByTopic(topic1);
 		assertEquals(1,list.size());		
 	}
@@ -126,9 +126,9 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		fw.setUser(user);
 		getForumWatchDao().create(fw);
 		
-		commit();
+		flush();
 		getTrackingService().setRead(topic1);
-		commit();
+		flush();
 		
 		List<User> list = getTopicDao().findUsersToNotifyByForum(topic1, forum);
 		assertEquals(1,list.size());		

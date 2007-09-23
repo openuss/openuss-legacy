@@ -10,7 +10,7 @@ public class LectureFactory {
 	public static Institute createInstitute() {
 		Institute institute = Institute.Factory.newInstance();
 		institute.setName(unique("test-institute"));
-		institute.setOwnername("institute owner");
+		institute.setOwnerName("institute owner");
 		institute.setShortcut(unique("shortcut"));
 		institute.setEmail("email@email.com");
 		institute.setAddress("Leonardo-Campus 3");

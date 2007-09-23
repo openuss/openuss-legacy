@@ -11,7 +11,7 @@
 	<a name="top"/>
         <section name="How to generate documentation for my module">
 			<p>
-				In order to let maven deal with your documentaion of your module, you have to obey a view things.<br/>
+				In order to let maven deal with your documentaion of your module, you have to obey a few things.<br/>
 				Maven 2 allows you to use three different documentation formats in order to set up your documentation.
 			</p>
 			<ul>

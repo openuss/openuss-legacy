@@ -57,22 +57,32 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	public static final int READ 				= 1 << 4;
 	public static final int UPDATE 				= 1 << 5;
 	public static final int DELETE 				= 1 << 6;
-
+	
 	// Additional permissions to institutes
 	public static final int MANAGE_COURSE_TYPES 	= 1 << 7;
-	public static final int MANAGE_PERIODS 			= 1 << 8;
-	public static final int MANAGE_COURSES 			= 1 << 9;
-	public static final int MANAGE_NEWS 			= 1 << 10;
+	public static final int MANAGE_COURSES 			= 1 << 8;
+	public static final int MANAGE_NEWS 			= 1 << 9;
 
 	// Additional permissions to courses
-	public static final int PARTICIPATE 		= 1 << 11;
-	public static final int ASSIST 				= 1 << 12;
+	public static final int PARTICIPATE 		= 1 << 10;
+	public static final int ASSIST 				= 1 << 11;
+	
+	// Additional permissions to universities
+	public static final int MANAGE_UNIVERSITY		= 1 << 12;
+	public static final int MANAGE_PERIODS 			= 1 << 13;
+	
+	// Additional permissions to departments
+	public static final int MANAGE_DEPARTMENT		= 1 << 14;
 
 	// Default combinations of base permissions
 	public static final int INSTITUTE_TUTOR = PARTICIPATE | ASSIST | READ;
 	public static final int INSTITUTE_ASSIST = CREATE | UPDATE | DELETE | MANAGE_NEWS | MANAGE_COURSE_TYPES | MANAGE_PERIODS | MANAGE_COURSES | INSTITUTE_TUTOR;
 	public static final int INSTITUTE_ADMINISTRATION = GRANT | INSTITUTE_ASSIST;
 	public static final int INSTITUTE_OWN = DELETE | INSTITUTE_ADMINISTRATION;
+	
+	public static final int DEPARTMENT_ADMINISTRATION = PARTICIPATE | ASSIST | READ | CREATE | UPDATE | DELETE | MANAGE_NEWS | MANAGE_DEPARTMENT | GRANT;
+	public static final int UNIVERSITY_ADMINISTRATION = MANAGE_UNIVERSITY | MANAGE_PERIODS | DEPARTMENT_ADMINISTRATION;
+	
 	
 	// Default combinations of base course permissions
 	public static final int COURSE_PARTICIPANT = READ | PARTICIPATE;
@@ -87,6 +97,8 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	private static final int[] validPermissions = {
 		GRANT, CREATE, READ, UPDATE, DELETE, ASSIST, PARTICIPATE, 
 		RU, CRU, CRUD, GCRUD, OGCRUD,
+		UNIVERSITY_ADMINISTRATION, MANAGE_UNIVERSITY,
+		DEPARTMENT_ADMINISTRATION, MANAGE_DEPARTMENT,
 		INSTITUTE_TUTOR, INSTITUTE_ASSIST, INSTITUTE_ADMINISTRATION, INSTITUTE_OWN
 	};
 	
@@ -150,6 +162,22 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 		return DELETE;
 	}
 
+	public int getDEPARTMENT_ADMINISTRATION() {
+		return DEPARTMENT_ADMINISTRATION;
+	}
+
+	public int getMANAGE_DEPARTMENT() {
+		return MANAGE_DEPARTMENT;
+	}
+
+	public int getMANAGE_UNIVERSITY() {
+		return MANAGE_UNIVERSITY;
+	}
+
+	public int getUNIVERSITY_ADMINISTRATION() {
+		return UNIVERSITY_ADMINISTRATION;
+	}
+
 	public int getINSTITUTE_ADMINISTRATION() {
 		return INSTITUTE_ADMINISTRATION;
 	}
@@ -174,7 +202,7 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 		return GRANT;
 	}
 
-	public int getMANAGE_CourseS() {
+	public int getMANAGE_COURSES() {
 		return MANAGE_COURSES;
 	}
 

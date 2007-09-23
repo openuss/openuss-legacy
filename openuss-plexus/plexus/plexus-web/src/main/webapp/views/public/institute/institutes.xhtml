@@ -28,11 +28,14 @@
   		<ui:define name="content">
   			<h:form id="facultiesForm">
 				<ui:include src="institutestable.xhtml"/>
-				<s:authorize ifAllGranted="ROLE_USER"> 
-					<o:block>
-						<h:commandButton title = "#{msg['desktop_command_institute_create']}" value="#{msg['desktop_command_institute_create']}" action="institute_create" styleClass="button"/>
-					</o:block>
-				</s:authorize>
+				<o:block>
+					<h:commandButton 
+					    id="addInstitute"
+						action="institute_create" 
+						value="#{msg.institute_command_add_institute}" 
+						title="#{msg.institute_command_add_institute_hint}"
+						styleClass="button"/>
+				</o:block>
 			</h:form>
 		</ui:define>
 	</ui:composition>

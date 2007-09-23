@@ -10,6 +10,18 @@
 	<bean id="domainIndexerFactory"	class="org.openuss.search.DomainIndexerFactory" scope="singleton">
 		<property name="indexer">
 			<map>
+			    <entry>
+					<key>
+						<value>org.openuss.lecture.University</value>
+					</key>
+					<value>universityIndexerCommand</value>
+				</entry>
+			    <entry>
+					<key>
+						<value>org.openuss.lecture.Department</value>
+					</key>
+					<value>departmentIndexerCommand</value>
+				</entry>
 				<entry>
 					<key>
 						<value>org.openuss.lecture.Institute</value>
@@ -25,19 +37,31 @@
 			</map>
 		</property>
 	</bean>
-
-	<bean name="courseIndexer" class="org.openuss.lecture.CourseIndexer">
+	
+	<bean id="universityIndexer" class="org.openuss.lecture.UniversityIndexer">
 		<property name="analyzer">
 			<ref bean="analyzer" />
 		</property>
-		<property name="courseDao">
-			<ref bean="courseDao" />
+		<property name="universityDao">
+			<ref bean="universityDao" />
 		</property>
 		<property name="indexFactory">
 			<ref bean="indexFactory" />
 		</property>
 	</bean>
-
+	
+	<bean id="departmentIndexer" class="org.openuss.lecture.DepartmentIndexer">
+		<property name="analyzer">
+			<ref bean="analyzer" />
+		</property>
+		<property name="departmentDao">
+			<ref bean="departmentDao" />
+		</property>
+		<property name="indexFactory">
+			<ref bean="indexFactory" />
+		</property>
+	</bean>
+	
 	<bean id="instituteIndexer" class="org.openuss.lecture.InstituteIndexer">
 		<property name="analyzer">
 			<ref bean="analyzer" />
@@ -50,7 +74,27 @@
 		</property>
 	</bean>
 	
+	<bean name="courseIndexer" class="org.openuss.lecture.CourseIndexer">
+		<property name="analyzer">
+			<ref bean="analyzer" />
+		</property>
+		<property name="courseDao">
+			<ref bean="courseDao" />
+		</property>
+		<property name="indexFactory">
+			<ref bean="indexFactory" />
+		</property>
+	</bean>
+
+	
+	
+	
+	
 	<bean id="lectureIndexImpl" class="org.openuss.lecture.LectureIndexImpl">
+		<property name="universityDao" ref="universityDao"/>
+		<property name="universityIndexer" ref="universityIndexer"/>
+		<property name="departmentDao" ref="departmentDao"/>
+		<property name="departmentIndexer" ref="departmentIndexer"/>
 		<property name="instituteDao" ref="instituteDao"/>
 		<property name="instituteIndexer" ref="instituteIndexer"/>
 		<property name="courseDao" ref="courseDao"/>
@@ -70,10 +114,18 @@
 		</property>
 	</bean>
 	
+	<bean id="universityIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
+		<property name="domainIndexer" ref="universityIndexer"/>
+	</bean>
+	
+	<bean id="departmentIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
+		<property name="domainIndexer" ref="departmentIndexer"/>
+	</bean>
+	
 	<bean id="instituteIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
 		<property name="domainIndexer" ref="instituteIndexer"/>
 	</bean>
-
+	
 	<bean id="courseIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
 		<property name="domainIndexer" ref="courseIndexer"/>
 	</bean>
@@ -91,7 +143,12 @@
 	<bean id="lectureSearcher" class="org.openuss.lecture.LectureSearchQuery" scope="prototype">
 		<constructor-arg ref="searcherFactory"/>
 		<constructor-arg ref="analyzer" />
-	</bean>	
+	</bean>
+	
+	<bean id="extendedSearcher" class="org.openuss.search.ExtendedSearchQuery" scope="prototype">
+		<constructor-arg ref="searcherFactory"/>
+		<constructor-arg ref="analyzer" />
+	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 		Lucene Support Configuration

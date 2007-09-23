@@ -7,13 +7,16 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 
 /**
  * Period Edit Page Controller
  * 
  * @author Ingo Dueppe
+ * @author Weijun Chen
+ * @author Kai Stettner
  */
-@Bean(name = "views$secured$lecture$periodedit", scope = Scope.REQUEST)
+@Bean(name = "views$secured$lecture$universityperiodedit", scope = Scope.REQUEST)
 @View
 public class PeriodEditPage extends AbstractPeriodPage {
 
@@ -25,13 +28,13 @@ public class PeriodEditPage extends AbstractPeriodPage {
 	
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
-		crumb.setName(i18n("period_heading"));
-		crumb.setHint(i18n("period_heading"));
-		crumbs.add(crumb);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		crumb.setLink(PageLinks.UNIVERSITY_PERIODS);
+		crumb.setName(i18n("university_command_periods"));
+		
+		breadcrumbs.loadUniversityCrumbs(universityInfo);
+		breadcrumbs.addCrumb(crumb);
 	}
-	
+		
 	/**
 	 * Store changes in the business layer.
 	 * 
@@ -39,14 +42,15 @@ public class PeriodEditPage extends AbstractPeriodPage {
 	 * @throws LectureException
 	 */
 	public String savePeriod() throws LectureException {
-		if (period.getId() == null) {
-			lectureService.add(institute.getId(), period);
+		if (periodInfo.getId() == null) {
+			periodInfo.setUniversityId(universityInfo.getId());
+			universityService.createPeriod(periodInfo);
 			addMessage(i18n("message_created_new_period_succeed"));
 		} else {
-			lectureService.persist(period);
+			universityService.update(periodInfo);
 			addMessage(i18n("message_save_period_succeed"));
 		}
-		return Constants.INSTITUTE_PERIODS_PAGE;
+		return Constants.UNIVERSITY_PERIODS_PAGE;
 	}
 
 }

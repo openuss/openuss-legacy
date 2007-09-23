@@ -25,6 +25,7 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 	
 	@Override
 	protected Desktop handleCreateDesktop(final User user) throws Exception {
+		logger.debug("Starting method handleCreateDesktop");
 		Desktop desktop = new DesktopImpl();
 		desktop.setUser(user);
 		getDesktopDao().create(desktop);
@@ -72,7 +73,7 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 			saveDesktop(desktop);
 		}
 	}
-
+	
 	@Override
 	protected void handleLinkCourseType(Desktop desktop, CourseType courseType) throws Exception {
 		if (courseType == null) {
@@ -101,9 +102,10 @@ public class DesktopServiceImpl extends org.openuss.desktop.DesktopServiceBase {
 	protected void handleUnlinkInstitute(Desktop desktop, Institute institute) throws Exception {
 		desktop = getDesktop(desktop);
 		institute = getInstituteDao().load(institute.getId());
+		/*
 		if (desktop.getUser().equals(institute.getOwner())) {
 			throw new DesktopException("error_must_not_remove_owned_institute");
-		}
+		}*/
 		desktop.unlinkInstitute(institute);
 		saveDesktop(desktop);
 	}

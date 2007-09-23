@@ -42,7 +42,7 @@
 				<f:param value="#{user.contact.firstName} #{user.contact.lastName}" />
 			</h:outputFormat>
 		</o:block>
-		<h:form id="coursesForm" rendered="${!empty desktop.courses}">
+		<h:form id="coursesForm" rendered="${!empty desktopcourses}">
 			<ui:include src="/views/commons/desktop/courses.xhtml" />
 		</h:form>
 		<h:form id="courseTypesForm" rendered="${!empty desktop.courseTypes}">

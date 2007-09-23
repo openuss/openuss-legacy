@@ -17,16 +17,48 @@ import org.openuss.security.User;
 
 /**
  * @see org.openuss.lecture.Institute
+ * @author Ingo Dueppe, Ron Haus
  */
 public class InstituteDaoImpl extends org.openuss.lecture.InstituteDaoBase {
 
-	public Institute instituteDetailsToEntity(InstituteDetails instituteDetails) {
-		Institute institute = load(instituteDetails.getId());
-		if (institute == null) {
-			institute = Institute.Factory.newInstance();
+	/**
+	 * @see org.openuss.lecture.InstituteDao#toInstituteInfo(org.openuss.lecture.Institute,
+	 *      org.openuss.lecture.InstituteInfo)
+	 */
+	public void toInstituteInfo(org.openuss.lecture.Institute sourceEntity, org.openuss.lecture.InstituteInfo targetVO) {
+		super.toInstituteInfo(sourceEntity, targetVO);
+		
+		if (sourceEntity.getDepartment() != null) {
+			targetVO.setDepartmentId(sourceEntity.getDepartment().getId());
 		}
-		instituteDetailsToEntity(instituteDetails, institute, false);
+	}
+
+	/**
+	 * Retrieves the entity object that is associated with the specified value object from the object store. If no such
+	 * entity object exists in the object store, a new, blank entity is created
+	 */
+	private Institute loadInstituteFromInstituteInfo(InstituteInfo instituteInfo) {
+
+		Institute institute = Institute.Factory.newInstance();
+		if (instituteInfo.getId() != null) {
+			institute = this.load(instituteInfo.getId());
+		}
 		return institute;
+	}
+
+	/**
+	 * @see org.openuss.lecture.InstituteDao#instituteInfoToEntity(org.openuss.lecture.InstituteInfo)
+	 */
+	public Institute instituteInfoToEntity(InstituteInfo instituteInfo) {
+		Institute entity = this.loadInstituteFromInstituteInfo(instituteInfo);
+		this.instituteInfoToEntity(instituteInfo, entity, true);
+		
+		if (instituteInfo.getDepartmentId() != null) {
+			Department department = this.getDepartmentDao().load(instituteInfo.getDepartmentId());
+			entity.setDepartment(department);
+		}
+		
+		return entity;
 	}
 
 	public Institute instituteSecurityToEntity(InstituteSecurity instituteSecurity) {
@@ -35,6 +67,7 @@ public class InstituteDaoImpl extends org.openuss.lecture.InstituteDaoBase {
 	}
 
 	@Override
+	@SuppressWarnings( { "unchecked" })
 	public void toInstituteSecurity(Institute institute, InstituteSecurity target) {
 		Map<Long, InstituteMember> members = new HashMap<Long, InstituteMember>();
 		List<InstituteGroup> groups = new ArrayList<InstituteGroup>();
@@ -48,28 +81,29 @@ public class InstituteDaoImpl extends org.openuss.lecture.InstituteDaoBase {
 	}
 
 	private void traverseAdditionalMembers(Institute institute, Map<Long, InstituteMember> members) {
-		for (Authority authority: institute.getMembers()) {
+		for (Authority authority : institute.getMembership().getMembers()) {
 			if (authority instanceof User && !members.containsKey(authority.getId())) {
 				InstituteMember member = new InstituteMember();
 				member.setGroups(new ArrayList<InstituteGroup>());
-				toInstituteMember((User)authority, member, institute);
+				toInstituteMember((User) authority, member, institute);
 				members.put(member.getId(), member);
 			}
 		}
 	}
 
+	@SuppressWarnings( { "unchecked" })
 	private void traverseGroups(Institute institute, Map<Long, InstituteMember> members, Collection groups) {
-		for (Group group : institute.getGroups()) {
+		for (Group group : institute.getMembership().getGroups()) {
 			InstituteGroup instituteGroup = groupToInstituteGroup(group);
 			groups.add(instituteGroup);
-			
+
 			for (Authority authority : group.getMembers()) {
 				if (authority instanceof User) {
 					InstituteMember member = null;
 					if (!members.containsKey(authority.getId())) {
 						member = new InstituteMember();
 						member.setGroups(new ArrayList<InstituteGroup>());
-						toInstituteMember((User)authority, member, institute);
+						toInstituteMember((User) authority, member, institute);
 						members.put(member.getId(), member);
 					} else {
 						member = members.get(authority.getId());
@@ -82,7 +116,7 @@ public class InstituteDaoImpl extends org.openuss.lecture.InstituteDaoBase {
 			}
 		}
 	}
-	
+
 	private InstituteGroup groupToInstituteGroup(Group group) {
 		InstituteGroup instituteGroup = new InstituteGroup();
 		instituteGroup.setMembers(new ArrayList<InstituteMember>());
@@ -101,9 +135,6 @@ public class InstituteDaoImpl extends org.openuss.lecture.InstituteDaoBase {
 		member.setUsername(user.getUsername());
 		member.setFirstName(user.getFirstName());
 		member.setLastName(user.getLastName());
-		if (institute != null) {
-			member.setOwner((institute.getOwner().equals(user)));
-		}
 	}
 
 }

@@ -6,12 +6,14 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.course.newsletter.CourseNewsletterService;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.newsletter.MailDetail;
 import org.openuss.newsletter.MailInfo;
 import org.openuss.newsletter.NewsletterInfo;
 import org.openuss.newsletter.MailingStatus;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.course.AbstractCoursePage;
 
 /**
  * 
@@ -20,7 +22,7 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$newsletter$showmail", scope = Scope.REQUEST)
 @View
-public class ShowMailPage extends BasePage{
+public class ShowMailPage extends AbstractCoursePage {
 	
 	@Property(value = "#{courseNewsletterService}")
 	protected CourseNewsletterService courseNewsletterService;
@@ -34,6 +36,7 @@ public class ShowMailPage extends BasePage{
 	
 	@Prerender
 	public void prerender() throws Exception {
+		
 		if (mail==null){
 			addError(i18n("newsletter_mailaccess_impossible"));
 			redirect(Constants.NEWSLETTER_MAIN);
@@ -60,7 +63,13 @@ public class ShowMailPage extends BasePage{
 				return;
 			}
 			setSessionBean(Constants.NEWSLETTER_MAIL, mail);
-			crumbs.clear();
+			
+			BreadCrumb newCrumb = new BreadCrumb();
+			newCrumb.setName(mail.getSubject());
+			
+			breadcrumbs.loadCourseCrumbs(courseInfo);
+			breadcrumbs.addCrumb(newCrumb);
+			
 		}
 	}
 

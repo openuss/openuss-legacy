@@ -20,7 +20,7 @@
 			<plexus:commandSortHeader columnName="name">
 				<h:outputText value="#{msg.desktop_institutes_colheader_name}"/>
 			</plexus:commandSortHeader>
-			<o:link value="/views/secured/lecture/institute.faces" title="#{instituteItem.ownername}">
+			<o:link value="/views/secured/lecture/institute.faces" title="#{instituteItem.ownerName}">
 				<f:param value="#{instituteItem.id}" name="institute" />
 				<h:outputText value="#{instituteItem.name} (#{instituteItem.shortcut})"/>
 			</o:link>

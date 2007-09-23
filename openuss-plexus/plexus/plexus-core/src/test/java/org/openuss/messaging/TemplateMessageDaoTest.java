@@ -30,7 +30,7 @@ public class TemplateMessageDaoTest extends TemplateMessageDaoTestBase {
 		assertNull(message.getId());
 		templateMessageDao.create(message);
 		assertNotNull(message.getId());
-		commit();
+		flush();
 		
 		message.addParameter("name","name of the sender");
 		message.addParameter("fromEmail","no-reply@openuss.org");
@@ -38,11 +38,11 @@ public class TemplateMessageDaoTest extends TemplateMessageDaoTestBase {
 		message.addParameter(RandomStringUtils.random(64), RandomStringUtils.randomAlphanumeric(255));
 		
 		templateMessageDao.update(message);
-		commit();
+		flush();
 		
 		TemplateMessage loadMessage = templateMessageDao.load(message.getId());
 		
-		commit();
+		flush();
 		
 		assertEquals(4, loadMessage.getParameters().size());
 		assertEquals(TEMPLATENAME, loadMessage.getTemplate());

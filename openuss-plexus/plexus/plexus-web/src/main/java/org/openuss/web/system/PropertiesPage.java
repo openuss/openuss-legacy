@@ -8,11 +8,13 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureIndex;
 import org.openuss.system.SystemProperty;
 import org.openuss.system.SystemService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 
 /**
  * @author Ingo Dueppe
@@ -33,6 +35,14 @@ public class PropertiesPage extends BasePage  {
 	public void prerender() {
 		propertyList.setData(new ArrayList<SystemProperty>(systemService.getProperties()));
 		setSessionBean(Constants.BREADCRUMBS, null);
+		
+		
+		BreadCrumb newCrumb = new BreadCrumb();
+		newCrumb.setName(i18n("admin_command_properties"));
+		newCrumb.setLink(PageLinks.ADMIN_PROPERTIES);
+		
+		breadcrumbs.loadAdministrationCrumbs();
+		breadcrumbs.addCrumb(newCrumb);
 	}
 	
 	public Collection<SystemProperty> getProperties() {

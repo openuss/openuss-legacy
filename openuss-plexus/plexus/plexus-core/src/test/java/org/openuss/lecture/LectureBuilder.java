@@ -1,26 +1,53 @@
 package org.openuss.lecture;
 
+import org.openuss.TestUtility;
 import org.openuss.security.User;
 
 /**
  * Builds institute, periods, courseType, and course structures.
  *  
  * @author Ingo Dueppe
+ * @deprecated Use testUtility instead
  */
 public class LectureBuilder {
 	
 	private User owner;
 	
+	private TestUtility testUtility;
+	
+	private University university;
+	
+	private UniversityDao universityDao;
+	
+	private Department department;
+	
+	private DepartmentDao departmentDao;
+	
 	private Institute institute;
 	
 	private InstituteDao instituteDao;
 	
+	private Course course;
+	
+    private CourseType courseType;
+	
 	private static int code = 0;
+	
+	public LectureBuilder createUniversity() {
+		university = testUtility.createUniqueUniversityInDB();
+		return this;
+	}
+	
+	public LectureBuilder createDepartment() {
+		department = testUtility.createUniqueDepartmentInDB();
+		return this;
+	}
 	
 	public LectureBuilder createInstitute(User owner) {
 		institute = Institute.Factory.newInstance();
 		institute.setName(unique());
-		institute.setOwnername("institute owner");
+		institute.setDescription("A pretty good institute");
+		institute.setOwnerName("institute owner");
 		institute.setShortcut(unique());
 		institute.setEmail("email@email.com");
 		institute.setAddress("Leonardo-Campus 3");
@@ -29,7 +56,23 @@ public class LectureBuilder {
 		institute.setLocale("de");
 		institute.setTheme("plexus");
 		institute.setWebsite("www.openuss.org");
-		institute.setOwner(owner);
+		return this;
+	}
+	
+	public LectureBuilder createCourse(Institute institute, CourseType courseType) {
+		course = Course.Factory.newInstance();
+		course.setCourseType(courseType);
+		course.setDescription("A pretty good course");
+		course.setShortcut("PJS ALM");
+		course.setId(15l);
+		return this;
+	}
+	
+	public LectureBuilder createCourseType(Institute institute) {
+		courseType = CourseType.Factory.newInstance();
+		courseType.setInstitute(institute);
+		courseType.setDescription("A pretty good courseType");
+		courseType.setName("PJS ALM CourseType");
 		return this;
 	}
 	
@@ -46,8 +89,8 @@ public class LectureBuilder {
 		Period period = Period.Factory.newInstance();
 		period.setName("test-period");
 		period.setDescription("description");
-		institute.add(period);
-		period.setInstitute(institute);
+		university.getPeriods().add(period);
+		period.setUniversity(university);
 		return this;
 	}
 	
@@ -57,7 +100,7 @@ public class LectureBuilder {
 	
 	public LectureBuilder addCourse(int indexCourseType, int indexPeriod ) {
 		CourseType courseType = institute.getCourseTypes().get(indexCourseType);
-		Period period = institute.getPeriods().get(indexPeriod);
+		Period period = university.getPeriods().get(indexPeriod);
 		addCourse(institute, courseType, period);
 		return this;
 	}
@@ -72,11 +115,11 @@ public class LectureBuilder {
 	}
 	
 	public Course getCourse() {
-		return getCourse(0);
+		return this.course;
 	}
 	
 	public Course getCourse(int index) {
-		return institute.getCourses().get(index);
+		return (Course) institute.getAllCourses().get(index);
 	}
 	
 	public LectureBuilder remove() {
@@ -96,10 +139,18 @@ public class LectureBuilder {
 		return courseType;
 	}
 	
+	public CourseType getCourseType() {
+		return this.courseType;
+	}
+	
+	public CourseType getCourseType(int index) {
+		return institute.getCourseTypes().get(index);
+	}
+	
 	public Period addPeriod(Institute institute) {
 		Period period = LectureFactory.createPeriod();
-		period.setInstitute(institute);
-		institute.add(period);
+		period.setUniversity(university);
+		university.getPeriods().add(period);
 		return period;
 	}
 	
@@ -110,8 +161,8 @@ public class LectureBuilder {
 		course.setShortcut(unique());
 		period.add(course);
 		course.setPeriod(period);
-		institute.add(course);
-		course.setInstitute(institute);
+		//institute.add(course);
+		//course.setInstitute(institute);
 		return course;
 	}
 	
@@ -137,5 +188,45 @@ public class LectureBuilder {
 
 	public void setInstituteDao(InstituteDao instituteDao) {
 		this.instituteDao = instituteDao;
+	}
+
+	public University getUniversity() {
+		return university;
+	}
+
+	public void setUniversity(University university) {
+		this.university = university;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public UniversityDao getUniversityDao() {
+		return universityDao;
+	}
+
+	public void setUniversityDao(UniversityDao universityDao) {
+		this.universityDao = universityDao;
+	}
+
+	public DepartmentDao getDepartmentDao() {
+		return departmentDao;
+	}
+
+	public void setDepartmentDao(DepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
+	}
+
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
 	}
 }

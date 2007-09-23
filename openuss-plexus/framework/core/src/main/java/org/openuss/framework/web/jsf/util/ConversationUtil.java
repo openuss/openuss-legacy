@@ -62,16 +62,20 @@ public class ConversationUtil {
 	 * @param parameters
 	 */
 	public static void redirect(FacesContext facesContext, String viewId, Map<String, Object> parameters) {
+		logger.debug("Starting method redirect");
 		final ExternalContext externalContext = facesContext.getExternalContext();
 
 		String url = facesContext.getApplication().getViewHandler().getActionURL(facesContext, viewId);
 		if (parameters != null) {
+			logger.debug("Try to encode "+url);
 			url = ConversationUtil.encodeParameters(url, parameters);
+			logger.debug(url);
 			if (url.length() > 1024) {
 				logger.error("url "+url+"is longer than 1024 bytes");
 			}
 		}
 		try {
+			logger.debug("Try to redirect to "+url);
 			externalContext.redirect(externalContext.encodeActionURL(url));
 		} catch (IOException ioe) {
 			throw new RuntimeException("could not redirect to: " + url, ioe);
@@ -136,6 +140,7 @@ public class ConversationUtil {
 	 * @return url+parameters
 	 */
 	public static String encodeParameters(String url, Map<String, Object> parameters) {
+		logger.debug("Starting method encodeParameters");
 		if (parameters.isEmpty())
 			return url;
 

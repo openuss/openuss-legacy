@@ -33,7 +33,7 @@ public class NewsServiceIntegrationTest extends NewsServiceIntegrationTestBase {
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
 		super.onSetUpInTransaction();
-		testUtility.createSecureContext();
+		testUtility.createAdminSecureContext();
 		//FIXME aclUtility should be configured by dependency injection
 		AcegiUtils.setAclManager(aclManager);
 	}
@@ -86,7 +86,7 @@ public class NewsServiceIntegrationTest extends NewsServiceIntegrationTestBase {
 		assertTrue(loaded.getAttachments().contains(file3));
 		
 		newsService.deleteNewsItem(info);
-		commit();
+		flush();
 		assertNull(newsService.getNewsItem(info));
 	}
 	
@@ -106,7 +106,7 @@ public class NewsServiceIntegrationTest extends NewsServiceIntegrationTestBase {
 		info3.setPublisherIdentifier(publisher.getId());
 		newsService.saveNewsItem(info3);
 		
-		commit();
+		flush();
 		
 		List<NewsItemInfo> news = newsService.getNewsItems(publisher);
 		assertNotNull(news);

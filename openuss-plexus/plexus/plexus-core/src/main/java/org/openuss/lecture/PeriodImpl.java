@@ -5,6 +5,10 @@
 //
 package org.openuss.lecture;
 
+import java.util.Date;
+
+import org.apache.commons.lang.Validate;
+
 /**
  * @see org.openuss.lecture.Period
  */
@@ -16,7 +20,16 @@ public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.op
 
 	@Override
 	public void add(Course course) {
-		getCourses().add(course);
+		Validate.notNull(course, "Period.add(Course) - course cannot be null");
+
+		if (!this.getCourses().contains(course)) {
+			this.getCourses().add(course);
+			course.setPeriod(this);
+		} else {
+			course.setPeriod(this);
+			throw new IllegalArgumentException(
+			"University.add(Course) - the Course has already been in the List");
+		}	
 	}
 
 	@Override
@@ -24,9 +37,20 @@ public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.op
 		getCourses().remove(course);
 	}
 
-	@Override
+	@Override 
 	public boolean isActive() {
-		return getInstitute() != null && equals(getInstitute().getActivePeriod());
+		Date now = new Date();
+		if (this.getStartdate().before((now)) && this.getEnddate().after(now))
+			return true;
+		else
+			return false;
 	}
 
+	@Override
+	public boolean isRemovable() {
+		if (this.getCourses().size() < 1)
+			return true;
+		else
+			return false;
+	}
 }

@@ -44,7 +44,7 @@ public class RepositoryFileDaoTest extends RepositoryFileDaoTestBase {
 		InputStream s = nfile.getInputStream();
 		byte[] d2 = new byte[size];
 		try {
-			s.read(d2);
+			assertTrue("size of data ",s.read(d2) == size);
 			s.close();
 		} catch (IOException e) {
 			fail();

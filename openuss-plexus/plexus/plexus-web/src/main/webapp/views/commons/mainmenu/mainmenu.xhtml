@@ -8,12 +8,12 @@
 	xmlns:foundation="http://www.openuss.org/foundation/jsf">
 	<h:form id="mainmenu">
 		<ul id="header_navigation">
-			<c:if test="#{empty sessionScope.desktop}">
+			<!--<c:if test="#{empty sessionScope.desktop}">
 				<li class="main_nav_home"><h:commandLink action="home" value="#{msg.mainmenu_command_home}" /></li>
 			</c:if>
 			<s:authorize ifAllGranted="ROLE_USER">
 				<li class="main_nav_desktop"><h:commandLink action="desktop" value="#{msg.mainmenu_command_desktop}" /></li>
-			</s:authorize>
+			</s:authorize>-->
 			<li class="main_nav_doc"><h:outputLink value="/openuss-plexus/views/public/documentation.faces">#{msg.mainmenu_command_documentation}</h:outputLink></li>
 			<li class="main_nav_forum"><h:outputLink value="/openuss-plexus/views/public/forum.faces">#{msg.mainmenu_command_userforum}</h:outputLink></li>
 			<s:authorize ifAllGranted="ROLE_ADMIN">

@@ -21,8 +21,8 @@ public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
 
 	/**  This is the system instance identity, that must be unique with the cluster */
 	private static volatile Long instanceIdentity = 1L;
-
-	public SystemServiceImpl() {
+	
+	static {
 		try {
 			instanceIdentity = ((long)InetAddress.getLocalHost().hashCode()) + System.currentTimeMillis(); 
 			
@@ -30,8 +30,6 @@ public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
 			logger.error(e);
 			instanceIdentity = System.currentTimeMillis();
 		}
-		instanceIdentity = new Long(0) + System.currentTimeMillis();
-
 	}
 
 	/**
@@ -72,7 +70,7 @@ public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
 	@Override
 	protected void handleSetInstanceIdentity(Long identity) throws Exception {
 		synchronized (SystemService.class) {
-			instanceIdentity = identity;
+			SystemServiceImpl.instanceIdentity = identity;
 		}
 	}
 

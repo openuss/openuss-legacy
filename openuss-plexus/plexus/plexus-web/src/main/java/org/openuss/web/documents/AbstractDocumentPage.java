@@ -39,6 +39,8 @@ public class AbstractDocumentPage extends AbstractCoursePage {
 	}
 
 	public void addDocumentsCrumbs(){
+		breadcrumbs.loadCourseCrumbs(courseInfo);
+		
 		for(FolderInfo folder : getCurrentPath()) {
 			BreadCrumb crumb = new BreadCrumb();
 			if (folder.isRoot()) {
@@ -51,7 +53,7 @@ public class AbstractDocumentPage extends AbstractCoursePage {
 			crumb.setLink(PageLinks.DOCUMENTS_MAIN);
 			crumb.addParameter("course",courseInfo.getId());
 			crumb.addParameter("folder",folder.getId());
-			crumbs.add(crumb);
+			breadcrumbs.addCrumb(crumb);
 		}
 	}
 	
