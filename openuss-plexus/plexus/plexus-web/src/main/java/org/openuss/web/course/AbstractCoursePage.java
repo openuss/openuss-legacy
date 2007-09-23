@@ -74,7 +74,7 @@ public class AbstractCoursePage extends BasePage {
 			breadcrumbs.loadCourseCrumbs(courseInfo);
 		}
 		if (courseInfo == null) {
-			addMessage(i18n("message_error_course_page"));
+			addError(i18n("message_error_course_page"));
 			redirect(Constants.OUTCOME_BACKWARD);
 			return;
 		} else {

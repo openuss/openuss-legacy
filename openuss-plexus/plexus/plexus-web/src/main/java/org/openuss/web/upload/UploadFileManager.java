@@ -62,7 +62,7 @@ public class UploadFileManager extends BaseBean{
 	 * @param file
 	 */
 	public void removeDocument(UploadedDocument document) {
-		Validate.notNull(document, "Parameter fileInfo must not be null!");
+		Validate.notNull(document, "Parameter document must not be null!");
 
 		files.remove(document);
 		document.remove();

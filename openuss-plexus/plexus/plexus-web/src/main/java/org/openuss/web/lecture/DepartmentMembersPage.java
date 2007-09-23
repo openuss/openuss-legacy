@@ -4,6 +4,8 @@ package org.openuss.web.lecture;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -113,7 +115,7 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 				return Constants.SUCCESS;
 		  }
 		  		  
-		  if(member.getUsername()!=user.getUsername())
+		  if(! StringUtils.equals(member.getUsername(),user.getUsername()))
 			  return Constants.DEPARTMENT;
 		  else
 			   return Constants.SUCCESS;

@@ -1,9 +1,6 @@
 package org.openuss.lecture;
 
 import java.util.Date;
-import java.util.ResourceBundle;
-
-import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -13,7 +10,6 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.DateTools.Resolution;
 import org.openuss.search.DomainIndexer;
-
 import org.springmodules.lucene.index.core.DocumentCreator;
 
 /**

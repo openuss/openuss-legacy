@@ -221,7 +221,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		PostInfo postInfo = getPostDao().toPostInfo(getPostDao().load(post.getId()));
 		List<FileInfo> attachments = getAttachments(postInfo);
 		postInfo.setAttachments(attachments);
-		postInfo.setUserIsSubmitter(postInfo.getSubmitterId()==getSecurityService().getCurrentUser().getId());
+		postInfo.setUserIsSubmitter(postInfo.getSubmitterId().equals(getSecurityService().getCurrentUser().getId()));
 		return postInfo;
 
 	}
@@ -240,7 +240,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		List<PostInfo> posts = getPostDao().findByTopic(PostDao.TRANSFORM_POSTINFO, topic);
 		Collections.sort(posts, new PostInfoComparator());
 		for (PostInfo post : posts) {
-			post.setUserIsSubmitter(post.getSubmitterId()==getSecurityService().getCurrentUser().getId());
+			post.setUserIsSubmitter(post.getSubmitterId().equals(getSecurityService().getCurrentUser().getId()));
 			List<FileInfo> attachments = getDocumentService().getFileEntries(post);
 			post.setAttachments(attachments);
 		}

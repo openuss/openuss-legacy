@@ -15,7 +15,7 @@ import java.util.Date;
 public class SystemStatisticDaoTest extends SystemStatisticDaoTestBase {
 	
 	public void testSystemStatisticsDaoCreate() {
-		SystemStatistic systemStatistic = new SystemStatisticImpl();
+		SystemStatistic systemStatistic = SystemStatistic.Factory.newInstance();
 		systemStatistic.setUsers(new Long(1));
 		systemStatistic.setUniversities(new Long(1));
 		systemStatistic.setDepartments(new Long(1));

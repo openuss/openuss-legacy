@@ -22,9 +22,6 @@ public class MigrationService {
 	/** Hibernate SessionFactory for legacy database */
 	private SessionFactory legacySessionFactory;
 	
-	/** Hibernate SessionFactory for the new plexus database */
-	private SessionFactory plexusSessionFactory;
-	
 	/** User data import */
 	private UserImport userImport;
 	
@@ -58,13 +55,13 @@ public class MigrationService {
 		logger.info("initialize databses");
 
 		legacySession = openAndBindNewSession(legacySessionFactory);
-//		userImport.perform();
-//		lectureImport.perform();
-//		newsImport.perform(); 
-//		desktopImport.perform();
-//		courseMemberImport.perform();
-//		documentImport.perform();
-//		newsLetterImport.perform();
+		userImport.perform();
+		lectureImport.perform();
+		newsImport.perform(); 
+		desktopImport.perform();
+		courseMemberImport.perform();
+		documentImport.perform();
+		newsLetterImport.perform();
 		quizImport.perform();
 		
 		legacyTx.rollback();
@@ -82,10 +79,6 @@ public class MigrationService {
 	
 	public void setLegacySessionFactory(SessionFactory legacySessionFactory) {
 		this.legacySessionFactory = legacySessionFactory;
-	}
-
-	public void setPlexusSessionFactory(SessionFactory plexusSessionFactory) {
-		this.plexusSessionFactory = plexusSessionFactory;
 	}
 
 	public void setUserImport(UserImport userImport) {

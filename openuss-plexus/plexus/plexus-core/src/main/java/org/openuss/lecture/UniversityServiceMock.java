@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.Validate;
-
 public class UniversityServiceMock implements UniversityService {
 
 	public Long createUniversity(UniversityInfo universityInfo, Long ownerId) {

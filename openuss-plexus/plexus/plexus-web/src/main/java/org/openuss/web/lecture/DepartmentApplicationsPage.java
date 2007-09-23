@@ -1,5 +1,3 @@
-
-
 package org.openuss.web.lecture;
 
 import java.util.ArrayList;
@@ -25,16 +23,17 @@ import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**
- * Application page to manage institute application for membership 
- *  
+ * Application page to manage institute application for membership
+ * 
  * @author Tianyu Wang
  */
 @Bean(name = "views$secured$lecture$departmentapplicationspage", scope = Scope.REQUEST)
 @View
 public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 	private static final Logger logger = Logger.getLogger(DepartmentApplicationsPage.class);
-	
+
 	private ApplicationsTable applications = new ApplicationsTable();
+
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
@@ -46,25 +45,24 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 		crumb.setLink("");
 		crumb.setName(i18n("department_manage_institute_applications_header"));
 		crumb.setHint(i18n("department_manage_institute_applications_header"));
-		
+
 		breadcrumbs.loadDepartmentCrumbs(departmentInfo);
 		breadcrumbs.addCrumb(crumb);
 	}
-	
-	
+
 	private class ApplicationsTable extends AbstractPagedTable<ApplicationInfo> {
 
 		private static final long serialVersionUID = 7717723162072514379L;
-		
-		private DataPage<ApplicationInfo> page; 
-		
-		@Override 
+
+		private DataPage<ApplicationInfo> page;
+
+		@Override
 		public DataPage<ApplicationInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<ApplicationInfo> applications = new ArrayList<ApplicationInfo>();
-				applications = departmentService.findApplicationsByDepartmentAndConfirmed(departmentInfo.getId(),false);
-				
-				page = new DataPage<ApplicationInfo>(applications.size(),0,applications);
+				List<ApplicationInfo> applications = departmentService.findApplicationsByDepartmentAndConfirmed(
+						departmentInfo.getId(), false);
+
+				page = new DataPage<ApplicationInfo>(applications.size(), 0, applications);
 				sort(applications);
 			}
 			return page;
@@ -72,34 +70,36 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 	}
 
 	/**
-	 * Store the selected institute into session scope and go to institute main page.
+	 * Store the selected institute into session scope and go to institute main
+	 * page.
+	 * 
 	 * @return Outcome
 	 */
 	public String selectInstitute() {
 		logger.debug("Starting method selectInstitute");
 		InstituteInfo currentInstitute = currentInstitute();
 		logger.debug("Returning to method selectInstitute");
-		logger.debug(currentInstitute.getId());	
-		//setSessionBean(Constants.INSTITUTE, institute);
+		logger.debug(currentInstitute.getId());
+		// setSessionBean(Constants.INSTITUTE, institute);
 		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
-		
+
 		return Constants.INSTITUTE_PAGE;
 	}
-	
+
 	private InstituteInfo currentInstitute() {
 		logger.debug("Starting method currentInstitute");
 		InstituteInfo instituteDetails = applications.getRowData().getInstituteInfo();
 		logger.debug(instituteDetails.getName());
 		logger.debug(instituteDetails.getOwnerName());
 		logger.debug(instituteDetails.getId());
-		//Institute institute = Institute.Factory.newInstance();
+		// Institute institute = Institute.Factory.newInstance();
 		InstituteInfo newInstituteInfo = new InstituteInfo();
-		//institute.setId(details.getId());
+		// institute.setId(details.getId());
 		newInstituteInfo.setId(instituteDetails.getId());
 		return newInstituteInfo;
 	}
-	
-	public String acceptApplication(){
+
+	public String acceptApplication() {
 		ApplicationInfo app = applications.getRowData();
 		try {
 			departmentService.acceptApplication(app.getId(), user.getId());
@@ -109,8 +109,8 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 		}
 		return Constants.SUCCESS;
 	}
-	
-	public String rejectApplication(){
+
+	public String rejectApplication() {
 		ApplicationInfo app = applications.getRowData();
 		try {
 			departmentService.rejectApplication(app.getId());
@@ -120,7 +120,6 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 		}
 		return Constants.SUCCESS;
 	}
-	
 
 	public ApplicationsTable getApplications() {
 		return applications;

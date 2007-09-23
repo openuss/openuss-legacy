@@ -306,7 +306,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		FileInfo file = documentService.getFileEntry(entry.getId(), false);
 		assertNull(file.getInputStream());
 		
-		file = documentService.getFileEntry(entry.getId(), true);
+		documentService.getFileEntry(entry.getId(), true);
 		validateFileInfo(info);
 		assertNotNull(info.getInputStream());
 	}

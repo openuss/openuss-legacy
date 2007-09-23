@@ -82,6 +82,7 @@ public class CourseIndexingAspectTest extends AbstractTransactionalDataSourceSpr
 				"classpath*:applicationContext-messaging.xml",
 				"classpath*:applicationContext-resources.xml",
 				"classpath*:applicationContext-aop.xml",
+				"classpath*:applicationContext-commands.xml",
 				"classpath*:testContext.xml", 
 				"classpath*:testSecurity.xml", 
 				"classpath*:testDataSource.xml"};
@@ -96,14 +97,12 @@ public class CourseIndexingAspectTest extends AbstractTransactionalDataSourceSpr
 	}
 
 	
-	private class IndexerServiceMock implements IndexerService {
+	private static class IndexerServiceMock implements IndexerService {
 		
 		private int create;
 		private int delete;
 		private int update;
-		
-		
-		
+
 		public void createIndex(DomainObject domainObject) throws IndexerApplicationException {
 			logger.debug("method createIndex: Increment testCreateIndex");
 			create++;

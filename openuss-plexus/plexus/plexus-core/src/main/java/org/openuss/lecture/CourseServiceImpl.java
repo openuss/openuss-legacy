@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.security.Roles;
@@ -413,7 +414,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		Iterator iter = allCourses.iterator();
 		while (iter.hasNext()) {
 			Course course = (Course) iter.next();
-			if (course.getCourseType().getInstitute().getId() == instituteId) {
+			if (ObjectUtils.equals(course.getCourseType().getInstitute().getId(),instituteId)) {
 				courseInfos.add(this.getCourseDao().toCourseInfo(course));
 			}
 
@@ -535,7 +536,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		Iterator iter = allCourses.iterator();
 		while (iter.hasNext()) {
 			Course course = (Course) iter.next();
-			if ((course.isEnabled() == enabled) && (course.getCourseType().getInstitute().getId() == instituteId)) {
+			if ((course.isEnabled() == enabled) && (ObjectUtils.equals(course.getCourseType().getInstitute().getId() , instituteId))) {
 				courseInfos.add(this.getCourseDao().toCourseInfo(course));
 			}
 

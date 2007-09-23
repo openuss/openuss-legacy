@@ -60,7 +60,8 @@ public class BookmarkingAspectTest extends AbstractTransactionalDataSourceSpring
 		try {
 			desktopInfo = desktopService2.findDesktopByUser(user.getId());
 		} catch (DesktopException e) {
-			e.printStackTrace();
+			logger.error(e);
+			fail();
 		}
 		assertTrue(desktopInfo.getUniversityInfos().isEmpty());
 
@@ -118,7 +119,8 @@ public class BookmarkingAspectTest extends AbstractTransactionalDataSourceSpring
 			desktopInfo = desktopService2.findDesktopByUser(user.getId());
 			assertTrue(desktopInfo.getCourseInfos().isEmpty());
 		} catch (DesktopException e) {
-			e.printStackTrace();
+			logger.error(e);
+			fail();
 		}
 
 		// Bookmark a Course
@@ -127,7 +129,8 @@ public class BookmarkingAspectTest extends AbstractTransactionalDataSourceSpring
 			desktopInfo = desktopService2.findDesktopByUser(user.getId());
 			assertTrue(desktopInfo.getCourseInfos().size() == 1);
 		} catch (DesktopException e) {
-			e.printStackTrace();
+			logger.error(e);
+			fail();
 		}
 
 		// Remove Course
@@ -141,7 +144,8 @@ public class BookmarkingAspectTest extends AbstractTransactionalDataSourceSpring
 			desktopInfo = desktopService2.findDesktopByUser(user.getId());
 			assertTrue(desktopInfo.getCourseInfos().isEmpty());
 		} catch (DesktopException e) {
-			e.printStackTrace();
+			logger.error(e);
+			fail();
 		}
 	}
 }

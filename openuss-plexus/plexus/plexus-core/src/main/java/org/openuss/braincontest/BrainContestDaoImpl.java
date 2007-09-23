@@ -66,7 +66,7 @@ public class BrainContestDaoImpl extends
         }
         else if (sourceVO.getTries() == null)
         {
-        	targetEntity.setTries(new Integer(0));
+        	targetEntity.setTries(0);
         }
 
 	}

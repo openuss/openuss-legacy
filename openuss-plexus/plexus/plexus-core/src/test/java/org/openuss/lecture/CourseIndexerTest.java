@@ -29,7 +29,6 @@ private static final Logger logger = Logger.getLogger(CourseIndexerTest.class);
 	private LectureSearcher lectureSearcher;
 	private TestUtility testUtility;
 	private Course course;
-	private CourseType courseType;
 
 	@Override
 	protected void onSetUp() throws Exception {
@@ -39,7 +38,7 @@ private static final Logger logger = Logger.getLogger(CourseIndexerTest.class);
 		courseIndexer.setCourseDao(courseDao);
 	
 		// Create CourseType
-		courseType = testUtility.createUniqueCourseTypeInDB();
+		testUtility.createUniqueCourseTypeInDB();
 	
 		course = testUtility.createUniqueCourseInDB();
 		

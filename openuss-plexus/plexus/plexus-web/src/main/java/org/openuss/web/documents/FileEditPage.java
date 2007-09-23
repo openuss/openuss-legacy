@@ -3,6 +3,8 @@ package org.openuss.web.documents;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.faces.component.UIInput;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -27,6 +29,8 @@ public class FileEditPage extends AbstractDocumentPage{
 	
 	@Property(value = "#{"+Constants.UPLOAD_FILE_MANAGER+"}")
 	private UploadFileManager uploadFileManager;
+	
+	private UIInput fileUpload;
 
 	@Prerender
 	public void prerender() throws Exception {
@@ -52,60 +56,61 @@ public class FileEditPage extends AbstractDocumentPage{
 
 	public String save() throws DocumentApplicationException, IOException{
 		logger.debug("saving file");
-		if (selectedFile != null && selectedFile.getId() == null) {
-			UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
-			if (document != null) {
-				logger.debug("source is "+document.getSource());
-				if (StringUtils.isBlank(selectedFile.getFileName())) {
-					selectedFile.setFileName(document.getFileName());
-				} else {
-					String fileName = selectedFile.getFileName();
-					if (!StringUtils.equals(extension(fileName), extension(document.getFileName()))) {
-						fileName = fileName + '.' +extension(document.getFileName());
-					}
-					selectedFile.setFileName(fileName);
-				}
-				selectedFile.setExtension(extension(document.getFileName()));
-
-				selectedFile.setContentType(document.getContentType());
-				selectedFile.setFileSize(document.getFileSize());
-				selectedFile.setInputStream(document.getInputStream());
-
-				documentService.createFileEntry(selectedFile, retrieveActualFolder());
-				uploadFileManager.removeDocument(document);
-			} else {
-				documentService.createFileEntry(selectedFile, retrieveActualFolder());
+		if (isNewFile()) {
+			if (!saveNewFile()) {
+				addError(fileUpload.getClientId(getFacesContext()),i18n("error_file_input_required"),i18n("error_file_input_required"));
+				return Constants.FAILURE;
 			}
-			addMessage(i18n("message_documents_new_ folder_created"));
-		} else if (selectedFile != null && selectedFile.getId() != null) {
-			
+		} else if (isExistingFile()) {
 			UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 			if (document != null) {
-				logger.debug("source is "+document.getSource());
-				if (StringUtils.isBlank(selectedFile.getFileName())) {
-					selectedFile.setFileName(document.getFileName());
-				} else {
-					String fileName = selectedFile.getFileName();
-					if (!StringUtils.equals(extension(fileName), extension(document.getFileName()))) {
-						fileName = fileName + '.' +extension(document.getFileName());
-					}
-					selectedFile.setFileName(fileName);
-				}
-				selectedFile.setExtension(extension(document.getFileName()));
-				selectedFile.setContentType(document.getContentType());
-				selectedFile.setFileSize(document.getFileSize());
-				selectedFile.setInputStream(document.getInputStream());
+				documentToSelectedFile(document);
 			}
 			documentService.saveFileEntry(selectedFile);
-			
 			if (document != null) {
 				uploadFileManager.removeDocument(document);
 			}
-			
-			addMessage(i18n("message_documents_save_folder"));
+			addMessage(i18n("message_documents_save_file"));
 		}
 		removeSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRY);
 		return Constants.DOCUMENTS_MAIN_PAGE;
+	}
+
+	private boolean saveNewFile() throws IOException, DocumentApplicationException {
+		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
+		if (document != null) {
+			documentToSelectedFile(document);
+			documentService.createFileEntry(selectedFile, retrieveActualFolder());
+			uploadFileManager.removeDocument(document);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private void documentToSelectedFile(UploadedDocument document) throws IOException {
+		logger.debug("source is "+document.getSource());
+		if (StringUtils.isBlank(selectedFile.getFileName())) {
+			selectedFile.setFileName(document.getFileName());
+		} else {
+			String fileName = selectedFile.getFileName();
+			if (!StringUtils.equals(extension(fileName), extension(document.getFileName()))) {
+				fileName = fileName + '.' +extension(document.getFileName());
+			}
+			selectedFile.setFileName(fileName);
+		}
+		selectedFile.setExtension(extension(document.getFileName()));
+		selectedFile.setContentType(document.getContentType());
+		selectedFile.setFileSize(document.getFileSize());
+		selectedFile.setInputStream(document.getInputStream());
+	}
+
+	private boolean isExistingFile() {
+		return selectedFile != null && selectedFile.getId() != null;
+	}
+
+	private boolean isNewFile() {
+		return selectedFile != null && selectedFile.getId() == null;
 	}
 
 	
@@ -134,5 +139,13 @@ public class FileEditPage extends AbstractDocumentPage{
 	public void setUploadFileManager(UploadFileManager uploadFileManager) {
 		this.uploadFileManager = uploadFileManager;
 	}
-	
+
+	public UIInput getFileUpload() {
+		return fileUpload;
+	}
+
+	public void setFileUpload(UIInput fileUpload) {
+		this.fileUpload = fileUpload;
+	}
+
 } 

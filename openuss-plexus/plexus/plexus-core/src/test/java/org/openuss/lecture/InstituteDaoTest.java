@@ -78,13 +78,10 @@ public class InstituteDaoTest extends InstituteDaoTestBase {
 
 		try {
 			instituteDao.update(institute2);
-
 			// Synchronize with Database
 			flush();
-
-			fail();
 		} catch (Exception e) {
-			// Success
+			fail("Institute Shortcut must still be unique.");
 		}
 	}
 

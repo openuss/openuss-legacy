@@ -18,8 +18,15 @@ import org.openuss.security.UserDao;
  * @see org.openuss.lecture.InstituteService
  * @author Ron Haus
  * @author Florian Dondorf
+ * @author Ingo Düppe
  */
 public class InstituteServiceIntegrationTest extends InstituteServiceIntegrationTestBase {
+
+	private DepartmentService departmentService;
+
+	private InstituteDao instituteDao;
+	
+	private DepartmentDao departmentDao;
 
 	public void testCreateInstitute() {
 		logger.info("----> BEGIN access to create(Institute) test");
@@ -48,17 +55,13 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		flush();
 
 		// Test
-		InstituteDao instituteDao = (InstituteDao) this.getApplicationContext().getBean("instituteDao");
-		DepartmentDao departmentDao = (DepartmentDao) this.getApplicationContext().getBean("departmentDao");
-
 		Institute instituteTest = instituteDao.load(instituteId);
 		assertNotNull(instituteTest);
 		assertNull(instituteTest.getDepartment()); // One needs to call applyAtUniversity right after
 		instituteService.applyAtDepartment(instituteId, departmentOfficial.getId(), owner.getId());
 		assertNotNull(instituteTest.getDepartment());
 
-		Department departmentDefault = departmentDao.findByUniversityAndDefault(departmentOfficial.getUniversity(),
-				true);
+		Department departmentDefault = departmentDao.findByUniversityAndDefault(departmentOfficial.getUniversity(),	true);
 		assertEquals(departmentDefault.getId(), instituteTest.getDepartment().getId());
 		assertTrue(departmentDefault.getInstitutes().contains(instituteTest));
 		assertEquals(2, instituteTest.getApplications().size());
@@ -206,7 +209,6 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		flush();
 
 		// Try to load Institute again
-		InstituteDao instituteDao = (InstituteDao) this.applicationContext.getBean("instituteDao");
 		Institute institute3 = instituteDao.load(instituteId);
 		assertNull(institute3);
 
@@ -250,8 +252,6 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		// Synchronize with Database
 		flush();
 
-		// Try to load Institute again
-		InstituteDao instituteDao = (InstituteDao) this.applicationContext.getBean("instituteDao");
 		Institute institute2 = instituteDao.load(instituteId);
 		assertNull(institute2);
 
@@ -281,9 +281,6 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 	public void testApplyAtDepartment() {
 		logger.debug("----> BEGIN access to applyAtDepartment test <---- ");
 
-		DepartmentService departmentService = (DepartmentService) this.getApplicationContext().getBean(
-		"departmentService");
-		
 		// Create two OFFICIAL Department
 		Department departmentOfficial1 = testUtility.createUniqueDepartmentInDB();
 		departmentOfficial1.setDepartmentType(DepartmentType.OFFICIAL);
@@ -433,5 +430,17 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		 * assertNotNull(applicationInfo2); assertEquals(applicationId, applicationInfo2.getId());
 		 */
 		logger.info("----> END access to findApplicationByInstitute test");
+	}
+
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+
+	public void setInstituteDao(InstituteDao instituteDao) {
+		this.instituteDao = instituteDao;
+	}
+
+	public void setDepartmentDao(DepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
 	}
 }

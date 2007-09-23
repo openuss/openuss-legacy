@@ -45,7 +45,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	private List<SelectItem> instituteCourseTypeItems;
 	private List<CourseTypeInfo> instituteCourseTypes;
 	private Boolean renderCourseNew = false;
-	public static Boolean renderCourseTypeEditNew = false;
+	static Boolean renderCourseTypeEditNew = false;
 	private List<PeriodInfo> periodInfos = null;
 	private Long universityId = 0l;
 	private Long departmentId = 0l;

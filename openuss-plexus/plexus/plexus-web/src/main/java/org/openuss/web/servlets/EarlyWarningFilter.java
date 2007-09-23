@@ -38,7 +38,7 @@ public class EarlyWarningFilter implements Filter {
 		if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
 			InstrumentedResponse instrumentedResponse = new InstrumentedResponse((HttpServletResponse) response);
 			chain.doFilter(request, instrumentedResponse);
-			instrumentedResponse.flush();
+ 			instrumentedResponse.flush();
 		} else {
 			chain.doFilter(request, response);
 		}

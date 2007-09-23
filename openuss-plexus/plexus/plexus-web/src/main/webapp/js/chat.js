@@ -2,7 +2,7 @@ var chatWindows;
 var WIDTH = 600;
 var HEIGHT = 650;
 var RETRY_TIME = 100;
-var REFRESH_TIME = 3000;
+var REFRESH_TIME = 10000;
 var timestamp = -1;
 var sending = false;
 var serverName = "";

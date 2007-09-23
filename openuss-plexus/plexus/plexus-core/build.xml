@@ -72,7 +72,7 @@
 		<classpath>
 			<pathelement location="${m2_repo}/jaybird/jaybird-full/2.1.1/jaybird-full-2.1.1.jar"/>
 			<pathelement location="${m2_repo}/ant/ant/1.6.5/ant-1.6.5.jar"/>
-			<pathelement location="${m2_repo}/org/openuss/framework/framework-tools/3.1-SNAPSHOT/framework-tools-3.1-SNAPSHOT.jar" />
+			<pathelement location="${m2_repo}/org/openuss/framework/framework-tools/3.0-SNAPSHOT/framework-tools-3.0-SNAPSHOT.jar" />
 		</classpath>
 	</taskdef>
 
@@ -92,6 +92,7 @@
 			</classpath>
 			<transaction src="target/firebird_database_schema.sql"/>
 			<transaction src="src/main/data/init.sql"/>
+			<transaction src="src/main/data/quartz.sql"/>
 		</sql>
 		<echo message="INFO: Database schemas created" />
 	</target>
@@ -109,6 +110,7 @@
 			</classpath>
 			<transaction src="target/firebird_database_schema.sql"/>
 			<transaction src="src/main/data/init.sql"/>
+			<transaction src="src/main/data/quartz.sql"/>
 		</sql>
 		<echo message="INFO: Database schemas created" />
 	</target>

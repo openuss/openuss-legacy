@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +17,6 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.registration.RegistrationException;
 import org.openuss.security.Group;
-import org.openuss.security.GroupType;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
@@ -68,30 +66,6 @@ public class LectureServiceImpl extends LectureServiceBase {
 	protected Course handleGetCourse(Long courseId) throws Exception {
 		return getCourseDao().load(courseId);
 
-	}
-
-	@Override
-	protected boolean handleIsNoneExistingInstituteShortcut(Institute self, String shortcut) throws Exception {
-		Institute found = getInstituteDao().findByShortcut(shortcut);
-		return isEqualOrNull(self, found);
-	}
-
-	@Override
-	protected boolean handleIsNoneExistingCourseShortcut(Course self, String shortcut) throws Exception {
-		Course found = getCourseDao().findByShortcut(shortcut);
-		return isEqualOrNull(self, found);
-	}
-
-	@Override
-	protected boolean handleIsNoneExistingCourseTypeShortcut(CourseType self, String shortcut) throws Exception {
-		CourseType found = getCourseTypeDao().findByShortcut(shortcut);
-		return isEqualOrNull(self, found);
-	}
-
-	@Override
-	protected boolean handleIsNoneExistingCourseTypeName(CourseType self, String name) throws Exception {
-		CourseType found = getCourseTypeDao().findByName(name);
-		return isEqualOrNull(self, found);
 	}
 
 	@Override
@@ -351,10 +325,10 @@ public class LectureServiceImpl extends LectureServiceBase {
 	}
 
 	@Override
-	protected List handleGetInstituteAspirants(Long instituteId) throws Exception {
+	protected List<?> handleGetInstituteAspirants(Long instituteId) throws Exception {
 		Institute institute = getInstituteDao().load(instituteId);
 		// need to get ride of persistent back so use a new ArrayList
-		List aspirants = new ArrayList<User>(institute.getMembership().getAspirants());
+		List<?> aspirants = new ArrayList<User>(institute.getMembership().getAspirants());
 		getUserDao().toUserInfoCollection(aspirants);
 		return aspirants;
 	}
@@ -394,33 +368,6 @@ public class LectureServiceImpl extends LectureServiceBase {
 				*/
 	}
 
-	private List<User> getInstituteAdmins(Institute institute) {
-		// XXX Polish me!
-		Collection<Group> groups = institute.getMembership().getGroups();
-		Iterator i = groups.iterator();
-		Group adminGroup = null;
-		Group group;
-		List instituteMembers;
-		User member;
-		List<User> administrators = new ArrayList<User>();
-		// find administrator group of institute
-		while (i.hasNext()) {
-			group = (Group) i.next();
-			if (group.getGroupType() == GroupType.ADMINISTRATOR) {
-				adminGroup = group;
-			}
-		}
-		// add members of administrator group to list of administrators
-		instituteMembers = institute.getMembership().getMembers();
-		i = instituteMembers.iterator();
-		while (i.hasNext()) {
-			member = (User) i.next();
-			if (member.getGroups().contains(adminGroup)) {
-				administrators.add(member);
-			}
-		}
-		return administrators;
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -553,24 +500,6 @@ public class LectureServiceImpl extends LectureServiceBase {
 		}
 	}
 
-	private void fireRemovingInstitute(Institute institute) throws LectureException {
-		if (listeners != null) {
-			logger.debug("fire removing institute event");
-			for (LectureListener listener : listeners) {
-				listener.removingInstitute(institute);
-			}
-		}
-	}
-
-	private void fireCreatedInstitute(Institute institute) throws LectureException {
-		if (listeners != null) {
-			logger.debug("fire created institute event");
-			for (LectureListener listener : listeners) {
-				listener.createdInstitute(institute);
-			}
-		}
-	}
-
 	private User getUser(Long userId) throws LectureException {
 		User user = User.Factory.newInstance();
 		user = getSecurityService().getUser(userId);
@@ -579,30 +508,6 @@ public class LectureServiceImpl extends LectureServiceBase {
 			throw new LectureException("user_cannot_be_found");
 		}
 		return user;
-	}
-
-	/**
-	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self entry.
-	 * <ul>
-	 * <li>self == null AND found == null => <b>true</b></li>
-	 * <li>self == null AND found <> null => <b>false</b></li>
-	 * <li>self <> null AND found == null => <b>true</b></li>
-	 * <li>self <> null AND found <> null AND self == found => <b>true</b></li>
-	 * <li>self <> null AND found <> null AND self <> found => <b>false</b></li>
-	 * </ul>
-	 * 
-	 * @param self
-	 *            current record
-	 * @param found
-	 *            in database
-	 * @return true or false
-	 */
-	private boolean isEqualOrNull(Object self, Object found) {
-		if (self == null || found == null) {
-			return found == null;
-		} else {
-			return self.equals(found);
-		}
 	}
 
 	@Override

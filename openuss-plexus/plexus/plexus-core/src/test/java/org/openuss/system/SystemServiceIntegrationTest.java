@@ -11,4 +11,10 @@ package org.openuss.system;
  */
 public class SystemServiceIntegrationTest extends SystemServiceIntegrationTestBase {
 	
+	public void testSystemIdendity () {
+		long id = systemService.getInstanceIdentity();
+		logger.info("system id "+id);
+		assertNotSame(1L, id);
+	}
+	
 }

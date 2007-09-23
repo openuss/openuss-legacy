@@ -8,6 +8,7 @@ package org.openuss.lecture;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.Validate;
 import org.openuss.registration.RegistrationException;
 import org.openuss.security.Group;
@@ -330,7 +331,7 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 		if (organisationFound == null) {
 			return true;
 		} else {
-			return (organisationId == organisationFound.getId());
+			return (ObjectUtils.equals(organisationId,organisationFound.getId()));
 		}
 	}
 	

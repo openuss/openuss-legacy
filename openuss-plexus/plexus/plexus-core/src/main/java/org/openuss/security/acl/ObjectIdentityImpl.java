@@ -30,8 +30,8 @@ public class ObjectIdentityImpl extends ObjectIdentityBase implements ObjectIden
 	public void removePermission(Permission permission) {
 		if (permission != null) {
 			getPermissions().remove(permission);
+			permission.setAclObjectIdentity(null);
 		}
-		permission.setAclObjectIdentity(null);
 	}
 
 	@Override

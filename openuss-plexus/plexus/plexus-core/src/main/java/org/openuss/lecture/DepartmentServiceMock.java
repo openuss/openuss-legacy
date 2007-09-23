@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.Validate;
-
 public class DepartmentServiceMock implements DepartmentService {
 
 	public Long create(DepartmentInfo departmentInfo, Long ownerId) {

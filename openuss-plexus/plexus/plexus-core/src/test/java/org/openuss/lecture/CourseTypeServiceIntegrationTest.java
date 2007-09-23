@@ -26,7 +26,7 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 		Institute institute = testUtility.createUniqueInstituteInDB();
 		
 		//Create Period
-		Period period = testUtility.createUniquePeriodInDB();
+		testUtility.createUniquePeriodInDB();
 		
 		//Create CourseInfo
 		CourseTypeInfo courseTypeInfo = new CourseTypeInfo();
@@ -218,7 +218,7 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 		logger.debug("----> BEGIN access to isNoneExistingCourseTypeName test <---- ");
 		
 		//Create Secure Context
-		User user = testUtility.createSecureContext();
+		testUtility.createSecureContext();
 		
 		// Create CourseTypes
 		CourseType courseType1= testUtility.createUniqueCourseTypeInDB();

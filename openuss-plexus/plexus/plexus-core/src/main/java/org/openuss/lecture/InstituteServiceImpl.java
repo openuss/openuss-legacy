@@ -287,6 +287,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				application.remove(application.getDepartment());
 				this.getApplicationDao().remove(application);
 			} catch (Exception e) {
+				logger.error(e);
 			}
 
 		}
@@ -317,6 +318,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 					applicationOld.remove(applicationOld.getDepartment());
 					this.getApplicationDao().remove(applicationOld);
 				} catch (Exception e) {
+					logger.error(e);
 				}
 			}
 

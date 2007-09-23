@@ -7,7 +7,7 @@
 	<artifactId>openuss</artifactId>
 	<packaging>pom</packaging>
 	<name>Open University Support System - The Relaunch</name>
-	<version>3.1-SNAPSHOT</version>
+	<version>3.0-SNAPSHOT</version>
 	<description>
 		OpenUSS Plexus is the relaunch of the well known E-Learning
 		plattform OpenUSS.
@@ -202,6 +202,14 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<forkMode>once</forkMode>
+					<argLine>-Xmx256M</argLine>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.andromda.maven.plugins</groupId>
 				<artifactId>andromda-multi-source-plugin</artifactId>
@@ -610,6 +618,11 @@
 				<groupId>com.sun.el</groupId>
 				<artifactId>el-ri</artifactId>
 				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring</artifactId>
+				<version>2.0.5</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>

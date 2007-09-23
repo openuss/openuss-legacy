@@ -1,7 +1,5 @@
 package org.openuss.lecture;
 
-import java.util.List;
-
 import org.openuss.TestUtility;
 import org.openuss.security.User;
 
@@ -31,11 +29,7 @@ public class LectureBuilder {
 	
 	private Course course;
 	
-	private CourseDao courseDao;
-	
     private CourseType courseType;
-	
-	private CourseTypeDao courseTypeDao;
 	
 	private static int code = 0;
 	

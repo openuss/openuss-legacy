@@ -302,38 +302,6 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		return instituteCrumb;
 	}
 
-	// Course Crumb Generation
-
-	private List<BreadCrumb> getCourseCrumbs(Long courseId) {
-		/*
-		 * ValueBinding binding =
-		 * getFacesContext().getApplication().createValueBinding("#{courseService}");
-		 * if(binding == null) return getEmptyList();
-		 * 
-		 * CourseService courseService =
-		 * (CourseService)binding.getValue(getFacesContext());
-		 */
-		if (courseService == null)
-			return getEmptyList();
-
-		CourseInfo info = courseService.findCourse(courseId);
-		if (info == null)
-			return getEmptyList();
-
-		List<BreadCrumb> crumbs;
-
-		if (organisationHierarchy.getInstituteInfo() != null)
-			crumbs = getInstituteCrumbs(organisationHierarchy
-					.getInstituteInfo());
-		else
-			crumbs = getInstituteCrumbs(info.getInstituteId());
-		BreadCrumb courseCrumb = getCourseCrumb(info);
-
-		assert crumbs != null;
-		crumbs.add(courseCrumb);
-		return crumbs;
-	}
-
 	private List<BreadCrumb> getCourseCrumbs(CourseInfo info) {
 		if (info == null)
 			return getEmptyList();
@@ -584,16 +552,12 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		this.organisationService = organisationService;
 	}
 
-	private OrganisationHierarchy getOrganisationHierarchy() {
-		return organisationHierarchy;
-	}
-
-	private void setOrganisationHierarchy(
-			OrganisationHierarchy organisationHierarchy) {
-		if (organisationHierarchy != null)
+	private void setOrganisationHierarchy(OrganisationHierarchy organisationHierarchy) {
+		if (organisationHierarchy != null) {
 			this.organisationHierarchy = organisationHierarchy;
-		else
-			organisationHierarchy = new OrganisationHierarchy();
+		} else {
+			this.organisationHierarchy = new OrganisationHierarchy();
+		}
 	}
 
 }

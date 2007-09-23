@@ -133,7 +133,7 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 		this.aclManager = aclManager;
 	}
 
-	public class TestBean {
+	public static class TestBean {
 		private Long id;
 		private String name;
 

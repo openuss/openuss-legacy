@@ -214,19 +214,13 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 	@Override
 	protected void handleAcceptApplication(Long applicationId, Long userId) throws Exception {
-
-		Validate.notNull(applicationId, "DepartmentService.handleAcceptApplication - the applicationId cannot be null");
-
+		Validate.notNull(applicationId, "The applicationId cannot be null");
 		Application application = this.getApplicationDao().load(applicationId);
-		Validate.notNull(application,
-				"DepartmentService.handleAcceptApplication - no Application found corresponding to the ID "
-						+ applicationId);
-		Validate.isTrue(!application.isConfirmed(),
-				"DepartmentService.handleAcceptApplication - the Application is already confirmed");
+		Validate.notNull(application, "No Application found corresponding to the ID "+ applicationId);
+		Validate.isTrue(!application.isConfirmed(),	"The Application is already confirmed");
 
 		User user = this.getUserDao().load(userId);
-		Validate.notNull(user, "DepartmentService.handleAcceptApplication - no User found corresponding to the ID "
-				+ userId);
+		Validate.notNull(user, "No User found corresponding to the ID "	+ userId);
 
 		Department department = application.getDepartment();
 		Institute institute = application.getInstitute();
@@ -237,7 +231,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		// Delete all old Applications of the Institute (should actually only be max 2)
 		List<Application> applicationsOld = new ArrayList<Application>();
 		for (Application applicationOld : institute.getApplications()) {
-			if (applicationOld.getId() != applicationId) {
+			if (!applicationId.equals(applicationOld.getId())) {
 				applicationsOld.add(applicationOld);
 			}
 		}
@@ -247,14 +241,13 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 				applicationOld.remove(applicationOld.getDepartment());
 				this.getApplicationDao().remove(applicationOld);
 			} catch (Exception e) {
+				logger.error(e);
 			}
 		}
-
 		// Mark Application as confirmed
 		application.setConfirmationDate(new Date());
 		application.setConfirmingUser(user);
 		application.setConfirmed(true);
-
 	}
 
 	@Override
@@ -290,19 +283,19 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 		// Remove obsolete Application
 		Application application = this.getApplicationDao().findByInstituteAndDepartment(institute, department);
-		Long userId = application.getApplyingUser().getId();
-		if (application != null) {
-			application.remove(department);
-			application.remove(institute);
-			this.getApplicationDao().remove(application);
+		if (application == null) {
+			return;
 		}
+		application.remove(department);
+		application.remove(institute);
+		this.getApplicationDao().remove(application);
+		Long userId = application.getApplyingUser().getId();
 
 		// Remove Institute from old Department
 		department.remove(institute);
 
 		// Assign Institute to Standard non-official Department
-		Department departmentDefault = this.getDepartmentDao().findByUniversityAndDefault(department.getUniversity(),
-				true);
+		Department departmentDefault = this.getDepartmentDao().findByUniversityAndDefault(department.getUniversity(), true);
 		this.getInstituteService().applyAtDepartment(instituteId, departmentDefault.getId(), userId);
 	}
 

@@ -5,8 +5,6 @@
  */
 package org.openuss.lecture;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.openuss.security.AuthorityDao;
 import org.openuss.security.User;
@@ -27,8 +25,6 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 	private AuthorityDao authorityDao;
 	
 	private CourseTypeDao courseTypeDao;
-
-	private User user;
 
 	public LectureServiceIntegrationTest() {
 		setDefaultRollback(true);
@@ -125,117 +121,9 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		logger.debug("----> END access to getCourse test <---- ");
 	}
 	
-	public void testIsNoneExistingInstituteShortcut () {
-		logger.debug("----> BEGIN access to isNoneExistingInstituteShortcut test <---- ");
-		
-		//Create Secure Context
-		User user = testUtility.createSecureContext();
-		
-		// Create institutes
-		Institute institute1= testUtility.createUniqueInstituteInDB();
-		Institute institute2= testUtility.createUniqueInstituteInDB();
-		flush();
-		
-		// Test
-		Boolean result = this.getLectureService().isNoneExistingInstituteShortcut(institute1, institute1.getShortcut());
-		assertNotNull(result);
-		assertTrue(result);
-		
-		result = this.getLectureService().isNoneExistingInstituteShortcut(institute1, testUtility.unique("shortcut"));
-		assertNotNull(result);
-		assertTrue(result);
-		
-		result = this.getLectureService().isNoneExistingInstituteShortcut(institute1, institute2.getShortcut());
-		assertNotNull(result);
-		assertFalse(result);
-		
-		logger.debug("----> END access to isNoneExistingInstituteShortcut test <---- ");
-	}
-	
-	public void testIsNoneExistingCourseShortcut () {
-		logger.debug("----> BEGIN access to isNoneExistingCourseShortcut test <---- ");
-		
-		//Create Secure Context
-		User user = testUtility.createSecureContext();
-		
-		// Create CourseTypes
-		Course course1= testUtility.createUniqueCourseInDB();
-		Course course2= testUtility.createUniqueCourseInDB();
-		flush();
-		
-		// Test
-		Boolean result = this.getLectureService().isNoneExistingCourseShortcut(course1, course1.getShortcut());
-		assertNotNull(result);
-		assertTrue(result);
-		
-		result = this.getLectureService().isNoneExistingCourseShortcut(course1, testUtility.unique("shortcut"));
-		assertNotNull(result);
-		assertTrue(result);
-		
-		result = this.getLectureService().isNoneExistingCourseShortcut(course1, course2.getShortcut());
-		assertNotNull(result);
-		assertFalse(result);
-		
-		logger.debug("----> END access to isNoneExistingCourseShortcut test <---- ");
-	}
-	
-	public void testIsNoneExistingCourseTypeShortcut () {
-		logger.debug("----> BEGIN access to isNoneExistingCourseTypeShortcut test <---- ");
-		
-		//Create Secure Context
-		User user = testUtility.createSecureContext();
-		
-		// Create CourseTypes
-		CourseType courseType1= testUtility.createUniqueCourseTypeInDB();
-		CourseType courseType2= testUtility.createUniqueCourseTypeInDB();
-		flush();
-		
-		// Test
-		Boolean result = this.getLectureService().isNoneExistingCourseTypeShortcut(courseType1, courseType1.getShortcut());
-		assertNotNull(result);
-		assertTrue(result);
-		
-		result = this.getLectureService().isNoneExistingCourseTypeShortcut(courseType1, testUtility.unique("shortcut"));
-		assertNotNull(result);
-		assertTrue(result);
-		
-		result = this.getLectureService().isNoneExistingCourseTypeShortcut(courseType1, courseType2.getShortcut());
-		assertNotNull(result);
-		assertFalse(result);
-		
-		logger.debug("----> END access to isNoneExistingCourseTypeShortcut test <---- ");
-	}
-	
-	public void testIsNoneExistingCourseTypeName () {
-		logger.debug("----> BEGIN access to isNoneExistingCourseTypeName test <---- ");
-		
-		//Create Secure Context
-		User user = testUtility.createSecureContext();
-		
-		// Create CourseTypes
-		CourseType courseType1= testUtility.createUniqueCourseTypeInDB();
-		CourseType courseType2= testUtility.createUniqueCourseTypeInDB();
-		flush();
-		
-		// Test
-		Boolean result = this.getLectureService().isNoneExistingCourseTypeName(courseType1, courseType1.getName());
-		assertNotNull(result);
-		assertTrue(result);
-		
-		result = this.getLectureService().isNoneExistingCourseTypeName(courseType1, testUtility.unique("name"));
-		assertNotNull(result);
-		assertTrue(result);
-		
-		result = this.getLectureService().isNoneExistingCourseTypeName(courseType1, courseType2.getName());
-		assertNotNull(result);
-		assertFalse(result);
-		
-		logger.debug("----> END access to isNoneExistingCourseTypeName test <---- ");
-	}
-	
 	public void testAddCourseTypeToInstitute() throws LectureException{
 		logger.debug("----> add courseType <---- ");
-		user = testUtility.createUserSecureContext();
+		testUtility.createUserSecureContext();
 		Institute institute = testUtility.createUniqueInstituteInDB();//createInstitute();
 		//lectureService.createInstitute(institute);
 
@@ -249,7 +137,6 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 			;
 		}
 	}
-	
 	
 	public void testAddPeriodToInstitute() throws LectureException {
 		logger.debug("add period to institute");
@@ -286,17 +173,6 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		
 		setComplete();
 		*/
-	}
-	
-	private Institute createInstitute() {
-		Institute institute = Institute.Factory.newInstance();
-		institute.setName(unique("institute name"));
-		institute.setShortcut(unique("institute"));
-		institute.setOwnerName("ownername");
-		institute.setEmail("email@institute");
-		//institute.setOwner(user);
-		institute.setLocale("de");
-		return institute;
 	}
 	
 	private String unique(String name) {

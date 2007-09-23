@@ -83,6 +83,7 @@ private static final Logger logger = Logger.getLogger(DepartmentIndexingAspectTe
 				"classpath*:applicationContext-messaging.xml",
 				"classpath*:applicationContext-resources.xml",
 				"classpath*:applicationContext-aop.xml",
+				"classpath*:applicationContext-commands.xml",
 				"classpath*:testContext.xml", 
 				"classpath*:testSecurity.xml", 
 				"classpath*:testDataSource.xml"};
@@ -97,7 +98,7 @@ private static final Logger logger = Logger.getLogger(DepartmentIndexingAspectTe
 	}
 
 	
-	private class IndexerServiceMock implements IndexerService {
+	private static class IndexerServiceMock implements IndexerService {
 		
 		private int create;
 		private int delete;

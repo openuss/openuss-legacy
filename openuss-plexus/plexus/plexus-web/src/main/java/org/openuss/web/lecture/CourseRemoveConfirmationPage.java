@@ -1,5 +1,7 @@
 package org.openuss.web.lecture;
 
+import org.apache.log4j.Logger;
+
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Preprocess;
@@ -17,6 +19,9 @@ import org.openuss.web.course.AbstractCoursePage;
 @Bean(name = "views$secured$lecture$courseremoveconfirmation", scope = Scope.REQUEST)
 @View
 public class CourseRemoveConfirmationPage extends AbstractCoursePage {
+	
+	/** Logger for this class */
+	private static final Logger logger = Logger.getLogger(CourseRemoveConfirmationPage.class);
 
 	private static final long serialVersionUID = -202000019652888870L;
 
@@ -31,7 +36,7 @@ public class CourseRemoveConfirmationPage extends AbstractCoursePage {
 			newCrumb.setHint(i18n("course_remove_header"));
 			breadcrumbs.addCrumb(newCrumb);
 		} catch (Exception e) {
-		
+			logger.error(e);
 		}
 	}
 	

@@ -19,53 +19,53 @@ import org.openuss.framework.web.jsf.util.ConversationUtil;
  */
 public class RedirectNavigationHandler extends NavigationHandler {
 
- private static final Logger logger = Logger.getLogger(RedirectNavigationHandler.class);
- 
- private static final String VIEW_BACKWARD = "view:backward";
- 
- private static final String VIEW_HOME = "home";
- 
- private static final String VIEW_STACK_KEY = "viewStack";
- 
- 
- private final NavigationHandler originalNavigationHandler;
- 
- 
- public RedirectNavigationHandler(NavigationHandler original) {
-  logger.debug(" initialized");
-  this.originalNavigationHandler = original;
- }
+	private static final Logger logger = Logger.getLogger(RedirectNavigationHandler.class);
+	
+	private static final String VIEW_BACKWARD = "view:backward";
+	
+	private static final String VIEW_HOME = "home";
+	
+	private static final String VIEW_STACK_KEY = "viewStack";
+	
+	
+	private final NavigationHandler originalNavigationHandler;
+	
+	
+	public RedirectNavigationHandler(NavigationHandler original) {
+		logger.debug(" initialized");
+		this.originalNavigationHandler = original;
+	}
 
- 
- @Override
- public void handleNavigation(FacesContext facesContext, String fromAction, String outcome) {
-  if (logger.isDebugEnabled()) {
-   logger.debug("handleNavigation(context=" + facesContext + ", fromAction=" + fromAction + ", outcome=" + outcome + ") - start"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-  }
-  
-  if (facesContext.getResponseComplete()) {
-   return; // nothing to do
-  }
+	
+	@Override
+	public void handleNavigation(FacesContext facesContext, String fromAction, String outcome) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("handleNavigation(context=" + facesContext + ", fromAction=" + fromAction + ", outcome=" + outcome + ") - start");
+		}
+		
+		if (facesContext.getResponseComplete()) {
+			return; // nothing to do
+		}
 
-  // check if the outcome is a viewId
-  Stack<String> viewStack = getViewStack(facesContext);
-  
-  String currentViewId = facesContext.getViewRoot().getViewId();
-  
-  if (isBackward(outcome)) {
-   if (!viewStack.isEmpty()) {
-    String viewId = viewStack.pop();
-    if (StringUtils.equals(viewId, currentViewId) && !viewStack.isEmpty()) {
-     viewId = viewStack.pop();
-    }
-    if (!StringUtils.equals(currentViewId, viewId)) {
-     redirectToViewId(facesContext, viewId);
-     return;
-    } else {
-     outcome = VIEW_HOME;
-    }
-   }
-  }
+		// check if the outcome is a viewId
+		Stack<String> viewStack = getViewStack(facesContext);
+		
+		String currentViewId = facesContext.getViewRoot().getViewId();
+		
+		if (isBackward(outcome)) {
+			if (!viewStack.isEmpty()) {
+				String viewId = viewStack.pop();
+				if (StringUtils.equals(viewId, currentViewId) && !viewStack.isEmpty()) {
+					viewId = viewStack.pop();
+				}
+				if (!StringUtils.equals(currentViewId, viewId)) {
+					redirectToViewId(facesContext, viewId);
+					return;
+				} else {
+					outcome = VIEW_HOME;
+				}
+			}
+		}
 
   if (isViewId(outcome)) {
    ConversationUtil.interpolateAndRedirect(facesContext, outcome);

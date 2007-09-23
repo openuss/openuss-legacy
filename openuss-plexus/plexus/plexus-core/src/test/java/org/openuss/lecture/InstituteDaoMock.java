@@ -1,6 +1,5 @@
 package org.openuss.lecture;
 
-import java.sql.Blob;
 import java.util.Collection;
 import java.util.List;
 

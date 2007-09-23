@@ -82,18 +82,19 @@ public class TestUtility {
 	private static long uniqueId = System.currentTimeMillis();
 
 	/**
-	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
+	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
 	 */
 	public User createDefaultUserInDB() {
 		defaultUser.setUsername(unique("username"));
 		defaultUser.setGroups(new ArrayList<Group>());
+		defaultUser.setContact(UserContact.Factory.newInstance());
 		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
 		userDao.create(defaultUser);
 		return defaultUser;
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
+	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
 	 */
 	public User createUserInDB() {
 		User user = createDefaultUser();
@@ -102,21 +103,21 @@ public class TestUtility {
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.1
+	 * @deprecated As of OpenUSS 3.0 RC1
 	 */
 	public void removeUser() {
 		removeUser(defaultUser);
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.1
+	 * @deprecated As of OpenUSS 3.0 RC1
 	 */
 	public void updateUser(User user) {
 		userDao.update(user);
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.1
+	 * @deprecated As of OpenUSS 3.0 RC1
 	 */
 	public void removeUser(User user) {
 		user = userDao.load(user.getId());
@@ -124,11 +125,17 @@ public class TestUtility {
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueInstituteInDB()</code>.
+	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueInstituteInDB()</code>.
 	 */
 	public Institute createPersistInstituteWithDefaultUser() {
 		defaultUser.setUsername(unique("username"));
+		defaultUser.setContact(UserContact.Factory.newInstance());
+		defaultUser.setFirstName("firstName");
+		defaultUser.setLastName("lastName");
+		defaultUser.setTitle("title");
+		defaultUser.setEmail(unique("email"));
 		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
+		
 		userDao.create(defaultUser);
 		defaultInstitute.setName(unique("name"));
 		defaultInstitute.setShortcut(unique("shortcut"));
@@ -633,7 +640,7 @@ public class TestUtility {
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueInstituteInDB()</code>.
+	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueInstituteInDB()</code>.
 	 */
 	public Institute createdDefaultInstituteWithStoredUser() {
 		defaultUser.setUsername(unique("username"));
@@ -645,7 +652,7 @@ public class TestUtility {
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUserSecureContext()</code>.
+	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUserSecureContext()</code>.
 	 */
 	public User createSecureContext() {
 		return createSecureContext(Roles.USER_ID);
@@ -671,6 +678,9 @@ public class TestUtility {
 		User user = User.Factory.newInstance();
 		user.setUsername(username);
 		user.setPassword(password);
+		user.setFirstName("firstName");
+		user.setLastName("lastName");
+		user.setTitle("title");
 		user.setEmail("email");
 		user.setEnabled(true);
 		Group group = groupDao.load(roleId);
@@ -692,7 +702,7 @@ public class TestUtility {
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
+	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
 	 */
 	public User createDefaultUser() {
 		User user = User.Factory.newInstance();

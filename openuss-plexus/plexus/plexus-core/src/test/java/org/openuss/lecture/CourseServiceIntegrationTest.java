@@ -204,7 +204,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		CourseType courseType1 = course1.getCourseType(); 
 		
 		Course course2 = testUtility.createUniqueCourseInDB();
-		CourseType courseType2 = course2.getCourseType(); 
+		course2.getCourseType(); 
 		
 		//Create desktop
 		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
@@ -560,7 +560,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 			}
 		}
 		int countInstitute2EnabledCourses = coursesInstitute2Ênabled.size();
-		int countInstitute2DisabledCourses = coursesInstitute2Disabled.size();
+		coursesInstitute2Disabled.size();
 		
 		// Create Courses
 		Course course1 = testUtility.createUniqueCourseInDB();
@@ -745,7 +745,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		logger.debug("----> BEGIN access to isNoneExistingCourseShortcut test <---- ");
 		
 		//Create Secure Context
-		User user = testUtility.createUserSecureContext();
+		testUtility.createUserSecureContext();
 		
 		// Create Courses
 		Course course1= testUtility.createUniqueCourseInDB();

@@ -4,6 +4,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.openuss.braincontest.BrainContestTests;
+import org.openuss.chat.ChatTests;
 import org.openuss.commands.CommandTests;
 import org.openuss.course.newsletter.CourseNewsletterTests;
 import org.openuss.desktop.DesktopTests;
@@ -22,7 +23,12 @@ import org.openuss.system.SystemTests;
 import org.openuss.viewtracking.ViewTrackingTests;
 import org.openuss.wiki.WikiTests;
 
+/**
+ * JUnit Testsuite for all core tests. 
+ * @author Ingo Dueppe
+ */
 public class AllTests {
+
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.openuss");
 		// $JUnit-BEGIN$
@@ -44,10 +50,10 @@ public class AllTests {
 		suite.addTest(ViewTrackingTests.suite());
 		suite.addTest(WikiTests.suite());
 		suite.addTest(StatisticsTests.suite());
+		suite.addTest(ChatTests.suite());
 		// $JUnit-END$
 		return suite;
 	}
-
 
 	public static void main(String[] args) {
 		suite();

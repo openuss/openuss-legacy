@@ -1,9 +1,6 @@
 package org.openuss.lecture;
 
 import java.util.Date;
-import java.util.ResourceBundle;
-
-import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;

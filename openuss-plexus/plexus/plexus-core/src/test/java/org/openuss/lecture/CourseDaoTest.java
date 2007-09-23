@@ -101,9 +101,9 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		try {
 			courseDao.create(course2);
 			flush();			
-			fail("Shortcut violation expected!");
+			// succeed - can create two or more courses with the same shortcut
 		} catch (Exception e) {
-			// succeed - cannot create two or more courses with the same shortcut
+			fail("Shorcut must still be unique!");
 		}
 	}
 	

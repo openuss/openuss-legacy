@@ -172,7 +172,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		
 		// save old values
 		Long oldUniversityId = extendedSearchResults.getUniversityId();
-		Long oldDepartmentId = extendedSearchResults.getDepartmentId();
+//		Long oldDepartmentId = extendedSearchResults.getDepartmentId();
 		
 		
 		// set content of combo box "organisation" if this is necessary for the selected result type

@@ -1,26 +1,21 @@
 package org.openuss.discussion;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * @author Sebastian Roekens
  *
  */
-public class TopicInfoComparator implements Comparator{
+public class TopicInfoComparator implements Comparator<TopicInfo>, Serializable{
+
+	private static final long serialVersionUID = 2590681090108184395L;
 
 	/**
 	 * compares last name of user
 	 */
-	public int compare(Object o1, Object o2) {		
-		if (o1 instanceof TopicInfo){
-			if (o2 instanceof TopicInfo){
-				TopicInfo topicInfo1 = (TopicInfo) o1;
-				TopicInfo topicInfo2 = (TopicInfo) o2;
-				//reverse sorting -> newest topics on top of list
-				return (topicInfo2.getCreated().compareTo(topicInfo1.getCreated()));
-			}
-		}
-		return 0;
+	public int compare(TopicInfo topicInfo1, TopicInfo topicInfo2) {
+		return (topicInfo2.getCreated().compareTo(topicInfo1.getCreated()));
 	}
 	
 }

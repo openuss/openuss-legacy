@@ -23,6 +23,7 @@
                     	<modelPackage process="false">org::acegisecurity::providers::dao</modelPackage>
                     	<modelPackage process="false">org::openuss::framework::*</modelPackage>
                     	<modelPackage process="false">org::openuss::migration::legacy::dao</modelPackage>
+                    	<modelPackage process="false">org::quartz</modelPackage>
                     	<modelPackage process="false">architecture::*</modelPackage>
                     	<modelPackage process="false">java::*</modelPackage>
                     </modelPackages>

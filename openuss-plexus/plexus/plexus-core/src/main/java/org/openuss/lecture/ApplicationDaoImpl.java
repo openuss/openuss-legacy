@@ -5,6 +5,9 @@
  */
 package org.openuss.lecture;
 
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.Validate;
+
 /**
  * @see org.openuss.lecture.Application
  * @author Ron Haus
@@ -54,20 +57,15 @@ public class ApplicationDaoImpl extends org.openuss.lecture.ApplicationDaoBase {
 	 * @see org.openuss.lecture.ApplicationDao#applicationInfoToEntity(org.openuss.lecture.ApplicationInfo)
 	 */
 	public Application applicationInfoToEntity(ApplicationInfo applicationInfo) {
-		if (applicationInfo.getDepartmentInfo() == null) {
-			throw new IllegalArgumentException(
-					"ApplicationDaoImpl.applicationInfoToEntity - the DepartmentID cannot be null");
-		}
-		if (applicationInfo.getInstituteInfo() == null) {
-			throw new IllegalArgumentException(
-					"ApplicationDaoImpl.applicationInfoToEntity - the InstituteID cannot be null");
-		}
-		if (applicationInfo.getApplyingUserInfo() == null) {
-			throw new IllegalArgumentException(
-					"ApplicationDaoImpl.applicationInfoToEntity - the ApplyingUserID cannot be null");
-		}
+		Validate.notNull(applicationInfo.getDepartmentInfo(),"the DepartmentID cannot be null");
+		Validate.notNull(applicationInfo.getInstituteInfo(), "the InstituteID cannot be null");
+		Validate.notNull(applicationInfo.getApplyingUserInfo(), "the ApplyingUserID cannot be null");
 		Application entity = this.loadApplicationFromApplicationInfo(applicationInfo);
+		if (entity == null) {
+			entity = Application.Factory.newInstance();
+		}
 		this.applicationInfoToEntity(applicationInfo, entity, true);
+		
 		entity.setDepartment(this.getDepartmentDao().load(applicationInfo.getDepartmentInfo().getId()));
 		entity.setInstitute(this.getInstituteDao().load(applicationInfo.getInstituteInfo().getId()));
 		entity.setApplyingUser(this.getUserDao().load(applicationInfo.getApplyingUserInfo().getId()));
@@ -88,7 +86,7 @@ public class ApplicationDaoImpl extends org.openuss.lecture.ApplicationDaoBase {
 	/**
      * @see org.openuss.lecture.ApplicationDao#findByDepartmentAndConfirmed(int, org.openuss.lecture.Department, boolean)
      */
-    public java.util.List findByDepartmentAndConfirmed(final int transform, final org.openuss.lecture.Department department, final boolean confirmed)
+    public java.util.List<?> findByDepartmentAndConfirmed(final int transform, final org.openuss.lecture.Department department, final boolean confirmed)
     {
         return this.findByDepartmentAndConfirmed(transform, "from org.openuss.lecture.Application as f where f.confirmed = :confirmed and (f.department = :department) order by f.applicationDate desc", department, confirmed);
     }

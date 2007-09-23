@@ -74,11 +74,9 @@ public class ExtendedSearchTest extends AbstractTransactionalDataSourceSpringCon
 		
 		logger.debug(universityInfo.getName());
 		hits = lectureSearchQuery.search(universityInfo.getName());
-		// hit size should be 2 due to the implementation of recreateLectureIndex
-		// index won't be deleted but duplicated (in detail it duplicates the indexer command of the create service) --> 2
-		assertEquals(2, hits.size());
+		assertEquals(1, hits.size());
 		
-		hits = lectureSearchQuery.search(new String("PleaseFindNothing"));
+		hits = lectureSearchQuery.search("PleaseFindNothing");
 		assertEquals(0, hits.size());
 		
 	}
@@ -91,6 +89,7 @@ public class ExtendedSearchTest extends AbstractTransactionalDataSourceSpringCon
 				"classpath*:applicationContext-cache.xml", 
 				"classpath*:applicationContext-messaging.xml",
 				"classpath*:applicationContext-resources.xml",
+				"classpath*:applicationContext-commands.xml",
 				"classpath*:applicationContext-aop.xml",
 				"classpath*:testContext.xml", 
 				"classpath*:testSecurity.xml", 

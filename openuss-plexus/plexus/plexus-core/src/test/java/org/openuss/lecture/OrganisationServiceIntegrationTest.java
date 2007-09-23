@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.acegisecurity.AccessDeniedException;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
@@ -98,7 +99,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 				organisationService.removeMember(university.getId(), user.getId());
 				fail("Exception should have been thrown!");
 			} catch (Exception e) {
-				;
+				logger.error(e);
 			}
 		}
 		logger.info("----> END access to removeMember test");
@@ -166,7 +167,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 			iterator = userInfos.iterator();
 			while (iterator.hasNext()) {
 				userInfo = (UserInfo) iterator.next();
-				if (userInfo.getId() == user.getId()) {
+				if (ObjectUtils.equals(userInfo.getId(),user.getId())) {
 					count++;
 				}
 			}
@@ -207,7 +208,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 			iterator = userInfos.iterator();
 			while (iterator.hasNext()) {
 				userInfo = (UserInfo) iterator.next();
-				if (userInfo.getId() == user.getId()) {
+				if (ObjectUtils.equals(userInfo.getId(),user.getId())) {
 					count++;
 				}
 			}
@@ -478,7 +479,7 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 			iterator = groups.iterator();
 			while (iterator.hasNext()) {
 				groupItem = (GroupItem) iterator.next();
-				if (groupItem.getId() == group.getId()) {
+				if (ObjectUtils.equals(groupItem.getId(), group.getId())) {
 					count++;
 				}
 			}

@@ -16,7 +16,7 @@ import org.apache.lucene.search.Searcher;
 
 /**
  * <p>
- * @deprecated since OpenUss 3.1.
+ * @deprecated since OpenUss 3.0 RC1.
  * Not necessary for searching.
  * Just used for testing purposes.
  * </p>

@@ -20,7 +20,7 @@ import org.springmodules.lucene.index.object.database.DefaultDatabaseIndexer;
 
 /**
  * <p>
- * @deprecated since OpenUss 3.1.
+ * @deprecated since OpenUss 3.0 RC1.
  * Not necessary for indexing.
  * Just used for testing purposes.
  * </p>
