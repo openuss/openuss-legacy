@@ -54,23 +54,15 @@
 					type="date"> 	
 				</o:input>
 				
-				<h:message
-					for="startdate"
-					style="errorCssClass" />
-				
 				<o:input
 					entity="periodInfo"
 					property="enddate"
 					required="true"
 					type="date">
 					
-					<f:validator
-						validatorId="calendarDateValidator"/>
+					<f:validator validatorId="calendarDateValidator" for="startdate"/>
 				</o:input>
-				
-				<h:message
-					for="endate"
-					style="errorCssClass" />
+			
 				
 			</o:block>
 			
