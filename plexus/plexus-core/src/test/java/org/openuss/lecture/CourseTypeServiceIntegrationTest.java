@@ -8,7 +8,6 @@ package org.openuss.lecture;
 import java.util.List;
 
 import org.openuss.TestUtility;
-import org.openuss.security.User;
 
 /**
  * JUnit Test for Spring Hibernate CourseTypeService class.
@@ -187,7 +186,7 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 		logger.debug("----> BEGIN access to isNoneExistingCourseTypeShortcut test <---- ");
 		
 		//Create Secure Context
-		User user = testUtility.createSecureContext();
+		testUtility.createUserSecureContext();
 		
 		// Create CourseTypes
 		CourseType courseType1= testUtility.createUniqueCourseTypeInDB();
@@ -218,7 +217,7 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 		logger.debug("----> BEGIN access to isNoneExistingCourseTypeName test <---- ");
 		
 		//Create Secure Context
-		testUtility.createSecureContext();
+		testUtility.createUserSecureContext();
 		
 		// Create CourseTypes
 		CourseType courseType1= testUtility.createUniqueCourseTypeInDB();

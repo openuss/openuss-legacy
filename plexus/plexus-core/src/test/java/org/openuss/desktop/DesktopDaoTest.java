@@ -41,9 +41,6 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 	
 	private LectureBuilder lectureBuilder;
 
-	
-	
-	
 	public void testDesktopDaoCreate() {
 		Desktop desktop = createDesktop();
 		assertNotNull(desktop.getId());

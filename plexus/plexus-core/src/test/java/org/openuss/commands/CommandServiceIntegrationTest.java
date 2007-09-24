@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.openuss.TestUtility;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.foundation.DomainObject;
 import org.springframework.beans.support.PropertyComparator;
@@ -24,13 +25,13 @@ public class CommandServiceIntegrationTest extends CommandServiceIntegrationTest
 	private CommandDao commandDao;
 	
 	public void testDoClusterOnceCommand() throws CommandApplicationService {
-		DomainObject domainObject = new DefaultDomainObject(testUtility.unique());
+		DomainObject domainObject = new DefaultDomainObject(TestUtility.unique());
 		commandService.createOnceCommand(domainObject, "commandName", new Date(), "commandType");
 		checkCommand(domainObject, CommandState.ONCE);
 	}
 	
 	public void testDoClusterEachCommand() throws CommandApplicationService {
-		DomainObject domainObject = new DefaultDomainObject(testUtility.unique());
+		DomainObject domainObject = new DefaultDomainObject(TestUtility.unique());
 		commandService.createEachCommand(domainObject, "commandName", "commandType");
 		checkCommand(domainObject, CommandState.EACH);
 	}

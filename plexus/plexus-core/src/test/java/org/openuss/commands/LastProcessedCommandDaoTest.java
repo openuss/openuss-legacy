@@ -5,8 +5,9 @@
  */
 package org.openuss.commands;
 
-import org.openuss.TestUtility;
 import java.util.Date;
+
+import org.openuss.TestUtility;
 
 
 /**
@@ -27,7 +28,7 @@ public class LastProcessedCommandDaoTest extends LastProcessedCommandDaoTestBase
 		command.setDomainIdentifier(1234L);
 		
 		LastProcessedCommand lastProcessedCommand = new LastProcessedCommandImpl();
-		lastProcessedCommand.setId(testUtitlity.unique());
+		lastProcessedCommand.setId(TestUtility.unique());
 		lastProcessedCommand.setLast(command);
 		lastProcessedCommandDao.create(lastProcessedCommand);
 		

@@ -40,7 +40,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		super.onSetUpInTransaction();
 		AcegiUtils.setAclManager(aclManager);
 		defaultDomainObject = createDomainObject();
-		user = testUtility.createSecureContext();
+		user = testUtility.createUserSecureContext();
 		securityService.createObjectIdentity(defaultDomainObject, null);
 		securityService.setPermissions(user, defaultDomainObject, LectureAclEntry.ASSIST);
 	}
@@ -316,7 +316,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertEquals(brainContest.getTries(), addedContest.getTries());
 		assertEquals(brainContest.getDomainIdentifier(), addedContest.getDomainIdentifier());
 		
-		User user = testUtility.createUserInDB();
+		User user = testUtility.createUniqueUserInDB();
 		AnswerInfo answer;
 
 		//check case right answer + no adding to top list
@@ -411,7 +411,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 	}
 		
 	private DefaultDomainObject createDomainObject() {
-		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(testUtility.unique());
+		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(TestUtility.unique());
 		return defaultDomainObject;
 	}
 	

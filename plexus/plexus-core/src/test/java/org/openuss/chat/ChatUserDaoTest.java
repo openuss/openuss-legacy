@@ -18,7 +18,7 @@ public class ChatUserDaoTest extends ChatUserDaoTestBase {
 	
 	public void testChatUserDaoCreate() {
 		ChatUser chatUser = ChatUser.Factory.newInstance();
-		chatUser.setId(testUtility.unique());
+		chatUser.setId(TestUtility.unique());
 		chatUser.setDisplayName("DisplayName");
 		chatUser.setEmail("openuss@openuss.de");
 		chatUserDao.create(chatUser);

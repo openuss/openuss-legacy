@@ -38,12 +38,12 @@ public class TopicDaoTest extends TopicDaoTestBase {
 	
 	public void testTopicDaoViewState() {
 		Forum forum = Forum.Factory.newInstance();
-		forum.setDomainIdentifier(testUtility.unique());
+		forum.setDomainIdentifier(TestUtility.unique());
 		forum.setReadOnly(false);
 		
 		forumDao.create(forum);
 		
-		User user = testUtility.createUserInDB();
+		User user = testUtility.createUniqueUserInDB();
 
 		Topic topic1 = createTopic(user, forum);
 		createViewState(user, topic1);
@@ -51,7 +51,7 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		Topic topic2 = createTopic(user, forum);
 		createViewState(user, topic2);
 		
-		createViewState(testUtility.createUserInDB(), topic2);
+		createViewState(testUtility.createUniqueUserInDB(), topic2);
 		
 		createTopic(user, forum);
 		
@@ -90,12 +90,12 @@ public class TopicDaoTest extends TopicDaoTestBase {
 
 	public void testSearchForUsersToNotifyByTopic(){
 		Forum forum = Forum.Factory.newInstance();
-		forum.setDomainIdentifier(testUtility.unique());
+		forum.setDomainIdentifier(TestUtility.unique());
 		forum.setReadOnly(false);
 		
 		forumDao.create(forum);
 		
-		User user = testUtility.createSecureContext();
+		User user = testUtility.createUserSecureContext();
 
 		Topic topic1 = createTopic(user, forum);
 		
@@ -112,12 +112,12 @@ public class TopicDaoTest extends TopicDaoTestBase {
 
 	public void testSearchForUsersToNotifyByForum(){
 		Forum forum = Forum.Factory.newInstance();
-		forum.setDomainIdentifier(testUtility.unique());
+		forum.setDomainIdentifier(TestUtility.unique());
 		forum.setReadOnly(false);
 		
 		forumDao.create(forum);
 		
-		User user = testUtility.createSecureContext();
+		User user = testUtility.createUserSecureContext();
 
 		Topic topic1 = createTopic(user, forum);
 		

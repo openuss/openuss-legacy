@@ -39,7 +39,7 @@ public class ChatRoomDaoTest extends ChatRoomDaoTestBase {
 
 	private ChatRoom createChatRoom() {
 		ChatRoom chatRoom = ChatRoom.Factory.newInstance();
-		chatRoom.setDomainId(testUtility.unique());
+		chatRoom.setDomainId(TestUtility.unique());
 		chatRoom.setName("Domain Name");
 		chatRoom.setTopic("Current Topic");
 		chatRoom.setCreated(new Date());
@@ -50,7 +50,7 @@ public class ChatRoomDaoTest extends ChatRoomDaoTestBase {
 
 	private ChatUser createChatUser() {
 		ChatUser user = ChatUser.Factory.newInstance("user", "test user");
-		user.setId(testUtility.unique());
+		user.setId(TestUtility.unique());
 		return user;
 	}
 
