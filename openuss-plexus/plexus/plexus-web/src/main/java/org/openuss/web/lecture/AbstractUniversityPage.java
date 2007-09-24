@@ -1,9 +1,5 @@
 package org.openuss.web.lecture;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
@@ -11,7 +7,6 @@ import org.apache.shale.tiger.view.Prerender;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
-import org.openuss.lecture.UniversityServiceException;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 

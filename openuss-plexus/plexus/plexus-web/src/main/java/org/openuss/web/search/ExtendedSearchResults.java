@@ -10,7 +10,6 @@ import javax.faces.model.SelectItem;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.View;
 import org.openuss.search.DomainResult;
 import org.openuss.web.Constants;
 

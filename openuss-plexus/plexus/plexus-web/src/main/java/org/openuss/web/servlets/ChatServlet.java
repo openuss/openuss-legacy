@@ -2,6 +2,7 @@ package org.openuss.web.servlets;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,9 +36,12 @@ public class ChatServlet extends HttpServlet {
 
 	/** ChatService */
 	private transient ChatService chatService;
-	
+
 	/** SecurityService */
 	private transient SecurityService securityService;
+
+	/** Application Context */
+	private WebApplicationContext context;
 
 	/**
 	 * @return XML representation of the room, starting with first new message
@@ -45,38 +49,48 @@ public class ChatServlet extends HttpServlet {
 	 */
 	public String toXml(ChatRoomInfo room, long lastMessage) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		xml.append("<room id=\"" + room.getDomainId() + "\">\n");
-		xml.append("\t<documentName>" + room.getName() + "</documentName>\n");
-		xml.append("\t<topic>" + room.getTopic() + "</topic>\n");
+		xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+		xml.append("<room id=\"" + room.getDomainId() + "\">");
+		xml.append("<documentName>" + room.getName() + "</documentName>");
+		xml.append("<topic>" + room.getTopic() + "</topic>");
 
 		// list of users currently in this chat room
-		xml.append("\t<users>\n");
+		xml.append("<users>");
 		addUsersXML(room, xml);
-		xml.append("\t</users>\n");
+		xml.append("</users>");
 
 		// list of new messages
-		xml.append("\t<messages>\n");
-		for (ChatMessageInfo message: (List<ChatMessageInfo>) chatService.getRecentMessages(room.getId(),lastMessage)) {
+		xml.append("<messages>");
+
+		Locale locale = new Locale(securityService.getCurrentUser().getLocale());
+
+		for (ChatMessageInfo message : (List<ChatMessageInfo>) chatService.getRecentMessages(room.getId(), lastMessage)) {
 			lastMessage = message.getId();
-			xml.append("\t\t<message>\n");
-			xml.append("\t\t\t<sender>" + message.getDisplayName() + "</sender>\n");
-			xml.append("\t\t\t<content>" + message.getText() + "</content>\n");
+			xml.append("<message>");
+			if (message.isI18n()) {
+				xml.append("<sender> System </sender>");
+				xml.append("<content>"
+						+ context.getMessage(message.getText(), new Object[] { message.getDisplayName() }, locale)
+						+ "</content>");
+			} else {
+				xml.append("<sender>" + message.getDisplayName() + "</sender>");
+				xml.append("<content>" + message.getText() + "</content>");
+			}
 			String time = (new java.text.SimpleDateFormat("HH:mm:ss")).format(message.getTime());
-			xml.append("\t\t\t<creationtime>" + time + "</creationtime>\n");
-			xml.append("\t\t</message>\n");
+			xml.append("<creationtime>" + time + "</creationtime>");
+			xml.append("</message>");
 		}
-		xml.append("\t</messages>\n");
+		xml.append("</messages>");
 
 		// set timestamp
-		xml.append("\t<last>" + lastMessage + "</last>\n");
-		xml.append("</room>\n");
+		xml.append("<last>" + lastMessage + "</last>");
+		xml.append("</room>");
 		return xml.toString();
 	}
 
 	private void addUsersXML(ChatRoomInfo room, StringBuffer xml) {
 		for (ChatUserInfo user : (List<ChatUserInfo>) chatService.getChatUsers(room.getId())) {
-			xml.append("\t\t<user>" + user.getDisplayName() + "</user>\n");
+			xml.append("<user>" + user.getDisplayName() + "</user>");
 		}
 	}
 
@@ -84,9 +98,9 @@ public class ChatServlet extends HttpServlet {
 	 * initialization
 	 */
 	public void init() {
-		final WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-		chatService = (ChatService) wac.getBean("chatService", ChatService.class);
-		securityService = (SecurityService) wac.getBean("securityService", SecurityService.class);
+		context = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		chatService = (ChatService) context.getBean("chatService", ChatService.class);
+		securityService = (SecurityService) context.getBean("securityService", SecurityService.class);
 	}
 
 	/**
@@ -126,14 +140,14 @@ public class ChatServlet extends HttpServlet {
 		} else if (action.equals("enter")) {
 			chatService.enterRoom(roomId);
 			StringBuffer xml = new StringBuffer();
-			xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-			xml.append("<newuser>\n");
-			xml.append("\t<user>" +	securityService.getCurrentUser().getId() + "</user>\n");
-			 xml.append("\t<last>" + chatService.getLastMessage(roomId) + "</last>\n");
-			 xml.append("</newuser>\n");
-			 res.setContentType("text/xml");
-			 res.getWriter().write(xml.toString());
-			 logger.debug(xml);
+			xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
+			xml.append("<newuser>");
+			xml.append("<user>" + securityService.getCurrentUser().getId() + "</user>");
+			xml.append("<last>" + chatService.getLastMessage(roomId) + "</last>");
+			xml.append("</newuser>");
+			res.setContentType("text/xml");
+			res.getWriter().write(xml.toString());
+			logger.debug(xml);
 		} else if (action.equals("leave")) {
 			chatService.leaveRoom(roomId);
 		} else if (action.equals("refresh")) {

@@ -1,5 +1,8 @@
 package org.openuss.web;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
@@ -68,6 +71,21 @@ public abstract class BasePage extends BaseBean {
 			user.setPreferences(UserPreferences.Factory.newInstance());
 			user.setContact(UserContact.Factory.newInstance());
 			setSessionBean(Constants.USER, user);
+		}
+	}
+	
+	/**
+	 * @return ResoureBundle
+	 */
+	@Override
+	public ResourceBundle getBundle() {
+		Visit visit = (Visit) getBean("visit");
+		if (visit != null) {
+			return ResourceBundle.getBundle(getBundleName(), new Locale(visit.getLocale()));
+		} else if (getFacesContext().getViewRoot() == null) {
+			return ResourceBundle.getBundle(getBundleName(), getRequest().getLocale());
+		} else {
+			return ResourceBundle.getBundle(getBundleName(), getFacesContext().getViewRoot().getLocale());
 		}
 	}
 	

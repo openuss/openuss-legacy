@@ -1,7 +1,5 @@
 package org.openuss.web.system;
 
-import javax.faces.el.ValueBinding;
-
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;

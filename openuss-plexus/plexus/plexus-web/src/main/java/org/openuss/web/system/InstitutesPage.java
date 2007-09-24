@@ -23,7 +23,6 @@ import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.InstituteServiceException;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.LectureService;
-import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;

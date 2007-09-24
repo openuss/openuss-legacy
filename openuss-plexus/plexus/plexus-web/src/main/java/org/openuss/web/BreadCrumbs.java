@@ -2,6 +2,8 @@ package org.openuss.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -28,13 +30,14 @@ import org.openuss.lecture.UniversityService;
  * object and add their own view-specific crumbs afterwards.
  * 
  * @author Julian Reimann
+ * @author Ingo Düppe
  */
 @Bean(name = "breadcrumbs", scope = Scope.REQUEST)
 public class BreadCrumbs extends BaseBean {
 
 	private boolean rendered;
-	
-	private List<BreadCrumb> myCrumbs;
+
+	private List<BreadCrumb> breadcrumbs;
 
 	@Property(value = "#{courseService}")
 	private CourseService courseService;
@@ -67,7 +70,7 @@ public class BreadCrumbs extends BaseBean {
 	 */
 	public void clear() {
 		rendered = false;
-		myCrumbs = getEmptyList();
+		breadcrumbs = null;
 	}
 
 	/*
@@ -75,18 +78,21 @@ public class BreadCrumbs extends BaseBean {
 	 */
 	public void init() {
 		rendered = true;
-		myCrumbs = getBaseCrumbs();
+		breadcrumbs = null;
 	}
 
 	/*
 	 * Returns the current list of bread crumbs
 	 */
 	public List<BreadCrumb> getCrumbs() {
-		return myCrumbs;
+		if (breadcrumbs == null) {
+			breadcrumbs = getBaseCrumbs();
+		}
+		return breadcrumbs;
 	}
 
-	public void setCrumbs(List<BreadCrumb> newCrumbs) {
-		myCrumbs = newCrumbs;
+	public void setCrumbs(List<BreadCrumb> breadcrumbs) {
+		this.breadcrumbs = breadcrumbs;
 	}
 
 	/*
@@ -113,7 +119,7 @@ public class BreadCrumbs extends BaseBean {
 		List<BreadCrumb> crumbs = new ArrayList<BreadCrumb>();
 
 		BreadCrumb baseCrumb = new BreadCrumb();
-		
+
 		baseCrumb.setName(i18n("home"));
 		baseCrumb.setHint(i18n("home"));
 		baseCrumb.setLink(PageLinks.START_PAGE);
@@ -193,8 +199,7 @@ public class BreadCrumbs extends BaseBean {
 		List<BreadCrumb> crumbs;
 
 		if (organisationHierarchy.getUniversityInfo() != null)
-			crumbs = getUniversityCrumbs(organisationHierarchy
-					.getUniversityInfo());
+			crumbs = getUniversityCrumbs(organisationHierarchy.getUniversityInfo());
 		else
 			crumbs = getUniversityCrumbs(info.getUniversityId());
 
@@ -212,8 +217,7 @@ public class BreadCrumbs extends BaseBean {
 		List<BreadCrumb> crumbs;
 
 		if (organisationHierarchy.getUniversityInfo() != null)
-			crumbs = getUniversityCrumbs(organisationHierarchy
-					.getUniversityInfo());
+			crumbs = getUniversityCrumbs(organisationHierarchy.getUniversityInfo());
 		else
 			crumbs = getUniversityCrumbs(info.getUniversityId());
 
@@ -226,7 +230,7 @@ public class BreadCrumbs extends BaseBean {
 
 	private BreadCrumb getDepartmentCrumb(DepartmentInfo info) {
 		assert info != null;
-		
+
 		BreadCrumb departmentCrumb = new BreadCrumb();
 		departmentCrumb.setName(info.getShortcut());
 		departmentCrumb.setHint(info.getName());
@@ -258,8 +262,7 @@ public class BreadCrumbs extends BaseBean {
 		List<BreadCrumb> crumbs;
 
 		if (organisationHierarchy.getDepartmentInfo() != null)
-			crumbs = getDepartmentCrumbs(organisationHierarchy
-					.getDepartmentInfo());
+			crumbs = getDepartmentCrumbs(organisationHierarchy.getDepartmentInfo());
 		else
 			crumbs = getDepartmentCrumbs(info.getDepartmentId());
 
@@ -277,8 +280,7 @@ public class BreadCrumbs extends BaseBean {
 		List<BreadCrumb> crumbs;
 
 		if (organisationHierarchy.getDepartmentInfo() != null)
-			crumbs = getDepartmentCrumbs(organisationHierarchy
-					.getDepartmentInfo());
+			crumbs = getDepartmentCrumbs(organisationHierarchy.getDepartmentInfo());
 		else
 			crumbs = getDepartmentCrumbs(info.getDepartmentId());
 
@@ -307,8 +309,7 @@ public class BreadCrumbs extends BaseBean {
 		List<BreadCrumb> crumbs;
 
 		if (organisationHierarchy.getInstituteInfo() != null)
-			crumbs = getInstituteCrumbs(organisationHierarchy
-					.getInstituteInfo());
+			crumbs = getInstituteCrumbs(organisationHierarchy.getInstituteInfo());
 		else
 			crumbs = getInstituteCrumbs(info.getInstituteId());
 
@@ -339,8 +340,7 @@ public class BreadCrumbs extends BaseBean {
 		List<BreadCrumb> crumbs;
 
 		if (organisationHierarchy.getInstituteInfo() != null)
-			crumbs = getInstituteCrumbs(organisationHierarchy
-					.getInstituteInfo());
+			crumbs = getInstituteCrumbs(organisationHierarchy.getInstituteInfo());
 		else
 			crumbs = getInstituteCrumbs(info.getInstituteId());
 
@@ -404,7 +404,7 @@ public class BreadCrumbs extends BaseBean {
 		crumbs.add(extendedSearchCrumb);
 		return crumbs;
 	}
-	
+
 	// Search Crumb Generation
 
 	private List<BreadCrumb> getSearchCrumbs() {
@@ -414,7 +414,7 @@ public class BreadCrumbs extends BaseBean {
 		BreadCrumb searchCrumb = new BreadCrumb();
 		searchCrumb.setName(i18n("header_search"));
 		searchCrumb.setHint(i18n("header_search"));
-		
+
 		crumbs.add(searchCrumb);
 		return crumbs;
 	}
@@ -429,7 +429,6 @@ public class BreadCrumbs extends BaseBean {
 		administrationCrumb.setName(i18n("mainmenu_command_administration"));
 		administrationCrumb.setHint(i18n("mainmenu_command_administration"));
 
-		
 		crumbs.add(administrationCrumb);
 		return crumbs;
 	}
@@ -453,20 +452,17 @@ public class BreadCrumbs extends BaseBean {
 	}
 
 	public void loadInstituteCrumbs(Long instituteId) {
-		setOrganisationHierarchy(organisationService
-				.findInstituteHierarchy(instituteId));
+		setOrganisationHierarchy(organisationService.findInstituteHierarchy(instituteId));
 		setCrumbs(getInstituteCrumbs(instituteId));
 	}
 
 	public void loadInstituteCrumbs(InstituteInfo instituteInfo) {
-		setOrganisationHierarchy(organisationService
-				.findInstituteHierarchy(instituteInfo.getId()));
+		setOrganisationHierarchy(organisationService.findInstituteHierarchy(instituteInfo.getId()));
 		setCrumbs(getInstituteCrumbs(instituteInfo));
 	}
 
 	public void loadCourseCrumbs(CourseInfo courseInfo) {
-		setOrganisationHierarchy(organisationService
-				.findCourseHierarchy(courseInfo.getId()));
+		setOrganisationHierarchy(organisationService.findCourseHierarchy(courseInfo.getId()));
 		setCrumbs(getCourseCrumbs(courseInfo));
 	}
 
@@ -497,7 +493,7 @@ public class BreadCrumbs extends BaseBean {
 
 	public void addCrumb(BreadCrumb newCrumb) {
 		if (newCrumb != null)
-			myCrumbs.add(newCrumb);
+			getCrumbs().add(newCrumb);
 	}
 
 	// Getters and Setters
@@ -555,6 +551,21 @@ public class BreadCrumbs extends BaseBean {
 			this.organisationHierarchy = organisationHierarchy;
 		} else {
 			this.organisationHierarchy = new OrganisationHierarchy();
+		}
+	}
+
+	/**
+	 * @return ResoureBundle
+	 */
+	@Override
+	public ResourceBundle getBundle() {
+		Visit visit = (Visit) getBean("visit");
+		if (visit != null) {
+			return ResourceBundle.getBundle(getBundleName(), new Locale(visit.getLocale()));
+		} else if (getFacesContext().getViewRoot() == null) {
+			return ResourceBundle.getBundle(getBundleName(), getRequest().getLocale());
+		} else {
+			return ResourceBundle.getBundle(getBundleName(), getFacesContext().getViewRoot().getLocale());
 		}
 	}
 
