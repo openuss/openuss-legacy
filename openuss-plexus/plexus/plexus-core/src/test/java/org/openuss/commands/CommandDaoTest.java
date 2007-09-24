@@ -20,11 +20,11 @@ public class CommandDaoTest extends CommandDaoTestBase {
 	private TestUtility testUtility;
 	
 	public void testCommandDaoCreate() {
-		createCommandInDB(testUtility.unique(), "commandname", "commandType", CommandState.ONCE);
+		createCommandInDB(TestUtility.unique(), "commandname", "commandType", CommandState.ONCE);
 	}
 	
 	public void testCommandDaoUpdate() {
-		Command command = createCommandInDB(testUtility.unique(), "commandname", "commandType", CommandState.EACH);
+		Command command = createCommandInDB(TestUtility.unique(), "commandname", "commandType", CommandState.EACH);
 		commit();
 		command = commandDao.load(command.getId());
 		command.setCommand("new command");
@@ -103,7 +103,7 @@ public class CommandDaoTest extends CommandDaoTestBase {
 
 	private void fillCommandArray(Command[] command, CommandState state) {
 		for (int i = 0; i < command.length; i++) {
-			command[i] = createCommandInDB(testUtility.unique(), "commandName", "commanType", state);
+			command[i] = createCommandInDB(TestUtility.unique(), "commandName", "commanType", state);
 		}
 	}
 	

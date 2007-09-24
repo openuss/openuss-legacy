@@ -55,7 +55,7 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 
 	private Desktop createDesktop() {
 		Desktop desktop = Desktop.Factory.newInstance();
-		desktop.setUser(testUtility.createUserInDB());
+		desktop.setUser(testUtility.createUniqueUserInDB());
 		this.desktopDao.create(desktop);
 		return desktop;
 	}

@@ -32,14 +32,14 @@ public class ChatMessageDaoTest extends ChatMessageDaoTestBase {
 		super.onSetUpInTransaction();
 
 		chatUser = ChatUser.Factory.newInstance("user", "test user");
-		chatUser.setId(testUtility.unique());
+		chatUser.setId(TestUtility.unique());
 		chatUserDao.create(chatUser);
 		
 		chatRoom = createChatRoom();
 	}
 
 	private ChatRoom createChatRoom() {
-		ChatRoom room = ChatRoom.Factory.newInstance(testUtility.unique(),"name","topic",new Date(), chatUser);
+		ChatRoom room = ChatRoom.Factory.newInstance(TestUtility.unique(),"name","topic",new Date(), chatUser);
 		chatRoomDao.create(room);
 		return room;
 	}

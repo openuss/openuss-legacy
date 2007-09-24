@@ -8,6 +8,7 @@ package org.openuss.discussion;
 import java.util.Date;
 import java.util.List;
 
+import org.openuss.TestUtility;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.foundation.DomainObject;
 import org.openuss.security.SecurityService;
@@ -23,12 +24,12 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 	public SecurityService securityService;
 	
 	private PostInfo generatePost(){
-		User user = testUtility.createSecureContext();
+		User user = testUtility.createUserSecureContext();
 		PostInfo postInfo = new PostInfo();
 		postInfo.setCreated(new Date(System.currentTimeMillis()));
 		postInfo.setLastModification(postInfo.getCreated());
 		postInfo.setSubmitter(user.getUsername());
-		postInfo.setSubmitterId(new Long(1));
+		postInfo.setSubmitterId(1L);
 		postInfo.setText("testText");
 		postInfo.setTitle("testTitle");	
 		postInfo.setIp("001.002.003.004");
@@ -36,7 +37,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 	}
 
 	private DomainObject generateDomainObject(){
-		DomainObject domainObject = new DefaultDomainObject(testUtility.unique());
+		DomainObject domainObject = new DefaultDomainObject(TestUtility.unique());
 		securityService.createObjectIdentity(domainObject, null);
 		//securityService.setPermissions(user, domainId, LectureAclEntry.ASSIST);		
 		return domainObject;

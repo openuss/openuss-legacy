@@ -797,28 +797,6 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		logger.debug("----> END access to setCourseStatus test <---- ");
 	}
 	
-	private LectureBuilder createInstituteStructure(AccessType accessType) {
-		LectureBuilder lectureBuilder = new LectureBuilder();
-		User owner = testUtility.createUserInDB();
-
-		lectureBuilder.createInstitute(owner)
-			.addCourseType()
-			.addPeriod()
-			.addCourse();
-		
-		Institute institute = lectureBuilder.getInstitute();
-		lectureBuilder.getCourse().setAccessType(accessType);
-		
-		instituteDao.create(institute);
-		
-		// define security settings
-		securityService.createObjectIdentity(institute, null);
-		securityService.createObjectIdentity(lectureBuilder.getCourse(), institute);
-		
-		flush();
-		return lectureBuilder;
-	}
-	
 	public InstituteDao getInstituteDao() {
 		return instituteDao;
 	}

@@ -26,7 +26,7 @@ public class ChatServiceIntegrationTest extends ChatServiceIntegrationTestBase {
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
 		super.onSetUpInTransaction();
-		testUtility.createSecureContext();
+		testUtility.createUserSecureContext();
 		domainObject = new DefaultDomainObject(1L);
 		room = chatService.createRoom(domainObject, "name", "topic");
 	}
