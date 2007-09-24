@@ -12,7 +12,6 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.LectureException;

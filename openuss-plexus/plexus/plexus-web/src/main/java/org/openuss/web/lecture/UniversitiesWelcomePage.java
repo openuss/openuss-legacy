@@ -49,7 +49,7 @@ public class UniversitiesWelcomePage extends BasePage{
 	
 	@Prerender
 	public void prerender() throws Exception {
-		crumbs.clear();
+		breadcrumbs.clear();
 	}
 	
 	/**

@@ -31,7 +31,6 @@ public class NewsletterNewMailPage extends AbstractNewsletterPage{
 		super.prerender();
 		newsletter = getCourseNewsletterService().getNewsletter(courseInfo);
 		setSessionBean(Constants.NEWSLETTER_NEWSLETTER, newsletter);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
 		addPageCrumb();
 	}	
 	

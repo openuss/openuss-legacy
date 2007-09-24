@@ -11,11 +11,8 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.CourseType;
 import org.openuss.lecture.CourseTypeInfo;
-import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -37,10 +34,11 @@ public class DesktopPage extends BasePage {
 	private InstituteDataProvider institutesProvider = new InstituteDataProvider();
 	
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
+		super.prerender();
 		logger.debug("prerender desktop");
 		refreshDesktop();
-		crumbs.clear();
+		breadcrumbs.clear();
 	}
 	
 	private void refreshDesktop() {
@@ -123,26 +121,26 @@ public class DesktopPage extends BasePage {
 	 * 
 	 * @return outcome
 	 */
-	public String showCourseType() {
-		logger.debug("starting method showCourseType");
-		CourseTypeInfo courseTypeInfo = courseTypesProvider.getRowData();
-		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
-		return Constants.COURSE_TYPE_COURSE_SELECTION_PAGE;
-	}
+//	public String showCourseType() {
+//		logger.debug("starting method showCourseType");
+//		CourseTypeInfo courseTypeInfo = courseTypesProvider.getRowData();
+//		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
+//		return Constants.COURSE_TYPE_COURSE_SELECTION_PAGE;
+//	}
 
-	public String removeCourseType() {
-		logger.debug("starting method remove courseType");
-		CourseTypeInfo courseTypeInfo = courseTypesProvider.getRowData();
-		try {
-			//desktopService.unlinkCourseType(desktop, courseType);
-			desktopService2.unlinkCourseType(desktopInfo.getId(), courseTypeInfo.getId());
-			addMessage(i18n("desktop_message_removed_coursetype_succeed", courseTypeInfo.getName()));
-		} catch (DesktopException e) {
-			logger.debug(e);
-			addError(i18n(e.getMessage()));
-		}
-		return Constants.DESKTOP;
-	}
+//	public String removeCourseType() {
+//		logger.debug("starting method remove courseType");
+//		CourseTypeInfo courseTypeInfo = courseTypesProvider.getRowData();
+//		try {
+//			//desktopService.unlinkCourseType(desktop, courseType);
+//			desktopService2.unlinkCourseType(desktopInfo.getId(), courseTypeInfo.getId());
+//			addMessage(i18n("desktop_message_removed_coursetype_succeed", courseTypeInfo.getName()));
+//		} catch (DesktopException e) {
+//			logger.debug(e);
+//			addError(i18n(e.getMessage()));
+//		}
+//		return Constants.DESKTOP;
+//	}
 
 	/* ------------------ data models ------------------- */
 	private class CourseDataProvider extends AbstractPagedTable<CourseInfo> {

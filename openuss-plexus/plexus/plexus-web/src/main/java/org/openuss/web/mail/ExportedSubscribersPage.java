@@ -26,7 +26,6 @@ public class ExportedSubscribersPage extends AbstractNewsletterPage {
 		setSessionBean(Constants.NEWSLETTER_NEWSLETTER, newsletter);
 		setSubscribersSemicolon(getCourseNewsletterService().exportSubscribers(courseInfo));
 		setSubscribersComma(getSubscribersSemicolon().replace(';', ','));
-		setSessionBean(Constants.BREADCRUMBS, crumbs);
 		addPageCrumb();
 	}
 	

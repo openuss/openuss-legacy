@@ -46,7 +46,7 @@ public class CourseTypeCourseSelectionPage extends BasePage {
 			courseType = lectureService.getCourseType(courseType.getId());
 		}
 		setSessionBean(Constants.COURSE_TYPE, courseType);
-		crumbs.clear();
+		breadcrumbs.clear();
 	}
 	
 	/* ------------------ data models ------------------- */

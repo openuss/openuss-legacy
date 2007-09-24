@@ -14,9 +14,7 @@ import org.openuss.framework.web.jsf.util.ConversationUtil;
  */
 public class BreadCrumb implements Serializable{
 
-	/**
-	 * 
-	 */
+	/** logger */
 	private static final long serialVersionUID = 7288616777708885608L;
 	
 	private String link;

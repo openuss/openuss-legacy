@@ -213,8 +213,8 @@ public class Constants {
 	public static final String STEP3 = "step3";	
 	
 	// strings used by string builder
-	private static final String SPACE = " ";
-	private static final String NEWLINE = "\r\n";
-	private static final String ARROW = " -> ";
+	public static final String SPACE = " ";
+	public static final String NEWLINE = "\r\n";
+	public static final String ARROW = " -> ";
 	
 }

@@ -1,6 +1,5 @@
 package org.openuss.web.course;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +24,7 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$course$coursenews", scope = Scope.REQUEST)
 @View
-public class CourseNewsPage extends AbstractCoursePage implements Serializable{
+public class CourseNewsPage extends AbstractCoursePage {
 
 	private static final Logger logger = Logger.getLogger(CourseNewsPage.class);
 

@@ -1,11 +1,6 @@
 package org.openuss.web.lecture;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import javax.faces.event.ValueChangeEvent;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -18,8 +13,6 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.ApplicationInfo;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
-import org.openuss.security.User;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**

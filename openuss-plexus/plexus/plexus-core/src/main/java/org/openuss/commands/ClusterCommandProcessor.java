@@ -50,13 +50,13 @@ public class ClusterCommandProcessor implements ApplicationContextAware {
 	 * process all pending node commands
 	 */
 	public void processNodeCommands() {
-		logger.info("starting processing node commands");
+		logger.debug("starting processing node commands");
 		Collection<Command> commands = loadNextNodeCommands();
 		for (Command command : commands) {
 			processNodeCommand(command);
 			updateLastProcessedCommand(command);
 		}
-		logger.info("finished processing node commands");
+		logger.debug("finished processing node commands");
 	}
 	
 	/**

@@ -1,11 +1,10 @@
 package org.openuss.web.course;
 
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.apache.shale.tiger.managed.Scope;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.web.Constants;
 
 @Bean(name="views$secured$course$fslinstall", scope=Scope.REQUEST)
 @View
