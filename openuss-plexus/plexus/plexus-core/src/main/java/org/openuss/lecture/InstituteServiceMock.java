@@ -29,17 +29,17 @@ public class InstituteServiceMock implements InstituteService {
 		List institutes = new ArrayList();
 		
 		List validDepartments = new ArrayList();
-		validDepartments.add(new Long(1101));
-		validDepartments.add(new Long(1102));
-		validDepartments.add(new Long(1103));
-		validDepartments.add(new Long(1201));
-		validDepartments.add(new Long(1202));
-		validDepartments.add(new Long(1301));
-		validDepartments.add(new Long(1302));
-		validDepartments.add(new Long(1401));
-		validDepartments.add(new Long(1402));
-		validDepartments.add(new Long(1501));
-		validDepartments.add(new Long(1502));
+		validDepartments.add(1101L);
+		validDepartments.add(1102L);
+		validDepartments.add(1103L);
+		validDepartments.add(1201L);
+		validDepartments.add(1202L);
+		validDepartments.add(1301L);
+		validDepartments.add(1302L);
+		validDepartments.add(1401L);
+		validDepartments.add(1402L);
+		validDepartments.add(1501L);
+		validDepartments.add(1502L);
 		
 		if(!validDepartments.contains(departmentId)){
 			return institutes;
@@ -47,13 +47,13 @@ public class InstituteServiceMock implements InstituteService {
 		
 		if( departmentId.longValue() % 2 == 0){
 			InstituteInfo institute1 = new InstituteInfo();
-			institute1.setId(new Long(10000+departmentId.longValue()));
+			institute1.setId(10000L+departmentId.longValue());
 			institute1.setName("Lehrstuhl 1");
 			institute1.setShortcut("LS1");
 			institute1.setEnabled(true);
 			
 			InstituteInfo institute2 = new InstituteInfo();
-			institute2.setId(new Long(10000+departmentId.longValue()));
+			institute2.setId(10000+departmentId.longValue());
 			institute2.setName("Lehrstuhl 2");
 			institute2.setShortcut("LS2");
 			institute2.setEnabled(true);
@@ -62,13 +62,13 @@ public class InstituteServiceMock implements InstituteService {
 			institutes.add(institute2);
 		} else {
 			InstituteInfo institute1 = new InstituteInfo();
-			institute1.setId(new Long(10000+departmentId.longValue()));
+			institute1.setId(10000L+departmentId.longValue());
 			institute1.setName("Lehrstuhl A");
 			institute1.setShortcut("LSA");
 			institute1.setEnabled(true);
 			
 			InstituteInfo institute2 = new InstituteInfo();
-			institute2.setId(new Long(10000+departmentId.longValue()));
+			institute2.setId(10000L+departmentId.longValue());
 			institute2.setName("Lehrstuhl B");
 			institute2.setShortcut("LSB");
 			institute2.setEnabled(true);
@@ -117,7 +117,7 @@ public class InstituteServiceMock implements InstituteService {
 		return false;
 	}
 	
-	public List findInstitutesByEnabled (boolean enabledOnly) {
+	public List<InstituteInfo> findAllInstitutes (boolean enabledOnly) {
 		// TODO Auto-generated method stub
 		return null;
 	}

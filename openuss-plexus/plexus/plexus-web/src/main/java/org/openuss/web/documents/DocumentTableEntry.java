@@ -3,6 +3,10 @@ package org.openuss.web.documents;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 
+ * @author Ingo Dueppe
+ */
 public class DocumentTableEntry implements Serializable {
 
 	private static final long serialVersionUID = -3053386731692416783L;
@@ -21,22 +25,21 @@ public class DocumentTableEntry implements Serializable {
 
 	public Boolean marked;
 
-	public DocumentTableEntry(String filename, String mimeType, String size, Date lastChange, Date created,
-			boolean viewed) {
+	public DocumentTableEntry(String filename, String mimeType, String size, Date lastChange, Date created, boolean viewed) {
 		this.filename = filename;
 		this.mimeType = mimeType;
 		this.size = size;
-		this.lastChange = lastChange;
-		this.created = created;
+		this.lastChange = new Date(lastChange.getTime());
+		this.created = new Date(created.getTime());
 		this.viewed = viewed;
 	}
 
 	public Date getCreated() {
-		return created;
+		return new Date(created.getTime());
 	}
 
 	public void setCreated(Date created) {
-		this.created = created;
+		this.created = new Date(created.getTime());
 	}
 
 	public String getFilename() {
@@ -48,11 +51,11 @@ public class DocumentTableEntry implements Serializable {
 	}
 
 	public Date getLastChange() {
-		return lastChange;
+		return new Date(lastChange.getTime());
 	}
 
 	public void setLastChange(Date lastChange) {
-		this.lastChange = lastChange;
+		this.lastChange = new Date(lastChange.getTime());
 	}
 
 	public String getMimeType() {

@@ -41,7 +41,7 @@ public class ChatServlet extends HttpServlet {
 	private transient SecurityService securityService;
 
 	/** Application Context */
-	private WebApplicationContext context;
+	private transient WebApplicationContext context;
 
 	/**
 	 * @return XML representation of the room, starting with first new message

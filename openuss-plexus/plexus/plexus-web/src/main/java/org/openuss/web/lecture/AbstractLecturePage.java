@@ -7,7 +7,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.openuss.documents.DocumentService;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
-import org.openuss.lecture.CourseType;
+import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.CourseTypeService;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentService;
@@ -71,8 +71,8 @@ public abstract class AbstractLecturePage extends BasePage {
 	@Property (value="#{documentService}")
 	private DocumentService documentService;
 
-	@Property(value = "#{sessionScope.courseType}")
-	protected CourseType courseType;
+	@Property(value = "#{sessionScope.courseTypeInfo}")
+	protected CourseTypeInfo courseTypeInfo;
 	
 	@Property(value = "#{courseInfo}")
 	protected CourseInfo courseInfo;
@@ -176,12 +176,12 @@ public abstract class AbstractLecturePage extends BasePage {
 		this.universityService = universityService;
 	}
 
-	public CourseType getCourseType() {
-		return courseType;
+	public CourseTypeInfo getCourseTypeInfo() {
+		return courseTypeInfo;
 	}
 
-	public void setCourseType(CourseType courseType) {
-		this.courseType = courseType;
+	public void setCourseTypeInfo(CourseTypeInfo courseType) {
+		this.courseTypeInfo = courseType;
 	}
 
 	public InstituteService getInstituteService() {

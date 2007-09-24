@@ -86,16 +86,12 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	@SuppressWarnings( { "unchecked" })
 	protected List handleFindCoursesByCourseType(Long courseTypeId) {
-
 		Validate.notNull(courseTypeId, "CourseService.findCoursesByCourseType -" + "courseTypeId cannot be null.");
-
 		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
-
 		return this.getCourseDao().findByCourseType(CourseDao.TRANSFORM_COURSEINFO, courseType);
 	}
 
 	protected CourseInfo handleFindCourse(Long courseId) {
-
 		Validate.notNull(courseId, "CourseService.findCourse - courseId cannot be null.");
 		return this.getCourseDao().toCourseInfo(this.getCourseDao().load(courseId));
 	}

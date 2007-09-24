@@ -6,7 +6,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.register.FacesValidator;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.web.Constants;
@@ -19,8 +18,6 @@ import org.openuss.web.Constants;
 @FacesValidator(value="instituteDepartmentSelectValidator")
 public class InstituteDepartmentSelectValidator extends BaseBean implements Validator {
 	
-	private static final Logger logger = Logger.getLogger(InstituteDepartmentSelectValidator.class);
-
 	public static final String INSTITUTE_DEPARTMENT_MESSAGE_ID = "error_choose_a_valid_department";
 
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {

@@ -19,10 +19,8 @@
 			<o:input entity="courseTypeInfo" property="description" maxlength="250" type="textarea"/>
 		</o:block> 
 		<o:block>	
-		<c:if test="#{views$secured$lecture$institutecourses.renderCourseTypeEditNew}">
-			<h:commandButton id="saveCourseType"   action="#{views$secured$lecture$institutecourses.saveCourseType}" value="#{msg.save}" styleClass="button_save" />
-			<h:commandButton id="cancelCourseType" action="#{views$secured$lecture$institutecourses.cancelCourseType}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
-		</c:if>
+			<h:commandButton id="saveCourseType"   action="#{views$secured$lecture$institutecoursetypes.saveCourseType}" value="#{msg.save}" styleClass="button_save" />
+			<h:commandButton id="cancelCourseType" action="#{views$secured$lecture$institutecoursetypes.cancelCourseType}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
 		</o:block>
 	</h:form>
 </ui:composition>

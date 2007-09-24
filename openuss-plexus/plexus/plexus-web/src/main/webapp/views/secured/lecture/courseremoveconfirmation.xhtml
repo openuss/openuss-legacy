@@ -39,8 +39,20 @@
 	  				<p class="content_font_normal">
 	  					<span>
 							<h:outputText value="#{msg.course_remove_text}" styleClass="warning"/>
-						</span>
+						</span><br/>
+						<strong>#{courseInfo.name} (#{courseInfo.shortcut})	</strong><br/> 
+						<br/>
 					</p>
+					<p class="content_font_normal">
+	   					<h:selectBooleanCheckbox id="checkConfirmation"
+	   						validator="#{views$secured$lecture$courseremoveconfirmation.validateRemoveConfirmation}" 
+	   						styleClass="checkbox" 
+	   						required="true"/>
+	   					<h:outputLabel value="#{msg.course_remove_confirmation_flag}" for="checkConfirmation"/>
+	   				</p>
+	   				<h:message for="checkConfirmation" styleClass="field_error"/>
+					
+					
 				</o:block>
 				<o:block>
 					<h:commandButton value="${msg.remove}" action="#{views$secured$lecture$courseremoveconfirmation.removeCourse}" styleClass="button_warning"/>

@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
-import javax.faces.el.ValueBinding;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -47,21 +44,14 @@ public class InstitutePage extends AbstractLecturePage {
 	@Property(value = "#{newsService}")
 	private NewsService newsService;
 
-	@Property(value = "#{periodInfo}")
-	private PeriodInfo periodInfo;
-	
 	private CourseDataModel courseData = new CourseDataModel();
 	
 	private List<PeriodInfo> periodInfos = null;
-	private Long universityId = 0l;
-	private Long departmentId = 0l;
+	private Long universityId;
+	private Long departmentId;
 	private List<SelectItem> institutePeriodItems;
 	private List<PeriodInfo> institutePeriods;
 	
-	private ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
-	private String locale = (String)binding.getValue(getFacesContext());
-	private ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
-
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws LectureException {
@@ -89,7 +79,7 @@ public class InstitutePage extends AbstractLecturePage {
 			}
 		} 
 		
-		if (periodInfo == null && instituteInfo != null || instituteInfo != null && !periodInfos.contains(periodInfo)) {
+		if (periodInfo != null && instituteInfo != null && !periodInfos.contains(periodInfo)) {
 			if (periodInfo.getId() != null) {
 				// if id of period is ALL_ACTIVE_PERIODS or ALL_PERIODS do nothing. Remain selected!
 				if((periodInfo.getId().longValue() == Constants.COURSES_ALL_PERIODS) || (periodInfo.getId().longValue() == Constants.COURSES_ALL_ACTIVE_PERIODS)) {
@@ -98,25 +88,21 @@ public class InstitutePage extends AbstractLecturePage {
 				// in the new institute(this should be always!). --> The combobox value switches to ALL_ACTIVE_PERIODS
 				} else {
 					periodInfo.setId(Constants.COURSES_ALL_ACTIVE_PERIODS);
-					periodInfo.setName(bundle.getString("all_active_periods"));
+					periodInfo.setName(i18n("all_active_periods"));
 				}
 			}
 			// Suppose the case you initially starting the application no periods are selected --> no periodInfo VO was initiated.
 			// Set default selection to ALL_ACTIVE_PERIODS
 			if ((periodInfo.getId() == null) && (periodInfos.size() > 0)) {
 				periodInfo.setId(Constants.COURSES_ALL_ACTIVE_PERIODS);
-				periodInfo.setName(bundle.getString("all_active_periods"));
+				periodInfo.setName(i18n("all_active_periods"));
 			}
 			
 			if (periodInfos.size() < 1) {
 				// normally this should never happen due to the fact that each university has a standard period!
 				periodInfo = new PeriodInfo();	
 			}
-	
 		} 
-		
-		
-		
 		
 		setSessionBean(Constants.PERIOD_INFO, periodInfo);
 		addBreadCrumbs();
@@ -257,10 +243,10 @@ public class InstitutePage extends AbstractLecturePage {
 			PeriodInfo periodInfo;
 			
 			//create item in combobox displaying all active periods
-			SelectItem itemAllActivePeriods = new SelectItem(Constants.COURSES_ALL_ACTIVE_PERIODS, bundle.getString("all_active_periods"));
+			SelectItem itemAllActivePeriods = new SelectItem(Constants.COURSES_ALL_ACTIVE_PERIODS, i18n("all_active_periods"));
 			institutePeriodItems.add(itemAllActivePeriods);
 			//create item in combobox displaying all periods
-			SelectItem itemAllPeriods = new SelectItem(Constants.COURSES_ALL_PERIODS, bundle.getString("all_periods"));
+			SelectItem itemAllPeriods = new SelectItem(Constants.COURSES_ALL_PERIODS, i18n("all_periods"));
 			institutePeriodItems.add(itemAllPeriods);
 			
 			while (iter.hasNext()) {
@@ -282,9 +268,9 @@ public class InstitutePage extends AbstractLecturePage {
 	public void processPeriodSelectChanged(ValueChangeEvent event) {
 		final Long periodId = (Long) event.getNewValue();
 		if (periodId.longValue() == Constants.COURSES_ALL_PERIODS) {
-			periodInfo.setName(bundle.getString("all_periods"));
+			periodInfo.setName(i18n("all_periods"));
 		} else if (periodId.longValue() == Constants.COURSES_ALL_ACTIVE_PERIODS) {
-			periodInfo.setName(bundle.getString("all_active_periods"));
+			periodInfo.setName(i18n("all_active_periods"));
 		} else {
 			periodInfo = universityService.findPeriod(periodId);
 			setSessionBean(Constants.PERIOD_INFO, periodInfo);

@@ -716,10 +716,8 @@ public class TestUtility {
 		return user;
 	}
 
-	public long unique() {
-		synchronized (TestUtility.class) {
-			return ++uniqueId;
-		}
+	public static synchronized long unique() {
+		return ++uniqueId;
 	}
 
 	public String unique(String str) {
