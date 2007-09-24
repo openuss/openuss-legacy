@@ -5,9 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteInfo;
-import org.openuss.lecture.LectureService;
+import org.openuss.lecture.InstituteService;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
 import org.openuss.system.SystemProperties;
@@ -15,15 +14,24 @@ import org.openuss.system.SystemService;
 
 import com.sun.syndication.feed.synd.SyndEntry;
 
+/**
+ * 
+ * @author Ingo Dueppe
+ * @author Sebastian Roekens
+ */
 public class InstituteFeed extends AbstractFeed {
 
-	private transient LectureService lectureService;
+	/** logger **/
+	public static final Logger logger = Logger.getLogger(CourseFeed.class);
 
+	/** institute service **/
+	private transient InstituteService instituteService;
+
+	/** system service **/
 	private transient SystemService systemService;
 
+	/** news service **/
 	private transient NewsService newsService;
-
-	public static final Logger logger = Logger.getLogger(CourseFeed.class);
 
 	private FeedWrapper buildFeedArray(InstituteInfo institute) {
 		final List<SyndEntry> entries = new ArrayList<SyndEntry>();
@@ -63,9 +71,7 @@ public class InstituteFeed extends AbstractFeed {
 		if (instituteId == null || instituteId == 0) {
 			return null;
 		}
-		Institute f = Institute.Factory.newInstance();
-		f.setId(instituteId);
-		InstituteInfo institute = lectureService.getInstitute(f);
+		InstituteInfo institute = instituteService.findInstitute(instituteId);
 		if (institute == null) {
 			return null;
 		} else  {
@@ -89,12 +95,12 @@ public class InstituteFeed extends AbstractFeed {
 		this.systemService = systemService;
 	}
 
-	public LectureService getLectureService() {
-		return lectureService;
+	public InstituteService getInstituteService() {
+		return instituteService;
 	}
 
-	public void setLectureService(LectureService lectureService) {
-		this.lectureService = lectureService;
+	public void setInstituteService(InstituteService instituteService) {
+		this.instituteService = instituteService;
 	}
 
 }
