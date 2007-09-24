@@ -20,9 +20,10 @@
 			<plexus:commandSortHeader columnName="name">
 				#{msg['department_name']}
 			</plexus:commandSortHeader>
-	        <h:commandLink action="#{views$public$department$NonOfficialDepartments.selectDepartment}" styleClass="command">
+			<o:link value="/views/public/department/department.faces">
+				<f:param name="department" value="#{bean.id}"/>
 				<h:outputText value="#{bean.name}"/>
-			</h:commandLink>
+			</o:link>
 			<h:graphicImage 
 				value="/images/pool/icons/document_stop.png" 
 				title="#{msg.default_department_donot_delete}" 

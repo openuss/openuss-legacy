@@ -20,9 +20,10 @@
 			<plexus:commandSortHeader columnName="name">
 				#{msg['institute_name']}
 			</plexus:commandSortHeader>
-				<h:commandLink action="#{views$public$institute$institutesoverview.selectInstitute}" styleClass="command">
-					<h:outputText value="#{bean.name}"/>
-				</h:commandLink> 
+			<o:link value="/views/public/institute/institute.faces">
+				<f:param name="institute" value="#{bean.id}"/>
+				<h:outputText value="#{bean.name}"/>
+			</o:link>
 		</t:column>
 		
 		<t:column>
