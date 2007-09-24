@@ -8,7 +8,6 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.openuss.documents.FileInfo;
-import org.openuss.web.documents.ZipFileUnpacker;
 
 public class ZipFileImportTest extends TestCase {
 

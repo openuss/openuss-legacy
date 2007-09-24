@@ -1,11 +1,9 @@
 package org.openuss.web.lecture;
 
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
-import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;

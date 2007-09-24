@@ -17,16 +17,11 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.documents.DocumentApplicationException;
-import org.openuss.documents.FileInfo;
-import org.openuss.documents.FolderInfo;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.UniversityInfo;
-import org.openuss.security.Roles;
-import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
-import org.openuss.web.upload.UploadedDocument;
 
 
 /**

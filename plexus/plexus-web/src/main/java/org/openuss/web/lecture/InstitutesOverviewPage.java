@@ -1,7 +1,5 @@
 package org.openuss.web.lecture;
 
-import static org.openuss.web.lecture.InstitutesOverviewPage.logger;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

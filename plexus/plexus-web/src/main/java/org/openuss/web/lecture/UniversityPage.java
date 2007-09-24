@@ -9,9 +9,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
-import org.openuss.lecture.Period;
 import org.openuss.news.NewsService;
-import org.openuss.web.Constants;
 
 /**
  * 
