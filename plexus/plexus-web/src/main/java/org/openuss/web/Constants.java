@@ -105,9 +105,10 @@ public class Constants {
 	public static final String INSTITUTE_PERIODS_PAGE = "institute_periods";
 	public static final String INSTITUTE_PERIOD_REMOVE_PAGE = "institute_period_remove";
 	public static final String INSTITUTES_ADMIN_PAGE = "admin_institutes";
-	public static final String INSTITUTE_COURSE_TYPES_PAGE = "institute_coursetypes";
 	public static final String INSTITUTE_COURSE_REMOVE_PAGE = "institute_course_remove";
 	public static final String INSTITUTE_COURSE_TYPE_REMOVE_PAGE = "institute_coursetype_remove";
+	public static final String INSTITUTE_COURSE_TYPES_PAGE = "institute_coursetypes";
+	public static final String INSTITUTE_COURSES_PAGE = "institute_courses";
 	public static final String INSTITUTE_CONFIRM_DISABLE_PAGE = "institute_disable_confirmation";
 	public static final String INSTITUTE_MEMBERS_PAGE = "institute_members";
 	public static final String INSTITUTE_NEWS_PAGE = "institute_news";
@@ -115,7 +116,6 @@ public class Constants {
 	public static final String INSTITUTE_REGISTRATION_START_PAGE = "institute_registration_start";
 	public static final String INSTITUTE_REGISTRATION_STEP1_PAGE = "institute_registration_step1";
 	public static final String INSTITUTE_REGISTRATION_STEP2_PAGE = "institute_registration_step2";
-	public static final String INSTITUTE_COURSES_PAGE = "institute_courses";
 	public static final String INSTITUTES_PAGE = "manage_institute";
 	public static final String INSTITUTE_CONFIRM_REMOVE_PAGE = "institute_remove_confirmation";
 	public static final String INSTITUTE_DEPARTMENTS_PAGE = "institute_departments";
@@ -131,6 +131,7 @@ public class Constants {
 	// course and course type navigation outcomes and combobox long constants
 	public static final String COURSE_PAGE = "course_main";
 	public static final String COURSE_OPTIONS_PAGE = "course_options";
+	public static final String COURSE_TYPE_EDITING_FLAG = "course_type_editing";
 	public static final String COURSE_TYPE_COURSE_SELECTION_PAGE = "coursetype_course_selection";
 	public static final String COURSE_TYPE_CONFIRM_REMOVE_PAGE = "course_type_remove_confirmation";
 	public static final String COURSE_CONFIRM_REMOVE_PAGE = "course_remove_confirmation";
@@ -216,5 +217,7 @@ public class Constants {
 	public static final String SPACE = " ";
 	public static final String NEWLINE = "\r\n";
 	public static final String ARROW = " -> ";
+
+
 	
 }

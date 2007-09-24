@@ -61,7 +61,7 @@ public class AbstractCoursePage extends BasePage {
 
 	@Prerender
 	public void prerender() throws Exception {
-		if (courseInfo.getId() != null) {
+		if (courseInfo != null && courseInfo.getId() != null) {
 			courseInfo = courseService.findCourse(courseInfo.getId());
 			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
 			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
@@ -77,28 +77,6 @@ public class AbstractCoursePage extends BasePage {
 		}
 	}
 
-	/*
-	public void generateBreadCrumbs() {
-		crumbs.clear();
-		BreadCrumb instituteCrumb = new BreadCrumb();
-
-		instituteCrumb.setName(instituteInfo.getShortcut());
-		instituteCrumb.setLink(PageLinks.INSTITUTE_PAGE);
-		instituteCrumb.addParameter("institute", instituteInfo.getId());
-		instituteCrumb.addParameter("period", courseInfo.getPeriodId());
-		instituteCrumb.setHint(instituteInfo.getName());
-
-		BreadCrumb courseCrumb = new BreadCrumb();
-		courseCrumb.setName(courseInfo.getShortcut());
-		courseCrumb.setLink(PageLinks.COURSE_PAGE);
-		courseCrumb.addParameter("course", courseInfo.getId());
-		courseCrumb.setHint(courseInfo.getName());
-
-		crumbs.add(instituteCrumb);
-		crumbs.add(courseCrumb);
-	}
-*/
-	
 	public CourseService getCourseService() {
 		return courseService;
 	}

@@ -1,4 +1,4 @@
-package org.openuss.web.braincontest; 
+package org.openuss.web.braincontest;
 
 import java.util.Date;
 import java.util.List;
@@ -17,63 +17,63 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$braincontest$braincontestmain", scope = Scope.REQUEST)
 @View
-public class BrainContestMainPage extends AbstractBrainContestPage{
-	
+public class BrainContestMainPage extends AbstractBrainContestPage {
+
 	private BrainContestMainDataProvider data = new BrainContestMainDataProvider();
-	
-	public String remove() throws BrainContestApplicationException{
+
+	public String remove() throws BrainContestApplicationException {
 		BrainContestInfo bci = this.data.getRowData();
 		getBrainContestService().removeContest(bci);
 		addMessage(i18n("braincontest_main_deleted", bci.getTitle()));
 		return Constants.SUCCESS;
 	}
-	
-	public String change(){
+
+	public String change() {
 		addContestToSession();
 		return Constants.BRAINCONTEST_NEWCONTEST;
 	}
 
 	private void addContestToSession() {
 		BrainContestInfo bci = this.data.getRowData();
-		if (bci.getTries()==null) bci.setTries(new Integer(0));
+		if (bci.getTries() == null)
+			bci.setTries(0);
 		setSessionBean(Constants.BRAINCONTENT_CONTEST, bci);
 	}
-	
-	public String topList(){
+
+	public String topList() {
 		addContestToSession();
-		return Constants.BRAINCONTEST_TOP;		
+		return Constants.BRAINCONTEST_TOP;
 	}
-	
-	public String solve(){
+
+	public String solve() {
 		addContestToSession();
 		return Constants.BRAINCONTEST_SOLVE;
 	}
-	
-	public String newContest(){
+
+	public String newContest() {
 		BrainContestInfo bci = new BrainContestInfo();
-		bci.setReleaseDate(new Date(System.currentTimeMillis()));				
-		setSessionBean(Constants.BRAINCONTENT_CONTEST, bci);		
+		bci.setReleaseDate(new Date(System.currentTimeMillis()));
+		setSessionBean(Constants.BRAINCONTENT_CONTEST, bci);
 		return Constants.BRAINCONTEST_NEWCONTEST;
 	}
-	
-	public String editContest(){
+
+	public String editContest() {
 		BrainContestInfo bci = getBrainContestService().getContest(this.data.getRowData());
 		setSessionBean(Constants.BRAINCONTENT_CONTEST, bci);
 		return Constants.BRAINCONTEST_NEWCONTEST;
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
 	private class BrainContestMainDataProvider extends AbstractPagedTable<BrainContestInfo> {
 
 		private static final long serialVersionUID = -7344640723752102800L;
-		
-		private DataPage<BrainContestInfo> page; 
-		
-		@Override 
-		public DataPage<BrainContestInfo> getDataPage(int startRow, int pageSize) {		
-			List<BrainContestInfo> al = getBrainContestService().getContests(courseInfo);			 
-			page = new DataPage <BrainContestInfo>(al.size(),0,al);
+
+		private DataPage<BrainContestInfo> page;
+
+		@Override
+		public DataPage<BrainContestInfo> getDataPage(int startRow, int pageSize) {
+			List<BrainContestInfo> al = getBrainContestService().getContests(courseInfo);
+			page = new DataPage<BrainContestInfo>(al.size(), 0, al);
 			return page;
 		}
 	}

@@ -156,6 +156,11 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>institute_coursetypes</from-outcome>
+			<to-view-id>/views/secured/lecture/institutecoursetypes.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
 			<from-outcome>institute_courses</from-outcome>
 			<to-view-id>/views/secured/lecture/institutecourses.xhtml</to-view-id>
 		</navigation-case>
@@ -354,6 +359,11 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>institute_coursetypes</from-outcome>
+			<to-view-id>/views/secured/lecture/institutecoursetypes.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
 			<from-outcome>institute_courses</from-outcome>
 			<to-view-id>/views/secured/lecture/institutecourses.xhtml</to-view-id>
 		</navigation-case>
@@ -410,8 +420,8 @@
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>institute_courses</from-outcome>
-			<to-view-id>/views/secured/lecture/institutecourses.xhtml</to-view-id>
+			<from-outcome>institute_coursetypes</from-outcome>
+			<to-view-id>/views/secured/lecture/institutecoursetypes.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>

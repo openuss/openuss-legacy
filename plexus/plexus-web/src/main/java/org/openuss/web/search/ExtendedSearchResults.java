@@ -47,12 +47,12 @@ public class ExtendedSearchResults implements Serializable {
 	public ExtendedSearchResults(){
 		titleOnly = false;
 		officialOnly = false;
-		resultTypeId = new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION);
-		universityId = new Long(0);
-		departmentId = new Long(0);
-		instituteId = new Long(0);
-		courseTypeId = new Long(0);
-		periodId = new Long(0);
+		resultTypeId = (long) Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION;
+		universityId = 0L;
+		departmentId = 0L;
+		instituteId = 0L;
+		courseTypeId = 0L;
+		periodId = 0L;
 		universities = new ArrayList<SelectItem>();
 		departments = new ArrayList<SelectItem>();
 		institutes = new ArrayList<SelectItem>();
@@ -149,21 +149,11 @@ public class ExtendedSearchResults implements Serializable {
 	public List<SelectItem> getResultTypes() {
 		ResourceBundle rb = ExtendedSearchUtil.getResourceBundle();
 		ArrayList<SelectItem> resultTypes = new ArrayList<SelectItem>();
-		resultTypes.add(new SelectItem(
-				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_ALL), 
-				rb.getString("extended_search_get_all")));
-		resultTypes.add(new SelectItem(
-				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION), 
-				rb.getString("extended_search_university")));
-		resultTypes.add(new SelectItem(
-				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION), 
-				rb.getString("extended_search_department")));
-		resultTypes.add(new SelectItem(
-				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION), 
-				rb.getString("extended_search_institute")));
-		resultTypes.add(new SelectItem(
-				new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE), 
-				rb.getString("extended_search_course")));
+		resultTypes.add(new SelectItem(Long.valueOf(Constants.EXTENDED_SEARCH_RESULT_TYPE_ALL), rb.getString("extended_search_get_all")));
+		resultTypes.add(new SelectItem(Long.valueOf(Constants.EXTENDED_SEARCH_RESULT_TYPE_ORGANISATION), rb.getString("extended_search_university")));
+		resultTypes.add(new SelectItem(Long.valueOf(Constants.EXTENDED_SEARCH_RESULT_TYPE_SUBORGANISATION),	rb.getString("extended_search_department")));
+		resultTypes.add(new SelectItem(Long.valueOf(Constants.EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION),	rb.getString("extended_search_institute")));
+		resultTypes.add(new SelectItem(Long.valueOf(Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE),	rb.getString("extended_search_course")));
 		return resultTypes;
 	}
 	

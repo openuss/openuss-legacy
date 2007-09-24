@@ -13,6 +13,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -47,16 +48,16 @@ public class InstituteMembersPage extends AbstractLecturePage {
 
 	@Property(value = "#{securityService}")
 	private SecurityService securityService;
-	
+
 	@Property(value = "#{organisationService}")
 	private OrganisationService organisationService;
-	
+
 	private MembersTable members = new MembersTable();
 
 	private InstituteSecurity instituteSecurity;
 
 	private List<?> instituteGroups;
-	
+
 	private transient Set<InstituteMember> changedMembers = new HashSet<InstituteMember>();
 
 	private String username;
@@ -67,7 +68,7 @@ public class InstituteMembersPage extends AbstractLecturePage {
 		// force refreshing data on Render-Response-Phase
 		instituteSecurity = null;
 		instituteGroups = null;
-		if(instituteInfo != null) {
+		if (instituteInfo != null) {
 			if (!instituteInfo.isEnabled()) {
 				addMessage(i18n("institute_not_activated"));
 			}
@@ -80,16 +81,16 @@ public class InstituteMembersPage extends AbstractLecturePage {
 		crumb.setLink("");
 		crumb.setName(i18n("institute_command_members"));
 		crumb.setHint(i18n("institute_command_members"));
-		
+
 		breadcrumbs.loadInstituteCrumbs(instituteInfo);
 		breadcrumbs.addCrumb(crumb);
 	}
-	
+
 	private InstituteSecurity getInstituteSecurity() {
 		if (instituteSecurity == null) {
 			logger.debug("fetching institute security informations");
 			instituteSecurity = instituteService.getInstituteSecurity(instituteInfo.getId());
-			sortMembers(instituteSecurity.getMembers(),members.getSortColumn(),members.isAscending());
+			sortMembers(instituteSecurity.getMembers(), members.getSortColumn(), members.isAscending());
 		}
 		return instituteSecurity;
 	}
@@ -102,7 +103,7 @@ public class InstituteMembersPage extends AbstractLecturePage {
 				public Object transform(Object input) {
 					if (input instanceof InstituteGroup) {
 						InstituteGroup group = (InstituteGroup) input;
-						return new SelectItem(group, i18n(group.getLabel(),group.getLabel(),null));
+						return new SelectItem(group, i18n(group.getLabel(), group.getLabel(), null));
 					}
 					return null;
 				}
@@ -118,7 +119,7 @@ public class InstituteMembersPage extends AbstractLecturePage {
 	}
 
 	public String save() {
-		for(InstituteMember member : changedMembers) {
+		for (InstituteMember member : changedMembers) {
 			try {
 				instituteService.setGroupOfMember(member, instituteInfo.getId());
 				addMessage(i18n("institute_auth_message_changed_member", member.getUsername()));
@@ -132,34 +133,37 @@ public class InstituteMembersPage extends AbstractLecturePage {
 	public String removeMember() throws LectureException {
 		logger.debug("remove member");
 		InstituteMember member = members.getRowData();
-		
-		try{
-			organisationService.removeMember(instituteInfo.getId(),member.getId() );}
-		catch (Exception iae) {
+
+		try {
+			organisationService.removeMember(instituteInfo.getId(), member.getId());
+		} catch (Exception iae) {
 			addError(i18n("auth_message_error_removed_member"));
 			return Constants.SUCCESS;
 		}
 
-			
+		// FIXME below code should be handled within the business layer
+		
 		Iterator<InstituteGroup> iter = member.getGroups().iterator();
 		InstituteGroup group;
-	
-		while (iter.hasNext()){
-			group=iter.next();
-			try{
-			organisationService.removeUserFromGroup(member.getId(),group.getId());}
-			catch(Exception e){
+		while (iter.hasNext()) {
+			group = iter.next();
+			try {
+				organisationService.removeUserFromGroup(member.getId(), group.getId());
+			} catch (Exception e) {
 				addError(i18n(e.getMessage()));
 			}
 		}
-		
 
-		addMessage(i18n("institute_auth_message_removed_member",new Object[]{member.getFirstName(),member.getLastName(),member.getUsername()}));
-		  if(member.getUsername()!=user.getUsername())
-			  return Constants.INSTITUTE;
-		  else
-			   return Constants.SUCCESS;
-		
+		addMessage(i18n("institute_auth_message_removed_member", new Object[] { 
+				member.getFirstName(),
+				member.getLastName(), 
+				member.getUsername() }));
+		if (!StringUtils.equals(member.getUsername(), user.getUsername())) {
+			return Constants.INSTITUTE;
+		} else {
+			return Constants.SUCCESS;
+		}
+
 	}
 
 	/**
@@ -179,7 +183,7 @@ public class InstituteMembersPage extends AbstractLecturePage {
 		} catch (OrganisationServiceException e) {
 			logger.debug(e.getMessage());
 			addError(i18n("organisation_error_apply_member_at_institute_already_applied"));
-		} catch (Exception e){
+		} catch (Exception e) {
 			logger.debug(e.getMessage());
 			addError(i18n("organisation_error_apply_member_at_institute"));
 		}
@@ -212,10 +216,10 @@ public class InstituteMembersPage extends AbstractLecturePage {
 		return new DataPage<InstituteMember>(members.size(), 0, members);
 	}
 
-	/* ------------------------------------  SORTING ------------------- */
-	
+	/* ------------------------------------ SORTING ------------------- */
+
 	private void sortMembers(List<InstituteMember> members, final String column, final boolean ascending) {
-		logger.debug("sorting members by "+column+" ascending "+ascending);
+		logger.debug("sorting members by " + column + " ascending " + ascending);
 		Comparator<InstituteMember> comparator = new Comparator<InstituteMember>() {
 			public int compare(InstituteMember m1, InstituteMember m2) {
 				if (column == null) {
@@ -233,9 +237,10 @@ public class InstituteMembersPage extends AbstractLecturePage {
 				return 0;
 			}
 		};
-		Collections.sort(members,comparator);
+		Collections.sort(members, comparator);
 	}
-	/* ------------------------------------  SORTING ------------------- */
+
+	/* ------------------------------------ SORTING ------------------- */
 
 	/**
 	 * LocalDataModel of Institute Members

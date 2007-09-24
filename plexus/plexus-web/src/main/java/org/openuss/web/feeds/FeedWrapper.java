@@ -5,12 +5,15 @@
 //
 package org.openuss.web.feeds;
 
+import java.util.Date;
+
 
 /**
  * 
- * 
+ * @author Ingo Düppe
+ * @author Sebastian Roeckens
  */
-public class FeedWrapper implements java.io.Serializable {
+public class FeedWrapper  {
 
 	private static final long serialVersionUID = 3926487462738394282L;
 
@@ -21,7 +24,7 @@ public class FeedWrapper implements java.io.Serializable {
 
 	public FeedWrapper(java.io.Writer writer, java.util.Date lastModified) {
 		this.writer = writer;
-		this.lastModified = lastModified;
+		this.lastModified = new Date(lastModified.getTime());
 	}
 
 	/**
@@ -64,11 +67,11 @@ public class FeedWrapper implements java.io.Serializable {
 	 * 
 	 */
 	public java.util.Date getLastModified() {
-		return this.lastModified;
+		return new Date(this.lastModified.getTime());
 	}
 
 	public void setLastModified(java.util.Date lastModified) {
-		this.lastModified = lastModified;
+		this.lastModified = new Date(lastModified.getTime());
 	}
 
 }

@@ -142,7 +142,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		extendedSearchResults.setTextToSearch("");
 		extendedSearchResults.setTitleOnly(false);
 		extendedSearchResults.setOfficialOnly(false);
-		extendedSearchResults.setResultTypeId(Long.valueOf(Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE));
+		extendedSearchResults.setResultTypeId((long)Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE);
 		resetUniversities();
 		extendedSearchResults.setDepartments(defaultSelectItemList());
 		extendedSearchResults.setInstitutes(defaultSelectItemList());

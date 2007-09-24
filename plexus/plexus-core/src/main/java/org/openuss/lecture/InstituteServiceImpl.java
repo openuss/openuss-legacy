@@ -211,12 +211,12 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	 * @see org.openuss.lecture.InstituteService#findInstitutesByEnabled(java.lang.Boolean)
 	 */
 	@Override
-	protected List handleFindInstitutesByEnabled(boolean enabledOnly) throws Exception {
-
-		Validate.notNull(enabledOnly,
-				"InstituteServiceImpl.handleFindInstitutesByEnabled - enabledOnly cannot be null.");
-
-		return this.getInstituteDao().findByEnabled(enabledOnly);
+	protected List handleFindAllInstitutes(boolean enabledOnly) throws Exception {
+		if (enabledOnly) {
+			return getInstituteDao().findByEnabled(InstituteDao.TRANSFORM_INSTITUTEINFO, enabledOnly);
+		} else {
+			return new ArrayList(getInstituteDao().loadAll(InstituteDao.TRANSFORM_INSTITUTEINFO));
+		}
 	}
 
 	/**

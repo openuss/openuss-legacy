@@ -22,7 +22,6 @@ import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.InstituteServiceException;
 import org.openuss.lecture.LectureException;
-import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
@@ -39,9 +38,6 @@ public class InstitutesPage extends BasePage{
 
 	private static final Logger logger = Logger.getLogger(InstitutesPage.class);
 
-	@Property (value="#{lectureService}")
-	private LectureService lectureService;
-	
 	@Property (value="#{instituteService}")
 	private InstituteService instituteService;
 	
@@ -155,7 +151,7 @@ public class InstitutesPage extends BasePage{
 		@Override
 		public DataPage<InstituteInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null){
-				List<InstituteInfo> institutes = new ArrayList<InstituteInfo>(lectureService.getInstitutes(false));
+				List<InstituteInfo> institutes = new ArrayList<InstituteInfo>(instituteService.findAllInstitutes(false));
 				sort(institutes);
 				page = new DataPage<InstituteInfo>(institutes.size(), 0, institutes);
 			}
@@ -166,14 +162,6 @@ public class InstitutesPage extends BasePage{
 	
 	
 	/* ------------ properties ----------------- */
-
-	public LectureService getLectureService() {
-		return lectureService;
-	}
-
-	public void setLectureService(LectureService lectureService) {
-		this.lectureService = lectureService;
-	}
 
 	public InstituteDataProvider getProvider() {
 		return provider;

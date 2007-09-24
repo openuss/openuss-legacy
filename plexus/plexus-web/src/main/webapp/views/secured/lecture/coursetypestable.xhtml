@@ -11,10 +11,10 @@
      <plexus:dataTable   
      	id="courseTypes" 
      	label="#{msg['coursetype_coursetypestable_header']}" 
-     	value="views$secured$lecture$institutecourses.dataCourseTypes" 
+     	value="views$secured$lecture$institutecoursetypes.dataCourseTypes" 
      	columnClasses="col_max_left, col_commands"
      	var="bean" 
-     	rows="4">  
+     	rows="15">  
    
 		<t:column>
 		
@@ -28,7 +28,7 @@
 		<plexus:column header="#{msg.commands_header}">
 			 
 			<plexus:command 
-				bean="#{views$secured$lecture$institutecourses}"
+				bean="#{views$secured$lecture$institutecoursetypes}"
 				action="editCourseType"
 				label="#{msg.coursetype_command_edit}"
 				hint="#{msg.coursetype_command_edit_hint}"
@@ -36,7 +36,7 @@
 			</plexus:command>
 				
 			<plexus:command   
-				bean="#{views$secured$lecture$institutecourses}"
+				bean="#{views$secured$lecture$institutecoursetypes}"
 				action="selectCourseTypeAndConfirmRemove"
 				label="#{msg.coursetype_command_remove}"
 				hint="#{msg.coursetype_command_remove_hint}"
