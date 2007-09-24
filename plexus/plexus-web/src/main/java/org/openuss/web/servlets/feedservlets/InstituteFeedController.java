@@ -1,15 +1,17 @@
 package org.openuss.web.servlets.feedservlets;
 
-import org.openuss.lecture.LectureService;
 import org.openuss.web.feeds.FeedWrapper;
 import org.openuss.web.feeds.InstituteFeed;
 import org.springframework.web.servlet.mvc.Controller;
 
+/**
+ * 
+ * @author Ingo Dueppe
+ * @author Sebastian Roekens
+ */
 public class InstituteFeedController extends AbstractFeedServlet implements Controller{
 
 	private InstituteFeed instituteFeed;
-	
-	private LectureService lectureService;
 	
 	public InstituteFeed getInstituteFeed() {
 		return instituteFeed;
@@ -17,14 +19,6 @@ public class InstituteFeedController extends AbstractFeedServlet implements Cont
 
 	public void setInstituteFeed(InstituteFeed instituteFeed) {
 		this.instituteFeed = instituteFeed;
-	}
-
-	public LectureService getLectureService() {
-		return lectureService;
-	}
-
-	public void setLectureService(LectureService lectureService) {
-		this.lectureService = lectureService;
 	}
 
 	@Override
@@ -38,10 +32,8 @@ public class InstituteFeedController extends AbstractFeedServlet implements Cont
 	}
 
 	@Override
-	public boolean checkPermissions(Long domainIdentifier) {
+	public boolean hasPermissions(Long domainIdentifier) {
 		return true; // anonymous access allowed
 	}
 
-	
-	
 }

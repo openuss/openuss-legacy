@@ -30,7 +30,7 @@ public abstract class AbstractFeedServlet{
 		String modifiedSince = req.getParameter(IF_MODIFIED_SINCE);
 
 		if (domainIdentifier != null) {
-			if (!checkPermissions(domainIdentifier)) {
+			if (!hasPermissions(domainIdentifier)) {
 				res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 				return null;
 			}
@@ -80,7 +80,12 @@ public abstract class AbstractFeedServlet{
 	 */
 	protected abstract FeedWrapper getFeedWrapper(Long domainId);
 
-	public boolean checkPermissions(Long domainIdentifier){
+	/**
+	 * Has the current user the permission to view the rss feed?
+	 * @param domainIdentifier
+	 * @return true - user may access the rss feed
+	 */
+	public boolean hasPermissions(Long domainIdentifier){
 		return AcegiUtils.hasPermission(domainIdentifier, new Integer[] { LectureAclEntry.READ });
 	}
 	
