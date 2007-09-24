@@ -9,7 +9,6 @@
 	
 	<bean name="/public/institute.xml*" class="org.openuss.web.servlets.feedservlets.InstituteFeedController">	
 		<property name="instituteFeed"><ref bean="instituteFeed"/></property>
-		<property name="lectureService"><ref bean="lectureService"/></property>
 	</bean>
 
 	<bean name="/secured/discussion.xml*" class="org.openuss.web.servlets.feedservlets.DiscussionFeedController">	
@@ -35,7 +34,7 @@
 	</bean>
 
 	<bean name="instituteFeed" class="org.openuss.web.feeds.InstituteFeed" parent="feedTemplate">	
-		<property name="lectureService" ref="lectureService"/>
+		<property name="instituteService" ref="instituteService"/>
 		<property name="newsService" ref="newsService"/>
 		<property name="securityService" ref="securityService"/>
 	</bean>
