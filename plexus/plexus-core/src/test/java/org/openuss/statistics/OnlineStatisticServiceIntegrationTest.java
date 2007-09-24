@@ -14,7 +14,7 @@ import java.util.List;
 public class OnlineStatisticServiceIntegrationTest extends OnlineStatisticServiceIntegrationTestBase {
 	
 	public void testUserSession() {
-		testUtility.createSecureContext();
+		testUtility.createUserSecureContext();
 		
 		assertTrue(0 == onlineStatisticService.getOnlineInfo().getTotal());
 		Long sessionId = onlineStatisticService.logSessionStart(null);

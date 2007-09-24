@@ -16,13 +16,13 @@ public class SystemStatisticDaoTest extends SystemStatisticDaoTestBase {
 	
 	public void testSystemStatisticsDaoCreate() {
 		SystemStatistic systemStatistic = SystemStatistic.Factory.newInstance();
-		systemStatistic.setUsers(new Long(1));
-		systemStatistic.setUniversities(new Long(1));
-		systemStatistic.setDepartments(new Long(1));
-		systemStatistic.setInstitutes(new Long(1));
-		systemStatistic.setCourses(new Long(1));
-		systemStatistic.setDocuments(new Long(1));
-		systemStatistic.setPosts(new Long(1));
+		systemStatistic.setUsers(1L);
+		systemStatistic.setUniversities(1L);
+		systemStatistic.setDepartments(1L);
+		systemStatistic.setInstitutes(1L);
+		systemStatistic.setCourses(1L);
+		systemStatistic.setDocuments(1L);
+		systemStatistic.setPosts(1L);
 		systemStatistic.setCreateTime(new Date());
 		assertNull(systemStatistic.getId());
 		systemStatisticDao.create(systemStatistic);

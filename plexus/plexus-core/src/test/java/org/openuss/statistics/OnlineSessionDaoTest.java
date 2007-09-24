@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.openuss.TestUtility;
 import org.openuss.security.User;
 
@@ -21,8 +22,10 @@ public class OnlineSessionDaoTest extends OnlineSessionDaoTestBase {
 	
 	private TestUtility testUtility;
 	
-	private static final Date PAST = new Date(System.currentTimeMillis()-1000000);
-	private static final Date NOW = new Date(System.currentTimeMillis());
+	private static final Date NOW = new Date();
+	private static final Date PAST30 = DateUtils.addMinutes(NOW, -30);
+	private static final Date PAST45 = DateUtils.addMinutes(NOW, -45);
+	private static final Date PAST65 = DateUtils.addMinutes(NOW, -65);
 
 	
 	public void testOnlineInfo() {
@@ -30,13 +33,14 @@ public class OnlineSessionDaoTest extends OnlineSessionDaoTestBase {
 		assertTrue(0 == info.getUsers());
 		assertTrue(0 == info.getTotal());
 		
-		OnlineSession guest = createUserSession(RandomStringUtils.random(30),PAST, null,null);
-		OnlineSession user1 = createUserSession(RandomStringUtils.random(30), PAST, null, testUtility.createUserInDB());
-		OnlineSession user2 = createUserSession(RandomStringUtils.random(30), PAST, null, testUtility.createUserInDB());
+		OnlineSession guest = createUserSession(RandomStringUtils.random(30),PAST30, null,null);
+		OnlineSession user1 = createUserSession(RandomStringUtils.random(30), PAST30, null, testUtility.createUniqueUserInDB());
+		OnlineSession user2 = createUserSession(RandomStringUtils.random(30), PAST45, null, testUtility.createUniqueUserInDB());
+		OnlineSession user3 = createUserSession(RandomStringUtils.random(30), PAST65, null, testUtility.createUniqueUserInDB());
 		
 		info = getOnlineSessionDao().loadOnlineInfo();
-		assertTrue(2 == info.getUsers());
-		assertTrue(3 == info.getTotal());
+		assertEquals("Number of Users", Long.valueOf(2), info.getUsers());
+		assertEquals("Number of Total", Long.valueOf(3), info.getTotal());
 		
 		guest.setEndTime(NOW);
 		user1.setEndTime(NOW);
@@ -51,7 +55,7 @@ public class OnlineSessionDaoTest extends OnlineSessionDaoTestBase {
 	}
 	
 	public void testFindActiveSessionByUser() {
-		OnlineSession session = createUserSession(RandomStringUtils.random(30),PAST, null, testUtility.createUserInDB());
+		OnlineSession session = createUserSession(RandomStringUtils.random(30),PAST30, null, testUtility.createUniqueUserInDB());
 		
 		List<OnlineSession> sessions = onlineSessionDao.findActiveSessionByUser(session.getUser());
 		assertNotNull(sessions);
