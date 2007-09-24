@@ -9,9 +9,8 @@ import org.openuss.course.newsletter.CourseNewsletterService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.newsletter.MailDetail;
 import org.openuss.newsletter.MailInfo;
-import org.openuss.newsletter.NewsletterInfo;
 import org.openuss.newsletter.MailingStatus;
-import org.openuss.web.BasePage;
+import org.openuss.newsletter.NewsletterInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 

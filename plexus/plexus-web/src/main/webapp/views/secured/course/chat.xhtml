@@ -21,12 +21,12 @@
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/chatlayout.xhtml">
   		<ui:define name="title">
-  			<h:outputText value="#{course.name}"/>
+  			<h:outputText value="#{courseInfo.name}"/>
   		</ui:define>
   		<ui:define name="content"> 
 			<o:block>
 				<span class="header_font_normal">
-					<h:outputText value="#{course.shortcut} > Chat" styleClass="content_font_normal"></h:outputText>
+					<h:outputText value="#{courseInfo.shortcut} > Chat" styleClass="content_font_normal"></h:outputText>
 				</span>
 			</o:block>
 			<form action="javascript:doSend()" name="formular" method="post">

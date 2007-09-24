@@ -123,7 +123,7 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage{
 	}
 	
 	public String getTransformedLocale() {
-		if (departmentInfo.getLocale().toString().equals("en")) {
+		if (departmentInfo.getLocale().equals("en")) {
 			return bundle.getString("transform_locale_en");
 		} else if (departmentInfo.getLocale().toString().equals("de")) {
 			return bundle.getString("transform_locale_de");

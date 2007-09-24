@@ -1,28 +1,25 @@
 package org.openuss.web;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
-import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.web.PageLinks;
-import java.util.List;
-import java.util.ArrayList;
-import org.openuss.lecture.UniversityService;
-import org.openuss.lecture.UniversityInfo;
-import org.openuss.lecture.DepartmentService;
-import org.openuss.lecture.DepartmentInfo;
-import org.openuss.lecture.InstituteService;
-import org.openuss.lecture.InstituteInfo;
-import org.openuss.lecture.CourseTypeService;
-import org.openuss.lecture.CourseTypeInfo;
-import org.openuss.lecture.CourseService;
+import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.OrganisationService;
+import org.openuss.lecture.CourseService;
+import org.openuss.lecture.CourseTypeInfo;
+import org.openuss.lecture.CourseTypeService;
+import org.openuss.lecture.DepartmentInfo;
+import org.openuss.lecture.DepartmentService;
+import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.OrganisationHierarchy;
-import javax.faces.el.ValueBinding;
+import org.openuss.lecture.OrganisationService;
+import org.openuss.lecture.UniversityInfo;
+import org.openuss.lecture.UniversityService;
 
 /**
  * Utility Bean for hierarchical bread crumb generation This bean knows how to
@@ -33,9 +30,10 @@ import javax.faces.el.ValueBinding;
  * @author Julian Reimann
  */
 @Bean(name = "breadcrumbs", scope = Scope.REQUEST)
-public class BreadCrumbs extends BaseBean implements Serializable {
-	private static final long serialVersionUID = 7747345698483117871L;
+public class BreadCrumbs extends BaseBean {
+
 	private boolean rendered;
+	
 	private List<BreadCrumb> myCrumbs;
 
 	@Property(value = "#{courseService}")
@@ -87,7 +85,7 @@ public class BreadCrumbs extends BaseBean implements Serializable {
 		return myCrumbs;
 	}
 
-	private void setCrumbs(List<BreadCrumb> newCrumbs) {
+	public void setCrumbs(List<BreadCrumb> newCrumbs) {
 		myCrumbs = newCrumbs;
 	}
 

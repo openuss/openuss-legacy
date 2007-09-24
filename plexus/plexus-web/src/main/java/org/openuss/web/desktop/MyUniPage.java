@@ -120,7 +120,7 @@ public class MyUniPage extends BasePage {
 	private void loadParams()
 	{
 		logger.debug("Loading request parameters");
-		Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		Map<?,?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		
 		try {
 			String stringParamUniversity = (String)params.get("university");

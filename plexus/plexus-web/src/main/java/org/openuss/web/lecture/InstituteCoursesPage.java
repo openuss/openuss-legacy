@@ -36,6 +36,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 
 	public static final Logger logger = Logger.getLogger(InstituteCoursesPage.class);
 
+
 	private LocalDataModelCourseTypes dataCourseTypes = new LocalDataModelCourseTypes();
 	private LocalDataModelCourses dataCourses = new LocalDataModelCourses();
 	
@@ -45,7 +46,8 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	private List<SelectItem> instituteCourseTypeItems;
 	private List<CourseTypeInfo> instituteCourseTypes;
 	private Boolean renderCourseNew = false;
-	static Boolean renderCourseTypeEditNew = false;
+	// FIXME 
+	public  static Boolean renderCourseTypeEditNew = false;
 	private List<PeriodInfo> periodInfos = null;
 	private Long universityId = 0l;
 	private Long departmentId = 0l;
@@ -87,9 +89,7 @@ public class InstituteCoursesPage extends AbstractCoursePage {
 	
 		} 
 		
-		
 		addPageCrumbs();
-			
 		setSessionBean(Constants.PERIOD_INFO, periodInfo);
 	}
 

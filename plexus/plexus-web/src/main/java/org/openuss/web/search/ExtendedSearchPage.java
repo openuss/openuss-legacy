@@ -144,7 +144,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		extendedSearchResults.setTextToSearch("");
 		extendedSearchResults.setTitleOnly(false);
 		extendedSearchResults.setOfficialOnly(false);
-		extendedSearchResults.setResultTypeId(new Long(Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE));
+		extendedSearchResults.setResultTypeId(Long.valueOf(Constants.EXTENDED_SEARCH_RESULT_TYPE_COURSE));
 		resetUniversities();
 		extendedSearchResults.setDepartments(defaultSelectItemList());
 		extendedSearchResults.setInstitutes(defaultSelectItemList());
@@ -318,7 +318,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		List<SelectItem> universitiesToDisplay = new ArrayList<SelectItem>();
 		UniversityInfo universityInfo;
 		// set possible universities
-		List universities = universityService.findUniversitiesByEnabled(true);
+		List<?> universities = universityService.findUniversitiesByEnabled(true);
 		if(universities.size() > 0){
 			universitiesToDisplay.add(getAllSelectItem());
 		} else {
@@ -341,7 +341,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		
 		// determine the departments which belong to the given university
 		if(organisationId.intValue() > 0){
-			List departments = departmentService.findDepartmentsByUniversityAndEnabled(organisationId, true);
+			List<?> departments = departmentService.findDepartmentsByUniversityAndEnabled(organisationId, true);
 			if(departments.size() > 0){
 				departmentsToDisplay.add(getAllSelectItem());
 			} else {
@@ -372,7 +372,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		InstituteInfo instituteInfo;
 		
 		if(suborganisationId.intValue() > Constants.EXTENDED_SEARCH_GET_ALL.intValue()){
-			List institutes = instituteService.findInstitutesByDepartmentAndEnabled(suborganisationId, true);
+			List<?> institutes = instituteService.findInstitutesByDepartmentAndEnabled(suborganisationId, true);
 			if(institutes.size() > 0){
 				institutesToDisplay.add(getAllSelectItem());
 			} else {
@@ -398,7 +398,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		CourseTypeInfo courseTypeInfo;
 
 		if(instituteId.intValue() > 0){
-			List courseTypes = courseTypeService.findCourseTypesByInstitute(instituteId);
+			List<?> courseTypes = courseTypeService.findCourseTypesByInstitute(instituteId);
 			if(courseTypes.size() > 0){
 				courseTypesToDisplay.add(getAllSelectItem());
 			} else {
@@ -425,7 +425,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		
 		// determine periods in which the institute offers courses
 		if(universityId.intValue() > 0){
-			List periods = universityService.findPeriodsByUniversity(universityId);
+			List<?> periods = universityService.findPeriodsByUniversity(universityId);
 			if(periods.size() > 0){
 				periodToDisplay.add(getAllSelectItem());
 			} else {

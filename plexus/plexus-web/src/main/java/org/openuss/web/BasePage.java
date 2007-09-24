@@ -1,23 +1,17 @@
 package org.openuss.web;
 
-import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
-import org.openuss.desktop.Desktop;
+import org.openuss.desktop.DesktopDao;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
-import org.openuss.desktop.DesktopService;
 import org.openuss.desktop.DesktopService2;
-import org.openuss.desktop.DesktopDao;
-import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.security.User;
 import org.openuss.security.UserContact;
 import org.openuss.security.UserPreferences;
-import org.openuss.web.BreadCrumbs;
-
 
 /**
  * Abstract BasePage  
@@ -40,9 +34,6 @@ public abstract class BasePage extends BaseBean {
 	@Property(value = "#{sessionScope.user}")
 	protected User user;
 	
-	@Property(value = "#{"+Constants.BREADCRUMBS+"}")
-	protected List<BreadCrumb> crumbs;
-	
 	@Property(value = "#{breadcrumbs}")
 	protected BreadCrumbs breadcrumbs;
 	
@@ -53,9 +44,6 @@ public abstract class BasePage extends BaseBean {
 	@Preprocess
 	public void preprocess() throws Exception {
 		logger.debug("Starting method preprocess");
-		
-		// TODO Remove old crumb code
-		crumbs.clear();
 		
 		if (desktopInfo == null) {
 			if (user != null && user.getId() != null) {
@@ -106,14 +94,6 @@ public abstract class BasePage extends BaseBean {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public List<BreadCrumb> getCrumbs() {
-		return crumbs;
-	}
-
-	public void setCrumbs(List<BreadCrumb> crumbs) {
-		this.crumbs = crumbs;
 	}
 
 	public DesktopDao getDesktopDao() {

@@ -13,7 +13,6 @@ import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.CourseTypeService;
 import org.openuss.lecture.CourseTypeServiceException;
 import org.openuss.web.Constants;
-import org.openuss.web.lecture.InstituteCoursesPage;
 
 /**
  * Checks whether or not the entered shortcut is already in use or not.
@@ -37,13 +36,13 @@ public class CourseTypeShortcutValidator extends BaseBean implements Validator {
 			boolean unique = courseTypeService.isNoneExistingCourseTypeShortcut(courseTypeInfo, shortcut);
 			if (!unique) {
 				((UIInput) component).setValid(false);
-				addMessage(i18n(SHORTCUT_MESSAGE_ID),null);
+				addError(i18n(SHORTCUT_MESSAGE_ID),null);
 				addError(component.getClientId(context), i18n(SHORTCUT_MESSAGE_ID),null);
 			}
 		} catch (CourseTypeServiceException e) {
 			logger.error(e);
 			// reset renderBoolean --> courseTypeEdit form is still visible
-			InstituteCoursesPage.renderCourseTypeEditNew = true;
+			// InstituteCoursesPage.renderCourseTypeEditNew = true;
 			((UIInput) component).setValid(false);
 			addError(i18n(e.getMessage()));	
 		}

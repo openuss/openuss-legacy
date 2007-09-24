@@ -53,12 +53,10 @@ public class AspirantsPage extends AbstractLecturePage {
 	}
 
 	private void addPageCrumb() {
+		breadcrumbs.loadInstituteCrumbs(instituteInfo);
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
 		crumb.setName(i18n("institute_command_aspirants"));
 		crumb.setHint(i18n("institute_command_aspirants"));
-		
-		// TODO check if further crumbs are necessary for this page
 		breadcrumbs.addCrumb(crumb);
 	}
 	

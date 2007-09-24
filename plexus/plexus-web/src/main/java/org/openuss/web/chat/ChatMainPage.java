@@ -44,8 +44,7 @@ public class ChatMainPage extends AbstractCoursePage {
 		crumb.setLink("");
 		crumb.setName(i18n("course_command_chat"));
 		crumb.setHint(i18n("course_command_chat"));
-		crumbs.add(crumb);
-		setRequestBean(Constants.BREADCRUMBS, crumbs);
+		breadcrumbs.addCrumb(crumb);
 	}
 	
 	private class ChatRoomDataProvider extends AbstractPagedTable<ChatRoomInfo> {

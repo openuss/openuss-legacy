@@ -2,7 +2,6 @@ package org.openuss.web.course;
 
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
-import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseTypeInfo;
@@ -17,7 +16,6 @@ import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-import org.openuss.web.PageLinks;
 
 /**
  * @author Kai Stettner
@@ -60,10 +58,6 @@ public class AbstractCoursePage extends BasePage {
 	
 	@Property(value = "#{periodInfo}")
 	protected PeriodInfo periodInfo;
-
-	
-	
-	
 
 	@Prerender
 	public void prerender() throws Exception {
