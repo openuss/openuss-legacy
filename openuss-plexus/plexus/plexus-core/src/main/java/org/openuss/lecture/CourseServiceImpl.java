@@ -342,10 +342,10 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		}
 
 		// Check changes of Period
-		Period period = this.getPeriodDao().load(courseInfo.getPeriodId());
-		if (!courseOld.getPeriod().equals(period)) {
-			throw new CourseServiceException("CourseService.updateCourse - The Period cannot be changed.");
-		}
+//		Period period = this.getPeriodDao().load(courseInfo.getPeriodId());
+//		if (!courseOld.getPeriod().equals(period)) {
+//			throw new CourseServiceException("CourseService.updateCourse - The Period cannot be changed.");
+//		}
 
 		// Transform VO to Entity
 		Course courseEntity = getCourseDao().courseInfoToEntity(courseInfo);

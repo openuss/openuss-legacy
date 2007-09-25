@@ -1450,8 +1450,7 @@ span.table_data_info {
 	background-color: #ff0000;
 }
 
-td input.button,.button_unlink,.button_link,.button_remove,.button_edit,.button_remove,.button_profile
-	{
+td input.button,.button_unlink,.button_link,.button_remove,.button_move,.button_edit,.button_remove,.button_profile	{
 	width: 79px;
 	height: 17px;
 	margin: 2px 5px 2px 0;
