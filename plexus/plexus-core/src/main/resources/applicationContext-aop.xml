@@ -57,9 +57,11 @@
 		<aop:pointcut
 			id="InstituteServiceDeleteCompleteInstituteTreePointcut"
 			expression="execution(* org..InstituteServiceBase.removeCompleteInstituteTree(java.lang.Long)) and args(instituteId)" />
-		<aop:pointcut id="InstituteServiceApplyAtDepartmentPointcut"
+<!-- 
+  		<aop:pointcut id="InstituteServiceApplyAtDepartmentPointcut"
 			expression="execution(* org..InstituteServiceBase.applyAtDepartment(org.openuss.lecture.ApplicationInfo)) and args(applicationInfo)" />
-		<aop:pointcut id="InstituteServiceApplyAtDepartmentPointcut2"
+ -->	
+		<aop:pointcut id="InstituteServiceApplyAtDepartmentPointcut"
 			expression="execution(* org..InstituteServiceBase.applyAtDepartment(java.lang.Long, java.lang.Long, java.lang.Long)) and args(instituteId, departmentId, userId)" />
 		<aop:pointcut id="InstituteServiceResendActivationCodePointcut"
 			expression="execution(* org..InstituteServiceBase.resendActivationCode(org.openuss.lecture.InstituteInfo, java.lang.Long)) and args(instituteInfo, userId)" />
@@ -88,7 +90,7 @@
 			ref="applicationConfirmationAspectBean">
 			<aop:after-returning
 				method="checkApplicationForConfirmation"
-				pointcut-ref="InstituteServiceApplyAtDepartmentPointcut2"
+				pointcut-ref="InstituteServiceApplyAtDepartmentPointcut"
 				arg-names="applicationId, instituteId, departmentId, userId"
 				returning="applicationId" />
 		</aop:aspect>
@@ -126,7 +128,7 @@
 			ref="instituteDepartmentMailSenderAspectBean">
 			<aop:after-returning
 				method="sendApplyInstituteAtDepartmentMail"
-				pointcut-ref="InstituteServiceApplyAtDepartmentPointcut2"
+				pointcut-ref="InstituteServiceApplyAtDepartmentPointcut"
 				arg-names="instituteId, departmentId, userId" />
 		</aop:aspect>
 
@@ -252,7 +254,7 @@
 				arg-names="instituteId" />
 			<aop:after-returning
 				method="updateInstituteIndexOnDepartmentApplication"
-				pointcut-ref="InstituteServiceApplyAtDepartmentPointcut2"
+				pointcut-ref="InstituteServiceApplyAtDepartmentPointcut"
 				arg-names="applicationId, instituteId, departmentId, userId" 
 				returning="applicationId" />
 			<aop:after-returning

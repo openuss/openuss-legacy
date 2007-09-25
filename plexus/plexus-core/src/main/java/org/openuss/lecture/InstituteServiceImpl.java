@@ -33,7 +33,6 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 	 * @see org.openuss.lecture.InstituteService#create(org.openuss.lecture.InstituteInfo)
 	 */
 	protected Long handleCreate(InstituteInfo instituteInfo, Long userId) throws Exception {
-
 		logger.debug("Starting method handleCreate");
 
 		Validate.notNull(instituteInfo, "The Institute cannot be null");
@@ -87,18 +86,17 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 		Group tutorsGroup = this.getGroupDao().load(tutorsId);
 
 		// Security
-		this.getSecurityService().createObjectIdentity(instituteEntity, null);
-		this.getSecurityService()
-				.setPermissions(adminsGroup, instituteEntity, LectureAclEntry.INSTITUTE_ADMINISTRATION);
-		this.getSecurityService().setPermissions(assistantsGroup, instituteEntity, LectureAclEntry.INSTITUTE_ASSIST);
-		this.getSecurityService().setPermissions(tutorsGroup, instituteEntity, LectureAclEntry.INSTITUTE_TUTOR);
+		getSecurityService().createObjectIdentity(instituteEntity, null);
+		getSecurityService().setPermissions(adminsGroup, instituteEntity, LectureAclEntry.INSTITUTE_ADMINISTRATION);
+		getSecurityService().setPermissions(assistantsGroup, instituteEntity, LectureAclEntry.INSTITUTE_ASSIST);
+		getSecurityService().setPermissions(tutorsGroup, instituteEntity, LectureAclEntry.INSTITUTE_TUTOR);
 
 		// Add Owner to Members and the group of Administrators
-		this.getOrganisationService().addMember(instituteEntity.getId(), userId);
-		this.getOrganisationService().addUserToGroup(userId, adminsGroup.getId());
+		getOrganisationService().addMember(instituteEntity.getId(), userId);
+		getOrganisationService().addUserToGroup(userId, adminsGroup.getId());
 
-		// Create Application
-		// this.handleApplyAtDepartment(instituteInfo.getId(), departmentId, userId);
+		// FIXME Create Application
+		// handleApplyAtDepartment(instituteInfo.getId(), departmentId, userId);
 
 		return instituteEntity.getId();
 	}
@@ -108,13 +106,12 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 	 */
 	protected void handleUpdate(InstituteInfo instituteInfo) throws Exception {
 		logger.debug("Starting method handleUpdate");
-
 		Validate.notNull(instituteInfo, "InstituteService.handleUpdate - the Institute cannot be null");
 		Validate.notNull(instituteInfo.getId(), "InstituteService.handleUpdate - the Institute must have a valid ID");
 
 		// Check changes of Department
-		Department department = this.getDepartmentDao().load(instituteInfo.getDepartmentId());
-		Institute instituteOld = this.getInstituteDao().load(instituteInfo.getId());
+		Department department = getDepartmentDao().load(instituteInfo.getDepartmentId());
+		Institute instituteOld = getInstituteDao().load(instituteInfo.getId());
 		if (!instituteOld.getDepartment().equals(department)) {
 			logger.debug("The department can not be changed. You have to apply first.");
 			instituteInfo.setDepartmentId(instituteOld.getDepartment().getId());
@@ -213,7 +210,6 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 
 	@Override
 	protected Long handleApplyAtDepartment(ApplicationInfo applicationInfo) throws Exception {
-		// FIXME Some of these validation should throw an application exception instead of IllegalStateException
 		Validate.notNull(applicationInfo, "The applicationInfo cannot be null.");
 		Validate.isTrue(applicationInfo.getConfirmationDate() == null, "You cannot set the Confirmation Date yet.");
 		Validate.isTrue(!applicationInfo.isConfirmed(), "Your Application cannot be confirmed yet.");
@@ -242,16 +238,99 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 
 	@Override
 	protected Long handleApplyAtDepartment(Long instituteId, Long departmentId, Long userId) throws Exception {
-		logger.debug("InstituteService.applyAtDepartment  - handleApplication started");
+		logger.debug("handleApplication started");
 
-		Validate.notNull(instituteId, "InstituteService.applyAtDepartment - the InstituteID cannot be null.");
-		Validate.notNull(departmentId, "InstituteService.applyAtDepartment - the DepartmentID cannot be null.");
-		Validate.notNull(userId, "InstituteService.applyAtDepartment - the UserID cannot be null.");
-		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute,
-				"InstituteService.applyAtDepartment - No Institute found corresponding to the InstituteID "
-						+ instituteId);
+		Validate.notNull(instituteId, "The InstituteID cannot be null.");
+		Validate.notNull(departmentId, "The DepartmentID cannot be null.");
+		Validate.notNull(userId, "The UserID cannot be null.");
+		Institute institute = getInstituteDao().load(instituteId);
+		Validate.notNull(institute,	"No Institute found corresponding to the InstituteID "	+ instituteId);
 
+		deleteOldNotConfirmedApplications(institute);
+		Department department = loadDepartment(departmentId);
+		User user = loadUser(userId);
+
+		if (department.getDepartmentType() == DepartmentType.NONOFFICIAL) {
+			deleteAllConfirmedApplications(institute);
+
+			Application application = createDefaultApplication(institute, department, user, true);
+			verifyCoursePeriodsAssoziations(department,institute);
+			// Add Institute to Department
+			department.add(institute);
+			return application.getId();
+
+		} else {
+			// Create not-confirmed Application for official Department
+			Application application = createDefaultApplication(institute, department, user, false);
+
+			if (institute.getDepartment() == null) {
+				// Add Institute to default Department of University including a confirmed Application
+				University university = department.getUniversity();
+				Department departmentDefault = this.getDepartmentDao().findByUniversityAndDefault(university, true);
+				createDefaultApplication(institute, departmentDefault, user, true);
+				departmentDefault.add(institute);
+			}
+
+			return application.getId();
+		}
+	}
+
+	/**
+	 * Checks if the institute changed the university. If so then the preexisting 
+	 * courses will be moved in the default period of the university.
+	 * @param department
+	 * @param institute
+	 */
+	private void verifyCoursePeriodsAssoziations(Department department, Institute institute) {
+		if (!institute.getDepartment().getUniversity().equals(department.getUniversity())) {
+			// a new university so move courses to default period
+			University university = department.getUniversity();
+			Period defaultPeriod = university.getDefaultPeriod();
+			
+			for(CourseType courseType : institute.getCourseTypes()) {
+				for (Course course : courseType.getCourses()) {
+					course.setPeriod(defaultPeriod);
+				}
+			}
+			getInstituteDao().update(institute);
+		}
+	}
+
+	
+	private void deleteAllConfirmedApplications(Institute institute) {
+		// Delete all confirmed Applications of the Institute (should actually only be max 1)
+		List<Application> applicationsOldConfirmed = new ArrayList<Application>();
+		for (Application applicationOld : institute.getApplications()) {
+			if (applicationOld.isConfirmed()) {
+				applicationsOldConfirmed.add(applicationOld);
+			}
+		}
+		for (Application applicationOld : applicationsOldConfirmed) {
+			try {
+				applicationOld.remove(applicationOld.getInstitute());
+				applicationOld.remove(applicationOld.getDepartment());
+				this.getApplicationDao().remove(applicationOld);
+			} catch (Exception e) {
+				logger.error(e);
+			}
+		}
+	}
+
+	private User loadUser(Long userId) {
+		// Load User
+		User user = getSecurityService().getUser(userId);
+		Validate.notNull(user, " No User found corresponding to the UserID " + userId);
+		return user;
+	}
+
+	private Department loadDepartment(Long departmentId) {
+		// Load Department
+		Department department = getDepartmentDao().load(departmentId);
+		Validate.notNull(department, " No Department found corresponding to the DepartmentID " + departmentId);
+		return department;
+	}
+
+	private void deleteOldNotConfirmedApplications(Institute institute) {
 		// Delete all not-confirmed Applications of the Institute (should actually only be max 1)
 		List<Application> applicationsOldNotConfirmed = new ArrayList<Application>();
 		for (Application application : institute.getApplications()) {
@@ -267,92 +346,28 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 			} catch (Exception e) {
 				logger.error(e);
 			}
-
 		}
+	}
 
-		// Load Department
-		Department department = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(department,
-				"InstituteService.applyAtDepartment - No Department found corresponding to the DepartmentID "
-						+ departmentId);
-
-		// Load User
-		User user = this.getUserDao().load(userId);
-		Validate.notNull(user, "InstituteService.applyAtDepartment - No User found corresponding to the UserID "
-				+ userId);
-
-		if (department.getDepartmentType() == DepartmentType.NONOFFICIAL) {
-
-			// Delete all confirmed Applications of the Institute (should actually only be max 1)
-			List<Application> applicationsOldConfirmed = new ArrayList<Application>();
-			for (Application applicationOld : institute.getApplications()) {
-				if (applicationOld.isConfirmed()) {
-					applicationsOldConfirmed.add(applicationOld);
-				}
-			}
-			for (Application applicationOld : applicationsOldConfirmed) {
-				try {
-					applicationOld.remove(applicationOld.getInstitute());
-					applicationOld.remove(applicationOld.getDepartment());
-					this.getApplicationDao().remove(applicationOld);
-				} catch (Exception e) {
-					logger.error(e);
-				}
-			}
-
-			// Create confirmed Application for non-official Department
-			Application application = Application.Factory.newInstance();
-			application.setApplicationDate(new Date());
-			application.setApplyingUser(user);
+	private Application createDefaultApplication(Institute institute, Department department, User user, boolean confirmed) {
+		// Create confirmed Application for non-official Department
+		Application application = Application.Factory.newInstance();
+		application.setApplicationDate(new Date());
+		application.setApplyingUser(user);
+		if (confirmed) {
 			application.setConfirmationDate(new Date());
 			application.setConfirmed(true);
 			application.setConfirmingUser(user);
-			application.setDescription("Automatically created Application");
-			application.add(institute);
-			application.add(department);
-			this.getApplicationDao().create(application);
-
-			// Add Institute to Department
-			department.add(institute);
-
-			return application.getId();
-
 		} else {
-
-			// Create not-confirmed Application for official Department
-			Application application = Application.Factory.newInstance();
-			application.setApplicationDate(new Date());
-			application.setApplyingUser(user);
 			application.setConfirmationDate(null);
 			application.setConfirmed(false);
 			application.setConfirmingUser(null);
-			application.setDescription("Automatically created Application");
-			application.add(institute);
-			application.add(department);
-			this.getApplicationDao().create(application);
-
-			if (institute.getDepartment() == null) {
-
-				// Add Institute to default Department of University including a confirmed Application
-				University university = department.getUniversity();
-				Department departmentDefault = this.getDepartmentDao().findByUniversityAndDefault(university, true);
-
-				Application applicationDefault = Application.Factory.newInstance();
-				applicationDefault.setApplicationDate(new Date());
-				applicationDefault.setApplyingUser(user);
-				applicationDefault.setConfirmationDate(new Date());
-				applicationDefault.setConfirmed(true);
-				applicationDefault.setConfirmingUser(user);
-				applicationDefault.setDescription("Automatically created Application");
-				applicationDefault.add(institute);
-				applicationDefault.add(departmentDefault);
-				this.getApplicationDao().create(applicationDefault);
-
-				departmentDefault.add(institute);
-			}
-
-			return application.getId();
 		}
+		application.setDescription("Automatically created Application");
+		application.add(institute);
+		application.add(department);
+		this.getApplicationDao().create(application);
+		return application;
 	}
 
 	@Override

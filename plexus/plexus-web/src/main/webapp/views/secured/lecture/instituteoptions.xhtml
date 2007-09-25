@@ -38,11 +38,11 @@
 					<h:commandButton value="${msg.save}" action="#{views$secured$lecture$instituteoptions.saveInstitute}" styleClass="button_save"/>
 					<h:commandButton value="${msg.cancel}" action="institute" styleClass="button_cancel" immediate="true"/>
 		  			<h:commandButton 
-					action = "#{views$secured$lecture$instituteoptions.selectInstituteAndConfirmDisable}"
-					styleClass="button_save"
-					value="#{msg.institute_command_disable}"
-					hint="#{msg.institute_command_disable_hint}"
-					rendered="#{instituteInfo.enabled}">
+						action = "#{views$secured$lecture$instituteoptions.selectInstituteAndConfirmDisable}"
+						styleClass="button_save"
+						value="#{msg.institute_command_disable}"
+						hint="#{msg.institute_command_disable_hint}"
+						rendered="#{instituteInfo.enabled}">
 					</h:commandButton>
 		  		</o:block>
 		  	</h:form>

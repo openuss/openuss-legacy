@@ -58,7 +58,7 @@ public abstract class BasePage extends BaseBean {
 			
 			if (desktopInfo != null) {
 				logger.error("could not find desktop for user "+user);
-				addError("message_error_no_desktop_found");
+				addError(i18n("message_error_no_desktop_found"));
 				redirect(Constants.HOME);
 			}
 		}

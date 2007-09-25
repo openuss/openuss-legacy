@@ -18,37 +18,6 @@ public class ApplicationConfirmationAspectImpl {
 	private DepartmentService departmentService;
 	private SecurityService securityService;
 
-	public UserDao getUserDao() {
-		return userDao;
-	}
-
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
-
-	public ApplicationDao getApplicationDao() {
-		return applicationDao;
-	}
-
-	public void setApplicationDao(ApplicationDao applicationDao) {
-		this.applicationDao = applicationDao;
-	}
-
-	public DepartmentService getDepartmentService() {
-		return departmentService;
-	}
-
-	public void setDepartmentService(DepartmentService departmentService) {
-		this.departmentService = departmentService;
-	}
-
-	public SecurityService getSecurityService() {
-		return securityService;
-	}
-
-	public void setSecurityService(SecurityService securityService) {
-		this.securityService = securityService;
-	}
 
 	public void checkApplicationForConfirmation(Object applicationId, Long instituteId, Long departmentId, Long userId) {
 		logger.debug("----------> Begin method checkApplicationForConfirmation <----------");
@@ -61,7 +30,7 @@ public class ApplicationConfirmationAspectImpl {
 			if ((application != null) && (!application.isConfirmed())) {
 				Department department = application.getDepartment();
 				if (department != null) {
-					logger.debug("--> Alles OK <--");
+					logger.debug("--> everything is fine <--");
 
 					boolean hasPermission = false;
 
@@ -69,8 +38,8 @@ public class ApplicationConfirmationAspectImpl {
 						hasPermission = securityService.hasPermission(department,
 								new Integer[] { LectureAclEntry.DEPARTMENT_ADMINISTRATION });
 					} catch (Exception e) {
-						logger.debug(e.getMessage());
 						logger.debug("--> Problems during Permission validation, skipping Confirmation <--");
+						logger.debug(e);
 					}
 					if (hasPermission) {
 						logger.debug("--> User has Admin Permissions, starting Confirmation <--");
@@ -93,4 +62,35 @@ public class ApplicationConfirmationAspectImpl {
 		logger.debug("----------> End method checkApplicationForConfirmation <----------");
 	}
 
+	public UserDao getUserDao() {
+		return userDao;
+	}
+	
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+	
+	public ApplicationDao getApplicationDao() {
+		return applicationDao;
+	}
+	
+	public void setApplicationDao(ApplicationDao applicationDao) {
+		this.applicationDao = applicationDao;
+	}
+	
+	public DepartmentService getDepartmentService() {
+		return departmentService;
+	}
+	
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+	
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+	
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
+	}
 }

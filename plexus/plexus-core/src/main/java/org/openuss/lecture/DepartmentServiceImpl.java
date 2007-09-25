@@ -22,26 +22,24 @@ import org.openuss.security.acl.LectureAclEntry;
  * @see org.openuss.lecture.DepartmentService
  * @author Florian Dondorf
  * @author Ron Haus
+ * @author Ingo Dueppe
  */
-public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentServiceBase {
+public class DepartmentServiceImpl extends DepartmentServiceBase {
 
 	private static final Logger logger = Logger.getLogger(DepartmentServiceImpl.class);
 
 	/**
-	 * @see org.openuss.lecture.DepartmentService#create(org.openuss.lecture.DepartmentInfo, java.lang.Long)
+	 * @see org.openuss.lecture.DepartmentService#create(org.openuss.lecture.DepartmentInfo,
+	 *      java.lang.Long)
 	 */
-	protected java.lang.Long handleCreate(org.openuss.lecture.DepartmentInfo department, java.lang.Long userId)
-			throws java.lang.Exception {
-
+	protected Long handleCreate(DepartmentInfo department, Long userId) throws Exception {
 		logger.debug("Starting method handleCreate");
 
-		Validate.notNull(department, "DepartmentService.handleCreate - the Department cannot be null");
-		Validate.notNull(userId, "DepartmentService.handleCreate - the User must have a valid ID");
+		Validate.notNull(department, "The Department cannot be null");
+		Validate.notNull(userId, "The User must have a valid ID");
 
-		Validate.isTrue(department.getId() == null,
-				"DepartmentService.handleCreate - the Department shouldn't have an ID yet");
-		Validate.isTrue(!department.isDefaultDepartment(),
-				"DepartmentService.handleCreate - You cannot create a default Department!");
+		Validate.isTrue(department.getId() == null, "The Department shouldn't have an ID yet");
+		Validate.isTrue(!department.isDefaultDepartment(), "You cannot create a default Department!");
 
 		// Transform ValueObject into Entity
 		Department departmentEntity = this.getDepartmentDao().departmentInfoToEntity(department);
@@ -75,26 +73,21 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		this.getOrganisationService().addMember(departmentEntity.getId(), userId);
 		this.getOrganisationService().addUserToGroup(userId, admins.getId());
 
-		// TODO: Fire departmentCreated event to bookmark Department to User who created it
-
 		return departmentEntity.getId();
 	}
 
 	/**
 	 * @see org.openuss.lecture.DepartmentService#update(org.openuss.lecture.DepartmentInfo)
 	 */
-	protected void handleUpdate(org.openuss.lecture.DepartmentInfo departmentInfo) throws java.lang.Exception {
-		// TODO: Security
-
-		Validate.notNull(departmentInfo, "DepartmentService.handleUpdate - the Department cannot be null");
-		Validate.isTrue(departmentInfo.getId() != null,
-				"DepartmentService.handleUpdate - the Department must have a valid ID");
+	protected void handleUpdate(DepartmentInfo departmentInfo) throws Exception {
+		Validate.notNull(departmentInfo, "The Department cannot be null");
+		Validate.isTrue(departmentInfo.getId() != null, "The Department must have a valid ID");
 
 		// Check changes of University
 		University university = this.getUniversityDao().load(departmentInfo.getUniversityId());
 		Department departmentOld = this.getDepartmentDao().load(departmentInfo.getId());
 		if (!departmentOld.getUniversity().equals(university)) {
-			throw new DepartmentServiceException("DepartmentService.handleUpdate - The University can not be changed.");
+			throw new DepartmentServiceException("The University can not be changed.");
 		}
 
 		// Transform VO to Entity
@@ -107,16 +100,13 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	/**
 	 * @see org.openuss.lecture.DepartmentService#removeDepartment(java.lang.Long)
 	 */
-	protected void handleRemoveDepartment(java.lang.Long departmentId) throws java.lang.Exception {
+	protected void handleRemoveDepartment(Long departmentId) throws Exception {
 		logger.debug("Starting method handleRemoveDepartment for DepartmentID " + departmentId);
 
-		Validate.notNull(departmentId, "DepartmentService.handleRemove - the DepartmentId cannot be null");
+		Validate.notNull(departmentId, "The DepartmentId cannot be null");
 		Department department = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(department,
-				"DepartmentService.handleRemoveDepartment - no Department found corresponding to the ID "
-						+ departmentId);
-		Validate.isTrue(department.getInstitutes().size() == 0,
-				"DepartmentService.handleRemoveDepartment - the Department still contains Institutes");
+		Validate.notNull(department, "No Department found corresponding to the ID " + departmentId);
+		Validate.isTrue(department.getInstitutes().size() == 0, "The Department still contains Institutes");
 
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(department);
@@ -133,11 +123,8 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	/**
 	 * @see org.openuss.lecture.DepartmentService#findDepartment(java.lang.Long)
 	 */
-	protected org.openuss.lecture.DepartmentInfo handleFindDepartment(java.lang.Long departmentId)
-			throws java.lang.Exception {
-
-		Validate.notNull(departmentId, "DepartmentService.handleFindDepartment - the DepartmentId cannot be null");
-
+	protected DepartmentInfo handleFindDepartment(Long departmentId) throws Exception {
+		Validate.notNull(departmentId, "The DepartmentId cannot be null");
 		Department department = (Department) this.getDepartmentDao().load(departmentId);
 		return this.getDepartmentDao().toDepartmentInfo(department);
 	}
@@ -146,19 +133,14 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	 * @see org.openuss.lecture.DepartmentService#findDepartmentsByUniversity(java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected java.util.List handleFindDepartmentsByUniversity(java.lang.Long universityId) throws java.lang.Exception {
-
-		Validate.notNull(universityId,
-				"DepartmentService.handleFindDepartmentsByUniversity - the universityId cannot be null");
-
+	protected List handleFindDepartmentsByUniversity(Long universityId) throws Exception {
+		Validate.notNull(universityId, "The universityId cannot be null");
 		University university = this.getUniversityDao().load(universityId);
-
-		Validate.notNull(university,
-				"DepartmentService.handleFindDepartmentsByUniversity - no University found corresponding to the ID "
-						+ universityId);
+		Validate.notNull(university, "No University found corresponding to the ID " + universityId);
 		/*
-		 * if (university == null) { return new ArrayList(); } List departmentInfos = new ArrayList(); for (Department
-		 * department : university.getDepartments()) {
+		 * if (university == null) { return new ArrayList(); } List
+		 * departmentInfos = new ArrayList(); for (Department department :
+		 * university.getDepartments()) {
 		 * departmentInfos.add(this.getDepartmentDao().toDepartmentInfo(department)); }
 		 */
 
@@ -171,27 +153,20 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	 */
 	@SuppressWarnings( { "unchecked" })
 	protected List handleFindDepartmentsByUniversityAndEnabled(Long universityId, boolean enabled) throws Exception {
-
-		Validate.notNull(universityId,
-				"DepartmentService.handleFindDepartmentsByUniversityAndEnabled - the universityId cannot be null");
-
+		Validate.notNull(universityId, "The universityId cannot be null");
 		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university,
-				"DepartmentService.handleFindDepartmentsByUniversityAndEnabled - no University found corresponding to the ID "
-						+ universityId);
-
-		return this.getDepartmentDao().findByUniversityAndEnabled(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university,
+		Validate.notNull(university, "No University found corresponding to the ID " + universityId);
+		return getDepartmentDao().findByUniversityAndEnabled(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university,
 				enabled);
 	}
 
 	/**
-	 * @see org.openuss.lecture.DepartmentService#findDepartmentsByType(org.openuss.lecture DepartmentType)
+	 * @see org.openuss.lecture.DepartmentService#findDepartmentsByType(org.openuss.lecture
+	 *      DepartmentType)
 	 */
 	@SuppressWarnings( { "unchecked" })
 	protected List handleFindDepartmentsByType(DepartmentType type) throws Exception {
-
-		Validate.notNull(type, "DepartmentService.handleFindDepartmentsByType - the type cannot be null");
-
+		Validate.notNull(type, "The type cannot be null");
 		return this.getDepartmentDao().findByType(DepartmentDao.TRANSFORM_DEPARTMENTINFO, type);
 	}
 
@@ -199,15 +174,10 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	@Override
 	protected List handleFindDepartmentsByUniversityAndType(Long universityId, DepartmentType departmentType)
 			throws Exception {
-		Validate.notNull(universityId,
-				"DepartmentService.handleFindDepartmentsByUniversityAndType - the universityId cannot be null");
-		Validate.notNull(departmentType,
-				"DepartmentService.handleFindDepartmentsByUniversityAndType - the departmentType cannot be null");
+		Validate.notNull(universityId, "DepartmentThe universityId cannot be null");
+		Validate.notNull(departmentType, "The departmentType cannot be null");
 		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university,
-				"DepartmentService.handleFindDepartmentsByUniversityAndType - no University found corresponding to the ID "
-						+ universityId);
-
+		Validate.notNull(university, "No University found corresponding to the ID " + universityId);
 		return this.getDepartmentDao().findByUniversityAndType(DepartmentDao.TRANSFORM_DEPARTMENTINFO, university,
 				departmentType);
 	}
@@ -216,17 +186,20 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	protected void handleAcceptApplication(Long applicationId, Long userId) throws Exception {
 		Validate.notNull(applicationId, "The applicationId cannot be null");
 		Application application = this.getApplicationDao().load(applicationId);
-		Validate.notNull(application, "No Application found corresponding to the ID "+ applicationId);
-		Validate.isTrue(!application.isConfirmed(),	"The Application is already confirmed");
+		Validate.notNull(application, "No Application found corresponding to the ID " + applicationId);
+		Validate.isTrue(!application.isConfirmed(), "The Application is already confirmed");
 
 		User user = this.getUserDao().load(userId);
-		Validate.notNull(user, "No User found corresponding to the ID "	+ userId);
+		Validate.notNull(user, "No User found corresponding to the ID " + userId);
 
 		Department department = application.getDepartment();
 		Institute institute = application.getInstitute();
+		
+		verifyCoursePeriodsAssoziations(department, institute);
 
 		// Add Institute to Department
 		department.add(institute);
+		getInstituteDao().update(institute);
 
 		// Delete all old Applications of the Institute (should actually only be max 2)
 		List<Application> applicationsOld = new ArrayList<Application>();
@@ -250,17 +223,34 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		application.setConfirmed(true);
 	}
 
+	/**
+	 * Checks if the institute changed the university. If so then the preexisting 
+	 * courses will be moved in the default period of the university.
+	 * @param department
+	 * @param institute
+	 */
+	private void verifyCoursePeriodsAssoziations(Department department, Institute institute) {
+		if (!institute.getDepartment().getUniversity().equals(department.getUniversity())) {
+			// a new university so move courses to default period
+			University university = department.getUniversity();
+			Period defaultPeriod = university.getDefaultPeriod();
+			
+			for(CourseType courseType : institute.getCourseTypes()) {
+				for (Course course : courseType.getCourses()) {
+					course.setPeriod(defaultPeriod);
+				}
+			}
+		}
+	}
+
 	@Override
 	protected void handleRejectApplication(Long applicationId) throws Exception {
 
-		Validate.notNull(applicationId, "DepartmentService.handleRejectApplication - the applicationId cannot be null");
+		Validate.notNull(applicationId, "The applicationId cannot be null");
 
 		Application application = this.getApplicationDao().load(applicationId);
-		Validate.notNull(application,
-				"DepartmentService.handleRejectApplication - no Application found corresponding to the ID "
-						+ applicationId);
-		Validate.isTrue(!application.isConfirmed(),
-				"DepartmentService.handleRejectApplication - the Application is already confirmed");
+		Validate.notNull(application, "No Application found corresponding to the ID " + applicationId);
+		Validate.isTrue(!application.isConfirmed(), "The Application is already confirmed");
 
 		application.remove(application.getDepartment());
 		application.remove(application.getInstitute());
@@ -270,16 +260,12 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	@SuppressWarnings( { "unchecked" })
 	@Override
 	protected void handleSignoffInstitute(Long instituteId) throws Exception {
-
-		Validate.notNull(instituteId, "DepartmentService.handleSignoffInstitute - the instituteId cannot be null");
-
+		Validate.notNull(instituteId, "The instituteId cannot be null");
 		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute,
-				"DepartmentService.handleSignoffInstitute - no Institute found corresponding to the ID " + instituteId);
+		Validate.notNull(institute, "No Institute found corresponding to the ID " + instituteId);
 
 		Department department = institute.getDepartment();
-		Validate.notNull(department,
-				"DepartmentService.handleSignoffInstitute - no Department found corresponding to the Institute");
+		Validate.notNull(department, "No Department found corresponding to the Institute");
 
 		// Remove obsolete Application
 		Application application = this.getApplicationDao().findByInstituteAndDepartment(institute, department);
@@ -295,14 +281,15 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 		department.remove(institute);
 
 		// Assign Institute to Standard non-official Department
-		Department departmentDefault = this.getDepartmentDao().findByUniversityAndDefault(department.getUniversity(), true);
+		Department departmentDefault = this.getDepartmentDao().findByUniversityAndDefault(department.getUniversity(),
+				true);
 		this.getInstituteService().applyAtDepartment(instituteId, departmentDefault.getId(), userId);
 	}
 
 	@Override
 	protected ApplicationInfo handleFindApplication(Long applicationId) throws Exception {
 
-		Validate.notNull(applicationId, "DepartmentService.handleFindApplication - the applicationId cannot be null");
+		Validate.notNull(applicationId, "The applicationId cannot be null");
 
 		return (ApplicationInfo) this.getApplicationDao().load(ApplicationDao.TRANSFORM_APPLICATIONINFO, applicationId);
 	}
@@ -313,40 +300,36 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	@SuppressWarnings( { "unchecked" })
 	public List handleFindApplicationsByDepartment(Long departmentId) throws Exception {
 
-		Validate.notNull(departmentId, "DepartmentService.findApplicationsByDepartment - "
-				+ "the departmentId cannot be null.");
+		Validate.notNull(departmentId, "Tthe departmentId cannot be null.");
 
 		// Load Department
 		Department departmentEntity = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(departmentEntity, "DepartmentService.findApplicationsByDepartment - "
-				+ "no department can be found with teh departmentId " + departmentId);
+		Validate.notNull(departmentEntity, "No department can be found with teh departmentId " + departmentId);
 
 		return this.getApplicationDao().findByDepartment(ApplicationDao.TRANSFORM_APPLICATIONINFO, departmentEntity);
 	}
 
 	@Override
 	public void handleSetDepartmentStatus(Long departmentId, boolean status) {
-		Validate.notNull(departmentId, "DepartmentService.setDepartmentStatus - the departmentId cannot be null.");
-		Validate.notNull(status, "DepartmentService.setDepartmentStatus - status cannot be null.");
+		Validate.notNull(departmentId, "The departmentId cannot be null.");
+		Validate.notNull(status, "Status cannot be null.");
 
 		// Load department
 		Department department = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(department, "DepartmentService.setDepartmentStatus - "
-				+ "department cannot be found with the corresponding departmentId " + departmentId);
+		Validate.notNull(department, "Department cannot be found with the corresponding departmentId " + departmentId);
 
-		// Only allow department to be enabled when the super-ordinate university is enabled
+		// Only allow department to be enabled when the super-ordinate
+		// university is enabled
 		if (status) {
-			Validate
-					.isTrue(
-							department.getUniversity().isEnabled(),
-							"DepartmentService.handleSetDepartmentStatus - the department cannot be enabled because the associated university is disabled.");
+			Validate.isTrue(department.getUniversity().isEnabled(),	"The department cannot be enabled because the associated university is disabled.");
 		}
 
 		// Set status
 		department.setEnabled(status);
 		this.update(this.getDepartmentDao().toDepartmentInfo(department));
 
-		// Set subordinate organisations to "disabled" if the department was just disabled
+		// Set subordinate organisations to "disabled" if the department was
+		// just disabled
 		if (!status) {
 			for (Institute institute : department.getInstitutes()) {
 				institute.setEnabled(false);
@@ -362,8 +345,7 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	}
 
 	@Override
-	public boolean handleIsNoneExistingOrganisationShortcutByDepartment(DepartmentInfo self, String shortcut)
-			throws Exception {
+	public boolean handleIsNoneExistingOrganisationShortcutByDepartment(DepartmentInfo self, String shortcut) throws Exception {
 		Organisation organisationFound = getOrganisationDao().findByShortcut(shortcut);
 		if (organisationFound instanceof University) {
 			University found = (University) organisationFound;
@@ -396,47 +378,32 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 
 	@Override
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindApplicationsByDepartmentAndConfirmed(Long departmentId, boolean confirmed)
-			throws Exception {
-		Validate.notNull(departmentId, "DepartmentService.findOpenApplicationsByDepartment - "
-				+ "the departmentId cannot be null.");
+	protected List handleFindApplicationsByDepartmentAndConfirmed(Long departmentId, boolean confirmed)	throws Exception {
+		Validate.notNull(departmentId, "The departmentId cannot be null.");
 
 		// Load Department
 		Department departmentEntity = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(departmentEntity, "DepartmentService.findOpenApplicationsByDepartment - "
-				+ "no department can be found with the departmentId " + departmentId);
-		return this.getApplicationDao().findByDepartmentAndConfirmed(ApplicationDao.TRANSFORM_APPLICATIONINFO,
-				departmentEntity, confirmed);
+		Validate.notNull(departmentEntity, "No department can be found with the departmentId " + departmentId);
+		return this.getApplicationDao().findByDepartmentAndConfirmed(ApplicationDao.TRANSFORM_APPLICATIONINFO,	departmentEntity, confirmed);
 	}
 
 	@Override
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindDepartmentsByUniversityAndTypeAndEnabled(Long universityId, DepartmentType type,
-			boolean enabled) throws Exception {
-
-		Validate.notNull(type,
-				"DepartmentService.handleFindDepartmentsByUniversityAndTypeAndEnabled - the type cannot be null");
-		Validate
-				.notNull(universityId,
-						"DepartmentService.handleFindDepartmentsByUniversityAndTypeAndEnabled - the universityId cannot be null");
-		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university,
-				"DepartmentService.handleFindDepartmentsByUniversityAndTypeAndEnabled - no University found corresponding to the ID "
-						+ universityId);
-
-		return this.getDepartmentDao().findByUniversityAndTypeAndEnabled(DepartmentDao.TRANSFORM_DEPARTMENTINFO,
-				university, type, enabled);
+	protected List handleFindDepartmentsByUniversityAndTypeAndEnabled(Long universityId, DepartmentType type, boolean enabled) throws Exception {
+		Validate.notNull(type, "The type cannot be null");
+		Validate.notNull(universityId, "The universityId cannot be null");
+		University university = getUniversityDao().load(universityId);
+		Validate.notNull(university, "No University found corresponding to the ID "	+ universityId);
+		return getDepartmentDao().findByUniversityAndTypeAndEnabled(DepartmentDao.TRANSFORM_DEPARTMENTINFO,	university, type, enabled);
 	}
 
 	@Override
 	protected void handleRemoveCompleteDepartmentTree(Long departmentId) throws Exception {
 		logger.debug("Starting method handleRemoveCompleteDepartmentTree for DepartmentID " + departmentId);
 
-		Validate.notNull(departmentId, "DepartmentService.handleRemove - the DepartmentId cannot be null");
+		Validate.notNull(departmentId, "The DepartmentId cannot be null");
 		Department department = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(department,
-				"DepartmentService.handleRemoveDepartment - no Department found corresponding to the ID "
-						+ departmentId);
+		Validate.notNull(department, "No Department found corresponding to the ID "	+ departmentId);
 
 		if (!department.getApplications().isEmpty()) {
 			// Remove applications
@@ -479,8 +446,8 @@ public class DepartmentServiceImpl extends org.openuss.lecture.DepartmentService
 	/*------------------- private methods -------------------- */
 
 	/**
-	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self
-	 * entry.
+	 * Convenience method for isNonExisting methods.<br/> Checks whether or not
+	 * the found record is equal to self entry.
 	 * <ul>
 	 * <li>self == null AND found == null => <b>true</b></li>
 	 * <li>self == null AND found <> null => <b>false</b></li>
