@@ -52,6 +52,8 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	private Long universityId;
 	
 	private Long departmentId;
+	
+	private boolean moving = false;
 
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
@@ -129,14 +131,32 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	public String saveCourse() throws DesktopException {
 		logger.debug("Starting method saveCourse");
 
-		courseInfo.setCourseTypeDescription(courseTypeInfo.getDescription());
-		courseInfo.setCourseTypeId(courseTypeInfo.getId());
-		courseInfo.setInstituteId(courseTypeInfo.getInstituteId());
-
-		courseInfo.setAccessType(AccessType.OPEN);
-		courseService.create(courseInfo);
+		courseService.updateCourse(courseInfo);
 		addMessage(i18n("institute_message_persist_coursetype_succeed"));
+		moving = false;
 
+		return Constants.SUCCESS;
+	}
+
+	/**
+	 * Beginning move mode of course to a different period
+	 * @return outcome
+	 */
+	public String moveCourse() {
+		logger.debug("Switching to move mode");
+		setSessionBean(Constants.COURSE_INFO, currentCourse());
+		moving = true;
+		return Constants.SUCCESS;
+	}
+
+	/**
+	 * Canceling move mode of course 
+	 * @return outcome
+	 */
+	public String cancelCourse() {
+		logger.debug("Switching to move mode");
+		removeSessionBean(Constants.COURSE_INFO);
+		moving = false;
 		return Constants.SUCCESS;
 	}
 
@@ -372,5 +392,13 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 			}
 			return page;
 		}
+	}
+
+	public boolean isMoving() {
+		return moving;
+	}
+
+	public void setMoving(boolean moving) {
+		this.moving = moving;
 	}
 }
