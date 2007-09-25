@@ -8,6 +8,8 @@ package org.openuss.lecture;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -88,11 +90,11 @@ public class UniversityImpl extends org.openuss.lecture.UniversityBase implement
 	public List getActivePeriods() {
 
 		List<Period> activePeriods = new ArrayList<Period>();
-		
+
 		if (this.getPeriods().isEmpty()) {
 			activePeriods = null;
 		} else {
-			for(Period period:this.getPeriods()) {
+			for (Period period : this.getPeriods()) {
 				if (period.isActive()) {
 					activePeriods.add(period);
 				}
@@ -100,7 +102,14 @@ public class UniversityImpl extends org.openuss.lecture.UniversityBase implement
 		}
 		return activePeriods;
 	}
-	
-	
+
+	@Override
+	public Period getDefaultPeriod() {
+		return (Period) CollectionUtils.find(getPeriods(), new Predicate() {
+			public boolean evaluate(Object object) {
+				return ((Period)object).isDefaultPeriod();
+			}
+		});
+	}
 
 }

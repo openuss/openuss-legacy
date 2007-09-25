@@ -106,7 +106,6 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 
 		// CourseTypes
 		targetVO.setCourseTypeInfos(new ArrayList(sourceEntity.getCourseTypes().size()));
-		//TODO Implement me!
 
 		// Courses
 		targetVO.setCourseInfos(new ArrayList(sourceEntity.getCourses().size()));
@@ -177,8 +176,6 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 			}
 		}
 		
-		//TODO Implement me!
-
 		// Institutes
 		if (copyIfNull && (sourceVO.getInstituteInfos() != null)) {
 			targetEntity.getInstitutes().clear();

@@ -2,12 +2,8 @@ package org.openuss.web.lecture;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
-import javax.faces.el.ValueBinding;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -18,6 +14,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.lecture.DepartmentInfo;
+import org.openuss.lecture.DepartmentType;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.UniversityInfo;
@@ -39,10 +36,6 @@ public class InstituteRegistrationController extends AbstractLecturePage {
 	private Long selectedUniversity;
 	private Long selectedDepartment;
 	private InstituteInfo instituteInfo;
-
-	private ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
-	private String locale = (String) binding.getValue(getFacesContext());
-	private ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
 
 	public String start() {
 		logger.debug("Start institute registration process");
@@ -82,119 +75,70 @@ public class InstituteRegistrationController extends AbstractLecturePage {
 		Long instituteId = instituteService.create(instituteInfo, user.getId());
 		instituteInfo.setId(instituteId);
 
-		// automatically start the department application process
+		// FIXME Should be done in business layer - automatically start the
+		// department application process
 		instituteService.applyAtDepartment(instituteId, selectedDepartment, user.getId());
 
 		setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
 		return Constants.INSTITUTE_PAGE;
 	}
 
-	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getAllUniversities() {
-		List<SelectItem> universityItems;
-		List<UniversityInfo> allEnabledUniversities;
-		List<UniversityInfo> allDisabledUniversities;
+		List<SelectItem> universityItems = new ArrayList<SelectItem>();
+		List<UniversityInfo> allEnabledUniversities = universityService.findUniversitiesByEnabled(true);
+		List<UniversityInfo> allDisabledUniversities = universityService.findUniversitiesByEnabled(false);
 
-		universityItems = new ArrayList<SelectItem>();
-
-		allEnabledUniversities = universityService.findUniversitiesByEnabled(true);
-		allDisabledUniversities = universityService.findUniversitiesByEnabled(false);
-
-		Iterator<UniversityInfo> iterEnabled = allEnabledUniversities.iterator();
-		UniversityInfo universityEnabled;
-
-		if (iterEnabled.hasNext()) {
-			SelectItem item = new SelectItem(Constants.UNIVERSITIES_ENABLED, bundle.getString("universities_enabled"));
-			universityItems.add(item);
-		}
-		while (iterEnabled.hasNext()) {
-			universityEnabled = iterEnabled.next();
-			SelectItem item = new SelectItem(universityEnabled.getId(), universityEnabled.getName());
-			universityItems.add(item);
+		if (!allEnabledUniversities.isEmpty()) {
+			universityItems.add(new SelectItem(Constants.UNIVERSITIES_ENABLED, i18n("universities_enabled")));
+			for (UniversityInfo university : allEnabledUniversities) {
+				universityItems.add(new SelectItem(university.getId(), university.getName()));
+			}
 		}
 
-		Iterator<UniversityInfo> iterDisabled = allDisabledUniversities.iterator();
-		UniversityInfo universityDisabled;
+		if (!allDisabledUniversities.isEmpty()) {
+			universityItems.add(new SelectItem(Constants.UNIVERSITIES_ENABLED, i18n("universities_disabled")));
+			for (UniversityInfo university : allDisabledUniversities) {
+				universityItems.add(new SelectItem(university.getId(), university.getName()));
+			}
+		}
 
-		if (iterDisabled.hasNext()) {
-			SelectItem item = new SelectItem(Constants.UNIVERSITIES_DISABLED, bundle.getString("universities_disabled"));
-			universityItems.add(item);
-		}
-		while (iterDisabled.hasNext()) {
-			universityDisabled = iterDisabled.next();
-			SelectItem item = new SelectItem(universityDisabled.getId(), universityDisabled.getName());
-			universityItems.add(item);
-		}
 		return universityItems;
 	}
 
-	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getAllDepartments() {
-		List<DepartmentInfo> allEnabledDepartments;
-		List<DepartmentInfo> allDisabledDepartments;
+		logger.debug("getting departments for university:" + selectedUniversity);
 		List<SelectItem> departmentItems = new ArrayList<SelectItem>();
 
 		if (selectedUniversity == null || selectedUniversity < 0L) {
-			SelectItem item = new SelectItem(Constants.DEPARTMENTS_NO_UNIVERSITY_SELECTED, bundle
-					.getString("institute_registration_choose_university"));
-			departmentItems.add(item);
-			return departmentItems;
+			departmentItems.add(new SelectItem(Constants.DEPARTMENTS_NO_UNIVERSITY_SELECTED,
+					i18n("institute_registration_choose_university")));
 		} else {
-			allEnabledDepartments = departmentService.findDepartmentsByUniversityAndEnabled(selectedUniversity, true);
-			allDisabledDepartments = departmentService.findDepartmentsByUniversityAndEnabled(selectedUniversity, false);
-
-			Iterator<DepartmentInfo> iterEnabled = allEnabledDepartments.iterator();
-			DepartmentInfo departmentEnabled;
-
-			// Add a label for the enabled departments to the list
-			if (iterEnabled.hasNext()) {
-				SelectItem item = new SelectItem(Constants.DEPARTMENTS_ENABLED, bundle.getString("departments_enabled"));
-				departmentItems.add(item);
+			List<DepartmentInfo> allEnabledDepartments = departmentService.findDepartmentsByUniversityAndEnabled(selectedUniversity, true);
+			if (!allEnabledDepartments.isEmpty()) {
+				departmentItems.add(new SelectItem(Constants.DEPARTMENTS_ENABLED, i18n("departments_enabled")));
+				sortInDepartments(allEnabledDepartments, departmentItems);
 			}
 
-			while (iterEnabled.hasNext()) {
-				departmentEnabled = iterEnabled.next();
-				if (departmentEnabled.getDepartmentType().getValue() == 0) {
-					SelectItem item = new SelectItem(departmentEnabled.getId(), departmentEnabled.getName() + " - ("
-							+ bundle.getString("departmenttype_official") + ")");
-					departmentItems.add(item);
-				} else if (departmentEnabled.getDepartmentType().getValue() == 1) {
-					SelectItem item = new SelectItem(departmentEnabled.getId(), departmentEnabled.getName() + " - ("
-							+ bundle.getString("departmenttype_non_offical") + ")");
-					departmentItems.add(item);
-				} else {
-					// do nothing
-				}
-			}
-
-			Iterator<DepartmentInfo> iterDisabled = allDisabledDepartments.iterator();
-			DepartmentInfo departmentDisabled;
-
-			// Add a label for the disabled departments to the list
-			if (iterDisabled.hasNext()) {
-				SelectItem item = new SelectItem(Constants.DEPARTMENTS_DISABLED, bundle
-						.getString("departments_disabled"));
-				departmentItems.add(item);
-			}
-
-			while (iterDisabled.hasNext()) {
-				departmentDisabled = iterDisabled.next();
-				if (departmentDisabled.getDepartmentType().getValue() == 0) {
-					SelectItem item = new SelectItem(departmentDisabled.getId(), departmentDisabled.getName() + " - ("
-							+ bundle.getString("departmenttype_official") + ")");
-					departmentItems.add(item);
-				} else if (departmentDisabled.getDepartmentType().getValue() == 1) {
-					SelectItem item = new SelectItem(departmentDisabled.getId(), departmentDisabled.getName() + " - ("
-							+ bundle.getString("departmenttype_non_offical") + ")");
-					departmentItems.add(item);
-				} else {
-					// do nothing
-				}
+			List<DepartmentInfo> allDisabledDepartments = departmentService.findDepartmentsByUniversityAndEnabled(selectedUniversity, false);
+			if (!allDisabledDepartments.isEmpty()) {
+				departmentItems.add(new SelectItem(Constants.DEPARTMENTS_DISABLED, i18n("departments_disabled")));
+				sortInDepartments(allDisabledDepartments, departmentItems);
 			}
 		}
-
 		return departmentItems;
+	}
 
+	private void sortInDepartments(List<DepartmentInfo> departments, List<SelectItem> departmentItems) {
+		String suffixOffical = " - (" + i18n("departmenttype_official") + ")";
+		String suffixNonOffical = " - (" + i18n("departmenttype_non_offical") + ")";
+
+		for (DepartmentInfo department : departments) {
+			if (department.getDepartmentType() == DepartmentType.OFFICIAL) {
+				departmentItems.add(new SelectItem(department.getId(), department.getName() + suffixOffical));
+			} else if (department.getDepartmentType() == DepartmentType.NONOFFICIAL) {
+				departmentItems.add(new SelectItem(department.getId(), department.getName() + suffixNonOffical));
+			}
+		}
 	}
 
 	public void processUniversitySelectChanged(ValueChangeEvent event) {

@@ -12,21 +12,40 @@
 	<o:input entity="instituteInfo" property="shortcut" maxlength="30" required="true">
 		<f:validator validatorId="filenameValidator"/>
 	</o:input>
+	
+	<t:saveState id="institute_university_id" value="#{views$secured$lecture$instituteoptions.universityId}" />
+	<t:saveState id="institute_department_id" value="#{views$secured$lecture$instituteoptions.departmentId}" />
  
+ 	<h:outputLabel value="#{msg.institute_preferences_university}" 
+ 				   for="universitySelect" 
+ 				   styleClass="field_label" 
+ 				   rendered="#{!empty instituteInfo.id}"/>
+ 				   
+	<h:selectOneListbox 
+			id="institute_preferences_university" 
+			size="1" 
+			styleClass="pulldown" 
+			value="#{views$secured$lecture$instituteoptions.universityId}"
+			valueChangeListener="#{views$secured$lecture$instituteoptions.processUniversitySelectChanged}" 
+			onchange="this.form.submit();"
+			immediate="true">
+ 			<f:selectItems value="#{views$secured$lecture$instituteoptions.allUniversities}"/>
+ 			<f:validator validatorId="universityDepartmentSelectValidator"/>
+	</h:selectOneListbox>
+
 	<h:outputLabel value="#{msg.department_selection}"  	
 					for="departmenSelection" 
 					styleClass="field_label"
 					rendered="#{!empty instituteInfo.id}"/>
-		
 	<h:selectOneListbox
-	    	    id="departmentSelection" 
-				size="1" 
-				value="#{views$secured$lecture$instituteoptions.departmentId}"
-				layout="pageDirection" 
-				styleClass="pulldown"
-				rendered="#{!empty instituteInfo.id}">
-				<f:selectItems value="#{views$secured$lecture$instituteoptions.allDepartments}"/>
-				<f:validator validatorId="instituteDepartmentSelectValidator"/>
+    	    id="departmentSelection" 
+			size="1" 
+			value="#{views$secured$lecture$instituteoptions.departmentId}"
+			layout="pageDirection" 
+			styleClass="pulldown"
+			rendered="#{!empty instituteInfo.id}">
+			<f:selectItems value="#{views$secured$lecture$instituteoptions.allDepartments}"/>
+			<f:validator validatorId="instituteDepartmentSelectValidator"/>
 	</h:selectOneListbox>
 	
 	<c:if test="#{!empty views$secured$lecture$instituteoptions.pendingApplicationInfo}">

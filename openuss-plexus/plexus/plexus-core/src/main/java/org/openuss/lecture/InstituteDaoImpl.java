@@ -19,13 +19,13 @@ import org.openuss.security.User;
  * @see org.openuss.lecture.Institute
  * @author Ingo Dueppe, Ron Haus
  */
-public class InstituteDaoImpl extends org.openuss.lecture.InstituteDaoBase {
+public class InstituteDaoImpl extends InstituteDaoBase {
 
 	/**
 	 * @see org.openuss.lecture.InstituteDao#toInstituteInfo(org.openuss.lecture.Institute,
 	 *      org.openuss.lecture.InstituteInfo)
 	 */
-	public void toInstituteInfo(org.openuss.lecture.Institute sourceEntity, org.openuss.lecture.InstituteInfo targetVO) {
+	public void toInstituteInfo(Institute sourceEntity, InstituteInfo targetVO) {
 		super.toInstituteInfo(sourceEntity, targetVO);
 		
 		if (sourceEntity.getDepartment() != null) {
@@ -51,13 +51,11 @@ public class InstituteDaoImpl extends org.openuss.lecture.InstituteDaoBase {
 	 */
 	public Institute instituteInfoToEntity(InstituteInfo instituteInfo) {
 		Institute entity = this.loadInstituteFromInstituteInfo(instituteInfo);
-		this.instituteInfoToEntity(instituteInfo, entity, true);
-		
+		instituteInfoToEntity(instituteInfo, entity, true);
 		if (instituteInfo.getDepartmentId() != null) {
-			Department department = this.getDepartmentDao().load(instituteInfo.getDepartmentId());
-			entity.setDepartment(department);
+			if (entity.getDepartment() == null || !instituteInfo.getDepartmentId().equals(entity.getDepartment().getId())) 
+				entity.setDepartment(getDepartmentDao().load(instituteInfo.getDepartmentId()));
 		}
-		
 		return entity;
 	}
 

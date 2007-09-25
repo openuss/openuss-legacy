@@ -79,7 +79,7 @@
 			</c:if>
 			<c:if test="#{views$secured$lecture$institutecourses.moving}">
 				<h:form id="moveForm">
-					<o:block label="#{msg.period_command_move_course_header}">
+					<o:block label="#{msg.period_command_move_course_header}" styleClass="form_box">
 						<h:outputFormat value="#{msg.period_command_move_course_text}" styleClass="content_font_normal">
 							<f:param value="#{courseInfo.name}"/>
 						</h:outputFormat> <br/>
