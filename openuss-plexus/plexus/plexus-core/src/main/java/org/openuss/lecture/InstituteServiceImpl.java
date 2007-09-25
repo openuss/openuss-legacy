@@ -23,25 +23,24 @@ import org.openuss.security.acl.LectureAclEntry;
  * @see org.openuss.lecture.InstituteService
  * @author Ron Haus
  * @author Florian Dondorf
+ * @author Ingo Düppe
  */
-@SuppressWarnings( { "unchecked" })
-public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBase {
+public class InstituteServiceImpl extends InstituteServiceBase {
 
 	private static final Logger logger = Logger.getLogger(InstituteServiceImpl.class);
 
 	/**
 	 * @see org.openuss.lecture.InstituteService#create(org.openuss.lecture.InstituteInfo)
 	 */
-	protected java.lang.Long handleCreate(InstituteInfo instituteInfo, Long userId) throws java.lang.Exception {
+	protected Long handleCreate(InstituteInfo instituteInfo, Long userId) throws Exception {
 
 		logger.debug("Starting method handleCreate");
 
-		Validate.notNull(instituteInfo, "InstituteService.handleCreate - the Institute cannot be null");
-		Validate.notNull(userId, "InstituteService.handleCreate - the User must have a valid ID");
-		User user = this.getUserDao().load(userId);
-		Validate.notNull(user, "InstituteService.handleCreate - no valid User found corresponding to the ID " + userId);
-		Validate.isTrue(instituteInfo.getId() == null,
-				"InstituteService.handleCreate - the Institute shouldn't have an ID yet");
+		Validate.notNull(instituteInfo, "The Institute cannot be null");
+		Validate.notNull(userId, "The User must have a valid ID");
+		User user = getSecurityService().getUser(userId);
+		Validate.notNull(user, "No valid User found corresponding to the ID " + userId);
+		Validate.isTrue(instituteInfo.getId() == null, "The Institute shouldn't have an ID yet");
 
 		// No validation needed for department ID since it is ignored anyway below
 		// Validate.notNull(instituteInfo.getDepartmentId(),
@@ -107,8 +106,7 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	/**
 	 * @see org.openuss.lecture.InstituteService#update(org.openuss.lecture.InstituteInfo)
 	 */
-	protected void handleUpdate(org.openuss.lecture.InstituteInfo instituteInfo) throws java.lang.Exception {
-
+	protected void handleUpdate(InstituteInfo instituteInfo) throws Exception {
 		logger.debug("Starting method handleUpdate");
 
 		Validate.notNull(instituteInfo, "InstituteService.handleUpdate - the Institute cannot be null");
@@ -132,15 +130,13 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	/**
 	 * @see org.openuss.lecture.InstituteService#removeInstitute(java.lang.Long)
 	 */
-	protected void handleRemoveInstitute(java.lang.Long instituteId) throws java.lang.Exception {
+	protected void handleRemoveInstitute(Long instituteId) throws Exception {
 		logger.debug("Starting method handleRemoveInstitute for InstituteID " + instituteId);
 
-		Validate.notNull(instituteId, "InstituteService.handleRemoveInstitute - the InstituteID cannot be null");
+		Validate.notNull(instituteId, "The InstituteID cannot be null");
 		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute,
-				"InstituteService.handleRemoveInstitute - no Institute found to the corresponding ID " + instituteId);
-		Validate.isTrue(institute.getCourseTypes().size() == 0,
-				"InstituteService.handleRemoveInstitute - the Institute still contains CourseTypes");
+		Validate.notNull(institute, "No Institute found to the corresponding ID " + instituteId);
+		Validate.isTrue(institute.getCourseTypes().size() == 0,	"The Institute still contains CourseTypes");
 
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(institute);
@@ -157,10 +153,8 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	/**
 	 * @see org.openuss.lecture.InstituteService#findInstitute(java.lang.Long)
 	 */
-	protected org.openuss.lecture.InstituteInfo handleFindInstitute(java.lang.Long instituteId)
-			throws java.lang.Exception {
-
-		Validate.notNull(instituteId, "InstituteService.handleFindInstitute - the instituteId cannot be null");
+	protected InstituteInfo handleFindInstitute(Long instituteId) throws Exception {
+		Validate.notNull(instituteId, "The instituteId cannot be null");
 
 		Institute institute = (Institute) this.getInstituteDao().load(instituteId);
 		return this.getInstituteDao().toInstituteInfo(institute);
@@ -170,15 +164,11 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	 * @see org.openuss.lecture.InstituteService#findInstitutesByDepartment(java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected java.util.List handleFindInstitutesByDepartment(java.lang.Long departmentId) throws java.lang.Exception {
-
-		Validate.notNull(departmentId,
-				"InstituteService.handleFindInstitutesByDepartment - the departmentId cannot be null");
+	protected List handleFindInstitutesByDepartment(Long departmentId) throws Exception {
+		Validate.notNull(departmentId, "The departmentId cannot be null");
 
 		Department department = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(department,
-				"InstituteService.handleFindInstitutesByDepartment - no Department found corresponding to the ID "
-						+ departmentId);
+		Validate.notNull(department, "No Department found corresponding to the ID "	+ departmentId);
 
 		List instituteInfos = new ArrayList();
 		for (Institute institute : department.getInstitutes()) {
@@ -192,19 +182,13 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 	 * @see org.openuss.lecture.InstituteService#findInstitutesByDepartmentAndEnabled(java.lang.Long, java.lang.Boolean)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected java.util.List handleFindInstitutesByDepartmentAndEnabled(java.lang.Long departmentId, boolean enabled)
-			throws java.lang.Exception {
-
-		Validate.notNull(departmentId,
-				"InstituteService.handleFindInstitutesByDepartmentAndEnabled - the departmentId cannot be null");
+	protected List handleFindInstitutesByDepartmentAndEnabled(Long departmentId, boolean enabled) throws Exception {
+		Validate.notNull(departmentId, "The departmentId cannot be null");
 
 		Department department = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(department,
-				"InstituteService.handleFindDepartmentsByUniversityAndEnabled - no University found corresponding to the ID "
-						+ departmentId);
+		Validate.notNull(department, "No University found corresponding to the ID "	+ departmentId);
 
-		return this.getInstituteDao().findByDepartmentAndEnabled(InstituteDao.TRANSFORM_INSTITUTEINFO, department,
-				enabled);
+		return getInstituteDao().findByDepartmentAndEnabled(InstituteDao.TRANSFORM_INSTITUTEINFO, department, enabled);
 	}
 
 	/**
@@ -229,32 +213,26 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 
 	@Override
 	protected Long handleApplyAtDepartment(ApplicationInfo applicationInfo) throws Exception {
-
-		Validate.notNull(applicationInfo, "InstituteService.applyAtDepartment - the applicationInfo cannot be null.");
-		Validate.isTrue(applicationInfo.getConfirmationDate() == null,
-				"InstituteService.applyAtDepartment - you cannot set the Confirmation Date yet.");
-
-		Validate.isTrue(!applicationInfo.isConfirmed(),
-				"InstituteService.applyAtDepartment - you Application cannot be confirmed yet.");
-
-		Validate.isTrue(applicationInfo.getConfirmingUserInfo() == null,
-				"InstituteService.applyAtDepartment - you cannot set the confirming User yet.");
+		// FIXME Some of these validation should throw an application exception instead of IllegalStateException
+		Validate.notNull(applicationInfo, "The applicationInfo cannot be null.");
+		Validate.isTrue(applicationInfo.getConfirmationDate() == null, "You cannot set the Confirmation Date yet.");
+		Validate.isTrue(!applicationInfo.isConfirmed(), "Your Application cannot be confirmed yet.");
+		Validate.isTrue(applicationInfo.getConfirmingUserInfo() == null, "You cannot set the confirming User yet.");
 
 		if ((applicationInfo.getApplicationDate() == null)) {
 			applicationInfo.setApplicationDate(new Date());
 		} else {
-			Validate.isTrue(!applicationInfo.getApplicationDate().after(new Date()),
-					"InstituteService.applyAtDepartment - Application Date is in the Future.");
+			Validate.isTrue(!applicationInfo.getApplicationDate().after(new Date()), "Application Date is in the Future.");
 		}
 
 		// Transform VO to entity
 		Application application = this.getApplicationDao().applicationInfoToEntity(applicationInfo);
-		Validate.notNull(application, "InstituteService.applyAtDepartment - cannot transform value object to entity");
-		Validate.isTrue(application.getDepartment().getDepartmentType().equals(DepartmentType.OFFICIAL),
-				"InstituteService.applyAtDepartment - an Application is only necessary for official Departments");
+		Validate.notNull(application, "Cannot transform value object to entity");
+		Validate.isTrue(application.getDepartment().getDepartmentType().equals(DepartmentType.OFFICIAL), "An Application is only necessary for official Departments");
 
 		application.add(application.getDepartment());
 		application.add(application.getInstitute());
+		
 		this.getApplicationDao().create(application);
 
 		applicationInfo.setId(application.getId());
@@ -388,11 +366,10 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 				"InstiuteService.setInstituteStatus - instiute cannot be found with the corresponding instituteId "
 						+ instituteId);
 
-		// Only allow institute to be enabled when the super-ordinate department is enabled
+		// Only allow institute to be enabled when the super-ordinate department
+		// is enabled
 		if (status) {
-			Validate
-					.isTrue(
-							institute.getDepartment().isEnabled(),
+			Validate.isTrue(institute.getDepartment().isEnabled(),
 							"DepartmentService.handleSetInstituteStatus - the institute cannot be enabled because the associated department is disabled.");
 		}
 
@@ -595,11 +572,4 @@ public class InstituteServiceImpl extends org.openuss.lecture.InstituteServiceBa
 			return self.equals(found);
 		}
 	}
-
-	/*------------------- private methods -------------------- */
-
-	// TODO: Add Set of listeners
-	// TODO: Method unregisterListener
-	// TODO: Method fireRemovingInstitute (Institute institute)
-	// TODO: Method fireCreatedInstitute (Institute institute)
 }

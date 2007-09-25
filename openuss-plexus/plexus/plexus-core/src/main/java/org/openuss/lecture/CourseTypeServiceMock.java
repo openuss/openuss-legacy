@@ -6,12 +6,10 @@ import java.util.List;
 public class CourseTypeServiceMock implements CourseTypeService {
 
 	public Long create(CourseTypeInfo courseTypeInfo) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public CourseTypeInfo findCourseType(Long courseTypeId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -33,12 +31,12 @@ public class CourseTypeServiceMock implements CourseTypeService {
 			courseTypes.add(courseType2);
 		} else {
 			CourseTypeInfo courseType1 = new CourseTypeInfo();
-			courseType1.setId(new Long(100000+instituteId.longValue()));
+			courseType1.setId(100000L+instituteId.longValue());
 			courseType1.setName("Einführung");
 			courseType1.setShortcut("Ein");
 			
 			CourseTypeInfo courseType2 = new CourseTypeInfo();
-			courseType2.setId(new Long(100000+instituteId.longValue()));
+			courseType2.setId(100000L+instituteId.longValue());
 			courseType2.setName("Vertiefung");
 			courseType2.setShortcut("Ver");
 			
@@ -50,27 +48,19 @@ public class CourseTypeServiceMock implements CourseTypeService {
 	}
 
 	public void removeCourseType(Long courseTypeId) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void update(CourseTypeInfo courseTypeInfo) {
-		// TODO Auto-generated method stub
-
 	}
 	
 	public boolean isNoneExistingCourseTypeShortcut (CourseTypeInfo self, String shortcut) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean isNoneExistingCourseTypeName (CourseTypeInfo self, String name) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	public void registerListener (LectureListener listener) {
-		// TODO Auto-generated method stub
-		
 	}
 }

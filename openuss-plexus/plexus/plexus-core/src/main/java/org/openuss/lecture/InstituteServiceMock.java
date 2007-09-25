@@ -6,22 +6,18 @@ import java.util.List;
 public class InstituteServiceMock implements InstituteService {
 
 	public Long create(InstituteInfo instituteInfo, Long userId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public ApplicationInfo findApplicationByInstituteAndConfirmed(Long instituteId, boolean confirmed) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public InstituteInfo findInstitute(Long instituteId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public void removeCompleteInstituteTree(Long instituteId) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -93,70 +89,56 @@ public class InstituteServiceMock implements InstituteService {
 	}
 
 	public void removeInstitute(Long instituteId) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void update(InstituteInfo instituteInfo) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public Long applyAtDepartment(Long instituteId, Long departmentId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public void removeUnconfirmedApplication(Long applicationId) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public boolean isNoneExistingOrganisationShortcutByInstitute (InstituteInfo self, String shortcut) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	public List<InstituteInfo> findAllInstitutes (boolean enabledOnly) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	public InstituteSecurity getInstituteSecurity(Long instituteId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	public Long applyAtDepartment(ApplicationInfo applicationInfo) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	public Long applyAtDepartment(Long instituteId, Long departmentId, Long userId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public List findApplicationsByInstitute(Long instituteId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public void setInstituteStatus(Long instituteId, boolean status) {
-		// TODO Auto-generated method stub
 	}
 
 	public ApplicationInfo findApplicationByInstitute(Long instituteId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	public void setGroupOfMember(InstituteMember member, Long instituteId) {
-		// TODO Auto-generated method stub
 	}
 	
 	public void resendActivationCode(InstituteInfo instituteInfo, Long userId) {
-		// TODO Auto-generated method stub
 	}
 	
 }
