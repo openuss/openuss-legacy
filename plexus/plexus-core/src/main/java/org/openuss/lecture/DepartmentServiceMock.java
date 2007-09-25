@@ -9,7 +9,6 @@ import java.util.Map;
 public class DepartmentServiceMock implements DepartmentService {
 
 	public Long create(DepartmentInfo departmentInfo, Long ownerId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -19,12 +18,10 @@ public class DepartmentServiceMock implements DepartmentService {
 
 
 	public void removeCompleteDepartmentTree(Long departmentId) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public List findDepartmentsByUniversityAndTypeAndEnabled(Long universityId, DepartmentType type, boolean enabled) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -33,22 +30,22 @@ public class DepartmentServiceMock implements DepartmentService {
 		Map<Long, DepartmentInfo> allDepartments = this.getMockDepartments();
 		List departmentInfos = new ArrayList(); 
 		
-		if(universityId.equals(new Long(100))){
-			departmentInfos.add(allDepartments.get(new Long(1101)));
-			departmentInfos.add(allDepartments.get(new Long(1102)));
-			departmentInfos.add(allDepartments.get(new Long(1103)));
-		} else if(universityId.equals(new Long(101))){
-			departmentInfos.add(allDepartments.get(new Long(1201)));
-			departmentInfos.add(allDepartments.get(new Long(1201)));
-		} else if(universityId.equals(new Long(102))){
-			departmentInfos.add(allDepartments.get(new Long(1301)));
-			departmentInfos.add(allDepartments.get(new Long(1302)));
-		} else if(universityId.equals(new Long(103))){
-			departmentInfos.add(allDepartments.get(new Long(1401)));
-			departmentInfos.add(allDepartments.get(new Long(1402)));
-		} else if(universityId.equals(new Long(104))){
-			departmentInfos.add(allDepartments.get(new Long(1501)));
-			departmentInfos.add(allDepartments.get(new Long(1502)));
+		if(universityId.equals(100L)){
+			departmentInfos.add(allDepartments.get(1101L));
+			departmentInfos.add(allDepartments.get(1102L));
+			departmentInfos.add(allDepartments.get(1103L));
+		} else if(universityId.equals(101L)){
+			departmentInfos.add(allDepartments.get(1201L));
+			departmentInfos.add(allDepartments.get(1201L));
+		} else if(universityId.equals(102L)){
+			departmentInfos.add(allDepartments.get(1301L));
+			departmentInfos.add(allDepartments.get(1302L));
+		} else if(universityId.equals(103L)){
+			departmentInfos.add(allDepartments.get(1401L));
+			departmentInfos.add(allDepartments.get(1402L));
+		} else if(universityId.equals(104L)){
+			departmentInfos.add(allDepartments.get(1501L));
+			departmentInfos.add(allDepartments.get(1502L));
 		}
 		
 		return departmentInfos;
@@ -73,12 +70,10 @@ public class DepartmentServiceMock implements DepartmentService {
 	}
 
 	public void removeDepartment(Long departmentId) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void update(DepartmentInfo departmentInfo) {
-		// TODO Auto-generated method stub
 
 	}
 	
@@ -88,97 +83,97 @@ public class DepartmentServiceMock implements DepartmentService {
 		
 		// Uni 1
 		departmentTemp = new DepartmentInfo();
-		departmentTemp.setId((new Long(1101)));
+		departmentTemp.setId(1101L);
 		departmentTemp.setName("Fachbereich 3 (Jura)");
 		departmentTemp.setShortcut("FB03");
-		departmentTemp.setUniversityId(new Long(100));
+		departmentTemp.setUniversityId(100L);
 		departmentTemp.setDepartmentType(org.openuss.lecture.DepartmentTypeEnum.OFFICIAL);
 		departmentTemp.setEnabled(true);
 		departments.put(departmentTemp.getId(), departmentTemp);
 		
 		departmentTemp = new DepartmentInfo();
-		departmentTemp.setId((new Long(1102)));
+		departmentTemp.setId(1102L);
 		departmentTemp.setName("Fachbereich 4 (WiWi)");
 		departmentTemp.setShortcut("FB04");
-		departmentTemp.setUniversityId(new Long(100));
+		departmentTemp.setUniversityId(100L);
 		departmentTemp.setDepartmentType(org.openuss.lecture.DepartmentTypeEnum.OFFICIAL);
 		departmentTemp.setEnabled(true);
 		departments.put(departmentTemp.getId(), departmentTemp);
 		
 		departmentTemp = new DepartmentInfo();
-		departmentTemp.setId((new Long(1103)));
+		departmentTemp.setId(1103L);
 		departmentTemp.setName("Lerngruppen FB 4");
 		departmentTemp.setShortcut("LG_FB04");
-		departmentTemp.setUniversityId(new Long(100));
+		departmentTemp.setUniversityId(100L);
 		departmentTemp.setDepartmentType(org.openuss.lecture.DepartmentTypeEnum.NONOFFICIAL);
 		departmentTemp.setEnabled(true);
 		departments.put(departmentTemp.getId(), departmentTemp);
 		
 		// Uni 2
 		departmentTemp = new DepartmentInfo();
-		departmentTemp.setId((new Long(1201)));
+		departmentTemp.setId(1201L);
 		departmentTemp.setName("Design");
 		departmentTemp.setShortcut("Des");
-		departmentTemp.setUniversityId(new Long(101));
+		departmentTemp.setUniversityId(101L);
 		departmentTemp.setDepartmentType(org.openuss.lecture.DepartmentTypeEnum.OFFICIAL);
 		departments.put(departmentTemp.getId(), departmentTemp);
 		
 		departmentTemp = new DepartmentInfo();
-		departmentTemp.setId((new Long(1202)));
+		departmentTemp.setId(1202L);
 		departmentTemp.setName("Pflege");
 		departmentTemp.setShortcut("Pfl");
-		departmentTemp.setUniversityId(new Long(101));
+		departmentTemp.setUniversityId(101L);
 		departmentTemp.setDepartmentType(org.openuss.lecture.DepartmentTypeEnum.OFFICIAL);
 		departments.put(departmentTemp.getId(), departmentTemp);
 		
 		// Uni 3
 		departmentTemp = new DepartmentInfo();
-		departmentTemp.setId((new Long(1301)));
+		departmentTemp.setId(1301L);
 		departmentTemp.setName("Business");
 		departmentTemp.setShortcut("Bus");
-		departmentTemp.setUniversityId(new Long(102));
+		departmentTemp.setUniversityId(102L);
 		departmentTemp.setDepartmentType(org.openuss.lecture.DepartmentTypeEnum.OFFICIAL);
 		departments.put(departmentTemp.getId(), departmentTemp);
 		
 		departmentTemp = new DepartmentInfo();
-		departmentTemp.setId((new Long(1302)));
+		departmentTemp.setId(1302L);
 		departmentTemp.setName("Law");
 		departmentTemp.setShortcut("L");
-		departmentTemp.setUniversityId(new Long(102));
+		departmentTemp.setUniversityId(102L);
 		departmentTemp.setDepartmentType(org.openuss.lecture.DepartmentTypeEnum.OFFICIAL);
 		departments.put(departmentTemp.getId(), departmentTemp);
 		
 		// Uni 4
 		departmentTemp = new DepartmentInfo();
-		departmentTemp.setId((new Long(1401)));
+		departmentTemp.setId(1401L);
 		departmentTemp.setName("Fremdsprachen");
 		departmentTemp.setShortcut("FS");
-		departmentTemp.setUniversityId(new Long(103));
+		departmentTemp.setUniversityId(103L);
 		departmentTemp.setDepartmentType(org.openuss.lecture.DepartmentTypeEnum.OFFICIAL);
 		departments.put(departmentTemp.getId(), departmentTemp);
 		
 		departmentTemp = new DepartmentInfo();
-		departmentTemp.setId((new Long(1402)));
+		departmentTemp.setId(1402L);
 		departmentTemp.setName("Pesonalführung");
 		departmentTemp.setShortcut("PF");
-		departmentTemp.setUniversityId(new Long(103));
+		departmentTemp.setUniversityId(103L);
 		departmentTemp.setDepartmentType(org.openuss.lecture.DepartmentTypeEnum.OFFICIAL);
 		departments.put(departmentTemp.getId(), departmentTemp);
 		
 		// Uni 5
 		departmentTemp = new DepartmentInfo();
-		departmentTemp.setId((new Long(1501)));
+		departmentTemp.setId(1501L);
 		departmentTemp.setName("Fremdsprachen");
 		departmentTemp.setShortcut("FS");
-		departmentTemp.setUniversityId(new Long(104));
+		departmentTemp.setUniversityId(104L);
 		departmentTemp.setDepartmentType(org.openuss.lecture.DepartmentTypeEnum.OFFICIAL);
 		departments.put(departmentTemp.getId(), departmentTemp);
 		
 		departmentTemp = new DepartmentInfo();
-		departmentTemp.setId((new Long(1502)));
+		departmentTemp.setId(1502L);
 		departmentTemp.setName("Management");
 		departmentTemp.setShortcut("Mgm");
-		departmentTemp.setUniversityId(new Long(104));
+		departmentTemp.setUniversityId(104L);
 		departmentTemp.setDepartmentType(org.openuss.lecture.DepartmentTypeEnum.OFFICIAL);
 		departments.put(departmentTemp.getId(), departmentTemp);
 		
@@ -186,56 +181,45 @@ public class DepartmentServiceMock implements DepartmentService {
 	}
 
 	public void acceptApplication(Long applicationId, Long userId) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void rejectApplication(Long applicationId) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void signoffInstitute(Long instituteId) {
-		// TODO Auto-generated method stub
 	}
 
 	public ApplicationInfo findApplication(Long applicationId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@SuppressWarnings( { "unchecked" })
 	public List findDepartmentsByType(DepartmentType type) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public List findDepartmentsByUniversityAndType(Long universityId, DepartmentType departmentType) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public boolean isNoneExistingOrganisationShortcutByDepartment(DepartmentInfo self, String shortcut) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	public void setDepartmentStatus(Long departmentId, boolean status) {
-		// TODO Auto-generated method stub
 	}
 	
 	public List findApplicationsByDepartment(Long departmentId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public List findApplicationsByDepartmentAndConfirmed(Long departmentId, boolean confirmed) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	public List findOpenApplicationsByDepartment(Long departmentId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

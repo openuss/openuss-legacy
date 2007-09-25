@@ -582,7 +582,8 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	
 	@Override
 	public void handleRemovePeriodAndCourses (Long periodId) {
-		// TODO Auto-generated method stub
+		// FIXME Implement this method
+		throw new UnsupportedOperationException("Operation is not implemented yet!");
 	}
 
 	/*------------------- private methods -------------------- */

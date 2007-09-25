@@ -9,17 +9,14 @@ import java.util.Map;
 public class UniversityServiceMock implements UniversityService {
 
 	public Long createUniversity(UniversityInfo universityInfo, Long ownerId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public Long createPeriod(PeriodInfo periodInfo) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public List findPeriodsByUniversityAndActivation(Long universityId,  boolean active) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -99,27 +96,22 @@ public class UniversityServiceMock implements UniversityService {
 	
 	@SuppressWarnings( { "unchecked" })
 	public List findUniversitiesByType (UniversityType type) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public void removePeriod(Long periodId) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void removeUniversity(Long universityId) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void update(UniversityInfo universityInfo) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void update(PeriodInfo periodInfo) {
-		// TODO Auto-generated method stub
 
 	}
 	
@@ -245,44 +237,35 @@ public class UniversityServiceMock implements UniversityService {
 	}
 
 	public List findUniversitiesByMemberAndEnabled(Long userId, boolean enabled) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public List findUniversitiesByTypeAndEnabled(UniversityType universityType, boolean enabled) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	public List findPeriodsByInstituteWithCoursesOrActive(InstituteInfo instituteInfo) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	public void removeCompleteUniversityTree(Long universityId) {
-		// TODO Auto-generated method stub
 	}
 
 	public boolean isNoneExistingOrganisationShortcutByUniversity(UniversityInfo self, String shortcut) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	public void setUniversityStatus(Long universityId, boolean status) {
-		// TODO Auto-generated method stub
 	}
 	
 	public List findPeriodsByUniversityWithCourses(Long universityId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	public boolean isActivePeriod(Long periodId) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	public void removePeriodAndCourses (Long periodId) {
-		// TODO Auto-generated method stub
 	}
 }
