@@ -5,6 +5,7 @@
 //
 package org.openuss.web.feeds;
 
+import java.io.Writer;
 import java.util.Date;
 
 
@@ -22,9 +23,9 @@ public class FeedWrapper  {
 		this.lastModified = null;
 	}
 
-	public FeedWrapper(java.io.Writer writer, java.util.Date lastModified) {
+	public FeedWrapper(Writer writer, Date lastModified) {
 		this.writer = writer;
-		this.lastModified = new Date(lastModified.getTime());
+		this.lastModified = lastModified;
 	}
 
 	/**
@@ -67,11 +68,11 @@ public class FeedWrapper  {
 	 * 
 	 */
 	public java.util.Date getLastModified() {
-		return new Date(this.lastModified.getTime());
+		return this.lastModified;
 	}
 
-	public void setLastModified(java.util.Date lastModified) {
-		this.lastModified = new Date(lastModified.getTime());
+	public void setLastModified(Date lastModified) {
+		this.lastModified = lastModified;
 	}
 
 }
