@@ -1,32 +1,3 @@
-.commands a {
-  background: transparent none repeat scroll 0%;
-  color: #FFFFFF;
-  float: left;
-  font-size: 0pt;
-  height: 16px;
-  line-height: 0px;
-  margin: 0 5px 0 0;
-  overflow: hidden;
-  position: relative;
-  white-space: nowrap;
-  width: 16px;
-}
-
-.commands a span {
-  background-position: left top;
-  background-repeat: no-repeat;
-  display: block;
-  height: 16px;
-  left: 0pt;
-  position: absolute;
-  top: 0pt;
-  width: 16px;
-}
-	
-.commands a:focus span, .commands a:hover span {
-  background-position: top right;
-}
-
 td.col_commands a {
   background: transparent none repeat scroll 0%;
   color: #FFFFFF;
