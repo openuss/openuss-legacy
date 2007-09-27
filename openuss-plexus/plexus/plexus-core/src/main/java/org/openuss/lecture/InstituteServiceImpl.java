@@ -254,8 +254,8 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 			deleteAllConfirmedApplications(institute);
 
 			Application application = createDefaultApplication(institute, department, user, true);
-			verifyCoursePeriodsAssoziations(department,institute);
 			// Add Institute to Department
+			verifyCoursePeriodsAssoziations(department,institute);
 			department.add(institute);
 			return application.getId();
 
@@ -282,7 +282,8 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 	 * @param institute
 	 */
 	private void verifyCoursePeriodsAssoziations(Department department, Institute institute) {
-		if (!institute.getDepartment().getUniversity().equals(department.getUniversity())) {
+		assert department != null;	assert institute != null;
+		if (institute.getDepartment() != null && !institute.getDepartment().getUniversity().equals(department.getUniversity())) {
 			// a new university so move courses to default period
 			University university = department.getUniversity();
 			Period defaultPeriod = university.getDefaultPeriod();
