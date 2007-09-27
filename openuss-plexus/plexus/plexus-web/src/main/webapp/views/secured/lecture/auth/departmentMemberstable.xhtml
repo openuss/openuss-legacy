@@ -36,6 +36,13 @@
 			</plexus:commandSortHeader>
 			<h:outputText value="#{bean.lastName}"/>
 		</t:column>
+
+		<t:column>
+			<plexus:commandSortHeader columnName="email">
+				<h:outputText value="#{msg['user_email']}"/>
+			</plexus:commandSortHeader>
+			<h:outputText value="#{bean.email}"/>
+		</t:column>
 		
 		
 		

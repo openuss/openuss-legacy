@@ -27,11 +27,7 @@
 		<h:outputText value="#{msg.welcome_headline}" />
 	</ui:define>
 	<ui:define name="content">
-		<o:block styleClass="empty_box" fontClass="header_font_normal">
-			<h:outputText value="#{msg.documentation_headline}"
-				styleClass="header_font_normal" />
-		</o:block>
-		<o:block>
+		<o:block label="#{msg.documentation_headline}">
 			<p class="header_font_normal">Dokumentationen als PDF</p>
 			<ul>
 				<li><h:outputLink value="/">In Deutsch</h:outputLink></li>

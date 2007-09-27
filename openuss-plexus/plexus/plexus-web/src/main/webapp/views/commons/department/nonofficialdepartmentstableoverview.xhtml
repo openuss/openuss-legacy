@@ -52,7 +52,7 @@
 					label="#{msg.university_command_shortcut_remove}"
 					title="#{msg.university_command_shortcut_hint_remove}"
 					styleClass="icon_bookmark_remove"
-					rendered="#{views$public$department$NonOfficialDepartments.bookmarked}">
+					rendered="#{views$public$department$NonOfficialDepartments.bookmarked==true}">
 				</plexus:command>
 				<plexus:command 
 					bean="#{views$public$department$NonOfficialDepartments}"
@@ -60,7 +60,7 @@
 					label="#{msg.university_command_shortcut}"
 					title="#{msg.university_command_shortcut_hint}"
 					styleClass="icon_bookmark"
-					rendered="#{not views$public$department$NonOfficialDepartments.bookmarked}">
+					rendered="#{views$public$department$NonOfficialDepartments.bookmarked==false}">
 				</plexus:command>	
 			</s:authorize>
 		</plexus:column>

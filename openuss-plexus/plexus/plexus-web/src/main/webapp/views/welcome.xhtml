@@ -28,6 +28,9 @@
 		<ui:define name="navigation"> 
 			<ui:include src="/views/commons/navigation/desktop.xhtml" />
 		</ui:define>
+		<ui:define name="sidebar"> 
+			<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
+		</ui:define>
   		<ui:define name="content">
   			<o:block styleClass="empty_box"> 
   				<h:outputLink action="home">
@@ -68,29 +71,6 @@
 		  		</h:form>
 			</o:block>
 			
-			<s:authorize ifAllGranted="ROLE_USER">
-					<!-- spacer -->
-					<div>
-						<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
-					</div>
-					
-						<o:block styleClass="teaser_blue" label="#{msg.organisation_command_actions}">
-						  	<h:form id="actionsForm">
-						  		<s:authorize ifAllGranted="ROLE_ADMIN">
-							  		<p class="content_font_normal">
-								  		<h:commandLink action="university_registration_start">
-											<h:outputText value="#{msg.university_command_add_university}"/>
-										</h:commandLink>
-									</p>
-								</s:authorize>
-						  		<p class="content_font_normal">
-							  		<h:commandLink action="institute_registration_start">
-										<h:outputText value="#{msg.institute_command_add_institute}"/>
-									</h:commandLink>
-								</p>
-							</h:form>
-						</o:block>
-				</s:authorize>
 			<div>
 				<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
 			</div>
