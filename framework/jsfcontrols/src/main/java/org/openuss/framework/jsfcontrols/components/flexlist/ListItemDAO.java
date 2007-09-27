@@ -3,6 +3,9 @@ package org.openuss.framework.jsfcontrols.components.flexlist;
 import java.io.Serializable;
 
 public class ListItemDAO implements Serializable {
+	
+	private static final long serialVersionUID = -7920738562941995001L;
+	
 	private String title;
 	private String url;
 	private String metaInformation;
