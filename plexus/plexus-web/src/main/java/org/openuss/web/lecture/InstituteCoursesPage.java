@@ -96,8 +96,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	private void addPageCrumbs() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
-		crumb.setName(i18n("coursetype_coursetypestable_header"));
-		crumb.setHint(i18n("coursetype_coursetypestable_header"));
+		crumb.setName(i18n("institute_courses_header"));
 
 		breadcrumbs.loadInstituteCrumbs(instituteInfo);
 		breadcrumbs.addCrumb(crumb);
