@@ -14,7 +14,7 @@
 		label="#{msg.departmentList_header}" 
 		value="views$public$department$departments.departments" 
 		var="bean" 
-		columnClasses="col_max_left, col_max_left, col_min_left, col_min_left"
+		columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
 		rows="15">
 		<t:column>
 			<plexus:commandSortHeader columnName="name">
@@ -22,7 +22,7 @@
 			</plexus:commandSortHeader>
 	        <h:commandLink action="#{views$public$department$departments.selectDepartment}" styleClass="command">
 				<h:outputText value="#{bean.name}"/>
-			</h:commandLink> 
+			</h:commandLink>  
 			<h:graphicImage 
 					value="/images/pool/icons/document_stop.png" 
 					title="#{msg.default_department_donot_delete}" 
