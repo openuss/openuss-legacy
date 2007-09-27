@@ -37,11 +37,10 @@
 						<h:selectOneMenu id="assistantSelectBox" value="#{views$secured$course$courseassistants.userId}" styleClass="pulldown_inline">
 						   	<f:selectItems value="#{views$secured$course$courseassistants.instituteMemberList}"/>
 						</h:selectOneMenu>
-						<plexus:command 
-								bean="#{views$secured$course$courseassistants}"
-								action="addAssistant"
+						<h:commandButton 
+								action="#{views$secured$course$courseassistants.addAssistant}"
 								label="#{msg['course_assistants_add']}"
-								title="#{msg['course_assistants_add_hint']}"
+								hint="#{msg['course_assistants_add_hint']}"
 								styleClass="button_add" />
 					</o:block>	
 				</c:if>

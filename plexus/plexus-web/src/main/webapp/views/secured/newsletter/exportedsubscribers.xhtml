@@ -36,11 +36,21 @@
 		<!-- removed ACL tags -->
 
 		<h:form id="newsletterSubscribers">
-			<o:block>
-				<h:outputText value="#{views$secured$newsletter$exportedsubscribers.subscribersSemicolon}" styleClass="font_content_normal"></h:outputText>
+			<o:block label="#{msg.course_newsletter_subscriber_export_semicolon_list_header}">
+				<h:inputTextarea 
+					value="#{views$secured$newsletter$exportedsubscribers.subscribersSemicolon}" 
+					styleClass="field"
+					size="100%"
+					rows="10"
+					readonly="true"/>
 			</o:block>
-			<o:block>
-				<h:outputText value="#{views$secured$newsletter$exportedsubscribers.subscribersComma}" styleClass="font_content_normal"></h:outputText>
+			<o:block label="#{msg.course_newsletter_subscriber_export_comma_list_header}" styleClass="form_box">
+				<h:inputTextarea 
+					value="#{views$secured$newsletter$exportedsubscribers.subscribersComma}" 
+					styleClass="field"
+					size="100%"
+					rows="10"
+					readonly="true"/>
 			</o:block>
 			<o:block>
 				<h:commandButton value="${msg.back}" title="#{msg.back}"

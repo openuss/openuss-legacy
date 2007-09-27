@@ -33,7 +33,7 @@
 
 		<h:form id="brainContestTableFrom">
 			<plexus:dataTable id="brainContestTable"
-				columnClasses="col_date, col_max_left, col_filesize, col_commands"
+				columnClasses="col_date, col_max_left, col_min_left, col_commands"
 				label="#{msg.braincontest_main_header}"
 				value="views$secured$braincontest$braincontestmain.data"
 				var="braincontest" rows="10">
@@ -58,30 +58,38 @@
 				</t:column>
 
 				<plexus:column header="#{msg.braincontest_main_column_actions}">
-					<plexus:command
-						bean="#{views$secured$braincontest$braincontestmain}"
-						action="topList" label="#{msg.braincontest_main_button_top}"
-						title="#{msg.braincontest_main_button_top}" 
-						rendered="#{braincontest.released}"/>
+						<plexus:command
+							bean="#{views$secured$braincontest$braincontestmain}"
+							action="topList" 
+							label="#{msg.braincontest_main_button_top}"
+							title="#{msg.braincontest_main_button_top}" 
+							rendered="#{braincontest.released}"
+							styleClass="icon_toplist"/>
+				</plexus:column>
+				<t:column >
 					<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 						<plexus:command						
 							bean="#{views$secured$braincontest$braincontestmain}"
 							onclick="if (!confirm('#{msg.braincontest_confirm_delete_post}')) return false"
 							action="remove" label="#{msg['braincontest_main_button_remove']}"
-							title="#{msg['braincontest_main_button_remove']}" />
+							title="#{msg['braincontest_main_button_remove']}" 
+							styleClass="icon_remove"/>
 						<plexus:command
 							bean="#{views$secured$braincontest$braincontestmain}"
-							action="editContest" label="#{msg['braincontest_main_button_edit']}"
-							title="#{msg['braincontest_main_button_edit']}" />
+							action="editContest" 
+							label="#{msg['braincontest_main_button_edit']}"
+							title="#{msg['braincontest_main_button_edit']}"
+							styleClass="icon_edit" />
 					</s:acl>	
-				</plexus:column>
+				</t:column>
 			</plexus:dataTable>
 			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 				<o:block>
-					<plexus:command
-						bean="#{views$secured$braincontest$braincontestmain}"
-						action="newContest" label="#{msg.braincontest_new}"
-						title="#{msg.braincontest_new}" />
+					<h:commandButton
+						action="#{views$secured$braincontest$braincontestmain.newContest}"
+						value="#{msg.braincontest_new}"
+						title="#{msg.braincontest_new}"
+						styleClass="button_add" />
 				</o:block>
 			</s:acl>
 		</h:form>

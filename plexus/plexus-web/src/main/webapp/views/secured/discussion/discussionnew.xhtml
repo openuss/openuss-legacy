@@ -83,8 +83,9 @@
 						
 				</o:block>
 				<o:block>
-					<plexus:command bean="#{views$secured$discussion$discussionnew}"
-						action="send" label="#{msg['discussion_discussionentry_button_send']}"
+					<h:commandButton 
+						action="#{views$secured$discussion$discussionnew.send}"
+						value="#{msg['discussion_discussionentry_button_send']}"
 						title="#{msg['discussion_discussionentry_button_send']}"
 						styleClass="button" />				
 					<h:commandButton 

@@ -45,14 +45,14 @@
 				action="showProfile"
 				label="#{msg['user_profile_command_show_profile']}"
 				title="#{msg['user_profile_command_show_profile_hint']}"
-				styleClass="button_profile" />
+				styleClass="icon_profile" />
 			<plexus:command
 				bean="#{views$secured$lecture$auth$departmentMembers}"
 				action="removeMember"
 				onclick="if (!confirm('#{msg.lecture_remove_departmentmember_confirmation}')) return false"
 				label="#{msg.department_members_command_remove}"
 				title="#{msg.department_members_command_remove_hint}"
-				styleClass="button_remove"/>
+				styleClass="icon_remove"/>
 		</plexus:column>
 	</plexus:dataTable>
 </ui:composition>

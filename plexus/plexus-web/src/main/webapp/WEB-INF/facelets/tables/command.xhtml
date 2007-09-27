@@ -17,10 +17,8 @@
     <c:if test="${empty styleClass}">
     	<c:set var="styleClass" value="button"/>
     </c:if>
-	<h:commandButton value="${label}" action="#{bean[action]}" styleClass="${styleClass}" title="${hint}" onclick="${onclick}" rendered="#{rendered}">
-		<ui:insert/>
-	</h:commandButton>
-	
-
-	
-</ui:composition>
+    <h:commandLink action="#{bean[action]}" styleClass="${styleClass}" title="${title}" onclick="${onclick}" rendered="#{rendered}">
+    	<span></span>${label}
+    	<ui:insert/>
+    </h:commandLink>
+</ui:composition> 

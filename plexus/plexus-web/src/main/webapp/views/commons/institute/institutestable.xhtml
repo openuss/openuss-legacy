@@ -46,7 +46,7 @@
 					action="removeShortcut"
 					label="#{msg.institute_command_shortcut_remove}"
 					title="#{msg.institute_command_shortcut_hint_remove}"
-					styleClass="remove_shortcut_button"
+					styleClass="icon_bookmark_remove"
 					rendered="#{views$public$institute$institutes.bookmarked}">
 				</plexus:command>
 				<plexus:command 
@@ -54,35 +54,38 @@
 					action="shortcutInstitute"
 					label="#{msg.institute_command_shortcut}"
 					title="#{msg.institute_command_shortcut_hint}"
-					styleClass="button_link"
+					styleClass="icon_bookmark"
 					rendered="#{not views$public$institute$institutes.bookmarked}">
 				</plexus:command>
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">
-				<h:commandButton 
-					action = "#{views$public$institute$institutes.selectInstituteAndConfirmDisable}"
-					styleClass="button_remove"
-					value="#{msg.institute_command_disable}"
-					hint="#{msg.institute_command_disable_hint}"
+				<plexus:command 
+					bean="#{views$public$institute$institutes}"
+					action = "selectInstituteAndConfirmDisable"
+					styleClass="icon_hide"
+					label="#{msg.institute_command_disable}"
+					title="#{msg.institute_command_disable_hint}"
 					rendered="#{bean.enabled}">
-				</h:commandButton>
+				</plexus:command>
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">
-				<h:commandButton 
-					action = "#{views$public$institute$institutes.enableInstitute}"
-					styleClass="button_remove"
-					value="#{msg.institute_command_enable}"
-					hint="#{msg.institute_command_enable_hint}"
+				<plexus:command 
+					bean="#{views$public$institute$institutes}"
+					action = "enableInstitute"
+					styleClass="icon_public"
+					label="#{msg.institute_command_enable}"
+					title="#{msg.institute_command_enable_hint}"
 					rendered="#{not bean.enabled}">
-				</h:commandButton>
+				</plexus:command>
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">
-				<h:commandButton
-					action = "#{views$public$institute$institutes.selectInstituteAndConfirmRemove}"
-					styleClass="button_remove"
-					value="#{msg.institute_command_remove}"
+				<plexus:command
+					bean="#{views$public$institute$institutes}"
+					action = "selectInstituteAndConfirmRemove"
+					styleClass="icon_remove"
+					title="#{msg.institute_command_remove}"
 					hint="#{msg.institute_command_remove_hint}">
-				</h:commandButton>	
+				</plexus:command>	
 			</s:authorize>
 			
 		</plexus:column>

@@ -65,9 +65,10 @@
 			</o:block>
 
 			<o:block>
-				<plexus:command bean="#{views$secured$documents$fileedit}" action="save"
-					label="#{msg['newdocument_button_save']}"
-					title="#{msg['newdocument_button_save']}" styleClass="button_save" />
+				<h:commandButton action="#{views$secured$documents$fileedit.save}"
+					value="#{msg['newdocument_button_save']}"
+					title="#{msg['newdocument_button_save']}" 
+					styleClass="button_save" />
 				<h:commandButton action="documents_main" immediate="true"
 					value="#{msg['newdocument_button_cancel']}"
 					styleClass="button_cancel" />

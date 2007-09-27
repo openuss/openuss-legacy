@@ -46,14 +46,14 @@
 				action="editNewsItem"
 				label="#{msg.news_command_edit}"
 				hint="#{msg.news_command_edit_hint}"
-				styleClass="button_edit"/>
+				styleClass="icon_edit"/>
 			<plexus:command 
 				bean="#{views$secured$course$coursenews}"
 				action="removeNewsItem"
 				onclick="if (!confirm('#{msg.coursenews_confirm_delete}')) return false"				
 				label="#{msg.news_command_remove}"
 				hint="#{msg.news_command_remove_hint}"
-				styleClass="button_remove"/>
+				styleClass="icon_remove"/>
 		</plexus:column>
 
 	</plexus:dataTable>

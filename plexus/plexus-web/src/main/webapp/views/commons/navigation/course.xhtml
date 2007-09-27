@@ -25,7 +25,7 @@
 							</t:commandNavigation2>
 							<t:commandNavigation2 
 								action="course_newsletter" 
-								activeOnViewIds="/views/secured/newsletter/newsletter.xhtml,/views/secured/newsletter/newslettersubscribers.xhtml,/views/secured/newsletter/showmail.xhtml,/views/secured/newsletter/newmail.xhtml"
+								activeOnViewIds="/views/secured/newsletter/newsletter.xhtml,/views/secured/newsletter/newslettersubscribers.xhtml,/views/secured/newsletter/exportedsubscribers.xhtml,/views/secured/newsletter/showmail.xhtml,/views/secured/newsletter/newmail.xhtml"
 								rendered="#{courseInfo.newsletter}">
 								<h:outputText value="#{msg['course_command_newsletter']}"/>
 							</t:commandNavigation2>
@@ -81,11 +81,13 @@
 									activeOnViewIds="/views/secured/course/courseassistants.xhtml">
 									<h:outputText value="#{msg['course_command_options_assistants']}" />
 								</t:commandNavigation2>
-								<t:commandNavigation2 
-									action="course_options_members" 
-									activeOnViewIds="/views/secured/course/courseparticipants.xhtml">
-									<h:outputText value="#{msg['course_command_options_participants']}" />
-								</t:commandNavigation2>
+								<c:if test="#{sessionScope.courseInfo.accessType.value != 0}">
+									<t:commandNavigation2 
+										action="course_options_members" 
+										activeOnViewIds="/views/secured/course/courseparticipants.xhtml">
+										<h:outputText value="#{msg['course_command_options_participants']}" />
+									</t:commandNavigation2>
+								</c:if>
 								<c:if test="#{sessionScope.courseInfo.accessType.value == 3}">
 									<t:commandNavigation2 
 										action="course_options_aspirants" 

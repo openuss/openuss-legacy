@@ -69,30 +69,33 @@
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 					<plexus:column header="#{msg.newsletter_actions}">
 						<plexus:command bean="#{views$secured$newsletter$newsletter}"
-							action="delMail" label="#{msg['newsletter_button_delete']}"
+							action="delMail" 
+							label="#{msg['newsletter_button_delete']}"
 							title="#{msg['newsletter_button_delete_hint']}"
-							styleClass="button_profile"
+							styleClass="icon_remove"
 							onclick="if (!confirm('#{msg.newsletter_remove_mail}')) return false"
-							rendered="#{not (mail.status.value==3)}"/>
+							rendered="#{not(mail.status.value==3)}"/>
 						<plexus:command bean="#{views$secured$newsletter$newsletter}"
-							action="sendMail" label="#{msg['newsletter_button_send']}"
+							action="sendMail" 
+							label="#{msg['newsletter_button_send']}"
 							title="#{msg['newsletter_button_send']}"
-							styleClass="button_profile"
+							styleClass="icon_send"
 							rendered="#{mail.status.value==2}" />
 						<plexus:command bean="#{views$secured$newsletter$newsletter}"
-							action="sendPlannedMailNow" label="#{msg['newsletter_button_send']}"
+							action="sendPlannedMailNow" 
+							label="#{msg['newsletter_button_send']}"
 							title="#{msg['newsletter_button_send_hint']}"
-							styleClass="button_profile" 
+							styleClass="icon_sendnow" 
 							rendered="#{mail.status.value==1}"/>
 						<plexus:command bean="#{views$secured$newsletter$newsletter}"
 							action="changeMail" label="#{msg['newsletter_button_change']}"
 							title="#{msg['newsletter_button_change_hint']}"
-							styleClass="button_profile" 
+							styleClass="icon_edit" 
 							rendered="#{(mail.status.value==2)}"/>
 						<plexus:command bean="#{views$secured$newsletter$newsletter}"
 							action="stopMail" label="#{msg['newsletter_button_stop']}"
 							title="#{msg['newsletter_button_stop']}"
-							styleClass="button_profile" 
+							styleClass="icon_cancel" 
 							rendered="#{(mail.status.value==1)}"/>
 					</plexus:column>					
 				</s:acl>
