@@ -65,7 +65,7 @@
 					styleClass="icon_hide"
 					label="#{msg.institute_command_disable}"
 					title="#{msg.institute_command_disable_hint}"
-					rendered="#{bean.enabled}">
+					rendered="#{bean.enabled==true}">
 				</plexus:command>
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">

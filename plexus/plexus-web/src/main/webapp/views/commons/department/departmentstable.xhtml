@@ -69,10 +69,8 @@
 					styleClass="icon_hide"
 					label="#{msg.department_command_disable}"
 					title="#{msg.department_command_disable_hint}"
-					rendered="#{bean.enabled}">
+					rendered="#{bean.enabled == true}">
 				</plexus:command>
-			</s:acl>
-			<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
 				<plexus:command 
 					bean="#{views$public$department$departments}"
 					action = "enableDepartment"
@@ -81,8 +79,6 @@
 					title="#{msg.department_command_enable_hint}"
 					rendered="#{not bean.enabled}">
 				</plexus:command>
-			</s:acl>
-			<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
 				<plexus:command
 					bean="#{views$public$department$departments}"
 					action = "selectDepartmentAndConfirmRemove"

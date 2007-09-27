@@ -31,10 +31,13 @@
 			<ui:include src="/views/commons/navigation/institute.xhtml" />
 		</ui:define>
 		<ui:define name="sidebar"> 
+			<ui:include src="/views/commons/sidebar/useroptions_institute.xhtml" />
 			<ui:include src="/views/commons/sidebar/feeds/institutefeed.xhtml" />
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
 		</ui:define>
-			
+		<ui:define name="breadcrumb">
+			<ui:include src="/views/commons/navigation/crumb_institute.xhtml" />
+		</ui:define>			
 		<ui:define name="content">
 		
 			<ui:include src="/views/commons/sidebar/instituteactivation.xhtml" />
@@ -65,55 +68,6 @@
 		  			<h:outputText value="#{instituteInfo.description}" styleClass="content_font_normal" escape="true"/>
 		  		</p>
 			</o:block>
-			
-			<s:authorize ifAllGranted="ROLE_USER">
-				<!-- spacer -->
-				<div>
-					<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
-				</div>
-				
-				<o:block styleClass="teaser_blue" label="#{msg.organisation_command_actions}">
-					<h:form id="actionsForm">
-						
-						<c:if test="#{not views$public$institute$institute.bookmarked}">
-							<p class="content_font_normal">
-						  			<h:commandLink
-						  				action="#{views$public$institute$institute.addShortcut}">
-						  				<h:outputText value="#{msg.institute_command_shortcut}" />
-						  			</h:commandLink>
-					  		</p>
-					  	</c:if>
-					  	
-					  	<c:if test="#{views$public$institute$institute.bookmarked}">	
-					  		<p class="content_font_normal">
-					  			<h:commandLink 
-					  				action="#{views$public$institute$institute.removeShortcut}">
-					  				<h:outputText value="#{msg.institute_command_remove_shortcut}" />
-					  			</h:commandLink>
-					  		</p>
-					  	</c:if>
-					  	
-					  	<s:authorize ifAllGranted="ROLE_USER">
-							<s:acl domainObject="#{instituteInfo}" hasNotPermission="#{ACL.INSTITUTE_TUTOR}">
-								<p class="content_font_normal">
-									<h:commandLink value="#{msg['institute_command_assistant_application']}" action="#{views$public$institute$institute.applyForMembership}"/>
-								</p>
-							</s:acl>
-						</s:authorize>
-					  		
-				  		<!-- 
-				  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.UPDATE}">
-					  		<p class="content_font_normal">
-						  		<h:commandLink action="institute_registration_start">
-									<h:outputText value="#{msg.institute_command_add_institute}"/>
-								</h:commandLink>
-							</p>
-						</s:acl>
-				  		 -->
-							
-					</h:form>
-				</o:block>
-			</s:authorize>
 			
 			<div>
 				<h:outputText value=" " styleClass="content_font_normal" escape="false"/>

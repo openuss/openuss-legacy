@@ -33,74 +33,49 @@
 			<ui:include src="/views/commons/navigation/university.xhtml" />
 		</ui:define>
  		<ui:define name="sidebar"> 
+			<ui:include src="/views/commons/sidebar/useroptions_university.xhtml" />
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
 		</ui:define>
   		<ui:define name="content">
+  			<o:block styleClass="teaser_blue_right" label="Logo">
+		  		<h:panelGroup>
+					<c:if test="#{not empty universityInfo.imageId}">
+						<h:graphicImage styleClass="organisation_logo"
+							renderer="${not empty universityInfo.imageId}"
+							value="/files?fileid=#{universityInfo.imageId}"
+							alt="#{msg.logo} #{universityInfo.name}"
+							title="#{msg.logo} #{universityInfo.name}"/> 
+					</c:if>
+							
+					<c:if test="#{empty universityInfo.imageId}">
+						<h:graphicImage styleClass="organisation_logo"
+							value="/images/university_logo_dummy.jpg"
+							alt="university logo dummy"
+							title="university logo dummy"/>
+					</c:if>
+				</h:panelGroup>
+		  	</o:block>
+  			
+  			<o:block styleClass="teaser_blue" label="#{universityInfo.name} - #{msg['university_profile']}">
+				<p class="content_font_normal">
+					<h:outputText value="#{universityInfo.description}" styleClass="content_font_normal" escape="true"/>
+				</p>
+			</o:block>
+			
 	  			
-	  			<o:block styleClass="teaser_blue_right" label="Logo">
-			  		
-			  		<h:panelGroup>
-						<c:if test="#{not empty universityInfo.imageId}">
-							<h:graphicImage styleClass="organisation_logo"
-								renderer="${not empty universityInfo.imageId}"
-								value="/files?fileid=#{universityInfo.imageId}"
-								alt="#{msg.logo} #{universityInfo.name}"
-								title="#{msg.logo} #{universityInfo.name}"/> 
-						</c:if>
-								
-						<c:if test="#{empty universityInfo.imageId}">
-							<h:graphicImage styleClass="organisation_logo"
-								value="/images/university_logo_dummy.jpg"
-								alt="university logo dummy"
-								title="university logo dummy"/>
-						</c:if>
-					</h:panelGroup>
-					
-			  	</o:block>
-	  			
-	  			<o:block styleClass="teaser_blue" label="#{universityInfo.name} - #{msg['university_profile']}">
-					<p class="content_font_normal">
-						<h:outputText value="#{universityInfo.description}" styleClass="content_font_normal" escape="true"/>
-					</p>
-				</o:block>
-				
-				<s:authorize ifAllGranted="ROLE_USER">
-					<!-- spacer -->
-					<div>
-						<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
-					</div>
-					
-					<o:block styleClass="teaser_blue" label="#{msg.organisation_command_actions}">
-						<h:form id="actionsForm">
-					  		<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UPDATE}">
-								<p class="content_font_normal">
-									<h:commandLink action="department_registration_start">
-										<h:outputText value="#{msg.department_command_add_department}"/>
-									</h:commandLink>
-								</p>
-							</s:acl>
-							<p class="content_font_normal">
-						  		<h:commandLink action="institute_registration_start">
-									<h:outputText value="#{msg.institute_command_add_institute}"/>
-								</h:commandLink>
-							</p>
-						</h:form>
-					</o:block>
-				</s:authorize>
-	  			
-			  	<div class="clear_both"/>
-				<!-- spacer -->
-				<div>
-					<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
-				</div>
-				
-				<h:form>
-					<ui:include src="/views/commons/department/officialdepartmentstableoverview.xhtml"/>
-				</h:form>
+		  	<div class="clear_both"/>
+			<!-- spacer -->
+			<div>
+				<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
+			</div>
+			
+			<h:form>
+				<ui:include src="/views/commons/department/officialdepartmentstableoverview.xhtml"/>
+			</h:form>
 
-				<h:form>
-					<ui:include src="/views/commons/department/nonofficialdepartmentstableoverview.xhtml"/>
-				</h:form>
+			<h:form>
+				<ui:include src="/views/commons/department/nonofficialdepartmentstableoverview.xhtml"/>
+			</h:form>
 
 		</ui:define>
 	</ui:composition>
