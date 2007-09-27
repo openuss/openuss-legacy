@@ -11,7 +11,7 @@
       
     <plexus:dataTable id="discussionstable" label="#{msg.discussion_main_header}" 
     	value="views$secured$discussion$discussions.data" var="topic" rows="10"
-    	columnClasses="col_min_center, col_max_left, col_min_center, col_min_center, col_min_center, col_date">  
+    	columnClasses="col_min_center, col_max_left, col_min_center, col_min_center, col_min_center, col_date, col_commands">  
       
 		<t:column>
 			<img src="#{theme.imagesPath}/icons/viewstate#{topic.viewState}.png"/>
@@ -43,9 +43,12 @@
 		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 			<t:column>
 				<plexus:commandSortHeader columnName="actions"> #{msg['discussion_main_column_actions']} </plexus:commandSortHeader>
-				<plexus:command bean="#{views$secured$discussion$discussions}"
-					action="removeTopic" label="#{msg['discussion_thread_remove_topic']}"
-					title="#{msg['discussion_thread_remove_topic']}"/>				
+				<plexus:command 
+					bean="#{views$secured$discussion$discussions}"
+					action="removeTopic" 
+					label="#{msg['discussion_thread_remove_topic']}"
+					title="#{msg['discussion_thread_remove_topic']}"
+					styleClass="icon_remove"/>				
 			</t:column>
 		</s:acl>
 	</plexus:dataTable>      

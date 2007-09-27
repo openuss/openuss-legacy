@@ -42,12 +42,12 @@
 		<h:form id="documentTableView">
 			<ui:include src="documentstable.xhtml" />
 			<o:block>
-				<plexus:command
-					bean="#{views$secured$documents$documents}"
-					action="download"
-					label="#{msg['documents_main_button_download']}"
-					title="#{msg['documents_main_button_download']}"
-					styleClass="button_add" />
+					<h:commandButton 
+					    id="download"
+						action="#{views$secured$documents$documents.download}" 
+						value="#{msg.documents_main_button_download}" 
+						title="#{msg.documents_main_button_download}"
+						styleClass="button_add"/>
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.CREATE}">
 					<h:commandButton 
 					    id="addZip"
@@ -69,12 +69,12 @@
 						styleClass="button_add"/>
 				</s:acl>
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.DELETE}">
-					<plexus:command
-						bean="#{views$secured$documents$documents}"
-						action="delete"
-						label="#{msg['documents_main_button_delete']}"
-						title="#{msg['documents_main_button_delete']}"
-						styleClass="button_add" />
+					<h:commandButton 
+					    id="delete"
+						action="#{views$secured$documents$documents.delete}" 
+						value="#{msg.documents_main_button_delete}" 
+						title="#{msg.documents_main_button_delete}"
+						styleClass="button_add"/>
 				</s:acl>
 			</o:block>
 		</h:form>

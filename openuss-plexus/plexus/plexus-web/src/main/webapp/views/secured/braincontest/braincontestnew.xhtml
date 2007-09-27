@@ -80,7 +80,7 @@
 					<h:commandButton value="#{msg.braincontest_add_attachment}"
 						action="#{views$secured$braincontest$braincontestnew.addAttachment}"
 						immediate="true"
-						styleClass="button"/> 
+						styleClass="button_add"/> 
 					
 					<h:message for="attachmentUpload" styleClass="field_error" showDetail="true" showSummary="false" />
 					
@@ -93,11 +93,12 @@
 				</o:block>
 	
 				<o:block>
-					<plexus:command bean="#{views$secured$braincontest$braincontestnew}"
-						action="save" label="#{msg['braincontest_save']}"
-						title="#{msg['braincontest_save']}" />
+					<h:commandButton action="#{views$secured$braincontest$braincontestnew.save}"
+						value="#{msg['braincontest_save']}"
+						title="#{msg['braincontest_save']}" 
+						styleClass="button_save"/>
 					<h:commandButton action="braincontest_main"
-						value="#{msg['braincontest_cancel']}" styleClass="button"
+						value="#{msg['braincontest_cancel']}" styleClass="button_cancel"
 						immediate="true" />
 				</o:block>
 			</s:acl>

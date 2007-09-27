@@ -39,8 +39,8 @@
 			<plexus:dataTable id="subscribertable"
 				label="#{msg.newsletter_subscribertable_header}"
 				value="views$secured$newsletter$newslettersubscribers.data"
-		    	columnClasses="col_max_left, col_min_center, col_command"
-				var="subscriber" rows="10">
+		    	columnClasses="col_max_left, col_max_center, col_commands"
+				var="subscriber" rows="30">
 
 
 				<t:column>
@@ -54,18 +54,26 @@
 				</t:column>
 
 				<plexus:column header="#{msg.commands_header}">
+					<plexus:command 
+						bean="#{views$secured$newsletter$newslettersubscribers}" 
+						action="showProfile" 
+						label="#{msg['user_profile_command_show_profile']}"
+						title="#{msg['user_profile_command_show_profile_hint']}"
+						styleClass="icon_profile"  />
 					<plexus:command
 						bean="#{views$secured$newsletter$newslettersubscribers}"
 						action="removeSubscriber"
 						label="#{msg['newsletter_subscriber_remove']}"
-						title="#{msg['newsletter_subscriber_remove']}"
-						styleClass="button" />
+						title="#{msg['newsletter_subscriber_remove_hint']}"
+						styleClass="icon_remove" />
+						
 				</plexus:column>
 
 			</plexus:dataTable>
 			<o:block>
-				<plexus:command bean="#{views$secured$newsletter$newslettersubscribers}"
-					action="exportSubscribers" label="#{msg['mailingjob_newmail_button_export']}"
+				<h:commandButton
+					action="#{views$secured$newsletter$newslettersubscribers.exportSubscribers}"
+					value="#{msg['mailingjob_newmail_button_export']}"
 					title="#{msg['mailingjob_newmail_button_export']}"
 					styleClass="button" />
 				<h:commandButton value="${msg.back}" title="#{msg.back}"

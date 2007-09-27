@@ -50,7 +50,7 @@
 					action="removeShortcut"
 					label="#{msg.university_command_shortcut_remove}"
 					title="#{msg.university_command_shortcut_hint_remove}"
-					styleClass="remove_shortcut_button"
+					styleClass="icon_bookmark_remove"
 					rendered="#{views$public$department$departments.bookmarked}">
 				</plexus:command>
 				<plexus:command 
@@ -58,36 +58,38 @@
 					action="shortcutDepartment"
 					label="#{msg.university_command_shortcut}"
 					title="#{msg.university_command_shortcut_hint}"
-					styleClass="button_link"
+					styleClass="icon_bookmark"
 					rendered="#{not views$public$department$departments.bookmarked}">
 				</plexus:command>	
 			</s:authorize>
 			<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
-				<h:commandButton 
-					action = "#{views$public$department$departments.selectDepartmentAndConfirmDisable}"
-					styleClass="button_remove"
-					value="#{msg.department_command_disable}"
-					hint="#{msg.department_command_disable_hint}"
+				<plexus:command 
+					bean="#{views$public$department$departments}"
+					action = "selectDepartmentAndConfirmDisable"
+					styleClass="icon_hide"
+					label="#{msg.department_command_disable}"
+					title="#{msg.department_command_disable_hint}"
 					rendered="#{bean.enabled}">
-				</h:commandButton>
+				</plexus:command>
 			</s:acl>
 			<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
-				<h:commandButton 
-					action = "#{views$public$department$departments.enableDepartment}"
-					styleClass="button_remove"
-					value="#{msg.department_command_enable}"
-					hint="#{msg.department_command_enable_hint}"
+				<plexus:command 
+					bean="#{views$public$department$departments}"
+					action = "enableDepartment"
+					styleClass="icon_public"
+					label="#{msg.department_command_enable}"
+					title="#{msg.department_command_enable_hint}"
 					rendered="#{not bean.enabled}">
-				</h:commandButton>
+				</plexus:command>
 			</s:acl>
 			<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
-				<h:commandButton
-					action = "#{views$public$department$departments.selectDepartmentAndConfirmRemove}"
-					styleClass="button_remove"
-					value="#{msg.department_command_remove}"
-					hint="#{msg.department_command_remove_hint}"
+				<plexus:command
+					bean="#{views$public$department$departments}"
+					action = "selectDepartmentAndConfirmRemove"
+					styleClass="icon_remove"
+					label="#{msg.department_command_remove}"
 					rendered="#{not bean.defaultDepartment}">
-				</h:commandButton>	
+				</plexus:command>	
 			</s:acl>
 		</plexus:column>
 		

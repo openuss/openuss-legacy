@@ -75,7 +75,9 @@
 					<c:if test="#{courseInfo.accessType.value == 2}">
 						<h:form id="course_main_apply_password_form">
 							<o:block label="#{msg.course_main_access}" styleClass="form_box">
-								<h:outputText value="#{msg.course_main_access_passtext}" styleClass="content_font_normal"/> 
+								<p class="content_font_normal">
+									<h:outputText value="#{msg.course_main_access_passtext}"/>
+								</p> 
 								<h:outputLabel for="course_password"
 									value="#{msg.course_main_access_password}"
 									styleClass="field_label" />
@@ -87,10 +89,9 @@
 							</o:block>
 		
 							<o:block>
-								<plexus:command bean="#{views$secured$course$main}"
-									action="applyWithPassword"
-									label="#{msg['course_main_access']}"
-									title="#{msg['course_main_access']}" styleClass="button" />
+								<h:commandButton action="#{views$secured$course$main.applyWithPassword}"
+									value ="#{msg['course_main_access']}"
+									hint="#{msg['course_main_access']}" styleClass="button" />
 							</o:block>
 						</h:form>
 					</c:if>
@@ -112,10 +113,9 @@
 									</p>
 								</o:block>
 								<o:block>
-									<plexus:command bean="#{views$secured$course$main}"
-										action="apply" 
-										label="#{msg['course_main_access_applybutton']}"
-										title="#{msg['course_main_access_applybutton']}"
+									<h:commandButton action="#{views$secured$course$main.apply}"
+										value="#{msg['course_main_access_applybutton']}"
+										hint="#{msg['course_main_access_applybutton']}"
 										styleClass="button" />
 								</o:block>
 							</h:form>

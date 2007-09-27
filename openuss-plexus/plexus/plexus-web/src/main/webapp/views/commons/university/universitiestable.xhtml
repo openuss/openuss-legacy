@@ -48,30 +48,33 @@
 
 		<plexus:column header="#{msg.commands_header}">
 			<s:authorize ifAllGranted="ROLE_ADMIN">
-					<h:commandButton 
-						action = "#{views$public$university$universities.selectUniversityAndConfirmDisable}"
-						styleClass="button_remove"
-						value="#{msg.university_command_disable}"
-						hint="#{msg.university_command_disable_hint}"
-						rendered="#{bean.enabled}">
-					</h:commandButton>
+				<plexus:command 
+						bean = "#{views$public$university$universities}"
+						action = "#selectUniversityAndConfirmDisable"
+						styleClass="icon_hide"
+						label="#{msg.university_command_disable}"
+						title="#{msg.university_command_disable_hint}"
+						rendered = "#{bean.enabled}">
+				</plexus:command>
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">
-					<h:commandButton 
-						action = "#{views$public$university$universities.enableUniversity}"
-						styleClass="button_remove"
-						value="#{msg.university_command_enable}"
-						hint="#{msg.university_command_enable_hint}"
-						rendered="#{not bean.enabled}">
-					</h:commandButton>
+				<plexus:command 
+						bean = "#{views$public$university$universities}"
+						action = "enableUniversity"
+						styleClass = "button_remove"
+						label = "#{msg.university_command_enable}"
+						title = "#{msg.university_command_enable_hint}"
+						rendered = "#{not bean.enabled}">
+				</plexus:command>
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">
-				<h:commandButton 
-					action = "#{views$public$university$universities.selectUniversityAndConfirmRemove}"
-					styleClass="button_remove"
-					value="#{msg.university_command_remove}"
-					hint="#{msg.university_command_remove_hint}">
-				</h:commandButton>
+				<plexus:command 
+						bean = "#{views$public$university$universities}"
+						action = "selectUniversityAndConfirmRemove"
+						styleClass = "icon_remove"
+						label = "#{msg.university_command_remove}"
+						title = "#{msg.university_command_remove_hint}">
+				</plexus:command>
 			</s:authorize>
 		</plexus:column>
 			

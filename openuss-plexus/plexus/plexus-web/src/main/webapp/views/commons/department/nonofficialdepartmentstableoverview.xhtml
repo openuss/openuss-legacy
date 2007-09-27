@@ -14,7 +14,7 @@
 		label="#{msg.nonofficialdepartmentList_header}" 
 		value="views$public$department$NonOfficialDepartments.departments" 
 		var="bean" 
-		columnClasses="col_max_left, col_max_left, col_min_left, col_min_left"
+		columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
 		rows="15">
 		<t:column>
 			<plexus:commandSortHeader columnName="name">
@@ -51,7 +51,7 @@
 					action="removeShortcut"
 					label="#{msg.university_command_shortcut_remove}"
 					title="#{msg.university_command_shortcut_hint_remove}"
-					styleClass="remove_shortcut_button"
+					styleClass="icon_bookmark_remove"
 					rendered="#{views$public$department$NonOfficialDepartments.bookmarked}">
 				</plexus:command>
 				<plexus:command 
@@ -59,7 +59,7 @@
 					action="shortcutDepartment"
 					label="#{msg.university_command_shortcut}"
 					title="#{msg.university_command_shortcut_hint}"
-					styleClass="button_link"
+					styleClass="icon_bookmark"
 					rendered="#{not views$public$department$NonOfficialDepartments.bookmarked}">
 				</plexus:command>	
 			</s:authorize>

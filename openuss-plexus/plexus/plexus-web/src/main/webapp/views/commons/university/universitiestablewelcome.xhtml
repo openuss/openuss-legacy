@@ -21,7 +21,7 @@
 				#{msg['university_name']}
 	        </plexus:commandSortHeader>
 	        <h:commandLink action="#{views$public$university$universitieswelcome.selectUniversity}" styleClass="command">
-				<h:outputText value="#{bean.name}"/>
+				<h:outputText value="#{bean.name} (#{bean.shortcut})"/>
 			</h:commandLink> 	
 		</t:column>
 		
@@ -39,41 +39,33 @@
 			<h:outputText value="#{bean.country}"/>
 		</t:column>
 
-		<t:column>
-			<plexus:commandSortHeader columnName="shortcut">
-				#{msg['institute_shortcut_header']}
-			</plexus:commandSortHeader>
-			<h:outputText value="#{bean.shortcut}"/>
-		</t:column>
-
-		<plexus:column header="#{msg.commands_header}">
-			<s:authorize ifAllGranted="ROLE_ADMIN">
-					<h:commandButton 
-						action = "#{views$public$university$universitieswelcome.selectUniversityAndConfirmDisable}"
-						styleClass="button_remove"
-						value="#{msg.university_command_disable}"
-						hint="#{msg.university_command_disable_hint}"
-						rendered="#{bean.enabled}">
-					</h:commandButton>
-			</s:authorize>
-			<s:authorize ifAllGranted="ROLE_ADMIN">
-					<h:commandButton 
-						action = "#{views$public$university$universitieswelcome.enableUniversity}"
-						styleClass="button_remove"
-						value="#{msg.university_command_enable}"
-						hint="#{msg.university_command_enable_hint}"
-						rendered="#{not bean.enabled}">
-					</h:commandButton>
-			</s:authorize>
-			<s:authorize ifAllGranted="ROLE_ADMIN">
-				<h:commandButton 
-					action = "#{views$public$university$universitieswelcome.selectUniversityAndConfirmRemove}"
-					styleClass="button_remove"
+		<s:authorize ifAllGranted="ROLE_ADMIN">
+			<plexus:column header="#{msg.commands_header}">
+				<plexus:command 
+					bean = "#{views$public$university$universitieswelcome}"
+					action = "selectUniversityAndConfirmDisable"
+					styleClass="icon_hide"
+					label="#{msg.university_command_disable}"
+					title="#{msg.university_command_disable_hint}"
+					rendered="#{bean.enabled}">
+				</plexus:command>
+				<plexus:command 
+					bean = "#{views$public$university$universitieswelcome}"
+					action = "enableUniversity"
+					styleClass="icon_public"
+					label="#{msg.university_command_enable}"
+					title="#{msg.university_command_enable_hint}"
+					rendered="#{not bean.enabled}">
+				</plexus:command>
+				<plexus:command 
+					bean = "#{views$public$university$universitieswelcome}"
+					action = "selectUniversityAndConfirmRemove"
+					styleClass="icon_remove"
 					value="#{msg.university_command_remove}"
 					hint="#{msg.university_command_remove_hint}">
-				</h:commandButton>
-			</s:authorize>
-		</plexus:column>
+				</plexus:command>
+			</plexus:column>
+		</s:authorize>
 			
 	</plexus:dataTable>
 </ui:composition>

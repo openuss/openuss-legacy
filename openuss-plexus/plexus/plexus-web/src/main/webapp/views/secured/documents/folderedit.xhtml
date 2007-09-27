@@ -42,10 +42,9 @@
 			</o:block>
 
 			<o:block>
-				<plexus:command 
-					bean="#{views$secured$documents$folderedit}"
-					action="save" 
-					label="#{msg['newfolder_button_save']}"
+				<h:commandButton 
+					action="#{views$secured$documents$folderedit.save}"
+					value="#{msg['newfolder_button_save']}"
 					title="#{msg['newfolder_button_save']}"
 					styleClass="button_save" />
 				<h:commandButton 
