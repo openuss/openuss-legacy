@@ -33,6 +33,7 @@
 .flexListItems li {
 	border-bottom: 1px solid #CCCCCC;
 	padding: 5px 0px 5px 0px;
+	line-height: 14px;
 }
 
 .flexList .flexListBottom {
