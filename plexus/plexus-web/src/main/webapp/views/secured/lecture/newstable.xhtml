@@ -52,6 +52,7 @@
 				action="removeNewsItem"
 				label="#{msg.news_command_remove}"
 				hint="#{msg.news_command_remove_hint}"
+				onclick="if (!confirm('#{msg.newsitem_confirm_delete}')) return false"
 				styleClass="icon_remove"/>
 		</plexus:column>
 
