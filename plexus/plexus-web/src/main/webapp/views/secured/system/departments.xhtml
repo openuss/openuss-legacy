@@ -33,7 +33,7 @@
 					label="#{msg.departmentList_header}" 
 					value="views$secured$system$departments.departments" 
 					var="bean" 
-					columnClasses="col_max_left, col_max_left, col_min_left, col_min_left"
+					columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
 					rows="15">
 					<t:column>
 						<plexus:commandSortHeader columnName="name">
@@ -69,44 +69,38 @@
 								action="removeShortcut"
 								label="#{msg.university_command_shortcut_remove}"
 								title="#{msg.university_command_shortcut_hint_remove}"
-								styleClass="remove_shortcut_button"
-								rendered="#{views$secured$system$departments.bookmarked}">
-							</plexus:command>
+								styleClass="icon_bookmark_remove"
+								rendered="#{views$secured$system$departments.bookmarked}"/>
 							<plexus:command 
 								bean="#{views$secured$system$departments}"
 								action="shortcutDepartment"
 								label="#{msg.university_command_shortcut}"
 								title="#{msg.university_command_shortcut_hint}"
-								styleClass="button_link"
-								rendered="#{not views$secured$system$departments.bookmarked}">
-							</plexus:command>	
+								styleClass="icon_bookmark"
+								rendered="#{not views$secured$system$departments.bookmarked}"/>
 						</s:authorize>
 						<s:authorize ifAllGranted="ROLE_ADMIN">
-							<h:commandButton 
-								action = "#{views$secured$system$departments.selectDepartmentAndConfirmDisable}"
-								styleClass="button_remove"
-								value="#{msg.department_command_disable}"
-								hint="#{msg.department_command_disable_hint}"
-								rendered="#{bean.enabled}">
-							</h:commandButton>
-						</s:authorize>
-						<s:authorize ifAlRlGranted="ROLE_ADMIN">
-							<h:commandButton 
-								action = "#{views$secured$system$departments.enableDepartment}"
-								styleClass="button_remove"
-								value="#{msg.department_command_enable}"
-								hint="#{msg.department_command_enable_hint}"
-								rendered="#{not bean.enabled}">
-							</h:commandButton>
-						</s:authorize>
-						<s:authorize ifAllGranted="ROLE_ADMIN">
-							<h:commandButton
-								action = "#{views$secured$system$departments.selectDepartmentAndConfirmRemove}"
-								styleClass="button_remove"
-								value="#{msg.department_command_remove}"
-								hint="#{msg.department_command_remove_hint}"
-								rendered="#{not bean.defaultDepartment}">
-							</h:commandButton>	
+							<plexus:command 
+								bean = "#{views$secured$system$departments}"
+								action = ".selectDepartmentAndConfirmDisable"
+								styleClass = "icon_hide"
+								label = "#{msg.department_command_disable}"
+								title = "#{msg.department_command_disable_hint}"
+								rendered="#{bean.enabled}"/>
+							<plexus:command
+								bean = "#{views$secured$system$departments}"
+								action = "enableDepartment"
+								styleClass="icon_public"
+								label="#{msg.department_command_enable}"
+								title="#{msg.department_command_enable_hint}"
+								rendered="#{not bean.enabled}"/>
+							<plexus:command
+								bean = "#{views$secured$system$departments}"
+								action = "selectDepartmentAndConfirmRemove"
+								styleClass="icon_remove"
+								label="#{msg.department_command_remove}"
+								title="#{msg.department_command_remove_hint}"
+								rendered="#{not bean.defaultDepartment}"/>
 						</s:authorize>
 					</plexus:column>
 					

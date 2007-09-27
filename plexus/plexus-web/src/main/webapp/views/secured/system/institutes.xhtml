@@ -36,7 +36,7 @@
 					value="views$secured$system$institutes.provider" 
 					var="bean" 
 					rows="15"
-			   		columnClasses="col_min_center, col_min_left, col_max_left, col_max_left, col_min_left, col_min_left, col_min_left, col_min_center">
+			   		columnClasses="col_min_center, col_min_left, col_max_left, col_max_left, col_min_left, col_min_left, col_min_left, col_commands">
 
 					<t:column>
 						<f:facet name="header">
@@ -91,12 +91,12 @@
 					
 					<plexus:column header="#{msg.commands_header}">
 						<s:authorize ifAllGranted="ROLE_ADMIN">
-							<h:commandButton
-								action = "#{views$secured$system$institutes.selectInstituteAndConfirmRemove}"
-								styleClass="button_remove"
-								value="#{msg.institute_command_remove}"
-								hint="#{msg.institute_command_remove_hint}">
-							</h:commandButton>	
+							<plexus:command
+								bean = "#{views$secured$system$institutes}"
+								action = "selectInstituteAndConfirmRemove"
+								styleClass="icon_remove"
+								label="#{msg.institute_command_remove}"
+								title="#{msg.institute_command_remove_hint}"/>
 						</s:authorize>
 					</plexus:column>
 				</plexus:dataTable>

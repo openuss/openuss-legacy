@@ -1626,7 +1626,7 @@ th {
 	text-align: left;
 	font-size: 8pt;
 	font-weight: bold;
-	color: #fff;
+	color: #505050;
 	background: #E3EDCF;
 }
 
@@ -1802,15 +1802,9 @@ td .pulldown_small {
 }
 
 td.col_commands {
-	width: 90px;
-}
-
-td.col_commands_two {
-	width: 172px;
-}
-
-td.col_commands_three {
-	width: 258px;
+	white-space: nowrap;
+	text-align: center;
+	width: 85px;
 }
 
 td.col_min_left {

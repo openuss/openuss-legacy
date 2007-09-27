@@ -40,15 +40,13 @@
 				action ="acceptApplication"
 				label="#{msg.institute_aspirant_accept}"
 				rendered="#{!bean.confirmed}"
-				styleClass="button_remove">
-			</plexus:command>
+				styleClass="button_remove"/>
 			<plexus:command   
 				bean= "#{views$secured$lecture$departmentapplicationspage}"  
 				action ="rejectApplication"
 				label="#{msg.institute_aspirant_reject}"
 				rendered="#{!bean.confirmed}"
-				styleClass="button_remove">
-			</plexus:command>
+				styleClass="button_remove"/>
 			
 		</plexus:column>
 	
