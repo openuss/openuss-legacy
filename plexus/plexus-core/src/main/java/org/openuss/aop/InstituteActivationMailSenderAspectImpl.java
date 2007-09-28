@@ -22,8 +22,8 @@ import org.openuss.system.SystemService;
  * creation of institutes.
  * 
  * @author Florian Dondorf
+ * @author Ingo Düppe
  */
-
 public class InstituteActivationMailSenderAspectImpl {
 
 	private static final Logger logger = Logger.getLogger(InstituteActivationMailSenderAspectImpl.class);
@@ -36,7 +36,7 @@ public class InstituteActivationMailSenderAspectImpl {
 	
 	
 	/**
-	 * Sends an activation mail to the creator of the institute.
+	 * Sends an activation mail to the email address of the institute.
 	 * @param instituteInfo - institute which should be activated
 	 * @param userId - user's id.
 	 */
@@ -73,7 +73,8 @@ public class InstituteActivationMailSenderAspectImpl {
 				"institute.activation.subject", 
 				"instituteactivation", 
 				parameters, 
-				recipients);
+				institute.getEmail(),
+				institute.getLocale());
 	}
 	
 	public void setUserDao(UserDao userDao) {
