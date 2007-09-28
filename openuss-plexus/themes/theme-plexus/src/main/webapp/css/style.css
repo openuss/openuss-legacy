@@ -1354,7 +1354,7 @@ ul {
 	text-decoration: none;
 	color: #505050;
 	border: 1px solid #B4B4B4;
-	margin: 10px 0 0 0px;
+	margin: 1px 10px 0px 10px;
 	display: inline;
 }
 
@@ -1394,11 +1394,6 @@ ul {
 	font-weight: bold;
 }
 
-.pulldown_inline {
-	margin-left: 0;
-	margin-right: 10px;
-	display: inline;
-}
 
 .tablenavigator {
 	

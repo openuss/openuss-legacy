@@ -38,41 +38,27 @@
 			<ui:include src="/views/commons/navigation/crumb_department.xhtml" />
 		</ui:define>	
 		<ui:define name="content">
-	  			
-	  			<o:block styleClass="teaser_blue_right" label="Logo">
-			  		<h:panelGroup>
-						<c:if test="#{not empty departmentInfo.imageId}">
-							<h:graphicImage styleClass="organisation_logo"
-								renderer="${not empty departmentInfo.imageId}"
-								value="/files?fileid=#{departmentInfo.imageId}"
-								alt="#{msg.logo} #{departmentInfo.name}"
-								title="#{msg.logo} #{departmentInfo.name}"/> 
-						</c:if>
-								
-						<c:if test="#{empty departmentInfo.imageId}">
-							<h:graphicImage styleClass="organisation_logo"
-								value="/images/department_logo_dummy.JPG"
-								alt="department logo dummy"
-								title="department logo dummy"/>
-						</c:if>
-					</h:panelGroup>
-			  	</o:block>
-	  			
-	  			<o:block styleClass="teaser_blue" label="#{departmentInfo.name} - #{msg['university_profile']}">
-				  	<p class="content_font_normal">
-				  		<h:outputText value="#{departmentInfo.description}" styleClass="content_font_normal" escape="false"/>
-					</p>
-				</o:block>
-	  			
-			  	<div class="clear_both"/>
-				<!-- spacer -->
-				<div>
-					<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
-				</div>
-				
-				<h:form>
-					<ui:include src="/views/commons/institute/institutestableoverview.xhtml"/>
-				</h:form>
+			<c:if test="#{(!empty departmentInfo.imageId) or (!empty departmentInfo.description)}">
+				<c:if test="#{not empty departmentInfo.imageId}">
+					<h:graphicImage styleClass="organisation_logo"
+						renderer="${not empty departmentInfo.imageId}"
+						value="/files?fileid=#{departmentInfo.imageId}"
+						alt="#{msg.logo} #{departmentInfo.name}"
+						title="#{msg.logo} #{departmentInfo.name}"
+						style="float:left;padding-right:10px;"/> 
+				</c:if>
+				<c:if test="#{!empty departmentInfo.description}">
+		  			<p class="content_font_normal">
+		  				<h:outputText value="#{departmentInfo.description}" styleClass="content_font_normal" escape="false"/>
+		  			</p>
+				</c:if>
+				<div style="clear:both"/>
+				<br/>
+			</c:if>
+			
+			<h:form>
+				<ui:include src="/views/commons/institute/institutestableoverview.xhtml"/>
+			</h:form>
 
 		</ui:define>
 				
