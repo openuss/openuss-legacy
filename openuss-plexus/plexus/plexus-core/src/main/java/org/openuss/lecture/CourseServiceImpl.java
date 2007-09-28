@@ -256,7 +256,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 				// FIXME - link should be configured from outside the core
 				// component
 				String link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
-						+ "views/secured/course/courseaspirants.faces?course=" + course.getId();
+						+ "/views/secured/course/courseaspirants.faces?course=" + course.getId();
 				Map<String, String> parameters = new HashMap<String, String>();
 				parameters.put("coursename", course.getName() + "(" + course.getShortcut() + ")");
 				parameters.put("courseapplicantlink", link);

@@ -162,6 +162,10 @@ public abstract class BaseBean {
     protected Object getSessionBean(String name) {
     	return getBean("sessionScope."+name);
     }
+    
+    public String contextPath() {
+    	return getRequest().getContextPath();
+    }
 
     /**
      * Remove bean from session.

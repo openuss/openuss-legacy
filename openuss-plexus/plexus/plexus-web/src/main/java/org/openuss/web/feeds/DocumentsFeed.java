@@ -28,7 +28,6 @@ public class DocumentsFeed extends AbstractFeed {
 
 	private transient SystemService systemService;
 
-
 	private String viewUri; 
 	
 	public static final Logger logger = Logger.getLogger(DocumentsFeed.class);

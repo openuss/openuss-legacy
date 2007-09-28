@@ -13,7 +13,7 @@
      	value="views$secured$lecture$departmentapplicationspage.applications" 
 		var="bean" 
      	label="#{msg.institute_applicationList_header}"
-       	columnClasses="col_max_left, col_commands"
+       	columnClasses="col_max_left, col_date, col_commands"
        	rows="5">  
    
 			
@@ -35,18 +35,16 @@
 	
 		<plexus:column header="#{msg.commands_header}"  >
 
-			<plexus:command 
-				bean= "#{views$secured$lecture$departmentapplicationspage}"  
-				action ="acceptApplication"
-				label="#{msg.institute_aspirant_accept}"
+			<h:commandButton 
+				action= "#{views$secured$lecture$departmentapplicationspage.acceptApplication}"  
+				value="#{msg.institute_aspirant_accept}"
 				rendered="#{!bean.confirmed}"
-				styleClass="button_remove"/>
-			<plexus:command   
-				bean= "#{views$secured$lecture$departmentapplicationspage}"  
-				action ="rejectApplication"
-				label="#{msg.institute_aspirant_reject}"
+				styleClass="button"/>
+			<h:commandButton   
+				action= "#{views$secured$lecture$departmentapplicationspage.rejectApplication}"  
+				value="#{msg.institute_aspirant_reject}"
 				rendered="#{!bean.confirmed}"
-				styleClass="button_remove"/>
+				styleClass="button"/>
 			
 		</plexus:column>
 	

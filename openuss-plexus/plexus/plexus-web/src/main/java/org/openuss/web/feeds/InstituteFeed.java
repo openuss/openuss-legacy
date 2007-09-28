@@ -41,7 +41,7 @@ public class InstituteFeed extends AbstractFeed {
 		FeedWrapper feedWrapper = new FeedWrapper();
 		
 		final String serverUrl = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue(); 
-		final String linkNewsItem = serverUrl + "views/public/news/newsDetail.faces?news=" ;
+		final String linkNewsItem = serverUrl + "/views/public/news/newsDetail.faces?news=" ;
 
 		if (newsEntries != null && newsEntries.size() != 0) {
 			Collections.reverse(newsEntries);
@@ -58,7 +58,7 @@ public class InstituteFeed extends AbstractFeed {
 			feedWrapper.setLastModified(newsEntries.get(0).getPublishDate());
 		}
 
-		String link = serverUrl + "views/secured/lecture/institute.faces?institute=" + institute.getId();
+		String link = serverUrl + "/views/secured/lecture/institute.faces?institute=" + institute.getId();
 		
 		feedWrapper.setWriter(this.convertToXml("["
 				+ i18n("rss_institute", null, locale()) + "] "

@@ -20,7 +20,7 @@ public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
 	private static final Logger logger = Logger.getLogger(SystemServiceImpl.class);
 
 	/**  This is the system instance identity, that must be unique within the cluster */
-	private static volatile Long instanceIdentity = 1L;
+	private static Long instanceIdentity = 1L;
 	
 	static {
 		try {
@@ -69,9 +69,8 @@ public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
 
 	@Override
 	protected void handleSetInstanceIdentity(Long identity) throws Exception {
-		synchronized (SystemService.class) {
-			SystemServiceImpl.instanceIdentity = identity;
-		}
+		throw new UnsupportedOperationException("Do not manipulate the Instance Id!");
+		
 	}
 
 }
