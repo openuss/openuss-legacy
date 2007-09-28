@@ -103,5 +103,21 @@ public class UniversityDaoMock extends AbstractMockDao<University> implements Un
 		
 	}
 
+	public University create(UniversityType universityType, String name, String shortName, String shortcut,
+			String description, String ownerName, String address, String postcode, String city, String country,
+			String telephone, String telefax, String website, String email, String locale, String theme, Long imageId,
+			boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object create(int transform, UniversityType universityType, String name, String shortName, String shortcut,
+			String description, String ownerName, String address, String postcode, String city, String country,
+			String telephone, String telefax, String website, String email, String locale, String theme, Long imageId,
+			boolean enabled) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

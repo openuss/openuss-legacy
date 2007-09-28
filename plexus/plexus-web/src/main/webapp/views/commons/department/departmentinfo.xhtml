@@ -13,7 +13,7 @@
     	<h:form id="institute_link">
     		<h:commandLink action="/views/public/department/department.faces" >
     			<f:param name="department" value="#{departmentInfo.id}"/>
-			 	<h:outputText value="#{departmentInfo.name}" styleClass="header_font_normal"/>
+			 	<h:outputText value="#{departmentInfo.shortName}" styleClass="header_font_normal"/>
 			 	<h:outputText value="#{departmentInfo.address}" styleClass="content_font_normal"/>
 			 	<h:outputText value="#{departmentInfo.postcode} #{departmentInfo.city}" styleClass="content_font_normal"/>
 			 	<h:outputFormat value="#{msg.institute_information_telephone}" rendered="#{!empty departmentInfo.telephone}" styleClass="content_font_normal">

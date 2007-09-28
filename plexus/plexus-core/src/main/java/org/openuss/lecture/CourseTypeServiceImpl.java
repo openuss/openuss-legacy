@@ -9,15 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
 
 /**
  * @see org.openuss.lecture.CourseTypeService
  * @author Florian Dondorf
  */
 public class CourseTypeServiceImpl extends org.openuss.lecture.CourseTypeServiceBase {
-
-	private static final Logger logger = Logger.getLogger(CourseTypeServiceImpl.class);
 
 	@Override
 	protected Long handleCreate(CourseTypeInfo courseTypeInfo) throws Exception {
@@ -127,17 +124,6 @@ public class CourseTypeServiceImpl extends org.openuss.lecture.CourseTypeService
 		// Update CourseType
 		this.getCourseTypeDao().update(courseTypeEntity);
 
-	}
-
-	@Override
-	public boolean handleIsNoneExistingCourseTypeShortcut(CourseTypeInfo self, String shortcut) throws Exception {
-		logger.debug("Starting method handleIsNoneExistingCourseTypeShortcut");
-		CourseType found = this.getCourseTypeDao().findByShortcut(shortcut);
-		CourseTypeInfo foundInfo = null;
-		if (found != null) {
-			foundInfo = this.getCourseTypeDao().toCourseTypeInfo(found);
-		}
-		return isEqualOrNull(self, foundInfo);
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseType;
+import org.openuss.lecture.CourseTypeService;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -35,7 +36,7 @@ public class CourseTypeCourseSelectionPage extends BasePage {
 	
 	@Property(value="#{lectureService}")
 	LectureService lectureService;
-
+	
 	@Prerender
 	public void prerender() {
 		logger.debug("prerender courseType course selction");

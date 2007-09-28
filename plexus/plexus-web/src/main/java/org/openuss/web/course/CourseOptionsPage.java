@@ -51,6 +51,8 @@ public class CourseOptionsPage extends AbstractCoursePage {
 			if (!isPostBack()) {
 				logger.debug("---------- is not postback ---------- refreshing course");
 				super.prerender();
+			} else {
+				breadcrumbs.loadCourseCrumbs(courseInfo);
 			}
 		}
 		setSessionBean(Constants.COURSE, courseInfo);

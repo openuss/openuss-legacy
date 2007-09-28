@@ -8,7 +8,6 @@ package org.openuss.lecture;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.Validate;
 import org.openuss.registration.RegistrationException;
 import org.openuss.security.Group;
@@ -20,19 +19,17 @@ import org.openuss.security.User;
  * @see org.openuss.lecture.OrganisationService
  * @author Ron Haus, Florian Dondorf
  */
-public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationServiceBase {
+public class OrganisationServiceImpl extends OrganisationServiceBase {
 
 	/**
 	 * @see org.openuss.lecture.OrganisationService#addMember(java.lang.Long, java.lang.Long)
 	 */
 	protected void handleAddMember(java.lang.Long organisationId, java.lang.Long userId) throws java.lang.Exception {
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
-		Validate.notNull(organisation,
-				"MembershipService.handleAddMember - no Organisation found corresponding to the ID " + organisationId);
+		Validate.notNull(organisation, "No Organisation found corresponding to the ID " + organisationId);
 
 		User user = this.getUserDao().load(userId);
-		Validate.notNull(organisation, "MembershipService.handleAddMember - no User found corresponding to the ID "
-				+ userId);
+		Validate.notNull(organisation, "No User found corresponding to the ID "	+ userId);
 
 		this.getMembershipService().addMember(organisation.getMembership(), user);
 	}
@@ -42,16 +39,13 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 	 */
 	protected void handleRemoveMember(Long organisationId, Long userId) throws Exception {
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
-		Validate.notNull(organisation,
-				"MembershipService.handleRemoveMember - no Organisation found corresponding to the ID "
-						+ organisationId);
+		Validate.notNull(organisation, "No Organisation found corresponding to the ID "	+ organisationId);
 
 		Validate.isTrue(organisation.getMembership().getMembers().size() > 1,
-				"MembershipService.handleRemoveMember - You cannot remove the last Member!");
+				"You cannot remove the last Member!");
 
 		User user = this.getUserDao().load(userId);
-		Validate.notNull(organisation, "MembershipService.handleRemoveMember - no User found corresponding to the ID "
-				+ userId);
+		Validate.notNull(organisation, "No User found corresponding to the ID "	+ userId);
 
 		this.getMembershipService().removeMember(organisation.getMembership(), user);
 
@@ -60,7 +54,7 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 	/**
 	 * @see org.openuss.lecture.OrganisationService#addAspirant(java.lang.Long, java.lang.Long)
 	 */
-	protected void handleAddAspirant(java.lang.Long organisationId, java.lang.Long userId) throws java.lang.Exception {
+	protected void handleAddAspirant(Long organisationId, Long userId) throws Exception {
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		Validate
 				.notNull(organisation,
@@ -324,16 +318,5 @@ public class OrganisationServiceImpl extends org.openuss.lecture.OrganisationSer
 				.setUniversityInfo(this.getUniversityDao().toUniversityInfo(institute.getDepartment().getUniversity()));
 		return hierarchy;
 	}
-
-	@Override
-	protected boolean handleIsNoneExistingOrganisationShortcut(Long organisationId, String shortcut) throws Exception {
-		Organisation organisationFound = getOrganisationDao().findByShortcut(shortcut);
-		if (organisationFound == null) {
-			return true;
-		} else {
-			return (ObjectUtils.equals(organisationId,organisationFound.getId()));
-		}
-	}
-	
 	
 }

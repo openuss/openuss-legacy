@@ -22,7 +22,7 @@ import org.openuss.lecture.UniversityServiceException;
 @FacesValidator(value = "calendarDateValidator")
 public class CalendarDateValidator extends BaseBean implements Validator {
 
-	private static final Logger logger = Logger.getLogger(UniversityShortcutValidator.class);
+	private static final Logger logger = Logger.getLogger(CalendarDateValidator.class);
 
 	public static final String SHORTCUT_MESSAGE_ID = "error_shortcut_already_exists";
 

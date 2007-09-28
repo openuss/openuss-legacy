@@ -14,7 +14,7 @@
 		<o:block label="#{msg.coursetype_header}" styleClass="form_box">
 			<o:input entity="courseTypeInfo" property="name" required="true" maxlength="100"/>
 			<o:input entity="courseTypeInfo" property="shortcut" required="true" maxlength="30">
-				<f:validator validatorId="courseTypeShortcutValidator"/>
+				<f:validator validatorId="filenameValidator"/>			
 			</o:input>
 			<o:input entity="courseTypeInfo" property="description" maxlength="250" type="textarea"/>
 		</o:block> 
