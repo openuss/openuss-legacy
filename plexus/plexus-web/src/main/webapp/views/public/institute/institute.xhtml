@@ -39,45 +39,29 @@
 			<ui:include src="/views/commons/navigation/crumb_institute.xhtml" />
 		</ui:define>			
 		<ui:define name="content">
-		
 			<ui:include src="/views/commons/sidebar/instituteactivation.xhtml" />
 			
-			<o:block styleClass="teaser_blue_right" label="Logo">
-			  		
-		  		<h:panelGroup>
-					<c:if test="#{not empty instituteInfo.imageId}">
-						<h:graphicImage styleClass="organisation_logo"
-							renderer="${not empty instituteInfo.imageId}"
-							value="/files?fileid=#{instituteInfo.imageId}"
-							alt="#{msg.logo} #{instituteInfo.name}"
-							title="#{msg.logo} #{instituteInfo.name}"/> 
-					</c:if>
-							
-					<c:if test="#{empty instituteInfo.imageId}">
-						<h:graphicImage styleClass="organisation_logo"
-							value="/images/institute_logo_dummy.jpg"
-							alt="institute logo dummy"
-							title="institute logo dummy"/>
-					</c:if>
-				</h:panelGroup>
-					
-		  	</o:block>
-	
-		  	<o:block styleClass="teaser_blue" label="#{instituteInfo.name} - #{msg['institute_profile']}">
-		  		<p class="content_font_normal">
-		  			<h:outputText value="#{instituteInfo.description}" styleClass="content_font_normal" escape="true"/>
-		  		</p>
-			</o:block>
-			
-			<div>
-				<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
-			</div>
-			<div class="clear_both"/>
+			<c:if test="#{(!empty instituteInfo.imageId) or (!empty instituteInfo.description)}">
+				<c:if test="#{not empty instituteInfo.imageId}">
+					<h:graphicImage styleClass="organisation_logo"
+						renderer="${not empty instituteInfo.imageId}"
+						value="/files?fileid=#{instituteInfo.imageId}"
+						alt="#{msg.logo} #{instituteInfo.name}"
+						title="#{msg.logo} #{instituteInfo.name}"
+						style="float:left;padding-right:10px;"/> 
+				</c:if>
+				<c:if test="#{!empty instituteInfo.description}">
+		  			<p class="content_font_normal">
+		  				<h:outputText value="#{instituteInfo.description}" styleClass="content_font_normal" escape="false"/>
+		  			</p>
+				</c:if>
+				<div style="clear:both"/>
+				<br/>
+			</c:if>
 				
   			<h:form id="instituteMainForm">
   				<ui:include src="/views/commons/course/coursestableoverview.xhtml"/>
   			</h:form>
-  			
   			<br/>
 	  		<plexus:newsTable value="#{views$public$institute$institute.currentNewsItems}" headline="${msg.news_header}"/>
   			

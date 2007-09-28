@@ -19,7 +19,7 @@ public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
 	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(SystemServiceImpl.class);
 
-	/**  This is the system instance identity, that must be unique with the cluster */
+	/**  This is the system instance identity, that must be unique within the cluster */
 	private static volatile Long instanceIdentity = 1L;
 	
 	static {

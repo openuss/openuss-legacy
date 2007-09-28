@@ -37,38 +37,23 @@
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
 		</ui:define>
   		<ui:define name="content">
-  			<o:block styleClass="teaser_blue_right" label="Logo">
-		  		<h:panelGroup>
-					<c:if test="#{not empty universityInfo.imageId}">
-						<h:graphicImage styleClass="organisation_logo"
-							renderer="${not empty universityInfo.imageId}"
-							value="/files?fileid=#{universityInfo.imageId}"
-							alt="#{msg.logo} #{universityInfo.name}"
-							title="#{msg.logo} #{universityInfo.name}"/> 
-					</c:if>
-							
-					<c:if test="#{empty universityInfo.imageId}">
-						<h:graphicImage styleClass="organisation_logo"
-							value="/images/university_logo_dummy.jpg"
-							alt="university logo dummy"
-							title="university logo dummy"/>
-					</c:if>
-				</h:panelGroup>
-		  	</o:block>
-  			
-  			<o:block styleClass="teaser_blue" label="#{universityInfo.name} - #{msg['university_profile']}">
-				<p class="content_font_normal">
-					<h:outputText value="#{universityInfo.description}" styleClass="content_font_normal" escape="true"/>
-				</p>
-			</o:block>
-			
-	  			
-		  	<div class="clear_both"/>
-			<!-- spacer -->
-			<div>
-				<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
-			</div>
-			
+  			<c:if test="#{(!empty universityInfo.imageId) or (!empty universityInfo.description)}">
+				<c:if test="#{not empty universityInfo.imageId}">
+					<h:graphicImage styleClass="organisation_logo"
+						renderer="${not empty universityInfo.imageId}"
+						value="/files?fileid=#{universityInfo.imageId}"
+						alt="#{msg.logo} #{universityInfo.name}"
+						title="#{msg.logo} #{universityInfo.name}"
+						style="float:left;padding-right:10px;"/> 
+				</c:if>
+				<c:if test="#{!empty universityInfo.description}">
+		  			<p class="content_font_normal">
+		  				<h:outputText value="#{universityInfo.description}" styleClass="content_font_normal" escape="false"/>
+		  			</p> 
+				</c:if>
+				<div style="clear:both"/>
+				<br/>
+			</c:if>
 			<h:form>
 				<ui:include src="/views/commons/department/officialdepartmentstableoverview.xhtml"/>
 			</h:form>
