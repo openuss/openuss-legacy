@@ -13,7 +13,7 @@
     	<h:form id="university_link">
     		<h:commandLink action="/views/public/university/university.faces" >
     			<f:param name="universityInfo" value="#{universityInfo.id}"/>
-			 	<h:outputText value="#{universityInfo.name}" styleClass="header_font_normal"/>
+			 	<h:outputText value="#{universityInfo.shortName}" styleClass="header_font_normal"/>
 				<h:outputText value="#{universityInfo.address}" styleClass="content_font_normal"/>
 				<h:outputText value="#{universityInfo.postcode} #{universityInfo.city}" styleClass="content_font_normal"/>
 				<h:outputFormat value="#{msg.university_information_telephone}" rendered="#{!empty universityInfo.telephone}" styleClass="content_font_normal">

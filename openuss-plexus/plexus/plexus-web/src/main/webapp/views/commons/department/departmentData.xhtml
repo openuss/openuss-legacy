@@ -7,13 +7,11 @@
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:c="http://java.sun.com/jstl/core"
       xmlns:o="http://www.openuss.org/jsfcontrols"
-      xmlns:s="http://www.openuss.org/jsf-security"
-      >
-      
+      xmlns:s="http://www.openuss.org/jsf-security">
 
-	<o:input entity="departmentInfo" property="name" maxlength="50" required="true"/>
-	<o:input entity="departmentInfo" property="shortcut" maxlength="50" required="true">
-		<f:validator validatorId="departmentShortcutValidator"/>
+	<o:input entity="departmentInfo" property="name" maxlength="250" required="true"/>
+	<o:input entity="departmentInfo" property="shortName" maxlength="250" required="true"/>
+	<o:input entity="departmentInfo" property="shortcut" maxlength="30" required="true">
 		<f:validator validatorId="filenameValidator"/>
 	</o:input>
 	

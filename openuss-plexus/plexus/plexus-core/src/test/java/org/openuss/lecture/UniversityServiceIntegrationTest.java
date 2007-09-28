@@ -635,36 +635,36 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> END access to removeCompleteUniversityTree test");
 	}
 	
-	public void testIsNoneExistingOrganisationShortcutByUniversity () {
-		logger.debug("----> BEGIN access to isNoneExistingOrganisationShortcutByUniversity test <---- ");
-		
-		//Create Secure Context
-		testUtility.createUserSecureContext();
-		
-		// Create Universities
-		University university1 = testUtility.createUniqueUniversityInDB();
-		University university2 = testUtility.createUniqueUniversityInDB();
-		flush();
-		
-		// Test
-		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
-		Boolean result = this.getUniversityService().isNoneExistingOrganisationShortcutByUniversity(
-				universityDao.toUniversityInfo(university1), university1.getShortcut());
-		assertNotNull(result);
-		assertTrue(result);
-		
-		result = this.getUniversityService().isNoneExistingOrganisationShortcutByUniversity(
-				universityDao.toUniversityInfo(university1), testUtility.unique("uni"));
-		assertNotNull(result);
-		assertTrue(result);
-		
-		result = this.getUniversityService().isNoneExistingOrganisationShortcutByUniversity(
-				universityDao.toUniversityInfo(university1), university2.getShortcut());
-		assertNotNull(result);
-		assertFalse(result);
-		
-		logger.debug("----> END access to isNoneExistingOrganisationShortcutByUniversity test <---- ");
-	}
+//	public void testIsNoneExistingOrganisationShortcutByUniversity () {
+//		logger.debug("----> BEGIN access to isNoneExistingOrganisationShortcutByUniversity test <---- ");
+//		
+//		//Create Secure Context
+//		testUtility.createUserSecureContext();
+//		
+//		// Create Universities
+//		University university1 = testUtility.createUniqueUniversityInDB();
+//		University university2 = testUtility.createUniqueUniversityInDB();
+//		flush();
+//		
+//		// Test
+//		UniversityDao universityDao = (UniversityDao) this.getApplicationContext().getBean("universityDao");
+//		Boolean result = this.getUniversityService().isNoneExistingOrganisationShortcutByUniversity(
+//				universityDao.toUniversityInfo(university1), university1.getShortcut());
+//		assertNotNull(result);
+//		assertTrue(result);
+//		
+//		result = this.getUniversityService().isNoneExistingOrganisationShortcutByUniversity(
+//				universityDao.toUniversityInfo(university1), testUtility.unique("uni"));
+//		assertNotNull(result);
+//		assertTrue(result);
+//		
+//		result = this.getUniversityService().isNoneExistingOrganisationShortcutByUniversity(
+//				universityDao.toUniversityInfo(university1), university2.getShortcut());
+//		assertNotNull(result);
+//		assertFalse(result);
+//		
+//		logger.debug("----> END access to isNoneExistingOrganisationShortcutByUniversity test <---- ");
+//	}
 	
 	public void testSetUniversityStatus() {
 		logger.info("----> BEGIN access to setUniversityStatus test");

@@ -345,38 +345,6 @@ public class DepartmentServiceImpl extends DepartmentServiceBase {
 	}
 
 	@Override
-	public boolean handleIsNoneExistingOrganisationShortcutByDepartment(DepartmentInfo self, String shortcut) throws Exception {
-		Organisation organisationFound = getOrganisationDao().findByShortcut(shortcut);
-		if (organisationFound instanceof University) {
-			University found = (University) organisationFound;
-			UniversityInfo foundInfo = null;
-			if (found != null) {
-				foundInfo = this.getUniversityDao().toUniversityInfo(found);
-			}
-			return isEqualOrNull(self, foundInfo);
-
-		} else if (organisationFound instanceof Department) {
-
-			Department found = (Department) organisationFound;
-			DepartmentInfo foundInfo = null;
-			if (found != null) {
-				foundInfo = this.getDepartmentDao().toDepartmentInfo(found);
-			}
-			return isEqualOrNull(self, foundInfo);
-
-		} else {
-
-			Institute found = (Institute) organisationFound;
-			InstituteInfo foundInfo = null;
-			if (found != null) {
-				foundInfo = this.getInstituteDao().toInstituteInfo(found);
-			}
-			return isEqualOrNull(self, foundInfo);
-
-		}
-	}
-
-	@Override
 	@SuppressWarnings( { "unchecked" })
 	protected List handleFindApplicationsByDepartmentAndConfirmed(Long departmentId, boolean confirmed)	throws Exception {
 		Validate.notNull(departmentId, "The departmentId cannot be null.");
@@ -441,33 +409,6 @@ public class DepartmentServiceImpl extends DepartmentServiceBase {
 		department.getUniversity().remove(department);
 		this.getDepartmentDao().remove(department);
 
-	}
-
-	/*------------------- private methods -------------------- */
-
-	/**
-	 * Convenience method for isNonExisting methods.<br/> Checks whether or not
-	 * the found record is equal to self entry.
-	 * <ul>
-	 * <li>self == null AND found == null => <b>true</b></li>
-	 * <li>self == null AND found <> null => <b>false</b></li>
-	 * <li>self <> null AND found == null => <b>true</b></li>
-	 * <li>self <> null AND found <> null AND self == found => <b>true</b></li>
-	 * <li>self <> null AND found <> null AND self <> found => <b>false</b></li>
-	 * </ul>
-	 * 
-	 * @param self
-	 *            current record
-	 * @param found
-	 *            in database
-	 * @return true or false
-	 */
-	private boolean isEqualOrNull(Object self, Object found) {
-		if (self == null || found == null) {
-			return found == null;
-		} else {
-			return self.equals(found);
-		}
 	}
 
 }

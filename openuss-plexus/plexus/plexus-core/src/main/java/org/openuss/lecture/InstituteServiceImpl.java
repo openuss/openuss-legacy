@@ -406,39 +406,6 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 	}
 
 	@Override
-	public boolean handleIsNoneExistingOrganisationShortcutByInstitute(InstituteInfo self, String shortcut)
-			throws Exception {
-		Organisation organisationFound = getOrganisationDao().findByShortcut(shortcut);
-		if (organisationFound instanceof University) {
-			University found = (University) organisationFound;
-			UniversityInfo foundInfo = null;
-			if (found != null) {
-				foundInfo = this.getUniversityDao().toUniversityInfo(found);
-			}
-			return isEqualOrNull(self, foundInfo);
-
-		} else if (organisationFound instanceof Department) {
-
-			Department found = (Department) organisationFound;
-			DepartmentInfo foundInfo = null;
-			if (found != null) {
-				foundInfo = this.getDepartmentDao().toDepartmentInfo(found);
-			}
-			return isEqualOrNull(self, foundInfo);
-
-		} else {
-
-			Institute found = (Institute) organisationFound;
-			InstituteInfo foundInfo = null;
-			if (found != null) {
-				foundInfo = this.getInstituteDao().toInstituteInfo(found);
-			}
-			return isEqualOrNull(self, foundInfo);
-
-		}
-	}
-
-	@Override
 	protected List handleFindApplicationsByInstitute(Long instituteId) throws Exception {
 		Validate.notNull(instituteId, "InstituteService.findApplicationByInstitute - the instituteId cannot be null.");
 
@@ -547,45 +514,12 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 	}
 
 	public void handleResendActivationCode(InstituteInfo instituteInfo, Long userId) {
-
-		Validate.notNull(instituteInfo, "InstituteServiceImpl.handleResendActivationCode -"
-				+ "instituteInfo cannot be null.");
-
-		Validate.notNull(instituteInfo.getId(), "InstituteServiceImpl.handleResendActivationCode -"
-				+ "id cannot be null.");
-
+		Validate.notNull(instituteInfo, "InstituteInfo cannot be null.");
+		Validate.notNull(instituteInfo.getId(), "id cannot be null.");
 		Institute institute = this.getInstituteDao().load(instituteInfo.getId());
-		Validate.notNull(institute, "InstituteServiceImpl.handleResendActivationCode -"
-				+ "no institute found with the instiuteId " + instituteInfo.getId());
+		Validate.notNull(institute, "No institute found with the instiuteId " + instituteInfo.getId());
 
 		// Do not delete this method although it seems that id does nothing.
 		// When this stub is called an aspect starts to send an email.
-	}
-
-	/*------------------- private methods -------------------- */
-
-	/**
-	 * Convenience method for isNonExisting methods.<br/> Checks whether or not the found record is equal to self
-	 * entry.
-	 * <ul>
-	 * <li>self == null AND found == null => <b>true</b></li>
-	 * <li>self == null AND found <> null => <b>false</b></li>
-	 * <li>self <> null AND found == null => <b>true</b></li>
-	 * <li>self <> null AND found <> null AND self == found => <b>true</b></li>
-	 * <li>self <> null AND found <> null AND self <> found => <b>false</b></li>
-	 * </ul>
-	 * 
-	 * @param self
-	 *            current record
-	 * @param found
-	 *            in database
-	 * @return true or false
-	 */
-	private boolean isEqualOrNull(Object self, Object found) {
-		if (self == null || found == null) {
-			return found == null;
-		} else {
-			return self.equals(found);
-		}
 	}
 }

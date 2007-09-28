@@ -182,36 +182,36 @@ public class CourseTypeServiceIntegrationTest extends CourseTypeServiceIntegrati
 		logger.info("----> END access to updateCourseType test");
 	}
 	
-	public void testIsNoneExistingCourseTypeShortcut () {
-		logger.debug("----> BEGIN access to isNoneExistingCourseTypeShortcut test <---- ");
-		
-		//Create Secure Context
-		testUtility.createUserSecureContext();
-		
-		// Create CourseTypes
-		CourseType courseType1= testUtility.createUniqueCourseTypeInDB();
-		CourseType courseType2= testUtility.createUniqueCourseTypeInDB();
-		flush();
-		
-		// Test
-		CourseTypeDao courseTypeDao = (CourseTypeDao) this.getApplicationContext().getBean("courseTypeDao");
-		Boolean result = this.getCourseTypeService().isNoneExistingCourseTypeShortcut(
-				courseTypeDao.toCourseTypeInfo(courseType1), courseType1.getShortcut());
-		assertNotNull(result);
-		assertTrue(result);
-		
-		result = this.getCourseTypeService().isNoneExistingCourseTypeShortcut(
-				courseTypeDao.toCourseTypeInfo(courseType1), testUtility.unique("shortcut"));
-		assertNotNull(result);
-		assertTrue(result);
-		
-		result = this.getCourseTypeService().isNoneExistingCourseTypeShortcut(
-				courseTypeDao.toCourseTypeInfo(courseType1), courseType2.getShortcut());
-		assertNotNull(result);
-		assertFalse(result);
-		
-		logger.debug("----> END access to isNoneExistingCourseTypeShortcut test <---- ");
-	}
+//	public void testIsNoneExistingCourseTypeShortcut () {
+//		logger.debug("----> BEGIN access to isNoneExistingCourseTypeShortcut test <---- ");
+//		
+//		//Create Secure Context
+//		testUtility.createUserSecureContext();
+//		
+//		// Create CourseTypes
+//		CourseType courseType1= testUtility.createUniqueCourseTypeInDB();
+//		CourseType courseType2= testUtility.createUniqueCourseTypeInDB();
+//		flush();
+//		
+//		// Test
+//		CourseTypeDao courseTypeDao = (CourseTypeDao) this.getApplicationContext().getBean("courseTypeDao");
+//		Boolean result = this.getCourseTypeService().isNoneExistingCourseTypeShortcut(
+//				courseTypeDao.toCourseTypeInfo(courseType1), courseType1.getShortcut());
+//		assertNotNull(result);
+//		assertTrue(result);
+//		
+//		result = this.getCourseTypeService().isNoneExistingCourseTypeShortcut(
+//				courseTypeDao.toCourseTypeInfo(courseType1), testUtility.unique("shortcut"));
+//		assertNotNull(result);
+//		assertTrue(result);
+//		
+//		result = this.getCourseTypeService().isNoneExistingCourseTypeShortcut(
+//				courseTypeDao.toCourseTypeInfo(courseType1), courseType2.getShortcut());
+//		assertNotNull(result);
+//		assertFalse(result);
+//		
+//		logger.debug("----> END access to isNoneExistingCourseTypeShortcut test <---- ");
+//	}
 	
 	public void testIsNoneExistingCourseTypeName () {
 		logger.debug("----> BEGIN access to isNoneExistingCourseTypeName test <---- ");
