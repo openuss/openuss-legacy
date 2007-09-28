@@ -150,8 +150,7 @@ public class RegistrationController extends BaseBean {
 	}
 
 	private String applicationAddress() {
-		final HttpServletRequest request = getRequest();
-		return systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+request.getContextPath();
+		return systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue();
 	}
 
 	/**

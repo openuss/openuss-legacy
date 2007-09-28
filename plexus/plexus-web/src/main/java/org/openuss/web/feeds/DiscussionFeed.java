@@ -61,7 +61,7 @@ public class DiscussionFeed extends AbstractFeed {
 					if (post.getLastModification().after(lastEntry))
 						lastEntry = post.getLastModification();
 					link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
-							+ "views/secured/discussion/discussionthread.faces?course=" + course.getId() + "&topic="
+							+ "/views/secured/discussion/discussionthread.faces?course=" + course.getId() + "&topic="
 							+ topic.getId() + "#" + post.getId();
 					this.addEntry(entries, post.getTitle(), link, post.getLastModification(), post.getText(), topic
 							.getTitle(), post.getSubmitter());
@@ -71,7 +71,7 @@ public class DiscussionFeed extends AbstractFeed {
 		}
 
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
-				+ "rss/secured/discussion.xml?course=" + course.getId();
+				+ "/rss/secured/discussion.xml?course=" + course.getId();
 
 		feedWrapper.setWriter(this.convertToXml("["
 				+ i18n("rss_discussion", null, locale()) + "] "

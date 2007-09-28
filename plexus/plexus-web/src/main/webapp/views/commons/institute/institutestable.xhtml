@@ -58,7 +58,7 @@
 					rendered="#{not views$public$institute$institutes.bookmarked}">
 				</plexus:command>
 			</s:authorize>
-			<s:authorize ifAllGranted="ROLE_ADMIN">
+			<s:authorize ifAllGranted="ROLE_USER">
 				<plexus:command 
 					bean="#{views$public$institute$institutes}"
 					action = "selectInstituteAndConfirmDisable"
@@ -67,8 +67,6 @@
 					title="#{msg.institute_command_disable_hint}"
 					rendered="#{bean.enabled==true}">
 				</plexus:command>
-			</s:authorize>
-			<s:authorize ifAllGranted="ROLE_ADMIN">
 				<plexus:command 
 					bean="#{views$public$institute$institutes}"
 					action = "enableInstitute"

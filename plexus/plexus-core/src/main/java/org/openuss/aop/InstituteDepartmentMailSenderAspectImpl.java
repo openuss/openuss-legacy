@@ -15,7 +15,6 @@ import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.messaging.MessageService;
 import org.openuss.security.User;
-import org.openuss.security.UserDao;
 import org.openuss.system.SystemProperties;
 import org.openuss.system.SystemService;
 
@@ -30,7 +29,6 @@ public class InstituteDepartmentMailSenderAspectImpl {
 
 	private static final Logger logger = Logger.getLogger(InstituteDepartmentMailSenderAspectImpl.class);
 	
-	private UserDao userDao;
 	private DepartmentDao departmentDao;
 	private InstituteDao instituteDao;
 	private ApplicationDao applicationDao;
@@ -38,45 +36,26 @@ public class InstituteDepartmentMailSenderAspectImpl {
 	private SystemService systemService;
 	
 	public void sendApplyInstituteAtDepartmentMail (Long instituteId, Long departmentId, Long userId) {
-		
-		logger.debug("sendApplyInstituteAtDepartmentMail - Sending Email to User who apllied at the department");
-		
-		Validate.notNull(instituteId, "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
-				"instituteId cannot be null.");
-		Validate.notNull(departmentId, "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
-				"departmentId cannot be null.");
-		Validate.notNull(userId, "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
-				"userId cannot be null.");
-		
+		logger.debug("Sending Email to User who apllied at the department");
+		Validate.notNull(instituteId, "instituteId cannot be null.");
+		Validate.notNull(departmentId, "departmentId cannot be null.");
+		Validate.notNull(userId, "userId cannot be null.");
 		// Load Institute
-		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute, "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
-				"no institute found with the instituteId "+instituteId);
-		
+		Institute institute = instituteDao.load(instituteId);
+		Validate.notNull(institute, "no institute found with the instituteId "+instituteId);
 		// Load Department
-		Department department = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(department, "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
-				"no department found with the departmentId "+departmentId);
-		
+		Department department = departmentDao.load(departmentId);
+		Validate.notNull(department, "no department found with the departmentId "+departmentId);
 		// Get Application
-		Application application = (Application) this.getApplicationDao().findByInstituteAndDepartment(institute, department);
-		Validate.notNull(application, "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
-				"no application found with ths institute "+institute.getName()+" and the department "+department.getName());
-		
-		Validate.notNull(application.getDepartment(), "InstituteDepartmentMailSenderAspectImpl.sendApplyInstituteAtDepartment -" +
-				"department cannot be null.");
+		Application application = applicationDao.findByInstituteAndDepartment(institute, department);
+		Validate.notNull(application, "no application found with ths institute "+institute.getName()+" and the department "+department.getName());
+		Validate.notNull(application.getDepartment(), "department cannot be null.");
 		
 		// Create Link to Department
-		String link = "/openuss-plexus/views/public/department/department.faces?department=" + application.getDepartment().getId();
+		String link = "/views/public/department/department.faces?department=" + application.getDepartment().getId();
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
 
-		// Prepare Parameters for EMail
-		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("institutename", application.getInstitute().getName());
-		parameters.put("departmentname", application.getDepartment().getName());
-		parameters.put("applyinguserfirstname", application.getApplyingUser().getFirstName());
-		parameters.put("applyinguserlastname", application.getApplyingUser().getLastName());
-		parameters.put("departmentapplicantlink", link);
+		Map<String, String> parameters = prepareEMailParameters(application, link);
 		
 		// Determine Recipients (Members of the Department)
 		List<User> recipients1 = new ArrayList<User>();
@@ -107,25 +86,8 @@ public class InstituteDepartmentMailSenderAspectImpl {
 				parameters, 
 				recipients2);
 	}
-	
-	public void sendAcceptApplicationAtDepartmentMail (Long applicationId, Long userId) {
-		logger.debug("sendAcceptApplicationAtDepartmentMail - Sending Email to User who apllied at the department");
-		
-		Validate.notNull(applicationId, "InstituteDepartmentMailSenderAspectImpl.sendAcceptApplicationAtDepartment -" +
-				"applicationd cannot be null.");
-		
-		// Get Application
-		Application application = (Application) this.getApplicationDao().load(applicationId);
-		Validate.notNull(application, "InstituteDepartmentMailSenderAspectImpl.sendAcceptApplicationAtDepartment -" +
-				"no Application found with the ID "+applicationId);
-		
-		Validate.notNull(application.getDepartment(), "InstituteDepartmentMailSenderAspectImpl.sendAcceptApplicationAtDepartment -" +
-				"department cannot be null.");
-		
-		// Create Link to Department
-		String link = "/openuss-plexus/views/public/department/department.faces?department=" + application.getDepartment().getId();
-		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
 
+	private Map<String, String> prepareEMailParameters(Application application, String link) {
 		// Prepare Parameters for EMail
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("institutename", application.getInstitute().getName());
@@ -133,6 +95,24 @@ public class InstituteDepartmentMailSenderAspectImpl {
 		parameters.put("applyinguserfirstname", application.getApplyingUser().getFirstName());
 		parameters.put("applyinguserlastname", application.getApplyingUser().getLastName());
 		parameters.put("departmentapplicantlink", link);
+		return parameters;
+	}
+	
+	public void sendAcceptApplicationAtDepartmentMail (Long applicationId, Long userId) {
+		logger.debug("Sending Email to User who apllied at the department");
+		
+		Validate.notNull(applicationId, "applicationd cannot be null.");
+		
+		// Get Application
+		Application application = applicationDao.load(applicationId);
+		Validate.notNull(application, "no Application found with the ID "+applicationId);
+		Validate.notNull(application.getDepartment(), "department cannot be null.");
+		
+		// Create Link to Department
+		String link = "/views/public/department/department.faces?department=" + application.getDepartment().getId();
+		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
+
+		Map<String, String> parameters = prepareEMailParameters(application, link);
 
 		// Determine Recipient (the user who created the application)
 		List<User> recipients = new ArrayList<User>(1);
@@ -148,18 +128,13 @@ public class InstituteDepartmentMailSenderAspectImpl {
 	}
 	
 	public void sendRejectApplicationAtDepartmentMail (Long applicationId) {
-		logger.debug("sendAcceptApplicationAtDepartmentMail - Sending Email to User who apllied at the department");
-		
-		Validate.notNull(applicationId, "InstituteDepartmentMailSenderAspectImpl.sendRejectApplicationAtDepartmentMail -" +
-				"applicationd cannot be null.");
+		logger.debug("Sending Email to User who apllied at the department");
+		Validate.notNull(applicationId, "applicationd cannot be null.");
 		
 		// Get Application
-		Application application = (Application) this.getApplicationDao().load(applicationId);
-		Validate.notNull(application, "InstituteDepartmentMailSenderAspectImpl.sendRejectApplicationAtDepartmentMail -" +
-				"no application found with the applicationInfo "+applicationId);
-		
-		Validate.notNull(application.getDepartment(), "InstituteDepartmentMailSenderAspectImpl.sendRejectApplicationAtDepartmentMail -" +
-				"department cannot be null.");
+		Application application = (Application) applicationDao.load(applicationId);
+		Validate.notNull(application, "no application found with the applicationInfo "+applicationId);
+		Validate.notNull(application.getDepartment(),"department cannot be null.");
 
 		// Prepare Parameters for EMail
 		Map<String, String> parameters = new HashMap<String, String>();
@@ -181,48 +156,20 @@ public class InstituteDepartmentMailSenderAspectImpl {
 				recipients); 
 	}
 
-	public UserDao getUserDao() {
-		return userDao;
-	}
-
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
-
-	public DepartmentDao getDepartmentDao() {
-		return departmentDao;
-	}
-
 	public void setDepartmentDao(DepartmentDao departmentDao) {
 		this.departmentDao = departmentDao;
-	}
-
-	public InstituteDao getInstituteDao() {
-		return instituteDao;
 	}
 
 	public void setInstituteDao(InstituteDao instituteDao) {
 		this.instituteDao = instituteDao;
 	}
 
-	public MessageService getMessageService() {
-		return messageService;
-	}
-
 	public void setMessageService(MessageService messageService) {
 		this.messageService = messageService;
 	}
 
-	public SystemService getSystemService() {
-		return systemService;
-	}
-
 	public void setSystemService(SystemService systemService) {
 		this.systemService = systemService;
-	}
-
-	public ApplicationDao getApplicationDao() {
-		return applicationDao;
 	}
 
 	public void setApplicationDao(ApplicationDao applicationDao) {

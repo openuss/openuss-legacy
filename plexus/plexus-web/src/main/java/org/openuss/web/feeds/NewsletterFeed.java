@@ -45,7 +45,7 @@ public class NewsletterFeed extends AbstractFeed {
 			while (i.hasNext()) {
 				mailInfo = (MailInfo) i.next();
 				link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
-						+ "views/secured/newsletter/showmail.faces?mail=" + mailInfo.getId();
+						+ "/views/secured/newsletter/showmail.faces?mail=" + mailInfo.getId();
 				mailDetail = getCourseNewsletterService().getMail(mailInfo);
 				this.addEntry(entries, mailDetail.getSubject(), link, mailDetail.getSendDate(), mailDetail.getText(),
 						course.getName(), course.getName());
@@ -55,7 +55,7 @@ public class NewsletterFeed extends AbstractFeed {
 		}
 
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
-				+ "views/secured/newsletter/newsletter.faces?course=" + course.getId();
+				+ "/views/secured/newsletter/newsletter.faces?course=" + course.getId();
 
 		feedWrapper.setWriter(this.convertToXml("["+i18n("rss_newsletter", null, locale())+"] "+course.getName(),
 				link, course.getDescription(), systemService

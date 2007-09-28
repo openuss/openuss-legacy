@@ -327,3 +327,27 @@ a.icon_cancel span {
 a.icon_cancel:focus span, a.icon_cancel:hover span {
   background-position: top right;
 }
+
+a.icon_accept {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 8pt;
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  padding-right: 5pt;
+}
+
+a.icon_reject {
+  background: transparent none repeat scroll 0%;
+  color: #F0F0F0;
+  float: left;
+  font-size: 8pt;
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+}
+

@@ -460,7 +460,7 @@ public class LectureServiceImpl extends LectureServiceBase {
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("institutename", institute.getName() + "(" + institute.getShortcut() + ")");
 		parameters.put("institutelink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
-				+ "views/secured/lecture/institute.faces?institute=" + institute.getId());
+				+ "/views/secured/lecture/institute.faces?institute=" + institute.getId());
 		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject",
 				"instituteapplicationapply", parameters, user);
 	}

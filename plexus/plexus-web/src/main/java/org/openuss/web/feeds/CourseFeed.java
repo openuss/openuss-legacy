@@ -43,7 +43,7 @@ public class CourseFeed extends AbstractFeed {
 			while (i.hasNext()) {
 				newsItem = (NewsItemInfo) i.next();
 				link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
-						+ "views/public/news/newsDetail.faces?news=" + newsItem.getId();
+						+ "/views/public/news/newsDetail.faces?news=" + newsItem.getId();
 				this.addEntry(entries, newsItem.getTitle(), link, newsItem.getPublishDate(), newsItem.getText(), course
 						.getName(), newsItem.getPublisherName());
 			}
@@ -53,7 +53,7 @@ public class CourseFeed extends AbstractFeed {
 		}
 
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
-				+ "views/secured/course/main.faces?" + course.getId();
+				+ "/views/secured/course/main.faces?" + course.getId();
 		feedWrapper.setWriter(this.convertToXml("["
 				+ i18n("rss_course", null, locale()) + "] "
 				+ course.getName(), link, course.getDescription(), systemService
