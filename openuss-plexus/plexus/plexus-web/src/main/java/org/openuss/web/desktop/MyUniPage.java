@@ -159,6 +159,7 @@ public class MyUniPage extends BasePage {
 				DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId());
 				desktopId = desktopInfo.getId();
 			} catch (Exception e) {
+				logger.error(e);
 			}
 
 			if (desktopId != null) {
@@ -167,7 +168,7 @@ public class MyUniPage extends BasePage {
 					try {
 						desktopService2.unlinkDepartment(desktopId, paramRemoveDepartment);
 					} catch (Exception e) {
-
+						logger.error(e);
 					}
 				}
 
@@ -176,7 +177,7 @@ public class MyUniPage extends BasePage {
 					try {
 						desktopService2.unlinkInstitute(desktopId, paramRemoveInstitute);
 					} catch (Exception e) {
-
+						logger.error(e);
 					}
 				}
 
@@ -185,7 +186,7 @@ public class MyUniPage extends BasePage {
 					try {
 						desktopService2.unlinkCourse(desktopId, paramRemoveCourse);
 					} catch (Exception e) {
-
+						logger.error(e);
 					}
 				}
 			}
@@ -210,7 +211,7 @@ public class MyUniPage extends BasePage {
 			try {
 				myUniData = (Map<Long, MyUniInfo>) desktopService2.getMyUniInfo(user.getId());
 			} catch (Exception e) {
-
+				logger.error(e);
 			}
 		}
 	}
@@ -418,10 +419,9 @@ public class MyUniPage extends BasePage {
 					newItem = new ListItemDAO();
 					newItem.setTitle(instituteInfo.getName());
 					newItem.setUrl(contextPath()+institutesBasePath + "?institute=" + instituteInfo.getId());
-					if (instituteInfo.isBookmarked())
-						newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId
-								+ "&remove_institute=" + instituteInfo.getId());
-
+					if (instituteInfo.isBookmarked()) {
+						newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId	+ "&remove_institute=" + instituteInfo.getId());
+					}
 					listItems.add(newItem);
 				}
 			}
@@ -542,8 +542,7 @@ public class MyUniPage extends BasePage {
 		institutesList.getAttributes().put("title", bundle.getString("flexlist_institutes"));
 		institutesList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_institutes"));
 		institutesList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_institutes"));
-		institutesList.getAttributes().put("alternateRemoveBookmarkLinkTitle",
-				bundle.getString("flexlist_remove_bookmark"));
+		institutesList.getAttributes().put("alternateRemoveBookmarkLinkTitle",	bundle.getString("flexlist_remove_bookmark"));
 
 		// Load values into the component
 		loadValuesForInstituteList(institutesList);
@@ -559,8 +558,7 @@ public class MyUniPage extends BasePage {
 		coursesList.getAttributes().put("title", bundle.getString("flexlist_courses"));
 		coursesList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_courses"));
 		coursesList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_courses"));
-		coursesList.getAttributes().put("alternateRemoveBookmarkLinkTitle",
-				bundle.getString("flexlist_remove_bookmark"));
+		coursesList.getAttributes().put("alternateRemoveBookmarkLinkTitle", 	bundle.getString("flexlist_remove_bookmark"));
 
 		// Load values into the component
 		loadValuesForCourseList(coursesList);

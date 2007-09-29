@@ -31,17 +31,16 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	 */
 	protected Long handleCreate(CourseInfo courseInfo) {
 
-		Validate.notNull(courseInfo, "CourseServiceImpl.handleCreate - courseInfo cannot be null.");
-		Validate.notNull(courseInfo.getCourseTypeId(),
-				"CourseServiceImpl.handleCreate - getCourseTypeId cannot be null.");
-		Validate.notNull(courseInfo.getPeriodId(), "CourseServiceImpl.handleCreate - PeriodId cannot be null.");
+		Validate.notNull(courseInfo, "CourseInfo cannot be null.");
+		Validate.notNull(courseInfo.getCourseTypeId(), "GetCourseTypeId cannot be null.");
+		Validate.notNull(courseInfo.getPeriodId(), "PeriodId cannot be null.");
 
 		// Default is enabled
 		courseInfo.setEnabled(true);
 
 		// Transform VO to entity
 		Course courseEntity = this.getCourseDao().courseInfoToEntity(courseInfo);
-		Validate.notNull(courseEntity, "CourseServiceImpl.handleCreate - cannot transform courseInfo to entity.");
+		Validate.notNull(courseEntity, "Cannot transform courseInfo to entity.");
 		courseEntity.setEnabled(true);
 
 		// Add Course to CourseType and Period
@@ -50,7 +49,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 		// Save Entity
 		this.getCourseDao().create(courseEntity);
-		Validate.notNull(courseEntity, "CourseServiceImpl.handleCreate - ID of course cannot be null.");
+		Validate.notNull(courseEntity, "Id of course cannot be null.");
 
 		// FIXME - Kai, Indexing should not base on VOs!
 		// Kai: Do not delete this!!! Set id of institute VO for indexing
@@ -58,6 +57,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 		// Set Security
 		this.getSecurityService().createObjectIdentity(courseEntity, courseEntity.getCourseType());
+		
 		updateAccessTypePermission(courseEntity);
 
 		return courseEntity.getId();
@@ -67,12 +67,9 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	 * @see org.openuss.lecture.CourseService#create(org.openuss.lecture.CourseInfo)
 	 */
 	protected void handleRemoveCourse(Long courseId) throws Exception {
-
-		Validate.notNull(courseId, "CourseServiceImpl.handleRemoveCourse - courseId cannot be null.");
+		Validate.notNull(courseId, "CourseId cannot be null.");
 		Course course = (Course) this.getCourseDao().load(courseId);
-		Validate.notNull(course,
-				"CourseServiceImpl.handleRemoveCourse - no course entity found with the corresponding courseId "
-						+ courseId);
+		Validate.notNull(course, "No course entity found with the corresponding courseId " + courseId);
 
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(course);
@@ -86,13 +83,13 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	@SuppressWarnings( { "unchecked" })
 	protected List handleFindCoursesByCourseType(Long courseTypeId) {
-		Validate.notNull(courseTypeId, "CourseService.findCoursesByCourseType -" + "courseTypeId cannot be null.");
+		Validate.notNull(courseTypeId, "CourseTypeId cannot be null.");
 		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
 		return this.getCourseDao().findByCourseType(CourseDao.TRANSFORM_COURSEINFO, courseType);
 	}
 
 	protected CourseInfo handleFindCourse(Long courseId) {
-		Validate.notNull(courseId, "CourseService.findCourse - courseId cannot be null.");
+		Validate.notNull(courseId, "CourseId cannot be null.");
 		return this.getCourseDao().toCourseInfo(this.getCourseDao().load(courseId));
 	}
 
@@ -253,8 +250,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 				for (CourseMemberInfo member : assistants) {
 					recipients.add(getSecurityService().getUser(member.getUserId()));
 				}
-				// FIXME - link should be configured from outside the core
-				// component
+				// FIXME - link should be configured from outside the core component
 				String link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
 						+ "/views/secured/course/courseaspirants.faces?course=" + course.getId();
 				Map<String, String> parameters = new HashMap<String, String>();
@@ -330,43 +326,30 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	@Override
 	protected void handleUpdateCourse(CourseInfo courseInfo) throws Exception {
 		logger.debug("Starting method handleUpdateCourse");
-		Validate.notNull(courseInfo, "CourseService.updateCourse - Parameter course must not be null.");
-		Validate.notNull(courseInfo.getId(),
-				"CourseService.updateCourse - Parameter course must contain a valid course id.");
+		Validate.notNull(courseInfo, "Parameter course must not be null.");
+		Validate.notNull(courseInfo.getId(), "Parameter course must contain a valid course id.");
 
 		// Check changes of CourseType
 		CourseType courseType = this.getCourseTypeDao().load(courseInfo.getCourseTypeId());
 		Course courseOld = getCourseDao().load(courseInfo.getId());
 		if (!courseOld.getCourseType().equals(courseType)) {
-			throw new CourseServiceException("CourseService.updateCourse - The CourseType cannot be changed.");
+			throw new CourseServiceException("The CourseType cannot be changed.");
 		}
-
-		// Check changes of Period
-//		Period period = this.getPeriodDao().load(courseInfo.getPeriodId());
-//		if (!courseOld.getPeriod().equals(period)) {
-//			throw new CourseServiceException("CourseService.updateCourse - The Period cannot be changed.");
-//		}
 
 		// Transform VO to Entity
 		Course courseEntity = getCourseDao().courseInfoToEntity(courseInfo);
-
 		// Update Rights
 		updateAccessTypePermission(courseEntity);
-
 		// Update Course
 		getCourseDao().update(courseEntity);
-
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindAllCoursesByInstitute(Long instituteId) throws Exception {
-
-		Validate.notNull(instituteId, "CourseService.findAllCoursesByInstitute -" + "instituteId cannot be null.");
-
+		Validate.notNull(instituteId, "InstituteId cannot be null.");
 		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute, "CourseService.findAllCoursesByInstitute - "
-				+ "no institute could be found with the instituteId " + instituteId);
+		Validate.notNull(institute, "No institute could be found with the instituteId " + instituteId);
 
 		List<CourseInfo> courses = new ArrayList<CourseInfo>();
 		Iterator iter = institute.getCourseTypes().iterator();
@@ -385,18 +368,14 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindCoursesByPeriodAndInstitute(Long periodId, Long instituteId) throws Exception {
-
-		Validate.notNull(periodId, "CourseService.findCoursesByPeriodAndInstitute -" + "periodId cannot be null.");
-		Validate
-				.notNull(instituteId, "CourseService.findCoursesByPeriodAndInstitute -" + "instituteId cannot be null.");
+		Validate.notNull(periodId, "PeriodId cannot be null.");
+		Validate.notNull(instituteId, "InstituteId cannot be null.");
 
 		Period period = this.getPeriodDao().load(periodId);
-		Validate.notNull(period, "CourseService.findCoursesByPeriodAndInstitute -"
-				+ "no period found with the corresponding periodId " + periodId);
+		Validate.notNull(period, "No period found with the corresponding periodId " + periodId);
 
 		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute, "CourseService.findCoursesByPeriodAndInstitute -"
-				+ "no institute found with the corresponding instiuteId " + instituteId);
+		Validate.notNull(institute, "No institute found with the corresponding instiuteId " + instituteId);
 
 		/*
 		 * List<CourseInfo> courseInfos = new ArrayList<CourseInfo>(); List<CourseType> courseTypes =
@@ -413,7 +392,6 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 			if (ObjectUtils.equals(course.getCourseType().getInstitute().getId(),instituteId)) {
 				courseInfos.add(this.getCourseDao().toCourseInfo(course));
 			}
-
 		}
 
 		return courseInfos;
@@ -422,18 +400,13 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindCoursesByActivePeriods(InstituteInfo instituteInfo) throws Exception {
-
-		Validate.notNull(instituteInfo, "CourseService.findCoursesByPeriodAndInstitute -"
-				+ "instituteInfo cannot be null.");
+		Validate.notNull(instituteInfo, "InstituteInfo cannot be null.");
 
 		// Load entity
 		Institute institute = this.getInstituteDao().instituteInfoToEntity(instituteInfo);
-		Validate.notNull(institute, "CourseService.findCoursesByPeriodAndInstitute -"
-				+ "instituteInfo cannot be transformed to institute.");
-		Validate.notNull(institute.getDepartment(), "CourseService.findCoursesByPeriodAndInstitute -"
-				+ "department cannot be null.");
-		Validate.notNull(institute.getDepartment().getUniversity(), "CourseService.findCoursesByPeriodAndInstitute -"
-				+ "university cannot be null.");
+		Validate.notNull(institute, "InstituteInfo cannot be transformed to institute.");
+		Validate.notNull(institute.getDepartment(), "Department cannot be null.");
+		Validate.notNull(institute.getDepartment().getUniversity(), "University cannot be null.");
 
 		List<Period> periods = this.getPeriodDao().findByUniversity(institute.getDepartment().getUniversity());
 		List<CourseInfo> courses = new ArrayList<CourseInfo>();
@@ -452,8 +425,8 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	@Override
 	protected void handleSetCourseStatus(Long courseId, boolean status) {
-		Validate.notNull(courseId, "CourseService.setCourseStatus -" + "courseId cannot be null.");
-		Validate.notNull(status, "CourseService.setCourseStatus -" + "status cannot be null.");
+		Validate.notNull(courseId, "CourseId cannot be null.");
+		Validate.notNull(status, "Status cannot be null.");
 
 		Course course = this.getCourseDao().load(courseId);
 		course.setEnabled(status);
@@ -463,16 +436,11 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected List handleFindCoursesByActivePeriodsAndEnabled(Long instituteId, boolean enabled) throws Exception {
-
-		Validate.notNull(instituteId, "CourseService.handleFindCoursesByActivePeriodsAndEnabled -"
-				+ "instituteId cannot be null.");
+		Validate.notNull(instituteId, "InstituteId cannot be null.");
 		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute, "CourseService.handleFindCoursesByActivePeriodsAndEnabled -"
-				+ "instituteInfo cannot be transformed to institute.");
-		Validate.notNull(institute.getDepartment(), "CourseService.handleFindCoursesByActivePeriodsAndEnabled -"
-				+ "department cannot be null.");
-		Validate.notNull(institute.getDepartment().getUniversity(),
-				"CourseService.handleFindCoursesByActivePeriodsAndEnabled -" + "university cannot be null.");
+		Validate.notNull(institute, "InstituteInfo cannot be transformed to institute.");
+		Validate.notNull(institute.getDepartment(), "Department cannot be null.");
+		Validate.notNull(institute.getDepartment().getUniversity(),	"University cannot be null.");
 		
 		List<Course> allCoursesOfInstitute = new ArrayList<Course>();
 		for (CourseType courseType : institute.getCourseTypes()) {
@@ -492,11 +460,10 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected List handleFindCoursesByInstituteAndEnabled(Long instituteId, boolean enabled) throws Exception {
-		Validate.notNull(instituteId, "CourseService.findAllCoursesByInstitute -" + "instituteId cannot be null.");
+		Validate.notNull(instituteId, "InstituteId cannot be null.");
 
 		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute, "CourseService.findAllCoursesByInstitute - "
-				+ "no institute could be found with the instituteId " + instituteId);
+		Validate.notNull(institute, "No institute could be found with the instituteId " + instituteId);
 
 		List<CourseInfo> courses = new ArrayList<CourseInfo>();
 		Iterator iter = institute.getCourseTypes().iterator();
@@ -515,17 +482,12 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected List handleFindCoursesByPeriodAndInstituteAndEnabled(Long periodId, Long instituteId, boolean enabled)
-			throws Exception {
-
-		Validate.notNull(periodId, "CourseService.handleFindCoursesByPeriodAndInstituteAndEnabled -"
-				+ "periodId cannot be null.");
-		Validate.notNull(instituteId, "CourseService.handleFindCoursesByPeriodAndInstituteAndEnabled -"
-				+ "instituteId cannot be null.");
+	protected List handleFindCoursesByPeriodAndInstituteAndEnabled(Long periodId, Long instituteId, boolean enabled) throws Exception {
+		Validate.notNull(periodId, "PeriodId cannot be null.");
+		Validate.notNull(instituteId, "InstituteId cannot be null.");
 
 		Period period = this.getPeriodDao().load(periodId);
-		Validate.notNull(period, "CourseService.handleFindCoursesByPeriodAndInstituteAndEnabled -"
-				+ "no period found with the corresponding periodId " + periodId);
+		Validate.notNull(period, "No period found with the corresponding periodId " + periodId);
 
 		List<Course> allCourses = this.getCourseDao().findByPeriod(period);
 		List<CourseInfo> courseInfos = new ArrayList<CourseInfo>();
@@ -535,7 +497,6 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 			if ((course.isEnabled() == enabled) && (ObjectUtils.equals(course.getCourseType().getInstitute().getId() , instituteId))) {
 				courseInfos.add(this.getCourseDao().toCourseInfo(course));
 			}
-
 		}
 
 		return courseInfos;
@@ -550,10 +511,18 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	/*------------------- private methods -------------------- */
 
 	private void updateAccessTypePermission(Course course) {
-		if (course.getAccessType() != AccessType.OPEN) {
-			getSecurityService().setPermissions(Roles.USER, course, LectureAclEntry.NOTHING);
-		} else if (course.getAccessType() == AccessType.OPEN) {
+		logger.debug("changing course "+course.getName()+" ("+course.getId()+") to "+course.getAccessType());
+		
+		if (course.getAccessType() == AccessType.ANONYMOUS) {
+			getSecurityService().setPermissions(Roles.ANONYMOUS, course, LectureAclEntry.READ);
+		} else {
+			getSecurityService().setPermissions(Roles.ANONYMOUS, course, LectureAclEntry.NOTHING);
+		}
+		
+		if (course.getAccessType() == AccessType.OPEN) {
 			getSecurityService().setPermissions(Roles.USER, course, LectureAclEntry.COURSE_PARTICIPANT);
+		} else {
+			getSecurityService().setPermissions(Roles.USER, course, LectureAclEntry.NOTHING);
 		}
 	}
 

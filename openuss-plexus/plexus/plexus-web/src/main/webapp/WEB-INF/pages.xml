@@ -32,7 +32,7 @@
 			Departments
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 	 
-	 <page view-id="/views/public/department/department.xhtml">
+	<page view-id="/views/public/department/department.xhtml">
 		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	 
@@ -175,7 +175,6 @@
 		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
 		<parameter name="topic" value="#{discussion_topic.id}" converterId="javax.faces.Long"/>
 	</page>
-	
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			Newsletter
@@ -195,8 +194,6 @@
 		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 
-	
-	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			News
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->

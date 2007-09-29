@@ -54,19 +54,21 @@
 						<plexus:commandSortHeader columnName="messages">#{msg['chat_rooms_messages']}</plexus:commandSortHeader>
 						<h:outputText value="#{room.messages}"/>
 					</t:column>
-					<plexus:column header="#{msg.commands_header}">
-						<plexus:command 
-							bean="#{views$secured$course$chatmain}"
-							action="deleteRoom"
-							label="#{msg['chat_rooms_delete']}"
-							title="#{msg['chat_rooms_delete_hint']}"
-							styleClass="icon_remove" />
-					</plexus:column>
+					<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+						<plexus:column header="#{msg.commands_header}">
+							<plexus:command 
+								bean="#{views$secured$course$chatmain}"
+								action="deleteRoom"
+								label="#{msg['chat_rooms_delete']}"
+								title="#{msg['chat_rooms_delete_hint']}"
+								styleClass="icon_remove" />
+						</plexus:column>
+					</s:acl>
 				</plexus:dataTable>
 			</h:form>      
 			
 			<h:form id="chatRoomCreate">
-				<o:block label="#{msg['chat_rooms_create']}">
+				<o:block label="#{msg['chat_rooms_create']}" styleClass="form_box">
 					<o:input entity="views$secured$course$chatmain" property="roomTopic" required="true" label="#{msg['chat_rooms_topic']}"/>
 					<h:commandButton action="#{views$secured$course$chatmain.createRoom}" value="#{msg['chat_rooms_create']}" title="#{msg['chat_rooms_create_hint']}" styleClass="button_save"/>
 				</o:block>

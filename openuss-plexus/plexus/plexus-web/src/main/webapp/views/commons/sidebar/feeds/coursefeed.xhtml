@@ -15,41 +15,36 @@
 		<h:form>
 		    <div class="feed">
 				<o:block styleClass="option_box" label="#{msg.rss_sidebox_title}">
-						<ul class="int">
+					<ul class="int">
+						<li>
+							<o:link value="/rss/secured/course.xml?course=#{courseInfo.id}"	title="#{msg['rss_course']}" >
+							   #{msg['rss_course']}
+							</o:link>
+								
+						</li>
+						<c:if test="#{courseInfo.discussion}">
 							<li>
-								<h:outputLink value="../../../rss/secured/course.xml?course=#{courseInfo.id}" 
-								 			title="#{msg['rss_course']}" >
-								   #{msg['rss_course']}
-								</h:outputLink>
+								<o:link value="/rss/secured/discussion.xml?course=#{courseInfo.id}"	title="#{msg['rss_discussion']}" >
+								   #{msg['rss_discussion']}
+								</o:link>
+							</li>
+						</c:if>
+						<c:if test="#{courseInfo.documents}">
+							<li>
+								<o:link value="/rss/secured/documents.xml?course=#{courseInfo.id}" title="#{msg['rss_documents']}" >
+								   #{msg['rss_documents']}
+								</o:link>
 									
 							</li>
-							<c:if test="#{courseInfo.discussion}">
-								<li>
-									<h:outputLink value="../../../rss/secured/discussion.xml?course=#{courseInfo.id}" 
-									 			title="#{msg['rss_discussion']}" >
-									   #{msg['rss_discussion']}
-									</h:outputLink>
-									
-								</li>
-							</c:if>
-							<c:if test="#{courseInfo.documents}">
-								<li>
-									<h:outputLink value="../../../rss/secured/documents.xml?course=#{courseInfo.id}" 
-									 			title="#{msg['rss_documents']}" >
-									   #{msg['rss_documents']}
-									</h:outputLink>
-										
-								</li>
-							</c:if>
-							<c:if test="#{courseInfo.newsletter}">							
-								<li>
-									<h:outputLink value="../../../rss/secured/newsletter.xml?course=#{courseInfo.id}" 
-									 			title="#{msg['rss_newsletter']}" >
-									   #{msg['rss_newsletter']}
-									</h:outputLink>
-								</li>
-							</c:if>
-						</ul>
+						</c:if>
+						<c:if test="#{courseInfo.newsletter}">							
+							<li>
+								<o:link value="/rss/secured/newsletter.xml?course=#{courseInfo.id}" title="#{msg['rss_newsletter']}" >
+								   #{msg['rss_newsletter']}
+								</o:link>
+							</li>
+						</c:if>
+					</ul>
 				</o:block>
 			</div>
 		</h:form>	
