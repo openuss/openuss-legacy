@@ -38,9 +38,13 @@ public class CourseDaoImpl extends org.openuss.lecture.CourseDaoBase {
 	 * @see org.openuss.lecture.CourseDao#toCourseInfo(org.openuss.lecture.Course)
 	 */
 	public CourseInfo toCourseInfo(final Course entity) {
-		CourseInfo targetVO = new CourseInfo();
-		toCourseInfo(entity, targetVO);
-		return targetVO;
+		if (entity != null) { 
+			CourseInfo targetVO = new CourseInfo();
+			toCourseInfo(entity, targetVO);
+			return targetVO;
+		} else {
+			return null;
+		}
 	}
 
 	/**

@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;

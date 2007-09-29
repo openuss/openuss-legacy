@@ -105,7 +105,7 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 
 	@Override
 	public int[] getValidPermissions() {
-		return validPermissions;
+		return validPermissions.clone();
 	}
 
 	/**

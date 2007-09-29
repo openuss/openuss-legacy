@@ -15,5 +15,8 @@ public interface SystemProperties {
 	// SERVER Configuration
 	public static final String OPENUSS_SERVER_URL = "openuss.server.url";
 	public static final String COPYRIGHT = "openuss.copyright";
+	
+	// COMMUNITY Configuration
+	public static final String COMMUNITY_COURSE_ID = "community.course.id";
 		
 }

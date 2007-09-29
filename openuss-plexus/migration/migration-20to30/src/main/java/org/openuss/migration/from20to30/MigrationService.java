@@ -56,16 +56,16 @@ public class MigrationService {
 
 		legacySession = openAndBindNewSession(legacySessionFactory);
 		userImport.perform();
-		lectureImport.perform();
-		newsImport.perform(); 
-		desktopImport.perform();
-		courseMemberImport.perform();
-		documentImport.perform();
-		newsLetterImport.perform();
-		quizImport.perform();
-		
-		legacyTx.rollback();
-		legacySession.close();
+//		lectureImport.perform();
+//		newsImport.perform(); 
+//		desktopImport.perform();
+//		courseMemberImport.perform();
+//		documentImport.perform();
+//		newsLetterImport.perform();
+//		quizImport.perform();
+//		
+//		legacyTx.rollback();
+//		legacySession.close();
 		
 	}
 

@@ -19,7 +19,8 @@ import org.openuss.security.User;
 
 /**
  * Listener for Lecture Desktop Connection. 
- * @author Ingo Dueppe, Florian Dondorf
+ * @author Ingo Dueppe
+ * @author Florian Dondorf
  */
 public class DesktopLectureAdapter implements LectureListener{
 

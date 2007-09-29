@@ -89,14 +89,14 @@ public class DomainResultBean implements DomainResult {
 	 * {@inheritDoc}
 	 */
 	public Date getModified() {
-		return modified;
+		return modified != null ? new Date(modified.getTime()) : null;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void setModified(Date modified) {
-		this.modified = modified;
+		this.modified = modified != null ? new Date(modified.getTime()) : null;
 	}
 
 	/**

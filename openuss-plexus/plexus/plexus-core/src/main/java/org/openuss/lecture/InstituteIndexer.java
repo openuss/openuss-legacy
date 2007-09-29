@@ -21,9 +21,7 @@ public class InstituteIndexer extends DomainIndexer {
 
 	private static final String DOMAINTYPE_VALUE = "institute";
 	
-	private static final String SPACE = " ";
 	private static final String NEWLINE = "<br/>";
-	private static final String ARROW = " -> ";
 
 	private static final Logger logger = Logger.getLogger(InstituteIndexer.class);
 

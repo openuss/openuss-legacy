@@ -22,7 +22,6 @@ public class CourseIndexer extends DomainIndexer {
 
 	private static final String SPACE = " ";
 	private static final String NEWLINE = "<br/>";
-	private static final String ARROW = " -> ";
 
 	private static final String DOMAINTYPE_VALUE = "course";
 

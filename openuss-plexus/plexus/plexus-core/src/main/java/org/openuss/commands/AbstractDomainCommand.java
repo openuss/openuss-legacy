@@ -17,11 +17,11 @@ public abstract class AbstractDomainCommand implements DomainCommand {
 	private String commandType;
 
 	public Date getStartTime() {
-		return startTime;
+		return startTime != null? new Date(startTime.getTime()):null;
 	}
 
 	public void setStartTime(Date commandTime) {
-		this.startTime = commandTime;
+		this.startTime = commandTime != null ? new Date(commandTime.getTime()):null;
 	}
 
 	public String getCommandType() {
