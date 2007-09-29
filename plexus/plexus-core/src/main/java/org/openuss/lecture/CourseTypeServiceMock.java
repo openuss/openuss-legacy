@@ -18,12 +18,12 @@ public class CourseTypeServiceMock implements CourseTypeService {
 		
 		if(instituteId.longValue() % 2 == 0){
 			CourseTypeInfo courseType1 = new CourseTypeInfo();
-			courseType1.setId(100000L+instituteId.longValue());
+			courseType1.setId(100000L+instituteId);
 			courseType1.setName("Grundlagen");
 			courseType1.setShortcut("Grdl");
 			
 			CourseTypeInfo courseType2 = new CourseTypeInfo();
-			courseType2.setId(100000L+instituteId.longValue());
+			courseType2.setId(100000L+instituteId);
 			courseType2.setName("Ausgewählte Kapitel");
 			courseType2.setShortcut("AK");
 			
@@ -31,12 +31,12 @@ public class CourseTypeServiceMock implements CourseTypeService {
 			courseTypes.add(courseType2);
 		} else {
 			CourseTypeInfo courseType1 = new CourseTypeInfo();
-			courseType1.setId(100000L+instituteId.longValue());
+			courseType1.setId(100000L+instituteId);
 			courseType1.setName("Einführung");
 			courseType1.setShortcut("Ein");
 			
 			CourseTypeInfo courseType2 = new CourseTypeInfo();
-			courseType2.setId(100000L+instituteId.longValue());
+			courseType2.setId(100000L+instituteId);
 			courseType2.setName("Vertiefung");
 			courseType2.setShortcut("Ver");
 			

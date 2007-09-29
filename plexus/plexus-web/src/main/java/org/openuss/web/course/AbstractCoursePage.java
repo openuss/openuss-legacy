@@ -63,15 +63,15 @@ public class AbstractCoursePage extends BasePage {
 	public void prerender() throws Exception {
 		if (courseInfo != null && courseInfo.getId() != null) {
 			courseInfo = courseService.findCourse(courseInfo.getId());
-			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
-			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
-			breadcrumbs.loadCourseCrumbs(courseInfo);
 		}
 		if (courseInfo == null) {
 			addError(i18n("message_error_course_page"));
 			redirect(Constants.OUTCOME_BACKWARD);
 			return;
 		} else {
+			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
+			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
+			breadcrumbs.loadCourseCrumbs(courseInfo);
 			setSessionBean(Constants.COURSE_INFO, courseInfo);
 			setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);	
 		}

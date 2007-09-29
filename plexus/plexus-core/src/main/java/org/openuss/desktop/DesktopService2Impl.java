@@ -1020,7 +1020,7 @@ public class DesktopService2Impl extends org.openuss.desktop.DesktopService2Base
 		 * Holds all relevant information that is displayed on the MyUni page
 		 * for one university
 		 */
-		private class UniversityDataSet {
+		private static class UniversityDataSet {
 			Map<Long, MyUniCourseInfo> currentCourses;
 			Map<Long, MyUniCourseInfo> pastCourses;
 			Map<Long, MyUniInstituteInfo> currentInstitutes;

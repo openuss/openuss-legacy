@@ -13,7 +13,6 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseType;
-import org.openuss.lecture.CourseTypeService;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -21,6 +20,9 @@ import org.openuss.web.Constants;
 
 /**
  * CourseTypeCourseSelectionPage is the controller bean to handle the desktop view. 
+ * 
+ * @deprecated
+ * 
  * @author Ingo Dueppe
  */
 @Bean(name="views$secured$desktop$coursetypecourseselection", scope=Scope.REQUEST)

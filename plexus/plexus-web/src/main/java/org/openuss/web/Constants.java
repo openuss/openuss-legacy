@@ -203,6 +203,8 @@ public class Constants {
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE = 4;
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_COURSE = 5;
 	
+	public static final String SYSTEM_PROPERTIES = "SYSTEM_PROPERTIES";
+	
 	// miscellaneous navigation outcomes and combobox long constants
 	public static final String ORGANISATION_IMAGE_NAME = "organisationlogo";
 	public static final String UPLOAD_FILE_MANAGER = "uploadFileManager";

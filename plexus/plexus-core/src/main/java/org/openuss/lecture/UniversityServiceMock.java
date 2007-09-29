@@ -2,7 +2,6 @@ package org.openuss.lecture;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -23,17 +22,7 @@ public class UniversityServiceMock implements UniversityService {
 	@SuppressWarnings( { "unchecked" })
 	public List findAllUniversities() {
 		Map<Long, UniversityInfo> universities = this.getMockUniversities();
-		UniversityInfo tempUniversity;
-		List result = new ArrayList();
-		
-		Iterator<Long> iterator = universities.keySet().iterator();
-		while(iterator.hasNext()){
-			Long key = iterator.next();
-			tempUniversity = universities.get(key);
-			result.add(tempUniversity);
-		}
-
-		return result;
+		return new ArrayList<UniversityInfo>(universities.values());
 	}
 
 	@SuppressWarnings( { "unchecked" })
@@ -51,22 +40,22 @@ public class UniversityServiceMock implements UniversityService {
 		Map<Long, PeriodInfo> allPeriods = this.getMockPeriods();
 		List periodInfos = new ArrayList(); 
 		
-		if(universityId.equals(new Long(100))){
-			periodInfos.add(allPeriods.get(new Long(200000)));
-			periodInfos.add(allPeriods.get(new Long(200001)));
-		} else if(universityId.equals(new Long(101))){
-			periodInfos.add(allPeriods.get(new Long(200002)));
-			periodInfos.add(allPeriods.get(new Long(200003)));
-		} else if(universityId.equals(new Long(102))){
-			periodInfos.add(allPeriods.get(new Long(200004)));
-			periodInfos.add(allPeriods.get(new Long(200005)));
-			periodInfos.add(allPeriods.get(new Long(200006)));
-		} else if(universityId.equals(new Long(103))){
-			periodInfos.add(allPeriods.get(new Long(200007)));
-			periodInfos.add(allPeriods.get(new Long(200008)));
-		} else if(universityId.equals(new Long(104))){
-			periodInfos.add(allPeriods.get(new Long(200009)));
-			periodInfos.add(allPeriods.get(new Long(2000010)));
+		if(universityId.equals(100L)){
+			periodInfos.add(allPeriods.get(200000L));
+			periodInfos.add(allPeriods.get(200001L));
+		} else if(universityId.equals(101L)){
+			periodInfos.add(allPeriods.get(200002L));
+			periodInfos.add(allPeriods.get(200003L));
+		} else if(universityId.equals(102L)){
+			periodInfos.add(allPeriods.get(200004L));
+			periodInfos.add(allPeriods.get(200005L));
+			periodInfos.add(allPeriods.get(200006L));
+		} else if(universityId.equals(103L)){
+			periodInfos.add(allPeriods.get(200007L));
+			periodInfos.add(allPeriods.get(200008L));
+		} else if(universityId.equals(104L)){
+			periodInfos.add(allPeriods.get(200009L));
+			periodInfos.add(allPeriods.get(2000010L));
 		}
 		
 		return periodInfos;
@@ -75,18 +64,12 @@ public class UniversityServiceMock implements UniversityService {
 	@SuppressWarnings( { "unchecked" })
 	public List findUniversitiesByEnabled(boolean enabled) {
 		Map<Long, UniversityInfo> universities = this.getMockUniversities();
-		UniversityInfo tempUniversity;
 		List result = new ArrayList();
-		
-		Iterator<Long> iterator = universities.keySet().iterator();
-		while(iterator.hasNext()){
-			Long key = iterator.next();
-			tempUniversity = universities.get(key);
-			if(tempUniversity.isEnabled() == enabled){
-				result.add(tempUniversity);
+		for (UniversityInfo university : universities.values()) {
+			if (university.isEnabled() == enabled) {
+				result.add(university);
 			}
 		}
-
 		return result;
 	}
 
@@ -120,7 +103,7 @@ public class UniversityServiceMock implements UniversityService {
 		Map<Long, UniversityInfo> universities = new HashMap<Long, UniversityInfo>();
 		
 		universityTemp = new UniversityInfo();
-		universityTemp.setId(new Long(100));
+		universityTemp.setId(100L);
 		universityTemp.setName("Universität Münster");
 		universityTemp.setShortcut("WWU");
 		universityTemp.setUniversityType(org.openuss.lecture.UniversityTypeEnum.UNIVERSITY);
@@ -128,7 +111,7 @@ public class UniversityServiceMock implements UniversityService {
 		universities.put(universityTemp.getId(), universityTemp);
 		
 		universityTemp = new UniversityInfo();
-		universityTemp.setId(new Long(101));
+		universityTemp.setId(101L);
 		universityTemp.setName("FH Münster");
 		universityTemp.setShortcut("FH MS");
 		universityTemp.setUniversityType(org.openuss.lecture.UniversityTypeEnum.UNIVERSITY);
@@ -136,7 +119,7 @@ public class UniversityServiceMock implements UniversityService {
 		universities.put(universityTemp.getId(), universityTemp);
 		
 		universityTemp = new UniversityInfo();
-		universityTemp.setId(new Long(102));
+		universityTemp.setId(102L);
 		universityTemp.setName("Ralph Lauren School of Business and Law");
 		universityTemp.setShortcut("RLSBL");
 		universityTemp.setUniversityType(org.openuss.lecture.UniversityTypeEnum.UNIVERSITY);
@@ -144,7 +127,7 @@ public class UniversityServiceMock implements UniversityService {
 		universities.put(universityTemp.getId(), universityTemp);
 		
 		universityTemp = new UniversityInfo();
-		universityTemp.setId(new Long(103));
+		universityTemp.setId(103L);
 		universityTemp.setName("BMW AG");
 		universityTemp.setShortcut("BMW");
 		universityTemp.setUniversityType(org.openuss.lecture.UniversityTypeEnum.COMPANY);
@@ -152,7 +135,7 @@ public class UniversityServiceMock implements UniversityService {
 		universities.put(universityTemp.getId(), universityTemp);
 		
 		universityTemp = new UniversityInfo();
-		universityTemp.setId(new Long(104));
+		universityTemp.setId(104L);
 		universityTemp.setName("Porsche AG");
 		universityTemp.setShortcut("Por");
 		universityTemp.setUniversityType(org.openuss.lecture.UniversityTypeEnum.COMPANY);
@@ -170,67 +153,67 @@ public class UniversityServiceMock implements UniversityService {
 		periodTemp = new PeriodInfo();
 		periodTemp.setId(periodTemp.getId());
 		periodTemp.setName("WS 2007/2008");
-		periodTemp.setUniversityId(new Long(100));
+		periodTemp.setUniversityId(100L);
 		periods.put(periodTemp.getId(), periodTemp);
 		
 		periodTemp = new PeriodInfo();
-		periodTemp.setId(new Long(200001));
+		periodTemp.setId(200001L);
 		periodTemp.setName("SS 2008");
-		periodTemp.setUniversityId(new Long(100));
+		periodTemp.setUniversityId(100L);
 		periods.put(periodTemp.getId(), periodTemp);
 		
 		periodTemp = new PeriodInfo();
-		periodTemp.setId(new Long(200002));
+		periodTemp.setId(200002L);
 		periodTemp.setName("WS 2007/2008");
-		periodTemp.setUniversityId(new Long(101));
+		periodTemp.setUniversityId(101L);
 		periods.put(periodTemp.getId(), periodTemp);
 		
 		periodTemp = new PeriodInfo();
-		periodTemp.setId(new Long(200003));
+		periodTemp.setId(200003L);
 		periodTemp.setName("SS 2008");
-		periodTemp.setUniversityId(new Long(101));
+		periodTemp.setUniversityId(101L);
 		periods.put(periodTemp.getId(), periodTemp);
 		
 		periodTemp = new PeriodInfo();
-		periodTemp.setId(new Long(200004));
+		periodTemp.setId(200004L);
 		periodTemp.setName("Academic Year 2007/2008 - Trimester 1");
-		periodTemp.setUniversityId(new Long(102));
+		periodTemp.setUniversityId(102L);
 		periods.put(periodTemp.getId(), periodTemp);
 		
 		periodTemp = new PeriodInfo();
-		periodTemp.setId(new Long(200005));
+		periodTemp.setId(200005L);
 		periodTemp.setName("Academic Year 2007/2008 - Trimester 2");
-		periodTemp.setUniversityId(new Long(102));
+		periodTemp.setUniversityId(102L);
 		periods.put(periodTemp.getId(), periodTemp);
 		
 		periodTemp = new PeriodInfo();
-		periodTemp.setId(new Long(200006));
+		periodTemp.setId(200006L);
 		periodTemp.setName("Academic Year 2007/2008 - Trimester 3");
-		periodTemp.setUniversityId(new Long(102));
+		periodTemp.setUniversityId(102L);
 		periods.put(periodTemp.getId(), periodTemp);
 		
 		periodTemp = new PeriodInfo();
-		periodTemp.setId(new Long(200007));
+		periodTemp.setId(200007L);
 		periodTemp.setName("2008 (1. Halbjahr)");
-		periodTemp.setUniversityId(new Long(103));
+		periodTemp.setUniversityId(103L);
 		periods.put(periodTemp.getId(), periodTemp);
 		
 		periodTemp = new PeriodInfo();
-		periodTemp.setId(new Long(200008));
+		periodTemp.setId(200008L);
 		periodTemp.setName("2008 (2. Halbjahr)");
-		periodTemp.setUniversityId(new Long(103));
+		periodTemp.setUniversityId(103L);
 		periods.put(periodTemp.getId(), periodTemp);
 		
 		periodTemp = new PeriodInfo();
-		periodTemp.setId(new Long(200009));
+		periodTemp.setId(200009L);
 		periodTemp.setName("2008 (1. Halbjahr)");
-		periodTemp.setUniversityId(new Long(104));
+		periodTemp.setUniversityId(104L);
 		periods.put(periodTemp.getId(), periodTemp);
 		
 		periodTemp = new PeriodInfo();
-		periodTemp.setId(new Long(200010));
+		periodTemp.setId(200010L);
 		periodTemp.setName("2008 (2. Halbjahr)");
-		periodTemp.setUniversityId(new Long(104));
+		periodTemp.setUniversityId(104L);
 		periods.put(periodTemp.getId(), periodTemp);
 		
 		return periods;

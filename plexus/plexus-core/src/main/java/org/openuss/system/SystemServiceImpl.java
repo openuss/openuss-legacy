@@ -70,7 +70,6 @@ public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
 	@Override
 	protected void handleSetInstanceIdentity(Long identity) throws Exception {
 		throw new UnsupportedOperationException("Do not manipulate the Instance Id!");
-		
 	}
 
 }
