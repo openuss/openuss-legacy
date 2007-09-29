@@ -12,6 +12,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.LectureException;
@@ -30,13 +31,6 @@ public class CourseOptionsPage extends AbstractCoursePage {
 	private static final Logger logger = Logger.getLogger(CourseOptionsPage.class);
 
 	private static final long serialVersionUID = 8821048605517398410L;
-
-	/*
-	 * TODO what about this below? @Preprocess public void preprocess() { if
-	 * (course != null) { logger.debug("---------------> refreshing course.");
-	 * course = getLectureService().getCourse(course.getId());
-	 * setSessionBean(Constants.Course, course); } }
-	 */
 
 	@Prerender
 	@Override
@@ -74,11 +68,15 @@ public class CourseOptionsPage extends AbstractCoursePage {
 	 */
 	public String saveOptions() throws LectureException {
 		logger.trace("saving course options");
+		
+		// TODO move to business layer
 		CourseInfo courseOld = getCourseService().getCourseInfo(courseInfo.getId());
 		if (courseOld.getAccessType() == AccessType.APPLICATION && courseInfo.getAccessType() != AccessType.APPLICATION) {
 			getCourseService().removeAspirants(courseOld);
 		}
 		// XSS Filter Content
+		courseInfo.setDescription(new HtmlInputFilter().filter(courseInfo.getDescription()));
+		
 		courseService.updateCourse(courseInfo);
 		addMessage(i18n("message_course_options_saved"));
 		return Constants.COURSE_OPTIONS_PAGE;
@@ -106,6 +104,7 @@ public class CourseOptionsPage extends AbstractCoursePage {
 
 	public List<SelectItem> getAccessTypes() {
 		List<SelectItem> items = new ArrayList<SelectItem>();
+		items.add(new SelectItem(AccessType.ANONYMOUS, i18n("course_options_access_anonymous")));
 		items.add(new SelectItem(AccessType.OPEN, i18n("course_options_access_open")));
 		items.add(new SelectItem(AccessType.CLOSED, i18n("course_options_access_closed")));
 		items.add(new SelectItem(AccessType.PASSWORD, i18n("course_options_access_password")));

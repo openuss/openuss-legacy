@@ -45,7 +45,7 @@
 						<f:selectItems value="#{views$secured$course$courseoptions.accessTypes}"/>
 					</h:selectOneMenu>
 					<h:message for="accessType" styleClass="field_error"/>
-					<c:if test="#{sessionScope.courseInfo.accessType.value == 2}">
+					<c:if test="#{sessionScope.courseInfo.accessType.value == 3}">
 		 				<o:input entity="courseInfo" property="password" required="true"/>
 	 				</c:if> 				
 					

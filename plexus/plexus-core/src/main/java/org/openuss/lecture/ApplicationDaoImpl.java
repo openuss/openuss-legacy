@@ -5,7 +5,6 @@
  */
 package org.openuss.lecture;
 
-import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.Validate;
 
 /**

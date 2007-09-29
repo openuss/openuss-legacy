@@ -19,7 +19,9 @@ public class AccessTypeLabelConverter extends BaseBean implements Converter  {
 	public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
 		if (value instanceof AccessType){
 			AccessType accessType = (AccessType) value;
-			if (accessType == AccessType.OPEN) {
+			if (accessType == AccessType.ANONYMOUS) {
+				return i18n("course_options_access_anonymous_short");
+			} else if (accessType == AccessType.OPEN) {
 				return i18n("course_options_access_open_short");
 			} else if (accessType == AccessType.CLOSED) {
 				return i18n("course_options_access_closed_short");

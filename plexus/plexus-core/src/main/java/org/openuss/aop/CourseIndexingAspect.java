@@ -53,7 +53,7 @@ public class CourseIndexingAspect {
 	public void updateCourseIndex(CourseInfo courseInfo) {
 		logger.info("Starting method updateCourseIndex");
 		try {
-			if (courseInfo.isEnabled() && courseInfo.getAccessType() != AccessType.CLOSED) {
+			if (courseInfo.isEnabled()) {
 				course = courseDao.courseInfoToEntity(courseInfo);
 				indexerService.updateIndex(course);
 			} else {

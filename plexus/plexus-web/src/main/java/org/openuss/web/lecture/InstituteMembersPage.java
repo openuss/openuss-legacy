@@ -158,7 +158,7 @@ public class InstituteMembersPage extends AbstractLecturePage {
 				member.getFirstName(),
 				member.getLastName(), 
 				member.getUsername() }));
-		if (!StringUtils.equals(member.getUsername(), user.getUsername())) {
+		if (StringUtils.equals(member.getUsername(), user.getUsername())) {
 			return Constants.INSTITUTE;
 		} else {
 			return Constants.SUCCESS;
