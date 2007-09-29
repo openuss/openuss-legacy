@@ -245,7 +245,4 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	public int getUPDATE() {
 		return UPDATE;
 	}
-	
-	
-	
 }
