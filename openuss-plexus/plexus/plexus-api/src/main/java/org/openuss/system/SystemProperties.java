@@ -18,5 +18,14 @@ public interface SystemProperties {
 	
 	// COMMUNITY Configuration
 	public static final String COMMUNITY_COURSE_ID = "community.course.id";
+	
+	// Support System Configuration
+	public static final String DOCUMENTATION_URL = "documentation.url";
+	public static final String SUPPORT_URL = "support.url";
+	public static final String BUGTRACKING_URL ="bugtracking.url";
+	
+	// Impressum
+	public static final String IMPRESSUM_TEXT = "impressum.text";
+	public static final String PROVIDER_URL = "provider.url";
 		
 }
