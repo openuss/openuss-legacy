@@ -32,13 +32,13 @@
 			<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
 		</ui:define>
   		<ui:define name="content">
-  			<o:block styleClass="empty_box"> 
-  				<h:outputLink action="home">
-					<b><h:outputText value="#{msg.home} - "/></b>
+  			<o:block styleClass="empty_box">  
+  				<o:link value="/views/welcome.faces">
+					<h:outputText value="#{msg.home} - " styleClass="header_font_normal"/>
 	  				<h:outputFormat value="#{msg.desktop_heading}" styleClass="header_font_normal">
 						<f:param value="#{user.contact.firstName} #{user.contact.lastName}" />
 					</h:outputFormat>
-				</h:outputLink>
+				</o:link>
   			</o:block> 
   			<o:block styleClass="teaser_blue_right" label="#{msg.welcome_barometer_header}">
 			  		<h:panelGrid columns="2">
