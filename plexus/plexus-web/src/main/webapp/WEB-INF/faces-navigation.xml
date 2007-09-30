@@ -170,6 +170,11 @@
 			<to-view-id>/views/errors/error.xhtml</to-view-id>
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>university_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/universitystart.xhtml</to-view-id>
+		</navigation-case>
+		
 		
 		
 	</navigation-rule>
