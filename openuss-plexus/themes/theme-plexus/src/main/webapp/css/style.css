@@ -1,4 +1,5 @@
 @import url(flexlist.css);
+
 @import url(buttons.css);
 
 html,body {
@@ -54,38 +55,37 @@ p {
 	z-index: 200;
 }
 
-#left div.institute_info span.header_font_normal{
+#left div.institute_info span.header_font_normal {
 	font-size: 8pt;
 	overflow: hidden;
 }
 
-#left div.university_info span.header_font_normal{
+#left div.university_info span.header_font_normal {
 	font-size: 8pt;
 }
 
 #messages ul li {
-    margin-left: -10px;
-    padding: 0px;
+	margin-left: -10px;
+	padding: 0px;
 }
 
 #messages .error {
-  display:block;
-  color: #fff;
-  font-weight: bolder;
-  background:#ff2200;
-  padding: 2px 10px 2px 10px;
-  margin: 0px;
+	display: block;
+	color: #fff;
+	font-weight: bolder;
+	background: #ff2200;
+	padding: 2px 10px 2px 10px;
+	margin: 0px;
 }
 
 #messages .info {
-  display:block;
-  color: #fff;
-  font-weight: bolder;
-  background:#5493D4;
-  padding: 2px 10px 2px 10px;
-  margin: 0px;
+	display: block;
+	color: #fff;
+	font-weight: bolder;
+	background: #5493D4;
+	padding: 2px 10px 2px 10px;
+	margin: 0px;
 }
-
 
 @media all {
 	* html b\ody #left {
@@ -156,26 +156,26 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 }
 
 #messages ul li {
-    margin-left: -10px;
-    padding: 0px;
+	margin-left: -10px;
+	padding: 0px;
 }
 
 #messages .error {
-  display:block;
-  color: #fff;
-  font-weight: bolder;
-  background:#ff2200;
-  padding: 2px 10px 2px 10px;
-  margin: 0px;
+	display: block;
+	color: #fff;
+	font-weight: bolder;
+	background: #ff2200;
+	padding: 2px 10px 2px 10px;
+	margin: 0px;
 }
 
 #messages .info {
-  display:block;
-  color: #fff;
-  font-weight: bolder;
-  background:#3366aa;
-  padding: 2px 10px 2px 10px;
-  margin: 0px;
+	display: block;
+	color: #fff;
+	font-weight: bolder;
+	background: #3366aa;
+	padding: 2px 10px 2px 10px;
+	margin: 0px;
 }
 
 #left .pulldown_form {
@@ -299,8 +299,7 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 	height: 21px;
 	margin: 5px 0 0 0;
 	padding: 0;
-	background: transparent url(../img/button_80_normal.png) 0px 0px
-		no-repeat;
+	background: transparent url(../img/button_80_normal.png) 0px 0px no-repeat;
 	border: 0;
 	font-color: #313131;
 	font-size: 8pt;
@@ -313,8 +312,7 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 }
 
 #left input.button:hover {
-	background: transparent url(../img/button_80_hover.png) 0px 0px
-		no-repeat;
+	background: transparent url(../img/button_80_hover.png) 0px 0px no-repeat;
 }
 
 #left .content_box ul.int {
@@ -1046,7 +1044,7 @@ ul#header_navigation li:hover {
 	background-repeat: repeat-x;
 }
 
-.chat_box .header_normal  , .news_box .header_normal {
+.chat_box .header_normal   , .news_box .header_normal {
 	padding: 0;
 	height: 28px;
 	background-image: url(../img/news_bg.jpg);
@@ -1313,6 +1311,7 @@ ul {
 	text-decoration: none;
 	font-weight: bold;
 }
+
 .field_inline_label {
 	display: inline;
 	font-size: 8pt;
@@ -1348,7 +1347,7 @@ ul {
 	display: block;
 }
 
-.field_inline, .pulldown_inline {
+.field_inline,.pulldown_inline {
 	width: 500px;
 	font-size: 9pt;
 	text-decoration: none;
@@ -1393,7 +1392,6 @@ ul {
 	text-decoration: none;
 	font-weight: bold;
 }
-
 
 .tablenavigator {
 	
@@ -1446,7 +1444,8 @@ span.table_data_info {
 	background-color: #ff0000;
 }
 
-td input.button,.button_unlink,.button_link,.button_remove,.button_move,.button_edit,.button_remove,.button_profile	{
+td input.button,.button_unlink,.button_link,.button_remove,.button_move,.button_edit,.button_remove,.button_profile
+	{
 	width: 79px;
 	height: 17px;
 	margin: 2px 5px 2px 0;
@@ -1462,11 +1461,10 @@ td input.button,.button_unlink,.button_link,.button_remove,.button_move,.button_
 	cursor: pointer;
 	cursor: hand;
 	outline-style: none;
-	filter: DropShadow(color = #FFF, offx = 1, offy = 1)
+	filter: DropShadow(color =   #FFF, offx =   1, offy =   1)
 }
 
-td .remove_shortcut_button
-	{
+td .remove_shortcut_button {
 	width: 121px;
 	height: 17px;
 	margin: 2px 5px 2px 0;
@@ -1482,7 +1480,7 @@ td .remove_shortcut_button
 	cursor: pointer;
 	cursor: hand;
 	outline-style: none;
-	filter: DropShadow(color = #FFF, offx = 1, offy = 1)
+	filter: DropShadow(color =   #FFF, offx =   1, offy =   1)
 }
 
 td input.button:hover,.button_unlink:hover,.button_link:hover,.button_remove:hover,.button_edit:hover,.button_remove:hover,.button_profile:hover
@@ -1491,8 +1489,7 @@ td input.button:hover,.button_unlink:hover,.button_link:hover,.button_remove:hov
 		no-repeat;
 }
 
-td .remove_shortcut_button:hover
-	{
+td .remove_shortcut_button:hover {
 	background: transparent url(../img/button_120_hover_remove.png) 0px 0px
 		no-repeat;
 }
@@ -1597,7 +1594,7 @@ table {
 	padding: 0;
 	width: 100%;
 	overflow: scroll;
-	border-collapse: collapse; 
+	border-collapse: collapse;
 	border-spacing: 0px;
 }
 
@@ -1606,7 +1603,7 @@ table {
 	color: #000;
 }
 
-#center .table_header a{
+#center .table_header a {
 	font-size: 8pt;
 	color: #000;
 }
@@ -1625,12 +1622,12 @@ th {
 	background: #E3EDCF;
 }
 
-.even > td {
+.even>td {
 	background-color: #FFF;
 	border-bottom: 1px solid #ddd;
 }
 
-.odd > td {
+.odd>td {
 	background-color: #FFF;
 	border-bottom: 1px solid #ddd;
 }
