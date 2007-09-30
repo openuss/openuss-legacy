@@ -56,4 +56,9 @@ public class RepositoryFileImpl extends RepositoryFileBase implements Repository
 		}
 	}
 
+	@Override
+	public void increaseDownloads() {
+		setDownloads(getDownloads()+1L);
+	}
+
 }
