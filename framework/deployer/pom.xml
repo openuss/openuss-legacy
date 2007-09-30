@@ -34,7 +34,7 @@
 							<tasks>
 								<echo>copy framework-deployer to server common lib</echo>
 								<copy file="${basedir}/target/framework-deployer-${pom.version}.jar" 
-								tofile="${basedir}/../../servers/tomcat/common/lib/framework-deployer.jar"/>
+									  tofile="${basedir}/../../servers/tomcat/lib/framework-deployer.jar"/>
 							</tasks>
 						</configuration>
 						<goals>
