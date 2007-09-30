@@ -43,54 +43,41 @@
 			</h:outputText>
 		</plexus:column>
 	
-		<plexus:column header="#{msg.commands_header}">	
-			<s:authorize ifAllGranted="ROLE_USER">
-				<plexus:command 
-					bean="#{views$secured$lecture$institutecourses}"
-					action="removeCourseShortcut"
-					label="#{msg.course_command_shortcut_remove}"
-					title="#{msg.course_command_shortcut_hint_remove}"
-					styleClass="icon_bookmark_remove"
-					rendered="#{views$secured$lecture$institutecourses.bookmarked}">
-				</plexus:command>
-				<plexus:command 
-					bean="#{views$secured$lecture$institutecourses}"
-					action="shortcutCourse"
-					label="#{msg.course_command_shortcut}"
-					title="#{msg.course_command_shortcut_hint}"
-					styleClass="icon_bookmark"
-					rendered="#{not views$secured$lecture$institutecourses.bookmarked}">
-				</plexus:command>
-			</s:authorize>
-			<s:authorize ifAllGranted="ROLE_ADMIN">
-				<plexus:command 
-					bean = "#{views$secured$lecture$institutecourses}"
-					action="disableCourse"
-					styleClass="icon_hide"
-					label="#{msg.course_command_disable}"
-					title="#{msg.course_command_disable_hint}"
-					rendered="#{courseInfo.enabled}">
-				</plexus:command>
-				<plexus:command 
-					bean = "#{views$secured$lecture$institutecourses}"
-					action = "enableCourse"
-					styleClass="icon_public"
-					label="#{msg.course_command_enable}"
-					title="#{msg.course_command_enable_hint}"
-					rendered="#{not courseInfo.enabled}">
-				</plexus:command>
-			</s:authorize>
-			<s:authorize ifAllGranted="ROLE_USER">
-				<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.INSTITUTE_ASSIST}">
-					<plexus:command
-						bean = "#{views$secured$lecture$institutecourses}"
-						action = "selectCourseAndConfirmRemove"
-						styleClass="icon_remove"
-						label="#{msg.course_command_remove}"
-						title="#{msg.course_command_remove_hint}">
+		<s:authorize ifAllGranted="ROLE_USER">
+			<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.INSTITUTE_ASSIST}">
+				<plexus:column header="#{msg.commands_header}">	
+					<plexus:command 
+						bean="#{views$secured$lecture$institutecourses}"
+						action="removeCourseShortcut"
+						label="#{msg.course_command_shortcut_remove}"
+						title="#{msg.course_command_shortcut_hint_remove}"
+						styleClass="icon_bookmark_remove"
+						rendered="#{views$secured$lecture$institutecourses.bookmarked}">
 					</plexus:command>
-				</s:acl>	
-				<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.INSTITUTE_ASSIST}">
+					<plexus:command 
+						bean="#{views$secured$lecture$institutecourses}"
+						action="shortcutCourse"
+						label="#{msg.course_command_shortcut}"
+						title="#{msg.course_command_shortcut_hint}"
+						styleClass="icon_bookmark"
+						rendered="#{not views$secured$lecture$institutecourses.bookmarked}">
+					</plexus:command>
+					<plexus:command 
+						bean = "#{views$secured$lecture$institutecourses}"
+						action="disableCourse"
+						styleClass="icon_hide"
+						label="#{msg.course_command_disable}"
+						title="#{msg.course_command_disable_hint}"
+						rendered="#{courseInfo.enabled}">
+					</plexus:command>
+					<plexus:command 
+						bean = "#{views$secured$lecture$institutecourses}"
+						action = "enableCourse"
+						styleClass="icon_public"
+						label="#{msg.course_command_enable}"
+						title="#{msg.course_command_enable_hint}"
+						rendered="#{not courseInfo.enabled}">
+					</plexus:command>
 					<plexus:command
 						bean = "#{views$secured$lecture$institutecourses}"
 						action = "moveCourse"
@@ -98,9 +85,16 @@
 						label="#{msg.course_command_move}"
 						title="#{msg.course_command_move_hint}">
 					</plexus:command>
-				</s:acl>	
-			</s:authorize>
-		</plexus:column>
+					<plexus:command
+						bean = "#{views$secured$lecture$institutecourses}"
+						action = "selectCourseAndConfirmRemove"
+						styleClass="icon_remove"
+						label="#{msg.course_command_remove}"
+						title="#{msg.course_command_remove_hint}">
+					</plexus:command>
+				</plexus:column>
+			</s:acl>	
+		</s:authorize>
 	</plexus:dataTable>
 	
 	

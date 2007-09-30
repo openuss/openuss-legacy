@@ -10,16 +10,14 @@
 	<h:form id="mainmenu">
 		<ul id="header_navigation">
 			<li class="main_nav_doc">
-				<o:link value="/views/secured/course/main.faces?" title="#{msg.mainmenu_command_documentation}" rendered="true">
-					<f:param name="course" value="#{SYSTEM_PROPERTIES.communityCourseId}"/>
+				<h:outputLink value="#{SYSTEM_PROPERTIES.DOCUMENTATION_URL}" title="#{msg.mainmenu_command_documentation}" rendered="true">
 					<h:outputText value="#{msg.mainmenu_command_documentation}"/>
-				</o:link>
+				</h:outputLink>
 			</li>
 			<li class="main_nav_forum">
-				<o:link value="/views/secured/discussion/discussions.faces" title="#{msg.mainmenu_command_userforum}" rendered="true">
-					<f:param name="course" value="#{SYSTEM_PROPERTIES.communityCourseId}"/>
+				<h:outputLink value="#{SYSTEM_PROPERTIES.SUPPORT_URL}" title="#{msg.mainmenu_command_userforum}" rendered="true">
 					<h:outputText value="#{msg.mainmenu_command_userforum}"/>
-				</o:link>
+				</h:outputLink>
 			</li>
 			<s:authorize ifAllGranted="ROLE_ADMIN">
 				<li class="main_nav_admin">

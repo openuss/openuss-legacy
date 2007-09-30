@@ -1450,8 +1450,7 @@ td input.button,.button_unlink,.button_link,.button_remove,.button_move,.button_
 	height: 17px;
 	margin: 2px 5px 2px 0;
 	padding: 0;
-	background: transparent url(../img/button_70_normal.png) 0px 0px
-		no-repeat;
+	background: transparent url(../img/button_70_normal.png) 0px 0px no-repeat;
 	border: 0;
 	font-color: #313131;
 	font-size: 7pt;
@@ -1469,8 +1468,7 @@ td .remove_shortcut_button {
 	height: 17px;
 	margin: 2px 5px 2px 0;
 	padding: 0;
-	background: transparent url(../img/button_120_normal_remove.png) 0px 0px
-		no-repeat;
+	background: transparent url(../img/button_120_normal_remove.png) 0px 0px no-repeat;
 	border: 0;
 	font-color: #313131;
 	font-size: 7pt;
@@ -1499,8 +1497,7 @@ td .remove_shortcut_button:hover {
 	height: 23px;
 	margin-left: 10px;
 	padding: 0;
-	background: transparent url(../img/button_120_normal.png) 0px 0px
-		no-repeat;
+	background: transparent url(../img/button_120_normal.png) 0px 0px no-repeat;
 	border: 0;
 	font-color: #313131;
 	font-size: 8pt;
@@ -1512,10 +1509,8 @@ td .remove_shortcut_button:hover {
 	outline-style: none;
 }
 
-.button_save:hover,.button_send:hover,.button_cancel:hover,.button_back:hover,.button_continue:hover
-	{
-	background: transparent url(../img/button_120_hover.png) 0px 0px
-		no-repeat;
+.button_save:hover,.button_send:hover,.button_cancel:hover,.button_back:hover,.button_continue:hover {
+	background: transparent url(../img/button_120_hover.png) 0px 0px no-repeat;
 }
 
 .button_warning {
@@ -1523,8 +1518,7 @@ td .remove_shortcut_button:hover {
 	height: 23px;
 	margin-left: 10px;
 	padding: 0;
-	background: transparent url(../img/button_120_red.png) 0px 0px no-repeat
-		;
+	background: transparent url(../img/button_120_red.png) 0px 0px no-repeat;
 	border: 0;
 	font-color: #313131;
 	font-size: 8pt;
@@ -1537,8 +1531,7 @@ td .remove_shortcut_button:hover {
 }
 
 .button_warning:hover {
-	background: transparent url(../img/button_120_hover_red.png) 0px 0px
-		no-repeat;
+	background: transparent url(../img/button_120_hover_red.png) 0px 0px no-repeat;
 }
 
 .button,.button_add,.button_login {
@@ -1547,8 +1540,7 @@ td .remove_shortcut_button:hover {
 	height: 23px;
 	margin-right: 10px;
 	padding: 0;
-	background: transparent url(../img/button_140_normal.png) 0px 0px
-		no-repeat;
+	background: transparent url(../img/button_140_normal.png) 0px 0px no-repeat;
 	border: 0;
 	font-color: #313131;
 	font-size: 8pt;
@@ -1561,8 +1553,7 @@ td .remove_shortcut_button:hover {
 }
 
 .button:hover,.button_add:hover,.button_login:hover {
-	background: transparent url(../img/button_140_hover.png) 0px 0px
-		no-repeat;
+	background: transparent url(../img/button_140_hover.png) 0px 0px no-repeat;
 }
 
 .button_big {
@@ -1571,8 +1562,7 @@ td .remove_shortcut_button:hover {
 	height: 23px;
 	margin-left: 10px;
 	padding: 0;
-	background: transparent url(../img/button_180_normal.png) 0px 0px
-		no-repeat;
+	background: transparent url(../img/button_180_normal.png) 0px 0px no-repeat;
 	border: 0;
 	font-color: #313131;
 	font-size: 8pt;
