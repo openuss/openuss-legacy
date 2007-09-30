@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
  * @author Ingo Dueppe
  * @see org.openuss.repository.RepositoryService
  */
-public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServiceBase {
+public class RepositoryServiceImpl extends RepositoryServiceBase {
 
 	private static final Logger logger = Logger.getLogger(RepositoryServiceImpl.class);
 
@@ -42,6 +42,9 @@ public class RepositoryServiceImpl extends org.openuss.repository.RepositoryServ
 			logger.error("File with id " + fileId + " not found.");
 			throw new RepositoryServiceException("File with id " + fileId + " not found.");
 		}
+		
+		file.increaseDownloads();
+		getRepositoryFileDao().update(file);
 
 		return fetchInputStream(file);
 	}
