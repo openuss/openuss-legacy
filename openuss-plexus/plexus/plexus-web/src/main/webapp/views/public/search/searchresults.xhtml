@@ -15,21 +15,20 @@
 			label="#{msg.search_result_header}" 
 			value="views$public$search$search.resultProvider" 
 			var="result" 
-			columnClasses="col_max_left, col_commands"
 			rows="15">
-			<t:column rendered="#{result.domainType == 'university'}" >
+			<t:column rendered="#{result.domainType == 'university'}" styleClass="col_min_center">
 				<img src="#{theme.imagesPath}/university.png" alt="#{result.name}" title="#{result.name}" />
 			</t:column>
-			<t:column rendered="#{result.domainType == 'department'}" >
+			<t:column rendered="#{result.domainType == 'department'}" styleClass="col_min_center">
 				<img src="#{theme.imagesPath}/department.png" alt="#{result.name}" title="#{result.name}" />
 			</t:column>
-			<t:column rendered="#{result.domainType == 'institute'}" >
+			<t:column rendered="#{result.domainType == 'institute'}" styleClass="col_min_center">
 				<img src="#{theme.imagesPath}/institute.png" alt="#{result.name}" title="#{result.name}" />
 			</t:column>
-			<t:column rendered="#{result.domainType == 'course'}">
+			<t:column rendered="#{result.domainType == 'course'}" styleClass="col_min_center">
 				<img src="#{theme.imagesPath}/course.png" alt="#{result.name}" title="#{result.name}" />
 			</t:column>
-			<t:column>
+			<t:column  styleClass="col_max_left">
 				<div class="institute_info">
 					<o:link value="/views/public/university/university.faces" rendered="#{result.domainType == 'university'}">
 		    			<f:param name="university" value="#{result.id}"/>
