@@ -69,13 +69,6 @@
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 					<plexus:column header="#{msg.newsletter_actions}">
 						<plexus:command bean="#{views$secured$newsletter$newsletter}"
-							action="delMail" 
-							label="#{msg['newsletter_button_delete']}"
-							title="#{msg['newsletter_button_delete_hint']}"
-							styleClass="icon_remove"
-							onclick="if (!confirm('#{msg.newsletter_remove_mail}')) return false"
-							rendered="#{not(mail.status.value==3)}"/>
-						<plexus:command bean="#{views$secured$newsletter$newsletter}"
 							action="sendMail" 
 							label="#{msg['newsletter_button_send']}"
 							title="#{msg['newsletter_button_send']}"
@@ -97,6 +90,13 @@
 							title="#{msg['newsletter_button_stop']}"
 							styleClass="icon_cancel" 
 							rendered="#{(mail.status.value==1)}"/>
+						<plexus:command bean="#{views$secured$newsletter$newsletter}"
+							action="delMail" 
+							label="#{msg['newsletter_button_delete']}"
+							title="#{msg['newsletter_button_delete_hint']}"
+							styleClass="icon_remove"
+							onclick="if (!confirm('#{msg.newsletter_remove_mail}')) return false"
+							rendered="#{not(mail.status.value==3)}"/>
 					</plexus:column>					
 				</s:acl>
 			</plexus:dataTable>

@@ -68,18 +68,18 @@
 				</plexus:column>
 				<t:column >
 					<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
-						<plexus:command						
-							bean="#{views$secured$braincontest$braincontestmain}"
-							onclick="if (!confirm('#{msg.braincontest_confirm_delete_post}')) return false"
-							action="remove" label="#{msg['braincontest_main_button_remove']}"
-							title="#{msg['braincontest_main_button_remove']}" 
-							styleClass="icon_remove"/>
 						<plexus:command
 							bean="#{views$secured$braincontest$braincontestmain}"
 							action="editContest" 
 							label="#{msg['braincontest_main_button_edit']}"
 							title="#{msg['braincontest_main_button_edit']}"
 							styleClass="icon_edit" />
+						<plexus:command						
+							bean="#{views$secured$braincontest$braincontestmain}"
+							onclick="if (!confirm('#{msg.braincontest_confirm_delete_post}')) return false"
+							action="remove" label="#{msg['braincontest_main_button_remove']}"
+							title="#{msg['braincontest_main_button_remove']}" 
+							styleClass="icon_remove"/>
 					</s:acl>	
 				</t:column>
 			</plexus:dataTable>
