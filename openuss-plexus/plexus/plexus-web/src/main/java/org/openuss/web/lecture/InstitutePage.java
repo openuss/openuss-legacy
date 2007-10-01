@@ -126,7 +126,7 @@ public class InstitutePage extends AbstractLecturePage {
 		try {
 			return desktopService2.isInstituteBookmarked(instituteInfo.getId(), user.getId());
 		} catch (Exception e) {
-			
+			logger.error(e);
 		}
 		
 		return false;
@@ -138,7 +138,7 @@ public class InstitutePage extends AbstractLecturePage {
 			CourseInfo currentCourse = currentCourse();
 			return desktopService2.isCourseBookmarked(currentCourse.getId(), user.getId());
 		} catch (Exception e) {
-			
+			logger.error(e);
 		}
 		
 		return false;

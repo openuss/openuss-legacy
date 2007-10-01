@@ -33,8 +33,13 @@
 		<ui:include src="/views/commons/navigation/course.xhtml" />
 	</ui:define>
 	<ui:define name="sidebar"> 
+		<ui:include src="/views/commons/sidebar/useroptions_course.xhtml"/>
 		<ui:include src="/views/commons/sidebar/feeds/coursefeed.xhtml" />
 	</ui:define>	
+	<ui:define name="breadcrumb">
+		<ui:include src="/views/commons/navigation/crumb_course.xhtml" />
+	</ui:define>			
+	
 	<ui:define name="content" styleClass="footer_normal">
 			<o:block>
 				<p class="header_font_normal">
