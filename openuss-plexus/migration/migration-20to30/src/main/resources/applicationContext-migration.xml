@@ -6,6 +6,12 @@
     					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 	
 
+	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="applicationContextSchedulerContextKey" value="applicationContext"/>
+		<property name="autoStartup" value="true" />
+		<property name="waitForJobsToCompleteOnShutdown" value="true" />
+ 		<property name="overwriteExistingJobs" value="true"/>
+	</bean>
 
 	<!-- Local DataSource that works in any environment --> 
     <bean id="legacyDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -132,7 +138,7 @@
 
 	<bean id="migrationService" class="org.openuss.migration.from20to30.MigrationService" >
 		<property name="legacySessionFactory" ref="legacySessionFactory"/>
-		<property name="userImport" ref="userImportTx"/>
+		<property name="userImport" ref="userImport"/>
 		<property name="lectureImport" ref="lectureImportTx"/>
 		<property name="desktopImport" ref="desktopImportTx"/>
 		<property name="courseMemberImport" ref="courseMemberImportTx"/>
