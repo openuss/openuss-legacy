@@ -75,6 +75,11 @@
 		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
 		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_COURSES}"/>
 	</page>
+
+	<page view-id="/views/secured/lecture/institutecourses.xhtml">
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_COURSES}"/>
+	</page>
 	
 	<page view-id="/views/secured/lecture/auth/members.xhtml">
 		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
