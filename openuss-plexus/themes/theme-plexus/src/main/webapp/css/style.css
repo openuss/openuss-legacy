@@ -1182,8 +1182,7 @@ p.content_font_normal,p.content_font_normal p {
 	color: #505050;
 }
 
-.warning_box p.content_font_normal,.warning_box p.content_font_normal p
-	{
+.warning_box p.content_font_normal,.warning_box p.content_font_normal p 	{
 	padding: 0;
 	font-size: 8pt;
 	text-decoration: none;
@@ -1198,7 +1197,6 @@ div.content_font_normal {
 }
 
 span.content_font_normal {
-	padding: 20px 0 10px 10px;
 	font-size: 8pt;
 	text-decoration: none;
 	color: #505050;
