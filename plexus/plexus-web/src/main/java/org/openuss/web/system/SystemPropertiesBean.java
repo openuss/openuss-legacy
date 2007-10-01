@@ -38,6 +38,10 @@ public class SystemPropertiesBean {
 		return systemService.getProperty(SystemProperties.PROVIDER_URL).getValue();
 	}
 
+	public String getOPENUSS_SERVER_URL() {
+		return systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue();
+	}
+
 	public void setSystemService(SystemService systemService) {
 		this.systemService = systemService;
 	}
