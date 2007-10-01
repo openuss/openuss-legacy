@@ -58,9 +58,11 @@
 	<c:if test="#{views$secured$myuni$myuni.data}">
 		<div class="content_box">
 			<div class="content_normal">		
-				<h:graphicImage value="/images/tutorial.png"
-								alt="tutorial dummy"
-								title="tutorial dummy" width="600px"/>
+			    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="800" height="575">
+			     	<param name="movie" value="#{SYSTEM_PROPERTIES.OPENUSS_SERVER_URL}/images/oss.swf" />
+			   	  	<param name="quality" value="high" />
+			     	<embed src="#{SYSTEM_PROPERTIES.OPENUSS_SERVER_URL}/images/oss.swf" quality="high" width="800" height="575" type="application/x-shockwave-flash"></embed>
+			    </object>
 			</div>
 			<div class="footer_normal">
 				<div class="footer_normal_left_bg" />
