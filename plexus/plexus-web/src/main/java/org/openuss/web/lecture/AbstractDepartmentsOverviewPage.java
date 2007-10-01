@@ -30,11 +30,9 @@ import org.openuss.web.Constants;
  * @author Malte Stockmann
  * 
  */
-
 public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 
-	protected static final Logger logger = Logger
-			.getLogger(DepartmentsPage.class);
+	protected static final Logger logger = Logger.getLogger(AbstractDepartmentsOverviewPage.class);
 
 	protected static final long serialVersionUID = 5069635747478432045L;
 
