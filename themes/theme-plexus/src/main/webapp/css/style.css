@@ -239,8 +239,8 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 	border-left-color: #ECECEC;
 }
 
-#left p.content_font_normal {
-	padding: 0;
+#left p.content_font_normal, #left span.content_font_normal  {
+	padding-left: 10px;
 	font-size: 8pt;
 	text-decoration: none;
 	color: #505050;
@@ -1073,6 +1073,11 @@ p.header_font_normal,span.header_font_normal {
 	color: #505050;
 }
 
+#center p.header_font_normal,#center span.header_font_normal {
+	padding-left: 0;
+	margin-left: 10px;
+}
+
 .warning_box p.header_font_normal,.warning_box span.header_font_normal {
 	padding: 8px 0 0 10px;
 	font-size: 10pt;
@@ -1200,6 +1205,10 @@ span.content_font_normal {
 	font-size: 8pt;
 	text-decoration: none;
 	color: #505050;
+}
+
+#center .content_normal span.content_font_normal {
+	margin-left: 10px;
 }
 
 #right span.content_font_normal {
