@@ -32,7 +32,6 @@
 			<default-locale>en</default-locale>
 			<supported-locale>en</supported-locale>
 			<supported-locale>de</supported-locale>
-			<supported-locale>ru</supported-locale>
 			<supported-locale>zh</supported-locale>
 		</locale-config>
 		<message-bundle>resources</message-bundle>
