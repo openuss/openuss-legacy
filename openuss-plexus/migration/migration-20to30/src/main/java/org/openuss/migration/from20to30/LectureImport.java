@@ -6,12 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.CourseTypeDao;
+import org.openuss.lecture.Department;
+import org.openuss.lecture.DepartmentDao;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.Period;
@@ -23,6 +26,7 @@ import org.openuss.migration.legacy.domain.Subject2;
 import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
 import org.openuss.security.GroupType;
+import org.openuss.security.Membership;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.security.acl.ObjectIdentity;
@@ -36,6 +40,8 @@ import org.openuss.security.acl.Permission;
  * 
  */
 public class LectureImport extends DefaultImport {
+
+	private static final long DEFAULT_DEPARTMENT_ID = 12L;
 
 	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(LectureImport.class);
@@ -64,7 +70,7 @@ public class LectureImport extends DefaultImport {
 	/** Map faculty to institute */
 	private Map<Faculty2, Institute> faculty2Institute = new HashMap<Faculty2, Institute>(1500);
 
-	/** Map legacy id of enrollment to couse object */
+	/** Map legacy id of enrollment to course object */
 	private Map<String, Course> id2Course = new HashMap<String, Course>(1500);
 
 	/** Map legacy id of subject to CourseType object */
@@ -72,6 +78,18 @@ public class LectureImport extends DefaultImport {
 
 	/** Map Insitute to ObjectIdentity */
 	private Map<Institute, ObjectIdentity> institute2ObjectIdentity = new HashMap<Institute, ObjectIdentity>();
+	
+	/** Default Department */
+	private Department department;
+	
+	private ObjectIdentity departmentOI;
+	
+	/** DepartmentDao **/
+	private DepartmentDao departmentDao;
+	
+	private Map<Long,Period> periods = new HashMap<Long, Period>();
+	
+	private PeriodIdentifier periodIdentifier = new PeriodIdentifier();
 
 	/**
 	 * Imports legacy data of faculties, subjects, semesters and enrollments.
@@ -79,6 +97,9 @@ public class LectureImport extends DefaultImport {
 	 * course objects.
 	 */
 	public void perform() {
+		logger.debug("initializing...");
+		initDepartment();
+		
 		logger.info("loading institutes structures...");
 		loadFaculties();
 		loadSubjectsSemesterEnrollments();
@@ -88,11 +109,33 @@ public class LectureImport extends DefaultImport {
 		logger.info("loading and saving permissiosn of institutes...");
 		createInstitutePermissions();
 		createGroupsGrantPermissionsOfFaculties();
+		
+		logger.info("clear everything");
+		clearCollections();
+		
+	}
+
+	private void initDepartment() {
+		department = departmentDao.load(DEFAULT_DEPARTMENT_ID);
+		for (Period period: department.getUniversity().getPeriods()) {
+			periods.put(period.getId(), period);
+		}
+		departmentOI = objectIdentityDao.load(department.getId());
+	}
+
+	private void clearCollections() {
+		id2Course = null;
+		id2CourseType = null;
+		institute2ObjectIdentity = null;
+		institutes = null;
+		faculty2Institute = null;
+		periods = null;
 	}
 
 	private void saveInstitutes() {
 		logger.info("saving institutes ...");
 		instituteDao.create(institutes);
+		departmentDao.update(department);
 		ImportUtil.refresh(institute2ObjectIdentity);
 		logger.info("saving legacy id mapping");
 
@@ -117,21 +160,29 @@ public class LectureImport extends DefaultImport {
 		Collection<Faculty2> faculties = legacyDao.loadAllInstitutes();
 		logger.debug("load " + faculties.size() + " legacy faculties entries.");
 		for (Faculty2 faculty : faculties) {
-			if (ImportUtil.toBoolean(faculty.getAactive())) {
-				Institute institute = createInstitute(faculty);
-				// FIXME OWNER IS NOT ACTIVE
-				User owner = userImport.loadUserByLegacyId(faculty.getAssistant().getId());
-				if (owner != null) {
-					// institute.setOwner(owner);
-					institute.getMembership().getMembers().add(owner);
-
-					institutes.add(institute);
-					faculty2Institute.put(faculty, institute);
-				} else {
-					logger.debug("skip faculty because owner doesn't exist " + faculty.getName());
-				}
+			if (faculty.getEnrollments().isEmpty()) {
+				identifierDao.log("Skip empty faculty "+faculty.getName());
+				logger.debug("Skip empty faculty "+faculty.getName());
 			} else {
-				logger.debug("skip faculty is not active " + faculty.getName());
+				if (ImportUtil.toBoolean(faculty.getAactive())) {
+					Institute institute = createInstitute(faculty);
+					// FIXME OWNER IS NOT ACTIVE
+					User owner = userImport.loadUserByLegacyId(faculty.getAssistant().getId());
+					if (owner != null) {
+						// institute.setOwner(owner);
+						institute.getMembership().getMembers().add(owner);
+	
+						institutes.add(institute);
+						faculty2Institute.put(faculty, institute);
+						department.add(institute);
+					} else {
+						logger.debug("skip faculty because owner doesn't exist " + faculty.getName());
+					}
+					
+				} else {
+					logger.debug("skip faculty is not active " + faculty.getName());
+					identifierDao.log("skip faculty is not active " + faculty.getName());
+				}
 			}
 		}
 	}
@@ -143,7 +194,6 @@ public class LectureImport extends DefaultImport {
 			Institute institute = entry.getValue();
 
 			parseSubjectsOfFaculty(faculty, institute);
-			parseSemesterOfFaculty(faculty, institute);
 		}
 	}
 
@@ -220,7 +270,7 @@ public class LectureImport extends DefaultImport {
 	}
 
 	private void buildInstituteSecurity(Collection<ObjectIdentity> objIds, Collection<Group> groups,
-			Institute institute, Group groupAdmins, Group groupAssistants, Group groupTutors) {
+		Institute institute, Group groupAdmins, Group groupAssistants, Group groupTutors) {
 		institute.getMembership().getGroups().add(groupAdmins);
 		institute.getMembership().getGroups().add(groupAssistants);
 		institute.getMembership().getGroups().add(groupTutors);
@@ -228,22 +278,24 @@ public class LectureImport extends DefaultImport {
 		groups.addAll(institute.getMembership().getGroups());
 
 		// create object identity structure institute <-(parent)---- course
-		ObjectIdentity instituteObjId = ImportUtil.createObjectIdentity(institute.getId(), null);
+		ObjectIdentity instituteObjId = ImportUtil.createObjectIdentity(institute.getId(), departmentOI);
 		objIds.add(instituteObjId);
 
 		// cache institute <--> objId dependency
 		institute2ObjectIdentity.put(institute, instituteObjId);
 
-		for (Course course : (List<Course>) institute.getAllCourses()) {
-			objIds.add(ImportUtil.createObjectIdentity(course.getId(), instituteObjId));
+		for(CourseType courseType : institute.getCourseTypes() ) {
+			ObjectIdentity courseTypeObjectIdentity = ImportUtil.createObjectIdentity(courseType.getId(), instituteObjId);
+			objIds.add(courseTypeObjectIdentity);
+			for (Course course : courseType.getCourses()) {
+				objIds.add(ImportUtil.createObjectIdentity(course.getId(), courseTypeObjectIdentity));
+			}
 		}
+		
 		// create group permissions
-		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_ADMINISTRATION,
-				instituteObjId, groupAdmins));
-		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_ASSIST, instituteObjId,
-				groupAssistants));
-		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_TUTOR, instituteObjId,
-				groupTutors));
+		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_ADMINISTRATION, instituteObjId, groupAdmins));
+		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_ASSIST, instituteObjId, groupAssistants));
+		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_TUTOR, instituteObjId, groupTutors));
 	}
 
 	private void buildInstituteMembers(Faculty2 faculty2, Institute institute, Group groupAdmins, Group groupAssistants) {
@@ -288,6 +340,12 @@ public class LectureImport extends DefaultImport {
 			id2CourseType.put(subject2.getId(), courseType);
 			institute.add(courseType);
 			courseType.setInstitute(institute);
+			
+			for (Enrollment2 enrollment:subject2.getEnrollments()) {
+				Course course = createCourse(enrollment);
+				id2Course.put(enrollment.getId(), course);
+				courseType.add(course);
+			}
 		}
 	}
 
@@ -299,32 +357,9 @@ public class LectureImport extends DefaultImport {
 		return courseType;
 	}
 
-	/**
-	 * Parse faculty semester structure and creates an institute period
-	 * structure
-	 * 
-	 * @param faculty2
-	 * @param institute
-	 * @param id2CourseType
-	 */
-	private void parseSemesterOfFaculty(Faculty2 faculty2, Institute institute) {
-//		for (Semester2 semester : faculty2.getSemesters()) {
-//			Period period = createPeriod(semester);
-//			institute.add(period);
-//			period.setInstitute(institute);
-//
-//			parseEnrollmentsOfSemester(semester, period);
-//
-//			// Map course of period to institute
-//			for (Course course : period.getCourses()) {
-//				institute.  courseType)(course);
-//				course.setInstitute(institute);
-//			}
-//		}
-	}
-
 	private Institute createInstitute(Faculty2 faculty) {
 		Institute institute = Institute.Factory.newInstance();
+		institute.setMembership(Membership.Factory.newInstance());
 		institute.setName(faculty.getName());
 		institute.setShortcut(faculty.getId());
 		institute.setDescription(faculty.getRemark());
@@ -335,40 +370,15 @@ public class LectureImport extends DefaultImport {
 		return institute;
 	}
 
-	/**
-	 * Map legacy semester to new period
-	 * 
-	 * @param semester
-	 * @return object of period
-	 */
-	private Period parseEnrollmentsOfSemester(Semester2 semester, Period period) {
-		for (Enrollment2 enrollment2 : semester.getEnrollments()) {
-			Course course = createCourse(enrollment2);
-			id2Course.put(enrollment2.getId(), course);
-
-			course.setPeriod(period);
-			period.add(course);
-
-			CourseType courseType = id2CourseType.get(enrollment2.getSubject().getId());
-			courseType.add(course);
-			course.setCourseType(courseType);
-		}
-
-		return period;
-	}
-
-	private Period createPeriod(Semester2 semester) {
-		Period period = Period.Factory.newInstance();
-		period.setName(semester.getName());
-		period.setDescription(semester.getRemark());
-		return period;
-	}
-
 	private Course createCourse(Enrollment2 enrollment2) {
 		Course course = Course.Factory.newInstance();
 		// subject name instead of the previous guid
-		course.setShortcut(enrollment2.getId());
+		Semester2 semester = enrollment2.getSemester();
+		course.setShortcut(StringUtils.abbreviate(semester.getName() +"-"+ enrollment2.getId(),30));
 		course.setDescription(enrollment2.getSubject().getRemark());
+		
+		// FIXME find a better fiting period for the course by analysing the name of the period.
+		course.setPeriod(periods.get(periodIdentifier.find(semester.getName())));
 
 		if (ImportUtil.toBoolean(enrollment2.getWithPassword())) {
 			course.setPassword(enrollment2.getPassword());
@@ -438,6 +448,10 @@ public class LectureImport extends DefaultImport {
 
 	public void setCourseTypeDao(CourseTypeDao courseTypeDao) {
 		this.courseTypeDao = courseTypeDao;
+	}
+
+	public void setDepartmentDao(DepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
 	}
 
 }

@@ -11,6 +11,9 @@ import java.util.Set;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.log4j.Logger;
 import org.hibernate.ScrollableResults;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.openuss.migration.legacy.domain.Assistant2;
 import org.openuss.migration.legacy.domain.Assistantinformation2;
 import org.openuss.migration.legacy.domain.Student2;
@@ -23,14 +26,14 @@ import org.openuss.security.UserContact;
 import org.openuss.security.UserDao;
 import org.openuss.security.UserPreferences;
 import org.openuss.security.UserProfile;
-import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.ObjectIdentityDao;
+import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * This Service migrate data from openuss 2.0 to openuss-plexus 3.0
  * 
  * @author Ingo Dueppe
- * 
  */
 public class UserImport extends DefaultImport {
 
@@ -48,11 +51,11 @@ public class UserImport extends DefaultImport {
 	/** Maps existing usernames of objects */
 	private Set<String> usernames = new HashSet<String>(36000);
 
-	/** List of users to be imported */
-	private List<User> importedUsers = new ArrayList<User>(36000);
+	/** Number of Users to be imported */
+	private List<User> importedUsers = new ArrayList<User>(33000);
 	
-	/** List of student or assistants that are invalid */
-	private List<Object> invalidEmails = new ArrayList<Object>();
+	/** Number of student or assistants that are invalid */
+	private int invalidEmails = 0;
 
 	/** UserDao */
 	private UserDao userDao;
@@ -63,35 +66,47 @@ public class UserImport extends DefaultImport {
 	/** ObjectIdentityDao */
 	private ObjectIdentityDao objectIdentityDao;
 	
+	private SessionFactory plexusSessionFactory;
+
+	private int count;
+	
 	public void perform() {
 		initializeUsers();
-		loadStudents();
+//		loadStudents();
 		loadAssistants();
 
-		logger.debug("found users               " + importedUsers.size());
+		logger.debug("found users               " + importedUsers);
 		logger.debug("found consolidated users  " + consolidatedUsernames.size());
-		logger.debug("found invalid users       " + invalidEmails.size());
+		logger.debug("found invalid users       " + invalidEmails);
 
-		saveUserObjectIdentites();
+		// saveUserObjectIdentites();
 		saveUserRoles();
 		
 		logger.info("cleaning data.");
 		importedUsers.clear();
-		
 		logger.info("finish user import.");
-		
 	}
 
 	private void saveUserRoles() {
-		logger.debug("adding new users to user group");
+		Session session = plexusSessionFactory.openSession();
+		
+		TransactionSynchronizationManager.bindResource(plexusSessionFactory, new SessionHolder(session));
+		Transaction tx = plexusSessionFactory.getCurrentSession().beginTransaction();
+
+		
 		Group roleUser = groupDao.load(Roles.USER_ID);
 		for (User user : importedUsers) {
 			roleUser.addMember(user);
 			user.addGroup(roleUser);
+			objectIdentityDao.create(ImportUtil.createObjectIdentity(user.getId(), null));
 		}
 		groupDao.update(roleUser);
+		
+		tx.commit();
+		session.close();
+		TransactionSynchronizationManager.unbindResource(plexusSessionFactory);
 	}
-	
+
 	private void initializeUsers() {
 		Collection<User> existingUsers = userDao.loadAll();
 		for (User user : existingUsers) {
@@ -104,12 +119,14 @@ public class UserImport extends DefaultImport {
 		logger.info("loading students...");
 		ScrollableResults results = legacyDao.loadAllStudents();
 		
-		int count = 0;
+		count = 0;
 		
 		Student2 student = null;
 		while (results.next()) {
 			// remove last student from session
-			evict(student); 
+			if (student != null) {
+				evict(student);
+			}
 			// retrieve next student
 			student = (Student2) results.get()[0];
 			if (!ImportUtil.toBoolean(student.getAactive())) {
@@ -118,13 +135,15 @@ public class UserImport extends DefaultImport {
 			}
 			String email = student.getEmailaddress().toLowerCase();
 			if (!GenericValidator.isEmail(email)) {
-				invalidEmails.add(student);
+				invalidEmails++;
+				identifierDao.log("invalid email address "+email+" of student "+student.getId());
 			} else if (email2UserMap.containsKey(email)) {
 				logger.trace("email already in use " + email);
 				Long userId = email2UserMap.get(email);
 				id2UserMap.put(student.getId(), userId);
 				identifierDao.insertUserId(student.getId(), userId);
 				consolidatedUsernames.put(userId, student.getUusername());
+				identifierDao.log("consolidate student "+student.getUusername()+"("+student.getId()+")");
 			} else {
 				storeUser(email, transformStudent2User(student), student.getId());
 			}
@@ -133,12 +152,11 @@ public class UserImport extends DefaultImport {
 		results.close();
 	}
 
-
 	private void loadAssistants() {
 		logger.info("loading assistants...");
 		ScrollableResults results = legacyDao.loadAllAssistants();
 		Assistant2 assistant = null;
-		int count = 0;
+		count = 0;
 		while(results.next()) {
 			// remove last assistant from session
 			evict(assistant);
@@ -150,7 +168,8 @@ public class UserImport extends DefaultImport {
 			}
 			String email = assistant.getEmailaddress().toLowerCase();
 			if (!GenericValidator.isEmail(email)) {
-				invalidEmails.add(assistant);
+				invalidEmails++;
+				identifierDao.log("invalid email address "+email+" of assistant "+assistant.getId());
 			} else if (email2UserMap.containsKey(email)) {
 				logger.debug("email already in use " + email);
 				Long userId = email2UserMap.get(email);
@@ -158,14 +177,15 @@ public class UserImport extends DefaultImport {
 				identifierDao.insertConsolidated(userId, assistant.getUusername());
 				id2UserMap.put(assistant.getId(), userId);
 				consolidatedUsernames.put(userId, assistant.getUusername());
+				identifierDao.log("consolidate assistant "+assistant.getUusername()+"("+assistant.getId()+")");
 			} else {
 				storeUser(email, transformAssistant2User(assistant), assistant.getId());
 			}
-			process(++count);
+			count++;
+			process(count);
 		}
 		results.close();
 	}
-
 
 	private void storeUser(String email, User user, String legacyId) {
 		checkUserName(user, legacyId);
@@ -177,6 +197,10 @@ public class UserImport extends DefaultImport {
 		importedUsers.add(user);
 		email2UserMap.put(email, user.getId());
 		id2UserMap.put(legacyId, user.getId());
+		
+//		if (count % 100 == 0 ) {
+//		plexusSessionFactory.getCurrentSession().flush();
+//		}
 	}
 
 	private void checkUserName(User user, String legacyId) {
@@ -191,6 +215,7 @@ public class UserImport extends DefaultImport {
 			logger.debug("rename user " + user.getDisplayName() + "(" + user.getUsername() + ")");
 		}
 	}
+
 	private User transformAssistant2User(Assistant2 assistant) {
 		User user = User.Factory.newInstance();
 		user.setUsername(assistant.getUusername());
@@ -224,7 +249,6 @@ public class UserImport extends DefaultImport {
 
 			profile.setPortrait(info.getTtext());
 		}
-
 		return profile;
 	}
 
@@ -267,15 +291,6 @@ public class UserImport extends DefaultImport {
 		return usernames.contains(user.getUsername().toLowerCase().trim());
 	}
 
-	private void saveUserObjectIdentites() {
-		logger.debug("setting user object identity");
-		Collection<ObjectIdentity> objIds = new ArrayList<ObjectIdentity>();
-		for (User user : importedUsers) {
-			objIds.add(ImportUtil.createObjectIdentity(user.getId(), null));
-		}
-		objectIdentityDao.create(objIds);
-	}
-
 	@SuppressWarnings( { "deprecation" })
 	private User transformStudent2User(Student2 student) {
 		logger.trace("create " + student.getLastname() + "(" + student.getEmailaddress() + ")");
@@ -292,7 +307,7 @@ public class UserImport extends DefaultImport {
 		user.setEnabled(false);
 
 		// User Contact
-		user.setContact(UserContact.Factory.newInstance());
+		// user.setContact(UserContact.Factory.newInstance());
 		user.getContact().setFirstName(student.getFirstname());
 		user.getContact().setLastName(student.getLastname());
 		user.getContact().setAddress(student.getAddress());
@@ -303,7 +318,7 @@ public class UserImport extends DefaultImport {
 		user.getContact().setTelephone(student.getTelephone());
 
 		// User Preferences
-		user.getPreferences().setLocale(student.getLocale());
+		user.setLocale(student.getLocale());
 
 		user.setProfile(UserProfile.Factory.newInstance());
 		// User Profile
@@ -328,7 +343,7 @@ public class UserImport extends DefaultImport {
 
 	private void process(int count) {
 		if (count % 500 == 0) {
-			logger.trace("processed " + count + " ...");
+			logger.info("processed " + count + " ...");
 		}
 	}
 
@@ -365,4 +380,7 @@ public class UserImport extends DefaultImport {
 		this.objectIdentityDao = objectIdentityDao;
 	}
 
+	public void setPlexusSessionFactory(SessionFactory plexusSessionFactory) {
+		this.plexusSessionFactory = plexusSessionFactory;
+	}
 }

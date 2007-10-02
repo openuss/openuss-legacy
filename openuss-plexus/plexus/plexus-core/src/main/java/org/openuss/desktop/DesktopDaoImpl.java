@@ -6,8 +6,12 @@
 package org.openuss.desktop;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Department;
@@ -16,16 +20,17 @@ import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityInfo;
+import org.springframework.orm.hibernate3.HibernateCallback;
 
 /**
  * @see org.openuss.desktop.Desktop
  * @author Ingo Dueppe, Ron Haus
  */
-public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
+public class DesktopDaoImpl extends DesktopDaoBase {
 
 	@Override
 	@SuppressWarnings( { "unchecked" })
-	public java.util.Collection findByUniversity(final int transform, final org.openuss.lecture.University university) {
+	public Collection findByUniversity(final int transform, final University university) {
 		return this
 				.findByUniversity(
 						transform,
@@ -118,7 +123,7 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 	/**
 	 * @see org.openuss.desktop.DesktopDao#toDesktopInfo(org.openuss.desktop.Desktop)
 	 */
-	public org.openuss.desktop.DesktopInfo toDesktopInfo(final org.openuss.desktop.Desktop entity) {
+	public DesktopInfo toDesktopInfo(final Desktop entity) {
 		return super.toDesktopInfo(entity);
 	}
 
@@ -126,7 +131,7 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 	 * Retrieves the entity object that is associated with the specified value object from the object store. If no such
 	 * entity object exists in the object store, a new, blank entity is created
 	 */
-	private org.openuss.desktop.Desktop loadDesktopFromDesktopInfo(org.openuss.desktop.DesktopInfo desktopInfo) {
+	private Desktop loadDesktopFromDesktopInfo(DesktopInfo desktopInfo) {
 
 		Desktop desktop = Desktop.Factory.newInstance();
 		if (desktopInfo.getId() != null) {
@@ -138,8 +143,8 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 	/**
 	 * @see org.openuss.desktop.DesktopDao#desktopInfoToEntity(org.openuss.desktop.DesktopInfo)
 	 */
-	public org.openuss.desktop.Desktop desktopInfoToEntity(org.openuss.desktop.DesktopInfo desktopInfo) {
-		org.openuss.desktop.Desktop entity = this.loadDesktopFromDesktopInfo(desktopInfo);
+	public Desktop desktopInfoToEntity(DesktopInfo desktopInfo) {
+		Desktop entity = this.loadDesktopFromDesktopInfo(desktopInfo);
 		this.desktopInfoToEntity(desktopInfo, entity, true);
 		return entity;
 	}
@@ -149,8 +154,7 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 	 *      org.openuss.desktop.Desktop)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	public void desktopInfoToEntity(org.openuss.desktop.DesktopInfo sourceVO, org.openuss.desktop.Desktop targetEntity,
-			boolean copyIfNull) {
+	public void desktopInfoToEntity(DesktopInfo sourceVO, Desktop targetEntity,	boolean copyIfNull) {
 		super.desktopInfoToEntity(sourceVO, targetEntity, copyIfNull);
 
 		// User
@@ -203,6 +207,32 @@ public class DesktopDaoImpl extends org.openuss.desktop.DesktopDaoBase {
 			}
 		}
 
+	}
+
+	@Override
+	protected boolean handleIsCourseBookmarked(final Long courseId, final Long userId) throws Exception {
+		return false;
+	}
+
+	@Override
+	protected boolean handleIsDepartmentBookmarked(Long departmentId, Long userId) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected boolean handleIsInstituteBookmarked(final Long instituteId, final Long userId) throws Exception {
+		final String hqlIsBookmarked = "SELECT t, v FROM DISCUSSION_TOPIC t, ViewState v WHERE t.id = v.id and t.domainIdentifier = :domainIdentifer and v.userId = :userId";
+		Object object = getHibernateTemplate().execute(new HibernateCallback() {
+			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
+				Query query = session.createQuery(hqlIsBookmarked);
+				query.setLong("instituteId",instituteId);
+				query.setLong("userId",userId);
+				return query.list();  
+			}
+		}, true);
+		return true;		
+		
 	}
 
 }

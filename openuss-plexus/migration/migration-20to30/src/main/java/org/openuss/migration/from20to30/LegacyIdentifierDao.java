@@ -21,6 +21,15 @@ public class LegacyIdentifierDao extends SimpleJdbcDaoSupport implements Initial
 	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(LegacyIdentifierDao.class);
 
+	/** <code>CREATE TABLE LEGACY_LOG (LOGTIME TIMESTAMP NOT NULL, TEXT  VARCHAR(4000))</code> */
+	private static final String SQL_LEGACYLOG_CREATE_TABLE = "CREATE TABLE LEGACY_LOG (ID BIGINT NOT NULL, LOGTIME TIMESTAMP NOT NULL, TEXT  VARCHAR(4000))";
+
+	/** ALTER TABLE LEGACY_LOG ADD CONSTRAINT PK_LEGACY_LOG PRIMARY KEY (LOGTIME);</code> */
+	private static final String SQL_LEGACYLOG_CREATE_INDEX = "ALTER TABLE LEGACY_LOG ADD CONSTRAINT PK_LEGACY_LOG PRIMARY KEY (ID)";
+
+	/** INSERT INTO LEGACY_LOG (LOGTIME, TEXT) VALUES (current_date,'HELLO');</code> */
+	private static final String SQL_INSERT_LOG = "INSERT INTO LEGACY_LOG (ID, LOGTIME, TEXT) VALUES (gen_id(global_sequence,1),current_date,?)";
+
 	/** <code>CREATE TABLE LEGACY_USERIDS (LEGACYID VARCHAR(40) NOT NULL, ID BIGINT NOT NULL)</code> */
 	private static final String SQL_LEGACYIDS_CREATE_TABLE = "CREATE TABLE LEGACY_IDS (LEGACYID VARCHAR(30) NOT NULL, ID BIGINT NOT NULL)";
 	
@@ -124,6 +133,10 @@ public class LegacyIdentifierDao extends SimpleJdbcDaoSupport implements Initial
 		logger.debug("Log renamed user " + oldName + " to legacy id " + legacyId);
 		getSimpleJdbcTemplate().update(SQL_RENAMED_INSERT, legacyId, StringUtils.trimToEmpty(oldName));
 	}
+	
+	public void log(String text) {
+		getSimpleJdbcTemplate().update(SQL_INSERT_LOG, text);
+	}
 
 	/**
 	 * Insert a mapping between a legacy id and a user id
@@ -208,6 +221,12 @@ public class LegacyIdentifierDao extends SimpleJdbcDaoSupport implements Initial
 		try {
 			getJdbcTemplate().execute(SQL_RENAMED_CREATE_TABLE);
 			getJdbcTemplate().execute(SQL_RENAMED_CREATE_INDEX);
+		} catch (Throwable e) {
+			logger.warn("Legacy tables already exists");
+		}
+		try {
+			getJdbcTemplate().execute(SQL_LEGACYLOG_CREATE_TABLE);
+			getJdbcTemplate().execute(SQL_LEGACYLOG_CREATE_INDEX);
 		} catch (Throwable e) {
 			logger.warn("Legacy tables already exists");
 		}

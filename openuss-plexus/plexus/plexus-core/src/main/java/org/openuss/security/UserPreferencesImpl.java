@@ -8,6 +8,8 @@ package org.openuss.security;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @see org.openuss.security.UserPreferences
  * @author ingo dueppe
@@ -20,6 +22,12 @@ public class UserPreferencesImpl extends UserPreferencesBase implements UserPref
 		setTimezone(TimeZone.getDefault().getID());
 		setLocale(Locale.getDefault().toString());
 		setTheme("plexus");
+	}
+	
+	public void setLocale(String locale) {
+		if (!StringUtils.isBlank(locale)) {
+			super.setLocale(locale);
+		}
 	}
 
 }

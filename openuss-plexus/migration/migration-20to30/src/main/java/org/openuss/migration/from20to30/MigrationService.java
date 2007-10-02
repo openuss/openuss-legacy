@@ -5,6 +5,8 @@ import org.hibernate.CacheMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -50,23 +52,30 @@ public class MigrationService {
 	private Session legacySession;
 
 	private Transaction legacyTx;
+	
+	/** Workaround to shutdown */
+	private Scheduler scheduler;
 
 	public void importData() {
 		logger.info("initialize databses");
 
 		legacySession = openAndBindNewSession(legacySessionFactory);
 		userImport.perform();
-//		lectureImport.perform();
+		lectureImport.perform();
 //		newsImport.perform(); 
 //		desktopImport.perform();
 //		courseMemberImport.perform();
 //		documentImport.perform();
 //		newsLetterImport.perform();
 //		quizImport.perform();
-//		
-//		legacyTx.rollback();
-//		legacySession.close();
-		
+//
+		legacyTx.rollback();
+		legacySession.close();
+		try {
+			scheduler.shutdown();
+		} catch (SchedulerException e) {
+			logger.error(e);
+		}
 	}
 
 	private Session openAndBindNewSession(SessionFactory sessionFactory) {
@@ -111,6 +120,10 @@ public class MigrationService {
 
 	public void setNewsLetterImport(NewsLetterImport newsLetterImport) {
 		this.newsLetterImport = newsLetterImport;
+	}
+
+	public void setScheduler(Scheduler scheduler) {
+		this.scheduler = scheduler;
 	}
 
 }
