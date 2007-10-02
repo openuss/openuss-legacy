@@ -147,9 +147,9 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 		return (ScrollableResults) this.getHibernateTemplate().execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				Query query = session.createQuery(hql);
-				query.setFetchSize(20);
+				query.setFetchSize(50);
 				query.setCacheable(false);
-				query.setFlushMode(FlushMode.ALWAYS);
+				query.setFlushMode(FlushMode.MANUAL);
 				return query.scroll(ScrollMode.FORWARD_ONLY);
 			}
 		});

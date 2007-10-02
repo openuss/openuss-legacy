@@ -18,6 +18,12 @@ import org.apache.commons.lang.StringUtils;
 public class UserImpl extends UserBase implements User, UserDetails {
 
 	private static final long serialVersionUID = 4562337137383225187L;
+	
+	public UserImpl() {
+		setPreferences(UserPreferences.Factory.newInstance());
+		setContact(UserContact.Factory.newInstance());
+		setProfile(UserProfile.Factory.newInstance());
+	}
 
 	@Override
 	public void setUsername(String username) {
@@ -149,15 +155,15 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		getPreferences().setTimezone(timezone);
 	}
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public UserPreferences getPreferences() {
-		if (super.getPreferences() != null) {
-			return super.getPreferences();
-		} else {
-			return UserPreferences.Factory.newInstance();
-		}
-	}
+//	@Override
+//	@SuppressWarnings("deprecation")
+//	public UserPreferences getPreferences() {
+//		if (super.getPreferences() != null) {
+//			return super.getPreferences();
+//		} else {
+//			return UserPreferences.Factory.newInstance();
+//		}
+//	}
 
 	@Override
 	public String getLocale() {
@@ -199,7 +205,7 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	public void setTitle(String title) {
 		getContact().setTitle(title);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public UserContact getContact() {
@@ -207,7 +213,7 @@ public class UserImpl extends UserBase implements User, UserDetails {
 			setContact(UserContact.Factory.newInstance());
 		}
 		return super.getContact();
-		
+
 	}
 
 }

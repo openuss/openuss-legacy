@@ -201,40 +201,29 @@ public class DesktopService2Impl extends DesktopService2Base {
 	 *      java.lang.Long)
 	 */
 	protected void handleUnlinkDepartment(Long desktopId, Long departmentId) throws Exception {
-
 		Validate.notNull(desktopId, "DesktopId cannot be null!");
 		Desktop desktop = this.getDesktopDao().load(desktopId);
-		Validate
-				.notNull(desktop,
-						"DesktopService2.handleUnlinkDepartment - No Desktop found corresponding to the desktopId "
-								+ desktopId);
+		Validate.notNull(desktop, "No Desktop found corresponding to the desktopId " + desktopId);
 
-		Validate.notNull(departmentId, "DesktopService2.handleUnlinkDepartment - departmentId cannot be null!");
+		Validate.notNull(departmentId, "SepartmentId cannot be null!");
 		Department department = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(department,
-				"DesktopService2.handleUnlinkDepartment - No Department found corresponding to the departmentId "
-						+ departmentId);
+		Validate.notNull(department, "No Department found corresponding to the departmentId " + departmentId);
 
 		desktop.getDepartments().remove(department);
-
 	}
 
 	/**
 	 * @see org.openuss.desktop.DesktopService2#unlinkInstitute(java.lang.Long,
 	 *      java.lang.Long)
 	 */
-	protected void handleUnlinkInstitute(Long desktopId, Long instituteId) throws java.lang.Exception {
-
-		Validate.notNull(desktopId, "DesktopService2.handleUnlinkInstitute - desktopId cannot be null!");
+	protected void handleUnlinkInstitute(Long desktopId, Long instituteId) throws Exception {
+		Validate.notNull(desktopId, "DesktopId cannot be null!");
 		Desktop desktop = this.getDesktopDao().load(desktopId);
-		Validate.notNull(desktop,
-				"DesktopService2.handleUnlinkInstitute - No Desktop found corresponding to the desktopId " + desktopId);
+		Validate.notNull(desktop, "No Desktop found corresponding to the desktopId " + desktopId);
 
-		Validate.notNull(instituteId, "DesktopService2.handleUnlinkInstitute - instituteId cannot be null!");
+		Validate.notNull(instituteId, "InstituteId cannot be null!");
 		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute,
-				"DesktopService2.handleUnlinkInstitute - No Institute found corresponding to the instituteId "
-						+ instituteId);
+		Validate.notNull(institute,	"No Institute found corresponding to the instituteId "	+ instituteId);
 
 		desktop.getInstitutes().remove(institute);
 	}
@@ -243,21 +232,15 @@ public class DesktopService2Impl extends DesktopService2Base {
 	 * @see org.openuss.desktop.DesktopService2#unlinkCourseType(java.lang.Long,
 	 *      java.lang.Long)
 	 */
-	protected void handleUnlinkCourseType(java.lang.Long desktopId, java.lang.Long courseTypeId)
-			throws java.lang.Exception {
+	protected void handleUnlinkCourseType(Long desktopId,Long courseTypeId) throws Exception {
 
-		Validate.notNull(desktopId, "DesktopService2.handleUnlinkCourseType - desktopId cannot be null!");
+		Validate.notNull(desktopId, "desktopId cannot be null!");
 		Desktop desktop = this.getDesktopDao().load(desktopId);
-		Validate
-				.notNull(desktop,
-						"DesktopService2.handleUnlinkCourseType - No Desktop found corresponding to the desktopId "
-								+ desktopId);
+		Validate.notNull(desktop, "No Desktop found corresponding to the desktopId "+ desktopId);
 
-		Validate.notNull(courseTypeId, "DesktopService2.handleUnlinkCourseType - courseTypeId cannot be null!");
+		Validate.notNull(courseTypeId, "courseTypeId cannot be null!");
 		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
-		Validate.notNull(courseType,
-				"DesktopService2.handleUnlinkCourseType - No CourseType found corresponding to the courseTypeId "
-						+ courseTypeId);
+		Validate.notNull(courseType, "No CourseType found corresponding to the courseTypeId " + courseTypeId);
 
 		desktop.getCourseTypes().remove(courseType);
 	}
@@ -266,7 +249,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 	 * @see org.openuss.desktop.DesktopService2#unlinkCourse(java.lang.Long,
 	 *      java.lang.Long)
 	 */
-	protected void handleUnlinkCourse(java.lang.Long desktopId, java.lang.Long courseId) throws java.lang.Exception {
+	protected void handleUnlinkCourse(Long desktopId, Long courseId) throws Exception {
 		Validate.notNull(desktopId, "DesktopId cannot be null!");
 		Desktop desktop = this.getDesktopDao().load(desktopId);
 		Validate.notNull(desktop, "No Desktop found corresponding to the desktopId " + desktopId);
@@ -285,9 +268,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 
 		Validate.notNull(universityId, "DesktopService2.handleUnlinkAllFromUniversity - universityId cannot be null!");
 		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university,
-				"DesktopService2.handleUnlinkAllFromUniversity - No University found corresponding to the universityId "
-						+ universityId);
+		Validate.notNull(university, "No University found corresponding to the universityId "+ universityId);
 
 		Collection<Desktop> desktops = getDesktopDao().findByUniversity(university);
 		for (Desktop desktop : desktops) {
@@ -314,13 +295,10 @@ public class DesktopService2Impl extends DesktopService2Base {
 	 * @see org.openuss.desktop.DesktopService2#unlinkAllFromInstitue(java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleUnlinkAllFromInstitute(java.lang.Long instituteId) throws java.lang.Exception {
-
-		Validate.notNull(instituteId, "DesktopService2.handleUnlinkAllFromInstitue - instituteId cannot be null!");
+	protected void handleUnlinkAllFromInstitute(Long instituteId) throws Exception {
+		Validate.notNull(instituteId, "instituteId cannot be null!");
 		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute,
-				"DesktopService2.handleUnlinkAllFromInstitue - No Institute found corresponding to the instituteId "
-						+ instituteId);
+		Validate.notNull(institute,	"No Institute found corresponding to the instituteId "	+ instituteId);
 
 		Collection<Desktop> desktops = getDesktopDao().findByInstitute(institute);
 		for (Desktop desktop : desktops) {
@@ -332,13 +310,10 @@ public class DesktopService2Impl extends DesktopService2Base {
 	 * @see org.openuss.desktop.DesktopService2#unlinkAllFromCourseType(java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleUnlinkAllFromCourseType(java.lang.Long courseTypeId) throws java.lang.Exception {
-
-		Validate.notNull(courseTypeId, "DesktopService2.handleUnlinkAllFromCourseType - courseTypeId cannot be null!");
+	protected void handleUnlinkAllFromCourseType(Long courseTypeId) throws Exception {
+		Validate.notNull(courseTypeId, "courseTypeId cannot be null!");
 		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
-		Validate.notNull(courseType,
-				"DesktopService2.handleUnlinkAllFromCourseType - No CourseType found corresponding to the courseTypeId "
-						+ courseTypeId);
+		Validate.notNull(courseType, "No CourseType found corresponding to the courseTypeId " + courseTypeId);
 
 		Collection<Desktop> desktops = getDesktopDao().findByCourseType(courseType);
 		for (Desktop desktop : desktops) {
@@ -350,14 +325,10 @@ public class DesktopService2Impl extends DesktopService2Base {
 	 * @see org.openuss.desktop.DesktopService2#unlinkAllFromCourse(java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleUnlinkAllFromCourse(java.lang.Long courseId) throws java.lang.Exception {
-
-		Validate.notNull(courseId, "DesktopService2.handleUnlinkAllFromCourse - courseId cannot be null!");
+	protected void handleUnlinkAllFromCourse(Long courseId) throws Exception {
+		Validate.notNull(courseId, "CourseId cannot be null!");
 		Course course = this.getCourseDao().load(courseId);
-		Validate
-				.notNull(course,
-						"DesktopService2.handleUnlinkAllFromCourse - No Course found corresponding to the courseId "
-								+ courseId);
+		Validate.notNull(course, "No Course found corresponding to the courseId " + courseId);
 
 		Collection<Desktop> desktops = getDesktopDao().findByCourse(course);
 		for (Desktop desktop : desktops) {
@@ -370,13 +341,10 @@ public class DesktopService2Impl extends DesktopService2Base {
 	 *      java.lang.Long universityId)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindLinkedDepartmentsByUserAndUniversity(java.lang.Long userId, java.lang.Long universityId)
-			throws java.lang.Exception {
+	protected List handleFindLinkedDepartmentsByUserAndUniversity(Long userId, Long universityId) throws Exception {
 
-		Validate.notNull(userId,
-				"DesktopService2.handleFindLinkedDEpartmentsByUserAndUniversity - userId cannot be null!");
-		Validate.notNull(universityId,
-				"DesktopService2.handleFindLinkedDEpartmentsByUserAndUniversity - universityId cannot be null!");
+		Validate.notNull(userId, "userId cannot be null!");
+		Validate.notNull(universityId, "universityId cannot be null!");
 
 		// Get linked departments of user for given university
 		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
@@ -397,19 +365,12 @@ public class DesktopService2Impl extends DesktopService2Base {
 	 *      java.lang.Long universityId)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindAdditionalDepartmentsByUserAndUniversity(java.lang.Long userId, java.lang.Long universityId)
-			throws java.lang.Exception {
-
-		Validate.notNull(userId,
-				"DesktopService2.handleFindAdditionalDepartmentsByUserAndUniversity - userId cannot be null!");
-		Validate.notNull(universityId,
-				"DesktopService2.handleFindAdditionalDepartmentsByUserAndUniversity - universityId cannot be null!");
-
+	protected List handleFindAdditionalDepartmentsByUserAndUniversity(Long userId, Long universityId) throws Exception {
+		Validate.notNull(userId, "UserId cannot be null!");
+		Validate.notNull(universityId, "UniversityId cannot be null!");
 		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
-
 		// Get additional institutes of university
-		List<InstituteInfo> additionalInstitutes = this.findAdditionalInstitutesByUserAndUniversity(userId,
-				universityId);
+		List<InstituteInfo> additionalInstitutes = this.findAdditionalInstitutesByUserAndUniversity(userId,	universityId);
 
 		// Generate list of all institutes
 		List<InstituteInfo> allInstitutes = new ArrayList<InstituteInfo>();
@@ -437,13 +398,9 @@ public class DesktopService2Impl extends DesktopService2Base {
 	 *      java.lang.Long universityId)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindLinkedInstitutesByUserAndUniversity(java.lang.Long userId, java.lang.Long universityId)
-			throws java.lang.Exception {
-
-		Validate.notNull(userId,
-				"DesktopService2.handleFindLinkedInstitutesByUserAndUniversity - userId cannot be null!");
-		Validate.notNull(universityId,
-				"DesktopService2.handleFindLinkedInstitutesByUserAndUniversity - universityId cannot be null!");
+	protected List handleFindLinkedInstitutesByUserAndUniversity(Long userId, Long universityId) throws Exception {
+		Validate.notNull(userId, "userId cannot be null!");
+		Validate.notNull(universityId, "universityId cannot be null!");
 
 		// Get linked institutes of user for given university
 		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
@@ -465,14 +422,9 @@ public class DesktopService2Impl extends DesktopService2Base {
 	 *      java.lang.Long universityId)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindAdditionalInstitutesByUserAndUniversity(java.lang.Long userId, java.lang.Long universityId)
-			throws java.lang.Exception {
-
-		Validate.notNull(userId,
-				"DesktopService2.handleFindAdditionalInstitutesByUserAndUniversity - userId cannot be null!");
-		Validate.notNull(universityId,
-				"DesktopService2.handleFindAdditionalInstitutesByUserAndUniversity - universityId cannot be null!");
-
+	protected List handleFindAdditionalInstitutesByUserAndUniversity(Long userId, Long universityId) throws Exception {
+		Validate.notNull(userId, "UserId cannot be null!");
+		Validate.notNull(universityId, "UniversityId cannot be null!");
 		// Get Courses
 		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
 		List<InstituteInfo> additionalInstitutes = new ArrayList<InstituteInfo>();
@@ -530,110 +482,86 @@ public class DesktopService2Impl extends DesktopService2Base {
 	}
 
 	protected boolean handleIsUniversityBookmarked(Long universityId, Long userId) {
-
-		Validate
-				.notNull(universityId, "DesktopService2.handleIsUniversityBookmarked - the universityId cannot be null");
-		Validate.notNull(userId, "DesktopService2.handleIsUniversityBookmarked - the userId cannot be null");
-
+		// FIXME this is too slow, use a special dao finder method to determine
+		Validate.notNull(universityId, "The universityId cannot be null");
+		Validate.notNull(userId, "The userId cannot be null");
 		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university, "DesktopService2.handleIsUniversityBookmarked - "
-				+ "no university found with the universityId " + universityId);
+		Validate.notNull(university, "No university found with the universityId " + universityId);
 
 		User user = this.getUserDao().load(userId);
-		Validate
-				.notNull(user, "DesktopService2.handleIsUniversityBookmarked - no user found with the userId " + userId);
+		Validate.notNull(user, "No user found with the userId " + userId);
 
-		// Desktop desktop =
-		// this.getDesktopDao().findByUniversityAndUser(university, user);
 		Desktop desktop = this.getDesktopDao().findByUser(user);
 		if (desktop != null) {
-			if (desktop.getUniversities().contains(university)) {
-				return true;
-			}
+			return desktop.getUniversities().contains(university);
+		} else {
+			return false;
 		}
-		return false;
-
 	}
 
 	protected boolean handleIsDepartmentBookmarked(Long departmentId, Long userId) {
-
-		Validate
-				.notNull(departmentId, "DesktopService2.handleIsUniversityBookmarked - the departmentId cannot be null");
-		Validate.notNull(userId, "DesktopService2.handleIsUniversityBookmarked - the userId cannot be null");
+		// FIXME this is too slow, use a special dao finder method to determine
+		Validate.notNull(departmentId, "The departmentId cannot be null");
+		Validate.notNull(userId, "The userId cannot be null");
 
 		Department department = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(department, "DesktopService2.handleIsUniversityBookmarked - "
-				+ "no department found with the departmentId " + departmentId);
+		Validate.notNull(department, "No department found with the departmentId " + departmentId);
 
 		User user = this.getUserDao().load(userId);
-		Validate
-				.notNull(user, "DesktopService2.handleIsUniversityBookmarked - no user found with the userId " + userId);
+		Validate.notNull(user, "No user found with the userId " + userId);
 
-		// Desktop desktop =
-		// this.getDesktopDao().findByUniversityAndUser(university, user);
+		// Desktop desktop = this.getDesktopDao().findByUniversityAndUser(university, user);
 		Desktop desktop = this.getDesktopDao().findByUser(user);
 		if (desktop != null) {
-			if (desktop.getDepartments().contains(department)) {
-				return true;
-			}
+			return desktop.getDepartments().contains(department);
+		} else {
+			return false;
 		}
-		return false;
 	}
 
 	protected boolean handleIsInstituteBookmarked(Long instituteId, Long userId) {
-
-		Validate.notNull(instituteId, "DesktopService2.handleIsUniversityBookmarked - the instituteId cannot be null");
-		Validate.notNull(userId, "DesktopService2.handleIsUniversityBookmarked - the userId cannot be null");
+		// FIXME this is too slow, use a special dao finder method to determine
+		Validate.notNull(instituteId, "The instituteId cannot be null");
+		Validate.notNull(userId, "The userId cannot be null");
 
 		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute, "DesktopService2.handleIsUniversityBookmarked - "
-				+ "no institute found with the instituteId " + instituteId);
+		Validate.notNull(institute, "No institute found with the instituteId " + instituteId);
 
 		User user = this.getUserDao().load(userId);
-		Validate
-				.notNull(user, "DesktopService2.handleIsUniversityBookmarked - no user found with the userId " + userId);
+		Validate.notNull(user, "No user found with the userId " + userId);
 
-		// Desktop desktop =
-		// this.getDesktopDao().findByUniversityAndUser(university, user);
 		Desktop desktop = this.getDesktopDao().findByUser(user);
 		if (desktop != null) {
-			if (desktop.getInstitutes().contains(institute)) {
-				return true;
-			}
+			return desktop.getInstitutes().contains(institute);
+		} else {
+			return false;
 		}
-		return false;
 	}
 
 	protected boolean handleIsCourseBookmarked(Long courseId, Long userId) {
-
-		Validate.notNull(courseId, "DesktopService2.handleIsUniversityBookmarked - the instituteId cannot be null");
-		Validate.notNull(userId, "DesktopService2.handleIsUniversityBookmarked - the userId cannot be null");
+		// FIXME this is too slow, use a special dao finder method to determine
+		Validate.notNull(courseId, "The instituteId cannot be null");
+		Validate.notNull(userId, "The userId cannot be null");
 
 		Course course = this.getCourseDao().load(courseId);
-		Validate.notNull(course, "DesktopService2.handleIsUniversityBookmarked - "
-				+ "no course found with the courseId " + courseId);
+		Validate.notNull(course, "No course found with the courseId " + courseId);
 
 		User user = this.getUserDao().load(userId);
-		Validate
-				.notNull(user, "DesktopService2.handleIsUniversityBookmarked - no user found with the userId " + userId);
+		Validate.notNull(user, "No user found with the userId " + userId);
 
-		// Desktop desktop =
-		// this.getDesktopDao().findByUniversityAndUser(university, user);
 		Desktop desktop = this.getDesktopDao().findByUser(user);
 		if (desktop != null) {
-			if (desktop.getCourses().contains(course)) {
-				return true;
-			}
+			return desktop.getCourses().contains(course);
+		} else {
+			return false;
 		}
-		return false;
 	}
 
 	protected Map handleGetMyUniInfo(Long userId) {
 		Validate.notNull(userId, "UserId cannot be null!");
 
 		User user = this.getUserDao().load(userId);
-		Validate.notNull(user, "No user found corresponding to the userId "
-				+ userId);
+		Validate.notNull(user, "No user found corresponding to the userId "	+ userId);
 
 		Desktop desktop = getDesktopDao().findByUser(user);
 

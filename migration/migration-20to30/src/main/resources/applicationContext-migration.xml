@@ -8,8 +8,8 @@
 
 	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="applicationContextSchedulerContextKey" value="applicationContext"/>
-		<property name="autoStartup" value="true" />
-		<property name="waitForJobsToCompleteOnShutdown" value="true" />
+		<property name="autoStartup" value="false" />
+		<property name="waitForJobsToCompleteOnShutdown" value="false" />
  		<property name="overwriteExistingJobs" value="true"/>
 	</bean>
 
@@ -44,6 +44,7 @@
 		<property name="userDao" ref="userDao"/>
 		<property name="groupDao" ref="groupDao"/>
 		<property name="objectIdentityDao" ref="objectIdentityDao"/>
+		<property name="plexusSessionFactory" ref="sessionFactory"/>
 	</bean>
 
 	<bean id="lectureImport" class="org.openuss.migration.from20to30.LectureImport" parent="import_template">
@@ -53,6 +54,7 @@
 		<property name="instituteDao" ref="instituteDao"/>
 		<property name="objectIdentityDao" ref="objectIdentityDao"/>
 		<property name="userImport" ref="userImport"/>
+		<property name="departmentDao" ref="departmentDao"/>
 	</bean>
 	
 	<bean id="desktopImport" class="org.openuss.migration.from20to30.DesktopImport" parent="import_template">
@@ -146,6 +148,7 @@
 		<property name="documentImport" ref="documentImport"/>
 		<property name="newsLetterImport" ref="newsLetterImportTx"/>
 		<property name="quizImport" ref="quizImport"/>
+		<property name="scheduler" ref="scheduler"/>
 	</bean>
 	
 	<!-- Spring Cache Manager Configuration  -->
