@@ -35,11 +35,10 @@ public class ApplicationConfirmationAspectImpl {
 					boolean hasPermission = false;
 
 					try {
-						hasPermission = securityService.hasPermission(department,
-								new Integer[] { LectureAclEntry.DEPARTMENT_ADMINISTRATION });
+						hasPermission = securityService.hasPermission(department, new Integer[] { LectureAclEntry.DEPARTMENT_ADMINISTRATION });
 					} catch (Exception e) {
 						logger.debug("--> Problems during Permission validation, skipping Confirmation <--");
-						logger.debug(e);
+						logger.error(e);
 					}
 					if (hasPermission) {
 						logger.debug("--> User has Admin Permissions, starting Confirmation <--");
@@ -49,12 +48,10 @@ public class ApplicationConfirmationAspectImpl {
 					}
 
 				} else {
-					logger.debug("--> No Department found corresponding to the ApplicationID " + applicationId
-							+ ", skipping Confirmation <--");
+					logger.debug("--> No Department found corresponding to the ApplicationID " + applicationId + ", skipping Confirmation <--");
 				}
 			} else {
-				logger.debug("--> No non-confirmed Application found corresponding to the ApplicationID " + applicationId
-						+ ", skipping Confirmation <--");
+				logger.debug("--> No non-confirmed Application found corresponding to the ApplicationID " + applicationId + ", skipping Confirmation <--");
 			}
 
 		}

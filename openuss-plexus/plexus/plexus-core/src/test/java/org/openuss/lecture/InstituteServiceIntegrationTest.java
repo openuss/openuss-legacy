@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.acegisecurity.AccessDeniedException;
+import org.acegisecurity.acl.AclManager;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
 
@@ -27,6 +29,15 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 	private InstituteDao instituteDao;
 	
 	private DepartmentDao departmentDao;
+	
+	private AclManager aclManager;
+
+	@Override
+	protected void onSetUpInTransaction() throws Exception {
+		super.onSetUpInTransaction();
+		testUtility.createUserSecureContext();
+		AcegiUtils.setAclManager(aclManager);
+	}
 
 	public void testCreateInstitute() {
 		logger.info("----> BEGIN access to create(Institute) test");
@@ -54,7 +65,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		assertNotNull(instituteId);
 
 		// Synchronize with Database
-		flush();
+		commit();
 
 		// Test
 		Institute instituteTest = instituteDao.load(instituteId);
@@ -63,7 +74,9 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		instituteService.applyAtDepartment(instituteId, departmentOfficial.getId(), owner.getId());
 		assertNotNull(instituteTest.getDepartment());
 
+		commit();
 		Department departmentDefault = departmentDao.findByUniversityAndDefault(departmentOfficial.getUniversity(),	true);
+		departmentOfficial = departmentDao.load(departmentOfficial.getId());
 		assertEquals(departmentDefault.getId(), instituteTest.getDepartment().getId());
 		assertTrue(departmentDefault.getInstitutes().contains(instituteTest));
 		assertEquals(2, instituteTest.getApplications().size());
@@ -101,7 +114,7 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		assertNotNull(instituteId2);
 
 		// Synchronize with Database
-		flush();
+		commit();
 
 		// Test
 		Institute instituteTest2 = instituteDao.load(instituteId2);
@@ -110,6 +123,8 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		instituteService.applyAtDepartment(instituteId2, departmentNonOfficial.getId(), owner.getId());
 		assertNotNull(instituteTest2.getDepartment());
 
+		instituteTest2 = instituteDao.load(instituteId2);
+		departmentNonOfficial = departmentDao.load(departmentNonOfficial.getId());
 		assertEquals(departmentNonOfficial.getId(), instituteTest2.getDepartment().getId());
 		assertTrue(departmentNonOfficial.getInstitutes().contains(instituteTest2));
 		assertEquals(1, instituteTest2.getApplications().size());
@@ -456,4 +471,9 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 	public void setDepartmentDao(DepartmentDao departmentDao) {
 		this.departmentDao = departmentDao;
 	}
+
+	public void setAclManager(AclManager aclManager) {
+		this.aclManager = aclManager;
+	}
+	
 }

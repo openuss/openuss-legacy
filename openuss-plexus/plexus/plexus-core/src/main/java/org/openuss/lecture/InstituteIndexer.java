@@ -61,7 +61,7 @@ public class InstituteIndexer extends DomainIndexer {
 
 	private void setFields(final Institute institute, Document document) {
 		boolean isOfficial; 
-		if(institute.getDepartment().getDepartmentType().equals(DepartmentType.OFFICIAL)){
+		if(institute.getDepartment() != null && DepartmentType.OFFICIAL.equals(institute.getDepartment().getDepartmentType())){
 			isOfficial = true;
 		} else {
 			isOfficial = false;

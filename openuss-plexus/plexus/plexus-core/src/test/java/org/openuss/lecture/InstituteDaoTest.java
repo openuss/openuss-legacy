@@ -91,14 +91,19 @@ public class InstituteDaoTest extends InstituteDaoTestBase {
 		int enabledCount = this.getInstituteDao().findByEnabled(true).size();
 		int disabledCount = this.getInstituteDao().findByEnabled(false).size();
 		
+		Department department = testUtility.createUniqueDepartmentInDB();
+		
 		// Create 3 Institutes
 		Institute institute1 = testUtility.createUniqueInstituteInDB();
+		institute1.setDepartment(department);
 		institute1.setEnabled(true);
 		enabledCount++;
 		Institute institute2 = testUtility.createUniqueInstituteInDB();
+		institute2.setDepartment(department);
 		institute2.setEnabled(true);
 		enabledCount++;
 		Institute institute3 = testUtility.createUniqueInstituteInDB();
+		institute3.setDepartment(department);
 		institute3.setEnabled(false);
 		disabledCount++;
 
