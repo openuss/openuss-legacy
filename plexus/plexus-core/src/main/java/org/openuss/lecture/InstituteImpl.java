@@ -16,7 +16,7 @@ import org.apache.commons.lang.Validate;
  * @author Ron Haus
  * @author Florian Dondorf
  */
-public class InstituteImpl extends org.openuss.lecture.InstituteBase implements org.openuss.lecture.Institute {
+public class InstituteImpl extends InstituteBase implements Institute {
 
 	/**
 	 * The serial version UID of this class. Needed for serialization.
@@ -90,5 +90,16 @@ public class InstituteImpl extends org.openuss.lecture.InstituteBase implements 
 		}
 		return courses;
 	}
+
+	@Override
+	public boolean isEnabled() {
+		if (getDepartment() == null) {
+			return false;
+		} 
+		return super.isEnabled();
+		
+	}
+	
+	
 
 }

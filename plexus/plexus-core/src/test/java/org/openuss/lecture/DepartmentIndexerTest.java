@@ -3,6 +3,8 @@ package org.openuss.lecture;
 import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
 import org.openuss.search.DomainResult;
@@ -26,15 +28,11 @@ private static final Logger logger = Logger.getLogger(DepartmentIndexerTest.clas
 	protected void onSetUp() throws Exception {
 		super.onSetUp();
 		logger.debug("Method onSetUp: Started");
-		
 		departmentIndexer.setDepartmentDao(departmentDao);
-		
 		department = testUtility.createUniqueDepartmentInDB();
-	
+		department.setDescription(RandomStringUtils.randomAlphabetic(30));
 		departmentDao.create(department);
-		
 		departmentIndexer.setDomainObject(department);
-		
 		departmentIndexer.create();
 	}
 	
@@ -45,34 +43,31 @@ private static final Logger logger = Logger.getLogger(DepartmentIndexerTest.clas
 		departmentIndexer.delete();
 	}
 
-	
-	
 	public void testIndexingAndSearching() {
 		logger.debug("Method testIndexingAndSearching: Started");
 		
-		List<DomainResult> results = lectureSearcher.search("A unique Department");
+		List<DomainResult> results = lectureSearcher.search(department.getDescription());
 		DomainResult[] resultObjs = (DomainResult[]) results.toArray(new DomainResult[results.size()]);
 		logger.debug("--- RESULTS ---> "+ArrayUtils.toString(resultObjs));
 		logger.debug(" Result size is: "+results.size());
 		assertNotNull(results);
-		assertTrue(results.size() == 1);
-		
+		assertEquals(1, results.size());
 	}
 	
 	public void testIndexerUpdatingAndSearching() {
 		logger.debug("Method testIndexerUpdatingAndSearching: Started");
 		// set description to new description "A pathetic department"
-		department.setDescription("A pathetic department");
 		
+		String description = RandomStringUtils.randomAlphabetic(30);
+		department.setDescription("test "+description+" test");
 		departmentIndexer.update();
 		
-		List<DomainResult> results = lectureSearcher.search("pathetic");
+		List<DomainResult> results = lectureSearcher.search(description);
 		DomainResult[] resultObjs = (DomainResult[]) results.toArray(new DomainResult[results.size()]);
 		logger.debug("--- RESULTS ---> "+ArrayUtils.toString(resultObjs));
 		logger.debug(" Result size is: "+results.size());
 		assertNotNull(results);
-		assertTrue(results.size() == 1);
-		
+		assertEquals(1, results.size());
 	}
 	
 	protected String[] getConfigLocations() {
