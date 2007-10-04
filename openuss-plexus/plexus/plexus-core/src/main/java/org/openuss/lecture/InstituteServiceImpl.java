@@ -8,6 +8,7 @@ package org.openuss.lecture;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -41,7 +42,8 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 		Validate.notNull(user, "No valid User found corresponding to the ID " + userId);
 		Validate.isTrue(instituteInfo.getId() == null, "The Institute shouldn't have an ID yet");
 
-		// No validation needed for department ID since it is ignored anyway below
+		// No validation needed for department ID since it is ignored anyway
+		// below
 		// Validate.notNull(instituteInfo.getDepartmentId(),
 		// "InstituteService.handleCreate - the DepartmentID cannot be null");
 
@@ -133,7 +135,7 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 		Validate.notNull(instituteId, "The InstituteID cannot be null");
 		Institute institute = this.getInstituteDao().load(instituteId);
 		Validate.notNull(institute, "No Institute found to the corresponding ID " + instituteId);
-		Validate.isTrue(institute.getCourseTypes().size() == 0,	"The Institute still contains CourseTypes");
+		Validate.isTrue(institute.getCourseTypes().size() == 0, "The Institute still contains CourseTypes");
 
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(institute);
@@ -165,7 +167,7 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 		Validate.notNull(departmentId, "The departmentId cannot be null");
 
 		Department department = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(department, "No Department found corresponding to the ID "	+ departmentId);
+		Validate.notNull(department, "No Department found corresponding to the ID " + departmentId);
 
 		List instituteInfos = new ArrayList();
 		for (Institute institute : department.getInstitutes()) {
@@ -176,14 +178,15 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 	}
 
 	/**
-	 * @see org.openuss.lecture.InstituteService#findInstitutesByDepartmentAndEnabled(java.lang.Long, java.lang.Boolean)
+	 * @see org.openuss.lecture.InstituteService#findInstitutesByDepartmentAndEnabled(java.lang.Long,
+	 *      java.lang.Boolean)
 	 */
 	@SuppressWarnings( { "unchecked" })
 	protected List handleFindInstitutesByDepartmentAndEnabled(Long departmentId, boolean enabled) throws Exception {
 		Validate.notNull(departmentId, "The departmentId cannot be null");
 
 		Department department = this.getDepartmentDao().load(departmentId);
-		Validate.notNull(department, "No University found corresponding to the ID "	+ departmentId);
+		Validate.notNull(department, "No University found corresponding to the ID " + departmentId);
 
 		return getInstituteDao().findByDepartmentAndEnabled(InstituteDao.TRANSFORM_INSTITUTEINFO, department, enabled);
 	}
@@ -211,29 +214,8 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 	@Override
 	protected Long handleApplyAtDepartment(ApplicationInfo applicationInfo) throws Exception {
 		Validate.notNull(applicationInfo, "The applicationInfo cannot be null.");
-		Validate.isTrue(applicationInfo.getConfirmationDate() == null, "You cannot set the Confirmation Date yet.");
-		Validate.isTrue(!applicationInfo.isConfirmed(), "Your Application cannot be confirmed yet.");
-		Validate.isTrue(applicationInfo.getConfirmingUserInfo() == null, "You cannot set the confirming User yet.");
-
-		if ((applicationInfo.getApplicationDate() == null)) {
-			applicationInfo.setApplicationDate(new Date());
-		} else {
-			Validate.isTrue(!applicationInfo.getApplicationDate().after(new Date()), "Application Date is in the Future.");
-		}
-
-		// Transform VO to entity
-		Application application = this.getApplicationDao().applicationInfoToEntity(applicationInfo);
-		Validate.notNull(application, "Cannot transform value object to entity");
-		Validate.isTrue(application.getDepartment().getDepartmentType().equals(DepartmentType.OFFICIAL), "An Application is only necessary for official Departments");
-
-		application.add(application.getDepartment());
-		application.add(application.getInstitute());
-		
-		this.getApplicationDao().create(application);
-
-		applicationInfo.setId(application.getId());
-
-		return application.getId();
+		return handleApplyAtDepartment(applicationInfo.getInstituteInfo().getId(), applicationInfo.getDepartmentInfo()
+				.getId(), applicationInfo.getApplyingUserInfo().getId());
 	}
 
 	@Override
@@ -244,7 +226,7 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 		Validate.notNull(departmentId, "The DepartmentID cannot be null.");
 		Validate.notNull(userId, "The UserID cannot be null.");
 		Institute institute = getInstituteDao().load(instituteId);
-		Validate.notNull(institute,	"No Institute found corresponding to the InstituteID "	+ instituteId);
+		Validate.notNull(institute, "No Institute found corresponding to the InstituteID " + instituteId);
 
 		deleteOldNotConfirmedApplications(institute);
 		Department department = loadDepartment(departmentId);
@@ -255,7 +237,7 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 
 			Application application = createDefaultApplication(institute, department, user, true);
 			// Add Institute to Department
-			verifyCoursePeriodsAssoziations(department,institute);
+			verifyCoursePeriodsAssoziations(department, institute);
 			department.add(institute);
 			return application.getId();
 
@@ -264,7 +246,8 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 			Application application = createDefaultApplication(institute, department, user, false);
 
 			if (institute.getDepartment() == null) {
-				// Add Institute to default Department of University including a confirmed Application
+				// Add Institute to default Department of University including a
+				// confirmed Application
 				University university = department.getUniversity();
 				Department departmentDefault = this.getDepartmentDao().findByUniversityAndDefault(university, true);
 				createDefaultApplication(institute, departmentDefault, user, true);
@@ -276,30 +259,40 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 	}
 
 	/**
-	 * Checks if the institute changed the university. If so then the preexisting 
-	 * courses will be moved in the default period of the university.
+	 * Checks if the institute changed the university. If so then the
+	 * preexisting courses will be moved in the default period of the
+	 * university.
+	 * 
 	 * @param department
 	 * @param institute
 	 */
 	private void verifyCoursePeriodsAssoziations(Department department, Institute institute) {
-		assert department != null;	assert institute != null;
-		if (institute.getDepartment() != null && !institute.getDepartment().getUniversity().equals(department.getUniversity())) {
-			// a new university so move courses to default period
-			University university = department.getUniversity();
-			Period defaultPeriod = university.getDefaultPeriod();
+		assert department != null;
+		assert institute != null;
+		
+		if (hasUniversityChanged(department, institute)) {
+			University newUniversity = department.getUniversity();
+			University oldUniversity = institute.getDepartment().getUniversity();
 			
-			for(CourseType courseType : institute.getCourseTypes()) {
+			Map<Period, Period> periodMapping = PeriodMapping.generate(oldUniversity.getPeriods(), newUniversity.getPeriods());
+			
+			for (CourseType courseType : institute.getCourseTypes()) {
 				for (Course course : courseType.getCourses()) {
-					course.setPeriod(defaultPeriod);
+					course.setPeriod(periodMapping.get(course.getPeriod()));
 				}
 			}
 			getInstituteDao().update(institute);
 		}
 	}
 
-	
+	private boolean hasUniversityChanged(Department department, Institute institute) {
+		return institute.getDepartment() != null
+				&& !institute.getDepartment().getUniversity().equals(department.getUniversity());
+	}
+
 	private void deleteAllConfirmedApplications(Institute institute) {
-		// Delete all confirmed Applications of the Institute (should actually only be max 1)
+		// Delete all confirmed Applications of the Institute (should actually
+		// only be max 1)
 		List<Application> applicationsOldConfirmed = new ArrayList<Application>();
 		for (Application applicationOld : institute.getApplications()) {
 			if (applicationOld.isConfirmed()) {
@@ -332,7 +325,8 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 	}
 
 	private void deleteOldNotConfirmedApplications(Institute institute) {
-		// Delete all not-confirmed Applications of the Institute (should actually only be max 1)
+		// Delete all not-confirmed Applications of the Institute (should
+		// actually only be max 1)
 		List<Application> applicationsOldNotConfirmed = new ArrayList<Application>();
 		for (Application application : institute.getApplications()) {
 			if (!application.isConfirmed()) {
@@ -350,7 +344,8 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 		}
 	}
 
-	private Application createDefaultApplication(Institute institute, Department department, User user, boolean confirmed) {
+	private Application createDefaultApplication(Institute institute, Department department, User user,
+			boolean confirmed) {
 		// Create confirmed Application for non-official Department
 		Application application = Application.Factory.newInstance();
 		application.setApplicationDate(new Date());
@@ -385,7 +380,9 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 		// Only allow institute to be enabled when the super-ordinate department
 		// is enabled
 		if (status) {
-			Validate.isTrue(institute.getDepartment().isEnabled(),
+			Validate
+					.isTrue(
+							institute.getDepartment().isEnabled(),
 							"DepartmentService.handleSetInstituteStatus - the institute cannot be enabled because the associated department is disabled.");
 		}
 
@@ -393,7 +390,8 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 		institute.setEnabled(status);
 		this.update(this.getInstituteDao().toInstituteInfo(institute));
 
-		// Set subordinate courses to "disabled" if the institution was just disabled
+		// Set subordinate courses to "disabled" if the institution was just
+		// disabled
 		if (!status) {
 			this.getInstituteDao().update(institute);
 			for (CourseType courseType : institute.getCourseTypes()) {
@@ -450,12 +448,9 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 	protected void handleRemoveCompleteInstituteTree(Long instituteId) throws Exception {
 		logger.debug("Starting method handleRemoveCompleteInstituteTree for InstituteID " + instituteId);
 
-		Validate.notNull(instituteId,
-				"InstituteService.handleRemoveCompleteInstituteTree - the InstituteID cannot be null");
+		Validate.notNull(instituteId, "The InstituteID cannot be null");
 		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute,
-				"InstituteService.handleRemoveCompleteInstituteTree - no Institute found to the corresponding ID "
-						+ instituteId);
+		Validate.notNull(institute, "No Institute found to the corresponding ID " + instituteId);
 
 		if (!institute.getCourseTypes().isEmpty()) {
 
@@ -489,8 +484,7 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 		Institute institute = getInstituteDao().load(instituteId);
 
 		User user = this.getUserDao().load(member.getId());
-		Validate.notNull(user, "InstituteServiceImpl.handleSetGroupOfMember -" + "no user found with the userId "
-				+ member.getId());
+		Validate.notNull(user, "No user found with the userId "	+ member.getId());
 
 		if (!institute.getMembership().getMembers().contains(user)) {
 			throw new LectureException("User is not a member of the institute!");

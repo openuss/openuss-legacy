@@ -8,6 +8,7 @@ package org.openuss.lecture;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -230,17 +231,27 @@ public class DepartmentServiceImpl extends DepartmentServiceBase {
 	 * @param institute
 	 */
 	private void verifyCoursePeriodsAssoziations(Department department, Institute institute) {
-		if (!institute.getDepartment().getUniversity().equals(department.getUniversity())) {
-			// a new university so move courses to default period
-			University university = department.getUniversity();
-			Period defaultPeriod = university.getDefaultPeriod();
+		assert department != null;
+		assert institute != null;
+		
+		if (hasUniversityChanged(department, institute)) {
+			University newUniversity = department.getUniversity();
+			University oldUniversity = institute.getDepartment().getUniversity();
 			
-			for(CourseType courseType : institute.getCourseTypes()) {
+			Map<Period, Period> periodMapping = PeriodMapping.generate(oldUniversity.getPeriods(), newUniversity.getPeriods());
+			
+			for (CourseType courseType : institute.getCourseTypes()) {
 				for (Course course : courseType.getCourses()) {
-					course.setPeriod(defaultPeriod);
+					course.setPeriod(periodMapping.get(course.getPeriod()));
 				}
 			}
-		}
+			getInstituteDao().update(institute);
+		}		
+	}
+	
+	private boolean hasUniversityChanged(Department department, Institute institute) {
+		return institute.getDepartment() != null
+				&& !institute.getDepartment().getUniversity().equals(department.getUniversity());
 	}
 
 	@Override
