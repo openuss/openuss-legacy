@@ -520,7 +520,6 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		}
 		int enabledUniversitiesCount = enabledUniversities.size();
 		int enabledCompaniesiesCount = enabledCompanies.size();
-		int disabledUniversitiesCount = disabledUniversities.size();
 		int disabledCompaniesCount = disabledCompanies.size();
 		
 		// Create Universities
@@ -541,7 +540,6 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		University university4 = testUtility.createUniqueUniversityInDB();
 		university4.setUniversityType(UniversityType.UNIVERSITY);
 		university4.setEnabled(false);
-		disabledUniversitiesCount++;
 
 		University university5 = testUtility.createUniqueUniversityInDB();
 		university5.setUniversityType(UniversityType.COMPANY);

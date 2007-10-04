@@ -49,7 +49,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
-		instituteTestID = testUtility.unique();
+		instituteTestID = TestUtility.unique();
 		cache.getCache().flush();
 		createSecureContext(TEST_ADMIN, TEST_ROLE_ADMIN);
 		institute = Institute.Factory.newInstance();
@@ -115,7 +115,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		objectIdentityDao.create(oi);
 		oi.addPermission(permission);
 
-		long oid = testUtility.unique();
+		long oid = TestUtility.unique();
 		
 		ObjectIdentity oi2 = ObjectIdentity.Factory.newInstance();
 		oi2.setId(oid);
@@ -150,7 +150,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		objectIdentityDao.create(oi);
 		oi.addPermission(permission);
 
-		long oid = testUtility.unique();
+		long oid = TestUtility.unique();
 		ObjectIdentity oi2 = ObjectIdentity.Factory.newInstance();
 		oi2.setId(oid);
 		oi2.setParent(oi);
@@ -212,7 +212,6 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 				"classpath*:applicationContext-messaging.xml",
 				"classpath*:applicationContext-resources.xml",
 				"classpath*:applicationContext-aop.xml",
-				"classpath*:applicationContext-commands.xml",
 				"classpath*:testContext.xml", 
 				"classpath*:testSecurity.xml", 
 				"classpath*:testDataSource.xml"};

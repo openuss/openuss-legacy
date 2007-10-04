@@ -447,7 +447,6 @@ public class OrganisationServiceIntegrationTest extends OrganisationServiceInteg
 		// Create university
 		University university = testUtility.createUniqueUniversityInDB();
 		assertNotNull(university);
-		int sizeBefore = university.getMembership().getGroups().size();
 
 		// Create 2 more Groups
 		GroupItem groupItem1 = new GroupItem();

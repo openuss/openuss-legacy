@@ -222,8 +222,9 @@ public class DesktopDaoImpl extends DesktopDaoBase {
 
 	@Override
 	protected boolean handleIsInstituteBookmarked(final Long instituteId, final Long userId) throws Exception {
+		// TODO everything
 		final String hqlIsBookmarked = "SELECT t, v FROM DISCUSSION_TOPIC t, ViewState v WHERE t.id = v.id and t.domainIdentifier = :domainIdentifer and v.userId = :userId";
-		Object object = getHibernateTemplate().execute(new HibernateCallback() {
+		getHibernateTemplate().execute(new HibernateCallback() {
 			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
 				Query query = session.createQuery(hqlIsBookmarked);
 				query.setLong("instituteId",instituteId);

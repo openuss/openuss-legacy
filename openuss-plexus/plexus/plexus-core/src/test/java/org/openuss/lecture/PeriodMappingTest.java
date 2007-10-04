@@ -69,6 +69,7 @@ public class PeriodMappingTest extends TestCase {
 		fromPeriod.add(pSeven);
 		fromPeriod.add(pEight);
 		fromPeriod.add(pNine);
+		fromPeriod.add(pTen);
 		
 		Map<Period,Period> maps = PeriodMapping.generate(fromPeriod, toPeriod);
 		

@@ -7,7 +7,6 @@ package org.openuss.lecture;
 
 import org.apache.log4j.Logger;
 import org.openuss.security.AuthorityDao;
-import org.openuss.security.User;
 import org.openuss.security.UserDao;
 
 /**
@@ -35,11 +34,12 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		assertNotNull(authorityDao);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void testGetInstitutes () {
 		logger.debug("----> BEGIN access to getInstitutes test <---- ");
 		
 		//Create Secure context
-		User user = testUtility.createAdminSecureContext();
+		testUtility.createAdminSecureContext();
 		
 		//Create institutes
 		Institute institute1 = testUtility.createUniqueInstituteInDB();
@@ -47,12 +47,6 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		
 		Institute institute2 = testUtility.createUniqueInstituteInDB();
 		institute1.setEnabled(true);
-		
-		Institute institute3 = testUtility.createUniqueInstituteInDB();
-		institute1.setEnabled(true);
-		
-		Institute institute4 = testUtility.createUniqueInstituteInDB();
-		institute1.setEnabled(false);
 		
 		//Synchronize with Database
 		flush();
@@ -87,11 +81,12 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		logger.debug("----> END access to getInstitute test <---- ");
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void testGetCourseType () {
 		logger.debug("----> BEGIN access to getCourseType test <---- ");
 		
 		//Create Secure context
-		User user = testUtility.createSecureContext();
+		testUtility.createSecureContext();
 		
 		//Create CourseType
 		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
@@ -104,11 +99,12 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		logger.debug("----> END access to getCourseType test <---- ");
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void testGetCourse () {
 		logger.debug("----> BEGIN access to getCourse test <---- ");
 		
 		//Create Secure context
-		User user = testUtility.createSecureContext();
+		testUtility.createSecureContext();
 		
 		//Create Course
 		Course course= testUtility.createUniqueCourseInDB();
@@ -121,6 +117,7 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		logger.debug("----> END access to getCourse test <---- ");
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void testAddCourseTypeToInstitute() throws LectureException{
 		logger.debug("----> add courseType <---- ");
 		testUtility.createUserSecureContext();
@@ -131,13 +128,14 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		
 		CourseType courseType = CourseType.Factory.newInstance(unique("name"), unique("courseType"));
 		try {
-			institute = lectureService.add(institute.getId(), courseType);
+			lectureService.add(institute.getId(), courseType);
 			fail("LectreServiceException should have been thrown.");
 		} catch (LectureServiceException lse) {
 			;
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void testAddPeriodToInstitute() throws LectureException {
 		logger.debug("add period to institute");
 		
@@ -146,33 +144,10 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		
 		try {
 			this.getLectureService().add(institute.getId(), period);
-			fail("LectureServiceException must have been throen.");
+			fail("LectureServiceException must have been thrown.");
 		} catch (LectureServiceException lse) {
 			;
 		}
-		/*
-		user = testUtility.createSecureContext();
-		
-		Institute institute = createInstitute();
-		lectureService.createInstitute(institute);
-		
-		commit();
-		
-		Period period = Period.Factory.newInstance();
-		period.setName("WS06/07");
-		period.setDescription("Wintersemester 2006 / 2007");
-		
-		institute = lectureService.add(institute.getId(), period);
-		
-		//assertTrue(institute.getPeriods().contains(period));
-		commit();
-		
-		assertNotNull(period.getId());
-		
-		lectureService.removeInstitute(institute.getId());
-		
-		setComplete();
-		*/
 	}
 	
 	private String unique(String name) {

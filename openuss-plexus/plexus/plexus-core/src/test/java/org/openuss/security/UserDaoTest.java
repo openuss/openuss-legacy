@@ -20,9 +20,8 @@ import org.springframework.dao.DataAccessException;
  * @author Ron Haus, Ingo Dueppe
  */
 public class UserDaoTest extends UserDaoTestBase {
-	/**
-	 * Logger for this class
-	 */
+	
+	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(UserDaoTest.class);
 	
 	private GroupDao groupDao;
@@ -36,7 +35,7 @@ public class UserDaoTest extends UserDaoTestBase {
 	@Override
 	protected void onSetUpBeforeTransaction() throws Exception {
 		super.onSetUpBeforeTransaction();
-		User user = testUtility.createUniqueUserInDB();
+		testUtility.createUniqueUserInDB();
 	}
 	
 	public void setGroupDao(GroupDao groupDao) {

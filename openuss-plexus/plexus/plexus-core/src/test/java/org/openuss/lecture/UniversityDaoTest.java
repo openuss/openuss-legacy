@@ -262,7 +262,6 @@ public class UniversityDaoTest extends UniversityDaoTestBase {
 		int countEnabledUniversities = enabledUniversities.size();
 		int countDisabledUniversities = disabledUniversities.size();
 		int countEnabledCompanies = enabledCompanies.size();
-		int countDisabledCompanies = disabledCompanies.size();
 		
 		// Create 4 Universities
 		University university1 = testUtility.createUniqueUniversityInDB();

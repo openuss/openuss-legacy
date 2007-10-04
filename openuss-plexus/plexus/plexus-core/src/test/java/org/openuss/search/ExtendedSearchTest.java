@@ -89,7 +89,6 @@ public class ExtendedSearchTest extends AbstractTransactionalDataSourceSpringCon
 				"classpath*:applicationContext-cache.xml", 
 				"classpath*:applicationContext-messaging.xml",
 				"classpath*:applicationContext-resources.xml",
-				"classpath*:applicationContext-commands.xml",
 				"classpath*:applicationContext-aop.xml",
 				"classpath*:testContext.xml", 
 				"classpath*:testSecurity.xml", 
