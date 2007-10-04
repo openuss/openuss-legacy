@@ -289,15 +289,19 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 			if (!AcegiUtils.hasPermission(object, new Integer[] { LectureAclEntry.CRUD })) {
 				CollectionUtils.filter(entries, new Predicate() {
 					public boolean evaluate(Object object) {
+						boolean eval = false;
 						if (object instanceof FolderEntry) {
-							return ((FolderEntry) object).isReleased();
+							eval = ((FolderEntry) object).isReleased();
 						} else if (object instanceof FileInfo) {
-							return ((FileInfo) object).isReleased();
+							eval = ((FileInfo) object).isReleased();
 						} else if (object instanceof FolderEntryInfo) {
-							return ((FolderEntryInfo) object).isReleased();
-						} else {
-							return false;
+							eval = ((FolderEntryInfo) object).isReleased();
+						} 
+						if (!eval) {
+							logger.trace("------------------------------------> removing file "+object);
 						}
+						
+						return eval;
 					}
 				});
 			}

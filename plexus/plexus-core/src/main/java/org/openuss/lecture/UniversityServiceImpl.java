@@ -242,14 +242,12 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	/**
 	 * @see org.openuss.lecture.UniversityService#removeCompleteUniversityTree(java.lang.Long)
 	 */
-	protected void handleRemoveCompleteUniversityTree(java.lang.Long universityId) throws java.lang.Exception {
+	protected void handleRemoveCompleteUniversityTree(Long universityId) throws Exception {
 		logger.debug("Starting method handleRemoveUniversity for UniversityID " + universityId);
 
-		Validate.notNull(universityId, "UniversityService.handleRemoveUniversity - universityId cannot be null.");
+		Validate.notNull(universityId, "UniversityId cannot be null.");
 		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university,
-				"UniversityService.handleRemoveUniversity - cannot find a university with the corresponding ID "
-						+ universityId);
+		Validate.notNull(university, "Cannot find a university with the corresponding ID "	+ universityId);
 
 		if (!university.getDepartments().isEmpty()) {
 			// Remove Departments

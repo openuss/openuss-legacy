@@ -232,8 +232,7 @@ public class TestUtility {
 		department.setDefaultDepartment(true);
 		department.setDepartmentType(DepartmentType.NONOFFICIAL);
 		department.setShortcut(unique("StandDepart"));
-		department
-				.setDescription("Dies ist das Standard Department. Es ist als Auffangbehälter für Institutionen gedacht, die noch keinem anderen Department zugeordnet werden können.");
+		department.setDescription("Dies ist das Standard Department.");
 		department.setOwnerName(university.getOwnerName());
 		department.setEnabled(true);
 		department.setMembership(Membership.Factory.newInstance());
@@ -253,8 +252,7 @@ public class TestUtility {
 		Period period = Period.Factory.newInstance();
 		period.setName("Standard Period");
 		period.setDefaultPeriod(true);
-		period
-				.setDescription("Dies ist die Standard Period. Sie ist als Auffangbehälter für Veranstaltungen gedacht, die keiner anderen Periode zugeordnet werden können.");
+		period.setDescription("Dies ist die Standard Period.");
 		period.setStartdate(new Date(0)); // 1. January 1970, 00:00:00 GMT
 		Calendar cal = new GregorianCalendar();
 		cal.set(2050, 11, 31);// 31. December 2050, 00:00:00 GMT
@@ -267,10 +265,6 @@ public class TestUtility {
 		this.getUniversityDao().create(university);
 		this.getDepartmentDao().create(department);
 		this.getPeriodDao().create(period);
-
-		// FIXME - Kai, Indexing should not base on VOs!
-		// KAI: Do not delete this!!! Set id of university VO for indexing
-		university.setId(university.getId());
 
 		// Create default Groups for the University and it's Department
 		GroupItem groupItemUni = new GroupItem();
@@ -331,10 +325,6 @@ public class TestUtility {
 
 		// Create the University
 		this.getUniversityDao().create(university);
-
-		// FIXME - Kai, Indexing should not base on VOs!
-		// KAI: Do not delete this!!! Set id of university VO for indexing
-		university.setId(university.getId());
 
 		// Create default Groups for the University
 		GroupItem groupItemUni = new GroupItem();
@@ -697,8 +687,7 @@ public class TestUtility {
 		groupDao.update(group);
 
 		final UsernamePasswordAuthenticationToken authentication;
-		authentication = new UsernamePasswordAuthenticationToken(user, "[Protected]", ((UserImpl) user)
-				.getAuthorities());
+		authentication = new UsernamePasswordAuthenticationToken(user, "[Protected]", ((UserImpl) user).getAuthorities());
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		return user;

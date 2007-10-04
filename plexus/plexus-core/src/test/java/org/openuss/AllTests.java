@@ -3,6 +3,7 @@ package org.openuss;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.openuss.aop.AopTests;
 import org.openuss.braincontest.BrainContestTests;
 import org.openuss.chat.ChatTests;
 import org.openuss.commands.CommandTests;
@@ -32,6 +33,7 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.openuss");
 		// $JUnit-BEGIN$
+		suite.addTest(AopTests.suite());
 		suite.addTest(BrainContestTests.suite());
 		suite.addTest(CommandTests.suite());
 		suite.addTest(DesktopTests.suite());
