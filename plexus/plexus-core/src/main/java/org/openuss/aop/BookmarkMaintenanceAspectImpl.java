@@ -35,22 +35,16 @@ public class BookmarkMaintenanceAspectImpl {
 		logger.debug("----------> BEGIN method bookmarkOrganisation <----------");
 		
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
-		Validate.notNull(organisation, "BookmarkMaintenanceAspectImpl.bookmarkOrganisation -" +
-				"no organisation found with the given organisationId");
+		Validate.notNull(organisation, "No organisation found with the given organisationId");
 		
 		if (organisation instanceof University) {
-			UniversityInfo universityInfo =
-				this.getUniversityDao().toUniversityInfo((University)organisation);
+			UniversityInfo universityInfo =	getUniversityDao().toUniversityInfo((University)organisation);
 			this.bookmarkUniversity(universityInfo, userId);
-		}
-		else if (organisation instanceof Department) {
-			DepartmentInfo departmentInfo =
-				this.getDepartmentDao().toDepartmentInfo((Department) organisation);
+		} else if (organisation instanceof Department) {
+			DepartmentInfo departmentInfo = getDepartmentDao().toDepartmentInfo((Department) organisation);
 			this.bookmarkDepartment(departmentInfo, userId);
-		}
-		else if (organisation instanceof Institute) {
-			InstituteInfo instituteInfo =
-				this.getInstituteDao().toInstituteInfo((Institute) organisation);
+		} else if (organisation instanceof Institute) {
+			InstituteInfo instituteInfo = getInstituteDao().toInstituteInfo((Institute) organisation);
 			this.bookmarkInstitute(instituteInfo, userId);
 		}
 	}
@@ -64,9 +58,8 @@ public class BookmarkMaintenanceAspectImpl {
 	public void bookmarkUniversity(UniversityInfo universityInfo, Long userId) {
 		logger.debug("----------> BEGIN method bookmarkUniversity <----------");
 
-		Validate.notNull(universityInfo,
-				"BookmarkMaintenanceAspectImpl.bookmarkUniversity - the universityInfo cannot be null.");
-		Validate.notNull(userId, "BookmarkMaintenanceAspectImpl.bookmarkUniversity - the userId cannot be null.");
+		Validate.notNull(universityInfo, "The universityInfo cannot be null.");
+		Validate.notNull(userId, "The userId cannot be null.");
 
 		try {
 			// Get DesktopInfo
@@ -89,8 +82,7 @@ public class BookmarkMaintenanceAspectImpl {
 	public void deleteBookmarksOfUniversity(Long universityId) {
 		logger.debug("----------> BEGIN method deleteBookmarksOfUniversity <----------");
 
-		Validate.notNull(universityId,
-				"BookmarkMaintenanceAspectImpl.deleteBookmarksOfUniversity - the universityId cannot be null.");
+		Validate.notNull(universityId, "The universityId cannot be null.");
 
 		try {
 			desktopService2.unlinkAllFromUniversity(universityId);
@@ -104,9 +96,8 @@ public class BookmarkMaintenanceAspectImpl {
 	public void bookmarkDepartment(DepartmentInfo departmentInfo, Long userId) {
 		logger.debug("----------> BEGIN method bookmarkDepartment <----------");
 
-		Validate.notNull(departmentInfo,
-				"BookmarkMaintenanceAspectImpl.bookmarkDepartment - the departmentInfo cannot be null.");
-		Validate.notNull(userId, "BookmarkMaintenanceAspectImpl.bookmarkDepartment - the userId cannot be null.");
+		Validate.notNull(departmentInfo, "The departmentInfo cannot be null.");
+		Validate.notNull(userId, "The userId cannot be null.");
 
 		try {
 			// Get DesktopInfo
@@ -129,8 +120,7 @@ public class BookmarkMaintenanceAspectImpl {
 	public void deleteBookmarksOfDepartment(Long departmentId) {
 		logger.debug("----------> BEGIN method deleteBookmarksOfDepartment <----------");
 
-		Validate.notNull(departmentId,
-				"BookmarkMaintenanceAspectImpl.deleteBookmarksOfDepartment - the departmentId cannot be null.");
+		Validate.notNull(departmentId, "The departmentId cannot be null.");
 
 		try {
 			desktopService2.unlinkAllFromDepartment(departmentId);
@@ -150,9 +140,8 @@ public class BookmarkMaintenanceAspectImpl {
 	public void bookmarkInstitute(InstituteInfo instituteInfo, Long userId) {
 		logger.debug("----------> BEGIN method bookmarkInstitute <----------");
 
-		Validate.notNull(instituteInfo,
-				"BookmarkMaintenanceAspectImpl.bookmarkInstitute - the instituteInfo cannot be null.");
-		Validate.notNull(userId, "BookmarkMaintenanceAspectImpl.bookmarkInstitute - the userId cannot be null.");
+		Validate.notNull(instituteInfo,	"The instituteInfo cannot be null.");
+		Validate.notNull(userId, "The userId cannot be null.");
 
 		try {
 			// Get DesktopInfo
@@ -175,8 +164,7 @@ public class BookmarkMaintenanceAspectImpl {
 	public void deleteBookmarksOfInstitute(Long instituteId) {
 		logger.debug("----------> BEGIN method deleteBookmarksOfInstitute <----------");
 
-		Validate.notNull(instituteId,
-				"BookmarkMaintenanceAspectImpl.deleteBookmarksOfInstitute - the instituteId cannot be null.");
+		Validate.notNull(instituteId, "The instituteId cannot be null.");
 
 		try {
 			desktopService2.unlinkAllFromInstitute(instituteId);
@@ -190,7 +178,7 @@ public class BookmarkMaintenanceAspectImpl {
 	public void deleteBookmarksOfCourse(Long courseId) {
 		logger.debug("----------> BEGIN method deleteBookmarksOfCourses <----------");
 
-		Validate.notNull(courseId, "BookmarkMaintenanceAspectImpl.bookmarkCourse - the courseId cannot be null.");
+		Validate.notNull(courseId, "The courseId cannot be null.");
 
 		try {
 			// Unlink all

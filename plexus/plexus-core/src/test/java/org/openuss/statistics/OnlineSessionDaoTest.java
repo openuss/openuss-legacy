@@ -36,7 +36,7 @@ public class OnlineSessionDaoTest extends OnlineSessionDaoTestBase {
 		OnlineSession guest = createUserSession(RandomStringUtils.random(30),PAST30, null,null);
 		OnlineSession user1 = createUserSession(RandomStringUtils.random(30), PAST30, null, testUtility.createUniqueUserInDB());
 		OnlineSession user2 = createUserSession(RandomStringUtils.random(30), PAST45, null, testUtility.createUniqueUserInDB());
-		OnlineSession user3 = createUserSession(RandomStringUtils.random(30), PAST65, null, testUtility.createUniqueUserInDB());
+		createUserSession(RandomStringUtils.random(30), PAST65, null, testUtility.createUniqueUserInDB());
 		
 		info = getOnlineSessionDao().loadOnlineInfo();
 		assertEquals("Number of Users", Long.valueOf(2), info.getUsers());

@@ -39,7 +39,6 @@ public class DomainIndexerFactoryTest extends AbstractDependencyInjectionSpringC
 				"classpath*:applicationContext-messaging.xml",
 				"classpath*:applicationContext-resources.xml",
 				"classpath*:applicationContext-aop.xml",
-				"classpath*:applicationContext-commands.xml",
 				"classpath*:testContext.xml", 
 				"classpath*:testSecurity.xml", 
 				"classpath*:testDataSource.xml"};

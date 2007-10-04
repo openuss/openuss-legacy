@@ -40,6 +40,7 @@ import org.openuss.security.UserContact;
 import org.openuss.security.UserDao;
 import org.openuss.security.UserImpl;
 import org.openuss.security.UserPreferences;
+import org.openuss.security.UserProfile;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
@@ -89,6 +90,7 @@ public class TestUtility {
 		defaultUser.setGroups(new ArrayList<Group>());
 		defaultUser.setContact(UserContact.Factory.newInstance());
 		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
+		defaultUser.setProfile(UserProfile.Factory.newInstance());
 		userDao.create(defaultUser);
 		return defaultUser;
 	}
@@ -134,11 +136,16 @@ public class TestUtility {
 		defaultUser.setLastName("lastName");
 		defaultUser.setTitle("title");
 		defaultUser.setEmail(unique("email"));
+		defaultUser.setLocale("de_DE");
 		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
 		
 		userDao.create(defaultUser);
 		defaultInstitute.setName(unique("name"));
 		defaultInstitute.setShortcut(unique("shortcut"));
+		defaultInstitute.setEmail(unique("email"));
+		defaultInstitute.setLocale("de_DE");
+		defaultInstitute.setOwnerName("owner name");
+		defaultInstitute.setMembership(Membership.Factory.newInstance());
 		instituteDao.create(defaultInstitute);
 		return defaultInstitute;
 	}

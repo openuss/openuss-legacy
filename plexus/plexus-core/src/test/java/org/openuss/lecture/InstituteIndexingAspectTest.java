@@ -48,6 +48,8 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 		instituteInfo.setName(testUtility.unique("testInstitute"));
 		instituteInfo.setShortcut(testUtility.unique("testI"));
 		instituteInfo.setOwnerName("Administrator");
+		instituteInfo.setEmail("plexus@openuss-pelxus.com");
+		instituteInfo.setLocale("de_DE");
 		instituteInfo.setEnabled(false);
 		instituteInfo.setDescription("This is a test Institute");
 		instituteInfo.setDepartmentId(departmentOfficial.getId()); //Should be ignored by createInstitute
@@ -65,6 +67,8 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 		instituteInfo.setName(testUtility.unique("testInstitute"));
 		instituteInfo.setShortcut(testUtility.unique("testI"));
 		instituteInfo.setOwnerName("Administrator");
+		instituteInfo.setEmail("plexus@openuss-pelxus.com");
+		instituteInfo.setLocale("de_DE");
 		instituteInfo.setEnabled(true);
 		instituteInfo.setDescription("This is a test Institute at " + testUtility.unique("time"));
 		instituteInfo.setDepartmentId(institute.getDepartment().getId());
@@ -91,7 +95,6 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 				"classpath*:applicationContext-messaging.xml",
 				"classpath*:applicationContext-resources.xml",
 				"classpath*:applicationContext-aop.xml",
-				"classpath*:applicationContext-commands.xml",
 				"classpath*:testContext.xml", 
 				"classpath*:testSecurity.xml", 
 				"classpath*:testDataSource.xml"};

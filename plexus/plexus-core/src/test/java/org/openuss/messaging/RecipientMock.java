@@ -61,11 +61,11 @@ public class RecipientMock implements Recipient {
 	}
 
 	public Date getSend() {
-		return send;
+		return send == null?null: new Date(send.getTime());
 	}
 
 	public void setSend(Date send) {
-		this.send = send;
+		this.send = send == null ? null : new Date(send.getTime());
 	}
 
 	public SendState getState() {

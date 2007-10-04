@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.openuss.TestUtility;
 import org.openuss.security.UserDao;
 
@@ -144,8 +145,8 @@ public class PeriodDaoTest extends PeriodDaoTestBase {
 		assertEquals(periodInfo.getId(), period.getId());
 		assertEquals(periodInfo.getName(), period.getName());
 		assertEquals(periodInfo.getDescription(), period.getDescription());
-		assertEquals(periodInfo.getStartdate().getTime(), period.getStartdate().getTime());
-		assertEquals(periodInfo.getEnddate().getTime(), period.getEnddate().getTime());
+		assertEquals(DateUtils.truncate(periodInfo.getStartdate(), Calendar.DATE).getTime(), period.getStartdate().getTime());
+		assertEquals(DateUtils.truncate(periodInfo.getEnddate(),Calendar.DATE).getTime(), period.getEnddate().getTime());
 		assertEquals(periodInfo.getUniversityId(), period.getUniversity().getId());
 	}
 	

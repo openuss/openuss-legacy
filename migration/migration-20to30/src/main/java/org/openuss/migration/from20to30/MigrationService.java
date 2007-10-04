@@ -60,15 +60,15 @@ public class MigrationService {
 		logger.info("initialize databses");
 
 		legacySession = openAndBindNewSession(legacySessionFactory);
-		userImport.perform();
-		lectureImport.perform();
-//		newsImport.perform(); 
-//		desktopImport.perform();
-//		courseMemberImport.perform();
-//		documentImport.perform();
-//		newsLetterImport.perform();
-//		quizImport.perform();
-//
+//		userImport.perform();
+//		lectureImport.perform();
+		newsImport.perform(); 
+		desktopImport.perform();
+		courseMemberImport.perform();
+		documentImport.perform();
+		newsLetterImport.perform();
+		quizImport.perform();
+
 		legacyTx.rollback();
 		legacySession.close();
 		try {

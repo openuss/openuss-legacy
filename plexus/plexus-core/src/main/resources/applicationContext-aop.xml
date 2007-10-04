@@ -85,7 +85,6 @@
 			expression="execution(* org..CourseServiceBase.setCourseStatus(java.lang.Long, boolean)) and args(courseId, status)" />
 
 		<!-- Aspect Definitions -->
-
 		<aop:aspect id="applicationConfirmationAspect"
 			ref="applicationConfirmationAspectBean">
 			<aop:after-returning
@@ -147,7 +146,7 @@
 				pointcut-ref="DepartmentServiceRejectInstituteApplicationPointcut"
 				arg-names="applicationId" />
 		</aop:aspect>
-
+<!-- 
 		<aop:aspect id="bookmarkMaintenanceAspect"
 			ref="bookmarkMaintenanceAspectBean">
 			<aop:after-returning method="bookmarkUniversity"
@@ -183,7 +182,8 @@
 				pointcut-ref="OrganisationServiceAddMemberPointcut"
 				arg-names="organisationId, userId" />
 		</aop:aspect>
-
+		
+-->		
 		<aop:aspect id="removeInstituteCodesAspect"
 			ref="instituteCodesMaintenanceAspectBean">
 			<aop:before method="removeInstituteCodes"

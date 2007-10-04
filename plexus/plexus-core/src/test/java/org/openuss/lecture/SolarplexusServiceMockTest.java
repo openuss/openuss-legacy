@@ -53,7 +53,7 @@ public class SolarplexusServiceMockTest extends TestCase {
 	public void testFindDepartmentsByUniversityAndEnabled(){
 		logger.debug("Method testFindDepartmentsByUniversityAndEnabled: Started");
 		
-		List departments = departmentMock.findDepartmentsByUniversityAndEnabled(new Long(100), true);
+		List departments = departmentMock.findDepartmentsByUniversityAndEnabled(100L, true);
 		
 		assertEquals(3, departments.size());
 	}
@@ -61,7 +61,7 @@ public class SolarplexusServiceMockTest extends TestCase {
 	public void testFindDepartment(){
 		logger.debug("Method testFindDepartment: Started");
 		
-		DepartmentInfo departmentInfo = departmentMock.findDepartment(new Long(1101));
+		DepartmentInfo departmentInfo = departmentMock.findDepartment(1101L);
 		
 		assertEquals("Fachbereich 3 (Jura)", departmentInfo.getName());
 	}
@@ -69,7 +69,7 @@ public class SolarplexusServiceMockTest extends TestCase {
 	public void testFindInstitutesByDepartment(){
 		logger.debug("Method testFindInstitutesByDepartment: Started");
 				
-		List institutes = instituteMock.findInstitutesByDepartmentAndEnabled(new Long(1102), true);
+		List institutes = instituteMock.findInstitutesByDepartmentAndEnabled(1102L, true);
 		Iterator iter = institutes.iterator();
 		InstituteInfo instituteInfo = (InstituteInfo) iter.next();
 		
@@ -80,7 +80,7 @@ public class SolarplexusServiceMockTest extends TestCase {
 	public void testFindInstitutesByDepartmentAndEnabled(){
 		logger.debug("Method testFindInstitutesByDepartmentAndEnabled: Started");
 				
-		List institutes = instituteMock.findInstitutesByDepartmentAndEnabled(new Long(1102), false);
+		List institutes = instituteMock.findInstitutesByDepartmentAndEnabled(1102L, false);
 
 		assertEquals(0, institutes.size());
 	}
@@ -88,8 +88,8 @@ public class SolarplexusServiceMockTest extends TestCase {
 	public void testFindCourseTypeByInstitute(){
 		logger.debug("Method testFindCourseTypeByInstitute: Started");
 		
-		List courseTypes1 = courseTypeService.findCourseTypesByInstitute(new Long(11101));
-		List courseTypes2 = courseTypeService.findCourseTypesByInstitute(new Long(11102));
+		List courseTypes1 = courseTypeService.findCourseTypesByInstitute(11101L);
+		List courseTypes2 = courseTypeService.findCourseTypesByInstitute(11102L);
 		CourseTypeInfo courseTypeInfo;
 		Iterator iter;
 		

@@ -37,7 +37,7 @@ public class SubscriberDaoImpl extends SubscriberDaoBase {
 	private Subscriber loadSubscriberFromSubscriberInfo(SubscriberInfo subscriberInfo) {
 		Subscriber subscriber;
 		if (subscriberInfo.getId() == null) {
-			return subscriber = Subscriber.Factory.newInstance();
+			return Subscriber.Factory.newInstance();
 		}
 		subscriber = this.load(subscriberInfo.getId());
 		if (subscriber == null) {
