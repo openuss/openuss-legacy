@@ -32,7 +32,7 @@ public class PeriodIdentifier {
 	private static final Pattern patternSS01 = Pattern.compile(".*S.*01([^\\d]*|\\z)",Pattern.CASE_INSENSITIVE);
 	private static final Pattern patternWS01_02 = Pattern.compile(".*(01).*[/-].*(02).*",Pattern.CASE_INSENSITIVE);
 	private static final Pattern patternSS02 = Pattern.compile(".*S.*02([^\\d]*|\\z)",Pattern.CASE_INSENSITIVE);
-	private static final Pattern patternWS02_03 = Pattern.compile(".*(01).*[/-].*(02).*",Pattern.CASE_INSENSITIVE);
+	private static final Pattern patternWS02_03 = Pattern.compile(".*(02).*[/-].*(03).*",Pattern.CASE_INSENSITIVE);
 	private static final Pattern patternSS03 = Pattern.compile(".*S.*03([^\\d]*|\\z)",Pattern.CASE_INSENSITIVE);
 	private static final Pattern patternWS03_04 = Pattern.compile(".*(03).*[/-].*(04).*",Pattern.CASE_INSENSITIVE);
 	private static final Pattern patternSS04 = Pattern.compile(".*S.*04([^\\d]*|\\z)",Pattern.CASE_INSENSITIVE);
