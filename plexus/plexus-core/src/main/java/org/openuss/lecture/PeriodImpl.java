@@ -5,9 +5,11 @@
 //
 package org.openuss.lecture;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.time.DateUtils;
 
 /**
  * @see org.openuss.lecture.Period
@@ -53,4 +55,16 @@ public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.op
 		else
 			return false;
 	}
+
+	@Override
+	public void setEnddate(Date enddate) {
+		super.setEnddate(DateUtils.truncate(enddate, Calendar.DATE));
+	}
+
+	@Override
+	public void setStartdate(Date startdate) {
+		super.setStartdate(DateUtils.truncate(startdate, Calendar.DATE));
+	}
+	
+	
 }
