@@ -57,10 +57,6 @@
 		<aop:pointcut
 			id="InstituteServiceDeleteCompleteInstituteTreePointcut"
 			expression="execution(* org..InstituteServiceBase.removeCompleteInstituteTree(java.lang.Long)) and args(instituteId)" />
-<!-- 
-  		<aop:pointcut id="InstituteServiceApplyAtDepartmentPointcut"
-			expression="execution(* org..InstituteServiceBase.applyAtDepartment(org.openuss.lecture.ApplicationInfo)) and args(applicationInfo)" />
- -->	
 		<aop:pointcut id="InstituteServiceApplyAtDepartmentPointcut"
 			expression="execution(* org..InstituteServiceBase.applyAtDepartment(java.lang.Long, java.lang.Long, java.lang.Long)) and args(instituteId, departmentId, userId)" />
 		<aop:pointcut id="InstituteServiceResendActivationCodePointcut"
@@ -146,7 +142,7 @@
 				pointcut-ref="DepartmentServiceRejectInstituteApplicationPointcut"
 				arg-names="applicationId" />
 		</aop:aspect>
-<!-- 
+
 		<aop:aspect id="bookmarkMaintenanceAspect"
 			ref="bookmarkMaintenanceAspectBean">
 			<aop:after-returning method="bookmarkUniversity"
@@ -183,7 +179,6 @@
 				arg-names="organisationId, userId" />
 		</aop:aspect>
 		
--->		
 		<aop:aspect id="removeInstituteCodesAspect"
 			ref="instituteCodesMaintenanceAspectBean">
 			<aop:before method="removeInstituteCodes"
