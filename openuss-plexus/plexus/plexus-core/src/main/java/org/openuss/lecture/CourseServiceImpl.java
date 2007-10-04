@@ -53,6 +53,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 		// FIXME - Kai, Indexing should not base on VOs!
 		// Kai: Do not delete this!!! Set id of institute VO for indexing
+		// Update input parameter for aspects to get the right domain objects. 
 		courseInfo.setId(courseEntity.getId());
 
 		// Set Security
@@ -95,6 +96,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	@Override
 	protected boolean handleIsNoneExistingCourseShortcut(CourseInfo self, String shortcut) {
+		logger.error("IsNoneExistingCourseShortcut is called!");
 		Course found = getCourseDao().findByShortcut(shortcut);
 		CourseInfo foundInfo = null;
 		if (found != null) {
