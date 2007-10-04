@@ -9,6 +9,11 @@ import org.openuss.messaging.MessageSendingCommand;
 import org.openuss.security.User;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
+/**
+ * 
+ * @author Ingo Dueppe
+ *
+ */
 public class MailSenderAspectTest extends AbstractTransactionalDataSourceSpringContextTests {
 
 	protected SessionFactory sessionFactory;
@@ -21,11 +26,34 @@ public class MailSenderAspectTest extends AbstractTransactionalDataSourceSpringC
 		this.sessionFactory = sessionFactory;
 	}
 
+	@Override
+	protected void onSetUp() throws Exception {
+		super.onSetUp();
+		jobDao = new MessageJobDaoMock();
+		messageSendingCommand.setMessageJobDao(jobDao);
+	}
+
+	public void testSendAddMemberMail() {
+		University university = testUtility.createUniqueUniversityInDB();
+		User user = testUtility.createUniqueUserInDB();
+		user.setEmail("plexus@openuss-plexus.org");
+
+		OrganisationService organisationService = (OrganisationService) this.applicationContext
+				.getBean("organisationService");
+		organisationService.addMember(university.getId(), user.getId());
+	}
+
 	protected String[] getConfigLocations() {
-		return new String[] { "classpath*:applicationContext.xml", "classpath*:applicationContext-beans.xml",
-				"classpath*:applicationContext-lucene.xml", "classpath*:applicationContext-cache.xml",
-				"classpath*:applicationContext-messaging.xml", "classpath*:applicationContext-resources.xml",
-				"classpath*:applicationContext-aop.xml", "classpath*:testContext.xml", "classpath*:testSecurity.xml",
+		return new String[] { 
+				"classpath*:applicationContext.xml", 
+				"classpath*:applicationContext-beans.xml",
+				"classpath*:applicationContext-lucene.xml", 
+				"classpath*:applicationContext-cache.xml",
+				"classpath*:applicationContext-messaging.xml", 
+				"classpath*:applicationContext-resources.xml",
+				"classpath*:applicationContext-aop.xml", 
+				"classpath*:testContext.xml", 
+				"classpath*:testSecurity.xml",
 				"classpath*:testDataSource.xml" };
 	}
 
@@ -49,22 +77,5 @@ public class MailSenderAspectTest extends AbstractTransactionalDataSourceSpringC
 		this.messageSendingCommand = messageSendingCommand;
 	}
 	private MessageJobDaoMock jobDao;
-
-	@Override
-	protected void onSetUp() throws Exception {
-		super.onSetUp();
-		jobDao = new MessageJobDaoMock();
-		messageSendingCommand.setMessageJobDao(jobDao);
-	}
-
-	public void testSendAddMemberMail() {
-		University university = testUtility.createUniqueUniversityInDB();
-		User user = testUtility.createUniqueUserInDB();
-		user.setEmail("plexus@openuss-plexus.org");
-
-		OrganisationService organisationService = (OrganisationService) this.applicationContext
-				.getBean("organisationService");
-		organisationService.addMember(university.getId(), user.getId());
-	}
 
 }
