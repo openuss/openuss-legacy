@@ -72,7 +72,7 @@ public class UserImport extends DefaultImport {
 	
 	public void perform() {
 		initializeUsers();
-//		loadStudents();
+		loadStudents();
 		loadAssistants();
 
 		logger.debug("found users               " + importedUsers);
@@ -197,10 +197,6 @@ public class UserImport extends DefaultImport {
 		importedUsers.add(user);
 		email2UserMap.put(email, user.getId());
 		id2UserMap.put(legacyId, user.getId());
-		
-//		if (count % 100 == 0 ) {
-//		plexusSessionFactory.getCurrentSession().flush();
-//		}
 	}
 
 	private void checkUserName(User user, String legacyId) {
