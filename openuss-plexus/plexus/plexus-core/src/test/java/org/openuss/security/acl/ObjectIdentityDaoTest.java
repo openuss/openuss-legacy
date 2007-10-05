@@ -65,7 +65,7 @@ public class ObjectIdentityDaoTest extends ObjectIdentityDaoTestBase {
 
 	private ObjectIdentity createObjectIdentity(ObjectIdentity parent) {
 		ObjectIdentity objectIdentity = ObjectIdentity.Factory.newInstance();
-		objectIdentity.setId(testUtility.unique());
+		objectIdentity.setId(TestUtility.unique());
 		objectIdentity.setParent(parent);
 		return objectIdentity;
 	}

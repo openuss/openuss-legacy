@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.openuss.TestUtility;
 
 /**
  * JUnit Test for Spring Hibernate RepositoryService class.
@@ -28,7 +29,7 @@ public class RepositoryServiceIntegrationTest extends RepositoryServiceIntegrati
 
 	private void checkRepositoryRoundtrip(String fileName) throws IOException, FileNotFoundException {
 		testUtility.createAdminSecureContext();
-		long fileId = testUtility.unique();
+		long fileId = TestUtility.unique();
 		File testFile = new File(fileName);
 		long checksum = FileUtils.checksumCRC32(testFile);
 		

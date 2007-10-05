@@ -648,13 +648,6 @@ public class TestUtility {
 		return defaultInstitute;
 	}
 
-	/**
-	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUserSecureContext()</code>.
-	 */
-	public User createSecureContext() {
-		return createSecureContext(Roles.USER_ID);
-	}
-
 	public User createAnonymousSecureContext() {
 		return createSecureContext(Roles.ANONYMOUS_ID);
 	}

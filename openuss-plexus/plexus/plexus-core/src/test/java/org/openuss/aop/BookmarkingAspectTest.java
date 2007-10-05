@@ -7,7 +7,6 @@ import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseService;
-import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.lecture.UniversityType;

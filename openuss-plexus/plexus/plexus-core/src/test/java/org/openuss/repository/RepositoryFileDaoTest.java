@@ -27,7 +27,7 @@ public class RepositoryFileDaoTest extends RepositoryFileDaoTestBase {
 		byte[] data = str.getBytes();
 		
 		RepositoryFile file = RepositoryFile.Factory.newInstance();
-		file.setId(testUtility.unique());
+		file.setId(TestUtility.unique());
 		file.setModified(new Date());
 		file.setInputStream(new ByteArrayInputStream(data));
 		

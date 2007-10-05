@@ -14,8 +14,6 @@ import org.openuss.lecture.Course;
 import org.openuss.lecture.Department;
 import org.openuss.lecture.DepartmentDao;
 import org.openuss.lecture.DepartmentInfo;
-import org.openuss.lecture.InstituteDao;
-import org.openuss.lecture.LectureBuilder;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
 import org.openuss.lecture.UniversityInfo;
@@ -31,16 +29,12 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 	
 	private TestUtility testUtility;
 	
-	private InstituteDao instituteDao;
-	
 	private UserDao userDao;
 	
 	private UniversityDao universityDao;
 	
 	private DepartmentDao departmentDao;
 	
-	private LectureBuilder lectureBuilder;
-
 	public void testDesktopDaoCreate() {
 		Desktop desktop = createDesktop();
 		assertNotNull(desktop.getId());
@@ -230,14 +224,14 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		
 		// Create a new ValueObject
 		DesktopInfo desktopInfo2 = new DesktopInfo();
-		desktopInfo2.setUserInfo(this.getUserDao().toUserInfo(testUtility.createUniqueUserInDB()));
+		desktopInfo2.setUserInfo(this.userDao.toUserInfo(testUtility.createUniqueUserInDB()));
 		List universities = new ArrayList();
-		universities.add(this.getUniversityDao().toUniversityInfo(department.getUniversity()));
-		universities.add(this.getUniversityDao().toUniversityInfo(department2.getUniversity()));
+		universities.add(this.universityDao.toUniversityInfo(department.getUniversity()));
+		universities.add(this.universityDao.toUniversityInfo(department2.getUniversity()));
 		desktopInfo2.setUniversityInfos(universities);
 		List departments = new ArrayList();
-		departments.add(this.getDepartmentDao().toDepartmentInfo(department));
-		departments.add(this.getDepartmentDao().toDepartmentInfo(department2));
+		departments.add(this.departmentDao.toDepartmentInfo(department));
+		departments.add(this.departmentDao.toDepartmentInfo(department2));
 		desktopInfo2.setDepartmentInfos(departments);
 		
 		// Test toEntity
@@ -251,8 +245,6 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		
 	}
 	
-	
-	
 	private void removeDesktopAndUser(Desktop desktop) {
 		desktopDao.remove(desktop);
 		testUtility.removeUser(desktop.getUser());
@@ -265,53 +257,19 @@ public class DesktopDaoTest extends DesktopDaoTestBase {
 		return desktopOne;
 	}
 	
-	
-
-	public TestUtility getTestUtility() {
-		return testUtility;
-	}
-
 	public void setTestUtility(TestUtility testUtility) {
 		this.testUtility = testUtility;
-	}
-
-	public InstituteDao getInstituteDao() {
-		return instituteDao;
-	}
-
-	public void setInstituteDao(InstituteDao instituteDao) {
-		this.instituteDao = instituteDao;
-	}
-	
-	public UserDao getUserDao() {
-		return userDao;
 	}
 
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
 
-	public UniversityDao getUniversityDao() {
-		return universityDao;
-	}
-
 	public void setUniversityDao(UniversityDao universityDao) {
 		this.universityDao = universityDao;
 	}
 	
-	public DepartmentDao getDepartmentDao() {
-		return departmentDao;
-	}
-
 	public void setDepartmentDao(DepartmentDao departmentDao) {
 		this.departmentDao = departmentDao;
 	}
-
-	public LectureBuilder getLectureBuilder() {
-		return lectureBuilder;
-	}
-
-	public void setLectureBuilder(LectureBuilder lectureBuilder) {
-		this.lectureBuilder = lectureBuilder;
-	}	
 }

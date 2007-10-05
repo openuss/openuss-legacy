@@ -4,13 +4,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
-import org.openuss.lecture.LectureIndex;
 import org.openuss.lecture.LectureSearchQuery;
 import org.openuss.lecture.University;
-import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
-import org.openuss.lecture.UniversityType;
-import org.openuss.security.User;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
 

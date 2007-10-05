@@ -17,8 +17,8 @@ public class TrackingServiceIntegrationTest extends TrackingServiceIntegrationTe
 	private TestUtility testUtility;
 
 	public void testViewState() {
-		testUtility.createSecureContext();
-		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(testUtility.unique());
+		testUtility.createUserSecureContext();
+		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(TestUtility.unique());
 		
 		assertEquals(ViewState.NEW, trackingService.getViewState(defaultDomainObject));
 		

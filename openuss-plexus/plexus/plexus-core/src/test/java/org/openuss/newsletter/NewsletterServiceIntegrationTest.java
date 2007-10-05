@@ -39,7 +39,7 @@ public class NewsletterServiceIntegrationTest extends NewsletterServiceIntegrati
 	protected void onSetUpInTransaction() throws Exception {
 		super.onSetUpInTransaction();
 		AcegiUtils.setAclManager(aclManager);
-		user = testUtility.createSecureContext();
+		user = testUtility.createUserSecureContext();
 		DomainObject assistDO = generateDOAssist(user);
 		flush();
 		getNewsletterService().addNewsletter(assistDO, "assistML"); 
@@ -95,7 +95,7 @@ public class NewsletterServiceIntegrationTest extends NewsletterServiceIntegrati
 		DomainObject domainObject = generateDomainObject();
 		getNewsletterService().addNewsletter(domainObject, "testName");		
 		NewsletterInfo newsletter = getNewsletterService().getNewsletter(domainObject);
-		User user = testUtility.createDefaultUserInDB();
+		User user = testUtility.createUniqueUserInDB();
 		flush();
 		//Init list of subscribers has to be empty
 		List<SubscriberInfo> subscribers = getNewsletterService().getSubscribers(newsletter);
@@ -211,13 +211,13 @@ public class NewsletterServiceIntegrationTest extends NewsletterServiceIntegrati
 	}
 
 	private DomainObject generateDomainObject(){
-		DomainObject domainObject = new DefaultDomainObject(testUtility.unique());
+		DomainObject domainObject = new DefaultDomainObject(TestUtility.unique());
 		securityService.createObjectIdentity(domainObject, null);
 		return domainObject;
 	}
 	
 	private DomainObject generateDOAssist(User user){
-		DomainObject domainObject = new DefaultDomainObject(testUtility.unique());
+		DomainObject domainObject = new DefaultDomainObject(TestUtility.unique());
 		securityService.createObjectIdentity(domainObject, null);
 		securityService.setPermissions(user, domainObject.getId(), LectureAclEntry.ASSIST);		
 		return domainObject;
