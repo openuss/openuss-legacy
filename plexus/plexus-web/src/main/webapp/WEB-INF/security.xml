@@ -59,8 +59,8 @@
 		</property>
 	</bean>
 
-	<bean id="formExceptionTranslationFilter"
-		class="org.acegisecurity.ui.ExceptionTranslationFilter">
+<!-- 	<bean id="formExceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">-->
+	<bean id="formExceptionTranslationFilter" class="org.openuss.framework.web.acegi.PlexusExceptionTranslationFilter">
 		<property name="authenticationEntryPoint">
 			<ref local="authenticationProcessingFilterEntryPoint" />
 		</property>
