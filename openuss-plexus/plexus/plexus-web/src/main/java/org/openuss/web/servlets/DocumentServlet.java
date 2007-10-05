@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.acegisecurity.AccessDeniedException;
 import org.acegisecurity.acl.AclManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -71,7 +72,7 @@ public class DocumentServlet extends HttpServlet {
 		if (file == null) {
 			sendFileNotFound(response);
 		} else if (!AcegiUtils.hasPermission(file, new Integer[] { LectureAclEntry.READ })) {
-			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			throw new AccessDeniedException("User is not permitted!");
 		} else {
 			sendFileHeader(response, file);
 			sendFileContent(response, file);
