@@ -1,14 +1,13 @@
 package org.openuss.framework.web.jsf.pages;
 
-import java.io.IOException;
-
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
-import javax.servlet.http.HttpServletResponse;
 
+import org.acegisecurity.AccessDeniedException;
 import org.apache.log4j.Logger;
 import org.openuss.framework.utilities.DomainObjectUtility;
+import org.openuss.framework.web.acegi.PlexusExceptionTranslationFilter;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.framework.web.jsf.util.FacesUtils;
 
@@ -63,12 +62,16 @@ public class SecurityConstraint {
 	}
 
 	private void sendAccessDeniedError() {
-		try {
-			FacesUtils.sendError(HttpServletResponse.SC_FORBIDDEN);
-		} catch (IOException e) {
-			logger.error(e);
-			throw new RuntimeException(e);
-		}
+		String msg = "Security Constraint Access Denied on Domain Object " + domainObject.getExpressionString()+". Needed permissions are "+permissions;
+		// FacesUtils.sendError(HttpServletResponse.SC_FORBIDDEN);
+		// Ugly workaround, the default solution to throw a AccessDeniedException doesn't work within a PhaseListener
+		// MyFaces PhaseListener executor will caught all exceptions, so the exception will never reach the ExceptionTranslationFilter
+		// of Acegi. So this workaround stores the exception within the request and overrides the acegie filter by 
+		// PlexusExceptionTranslationFilter.
+		FacesUtils.getFacesContext().responseComplete();
+		logger.debug(msg);
+		AccessDeniedException ade = new AccessDeniedException("Security Constraint Access Denied on Domain Object "+domainObject.getExpressionString()+ "");
+		FacesUtils.getRequest().setAttribute(PlexusExceptionTranslationFilter.EXCEPTION_KEY, ade);
 	}
 
 	private boolean hasPermission() {

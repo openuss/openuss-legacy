@@ -1,10 +1,9 @@
 package org.openuss.framework.web.jsf.pages;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.shale.test.base.AbstractJsfTestCase;
 import org.apache.shale.test.mock.MockNavigationHandler;
+import org.openuss.framework.web.acegi.PlexusExceptionTranslationFilter;
 import org.openuss.framework.web.jsf.util.MockAclManager;
 
 /**
@@ -96,7 +95,7 @@ public class PagesTest extends AbstractJsfTestCase {
 
 		facesContext.getViewRoot().setViewId("/course/nodeniedaction.xhtml");
 		Pages.instance().performSecurityConstraints(facesContext);
-		assertEquals(HttpServletResponse.SC_FORBIDDEN, response.getStatus());
+		assertNotNull(request.getAttribute(PlexusExceptionTranslationFilter.EXCEPTION_KEY));
 	}
 
 	public void testEncodePageParameters() {

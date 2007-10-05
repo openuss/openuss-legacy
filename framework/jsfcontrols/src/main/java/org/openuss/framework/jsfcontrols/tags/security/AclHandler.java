@@ -7,8 +7,8 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.el.MethodBinding;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.acegisecurity.AccessDeniedException;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -132,7 +132,8 @@ public class AclHandler extends TagHandler {
 		if (onErrorAction != null) {
 			performOnErrorAction(faceletContext);
 		} else if (ifNot != null && StringUtils.equals(ifNot.getValue(),ERROR)) {
-			FacesUtils.sendError(HttpServletResponse.SC_FORBIDDEN);
+			throw new AccessDeniedException("Access denied on domain object "+domainObject.getValue());
+//			FacesUtils.sendError(HttpServletResponse.SC_FORBIDDEN);
 		} 
 	}
 
