@@ -9,6 +9,7 @@ import org.acegisecurity.acl.AclManager;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.openuss.TestUtility;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.University;
 import org.openuss.security.acl.LectureAclEntry;
@@ -44,7 +45,7 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 
 	public void testPermission() {
 		User user = testUtility.createUniqueUserInDB();
-		TestBean bean = new TestBean(testUtility.unique(), "test get permission");
+		TestBean bean = new TestBean(TestUtility.unique(), "test get permission");
 
 		securityService.createObjectIdentity(bean, null);
 
@@ -67,8 +68,8 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 				GroupType.ADMINISTRATOR);
 		User user = testUtility.createUniqueUserInDB();
 		securityService.addAuthorityToGroup(user, group);
-		Object parent = new TestBean(testUtility.unique(), "parent");
-		Object child = new TestBean(testUtility.unique(), "child");
+		Object parent = new TestBean(TestUtility.unique(), "parent");
+		Object child = new TestBean(TestUtility.unique(), "child");
 		securityService.createObjectIdentity(parent, null);
 		securityService.createObjectIdentity(child, parent);
 		securityService.setPermissions(group, parent, LectureAclEntry.ASSIST);

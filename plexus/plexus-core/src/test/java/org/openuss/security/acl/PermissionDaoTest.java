@@ -53,7 +53,7 @@ public class PermissionDaoTest extends PermissionDaoTestBase {
 
 	private ObjectIdentity createAndTestObjectIdentityInDB() {
 		ObjectIdentity objectIdentity = ObjectIdentity.Factory.newInstance();
-		objectIdentity.setId(testUtility.unique());
+		objectIdentity.setId(TestUtility.unique());
 		objectIdentity.setParent(null);
 		objectIdentityDao.create(objectIdentity);
 		return objectIdentity;

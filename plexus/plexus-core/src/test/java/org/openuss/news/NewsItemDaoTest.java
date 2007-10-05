@@ -96,7 +96,7 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 	public void testFindAndCountByPublisher() {
 		removeAllNewsItem();
 		
-		long publisherId = testUtility.unique();
+		long publisherId = TestUtility.unique();
 		
 		NewsItem itemOne = createNewsItem();
 		itemOne.setPublisherIdentifier(publisherId);
@@ -169,7 +169,7 @@ public class NewsItemDaoTest extends NewsItemDaoTestBase {
 	private NewsItem createNewsItem() {
 		NewsItem newsItem = NewsItem.Factory.newInstance();
 		newsItem.setCategory(NewsCategory.GLOBAL);
-		newsItem.setPublisherIdentifier(testUtility.unique());
+		newsItem.setPublisherIdentifier(TestUtility.unique());
 		newsItem.setPublisherName("publishername of newsitem can be 250 character long - 123456789012345678012345678012345678901234567890123456789012345678");
 		newsItem.setTitle("titel of newsitem can be 250 character long - 123456789012345678012345678012345678901234567890123456789012345678");
 		newsItem.setText("text of the newsitem");

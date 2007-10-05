@@ -27,7 +27,7 @@ public class DomainViewStateDaoTest extends DomainViewStateDaoTestBase {
 
 	public void testViewStateDaoCreate() {
 		User user = testUtility.createAdminSecureContext();
-		Long id = testUtility.unique();
+		Long id = TestUtility.unique();
 		DomainViewState domainViewState = createDomainViewState(id, user.getId(), ViewState.NEW);
 		
 		assertEquals(id, domainViewState.getDomainViewStatePk().getDomainIdentifier());
@@ -42,10 +42,10 @@ public class DomainViewStateDaoTest extends DomainViewStateDaoTestBase {
 	}
 	
 	public void testUpdateAllAndRemoveBy() {
-		Long domainId1 = testUtility.unique();
-		Long domainId2 = testUtility.unique();
-		Long user1 = testUtility.unique();
-		Long user2 = testUtility.unique();
+		Long domainId1 = TestUtility.unique();
+		Long domainId2 = TestUtility.unique();
+		Long user1 = TestUtility.unique();
+		Long user2 = TestUtility.unique();
 		
 		DomainViewState viewState1 = createDomainViewState(domainId1, user1, ViewState.NEW);
 		DomainViewState viewState2 = createDomainViewState(domainId1, user2, ViewState.NEW);

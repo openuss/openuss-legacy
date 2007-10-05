@@ -86,7 +86,7 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		logger.debug("----> BEGIN access to getCourseType test <---- ");
 		
 		//Create Secure context
-		testUtility.createSecureContext();
+		testUtility.createUserSecureContext();
 		
 		//Create CourseType
 		CourseType courseType = testUtility.createUniqueCourseTypeInDB();
@@ -104,7 +104,7 @@ public class LectureServiceIntegrationTest extends LectureServiceIntegrationTest
 		logger.debug("----> BEGIN access to getCourse test <---- ");
 		
 		//Create Secure context
-		testUtility.createSecureContext();
+		testUtility.createUserSecureContext();
 		
 		//Create Course
 		Course course= testUtility.createUniqueCourseInDB();

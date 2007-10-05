@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.acegisecurity.acl.AclManager;
+import org.openuss.TestUtility;
 import org.openuss.documents.FileInfo;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.foundation.DomainObject;
@@ -91,7 +92,7 @@ public class NewsServiceIntegrationTest extends NewsServiceIntegrationTestBase {
 	}
 	
 	public void testGetNewsItemsByPublisher() {
-		DomainObject publisher = new DefaultDomainObject(testUtility.unique());
+		DomainObject publisher = new DefaultDomainObject(TestUtility.unique());
 		securityService.createObjectIdentity(publisher, null);
 		
 		NewsItemInfo info1 = createNewsItem();
@@ -121,7 +122,7 @@ public class NewsServiceIntegrationTest extends NewsServiceIntegrationTestBase {
 	private NewsItemInfo createNewsItem() {
 		NewsItemInfo vo = new NewsItemInfo();
 		vo.setCategory(NewsCategory.GLOBAL);
-		vo.setPublisherIdentifier(testUtility.unique());
+		vo.setPublisherIdentifier(TestUtility.unique());
 		vo.setPublisherName("publishername of newsitem can be 250 character long");
 		vo.setTitle("titel of newsitem can be 250 character long");
 		vo.setText("text of the newsitem");

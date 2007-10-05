@@ -23,7 +23,7 @@ public class MailDaoTest extends MailDaoTestBase {
 	
 	public void testMailDaoCreate() {
 		Newsletter newsletter = Newsletter.Factory.newInstance();
-		newsletter.setDomainIdentifier(testUtility.unique());
+		newsletter.setDomainIdentifier(TestUtility.unique());
 		newsletter.setName("Name");
 		newsletterDao.create(newsletter);
 		
@@ -34,7 +34,7 @@ public class MailDaoTest extends MailDaoTestBase {
 		mail.setText("TEXT");
 		mail.setSms(true);
 		mail.setSendDate(new Date());
-		mail.setMessageId(testUtility.unique());
+		mail.setMessageId(TestUtility.unique());
 		assertNull(mail.getId());
 		mailDao.create(mail);
 		assertNotNull(mail.getId());

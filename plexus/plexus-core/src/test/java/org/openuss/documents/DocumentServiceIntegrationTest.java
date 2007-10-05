@@ -14,6 +14,8 @@ import java.util.List;
 
 import org.acegisecurity.acl.AclManager;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
+import org.openuss.TestUtility;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.repository.RepositoryService;
@@ -40,7 +42,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
 		AcegiUtils.setAclManager(aclManager);
-		testUtility.createSecureContext();
+		testUtility.createUserSecureContext();
 		defaultDomainObject = createDomainObject();
 		super.onSetUpInTransaction();
 	}
@@ -87,6 +89,9 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		flush();
 		entries = documentService.getFolderEntries(defaultDomainObject, root);
 		assertNotNull(entries);
+		// FIXME this asserts cause under some circustances trouble
+		// I guess it has something todo with the security cache
+		// neeed to be fixed soon -
 		assertEquals(1, entries.size());
 		FolderEntryInfo info = entries.get(0);
 		assertEquals(folder.getId(), info.getId());
@@ -240,7 +245,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertFalse(entry.isFolder());
 		assertEquals(entry.getCreated(), entry.getReleaseDate());
 		
-		InputStream is = getRepositoryService().loadContent(entry.getId());
+		InputStream is = repositoryService.loadContent(entry.getId());
 		assertNotNull(is);
 		is.close();
 		
@@ -248,7 +253,7 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		flush();
 
 		try {
-			getRepositoryService().loadContent(entry.getId());
+			repositoryService.loadContent(entry.getId());
 			fail();
 		} catch (RepositoryServiceException rse) {
 			// expected
@@ -340,41 +345,26 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		FolderInfo folder = new FolderInfo();
 		folder.setName(testUtility.unique("folder name"));
 		folder.setDescription("first folder description");
+		folder.setCreated(DateUtils.addDays(new Date(), -1));
 		return folder;
 	}
 
 	private DefaultDomainObject createDomainObject() {
-		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(testUtility.unique());
-		getSecurityService().createObjectIdentity(defaultDomainObject, null);
+		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(TestUtility.unique());
+		securityService.createObjectIdentity(defaultDomainObject, null);
 		return defaultDomainObject;
 	}
 	
-	public FolderEntryDao getFolderEntryDao() {
-		return folderEntryDao;
-	}
-
 	public void setFolderEntryDao(FolderEntryDao folderEntryDao) {
 		this.folderEntryDao = folderEntryDao;
-	}
-
-	public RepositoryService getRepositoryService() {
-		return repositoryService;
 	}
 
 	public void setRepositoryService(RepositoryService repositoryService) {
 		this.repositoryService = repositoryService;
 	}
 
-	public SecurityService getSecurityService() {
-		return securityService;
-	}
-
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
-	}
-
-	public AclManager getAclManager() {
-		return aclManager;
 	}
 
 	public void setAclManager(AclManager aclManager) {

@@ -49,7 +49,7 @@ public class MessageServiceIntegrationTest extends MessageServiceIntegrationTest
 	private List<User> createUsers(int number) {
 		List<User> users = new ArrayList<User>();
 		for(int i = 0; i < number; i++) {
-			users.add(testUtility.createUserInDB());
+			users.add(testUtility.createUniqueUserInDB());
 		}
 		return users;
 	}

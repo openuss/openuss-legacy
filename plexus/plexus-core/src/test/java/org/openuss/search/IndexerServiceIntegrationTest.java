@@ -8,6 +8,7 @@ package org.openuss.search;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.openuss.TestUtility;
 import org.openuss.commands.Command;
 import org.openuss.commands.CommandDao;
 import org.openuss.foundation.DomainObject;
@@ -29,7 +30,7 @@ public class IndexerServiceIntegrationTest extends IndexerServiceIntegrationTest
 
 	private DomainObject createDomainObject() {
 		Institute institute = Institute.Factory.newInstance();
-		institute.setId(testUtility.unique());
+		institute.setId(TestUtility.unique());
 		return institute;
 	}
 
