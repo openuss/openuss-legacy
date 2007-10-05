@@ -47,6 +47,9 @@ public class MigrationService {
 	
 	/** QuizImport */
 	private QuizImport quizImport;
+	
+	/** DiscussionItem */
+	private DiscussionImport discussionImport;
 
 	/** Legacy hibernate session */
 	private Session legacySession;
@@ -62,13 +65,14 @@ public class MigrationService {
 		legacySession = openAndBindNewSession(legacySessionFactory);
 //		userImport.perform();
 //		lectureImport.perform();
-		newsImport.perform(); 
-		desktopImport.perform();
-		courseMemberImport.perform();
-		documentImport.perform();
-		newsLetterImport.perform();
-		quizImport.perform();
-
+//		newsImport.perform(); 
+//		desktopImport.perform();
+//		courseMemberImport.perform();
+//		documentImport.perform();
+//		newsLetterImport.perform();
+//		quizImport.perform();
+		discussionImport.perform();
+		
 		legacyTx.rollback();
 		legacySession.close();
 		try {
@@ -124,6 +128,10 @@ public class MigrationService {
 
 	public void setScheduler(Scheduler scheduler) {
 		this.scheduler = scheduler;
+	}
+
+	public void setDiscussionImport(DiscussionImport discussionImport) {
+		this.discussionImport = discussionImport;
 	}
 
 }

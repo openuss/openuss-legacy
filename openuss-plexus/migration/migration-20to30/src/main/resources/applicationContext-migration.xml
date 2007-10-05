@@ -88,6 +88,18 @@
 		<property name="permissionDao" ref="permissionDao"/>
 		<property name="objectIdentityDao" ref="objectIdentityDao"/>
 	</bean>
+
+	<bean id="discussionImport" class="org.openuss.migration.from20to30.DiscussionImport" parent="import_template">
+		<property name="userImport" ref="userImport"/>
+		<property name="forumDao" ref="forumDao"/>
+		<property name="topicDao" ref="topicDao"/>
+		<property name="postDao" ref="postDao"/>
+		<property name="userDao" ref="userDao"/>
+		<property name="forumWatchDao" ref="forumWatchDao"/>
+		<property name="objectIdentityDao" ref="objectIdentityDao"/>
+		<property name="documentService" ref="documentService"/>
+		
+	</bean>
 	
 	<bean id="quizImport" class="org.openuss.migration.from20to30.QuizImport" parent="import_template">
 		<property name="brainContestService" ref="brainContestService"/>
@@ -135,6 +147,12 @@
 			<ref bean="newsLetterImport"/>
 		</property>
 	</bean>
+
+	<bean id="discussionImportTx" parent="template_tx">
+		<property name="target">
+			<ref bean="discussionImport"/>
+		</property>
+	</bean>
 	
 	<!-- Local DataSource that works in any environment --> 
 
@@ -147,6 +165,7 @@
 		<property name="newsImport" ref="newsImportTx"/>
 		<property name="documentImport" ref="documentImport"/>
 		<property name="newsLetterImport" ref="newsLetterImportTx"/>
+		<property name="discussionImport" ref="discussionImportTx"/>
 		<property name="quizImport" ref="quizImport"/>
 		<property name="scheduler" ref="scheduler"/>
 	</bean>

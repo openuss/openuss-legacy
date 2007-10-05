@@ -12,8 +12,10 @@ import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
+import org.openuss.business.extension.discussion.discussionfiledescription.discussionfilebase.DiscussionFileObject;
 import org.openuss.business.extension.lecture.file.filedescription.lecturefilebase.LectureFileObject;
 import org.openuss.migration.legacy.domain.Assistant2;
+import org.openuss.migration.legacy.domain.Discussionfilebase2;
 import org.openuss.migration.legacy.domain.Faculty2;
 import org.openuss.migration.legacy.domain.Filebase2;
 import org.openuss.migration.legacy.domain.Lecturefilebase2;
@@ -21,44 +23,35 @@ import org.openuss.migration.legacy.domain.Quizfile2;
 import org.openuss.migration.legacy.domain.Student2;
 import org.openuss.utility.FileObjectWrapper;
 import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  * 
  * @author Ingo Dueppe
  */
-public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.HibernateDaoSupport implements LegacyDao {
+public class LegacyDaoImpl extends HibernateDaoSupport implements LegacyDao {
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
 	public Assistant2 loadAssistant(String id) {
 		return (Assistant2) this.getHibernateTemplate().get(Assistant2.class, id);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
 	public ScrollableResults loadAllAssistants() {
 		return query("from Assistant2");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
 	public Student2 loadStudent(String id) {
 		return (Student2) this.getHibernateTemplate().load(Student2.class, id);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
 	public ScrollableResults loadAllStudents() {
 		return query("from Student2");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
 	public List<Faculty2> loadAllInstitutes() {
 		return (List<Faculty2>) this.getHibernateTemplate().loadAll(Faculty2.class);
 	}
@@ -93,9 +86,16 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 		return query("from Studentsubject2");
 	}
 
+	/** {@inheritDoc} */
 	public ScrollableResults loadAllFacultyInformation() {
 		return query("from Facultyinformation2 order by faculty");
 	}
+	
+	/** {@inheritDoc} */
+	public ScrollableResults loadTopDiscussionItems() {
+		return query("from Discussionitem2 d where d.parent is null order by enrollmentpk");
+	}
+
 
 	public Filebase2 loadFileBase(String id) {
 		return (Filebase2) this.getHibernateTemplate().load(Filebase2.class, id);
@@ -113,6 +113,9 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 		return query("from Enrollmentaccesslist2 order by enrollment");
 	}
 	
+	public ScrollableResults loadAllDiscussionWatches() {
+		return query("from Discussionwatch2 order by submitter");
+	}
 
 	public byte[] loadLectureFileData(String id) {
 		Lecturefilebase2 base = (Lecturefilebase2) this.getHibernateTemplate().load(Lecturefilebase2.class, id);
@@ -180,4 +183,24 @@ public class LegacyDaoImpl extends org.springframework.orm.hibernate3.support.Hi
 		return null;
 	}
 
+	public byte[] loadDiscussionFileData(String id) {
+		Discussionfilebase2 base = (Discussionfilebase2) this.getHibernateTemplate().load(Discussionfilebase2.class, id);
+		if (base != null) {
+			try {
+				ByteArrayInputStream bis = new ByteArrayInputStream(base.getBasefile());
+				ObjectInputStream ois = new ObjectInputStream(bis);
+				DiscussionFileObject fileObject = (DiscussionFileObject) ois.readObject();
+				ois.close();
+				bis.close();
+				byte[] data = fileObject.getData();
+				getSession().evict(base);
+				return data;
+			} catch (ClassNotFoundException e) {
+				logger.error(e);
+			} catch (IOException e) {
+				logger.error(e);
+			}
+		}
+		return null;
+	}
 }

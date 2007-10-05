@@ -13,10 +13,10 @@ public class Discussionitem2 implements java.io.Serializable {
 	// Fields    
 
 	private String id;
-	private Discussionitem2 discussionitem2;
+	private Discussionitem2 parent;
 	private Formula2 formula2;
-	private Discussionfilebase2 discussionfilebase2;
-	private Enrollment2 enrollment2;
+	private String discussionfilebase2;
+	private String enrollment2;
 	private String subject;
 	private String ttext;
 	private Date ddate;
@@ -40,11 +40,11 @@ public class Discussionitem2 implements java.io.Serializable {
 
 	/** full constructor */
 	public Discussionitem2(String id, Discussionitem2 discussionitem2, Formula2 formula2,
-			Discussionfilebase2 discussionfilebase2, Enrollment2 enrollment2, String subject, String ttext, Date ddate,
+			String discussionfilebase2, String enrollment2, String subject, String ttext, Date ddate,
 			String localestring, String submitterpk, String submittertype, String discussionfilename,
 			String discussionsize, Set<Discussionitem2> discussionitem2s) {
 		this.id = id;
-		this.discussionitem2 = discussionitem2;
+		this.parent = discussionitem2;
 		this.formula2 = formula2;
 		this.discussionfilebase2 = discussionfilebase2;
 		this.enrollment2 = enrollment2;
@@ -68,12 +68,12 @@ public class Discussionitem2 implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Discussionitem2 getDiscussionitem() {
-		return this.discussionitem2;
+	public Discussionitem2 getParent() {
+		return this.parent;
 	}
 
-	public void setDiscussionitem(Discussionitem2 discussionitem2) {
-		this.discussionitem2 = discussionitem2;
+	public void setParent(Discussionitem2 parent) {
+		this.parent = parent;
 	}
 
 	public Formula2 getFormula() {
@@ -84,19 +84,19 @@ public class Discussionitem2 implements java.io.Serializable {
 		this.formula2 = formula2;
 	}
 
-	public Discussionfilebase2 getDiscussionfilebase() {
+	public String getDiscussionfilebase() {
 		return this.discussionfilebase2;
 	}
 
-	public void setDiscussionfilebase(Discussionfilebase2 discussionfilebase2) {
+	public void setDiscussionfilebase(String discussionfilebase2) {
 		this.discussionfilebase2 = discussionfilebase2;
 	}
 
-	public Enrollment2 getEnrollment() {
+	public String getEnrollment() {
 		return this.enrollment2;
 	}
 
-	public void setEnrollment(Enrollment2 enrollment2) {
+	public void setEnrollment(String enrollment2) {
 		this.enrollment2 = enrollment2;
 	}
 
