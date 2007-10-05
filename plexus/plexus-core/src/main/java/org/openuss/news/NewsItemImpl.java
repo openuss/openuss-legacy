@@ -5,13 +5,23 @@
  */
 package org.openuss.news;
 
+import org.apache.log4j.Logger;
+
 import java.util.Date;
+
+import org.openuss.framework.utilities.Text2HtmlConverter;
 
 /**
  * @author ingo dueppe
  * @see org.openuss.news.NewsItem
  */
 public class NewsItemImpl extends NewsItemBase implements NewsItem {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(NewsItemImpl.class);
+	
+
 	/**
 	 * The serial version UID of this class. Needed for serialization.
 	 */
@@ -49,4 +59,13 @@ public class NewsItemImpl extends NewsItemBase implements NewsItem {
 		}
 	}
 
+	@Override
+	public String getText() {
+		String text = super.getText();
+		if (!text.contains("<br/>") && !text.contains("<a")) {
+			text = Text2HtmlConverter.toHtml(text);
+			logger.debug("converter text to "+text);
+		}
+		return text;
+	}
 }
