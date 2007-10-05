@@ -31,7 +31,9 @@ public abstract class DefaultImport {
 	}
 
 	protected void evict(Object object) {
-		legacySessionFactory.getCurrentSession().evict(object);
+		if (object != null) {
+			legacySessionFactory.getCurrentSession().evict(object);
+		}
 	}
 
 }

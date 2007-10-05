@@ -68,6 +68,11 @@ public class LegacyDaoImplTest extends AbstractTransactionalDataSourceSpringCont
 		results.close();
 	}
 
+	public void testLoadTopDiscussionItems() {
+		ScrollableResults results = legacyDao.loadTopDiscussionItems();
+		results.close();
+	}
+
 	public LegacyDao getLegacyDao() {
 		return legacyDao;
 	}

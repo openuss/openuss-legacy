@@ -177,10 +177,10 @@ public class LegacyIdentifierDao extends SimpleJdbcDaoSupport implements Initial
 	}
 
 	/**
-	 * Retrieve new id of a legacy di
+	 * Retrieve new id of a legacy id
 	 * 
 	 * @param legacyId
-	 * @return user id
+	 * @return id
 	 */
 	public Long getId(String legacyId) {
 		logger.trace("looking for " + legacyId);
