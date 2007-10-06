@@ -13,6 +13,13 @@
  		<property name="overwriteExistingJobs" value="true"/>
 	</bean>
 
+	<bean id="nodeScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="applicationContextSchedulerContextKey" value="applicationContext"/>
+		<property name="autoStartup" value="false" />
+		<property name="waitForJobsToCompleteOnShutdown" value="false" />
+ 		<property name="overwriteExistingJobs" value="true"/>
+	</bean>
+
 	<!-- Local DataSource that works in any environment --> 
     <bean id="legacyDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName"><value>org.firebirdsql.jdbc.FBDriver</value></property>
@@ -34,7 +41,7 @@
 	<bean id="template_tx" abstract="true" class="org.springframework.aop.framework.ProxyFactoryBean">
         <property name="interceptorNames">
             <list>
-               <!-- <value>serviceTransactionInterceptor</value> -->
+               <value>serviceTransactionInterceptor</value>
                <value>hibernateInterceptor</value>
             </list>
         </property>
@@ -98,7 +105,6 @@
 		<property name="forumWatchDao" ref="forumWatchDao"/>
 		<property name="objectIdentityDao" ref="objectIdentityDao"/>
 		<property name="documentService" ref="documentService"/>
-		<property name="transactionManager" ref="transactionManager"/>
 	</bean>
 	
 	<bean id="quizImport" class="org.openuss.migration.from20to30.QuizImport" parent="import_template">

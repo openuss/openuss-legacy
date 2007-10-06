@@ -27,10 +27,6 @@ import org.openuss.security.User;
 import org.openuss.security.UserDao;
 import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.ObjectIdentityDao;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * This Service migrate data from openuss 2.0 to openuss-plexus 3.0
@@ -70,40 +66,29 @@ public class DiscussionImport extends DefaultImport {
 	/** DocumentService */
 	private DocumentService documentService;
 
-	/** Transaction Manager */
-	private PlatformTransactionManager transactionManager;
-
 	/** Course Forum Map */
 	private Map<Long, Forum> course2Forum = new HashMap<Long, Forum>();
 
 	private int count = 0;
 
-	public void perform() {
-//		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
-
-//		transactionTemplate.execute(new TransactionCallback() {
-//			public Object doInTransaction(TransactionStatus status) {
-//				logger.info("initializing...");
-//				initializeUser();
-//				logger.info("parsing discussions...");
-//				importItems();
-//				logger.info("parsing watch entries...");
-//				importWatches();
-//				return null;
-//			}
-//		});
-		logger.info("parsing discussions attachment...");
-		importAttachments();
-//		logger.info("clearing data...");
-//		clearingData();
-
+	public void performDiscussion() {
+		logger.info("initializing...");
+		initializeUser();
+		logger.info("parsing discussions...");
+		importItems();
+		logger.info("parsing watch entries...");
+		importWatches();
+		clearingData();
 	}
 
-	// private void clearingData() {
-	// objectIdentities = null;
-	// domain2Forum = null;
-	// legacy2Forum = null;
-	// }
+	public void performAttachments() {
+		logger.info("parsing discussions attachment...");
+		importAttachments();
+	}
+
+	private void clearingData() {
+		course2Forum = null;
+	}
 
 	private void importWatches() {
 		ScrollableResults results = legacyDao.loadAllDiscussionWatches();
@@ -129,6 +114,7 @@ public class DiscussionImport extends DefaultImport {
 				}
 			}
 		}
+		results.close();
 	}
 
 	private void importItems() {
@@ -154,6 +140,7 @@ public class DiscussionImport extends DefaultImport {
 				progress();
 			}
 		}
+		results.close();
 	}
 
 	private void initializeUser() {
@@ -228,6 +215,7 @@ public class DiscussionImport extends DefaultImport {
 			}
 
 		}
+		results.close();
 	}
 
 	private void importAttachment(Discussionitem2 discussionItem, Long postId) {
@@ -292,9 +280,4 @@ public class DiscussionImport extends DefaultImport {
 	public void setDocumentService(DocumentService documentService) {
 		this.documentService = documentService;
 	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
-	}
-
 }
