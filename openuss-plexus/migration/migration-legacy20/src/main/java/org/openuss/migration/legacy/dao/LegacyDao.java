@@ -55,11 +55,14 @@ public interface LegacyDao {
 	
 	public abstract ScrollableResults loadAllDiscussionWatches();
 	
+	public abstract ScrollableResults loadAllDiscussionAttachments();
+
 	public abstract byte[] loadLectureFileData(String id);
 
 	public abstract byte[] loadQuizFileData(String id);
 
 	public abstract byte[] loadDiscussionFileData(String discussionfilebase);
+
 
 
 }

@@ -27,6 +27,8 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  * 
+ * This class provides all needed data access methodes to import legacy data
+ * 
  * @author Ingo Dueppe
  */
 public class LegacyDaoImpl extends HibernateDaoSupport implements LegacyDao {
@@ -117,6 +119,22 @@ public class LegacyDaoImpl extends HibernateDaoSupport implements LegacyDao {
 		return query("from Discussionwatch2 order by submitter");
 	}
 
+	public ScrollableResults loadAllMailingListSubscribers() {
+		return query("from Mailinglist2 order by enrollmentpk");
+	}
+	
+	public ScrollableResults loadAllMailingListMessages() {
+		return query("from Mailinglistmessage2 order by enrollmentPk");
+	}
+	
+	public ScrollableResults loadAllQuiz() {
+		return query("from Quiz2 order by enrollmentpk");
+	}
+	
+	public ScrollableResults loadAllDiscussionAttachments() {
+		return query("from Discussionitem2 d where d.discussionfilebase is not null");
+	}
+	
 	public byte[] loadLectureFileData(String id) {
 		Lecturefilebase2 base = (Lecturefilebase2) this.getHibernateTemplate().load(Lecturefilebase2.class, id);
 		if (base != null) {
@@ -138,14 +156,6 @@ public class LegacyDaoImpl extends HibernateDaoSupport implements LegacyDao {
 		return null;
 	}
 
-	public ScrollableResults loadAllMailingListSubscribers() {
-		return query("from Mailinglist2 order by enrollmentpk");
-	}
-
-	public ScrollableResults loadAllMailingListMessages() {
-		return query("from Mailinglistmessage2 order by enrollmentPk");
-	}
-
 	private ScrollableResults query (final String hql) {
 		return (ScrollableResults) this.getHibernateTemplate().execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
@@ -156,10 +166,6 @@ public class LegacyDaoImpl extends HibernateDaoSupport implements LegacyDao {
 				return query.scroll(ScrollMode.FORWARD_ONLY);
 			}
 		});
-	}
-
-	public ScrollableResults loadAllQuiz() {
-		return query("from Quiz2 order by enrollmentpk");
 	}
 
 	public byte[] loadQuizFileData(String id) {
@@ -203,4 +209,5 @@ public class LegacyDaoImpl extends HibernateDaoSupport implements LegacyDao {
 		}
 		return null;
 	}
+
 }

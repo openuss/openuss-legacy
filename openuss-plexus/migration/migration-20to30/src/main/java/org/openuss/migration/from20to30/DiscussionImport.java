@@ -2,7 +2,6 @@ package org.openuss.migration.from20to30;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +19,7 @@ import org.openuss.discussion.Topic;
 import org.openuss.discussion.TopicDao;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
+import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.foundation.DomainObject;
 import org.openuss.migration.legacy.domain.Discussionitem2;
 import org.openuss.migration.legacy.domain.Discussionwatch2;
@@ -27,6 +27,10 @@ import org.openuss.security.User;
 import org.openuss.security.UserDao;
 import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.ObjectIdentityDao;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * This Service migrate data from openuss 2.0 to openuss-plexus 3.0
@@ -62,40 +66,44 @@ public class DiscussionImport extends DefaultImport {
 
 	/** ObjectIdentityDao */
 	private ObjectIdentityDao objectIdentityDao;
-	
+
 	/** DocumentService */
 	private DocumentService documentService;
 
-	/** ObjectIdentities */
-	private Collection<ObjectIdentity> objectIdentities = new ArrayList<ObjectIdentity>();
-	
+	/** Transaction Manager */
+	private PlatformTransactionManager transactionManager;
+
 	/** Course Forum Map */
-	private Map<Long,Forum> course2Forum = new HashMap<Long,Forum>();
+	private Map<Long, Forum> course2Forum = new HashMap<Long, Forum>();
 
 	private int count = 0;
 
 	public void perform() {
-		logger.info("initializing...");
-		initializeUser();
-		logger.info("parsing discussions...");
-		importItems();
-		logger.info("parsing watch entries...");
-		importWatches();
-		logger.info("persisting object identities...");
-		persistObjectIdentities();
-		logger.info("clearing data...");
+//		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+
+//		transactionTemplate.execute(new TransactionCallback() {
+//			public Object doInTransaction(TransactionStatus status) {
+//				logger.info("initializing...");
+//				initializeUser();
+//				logger.info("parsing discussions...");
+//				importItems();
+//				logger.info("parsing watch entries...");
+//				importWatches();
+//				return null;
+//			}
+//		});
+		logger.info("parsing discussions attachment...");
+		importAttachments();
+//		logger.info("clearing data...");
 //		clearingData();
+
 	}
 
-//	private void clearingData() {
-//		objectIdentities = null;
-//		domain2Forum = null;
-//		legacy2Forum = null;
-//	}
-
-	private void persistObjectIdentities() {
-		objectIdentityDao.create(objectIdentities);
-	}
+	// private void clearingData() {
+	// objectIdentities = null;
+	// domain2Forum = null;
+	// legacy2Forum = null;
+	// }
 
 	private void importWatches() {
 		ScrollableResults results = legacyDao.loadAllDiscussionWatches();
@@ -103,22 +111,21 @@ public class DiscussionImport extends DefaultImport {
 		while (results.next()) {
 			evict(watch);
 			watch = (Discussionwatch2) results.get()[0];
-			
+
 			Long courseId = identifierDao.getId(watch.getDiscussionitem());
 			Forum forum = course2Forum.get(courseId);
-//			Forum forum = forumDao.findByDomainIdentifier(courseId); 
 			if (forum == null) {
-				logger.debug("skip watch entry for discussion item "+watch.getDiscussionitem());
+				logger.debug("skip watch entry for discussion item " + watch.getDiscussionitem());
 			} else {
 				User submitter = userImport.loadUserByLegacyId(watch.getSubmitter());
 				if (submitter != null) {
-					logger.info("create forum watch for user "+submitter.getDisplayName() );
+					logger.info("create forum watch for user " + submitter.getDisplayName());
 					ForumWatch forumWatch = ForumWatch.Factory.newInstance();
 					forumWatch.setForum(forum);
 					forumWatch.setUser(submitter);
 					forumWatchDao.create(forumWatch);
 				} else {
-					logger.info("submitter is null" );
+					logger.info("submitter is null");
 				}
 			}
 		}
@@ -135,17 +142,14 @@ public class DiscussionImport extends DefaultImport {
 				logger.debug("skip discussion item " + item.getId() + " because course doesn't exists.");
 			} else {
 				ObjectIdentity courseOI = objectIdentityDao.load(courseId);
-
 				Forum forum = loadForum(courseId);
-				
 				User submitter = loadSubmitter(item);
-
 				Topic topic = Topic.Factory.newInstance(0, false, submitter);
 				topicDao.create(topic);
 				ObjectIdentity topicOI = saveObjectIdentity(courseOI, topic);
 				forum.addTopic(topic);
 
-				createRecursivePost(item, topic, topicOI);
+				importPostTree(item, topic, topicOI);
 				topicDao.update(topic);
 				progress();
 			}
@@ -158,14 +162,13 @@ public class DiscussionImport extends DefaultImport {
 
 	private Forum loadForum(Long courseId) {
 		Forum forum = course2Forum.get(courseId);
-//		Forum forum = forumDao.findByDomainIdentifier(courseId);
 		if (forum == null) {
 			logger.debug("creating forum for course " + courseId);
 			forum = Forum.Factory.newInstance(courseId, false);
 			forumDao.create(forum);
 			course2Forum.put(courseId, forum);
 		} else {
-			logger.debug("found forum "+forum.getDomainIdentifier());
+			logger.debug("found forum " + forum.getDomainIdentifier());
 		}
 		return forum;
 	}
@@ -186,7 +189,7 @@ public class DiscussionImport extends DefaultImport {
 		}
 	}
 
-	private void createRecursivePost(Discussionitem2 discussionItem, Topic topic, ObjectIdentity topicObjectIdentity) {
+	private void importPostTree(Discussionitem2 discussionItem, Topic topic, ObjectIdentity topicObjectIdentity) {
 		logger.debug("parsing " + discussionItem.getId());
 
 		Post post = Post.Factory.newInstance();
@@ -206,14 +209,28 @@ public class DiscussionImport extends DefaultImport {
 		topic.addPost(post);
 		postDao.create(post);
 		saveObjectIdentity(topicObjectIdentity, post);
-		importAttachment(discussionItem, post);
+		identifierDao.insertLegacyId(discussionItem.getId(), post.getId());
 
 		for (Discussionitem2 item : discussionItem.getDiscussionitems()) {
-			createRecursivePost(item, topic, topicObjectIdentity);
+			importPostTree(item, topic, topicObjectIdentity);
 		}
 	}
 
-	private void importAttachment(Discussionitem2 discussionItem, Post post) {
+	private void importAttachments() {
+		ScrollableResults results = legacyDao.loadAllDiscussionAttachments();
+		Discussionitem2 discussionItem = null;
+		while (results.next()) {
+			evict(discussionItem);
+			discussionItem = (Discussionitem2) results.get()[0];
+			Long postId = identifierDao.getId(discussionItem.getId());
+			if (postId != null) {
+				importAttachment(discussionItem, postId);
+			}
+
+		}
+	}
+
+	private void importAttachment(Discussionitem2 discussionItem, Long postId) {
 		if (StringUtils.isNotBlank(discussionItem.getDiscussionfilename())) {
 			try {
 				FileInfo fileInfo = new FileInfo();
@@ -223,10 +240,10 @@ public class DiscussionImport extends DefaultImport {
 				if (data != null && data.length > 0) {
 					fileInfo.setFileSize(data.length);
 					fileInfo.setInputStream(new ByteArrayInputStream(data));
-					fileInfo.setCreated(post.getCreated());
+					fileInfo.setCreated(discussionItem.getDdate());
 					List<FileInfo> fileInfos = new ArrayList<FileInfo>();
 					fileInfos.add(fileInfo);
-					documentService.diffSave(post, fileInfos);
+					documentService.diffSave(new DefaultDomainObject(postId), fileInfos);
 				} else {
 					logger.debug("skip attachment due to zero data!");
 				}
@@ -274,6 +291,10 @@ public class DiscussionImport extends DefaultImport {
 
 	public void setDocumentService(DocumentService documentService) {
 		this.documentService = documentService;
+	}
+
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
+		this.transactionManager = transactionManager;
 	}
 
 }
