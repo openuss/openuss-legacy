@@ -66,12 +66,13 @@ public class MigrationService {
 //		userImport.perform();
 //		lectureImport.perform();
 //		newsImport.perform(); 
-//		desktopImport.perform();
+//		desktopImport.createDesktops();
+		desktopImport.importLinks();
 //		courseMemberImport.perform();
 //		documentImport.perform();
 //		newsLetterImport.perform();
 //		quizImport.perform();
-		discussionImport.perform();
+//		discussionImport.performDiscussion();
 		
 		legacyTx.rollback();
 		legacySession.close();

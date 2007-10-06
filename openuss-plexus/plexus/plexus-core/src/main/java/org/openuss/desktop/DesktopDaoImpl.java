@@ -8,7 +8,6 @@ package org.openuss.desktop;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -93,20 +92,22 @@ public class DesktopDaoImpl extends DesktopDaoBase {
 		// Universities
 		targetVO.setUniversityInfos(new ArrayList(sourceEntity.getUniversities().size()));
 		for (University university : sourceEntity.getUniversities()) {
-			targetVO.getUniversityInfos().add(this.getUniversityDao().toUniversityInfo(university));
+			if (university != null)
+				targetVO.getUniversityInfos().add(this.getUniversityDao().toUniversityInfo(university));
 		}
 
 		// Departments
 		targetVO.setDepartmentInfos(new ArrayList(sourceEntity.getDepartments().size()));
 		for (Department department : sourceEntity.getDepartments()) {
-			targetVO.getDepartmentInfos().add(this.getDepartmentDao().toDepartmentInfo(department));
+			if (department != null)
+				targetVO.getDepartmentInfos().add(this.getDepartmentDao().toDepartmentInfo(department));
 		}
 		
 		// Institutes
 		targetVO.setInstituteInfos(new ArrayList(sourceEntity.getInstitutes().size()));
 		for (Institute institute : sourceEntity.getInstitutes()) {
-			targetVO.getInstituteInfos().add(this.getInstituteDao().toInstituteInfo(institute));
-			//TODO Rename InstitueDetails in InstitueInfo
+			if (institute != null)
+				targetVO.getInstituteInfos().add(this.getInstituteDao().toInstituteInfo(institute));
 		}
 
 		// CourseTypes
@@ -115,7 +116,8 @@ public class DesktopDaoImpl extends DesktopDaoBase {
 		// Courses
 		targetVO.setCourseInfos(new ArrayList(sourceEntity.getCourses().size()));
 		for (Course course : sourceEntity.getCourses()) {
-			targetVO.getCourseInfos().add(this.getCourseDao().toCourseInfo(course));
+			if (course != null)
+				targetVO.getCourseInfos().add(this.getCourseDao().toCourseInfo(course));
 		}
 
 	}
