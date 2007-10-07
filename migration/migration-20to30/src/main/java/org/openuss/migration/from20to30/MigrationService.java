@@ -50,6 +50,9 @@ public class MigrationService {
 	
 	/** DiscussionItem */
 	private DiscussionImport discussionImport;
+	
+	/** UserPasswordEncoder */
+	private UserPasswordEncoder userPasswordEncoder;
 
 	/** Legacy hibernate session */
 	private Session legacySession;
@@ -73,6 +76,8 @@ public class MigrationService {
 		newsLetterImport.perform();
 		quizImport.perform();
 		discussionImport.performDiscussion();
+		discussionImport.performAttachments();
+		userPasswordEncoder.performEncoding();
 		
 		legacyTx.rollback();
 		legacySession.close();
@@ -133,6 +138,10 @@ public class MigrationService {
 
 	public void setDiscussionImport(DiscussionImport discussionImport) {
 		this.discussionImport = discussionImport;
+	}
+
+	public void setUserPasswordEncoder(UserPasswordEncoder userPasswordEncoder) {
+		this.userPasswordEncoder = userPasswordEncoder;
 	}
 
 }
