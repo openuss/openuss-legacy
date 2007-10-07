@@ -1,5 +1,9 @@
 package org.openuss.system;
 
+/**
+ * Global System Property Ids 
+ * @author Ingo Dueppe
+ */
 public interface SystemProperties {
 	
 	public static final String REPOSITORY_PATH = "repository.path";
@@ -26,5 +30,12 @@ public interface SystemProperties {
 	public static final String IMPRESSUM_TEXT = "impressum.text";
 	public static final String PROVIDER_URL = "provider.url";
 	
+	
+	// OpenUSS Server Id 
+	/**
+	 *  JVM Application Parameter to define the server id.<br/>
+	 *  Add <code>-Dopenuss.instance.id</code> to the server jvm startup to define the server id.
+	 **/
+	public static final String OPENUSS_INSTANCE_ID ="openuss.instance.id";
 		
 }

@@ -5,6 +5,7 @@
  */
 package org.openuss.system;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.net.InetAddress;
@@ -13,22 +14,36 @@ import java.util.Collection;
 
 /**
  * @see org.openuss.system.SystemService
+ * @author Ingo Dueppe
  */
 public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
-	
+
 	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(SystemServiceImpl.class);
 
-	/**  This is the system instance identity, that must be unique within the cluster */
-	private static Long instanceIdentity = 1L;
-	
+	/**
+	 * This is the system instance identity, that must be unique within the
+	 * cluster
+	 */
+	private static Long instanceIdentity = null;
+
 	static {
-		try {
-			instanceIdentity = ((long)InetAddress.getLocalHost().hashCode()) + System.currentTimeMillis(); 
-			
-		} catch (UnknownHostException e) {
-			logger.error(e);
-			instanceIdentity = System.currentTimeMillis();
+		String instanceId = System.getProperty(SystemProperties.OPENUSS_INSTANCE_ID);
+		if (StringUtils.isNotBlank(instanceId)) {
+			try {
+				instanceIdentity = Long.valueOf(instanceId);
+			} catch (NumberFormatException ex) {
+				logger.error("-D" + SystemProperties.OPENUSS_INSTANCE_ID + " must be a number.");
+				logger.error(ex);
+			}
+		}
+		if (instanceIdentity == null) {
+			try {
+				instanceIdentity = ((long) InetAddress.getLocalHost().hashCode()) + System.currentTimeMillis();
+			} catch (UnknownHostException e) {
+				logger.error(e);
+				instanceIdentity = System.currentTimeMillis();
+			}
 		}
 	}
 
@@ -61,7 +76,7 @@ public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
 	protected void handlePersistProperties(Collection properties) throws Exception {
 		getSystemPropertyDao().update(properties);
 	}
-	
+
 	@Override
 	protected Long handleGetInstanceIdentity() throws Exception {
 		return instanceIdentity;
