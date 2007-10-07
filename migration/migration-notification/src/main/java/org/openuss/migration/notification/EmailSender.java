@@ -2,18 +2,21 @@ package org.openuss.migration.notification;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 /**
  * 
@@ -25,6 +28,7 @@ public class EmailSender extends SimpleJdbcDaoSupport implements InitializingBea
 	private static final Logger logger = Logger.getLogger(EmailSender.class);
 
 	private static final String SQL_SELECT_EMAILS = "select ID, EMAIL, TEXT from USER_NOTIFICATION where SENDAT is null";
+	private static final String SQL_UPDATE_SEND = "update USER_NOTIFICATION set SENDAT = ? WHERE id = ?";
 
 	public void sendNotifications() {
 		List<Notification> msgs = getSimpleJdbcTemplate().query(SQL_SELECT_EMAILS,
@@ -40,14 +44,28 @@ public class EmailSender extends SimpleJdbcDaoSupport implements InitializingBea
 
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		
-		
 		Session session = mailSender.getSession();
 		Transport transport;
 		try {
 			transport = session.getTransport("smtp");
 			transport.connect("localhost", "plexus@openuss-plexus.com", "plexus");
 			try {
-				// TODO send mail
+				int count = 0;
+				for (Notification notification : msgs) {
+					count = progress(count);
+					MimeMessage message = mailSender.createMimeMessage();
+					MimeMessageHelper helper = new MimeMessageHelper(message);
+					helper.setFrom("no-reply@openuss.uni-muenster.de");
+					helper.setTo("plexus@openuss-plexus.com");
+					helper.setSubject("Ihr Benutzerkonto bei OpenUSS 3.0 / With reference to your account at OpenUSS 3.0");
+					helper.setText(notification.text, true);
+					Date sendat = new Date();
+					helper.setSentDate(sendat);
+					
+					getSimpleJdbcTemplate().update(SQL_UPDATE_SEND, sendat, notification.id);
+					
+					transport.sendMessage(message, message.getAllRecipients());
+				}
 			} finally {
 				transport.close();
 			}
@@ -57,6 +75,18 @@ public class EmailSender extends SimpleJdbcDaoSupport implements InitializingBea
 			logger.error(e);
 		}
 
+	}
+
+	private int progress(int count) {
+		if (count++ % 10 == 0) {
+			logger.debug("processed "+count);
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				logger.error(e);
+			}
+		}
+		return count;
 	}
 
 	public static class Notification {

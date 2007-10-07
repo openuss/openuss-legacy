@@ -4,7 +4,7 @@
 		<p>Lieber OpenUSS-Nutzer,</p>
 		<p>wir freuen uns, Ihnen mitteilen zu können, dass OpenUSS 3.0 online ist. 
 		Die neue vollständig überarbeitete Version zeichnet sich durch ein neues Oberflächendesign und eine vereinfachte Navigationsstruktur aus. 
-		Weitere Informationen finden Sie unter <a href="www.openuss.de">www.openuss.de</a>.
+		Weitere Informationen finden Sie unter <a href="http://www.openuss.de">www.openuss.de</a>.
 		</p>
 		<p>Mit dem erweiterten Leistungsumfang sind einige Anpassungen notwendig geworden. Damit Sie diese nutzen können, sind wir auf Ihre Mithilfe angewiesen.</p> 
 		<p>Unter Ihrer E-Mail-Adresse ${email} wurde die folgende Institution gefunden:</p>
@@ -59,7 +59,7 @@
 		<p>
 			we are happy to announce, that OpenUSS 3.0 is online.
 			The new, completely edited version has a brand-new user interface-design and a simplified navigation structure. 
-			For further information reference look at <a href="www.openuss.de">www.openuss.de</a>.
+			For further information reference look at <a href="http://www.openuss.de">www.openuss.de</a>.
 		</p>
 		<p>According to the enhanced features some adjustments were needed. In order to give you the chance to use these new features, we rely on your help.</p> 
 		<p>The following institutions were found in our data using your E-Mail-Address <i>${email}</i>:</p>

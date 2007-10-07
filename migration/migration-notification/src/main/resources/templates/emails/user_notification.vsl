@@ -4,7 +4,7 @@
 		<p>Lieber OpenUSS-Nutzer,</p>
 		<p>wir freuen uns, Ihnen mitteilen zu können, dass OpenUSS 3.0 online ist. 
 		Die neue vollständig überarbeitete Version zeichnet sich durch ein neues Oberflächendesign und eine vereinfachte Navigationsstruktur aus. 
-		Weitere Informationen finden Sie unter <a href="www.openuss.de">www.openuss.de</a>.
+		Weitere Informationen finden Sie unter <a href="http://www.openuss.de">www.openuss.de</a>.
 		</p>
 		<p>Durch ein neues Rollenkonzept war eine Bereinigung der Nutzerdaten vorzunehmen.</p> 
 #if ($consolidated)
@@ -40,7 +40,7 @@
 		<p>Dear OpenUSS-User,</p>
 		<p>we are happy to announce, that OpenUSS 3.0 is online. 
 		   The new, completely edited version has a brand-new user interface-design and a simplified navigation structure. 
-		   For further information reference look at <a href="www.openuss.de">www.openuss.de</a>.
+		   For further information reference look at <a href="http://www.openuss.de">www.openuss.de</a>.
 		</p>
 		<p>As a new role concept was implemented, the user data had to be revised.</p> 
 #if ($consolidated)

@@ -6,9 +6,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Client to notify users and institutes owners about the migration.
- *  
+ * 
  * @author Ingo Dueppe
- *
+ * 
  */
 public class NotificationClient {
 
@@ -17,25 +17,30 @@ public class NotificationClient {
 
 	public static void main(String[] args) {
 		logger.info("initializing legacy registration");
-		
+
 		ApplicationContext context = new ClassPathXmlApplicationContext(getConfigLocations());
+
 		EmailGenerator generator = (EmailGenerator) context.getBean("emailGenerator");
-//		generator.generateUserNotificationEmails();
-		generator.generateInstituteNotification();
-//		if (args.length == 0) {
-//			System.out.println("\n Parameters for Notification Client");
-//		} else if ("generate_emails".equals(args[0])) {
-//			
-//		}
-	
+		EmailSender sender = (EmailSender) context.getBean("emailSender");
+
+		if (args.length == 0) {
+			System.out.println("\n Parameters for Notification Client");
+		} else {
+			if (args[0].contains("u")) {
+				generator.generateUserNotificationEmails();
+			}
+			if (args[0].contains("i")) {
+				generator.generateInstituteNotification();
+			}
+			if (args[0].contains("s")) {
+				sender.sendNotifications();
+			}
+		}
+
 	}
-	
+
 	protected static String[] getConfigLocations() {
-		return new String[] {
-			"classpath*:datasource.xml",
-			"classpath*:applicationContext.xml"
-		};
-	}	
-	
+		return new String[] { "classpath*:datasource.xml", "classpath*:applicationContext.xml" };
+	}
 
 }
