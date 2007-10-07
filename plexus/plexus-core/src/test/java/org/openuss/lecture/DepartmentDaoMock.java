@@ -193,7 +193,6 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 			String shortcut, String description, String ownerName, String address, String postcode, String city,
 			String country, String telephone, String telefax, String website, String email, String locale,
 			String theme, Long imageId, boolean enabled) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -201,7 +200,6 @@ public class DepartmentDaoMock extends AbstractMockDao<Department> implements De
 			String shortName, String shortcut, String description, String ownerName, String address, String postcode,
 			String city, String country, String telephone, String telefax, String website, String email, String locale,
 			String theme, Long imageId, boolean enabled) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -59,7 +59,7 @@ public class PasswordChangeAction extends BaseBean {
 	public String changePassword() {
 		if (user != null) {
 			user.setPassword(newPassword);
-			getSecurityService().saveUser(user);			
+			getSecurityService().changePassword(newPassword);			
 			addMessage(i18n("password_change_successful"));
 			return Constants.SUCCESS;
 		}
