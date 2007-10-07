@@ -24,6 +24,7 @@
 	<modules>
 		<module>migration-legacy20</module>
 		<module>migration-20to30</module>
+		<module>migration-notification</module>
 	</modules>
 
 	<reporting>

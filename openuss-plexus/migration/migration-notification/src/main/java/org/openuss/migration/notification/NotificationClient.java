@@ -19,8 +19,9 @@ public class NotificationClient {
 		logger.info("initializing legacy registration");
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext(getConfigLocations());
-		UserEmailGenerator generator = (UserEmailGenerator) context.getBean("userEmailGenerator");
-		generator.perform();
+		EmailGenerator generator = (EmailGenerator) context.getBean("emailGenerator");
+//		generator.generateUserNotificationEmails();
+		generator.generateInstituteNotification();
 //		if (args.length == 0) {
 //			System.out.println("\n Parameters for Notification Client");
 //		} else if ("generate_emails".equals(args[0])) {
