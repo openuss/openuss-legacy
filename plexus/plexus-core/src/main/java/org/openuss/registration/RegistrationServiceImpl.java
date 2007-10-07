@@ -13,6 +13,7 @@ import java.util.Date;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Institute;
@@ -87,11 +88,7 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 		UserActivationCode reg = UserActivationCode.Factory.newInstance();
 
 		// generate new MD5 hash from user id and current time millis
-
-		String input = user.getId()+""+System.currentTimeMillis();
-		StringBuffer resultString = md5(input);
-		
-		String code = "AC"+resultString.toString();
+		String code = md5("AC{"+user.getId()+"}"+System.currentTimeMillis())+user.getId();
 		
 		// store registration code
 		reg.setUser(user);
@@ -140,7 +137,7 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 	private boolean isExpired(ActivationCode ac) {
 		long createdAt = ac.getCreatedAt().getTime();
 		long now = System.currentTimeMillis();
-		return ((now-createdAt)/60000) > 15;
+		return ((now-createdAt)/60000) > 30;
 	}
 
 	@Override
@@ -167,11 +164,7 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 		InstituteActivationCode instituteActivationCode = InstituteActivationCode.Factory.newInstance();
 
 		// generate new MD5 hash from user id and current time millis
-
-		String input = institute.getId()+""+System.currentTimeMillis();
-		StringBuffer resultString = md5(input);
-		
-		String code = "FA"+resultString.toString();
+		String code = md5("FA{"+institute.getId()+"}"+System.currentTimeMillis()+""+institute.getId());
 		
 		// store registration code
 		instituteActivationCode.setInstitute(institute);
@@ -182,23 +175,17 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 		return code;	
 	}
 
-	private StringBuffer md5(String input) throws RegistrationException {
-		MessageDigest md;
-		byte[] byteHash;
-		StringBuffer resultString = new StringBuffer();
+	private String md5(String raw) throws RegistrationException {
 		try {
-		     md = MessageDigest.getInstance("MD5");
+		     MessageDigest md = MessageDigest.getInstance("MD5");
 		     md.reset();
-		     md.update(input.getBytes());
-		     byteHash = md.digest();
-		     for(int i = 0; i < byteHash.length; i++) {
-		    	 resultString.append(Integer.toHexString(0xFF & byteHash[i]));
-		     }
+		     byte[] byteHash = md.digest(raw.getBytes());
+		     
+		     return new String(Base64.encodeBase64(byteHash));
 		} catch(NoSuchAlgorithmException e) {
 		     logger.error("Error while MD5 encoding: ", e);	
 		     throw new RegistrationException("Error while MD5 encoding code ");
 		}
-		return resultString;
 	}
 
 	@SuppressWarnings("unchecked")
