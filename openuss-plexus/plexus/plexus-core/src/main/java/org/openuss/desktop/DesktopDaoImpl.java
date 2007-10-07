@@ -213,6 +213,7 @@ public class DesktopDaoImpl extends DesktopDaoBase {
 
 	@Override
 	protected boolean handleIsCourseBookmarked(final Long courseId, final Long userId) throws Exception {
+		// TODO Auto-generated method stub
 		return false;
 	}
 

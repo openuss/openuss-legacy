@@ -26,6 +26,7 @@ import org.openuss.system.SystemProperties;
 /**
  * @see org.openuss.lecture.LectureService
  * @author Ingo Dueppe, Ron Haus, Florian Dondorf
+ * @deprecated
  */
 public class LectureServiceImpl extends LectureServiceBase {
 

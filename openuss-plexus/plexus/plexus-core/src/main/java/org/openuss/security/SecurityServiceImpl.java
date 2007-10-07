@@ -14,6 +14,7 @@ import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -28,7 +29,7 @@ import org.openuss.security.acl.Permission;
  * @author Ron Haus
  * @author Ingo Dueppe
  */
-public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBase {
+public class SecurityServiceImpl extends SecurityServiceBase {
 	/**
 	 * Logger for this class
 	 */
@@ -75,21 +76,41 @@ public class SecurityServiceImpl extends org.openuss.security.SecurityServiceBas
 		if (isNonExistingEmailAddress(user, user.getEmail()) != null) {
 			throw new SecurityServiceException("Email adress already in use (shold not occur -> validator bypassed?) "+user.getEmail());
 		}
+		
+		
 		user = getUserDao().create(user);
+		encodePassword(user);
+		getUserDao().update(user);
 
 		// define object identity
 		createObjectIdentity(user, null);
 
 		return user;
 	}
+	
+	@Override
+	protected void handleChangePassword(String password) throws Exception {
+		Validate.notEmpty(password,"Password must not be empty");
+		Validate.isTrue(password.length()>5,"Password must be longer then 5 characters");
+		User user = getCurrentUser();
+		user = getUserDao().load(user.getId());
+		user.setPassword(password);
+		encodePassword(user);
+		getUserDao().update(user);
+		updateSecurityContext(user);
+	}
+
+	private void encodePassword(User user) {
+		logger.info("encode user password");
+		Md5PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
+		passwordEncoder.setEncodeHashAsBase64(true);
+		user.setPassword(passwordEncoder.encodePassword(user.getPassword(), user.getId()));
+	}
 
 	@Override
 	protected void handleSaveUser(User user) throws Exception {
-		if (StringUtils.isBlank(user.getPassword())) {
-			// no password so inject the persistent one
-			String password = getUserDao().getPassword(user.getId());
-			user.setPassword(password);
-		}
+		// Do not change the user password by this method use changeUserPassword instead
+		user.setPassword(getUserDao().getPassword(user.getId()));
 		getUserDao().update(user);
 	}
 
