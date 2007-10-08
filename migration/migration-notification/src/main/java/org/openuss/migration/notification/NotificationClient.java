@@ -22,20 +22,22 @@ public class NotificationClient {
 
 		EmailGenerator generator = (EmailGenerator) context.getBean("emailGenerator");
 		EmailSender sender = (EmailSender) context.getBean("emailSender");
+		EmailGeneratorPatch patch = (EmailGeneratorPatch) context.getBean("emailGeneratorPatch");
+		patch.patchCodes();
 
-		if (args.length == 0) {
-			System.out.println("\n Parameters for Notification Client");
-		} else {
-			if (args[0].contains("u")) {
-				generator.generateUserNotificationEmails();
-			}
-			if (args[0].contains("i")) {
-				generator.generateInstituteNotification();
-			}
-			if (args[0].contains("s")) {
-				sender.sendNotifications();
-			}
-		}
+//		if (args.length == 0) {
+//			System.out.println("\n Parameters for Notification Client");
+//		} else {
+//			if (args[0].contains("u")) {
+//				generator.generateUserNotificationEmails();
+//			}
+//			if (args[0].contains("i")) {
+//				generator.generateInstituteNotification();
+//			}
+//			if (args[0].contains("s")) {
+//				sender.sendNotifications();
+//			}
+//		}
 
 	}
 

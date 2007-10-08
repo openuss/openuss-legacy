@@ -13,6 +13,10 @@
         <property name="velocityEngine" ref="velocityEngine"/>
     </bean>
 
+    <bean id="emailGeneratorPatch" class="org.openuss.migration.notification.EmailGeneratorPatch">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="emailSender" class="org.openuss.migration.notification.EmailSender">
         <property name="dataSource" ref="dataSource"/>
         <property name="mailHost" value="localhost"/>
