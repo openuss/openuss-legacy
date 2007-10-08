@@ -36,7 +36,7 @@
 		</p>
 		<p>
 			Da eine Bereinigung der Daten notwendig war, möchten wir Sie bitten, die Angaben zu Ihrer Institution unter folgendem Link zu überprüfen.<br/>
-    		<a href="http://www.openuss.de/views/secured/lecture/instituteoptions.faces?institute==${institute_id}">http://www.openuss.de/views/secured/lecture/instituteoptions.faces?institute=${institute_id}</a>
+    		<a href="http://www.openuss.de/views/secured/lecture/instituteoptions.faces?institute=${institute_id}">http://www.openuss.de/views/secured/lecture/instituteoptions.faces?institute=${institute_id}</a>
 		</p>
 		<p>
 			Kontrollieren Sie bitte auch die Zuordnung Ihrer Institution zu einem Fachbereich bzw. einer Universität. 
@@ -69,7 +69,7 @@
 		
 		<p>
 			First of all we would kindly ask you to reactivate your institution ${institute_name}. For doing that, please visit the following link.<br/>
-    		<a href="http://www.openuss.de/actions/public/lecture/instituteactivation.faces=${code}">http://www.openuss.de/actions/public/lecture/instituteactivation.faces=${code}</a>
+    		<a href="http://www.openuss.de/actions/public/lecture/instituteactivation.faces?code=${code}">http://www.openuss.de/actions/public/lecture/instituteactivation.faces?code=${code}</a>
 		</p>
 		
 		<p>
