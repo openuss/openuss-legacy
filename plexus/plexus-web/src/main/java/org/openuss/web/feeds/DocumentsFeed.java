@@ -8,6 +8,7 @@ package org.openuss.web.feeds;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
@@ -44,7 +45,7 @@ public class DocumentsFeed extends AbstractFeed {
 		if (files != null && files.size() > 0) {
 			for(FileInfo entry : files) {
 				String link = urlServer + "/files/" + entry.getFileName() + "?"+Constants.REPOSITORY_FILE_ID+"="+entry.getId();
-				this.addEntry(entries, course.getName()+" - "+entry.getName(), link, entry.getCreated(), entry.getName()+"\n"+entry.getDescription(), course.getName(),course.getName());
+				this.addEntry(entries, course.getName()+" - "+entry.getName(), link, entry.getCreated(), entry.getName()+"\n"+StringUtils.trimToEmpty(entry.getDescription()), course.getName(),course.getName());
 			}
 			
 		}

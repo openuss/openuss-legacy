@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
@@ -42,8 +43,7 @@ public abstract class AbstractFeed implements MessageSourceAware {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void addEntry(List entries, String title, String link, Date date, String blogContent, String cat,
-			String author) {
+	public void addEntry(List entries, String title, String link, Date date, String blogContent, String cat, String author) {
 
 		try {
 			final List categories = new ArrayList();
@@ -52,16 +52,16 @@ public abstract class AbstractFeed implements MessageSourceAware {
 			SyndCategory category;
 
 			entry = new SyndEntryImpl();
-			entry.setAuthor(author);
-			entry.setTitle(title);
-			entry.setLink(link);
+			entry.setAuthor(StringUtils.trimToEmpty(author));
+			entry.setTitle(StringUtils.trimToEmpty(title));
+			entry.setLink(StringUtils.trimToEmpty(link));
 			entry.setPublishedDate(date);
 			description = new SyndContentImpl();
 			description.setType(TEXT_HTML);
-			description.setValue(blogContent);
+			description.setValue(StringUtils.trimToEmpty(blogContent));
 			entry.setDescription(description);
 			category = new SyndCategoryImpl();
-			category.setName(cat);
+			category.setName(StringUtils.trimToEmpty(cat));
 			categories.add(category);
 			entry.setCategories(categories);
 			categories.remove(category);

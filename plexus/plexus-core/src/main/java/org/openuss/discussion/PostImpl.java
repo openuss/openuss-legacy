@@ -5,6 +5,8 @@
  */
 package org.openuss.discussion;
 
+import java.util.Date;
+
 import org.apache.commons.lang.StringUtils;
 import org.openuss.framework.utilities.Text2HtmlConverter;
 
@@ -82,6 +84,15 @@ public class PostImpl extends PostBase implements Post {
 			text = Text2HtmlConverter.toHtml(text);
 		}
 		return text;
+	}
+
+	@Override
+	public Date getLastModification() {
+		Date last = super.getLastModification();
+		if (last == null) {
+			last = super.getCreated();
+		} 
+		return last;
 	}
 
 }
