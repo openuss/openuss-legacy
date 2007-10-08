@@ -29,6 +29,10 @@ public class EmailSender extends SimpleJdbcDaoSupport implements InitializingBea
 
 	private static final String SQL_SELECT_EMAILS = "select ID, EMAIL, TEXT from USER_NOTIFICATION where SENDAT is null";
 	private static final String SQL_UPDATE_SEND = "update USER_NOTIFICATION set SENDAT = ? WHERE id = ?";
+	
+	private String mailHost;
+	private String mailUser;
+	private String mailPassword;
 
 	public void sendNotifications() {
 		List<Notification> msgs = getSimpleJdbcTemplate().query(SQL_SELECT_EMAILS,
@@ -48,7 +52,7 @@ public class EmailSender extends SimpleJdbcDaoSupport implements InitializingBea
 		Transport transport;
 		try {
 			transport = session.getTransport("smtp");
-			transport.connect("localhost", "plexus@openuss-plexus.com", "plexus");
+			transport.connect(mailHost, mailUser, mailPassword);
 			try {
 				int count = 0;
 				for (Notification notification : msgs) {
@@ -57,14 +61,17 @@ public class EmailSender extends SimpleJdbcDaoSupport implements InitializingBea
 					MimeMessageHelper helper = new MimeMessageHelper(message);
 					helper.setFrom("no-reply@openuss.uni-muenster.de");
 					helper.setTo("plexus@openuss-plexus.com");
-					helper.setSubject("Ihr Benutzerkonto bei OpenUSS 3.0 / With reference to your account at OpenUSS 3.0");
+					helper.setSubject("Ihr Benutzerkonto bei OpenUSS 3.0 (With reference to your account at OpenUSS 3.0)");
 					helper.setText(notification.text, true);
 					Date sendat = new Date();
 					helper.setSentDate(sendat);
 					
-					getSimpleJdbcTemplate().update(SQL_UPDATE_SEND, sendat, notification.id);
-					
-					transport.sendMessage(message, message.getAllRecipients());
+					try {
+						transport.sendMessage(message, message.getAllRecipients());
+						getSimpleJdbcTemplate().update(SQL_UPDATE_SEND, sendat, notification.id);
+					} catch (MessagingException me) {
+						logger.error(me);
+					}
 				}
 			} finally {
 				transport.close();
@@ -93,6 +100,18 @@ public class EmailSender extends SimpleJdbcDaoSupport implements InitializingBea
 		public Long id;
 		public String email;
 		public String text;
+	}
+
+	public void setMailHost(String mailHost) {
+		this.mailHost = mailHost;
+	}
+
+	public void setMailUser(String mailUser) {
+		this.mailUser = mailUser;
+	}
+
+	public void setMailPassword(String mailPassword) {
+		this.mailPassword = mailPassword;
 	}
 
 }

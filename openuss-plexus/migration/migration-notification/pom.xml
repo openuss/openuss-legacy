@@ -75,7 +75,7 @@
 					<archive>
 						<manifest>
 							<mainClass>
-								org.openuss.migration.notification.NotifyClient
+								org.openuss.migration.notification.NotificationClient
 							</mainClass>
 						</manifest>
 					</archive>

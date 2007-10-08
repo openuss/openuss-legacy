@@ -40,7 +40,9 @@ public class NotificationClient {
 	}
 
 	protected static String[] getConfigLocations() {
-		return new String[] { "classpath*:datasource.xml", "classpath*:applicationContext.xml" };
+		return new String[] { 
+			"classpath*:dataSource.xml", 
+			"classpath*:applicationContext.xml" };
 	}
 
 }
