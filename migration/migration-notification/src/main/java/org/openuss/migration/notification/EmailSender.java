@@ -66,6 +66,8 @@ public class EmailSender extends SimpleJdbcDaoSupport implements InitializingBea
 					Date sendat = new Date();
 					helper.setSentDate(sendat);
 					
+					logger.info("sending to "+notification.email);
+					
 					try {
 						transport.sendMessage(message, message.getAllRecipients());
 						getSimpleJdbcTemplate().update(SQL_UPDATE_SEND, sendat, notification.id);
@@ -88,7 +90,7 @@ public class EmailSender extends SimpleJdbcDaoSupport implements InitializingBea
 		if (count++ % 10 == 0) {
 			logger.debug("processed "+count);
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				logger.error(e);
 			}
