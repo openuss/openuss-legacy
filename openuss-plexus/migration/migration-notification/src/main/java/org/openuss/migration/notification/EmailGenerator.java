@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
@@ -166,7 +165,11 @@ public class EmailGenerator extends SimpleJdbcDaoSupport implements Initializing
 			md.reset();
 			byte[] byteHash = md.digest(raw.getBytes());
 
-			return new String(Base64.encodeBase64(byteHash));
+		     StringBuffer result = new StringBuffer();
+		     for(int i = 0; i < byteHash.length; i++) {
+		    	 result.append(Integer.toHexString(0xFF & byteHash[i]));
+		     }
+		     return result.toString();
 		} catch (NoSuchAlgorithmException e) {
 			logger.error("Error while MD5 encoding: ", e);
 			throw new RuntimeException(e);

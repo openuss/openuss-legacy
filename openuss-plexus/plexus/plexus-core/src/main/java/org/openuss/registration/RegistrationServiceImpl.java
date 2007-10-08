@@ -13,7 +13,6 @@ import java.util.Date;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Institute;
@@ -180,13 +179,17 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 		     MessageDigest md = MessageDigest.getInstance("MD5");
 		     md.reset();
 		     byte[] byteHash = md.digest(raw.getBytes());
-		     
-		     return new String(Base64.encodeBase64(byteHash));
+		     StringBuffer result = new StringBuffer();
+		     for(int i = 0; i < byteHash.length; i++) {
+		    	 result.append(Integer.toHexString(0xFF & byteHash[i]));
+		     }
+		     return result.toString();
 		} catch(NoSuchAlgorithmException e) {
 		     logger.error("Error while MD5 encoding: ", e);	
 		     throw new RegistrationException("Error while MD5 encoding code ");
 		}
 	}
+	
 
 	@SuppressWarnings("unchecked")
 	@Override
