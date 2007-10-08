@@ -521,7 +521,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 			getSecurityService().setPermissions(Roles.ANONYMOUS, course, LectureAclEntry.NOTHING);
 		}
 		
-		if (course.getAccessType() == AccessType.OPEN) {
+		if (course.getAccessType() == AccessType.OPEN || course.getAccessType() == AccessType.ANONYMOUS) {
 			getSecurityService().setPermissions(Roles.USER, course, LectureAclEntry.COURSE_PARTICIPANT);
 		} else {
 			getSecurityService().setPermissions(Roles.USER, course, LectureAclEntry.NOTHING);
