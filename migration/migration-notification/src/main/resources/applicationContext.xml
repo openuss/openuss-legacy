@@ -15,6 +15,9 @@
 
     <bean id="emailSender" class="org.openuss.migration.notification.EmailSender">
         <property name="dataSource" ref="dataSource"/>
+        <property name="mailHost" value="localhost"/>
+        <property name="mailUser" value="plexus@openuss-plexus.com"/>
+        <property name="mailPassword" value="plexus"/>
     </bean>
 
 	<bean id="velocityEngine"
