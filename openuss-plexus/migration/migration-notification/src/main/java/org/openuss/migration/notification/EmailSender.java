@@ -60,7 +60,7 @@ public class EmailSender extends SimpleJdbcDaoSupport implements InitializingBea
 					MimeMessage message = mailSender.createMimeMessage();
 					MimeMessageHelper helper = new MimeMessageHelper(message);
 					helper.setFrom("no-reply@openuss.uni-muenster.de");
-					helper.setTo("plexus@openuss-plexus.com");
+					helper.setTo(notification.email);
 					helper.setSubject("Ihr Benutzerkonto bei OpenUSS 3.0 (With reference to your account at OpenUSS 3.0)");
 					helper.setText(notification.text, true);
 					Date sendat = new Date();
