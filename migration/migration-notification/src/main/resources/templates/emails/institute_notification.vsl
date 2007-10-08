@@ -14,7 +14,7 @@
 		
 		<p>
 			Wir möchten Sie zunächst bitten, Ihre Institution <i>${institute_name}</i> erneut zu aktivieren. Hierzu klicken Sie bitte auf den folgenden Link.<br/>
-    		<a href="http://www.openuss.de/actions/public/lecture/instituteactivation.faces?code=${code}">http://www.openuss.de/actions/public/lecture/instituteactivation.faces${code}</a>
+    		<a href="http://www.openuss.de/actions/public/lecture/instituteactivation.faces?code=${code}">http://www.openuss.de/actions/public/lecture/instituteactivation.faces?code=${code}</a>
 		</p>
 		
 		<p>
