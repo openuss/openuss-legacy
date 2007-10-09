@@ -86,10 +86,6 @@
 		</property>
 	</bean>
 
-	
-	
-	
-	
 	<bean id="lectureIndexImpl" class="org.openuss.lecture.LectureIndexImpl">
 		<property name="universityDao" ref="universityDao"/>
 		<property name="universityIndexer" ref="universityIndexer"/>
@@ -172,7 +168,7 @@
 
 	<bean id="lectureDirectory"
 		class="org.springmodules.lucene.index.support.FSDirectoryFactoryBean">
-		<property name="create" value="true" />
+		<property name="create" value="false" />
 		<property name="location" value="file:${java.io.tmpdir}/lucene/lecture" />
 	</bean>
 
