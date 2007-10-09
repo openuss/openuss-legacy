@@ -23,21 +23,30 @@ public class NotificationClient {
 		EmailGenerator generator = (EmailGenerator) context.getBean("emailGenerator");
 		EmailSender sender = (EmailSender) context.getBean("emailSender");
 		EmailGeneratorPatch patch = (EmailGeneratorPatch) context.getBean("emailGeneratorPatch");
-		patch.patchCodes();
 
-//		if (args.length == 0) {
-//			System.out.println("\n Parameters for Notification Client");
-//		} else {
-//			if (args[0].contains("u")) {
-//				generator.generateUserNotificationEmails();
-//			}
-//			if (args[0].contains("i")) {
-//				generator.generateInstituteNotification();
-//			}
-//			if (args[0].contains("s")) {
-//				sender.sendNotifications();
-//			}
-//		}
+		if (args.length == 0) {
+			String help = "Help for Notification Client \n\n" +
+					"\t java -jar migration-notification.jar [uisp]\n" +
+					"\n" +
+					"\t\tu	-	Generate user notification emails in database" +
+					"\t\ti	-	Generate institute notification emails in database" +
+					"\t\ts	-	Send notification emails " +
+					"\t\tp	-	Patch MD5 keys - issue of base64 coded keys";
+			System.out.println(help);
+		} else {
+			if (args[0].contains("u")) {
+				generator.generateUserNotificationEmails();
+			}
+			if (args[0].contains("i")) {
+				generator.generateInstituteNotification();
+			}
+			if (args[0].contains("s")) {
+				sender.sendNotifications();
+			}
+			if (args[0].contains("p")) {
+				patch.patchCodes();
+			}
+		}
 
 	}
 
