@@ -36,8 +36,12 @@
 				  			</h:outputFormat><br/>
 				  		</p>
 			 			<p class="content_font_normal">	  			
-		  					<h:outputLink value="mailto:#{msg.support_email}"><h:outputText value="#{msg.support_email_label}"/></h:outputLink>
-		  				</p>
+			 				<h:outputText value="#{msg.errors_error_bugtracking_url_text}" class="content_font_header"/>
+			 			</p>
+			 				<span class="content_font_normal">#{msg.errors_error_bugtracking_url}</span>
+			 				<h:outputLink value="#{SYSTEM_PROPERTIES.BUGTRACKING_URL}"><h:outputText value="#{SYSTEM_PROPERTIES.BUGTRACKING_URL}"/></h:outputLink><br/>
+		  					<span class="content_font_normal">Servicecenter E-Learning: </span>
+		  					<h:outputLink id="label" value="mailto:#{msg.support_email}"><h:outputText value="#{msg.support_email_label}"/></h:outputLink>
 		  			</o:block>
 		  			<o:block>
 	  					<h:commandButton value="#{msg.home}" action="home" styleClass="button"/>
