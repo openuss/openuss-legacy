@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteDao;
 import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.LectureException;
 import org.openuss.messaging.MessageService;
 import org.openuss.registration.RegistrationService;
 import org.openuss.security.User;
@@ -43,6 +44,7 @@ public class InstituteActivationMailSenderAspectImpl {
 	public void sendInstituteActivationMail (InstituteInfo instituteInfo, Long userId) throws Exception {
 		logger.debug("sendInstituteActivationMail - User " + userId + " should activate institute");
 		
+		
 		// Loading User
 		User user = userDao.load(userId);
 		Validate.notNull(user, "InstituteActivationMailSenderAspectImpl - no user found with the given userId "+userId);
@@ -51,6 +53,9 @@ public class InstituteActivationMailSenderAspectImpl {
 		Institute institute = instituteDao.findByShortcut(instituteInfo.getShortcut());
 		Validate.notNull(institute, "InstituteActivationMailSenderAspectImpl - no institute found with the given shortcut "+instituteInfo.getShortcut());
 		
+		if (institute.getEmail() == null) {
+			throw new LectureException("error_institute_has_no_email_address");
+		}
 		// Create activationCode
 		String activationCode = registrationService.generateInstituteActivationCode(institute);
 				
