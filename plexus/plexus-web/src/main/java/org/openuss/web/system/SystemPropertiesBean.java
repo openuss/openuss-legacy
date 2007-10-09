@@ -49,7 +49,7 @@ public class SystemPropertiesBean {
 	public String getOPENUSS_INSTANCE_ID() {
 		return systemService.getInstanceIdentity().toString();
 	}
-
+	
 	public void setSystemService(SystemService systemService) {
 		this.systemService = systemService;
 	}
