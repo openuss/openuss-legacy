@@ -9,37 +9,37 @@
 		      Security
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
     
-    <bean id="user" class="org.openuss.security.UserImpl" scope="singleton"/>
-    <bean id="userContact" class="org.openuss.security.UserContactImpl" scope="singleton"/>
-    <bean id="userPreferences" class="org.openuss.security.UserPreferencesImpl" scope="singleton"/>
-    <bean id="userProfile" class="org.openuss.security.UserProfileImpl" scope="singleton"/>
+    <bean id="user" class="org.openuss.security.UserImpl" scope="propotype"/>
+    <bean id="userContact" class="org.openuss.security.UserContactImpl" scope="prototype"/>
+    <bean id="userPreferences" class="org.openuss.security.UserPreferencesImpl" scope="prototype"/>
+    <bean id="userProfile" class="org.openuss.security.UserProfileImpl" scope="prototype"/>
 
    	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		      Lecture
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
 
-	<bean id="institute" class="org.openuss.lecture.InstituteImpl" scope="singleton"/>
-	<bean id="courseType" class="org.openuss.lecture.CourseTypeImpl" scope="singleton"/>
-	<bean id="period" class="org.openuss.lecture.PeriodImpl" scope="singleton"/>
-	<bean id="course" class="org.openuss.lecture.CourseImpl"  scope="singleton"/>
+	<bean id="institute" class="org.openuss.lecture.InstituteImpl" scope="prototype"/>
+	<bean id="courseType" class="org.openuss.lecture.CourseTypeImpl" scope="prototype"/>
+	<bean id="period" class="org.openuss.lecture.PeriodImpl" scope="prototype"/>
+	<bean id="course" class="org.openuss.lecture.CourseImpl"  scope="prototype"/>
 	
    	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		      News
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
-    <bean id="newsItem" class="org.openuss.news.NewsItemImpl" scope="singleton"/>
+    <bean id="newsItem" class="org.openuss.news.NewsItemImpl" scope="prototype"/>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     				BrainContest
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<bean id="brainContest" class="org.openuss.braincontest.BrainContestImpl" scope="singleton"/>
-	<bean id="brainContestAnswer" class="org.openuss.braincontest.AnswerImpl"  scope="singleton"/>
+	<bean id="brainContest" class="org.openuss.braincontest.BrainContestImpl" scope="prototype"/>
+	<bean id="brainContestAnswer" class="org.openuss.braincontest.AnswerImpl"  scope="prototype"/>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     				Documents
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
- 	<bean id="folder" class="org.openuss.documents.FolderImpl"  scope="singleton"/>
-	<bean id="fileEntry" class="org.openuss.documents.FileEntryImpl" scope="singleton"/>
+ 	<bean id="folder" class="org.openuss.documents.FolderImpl"  scope="prototype"/>
+	<bean id="fileEntry" class="org.openuss.documents.FileEntryImpl" scope="prototype"/>
 	 
-	<bean id="newDocument" class="org.openuss.repository.RepositoryFileImpl"  scope="singleton"/>
-	<bean id="newFolder" class="org.openuss.documents.FolderImpl"  scope="singleton"/>
+	<bean id="newDocument" class="org.openuss.repository.RepositoryFileImpl" scope="prototype"/>
+	<bean id="newFolder" class="org.openuss.documents.FolderImpl" scope="prototype"/>
 </beans>
