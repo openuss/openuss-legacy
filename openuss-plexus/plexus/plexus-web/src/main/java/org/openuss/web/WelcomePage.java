@@ -47,14 +47,6 @@ public class WelcomePage extends BasePage {
 		setSessionBean(Constants.SYSTEM_STATISTIC, getSystemStatistic());
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public LectureService getLectureService() {
 		return lectureService;
 	}
