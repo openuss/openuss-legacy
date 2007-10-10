@@ -25,9 +25,9 @@ public class Text2HtmlConverter {
 	 * @return Result
 	 */
 	public static String toHtml(String text) {
-		// Disarm html entities
-		text = StringUtils.replace(text.trim(), "<", "&lt;");
-		text = StringUtils.replace(text.trim(), ">", "&gt;");
+//		// Disarm html entities
+//		text = StringUtils.replace(text.trim(), "<", "&lt;");
+//		text = StringUtils.replace(text.trim(), ">", "&gt;");
 
 		// Translate line breaks to html breaks
 		text = StringUtils.replace(text.trim(), "\n", "<br/>");

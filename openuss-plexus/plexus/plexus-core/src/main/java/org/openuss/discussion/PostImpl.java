@@ -8,7 +8,6 @@ package org.openuss.discussion;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
-import org.openuss.framework.utilities.Text2HtmlConverter;
 
 /**
  * @author ingo dueppe
@@ -80,9 +79,6 @@ public class PostImpl extends PostBase implements Post {
 	@Override
 	public String getText() {
 		String text = super.getText();
-		if (!text.contains("<br/>") && !text.contains("<a")) {
-			text = Text2HtmlConverter.toHtml(text);
-		}
 		return text;
 	}
 
