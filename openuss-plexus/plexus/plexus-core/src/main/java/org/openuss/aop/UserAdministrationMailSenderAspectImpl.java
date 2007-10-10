@@ -105,14 +105,12 @@ public class UserAdministrationMailSenderAspectImpl {
 		if (organisation != null) {
 			logger.debug("sendAddMemberMail for organisation " + organisation.getName());
 			String link = generateAddAspirantMailLink(organisation);
-			link = serverUrl() + link;
 			final String subjectMembers = "user.membership.addaspirant.members.subject";
 			final String templateMembers = "addaspirantmembers";
 			final String subjectUser = "user.membership.addaspirant.user.subject";
 			final String templateUser = "addaspirantuser";
 
-			sendMessage(new SendMessageParameter(organisation, loadUser(userId), link, subjectMembers, templateMembers,
-					subjectUser, templateUser));
+			sendMessage(new SendMessageParameter(organisation, loadUser(userId), link, subjectMembers, templateMembers, subjectUser, templateUser));
 		}
 	}
 
