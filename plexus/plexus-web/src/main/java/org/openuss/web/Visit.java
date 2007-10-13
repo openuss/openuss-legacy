@@ -1,5 +1,6 @@
 package org.openuss.web;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +25,7 @@ import org.openuss.security.User;
  */
 @Bean(name="visit",scope=Scope.SESSION)
 @View
-public class Visit extends BaseBean {
+public class Visit extends BaseBean implements Serializable{
 
 	private static final Logger logger = Logger.getLogger(Visit.class);
 	

@@ -17,9 +17,6 @@ import java.util.List;
  */
 public class DataPage<T> implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7635256923773083387L;
 	
 	private int datasetSize;

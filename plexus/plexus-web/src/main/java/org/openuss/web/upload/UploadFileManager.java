@@ -1,6 +1,7 @@
 package org.openuss.web.upload;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -23,7 +24,8 @@ import org.openuss.web.Constants;
  */
 @Bean (name=Constants.UPLOAD_FILE_MANAGER, scope=Scope.SESSION)
 @View
-public class UploadFileManager extends BaseBean{
+public class UploadFileManager extends BaseBean implements Serializable{
+	
 	private static final Logger logger = Logger.getLogger(UploadFileManager.class);
 
 	private static final long serialVersionUID = -842372090394813149L;
