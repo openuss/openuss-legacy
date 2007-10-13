@@ -24,7 +24,7 @@ public class UploadListener extends BaseBean implements ValueChangeListener {
 		UploadedFile uploadedFile = (UploadedFile) event.getNewValue();
 		if (uploadedFile != null) {
 			logValueChangeEvent(event);
-			UploadedDocument document = new UploadedDocument(uploadedFile, event.getSource());
+			UploadedDocument document = new UploadedDocument(uploadedFile, event.getSource().toString());
 			getUploadFileManager().registerDocument(document);
 			setSessionBean(Constants.UPLOADED_FILE, document);
 		}

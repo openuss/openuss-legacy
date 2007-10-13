@@ -29,6 +29,11 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	public void setUsername(String username) {
 		super.setUsername(username.toLowerCase().trim());
 	}
+	
+	@Override
+	public void setEmail(String email) {
+		super.setEmail(email.toLowerCase().trim());
+	}
 
 	/**
 	 * @see org.openuss.security.User#getGrantedAuthorities()
@@ -36,7 +41,6 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	public org.acegisecurity.GrantedAuthority[] getAuthorities() {
 		// expected that all groups beans implements GrantedAuthority interface
 		List<Group> authorities = getGrantedGroups();
-
 		return (GrantedAuthority[]) authorities.toArray(new GrantedAuthority[authorities.size()]);
 	}
 
@@ -147,10 +151,12 @@ public class UserImpl extends UserBase implements User, UserDetails {
 				+ StringUtils.trimToEmpty(getLastName());
 	}
 
+	@SuppressWarnings("deprecation")
 	public String getTimezone() {
 		return getPreferences().getTimezone();
 	}
 
+	@SuppressWarnings("deprecation")
 	public void setTimezone(String timezone) {
 		getPreferences().setTimezone(timezone);
 	}
@@ -165,11 +171,13 @@ public class UserImpl extends UserBase implements User, UserDetails {
 //		}
 //	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public String getLocale() {
 		return getPreferences().getLocale();
 	}
 
+	@SuppressWarnings("deprecation")
 	public void setLocale(String locale) {
 		getPreferences().setLocale(locale);
 	}

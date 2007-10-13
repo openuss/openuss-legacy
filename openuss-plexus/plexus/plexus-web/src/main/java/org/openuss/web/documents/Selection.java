@@ -1,5 +1,6 @@
 package org.openuss.web.documents;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,9 @@ import org.apache.log4j.Logger;
  * 
  * @param <T>
  */
-public class Selection<T> {
+public class Selection<T> implements Serializable{
+
+	private static final long serialVersionUID = -1738811426145531329L;
 
 	private static final Logger logger = Logger.getLogger(Selection.class);
 

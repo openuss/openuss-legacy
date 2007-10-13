@@ -178,6 +178,21 @@ public class UserDaoTest extends UserDaoTestBase {
 		found = userDao.findUserByUsername("this cannot be found");
 		assertNull(found);
 	}
+	
+	public void testFindUserByEmail() {
+		logger.info("--> BEGIN find user by email");
+		User user = testUtility.createUniqueUserInDB();
+		assertNotNull(user.getId());
+		
+		User found = userDao.findUserByEmail(StringUtils.swapCase(user.getEmail()));
+		assertNotNull(found);
+		assertEquals(user, found);
+		
+		found = userDao.findUserByEmail("this cannot be found");
+		assertNull(found);
+		
+		
+	}
 
 	public TestUtility getTestUtility() {
 		return testUtility;

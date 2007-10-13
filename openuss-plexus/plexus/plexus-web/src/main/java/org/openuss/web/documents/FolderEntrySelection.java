@@ -8,4 +8,6 @@ import org.openuss.documents.FolderEntryInfo;
  */
 public class FolderEntrySelection extends Selection<FolderEntryInfo> {
 
+	private static final long serialVersionUID = -7701064510610403469L;
+
 }

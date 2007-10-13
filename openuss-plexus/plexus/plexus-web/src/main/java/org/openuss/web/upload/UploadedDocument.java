@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.Validate;
@@ -16,18 +17,21 @@ import org.apache.myfaces.custom.fileupload.UploadedFile;
  * @author Ingo Dueppe
  * 
  */
-public class UploadedDocument {
+public class UploadedDocument implements Serializable {
+	private static final long serialVersionUID = 5198805326329538450L;
+
 	static final Logger logger = Logger.getLogger(UploadedDocument.class);
 
-	private Object source;
+	private String source;
 
 	private Integer fileSize;
 	private String fileName;
 	private String contentType;
-	private InputStream inputStream;
 	private File file;
 	
-	public UploadedDocument(UploadedFile uploadedFile, Object source) {
+	private transient InputStream inputStream;
+	
+	public UploadedDocument(UploadedFile uploadedFile, String source) {
 		Validate.notNull(uploadedFile, "Parameter uploadedFile must not be null!");
 		Validate.notNull(source, "Paramter component must not be null");
 		
@@ -82,7 +86,7 @@ public class UploadedDocument {
 		return inputStream;
 	}
 	
-	public Object getSource() {
+	public String getSource() {
 		return source;
 	}
 	

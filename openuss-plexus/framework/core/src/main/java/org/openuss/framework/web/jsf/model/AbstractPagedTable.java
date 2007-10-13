@@ -21,7 +21,7 @@ import org.springframework.beans.support.PropertyComparator;
  * 
  * @param <T>
  */
-public abstract class AbstractPagedTable<T> extends BaseBean implements Serializable{
+public abstract class AbstractPagedTable<T> extends BaseBean {
 
 	private static final Logger logger = Logger.getLogger(AbstractPagedTable.class);
 
@@ -29,9 +29,9 @@ public abstract class AbstractPagedTable<T> extends BaseBean implements Serializ
 
 	private PagedTableMemento state = new PagedTableMemento();
 
-	private transient UIData table;
-	private transient HtmlDataScroller scroller;
-	private transient DataModel data;
+	private UIData table;
+	private HtmlDataScroller scroller;
+	private DataModel data;
 	
 	public abstract DataPage<T> getDataPage(int startRow, int pageSize);
 
@@ -214,7 +214,7 @@ public abstract class AbstractPagedTable<T> extends BaseBean implements Serializ
 	 * 
 	 * @author Ingo Dueppe
 	 */
-	private class PagedTableMemento implements Serializable {
+	private static class PagedTableMemento implements Serializable {
 
 		private static final long serialVersionUID = -4565453284559704002L;
 
