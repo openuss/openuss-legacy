@@ -74,6 +74,7 @@ public class BrainContestMainPage extends AbstractBrainContestPage {
 		public DataPage<BrainContestInfo> getDataPage(int startRow, int pageSize) {
 			List<BrainContestInfo> al = getBrainContestService().getContests(courseInfo);
 			page = new DataPage<BrainContestInfo>(al.size(), 0, al);
+			sort(al);
 			return page;
 		}
 	}
