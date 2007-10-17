@@ -48,6 +48,7 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 			List<TopicInfo> al = discussionService.getTopics(getForum());		
 			setSessionBean(Constants.DISCUSSION_THREADLENGTH, 0);
 			page = new DataPage<TopicInfo>(al.size(),0,al);
+			sort(al);
 			return page;
 		}
 	}
