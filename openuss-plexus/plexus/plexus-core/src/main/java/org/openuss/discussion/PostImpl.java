@@ -77,12 +77,6 @@ public class PostImpl extends PostBase implements Post {
 	}
 
 	@Override
-	public String getText() {
-		String text = super.getText();
-		return text;
-	}
-
-	@Override
 	public Date getLastModification() {
 		Date last = super.getLastModification();
 		if (last == null) {

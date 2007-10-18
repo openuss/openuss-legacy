@@ -31,21 +31,19 @@
 			<o:block label="${headline}" styleClass="news_box">
 				<h:form id="news_tables">
 		   			<h:dataTable id="news" value="${value}" var="item" binding="#{news_controller.newsTable}" styleClass="news">
-	    				<h:column>
-	    					<h:outputText value="#{item.publisherName} - " styleClass="news_publisher"/>
-	    					<h:outputText value="#{item.publishDate}" styleClass="news_date">
+    					<h:column>
+    						<h:outputText value="#{item.publisherName} - " styleClass="news_publisher"/>
+    						<h:outputText value="#{item.publishDate}" styleClass="news_date">
 	    						<oc:convertTimestamp timeZone="#{visit.timeZone}" type="${displayDateTime}" dateStyle="${dateStyle}" timeStyle="${timeStyle}"/>
-	    					</h:outputText>
-	    					<br/>
-		    				<h:outputText value="#{item.title}" styleClass="news_title"/>
-	    					<br/>
-	    					<o:link value="/views/public/news/newsDetail.faces">
-	    						<f:param value="#{item.id}" name="news"/>
-			    				<h:outputText value="#{msg.news_selected_newsitem_detaillink}"/>
-	    					</o:link>
-	    				</h:column>
-	   				</h:dataTable>
-	   			</h:form>
+    						</h:outputText>
+    						<h:outputText value="#{item.title}" styleClass="news_title"/>
+    						<o:link value="/views/public/news/newsDetail.faces" styleClass="news_link">
+    							<f:param value="#{item.id}" name="news"/>
+		    					<h:outputText value="#{msg['news_selected_newsitem_detaillink']}"/>
+    						</o:link>
+    					</h:column>
+   					</h:dataTable> 
+   				</h:form>
    			</o:block>
 		</c:if>
 	</ui:composition>

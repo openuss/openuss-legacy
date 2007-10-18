@@ -29,7 +29,7 @@
 		<t:column>
 			<plexus:commandSortHeader columnName="publishDate">#{msg.news_colheader_publish}</plexus:commandSortHeader>
 			<h:outputText id="publishDate" value="#{item.publishDate}">
-				<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+				<f:convertDateTime type="both" timeZone="#{visit.timeZone}" locale="#{visit.locale}"/>
 			</h:outputText>
 		</t:column>
 		

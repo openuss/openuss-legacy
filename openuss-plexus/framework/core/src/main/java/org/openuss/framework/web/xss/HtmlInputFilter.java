@@ -104,6 +104,8 @@ public class HtmlInputFilter {
 		ArrayList<String> a_atts = new ArrayList<String>();
 		a_atts.add("href");
 		a_atts.add("target");
+		a_atts.add("color");
+		a_atts.add("style");
 		vAllowed.put("a", a_atts);
 
 		ArrayList<String> img_atts = new ArrayList<String>();
@@ -112,17 +114,26 @@ public class HtmlInputFilter {
 		img_atts.add("height");
 		img_atts.add("alt");
 		vAllowed.put("img", img_atts);
+		
+		ArrayList<String> default_atts = new ArrayList<String>();
+		default_atts.add("color");
+		default_atts.add("style");
 
-		ArrayList<String> no_atts = new ArrayList<String>();
-		vAllowed.put("b", no_atts);
-		vAllowed.put("strong", no_atts);
-		vAllowed.put("i", no_atts);
-		vAllowed.put("em", no_atts);
-		vAllowed.put("br", no_atts);
-		vAllowed.put("p", no_atts);
-		vAllowed.put("ol", no_atts);
-		vAllowed.put("ul", no_atts);
-		vAllowed.put("li", no_atts);
+		vAllowed.put("b", default_atts );
+		vAllowed.put("em", default_atts );
+		vAllowed.put("strong", default_atts );
+		vAllowed.put("i", default_atts );
+		vAllowed.put("em", default_atts );
+		vAllowed.put("br", default_atts );
+		vAllowed.put("p", default_atts );
+		vAllowed.put("ol", default_atts );
+		vAllowed.put("ul", default_atts );
+		vAllowed.put("li", default_atts );
+		vAllowed.put("span", default_atts );
+		vAllowed.put("font", default_atts );
+		vAllowed.put("strike", default_atts );
+		vAllowed.put("u", default_atts );
+		
 
 		vSelfClosingTags = new String[] { "img" , "br"};
 		vNeedClosingTags = new String[] { "a", "b", "strong", "i", "em" };

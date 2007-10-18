@@ -78,8 +78,8 @@
 	</context-param>
 	
 	<context-param>
-    	<param-name>javax.faces.CONFIG_FILES</param-name>
-    	<param-value>/WEB-INF/faces-navigation.xml,/WEB-INF/faces-managed-beans.xml</param-value>
+		<param-name>javax.faces.CONFIG_FILES</param-name>
+		<param-value>/WEB-INF/faces-navigation.xml,/WEB-INF/faces-managed-beans.xml</param-value>
 	</context-param>	
 
 	<context-param>

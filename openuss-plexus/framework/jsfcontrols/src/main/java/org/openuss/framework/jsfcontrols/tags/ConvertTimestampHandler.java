@@ -61,7 +61,8 @@ public class ConvertTimestampHandler extends ConvertHandler {
      */
     protected Converter createConverter(FaceletContext ctx)
             throws FacesException, ELException, FaceletException {
-        return ctx.getFacesContext().getApplication().createConverter(TimestampConverter.CONVERTER_ID);
+        Converter converter = ctx.getFacesContext().getApplication().createConverter(TimestampConverter.CONVERTER_ID);
+        return converter;
 
     }
 
