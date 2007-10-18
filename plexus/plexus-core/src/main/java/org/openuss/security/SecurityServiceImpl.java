@@ -235,7 +235,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	@Override
 	protected boolean handleIsValidUserName(User self, String userName) throws Exception {
 		// username must not start with GROUP_ or ROLE_
-		if (userName.startsWith(GROUP_PREFIX) || userName.startsWith(ROLE_PREFIX)) {
+		if (userName == null || userName.startsWith(GROUP_PREFIX) || userName.startsWith(ROLE_PREFIX)) {
 			return false;
 		}
 		User user = getUserDao().findUserByUsername(userName);
