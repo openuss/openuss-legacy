@@ -39,10 +39,8 @@ public class UserAdministrationMailSenderAspectImpl {
 	 * Sends Emails to the new Member and all old Members of the Organisation
 	 * whenever a new Member has been added to the Organisation.
 	 * 
-	 * @param organisationId -
-	 *            ID of the Organisation.
-	 * @param userID -
-	 *            ID of the new Member.
+	 * @param organisationId - ID of the Organisation.
+	 * @param userID - ID of the new Member.
 	 */
 	public void sendAddMemberMail(Long organisationId, Long userId) {
 		logger.debug("sendAddMemberMail - User " + userId + " has been added to Organisation " + organisationId);
@@ -160,8 +158,7 @@ public class UserAdministrationMailSenderAspectImpl {
 			final String templateMembers = "rejectaspirantmembers";
 			final String subjectUser = "user.membership.rejectaspirant.user.subject";
 			final String templateUser = "rejectaspirantuser";
-			sendMessage(new SendMessageParameter(organisation, loadUser(userId), link, subjectMembers, templateMembers,
-					subjectUser, templateUser));
+			sendMessage(new SendMessageParameter(organisation, loadUser(userId), link, subjectMembers, templateMembers,	subjectUser, templateUser));
 		}
 	}
 

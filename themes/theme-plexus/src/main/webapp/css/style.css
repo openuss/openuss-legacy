@@ -1805,20 +1805,36 @@ td.col_max_left label input {
 	display: inline;
 }
 
-.news_publisher {
-	font-weight: bold;
-}
-
-.news_date {
-	color: #000;
-	font-weight: bold;
-}
-
-.news_title {
-	color: #333;
+span.news_publisher {
 	font-weight: normal;
-	padding-left: 5px;
-	padding-right: 5px;
+	font-size: 8pt;
+}
+
+span.news_date {
+	color: #000;
+	display:inline;
+	font-weight: normal;
+	font-size: 8pt;
+}
+
+span.news_title {
+	color: #333;
+	font-weight: bold;
+	padding: 1px 0px;
+	display: block;
+}
+
+#center a.news_link {
+	background: url(../img/link_int.png);
+	background-repeat: no-repeat;
+	background-position: 1px 2px;
+	padding-left:15px;	
+	color:#000;
+}
+
+span.news_text {
+	display: block;
+	border-top: 1px solid #b4b4b4;
 }
 
 .table_scroll {

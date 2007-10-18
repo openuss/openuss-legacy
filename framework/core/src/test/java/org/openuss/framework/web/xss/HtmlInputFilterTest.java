@@ -104,6 +104,28 @@ public class HtmlInputFilterTest extends TestCase {
 		test("<a href=\"vbscript:foo\">bar</a>", "<a href=\"#foo\">bar</a>");
 		test("<a href=\"view-source:foo\">bar</a>", "<a href=\"#foo\">bar</a>");
 	}
+	
+	public void testEditor() {
+		String tmp = "<font color=\"#ff0000\">aaaaaaaaa</font><br /><span style=" +
+				"\"background-color: rgb(255, 204, 0);\">asasa</span><br />" +
+				"<span style=\"background-color: rgb(255, 153, 204);\">sasa" +
+				"s </span>a <strong><em>pokdsa </em></strong>k dap <font co" +
+				"lor=\"#ff0000\">pokds </font><strong>aposkdpoasdk&nbsp; </" +
+				"strong><img src=\"/openuss-plexus/fckfaces/FCKeditor/edito" +
+				"r/images/smiley/msn/shades_smile.gif\" alt=\"\" /><br /><i" +
+				"mg src=\"/openuss-plexus/fckfaces/FCKeditor/editor/images/" +
+				"smiley/msn/angel_smile.gif\" alt=\"\" /><br /><br style=\"" +
+				"background-color: rgb(255, 255, 153);\" /><ol style=\"back" +
+				"ground-color: rgb(255, 255, 153);\"> <li>adsadasdasdsaasad" +
+				"sad</li></ol><br /><ul><li>asdsad<ul><li>sadsadasd</li><li" +
+				">asdasd</li></ul></li><li>asdsad</li></ul><ol><li>asdsad</" +
+				"li><li>asdsad<ol><li>asdasad</li><li>sad</li><li>sadsad</l" +
+				"i><li>asdsad</li></ol></li><li>asdasd</li></ol>centrum<br " +
+				"/>right<br />justify qwewqe wqewqe<br />qwewqe<br /><br />" +
+				"<a href=\"http://link\">link</a><br /><br /><br />qwe<br />";
+		
+		test(tmp,tmp);
+	}
 
 	public void test_self_closing_tags() {
 		test("<img src=\"a\">", "<img src=\"a\" />");
