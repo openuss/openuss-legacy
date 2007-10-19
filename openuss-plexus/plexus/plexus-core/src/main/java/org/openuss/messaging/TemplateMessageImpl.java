@@ -85,4 +85,6 @@ public class TemplateMessageImpl extends TemplateMessageBase implements Template
 		}
 		return params;
 	}
+	
+	
 }
