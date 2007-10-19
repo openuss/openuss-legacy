@@ -32,7 +32,7 @@ import org.openuss.security.User;
  */
 public class DesktopService2Impl extends DesktopService2Base {
 
-	private static final Logger logger = Logger.getLogger(DesktopServiceImpl.class);
+	private static final Logger logger = Logger.getLogger(DesktopService2Impl.class);
 
 	/**
 	 * @see org.openuss.desktop.DesktopService2#findDesktop(java.lang.Long)
