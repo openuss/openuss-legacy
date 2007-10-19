@@ -49,14 +49,6 @@ public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.op
 	}
 
 	@Override
-	public boolean isRemovable() {
-		if (this.getCourses().size() < 1)
-			return true;
-		else
-			return false;
-	}
-
-	@Override
 	public void setEnddate(Date enddate) {
 		super.setEnddate(DateUtils.truncate(enddate, Calendar.DATE));
 	}

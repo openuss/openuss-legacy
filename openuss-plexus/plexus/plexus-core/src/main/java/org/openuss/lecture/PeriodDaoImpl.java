@@ -37,11 +37,6 @@ public class PeriodDaoImpl extends PeriodDaoBase {
 			periodInfo.setActive(false);
 		}
 
-		if (entity.isRemovable()) {
-			periodInfo.setRemovable(true);
-		} else {
-			periodInfo.setRemovable(false);
-		}
 		return periodInfo;
 	}
 
