@@ -109,7 +109,7 @@ public class InstituteDepartmentMailSenderAspectImpl {
 		Validate.notNull(application.getDepartment(), "department cannot be null.");
 		
 		// Create Link to Department
-		String link = "/views/public/department/department.faces?department=" + application.getDepartment().getId();
+		String link = "/views/secured/lecture/departmentinstitutes.faces?department=" + application.getDepartment().getId();
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
 
 		Map<String, String> parameters = prepareEMailParameters(application, link);
