@@ -16,19 +16,19 @@ public abstract class MessagePreparator implements InitializingBean, MimeMessage
 	protected Recipient recipient;
 	protected Date sendDate;
 	protected String fromAddress;
-	
+
 	private SystemService systemService;
-	
+
 	public void setSystemService(SystemService systemService) {
 		this.systemService = systemService;
 	}
-	
+
 	public void afterPropertiesSet() throws Exception {
 		if (systemService != null) {
 			fromAddress = systemService.getProperty(SystemProperties.MAIL_FROM_ADDRESS).getValue();
 		}
 	}
-	
+
 	public Recipient getRecipient() {
 		return recipient;
 	}
@@ -38,11 +38,13 @@ public abstract class MessagePreparator implements InitializingBean, MimeMessage
 	}
 
 	public Date getSendDate() {
-		return sendDate;
+		return sendDate == null ? null : new Date(sendDate.getTime());
 	}
 
 	public void setSendDate(Date sendDate) {
-		this.sendDate = sendDate;
+		if (sendDate != null) {
+			this.sendDate = new Date(sendDate.getTime());
+		}
 	}
 
 	public String getFromAddress() {
