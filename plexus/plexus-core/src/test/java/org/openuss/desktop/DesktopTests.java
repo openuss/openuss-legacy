@@ -8,7 +8,6 @@ public class DesktopTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.openuss.desktop");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(DesktopServiceIntegrationTest.class);
 		suite.addTestSuite(DesktopService2IntegrationTest.class);
 		suite.addTestSuite(DesktopDaoTest.class);
 		//$JUnit-END$
