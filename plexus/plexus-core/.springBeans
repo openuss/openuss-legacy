@@ -5,7 +5,6 @@
 	</configExtensions>
 	<configs>
 		<config>src/main/resources/applicationContext-activation.xml</config>
-		<config>src/main/resources/applicationContext-adapters.xml</config>
 		<config>src/main/resources/applicationContext-aop.xml</config>
 		<config>src/main/resources/applicationContext-cache.xml</config>
 		<config>src/main/resources/applicationContext-commands.xml</config>
