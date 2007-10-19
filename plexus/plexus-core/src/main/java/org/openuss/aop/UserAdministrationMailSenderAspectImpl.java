@@ -13,6 +13,9 @@ import org.openuss.lecture.Organisation;
 import org.openuss.lecture.OrganisationDao;
 import org.openuss.lecture.University;
 import org.openuss.messaging.MessageService;
+import org.openuss.security.Authority;
+import org.openuss.security.Group;
+import org.openuss.security.GroupType;
 import org.openuss.security.User;
 import org.openuss.security.UserDao;
 import org.openuss.system.SystemProperties;
@@ -214,10 +217,17 @@ public class UserAdministrationMailSenderAspectImpl {
 	}
 
 	private List<User> prepareRecipientsMembers(Organisation organisation, User user) {
-		// Determine Recipients (Members of the University)
+		// Determine Administrator Recipients (Members of the University)
 		List<User> recipients1 = new ArrayList<User>();
-		for (User member : organisation.getMembership().getMembers()) {
-			recipients1.add(member);
+		for (Group group : organisation.getMembership().getGroups()){
+			if (group.getGroupType() == GroupType.ADMINISTRATOR){
+				for (Authority auth : group.getMembers()){
+					if (auth instanceof User){
+						recipients1.add((User)auth);
+					}
+					
+				}
+			}
 		}
 		recipients1.remove(user);
 		return recipients1;
