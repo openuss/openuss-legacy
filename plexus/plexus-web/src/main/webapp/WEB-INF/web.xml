@@ -19,7 +19,6 @@
 			classpath*:applicationContext-dataSource.xml,
 			classpath*:applicationContext-legacy.xml,
 			<!--classpath*:applicationContext-beans.xml,-->
-			classpath*:applicationContext-adapters.xml,
 			classpath*:applicationContext-commands.xml,
 			classpath*:applicationContext-messaging.xml,
 			classpath*:applicationContext-newsletter.xml,
