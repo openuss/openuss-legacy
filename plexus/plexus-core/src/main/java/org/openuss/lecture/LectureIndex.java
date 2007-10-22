@@ -82,6 +82,11 @@ public class LectureIndex extends DomainIndexer {
 			for (String file : files) {
 				Lock lock = fsDirectory.makeLock(file);
 				try {
+					try {
+						lock.obtain();
+					} catch (IOException e) {
+						logger.error("Couldn't obtain lock for "+file);
+					}
 					fsDirectory.deleteFile(file);
 				} catch (IOException e) {
 					logger.error(e);
@@ -89,7 +94,7 @@ public class LectureIndex extends DomainIndexer {
 					lock.release();
 				}
 			}
-		}
+		}		
 	}
 	
 	private void indexUniversities() {
@@ -97,9 +102,13 @@ public class LectureIndex extends DomainIndexer {
 		Collection<University> universities = universityDao.loadAll();
 		
 		for(University university: universities) {
-			if(university.isEnabled()){
-				universityIndexer.setDomainObject(university);
-				universityIndexer.create();
+			try {
+				if(university.isEnabled()){
+					universityIndexer.setDomainObject(university);
+					universityIndexer.create();
+				}
+			} catch (Exception ex) {
+				logger.error(ex);
 			}
 		}
 	}
@@ -109,9 +118,13 @@ public class LectureIndex extends DomainIndexer {
 		Collection<Department> departments = departmentDao.loadAll();
 		
 		for(Department department: departments) {
-			if(department.isEnabled()){
-				departmentIndexer.setDomainObject(department);
-				departmentIndexer.create();
+			try {
+				if(department.isEnabled()){
+					departmentIndexer.setDomainObject(department);
+					departmentIndexer.create();
+				}
+			} catch (Exception ex) {
+				logger.error(ex);
 			}
 		}
 	}
@@ -121,9 +134,13 @@ public class LectureIndex extends DomainIndexer {
 		Collection<Institute> institutes = instituteDao.loadAll();
 		
 		for(Institute institute: institutes) {
-			if(institute.isEnabled()){
-				instituteIndexer.setDomainObject(institute);
-				instituteIndexer.create();
+			try {
+				if(institute.isEnabled()){
+					instituteIndexer.setDomainObject(institute);
+					instituteIndexer.create();
+				}
+			} catch (Exception ex) {
+				logger.error(ex);
 			}
 		}
 	}
@@ -133,11 +150,13 @@ public class LectureIndex extends DomainIndexer {
 		Collection<Course> courses = courseDao.loadAll();
 		
 		for(Course course: courses) {
-			if(course.isEnabled() 
-					&& course.getAccessType() != null && 
-					!course.getAccessType().equals(AccessType.CLOSED)){
-				courseIndexer.setDomainObject(course);
-				courseIndexer.create();
+			try {
+				if(course.isEnabled() && course.getAccessType() != null && !course.getAccessType().equals(AccessType.CLOSED)){
+					courseIndexer.setDomainObject(course);
+					courseIndexer.create();
+				}
+			} catch (Exception ex) {
+				logger.error(ex);
 			}
 		}
 	}
