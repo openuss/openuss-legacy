@@ -27,7 +27,6 @@ import org.openuss.system.SystemService;
  * 
  * @author Ron Haus
  * @author Florian Dondorf
- * @author Ingo Düppe
  */
 
 public class UserAdministrationMailSenderAspectImpl {
@@ -157,7 +156,6 @@ public class UserAdministrationMailSenderAspectImpl {
 		if (organisation != null) {
 			logger.debug("sendAddMemberMail to organisation members of " + organisation.getName());
 			String link = generateRejectAspirantMailLink(organisation);
-			link = serverUrl() + link;
 			final String subjectMembers = "user.membership.rejectaspirant.members.subject";
 			final String templateMembers = "rejectaspirantmembers";
 			final String subjectUser = "user.membership.rejectaspirant.user.subject";
