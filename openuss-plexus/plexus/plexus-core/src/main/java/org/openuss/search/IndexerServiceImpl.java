@@ -7,6 +7,7 @@ package org.openuss.search;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.commands.CommandApplicationService;
+import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.foundation.DomainObject;
 
 /**
@@ -40,6 +41,14 @@ public class IndexerServiceImpl extends IndexerServiceBase {
 		try {
 			String commandName = indexerFactory.getIndexerName(domainObject);
 			getCommandService().createEachCommand(domainObject, commandName, commandType);
+		} catch (CommandApplicationService e) {
+			throw new IndexerApplicationException(e);
+		}
+	}
+	
+	protected void handleRecreate() throws Exception {
+		try {
+			getCommandService().createEachCommand(new DefaultDomainObject(1L), "recreateIndexerCommand", "UPDATE");
 		} catch (CommandApplicationService e) {
 			throw new IndexerApplicationException(e);
 		}

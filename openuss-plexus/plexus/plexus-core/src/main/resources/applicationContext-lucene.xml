@@ -86,7 +86,7 @@
 		</property>
 	</bean>
 
-	<bean id="lectureIndexImpl" class="org.openuss.lecture.LectureIndexImpl">
+	<bean id="recreateIndexer" class="org.openuss.lecture.LectureIndex">
 		<property name="universityDao" ref="universityDao"/>
 		<property name="universityIndexer" ref="universityIndexer"/>
 		<property name="departmentDao" ref="departmentDao"/>
@@ -95,8 +95,11 @@
 		<property name="instituteIndexer" ref="instituteIndexer"/>
 		<property name="courseDao" ref="courseDao"/>
 		<property name="courseIndexer" ref="courseIndexer"/>
+		<property name="fsDirectory" ref="lectureDirectory"/>
+		<property name="indexFactory" ref="indexFactory" />
 	</bean>
 	
+	<!-- 
 	<bean id="lectureIndex" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="proxyInterfaces"><value>org.openuss.lecture.LectureIndex</value></property>
 		<property name="target">
@@ -108,6 +111,11 @@
 				<value>hibernateInterceptor</value>
 			</list>
 		</property>
+	</bean>
+	 -->
+	
+	<bean id="recreateIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
+		<property name="domainIndexer" ref="recreateIndexer"/>
 	</bean>
 	
 	<bean id="universityIndexerCommand" class="org.openuss.search.DomainIndexerCommand">

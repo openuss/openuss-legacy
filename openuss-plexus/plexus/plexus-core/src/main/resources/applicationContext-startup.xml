@@ -10,7 +10,7 @@
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	  
 	  <bean id="application" class="org.openuss.foundation.ApplicationStartup" lazy-init="false">
-	  	<property name="lectureIndex" ref="lectureIndex"/>
+	  	<property name="lectureIndex" ref="recreateIndexer"/>
 	  </bean>
 
 </beans>

@@ -1,18 +1,22 @@
 package org.openuss.lecture;
 
+import java.io.IOException;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.Lock;
+import org.openuss.search.DomainIndexer;
 
 /**
  * @author Ingo Dueppe
  * @author Kai Stettner
  * @author Malte Stockmann
  */
-public class LectureIndexImpl implements LectureIndex{
+public class LectureIndex extends DomainIndexer {
 
-	private static final Logger logger = Logger.getLogger(LectureIndexImpl.class);
+	private static final Logger logger = Logger.getLogger(LectureIndex.class);
 	
 	private UniversityDao universityDao;
 	private DepartmentDao departmentDao;
@@ -25,6 +29,35 @@ public class LectureIndexImpl implements LectureIndex{
 	private DepartmentIndexer departmentIndexer;
 	private InstituteIndexer instituteIndexer;
 	private CourseIndexer courseIndexer;
+	
+	private FSDirectory fsDirectory;
+	
+	@Override
+	public void create() {
+		try {
+			recreate();
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}
+
+	@Override
+	public void update() {
+		try {
+			recreate();
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}
+
+	@Override
+	public void delete() {
+		try {
+			recreate();
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}
 
 	/**
 	 * Recreates the full lecture index
@@ -33,12 +66,28 @@ public class LectureIndexImpl implements LectureIndex{
 	public void recreate() throws Exception {
 		logger.debug("start to recreate lecture index.");
 
+		deleteIndex();
+		
 		indexUniversities();
 		indexDepartments();
 		indexInstitutes();
 		indexCourses();
 		
 		logger.debug("recreated lecture index.");
+	}
+
+	private void deleteIndex() {
+		String[] files = fsDirectory.list();
+		for (String file : files) {
+			Lock lock = fsDirectory.makeLock(file);
+			try {
+				fsDirectory.deleteFile(file);
+			} catch (IOException e) {
+				logger.error(e);
+			} finally {
+				lock.release();
+			}
+		}
 	}
 	
 	private void indexUniversities() {
@@ -163,4 +212,7 @@ public class LectureIndexImpl implements LectureIndex{
 		this.courseIndexer = courseIndexer;
 	}
 
+	public void setFsDirectory(FSDirectory fsDirectory) {
+		this.fsDirectory = fsDirectory;
+	}
 }
