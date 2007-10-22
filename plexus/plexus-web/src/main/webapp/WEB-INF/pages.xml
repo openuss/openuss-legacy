@@ -142,19 +142,19 @@
 	</page>
 
 	<page view-id="/views/secured/documents/folderedit.xhtml">
-		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.CRUD}"/>
+		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.ASSIST}"/>
 	</page>
 
 	<page view-id="/views/secured/documents/fileedit.xhtml">
-		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.CRUD}"/>
+		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.ASSIST}"/>
 	</page>
 
 	<page view-id="/views/secured/documents/addzip.xhtml">
-		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.CRUD}"/>
+		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.ASSIST}"/>
 	</page>
 
 	<page view-id="/views/secured/documents/remove.xhtml">
-		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.CRUD}"/>
+		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.ASSIST}"/>
 	</page>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

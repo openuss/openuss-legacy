@@ -76,7 +76,7 @@
 			</h:outputText>
 		</t:column>
 		
-		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.CREATE}">
+		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 			<plexus:column header="#{msg.documents_main_column_actions}">
 				<plexus:command 
 				    bean="#{views$secured$documents$documents}"

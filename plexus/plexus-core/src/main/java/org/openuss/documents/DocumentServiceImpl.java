@@ -286,7 +286,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		// FIXME should be implemented as aspect
 		if (entries != null && entries.size() > 0) {
 			Object object = entries.iterator().next();
-			if (!AcegiUtils.hasPermission(object, new Integer[] { LectureAclEntry.CRUD })) {
+			if (!AcegiUtils.hasPermission(object, new Integer[] { LectureAclEntry.ASSIST })) {
 				CollectionUtils.filter(entries, new Predicate() {
 					public boolean evaluate(Object object) {
 						boolean eval = false;
