@@ -157,10 +157,11 @@
 		<property name="create" value="true" />
 		<property name="directory" ref="lectureDirectory" />
 		<property name="analyzer" ref="analyzer" />
+		<property name="resolveLock" value="true"/>
 	</bean>
 
 	<bean id="lectureDirectory"
-		class="org.springmodules.lucene.index.support.FSDirectoryFactoryBean">
+		class="org.openuss.search.lucene.WorkAroundFSDirectoryFactoryBean">
 		<property name="create" value="true" />
 		<property name="location" value="file:${java.io.tmpdir}/lucene/lecture" />
 	</bean>
