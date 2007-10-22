@@ -122,7 +122,8 @@ public class HtmlInputFilterTest extends TestCase {
 				"li><li>asdsad<ol><li>asdasad</li><li>sad</li><li>sadsad</l" +
 				"i><li>asdsad</li></ol></li><li>asdasd</li></ol>centrum<br " +
 				"/>right<br />justify qwewqe wqewqe<br />qwewqe<br /><br />" +
-				"<a href=\"http://link\">link</a><br /><br /><br />qwe<br />";
+				"<a style=\"color:#00f;\" color=\"rgb(120,120,0)\" href=\"h" +
+				"ttp://link\">link</a><br /><br /><br />qwe<br />";
 		
 		test(tmp,tmp);
 	}

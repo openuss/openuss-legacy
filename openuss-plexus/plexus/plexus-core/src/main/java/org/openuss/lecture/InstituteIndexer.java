@@ -28,7 +28,6 @@ public class InstituteIndexer extends DomainIndexer {
 	private InstituteDao instituteDao;
 
 	public void create() {
-		logger.debug("Starting method create");
 		final Institute institute = getInstitute();
 		if (institute != null) {
 			logger.debug("method create: create new index entry for institute " + institute.getName() + " (" + institute.getId() + ")");
@@ -43,7 +42,6 @@ public class InstituteIndexer extends DomainIndexer {
 	}
 
 	public void update() {
-		logger.debug("Starting method update");
 		final Institute institute = getInstitute();
 		if (institute != null) {
 			logger.debug("method update: update index entry for institute " + institute.getName() + " (" + institute.getId() + ")");
