@@ -24,7 +24,7 @@ public class MailSendingCommand extends AbstractDomainCommand implements DomainC
 			while (i.hasNext()){
 				users.add(((Subscriber)i.next()).getUser());
 			}
-			Long messageId = getMessageService().sendMessage(mail.getNewsletter().getName(), "["+mail.getNewsletter().getName()+"]"+mail.getSubject(), mail.getText(), mail.isSms(), users);
+			Long messageId = getMessageService().sendMessage(mail.getNewsletter().getName(), "["+mail.getNewsletter().getName()+"] "+mail.getSubject(), mail.getText(), mail.isSms(), users);
 			mail.setStatus(MailingStatus.INQUEUE);
 			mail.setMessageId(messageId);
 			getMailDao().update(mail);
