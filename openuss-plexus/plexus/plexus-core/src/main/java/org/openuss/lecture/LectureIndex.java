@@ -77,15 +77,17 @@ public class LectureIndex extends DomainIndexer {
 	}
 
 	private void deleteIndex() {
-		String[] files = fsDirectory.list();
-		for (String file : files) {
-			Lock lock = fsDirectory.makeLock(file);
-			try {
-				fsDirectory.deleteFile(file);
-			} catch (IOException e) {
-				logger.error(e);
-			} finally {
-				lock.release();
+		if (fsDirectory != null) {
+			String[] files = fsDirectory.list();
+			for (String file : files) {
+				Lock lock = fsDirectory.makeLock(file);
+				try {
+					fsDirectory.deleteFile(file);
+				} catch (IOException e) {
+					logger.error(e);
+				} finally {
+					lock.release();
+				}
 			}
 		}
 	}
