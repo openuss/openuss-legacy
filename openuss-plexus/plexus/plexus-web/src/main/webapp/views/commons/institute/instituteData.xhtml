@@ -10,9 +10,7 @@
       
 	<o:input entity="instituteInfo" property="name" maxlength="250" required="true"/>
 	<o:input entity="instituteInfo" property="shortName" maxlength="250" required="true"/>
-	<o:input entity="instituteInfo" property="shortcut" maxlength="30" required="true">
-		<f:validator validatorId="filenameValidator"/>
-	</o:input>
+	<o:input entity="instituteInfo" property="shortcut" maxlength="30" required="true"/>
 	
 	<t:saveState id="institute_university_id" value="#{views$secured$lecture$instituteoptions.universityId}" />
 	<t:saveState id="institute_department_id" value="#{views$secured$lecture$instituteoptions.departmentId}" />

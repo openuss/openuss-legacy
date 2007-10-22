@@ -30,9 +30,7 @@
   		<ui:define name="content">
 			<h:form id="courseOptionForm">
 	  			<o:block label="#{msg.course_options_headline} - #{sessionScope.courseInfo.name} - #{sessionScope.courseInfo.periodName}" styleClass="form_box">
-					<o:input entity="courseInfo" property="shortcut" maxlength="30" required="true">
-						<f:validator validatorId="filenameValidator"/>
-					</o:input>
+					<o:input entity="courseInfo" property="shortcut" maxlength="30" required="true"/>
 					<h:outputLabel for="accessType" value="#{msg.course_options_access_headline}" styleClass="field_label"/>
 					<h:selectOneMenu id="accessType" 
 						layout="pageDirection" 
