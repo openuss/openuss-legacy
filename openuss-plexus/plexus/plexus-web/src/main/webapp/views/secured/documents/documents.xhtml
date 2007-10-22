@@ -48,7 +48,7 @@
 						value="#{msg.documents_main_button_download}" 
 						title="#{msg.documents_main_button_download}"
 						styleClass="button_add"/>
-				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.CREATE}">
+				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 					<h:commandButton 
 					    id="addZip"
 						action="documents_add_zip" 
@@ -68,7 +68,7 @@
 						title="#{msg.documents_main_button_newfolder}"
 						styleClass="button_add"/>
 				</s:acl>
-				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.DELETE}">
+				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 					<h:commandButton 
 					    id="delete"
 						action="#{views$secured$documents$documents.delete}" 
