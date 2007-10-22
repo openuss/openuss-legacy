@@ -9,7 +9,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.lecture.LectureIndex;
+import org.openuss.search.IndexerService;
 import org.openuss.system.SystemProperty;
 import org.openuss.system.SystemService;
 import org.openuss.web.BasePage;
@@ -29,7 +29,6 @@ public class PropertiesPage extends BasePage  {
 	
 	@Property(value="#{systemService}")
 	private SystemService systemService;
-	
 	
 	@Prerender
 	public void prerender() {
@@ -72,8 +71,8 @@ public class PropertiesPage extends BasePage  {
 	}
 	
 	public String recreateLectureIndex() throws Exception {
-		LectureIndex lectureIndex = (LectureIndex) getBean("lectureIndex");
-		lectureIndex.recreate();
+		IndexerService indexerService = (IndexerService) getBean("indexerService");
+		indexerService.recreate();
 		return Constants.SUCCESS;
 	}
 

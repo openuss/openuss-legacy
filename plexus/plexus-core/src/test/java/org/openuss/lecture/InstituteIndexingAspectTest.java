@@ -114,6 +114,7 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 		private int create;
 		private int delete;
 		private int update;
+		private int recreate;
 		
 		public void createIndex(DomainObject domainObject) throws IndexerApplicationException {
 			logger.debug("method createIndex: Increment testCreateIndex");
@@ -128,6 +129,11 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 		public void updateIndex(DomainObject domainObject) throws IndexerApplicationException {
 			logger.debug("method updateIndex: Increment testUpdateIndex");
 			update++;
+		}
+
+		public void recreate() throws IndexerApplicationException {
+			logger.debug("method recreateIndex: Increment testRecreateIndex");
+			recreate++;
 		}
 	}
 

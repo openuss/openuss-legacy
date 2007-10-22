@@ -27,6 +27,7 @@ import org.openuss.system.SystemService;
  * 
  * @author Ron Haus
  * @author Florian Dondorf
+ * @author Ingo Düppe
  */
 
 public class UserAdministrationMailSenderAspectImpl {

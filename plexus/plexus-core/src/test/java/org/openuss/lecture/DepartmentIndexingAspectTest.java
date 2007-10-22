@@ -102,7 +102,7 @@ private static final Logger logger = Logger.getLogger(DepartmentIndexingAspectTe
 		private int create;
 		private int delete;
 		private int update;
-		
+		private int recreate;
 		
 		
 		public void createIndex(DomainObject domainObject) throws IndexerApplicationException {
@@ -118,6 +118,11 @@ private static final Logger logger = Logger.getLogger(DepartmentIndexingAspectTe
 		public void updateIndex(DomainObject domainObject) throws IndexerApplicationException {
 			logger.debug("method updateIndex: Increment testUpdateIndex");
 			update++;
+		}
+
+		public void recreate() throws IndexerApplicationException {
+			logger.debug("method recreateIndex: Increment testRecreateIndex");
+			recreate++;
 		}
 	}
 
