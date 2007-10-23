@@ -75,15 +75,9 @@
 	</bean>
 	
 	<bean name="courseIndexer" class="org.openuss.lecture.CourseIndexer">
-		<property name="analyzer">
-			<ref bean="analyzer" />
-		</property>
-		<property name="courseDao">
-			<ref bean="courseDao" />
-		</property>
-		<property name="indexFactory">
-			<ref bean="indexFactory" />
-		</property>
+		<property name="analyzer" ref="analyzer" />
+		<property name="courseDao" ref="courseDao" />
+		<property name="indexFactory" ref="indexFactory" />
 	</bean>
 
 	<bean id="recreateIndexer" class="org.openuss.lecture.LectureIndex">
@@ -97,6 +91,19 @@
 		<property name="courseIndexer" ref="courseIndexer"/>
 		<property name="fsDirectory" ref="lectureDirectory"/>
 		<property name="indexFactory" ref="indexFactory" />
+	</bean>
+	
+	<bean id="recreateLectureIndex" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces"><value>org.openuss.lecture.RecreateLectureIndex</value></property>
+		<property name="target">
+			<bean parent="recreateIndexer" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>serviceTransactionInterceptor</value>
+				<value>hibernateInterceptor</value>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="recreateIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
@@ -158,6 +165,7 @@
 		<property name="directory" ref="lectureDirectory" />
 		<property name="analyzer" ref="analyzer" />
 		<property name="resolveLock" value="true"/>
+		<property name="writeLockTimeout" value="2000"/>
 	</bean>
 
 	<bean id="lectureDirectory"

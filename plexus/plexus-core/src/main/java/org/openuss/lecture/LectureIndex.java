@@ -14,7 +14,7 @@ import org.openuss.search.DomainIndexer;
  * @author Kai Stettner
  * @author Malte Stockmann
  */
-public class LectureIndex extends DomainIndexer {
+public class LectureIndex extends DomainIndexer implements RecreateLectureIndex {
 
 	private static final Logger logger = Logger.getLogger(LectureIndex.class);
 	
@@ -78,6 +78,7 @@ public class LectureIndex extends DomainIndexer {
 
 	private void deleteIndex() {
 		if (fsDirectory != null) {
+			logger.debug("deleting index");
 			String[] files = fsDirectory.list();
 			for (String file : files) {
 				Lock lock = fsDirectory.makeLock(file);
