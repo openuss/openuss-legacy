@@ -22,8 +22,10 @@
                     com.sun.naming.*,
                     javax.servlet.*
                 );
+                ReadOnly = FALSE;
             };
             cpu = f;
+            eliminate = f;
             grp = t;
             mem = f;
         },
@@ -51,8 +53,10 @@
                     org.dom4j.*,
                     com.ibm.xml.*
                 );
+                ReadOnly = FALSE;
             };
             cpu = f;
+            eliminate = f;
             grp = t;
             mem = f;
         },
@@ -87,9 +91,11 @@
                     com.ibm.jvm.*,
                     COM.jrockit.*
                 );
+                ReadOnly = FALSE;
             };
             cpu = f;
-            grp = f;
+            eliminate = f;
+            grp = t;
             mem = f;
         }
     );
