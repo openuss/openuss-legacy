@@ -50,21 +50,21 @@
 			<s:authorize ifAllGranted="ROLE_ADMIN">
 				<plexus:command 
 						bean = "#{views$public$university$universities}"
-						action = "#selectUniversityAndConfirmDisable"
+						action = "selectUniversityAndConfirmDisable"
 						styleClass="icon_hide"
 						label="#{msg.university_command_disable}"
 						title="#{msg.university_command_disable_hint}"
-						rendered = "#{bean.enabled}">
+						rendered="#{bean.enabled==true}">
 				</plexus:command>
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">
 				<plexus:command 
 						bean = "#{views$public$university$universities}"
 						action = "enableUniversity"
-						styleClass = "button_remove"
+						styleClass = "icon_public"
 						label = "#{msg.university_command_enable}"
 						title = "#{msg.university_command_enable_hint}"
-						rendered = "#{not bean.enabled}">
+						rendered="#{not bean.enabled}">
 				</plexus:command>
 			</s:authorize>
 			<s:authorize ifAllGranted="ROLE_ADMIN">

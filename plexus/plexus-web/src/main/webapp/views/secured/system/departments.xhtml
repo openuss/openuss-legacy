@@ -82,11 +82,11 @@
 						<s:authorize ifAllGranted="ROLE_ADMIN">
 							<plexus:command 
 								bean = "#{views$secured$system$departments}"
-								action = ".selectDepartmentAndConfirmDisable"
+								action = "selectDepartmentAndConfirmDisable"
 								styleClass = "icon_hide"
 								label = "#{msg.department_command_disable}"
 								title = "#{msg.department_command_disable_hint}"
-								rendered="#{bean.enabled}"/>
+								rendered="#{bean.enabled==true}"/>
 							<plexus:command
 								bean = "#{views$secured$system$departments}"
 								action = "enableDepartment"
