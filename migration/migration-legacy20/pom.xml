@@ -31,7 +31,7 @@
 									classname="org.hibernate.tool.hbm2ddl.SchemaExportTask">
 									<classpath>
 										<pathelement
-											location="${settings.localRepository}/org/hibernate/hibernate/3.2.4.sp1/hibernate-3.2.4.sp1.jar" />
+											location="${settings.localRepository}/org/hibernate/hibernate/3.2.5.ga/hibernate-3.2.5.ga.jar" />
 										<pathelement
 											location="${settings.localRepository}/commons-logging/commons-logging/1.1/commons-logging-1.1.jar" />
 										<pathelement
