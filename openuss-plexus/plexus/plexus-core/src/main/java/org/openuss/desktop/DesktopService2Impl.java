@@ -449,22 +449,16 @@ public class DesktopService2Impl extends DesktopService2Base {
 	 *      java.lang.Long universityId)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindLinkedCoursesByUserAndUniversity(java.lang.Long userId, java.lang.Long universityId)
-			throws java.lang.Exception {
+	protected List handleFindLinkedCoursesByUserAndUniversity(Long userId, Long universityId) throws Exception {
 
-		Validate.notNull(userId, "DesktopService2.handleFindCoursesByUserAndUniversity - userId cannot be null!");
-		Validate.notNull(universityId,
-				"DesktopService2.handleFindCoursesByUserAndUniversity - universityId cannot be null!");
+		Validate.notNull(userId, "userId cannot be null!");
+		Validate.notNull(universityId, "universityId cannot be null!");
 
 		User user = this.getUserDao().load(userId);
-		Validate.notNull(user,
-				"DesktopService2.handleFindCoursesByUserAndUniversity - No user found corresponding to the userId "
-						+ userId);
+		Validate.notNull(user, "No user found corresponding to the userId "	+ userId);
 
 		University university = this.getUniversityDao().load(universityId);
-		Validate.notNull(university,
-				"DesktopService2.handleFindCoursesByUserAndUniversity - No university found corresponding to the universityId "
-						+ universityId);
+		Validate.notNull(university, "No university found corresponding to the universityId " + universityId);
 
 		DesktopInfo desktopInfo = this.findDesktopByUser(userId);
 		List<CourseInfo> linkedCourses = new ArrayList<CourseInfo>();
