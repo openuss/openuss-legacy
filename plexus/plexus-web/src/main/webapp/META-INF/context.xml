@@ -9,15 +9,22 @@
     <Manager pathname="" />
     -->
     
-    <Resource name="jdbc/openuss30" auth="Container" type="javax.sql.DataSource" 
+    <Resource 
+    	name="jdbc/openuss30" 
+    	auth="Container" 
+    	type="javax.sql.DataSource" 
 		driverClassName="org.firebirdsql.jdbc.FBDriver" 
-		url="jdbc:firebirdsql:localhost:openuss30" 
-		username="sysdba" password="masterkey" />
+		url="jdbc:firebirdsql:localhost:openuss30"
+		username="sysdba" 
+		password="masterkey" 
+		validationQuery="SELECT 1 FROM RDB$DATABASE"
+		maxActive="15"/>
 
+<!-- 
     <Resource name="jdbc/openuss" auth="Container" type="javax.sql.DataSource" 
 		driverClassName="org.firebirdsql.jdbc.FBDriver" 
 		url="jdbc:firebirdsql:localhost:openuss" 
 		username="sysdba" password="masterkey" />
-    
+ -->
 
 </Context>
