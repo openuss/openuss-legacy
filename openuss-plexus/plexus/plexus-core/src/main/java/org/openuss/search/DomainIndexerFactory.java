@@ -20,6 +20,8 @@ public class DomainIndexerFactory {
 	private Map<String, String> indexer = new HashMap<String, String>();
 
 	public String getIndexerName(DomainObject domainObject) {
+		// FIXME sooon - we don't need this anymore
+		
 		logger.debug("Starting method getIndexerName");
 		Validate.notNull(domainObject, "Parameter domainObject must not be null.");
 		//Just for debugging
