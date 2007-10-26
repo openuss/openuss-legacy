@@ -7,6 +7,8 @@ package org.openuss.lecture;
 
 /**
  * @see org.openuss.lecture.Course
+ * 
+ * @author Ingo Düppe
  */
 public class CourseDaoImpl extends org.openuss.lecture.CourseDaoBase {
 	/**
@@ -53,10 +55,12 @@ public class CourseDaoImpl extends org.openuss.lecture.CourseDaoBase {
 	 * object store, a new, blank entity is created
 	 */
 	private Course loadCourseFromCourseInfo(CourseInfo courseInfo) {
-		
-		Course course = Course.Factory.newInstance();
-		if (courseInfo.getId() != null) {
+		Course course = null;
+		if (courseInfo != null && courseInfo.getId() != null) {
 			course = this.load(courseInfo.getId());
+		}
+		if (course == null) {
+			course = Course.Factory.newInstance();
 		}
 		return course;
 	}
@@ -67,11 +71,19 @@ public class CourseDaoImpl extends org.openuss.lecture.CourseDaoBase {
 	public Course courseInfoToEntity(CourseInfo courseInfo) {
 		Course entity = this.loadCourseFromCourseInfo(courseInfo);
 		this.courseInfoToEntity(courseInfo, entity, true);
-		if (courseInfo.getCourseTypeId() != null) {
-			CourseType courseType = this.getCourseTypeDao().load(courseInfo.getCourseTypeId());
-			entity.setCourseType(courseType);
+		
+		if (entity.getCourseType() != null && !entity.getCourseType().getId().equals(courseInfo.getCourseTypeId()) ) {
+			Exception e = new Exception("Course Type changed!");
+			logger.error("ERROR -> Course Type Changed!",e);
+		} else {
+			// prevent to move course to different course type
+			if (courseInfo.getCourseTypeId() != null && entity.getId() == null) {
+				CourseType courseType = this.getCourseTypeDao().load(courseInfo.getCourseTypeId());
+				entity.setCourseType(courseType);
+			}
 		}
 		
+		// enable to move course to different period
 		if (courseInfo.getPeriodId() != null) {
 			Period period = this.getPeriodDao().load(courseInfo.getPeriodId());
 			entity.setPeriod(period);
