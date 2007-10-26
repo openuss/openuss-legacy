@@ -28,7 +28,7 @@ public class ConversationUtil {
 	
 	private static ConverterHelper converterHelper = new ConverterHelper();
 
-	public static final String FACES_MESSAGES_SESSION_KEY = "org.openuss.framework.web.jsf.events.RedirectPhaseListener.SaveGlobalFacesMessages";
+	public static final String FACES_MESSAGES_SESSION_KEY = "org.openuss.framework.web.jsf.events.ConversationUtil.SaveGlobalFacesMessages";
 
 	/**
 	 * Redirects to the given URL 
