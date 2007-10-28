@@ -1,33 +1,34 @@
 <project name="openuss :: build" default="install" basedir=".">
-
 	<!-- test CI 7 -->
 	
+	<condition property="maven.executable" value="mvn.bat" else="mvn"><os family="windows" /></condition>
+		
 	<target name="compile">
-		<exec executable="mvn.bat">
+		<exec executable="${maven.executable}">
 			<arg line="compile"/>
 		</exec> 
 	</target>
 	
 	<target name="install">
-		<exec executable="mvn.bat">
+		<exec executable="${maven.executable}">
 			<arg line="-e install"/>
 		</exec>
 	</target>
 	
 	<target name="install w/o tests">
-		<exec executable="mvn.bat">
+		<exec executable="${maven.executable}">
 			<arg line="install -Dmaven.test.skip=true"/>
 		</exec>
 	</target>
 	
 	<target name="install w/o tests (offline)">
-		<exec executable="mvn.bat">
+		<exec executable="${maven.executable}">
 			<arg line="-o install -Dmaven.test.skip=true"/>
 		</exec>
 	</target>
 	
 	<target name="clean-all">
-		<exec executable="mvn.bat">
+		<exec executable="${maven.executable}">
 			<arg line="clean"/>
 		</exec>
 		<antcall target="clean-logs"/>
@@ -41,13 +42,13 @@
 	</target>
 	
 	<target name="site">
-		<exec executable="mvn.bat">
+		<exec executable="${maven.executable}">
 			<arg line="-e site:site"/>
 		</exec>
 	</target>
 	
 	<target name="eclipse">
-		<exec executable="mvn.bat">
+		<exec executable="${maven.executable}">
 			<arg line="eclipse:clean eclipse:eclipse"/>
 			<arg line="-DdownloadSources=true"/>
 		</exec>
