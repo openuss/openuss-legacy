@@ -14,7 +14,6 @@
 		<config>src/main/resources/applicationContext-newsletter.xml</config>
 		<config>src/main/resources/applicationContext-quartz.xml</config>
 		<config>src/main/resources/applicationContext-resources.xml</config>
-		<config>src/main/resources/applicationContext-startup.xml</config>
 		<config>target/src/applicationContext.xml</config>
 		<config>target/src/applicationContext-dataSource.xml</config>
 		<config>target/src/applicationContext-localDataSource.xml</config>
