@@ -62,7 +62,7 @@ public class WorkAroundFSDirectoryFactoryBean implements FactoryBean, Initializi
                     "location must be a directory");
         }
 
-        directory = FSDirectory.getDirectory(locationFile, create);
+        directory = FSDirectory.getDirectory(locationFile);
     }
 
     /**
