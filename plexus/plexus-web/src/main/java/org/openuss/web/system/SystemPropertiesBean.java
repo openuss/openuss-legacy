@@ -1,5 +1,7 @@
 package org.openuss.web.system;
 
+import org.apache.log4j.Logger;
+
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -13,37 +15,40 @@ import org.openuss.web.Constants;
  */
 @Bean(name = Constants.SYSTEM_PROPERTIES, scope = Scope.REQUEST)
 public class SystemPropertiesBean {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(SystemPropertiesBean.class);
 	
 	@Property(value="#{systemService}")
 	private SystemService systemService;
 	
-	
 	public String getDOCUMENTATION_URL() {
-		return systemService.getProperty(SystemProperties.DOCUMENTATION_URL).getValue();
+		return value(SystemProperties.DOCUMENTATION_URL);
 	}
 
 	public String getSUPPORT_URL() {
-		return systemService.getProperty(SystemProperties.SUPPORT_URL).getValue();
+		return value(SystemProperties.SUPPORT_URL);
 	}
 
 	public String getBUGTRACKING_URL() {
-		return systemService.getProperty(SystemProperties.BUGTRACKING_URL).getValue();
+		return value(SystemProperties.BUGTRACKING_URL);
 	}
 
 	public String getIMPRESSUM_TEXT() {
-		return systemService.getProperty(SystemProperties.IMPRESSUM_TEXT).getValue();
+		return value(SystemProperties.IMPRESSUM_TEXT);
 	}
 	
 	public String getPROVIDER_URL() {
-		return systemService.getProperty(SystemProperties.PROVIDER_URL).getValue();
+		return value(SystemProperties.PROVIDER_URL);
 	}
 
 	public String getOPENUSS_SERVER_URL() {
-		return systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue();
+		return value(SystemProperties.OPENUSS_SERVER_URL);
 	}
 
 	public String getGETTING_STARTED() {
-		return systemService.getProperty(SystemProperties.GETTING_STARTED).getValue();
+		return value(SystemProperties.GETTING_STARTED);
 	}
 	
 	public String getOPENUSS_INSTANCE_ID() {
@@ -54,4 +59,13 @@ public class SystemPropertiesBean {
 		this.systemService = systemService;
 	}
 
+	private String value(String propertyName) {
+		try {
+			return systemService.getProperty(propertyName).getValue();
+		} catch (Exception ex) {
+			logger.error(ex);
+			return "";
+		}
+	}
 }
+
