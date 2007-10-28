@@ -242,6 +242,9 @@
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/commons-pool/commons-pool/1.3/commons-pool-1.3.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/edu/emory/mathcs/backport-concurrency/1.0/backport-concurrency-1.0.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
 	<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/openuss/framework/wtp-facelets-hack/3.0-SNAPSHOT/wtp-facelets-hack-3.0-SNAPSHOT.jar">
 		<dependency-type>uses</dependency-type>
 	</dependent-module>
