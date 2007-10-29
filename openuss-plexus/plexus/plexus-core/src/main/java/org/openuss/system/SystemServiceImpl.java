@@ -87,4 +87,9 @@ public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
 		throw new UnsupportedOperationException("Do not manipulate the Instance Id!");
 	}
 
+	@Override
+	protected SystemProperty handleGetProperty(Long id) throws Exception {
+		return getSystemPropertyDao().load(id);
+	}
+
 }

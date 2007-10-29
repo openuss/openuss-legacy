@@ -43,7 +43,7 @@ public class RepositoryServiceImpl extends RepositoryServiceBase {
 			throw new RepositoryServiceException("File with id " + fileId + " not found.");
 		}
 		
-		file.increaseDownloads();
+		// file.increaseDownloads();
 		getRepositoryFileDao().update(file);
 
 		return fetchInputStream(file);
