@@ -36,4 +36,8 @@ public class MockServiceSystem implements SystemService {
 		return instanceIdentity;
 	}
 
+	public SystemProperty getProperty(Long id) {
+		return null;
+	}
+
 }

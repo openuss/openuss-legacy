@@ -18,7 +18,8 @@
 		username="sysdba" 
 		password="masterkey" 
 		validationQuery="SELECT 1 FROM RDB$DATABASE"
-		maxActive="15"/>
+		maxActive="60"
+		maxWait="6000"/>
 
 <!-- 
     <Resource name="jdbc/openuss" auth="Container" type="javax.sql.DataSource" 

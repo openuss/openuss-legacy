@@ -30,7 +30,7 @@ public class PlexusAuthenticationProcessingFilter extends AuthenticationProcessi
 			logger.debug("Principal is: "+authResult.getPrincipal());
 			User details = (User) authResult.getPrincipal();
 			User user = securityService.getUserByName(details.getUsername());
-			securityService.setLoginTime(user);
+			// securityService.setLoginTime(user);
 			request.getSession().setAttribute(Constants.USER_SESSION_KEY, user);
 			
 			onlineStatisticService.logSessionStart((Long)request.getSession().getAttribute(Constants.ONLINE_SESSION_ID));
