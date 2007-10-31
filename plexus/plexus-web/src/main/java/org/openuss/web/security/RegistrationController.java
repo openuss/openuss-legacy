@@ -63,6 +63,10 @@ public class RegistrationController extends BaseBean {
 	 */
 	public String performRegistration() throws RegistrationException {
 		User user = (User) getSessionBean(Constants.USER_SESSION_KEY);
+		if (user == null) {
+			addError(i18n("message_error_cannot_perform_registration"));
+			return "failure";
+		}
 		// set default user time zone
 		user.setTimezone(TimeZone.getDefault().getID());
 
