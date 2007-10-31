@@ -8,13 +8,12 @@ package org.openuss.security;
 /**
  * @see org.openuss.security.UserProfile
  */
-public class UserProfileImpl
-    extends org.openuss.security.UserProfileBase
-	implements org.openuss.security.UserProfile
-{
-    /**
-     * The serial version UID of this class. Needed for serialization.
-     */
-    private static final long serialVersionUID = -4978864423131642002L;
+public class UserProfileImpl extends UserProfileBase implements UserProfile {
 
+	private static final long serialVersionUID = -4978864423131642002L;
+
+	@Override
+	public String getPortrait() {
+		return super.getPortrait() == null ? "" : super.getPortrait();
+	}
 }
