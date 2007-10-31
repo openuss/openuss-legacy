@@ -20,7 +20,7 @@
 	<classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4/mail-1.4.jar" sourcepath="M2_REPO/javax/mail/mail/1.4/mail-1.4-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/junit/junit/3.8.2/junit-3.8.2.jar" sourcepath="M2_REPO/junit/junit/3.8.2/junit-3.8.2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.2/commons-collections-3.2.jar" sourcepath="M2_REPO/commons-collections/commons-collections/3.2/commons-collections-3.2-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring/2.0.5/spring-2.0.5.jar" sourcepath="M2_REPO/org/springframework/spring/2.0.5/spring-2.0.5-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring/2.0.7/spring-2.0.7.jar" sourcepath="M2_REPO/org/springframework/spring/2.0.7/spring-2.0.7-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/logkit/logkit/1.0.1/logkit-1.0.1.jar" sourcepath="M2_REPO/logkit/logkit/1.0.1/logkit-1.0.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/easymock/easymockclassextension/2.2/easymockclassextension-2.2.jar" sourcepath="M2_REPO/org/easymock/easymockclassextension/2.2/easymockclassextension-2.2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-dbcp/commons-dbcp/1.2.2/commons-dbcp-1.2.2.jar"/>
