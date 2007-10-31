@@ -13,11 +13,10 @@ import org.openuss.web.Constants;
  * @author Ingo Dueppe
  *
  */
-@Bean(name = Constants.SYSTEM_PROPERTIES, scope = Scope.REQUEST)
+@Bean(name = Constants.SYSTEM_PROPERTIES, scope = Scope.APPLICATION)
 public class SystemPropertiesBean {
-	/**
-	 * Logger for this class
-	 */
+	
+	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(SystemPropertiesBean.class);
 	
 	@Property(value="#{systemService}")
@@ -52,7 +51,11 @@ public class SystemPropertiesBean {
 	}
 	
 	public String getOPENUSS_INSTANCE_ID() {
-		return systemService.getInstanceIdentity().toString();
+		try {
+			return systemService.getInstanceIdentity().toString();
+		} catch (Exception e) {
+			return "not available";
+		}
 	}
 	
 	public void setSystemService(SystemService systemService) {
