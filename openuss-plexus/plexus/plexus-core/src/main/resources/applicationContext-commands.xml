@@ -12,6 +12,7 @@
 	<bean id="nodeScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="applicationContextSchedulerContextKey" value="applicationContext"/>
 		<property name="autoStartup" value="true" />
+ 		<property name="startupDelay" value="180"/>
 		<property name="waitForJobsToCompleteOnShutdown" value="true" />
  		<property name="overwriteExistingJobs" value="true"/>
  		<property name="triggers">
@@ -28,6 +29,7 @@
 	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="applicationContextSchedulerContextKey" value="applicationContext"/>
 		<property name="autoStartup" value="true"/>
+ 		<property name="startupDelay" value="180"/>
 		<property name="waitForJobsToCompleteOnShutdown" value="true"/>
  		<property name="overwriteExistingJobs" value="true"/>
  		<property name="transactionManager" ref="transactionManager"/>
@@ -42,9 +44,9 @@
 				<!-- Job store -->
 				<prop key="org.quartz.scheduler.instanceId">AUTO</prop>
 				<prop key="org.quartz.jobStore.isClustered">true</prop>
-				<prop key="org.quartz.jobStore.clusterCheckinInterval">60000</prop>
+				<prop key="org.quartz.jobStore.clusterCheckinInterval">120000</prop>
 				<prop key="org.quartz.jobStore.tablePrefix">QUARTZ_</prop>
-				<prop key="org.quartz.jobStore.misfireThreshold">60000</prop>
+				<prop key="org.quartz.jobStore.misfireThreshold">120000</prop>
 				<prop key="org.quartz.jobStore.class">org.quartz.impl.jdbcjobstore.JobStoreTX</prop>
 				<prop key="org.quartz.jobStore.driverDelegateClass">org.quartz.impl.jdbcjobstore.StdJDBCDelegate</prop>
 				<prop key="org.quartz.jobStore.useProperties">false</prop>
@@ -103,8 +105,8 @@
 	
 	<bean id="nodeCommandTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
 		<property name="jobDetail" ref="nodeCommandJobDetail" />
-		<property name="startDelay" value="3000" />
-		<property name="repeatInterval" value="15000" />
+		<property name="startDelay" value="30000" />
+		<property name="repeatInterval" value="120000" />
 	</bean>
 
 	<bean id="nodeCommandJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
