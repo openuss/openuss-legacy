@@ -228,5 +228,9 @@
 			<groupId>org.springmodules</groupId>
 			<artifactId>spring-modules-lucene</artifactId>
 		</dependency>	
+		<dependency>
+			<groupId>edu.emory.mathcs</groupId>
+			<artifactId>backport-concurrency</artifactId>
+		</dependency>
 	</dependencies>
 </project>
