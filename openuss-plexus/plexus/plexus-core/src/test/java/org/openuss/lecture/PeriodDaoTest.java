@@ -60,14 +60,13 @@ public class PeriodDaoTest extends PeriodDaoTestBase {
 		flush();
 		
 		//Create Startdate
-		Calendar cal = new GregorianCalendar();
-		cal.set(2007, 10, 1);
-		Date startdate = new Date(cal.getTimeInMillis());
+		Date now = DateUtils.truncate(new Date(), Calendar.DATE);
+		Date pastOne = DateUtils.addDays(now, -10);
+		Date pastTwo = DateUtils.addDays(now, -2);
+		Date futureOne = DateUtils.addDays(now, 10);
 		
-		//Create Enddate
-		cal = new GregorianCalendar();
-		cal.set(2008, 3, 31);
-		Date enddate = new Date(cal.getTimeInMillis());
+		Date startdate = pastOne;
+		Date enddate = pastTwo;
 		
 		//Create Period
 		Period period = Period.Factory.newInstance();
@@ -91,14 +90,10 @@ public class PeriodDaoTest extends PeriodDaoTestBase {
 		// Test with active period and courses in list
 		
 		//Create Startdate
-		cal = new GregorianCalendar();
-		cal.set(2007, 3, 1);
-		startdate = new Date(cal.getTimeInMillis());
+		startdate = pastOne;
 		
 		//Create Enddate
-		cal = new GregorianCalendar();
-		cal.set(2010, 9, 31);
-		enddate = new Date(cal.getTimeInMillis());
+		enddate = futureOne;
 		
 		Period activePeriod = testUtility.createUniquePeriodInDB();
 		activePeriod.setStartdate(startdate);
