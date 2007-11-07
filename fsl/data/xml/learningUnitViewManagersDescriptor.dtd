@@ -1,0 +1,8 @@
+<!ELEMENT learningUnitViewManagersDescriptor (learningUnitViewManagerDescriptor)*>
+<!ELEMENT learningUnitViewManagerDescriptor EMPTY>
+<!ATTLIST learningUnitViewManagerDescriptor id ID #REQUIRED> 
+<!ATTLIST learningUnitViewManagerDescriptor title CDATA #REQUIRED>
+<!ATTLIST learningUnitViewManagerDescriptor version CDATA #REQUIRED>
+<!ATTLIST learningUnitViewManagerDescriptor path CDATA #REQUIRED>
+<!ATTLIST learningUnitViewManagerDescriptor className CDATA #REQUIRED>
+<!ATTLIST learningUnitViewManagerDescriptor authors CDATA #REQUIRED>

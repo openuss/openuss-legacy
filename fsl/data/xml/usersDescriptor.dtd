@@ -1,0 +1,29 @@
+<!ELEMENT usersDescriptor (userDescriptor)*>
+<!ELEMENT userDescriptor (userColorDescriptor*, userFontDescriptor*, userFrameDescriptor*)>
+
+<!ATTLIST userDescriptor id ID #REQUIRED>
+<!ATTLIST userDescriptor userName CDATA #REQUIRED>
+<!ATTLIST userDescriptor userPassword CDATA #REQUIRED>
+<!ATTLIST userDescriptor currentUserRole NMTOKEN #REQUIRED>
+<!ATTLIST userDescriptor allowedUserRoles NMTOKENS #REQUIRED>
+<!ATTLIST userDescriptor learningUnitsUserDataDirectoryName CDATA #REQUIRED>
+<!ATTLIST userDescriptor automaticSelectionEnabled (true|false) #IMPLIED>
+<!ATTLIST userDescriptor playWelcomeVideosEnabled (true|false) #IMPLIED>
+<!ATTLIST userDescriptor displayWelcomeScreen (true|false) #IMPLIED>
+<!ATTLIST userDescriptor rememberFrameStatusEnabled (true|false) #IMPLIED>
+
+<!ELEMENT userColorDescriptor EMPTY>
+<!ATTLIST userColorDescriptor red CDATA #REQUIRED>
+<!ATTLIST userColorDescriptor green CDATA #REQUIRED>
+<!ATTLIST userColorDescriptor blue CDATA #REQUIRED>
+
+<!ELEMENT userFontDescriptor EMPTY>
+<!ATTLIST userFontDescriptor structureTreeFontSize CDATA #REQUIRED>
+<!ATTLIST userFontDescriptor elementsContentsPanelFontSize CDATA #REQUIRED>
+
+<!ELEMENT userFrameDescriptor EMPTY>
+<!ATTLIST userFrameDescriptor frameWidth CDATA #REQUIRED>
+<!ATTLIST userFrameDescriptor frameHeight CDATA #REQUIRED>
+<!ATTLIST userFrameDescriptor frameLocationX CDATA #REQUIRED>
+<!ATTLIST userFrameDescriptor frameLocationY CDATA #REQUIRED>
+<!ATTLIST userFrameDescriptor frameMaximized CDATA #REQUIRED>

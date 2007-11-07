@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<xml-java-binding-schema version="1.0-ea">
+  <options package="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.glossary.data.xmlBinding"/> 
+  <element name="glossaryDescriptor" type="class" root="true">
+    <content>
+       <element-ref name="viewElement" collection="list" property="learningUnitViewElements"/>
+    </content>
+  </element>
+  <element name="viewElement" type="class">
+    <content>
+      <element-ref name="viewElementLink" collection="list" property="learningUnitViewElementLinks"/>
+    </content>
+    <attribute name="folder" convert="boolean"/>
+    <attribute name="memoryUsable" convert="boolean"/>
+    <attribute name="successfulTries" convert="int"/>
+    <attribute name="tries" convert="int"/>
+    <attribute name="lastTry" convert="long"/>
+    <attribute name="category" convert="int"/>
+  </element>
+  <element name="viewElementLink" type="class">
+    <content>
+      <element-ref name="viewElementLinkTarget" collection="list" property="learningUnitViewElementLinkTargets"/>
+    </content>
+  </element>
+  <element name="viewElementLinkTarget" type="class">
+   <attribute name="targetViewManagerId" property="targetLearningUnitViewManagerId"/>
+   <attribute name="targetViewElementId" property="targetLearningUnitViewElementId"/>
+  </element>
+
+
+</xml-java-binding-schema>

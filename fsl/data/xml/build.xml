@@ -1,0 +1,37 @@
+<!-- ********************************************************************* -->
+<!-- Build file for generation of XML-descriptor files for FSL             -->
+<!-- Author: Mirko Wahn                                                    -->
+<!-- Usage:                                                                -->
+<!--   ant -Ddtd-file=%1.dtd -Dxjs-file=%1.xjs create                      -->
+<!-- ********************************************************************* -->
+
+<project name="xml-generate" default="dist" basedir=".">
+
+<!-- ********************************************************************* -->
+<!-- Set global properties for this build                                  -->
+<!-- ********************************************************************* -->
+  <property name="targetDir" value="."/>
+  <property name="ext-libs" value="../../ext-libs"/>
+  <property name="cp" value="${ext-libs}/jaxb-rt-1.0-ea.jar;
+                             ${ext-libs}/jaxb-xjc-1.0-ea.jar"/>
+  
+<!-- ===================================================================== -->
+<!-- Initialization                                                        -->
+<!-- ===================================================================== -->
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+  </target>
+
+<!-- ********************************************************************* -->
+<!-- Create                                                                -->
+<!-- ********************************************************************* -->
+  <target name="create">
+    <java classpath="${cp}" classname="com.sun.tools.xjc.Main">
+      <arg value="${dtd-file}"/>
+      <arg value="${xjs-file}"/>
+    </java>
+  </target>
+
+</project>
+<!-- ********************************************************************* -->

@@ -1,0 +1,8 @@
+<!ELEMENT programConfiguration (paths)>
+<!ELEMENT paths EMPTY>
+<!ATTLIST paths fullPathToLearningUnitsDirectory CDATA #REQUIRED>
+<!ATTLIST paths fullPathToUsersDirectory CDATA #REQUIRED>
+<!ATTLIST paths fullPathToLearningUnitViewManagersDirectory CDATA #REQUIRED>
+<!ATTLIST paths openUssServerName CDATA #IMPLIED>
+<!ATTLIST paths automaticLoginUsername CDATA #IMPLIED>
+

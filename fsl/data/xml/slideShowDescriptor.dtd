@@ -1,0 +1,22 @@
+<!ELEMENT slideShowDescriptor (viewElement)*>
+<!ELEMENT viewElement (viewElementLink)*>
+<!ATTLIST viewElement id ID #REQUIRED>
+<!ATTLIST viewElement parentId NMTOKEN #REQUIRED>
+<!ATTLIST viewElement title CDATA #REQUIRED>
+<!ATTLIST viewElement type CDATA #REQUIRED>
+<!ATTLIST viewElement lastModificationDate CDATA #IMPLIED>
+<!ATTLIST viewElement folder (true|false) #REQUIRED>
+<!ATTLIST viewElement imageFileName CDATA #IMPLIED>
+<!ATTLIST viewElement audioFileName CDATA #IMPLIED>
+<!ATTLIST viewElement waitForAudioEnd (true|false) #IMPLIED>
+<!ATTLIST viewElement delayTime CDATA #IMPLIED>
+<!ATTLIST viewElement volume CDATA #IMPLIED>
+<!ATTLIST viewElement repeatAudio CDATA #IMPLIED>
+<!ATTLIST viewElement doAntialiazing CDATA #IMPLIED>
+<!ATTLIST viewElement backgroundColor CDATA #IMPLIED>
+<!ELEMENT viewElementLink (viewElementLinkTarget)*>
+<!ATTLIST viewElementLink id NMTOKEN #REQUIRED>
+<!ELEMENT viewElementLinkTarget EMPTY>
+<!ATTLIST viewElementLinkTarget targetLearningUnitId NMTOKEN #REQUIRED>
+<!ATTLIST viewElementLinkTarget targetViewManagerId NMTOKEN #REQUIRED>
+<!ATTLIST viewElementLinkTarget targetViewElementId NMTOKEN #REQUIRED>

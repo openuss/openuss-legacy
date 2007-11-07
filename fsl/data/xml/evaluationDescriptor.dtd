@@ -1,0 +1,8 @@
+<!ELEMENT evaluationsDescriptor (evaluationDescriptor)*>
+<!ELEMENT evaluationDescriptor (evaluationRun)*>
+<!ATTLIST evaluationDescriptor id ID #REQUIRED>
+<!ELEMENT evaluationRun EMPTY>
+<!ATTLIST evaluationRun id NMTOKEN #REQUIRED>
+<!ATTLIST evaluationRun multipleChoiceQuota CDATA #REQUIRED>
+<!ATTLIST evaluationRun gapTextQuota CDATA #REQUIRED>
+<!ATTLIST evaluationRun relatorQuota CDATA #REQUIRED>

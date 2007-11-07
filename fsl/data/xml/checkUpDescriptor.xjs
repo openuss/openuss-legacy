@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<xml-java-binding-schema version="1.0-ea">
+  <options package="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.checkUp.data.xmlBinding"/> 
+  <element name="checkUpDescriptor" type="class" root="true">
+    <content>
+       <element-ref name="viewElement" collection="list" property="learningUnitViewElements"/>
+    </content>
+  </element>
+  <element name="viewElement" type="class">
+    <content>
+      <element-ref name="viewElementLink" collection="list" property="learningUnitViewElementLinks"/>
+      <element-ref name="gapText" collection="list" property="gapTexts"/>
+      <element-ref name="multipleChoice" collection="list" property="multipleChoices"/>
+      <element-ref name="relator" collection="list" property="relators"/>
+    </content>
+    <attribute name="folder" convert="boolean"/>
+  </element>
+  <element name="viewElementLink" type="class">
+    <content>
+      <element-ref name="viewElementLinkTarget" collection="list" property="learningUnitViewElementLinkTargets"/>
+    </content>
+  </element>
+  <element name="viewElementLinkTarget" type="class">
+   <attribute name="targetViewManagerId" property="targetLearningUnitViewManagerId"/>
+   <attribute name="targetViewElementId" property="targetLearningUnitViewElementId"/>
+  </element>
+  <element name="gapText" type="class">
+    <content>
+      <element-ref name="gapTextGap" collection="list" property="gapTextGaps"/>
+    </content>
+  </element>  
+  <element name="gapTextGap" type="class">
+    <content>
+      <element-ref name="gapTextSolution" collection="list" property="gapTextSolutions"/>
+    </content>
+    <attribute name="ignoreCase" convert="boolean"/>
+  </element>
+  <element name="multipleChoice" type="class">
+    <content>
+      <element-ref name="multipleChoiceAnswer" collection="list" property="multipleChoiceAnswers"/>
+    </content>
+  </element>
+  <element name="relator" type="class">
+    <content>
+      <element-ref name="relatorStartPoint" collection="list" property="relatorStartPoints"/>
+      <element-ref name="relatorEndPoint" collection="list" property="relatorEndPoints"/>
+      <element-ref name="relatorRelation" collection="list" property="relatorRelations"/>
+    </content>
+  </element>
+</xml-java-binding-schema>

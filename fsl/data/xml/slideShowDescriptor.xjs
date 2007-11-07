@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<xml-java-binding-schema version="1.0-ea">
+  <options package="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.slideShow.data.xmlBinding"/> 
+  <element name="slideShowDescriptor" type="class" root="true">
+    <content>
+       <element-ref name="viewElement" collection="list" property="learningUnitViewElements"/>
+    </content>
+  </element>
+  <element name="viewElement" type="class">
+    <content>
+      <element-ref name="viewElementLink" collection="list" property="learningUnitViewElementLinks"/>
+    </content>
+    <attribute name="folder" convert="boolean"/>
+    <attribute name="waitForAudioEnd" convert="boolean"/>
+    <attribute name="delayTime" convert="int"/>
+    <attribute name="volume" convert="int"/>
+    <attribute name="repeatAudio" convert="boolean"/>
+    <attribute name="doAntialiazing" convert="boolean"/>
+  </element>
+  <element name="viewElementLink" type="class">
+    <content>
+      <element-ref name="viewElementLinkTarget" collection="list" property="learningUnitViewElementLinkTargets"/>
+    </content>
+  </element>
+  <element name="viewElementLinkTarget" type="class">
+   <attribute name="targetViewManagerId" property="targetLearningUnitViewManagerId"/>
+   <attribute name="targetViewElementId" property="targetLearningUnitViewElementId"/>
+  </element>
+</xml-java-binding-schema>

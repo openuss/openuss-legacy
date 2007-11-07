@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xml-java-binding-schema version="1.0-ea">
+  <options package="freestyleLearning.homeCore.learningUnitsManager.data.xmlBinding"/> 
+  <element name="learningUnitViewManagersDescriptor" type="class" root="true">
+    <content>
+       <element-ref name="learningUnitViewManagerDescriptor" collection="list" property="learningUnitViewManagersDescriptors"/>
+    </content>
+  </element>
+  <element name="learningUnitViewManagerDescriptor" type="class"/>
+</xml-java-binding-schema>

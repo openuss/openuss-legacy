@@ -1,0 +1,14 @@
+<!ELEMENT learningUnitsDescriptor (learningUnitDescriptor)*>
+
+<!ELEMENT learningUnitDescriptor EMPTY>
+<!ATTLIST learningUnitDescriptor id ID #REQUIRED> 
+<!ATTLIST learningUnitDescriptor parentID CDATA #IMPLIED>
+<!ATTLIST learningUnitDescriptor title CDATA #REQUIRED>
+<!ATTLIST learningUnitDescriptor enrollmentId CDATA #IMPLIED>
+<!ATTLIST learningUnitDescriptor openUssServerName CDATA #IMPLIED>
+<!ATTLIST learningUnitDescriptor version CDATA #IMPLIED>
+<!ATTLIST learningUnitDescriptor path CDATA #IMPLIED>
+<!ATTLIST learningUnitDescriptor authors CDATA #IMPLIED>
+<!ATTLIST learningUnitDescriptor learningUnitViewManagers NMTOKENS #IMPLIED>
+<!ATTLIST learningUnitDescriptor folder (true|false) #IMPLIED>
+

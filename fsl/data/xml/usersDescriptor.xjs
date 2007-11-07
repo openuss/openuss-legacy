@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xml-java-binding-schema version="1.0-ea">
+  <options package="freestyleLearning.homeCore.usersManager.data.xmlBinding"/> 
+  <element name="usersDescriptor" type="class" root="true">
+    <content>
+       <element-ref name="userDescriptor" collection="list" property="usersDescriptors"/>
+    </content>
+  </element>
+  <element name="userDescriptor" type="class">
+    <content>
+       <element-ref name="userColorDescriptor" collection="list" property="userColors"/>
+       <element-ref name="userFontDescriptor" collection="list" property="userFonts"/>
+       <element-ref name="userFrameDescriptor" collection="list" property="userFrameOptions"/>
+    </content>
+    <attribute name="automaticSelectionEnabled" convert="boolean"/>
+    <attribute name="playWelcomeVideosEnabled" convert="boolean"/>
+    <attribute name="displayWelcomeScreen" convert="boolean"/>
+    <attribute name="rememberFrameStatusEnabled" convert="boolean"/>
+  </element>
+  <element name="userColorDescriptor" type="class">
+    <attribute name="red" property="red"/>
+    <attribute name="green" property="green"/>
+    <attribute name="blue" property="blue"/>
+  </element>  
+  <element name="userFontDescriptor" type="class">
+    <attribute name="structureTreeFontSize" property="structureTreeFontSize"/>
+    <attribute name="elementsContentsPanelFontSize" property="elementsContentsPanelFontSize"/>
+  </element>
+  <element name="userFrameDescriptor" type="class">
+    <attribute name="frameMaximized" convert="boolean"/>
+    <attribute name="frameWidth" convert="int"/>
+    <attribute name="frameHeight" convert="int"/>
+    <attribute name="frameLocationX" convert="int"/>
+    <attribute name="frameLocationY" convert="int"/>
+  </element>
+</xml-java-binding-schema>
