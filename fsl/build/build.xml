@@ -1,0 +1,895 @@
+<!-- ********************************************************************* -->
+<!-- Build file for the Freestyle Learning Components                      -->
+<!-- Author: Mirko Wahn / Freestyle Learning Group                         -->
+<!-- ********************************************************************* -->
+
+<project name="FreestyleLearning3" default="dist-all" basedir="..">
+
+<!-- ********************************************************************* -->
+<!-- Set global properties for this build                                  -->
+<!-- ********************************************************************* -->
+  <property name="build" value="build"/>
+  <property name="src" value="src"/>
+  <property name="dist" value="bin"/>
+  <property name="docs" value="docs"/>
+  <property name="classes" value="classes"/>
+  <property name="ext-libs" value="ext-libs"/>
+  <property name="ia-files" value="../installation/fsl-files"/>
+  <property name="dev-bin" value="../fsl/bin"/>
+  
+  <!-- Modifications for axis - 08.08.2007 -->
+  
+  <property name="cp" value="${ext-libs}/jaxb-rt-1.0-ea.jar;
+  			     ${ext-libs}/jaxb-xjc.jar;
+  			     ${ext-libs}/jmf.jar;
+  			     ${ext-libs}/lucene-1.2.jar;
+  			     ${ext-libs}/IAClasses.zip;  			   
+  			     ${ext-libs}/jax-qname.jar;
+  			     ${ext-libs}/jaxrpc-api.jar;
+
+  			     ${ext-libs}/jgraph.jar;
+  			     ${ext-libs}/jpedal.jar;
+  			     ${ext-libs}/bcprov-jdk14-119.jar;
+  			     ${ext-libs}/jai_codec.jar;
+  			     ${ext-libs}/jai_core.jar;
+  			     ${ext-libs}/jdom.jar;
+  			     
+  			     ${ext-libs}/axis.jar;
+  			     ${ext-libs}/axis-ant.jar;
+  			     ${ext-libs}/commons-discovery.jar;
+  			     ${ext-libs}/commons-logging.jar;
+  			     ${ext-libs}/log4j-1.2.8.jar;
+  			     ${ext-libs}/saaj.jar;
+  			     ${ext-libs}/jaxrpc.jar;
+  			     ${ext-libs}/wsdl4j.jar;
+  				 ${ext-libs}/activation.jar;
+  				 ${ext-libs}/mail.jar; 
+  				
+  			     ${ext-libs}/Skinlf.jar"/>
+
+<!-- ===================================================================== -->
+<!-- Initialization                                                        -->
+<!-- ===================================================================== -->
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+  </target>
+
+<!-- ********************************************************************* -->
+<!-- Compile                                                               -->
+<!-- ********************************************************************* -->
+  <target name="compile-all" depends="init">
+    <!-- Compile the java code from ${src} into ${classes} -->
+    <javac classpath="${cp}" srcdir="${src}" destdir="${classes}"/>
+  </target>
+
+  <target name="compile-deprecated" depends="init">
+    <!-- Compile the java code from ${src} into ${classes} -->
+    <javac classpath="${cp}" srcdir="${src}" destdir="${classes}" deprecation="on"/>
+  </target>
+
+<!-- ********************************************************************* -->
+<!-- Make Documentation                                                    -->
+<!-- ********************************************************************* -->
+  <target name="doc-home" depends="init">
+    <javadoc 
+    	sourcepath="${src}/home" 
+    	destdir="${docs}" 
+    	packagenames="freestyleLearning.homeCore.*"/>
+  </target>
+  
+  <target name="doc-api" depends="init">
+    <javadoc 
+    	sourcepath="${src}/viewManagerAPI" 
+    	destdir="${docs}" 
+    	packagenames="freestyleLearning.learningUnitViewAPI.*"/>
+  </target>
+    
+  <target name="doc-independent" depends="init">
+    <javadoc 
+    	sourcepath="${src}/independent" 
+    	destdir="${docs}" 
+    	packagenames="freestyleLearningGroup.independent.*"/>
+  </target>
+  
+<!-- ===================================================================== -->
+<!-- Make docs for FSL-Packages                                            -->
+<!-- ===================================================================== -->
+  <target name="doc-fsl" depends="init">
+    <antcall target="clean-doc"/>  
+    <antcall target="copy-fsldoc"/>
+    <antcall target="doc"/>
+  </target>
+  
+<!-- ===================================================================== -->
+<!-- Make docs for LearningUnitViewManager-Packages                        -->
+<!-- ===================================================================== -->
+  <target name="doc-luvm" depends="init">
+    <antcall target="clean-doc"/>  
+    <antcall target="copy-luvmdoc"/>
+    <antcall target="doc"/>
+  </target>
+  
+<!-- ===================================================================== -->
+<!-- Help routines for doc generation                                      -->
+<!-- ===================================================================== -->
+  <target name="clean-doc" depends="init">
+	<delete includeEmptyDirs="true">
+		<fileset dir="${docs}" includes="**/*.*"/>
+	</delete>
+	<delete dir="${docs}/freestyleLearning"/>
+	<delete dir="${docs}/freestyleLearningGroup"/>
+  </target>
+  
+  <target name="copy-fsldoc" depends="init">
+    <mkdir dir="${build}/javadoc"/>
+    <copy todir="${build}/javadoc">
+	<fileset dir="${src}/home/">
+	  <patternset id="only.sources">
+	    <include name="**/*.java"/>
+	  </patternset>
+	</fileset>
+	<fileset dir="${src}/viewManagerAPI/">
+	  <patternset refid="only.sources"/>
+	</fileset>
+	<fileset dir="${src}/independent/">
+	  <patternset refid="only.sources"/>
+	</fileset>
+    </copy>
+  </target>
+
+  <target name="copy-luvmdoc" depends="init">
+    <mkdir dir="${build}/javadoc"/>
+    <copy todir="${build}/javadoc">
+	<fileset dir="${src}/viewManagers/audio/">
+	  <patternset refid="only.sources"/>
+	</fileset>
+	<fileset dir="${src}/viewManagers/caseStudy/">
+	  <patternset refid="only.sources"/>
+	</fileset>
+	<fileset dir="${src}/viewManagers/checkUp">
+	  <patternset refid="only.sources"/>
+	</fileset>
+	<fileset dir="${src}/viewManagers/glossary/">
+	  <patternset refid="only.sources"/>
+	</fileset>
+	<fileset dir="${src}/viewManagers/intro/">
+	  <patternset refid="only.sources"/>
+	</fileset>
+	<fileset dir="${src}/viewManagers/learningByDoing/">
+	  <patternset refid="only.sources"/>
+	</fileset>
+	<fileset dir="${src}/viewManagers/mediaPool/">
+	  <patternset refid="only.sources"/>
+	</fileset>
+	<fileset dir="${src}/viewManagers/mindmaps/">
+	  <patternset refid="only.sources"/>
+	</fileset>
+	<fileset dir="${src}/viewManagers/notes/">
+	  <patternset refid="only.sources"/>
+	</fileset>
+	<fileset dir="${src}/viewManagers/questionAndAnswer/">
+	  <patternset refid="only.sources"/>
+	</fileset>
+	<fileset dir="${src}/viewManagers/slideShow/">
+	  <patternset refid="only.sources"/>
+	</fileset>
+	<fileset dir="${src}/viewManagers/textStudy/">
+	  <patternset refid="only.sources"/>
+	</fileset>
+	<fileset dir="${src}/viewManagers/selector/">
+	  <patternset refid="only.sources"/>
+	</fileset>
+    </copy>
+  </target>
+    
+<!-- ********************************************************************* -->
+<!-- Make JavaDocs                                                         -->
+<!-- ********************************************************************* -->
+  <target name="doc" depends="init">
+    <javadoc 
+    	sourcepath="${build}/javadoc" 
+    	destdir="${docs}" 
+    	packagenames="*.*"/>
+  </target>
+
+<!-- ********************************************************************* -->
+<!-- Make complete Freestyle Learning                                      -->
+<!-- ********************************************************************* -->
+  <target name="dist-all" depends="compile-all">
+    <antcall target="build-all"/>
+  </target>
+
+  <target name="build-all" depends="init">
+    <antcall target="build-home"/>
+    <antcall target="build-api"/>
+    <antcall target="build-independent"/>
+    <antcall target="build-luvm"/>
+    <antcall target="clean"/>
+  </target>
+
+  <target name="dist-fsljar" depends="compile-all">
+    <mkdir dir="${dist}"/>
+
+<!-- copy all classes into build directory                                 -->     
+    <copy todir="${build}">
+	<fileset dir="${classes}"/>
+    </copy>
+
+<!-- copy all non-sources to build directory                               -->
+<!-- homeCore-Package                                                      -->
+    <copy todir="${build}">
+	<fileset dir="${src}/home/">
+	  <patternset id="non.sources">
+	    <exclude name="**/*.java*"/>
+	    <exclude name="**/.nbattrs"/>
+	  </patternset>
+	</fileset>
+    </copy>
+<!-- independent-Package                                                   -->
+    <copy todir="${build}">
+	<fileset dir="${src}/independent/">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+<!-- viewManagerAPI-Package                                                -->
+    <copy todir="${build}">
+	<fileset dir="${src}/viewManagerAPI/">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+   
+<!-- learningUnitViewManagers                                              -->
+    <copy todir="${build}">
+	<fileset dir="${src}/viewManagers/audio">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <copy todir="${build}">
+	<fileset dir="${src}/viewManagers/caseStudy">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <copy todir="${build}">
+	<fileset dir="${src}/viewManagers/checkUp">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <copy todir="${build}">
+	<fileset dir="${src}/viewManagers/glossary">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <copy todir="${build}">
+	<fileset dir="${src}/viewManagers/intro">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <copy todir="${build}">
+	<fileset dir="${src}/viewManagers/learningByDoing">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <copy todir="${build}">
+	<fileset dir="${src}/viewManagers/mediaPool">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <copy todir="${build}">
+	<fileset dir="${src}/viewManagers/mindmaps">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <copy todir="${build}">
+	<fileset dir="${src}/viewManagers/notes">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <copy todir="${build}">
+	<fileset dir="${src}/viewManagers/questionAndAnswer">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <copy todir="${build}">
+	<fileset dir="${src}/viewManagers/slideShow">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <copy todir="${build}">
+	<fileset dir="${src}/viewManagers/textStudy">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy> 
+    <copy todir="${build}">
+	<fileset dir="${src}/viewManagers/selector">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy> 
+  	
+  	<!-- AXIS Deployment -->
+  	<target name="axis-deployment" depends="compile-all">
+  		
+  	</target>
+
+<!-- create jar-file                                                       -->
+    <jar jarfile="${dist}/fsl3-${DSTAMP}.jar" basedir="${build}" manifest="${build}/fslManifest.mf"/>
+  </target>
+
+<!-- ********************************************************************* -->
+<!-- Make homeCore-Package                                                 -->
+<!-- ********************************************************************* -->
+  <target name="compile-home" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/home" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-home" depends="compile-home">
+    <antcall target="build-home"/>
+  </target>
+  
+  <target name="build-home" depends="init">
+    <mkdir dir="${build}/home/freestyleLearning/homeCore"/>
+    <copy todir="${build}/home/freestyleLearning/homeCore">
+	<fileset dir="${classes}/freestyleLearning/homeCore"/>
+    </copy>
+    <copy todir="${build}/home">
+	<fileset dir="${src}/home">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <mkdir dir="${build}/home/freestyleLearning/setupCore"/>
+    <copy todir="${build}/home/freestyleLearning/setupCore">
+	<fileset dir="${classes}/freestyleLearning/setupCore"/>
+    </copy>
+    <copy todir="${build}/home">
+	<fileset dir="${src}/home">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${dist}/home.jar" basedir="${build}/home" manifest="${build}/fslManifest.mf"/>
+
+    <!-- IA -->
+    <copy file="${dist}/home.jar" tofile="${ia-files}/home.jar"/>
+    <copy file="${dist}/home.jar" tofile="${dev-bin}/home.jar"/>
+   
+  </target>
+
+<!-- ********************************************************************* -->
+<!-- Make learningUnitViewAPI-Package                                      -->
+<!-- ********************************************************************* -->
+  <target name="compile-api" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/viewManagerAPI" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-api" depends="compile-api">
+    <antcall target="build-api"/>
+  </target>
+  
+  <target name="build-api" depends="init">
+    <mkdir dir="${build}/viewManagerAPI/freestyleLearning/learningUnitViewAPI"/>
+    <copy todir="${build}/viewManagerAPI/freestyleLearning/learningUnitViewAPI">
+	<fileset dir="${classes}/freestyleLearning/learningUnitViewAPI"/>
+    </copy>
+    <copy todir="${build}/viewManagerAPI">
+	<fileset dir="${src}/viewManagerAPI">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${dist}/learningUnitViewAPI.jar" basedir="${build}/viewManagerAPI"/>
+
+    <!-- IA -->
+    <copy file="${dist}/learningUnitViewAPI.jar" tofile="${ia-files}/learningUnitViewAPI.jar"/>
+    <copy file="${dist}/learningUnitViewAPI.jar" tofile="${dev-bin}/learningUnitViewAPI.jar"/>
+
+  </target>
+
+<!-- ********************************************************************* -->
+<!-- Make independent-Package                                              -->
+<!-- ********************************************************************* -->
+  <target name="compile-independent" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/independent" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-independent" depends="compile-independent">
+    <antcall target="build-independent"/>
+  </target>
+  
+  <target name="build-independent" depends="init">
+    <mkdir dir="${build}/independent/freestyleLearningGroup/independent"/>
+    <copy todir="${build}/independent/freestyleLearningGroup/independent">
+	<fileset dir="${classes}/freestyleLearningGroup/independent"/>
+    </copy>
+    <copy todir="${build}/independent">
+	<fileset dir="${src}/independent">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${dist}/independent.jar" basedir="${build}/independent"/>
+
+    <!-- IA -->
+    <copy file="${dist}/independent.jar" tofile="${ia-files}/independent.jar"/>
+    <copy file="${dist}/independent.jar" tofile="${dev-bin}/independent.jar"/>
+
+  </target>
+
+<!-- ********************************************************************* -->
+<!-- Make LearningUnitViewManagers                                         -->
+<!-- ********************************************************************* -->
+
+<!-- All LearningUnitViewManagers                                          -->
+  <target name="dist-luvm">
+    <antcall target="dist-audio"/>
+    <antcall target="dist-caseStudy"/>
+    <antcall target="dist-checkUp"/>
+    <antcall target="dist-glossary"/>
+    <antcall target="dist-intro"/>
+    <antcall target="dist-learningByDoing"/>
+    <antcall target="dist-mediaPool"/>
+    <antcall target="dist-mindmaps"/>
+    <antcall target="dist-notes"/>
+    <antcall target="dist-questionAndAnswer"/>
+    <antcall target="dist-slideShow"/>
+    <antcall target="dist-textStudy"/>
+    <antcall target="dist-selector"/>
+    <antcall target="clean"/>
+  </target>
+
+  <target name="build-luvm">
+    <antcall target="build-audio"/>
+    <antcall target="build-caseStudy"/>
+    <antcall target="build-checkUp"/>
+    <antcall target="build-glossary"/>
+    <antcall target="build-intro"/>
+    <antcall target="build-learningByDoing"/>
+    <antcall target="build-mediaPool"/>
+    <antcall target="build-mindmaps"/>
+    <antcall target="build-notes"/>
+    <antcall target="build-questionAndAnswer"/>
+    <antcall target="build-slideShow"/>
+    <antcall target="build-textStudy"/>
+    <antcall target="build-selector"/>
+  </target>
+
+<!-- Audio                                                             -->
+  <target name="compile-audio" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/viewManagers/audio" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-audio" depends="compile-audio">
+    <antcall target="build-audio"/>
+  </target>
+  
+  <target name="build-audio" depends="init">
+    <mkdir dir="${build}/audio/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/audio"/>
+    <copy todir="${build}/audio/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/audio">
+	<fileset dir="${classes}/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/audio"/>
+    </copy>
+    <mkdir dir="${build}/audio"/>
+    <copy todir="${build}/audio">
+	<fileset dir="${src}/viewManagers/audio">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${build}/audio.jar" basedir="${build}/audio"/>
+    <copy file="${build}/audio.jar" tofile="${dist}/learningUnitViewManagers/audio/manager.jar"/>
+
+    <!-- IA -->
+    <copy file="${build}/audio.jar" tofile="${ia-files}/learningUnitViewManagers/audio/manager.jar"/>
+    <copy file="${build}/audio.jar" tofile="${dev-bin}/learningUnitViewManagers/audio/manager.jar"/>
+
+  </target>
+
+<!-- CaseStudy                                                             -->
+  <target name="compile-caseStudy" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/viewManagers/caseStudy" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-caseStudy" depends="compile-caseStudy">
+    <antcall target="build-caseStudy"/>
+  </target>
+  
+  <target name="build-caseStudy" depends="init">
+    <mkdir dir="${build}/caseStudy/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/caseStudy"/>
+    <copy todir="${build}/caseStudy/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/caseStudy">
+	<fileset dir="${classes}/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/caseStudy"/>
+    </copy>
+    <mkdir dir="${build}/caseStudy"/>
+    <copy todir="${build}/caseStudy">
+	<fileset dir="${src}/viewManagers/caseStudy">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${build}/caseStudy.jar" basedir="${build}/caseStudy"/>
+    <copy file="${build}/caseStudy.jar" tofile="${dist}/learningUnitViewManagers/caseStudy/manager.jar"/>
+
+    <!-- IA -->
+    <copy file="${build}/caseStudy.jar" tofile="${ia-files}/learningUnitViewManagers/caseStudy/manager.jar"/>
+    <copy file="${build}/caseStudy.jar" tofile="${dev-bin}/learningUnitViewManagers/caseStudy/manager.jar"/>
+
+  </target>
+
+<!-- CheckUp                                                               -->
+  <target name="compile-checkUp" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/viewManagers/checkUp" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-checkUp" depends="compile-checkUp">
+    <antcall target="build-checkUp"/>
+  </target>
+  
+  <target name="build-checkUp" depends="init">
+    <mkdir dir="${build}/checkUp/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/checkUp"/>
+    <copy todir="${build}/checkUp/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/checkUp">
+	<fileset dir="${classes}/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/checkUp"/>
+    </copy>
+    <mkdir dir="${build}/checkUp"/>
+    <copy todir="${build}/checkUp">
+	<fileset dir="${src}/viewManagers/checkUp">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${build}/checkUp.jar" basedir="${build}/checkUp"/>
+    <copy file="${build}/checkUp.jar" tofile="${dist}/learningUnitViewManagers/checkUp/manager.jar"/>
+
+    <!-- IA -->
+    <copy file="${build}/checkUp.jar" tofile="${ia-files}/learningUnitViewManagers/checkUp/manager.jar"/>
+    <copy file="${build}/checkUp.jar" tofile="${dev-bin}/learningUnitViewManagers/checkUp/manager.jar"/>
+
+  </target>
+
+<!-- Glossary                                                              -->
+  <target name="compile-glossary" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/viewManagers/glossary" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-glossary" depends="compile-glossary">
+    <antcall target="build-glossary"/>
+  </target>
+  
+  <target name="build-glossary" depends="init">
+    <mkdir dir="${build}/glossary/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/glossary"/>
+    <copy todir="${build}/glossary/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/glossary">
+	<fileset dir="${classes}/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/glossary"/>
+    </copy>
+    <mkdir dir="${build}/glossary"/>
+    <copy todir="${build}/glossary">
+	<fileset dir="${src}/viewManagers/glossary">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${build}/glossary.jar" basedir="${build}/glossary"/>
+    <copy file="${build}/glossary.jar" tofile="${dist}/learningUnitViewManagers/glossary/manager.jar"/>
+
+    <!-- IA -->
+    <copy file="${build}/glossary.jar" tofile="${ia-files}/learningUnitViewManagers/glossary/manager.jar"/>
+    <copy file="${build}/glossary.jar" tofile="${dev-bin}/learningUnitViewManagers/glossary/manager.jar"/>
+
+  </target>
+
+<!-- Intro                                                                 -->
+  <target name="compile-intro" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/viewManagers/intro" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-intro" depends="compile-intro">
+    <antcall target="build-intro"/>
+  </target>
+  
+  <target name="build-intro" depends="init">
+    <mkdir dir="${build}/intro/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/intro"/>
+    <copy todir="${build}/intro/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/intro">
+	<fileset dir="${classes}/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/intro"/>
+    </copy>
+    <mkdir dir="${build}/intro"/>
+    <copy todir="${build}/intro">
+	<fileset dir="${src}/viewManagers/intro">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${build}/intro.jar" basedir="${build}/intro"/>
+    <copy file="${build}/intro.jar" tofile="${dist}/learningUnitViewManagers/intro/manager.jar"/>
+
+    <!-- IA -->
+    <copy file="${build}/intro.jar" tofile="${ia-files}/learningUnitViewManagers/intro/manager.jar"/>
+    <copy file="${build}/intro.jar" tofile="${dev-bin}/learningUnitViewManagers/intro/manager.jar"/>
+
+  </target>
+
+<!-- LearningByDoing                                                       -->
+  <target name="compile-learningByDoing" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/viewManagers/learningByDoing" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-learningByDoing" depends="compile-learningByDoing">
+    <antcall target="build-learningByDoing"/>
+  </target>
+  
+  <target name="build-learningByDoing" depends="init">
+    <mkdir dir="${build}/learningByDoing/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/learningByDoing"/>
+    <copy todir="${build}/learningByDoing/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/learningByDoing">
+	<fileset dir="${classes}/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/learningByDoing"/>
+    </copy>
+    <mkdir dir="${build}/learningByDoing"/>
+    <copy todir="${build}/learningByDoing">
+	<fileset dir="${src}/viewManagers/learningByDoing">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${build}/learningByDoing.jar" basedir="${build}/learningByDoing"/>
+    <copy file="${build}/learningByDoing.jar" tofile="${dist}/learningUnitViewManagers/learningByDoing/manager.jar"/>
+
+    <!-- IA -->
+    <copy file="${build}/learningByDoing.jar" tofile="${ia-files}/learningUnitViewManagers/learningByDoing/manager.jar"/>
+    <copy file="${build}/learningByDoing.jar" tofile="${dev-bin}/learningUnitViewManagers/learningByDoing/manager.jar"/>
+
+  </target>
+
+<!-- MediaPool                                                             -->
+  <target name="compile-mediaPool" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/viewManagers/mediaPool" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-mediaPool" depends="compile-mediaPool">
+    <antcall target="build-mediaPool"/>
+  </target>
+  
+  <target name="build-mediaPool" depends="init">
+    <mkdir dir="${build}/mediaPool/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/mediaPool"/>
+    <copy todir="${build}/mediaPool/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/mediaPool">
+	<fileset dir="${classes}/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/mediaPool"/>
+    </copy>
+    <mkdir dir="${build}/mediaPool"/>
+    <copy todir="${build}/mediaPool">
+	<fileset dir="${src}/viewManagers/mediaPool">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${build}/mediaPool.jar" basedir="${build}/mediaPool"/>
+    <copy file="${build}/mediaPool.jar" tofile="${dist}/learningUnitViewManagers/mediaPool/manager.jar"/>
+
+    <!-- IA -->
+    <copy file="${build}/mediaPool.jar" tofile="${ia-files}/learningUnitViewManagers/mediaPool/manager.jar"/>
+    <copy file="${build}/mediaPool.jar" tofile="${dev-bin}/learningUnitViewManagers/mediaPool/manager.jar"/>
+
+  </target>
+
+<!-- Mindmaps                                                              -->
+  <target name="compile-mindmaps">
+    <javac classpath="${cp}" srcdir="${src}/viewManagers/mindmaps" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-mindmaps" depends="compile-mindmaps">
+    <antcall target="build-mindmaps"/>
+  </target>
+  
+  <target name="build-mindmaps">
+    <mkdir dir="${build}/mindmaps/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/mindmaps"/>
+    <copy todir="${build}/mindmaps/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/mindmaps">
+	<fileset dir="${classes}/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/mindmaps"/>
+    </copy>
+    <mkdir dir="${build}/mindmaps"/>
+    <copy todir="${build}/mindmaps">
+	<fileset dir="${src}/viewManagers/mindmaps">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${build}/mindmaps.jar" basedir="${build}/mindmaps"/>
+    <copy file="${build}/mindmaps.jar" tofile="${dist}/learningUnitViewManagers/mindmaps/manager.jar"/>
+
+    <!-- IA -->
+    <copy file="${build}/mindmaps.jar" tofile="${ia-files}/learningUnitViewManagers/mindmaps/manager.jar"/>
+    <copy file="${build}/mindmaps.jar" tofile="${dev-bin}/learningUnitViewManagers/mindmaps/manager.jar"/>
+
+  </target>
+
+<!-- NoteManager                                                           -->
+  <target name="compile-notes" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/viewManagers/notes" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-notes" depends="compile-notes">
+    <antcall target="build-notes"/>
+  </target>
+  
+  <target name="build-notes" depends="init">
+    <mkdir dir="${build}/notes/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/notes"/>
+    <copy todir="${build}/notes/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/notes">
+	<fileset dir="${classes}/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/notes"/>
+    </copy>
+    <mkdir dir="${build}/notes"/>
+    <copy todir="${build}/notes">
+	<fileset dir="${src}/viewManagers/notes">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${build}/notes.jar" basedir="${build}/notes"/>
+    <copy file="${build}/notes.jar" tofile="${dist}/learningUnitViewManagers/notes/manager.jar"/>
+
+    <!-- IA -->
+    <copy file="${build}/notes.jar" tofile="${ia-files}/learningUnitViewManagers/notes/manager.jar"/>
+    <copy file="${build}/notes.jar" tofile="${dev-bin}/learningUnitViewManagers/notes/manager.jar"/>
+
+  </target>
+
+<!-- QuestionAndAnswer                                                     -->
+  <target name="compile-questionAndAnswer" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/viewManagers/questionAndAnswer" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-questionAndAnswer" depends="compile-questionAndAnswer">
+    <antcall target="build-questionAndAnswer"/>
+  </target>
+  
+  <target name="build-questionAndAnswer" depends="init">
+    <mkdir dir="${build}/questionAndAnswer/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/questionAndAnswer"/>
+    <copy todir="${build}/questionAndAnswer/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/questionAndAnswer">
+	<fileset dir="${classes}/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/questionAndAnswer"/>
+    </copy>
+    <mkdir dir="${build}/questionAndAnswer"/>
+    <copy todir="${build}/questionAndAnswer">
+	<fileset dir="${src}/viewManagers/questionAndAnswer">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${build}/questionAndAnswer.jar" basedir="${build}/questionAndAnswer"/>
+    <copy file="${build}/questionAndAnswer.jar" tofile="${dist}/learningUnitViewManagers/questionAndAnswer/manager.jar"/>
+
+    <!-- IA -->
+    <copy file="${build}/questionAndAnswer.jar" tofile="${ia-files}/learningUnitViewManagers/questionAndAnswer/manager.jar"/>
+    <copy file="${build}/questionAndAnswer.jar" tofile="${dev-bin}/learningUnitViewManagers/questionAndAnswer/manager.jar"/>
+
+  </target>
+
+<!-- SlideShow                                                             -->
+  <target name="compile-slideShow" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/viewManagers/slideShow" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-slideShow" depends="compile-slideShow">
+    <antcall target="build-slideShow"/>
+  </target>
+  
+  <target name="build-slideShow" depends="init">
+    <mkdir dir="${build}/slideShow/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/slideShow"/>
+    <copy todir="${build}/slideShow/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/slideShow">
+	<fileset dir="${classes}/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/slideShow"/>
+    </copy>
+    <mkdir dir="${build}/slideShow"/>
+    <copy todir="${build}/slideShow">
+	<fileset dir="${src}/viewManagers/slideShow">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${build}/slideShow.jar" basedir="${build}/slideShow"/>
+    <copy file="${build}/slideShow.jar" tofile="${dist}/learningUnitViewManagers/slideShow/manager.jar"/>
+
+    <!-- IA -->
+    <copy file="${build}/slideShow.jar" tofile="${ia-files}/learningUnitViewManagers/slideShow/manager.jar"/>
+    <copy file="${build}/slideShow.jar" tofile="${dev-bin}/learningUnitViewManagers/slideShow/manager.jar"/>
+
+  </target>
+
+<!-- TextStudy                                                             -->
+  <target name="compile-textStudy" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/viewManagers/textStudy" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-textStudy" depends="compile-textStudy">
+    <antcall target="build-textStudy"/>
+  </target>
+  
+  <target name="build-textStudy" depends="init">
+    <mkdir dir="${build}/textStudy/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/textStudy"/>
+    <copy todir="${build}/textStudy/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/textStudy">
+	<fileset dir="${classes}/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/textStudy"/>
+    </copy>
+    <mkdir dir="${build}/textStudy"/>
+    <copy todir="${build}/textStudy">
+	<fileset dir="${src}/viewManagers/textStudy">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${build}/textStudy.jar" basedir="${build}/textStudy"/>
+    <copy file="${build}/textStudy.jar" tofile="${dist}/learningUnitViewManagers/textStudy/manager.jar"/>
+    
+    <!-- IA -->
+    <copy file="${build}/textStudy.jar" tofile="${ia-files}/learningUnitViewManagers/textStudy/manager.jar"/>
+    <copy file="${build}/textStudy.jar" tofile="${dev-bin}/learningUnitViewManagers/textStudy/manager.jar"/>
+    
+  </target>
+
+
+<!-- Selector                                                             -->
+  <target name="compile-selector" depends="init">
+    <javac classpath="${cp}" srcdir="${src}/viewManagers/selector" destdir="${classes}"/>
+  </target>
+
+  <target name="dist-selector" depends="compile-selector">
+    <antcall target="build-selector"/>
+  </target>
+  
+  <target name="build-selector" depends="init">
+    <mkdir dir="${build}/selector/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/selector"/>
+    <copy todir="${build}/selector/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/selector">
+	<fileset dir="${classes}/freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/selector"/>
+    </copy>
+    <mkdir dir="${build}/selector"/>
+    <copy todir="${build}/selector">
+	<fileset dir="${src}/viewManagers/selector">
+	  <patternset refid="non.sources"/>
+	</fileset>
+    </copy>
+    <jar jarfile="${build}/selector.jar" basedir="${build}/selector"/>
+    
+    <!-- disabled until release 
+    	<copy file="${build}/selector.jar" tofile="${dist}/learningUnitViewManagers/selector/manager.jar"/>
+    -->
+    
+    <!-- IA -->
+    <!-- disabled until release 
+	<copy file="${build}/selector.jar" tofile="${ia-files}/learningUnitViewManagers/selector/manager.jar"/>
+    -->
+    <copy file="${build}/selector.jar" tofile="${dev-bin}/learningUnitViewManagers/selector/manager.jar"/>
+    
+  </target>
+
+<!-- ********************************************************************* -->
+<!-- clean up                                                              -->
+<!-- ********************************************************************* -->
+  <target name="clean">
+	<delete includeEmptyDirs="true">
+		<fileset dir="${build}">
+			<exclude name="fslManifest.mf"/>
+			<exclude name="build**.**"/>
+			<exclude name="**.bat"/>
+			<exclude name="**.sh"/>
+		</fileset>
+	</delete>
+<!-- delete core and independent dirs                                      -->
+	<delete dir="${build}/home"/>
+	<delete dir="${build}/independent"/>
+	<delete dir="${build}/viewManagerAPI"/>
+	<delete dir="${build}/javadoc"/>
+<!-- delete Learning Unit View Manager dirs                                -->
+	<delete dir="${build}/audio"/>
+	<delete dir="${build}/caseStudy"/>
+	<delete dir="${build}/checkUp"/>
+	<delete dir="${build}/caseStudy"/>
+	<delete dir="${build}/glossary"/>
+	<delete dir="${build}/intro"/>
+	<delete dir="${build}/learningByDoing"/>
+	<delete dir="${build}/mediaPool"/>
+	<delete dir="${build}/mindmaps"/>
+	<delete dir="${build}/notes"/>
+	<delete dir="${build}/questionAndAnswer"/>
+	<delete dir="${build}/slideShow"/>
+	<delete dir="${build}/textStudy"/>
+	<delete dir="${build}/selector"/>
+  </target>
+  
+  <target name="clean-all" depends="clean">
+<!-- delete jars in ${dist} directory                                      -->
+	<delete includeEmptyDirs="true">
+		<fileset dir="${dist}/learningUnitViewManagers">
+			<exclude name="learningUnitViewManagersDescriptor.xml"/>
+		</fileset>
+	</delete>
+	<delete>
+		<fileset dir="${dist}" includes="**/*.jar"/>
+	</delete>
+<!-- delete classes in ${classes} directory                                -->
+	<delete>
+		<fileset dir="${classes}" includes="**/*.*"/>
+	</delete>
+	<delete dir="${classes}/freestyleLearning"/>
+	<delete dir="${classes}/freestyleLearningGroup"/>
+<!-- delete html-docs in ${docs} directory				   -->
+	<delete includeEmptyDirs="true">
+		<fileset dir="${docs}" includes="**/*.*"/>
+	</delete>
+	<delete dir="${docs}/freestyleLearning"/>
+	<delete dir="${docs}/freestyleLearningGroup"/>
+  </target>
+  
+</project>
+
+<!-- ********************************************************************* -->
