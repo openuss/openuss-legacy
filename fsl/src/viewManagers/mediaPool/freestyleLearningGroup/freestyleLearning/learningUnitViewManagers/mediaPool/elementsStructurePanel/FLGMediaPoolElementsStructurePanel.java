@@ -20,15 +20,13 @@ import freestyleLearningGroup.independent.util.*;
 
 /**
  * FLGMediaPoolElementsStructurePanel.
- * Class for managing Media Pool Structure Panel Elements.
+ * Class for managing Media Pool Structure Tree Elements.
  * @author Freestyle Learning Group
- * Carsten Fiedler modified
  */
 public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitViewElementsStructurePanel {
     private FLGMediaPoolSpecificPanel learningUnitViewNewAndModifyElementDialogViewSpecificPane;
     private FLGInternationalization internationalization;
     private String[] mediaTypes = new String[6];
-    // Carsten Fiedler, 21.08.2006
     private ArrayList nodesToDelete;
     
     /**
@@ -64,10 +62,9 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
     
     /**
      * Returns pane for inserting or modifing structure tree elements.
-     * @return <code>FSLLearningUnitViewNewAndModifyElementDialogViewSpecificPane</code> learningUnitViewNewAndModifyElementDialogViewSpecificPane.
+     * @return <code>FSLLearningUnitViewNewAndModifyElementDialogViewSpecificPane</code> learningUnitViewNewAndModifyElementDialogViewSpecificPane
      */
-    public FSLLearningUnitViewNewAndModifyElementDialogViewSpecificPane
-    getLearningUnitViewNewAndModifyElementDialogViewSpecificPane() {
+    public FSLLearningUnitViewNewAndModifyElementDialogViewSpecificPane getLearningUnitViewNewAndModifyElementDialogViewSpecificPane() {
         return learningUnitViewNewAndModifyElementDialogViewSpecificPane;
     }
     
