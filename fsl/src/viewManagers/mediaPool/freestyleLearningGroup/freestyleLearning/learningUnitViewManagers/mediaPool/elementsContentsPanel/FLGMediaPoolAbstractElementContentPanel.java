@@ -16,7 +16,7 @@ import javax.swing.*;
 
 /**
  * Abstract class generalizing features for all specific mediaPool content panels
- * @author  Mirko Wahn
+ * @author Freestyle Learning Group
  */
 abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearningUnitViewElementContentPanel {
     
@@ -92,10 +92,11 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
     }
     
     /**
-     * Select and set background color 
+     * Select and set background color.
+     * @return <code>Color</color> background color
      */
      protected Color showColorChooserDialog() {
-        JPanel dialogPanel = new JPanel();
+    	JPanel dialogPanel = new JPanel();
         dialogPanel.setLayout(new FLGColumnLayout());
         dialogPanel.setOpaque(false);
         dialogPanel.setBorder(BorderFactory.createTitledBorder(internationalization.getString("border.colorChooser.title")));
@@ -118,6 +119,14 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
         colorButton.setBackground(presentBGColor);
         colorButton.setBorder(BorderFactory.createLoweredBevelBorder());
         colorButton.setPreferredSize(new Dimension(40, 20));
+        
+        // set color for active element
+        String activeId = learningUnitViewManager.getActiveLearningUnitViewElementId();
+        final FLGMediaPoolElement activeElement = (FLGMediaPoolElement) learningUnitViewElementsManager.getLearningUnitViewElement(activeId, true);
+        if(activeElement.getBackgroundColor() != null) {
+        	colorButton.setBackground(new Color(Integer.parseInt(activeElement.getBackgroundColor())));
+        }
+        
         colorButton.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -125,8 +134,6 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
                         internationalization.getString("dialog.colorChooser.title"), presentBGColor);
                     colorButton.setBackground(selectedColor);
                     // set element color for active element
-                    String activeId = learningUnitViewManager.getActiveLearningUnitViewElementId();
-                    FLGMediaPoolElement activeElement = (FLGMediaPoolElement) learningUnitViewElementsManager.getLearningUnitViewElement(activeId, true);
                     activeElement.setBackgroundColor(Integer.toString(selectedColor.getRGB()));
                     activeElement.setModified(true);
                     learningUnitViewElementsManager.setModified(true);
