@@ -764,6 +764,7 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
 		            });
 		            
 		            // add image components
+		            label_imageFile.setBorder(new EmptyBorder(5,5,5,5));
 		            add(label_imageFile, FLGColumnLayout.LEFT);
 		            JPanel imagePanel = new JPanel(new GridBagLayout());
 		            imagePanel.add(textField_imageFile);
@@ -832,6 +833,7 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
             	}
                 
 		        // add audio components for all panels
+		        label_audioFile.setBorder(new EmptyBorder(5,5,5,5));
 		        add(label_audioFile, FLGColumnLayout.LEFT);
 		        JPanel audioButtonsPanel = new JPanel(new GridBagLayout());
 		        audioButtonsPanel.add(textField_audioFile);
