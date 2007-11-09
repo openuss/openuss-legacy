@@ -26,13 +26,12 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
     protected Color presentBGColor;
     protected String activeLearningUnitViewElementId;
     protected boolean scaleToFit;
-    protected boolean bgColorForAllElements;
+    protected boolean bgColorForAllElements = true;
     protected String addFileString;
     protected String removeFileString;
     protected String backgroundColorString;
     protected javax.swing.filechooser.FileFilter fileSelectionFilter;
     protected FLGImageComponent imageComponent;
-    protected Color selectedColor;
     protected JCheckBox checkBox_toggleBGColorOptions;
     private JFileChooser fileChooser;
 
@@ -86,9 +85,36 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
             backgroundColorString, 
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    showColorChooserDialog();
+                    Color selectedColor = showColorChooserDialog();
+                    // set element color for active element
+                    String activeId = learningUnitViewManager.getActiveLearningUnitViewElementId();
+                    FLGMediaPoolElement activeElement = (FLGMediaPoolElement) learningUnitViewElementsManager.getLearningUnitViewElement(activeId, true);
+                    activeElement.setBackgroundColor(Integer.toString(selectedColor.getRGB()));
+                    activeElement.setModified(true);
+                    if(bgColorForAllElements) {
+                    	setElementsColor(selectedColor);
+                    }
+                    learningUnitViewElementsManager.setModified(true);
                 }
         });
+    }
+    
+    private void setElementsColor(Color selectedColor) {
+    	// get all media pool elements and add color
+    	String[] topLevelIds = learningUnitViewElementsManager.getTopLevelLearningUnitViewElementsIds();
+    	// set color
+    	for (int i=0; i<topLevelIds.length; i++) {
+    		FLGMediaPoolElement element = (FLGMediaPoolElement) learningUnitViewElementsManager.getLearningUnitViewElement(topLevelIds[i], true);
+    		element.setBackgroundColor(Integer.toString(selectedColor.getRGB()));
+    		element.setModified(true);
+    		// children
+    		String[] childrenIds = learningUnitViewElementsManager.getChildrenIdsOfLearningUnitViewElement(topLevelIds[i]);
+    		for (int j=0; j<childrenIds.length; j++) {
+    			FLGMediaPoolElement child_element = (FLGMediaPoolElement) learningUnitViewElementsManager.getLearningUnitViewElement(childrenIds[i], true);
+    			child_element.setBackgroundColor(Integer.toString(selectedColor.getRGB()));
+    			child_element.setModified(true);
+    		}
+    	}
     }
     
     /**
@@ -125,18 +151,15 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
         final FLGMediaPoolElement activeElement = (FLGMediaPoolElement) learningUnitViewElementsManager.getLearningUnitViewElement(activeId, true);
         if(activeElement.getBackgroundColor() != null) {
         	colorButton.setBackground(new Color(Integer.parseInt(activeElement.getBackgroundColor())));
+        	presentBGColor = new Color(Integer.parseInt(activeElement.getBackgroundColor()));
         }
         
         colorButton.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    selectedColor = colorChooser.showDialog(null, 
+                	Color selectedColor = colorChooser.showDialog(null, 
                         internationalization.getString("dialog.colorChooser.title"), presentBGColor);
-                    colorButton.setBackground(selectedColor);
-                    // set element color for active element
-                    activeElement.setBackgroundColor(Integer.toString(selectedColor.getRGB()));
-                    activeElement.setModified(true);
-                    learningUnitViewElementsManager.setModified(true);
+                    if(selectedColor != null) colorButton.setBackground(selectedColor);
                 }
             });
             
@@ -171,10 +194,10 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
             setOpaque(true);
             presentBGColor = colorButton.getBackground();
             setBackground(presentBGColor);
+        } else {
+            setOpaque(true);
+            presentBGColor = colorButton.getBackground();
         }
-        else {
-            setOpaque(false);
-        }        
         repaint();
         return presentBGColor;
     }
