@@ -100,6 +100,9 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
     }
     
     private void setElementsColor(Color selectedColor) {
+    	
+    	System.out.println("selectedColor: " + Integer.toString(selectedColor.getRGB()));
+    	
     	// get all media pool elements and add color
     	String[] topLevelIds = learningUnitViewElementsManager.getTopLevelLearningUnitViewElementsIds();
     	// set color
@@ -122,10 +125,11 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
      * @return <code>Color</color> background color
      */
      protected Color showColorChooserDialog() {
-    	JPanel dialogPanel = new JPanel();
-        dialogPanel.setLayout(new FLGColumnLayout());
-        dialogPanel.setOpaque(false);
-        dialogPanel.setBorder(BorderFactory.createTitledBorder(internationalization.getString("border.colorChooser.title")));
+    	 bgColorForAllElements = true;
+    	 JPanel dialogPanel = new JPanel();
+    	 dialogPanel.setLayout(new FLGColumnLayout());
+    	 dialogPanel.setOpaque(false);
+         dialogPanel.setBorder(BorderFactory.createTitledBorder(internationalization.getString("border.colorChooser.title")));
 
         JPanel dialogInnerPanel = new JPanel();
         dialogInnerPanel.setLayout(new FlowLayout());
