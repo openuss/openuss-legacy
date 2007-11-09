@@ -4,5 +4,4 @@
   <userDescriptor id="learner" userName="learner" userPassword="learner" currentUserRole="learner" allowedUserRoles="learner" learningUnitsUserDataDirectoryName="learner" automaticSelectionEnabled="false" playWelcomeVideosEnabled="true" displayWelcomeScreen="false" rememberFrameStatusEnabled="true">
     <userFrameDescriptor frameMaximized="true" frameWidth="1688" frameHeight="1028" frameLocationX="-4" frameLocationY="-4"/></userDescriptor>
   <userDescriptor id="author" userName="author" userPassword="author" currentUserRole="author" allowedUserRoles="learner author" learningUnitsUserDataDirectoryName="Author" automaticSelectionEnabled="false" playWelcomeVideosEnabled="true" displayWelcomeScreen="false" rememberFrameStatusEnabled="true">
-    <userFrameDescriptor frameMaximized="true" frameWidth="1688" frameHeight="1028" frameLocationX="-4" frameLocationY="-4"/></userDescriptor>
-  </usersDescriptor>
+    <userFrameDescriptor frameMaximized="true" frameWidth="1688" frameHeight="1028" frameLocationX="-4" frameLocationY="-4"/></userDescriptor></usersDescriptor>
