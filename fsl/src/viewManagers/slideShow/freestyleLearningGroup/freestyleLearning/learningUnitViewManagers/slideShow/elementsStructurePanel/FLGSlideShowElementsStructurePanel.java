@@ -183,7 +183,7 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
      */
     public FSLLearningUnitViewElement createLearningUnitViewElement(String id, String parentId, String title, boolean folder) {
     	FLGSlideShowElement newElement = new FLGSlideShowElement();
-      // check if older is inserted
+    	// check if older is inserted
     	if (tabbedPane.getSelectedIndex() == 1) {
           	folder = true;
         }
@@ -1060,7 +1060,13 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
 						folderImportPanel.setAudioFileName(audioFile.getAbsolutePath());
 					}
 				}*/
-            } 
+            } else {
+            	if(modifyViewElement) {
+            		if (recordFile != null) {
+            			recordFile = null;
+            		}
+            	}
+            }
         }
         
         /**
