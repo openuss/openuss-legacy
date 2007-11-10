@@ -28,7 +28,7 @@ public abstract class AbstractFeed implements MessageSourceAware {
 
 	public static final String RSS_2_0 = "rss_2.0";
 
-	public static final String ISO_8859_1 = "ISO-8859-1";
+	public static final String ENCODING = "UTF-8";
 
 	public static final String TEXT_HTML = "text/html";
 
@@ -78,7 +78,7 @@ public abstract class AbstractFeed implements MessageSourceAware {
 		try {
 
 			final SyndFeed feed = new SyndFeedImpl();
-			feed.setEncoding(ISO_8859_1);
+			feed.setEncoding(ENCODING);
 			feed.setTitle(title);
 			feed.setLink(link);
 			if (description == null) {
