@@ -213,8 +213,11 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
         if (learningUnitViewElementsManager != null) {
             FLGMediaPoolElement mediaPoolElement = (FLGMediaPoolElement)learningUnitViewElementsManager.getLearningUnitViewElement(learningUnitViewElementId, false);
             if (mediaPoolElement != null && mediaPoolElement.getAdditionalFileName() != null) {
-                createImage();
+                
+
+            	createImage();
                 layoutImage();
+                
             } else {
                 removeAll();
                 repaint();
@@ -223,6 +226,7 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
             	if(mediaPoolElement.getBackgroundColor()!= null) {
             		setBackground(new Color(Integer.valueOf(mediaPoolElement.getBackgroundColor())));
             	}
+      
             }
             
         }
