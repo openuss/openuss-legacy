@@ -90,10 +90,16 @@ abstract public class FSLAbstractLearningUnitViewElementsStructurePanel extends 
         TreeNode root = (TreeNode)importedFolderFilesStructure.getRoot();
         root.getChildCount();
         
+        
+        
         // insert root, create new FSL-Element
         String elementId = learningUnitViewElementsManager.createLearningUnitViewElementId();
         File rootFile = (File)((DefaultMutableTreeNode)root).getUserObject();
-        String title = rootFile.getName();
+        
+        //String title = rootFile.getName();
+        
+        String title = editToolBar.getLearningUnitViewElementTitle();
+        
         FSLLearningUnitViewElement newElement = createLearningUnitViewElement(elementId, parentId, title, true);
         
         switch (position) {

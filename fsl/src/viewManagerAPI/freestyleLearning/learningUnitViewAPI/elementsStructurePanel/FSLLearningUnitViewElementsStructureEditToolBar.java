@@ -629,7 +629,7 @@ public class FSLLearningUnitViewElementsStructureEditToolBar extends FLGEffectPa
                 }
                 // create elements as children from parent id
                 learningUnitViewElementsStructurePanel.createElements(
-                		parentId,newElementDialog.getInsertCommand(),selectedLearningUnitViewElementId);
+                		parentId, newElementDialog.getInsertCommand(), selectedLearningUnitViewElementId);
             } else {
                 // else insert single element
                 String elementId = learningUnitViewElementsManager.createLearningUnitViewElementId();
@@ -668,7 +668,7 @@ public class FSLLearningUnitViewElementsStructureEditToolBar extends FLGEffectPa
                         break;
                 }
                 FSLLearningUnitViewEvent event = FSLLearningUnitViewEvent.createElementsCreatedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
-                new String[] { newElement.getId() });
+                		new String[] { newElement.getId() });
                 learningUnitViewManager.fireLearningUnitViewEvent(event);
                 activeLearningUnitViewElementId = newElement.getId();
                 event = FSLLearningUnitViewEvent.createElementActivatedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
