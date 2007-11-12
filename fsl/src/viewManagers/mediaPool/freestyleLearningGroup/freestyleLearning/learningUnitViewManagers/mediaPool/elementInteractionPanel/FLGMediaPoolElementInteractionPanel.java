@@ -74,7 +74,6 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
             pauseButton.setToolTipText(internationalization.getString("button.tooltip.pause"));
             stopButton = new FSLLearningUnitViewElementInteractionButton(loadImage("buttonStop.gif"));
             stopButton.setToolTipText(internationalization.getString("button.tooltip.stop"));
-
             pageScalePlusButton = new FSLLearningUnitViewElementInteractionButton(loadImage("buttonScalePlus.gif"));
             pageScalePlusButton.setToolTipText(internationalization.getString("button.tooltip.pageScalePlus"));
             pageScaleMinusButton = new FSLLearningUnitViewElementInteractionButton(loadImage("buttonScaleMinus.gif"));
@@ -233,7 +232,7 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
     }
     
     private void rebuildButtonStatus(FSLLearningUnitViewElement learningUnitViewElement, boolean isFullScreenModeChanged) {
-        if (learningUnitViewElement.getType().equals("video") || learningUnitViewElement.getType().equals("audio")) {
+    	if (learningUnitViewElement.getType().equals("video") || learningUnitViewElement.getType().equals("audio")) {
             setSplitModeAllowed(false);
             setFullScreenModeAllowed(learningUnitViewElement.getType().equals("video"));
             setScaleModeAllowed(true);
@@ -246,18 +245,21 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
                 stopButton.setEnabled(playing);
             }
             return;
-        }
-        else if (learningUnitViewElement.getType().equals("picture")) {
+        } else if (learningUnitViewElement.getType().equals("picture")) {
             setScaleModeAllowed(true);
             setSplitModeAllowed(true);
             setFullScreenModeAllowed(true);
+            stopButton.setEnabled(playing);
+            add(stopButton);
             buildDependentUI();
+            stopButton.setEnabled(playing);
+            add(stopButton);
             return;
-        }
-        else if (learningUnitViewElement.getType().equals("pdf")) {
+        } else if (learningUnitViewElement.getType().equals("pdf")) {
             setFullScreenModeAllowed(false);
             setSplitModeAllowed(false);
             setScaleModeAllowed(false);
+
             add(playButton);
             addSeparator();
             add(prevPageButton);
@@ -269,6 +271,8 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
             add(pageScalePageHeightButton);
             add(pageScalePage100Button);
             buildDependentUI();
+            stopButton.setEnabled(playing);
+            add(stopButton);
             return;
         }
         setFullScreenModeAllowed(false);
@@ -278,6 +282,9 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
         addSeparator();
         playButton.setToolTipText(internationalization.getString("button.tooltip.execute"));
         add(playButton);
+        
+    	
+
     }
     
     /**

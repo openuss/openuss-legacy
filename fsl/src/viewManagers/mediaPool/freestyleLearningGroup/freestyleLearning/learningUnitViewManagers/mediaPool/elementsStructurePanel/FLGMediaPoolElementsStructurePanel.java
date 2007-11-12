@@ -234,10 +234,8 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
             return new File(fileSelectTextField.getText());
         }
         
-        // Carsten Fiedler modified 07.09.2006
         public void showFileChooserDialog() {
-            FLGMediaFileChooser fileChooser=null;
-            
+            FLGMediaFileChooser fileChooser = null;
             if (editToolBar.folderImportIsSelected()) {
                 fileChooser = new FLGMediaFileChooser(FLGMediaFileChooser.FOLDER);
             } else {
@@ -252,18 +250,20 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
                     StringBuffer title = new StringBuffer(mediaFile.getName());
                     int length = title.length();
                     for (int i=0; i<=fileExtension.length(); i++) {
-                        title.deleteCharAt((length-1)-i*1);
+                        title.deleteCharAt((length - 1) - i * 1);
                     }
                     if (editToolBar.folderImportIsSelected()) {
-                        folderImport=true;
-                        String folderTitle=mediaFile.getName();
-                        editToolBar.setLearningUnitViewElementTitle(folderTitle);
+                        folderImport = true;
+                        String folderTitle = mediaFile.getName();
+                        if(editToolBar.getLearningUnitViewElementTitle() != null && editToolBar.getLearningUnitViewElementTitle().equals("")) {
+                        	editToolBar.setLearningUnitViewElementTitle(folderTitle);
+                        }
                         // get files
                         DefaultTreeModel treeModel = FLGFileUtility.loadDirectoryContent(mediaFile);
                         // filter files
                         TreeNode root = (TreeNode) treeModel.getRoot();
                         nodesToDelete.clear();
-                        importedFolderFilesStructure = deleteNodes(treeModel,filterFiles(treeModel,root));
+                        importedFolderFilesStructure = deleteNodes(treeModel, filterFiles(treeModel, root));
                     } else {
                         folderImport=false;
                         editToolBar.setLearningUnitViewElementTitle(title.toString());
@@ -276,7 +276,6 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
             }
         }
         
-        // Carsten Fiedler, 21.08.2006
         private DefaultTreeModel deleteNodes(DefaultTreeModel treeModel, java.util.List nodeList) {
             for (int i=0; i<nodeList.size(); i++) {
                 // get node and remove it
@@ -286,7 +285,6 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
             return treeModel;
         }
         
-        // Carsten Fiedler, 21.08.2006
         private java.util.List filterFiles(DefaultTreeModel treeModel, TreeNode nodeToCheck) {
             for (int i=0; i<treeModel.getChildCount(nodeToCheck);i++) {
                 TreeNode child = (TreeNode)treeModel.getChild(nodeToCheck,i);
@@ -308,7 +306,7 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
                     // audio files
                     if (selectedMediaType.equals(FLGMediaPoolElement.FILE_TYPE_AUDIO)) {
                         if (!fileExtension.equals("mp2")
-                        && !fileExtension.equals("mp3")     // MW 15.11.2007
+                        && !fileExtension.equals("mp3")
                         && !fileExtension.equals("wav")
                         && !fileExtension.equals("au")
                         && !fileExtension.equals("midi")) {
