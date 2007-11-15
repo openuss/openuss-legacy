@@ -412,24 +412,15 @@ abstract public class FSLAbstractLearningUnitViewElementsContentsPanel extends J
             private void exitFullScreenMode() {
                 if (fullScreenMode) {
                 	fullScreenMode = false;
-                	
-                	System.out.println("FSLAbstractLearningUnitViewElementsContentsPanel: Closing full screen mode...");
-                	
                 	fullScreenWindow.setVisible(false);
                     fullScreenWindow.dispose();
-                          
                     FSLLearningUnitViewEvent viewActivatedEvent =
                         FSLLearningUnitViewEvent.createViewActivatedEvent(learningUnitViewManager.getLearningUnitViewManagerId(), false);
                     learningUnitViewManager.fireLearningUnitViewEvent(viewActivatedEvent);
-                    
                     FSLLearningUnitViewEvent elementActivatedEvent =
                         FSLLearningUnitViewEvent.createElementActivatedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
                         activeLearningUnitViewElementId, null, false, true);
                     learningUnitViewManager.fireLearningUnitViewEvent(elementActivatedEvent);
-                    
-                    
-                    
-                    System.out.println("FSLAbstractLearningUnitViewElementsContentsPanel: Full screen mode closed!");
                 }
             }
         }
