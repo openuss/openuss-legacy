@@ -112,7 +112,11 @@ public class FSLLearningUnitViewElementsStructureEditToolBar extends FLGEffectPa
      * @return <code>boolean</code> folderImportIsSelected
      */
     public boolean folderImportIsSelected() {
-        return newElementDialog.folderImportIsSelected();
+    	if(newElementDialog !=  null) {
+    		return newElementDialog.folderImportIsSelected();
+    	} else {
+    		return false;
+    	}
     }
     
     /**
