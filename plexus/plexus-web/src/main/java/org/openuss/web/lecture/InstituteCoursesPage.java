@@ -374,8 +374,8 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 		@Override
 		@SuppressWarnings( { "unchecked" })
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
+			List<CourseInfo> courses = new ArrayList<CourseInfo>();;
 			if (page == null) {
-				List<CourseInfo> courses = new ArrayList<CourseInfo>();
 				if ((periodInfo.getId() != null) && (periodInfo.getId().longValue() != Constants.COURSES_ALL_PERIODS)
 						&& (periodInfo.getId().longValue() != Constants.COURSES_ALL_ACTIVE_PERIODS)) {
 					List<CourseInfo> coursesByPeriodAndInstitute = courseService.findCoursesByPeriodAndInstitute(
