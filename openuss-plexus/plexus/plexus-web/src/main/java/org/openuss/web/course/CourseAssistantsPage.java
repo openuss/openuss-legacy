@@ -72,6 +72,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 				logger.debug("fetching course assistant list");
 				List<CourseMemberInfo> assistants = getAssistants();
 				page = new DataPage<CourseMemberInfo>(assistants.size(), 0, assistants);
+				sort(assistants);
 			}
 			return page;
 		}

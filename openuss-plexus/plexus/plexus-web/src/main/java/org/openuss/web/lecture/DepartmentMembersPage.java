@@ -172,25 +172,6 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 
-	/**
-	 * @param startRow
-	 *            row to start from
-	 * @param pageSize
-	 *            number of rows on each page
-	 * @return
-	 */
-	private DataPage<UserInfo> fetchDataPage(int startRow, int pageSize) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("getDataPage(" + startRow + "," + pageSize + ")");
-		}
-		
-		 logger.info("universityId:" + departmentInfo.getId());
-		  
-		 List<UserInfo> members = organisationService.findAllMembers(departmentInfo.getId());
-		
-	
-		return new DataPage<UserInfo>(members.size(), 0, members);
-	}
 
 	/**
 	 * LocalDataModel of Universitry Members
@@ -201,8 +182,10 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 
 		@Override
 		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
+			List<UserInfo> members = organisationService.findAllMembers(departmentInfo.getId());
+			sort(members);
 			
-			return fetchDataPage(startRow, pageSize);
+			return new DataPage<UserInfo>(members.size(),0,members);
 		}
 	}
 

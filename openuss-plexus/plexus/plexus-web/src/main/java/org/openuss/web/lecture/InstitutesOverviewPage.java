@@ -26,7 +26,7 @@ import org.openuss.web.Constants;
 /**
  * 
  * @author Kai Stettner
- * 
+ * @deprecated Needed? Page views/public/institute/institutesoverview not existing
  */
 @Bean(name = "views$public$institute$institutesoverview", scope = Scope.REQUEST)
 @View

@@ -170,24 +170,6 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 
-	/**
-	 * @param startRow
-	 *            row to start from
-	 * @param pageSize
-	 *            number of rows on each page
-	 * @return
-	 */
-	private DataPage<UserInfo> fetchDataPage(int startRow, int pageSize) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("getDataPage(" + startRow + "," + pageSize + ")");
-		}
-
-		logger.info("universityId:" + universityInfo.getId());
-
-		List<UserInfo> members = organisationService.findAllMembers(universityInfo.getId());
-
-		return new DataPage<UserInfo>(members.size(), 0, members);
-	}
 
 	/**
 	 * LocalDataModel of University Members
@@ -199,7 +181,9 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 		@Override
 		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 
-			return fetchDataPage(startRow, pageSize);
+			List<UserInfo> members = organisationService.findAllMembers(universityInfo.getId());
+			sort(members);
+			return new DataPage<UserInfo>(members.size(), 0, members);
 		}
 	}
 

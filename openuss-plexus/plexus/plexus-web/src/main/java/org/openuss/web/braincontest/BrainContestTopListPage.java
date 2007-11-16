@@ -66,7 +66,7 @@ public class BrainContestTopListPage extends AbstractBrainContestPage {
 			if (page == null) {
 				logger.debug("fetching answers");
 				List<AnswerInfo> answers = getBrainContestService().getAnswers(getBrainContest());
-				page = new DataPage<AnswerInfo>(answers.size(), 0, answers);
+				page = new DataPage<AnswerInfo>(answers.size(), 0, answers);				
 			}
 			return page;
 		}

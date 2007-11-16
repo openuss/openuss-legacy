@@ -38,6 +38,7 @@ public class WhoIsOnlinePage extends BasePage {
 		public DataPage<OnlineUserInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<OnlineUserInfo> users = getOnlineStatisticService().getActiveUsers();
+				sort(users);
 				page = new DataPage<OnlineUserInfo>(users.size(), 0, users);
 			}
 			return page;
