@@ -33,7 +33,7 @@
 	<ui:define name="content">
 		<h:form id="newMailForm">
 			<o:block label="#{msg.newsletter_newmail_header}" styleClass="form_box">
-				<o:input entity="newsletter_mail" property="subject" required="true" length="250"></o:input>
+				<o:input entity="newsletter_mail" property="subject" required="true" maxlength="250"></o:input>
 				<h:outputText value="#{msg.mailingjob_newmail_mailmessage}"	styleClass="field_label" />
 				<div class="content_iframe">
 					<fck:editor value="#{newsletter_mail.text}" id="textEditor" toolbarSet="Email" width="100%" height="200">
