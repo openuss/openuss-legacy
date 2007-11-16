@@ -57,6 +57,7 @@ public class CourseParticipantsPage extends AbstractCoursePage {
 			if (page == null) {
 				List<CourseMemberInfo> participants = courseService.getParticipants(courseInfo);
 				page = new DataPage<CourseMemberInfo>(participants.size(), 0, participants);
+				sort(participants);
 			}
 			return page;
 		}

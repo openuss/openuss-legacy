@@ -77,6 +77,7 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 			if (page == null) {
 				List<PostInfo> al = discussionService.getPosts(topic);
 				setSessionBean(Constants.DISCUSSION_THREADLENGTH, al.size());
+				sort(al);
 				page = new DataPage<PostInfo>(al.size(),0,al);
 			}
 			return page;

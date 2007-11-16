@@ -55,6 +55,7 @@ public class NewsletterSubscribersPage extends AbstractNewsletterPage{
 		@Override 
 		public DataPage<SubscriberInfo> getDataPage(int startRow, int pageSize) {		
 			List<SubscriberInfo> al = courseNewsletterService.getSubscribers(courseInfo);			
+			sort(al);
 			page = new DataPage<SubscriberInfo>(al.size(),0,al);
 			return page;
 		}

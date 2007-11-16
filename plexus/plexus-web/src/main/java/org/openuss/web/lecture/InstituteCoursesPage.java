@@ -386,9 +386,9 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 				} else {
 					logger.error("institute page - no period selected!");
 				}
-				sort(courses);
 				page = new DataPage<CourseInfo>(courses.size(), 0, courses);
 			}
+			sort(courses);
 			return page;
 		}
 	}
