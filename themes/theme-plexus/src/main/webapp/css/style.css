@@ -275,7 +275,9 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 	height: 21px;
 	margin: 5px 0 0 0;
 	padding: 0;
-	background: transparent url(../img/button_80_normal.png) 0px 0px no-repeat;
+	background-position: left top;
+	background-image: url(../img/button_80_normal2.png);
+	background-repeat: no-repeat;
 	border: 0;
 	font-color: #313131;
 	font-size: 8pt;
@@ -288,7 +290,7 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 }
 
 #left input.button:hover {
-	background: transparent url(../img/button_80_hover.png) 0px 0px no-repeat;
+	background-position: top right;
 }
 
 #left .content_box ul.int {
@@ -1442,25 +1444,9 @@ td input.button,.button_unlink,.button_link,.button_remove,.button_move,.button_
 	height: 17px;
 	margin: 2px 5px 2px 0;
 	padding: 0;
-	background: transparent url(../img/button_70_normal.png) 0px 0px no-repeat;
-	border: 0;
-	font-color: #313131;
-	font-size: 7pt;
-	text-decoration: none;
-	font-weight: normal;
-	overflow: hidden;
-	cursor: pointer;
-	cursor: hand;
-	outline-style: none;
-	filter: DropShadow(color =   #FFF, offx =   1, offy =   1)
-}
-
-td .remove_shortcut_button {
-	width: 121px;
-	height: 17px;
-	margin: 2px 5px 2px 0;
-	padding: 0;
-	background: transparent url(../img/button_120_normal_remove.png) 0px 0px no-repeat;
+	background-position: left top;
+	background-image: url(../img/button_70_normal2.png);
+	background-repeat: no-repeat;
 	border: 0;
 	font-color: #313131;
 	font-size: 7pt;
@@ -1475,13 +1461,31 @@ td .remove_shortcut_button {
 
 td input.button:hover,.button_unlink:hover,.button_link:hover,.button_remove:hover,.button_edit:hover,.button_remove:hover,.button_profile:hover
 	{
-	background: transparent url(../img/button_70_hover.png) 0px 0px
-		no-repeat;
+	background-position: top right;
+}
+
+td .remove_shortcut_button {
+	width: 121px;
+	height: 17px;
+	margin: 2px 5px 2px 0;
+	padding: 0;
+	background-position: left top;
+	background-image: url(../img/button_120_normal_remove2.png);
+	background-repeat: no-repeat;
+	border: 0;
+	font-color: #313131;
+	font-size: 7pt;
+	text-decoration: none;
+	font-weight: normal;
+	overflow: hidden;
+	cursor: pointer;
+	cursor: hand;
+	outline-style: none;
+	filter: DropShadow(color =   #FFF, offx =   1, offy =   1)
 }
 
 td .remove_shortcut_button:hover {
-	background: transparent url(../img/button_120_hover_remove.png) 0px 0px
-		no-repeat;
+	background-position: top right;
 }
 
 .button_save,.button_send,.button_cancel,.button_back,.button_continue {
@@ -1489,7 +1493,9 @@ td .remove_shortcut_button:hover {
 	height: 23px;
 	margin-left: 10px;
 	padding: 0;
-	background: transparent url(../img/button_120_normal.png) 0px 0px no-repeat;
+	background-position: left top;
+	background-image: url(../img/button_120_normal2.png);
+	background-repeat: no-repeat;
 	border: 0;
 	font-color: #313131;
 	font-size: 8pt;
@@ -1502,7 +1508,7 @@ td .remove_shortcut_button:hover {
 }
 
 .button_save:hover,.button_send:hover,.button_cancel:hover,.button_back:hover,.button_continue:hover {
-	background: transparent url(../img/button_120_hover.png) 0px 0px no-repeat;
+	background-position: top right;
 }
 
 .button_warning {
@@ -1510,7 +1516,9 @@ td .remove_shortcut_button:hover {
 	height: 23px;
 	margin-left: 10px;
 	padding: 0;
-	background: transparent url(../img/button_120_red.png) 0px 0px no-repeat;
+	background-position: left top;
+	background-image: url(../img/button_120_red2.png);
+	background-repeat: no-repeat;
 	border: 0;
 	font-color: #313131;
 	font-size: 8pt;
@@ -1523,7 +1531,7 @@ td .remove_shortcut_button:hover {
 }
 
 .button_warning:hover {
-	background: transparent url(../img/button_120_hover_red.png) 0px 0px no-repeat;
+	background-position: top right;
 }
 
 .button,.button_add,.button_login {
@@ -1532,7 +1540,9 @@ td .remove_shortcut_button:hover {
 	height: 23px;
 	margin-right: 10px;
 	padding: 0;
-	background: transparent url(../img/button_140_normal.png) 0px 0px no-repeat;
+	background-position: left top;
+	background-image: url(../img/button_140_normal2.png);
+	background-repeat: no-repeat;
 	border: 0;
 	font-color: #313131;
 	font-size: 8pt;
@@ -1545,7 +1555,7 @@ td .remove_shortcut_button:hover {
 }
 
 .button:hover,.button_add:hover,.button_login:hover {
-	background: transparent url(../img/button_140_hover.png) 0px 0px no-repeat;
+	background-position: top right;
 }
 
 .button_big {
@@ -1554,7 +1564,9 @@ td .remove_shortcut_button:hover {
 	height: 23px;
 	margin-left: 10px;
 	padding: 0;
-	background: transparent url(../img/button_180_normal.png) 0px 0px no-repeat;
+	background-position: left top;
+	background-image: url(../img/button_180_normal2.png);
+	background-repeat: no-repeat;
 	border: 0;
 	font-color: #313131;
 	font-size: 8pt;
@@ -1567,8 +1579,7 @@ td .remove_shortcut_button:hover {
 }
 
 .button_big:hover {
-	background: transparent url(../img/button_180_hover.png) 0px 0px
-		no-repeat;
+	background-position: top right;
 }
 
 table {
