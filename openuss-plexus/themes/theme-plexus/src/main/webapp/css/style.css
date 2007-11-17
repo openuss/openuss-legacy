@@ -444,7 +444,8 @@ ul.navigation li ul li.nav_item a {
 	text-decoration: none;
 	font-weight: bold;
 	color: #4C4C4C;
-	background-image: url(../img/e_menu2_nav.jpg);
+	background-position: left top;
+	background-image: url(../img/e_menu2_nav3.jpg);
 	background-repeat: no-repeat;
 	border-style: none none solid none;
 	border-width: 0 0 1px 0;
@@ -452,7 +453,7 @@ ul.navigation li ul li.nav_item a {
 }
 
 ul.navigation li ul li.nav_item a:hover {
-	background-image: url(../img/e_menu2_nav_hover.jpg);
+	background-position: top right;
 }
 
 ul.navigation li ul li.open_item a {
@@ -465,7 +466,8 @@ ul.navigation li ul li.open_item a {
 	text-decoration: none;
 	font-weight: bold;
 	color: #4C4C4C;
-	background-image: url(../img/e_menu2_open.jpg);
+	background-position: left top;
+	background-image: url(../img/e_menu2_open3.jpg);
 	background-repeat: no-repeat;
 	border-style: none none solid none;
 	border-width: 0 0 1px 0;
@@ -473,7 +475,7 @@ ul.navigation li ul li.open_item a {
 }
 
 ul.navigation li ul li.open_item a:hover {
-	background-image: url(../img/e_menu2_open_hover.jpg);
+	background-position: top right;
 }
 
 ul.navigation li ul li.active_item a {
@@ -486,7 +488,8 @@ ul.navigation li ul li.active_item a {
 	text-decoration: none;
 	font-weight: bold;
 	color: #4C4C4C;
-	background-image: url(../img/e_menu2_active.jpg);
+	background-position: left top;
+	background-image: url(../img/e_menu2_active3.jpg);
 	background-repeat: no-repeat;
 	border-style: none none solid none;
 	border-width: 0 0 1px 0;
@@ -494,7 +497,7 @@ ul.navigation li ul li.active_item a {
 }
 
 ul.navigation li ul li.active_item a:hover {
-	background-image: url(../img/e_menu2_active_hover.jpg);
+	background-position: top right;
 }
 
 ul.navigation li ul li ul li.nav_item a {
@@ -507,7 +510,8 @@ ul.navigation li ul li ul li.nav_item a {
 	text-decoration: none;
 	font-weight: bold;
 	color: #4C4C4C;
-	background-image: url(../img/e_menu3_nav.jpg);
+	background-position: left top;
+	background-image: url(../img/e_menu3_nav3.jpg);
 	background-repeat: no-repeat;
 	border-style: none none solid none;
 	border-width: 0 0 1px 0;
@@ -515,7 +519,7 @@ ul.navigation li ul li ul li.nav_item a {
 }
 
 ul.navigation li ul li ul li.nav_item a:hover {
-	background-image: url(../img/e_menu3_nav_hover.jpg);
+	background-position: top right;
 }
 
 ul.navigation li ul li ul li.open_item a {
@@ -528,7 +532,8 @@ ul.navigation li ul li ul li.open_item a {
 	text-decoration: none;
 	font-weight: bold;
 	color: #4C4C4C;
-	background-image: url(../img/e_menu3_open.jpg);
+	background-position: left top;
+	background-image: url(../img/e_menu3_open3.jpg);
 	background-repeat: no-repeat;
 	border-style: none none solid none;
 	border-width: 0 0 1px 0;
@@ -536,7 +541,7 @@ ul.navigation li ul li ul li.open_item a {
 }
 
 ul.navigation li ul li ul li.open_item a:hover {
-	background-image: url(../img/e_menu3_open_hover.jpg);
+	background-position: top right;
 }
 
 ul.navigation li ul li ul li.active_item a {
@@ -549,7 +554,8 @@ ul.navigation li ul li ul li.active_item a {
 	text-decoration: none;
 	font-weight: bold;
 	color: #4C4C4C;
-	background-image: url(../img/e_menu3_active.jpg);
+	background-position: left top;
+	background-image: url(../img/e_menu3_active3.jpg);
 	background-repeat: no-repeat;
 	border-style: none none solid none;
 	border-width: 0 0 1px 0;
@@ -557,7 +563,7 @@ ul.navigation li ul li ul li.active_item a {
 }
 
 ul.navigation li ul li ul li.active_item a:hover {
-	background-image: url(../img/e_menu3_active_hover.jpg);
+	background-position: top right;
 }
 
 .field_search {
