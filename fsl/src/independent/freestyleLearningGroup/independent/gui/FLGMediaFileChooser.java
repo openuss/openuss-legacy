@@ -11,7 +11,6 @@ import freestyleLearningGroup.independent.util.FLGInternationalization;
 
 /**
  * FLGMediaFileChooser.
- * Carsten Fiedler modified 21.08.2006
  */
 public class FLGMediaFileChooser extends JFileChooser {
     public static final int PICTURE = 0;
@@ -23,10 +22,8 @@ public class FLGMediaFileChooser extends JFileChooser {
     public static final int XML = 6;
     public static final int OPEN_OFFICE_STARWRITER = 7;
     private FLGInternationalization internationalization;
-    // Carsten Fiedler, 21.08.2006
     public static final int FOLDER = 8;
     
-    //  Carsten Fiedler, 21.08.2006
     public FLGMediaFileChooser(int mediaType) {
         internationalization = new FLGInternationalization("freestyleLearningGroup.independent.gui.internationalization",
             getClass().getClassLoader());
@@ -92,7 +89,6 @@ public class FLGMediaFileChooser extends JFileChooser {
         return fileExtension;
     }
 
-    // Carsten Fiedler, 21.08.2006
     class FolderFileFilter extends FileFilter {
        	public boolean accept(File f) {
           if (f.isDirectory()) return true;
@@ -118,14 +114,12 @@ public class FLGMediaFileChooser extends JFileChooser {
         }
     }
 
-
-    // Carsten Fiedler, 04.07.2007
     class VideoFileFilter extends FileFilter {
         public boolean accept(File f) {
             if (f.isDirectory()) return true;
             else {
                 String fileName = f.getName().toLowerCase();
-                return fileName.endsWith(".mov") || fileName.endsWith(".mpeg") || fileName.endsWith(".mpg");
+                return (fileName.endsWith(".mov") || fileName.endsWith(".mpeg") || fileName.endsWith(".mpg"));
             }
         }
 
