@@ -30,9 +30,12 @@ public class EmailSender extends SimpleJdbcDaoSupport implements InitializingBea
 	private static final String SQL_SELECT_EMAILS = "select ID, EMAIL, TEXT from USER_NOTIFICATION where SENDAT is null";
 	private static final String SQL_UPDATE_SEND = "update USER_NOTIFICATION set SENDAT = ? WHERE id = ?";
 	
-	private String mailHost;
-	private String mailUser;
-	private String mailPassword;
+	private String mailHost = "";
+	private String mailUser = "";
+	private String mailPassword = "";
+	
+	private String mailFrom = "";
+	private String mailTo = "";
 
 	public void sendNotifications() {
 		List<Notification> msgs = getSimpleJdbcTemplate().query(SQL_SELECT_EMAILS,
@@ -59,8 +62,8 @@ public class EmailSender extends SimpleJdbcDaoSupport implements InitializingBea
 					count = progress(count);
 					MimeMessage message = mailSender.createMimeMessage();
 					MimeMessageHelper helper = new MimeMessageHelper(message);
-					helper.setFrom("no-reply@openuss.uni-muenster.de");
-					helper.setTo("plexus@openuss-plexus.com");
+					helper.setFrom(mailFrom);
+					helper.setTo(mailTo);
 					helper.setSubject("Ihr Benutzerkonto bei OpenUSS 3.0 (With reference to your account at OpenUSS 3.0)");
 					helper.setText(notification.text, true);
 					Date sendat = new Date();
@@ -114,6 +117,14 @@ public class EmailSender extends SimpleJdbcDaoSupport implements InitializingBea
 
 	public void setMailPassword(String mailPassword) {
 		this.mailPassword = mailPassword;
+	}
+
+	public void setMailFrom(String mailFrom) {
+		this.mailFrom = mailFrom;
+	}
+
+	public void setMailTo(String mailTo) {
+		this.mailTo = mailTo;
 	}
 
 }
