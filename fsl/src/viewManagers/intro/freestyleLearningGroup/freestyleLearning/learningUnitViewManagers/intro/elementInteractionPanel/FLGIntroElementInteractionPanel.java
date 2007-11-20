@@ -59,7 +59,7 @@ public class FLGIntroElementInteractionPanel extends FSLAbstractLearningUnitView
             super.init(learningUnitViewManager, learningUnitEventGenerator, editMode);
             learningUnitViewManager.addLearningUnitViewListener(new FLGIntroElementInteractionPanel_LearningUnitViewAdapter());
             this.setFullScreenModeAllowed(true);
-            this.setScaleModeAllowed(false);
+            this.setScaleModeAllowed(true);
     }
 
     private void play() {

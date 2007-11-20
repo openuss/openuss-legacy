@@ -2,6 +2,8 @@
 
 package freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.intro.statusPanel;
 
+import java.text.DecimalFormat;
+
 import freestyleLearning.learningUnitViewAPI.FSLLearningUnitViewManager;
 import freestyleLearning.learningUnitViewAPI.events.learningUnitEvent.FSLLearningUnitEventGenerator;
 import freestyleLearning.learningUnitViewAPI.events.learningUnitViewEvent.FSLLearningUnitViewAdapter;
@@ -15,6 +17,8 @@ public class FLGIntroStatusPanel extends FSLAbstractLearningUnitViewStatusPanel 
     private FLGInternationalization internationalization;
     private int actualPlayingTime = 0;
     private int maximumPlayingTime = 0;
+    private DecimalFormat minuteFormat = new DecimalFormat("00");
+    private DecimalFormat secondsFormat = new DecimalFormat("':'00");
 
     public FLGIntroStatusPanel() {
         internationalization = new FLGInternationalization("freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.intro.statusPanel.internationalization",
@@ -37,11 +41,17 @@ public class FLGIntroStatusPanel extends FSLAbstractLearningUnitViewStatusPanel 
 
     class FLGIntroStatusPanel_LearningUnitViewAdapter extends FSLLearningUnitViewAdapter {
         public void learningUnitViewSpecificEventOccurred(FSLLearningUnitViewEvent e) {
-            FLGIntroViewEvent introViewEvent = (FLGIntroViewEvent)e;
-            if (introViewEvent.getEventSpecificType() == FLGIntroViewEvent.INTRO_VIDEO_PLAYING_TIME_PROGRESS) {
-                setText(internationalization.getString("text.playing") + " " + introViewEvent.actualVideoPlayingTime + "/" +
-                    introViewEvent.maximumVideoPlayingTime + " " + internationalization.getString("text.seconds"));
-            }
+        	FLGIntroViewEvent introViewEvent = (FLGIntroViewEvent)e;
+        	if (introViewEvent.getEventSpecificType() == FLGIntroViewEvent.INTRO_VIDEO_PLAYING_TIME_PROGRESS) {
+	            int maxMin = (int)(introViewEvent.maximumVideoPlayingTime / 60);
+	            int maxSeconds = (int)(introViewEvent.maximumVideoPlayingTime % 60);
+	            int actualMin = (int)((introViewEvent.actualVideoPlayingTime+1) / 60);
+	            int actualSeconds = (int)((introViewEvent.actualVideoPlayingTime+1) % 60);
+	            setText(internationalization.getString("text.playing") + " "
+	            		+ minuteFormat.format(actualMin) + secondsFormat.format(actualSeconds)
+	            		+ " / " + minuteFormat.format(maxMin) + secondsFormat.format(maxSeconds));
+        	}
+            
             if (introViewEvent.getEventSpecificType() == FLGIntroViewEvent.INTRO_END_OF_VIDEO_REACHED) {
                 setText(internationalization.getString("text.hint"));
             }

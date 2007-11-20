@@ -91,10 +91,12 @@ public class FLGIntroVideoElementContentPanel extends FSLAbstractLearningUnitVie
 
     private void play() {
         Thread timeSetter;
-        removeAll();
-        createPlayer();
-        add(videoPlayer);
-        int actualPlayingTime;
+        if(!paused) {
+	        removeAll();
+	        createPlayer();
+	        add(videoPlayer);
+        }
+        //int actualPlayingTime;
         videoPlayer.start();
         timeSetter = new Thread() {
             public void run() {
@@ -106,8 +108,7 @@ public class FLGIntroVideoElementContentPanel extends FSLAbstractLearningUnitVie
                                 FSLLearningUnitViewEvent introViewEvent =
                                     FLGIntroViewEvent.createViewSpecificEvent(FLGIntroViewEvent.INTRO_VIDEO_PLAYING_TIME_PROGRESS);
                                 ((FLGIntroViewEvent)introViewEvent).actualVideoPlayingTime = time;
-                                ((FLGIntroViewEvent)introViewEvent).maximumVideoPlayingTime =
-                                    videoPlayer.getMaximumPlayingTime();
+                                ((FLGIntroViewEvent)introViewEvent).maximumVideoPlayingTime = videoPlayer.getMaximumPlayingTime();
                                 learningUnitViewManager.fireLearningUnitViewEvent(introViewEvent);
                             }
                         });
@@ -154,13 +155,13 @@ public class FLGIntroVideoElementContentPanel extends FSLAbstractLearningUnitVie
             int introViewEventType = introViewEvent.getEventSpecificType();
             if (videoPlayer != null) {
                 if (introViewEventType == FLGIntroViewEvent.INTRO_PLAY_BUTTON_PRESSED) {
-                    if (paused) {
-                        paused = false;
-                        videoPlayer.start();
-                    }
-                    else {
+ //                    if (paused) {
+//                        paused = false;
+//                        videoPlayer.start();
+//                    }
+//                    else {
                         play();
-                    }
+                    //}
                 }
                 else if (introViewEventType == FLGIntroViewEvent.INTRO_PAUSE_BUTTON_PRESSED) {
                     paused = true;
@@ -174,6 +175,7 @@ public class FLGIntroVideoElementContentPanel extends FSLAbstractLearningUnitVie
                             }
                         }).start();
                     clearPanel();
+                    paused = false;
                 }
                 else if (introViewEventType == FLGIntroViewEvent.INTRO_END_OF_VIDEO_REACHED) {
                     (
@@ -183,6 +185,7 @@ public class FLGIntroVideoElementContentPanel extends FSLAbstractLearningUnitVie
                             }
                         }).start();
                     clearPanel();
+                    paused = false;
                 }
             }
         }
