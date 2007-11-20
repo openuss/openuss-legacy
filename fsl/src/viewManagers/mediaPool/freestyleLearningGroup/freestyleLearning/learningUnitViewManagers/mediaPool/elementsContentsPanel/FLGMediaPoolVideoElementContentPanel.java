@@ -40,13 +40,23 @@ public class FLGMediaPoolVideoElementContentPanel extends FLGMediaPoolPlayableMe
             int mediaPoolViewEventType = ((FLGMediaPoolViewEvent)e).getEventSpecificType();
             switch (mediaPoolViewEventType) {
                 case FLGMediaPoolViewEvent.MEDIA_PLAY_BUTTON_PRESSED: {
-                    stop();
-                    //removeAll();
-                    add(player, BorderLayout.CENTER);
-                    FLGMediaPoolElement element = (FLGMediaPoolElement)learningUnitViewManager.getLearningUnitViewElementsManager().getLearningUnitViewElement(activeLearningUnitViewElementId, false);
-                    if (element.getType().equals(FLGMediaPoolElement.FILE_TYPE_VIDEO)) {
-                        loadMediaToCurrentElement();
-                        play();
+                    if(paused) {
+                    	// resume playing
+                    	play();
+                    } else if(!isPlaying) {
+                    	// load new video and reset panel
+	                    FLGMediaPoolElement element = (FLGMediaPoolElement)learningUnitViewManager.getLearningUnitViewElementsManager().getLearningUnitViewElement(
+	                    		activeLearningUnitViewElementId, false);
+	                    if (element!= null) {
+		                    if (element.getType().equals(FLGMediaPoolElement.FILE_TYPE_VIDEO)) {
+		                    	stop();
+			                    removeAll();
+			                    add(player, BorderLayout.CENTER);
+		                        loadMediaToCurrentElement();
+		                        currentPlayedElementId = element.getId();
+		                        play();
+		                    }
+	                    }
                     }
                     break;
                 }

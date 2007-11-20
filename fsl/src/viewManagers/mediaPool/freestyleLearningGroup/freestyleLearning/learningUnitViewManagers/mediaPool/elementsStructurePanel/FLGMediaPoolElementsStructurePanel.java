@@ -193,7 +193,7 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
         }
         
         public String verifyInput(FSLLearningUnitViewElement editedLearningUnitViewElement,
-        FSLLearningUnitViewElement referenceLearningUnitViewElement, boolean asFolder, int insertPosition) {
+        		FSLLearningUnitViewElement referenceLearningUnitViewElement, boolean asFolder, int insertPosition) {
             if (!asFolder) {
                 File fileToVerify = new File(fileSelectTextField.getText());
                 if (fileToVerify.exists()) return null;

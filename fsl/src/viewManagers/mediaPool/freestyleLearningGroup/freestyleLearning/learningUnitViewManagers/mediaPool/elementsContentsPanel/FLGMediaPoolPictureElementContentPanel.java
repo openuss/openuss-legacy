@@ -21,7 +21,7 @@ import freestyleLearningGroup.independent.gui.*;
  * Manager class for Media Pool Picture Panel.
  * @author Freestyle Learning Group
  */
-public class FLGMediaPoolPictureElementContentPanel extends FSLAbstractLearningUnitViewElementContentPanel {
+public class FLGMediaPoolPictureElementContentPanel extends FLGMediaPoolAbstractElementContentPanel {
     private FLGImageComponent imageComponent;
     private FSLLearningUnitViewManager learningUnitViewManager;
     private String lastLoadedLearningUnitViewElementId;
@@ -51,21 +51,12 @@ public class FLGMediaPoolPictureElementContentPanel extends FSLAbstractLearningU
     }
     
     /**
-     * Returns edit tool bar components.
-     * Media Pool does not implement tool bar.
-     * @return JComponent[] components
-     */
-    protected JComponent[] getEditToolBarComponents() {
-        return null;
-    }
-    
-    /**
      * Builds independent UI.
-     */
+     *
     protected void buildIndependentUI() {
         setOpaque(true);
         setBackground((Color)UIManager.get("FSLMainFrameColor1"));
-    }
+    }*/
     
     /**
      * Returns, if panel is modified by user.
@@ -89,17 +80,27 @@ public class FLGMediaPoolPictureElementContentPanel extends FSLAbstractLearningU
      * @param boolean reloadIfAlreadyLoaded
      */
     protected void buildDependentUI(boolean reloadIfAlreadyLoaded) {
+    	FLGMediaPoolElement element = null;
         if (learningUnitViewManager.getActiveLearningUnitViewElementId() != null) {
-            FLGMediaPoolElement element = (FLGMediaPoolElement) learningUnitViewElementsManager.getLearningUnitViewElement(learningUnitViewManager.getActiveLearningUnitViewElementId(),false);
+            element = (FLGMediaPoolElement) learningUnitViewElementsManager.getLearningUnitViewElement(learningUnitViewManager.getActiveLearningUnitViewElementId(),false);
             if (element != null && element.hasScaleToFit()) {
                 element.setScaleToFit(element.getScaleToFit());
             }
+            createImage();
+            layoutImage();
+        } else {
+            removeAll();
+            repaint();
         }
-        createImage();
-        layoutImage();
+
+        if(element != null) {
+        	if(element.getBackgroundColor()!= null) {
+            	setBackground(new Color(Integer.valueOf(element.getBackgroundColor())));
+        	}
+        }
     }
-    
-    private void createImage() {
+
+    protected void createImage() {
         FLGUIUtilities.startLongLastingOperation();
         if (scaleToFit) {
             imageComponent = new FLGImageComponent(true);
@@ -125,7 +126,7 @@ public class FLGMediaPoolPictureElementContentPanel extends FSLAbstractLearningU
         FLGUIUtilities.stopLongLastingOperation();
     }
     
-    private void layoutImage() {
+    protected void layoutImage() {
         removeAll();
         if (imageComponent != null) {
             if (scaleToFit) {

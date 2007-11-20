@@ -99,10 +99,7 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
         });
     }
     
-    private void setElementsColor(Color selectedColor) {
-    	
-    	System.out.println("selectedColor: " + Integer.toString(selectedColor.getRGB()));
-    	
+    protected void setElementsColor(Color selectedColor) {
     	// get all media pool elements and add color
     	String[] topLevelIds = learningUnitViewElementsManager.getTopLevelLearningUnitViewElementsIds();
     	// set color
@@ -213,11 +210,8 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
         if (learningUnitViewElementsManager != null) {
             FLGMediaPoolElement mediaPoolElement = (FLGMediaPoolElement)learningUnitViewElementsManager.getLearningUnitViewElement(learningUnitViewElementId, false);
             if (mediaPoolElement != null && mediaPoolElement.getAdditionalFileName() != null) {
-                
-
-            	createImage();
+              	createImage();
                 layoutImage();
-                
             } else {
                 removeAll();
                 repaint();
@@ -225,10 +219,8 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
             if(mediaPoolElement != null) {
             	if(mediaPoolElement.getBackgroundColor()!= null) {
             		setBackground(new Color(Integer.valueOf(mediaPoolElement.getBackgroundColor())));
-            	}
-      
+            	} 
             }
-            
         }
     }
     
@@ -341,7 +333,9 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
      */
     protected JComponent[] getEditToolBarComponents() {
         return editToolBarComponents;
-    }    
+    }  
+    
+    
 
     /** 
      * Check if file extension matches filter array.
@@ -363,9 +357,10 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
      * Accepted extensions include
      *  - .gif
      *  - .jpg
+     *  - .png
      */
     class FLGMediaPoolImageFileFilter extends javax.swing.filechooser.FileFilter {
-        private String[] pictureExtensions = { ".gif", ".jpg" };
+        private String[] pictureExtensions = { ".gif", ".jpg", ".png" };
         public boolean accept(File file) {
             if (file.isDirectory()) return true;
             if (file.getName().lastIndexOf('.') > 0) {

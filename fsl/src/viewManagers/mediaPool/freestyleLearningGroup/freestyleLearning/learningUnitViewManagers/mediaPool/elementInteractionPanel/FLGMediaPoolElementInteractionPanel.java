@@ -38,7 +38,8 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
     private FSLLearningUnitViewElementInteractionButton pageScalePage100Button;
     private FSLLearningUnitViewElementInteractionButton nextPageButton;
     private FSLLearningUnitViewElementInteractionButton prevPageButton;
-    private boolean playing;
+    private boolean playing = false;
+    private boolean paused = false;
     private FLGInternationalization internationalization;
     private String activatedLearningUnitViewElementId;
     
@@ -193,7 +194,7 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
     }
     
     private void play() {
-        if (playing) {
+        if (playing && !paused) {
             stop();
         }
         FLGMediaPoolElement mediaPoolElement = (FLGMediaPoolElement)learningUnitViewElementsManager.getLearningUnitViewElement(activatedLearningUnitViewElementId, false);
@@ -202,8 +203,7 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
             FSLLearningUnitViewEvent mediaPoolViewEvent = FLGMediaPoolViewEvent.createViewSpecificEvent(FLGMediaPoolViewEvent.MEDIA_PLAY_BUTTON_PRESSED, 
             		learningUnitViewManager.getActiveLearningUnitViewElementId());
             learningUnitViewManager.fireLearningUnitViewEvent(mediaPoolViewEvent);
-        }
-        else {
+        } else {
             // start application
             String executableFileName = mediaPoolElement.getMediaFileName();
             File executableFile = learningUnitViewElementsManager.resolveRelativeFileName(executableFileName, mediaPoolElement);
@@ -214,8 +214,7 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
     }
     
     private void pause() {
-        pauseButton.setEnabled(false);
-        playButton.setEnabled(true);
+    	paused = true;
         FSLLearningUnitViewEvent mediaPoolViewEvent = FLGMediaPoolViewEvent.createViewSpecificEvent(
             FLGMediaPoolViewEvent.MEDIA_PAUSE_BUTTON_PRESSED, learningUnitViewManager.getActiveLearningUnitViewElementId());
         learningUnitViewManager.fireLearningUnitViewEvent(mediaPoolViewEvent);
@@ -229,6 +228,7 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
         FSLLearningUnitViewEvent mediaPoolViewEvent = FLGMediaPoolViewEvent.createViewSpecificEvent(
             FLGMediaPoolViewEvent.MEDIA_STOP_BUTTON_PRESSED, learningUnitViewManager.getActiveLearningUnitViewElementId());
         learningUnitViewManager.fireLearningUnitViewEvent(mediaPoolViewEvent);
+        paused = false;
     }
     
     private void rebuildButtonStatus(FSLLearningUnitViewElement learningUnitViewElement, boolean isFullScreenModeChanged) {
@@ -240,26 +240,27 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
             playButton.setToolTipText(internationalization.getString("button.tooltip.play"));
             add(playButton);
             add(stopButton);
+            add(pauseButton);
             if (!isFullScreenModeChanged) {
                 playButton.setEnabled(true);
                 stopButton.setEnabled(playing);
+                pauseButton.setEnabled(playing);
             }
             return;
         } else if (learningUnitViewElement.getType().equals("picture")) {
             setScaleModeAllowed(true);
             setSplitModeAllowed(true);
             setFullScreenModeAllowed(true);
-            stopButton.setEnabled(playing);
-            add(stopButton);
             buildDependentUI();
             stopButton.setEnabled(playing);
             add(stopButton);
+            pauseButton.setEnabled(playing);
+            //add(pauseButton);
             return;
         } else if (learningUnitViewElement.getType().equals("pdf")) {
             setFullScreenModeAllowed(false);
             setSplitModeAllowed(false);
             setScaleModeAllowed(false);
-
             add(playButton);
             addSeparator();
             add(prevPageButton);
@@ -273,6 +274,18 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
             buildDependentUI();
             stopButton.setEnabled(playing);
             add(stopButton);
+            pauseButton.setEnabled(playing);
+            //add(pauseButton);
+            return;
+        } else if (learningUnitViewElement.getFolder()) {
+            setScaleModeAllowed(false);
+            setSplitModeAllowed(false);
+            setFullScreenModeAllowed(false);
+            buildDependentUI();
+            stopButton.setEnabled(playing);
+            add(stopButton);
+            pauseButton.setEnabled(playing);
+            //add(pauseButton);
             return;
         }
         setFullScreenModeAllowed(false);
@@ -282,9 +295,6 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
         addSeparator();
         playButton.setToolTipText(internationalization.getString("button.tooltip.execute"));
         add(playButton);
-        
-    	
-
     }
     
     /**
@@ -303,7 +313,7 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
     
     class FLGMediaPoolElementInteractionPanel_Adapter extends FSLLearningUnitViewAdapter {
         public void learningUnitViewDeactivated(FSLLearningUnitViewEvent event) {
-//            stop();
+        	stop();
         }
         
         public void learningUnitViewSpecificEventOccurred(FSLLearningUnitViewEvent e) {
@@ -319,6 +329,11 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
                 playButton.setEnabled(true);
                 pauseButton.setEnabled(false);
                 stopButton.setEnabled(false);
+            }
+            if (mediaPoolViewEventType == FLGMediaPoolViewEvent.MEDIA_PAUSE_BUTTON_PRESSED) {
+                playing = false;
+                playButton.setEnabled(true);
+                pauseButton.setEnabled(false);
             }
         }
         
@@ -348,7 +363,7 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
             activatedLearningUnitViewElementId = event.getActiveLearningUnitViewElementId();
             FLGMediaPoolElement learningUnitViewElement = (FLGMediaPoolElement)learningUnitViewElementsManager.getLearningUnitViewElement(event.getActiveLearningUnitViewElementId(), false);
             if (event.getLearningUnitViewManagerId().equals(learningUnitViewManager.getLearningUnitViewManagerId())) {
-                if (learningUnitViewElement != null && !learningUnitViewElement.getFolder()) {
+                if (learningUnitViewElement != null) {
                     rebuildButtonStatus(learningUnitViewElement, event.isFullScreenModeChanged());
                 }
             }

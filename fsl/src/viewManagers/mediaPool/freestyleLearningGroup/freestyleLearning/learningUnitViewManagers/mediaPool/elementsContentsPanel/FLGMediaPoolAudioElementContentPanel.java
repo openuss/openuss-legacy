@@ -29,11 +29,25 @@ public class FLGMediaPoolAudioElementContentPanel extends FLGMediaPoolPlayableMe
             int mediaPoolViewEventType = ((FLGMediaPoolViewEvent)e).getEventSpecificType();
             switch (mediaPoolViewEventType) {
                 case FLGMediaPoolViewEvent.MEDIA_PLAY_BUTTON_PRESSED: {
-                    stop();
-                    FLGMediaPoolElement element = (FLGMediaPoolElement)learningUnitViewManager.getLearningUnitViewElementsManager().getLearningUnitViewElement(activeLearningUnitViewElementId, false);
-                    if (element.getType().equals(FLGMediaPoolElement.FILE_TYPE_AUDIO)) {
-                        loadMediaToCurrentElement();
-                        play();
+                    if(paused) {
+                    	if(lastLoadedLearningUnitViewElementId != null && learningUnitViewElementId!= null) {
+	                    	if(lastLoadedLearningUnitViewElementId == learningUnitViewElementId) {
+		                    	// resume playing
+		                    	play();
+	                    	} else {
+	                    		stop();
+	                    	}
+                    	}
+                    } else if(!isPlaying) {
+	                    FLGMediaPoolElement element = (FLGMediaPoolElement)learningUnitViewManager.getLearningUnitViewElementsManager().getLearningUnitViewElement(activeLearningUnitViewElementId, false);
+		                if (element != null) {
+		                	if (element.getType().equals(FLGMediaPoolElement.FILE_TYPE_AUDIO)) {
+		                    	  stop();
+		                        loadMediaToCurrentElement();
+		                        currentPlayedElementId = element.getId();
+		                        play();
+		                    }
+                    	}
                     }
                     break;
                 }
