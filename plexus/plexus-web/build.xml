@@ -1,7 +1,6 @@
 <project name="openuss :: plexus :: web :: build" default="install (offline)" basedir=".">
-	
 	<condition property="maven.executable" value="mvn.bat" else="mvn"><os family="windows" /></condition>
-
+	
 	<target name="clover-view">
 		<java fork="true" classname="com.cenqua.clover.reporters.jfc.Viewer">
 			<arg line="-i target/clover/clover.db"/>
