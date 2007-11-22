@@ -122,7 +122,7 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
      * @return <code>Color</color> background color
      */
      protected Color showColorChooserDialog() {
-    	 bgColorForAllElements = true;
+    	 bgColorForAllElements = false;
     	 JPanel dialogPanel = new JPanel();
     	 dialogPanel.setLayout(new FLGColumnLayout());
     	 dialogPanel.setOpaque(false);
@@ -185,7 +185,7 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
         dialogInnerPanel.add(resetButton);
             
         dialogPanel.add(dialogInnerPanel, FLGColumnLayout.LEFTEND);
-        dialogPanel.add(checkBox_toggleBGColorOptions, FLGColumnLayout.LEFTEND);
+        //dialogPanel.add(checkBox_toggleBGColorOptions, FLGColumnLayout.LEFTEND);
 
         FLGOptionPane colorChooserDialog = new FLGOptionPane(null, dialogPanel, 
             internationalization.getString("dialog.colorChooser.title"), 
@@ -219,7 +219,10 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
             if(mediaPoolElement != null) {
             	if(mediaPoolElement.getBackgroundColor()!= null) {
             		setBackground(new Color(Integer.valueOf(mediaPoolElement.getBackgroundColor())));
-            	} 
+            	} else {
+            		// default background color
+            		setBackground((Color)UIManager.get("FSLMainFrameColor1"));
+            	}
             }
         }
     }
