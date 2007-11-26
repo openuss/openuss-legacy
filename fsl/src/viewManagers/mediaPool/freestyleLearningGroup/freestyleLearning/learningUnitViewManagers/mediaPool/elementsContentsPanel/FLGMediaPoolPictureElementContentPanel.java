@@ -83,20 +83,23 @@ public class FLGMediaPoolPictureElementContentPanel extends FLGMediaPoolAbstract
     	FLGMediaPoolElement element = null;
         if (learningUnitViewManager.getActiveLearningUnitViewElementId() != null) {
             element = (FLGMediaPoolElement) learningUnitViewElementsManager.getLearningUnitViewElement(learningUnitViewManager.getActiveLearningUnitViewElementId(),false);
-            if (element != null && element.hasScaleToFit()) {
-                element.setScaleToFit(element.getScaleToFit());
-            }
-            createImage();
-            layoutImage();
+            if (element != null) {
+            	if (element.hasScaleToFit()) {
+            		element.setScaleToFit(element.getScaleToFit());
+            	}
+            	if(element.getBackgroundColor() != null) {
+            		setBackground(new Color(Integer.valueOf(element.getBackgroundColor())));
+            	} else {
+            		setBackground((Color)UIManager.get("FSLMainFrameColor1"));
+            	}
+            	createImage();
+            	layoutImage();
+        	}
         } else {
+        	// no content
             removeAll();
             repaint();
-        }
-
-        if(element != null) {
-        	if(element.getBackgroundColor()!= null) {
-            	setBackground(new Color(Integer.valueOf(element.getBackgroundColor())));
-        	}
+            setBackground((Color)UIManager.get("FSLMainFrameColor1"));
         }
     }
 
@@ -137,7 +140,7 @@ public class FLGMediaPoolPictureElementContentPanel extends FLGMediaPoolAbstract
                 imageComponent.setBorder(BorderFactory.createEmptyBorder());
                 picturePanel = new JPanel(
                 new FLGSingleLayout(FLGSingleLayout.CENTER, FLGSingleLayout.CENTER, FLGSingleLayout.SHRINK_AS_NEEDED,
-                FLGSingleLayout.SHRINK_AS_NEEDED, true));
+                		FLGSingleLayout.SHRINK_AS_NEEDED, true));
                 picturePanel.setOpaque(true);
                 picturePanel.setBackground((Color)UIManager.get("FSLMainFrameColor1"));
                 picturePanel.setBorder(BorderFactory.createEmptyBorder());

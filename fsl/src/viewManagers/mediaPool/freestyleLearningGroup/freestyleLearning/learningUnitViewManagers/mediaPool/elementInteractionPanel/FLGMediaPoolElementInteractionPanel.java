@@ -357,9 +357,6 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
             if (element != null && element.hasScaleToFit()) {
                 setScaleToFit(element.getScaleToFit());
             }
-            if (!event.getActiveLearningUnitViewElementId().equals(activatedLearningUnitViewElementId)) {
-//                stop();
-            }
             activatedLearningUnitViewElementId = event.getActiveLearningUnitViewElementId();
             FLGMediaPoolElement learningUnitViewElement = (FLGMediaPoolElement)learningUnitViewElementsManager.getLearningUnitViewElement(event.getActiveLearningUnitViewElementId(), false);
             if (event.getLearningUnitViewManagerId().equals(learningUnitViewManager.getLearningUnitViewManagerId())) {

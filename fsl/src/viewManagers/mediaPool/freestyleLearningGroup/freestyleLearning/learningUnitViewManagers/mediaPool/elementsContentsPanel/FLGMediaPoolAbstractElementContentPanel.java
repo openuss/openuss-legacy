@@ -171,6 +171,7 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
                 bgColorForAllElements = checkBox_toggleBGColorOptions.isSelected();
             }
         });
+        checkBox_toggleBGColorOptions.setSelected(false);
         final JButton resetButton = new JButton(internationalization.getString("button.resetBackground.label"));
         resetButton.addActionListener(
             new ActionListener() {
@@ -207,22 +208,34 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
      * Implementation for showing additional image files.
      */
     protected void buildDependentUI(boolean reloadIfAlreadyLoaded) {
-        if (learningUnitViewElementsManager != null) {
-            FLGMediaPoolElement mediaPoolElement = (FLGMediaPoolElement)learningUnitViewElementsManager.getLearningUnitViewElement(learningUnitViewElementId, false);
-            if (mediaPoolElement != null && mediaPoolElement.getAdditionalFileName() != null) {
-              	createImage();
-                layoutImage();
-            } else {
-                removeAll();
-                repaint();
-            }
-            if(mediaPoolElement != null) {
-            	if(mediaPoolElement.getBackgroundColor()!= null) {
+    	if (learningUnitViewElementsManager != null) {
+            
+    		FLGMediaPoolElement mediaPoolElement = (FLGMediaPoolElement)learningUnitViewElementsManager.getLearningUnitViewElement(learningUnitViewElementId, false);
+            
+            if (mediaPoolElement != null) {
+            	
+            	
+            	if (mediaPoolElement.getAdditionalFileName() != null) {
+	            	// element with content
+	              	createImage();
+	                layoutImage();
+            	} else {
+            		// no content
+                    removeAll();
+              		repaint();
+            	}
+            
+            	if(mediaPoolElement.getBackgroundColor() != null) {
             		setBackground(new Color(Integer.valueOf(mediaPoolElement.getBackgroundColor())));
             	} else {
             		// default background color
             		setBackground((Color)UIManager.get("FSLMainFrameColor1"));
             	}
+            } else {
+            	// no content
+                removeAll();
+          		repaint();
+          		setBackground((Color)UIManager.get("FSLMainFrameColor1"));
             }
         }
     }
@@ -233,7 +246,7 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
         if (learningUnitViewElementsManager != null) {
             FLGMediaPoolElement mediaPoolElement = (FLGMediaPoolElement)learningUnitViewElementsManager.getLearningUnitViewElement(learningUnitViewElementId, false);
             if (mediaPoolElement != null) {
-                File imageFile = learningUnitViewElementsManager.resolveRelativeFileName(mediaPoolElement.getAdditionalFileName(), mediaPoolElement);
+                File imageFile = learningUnitViewElementsManager.resolveRelativeFileName(mediaPoolElement.getMediaFileName(), mediaPoolElement);
                 try {
                     Image image = FLGImageUtility.loadImageAndWait(imageFile.toURL());
                     imageComponent.setImage(image);
@@ -397,6 +410,7 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
         
         public void learningUnitViewElementActivated(FSLLearningUnitViewEvent event) {
             activeLearningUnitViewElementId = event.getActiveLearningUnitViewElementId();
+            buildDependentUI(false);
         }
     }
 }
