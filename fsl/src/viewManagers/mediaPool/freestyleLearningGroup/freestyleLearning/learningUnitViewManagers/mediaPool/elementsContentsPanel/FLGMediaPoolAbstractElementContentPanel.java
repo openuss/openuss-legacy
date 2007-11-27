@@ -97,6 +97,8 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
                     learningUnitViewElementsManager.setModified(true);
                 }
         });
+        editToolBarComponents[0].setEnabled(false);
+        editToolBarComponents[1].setEnabled(false);
     }
     
     protected void setElementsColor(Color selectedColor) {
@@ -209,12 +211,12 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
      */
     protected void buildDependentUI(boolean reloadIfAlreadyLoaded) {
     	if (learningUnitViewElementsManager != null) {
-            
     		FLGMediaPoolElement mediaPoolElement = (FLGMediaPoolElement)learningUnitViewElementsManager.getLearningUnitViewElement(learningUnitViewElementId, false);
-            
             if (mediaPoolElement != null) {
-            	
-            	
+            	if(mediaPoolElement.getType().equals("audio")) {
+                    editToolBarComponents[0].setEnabled(true);
+                    editToolBarComponents[1].setEnabled(true);
+            	}
             	if (mediaPoolElement.getAdditionalFileName() != null) {
 	            	// element with content
 	              	createImage();
@@ -224,7 +226,6 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
                     removeAll();
               		repaint();
             	}
-            
             	if(mediaPoolElement.getBackgroundColor() != null) {
             		setBackground(new Color(Integer.valueOf(mediaPoolElement.getBackgroundColor())));
             	} else {
@@ -246,7 +247,7 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
         if (learningUnitViewElementsManager != null) {
             FLGMediaPoolElement mediaPoolElement = (FLGMediaPoolElement)learningUnitViewElementsManager.getLearningUnitViewElement(learningUnitViewElementId, false);
             if (mediaPoolElement != null) {
-                File imageFile = learningUnitViewElementsManager.resolveRelativeFileName(mediaPoolElement.getMediaFileName(), mediaPoolElement);
+                File imageFile = learningUnitViewElementsManager.resolveRelativeFileName(mediaPoolElement.getAdditionalFileName(), mediaPoolElement);
                 try {
                     Image image = FLGImageUtility.loadImageAndWait(imageFile.toURL());
                     imageComponent.setImage(image);
@@ -267,8 +268,7 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
             if (scaleToFit) {
                 setLayout(new BorderLayout());
                 add(imageComponent);
-            }
-            else {
+            } else {
                 // image component
                 imageComponent.setOpaque(false);
                 // image container
@@ -314,7 +314,6 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
      */
     protected void addFile() {
         File[] fileList = showAddFileDialog(fileSelectionFilter);
-        
         FLGUIUtilities.startLongLastingOperation();
         FLGMediaPoolElement mediaPoolElement = (FLGMediaPoolElement)learningUnitViewElementsManager.getLearningUnitViewElement(activeLearningUnitViewElementId, false);
         for (int i = 0; i < fileList.length; i++) {
