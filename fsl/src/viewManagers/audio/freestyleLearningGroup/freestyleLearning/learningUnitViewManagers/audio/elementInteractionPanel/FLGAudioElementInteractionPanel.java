@@ -335,7 +335,7 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
             overwriteFilePanel = new FLGAudioFileOverwriteDialog();
             //overwrite true says overwrite the existing soundfile, else the if-clause will not be accessed.
             overwriteIt = overwriteFilePanel.showDialog(learningUnitViewElementsManager, activeLearningUnitViewElementId);
-        }
+        } 
         //if-clause for the creating of a soundfile
         if (overwriteIt) {
             //from the audio element, a FLGAudioElement is get
@@ -349,6 +349,9 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
                     ".wav", activeLearningUnitViewElementId);
                 //the element-soundfilename is set to the soundfile's name
                 learningUnitViewElement.setSoundFileName(soundFile + "");
+                
+                System.out.println("Recording: " + soundFile.getAbsolutePath());
+                
             }
             //if there is a soundfile already
             else {
@@ -371,10 +374,7 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
                 //the name of the soundfile is set to the elements-soundfilename
                 learningUnitViewElement.setSoundFileName("" + soundFile);
             }
-            String soundFileString = "" + soundFile;
-            soundFile = new File(soundFileString);
-            //new recorder-object is created
-            recorder = new FLGAudioRecorder(soundFileString);
+            recorder = new FLGAudioRecorder(soundFile.getAbsolutePath());
             recording = true;
             //disable other buttons (not stop)
             enableButtons(false);
@@ -391,6 +391,7 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
             actualizeContentsPanel();
             //actualize buttons ;-)
             actualizeButtons();
+            actualAudio.setSoundFileName(soundFile.getName());
         }
         //nothing will be recorder, because overwrite was false.
     }

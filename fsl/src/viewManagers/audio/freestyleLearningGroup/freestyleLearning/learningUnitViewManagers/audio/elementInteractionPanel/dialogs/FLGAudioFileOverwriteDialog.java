@@ -22,7 +22,6 @@ public class FLGAudioFileOverwriteDialog implements FLGDialogInputVerifier {
     private FLGInternationalization internationalization;
     private JPanel dialogContentComponent;
     private JLabel fileExistsLabel;
-    private JLabel fileOverwriteLabel;
     private FSLLearningUnitViewElement referenceLearningUnitViewElement;
 
     /** Constructor of this class. */
@@ -40,7 +39,6 @@ public class FLGAudioFileOverwriteDialog implements FLGDialogInputVerifier {
      */
     public boolean showDialog(FSLLearningUnitViewElementsManager elementsManager, String referenceElementId) {
         this.referenceLearningUnitViewElement = elementsManager.getLearningUnitViewElement(referenceElementId, false);
-        //buildDependentUI();
         int returnValue = FLGOptionPane.showConfirmDialog(this, dialogContentComponent,
             internationalization.getString("dialog.soundFileExists.title"),
             FLGOptionPane.OK_CANCEL_OPTION, FLGOptionPane.PLAIN_MESSAGE);
@@ -55,13 +53,11 @@ public class FLGAudioFileOverwriteDialog implements FLGDialogInputVerifier {
     private void buildIndependentUI() {
         dialogContentComponent = new JPanel(new BorderLayout());
         dialogContentComponent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        JPanel mainElementInputPanel = new JPanel(new FLGColumnLayout());
+        JPanel mainElementInputPanel = new JPanel(new BorderLayout());
         dialogContentComponent.add(mainElementInputPanel, BorderLayout.NORTH);
-        fileExistsLabel = new JLabel(internationalization.getString("label.file.exists"));
-        fileOverwriteLabel = new JLabel(internationalization.getString("label.file.overwrite"));
-        mainElementInputPanel.setLayout(new FLGColumnLayout(5, 5));
-        mainElementInputPanel.add(fileExistsLabel, FLGColumnLayout.CENTEREND);
-        mainElementInputPanel.add(fileOverwriteLabel, FLGColumnLayout.CENTEREND);
+        fileExistsLabel = new JLabel(internationalization.getString("label.file.exists") + " " 
+        		+ internationalization.getString("label.file.overwrite"));
+        mainElementInputPanel.add(fileExistsLabel, BorderLayout.CENTER);
     }
 
     public String verifyInput() {
