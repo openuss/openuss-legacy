@@ -97,6 +97,8 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
         pauseButton = new FSLLearningUnitViewElementInteractionButton(loadImage("pauseButton.gif"));
         pauseButton.setToolTipText(internationalization.getString("button.tooltip.pause"));
         enableButtons(false);
+        pauseButton.setEnabled(false);
+        stopButton.setEnabled(false);
         recordButton.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -158,8 +160,8 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
         openMediaButton.setEnabled(enabled);
         recordButton.setEnabled(enabled);
         playButton.setEnabled(enabled);
-        stopButton.setEnabled(enabled);
-        pauseButton.setEnabled(enabled);
+        stopButton.setEnabled(!enabled);
+        pauseButton.setEnabled(!enabled);
     }
 
     private Image loadImage(String imageFileName) {
@@ -259,16 +261,22 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
         //if the audio-element is a folder
         if (audioElement.getFolder()) {
             enableButtons(false);
+            stopButton.setEnabled(false);
+            pauseButton.setEnabled(false);
             if (playing == true) {
                 stopButton.setEnabled(true);
                 pauseButton.setEnabled(true);
+                playButton.setEnabled(false);
             }
             else if (pausedPlaying == true) {
                 stopButton.setEnabled(true);
                 playButton.setEnabled(true);
+                pauseButton.setEnabled(false);
             }
             else if (recording == true) {
                 stopButton.setEnabled(true);
+                playButton.setEnabled(false);
+                pauseButton.setEnabled(false);
             }
         }
         else //it is not a folder
@@ -277,13 +285,17 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
             if (playing == true) {
                 stopButton.setEnabled(true);
                 pauseButton.setEnabled(true);
+                playButton.setEnabled(false);
             }
             else if (pausedPlaying == true) {
                 stopButton.setEnabled(true);
                 playButton.setEnabled(true);
+                pauseButton.setEnabled(false);
             }
             else if (recording == true) {
                 stopButton.setEnabled(true);
+                playButton.setEnabled(false);
+                pauseButton.setEnabled(false);
             }
             else {
                 Audio actualAudio = (Audio)learningUnitViewElementsManager.getLearningUnitViewElement(activeLearningUnitViewElementId, false);
@@ -442,12 +454,10 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
 //                File destinationMediaFile = learningUnitViewElementsManager.createNewFileForElementsExternalData("audio",
 //                    getExtension(mediaFileName), activeLearningUnitViewElementId);
                 File destinationMediaFile = learningUnitViewElementsManager.resolveRelativeFileName(mediaFileName, actualAudio);
-                System.out.println(destinationMediaFile.getAbsolutePath());
                 // copy source media file to learning unit view directory
                 FLGUIUtilities.startLongLastingOperation();
                 FLGFileUtility.copy(mediaFile, destinationMediaFile);             
                 FLGUIUtilities.stopLongLastingOperation();
-                
                 actualAudio.setSoundFileName(destinationMediaFile.getName());
                 setUpdated();
                 //and the content-panel is updated too, to show the new name of the attached soundfile
