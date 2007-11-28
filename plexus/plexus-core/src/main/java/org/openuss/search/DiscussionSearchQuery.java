@@ -63,12 +63,12 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 	
 	/**
 	 * performs a discussion search
-	 * @param textToSearch search term
-	 * @param resultTypeId
+	 * @param textToSearch search term 
 	 * @param postId 
 	 * @param onlyInTitle
+	 * @param submitter
 	 */
-	public List<DiscussionSearchDomainResult> search(String textToSearch, Long courseId, boolean onlyInTitle) {
+	public List<DiscussionSearchDomainResult> search(String textToSearch, Long courseId, boolean onlyInTitle, String submitter) {
 		
 		StringBuilder queryString = new StringBuilder();
 		
