@@ -23,7 +23,7 @@ import org.openuss.news.NewsCategory;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
 import org.openuss.news.PublisherType;
-import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.upload.UploadFileManager;
@@ -103,7 +103,7 @@ public class NewsEditPage extends AbstractLecturePage {
 	}
 
 	private String getAuthorName() {
-		User user = (User) getSessionBean(Constants.USER);
+		UserInfo user = (UserInfo) getSessionBean(Constants.USER);
 		return user.getDisplayName();
 	}
 	

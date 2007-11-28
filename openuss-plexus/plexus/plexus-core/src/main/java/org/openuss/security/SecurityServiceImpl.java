@@ -40,26 +40,45 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 
 	@Override
 	protected Collection handleGetAllUsers() throws Exception {
-		return getUserDao().loadAll();
+		Collection<?> allUsers = getUserDao().loadAll();
+		getUserDao().toUserInfoCollection(allUsers);
+		//TODO check if profiles, preferences and contact have to be added
+		return allUsers;
 	}
 
 	@Override
-	protected User handleGetUser(Long userId) throws Exception {
-		return getUserDao().load(userId);
+	protected UserInfo handleGetUser(Long userId) throws Exception {
+		User user = getUserDao().load(userId);
+		UserInfo userInfo = userToUserInfo(user);
+		return userInfo;
+	}
+
+	private UserInfo userToUserInfo(User user) {
+		if (user==null) {
+			return null; 
+		}
+		UserInfo userInfo = getUserDao().toUserInfo(user);
+		userInfo.setContact(getUserContactDao().toUserContactInfo(user.getContact()));
+		userInfo.setPreferences(getUserPreferencesDao().toUserPreferencesInfo(user.getPreferences()));
+		userInfo.setProfile(getUserProfileDao().toUserProfileInfo(user.getProfile()));
+		userInfo.setImageId(user.getImageId());
+		userInfo.setDisplayName(user.getDisplayName());
+		userInfo.setSmsNotification(user.hasSmsNotification());		
+		return userInfo;
 	}
 
 	@Override
-	protected User handleGetUserByName(String name) throws Exception {
-		return getUserDao().findUserByUsername(name.toLowerCase());
+	protected UserInfo handleGetUserByName(String name) throws Exception {
+		return userToUserInfo(getUserDao().findUserByUsername(name.toLowerCase()));
 	}
 
 	@Override
-	protected User handleGetUserByEmail(String email) throws Exception {
-		return getUserDao().findUserByEmail(email);
+	protected UserInfo handleGetUserByEmail(String email) throws Exception {
+		return userToUserInfo(getUserDao().findUserByEmail(email));
 	}
 
 	@Override
-	protected User handleCreateUser(User user) throws Exception {
+	protected UserInfo handleCreateUser(UserInfo user) throws Exception {
 		Validate.isTrue(user.getId() == null, "User must not have an identifier!");
 		if (!isValidUserName(null, user.getUsername())) {
 			throw new SecurityServiceException("Invalid username.");
@@ -70,20 +89,17 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		if (StringUtils.isBlank(user.getEmail())) {
 			throw new SecurityServiceException("Email must be defined");
 		}
-		if (user.getProfile() == null) {
-			user.setProfile(UserProfile.Factory.newInstance());
-		}
 		if (isNonExistingEmailAddress(user, user.getEmail()) != null) {
 			throw new SecurityServiceException("Email adress already in use (shold not occur -> validator bypassed?) "+user.getEmail());
 		}
 		
 		
-		user = getUserDao().create(user);
-		encodePassword(user);
-		getUserDao().update(user);
-
+		User userObject = getUserDao().userInfoToEntity(user);
+		encodePassword(userObject);
+		getUserDao().create(userObject);
+		user.setId(userObject.getId());
 		// define object identity
-		createObjectIdentity(user, null);
+		createObjectIdentity(userObject, null);
 
 		return user;
 	}
@@ -92,8 +108,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	protected void handleChangePassword(String password) throws Exception {
 		Validate.notEmpty(password,"Password must not be empty");
 		Validate.isTrue(password.length()>5,"Password must be longer then 5 characters");
-		User user = getCurrentUser();
-		user = getUserDao().load(user.getId());
+		User user = getUserDao().load(getCurrentUser().getId());
 		user.setPassword(password);
 		encodePassword(user);
 		getUserDao().update(user);
@@ -115,35 +130,76 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	}
 
 	@Override
-	protected void handleSaveUserProfile(UserProfile profile) throws Exception {
-		if (profile.getId() == null) {
-			getUserProfileDao().create(profile);
-		} else {
-			getUserProfileDao().update(profile);
+	protected void handleSaveUserProfile(UserInfo profile) throws Exception {
+		User user = getUserDao().load(profile.getId());
+		if (user.getProfile()==null){
+			UserProfile userProfile;
+			if (profile.getProfile()!=null){
+				userProfile = getUserProfileDao().userProfileInfoToEntity(profile.getProfile());				
+			} else {
+				userProfile = UserProfile.Factory.newInstance();
+			}
+			getUserProfileDao().create(userProfile);
+			user.setProfile(userProfile);
+			getUserDao().update(user);
+		}
+		else {
+			UserProfile userProfile = user.getProfile();
+			if (profile.getProfile()!=null){
+				userProfile = getUserProfileDao().userProfileInfoToEntity(profile.getProfile());
+			}
+			getUserProfileDao().update(userProfile);
 		}
 	}
 
 	@Override
-	protected void handleSaveUserContact(UserContact contact) throws Exception {
-		if (contact.getId() == null) {
-			getUserContactDao().create(contact);
-		} else {
-			getUserContactDao().update(contact);
+	protected void handleSaveUserContact(UserInfo contact) throws Exception {
+		User user = getUserDao().load(contact.getId());
+		if (user.getContact()==null){
+			UserContact userContact;
+			if (contact.getContact()!=null){
+				userContact = getUserContactDao().userContactInfoToEntity(contact.getContact());				
+			} else {
+				userContact = UserContact.Factory.newInstance();
+			}			
+			getUserContactDao().create(userContact);
+			user.setContact(userContact);
+			getUserDao().update(user);
 		}
-
+		else {
+			UserContact userContact = user.getContact();
+			if (contact.getContact()!=null) {
+				userContact = getUserContactDao().userContactInfoToEntity(contact.getContact());
+			}
+			getUserContactDao().update(userContact);
+		}
 	}
 
 	@Override
-	protected void handleSaveUserPreferences(UserPreferences preferences) throws Exception {
-		if (preferences.getId() == null) {
-			getUserPreferencesDao().create(preferences);
-		} else {
-			getUserPreferencesDao().update(preferences);
+	protected void handleSaveUserPreferences(UserInfo preferences) throws Exception {
+		User user = getUserDao().load(preferences.getId());
+		if (user.getPreferences()==null){
+			UserPreferences userPreferences;
+			if (preferences.getPreferences()!=null){
+				userPreferences = getUserPreferencesDao().userPreferencesInfoToEntity(preferences.getPreferences());				
+			} else {
+				userPreferences = UserPreferences.Factory.newInstance();
+			}
+			getUserPreferencesDao().create(userPreferences);
+			user.setPreferences(userPreferences);
+			getUserDao().update(user);
+		}
+		else {
+			UserPreferences userPreferences = user.getPreferences();
+			if (preferences.getPreferences()!=null){
+				userPreferences = getUserPreferencesDao().userPreferencesInfoToEntity(preferences.getPreferences());				
+			} 
+			getUserPreferencesDao().update(userPreferences);
 		}
 	}
 
 	@Override
-	protected void handleRemoveUser(User user) throws Exception {
+	protected void handleRemoveUser(UserInfo user) throws Exception {
 		getUserDao().remove(user.getId());
 	}
 
@@ -233,7 +289,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	}
 
 	@Override
-	protected boolean handleIsValidUserName(User self, String userName) throws Exception {
+	protected boolean handleIsValidUserName(UserInfo self, String userName) throws Exception {
 		// username must not start with GROUP_ or ROLE_
 		if (userName == null || userName.startsWith(GROUP_PREFIX) || userName.startsWith(ROLE_PREFIX)) {
 			return false;
@@ -242,17 +298,17 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		if (self == null || user == null) {
 			return user == null;
 		} else {
-			return self.equals(user);
+			return self.equals(userToUserInfo(user));
 		}
 	}
 
 	@Override
-	protected User handleIsNonExistingEmailAddress(User self, String email) throws Exception {
+	protected UserInfo handleIsNonExistingEmailAddress(UserInfo self, String email) throws Exception {
 		User found = getUserDao().findUserByEmail(email);
 		if (self == null || found == null) {
-			return found;
+			return null;
 		} else {
-			return (self.equals(found)) ? null : found;
+			return (self.equals(found)) ? null : userToUserInfo(found);
 		}
 	}
 
@@ -367,7 +423,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	}
 
 	@Override
-	protected void handleSetLoginTime(User user) throws Exception {
+	protected void handleSetLoginTime(UserInfo user) throws Exception {
 		User usr = getUserDao().load(user.getId());
 		if (usr == null) {
 			logger.error("couldn't find user with id " + user.getId());
@@ -429,7 +485,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	}
 
 	@Override
-	protected User handleGetCurrentUser() throws Exception {
+	protected UserInfo handleGetCurrentUser() throws Exception {
 		SecurityContext context = SecurityContextHolder.getContext();
 		if (context == null || context.getAuthentication() == null) {
 			return null;
@@ -442,6 +498,26 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	protected boolean handleHasPermission(Object domainObject, Integer[] permissions) throws Exception {
 		// FIXME make SecurityService independent from AcegiUtils
 		return AcegiUtils.hasPermission(domainObject, permissions);
+	}
+
+	@Override
+	protected User handleGetUserObject(UserInfo user) throws Exception {
+		return getUserDao().load(user.getId());
+	}
+
+	@Override
+	protected User handleGetUserObject(Long userId) throws Exception {
+		return getUserDao().load(userId);
+	}
+
+	@Override
+	protected void handleSaveUser(UserInfo user) throws Exception {
+		if (user.getId()!=null){
+			getUserDao().update(getUserDao().userInfoToEntity(user));
+		} else if (user.getId()==null){
+			createUser(user);
+		}
+		
 	}
 
 }

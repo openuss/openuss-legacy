@@ -20,6 +20,7 @@ import org.openuss.security.Group;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.system.SystemProperties;
 
@@ -329,7 +330,9 @@ public class LectureServiceImpl extends LectureServiceBase {
 	protected List<?> handleGetInstituteAspirants(Long instituteId) throws Exception {
 		Institute institute = getInstituteDao().load(instituteId);
 		// need to get ride of persistent back so use a new ArrayList
-		List<?> aspirants = new ArrayList<User>(institute.getMembership().getAspirants());
+		Collection<?> aspirantsCollection= institute.getMembership().getAspirants();
+		getUserDao().toUserInfoCollection(aspirantsCollection);
+		List<?> aspirants = new ArrayList<UserInfo>((Collection<UserInfo>)aspirantsCollection);
 		getUserDao().toUserInfoCollection(aspirants);
 		return aspirants;
 	}
@@ -402,7 +405,7 @@ public class LectureServiceImpl extends LectureServiceBase {
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("institutename", institute.getName() + "(" + institute.getShortcut() + ")");
 		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject",
-				"instituteapplicationreject", parameters, user);
+				"instituteapplicationreject", parameters, getUserDao().toUserInfo(user));
 	}
 
 	/**
@@ -463,7 +466,7 @@ public class LectureServiceImpl extends LectureServiceBase {
 		parameters.put("institutelink", getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
 				+ "/views/secured/lecture/institute.faces?institute=" + institute.getId());
 		getMessageService().sendMessage(institute.getShortcut(), "institute.application.subject",
-				"instituteapplicationapply", parameters, user);
+				"instituteapplicationapply", parameters, getUserDao().toUserInfo(user));
 	}
 
 	@Override
@@ -503,7 +506,9 @@ public class LectureServiceImpl extends LectureServiceBase {
 
 	private User getUser(Long userId) throws LectureException {
 		User user = User.Factory.newInstance();
-		user = getSecurityService().getUser(userId);
+		UserInfo userInfo = new UserInfo();
+		userInfo.setId(userId);
+		user = getSecurityService().getUserObject(userInfo);
 		if (user == null) {
 			logger.error("Coun't find user with id " + userId);
 			throw new LectureException("user_cannot_be_found");

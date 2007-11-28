@@ -25,7 +25,7 @@ import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.InstituteMember;
 import org.openuss.lecture.InstituteSecurity;
 import org.openuss.security.SecurityService;
-import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.security.UserComparator;
 import org.openuss.web.Constants;
 
@@ -97,7 +97,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	public String showProfile() {
 		CourseMemberInfo memberInfo = data.getRowData();
-		User user = User.Factory.newInstance();
+		UserInfo user = new UserInfo();
 		user.setId(memberInfo.getUserId());
 		setSessionBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
@@ -114,7 +114,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	public String addAssistant() {
 		logger.debug("course assistant aspirant added");
-		User user = User.Factory.newInstance();
+		UserInfo user = new UserInfo();
 		user.setId(userId);
 		courseService.addAssistant(courseInfo, user);
 		addMessage(i18n("message_course_add_assistant"));
@@ -140,15 +140,15 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 					return !userIds.contains(member.getId());
 				}
 			});
-			List<User> membersUser = new ArrayList<User>();
+			List<UserInfo> membersUser = new ArrayList<UserInfo>();
 			for(InstituteMember member : members) {
 				membersUser.add(getSecurityService().getUserByName(member.getUsername()));
 			}
 			UserComparator userComparator = new UserComparator();
 			Collections.sort(membersUser, userComparator);
 			instituteMembers = new ArrayList<SelectItem>();
-			for(User member : membersUser) {
-				instituteMembers.add(new SelectItem(member.getId(), member.getTitle()+" "+member.getLastName()+" "+member.getFirstName()));
+			for(UserInfo member : membersUser) {
+				instituteMembers.add(new SelectItem(member.getId(), member.getContact().getTitle()+" "+member.getContact().getLastName()+" "+member.getContact().getFirstName()));
 			}
 
 			

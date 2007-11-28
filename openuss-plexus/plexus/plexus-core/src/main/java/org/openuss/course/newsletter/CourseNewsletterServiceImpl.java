@@ -13,6 +13,7 @@ import org.openuss.newsletter.MailInfo;
 import org.openuss.newsletter.NewsletterInfo;
 import org.openuss.newsletter.SubscriberInfo;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 
 /**
  * @see org.openuss.course.newsletter.CourseNewsletterService
@@ -69,7 +70,7 @@ public class CourseNewsletterServiceImpl extends CourseNewsletterServiceBase {
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#subscribe(org.openuss.lecture.CourseInfo,
 	 *      org.openuss.security.User)
 	 */
-	protected void handleSubscribe(CourseInfo course, User user) throws Exception {
+	protected void handleSubscribe(CourseInfo course, UserInfo user) throws Exception {
 		NewsletterInfo newsletter = getNewsletter(course);
 		getNewsletterService().subscribe(newsletter, user);
 	}
@@ -78,7 +79,7 @@ public class CourseNewsletterServiceImpl extends CourseNewsletterServiceBase {
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#unsubscribe1(org.openuss.lecture.CourseInfo,
 	 *      org.openuss.security.User)
 	 */
-	protected void handleUnsubscribe(CourseInfo course, User user) throws Exception {
+	protected void handleUnsubscribe(CourseInfo course, UserInfo user) throws Exception {
 		NewsletterInfo newsletter = getNewsletter(course);
 		getNewsletterService().unsubscribe(newsletter, user);
 	}

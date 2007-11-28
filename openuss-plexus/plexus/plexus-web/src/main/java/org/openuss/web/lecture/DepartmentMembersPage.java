@@ -23,7 +23,6 @@ import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.security.GroupItem;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
-import org.openuss.security.User;
 import org.openuss.web.Constants;
 
 /**
@@ -166,7 +165,7 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 	public String showProfile() {
 
 		UserInfo member = members.getRowData();
-		User user = securityService.getUser(member.getId());
+		UserInfo user = securityService.getUser(member.getId());
 		setSessionBean(Constants.SHOW_USER_PROFILE, user);
 
 		return Constants.USER_PROFILE_VIEW_PAGE;

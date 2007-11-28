@@ -29,7 +29,7 @@ public class UserDetailsServiceAdapter implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
 		if (securityService == null)
 			throw new IllegalStateException("Adapter is not associated to an SecurityService object!");
-		User user = securityService.getUserByName(username);
+		User user = getSecurityService().getUserObject(securityService.getUserByName(username));
 		if (user == null)
 			throw new UsernameNotFoundException("Username not found!");
 		return (UserImpl) user;

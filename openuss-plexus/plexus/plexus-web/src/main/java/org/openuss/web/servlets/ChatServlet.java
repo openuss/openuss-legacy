@@ -62,7 +62,7 @@ public class ChatServlet extends HttpServlet {
 		// list of new messages
 		xml.append("<messages>");
 
-		Locale locale = new Locale(securityService.getCurrentUser().getLocale());
+		Locale locale = new Locale(securityService.getCurrentUser().getPreferences().getLocale());
 
 		for (ChatMessageInfo message : (List<ChatMessageInfo>) chatService.getRecentMessages(room.getId(), lastMessage)) {
 			lastMessage = message.getId();

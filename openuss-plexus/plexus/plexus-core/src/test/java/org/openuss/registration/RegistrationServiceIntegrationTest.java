@@ -14,6 +14,7 @@ import org.openuss.security.User;
 import org.openuss.security.UserContact;
 import org.openuss.security.UserContactDao;
 import org.openuss.security.UserDao;
+import org.openuss.security.UserInfo;
 import org.openuss.security.UserPreferences;
 import org.openuss.security.UserPreferencesDao;
 
@@ -57,21 +58,22 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 	}
 	
 	public void testUserRegistration() throws RegistrationException {
-		registrationService.registrateUser(user);
+		UserInfo userInfo = userDao.toUserInfo(user);
+		registrationService.registrateUser(userInfo);
 		
-		assertNotNull(user.getId());
-		assertEquals(false, user.isEnabled());
+		assertNotNull(userInfo.getId());
+		assertEquals(false, userInfo.isEnabled());
 		
 		setComplete();
 		endTransaction();
 		startNewTransaction();
 		
-		String code = registrationService.generateActivationCode(user);
+		String code = registrationService.generateActivationCode(userInfo);
 		
 		// activate user
 		registrationService.activateUserByCode(code);
 		
-		user = getUserDao().load(user.getId());
+		user = getUserDao().load(userInfo.getId());
 		assertEquals(true, user.isEnabled());
 		
 		// try to activate again

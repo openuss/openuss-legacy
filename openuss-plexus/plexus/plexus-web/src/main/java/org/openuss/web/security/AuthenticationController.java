@@ -35,6 +35,7 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.statistics.OnlineSessionTracker;
@@ -175,8 +176,9 @@ public class AuthenticationController extends BasePage {
 	private void injectUserInformationIntoSession(Authentication auth) {
 		if (auth.getPrincipal() instanceof User) {
 			logger.debug("Principal is: "+auth.getPrincipal());
+			//FIXME still a last user object in web layer
 			User details = (User) auth.getPrincipal();
-			User user = securityService.getUserByName(details.getUsername());
+			UserInfo user = securityService.getUserByName(details.getUsername());
 			securityService.setLoginTime(user);
 			setSessionBean(Constants.USER_SESSION_KEY, user);
 			

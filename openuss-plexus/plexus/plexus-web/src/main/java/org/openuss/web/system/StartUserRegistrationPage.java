@@ -8,9 +8,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.apache.shale.tiger.managed.Scope;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.security.User;
-import org.openuss.security.UserContact;
-import org.openuss.security.UserPreferences;
+import org.openuss.security.UserInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -21,10 +19,8 @@ public class StartUserRegistrationPage extends BasePage{
 	@Prerender
 	public void prerender() throws Exception{
 		super.prerender();
-		user = User.Factory.newInstance();
-		user.setPreferences(UserPreferences.Factory.newInstance());
+		user = new UserInfo();
 		user.getPreferences().setLocale(((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getLocale().toString());
-		user.setContact(UserContact.Factory.newInstance());
 		setSessionBean(Constants.USER, user);
 		
 		breadcrumbs.init();

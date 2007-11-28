@@ -15,6 +15,7 @@ import org.openuss.foundation.DomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
@@ -56,12 +57,13 @@ public class NewsletterServiceIntegrationTest extends NewsletterServiceIntegrati
 		getNewsletterService().addNewsletter(domainObject, "testName");		
 		NewsletterInfo newsletter = getNewsletterService().getNewsletter(domainObject);
 		User user = testUtility.createUniqueUserInDB();
+		UserInfo userInfo = securityService.getUser(user.getId());
 		flush();
 		//Init list of subscribers has to be empty
 		List<SubscriberInfo> subscribers = getNewsletterService().getSubscribers(newsletter);
 		assertEquals(0, subscribers.size());
 		//add user to newsletter
-		getNewsletterService().subscribe(newsletter, user);
+		getNewsletterService().subscribe(newsletter, userInfo);
 		subscribers = getNewsletterService().getSubscribers(newsletter);
 		assertEquals(1, subscribers.size());
 		SubscriberInfo si = (SubscriberInfo) subscribers.get(0);
@@ -73,7 +75,7 @@ public class NewsletterServiceIntegrationTest extends NewsletterServiceIntegrati
 		subscribers = getNewsletterService().getSubscribers(newsletter);
 		assertEquals(0, subscribers.size());
 		//add user to newsletter
-		getNewsletterService().subscribe(newsletter, user);
+		getNewsletterService().subscribe(newsletter, userInfo);
 		subscribers = getNewsletterService().getSubscribers(newsletter);
 		assertEquals(1, subscribers.size());
 		si = (SubscriberInfo) subscribers.get(0);
@@ -81,11 +83,11 @@ public class NewsletterServiceIntegrationTest extends NewsletterServiceIntegrati
 		assertEquals(user.getDisplayName(), si.getDisplayName());
 		assertEquals(user.getEmail(), si.getEmail());
 		//delete user from newsletter using second unsubscribe method
-		getNewsletterService().unsubscribe(newsletter, user);
+		getNewsletterService().unsubscribe(newsletter, userInfo);
 		subscribers = getNewsletterService().getSubscribers(newsletter);
 		assertEquals(0, subscribers.size());
 		//test unsubscribe methods if user not in newsletter
-		getNewsletterService().unsubscribe(newsletter, user);
+		getNewsletterService().unsubscribe(newsletter, userInfo);
 		getNewsletterService().unsubscribe(si);
 		subscribers = getNewsletterService().getSubscribers(newsletter);
 		assertEquals(0, subscribers.size());
@@ -96,12 +98,13 @@ public class NewsletterServiceIntegrationTest extends NewsletterServiceIntegrati
 		getNewsletterService().addNewsletter(domainObject, "testName");		
 		NewsletterInfo newsletter = getNewsletterService().getNewsletter(domainObject);
 		User user = testUtility.createUniqueUserInDB();
+		UserInfo userInfo = securityService.getUser(user.getId());
 		flush();
 		//Init list of subscribers has to be empty
 		List<SubscriberInfo> subscribers = getNewsletterService().getSubscribers(newsletter);
 		assertEquals(0, subscribers.size());
 		//add user to newsletter
-		getNewsletterService().subscribe(newsletter, user);
+		getNewsletterService().subscribe(newsletter, userInfo);
 		subscribers = getNewsletterService().getSubscribers(newsletter);
 		assertEquals(1, subscribers.size());
 		SubscriberInfo si = (SubscriberInfo) subscribers.get(0);

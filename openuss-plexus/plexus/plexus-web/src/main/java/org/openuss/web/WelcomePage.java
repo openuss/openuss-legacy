@@ -8,7 +8,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.lecture.LectureService;
 import org.openuss.security.SecurityService;
-import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.statistics.OnlineStatisticService;
 import org.openuss.statistics.SystemStatisticInfo;
 
@@ -37,9 +37,7 @@ public class WelcomePage extends BasePage {
 
 		if (user != null && user.getId() == null) {
 			logger.debug("in user if clause");
-			user = User.Factory.newInstance();
-			user.setPreferences(null);
-			user.setContact(null);
+			user = new UserInfo();
 			setSessionBean(Constants.USER, null);
 		}
 		setRequestBean(Constants.BREADCRUMBS, null);
