@@ -37,6 +37,12 @@ public abstract class DomainIndexer extends LuceneIndexSupport {
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE = 4;
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_COURSE = 5;
 
+	// discussion search
+	public static final String DISCUSSION_TITLE = "DISCUSSION_TITLE";
+	public static final String COURSE_IDENTIFIER = "COURSE_IDENTIFIER";
+	public static final String POST_IDENTIFIER = "POST_IDENTIFIER";
+	
+	
 	private DomainObject domainObject;
 	
 	/**

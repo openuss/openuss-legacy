@@ -146,6 +146,14 @@
 		<constructor-arg ref="analyzer" />
 	</bean>
 
+	<!-- discussion search -->
+	<bean id="discussionSearcher" class="org.openuss.search.DiscussionSearchQuery" scope="prototype">
+		<constructor-arg ref="searcherFactory"/>
+		<constructor-arg ref="analyzer" />
+	</bean>
+
+
+
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 		Lucene Support Configuration
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -163,7 +171,7 @@
 		class="org.springmodules.lucene.index.factory.SimpleIndexFactory">
 		<property name="create" value="true" />
 		<property name="directory" ref="lectureDirectory" />
-		<property name="analyzer" ref="analyzer" />
+		<property name="analyzer" ref="analyzer" ></property>
 		<property name="resolveLock" value="true"/>
 		<property name="writeLockTimeout" value="2000"/>
 	</bean>
@@ -172,6 +180,6 @@
 		class="org.openuss.search.lucene.WorkAroundFSDirectoryFactoryBean">
 		<property name="create" value="true" />
 		<property name="location" value="file:${java.io.tmpdir}/lucene/lecture" />
-	</bean>
-
+	</bean>	
+	
 </beans>

@@ -380,7 +380,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 			f.setDomainIdentifier(domainObject.getId());
 			f.setReadOnly(false);
 			handleAddForum(f);
-			forum = getForumDao().findByDomainIdentifier(domainObject.getId());
+			forum = getForumDao().findByDomainIdentifier(domainObject.getId());			
 		}
 		return getForumDao().toForumInfo(forum);
 	}
