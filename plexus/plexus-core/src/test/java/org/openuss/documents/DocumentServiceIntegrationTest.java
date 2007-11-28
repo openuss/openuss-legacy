@@ -338,7 +338,6 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		//verschieben
 		List<FolderEntryInfo> chosen = new ArrayList<FolderEntryInfo>();
 		chosen.add(entries.get(0));
-		System.out.println("ID von chosen: " +chosen.get(0).getId());
 		assertEquals("file1.txt", chosen.get(0).getFileName());
 		documentService.moveFolderEntries(defaultDomainObject, subfolder, chosen);
 		//Hier wird das falsche dingen genommen!
@@ -397,6 +396,20 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		chosen.add(folderDao.toFolderEntryInfo(folderDao.folderInfoToEntity(folderInfoRoot)));
 		try {
 			documentService.moveFolderEntries(defaultDomainObject, subfolder, chosen);
+			assertTrue(false);
+		} catch (DocumentApplicationException e) {
+			assertTrue(true);
+		} catch (DocumentServiceException e) {
+			assertTrue(true);
+		}
+		//test moving subfolder to subsubfolder
+		chosen.clear();
+		FolderInfo subsubfolder = createSubFolder();
+		subsubfolder.setName("SubSubFolder");
+		documentService.createFolder(subsubfolder, subfolder);
+		chosen.add(folderDao.toFolderEntryInfo(folderDao.folderInfoToEntity(subfolder)));
+		try {
+			documentService.moveFolderEntries(defaultDomainObject, subsubfolder, chosen);
 			assertTrue(false);
 		} catch (DocumentApplicationException e) {
 			assertTrue(true);

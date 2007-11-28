@@ -472,10 +472,9 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 			FolderInfo target, List chosenObjects) throws Exception {
 		Folder targetFolder = getFolderDao().folderInfoToEntity(target);
 		List<FolderEntry> chosen = new ArrayList(chosenObjects);
-		getFolderDao().folderEntryInfoToEntityCollection(chosen);
+		getFolderEntryDao().folderEntryInfoToEntityCollection(chosen);
 		// Moving chosen to target
 		for(int i=0; i<chosen.size(); i++){
-			System.out.println("Versuche " + chosen.get(i).getId() + " zu verschieben.");
 			targetFolder.moveHere(chosen.get(i));
 		}
 	}

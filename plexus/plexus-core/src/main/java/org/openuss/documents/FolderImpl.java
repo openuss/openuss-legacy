@@ -96,15 +96,27 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 	public boolean correctHierarchy(FolderEntry entry) {
 		// TODO Auto-generated method stub
 		// TODO Implement check for correct Hierarchy after moving!
-		if(this.equals(entry) && entry instanceof Folder){
-			return false; //Hierarchy would get destroyed.
+		if(!(entry instanceof Folder)){
+			return true; //Only tried to move a File, therefore correct Hierarchy
 		}
-		return true; //Hierarchy stays correct
+		if(this.equals(entry)){
+			return false; //Tried to move Folder into itself
+		}
+		return correctHierarchyCheckHelp(entry, this);
+	}
+	
+	private boolean correctHierarchyCheckHelp(FolderEntry entry, Folder parent){
+		if(parent.getParent()==null){
+			return true; //There is no parent, everything correct
+		}
+		if(parent.getParent().equals(entry)){
+			return false; //Tried to move Folder into Subfolder
+		}
+		return correctHierarchyCheckHelp(entry, parent.getParent());
 	}
 
 	@Override
 	public void moveHere(FolderEntry entry) throws DocumentApplicationException {
-		System.out.println("Vater: " + entry.getId());
 		entry.getParent().removeFolderEntry(entry);
 		this.addFolderEntry(entry);
 	}
