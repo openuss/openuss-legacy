@@ -628,7 +628,17 @@
 			<navigation-case>
 				<from-outcome>discussion_new</from-outcome>
 				<to-view-id>/views/secured/discussion/discussionnew.xhtml</to-view-id>				
+			</navigation-case>	
+			
+			<navigation-case>
+				<from-outcome>discussion_search</from-outcome>
+				<to-view-id>/views/secured/discussion/discussionsearch.xhtml</to-view-id>				
 			</navigation-case>		
+			
+			<navigation-case>
+				<from-outcome>discussion_search_result</from-outcome>
+				<to-view-id>/views/secured/discussion/discussionsearch.xhtml</to-view-id>				
+			</navigation-case>
 
 			<navigation-case>
 				<from-outcome>discussion_thread</from-outcome>
