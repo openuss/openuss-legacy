@@ -338,13 +338,12 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		//verschieben
 		List<FolderEntryInfo> chosen = new ArrayList<FolderEntryInfo>();
 		chosen.add(entries.get(0));
+		System.out.println("ID von chosen: " +chosen.get(0).getId());
 		assertEquals("file1.txt", chosen.get(0).getFileName());
 		documentService.moveFolderEntries(defaultDomainObject, subfolder, chosen);
 		//Hier wird das falsche dingen genommen!
 		List<FolderEntryInfo> test2 = documentService.getFolderEntries(defaultDomainObject, subfolder);
 		assertEquals(2,test2.size());
-		System.out.println(test2.get(0).getPath() +" - " + test2.get(0).getFileName());
-		System.out.println(test2.get(1).getPath() +" - " + test2.get(1).getFileName());
 		assertEquals(test2.get(1).getPath(), "subfolder");
 		assertEquals(1, documentService.getFolderEntries(defaultDomainObject,root).size());
 	}
@@ -376,10 +375,34 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertEquals(2,documentService.getFolderEntries(defaultDomainObject,subfolder).size());
 	}
 	
-	// TODO: Add Test for moving a folder in its own subfolder
-	// TODO: Add Test for moving a folder in itself
+
 	public void testMoveFolderEntriesIllegalTarget() throws Exception{
-		
+		//create root
+		FolderInfo folderInfoRoot = documentService.getFolder(defaultDomainObject);
+		//create subfolder
+		FolderInfo subfolder = createSubFolder();
+		subfolder.setName("subfolder");
+		documentService.createFolder(subfolder, folderInfoRoot);
+		//test moving subfolder to subfolder
+		List<FolderEntryInfo> chosen = new ArrayList<FolderEntryInfo>();
+		chosen.add(folderDao.toFolderEntryInfo(folderDao.folderInfoToEntity(subfolder)));
+		try {
+			documentService.moveFolderEntries(defaultDomainObject, subfolder, chosen);
+			assertTrue(false);
+		} catch (DocumentApplicationException e) {
+			assertTrue(true);
+		}
+		//test moving root to subfolder
+		chosen.clear();
+		chosen.add(folderDao.toFolderEntryInfo(folderDao.folderInfoToEntity(folderInfoRoot)));
+		try {
+			documentService.moveFolderEntries(defaultDomainObject, subfolder, chosen);
+			assertTrue(false);
+		} catch (DocumentApplicationException e) {
+			assertTrue(true);
+		} catch (DocumentServiceException e) {
+			assertTrue(true);
+		}
 	}
 	
 	private void validateFileInfo(FileInfo info) {

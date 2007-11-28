@@ -24,7 +24,7 @@ import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
- * @see org.openuss.documents.DocumentsService
+ * @see org.openuss.documents.DocumentService
  */
 public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBase {
 
@@ -469,15 +469,14 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 
 	@Override
 	protected void handleMoveFolderEntries(DomainObject domainObject,
-			FolderInfo target, List chosen) throws Exception {
-		FolderEntry folderEntry;
-		// TODO Implement moving
+			FolderInfo target, List chosenObjects) throws Exception {
+		Folder targetFolder = getFolderDao().folderInfoToEntity(target);
+		List<FolderEntry> chosen = new ArrayList(chosenObjects);
+		getFolderDao().folderEntryInfoToEntityCollection(chosen);
+		// Moving chosen to target
 		for(int i=0; i<chosen.size(); i++){
-			folderEntry = getFolderEntryDao().folderEntryInfoToEntity((FolderEntryInfo) chosen.get(i));
-			folderEntry.setParent(getFolderDao().folderInfoToEntity(super.getFolder(target)));
+			System.out.println("Versuche " + chosen.get(i).getId() + " zu verschieben.");
+			targetFolder.moveHere(chosen.get(i));
 		}
-		// TODO Implement stuff for not allowing the move of a folder in its own subfolder
-		// TODO e.g. disallow destroying of document tree!
 	}
-
 }

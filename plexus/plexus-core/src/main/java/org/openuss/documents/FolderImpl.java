@@ -6,6 +6,7 @@
 package org.openuss.documents;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -23,6 +24,7 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 	 */
 	public void addFolderEntry(org.openuss.documents.FolderEntry entry) throws DocumentApplicationException {
 		if (!canAdd(entry)){
+			//TODO Throw different Exceptions for Wrong Name and Destroyed Hierarchy
 			throw new DocumentApplicationException("documents_folder_not_a_unique_filename");
 		}
 		if (getEntries() != null && entry != null) {
@@ -40,12 +42,7 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 
 	@Override
 	public boolean canAdd(FolderEntry folderEntry) {
-		for (FolderEntry entry : getEntries()) {
-			if (StringUtils.equalsIgnoreCase(folderEntry.getFileName(), entry.getFileName()) && !ObjectUtils.equals(entry, folderEntry)) {
-				return false; // not valid
-			}
-		}
-		return true; // vaild
+		return correctName(folderEntry) && correctHierarchy(folderEntry);
 	}
 	
 	@Override
@@ -93,6 +90,33 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 			size += entry.getFileSize();
 		}
 		return size;
+	}
+
+	@Override
+	public boolean correctHierarchy(FolderEntry entry) {
+		// TODO Auto-generated method stub
+		// TODO Implement check for correct Hierarchy after moving!
+		if(this.equals(entry) && entry instanceof Folder){
+			return false; //Hierarchy would get destroyed.
+		}
+		return true; //Hierarchy stays correct
+	}
+
+	@Override
+	public void moveHere(FolderEntry entry) throws DocumentApplicationException {
+		System.out.println("Vater: " + entry.getId());
+		entry.getParent().removeFolderEntry(entry);
+		this.addFolderEntry(entry);
+	}
+
+	@Override
+	public boolean correctName(FolderEntry entry) {
+		for (FolderEntry folderEntry : getEntries()) {
+			if (StringUtils.equalsIgnoreCase(entry.getFileName(), folderEntry.getFileName()) && !ObjectUtils.equals(folderEntry, entry)) {
+				return false; // not valid
+			}
+		}
+		return true; // valid
 	}
 
 }
