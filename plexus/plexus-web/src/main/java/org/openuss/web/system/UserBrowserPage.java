@@ -17,7 +17,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
 import org.openuss.security.SecurityService;
-import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.security.UserCriteria;
 import org.openuss.security.UserInfo;
 import org.openuss.statistics.SystemStatisticInfo;
@@ -75,7 +75,7 @@ public class UserBrowserPage extends BasePage{
 	 */
 	public String saveUsers() {
 		for (UserInfo userInfo : changedUsers) {
-			User user = securityService.getUser(userInfo.getId());
+			UserInfo user = securityService.getUser(userInfo.getId());
 			user.setEnabled(userInfo.isEnabled());
 			user.setAccountExpired(userInfo.isAccountExpired());
 			user.setAccountLocked(userInfo.isAccountLocked());
@@ -88,7 +88,7 @@ public class UserBrowserPage extends BasePage{
 
 	public String showProfile() {
 		UserInfo userInfo = dataModel.getRowData();
-		User user = securityService.getUser(userInfo.getId());
+		UserInfo user = securityService.getUser(userInfo.getId());
 		setSessionBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}

@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.foundation.DomainObject;
-import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 
 /**
  * @see org.openuss.chat.ChatService
@@ -42,8 +42,8 @@ public class ChatServiceImpl extends ChatServiceBase {
 	}
 	
 	private ChatUser retrieveCurrentChatUser() {
-		User user = getSecurityService().getCurrentUser();
-		if (user == null) {
+		UserInfo user = getSecurityService().getCurrentUser();
+		if (user == null || user.getId()==null) {
 			throw new IllegalStateException("No user is logined.");
 		}
 		ChatUser chatUser = getChatUserDao().load(user.getId());

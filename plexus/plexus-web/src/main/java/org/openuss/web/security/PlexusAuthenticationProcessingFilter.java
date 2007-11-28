@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
 import org.openuss.security.SecurityService;
-import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.statistics.OnlineStatisticService;
 import org.openuss.web.Constants;
 
@@ -26,10 +26,10 @@ public class PlexusAuthenticationProcessingFilter extends AuthenticationProcessi
 	protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) throws IOException {
 		super.onSuccessfulAuthentication(request, response, authResult);
 		
-		if (authResult.getPrincipal() instanceof User) {
+		if (authResult.getPrincipal() instanceof UserInfo) {
 			logger.debug("Principal is: "+authResult.getPrincipal());
-			User details = (User) authResult.getPrincipal();
-			User user = securityService.getUserByName(details.getUsername());
+			UserInfo details = (UserInfo) authResult.getPrincipal();
+			UserInfo user = securityService.getUserByName(details.getUsername());
 			// securityService.setLoginTime(user);
 			request.getSession().setAttribute(Constants.USER_SESSION_KEY, user);
 			

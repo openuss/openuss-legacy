@@ -18,6 +18,7 @@ import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
@@ -317,25 +318,26 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertEquals(brainContest.getDomainIdentifier(), addedContest.getDomainIdentifier());
 		
 		User user = testUtility.createUniqueUserInDB();
+		UserInfo userInfo = getSecurityService().getUser(user.getId());
 		AnswerInfo answer;
 
 		//check case right answer + no adding to top list
-		assertTrue("Right answer handled as wrong",brainContestService.answer("testSolution", user, addedContest, false));
+		assertTrue("Right answer handled as wrong",brainContestService.answer("testSolution", userInfo, addedContest, false));
 
 		assertEquals(1, addedContest.getTries().intValue());
 		Collection<AnswerInfo> answers = brainContestService.getAnswers(addedContest);		
 		//check case wrong answer + no adding to top list
-		assertFalse("Wrong answer handled as right",brainContestService.answer("xxx", user, addedContest, false));
+		assertFalse("Wrong answer handled as right",brainContestService.answer("xxx", userInfo, addedContest, false));
 
 		answers = brainContestService.getAnswers(addedContest);		
 		assertEquals(2, addedContest.getTries().intValue());
 		//check case wrong answer + adding to top list		
 
-		assertFalse("Wrong answer handled as right",brainContestService.answer("xxx", user, addedContest, true));
+		assertFalse("Wrong answer handled as right",brainContestService.answer("xxx", userInfo, addedContest, true));
 		assertEquals(3, addedContest.getTries().intValue());
 		//check case right answer + adding to top list		
 
-		assertTrue("Right answer handled as wrong",brainContestService.answer("testSolution", user, addedContest, true));
+		assertTrue("Right answer handled as wrong",brainContestService.answer("testSolution", userInfo, addedContest, true));
 		flush();
 
 		answers = brainContestService.getAnswers(addedContest);		

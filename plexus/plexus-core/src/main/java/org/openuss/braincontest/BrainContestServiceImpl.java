@@ -18,6 +18,7 @@ import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
@@ -164,7 +165,7 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 	 *      org.openuss.security.User,
 	 *      org.openuss.braincontest.BrainContestInfo, boolean)
 	 */
-	protected boolean handleAnswer(String answer, User user, BrainContestInfo contest, boolean topList)
+	protected boolean handleAnswer(String answer, UserInfo user, BrainContestInfo contest, boolean topList)
 			throws Exception {
 		Validate.notNull(answer, "Answer must not be null");
 		Validate.notNull(user, "User must not be null");
@@ -174,7 +175,7 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 
 		// TODO findByContestAndSolver should only return one instance
 		// There fore the answer id is a composite id of contest and solver
-		List<Answer> checkIfAnswered = getAnswerDao().findByContestAndSolver(user, bc);
+		List<Answer> checkIfAnswered = getAnswerDao().findByContestAndSolver(getSecurityService().getUserObject(user), bc);
 		if (checkIfAnswered.size() > 0) {
 			throw new BrainContestApplicationException("braincontest_message_user_correct_answer");
 		}
@@ -184,7 +185,7 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 		if (valid && topList) {
 			Answer answerObject = Answer.Factory.newInstance();
 			answerObject.setAnsweredAt(new Date(System.currentTimeMillis()));
-			answerObject.setSolver(user);
+			answerObject.setSolver(getSecurityService().getUserObject(user));
 			bc.addAnswer(answerObject);
 		}
 		getBrainContestDao().update(bc);

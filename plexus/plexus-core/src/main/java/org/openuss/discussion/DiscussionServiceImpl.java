@@ -41,7 +41,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Topic topic = Topic.Factory.newInstance();
 		topic.setReadOnly(false);
 
-		topic.setSubmitter(getSecurityService().getUserByName(postInfo.getSubmitter()));
+		topic.setSubmitter(getSecurityService().getUserObject(getSecurityService().getUserByName(postInfo.getSubmitter())));
 		Forum forum = getForumDao().load(forumInfo.getId());
 		// TODO define a add topic method in forum 
 		forum.getTopics().add(topic);
@@ -120,7 +120,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		
 		Post post = getPostDao().postInfoToEntity(postInfo);
 		
-		post.setSubmitter(getSecurityService().getUserByName(postInfo.getSubmitter()));
+		post.setSubmitter(getSecurityService().getUserObject(getSecurityService().getUserByName(postInfo.getSubmitter())));
 
 		addPostToTopicAndPersist(topic, post);
 		
@@ -196,7 +196,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Post post = getPostDao().load(postInfo.getId());
 		post.setText(postInfo.getText());
 		post.setTitle(postInfo.getTitle());
-		post.setEditor(getSecurityService().getUserByName(postInfo.getEditor()));
+		post.setEditor(getSecurityService().getUserObject(getSecurityService().getUserByName(postInfo.getEditor())));
 		post.setLastModification(postInfo.getLastModification());
 		getPostDao().update(post);
 		
@@ -269,7 +269,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		if (forum == null) {
 			return new ArrayList<TopicInfo>();
 		} else {
-			List <TopicInfo> topics = getTopicDao().loadTopicsWithViewState(forum, getSecurityService().getCurrentUser());
+			List <TopicInfo> topics = getTopicDao().loadTopicsWithViewState(forum, getSecurityService().getUserObject(getSecurityService().getCurrentUser()));
 			Collections.sort(topics, new TopicInfoComparator());
 			return topics;
 		}
@@ -283,7 +283,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Validate.notNull(topic.getId());
 		DiscussionWatch dw = DiscussionWatch.Factory.newInstance();
 		dw.setTopic(getTopicDao().load(topic.getId()));
-		dw.setUser(getSecurityService().getCurrentUser());
+		dw.setUser(getSecurityService().getUserObject(getSecurityService().getCurrentUser()));
 		getDiscussionWatchDao().create(dw);
 	}
 
@@ -295,7 +295,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Validate.notNull(forum.getId());
 		ForumWatch fw = ForumWatch.Factory.newInstance();
 		fw.setForum(getForumDao().load(forum.getId()));
-		fw.setUser(getSecurityService().getCurrentUser());
+		fw.setUser(getSecurityService().getUserObject(getSecurityService().getCurrentUser()));
 		getForumWatchDao().create(fw);
 	}
 
@@ -306,7 +306,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Validate.notNull(topic);
 		Validate.notNull(topic.getId());
 		Topic t = getTopicDao().load(topic.getId());
-		DiscussionWatch dw = getDiscussionWatchDao().findByTopicAndUser(t, getSecurityService().getCurrentUser());
+		DiscussionWatch dw = getDiscussionWatchDao().findByTopicAndUser(t, getSecurityService().getUserObject(getSecurityService().getCurrentUser()));
 		getDiscussionWatchDao().remove(dw);
 	}
 
@@ -317,7 +317,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Validate.notNull(forum);
 		Validate.notNull(forum.getId());
 		Forum f = getForumDao().load(forum.getId());
-		ForumWatch fw = getForumWatchDao().findByUserAndForum(getSecurityService().getCurrentUser(), f);
+		ForumWatch fw = getForumWatchDao().findByUserAndForum(getSecurityService().getUserObject(getSecurityService().getCurrentUser()), f);
 		getForumWatchDao().remove(fw);
 	}
 
@@ -408,14 +408,14 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	protected boolean handleWatchesForum(ForumInfo forum) throws Exception {
 		Validate.notNull(forum);
 		Validate.notNull(forum.getId());
-		return (getForumWatchDao().findByUserAndForum(getSecurityService().getCurrentUser(), getForumDao().load(forum.getId())) != null);
+		return (getForumWatchDao().findByUserAndForum(getSecurityService().getUserObject(getSecurityService().getCurrentUser()), getForumDao().load(forum.getId())) != null);
 	}
 
 	@Override
 	protected boolean handleWatchesTopic(TopicInfo topic) throws Exception {
 		Validate.notNull(topic);
 		Validate.notNull(topic.getId());
-		return (getDiscussionWatchDao().findByTopicAndUser(getTopicDao().load(topic.getId()), getSecurityService().getCurrentUser()) != null);
+		return (getDiscussionWatchDao().findByTopicAndUser(getTopicDao().load(topic.getId()), getSecurityService().getUserObject(getSecurityService().getCurrentUser())) != null);
 	}
 	
 	@SuppressWarnings("unchecked")

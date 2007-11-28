@@ -12,9 +12,7 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
 import org.openuss.framework.web.jsf.controller.BaseBean;
-import org.openuss.security.User;
-import org.openuss.security.UserContact;
-import org.openuss.security.UserPreferences;
+import org.openuss.security.UserInfo;
 
 /**
  * Abstract BasePage  
@@ -35,7 +33,7 @@ public abstract class BasePage extends BaseBean {
 	protected DesktopDao desktopDao;
 	
 	@Property(value = "#{sessionScope.user}")
-	protected User user;
+	protected UserInfo user;
 	
 	@Property(value = "#{breadcrumbs}")
 	protected BreadCrumbs breadcrumbs;
@@ -67,9 +65,7 @@ public abstract class BasePage extends BaseBean {
 	@Prerender
 	public void prerender() throws Exception {
 		if ((user!=null)&&(user.getId()==null)){	
-			user = User.Factory.newInstance();
-			user.setPreferences(UserPreferences.Factory.newInstance());
-			user.setContact(UserContact.Factory.newInstance());
+			user = new UserInfo();
 			setSessionBean(Constants.USER, user);
 		}
 	}
@@ -106,11 +102,11 @@ public abstract class BasePage extends BaseBean {
 		this.desktopService2 = desktopService2;
 	}
 
-	public User getUser() {
+	public UserInfo getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(UserInfo user) {
 		this.user = user;
 	}
 

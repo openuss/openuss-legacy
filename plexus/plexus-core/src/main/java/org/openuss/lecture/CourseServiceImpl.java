@@ -16,6 +16,7 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.system.SystemProperties;
 
@@ -165,7 +166,9 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		if (member == null) {
 			member = CourseMember.Factory.newInstance();
 			course = getCourseDao().load(course.getId());
-			user = getSecurityService().getUser(user.getId());
+			UserInfo userInfo = new UserInfo();
+			userInfo.setId(user.getId());
+			user = getSecurityService().getUserObject(userInfo);
 			member.setCourse(course);
 			member.setUser(user);
 		}
@@ -189,7 +192,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("coursename", "" + member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")");
 		getMessageService().sendMessage(member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")",
-				"course.application.subject", "courseapplicationapply", parameters, member.getUser());
+				"course.application.subject", "courseapplicationapply", parameters, getSecurityService().getUser(member.getUser().getId()));
 	}
 
 	private void persistParticipantWithPermissions(CourseMember participant) {
@@ -215,32 +218,32 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("coursename", "" + member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")");
 		getMessageService().sendMessage(member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")",
-				"course.application.subject", "courseapplicationreject", parameters, member.getUser());
+				"course.application.subject", "courseapplicationreject", parameters, getSecurityService().getUser(member.getUser().getId()));
 	}
 
 	@Override
-	protected void handleAddAspirant(CourseInfo course, User user) throws Exception {
-		CourseMember aspirant = retrieveCourseMember(getCourseDao().courseInfoToEntity(course), user);
+	protected void handleAddAspirant(CourseInfo course, UserInfo user) throws Exception {
+		CourseMember aspirant = retrieveCourseMember(getCourseDao().courseInfoToEntity(course), getSecurityService().getUserObject(user));
 		aspirant.setMemberType(CourseMemberType.ASPIRANT);
 		getCourseMemberDao().create(aspirant);
 	}
 
 	@Override
-	protected void handleAddAssistant(CourseInfo course, User user) throws Exception {
-		CourseMember assistant = retrieveCourseMember(getCourseDao().courseInfoToEntity(course), user);
+	protected void handleAddAssistant(CourseInfo course, UserInfo user) throws Exception {
+		CourseMember assistant = retrieveCourseMember(getCourseDao().courseInfoToEntity(course), getSecurityService().getUserObject(user));
 		assistant.setMemberType(CourseMemberType.ASSISTANT);
 		getCourseMemberDao().create(assistant);
 	}
 
 	@Override
-	protected void handleAddParticipant(CourseInfo course, User user) throws Exception {
-		CourseMember participant = retrieveCourseMember(getCourseDao().courseInfoToEntity(course), user);
+	protected void handleAddParticipant(CourseInfo course, UserInfo user) throws Exception {
+		CourseMember participant = retrieveCourseMember(getCourseDao().courseInfoToEntity(course), getSecurityService().getUserObject(user));
 		persistParticipantWithPermissions(participant);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void handleApplyUser(CourseInfo courseInfo, User user) throws Exception {
+	protected void handleApplyUser(CourseInfo courseInfo, UserInfo user) throws Exception {
 		Validate.notNull(user, "Parameter user must not be null.");
 		Validate.notNull(courseInfo, "Parameter courseInfo must not be null.");
 		Validate.notNull(courseInfo.getId(), "Parameter courseInfo.id must not be null.");
@@ -250,7 +253,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 			List<User> recipients = new ArrayList<User>();
 			if (assistants != null && assistants.size() != 0) {
 				for (CourseMemberInfo member : assistants) {
-					recipients.add(getSecurityService().getUser(member.getUserId()));
+					recipients.add(getSecurityService().getUserObject(member.getUserId()));
 				}
 				// FIXME - link should be configured from outside the core component
 				String link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
@@ -261,17 +264,17 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 				getMessageService().sendMessage(course.getName(), "course.application.subject", "courseapplication",
 						parameters, recipients);
 			}
-			addAspirant(course, user);
+			addAspirant(course, getSecurityService().getUserObject(user));
 		} else {
 			throw new CourseApplicationException("message_error_course_accesstype_is_not_application");
 		}
 	}
 
 	@Override
-	protected void handleApplyUserByPassword(String password, CourseInfo course, User user) throws Exception {
+	protected void handleApplyUserByPassword(String password, CourseInfo course, UserInfo user) throws Exception {
 		Course originalCourse = getCourseDao().courseInfoToEntity(course);
 		if (originalCourse.getAccessType() == AccessType.PASSWORD && originalCourse.isPasswordCorrect(password)) {
-			addParticipant(originalCourse, user);
+			addParticipant(originalCourse, getSecurityService().getUserObject(user));
 		} else {
 			throw new CourseApplicationException("message_error_password_is_not_correct");
 		}
@@ -298,9 +301,9 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	}
 
 	@Override
-	protected CourseMemberInfo handleGetMemberInfo(CourseInfo course, User user) throws Exception {
+	protected CourseMemberInfo handleGetMemberInfo(CourseInfo course, UserInfo user) throws Exception {
 		return (CourseMemberInfo) getCourseMemberDao().findByUserAndCourse(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
-				user, getCourseDao().courseInfoToEntity(course));
+				getSecurityService().getUserObject(user), getCourseDao().courseInfoToEntity(course));
 	}
 
 	@SuppressWarnings("unchecked")

@@ -10,7 +10,7 @@ import java.util.Locale;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.openuss.security.SecurityService;
-import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 
@@ -116,9 +116,9 @@ public abstract class AbstractFeed implements MessageSourceAware {
 	}
 
 	protected Locale locale() {
-		User user = getSecurityService().getCurrentUser();
+		UserInfo user = getSecurityService().getCurrentUser();
 		if (user != null) {
-			return new Locale(user.getLocale());
+			return new Locale(user.getPreferences().getLocale());
 		} else {
 			return Locale.getDefault();
 		}

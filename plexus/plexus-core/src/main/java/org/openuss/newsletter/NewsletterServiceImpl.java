@@ -17,6 +17,7 @@ import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.foundation.DomainObject;
 import org.openuss.messaging.JobInfo;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
@@ -38,13 +39,14 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 	 * @see org.openuss.newsletter.NewsletterService#subscribe(org.openuss.foundation.DomainObject,
 	 *      org.openuss.security.User)
 	 */
-	protected void handleSubscribe(NewsletterInfo newsletter, User user) throws java.lang.Exception {
+	protected void handleSubscribe(NewsletterInfo newsletter, UserInfo user) throws java.lang.Exception {
 		Newsletter ml = loadNewsletter(newsletter);
-		Subscriber subscriber = getSubscriberDao().findByUserAndNewsletter(user, ml);
+		User userObject = getSecurityService().getUserObject(user);
+		Subscriber subscriber = getSubscriberDao().findByUserAndNewsletter(userObject, ml);
 		if (subscriber == null) {
 			subscriber = Subscriber.Factory.newInstance();
 			subscriber.setNewsletter(ml);
-			subscriber.setUser(user);
+			subscriber.setUser(userObject);
 		}
 		getSubscriberDao().create(subscriber);
 	}
@@ -53,9 +55,9 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 	 * @see org.openuss.newsletter.NewsletterService#unsubscribe(org.openuss.foundation.DomainObject,
 	 *      org.openuss.security.User)
 	 */
-	protected void handleUnsubscribe(NewsletterInfo newsletter, User user) throws java.lang.Exception {
+	protected void handleUnsubscribe(NewsletterInfo newsletter, UserInfo user) throws java.lang.Exception {
 		Newsletter ml = loadNewsletter(newsletter);
-		Subscriber subscriber = getSubscriberDao().findByUserAndNewsletter(user, ml);
+		Subscriber subscriber = getSubscriberDao().findByUserAndNewsletter(getSecurityService().getUserObject(user), ml);
 		if (subscriber != null) {
 			getSubscriberDao().remove(subscriber);
 		}
@@ -124,7 +126,7 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 		Validate.notNull(newsLetterInfo,"Parameter NewsLetterInfo must not be null.");
 		Validate.notNull(newsLetterInfo.getId(), "Parameter NewsLetterInfo must contain a valid id.");
 		List<User> recipients = new ArrayList<User>();
-		recipients.add(getSecurityService().getCurrentUser());
+		recipients.add(getSecurityService().getUserObject(getSecurityService().getCurrentUser()));
 		newsLetterInfo = getNewsletter(new DefaultDomainObject(newsLetterInfo.getDomainIdentifier()));
 		if (newsLetterInfo != null) {
 			getMessageService().sendMessage(newsLetterInfo.getName(),				
@@ -211,7 +213,7 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 		//supposed that there is just 1 newsletter per domain object 
 		Newsletter newsletter = (Newsletter)newsletters.get(0);
 		NewsletterInfo info = getNewsletterDao().toNewsletterInfo(newsletter);
-		info.setSubscribed(getSubscriberDao().findByUserAndNewsletter(getSecurityService().getCurrentUser(), newsletter)!=null);
+		info.setSubscribed(getSubscriberDao().findByUserAndNewsletter(getSecurityService().getUserObject(getSecurityService().getCurrentUser()), newsletter)!=null);
 		return info;
 	}
 
