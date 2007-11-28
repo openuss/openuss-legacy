@@ -14,6 +14,6 @@ import org.openuss.search.DiscussionSearchDomainResult;
  */
 public interface DiscussionSearcher {
 	
-	public List<DiscussionSearchDomainResult> search(String textToSearch, Long courseId, boolean onlyInTitle);
+	public List<DiscussionSearchDomainResult> search(String textToSearch, Long courseId, boolean onlyInTitle, String submitter);
 
 }
