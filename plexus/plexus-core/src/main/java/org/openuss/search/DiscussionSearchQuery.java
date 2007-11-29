@@ -55,7 +55,7 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 			domainResult.setId(Long.parseLong(document.get(DomainIndexer.IDENTIFIER)));
 			domainResult.setModified(DateTools.stringToDate(document.get(DomainIndexer.MODIFIED)));
 			domainResult.setPostId(document.get(DomainIndexer.POST_IDENTIFIER));			
-			domainResult.setCourseId(document.get(DomainIndexer.POST_COURSE_IDENTIFIER));
+			domainResult.setCourseId(document.get(DomainIndexer.COURSE_IDENTIFIER));
 		} catch (java.text.ParseException e) {
 			logger.error(e);
 		}
@@ -84,14 +84,14 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 		
 		if(courseId != null && courseId > 0){
 			queryString.append(" ");
-			queryString.append(DomainIndexer.POST_COURSE_IDENTIFIER);
+			queryString.append(DomainIndexer.COURSE_IDENTIFIER);
 			queryString.append(":");
 			queryString.append(courseId.toString());
 		}
 		
 		if(submitter != null && !submitter.equals("")){
 			queryString.append(" ");
-			queryString.append(DomainIndexer.POST_SUBMITTER);
+			queryString.append(DomainIndexer.POST_SUBMITTER_NAME);
 			queryString.append(":");
 			queryString.append(submitter);
 		}
