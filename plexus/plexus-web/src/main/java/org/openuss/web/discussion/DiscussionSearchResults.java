@@ -39,7 +39,9 @@ public class DiscussionSearchResults implements Serializable {
 	
 	@Property(value = "#{courseInfo}")	
 	protected CourseInfo courseInfo;
-		
+	
+	//TODO nochmals checken ob es direkt mit property geht
+	//@Property(value = "#{courseInfo.id}")
 	protected Long courseId;
 	
 	private List<SelectItem> postIds;

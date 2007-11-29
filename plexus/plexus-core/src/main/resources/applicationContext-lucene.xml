@@ -172,7 +172,7 @@
 	</bean>	
 
 	<!-- discussion search -->
-	<bean id="discussionSearcher" class="org.openuss.search.DiscussionSearchQuery" scope="prototype">
+	<bean id="discussionSearcher" class="org.openuss.discussion.DiscussionSearchQuery" scope="prototype">
 		<constructor-arg ref="discussionSearcherFactory"/>
 		<constructor-arg ref="discussionAnalyzer" />
 	</bean>

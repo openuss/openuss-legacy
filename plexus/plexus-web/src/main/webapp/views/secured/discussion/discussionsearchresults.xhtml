@@ -11,27 +11,32 @@
 
 	<!-- discussion search result page  -->
 	<!--  <t:div style="#{discussion_search_results.visibilityResultTable}"> -->
-		<plexus:dataTable  
+		<!-- 
+		
+		<plexus:dataTable
 			id="discussions" 
 			label="#{msg.search_result_header}" 
-			value="views$secured$discussion$discussions.data"
+			value="views$secured$discussion$discussionssearch.resultProvider"
 			var="result"			
 			rows="20">
 			<t:column rendered="true" styleClass="col_min_center">
-				<img src="#{theme.imagesPath}/icons/viewstate1.png" alt="#{result.title}" title="#{result.title}" />
+				<img src="#{theme.imagesPath}/icons/viewstate1.png" alt="#{result.id}" title="#{result.id}" />
 			</t:column>
 
+		
 			<t:column styleClass="col_max_left">
 				<div class="institute_info">
 					<o:link value="/views/secured/discussion/discussionthread.faces" rendered="true">
 		       			<f:param name="course" value="#{courseInfo.id}"/>
-		    			<f:param name="topic" value="#{result.id}"/>
+		    			<f:param name="topic" value="#{result.postId}"/>
 					 	<h:outputText value="#{result.title}" styleClass="header_font_normal"/>					 							 						 
 		    		</o:link>
 	    		</div>
-			</t:column>	
+			</t:column>
+			 	
 				
 		</plexus:dataTable>
+		-->
 		
 	<!--  </t:div> -->
 
