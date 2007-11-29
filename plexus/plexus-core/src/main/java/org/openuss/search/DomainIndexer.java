@@ -3,12 +3,18 @@ package org.openuss.search;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.apache.lucene.index.Term;
+import org.openuss.discussion.Post;
 import org.openuss.foundation.DomainObject;
+import org.springmodules.lucene.index.factory.IndexFactory;
 import org.springmodules.lucene.index.support.LuceneIndexSupport;
 
 /**
  * Domain Index Command
  * @author Ingo Dueppe
+ * @author Jürgen de Braaf
+ * @author Thomas Jansing
+ * @author Peter Schuh
+ * @author Tobias Brockmann
  */
 public abstract class DomainIndexer extends LuceneIndexSupport {
 
@@ -36,13 +42,18 @@ public abstract class DomainIndexer extends LuceneIndexSupport {
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION = 3;
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE = 4;
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_COURSE = 5;
-
-	// discussion search
+	
+	// Discussion Search and Indexing
+	// Discussion Indexing
+	public static final String CREATED = "CREATED";	
+	public static final String POST_SUBMITTER_IDENTIFIER = "SUBMITTER_IDENTIFIER";
+	public static final String POST_SUBMITTER_NAME = "SUBMITTER_NAME";
+	public static final String TOPIC_IDENTIFIER = "TOPIC_IDENTIFIER";
+	public static final String FORUM_IDENTIFIER = "FORUM_IDENTIFIER";
+	// Discussion Search	
 	public static final String POST_TITLE = "POST_TITLE";
-	public static final String POST_COURSE_IDENTIFIER = "POST_COURSE_IDENTIFIER";
-	public static final String POST_IDENTIFIER = "POST_IDENTIFIER";
-	public static final String POST_SUBMITTER = "POST_SUBMITTER";	
-		
+	public static final String COURSE_IDENTIFIER = "COURSE_IDENTIFIER";
+	public static final String POST_IDENTIFIER = "POST_IDENTIFIER";			
 	
 	private DomainObject domainObject;
 	
@@ -57,10 +68,10 @@ public abstract class DomainIndexer extends LuceneIndexSupport {
 	public abstract void update();
 
 	/**
-	 * Delete the index entry of the domain object
+	 * Delete the index entry of the domain object in lecture index
 	 */
 	public void delete() {
-		logger.debug("Method delete: delete index entry for domain object");
+		logger.debug("Method delete: delete index entry for domain object (unequal to post)");
 		Validate.notNull(getDomainObject(),"Field domainObject must not be null");
 		logger.debug("deleting domain object ["+getDomainObject().getId()+"] from index");
 		Term term = new Term(IDENTIFIER, String.valueOf(getDomainObject().getId()));
@@ -80,5 +91,4 @@ public abstract class DomainIndexer extends LuceneIndexSupport {
 	public void setDomainObject(DomainObject domainObject) {
 		this.domainObject = domainObject;
 	}
-
 }
