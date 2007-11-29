@@ -93,8 +93,8 @@ public class DiscussionIndexer extends DomainIndexer {
 		document.add(new Field(MODIFIED, 
 				DateTools.dateToString(post.getLastModification(), Resolution.MINUTE), Field.Store.YES,
 				Field.Index.UN_TOKENIZED));
-		document.add(new Field(SUBMITTER_IDENTIFIER, String.valueOf(post.getSubmitter().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
-		document.add(new Field(SUBMITTER_NAME, post.getSubmitterName(), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(POST_SUBMITTER_IDENTIFIER, String.valueOf(post.getSubmitter().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(POST_SUBMITTER_NAME, post.getSubmitterName(), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(TOPIC_IDENTIFIER, String.valueOf(post.getTopic().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(FORUM_IDENTIFIER, String.valueOf(post.getTopic().getForum().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(POST_TITLE, post.getTitle(), Field.Store.YES, Field.Index.TOKENIZED));
