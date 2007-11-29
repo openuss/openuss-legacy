@@ -23,7 +23,8 @@ public class DiscussionSearchDomainResultBean implements DiscussionSearchDomainR
 	private String title;
 	private String submitter;
 	private String courseId;
-	private String postId;	
+	private String postId;
+	private String topicId;
 	
 	private float score;
 
@@ -130,6 +131,14 @@ public class DiscussionSearchDomainResultBean implements DiscussionSearchDomainR
 		//TODO Debug Ausgabe
 		return "DEBUG: "		
 					+"CourseID: "+courseId;
+	}
+
+	public String getTopicId() {
+		return topicId;
+	}
+
+	public void setTopicId(String topicId) {
+		this.topicId = topicId;
 	}
 
 }

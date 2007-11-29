@@ -56,6 +56,7 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 			domainResult.setModified(DateTools.stringToDate(document.get(DomainIndexer.MODIFIED)));
 			domainResult.setPostId(document.get(DomainIndexer.POST_IDENTIFIER));			
 			domainResult.setCourseId(document.get(DomainIndexer.COURSE_IDENTIFIER));
+			domainResult.setTopicId(document.get(DomainIndexer.TOPIC_IDENTIFIER));			
 	
 			logger.debug("score: "+score);
 			logger.debug("POST_TITLE: "+document.get(DomainIndexer.POST_TITLE));
@@ -63,6 +64,7 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 			logger.debug("MODIFIED: "+document.get(DomainIndexer.MODIFIED));
 			logger.debug("POST_IDENTIFIER: "+document.get(DomainIndexer.POST_IDENTIFIER));
 			logger.debug("COURSE_IDENTIFIER: "+document.get(DomainIndexer.COURSE_IDENTIFIER));
+			logger.debug("TOPIC_IDENTIFIER: "+document.get(DomainIndexer.TOPIC_IDENTIFIER));
 			
 			
 		} catch (java.text.ParseException e) {
