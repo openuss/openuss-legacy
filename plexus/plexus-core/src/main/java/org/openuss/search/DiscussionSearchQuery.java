@@ -51,10 +51,11 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 		try {
 			domainResult.setScore(score);
 			
-			domainResult.setTitle(document.get(DomainIndexer.DISCUSSION_TITLE));			
+			domainResult.setTitle(document.get(DomainIndexer.POST_TITLE));			
 			domainResult.setId(Long.parseLong(document.get(DomainIndexer.IDENTIFIER)));
 			domainResult.setModified(DateTools.stringToDate(document.get(DomainIndexer.MODIFIED)));
 			domainResult.setPostId(document.get(DomainIndexer.POST_IDENTIFIER));			
+			domainResult.setCourseId(document.get(DomainIndexer.POST_COURSE_IDENTIFIER));
 		} catch (java.text.ParseException e) {
 			logger.error(e);
 		}
@@ -75,7 +76,7 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 		if(!onlyInTitle){
 			queryString.append(textToSearch);
 		} else {
-			queryString.append(DomainIndexer.DISCUSSION_TITLE);
+			queryString.append(DomainIndexer.POST_TITLE);
 			queryString.append(":(");
 			queryString.append(textToSearch);
 			queryString.append(")");
@@ -83,11 +84,18 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 		
 		if(courseId != null && courseId > 0){
 			queryString.append(" ");
-			queryString.append(DomainIndexer.COURSE_IDENTIFIER);
+			queryString.append(DomainIndexer.POST_COURSE_IDENTIFIER);
 			queryString.append(":");
 			queryString.append(courseId.toString());
 		}
-								
+		
+		if(submitter != null && !submitter.equals("")){
+			queryString.append(" ");
+			queryString.append(DomainIndexer.POST_SUBMITTER);
+			queryString.append(":");
+			queryString.append(submitter);
+		}
+		
 		String searchQuery = queryString.toString();
 		logger.debug("Discussion Search - search query: "+searchQuery);
 		
