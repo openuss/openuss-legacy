@@ -46,8 +46,8 @@ public abstract class DomainIndexer extends LuceneIndexSupport {
 	// Discussion Search and Indexing
 	// Discussion Indexing
 	public static final String CREATED = "CREATED";	
-	public static final String POST_SUBMITTER_IDENTIFIER = "SUBMITTER_IDENTIFIER";
-	public static final String POST_SUBMITTER_NAME = "SUBMITTER_NAME";
+	public static final String POST_SUBMITTER_IDENTIFIER = "POST_SUBMITTER_IDENTIFIER";
+	public static final String POST_SUBMITTER_NAME = "POST_SUBMITTER_NAME";
 	public static final String TOPIC_IDENTIFIER = "TOPIC_IDENTIFIER";
 	public static final String FORUM_IDENTIFIER = "FORUM_IDENTIFIER";
 	// Discussion Search	
