@@ -532,34 +532,34 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		Institute institute2 = testUtility.createUniqueInstituteInDB();
 		
 		// Count Courses
-		List<Course> coursesInstitute1Ênabled = new ArrayList<Course>();
+		List<Course> coursesInstitute1Enabled = new ArrayList<Course>();
 		List<Course> coursesInstitute1Disabled = new ArrayList<Course>();
 		for (CourseType courseType : institute1.getCourseTypes()) {
 			for (Course course : courseType.getCourses()) {
 				if (course.isEnabled()) {
-					coursesInstitute1Ênabled.add(course);
+					coursesInstitute1Enabled.add(course);
 				}
 				else {
 					coursesInstitute1Disabled.add(course);
 				}
 			}
 		}
-		int countInstitute1EnabledCourses = coursesInstitute1Ênabled.size();
+		int countInstitute1EnabledCourses = coursesInstitute1Enabled.size();
 		int countInstitute1DisabledCourses = coursesInstitute1Disabled.size();
 		
 		List<Course> coursesInstitute2Disabled = new ArrayList<Course>();
-		List<Course> coursesInstitute2Ênabled = new ArrayList<Course>();
+		List<Course> coursesInstitute2Enabled = new ArrayList<Course>();
 		for (CourseType courseType : institute2.getCourseTypes()) {
 			for (Course course : courseType.getCourses()) {
 				if (course.isEnabled()) {
-					coursesInstitute2Ênabled.add(course);
+					coursesInstitute2Enabled.add(course);
 				}
 				else {
 					coursesInstitute2Disabled.add(course);
 				}
 			}
 		}
-		int countInstitute2EnabledCourses = coursesInstitute2Ênabled.size();
+		int countInstitute2EnabledCourses = coursesInstitute2Enabled.size();
 		coursesInstitute2Disabled.size();
 		
 		// Create Courses
