@@ -1,6 +1,5 @@
 package org.openuss.discussion;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -99,13 +98,14 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 		String searchQuery = queryString.toString();
 		logger.debug("Discussion Search - search query: "+searchQuery);
 		
-		// TODO Dummy überarbeiten
+		/*
 		
 		List<DiscussionSearchDomainResult> testHitsList = new ArrayList<DiscussionSearchDomainResult>(null);
 		
 		return testHitsList;
+		*/
 		
-		//return this.search(searchQuery);
+		return this.search(searchQuery);
 		
 		
 		
