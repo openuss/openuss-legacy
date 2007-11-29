@@ -37,4 +37,6 @@ public interface DiscussionSearchDomainResult extends DomainObject {
 	public String getCourseId();
 	
 	public String getSubmitter();
+	
+	public String getTopicId();
 }
