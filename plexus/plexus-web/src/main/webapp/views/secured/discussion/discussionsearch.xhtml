@@ -57,10 +57,11 @@
 
 						<h:outputText value="Author:" styleClass="field_label"/>	
 					 	<h:inputText id="discussion_search_term_submitter" styleClass="field_inline" value="#{discussion_search_results.submitter}"/>
-						
-						<!-- <h:inputHidden id="discussion_search_courseId" styleClass="field_inline" value="#{discussion_search_results.courseId}"/>  -->
+					
 
-						<!-- 
+						<!--
+						 
+<h:inputHidden id="discussion_search_courseId" styleClass="field_inline" value="#{courseInfo.id}" binding="#{discussion_search_results.courseId}"/>						
 						
 						<h:outputText value="Zeitraum" styleClass="field_label"/>	
 					 	

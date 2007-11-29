@@ -79,7 +79,7 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	}
 	
 	public String search(){
-		logger.info("DiscussionMainPage - search");
+		logger.debug("DiscussionMainPage - search");
 		
 		return Constants.DISCUSSION_SEARCH;
 	}
@@ -102,7 +102,6 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	public DiscussionDataProvider getData() {
 		return data;
 	}
-
 
 	public void setData(DiscussionDataProvider data) {
 		this.data = data;

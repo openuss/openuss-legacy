@@ -8,7 +8,9 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.search.DiscussionSearchDomainResult;
 
 
@@ -34,7 +36,12 @@ public class DiscussionSearchResults implements Serializable {
 	private String submitter;
 	private boolean titleOnly;
 	private Long postId;
-	private Long courseId;	
+	
+	@Property(value = "#{courseInfo}")	
+	protected CourseInfo courseInfo;
+		
+	protected Long courseId;
+	
 	private List<SelectItem> postIds;
 	private List<SelectItem> courseIds;
 	
@@ -85,15 +92,24 @@ public class DiscussionSearchResults implements Serializable {
 	public void setPostId(Long postId) {
 		this.postId = postId;
 	}
-	
-		
-	public Long getCourseId() {
-		return courseId;
+			
+	public Long getCourseId() {	
+		return courseId;		
 	}
 
 	public void setCourseId(Long courseId) {
 		this.courseId = courseId;
 	}
+
+	public CourseInfo getCourseInfo() {
+		logger.debug("courseInfo.getId(): "+ courseInfo.getId());
+		return courseInfo;
+	}
+
+	public void setCourseInfo(CourseInfo courseInfo) {
+		this.courseInfo = courseInfo;
+	}
+
 
 	/**
 	 * generates the CSS tag which determines whether the result data table is displayed

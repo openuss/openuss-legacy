@@ -54,27 +54,27 @@ private static final Logger logger = Logger.getLogger(DiscussionSearchPage.class
 	 */
 	public String search() {
 		
-		logger.info("Starting method search");
+		logger.debug("Starting method search");
 		
 		logger.debug("txtToSearch: "+ discussionSearchResults.getTextToSearch());
-		logger.debug("courseId: "+ discussionSearchResults.getCourseId());
+		logger.debug("courseId: "+ discussionSearchResults.getCourseInfo().getId());
 		logger.debug("titleOnly: "+ discussionSearchResults.isTitleOnly());		
 		logger.debug("submitter: "+ discussionSearchResults.getSubmitter());
 		
 		List<DiscussionSearchDomainResult> searchResult = null;
 		if (StringUtils.isNotBlank(discussionSearchResults.getTextToSearch())) {
 			logger.debug("Discussion Search for "+discussionSearchResults.getTextToSearch());
-			
-			
+						
 			try {
 				searchResult = 	discussionSearcher.search(
 								discussionSearchResults.getTextToSearch(),
-								discussionSearchResults.getCourseId(),
+								discussionSearchResults.getCourseInfo().getId(),
 								discussionSearchResults.isTitleOnly(),
 								discussionSearchResults.getSubmitter()
 							);
 							discussionSearchResults.setHits(searchResult);
 				if(searchResult == null || searchResult.size() == 0){
+					logger.debug("search_no_matches_found");
 					getFacesContext().addMessage(null, new FacesMessage(i18n("search_no_matches_found")) );
 				}
 			} catch (LuceneSearchException ex) {
