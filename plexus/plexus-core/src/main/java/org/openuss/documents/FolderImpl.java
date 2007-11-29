@@ -24,8 +24,11 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 	 */
 	public void addFolderEntry(org.openuss.documents.FolderEntry entry) throws DocumentApplicationException {
 		if (!canAdd(entry)){
-			//TODO Throw different Exceptions for Wrong Name and Destroyed Hierarchy
-			throw new DocumentApplicationException("documents_folder_not_a_unique_filename");
+			if(!correctName(entry)){
+				throw new DocumentApplicationException("documents_folder_not_a_unique_filename");
+			} else {
+				throw new DocumentApplicationException("documents_operation_would_destroy_hierarchy");
+			}
 		}
 		if (getEntries() != null && entry != null) {
 			getEntries().add(entry);
