@@ -10,8 +10,8 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.openuss.discussion.DiscussionSearchDomainResult;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.search.DiscussionSearchDomainResult;
 
 
 /**
@@ -26,7 +26,7 @@ import org.openuss.search.DiscussionSearchDomainResult;
 @Bean(name="discussion_search_results", scope=Scope.SESSION)
 public class DiscussionSearchResults implements Serializable {
 	
-	private static final long serialVersionUID = 2703663293293922929L;
+	private static final long serialVersionUID = 2103663293293922929L;
 	
 	private static final Logger logger = Logger.getLogger(DiscussionSearchResults.class);
 	

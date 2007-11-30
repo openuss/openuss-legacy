@@ -12,12 +12,15 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.discussion.DiscussionSearchDomainResult;
 import org.openuss.discussion.DiscussionSearcher;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.search.DiscussionSearchDomainResult;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 import org.springmodules.lucene.search.LuceneSearchException;
 
 /**
@@ -30,7 +33,7 @@ import org.springmodules.lucene.search.LuceneSearchException;
  */
 @Bean(name = "views$secured$discussion$discussionsearch", scope = Scope.REQUEST)
 @View
-public class DiscussionSearchPage extends BasePage {
+public class DiscussionSearchPage extends AbstractDiscussionPage{
 	
 private static final Logger logger = Logger.getLogger(DiscussionSearchPage.class);
 	
@@ -40,12 +43,20 @@ private static final Logger logger = Logger.getLogger(DiscussionSearchPage.class
 	
 	@Property(value="#{discussion_search_results}")
 	private DiscussionSearchResults discussionSearchResults;
-	
+		
 	private DiscussionSearchResultDataProvider resultProvider = new DiscussionSearchResultDataProvider();	 
 	
 	@Prerender
-	public void prerender(){
-		breadcrumbs.loadExtendedSearchCrumbs();
+	public void prerender() throws Exception {	
+		super.prerender();
+		addPageCrumb();
+	}
+	
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setName(i18n("discussion_search"));
+		crumb.setHint(i18n("discussion_search"));
+		breadcrumbs.addCrumb(crumb);
 	}
 	
 	/**
@@ -100,7 +111,7 @@ private static final Logger logger = Logger.getLogger(DiscussionSearchPage.class
 		return Constants.DISCUSSION_SEARCH_RESULT;
 		
 	}		
-	
+		
 	public DiscussionSearchResultDataProvider getResultProvider() {
 		return resultProvider;
 	}

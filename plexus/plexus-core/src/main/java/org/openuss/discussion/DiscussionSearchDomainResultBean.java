@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.util.Date;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.openuss.search.DiscussionSearchDomainResult;
 
 /**
  * Value Object of DomainResult
@@ -16,7 +15,7 @@ import org.openuss.search.DiscussionSearchDomainResult;
  */
 public class DiscussionSearchDomainResultBean implements DiscussionSearchDomainResult {
 
-	private static final long serialVersionUID = 1297801100348861030L;
+	private static final long serialVersionUID = 3297801100348861030L;
 	
 	private Long id;
 	private Date modified;
@@ -130,7 +129,7 @@ public class DiscussionSearchDomainResultBean implements DiscussionSearchDomainR
 	public String getDebugInfo(){
 		//TODO Debug Ausgabe
 		return "DEBUG: "		
-					+"CourseID: "+courseId;
+					+"Hallo CourseID: "+courseId;
 	}
 
 	public String getTopicId() {

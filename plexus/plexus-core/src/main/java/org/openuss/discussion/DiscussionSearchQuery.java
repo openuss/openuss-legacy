@@ -12,7 +12,6 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.queryParser.QueryParser.Operator;
 import org.apache.lucene.search.Query;
 import org.openuss.lecture.LectureSearchQuery;
-import org.openuss.search.DiscussionSearchDomainResult;
 import org.openuss.search.DomainIndexer;
 import org.springmodules.lucene.search.factory.SearcherFactory;
 import org.springmodules.lucene.search.object.SimpleLuceneSearchQuery;

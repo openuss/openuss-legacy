@@ -1,4 +1,4 @@
-package org.openuss.search;
+package org.openuss.discussion;
 
 import java.util.Date;
 

@@ -10,34 +10,51 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<!-- discussion search result page  -->
-	<!--  <t:div style="#{discussion_search_results.visibilityResultTable}"> -->
-		<!-- 
-		
-		<plexus:dataTable
+	<t:div style="#{discussion_search_results.visibilityResultTable}">
+	
+	<plexus:dataTable
 			id="discussions" 
 			label="#{msg.search_result_header}" 
-			value="views$secured$discussion$discussionssearch.resultProvider"
+			value="views$secured$discussion$discussionsearch.resultProvider" 
 			var="result"			
 			rows="20">
-			<t:column rendered="true" styleClass="col_min_center">
-				<img src="#{theme.imagesPath}/icons/viewstate1.png" alt="#{result.id}" title="#{result.id}" />
-			</t:column>
 
-		
-			<t:column styleClass="col_max_left">
-				<div class="institute_info">
+			<t:column rendered="true" styleClass="col_min_center">
+					<img src="#{theme.imagesPath}/icons/viewstate0.png" alt="#{result.title}" title="#{result.title}" />
+			</t:column>
+			
+			<t:column rendered="true" styleClass="col_max_left">
 					<o:link value="/views/secured/discussion/discussionthread.faces" rendered="true">
+		       			<f:param name="topic" value="#{result.topicId}"/>
 		       			<f:param name="course" value="#{courseInfo.id}"/>
-		    			<f:param name="topic" value="#{result.postId}"/>
 					 	<h:outputText value="#{result.title}" styleClass="header_font_normal"/>					 							 						 
 		    		</o:link>
-	    		</div>
+		    </t:column>
+			
+			<!-- Debug Info below -->
+			<t:column rendered="true" styleClass="col_max_left">
+				    <h:outputText value=" 1) Relevanz: " />
+					<h:outputText value="#{result.formattedScore}" />
+				    <h:outputText value=" | 2) Title: " />
+					<h:outputText value="#{result.title}" />
+				    <h:outputText value=" | 3) Submitter: " />
+				    <h:outputText value="#{result.submitter}" />
+				    <h:outputText value=" | 4) Modified: " />
+				    <h:outputText value="#{result.modified}" />
+				    
+				    <t:htmlTag value="hr" style="width:500px; margin-left:0px; text-align:left;" />
+				    
+				    <h:outputText value=" 5) PostId: " />					
+				    <h:outputText value="#{result.postId}" />
+				    <h:outputText value=" | 6) CourseId: " />					
+				    <h:outputText value="#{result.courseId}" />
+				    <h:outputText value=" | 7) TopicId: " />					
+				    <h:outputText value="#{result.topicId}" />
+
 			</t:column>
-			 	
-				
-		</plexus:dataTable>
-		-->
-		
-	<!--  </t:div> -->
+
+	</plexus:dataTable>
+	
+	</t:div>
 
 </ui:composition>

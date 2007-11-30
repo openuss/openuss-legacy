@@ -2,7 +2,6 @@ package org.openuss.discussion;
 
 import java.util.List;
 
-import org.openuss.search.DiscussionSearchDomainResult;
 
 /**
  * Discussion Search Interface

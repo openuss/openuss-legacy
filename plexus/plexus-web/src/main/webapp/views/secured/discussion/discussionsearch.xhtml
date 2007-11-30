@@ -25,21 +25,23 @@
 	
 	<!-- text above will be ignored -->
 	
-	<f:view>
+
 	<ui:composition template="/views/layout/layout.xhtml">
 
 		<ui:define name="navigation">
 			<ui:include src="/views/commons/navigation/course.xhtml" />
 		</ui:define>
-	
+		<ui:define name="title">
+			<h:outputText value="#{msg.course_main_title} - #{courseInfo.shortcut}" />
+		</ui:define>
   		<ui:define name="content">
-
-			<h:form id="DiscussionSearchForm" enctype="multipart/form-data">
+  		
+			<h:form id="discussionThreadTableView" enctype="multipart/form-data">
 	  			<o:block label="#{msg.discussion_search}" styleClass="form_box">
 
 					<h:panelGrid border="0" columns="2" footerClass="footer_left">
-						<h:outputText value="Suchbegriff:" styleClass="field_label" style="vertical-align:top;" />
-					 	<h:inputText id="discussion_search_term_txtToSearch" styleClass="field_inline" value="#{discussion_search_results.textToSearch}" />
+						<h:outputText value="#{msg.extended_search_search_term}" styleClass="field_label" style="vertical-align:top;" />
+					 	<h:inputText id="discussion_search_search_term" styleClass="field_inline" value="#{discussion_search_results.textToSearch}" />
 						
 						<h:outputText value=" "/>
 						<h:panelGrid border="0" columns="1">
@@ -55,8 +57,8 @@
 							<t:htmlTag value="hr" style="width:500px; margin-left:10px; text-align:left;" />
 						</h:panelGroup>
 
-						<h:outputText value="Author:" styleClass="field_label"/>	
-					 	<h:inputText id="discussion_search_term_submitter" styleClass="field_inline" value="#{discussion_search_results.submitter}"/>
+						<h:outputText value="#{msg.discussion_search_submitter}" styleClass="field_label"/>	
+					 	<h:inputText id="discussion_search_submitter" styleClass="field_inline" value="#{discussion_search_results.submitter}"/>
 					
 
 						<!--
@@ -93,7 +95,7 @@
 						styleClass="button" />				
 					<h:commandButton 
 						action="#{views$secured$discussion$discussionnew.cancel}"
-						value="${msg.discussion_search_button_cancel}"						 
+						value="#{msg.discussion_search_button_cancel}"						 
 						immediate="true" 
 						styleClass="button"/>
 				</o:block>
@@ -104,7 +106,6 @@
 			</h:form>
   		</ui:define>
 	</ui:composition>
-	<!-- text above will be ignored -->
-	</f:view>
+
 	</body>
 </html>
