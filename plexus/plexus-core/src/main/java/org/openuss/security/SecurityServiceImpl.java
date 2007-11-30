@@ -74,7 +74,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 			user.setProfile(UserProfile.Factory.newInstance());
 		}
 		if (isNonExistingEmailAddress(user, user.getEmail()) != null) {
-			throw new SecurityServiceException("Email adress already in use (shold not occur -> validator bypassed?) "+user.getEmail());
+			throw new SecurityServiceException("Email adress already in use (should not occur -> validator bypassed?) "+user.getEmail());
 		}
 		
 		

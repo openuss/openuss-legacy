@@ -9,6 +9,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -22,10 +23,11 @@ import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.web.Constants;
+import org.openuss.web.course.CourseShortcutDelegate;
 
 /**
  * CourseType Administration Page
- * @author Ingo Düppe
+ * @author Ingo Dï¿½ppe
  * @author Kai Stettner
  */
 @Bean(name = "views$secured$lecture$institutecourses", scope = Scope.REQUEST)
@@ -54,6 +56,17 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	private Long departmentId;
 	
 	private boolean moving = false;
+	
+	@Property(value = "#{courseShortcutDelegate}")
+	protected CourseShortcutDelegate courseShortcutDelegate;
+
+	public CourseShortcutDelegate getCourseShortcutDelegate() {
+		return courseShortcutDelegate;
+	}
+
+	public void setCourseShortcutDelegate(CourseShortcutDelegate courseShortcutDelegate) {
+		this.courseShortcutDelegate = courseShortcutDelegate;
+	}
 
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
@@ -227,34 +240,12 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 		return Constants.COURSE_CONFIRM_REMOVE_PAGE;
 	}
 
-	/**
-	 * Bookmarks the selected course on the MyUni Page.
-	 * 
-	 * @return Outcome
-	 */
 	public String shortcutCourse() {
-		try {
-			CourseInfo currentCourse = currentCourse();
-			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
-			addMessage(i18n("desktop_command_add_course_succeed"));
-			return Constants.SUCCESS;
-		} catch (DesktopException e) {
-			logger.error(e);
-			addError(i18n(e.getMessage()));
-			return Constants.FAILURE;
-		}
+		return getCourseShortcutDelegate().shortcutCourse(desktopService2, desktopInfo, currentCourse(), user);
 	}
 
 	public String removeCourseShortcut() {
-		try {
-			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse().getId());
-		} catch (Exception e) {
-			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
-			return Constants.FAILURE;
-		}
-
-		addMessage(i18n("institute_success_remove_shortcut"));
-		return Constants.SUCCESS;
+		return getCourseShortcutDelegate().removeCourseShortcut(desktopService2, desktopInfo, currentCourse(), user);
 	}
 
 	public Boolean getBookmarked() {

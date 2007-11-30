@@ -75,6 +75,15 @@
 		</property>
 	</bean>
 
+	<bean id="courseShortcutDelegate" class="org.openuss.web.course.CourseShortcutDelegate">
+		<property name="discussionService">
+			<ref bean="discussionService"/>
+		</property>
+		<property name="courseNewsletterService">
+			<ref bean="courseNewsletterService"/>
+		</property>
+	</bean>
+
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           L E C T U R E  S E A R C H  I N D E X
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

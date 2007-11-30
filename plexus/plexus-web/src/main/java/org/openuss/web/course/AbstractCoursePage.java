@@ -2,6 +2,7 @@ package org.openuss.web.course;
 
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
+import org.openuss.course.newsletter.CourseNewsletterService;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseTypeInfo;
@@ -56,9 +57,11 @@ public class AbstractCoursePage extends BasePage {
 	@Property(value = "#{courseService}")
 	protected CourseService courseService;
 	
+	
 	@Property(value = "#{periodInfo}")
 	protected PeriodInfo periodInfo;
 
+	
 	@Prerender
 	public void prerender() throws Exception {
 		if (courseInfo != null && courseInfo.getId() != null) {
@@ -173,5 +176,4 @@ public class AbstractCoursePage extends BasePage {
 		this.lectureService = lectureService;
 	}
 
-	
 }

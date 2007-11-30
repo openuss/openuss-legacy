@@ -3,8 +3,10 @@ package org.openuss.web.desktop;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.andromda.spring.ServiceLocator;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -16,6 +18,7 @@ import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.course.CourseShortcutDelegate;
 
 /**
  * DesktopViewController is the mvc bean to handle the desktop view.
@@ -29,6 +32,9 @@ public class DesktopPage extends BasePage {
 
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
 
+	@Property(value = "#{courseShortcutDelegate}")
+	protected CourseShortcutDelegate courseShortcutDelegate;
+	
 	private CourseDataProvider coursesProvider = new CourseDataProvider();
 	private CourseTypeDataProvider courseTypesProvider = new CourseTypeDataProvider();
 	private InstituteDataProvider institutesProvider = new InstituteDataProvider();
@@ -104,16 +110,7 @@ public class DesktopPage extends BasePage {
 	 */
 	public String removeCourse() {
 		logger.debug("starting method remove course");
-		CourseInfo courseInfo = coursesProvider.getRowData();
-		try {
-			//desktopService.unlinkCourse(desktop, course);
-			desktopService2.unlinkCourse(desktopInfo.getId(), courseInfo.getId());
-			addMessage(i18n("desktop_mesage_removed_course_succeed", courseInfo.getShortcut()));
-		} catch (DesktopException e) {
-			logger.debug(e);
-			addError(i18n(e.getMessage()));
-		}
-		return Constants.DESKTOP;
+		return getCourseShortcutDelegate().removeCourseShortcut(desktopService2, desktopInfo, coursesProvider.getRowData(), user);
 	}
 
 	/**
@@ -211,5 +208,13 @@ public class DesktopPage extends BasePage {
 
 	public void setCourseTypesProvider(CourseTypeDataProvider courseTypesProvider) {
 		this.courseTypesProvider = courseTypesProvider;
+	}
+
+	public CourseShortcutDelegate getCourseShortcutDelegate() {
+		return courseShortcutDelegate;
+	}
+
+	public void setCourseShortcutDelegate(CourseShortcutDelegate courseShortcutDelegate) {
+		this.courseShortcutDelegate = courseShortcutDelegate;
 	}
 }

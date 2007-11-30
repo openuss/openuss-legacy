@@ -10,10 +10,10 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.CourseApplicationException;
 import org.openuss.lecture.CourseMemberInfo;
@@ -34,6 +34,9 @@ public class CourseMainPage extends AbstractCoursePage {
 	private String password;
 
 	private List<CourseMemberInfo> assistants = new ArrayList<CourseMemberInfo>();
+	
+	@Property(value = "#{courseShortcutDelegate}")
+	protected CourseShortcutDelegate courseShortcutDelegate;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -91,28 +94,11 @@ public class CourseMainPage extends AbstractCoursePage {
 	 * @return Outcome
 	 */
 	public String shortcutCourse() {
-		//courseInfo = courseData.getRowData();
-		try {
-			desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());
-			addMessage(i18n("desktop_command_add_course_succeed"));
-			return Constants.SUCCESS;
-		} catch (DesktopException e) {
-			logger.error(e);
-			addError(i18n(e.getMessage()));
-			return Constants.FAILURE;
-		}
+		return getCourseShortcutDelegate().shortcutCourse(desktopService2, desktopInfo, courseInfo, user);
 	}
 
 	public String removeCourseShortcut() {
-		try {
-			desktopService2.unlinkCourse(desktopInfo.getId(), courseInfo.getId());
-		} catch (Exception e) {
-			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
-			return Constants.FAILURE;
-		}
-		
-		addMessage(i18n("institute_success_remove_shortcut"));
-		return Constants.SUCCESS;
+		return getCourseShortcutDelegate().removeCourseShortcut(desktopService2, desktopInfo, courseInfo, user);
 	}
 
 	public String getPassword() {
@@ -125,6 +111,15 @@ public class CourseMainPage extends AbstractCoursePage {
 
 	public List<CourseMemberInfo> getAssistants() {
 		return assistants;
+	}
+
+	public CourseShortcutDelegate getCourseShortcutDelegate() {
+		return courseShortcutDelegate;
+	}
+
+	public void setCourseShortcutDelegate(
+			CourseShortcutDelegate courseShortcutDelegate) {
+		this.courseShortcutDelegate = courseShortcutDelegate;
 	}
 
 }

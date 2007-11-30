@@ -316,9 +316,12 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	protected void handleRemoveForumWatch(ForumInfo forum) throws Exception {
 		Validate.notNull(forum);
 		Validate.notNull(forum.getId());
+		
 		Forum f = getForumDao().load(forum.getId());
 		ForumWatch fw = getForumWatchDao().findByUserAndForum(getSecurityService().getCurrentUser(), f);
-		getForumWatchDao().remove(fw);
+		if(fw != null) {
+			getForumWatchDao().remove(fw);
+		}
 	}
 
 	/**

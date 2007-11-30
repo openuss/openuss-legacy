@@ -13,6 +13,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.web.course.CourseShortcutDelegate;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -51,6 +52,9 @@ public class InstitutePage extends AbstractLecturePage {
 	private Long departmentId;
 	private List<SelectItem> institutePeriodItems;
 	private List<PeriodInfo> institutePeriods;
+	
+	@Property(value = "#{courseShortcutDelegate}")
+	protected CourseShortcutDelegate courseShortcutDelegate;
 	
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
@@ -163,32 +167,12 @@ public class InstitutePage extends AbstractLecturePage {
 	 * @return Outcome
 	 */
 	public String shortcutCourse() {
-		//courseInfo = courseData.getRowData();
-		try {
-			CourseInfo currentCourse = currentCourse();
-			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
-			addMessage(i18n("desktop_command_add_course_succeed"));
-			return Constants.SUCCESS;
-		} catch (DesktopException e) {
-			logger.error(e);
-			addError(i18n(e.getMessage()));
-			return Constants.FAILURE;
-		}
+		return getCourseShortcutDelegate().shortcutCourse(desktopService2, desktopInfo, currentCourse(), user);
 	}
 
 	public String removeCourseShortcut()
 	{
-		try {
-			//courseInfo = courseData.getRowData();
-			CourseInfo currentCourse = currentCourse();
-			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse.getId());
-		} catch (Exception e) {
-			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
-			return Constants.FAILURE;
-		}
-		
-		addMessage(i18n("institute_success_remove_shortcut"));
-		return Constants.SUCCESS;
+		return getCourseShortcutDelegate().removeCourseShortcut(desktopService2, desktopInfo, currentCourse(), user);
 	}
 
 		
@@ -380,5 +364,14 @@ public class InstitutePage extends AbstractLecturePage {
 
 	public void setPeriodInfo(PeriodInfo periodInfo) {
 		this.periodInfo = periodInfo;
+	}
+
+
+	public CourseShortcutDelegate getCourseShortcutDelegate() {
+		return courseShortcutDelegate;
+	}
+
+	public void setCourseShortcutDelegate(CourseShortcutDelegate courseShortcutDelegate) {
+		this.courseShortcutDelegate = courseShortcutDelegate;
 	}
 }
