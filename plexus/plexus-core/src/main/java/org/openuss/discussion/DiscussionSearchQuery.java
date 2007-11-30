@@ -1,6 +1,5 @@
 package org.openuss.discussion;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -11,7 +10,6 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.queryParser.QueryParser.Operator;
 import org.apache.lucene.search.Query;
-import org.openuss.lecture.LectureSearchQuery;
 import org.openuss.search.DomainIndexer;
 import org.springmodules.lucene.search.factory.SearcherFactory;
 import org.springmodules.lucene.search.object.SimpleLuceneSearchQuery;
@@ -35,7 +33,7 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 	@Override
 	protected Query constructSearchQuery(String textToSearch) throws ParseException {
 		
-		QueryParser parser = new QueryParser("CONTENT", getTemplate().getAnalyzer());
+		QueryParser parser = new QueryParser(DomainIndexer.CONTENT, getTemplate().getAnalyzer());
 		// allows wildcards at the beginning of a search phrase
 		parser.setAllowLeadingWildcard(true);
 		
@@ -52,6 +50,7 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 			domainResult.setScore(score);			
 			domainResult.setTitle(document.get(DomainIndexer.POST_TITLE));			
 			domainResult.setId(Long.parseLong(document.get(DomainIndexer.IDENTIFIER)));
+			domainResult.setSubmitter(document.get(DomainIndexer.POST_SUBMITTER_NAME));
 			domainResult.setModified(DateTools.stringToDate(document.get(DomainIndexer.MODIFIED)));
 			domainResult.setPostId(document.get(DomainIndexer.POST_IDENTIFIER));			
 			domainResult.setCourseId(document.get(DomainIndexer.COURSE_IDENTIFIER));
@@ -60,6 +59,7 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 			logger.debug("score: "+score);
 			logger.debug("POST_TITLE: "+document.get(DomainIndexer.POST_TITLE));
 			logger.debug("IDENTIFIER: "+document.get(DomainIndexer.IDENTIFIER));
+			logger.debug("POST_SUBMITTER_NAME: "+document.get(DomainIndexer.POST_SUBMITTER_NAME));
 			logger.debug("MODIFIED: "+document.get(DomainIndexer.MODIFIED));
 			logger.debug("POST_IDENTIFIER: "+document.get(DomainIndexer.POST_IDENTIFIER));
 			logger.debug("COURSE_IDENTIFIER: "+document.get(DomainIndexer.COURSE_IDENTIFIER));
@@ -82,14 +82,27 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 	public List<DiscussionSearchDomainResult> search(String textToSearch, Long courseId, boolean onlyInTitle, String submitter) {
 		
 		StringBuilder queryString = new StringBuilder();
-		
-		if(!onlyInTitle){
-			queryString.append(textToSearch);
-		} else {
-			queryString.append(DomainIndexer.POST_TITLE);
-			queryString.append(":(");
-			queryString.append(textToSearch);
-			queryString.append(")");
+				
+		if(!textToSearch.isEmpty()) {
+			if(onlyInTitle){
+				queryString.append(DomainIndexer.POST_TITLE);
+				queryString.append(":(");
+				queryString.append(textToSearch);
+				queryString.append(")");			
+			} else {
+				queryString.append("(");				
+				queryString.append(DomainIndexer.POST_TITLE);
+				queryString.append(":(");
+				queryString.append(textToSearch);
+				queryString.append(")");
+							
+				queryString.append(" OR ");			
+				queryString.append(DomainIndexer.CONTENT);
+				queryString.append(":(");
+				queryString.append(textToSearch);
+				queryString.append(")");				
+				queryString.append(")");
+			}			
 		}
 		
 		if(courseId != null && courseId > 0){
@@ -98,17 +111,17 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 			queryString.append(":");
 			queryString.append(courseId.toString());
 		}
-		
+				
 		if(submitter != null && !submitter.equals("")){
 			queryString.append(" ");
 			queryString.append(DomainIndexer.POST_SUBMITTER_NAME);
-			queryString.append(":");
+			queryString.append(":(");
 			queryString.append(submitter);
+			queryString.append(")");
 		}
 		
-		String searchQuery = queryString.toString();
+		String searchQuery = queryString.toString();		
 		logger.debug("Discussion Search - search query: "+searchQuery);
-		
 		
 		
 		List<DiscussionSearchDomainResult> testHitsList = this.search(searchQuery);
@@ -120,11 +133,7 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 		return testHitsList;
 		
 		
-		
-		
 		//return this.search(searchQuery);
-		
-		
 		
 	}
 

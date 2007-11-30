@@ -37,6 +37,8 @@ public class DiscussionSearchResults implements Serializable {
 	private boolean titleOnly;
 	private Long postId;
 	
+	private final String poundKey = "#";
+	
 	@Property(value = "#{courseInfo}")	
 	protected CourseInfo courseInfo;
 	
@@ -85,6 +87,11 @@ public class DiscussionSearchResults implements Serializable {
 
 	public void setSubmitter(String submitter) {
 		this.submitter = submitter;
+	}
+
+	
+	public String getPoundKey() {
+		return poundKey;
 	}
 
 	public Long getPostId() {
