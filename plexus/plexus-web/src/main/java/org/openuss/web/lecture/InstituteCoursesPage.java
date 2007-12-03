@@ -9,7 +9,6 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -23,7 +22,6 @@ import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.web.Constants;
-import org.openuss.web.course.CourseShortcutDelegate;
 
 /**
  * CourseType Administration Page
@@ -57,16 +55,6 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	
 	private boolean moving = false;
 	
-	@Property(value = "#{courseShortcutDelegate}")
-	protected CourseShortcutDelegate courseShortcutDelegate;
-
-	public CourseShortcutDelegate getCourseShortcutDelegate() {
-		return courseShortcutDelegate;
-	}
-
-	public void setCourseShortcutDelegate(CourseShortcutDelegate courseShortcutDelegate) {
-		this.courseShortcutDelegate = courseShortcutDelegate;
-	}
 
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
@@ -241,11 +229,27 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	}
 
 	public String shortcutCourse() {
-		return getCourseShortcutDelegate().shortcutCourse(desktopService2, desktopInfo, currentCourse(), user);
+		try {
+			desktopService2.linkCourse(desktopInfo.getId(), currentCourse().getId());
+			addMessage(i18n("desktop_command_add_course_succeed"));
+			return Constants.SUCCESS;
+		} catch (DesktopException e) {
+			logger.error(e);
+			addError(i18n(e.getMessage()));
+			return Constants.FAILURE;
+		}
 	}
 
 	public String removeCourseShortcut() {
-		return getCourseShortcutDelegate().removeCourseShortcut(desktopService2, desktopInfo, currentCourse(), user);
+		try {
+			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse().getId());
+			addMessage(i18n("desktop_command_add_course_succeed"));
+			return Constants.SUCCESS;
+		} catch (DesktopException e) {
+			logger.error(e);
+			addError(i18n(e.getMessage()));
+			return Constants.FAILURE;
+		}
 	}
 
 	public Boolean getBookmarked() {

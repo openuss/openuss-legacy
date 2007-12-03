@@ -13,7 +13,6 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.web.course.CourseShortcutDelegate;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -53,8 +52,6 @@ public class InstitutePage extends AbstractLecturePage {
 	private List<SelectItem> institutePeriodItems;
 	private List<PeriodInfo> institutePeriods;
 	
-	@Property(value = "#{courseShortcutDelegate}")
-	protected CourseShortcutDelegate courseShortcutDelegate;
 	
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
@@ -167,12 +164,28 @@ public class InstitutePage extends AbstractLecturePage {
 	 * @return Outcome
 	 */
 	public String shortcutCourse() {
-		return getCourseShortcutDelegate().shortcutCourse(desktopService2, desktopInfo, currentCourse(), user);
+		try {
+			desktopService2.linkCourse(desktopInfo.getId(), currentCourse().getId());
+			addMessage(i18n("desktop_command_add_course_succeed"));
+			return Constants.SUCCESS;
+		} catch (DesktopException e) {
+			logger.error(e);
+			addError(i18n(e.getMessage()));
+			return Constants.FAILURE;
+		}
 	}
 
 	public String removeCourseShortcut()
 	{
-		return getCourseShortcutDelegate().removeCourseShortcut(desktopService2, desktopInfo, currentCourse(), user);
+		try {
+			desktopService2.unlinkCourse(desktopInfo.getId(), courseInfo.getId());
+			addMessage(i18n("desktop_command_add_course_succeed"));
+			return Constants.SUCCESS;
+		} catch (DesktopException e) {
+			logger.error(e);
+			addError(i18n(e.getMessage()));
+			return Constants.FAILURE;
+		}
 	}
 
 		
@@ -366,12 +379,4 @@ public class InstitutePage extends AbstractLecturePage {
 		this.periodInfo = periodInfo;
 	}
 
-
-	public CourseShortcutDelegate getCourseShortcutDelegate() {
-		return courseShortcutDelegate;
-	}
-
-	public void setCourseShortcutDelegate(CourseShortcutDelegate courseShortcutDelegate) {
-		this.courseShortcutDelegate = courseShortcutDelegate;
-	}
 }

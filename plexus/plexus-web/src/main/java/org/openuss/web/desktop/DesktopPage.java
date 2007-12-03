@@ -3,10 +3,8 @@ package org.openuss.web.desktop;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.andromda.spring.ServiceLocator;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -18,7 +16,6 @@ import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-import org.openuss.web.course.CourseShortcutDelegate;
 
 /**
  * DesktopViewController is the mvc bean to handle the desktop view.
@@ -31,9 +28,6 @@ import org.openuss.web.course.CourseShortcutDelegate;
 public class DesktopPage extends BasePage {
 
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
-
-	@Property(value = "#{courseShortcutDelegate}")
-	protected CourseShortcutDelegate courseShortcutDelegate;
 	
 	private CourseDataProvider coursesProvider = new CourseDataProvider();
 	private CourseTypeDataProvider courseTypesProvider = new CourseTypeDataProvider();
@@ -109,8 +103,15 @@ public class DesktopPage extends BasePage {
 	 * @return outcome
 	 */
 	public String removeCourse() {
-		logger.debug("starting method remove course");
-		return getCourseShortcutDelegate().removeCourseShortcut(desktopService2, desktopInfo, coursesProvider.getRowData(), user);
+		try {
+			desktopService2.unlinkCourse(desktopInfo.getId(), coursesProvider.getRowData().getId());
+			addMessage(i18n("desktop_command_add_course_succeed"));
+			return Constants.SUCCESS;
+		} catch (DesktopException e) {
+			logger.error(e);
+			addError(i18n(e.getMessage()));
+			return Constants.FAILURE;
+		}
 	}
 
 	/**
@@ -208,13 +209,5 @@ public class DesktopPage extends BasePage {
 
 	public void setCourseTypesProvider(CourseTypeDataProvider courseTypesProvider) {
 		this.courseTypesProvider = courseTypesProvider;
-	}
-
-	public CourseShortcutDelegate getCourseShortcutDelegate() {
-		return courseShortcutDelegate;
-	}
-
-	public void setCourseShortcutDelegate(CourseShortcutDelegate courseShortcutDelegate) {
-		this.courseShortcutDelegate = courseShortcutDelegate;
 	}
 }

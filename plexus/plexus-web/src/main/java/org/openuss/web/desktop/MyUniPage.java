@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-import org.andromda.spring.ServiceLocator;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -32,7 +31,6 @@ import org.openuss.framework.jsfcontrols.components.flexlist.UITabs;
 import org.openuss.lecture.CourseService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-import org.openuss.web.course.CourseShortcutDelegate;
 
 /**
  * Display of the Startpage, after the user logged in.
@@ -46,10 +44,7 @@ public class MyUniPage extends BasePage {
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
 
 	private static final String universityBasePath = "/views/public/university/university.faces?university=";
-	
-	@Property(value = "#{courseShortcutDelegate}")
-	protected CourseShortcutDelegate courseShortcutDelegate;
-	
+		
 	@Property(value = "#{courseService}")
 	protected CourseService courseService;
 
@@ -195,8 +190,7 @@ public class MyUniPage extends BasePage {
 				// Remove course bookmark
 				if (paramRemoveCourse != null) {
 					try {
-						
-						getCourseShortcutDelegate().removeCourseShortcut(desktopService2, desktopInfo, getCourseService().getCourseInfo(paramRemoveCourse), user);
+						desktopService2.unlinkCourse(desktopInfo.getId(), paramRemoveCourse);
 					} catch (Exception e) {
 						logger.error(e);
 					}
@@ -588,14 +582,7 @@ public class MyUniPage extends BasePage {
 		loadValuesForTabs(tabs);
 	}
 
-	public org.openuss.web.course.CourseShortcutDelegate getCourseShortcutDelegate() {
-		return courseShortcutDelegate;
-	}
 
-	public void setCourseShortcutDelegate(
-			CourseShortcutDelegate courseShortcutDelegate) {
-		this.courseShortcutDelegate = courseShortcutDelegate;
-	}
 
 	public CourseService getCourseService() {
 		return courseService;

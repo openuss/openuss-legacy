@@ -9,8 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.openuss.course.newsletter.CourseNewsletterService;
+import org.openuss.discussion.DiscussionService;
+import org.openuss.discussion.ForumInfo;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Department;
 import org.openuss.lecture.DepartmentInfo;
@@ -18,7 +22,9 @@ import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
+import org.openuss.newsletter.NewsletterInfo;
 import org.openuss.security.User;
+import org.openuss.security.UserProfile;
 
 /**
  * JUnit Test for Spring Hibernate DesktopService2 class.
@@ -33,9 +39,36 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 	 */
 	private static final Logger logger = Logger.getLogger(DesktopService2IntegrationTest.class);
 
-	private DesktopDao desktopDao;
+	protected DesktopDao desktopDao;
+	protected UniversityDao universityDao;
+	protected CourseNewsletterService courseNewsletterService;
+	protected DiscussionService discussionService;
+	protected CourseService courseService;
 	
-	private UniversityDao universityDao;
+	public CourseService getCourseService() {
+		return courseService;
+	}
+
+	public void setCourseService(CourseService courseService) {
+		this.courseService = courseService;
+	}
+
+	public CourseNewsletterService getCourseNewsletterService() {
+		return courseNewsletterService;
+	}
+
+	public void setCourseNewsletterService(
+			CourseNewsletterService courseNewsletterService) {
+		this.courseNewsletterService = courseNewsletterService;
+	}
+
+	public DiscussionService getDiscussionService() {
+		return discussionService;
+	}
+
+	public void setDiscussionService(DiscussionService discussionService) {
+		this.discussionService = discussionService;
+	}
 
 	public UniversityDao getUniversityDao() {
 		return universityDao;
@@ -180,28 +213,144 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		logger.info("----> END access to linkDepartment test");
 	}
 
-	public void testLinkInstitute() throws Exception {
-		logger.info("----> BEGIN access to linkInstitute test");
-
-		// TODO Implement me!
-
-		logger.info("----> END access to linkInstitute test");
+	public void testVariousInjections() {
+		assertTrue(discussionService != null);
+		assertTrue(courseNewsletterService != null);
+		assertTrue(courseService != null);
 	}
-
-	public void testLinkCourseType() throws Exception {
-		logger.info("----> BEGIN access to linkCourseType test");
-
-		// TODO Implement me!
-
-		logger.info("----> END access to linkCourseType test");
-	}
-
+	
 	public void testLinkCourse() throws Exception {
-		logger.info("----> BEGIN access to unlinkCourse test");
+		logger.info("----> BEGIN access to linkCourse test");
+		
+		// Initialize test objects
+		User user = testUtility.createUserSecureContext(); 
+        long userId = user.getId();
+		Desktop desktop = Desktop.Factory.newInstance();
+		desktop.setUser(user);
+		desktopDao.create(desktop);
+		long desktopId = desktop.getId();
+        Course course = testUtility.createUniqueCourseInDB();
+        long courseId = course.getId();
+        CourseInfo courseInfo = courseService.getCourseInfo(courseId);
+        NewsletterInfo newsletterInfo; // Each test will reaquire this to force updating
+        ForumInfo forum = getDiscussionService().getForum(courseInfo);
+        assertTrue(forum != null);
+        UserProfile up = user.getProfile(); // deprecated without replacement
+        assertTrue(up != null);
+        
+        // No automatic abonnement selected
+        up.setNewsletterSelected(false);
+        up.setDiscussionSelected(false);
+        assertTrue(! up.isNewsletterSelected());
+        assertTrue(! up.isDiscussionSelected());
+        
+        newsletterInfo = courseNewsletterService.getNewsletter(courseInfo);
+        assertTrue(! desktopService2.isCourseBookmarked(courseId, userId));
+        assertTrue(! newsletterInfo.isSubscribed());
+        assertTrue(! discussionService.watchesForum(forum));
 
-		// TODO Implement me!
+        desktopService2.linkCourse(desktopId, courseId);
 
-		logger.info("----> END access to unlinkCourse test");
+        newsletterInfo = courseNewsletterService.getNewsletter(courseInfo);
+        assertTrue(desktopService2.isCourseBookmarked(courseId, userId));
+        assertTrue(! newsletterInfo.isSubscribed());
+        assertTrue(! discussionService.watchesForum(forum));
+
+        // Test manual subscriptions
+        courseNewsletterService.subscribe(courseInfo, user);
+        discussionService.addForumWatch(forum);
+        
+        newsletterInfo = courseNewsletterService.getNewsletter(courseInfo);
+        assertTrue(desktopService2.isCourseBookmarked(courseId, userId));
+        assertTrue(newsletterInfo.isSubscribed());
+        assertTrue(discussionService.watchesForum(forum));
+        
+        desktopService2.unlinkCourse(desktopId, courseId);
+        
+        newsletterInfo = courseNewsletterService.getNewsletter(courseInfo);
+        assertTrue(! desktopService2.isCourseBookmarked(courseId, userId));
+        assertTrue(! newsletterInfo.isSubscribed());
+        assertTrue(! discussionService.watchesForum(forum));
+        
+        // Both selected
+        up.setNewsletterSelected(true);
+        up.setDiscussionSelected(true);
+        assertTrue(up.isNewsletterSelected());
+        assertTrue(up.isDiscussionSelected());
+
+        newsletterInfo = courseNewsletterService.getNewsletter(courseInfo);
+        assertTrue(! desktopService2.isCourseBookmarked(courseId, userId));
+        assertTrue(! newsletterInfo.isSubscribed());
+        assertTrue(! discussionService.watchesForum(forum));
+
+        desktopService2.linkCourse(desktopId, courseId);
+
+        newsletterInfo = courseNewsletterService.getNewsletter(courseInfo);
+        assertTrue(desktopService2.isCourseBookmarked(courseId, userId));
+        assertTrue(newsletterInfo.isSubscribed());
+        assertTrue(discussionService.watchesForum(forum));
+
+        // Test manual unsubscriptions
+        courseNewsletterService.unsubscribe(courseInfo, user);
+        discussionService.removeForumWatch(forum);
+
+        newsletterInfo = courseNewsletterService.getNewsletter(courseInfo);
+        assertTrue(desktopService2.isCourseBookmarked(courseId, userId));
+        assertTrue(! newsletterInfo.isSubscribed());
+        assertTrue(! discussionService.watchesForum(forum));
+
+        desktopService2.unlinkCourse(desktopId, courseId);
+
+        newsletterInfo = courseNewsletterService.getNewsletter(courseInfo);
+        assertTrue(! desktopService2.isCourseBookmarked(courseId, userId));
+        assertTrue(! newsletterInfo.isSubscribed());
+        assertTrue(! discussionService.watchesForum(forum));
+
+        // Forum selected, changing in between
+        up.setNewsletterSelected(false);
+        up.setDiscussionSelected(true);
+        assertTrue(! up.isNewsletterSelected());
+        assertTrue(up.isDiscussionSelected());
+
+        newsletterInfo = courseNewsletterService.getNewsletter(courseInfo);
+        assertTrue(! desktopService2.isCourseBookmarked(courseId, userId));
+        assertTrue(! newsletterInfo.isSubscribed());
+        assertTrue(! discussionService.watchesForum(forum));
+
+        desktopService2.linkCourse(desktopId, courseId);
+
+        newsletterInfo = courseNewsletterService.getNewsletter(courseInfo);
+        assertTrue(desktopService2.isCourseBookmarked(courseId, userId));
+        assertTrue(! newsletterInfo.isSubscribed());
+        assertTrue(discussionService.watchesForum(forum));
+
+        up.setNewsletterSelected(true);
+        up.setDiscussionSelected(false);
+        assertTrue(up.isNewsletterSelected());
+        assertTrue(! up.isDiscussionSelected());
+
+        desktopService2.unlinkCourse(desktopId, courseId);
+
+        newsletterInfo = courseNewsletterService.getNewsletter(courseInfo);
+        assertTrue(! desktopService2.isCourseBookmarked(courseId, userId));
+        assertTrue(! newsletterInfo.isSubscribed());
+        assertTrue(! discussionService.watchesForum(forum));
+
+        desktopService2.linkCourse(desktopId, courseId);
+
+        newsletterInfo = courseNewsletterService.getNewsletter(courseInfo);
+        assertTrue(desktopService2.isCourseBookmarked(courseId, userId));
+        assertTrue(newsletterInfo.isSubscribed());
+        assertTrue(! discussionService.watchesForum(forum));
+
+        desktopService2.unlinkCourse(desktopId, courseId);
+
+        newsletterInfo = courseNewsletterService.getNewsletter(courseInfo);
+        assertTrue(! desktopService2.isCourseBookmarked(courseId, userId));
+        assertTrue(! newsletterInfo.isSubscribed());
+        assertTrue(! discussionService.watchesForum(forum));
+
+		logger.info("----> END access to linkCourse test");
 	}
 
 	public void testUnlinkUniversity() throws Exception {
@@ -256,30 +405,6 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		logger.info("----> END access to unlinkDepartment test");
 	}
 
-	public void testUnlinkInstitute() throws Exception {
-		logger.info("----> BEGIN access to unlinkInstitute test");
-
-		// TODO Implement me!
-
-		logger.info("----> END access to unlinkInstitute test");
-	}
-
-	public void testUnlinkCourseType() throws Exception {
-		logger.info("----> BEGIN access to unlinkCourseType test");
-
-		// TODO Implement me!
-
-		logger.info("----> END access to unlinkCourseType test");
-	}
-
-	public void testUnlinkCourse() throws Exception {
-		logger.info("----> BEGIN access to unlinkCourse test");
-
-		// TODO Implement me!
-
-		logger.info("----> END access to unlinkCourse test");
-	}
-	
 	@SuppressWarnings( { "unchecked" })
 	public void testFindLinkedDepartmentsByUserAndUniversity () {
 		logger.info("----> BEGIN access to findLinkedDepartmentsByUserAndUniversity(userId, universityId) test");
@@ -678,30 +803,6 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		assertFalse(desktop2.getDepartments().contains(department));
 
 		logger.info("----> END access to unlinkAllFromDepartment test");
-	}
-
-	public void testUnlinkAllFromInstitute() throws Exception {
-		logger.info("----> BEGIN access to unlinkAllFromInstitute test");
-
-		// TODO Implement me!
-
-		logger.info("----> END access to unlinkAllFromInstitute test");
-	}
-
-	public void testUnlinkAllFromCourseType() throws Exception {
-		logger.info("----> BEGIN access to unlinkAllFromCourseType test");
-
-		// TODO Implement me!
-
-		logger.info("----> END access to unlinkAllFromCourseType test");
-	}
-
-	public void testUnlinkAllFromCourse() throws Exception {
-		logger.info("----> BEGIN access to unlinkAllFromCourse test");
-
-		// TODO Implement me!
-
-		logger.info("----> END access to unlinkAllFromCourse test");
 	}
 	
 	public void testIsUniversityBookmarked () {
