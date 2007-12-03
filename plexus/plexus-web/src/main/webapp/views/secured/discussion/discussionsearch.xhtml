@@ -24,7 +24,6 @@
 	<body>      
 	
 	<!-- text above will be ignored -->
-	
 
 	<ui:composition template="/views/layout/layout.xhtml">
 
@@ -60,13 +59,8 @@
 						<h:outputText value="#{msg.discussion_search_submitter}" styleClass="field_label"/>	
 					 	<h:inputText id="discussion_search_submitter" styleClass="field_inline" value="#{discussion_search_results.submitter}"/>
 					
-
-						<!--
-						 
-<h:inputHidden id="discussion_search_courseId" styleClass="field_inline" value="#{courseInfo.id}" binding="#{discussion_search_results.courseId}"/>						
-						
+						<!-- 
 						<h:outputText value="Zeitraum" styleClass="field_label"/>	
-					 	
 					
 					 	<h:panelGrid border="0" columns="1">
 					 		<h:panelGroup>
@@ -77,11 +71,8 @@
 					 		</h:panelGroup>
 					 	</h:panelGrid>
 					 	-->
-					 	
-						
+					 							
 						<h:outputText value=" "/>
-
-						
 
 					</h:panelGrid>
 
@@ -94,14 +85,17 @@
 						title="#{msg['discussion_search_button']}"
 						styleClass="button" />				
 					<h:commandButton 
-						action="#{views$secured$discussion$discussionnew.cancel}"
+						action="#{views$secured$discussion$discussionsearch.cancel}"
 						value="#{msg.discussion_search_button_cancel}"						 
 						immediate="true" 
 						styleClass="button"/>
+					<h:commandButton 
+						action="#{views$secured$discussion$discussionsearch.clear}"
+						value="#{msg.discussion_search_button_clear}"						 
+						styleClass="button"/>
 				</o:block>
 				
-				<ui:include src="discussionsearchresults.xhtml" />
-				
+				<ui:include src="discussionsearchresults.xhtml" />	
 				
 			</h:form>
   		</ui:define>

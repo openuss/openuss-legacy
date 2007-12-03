@@ -1,9 +1,11 @@
 package org.openuss.web.discussion;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -17,10 +19,7 @@ import org.openuss.discussion.DiscussionSearcher;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.CourseInfo;
-import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-import org.openuss.web.PageLinks;
 import org.springmodules.lucene.search.LuceneSearchException;
 
 /**
@@ -111,7 +110,16 @@ private static final Logger logger = Logger.getLogger(DiscussionSearchPage.class
 		return Constants.DISCUSSION_SEARCH_RESULT;
 		
 	}		
-		
+	
+	public String cancel() {
+		return Constants.DISCUSSION_MAIN;
+	}
+	
+	public String clear() {
+		discussionSearchResults.setHits(null);
+		return Constants.DISCUSSION_SEARCH_RESULT;
+	}
+	
 	public DiscussionSearchResultDataProvider getResultProvider() {
 		return resultProvider;
 	}
