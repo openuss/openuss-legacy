@@ -1,12 +1,8 @@
 package org.openuss.web.discussion;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.faces.application.FacesMessage;
-import javax.faces.model.SelectItem;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
