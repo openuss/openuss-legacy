@@ -14,6 +14,9 @@ import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.course.newsletter.CourseNewsletterService;
+import org.openuss.discussion.DiscussionService;
+import org.openuss.discussion.ForumInfo;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseType;
@@ -23,6 +26,7 @@ import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.Period;
 import org.openuss.lecture.University;
+import org.openuss.newsletter.NewsletterInfo;
 import org.openuss.security.User;
 import org.openuss.security.UserProfile;
 
@@ -585,9 +589,16 @@ public class DesktopService2Impl extends DesktopService2Base {
 		}
 
 		MyUniDataSet myUniDataSet = new MyUniDataSet(desktop);
+		
+		myUniDataSet.setCourseDao(getCourseDao());
+		myUniDataSet.setCourseNewsletterService(getCourseNewsletterService());
+		myUniDataSet.setDiscussionService(getDiscussionService());
+		
 		myUniDataSet.loadData();
 		return myUniDataSet.getMyUniInfo();
 	}
+	
+	
 
 	public static class MyUniDataSet {
 		private Desktop desktop;
@@ -600,6 +611,27 @@ public class DesktopService2Impl extends DesktopService2Base {
 		public void setDesktop(Desktop desktop) {
 			this.desktop = desktop;
 		}
+		
+		private CourseNewsletterService courseNewsletterService;
+		private org.openuss.lecture.CourseDao courseDao;
+		
+		public void setCourseNewsletterService(
+				CourseNewsletterService courseNewsletterService) {
+			this.courseNewsletterService = courseNewsletterService;
+		}
+		
+		private org.openuss.discussion.DiscussionService discussionService;
+		
+		public void setDiscussionService(DiscussionService discussionService){
+			this.discussionService = discussionService;
+		}
+	    /**
+	     * Sets the reference to <code>course</code>'s DAO.
+	     */
+	    public void setCourseDao(org.openuss.lecture.CourseDao courseDao)
+	    {
+	        this.courseDao = courseDao;
+	    }
 
 		/*
 		 * Fills the MyUni data structure
@@ -701,6 +733,11 @@ public class DesktopService2Impl extends DesktopService2Base {
 			assert uniDataSets != null;
 			if (!uniDataSets.containsKey(universityID)) {
 				UniversityDataSet universityDataSet = new UniversityDataSet(university);
+				
+				universityDataSet.setCourseDao(this.courseDao);
+				universityDataSet.setCourseNewsletterService(this.courseNewsletterService);
+				universityDataSet.setDiscussionService(this.discussionService);
+				
 				uniDataSets.put(universityID, universityDataSet);
 			}
 
@@ -1071,12 +1108,69 @@ public class DesktopService2Impl extends DesktopService2Base {
 						courseInfo.setPeriod(coursePeriod.getName());
 						courseInfo.setPeriodId(coursePeriod.getId());
 					}
-
+					
+					if (course.getNewsletter()) {
+						CourseInfo ci = getCourseDao().toCourseInfo(course);
+						NewsletterInfo newsletter = getCourseNewsletterService().getNewsletter(ci);
+						courseInfo.setNewsletterSubscribed(newsletter.isSubscribed());
+					} else {
+						courseInfo.setNewsletterSubscribed(null);
+					}
+					
+					if (course.getDiscussion()) {
+						CourseInfo ci = getCourseDao().toCourseInfo(course);
+						ForumInfo forum = getDiscussionService().getForum(ci);
+						courseInfo.setForumSubscribed(getDiscussionService().watchesForum(forum));
+					} else {
+						courseInfo.setForumSubscribed(null);
+					}
+					
 					return courseInfo;
 				} else {
 					return null;
 				}
 			}
+			
+			
+			private CourseNewsletterService courseNewsletterService;
+			
+			private CourseNewsletterService getCourseNewsletterService() {
+				return this.courseNewsletterService;
+			}
+			
+			public void setCourseNewsletterService(
+					CourseNewsletterService courseNewsletterService) {
+				this.courseNewsletterService = courseNewsletterService;
+			}
+			
+			private org.openuss.lecture.CourseDao courseDao;
+
+		    /**
+		     * Sets the reference to <code>course</code>'s DAO.
+		     */
+		    public void setCourseDao(org.openuss.lecture.CourseDao courseDao)
+		    {
+		        this.courseDao = courseDao;
+		    }
+
+		    /**
+		     * Gets the reference to <code>course</code>'s DAO.
+		     */
+		    protected org.openuss.lecture.CourseDao getCourseDao()
+		    {
+		        return this.courseDao;
+		    }
+		    
+		    private DiscussionService discussionService;
+
+			public DiscussionService getDiscussionService() {
+				return discussionService;
+			}
+
+			public void setDiscussionService(DiscussionService discussionService) {
+				this.discussionService = discussionService;
+			}
+			
 		}
 	}
 }

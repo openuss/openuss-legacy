@@ -17,6 +17,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.course.newsletter.CourseNewsletterService;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
@@ -25,10 +26,17 @@ import org.openuss.desktop.MyUniDepartmentInfo;
 import org.openuss.desktop.MyUniInfo;
 import org.openuss.desktop.MyUniInstituteInfo;
 import org.openuss.desktop.MyUniUniversityInfo;
+import org.openuss.discussion.DiscussionService;
+import org.openuss.discussion.ForumInfo;
+import org.openuss.framework.jsfcontrols.components.flexlist.CourseUIFlexList;
 import org.openuss.framework.jsfcontrols.components.flexlist.ListItemDAO;
 import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
 import org.openuss.framework.jsfcontrols.components.flexlist.UITabs;
 import org.openuss.lecture.CourseService;
+import org.openuss.lecture.CourseDao;
+import org.openuss.lecture.CourseInfo;
+import org.openuss.security.SecurityService;
+import org.openuss.security.User;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -43,6 +51,19 @@ import org.openuss.web.Constants;
 public class MyUniPage extends BasePage {
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
 
+	@Property(value = "#{discussionService}")
+	protected DiscussionService discussionService;
+	
+	
+	@Property(value = "#{courseNewsletterService}")
+	protected CourseNewsletterService courseNewsletterService;
+	
+	@Property(value = "#{courseDao}")
+	protected CourseDao courseDao;
+	
+	@Property(value ="#{securityService}")
+	protected SecurityService securityService;
+	
 	private static final String universityBasePath = "/views/public/university/university.faces?university=";
 		
 	@Property(value = "#{courseService}")
@@ -53,9 +74,13 @@ public class MyUniPage extends BasePage {
 	private Long paramRemoveDepartment = null;
 	private Long paramRemoveInstitute = null;
 	private Long paramRemoveCourse = null;
+	private Long paramSubscribeNewsletter = null;
+	private Long paramUnsubscribeNewsletter = null;
+	private Long paramSubscribeForum = null;
+	private Long paramUnsubscribeForum = null;
 	private UIFlexList departmentsList;
 	private UIFlexList institutesList;
-	private UIFlexList coursesList;
+	private CourseUIFlexList coursesList;
 	private UITabs tabs;
 	private Desktop desktop;
 
@@ -86,6 +111,8 @@ public class MyUniPage extends BasePage {
 		loadParams();
 		// Remove bookmarks
 		removeBookmarks();
+		// (un)subscribe newsletter/forum
+		handleSubscriptions();
 		// Load myUni data
 		prepareData();
 		// Load data into the list components
@@ -151,6 +178,30 @@ public class MyUniPage extends BasePage {
 		} catch (Exception e) {
 			paramRemoveInstitute = null;
 		}
+		try {
+			String stringParamSubscribeNewsletter = (String) params.get("subscribe_newsletter");
+			paramSubscribeNewsletter = Long.valueOf(stringParamSubscribeNewsletter);
+		} catch (Exception e) {
+			paramSubscribeNewsletter = null;
+		}
+		try {
+			String stringParamUnsubscribeNewsletter = (String) params.get("unsubscribe_newsletter");
+			paramUnsubscribeNewsletter = Long.valueOf(stringParamUnsubscribeNewsletter);
+		} catch (Exception e) {
+			paramUnsubscribeNewsletter = null;
+		}
+		try {
+			String stringParamSubscribeForum = (String) params.get("subscribe_forum");
+			paramSubscribeForum = Long.valueOf(stringParamSubscribeForum);
+		} catch (Exception e) {
+			paramSubscribeForum = null;
+		}
+		try {
+			String stringParamUnsubscribeForum = (String) params.get("unsubscribe_forum");
+			paramUnsubscribeForum = Long.valueOf(stringParamUnsubscribeForum);
+		} catch (Exception e) {
+			paramUnsubscribeForum = null;
+		}
 	}
 
 	/*
@@ -196,6 +247,30 @@ public class MyUniPage extends BasePage {
 					}
 				}
 			}
+		}
+	}
+	/*
+	 * Handles newsletter and forum subscriptions
+	 */
+	private void handleSubscriptions(){
+		User user = getSecurityService().getCurrentUser();
+		if (paramSubscribeNewsletter != null){
+			CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramSubscribeNewsletter));
+			getCourseNewsletterService().subscribe(ci, user);
+		}
+		if (paramUnsubscribeNewsletter != null){
+			CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramUnsubscribeNewsletter));
+			getCourseNewsletterService().unsubscribe(ci, user);
+		}
+		if (paramSubscribeForum != null){
+			CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramSubscribeForum));
+			ForumInfo forum = getDiscussionService().getForum(ci);
+			getDiscussionService().addForumWatch(forum);
+		}
+		if (paramUnsubscribeForum != null){
+			CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramUnsubscribeForum));
+			ForumInfo forum = getDiscussionService().getForum(ci);
+			getDiscussionService().removeForumWatch(forum);
 		}
 	}
 
@@ -280,7 +355,7 @@ public class MyUniPage extends BasePage {
 		}
 	}
 
-	private void loadValuesForCourseList(UIFlexList coursesList) {
+	private void loadValuesForCourseList(CourseUIFlexList coursesList) {
 		if (courseListDataLoaded == false && prerenderCalled == true && coursesList != null) {
 			logger.debug("Loading data for courses flexlist");
 			// Make sure myUni-Data is loaded
@@ -450,11 +525,27 @@ public class MyUniPage extends BasePage {
 				Collection<MyUniCourseInfo> courseCollection = myUniInfo.getCurrentCourses();
 
 				for (MyUniCourseInfo courseInfo : courseCollection) {
+					
 					newItem = new ListItemDAO();
 					newItem.setTitle(courseInfo.getName());
 					newItem.setUrl(contextPath()+coursesBasePath + "?course=" + courseInfo.getId());
 					newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId + "&remove_course="
 							+ courseInfo.getId());
+					//Newsletter subscribe-status
+					Boolean newsletterSubscribed = courseInfo.getNewsletterSubscribed();
+					newItem.setNewsletterSubscribed(newsletterSubscribed);
+					if ( newsletterSubscribed != null){
+						newItem.setNewsletterActionUrl(contextPath() + myUniBasePath + "?university=" + universityId
+							+ (newsletterSubscribed ? "&unsubscribe_newsletter=" : "&subscribe_newsletter=") + courseInfo.getId() );
+					}
+					//Forum subscribe-status
+					Boolean forumSubscribed = courseInfo.getForumSubscribed();
+					newItem.setForumSubscribed(forumSubscribed);
+					if ( forumSubscribed != null){
+						newItem.setForumActionUrl(contextPath() + myUniBasePath + "?university=" + universityId
+							+ (forumSubscribed ? "&unsubscribe_forum=" : "&subscribe_forum=") + courseInfo.getId() );
+					}
+					
 					newItem.setMetaInformation(courseInfo.getPeriod());
 					listItems.add(newItem);
 				}
@@ -478,11 +569,27 @@ public class MyUniPage extends BasePage {
 				Collection<MyUniCourseInfo> courseCollection = myUniInfo.getPastCourses();
 
 				for (MyUniCourseInfo courseInfo : courseCollection) {
+					
 					newItem = new ListItemDAO();
 					newItem.setTitle(courseInfo.getName());
 					newItem.setUrl(contextPath()+coursesBasePath + "?course=" + courseInfo.getId());
 					newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId + "&remove_course="
 							+ courseInfo.getId());
+					//Newsletter subscribe-status
+					Boolean newsletterSubscribed = courseInfo.getNewsletterSubscribed();
+					newItem.setNewsletterSubscribed(newsletterSubscribed);
+					if ( newsletterSubscribed != null){
+						newItem.setNewsletterActionUrl(contextPath() + myUniBasePath + "?university=" + universityId
+							+ (newsletterSubscribed ? "&unsubscribe_newsletter=" : "&subscribe_newsletter=") + courseInfo.getId() );
+					}
+					//Forum subscribe-status
+					Boolean forumSubscribed = courseInfo.getForumSubscribed();
+					newItem.setForumSubscribed(forumSubscribed);
+					if ( forumSubscribed != null){
+						newItem.setForumActionUrl(contextPath() + myUniBasePath + "?university=" + universityId
+							+ (forumSubscribed ? "&unsubscribe_forum=" : "&subscribe_forum=") + courseInfo.getId() );
+					}
+					
 					newItem.setMetaInformation(courseInfo.getPeriod());
 					listItems.add(newItem);
 				}
@@ -554,11 +661,11 @@ public class MyUniPage extends BasePage {
 		loadValuesForInstituteList(institutesList);
 	}
 
-	public UIFlexList getCoursesList() {
+	public CourseUIFlexList getCoursesList() {
 		return coursesList;
 	}
 
-	public void setCoursesList(UIFlexList coursesList) {
+	public void setCoursesList(CourseUIFlexList coursesList) {
 		logger.debug("Setting courses flexlist component");
 		this.coursesList = coursesList;
 		coursesList.getAttributes().put("title", bundle.getString("flexlist_courses"));
@@ -591,4 +698,38 @@ public class MyUniPage extends BasePage {
 	public void setCourseService(CourseService courseService) {
 		this.courseService = courseService;
 	}
+	
+	public DiscussionService getDiscussionService() {
+		return discussionService;
+	}
+
+	public void setDiscussionService(DiscussionService discussionService) {
+		this.discussionService = discussionService;
+	}
+
+	public CourseNewsletterService getCourseNewsletterService() {
+		return courseNewsletterService;
+	}
+
+	public void setCourseNewsletterService(
+			CourseNewsletterService courseNewsletterService) {
+		this.courseNewsletterService = courseNewsletterService;
+	}
+
+	public CourseDao getCourseDao() {
+		return courseDao;
+	}
+
+	public void setCourseDao(CourseDao courseDao) {
+		this.courseDao = courseDao;
+	}
+
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
+	}
+
 }

@@ -24,6 +24,12 @@
 	</component>
 	
 	<component>
+		<component-type>org.openuss.framework.jsfcontrols.components.courseflexlist</component-type>
+		<component-class>org.openuss.framework.jsfcontrols.components.flexlist.CourseUIFlexList</component-class>
+	</component>
+
+
+	<component>
 		<component-type>org.openuss.framework.jsfcontrols.components.flexlist_tabs</component-type>
 		<component-class>org.openuss.framework.jsfcontrols.components.flexlist.UITabs</component-class>
 	</component>
