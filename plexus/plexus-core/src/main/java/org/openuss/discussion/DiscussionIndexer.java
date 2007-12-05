@@ -9,7 +9,6 @@ import org.apache.lucene.document.DateTools.Resolution;
 import org.apache.lucene.index.Term;
 import org.openuss.search.DomainIndexer;
 import org.springmodules.lucene.index.core.DocumentCreator;
-import org.springmodules.lucene.index.factory.IndexFactory;
 
 /**
  *
@@ -50,18 +49,6 @@ public class DiscussionIndexer extends DomainIndexer {
 			logger.debug("update index entry for post "+post.getId());
 			delete();
 			create();
-//			try {
-//				Term instituteTerm = new Term(IDENTIFIER, String.valueOf(course.getId()));
-//				getLuceneIndexTemplate().updateDocument(instituteTerm, new DocumentModifier() {
-//					public Document updateDocument(Document document) throws Exception {
-//						Document newDocument = new Document();
-//						setFields(course, document);
-//						return newDocument;
-//					}
-//				});
-//			} catch (LuceneIndexAccessException ex) {
-//				create();				
-//			}
 		}
 	}
 
