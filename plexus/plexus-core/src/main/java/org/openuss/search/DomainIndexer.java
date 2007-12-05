@@ -3,9 +3,7 @@ package org.openuss.search;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.apache.lucene.index.Term;
-import org.openuss.discussion.Post;
 import org.openuss.foundation.DomainObject;
-import org.springmodules.lucene.index.factory.IndexFactory;
 import org.springmodules.lucene.index.support.LuceneIndexSupport;
 
 /**
