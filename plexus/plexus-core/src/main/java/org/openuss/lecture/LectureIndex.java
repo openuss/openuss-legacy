@@ -35,7 +35,7 @@ public class LectureIndex extends DomainIndexer implements RecreateLectureIndex 
 	
 	private FSDirectory fsDirectory;
 	
-	//Ergaenzung fuer Discussion Search
+	//Extension for Discussion Search
 	private FSDirectory fsDiscussionDirectory;
 	private PostDao postDao;
 	private DiscussionIndexer discussionIndexer;
@@ -216,7 +216,7 @@ public class LectureIndex extends DomainIndexer implements RecreateLectureIndex 
 		this.fsDirectory = fsDirectory;
 	}
 	
-    //Ab hier Ergaenzung fuer Discussion Search
+    //Extension for Discussion Search
 	public FSDirectory getFsDiscussionDirectory() {
 		return fsDiscussionDirectory;
 	}
