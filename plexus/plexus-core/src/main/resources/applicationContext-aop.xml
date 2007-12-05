@@ -83,7 +83,7 @@
         <!-- Additional pointcuts for Discussion Search -->
         
 		<aop:pointcut id="DiscussionServiceCreatePointcut"
-			expression="execution(* org..DiscussionServiceBase.addPost(org.openuss.discussion.PostInfo, org.openuss.discussion.TopicInfo)) and args(postInfo, ..)" />
+			expression="(execution(* org..DiscussionServiceBase.addPost(org.openuss.discussion.PostInfo, org.openuss.discussion.TopicInfo)) and args(postInfo, ..)) or (execution(* org..DiscussionServiceBase.createTopic(org.openuss.discussion.PostInfo, org.openuss.discussion.ForumInfo)) and args(postInfo, ..))" />
 		<aop:pointcut id="DiscussionServiceDeletePointcut"
 			expression="execution(* org..DiscussionServiceBase.deletePost(org.openuss.discussion.PostInfo)) and args(postInfo)" />
 		<aop:pointcut id="DiscussionServiceUpdatePointcut"
