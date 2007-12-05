@@ -85,7 +85,7 @@ public class DiscussionIndexer extends DomainIndexer {
 	private void setFields(final Post post, Document document) {		 
 		String postText = post.getText();
 		document.add(new Field(IDENTIFIER, String.valueOf(post.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
-		document.add(new Field(POST_IDENTIFIER, String.valueOf(post.getId()), Field.Store.YES, Field.Index.TOKENIZED));
+		document.add(new Field(POST_IDENTIFIER, String.valueOf(post.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(DOMAINTYPE, DOMAINTYPE_VALUE, Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(CREATED, 
 				DateTools.dateToString(post.getCreated(), Resolution.MINUTE), Field.Store.YES,
@@ -94,7 +94,7 @@ public class DiscussionIndexer extends DomainIndexer {
 				DateTools.dateToString(post.getLastModification(), Resolution.MINUTE), Field.Store.YES,
 				Field.Index.UN_TOKENIZED));
 		document.add(new Field(POST_SUBMITTER_IDENTIFIER, String.valueOf(post.getSubmitter().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
-		document.add(new Field(POST_SUBMITTER_NAME, post.getSubmitterName(), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		document.add(new Field(POST_SUBMITTER_NAME, post.getSubmitterName(), Field.Store.YES, Field.Index.TOKENIZED));
 		document.add(new Field(TOPIC_IDENTIFIER, String.valueOf(post.getTopic().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(FORUM_IDENTIFIER, String.valueOf(post.getTopic().getForum().getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
 		document.add(new Field(POST_TITLE, post.getTitle(), Field.Store.YES, Field.Index.TOKENIZED));

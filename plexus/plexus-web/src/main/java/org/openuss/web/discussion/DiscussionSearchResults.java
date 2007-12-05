@@ -35,6 +35,7 @@ public class DiscussionSearchResults implements Serializable {
 	private String textToSearch;
 	private String submitter;
 	private boolean titleOnly;
+	private boolean isFuzzy;
 	private Long postId;
 	
 	private final String poundKey = "#";
@@ -51,6 +52,7 @@ public class DiscussionSearchResults implements Serializable {
 	
 	public DiscussionSearchResults(){
 		titleOnly = false;
+		isFuzzy = true;
 		postId = 0L;
 		courseId = 0L;
 		postIds = new ArrayList<SelectItem>();
@@ -165,6 +167,14 @@ public class DiscussionSearchResults implements Serializable {
 
 	public int getHitCounts() {
 		return hits != null ? hits.size() : 0;
+	}
+
+	public boolean getIsFuzzy() {
+		return isFuzzy;
+	}
+
+	public void setIsFuzzy(boolean isFuzzy) {
+		this.isFuzzy = isFuzzy;
 	}
 
 

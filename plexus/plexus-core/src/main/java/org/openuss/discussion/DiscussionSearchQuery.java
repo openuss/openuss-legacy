@@ -56,6 +56,7 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 			domainResult.setCourseId(document.get(DomainIndexer.COURSE_IDENTIFIER));
 			domainResult.setTopicId(document.get(DomainIndexer.TOPIC_IDENTIFIER));			
 	
+			/*
 			logger.debug("score: "+score);
 			logger.debug("POST_TITLE: "+document.get(DomainIndexer.POST_TITLE));
 			logger.debug("IDENTIFIER: "+document.get(DomainIndexer.IDENTIFIER));
@@ -64,7 +65,7 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 			logger.debug("POST_IDENTIFIER: "+document.get(DomainIndexer.POST_IDENTIFIER));
 			logger.debug("COURSE_IDENTIFIER: "+document.get(DomainIndexer.COURSE_IDENTIFIER));
 			logger.debug("TOPIC_IDENTIFIER: "+document.get(DomainIndexer.TOPIC_IDENTIFIER));
-			
+			*/
 			
 		} catch (java.text.ParseException e) {
 			logger.error(e);
@@ -79,7 +80,7 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 	 * @param onlyInTitle
 	 * @param submitter
 	 */
-	public List<DiscussionSearchDomainResult> search(String textToSearch, Long courseId, boolean onlyInTitle, String submitter) {
+	public List<DiscussionSearchDomainResult> search(String textToSearch, Long courseId, boolean onlyInTitle, boolean isFuzzy, String submitter) {
 		
 		StringBuilder queryString = new StringBuilder();
 				
@@ -88,18 +89,21 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 				queryString.append(DomainIndexer.POST_TITLE);
 				queryString.append(":(");
 				queryString.append(textToSearch);
+				queryString = addFuzzySuffixIfFuzzy(queryString, isFuzzy);
 				queryString.append(")");			
 			} else {
 				queryString.append("(");				
 				queryString.append(DomainIndexer.POST_TITLE);
 				queryString.append(":(");
 				queryString.append(textToSearch);
+				queryString = addFuzzySuffixIfFuzzy(queryString, isFuzzy);
 				queryString.append(")");
 							
 				queryString.append(" OR ");			
 				queryString.append(DomainIndexer.CONTENT);
 				queryString.append(":(");
 				queryString.append(textToSearch);
+				queryString = addFuzzySuffixIfFuzzy(queryString, isFuzzy);
 				queryString.append(")");				
 				queryString.append(")");
 			}			
@@ -117,13 +121,14 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 			queryString.append(DomainIndexer.POST_SUBMITTER_NAME);
 			queryString.append(":(");
 			queryString.append(submitter);
+			queryString = addFuzzySuffixIfFuzzy(queryString, isFuzzy);
 			queryString.append(")");
 		}
 		
 		String searchQuery = queryString.toString();		
-		logger.debug("Discussion Search - search query: "+searchQuery);
+		logger.debug("DiscussionSearchQuery.class - search query string: "+searchQuery);
 		
-		
+		/*		
 		List<DiscussionSearchDomainResult> testHitsList = this.search(searchQuery);
 		
 		for(int i= 0; i<testHitsList.size(); i++) {
@@ -131,10 +136,20 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 		}
 				
 		return testHitsList;
+		*/
 		
+		return this.search(searchQuery);
 		
-		//return this.search(searchQuery);
-		
+	}
+	/**
+	 * This method adds the fuzzy-suffix ~ if the user wants to perform fuzzy search
+	 * @return suffix if wanted, no suffix if not wanted
+	 */
+	private StringBuilder addFuzzySuffixIfFuzzy(StringBuilder queryString, boolean isFuzzy){
+		if(isFuzzy){
+			queryString.append("~");
+		}
+		return queryString;
 	}
 
 }

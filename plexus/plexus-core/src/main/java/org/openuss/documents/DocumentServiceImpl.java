@@ -478,4 +478,13 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 			targetFolder.moveHere(chosen.get(i));
 		}
 	}
+
+	@Override
+	protected List handleGetAllSubfolders(DomainObject domainObject)
+			throws Exception {
+		Folder root = getFolderDao().folderInfoToEntity(super.getFolder(domainObject));
+		List allFolders = root.getAllSubfolders();	
+		getFolderDao().toFolderInfoCollection(allFolders);
+		return allFolders;
+	}
 }

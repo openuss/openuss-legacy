@@ -53,7 +53,8 @@ public abstract class DomainIndexer extends LuceneIndexSupport {
 	// Discussion Search	
 	public static final String POST_TITLE = "POST_TITLE";
 	public static final String COURSE_IDENTIFIER = "COURSE_IDENTIFIER";
-	public static final String POST_IDENTIFIER = "POST_IDENTIFIER";			
+	public static final String POST_IDENTIFIER = "POST_IDENTIFIER";
+	public static final String IS_FUZZY = "IS_FUZZY";
 	
 	private DomainObject domainObject;
 	

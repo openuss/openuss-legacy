@@ -5,6 +5,7 @@
  */
 package org.openuss.documents;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -132,6 +133,19 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 			}
 		}
 		return true; // valid
+	}
+
+	@Override
+	public List getAllSubfolders() {
+		List<Folder> subfolders = new ArrayList<Folder>();
+		subfolders.add(this);
+		List<FolderEntry> folderEntries = this.getEntries();
+		for(int i = 0; i<folderEntries.size(); i++){
+			if(folderEntries.get(i) instanceof Folder){
+				subfolders.addAll(((Folder)folderEntries.get(i)).getAllSubfolders());
+			}
+		}
+		return subfolders;
 	}
 
 }

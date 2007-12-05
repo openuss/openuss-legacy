@@ -13,6 +13,6 @@ import java.util.List;
  */
 public interface DiscussionSearcher {
 	
-	public List<DiscussionSearchDomainResult> search(String textToSearch, Long courseId, boolean onlyInTitle, String submitter);
+	public List<DiscussionSearchDomainResult> search(String textToSearch, Long courseId, boolean onlyInTitle, boolean isFuzzy, String submitter);
 
 }

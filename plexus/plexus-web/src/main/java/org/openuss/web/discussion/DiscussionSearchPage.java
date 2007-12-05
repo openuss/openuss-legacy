@@ -62,20 +62,29 @@ private static final Logger logger = Logger.getLogger(DiscussionSearchPage.class
 		
 		logger.debug("Starting method search");
 		
+		/*
 		logger.debug("txtToSearch: "+ discussionSearchResults.getTextToSearch());
 		logger.debug("courseId: "+ discussionSearchResults.getCourseInfo().getId());
 		logger.debug("titleOnly: "+ discussionSearchResults.isTitleOnly());		
 		logger.debug("submitter: "+ discussionSearchResults.getSubmitter());
+		*/
 		
 		List<DiscussionSearchDomainResult> searchResult = null;
-		if (StringUtils.isNotBlank(discussionSearchResults.getTextToSearch())) {
-			logger.debug("Discussion Search for "+discussionSearchResults.getTextToSearch());
+		
+		logger.debug("before_if_Discussion Search for textToSearch: "+discussionSearchResults.getTextToSearch());
+		logger.debug("before_if_Discussion Search for submitter: "+discussionSearchResults.getSubmitter());
+
+		if (StringUtils.isNotBlank(discussionSearchResults.getTextToSearch()) || StringUtils.isNotBlank(discussionSearchResults.getSubmitter())) {
+			
+			logger.debug("after_if_Discussion Search for textToSearch:  "+discussionSearchResults.getTextToSearch());
+			logger.debug("after_if_Discussion Search for submitter: "+discussionSearchResults.getSubmitter());
 						
 			try {
 				searchResult = 	discussionSearcher.search(
 								discussionSearchResults.getTextToSearch(),
 								discussionSearchResults.getCourseInfo().getId(),
 								discussionSearchResults.isTitleOnly(),
+								discussionSearchResults.getIsFuzzy(),
 								discussionSearchResults.getSubmitter()
 							);
 							discussionSearchResults.setHits(searchResult);

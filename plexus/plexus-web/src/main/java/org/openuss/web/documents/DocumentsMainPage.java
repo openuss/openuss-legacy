@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -36,6 +37,16 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	@Property(value = "#{" + Constants.DOCUMENTS_FOLDERENTRY_SELECTION + "}")
 	private FolderEntrySelection entrySelection;
+	
+	/*
+	 * Target Folder to which selected Entries will be moved
+	 */
+	private FolderInfo targetFolder;
+	
+	/*
+	 * Target folder list
+	 */
+	private List<SelectItem> folderList;
 
 	private List<FolderEntryInfo> entries;
 
@@ -141,6 +152,16 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		}
 		return Constants.SUCCESS;
 	}
+	
+	/**
+	 * Moves selected FolderEntries to target
+	 * Uses documentService.moveFolderEntries();
+	 * @return success
+	 */
+	public String moveFolderEntriesToTarget(){
+		//TODO Implement here
+		return Constants.SUCCESS;
+	}
 
 	public String newFolder() {
 		logger.debug("create new folder");
@@ -183,6 +204,31 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	public void setEntrySelection(FolderEntrySelection selectedEntries) {
 		this.entrySelection = selectedEntries;
+	}
+
+	public FolderInfo getTargetFolder() {
+		return targetFolder;
+	}
+
+	public void setTargetFolder(FolderInfo targetFolder) {
+		this.targetFolder = targetFolder;
+	}
+
+	public List<SelectItem> getFolderList() {
+		if(folderList == null){
+			//get Folder List from Document Service
+			List<FolderInfo> allFolderInfos= super.documentService.getAllSubfolders(courseInfo);
+			logger.debug("getFolderList() - size of allSubFolders: " + allFolderInfos.size());
+			for(int i=0; i<allFolderInfos.size(); i++){
+				//folderList.add(new SelectItem(allFolderInfos.get(i).getId(), allFolderInfos.get(i).getName()));
+				folderList.add(new SelectItem(i, "Hallo Welt " + i));
+			}
+		}
+		return folderList;
+	}
+
+	public void setFolderList(List<SelectItem> folderList) {
+		this.folderList = folderList;
 	}
 
 }
