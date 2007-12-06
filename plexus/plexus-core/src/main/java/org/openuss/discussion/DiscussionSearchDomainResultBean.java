@@ -12,6 +12,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author Juergen de Braaf
  * @author Peter Schuh
  * @author Tobias Brockmann
+ * 
+ * Implements the DiscussionSearchDomainResult interface and serves as data bean for discussion search page.
  */
 public class DiscussionSearchDomainResultBean implements DiscussionSearchDomainResult {
 
@@ -27,6 +29,9 @@ public class DiscussionSearchDomainResultBean implements DiscussionSearchDomainR
 	
 	private float score;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public float getScore() {
 		return score;
 	}
@@ -61,9 +66,6 @@ public class DiscussionSearchDomainResultBean implements DiscussionSearchDomainR
 		return modified != null ? new Date(modified.getTime()) : null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void setModified(Date modified) {
 		this.modified = modified != null ? new Date(modified.getTime()) : null;
 	}
@@ -75,6 +77,9 @@ public class DiscussionSearchDomainResultBean implements DiscussionSearchDomainR
 		return ToStringBuilder.reflectionToString(this);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	public String getSubmitter() {
 		return submitter;
 	}
@@ -90,9 +95,6 @@ public class DiscussionSearchDomainResultBean implements DiscussionSearchDomainR
 		return courseId;
 	}
 
-	/**
-	 * 
-	 */
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 	}
@@ -104,9 +106,6 @@ public class DiscussionSearchDomainResultBean implements DiscussionSearchDomainR
 		return title;
 	}
 
-	/**
-	 * 
-	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -118,20 +117,13 @@ public class DiscussionSearchDomainResultBean implements DiscussionSearchDomainR
 		return postId;
 	}
 
-	/**
-	 * 
-	 */
 	public void setPostId(String postId) {
 		this.postId = postId;
 	}
 	
-	
-	public String getDebugInfo(){
-		//TODO Debug Ausgabe
-		return "DEBUG: "		
-					+"Hallo CourseID: "+courseId;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	public String getTopicId() {
 		return topicId;
 	}

@@ -16,6 +16,7 @@ import org.springmodules.lucene.search.object.SimpleLuceneSearchQuery;
 
 /**
  * Discussion Search
+ * Composes the search query string and calls Lucene search method.
  * 
  * @author Peter Schuh
  * @author Jürgen de Braaf
@@ -54,18 +55,7 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 			domainResult.setModified(DateTools.stringToDate(document.get(DomainIndexer.MODIFIED)));
 			domainResult.setPostId(document.get(DomainIndexer.POST_IDENTIFIER));			
 			domainResult.setCourseId(document.get(DomainIndexer.COURSE_IDENTIFIER));
-			domainResult.setTopicId(document.get(DomainIndexer.TOPIC_IDENTIFIER));			
-	
-			/*
-			logger.debug("score: "+score);
-			logger.debug("POST_TITLE: "+document.get(DomainIndexer.POST_TITLE));
-			logger.debug("IDENTIFIER: "+document.get(DomainIndexer.IDENTIFIER));
-			logger.debug("POST_SUBMITTER_NAME: "+document.get(DomainIndexer.POST_SUBMITTER_NAME));
-			logger.debug("MODIFIED: "+document.get(DomainIndexer.MODIFIED));
-			logger.debug("POST_IDENTIFIER: "+document.get(DomainIndexer.POST_IDENTIFIER));
-			logger.debug("COURSE_IDENTIFIER: "+document.get(DomainIndexer.COURSE_IDENTIFIER));
-			logger.debug("TOPIC_IDENTIFIER: "+document.get(DomainIndexer.TOPIC_IDENTIFIER));
-			*/
+			domainResult.setTopicId(document.get(DomainIndexer.TOPIC_IDENTIFIER));		
 			
 		} catch (java.text.ParseException e) {
 			logger.error(e);
@@ -74,11 +64,13 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 	}
 	
 	/**
-	 * performs a discussion search
+	 * Performs a discussion search.
+	 * 
 	 * @param textToSearch search term 
-	 * @param postId 
-	 * @param onlyInTitle
-	 * @param submitter
+	 * @param courseId
+	 * @param onlyInTitle search only in title?
+	 * @param isFuzzy use fuzzy search?
+	 * @param submitter search for author/submitter
 	 */
 	public List<DiscussionSearchDomainResult> search(String textToSearch, Long courseId, boolean onlyInTitle, boolean isFuzzy, String submitter) {
 		
@@ -127,20 +119,11 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 		
 		String searchQuery = queryString.toString();		
 		logger.debug("DiscussionSearchQuery.class - search query string: "+searchQuery);
-		
-		/*		
-		List<DiscussionSearchDomainResult> testHitsList = this.search(searchQuery);
-		
-		for(int i= 0; i<testHitsList.size(); i++) {
-			logger.debug("search-hits: "+testHitsList.get(i).toString());
-		}
-				
-		return testHitsList;
-		*/
-		
+					
 		return this.search(searchQuery);
 		
 	}
+	
 	/**
 	 * This method adds the fuzzy-suffix ~ if the user wants to perform fuzzy search
 	 * @return suffix if wanted, no suffix if not wanted

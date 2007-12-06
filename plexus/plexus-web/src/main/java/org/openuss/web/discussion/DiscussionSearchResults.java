@@ -42,19 +42,14 @@ public class DiscussionSearchResults implements Serializable {
 	
 	@Property(value = "#{courseInfo}")	
 	protected CourseInfo courseInfo;
-	
-	//TODO nochmals checken ob es direkt mit property geht
-	//@Property(value = "#{courseInfo.id}")
-	protected Long courseId;
-	
+		
 	private List<SelectItem> postIds;
 	private List<SelectItem> courseIds;
 	
 	public DiscussionSearchResults(){
 		titleOnly = false;
 		isFuzzy = true;
-		postId = 0L;
-		courseId = 0L;
+		postId = 0L;		
 		postIds = new ArrayList<SelectItem>();
 		courseIds = new ArrayList<SelectItem>();
 	}
@@ -103,17 +98,8 @@ public class DiscussionSearchResults implements Serializable {
 	public void setPostId(Long postId) {
 		this.postId = postId;
 	}
-			
-	public Long getCourseId() {	
-		return courseId;		
-	}
-
-	public void setCourseId(Long courseId) {
-		this.courseId = courseId;
-	}
-
-	public CourseInfo getCourseInfo() {
-		logger.debug("courseInfo.getId(): "+ courseInfo.getId());
+	
+	public CourseInfo getCourseInfo() {		
 		return courseInfo;
 	}
 
@@ -127,7 +113,7 @@ public class DiscussionSearchResults implements Serializable {
 	 * @return
 	 */
 	public String getVisibilityResultTable(){
-		logger.debug("test"+this.getHitCounts());
+		logger.debug("getVisibilityResultTable - hits counts: "+this.getHitCounts());
 		if(this.getHitCounts() > 0){
 			return "display:inline;";
 		} else {
@@ -140,14 +126,13 @@ public class DiscussionSearchResults implements Serializable {
 	 * @return
 	 */
 	public String getVisibilityNotificationZero(){
-		logger.debug("test"+this.getHitCounts());
+		logger.debug("getVisibilityNotificationZero - hits counts: "+this.getHitCounts());
 		if(this.getHitCounts() == 0){
 			return "display:inline;";
 		} else {
 			return "display:none;";
 		}
 	}
-
 
 	public List<SelectItem> getPostIds() {
 		return postIds;
@@ -176,7 +161,5 @@ public class DiscussionSearchResults implements Serializable {
 	public void setIsFuzzy(boolean isFuzzy) {
 		this.isFuzzy = isFuzzy;
 	}
-
-
 	
 }
