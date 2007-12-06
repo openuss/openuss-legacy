@@ -21,12 +21,15 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.framework.web.jsf.pages.SecurityConstraint;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.InstituteMember;
 import org.openuss.lecture.InstituteSecurity;
 import org.openuss.security.SecurityService;
+import org.openuss.security.SecurityServiceImpl;
 import org.openuss.security.User;
 import org.openuss.security.UserComparator;
+import org.openuss.security.UserCriteria;
 import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$course$courseassistants", scope = Scope.REQUEST)
@@ -40,10 +43,14 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 	protected SecurityService securityService;
 
 	private Long userId;
+	// Die ist neu
+	private Long userId2;
 
 	List<CourseMemberInfo> assistants;
 	Set<Long> assistantsUserIds;
 	List<SelectItem> instituteMembers;
+	// Die ist neu
+	List<SelectItem> userMembers;
 	
 	private DataPage<CourseMemberInfo> page;
 
@@ -121,11 +128,23 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		resetCachedData();
 		return Constants.SUCCESS;
 	}
+	
+	// Die Methode ist neu
+	public String addUserAssistant() {
+		logger.debug("course assistant aspirant added");
+		User user = User.Factory.newInstance();
+		user.setId(userId2);
+		courseService.addAssistant(courseInfo, user);
+		addMessage(i18n("message_course_add_assistant"));
+		resetCachedData();
+		return Constants.SUCCESS;
+	}
 
 	private void resetCachedData() {
 		assistants = null;
 		instituteMembers = null;
 		assistantsUserIds = null;
+		userMembers = null;
 		page = null;
 	}
 
@@ -156,6 +175,32 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		return instituteMembers;
 	}
 
+	// Die ist neu
+	public Collection<SelectItem> getUserList() {
+		if (userMembers == null) {
+			List<User> members = (List<User>) getSecurityService().getAllUsers();
+			final Set<Long> userIds = getAssistantsUserIdMap();	
+			CollectionUtils.filter(members, new Predicate() {
+				public boolean evaluate(Object object) {
+					User member = (User) object;
+					return !userIds.contains(member.getId());
+				}
+			});
+			List<User> membersUser = new ArrayList<User>();
+			for(User member : members) {
+				membersUser.add(getSecurityService().getUserByName(member.getUsername()));
+			}
+			UserComparator userComparator = new UserComparator();
+			Collections.sort(membersUser, userComparator);
+			userMembers = new ArrayList<SelectItem>();
+			for(User member : membersUser) {
+				userMembers.add(new SelectItem(member.getId(), member.getTitle()+" "+member.getLastName()+" "+member.getFirstName()));
+			}
+		}
+		return userMembers;
+	}
+	
+	
 	public String save() {
 		logger.debug("Course assistants page - saved");
 		return Constants.SUCCESS;
@@ -179,6 +224,14 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	
+	public Long getUserId2() {
+		return userId2;
+	}
+
+	public void setUserId2(Long userId2) {
+		this.userId2 = userId2;
 	}
 
 	public SecurityService getSecurityService() {

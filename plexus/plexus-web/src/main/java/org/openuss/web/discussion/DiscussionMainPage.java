@@ -2,6 +2,7 @@ package org.openuss.web.discussion;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
@@ -16,6 +17,8 @@ import org.openuss.web.Constants;
 @Bean(name = "views$secured$discussion$discussions", scope = Scope.REQUEST)
 @View
 public class DiscussionMainPage extends AbstractDiscussionPage{
+	
+	private static final Logger logger = Logger.getLogger(DiscussionMainPage.class);
 	
 	private DiscussionDataProvider data = new DiscussionDataProvider();
 	
@@ -74,6 +77,12 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 		setSessionBean(Constants.DISCUSSION_TOPIC, t);
 		return Constants.DISCUSSION_REMOVETHREAD;
 	}
+	
+	public String search(){
+		logger.debug("DiscussionMainPage - search");
+		
+		return Constants.DISCUSSION_SEARCH;
+	}
 
 	public String changeWatchState(){
 		ForumInfo forum = discussionService.getForum(courseInfo);
@@ -93,7 +102,6 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	public DiscussionDataProvider getData() {
 		return data;
 	}
-
 
 	public void setData(DiscussionDataProvider data) {
 		this.data = data;

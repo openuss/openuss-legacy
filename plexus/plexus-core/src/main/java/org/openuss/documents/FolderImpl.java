@@ -5,7 +5,9 @@
  */
 package org.openuss.documents;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -23,7 +25,11 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 	 */
 	public void addFolderEntry(org.openuss.documents.FolderEntry entry) throws DocumentApplicationException {
 		if (!canAdd(entry)){
-			throw new DocumentApplicationException("documents_folder_not_a_unique_filename");
+			if(!correctName(entry)){
+				throw new DocumentApplicationException("documents_folder_not_a_unique_filename");
+			} else {
+				throw new DocumentApplicationException("documents_operation_would_destroy_hierarchy");
+			}
 		}
 		if (getEntries() != null && entry != null) {
 			getEntries().add(entry);
@@ -40,12 +46,7 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 
 	@Override
 	public boolean canAdd(FolderEntry folderEntry) {
-		for (FolderEntry entry : getEntries()) {
-			if (StringUtils.equalsIgnoreCase(folderEntry.getFileName(), entry.getFileName()) && !ObjectUtils.equals(entry, folderEntry)) {
-				return false; // not valid
-			}
-		}
-		return true; // vaild
+		return correctName(folderEntry) && correctHierarchy(folderEntry);
 	}
 	
 	@Override
@@ -93,6 +94,58 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 			size += entry.getFileSize();
 		}
 		return size;
+	}
+
+	@Override
+	public boolean correctHierarchy(FolderEntry entry) {
+		// TODO Auto-generated method stub
+		// TODO Implement check for correct Hierarchy after moving!
+		if(!(entry instanceof Folder)){
+			return true; //Only tried to move a File, therefore correct Hierarchy
+		}
+		if(this.equals(entry)){
+			return false; //Tried to move Folder into itself
+		}
+		return correctHierarchyCheckHelp(entry, this);
+	}
+	
+	private boolean correctHierarchyCheckHelp(FolderEntry entry, Folder parent){
+		if(parent.getParent()==null){
+			return true; //There is no parent, everything correct
+		}
+		if(parent.getParent().equals(entry)){
+			return false; //Tried to move Folder into Subfolder
+		}
+		return correctHierarchyCheckHelp(entry, parent.getParent());
+	}
+
+	@Override
+	public void moveHere(FolderEntry entry) throws DocumentApplicationException {
+		entry.getParent().removeFolderEntry(entry);
+		this.addFolderEntry(entry);
+	}
+
+	@Override
+	public boolean correctName(FolderEntry entry) {
+		for (FolderEntry folderEntry : getEntries()) {
+			if (StringUtils.equalsIgnoreCase(entry.getFileName(), folderEntry.getFileName()) && !ObjectUtils.equals(folderEntry, entry)) {
+				return false; // not valid
+			}
+		}
+		return true; // valid
+	}
+
+	@Override
+	public List getAllSubfolders() {
+		List<Folder> subfolders = new ArrayList<Folder>();
+		subfolders.add(this);
+		List<FolderEntry> folderEntries = this.getEntries();
+		for(int i = 0; i<folderEntries.size(); i++){
+			if(folderEntries.get(i) instanceof Folder){
+				subfolders.addAll(((Folder)folderEntries.get(i)).getAllSubfolders());
+			}
+		}
+		return subfolders;
 	}
 
 }

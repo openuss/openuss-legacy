@@ -32,8 +32,10 @@
 		  	
 			<h:form id="assistantsForm"> 
 				<ui:include src="courseassistantstable.xhtml" />
+				
 				<c:if test="#{not empty views$secured$course$courseassistants.instituteMemberList}">
 					<o:block>
+						<h:outputText value="#{msg.institute_members_command_assistant}" styleClass="field_label"/>
 						<h:selectOneMenu id="assistantSelectBox" value="#{views$secured$course$courseassistants.userId}" styleClass="pulldown_inline">
 						   	<f:selectItems value="#{views$secured$course$courseassistants.instituteMemberList}"/>
 						</h:selectOneMenu>
@@ -44,6 +46,23 @@
 								styleClass="button_add" />
 					</o:block>	
 				</c:if>
+				
+				<!-- Dieser Teil ist neu hinzu gekommen für die User-Check-Box und den Hinzufügen-Button -->
+				<c:if test="#{not empty views$secured$course$courseassistants.userList}">
+					<o:block>
+						<h:outputText value="#{msg.institute_members_command_user}" styleClass="field_label"/>
+						<h:selectOneMenu id="userSelectBox" value="#{views$secured$course$courseassistants.userId2}" styleClass="pulldown_inline">
+						   	<f:selectItems value="#{views$secured$course$courseassistants.userList}"/>
+						</h:selectOneMenu>
+						<h:commandButton 
+								action="#{views$secured$course$courseassistants.addUserAssistant}"
+								value="#{msg['course_assistants_add']}"
+								hint="#{msg['course_assistants_add_hint']}"
+								styleClass="button_add" />
+					</o:block>	
+				</c:if>
+				<!-- Ende des neuen Teils -->
+				
 	  		</h:form>
   		</ui:define>
 	</ui:composition>

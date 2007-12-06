@@ -24,7 +24,7 @@ import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
- * @see org.openuss.documents.DocumentsService
+ * @see org.openuss.documents.DocumentService
  */
 public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBase {
 
@@ -467,4 +467,24 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		return folder;
 	}
 
+	@Override
+	protected void handleMoveFolderEntries(DomainObject domainObject,
+			FolderInfo target, List chosenObjects) throws Exception {
+		Folder targetFolder = getFolderDao().folderInfoToEntity(target);
+		List<FolderEntry> chosen = new ArrayList(chosenObjects);
+		getFolderEntryDao().folderEntryInfoToEntityCollection(chosen);
+		// Moving chosen to target
+		for(int i=0; i<chosen.size(); i++){
+			targetFolder.moveHere(chosen.get(i));
+		}
+	}
+
+	@Override
+	protected List handleGetAllSubfolders(DomainObject domainObject)
+			throws Exception {
+		Folder root = getFolderDao().folderInfoToEntity(super.getFolder(domainObject));
+		List allFolders = root.getAllSubfolders();	
+		getFolderDao().toFolderInfoCollection(allFolders);
+		return allFolders;
+	}
 }
