@@ -20,6 +20,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
@@ -157,9 +158,12 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	 * Moves selected FolderEntries to target
 	 * Uses documentService.moveFolderEntries();
 	 * @return success
+	 * @throws DocumentApplicationException 
 	 */
-	public String moveFolderEntriesToTarget(){
-		//TODO Implement here
+	public String moveFolderEntriesToTarget() throws DocumentApplicationException{
+		documentService.moveFolderEntries(courseInfo, targetFolder, selectedEntries() );
+		// TODO success message
+		addMessage(i18n("documents_move_files"));
 		return Constants.SUCCESS;
 	}
 
@@ -218,11 +222,23 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		if(folderList == null){
 			//get Folder List from Document Service
 			List<FolderInfo> allFolderInfos= super.documentService.getAllSubfolders(courseInfo);
-			logger.debug("getFolderList() - size of allSubFolders: " + allFolderInfos.size());
-			for(int i=0; i<allFolderInfos.size(); i++){
-				//folderList.add(new SelectItem(allFolderInfos.get(i).getId(), allFolderInfos.get(i).getName()));
-				folderList.add(new SelectItem(i, "Hallo Welt " + i));
+			folderList = new ArrayList<SelectItem>();
+			for(FolderInfo info: allFolderInfos) {
+				if (info != null) {
+					folderList.add(new SelectItem(info,">"+info.getName()));
+				} else {
+					SelectItem item = new SelectItem("--");
+					item.setDisabled(true);
+					folderList.add(item);
+				}
+					
 			}
+			
+//			logger.debug("getFolderList() - size of allSubFolders: " + allFolderInfos.size());
+//			for(int i=0; i<allFolderInfos.size(); i++){
+//				//folderList.add(new SelectItem(allFolderInfos.get(i).getId(), allFolderInfos.get(i).getName()));
+////				folderList.add(new SelectItem(i, "Hallo Welt " + i));
+//			}
 		}
 		return folderList;
 	}

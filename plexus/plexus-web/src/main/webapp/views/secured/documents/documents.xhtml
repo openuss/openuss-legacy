@@ -77,7 +77,18 @@
 						styleClass="button_add"/>
 				</s:acl>
 			</o:block>
-
+			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+				<o:block>
+					<h:selectOneMenu id="targetFolder" value="#{views$secured$documents$documents.targetFolder}" styleClass="pulldown_inline">
+					   	<f:selectItems value="#{views$secured$documents$documents.folderList}"/>
+					</h:selectOneMenu>
+					<h:commandButton 
+							action="#{views$secured$documents$documents.moveFolderEntriesToTarget}"
+							value="verschieben"
+							hint="#{msg['course_assistants_add_hint']}"
+							styleClass="button_add" />
+				</o:block>
+			</s:acl>
 		</h:form>
 	</ui:define>
 </ui:composition>
@@ -86,15 +97,3 @@
 
 </body>
 </html>
-			<!-- <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
-				<o:block>
-						<h:selectOneMenu id="targetFolder" value="#{views$secured$documents$documents.targetFolder}" styleClass="pulldown_inline">
-						   	<f:selectItems value="#{views$secured$documents$documents.folderList}"/>
-						</h:selectOneMenu>
-						<h:commandButton 
-								action="#{views$secured$documents$documents.moveFolderEntriesToTarget}"
-								value="verschieben"
-								hint="#{msg['course_assistants_add_hint']}"
-								styleClass="button_add" />
-				</o:block>
-			</s:acl>-->
