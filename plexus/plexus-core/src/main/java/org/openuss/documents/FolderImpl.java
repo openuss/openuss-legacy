@@ -99,12 +99,12 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 	@Override
 	public boolean correctHierarchy(FolderEntry entry) {
 		// TODO Auto-generated method stub
-		// TODO Implement check for correct Hierarchy after moving!
+		// TODO Implement check for correct hierarchy after moving!
 		if(!(entry instanceof Folder)){
-			return true; //Only tried to move a File, therefore correct Hierarchy
+			return true; //Only tried to move a file, therefore correct hierarchy
 		}
 		if(this.equals(entry)){
-			return false; //Tried to move Folder into itself
+			return false; //Tried to move folder into itself
 		}
 		return correctHierarchyCheckHelp(entry, this);
 	}
@@ -114,7 +114,7 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 			return true; //There is no parent, everything correct
 		}
 		if(parent.getParent().equals(entry)){
-			return false; //Tried to move Folder into Subfolder
+			return false; //Tried to move folder into subfolder
 		}
 		return correctHierarchyCheckHelp(entry, parent.getParent());
 	}
@@ -140,9 +140,9 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 		List<Folder> subfolders = new ArrayList<Folder>();
 		subfolders.add(this);
 		List<FolderEntry> folderEntries = this.getEntries();
-		for(int i = 0; i<folderEntries.size(); i++){
-			if(folderEntries.get(i) instanceof Folder){
-				subfolders.addAll(((Folder)folderEntries.get(i)).getAllSubfolders());
+		for (FolderEntry fe : folderEntries) {
+			if(fe instanceof Folder){
+				subfolders.addAll(((Folder)fe).getAllSubfolders());
 			}
 		}
 		return subfolders;

@@ -15,10 +15,7 @@ import org.springframework.web.servlet.mvc.Controller;
  * @author Sebastian Roekens
  */
 public class GlobalFeedController extends AbstractFeedServlet implements Controller{
-
 	private GlobalFeed globalFeed;
-	
-	private static final Logger logger = Logger.getLogger(AbstractFeedServlet.class);
 	
 	public GlobalFeed getGlobalFeed() {
 		return globalFeed;

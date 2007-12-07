@@ -297,7 +297,6 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		validateFileInfo(info);
 		assertNull(info.getInputStream());
 	}
-
 	
 	public void testGetFileEntry() throws DocumentApplicationException {
 		FolderInfo root = documentService.getFolder(defaultDomainObject);
@@ -318,29 +317,34 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertNotNull(info.getInputStream());
 	}
 
-
 	public void testMoveFolderEntriesOne() throws Exception{
-		//File unter Root erzeugen
+		// Create a file in the root directory
 		FolderInfo root = documentService.getFolder(defaultDomainObject);
 		FileInfo file1 = createFileInfo("file1.txt");
 		documentService.createFileEntry(file1, root);
-		//Subfolder unter root erzeugen
+
+		// Create a sub folder
 		FolderInfo subfolder = createSubFolder();
 		subfolder.setName("subfolder");
 		documentService.createFolder(subfolder, root);
 		documentService.createFileEntry(createFileInfo("2.txt"),subfolder);
+		
+		// Test subfolder content
 		List<FolderEntryInfo> test = documentService.getFolderEntries(defaultDomainObject, subfolder);
 		assertEquals(1, test.size());
-		//Prüfe Teil 1
+		
+		// Test root folder content
 		List<FolderEntryInfo> entries = documentService.getFolderEntries(defaultDomainObject, root);
 		assertNotNull(entries);
 		assertEquals(2, entries.size());
-		//verschieben
-		List<FolderEntryInfo> chosen = new ArrayList<FolderEntryInfo>();
-		chosen.add(entries.get(0));
-		assertEquals("file1.txt", chosen.get(0).getFileName());
-		documentService.moveFolderEntries(defaultDomainObject, subfolder, chosen);
-		//Hier wird das falsche dingen genommen!
+		
+		// Move something
+		List<FolderEntryInfo> toMove = new ArrayList<FolderEntryInfo>();
+		toMove.add(entries.get(0));
+		assertEquals("file1.txt", toMove.get(0).getFileName());
+		documentService.moveFolderEntries(defaultDomainObject, subfolder, toMove);
+		
+		// Test subfolder content
 		List<FolderEntryInfo> test2 = documentService.getFolderEntries(defaultDomainObject, subfolder);
 		assertEquals(2,test2.size());
 		assertEquals(test2.get(1).getPath(), "subfolder");
@@ -348,33 +352,62 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	}
 	
 	public void testMoveFolderEntriesMany() throws Exception{
-		//create root
-		FolderInfo folderInfoRoot = documentService.getFolder(defaultDomainObject);
-		//create 2 documents under root
-		documentService.createFileEntry(createFileInfo("datei1.txt"), folderInfoRoot);
-		documentService.createFileEntry(createFileInfo("datei2.txt"), folderInfoRoot);
-		//create subfolder
-		FolderInfo subfolder = createSubFolder();
-		subfolder.setName("subfolder");
-		documentService.createFolder(subfolder, folderInfoRoot);
-		//Test content of root
-		assertEquals(3, documentService.getFolderEntries(defaultDomainObject,folderInfoRoot).size());
-		//Test content of subfolder
-		assertEquals(0, documentService.getFolderEntries(defaultDomainObject,subfolder).size());
-		//Move both documents to subfolder
-		List<FolderEntryInfo> chosen = new ArrayList<FolderEntryInfo>();
-		Folder folderRoot = folderDao.folderInfoToEntity(folderInfoRoot);
-		chosen.add(folderEntryDao.toFolderEntryInfo(folderRoot.getFolderEntryByName("datei1")));
-		chosen.add(folderEntryDao.toFolderEntryInfo(folderRoot.getFolderEntryByName("datei2")));
-		assertEquals(2,chosen.size());
-		documentService.moveFolderEntries(defaultDomainObject, subfolder, chosen);
-		//Test content of root
-		assertEquals(1,documentService.getFolderEntries(defaultDomainObject,folderInfoRoot).size());
-		//Test content of subfolder
-		assertEquals(2,documentService.getFolderEntries(defaultDomainObject,subfolder).size());
+		// Create root
+		FolderInfo rootFolderInfo = documentService.getFolder(defaultDomainObject);
+		
+		// Choose file names
+		String testFn1 = "f1";
+		String testFn2 = "f2";
+		
+		// Create 2 documents under root
+		documentService.createFileEntry(createFileInfo(testFn1), rootFolderInfo);
+		documentService.createFileEntry(createFileInfo(testFn2), rootFolderInfo);
+		
+		// Create subfolder
+		FolderInfo subFolderInfo = createSubFolder();
+		subFolderInfo.setName("subfolder");
+		documentService.createFolder(subFolderInfo, rootFolderInfo);
+		
+		// Test content of root
+		assertEquals(3, documentService.getFolderEntries(defaultDomainObject,rootFolderInfo).size());
+		
+		// Test content of subfolder
+		assertEquals(0, documentService.getFolderEntries(defaultDomainObject,subFolderInfo).size());
+		
+		// Move both documents to subfolder
+		List<FolderEntryInfo> subFolderEntries = new ArrayList<FolderEntryInfo>();
+		Folder rootFolder = folderDao.folderInfoToEntity(rootFolderInfo);
+		FolderEntryInfo fei1 = folderEntryDao.toFolderEntryInfo(rootFolder.getFolderEntryByName(testFn1));
+		assertNotNull(fei1);
+		subFolderEntries.add(fei1);
+		FolderEntryInfo fei2 = folderEntryDao.toFolderEntryInfo(rootFolder.getFolderEntryByName(testFn2));
+		assertNotNull(fei2);
+		subFolderEntries.add(fei2);
+		documentService.moveFolderEntries(defaultDomainObject, subFolderInfo, subFolderEntries);
+
+		// Test content of root
+		assertEquals(1,documentService.getFolderEntries(defaultDomainObject,rootFolderInfo).size());
+		// Test content of subfolder
+		assertEquals(subFolderEntries.size(), documentService.getFolderEntries(defaultDomainObject,subFolderInfo).size());
+		
+		// Move both documents back to root
+		List<FolderEntryInfo> toMoveEntries = new ArrayList<FolderEntryInfo>();
+		Folder subFolder = folderDao.folderInfoToEntity(subFolderInfo);
+		fei1 = folderEntryDao.toFolderEntryInfo(subFolder.getFolderEntryByName(testFn1));
+		assertNotNull(fei1);
+		toMoveEntries.add(fei1);
+		fei2 = folderEntryDao.toFolderEntryInfo(subFolder.getFolderEntryByName(testFn2));
+		assertNotNull(fei2);
+		toMoveEntries.add(fei2);
+		documentService.moveFolderEntries(defaultDomainObject, rootFolderInfo, toMoveEntries);
+		
+		// Test content of root
+		assertEquals(1 + toMoveEntries.size(),documentService.getFolderEntries(defaultDomainObject,rootFolderInfo).size());
+		// Test content of subfolder
+		assertEquals(0, documentService.getFolderEntries(defaultDomainObject,subFolderInfo).size());
+		
 	}
 	
-
 	public void testMoveFolderEntriesIllegalTarget() throws Exception{
 		//create root
 		FolderInfo folderInfoRoot = documentService.getFolder(defaultDomainObject);

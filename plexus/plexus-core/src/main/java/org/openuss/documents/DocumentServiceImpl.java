@@ -471,11 +471,11 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	protected void handleMoveFolderEntries(DomainObject domainObject,
 			FolderInfo target, List chosenObjects) throws Exception {
 		Folder targetFolder = getFolderDao().folderInfoToEntity(target);
-		List<FolderEntry> chosen = new ArrayList(chosenObjects);
+		List<FolderEntry> chosen = new ArrayList<FolderEntry>(chosenObjects);
 		getFolderEntryDao().folderEntryInfoToEntityCollection(chosen);
 		// Moving chosen to target
-		for(int i=0; i<chosen.size(); i++){
-			targetFolder.moveHere(chosen.get(i));
+		for (FolderEntry fe : chosen) {
+			targetFolder.moveHere(fe);
 		}
 	}
 
