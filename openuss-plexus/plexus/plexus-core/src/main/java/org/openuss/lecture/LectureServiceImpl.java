@@ -330,10 +330,11 @@ public class LectureServiceImpl extends LectureServiceBase {
 	protected List<?> handleGetInstituteAspirants(Long instituteId) throws Exception {
 		Institute institute = getInstituteDao().load(instituteId);
 		// need to get ride of persistent back so use a new ArrayList
-		Collection<?> aspirantsCollection= institute.getMembership().getAspirants();
-		getUserDao().toUserInfoCollection(aspirantsCollection);
-		List<?> aspirants = new ArrayList<UserInfo>((Collection<UserInfo>)aspirantsCollection);
-		getUserDao().toUserInfoCollection(aspirants);
+		Collection<User> aspirantsCollection= institute.getMembership().getAspirants();
+		List<UserInfo> aspirants = new ArrayList<UserInfo>();
+		for (User user:aspirantsCollection){
+			aspirants.add(getSecurityService().getUserByEmail(user.getEmail()));
+		}		
 		return aspirants;
 	}
 

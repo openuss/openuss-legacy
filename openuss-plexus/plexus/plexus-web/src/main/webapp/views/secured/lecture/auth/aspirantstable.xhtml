@@ -17,12 +17,12 @@
 		
 		<t:column>
 			<plexus:commandSortHeader columnName="firstname"> #{msg['user_contact_firstname']}</plexus:commandSortHeader>
-			<h:outputText value="#{aspirant.firstName}"/>
+			<h:outputText value="#{aspirant.contact.firstName}"/>
 		</t:column>
 		 
 		<t:column>
 			<plexus:commandSortHeader columnName="lastname">#{msg['user_contact_lastname']}</plexus:commandSortHeader>
-			<h:outputText value="#{aspirant.lastName}"/>
+			<h:outputText value="#{aspirant.contact.lastName}"/>
 		</t:column>
 
 		<t:column>
