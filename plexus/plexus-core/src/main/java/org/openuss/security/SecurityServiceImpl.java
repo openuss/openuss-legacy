@@ -6,6 +6,7 @@
 package org.openuss.security;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -418,8 +419,12 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	@Override
 	protected List handleGetUsers(UserCriteria criteria) throws Exception {
 		UserDao userDao = getUserDao();
-		List users = userDao.findUsersByCriteria(UserDao.TRANSFORM_USERINFO, criteria);
-		return users;
+		List<User> users = userDao.findUsersByCriteria(criteria);
+		List<UserInfo> userVos= new ArrayList<UserInfo>();
+		for (User user:users){
+			userVos.add(userToUserInfo(user));
+		}
+		return userVos;
 	}
 
 	@Override
@@ -502,6 +507,9 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 
 	@Override
 	protected User handleGetUserObject(UserInfo user) throws Exception {
+		if (user==null||user.getId()==null){
+			return null;
+		}
 		return getUserDao().load(user.getId());
 	}
 

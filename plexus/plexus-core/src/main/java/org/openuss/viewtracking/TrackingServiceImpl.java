@@ -12,6 +12,7 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.lang.Validate;
 import org.openuss.framework.utilities.DomainObjectUtility;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 
 /**
  * @see org.openuss.viewtracking.TrackingService
@@ -62,7 +63,7 @@ public class TrackingServiceImpl extends org.openuss.viewtracking.TrackingServic
 
 	private DomainViewStatePK generatePrimaryKey(Object domainObject) throws IllegalAccessException, InvocationTargetException {
 		Long domainIdentifier = DomainObjectUtility.identifierFromObject(domainObject);
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserInfo user = getSecurityService().getCurrentUser();
 		
 		DomainViewStatePK pk = new DomainViewStatePK();
 		pk.setDomainIdentifier(domainIdentifier);

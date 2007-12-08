@@ -13,6 +13,7 @@ import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.security.UserInfo;
 import org.openuss.security.UserContact;
 import org.openuss.security.UserPreferences;
+import org.openuss.security.UserPreferencesInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -39,6 +40,9 @@ public class RegistrationData extends BaseBean {
 		
 		UserInfo user = new UserInfo();
 		String locale = getFacesContext().getViewRoot().getLocale().toString();
+		if (user.getPreferences()==null){
+			user.setPreferences(new UserPreferencesInfo());
+		}
 		user.getPreferences().setLocale(locale);
 		setSessionBean(Constants.USER_SESSION_KEY, user);
 	}
