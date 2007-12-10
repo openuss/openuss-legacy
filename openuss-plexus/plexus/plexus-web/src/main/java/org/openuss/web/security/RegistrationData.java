@@ -11,8 +11,6 @@ import org.apache.shale.tiger.view.Init;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.security.UserInfo;
-import org.openuss.security.UserContact;
-import org.openuss.security.UserPreferences;
 import org.openuss.security.UserPreferencesInfo;
 import org.openuss.web.Constants;
 

@@ -97,7 +97,7 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 		try {
 			departmentService.acceptApplication(app.getId(), user.getId());
 		} catch (Exception e) {
-			// TODO Do something reasonable here to process the exception
+			handleException(e);
 			return Constants.FAILURE;
 		}
 		return Constants.SUCCESS;
@@ -108,10 +108,15 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 		try {
 			departmentService.rejectApplication(app.getId());
 		} catch (Exception e) {
-			// TODO Do something reasonable here to process the exception
+			handleException(e);
 			return Constants.FAILURE;
 		}
 		return Constants.SUCCESS;
+	}
+
+	private void handleException(Exception e) {
+		logger.error(e);
+		addError(i18n(e.getMessage()));
 	}
 
 	public ApplicationsTable getApplications() {

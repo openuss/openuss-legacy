@@ -12,7 +12,6 @@ import org.openuss.newsletter.MailDetail;
 import org.openuss.newsletter.MailInfo;
 import org.openuss.newsletter.NewsletterInfo;
 import org.openuss.newsletter.SubscriberInfo;
-import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 
 /**

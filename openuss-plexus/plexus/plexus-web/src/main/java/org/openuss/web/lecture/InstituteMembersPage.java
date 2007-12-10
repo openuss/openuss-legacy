@@ -141,7 +141,7 @@ public class InstituteMembersPage extends AbstractLecturePage {
 			return Constants.SUCCESS;
 		}
 
-		// FIXME below code should be handled within the business layer
+		// FIXME Below code should be handled within the business layer
 		
 		Iterator<InstituteGroup> iter = member.getGroups().iterator();
 		InstituteGroup group;

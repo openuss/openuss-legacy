@@ -8,10 +8,8 @@ package org.openuss.viewtracking;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.lang.Validate;
 import org.openuss.framework.utilities.DomainObjectUtility;
-import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 
 /**

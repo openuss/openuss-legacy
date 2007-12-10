@@ -28,7 +28,7 @@ public class CalendarDateValidator extends BaseBean implements Validator {
 
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		try {
-			// FIXME startdate should be configurable through validator tag attribute 
+			// FIXME Startdate should be configurable through validator tag attribute 
 			Date startDate = (Date) ((UIOutput) component.getParent().findComponent("startdate")).getValue();
 			Date endDate = (Date) value;
 

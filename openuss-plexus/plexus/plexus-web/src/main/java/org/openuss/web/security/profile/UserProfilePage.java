@@ -18,7 +18,6 @@ import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
-import org.openuss.security.UserPreferences;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
