@@ -195,7 +195,7 @@ public class MyUniPage extends BasePage {
 
 	public boolean getData() {
 		logger.debug("Checcking, if data available");
-		if (myUniData.isEmpty()) {
+		if (myUniData == null || myUniData.isEmpty()) {
 			return true;
 		} else {
 			return false;
