@@ -377,7 +377,6 @@ public class LectureImport extends DefaultImport {
 		course.setShortcut(StringUtils.abbreviate(semester.getName() +"-"+ enrollment2.getId(),30));
 		course.setDescription(enrollment2.getSubject().getRemark());
 		
-		// FIXME find a better fiting period for the course by analysing the name of the period.
 		course.setPeriod(periods.get(periodIdentifier.find(semester.getName())));
 
 		if (ImportUtil.toBoolean(enrollment2.getWithPassword())) {
