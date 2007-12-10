@@ -21,15 +21,13 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.framework.web.jsf.pages.SecurityConstraint;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.InstituteMember;
 import org.openuss.lecture.InstituteSecurity;
+import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.security.SecurityService;
-import org.openuss.security.SecurityServiceImpl;
 import org.openuss.security.User;
 import org.openuss.security.UserComparator;
-import org.openuss.security.UserCriteria;
 import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$course$courseassistants", scope = Scope.REQUEST)
@@ -41,16 +39,14 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	@Property(value = "#{securityService}")
 	protected SecurityService securityService;
-
+	
 	private Long userId;
-	// Die ist neu
-	private Long userId2;
 
 	List<CourseMemberInfo> assistants;
 	Set<Long> assistantsUserIds;
 	List<SelectItem> instituteMembers;
-	// Die ist neu
-	List<SelectItem> userMembers;
+	
+	String username;
 	
 	private DataPage<CourseMemberInfo> page;
 
@@ -121,30 +117,23 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	public String addAssistant() {
 		logger.debug("course assistant aspirant added");
-		User user = User.Factory.newInstance();
-		user.setId(userId);
-		courseService.addAssistant(courseInfo, user);
-		addMessage(i18n("message_course_add_assistant"));
-		resetCachedData();
-		return Constants.SUCCESS;
-	}
-	
-	// Die Methode ist neu
-	public String addUserAssistant() {
-		logger.debug("course assistant aspirant added");
-		User user = User.Factory.newInstance();
-		user.setId(userId2);
-		courseService.addAssistant(courseInfo, user);
-		addMessage(i18n("message_course_add_assistant"));
-		resetCachedData();
-		return Constants.SUCCESS;
+		if (userId != null){
+			User user = User.Factory.newInstance();
+			user.setId(userId);
+			courseService.addAssistant(courseInfo, user);
+			addMessage(i18n("message_course_add_assistant"));
+			resetCachedData();
+			userId  = null;
+			return Constants.SUCCESS;
+		} else {
+			return addUser();
+		}
 	}
 
 	private void resetCachedData() {
 		assistants = null;
 		instituteMembers = null;
 		assistantsUserIds = null;
-		userMembers = null;
 		page = null;
 	}
 
@@ -166,6 +155,12 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 			UserComparator userComparator = new UserComparator();
 			Collections.sort(membersUser, userComparator);
 			instituteMembers = new ArrayList<SelectItem>();
+			if (!membersUser.isEmpty()){
+				SelectItem item = new SelectItem();
+				item.setLabel(i18n("please_choose"));
+				item.setDisabled(true);
+				instituteMembers.add(item);
+			}
 			for(User member : membersUser) {
 				instituteMembers.add(new SelectItem(member.getId(), member.getTitle()+" "+member.getLastName()+" "+member.getFirstName()));
 			}
@@ -175,31 +170,30 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		return instituteMembers;
 	}
 
-	// Die ist neu
-	public Collection<SelectItem> getUserList() {
-		if (userMembers == null) {
-			List<User> members = (List<User>) getSecurityService().getAllUsers();
-			final Set<Long> userIds = getAssistantsUserIdMap();	
-			CollectionUtils.filter(members, new Predicate() {
-				public boolean evaluate(Object object) {
-					User member = (User) object;
-					return !userIds.contains(member.getId());
-				}
-			});
-			List<User> membersUser = new ArrayList<User>();
-			for(User member : members) {
-				membersUser.add(getSecurityService().getUserByName(member.getUsername()));
-			}
-			UserComparator userComparator = new UserComparator();
-			Collections.sort(membersUser, userComparator);
-			userMembers = new ArrayList<SelectItem>();
-			for(User member : membersUser) {
-				userMembers.add(new SelectItem(member.getId(), member.getTitle()+" "+member.getLastName()+" "+member.getFirstName()));
-			}
+	public String addUser() {
+		logger.debug("course assistant aspirant added");
+		User user = User.Factory.newInstance();
+		if(securityService.getUserByName(username) != null){
+		user = securityService.getUserByName(username);	
+		} else {
+			user = securityService.getUserByEmail(username);
 		}
-		return userMembers;
+		try {
+			courseService.addAssistant(courseInfo, user);
+			addMessage(i18n("message_course_add_assistant"));
+			resetCachedData();
+		} catch (OrganisationServiceException e) {
+			logger.debug(e.getMessage());
+			addError(i18n("organisation_error_apply_member_at_course_already_applied"));
+			return Constants.FAILURE;
+		} catch (Exception e) {
+			logger.debug(e.getMessage());
+			addError(i18n("organisation_error_apply_member_at_course"));
+			return Constants.FAILURE;
+		}
+		username = "";
+		return Constants.SUCCESS;
 	}
-	
 	
 	public String save() {
 		logger.debug("Course assistants page - saved");
@@ -225,14 +219,6 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-	
-	public Long getUserId2() {
-		return userId2;
-	}
-
-	public void setUserId2(Long userId2) {
-		this.userId2 = userId2;
-	}
 
 	public SecurityService getSecurityService() {
 		return securityService;
@@ -241,5 +227,14 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
 	}
+	
+	
+	public String getUsername() {
+		return username;
+	}
 
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
 }

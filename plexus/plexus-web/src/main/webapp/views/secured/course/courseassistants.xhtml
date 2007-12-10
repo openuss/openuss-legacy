@@ -33,36 +33,35 @@
 			<h:form id="assistantsForm"> 
 				<ui:include src="courseassistantstable.xhtml" />
 				
-				<c:if test="#{not empty views$secured$course$courseassistants.instituteMemberList}">
-					<o:block>
-						<h:outputText value="#{msg.institute_members_command_assistant}" styleClass="field_label"/>
-						<h:selectOneMenu id="assistantSelectBox" value="#{views$secured$course$courseassistants.userId}" styleClass="pulldown_inline">
-						   	<f:selectItems value="#{views$secured$course$courseassistants.instituteMemberList}"/>
-						</h:selectOneMenu>
-						<h:commandButton 
+				
+					<o:block label="#{msg.institute_members_command_head}" styleClass="form_box">
+						<p class="content_font_normal">
+							<c:if test="#{not empty views$secured$course$courseassistants.instituteMemberList}">
+								<h:outputLabel value="#{msg.institute_members_command_assistant}" 
+											   for="assistantSelectBox" 
+											   styleClass="field_label" />
+								<h:selectOneMenu id="assistantSelectBox" 
+												 value="#{views$secured$course$courseassistants.userId}" 
+												 styleClass="pulldown">
+						   			<f:selectItems value="#{views$secured$course$courseassistants.instituteMemberList}"/>
+								</h:selectOneMenu>
+							</c:if>
+							<o:input entity="views$secured$course$courseassistants" 
+									 property="username"
+									 label="#{msg.institute_members_command_user}" 
+									 styleClass="field">
+								<f:validator validatorId="userEmailExistValidator" />
+							</o:input>
+							<br/>
+							<h:commandButton 
+								id="addMemberButton"
 								action="#{views$secured$course$courseassistants.addAssistant}"
-								value="#{msg['course_assistants_add']}"
-								hint="#{msg['course_assistants_add_hint']}"
+								value="#{msg.course_assistants_add}"
+								hint="#{msg.course_assistants_add_hint}"
 								styleClass="button_add" />
+						</p>
 					</o:block>	
-				</c:if>
-				
-				<!-- Dieser Teil ist neu hinzu gekommen für die User-Check-Box und den Hinzufügen-Button -->
-				<c:if test="#{not empty views$secured$course$courseassistants.userList}">
-					<o:block>
-						<h:outputText value="#{msg.institute_members_command_user}" styleClass="field_label"/>
-						<h:selectOneMenu id="userSelectBox" value="#{views$secured$course$courseassistants.userId2}" styleClass="pulldown_inline">
-						   	<f:selectItems value="#{views$secured$course$courseassistants.userList}"/>
-						</h:selectOneMenu>
-						<h:commandButton 
-								action="#{views$secured$course$courseassistants.addUserAssistant}"
-								value="#{msg['course_assistants_add']}"
-								hint="#{msg['course_assistants_add_hint']}"
-								styleClass="button_add" />
-					</o:block>	
-				</c:if>
-				<!-- Ende des neuen Teils -->
-				
+
 	  		</h:form>
   		</ui:define>
 	</ui:composition>
