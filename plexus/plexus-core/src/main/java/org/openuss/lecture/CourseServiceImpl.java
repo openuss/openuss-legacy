@@ -553,4 +553,129 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		}
 	}
 
+	@Override
+	protected List handleFindAllCoursesByDepartment(Long departmentId) throws Exception {
+		Validate.notNull(departmentId, "DepartmentID cannot be null.");
+		Department department = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(department, "No department could be found with the departmentId " + departmentId);
+
+		List<CourseInfo> courseList = new ArrayList<CourseInfo>();
+		List<InstituteInfo> instituteInfos = new ArrayList();
+		for (Institute institute : department.getInstitutes()) {
+			instituteInfos.add(this.getInstituteDao().toInstituteInfo(institute));
+		}
+		
+		for(int i=0; i<instituteInfos.size();i++) {	
+			courseList.addAll(this.findAllCoursesByInstitute(instituteInfos.get(i).getId()));
+		}
+		
+		return courseList;
+
+	}
+
+	@Override
+	protected List handleFindAllCoursesByDepartmentAndActivePeriods(
+			Long departmentId) throws Exception {
+		Validate.notNull(departmentId, "DepartmentID cannot be null.");
+		Department department = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(department, "No department could be found with the departmentId " + departmentId);
+
+		List<CourseInfo> courseList = new ArrayList<CourseInfo>();
+		List<InstituteInfo> instituteInfos = new ArrayList();
+		for (Institute institute : department.getInstitutes()) {
+			instituteInfos.add(this.getInstituteDao().toInstituteInfo(institute));
+		}
+		
+		for(int i=0; i<instituteInfos.size();i++) {	
+			courseList.addAll(this.findCoursesByActivePeriods(instituteInfos.get(i)));
+		}
+		
+		return courseList;
+	}
+
+	@Override
+	protected List handleFindAllCoursesByDepartmentAndActivePeriodsAndEnabled(
+			Long departmentId, boolean enabled) throws Exception {
+		Validate.notNull(enabled, "enabled cannot be null.");
+		Validate.notNull(departmentId, "DepartmentID cannot be null.");
+		Department department = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(department, "No department could be found with the departmentId " + departmentId);
+
+		List<CourseInfo> courseList = new ArrayList<CourseInfo>();
+		List<InstituteInfo> instituteInfos = new ArrayList();
+		for (Institute institute : department.getInstitutes()) {
+			instituteInfos.add(this.getInstituteDao().toInstituteInfo(institute));
+		}
+		
+		for(int i=0; i<instituteInfos.size();i++) {		
+			courseList.addAll(this.findCoursesByActivePeriodsAndEnabled(instituteInfos.get(i).getId(), enabled));
+		}
+		
+		return courseList;
+	}
+
+	@Override
+	protected List handleFindAllCoursesByDepartmentAndEnabled(
+			Long departmentId, boolean enabled) throws Exception {
+		Validate.notNull(enabled, "enabled cannot be null.");
+		Validate.notNull(departmentId, "DepartmentID cannot be null.");
+		Department department = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(department, "No department could be found with the departmentId " + departmentId);
+
+		List<CourseInfo> courseList = new ArrayList<CourseInfo>();
+		List<InstituteInfo> instituteInfos = new ArrayList();
+		for (Institute institute : department.getInstitutes()) {
+			instituteInfos.add(this.getInstituteDao().toInstituteInfo(institute));
+		}
+		
+		for(int i=0; i<instituteInfos.size();i++) {			
+			courseList.addAll(this.findCoursesByInstituteAndEnabled(instituteInfos.get(i).getId(), enabled));
+		}
+		
+		return courseList;
+	}
+
+	@Override
+	protected List handleFindAllCoursesByDepartmentAndPeriod(Long departmentId,
+			Long periodId) throws Exception {
+		Validate.notNull(periodId, "PeriodID cannot be null.");
+		Validate.notNull(departmentId, "DepartmentID cannot be null.");
+		Department department = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(department, "No department could be found with the departmentId " + departmentId);
+
+		List<CourseInfo> courseList = new ArrayList<CourseInfo>();
+		List<InstituteInfo> instituteInfos = new ArrayList();
+		for (Institute institute : department.getInstitutes()) {
+			instituteInfos.add(this.getInstituteDao().toInstituteInfo(institute));
+		}
+		
+		for(int i=0; i<instituteInfos.size();i++) {		
+			courseList.addAll(this.findCoursesByPeriodAndInstitute(periodId, instituteInfos.get(i).getId()));
+		}
+		
+		return courseList;
+	}
+
+	@Override
+	protected List handleFindAllCoursesByDepartmentAndPeriodAndEnabled(
+			Long departmentId, Long periodId, boolean enabled) throws Exception {
+		Validate.notNull(enabled, "enabled cannot be null.");
+		Validate.notNull(periodId, "PeriodID cannot be null.");
+		Validate.notNull(departmentId, "DepartmentID cannot be null.");
+		Department department = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(department, "No department could be found with the departmentId " + departmentId);
+
+		List<CourseInfo> courseList = new ArrayList<CourseInfo>();
+		List<InstituteInfo> instituteInfos = new ArrayList();
+		for (Institute institute : department.getInstitutes()) {
+			instituteInfos.add(this.getInstituteDao().toInstituteInfo(institute));
+		}
+		
+		for(int i=0; i<instituteInfos.size();i++){	
+			courseList.addAll(this.findCoursesByPeriodAndInstituteAndEnabled(periodId, instituteInfos.get(i).getId(), enabled));
+		}
+		
+		return courseList;
+	}
+
 }
