@@ -17,7 +17,6 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserInfo;
 import org.openuss.security.UserCriteria;
 import org.openuss.security.UserInfo;
 import org.openuss.statistics.SystemStatisticInfo;
@@ -106,7 +105,7 @@ public class UserBrowserPage extends BasePage{
 			criteria.setMaximumResultSize(pageSize * 4);
 			List<UserInfo> users = securityService.getUsers(criteria);
 			logger.debug("got "+users.size()+" users");
-			// FIXME - total size should be fetched from database instead of guessing
+			// FIXME Total size should be fetched from database instead of guessing
 			int size = systemStatistic.getUsers().intValue();
 			dataPage = new DataPage<UserInfo>(size,startRow,users);
 		}

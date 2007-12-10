@@ -176,7 +176,7 @@ public class AuthenticationController extends BasePage {
 	private void injectUserInformationIntoSession(Authentication auth) {
 		if (auth.getPrincipal() instanceof User) {
 			logger.debug("Principal is: "+auth.getPrincipal());
-			//FIXME still a last user object in web layer
+			//FIXME Still a last user object in web layer
 			User details = (User) auth.getPrincipal();
 			UserInfo user = securityService.getUserByName(details.getUsername());
 			securityService.setLoginTime(user);
@@ -211,29 +211,6 @@ public class AuthenticationController extends BasePage {
 		SecurityContextHolder.clearContext();
 
 		return LOGOUT;
-	}
-	
-
-
-	
-	/**
-	 * Generates a new Password and send it per email to the user.
-	 * @return Outcome SUCCESS | FAILURE
-	 */
-	public String forgotPassword() {
-		//TODO Generate new password, change the user credentials, and send per email.  
-		String outcome = Constants.SUCCESS;
-		
-		if ("fail".equals(username)) {
-			addError("Username doesn't exist!");
-			outcome = Constants.FAILURE;
-		} else if ("fail@fail.com".equals(email)) {
-			addError("E-Mail Address doesn't match.");
-			outcome = Constants.FAILURE;
-		} else {
-	
-		}
-		return outcome;
 	}
 	
 	public AuthenticationManager getAuthenticationManager() {

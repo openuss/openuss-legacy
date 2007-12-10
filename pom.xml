@@ -278,6 +278,7 @@
 	<modules>
 		<module>framework</module>
 		<module>themes</module>
+		<module>openformula</module>
 		<module>plexus</module>
 		<module>migration</module>
 	</modules>
