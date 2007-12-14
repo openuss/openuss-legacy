@@ -22,11 +22,10 @@ import freestyleLearningGroup.independent.gui.FLGHtmlPane;
 import freestyleLearningGroup.independent.gui.FLGHtmlPaneEditButtonsFactory;
 import freestyleLearningGroup.independent.gui.FLGScrollPane;
 import freestyleLearningGroup.independent.util.FLGFileUtility;
+import freestyleLearningGroup.independent.util.FLGInternationalization;
 
 /**
  * @author Freestyle Learning Group
- * @author Gunnar Thies
- * @version 1.0, 15/04/03
  */
 public class FLGAudioElementContentPanel extends FSLAbstractLearningUnitViewElementContentPanel {
     private FLGScrollPane scrollPane;
@@ -35,6 +34,7 @@ public class FLGAudioElementContentPanel extends FSLAbstractLearningUnitViewElem
     private JPanel scrollPaneView;
     private boolean active;
     private JComponent[] editToolBarComponents;
+    private FLGInternationalization internationalization; 
 
     /**
      * Initializes this class.
@@ -47,6 +47,8 @@ public class FLGAudioElementContentPanel extends FSLAbstractLearningUnitViewElem
             super.init(learningUnitViewManager, learningUnitEventGenerator, editMode);
             learningUnitEventGenerator.addLearningUnitListener(new FLGAudioElementContentPanel_LearningUnitAdapter());
             learningUnitViewManager.addLearningUnitViewListener(new FLGAudioElementContentPanel_LearningUnitViewAdapter());
+            internationalization = new FLGInternationalization("freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.audio.elementsContentsPanel.internationalization",
+                    getClass().getClassLoader());
     }
 
     protected java.awt.Component getPrintableComponent() {
@@ -163,11 +165,12 @@ public class FLGAudioElementContentPanel extends FSLAbstractLearningUnitViewElem
                 titlePane = "<html><body><h1>" + learningUnitViewElement.getTitle() + "</h1><br>";
                 //if a soundfile for this element exists, it is named here.
                 if (learningUnitViewElement.getSoundFileName() != null) {
-                    titlePane = titlePane + "SoundFile: " + learningUnitViewElement.getSoundFileName() + "<hr></body></html>";
+                    titlePane = titlePane + internationalization.getString("elementsContentsPanel.soundFile") + " " 
+                    + learningUnitViewElement.getSoundFileName() + "<hr></body></html>";
                 }
                 //If there is no soundfile available for the element..
                 else if (learningUnitViewElement.getSoundFileName() == null) {
-                    titlePane = titlePane + "SoundFile:<font color=red> not available...</font><hr></body></html>";
+                    titlePane = titlePane + internationalization.getString("elementsContentsPanel.soundFile") + "<font color=red> not available...</font><hr></body></html>";
                 }
                 elementTitleHtmlPane.setText(titlePane);
                 if (learningUnitViewElement.getHtmlFileName() != null) {

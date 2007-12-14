@@ -24,7 +24,6 @@ import freestyleLearningGroup.independent.util.*;
  * This class adds control-buttons, to control the content of the audio-manager.
  * With these buttons you can play, record and open existing media files and assign them to an element of the learning unit.
  * @author Gunnar Thies
- * @version 1.0, 15/04/03
  */
 public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitViewElementInteractionPanel {
     private FSLLearningUnitViewElementInteractionButton openMediaButton, playButton, stopButton, pauseButton, recordButton;
@@ -50,10 +49,10 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
     private boolean sampleOver;
     private FLGAudioContextDependentInteractionPanel contextDependentInteractionPanel;
 
-    /*FLGAudioElementInteractionPanel-Constructor
+    /**
+     * FLGAudioElementInteractionPanel-Constructor
      * The internationalization is loaded...
      */
-
     public FLGAudioElementInteractionPanel() {
         internationalization = new FLGInternationalization("freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.audio.elementInteractionPanel.internationalization",
             getClass().getClassLoader());

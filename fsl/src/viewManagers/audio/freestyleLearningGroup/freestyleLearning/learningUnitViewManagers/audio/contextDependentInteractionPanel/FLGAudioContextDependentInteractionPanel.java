@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import freestyleLearning.learningUnitViewAPI.FSLLearningUnitViewElement;
@@ -62,7 +63,7 @@ public class FLGAudioContextDependentInteractionPanel extends FSLAbstractLearnin
 
     /** Method for building the panel with its buttons. */
     protected void buildDependentUI() {
-        setLayout(new FlowLayout());
+        //setLayout(new FlowLayout());
         setVisible(true);
         setOpaque(false);
         try {
@@ -112,6 +113,9 @@ public class FLGAudioContextDependentInteractionPanel extends FSLAbstractLearnin
                     }
                 });
             //adds the three buttons to the panel.
+            
+            add(new JLabel("Audio Notiz anhören"));
+            
             add(playButton);
             add(pauseButton);
             add(stopButton);
