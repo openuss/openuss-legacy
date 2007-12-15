@@ -216,7 +216,6 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
             if (soundFileName != null) {
                 //location of the soundfile
                 File soundFile = learningUnitViewElementsManager.resolveRelativeFileName(soundFileName, actualAudio);
-                System.out.println("soundFile = " + soundFile.getAbsolutePath());
                 //disable other buttons
                 enableButtons(false);
                 pauseButton.setEnabled(true);
@@ -317,6 +316,7 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
             enableButtons(false);
             stopButton.setEnabled(true);
             playButton.setEnabled(true);
+            pauseButton.setEnabled(false);
             player.pause();
             playing = false;
             pausedPlaying = true;
@@ -445,7 +445,9 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
         //if the user pressed on OK after the choosing of a file then the name of the soundfile is set
         //otherwise nothing happens.
         if (chooseFilePanel.showDialog(learningUnitViewElementsManager, activeLearningUnitViewElementId, soundFileName)) {
-            mediaFile = chooseFilePanel.getMediaFileName();
+            
+        	mediaFile = chooseFilePanel.getMediaFileName();
+        	if(mediaFile != null) {
             mediaFileName = mediaFile.getName();
             //the name of the soundfile attached to the element must be updated
             if (mediaFileName != null) {
@@ -462,10 +464,13 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
                 //and the content-panel is updated too, to show the new name of the attached soundfile
                 actualizeContentsPanel();
             }
-        }
+        	
+        
         //actualize buttons anyway
         actualizeButtons();
         setUpdated();
+        	}
+        }
     }
     
     private String getExtension(String fileName) {

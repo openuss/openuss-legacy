@@ -1,6 +1,8 @@
 package freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.audio.contextDependentInteractionPanel;
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,7 +65,7 @@ public class FLGAudioContextDependentInteractionPanel extends FSLAbstractLearnin
 
     /** Method for building the panel with its buttons. */
     protected void buildDependentUI() {
-        //setLayout(new FlowLayout());
+        setLayout(new FlowLayout());
         setVisible(true);
         setOpaque(false);
         try {
@@ -82,6 +84,7 @@ public class FLGAudioContextDependentInteractionPanel extends FSLAbstractLearnin
                         playing = true;
                         playButton.setEnabled(false);
                         pauseButton.setEnabled(true);
+                        stopButton.setEnabled(true);
                         //start thread which waits for the end of the sample.
                         startPlayWatcherThread();
                         //use the function of the play-button of elementInteractionPanel
@@ -99,6 +102,7 @@ public class FLGAudioContextDependentInteractionPanel extends FSLAbstractLearnin
                         elementInteractionPanel.stop();
                     }
                 });
+            stopButton.setEnabled(false);
             pauseButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -112,10 +116,13 @@ public class FLGAudioContextDependentInteractionPanel extends FSLAbstractLearnin
                         elementInteractionPanel.pause();
                     }
                 });
-            //adds the three buttons to the panel.
-            
-            add(new JLabel("Audio Notiz anhören"));
-            
+            pauseButton.setEnabled(false);
+            // build panel
+            Font font = new Font("SansSerif", Font.PLAIN, 16);
+            setFont(font);
+            JLabel label = new JLabel("Audio Notiz anhören");
+            label.setFont(font);
+            add(label);
             add(playButton);
             add(pauseButton);
             add(stopButton);
@@ -138,7 +145,8 @@ public class FLGAudioContextDependentInteractionPanel extends FSLAbstractLearnin
             stopButton.setEnabled(true);
         }
         else
-            enableButtons(true);
+            enableButtons(false);
+        	playButton.setEnabled(true);
     }
 
     /** This method implements a thread, which waits for the end of playing a sample. After that all buttons can be enabled ! */
@@ -154,7 +162,8 @@ public class FLGAudioContextDependentInteractionPanel extends FSLAbstractLearnin
                         break;
                     }
                 }
-                enableButtons(true);
+                enableButtons(false);
+            	playButton.setEnabled(true);
             }
         };
         thread.start();

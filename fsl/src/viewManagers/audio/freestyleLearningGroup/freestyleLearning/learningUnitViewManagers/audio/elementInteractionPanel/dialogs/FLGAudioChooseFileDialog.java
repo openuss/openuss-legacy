@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import freestyleLearning.learningUnitViewAPI.FSLLearningUnitViewElement;
 import freestyleLearning.learningUnitViewAPI.FSLLearningUnitViewElementsManager;
@@ -79,6 +80,7 @@ public class FLGAudioChooseFileDialog implements FLGDialogInputVerifier {
         JPanel mainElementInputPanel = new JPanel(new FLGColumnLayout());
         dialogContentComponent.add(mainElementInputPanel, BorderLayout.NORTH);
         fileSelectLabel = new JLabel(internationalization.getString("label.filename.text"));
+        fileSelectLabel.setBorder(new EmptyBorder(5,5,5,5));
         fileSelectTextField = new JTextField("", 20);
         fileSelectTextField.setEditable(false);
         fileSelectButton = new JButton(internationalization.getString("button.label.browse"));
@@ -89,6 +91,7 @@ public class FLGAudioChooseFileDialog implements FLGDialogInputVerifier {
                     showFileChooserDialog();
                 }
             });
+        fileSelectButton.setBorder(new EmptyBorder(5,5,5,5));
         mainElementInputPanel.setLayout(new FLGColumnLayout(5, 5));
         //add the components to the mainElementInputPanel
         mainElementInputPanel.add(fileSelectLabel, FLGColumnLayout.LEFT);
