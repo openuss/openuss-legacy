@@ -530,9 +530,12 @@ public class FLGAudioManager extends FSLAbstractLearningUnitViewManager {
          * Adds listener to it, so the cdi-panel can be closed after closing the fullscreen-window.
          */
         public void learningUnitViewFullScreenModeSelected(FSLLearningUnitViewEvent event) {
-            if (contextDependentInteractionPanel.isShowing()) {
+         if(contextDependentInteractionPanel != null)   {
+        	if (contextDependentInteractionPanel.isShowing()) {
                 cdiDialog = new JDialog(FLGUIUtilities.getFullScreenWindow(), "", false);
                 FSLLearningUnitViewsManager.addContextDependentInteractionComponent(null, thisManagerId);
+                
+                if(FLGUIUtilities.getFullScreenWindow() != null) {
                 FLGUIUtilities.getFullScreenWindow().addWindowListener(
                     // WindowListener
                     new WindowListener() {
@@ -549,6 +552,8 @@ public class FLGAudioManager extends FSLAbstractLearningUnitViewManager {
                         public void windowIconified(WindowEvent e) { }
                         public void windowDeiconified(WindowEvent e) { }
                     });
+                }
+                
                 //displays cdi-dialog at the right place
                 Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
                 cdiDialog.getContentPane().setBackground((Color)UIManager.get("FSLMainFrameColor1"));
@@ -557,6 +562,7 @@ public class FLGAudioManager extends FSLAbstractLearningUnitViewManager {
                 cdiDialog.pack();
                 cdiDialog.show();
             }
+        }
         }
     }
 
