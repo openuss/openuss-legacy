@@ -96,7 +96,6 @@ public class FLGIntroVideoElementContentPanel extends FSLAbstractLearningUnitVie
 	        createPlayer();
 	        add(videoPlayer);
         }
-        //int actualPlayingTime;
         videoPlayer.start();
         timeSetter = new Thread() {
             public void run() {
@@ -127,12 +126,10 @@ public class FLGIntroVideoElementContentPanel extends FSLAbstractLearningUnitVie
     private void createPlayer() {
         if (videoPlayer != null) {
             videoPlayer.stop();
-        }
-        else {
+        } else {
             videoPlayer = new FLGMediaPlayer();
         }
         videoPlayer.setScaleToFit(scaleToFit);
-        // if (lastLoadedLearningUnitViewElementId != learningUnitViewElementId)
         loadVideoToCurrentElement();
         videoPlayer.addMediaListener(
             new FLGMediaListener() {
@@ -155,29 +152,19 @@ public class FLGIntroVideoElementContentPanel extends FSLAbstractLearningUnitVie
             int introViewEventType = introViewEvent.getEventSpecificType();
             if (videoPlayer != null) {
                 if (introViewEventType == FLGIntroViewEvent.INTRO_PLAY_BUTTON_PRESSED) {
- //                    if (paused) {
-//                        paused = false;
-//                        videoPlayer.start();
-//                    }
-//                    else {
-                        play();
-                    //}
-                }
-                else if (introViewEventType == FLGIntroViewEvent.INTRO_PAUSE_BUTTON_PRESSED) {
+                	play();
+                } else if (introViewEventType == FLGIntroViewEvent.INTRO_PAUSE_BUTTON_PRESSED) {
                     paused = true;
                     videoPlayer.pause();
-                }
-                else if (introViewEventType == FLGIntroViewEvent.INTRO_STOP_BUTTON_PRESSED) {
-                    (
-                        new Thread() {
-                            public void run() {
-                                videoPlayer.stop();
-                            }
-                        }).start();
+                } else if (introViewEventType == FLGIntroViewEvent.INTRO_STOP_BUTTON_PRESSED) {
+                    ( new Thread() {
+                    	public void run() {
+                    		videoPlayer.stop();
+                    	}
+                    }).start();
                     clearPanel();
                     paused = false;
-                }
-                else if (introViewEventType == FLGIntroViewEvent.INTRO_END_OF_VIDEO_REACHED) {
+                } else if (introViewEventType == FLGIntroViewEvent.INTRO_END_OF_VIDEO_REACHED) {
                     (
                         new Thread() {
                             public void run() {
@@ -194,8 +181,7 @@ public class FLGIntroVideoElementContentPanel extends FSLAbstractLearningUnitVie
             if (!event.isFullScreenModeChanged()) {
                 clearPanel();
                 createPlayer();
-            }
-            else {
+            } else {
                 buildIndependentUI();
                 removeAll();
                 add(videoPlayer);

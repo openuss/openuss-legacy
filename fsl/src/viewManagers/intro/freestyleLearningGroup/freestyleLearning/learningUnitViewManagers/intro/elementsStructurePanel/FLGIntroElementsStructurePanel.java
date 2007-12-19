@@ -161,7 +161,7 @@ public class FLGIntroElementsStructurePanel extends FSLAbstractLearningUnitViewE
             public void showFileChooserDialog() {
                 FLGMediaFileChooser mediaFileChooser = new FLGMediaFileChooser(FLGMediaFileChooser.VIDEO);
                 if (mediaFileChooser.showDialog(lastSelectedDir)) {
-                    videoFile = mediaFileChooser.getSelectedFile();
+                	videoFile = mediaFileChooser.getSelectedFile();
                     lastSelectedDir = videoFile.getParentFile();
                     if (videoFile.exists()) {
                         fileSelectTextField.setText(videoFile.getAbsolutePath());
@@ -169,5 +169,6 @@ public class FLGIntroElementsStructurePanel extends FSLAbstractLearningUnitViewE
                     }
                 }
             }
+            
     }
 }
