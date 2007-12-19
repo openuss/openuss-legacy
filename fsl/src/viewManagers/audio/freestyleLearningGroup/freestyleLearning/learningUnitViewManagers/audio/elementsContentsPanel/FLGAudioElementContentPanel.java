@@ -170,7 +170,8 @@ public class FLGAudioElementContentPanel extends FSLAbstractLearningUnitViewElem
                 }
                 //If there is no soundfile available for the element..
                 else if (learningUnitViewElement.getSoundFileName() == null) {
-                    titlePane = titlePane + internationalization.getString("elementsContentsPanel.soundFile") + "<font color=red> not available...</font><hr></body></html>";
+                    titlePane = titlePane + internationalization.getString("elementsContentsPanel.soundFile") + "<font color=red>" +
+                    internationalization.getString("elementsContentsPanel.soundFile.notAvailable") + "..." + "</font><hr></body></html>";
                 }
                 elementTitleHtmlPane.setText(titlePane);
                 if (learningUnitViewElement.getHtmlFileName() != null) {
