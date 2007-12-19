@@ -218,12 +218,12 @@ public class FLGSlideShowSlideElementContentPanel extends FSLAbstractLearningUni
             // get amount of elements to play
         	maxSlideIndex = slideShowSlideElementIds.size();
         	
-        	System.out.println("maxSlideIndex: " + maxSlideIndex);
+        	//System.out.println("maxSlideIndex: " + maxSlideIndex);
         	
         	// play slides
         	for (currentSlideIndex = 0; currentSlideIndex < slideShowSlideElementIds.size(); currentSlideIndex++) {
         		
-        		System.out.println("currentSlideIndex: " + currentSlideIndex);
+        		//System.out.println("currentSlideIndex: " + currentSlideIndex);
         		
         		// maybe user did not choose wait for audio end -> close audio 2 before loading next element
         		if (audioPlayer2.isPlaying()) {
@@ -291,7 +291,7 @@ public class FLGSlideShowSlideElementContentPanel extends FSLAbstractLearningUni
             	// folder with music
             	slideShowSlideElementIds.add(slideShowRootElementId);
             	
-            	System.out.println("adding folder: " + slideShowSlideElement.getTitle());
+            	//System.out.println("adding folder: " + slideShowSlideElement.getTitle());
             	
             	slideShowSlideElement = getNextSlideShowSlideElement(slideShowSlideElement);
             } else if (!slideShowSlideElement.getType().equals(FLGSlideShowElement.ELEMENT_TYPE_SLIDE)) {
@@ -301,7 +301,7 @@ public class FLGSlideShowSlideElementContentPanel extends FSLAbstractLearningUni
             while (slideShowSlideElement != null) {
             	// get children for element
             	
-            	System.out.println("adding slide: " + slideShowSlideElement.getTitle() );
+            	//System.out.println("adding slide: " + slideShowSlideElement.getTitle() );
                 
             	slideShowSlideElementIds.add(slideShowSlideElement.getId());
                 slideShowSlideElement = getNextSlideShowSlideElement(slideShowSlideElement);
@@ -405,7 +405,7 @@ public class FLGSlideShowSlideElementContentPanel extends FSLAbstractLearningUni
                         	audioPlayer.loadMedia(audioFile);    
                         	audioPlayer.start();
                         }
-                        System.out.println("FLGSlideShowElementContentPanel, playAudio: AudioPlayer 1 started.");
+                        //System.out.println("FLGSlideShowElementContentPanel, playAudio: AudioPlayer 1 started.");
                     }
                 } catch (Exception e) {
                     System.out.println("FLGSlideShowElementContentPanel: " + e);
