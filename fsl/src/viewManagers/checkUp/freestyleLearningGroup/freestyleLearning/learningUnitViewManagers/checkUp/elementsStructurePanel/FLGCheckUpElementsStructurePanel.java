@@ -85,17 +85,14 @@ public class FLGCheckUpElementsStructurePanel extends
 		public FLGCheckUpSpecificElementDialogPane() {
 			setLayout(new BorderLayout());
 			comboBox_elementType = new JComboBox();
-			comboBox_elementType.addItem(internationalization
-					.getString("text.question"));
+			//comboBox_elementType.addItem(internationalization
+				//	.getString("text.question"));
 			comboBox_elementType.addItem(internationalization
 					.getString("text.multipleChoiceAlternative"));
 			comboBox_elementType.addItem(internationalization
 					.getString("text.relatorAlternative"));
-			// Gap text temporary disabled
 			comboBox_elementType.addItem(internationalization
-					.getString("text.gapTextAlternative")); // MW: deactivated
-															// because of Gap
-															// Bug
+					.getString("text.gapTextAlternative")); 
 			add(comboBox_elementType);
 		}
 
@@ -114,22 +111,22 @@ public class FLGCheckUpElementsStructurePanel extends
 				FSLLearningUnitViewElement learningUnitViewElement) {
 			if (learningUnitViewElement != null) {
 				if (!learningUnitViewElement.getFolder()) {
+					/**
 					if (learningUnitViewElement.getType().equals(
 							FLGCheckUpElement.ELEMENT_TYPE_QUESTION)) {
 						comboBox_elementType.setSelectedIndex(0);
-					}
+					}**/
 					if (learningUnitViewElement.getType().equals(
 							FLGCheckUpElement.ELEMENT_TYPE_MULTIPLECHOICE)) {
-						comboBox_elementType.setSelectedIndex(1);
+						comboBox_elementType.setSelectedIndex(0);
 					}
 					if (learningUnitViewElement.getType().equals(
 							FLGCheckUpElement.ELEMENT_TYPE_RELATOR)) {
-						comboBox_elementType.setSelectedIndex(2);
+						comboBox_elementType.setSelectedIndex(1);
 					}
-					// Gap text temporary disabled
 					if (learningUnitViewElement.getType().equals(
 							FLGCheckUpElement.ELEMENT_TYPE_GAPTEXT)) {
-						comboBox_elementType.setSelectedIndex(3);
+						comboBox_elementType.setSelectedIndex(2);
 					}
 				}
 			}
@@ -147,13 +144,13 @@ public class FLGCheckUpElementsStructurePanel extends
 
 		String getSelectedElementType() {
 			switch (comboBox_elementType.getSelectedIndex()) {
+			//case 0:
+				//return FLGCheckUpElement.ELEMENT_TYPE_QUESTION;
 			case 0:
-				return FLGCheckUpElement.ELEMENT_TYPE_QUESTION;
-			case 1:
 				return FLGCheckUpElement.ELEMENT_TYPE_MULTIPLECHOICE;
-			case 2:
+			case 1:
 				return FLGCheckUpElement.ELEMENT_TYPE_RELATOR;
-			case 3:
+			case 2:
 				return FLGCheckUpElement.ELEMENT_TYPE_GAPTEXT;
 			}
 			return null;

@@ -768,12 +768,12 @@ public class FLGCheckUpElementInteractionPanel extends
 			checkBoxMultipleChoice = new JCheckBox(internationalization
 					.getString("button.allowMultipleChoice"), true);
 			checkBoxGapText = new JCheckBox(internationalization
-					.getString("button.allowGapText"), false);
+					.getString("button.allowGapText"), true);
 			checkBoxRelator = new JCheckBox(internationalization
 					.getString("button.allowRelator"), true);
-			alternativesPanel.add(checkBoxMultipleChoice,
-					FLGColumnLayout.LEFTEND);
+			alternativesPanel.add(checkBoxMultipleChoice, FLGColumnLayout.LEFTEND);
 			alternativesPanel.add(checkBoxRelator, FLGColumnLayout.LEFTEND);
+			alternativesPanel.add(checkBoxGapText, FLGColumnLayout.LEFTEND);
 
 			// panel for question no selection
 			JPanel questionNoPanel = new JPanel();
