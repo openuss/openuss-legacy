@@ -281,7 +281,7 @@ public class FSLNewUserDialog implements FLGDialogInputVerifier {
         // TabbedPane
         tabbedPane = new JTabbedPane();
         tabbedPane.addTab(internationalization.getString("label.tabbedPane.fsl"), fslOuterPanel);
-        tabbedPane.addTab(internationalization.getString("label.tabbedPane.openUSS"), openUssPanel);
+        //tabbedPane.addTab(internationalization.getString("label.tabbedPane.openUSS"), openUssPanel);
       
         dialogContentComponent = new JPanel(new BorderLayout());
         dialogContentComponent.add(tabbedPane, BorderLayout.CENTER);

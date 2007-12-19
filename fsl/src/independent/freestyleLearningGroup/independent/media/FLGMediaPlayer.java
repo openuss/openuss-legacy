@@ -116,7 +116,6 @@ public class FLGMediaPlayer extends JPanel implements ControllerListener {
                 player.setPlaybackLoop(playbackLoop);
                 player.addControllerListener(this);
                 player.realize();
-                
             } catch (Exception e) {
             	System.out.println("Error while setting mediaLocator in FLGMediaPlayer, loadMedia().");
                 throw new FLGMediaException();

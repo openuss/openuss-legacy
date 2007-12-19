@@ -299,7 +299,7 @@ abstract public class FSLAbstractLearningUnitViewElementsStructurePanel extends 
     
     class FSLLearningUnitViewElementsStructurePanel_LearningUnitViewAdapter extends FSLLearningUnitViewVetoableAdapter {
         public void learningUnitViewElementsSelected(FSLLearningUnitViewEvent event) {
-            if (event.getLearningUnitViewManagerId().equals(learningUnitViewManager.getLearningUnitViewManagerId())) {
+         if (event.getLearningUnitViewManagerId().equals(learningUnitViewManager.getLearningUnitViewManagerId())) {
                 if (automaticActivation) {
                     activeLearningUnitViewElementId = null;
                     String[] learningUnitViewElementIds = event.getLearningUnitViewElementIds();
