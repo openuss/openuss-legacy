@@ -33,7 +33,6 @@ public class FLGCheckUpElementsStructurePanel extends
 		learningUnitViewNewAndModifyElementDialogViewSpecificPane = new FLGCheckUpSpecificElementDialogPane();
 		learningUnitViewManager
 				.addLearningUnitViewListener(new FLGCheckUpElementStructurePanel_Adapter());
-		// Gap text temporary disabled
 		structureTree = new FLGCheckUpElementsStructureTree();
 		structureTree.init(learningUnitViewManager,
 				learningUnitViewElementsManager, learningUnitEventGenerator,
@@ -85,8 +84,8 @@ public class FLGCheckUpElementsStructurePanel extends
 		public FLGCheckUpSpecificElementDialogPane() {
 			setLayout(new BorderLayout());
 			comboBox_elementType = new JComboBox();
-			//comboBox_elementType.addItem(internationalization
-				//	.getString("text.question"));
+			comboBox_elementType.addItem(internationalization
+					.getString("text.question"));
 			comboBox_elementType.addItem(internationalization
 					.getString("text.multipleChoiceAlternative"));
 			comboBox_elementType.addItem(internationalization
@@ -111,22 +110,21 @@ public class FLGCheckUpElementsStructurePanel extends
 				FSLLearningUnitViewElement learningUnitViewElement) {
 			if (learningUnitViewElement != null) {
 				if (!learningUnitViewElement.getFolder()) {
-					/**
 					if (learningUnitViewElement.getType().equals(
 							FLGCheckUpElement.ELEMENT_TYPE_QUESTION)) {
 						comboBox_elementType.setSelectedIndex(0);
-					}**/
-					if (learningUnitViewElement.getType().equals(
-							FLGCheckUpElement.ELEMENT_TYPE_MULTIPLECHOICE)) {
-						comboBox_elementType.setSelectedIndex(0);
 					}
 					if (learningUnitViewElement.getType().equals(
-							FLGCheckUpElement.ELEMENT_TYPE_RELATOR)) {
+							FLGCheckUpElement.ELEMENT_TYPE_MULTIPLECHOICE)) {
 						comboBox_elementType.setSelectedIndex(1);
 					}
 					if (learningUnitViewElement.getType().equals(
-							FLGCheckUpElement.ELEMENT_TYPE_GAPTEXT)) {
+							FLGCheckUpElement.ELEMENT_TYPE_RELATOR)) {
 						comboBox_elementType.setSelectedIndex(2);
+					}
+					if (learningUnitViewElement.getType().equals(
+							FLGCheckUpElement.ELEMENT_TYPE_GAPTEXT)) {
+						comboBox_elementType.setSelectedIndex(3);
 					}
 				}
 			}
@@ -144,13 +142,13 @@ public class FLGCheckUpElementsStructurePanel extends
 
 		String getSelectedElementType() {
 			switch (comboBox_elementType.getSelectedIndex()) {
-			//case 0:
-				//return FLGCheckUpElement.ELEMENT_TYPE_QUESTION;
 			case 0:
-				return FLGCheckUpElement.ELEMENT_TYPE_MULTIPLECHOICE;
+				return FLGCheckUpElement.ELEMENT_TYPE_QUESTION;
 			case 1:
-				return FLGCheckUpElement.ELEMENT_TYPE_RELATOR;
+				return FLGCheckUpElement.ELEMENT_TYPE_MULTIPLECHOICE;
 			case 2:
+				return FLGCheckUpElement.ELEMENT_TYPE_RELATOR;
+			case 3:
 				return FLGCheckUpElement.ELEMENT_TYPE_GAPTEXT;
 			}
 			return null;

@@ -799,8 +799,8 @@ public class FLGCheckUpElementInteractionPanel extends
 			tf_noQuestions = new JTextField(5);
 			tf_noQuestions.setDocument(new FLGDigitDocument());
 			tf_noQuestions.setEnabled(false);
-			// questionNoPanel.add(radioButtonAllQuestions,
-			// FLGColumnLayout.LEFTEND);
+			//questionNoPanel.add(radioButtonAllQuestions,
+					//FLGColumnLayout.LEFTEND);
 			questionNoPanel.add(radioButtonAllQuestionsSelectedElement,
 					FLGColumnLayout.LEFTEND);
 			questionNoPanel.add(radioButtonNoQuestions, FLGColumnLayout.LEFT);
@@ -826,6 +826,7 @@ public class FLGCheckUpElementInteractionPanel extends
 					tf_noQuestions.setEnabled(false);
 				}
 			});
+			
 			radioButtonAllQuestionsSelectedElement
 					.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
