@@ -98,8 +98,6 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 
 	@Override
 	public boolean correctHierarchy(FolderEntry entry) {
-		// TODO Auto-generated method stub
-		// TODO Implement check for correct hierarchy after moving!
 		if(!(entry instanceof Folder)){
 			return true; //Only tried to move a file, therefore correct hierarchy
 		}
@@ -121,8 +119,16 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 
 	@Override
 	public void moveHere(FolderEntry entry) throws DocumentApplicationException {
-		entry.getParent().removeFolderEntry(entry);
-		this.addFolderEntry(entry);
+		if(canAdd(entry)){
+			entry.getParent().removeFolderEntry(entry);
+			this.addFolderEntry(entry);
+		} else {
+			if(!correctName(entry)){
+				throw new DocumentApplicationException("documents_folder_not_a_unique_filename");
+			} else {
+				throw new DocumentApplicationException("documents_operation_would_destroy_hierarchy");
+			}
+		}
 	}
 
 	@Override

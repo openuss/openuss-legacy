@@ -57,7 +57,6 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 
 		documentService.createFileEntry(fileOne, root);
 		assertNotNull(fileOne.getId());
-		assertFalse(fileOne.isReleased());
 		
 		FileInfo fileTwo = createFileInfo("released.txt");
 		documentService.createFileEntry(fileTwo, root);

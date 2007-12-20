@@ -51,6 +51,8 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	private List<FolderEntryInfo> entries;
 
+	private boolean moveMode = false;
+	
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
@@ -164,7 +166,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		documentService.moveFolderEntries(courseInfo, targetFolder, selectedEntries() );
 		// TODO success message
 		addMessage(i18n("documents_move_files"));
-		return Constants.SUCCESS;
+		return Constants.DOCUMENTS_MAIN_PAGE;
 	}
 
 	public String newFolder() {
@@ -225,26 +227,39 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 			folderList = new ArrayList<SelectItem>();
 			for(FolderInfo info: allFolderInfos) {
 				if (info != null) {
-					folderList.add(new SelectItem(info,">"+info.getName()));
+					String depth = "";
+					//check depth
+					List path = super.documentService.getFolderPath(info);
+					for(int i = 0; i < path.size(); i++)
+						depth = depth + "> ";
+					//@TODO implement check wether element is root. Change name if so.
+					String name = info.getName() == null ? "Root" : info.getName();
+					folderList.add(new SelectItem(info,depth + name ));
 				} else {
 					SelectItem item = new SelectItem("--");
 					item.setDisabled(true);
 					folderList.add(item);
 				}
-					
 			}
-			
-//			logger.debug("getFolderList() - size of allSubFolders: " + allFolderInfos.size());
-//			for(int i=0; i<allFolderInfos.size(); i++){
-//				//folderList.add(new SelectItem(allFolderInfos.get(i).getId(), allFolderInfos.get(i).getName()));
-////				folderList.add(new SelectItem(i, "Hallo Welt " + i));
-//			}
 		}
 		return folderList;
+	}
+	
+	public String switchToMoveMode(){
+		setMoveMode(true);
+		return Constants.SUCCESS;
 	}
 
 	public void setFolderList(List<SelectItem> folderList) {
 		this.folderList = folderList;
+	}
+
+	public boolean getMoveMode() {
+		return moveMode;
+	}
+
+	public void setMoveMode(boolean moveMode) {
+		this.moveMode = moveMode;
 	}
 
 }
