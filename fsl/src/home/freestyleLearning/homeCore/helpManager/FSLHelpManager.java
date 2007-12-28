@@ -131,7 +131,7 @@ public class FSLHelpManager {
             FSLHelpManager.class.getClassLoader().getResource("freestyleLearning/homeCore/images/splash.gif"));
         FLGInternationalization internationalization_version = new FLGInternationalization("freestyleLearning.homeCore.mainFrame.internationalization",
             FSLHelpManager.class.getClassLoader());
-        String buttonLabel = internationalization_version.getString("frameTitle");
+        String buttonLabel = internationalization_version.getString("frameTitleWithVersion");
         JButton dismissButton = new JButton(buttonLabel);
         dismissButton.setOpaque(false);
         AbstractAction dismissAction = new AbstractAction(dismissButton.getText()) {
