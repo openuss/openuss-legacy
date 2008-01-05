@@ -7,7 +7,7 @@ import org.openuss.lecture.InstituteGroup;
 public class InstituteGroupConverterTest extends TestCase {
 	
 	public void testAsObject() {
-		InstituteGroupConverter converter = new InstituteGroupConverter();
+		final InstituteGroupConverter converter = new InstituteGroupConverter();
 		InstituteGroup group = (InstituteGroup) converter.getAsObject(null, null, "12345:GROUP_NAME");
 		assertTrue(group.getId() == 12345L);
 		assertEquals("GROUP_NAME", group.getName());
