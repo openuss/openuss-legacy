@@ -38,7 +38,7 @@ public abstract class AbstractFeed implements MessageSourceAware {
 
 	protected SecurityService securityService;
 
-	public String i18n(String code, Object[] args, Locale locale) {
+	public String i18n(final String code, final Object[] args, final Locale locale) {
 		return messageSource.getMessage(code, args, locale);
 	}
 
@@ -76,7 +76,6 @@ public abstract class AbstractFeed implements MessageSourceAware {
 
 	public Writer convertToXml(String title, String link, String description, String copyright, List<SyndEntry> entries) {
 		try {
-
 			final SyndFeed feed = new SyndFeedImpl();
 			feed.setEncoding(ENCODING);
 			feed.setTitle(title);
@@ -94,13 +93,10 @@ public abstract class AbstractFeed implements MessageSourceAware {
 			final SyndFeedOutput output = new SyndFeedOutput();
 			output.output(feed, writer);
 			return writer;
-
-		}
-
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			logger.error("Unknown error: ", ex);
+			return null;
 		}
-		return null;
 	}
 
 	public void setMessageSource(MessageSource messageSource) {
@@ -116,12 +112,12 @@ public abstract class AbstractFeed implements MessageSourceAware {
 	}
 
 	protected Locale locale() {
+		Locale result = Locale.getDefault();
 		UserInfo user = getSecurityService().getCurrentUser();
 		if (user != null) {
-			return new Locale(user.getPreferences().getLocale());
-		} else {
-			return Locale.getDefault();
+			result = new Locale(user.getPreferences().getLocale());
 		}
+		return result;
 	}
 
 }
