@@ -568,42 +568,42 @@
 			<dependency>
 				<groupId>org.apache.shale</groupId>
 				<artifactId>shale-application</artifactId>
-				<version>1.0.4</version>
+				<version>${shale.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.shale</groupId>
 				<artifactId>shale-core</artifactId>
-				<version>1.0.4</version>
+				<version>${shale.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.shale</groupId>
 				<artifactId>shale-dialog</artifactId>
-				<version>1.0.4</version>
+				<version>${shale.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.shale</groupId>
 				<artifactId>shale-dialog-scxml</artifactId>
-				<version>1.0.4</version>
+				<version>${shale.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.shale</groupId>
 				<artifactId>shale-remoting</artifactId>
-				<version>1.0.4</version>
+				<version>${shale.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.shale</groupId>
 				<artifactId>shale-tiger</artifactId>
-				<version>1.0.4</version>
+				<version>${shale.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.shale</groupId>
 				<artifactId>shale-spring</artifactId>
-				<version>1.0.4</version>
+				<version>${shale.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.shale</groupId>
 				<artifactId>shale-test</artifactId>
-				<version>1.0.4</version>
+				<version>${shale.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.facelets</groupId>
@@ -634,77 +634,77 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-aop</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-aspects</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-jdbc</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-beans</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-core</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-remoting</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-support</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-hibernate3</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-mock</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-dao</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-jca</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
-				<version>2.0.7</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springmodules</groupId>
@@ -733,7 +733,7 @@
 			<dependency>
 				<groupId>org.acegisecurity</groupId>
 				<artifactId>acegi-security</artifactId>
-				<version>1.0.4</version>
+				<version>1.0.6</version>
 				<exclusions>
 					<exclusion>
 						<groupId>org.springframework</groupId>
@@ -942,11 +942,13 @@
 			<url>scpexe://teamopenuss.uni-muenster.de/</url>
 		</site>
 	</distributionManagement>
+	<properties>
+		<shale.version>1.0.4</shale.version>
+		<spring.version>2.0.7</spring.version>
 	<!--
-		<properties>
 		<maven.andromda.loggingConfigurationUri>
 		${project.dir}/tools/config/log4j.xml
 		</maven.andromda.loggingConfigurationUri>
-		</properties>
 	-->
+	</properties>
 </project>
