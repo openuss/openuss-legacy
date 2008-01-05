@@ -3,9 +3,9 @@ package org.openuss.security.acegi;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UserDetailsService;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserImpl;
-import org.openuss.security.SecurityService;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -27,11 +27,17 @@ public class UserDetailsServiceAdapter implements UserDetailsService {
 	}
 
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
-		if (securityService == null)
+		if (securityService == null) {
 			throw new IllegalStateException("Adapter is not associated to an SecurityService object!");
+		}
+
+		// TODO Check if we need to remove the UserImpl
 		User user = getSecurityService().getUserObject(securityService.getUserByName(username));
-		if (user == null)
+		if (user == null) {
 			throw new UsernameNotFoundException("Username not found!");
+		}
+		
 		return (UserImpl) user;
 	}
+
 }
