@@ -17,7 +17,7 @@ public class ThemeAwareResourceResolver extends ClasspathResourceResolver {
 	private static final Logger logger = Logger.getLogger(ThemeAwareResourceResolver.class);
 
 	@Override
-	public URL resolveUrl(String path) {
+	public URL resolveUrl(final String path) {
 		URL url = super.resolveUrl(path);
 		if (url == null) {
 			Theme theme = getCurrentTheme();
@@ -40,10 +40,10 @@ public class ThemeAwareResourceResolver extends ClasspathResourceResolver {
 	}
 	
 	private Theme getCurrentTheme() {
-		Theme theme = null;
-		theme = (Theme) getFacesContext().getExternalContext().getSessionMap().get(ThemeManager.THEME_SCOPEKEY);
-		if (theme == null)
+		Theme theme = (Theme) getFacesContext().getExternalContext().getSessionMap().get(ThemeManager.THEME_SCOPEKEY);
+		if (theme == null) {
 			theme = (Theme) getFacesContext().getExternalContext().getApplicationMap().get(ThemeManager.THEME_SCOPEKEY);
+		}
 		return theme;
 	}
 	
