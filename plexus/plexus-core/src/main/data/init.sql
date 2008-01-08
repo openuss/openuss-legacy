@@ -22,6 +22,7 @@ INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (11, 'bugtracking
 INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (12, 'impressum.text', '<a href="http://www.wi.uni-muenster.de/aw">OpenUSS wird Lehrstuhl für WI und Controlling entwickelt</a>');
 INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (13, 'provider.url', 'http://openuss.sourceforge.net');
 INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (14, 'getting.started', '');
+INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (15, 'mail.smtp.auth', 'true');
 
 
 INSERT INTO SECURITY_AUTHORITY (ID) VALUES (-10);
