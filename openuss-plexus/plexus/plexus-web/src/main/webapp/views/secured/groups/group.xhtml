@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:plexus="http://www.openuss.org/plexus/jsf"      
+      xmlns:fck="http://www.fck-faces.org/fck-faces">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+		<ui:define name="navigation">
+			<ui:include src="/views/commons/navigation/course.xhtml" />
+		</ui:define>
+ 		 
+  		<ui:define name="content">
+			<h:form id="groupListForm" >
+				<o:block>
+					<p class="header_font_normal">
+						<h:outputText value="#{groupInfo.groupName} "/>
+					</p>
+					<p class="content_font_normal">
+						<h:outputText value="#{groupInfo.description}"/>
+					</p>
+				</o:block>
+				<c:if test="#{views$secured$groups$group.adminInfo.deadlineReached}">		
+				  	<plexus:dataTable 
+				    	id="groupTable" 
+				    	label="Mitglieder" 
+				    	value="views$secured$groups$group.groupMembers" 
+				   	 	columnClasses="col_min_left, col_min_left, col_min_left, col_min_right"
+				    	var="members" 
+				    	rows="10">  
+				      
+						<t:column>
+							<f:facet name="header">  
+								#{msg.group_member} 
+							</f:facet>
+							<h:outputText value="#{members.memberName}" styleClass="content_font_normal"/>
+						</t:column>
+				</c:if>
+					</plexus:dataTable> 	
+					<o:block>
+						<h:commandButton 
+							value="#{msg.back}" 
+							action="course_main" 
+							styleClass="button"/>
+					</o:block>
+			</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

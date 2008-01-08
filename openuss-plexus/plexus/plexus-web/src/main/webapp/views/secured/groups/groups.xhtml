@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:plexus="http://www.openuss.org/plexus/jsf"      
+      xmlns:fck="http://www.fck-faces.org/fck-faces">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+		<ui:define name="navigation">
+			<ui:include src="/views/commons/navigation/course.xhtml" />
+		</ui:define>
+ 		 
+  		<ui:define name="content">
+			<h:form id="groupListForm" >
+				<c:if test="#{not views$secured$groups$groups.adminInfo.deadlineReached}">
+					<plexus:dataTable 
+				    	id="groupTableAspirants1" 
+				    	label="#{views$secured$groups$groups.group1.groupName}" 
+				    	value="views$secured$groups$groups.groupAspirants1" 
+				   	 	columnClasses="col_min_left"
+				    	var="groupAspirant1" 
+				    	rows="10"
+				    	rendered="#{views$secured$groups$groups.group1Existing}">  
+				      
+						<t:column>
+							<f:facet name="header">  
+								#{msg.group_aspirants_name} 
+							</f:facet>
+							<h:outputText value="#{groupAspirant1.memberName}" />
+						</t:column>
+					</plexus:dataTable> 			
+					<plexus:dataTable 
+				    	id="groupTableAspirants2" 
+				    	label="#{views$secured$groups$groups.group2.groupName}" 
+				    	value="views$secured$groups$groups.groupAspirants2" 
+				   	 	columnClasses="col_min_left"
+				    	var="groupAspirant2" 
+				    	rows="10"
+				    	rendered="#{views$secured$groups$groups.group2Existing}">  
+				      
+						<t:column>
+							<f:facet name="header">  
+								#{msg.group_aspirants_name} 
+							</f:facet>
+							<h:outputText value="#{groupAspirant2.memberName}" />
+						</t:column>
+					</plexus:dataTable> 			
+					<plexus:dataTable 
+				    	id="groupTableAspirants3" 
+				    	label="#{views$secured$groups$groups.group3.groupName}" 
+				    	value="views$secured$groups$groups.groupAspirants3" 
+				   	 	columnClasses="col_min_left"
+				    	var="groupAspirant3" 
+				    	rows="10"
+				    	rendered="#{views$secured$groups$groups.group3Existing}">  
+				      
+						<t:column>
+							<f:facet name="header">  
+								#{msg.group_aspirants_name} 
+							</f:facet>
+							<h:outputText value="#{groupAspirant3.memberName}" />
+						</t:column>
+					</plexus:dataTable> 
+					<plexus:dataTable 
+				    	id="groupTableAspirants4" 
+				    	label="#{views$secured$groups$groups.group4.groupName}" 
+				    	value="views$secured$groups$groups.groupAspirants4" 
+				   	 	columnClasses="col_min_left"
+				    	var="groupAspirant4" 
+				    	rows="10"
+				    	rendered="#{views$secured$groups$groups.group4Existing}">  
+				      
+						<t:column>
+							<f:facet name="header">  
+								#{msg.group_aspirants_name} 
+							</f:facet>
+							<h:outputText value="#{groupAspirant4.memberName}" />
+						</t:column>
+					</plexus:dataTable> 			
+					<plexus:dataTable 
+				    	id="groupTableAspirants5" 
+				    	label="#{views$secured$groups$groups.group5.groupName}" 
+				    	value="views$secured$groups$groups.groupAspirants5" 
+				   	 	columnClasses="col_min_left"
+				    	var="groupAspirant5" 
+				    	rows="10"
+				    	rendered="#{views$secured$groups$groups.group5Existing}">  
+				      
+						<t:column>
+							<f:facet name="header">  
+								#{msg.group_aspirants_name} 
+							</f:facet>
+							<h:outputText value="#{groupAspirant5.memberName}" />
+						</t:column>
+					</plexus:dataTable> 	
+				</c:if>		
+				<c:if test="#{views$secured$groups$groups.adminInfo.deadlineReached}">
+					<plexus:dataTable 
+				    	id="groupTableMembers1" 
+				    	label="#{views$secured$groups$groups.group1.groupName}" 
+				    	value="views$secured$groups$groups.groupMembers1" 
+				   	 	columnClasses="col_min_left"
+				    	var="groupMember1" 
+				    	rows="10"
+				    	rendered="#{views$secured$groups$groups.group1Existing}">  
+				      
+						<t:column>
+							<f:facet name="header">  
+								#{msg.group_members_name} 
+							</f:facet>
+							<h:outputText value="#{groupMember1.memberName}" />
+						</t:column>
+						<c:if test="#{views$secured$groups$groups.adminInfo.matNr}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_mat} 
+								</f:facet>
+								<h:outputText value="#{groupMember1.matriculation}" />
+							</t:column>
+						</c:if>
+						<c:if test="#{views$secured$groups$groups.adminInfo.studies}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_studies} 
+								</f:facet>
+								<h:outputText value="#{groupMember1.studies}" />
+							</t:column>
+						</c:if>
+						<c:if test="#{views$secured$groups$groups.adminInfo.semester}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_semester} 
+								</f:facet>
+								<h:outputText value="#{groupMember1.ageGroup}" />
+							</t:column>
+						</c:if>
+					</plexus:dataTable> 			
+					<plexus:dataTable 
+				    	id="groupTableMembers2" 
+				    	label="#{views$secured$groups$groups.group2.groupName}" 
+				    	value="views$secured$groups$groups.groupMembers2" 
+				   	 	columnClasses="col_min_left"
+				    	var="groupMember2" 
+				    	rows="10"
+				    	rendered="#{views$secured$groups$groups.group2Existing}">  
+				      
+						<t:column>
+							<f:facet name="header">  
+								#{msg.group_members_name} 
+							</f:facet>
+							<h:outputText value="#{groupMember2.memberName}" />
+						</t:column>
+						<c:if test="#{views$secured$groups$groups.adminInfo.matNr}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_mat} 
+								</f:facet>
+								<h:outputText value="#{groupMember2.matriculation}" />
+							</t:column>
+						</c:if>
+						<c:if test="#{views$secured$groups$groups.adminInfo.studies}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_studies} 
+								</f:facet>
+								<h:outputText value="#{groupMember2.studies}" />
+							</t:column>
+						</c:if>
+						<c:if test="#{views$secured$groups$groups.adminInfo.semester}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_semester} 
+								</f:facet>
+								<h:outputText value="#{groupMember2.ageGroup}" />
+							</t:column>
+						</c:if>
+					</plexus:dataTable> 			
+					<plexus:dataTable 
+				    	id="groupTableMembers3" 
+				    	label="#{views$secured$groups$groups.group3.groupName}" 
+				    	value="views$secured$groups$groups.groupMembers3" 
+				   	 	columnClasses="col_min_left"
+				    	var="groupMember3" 
+				    	rows="10"
+				    	rendered="#{views$secured$groups$groups.group3Existing}">  
+				      
+						<t:column>
+							<f:facet name="header">  
+								#{msg.group_members_name} 
+							</f:facet>
+							<h:outputText value="#{groupMember3.memberName}" />
+						</t:column>
+						<c:if test="#{views$secured$groups$groups.adminInfo.matNr}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_mat} 
+								</f:facet>
+								<h:outputText value="#{groupMember3.matriculation}" />
+							</t:column>
+						</c:if>
+						<c:if test="#{views$secured$groups$groups.adminInfo.studies}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_studies} 
+								</f:facet>
+								<h:outputText value="#{groupMember3.studies}" />
+							</t:column>
+						</c:if>
+						<c:if test="#{views$secured$groups$groups.adminInfo.semester}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_semester} 
+								</f:facet>
+								<h:outputText value="#{groupMember3.ageGroup}" />
+							</t:column>
+						</c:if>
+					</plexus:dataTable> 
+					<plexus:dataTable 
+				    	id="groupTableMembers4" 
+				    	label="#{views$secured$groups$groups.group4.groupName}" 
+				    	value="views$secured$groups$groups.groupMembers4" 
+				   	 	columnClasses="col_min_left"
+				    	var="groupMember4" 
+				    	rows="10"
+				    	rendered="#{views$secured$groups$groups.group4Existing}">  
+				      
+						<t:column>
+							<f:facet name="header">  
+								#{msg.group_members_name} 
+							</f:facet>
+							<h:outputText value="#{groupMember4.memberName}" />
+						</t:column>
+						<c:if test="#{views$secured$groups$groups.adminInfo.matNr}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_mat} 
+								</f:facet>
+								<h:outputText value="#{groupMember4.matriculation}" />
+							</t:column>
+						</c:if>
+						<c:if test="#{views$secured$groups$groups.adminInfo.studies}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_studies} 
+								</f:facet>
+								<h:outputText value="#{groupMember4.studies}" />
+							</t:column>
+						</c:if>
+						<c:if test="#{views$secured$groups$groups.adminInfo.semester}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_semester} 
+								</f:facet>
+								<h:outputText value="#{groupMember4.ageGroup}" />
+							</t:column>
+						</c:if>
+						
+					</plexus:dataTable> 			
+					<plexus:dataTable 
+				    	id="groupTableMembers5" 
+				    	label="#{views$secured$groups$groups.group5.groupName}" 
+				    	value="views$secured$groups$groups.groupMembers5" 
+				   	 	columnClasses="col_min_left"
+				    	var="groupMember5" 
+				    	rows="10"
+				    	rendered="#{views$secured$groups$groups.group5Existing}">  
+				      
+						<t:column>
+							<f:facet name="header">  
+								#{msg.group_members_name} 
+							</f:facet>
+							<h:outputText value="#{groupMember5.memberName}" />
+						</t:column>
+						<c:if test="#{views$secured$groups$groups.adminInfo.matNr}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_mat} 
+								</f:facet>
+								<h:outputText value="#{groupMember5.matriculation}" />
+							</t:column>
+						</c:if>
+						<c:if test="#{views$secured$groups$groups.adminInfo.studies}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_studies} 
+								</f:facet>
+								<h:outputText value="#{groupMember5.studies}" />
+							</t:column>
+						</c:if>
+						<c:if test="#{views$secured$groups$groups.adminInfo.semester}">
+							<t:column>
+								<f:facet name="header">  
+									#{msg.group_aspire_semester} 
+								</f:facet>
+								<h:outputText value="#{groupMember5.ageGroup}" />
+							</t:column>
+						</c:if>
+						
+					</plexus:dataTable>
+					<o:block>
+						<h:commandButton 
+							value="#{msg.group_button_assign}" 
+							action="#{views$secured$groups$groups.assign}" 
+							styleClass="button"/>
+						<h:commandButton 
+							value="#{msg.group_button_clear}" 
+							action="#{views$secured$groups$groups.clear}" 
+							styleClass="button"/>
+						<h:commandButton 
+							value="#{msg.group_button_move}" 
+							action="groups_assign_custom" 
+							styleClass="button"/>
+					</o:block> 	
+				</c:if>		
+			</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

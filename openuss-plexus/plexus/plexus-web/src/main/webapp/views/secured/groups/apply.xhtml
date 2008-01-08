@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:fck="http://www.fck-faces.org/fck-faces"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+		<ui:define name="navigation">
+			<ui:include src="/views/commons/navigation/course.xhtml" />
+		</ui:define>
+ 		 
+  		<ui:define name="content">
+			<h:form id="groupAttribsForm">
+	  			<o:block>
+	  				<c:if test="#{groupAdminInformationInfo.matNr}">
+		  				<h:outputText value="#{msg.group_aspire_mat}" styleClass="field_label" />
+						<div class="content_iframe">
+							<t:inputText value="#{user.profile.matriculation}" size="40" required="true"/> <br />
+						</div>
+					</c:if>
+					<c:if test="#{groupAdminInformationInfo.studies}">
+						<h:outputText value="#{msg.group_aspire_studies}" styleClass="field_label" /> 
+						<div class="content_iframe">
+							<t:inputText  value="#{user.profile.studies}" size="40" required="true"/> <br />
+						</div>
+					</c:if>
+					<c:if test="#{groupAdminInformationInfo.semester}">
+						<h:outputText value="#{msg.group_aspire_semester}" styleClass="field_label" /> 
+						<div class="content_iframe">
+							<t:inputText  value="#{user.profile.ageGroup}" size="40" required="true"/> <br />
+						</div>
+					</c:if>
+					<c:if test="#{groupAdminInformationInfo.prefCount > 0}">
+						<h:outputLabel value="#{msg.group_aspire_choice1}" for="groupchoose1" styleClass="field_label"/>
+		  				<h:selectOneMenu id="groupchooses1" 
+							layout="pageDirection"						 
+							styleClass="pulldown"
+							value="#{views$secured$groups$apply.group1}">
+							<f:selectItems value="#{views$secured$groups$apply.groups}"/>							
+						</h:selectOneMenu>
+					</c:if>
+					<c:if test="#{groupAdminInformationInfo.prefCount > 1}">
+						<h:outputLabel value="#{msg.group_aspire_choice2}" for="groupchoose1" styleClass="field_label"/>
+		  				<h:selectOneMenu id="groupchooses2" 
+							layout="pageDirection"						 
+							styleClass="pulldown"
+							value="#{views$secured$groups$apply.group2}">
+							<f:selectItems value="#{views$secured$groups$apply.groups}"/>							
+						</h:selectOneMenu>
+					</c:if>
+					<c:if test="#{groupAdminInformationInfo.prefCount > 2}">
+						<h:outputLabel value="#{msg.group_aspire_choice3}" for="groupchoose1" styleClass="field_label"/>
+		  				<h:selectOneMenu id="groupchooses3" 
+							layout="pageDirection"						 
+							styleClass="pulldown"
+							value="#{views$secured$groups$apply.group3}">
+							<f:selectItems value="#{views$secured$groups$apply.groups}"/>							
+						</h:selectOneMenu>
+					</c:if>
+					<c:if test="#{groupAdminInformationInfo.prefCount > 3}">
+						<h:outputLabel value="#{msg.group_aspire_choice4}" for="groupchoose1" styleClass="field_label"/>
+		  				<h:selectOneMenu id="groupchooses4" 
+							layout="pageDirection"						 
+							styleClass="pulldown"
+							value="#{views$secured$groups$apply.group4}">
+							<f:selectItems value="#{views$secured$groups$apply.groups}"/>							
+						</h:selectOneMenu>
+					</c:if>
+					<c:if test="#{groupAdminInformationInfo.prefCount > 4}">
+						<h:outputLabel value="#{msg.group_aspire_choice1}" for="groupchoose1" styleClass="field_label"/>
+		  				<h:selectOneMenu id="groupchooses5" 
+							layout="pageDirection"						 
+							styleClass="pulldown"
+							value="#{views$secured$groups$apply.group5}">
+							<f:selectItems value="#{views$secured$groups$apply.groups}"/>							
+						</h:selectOneMenu>
+					</c:if>
+					<t:dataList layout="simple" var="param" value="#{group_params}" rowIndexVar="row">
+		  				<h:outputText value="#{param.customName}" styleClass="field_label" />
+						<div class="content_iframe">
+							<t:inputText value="#{param.customValue}" size="40"/> <br />
+						</div>					
+					</t:dataList>
+	  			</o:block>
+	  			<o:block>
+					<h:commandButton 
+						value="#{msg.group_aspire}" 
+						action="#{views$secured$groups$apply.applyUser}" 
+						styleClass="button"/>
+					<h:commandButton 
+						value="#{msg.cancel}" 
+						action="course_main" 
+						immediate="true" 
+						styleClass="button"/>
+				</o:block>
+			</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>
