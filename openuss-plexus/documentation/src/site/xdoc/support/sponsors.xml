@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<document>
+
+    <properties>
+		<author email="isarsu[at]sourceforge[dot]net">Arne Sutor</author>
+        <title>Sponsors</title>
+    </properties>
+
+    <body>
+
+        <section name="brought to you by">
+        <a name="campussource"/>
+		<h4>
+			Campus Source
+		</h4>
+		<p>
+			The Portal for Open Source Software for higher education. 
+			CampusSource is supported by "Das Ministerium fuer Schule, 
+			Wissenschaft und Forschung des Landes Nordrhein - Westfalen, Germany".
+		</p>
+		<p>
+			View the <a href="http://www.campussource.de/">CampusSource homepage</a> for details.
+		</p>
+		<a name="ercis" />
+		<h4>
+			Ercis
+		</h4>
+		<p>
+			The ERCIS - European Research Center for Information Systems - is a network 
+			of scientists that conduct cooperative research in the field of integrated 
+			information systems development and organizational design. For the first time, 
+			core competencies in the discipline of information systems are interrelated 
+			with issues in the field of computer science, business administration and 
+			specific legal issues within an institutional framework. Thus, a holistic 
+			view of information system development and organizational design issues can 
+			be ensured.
+			<br/>
+			Due to its outstanding reputation in both research and teaching within the 
+			field of information systems and business administration, the University of 
+			Münster has been selected by the federal state of North Rhine-Westphalia to 
+			found the European Research Center for Information Systems. Its objective 
+			is to undertake joint research projects that span different disciplines and 
+			countries, thus fostering research at a level that cannot be achieved by 
+			individual go-it-alone projects. The exchange of researchers, such as PhD 
+			students, lecturers or (associate) professors, is encouraged and cooperative 
+			masters and doctoral programs are also part of the overall objective.
+		</p>
+		<p>
+			View the <a href="http://www.ercis.de/">Ercis homepage</a> for details.
+		</p>
+		<a name="partner"/>
+		<h4>
+			<a name="partners">Partner Universities</a>
+		</h4>
+		<ul>
+			<li><a href="http://www.htwk-leipzig.de/">Leipzig University of Applied Sciences</a></li>
+			<li><a href="http://www.upn.mx/">National University of Pedagogy Mexico</a></li>
+			<li><a href="http://www.stibanas.ac.id/">STIMIK Perbanas</a></li>
+			<li><a href="http://www.ansteduniversity.org/">Ansted University</a></li>
+		</ul>
+        </section>
+
+    </body>
+</document>

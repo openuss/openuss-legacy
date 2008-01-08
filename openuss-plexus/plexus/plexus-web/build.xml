@@ -1,0 +1,45 @@
+<project name="openuss :: plexus :: web :: build" default="install (offline)" basedir=".">
+	<condition property="maven.executable" value="mvn.bat" else="mvn"><os family="windows" /></condition>
+	
+	<target name="clover-view">
+		<java fork="true" classname="com.cenqua.clover.reporters.jfc.Viewer">
+			<arg line="-i target/clover/clover.db"/>
+			<classpath path="${m2_repo}/com/cenqua/clover/clover/1.3.12/clover-1.3.12.jar"/>
+		</java>
+	</target>
+	<target name="compile">
+		<exec executable="${maven.executable}">
+			<arg line="compile"/>
+		</exec>
+	</target>
+	<target name="clean">
+		<exec executable="${maven.executable}">
+			<arg line="clean"/>
+		</exec>
+	</target>
+	<target name="install">
+		<exec executable="${maven.executable}">
+			<arg line="install"/>
+		</exec>
+	</target>
+	<target name="install (offline)">
+		<exec executable="${maven.executable}">
+			<arg line="-o install"/>
+		</exec>
+	</target>
+	<target name="install w/o tests">
+		<exec executable="${maven.executable}">
+			<arg line="install -Dmaven.test.skip=true" />
+		</exec>
+	</target>
+	<target name="eclipse">
+		<exec executable="${maven.executable}">
+			<arg line="eclipse:eclipse -DdownloadSources=true -Dwtpversion=1.0"/>
+		</exec>
+	</target>
+	<target name="eclipse (offline)">
+		<exec executable="${maven.executable}">
+			<arg line="-o eclipse:clean eclipse:eclipse -DdownloadSources=true -Dwtpversion=1.0"/>
+		</exec>
+	</target>
+</project>

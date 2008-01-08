@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<faqs id="Troubleshooting" title="Troubleshooting FAQ">
+  <part id="trouble">
+    <faq id="ant">
+      <question>I could not execute the install-missing ant script.</question>
+      <answer>
+        <p>
+			Your System has a user PATH variable, which does not point to the maven installation binary directory<br/>
+			Just set a user variable PATH, wich points to the maven installation binary directory
+			<code>{maven-bin-installation-directory\bin}</code>
+        </p>
+      </answer>
+    </faq>
+    <faq id="findbugs">
+      <question>I get a Java.OutOfMemory.Error during the findbugs report generation!</question>
+      <answer>
+        <p>
+			The underlining JavaNCSS tool is not currently able to analyze code written to compile with JDK 1.5+.
+		</p>
+		<p>
+			When running findbugs on a project, the default heap size might not be enough to complete the build. 
+			For now there is no way to fork findbugs and run with it's own memory requirements, but the following 
+			system variable will allow you to do so for Maven:        
+			<source>
+MAVEN_OPTS=-Xmx384M
+			</source>
+		</p>
+      </answer>
+    </faq>
+    <faq id="artifacts">
+      <question>Sometimes maven does not work properly and cannot download arbitrary artifacts. </question>
+      <answer>
+        <p>
+			This may happen through network issues. Be insistent and try "mvn install" several times.<br/>
+			You will see the process will get each time a little bit further.
+        </p>
+      </answer>
+    </faq>
+    <faq id="clover">
+      <question>During the site generation, no Clover Covarage Report was generated!</question>
+      <answer>
+        <p>
+			The clover report plugin can only generate a report, when it finds the clover sources under <code>target/clover</code>.<br/>
+			Even if a specific goal was defined in the master pom, it can happen. Therefore just run <source>mvn install</source> once before you execute
+			<source>mvn site</source>
+        </p>
+      </answer>
+    </faq>
+	<faq id="jsfblankpage">
+	<question>A JSF page producing a blank page without any exception!</question>
+	<answer>
+		<p>
+			Check if the /web-inf/lib folder of your webapp contains the jsp-api-2.1.jar file. Remove this file and try again.
+		</p>
+      </answer>
+    </faq>
+	<faq id="mavenwar">
+	<question>Building error with maven war plugin.</question>
+	<answer>
+		<p>
+			Check if maven downloaded the maven-war-plugin-2.0.1.pom and sha file. If these files are missing a build error occure.
+		</p>
+      </answer>
+    </faq>
+	<faq id="cloverview">
+	<question>Clover SwingView doesn't find the license file.</question>
+	<answer>
+		<p>
+			Copy the clover license file into your local repository beside your clover jar file.
+		</p>
+      </answer>
+    </faq>
+	<faq id="request scope and datatable">
+	<question>Request Attributes are empty after table</question>
+	<answer>
+		<p>
+			It seems that request attributes got empty if the same name is used as row index bean within datatables before.
+		</p>
+      </answer>
+    </faq>
+	<faq id="Problems on ValueObject realizing DomainObject">
+	<question>After creation of an value object, which realizes the DomainObject interface the error "Shared packages has references to outer elements" occurs on saving.</question>
+	<answer>
+		<p>
+			Open inheritance tree and delete the newly created (blue) realize abstraction.
+		</p>
+      </answer>
+    </faq>
+</part>
+</faqs>

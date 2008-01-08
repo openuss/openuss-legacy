@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<configExtensions>
+		<configExtension>xml</configExtension>
+	</configExtensions>
+	<configs>
+		<config>src/main/resources/applicationContext-activation.xml</config>
+		<config>src/main/resources/applicationContext-aop.xml</config>
+		<config>src/main/resources/applicationContext-cache.xml</config>
+		<config>src/main/resources/applicationContext-commands.xml</config>
+		<config>src/main/resources/applicationContext-entities.xml</config>
+		<config>src/main/resources/applicationContext-lucene.xml</config>
+		<config>src/main/resources/applicationContext-messaging.xml</config>
+		<config>src/main/resources/applicationContext-newsletter.xml</config>
+		<config>src/main/resources/applicationContext-quartz.xml</config>
+		<config>src/main/resources/applicationContext-resources.xml</config>
+	</configs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>

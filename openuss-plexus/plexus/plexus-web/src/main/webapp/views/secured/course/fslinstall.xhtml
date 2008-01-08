@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:plexus="http://www.openuss.org/plexus/jsf"      
+      xmlns:fck="http://www.fck-faces.org/fck-faces">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+		<ui:define name="navigation">
+			<ui:include src="/views/commons/navigation/course.xhtml" />
+		</ui:define>
+ 		 
+  		<ui:define name="content">
+  		<ui:define name="content">
+			<o:block label="Freestyle Learning">
+				<h:panelGrid column="2">
+					<h:graphicImage value="/images/freestyle-learning.jpg" width="237px" height="100px"/>
+	
+					<p class="header_font_normal">
+					  Version 3.5
+					</p>
+					
+					<h:panelGrid columns="4">
+				        <h:outputText value="Plattform"/>
+				        <h:outputText value="mit Java VM"/>
+				        <h:outputText value="ohne Java VM"/>
+				        <h:outputText value="Anleitung"/>
+				        <h:outputText value="Windows"/>
+			            <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/3.5/InstData/Windows/VM/fsl_setup.exe">Download (32.9 MB)</h:outputLink>
+			            <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/3.5/InstData/Windows/NoVM/fsl_setup.exe">Download (17.9 MB)</h:outputLink>
+			            <h:outputLink value="#windows">view</h:outputLink>
+				        <h:outputText value="Mac OS X"/>
+				        <h:outputText value="-"/>
+			            <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/3.5/InstData/MacOSX/fsl_setup.zip">Download (17.5 MB)</h:outputLink>
+			            <h:outputLink value="#macosx">view</h:outputLink>
+				        <h:outputText value="Linux"/>
+			            <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/3.5/InstData/Linux/VM/fsl_setup.bin">Download (49.5 MB)</h:outputLink>
+			            <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/3.5/InstData/Linux/NoVM/fsl_setup.bin">Download (18.1 MB)</h:outputLink>
+			            <h:outputLink value="#linux">view</h:outputLink>
+					</h:panelGrid>
+					<p class="header_font_normal">
+					  Handbücher
+					</p>
+					<h:panelGrid columns="3">
+				        <h:outputText value="Version"/>
+				        <h:outputText value="Deutsch"/>
+				        <h:outputText value="English"/>
+				        <h:outputText value="3.5"/>
+				        <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/manual_3.5/FSL-Manual_de.pdf">Download PDF (2.8 MB)</h:outputLink>
+						<h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/manual_3.5/FSL-Manual_en.pdf">Download PDF (2.2 MB)</h:outputLink>
+					</h:panelGrid>
+					
+					<p class="content_font_normal">
+						Nach dem Herunterladen bitte die Installationsanwendung starten und den Anweisungen folgen.
+						Wenn Sie nicht sicher sind, ob Ihr System bereits über eine Java VM verfügt, achten Sie bitte 
+						darauf, die Version mit integrierter VM herunterzuladen.
+					</p>
+					<p class="header_font_normal">
+					  Installationsanleitung Windows
+					</p>
+					<p class="content_font_normal">
+						Nach dem Herunterladen bitte die Installationsanwendung starten und den Anweisungen folgen.
+						Wenn Sie nicht sicher sind, ob Ihr System bereits über eine Java VM verfügt, achten Sie bitte 
+						darauf, die Version mit integrierter VM herunterzuladen.
+					</p>
+					<p class="header_font_normal">
+					 Installationsanleitung Mac OS X
+					</p>
+					<p class="content_font_normal">
+						 Anforderungen:
+					</p>
+						 <ul>
+						 	<li>Mac OS X 10.0 oder höher</li>
+						 	<li>StuffIt Expander 6.0 oder höher (bei Bedarf herunterladbar unter <a href="http://www.aladdinsys.com/expander/index.html">http://www.aladdinsys.com/expander/index.html</a> )</li>
+						 </ul>
+					<p class="content_font_normal">
+						 Um Problemen vorzubeugen verwenden Sie bitte nur den StuffIt Expander!
+						 Sollten dennoch Probleme auftreten, wenden Sie sich bitte an den Support .
+					</p>
+					<p class="header_font_normal">
+						 Installationsanleitung Linux
+					</p>
+					<p class="content_font_normal">
+						 Nach dem Herunterladen der Installationsdatei starten Sie bitte eine Shell und wechseln mit dem Befehl <code> cd </code> in das Verzeichnis, 
+						 in dem sich die Installationsdatei befindet. Tippen Sie nun <code>sh ./fsl_setup.bin</code><br/>
+						 Anmerkung: Wenn Sie nicht sicher sind, ob Ihr System bereits über eine Java VM verfügt, achten Sie bitte darauf, die Version mit integrierter 
+						 VM herunterzuladen. Alternativ können Sie die zur Ihrem Betriebssystem passende VM auch von den Internetseiten des Sun Java Center herunterladen 
+					</p>
+				</h:panelGrid>
+			</o:block>
+  		</ui:define>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>
