@@ -944,7 +944,7 @@
 	</distributionManagement>
 	<properties>
 		<shale.version>1.0.4</shale.version>
-		<spring.version>2.0.7</spring.version>
+		<spring.version>2.0.8</spring.version>
 	<!--
 		<maven.andromda.loggingConfigurationUri>
 		${project.dir}/tools/config/log4j.xml
