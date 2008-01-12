@@ -120,7 +120,7 @@ public class FLGAudioContextDependentInteractionPanel extends FSLAbstractLearnin
             // build panel
             Font font = new Font("SansSerif", Font.PLAIN, 16);
             setFont(font);
-            JLabel label = new JLabel("Audio Notiz anhören");
+            JLabel label = new JLabel(internationalization.getString("contextDependentIAPanel.text"));
             label.setFont(font);
             add(label);
             add(playButton);
