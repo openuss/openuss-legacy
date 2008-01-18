@@ -1187,6 +1187,7 @@ public class FSLLearningUnitsManager implements FSLLearningUnitsActivator, FSLLe
                 // remove parents from learning unit in descriptor
                 learningUnitDescriptor.setParentID(null);
                 // set cross-plattform-path with plattform independent separators in exportdescriptor
+                final String exportPath = learningUnitDescriptor.getPath();
                 learningUnitDescriptor.setPath("./" + learningUnitsOriginalDataDirectory.getName() + "/" + learningUnitDescriptor.getId());
                 // build new learning units descriptor instance
                 FSLLearningUnitsDescriptor unitsDescriptor = new FSLLearningUnitsDescriptor();
@@ -1223,14 +1224,14 @@ public class FSLLearningUnitsManager implements FSLLearningUnitsActivator, FSLLe
                             try {
                                 ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(outFile));
                                 // get all learning units elements to export and store them in zip file
-                                File[] files = (new File(learningUnitDesc.getPath())).listFiles();
+                                File[] files = (new File(exportPath)).listFiles();
                                 // progress bar settings
                                 int maxSteps = files.length*100;
                                 exportProgressDialog = new FLGImageProgressDialog(null, 0, maxSteps, 0,
                                 		getClass().getClassLoader().getResource("freestyleLearning/homeCore/images/fsl.gif"), (Color)UIManager.get("FSLColorBlue"),
                                 		(Color)UIManager.get("FSLColorRed"),internationalization.getString("learningUnit.export.progressbarText"));
                                 //exportProgressDialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-                               exportProgressDialog.setIndeterminate(true);
+                                exportProgressDialog.setIndeterminate(true);
                                 // export files
                                 try {
                                     for (int i=0; i<files.length; i++) {
