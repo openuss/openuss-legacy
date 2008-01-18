@@ -16,6 +16,14 @@
 		var="bean" 
 		columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
 		rows="20">
+		
+		<f:facet name="header">
+			<o:link value="/views/public/department/allcoursesbydepartment.faces">
+   				<f:param name="department" value="#{departmentInfo.id}" />
+				<h:outputText style="color:#5493D4" value="#{msg.course_navigation_allcoursesbydepartment_link}"/>
+    		</o:link>
+		</f:facet>
+		
 		<t:column>
 			<plexus:commandSortHeader columnName="name">
 				#{msg['institute_name']}

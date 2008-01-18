@@ -239,7 +239,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	
 	public void testAspirantToParticipant() {
 
-		courseService.applyUser(courseInfo, getSecurityService().getUser(user.getId()));
+		courseService.applyUser(courseInfo, user);
 	
 		List<CourseMemberInfo> aspirants = courseService.getAspirants(courseInfo);
 		assertEquals(1, aspirants.size());
@@ -264,7 +264,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	}
 
 	public void testRejectAspirant() {
-		courseService.applyUser(courseInfo, getSecurityService().getUser(user.getId()));
+		courseService.applyUser(courseInfo, user);
 		
 		List<CourseMemberInfo> aspirants = courseService.getAspirants(courseInfo);
 		assertEquals(1, aspirants.size());
@@ -279,7 +279,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	}
 	
 	public void testAspirants() {
-		courseService.addAspirant(courseInfo, getSecurityService().getUser(user.getId()));
+		courseService.addAspirant(courseInfo, user);
 	
 		List<CourseMemberInfo> aspirants = courseService.getAspirants(courseInfo);
 		assertEquals(1, aspirants.size());
@@ -291,7 +291,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	}
 
 	public void testAssistants() {
-		courseService.addAssistant(courseInfo, getSecurityService().getUser(user.getId()));
+		courseService.addAssistant(courseInfo, user);
 		
 		List<CourseMemberInfo> assistants = courseService.getAssistants(courseInfo);
 		assertEquals(1, assistants.size());
@@ -303,7 +303,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	}
 	
 	public void testParticipant() {
-		courseService.addParticipant(courseInfo, getSecurityService().getUser(user.getId()));
+		courseService.addParticipant(courseInfo, user);
 		
 		List<CourseMemberInfo> participant = courseService.getParticipants(courseInfo);
 		assertEquals(1, participant.size());

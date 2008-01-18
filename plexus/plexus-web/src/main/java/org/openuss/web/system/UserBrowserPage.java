@@ -17,6 +17,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
 import org.openuss.security.SecurityService;
+import org.openuss.security.User;
 import org.openuss.security.UserCriteria;
 import org.openuss.security.UserInfo;
 import org.openuss.statistics.SystemStatisticInfo;
@@ -74,7 +75,7 @@ public class UserBrowserPage extends BasePage{
 	 */
 	public String saveUsers() {
 		for (UserInfo userInfo : changedUsers) {
-			UserInfo user = securityService.getUser(userInfo.getId());
+			User user = securityService.getUser(userInfo.getId());
 			user.setEnabled(userInfo.isEnabled());
 			user.setAccountExpired(userInfo.isAccountExpired());
 			user.setAccountLocked(userInfo.isAccountLocked());
@@ -87,7 +88,7 @@ public class UserBrowserPage extends BasePage{
 
 	public String showProfile() {
 		UserInfo userInfo = dataModel.getRowData();
-		UserInfo user = securityService.getUser(userInfo.getId());
+		User user = securityService.getUser(userInfo.getId());
 		setSessionBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
@@ -105,7 +106,7 @@ public class UserBrowserPage extends BasePage{
 			criteria.setMaximumResultSize(pageSize * 4);
 			List<UserInfo> users = securityService.getUsers(criteria);
 			logger.debug("got "+users.size()+" users");
-			// FIXME Total size should be fetched from database instead of guessing
+			// FIXME - total size should be fetched from database instead of guessing
 			int size = systemStatistic.getUsers().intValue();
 			dataPage = new DataPage<UserInfo>(size,startRow,users);
 		}

@@ -17,7 +17,8 @@ import org.openuss.documents.FolderInfo;
 import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserInfo;
+import org.openuss.security.User;
+import org.openuss.security.UserPreferences;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -62,7 +63,7 @@ public class UserProfilePage extends BasePage{
 	 * 
 	 */
 	public String profilePage(){
-		UserInfo profile = new UserInfo();
+		User profile = User.Factory.newInstance();
 		profile.setId(this.user.getId());
 		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
 		return Constants.USER_PROFILE_VIEW_PAGE;
@@ -103,7 +104,7 @@ public class UserProfilePage extends BasePage{
 		}
 		user.getProfile().setPortrait(new HtmlInputFilter().filter(user.getProfile().getPortrait()) );
 		securityService.saveUser(user);
-		securityService.saveUserContact(user);
+		securityService.saveUserContact(user.getContact());
 		addMessage(i18n("user_message_saved_profile_successfully"));
 	}
 
@@ -127,7 +128,8 @@ public class UserProfilePage extends BasePage{
 	 * Persist User Preferences
 	 */
 	private void savePreferences(ActionEvent event) {
-		securityService.saveUserPreferences(user);		
+		UserPreferences preferences = user.getPreferences();
+		securityService.saveUserPreferences(preferences);		
 	}
 	
 	/**

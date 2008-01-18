@@ -31,7 +31,7 @@ public class EntityObjectIdentity implements AclObjectIdentity {
 
 	/**
 	 * Creates the <code>EntityObjectIdentity</code> based on the passed
-	 * object instance. The passed object must provide a <code>Long getId()</code>
+	 * object instance. The passed object must provide a <code>Integer getId()</code>
 	 * method, otherwise an exception will be thrown.
 	 * 
 	 * @param object

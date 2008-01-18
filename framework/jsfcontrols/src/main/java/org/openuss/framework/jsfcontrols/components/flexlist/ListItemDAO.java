@@ -10,6 +10,10 @@ public class ListItemDAO implements Serializable {
 	private String url;
 	private String metaInformation;
 	private String removeBookmarkUrl;
+	private Boolean newsletterSubscribed;
+	private String newsletterActionUrl;
+	private Boolean forumSubscribed;
+	private String forumActionUrl;
 	
 	
 	public String getMetaInformation() {
@@ -41,5 +45,29 @@ public class ListItemDAO implements Serializable {
 	
 	public void setRemoveBookmarkUrl(String removeBookmarkUrl) {
 		this.removeBookmarkUrl = removeBookmarkUrl;
+	}
+	public Boolean getNewsletterSubscribed() {
+		return newsletterSubscribed;
+	}
+	public void setNewsletterSubscribed(Boolean newsletterSubscribed) {
+		this.newsletterSubscribed = newsletterSubscribed;
+	}
+	public String getNewsletterActionUrl() {
+		return newsletterActionUrl;
+	}
+	public void setNewsletterActionUrl(String newsletterActionUrl) {
+		this.newsletterActionUrl = newsletterActionUrl;
+	}
+	public Boolean getForumSubscribed() {
+		return forumSubscribed;
+	}
+	public void setForumSubscribed(Boolean forumSubscribed) {
+		this.forumSubscribed = forumSubscribed;
+	}
+	public String getForumActionUrl() {
+		return forumActionUrl;
+	}
+	public void setForumActionUrl(String forumActionUrl) {
+		this.forumActionUrl = forumActionUrl;
 	}
 }

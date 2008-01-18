@@ -18,7 +18,6 @@ import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
-import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
@@ -39,7 +38,7 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 
 		Validate.notNull(instituteInfo, "The Institute cannot be null");
 		Validate.notNull(userId, "The User must have a valid ID");
-		UserInfo user = getSecurityService().getUser(userId);
+		User user = getSecurityService().getUser(userId);
 		Validate.notNull(user, "No valid User found corresponding to the ID " + userId);
 		Validate.isTrue(instituteInfo.getId() == null, "The Institute shouldn't have an ID yet");
 
@@ -313,7 +312,7 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 
 	private User loadUser(Long userId) {
 		// Load User
-		User user = getSecurityService().getUserObject(userId);
+		User user = getSecurityService().getUser(userId);
 		Validate.notNull(user, " No User found corresponding to the UserID " + userId);
 		return user;
 	}

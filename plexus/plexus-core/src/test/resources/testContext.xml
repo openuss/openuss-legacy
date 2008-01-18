@@ -67,14 +67,14 @@
 			<ref bean="organisationService" />
 		</property>
 	</bean>
-
+	
 	<bean id="lectureBuilder"
 		class="org.openuss.lecture.LectureBuilder">
 		<property name="instituteDao">
 			<ref bean="instituteDao" />
 		</property>
 	</bean>
-
+	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           L E C T U R E  S E A R C H  I N D E X
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

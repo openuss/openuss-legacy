@@ -25,13 +25,13 @@ import org.openuss.security.acl.Permission;
 public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTestBase {
 
 	private AclManager aclManager;
-	
+
 	public void testSaveLoadAndRemoveUser() {
 		User user = testUtility.createUniqueUserInDB();
-		User user2 = securityService.getUserObject(securityService.getUserByName(user.getUsername()));
+		User user2 = securityService.getUserByName(user.getUsername());
 		assertEquals(user, user2);
 
-		securityService.removeUser(getSecurityService().getUser(user.getId()));
+		securityService.removeUser(user);
 	}
 
 	public void testIsNonExistingUserName() {
@@ -39,7 +39,7 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 
 		assertTrue(securityService.isValidUserName(null, testUtility.unique("Name")));
 		assertFalse(securityService.isValidUserName(null, user.getUsername()));
-		assertTrue(securityService.isValidUserName(getSecurityService().getUser(user.getId()), user.getUsername()));
+		assertTrue(securityService.isValidUserName(user, user.getUsername()));
 
 	}
 

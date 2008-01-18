@@ -23,31 +23,31 @@ public class SystemPropertiesBean {
 	private SystemService systemService;
 	
 	public String getDOCUMENTATION_URL() {
-		return value(SystemProperties.DOCUMENTATION_URL);
+		return value(SystemProperties.DOCUMENTATION_URL_ID);
 	}
 
 	public String getSUPPORT_URL() {
-		return value(SystemProperties.SUPPORT_URL);
+		return value(SystemProperties.SUPPORT_URL_ID);
 	}
 
 	public String getBUGTRACKING_URL() {
-		return value(SystemProperties.BUGTRACKING_URL);
+		return value(SystemProperties.BUGTRACKING_URL_ID);
 	}
 
 	public String getIMPRESSUM_TEXT() {
-		return value(SystemProperties.IMPRESSUM_TEXT);
+		return value(SystemProperties.IMPRESSUM_TEXT_ID);
 	}
 	
 	public String getPROVIDER_URL() {
-		return value(SystemProperties.PROVIDER_URL);
+		return value(SystemProperties.PROVIDER_URL_ID);
 	}
 
 	public String getOPENUSS_SERVER_URL() {
-		return value(SystemProperties.OPENUSS_SERVER_URL);
+		return value(SystemProperties.OPENUSS_SERVER_URL_ID);
 	}
 
 	public String getGETTING_STARTED() {
-		return value(SystemProperties.GETTING_STARTED);
+		return value(SystemProperties.GETTING_STARTED_ID);
 	}
 	
 	public String getOPENUSS_INSTANCE_ID() {
@@ -62,9 +62,9 @@ public class SystemPropertiesBean {
 		this.systemService = systemService;
 	}
 
-	private String value(String propertyKey) {
+	private String value(Long propertyId) {
 		try {
-			return systemService.getProperty(propertyKey).getValue();
+			return systemService.getProperty(propertyId).getValue();
 		} catch (Exception ex) {
 			logger.error(ex);
 			return "";

@@ -14,6 +14,9 @@ import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.course.newsletter.CourseNewsletterService;
+import org.openuss.discussion.DiscussionService;
+import org.openuss.discussion.ForumInfo;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseType;
@@ -23,7 +26,9 @@ import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.Period;
 import org.openuss.lecture.University;
+import org.openuss.newsletter.NewsletterInfo;
 import org.openuss.security.User;
+import org.openuss.security.UserProfile;
 
 /**
  * @see org.openuss.desktop.DesktopService2
@@ -31,7 +36,6 @@ import org.openuss.security.User;
  * @author Florian Dondorf
  */
 public class DesktopService2Impl extends DesktopService2Base {
-
 	private static final Logger logger = Logger.getLogger(DesktopService2Impl.class);
 
 	/**
@@ -165,6 +169,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 	}
 
 	/**
+	 * 
 	 * @see org.openuss.desktop.DesktopService2#linkCourse(java.lang.Long,
 	 *      java.lang.Long)
 	 */
@@ -175,9 +180,21 @@ public class DesktopService2Impl extends DesktopService2Base {
 		Validate.notNull(courseId, "CourseId cannot be null!");
 		Course course = this.getCourseDao().load(courseId);
 		Validate.notNull(course, "No Course found corresponding to the courseId " + courseId);
-
 		if (!desktop.getCourses().contains(course)) {
 			desktop.getCourses().add(course);
+		}
+		// edited by Marius, Philipp and Stefan
+		User user = desktop.getUser();
+		UserProfile profile = user.getProfile();
+		CourseInfo courseInfo = getCourseService().getCourseInfo(courseId);
+		if (profile.isNewsletterSelected()) {
+			logger.debug("Newsletter isSelected = true");
+			getCourseNewsletterService().subscribe(courseInfo, user);
+			logger.debug("Newsletter subcribed");
+		}
+		
+		if (profile.isDiscussionSelected()) {
+			getDiscussionService().addForumWatch(getDiscussionService().getForum(courseInfo));
 		}
 	}
 
@@ -252,6 +269,10 @@ public class DesktopService2Impl extends DesktopService2Base {
 	protected void handleUnlinkCourse(Long desktopId, Long courseId) throws Exception {
 		Validate.notNull(desktopId, "DesktopId cannot be null!");
 		Desktop desktop = this.getDesktopDao().load(desktopId);
+		User user = desktop.getUser();
+		CourseInfo courseInfo = getCourseService().getCourseInfo(courseId);
+		getCourseNewsletterService().unsubscribe(courseInfo, user);
+		getDiscussionService().removeForumWatch(getDiscussionService().getForum(courseInfo));
 		Validate.notNull(desktop, "No Desktop found corresponding to the desktopId " + desktopId);
 		Validate.notNull(courseId, "DesktopService2.handleUnlinkCourse - courseId cannot be null!");
 		Course course = this.getCourseDao().load(courseId);
@@ -568,9 +589,16 @@ public class DesktopService2Impl extends DesktopService2Base {
 		}
 
 		MyUniDataSet myUniDataSet = new MyUniDataSet(desktop);
+		
+		myUniDataSet.setCourseDao(getCourseDao());
+		myUniDataSet.setCourseNewsletterService(getCourseNewsletterService());
+		myUniDataSet.setDiscussionService(getDiscussionService());
+		
 		myUniDataSet.loadData();
 		return myUniDataSet.getMyUniInfo();
 	}
+	
+	
 
 	public static class MyUniDataSet {
 		private Desktop desktop;
@@ -583,6 +611,27 @@ public class DesktopService2Impl extends DesktopService2Base {
 		public void setDesktop(Desktop desktop) {
 			this.desktop = desktop;
 		}
+		
+		private CourseNewsletterService courseNewsletterService;
+		private org.openuss.lecture.CourseDao courseDao;
+		
+		public void setCourseNewsletterService(
+				CourseNewsletterService courseNewsletterService) {
+			this.courseNewsletterService = courseNewsletterService;
+		}
+		
+		private org.openuss.discussion.DiscussionService discussionService;
+		
+		public void setDiscussionService(DiscussionService discussionService){
+			this.discussionService = discussionService;
+		}
+	    /**
+	     * Sets the reference to <code>course</code>'s DAO.
+	     */
+	    public void setCourseDao(org.openuss.lecture.CourseDao courseDao)
+	    {
+	        this.courseDao = courseDao;
+	    }
 
 		/*
 		 * Fills the MyUni data structure
@@ -684,6 +733,11 @@ public class DesktopService2Impl extends DesktopService2Base {
 			assert uniDataSets != null;
 			if (!uniDataSets.containsKey(universityID)) {
 				UniversityDataSet universityDataSet = new UniversityDataSet(university);
+				
+				universityDataSet.setCourseDao(this.courseDao);
+				universityDataSet.setCourseNewsletterService(this.courseNewsletterService);
+				universityDataSet.setDiscussionService(this.discussionService);
+				
 				uniDataSets.put(universityID, universityDataSet);
 			}
 
@@ -784,114 +838,6 @@ public class DesktopService2Impl extends DesktopService2Base {
 			return universityID;
 
 		}
-
-		// Test data not working any longer because of entity objects in
-		// add*-Methods in UniversityDataSet
-		/*
-		 * public void loadTestData() { logger.debug("Loading MyUni test data");
-		 * 
-		 * MyUniUniversityInfo uniInfo; MyUniDepartmentInfo departmentInfo;
-		 * MyUniCourseInfo courseInfo; UniversityDataSet uniDataSet;
-		 * 
-		 *  // Create Uni 1 and Subitems uniInfo = new MyUniUniversityInfo();
-		 * uniInfo.setId(1L); uniInfo.setName("Uni Münster"); uniDataSet = new
-		 * UniversityDataSet(uniInfo);
-		 * 
-		 * departmentInfo = new MyUniDepartmentInfo(); departmentInfo.setId(1L);
-		 * departmentInfo.setName("Fachbereich 4");
-		 * uniDataSet.addDepartment(departmentInfo);
-		 * 
-		 * departmentInfo = new MyUniDepartmentInfo(); departmentInfo.setId(2L);
-		 * departmentInfo.setName("Fachbereich 5");
-		 * uniDataSet.addDepartment(departmentInfo);
-		 * 
-		 * departmentInfo = new MyUniDepartmentInfo(); departmentInfo.setId(3L);
-		 * departmentInfo.setName("Fachbereich 6");
-		 * uniDataSet.addDepartment(departmentInfo);
-		 * 
-		 * courseInfo = new MyUniCourseInfo(); courseInfo.setId(1L);
-		 * courseInfo.setName("KLR"); uniDataSet.addCourse(courseInfo, true);
-		 * 
-		 * courseInfo = new MyUniCourseInfo(); courseInfo.setId(2L);
-		 * courseInfo.setName("BWL1"); uniDataSet.addCourse(courseInfo, true);
-		 * 
-		 * courseInfo = new MyUniCourseInfo(); courseInfo.setId(3L);
-		 * courseInfo.setName("BWL2"); uniDataSet.addCourse(courseInfo, false);
-		 * 
-		 * courseInfo = new MyUniCourseInfo(); courseInfo.setId(4L);
-		 * courseInfo.setName("BWL3"); uniDataSet.addCourse(courseInfo, false);
-		 * 
-		 * uniDataSets.put(1L, uniDataSet);
-		 *  // Create Uni 2 and subitems uniInfo = new MyUniUniversityInfo();
-		 * uniInfo.setId(2L); uniInfo.setName("Uni Bonn"); uniDataSet = new
-		 * UniversityDataSet(uniInfo);
-		 * 
-		 * 
-		 * departmentInfo = new MyUniDepartmentInfo(); departmentInfo.setId(4L);
-		 * departmentInfo.setName("Fachbereich 4");
-		 * uniDataSet.addDepartment(departmentInfo);
-		 * 
-		 * departmentInfo = new MyUniDepartmentInfo(); departmentInfo.setId(5L);
-		 * departmentInfo.setName("Fachbereich 8");
-		 * uniDataSet.addDepartment(departmentInfo);
-		 * 
-		 * 
-		 * courseInfo = new MyUniCourseInfo(); courseInfo.setId(1L);
-		 * courseInfo.setName("Kosten- und Leistungsrechnung");
-		 * uniDataSet.addCourse(courseInfo, true);
-		 * 
-		 * courseInfo = new MyUniCourseInfo(); courseInfo.setId(2L);
-		 * courseInfo.setName("Informatik 1"); uniDataSet.addCourse(courseInfo,
-		 * true);
-		 * 
-		 * courseInfo = new MyUniCourseInfo(); courseInfo.setId(3L);
-		 * courseInfo.setName("Informatik 2"); uniDataSet.addCourse(courseInfo,
-		 * true);
-		 * 
-		 * courseInfo = new MyUniCourseInfo(); courseInfo.setId(4L);
-		 * courseInfo.setName("Unternehmensgründung Märkte und Branchen");
-		 * uniDataSet.addCourse(courseInfo, false);
-		 * 
-		 * uniDataSets.put(2L, uniDataSet);
-		 *  // Create Uni 3 and subitems uniInfo = new UniversityInfo();
-		 * uniInfo.setId(3L); uniInfo.setName("Uni Köln"); uniDataSet = new
-		 * UniversityDataSet(uniInfo);
-		 * 
-		 * departmentInfo = new MyUniDepartmentInfo(); departmentInfo.setId(6L);
-		 * departmentInfo.setName("Fachbereich 1");
-		 * departmentInfo.setUniversityId(3L);
-		 * uniDataSet.addDepartment(departmentInfo);
-		 * 
-		 * departmentInfo = new MyUniDepartmentInfo(); departmentInfo.setId(7L);
-		 * departmentInfo.setName("Fachbereich 7");
-		 * departmentInfo.setUniversityId(3L);
-		 * uniDataSet.addDepartment(departmentInfo);
-		 * 
-		 * departmentInfo = new MyUniDepartmentInfo(); departmentInfo.setId(8L);
-		 * departmentInfo.setName("Fachbereich 8");
-		 * departmentInfo.setUniversityId(8L);
-		 * uniDataSet.addDepartment(departmentInfo);
-		 * 
-		 * 
-		 * courseInfo = new MyUniCourseInfo(); courseInfo.setId(1L);
-		 * courseInfo.setName("Einführung in die WI");
-		 * uniDataSet.addCourse(courseInfo, true);
-		 * 
-		 * courseInfo = new MyUniCourseInfo(); courseInfo.setId(2L);
-		 * courseInfo.setName("Datenbanken"); uniDataSet.addCourse(courseInfo,
-		 * false);
-		 * 
-		 * courseInfo = new MyUniCourseInfo(); courseInfo.setId(3L);
-		 * courseInfo.setName("Einführung in die Java Framework-Theorie");
-		 * uniDataSet.addCourse(courseInfo, false);
-		 * 
-		 * courseInfo = new MyUniCourseInfo(); courseInfo.setId(4L);
-		 * courseInfo.setName("OpenUSS Projektseminar");
-		 * uniDataSet.addCourse(courseInfo, false);
-		 * 
-		 * 
-		 * uniDataSets.put(3L, uniDataSet); }
-		 */
 
 		/*
 		 * Holds all relevant information that is displayed on the MyUni page
@@ -1162,12 +1108,69 @@ public class DesktopService2Impl extends DesktopService2Base {
 						courseInfo.setPeriod(coursePeriod.getName());
 						courseInfo.setPeriodId(coursePeriod.getId());
 					}
-
+					
+					if (course.getNewsletter()) {
+						CourseInfo ci = getCourseDao().toCourseInfo(course);
+						NewsletterInfo newsletter = getCourseNewsletterService().getNewsletter(ci);
+						courseInfo.setNewsletterSubscribed(newsletter.isSubscribed());
+					} else {
+						courseInfo.setNewsletterSubscribed(null);
+					}
+					
+					if (course.getDiscussion()) {
+						CourseInfo ci = getCourseDao().toCourseInfo(course);
+						ForumInfo forum = getDiscussionService().getForum(ci);
+						courseInfo.setForumSubscribed(getDiscussionService().watchesForum(forum));
+					} else {
+						courseInfo.setForumSubscribed(null);
+					}
+					
 					return courseInfo;
 				} else {
 					return null;
 				}
 			}
+			
+			
+			private CourseNewsletterService courseNewsletterService;
+			
+			private CourseNewsletterService getCourseNewsletterService() {
+				return this.courseNewsletterService;
+			}
+			
+			public void setCourseNewsletterService(
+					CourseNewsletterService courseNewsletterService) {
+				this.courseNewsletterService = courseNewsletterService;
+			}
+			
+			private org.openuss.lecture.CourseDao courseDao;
+
+		    /**
+		     * Sets the reference to <code>course</code>'s DAO.
+		     */
+		    public void setCourseDao(org.openuss.lecture.CourseDao courseDao)
+		    {
+		        this.courseDao = courseDao;
+		    }
+
+		    /**
+		     * Gets the reference to <code>course</code>'s DAO.
+		     */
+		    protected org.openuss.lecture.CourseDao getCourseDao()
+		    {
+		        return this.courseDao;
+		    }
+		    
+		    private DiscussionService discussionService;
+
+			public DiscussionService getDiscussionService() {
+				return discussionService;
+			}
+
+			public void setDiscussionService(DiscussionService discussionService) {
+				this.discussionService = discussionService;
+			}
+			
 		}
 	}
 }

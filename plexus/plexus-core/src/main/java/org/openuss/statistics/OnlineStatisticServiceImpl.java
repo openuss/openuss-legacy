@@ -21,7 +21,7 @@ public class OnlineStatisticServiceImpl extends OnlineStatisticServiceBase {
 	 *      java.util.Date)
 	 */
 	protected Long handleLogSessionStart(Long sessionId) throws Exception {
-		User user = getSecurityService().getUserObject(getSecurityService().getCurrentUser());
+		User user = getSecurityService().getCurrentUser();
 		OnlineSession session;
 		
 		if (sessionId == null) {
@@ -61,7 +61,7 @@ public class OnlineStatisticServiceImpl extends OnlineStatisticServiceBase {
 		Validate.notNull(sessionId, "Parameter sessionId must not be null!");
 		OnlineSession session = getOnlineSessionDao().load(sessionId);
 		if (session != null) {
-			session.setUser(getSecurityService().getUserObject(getSecurityService().getCurrentUser()));
+			session.setUser(getSecurityService().getCurrentUser());
 			session.setEndTime(new Date());
 			getOnlineSessionDao().update(session);
 		}

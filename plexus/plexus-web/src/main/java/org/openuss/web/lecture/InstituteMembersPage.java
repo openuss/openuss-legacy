@@ -30,7 +30,7 @@ import org.openuss.lecture.LectureException;
 import org.openuss.lecture.OrganisationService;
 import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserInfo;
+import org.openuss.security.User;
 import org.openuss.web.Constants;
 
 /**
@@ -141,7 +141,7 @@ public class InstituteMembersPage extends AbstractLecturePage {
 			return Constants.SUCCESS;
 		}
 
-		// FIXME Below code should be handled within the business layer
+		// FIXME below code should be handled within the business layer
 		
 		Iterator<InstituteGroup> iter = member.getGroups().iterator();
 		InstituteGroup group;
@@ -176,7 +176,7 @@ public class InstituteMembersPage extends AbstractLecturePage {
 		if (logger.isDebugEnabled()) {
 			logger.debug("add a member to institute");
 		}
-		UserInfo user = securityService.getUserByName(username);
+		User user = securityService.getUserByName(username);
 		try {
 			organisationService.addMember(instituteInfo.getId(), user.getId());
 			addMessage(i18n("organisation_add_member_to_institute", username));
@@ -196,7 +196,7 @@ public class InstituteMembersPage extends AbstractLecturePage {
 	 */
 	public String showProfile() {
 		InstituteMember member = members.getRowData();
-		UserInfo user = securityService.getUser(member.getId());
+		User user = securityService.getUser(member.getId());
 		setSessionBean(Constants.SHOW_USER_PROFILE, user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}

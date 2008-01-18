@@ -53,9 +53,6 @@ public class UserDaoImpl extends org.openuss.security.UserDaoBase {
 	}
 
 	private User loadUserFromUserInfo(UserInfo userInfo) {
-		if (userInfo.getId()==null){
-			return User.Factory.newInstance();
-		}
 		User user = load(userInfo.getId());
 		if (user == null) {
 			user = User.Factory.newInstance();
@@ -68,6 +65,8 @@ public class UserDaoImpl extends org.openuss.security.UserDaoBase {
 		super.toUserInfo(source, target);
 		// do not provide the users password hash code
 		target.setPassword("[PROTECTED]");
+		target.setFirstName(source.getFirstName());
+		target.setLastName(source.getLastName());
 	}
 
 }

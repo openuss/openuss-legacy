@@ -17,7 +17,7 @@ import org.openuss.messaging.MessageService;
 import org.openuss.registration.RegistrationException;
 import org.openuss.registration.RegistrationService;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserInfo;
+import org.openuss.security.User;
 import org.openuss.system.SystemProperties;
 import org.openuss.system.SystemService;
 import org.openuss.web.Constants;
@@ -62,13 +62,13 @@ public class RegistrationController extends BaseBean {
 	 * @return outcome
 	 */
 	public String performRegistration() throws RegistrationException {
-		UserInfo user = (UserInfo) getSessionBean(Constants.USER_SESSION_KEY);
+		User user = (User) getSessionBean(Constants.USER_SESSION_KEY);
 		if (user == null) {
 			addError(i18n("message_error_cannot_perform_registration"));
 			return "failure";
 		}
 		// set default user time zone
-		user.getPreferences().setTimezone(TimeZone.getDefault().getID());
+		user.setTimezone(TimeZone.getDefault().getID());
 
 		registrationService.registrateUser(user);
 		String activationCode = registrationService.generateActivationCode(user);
@@ -89,7 +89,7 @@ public class RegistrationController extends BaseBean {
 	 * @param user
 	 * @param activationCode
 	 */
-	private void sendVerificationEmail(UserInfo user, String activationCode) {
+	private void sendVerificationEmail(User user, String activationCode) {
 		try {
 			String link = "/actions/public/user/activate.faces?code=" + activationCode;
 
@@ -114,7 +114,7 @@ public class RegistrationController extends BaseBean {
 	 */
 	public String resendActivationCode() {
 		try {
-			UserInfo user = securityService.getUserByName(username);
+			User user = securityService.getUserByName(username);
 			if (user == null) {
 				addError("User does not exist");
 				return Constants.FAILURE;
@@ -139,7 +139,7 @@ public class RegistrationController extends BaseBean {
 	 * @param verificationCode
 	 * @throws MessagingException
 	 */
-	private void sendForgottenPasswordEmail(UserInfo user, String verificationCode) throws Exception {
+	private void sendForgottenPasswordEmail(User user, String verificationCode) throws Exception {
 		String link = "/actions/public/user/password/change.faces?code=" + verificationCode;
 
 		link = applicationAddress() + link;
@@ -168,7 +168,7 @@ public class RegistrationController extends BaseBean {
 			throw new IllegalStateException(
 					"RegistrationController isn't connected to a RegistrationService. Check if the property is properly initialized within managed beans configuration.");
 
-		UserInfo user = securityService.getUserByName(userToken);
+		User user = securityService.getUserByName(userToken);
 		if (user == null) {
 			user = securityService.getUserByEmail(userToken);
 		}
@@ -184,7 +184,7 @@ public class RegistrationController extends BaseBean {
 		return Constants.SUCCESS;
 	}
 
-	private void showPasswordMailConfirmation(UserInfo user) {
+	private void showPasswordMailConfirmation(User user) {
 		addMessage(i18n("password_mail_send", user.getEmail()));
 		MessageBox msgBox = new MessageBox();
 		msgBox.setConfirmLabel(i18n("home"));

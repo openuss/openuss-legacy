@@ -172,6 +172,8 @@ public class Constants {
 	public static final String DISCUSSION_THREADLENGTH = "discussion_threadlength";
 	public static final String DISCUSSION_REMOVETHREAD = "discussion_removethread";
 	public static final String DISCUSSION_FORUM = "discussion_forum";
+	public static final String DISCUSSION_SEARCH = "discussion_search";	
+	public static final String DISCUSSION_SEARCH_RESULT = "discussion_search_result";
 	
 	// news navigation outcomes and combobox long constants
 	public static final String COURSE_NEWS_EDIT_PAGE = "course_news_edit";

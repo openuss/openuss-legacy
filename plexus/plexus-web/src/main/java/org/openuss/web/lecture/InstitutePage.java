@@ -52,6 +52,7 @@ public class InstitutePage extends AbstractLecturePage {
 	private List<SelectItem> institutePeriodItems;
 	private List<PeriodInfo> institutePeriods;
 	
+	
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws LectureException {
@@ -163,10 +164,8 @@ public class InstitutePage extends AbstractLecturePage {
 	 * @return Outcome
 	 */
 	public String shortcutCourse() {
-		//courseInfo = courseData.getRowData();
 		try {
-			CourseInfo currentCourse = currentCourse();
-			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
+			desktopService2.linkCourse(desktopInfo.getId(), currentCourse().getId());
 			addMessage(i18n("desktop_command_add_course_succeed"));
 			return Constants.SUCCESS;
 		} catch (DesktopException e) {
@@ -179,16 +178,14 @@ public class InstitutePage extends AbstractLecturePage {
 	public String removeCourseShortcut()
 	{
 		try {
-			//courseInfo = courseData.getRowData();
-			CourseInfo currentCourse = currentCourse();
-			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse.getId());
-		} catch (Exception e) {
-			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
+			desktopService2.unlinkCourse(desktopInfo.getId(), courseInfo.getId());
+			addMessage(i18n("desktop_command_add_course_succeed"));
+			return Constants.SUCCESS;
+		} catch (DesktopException e) {
+			logger.error(e);
+			addError(i18n(e.getMessage()));
 			return Constants.FAILURE;
 		}
-		
-		addMessage(i18n("institute_success_remove_shortcut"));
-		return Constants.SUCCESS;
 	}
 
 		
@@ -381,4 +378,5 @@ public class InstitutePage extends AbstractLecturePage {
 	public void setPeriodInfo(PeriodInfo periodInfo) {
 		this.periodInfo = periodInfo;
 	}
+
 }

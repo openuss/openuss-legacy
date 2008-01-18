@@ -69,7 +69,7 @@ public class CourseOptionsPage extends AbstractCoursePage {
 	public String saveOptions() throws LectureException {
 		logger.trace("saving course options");
 		
-		// TODO should be done within the business layer
+		// TODO move to business layer
 		CourseInfo courseOld = getCourseService().getCourseInfo(courseInfo.getId());
 		if (courseOld.getAccessType() == AccessType.APPLICATION && courseInfo.getAccessType() != AccessType.APPLICATION) {
 			getCourseService().removeAspirants(courseOld);

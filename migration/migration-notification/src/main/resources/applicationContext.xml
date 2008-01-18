@@ -22,8 +22,6 @@
         <property name="mailHost" value="localhost"/>
         <property name="mailUser" value="plexus@openuss-plexus.com"/>
         <property name="mailPassword" value="plexus"/>
-        <property name="mailFrom" value="plexus@openuss-plexus.com"/>
-        <property name="mailTo" value="plexus@openuss-plexus.com"/>
     </bean>
 
 	<bean id="velocityEngine"

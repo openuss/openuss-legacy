@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -19,6 +20,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
@@ -36,9 +38,21 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	@Property(value = "#{" + Constants.DOCUMENTS_FOLDERENTRY_SELECTION + "}")
 	private FolderEntrySelection entrySelection;
+	
+	/*
+	 * Target Folder to which selected Entries will be moved
+	 */
+	private FolderInfo targetFolder;
+	
+	/*
+	 * Target folder list
+	 */
+	private List<SelectItem> folderList;
 
 	private List<FolderEntryInfo> entries;
 
+	private boolean moveMode = false;
+	
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
@@ -141,6 +155,19 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		}
 		return Constants.SUCCESS;
 	}
+	
+	/**
+	 * Moves selected FolderEntries to target
+	 * Uses documentService.moveFolderEntries();
+	 * @return success
+	 * @throws DocumentApplicationException 
+	 */
+	public String moveFolderEntriesToTarget() throws DocumentApplicationException{
+		documentService.moveFolderEntries(courseInfo, targetFolder, selectedEntries() );
+		// TODO success message
+		addMessage(i18n("documents_move_files"));
+		return Constants.DOCUMENTS_MAIN_PAGE;
+	}
 
 	public String newFolder() {
 		logger.debug("create new folder");
@@ -183,6 +210,56 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	public void setEntrySelection(FolderEntrySelection selectedEntries) {
 		this.entrySelection = selectedEntries;
+	}
+
+	public FolderInfo getTargetFolder() {
+		return targetFolder;
+	}
+
+	public void setTargetFolder(FolderInfo targetFolder) {
+		this.targetFolder = targetFolder;
+	}
+
+	public List<SelectItem> getFolderList() {
+		if(folderList == null){
+			//get Folder List from Document Service
+			List<FolderInfo> allFolderInfos= super.documentService.getAllSubfolders(courseInfo);
+			folderList = new ArrayList<SelectItem>();
+			for(FolderInfo info: allFolderInfos) {
+				if (info != null) {
+					String depth = "";
+					//check depth
+					List path = super.documentService.getFolderPath(info);
+					for(int i = 0; i < path.size(); i++)
+						depth = depth + "> ";
+					//@TODO implement check wether element is root. Change name if so.
+					String name = info.getName() == null ? "Root" : info.getName();
+					folderList.add(new SelectItem(info,depth + name ));
+				} else {
+					SelectItem item = new SelectItem("--");
+					item.setDisabled(true);
+					folderList.add(item);
+				}
+			}
+		}
+		return folderList;
+	}
+	
+	public String switchToMoveMode(){
+		setMoveMode(true);
+		return Constants.SUCCESS;
+	}
+
+	public void setFolderList(List<SelectItem> folderList) {
+		this.folderList = folderList;
+	}
+
+	public boolean getMoveMode() {
+		return moveMode;
+	}
+
+	public void setMoveMode(boolean moveMode) {
+		this.moveMode = moveMode;
 	}
 
 }

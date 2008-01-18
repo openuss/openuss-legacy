@@ -28,7 +28,7 @@ import org.openuss.web.Constants;
 public class DesktopPage extends BasePage {
 
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
-
+	
 	private CourseDataProvider coursesProvider = new CourseDataProvider();
 	private CourseTypeDataProvider courseTypesProvider = new CourseTypeDataProvider();
 	private InstituteDataProvider institutesProvider = new InstituteDataProvider();
@@ -103,17 +103,15 @@ public class DesktopPage extends BasePage {
 	 * @return outcome
 	 */
 	public String removeCourse() {
-		logger.debug("starting method remove course");
-		CourseInfo courseInfo = coursesProvider.getRowData();
 		try {
-			//desktopService.unlinkCourse(desktop, course);
-			desktopService2.unlinkCourse(desktopInfo.getId(), courseInfo.getId());
-			addMessage(i18n("desktop_mesage_removed_course_succeed", courseInfo.getShortcut()));
+			desktopService2.unlinkCourse(desktopInfo.getId(), coursesProvider.getRowData().getId());
+			addMessage(i18n("desktop_command_add_course_succeed"));
+			return Constants.SUCCESS;
 		} catch (DesktopException e) {
-			logger.debug(e);
+			logger.error(e);
 			addError(i18n(e.getMessage()));
+			return Constants.FAILURE;
 		}
-		return Constants.DESKTOP;
 	}
 
 	/**

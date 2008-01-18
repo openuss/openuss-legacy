@@ -19,7 +19,6 @@ import org.openuss.lecture.Institute;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.UserImpl;
-import org.openuss.security.UserInfo;
 
 
 /**
@@ -32,7 +31,7 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 	private static final Logger logger = Logger.getLogger(RegistrationServiceImpl.class);
 	
 	@Override
-	protected void handleRegistrateUser(UserInfo user) throws RegistrationException {
+	protected void handleRegistrateUser(User user) throws RegistrationException {
 		Validate.notNull(user, "User parameter must not be null!");
 
 		// ensure that user will not be activate
@@ -40,12 +39,8 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 
 		getSecurityService().createUser(user);
 		
-		getSecurityService().saveUserPreferences(user);
-		getSecurityService().saveUserContact(user);
-		getSecurityService().saveUserProfile(user);
-		
 		// asign roles to user
-		asignRolesToUser(getSecurityService().getUserObject(user));
+		asignRolesToUser(user);
 	}
 
 	@Override
@@ -88,14 +83,14 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 	}
 
 	@Override
-	protected String handleGenerateActivationCode(UserInfo user) throws RegistrationException {
+	protected String handleGenerateActivationCode(User user) throws RegistrationException {
 		UserActivationCode reg = UserActivationCode.Factory.newInstance();
 
 		// generate new MD5 hash from user id and current time millis
 		String code = md5("AC{"+user.getId()+"}"+System.currentTimeMillis())+user.getId();
 		
 		// store registration code
-		reg.setUser(getSecurityService().getUserObject(user));
+		reg.setUser(user);
 		reg.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		reg.setCode(code);		
 		getUserActivationCodeDao().create(reg);
@@ -104,7 +99,7 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 	}
 
 	@Override
-	protected UserInfo handleLoginUserByActivationCode(String activationCode) throws Exception {
+	protected User handleLoginUserByActivationCode(String activationCode) throws Exception {
 		UserActivationCode code = getUserActivationCodeDao().findByCode(activationCode);
 		if (code==null){
 			logger.debug("Could not find activation code: " + activationCode);
@@ -116,7 +111,7 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 			throw new RegistrationCodeExpiredException("activation code expired!" + activationCode);
 		}
 		loginUser(code.getUser());
-		return getSecurityService().getUser(code.getUser().getId());
+		return code.getUser();
 		
 	}
 
@@ -132,8 +127,8 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 		
 			logger.debug("Principal is: "+authRequest.getPrincipal());
 			User details = (User) authRequest.getPrincipal();
-			user = getSecurityService().getUserObject(getSecurityService().getUserByName(details.getUsername()));
-			getSecurityService().setLoginTime(getSecurityService().getUser(user.getId()));			
+			user = getSecurityService().getUserByName(details.getUsername());
+			getSecurityService().setLoginTime(user);			
 		}
 		return user;
 	}

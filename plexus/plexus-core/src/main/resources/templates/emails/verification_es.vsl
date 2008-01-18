@@ -1,0 +1,24 @@
+<html>
+	<body>
+		<h3><font color="#003366">OpenUSS Verificación Email</font></h3>
+		Para activar su <i>${username}</i> cuenta de OpenUSS y verificar su cuenta de correo, por favor haga click en el siguiente enlace:<br/>
+		<p>
+		<a href="${link}">${link}</a>
+		</p>
+		<p>
+			Si ha recibido este correo por error, no tiene que tomar ninguna medida para el eliminar esta cuenta.
+			La cuenta no será activada, y en lo sucesivo no recibirá más emails referentes a ello.
+		</p>
+		<p>
+			Si el enlace de arriba no funciona, copie y pegue la URL en una nueva ventana de su navegador.
+		</p>
+		<p>
+			Gracias por utilizar OpenUSS.
+		</p>
+		<p>
+			<small>Este es solo un email informativo. Cualquier respuesta a este mensaje no será monitorizada ni respondida.</small>
+		</p>
+	</body>
+</html>
+
+

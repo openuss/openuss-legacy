@@ -11,7 +11,7 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.newsletter.SubscriberInfo;
-import org.openuss.security.UserInfo;
+import org.openuss.security.User;
 import org.openuss.web.Constants;
 
 /**
@@ -26,7 +26,7 @@ public class NewsletterSubscribersPage extends AbstractNewsletterPage{
 	private SubscriberDataProvider data = new SubscriberDataProvider();
 	
 	@Property(value= "#{"+Constants.USER+"}")
-	private UserInfo user;
+	private User user;
 	
 	@SuppressWarnings("unchecked")
 	@Prerender
@@ -63,14 +63,14 @@ public class NewsletterSubscribersPage extends AbstractNewsletterPage{
 
 	public String showProfile() {
 		SubscriberInfo subscriberInfo = data.getRowData();
-		UserInfo user = new UserInfo();
+		User user = User.Factory.newInstance();
 		user.setId(subscriberInfo.getUserId());
 		setSessionBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	
 	public String removeSubscriber(){
-		UserInfo user = new UserInfo();
+		User user = User.Factory.newInstance();
 		user.setId(data.getRowData().getUserId());
 		getCourseNewsletterService().unsubscribe(courseInfo, user);
 		 return Constants.SUCCESS;
@@ -88,11 +88,11 @@ public class NewsletterSubscribersPage extends AbstractNewsletterPage{
 		this.data = data;
 	}
 
-	public UserInfo getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(UserInfo user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 

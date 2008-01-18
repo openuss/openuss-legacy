@@ -43,7 +43,7 @@ public class DocumentServlet extends HttpServlet {
 		final WebApplicationContext wac = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(getServletContext());
 		documentService = (DocumentService) wac.getBean("documentService", DocumentService.class);
-		// TODO Should be declared by acegi security context;
+		// FIXME should be declared by acegi security context;
 		aclManager = (AclManager) wac.getBean("aclManager", AclManager.class);
 		AcegiUtils.setAclManager(aclManager);
 	}

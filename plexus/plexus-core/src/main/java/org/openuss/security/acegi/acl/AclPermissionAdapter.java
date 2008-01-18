@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.acegisecurity.acl.basic.AclObjectIdentity;
 import org.acegisecurity.acl.basic.BasicAclEntry;
-import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -26,30 +25,33 @@ public class AclPermissionAdapter implements BasicAclEntry {
 
 	private static final long serialVersionUID = -5816801870720669885L;
 	
-	private Object recipient;
-	
-	private int mask;
-	
-	private long identifier;
-	
-	private AclObjectIdentity aclObjectIdentity;
-	
-	private AclObjectIdentity aclObjectParentIdentity;
+	private Permission permission;
 	
 	/**
 	 * @param permission
 	 */
 	public AclPermissionAdapter(Permission permission) {
-		Validate.notNull(permission,"Permission must not be null");
-		
-		this.recipient = permission.getRecipient().toString();
-		this.mask = permission.getMask();
-		this.identifier = permission.getId();
-		this.aclObjectIdentity = fetchAclObjectIdentity(permission);
-		this.aclObjectParentIdentity = fetchAclObjectParentIdentity(permission);
+		this.permission = permission;
 	}
 	
-	private AclObjectIdentity fetchAclObjectParentIdentity(Permission permission) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public AclObjectIdentity getAclObjectIdentity() {
+		try {
+			return new EntityObjectIdentity(permission.getAclObjectIdentity());
+		} catch (IllegalAccessException e) {
+			logger.error(e);
+		} catch (InvocationTargetException e) {
+			logger.error(e);
+		}
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public AclObjectIdentity getAclObjectParentIdentity() {
 		final ObjectIdentity objectIdentity = permission.getAclObjectIdentity().getParent();
 		try {
 			return (objectIdentity == null) ? null : new EntityObjectIdentity(objectIdentity);
@@ -61,45 +63,18 @@ public class AclPermissionAdapter implements BasicAclEntry {
 		return null;
 	}
 
-	private AclObjectIdentity fetchAclObjectIdentity(Permission permission) {
-		try {
-			return new EntityObjectIdentity(permission.getAclObjectIdentity());
-		} catch (IllegalAccessException e) {
-			logger.error(e);
-		} catch (InvocationTargetException e) {
-			logger.error(e);
-		}
-		return null;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public AclObjectIdentity getAclObjectIdentity() {
-		return aclObjectIdentity;
-	}
-
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public AclObjectIdentity getAclObjectParentIdentity() {
-		return aclObjectParentIdentity;
-	}
-
-
 	/**
 	 * {@inheritDoc}
 	 */
 	public int getMask() {
-		return mask;
+		return permission.getMask();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public Object getRecipient() {
-		return recipient;
+		return permission.getRecipient().toString();
 	}
 
 
@@ -107,28 +82,44 @@ public class AclPermissionAdapter implements BasicAclEntry {
 	 * {@inheritDoc}
 	 */
 	public void setAclObjectIdentity(AclObjectIdentity aclObjectIdentity) {
-		this.aclObjectIdentity = aclObjectIdentity;
+		throw new UnsupportedOperationException("setRecipient must be set over the associated permission object");
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void setAclObjectParentIdentity(AclObjectIdentity aclObjectParentIdentity) {
-		this.aclObjectParentIdentity = aclObjectParentIdentity;
+		throw new UnsupportedOperationException("setRecipient must be set over the associated permission object");
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void setMask(int mask) {
-		this.mask = mask;
+		throw new UnsupportedOperationException("setRecipient must be set over the associated permission object");
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void setRecipient(Object recipient) {
-		this.recipient = recipient;
+		throw new UnsupportedOperationException("setRecipient must be set over the associated permission object");
+	}
+
+	/**
+	 * Get the associated permission object.
+	 * @return
+	 */
+	public Permission getPermission() {
+		return permission;
+	}
+
+	/**
+	 * Set the associated permission object.
+	 * @param permission
+	 */
+	public void setPermission(Permission permission) {
+		this.permission = permission;
 	}
 
 	/**
@@ -145,11 +136,15 @@ public class AclPermissionAdapter implements BasicAclEntry {
 	 */
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this)
-			.append("recipient", recipient)
-			.append("mask", mask)
-			.append("id", identifier)
-			.toString();
+		if (permission == null)
+			return super.toString()+" permission not set";
+		else {
+			return new ToStringBuilder(this)
+				.append("recipient", permission.getRecipient())
+				.append("mask", permission.getMask())
+				.append("id", permission.getId())
+				.toString();
+		}
 	}
 	
 	/**
@@ -158,9 +153,9 @@ public class AclPermissionAdapter implements BasicAclEntry {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder(-623867371, 1205873953)
-			.append(recipient)
-			.append(mask)
-			.append(identifier)
+			.append(permission.getRecipient())
+			.append(permission.getMask())
+			.append(permission.getId())
 			.toHashCode();
 	}
 	
@@ -177,9 +172,9 @@ public class AclPermissionAdapter implements BasicAclEntry {
 		}
 		AclPermissionAdapter rhs = (AclPermissionAdapter) object;
 		return new EqualsBuilder()
-			.append(this.recipient, rhs.recipient)
-			.append(this.mask, rhs.mask)
-			.append(this.identifier, rhs.identifier)
+			.append(this.permission.getRecipient(), rhs.permission.getRecipient())
+			.append(this.permission.getMask(), rhs.permission.getMask())
+			.append(this.permission.getId(), rhs.permission.getId())
 			.isEquals();
 	}
 }

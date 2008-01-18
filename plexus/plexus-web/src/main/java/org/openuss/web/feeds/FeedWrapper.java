@@ -18,11 +18,33 @@ public class FeedWrapper  {
 
 	private static final long serialVersionUID = 3926487462738394282L;
 
+	public FeedWrapper() {
+		this.writer = null;
+		this.lastModified = null;
+	}
+
+	public FeedWrapper(Writer writer, Date lastModified) {
+		this.writer = writer;
+		this.lastModified = lastModified;
+	}
+
+	/**
+	 * Copies constructor from other FeedWrapper
+	 * 
+	 * @param otherBean,
+	 *            cannot be <code>null</code>
+	 * @throws java.lang.NullPointerException
+	 *             if the argument is <code>null</code>
+	 */
+	public FeedWrapper(FeedWrapper otherBean) {
+		this(otherBean.getWriter(), otherBean.getLastModified());
+	}
+
 	/**
 	 * Copies all properties from the argument value object into this value
 	 * object.
 	 */
-	public void copy(final FeedWrapper otherBean) {
+	public void copy(FeedWrapper otherBean) {
 		this.setWriter(otherBean.getWriter());
 		this.setLastModified(otherBean.getLastModified());
 	}
@@ -36,7 +58,7 @@ public class FeedWrapper  {
 		return this.writer;
 	}
 
-	public void setWriter(final Writer writer) {
+	public void setWriter(java.io.Writer writer) {
 		this.writer = writer;
 	}
 
@@ -46,14 +68,11 @@ public class FeedWrapper  {
 	 * 
 	 */
 	public java.util.Date getLastModified() {
-		return lastModified != null? new Date(lastModified.getTime()):null;
+		return this.lastModified;
 	}
 
-	public void setLastModified(final Date lastModified) {
-		this.lastModified = null;
-		if (lastModified != null) {
-			this.lastModified = new Date(lastModified.getTime());
-		}
+	public void setLastModified(Date lastModified) {
+		this.lastModified = lastModified;
 	}
 
 }

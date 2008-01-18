@@ -8,7 +8,7 @@ import org.openuss.registration.RegistrationCodeExpiredException;
 import org.openuss.registration.RegistrationCodeNotFoundException;
 import org.openuss.registration.RegistrationService;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserInfo;
+import org.openuss.security.User;
 import org.openuss.web.Constants;
 
 /**
@@ -32,7 +32,7 @@ public class PasswordChangeAction extends BaseBean {
 	private String newPassword;
 	
 	@Property(value="#{sessionScope.user}")
-	private UserInfo user; 
+	private User user; 
 	
 	/**
 	 * Activate User by activationCode.
@@ -98,11 +98,11 @@ public class PasswordChangeAction extends BaseBean {
 		this.securityService = securityService;
 	}
 
-	public UserInfo getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(UserInfo user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 }

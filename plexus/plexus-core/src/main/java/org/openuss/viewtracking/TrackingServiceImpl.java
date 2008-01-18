@@ -8,9 +8,10 @@ package org.openuss.viewtracking;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.lang.Validate;
 import org.openuss.framework.utilities.DomainObjectUtility;
-import org.openuss.security.UserInfo;
+import org.openuss.security.User;
 
 /**
  * @see org.openuss.viewtracking.TrackingService
@@ -61,7 +62,7 @@ public class TrackingServiceImpl extends org.openuss.viewtracking.TrackingServic
 
 	private DomainViewStatePK generatePrimaryKey(Object domainObject) throws IllegalAccessException, InvocationTargetException {
 		Long domainIdentifier = DomainObjectUtility.identifierFromObject(domainObject);
-		UserInfo user = getSecurityService().getCurrentUser();
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		DomainViewStatePK pk = new DomainViewStatePK();
 		pk.setDomainIdentifier(domainIdentifier);

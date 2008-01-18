@@ -13,7 +13,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.newsletter.MailDetail;
 import org.openuss.newsletter.MailInfo;
 import org.openuss.newsletter.MailingStatus;
-import org.openuss.security.UserInfo;
+import org.openuss.security.User;
 import org.openuss.web.Constants;
 
 /**
@@ -29,7 +29,7 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 	private NewsletterDataProvider data = new NewsletterDataProvider();
 	
 	@Property(value= "#{"+Constants.USER+"}")
-	private UserInfo user;
+	private User user;
 	
 	@SuppressWarnings("unchecked")
 	@Prerender
@@ -136,11 +136,11 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 		this.data = data;
 	}
 
-	public UserInfo getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(UserInfo user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 }

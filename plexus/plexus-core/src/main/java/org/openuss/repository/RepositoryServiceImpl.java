@@ -11,7 +11,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
@@ -52,29 +51,21 @@ public class RepositoryServiceImpl extends RepositoryServiceBase {
 
 	private InputStream fetchInputStream(RepositoryFile file) throws FileNotFoundException, IOException {
 		long fileId = file.getId();
-		File cachedFile = cachedFile(fileId);
-		if (!cachedFile.exists()) {
-			refreshCacheFile(file, cachedFile);
+		File cacheFile = cachedFile(fileId);
+		if (!cacheFile.exists()) {
+			refreshCacheFile(file, cacheFile);
 		} else {
-			if (isCachedFileInvalide(file, cachedFile)) { 
-				if (cachedFile.delete()) {
-					refreshCacheFile(file, cachedFile);
+			if (!FileUtils.isFileNewer(cacheFile, file.getModified())) { 
+				if (cacheFile.delete()) {
+					refreshCacheFile(file, cacheFile);
 				} else {
-					logger.warn("Could not delete cached file "+cachedFile.getName());
+					// FIXME Resource request lock conflict - someone is reading an outdated file.
+					logger.error("-------------> CACHE Could rewrite cache");
 					return file.getInputStream();
 				}
 			}
 		}
-		return new FileInputStream(cachedFile);
-	}
-
-	private boolean isCachedFileInvalide(RepositoryFile file, File cachedFile){
-		try {
-			return !FileUtils.isFileNewer(cachedFile, file.getModified()) || file.getContent().length() == cachedFile.length();
-		} catch (SQLException e) {
-			logger.warn(e);
-			return true;
-		}
+		return new FileInputStream(cacheFile);
 	}
 
 	@Override
@@ -90,7 +81,8 @@ public class RepositoryServiceImpl extends RepositoryServiceBase {
 	}
 
 	private File cachedFile(long fileId) {
-		return new File(toFileName(fileId));
+		File cacheFile = new File(toFileName(fileId));
+		return cacheFile;
 	}
 
 	private void refreshCacheFile(RepositoryFile file, File cacheFile) throws FileNotFoundException, IOException {

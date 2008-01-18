@@ -63,9 +63,7 @@ public class DocumentAddZipPage extends AbstractDocumentPage{
 				addMessage(i18n("message_extract_files_successfully", infos.size()));
 			} finally{
 				unpacker.closeQuitly();
-				if (!zipFile.delete()) {
-					zipFile.deleteOnExit();
-				}
+				zipFile.delete();
 				removeSessionBean(Constants.UPLOADED_FILE);
 			}
 		} catch (IOException e) {

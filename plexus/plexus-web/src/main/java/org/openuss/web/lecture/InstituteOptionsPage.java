@@ -79,7 +79,7 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		instituteService.update(instituteInfo);
 		addMessage(i18n("institute_message_command_save_succeed"));
 
-		// FIXME This must be done in the business logic
+		// FIXME this must be done in the business logic
 		// start department application process if a department is selected which differs from the current one
 		if (!departmentId.equals(departmentInfo.getId())) {
 			ApplicationInfo pendingApplication = instituteService.findApplicationByInstituteAndConfirmed(instituteInfo.getId(), false);
@@ -134,7 +134,7 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	}
 
 	private void permitRolesImageReadPermission(FileInfo imageFile) {
-		// FIXME Should be done within the business layer
+		// FIXME should be done within the business layer
 		securityService.setPermissions(Roles.ANONYMOUS, imageFile, LectureAclEntry.READ);
 		securityService.setPermissions(Roles.USER, imageFile, LectureAclEntry.READ);
 	}

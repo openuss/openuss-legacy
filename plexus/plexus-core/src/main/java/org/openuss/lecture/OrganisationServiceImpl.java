@@ -14,7 +14,6 @@ import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
 import org.openuss.security.GroupItem;
 import org.openuss.security.User;
-import org.openuss.security.UserInfo;
 
 /**
  * @see org.openuss.lecture.OrganisationService
@@ -80,9 +79,9 @@ public class OrganisationServiceImpl extends OrganisationServiceBase {
 
 		List<User> members = organisation.getMembership().getMembers();
 
-		List<UserInfo> memberInfos = new ArrayList();
+		List memberInfos = new ArrayList();
 		for (User user : members) {
-			memberInfos.add(getSecurityService().getUserByEmail(user.getEmail()));
+			memberInfos.add(this.getUserDao().toUserInfo(user));
 		}
 
 		return memberInfos;
@@ -100,9 +99,9 @@ public class OrganisationServiceImpl extends OrganisationServiceBase {
 
 		List<User> aspirants = organisation.getMembership().getAspirants();
 
-		List<UserInfo> aspirantInfos = new ArrayList();
+		List aspirantInfos = new ArrayList();
 		for (User user : aspirants) {
-			aspirantInfos.add(getSecurityService().getUserByEmail(user.getEmail()));
+			aspirantInfos.add(this.getUserDao().toUserInfo(user));
 		}
 
 		return aspirantInfos;

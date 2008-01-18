@@ -24,7 +24,7 @@ import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
- * @see org.openuss.documents.DocumentsService
+ * @see org.openuss.documents.DocumentService
  */
 public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBase {
 
@@ -128,14 +128,16 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	@Override
-	protected List<FolderEntryInfo> handleGetFolderEntries(DomainObject domainObject, FolderInfo folderInfo) throws Exception {
+	protected List<FolderEntryInfo> handleGetFolderEntries(DomainObject domainObject, FolderInfo folderInfo)
+			throws Exception {
 		Validate.notNull(domainObject, "Parameter DomainObject must not be null!");
 		Folder folder = retrieveFolderOfOwner(domainObject, folderInfo);
-		List<FolderEntryInfo> entries = getFolderEntryDao().findByParent(FolderEntryDao.TRANSFORM_FOLDERENTRYINFO, folder);
+		List<FolderEntryInfo> entries = getFolderEntryDao().findByParent(FolderEntryDao.TRANSFORM_FOLDERENTRYINFO,
+				folder);
 		filterEntriesByPermission(entries);
 		return entries;
 	}
-	
+
 	private boolean isFolderOfDomainObject(DomainObject domainObject, Folder folder) {
 		Validate.notNull(folder);
 		while (folder.getParent() != null) {
@@ -296,11 +298,11 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 							eval = ((FileInfo) object).isReleased();
 						} else if (object instanceof FolderEntryInfo) {
 							eval = ((FolderEntryInfo) object).isReleased();
-						} 
-						if (!eval) {
-							logger.trace("------------------------------------> removing file "+object);
 						}
-						
+						if (!eval) {
+							logger.trace("------------------------------------> removing file " + object);
+						}
+
 						return eval;
 					}
 				});
@@ -448,15 +450,18 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	}
 
 	/**
-	 * This method verifies that the returned folder belongs to the domain object. If the specified folder
-	 * is not a subfolder of the domain object this method will return the root folder of the domain object.
+	 * This method verifies that the returned folder belongs to the domain
+	 * object. If the specified folder is not a subfolder of the domain object
+	 * this method will return the root folder of the domain object.
+	 * 
 	 * @param owner
 	 * @param folderInfo
 	 * @return folder entity instance
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	private Folder retrieveFolderOfOwner(DomainObject owner, FolderInfo folderInfo) throws IllegalAccessException, InvocationTargetException {
+	private Folder retrieveFolderOfOwner(DomainObject owner, FolderInfo folderInfo) throws IllegalAccessException,
+			InvocationTargetException {
 		Folder folder = null;
 		if (folderInfo != null && folderInfo.getId() != null) {
 			folder = getFolderDao().load(folderInfo.getId());
@@ -467,4 +472,25 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		return folder;
 	}
 
+	@Override
+	protected void handleMoveFolderEntries(DomainObject domainObject, FolderInfo target, List chosenObjects)
+			throws Exception {
+		Validate.notNull(target, "Parameter target must not be null");
+		Validate.notNull(target.getId(), "Parameter target must contain valid domain id");
+		Folder targetFolder = getFolderDao().load(target.getId());
+		List<FolderEntry> chosen = new ArrayList<FolderEntry>(chosenObjects);
+		getFolderEntryDao().folderEntryInfoToEntityCollection(chosen);
+		// Moving chosen to target
+		for (FolderEntry fe : chosen) {
+			targetFolder.moveHere(fe);
+		}
+	}
+
+	@Override
+	protected List handleGetAllSubfolders(DomainObject domainObject) throws Exception {
+		Folder root = getFolderDao().folderInfoToEntity(super.getFolder(domainObject));
+		List allFolders = root.getAllSubfolders();
+		getFolderDao().toFolderInfoCollection(allFolders);
+		return allFolders;
+	}
 }

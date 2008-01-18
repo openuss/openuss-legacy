@@ -13,7 +13,6 @@ import java.util.Map;
 import org.apache.commons.lang.Validate;
 import org.openuss.commands.CommandApplicationService;
 import org.openuss.security.User;
-import org.openuss.security.UserInfo;
 
 /**
  * @see org.openuss.messaging.MessageService
@@ -91,19 +90,19 @@ public class MessageServiceImpl extends MessageServiceBase {
 	}
 
 	@Override
-	protected Long handleSendMessage(String senderName, String subject, String text, boolean sms, UserInfo recipient) throws Exception {
+	protected Long handleSendMessage(String senderName, String subject, String text, boolean sms, User recipient) throws Exception {
 		return handleSendMessage(senderName, subject, text, sms, wrapRecipient(recipient));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Long handleSendMessage(String senderName, String subject, String templateName, Map parameters, UserInfo recipient) throws Exception {
+	protected Long handleSendMessage(String senderName, String subject, String templateName, Map parameters, User recipient) throws Exception {
 		return handleSendMessage(senderName, subject, templateName, parameters, wrapRecipient(recipient));
 	}
 
-	private List<User> wrapRecipient(UserInfo recipient) {
+	private List<User> wrapRecipient(User recipient) {
 		List<User> recipients = new ArrayList<User>();
-		recipients.add(getSecurityService().getUserObject(recipient.getId()));
+		recipients.add(recipient);
 		return recipients;
 	}
 

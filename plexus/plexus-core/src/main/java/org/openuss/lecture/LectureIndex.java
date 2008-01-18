@@ -7,6 +7,9 @@ import org.apache.log4j.Logger;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.Lock;
+import org.openuss.discussion.DiscussionIndexer;
+import org.openuss.discussion.Post;
+import org.openuss.discussion.PostDao;
 import org.openuss.search.DomainIndexer;
 
 /**
@@ -31,6 +34,11 @@ public class LectureIndex extends DomainIndexer implements RecreateLectureIndex 
 	private CourseIndexer courseIndexer;
 	
 	private FSDirectory fsDirectory;
+	
+	//Extension for Discussion Search
+	private FSDirectory fsDiscussionDirectory;
+	private PostDao postDao;
+	private DiscussionIndexer discussionIndexer;
 	
 	@Override
 	public void create() {
@@ -64,40 +72,10 @@ public class LectureIndex extends DomainIndexer implements RecreateLectureIndex 
 	 * @throws Exception
 	 */
 	public void recreate() throws Exception {
-		logger.debug("start to recreate lecture index.");
-
-		deleteIndex();
-		
-		indexUniversities();
-		indexDepartments();
-		indexInstitutes();
-		indexCourses();
-		
-		logger.debug("recreated lecture index.");
+		recreateLectureIndex();
+		recreateDiscussionIndex();
 	}
 
-	private void deleteIndex() {
-		if (fsDirectory != null) {
-			logger.debug("deleting index");
-			String[] files = fsDirectory.list();
-			for (String file : files) {
-				Lock lock = fsDirectory.makeLock(file);
-				try {
-					try {
-						lock.obtain();
-					} catch (IOException e) {
-						logger.error("Couldn't obtain lock for "+file);
-					}
-					fsDirectory.deleteFile(file);
-				} catch (IOException e) {
-					logger.error(e);
-				} finally {
-					lock.release();
-				}
-			}
-		}		
-	}
-	
 	private void indexUniversities() {
 		logger.debug("indexing universities...");
 		Collection<University> universities = universityDao.loadAll();
@@ -237,4 +215,111 @@ public class LectureIndex extends DomainIndexer implements RecreateLectureIndex 
 	public void setFsDirectory(FSDirectory fsDirectory) {
 		this.fsDirectory = fsDirectory;
 	}
+	
+    //Extension for Discussion Search
+	public FSDirectory getFsDiscussionDirectory() {
+		return fsDiscussionDirectory;
+	}
+
+	public void setFsDiscussionDirectory(FSDirectory fsDiscussionDirectory) {
+		this.fsDiscussionDirectory = fsDiscussionDirectory;
+	}
+	
+	private void indexDiscussions() {
+		logger.debug("indexing discussions...");
+		Collection<Post> posts = postDao.loadAll();
+		
+		for(Post post: posts) {
+			try {
+				discussionIndexer.setDomainObject(post);
+				discussionIndexer.create();				
+			} catch (Exception ex) {
+				logger.error(ex);
+			}
+		}
+	}
+
+	private void deleteLectureIndex() {
+		if (fsDirectory != null) {
+			logger.debug("deleting lecture index");
+			String[] files = fsDirectory.list();
+			for (String file : files) {
+				Lock lock = fsDirectory.makeLock(file);
+				try {
+					try {
+						lock.obtain();
+					} catch (IOException e) {
+						logger.error("Couldn't obtain lock for "+file);
+					}
+					fsDirectory.deleteFile(file);
+				} catch (IOException e) {
+					logger.error(e);
+				} finally {
+					lock.release();
+				}
+			}
+		}		
+	}
+	
+	private void deleteDiscussionIndex() {
+		if (fsDiscussionDirectory != null) {
+			logger.debug("deleting discussion index");
+			String[] files = fsDiscussionDirectory.list();
+			for (String file : files) {
+				Lock lock = fsDiscussionDirectory.makeLock(file);
+				try {
+					try {
+						lock.obtain();
+					} catch (IOException e) {
+						logger.error("Couldn't obtain lock for "+file);
+					}
+					fsDiscussionDirectory.deleteFile(file);
+				} catch (IOException e) {
+					logger.error(e);
+				} finally {
+					lock.release();
+				}
+			}
+		}		
+	}
+	
+	public void recreateLectureIndex() throws Exception {
+		logger.debug("start to recreate lecture index.");
+
+		deleteLectureIndex();
+		
+		indexUniversities();
+		indexDepartments();
+		indexInstitutes();
+		indexCourses();
+		
+		logger.debug("recreated lecture index.");
+	}
+
+	public void recreateDiscussionIndex() throws Exception {
+		logger.debug("start to recreate discussion index.");
+
+		deleteDiscussionIndex();
+		
+		indexDiscussions();
+		
+		logger.debug("recreated discussion index.");
+	}
+
+	public DiscussionIndexer getDiscussionIndexer() {
+		return discussionIndexer;
+	}
+
+	public void setDiscussionIndexer(DiscussionIndexer discussionIndexer) {
+		this.discussionIndexer = discussionIndexer;
+	}
+
+	public PostDao getPostDao() {
+		return postDao;
+	}
+
+	public void setPostDao(PostDao postDao) {
+		this.postDao = postDao;
+	}
+	
 }
