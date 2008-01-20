@@ -59,7 +59,14 @@
 								activeOnViewIds="/views/secured/course/fslinstall.xhtml"
 								rendered="#{courseInfo.freestylelearning}">
 								<h:outputText value="Freestyle Learning"/>
-							</t:commandNavigation2>					
+							</t:commandNavigation2>			
+							
+							<!-- TODO add rendered flag! -->
+							<t:commandNavigation2 
+                                action="papersubmission" 
+                                activeOnViewIds="/views/secured/course/papersubmission/paperlist.xhtml">
+                                <h:outputText  value="#{msg['course_command_papersubmission']}"/>
+                            </t:commandNavigation2>     		
 						</s:authorize> 
 						<s:authorize ifAllGranted="ROLE_USER">
 							<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">

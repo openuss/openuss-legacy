@@ -22,6 +22,7 @@ public class Constants {
 	public static final String COURSE = "course";
 	public static final String COURSE_INFO = "courseInfo";
 	public static final String DESKTOP_INFO = "desktopInfo";
+	public static final String PAPER_INFO = "paperInfo";
 
 	public static final String PERIOD = "period";
 	public static final String PERIOD_INFO = "periodInfo";
@@ -222,6 +223,8 @@ public class Constants {
 	public static final String NEWLINE = "\r\n";
 	public static final String ARROW = " -> ";
 
-
+	// papersubmission outcomes
+	public static final String PAPERSUBMISSION_LIST_PAGE = "paperlist";
+	public static final String PAPER_CONFIRM_REMOVE_PAGE = "paper_confirm_remove";
 	
 }

@@ -658,7 +658,12 @@
 			<navigation-case>
 				<from-outcome>wiki_edit</from-outcome>
 				<to-view-id>/views/secured/wiki/wikiedit.xhtml</to-view-id>				
-			</navigation-case>					
+			</navigation-case>	
+			
+			<navigation-case>
+                <from-outcome>papersubmission</from-outcome>
+                <to-view-id>/views/secured/course/papersubmission/paperlist.xhtml</to-view-id>
+            </navigation-case>				
 		</navigation-rule>
 		
 		<navigation-rule>
@@ -1016,6 +1021,23 @@
 			<to-view-id>/views/secured/lecture/registration/step1.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      P a p e r s u b m i s s i o n 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- FIXME move to course-section!! -->
+    <navigation-rule>
+        <from-view-id>/views/secured/course/papersubmission/*</from-view-id>   
+        
+        <navigation-case>
+            <from-outcome>paperlist</from-outcome>
+            <to-view-id>/views/secured/course/papersubmission/paperlist.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>paper_confirm_remove</from-outcome>
+            <to-view-id>/views/secured/course/papersubmission/paperremoveconfirmation.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 		
 </faces-config>
 
