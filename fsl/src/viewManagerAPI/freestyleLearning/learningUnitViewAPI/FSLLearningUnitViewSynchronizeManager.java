@@ -128,12 +128,20 @@ public class FSLLearningUnitViewSynchronizeManager implements FLGDialogInputVeri
 		redPanel.setBackground(Color.RED);
 		redPanel.setSize(new Dimension(5,5));
 		legendPanel.add(redPanel, FLGColumnLayout.LEFT);
-		legendPanel.add(new JLabel("zu überschreibende Elemente"), FLGColumnLayout.LEFTEND);
+		
+		//legendPanel.add(new JLabel("zu überschreibende Elemente"), FLGColumnLayout.LEFTEND);
+		legendPanel.add(new JLabel(internationalization.getString("synchronizeDialog.legend.elementsToOverwrite")), 
+				FLGColumnLayout.LEFTEND);
+		
 		JPanel blackPanel = new JPanel();
 		blackPanel.setBackground(Color.BLACK);
 		blackPanel.setSize(new Dimension(6,6));
 		legendPanel.add(blackPanel, FLGColumnLayout.LEFT);
-		legendPanel.add(new JLabel("aktuelle Elemente"), FLGColumnLayout.LEFTEND);
+		
+		//legendPanel.add(new JLabel("aktuelle Elemente"), FLGColumnLayout.LEFTEND);
+		legendPanel.add(new JLabel(internationalization.getString("synchronizeDialog.legend.elementsUpToDate")), 
+				FLGColumnLayout.LEFTEND);
+		
 		mainPanel.add(legendPanel, BorderLayout.SOUTH);
 		
 		buildTreeModels();
