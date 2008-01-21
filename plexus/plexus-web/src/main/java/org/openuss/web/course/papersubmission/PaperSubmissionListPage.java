@@ -13,7 +13,6 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
@@ -31,7 +30,7 @@ public class PaperSubmissionListPage extends AbstractCoursePage {
 	private Boolean editing = false;
 	
 	/** paper that is currently edited. */
-	@Property(value="#{"+Constants.PAPER_INFO+"}")
+	@Property(value="#{"+Constants.PAPERSUBMISSION_PAPER_INFO+"}")
 	private PaperInfo paperInfo = null;
 	
 	/** Prepares the information needed for rendering. 
@@ -64,7 +63,7 @@ public class PaperSubmissionListPage extends AbstractCoursePage {
 	public String addPaper() {
 		editing = true;
 		paperInfo = new PaperInfo();
-		setSessionBean(Constants.PAPER_INFO, paperInfo);
+		setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperInfo);
 		return Constants.SUCCESS;
 	}
 	
@@ -82,7 +81,7 @@ public class PaperSubmissionListPage extends AbstractCoursePage {
 		// TODO: implement find paper...
 		//paperInfo = courseTypeService.findCourseType(paperInfo.getId());
 		paperInfo = new PaperInfo(1l, 1l, "VOFI mit Steuern", "Bauen Sie einen VOFI mit Steuern!");
-		setSessionBean(Constants.PAPER_INFO, paperInfo);
+		setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperInfo);
 		if (paperInfo == null) {
 			addWarning(i18n("error_paper_not_found"));
 			return Constants.FAILURE;
@@ -114,7 +113,7 @@ public class PaperSubmissionListPage extends AbstractCoursePage {
 			addMessage(i18n("papersubmission_message_persist_paper_succeed"));
 		}
 
-		removeSessionBean(Constants.PAPER_INFO);
+		removeSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO);
 		paperInfo = null;
 		editing = false;
 		return Constants.SUCCESS;
@@ -127,7 +126,7 @@ public class PaperSubmissionListPage extends AbstractCoursePage {
 	 */
 	public String cancelPaper() {
 		logger.debug("cancelPaper()");
-		removeSessionBean(Constants.PAPER_INFO);
+		removeSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO);
 		this.editing = false;
 		return Constants.SUCCESS;
 	}
@@ -143,7 +142,7 @@ public class PaperSubmissionListPage extends AbstractCoursePage {
 		PaperInfo currentPaper = currentPaper();
 		logger.debug("Returning to method selectPaperAndConfirmRemove");
 		logger.debug(currentPaper.getId());
-		setSessionBean(Constants.PAPER_INFO, currentPaper);
+		setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, currentPaper);
 
 		return Constants.PAPER_CONFIRM_REMOVE_PAGE;
 	}

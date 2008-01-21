@@ -10,39 +10,36 @@
       xmlns:c="http://java.sun.com/jstl/core">
       
      <plexus:dataTable   
-        id="papers" 
-        label="#{msg['papersubmission_paperstable_header']}" 
-        value="views$secured$course$papersubmission$paperlist.dataPapers" 
+        id="workspaces" 
+        label="#{msg['collaboration_workspacetable_header']}" 
+        value="views$secured$course$collaboration$main.dataWorkspaces" 
         columnClasses="col_max_left, col_commands"
         var="bean" 
         rows="20">  
    
         <t:column>
-            <plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader>
-            <o:link value="/views/secured/course/papersubmission/paperview.faces" title="#{bean.description}">
-                <f:param value="#{bean.id}" name="paper" />
+            <plexus:commandSortHeader columnName="name">#{msg.collaboration_colheader_name}</plexus:commandSortHeader>
+            <o:link value="/views/secured/course/collaboration/workspaceview.faces" title="#{bean.name}">
+                <f:param value="#{bean.id}" name="workspace" />
                 <b><h:outputText value="#{bean.name}"/></b>
-            </o:link> 
-            <br></br>
-            <small><h:outputText value="#{bean.description}"/></small>
-            
+            </o:link>
         </t:column>
         
         <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 	        <plexus:column header="#{msg.commands_header}">   
 	            <plexus:command 
-	                bean="#{views$secured$course$papersubmission$paperlist}"
-	                action="editPaper"
-	                label="#{msg.papersubmission_command_edit}"
-	                hint="#{msg.papersubmission_command_edit_hint}"
+	                bean="#{views$secured$course$collaboration$main}"
+	                action="editWorkspace"
+	                label="#{msg.collaboration_command_edit_workspace}"
+	                hint="#{msg.collaboration_command_edit_workspace_hint}"
 	                styleClass="icon_edit">
 	            </plexus:command>
 	                
 	            <plexus:command   
-	                bean="#{views$secured$course$papersubmission$paperlist}"
-	                action="selectPaperAndConfirmRemove"
-	                label="#{msg.papersubmission_command_remove}"
-	                hint="#{msg.papersubmission_command_remove_hint}"
+	                bean="#{views$secured$course$collaboration$main}"
+	                action="selectWorkspaceAndConfirmRemove"
+	                label="#{msg.collaboration_command_remove_workspace}"
+	                hint="#{msg.collaboration_command_remove_workspace_hint}"
 	                styleClass="icon_remove">
 	            </plexus:command>
 	        

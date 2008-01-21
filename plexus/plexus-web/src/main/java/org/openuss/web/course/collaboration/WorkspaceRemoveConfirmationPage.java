@@ -1,4 +1,4 @@
-package org.openuss.web.course.papersubmission;
+package org.openuss.web.course.collaboration;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -14,16 +14,16 @@ import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 
-/** Controller for the paperremoveconfirmation.xhtml view.
+/** Controller for the workspaceremoveconfirmation.xhtml view.
  * 
  * @author Christian Beer
  */
-@Bean(name = "views$secured$course$papersubmission$paperremoveconfirmation", scope = Scope.REQUEST)
+@Bean(name = "views$secured$course$collaboration$removeconfirmation", scope = Scope.REQUEST)
 @View
-public class PaperRemoveConfirmationPage extends AbstractCoursePage {
+public class WorkspaceRemoveConfirmationPage extends AbstractCoursePage {
 	
 	/** Logger for this class */
-	private static final Logger logger = Logger.getLogger(PaperRemoveConfirmationPage.class);
+	private static final Logger logger = Logger.getLogger(WorkspaceRemoveConfirmationPage.class);
 
 	private static final long serialVersionUID = -202000019652888870L;
 
@@ -34,8 +34,8 @@ public class PaperRemoveConfirmationPage extends AbstractCoursePage {
 			breadcrumbs.loadCourseCrumbs(courseInfo);
 			
 			BreadCrumb newCrumb = new BreadCrumb();
-			newCrumb.setName(i18n("paper_remove_header"));
-			newCrumb.setHint(i18n("paper_remove_header"));
+			newCrumb.setName(i18n("workspace_remove_header"));
+			newCrumb.setHint(i18n("workspace_remove_header"));
 			breadcrumbs.addCrumb(newCrumb);
 		} catch (Exception e) {
 			logger.error(e);
@@ -47,17 +47,17 @@ public class PaperRemoveConfirmationPage extends AbstractCoursePage {
 	 * @return outcome
 	 * @throws LectureException
 	 */
-	public String removePaper() throws LectureException {
+	public String removeWorkspace() throws LectureException {
 		try {
 			// TODO implement!
 			//courseService.removeCourse(courseInfo.getId());
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, null);
-			addMessage(i18n("paper_removed_succeed"));
-			return Constants.PAPERSUBMISSION_LIST_PAGE;
+			addMessage(i18n("workspace_removed_succeed"));
+			return Constants.COLLABORATION_MAIN_PAGE;
 		} catch (Exception e) {
 			e.printStackTrace();
-			addMessage(i18n("paper_cannot_be_removed"));
-			return Constants.PAPERSUBMISSION_LIST_PAGE;
+			addMessage(i18n("workspace_cannot_be_removed"));
+			return Constants.COLLABORATION_MAIN_PAGE;
 		}
 	}
 	

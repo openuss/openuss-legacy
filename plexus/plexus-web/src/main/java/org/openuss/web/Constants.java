@@ -22,7 +22,6 @@ public class Constants {
 	public static final String COURSE = "course";
 	public static final String COURSE_INFO = "courseInfo";
 	public static final String DESKTOP_INFO = "desktopInfo";
-	public static final String PAPER_INFO = "paperInfo";
 
 	public static final String PERIOD = "period";
 	public static final String PERIOD_INFO = "periodInfo";
@@ -223,8 +222,14 @@ public class Constants {
 	public static final String NEWLINE = "\r\n";
 	public static final String ARROW = " -> ";
 
-	// papersubmission outcomes
+	// papersubmission 
+	public static final String PAPERSUBMISSION_PAPER_INFO = "paperInfo";
 	public static final String PAPERSUBMISSION_LIST_PAGE = "paperlist";
 	public static final String PAPER_CONFIRM_REMOVE_PAGE = "paper_confirm_remove";
-	
+	public static final String PAPERSUBMISSION_SUBMISSION_SELECTION = "papersubmission_submission_selection";
+
+	// papersubmission 
+	public static final String COLLABORATION_WORKSPACE_INFO = "workspaceInfo";
+	public static final String COLLABORATION_MAIN_PAGE      = "main";
+	public static final String COLLABORATION_WORKSPACE_CONFIRM_REMOVE_PAGE = "workspace_confirm_remove";
 }

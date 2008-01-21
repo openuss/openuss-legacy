@@ -34,29 +34,29 @@
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
 		</ui:define>
   		<ui:define name="content">
-  			<h:form id="removePaperConfirmation">
-				<o:block label="#{msg.warning_attention_dataloss}- #{msg.paper_remove_header}" styleClass="warning_box">
+  			<h:form id="removeWorkspaceConfirmation">
+				<o:block label="#{msg.warning_attention_dataloss}- #{msg.workspace_remove_header}" styleClass="warning_box">
 	  				<p class="content_font_normal">
 	  					<span>
-							<h:outputText value="#{msg.paper_remove_text}" styleClass="warning"/>
+							<h:outputText value="#{msg.workspace_remove_text}" styleClass="warning"/>
 						</span><br/>
-						<strong>#{paperInfo.name}	</strong><br/> 
+						<strong>#{workspaceInfo.name}	</strong><br/> 
 						<br/>
 					</p>
 					<p class="content_font_normal">
 	   					<h:selectBooleanCheckbox id="checkConfirmation"
-	   						validator="#{views$secured$course$papersubmission$paperremoveconfirmation.validateRemoveConfirmation}" 
+	   						validator="#{views$secured$course$collaboration$removeconfirmation.validateRemoveConfirmation}" 
 	   						styleClass="checkbox" 
 	   						required="true"/>
-	   					<h:outputLabel value="#{msg.paper_remove_confirmation_flag}" for="checkConfirmation"/>
+	   					<h:outputLabel value="#{msg.workspace_remove_confirmation_flag}" for="checkConfirmation"/>
 	   				</p>
 	   				<h:message for="checkConfirmation" styleClass="field_error"/>
 					
 					
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.remove}" action="#{views$secured$course$papersubmission$paperremoveconfirmation.removePaper}" styleClass="button_warning"/>
-					<h:commandButton value="${msg.cancel}" action="paperlist" styleClass="button_cancel" immediate="true"/>				
+					<h:commandButton value="${msg.remove}" action="#{views$secured$course$collaboration$removeconfirmation.removeWorkspace}" styleClass="button_warning"/>
+					<h:commandButton value="${msg.cancel}" action="workspacelist" styleClass="button_cancel" immediate="true"/>				
 				</o:block>
 			</h:form>
 		</ui:define>
