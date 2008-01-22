@@ -1,4 +1,4 @@
-package org.openuss.web.course.collaboration;
+package org.openuss.web.collaboration;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package org.openuss.web.course.collaboration;
+package org.openuss.web.collaboration;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -18,7 +18,7 @@ import org.openuss.web.course.AbstractCoursePage;
  * 
  * @author Christian Beer
  */
-@Bean(name = "views$secured$course$collaboration$removeconfirmation", scope = Scope.REQUEST)
+@Bean(name = "views$secured$collaboration$removeconfirmation", scope = Scope.REQUEST)
 @View
 public class WorkspaceRemoveConfirmationPage extends AbstractCoursePage {
 	

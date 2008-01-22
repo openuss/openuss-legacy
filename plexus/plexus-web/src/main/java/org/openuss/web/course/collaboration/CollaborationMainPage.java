@@ -1,4 +1,4 @@
-package org.openuss.web.course.collaboration;
+package org.openuss.web.collaboration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 
-@Bean(name = "views$secured$course$collaboration$main", scope = Scope.REQUEST)
+@Bean(name = "views$secured$collaboration$main", scope = Scope.REQUEST)
 @View
 public class CollaborationMainPage extends AbstractCoursePage {
 	
