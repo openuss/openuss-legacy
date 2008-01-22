@@ -1,4 +1,4 @@
-package org.openuss.web.course.papersubmission;
+package org.openuss.web.papersubmission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 
-@Bean(name = "views$secured$course$papersubmission$paperlist", scope = Scope.REQUEST)
+@Bean(name = "views$secured$papersubmission$paperlist", scope = Scope.REQUEST)
 @View
 public class PaperSubmissionListPage extends AbstractCoursePage {
 	

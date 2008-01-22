@@ -1,4 +1,4 @@
-package org.openuss.web.course.papersubmission;
+package org.openuss.web.papersubmission;
 
 import org.openuss.web.documents.Selection;
 

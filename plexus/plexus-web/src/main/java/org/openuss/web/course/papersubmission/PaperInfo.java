@@ -1,4 +1,4 @@
-package org.openuss.web.course.papersubmission;
+package org.openuss.web.papersubmission;
 
 /** FIXME: a class like this must be generated and then this must be removed! */
 public class PaperInfo implements  java.io.Serializable, org.openuss.foundation.DomainObject {

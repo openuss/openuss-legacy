@@ -1,4 +1,4 @@
-package org.openuss.web.course.papersubmission;
+package org.openuss.web.papersubmission;
 
 
 public class SubmissionFileInfo implements  java.io.Serializable, org.openuss.foundation.DomainObject {

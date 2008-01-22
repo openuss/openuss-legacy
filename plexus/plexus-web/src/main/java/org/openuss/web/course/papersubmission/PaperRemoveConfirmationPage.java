@@ -1,4 +1,4 @@
-package org.openuss.web.course.papersubmission;
+package org.openuss.web.papersubmission;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -18,7 +18,7 @@ import org.openuss.web.course.AbstractCoursePage;
  * 
  * @author Christian Beer
  */
-@Bean(name = "views$secured$course$papersubmission$paperremoveconfirmation", scope = Scope.REQUEST)
+@Bean(name = "views$secured$papersubmission$paperremoveconfirmation", scope = Scope.REQUEST)
 @View
 public class PaperRemoveConfirmationPage extends AbstractCoursePage {
 	
