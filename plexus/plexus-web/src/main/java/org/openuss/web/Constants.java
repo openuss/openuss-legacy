@@ -224,12 +224,12 @@ public class Constants {
 
 	// papersubmission 
 	public static final String PAPERSUBMISSION_PAPER_INFO = "paperInfo";
-	public static final String PAPERSUBMISSION_LIST_PAGE = "paperlist";
+	public static final String PAPERSUBMISSION_LIST_PAGE = "papersubmission";
 	public static final String PAPER_CONFIRM_REMOVE_PAGE = "paper_confirm_remove";
 	public static final String PAPERSUBMISSION_SUBMISSION_SELECTION = "papersubmission_submission_selection";
 
 	// papersubmission 
 	public static final String COLLABORATION_WORKSPACE_INFO = "workspaceInfo";
-	public static final String COLLABORATION_MAIN_PAGE      = "main";
+	public static final String COLLABORATION_MAIN_PAGE      = "collaboration";
 	public static final String COLLABORATION_WORKSPACE_CONFIRM_REMOVE_PAGE = "workspace_confirm_remove";
 }
