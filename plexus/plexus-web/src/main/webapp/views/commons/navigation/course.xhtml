@@ -73,7 +73,13 @@
                                 activeOnViewIds="/views/secured/collaboration/main.xhtml"
                                 rendered="#{courseInfo.collaboration}">
                                 <h:outputText  value="#{msg['course_command_collaboration']}"/>
-                            </t:commandNavigation2>          		
+                            </t:commandNavigation2>
+							<t:commandNavigation2 
+								action="course_wiki" 
+								activeOnViewIds="/views/secured/wiki/wikimain.xhtml"
+								rendered="#{courseInfo.wiki}">
+								<h:outputText value="Wiki"/>
+							</t:commandNavigation2>			
 						</s:authorize> 
 						<s:authorize ifAllGranted="ROLE_USER">
 							<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">

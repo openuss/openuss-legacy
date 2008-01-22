@@ -38,10 +38,16 @@
 					</div>
 				</o:block>					
 				<o:block>
+				<!-- 
 					<plexus:command bean="#{views$secured$wiki$wikimain}"
 						action="save" label="#{msg['wiki_edit_button_save']}"
 						title="#{msg['wiki_edit_button_save']}"
-						styleClass="button" />				
+						styleClass="button" />	
+						-->
+				    <h:commandButton 
+						value="#{msg['wiki_edit_button_save']}" 
+						action="#{views$secured$wiki$wikimain.save}" 
+						styleClass="button"/>			
 					<h:commandButton 
 						value="${msg.wiki_edit_button_cancel}" 
 						action="course_wiki" 
