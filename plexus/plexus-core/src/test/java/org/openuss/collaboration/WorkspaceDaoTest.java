@@ -13,7 +13,7 @@ package org.openuss.collaboration;
 public class WorkspaceDaoTest extends WorkspaceDaoTestBase {
 	
 	public void testWorkspaceDaoCreate() {
-		Workspace workspace = new Workspace.Factory.newInstance();
+		Workspace workspace = new WorkspaceImpl();
 		workspace.setName(" ");
 		assertNull(workspace.getId());
 		workspaceDao.create(workspace);

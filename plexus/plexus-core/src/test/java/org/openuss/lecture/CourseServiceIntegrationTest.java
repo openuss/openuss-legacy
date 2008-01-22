@@ -76,6 +76,8 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		courseInfo.setFreestylelearning(true);
 		courseInfo.setNewsletter(true);
 		courseInfo.setWiki(true);
+		courseInfo.setCollaboration(true);
+		courseInfo.setPapersubmission(true);
 		
 		//Test
 		Long courseId = this.getCourseService().create(courseInfo);
@@ -138,6 +140,8 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		courseInfo.setFreestylelearning(true);
 		courseInfo.setNewsletter(true);
 		courseInfo.setWiki(true);
+		courseInfo.setCollaboration(true);
+		courseInfo.setPapersubmission(true);
 		
 		// Test
 		this.getCourseService().updateCourse(courseInfo);
