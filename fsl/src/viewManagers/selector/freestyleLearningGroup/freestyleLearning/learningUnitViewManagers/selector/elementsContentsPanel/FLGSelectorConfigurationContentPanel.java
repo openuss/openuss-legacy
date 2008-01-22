@@ -343,7 +343,7 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
         musicButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileDialog = new JFileChooser();
-                String[] fileExtensions = { ".mp2" ,".wav",".mid"};
+                String[] fileExtensions = { ".mp3", ".mp2" ,".wav",".mid"};
                 fileDialog.setFileFilter(new FLGUIUtilities.FLGFileFilter(fileExtensions,
                 	internationalization.getString("selector.configurationContentPanel.musicFileChooser.fileTypes")));
                 fileDialog.setDialogTitle(internationalization.getString("selector.dialogs.musicFileChooser.tilte"));

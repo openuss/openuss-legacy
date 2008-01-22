@@ -1,5 +1,18 @@
 package freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.selector.elementsContentsPanel;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+
 import freestyleLearning.learningUnitViewAPI.FSLLearningUnitViewManager;
 import freestyleLearning.learningUnitViewAPI.elementsContentsPanel.FSLAbstractLearningUnitViewElementContentPanel;
 import freestyleLearning.learningUnitViewAPI.elementsContentsPanel.FSLAbstractLearningUnitViewElementsContentsPanel;
@@ -11,6 +24,8 @@ import freestyleLearning.learningUnitViewAPI.events.learningUnitViewEvent.FSLLea
 import freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.selector.data.xmlBindingSubclasses.FLGSelectorElement;
 import freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.selector.elementsContentsPanel.FLGSelectorConfigurationContentPanel.FLGSelectorLearningUnitViewAdapter;
 import freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.selector.events.FLGSelectorEvent;
+import freestyleLearningGroup.independent.gui.FLGSingleLayout;
+import freestyleLearningGroup.independent.gui.FLGUIUtilities;
 
 /**
  * FLGSelectorElementsContentsPanel.
@@ -101,7 +116,7 @@ public class FLGSelectorElementsContentsPanel extends FSLAbstractLearningUnitVie
             	// open full screen mode
                 String activeLearningUnitViewElementId = learningUnitViewManager.getActiveLearningUnitViewElementId();
             	FSLLearningUnitViewEvent event2 = FSLLearningUnitViewEvent.createFullScreenModeChangedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
-                        activeLearningUnitViewElementId, true);
+                        activeLearningUnitViewElementId, true, true);
                 learningUnitViewManager.fireLearningUnitViewEvent(event2);
             }
             if (selectorEvent.getEventSpecificType() == FLGSelectorEvent.SELECTOR_MULTI_PLAYER_MODE_ENTERED) {
@@ -110,7 +125,7 @@ public class FLGSelectorElementsContentsPanel extends FSLAbstractLearningUnitVie
             	// open full screen mode
                 String activeLearningUnitViewElementId = learningUnitViewManager.getActiveLearningUnitViewElementId();
             	FSLLearningUnitViewEvent event2 = FSLLearningUnitViewEvent.createFullScreenModeChangedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
-                        activeLearningUnitViewElementId, true);
+                        activeLearningUnitViewElementId, true, true);
                 learningUnitViewManager.fireLearningUnitViewEvent(event2);
             }
             if (selectorEvent.getEventSpecificType() == FLGSelectorEvent.SELECTOR_MULTI_PLAYER_RUN_EXITED) {
@@ -121,7 +136,7 @@ public class FLGSelectorElementsContentsPanel extends FSLAbstractLearningUnitVie
                 	// open full screen mode
 	                String activeLearningUnitViewElementId = learningUnitViewManager.getActiveLearningUnitViewElementId();
 	            	FSLLearningUnitViewEvent event2 = FSLLearningUnitViewEvent.createFullScreenModeChangedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
-	                        activeLearningUnitViewElementId, true);
+	                        activeLearningUnitViewElementId, true, true);
 	                learningUnitViewManager.fireLearningUnitViewEvent(event2);
                 }
                 
@@ -131,7 +146,7 @@ public class FLGSelectorElementsContentsPanel extends FSLAbstractLearningUnitVie
                 // close full screen mode
                 String activeLearningUnitViewElementId = learningUnitViewManager.getActiveLearningUnitViewElementId();
             	FSLLearningUnitViewEvent event2 = FSLLearningUnitViewEvent.createFullScreenModeChangedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
-                        activeLearningUnitViewElementId, false);
+                        activeLearningUnitViewElementId, false, true);
                 learningUnitViewManager.fireLearningUnitViewEvent(event2);
                 
                 playMode = false;
@@ -180,4 +195,5 @@ public class FLGSelectorElementsContentsPanel extends FSLAbstractLearningUnitVie
              }
         }
     }
+
 }

@@ -141,9 +141,9 @@ public class FLGSelectorElementInteractionPanel extends FSLAbstractLearningUnitV
     
     private void play() {
         // open dialog for selector start
-    	startDialog.init(width,height,gameSpeed,gameLength);
+    	startDialog.init(width, height, gameSpeed, gameLength);
         if(startDialog.userWantsToPlay()) {
-            playMode=true;
+            playMode = true;
             setFullScreenModeAllowed(true);
             // get user selection
             width = startDialog.getSelectedPlayGroundWidth();
@@ -153,7 +153,7 @@ public class FLGSelectorElementInteractionPanel extends FSLAbstractLearningUnitV
             buildDependentUI();
             // load playground into content panel and start music panel
             FSLLearningUnitViewEvent selectorEvent = FLGSelectorEvent.createViewSpecificEvent(FLGSelectorEvent.SELECTOR_PLAY_MODE_ENTERED,
-            width, height, gameSpeed, gameLength);
+            		width, height, gameSpeed, gameLength);
             learningUnitViewManager.fireLearningUnitViewEvent(selectorEvent);
         }
     }
@@ -174,7 +174,7 @@ public class FLGSelectorElementInteractionPanel extends FSLAbstractLearningUnitV
 	            buildDependentUI();
 	            // load playground into content panel and start music panel
 	            FSLLearningUnitViewEvent selectorEvent = FLGSelectorEvent.createViewSpecificEvent(FLGSelectorEvent.SELECTOR_MULTI_PLAYER_MODE_ENTERED,
-	            width, height, gameSpeed, gameLength, playerDialog.getPlayers());
+	            		width, height, gameSpeed, gameLength, playerDialog.getPlayers());
 	            learningUnitViewManager.fireLearningUnitViewEvent(selectorEvent);
             }
     	}

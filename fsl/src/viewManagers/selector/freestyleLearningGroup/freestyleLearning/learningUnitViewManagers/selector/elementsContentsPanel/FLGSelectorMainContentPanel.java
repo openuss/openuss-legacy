@@ -156,18 +156,18 @@ public class FLGSelectorMainContentPanel extends FSLAbstractLearningUnitViewElem
         learningUnitViewElementsManager = learningUnitViewManager.getLearningUnitViewElementsManager();
         FLGSelectorElement viewElement = (FLGSelectorElement) learningUnitViewElementsManager.getLearningUnitViewElement(
         		activeLearningUnitViewElementId,false);
-        if (viewElement!=null && playModeActivated) {
+        if (viewElement != null && playModeActivated) {
             // set game title
             headerLabel.setText(viewElement.getTitle());
             // set layout for game panel
             playGroundPanel.setLayout(new GridLayout(playGroundWidth, playGroundHeight));
             playGroundPanel.setBorder(new EmptyBorder(5,5,5,5));
             // add panels for grid objects
-            for (int i=0; i<playGroundHeight; i++) {
-                for (int j=0; j<playGroundWidth; j++) {
+            for (int i = 0; i < playGroundHeight; i++) {
+                for (int j = 0; j < playGroundWidth; j++) {
                     JPanel gridPanel = new JPanel();
                     gridPanel.setOpaque(false);
-                    gridPanel.setBorder(BorderFactory.createLineBorder(FLGUIUtilities.BASE_COLOR4,1));
+                    gridPanel.setBorder(BorderFactory.createLineBorder(FLGUIUtilities.BASE_COLOR4, 1));
                     playGroundPanel.add(gridPanel);
                 }
             }
@@ -409,7 +409,7 @@ public class FLGSelectorMainContentPanel extends FSLAbstractLearningUnitViewElem
         headerLabel.setText("");
        	// if full screen mode, deactive it 
        	FSLLearningUnitViewEvent event = FSLLearningUnitViewEvent.createFullScreenModeChangedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
-            activeLearningUnitViewElementId, false);
+            activeLearningUnitViewElementId, false, false);
        	learningUnitViewManager.fireLearningUnitViewEvent(event);
     }
     
@@ -530,11 +530,11 @@ public class FLGSelectorMainContentPanel extends FSLAbstractLearningUnitViewElem
         // play sounds
         if(correctElements.size()>wrongElements.size()+notClickedElements.size()) {
 			// success
-        	successClip.play();
+        	//successClip.play();
         } 
 		if (correctElements.size()==wrongElements.size() && notClickedElements.size()==0) {
 			// play default sound
-		    evaluationAudioClip.play();
+		    //evaluationAudioClip.play();
 		}
 		if((correctElements.size()<wrongElements.size()) || (correctElements.size()==wrongElements.size() && notClickedElements.size()>0)) {
 			// failure
