@@ -49,6 +49,8 @@ public interface FSLLearningUnitViewManager extends FSLLearningUnitViewEventGene
     
     double getLearningUnitViewProgressStatus();
     
+    public void activateGuidedTourButton(boolean activate);
+    
     /** 
      * Returns true, if folder import is supprted by view manager. Default value is false. 
      * Value should be overwirtten by subclass if it supports folder import.
