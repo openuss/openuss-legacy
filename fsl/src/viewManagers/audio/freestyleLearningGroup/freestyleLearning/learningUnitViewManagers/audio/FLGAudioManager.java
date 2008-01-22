@@ -531,37 +531,39 @@ public class FLGAudioManager extends FSLAbstractLearningUnitViewManager {
          */
         public void learningUnitViewFullScreenModeSelected(FSLLearningUnitViewEvent event) {
          if(contextDependentInteractionPanel != null)   {
-        	if (contextDependentInteractionPanel.isShowing()) {
-                cdiDialog = new JDialog(FLGUIUtilities.getFullScreenWindow(), "", false);
-                FSLLearningUnitViewsManager.addContextDependentInteractionComponent(null, thisManagerId);
-                
-                if(FLGUIUtilities.getFullScreenWindow() != null) {
-                FLGUIUtilities.getFullScreenWindow().addWindowListener(
-                    // WindowListener
-                    new WindowListener() {
-                        public void windowClosing(WindowEvent e) {
-                        }
-                        public void windowClosed(WindowEvent e) {
-                            hideCdiPanel();
-                            FSLLearningUnitViewsManager.addContextDependentInteractionComponent(contextDependentInteractionPanel,
-                                thisManagerId);
-                        }
-                        public void windowOpened(WindowEvent e) { }
-                        public void windowActivated(WindowEvent e) { }
-                        public void windowDeactivated(WindowEvent e) { }
-                        public void windowIconified(WindowEvent e) { }
-                        public void windowDeiconified(WindowEvent e) { }
-                    });
-                }
-                
-                //displays cdi-dialog at the right place
-                Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
-                cdiDialog.getContentPane().setBackground((Color)UIManager.get("FSLMainFrameColor1"));
-                cdiDialog.setLocation((int)(screenDim.getWidth() - 200), 200);
-                cdiDialog.getContentPane().add(contextDependentInteractionPanel);
-                cdiDialog.pack();
-                cdiDialog.show();
-            }
+        	if(!event.getCloseOtherWindows()) {
+	        	if (contextDependentInteractionPanel.isShowing()) {
+	                cdiDialog = new JDialog(FLGUIUtilities.getFullScreenWindow(), "", false);
+	                FSLLearningUnitViewsManager.addContextDependentInteractionComponent(null, thisManagerId);
+	                
+	                if(FLGUIUtilities.getFullScreenWindow() != null) {
+	                FLGUIUtilities.getFullScreenWindow().addWindowListener(
+	                    // WindowListener
+	                    new WindowListener() {
+	                        public void windowClosing(WindowEvent e) {
+	                        }
+	                        public void windowClosed(WindowEvent e) {
+	                            hideCdiPanel();
+	                            FSLLearningUnitViewsManager.addContextDependentInteractionComponent(contextDependentInteractionPanel,
+	                                thisManagerId);
+	                        }
+	                        public void windowOpened(WindowEvent e) { }
+	                        public void windowActivated(WindowEvent e) { }
+	                        public void windowDeactivated(WindowEvent e) { }
+	                        public void windowIconified(WindowEvent e) { }
+	                        public void windowDeiconified(WindowEvent e) { }
+	                    });
+	                }
+	                
+	                //displays cdi-dialog at the right place
+	                Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
+	                cdiDialog.getContentPane().setBackground((Color)UIManager.get("FSLMainFrameColor1"));
+	                cdiDialog.setLocation((int)(screenDim.getWidth() - 200), 200);
+	                cdiDialog.getContentPane().add(contextDependentInteractionPanel);
+	                cdiDialog.pack();
+	                cdiDialog.show();
+	            }
+        	}
         }
         }
     }
