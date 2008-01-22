@@ -37,6 +37,11 @@ public class FSLLearningUnitViewEvent {
     protected boolean fullScreenModeChanged;
     protected boolean scaleToFit;
     protected boolean followingHyperlink;
+    protected boolean closeOtherWindows;
+    
+    public boolean getCloseOtherWindows() {
+    	return closeOtherWindows;
+    }
     
     public String getLearningUnitViewManagerId() {
         return learningUnitViewManagerId;
@@ -228,12 +233,13 @@ public class FSLLearningUnitViewEvent {
     }
 
     public static FSLLearningUnitViewEvent createFullScreenModeChangedEvent(String learningUnitViewManagerId,
-        String learningUnitViewElementId, boolean fullScreenModeRequested) {
+        String learningUnitViewElementId, boolean fullScreenModeRequested, boolean closeOtherWindows) {
             FSLLearningUnitViewEvent event = new FSLLearningUnitViewEvent();
             event.eventType = FULL_SCREEN_SELECTED;
             event.learningUnitViewManagerId = learningUnitViewElementId;
             event.activeLearningUnitViewElementId = learningUnitViewElementId;
             event.fullScreenModeRequested = fullScreenModeRequested;
+            event.closeOtherWindows = closeOtherWindows;
             return event;
     }
 }

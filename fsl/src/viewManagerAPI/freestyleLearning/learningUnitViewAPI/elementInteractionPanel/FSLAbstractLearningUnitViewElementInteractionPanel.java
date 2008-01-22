@@ -233,7 +233,7 @@ abstract public class FSLAbstractLearningUnitViewElementInteractionPanel extends
         private void setFullScreenMode(boolean fullScreenRequested) {
             this.fullScreenSelected = fullScreenRequested;
             FSLLearningUnitViewEvent event = FSLLearningUnitViewEvent.createFullScreenModeChangedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
-                activeLearningUnitViewElementId, fullScreenRequested);
+                activeLearningUnitViewElementId, fullScreenRequested, false);
             learningUnitViewManager.fireLearningUnitViewEvent(event);
         }
 

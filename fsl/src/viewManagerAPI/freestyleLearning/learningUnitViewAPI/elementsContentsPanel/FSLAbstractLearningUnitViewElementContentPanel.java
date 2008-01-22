@@ -149,7 +149,7 @@ abstract public class FSLAbstractLearningUnitViewElementContentPanel extends JPa
                     learningUnitViewManager.followLearningUnitViewElementLink(linkId, learningUnitViewElementId);
                     // to display link element, quit full screen mode
                     FSLLearningUnitViewEvent event = FSLLearningUnitViewEvent.createFullScreenModeChangedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
-                    learningUnitViewElementId, false);
+                    learningUnitViewElementId, false, false);
                     learningUnitViewManager.fireLearningUnitViewEvent(event);
                 }
             }

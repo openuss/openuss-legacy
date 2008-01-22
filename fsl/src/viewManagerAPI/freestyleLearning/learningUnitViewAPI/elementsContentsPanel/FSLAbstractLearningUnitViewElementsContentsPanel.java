@@ -37,24 +37,24 @@ import freestyleLearningGroup.independent.util.FLGInternationalization;
 
 abstract public class FSLAbstractLearningUnitViewElementsContentsPanel extends JPanel implements
     FSLLearningUnitViewElementsContentsPanel {
-        private String activeLearningUnitViewElementId;
-        private String secondaryActiveLearningUnitViewElementId;
-        private boolean viewIsActive;
-        private boolean activeElementContentPanelIsTop;
-        private JSplitPane splitPane;
-        private JPanel centerPanel;
-        private JPanel northPanel;
-        private JPanel westPanel;
-        private JPanel topContentPanelContainer;
-        private JPanel bottomContentPanelContainer;
+	protected String activeLearningUnitViewElementId;
+	protected String secondaryActiveLearningUnitViewElementId;
+	protected boolean viewIsActive;
+	protected boolean activeElementContentPanelIsTop;
+	protected JSplitPane splitPane;
+	protected JPanel centerPanel;
+	protected JPanel northPanel;
+	protected JPanel westPanel;
+	protected JPanel topContentPanelContainer;
+	protected JPanel bottomContentPanelContainer;
         protected JFrame fullScreenWindow;
         protected int activeElementContentPanelIndex;
-        private boolean editMode;
+        protected boolean editMode;
         protected boolean fullScreenMode;
         protected FSLLearningUnitViewManager learningUnitViewManager;
         protected FSLLearningUnitViewElementsManager learningUnitViewElementsManager;
-        private FSLLearningUnitViewElementInteractionButton fullScreenModeButton;
-        private FLGInternationalization internationalization;
+        protected FSLLearningUnitViewElementInteractionButton fullScreenModeButton;
+        protected FLGInternationalization internationalization;
 
         public void init(FSLLearningUnitViewManager learningUnitViewManager,
             FSLLearningUnitEventGenerator learningUnitEventGenerator, boolean editMode) {
@@ -146,7 +146,7 @@ abstract public class FSLAbstractLearningUnitViewElementsContentsPanel extends J
 
         private void setFullScreenMode(boolean fullScreenRequested) {
             FSLLearningUnitViewEvent event = FSLLearningUnitViewEvent.createFullScreenModeChangedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
-                activeLearningUnitViewElementId, fullScreenRequested);
+                activeLearningUnitViewElementId, fullScreenRequested, false);
             learningUnitViewManager.fireLearningUnitViewEvent(event);
         }
 
@@ -255,13 +255,13 @@ abstract public class FSLAbstractLearningUnitViewElementsContentsPanel extends J
         }
 
         // Jan finished.
-        private FSLAbstractLearningUnitViewElementContentPanel getActiveElementContentPanel() {
+        protected FSLAbstractLearningUnitViewElementContentPanel getActiveElementContentPanel() {
             if (learningUnitViewElementsManager != null && activeLearningUnitViewElementId != null)
                 return getElementContentPanel(activeElementContentPanelIndex, activeLearningUnitViewElementId);
             return null;
         }
 
-        private FSLAbstractLearningUnitViewElementContentPanel getSecondaryActiveElementContentPanel() {
+        protected FSLAbstractLearningUnitViewElementContentPanel getSecondaryActiveElementContentPanel() {
             if (learningUnitViewElementsManager != null && secondaryActiveLearningUnitViewElementId != null)
                 return getElementContentPanel(1 - activeElementContentPanelIndex, secondaryActiveLearningUnitViewElementId);
             else
