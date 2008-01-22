@@ -39,7 +39,7 @@
 	                <plexus:dataTable   
 				        id="submissions" 
 				        label="#{msg['papersubmission_submissionstable_header']}" 
-				        value="views$secured$course$papersubmission$paperview.dataSubmissions" 
+				        value="views$secured$papersubmission$paperview.dataSubmissions" 
 				        columnClasses="col_min_center, col_max_left, col_max_left"
 				        var="bean" 
 				        rows="20">
@@ -73,7 +73,7 @@
 					<o:block>
 	                    <h:commandButton 
 	                        id="downloadFile"
-	                        action="#{views$secured$course$papersubmission$paperview.download}" 
+	                        action="#{views$secured$papersubmission$paperview.download}" 
 	                        value="#{msg.papersubmission_command_download}" 
 	                        title="#{msg.papersubmission_command_download_hint}"
 	                        styleClass="button_big"/> <h:outputText value="other buttons here..."/>
@@ -87,7 +87,7 @@
 	                <plexus:dataTable   
 	                    id="submissionfiles" 
 	                    label="#{msg['papersubmission_submissionfilestable_header']}" 
-	                    value="views$secured$course$papersubmission$paperview.dataSubmissionFiles" 
+	                    value="views$secured$papersubmission$paperview.dataSubmissionFiles" 
 	                    columnClasses="col_max_left, col_max_left, col_max_left, col_command"
 	                    var="bean" 
 	                    rows="20">  
@@ -122,7 +122,7 @@
 	                <o:block>
 	                    <h:commandButton 
 	                        id="addFile"
-	                        action="#{views$secured$course$papersubmission$paperview.addFile}" 
+	                        action="#{views$secured$papersubmission$paperview.addFile}" 
 	                        value="#{msg.papersubmission_command_addfile}" 
 	                        title="#{msg.papersubmission_command_addfile_hint}"
 	                        styleClass="button_big"/> <h:outputText value="other buttons here..."/>

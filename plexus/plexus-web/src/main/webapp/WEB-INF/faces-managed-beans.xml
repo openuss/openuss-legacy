@@ -185,7 +185,7 @@
  	
  	<managed-bean>
         <managed-bean-name>papersubmission_submission_selection</managed-bean-name>
-        <managed-bean-class>org.openuss.web.course.papersubmission.SubmissionSelection</managed-bean-class>
+        <managed-bean-class>org.openuss.web.papersubmission.SubmissionSelection</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 

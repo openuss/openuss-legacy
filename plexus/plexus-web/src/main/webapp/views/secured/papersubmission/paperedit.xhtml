@@ -16,8 +16,8 @@
             <o:input entity="paperInfo" property="description" maxlength="250" type="textarea"/>
         </o:block> 
         <o:block>   
-            <h:commandButton id="savePaper"   action="#{views$secured$course$papersubmission$paperlist.savePaper}" value="#{msg.save}" styleClass="button_save" />
-            <h:commandButton id="cancelPaper" action="#{views$secured$course$papersubmission$paperlist.cancelPaper}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
+            <h:commandButton id="savePaper"   action="#{views$secured$papersubmission$paperlist.savePaper}" value="#{msg.save}" styleClass="button_save" />
+            <h:commandButton id="cancelPaper" action="#{views$secured$papersubmission$paperlist.cancelPaper}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
         </o:block>
     </h:form>
 </ui:composition>

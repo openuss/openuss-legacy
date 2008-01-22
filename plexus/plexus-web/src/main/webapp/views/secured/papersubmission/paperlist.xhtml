@@ -32,26 +32,26 @@
 		</ui:define>
 		
   		<ui:define name="content">
- 	  		<t:saveState id="collaboration_editing" value="#{views$secured$course$collaboration$main.editing}" />
+ 	  		<t:saveState id="papersubmission_editing" value="#{views$secured$papersubmission$paperlist.editing}" />
 	  		
   			<h:form id="papersForm">
-				<ui:include src="workspacetable.xhtml"/>
+				<ui:include src="paperstable.xhtml"/>
 				
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
-					<c:if test="#{!views$secured$course$collaboration$main.editing}">	
+					<c:if test="#{!views$secured$papersubmission$paperlist.editing}">	
 						<o:block>
 							<h:commandButton 
-							    id="addWorkspace"
-								action="#{views$secured$course$collaboration$main.addWorkspace}" 
-								value="#{msg.collaboration_command_add_workspace}" 
-								title="#{msg.collaboration_command_add_workspace_hint}"
+							    id="addPaper"
+								action="#{views$secured$papersubmission$paperlist.addPaper}" 
+								value="#{msg.papersubmission_command_add}" 
+								title="#{msg.papersubmission_command_add_hint}"
 								styleClass="button_big"/>
 						</o:block>
 					</c:if>
 				</s:acl>
 			</h:form>
-			<c:if test="#{views$secured$course$collaboration$main.editing}">
-				<ui:include src="edit.xhtml"/>
+			<c:if test="#{views$secured$papersubmission$paperlist.editing}">
+				<ui:include src="paperedit.xhtml"/>
 			</c:if>
 				
   		</ui:define>

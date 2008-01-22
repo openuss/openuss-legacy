@@ -12,14 +12,14 @@
      <plexus:dataTable   
         id="workspaces" 
         label="#{msg['collaboration_workspacetable_header']}" 
-        value="views$secured$course$collaboration$main.dataWorkspaces" 
+        value="views$secured$collaboration$main.dataWorkspaces" 
         columnClasses="col_max_left, col_commands"
         var="bean" 
         rows="20">  
    
         <t:column>
             <plexus:commandSortHeader columnName="name">#{msg.collaboration_colheader_name}</plexus:commandSortHeader>
-            <o:link value="/views/secured/course/collaboration/workspaceview.faces" title="#{bean.name}">
+            <o:link value="/views/secured/collaboration/workspaceview.faces" title="#{bean.name}">
                 <f:param value="#{bean.id}" name="workspace" />
                 <b><h:outputText value="#{bean.name}"/></b>
             </o:link>
@@ -28,7 +28,7 @@
         <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 	        <plexus:column header="#{msg.commands_header}">   
 	            <plexus:command 
-	                bean="#{views$secured$course$collaboration$main}"
+	                bean="#{views$secured$collaboration$main}"
 	                action="editWorkspace"
 	                label="#{msg.collaboration_command_edit_workspace}"
 	                hint="#{msg.collaboration_command_edit_workspace_hint}"
@@ -36,7 +36,7 @@
 	            </plexus:command>
 	                
 	            <plexus:command   
-	                bean="#{views$secured$course$collaboration$main}"
+	                bean="#{views$secured$collaboration$main}"
 	                action="selectWorkspaceAndConfirmRemove"
 	                label="#{msg.collaboration_command_remove_workspace}"
 	                hint="#{msg.collaboration_command_remove_workspace_hint}"
