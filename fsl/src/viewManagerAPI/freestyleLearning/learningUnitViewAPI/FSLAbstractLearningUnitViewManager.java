@@ -152,7 +152,7 @@ abstract public class FSLAbstractLearningUnitViewManager implements FSLLearningU
      */
     public void activate(boolean followingHyperlink) {
         active = true;
-        ((FSLLearningUnitsManager)learningUnitsActivator).getTourCreatorCaptureButton().setEnabled(selectedLearningUnitViewElementId != null);
+       ((FSLLearningUnitsManager)learningUnitsActivator).getTourCreatorCaptureButton().setEnabled(selectedLearningUnitViewElementId != null);
         fireLearningUnitViewEvent(FSLLearningUnitViewEvent.createViewActivatedEvent(learningUnitViewManagerId,
             followingHyperlink));
     }
@@ -667,6 +667,10 @@ abstract public class FSLAbstractLearningUnitViewManager implements FSLLearningU
         return null;
     }
     
+    public void activateGuidedTourButton(boolean activate) {
+    	((FSLLearningUnitsManager)learningUnitsActivator).getTourCreatorCaptureButton().setEnabled(activate);
+    }
+    
     public String getElementsTitleById(String learningUnitViewElementId) {
         return null;
     }
@@ -1168,7 +1172,13 @@ abstract public class FSLAbstractLearningUnitViewManager implements FSLLearningU
 
         public void learningUnitEditModeChanged(FSLLearningUnitEvent event) {
             editMode = event.isEditMode();
-            
+            if(!editMode) {
+            	if(getActiveLearningUnitViewElementId() != null) {
+            		((FSLLearningUnitsManager)learningUnitsActivator).getTourCreatorCaptureButton().setEnabled(true);
+            	}
+            } else {
+            	((FSLLearningUnitsManager)learningUnitsActivator).getTourCreatorCaptureButton().setEnabled(false);
+            }
         }
 
         public void learningUnitsUserDirectoryChanged(FSLLearningUnitEvent event) {
@@ -1178,7 +1188,6 @@ abstract public class FSLAbstractLearningUnitViewManager implements FSLLearningU
             currentLearningUnitId = null;
         }
     }
-
 
     class FSLAbstractLearningUnitViewManager_LearningUnitViewAdapter extends FSLLearningUnitViewVetoableAdapter {
         public void learningUnitViewElementActivated(FSLLearningUnitViewEvent event) {

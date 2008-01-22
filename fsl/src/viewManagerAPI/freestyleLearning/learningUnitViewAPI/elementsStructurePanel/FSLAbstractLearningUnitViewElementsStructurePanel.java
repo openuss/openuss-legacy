@@ -46,7 +46,7 @@ abstract public class FSLAbstractLearningUnitViewElementsStructurePanel extends 
                 new FSLLearningUnitViewElementsStructurePanel_LearningUnitViewAdapter());
             structureTree = new FSLLearningUnitViewElementStructureTree();
             structureTree.init(learningUnitViewManager, learningUnitViewElementsManager,
-            learningUnitEventGenerator, editMode);
+            	learningUnitEventGenerator, editMode);
             setTreeNodeIconProvider(new FSLAbstractLearningUnitViewElementsStructurePanel_DefaultTreeNodeIconProvider());
             createDefaultEditToolBar();
     }
@@ -65,9 +65,10 @@ abstract public class FSLAbstractLearningUnitViewElementsStructurePanel extends 
         buildIndependentUI();
     }
     
+    /**
     public void setStructureTreeEnabled(boolean enabled) {
         structureTree.setEnabled(enabled);
-    }
+    }**/
     
     /**
      * @return <code>boolean</code> true if folder import is supported

@@ -134,6 +134,7 @@ public class FSLLearningUnitViewElementStructureTree extends JTree {
         setModel(treeModel);
         if (activeLearningUnitViewElementId != null) {
             setSelectedElement(activeLearningUnitViewElementId);
+            if(!editMode) learningUnitViewManager.activateGuidedTourButton(true);
         }
     }
     
@@ -236,7 +237,8 @@ public class FSLLearningUnitViewElementStructureTree extends JTree {
             }
         }      
         if (treePath != null) {
-            setSelectionPath(treePath);            
+            setSelectionPath(treePath);   
+            if(!editMode) learningUnitViewManager.activateGuidedTourButton(true);
             scrollPathToVisible(getSelectionPath());
         }
     }
@@ -462,6 +464,7 @@ public class FSLLearningUnitViewElementStructureTree extends JTree {
                 activeLearningUnitViewElementId = event.getActiveLearningUnitViewElementId();
                 secondaryActiveLearningUnitViewElementId = event.getSecondaryActiveLearningUnitViewElementId();
                 setSelectedElement(activeLearningUnitViewElementId);
+                if(!editMode) learningUnitViewManager.activateGuidedTourButton(true);
                     if (getSelectionPath() != null) {
                     fireTreeExpanded(getSelectionPath());
                 }
