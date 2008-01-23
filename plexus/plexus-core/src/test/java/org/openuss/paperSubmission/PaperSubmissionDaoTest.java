@@ -5,6 +5,8 @@
  */
 package org.openuss.paperSubmission;
 
+import java.util.Date;
+
 
 /**
  * JUnit Test for Spring Hibernate PaperSubmissionDao class.
@@ -13,8 +15,8 @@ package org.openuss.paperSubmission;
 public class PaperSubmissionDaoTest extends PaperSubmissionDaoTestBase {
 	
 	public void testPaperSubmissionDaoCreate() {
-		PaperSubmission paperSubmission = new PaperSubmission.Factory.newInstance();
-		paperSubmission.setDeliverDate(" ");
+		PaperSubmission paperSubmission = PaperSubmission.Factory.newInstance();
+		paperSubmission.setDeliverDate(new Date());
 		assertNull(paperSubmission.getId());
 		paperSubmissionDao.create(paperSubmission);
 		assertNotNull(paperSubmission.getId());

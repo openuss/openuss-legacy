@@ -5,6 +5,8 @@
  */
 package org.openuss.paperSubmission;
 
+import java.util.Date;
+
 
 /**
  * JUnit Test for Spring Hibernate ExamDao class.
@@ -13,9 +15,9 @@ package org.openuss.paperSubmission;
 public class ExamDaoTest extends ExamDaoTestBase {
 	
 	public void testExamDaoCreate() {
-		Exam exam = new Exam.Factory.newInstance();
+		Exam exam = Exam.Factory.newInstance();
 		exam.setName(" ");
-		exam.setDeadline(" ");
+		exam.setDeadline(new Date());
 		assertNull(exam.getId());
 		examDao.create(exam);
 		assertNotNull(exam.getId());
