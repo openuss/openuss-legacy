@@ -9,14 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.openuss.foundation.DomainObject;
+import org.apache.log4j.Logger;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseDao;
+import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.CourseType;
 
 /**
  * @see org.openuss.collaboration.WorkspaceService
  */
 public class WorkspaceServiceImpl extends
 		org.openuss.collaboration.WorkspaceServiceBase {
+	
+	private static final Logger logger = Logger.getLogger(WorkspaceServiceImpl.class);
 
 	/**
 	 * @see org.openuss.collaboration.WorkspaceDocumentService#createWorkspace(org.openuss.collaboration.WorkspaceInfo,
@@ -106,15 +111,29 @@ public class WorkspaceServiceImpl extends
 
 	@Override
 	protected List handleFindWorkspacesByCourse(Long courseId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Validate.notNull(courseId, "courseId cannot be null.");
+		Course course = this.getCourseDao().load(courseId);
+		return this.getWorkspaceDao().findByCourse(WorkspaceDao.TRANSFORM_WORKSPACEINFO, course);
 	}
 
 	@Override
 	protected WorkspaceInfo handleGetWorkspace(Long workspaceId)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Validate.notNull(workspaceId, "Parameter workspaceId must not be null!");
+		return (WorkspaceInfo)getWorkspaceDao().load(WorkspaceDao.TRANSFORM_WORKSPACEINFO, workspaceId);
+	}
+
+	@Override
+	protected void handleUpdateWorkspace(WorkspaceInfo workspaceInfo)
+			throws Exception {
+		logger.debug("Starting method handleUpdateWorkspace");
+		Validate.notNull(workspaceInfo, "Parameter workspaceInfo must not be null.");
+		Validate.notNull(workspaceInfo.getId(), "Parameter workspaceInfo must contain a valid course id.");
+
+		// Transform VO to Entity
+		Workspace workspaceEntity = getWorkspaceDao().workspaceInfoToEntity(workspaceInfo);
+		// Update Course
+		getWorkspaceDao().update(workspaceEntity);
 	}
 
 }
