@@ -84,7 +84,7 @@ public class CollaborationMainPage extends AbstractCoursePage {
 			return Constants.FAILURE;
 		}
 		// TODO: implement find workspace...
-//		workspaceInfo = workspaceService.find(workspaceInfo.getId());
+		workspaceInfo = workspaceService.getWorkspace(workspaceInfo.getId());
 		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, workspaceInfo);
 		if (workspaceInfo == null) {
 			addWarning(i18n("error_workspace_not_found"));
@@ -108,8 +108,9 @@ public class CollaborationMainPage extends AbstractCoursePage {
 		// TODO implement save/update
 		if (workspaceInfo.getId() == null) {
 
-			//workspaceInfo.setInstituteId(instituteInfo.getId());
-			//courseTypeService.create(courseTypeInfo);
+			// FIXME: improve WorkspaceService!!
+			workspaceInfo.setCourseId(courseInfo.getId());
+			workspaceService.createWorkspace(workspaceInfo);
 
 			addMessage(i18n("collaboration_message_add_workspace_succeed"));
 		} else {
@@ -198,10 +199,8 @@ public class CollaborationMainPage extends AbstractCoursePage {
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				// TODO: implement!
-				/*List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService
-						.findCourseTypesByInstitute(instituteInfo.getId()));*/
-				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>();
-				//workspaces.add(new WorkspaceInfo(1l, "VOFI"));
+				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService
+						.findWorkspacesByCourse(courseInfo.getId()));
 				
 				sort(workspaces);
 				page = new DataPage<WorkspaceInfo>(workspaces.size(), 0, workspaces);
