@@ -114,7 +114,7 @@ public class CollaborationMainPage extends AbstractCoursePage {
 
 			addMessage(i18n("collaboration_message_add_workspace_succeed"));
 		} else {
-			//courseTypeService.update(courseTypeInfo);
+			workspaceService.updateWorkspace(workspaceInfo);
 			addMessage(i18n("collaboration_message_persist_workspace_succeed"));
 		}
 
