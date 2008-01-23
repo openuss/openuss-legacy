@@ -106,7 +106,6 @@ public class WorkspaceServiceImpl extends
 	@Override
 	protected List handleFindWorkspacesByCourse(Long courseId) throws Exception {
 		Validate.notNull(courseId, "courseId cannot be null.");
-		System.out.println("============ courseId: " + courseId);
 		Course course = this.getCourseDao().load(courseId);
 		return this.getWorkspaceDao().findByCourse(WorkspaceDao.TRANSFORM_WORKSPACEINFO, course);
 	}

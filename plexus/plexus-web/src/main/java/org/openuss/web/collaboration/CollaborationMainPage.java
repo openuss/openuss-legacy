@@ -5,38 +5,28 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.collaboration.WorkspaceInfo;
-import org.openuss.collaboration.WorkspaceService;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
-import org.openuss.web.course.AbstractCoursePage;
 
 @Bean(name = "views$secured$collaboration$main", scope = Scope.REQUEST)
 @View
-public class CollaborationMainPage extends AbstractCoursePage {
+public class CollaborationMainPage extends AbstractCollaborationPage {
 	
 	public static final Logger logger = Logger.getLogger(CollaborationMainPage.class);
-	
-	@Property(value = "#{workspaceService}")
-	protected WorkspaceService workspaceService;
 	
 	/** The datamodel for all workspaces. */
 	private LocalDataModelWorkspaces dataWorkspaces = new LocalDataModelWorkspaces();
 
 	/** If <code>true</code> the page is in editing mode. */
 	private Boolean editing = false;
-	
-	/** workspace that is currently edited. */
-	@Property(value="#{"+Constants.COLLABORATION_WORKSPACE_INFO+"}")
-	private WorkspaceInfo workspaceInfo = null;
 	
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
@@ -83,7 +73,6 @@ public class CollaborationMainPage extends AbstractCoursePage {
 		if (workspaceInfo == null) {
 			return Constants.FAILURE;
 		}
-		// TODO: implement find workspace...
 		workspaceInfo = workspaceService.getWorkspace(workspaceInfo.getId());
 		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, workspaceInfo);
 		if (workspaceInfo == null) {
@@ -105,7 +94,6 @@ public class CollaborationMainPage extends AbstractCoursePage {
 	 */
 	public String saveWorkspace() throws DesktopException, LectureException {
 		logger.debug("Starting method saveWorkspace()");
-		// TODO implement save/update
 		if (workspaceInfo.getId() == null) {
 
 			workspaceInfo.setCourseId(courseInfo.getId());
@@ -165,25 +153,11 @@ public class CollaborationMainPage extends AbstractCoursePage {
 		this.editing = editing;
 	}
 
-	public WorkspaceInfo getWorkspaceInfo() {
-		return workspaceInfo;
-	}
-	public void setWorkspaceInfo(WorkspaceInfo workspaceInfo) {
-		this.workspaceInfo = workspaceInfo;
-	}
-	
 	public LocalDataModelWorkspaces getDataWorkspaces() {
 		return dataWorkspaces;
 	}
 	public void setDataWorkspaces(LocalDataModelWorkspaces dataWorkspaces) {
 		this.dataWorkspaces = dataWorkspaces;
-	}
-	
-	public WorkspaceService getWorkspaceService() {
-		return workspaceService;
-	}
-	public void setWorkspaceService(WorkspaceService workspaceService) {
-		this.workspaceService = workspaceService;
 	}
 	
 	/////// Inner classes ////////////////////////////////////////////////////
@@ -196,13 +170,9 @@ public class CollaborationMainPage extends AbstractCoursePage {
 		@Override
 		@SuppressWarnings( { "unchecked" })
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
-			System.out.println(">>>>>>>>>>>>>>>>> page: " + page);
-			
 			if (page == null) {
 				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService
 						.findWorkspacesByCourse(courseInfo.getId()));
-
-				System.out.println(">>>>>>>>>>>>>>>>> workspaces: " + workspaces);
 				
 				sort(workspaces);
 				page = new DataPage<WorkspaceInfo>(workspaces.size(), 0, workspaces);

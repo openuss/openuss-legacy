@@ -6,15 +6,12 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.collaboration.WorkspaceService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
-import org.openuss.web.course.AbstractCoursePage;
 
 /** Controller for the workspaceremoveconfirmation.xhtml view.
  * 
@@ -22,15 +19,12 @@ import org.openuss.web.course.AbstractCoursePage;
  */
 @Bean(name = "views$secured$collaboration$removeconfirmation", scope = Scope.REQUEST)
 @View
-public class WorkspaceRemoveConfirmationPage extends AbstractCoursePage {
+public class WorkspaceRemoveConfirmationPage extends AbstractCollaborationPage {
 	
 	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(WorkspaceRemoveConfirmationPage.class);
 
 	private static final long serialVersionUID = -202000019652888870L;
-	
-	@Property(value = "#{workspaceService}")
-	protected WorkspaceService workspaceService;
 
 	@Prerender
 	public void prerender() throws LectureException {
@@ -54,8 +48,7 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCoursePage {
 	 */
 	public String removeWorkspace() throws LectureException {
 		try {
-			// TODO implement!
-			//workspaceService.removeWorkspace(courseInfo.getId());
+			workspaceService.removeWorkspace(workspaceInfo.getId());
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, null);
 			addMessage(i18n("workspace_removed_succeed"));
 			return Constants.COLLABORATION_MAIN_PAGE;
@@ -79,12 +72,5 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCoursePage {
 			((UIInput) toValidate).setValid(false);
 			addError(toValidate.getClientId(context), i18n("error_need_to_confirm_removement"), null);
 		}
-	}
-	
-	public WorkspaceService getWorkspaceService() {
-		return workspaceService;
-	}
-	public void setWorkspaceService(WorkspaceService workspaceService) {
-		this.workspaceService = workspaceService;
 	}
 }

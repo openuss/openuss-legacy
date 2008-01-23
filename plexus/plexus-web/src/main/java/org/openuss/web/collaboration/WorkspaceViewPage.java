@@ -12,11 +12,10 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.web.course.AbstractCoursePage;
 
 @Bean(name = "views$secured$collaboration$workspaceview", scope = Scope.REQUEST)
 @View
-public class WorkspaceViewPage extends AbstractCoursePage {
+public class WorkspaceViewPage extends AbstractCollaborationPage {
 	
 	public static final Logger logger = Logger.getLogger(WorkspaceViewPage.class);
 	
