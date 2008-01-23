@@ -6,15 +6,15 @@
 package org.openuss.wiki;
 
 /**
- * @see org.openuss.wiki.WikiPage
+ * @see org.openuss.wiki.WikiSite
  */
-public class WikiPageImpl
-    extends org.openuss.wiki.WikiPageBase
-	implements org.openuss.wiki.WikiPage
+public class WikiSiteImpl
+    extends org.openuss.wiki.WikiSiteBase
+	implements org.openuss.wiki.WikiSite
 {
     /**
      * The serial version UID of this class. Needed for serialization.
      */
-    private static final long serialVersionUID = 2668764440151936352L;
+    private static final long serialVersionUID = 9001648618146832557L;
 
 }
