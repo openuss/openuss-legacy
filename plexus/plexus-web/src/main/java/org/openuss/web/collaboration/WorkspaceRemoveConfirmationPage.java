@@ -6,9 +6,11 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.collaboration.WorkspaceService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
@@ -26,6 +28,9 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCoursePage {
 	private static final Logger logger = Logger.getLogger(WorkspaceRemoveConfirmationPage.class);
 
 	private static final long serialVersionUID = -202000019652888870L;
+	
+	@Property(value = "#{workspaceService}")
+	protected WorkspaceService workspaceService;
 
 	@Prerender
 	public void prerender() throws LectureException {
@@ -50,7 +55,7 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCoursePage {
 	public String removeWorkspace() throws LectureException {
 		try {
 			// TODO implement!
-			//courseService.removeCourse(courseInfo.getId());
+			//workspaceService.removeWorkspace(courseInfo.getId());
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, null);
 			addMessage(i18n("workspace_removed_succeed"));
 			return Constants.COLLABORATION_MAIN_PAGE;
@@ -76,4 +81,10 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCoursePage {
 		}
 	}
 	
+	public WorkspaceService getWorkspaceService() {
+		return workspaceService;
+	}
+	public void setWorkspaceService(WorkspaceService workspaceService) {
+		this.workspaceService = workspaceService;
+	}
 }

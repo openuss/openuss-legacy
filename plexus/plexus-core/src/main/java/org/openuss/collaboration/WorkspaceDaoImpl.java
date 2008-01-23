@@ -39,14 +39,11 @@ public class WorkspaceDaoImpl
      */
     private org.openuss.collaboration.Workspace loadWorkspaceFromWorkspaceInfo(org.openuss.collaboration.WorkspaceInfo workspaceInfo)
     {
-        // @todo implement loadWorkspaceFromWorkspaceInfo
-        //throw new java.lang.UnsupportedOperationException("org.openuss.collaboration.loadWorkspaceFromWorkspaceInfo(org.openuss.collaboration.WorkspaceInfo) not yet implemented.");
-
-        /* A typical implementation looks like this: */
-        org.openuss.collaboration.Workspace workspace = this.load(workspaceInfo.getId());
-        if (workspace == null)
-        {
-            workspace = org.openuss.collaboration.Workspace.Factory.newInstance();
+        Workspace workspace = null;
+        if (workspaceInfo.getId() != null) {
+        	workspace = this.load(workspaceInfo.getId());
+        } else {
+            workspace = Workspace.Factory.newInstance();
         }
         return workspace;
     }

@@ -108,7 +108,6 @@ public class CollaborationMainPage extends AbstractCoursePage {
 		// TODO implement save/update
 		if (workspaceInfo.getId() == null) {
 
-			// FIXME: improve WorkspaceService!!
 			workspaceInfo.setCourseId(courseInfo.getId());
 			workspaceService.createWorkspace(workspaceInfo);
 
@@ -197,10 +196,13 @@ public class CollaborationMainPage extends AbstractCoursePage {
 		@Override
 		@SuppressWarnings( { "unchecked" })
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
+			System.out.println(">>>>>>>>>>>>>>>>> page: " + page);
+			
 			if (page == null) {
-				// TODO: implement!
 				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService
 						.findWorkspacesByCourse(courseInfo.getId()));
+
+				System.out.println(">>>>>>>>>>>>>>>>> workspaces: " + workspaces);
 				
 				sort(workspaces);
 				page = new DataPage<WorkspaceInfo>(workspaces.size(), 0, workspaces);

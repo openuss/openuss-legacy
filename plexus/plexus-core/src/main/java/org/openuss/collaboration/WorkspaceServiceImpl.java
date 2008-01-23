@@ -10,6 +10,8 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.discussion.Forum;
+import org.openuss.discussion.ForumWatch;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseInfo;
@@ -38,16 +40,23 @@ public class WorkspaceServiceImpl extends
 		Validate.notNull(workspaceEntity, "Cannot transform workspaceInfo to entity.");
 
 		// Add Course to CourseType and Period
-		this.getCourseDao().load(workspaceInfo.getCourseId()).getWorkspaces().add(workspaceEntity);
+		Course course = this.getCourseDao().load(workspaceInfo.getCourseId());
+		course.getWorkspaces().add(workspaceEntity);
+		workspaceEntity.setCourse(course);
 		
 		// Save Entity
 		this.getWorkspaceDao().create(workspaceEntity);
 		Validate.notNull(workspaceEntity, "Id of workspace cannot be null.");
-
+		
 		// FIXME - Kai, Indexing should not base on VOs!
 		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		// Update input parameter for aspects to get the right domain objects. 
 		workspaceInfo.setId(workspaceEntity.getId());
+
+		// add object identity to security
+		getSecurityService().createObjectIdentity(workspaceEntity, workspaceEntity.getCourse());
+		
+		this.getCourseDao().update(course);
 
 		// Set Security
 	//FIXME: don't know what this does:	this.getSecurityService().createObjectIdentity(workspaceEntity, workspaceEntity.getCourseType());
@@ -60,12 +69,12 @@ public class WorkspaceServiceImpl extends
 	 */
 	protected void handleRemoveWorkspace(java.lang.Long workspaceId)
 			throws java.lang.Exception {
-		// @todo implement protected void handleRemoveWorkspace(java.lang.Long
-		// workspaceId)
-		// throw new
-		// java.lang.UnsupportedOperationException("org.openuss.collaboration.WorkspaceDocumentService.handleRemoveWorkspace(java.lang.Long
-		// workspaceId) Not implemented!");
-		System.out.println("handleRemoveWorkspace called");
+		Validate.notNull(workspaceId, "workspaceId cannot be null.");
+		
+		// Transform VO to entity
+		Workspace workspaceEntity = this.getWorkspaceDao().load(workspaceId);
+
+		getWorkspaceDao().remove(workspaceEntity);
 	}
 
 	/**
@@ -84,21 +93,6 @@ public class WorkspaceServiceImpl extends
 	}
 
 	/**
-	 * @see org.openuss.collaboration.WorkspaceDocumentService#saveWorkspace(org.openuss.collaboration.WorkspaceInfo)
-	 */
-	protected void handleSaveWorkspace(
-			org.openuss.collaboration.WorkspaceInfo workspaceInfo)
-			throws java.lang.Exception {
-		// @todo implement protected void
-		// handleSaveWorkspace(org.openuss.collaboration.WorkspaceInfo
-		// workspaceInfo)
-		// throw new
-		// java.lang.UnsupportedOperationException("org.openuss.collaboration.WorkspaceDocumentService.handleSaveWorkspace(org.openuss.collaboration.WorkspaceInfo
-		// workspaceInfo) Not implemented!");
-		System.out.println("handleSaveWorkspace called");
-	}
-
-	/**
 	 * @see org.openuss.collaboration.WorkspaceDocumentService#getWorkspaceMembers(java.lang.Long)
 	 */
 	protected java.util.List handleGetWorkspaceMembers(
@@ -112,6 +106,7 @@ public class WorkspaceServiceImpl extends
 	@Override
 	protected List handleFindWorkspacesByCourse(Long courseId) throws Exception {
 		Validate.notNull(courseId, "courseId cannot be null.");
+		System.out.println("============ courseId: " + courseId);
 		Course course = this.getCourseDao().load(courseId);
 		return this.getWorkspaceDao().findByCourse(WorkspaceDao.TRANSFORM_WORKSPACEINFO, course);
 	}
