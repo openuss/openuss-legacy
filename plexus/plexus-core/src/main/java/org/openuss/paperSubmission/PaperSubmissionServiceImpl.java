@@ -5,6 +5,8 @@
  */
 package org.openuss.paperSubmission;
 
+import java.util.ArrayList;
+
 /**
  * @see org.openuss.paperSubmission.PaperSubmissionService
  */
@@ -19,7 +21,7 @@ public class PaperSubmissionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected void handleCreateExam(org.openuss.paperSubmission.ExamInfo examInfo)
-        throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleCreateExam(org.openuss.paperSubmission.ExamInfo examInfo) Not implemented!");
+        //throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleCreateExam(org.openuss.paperSubmission.ExamInfo examInfo) Not implemented!");
     }
 
     /**
@@ -29,7 +31,7 @@ public class PaperSubmissionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected void handleRemoveExam(java.lang.Long examId)
-        throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleRemoveExam(java.lang.Long examId) Not implemented!");
+        //throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleRemoveExam(java.lang.Long examId) Not implemented!");
     }
 
     /**
@@ -39,7 +41,7 @@ public class PaperSubmissionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected void handleUpdateExam(org.openuss.paperSubmission.ExamInfo examInfo)
-        throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleUpdateExam(org.openuss.paperSubmission.ExamInfo examInfo) Not implemented!");
+        //throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleUpdateExam(org.openuss.paperSubmission.ExamInfo examInfo) Not implemented!");
     }
 
     /**
@@ -49,7 +51,7 @@ public class PaperSubmissionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected void handleCreatePaperSubmission(org.openuss.paperSubmission.PaperSubmissionInfo paperSubmissionInfo)
-        throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleCreatePaperSubmission(org.openuss.paperSubmission.PaperSubmissionInfo paperSubmissionInfo) Not implemented!");
+        //throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleCreatePaperSubmission(org.openuss.paperSubmission.PaperSubmissionInfo paperSubmissionInfo) Not implemented!");
     }
 
     /**
@@ -59,7 +61,7 @@ public class PaperSubmissionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected void handleRemovePaperSubmission(java.lang.Long paperSubmissionId)
-        throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleRemovePaperSubmission(java.lang.Long paperSubmissionId) Not implemented!");
+        //throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleRemovePaperSubmission(java.lang.Long paperSubmissionId) Not implemented!");
     }
 
     /**
@@ -69,7 +71,8 @@ public class PaperSubmissionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected java.util.List handleFindExamsByCourse(java.lang.Long courseId)
-        return null;
+        //return null;
+    	return new ArrayList();
     }
 
     /**
@@ -79,7 +82,7 @@ public class PaperSubmissionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected java.util.List handleFindPaperSubmissionsByExam(java.lang.Long examId)
-        return null;
+    	return new ArrayList();
     }
 
     /**
@@ -89,7 +92,7 @@ public class PaperSubmissionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected java.util.List handleFindExamsByCourseMember(java.lang.Long userId)
-        return null;
+    	return new ArrayList();
     }
 
     /**
@@ -99,7 +102,8 @@ public class PaperSubmissionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected org.openuss.paperSubmission.ExamInfo handleGetExam(java.lang.Long examId)
-        return null;
+        //return null;
+    	return new org.openuss.paperSubmission.ExamInfo();
     }
 
     /**
@@ -109,7 +113,8 @@ public class PaperSubmissionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected java.util.List handleFindPaperSubmissionsByExamAndCourseMember(java.lang.Long examId, java.lang.Long courseMemberId)
-        return null;
+        //return null;
+    	return new ArrayList();
     }
 
     /**
@@ -119,7 +124,8 @@ public class PaperSubmissionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected org.openuss.paperSubmission.PaperSubmissionInfo handleGetPaperSubmission(java.lang.Long paperSubmissionId)
-        return null;
+        //return null;
+    	return new org.openuss.paperSubmission.PaperSubmissionInfo();
     }
 
     /**
@@ -129,7 +135,8 @@ public class PaperSubmissionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected void handleDeletePaperSubmission(java.lang.Long paperSubmissionId)
-        throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleDeletePaperSubmission(java.lang.Long paperSubmissionId) Not implemented!");
+        //throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleDeletePaperSubmission(java.lang.Long paperSubmissionId) Not implemented!");
+    	
     }
 
     /**
@@ -139,7 +146,8 @@ public class PaperSubmissionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected java.util.List handleFindActiveExamsByCourse(java.lang.Long courseId)
-        return null;
+        //return null;
+    	return new ArrayList();
     }
 
     /**
@@ -149,7 +157,8 @@ public class PaperSubmissionServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected java.util.List handleFindInactiveExamsByCourse(java.lang.Long courseId)
-        return null;
+        //return null;
+    	return new ArrayList();
     }
 
 }
