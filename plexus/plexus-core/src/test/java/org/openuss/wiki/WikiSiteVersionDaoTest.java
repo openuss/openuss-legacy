@@ -5,6 +5,8 @@
  */
 package org.openuss.wiki;
 
+import java.util.Date;
+
 
 /**
  * JUnit Test for Spring Hibernate WikiSiteVersionDao class.
@@ -13,9 +15,9 @@ package org.openuss.wiki;
 public class WikiSiteVersionDaoTest extends WikiSiteVersionDaoTestBase {
 	
 	public void testWikiSiteVersionDaoCreate() {
-		WikiSiteVersion wikiSiteVersion = new WikiSiteVersion.Factory.newInstance();
+		WikiSiteVersion wikiSiteVersion = WikiSiteVersion.Factory.newInstance();
 		wikiSiteVersion.setText(" ");
-		wikiSiteVersion.setCreationDate(" ");
+		wikiSiteVersion.setCreationDate(new Date());
 		assertNull(wikiSiteVersion.getId());
 		wikiSiteVersionDao.create(wikiSiteVersion);
 		assertNotNull(wikiSiteVersion.getId());

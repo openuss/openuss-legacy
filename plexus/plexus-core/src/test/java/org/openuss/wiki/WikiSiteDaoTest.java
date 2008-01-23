@@ -13,9 +13,9 @@ package org.openuss.wiki;
 public class WikiSiteDaoTest extends WikiSiteDaoTestBase {
 	
 	public void testWikiSiteDaoCreate() {
-		WikiSite wikiSite = new WikiSite.Factory.newInstance();
+		WikiSite wikiSite = WikiSite.Factory.newInstance();
 		wikiSite.setName(" ");
-		wikiSite.setDeleted(" ");
+		wikiSite.setDeleted(true);
 		assertNull(wikiSite.getId());
 		wikiSiteDao.create(wikiSite);
 		assertNotNull(wikiSite.getId());
