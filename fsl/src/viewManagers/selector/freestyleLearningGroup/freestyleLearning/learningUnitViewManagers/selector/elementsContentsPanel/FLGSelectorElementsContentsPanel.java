@@ -131,7 +131,6 @@ public class FLGSelectorElementsContentsPanel extends FSLAbstractLearningUnitVie
             if (selectorEvent.getEventSpecificType() == FLGSelectorEvent.SELECTOR_MULTI_PLAYER_RUN_EXITED) {
             	playMode = true;
                 buildDependentUI(false,false);
-            	
                 if (!selectorEvent.getLastMultiPlayerRun()) {
                 	// open full screen mode
 	                String activeLearningUnitViewElementId = learningUnitViewManager.getActiveLearningUnitViewElementId();

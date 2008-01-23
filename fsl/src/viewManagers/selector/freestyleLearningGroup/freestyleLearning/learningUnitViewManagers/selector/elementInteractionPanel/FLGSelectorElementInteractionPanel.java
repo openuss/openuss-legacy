@@ -139,6 +139,13 @@ public class FLGSelectorElementInteractionPanel extends FSLAbstractLearningUnitV
         add(stopButton);
     }
     
+    protected void setFullScreenMode(boolean fullScreenRequested) {
+        this.fullScreenSelected = fullScreenRequested;
+        FSLLearningUnitViewEvent event = FSLLearningUnitViewEvent.createFullScreenModeChangedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
+            activeLearningUnitViewElementId, fullScreenRequested, true);
+        learningUnitViewManager.fireLearningUnitViewEvent(event);
+    }
+    
     private void play() {
         // open dialog for selector start
     	startDialog.init(width, height, gameSpeed, gameLength);
