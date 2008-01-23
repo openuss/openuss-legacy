@@ -9,6 +9,8 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.collaboration.WorkspaceInfo;
+import org.openuss.collaboration.WorkspaceService;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
@@ -22,6 +24,9 @@ import org.openuss.web.course.AbstractCoursePage;
 public class CollaborationMainPage extends AbstractCoursePage {
 	
 	public static final Logger logger = Logger.getLogger(CollaborationMainPage.class);
+	
+	@Property(value = "#{workspaceService}")
+	protected WorkspaceService workspaceService;
 	
 	/** The datamodel for all workspaces. */
 	private LocalDataModelWorkspaces dataWorkspaces = new LocalDataModelWorkspaces();
@@ -79,8 +84,7 @@ public class CollaborationMainPage extends AbstractCoursePage {
 			return Constants.FAILURE;
 		}
 		// TODO: implement find workspace...
-		//workspaceInfo = courseTypeService.findCourseType(workspaceInfo.getId());
-		workspaceInfo = new WorkspaceInfo(1l, "VOFI");
+//		workspaceInfo = workspaceService.find(workspaceInfo.getId());
 		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, workspaceInfo);
 		if (workspaceInfo == null) {
 			addWarning(i18n("error_workspace_not_found"));
@@ -175,6 +179,13 @@ public class CollaborationMainPage extends AbstractCoursePage {
 		this.dataWorkspaces = dataWorkspaces;
 	}
 	
+	public WorkspaceService getWorkspaceService() {
+		return workspaceService;
+	}
+	public void setWorkspaceService(WorkspaceService workspaceService) {
+		this.workspaceService = workspaceService;
+	}
+	
 	/////// Inner classes ////////////////////////////////////////////////////
 	
 	private class LocalDataModelWorkspaces extends AbstractPagedTable<WorkspaceInfo> {
@@ -190,7 +201,7 @@ public class CollaborationMainPage extends AbstractCoursePage {
 				/*List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService
 						.findCourseTypesByInstitute(instituteInfo.getId()));*/
 				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>();
-				workspaces.add(new WorkspaceInfo(1l, "VOFI"));
+				//workspaces.add(new WorkspaceInfo(1l, "VOFI"));
 				
 				sort(workspaces);
 				page = new DataPage<WorkspaceInfo>(workspaces.size(), 0, workspaces);
