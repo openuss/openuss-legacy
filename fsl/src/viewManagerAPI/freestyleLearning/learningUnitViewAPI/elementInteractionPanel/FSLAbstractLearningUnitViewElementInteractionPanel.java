@@ -22,12 +22,12 @@ abstract public class FSLAbstractLearningUnitViewElementInteractionPanel extends
         private boolean fullScreenModeAllowed;
         private boolean scaleToScreenAllowed;
         private boolean scaleToFit;
-        private FSLLearningUnitViewElementInteractionButton scaleToggleButton;
+        protected FSLLearningUnitViewElementInteractionButton scaleToggleButton;
         protected FSLLearningUnitViewElementInteractionButton fullScreenModeButton;
-        private FSLLearningUnitViewElementInteractionButton splitModeButton;
-        private FSLLearningUnitViewElementInteractionButton splitModeSwitchButton;
-        private FSLLearningUnitViewElementInteractionButton nextElementButton;
-        private FSLLearningUnitViewElementInteractionButton previousElementButton;
+        protected FSLLearningUnitViewElementInteractionButton splitModeButton;
+        protected FSLLearningUnitViewElementInteractionButton splitModeSwitchButton;
+        protected FSLLearningUnitViewElementInteractionButton nextElementButton;
+        protected FSLLearningUnitViewElementInteractionButton previousElementButton;
         protected boolean editMode;
         protected boolean fullScreenSelected;
         protected FSLLearningUnitViewManager learningUnitViewManager;
@@ -230,7 +230,7 @@ abstract public class FSLAbstractLearningUnitViewElementInteractionPanel extends
             learningUnitViewManager.fireLearningUnitViewEvent(event);
         }
 
-        private void setFullScreenMode(boolean fullScreenRequested) {
+        protected void setFullScreenMode(boolean fullScreenRequested) {
             this.fullScreenSelected = fullScreenRequested;
             FSLLearningUnitViewEvent event = FSLLearningUnitViewEvent.createFullScreenModeChangedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
                 activeLearningUnitViewElementId, fullScreenRequested, false);
