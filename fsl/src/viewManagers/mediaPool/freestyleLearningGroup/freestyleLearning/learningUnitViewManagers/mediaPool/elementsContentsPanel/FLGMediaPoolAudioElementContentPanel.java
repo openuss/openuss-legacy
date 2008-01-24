@@ -38,7 +38,7 @@ public class FLGMediaPoolAudioElementContentPanel extends FLGMediaPoolPlayableMe
 	                    		stop();
 	                    	}
                     	}
-                    } else if(!isPlaying) {
+                    } else if(!isPlaying && !paused) {
 	                    FLGMediaPoolElement element = (FLGMediaPoolElement)learningUnitViewManager.getLearningUnitViewElementsManager().getLearningUnitViewElement(activeLearningUnitViewElementId, false);
 		                if (element != null) {
 		                	if (element.getType().equals(FLGMediaPoolElement.FILE_TYPE_AUDIO)) {

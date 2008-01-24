@@ -101,8 +101,8 @@ abstract class FLGMediaPoolPlayableMediaContentPanel extends FLGMediaPoolAbstrac
        isPlaying = true;
        player.start();
        if (timeSetter == null || !timeSetter.running) {
-           timeSetter = new MediaPoolThread();
-    	   timeSetter.start();
+    		   timeSetter = new MediaPoolThread();
+    		   timeSetter.start();
        }
        paused = false;
     }

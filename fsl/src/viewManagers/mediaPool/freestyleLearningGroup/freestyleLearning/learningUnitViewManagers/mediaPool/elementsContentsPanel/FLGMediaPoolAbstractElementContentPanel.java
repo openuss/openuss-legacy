@@ -19,11 +19,11 @@ import javax.swing.*;
  * @author Freestyle Learning Group
  */
 abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearningUnitViewElementContentPanel {
-    
     protected FLGInternationalization internationalization;
     protected JComponent[] editToolBarComponents;
     protected JColorChooser colorChooser;
     protected Color presentBGColor;
+    protected Color selectedColor;
     protected String activeLearningUnitViewElementId;
     protected boolean scaleToFit;
     protected boolean bgColorForAllElements = true;
@@ -65,6 +65,7 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
         fileChooser = new JFileChooser();
         //setOpaque(false);
         editToolBarComponents = new FLGEditToolBarButton[3];
+        
         editToolBarComponents[0] = new FLGEditToolBarButton(loadImage("buttonAddFile.gif"),
             addFileString, 
             new ActionListener() {
@@ -73,6 +74,7 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
                     buildDependentUI(true);
                 }
         });
+                               
         editToolBarComponents[1] = new FLGEditToolBarButton(loadImage("buttonRemoveFile.gif"),
             removeFileString, 
             new ActionListener() {
@@ -81,11 +83,12 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
                     buildDependentUI(true);
                  }
         });
+                               
         editToolBarComponents[2] = new FLGEditToolBarButton(loadImage("buttonBGColor.gif"),
             backgroundColorString, 
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    Color selectedColor = showColorChooserDialog();
+                    selectedColor = showColorChooserDialog();
                     // set element color for active element
                     String activeId = learningUnitViewManager.getActiveLearningUnitViewElementId();
                     FLGMediaPoolElement activeElement = (FLGMediaPoolElement) learningUnitViewElementsManager.getLearningUnitViewElement(activeId, true);
@@ -95,8 +98,11 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
                     	setElementsColor(selectedColor);
                     }
                     learningUnitViewElementsManager.setModified(true);
+                    buildDependentUI(true);
                 }
         });
+
+    	   
         editToolBarComponents[0].setEnabled(false);
         editToolBarComponents[1].setEnabled(false);
     }
@@ -226,12 +232,12 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
                     removeAll();
               		repaint();
             	}
-            	if(mediaPoolElement.getBackgroundColor() != null) {
-            		setBackground(new Color(Integer.valueOf(mediaPoolElement.getBackgroundColor())));
+          		if(mediaPoolElement.getBackgroundColor() != null) {
+          			setBackground(new Color(Integer.valueOf(mediaPoolElement.getBackgroundColor())));
             	} else {
             		// default background color
             		setBackground((Color)UIManager.get("FSLMainFrameColor1"));
-            	}
+            	} 
             } else {
             	// no content
                 removeAll();

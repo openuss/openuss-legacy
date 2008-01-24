@@ -26,7 +26,6 @@ public class FLGMediaPoolPictureElementContentPanel extends FLGMediaPoolAbstract
     private FSLLearningUnitViewManager learningUnitViewManager;
     private String lastLoadedLearningUnitViewElementId;
     private boolean scaleToFit;
-    private Color backgroundColor;
     private JPanel picturePanel;
     private boolean isModifiedByUserInput = false;
     
@@ -49,14 +48,6 @@ public class FLGMediaPoolPictureElementContentPanel extends FLGMediaPoolAbstract
     protected java.awt.Component getPrintableComponent() {
         return this;
     }
-    
-    /**
-     * Builds independent UI.
-     *
-    protected void buildIndependentUI() {
-        setOpaque(true);
-        setBackground((Color)UIManager.get("FSLMainFrameColor1"));
-    }*/
     
     /**
      * Returns, if panel is modified by user.
@@ -84,16 +75,10 @@ public class FLGMediaPoolPictureElementContentPanel extends FLGMediaPoolAbstract
         if (learningUnitViewManager.getActiveLearningUnitViewElementId() != null) {
             element = (FLGMediaPoolElement) learningUnitViewElementsManager.getLearningUnitViewElement(learningUnitViewManager.getActiveLearningUnitViewElementId(),false);
             if (element != null) {
+            	createImage();
             	if (element.hasScaleToFit()) {
             		element.setScaleToFit(element.getScaleToFit());
             	}
-            	if(element.getBackgroundColor() != null) {
-            		setBackground(new Color(Integer.valueOf(element.getBackgroundColor())));
-            	} else {
-            		setBackground((Color)UIManager.get("FSLMainFrameColor1"));
-            	}
-            	createImage();
-            	layoutImage();
         	}
         } else {
         	// no content
@@ -107,8 +92,7 @@ public class FLGMediaPoolPictureElementContentPanel extends FLGMediaPoolAbstract
         FLGUIUtilities.startLongLastingOperation();
         if (scaleToFit) {
             imageComponent = new FLGImageComponent(true);
-        }
-        else {
+        } else {
             imageComponent = new FLGImageComponent(true, false);
         }
         if (learningUnitViewElementsManager != null) {
@@ -132,18 +116,28 @@ public class FLGMediaPoolPictureElementContentPanel extends FLGMediaPoolAbstract
     protected void layoutImage() {
         removeAll();
         if (imageComponent != null) {
+        	// get background color
+            FLGMediaPoolElement element = (FLGMediaPoolElement)learningUnitViewElementsManager.getLearningUnitViewElement(learningUnitViewElementId, false);
+            Color backgroundColor;
+        	if(element.getBackgroundColor() != null) {
+        		backgroundColor = new Color(Integer.valueOf(element.getBackgroundColor()));
+        	} else {
+        		backgroundColor = (Color)UIManager.get("FSLMainFrameColor1");
+        	}
+            // check if image has to be scaled
             if (scaleToFit) {
                 setLayout(new BorderLayout());
-                add(imageComponent);
-            }
-            else {
+                picturePanel = new JPanel(new BorderLayout());
+                picturePanel.add(imageComponent, BorderLayout.CENTER);
+                picturePanel.setBackground(backgroundColor);
+                add(picturePanel, BorderLayout.CENTER);
+            } else {
                 imageComponent.setBorder(BorderFactory.createEmptyBorder());
                 picturePanel = new JPanel(
                 new FLGSingleLayout(FLGSingleLayout.CENTER, FLGSingleLayout.CENTER, FLGSingleLayout.SHRINK_AS_NEEDED,
                 		FLGSingleLayout.SHRINK_AS_NEEDED, true));
-                picturePanel.setOpaque(true);
-                picturePanel.setBackground((Color)UIManager.get("FSLMainFrameColor1"));
-                picturePanel.setBorder(BorderFactory.createEmptyBorder());
+                picturePanel.setBackground(backgroundColor);
+            	picturePanel.setBorder(BorderFactory.createEmptyBorder());
                 picturePanel.add(imageComponent);
                 // picture panel should be contained in Scrollpane
                 JScrollPane scrollPane = new JScrollPane(picturePanel);
@@ -157,13 +151,13 @@ public class FLGMediaPoolPictureElementContentPanel extends FLGMediaPoolAbstract
     
     class PictureElementContentPanel_Adapter extends FSLLearningUnitViewAdapter {
         public void learningUnitViewFullScreenModeSelected(FSLLearningUnitViewEvent event) {
-            if (event.isFullScreenModeRequested()) {
+        	Color backgroundColor;
+        	if (event.isFullScreenModeRequested()) {
                 backgroundColor = Color.black;
             }
             else {
                 backgroundColor = (Color)UIManager.get("FSLMainFrameColor1");
             }
-            picturePanel.setBackground(backgroundColor);
             setBackground(backgroundColor);
         }
         
