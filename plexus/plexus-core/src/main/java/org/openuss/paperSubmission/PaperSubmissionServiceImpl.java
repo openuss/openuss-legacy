@@ -161,4 +161,10 @@ public class PaperSubmissionServiceImpl
     	return new ArrayList();
     }
 
+	@Override
+	protected Boolean handleIsExamDeadlineExpired(Long examId) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

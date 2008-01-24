@@ -6,7 +6,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
-import org.openuss.wiki.WikiPage;
+import org.openuss.wiki.WikiSite;
 
 
 @Bean(name = "views$secured$wiki$wikimain", scope = Scope.REQUEST)
@@ -15,7 +15,7 @@ public class WikiMainPage extends AbstractCoursePage{
 	private static final Logger logger = Logger.getLogger(WikiMainPage.class);
 	
 	public String save(){
-		logger.debug("WikiPage saved");
+		logger.debug("WikiSite saved");
 		return Constants.SUCCESS;
 	}
 
