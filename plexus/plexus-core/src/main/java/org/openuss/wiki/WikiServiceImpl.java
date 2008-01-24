@@ -122,4 +122,18 @@ public class WikiServiceImpl
         return null;
     }
 
+	@Override
+	protected WikiSiteInfo handleFindWikiSiteByCourseAndName(Long courseId,
+			String siteName) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void handleUpdateWikiSite(WikiSiteInfo wikiSiteInfo)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
