@@ -188,5 +188,38 @@
         <managed-bean-class>org.openuss.web.papersubmission.SubmissionSelection</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    
+    
+    <managed-bean>
+        <managed-bean-name>collaboration_current_folder</managed-bean-name>
+        <managed-bean-class>org.openuss.documents.FolderInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>collaboration_selected_folder</managed-bean-name>
+        <managed-bean-class>org.openuss.documents.FolderInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>collaboration_selected_file</managed-bean-name>
+        <managed-bean-class>org.openuss.documents.FileInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>collaboration_folderentry_selection</managed-bean-name>
+        <managed-bean-class>org.openuss.web.documents.FolderEntrySelection</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>workspace</managed-bean-name>
+        <managed-bean-class>org.openuss.collaboration.WorkspaceInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>workspaceInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.collaboration.WorkspaceInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 
 </faces-config>

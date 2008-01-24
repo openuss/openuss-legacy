@@ -136,7 +136,23 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 		logger.debug(currentWorkspace.getId());
 		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, currentWorkspace);
 
-		return Constants.COLLABORATION_WORKSPACE_CONFIRM_REMOVE_PAGE;
+		return Constants.COLLABORATION_CONFIRM_REMOVE_PAGE;
+	}
+	
+	/**
+	 * Store the selected workspace into session scope and go to workspace main page.
+	 * 
+	 * @return Outcome
+	 */
+	public String selectWorkspace() {
+		logger.debug("Starting method selectWorkspace");
+		WorkspaceInfo workspace = currentWorkspace();
+		System.out.println(">>>>>>>>>>>> select workspace: " + workspace);
+		logger.debug("Returning to method selectWorkspace");
+		logger.debug(workspace.getId());
+		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, workspace);
+
+		return Constants.COLLABORATION_WORKSPACE_PAGE;
 	}
 	
 	//// getter/setter methods ////////////////////////////////////////////////

@@ -64,13 +64,13 @@
 							<!-- ps bachelor collaboration -->
 							<t:commandNavigation2 
                                 action="papersubmission" 
-                                activeOnViewIds="/views/secured/papersubmission.xhtml"
+                                activeOnViewIds="/views/secured/papersubmission/paperlist.xhtml"
                                 rendered="#{courseInfo.papersubmission}">
                                 <h:outputText  value="#{msg['course_command_papersubmission']}"/>
                             </t:commandNavigation2>
                             <t:commandNavigation2 
                                 action="collaboration" 
-                                activeOnViewIds="/views/secured/collaboration.xhtml"
+                                activeOnViewIds="/views/secured/collaboration/main.xhtml"
                                 rendered="#{courseInfo.collaboration}">
                                 <h:outputText  value="#{msg['course_command_collaboration']}"/>
                             </t:commandNavigation2>

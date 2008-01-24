@@ -212,5 +212,28 @@
 		<parameter name="news" value="#{news_selected_newsitem.id}" converterId="javax.faces.Long"/>
 	</page>
 	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            Collaboration
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+    <page view-id="/views/secured/collaboration/*">
+        <securityConstraint domainObject="#{collaboration_current_folder}" permissions="#{ACL.READ}"/>
+        <securityConstraint domainObject="#{workspaceInfo}" permissions="#{ACL.READ}"/>
+        <parameter name="folder" value="#{collaboration_current_folder.id}" converterId="javax.faces.Long"/>
+        <parameter name="workspace" value="#{workspaceInfo.id}" converterId="javax.faces.Long"/>
+    </page>
+    <page view-id="/views/secured/collaboration/folderedit.xhtml">
+        <securityConstraint domainObject="#{collaboration_current_folder}" permissions="#{ACL.ASSIST}"/>
+    </page>
+    <page view-id="/views/secured/collaboration/fileedit.xhtml">
+        <securityConstraint domainObject="#{collaboration_current_folder}" permissions="#{ACL.ASSIST}"/>
+    </page>
+    <page view-id="/views/secured/collaboration/addzip.xhtml">
+        <securityConstraint domainObject="#{collaboration_current_folder}" permissions="#{ACL.ASSIST}"/>
+    </page>
+    <page view-id="/views/secured/collaboration/remove.xhtml">
+        <securityConstraint domainObject="#{collaboration_current_folder}" permissions="#{ACL.ASSIST}"/>
+    </page>
+	
 	
 </pages>
