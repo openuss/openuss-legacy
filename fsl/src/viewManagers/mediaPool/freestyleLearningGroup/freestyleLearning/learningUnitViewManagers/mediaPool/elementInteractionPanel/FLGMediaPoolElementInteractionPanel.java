@@ -234,69 +234,71 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
     
     private void rebuildButtonStatus(FSLLearningUnitViewElement learningUnitViewElement, boolean isFullScreenModeChanged) {
     	if(!editMode) {
-	    	if (learningUnitViewElement.getType().equals("video") || learningUnitViewElement.getType().equals("audio")) {
-	            setSplitModeAllowed(false);
-	            setFullScreenModeAllowed(learningUnitViewElement.getType().equals("video"));
-	            setScaleModeAllowed(true);
-	            buildDependentUI();
-	            playButton.setToolTipText(internationalization.getString("button.tooltip.play"));
-	            playButton.setEnabled(true);
-	            add(playButton);
-	            add(stopButton);
-	            add(pauseButton);
-	            if (!isFullScreenModeChanged) {
-	                playButton.setEnabled(!playing);
-	                stopButton.setEnabled(playing);
-	                pauseButton.setEnabled(playing);
-	            }
-		    	exportButton.setEnabled(true);
-	            return;
-	        } else if (learningUnitViewElement.getType().equals("picture")) {
-	            setScaleModeAllowed(true);
-	            setSplitModeAllowed(true);
-	            setFullScreenModeAllowed(true);
-	            buildDependentUI();
-	            stopButton.setEnabled(playing);
-	            add(stopButton);
-		    	exportButton.setEnabled(true);
-	            return;
-	        } else if (learningUnitViewElement.getType().equals("pdf")) {
-	            setFullScreenModeAllowed(false);
-	            setSplitModeAllowed(false);
-	            setScaleModeAllowed(false);
-	            addSeparator();
-	            // pdf specific buttons
-	            //add(prevPageButton);
-	            //add(nextPageButton);
-	            add(pageScalePlusButton);
-	            add(pageScaleMinusButton);
-	            addSeparator();
-	            add(pageScalePageWidthButton);
-	            add(pageScalePageHeightButton);
-	            add(pageScalePage100Button);
-	            stopButton.setEnabled(playing);
-	            add(stopButton);
-		    	exportButton.setEnabled(true);
-	            return;
-	        } else if (learningUnitViewElement.getFolder()) {
-	            setScaleModeAllowed(false);
-	            setSplitModeAllowed(false);
-	            setFullScreenModeAllowed(false);
-	            buildDependentUI();
-	            stopButton.setEnabled(playing);
-	            add(stopButton);
-		    	exportButton.setEnabled(true);
-	            return;
-	        } else {
-	        	setFullScreenModeAllowed(false);
-	        	setSplitModeAllowed(false);
-	        	setScaleModeAllowed(false);
-	        	buildDependentUI();
-	        	addSeparator();
-	        	playButton.setToolTipText(internationalization.getString("button.tooltip.execute"));
-	        	playButton.setEnabled(true);
-	        	add(playButton);
-	        	exportButton.setEnabled(true);
+    		if(learningUnitViewElement != null) {
+		    	if (learningUnitViewElement.getType().equals("video") || learningUnitViewElement.getType().equals("audio")) {
+		            setSplitModeAllowed(false);
+		            setFullScreenModeAllowed(learningUnitViewElement.getType().equals("video"));
+		            setScaleModeAllowed(true);
+		            buildDependentUI();
+		            playButton.setToolTipText(internationalization.getString("button.tooltip.play"));
+		            playButton.setEnabled(true);
+		            add(playButton);
+		            add(stopButton);
+		            add(pauseButton);
+		            if (!isFullScreenModeChanged) {
+		                playButton.setEnabled(!playing);
+		                stopButton.setEnabled(playing);
+		                pauseButton.setEnabled(playing);
+		            }
+		            exportButton.setEnabled(true);
+		            return;
+		        } else if (learningUnitViewElement.getType().equals("picture")) {
+		            setScaleModeAllowed(true);
+		            setSplitModeAllowed(true);
+		            setFullScreenModeAllowed(true);
+		            buildDependentUI();
+		            stopButton.setEnabled(playing);
+		            add(stopButton);
+		            exportButton.setEnabled(true);
+		            return;
+		        } else if (learningUnitViewElement.getType().equals("pdf")) {
+		            setFullScreenModeAllowed(false);
+		            setSplitModeAllowed(false);
+		            setScaleModeAllowed(false);
+		            addSeparator();
+		            // pdf specific buttons
+		            //add(prevPageButton);
+		            //add(nextPageButton);
+		            add(pageScalePlusButton);
+		            add(pageScaleMinusButton);
+		            addSeparator();
+		            add(pageScalePageWidthButton);
+		            add(pageScalePageHeightButton);
+		            add(pageScalePage100Button);
+		            stopButton.setEnabled(playing);
+		            add(stopButton);
+		            exportButton.setEnabled(true);
+		            return;
+		        } else if (learningUnitViewElement.getFolder()) {
+		            setScaleModeAllowed(false);
+		            setSplitModeAllowed(false);
+		            setFullScreenModeAllowed(false);
+		            buildDependentUI();
+		            stopButton.setEnabled(playing);
+		            add(stopButton);
+			    	exportButton.setEnabled(true);
+		            return;
+		        } else {
+		        	setFullScreenModeAllowed(false);
+		        	setSplitModeAllowed(false);
+		        	setScaleModeAllowed(false);
+		        	buildDependentUI();
+		        	addSeparator();
+		         	playButton.setToolTipText(internationalization.getString("button.tooltip.execute"));
+			       	playButton.setEnabled(true);
+			       	add(playButton);
+		        	exportButton.setEnabled(true);
+		        }
 	        }
     	} else {
     		scaleToggleButton.setEnabled(false);
