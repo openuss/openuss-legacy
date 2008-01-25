@@ -1,7 +1,9 @@
 package org.openuss.web.collaboration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -79,6 +81,7 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 	 * @return outcome
 	 * @throws LectureException
 	 */
+	@SuppressWarnings("unchecked")
 	public String editWorkspace() throws LectureException {
 		workspaceInfo = currentWorkspace();
 		if (workspaceInfo == null) {
@@ -89,10 +92,19 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 		if (workspaceInfo == null) {
 			addWarning(i18n("error_workspace_not_found"));
 			return Constants.FAILURE;
-
 		} else {
 			logger.debug("selected workspaceInfo " + workspaceInfo.getName());
 			editing = true;
+			
+			// get mapped users
+			List<CourseMemberInfo> courseMembers = courseService.getParticipants(courseInfo);
+			List<CourseMemberInfo> workspaceMembers = workspaceService.findWorkspaceMembers(workspaceInfo.getId());
+			Map<CourseMemberInfo, Boolean> map = new HashMap<CourseMemberInfo, Boolean>(courseMembers.size());
+			for (CourseMemberInfo member : courseMembers) {
+				map.put(member, workspaceMembers.contains(member) ? Boolean.TRUE : Boolean.FALSE);
+			}
+			this.memberSelection.setMap(map);
+			
 			return Constants.SUCCESS;
 		}
 	}
@@ -103,6 +115,7 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 	 * 
 	 * @return outcome
 	 */
+	@SuppressWarnings("unchecked")
 	public String saveWorkspace() throws DesktopException, LectureException {
 		logger.debug("Starting method saveWorkspace()");
 		if (workspaceInfo.getId() == null) {
@@ -113,6 +126,17 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 			addMessage(i18n("collaboration_message_add_workspace_succeed"));
 		} else {
 			workspaceService.updateWorkspace(workspaceInfo);
+			
+			// store mapping
+			List<CourseMemberInfo> courseMembers = courseService.getParticipants(courseInfo);
+			List<Long> memberIds = new ArrayList<Long>(courseMembers.size());
+			for (CourseMemberInfo member : courseMembers) {
+				if (this.memberSelection.isSelected(member)) {
+					memberIds.add(member.getId());
+				}
+			}
+			workspaceService.updateWorkspaceMembers(memberIds, workspaceInfo.getId());
+			
 			addMessage(i18n("collaboration_message_persist_workspace_succeed"));
 		}
 

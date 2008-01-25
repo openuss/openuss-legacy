@@ -18,7 +18,7 @@
 	        id="memberstable" 
 	        label="#{msg.collaboration_workspace_members_header}" 
 	        value="views$secured$collaboration$main.dataCourseMembers" 
-	        columnClasses=" col_min_center, col_max_left, col_max_left"
+	        columnClasses=" col_min_center, col_max_left, col_max_left, col_max_left"
 	        var="entry" 
 	        rows="20">  
 	      
@@ -35,12 +35,17 @@
 	        </t:column>
 	
 	        <t:column>
-	            <plexus:commandSortHeader columnName="name"> #{msg['collaboration_member_firstname']} </plexus:commandSortHeader>
+                <plexus:commandSortHeader columnName="username"> #{msg['collaboration_member_username']} </plexus:commandSortHeader>
+                <h:outputText value="#{entry.username}"/> 
+            </t:column>
+	
+	        <t:column>
+	            <plexus:commandSortHeader columnName="firstName"> #{msg['collaboration_member_firstname']} </plexus:commandSortHeader>
 	            <h:outputText value="#{entry.firstName}"/> 
 	        </t:column>
 	
 	        <t:column>
-                <plexus:commandSortHeader columnName="name"> #{msg['collaboration_member_lastname']} </plexus:commandSortHeader>
+                <plexus:commandSortHeader columnName="lastName"> #{msg['collaboration_member_lastname']} </plexus:commandSortHeader>
                 <h:outputText value="#{entry.lastName}"/>
             </t:column>
    	    </plexus:dataTable>  

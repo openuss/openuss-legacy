@@ -12,6 +12,7 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseMember;
+import org.openuss.lecture.CourseMemberInfo;
 
 /**
  * @see org.openuss.collaboration.WorkspaceService
@@ -76,6 +77,7 @@ public class WorkspaceServiceImpl extends
 	/**
 	 * @see org.openuss.collaboration.WorkspaceDocumentService#getWorkspaceMembers(java.lang.Long)
 	 */
+	@SuppressWarnings("unchecked")
 	protected java.util.List handleGetWorkspaceMembers(
 			java.lang.Long workspaceId) throws java.lang.Exception {
 		// @todo implement protected java.util.List
@@ -84,6 +86,7 @@ public class WorkspaceServiceImpl extends
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindWorkspacesByCourse(Long courseId) throws Exception {
 		Validate.notNull(courseId, "courseId cannot be null.");
@@ -111,13 +114,23 @@ public class WorkspaceServiceImpl extends
 		getWorkspaceDao().update(workspaceEntity);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindWorkspaceMembers(Long workspaceId)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Validate.notNull(workspaceId, "workspaceId cannot be null.");
+		Workspace workspace = this.getWorkspaceDao().load(workspaceId);
+		Validate.notNull(workspace, "No workspace could be found with the workspaceId " + workspaceId);
+		
+		List<CourseMemberWorkspace> cmws = this.getCourseMemberWorkspaceDao().findByWorkspace(workspace);
+		List<CourseMemberInfo> members = new ArrayList<CourseMemberInfo>(cmws.size());
+		for (CourseMemberWorkspace cmw : cmws) {
+			members.add(this.getCourseMemberDao().toCourseMemberInfo(cmw.getCourseMember()));
+		}
+		return members;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindWorkspacesByCourseAndCourseMember(Long courseId,
 			Long courseMemberId) throws Exception {
@@ -133,11 +146,30 @@ public class WorkspaceServiceImpl extends
 		return workspaces;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void handleUpdateWorkspaceMembers(List courseMemberId,
 			Long workspaceId) throws Exception {
-		// TODO Auto-generated method stub
+		logger.debug("Starting method handleUpdateWorkspaceMembers");
+		Validate.notNull(workspaceId, "Parameter workspaceId must not be null.");
+		Validate.notNull(courseMemberId, "Parameter courseMemberId must not be null.");
+
+		Workspace workspace = getWorkspaceDao().load(workspaceId);
 		
+		List<CourseMemberWorkspace> cmws = this.getCourseMemberWorkspaceDao().findByWorkspace(workspace);
+		getCourseMemberWorkspaceDao().remove(cmws);
+		
+		cmws = new ArrayList<CourseMemberWorkspace>(courseMemberId.size());		
+		for (Long id : (List<Long>)courseMemberId) {
+			CourseMember member = getCourseMemberDao().load(id); 
+			
+			CourseMemberWorkspace cmw = CourseMemberWorkspace.Factory.newInstance();
+			cmw.setCourseMember(member);
+			cmw.setWorkspace(workspace);
+			
+			cmws.add(cmw);
+		}
+		getCourseMemberWorkspaceDao().create(cmws);
 	}
 
 }
