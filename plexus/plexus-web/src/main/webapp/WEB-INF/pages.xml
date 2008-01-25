@@ -223,16 +223,12 @@
         <parameter name="workspace" value="#{workspaceInfo.id}" converterId="javax.faces.Long"/>
     </page>
     <page view-id="/views/secured/collaboration/folderedit.xhtml">
-        <securityConstraint domainObject="#{collaboration_current_folder}" permissions="#{ACL.ASSIST}"/>
     </page>
     <page view-id="/views/secured/collaboration/fileedit.xhtml">
-        <securityConstraint domainObject="#{collaboration_current_folder}" permissions="#{ACL.ASSIST}"/>
     </page>
     <page view-id="/views/secured/collaboration/addzip.xhtml">
-        <securityConstraint domainObject="#{collaboration_current_folder}" permissions="#{ACL.ASSIST}"/>
     </page>
     <page view-id="/views/secured/collaboration/remove.xhtml">
-        <securityConstraint domainObject="#{collaboration_current_folder}" permissions="#{ACL.ASSIST}"/>
     </page>
 	
 	

@@ -66,6 +66,7 @@ public class AbstractCollaborationPage extends AbstractCoursePage {
 		return documentService.getFolder(workspaceInfo, currentFolder);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<FolderInfo> getCurrentPath() {
 		logger.debug("getting current path");
 		if (currentFolder != null && currentFolder.getId() != null) {

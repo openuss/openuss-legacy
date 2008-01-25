@@ -205,7 +205,6 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				CourseMemberInfo memberInfo = courseService.getMemberInfo(courseInfo, user);
-				System.out.println(">>>>>> memberInfo: " + memberInfo + ", " + courseInfo + ", " + user);
 				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService
 						.findWorkspacesByCourseAndCourseMember(courseInfo.getId(), 
 								memberInfo.getId()));

@@ -91,6 +91,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		for(FolderInfo folder : getCurrentPath()) {
 			crumb = new BreadCrumb();
 			if (folder.isRoot()) {
+				System.out.println(">>>>>>>> workspace: " + workspaceInfo.getName());
 				crumb.setName(workspaceInfo.getName());
 				crumb.setHint(workspaceInfo.getName());
 			} else {
@@ -104,6 +105,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<FolderEntryInfo> loadFolderEntries() {
 		if (entries == null) {
 			entries = documentService.getFolderEntries(workspaceInfo, currentFolder);
@@ -111,11 +113,12 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		return entries;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String download() throws IOException {
 		logger.debug("downloading documents");
 		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
 		if (files.size() > 0) {
-			setSessionBean(Constants.COLLABORATION_SELECTED_FILEENTRIES, files);
+			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
 			response.sendRedirect(getExternalContext().getRequestContextPath() + Constants.ZIP_DOWNLOAD_URL);
 			getFacesContext().responseComplete();
@@ -218,6 +221,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		this.targetFolder = targetFolder;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<SelectItem> getFolderList() {
 		if(folderList == null){
 			//get Folder List from Document Service
@@ -276,6 +280,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		 * 
 		 * @param periods
 		 */
+		@SuppressWarnings("unchecked")
 		@Override
 		protected void sort(List<FolderEntryInfo> list) {
 			ComparatorChain chain = new ComparatorChain();

@@ -43,19 +43,19 @@
 				<t:inputFileUpload id="zipfile" storage="file" accept="*" immediate="true" styleClass="uploadField">
 					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
 				</t:inputFileUpload>
-				<o:input entity="documents_selected_file" property="created" type="full" label="#{msg.documents_selected_file_release}"/>
+				<o:input entity="collaboration_selected_file" property="created" type="full" label="#{msg.documents_selected_file_release}"/>
 			</o:block>
 			
 			<o:block>
 				<h:commandButton 
 					id="btn_save" 
-					action="#{views$secured$documents$addzip.unzip}" 
+					action="#{views$secured$collaboration$addzip.unzip}" 
 					value="#{msg.save}" 
 					title="#{msg.save_hint}" 
 					styleClass="button_save" />
 				<h:commandButton 
 					id="btn_cancel" 
-					action="documents_main" 
+					action="collaboration" 
 					value="#{msg.cancel}" 
 					styleClass="button_cancel" 
 					immediate="true" />

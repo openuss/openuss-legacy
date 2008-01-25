@@ -24,10 +24,10 @@
 					immediate="true" 
 					onchange="this.form.submit();" 
 					onclick="this.form.submit();" 
-					value="#{documents_entry_selection.state}" 
-					valueChangeListener="#{documents_entry_selection.switchSelection}"/>
+					value="#{collaboration_entry_selection.state}" 
+					valueChangeListener="#{collaboration_entry_selection.switchSelection}"/>
 			</f:facet>
-			<h:selectBooleanCheckbox value="#{documents_entry_selection.map[entry]}"/>
+			<h:selectBooleanCheckbox value="#{collaboration_entry_selection.map[entry]}"/>
 		</t:column>
 
 		<t:column> 

@@ -233,10 +233,10 @@ public class Constants {
 	public static final String COLLABORATION_MAIN_PAGE      = "collaboration";
 	public static final String COLLABORATION_WORKSPACE_PAGE   = "workspaceview";
 	public static final String COLLABORATION_CONFIRM_REMOVE_PAGE = "collaboration_confirm_remove";
-	public static final String COLLABORATION_REMOVE_FOLDERENTRY_PAGE = "collaboration_remove_folderentry";
+	public static final String COLLABORATION_REMOVE_FOLDERENTRY_PAGE = "collaboration_remove_folderentries";
 	public static final String COLLABORATION_EDIT_FOLDER_PAGE = "collaboration_edit_folder";
 	public static final String COLLABORATION_EDIT_FILEENTRY_PAGE = "collaboration_edit_file";
-	public static final String COLLABORATION_FOLDERENTRY_SELECTION = "collaboration_folderentry_selection";
+	public static final String COLLABORATION_FOLDERENTRY_SELECTION = "collaboration_entry_selection";
 	public static final String COLLABORATION_SELECTED_FILEENTRY = "collaboration_selected_fileentry";
 	public static final String COLLABORATION_SELECTED_FOLDERENTRIES = "collaboration_selected_folderentries";
 	public static final String COLLABORATION_SELECTED_FILEENTRIES = "collaboration_selected_fileentries";
