@@ -32,6 +32,10 @@ public class AbstractCollaborationPage extends AbstractCoursePage {
 	@Override
 	public void prerender() throws Exception {
 		super.prerender();
+		
+		if (this.workspaceInfo != null && this.workspaceInfo.getId() != null) {
+			this.workspaceInfo = workspaceService.getWorkspace(workspaceInfo.getId());
+		}
 	}
 	
 	public WorkspaceInfo getWorkspaceInfo() {

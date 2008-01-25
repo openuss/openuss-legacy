@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -28,9 +29,15 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 	
 	/** The datamodel for all workspaces. */
 	private LocalDataModelWorkspaces dataWorkspaces;
+	
+	/** The datamodel for member mapping. */
+	private LocalDataModelCourseMembers dataCourseMembers;
 
 	/** If <code>true</code> the page is in editing mode. */
 	private Boolean editing = false;
+	
+	@Property(value = "#{" + Constants.COLLABORATION_WORKSPACE_MEMBER_SELECTION + "}")
+	private WorkspaceMemberSelection memberSelection;
 	
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
@@ -193,6 +200,23 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 		this.dataMappedWorkspaces = dataMappedWorkspaces;
 	}
 	
+	public WorkspaceMemberSelection getMemberSelection() {
+		return memberSelection;
+	}
+	public void setMemberSelection(WorkspaceMemberSelection memberSelection) {
+		this.memberSelection = memberSelection;
+	}
+	
+	public LocalDataModelCourseMembers getDataCourseMembers() {
+		if (dataCourseMembers == null) {
+			this.dataCourseMembers = new LocalDataModelCourseMembers();
+		}
+		return dataCourseMembers;
+	}
+	public void setDataCourseMembers(LocalDataModelCourseMembers dataCourseMembers) {
+		this.dataCourseMembers = dataCourseMembers;
+	}	
+	
 	/////// Inner classes ////////////////////////////////////////////////////
 	
 	private class LocalDataModelMappedWorkspaces extends AbstractPagedTable<WorkspaceInfo> {
@@ -230,6 +254,25 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 				
 				sort(workspaces);
 				page = new DataPage<WorkspaceInfo>(workspaces.size(), 0, workspaces);
+			}
+			return page;
+		}
+	}
+	
+	private class LocalDataModelCourseMembers extends AbstractPagedTable<CourseMemberInfo> {
+		private static final long serialVersionUID = -6289875618529435428L;
+
+		private DataPage<CourseMemberInfo> page;
+
+		@Override
+		@SuppressWarnings( { "unchecked" })
+		public DataPage<CourseMemberInfo> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				List<CourseMemberInfo> courseMembers = new ArrayList<CourseMemberInfo>(courseService
+						.getParticipants(courseInfo));
+				
+				sort(courseMembers);
+				page = new DataPage<CourseMemberInfo>(courseMembers.size(), 0, courseMembers);
 			}
 			return page;
 		}

@@ -206,10 +206,15 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     <managed-bean>
-        <managed-bean-name>collaboration_folderentry_selection</managed-bean-name>
+        <managed-bean-name>collaboration_entry_selection</managed-bean-name>
         <managed-bean-class>org.openuss.web.documents.FolderEntrySelection</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>collaboration_member_selection</managed-bean-name>
+        <managed-bean-class>org.openuss.web.collaboration.WorkspaceMemberSelection</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>    
     
     <managed-bean>
         <managed-bean-name>workspace</managed-bean-name>

@@ -236,6 +236,7 @@ public class Constants {
 	public static final String COLLABORATION_REMOVE_FOLDERENTRY_PAGE = "collaboration_remove_folderentries";
 	public static final String COLLABORATION_EDIT_FOLDER_PAGE = "collaboration_edit_folder";
 	public static final String COLLABORATION_EDIT_FILEENTRY_PAGE = "collaboration_edit_file";
+	public static final String COLLABORATION_WORKSPACE_MEMBER_SELECTION = "collaboration_member_selection";
 	public static final String COLLABORATION_FOLDERENTRY_SELECTION = "collaboration_entry_selection";
 	public static final String COLLABORATION_SELECTED_FILEENTRY = "collaboration_selected_fileentry";
 	public static final String COLLABORATION_SELECTED_FOLDERENTRIES = "collaboration_selected_folderentries";

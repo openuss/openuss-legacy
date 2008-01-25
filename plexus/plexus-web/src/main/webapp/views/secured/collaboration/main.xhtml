@@ -36,9 +36,9 @@
 	  		
   			<h:form id="papersForm">
 				<ui:include src="workspacetable.xhtml"/>
-				
+				 
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
-					<c:if test="#{!views$secured$collaboration$main.editing}">	
+			 		<c:if test="#{!views$secured$collaboration$main.editing}">	
 						<o:block>
 							<h:commandButton 
 							    id="addWorkspace"
