@@ -226,5 +226,12 @@
         <managed-bean-class>org.openuss.collaboration.WorkspaceInfo</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    
+    <!--  Wiki -->   
+    <managed-bean>
+        <managed-bean-name>WikiSiteVersionInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.wiki.WikiSiteVersionInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 
 </faces-config>

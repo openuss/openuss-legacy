@@ -5,6 +5,11 @@
  */
 package org.openuss.wiki;
 
+import java.util.List;
+
+import org.apache.commons.lang.Validate;
+import org.openuss.lecture.Course;
+
 /**
  * @see org.openuss.wiki.WikiService
  */
@@ -18,8 +23,33 @@ public class WikiServiceImpl
     protected void handleCreateWikiSite(org.openuss.wiki.WikiSiteInfo wikiSiteInfo)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleCreateWikiSite(org.openuss.wiki.WikiSiteInfo wikiSiteInfo)
-        throw new java.lang.UnsupportedOperationException("org.openuss.wiki.WikiService.handleCreateWikiSite(org.openuss.wiki.WikiSiteInfo wikiSiteInfo) Not implemented!");
+    	Validate.notNull(wikiSiteInfo, "Parameter wikiSiteInfo cannot be null.");
+		Validate.notNull(wikiSiteInfo.getCourseId(), "getCourseId cannot be null.");
+		
+		// Transform VO to entity
+		WikiSite wikiSiteEntity = this.getWikiSiteDao().wikiSiteInfoToEntity(wikiSiteInfo);
+		Validate.notNull(wikiSiteEntity, "Cannot transform wikiSiteInfo to entity.");
+
+		// Add wiki to course
+		Course course = this.getCourseDao().load(wikiSiteInfo.getCourseId());
+		course.getWikiPages().add(wikiSiteEntity);
+		wikiSiteEntity.setCourse(course);
+		
+		// Save Entity
+		this.getWikiSiteDao().create(wikiSiteEntity);
+		Validate.notNull(wikiSiteEntity, "Id of wikiSite cannot be null.");
+		
+		wikiSiteInfo.setId(wikiSiteEntity.getId());
+
+		// add object identity to security
+		getSecurityService().createObjectIdentity(wikiSiteEntity, wikiSiteEntity.getCourse());
+		
+		this.getCourseDao().update(course);
+
+		// Set Security
+	//FIXME: don't know what this does:	this.getSecurityService().createObjectIdentity(workspaceEntity, workspaceEntity.getCourseType());
+		
+//		updateAccessTypePermission(workspaceEntity);
     }
 
     /**
@@ -48,8 +78,33 @@ public class WikiServiceImpl
     protected void handleCreateWikiSiteVersion(org.openuss.wiki.WikiSiteVersionInfo wikiSiteVersionInfo)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleCreateWikiSiteVersion(org.openuss.wiki.WikiSiteVersionInfo wikiSiteVersionInfo)
-        throw new java.lang.UnsupportedOperationException("org.openuss.wiki.WikiService.handleCreateWikiSiteVersion(org.openuss.wiki.WikiSiteVersionInfo wikiSiteVersionInfo) Not implemented!");
+    	Validate.notNull(wikiSiteVersionInfo, "Parameter wikiSiteVersionInfo cannot be null.");
+		Validate.notNull(wikiSiteVersionInfo.getWikiSiteId(), "getWikiSiteId cannot be null.");
+		
+		// Transform VO to entity
+		WikiSiteVersion wikiSiteVersionEntity = this.getWikiSiteVersionDao().wikiSiteVersionInfoToEntity(wikiSiteVersionInfo);
+		Validate.notNull(wikiSiteVersionEntity, "Cannot transform wikiSiteInfo to entity.");
+
+		// Add wiki to course
+		WikiSite site = this.getWikiSiteDao().load(wikiSiteVersionInfo.getWikiSiteId());
+		site.getWikiPageVersions().add(wikiSiteVersionEntity);
+		wikiSiteVersionEntity.setWikiSite(site);
+		
+		// Save Entity
+		this.getWikiSiteVersionDao().create(wikiSiteVersionEntity);
+		Validate.notNull(wikiSiteVersionEntity, "Id of wikiSiteVersion cannot be null.");
+		
+		wikiSiteVersionInfo.setId(wikiSiteVersionEntity.getId());
+
+		// add object identity to security
+		getSecurityService().createObjectIdentity(wikiSiteVersionEntity, wikiSiteVersionEntity.getWikiSite());
+		
+		this.getWikiSiteDao().update(site);
+
+		// Set Security
+	//FIXME: don't know what this does:	this.getSecurityService().createObjectIdentity(workspaceEntity, workspaceEntity.getCourseType());
+		
+//		updateAccessTypePermission(workspaceEntity);
     }
 
     /**
@@ -68,8 +123,8 @@ public class WikiServiceImpl
     protected org.openuss.wiki.WikiSiteInfo handleGetWikiSite(java.lang.Long wikiSiteId)
         throws java.lang.Exception
     {
-        // @todo implement protected org.openuss.wiki.WikiSiteInfo handleGetWikiSite(java.lang.Long wikiSiteId)
-        return null;
+    	Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!");
+		return (WikiSiteInfo)getWikiSiteDao().load(WikiSiteDao.TRANSFORM_WIKISITEINFO, wikiSiteId);
     }
 
     /**
@@ -78,8 +133,8 @@ public class WikiServiceImpl
     protected org.openuss.wiki.WikiSiteVersionInfo handleGetWikiSiteVersion(java.lang.Long wikiSiteVersionId)
         throws java.lang.Exception
     {
-        // @todo implement protected org.openuss.wiki.WikiSiteVersionInfo handleGetWikiSiteVersion(java.lang.Long wikiSiteVersionId)
-        return null;
+    	Validate.notNull(wikiSiteVersionId, "Parameter wikiSiteVersionId must not be null!");
+		return (WikiSiteVersionInfo)getWikiSiteVersionDao().load(WikiSiteVersionDao.TRANSFORM_WIKISITEVERSIONINFO, wikiSiteVersionId);
     }
 
     /**
@@ -88,8 +143,17 @@ public class WikiServiceImpl
     protected org.openuss.wiki.WikiSiteVersionInfo handleGetNewestWikiSiteVersion(java.lang.Long wikiSiteId)
         throws java.lang.Exception
     {
-        // @todo implement protected org.openuss.wiki.WikiSiteVersionInfo handleGetNewestWikiSiteVersion(java.lang.Long wikiSiteId)
-        return null;
+    	Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!");
+    	WikiSite site = getWikiSiteDao().load(wikiSiteId);
+    	Validate.notNull(site, "No wikiSite found for wikiSiteId:" + wikiSiteId);
+    	
+    	String query = "from org.openuss.wiki.WikiSiteVersion as f where f.wikiSite = :wikiSite order by f.creationDate desc";
+    	List<WikiSiteVersionInfo> list = getWikiSiteVersionDao().findByWikiSite(WikiSiteVersionDao.TRANSFORM_WIKISITEVERSIONINFO, query, site);
+    	if (list.isEmpty()) {
+    		return null;
+    	} else {
+    		return list.get(0);
+    	}
     }
 
     /**
@@ -112,21 +176,14 @@ public class WikiServiceImpl
         return null;
     }
 
-    /**
-     * @see org.openuss.wiki.WikiService#getWikiSiteStartpageByCourse(java.lang.Long)
-     */
-    protected org.openuss.wiki.WikiSiteInfo handleGetWikiSiteStartpageByCourse(java.lang.Long courseId)
-        throws java.lang.Exception
-    {
-        // @todo implement protected org.openuss.wiki.WikiSiteInfo handleGetWikiSiteStartpageByCourse(java.lang.Long courseId)
-        return null;
-    }
-
 	@Override
 	protected WikiSiteInfo handleFindWikiSiteByCourseAndName(Long courseId,
 			String siteName) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Validate.notNull(courseId, "Parameter courseId must not be null!");
+		Course course = getCourseDao().load(courseId);
+		Validate.notNull(course, "No course found for courseId:" + courseId);
+		
+		return (WikiSiteInfo)getWikiSiteDao().findByCourseAndName(WikiSiteDao.TRANSFORM_WIKISITEINFO, course, siteName);
 	}
 
 	@Override

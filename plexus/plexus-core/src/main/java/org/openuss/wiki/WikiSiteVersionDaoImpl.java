@@ -39,17 +39,13 @@ public class WikiSiteVersionDaoImpl
      */
     private org.openuss.wiki.WikiSiteVersion loadWikiSiteVersionFromWikiSiteVersionInfo(org.openuss.wiki.WikiSiteVersionInfo wikiSiteVersionInfo)
     {
-        // @todo implement loadWikiSiteVersionFromWikiSiteVersionInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.wiki.loadWikiSiteVersionFromWikiSiteVersionInfo(org.openuss.wiki.WikiSiteVersionInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.wiki.WikiSiteVersion wikiSiteVersion = this.load(wikiSiteVersionInfo.getId());
-        if (wikiSiteVersion == null)
-        {
-            wikiSiteVersion = org.openuss.wiki.WikiSiteVersion.Factory.newInstance();
+    	WikiSiteVersion wikiSiteVersion = null;
+    	if (wikiSiteVersionInfo.getId() == null) {
+    		wikiSiteVersion = org.openuss.wiki.WikiSiteVersion.Factory.newInstance();
+    	} else {
+    		wikiSiteVersion = this.load(wikiSiteVersionInfo.getId());
         }
         return wikiSiteVersion;
-        */
     }
 
     

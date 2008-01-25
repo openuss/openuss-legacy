@@ -39,17 +39,14 @@ public class WikiSiteDaoImpl
      */
     private org.openuss.wiki.WikiSite loadWikiSiteFromWikiSiteInfo(org.openuss.wiki.WikiSiteInfo wikiSiteInfo)
     {
-        // @todo implement loadWikiSiteFromWikiSiteInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.wiki.loadWikiSiteFromWikiSiteInfo(org.openuss.wiki.WikiSiteInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.wiki.WikiSite wikiSite = this.load(wikiSiteInfo.getId());
-        if (wikiSite == null)
-        {
-            wikiSite = org.openuss.wiki.WikiSite.Factory.newInstance();
+    	
+        WikiSite wikiSite = null;
+        if (wikiSiteInfo.getId() == null) {
+        	wikiSite = org.openuss.wiki.WikiSite.Factory.newInstance();
+        } else {
+            wikiSite = this.load(wikiSiteInfo.getId());
         }
         return wikiSite;
-        */
     }
 
     

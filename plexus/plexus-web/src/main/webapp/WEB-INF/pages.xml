@@ -231,5 +231,12 @@
     <page view-id="/views/secured/collaboration/remove.xhtml">
     </page>
 	
-	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            Wiki
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+    <page view-id="/views/secured/wiki/*">
+        <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
+        <parameter name="page" value="#{currentSiteInfo.id}" converterId="javax.faces.Long"/> 
+    </page>    
 </pages>

@@ -36,7 +36,7 @@ public class WorkspaceServiceImpl extends
 		Workspace workspaceEntity = this.getWorkspaceDao().workspaceInfoToEntity(workspaceInfo);
 		Validate.notNull(workspaceEntity, "Cannot transform workspaceInfo to entity.");
 
-		// Add Course to CourseType and Period
+		// Add workspace to course
 		Course course = this.getCourseDao().load(workspaceInfo.getCourseId());
 		course.getWorkspaces().add(workspaceEntity);
 		workspaceEntity.setCourse(course);
