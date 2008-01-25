@@ -13,6 +13,7 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
@@ -22,8 +23,11 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 	
 	public static final Logger logger = Logger.getLogger(CollaborationMainPage.class);
 	
+	/** The datamodel for all mapped workspaces for this user. */
+	private LocalDataModelMappedWorkspaces dataMappedWorkspaces;
+	
 	/** The datamodel for all workspaces. */
-	private LocalDataModelWorkspaces dataWorkspaces = new LocalDataModelWorkspaces();
+	private LocalDataModelWorkspaces dataWorkspaces;
 
 	/** If <code>true</code> the page is in editing mode. */
 	private Boolean editing = false;
@@ -147,7 +151,6 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 	public String selectWorkspace() {
 		logger.debug("Starting method selectWorkspace");
 		WorkspaceInfo workspace = currentWorkspace();
-		System.out.println(">>>>>>>>>>>> select workspace: " + workspace);
 		logger.debug("Returning to method selectWorkspace");
 		logger.debug(workspace.getId());
 		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, workspace);
@@ -170,13 +173,49 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 	}
 
 	public LocalDataModelWorkspaces getDataWorkspaces() {
+		if (dataWorkspaces == null) {
+			this.dataWorkspaces = new LocalDataModelWorkspaces();
+		}
 		return dataWorkspaces;
 	}
 	public void setDataWorkspaces(LocalDataModelWorkspaces dataWorkspaces) {
 		this.dataWorkspaces = dataWorkspaces;
 	}
 	
+	public LocalDataModelMappedWorkspaces getDataMappedWorkspaces() {
+		if (dataMappedWorkspaces == null) {
+			this.dataMappedWorkspaces = new LocalDataModelMappedWorkspaces();
+		}
+		return dataMappedWorkspaces;
+	}
+	public void setDataMappedWorkspaces(
+			LocalDataModelMappedWorkspaces dataMappedWorkspaces) {
+		this.dataMappedWorkspaces = dataMappedWorkspaces;
+	}
+	
 	/////// Inner classes ////////////////////////////////////////////////////
+	
+	private class LocalDataModelMappedWorkspaces extends AbstractPagedTable<WorkspaceInfo> {
+		private static final long serialVersionUID = -6289875618529435428L;
+
+		private DataPage<WorkspaceInfo> page;
+
+		@Override
+		@SuppressWarnings( { "unchecked" })
+		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				CourseMemberInfo memberInfo = courseService.getMemberInfo(courseInfo, user);
+				System.out.println(">>>>>> memberInfo: " + memberInfo + ", " + courseInfo + ", " + user);
+				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService
+						.findWorkspacesByCourseAndCourseMember(courseInfo.getId(), 
+								memberInfo.getId()));
+				
+				sort(workspaces);
+				page = new DataPage<WorkspaceInfo>(workspaces.size(), 0, workspaces);
+			}
+			return page;
+		}
+	}
 	
 	private class LocalDataModelWorkspaces extends AbstractPagedTable<WorkspaceInfo> {
 		private static final long serialVersionUID = -6289875618529435428L;
@@ -196,5 +235,5 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 			return page;
 		}
 	}
-	
+
 }

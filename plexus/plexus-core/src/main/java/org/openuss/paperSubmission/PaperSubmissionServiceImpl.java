@@ -6,6 +6,7 @@
 package org.openuss.paperSubmission;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @see org.openuss.paperSubmission.PaperSubmissionService
@@ -165,6 +166,20 @@ public class PaperSubmissionServiceImpl
 	protected Boolean handleIsExamDeadlineExpired(Long examId) throws Exception {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	protected List handleFindActiveExamsByCourseMember(Long courseMemberId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void handleUpdatePaperSubmission(
+			PaperSubmissionInfo paperSubmissionInfo) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

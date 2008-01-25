@@ -10,12 +10,8 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-import org.openuss.discussion.Forum;
-import org.openuss.discussion.ForumWatch;
 import org.openuss.lecture.Course;
-import org.openuss.lecture.CourseDao;
-import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.CourseType;
+import org.openuss.lecture.CourseMember;
 
 /**
  * @see org.openuss.collaboration.WorkspaceService
@@ -78,21 +74,6 @@ public class WorkspaceServiceImpl extends
 	}
 
 	/**
-	 * @see org.openuss.collaboration.WorkspaceDocumentService#saveWorkspaceMembers(java.util.List,
-	 *      java.lang.Long)
-	 */
-	protected void handleSaveWorkspaceMembers(java.util.List userId,
-			java.lang.Long workspaceId) throws java.lang.Exception {
-		// @todo implement protected void
-		// handleSaveWorkspaceMembers(java.util.List userId, java.lang.Long
-		// workspaceId)
-		// throw new
-		// java.lang.UnsupportedOperationException("org.openuss.collaboration.WorkspaceDocumentService.handleSaveWorkspaceMembers(java.util.List
-		// userId, java.lang.Long workspaceId) Not implemented!");
-		System.out.println("handleRemoveWorkspace called");
-	}
-
-	/**
 	 * @see org.openuss.collaboration.WorkspaceDocumentService#getWorkspaceMembers(java.lang.Long)
 	 */
 	protected java.util.List handleGetWorkspaceMembers(
@@ -128,6 +109,35 @@ public class WorkspaceServiceImpl extends
 		Workspace workspaceEntity = getWorkspaceDao().workspaceInfoToEntity(workspaceInfo);
 		// Update Course
 		getWorkspaceDao().update(workspaceEntity);
+	}
+
+	@Override
+	protected List handleFindWorkspaceMembers(Long workspaceId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List handleFindWorkspacesByCourseAndCourseMember(Long courseId,
+			Long courseMemberId) throws Exception {
+		Validate.notNull(courseId, "courseId cannot be null.");
+		CourseMember courseMember = this.getCourseMemberDao().load(courseMemberId);
+		Validate.notNull(courseMember, "No courseMember could be found with the courseMemberId " + courseId);
+		
+		List<CourseMemberWorkspace> cmws = this.getCourseMemberWorkspaceDao().findByCourseMember(CourseMemberWorkspaceDao.TRANSFORM_NONE, courseMember);
+		List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>();
+		for (CourseMemberWorkspace cmw : cmws) {
+			workspaces.add(this.getWorkspaceDao().toWorkspaceInfo(cmw.getWorkspace()));
+		}
+		return workspaces;
+	}
+
+	@Override
+	protected void handleUpdateWorkspaceMembers(List courseMemberId,
+			Long workspaceId) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
