@@ -39,7 +39,7 @@
 				<o:input entity="collaboration_selected_file" property="name" maxlength="100" />
 				<o:input entity="collaboration_selected_file" property="description" type="textarea" />
 
-				<f:subview rendered="${!empty documents_selected_file.fileName}">
+				<f:subview rendered="${!empty collaboration_selected_file.fileName}">
 					<div class="content_font_normal">
 						<h:graphicImage	value="/images/filetypes/#{sessionScope.collaboration_selected_file.extension}.gif" />
 						&#160;<h:outputText value="#{collaboration_selected_file.fileName}"/>
@@ -59,9 +59,7 @@
 				</t:inputFileUpload>
 				<h:message id="fileError" for="file" styleClass="field_error" showDetail="true" showSummary="false" />
 
-				<o:input entity="documents_selected_file" property="fileName" maxlength="100"/>
-				
-				<o:input entity="documents_selected_file" property="created" required="true" label="#{msg.documents_selected_file_release}" type="full"/>
+				<o:input entity="collaboration_selected_file" property="fileName" maxlength="100"/>
 			</o:block>
 
 			<o:block>
