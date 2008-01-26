@@ -115,7 +115,6 @@ public class FLGAudioManager extends FSLAbstractLearningUnitViewManager {
             contextDependentActivationButton = new
                 FSLLearningUnitViewContextDependentActivationButton(loadImage("contextDependentActivationButtonNoContent.gif"));
             contextDependentActivationButton.setToolTipText(internationalization.getString("button.contextDependentActivation.toolTipTextAddNote"));
-            contextDependentActivationButton.setEnabled(true);
             //creates and initiates the contents-panel
             progressStatus.setStatusValue(progressStatus.getStatusValue() + (int)(stepSize / 5.));
             elementsContentsPanel = new FLGAudioElementsContentsPanel();
@@ -501,12 +500,26 @@ public class FLGAudioManager extends FSLAbstractLearningUnitViewManager {
             String activatedManagerId = event.getLearningUnitViewManagerId();
             FSLLearningUnitViewManager activatedManager =
                 learningUnitViewsActivator.getLearningUnitViewManager(activatedManagerId);
-            contextDependentActivationButton.setEnabled(activatedManagerId != getLearningUnitViewManagerId());
+           
+            	contextDependentActivationButton.setEnabled(false);
+           
             //ask for context-dependent Element and refresh the CDI-button
             refreshContextDependentInteractionButton(activatedManager.getActiveLearningUnitViewElementId() +
                 "", activatedManagerId);
         }
-
+        
+        public void learningUnitViewElementActivated(FSLLearningUnitViewEvent event) {
+            String managerId = event.getLearningUnitViewManagerId();
+            String elementId = event.getActiveLearningUnitViewElementId();
+            if (hasContextDependentElement(elementId, managerId)) {
+                contextDependentActivationButton.setImage(loadImage("contextDependentActivationButtonContentExisting.gif"));
+            } else {
+                contextDependentActivationButton.setImage(loadImage("contextDependentActivationButtonNoContent.gif"));
+            }
+            contextDependentActivationButton.setEnabled(true);
+            contextDependentActivationButton.repaint();
+        }
+        
         public void learningUnitViewElementsRemoved(FSLLearningUnitViewEvent event) {
             String[] removedElementIds = event.getLearningUnitViewElementIds();
             String removedElementsViewManager = event.getLearningUnitViewManagerId();
