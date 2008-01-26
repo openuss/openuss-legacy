@@ -331,7 +331,9 @@ public class FLGMediaPoolElementInteractionPanel extends FSLAbstractLearningUnit
             FLGMediaPoolElement element =
                 (FLGMediaPoolElement)learningUnitViewElementsManager.getLearningUnitViewElement(
                     learningUnitViewManager.getActiveLearningUnitViewElementId(), false);
-        	rebuildButtonStatus(element, true);
+            if(element != null) {
+            	rebuildButtonStatus(element, true);
+            }
           }
     }
     
