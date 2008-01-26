@@ -60,7 +60,6 @@ public class FLGNotesManager extends FSLAbstractLearningUnitViewManager {
                 }
             });
             contextDependentActivationButton.setToolTipText(internationalization.getString("button.contextDependentActivation.toolTipTextAddNote"));
-            contextDependentActivationButton.setEnabled(false);
             progressStatus.setStatusValue(progressStatus.getStatusValue() + (int)(stepSize / 5.));
             elementsContentsPanel = new FLGNotesElementsContentsPanel();
             elementsContentsPanel.init(this, learningUnitEventGenerator, editMode);
@@ -96,12 +95,10 @@ public class FLGNotesManager extends FSLAbstractLearningUnitViewManager {
     }
 
     private boolean hasContextDependentElement(String targetLearningUnitViewElementId,
-        String targetLearningUnitViewManagerId) {
-            String id = targetLearningUnitViewElementId + "@" + targetLearningUnitViewManagerId;
-            if (getLearningUnitViewElementsManager() != null &&
-                getLearningUnitViewElementsManager().getLearningUnitViewElement(id, false) != null)
-                    return true;
-            return false;
+    		String targetLearningUnitViewManagerId) {
+       	String id = targetLearningUnitViewElementId + "@" + targetLearningUnitViewManagerId;
+          if (getLearningUnitViewElementsManager() != null && getLearningUnitViewElementsManager().getLearningUnitViewElement(id, false) != null) return true;
+        return false;
     }
 
     // override FSLAbstractLearningUnitViewManager methods
@@ -367,27 +364,32 @@ public class FLGNotesManager extends FSLAbstractLearningUnitViewManager {
                 noteExists = false;
                 contextDependentActivationButton.setImage(loadImage("contextDependentActivationButtonNoContent.gif"));
             }
+            contextDependentActivationButton.setEnabled(true);
             contextDependentActivationButton.repaint();
         }
 
         public void learningUnitViewActivated(FSLLearningUnitViewEvent event) {
-            String activatedManagerId = event.getLearningUnitViewManagerId();
-            FSLLearningUnitViewManager activatedManager =
-                learningUnitViewsActivator.getLearningUnitViewManager(activatedManagerId);
-            contextDependentActivationButton.setEnabled(activatedManager.getActiveLearningUnitViewElementId() != null);
-            if (hasContextDependentElement(activatedManager.getActiveLearningUnitViewElementId(), activatedManagerId)) {
-                noteExists = true;
-                contextDependentActivationButton.setImage(loadImage("contextDependentActivationButtonContentExisting.gif"));
-                contextDependentActivationButton.setToolTipText(internationalization.getString("button.contextDependentActivation.toolTipTextViewNote"));
-            }
-            else {
-                noteExists = false;
-                contextDependentActivationButton.setImage(loadImage("contextDependentActivationButtonNoContent.gif"));
-                contextDependentActivationButton.setToolTipText(internationalization.getString("button.contextDependentActivation.toolTipTextAddNote"));
-            }
-            contextDependentActivationButton.repaint();
+            noteExists = false;
+            contextDependentActivationButton.setImage(loadImage("contextDependentActivationButtonNoContent.gif"));
+            contextDependentActivationButton.setToolTipText(internationalization.getString("button.contextDependentActivation.toolTipTextAddNote"));
+           	contextDependentActivationButton.setEnabled(false);
+        	contextDependentActivationButton.repaint();
         }
 
+        public void learningUnitViewElementActivated(FSLLearningUnitViewEvent event) {
+            String managerId = event.getLearningUnitViewManagerId();
+            String elementId = event.getActiveLearningUnitViewElementId();
+            if (hasContextDependentElement(elementId, managerId)) {
+                noteExists = true;
+                contextDependentActivationButton.setImage(loadImage("contextDependentActivationButtonContentExisting.gif"));
+            } else {
+                noteExists = false;
+                contextDependentActivationButton.setImage(loadImage("contextDependentActivationButtonNoContent.gif"));
+            }
+            contextDependentActivationButton.setEnabled(true);
+            contextDependentActivationButton.repaint();
+        }
+        
         public void learningUnitViewDeactivated(FSLLearningUnitViewEvent event) {
             if (event.getLearningUnitViewManagerId().equals(learningUnitViewManagerId)) {
                 learningUnitsManager.enterEditMode(false);
