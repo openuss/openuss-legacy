@@ -415,6 +415,13 @@ abstract class FLGMediaPoolAbstractElementContentPanel extends FSLAbstractLearni
         
         public void learningUnitViewElementActivated(FSLLearningUnitViewEvent event) {
             activeLearningUnitViewElementId = event.getActiveLearningUnitViewElementId();
+            FLGMediaPoolElement element = (FLGMediaPoolElement)learningUnitViewElementsManager.getLearningUnitViewElement(activeLearningUnitViewElementId, false);
+            if (element.getBackgroundColor() != null) {
+            	presentBGColor = new Color(Integer.valueOf(element.getBackgroundColor())); 
+            } else {
+            	// default color
+            	presentBGColor = (Color)UIManager.get("FSLMainFrameColor1");
+            }
             buildDependentUI(false);
         }
     }
