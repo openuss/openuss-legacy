@@ -304,7 +304,9 @@ abstract public class FSLAbstractLearningUnitViewElementsContentsPanel extends J
             public void learningUnitViewActivated(FSLLearningUnitViewEvent event) {
                 if (event.getLearningUnitViewManagerId().equals(learningUnitViewManager.getLearningUnitViewManagerId())) {
                     viewIsActive = true;
-                    buildDependentUI(true, false);
+                    //buildDependentUI(true, false);
+                    topContentPanelContainer.removeAll();
+                    bottomContentPanelContainer.removeAll();
                 }
             }
 

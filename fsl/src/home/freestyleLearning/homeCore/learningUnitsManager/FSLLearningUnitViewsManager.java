@@ -120,7 +120,9 @@ public class FSLLearningUnitViewsManager implements FSLLearningUnitViewsActivato
         boolean followingHyperlink) {
             FSLLearningUnitViewManager lastSelectedLearningUnitViewManager = this.activeLearningUnitViewManager;
             String elementIdToSelect = null;
+            
             // activate one and only element (if only)
+            /**
             if (activeLearningUnitViewManager != null) {
                 FSLLearningUnitViewElementsManager activeLearningUnitViewElementsManager =
                     activeLearningUnitViewManager.getLearningUnitViewElementsManager(learningUnitsActivator.getActiveLearningUnitId());
@@ -132,16 +134,15 @@ public class FSLLearningUnitViewsManager implements FSLLearningUnitViewsActivato
                         elementIdToSelect = activeLearningUnitViewElementIds[0];
                     }
                 }
-            }
+            }**/
+            
             // select element with same label as last selected element
             if (!followingHyperlink && automaticSelectionEnabled && lastSelectedLearningUnitViewManager != null) {
                 String lastSelectedElementTitle = null;
                 String lastSelectedParentElementTitle = null;
                 String lastSelectedElementId = lastSelectedLearningUnitViewManager.getActiveLearningUnitViewElementId();
-                if (lastSelectedElementId != null &&
-                    lastSelectedLearningUnitViewManager.getLearningUnitViewElementsManager() != null) {
-                        FSLLearningUnitViewElement lastSelectedElement =
-                            lastSelectedLearningUnitViewManager.getLearningUnitViewElementsManager().getLearningUnitViewElement(lastSelectedElementId, false);
+                if (lastSelectedElementId != null && lastSelectedLearningUnitViewManager.getLearningUnitViewElementsManager() != null) {
+                        FSLLearningUnitViewElement lastSelectedElement = lastSelectedLearningUnitViewManager.getLearningUnitViewElementsManager().getLearningUnitViewElement(lastSelectedElementId, false);
                         if (lastSelectedElement != null) {
                             lastSelectedElementTitle = lastSelectedElement.getTitle();
                             FSLLearningUnitViewElement lastSelectedParentElement =
@@ -171,20 +172,17 @@ public class FSLLearningUnitViewsManager implements FSLLearningUnitViewsActivato
                             }
                             if (lastSelectedParentElementTitle != null) {
                                 if (lastSelectedElementTitle != null &&
-                                    FLGUtilities.equalsIgnoreCaseIgnoreLeadingNumbers(activeElementTitle, lastSelectedElementTitle) &&
-                                    activeParentElementTitle != null &&
-                                    FLGUtilities.equalsIgnoreCaseIgnoreLeadingNumbers(activeParentElementTitle,
-                                    lastSelectedParentElementTitle)) {
-                                        elementIdToSelect = activeLearningUnitViewElementIds[i];
+                                    FLGUtilities.equalsIgnoreCaseIgnoreLeadingNumbers(activeElementTitle, lastSelectedElementTitle) && activeParentElementTitle != null &&
+                                    FLGUtilities.equalsIgnoreCaseIgnoreLeadingNumbers(activeParentElementTitle, lastSelectedParentElementTitle)) {
+                                        //elementIdToSelect = activeLearningUnitViewElementIds[i];
                                         break;
                                 }
                             }
                             else {
                                 if (lastSelectedElementTitle != null &&
-                                    FLGUtilities.equalsIgnoreCaseIgnoreLeadingNumbers(activeElementTitle, lastSelectedElementTitle) &&
-                                    activeParentElementTitle == null) {
-                                        elementIdToSelect = activeLearningUnitViewElementIds[i];
-                                        break;
+                                    FLGUtilities.equalsIgnoreCaseIgnoreLeadingNumbers(activeElementTitle, lastSelectedElementTitle) && activeParentElementTitle == null) {
+                                    		//elementIdToSelect = activeLearningUnitViewElementIds[i];
+                                        	break;
                                 }
                             }
                         }
@@ -197,9 +195,13 @@ public class FSLLearningUnitViewsManager implements FSLLearningUnitViewsActivato
                     activeLearningUnitViewManager.activate(followingHyperlink);
                 }
             }
+            
+            
             if (elementIdToSelect != null) {
                 activeLearningUnitViewManager.setActiveLearningUnitViewElementId(elementIdToSelect, null);
             }
+            
+            
             activeLearningUnitViewManager.setCurrentUserData(userName, userPassword);
             buildDependentUI(false, false);
             learningUnitsManager.updateMenuItems();
@@ -533,6 +535,8 @@ public class FSLLearningUnitViewsManager implements FSLLearningUnitViewsActivato
     }
 
     private void buildLearningUnitViewsContextDependentActivationButtonPanel() {
+    	
+    	
         if (learningUnitViewManagersOfCurrentLearningUnit != null) {
             if (contextDependentActivationButtonsOfCurrentLearningUnit != null) {
                 for (int i = 0; i < contextDependentActivationButtonsOfCurrentLearningUnit.size(); i++) {
@@ -548,9 +552,11 @@ public class FSLLearningUnitViewsManager implements FSLLearningUnitViewsActivato
                         contextDependentActivationButton.setActionCommand(learningUnitViewManagersOfCurrentLearningUnit[i].getLearningUnitViewManagerId());
                         contextDependentActivationButton.addActionListener(learningUnitViewContextDependentActivationButtonListener);
                         contextDependentActivationButtonsOfCurrentLearningUnit.add(contextDependentActivationButton);
+                        
                         contextDependentActivationButton.setEnabled(activeLearningUnitViewManager != null &&
                             !activeLearningUnitViewManager.isContextDependentLearningUnitViewManager() &&
                             activeLearningUnitViewManager.getActiveLearningUnitViewElementId() != null);
+                        
                     }
                 }
             }

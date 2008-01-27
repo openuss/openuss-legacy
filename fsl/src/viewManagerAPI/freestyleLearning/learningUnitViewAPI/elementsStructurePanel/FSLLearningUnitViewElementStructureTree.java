@@ -133,7 +133,7 @@ public class FSLLearningUnitViewElementStructureTree extends JTree {
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         setModel(treeModel);
         if (activeLearningUnitViewElementId != null) {
-            setSelectedElement(activeLearningUnitViewElementId);
+            //setSelectedElement(activeLearningUnitViewElementId);
             if(!editMode) learningUnitViewManager.activateGuidedTourButton(true);
         }
     }
