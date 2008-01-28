@@ -900,6 +900,10 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
 		        }    
 		     }
             
+            public void enableScaleCheckBox(boolean enable) {
+            	checkBox_scaleImages.setEnabled(enable);
+        	}
+        
             public void enableMusicDeleteButton(boolean enable) {
             	button_deleteMusic.setEnabled(enable);
             }
@@ -1230,13 +1234,15 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
        	 	scaleImages = false;
        	 	slidePanel.setBackgroundColor((Color)UIManager.get("FSLMainFrameColor1"));
        	 	folderImportPanel.setBackgroundColor((Color)UIManager.get("FSLMainFrameColor1"));
-        	FLGSlideShowElement slideShowElement = (FLGSlideShowElement)learningUnitViewElement;
+       	 	slidePanel.enableScaleCheckBox(true);
+       	 	FLGSlideShowElement slideShowElement = (FLGSlideShowElement)learningUnitViewElement;
         	if (slideShowElement != null){
         		modifyViewElement = true;
         		if(slideShowElement.hasRepeatAudio()) {
         			folderPanel.setRepeatAudio(slideShowElement.getRepeatAudio());
         			repeatAudio = slideShowElement.getRepeatAudio();
         		}
+        		slidePanel.enableScaleCheckBox(false);
         		if(!slideShowElement.getFolder()) {
         			// background color
         			if(slideShowElement.getBackgroundColor() != null) {
