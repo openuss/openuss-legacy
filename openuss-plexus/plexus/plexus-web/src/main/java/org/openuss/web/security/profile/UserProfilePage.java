@@ -18,6 +18,7 @@ import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
+import org.openuss.security.UserInfoDetails;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -50,7 +51,7 @@ public class UserProfilePage extends BasePage{
 		logger.debug("prerender");
 		
 		if (user != null) {
-			user = securityService.getUser(user.getId());
+			user = (UserInfoDetails) getSecurityService().getUserInfoDetails(securityService.getUser(user.getId()));
 			setSessionBean(Constants.USER, user);
 		}
 		

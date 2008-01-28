@@ -27,6 +27,7 @@ import org.openuss.lecture.InstituteSecurity;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
 import org.openuss.security.UserComparator;
+import org.openuss.security.UserInfoDetails;
 import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$course$courseassistants", scope = Scope.REQUEST)
@@ -97,7 +98,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	public String showProfile() {
 		CourseMemberInfo memberInfo = data.getRowData();
-		UserInfo user = new UserInfo();
+		UserInfoDetails user = new UserInfoDetails();
 		user.setId(memberInfo.getUserId());
 		setSessionBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;

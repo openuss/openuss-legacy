@@ -8,7 +8,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserInfo;
+import org.openuss.security.UserInfoDetails;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -26,13 +26,13 @@ public class ViewUserProfilePage extends BasePage{
 	private SecurityService securityService;
 	
 	@Property(value="#{"+Constants.SHOW_USER_PROFILE+"}")
-	private UserInfo profile;
+	private UserInfoDetails profile;
 	
 	@Prerender
 	public void prerender() {
 		logger.debug("prerender - refreshing showuser session bean");
 		if ((profile != null)&&(profile.getId()!=null)) {
-			profile = securityService.getUser(profile.getId());
+			profile = (UserInfoDetails) getSecurityService().getUserInfoDetails(securityService.getUser(profile.getId()));
 			setSessionBean(Constants.SHOW_USER_PROFILE, profile);
 		}
 		if (profile==null||profile.getId()==null) {
@@ -51,11 +51,11 @@ public class ViewUserProfilePage extends BasePage{
 		this.securityService = securityService;
 	}
 
-	public UserInfo getProfile() {
+	public UserInfoDetails getProfile() {
 		return profile;
 	}
 
-	public void setProfile(UserInfo profile) {
+	public void setProfile(UserInfoDetails profile) {
 		this.profile = profile;
 	}
 

@@ -23,6 +23,7 @@ import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.security.GroupItem;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
+import org.openuss.security.UserInfoDetails;
 import org.openuss.web.Constants;
 
 /**
@@ -134,7 +135,7 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		}
 		try{
 		logger.debug(username);
-		user = securityService.getUserByName(username);
+		user = (UserInfoDetails) getSecurityService().getUserInfoDetails(securityService.getUserByName(username));
 		logger.debug(departmentInfo.getId());
 		logger.debug(user.getId());
 		organisationService.addMember(departmentInfo.getId(), user.getId());
@@ -165,7 +166,7 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 	public String showProfile() {
 
 		UserInfo member = members.getRowData();
-		UserInfo user = securityService.getUser(member.getId());
+		UserInfoDetails user = (UserInfoDetails) getSecurityService().getUserInfoDetails(securityService.getUser(member.getId()));
 		setSessionBean(Constants.SHOW_USER_PROFILE, user);
 
 		return Constants.USER_PROFILE_VIEW_PAGE;

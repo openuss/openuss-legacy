@@ -18,6 +18,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.OrganisationService;
 import org.openuss.security.UserInfo;
+import org.openuss.security.UserInfoDetails;
 import org.openuss.web.Constants;
 
 /**
@@ -93,7 +94,7 @@ public class AspirantsPage extends AbstractLecturePage {
 	
 	public String showProfile() {
 		UserInfo userInfo = data.getRowData();
-		UserInfo user = new UserInfo();
+		UserInfoDetails user = new UserInfoDetails();
 		user.setId(userInfo.getId());
 		setSessionBean(Constants.SHOW_USER_PROFILE, user);
 		return Constants.USER_PROFILE_VIEW_PAGE;

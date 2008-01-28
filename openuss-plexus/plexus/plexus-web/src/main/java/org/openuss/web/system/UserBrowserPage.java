@@ -19,6 +19,7 @@ import org.openuss.lecture.LectureException;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserCriteria;
 import org.openuss.security.UserInfo;
+import org.openuss.security.UserInfoDetails;
 import org.openuss.statistics.SystemStatisticInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -87,7 +88,7 @@ public class UserBrowserPage extends BasePage{
 
 	public String showProfile() {
 		UserInfo userInfo = dataModel.getRowData();
-		UserInfo user = securityService.getUser(userInfo.getId());
+		UserInfoDetails user = (UserInfoDetails) securityService.getUserInfoDetails(userInfo);
 		setSessionBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}

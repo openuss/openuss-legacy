@@ -12,6 +12,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.newsletter.SubscriberInfo;
 import org.openuss.security.UserInfo;
+import org.openuss.security.UserInfoDetails;
 import org.openuss.web.Constants;
 
 /**
@@ -26,7 +27,7 @@ public class NewsletterSubscribersPage extends AbstractNewsletterPage{
 	private SubscriberDataProvider data = new SubscriberDataProvider();
 	
 	@Property(value= "#{"+Constants.USER+"}")
-	private UserInfo user;
+	private UserInfoDetails user;
 	
 	@SuppressWarnings("unchecked")
 	@Prerender
@@ -88,11 +89,11 @@ public class NewsletterSubscribersPage extends AbstractNewsletterPage{
 		this.data = data;
 	}
 
-	public UserInfo getUser() {
+	public UserInfoDetails getUser() {
 		return user;
 	}
 
-	public void setUser(UserInfo user) {
+	public void setUser(UserInfoDetails user) {
 		this.user = user;
 	}
 

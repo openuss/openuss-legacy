@@ -34,7 +34,8 @@ public class PageActionManager {
 		final UIViewRoot view = facesContext.getViewRoot();
 
 		if (view == null) {
-			throw new IllegalStateException("View is not defined. Call processActions after the restore view phase!");
+//			throw new IllegalStateException("View is not defined. Call processActions after the restore view phase!");
+			return;
 		}
 		
 		logger.debug("start processing actions");

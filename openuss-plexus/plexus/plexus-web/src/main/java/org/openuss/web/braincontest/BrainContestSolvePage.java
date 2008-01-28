@@ -11,7 +11,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.security.UserInfo;
+import org.openuss.security.UserInfoDetails;
 import org.openuss.web.Constants;
 
 /**
@@ -24,7 +24,7 @@ public class BrainContestSolvePage extends AbstractBrainContestPage {
 			.getLogger(BrainContestSolvePage.class);
 
 	@Property(value = "#{user}")
-	private UserInfo user;
+	private UserInfoDetails user;
 
 	@Property(value = "#{braincontest_answer}")
 	private AnswerWebInfo answer;
@@ -77,11 +77,11 @@ public class BrainContestSolvePage extends AbstractBrainContestPage {
 		return Constants.BRAINCONTEST_WRONG;
 	}
 
-	public UserInfo getUser() {
+	public UserInfoDetails getUser() {
 		return user;
 	}
 
-	public void setUser(UserInfo user) {
+	public void setUser(UserInfoDetails user) {
 		this.user = user;
 	}
 

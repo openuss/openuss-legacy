@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TimeZone;
 
 import org.acegisecurity.context.SecurityContextHolder;
@@ -515,6 +517,14 @@ public class TestUtility {
 		course.setBraincontest(false);
 		period.add(course);
 		courseType.add(course);
+		Group group = Group.Factory.newInstance();
+		group.setLabel("COURSE_"+course.getShortcut()+"_PARTICIPANTS");
+		group.setName("COURSE_"+course.getShortcut()+"_PARTICIPANTS");
+		group.setPassword("");		
+		getGroupDao().create(group);
+		Set<Group> groups = new HashSet<Group>();
+		groups.add(group);
+		course.setGroups(groups);
 
 		courseDao.create(course);
 		this.getSecurityService().createObjectIdentity(course, courseType);
