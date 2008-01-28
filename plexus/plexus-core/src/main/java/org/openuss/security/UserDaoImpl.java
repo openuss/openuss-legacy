@@ -5,6 +5,10 @@
  */
 package org.openuss.security;
 
+import java.util.List;
+
+import org.acegisecurity.GrantedAuthority;
+
 
 /**
  * @see org.openuss.security.User
@@ -48,7 +52,7 @@ public class UserDaoImpl extends org.openuss.security.UserDaoBase {
 
 	public User userInfoToEntity(UserInfo userInfo) {
 		User user = loadUserFromUserInfo(userInfo);
-		userInfoToEntity(userInfo, user, false);
+		userInfoToEntity(userInfo, user, false);		
 		return user;
 	}
 
@@ -66,8 +70,6 @@ public class UserDaoImpl extends org.openuss.security.UserDaoBase {
 	@Override
 	public void toUserInfo(org.openuss.security.User source, org.openuss.security.UserInfo target) {
 		super.toUserInfo(source, target);
-		// do not provide the users password hash code
-		target.setPassword("[PROTECTED]");
 	}
-
+	
 }

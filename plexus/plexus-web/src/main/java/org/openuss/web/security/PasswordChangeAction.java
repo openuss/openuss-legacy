@@ -9,6 +9,7 @@ import org.openuss.registration.RegistrationCodeNotFoundException;
 import org.openuss.registration.RegistrationService;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
+import org.openuss.security.UserInfoDetails;
 import org.openuss.web.Constants;
 
 /**
@@ -32,7 +33,7 @@ public class PasswordChangeAction extends BaseBean {
 	private String newPassword;
 	
 	@Property(value="#{sessionScope.user}")
-	private UserInfo user; 
+	private UserInfoDetails user; 
 	
 	/**
 	 * Activate User by activationCode.
@@ -41,7 +42,7 @@ public class PasswordChangeAction extends BaseBean {
 	public String loginUserByCode() {
 		if (changeCode != null) {						
 			try {
-				user = registrationService.loginUserByActivationCode(changeCode);
+				user = (UserInfoDetails) getSecurityService().getUserInfoDetails(registrationService.loginUserByActivationCode(changeCode));
 				setSessionBean(Constants.USER, user);
 				return Constants.SUCCESS;
 			} catch (RegistrationCodeNotFoundException e) {
@@ -98,11 +99,11 @@ public class PasswordChangeAction extends BaseBean {
 		this.securityService = securityService;
 	}
 
-	public UserInfo getUser() {
+	public UserInfoDetails getUser() {
 		return user;
 	}
 
-	public void setUser(UserInfo user) {
+	public void setUser(UserInfoDetails user) {
 		this.user = user;
 	}
 }

@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.acegisecurity.Authentication;
+import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
@@ -65,7 +66,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		userInfo.setImageId(user.getImageId());
 		userInfo.setDisplayName(user.getDisplayName());
 		userInfo.setSmsNotification(user.hasSmsNotification());
-		return userInfo;
+		return userInfo2UserInfoDetails(userInfo);
 	}
 
 	@Override
@@ -525,6 +526,36 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 			createUser(user);
 		}
 
+	}
+
+	@Override
+	protected Object handleGetUserInfoDetails(UserInfo userInfo)
+			throws Exception {
+		UserInfoDetails userInfoDetails = userInfo2UserInfoDetails(userInfo);
+		return userInfoDetails;
+	}
+	
+	private UserInfoDetails userInfo2UserInfoDetails(UserInfo userInfo){
+		UserInfoDetails uid = new UserInfoDetails();
+		uid.setAccountExpired(userInfo.isAccountExpired());
+		uid.setAccountLocked(userInfo.isAccountLocked());
+		uid.setContact(userInfo.getContact());
+		uid.setCredentialsExpired(userInfo.isCredentialsExpired());
+		uid.setDisplayName(userInfo.getDisplayName());
+		uid.setEmail(userInfo.getEmail());
+		uid.setEnabled(userInfo.isEnabled());
+		uid.setId(userInfo.getId());
+		uid.setImageId(userInfo.getImageId());
+		uid.setLastLogin(userInfo.getLastLogin());
+		uid.setPassword(userInfo.getPassword());
+		uid.setPreferences(userInfo.getPreferences());
+		uid.setProfile(userInfo.getProfile());
+		uid.setSmsNotification(userInfo.isSmsNotification());
+		uid.setUsername(userInfo.getUsername());
+		User source = getUserObject(userInfo);
+		List<Group> authorities = source.getGrantedGroups();
+		uid.setAuthorities((GrantedAuthority[]) authorities.toArray(new GrantedAuthority[authorities.size()]));
+		return uid;
 	}
 
 }

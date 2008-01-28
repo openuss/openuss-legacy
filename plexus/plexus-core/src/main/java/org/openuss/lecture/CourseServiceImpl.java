@@ -7,13 +7,17 @@ package org.openuss.lecture;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.security.Group;
+import org.openuss.security.GroupType;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
@@ -60,8 +64,21 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		// Set Security
 		this.getSecurityService().createObjectIdentity(courseEntity, courseEntity.getCourseType());
 		
-		updateAccessTypePermission(courseEntity);
+		
+		// Create default Group for Course
+		Group participantsGroup = getSecurityService().createGroup("COURSE_" + courseEntity.getId() + "_PARTICIPANTS", "autogroup_administrator_label", "", GroupType.ADMINISTRATOR);
+		Set<Group> groups = courseEntity.getGroups();
+		if (groups == null){
+			groups = new HashSet<Group>();
+		}
+		groups.add(participantsGroup);
+		courseEntity.setGroups(groups);
+		getCourseDao().update(courseEntity);
 
+		// Security
+		getSecurityService().setPermissions(participantsGroup, courseEntity, LectureAclEntry.COURSE_PARTICIPANT);
+
+		updateAccessTypePermission(courseEntity);
 		return courseEntity.getId();
 	}
 
@@ -194,19 +211,28 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		getMessageService().sendMessage(member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")",
 				"course.application.subject", "courseapplicationapply", parameters, getSecurityService().getUser(member.getUser().getId()));
 	}
-
+	
+	private Group getParticipantsGroup(Course course){
+		Set<Group> groups = course.getGroups();
+		for (Group group:groups){
+			if (group.getName().contains("PARTICIPANTS")){
+				return group;
+			}
+		}
+		return null;		
+	}
+	
 	private void persistParticipantWithPermissions(CourseMember participant) {
 		participant.setMemberType(CourseMemberType.PARTICIPANT);
-		getSecurityService().setPermissions(participant.getUser(), participant.getCourse(),
-				LectureAclEntry.COURSE_PARTICIPANT);
 		persistCourseMember(participant);
+		getSecurityService().addAuthorityToGroup(participant.getUser(), getParticipantsGroup(participant.getCourse()));
 	}
 
 	@Override
 	protected void handleRemoveMember(Long memberId) throws Exception {
 		CourseMember member = getCourseMemberDao().load(memberId);
 		if (member != null) {
-			getSecurityService().removePermission(member.getUser(), member.getCourse());
+			getSecurityService().removeAuthorityFromGroup(member.getUser(), getParticipantsGroup(member.getCourse()));
 			getCourseMemberDao().remove(member);
 		}
 	}
@@ -517,17 +543,18 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	private void updateAccessTypePermission(Course course) {
 		logger.debug("changing course "+course.getName()+" ("+course.getId()+") to "+course.getAccessType());
-		
+		Group group = getParticipantsGroup(course);
 		if (course.getAccessType() == AccessType.ANONYMOUS) {
+			//TODO check if change needed
 			getSecurityService().setPermissions(Roles.ANONYMOUS, course, LectureAclEntry.READ);
 		} else {
 			getSecurityService().setPermissions(Roles.ANONYMOUS, course, LectureAclEntry.NOTHING);
 		}
 		
 		if (course.getAccessType() == AccessType.OPEN || course.getAccessType() == AccessType.ANONYMOUS) {
-			getSecurityService().setPermissions(Roles.USER, course, LectureAclEntry.COURSE_PARTICIPANT);
+			getSecurityService().addAuthorityToGroup(Roles.USER, group);
 		} else {
-			getSecurityService().setPermissions(Roles.USER, course, LectureAclEntry.NOTHING);
+			getSecurityService().removeAuthorityFromGroup(Roles.USER, group);
 		}
 	}
 

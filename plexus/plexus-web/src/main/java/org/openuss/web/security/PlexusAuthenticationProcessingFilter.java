@@ -10,6 +10,7 @@ import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
+import org.openuss.security.UserInfoDetails;
 import org.openuss.statistics.OnlineStatisticService;
 import org.openuss.web.Constants;
 
@@ -33,6 +34,9 @@ public class PlexusAuthenticationProcessingFilter extends AuthenticationProcessi
 			logger.debug("Principal is: "+authResult.getPrincipal());
 			userInfo = securityService.getUserByName((String)authResult.getPrincipal());
 		} else if (authResult.getPrincipal() instanceof UserInfo) {
+			logger.debug("Principal is: "+authResult.getPrincipal());
+			userInfo = securityService.getUserByName(((UserInfo) authResult.getPrincipal()).getUsername());
+		} else if (authResult.getPrincipal() instanceof UserInfoDetails) {
 			logger.debug("Principal is: "+authResult.getPrincipal());
 			userInfo = securityService.getUserByName(((UserInfo) authResult.getPrincipal()).getUsername());
 		} else if (authResult.getPrincipal() instanceof User) {

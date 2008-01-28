@@ -9,7 +9,7 @@ import org.apache.shale.tiger.view.View;
 import org.apache.shale.tiger.managed.Scope;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.security.UserContactInfo;
-import org.openuss.security.UserInfo;
+import org.openuss.security.UserInfoDetails;
 import org.openuss.security.UserPreferencesInfo;
 import org.openuss.security.UserProfileInfo;
 import org.openuss.web.BasePage;
@@ -22,7 +22,7 @@ public class StartUserRegistrationPage extends BasePage{
 	@Prerender
 	public void prerender() throws Exception{
 		super.prerender();
-		user = new UserInfo();
+		user = new UserInfoDetails();
 		user.setPreferences(new UserPreferencesInfo());
 		user.setProfile(new UserProfileInfo());
 		user.setContact(new UserContactInfo());

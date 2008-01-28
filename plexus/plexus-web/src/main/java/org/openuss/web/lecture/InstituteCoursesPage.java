@@ -117,6 +117,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 		courseInfo.setInstituteId(courseTypeInfo.getInstituteId());
 		// new course by default with the features newsletter, documents and
 		// discussion
+		//FIXME should not be defined in web layer 
 		courseInfo.setNewsletter(true);
 		courseInfo.setDocuments(true);
 		courseInfo.setDiscussion(true);
