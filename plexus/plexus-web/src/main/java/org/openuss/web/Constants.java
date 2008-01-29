@@ -250,5 +250,7 @@ public class Constants {
 
 	public static final String WIKI_MAIN_PAGE = "course_wiki";
 
+	public static final String WIKI_IS_ACTIVE = "fck_editor_is_wiki";
+
 
 }

@@ -5,6 +5,7 @@ import org.acegisecurity.acl.AclEntry;
 import org.acegisecurity.acl.AclManager;
 import org.acegisecurity.acl.basic.BasicAclEntry;
 import org.acegisecurity.context.SecurityContextHolder;
+import org.apache.commons.lang.mutable.MutableBoolean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.discussion.DiscussionService;
@@ -30,6 +31,9 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 
 	@Property(value = "#{aclManager}")
 	protected AclManager aclManager;
+	
+	@Property(value = "#{" + Constants.WIKI_IS_ACTIVE+ "}")
+	protected MutableBoolean wikiActive;
 	
 	public ForumInfo forum;
 	
@@ -110,5 +114,12 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 
 	public void setAclManager(AclManager aclManager) {
 		this.aclManager = aclManager;
+	}
+	
+	public MutableBoolean getWikiActive() {
+		return wikiActive;
+	}
+	public void setWikiActive(MutableBoolean wikiActive) {
+		this.wikiActive = wikiActive;
 	}
 }

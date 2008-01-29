@@ -47,6 +47,10 @@ public class WikiMainPage extends AbstractWikiPage{
 			setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
 		}
 		
+		this.siteVersionInfo.setNote("");
+		
+		wikiActive.setValue(true);
+		
 	}
 	
 	public String save() {
