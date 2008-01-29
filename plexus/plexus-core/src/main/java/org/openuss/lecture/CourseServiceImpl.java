@@ -553,4 +553,46 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		}
 	}
 
+	@Override
+	protected List handleFindAllCoursesByDepartment(Long departmentId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List handleFindAllCoursesByDepartmentAndActivePeriods(
+			Long departmentId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List handleFindAllCoursesByDepartmentAndActivePeriodsAndEnabled(
+			Long departmentId, boolean enabled) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List handleFindAllCoursesByDepartmentAndEnabled(
+			Long departmentId, boolean enabled) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List handleFindAllCoursesByDepartmentAndPeriod(Long departmentId,
+			Long periodId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List handleFindAllCoursesByDepartmentAndPeriodAndEnabled(
+			Long departmentId, Long periodId, boolean enabled) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
