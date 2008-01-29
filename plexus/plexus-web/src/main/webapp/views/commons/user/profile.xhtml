@@ -40,7 +40,7 @@
 					</c:if>
 				</div>
 				<div class="usercontact">
-					<ul>
+					<ul><!-- 
 						<c:if test="#{not empty showuser.contact.title}">
 							<li>#{showuser.contact.title}</li>
 						</c:if>
@@ -58,7 +58,58 @@
 						</c:if>
 						<c:if test="#{showuser.profile.emailPublic}">
 							<li><h:outputLink value="mailto://#{showuser.email}" styleClass="email">#{showuser.email}</h:outputLink></li>
+						</c:if> -->
+						<b>Allgemeine Informationen</b> <br />
+						Name: #{showuser.contact.firstName} #{showuser.contact.lastName}<br />
+						<c:if test="#{showuser.profile.profileContactPublic}">
+						<br /><b>Kontaktdaten</b><br />
+						Adresse: #{showuser.contact.address}, 
+						#{showuser.contact.postcode} #{showuser.contact.city}, 
+						#{showuser.contact.country}<br />
+						<c:if test="#{showuser.profile.emailPublic}">
+						E-Mail:  <h:outputLink value="mailto://#{showuser.email}" styleClass="email">#{showuser.email}</h:outputLink><br/>
 						</c:if>
+						<c:if test="#{not empty showuser.contact.skype}">
+						Skype: <h:outputLink value="skype:#{showuser.contact.skype}" styleClass="email"><img src="http://mystatus.skype.com/smallicon/#{showuser.contact.skype}"/> #{showuser.contact.skype}</h:outputLink><br />
+						</c:if>
+						<c:if test="#{not empty showuser.contact.icq}">
+						ICQ: #{showuser.contact.icq}<br /><!-- insert image here -->
+						</c:if>
+						<c:if test="#{not empty showuser.contact.msn}">
+						MSN: #{showuser.contact.msn}<br />
+						</c:if>
+						<c:if test="#{not empty showuser.contact.telephone}">
+						Telefon: #{showuser.contact.telephone}<br />
+						</c:if>
+						<c:if test="#{not empty showuser.contact.mobile}">
+						Mobile: #{showuser.contact.mobile}<br />
+						</c:if>
+						</c:if>
+						<c:if test="#{showuser.profile.profilePersonalPublic}">
+						<br /><b>Persoenliches</b><br />
+						<c:if test="#{not empty showuser.contact.birthday}">
+						#{msg.user_contact_birthday}: #{showuser.contact.birthday}<br />
+						</c:if>
+						<c:if test="#{not empty showuser.contact.searching}">
+						Ich suche: #{showuser.contact.searching}<br />
+						</c:if>
+						<c:if test="#{not empty showuser.contact.providing}">
+						Ich biete: #{showuser.contact.providing}<br />
+						</c:if>
+						<c:if test="#{not empty showuser.contact.interests}">
+						Hobbys: #{showuser.contact.interests}<br />
+						</c:if>
+						</c:if>
+						<c:if test="#{showuser.profile.profileUniPublic}">
+						<br /><b>Studium</b><br />
+						<c:if test="#{not empty showuser.profile.studies}">
+						Studiengang: #{showuser.profile.studies}<br />
+						</c:if>
+						<c:if test="#{not empty showuser.profile.ageGroup}">
+						Jahrgang: #{showuser.profile.ageGroup}<br />
+						</c:if>
+						</c:if>
+						
 					</ul>
 				</div>
 				<div class="content_font_normal">
