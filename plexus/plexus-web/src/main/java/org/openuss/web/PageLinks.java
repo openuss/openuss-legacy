@@ -34,6 +34,9 @@ public class PageLinks{
 
 	public static final String DOCUMENTS_MAIN = "/views/secured/documents/documents.faces";
 	
+	public static final String COLLABORATION_MAIN = "/views/secured/collaboration/main.faces";
+	public static final String COLLABORATION_WORKSPACE = "/views/secured/collaboration/workspaceview.faces";
+	
 	public static final String ADMIN_PROPERTIES = "/views/secured/system/properties.faces";
 	public static final String ADMIN_USERSBROWSER = "/views/secured/system/userbrowser.faces";
 	public static final String ADMIN_GROUPS = "/views/secured/system/groups.faces";

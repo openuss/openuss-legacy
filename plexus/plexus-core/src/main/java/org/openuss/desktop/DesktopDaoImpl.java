@@ -135,6 +135,7 @@ public class DesktopDaoImpl extends DesktopDaoBase {
 	 */
 	private Desktop loadDesktopFromDesktopInfo(DesktopInfo desktopInfo) {
 
+		// FIXME: imperformant: if there is a not-null id there must not be newInstance!!
 		Desktop desktop = Desktop.Factory.newInstance();
 		if (desktopInfo.getId() != null) {
 			desktop = this.load(desktopInfo.getId());

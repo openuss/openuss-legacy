@@ -10,8 +10,7 @@
 	  xmlns:c="http://java.sun.com/jstl/core"      
       xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:o="http://www.openuss.org/jsfcontrols"
-	  xmlns:plexus="http://www.openuss.org/plexus/jsf"      
-      xmlns:fck="http://www.fck-faces.org/fck-faces">
+	  xmlns:plexus="http://www.openuss.org/plexus/jsf">
       
  	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -24,26 +23,26 @@
 	<body>      
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
-		<ui:define name="navigation">
-			<ui:include src="/views/commons/navigation/course.xhtml" />
-		</ui:define>
- 		 
-  		<ui:define name="content">
-			<h:form id="mainWikiForm">
-				<o:block label="#{msg.wiki_main_header}">
-					<h:outputText value="#{views$secured$wiki$wikimain.wikiPage.text}"></h:outputText>
-				</o:block>					
-				<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}">
-					<o:block>
-						<h:commandButton 
-							value="${msg.wiki_main_button_edit}" 
-							action="wiki_edit" 
-							immediate="true" 
-							styleClass="button"/>
-					</o:block>
-				</s:acl>
-			</h:form>
-  		</ui:define>
+	   <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}" ifNot="error"/>
+    
+        <ui:define name="navigation">
+            <ui:include src="/views/commons/navigation/course.xhtml" />
+        </ui:define>
+         
+        <ui:define name="content">
+            <h:form id="mainWikiForm">
+                <o:block label="#{msg.wiki_main_header}">
+                    <div style="margin:10px"><h:outputText escape="false" value="#{views$secured$wiki$wikimain.siteVersionInfo.text}"></h:outputText></div>
+                </o:block>                  
+                <o:block>
+                    <h:commandButton 
+                        value="${msg.wiki_main_button_edit}" 
+                        action="wiki_edit" 
+                        immediate="true" 
+                        styleClass="button"/>
+                </o:block>
+            </h:form>
+        </ui:define>
 	</ui:composition>
 	<!-- text above will be ignored -->
 	</body>

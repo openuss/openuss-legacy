@@ -658,7 +658,51 @@
 			<navigation-case>
 				<from-outcome>wiki_edit</from-outcome>
 				<to-view-id>/views/secured/wiki/wikiedit.xhtml</to-view-id>				
-			</navigation-case>					
+			</navigation-case>	
+            
+            <!--  Papersubmission  -->
+            <navigation-case>
+	            <from-outcome>papersubmission</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/paperlist.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>paper_confirm_remove</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/paperremoveconfirmation.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>paperview</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/paperview.xhtml</to-view-id>
+	        </navigation-case>
+	        
+	        <!--  Collaboration -->
+	        <navigation-case>
+	            <from-outcome>collaboration</from-outcome>
+	            <to-view-id>/views/secured/collaboration/main.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>collaboration_confirm_remove</from-outcome>
+	            <to-view-id>/views/secured/collaboration/workspaceremoveconfirmation.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>workspaceview</from-outcome>
+	            <to-view-id>/views/secured/collaboration/workspaceview.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+                <from-outcome>collaboration_edit_file</from-outcome>
+                <to-view-id>/views/secured/collaboration/fileedit.xhtml</to-view-id>                
+            </navigation-case>          
+            <navigation-case>
+                <from-outcome>collaboration_edit_folder</from-outcome>
+                <to-view-id>/views/secured/collaboration/folderedit.xhtml</to-view-id>              
+            </navigation-case>          
+            <navigation-case>
+                <from-outcome>collaboration_remove_folderentries</from-outcome>
+                <to-view-id>/views/secured/collaboration/remove.xhtml</to-view-id>              
+            </navigation-case>          
+            <navigation-case>
+                <from-outcome>collaboration_add_zip</from-outcome>
+                <to-view-id>/views/secured/collaboration/addzip.xhtml</to-view-id>              
+            </navigation-case>  
 		</navigation-rule>
 		
 		<navigation-rule>
@@ -668,6 +712,13 @@
 				<to-view-id>/views/secured/documents/documents.xhtml</to-view-id>
 			</navigation-case>
 		</navigation-rule>
+		<navigation-rule>
+            <from-view-id>/views/secured/collaboration/addzip.xhtml</from-view-id>
+            <navigation-case>
+                <from-outcome>success</from-outcome>
+                <to-view-id>/views/secured/collaboration/workspaceview.xhtml</to-view-id>
+            </navigation-case>
+        </navigation-rule>
 	
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
        News  - P a g e
@@ -1016,6 +1067,6 @@
 			<to-view-id>/views/secured/lecture/registration/step1.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-		
+
 </faces-config>
 
