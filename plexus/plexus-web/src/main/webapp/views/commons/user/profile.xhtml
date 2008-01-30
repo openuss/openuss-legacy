@@ -81,7 +81,7 @@
 						<c:if test="#{showuser.profile.profilePersonalPublic}">
 						<br /><h:outputText value="#{msg.profile_personal_header}" styleClass="header_font_normal"/><br />
 						<c:if test="#{not empty showuser.contact.birthday}">
-						#{msg.user_contact_birthday}: #{showuser.contact.birthday}<br />
+						#{msg.user_contact_birthday}: <h:outputText value="#{showuser.contact.birthday}"><f:convertDateTime type="date"/></h:outputText><br />
 						</c:if>
 						<c:if test="#{not empty showuser.contact.searching}">
 						#{msg.user_contact_searching}: #{showuser.contact.searching}<br />
