@@ -40,16 +40,16 @@ public class ExamDaoImpl
     private org.openuss.paperSubmission.Exam loadExamFromExamInfo(org.openuss.paperSubmission.ExamInfo examInfo)
     {
         // @todo implement loadExamFromExamInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.loadExamFromExamInfo(org.openuss.paperSubmission.ExamInfo) not yet implemented.");
+        //throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.loadExamFromExamInfo(org.openuss.paperSubmission.ExamInfo) not yet implemented.");
 
-        /* A typical implementation looks like this:
-        org.openuss.paperSubmission.Exam exam = this.load(examInfo.getId());
-        if (exam == null)
-        {
-            exam = org.openuss.paperSubmission.Exam.Factory.newInstance();
+    	Exam exam = null;
+
+        if (examInfo.getId() != null){
+        	exam = this.load(examInfo.getId());
+        }else{
+        	exam = Exam.Factory.newInstance();
         }
-        return exam;
-        */
+        return exam;        
     }
 
     

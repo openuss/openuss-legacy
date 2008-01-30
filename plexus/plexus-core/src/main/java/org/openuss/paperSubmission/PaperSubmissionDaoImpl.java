@@ -4,6 +4,9 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.paperSubmission;
+
+import org.openuss.collaboration.Workspace;
+
 /**
  * @see org.openuss.paperSubmission.PaperSubmission
  */
@@ -40,16 +43,16 @@ public class PaperSubmissionDaoImpl
     private org.openuss.paperSubmission.PaperSubmission loadPaperSubmissionFromPaperSubmissionInfo(org.openuss.paperSubmission.PaperSubmissionInfo paperSubmissionInfo)
     {
         // @todo implement loadPaperSubmissionFromPaperSubmissionInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.loadPaperSubmissionFromPaperSubmissionInfo(org.openuss.paperSubmission.PaperSubmissionInfo) not yet implemented.");
+        //throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.loadPaperSubmissionFromPaperSubmissionInfo(org.openuss.paperSubmission.PaperSubmissionInfo) not yet implemented.");
 
-        /* A typical implementation looks like this:
-        org.openuss.paperSubmission.PaperSubmission paperSubmission = this.load(paperSubmissionInfo.getId());
-        if (paperSubmission == null)
-        {
-            paperSubmission = org.openuss.paperSubmission.PaperSubmission.Factory.newInstance();
-        }
+        PaperSubmission paperSubmission = null;
+        
+        if (paperSubmissionInfo.getId() != null){
+        	paperSubmission = this.load(paperSubmissionInfo.getId());
+        }else{
+        	paperSubmission = PaperSubmission.Factory.newInstance();
+        }        
         return paperSubmission;
-        */
     }
 
     
