@@ -36,7 +36,7 @@ public abstract class BasePage extends BaseBean {
 	@Property(value ="#{desktopDao}")
 	protected DesktopDao desktopDao;
 	
-	@Property(value = "#{sessionScope.user}")
+	@Property(value = "#{user}")
 	protected UserInfoDetails user;
 	
 	@Property(value = "#{breadcrumbs}")
