@@ -59,7 +59,7 @@
 					<o:input entity="user.contact" property="birthday" maxlength="16" required="false"/>
 					<o:input entity="user.contact" property="searching" maxlength="500" required="false"/>
 					<o:input entity="user.contact" property="providing" maxlength="500" required="false"/>
-					<o:input entity="user.contact" property="interest" maxlength="500" required="false"/>
+					<o:input entity="user.contact" property="interests" maxlength="500" required="false"/>
 					<!-- user portrait -->
 						<br />
 					  	<h:outputText value="#{msg.user_profile_portrait}" styleClass="header_font_normal"/>
@@ -72,7 +72,7 @@
 					
 				<!-- hidden profile information -->
 					<br />
-					<h:outputText value="#{msg.profile_hidden_header}" styleClass="header_font_normal"/> <br/> 
+					<h:outputText value="#{msg.profile_uni_header}" styleClass="header_font_normal"/> <br/> 
 					<h:outputText value="#{msg.profile_hidden_explain}" styleClass="content_font_normal"/>
 					<o:input entity="user.profile" property="ageGroup" maxlength="50"/>
 					<o:input entity="user.profile" property="matriculation" maxlength="50"/>
@@ -97,9 +97,13 @@
 					<!-- visibility -->
 						<br />
 						<h:outputText value="#{msg.profile_visibility_config}" styleClass="header_font_normal" /><br />
+						<h:outputText value="#{msg.profile_visibility_explain}" styleClass="content_font_normal"/>
+						<o:input entity="user.profile" property="profileContactPublic"/>
 						<o:input entity="user.profile" property="telephonePublic"/>
-						<o:input entity="user.profile" property="addressPublic" required="false" /> 
+						<o:input entity="user.profile" property="addressPublic"/> 
 						<o:input entity="user.profile" property="emailPublic"/>
+						<o:input entity="user.profile" property="profilePersonalPublic"/>
+						<o:input entity="user.profile" property="profileUniPublic"/>
 		
 					<!-- photo -->
 						<br />
