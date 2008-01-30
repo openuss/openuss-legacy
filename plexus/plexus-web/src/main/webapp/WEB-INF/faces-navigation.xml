@@ -658,7 +658,12 @@
 			<navigation-case>
 				<from-outcome>wiki_edit</from-outcome>
 				<to-view-id>/views/secured/wiki/wikiedit.xhtml</to-view-id>				
-			</navigation-case>	
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>wiki_overview</from-outcome>
+				<to-view-id>/views/secured/wiki/wikioverview.xhtml</to-view-id>
+			</navigation-case>
             
             <!--  Papersubmission  -->
             <navigation-case>

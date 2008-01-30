@@ -63,4 +63,8 @@ public class WikiMainPage extends AbstractWikiPage{
 		return Constants.WIKI_MAIN_PAGE;
 	}
 	
+	public String overview() {
+		return Constants.WIKI_OVERVIEW;
+	}
+	
 }
