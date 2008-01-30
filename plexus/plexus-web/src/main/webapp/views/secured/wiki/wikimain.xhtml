@@ -31,7 +31,7 @@
          
         <ui:define name="content">
             <h:form id="mainWikiForm">
-                <o:block label="#{msg.wiki_main_header}">
+                <o:block label="#{views$secured$wiki$wikiversion.siteInfo.name}">
                     <div style="margin:10px"><h:outputText escape="false" value="#{views$secured$wiki$wikimain.siteVersionInfo.text}"></h:outputText></div>
                 </o:block>                  
                 <o:block>
@@ -44,6 +44,12 @@
                     <h:commandButton
 						value="${msg.wiki_main_button_overview}"
 						action="wiki_overview"
+						immediate="true" 
+						styleClass="button"/>
+						
+					<h:commandButton
+						value="${msg.wiki_main_button_version}"
+						action="wiki_version"
 						immediate="true" 
 						styleClass="button"/>
 						

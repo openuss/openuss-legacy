@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+	   <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}" ifNot="error"/>
+    
+        <ui:define name="navigation">
+            <ui:include src="/views/commons/navigation/course.xhtml" />
+        </ui:define>
+         
+        <ui:define name="content">
+            <h:form id="mainWikiForm">
+               	<plexus:dataTable 
+			    	id="documentstable" 
+			    	label="#{views$secured$wiki$wikiversion.siteInfo.name}" 
+			    	value="views$secured$wiki$wikiversion.data" 
+			    	columnClasses=" col_min_center,col_max_left, col_date, col_commands"
+			    	var="entry" 
+			    	rows="20">  
+			      
+					<t:column>
+						<f:facet name="header">
+							<h:selectBooleanCheckbox 
+								immediate="true" 
+								onchange="this.form.submit();" 
+								onclick="this.form.submit();" 
+								value="#{documents_entry_selection.state}" 
+								valueChangeListener="#{documents_entry_selection.switchSelection}"/>
+						</f:facet>
+						<h:selectBooleanCheckbox value="#{documents_entry_selection.map[entry]}"/>
+					</t:column>
+					
+					<t:column>
+						<plexus:commandSortHeader columnName="versionNo"> #{msg['wiki_version_column_versionnumber']} </plexus:commandSortHeader>
+						<h:outputText value="#{entry.versionNo}"/>
+					</t:column>
+					
+					<t:column>
+						<plexus:commandSortHeader columnName="versionNo"> #{msg['wiki_version_column_author']} </plexus:commandSortHeader>
+						<h:outputText value="#{entry.author}"/>
+					</t:column>					
+			
+					<t:column>
+						<plexus:commandSortHeader columnName="created"> #{msg['wiki_version_column_create']} </plexus:commandSortHeader>
+						<h:outputText value="#{entry.created}">
+							<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+						</h:outputText>
+					</t:column>
+					
+					<plexus:column header="#{msg.documents_main_column_actions}">
+						<plexus:command 
+						    bean="#{views$secured$documents$documents}"
+							action="editFolderEntry" 
+							label="#{msg.documents_main_button_change}" 
+							title="#{msg.documents_main_button_change}"
+							styleClass="icon_edit"/>
+					</plexus:column>
+					
+				</plexus:dataTable>                 
+            </h:form>
+        </ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>
