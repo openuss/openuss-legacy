@@ -14,7 +14,6 @@ import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.repository.RepositoryService;
 import org.openuss.security.*;
-import org.openuss.security.externalAuth.*;
 
 /**
  * JUnit Test for Spring Hibernate BuddyService class.
