@@ -81,4 +81,8 @@ public class BuddyServiceIntegrationTest extends BuddyServiceIntegrationTestBase
 		buddyService.authorizeBuddyRequest(buddy2, true);
 		assertEquals(1, buddyService.getBuddyList(user1).size());
 		}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
 }

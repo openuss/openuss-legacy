@@ -5,6 +5,10 @@
  */
 package org.openuss.buddylist;
 
+import java.util.*;
+
+import org.openuss.security.*;
+
 /**
  * @see org.openuss.buddylist.BuddyService
  */
@@ -15,11 +19,12 @@ public class BuddyServiceImpl
     /**
      * @see org.openuss.buddylist.BuddyService#addBuddy(org.openuss.security.User, org.openuss.security.UserInfo)
      */
-    protected void handleAddBuddy(org.openuss.security.User user, org.openuss.security.UserInfo buddy)
-        throws java.lang.Exception
-    {
-        // @todo implement protected void handleAddBuddy(org.openuss.security.User user, org.openuss.security.UserInfo buddy)
-        throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.BuddyService.handleAddBuddy(org.openuss.security.User user, org.openuss.security.UserInfo buddy) Not implemented!");
+    protected void handleAddBuddy(org.openuss.security.User user, org.openuss.security.UserInfo userToAdd){
+      	// @todo test wether userToAdd is already buddy of user
+    	User newBuddy = getUserDao().userInfoToEntity(userToAdd);
+      	Buddy buddy = getBuddyDao().create(false, newBuddy, user);
+      	user.getBuddyList().add(buddy);
+      	newBuddy.getBuddies().add(buddy);
     }
 
     /**
@@ -68,8 +73,8 @@ public class BuddyServiceImpl
     protected java.util.List handleGetBuddyList(org.openuss.security.User user)
         throws java.lang.Exception
     {
-        // @todo implement protected java.util.List handleGetBuddyList(org.openuss.security.User user)
-        return null;
+    	List BuddyList = new java.util.ArrayList();
+        return BuddyList;
     }
 
     /**
