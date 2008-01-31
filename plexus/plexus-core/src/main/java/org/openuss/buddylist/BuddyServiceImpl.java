@@ -73,7 +73,13 @@ public class BuddyServiceImpl
     protected java.util.List handleGetBuddyList(org.openuss.security.User user)
         throws java.lang.Exception
     {
-    	List BuddyList = new java.util.ArrayList();
+    	// @TODO Test wether BuddyList is empty
+    	List<Buddy> BuddyList = new java.util.ArrayList();
+    	Set<Buddy> allCandidates = user.getBuddyList();
+    	for(Buddy candidate : allCandidates){
+    		if(candidate.isAuthorized())
+    			BuddyList.add(candidate);
+    	}
         return BuddyList;
     }
 
@@ -83,8 +89,15 @@ public class BuddyServiceImpl
     protected void handleAuthorizeBuddyRequest(org.openuss.buddylist.BuddyInfo buddy, boolean authorize)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleAuthorizeBuddyRequest(org.openuss.buddylist.BuddyInfo buddy, boolean authorize)
-        throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.BuddyService.handleAuthorizeBuddyRequest(org.openuss.buddylist.BuddyInfo buddy, boolean authorize) Not implemented!");
+    	Buddy authorizeBuddy = getBuddyDao().buddyInfoToEntity(buddy);
+    	if(authorize == true){
+    		//authorize buddy
+    		authorizeBuddy.setAuthorized(true);
+    	} else {
+    		//delete buddy
+            // @todo implement protected void handleAuthorizeBuddyRequest(org.openuss.buddylist.BuddyInfo buddy, boolean authorize)
+            throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.BuddyService.handleAuthorizeBuddyRequest(org.openuss.buddylist.BuddyInfo buddy, boolean authorize) Not implemented!");
+    	}
     }
 
     /**
@@ -93,8 +106,14 @@ public class BuddyServiceImpl
     protected java.util.List handleGetAllOpenRequests(org.openuss.security.User user)
         throws java.lang.Exception
     {
-        // @todo implement protected java.util.List handleGetAllOpenRequests(org.openuss.security.User user)
-        return null;
+        Set<Buddy> allCandidates = user.getBuddies();
+        List<BuddyInfo> openRequests = new ArrayList();
+        for (Buddy candidate : allCandidates){
+        	if(!candidate.isAuthorized()){
+        		openRequests.add(getBuddyDao().toBuddyInfo(candidate));
+        	}
+        }
+        return openRequests;
     }
 
 }

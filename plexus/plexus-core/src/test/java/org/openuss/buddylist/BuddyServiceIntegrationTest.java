@@ -77,8 +77,10 @@ public class BuddyServiceIntegrationTest extends BuddyServiceIntegrationTestBase
 		userDao.toUserInfo(user2, user2Info);
 		buddyService.addBuddy(user1, user2Info);
 		assertEquals(0, buddyService.getBuddyList(user1).size());
+		assertEquals(1, buddyService.getAllOpenRequests(user2).size());
 		BuddyInfo buddy2 = (BuddyInfo)buddyService.getAllOpenRequests(user2).get(0);
 		buddyService.authorizeBuddyRequest(buddy2, true);
+		assertEquals(0, buddyService.getAllOpenRequests(user2).size());
 		assertEquals(1, buddyService.getBuddyList(user1).size());
 		}
 
