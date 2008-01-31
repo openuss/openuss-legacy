@@ -5,6 +5,8 @@
  */
 package org.openuss.buddylist;
 
+import java.util.Date;
+
 import org.acegisecurity.acl.AclManager;
 import org.acegisecurity.userdetails.User;
 import org.openuss.TestUtility;
@@ -32,8 +34,6 @@ public class BuddyServiceIntegrationTest extends BuddyServiceIntegrationTestBase
 	private TagDao tagDao;
 	
 	private UserDao userDao;
-	
-	private SecurityDomainDao securityDomainDao;
 
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
@@ -72,9 +72,8 @@ public class BuddyServiceIntegrationTest extends BuddyServiceIntegrationTestBase
 	 * The buddylist should now consist of one entry.
 	 */
 	public void testBuddyList(){
-		SecurityDomain securityDomain = securityDomainDao.create("ABC", "ABCDEFG");
-		org.openuss.security.User user1 = userDao.create(false, false, false, "a@b.com", true, "24", securityDomain, "User1");
-		org.openuss.security.User user2 = userDao.create(false, false, false, "b@c.com", true, "asdf", securityDomain, "user2");
+		org.openuss.security.User user1 = userDao.create("user1", "asdf", "asdf@asdf.com", true, false, false, false, new Date());
+		org.openuss.security.User user2 = userDao.create("user2", "asdf", "asdf@asdf.com", true, false, false, false, new Date());
 		UserInfo user2Info = new UserInfo();
 		userDao.toUserInfo(user2, user2Info);
 		buddyService.addBuddy(user1, user2Info);
