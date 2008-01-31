@@ -72,9 +72,9 @@ public class BuddyServiceIntegrationTest extends BuddyServiceIntegrationTestBase
 	 * The buddylist should now consist of one entry.
 	 */
 	public void testBuddyList(){
-		SecurityDomain openUSS = securityDomainDao.create("openUSS", "OpenUSS");
-		org.openuss.security.User user1 = userDao.create(false, false, false, "a@b.com", true, "24", securityDomainDao.create("openUSS", "OpenUSS"), "User1");
-		org.openuss.security.User user2 = userDao.create(false, false, false, "b@c.com", true, "asdf", securityDomainDao.create("openUSS", "OpenUSS"), "user2");
+		SecurityDomain securityDomain = securityDomainDao.create("ABC", "ABCDEFG");
+		org.openuss.security.User user1 = userDao.create(false, false, false, "a@b.com", true, "24", securityDomain, "User1");
+		org.openuss.security.User user2 = userDao.create(false, false, false, "b@c.com", true, "asdf", securityDomain, "user2");
 		UserInfo user2Info = new UserInfo();
 		userDao.toUserInfo(user2, user2Info);
 		buddyService.addBuddy(user1, user2Info);
