@@ -18,6 +18,12 @@
  * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
  */
 
+FCKConfig.Debug = true;
+
+// Wiki link plugin
+var sOtherPluginPath = FCKConfig.BasePath.substr(0, FCKConfig.BasePath.length - 7) + 'editor/plugins/' ;
+FCKConfig.Plugins.Add( 'wiki', null, sOtherPluginPath ) ;
+
 FCKConfig.ToolbarSets["OpenUSS"] = [
 	['Preview'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
@@ -55,7 +61,7 @@ FCKConfig.ToolbarSets["Wiki"] = [
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink'],
+	['Link','OpenUSSWikiLink','Unlink'],
 	['TextColor','BGColor'],
 	['Smiley']
 ] ;

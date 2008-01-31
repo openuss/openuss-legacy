@@ -49,8 +49,6 @@ public class WikiMainPage extends AbstractWikiPage{
 		
 		this.siteVersionInfo.setNote("");
 		
-		wikiActive.setValue(true);
-		
 	}
 	
 	public String save() {

@@ -17,7 +17,15 @@
  */
 package org.openuss.web.servlets;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,20 +44,50 @@ import org.openuss.web.Constants;
 public class FCKServlet extends org.fckfaces.util.Servlet {
 
 	private static final long serialVersionUID = -945294405900760483L;
+	private static final String FCKEDITOR_WIKI_PREFIX = "/FCKeditorWiki/";
 
-	private static final String WIKI_FCKEDITOR_PATH = "/FCKEditorWiki/";
-	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
 		if (isWiki(request.getSession())) {
 			// search the resource in classloader
-	        ClassLoader cl = this.getClass().getClassLoader();
 	        String uri = request.getRequestURI();
 	        String path = uri.substring(uri.indexOf(Util.FCK_FACES_RESOURCE_PREFIX)+Util.FCK_FACES_RESOURCE_PREFIX.length()+1);
 	        
-	        // FIXME instead of forward do the same as in orig. servlet >> caching!!!
-	        this.getServletContext().getRequestDispatcher(WIKI_FCKEDITOR_PATH + path).forward(request,response);
+	        File file = new File(getServletContext().getRealPath(FCKEDITOR_WIKI_PREFIX + path));
+	        
+	        if (!file.exists()) {
+	        	log("File '" + file + "' not found.");
+	        	super.doGet(request, response);
+	        } else {
+	        	if (uri.endsWith(".jsf")) {
+		        	response.setContentType("text/html;");
+		        } else {
+		            response.setHeader("Cache-Control", "public");
+		            response.setHeader("Last-Modified", calcModify());
+		        }
+		        if (uri.endsWith(".css")) {
+		        	response.setContentType("text/css;");
+		        } else if (uri.endsWith(".js")) {
+		        	response.setContentType("text/javascript;");
+		        } else if (uri.endsWith(".gif")) {
+		        	response.setContentType("image/gif;");
+		        }
+		        response.setContentLength((int) file.length());
+		        
+		        // resource found, copying on output stream
+		        OutputStream out = response.getOutputStream();
+		        byte[] buffer = new byte[4096];
+		        InputStream bis = new FileInputStream(file);
+		        int read = 0;
+		        while ((read = bis.read(buffer)) != -1) {
+		            out.write(buffer, 0,read);
+		            read = bis.read(buffer);
+		        }
+		        bis.close();
+		        out.flush();
+		        out.close();
+	        }
 		} else {
 			super.doGet(request, response);
 		}
@@ -58,6 +96,13 @@ public class FCKServlet extends org.fckfaces.util.Servlet {
 	protected boolean isWiki(HttpSession session) {
 		MutableBoolean isWiki = (MutableBoolean)session.getAttribute(Constants.WIKI_IS_ACTIVE);
 		return isWiki.booleanValue();
+	}
+	
+	private static final String calcModify() {
+		Date mod = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z",Locale.ENGLISH);
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+		return sdf.format(mod);
 	}
 
 }

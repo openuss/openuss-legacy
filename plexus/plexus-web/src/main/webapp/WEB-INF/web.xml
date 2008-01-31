@@ -438,7 +438,8 @@
 	<servlet>
 		<servlet-name>FCKFaces</servlet-name>
 		<!-- new servlet to get a special FCKeditor for wiki! -->
-		<servlet-class>org.openuss.web.servlets.FCKServlet</servlet-class>
+<!-- 	<servlet-class>org.fckfaces.util.Servlet</servlet-class> -->
+        <servlet-class>org.openuss.web.servlets.FCKServlet</servlet-class>
 	</servlet>
 	
 	<servlet>

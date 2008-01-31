@@ -232,12 +232,6 @@
         <managed-bean-name>WikiSiteVersionInfo</managed-bean-name>
         <managed-bean-class>org.openuss.wiki.WikiSiteVersionInfo</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>fck_editor_is_wiki</managed-bean-name>
-        <managed-bean-class>org.apache.commons.lang.mutable.MutableBoolean</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    
+    </managed-bean>   
 
 </faces-config>

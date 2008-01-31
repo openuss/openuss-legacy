@@ -1,6 +1,5 @@
 package org.openuss.web.wiki;
 
-import org.apache.commons.lang.mutable.MutableBoolean;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.openuss.web.Constants;
@@ -22,9 +21,6 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	@Property(value = "#{" + Constants.WIKI_CURRENT_SITE+ "}")
 	protected WikiSiteInfo siteInfo;
 	
-	@Property(value = "#{" + Constants.WIKI_IS_ACTIVE+ "}")
-	protected MutableBoolean wikiActive;
-
 	public WikiService getWikiService() {
 		return wikiService;
 	}
@@ -44,13 +40,4 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	public void setSiteInfo(WikiSiteInfo siteInfo) {
 		this.siteInfo = siteInfo;
 	}
-	
-	public MutableBoolean getWikiActive() {
-		return wikiActive;
-	}
-	public void setWikiActive(MutableBoolean wikiActive) {
-		this.wikiActive = wikiActive;
-	}
-	
-
 }

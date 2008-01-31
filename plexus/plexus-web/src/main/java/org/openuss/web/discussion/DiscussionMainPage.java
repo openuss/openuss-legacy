@@ -37,8 +37,6 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 		if (forum.isReadOnly()){
 			addMessage(i18n("discussion_forum_readonly_true_simple"));
 		}
-		
-		this.wikiActive.setValue(false);
 	}	
 	
 	private class DiscussionDataProvider extends AbstractPagedTable<TopicInfo> {

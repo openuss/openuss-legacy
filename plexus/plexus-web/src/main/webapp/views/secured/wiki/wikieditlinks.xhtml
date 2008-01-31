@@ -19,24 +19,104 @@
 		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
 		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
 		
-		<script type="text/javascript">
-			function SelectFile( fileUrl ) {
-			 // window.opener.SetUrl( url, width, height, alt);
-			 window.opener.SetUrl( fileUrl ) ;
-			 window.close() ;
-			}
-		</script>
+		<script src="wiki/fck_wiki.js" type="text/javascript"></script>
 	</head>
 
 	<body>      
 	<!-- text above will be ignored -->
 	<ui:composition>
+	   <script type="text/javascript">
+            // oLink: The actual selected link in the editor.
+            var oLink = FCK.Selection.MoveToAncestorNode( 'A' ) ;
+            if ( oLink )
+                FCK.Selection.SelectNode( oLink ) ;
+                
+            alert("FUCK U");
+            
+            window.onload = function()
+            {
+                // Translate the dialog box texts.
+                oEditor.FCKLanguageManager.TranslatePage(document) ;
+            
+                // Load the selected link information (if any).
+                LoadSelection() ;
+            
+                GetE('page').focus();
+                window.parent.SetAutoSize( true ) ;
+            
+                // Activate the "OK" button.
+                window.parent.SetOkButton(true) ;
+            }
+                        
+        
+            //#### The OK button was hit.
+            function Ok()
+            {
+                var sUri, sInnerHtml ;
+            
+                sUri = GetE('page').value ;
+                if ( sUri.length == 0 )
+                {
+                    alert( FCKLang.DlnLnkMsgNoUrl ) ;
+                    return false ;
+                }
+            
+                //check that the links have a proper protocol or assume http
+                var sProtocol = oRegex.UriProtocol.exec( sUri ) ;
+                if ( !sProtocol )
+                {
+                    sUri = "http://" + sUri ;
+                }
+            
+                // No link selected, so try to create one.
+                if ( !oLink )
+                    oLink = oEditor.FCK.CreateLink( sUri ) ;
+                
+                if ( oLink )
+                    sInnerHtml = oLink.innerHTML ;      // Save the innerHTML (IE changes it if it is like a URL).
+                else
+                {
+                    // If no selection, use the uri as the link text (by dom, 2006-05-26)
+                    sInnerHtml = sUri;
+            
+                    var oLinkPathRegEx = new RegExp("//?([^?\"']+)([?].*)?$");
+                    var asLinkPath = oLinkPathRegEx.exec( sUri );
+                    if (asLinkPath != null)
+                        sInnerHtml = asLinkPath[1];  // use matched path
+            
+            
+                    // built new anchor and add link text
+                    oLink = oEditor.FCK.CreateElement( 'a' ) ;
+                }
+                
+                oEditor.FCKUndo.SaveUndoStep() ;
+            
+                oLink.href = sUri ;
+                SetAttribute( oLink, '_fcksavedurl', sUri ) ;
+            
+                oLink.innerHTML = sInnerHtml ;      // Set (or restore) the innerHTML
+            
+            //      SetAttribute( oLink, 'target', null ) ;
+            //  SetAttribute( oLink, 'title'    , GetE('txtAttTitle').value ) ;
+            
+                // Select the link.
+                oEditor.FCKSelection.SelectNode(oLink);
+                
+                return true ;
+            }
+        </script>
+	
 	   <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}" ifNot="error"/>
     
         <ui:define name="content">
             <h:form id="mainWikiForm">
-                <a href="javascript:SelectFile('File1.jpg');">File 1</a><br />
-                <a href="javascript:SelectFile('File2.jpg');">File 2</a>
+                <select name="page" size="10">
+			      <option>Heino</option>
+			      <option>Michael Jackson</option>
+			      <option>Tom Waits</option>
+			      <option>Nina Hagen</option>
+			      <option>Marianne Rosenberg</option>
+			    </select>
             </h:form>
         </ui:define>
 	</ui:composition>

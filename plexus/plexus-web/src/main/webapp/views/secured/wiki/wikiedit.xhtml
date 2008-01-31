@@ -32,7 +32,7 @@
 			<h:form id="editWikiForm">
 				<o:block label="#{msg.wiki_edit_header}" styleClass="form_box">
 					<div class="content_iframe">
-						<fck:editor value="#{views$secured$wiki$wikimain.siteVersionInfo.text}" id="textEditor" toolbarSet="OpenUSS" width="100%" height="400">
+						<fck:editor value="#{views$secured$wiki$wikimain.siteVersionInfo.text}" id="textEditor" toolbarSet="Wiki" width="100%" height="400">
 							<f:converter converterId="xssFilter"/>
 						</fck:editor>	 				
 					</div>
