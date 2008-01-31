@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:fck="http://www.fck-faces.org/fck-faces"
+	xmlns:s="http://www.openuss.org/jsf-security">
+				<!-- public profile information -->
+					<br />
+					<h:outputText value="#{msg.profile_public_header}" styleClass="header_font_normal"/> <br />
+					<h:outputText value="#{msg.profile_public_explain}" styleClass="content_font_normal"/>								
+					<o:input entity="user.contact" property="firstName" maxlength="100" required="true"/>
+					<o:input entity="user.contact" property="lastName" maxlength="100" required="true"/>
+					<o:input entity="user.contact" property="title" maxlength="100"/>
+					<o:input entity="user.contact" property="profession" maxlength="100"/>
+					
+				<!-- adress information -->
+					<br />
+					<h:outputText value="#{msg.profile_address_header}" styleClass="header_font_normal"/> <br />
+					<o:input entity="user.contact" property="address" maxlength="100" required="true"/>
+					<o:input entity="user.contact" property="postcode" maxlength="50" required="true"/>
+					<o:input entity="user.contact" property="city" maxlength="100" required="true"/>
+					<o:input entity="user.contact" property="country" maxlength="100" required="false"/>
+					<o:input entity="user.contact" property="telephone" maxlength="100"/>
+					<o:input entity="user.contact" property="mobile" maxlength="100"/>
+					<o:input entity="user.contact" property="skype" maxlength="100"/>
+					<o:input entity="user.contact" property="icq" maxlength="100"/>
+					<o:input entity="user.contact" property="msn" maxlength="100"/>
+				
+
+
+</ui:composition>
