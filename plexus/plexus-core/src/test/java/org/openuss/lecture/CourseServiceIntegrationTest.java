@@ -532,19 +532,25 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		Institute institute2 = testUtility.createUniqueInstituteInDB();
 		
 		// Count Courses
-		List<Course> coursesInstitute1�nabled = new ArrayList<Course>();
+
+		List<Course> coursesInstitute1Enabled = new ArrayList<Course>();
+
 		List<Course> coursesInstitute1Disabled = new ArrayList<Course>();
 		for (CourseType courseType : institute1.getCourseTypes()) {
 			for (Course course : courseType.getCourses()) {
 				if (course.isEnabled()) {
-					coursesInstitute1�nabled.add(course);
+
+					coursesInstitute1Enabled.add(course);
+
 				}
 				else {
 					coursesInstitute1Disabled.add(course);
 				}
 			}
 		}
-		int countInstitute1EnabledCourses = coursesInstitute1�nabled.size();
+
+		int countInstitute1EnabledCourses = coursesInstitute1Enabled.size();
+
 		int countInstitute1DisabledCourses = coursesInstitute1Disabled.size();
 		
 		List<Course> coursesInstitute2Disabled = new ArrayList<Course>();
