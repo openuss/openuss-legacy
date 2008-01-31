@@ -5,6 +5,8 @@
  */
 package org.openuss.calendar;
 
+import java.util.Date;
+import java.sql.Timestamp;
 /**
  * @see org.openuss.calendar.CalendarService
  */
@@ -29,7 +31,21 @@ public class CalendarServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected void handleCreateCalendar(org.openuss.foundation.DomainObject domainObject)
-        throw new java.lang.UnsupportedOperationException("org.openuss.calendar.CalendarService.handleCreateCalendar(org.openuss.foundation.DomainObject domainObject) Not implemented!");
+        
+    	Calendar cal = Calendar.Factory.newInstance();
+        // @todo use timenow as param for setLastUpdate in handleCreateCalendar
+        Timestamp timeStamp = new Timestamp(3333333);
+        cal.setLastUpdate(timeStamp);
+        
+        // check calendarType
+        // @todo get calendarType dynamically in handleCreateCalendar
+        
+        CalendarType calType = CalendarType.course_calendar;
+        
+        cal.setCalendarType(calType);
+        
+        getCalendarDao().create(cal);
+    	
     }
 
     /**
