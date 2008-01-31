@@ -52,9 +52,7 @@ public class WikiVersionPage extends AbstractWikiPage{
 		}
 		
 		this.siteVersionInfo.setNote("");
-		
-		wikiActive.setValue(true);
-		
+	
 	}
 	
 	private class WikiDataProvider extends AbstractPagedTable<WikiSiteVersionInfo> {
