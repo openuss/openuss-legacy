@@ -1,7 +1,11 @@
 package org.openuss.web.wiki;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
+import org.openuss.framework.web.jsf.model.AbstractPagedTable;
+import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.wiki.WikiService;
@@ -40,4 +44,28 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	public void setSiteInfo(WikiSiteInfo siteInfo) {
 		this.siteInfo = siteInfo;
 	}
+	
+	private WikiOverviewDataProvider data = new WikiOverviewDataProvider();
+	
+	public WikiOverviewDataProvider getData() {
+		return data;
+	}
+
+	public void setData(WikiOverviewDataProvider data) {
+		this.data = data;
+	} 
+	
+	private class WikiOverviewDataProvider extends AbstractPagedTable<WikiSiteInfo> {
+		private DataPage<WikiSiteInfo> page; 
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public DataPage<WikiSiteInfo> getDataPage(int startRow, int pageSize) {		
+			List<WikiSiteInfo> wikiSiteInfoList = wikiService.findWikiSitesByCourse(courseInfo.getId());		
+			page = new DataPage<WikiSiteInfo>(wikiSiteInfoList.size(), 0, wikiSiteInfoList);
+			sort(wikiSiteInfoList);
+			return page;
+		}
+	}
+	
 }
