@@ -183,7 +183,7 @@ public class WikiServiceImpl
 		Course course = getCourseDao().load(courseId);
 		Validate.notNull(course, "No course found for courseId:" + courseId);
 		
-		return (WikiSiteInfo)getWikiSiteDao().findByCourseAndName(course, siteName);
+		return (WikiSiteInfo)getWikiSiteDao().findByCourseAndName(WikiSiteDao.TRANSFORM_WIKISITEINFO, course, siteName);
 	}
 
 	@Override
