@@ -5,6 +5,9 @@
  */
 package org.openuss.buddylist;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @see org.openuss.buddylist.Buddy
  */
@@ -27,12 +30,33 @@ public class BuddyImpl
     }
 
     /**
+     * @throws Exception 
      * @see org.openuss.buddylist.Buddy#addTag(java.lang.String)
      */
-    public void addTag(java.lang.String tag)
-    {
-        // @todo implement public void addTag(java.lang.String tag)
-        throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.Buddy.addTag(java.lang.String tag) Not implemented!");
+    public void addTag(java.lang.String tagContent)
+    {    	   	
+    	System.out.println("ADD TAG");
+    	List<Tag> allTags = new ArrayList();
+    	allTags.addAll(getUser().getUsedTags());
+    	for(Tag candidateTag : allTags){
+    		if(candidateTag.getTag().equals(tagContent)){
+    			if(getallTags().contains(tagContent)){
+    				System.out.println("ADD TAG - Tag already added");
+    				return;
+    			} else {
+    				getallTags().add(candidateTag);
+    				candidateTag.getBuddies().add(this);
+    				System.out.println("ADD TAG - Tag added");
+    				return;
+    			}
+    		}
+    	}
+    	Tag tag = Tag.Factory.newInstance(tagContent, getUser());
+    	tag.getBuddies().add(this);
+    	System.out.println("ADD TAG - Tag created");
+    	getTags().add(tag); 
+    	tag.setUser(getUser());
+    	getUser().getUsedTags().add(tag);
     }
 
     /**
@@ -40,8 +64,9 @@ public class BuddyImpl
      */
     public java.util.List getallTags()
     {
-        // @todo implement public java.util.List getallTags()
-        return null;
+    	ArrayList allTags = new ArrayList();
+    	allTags.addAll(super.getTags());
+        return allTags;
     }
 
 }
