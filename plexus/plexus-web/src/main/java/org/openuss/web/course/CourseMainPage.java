@@ -34,6 +34,7 @@ public class CourseMainPage extends AbstractCoursePage {
 	private String password;
 
 	private List<CourseMemberInfo> assistants = new ArrayList<CourseMemberInfo>();
+	
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -91,7 +92,6 @@ public class CourseMainPage extends AbstractCoursePage {
 	 * @return Outcome
 	 */
 	public String shortcutCourse() {
-		//courseInfo = courseData.getRowData();
 		try {
 			desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());
 			addMessage(i18n("desktop_command_add_course_succeed"));
@@ -106,13 +106,13 @@ public class CourseMainPage extends AbstractCoursePage {
 	public String removeCourseShortcut() {
 		try {
 			desktopService2.unlinkCourse(desktopInfo.getId(), courseInfo.getId());
-		} catch (Exception e) {
-			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
+			addMessage(i18n("desktop_command_add_course_succeed"));
+			return Constants.SUCCESS;
+		} catch (DesktopException e) {
+			logger.error(e);
+			addError(i18n(e.getMessage()));
 			return Constants.FAILURE;
 		}
-		
-		addMessage(i18n("institute_success_remove_shortcut"));
-		return Constants.SUCCESS;
 	}
 
 	public String getPassword() {

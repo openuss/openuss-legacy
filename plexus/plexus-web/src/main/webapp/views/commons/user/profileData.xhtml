@@ -80,6 +80,7 @@
 					<o:input entity="user.contact" property="smsEmail" maxlength="100">
 						<t:validateEmail/>
 					</o:input>
+					
 				
 				<br />
 				<h:outputText value="#{msg['user_profile_preferences_header']}" styleClass="header_font_normal" />
@@ -93,6 +94,14 @@
 				</h:selectOneListbox>
 
 				<br />
+				<!-- Newsletter Settings -->
+					<br />
+					<h:outputText value="#{msg.profile_newsletter_settings_header}" styleClass="header_font_normal"/> <br/> 
+					<h:outputText value="#{msg.profile_newsletter_settings_explain}" styleClass="content_font_normal"/>
+					<br />
+					<o:input entity="user.profile" property="newsletterSelected" required="false"/>
+					<o:input entity="user.profile" property="discussionSelected" required="false" /> 
+					<br />	
 				<s:authorize ifAllGranted="ROLE_USER">
 					<!-- visibility -->
 						<br />

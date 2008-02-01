@@ -59,6 +59,8 @@ public class CourseIndexingAspectTest extends AbstractTransactionalDataSourceSpr
 		courseInfo.setFreestylelearning(true);
 		courseInfo.setNewsletter(true);
 		courseInfo.setWiki(true);
+		courseInfo.setCollaboration(true);
+		courseInfo.setPapersubmission(true);
 		
 		Long courseId = courseService.create(courseInfo);
 		

@@ -38,8 +38,6 @@ public class DiscussionSearchResults implements Serializable {
 	private boolean isFuzzy;
 	private Long postId;
 	
-	private final String poundKey = "#";
-	
 	@Property(value = "#{courseInfo}")	
 	protected CourseInfo courseInfo;
 		
@@ -86,11 +84,6 @@ public class DiscussionSearchResults implements Serializable {
 		this.submitter = submitter;
 	}
 
-	
-	public String getPoundKey() {
-		return poundKey;
-	}
-
 	public Long getPostId() {
 		return postId;
 	}
@@ -109,28 +102,15 @@ public class DiscussionSearchResults implements Serializable {
 
 
 	/**
-	 * generates the CSS tag which determines whether the result data table is displayed
+	 * Indicates whether the result data table is rendered or not
 	 * @return
 	 */
 	public String getVisibilityResultTable(){
 		logger.debug("getVisibilityResultTable - hits counts: "+this.getHitCounts());
 		if(this.getHitCounts() > 0){
-			return "display:inline;";
+			return "true";
 		} else {
-			return "display:none;";
-		}
-	}
-	
-	/**
-	 * generates the CSS tag which determines whether the result data table is displayed
-	 * @return
-	 */
-	public String getVisibilityNotificationZero(){
-		logger.debug("getVisibilityNotificationZero - hits counts: "+this.getHitCounts());
-		if(this.getHitCounts() == 0){
-			return "display:inline;";
-		} else {
-			return "display:none;";
+			return "false";
 		}
 	}
 

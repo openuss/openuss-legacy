@@ -41,6 +41,10 @@
 		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/> 
 	</page>
 	
+	<page view-id="/views/public/department/allcoursesbydepartment.xhtml">
+		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
 	<page view-id="/views/secured/lecture/departmentmembers.xhtml">
 		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
 		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
@@ -208,5 +212,31 @@
 		<parameter name="news" value="#{news_selected_newsitem.id}" converterId="javax.faces.Long"/>
 	</page>
 	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            Collaboration
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+    <page view-id="/views/secured/collaboration/*">
+        <securityConstraint domainObject="#{collaboration_current_folder}" permissions="#{ACL.READ}"/>
+        <securityConstraint domainObject="#{workspaceInfo}" permissions="#{ACL.READ}"/>
+        <parameter name="folder" value="#{collaboration_current_folder.id}" converterId="javax.faces.Long"/>
+        <parameter name="workspace" value="#{workspaceInfo.id}" converterId="javax.faces.Long"/>
+    </page>
+    <page view-id="/views/secured/collaboration/folderedit.xhtml">
+    </page>
+    <page view-id="/views/secured/collaboration/fileedit.xhtml">
+    </page>
+    <page view-id="/views/secured/collaboration/addzip.xhtml">
+    </page>
+    <page view-id="/views/secured/collaboration/remove.xhtml">
+    </page>
 	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            Wiki
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+    <page view-id="/views/secured/wiki/*">
+        <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
+        <parameter name="page" value="#{currentSiteInfo.id}" converterId="javax.faces.Long"/> 
+    </page>    
 </pages>

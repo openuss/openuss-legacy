@@ -80,7 +80,9 @@ public class CourseNewsletterServiceImpl extends CourseNewsletterServiceBase {
 	 */
 	protected void handleUnsubscribe(CourseInfo course, User user) throws Exception {
 		NewsletterInfo newsletter = getNewsletter(course);
-		getNewsletterService().unsubscribe(newsletter, user);
+		if(newsletter.isSubscribed()){
+			getNewsletterService().unsubscribe(newsletter, user);
+		}
 	}
 
 	/**

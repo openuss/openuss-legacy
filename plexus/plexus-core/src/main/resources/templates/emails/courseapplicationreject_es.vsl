@@ -1,0 +1,12 @@
+<html>
+	<body>
+		<h3><font color="#003366">OpenUSS Notificador de Emails</font></h3>
+			Desafortunadamente, su solicitud para <i>${coursename}</i> ha sido rechazada!
+		<p>
+			Gracias por utilizar OpenUSS.
+		</p>
+		<p>
+			<small>Este es solo un email informativo. Cualquier respuesta a este mensaje no será monitorizada ni respondida.</small>
+		</p>
+	</body>
+</html>

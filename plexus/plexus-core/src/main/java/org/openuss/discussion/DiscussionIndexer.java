@@ -17,12 +17,7 @@ import org.springmodules.lucene.index.core.DocumentCreator;
  * @author Tobias Brockmann
  */
 public class DiscussionIndexer extends DomainIndexer {
-
-	private static final String SPACE = " ";
-	private static final String NEWLINE = "<br/>";
-
 	private static final String DOMAINTYPE_VALUE = "post";
-	private static final String NULL_STRING = "null";
 
 	private static final Logger logger = Logger.getLogger(DiscussionIndexer.class);
 

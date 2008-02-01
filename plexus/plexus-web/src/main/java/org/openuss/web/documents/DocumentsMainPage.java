@@ -20,6 +20,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
@@ -50,6 +51,8 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	private List<FolderEntryInfo> entries;
 
+	private boolean moveMode = false;
+	
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
@@ -157,10 +160,13 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	 * Moves selected FolderEntries to target
 	 * Uses documentService.moveFolderEntries();
 	 * @return success
+	 * @throws DocumentApplicationException 
 	 */
-	public String moveFolderEntriesToTarget(){
-		//TODO Implement here
-		return Constants.SUCCESS;
+	public String moveFolderEntriesToTarget() throws DocumentApplicationException{
+		documentService.moveFolderEntries(courseInfo, targetFolder, selectedEntries() );
+		// TODO success message
+		addMessage(i18n("documents_move_files"));
+		return Constants.DOCUMENTS_MAIN_PAGE;
 	}
 
 	public String newFolder() {
@@ -218,17 +224,42 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		if(folderList == null){
 			//get Folder List from Document Service
 			List<FolderInfo> allFolderInfos= super.documentService.getAllSubfolders(courseInfo);
-			logger.debug("getFolderList() - size of allSubFolders: " + allFolderInfos.size());
-			for(int i=0; i<allFolderInfos.size(); i++){
-				//folderList.add(new SelectItem(allFolderInfos.get(i).getId(), allFolderInfos.get(i).getName()));
-				folderList.add(new SelectItem(i, "Hallo Welt " + i));
+			folderList = new ArrayList<SelectItem>();
+			for(FolderInfo info: allFolderInfos) {
+				if (info != null) {
+					String depth = "";
+					//check depth
+					List path = super.documentService.getFolderPath(info);
+					for(int i = 0; i < path.size(); i++)
+						depth = depth + "> ";
+					//@TODO implement check wether element is root. Change name if so.
+					String name = info.getName() == null ? "Root" : info.getName();
+					folderList.add(new SelectItem(info,depth + name ));
+				} else {
+					SelectItem item = new SelectItem("--");
+					item.setDisabled(true);
+					folderList.add(item);
+				}
 			}
 		}
 		return folderList;
 	}
+	
+	public String switchToMoveMode(){
+		setMoveMode(true);
+		return Constants.SUCCESS;
+	}
 
 	public void setFolderList(List<SelectItem> folderList) {
 		this.folderList = folderList;
+	}
+
+	public boolean getMoveMode() {
+		return moveMode;
+	}
+
+	public void setMoveMode(boolean moveMode) {
+		this.moveMode = moveMode;
 	}
 
 }

@@ -25,7 +25,7 @@ import org.openuss.web.Constants;
 
 /**
  * CourseType Administration Page
- * @author Ingo Düppe
+ * @author Ingo Dï¿½ppe
  * @author Kai Stettner
  */
 @Bean(name = "views$secured$lecture$institutecourses", scope = Scope.REQUEST)
@@ -54,6 +54,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	private Long departmentId;
 	
 	private boolean moving = false;
+	
 
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
@@ -227,15 +228,9 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 		return Constants.COURSE_CONFIRM_REMOVE_PAGE;
 	}
 
-	/**
-	 * Bookmarks the selected course on the MyUni Page.
-	 * 
-	 * @return Outcome
-	 */
 	public String shortcutCourse() {
 		try {
-			CourseInfo currentCourse = currentCourse();
-			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
+			desktopService2.linkCourse(desktopInfo.getId(), currentCourse().getId());
 			addMessage(i18n("desktop_command_add_course_succeed"));
 			return Constants.SUCCESS;
 		} catch (DesktopException e) {
@@ -248,13 +243,13 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	public String removeCourseShortcut() {
 		try {
 			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse().getId());
-		} catch (Exception e) {
-			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
+			addMessage(i18n("desktop_command_add_course_succeed"));
+			return Constants.SUCCESS;
+		} catch (DesktopException e) {
+			logger.error(e);
+			addError(i18n(e.getMessage()));
 			return Constants.FAILURE;
 		}
-
-		addMessage(i18n("institute_success_remove_shortcut"));
-		return Constants.SUCCESS;
 	}
 
 	public Boolean getBookmarked() {

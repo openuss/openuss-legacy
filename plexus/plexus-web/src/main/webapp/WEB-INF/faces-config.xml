@@ -33,6 +33,7 @@
 		<locale-config>
 			<default-locale>en</default-locale>
 			<supported-locale>en</supported-locale>
+			<supported-locale>es</supported-locale>
 			<supported-locale>de</supported-locale>
 			<supported-locale>zh</supported-locale>
 		</locale-config>
@@ -82,6 +83,13 @@
     	<display-name>UniversityTypeConverter</display-name>
     	<converter-for-class>org.openuss.lecture.UniversityType</converter-for-class>
     	<converter-class>org.openuss.web.lecture.converter.UniversityTypeConverter</converter-class>
+    </converter>
+
+    <converter>
+    	<description>Converts a FolderInfo object to a string representation and vice versa</description>
+    	<display-name>FolderInfoConverter</display-name>
+    	<converter-for-class>org.openuss.documents.FolderInfo</converter-for-class>
+    	<converter-class>org.openuss.web.documents.FolderInfoConverter</converter-class>
     </converter>
 	
 	<!-- - - - - - - - - - - - - - - - - - - - - - 

@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
+import org.openuss.course.newsletter.CourseNewsletterService;
 import org.openuss.documents.DocumentService;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
@@ -82,6 +83,18 @@ public abstract class AbstractLecturePage extends BasePage {
 	
 	@Property(value = "#{uploadFileManager}")
 	private UploadFileManager uploadFileManager;
+	
+	@Property(value = "#{courseNewsletterService}")
+	protected CourseNewsletterService courseNewsletterService;
+
+	public CourseNewsletterService getCourseNewsletterService() {
+		return courseNewsletterService;
+	}
+
+	public void setCourseNewsletterService(
+			CourseNewsletterService courseNewsletterService) {
+		this.courseNewsletterService = courseNewsletterService;
+	}
 
 	/**
 	 * Refreshing institute entity

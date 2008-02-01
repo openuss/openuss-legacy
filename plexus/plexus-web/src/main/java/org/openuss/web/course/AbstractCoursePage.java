@@ -56,9 +56,11 @@ public class AbstractCoursePage extends BasePage {
 	@Property(value = "#{courseService}")
 	protected CourseService courseService;
 	
+	
 	@Property(value = "#{periodInfo}")
 	protected PeriodInfo periodInfo;
 
+	
 	@Prerender
 	public void prerender() throws Exception {
 		if (courseInfo != null && courseInfo.getId() != null) {
@@ -173,5 +175,4 @@ public class AbstractCoursePage extends BasePage {
 		this.lectureService = lectureService;
 	}
 
-	
 }

@@ -5,7 +5,8 @@ import java.util.Date;
 import org.openuss.foundation.DomainObject;
 
 /**
- * Discussion Search Domain result object
+ * Discussion Search Domain Result Interface
+ * implemented by DiscussionSearchDomainResultBean.java
  * 
  * @author Thomas Jansing
  * @author Juergen de Braaf
@@ -16,7 +17,7 @@ public interface DiscussionSearchDomainResult extends DomainObject {
 
 	/**
 	 * 
-	 * @return string 
+	 * @return String
 	 */
 	public String getTitle();
 
@@ -28,7 +29,7 @@ public interface DiscussionSearchDomainResult extends DomainObject {
 	
 	/**
 	 * the search score of the result object 
-	 * @return String
+	 * @return Float
 	 */
 	public float getScore();
 	
