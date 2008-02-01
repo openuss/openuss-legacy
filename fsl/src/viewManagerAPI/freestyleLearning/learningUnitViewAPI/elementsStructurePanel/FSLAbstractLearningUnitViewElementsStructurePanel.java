@@ -145,7 +145,14 @@ abstract public class FSLAbstractLearningUnitViewElementsStructurePanel extends 
             }
         }
         
-        learningUnitViewManager.setElementSpecififcFileProperties(importedFileList,newElements,selectedMediaType);
+        learningUnitViewManager.setElementSpecififcFileProperties(importedFileList, newElements, selectedMediaType);
+        
+        // activate root element
+        activeLearningUnitViewElementId = elementId;
+        FSLLearningUnitViewEvent event = FSLLearningUnitViewEvent.createElementActivatedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
+        		activeLearningUnitViewElementId, secondaryActiveLearningUnitViewElementId, false);
+        learningUnitViewManager.fireLearningUnitViewEvent(event);
+        
         return newElements;
     }
     

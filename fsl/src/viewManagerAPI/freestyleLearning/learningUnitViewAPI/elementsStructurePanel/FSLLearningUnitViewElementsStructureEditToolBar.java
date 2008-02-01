@@ -634,7 +634,8 @@ public class FSLLearningUnitViewElementsStructureEditToolBar extends FLGEffectPa
                 // create elements as children from parent id
                 learningUnitViewElementsStructurePanel.createElements(
                 		parentId, newElementDialog.getInsertCommand(), selectedLearningUnitViewElementId);
-            } else {
+               
+           } else {
                 // else insert single element
                 String elementId = learningUnitViewElementsManager.createLearningUnitViewElementId();
                 String parentId;
@@ -643,8 +644,7 @@ public class FSLLearningUnitViewElementsStructureEditToolBar extends FLGEffectPa
                         parentId = selectedLearningUnitViewElementId;
                     else
                         parentId = "none";
-                }
-                else {
+                } else {
                     if (selectedLearningUnitViewElementId != null)
                         parentId = learningUnitViewElementsManager.getLearningUnitViewElement(selectedLearningUnitViewElementId,
                         false).getParentId();
