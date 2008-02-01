@@ -129,10 +129,11 @@ public class FLGStandardTour implements FLGTour{
     
         //start to move and play move sound 
         FLGStandardTourCreator l_tourCreator = FLGStandardTourCreator.getInstance();
+        /**
         if(l_tourCreator.m_currentTourCreatorOptions.mb_playSoundMove)
         {
             l_tourCreator.playSound(l_tourCreator.m_soundMove);
-        }
+        }**/
         //subList from-inclusive, to-exclusive
         int li_elementsToMove = ai_endIndex + 1 -ai_beginIndex;
         Object[] l_tempList_ = new Object[li_elementsToMove];

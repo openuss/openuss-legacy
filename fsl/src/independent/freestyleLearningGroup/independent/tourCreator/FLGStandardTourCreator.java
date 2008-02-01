@@ -55,10 +55,10 @@ public class FLGStandardTourCreator extends javax.swing.JFrame implements FLGTou
     /*********
      * Sound
      ********/
-    public java.applet.AudioClip m_soundCapture;
-    public java.applet.AudioClip m_soundSliderMove;
-    public java.applet.AudioClip m_soundDisplay;
-    public java.applet.AudioClip m_soundMove;
+    //public java.applet.AudioClip m_soundCapture;
+    //public java.applet.AudioClip m_soundSliderMove;
+    //public java.applet.AudioClip m_soundDisplay;
+    //public java.applet.AudioClip m_soundMove;
     private boolean mb_enableSounds = true;
     
     private static FLGStandardTourMediaPlayerDialog m_mediaPlayerDialog;
@@ -97,10 +97,10 @@ public class FLGStandardTourCreator extends javax.swing.JFrame implements FLGTou
          * init sounds
          */
         try{
-            m_soundCapture = java.applet.Applet.newAudioClip(getClass().getClassLoader().getResource("freestyleLearningGroup/independent/tourCreator/sounds/capture.wav"));
-            m_soundSliderMove = java.applet.Applet.newAudioClip(getClass().getClassLoader().getResource(this.m_currentTourCreatorOptions.ms_soundSliderMove));
-            m_soundDisplay = java.applet.Applet.newAudioClip(getClass().getClassLoader().getResource(this.m_currentTourCreatorOptions.ms_soundDisplay));
-            m_soundMove = java.applet.Applet.newAudioClip(getClass().getClassLoader().getResource(this.m_currentTourCreatorOptions.ms_soundMove));
+            //m_soundCapture = java.applet.Applet.newAudioClip(getClass().getClassLoader().getResource("freestyleLearningGroup/independent/tourCreator/sounds/capture.wav"));
+            //m_soundSliderMove = java.applet.Applet.newAudioClip(getClass().getClassLoader().getResource(this.m_currentTourCreatorOptions.ms_soundSliderMove));
+            //m_soundDisplay = java.applet.Applet.newAudioClip(getClass().getClassLoader().getResource(this.m_currentTourCreatorOptions.ms_soundDisplay));
+            //m_soundMove = java.applet.Applet.newAudioClip(getClass().getClassLoader().getResource(this.m_currentTourCreatorOptions.ms_soundMove));
         }catch(Exception e) {
             e.printStackTrace();
             System.out.println("Auto disabling sounds... continuing");
@@ -744,8 +744,8 @@ private void jList1MouseClicked(java.awt.event.MouseEvent evt) {
     
     private void m_buttonCaptureActionPerformed(java.awt.event.ActionEvent evt) {
         //play capture sound
-        if(this.m_currentTourCreatorOptions.mb_playSoundCapture)
-            this.playSound(this.m_soundCapture);
+        //if(this.m_currentTourCreatorOptions.mb_playSoundCapture)
+          //  this.playSound(this.m_soundCapture);
         
         //creating new tour element and temporary ElementInformation
         FLGStandardTourElement l_tempTourElement= new FLGStandardTourElement();
@@ -849,9 +849,10 @@ private void jList1MouseClicked(java.awt.event.MouseEvent evt) {
      */
     public void displayElement(int ai_elementNumber) {
         if(ai_elementNumber >= 0 && ai_elementNumber <= this.m_currentTour.getSize()) {
-            if(this.m_currentTourCreatorOptions.mb_playSoundDisplay) {
+            /**
+        	if(this.m_currentTourCreatorOptions.mb_playSoundDisplay) {
                 this.playSound(this.m_soundDisplay);
-            }
+            }**/
             //get element
             FLGStandardTourElement l_tempTourElement = (FLGStandardTourElement)this.m_currentTour.getElementAt(ai_elementNumber);
             File l_mediaFile = l_tempTourElement.getAssociatedMediaFile();

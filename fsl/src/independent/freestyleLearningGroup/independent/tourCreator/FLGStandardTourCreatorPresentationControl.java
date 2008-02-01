@@ -340,9 +340,12 @@ public class FLGStandardTourCreatorPresentationControl extends javax.swing.JFram
         //perhaps play sound
         if(li_newSliderPosition != this.mi_tempSliderPosition) {
             this.mi_tempSliderPosition = li_newSliderPosition;
+            
+            /**
             if(this.m_tourCreator.m_currentTourCreatorOptions.mb_playSoundSliderMove) {
                 this.m_tourCreator.playSound(m_tourCreator.m_soundSliderMove);
             }//if
+            **/
         }//if
         
         //update panel if visible
