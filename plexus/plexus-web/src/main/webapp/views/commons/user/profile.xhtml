@@ -41,28 +41,70 @@
 				</div>
 				<div class="usercontact">
 					<ul>
-						<c:if test="#{not empty showuser.contact.title}">
-							<li>#{showuser.contact.title}</li>
-						</c:if>
-						<li>#{showuser.contact.firstName} &#160; #{showuser.contact.lastName}</li>
-						<c:if test="#{not empty showuser.contact.profession}">
-							<li>#{showuser.contact.profession}</li>
-						</c:if>
+						<c:if test="#{showuser.profile.profileContactPublic}">
+						<br /><h:outputText value="#{msg.profile_address_header}" styleClass="header_font_normal"/><br />
 						<c:if test="#{showuser.profile.addressPublic}">
-							<li>#{showuser.contact.address}</li>
-							<li>#{showuser.contact.postcode} #{showuser.contact.city}</li>
-							<li>#{showuser.contact.country}</li>
+						<c:if test="#{not empty showuser.contact.address}">
+						#{msg.user_contact_address}: #{showuser.contact.address}<br />
 						</c:if>
-						<c:if test="#{showuser.profile.telephonePublic}">
-							<li>#{showuser.contact.telephone}</li>
+						<c:if test="#{not empty showuser.contact.postcode}">
+						#{msg.user_contact_postcode}: #{showuser.contact.postcode}<br />
+						</c:if> 
+						<c:if test="#{not empty showuser.contact.city}">
+						#{msg.user_contact_city}: #{showuser.contact.city}<br />
+						</c:if> 
+						<c:if test="#{not empty showuser.contact.country}">
+						#{msg.user_contact_country}: #{showuser.contact.country}<br />
+						</c:if> 
 						</c:if>
 						<c:if test="#{showuser.profile.emailPublic}">
-							<li><h:outputLink value="mailto://#{showuser.email}" styleClass="email">#{showuser.email}</h:outputLink></li>
+						<h:outputText value="#{msg.user_email}: "/><h:outputLink value="mailto://#{showuser.email}" styleClass="email">#{showuser.email}</h:outputLink><br/>
 						</c:if>
+						<c:if test="#{not empty showuser.contact.skype}">
+						<h:outputText value="#{msg.user_contact_skype}: "/><h:outputLink value="skype:#{showuser.contact.skype}" styleClass="email"><img src="http://mystatus.skype.com/smallicon/#{showuser.contact.skype}"/> #{showuser.contact.skype}</h:outputLink><br />
+						</c:if>
+						<c:if test="#{not empty showuser.contact.icq}">
+						#{msg.user_contact_icq}: #{showuser.contact.icq}<br /><!-- insert image here -->
+						</c:if>
+						<c:if test="#{not empty showuser.contact.msn}">
+						#{msg.user_contact_msn}: #{showuser.contact.msn}<br />
+						</c:if>
+						<c:if test="#{showuser.profile.telephonePublic}">
+						<c:if test="#{not empty showuser.contact.telephone}">
+						#{msg.user_contact_telephone}: #{showuser.contact.telephone}<br />
+						</c:if>
+						<c:if test="#{not empty showuser.contact.mobile}">
+						#{msg.user_contact_mobile}: #{showuser.contact.mobile}<br />
+						</c:if>
+						</c:if>
+						</c:if>
+						<c:if test="#{showuser.profile.profilePersonalPublic}">
+						<br /><h:outputText value="#{msg.profile_personal_header}" styleClass="header_font_normal"/><br />
+						<c:if test="#{not empty showuser.contact.birthday}">
+						<h:outputText value="#{msg.user_contact_birthday}: "/><h:outputText value="#{showuser.contact.birthday}"><f:convertDateTime pattern="dd.MM.yyyy"/></h:outputText><br />
+						</c:if>
+						<c:if test="#{not empty showuser.contact.searching}">
+						#{msg.user_contact_searching}: #{showuser.contact.searching}<br />
+						</c:if>
+						<c:if test="#{not empty showuser.contact.providing}">
+						#{msg.user_contact_providing}: #{showuser.contact.providing}<br />
+						</c:if>
+						<c:if test="#{not empty showuser.contact.interests}">
+						#{msg.user_contact_interests}: #{showuser.contact.interests}<br />
+						</c:if>
+						</c:if>
+						<c:if test="#{showuser.profile.profileUniPublic}">
+						<br /><h:outputText value="#{msg.profile_uni_header}" styleClass="header_font_normal"/><br />
+						<c:if test="#{not empty showuser.profile.studies}">
+						#{msg.user_profile_studies}: #{showuser.profile.studies}<br />
+						</c:if>
+						<c:if test="#{not empty showuser.profile.ageGroup}">
+						#{msg.user_profile_agegroup}: #{showuser.profile.ageGroup}<br />
+						</c:if>
+						</c:if><br />
+						<h:outputText value="#{showuser.profile.portrait}" escape="false"/>
 					</ul>
-				</div>
-				<div class="content_font_normal">
-					<h:outputText value="#{showuser.profile.portrait}" escape="false"/>
+					
 				</div>
 		   </div>
 	       <div class="footer_normal_left_bg"/>

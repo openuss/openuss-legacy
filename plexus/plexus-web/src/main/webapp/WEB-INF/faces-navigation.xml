@@ -69,10 +69,25 @@
 			<from-outcome>institute</from-outcome>
 			<to-view-id>/views/public/institute/institute.xhtml</to-view-id>
 		</navigation-case>
-		
+
 		<navigation-case>
 			<from-outcome>user_profile</from-outcome>
 			<to-view-id>/views/secured/user/profile.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>user_profile_personal</from-outcome>
+			<to-view-id>/views/secured/user/profilePersonal.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>user_profile_uni</from-outcome>
+			<to-view-id>/views/secured/user/profileUni.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>user_profile_preferences</from-outcome>
+			<to-view-id>/views/secured/user/profilePref.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>

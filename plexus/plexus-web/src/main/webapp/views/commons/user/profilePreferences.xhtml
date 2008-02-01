@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:fck="http://www.fck-faces.org/fck-faces"
+	xmlns:s="http://www.openuss.org/jsf-security">
+					<br />
+					<h:outputText value="#{msg['user_profile_login_header']}" styleClass="header_font_normal" />
+					<o:input entity="user" property="username" required="true">
+						<f:validator validatorId="usernameNotExistValidator" />
+					</o:input>
+					<o:input entity="user" property="email" required="true">
+						<t:validateEmail />
+						<f:validator validatorId="uniqueEmailValidator" />
+					</o:input>
+					<s:authorize ifNotGranted="ROLE_USER">
+						<o:input entity="user" property="password" required="true"
+							type="password" redisplay="false">
+							<f:validateLength minimum="5" />
+						</o:input>
+						<h:outputLabel value="#{msg.user_passwordconfirm}"
+							for="confirmPassword" styleClass="field_label" />
+						<h:inputSecret id="confirmPassword" styleClass="field" required="true"
+							redisplay="false">
+							<t:validateEqual for="password" />
+						</h:inputSecret>
+						<h:message for="confirmPassword" styleClass="field_error" />
+					</s:authorize>
+
+			
+				<br />
+				<h:outputText value="#{msg['user_profile_preferences_header']}" styleClass="header_font_normal" />
+				<h:outputLabel value="#{msg.user_preferences_locale}" for="languageSelect" styleClass="field_label"/>
+				<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{user.preferences.locale}">
+				    <f:selectItems value="#{visit.supportedLocaleItems}"/>
+				</h:selectOneListbox>
+				<h:outputLabel value="#{msg.user_preferences_timezone}" for="timeZoneSelect" styleClass="field_label"/>
+				<h:selectOneListbox id="timeZoneSelect" size="1" styleClass="pulldown" value="#{user.preferences.timezone}" >
+				    <f:selectItems value="#{visit.supportedTimeZoneItems}"/>
+				</h:selectOneListbox>
+
+				<br />
+				<s:authorize ifAllGranted="ROLE_USER">
+					<!-- visibility -->
+						<br />
+						<h:outputText value="#{msg.profile_visibility_config}" styleClass="header_font_normal" /><br />
+						<h:outputText value="#{msg.profile_visibility_explain}" styleClass="content_font_normal"/>
+						<o:input entity="user.profile" property="profileContactPublic"/>
+						<o:input entity="user.profile" property="telephonePublic"/>
+						<o:input entity="user.profile" property="addressPublic"/> 
+						<o:input entity="user.profile" property="emailPublic"/>
+						<o:input entity="user.profile" property="profilePersonalPublic"/>
+						<o:input entity="user.profile" property="profileUniPublic"/>
+				</s:authorize>
+
+</ui:composition>
