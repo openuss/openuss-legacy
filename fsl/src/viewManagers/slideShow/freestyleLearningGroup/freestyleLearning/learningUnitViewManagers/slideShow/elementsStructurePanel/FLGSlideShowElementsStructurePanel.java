@@ -932,6 +932,19 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
             	textField_imageFile.setText(fileName);
             }
             
+            public void enableAudioButton(boolean enable) {
+            	button_audioFile.setEnabled(enable);
+            }
+            
+            public void enableAudioLabel(boolean enable) {
+            	label_audioFile.setEnabled(enable);
+            }
+            
+            public void enableAudioTextFiedl(boolean enable) {
+            	textField_audioFile.setEnabled(enable);
+            	textField_audioFile.setEditable(enable);
+            }
+            
             public String getImageFileExtension() {
             	String imageFileExtension = null;
                 if (textField_imageFile.getText().lastIndexOf(".") > 0) {
@@ -986,7 +999,10 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
                 textField_audioFile.setEnabled(enable);
                 label_audioFile.setEnabled(enable);
                 textField_audioFile.setEditable(enable);
-                if (checkBox_waitForAudioEnd != null) { checkBox_waitForAudioEnd.setEnabled(enable); }
+                if (checkBox_waitForAudioEnd != null) { 
+                	checkBox_waitForAudioEnd.setEnabled(enable); 
+                	
+                }
                 if (textField_delayTime != null) { textField_delayTime.setEnabled(enable); }
                 setWaitForAudioEnd(!enable);
             }
@@ -1231,7 +1247,7 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
         public void setInputFieldsDefaults(FSLLearningUnitViewElement learningUnitViewElement) {
          	backgroundColor = (Color)UIManager.get("FSLMainFrameColor1");
          	doAntialiazing = false;
-       	 	scaleImages = false;
+       	 	scaleImages = true;
        	 	slidePanel.setBackgroundColor((Color)UIManager.get("FSLMainFrameColor1"));
        	 	folderImportPanel.setBackgroundColor((Color)UIManager.get("FSLMainFrameColor1"));
        	 	slidePanel.enableScaleCheckBox(true);
@@ -1331,6 +1347,9 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
                 	 folderImportPanel.enableAudioComponents(false);
                  }
            	} else {
+           		
+           		System.out.println("New element!!!");
+           		
             	modifyViewElement = false;
            	 	folderPanel.setAudioFileName("");
            	 	slidePanel.setAudioFileName("");
@@ -1342,6 +1361,7 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
            	 	folderImportPanel.setDelayTime("3");
           	 	folderImportPanel.setWaitForAudioEnd(false);
           	 	folderImportPanel.enableAudioComponents(false);
+          	 	folderImportPanel.checkBox_waitForAudioEnd.setSelected(false);
            	 	tabbedPane.setEnabledAt(2, true);
            	 	tabbedPane.setEnabledAt(1, true);
            	 	tabbedPane.setEnabledAt(0, true);
@@ -1381,8 +1401,26 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
             		if (imageFile.exists()) {
             			folderImportPanel.setImageFileName(imageFile.getAbsolutePath());
             			defaultDir = imageFile.getParentFile();
+            			
+            			// enable audio button 
+            			folderImportPanel.enableAudioButton(true);
+            			
+            			// enable audio text field
+            			//folderImportPanel.enableAudioLabel(true);
+            			
+            			// enable audio label
+            			//folderImportPanel.enableAudioTextFiedl(true);
+            			
+            			// enable 
+            			folderImportPanel.textField_delayTime.setEnabled(true);
+            			folderImportPanel.textField_delayTime.setEditable(true);
+            			
+            			// enable
+            			folderImportPanel.label_delayTime.setEnabled(true);
+            			
             			// enable audio components
-            			folderImportPanel.enableAudioComponents(true);
+            			//folderImportPanel.enableAudioComponents(true);
+            			
             			selectedMediaType = "image";
     	                folderImport = true;
                         String folderTitle = imageFile.getName();
@@ -1408,7 +1446,7 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
     				// enable audio components
     				folderPanel.setAudioFileName(recordFile.getAbsolutePath());
     				folderPanel.enableAudioComponents(true);
-                    recordPanel.initButtons(recordFile);
+        			recordPanel.initButtons(recordFile);
                     if(recordFile != null) {
                     	folderPanel.enableMusicDeleteButton(true);
                     }
@@ -1433,27 +1471,35 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
         		}
         	}
         	if (tabbedPane.getSelectedIndex() == 0) {
-        		// import audio folder
-        		FLGMediaFileChooser mediaFileChooser = new FLGMediaFileChooser(FLGMediaFileChooser.FOLDER);
-        		if (mediaFileChooser.showDialog(defaultDir)) {
-        			recordFile = mediaFileChooser.getSelectedFile();
-        			if (recordFile.exists()) {
-        				// enable audio components
-        				folderImportPanel.setAudioFileName(recordFile.getAbsolutePath());
-        				folderImportPanel.enableAudioComponents(true);
-        				defaultDir = recordFile.getParentFile();
-        				selectedMediaType = "audio";
-    	                folderImport = true;
-                        // set title
-    	                editToolBar.setLearningUnitViewElementTitle(recordFile.getName());
-    	                // get files
-                        DefaultTreeModel treeModel = FLGFileUtility.loadDirectoryContent(recordFile);
-                        // filter files
-                        TreeNode root = (TreeNode) treeModel.getRoot();
-                        nodesToDelete.clear();
-                        importedFolderFilesStructure_audioFiles = deleteNodes(treeModel,filterFiles(treeModel,root));
-        			}
-        		}
+        		
+        		
+    			// open dialog with import instructions
+    			if(FLGOptionPane.showConfirmDialog(internationalization.getString("FLGSlideShowSpecificElementDialogPane.showImageFileChooser.showAudioImportDialog.text"),
+    					internationalization.getString("FLGSlideShowSpecificElementDialogPane.showImageFileChooser.showAudioImportDialog.title"), 
+    					FLGOptionPane.OK_CANCEL_OPTION, FLGOptionPane.INFORMATION_MESSAGE) == FLGOptionPane.OK_OPTION) {
+    			
+    				// import audio folder
+	        		FLGMediaFileChooser mediaFileChooser = new FLGMediaFileChooser(FLGMediaFileChooser.FOLDER);
+	        		if (mediaFileChooser.showDialog(defaultDir)) {
+	        			recordFile = mediaFileChooser.getSelectedFile();
+	        			if (recordFile.exists()) {
+	        				// enable audio components
+	        				folderImportPanel.setAudioFileName(recordFile.getAbsolutePath());
+	        				folderImportPanel.enableAudioComponents(true);
+	        				defaultDir = recordFile.getParentFile();
+	        				selectedMediaType = "audio";
+	    	                folderImport = true;
+	                        // set title
+	    	                editToolBar.setLearningUnitViewElementTitle(recordFile.getName());
+	    	                // get files
+	                        DefaultTreeModel treeModel = FLGFileUtility.loadDirectoryContent(recordFile);
+	                        // filter files
+	                        TreeNode root = (TreeNode) treeModel.getRoot();
+	                        nodesToDelete.clear();
+	                        importedFolderFilesStructure_audioFiles = deleteNodes(treeModel,filterFiles(treeModel,root));
+	        			}
+	        		}
+    			}
         	}
        }
     }
@@ -1509,7 +1555,7 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
     public java.util.List createElements(String parentId, int position, String selectedLearningUnitViewElementId) {
     
     	ArrayList newElements = new ArrayList();
-    	
+    	String elementId = null;
     	if (importedFolderFilesStructure==null) {
     		FLGOptionPane.showMessageDialog(internationalization.getString("folderImport.dialog.missingImageElements.message"), 
                     internationalization.getString("folderImport.dialog.missingImageElements.title"), FLGOptionPane.PLAIN_MESSAGE);
@@ -1525,7 +1571,7 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
     			root.getChildCount();
 		        
     			// insert root, create new FSL-Element
-    			String elementId = learningUnitViewElementsManager.createLearningUnitViewElementId();
+    			elementId = learningUnitViewElementsManager.createLearningUnitViewElementId();
     			File rootFile = (File)((DefaultMutableTreeNode)root).getUserObject();
     			
     			// set root tilte
@@ -1598,7 +1644,7 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
     				root.getChildCount();
 		        
     				// insert root, create new FSL-Element
-    				String elementId = learningUnitViewElementsManager.createLearningUnitViewElementId();
+    				elementId = learningUnitViewElementsManager.createLearningUnitViewElementId();
     				File rootFile = (File)((DefaultMutableTreeNode)root).getUserObject();
     				String title = FLGFileUtility.removeExtension(rootFile.getName());
     				FSLLearningUnitViewElement newElement = createLearningUnitViewElement(elementId, parentId, title, true);
@@ -1659,6 +1705,14 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
     			}
     		}
     	}
+    	
+        // activate root element
+        activeLearningUnitViewElementId = elementId;
+        FSLLearningUnitViewEvent event = FSLLearningUnitViewEvent.createElementActivatedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
+        		activeLearningUnitViewElementId, secondaryActiveLearningUnitViewElementId, false);
+        learningUnitViewManager.fireLearningUnitViewEvent(event);
+    	
+    	
         return newElements;
     }
     
