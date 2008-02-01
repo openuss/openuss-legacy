@@ -7,6 +7,10 @@ package org.openuss.calendar;
 
 import java.util.Date;
 import java.sql.Timestamp;
+
+import org.openuss.groups.GroupInfo;
+import org.openuss.lecture.CourseInfo;
+import org.openuss.security.UserInfo;
 /**
  * @see org.openuss.calendar.CalendarService
  */
@@ -33,17 +37,24 @@ public class CalendarServiceImpl
         // @todo implement protected void handleCreateCalendar(org.openuss.foundation.DomainObject domainObject)
         
     	Calendar cal = Calendar.Factory.newInstance();
-        // @todo use timenow as param for setLastUpdate in handleCreateCalendar
+    	CalendarType calType;
+    	
+    	// check calendarType
+    	if (domainObject instanceof CourseInfo) {           
+            calType = CalendarType.course_calendar;
+    	} else if (domainObject instanceof GroupInfo) {
+    		calType = CalendarType.group_calendar;
+    	} else if (domainObject instanceof UserInfo) {
+    		calType = CalendarType.user_calendar;
+    	} else {
+    		throw new CalendarApplicationException ("DomainObject is not valid for calendar type.");
+    	}
+    		
+    	
+        // TODO use timenow as param for setLastUpdate in handleCreateCalendar
         Timestamp timeStamp = new Timestamp(3333333);
         cal.setLastUpdate(timeStamp);
-        
-        // check calendarType
-        // @todo get calendarType dynamically in handleCreateCalendar
-        
-        CalendarType calType = CalendarType.course_calendar;
-        
         cal.setCalendarType(calType);
-        
         getCalendarDao().create(cal);
     	
     }

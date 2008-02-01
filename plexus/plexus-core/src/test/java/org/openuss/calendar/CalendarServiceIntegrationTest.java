@@ -30,24 +30,19 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		return domainObject;
 	}
 	
-	public void testCreateCalendarForCourse() {
-		
-		CalendarInfo firstCal= new CalendarInfo();
-		firstCal.setId(1L);
-		firstCal.setCalendarType(CalendarType.course_calendar);	
-		
-		DomainObject domainObject = generateDomainObject();
+	public void testCreateCalendar() {
+		DomainObject domainObjectCourse = generateDomainObject();
 		
 		CourseInfo courseInfo = new CourseInfo();
-		courseInfo.setId(domainObject.getId());
-		
-		//System.out.println("Kurs-Id: " + courseInfo.getId());
-		
+		courseInfo.setId(domainObjectCourse.getId());
+				
 		try {
-			calendarService.createCalendar(domainObject);
+			calendarService.createCalendar(courseInfo);
 		} catch (CalendarApplicationException e){
 			System.out.println(e);
 		}
+		
+		
 	}
 
 	public SecurityService getSecurityService() {
