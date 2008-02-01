@@ -9,36 +9,31 @@
       xmlns:s="http://www.openuss.org/jsf-security"      
       xmlns:c="http://java.sun.com/jstl/core">
       
-    <plexus:dataTable id="wikioverviewtable" label="#{msg.wiki_overview_header}" 
-    	value="views$secured$wiki$wiki_overview.data" var="topic" rows="20"
-    	columnClasses="col_min_center, col_max_left, col_max_left, col_date, col_commands">  
+    <plexus:dataTable id="discussionstable" label="#{msg.wiki_overview_header}" 
+    	value="views$secured$wiki$wikioverview.data" var="wikiPage" rows="20"
+    	columnClasses="col_min_center, col_max_left, col_min_center, col_min_center, col_min_center, col_date, col_commands">  
       
 		<t:column>
-			<img src="#{theme.imagesPath}/icons/viewstate#{topic.viewState}.png"/>
+			
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="title"> #{msg['discussion_main_column_name']} </plexus:commandSortHeader>
-			<o:link value="/views/secured/discussion/discussionthread.faces" title="#{topic.title}" >
-				<f:param value="#{courseInfo.id}" name="course" />
-				<f:param value="#{topic.id}" name="topic"/>
-				<h:outputText value="#{topic.title}" />
-			</o:link>			
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="answerCount"> #{msg['discussion_main_column_answers']} </plexus:commandSortHeader>
-			<h:outputText value="#{wiki.name}" />
+			<h:outputText value="#{wikiPage.name}" />
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="submitter"> #{msg['discussion_main_column_author']} </plexus:commandSortHeader>
-			<h:outputText value="#{wiki.name}" />
+			<h:outputText value="#{wikiPage.name}" />
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="hits"> #{msg['discussion_main_column_clicks']} </plexus:commandSortHeader>
-			<h:outputText value="#{wiki.name}" />
+			<h:outputText value="#{wikiPage.name}" />
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="lastPost"> #{msg['discussion_main_column_lastentry']} </plexus:commandSortHeader>
-			<h:outputText value="#{wiki.name} - #{wiki.name}" />
+			<h:outputText value="#{wikiPage.name} - #{wikiPage.name}" />
 		</t:column>
 		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 			<t:column>
