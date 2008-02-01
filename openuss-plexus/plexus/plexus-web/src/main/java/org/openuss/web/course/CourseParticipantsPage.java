@@ -14,7 +14,6 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.LectureException;
-import org.openuss.security.UserInfo;
 import org.openuss.security.UserInfoDetails;
 import org.openuss.web.Constants;
 

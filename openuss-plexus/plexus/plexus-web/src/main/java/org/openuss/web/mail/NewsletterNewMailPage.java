@@ -7,7 +7,6 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.newsletter.MailDetail;
-import org.openuss.security.UserInfo;
 import org.openuss.security.UserInfoDetails;
 import org.openuss.web.Constants;
 

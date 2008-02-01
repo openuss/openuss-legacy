@@ -5,9 +5,6 @@
  */
 package org.openuss.security;
 
-import java.util.List;
-
-import org.acegisecurity.GrantedAuthority;
 
 
 /**

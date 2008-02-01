@@ -7,5 +7,26 @@
 		<config>src/main/webapp/WEB-INF/security.xml</config>
 	</configs>
 	<configSets>
+		<configSet>
+			<name><![CDATA[Web]]></name>
+			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
+			<incomplete>false</incomplete>
+			<configs>
+				<config>/plexus-core/src/main/resources/applicationContext-activation.xml</config>
+				<config>/plexus-core/src/main/resources/applicationContext-aop.xml</config>
+				<config>/plexus-core/src/main/resources/applicationContext-cache.xml</config>
+				<config>/plexus-core/src/main/resources/applicationContext-commands.xml</config>
+				<config>/plexus-core/src/main/resources/applicationContext-entities.xml</config>
+				<config>/plexus-core/src/main/resources/applicationContext-lucene.xml</config>
+				<config>/plexus-core/src/main/resources/applicationContext-messaging.xml</config>
+				<config>/plexus-core/src/main/resources/applicationContext-newsletter.xml</config>
+				<config>/plexus-core/src/main/resources/applicationContext-quartz.xml</config>
+				<config>/plexus-core/src/main/resources/applicationContext-resources.xml</config>
+				<config>src/main/webapp/WEB-INF/security.xml</config>
+				<config>/plexus-core/target/src/applicationContext.xml</config>
+				<config>/plexus-core/target/src/applicationContext-localDataSource.xml</config>
+				<config>/plexus-core/target/src/ehcache.xml</config>
+			</configs>
+		</configSet>
 	</configSets>
 </beansProjectDescription>
