@@ -10,8 +10,8 @@
       xmlns:c="http://java.sun.com/jstl/core">
       
     <plexus:dataTable id="wikioverviewtable" label="#{msg.wiki_overview_header}" 
-    	value="views$secured$discussion$discussions.data" var="topic" rows="20"
-    	columnClasses="col_min_center, col_max_left, col_min_center, col_min_center, col_min_center, col_date, col_commands">  
+    	value="views$secured$wiki$wiki_overview.data" var="topic" rows="20"
+    	columnClasses="col_min_center, col_max_left, col_max_left, col_date, col_commands">  
       
 		<t:column>
 			<img src="#{theme.imagesPath}/icons/viewstate#{topic.viewState}.png"/>
@@ -26,19 +26,19 @@
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="answerCount"> #{msg['discussion_main_column_answers']} </plexus:commandSortHeader>
-			<h:outputText value="#{topic.answerCount}" />
+			<h:outputText value="#{wiki.name}" />
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="submitter"> #{msg['discussion_main_column_author']} </plexus:commandSortHeader>
-			<h:outputText value="#{topic.submitter}" />
+			<h:outputText value="#{wiki.name}" />
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="hits"> #{msg['discussion_main_column_clicks']} </plexus:commandSortHeader>
-			<h:outputText value="#{topic.hits}" />
+			<h:outputText value="#{wiki.name}" />
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="lastPost"> #{msg['discussion_main_column_lastentry']} </plexus:commandSortHeader>
-			<h:outputText value="#{topic.lastPost} - #{topic.lastPostSubmitterName}" />
+			<h:outputText value="#{wiki.name} - #{wiki.name}" />
 		</t:column>
 		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 			<t:column>

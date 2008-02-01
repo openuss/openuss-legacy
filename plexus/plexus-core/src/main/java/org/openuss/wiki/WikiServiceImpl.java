@@ -169,11 +169,15 @@ public class WikiServiceImpl
     /**
      * @see org.openuss.wiki.WikiService#findWikiSitesByCourse(java.lang.Long)
      */
-    protected java.util.List handleFindWikiSitesByCourse(java.lang.Long courseId)
-        throws java.lang.Exception
-    {
-        // @todo implement protected java.util.List handleFindWikiSitesByCourse(java.lang.Long courseId)
-        return null;
+    @SuppressWarnings("unchecked")
+	protected java.util.List handleFindWikiSitesByCourse(java.lang.Long courseId)
+        throws java.lang.Exception {
+    	Validate.notNull(courseId, "Parameter courseId must not be null!");
+		Course course = getCourseDao().load(courseId);
+		Validate.notNull(course, "No course found for courseId:" + courseId);
+		
+		List<WikiSiteInfo> result = getWikiSiteDao().findByCourse(course);
+		return result;
     }
 
 	@Override
