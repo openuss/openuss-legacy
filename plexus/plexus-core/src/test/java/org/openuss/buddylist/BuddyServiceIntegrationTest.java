@@ -22,8 +22,6 @@ import org.openuss.security.*;
 public class BuddyServiceIntegrationTest extends BuddyServiceIntegrationTestBase {
 	private AclManager aclManager;
 	
-	private BuddyService buddyService;
-	
 	private SecurityService securityService;
 	
 	private DefaultDomainObject defaultDomainObject;
@@ -46,10 +44,6 @@ public class BuddyServiceIntegrationTest extends BuddyServiceIntegrationTestBase
 		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(TestUtility.unique());
 		securityService.createObjectIdentity(defaultDomainObject, null);
 		return defaultDomainObject;
-	}
-
-	public void setBuddyService(BuddyService buddyService) {
-		this.buddyService = buddyService;
 	}
 
 	public void setSecurityService(SecurityService securityService) {
