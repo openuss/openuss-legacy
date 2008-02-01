@@ -233,5 +233,10 @@
         <managed-bean-class>org.openuss.wiki.WikiSiteVersionInfo</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>   
+    <managed-bean>
+        <managed-bean-name>wiki_link_selection</managed-bean-name>
+        <managed-bean-class>org.openuss.web.wiki.WikiLinkSelection</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>  
 
 </faces-config>

@@ -30,14 +30,13 @@ import java.util.TimeZone;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.mutable.MutableBoolean;
 import org.fckfaces.util.Util;
-import org.openuss.web.Constants;
 
 /**
- * @author srecinto
+ * Servlet that lets us extend the FCKeditor with own plugins without putting 
+ * them into the classpath.
+ * 
  * @author Christian Beer
  *
  */
@@ -56,7 +55,6 @@ public class FCKServlet extends org.fckfaces.util.Servlet {
         File file = new File(getServletContext().getRealPath(FCKEDITOR_WIKI_PREFIX + path));
         
         if (!file.exists()) {
-        	log("File '" + file + "' not found.");
         	super.doGet(request, response);
         } else {
         	if (uri.endsWith(".jsf")) {
@@ -80,8 +78,7 @@ public class FCKServlet extends org.fckfaces.util.Servlet {
 	        InputStream bis = new FileInputStream(file);
 	        int read = 0;
 	        while ((read = bis.read(buffer)) != -1) {
-	            out.write(buffer, 0,read);
-	            read = bis.read(buffer);
+	            out.write(buffer, 0, read);
 	        }
 	        bis.close();
 	        out.flush();
