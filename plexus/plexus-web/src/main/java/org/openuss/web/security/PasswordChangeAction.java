@@ -8,7 +8,6 @@ import org.openuss.registration.RegistrationCodeExpiredException;
 import org.openuss.registration.RegistrationCodeNotFoundException;
 import org.openuss.registration.RegistrationService;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserInfo;
 import org.openuss.security.UserInfoDetails;
 import org.openuss.web.Constants;
 

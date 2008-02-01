@@ -109,7 +109,7 @@ public abstract class BasePage extends BaseBean {
 		this.desktopService2 = desktopService2;
 	}
 
-	public UserInfo getUser() {
+	public UserInfoDetails getUser() {
 		return user;
 	}
 

@@ -12,11 +12,9 @@
 		<phase-listener>
 			org.openuss.framework.web.jsf.events.PostRedirectGetPhaseListener
 		</phase-listener>
-		<!--
 		<phase-listener>
 			org.openuss.framework.web.jsf.events.DebugPhaseListener
 		</phase-listener>
-		-->
 		<phase-listener>
 			org.openuss.framework.web.jsf.pages.PagePhaseListener
 		</phase-listener>
