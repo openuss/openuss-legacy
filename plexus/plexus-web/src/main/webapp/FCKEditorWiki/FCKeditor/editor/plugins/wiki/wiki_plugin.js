@@ -30,9 +30,7 @@ FCKConfig.LinkUpload = false;
 FCKConfig.LinkDlgHideAdvanced = true;
 
 // Set the dialog tabs.
-window.parent.AddTab( 'InterWiki', 'Inter Wiki Link' ) ;
-
-window.parent.AddTab( 'Info', 'Internet Link' ) ;
+window.parent.AddTab( 'Info', 'Link' ) ;
 
 if ( !FCKConfig.LinkDlgHideTarget )
     window.parent.AddTab( 'Target', FCKLang.DlgLnkTargetTab, true ) ;
@@ -47,7 +45,6 @@ if ( !FCKConfig.LinkDlgHideAdvanced )
 // Function called when a dialog tag is selected.
 function OnDialogTabChange( tabCode )
 {
-    ShowE('divInterWiki', ( tabCode == 'InterWiki' ) ) ;
     ShowE('divInfo'     , ( tabCode == 'Info' ) ) ;
     ShowE('divTarget'   , ( tabCode == 'Target' ) ) ;
     ShowE('divUpload'   , ( tabCode == 'Upload' ) ) ;
@@ -77,6 +74,9 @@ oRegex.PopupUri.compile( "^javascript:void\\(\\s*window.open\\(\\s*'([^']+)'\\s*
 
 oRegex.PopupFeatures = new RegExp('') ;
 oRegex.PopupFeatures.compile( '(?:^|,)([^=]+)=(\\d+|yes|no)', 'gi' ) ;
+
+oRegex.InnerWikiUrl = new RegExp('') ;
+oRegex.InnerWikiUrl.compile( 'wikimain\.faces\\?page=(.+)', 'gi' ) ;
 
 //#### Parser Functions
 
@@ -150,10 +150,10 @@ window.onload = function()
     SetLinkType( GetE('cmbLinkType').value ) ;
 
     // Show/Hide the "Browse Server" button.
-    GetE('divBrowseServer').style.display = FCKConfig.LinkBrowser ? '' : 'none' ;
+    // GetE('divBrowseServer').style.display = FCKConfig.LinkBrowser ? '' : 'none' ;
 
     // Show the initial dialog content.
-    GetE('divInterWiki').style.display = '' ;
+    GetE('divInfo').style.display = '' ;
 
     // Set the actual uploader URL.
     if ( FCKConfig.LinkUpload )
@@ -279,6 +279,16 @@ function LoadSelection()
             GetE('txtTargetFrame').value = sTarget ;
         }
     }
+    
+    innerWikiMatch = oRegex.InnerWikiUrl.exec(sHRef);
+    if (sType == 'url' && innerWikiMatch) {
+    	sHRef = innerWikiMatch[1];
+    	
+    	alert("select page here..." + sHRef);
+    	
+    	sType = 'inner' ;
+    	GetE('txtName').value = sHRef ;
+    }
 
     // Get Advances Attributes
     GetE('txtAttId').value          = oLink.id ;
@@ -309,6 +319,7 @@ function LoadSelection()
 //#### Link type selection.
 function SetLinkType( linkType )
 {
+    ShowE('divLinkTypeInner'    , (linkType == 'inner') ) ;
     ShowE('divLinkTypeUrl'      , (linkType == 'url') ) ;
     ShowE('divLinkTypeAnchor'   , (linkType == 'anchor') ) ;
     ShowE('divLinkTypeEMail'    , (linkType == 'email') ) ;
@@ -442,6 +453,33 @@ function Ok()
 
     switch ( GetE('cmbLinkType').value )
     {
+    	case 'inner' :
+			rdoNodes = document.forms['mainWikiForm']['mainWikiForm:rdoExistingPage'];
+    		sPageId = '';
+    		for (i = 0; i < rdoNodes.length; i++) {
+    		    if (rdoNodes[i].checked) {
+    		        sPageId = rdoNodes[i].value;
+    		    }
+    		}
+
+    		if (sPageId == '__new__') {
+	            sUri = GetE('txtName').value ;
+	
+	            if ( sUri.length == 0 )
+	            {
+	                alert( '!!!TODO!!!' ) ;
+	                return false ;
+	            }
+	
+	            sUri = 'wikimain.faces?page=0&pageName=' + sUri ;
+	        } else {
+	        	sUri = 'wikimain.faces?page=' + sPageId ;
+	        }
+	        
+	        alert(sUri);
+
+            break ;
+
         case 'url' :
             sUri = GetE('txtUrl').value ;
 
@@ -630,4 +668,16 @@ function CheckUpload()
     }
     
     return true ;
+}
+
+//#### Page name selection.
+function SetPageName( pageName )
+{
+    if (pageName == '__new__') {
+        GetE('txtName').disabled = false;
+        GetE('txtName').value = '';
+    } else {
+        GetE('txtName').disabled = true;
+        GetE('txtName').value = pageName;
+    }
 }

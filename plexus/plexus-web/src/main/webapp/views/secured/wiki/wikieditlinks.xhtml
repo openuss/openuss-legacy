@@ -29,30 +29,35 @@
             <h:form id="mainWikiForm">
                 <script src="/openuss-plexus/fckfaces/FCKeditor/editor/dialog/common/fck_dialog_common.js" type="text/javascript"></script>
                 <script src="/openuss-plexus/fckfaces/FCKeditor/editor/plugins/wiki/wiki_plugin.js" type="text/javascript"></script>
-		  
-		  <!-- Added Tab: Interwiki links -->
-		  <div id="divInterWiki" style="DISPLAY: none">
-		      <o:block label="Existierende Seite">
-			      <h:selectOneRadio value="#{views$secured$wiki$wikieditlinks.selected}">
-		              <f:selectItems value="#{views$secured$wiki$wikieditlinks.wikiSites}"/>
-	              </h:selectOneRadio> 
-	          </o:block>
-	          
-	          <o:block label="Neue Seite">
-	              <o:input value="#{views$secured$wiki$wikieditlinks.createNewSite}"/>
-                  <o:input entity="views$secured$wiki$wikieditlinks.wiki_current_site" property="name" maxlength="100" />
-              </o:block>
-		  </div>
-		  
+
 		  <div id="divInfo" style="DISPLAY: none">
             <span fckLang="DlgLnkType">Link Type</span><br />
             <select id="cmbLinkType" onchange="SetLinkType(this.value);">
-                <option value="url" fckLang="DlgLnkTypeURL" selected="selected">URL</option>
+                <option value="inner" fckLang="DlgLnkTypeInner" selected="selected">Wiki-Seite</option>
+                <option value="url" fckLang="DlgLnkTypeURL">URL</option>
                 <option value="anchor" fckLang="DlgLnkTypeAnchor">Anchor in this page</option>
                 <option value="email" fckLang="DlgLnkTypeEMail">E-Mail</option>
             </select>
             <br />
             <br />
+            <div id="divLinkTypeInner">
+                <table cellspacing="0" cellpadding="0" width="100%" border="0" dir="ltr">
+                    <tr>
+                        <td nowrap="nowrap" width="100%">
+                            <h:selectOneRadio id="rdoExistingPage" value="#{views$secured$wiki$wikieditlinks.siteInfo.name}" 
+                                 layout="pageDirection" onchange="SetPageName(this.value)">
+                            	<f:selectItems value="#{views$secured$wiki$wikieditlinks.wikiSites}"/>
+                            	<f:selectItem itemValue="__new__" itemLabel="Neue Seite anlegen"/>
+                            </h:selectOneRadio>
+                            <br/>
+                            <span fckLang="DlgLnkName">Seiten-Name:</span><br />
+                            <input id="txtName" style="WIDTH: 100%" type="text" disabled="true"/>
+                        </td>
+                    </tr>
+                </table>
+                <br />
+            </div>
+            
             <div id="divLinkTypeUrl">
                 <table cellspacing="0" cellpadding="0" width="100%" border="0" dir="ltr">
                     <tr>
@@ -74,9 +79,6 @@
                     </tr>
                 </table>
                 <br />
-                <div id="divBrowseServer">
-                <input type="button" value="Browse Server" fckLang="DlgBtnBrowseServer" onclick="BrowseServer();" />
-                </div>
             </div>
             <div id="divLinkTypeAnchor" style="DISPLAY: none" align="center">
                 <div id="divSelAnchor" style="DISPLAY: none">

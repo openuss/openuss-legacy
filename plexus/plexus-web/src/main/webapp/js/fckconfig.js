@@ -20,6 +20,8 @@
 
 FCKConfig.Debug = true;
 
+FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/openuss/' ;
+
 // Wiki link plugin
 var sOtherPluginPath = FCKConfig.BasePath.substr(0, FCKConfig.BasePath.length - 7) + 'editor/plugins/' ;
 FCKConfig.Plugins.Add( 'wiki', null, sOtherPluginPath ) ;
@@ -61,7 +63,7 @@ FCKConfig.ToolbarSets["Wiki"] = [
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','OpenUSSWikiLink','Unlink'],
+	['OpenUSSWikiLink','Unlink'],
 	['TextColor','BGColor'],
 	['Smiley']
 ] ;
@@ -118,4 +120,3 @@ FCKConfig.ToolbarSets["Email"] = [
 	['TextColor','BGColor']
 	
 ] ;
-
