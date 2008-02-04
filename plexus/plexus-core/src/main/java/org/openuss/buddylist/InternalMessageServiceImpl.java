@@ -6,6 +6,9 @@
 package org.openuss.buddylist;
 
 import java.util.ArrayList;
+import java.util.Set;
+
+import org.openuss.security.User;
 
 /**
  * @see org.openuss.buddylist.InternalMessageService
@@ -20,8 +23,10 @@ public class InternalMessageServiceImpl
     protected java.util.List handleGetAllInternalMessages(org.openuss.security.User user)
         throws java.lang.Exception
     {
+    	Set messageSet = user.getSentMessages();
     	ArrayList messages = new ArrayList();
-    	messages.addAll(user.getSentMessages());
+    	messages.addAll(messageSet);    	
+    	getInternalMessageDao().toInternalMessageInfoCollection(messages);
     	return messages;
     }
 
@@ -31,7 +36,8 @@ public class InternalMessageServiceImpl
     protected void handleSetRead(org.openuss.buddylist.InternalMessageInfo message)
         throws java.lang.Exception
     {
-        getInternalMessageDao().load(message.getId()).setMessageReadByRecipient(true);
+        InternalMessage iMessage = getInternalMessageDao().load(message.getId());
+        iMessage.setMessageReadByRecipient(true);
     }
 
     /**
@@ -48,11 +54,15 @@ public class InternalMessageServiceImpl
     /**
      * @see org.openuss.buddylist.InternalMessageService#deleteInternalMessage(org.openuss.buddylist.InternalMessageInfo)
      */
-    protected void handleDeleteInternalMessage(org.openuss.buddylist.InternalMessageInfo message, boolean deleteAtSender)
+    protected void handleDeleteInternalMessage(org.openuss.buddylist.InternalMessageInfo messageInfo, boolean deleteAtSender)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleDeleteInternalMessage(org.openuss.buddylist.InternalMessageInfo message)
-        throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.InternalMessageService.handleDeleteInternalMessage(org.openuss.buddylist.InternalMessageInfo message) Not implemented!");
+    	InternalMessage message = getInternalMessageDao().load(messageInfo.getId());
+    	if(deleteAtSender){
+     		message.getSender().getSentMessages().remove(message);
+    	} else {
+    		message.getRecipient().getReceivedMessages().remove(message);
+    	}
     }
 
     /**
@@ -61,9 +71,9 @@ public class InternalMessageServiceImpl
     protected void handleSendInternalMessage(org.openuss.buddylist.InternalMessageInfo message)
         throws java.lang.Exception
     {
-    	InternalMessage internalMessage = getInternalMessageDao().create(message.getContent(), message.getMessageDate(), message.isMessageRead(), getUserDao().load(message.getRecipient().getId()), getUserDao().load(message.getSender().getId()), message.getSubject());
+    	InternalMessage internalMessage = getInternalMessageDao().create(message.getContent(), message.getMessageDate(), message.isMessageReadByRecipient(), getUserDao().load(message.getRecipientId()), getUserDao().load(message.getSenderId()), message.getSubject());
     	internalMessage.getSender().getSentMessages().add(internalMessage);
-        internalMessage.getRecipient().getReceivedMessages().add(internalMessage);
+    	internalMessage.getRecipient().getReceivedMessages().add(internalMessage);
     }
 
 }

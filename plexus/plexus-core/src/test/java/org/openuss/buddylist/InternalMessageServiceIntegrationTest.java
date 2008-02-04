@@ -31,19 +31,25 @@ public class InternalMessageServiceIntegrationTest extends InternalMessageServic
 		User recipient = userDao.create("user2", "asdf", "asdf@asdf.com", true, false, false, false, new Date());
 		//create message
 		InternalMessageInfo message = (InternalMessageInfo)messageDao.create(messageDao.TRANSFORM_INTERNALMESSAGEINFO, "content", new Date(), false, recipient, sender, "subject");
-		message.setSender(userDao.toUserInfo(sender));
-		message.setRecipient(userDao.toUserInfo(recipient));
+		message.setSenderId(sender.getId());
+		message.setRecipientId(recipient.getId());
 		internalMessageService.sendInternalMessage(message);
 		assertEquals(1, internalMessageService.getAllInternalMessages(sender).size());
 		assertEquals(1, internalMessageService.getAllReceivedInternalMessages(recipient).size());
 		InternalMessageInfo message2 = messageDao.toInternalMessageInfo((InternalMessage)(internalMessageService.getAllReceivedInternalMessages(recipient).get(0)));
-		assertEquals(false, message2.isMessageRead());
+		assertEquals(false, message2.isMessageReadByRecipient());
 		//mark message as read
-		internalMessageService.setRead(message);
-		assertEquals(false, message.isMessageRead());
-		//receiver: delete message
-		
+		internalMessageService.setRead(message2);
+		message2 = (InternalMessageInfo)messageDao.load(messageDao.TRANSFORM_INTERNALMESSAGEINFO, message2.getId());
+		assertEquals(true, message2.isMessageReadByRecipient());
+		//recipient: delete message
+		internalMessageService.deleteInternalMessage(message2, false);
+		assertEquals(1, internalMessageService.getAllInternalMessages(sender).size());
+		assertEquals(0, internalMessageService.getAllReceivedInternalMessages(recipient).size());
+		assertEquals(recipient.getId().longValue(), ((InternalMessageInfo)messageDao.load(messageDao.TRANSFORM_INTERNALMESSAGEINFO, message2.getId())).getRecipientId());
 		//sender: delete message
-		
+		internalMessageService.deleteInternalMessage(message2, true);
+		assertEquals(0, internalMessageService.getAllReceivedInternalMessages(recipient).size());
+		assertEquals(0, internalMessageService.getAllInternalMessages(sender).size());
 	}
 }
