@@ -6,3 +6,4 @@
  * 		Christian Beer
  */
 FCKLang.OpenUSSWikiLinkTitle		= 'Link' ;
+FCKLang.OpenUSSWikiLinkContextMenuTitle = 'Link editieren';

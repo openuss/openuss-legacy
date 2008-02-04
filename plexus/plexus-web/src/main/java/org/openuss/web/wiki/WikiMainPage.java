@@ -22,43 +22,21 @@ public class WikiMainPage extends AbstractWikiPage{
 	public void prerender() throws Exception {
 		super.prerender();
 		
-		if (this.siteVersionInfo == null || this.siteVersionInfo.getId() == null) {
-			this.siteInfo = this.wikiService.findWikiSiteByCourseAndName(this.courseInfo.getId(), Constants.WIKI_STARTSITE_NAME);
-			if (this.siteInfo == null) {
-				System.out.println("WikiSite '" + Constants.WIKI_STARTSITE_NAME + "' for course not found. Creating WikiSite for courseId: " + this.courseInfo.getId());
-				logger.debug("WikiSite '" + Constants.WIKI_STARTSITE_NAME + "' for course not found. Creating WikiSite for courseId: " + this.courseInfo.getId());
-				this.siteInfo = new WikiSiteInfo();
-				this.siteInfo.setCourseId(courseInfo.getId());
-				this.siteInfo.setName(Constants.WIKI_STARTSITE_NAME);
-				this.wikiService.createWikiSite(this.siteInfo);
-			}
-			
+		String pageName = Constants.WIKI_STARTSITE_NAME;
+		if (this.siteInfo != null && this.siteInfo.getName() != null) {
+			pageName = this.siteInfo.getName();
+		} 
+		this.siteInfo = this.wikiService.findWikiSiteByCourseAndName(this.courseInfo.getId(), pageName);
+		
+		if (this.siteInfo != null) {
 			this.siteVersionInfo = this.wikiService.getNewestWikiSiteVersion(this.siteInfo.getId());
-			if (this.siteVersionInfo == null) {
-				System.out.println("No version found for wiki with id:" + this.siteInfo.getId() + " ... creating one.");
-				logger.debug("No version found for wiki with id:" + this.siteInfo.getId() + " ... creating one.");
-				this.siteVersionInfo = new WikiSiteVersionInfo();
-				this.siteVersionInfo.setWikiSiteId(this.siteInfo.getId());
-				this.siteVersionInfo.setCreationDate(new Date());
-				this.siteVersionInfo.setUserId(user.getId());
-			}
-			
-			setSessionBean(Constants.WIKI_CURRENT_SITE, this.siteInfo);
-			setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
+		} else {
+			this.siteVersionInfo = null;
+			setSessionBean(Constants.WIKI_NEW_SITE_NAME, pageName);
 		}
 		
-		this.siteVersionInfo.setNote("");
-		
-	}
-	
-	public String save() {
-		this.siteVersionInfo.setId(null);
-		this.siteVersionInfo.setWikiSiteId(this.siteInfo.getId());
-		this.siteVersionInfo.setCreationDate(new Date());
-		this.siteVersionInfo.setUserId(user.getId());
-		getWikiService().createWikiSiteVersion(this.siteVersionInfo);
-		
-		return Constants.WIKI_MAIN_PAGE;
+		setSessionBean(Constants.WIKI_CURRENT_SITE, this.siteInfo);
+		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
 	}
 	
 	public String overview() {

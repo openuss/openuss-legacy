@@ -247,10 +247,12 @@ public class Constants {
 	public static final String WIKI_CURRENT_SITE = "wiki_current_site";
 	public static final String WIKI_CURRENT_SITE_VERSION = "wiki_current_site_version";
 	public static final String WIKI_STARTSITE_NAME = "index";
+	public static final String WIKI_STARTSITE_NAME_I18N = "wiki_index_page_readable";
 
 	public static final String WIKI_MAIN_PAGE = "course_wiki";
+	public static final String WIKI_EDIT_PAGE = "wiki_edit";
 	public static final String WIKI_OVERVIEW = "wiki_overview";
-	public static final String WIKI_IS_ACTIVE = "fck_editor_is_wiki";
+	public static final String WIKI_NEW_SITE_NAME = "wiki_new_site_name";
 
 
 }

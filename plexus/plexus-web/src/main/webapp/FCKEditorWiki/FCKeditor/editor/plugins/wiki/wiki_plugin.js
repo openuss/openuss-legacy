@@ -284,10 +284,21 @@ function LoadSelection()
     if (sType == 'url' && innerWikiMatch) {
     	sHRef = innerWikiMatch[1];
     	
-    	alert("select page here..." + sHRef);
+    	rdoNodes = document.forms['mainWikiForm']['mainWikiForm:rdoExistingPage'];
+   		sPageId = '';
+   		bFound = false;
+   		for (i = 0; i < rdoNodes.length; i++) {
+   		    if (rdoNodes[i].value == sHRef) {
+   		        rdoNodes[i].checked = true;
+   		        bFound = true;
+   		        break;
+   		    } 
+   		}
     	
     	sType = 'inner' ;
-    	GetE('txtName').value = sHRef ;
+    	if (!bFound) {
+    		GetE('txtName').value = sHRef ;
+    	}
     }
 
     // Get Advances Attributes
@@ -463,21 +474,16 @@ function Ok()
     		}
 
     		if (sPageId == '__new__') {
-	            sUri = GetE('txtName').value ;
+	            sPageId = GetE('txtName').value ;
 	
-	            if ( sUri.length == 0 )
+	            if ( sPageId.length == 0 )
 	            {
 	                alert( '!!!TODO!!!' ) ;
 	                return false ;
 	            }
-	
-	            sUri = 'wikimain.faces?page=0&pageName=' + sUri ;
-	        } else {
-	        	sUri = 'wikimain.faces?page=' + sPageId ;
-	        }
-	        
-	        alert(sUri);
+	        } 
 
+        	sUri = 'wikimain.faces?page=' + sPageId ;
             break ;
 
         case 'url' :
@@ -675,9 +681,7 @@ function SetPageName( pageName )
 {
     if (pageName == '__new__') {
         GetE('txtName').disabled = false;
-        GetE('txtName').value = '';
     } else {
         GetE('txtName').disabled = true;
-        GetE('txtName').value = pageName;
     }
 }

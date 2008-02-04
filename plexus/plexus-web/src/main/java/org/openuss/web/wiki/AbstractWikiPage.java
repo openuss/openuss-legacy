@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.wiki.WikiService;
 import org.openuss.wiki.WikiSiteInfo;
@@ -24,6 +26,26 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	
 	@Property(value = "#{" + Constants.WIKI_CURRENT_SITE+ "}")
 	protected WikiSiteInfo siteInfo;
+	
+	@Override
+	public void prerender() throws Exception {
+		super.prerender();
+		
+		addBreadCrumbs();
+	}
+	
+	/** Adds an additional breadcrumb to the course-crumbs.
+	 * 
+	 */
+	private void addBreadCrumbs() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink(PageLinks.WIKI_MAIN);
+		crumb.setName(i18n("wiki_main_header"));
+		crumb.setHint(i18n("wiki_main_header"));
+
+		breadcrumbs.loadCourseCrumbs(courseInfo);
+		breadcrumbs.addCrumb(crumb);
+	}
 	
 	public WikiService getWikiService() {
 		return wikiService;

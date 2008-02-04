@@ -484,11 +484,6 @@
 			</navigation-case>
 	
 			<navigation-case>
-				<from-outcome>course_wiki</from-outcome>
-				<to-view-id>/views/secured/wiki/wikimain.xhtml</to-view-id>
-			</navigation-case>
-	
-			<navigation-case>
 				<from-outcome>freestyle_learning</from-outcome>
 				<to-view-id>/views/secured/course/fslinstall.xhtml</to-view-id>
 			</navigation-case>
@@ -655,16 +650,19 @@
 				<to-view-id>/views/secured/discussion/removethread.xhtml</to-view-id>				
 			</navigation-case>			
 
+			<!--  Wiki  -->
+			<navigation-case>
+				<from-outcome>course_wiki</from-outcome>
+				<to-view-id>/views/secured/wiki/wikimain.xhtml</to-view-id>
+			</navigation-case>
 			<navigation-case>
 				<from-outcome>wiki_edit</from-outcome>
 				<to-view-id>/views/secured/wiki/wikiedit.xhtml</to-view-id>				
 			</navigation-case>
-			
 			<navigation-case>
 				<from-outcome>wiki_overview</from-outcome>
 				<to-view-id>/views/secured/wiki/wikioverview.xhtml</to-view-id>
 			</navigation-case>
-            
             <navigation-case>
 				<from-outcome>wiki_version</from-outcome>
 				<to-view-id>/views/secured/wiki/wikiversion.xhtml</to-view-id>				

@@ -33,7 +33,7 @@ if (window.document.location.href.match(/Wiki/)) {
 	                if ( bInsideLink )
 	                {
 	                        // the command needs the registered command name, the title for the context menu, and the icon path
-	                        menu.AddItem( 'OpenUSSWikiLink', FCKLang['OpenUSSWikiLinkTitle'], oWikiLinkItem.IconPath ) ;
+	                        menu.AddItem( 'OpenUSSWikiLink', FCKLang['OpenUSSWikiLinkContextMenuTitle'], oWikiLinkItem.IconPath ) ;
 	                }
 	        }}
 	);
