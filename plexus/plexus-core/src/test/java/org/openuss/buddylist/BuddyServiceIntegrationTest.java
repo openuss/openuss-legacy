@@ -103,17 +103,27 @@ public class BuddyServiceIntegrationTest extends BuddyServiceIntegrationTestBase
 		buddyService.authorizeBuddyRequest(buddy3, true);
 		assertEquals(0, buddyService.getAllUsedTags(user1).size());
 		buddyService.addTag(buddy2, "soccer");
-		buddy2 = (BuddyInfo)buddyDao.load(buddyDao.TRANSFORM_BUDDYINFO, buddy2.getId());
 		assertEquals(1, buddyService.getAllUsedTags(user1).size());
-		//assertEquals(1, buddy2.getTags().size());
 		buddyService.addTag(buddy3, "soccer");
 		assertEquals(1, buddyService.getAllUsedTags(user1).size());
-		//assertEquals(1, buddyDao.load(buddy2.getId()).getallTags().size());
-		//assertEquals(1, buddyDao.load(buddy3.getId()).getallTags().size());
+		assertEquals(1, buddyDao.load(buddy2.getId()).getallTags().size());
+		assertEquals(1, buddyDao.load(buddy3.getId()).getallTags().size());
+		buddyService.addTag(buddy2, "soccer");
+		assertEquals(1, buddyService.getAllUsedTags(user1).size());
+		assertEquals(1, buddyDao.load(buddy2.getId()).getallTags().size());
+		buddyService.addTag(buddy2, "tennis");
+		assertEquals(2, buddyDao.load(buddy2.getId()).getallTags().size());
 		assertEquals(2, buddyService.getBuddyList(user1).size());
-		/**userDao.remove(user3);
-		assertEquals(buddyService.getBuddyList(user1), 1);
-		**/
+		//delete Tag
+		buddyService.deleteTag(buddy2, "soccer");
+		assertEquals(2, buddyService.getAllUsedTags(user1).size());
+		assertEquals(1, buddyDao.load(buddy2.getId()).getallTags().size());
+		assertEquals(1, buddyDao.load(buddy3.getId()).getallTags().size());
+		//delete Buddy
+		buddyService.deleteBuddy(user1, buddy2);
+		assertEquals(1, buddyService.getAllUsedTags(user1).size());
+		assertEquals(1, buddyDao.load(buddy3.getId()).getallTags().size());
+		assertEquals(1, buddyService.getBuddyList(user1).size());
 	}
 
 	public void setUserDao(UserDao userDao) {

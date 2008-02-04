@@ -7,6 +7,9 @@ package org.openuss.buddylist;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import org.openuss.security.User;
 
 /**
  * @see org.openuss.buddylist.Buddy
@@ -23,10 +26,20 @@ public class BuddyImpl
     /**
      * @see org.openuss.buddylist.Buddy#removeTag(java.lang.String)
      */
-    public void removeTag(java.lang.String tag)
+    public void removeTag(java.lang.String tagContent)
     {
-        // @todo implement public void removeTag(java.lang.String tag)
-        throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.Buddy.removeTag(java.lang.String tag) Not implemented!");
+    	Set<Tag> allTags = getTags();
+    	for(Tag tag : allTags){
+    		if(tag.getTag().equals(tagContent)){
+    			allTags.remove(tag);
+    			tag.getBuddies().remove(this);
+    			if(tag.getBuddies().size()==0){
+    				User user = tag.getUser();
+    				user.getUsedTags().remove(tag);
+    				tag.setUser(null);
+    			}
+    		}
+    	}
     }
 
     /**
@@ -35,25 +48,19 @@ public class BuddyImpl
      */
     public void addTag(java.lang.String tagContent)
     {    	   	
-    	System.out.println("ADD TAG");
-    	List<Tag> allTags = new ArrayList();
-    	allTags.addAll(getUser().getUsedTags());
-    	for(Tag candidateTag : allTags){
+    	for(Tag candidateTag : getUser().getUsedTags()){
     		if(candidateTag.getTag().equals(tagContent)){
-    			if(getallTags().contains(tagContent)){
-    				System.out.println("ADD TAG - Tag already added");
+    			if(getallTags().contains(candidateTag)){
     				return;
     			} else {
-    				getallTags().add(candidateTag);
+    				getTags().add(candidateTag);
     				candidateTag.getBuddies().add(this);
-    				System.out.println("ADD TAG - Tag added");
     				return;
     			}
     		}
     	}
     	Tag tag = Tag.Factory.newInstance(tagContent, getUser());
     	tag.getBuddies().add(this);
-    	System.out.println("ADD TAG - Tag created");
     	getTags().add(tag); 
     	tag.setUser(getUser());
     	getUser().getUsedTags().add(tag);

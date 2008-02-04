@@ -27,7 +27,7 @@ public class BuddyServiceImpl
     		if(buddy.getBuddy().getId() == userToAdd.getId())
     			throw new Exception("Buddy is already on BuddyList");
     	}
-    	User newBuddy = getUserDao().userInfoToEntity(userToAdd);
+    	User newBuddy = getUserDao().load(userToAdd.getId());
       	Buddy buddy = getBuddyDao().create(false, newBuddy, user);
       	buddyList.add(buddy);
       	newBuddy.getBuddies().add(buddy);
@@ -41,10 +41,14 @@ public class BuddyServiceImpl
     {
         // Test if Buddy is on List
     	Set<Buddy> buddyList = user.getBuddyList();
-    	Buddy buddyToDelete = getBuddyDao().buddyInfoToEntity(buddy);
+    	Buddy buddyToDelete = getBuddyDao().load(buddy.getId());
     	if(buddyList.contains(buddyToDelete)){
+    		for(Tag tag : (List<Tag>)buddyToDelete.getallTags()){
+    			buddyToDelete.removeTag(tag.getTag());
+    		}
     		buddyList.remove(buddyToDelete);
     		buddyToDelete.getBuddy().getBuddies().remove(buddyToDelete);
+    		getBuddyDao().remove(buddyToDelete);
     	} else {
     		throw new Exception("Buddy not on list");
     	}
@@ -65,8 +69,7 @@ public class BuddyServiceImpl
     protected void handleDeleteTag(org.openuss.buddylist.BuddyInfo buddy, java.lang.String tag)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleDeleteTag(org.openuss.buddylist.BuddyInfo buddy, java.lang.String tag)
-        throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.BuddyService.handleDeleteTag(org.openuss.buddylist.BuddyInfo buddy, java.lang.String tag) Not implemented!");
+        getBuddyDao().load(buddy.getId()).removeTag(tag);
     }
 
     /**
@@ -88,7 +91,7 @@ public class BuddyServiceImpl
     {
     	Set<Buddy> allCandidates = user.getBuddyList();
     	if(allCandidates.size()==0) return new ArrayList();
-    	List<Buddy> BuddyList = new java.util.ArrayList();
+    	List<Buddy> BuddyList = new ArrayList();
     	for(Buddy candidate : allCandidates){
     		if(candidate.isAuthorized())
     			BuddyList.add(candidate);
@@ -102,14 +105,12 @@ public class BuddyServiceImpl
     protected void handleAuthorizeBuddyRequest(org.openuss.buddylist.BuddyInfo buddy, boolean authorize)
         throws java.lang.Exception
     {
-    	Buddy authorizeBuddy = getBuddyDao().buddyInfoToEntity(buddy);
+    	Buddy authorizeBuddy = getBuddyDao().load(buddy.getId());
     	if(authorize == true){
     		//authorize buddy
     		authorizeBuddy.setAuthorized(true);
     	} else {
-    		//delete buddy
-            // @todo implement protected void handleAuthorizeBuddyRequest(org.openuss.buddylist.BuddyInfo buddy, boolean authorize)
-            throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.BuddyService.handleAuthorizeBuddyRequest(org.openuss.buddylist.BuddyInfo buddy, boolean authorize) Not implemented!");
+    		deleteBuddy(authorizeBuddy.getUser(), buddy);
     	}
     }
 

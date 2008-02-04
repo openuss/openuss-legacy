@@ -5,6 +5,8 @@
  */
 package org.openuss.buddylist;
 
+import java.util.ArrayList;
+
 /**
  * @see org.openuss.buddylist.InternalMessageService
  */
@@ -18,8 +20,9 @@ public class InternalMessageServiceImpl
     protected java.util.List handleGetAllInternalMessages(org.openuss.security.User user)
         throws java.lang.Exception
     {
-        // @todo implement protected java.util.List handleGetAllInternalMessages(org.openuss.security.User user)
-        return null;
+    	ArrayList messages = new ArrayList();
+    	messages.addAll(user.getSentMessages());
+    	return messages;
     }
 
     /**
@@ -28,8 +31,7 @@ public class InternalMessageServiceImpl
     protected void handleSetRead(org.openuss.buddylist.InternalMessageInfo message)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleSetRead(org.openuss.buddylist.InternalMessageInfo message)
-        throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.InternalMessageService.handleSetRead(org.openuss.buddylist.InternalMessageInfo message) Not implemented!");
+        getInternalMessageDao().load(message.getId()).setMessageReadByRecipient(true);
     }
 
     /**
@@ -38,8 +40,9 @@ public class InternalMessageServiceImpl
     protected java.util.List handleGetAllReceivedInternalMessages(org.openuss.security.User user)
         throws java.lang.Exception
     {
-        // @todo implement protected java.util.List handleGetAllReceivedInternalMessages(org.openuss.security.User user)
-        return null;
+    	ArrayList messages = new ArrayList();
+    	messages.addAll(user.getReceivedMessages());
+    	return messages;
     }
 
     /**
@@ -58,8 +61,9 @@ public class InternalMessageServiceImpl
     protected void handleSendInternalMessage(org.openuss.buddylist.InternalMessageInfo message)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleSendInternalMessage(org.openuss.buddylist.InternalMessageInfo message)
-        throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.InternalMessageService.handleSendInternalMessage(org.openuss.buddylist.InternalMessageInfo message) Not implemented!");
+    	InternalMessage internalMessage = getInternalMessageDao().create(message.getContent(), message.getMessageDate(), message.isMessageRead(), getUserDao().load(message.getRecipient().getId()), getUserDao().load(message.getSender().getId()), message.getSubject());
+    	internalMessage.getSender().getSentMessages().add(internalMessage);
+        internalMessage.getRecipient().getReceivedMessages().add(internalMessage);
     }
 
 }

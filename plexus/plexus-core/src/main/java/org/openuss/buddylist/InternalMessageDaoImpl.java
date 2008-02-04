@@ -41,17 +41,12 @@ public class InternalMessageDaoImpl
      */
     private org.openuss.buddylist.InternalMessage loadInternalMessageFromInternalMessageInfo(org.openuss.buddylist.InternalMessageInfo internalMessageInfo)
     {
-        // @todo implement loadInternalMessageFromInternalMessageInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.loadInternalMessageFromInternalMessageInfo(org.openuss.buddylist.InternalMessageInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
         org.openuss.buddylist.InternalMessage internalMessage = this.load(internalMessageInfo.getId());
         if (internalMessage == null)
         {
             internalMessage = org.openuss.buddylist.InternalMessage.Factory.newInstance();
         }
         return internalMessage;
-        */
     }
 
     
