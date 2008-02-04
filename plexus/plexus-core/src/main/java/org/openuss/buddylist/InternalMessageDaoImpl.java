@@ -14,13 +14,18 @@ public class InternalMessageDaoImpl
      * @see org.openuss.buddylist.InternalMessageDao#toInternalMessageInfo(org.openuss.buddylist.InternalMessage, org.openuss.buddylist.InternalMessageInfo)
      */
     public void toInternalMessageInfo(
-        org.openuss.buddylist.InternalMessage sourceEntity,
-        org.openuss.buddylist.InternalMessageInfo targetVO)
+        org.openuss.buddylist.InternalMessage source,
+        org.openuss.buddylist.InternalMessageInfo target)
     {
-        // @todo verify behavior of toInternalMessageInfo
-        super.toInternalMessageInfo(sourceEntity, targetVO);
-        // WARNING! No conversion for targetVO.sender (can't convert sourceEntity.getSender():org.openuss.security.User to org.openuss.security.UserInfo
-        // WARNING! No conversion for targetVO.recipient (can't convert sourceEntity.getRecipient():org.openuss.security.User to org.openuss.security.UserInfo
+    	target.setId(source.getId());
+        target.setSubject(source.getSubject());
+        target.setContent(source.getContent());
+        target.setMessageReadByRecipient((source.getMessageReadByRecipient() == null ? false : source.getMessageReadByRecipient().booleanValue()));
+        target.setMessageDate(source.getMessageDate());
+        target.setRecipientId(source.getRecipient().getId());
+        target.setSenderId(source.getSender().getId());
+        target.setRecipientName(source.getRecipient().getDisplayName());
+        target.setSenderName(source.getSender().getDisplayName());
     }
 
 
@@ -41,17 +46,12 @@ public class InternalMessageDaoImpl
      */
     private org.openuss.buddylist.InternalMessage loadInternalMessageFromInternalMessageInfo(org.openuss.buddylist.InternalMessageInfo internalMessageInfo)
     {
-        // @todo implement loadInternalMessageFromInternalMessageInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.loadInternalMessageFromInternalMessageInfo(org.openuss.buddylist.InternalMessageInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
         org.openuss.buddylist.InternalMessage internalMessage = this.load(internalMessageInfo.getId());
         if (internalMessage == null)
         {
             internalMessage = org.openuss.buddylist.InternalMessage.Factory.newInstance();
         }
         return internalMessage;
-        */
     }
 
     

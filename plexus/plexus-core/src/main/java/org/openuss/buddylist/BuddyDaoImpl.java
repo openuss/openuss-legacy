@@ -4,6 +4,9 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.buddylist;
+
+import java.util.ArrayList;
+
 /**
  * @see org.openuss.buddylist.Buddy
  */
@@ -17,9 +20,9 @@ public class BuddyDaoImpl
         org.openuss.buddylist.Buddy sourceEntity,
         org.openuss.buddylist.BuddyInfo targetVO)
     {
-        // @todo verify behavior of toBuddyInfo
-        super.toBuddyInfo(sourceEntity, targetVO);
-        // WARNING! No conversion for targetVO.tags (can't convert sourceEntity.getTags():org.openuss.buddylist.Tag to java.util.List
+    	targetVO.setId(sourceEntity.getId());
+    	targetVO.setName(sourceEntity.getBuddy().getDisplayName());
+    	targetVO.setTags(sourceEntity.getallTags());
     }
 
 
