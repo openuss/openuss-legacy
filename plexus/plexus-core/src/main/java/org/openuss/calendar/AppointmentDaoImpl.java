@@ -42,16 +42,14 @@ public class AppointmentDaoImpl
     private org.openuss.calendar.Appointment loadAppointmentFromAppointmentInfo(org.openuss.calendar.AppointmentInfo appointmentInfo)
     {
         // @todo implement loadAppointmentFromAppointmentInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.calendar.loadAppointmentFromAppointmentInfo(org.openuss.calendar.AppointmentInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
+        
         org.openuss.calendar.Appointment appointment = this.load(appointmentInfo.getId());
         if (appointment == null)
         {
             appointment = org.openuss.calendar.Appointment.Factory.newInstance();
         }
         return appointment;
-        */
+        
     }
 
     

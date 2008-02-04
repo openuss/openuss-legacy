@@ -33,7 +33,6 @@ public class InternalMessageServiceIntegrationTest extends InternalMessageServic
 		InternalMessageInfo message = (InternalMessageInfo)messageDao.create(messageDao.TRANSFORM_INTERNALMESSAGEINFO, "content", new Date(), false, recipient, sender, "subject");
 		message.setSender(userDao.toUserInfo(sender));
 		message.setRecipient(userDao.toUserInfo(recipient));
-		System.out.println(message.getSender().getId());
 		internalMessageService.sendInternalMessage(message);
 		assertEquals(1, internalMessageService.getAllInternalMessages(sender).size());
 		assertEquals(1, internalMessageService.getAllReceivedInternalMessages(recipient).size());

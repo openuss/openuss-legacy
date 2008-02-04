@@ -48,7 +48,7 @@ public class InternalMessageServiceImpl
     /**
      * @see org.openuss.buddylist.InternalMessageService#deleteInternalMessage(org.openuss.buddylist.InternalMessageInfo)
      */
-    protected void handleDeleteInternalMessage(org.openuss.buddylist.InternalMessageInfo message)
+    protected void handleDeleteInternalMessage(org.openuss.buddylist.InternalMessageInfo message, boolean deleteAtSender)
         throws java.lang.Exception
     {
         // @todo implement protected void handleDeleteInternalMessage(org.openuss.buddylist.InternalMessageInfo message)
