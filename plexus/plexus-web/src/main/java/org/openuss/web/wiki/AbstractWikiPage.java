@@ -2,6 +2,7 @@ package org.openuss.web.wiki;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
@@ -27,6 +28,8 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	@Property(value = "#{" + Constants.WIKI_CURRENT_SITE+ "}")
 	protected WikiSiteInfo siteInfo;
 	
+	private WikiOverviewDataProvider data = new WikiOverviewDataProvider();
+	
 	@Override
 	public void prerender() throws Exception {
 		super.prerender();
@@ -45,6 +48,15 @@ public class AbstractWikiPage extends AbstractCoursePage {
 
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		breadcrumbs.addCrumb(crumb);
+		
+		if (this.siteInfo.getName() != null && 
+				!Constants.WIKI_STARTSITE_NAME.equals(this.siteInfo.getName())) {
+			crumb = new BreadCrumb();
+			crumb.setLink("");
+			crumb.setName(readablePageName(this.siteInfo.getName()));
+			crumb.setHint(this.siteInfo.getName());
+			breadcrumbs.addCrumb(crumb);
+		}
 	}
 	
 	public WikiService getWikiService() {
@@ -60,6 +72,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	public void setSiteVersionInfo(WikiSiteVersionInfo siteVersionInfo) {
 		this.siteVersionInfo = siteVersionInfo;
 	}
+	
 	public WikiSiteInfo getSiteInfo() {
 		return siteInfo;
 	}
@@ -67,15 +80,20 @@ public class AbstractWikiPage extends AbstractCoursePage {
 		this.siteInfo = siteInfo;
 	}
 	
-	private WikiOverviewDataProvider data = new WikiOverviewDataProvider();
-	
 	public WikiOverviewDataProvider getData() {
 		return data;
 	}
-
 	public void setData(WikiOverviewDataProvider data) {
 		this.data = data;
 	} 
+	
+	protected String readablePageName(String name) {
+		if (Constants.WIKI_STARTSITE_NAME.equals(name)) {
+			return i18n(Constants.WIKI_STARTSITE_NAME_I18N);
+		} else {
+			return StringUtils.capitalize(name);
+		}
+	}
 	
 	private class WikiOverviewDataProvider extends AbstractPagedTable<WikiSiteInfo> {
 		private DataPage<WikiSiteInfo> page; 

@@ -460,12 +460,13 @@ function FillPopupFields( windowName, features )
 //#### The OK button was hit.
 function Ok()
 {
-    var sUri, sInnerHtml ;
+    var sUri, sInnerHtml, sPageId;
 
     switch ( GetE('cmbLinkType').value )
     {
     	case 'inner' :
 			rdoNodes = document.forms['mainWikiForm']['mainWikiForm:rdoExistingPage'];
+    		
     		sPageId = '';
     		for (i = 0; i < rdoNodes.length; i++) {
     		    if (rdoNodes[i].checked) {
@@ -478,7 +479,7 @@ function Ok()
 	
 	            if ( sPageId.length == 0 )
 	            {
-	                alert( '!!!TODO!!!' ) ;
+	                alert( FCKLang.DlnLnkMsgNoPageName ) ;
 	                return false ;
 	            }
 	        } 
@@ -546,6 +547,11 @@ function Ok()
         // try to built better text for empty link
         switch (GetE('cmbLinkType').value)
         {
+            // inner link: use page name
+            case 'anchor':
+                sInnerHtml = sPageId;
+                break;
+        
             // anchor: use old behavior --> return true
             case 'anchor':
                 sInnerHtml = sInnerHtml.replace( /^#/, '' ) ;

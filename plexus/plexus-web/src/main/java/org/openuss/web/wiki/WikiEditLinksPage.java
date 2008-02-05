@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import org.apache.commons.beanutils.converters.StringConverter;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -32,15 +30,7 @@ public class WikiEditLinksPage extends AbstractWikiPage{
 		List<WikiSiteInfo> sites = wikiService.findWikiSitesByCourse(this.courseInfo.getId());
 		this.wikiSites = new ArrayList<SelectItem>(sites.size());
 		for (WikiSiteInfo site : sites) {
-			this.wikiSites.add(new SelectItem(site.getName(), readableName(site.getName())));
-		}
-	}
-
-	private String readableName(String name) {
-		if (Constants.WIKI_STARTSITE_NAME.equals(name)) {
-			return i18n(Constants.WIKI_STARTSITE_NAME_I18N);
-		} else {
-			return StringUtils.capitalize(name);
+			this.wikiSites.add(new SelectItem(site.getName(), readablePageName(site.getName())));
 		}
 	}
 

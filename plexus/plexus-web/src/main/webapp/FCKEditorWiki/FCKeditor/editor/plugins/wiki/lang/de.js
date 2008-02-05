@@ -5,5 +5,6 @@
  * File Authors:
  * 		Christian Beer
  */
-FCKLang.OpenUSSWikiLinkTitle		= 'Link' ;
+FCKLang.OpenUSSWikiLinkTitle		    = 'Link' ;
 FCKLang.OpenUSSWikiLinkContextMenuTitle = 'Link editieren';
+FCKLang.DlnLnkMsgNoPageName             = 'Bitte geben Sie einen Seiten-Namen ein'; 
