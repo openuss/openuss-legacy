@@ -7,6 +7,7 @@ package org.openuss.calendar;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import org.openuss.TestUtility;
 import org.openuss.foundation.DefaultDomainObject;
@@ -14,8 +15,7 @@ import org.openuss.foundation.DomainObject;
 import org.openuss.groups.GroupInfo;
 import org.openuss.groups.AccessType;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.security.SecurityService;
-import org.openuss.security.UserInfo;
+import org.openuss.security.*;
 
 /**
  * JUnit Test for Spring Hibernate CalendarService class.
@@ -25,6 +25,9 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 	
 	public SecurityService securityService;
 	
+	public UserDao userDao;
+	
+	public CalendarDao calendarDao;
 	
 	private UserInfo getTestUserInfo() {
 		DomainObject domainObjectUser = generateDomainObject();
@@ -150,7 +153,7 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		
 	}
 	
-	public void testSubsciption() {
+	public void testSubscription() {
 		/* Complete Test 2)
 		 * requires group + groupCalendar + appointments AND course + courseCalendar + appointments
 		 * 1 - createUserCalendar / creatCalendar for userInfo object
@@ -172,12 +175,49 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		 */
 		
 	}
+	
+	public void testCalendarCreation(){
+		//create user
+		User user = userDao.create("user", "pwd", "e@ma.il", true, false, false, false, new Date());
+		UserInfo userInfo = (UserInfo)userDao.load(userDao.TRANSFORM_USERINFO, user.getId());
+		
+		//create calendar
+		try {
+			calendarService.createUserCalendar(userInfo);
+
+		//get calendar from user
+		List<Calendar> calendars = calendarService.getUserCalendars(userInfo);
+		assertNotNull(calendars);
+		CalendarInfo calendar = (CalendarInfo)calendarDao.load(calendarDao.TRANSFORM_CALENDARINFO, calendars.get(0).getId());
+		assertNotNull(calendar);
+		assertEquals(calendars.get(0).getId(), calendar.getId());
+		//create appointment
+		AppointmentInfo singleAppointment = getTestAppointmentInfo();
+		assertNotNull(singleAppointment);
+		calendarService.createAppointment(singleAppointment, calendar);
+		//get appointments from user
+		List<Appointment> appointments = calendarService.getAllUserAppointments(userInfo);
+		assertNotNull(appointments);
+		assertEquals(appointments.get(0).getId(), singleAppointment.getId());
+		} catch (CalendarApplicationException e) {
+			fail();
+		}
+	}
+	
 	public SecurityService getSecurityService() {
 		return securityService;
 	}
 
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+
+	public void setCalendarDao(CalendarDao calendarDao) {
+		this.calendarDao = calendarDao;
 	}
 	
 }
