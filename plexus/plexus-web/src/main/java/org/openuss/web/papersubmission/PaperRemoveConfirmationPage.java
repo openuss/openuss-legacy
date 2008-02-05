@@ -11,6 +11,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
+import org.openuss.paperSubmission.PaperSubmissionService;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 
@@ -20,7 +21,7 @@ import org.openuss.web.course.AbstractCoursePage;
  */
 @Bean(name = "views$secured$papersubmission$paperremoveconfirmation", scope = Scope.REQUEST)
 @View
-public class PaperRemoveConfirmationPage extends AbstractCoursePage {
+public class PaperRemoveConfirmationPage extends AbstractPaperSubmissionPage {
 	
 	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(PaperRemoveConfirmationPage.class);
@@ -49,9 +50,8 @@ public class PaperRemoveConfirmationPage extends AbstractCoursePage {
 	 */
 	public String removePaper() throws LectureException {
 		try {
-			// TODO implement!
-			//courseService.removeCourse(courseInfo.getId());
-			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, null);
+			paperSubmissionService.removeExam(examInfo.getId());
+			setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, null);
 			addMessage(i18n("paper_removed_succeed"));
 			return Constants.PAPERSUBMISSION_LIST_PAGE;
 		} catch (Exception e) {

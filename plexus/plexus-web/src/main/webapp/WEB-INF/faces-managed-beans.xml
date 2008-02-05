@@ -192,12 +192,12 @@
         <managed-bean-class>org.openuss.documents.FileInfo</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
-     <managed-bean>
+    <managed-bean>
         <managed-bean-name>examInfo</managed-bean-name>
         <managed-bean-class>org.openuss.paperSubmission.ExamInfo</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
-        <managed-bean>
+    <managed-bean>
         <managed-bean-name>paperSubmissionInfo</managed-bean-name>
         <managed-bean-class>org.openuss.paperSubmission.PaperSubmissionInfo</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>

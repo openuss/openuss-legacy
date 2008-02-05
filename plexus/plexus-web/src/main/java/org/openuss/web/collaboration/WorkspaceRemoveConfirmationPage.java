@@ -49,7 +49,7 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCollaborationPage {
 	public String removeWorkspace() throws LectureException {
 		try {
 			workspaceService.removeWorkspace(workspaceInfo.getId());
-			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, null);
+			setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, null);
 			addMessage(i18n("workspace_removed_succeed"));
 			return Constants.COLLABORATION_MAIN_PAGE;
 		} catch (Exception e) {

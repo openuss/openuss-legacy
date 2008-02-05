@@ -45,7 +45,8 @@
 					<h:commandButton 
 					    id="download"
 						action="#{views$secured$documents$documents.download}" 
-						value="#{msg.documents_main_button_download}" 
+						value="#{
+						msg.documents_main_button_download}" 
 						title="#{msg.documents_main_button_download}"
 						styleClass="button_add"/>
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">

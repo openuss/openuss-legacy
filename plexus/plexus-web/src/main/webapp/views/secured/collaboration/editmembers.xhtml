@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core"    
+      xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+      <h:form>
+      <o:block> 
+        <t:column>
+            <t:selectManyListbox id="membersSelectBox" 
+				value="views$secured$collaboration$main">
+			</t:selectManyListbox>
+	    </t:column>  
+	    <t:column>
+			<t:selectManyListbox id="membersSelectedBox" 
+				value="">
+			</t:selectManyListbox>
+        </t:column>
+        </o:block>
+      </h:form>   
+
+</ui:composition>

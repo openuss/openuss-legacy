@@ -14,6 +14,7 @@ import java.util.TimeZone;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.collaboration.Workspace;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseMember;
 import org.openuss.lecture.CourseMemberDao;
@@ -77,10 +78,9 @@ public class PaperSubmissionServiceImpl
         //throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleRemoveExam(java.lang.Long examId) Not implemented!");
     	
     	Validate.notNull(examId, "examId cannot be null.");
-    	
     	//delete examId    	
         Exam examEntity = this.getExamDao().load(examId);
-        this.getExamDao().remove(examEntity);
+        getExamDao().remove(examEntity);
     }
 
     /**
