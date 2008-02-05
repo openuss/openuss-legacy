@@ -32,7 +32,7 @@ public class FLGStandardTourCreator extends javax.swing.JFrame implements FLGTou
     
     protected boolean mb_tourModified = false;
     protected boolean mb_tourWasNeverSaved = true;
-    private boolean mb_isInPresentationMode = false;
+    protected boolean mb_isInPresentationMode = false;
     private static FLGInternationalization m_internationalization;
     
     public FLGStandardTourCreatorOptions          m_currentTourCreatorOptions = new FLGStandardTourCreatorOptions();
@@ -546,6 +546,7 @@ public class FLGStandardTourCreator extends javax.swing.JFrame implements FLGTou
             this.m_aboutFrame = new FLGAboutFrame();
         this.m_aboutFrame.refreshAndShow();
     }
+    
     private void m_buttonToPresentationModeActionPerformed(java.awt.event.ActionEvent evt) {
         this.hide();
         this.mb_isInPresentationMode = true;
@@ -558,6 +559,20 @@ public class FLGStandardTourCreator extends javax.swing.JFrame implements FLGTou
         this.m_cellRenderer.setZeroPanelImage(m_currentTour.getTourIcon().getImage());
         this.m_presentationControl.refreshAndShow(this.m_currentTour);
     }
+    
+    public void openPresentationMode() {
+    	 this.hide();
+         this.mb_isInPresentationMode = true;
+         
+         //better not:
+         //enable Time Flow
+         //this.m_presentationControl.enableTimeFlow();
+         //set slider to zero
+         
+         this.m_cellRenderer.setZeroPanelImage(m_currentTour.getTourIcon().getImage());
+         this.m_presentationControl.refreshAndShow(this.m_currentTour);
+    }
+    
     private void m_tourMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {
         //ask for save if rememberToSaveOnOpenOption is set and tour is modified
         if(this.m_currentTourCreatorOptions.getRememberToSaveOnOpenOption() && this.mb_tourModified) {
