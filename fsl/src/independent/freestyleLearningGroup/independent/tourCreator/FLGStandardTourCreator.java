@@ -1238,7 +1238,7 @@ private void jList1MouseClicked(java.awt.event.MouseEvent evt) {
      * If the currently opened tour is modified an additional * is displayed
      */
     public void updateJFrameTitle(){
-        String ls_title = this.ms_windowTitle + " - " + m_currentTour.getTourName();
+        String ls_title = this.ms_windowTitle; // + " - " + m_currentTour.getTourName();
         if(mb_tourModified) ls_title += "*";
         //ls_title += " (" + ((this.mb_tourWasNeverSaved)? "-" : this.ms_currentTourFileName) + ")";
         this.setTitle(ls_title);
