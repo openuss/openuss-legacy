@@ -126,19 +126,19 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 			addMessage(i18n("collaboration_message_add_workspace_succeed"));
 		} else {
 			workspaceService.updateWorkspace(workspaceInfo);
-			
-			// store mapping
-			List<CourseMemberInfo> courseMembers = courseService.getParticipants(courseInfo);
-			List<Long> memberIds = new ArrayList<Long>(courseMembers.size());
-			for (CourseMemberInfo member : courseMembers) {
-				if (this.memberSelection.isSelected(member)) {
-					memberIds.add(member.getId());
-				}
-			}
-			workspaceService.updateWorkspaceMembers(memberIds, workspaceInfo.getId());
-			
-			addMessage(i18n("collaboration_message_persist_workspace_succeed"));
 		}
+		
+		// store mapping
+		List<CourseMemberInfo> courseMembers = courseService.getParticipants(courseInfo);
+		List<Long> memberIds = new ArrayList<Long>(courseMembers.size());
+		for (CourseMemberInfo member : courseMembers) {
+			if (this.memberSelection.isSelected(member)) {
+				memberIds.add(member.getId());
+			}
+		}
+		workspaceService.updateWorkspaceMembers(memberIds, workspaceInfo.getId());
+		
+		addMessage(i18n("collaboration_message_persist_workspace_succeed"));
 
 		removeSessionBean(Constants.COLLABORATION_WORKSPACE_INFO);
 		workspaceInfo = null;
