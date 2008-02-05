@@ -38,6 +38,7 @@ public class CalendarServiceImpl
         
     	Calendar cal = Calendar.Factory.newInstance();
     	CalendarType calType;
+    	Date date = new Date();
     	
     	// check calendarType
     	if (domainObject instanceof CourseInfo) {           
@@ -52,8 +53,8 @@ public class CalendarServiceImpl
     		
     	
         // TODO use timenow as param for setLastUpdate in handleCreateCalendar
-        Timestamp timeStamp = new Timestamp(3333333);
-        cal.setLastUpdate(timeStamp);
+        
+        cal.setLastUpdate(new Timestamp(date.getTime()));
         cal.setCalendarType(calType);
         getCalendarDao().create(cal);
     	
@@ -66,7 +67,10 @@ public class CalendarServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected void handleDeleteCalendar(org.openuss.calendar.CalendarInfo calender)
-        throw new java.lang.UnsupportedOperationException("org.openuss.calendar.CalendarService.handleDeleteCalendar(org.openuss.calendar.CalendarInfo calender) Not implemented!");
+        
+
+        
+    	throw new java.lang.UnsupportedOperationException("org.openuss.calendar.CalendarService.handleDeleteCalendar(org.openuss.calendar.CalendarInfo calender) Not implemented!");
     }
 
     /**
