@@ -10,22 +10,21 @@ import java.sql.Timestamp;
 
 import org.openuss.groups.GroupInfo;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.security.UserInfo;
+import org.openuss.security.*;
 /**
  * @see org.openuss.calendar.CalendarService
  */
 public class CalendarServiceImpl
     extends org.openuss.calendar.CalendarServiceBase
 {
-
     /**
      * @see org.openuss.calendar.CalendarService#createUserCalendar(org.openuss.security.UserInfo)
      */
-    protected void handleCreateUserCalendar(org.openuss.security.UserInfo user)
+    protected void handleCreateUserCalendar(org.openuss.security.UserInfo userInfo)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleCreateUserCalendar(org.openuss.security.UserInfo user)
-        throw new java.lang.UnsupportedOperationException("org.openuss.calendar.CalendarService.handleCreateUserCalendar(org.openuss.security.UserInfo user) Not implemented!");
+    	System.out.println("UI: "+userInfo.getId());
+    	super.createCalendar(userInfo);    	
     }
 
     /**
@@ -50,13 +49,17 @@ public class CalendarServiceImpl
     		calType = CalendarType.group_calendar;
     	} else if (domainObject instanceof UserInfo) {
     		calType = CalendarType.user_calendar;
+    		//set owner
+    		System.out.println("dO: " + domainObject.getId());
+    		System.out.println(getUserDao().load(domainObject.getId()).getUsername());
+    		User owner = getUserDao().load(domainObject.getId());
+    		cal.setCalendarOwner(owner);
+    		owner.getCalendars().add(cal);
     	} else {
     		throw new CalendarApplicationException ("DomainObject is not valid for calendar type.");
     	}
     		
-    	
-        // TODO use timenow as param for setLastUpdate in handleCreateCalendar
-        
+    	  
         cal.setLastUpdate(new Timestamp(date.getTime()));
         cal.setCalendarType(calType);
         getCalendarDao().create(cal);
@@ -225,5 +228,4 @@ public class CalendarServiceImpl
         // @todo implement protected void handleEndSubscription(org.openuss.calendar.CalendarInfo calendarInfo, org.openuss.security.UserInfo userInfo)
         throw new java.lang.UnsupportedOperationException("org.openuss.calendar.CalendarService.handleEndSubscription(org.openuss.calendar.CalendarInfo calendarInfo, org.openuss.security.UserInfo userInfo) Not implemented!");
     }
-
 }

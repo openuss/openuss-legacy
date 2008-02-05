@@ -25,9 +25,9 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 	
 	public SecurityService securityService;
 	
-	public UserDao userDao;
-	
 	public CalendarDao calendarDao;
+	
+	public UserDao userDao;
 	
 	private UserInfo getTestUserInfo() {
 		DomainObject domainObjectUser = generateDomainObject();
@@ -71,55 +71,7 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		return domainObject;
 	}
 	
-	public void testCreateCalendar() {
-		
-		// Creating a calendar for a course
-		
-		DomainObject domainObjectCourse = generateDomainObject();
-		
-		CourseInfo courseInfo = new CourseInfo();
-		courseInfo.setId(domainObjectCourse.getId());
-		
-		try {
-			calendarService.createCalendar(courseInfo);
-		} catch (CalendarApplicationException e){
-			System.out.println(e);
-		}
-		
-		// Creating a calendar for a group
-		
-		DomainObject domainObjectGroup = generateDomainObject(); 
 
-		AccessType accessType = AccessType.OPEN;
-		
-		GroupInfo groupInfo = new GroupInfo();
-		
-		groupInfo.setAccessType(accessType);
-		groupInfo.setDescription("Beschreibung");
-		groupInfo.setChat(false);
-		groupInfo.setForum(false);
-		groupInfo.setId(domainObjectGroup.getId());
-		groupInfo.setName("Tolle Gruppe");
-		groupInfo.setShortcut("Gruppen-Shortcut");
-		groupInfo.setNewsletter(false);
-		
-		try {
-			calendarService.createCalendar(groupInfo);
-		} catch (CalendarApplicationException e) {
-			System.out.println(e);
-		}
-		
-		// Creating a calendar for a user
-		
-		UserInfo userInfo = getTestUserInfo();
-		
-		try {
-			calendarService.createCalendar(userInfo);
-		} catch (CalendarApplicationException e) {
-			System.out.println(e);
-		}
-		
-	}
 	
 	public void testCalendarAdministration() {
 		/* Complete Test 1)
@@ -139,18 +91,37 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		 *     End :)
 		 */ 
 		
-		UserInfo userInfo = getTestUserInfo();
+		//create user
+		User user = userDao.create("user", "pwd", "e@ma.il", true, false, false, false, new Date());
+		System.out.println("User: " + user.getId());
+		UserInfo userInfo = (UserInfo)userDao.load(userDao.TRANSFORM_USERINFO, user.getId());
+		User rasdf = userDao.load(userInfo.getId());
+		System.out.println("User3: " + rasdf.getId());
+
 		
-		// TODO switch method to createUserCalendar
-		
+		//create calendar
 		try {
-			calendarService.createCalendar(userInfo);
+			calendarService.createUserCalendar(userInfo);
+
+			//get calendar from user
+			List<Calendar> calendars = calendarService.getUserCalendars(userInfo);
+			assertNotNull(calendars);
+			assertEquals(1, calendars.size());
+			CalendarInfo calendar = (CalendarInfo)calendarDao.load(calendarDao.TRANSFORM_CALENDARINFO, calendars.get(0).getId());
+			assertNotNull(calendar);
+			assertEquals(calendars.get(0).getId(), calendar.getId());
+			//create appointment
+			AppointmentInfo singleAppointment = getTestAppointmentInfo();
+			assertNotNull(singleAppointment);
+			calendarService.createAppointment(singleAppointment, calendar);
+			//get appointments from user
+			List<Appointment> appointments = calendarService.getAllUserAppointments(userInfo);
+			assertNotNull(appointments);
+			assertEquals(appointments.get(0).getId(), singleAppointment.getId());
 		} catch (CalendarApplicationException e) {
-			System.out.println(e);
+			fail();
 		}
-		
-		AppointmentInfo app = getTestAppointmentInfo();
-		
+
 	}
 	
 	public void testSubscription() {
@@ -175,34 +146,7 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		 */
 		
 	}
-	
-	public void testCalendarCreation(){
-		//create user
-		User user = userDao.create("user", "pwd", "e@ma.il", true, false, false, false, new Date());
-		UserInfo userInfo = (UserInfo)userDao.load(userDao.TRANSFORM_USERINFO, user.getId());
-		
-		//create calendar
-		try {
-			calendarService.createUserCalendar(userInfo);
 
-		//get calendar from user
-		List<Calendar> calendars = calendarService.getUserCalendars(userInfo);
-		assertNotNull(calendars);
-		CalendarInfo calendar = (CalendarInfo)calendarDao.load(calendarDao.TRANSFORM_CALENDARINFO, calendars.get(0).getId());
-		assertNotNull(calendar);
-		assertEquals(calendars.get(0).getId(), calendar.getId());
-		//create appointment
-		AppointmentInfo singleAppointment = getTestAppointmentInfo();
-		assertNotNull(singleAppointment);
-		calendarService.createAppointment(singleAppointment, calendar);
-		//get appointments from user
-		List<Appointment> appointments = calendarService.getAllUserAppointments(userInfo);
-		assertNotNull(appointments);
-		assertEquals(appointments.get(0).getId(), singleAppointment.getId());
-		} catch (CalendarApplicationException e) {
-			fail();
-		}
-	}
 	
 	public SecurityService getSecurityService() {
 		return securityService;
