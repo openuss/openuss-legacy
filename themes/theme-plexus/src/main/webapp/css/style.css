@@ -2132,3 +2132,14 @@ table.jscalendar-DB-dropdown-style {
 #extended_search_link_padding {
 	padding: 5px;
 }
+
+span.profile_header {
+	padding: 0px;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+span.profile_text {
+	padding: 15px 15px 15px 15px;
+}
+
