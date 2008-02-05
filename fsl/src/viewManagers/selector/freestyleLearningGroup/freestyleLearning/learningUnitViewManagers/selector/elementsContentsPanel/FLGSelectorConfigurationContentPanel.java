@@ -49,7 +49,7 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
     private FLGImageProgressDialog progressDialog = null;
     private boolean isModifiedByUserInput = false;
     private boolean userRoleIsAuthor;
-    private boolean selected=false;
+    private boolean selected = false;
     private boolean insertingSeveralImages = false;
     private JList gridObjectsList;
     private DefaultListModel listModel;
@@ -70,7 +70,7 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
     private JMenuItem removeElementItem;
     private JPopupMenu popup;
     private PopupActionListener popupListener;
-    private Object[] selectedGridObjects=null;
+    private Object[] selectedGridObjects = null;
     
     /**
      * Constructor.
@@ -275,7 +275,8 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
         JLabel previewLabel = new JLabel(internationalization.getString("selector.configurationPanel.previewPaneltext"),JLabel.CENTER);
         previewLabel.setFont(new Font("SansSerif", Font.PLAIN, 22));
         imagePanel.add(previewLabel,BorderLayout.CENTER);
-        imagePanel.setOpaque(false);
+        //imagePanel.setOpaque(false);
+        imagePanel.setBackground((Color)UIManager.get("FSLMainFrameColor1"));
         previewPanel.add(imagePanel,FLGColumnLayout.LEFTEND);
         propertiesPanel.add(previewPanel,FLGColumnLayout.LEFTEND);
         
@@ -620,11 +621,11 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
      * @param <code>Image</code> scaledImage
      * @param <code>File</code> newImageFile
      */
-    public void insertNewImageElement(String name, Image scaledImage, File imageFile) {
+    public void insertNewImageElement(String name, Image scaledImage, File imageFile, Color selectedColor) {
         // set check boxes
         isAllowedCheckBox.setSelected(true);
         isAllowedCheckBox.setEnabled(true);
-        if (learningUnitViewManager!=null && learningUnitViewElementsManager!=null) {
+        if (learningUnitViewManager != null && learningUnitViewElementsManager != null) {
             // get active view element
             String activeLearningUnitViewElementId = learningUnitViewManager.getActiveLearningUnitViewElementId();
             FLGSelectorElement viewElement = null;
@@ -636,33 +637,32 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
         		viewElement = (FLGSelectorElement) learningUnitViewElementsManager.getLearningUnitViewUserElement(
             		activeLearningUnitViewElementId);
         		// if no user element
-        		if(viewElement==null) {
+        		if(viewElement == null) {
         			// get original element
             		viewElement = (FLGSelectorElement) learningUnitViewElementsManager.getLearningUnitViewOriginalElement(
                         	activeLearningUnitViewElementId);
         		}
         	}
-            if (viewElement!=null) {
+            if (viewElement != null) {
                 // get grid object list to active view element
                 persistentGridObjectsList = viewElement.getLearningUnitViewElementGridObjects();
                 // get file type from grid object image file
                 String s = imageFile.getName();
                 StringBuffer fileType = new StringBuffer();
-                for (int i=3;i>0;i--) {
+                for (int i=3; i>0; i--) {
                     fileType.append(s.charAt(s.length()-i));
                 }
                 // create new file for elements externalData
                 File destinationFile = learningUnitViewElementsManager.createNewFileForElementsExternalData(
-                FLGSelectorElementGridObject.ELEMENT_TYPE_IMAGE, "." + fileType.toString(),
-                activeLearningUnitViewElementId);
+                		FLGSelectorElementGridObject.ELEMENT_TYPE_IMAGE, "." + fileType.toString(), activeLearningUnitViewElementId);
                 // create temporary source file in author/user directory to store scaled images
                 File sourceFile;
                 if (userRoleIsAuthor) {
                     sourceFile = new File(learningUnitViewManager.getLearningUnitViewOriginalDataDirectory()
-                    + "/" + imageFile.getName());
+                    		+ "/" + imageFile.getName());
                 } else {
                     sourceFile = new File(learningUnitViewManager.getLearningUnitViewUserDirectory()
-                    + "/" + imageFile.getName());
+                    		+ "/" + imageFile.getName());
                 }
                 try {
                 	FLGUIUtilities.saveImage(FLGUIUtilities.createBufferedImage(scaledImage),sourceFile.getAbsolutePath());
@@ -679,6 +679,7 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                 // store new grid object in view element descriptor
                 currentGridObject = newImageObject;
                 currentGridObject.setClickAllowed(true);
+                if(selectedColor != null) currentGridObject.setBackgroundColor(Integer.toString(selectedColor.getRGB()));
                 isAllowedCheckBox.setSelected(true);
                 persistentGridObjectsList.add(currentGridObject);
                 isModifiedByUserInput=true;
@@ -835,7 +836,7 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
         // delete old element
         deleteElement(currentGridObject.getId(),selectedIndex);
         listModel.removeElement(currentGridObject);
-        insertNewImageElement(name, newImage, imageFile);
+        insertNewImageElement(name, newImage, imageFile, null);
         if (clickedAllowed) {
             isAllowedCheckBox.setSelected(true);
             isAllowedCheckBox.setEnabled(true);
@@ -901,7 +902,7 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                         activeLearningUnitViewElementId);
         		}
         	}
-            if (viewElement!=null) {
+            if (viewElement != null) {
                 final java.util.List gridObjectList = viewElement.getLearningUnitViewElementGridObjects();
                 // delete entries in list model
                 if (gridObjectList!=null) {
@@ -1003,11 +1004,11 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
     
     private void loadGridObjectPreview() {
 	    	imagePanel.removeAll();
-	    	if (gridObjectsList.getSelectedIndices().length==1) {
+	    	if (gridObjectsList.getSelectedIndices().length == 1) {
 	    		editButton.setEnabled(true);
 		    	FLGSelectorElementGridObject gridObject = (FLGSelectorElementGridObject) gridObjectsList.getSelectedValue();
-			    	if (gridObject!=null) {
-			            currentGridObject=gridObject;
+			    	if (gridObject != null) {
+			            currentGridObject = gridObject;
 			            isAllowedCheckBox.setEnabled(true);
 			            if (currentGridObject.getClickAllowed()) {
 			                isAllowedCheckBox.setSelected(true);
@@ -1022,11 +1023,17 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
 			                }
 			                imagePanel.add(new JLabel(
 			                		new ImageIcon(
-			                				scaleImage(loadImage(currentGridObject.getId()),170,170))),BorderLayout.CENTER);
+			                				scaleImage(loadImage(currentGridObject.getId()), 170, 170))),BorderLayout.CENTER);
 			            } else {
 			                JLabel previewLabel = new JLabel(currentGridObject.getText(),JLabel.CENTER);
 			                previewLabel.setFont(new Font("SansSerif", Font.PLAIN, 22));
-			                imagePanel.add(previewLabel,BorderLayout.CENTER);
+			                if(currentGridObject.getBackgroundColor() != null) {
+			                	previewLabel.setOpaque(false);
+			                }
+			                imagePanel.add(previewLabel, BorderLayout.CENTER);
+			            }
+			            if(currentGridObject.getBackgroundColor() != null) {
+			            	imagePanel.setBackground(new Color(Integer.parseInt(currentGridObject.getBackgroundColor())));
 			            }
 			        }
 	    	}
@@ -1185,8 +1192,8 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                         Image newImage = newObjectDialog.getScaledImage();
                         String newText = newObjectDialog.getText();
                         File imageFile = newObjectDialog.getImageFile();
-                        if(imageFile!=null) {
-                            insertNewImageElement(newText,newImage,imageFile);
+                        if(imageFile != null) {
+                            insertNewImageElement(newText, newImage, imageFile, null);
                         } else {
                             // option error pane
                             FLGOptionPane.showConfirmDialog(internationalization.getString("selector.dialogs.noImageInserted.text"),
@@ -1314,56 +1321,60 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
             }
             // insert several images
             if (ae.getActionCommand().equals(internationalization.getString("selector.configurationContentPanel.popup.insertElements"))) {
-                // open message window with scaling options
-                final int width=250;
-                final int height=250;
-                // open file chooser
-                JFileChooser fileDialog = new JFileChooser();
-                fileDialog.setMultiSelectionEnabled(true);
-                fileDialog.setDialogTitle(internationalization.getString("selector.configurationContentPanel.loadImageDirectoryFileChooserTitle="));
-                java.awt.Dimension screenDim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-                fileDialog.setLocation((int)(screenDim.getWidth() - fileDialog.getWidth()) / 2,
-                (int)(screenDim.getHeight() - fileDialog.getHeight()) / 2);
-                String[] fileExtensions = { ".png" ,".jpg", ".gif"};
-                fileDialog.setFileFilter(new FLGUIUtilities.FLGFileFilter(fileExtensions,
-                internationalization.getString("selector.configurationContentPanel.fileDialog.fileFilter")));
-                // open dialog
-                if (fileDialog.showOpenDialog(new JPanel()) == JFileChooser.APPROVE_OPTION) {
-                	insertingSeveralImages=true;
-                    final File[] imageFiles = fileDialog.getSelectedFiles();
-                    FLGUIUtilities.startLongLastingOperation();
-                    Thread loader = new Thread() {
-                        public void run() {
-                            progressDialog = new FLGImageProgressDialog("title",0,(imageFiles.length)*10,0,
-                                getClass().getClassLoader().getResource("freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/selector/images/fsl.gif"),
-                                (Color)UIManager.get("FSLColorBlue"),(Color)UIManager.get("FSLColorRed"),
-                                internationalization.getString("selector.configurationContentPanel.loadAndScaleImagesProgrssBar"));
-                        	// scale images files and
-                        	// create new  grid objects for images in descriptor
-                        	for (int i=0;i<imageFiles.length;i++) {
-                        		Image scaledImage = scaleImage(loadImage(imageFiles[i]),width,height);
-                        		// scaled image needs height value, so draw it in temporary panel
-                        		new JPanel().add(new JLabel(new ImageIcon(scaledImage)));
-                        		try {
-                        			insertNewImageElement(imageFiles[i].getName(),scaledImage,imageFiles[i]);
-                        			// update jlist
-                        			final int barStep=i+1;
-                        			javax.swing.SwingUtilities.invokeLater(new Runnable() {
-                        				public void run() {
-                                        	 listModel.addElement(currentGridObject);
-                                       		 progressDialog.setBarValue(barStep*10);
-                        				}
-                        			 });
-                        		} catch (Exception exp) { exp.printStackTrace(); }
-                        	}
-                        	// close progress bar
-                            progressDialog.dispose();
-                        }
-                    };
-                    loader.start();
-                   	FLGUIUtilities.stopLongLastingOperation();
-                    insertingSeveralImages=false;
+                // scaling options
+                final int width = 250;
+                final int height = 250;
+                // open window for checking background color
+                Color selectedColor = JColorChooser.showDialog(null, internationalization.getString("dialog.colorChooser.title"), (Color)UIManager.get("FSLMainFrameColor1"));
+                if(selectedColor == null) {
+                	selectedColor = (Color)UIManager.get("FSLMainFrameColor1");
                 }
+                // open file chooser
+	            JFileChooser fileDialog = new JFileChooser();
+	            fileDialog.setMultiSelectionEnabled(true);
+	            fileDialog.setDialogTitle(internationalization.getString("selector.configurationContentPanel.loadImageDirectoryFileChooserTitle="));
+	            java.awt.Dimension screenDim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+	            fileDialog.setLocation((int)(screenDim.getWidth() - fileDialog.getWidth()) / 2, (int)(screenDim.getHeight() - fileDialog.getHeight()) / 2);
+	            String[] fileExtensions = { ".png" ,".jpg", ".gif"};
+	            fileDialog.setFileFilter(new FLGUIUtilities.FLGFileFilter(fileExtensions, internationalization.getString("selector.configurationContentPanel.fileDialog.fileFilter")));
+	            // open dialog
+	            final Color color = selectedColor;
+	            if (fileDialog.showOpenDialog(new JPanel()) == JFileChooser.APPROVE_OPTION) {
+	                	insertingSeveralImages=true;
+	                    final File[] imageFiles = fileDialog.getSelectedFiles();
+	                    FLGUIUtilities.startLongLastingOperation();
+	                    Thread loader = new Thread() {
+	                        public void run() {
+	                            progressDialog = new FLGImageProgressDialog("title",0,(imageFiles.length)*10,0,
+	                                getClass().getClassLoader().getResource("freestyleLearningGroup/freestyleLearning/learningUnitViewManagers/selector/images/fsl.gif"),
+	                                (Color)UIManager.get("FSLColorBlue"),(Color)UIManager.get("FSLColorRed"),
+	                                internationalization.getString("selector.configurationContentPanel.loadAndScaleImagesProgrssBar"));
+	                        	// scale images files and
+	                        	// create new  grid objects for images in descriptor
+	                        	for (int i = 0; i < imageFiles.length; i++) {
+	                        		Image scaledImage = scaleImage(loadImage(imageFiles[i]),width,height);
+	                        		// scaled image needs height value, so draw it in temporary panel
+	                        		new JPanel().add(new JLabel(new ImageIcon(scaledImage)));
+	                        		try {
+	                        			insertNewImageElement(imageFiles[i].getName(), scaledImage, imageFiles[i], color);
+	                        			// update jlist
+	                        			final int barStep=i+1;
+	                        			javax.swing.SwingUtilities.invokeLater(new Runnable() {
+	                        				public void run() {
+	                                        	 listModel.addElement(currentGridObject);
+	                                       		 progressDialog.setBarValue(barStep*10);
+	                        				}
+	                        			 });
+	                        		} catch (Exception exp) { exp.printStackTrace(); }
+	                        	}
+	                        	// close progress bar
+	                            progressDialog.dispose();
+	                        }
+	                    };
+	                    loader.start();
+	                   	FLGUIUtilities.stopLongLastingOperation();
+	                    insertingSeveralImages=false;
+	            }
             }
         }
     }

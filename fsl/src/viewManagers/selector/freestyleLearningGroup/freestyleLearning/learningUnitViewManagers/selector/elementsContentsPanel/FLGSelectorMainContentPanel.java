@@ -251,21 +251,31 @@ public class FLGSelectorMainContentPanel extends FSLAbstractLearningUnitViewElem
         	gridObjectPosition = createRandomGridObjectIndex();
    		}
         final int finalGridObjectPosition = gridObjectPosition;
-        occupiedIndexHash.put(Integer.toString(gridObjectPosition),Long.toString(System.currentTimeMillis()));
-        JGridPanel randomGridObjectPanel = new JGridPanel(randomGridObject,gridObjectPosition, new BorderLayout());
-        randomGridObjectPanel.setOpaque(false);
+        occupiedIndexHash.put(Integer.toString(gridObjectPosition), Long.toString(System.currentTimeMillis()));
+        JGridPanel randomGridObjectPanel = new JGridPanel(randomGridObject, gridObjectPosition, new BorderLayout());
+        
+        
+        //randomGridObjectPanel.setOpaque(true);
+        
+        
         randomGridObjectPanel.setBorder(BorderFactory.createLineBorder(new Color(50, 50, 122),5));
         if (randomGridObject.getType().equals(FLGSelectorElementGridObject.ELEMENT_TYPE_TEXT)) {
-            JLabel label = new JLabel(randomGridObject.getText(),JLabel.CENTER);
+            JLabel label = new JLabel(randomGridObject.getText(), JLabel.CENTER);
             label.setFont(new Font("SansSerif", Font.BOLD, 18));
-            randomGridObjectPanel.add(label,BorderLayout.CENTER);
+  
+            if(randomGridObject.getBackgroundColor() != null) {
+                label.setOpaque(false);
+            	randomGridObjectPanel.setBackground(new Color(Integer.parseInt(randomGridObject.getBackgroundColor())));
+            }
+            randomGridObjectPanel.add(label, BorderLayout.CENTER);
             randomGridObjectPanel.addMouseListener(new GridObjectSelectionMouseAdapter());
-        }
-        else {
+        } else {
           	scaleHeight = playGroundPanel.getComponent(0).getSize().height-10;
           	scaleWidth = playGroundPanel.getComponent(0).getSize().width-10;
-        	randomGridObjectPanel.add(new JLabel(new ImageIcon(
-        			scaleImage(randomGridObject.getId(),scaleHeight,scaleWidth))),BorderLayout.CENTER);
+            if(randomGridObject.getBackgroundColor() != null) {
+            	randomGridObjectPanel.setBackground(new Color(Integer.parseInt(randomGridObject.getBackgroundColor())));
+            }
+        	randomGridObjectPanel.add(new JLabel(new ImageIcon(scaleImage(randomGridObject.getId(), scaleHeight, scaleWidth))), BorderLayout.CENTER);
             randomGridObjectPanel.addMouseListener(new GridObjectSelectionMouseAdapter());
         }        
         playGroundPanel.remove(gridObjectPosition);
