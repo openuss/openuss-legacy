@@ -42,13 +42,12 @@
 	  				</o:block>
 	  				<o:block>
 	  					<h:commandButton 
-							value="#{msg['wiki_edit_button_create']}" 
+							value="#{msg.wiki_edit_button_create}" 
 							action="#{views$secured$wiki$wikiedit.create}"
 							styleClass="button"/>
 						<h:commandButton 
 							value="${msg.wiki_edit_button_cancel}" 
-							action="course_wiki" 
-							immediate="true" 
+							action="#{views$secured$wiki$wikiedit.cancelCreate}" 
 							styleClass="button"/>
 					</o:block>
 	  			</c:if>

@@ -29,6 +29,9 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	protected WikiSiteInfo siteInfo;
 	
 	private WikiOverviewDataProvider data = new WikiOverviewDataProvider();
+
+	protected String siteName;
+	protected Long siteVersionId;
 	
 	@Override
 	public void prerender() throws Exception {
@@ -85,8 +88,21 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	}
 	public void setData(WikiOverviewDataProvider data) {
 		this.data = data;
-	} 
+	}
 	
+	public void setSiteName(String siteName) {
+		this.siteName = siteName;
+	}
+	public String getSiteName() {
+		return siteName;
+	}
+	public void setSiteVersionId(Long siteVersionId) {
+		this.siteVersionId = siteVersionId;
+	}
+	public Long getSiteVersionId() {
+		return siteVersionId;
+	}
+
 	protected String readablePageName(String name) {
 		if (Constants.WIKI_STARTSITE_NAME.equals(name)) {
 			return i18n(Constants.WIKI_STARTSITE_NAME_I18N);

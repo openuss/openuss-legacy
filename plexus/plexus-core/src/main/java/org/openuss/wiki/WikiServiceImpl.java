@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.lecture.Course;
+import org.openuss.security.User;
 
 /**
  * @see org.openuss.wiki.WikiService
@@ -89,6 +90,10 @@ public class WikiServiceImpl
 		WikiSite site = this.getWikiSiteDao().load(wikiSiteVersionInfo.getWikiSiteId());
 		site.getWikiPageVersions().add(wikiSiteVersionEntity);
 		wikiSiteVersionEntity.setWikiSite(site);
+		
+		// Add user to version
+		User author = this.getUserDao().load(wikiSiteVersionInfo.getUserId());
+		wikiSiteVersionEntity.setAuthor(author);
 		
 		// Save Entity
 		this.getWikiSiteVersionDao().create(wikiSiteVersionEntity);

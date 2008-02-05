@@ -22,17 +22,41 @@ public class WikiEditPage extends AbstractWikiPage{
 	public void prerender() throws Exception {
 		super.prerender();
 		
-		String pageName = Constants.WIKI_STARTSITE_NAME;
-		if (this.siteInfo != null && this.siteInfo.getName() != null) {
-			pageName = this.siteInfo.getName();
-		} 
-		this.siteInfo = this.wikiService.findWikiSiteByCourseAndName(this.courseInfo.getId(), pageName);
-		
-		if (this.siteInfo != null) {
-			this.siteVersionInfo = this.wikiService.getNewestWikiSiteVersion(this.siteInfo.getId());
+		String pageName = (String)getSessionBean(Constants.WIKI_NEW_SITE_NAME);
+		if (pageName != null) {
+			this.siteInfo.setId(null);
+			this.siteInfo.setName(pageName);
+			this.siteInfo.setCourseId(courseInfo.getId());
 			
-			if (this.siteVersionInfo != null) {
-				this.siteVersionInfo.setNote("");
+			this.siteVersionInfo.setId(null);
+			this.siteVersionInfo.setWikiSiteId(null);
+			this.siteVersionInfo.setText("");
+			this.siteVersionInfo.setCreationDate(new Date());
+			this.siteVersionInfo.setUserId(user.getId());
+		} else {
+			this.siteInfo = this.wikiService.findWikiSiteByCourseAndName(this.courseInfo.getId(), pageName);
+			
+			if (this.siteInfo != null) {
+				if (this.siteVersionId != null) {
+					this.siteVersionInfo = this.wikiService.getWikiSiteVersion(this.siteVersionId);
+					addMessage(i18n("wiki_editing_old_version"));
+				} else {
+					this.siteVersionInfo = this.wikiService.getNewestWikiSiteVersion(this.siteInfo.getId());
+				}
+				
+				if (this.siteVersionInfo != null) {
+					this.siteVersionInfo.setNote("");
+				}
+			} else {
+				this.siteInfo.setId(null);
+				this.siteInfo.setName(this.siteName);
+				this.siteInfo.setCourseId(courseInfo.getId());
+				
+				this.siteVersionInfo.setId(null);
+				this.siteVersionInfo.setWikiSiteId(null);
+				this.siteVersionInfo.setText("");
+				this.siteVersionInfo.setCreationDate(new Date());
+				this.siteVersionInfo.setUserId(user.getId());
 			}
 		}
 		
@@ -41,6 +65,10 @@ public class WikiEditPage extends AbstractWikiPage{
 	}
 	
 	public String save() {
+		if (this.siteInfo.getId() == null) {
+			this.wikiService.createWikiSite(this.siteInfo);
+		}
+		
 		this.siteVersionInfo.setId(null);
 		this.siteVersionInfo.setWikiSiteId(this.siteInfo.getId());
 		this.siteVersionInfo.setCreationDate(new Date());
@@ -51,22 +79,13 @@ public class WikiEditPage extends AbstractWikiPage{
 	}
 	
 	public String create() {
-		String pageName = (String) getSessionBean(Constants.WIKI_NEW_SITE_NAME);
-		System.out.println(">>>>> " + pageName);
-		
-		this.siteInfo.setId(null);
-		this.siteInfo.setName(pageName);
-		this.siteInfo.setCourseId(courseInfo.getId());
-		this.wikiService.createWikiSite(this.siteInfo);
-		
-		this.siteVersionInfo.setId(null);
-		this.siteVersionInfo.setWikiSiteId(this.siteInfo.getId());
-		this.siteVersionInfo.setCreationDate(new Date());
-		this.siteVersionInfo.setUserId(user.getId());
-		
-		setSessionBean(Constants.WIKI_NEW_SITE_NAME, null);
-		
 		return Constants.WIKI_EDIT_PAGE;
+	}
+	public String cancelCreate() {
+		this.siteName = Constants.WIKI_STARTSITE_NAME;
+		this.siteVersionId = null;
+		
+		return Constants.WIKI_MAIN_PAGE;
 	}
 	
 	public String overview() {

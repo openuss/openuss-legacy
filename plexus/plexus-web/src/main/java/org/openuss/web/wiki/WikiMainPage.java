@@ -23,13 +23,17 @@ public class WikiMainPage extends AbstractWikiPage{
 		super.prerender();
 		
 		String pageName = Constants.WIKI_STARTSITE_NAME;
-		if (this.siteInfo != null && this.siteInfo.getName() != null) {
-			pageName = this.siteInfo.getName();
+		if (this.siteName != null) {
+			pageName = this.siteName;
 		} 
 		this.siteInfo = this.wikiService.findWikiSiteByCourseAndName(this.courseInfo.getId(), pageName);
 		
 		if (this.siteInfo != null) {
-			this.siteVersionInfo = this.wikiService.getNewestWikiSiteVersion(this.siteInfo.getId());
+			if (this.siteVersionId != null) {
+				this.siteVersionInfo = this.wikiService.getWikiSiteVersion(this.siteVersionId);
+			} else {
+				this.siteVersionInfo = this.wikiService.getNewestWikiSiteVersion(this.siteInfo.getId());
+			}
 		} else {
 			this.siteVersionInfo = null;
 			setSessionBean(Constants.WIKI_NEW_SITE_NAME, pageName);
