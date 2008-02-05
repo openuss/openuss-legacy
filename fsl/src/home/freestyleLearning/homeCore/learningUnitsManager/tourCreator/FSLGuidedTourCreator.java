@@ -68,6 +68,10 @@ public class FSLGuidedTourCreator extends FLGStandardTourCreator implements FSLT
         if (m_toursVector.size() > 0) setCurrentTour((FLGStandardTour)m_toursVector.get(0));
     }    
     
+    public boolean isInPresentationMode() {
+    	return mb_isInPresentationMode;
+    }
+    
     /** 
      *  Updates tour selection gui items
      *  and activate first tour in list
