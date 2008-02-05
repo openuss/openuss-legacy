@@ -2352,7 +2352,14 @@ public class FSLLearningUnitsManager implements FSLLearningUnitsActivator, FSLLe
     }
     
     public void showTourCreator() {
-        ((FSLGuidedTourCreator)tourCreator).setVisible(true);
+        if(((FSLGuidedTourCreator)tourCreator).isInPresentationMode()) {
+        	// open oresenter
+        	((FSLGuidedTourCreator)tourCreator).openPresentationMode();
+        } else {
+        	// open list with tours
+        	((FSLGuidedTourCreator)tourCreator).setVisible(true);
+        }
+        
     }
     
     public void setCurrentLearningUnitId(String id) {
