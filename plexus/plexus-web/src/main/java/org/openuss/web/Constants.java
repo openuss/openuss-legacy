@@ -223,10 +223,17 @@ public class Constants {
 	public static final String ARROW = " -> ";
 
 	// papersubmission 
-	public static final String PAPERSUBMISSION_PAPER_INFO = "paperInfo";
+	public static final String PAPERSUBMISSION_EXAM_INFO = "examInfo";
+	public static final String PAPERSUBMISSION_PAPER_INFO = "paperSubmissionInfo";
 	public static final String PAPERSUBMISSION_LIST_PAGE = "papersubmission";
 	public static final String PAPER_CONFIRM_REMOVE_PAGE = "paper_confirm_remove";
 	public static final String PAPERSUBMISSION_SUBMISSION_SELECTION = "papersubmission_submission_selection";
+	public static final String PAPERSUBMISSION_SELECTED_FILEENTRY = "papersubmission_selected_file";
+	public static final String PAPERSUBMISSION_EDIT_FILEENTRY_PAGE = "papersubmission_edit_file";
+	public static final String PAPERSUBMISSION_OVERVIEW_PAGE   = "papersubmissionview";
+	public static final String PAPERSUBMISSION_CURRENT_FOLDER = "papersubmission_current_folder";
+	public static final String PAPERSUBMISSION_FOLDERENTRY_SELECTION = "papersubmission_entry_selection";
+	
 
 	// collaboration
 	public static final String COLLABORATION_WORKSPACE_INFO = "workspaceInfo";

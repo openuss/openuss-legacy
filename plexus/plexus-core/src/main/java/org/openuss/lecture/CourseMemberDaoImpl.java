@@ -42,13 +42,15 @@ public class CourseMemberDaoImpl extends org.openuss.lecture.CourseMemberDaoBase
 	 */
 	private org.openuss.lecture.CourseMember loadCourseMemberFromCourseMemberInfo(
 			org.openuss.lecture.CourseMemberInfo courseMemberInfo) {
-
-		org.openuss.lecture.CourseMember courseMember = this.load(courseMemberInfo.getId());
-		if (courseMember == null) {
+		org.openuss.lecture.CourseMember courseMember = null;
+		if (courseMemberInfo.getId() != null) { 
+			courseMember = this.load(courseMemberInfo.getId());
+		} else {
 			courseMember = org.openuss.lecture.CourseMember.Factory.newInstance();
 		}
 		return courseMember;
 	}
+
 
 	/**
 	 * @see org.openuss.lecture.CourseMemberDao#courseMemberInfoToEntity(org.openuss.lecture.CourseMemberInfo)

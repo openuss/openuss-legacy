@@ -41,8 +41,8 @@
 					<c:if test="#{!views$secured$papersubmission$paperlist.editing}">	
 						<o:block>
 							<h:commandButton 
-							    id="addPaper"
-								action="#{views$secured$papersubmission$paperlist.addPaper}" 
+							    id="addExam"
+								action="#{views$secured$papersubmission$paperlist.addExam}" 
 								value="#{msg.papersubmission_command_add}" 
 								title="#{msg.papersubmission_command_add_hint}"
 								styleClass="button_big"/>
@@ -51,7 +51,7 @@
 				</s:acl>
 			</h:form>
 			<c:if test="#{views$secured$papersubmission$paperlist.editing}">
-				<ui:include src="paperedit.xhtml"/>
+				<ui:include src="examedit.xhtml"/>
 			</c:if>
 				
   		</ui:define>

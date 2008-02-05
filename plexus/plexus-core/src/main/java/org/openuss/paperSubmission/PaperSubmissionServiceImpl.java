@@ -16,6 +16,8 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseMember;
+import org.openuss.lecture.CourseMemberDao;
+import org.openuss.lecture.CourseMemberInfo;
 
 
 /**
@@ -37,28 +39,27 @@ public class PaperSubmissionServiceImpl
         //throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleCreateExam(org.openuss.paperSubmission.ExamInfo examInfo) Not implemented!");
     	
     	Validate.notNull(examInfo, "examInfo cannot be null.");
-    	Validate.notNull(examInfo.getId(), "getId cannot be null.");
+    	Validate.notNull(examInfo.getCourseId(), "getId cannot be null.");
     	
     	//Transform VO to Entity
-    	Exam examInfoEntity = this.getExamDao().examInfoToEntity(examInfo);
-    	Validate.notNull(examInfoEntity, "examInfoEntity cannot be null.");
+    	Exam examEntity = this.getExamDao().examInfoToEntity(examInfo);
+    	Validate.notNull(examEntity, "examInfoEntity cannot be null.");
     	
     	//Add to a course    	
     	Course course = this.getCourseDao().load(examInfo.getCourseId());
-    	examInfoEntity.setCourse(course);
+    	course.getExams().add(examEntity);
+    	examEntity.setCourse(course);
+    	    	
     	
-    	
-    	
-    	this.getExamDao().create(examInfoEntity);
-    	Validate.notNull(examInfoEntity, "examId cannot be null");
+    	this.getExamDao().create(examEntity);
+    	Validate.notNull(examEntity, "examId cannot be null");
     	
 		// Update input parameter for aspects to get the right domain objects.    	
 
-    	examInfo.setId(examInfoEntity.getId());
+    	examInfo.setId(examEntity.getId());
     	
 		// add object identity to security
-    	this.getSecurityService().createObjectIdentity(examInfoEntity, examInfoEntity.getCourse());
-		
+    	this.getSecurityService().createObjectIdentity(examEntity, examEntity.getCourse());
     	this.getCourseDao().update(course);		
 
 	// Set Security
@@ -112,7 +113,7 @@ public class PaperSubmissionServiceImpl
         //throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.PaperSubmissionService.handleCreatePaperSubmission(org.openuss.paperSubmission.PaperSubmissionInfo paperSubmissionInfo) Not implemented!");
     	
     	Validate.notNull(paperSubmissionInfo, "paperSubmissionInfo cannot be null.");
-    	Validate.notNull(paperSubmissionInfo.getId(), "paperSubmissionId cannot be null.");
+    	Validate.notNull(paperSubmissionInfo.getExamId(), "ExanId cannot be null.");
     	
     	//Transform to entity
     	PaperSubmission paperSubmissionEntity = this.getPaperSubmissionDao().paperSubmissionInfoToEntity(paperSubmissionInfo);
@@ -120,14 +121,17 @@ public class PaperSubmissionServiceImpl
     	
     	//FIXME: Add to a course and exam (NOT VERY SURE)
     	
-    	Course course = this.getCourseDao().load(paperSubmissionEntity.getId());
+    	//Course course = this.getCourseDao().load(paperSubmissionEntity.getId());
     	Exam exam = this.getExamDao().load(paperSubmissionInfo.getExamId());
-    	
-    	
+    	CourseMemberInfo courseMemberInfo = (CourseMemberInfo) this.getCourseMemberDao().load(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, paperSubmissionInfo.getCourseMemberId());
+    	CourseMember courseMember = this.getCourseMemberDao().courseMemberInfoToEntity(courseMemberInfo);
+    	    	
     	paperSubmissionEntity.setExam(exam);
+    	paperSubmissionEntity.setSender(courseMember);
+    	paperSubmissionEntity.setDeliverDate(new Date());
     	
     	
-    	//this.getPaperSubmissionDao().create(deliverDate);
+    	this.getPaperSubmissionDao().create(paperSubmissionEntity);
     	Validate.notNull(paperSubmissionEntity, "paperSubmissionId cannot be null");
     	
 
@@ -136,14 +140,14 @@ public class PaperSubmissionServiceImpl
 		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		// Update input parameter for aspects to get the right domain objects.
     	
-    	paperSubmissionInfo.setId(paperSubmissionInfo.getId());
+    	paperSubmissionInfo.setId(paperSubmissionEntity.getId());
 
     	    	
 		// add object identity to security
     	
-    	this.getSecurityService().createObjectIdentity(paperSubmissionEntity, paperSubmissionEntity.getExam().getCourse());
+    	this.getSecurityService().createObjectIdentity(paperSubmissionEntity, paperSubmissionEntity.getExam());
     	
-    	this.getCourseDao().update(course);
+    	this.getExamDao().update(exam);
 
 	// Set Security
 	// FIXME: don't know what this does:	this.getSecurityService().createObjectIdentity(examInfoEntity, examInfoEntity.getCourseType());
@@ -190,7 +194,7 @@ public class PaperSubmissionServiceImpl
     	Validate.notNull(examId, "examId cannot be null.");
     	
     	Exam exam = this.getExamDao().load(examId);
-    	return this.getPaperSubmissionDao().findByExam(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam);    	
+    	return this.getPaperSubmissionDao().findByExam(PaperSubmissionDao.TRANSFORM_NONE, exam);    	
     	
     }
 
@@ -232,10 +236,11 @@ public class PaperSubmissionServiceImpl
     	Validate.notNull(examId, "examId cannot be null.");
     	Validate.notNull(courseMemberId, "courseMemberId cannot be null");    	
    
-    	CourseMember courseMember = this.getCourseMemberDao().load(courseMemberId);
+    	CourseMemberInfo courseMemberInfo = (CourseMemberInfo) this.getCourseMemberDao().load(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, courseMemberId);
+    	CourseMember courseMember = this.getCourseMemberDao().courseMemberInfoToEntity(courseMemberInfo);
     	Exam exam = this.getExamDao().load(examId);
     	
-    	return this.getPaperSubmissionDao().findByExamAndCourseMember(PaperSubmissionDao.TRANSFORM_NONE, exam, courseMember);
+    	return this.getPaperSubmissionDao().findByExamAndCourseMember(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam, courseMember);
     	
         }
 

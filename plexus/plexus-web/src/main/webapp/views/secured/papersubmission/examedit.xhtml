@@ -12,11 +12,12 @@
       
     <h:form id="paperForm">
         <o:block label="#{msg.papersubmission_paper_header}" styleClass="form_box">
-            <o:input entity="paperInfo" property="name" required="true" maxlength="100"/>
-            <o:input entity="paperInfo" property="description" maxlength="250" type="textarea"/>
+            <o:input entity="examInfo" property="name" required="true" maxlength="100"/>
+            <o:input entity="examInfo" property="description" maxlength="250" type="textarea"/>
+            <o:input entity="examInfo" property="deadline" required="true" type="full"/>
         </o:block> 
         <o:block>   
-            <h:commandButton id="savePaper"   action="#{views$secured$papersubmission$paperlist.savePaper}" value="#{msg.save}" styleClass="button_save" />
+            <h:commandButton id="savePaper"   action="#{views$secured$papersubmission$paperlist.saveExam}" value="#{msg.save}" styleClass="button_save" />
             <h:commandButton id="cancelPaper" action="#{views$secured$papersubmission$paperlist.cancelPaper}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
         </o:block>
     </h:form>

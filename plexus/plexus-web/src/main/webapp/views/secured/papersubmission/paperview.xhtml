@@ -33,8 +33,7 @@
         
         <ui:define name="content">
             <h:form id="submissionsTableView">
-                
-                <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+                <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}"> 
                     <!-- Assitant-view -->
 	                <plexus:dataTable   
 				        id="submissions" 
@@ -61,12 +60,7 @@
 				            <h:outputText value="#{bean.name}"/>
 				        </t:column>
 				        
-				        <t:column>
-	                        <plexus:commandSortHeader columnName="status">#{msg.papersubmission_colheader_status}</plexus:commandSortHeader> 
-	                        <h:graphicImage value="/images/papersubmission/status_#{bean.status}.png"/>&nbsp;
-	                        <c:set var="key" value="papersubmission_submission_status_${bean.status}"/>
-	                        <h:outputText value="#{msg[key]}"/>
-	                    </t:column>
+				      
 				        
 				    </plexus:dataTable>
 				
@@ -76,12 +70,12 @@
 	                        action="#{views$secured$papersubmission$paperview.download}" 
 	                        value="#{msg.papersubmission_command_download}" 
 	                        title="#{msg.papersubmission_command_download_hint}"
-	                        styleClass="button_big"/> <h:outputText value="other buttons here..."/>
+	                        styleClass="button_big"/> 
 	                </o:block>
 	                 
                    
                 </s:acl>
-            
+                
                 <s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}">
 	                <!-- Student-view -->
 	                <plexus:dataTable   
@@ -92,6 +86,18 @@
 	                    var="bean" 
 	                    rows="20">  
 	                    
+	                    <t:column>
+				            <f:facet name="header">
+				                <h:selectBooleanCheckbox 
+				                    immediate="true" 
+				                    onchange="this.form.submit();" 
+				                    onclick="this.form.submit();" 
+				                    value="#{papersubmission_submission_selection.state}" 
+				                    valueChangeListener="#{papersubmission_submission_selection.switchSelection}"/>
+				            </f:facet>
+				            <h:selectBooleanCheckbox value="#{papersubmission_submission_selection.map[bean]}"/> 
+				        </t:column> 
+				        
 	                    <t:column> 
 				            <plexus:commandSortHeader columnName="extension"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
 				            <h:graphicImage value="/images/filetypes/#{bean.extension}.gif"/>
@@ -104,28 +110,54 @@
 	                    
 	                    <t:column>
 	                        <plexus:commandSortHeader columnName="status">#{msg.papersubmission_colheader_size}</plexus:commandSortHeader> 
-	                        <h:outputText value="#{bean.size}"/>
+	                        <h:outputText value="#{bean.sizeAsString}"/>
 	                    </t:column>
 	                    
 	                    <t:column>
 	                        <plexus:commandSortHeader columnName="status">#{msg.papersubmission_colheader_createdate}</plexus:commandSortHeader> 
-	                        <h:outputText value="#{bean.creationDate}"/>
+	                        <h:outputText value="#{bean.created}">
+	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+	                        </h:outputText>
 	                    </t:column>
 	                    
 	                    <t:column>
 	                        <plexus:commandSortHeader columnName="status">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader> 
-	                        <h:outputText value="#{bean.changeDate}"/>
+	                        <h:outputText value="#{bean.modified}">
+	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+	                        </h:outputText>
 	                    </t:column>
 	                    
 	                </plexus:dataTable> 
 	                
 	                <o:block>
 	                    <h:commandButton 
-	                        id="addFile"
-	                        action="#{views$secured$papersubmission$paperview.addFile}" 
-	                        value="#{msg.papersubmission_command_addfile}" 
-	                        title="#{msg.papersubmission_command_addfile_hint}"
-	                        styleClass="button_big"/> <h:outputText value="other buttons here..."/>
+					    id="download"
+						action="#{views$secured$papersubmission$paperview.download}" 
+						value="#{msg.documents_main_button_download}" 
+						title="#{msg.documents_main_button_download}"
+						styleClass="button_add"/>
+						
+						<h:commandButton 
+					    id="addZip"
+						action="documents_add_zip" 
+						value="#{msg.documents_main_button_zip}" 
+						title="#{msg.documents_main_button_zip}"
+						styleClass="button_add"/>
+						
+	                    <h:commandButton 
+                        id="addFile"
+                        action="#{views$secured$papersubmission$paperview.addFile}" 
+                        value="#{msg.papersubmission_command_addfile}" 
+                        title="#{msg.papersubmission_command_addfile_hint}"
+                        styleClass="button_add"/> 
+	                        
+	                    <h:commandButton 
+					    id="delete"
+						action="#{views$secured$documents$documents.delete}" 
+						value="#{msg.documents_main_button_delete}" 
+						styleClass="button_add"/>
+	                        
+	                    
 	                </o:block>   
 	                
 	            </s:acl>

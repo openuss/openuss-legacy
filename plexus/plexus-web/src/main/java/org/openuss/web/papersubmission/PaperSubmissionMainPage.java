@@ -10,28 +10,37 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
+import org.openuss.documents.DocumentService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
+import org.openuss.paperSubmission.ExamInfo;
+import org.openuss.paperSubmission.PaperSubmissionService;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
-
+              
 @Bean(name = "views$secured$papersubmission$paperlist", scope = Scope.REQUEST)
 @View
-public class PaperSubmissionMainPage extends AbstractCoursePage {
+public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 	
 	public static final Logger logger = Logger.getLogger(PaperSubmissionMainPage.class);
 	
+	@Property(value = "#{documentService}")
+	protected DocumentService documentService;
+	
+	@Property(value= "#{paperSubmissionService}")
+	protected PaperSubmissionService paperSubmissionService;
+	
 	/** The datamodel for all papers. */
-	private LocalDataModelPapers dataPapers = new LocalDataModelPapers();
+	private LocalDataModelExams dataExams = new LocalDataModelExams();
 
 	/** If <code>true</code> the page is in editing mode. */
 	private Boolean editing = false;
 	
-	/** paper that is currently edited. */
-	@Property(value="#{"+Constants.PAPERSUBMISSION_PAPER_INFO+"}")
-	private PaperInfo paperInfo = null;
+
+	
+	
 	
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
@@ -60,10 +69,10 @@ public class PaperSubmissionMainPage extends AbstractCoursePage {
 	 * 
 	 * @return outcome
 	 */
-	public String addPaper() {
+	public String addExam() {
 		editing = true;
-		paperInfo = new PaperInfo();
-		setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperInfo);
+		examInfo = new ExamInfo();
+		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		return Constants.SUCCESS;
 	}
 	
@@ -73,21 +82,21 @@ public class PaperSubmissionMainPage extends AbstractCoursePage {
 	 * @return outcome
 	 * @throws LectureException
 	 */
-	public String editPaper() throws LectureException {
-		paperInfo = currentPaper();
-		if (paperInfo == null) {
+	public String editExam() throws LectureException {
+		examInfo = currentExam();
+		if (examInfo == null) {
 			return Constants.FAILURE;
 		}
 		// TODO: implement find paper...
 		//paperInfo = courseTypeService.findCourseType(paperInfo.getId());
-		paperInfo = new PaperInfo(1l, 1l, "VOFI mit Steuern", "Bauen Sie einen VOFI mit Steuern!");
-		setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperInfo);
-		if (paperInfo == null) {
+		//examInfo = new ExamInfo(1l, 1l, "VOFI mit Steuern", "Bauen Sie einen VOFI mit Steuern!");
+		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
+		if (examInfo == null) {
 			addWarning(i18n("error_paper_not_found"));
 			return Constants.FAILURE;
 
 		} else {
-			logger.debug("selected paperInfo " + paperInfo.getName());
+			logger.debug("selected examInfo " + examInfo.getName());
 			editing = true;
 			return Constants.SUCCESS;
 		}
@@ -99,24 +108,27 @@ public class PaperSubmissionMainPage extends AbstractCoursePage {
 	 * 
 	 * @return outcome
 	 */
-	public String savePaper() throws DesktopException, LectureException {
+	public String saveExam() throws DesktopException, LectureException {
 		logger.debug("Starting method savePaper()");
 		// TODO implement save/update
-		if (paperInfo.getId() == null) {
+		if (examInfo.getId() == null) {
 
-			//paperInfo.setInstituteId(instituteInfo.getId());
-			//courseTypeService.create(courseTypeInfo);
+			examInfo.setCourseId(courseInfo.getId());
+			paperSubmissionService.createExam(examInfo);
 
 			addMessage(i18n("papersubmission_message_add_paper_succeed"));
 		} else {
 			//courseTypeService.update(courseTypeInfo);
+			paperSubmissionService.updateExam(examInfo);
+			
 			addMessage(i18n("papersubmission_message_persist_paper_succeed"));
 		}
 
-		removeSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO);
-		paperInfo = null;
+		removeSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
+		examInfo = null;
 		editing = false;
 		return Constants.SUCCESS;
+		
 	}
 	
 	/**
@@ -124,9 +136,9 @@ public class PaperSubmissionMainPage extends AbstractCoursePage {
 	 * 
 	 * @return outcome
 	 */
-	public String cancelPaper() {
+	public String cancelExam() {
 		logger.debug("cancelPaper()");
-		removeSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO);
+		removeSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
 		this.editing = false;
 		return Constants.SUCCESS;
 	}
@@ -137,21 +149,31 @@ public class PaperSubmissionMainPage extends AbstractCoursePage {
 	 * 
 	 * @return outcome
 	 */
-	public String selectPaperAndConfirmRemove() {
+	public String selectExamAndConfirmRemove() {
 		logger.debug("Starting method selectPaperAndConfirmRemove");
-		PaperInfo currentPaper = currentPaper();
-		logger.debug("Returning to method selectPaperAndConfirmRemove");
-		logger.debug(currentPaper.getId());
-		setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, currentPaper);
+		ExamInfo currentExam = currentExam();
+		logger.debug("Returning to method selectExamAndConfirmRemove");
+		logger.debug(currentExam.getId());
+		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
 
 		return Constants.PAPER_CONFIRM_REMOVE_PAGE;
 	}
 	
+	public String selectExam(){
+		logger.debug("Starting method selectExam");
+		ExamInfo currentExam = currentExam();
+		logger.debug("Returning to method selectExam");
+		logger.debug(currentExam.getId());
+		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
+
+		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
+	}
+	
 	//// getter/setter methods ////////////////////////////////////////////////
 
-	private PaperInfo currentPaper() {
-		PaperInfo paper = this.dataPapers.getRowData();
-		return paper;
+	private ExamInfo currentExam() {
+		ExamInfo exam = this.dataExams.getRowData();
+		return exam;
 	}
 	
 	public Boolean getEditing() {
@@ -162,42 +184,62 @@ public class PaperSubmissionMainPage extends AbstractCoursePage {
 	}
 	
 
-	public PaperInfo getPaperInfo() {
-		return paperInfo;
+	public LocalDataModelExams getDataExams() {
+		return dataExams;
 	}
-	public void setPaperInfo(PaperInfo paperInfo) {
-		this.paperInfo = paperInfo;
-	}
-	
-	public LocalDataModelPapers getDataPapers() {
-		return dataPapers;
-	}
-	public void setDataPapers(LocalDataModelPapers dataPapers) {
-		this.dataPapers = dataPapers;
+	public void setDataExams(LocalDataModelExams dataExams) {
+		this.dataExams = dataExams;
 	}
 	
 	/////// Inner classes ////////////////////////////////////////////////////
 	
-	private class LocalDataModelPapers extends AbstractPagedTable<PaperInfo> {
+	private class LocalDataModelExams extends AbstractPagedTable<ExamInfo> {
 		private static final long serialVersionUID = -6289875618529435428L;
 
-		private DataPage<PaperInfo> page;
+		private DataPage<ExamInfo> page;
 
 		@Override
 		@SuppressWarnings( { "unchecked" })
-		public DataPage<PaperInfo> getDataPage(int startRow, int pageSize) {
+		public DataPage<ExamInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				// TODO: implement!
 				/*List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService
 						.findCourseTypesByInstitute(instituteInfo.getId()));*/
-				List<PaperInfo> papers = new ArrayList<PaperInfo>();
-				papers.add(new PaperInfo(1l, 1l, "VOFI ohne Steuern", "Vofi ohne Steuern"));
+				List<ExamInfo> exams = new ArrayList<ExamInfo>();
+				exams = paperSubmissionService.findExamsByCourse(courseInfo.getId());
 				
-				sort(papers);
-				page = new DataPage<PaperInfo>(papers.size(), 0, papers);
+				//exams.add(new ExamInfo(1l, 1l, "VOFI ohne Steuern", "Vofi ohne Steuern"));
+				
+				sort(exams);
+				page = new DataPage<ExamInfo>(exams.size(), 0, exams);
 			}
 			return page;
 		}
+	}
+
+	public DocumentService getDocumentService() {
+		return documentService;
+	}
+
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
+	}
+
+	public PaperSubmissionService getPaperSubmissionService() {
+		return paperSubmissionService;
+	}
+
+	public void setPaperSubmissionService(
+			PaperSubmissionService paperSubmissionService) {
+		this.paperSubmissionService = paperSubmissionService;
+	}
+
+	public ExamInfo getExamInfo() {
+		return examInfo;
+	}
+
+	public void setExamInfo(ExamInfo examInfo) {
+		this.examInfo = examInfo;
 	}
 	
 }

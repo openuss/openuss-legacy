@@ -10,19 +10,23 @@
       xmlns:c="http://java.sun.com/jstl/core">
       
      <plexus:dataTable   
-        id="papers" 
+        id="exams" 
         label="#{msg['papersubmission_paperstable_header']}" 
-        value="views$secured$papersubmission$paperlist.dataPapers" 
+        value="views$secured$papersubmission$paperlist.dataExams" 
         columnClasses="col_max_left, col_commands"
         var="bean" 
         rows="20">  
    
         <t:column>
             <plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader>
-            <o:link value="/views/secured/papersubmission/paperview.faces" title="#{bean.description}">
+            <!-- <o:link value="/views/secured/papersubmission/paperview.faces" title="#{bean.description}">
                 <f:param value="#{bean.id}" name="paper" />
                 <b><h:outputText value="#{bean.name}"/></b>
             </o:link> 
+             -->
+            <h:commandLink action="#{views$secured$papersubmission$paperlist.selectExam}" styleClass="command">
+					<b><h:outputText value="#{bean.name}"/></b>
+			</h:commandLink>
             <br></br>
             <small><h:outputText value="#{bean.description}"/></small>
             
@@ -32,7 +36,7 @@
 	        <plexus:column header="#{msg.commands_header}">   
 	            <plexus:command 
 	                bean="#{views$secured$papersubmission$paperlist}"
-	                action="editPaper"
+	                action="editExam"
 	                label="#{msg.papersubmission_command_edit}"
 	                hint="#{msg.papersubmission_command_edit_hint}"
 	                styleClass="icon_edit">
@@ -40,7 +44,7 @@
 	                
 	            <plexus:command   
 	                bean="#{views$secured$papersubmission$paperlist}"
-	                action="selectPaperAndConfirmRemove"
+	                action="selectExamAndConfirmRemove"
 	                label="#{msg.papersubmission_command_remove}"
 	                hint="#{msg.papersubmission_command_remove_hint}"
 	                styleClass="icon_remove">
