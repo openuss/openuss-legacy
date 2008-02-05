@@ -34,7 +34,10 @@ public class CalendarServiceImpl
     protected void handleCreateCalendar(org.openuss.foundation.DomainObject domainObject)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleCreateCalendar(org.openuss.foundation.DomainObject domainObject)
+        
+    	// TODO check wheather the calendar was already created for this domain object
+    	
+    	// @todo implement protected void handleCreateCalendar(org.openuss.foundation.DomainObject domainObject)
         
     	Calendar cal = Calendar.Factory.newInstance();
     	CalendarType calType;

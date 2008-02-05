@@ -5,11 +5,14 @@ package org.openuss.calendar;
  * You can (and have to!) safely modify it by hand.
  */
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import org.openuss.TestUtility;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.foundation.DomainObject;
 import org.openuss.groups.GroupInfo;
-import org.openuss.lecture.AccessType;
+import org.openuss.groups.AccessType;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
@@ -37,6 +40,26 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		return userInfo;
 	}
 	
+	private AppointmentInfo getTestAppointmentInfo() {
+		
+		// Startzeit erzeugen
+		Date start = new Date();
+		
+		// Endzeit erzeugen
+		Date end = new Date();
+		
+		AppointmentInfo appInfo = new AppointmentInfo();
+		appInfo.setSubject("Subject");
+		appInfo.setDescription("Description");
+		appInfo.setLocation("Location");
+		appInfo.setStarttime(new Timestamp(start.getTime()));
+		appInfo.setEndtime(new Timestamp(end.getTime()));
+		
+		// TODO isSerial setzen beim Erzeugen eines Termins
+		
+		return appInfo;
+	}
+	
 	private DomainObject generateDomainObject(){
 		DomainObject domainObject = new DefaultDomainObject(TestUtility.unique());
 		securityService.createObjectIdentity(domainObject, null);
@@ -48,6 +71,7 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 	public void testCreateCalendar() {
 		
 		// Creating a calendar for a course
+		
 		DomainObject domainObjectCourse = generateDomainObject();
 		
 		CourseInfo courseInfo = new CourseInfo();
@@ -60,13 +84,14 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		}
 		
 		// Creating a calendar for a group
+		
 		DomainObject domainObjectGroup = generateDomainObject(); 
 
 		AccessType accessType = AccessType.OPEN;
 		
 		GroupInfo groupInfo = new GroupInfo();
-		// TODO AccessType setzen
-		// groupInfo.setAccessType(accessType);
+		
+		groupInfo.setAccessType(accessType);
 		groupInfo.setDescription("Beschreibung");
 		groupInfo.setChat(false);
 		groupInfo.setForum(false);
@@ -82,7 +107,7 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		}
 		
 		// Creating a calendar for a user
-		// TODO test the creation of a calendar for a user with createCalendar
+		
 		UserInfo userInfo = getTestUserInfo();
 		
 		try {
@@ -95,7 +120,7 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 	
 	public void testCalendarAdministration() {
 		/* Complete Test 1)
-	 	 * 1 - createUserCalendar / creatCalendar for userInfo object
+	 	 * 1 - createUserCalendar / createCalendar for userInfo object
 		 * 2 - createAppointment
 		 * 3 - getSingleAppointments / getAllUserAppointments -> not null
 		 * 4 - updateAppointment
@@ -110,6 +135,19 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		 *13 - deleteCalendar
 		 *     End :)
 		 */ 
+		
+		UserInfo userInfo = getTestUserInfo();
+		
+		// TODO switch method to createUserCalendar
+		
+		try {
+			calendarService.createCalendar(userInfo);
+		} catch (CalendarApplicationException e) {
+			System.out.println(e);
+		}
+		
+		AppointmentInfo app = getTestAppointmentInfo();
+		
 	}
 	
 	public void testSubsciption() {
