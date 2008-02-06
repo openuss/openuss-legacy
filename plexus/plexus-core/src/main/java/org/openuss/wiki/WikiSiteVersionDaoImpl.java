@@ -72,5 +72,13 @@ public class WikiSiteVersionDaoImpl
         // @todo verify behavior of wikiSiteVersionInfoToEntity
         super.wikiSiteVersionInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
+    
+    /**
+     * @see org.openuss.wiki.WikiSiteVersionDao#findByWikiSite(int, org.openuss.wiki.WikiSite)
+     */
+    public java.util.List findByWikiSite(final int transform, final org.openuss.wiki.WikiSite wikiSite)
+    {
+        return this.findByWikiSite(transform, "from org.openuss.wiki.WikiSiteVersion as f where f.wikiSite = :wikiSite", wikiSite);
+    }
 
 }

@@ -167,8 +167,12 @@ public class WikiServiceImpl
     protected java.util.List handleFindWikiSiteVersionsByWikiSite(java.lang.Long wikiSiteId)
         throws java.lang.Exception
     {
-        // @todo implement protected java.util.List handleFindWikiSiteVersionsByWikiSite(java.lang.Long wikiSiteId)
-        return null;
+    	Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!");
+		WikiSite wikiSite = getWikiSiteDao().load(wikiSiteId);
+		Validate.notNull(wikiSite, "No course found for courseId:" + wikiSiteId);
+		
+		List<WikiSiteVersionInfo> result = getWikiSiteVersionDao().findByWikiSite(wikiSite);
+		return result;
     }
 
     /**

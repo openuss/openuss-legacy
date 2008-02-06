@@ -1,12 +1,15 @@
 package org.openuss.web.wiki;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.documents.FileInfo;
+import org.openuss.documents.FolderEntryInfo;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
@@ -20,6 +23,8 @@ public class WikiVersionPage extends AbstractWikiPage{
 	private static final Logger logger = Logger.getLogger(WikiVersionPage.class);
 	
 	WikiDataProvider data = new WikiDataProvider();
+	
+	private List<WikiSiteVersionInfo> entries;
 	
 	@Override
 	@Prerender
@@ -55,29 +60,47 @@ public class WikiVersionPage extends AbstractWikiPage{
 	
 	}
 	
+	private List<WikiSiteVersionInfo> loadWikiSiteVersions() {
+		if (entries == null) {
+			entries = wikiService.findWikiSiteVersionsByWikiSite(this.siteInfo.getId());
+		}
+		return entries;
+	}
+	
 	private class WikiDataProvider extends AbstractPagedTable<WikiSiteVersionInfo> {
 
+		private static final long serialVersionUID = -1886479086904372812L;
+		
+		private DataPage<WikiSiteVersionInfo> page;
+		
 		@Override
 		public DataPage<WikiSiteVersionInfo> getDataPage(int startRow,
 				int pageSize) {
-			// TODO Auto-generated method stub
-			return null;
+			if (page == null) {
+				List<WikiSiteVersionInfo> entries = loadWikiSiteVersions();
+				//sort(entries);
+				page = new DataPage<WikiSiteVersionInfo>(entries.size(), 0, entries);
+			}
+			return page;
 		}
 		
 	}
 	
-	public String save() {
-		this.siteVersionInfo.setId(null);
-		this.siteVersionInfo.setWikiSiteId(this.siteInfo.getId());
-		this.siteVersionInfo.setCreationDate(new Date());
-		this.siteVersionInfo.setUserId(user.getId());
-		getWikiService().createWikiSiteVersion(this.siteVersionInfo);
-		
-		return Constants.WIKI_MAIN_PAGE;
+	
+	public WikiDataProvider getVersionData() {
+		return data;
 	}
 	
 	public String overview() {
 		return Constants.WIKI_OVERVIEW;
+	}
+	
+	public String showWikiVersion(){
+		return null;
+	}
+	
+	public String editWikiVersion() {
+		return null;
 	}
 	
 }
