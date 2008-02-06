@@ -21,8 +21,8 @@ import org.openuss.lecture.CourseMemberType;
 import org.openuss.web.Constants;
 
 /**
- * 
- * @author Ingo Dueppe
+ *
+ * @author Lutz D. Kramer
  * 
  */
 @Bean(name = "views$secured$course$main", scope = Scope.REQUEST)

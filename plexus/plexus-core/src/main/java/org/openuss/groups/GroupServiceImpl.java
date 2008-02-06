@@ -13,10 +13,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
-import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @see org.openuss.groups.GroupService
@@ -39,7 +37,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupService#acceptAspirant(java.lang.Long)
+	 * @see org.openuss.groups.GroupService#acceptAspirant(Long)
 	 */
 	protected void handleAcceptAspirant(Long memberId) throws Exception {
 		GroupMember member = getGroupMemberDao().load(memberId);
@@ -57,7 +55,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupService#rejectAspirant(java.lang.Long)
+	 * @see org.openuss.groups.GroupService#rejectAspirant(Long)
 	 */
 	protected void handleRejectAspirant(Long memberId) throws Exception {
 		GroupMember member = getGroupMemberDao().load(memberId);
@@ -109,10 +107,10 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#addModerator(org.openuss.groups.GroupInfo,
 	 *      org.openuss.security.UserInfo)
 	 */
-	protected void handleAddModerator(GroupInfo group, UserInfo user)
+	protected void handleAddModerator(GroupInfo group, User user)
 			throws Exception {
 		GroupMember aspirant = retrieveCourseMember(getGroupsDao()
-				.groupInfoToEntity(group), getUserDao().userInfoToEntity(user));
+				.groupInfoToEntity(group), user);
 		aspirant.setMemberType(GroupMemberType.MODERATOR);
 		persistGroupMember(aspirant);
 	}
@@ -121,10 +119,10 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#addAspirant(org.openuss.groups.GroupInfo,
 	 *      org.openuss.security.UserInfo)
 	 */
-	protected void handleAddAspirant(GroupInfo group, UserInfo user)
+	protected void handleAddAspirant(GroupInfo group, User user)
 			throws Exception {
 		GroupMember aspirant = retrieveCourseMember(getGroupsDao()
-				.groupInfoToEntity(group), getUserDao().userInfoToEntity(user));
+				.groupInfoToEntity(group), user);
 		aspirant.setMemberType(GroupMemberType.ASPIRANT);
 		persistGroupMember(aspirant);
 	}
@@ -133,20 +131,19 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#addMember(org.openuss.groups.GroupInfo,
 	 *      org.openuss.security.UserInfo)
 	 */
-	protected void handleAddMember(GroupInfo group, UserInfo user)
-			throws Exception {
+	protected void handleAddMember(GroupInfo group, User user) throws Exception {
 		GroupMember aspirant = retrieveCourseMember(getGroupsDao()
-				.groupInfoToEntity(group), getUserDao().userInfoToEntity(user));
+				.groupInfoToEntity(group), user);
 		aspirant.setMemberType(GroupMemberType.MEMBER);
 		persistGroupMember(aspirant);
 	}
 
 	/**
 	 * @see org.openuss.groups.GroupService#addUserByPassword(java.lang.String,
-	 *      org.openuss.groups.GroupInfo, org.openuss.security.UserInfo)
+	 *      org.openuss.groups.GroupInfo, org.openuss.security.User)
 	 */
 	protected void handleAddUserByPassword(String password, GroupInfo group,
-			UserInfo user) throws Exception {
+			User user) throws Exception {
 		Groups originalGroup = getGroupsDao().groupInfoToEntity(group);
 		if (originalGroup.getAccessType() == org.openuss.groups.AccessType.PASSWORD
 				&& originalGroup.isPasswordCorrect(password)) {
@@ -158,7 +155,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupService#getGroupInfo(java.lang.Long)
+	 * @see org.openuss.groups.GroupService#getGroupInfo(Long)
 	 */
 	protected GroupInfo handleGetGroupInfo(Long groupId) throws Exception {
 		Validate.notNull(groupId, "Parameter groupId must not be null!");
@@ -168,13 +165,13 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
 	/**
 	 * @see org.openuss.groups.GroupService#getMemberInfo(org.openuss.groups.GroupInfo,
-	 *      org.openuss.security.UserInfo)
+	 *      org.openuss.security.User)
 	 */
-	protected GroupMemberInfo handleGetMemberInfo(GroupInfo group, UserInfo user)
+	protected GroupMemberInfo handleGetMemberInfo(GroupInfo group, User user)
 			throws Exception {
 		return (GroupMemberInfo) getGroupMemberDao().findByUserAndGroup(
 				GroupMemberDao.TRANSFORM_GROUPMEMBERINFO,
-				getUserDao().userInfoToEntity(user),
+				user,
 				getGroupsDao().groupInfoToEntity(group));
 	}
 
@@ -212,9 +209,10 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
 	/**
 	 * @see org.openuss.groups.GroupService#create(org.openuss.groups.GroupInfo,
-	 *      org.openuss.security.UserInfo)
+	 *      org.openuss.security.User)
 	 */
-	protected java.lang.Long handleCreate(GroupInfo group, UserInfo user)
+	//TODO - Lutz: User als Creator einfügen
+	protected Long handleCreate(GroupInfo group, User user)
 			throws Exception {
 		Validate.notNull(group, "GroupInfo cannot be null.");
 
@@ -238,7 +236,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupService#deleteGroup(java.lang.Long)
+	 * @see org.openuss.groups.GroupService#deleteGroup(Long)
 	 */
 	protected void handleDeleteGroup(Long groupId) throws Exception {
 		Validate.notNull(groupId, "GroupId cannot be null.");
@@ -256,14 +254,9 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupService#findGroups(org.openuss.security.UserInfo)
+	 * @see org.openuss.groups.GroupService#findGroups(org.openuss.security.User)
 	 */
-	protected List<GroupInfo> handleFindGroups(UserInfo userInfo)
-			throws Exception {
-		Validate.notNull(userInfo, "UserInfo cannot be null.");
-
-		// Load entity
-		User user = this.getUserDao().userInfoToEntity(userInfo);
+	protected List<GroupInfo> handleFindGroups(User user) throws Exception {
 		Validate.notNull(user, "UserInfo cannot be transformed to user.");
 
 		List<GroupMember> groupMembers = this.getGroupMemberDao().findByUser(
@@ -294,57 +287,54 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
 	/**
 	 * @see org.openuss.groups.GroupService#isModerator(org.openuss.groups.GroupInfo,
-	 *      org.openuss.security.UserInfo)
+	 *      org.openuss.security.User)
 	 */
-	protected boolean handleIsModerator(GroupInfo groupInfo, UserInfo userInfo)
+	protected boolean handleIsModerator(GroupInfo groupInfo, User user)
 			throws Exception {
-		GroupMember member = getGroupMemberDao().findByUserAndGroup(
-				getUserDao().userInfoToEntity(userInfo),
+		GroupMember member = getGroupMemberDao().findByUserAndGroup(user,
 				getGroupsDao().groupInfoToEntity(groupInfo));
 		return (member.getMemberType() == org.openuss.groups.GroupMemberType.MODERATOR);
 	}
 
 	/**
 	 * @see org.openuss.groups.GroupService#isMember(org.openuss.groups.GroupInfo,
-	 *      org.openuss.security.UserInfo)
+	 *      org.openuss.security.User)
 	 */
-	protected boolean handleIsMember(GroupInfo groupInfo, UserInfo userInfo)
+	protected boolean handleIsMember(GroupInfo groupInfo, User user)
 			throws Exception {
-		GroupMember member = getGroupMemberDao().findByUserAndGroup(
-				getUserDao().userInfoToEntity(userInfo),
+		GroupMember member = getGroupMemberDao().findByUserAndGroup(user,
 				getGroupsDao().groupInfoToEntity(groupInfo));
 		return (member.getMemberType() == org.openuss.groups.GroupMemberType.MEMBER);
 	}
 
 	/**
 	 * @see org.openuss.groups.GroupService#isCreator(org.openuss.groups.GroupInfo,
-	 *      org.openuss.security.UserInfo)
+	 *      org.openuss.security.User)
 	 */
-	protected boolean handleIsCreator(GroupInfo groupInfo, UserInfo userInfo)
+	protected boolean handleIsCreator(GroupInfo groupInfo, User user)
 			throws Exception {
-		GroupMember member = getGroupMemberDao().findByUserAndGroup(
-				getUserDao().userInfoToEntity(userInfo),
+		GroupMember member = getGroupMemberDao().findByUserAndGroup(user,
 				getGroupsDao().groupInfoToEntity(groupInfo));
 		return (member.getMemberType() == org.openuss.groups.GroupMemberType.CREATOR);
 	}
 
 	/*------------------- private methods -------------------- */
-	//TODO - Lutz: Check Permission-States with Ingo
-
+	// TODO - Lutz: Check Permission-States with Ingo
 	private void updateAccessTypePermission(Groups group) {
 		logger.debug("changing group " + group.getName() + " (" + group.getId()
 				+ ") to " + group.getAccessType());
 
-// 		getSecurityService().setPermissions(Roles.ANONYMOUS, group,
-// 		LectureAclEntry.NOTHING);
-//		if (group.getAccessType() == org.openuss.groups.AccessType.OPEN
-//				|| group.getAccessType() == org.openuss.groups.AccessType.ANONYMOUS) {
-//			getSecurityService().setPermissions(Roles.USER, group,
-//					LectureAclEntry.COURSE_PARTICIPANT);
-//		} else {
-//			getSecurityService().setPermissions(Roles.USER, group,
-//					LectureAclEntry.NOTHING);
-//		}
+		// getSecurityService().setPermissions(Roles.ANONYMOUS, group,
+		// LectureAclEntry.NOTHING);
+		// if (group.getAccessType() == org.openuss.groups.AccessType.OPEN
+		// || group.getAccessType() == org.openuss.groups.AccessType.ANONYMOUS)
+		// {
+		// getSecurityService().setPermissions(Roles.USER, group,
+		// LectureAclEntry.COURSE_PARTICIPANT);
+		// } else {
+		// getSecurityService().setPermissions(Roles.USER, group,
+		// LectureAclEntry.NOTHING);
+		// }
 	}
 
 	private GroupMember retrieveCourseMember(Groups group, User user) {
@@ -372,8 +362,8 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		participant.setMemberType(GroupMemberType.MEMBER);
 		// TODO - Lutz: LectureAclEntry.COURSE_PARTICIPANT -->
 		// GroupMemberType.MEMBER ???
-// 		getSecurityService().setPermissions(participant.getUser(),
-// 		participant.getGroup(), GroupMemberType.MEMBER.getValue());
+		// getSecurityService().setPermissions(participant.getUser(),
+		// participant.getGroup(), GroupMemberType.MEMBER.getValue());
 		persistGroupMember(participant);
 	}
 
