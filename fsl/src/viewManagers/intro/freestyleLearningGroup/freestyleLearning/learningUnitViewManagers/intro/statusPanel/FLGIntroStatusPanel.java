@@ -47,8 +47,7 @@ public class FLGIntroStatusPanel extends FSLAbstractLearningUnitViewStatusPanel 
 	            int maxSeconds = (int)(introViewEvent.maximumVideoPlayingTime % 60);
 	            int actualMin = (int)((introViewEvent.actualVideoPlayingTime+1) / 60);
 	            int actualSeconds = (int)((introViewEvent.actualVideoPlayingTime+1) % 60);
-	            setText(internationalization.getString("text.playing") + " "
-	            		+ minuteFormat.format(actualMin) + secondsFormat.format(actualSeconds)
+	            setText(minuteFormat.format(actualMin) + secondsFormat.format(actualSeconds)
 	            		+ " / " + minuteFormat.format(maxMin) + secondsFormat.format(maxSeconds));
         	}
             
