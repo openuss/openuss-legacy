@@ -13,8 +13,9 @@ import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.security.Roles;
 import org.openuss.security.User;
-import org.openuss.security.UserInfo;
+import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @see org.openuss.groups.GroupService
@@ -27,7 +28,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	/**
 	 * @see org.openuss.groups.GroupService#removeMember(long)
 	 */
-	protected void handleRemoveMember(long memberId) throws java.lang.Exception {
+	protected void handleRemoveMember(long memberId) throws Exception {
 		GroupMember member = getGroupMemberDao().load(memberId);
 		if (member != null) {
 			getSecurityService().removePermission(member.getUser(),
@@ -211,7 +212,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#create(org.openuss.groups.GroupInfo,
 	 *      org.openuss.security.User)
 	 */
-	//TODO - Lutz: User als Creator einfügen
 	protected Long handleCreate(GroupInfo group, User user)
 			throws Exception {
 		Validate.notNull(group, "GroupInfo cannot be null.");
@@ -229,6 +229,11 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
 		// Set Security
 		this.getSecurityService().createObjectIdentity(groupEntity, null);
+		
+		// ADD User as Creator
+		GroupMember creater = retrieveCourseMember(getGroupsDao().groupInfoToEntity(group), user);
+		creater.setMemberType(GroupMemberType.CREATOR);
+		persistGroupMember(creater);
 
 		updateAccessTypePermission(groupEntity);
 
@@ -319,22 +324,10 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	}
 
 	/*------------------- private methods -------------------- */
-	// TODO - Lutz: Check Permission-States with Ingo
 	private void updateAccessTypePermission(Groups group) {
-		logger.debug("changing group " + group.getName() + " (" + group.getId()
-				+ ") to " + group.getAccessType());
-
-		// getSecurityService().setPermissions(Roles.ANONYMOUS, group,
-		// LectureAclEntry.NOTHING);
-		// if (group.getAccessType() == org.openuss.groups.AccessType.OPEN
-		// || group.getAccessType() == org.openuss.groups.AccessType.ANONYMOUS)
-		// {
-		// getSecurityService().setPermissions(Roles.USER, group,
-		// LectureAclEntry.COURSE_PARTICIPANT);
-		// } else {
-		// getSecurityService().setPermissions(Roles.USER, group,
-		// LectureAclEntry.NOTHING);
-		// }
+		logger.debug("changing group " + group.getName() + " (" + group.getId() + ") to " + group.getAccessType());
+		getSecurityService().setPermissions(Roles.ANONYMOUS, group, LectureAclEntry.NOTHING);
+		getSecurityService().setPermissions(Roles.USER, group, LectureAclEntry.NOTHING);
 	}
 
 	private GroupMember retrieveCourseMember(Groups group, User user) {
@@ -360,10 +353,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
 	private void persistParticipantWithPermissions(GroupMember participant) {
 		participant.setMemberType(GroupMemberType.MEMBER);
-		// TODO - Lutz: LectureAclEntry.COURSE_PARTICIPANT -->
-		// GroupMemberType.MEMBER ???
-		// getSecurityService().setPermissions(participant.getUser(),
-		// participant.getGroup(), GroupMemberType.MEMBER.getValue());
+		getSecurityService().setPermissions(participant.getUser(),participant.getGroup(), LectureAclEntry.COURSE_PARTICIPANT);
 		persistGroupMember(participant);
 	}
 
