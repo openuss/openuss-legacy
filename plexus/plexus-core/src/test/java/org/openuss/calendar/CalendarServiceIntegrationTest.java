@@ -95,7 +95,7 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 	
 
 	
-	public void testCalendarAdministration() {
+	public void testCalendarAdministrationSingle() {
 		/* Complete Test 1)
 	 	 * 1 - createUserCalendar / createCalendar for userInfo object
 		 * 2 - createAppointment
@@ -103,12 +103,6 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		 * 4 - updateAppointment
 		 * 5 - getAppointment
 		 * 6 - deleteAppointment
-		 * 7 - createSerialAppointment
-		 * 8 - getSerialAppointments / getAllUserAppointments -> not null
-		 * 9 - updateSerialAppointment
-		 *10 - getAppointment
-		 *11 - deleteSerialAppointment
-		 *12 - getSerialAppointments / getAllUserAppointments -> null
 		 *13 - deleteCalendar
 		 *     End :)
 		 */ 
@@ -142,10 +136,41 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 			List<AppointmentInfo> appointments = calendarService.getAllUserAppointments(userInfo);
 			assertNotNull(appointments);
 			assertEquals(appointments.get(0).getId(), appointmentInfos.get(0).getId());
+			singleAppointment = appointmentInfos.get(0);
+			assertEquals("Description", appointments.get(0).getDescription());
+			//update appointment
+			singleAppointment.setDescription("new Description");
+			calendarService.updateAppointment(singleAppointment, calendar);
+			appointments = calendarService.getAllUserAppointments(userInfo);
+			assertNotNull(appointments);
+			assertEquals(appointments.get(0).getId(), appointmentInfos.get(0).getId());
+			assertEquals("new Description", appointments.get(0).getDescription());
+			//delete appointment
+			calendarService.deleteAppointment(singleAppointment, calendar);
+			appointments = calendarService.getAllUserAppointments(userInfo);
+			appointmentInfos = calendarService.getSingleAppointments(calendar);
+			assertEquals(0, appointments.size());
+			assertEquals(0, appointmentInfos.size());
+			//delete calendar
+//			calendarService.deleteCalendar(calendar);
+//			calendars = calendarService.getUserCalendars(userInfo);
+//			assertEquals(0, calendars.size());
 		} catch (CalendarApplicationException e) {
 			fail();
 		}
 
+	}
+	
+	public void testCalendarAdministrationSerial(){
+		/* 
+		 * Complete test 1.5
+		 * 7 - createSerialAppointment
+		 * 8 - getSerialAppointments / getAllUserAppointments -> not null
+		 * 9 - updateSerialAppointment
+		 *10 - getAppointment
+		 *11 - deleteSerialAppointment
+		 *12 - getSerialAppointments / getAllUserAppointments -> null
+		 */
 	}
 	
 	public void testSubscription() {

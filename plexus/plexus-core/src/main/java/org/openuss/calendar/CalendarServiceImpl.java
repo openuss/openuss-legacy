@@ -93,11 +93,26 @@ public class CalendarServiceImpl
     /**
      * @see org.openuss.calendar.CalendarService#updateAppointment(org.openuss.calendar.AppointmentInfo, org.openuss.calendar.CalendarInfo)
      */
-    protected void handleUpdateAppointment(org.openuss.calendar.AppointmentInfo singleAppointment, org.openuss.calendar.CalendarInfo calendar)
+    protected void handleUpdateAppointment(org.openuss.calendar.AppointmentInfo newApp, org.openuss.calendar.CalendarInfo calendar)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleUpdateAppointment(org.openuss.calendar.AppointmentInfo singleAppointment, org.openuss.calendar.CalendarInfo calendar)
-        throw new java.lang.UnsupportedOperationException("org.openuss.calendar.CalendarService.handleUpdateAppointment(org.openuss.calendar.AppointmentInfo singleAppointment, org.openuss.calendar.CalendarInfo calendar) Not implemented!");
+    	if(newApp.getId()==null)
+    		throw new Exception("Please add Appointment first");
+    	Appointment app = getAppointmentDao().load(newApp.getId());
+    	if (app.getAssignedCalendar().getId()!=calendar.getId())
+    		throw new Exception("Calendar/Appointment do not fit");
+    	if(newApp.getAppointmentType()!=null)
+    		app.setAppointmentType(getAppointmentTypeDao().load(newApp.getAppointmentType().getId()));
+    	if(newApp.getCreator()!=null)
+    		app.setCreator(getUserDao().load(newApp.getCreator().getId()));
+    	app.setDescription(newApp.getDescription());
+    	app.setEndtime(newApp.getEndtime());
+    	app.setStarttime(newApp.getStarttime());
+    	app.setLocation(newApp.getLocation());
+    	app.setSubject(newApp.getSubject());
+    	app.setTimezone(newApp.getTimeZone());
+    	//TODO check whether calendar.lastUpdate should be updated!
+    	getAppointmentDao().update(app);
     }
 
     /**
@@ -106,8 +121,19 @@ public class CalendarServiceImpl
     protected void handleDeleteAppointment(org.openuss.calendar.AppointmentInfo singleAppointment, org.openuss.calendar.CalendarInfo calendar)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleDeleteAppointment(org.openuss.calendar.AppointmentInfo singleAppointment, org.openuss.calendar.CalendarInfo calendar)
-        throw new java.lang.UnsupportedOperationException("org.openuss.calendar.CalendarService.handleDeleteAppointment(org.openuss.calendar.AppointmentInfo singleAppointment, org.openuss.calendar.CalendarInfo calendar) Not implemented!");
+    	if(singleAppointment.getId()==null)
+    		throw new Exception("Appointment does not exist");
+    	Appointment app = getAppointmentDao().load(singleAppointment.getId());
+    	if(app.getAssignedCalendar().getId()!=calendar.getId())
+    		throw new Exception("Calendar/Appointment do not fit");
+    	if(app.isIsSerial())
+    		throw new Exception("Cannot delete appointment, is part of a serial appointment");
+    	if(app instanceof SerialAppointment)
+    		throw new Exception("Cannot delete appointment, is part of a serial appointment");
+    	app.setAssignedCalendar(null);
+    	Calendar cal = getCalendarDao().load(calendar.getId());
+    	cal.getSingleAppointments().remove(app);
+    	getAppointmentDao().remove(app);
     }
 
     /**

@@ -20,7 +20,7 @@ public class AppointmentImpl
     /**
      * @see org.openuss.calendar.Appointment#getCalendaType()
      */
-    public java.lang.String getCalendaType()
+    public java.lang.String getCalendarType()
     {
         // @todo implement public java.lang.String getCalendaType()
         return null;
