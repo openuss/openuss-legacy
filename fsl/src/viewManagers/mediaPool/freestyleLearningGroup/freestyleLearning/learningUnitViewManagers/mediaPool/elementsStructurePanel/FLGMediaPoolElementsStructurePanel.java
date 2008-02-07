@@ -78,25 +78,46 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
         String mediaPoolElementID = mediaPoolElement.getId();
         if (!mediaPoolElement.getFolder()) {
             mediaPoolElement.setType(selectedMediaType);
-            File sourceMediaFile = learningUnitViewNewAndModifyElementDialogViewSpecificPane.getMediaFile();
-            String sourceMediaFileExtension = learningUnitViewNewAndModifyElementDialogViewSpecificPane.getMediaFileExtension();
-            File destinationMediaFile = learningUnitViewElementsManager.createNewFileForElementsExternalData(selectedMediaType,
-            sourceMediaFileExtension, mediaPoolElementID);
-            if (sourceMediaFile != null && !sourceMediaFile.getName().equals(mediaPoolElement.getMediaFileName())) {
-                FLGUIUtilities.startLongLastingOperation();
-                FLGFileUtility.copyFile(sourceMediaFile, destinationMediaFile);
-                mediaPoolElement.setMediaFileName(destinationMediaFile.getName());
-                FLGUIUtilities.stopLongLastingOperation();
+            
+            if(selectedMediaType.equals("ppt")) {
+            	File sourceMediaFile = learningUnitViewNewAndModifyElementDialogViewSpecificPane.getMediaFile();
+            	File destinationMediaFile = null;
+            	if(learningUnitViewNewAndModifyElementDialogViewSpecificPane.getFinalizePPTFlag()) {
+            		// convert ppt in pps file
+                    String sourceMediaFileExtension = ".pps";
+                    destinationMediaFile = learningUnitViewElementsManager.createNewFileForElementsExternalData(selectedMediaType,
+                    		sourceMediaFileExtension, mediaPoolElementID);
+            	} else {
+            		// convert pps in ppt file
+                    String sourceMediaFileExtension = ".ppt";
+                    destinationMediaFile = learningUnitViewElementsManager.createNewFileForElementsExternalData(selectedMediaType,
+                    		sourceMediaFileExtension, mediaPoolElementID);
+            	}
+                if (sourceMediaFile != null) {
+                    FLGUIUtilities.startLongLastingOperation();
+                    FLGFileUtility.copyFile(sourceMediaFile, destinationMediaFile);
+                    mediaPoolElement.setMediaFileName(destinationMediaFile.getName());
+                    FLGUIUtilities.stopLongLastingOperation();
+                }
+            } else{
+	            File sourceMediaFile = learningUnitViewNewAndModifyElementDialogViewSpecificPane.getMediaFile();
+	            String sourceMediaFileExtension = learningUnitViewNewAndModifyElementDialogViewSpecificPane.getMediaFileExtension();
+	            File destinationMediaFile = learningUnitViewElementsManager.createNewFileForElementsExternalData(selectedMediaType,
+	            		sourceMediaFileExtension, mediaPoolElementID);
+	            if (sourceMediaFile != null && !sourceMediaFile.getName().equals(mediaPoolElement.getMediaFileName())) {
+	                FLGUIUtilities.startLongLastingOperation();
+	                FLGFileUtility.copyFile(sourceMediaFile, destinationMediaFile);
+	                mediaPoolElement.setMediaFileName(destinationMediaFile.getName());
+	                FLGUIUtilities.stopLongLastingOperation();
+	            }
             }
-        }
-        else {
+        } else {
             mediaPoolElement.setType("folder");
             mediaPoolElement.setMediaFileName("");
         }
     }
     
     /**
-     * Carsten Fiedler modified 21.08.2006
      * Creates LearningUnitViewElement.
      * @param <code>String</code> id
      * @param <code>String</code> parentId
@@ -118,14 +139,38 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
         else {
             if (!folderImport) {
                 newElement.setType(selectedMediaType);
-                final File sourceMediaFile = learningUnitViewNewAndModifyElementDialogViewSpecificPane.getMediaFile();
-                String sourceMediaFileExtension = learningUnitViewNewAndModifyElementDialogViewSpecificPane.getMediaFileExtension();
-                final File destinationMediaFile = learningUnitViewElementsManager.createNewFileForElementsExternalData(selectedMediaType,
-                sourceMediaFileExtension, id);
-                FLGUIUtilities.startLongLastingOperation();
-                FLGFileUtility.copyFile(sourceMediaFile, destinationMediaFile);
-                newElement.setMediaFileName(destinationMediaFile.getName());
-                FLGUIUtilities.stopLongLastingOperation();
+                if(selectedMediaType.equals("ppt")) {
+                	if(learningUnitViewNewAndModifyElementDialogViewSpecificPane.getFinalizePPTFlag()) {
+                		// convert ppt in pps file
+                		final File sourceMediaFile = learningUnitViewNewAndModifyElementDialogViewSpecificPane.getMediaFile();
+                		String sourceMediaFileExtension = ".pps";
+                        final File destinationMediaFile = learningUnitViewElementsManager.createNewFileForElementsExternalData(selectedMediaType,
+                                sourceMediaFileExtension, id);
+                        FLGUIUtilities.startLongLastingOperation();
+                        FLGFileUtility.copyFile(sourceMediaFile, destinationMediaFile);
+                        newElement.setMediaFileName(destinationMediaFile.getName());
+                        FLGUIUtilities.stopLongLastingOperation();
+                	} else {
+                		// convert pps in ppt file
+                		final File sourceMediaFile = learningUnitViewNewAndModifyElementDialogViewSpecificPane.getMediaFile();
+                		String sourceMediaFileExtension = ".ppt";
+                        final File destinationMediaFile = learningUnitViewElementsManager.createNewFileForElementsExternalData(selectedMediaType,
+                                sourceMediaFileExtension, id);
+                        FLGUIUtilities.startLongLastingOperation();
+                        FLGFileUtility.copyFile(sourceMediaFile, destinationMediaFile);
+                        newElement.setMediaFileName(destinationMediaFile.getName());
+                        FLGUIUtilities.stopLongLastingOperation();
+                	}
+                } else {
+                	final File sourceMediaFile = learningUnitViewNewAndModifyElementDialogViewSpecificPane.getMediaFile();
+                    String sourceMediaFileExtension = learningUnitViewNewAndModifyElementDialogViewSpecificPane.getMediaFileExtension();
+                    final File destinationMediaFile = learningUnitViewElementsManager.createNewFileForElementsExternalData(selectedMediaType,
+                    		sourceMediaFileExtension, id);
+                    FLGUIUtilities.startLongLastingOperation();
+                    FLGFileUtility.copyFile(sourceMediaFile, destinationMediaFile);
+                    newElement.setMediaFileName(destinationMediaFile.getName());
+                    FLGUIUtilities.stopLongLastingOperation();
+                }
             }
         }
         return newElement;
@@ -136,6 +181,7 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
         private JButton fileSelectButton;
         private JTextField fileSelectTextField;
         private JComboBox combo_mediaType;
+        private JCheckBox checkbox_finalizePPT;
         private File mediaFile;
         private File lastSelectedDir;
         private String mediaFileExtension;
@@ -165,14 +211,24 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
             add(fileSelectLabel, FLGColumnLayout.LEFT);
             add(fileSelectTextField, FLGColumnLayout.LEFT);
             add(fileSelectButton, FLGColumnLayout.LEFTEND);
+            checkbox_finalizePPT = new JCheckBox(internationalization.getString("checkBox.finalizePPT"));
+            checkbox_finalizePPT.setEnabled(false);
             combo_mediaType.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     selectedMediaType = mediaTypes[combo_mediaType.getSelectedIndex()];
+                    if(selectedMediaType.equals("ppt")) {
+                    	// activate finalize ppt checkbox
+                    	checkbox_finalizePPT.setEnabled(true);
+                    } else {
+                    	checkbox_finalizePPT.setEnabled(false);
+                    }
                 }
             });
             add(new JLabel(" "), FLGColumnLayout.LEFT);
             add(combo_mediaType, FLGColumnLayout.LEFTEND);
+            add(new JLabel(" "), FLGColumnLayout.LEFT);
+            add(checkbox_finalizePPT, FLGColumnLayout.LEFTEND);
             combo_mediaType.setSelectedIndex(DEFAULT_TYPE);
             selectedMediaType = mediaTypes[DEFAULT_TYPE];
         }
@@ -180,7 +236,6 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
         /**
          * Enables Dialog components.
          * @param <code>boolean</code> enabled
-         * Carsten Fiedler modified 21.08.2006
          */
         public void setEnabled(boolean enabled) {
             fileSelectTextField.setEnabled(enabled);
@@ -215,7 +270,24 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
                     for (int i = 0; i < mediaTypes.length; i++) {
                         if (mediaTypes[i].equals(mediaType)) {
                             combo_mediaType.setSelectedIndex(i);
+                            if(mediaType.equals("ppt")) {
+                            	String mediaFileName = ((FLGMediaPoolElement)learningUnitViewElement).getMediaFileName();
+                            	StringBuffer mediaFileNameBuffer = new StringBuffer(mediaFileName);
+                            	StringBuffer mediaFileExtension = new StringBuffer();
+                                for (int j = 3; j >= 0; j--) {
+                                	mediaFileExtension.append(mediaFileNameBuffer.charAt(mediaFileName.length()-j-1));
+                                }
+                                if(mediaFileExtension.toString().equals(".pps")) {
+                                  	// activate finalize ppt checkbox
+                                	checkbox_finalizePPT.setSelected(true);
+                                } else {	
+                                	checkbox_finalizePPT.setSelected(false);
+                                }
+                            }
                             break;
+                        } else{
+                        	checkbox_finalizePPT.setEnabled(false);
+                        	checkbox_finalizePPT.setSelected(false);
                         }
                     }
                 }
@@ -232,6 +304,10 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
         
         public File getMediaFile() {
             return new File(fileSelectTextField.getText());
+        }
+        
+        public boolean getFinalizePPTFlag() {
+        	return checkbox_finalizePPT.isSelected();
         }
         
         public void showFileChooserDialog() {
