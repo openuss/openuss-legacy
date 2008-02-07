@@ -7,7 +7,9 @@ package org.openuss.calendar;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import org.openuss.lecture.*;
 
 import org.openuss.TestUtility;
 import org.openuss.foundation.DefaultDomainObject;
@@ -29,6 +31,22 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 	
 	public UserDao userDao;
 	
+	public CourseTypeDao courseTypeDao;
+	
+	public CourseDao courseDao;
+	
+	public PeriodDao periodDao;
+	
+	public AppointmentTypeDao appointmentTypeDao;
+	
+	public CourseDao getCourseDao() {
+		return courseDao;
+	}
+
+	public void setCourseDao(CourseDao courseDao) {
+		this.courseDao = courseDao;
+	}
+
 	private UserInfo getTestUserInfo() {
 		DomainObject domainObjectUser = generateDomainObject();
 		
@@ -43,7 +61,7 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		return userInfo;
 	}
 	
-	private AppointmentInfo getTestAppointmentInfo() {
+	private AppointmentInfo getTestAppointmentInfo(AppointmentType appType, User user) {
 		
 		// Startzeit erzeugen
 		Date start = new Date();
@@ -57,8 +75,12 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		appInfo.setLocation("Location");
 		appInfo.setStarttime(new Timestamp(start.getTime()));
 		appInfo.setEndtime(new Timestamp(end.getTime()));
+		appInfo.setTimeZone("fdfd");
+		appInfo.setAppointmentType(getAppointmentTypeDao().toAppointmentTypeInfo(appType));
+		appInfo.setCreator(userDao.toUserInfo(user));
 		
 		// TODO isSerial setzen beim Erzeugen eines Termins
+		appInfo.setIsSerial(false);
 		
 		return appInfo;
 	}
@@ -93,31 +115,33 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		
 		//create user
 		User user = userDao.create("user", "pwd", "e@ma.il", true, false, false, false, new Date());
-		System.out.println("User: " + user.getId());
 		UserInfo userInfo = (UserInfo)userDao.load(userDao.TRANSFORM_USERINFO, user.getId());
-		User rasdf = userDao.load(userInfo.getId());
-		System.out.println("User3: " + rasdf.getId());
-
+		
+		//generate Appointment Type
+		AppointmentType standardAppointmentType = getAppointmentTypeDao().create("standard");
 		
 		//create calendar
 		try {
 			calendarService.createUserCalendar(userInfo);
-
 			//get calendar from user
 			List<Calendar> calendars = calendarService.getUserCalendars(userInfo);
 			assertNotNull(calendars);
 			assertEquals(1, calendars.size());
+			System.out.println("cal-id: "+calendars.get(0).getId());
 			CalendarInfo calendar = (CalendarInfo)calendarDao.load(calendarDao.TRANSFORM_CALENDARINFO, calendars.get(0).getId());
 			assertNotNull(calendar);
 			assertEquals(calendars.get(0).getId(), calendar.getId());
 			//create appointment
-			AppointmentInfo singleAppointment = getTestAppointmentInfo();
+			AppointmentInfo singleAppointment = getTestAppointmentInfo(standardAppointmentType, user);
 			assertNotNull(singleAppointment);
 			calendarService.createAppointment(singleAppointment, calendar);
+			//get appointments from calendar
+			List<AppointmentInfo> appointmentInfos = calendarService.getSingleAppointments(calendar);
+			assertEquals(1, appointmentInfos.size());
 			//get appointments from user
-			List<Appointment> appointments = calendarService.getAllUserAppointments(userInfo);
+			List<AppointmentInfo> appointments = calendarService.getAllUserAppointments(userInfo);
 			assertNotNull(appointments);
-			assertEquals(appointments.get(0).getId(), singleAppointment.getId());
+			assertEquals(appointments.get(0).getId(), appointmentInfos.get(0).getId());
 		} catch (CalendarApplicationException e) {
 			fail();
 		}
@@ -146,6 +170,34 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 		 */
 		
 	}
+	
+	public void testCourseCalendar() {
+		AppointmentType standardAppointmentType = getAppointmentTypeDao().create("standard");
+		User user = userDao.create("user", "pwd", "e@ma.il", true, false, false, false, new Date());
+		CourseType courseType = getCourseTypeDao().create("long name", "name", "description");
+		Period period = getPeriodDao().create("always", "always", new Date(2005), new Date(2007), true);
+		Course course = getCourseDao().create("test", org.openuss.lecture.AccessType.OPEN, "pwd", new Boolean(false), new Boolean(false), new Boolean(false), new Boolean(false), new Boolean(false), new Boolean(false), new Boolean(false), "Descr", true, new Boolean(false), new Boolean(false));
+		course.setCourseType(courseType);
+		course.setPeriod(period);
+		CourseInfo courseInfo = getCourseDao().toCourseInfo(course);
+		try {
+			calendarService.createCalendar(courseInfo);
+			CalendarInfo calendarInfo = calendarService.getCalendar(courseInfo);
+			assertNotNull(calendarInfo);
+			//create appointment
+			AppointmentInfo singleAppointmentInfo = getTestAppointmentInfo(standardAppointmentType, user);
+			assertNotNull(singleAppointmentInfo);
+			calendarService.createAppointment(singleAppointmentInfo, calendarInfo);
+			List<AppointmentInfo> appointmentInfos = calendarService.getSingleAppointments(calendarInfo);
+			assertEquals(1, appointmentInfos.size());
+			
+		} catch (CalendarApplicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail();
+		}
+		
+	}
 
 	
 	public SecurityService getSecurityService() {
@@ -163,5 +215,28 @@ public class CalendarServiceIntegrationTest extends CalendarServiceIntegrationTe
 	public void setCalendarDao(CalendarDao calendarDao) {
 		this.calendarDao = calendarDao;
 	}
+
+	public CourseTypeDao getCourseTypeDao() {
+		return courseTypeDao;
+	}
+
+	public void setCourseTypeDao(CourseTypeDao courseTypeDao) {
+		this.courseTypeDao = courseTypeDao;
+	}
+
+	public PeriodDao getPeriodDao() {
+		return periodDao;
+	}
+
+	public void setPeriodDao(PeriodDao periodDao) {
+		this.periodDao = periodDao;
+	}
+
+	public void setAppointmentTypeDao(AppointmentTypeDao appointmentTypeDao) {
+		this.appointmentTypeDao = appointmentTypeDao;
+	}
 	
+	public AppointmentTypeDao getAppointmentTypeDao(){
+		return this.appointmentTypeDao;
+	}
 }

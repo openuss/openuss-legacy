@@ -22,8 +22,8 @@ public class CalendarImpl
      */
     public void addAppointment(org.openuss.calendar.Appointment appointment)
     {
-        // @todo implement public void addAppointment(org.openuss.calendar.Appointment appointment)
-        throw new java.lang.UnsupportedOperationException("org.openuss.calendar.Calendar.addAppointment(org.openuss.calendar.Appointment appointment) Not implemented!");
+    		super.getSingleAppointments().add(appointment);
+    		appointment.setAssigendCalendar(this);
     }
 
     /**

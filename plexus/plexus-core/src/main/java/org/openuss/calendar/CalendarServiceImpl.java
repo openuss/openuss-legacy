@@ -5,7 +5,9 @@
  */
 package org.openuss.calendar;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.sql.Timestamp;
 
 import org.openuss.groups.GroupInfo;
@@ -23,7 +25,6 @@ public class CalendarServiceImpl
     protected void handleCreateUserCalendar(org.openuss.security.UserInfo userInfo)
         throws java.lang.Exception
     {
-    	System.out.println("UI: "+userInfo.getId());
     	super.createCalendar(userInfo);    	
     }
 
@@ -34,10 +35,7 @@ public class CalendarServiceImpl
         throws java.lang.Exception
     {
         
-    	// TODO check wheather the calendar was already created for this domain object
-    	
-    	// @todo implement protected void handleCreateCalendar(org.openuss.foundation.DomainObject domainObject)
-        
+    	// TODO check wheather the calendar was already created for this domain object 
     	Calendar cal = Calendar.Factory.newInstance();
     	CalendarType calType;
     	Date date = new Date();
@@ -50,18 +48,16 @@ public class CalendarServiceImpl
     	} else if (domainObject instanceof UserInfo) {
     		calType = CalendarType.user_calendar;
     		//set owner
-    		System.out.println("dO: " + domainObject.getId());
-    		System.out.println(getUserDao().load(domainObject.getId()).getUsername());
     		User owner = getUserDao().load(domainObject.getId());
     		cal.setCalendarOwner(owner);
     		owner.getCalendars().add(cal);
     	} else {
     		throw new CalendarApplicationException ("DomainObject is not valid for calendar type.");
     	}
-    		
-    	  
+    	
         cal.setLastUpdate(new Timestamp(date.getTime()));
         cal.setCalendarType(calType);
+        cal.setDomainIdentifier(domainObject.getId());
         getCalendarDao().create(cal);
     	
     }
@@ -82,11 +78,16 @@ public class CalendarServiceImpl
     /**
      * @see org.openuss.calendar.CalendarService#createAppointment(org.openuss.calendar.AppointmentInfo, org.openuss.calendar.CalendarInfo)
      */
-    protected void handleCreateAppointment(org.openuss.calendar.AppointmentInfo singleAppointment, org.openuss.calendar.CalendarInfo calendar)
+    protected void handleCreateAppointment(org.openuss.calendar.AppointmentInfo appointmentInfo, org.openuss.calendar.CalendarInfo calendarInfo)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleCreateAppointment(org.openuss.calendar.AppointmentInfo singleAppointment, org.openuss.calendar.CalendarInfo calendar)
-        throw new java.lang.UnsupportedOperationException("org.openuss.calendar.CalendarService.handleCreateAppointment(org.openuss.calendar.AppointmentInfo singleAppointment, org.openuss.calendar.CalendarInfo calendar) Not implemented!");
+    	Calendar calendar = getCalendarDao().load(calendarInfo.getId());
+    	User creator = null;
+    	if(appointmentInfo.getCreator()!=null){
+    		creator = getUserDao().load(appointmentInfo.getCreator().getId());
+    	}
+    	Appointment appointment = getAppointmentDao().create(getAppointmentTypeDao().load(appointmentInfo.getAppointmentType().getId()), calendar, creator, appointmentInfo.getDescription(), appointmentInfo.getEndtime(), false, appointmentInfo.getLocation(), appointmentInfo.getStarttime(), appointmentInfo.getSubject(), appointmentInfo.getTimeZone());
+    	calendar.addAppointment(appointment);
     }
 
     /**
@@ -146,18 +147,16 @@ public class CalendarServiceImpl
         throws java.lang.Exception
     {
         // @todo implement protected org.openuss.calendar.CalendarInfo handleGetCalendar(org.openuss.foundation.DomainObject domainObject)
-        return null;
+    	Calendar cal = getCalendarDao().findByDomainIdentifier(domainObject.getId());
+
+        if (cal == null) {
+        	System.out.println("calendar is null");
+        }
+        CalendarInfo calInfo = getCalendarDao().toCalendarInfo(cal);
+        
+        return calInfo;
     }
 
-    /**
-     * @see org.openuss.calendar.CalendarService#getSinlgeAppointments(org.openuss.calendar.CalendarInfo)
-     */
-    protected java.util.List handleGetSinlgeAppointments(org.openuss.calendar.CalendarInfo calendar)
-        throws java.lang.Exception
-    {
-        // @todo implement protected java.util.List handleGetSinlgeAppointments(org.openuss.calendar.CalendarInfo calendar)
-        return null;
-    }
 
     /**
      * @see org.openuss.calendar.CalendarService#getSerialAppointments(org.openuss.calendar.CalendarInfo)
@@ -175,8 +174,15 @@ public class CalendarServiceImpl
     protected java.util.List handleGetAllUserAppointments(org.openuss.security.UserInfo userInfo)
         throws java.lang.Exception
     {
-        // @todo implement protected java.util.List handleGetAllUserAppointments(org.openuss.security.UserInfo userInfo)
-        return null;
+    	User user = getUserDao().load(userInfo.getId());
+    	ArrayList appointments = new ArrayList();
+    	for(Calendar cal : user.getCalendars()){
+    		ArrayList appointmentInfos = new ArrayList();
+    		appointmentInfos.addAll(cal.getSingleAppointments());
+    		getAppointmentDao().toAppointmentInfoCollection(appointmentInfos);
+    		appointments.addAll(appointmentInfos);
+    	}
+    	return appointments;
     }
 
     /**
@@ -205,8 +211,11 @@ public class CalendarServiceImpl
     protected java.util.List handleGetUserCalendars(org.openuss.security.UserInfo userInfo)
         throws java.lang.Exception
     {
-        // @todo implement protected java.util.List handleGetUserCalendars(org.openuss.security.UserInfo userInfo)
-        return null;
+    	//@ todo check with gerrit busse what the target of getUserCalendars is!?!
+    	ArrayList cal = new ArrayList();
+    	cal.add(getCalendarDao().findByDomainIdentifier(userInfo.getId()));
+    	System.out.println(cal.get(0).getClass());
+        return cal;
     }
 
     /**
@@ -228,4 +237,14 @@ public class CalendarServiceImpl
         // @todo implement protected void handleEndSubscription(org.openuss.calendar.CalendarInfo calendarInfo, org.openuss.security.UserInfo userInfo)
         throw new java.lang.UnsupportedOperationException("org.openuss.calendar.CalendarService.handleEndSubscription(org.openuss.calendar.CalendarInfo calendarInfo, org.openuss.security.UserInfo userInfo) Not implemented!");
     }
+
+	@Override
+	protected List handleGetSingleAppointments(CalendarInfo calendar)
+			throws Exception {
+		Calendar cal = getCalendarDao().load(calendar.getId());
+		List apps = new ArrayList();
+		apps.addAll(cal.getSingleAppointments());
+		getAppointmentDao().toAppointmentInfoCollection(apps);
+		return apps;
+	}
 }
