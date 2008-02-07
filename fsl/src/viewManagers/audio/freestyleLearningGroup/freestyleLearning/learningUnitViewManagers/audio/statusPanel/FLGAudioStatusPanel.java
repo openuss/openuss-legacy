@@ -51,7 +51,7 @@ public class FLGAudioStatusPanel extends FSLAbstractLearningUnitViewStatusPanel 
         public void learningUnitViewSpecificEventOccurred(FSLLearningUnitViewEvent e) {
             FLGAudioViewEvent audioViewEvent = (FLGAudioViewEvent)e;
             if (audioViewEvent.getEventSpecificType() == FLGAudioViewEvent.AUDIO_PLAYING_TIME_PROGRESS) {
-                setText(internationalization.getString("text.playing") + " " + audioViewEvent.actualAudioPlayingTime + "/" +
+                setText(audioViewEvent.actualAudioPlayingTime + "/" +
                     audioViewEvent.maximumAudioPlayingTime + " " + internationalization.getString("text.seconds"));
             }
             if (audioViewEvent.getEventSpecificType() == FLGAudioViewEvent.AUDIO_RECORD_BUTTON_PRESSED) {
