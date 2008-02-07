@@ -71,6 +71,11 @@
 		</navigation-case>
 
 		<navigation-case>
+			<from-outcome>user_profile_vorlage</from-outcome>
+			<to-view-id>/views/secured/user/vorlage.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
 			<from-outcome>user_profile</from-outcome>
 			<to-view-id>/views/secured/user/profile.xhtml</to-view-id>
 		</navigation-case>
@@ -439,6 +444,26 @@
 			<from-outcome>institute_disable_confirmation</from-outcome>
 			<to-view-id>/views/secured/lecture/institutedisableconfirmation.xhtml</to-view-id>
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_buddylist</from-outcome>
+			<to-view-id>/views/secured/openuss4us/buddylist.xhtml</to-view-id>
+		</navigation-case>		
+
+		<navigation-case>
+			<from-outcome>openuss4us_messagecenter</from-outcome>
+			<to-view-id>/views/secured/openuss4us/messagecenter.xhtml</to-view-id>
+		</navigation-case>	
+		
+		<navigation-case>
+			<from-outcome>openuss4us_calendar</from-outcome>
+			<to-view-id>/views/secured/openuss4us/calendar.xhtml</to-view-id>
+		</navigation-case>	
+		
+		<navigation-case>
+			<from-outcome>openuss4us_groups</from-outcome>
+			<to-view-id>/views/secured/openuss4us/groups.xhtml</to-view-id>
+		</navigation-case>	
 		
 	</navigation-rule>
 	

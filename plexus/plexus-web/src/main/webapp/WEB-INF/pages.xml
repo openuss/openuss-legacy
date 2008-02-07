@@ -239,4 +239,28 @@
         <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
         <parameter name="page" value="#{currentSiteInfo.id}" converterId="javax.faces.Long"/> 
     </page>    
-</pages>
+
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            OpenUSS4US
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+    <page view-id="/views/secured/openuss4us/*">
+	<securityConstraint domainObject="#{userInfo}" permissions="#{ACL.READ}"/>
+	</page>
+	
+    <page view-id="/views/secured/openuss4us/buddylist.xhtml">
+    </page>
+    <page view-id="/views/secured/openuss4us/calendar.xhtml">
+    </page>
+    <page view-id="/views/secured/openuss4us/messagecenter.xhtml">
+    </page>
+    <page view-id="/views/secured/openuss4us/groups.xhtml">
+    </page>
+  
+    <page view-id="/views/secured/open/search.xhtml">
+    </page>
+    <page view-id="/views/secured/open/vorlage.xhtml">
+    </page>
+    
+ </pages>   
