@@ -7,6 +7,7 @@ package org.openuss.calendar;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.sql.Timestamp;
 
@@ -63,19 +64,6 @@ public class CalendarServiceImpl
     }
 
     /**
-     * @see org.openuss.calendar.CalendarService#deleteCalendar(org.openuss.calendar.CalendarInfo)
-     */
-    protected void handleDeleteCalendar(org.openuss.calendar.CalendarInfo calender)
-        throws java.lang.Exception
-    {
-        // @todo implement protected void handleDeleteCalendar(org.openuss.calendar.CalendarInfo calender)
-        
-
-        
-    	throw new java.lang.UnsupportedOperationException("org.openuss.calendar.CalendarService.handleDeleteCalendar(org.openuss.calendar.CalendarInfo calender) Not implemented!");
-    }
-
-    /**
      * @see org.openuss.calendar.CalendarService#createAppointment(org.openuss.calendar.AppointmentInfo, org.openuss.calendar.CalendarInfo)
      */
     protected void handleCreateAppointment(org.openuss.calendar.AppointmentInfo appointmentInfo, org.openuss.calendar.CalendarInfo calendarInfo)
@@ -86,7 +74,7 @@ public class CalendarServiceImpl
     	if(appointmentInfo.getCreator()!=null){
     		creator = getUserDao().load(appointmentInfo.getCreator().getId());
     	}
-    	Appointment appointment = getAppointmentDao().create(getAppointmentTypeDao().load(appointmentInfo.getAppointmentType().getId()), calendar, creator, appointmentInfo.getDescription(), appointmentInfo.getEndtime(), false, appointmentInfo.getLocation(), appointmentInfo.getStarttime(), appointmentInfo.getSubject(), appointmentInfo.getTimeZone());
+    	Appointment appointment = getAppointmentDao().create(getAppointmentTypeDao().load(appointmentInfo.getAppointmentType().getId()), calendar, creator, appointmentInfo.getDescription(), appointmentInfo.getEndtime(), appointmentInfo.getLocation(), false, appointmentInfo.getStarttime(), appointmentInfo.getSubject());
     	calendar.addAppointment(appointment);
     }
 
@@ -110,8 +98,7 @@ public class CalendarServiceImpl
     	app.setStarttime(newApp.getStarttime());
     	app.setLocation(newApp.getLocation());
     	app.setSubject(newApp.getSubject());
-    	app.setTimezone(newApp.getTimeZone());
-    	//TODO check whether calendar.lastUpdate should be updated!
+    	getCalendarDao().load(calendar.getId()).setLastUpdate(new Timestamp(new Date().getTime()));
     	getAppointmentDao().update(app);
     }
 
@@ -126,25 +113,66 @@ public class CalendarServiceImpl
     	Appointment app = getAppointmentDao().load(singleAppointment.getId());
     	if(app.getAssignedCalendar().getId()!=calendar.getId())
     		throw new Exception("Calendar/Appointment do not fit");
-    	if(app.isIsSerial())
+    	if(app.isSerial())
     		throw new Exception("Cannot delete appointment, is part of a serial appointment");
     	if(app instanceof SerialAppointment)
     		throw new Exception("Cannot delete appointment, is part of a serial appointment");
     	app.setAssignedCalendar(null);
     	Calendar cal = getCalendarDao().load(calendar.getId());
-    	cal.getSingleAppointments().remove(app);
+    	cal.deleteAppointment(app);
     	getAppointmentDao().remove(app);
     }
 
     /**
      * @see org.openuss.calendar.CalendarService#createSerialAppointment(org.openuss.calendar.SerialAppointmentInfo, org.openuss.calendar.CalendarInfo)
      */
-    protected void handleCreateSerialAppointment(org.openuss.calendar.SerialAppointmentInfo serialAppointment, org.openuss.calendar.CalendarInfo calendar)
+    protected void handleCreateSerialAppointment(org.openuss.calendar.SerialAppointmentInfo serialAppointmentInfo, org.openuss.calendar.CalendarInfo calendar)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleCreateSerialAppointment(org.openuss.calendar.SerialAppointmentInfo serialAppointment, org.openuss.calendar.CalendarInfo calendar)
-        throw new java.lang.UnsupportedOperationException("org.openuss.calendar.CalendarService.handleCreateSerialAppointment(org.openuss.calendar.SerialAppointmentInfo serialAppointment, org.openuss.calendar.CalendarInfo calendar) Not implemented!");
-    }
+    	if(serialAppointmentInfo.getStarttime().after(serialAppointmentInfo.getEndtime()))
+    		throw new Exception("Duration of appointment is negative");
+    	if(serialAppointmentInfo.getEndtime().after(serialAppointmentInfo.getRecurrenceEndtime()))
+    		throw new Exception("Recurrence endtime before first occurence");
+    	Calendar cal = getCalendarDao().load(calendar.getId());
+    	SerialAppointment serialAppointment = getSerialAppointmentDao().create(getAppointmentTypeDao().load(serialAppointmentInfo.getAppointmentType().getId()), cal, getUserDao().load(serialAppointmentInfo.getCreator().getId()), serialAppointmentInfo.getDescription(), serialAppointmentInfo.getEndtime(), serialAppointmentInfo.getLocation(), serialAppointmentInfo.getRecurrenceEndtime(), serialAppointmentInfo.getRecurrencePeriod(), serialAppointmentInfo.getRecurrenceType(), true, serialAppointmentInfo.getStarttime(), serialAppointmentInfo.getSubject());
+    	cal.addSerialAppointment(serialAppointment);
+     	GregorianCalendar absoluteEnd = new GregorianCalendar();
+     	absoluteEnd.setTime(serialAppointment.getRecurrenceEndtime());
+     	GregorianCalendar calculatedEnd = new GregorianCalendar();
+     	calculatedEnd.setTime(serialAppointment.getEndtime());
+     	GregorianCalendar calculatedStart = new GregorianCalendar();
+     	calculatedStart.setTime(serialAppointment.getStarttime());
+     	int field = GregorianCalendar.MONTH;
+     	if(serialAppointment.getRecurrenceType().equals(RecurrenceType.daily)){
+     		field = GregorianCalendar.DAY_OF_MONTH;
+     	} else if(serialAppointment.getRecurrenceType().equals(RecurrenceType.weekly)){
+     		field = GregorianCalendar.WEEK_OF_YEAR;
+     	} else if(serialAppointment.getRecurrenceType().equals(RecurrenceType.monthly)){
+     		field = GregorianCalendar.MONTH;
+     	} else if(serialAppointment.getRecurrenceType().equals(RecurrenceType.yearly)){
+     		field = GregorianCalendar.YEAR;
+     	}
+     	 while(calculatedEnd.compareTo(absoluteEnd) <= 0){
+     		//TODO Logger!
+     		 System.out.println("Generate Appointment "
+ 					+ calculatedStart.getTime().toGMTString() + " to "
+ 					+ calculatedEnd.getTime().toGMTString());
+     		Appointment app = new AppointmentImpl();
+     		app.setAppointmentType(serialAppointment.getAppointmentType());
+     		app.setCreator(serialAppointment.getCreator());
+     		app.setSubject(serialAppointment.getSubject());
+     		app.setDescription(serialAppointment.getDescription());
+     		app.setAssignedCalendar(serialAppointment.getAssignedCalendar());
+     		app.setEndtime(new Timestamp(calculatedEnd.getTime().getTime()));
+     		app.setStarttime(new Timestamp(calculatedStart.getTime().getTime()));    		
+     		app.setSerialAppointment(serialAppointment);
+     		app.setLocation(serialAppointment.getLocation());
+     		getAppointmentDao().create(app);
+     		serialAppointment.addSingleAppointment(app);
+     		calculatedStart.add(field, serialAppointment.getRecurrencePeriod());
+     		calculatedEnd.add(field, serialAppointment.getRecurrencePeriod());
+     	}
+     }
 
     /**
      * @see org.openuss.calendar.CalendarService#updateSerialAppointment(org.openuss.calendar.SerialAppointmentInfo, org.openuss.calendar.CalendarInfo)
@@ -172,8 +200,7 @@ public class CalendarServiceImpl
     protected org.openuss.calendar.CalendarInfo handleGetCalendar(org.openuss.foundation.DomainObject domainObject)
         throws java.lang.Exception
     {
-        // @todo implement protected org.openuss.calendar.CalendarInfo handleGetCalendar(org.openuss.foundation.DomainObject domainObject)
-    	Calendar cal = getCalendarDao().findByDomainIdentifier(domainObject.getId());
+        Calendar cal = getCalendarDao().findByDomainIdentifier(domainObject.getId());
 
         if (cal == null) {
         	System.out.println("calendar is null");
@@ -185,13 +212,15 @@ public class CalendarServiceImpl
 
 
     /**
-     * @see org.openuss.calendar.CalendarService#getSerialAppointments(org.openuss.calendar.CalendarInfo)
+     * @see org.openuss.calendar.CalendarService#getNaturalSerialAppointments(org.openuss.calendar.CalendarInfo)
      */
-    protected java.util.List handleGetSerialAppointments(org.openuss.calendar.CalendarInfo calendar)
+    protected java.util.List handleGetNaturalSerialAppointments(org.openuss.calendar.CalendarInfo calendar)
         throws java.lang.Exception
     {
-        // @todo implement protected java.util.List handleGetSerialAppointments(org.openuss.calendar.CalendarInfo calendar)
-        return null;
+    	Calendar cal = getCalendarDao().load(calendar.getId());
+    	List apps = cal.getNaturalSerialAppointments();
+    	getSerialAppointmentDao().toSerialAppointmentInfoCollection(apps);
+    	return apps;
     }
 
     /**
@@ -203,11 +232,9 @@ public class CalendarServiceImpl
     	User user = getUserDao().load(userInfo.getId());
     	ArrayList appointments = new ArrayList();
     	for(Calendar cal : user.getCalendars()){
-    		ArrayList appointmentInfos = new ArrayList();
-    		appointmentInfos.addAll(cal.getSingleAppointments());
-    		getAppointmentDao().toAppointmentInfoCollection(appointmentInfos);
-    		appointments.addAll(appointmentInfos);
+    		appointments.addAll(cal.getSingleAppointments());
     	}
+    	getAppointmentDao().toAppointmentInfoCollection(appointments);
     	return appointments;
     }
 
@@ -217,8 +244,7 @@ public class CalendarServiceImpl
     protected org.openuss.calendar.AppointmentInfo handleGetAppointment(java.lang.Long id)
         throws java.lang.Exception
     {
-        // @todo implement protected org.openuss.calendar.AppointmentInfo handleGetAppointment(java.lang.Long id)
-        return null;
+        return (AppointmentInfo)getAppointmentDao().load(AppointmentDao.TRANSFORM_APPOINTMENTINFO, id);
     }
 
     /**
@@ -227,9 +253,8 @@ public class CalendarServiceImpl
     protected org.openuss.calendar.SerialAppointmentInfo handleGetSerialAppointment(java.lang.Long id)
         throws java.lang.Exception
     {
-        // @todo implement protected org.openuss.calendar.SerialAppointmentInfo handleGetSerialAppointment(java.lang.Long id)
-        return null;
-    }
+        return (SerialAppointmentInfo)getSerialAppointmentDao().load(SerialAppointmentDao.TRANSFORM_SERIALAPPOINTMENTINFO, id);
+     }
 
     /**
      * @see org.openuss.calendar.CalendarService#getUserCalendars(org.openuss.security.UserInfo)
@@ -237,10 +262,8 @@ public class CalendarServiceImpl
     protected java.util.List handleGetUserCalendars(org.openuss.security.UserInfo userInfo)
         throws java.lang.Exception
     {
-    	//@ todo check with gerrit busse what the target of getUserCalendars is!?!
     	ArrayList cal = new ArrayList();
-    	cal.add(getCalendarDao().findByDomainIdentifier(userInfo.getId()));
-    	System.out.println(cal.get(0).getClass());
+    	cal.addAll(getUserDao().load(userInfo.getId()).getCalendars());
         return cal;
     }
 
@@ -265,11 +288,10 @@ public class CalendarServiceImpl
     }
 
 	@Override
-	protected List handleGetSingleAppointments(CalendarInfo calendar)
+	protected List handleGetNaturalSingleAppointments(CalendarInfo calendar)
 			throws Exception {
 		Calendar cal = getCalendarDao().load(calendar.getId());
-		List apps = new ArrayList();
-		apps.addAll(cal.getSingleAppointments());
+		List apps = cal.getNaturalSingleAppointments();
 		getAppointmentDao().toAppointmentInfoCollection(apps);
 		return apps;
 	}

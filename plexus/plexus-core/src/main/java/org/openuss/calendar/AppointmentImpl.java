@@ -22,8 +22,7 @@ public class AppointmentImpl
      */
     public java.lang.String getCalendarType()
     {
-        // @todo implement public java.lang.String getCalendaType()
-        return null;
+        return this.getAssignedCalendar().getCalendarType().getValue();
     }
 
 }

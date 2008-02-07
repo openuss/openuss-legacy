@@ -5,11 +5,15 @@
  */
 package org.openuss.calendar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @see org.openuss.calendar.Calendar
  */
 public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 		org.openuss.calendar.Calendar {
+	
 	/**
 	 * The serial version UID of this class. Needed for serialization.
 	 */
@@ -19,28 +23,16 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 	 * @see org.openuss.calendar.Calendar#addAppointment(org.openuss.calendar.Appointment)
 	 */
 	public void addAppointment(org.openuss.calendar.Appointment appointment) {
-		super.getSingleAppointments().add(appointment);
+		super.getAppointments().add(appointment);
 		appointment.setAssignedCalendar(this);
 	}
 
-	/**
-	 * @see org.openuss.calendar.Calendar#updateAppointment(org.openuss.calendar.Appointment)
-	 */
-	public void updateAppointment(org.openuss.calendar.Appointment appointment) {
-		// @todo implement public void
-		// updateAppointment(org.openuss.calendar.Appointment appointment)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.calendar.Calendar.updateAppointment(org.openuss.calendar.Appointment appointment) Not implemented!");
-	}
 
 	/**
 	 * @see org.openuss.calendar.Calendar#deleteAppointment(org.openuss.calendar.Appointment)
 	 */
 	public void deleteAppointment(org.openuss.calendar.Appointment appointment) {
-		// @todo implement public void
-		// deleteAppointment(org.openuss.calendar.Appointment appointment)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.calendar.Calendar.deleteAppointment(org.openuss.calendar.Appointment appointment) Not implemented!");
+    	this.getAppointments().remove(appointment);
 	}
 
 	/**
@@ -48,24 +40,9 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 	 */
 	public void addSerialAppointment(
 			org.openuss.calendar.SerialAppointment serialAppointment) {
-		// @todo implement public void
-		// addSerialAppointment(org.openuss.calendar.SerialAppointment
-		// serialAppointment)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.calendar.Calendar.addSerialAppointment(org.openuss.calendar.SerialAppointment serialAppointment) Not implemented!");
+		this.getAppointments().add(serialAppointment);
 	}
 
-	/**
-	 * @see org.openuss.calendar.Calendar#updateSerialAppointment(org.openuss.calendar.SerialAppointment)
-	 */
-	public void updateSerialAppointment(
-			org.openuss.calendar.SerialAppointment serialAppointment) {
-		// @todo implement public void
-		// updateSerialAppointment(org.openuss.calendar.SerialAppointment
-		// serialAppointment)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.calendar.Calendar.updateSerialAppointment(org.openuss.calendar.SerialAppointment serialAppointment) Not implemented!");
-	}
 
 	/**
 	 * @see org.openuss.calendar.Calendar#deleteSerialAppointment(org.openuss.calendar.SerialAppointment)
@@ -79,12 +56,37 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 				"org.openuss.calendar.Calendar.deleteSerialAppointment(org.openuss.calendar.SerialAppointment serialAppointment) Not implemented!");
 	}
 
-	/**
-	 * @see org.openuss.calendar.Calendar#getAllAppointmentsAsList()
-	 */
-	public java.util.List getAllAppointmentsAsList() {
-		// @todo implement public java.util.List getAllAppointmentsAsList()
-		return null;
+
+	@Override
+	public List getNaturalSerialAppointments() {
+		ArrayList apps = new ArrayList();
+		for(Appointment app : this.getAppointments()){
+			if(app instanceof SerialAppointment)
+				apps.add(app);
+		}
+		return apps;
+	}
+
+
+	@Override
+	public List getNaturalSingleAppointments() {
+		ArrayList apps = new ArrayList();
+		for(Appointment app : this.getAppointments()){
+			if(!app.isSerial())
+				apps.add(app);
+		}
+		return apps;
+	}
+
+
+	@Override
+	public List getSingleAppointments() {
+		ArrayList apps = new ArrayList();
+		for(Appointment app : this.getAppointments()){
+			if(!(app instanceof SerialAppointment))
+				apps.add(app);
+		}
+		return apps;
 	}
 
 }
