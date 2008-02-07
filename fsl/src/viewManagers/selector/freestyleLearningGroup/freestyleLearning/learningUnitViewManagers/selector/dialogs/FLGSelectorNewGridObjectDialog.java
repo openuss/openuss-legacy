@@ -27,16 +27,20 @@ public class FLGSelectorNewGridObjectDialog {
 	private String imageElementTitle;
 	private String selectedFile;
 	private JButton imageSearchButton;
+	private JButton colorChooserButton;
+	private JButton textColorChooserButton;
 	private JPanel imageElementDataPanel;
 	private JPanel textElementDataPanel;
 	private JPanel imagePreviewPanel;
 	private JPanel dialogPanel;
+	private JPanel textBackgroundPanel;
 	private JTabbedPane dialogTabbedPane;
 	private Image scaledImage;
 	private boolean imageSelected = false;
 	private File imageFile;
-	private int width=250;
-	private int height=250;
+	private int width = 250;
+	private int height = 250;
+    private Color selectedColor;
 	
 	/**
 	 * Constructor.
@@ -70,7 +74,28 @@ public class FLGSelectorNewGridObjectDialog {
         textElementDataPanel = new JPanel(new FLGColumnLayout());
         textElementDataPanel.add(new JLabel(internationalization.getString("selector.dialogs.newGridObjectDialog.elementTitle")),FLGColumnLayout.LEFT);
         textField_textElement = new JTextField(25);
-        textElementDataPanel.add(textField_textElement,FLGColumnLayout.LEFTEND);
+        textElementDataPanel.add(textField_textElement, FLGColumnLayout.LEFTEND);
+        textColorChooserButton = new JButton(internationalization.getString("selector.dialogs.newGridObjectDialog.colorChooserButton"));
+        textBackgroundPanel = new JPanel();
+        textBackgroundPanel.setPreferredSize(new Dimension(50,25));
+        textBackgroundPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        textBackgroundPanel.setBackground((Color)UIManager.get("FSLMainFrameColor1"));
+        textColorChooserButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// open color chosser dialog
+                selectedColor = JColorChooser.showDialog(null, internationalization.getString("dialog.colorChooser.title"), (Color)UIManager.get("FSLMainFrameColor1"));
+                if(selectedColor == null) {
+                	selectedColor = (Color)UIManager.get("FSLMainFrameColor1");
+                }
+                textBackgroundPanel.setBackground(selectedColor);
+			}
+        });
+        textElementDataPanel.add(new JLabel(""), FLGColumnLayout.LEFT);
+        JPanel colorPanel = new JPanel(new GridBagLayout());
+        colorPanel.add(textBackgroundPanel);
+        colorPanel.add(textColorChooserButton);
+        textElementDataPanel.add(colorPanel, FLGColumnLayout.LEFTEND);
+       
         JScrollPane sp_textElement = new JScrollPane(textElementDataPanel);
         sp_textElement.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         
@@ -87,13 +112,17 @@ public class FLGSelectorNewGridObjectDialog {
 		imageSearchButton = new JButton(internationalization.getString("selector.dialogs.newGridObjectDialog.imageSearchButton"));
 		imageSearchButton.setEnabled(true);
 		searchButtonPanel.add(imageSearchButton);
+        // color chooser button
+        colorChooserButton = new JButton(internationalization.getString("selector.dialogs.newGridObjectDialog.colorChooserButton"));
+        imageSearchButton.setEnabled(true);
+        searchButtonPanel.add(colorChooserButton);
 		imageElementDataPanel.add(searchButtonPanel,FLGColumnLayout.LEFTEND);
 		// image preview panel
 		imagePreviewPanel = new JPanel(new BorderLayout());
 		imagePreviewPanel.setPreferredSize(new Dimension(width-10,height-10));
 		imagePreviewPanel.setBorder(BorderFactory.createEtchedBorder());
 		imagePreviewPanel.setEnabled(true);
-		imageElementDataPanel.add(imagePreviewPanel,FLGColumnLayout.LEFTEND);
+		imageElementDataPanel.add(imagePreviewPanel, FLGColumnLayout.LEFTEND);
 		// action listener for search button		
 		imageSearchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -111,20 +140,42 @@ public class FLGSelectorNewGridObjectDialog {
 		        	selectedFile = fileDialog.getSelectedFile().getName();
 		        	// load and scale image
 		        	imageFile = fileDialog.getSelectedFile();
-		        	scaledImage = scaleImage(loadImage(fileDialog.getSelectedFile()),width,height);
+		        	scaledImage = scaleImage(loadImage(fileDialog.getSelectedFile()), width, height);
 		            // insert scaled image into preview panel 
 		        	imagePreviewPanel.removeAll();
+		        	if(selectedColor != null) {
+		        		imagePreviewPanel.setBackground(selectedColor);
+		        	} 
 		        	imagePreviewPanel.add(new JLabel(new ImageIcon(scaledImage)),BorderLayout.CENTER);
-		        	optionPane = new FLGOptionPane(null, dialogPanel	, 
-							 internationalization.getString("selector.dialogs.newGridObjectDialog.title"), 
+		        	optionPane = new FLGOptionPane(null, dialogPanel, internationalization.getString("selector.dialogs.newGridObjectDialog.title"), 
 					         FLGOptionPane.OK_CANCEL_OPTION, FLGOptionPane.PLAIN_MESSAGE);
 				   	optionPane.setVisible(true);
 		        }
 			}
 		});
+		// action listener for color chooser button
+		colorChooserButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// open color chosser dialog
+                selectedColor = JColorChooser.showDialog(null, internationalization.getString("dialog.colorChooser.title"), (Color)UIManager.get("FSLMainFrameColor1"));
+                if(selectedColor == null) {
+                	selectedColor = (Color)UIManager.get("FSLMainFrameColor1");
+                }
+                // update image panel
+                imagePreviewPanel.removeAll();
+                imagePreviewPanel.setBackground(selectedColor);
+                if(imageFile != null) {
+                	scaledImage = scaleImage(loadImage(imageFile), width, height);
+                	imagePreviewPanel.add(new JLabel(new ImageIcon(scaledImage)),BorderLayout.CENTER);
+                }
+            	//optionPane = new FLGOptionPane(null, dialogPanel, internationalization.getString("selector.dialogs.newGridObjectDialog.title"), 
+				  //       FLGOptionPane.OK_CANCEL_OPTION, FLGOptionPane.PLAIN_MESSAGE);
+               	//soptionPane.setVisible(true);
+			}
+		});
+		
         JScrollPane sp_imageElement = new JScrollPane(imageElementDataPanel);
         sp_imageElement.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-
         /**** build tabbed pane ****/
         dialogTabbedPane.addTab(internationalization.getString("selector.dialogs.newGridObjectDialog.dialogTabbedPane.text.title"),sp_textElement);
         dialogTabbedPane.addTab(internationalization.getString("selector.dialogs.newGridObjectDialog.dialogTabbedPane.image.title"),sp_imageElement);
@@ -194,6 +245,19 @@ public class FLGSelectorNewGridObjectDialog {
 		imagePreviewPanel.repaint();
 		imagePreviewPanel.updateUI();
 	}
+	
+	public Color getBackgroundcolor() {
+		return selectedColor;
+	}
+	
+	public void setBackgroundColor(Color color) {
+		selectedColor = color;
+	}
+	
+	public Color getTextBackgroundcolor() {
+		return selectedColor;
+	}
+	
 	
 	/**
 	 * Returns new element title.

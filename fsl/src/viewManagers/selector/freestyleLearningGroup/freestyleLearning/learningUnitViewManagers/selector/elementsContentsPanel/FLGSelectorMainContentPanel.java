@@ -482,7 +482,7 @@ public class FLGSelectorMainContentPanel extends FSLAbstractLearningUnitViewElem
         	if (gridObject.getType().equals(FLGSelectorElementGridObject.ELEMENT_TYPE_TEXT)){
         	   	correctAnswersArray[i]=gridObject.getText();
         	} else {
-        		correctAnswersArray[i]=gridObject.getImageFileName();
+        		correctAnswersArray[i] = gridObject.getImageFileName();
         	}
         }
         JList resultList = new JList(correctAnswersArray);

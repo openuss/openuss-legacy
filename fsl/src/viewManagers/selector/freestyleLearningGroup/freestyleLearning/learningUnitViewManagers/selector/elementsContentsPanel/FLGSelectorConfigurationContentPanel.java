@@ -692,7 +692,7 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
      * Inserts a new Grid Object, a new Text Element.
      * @param <code>String</code> newText
      */
-    public void insertNewTextElement(String newText) {
+    public void insertNewTextElement(String newText, Color selectedColor) {
         boolean textElementAlreadyExits=false;
         if (learningUnitViewManager!=null && learningUnitViewElementsManager!=null) {
             // get active view element
@@ -717,7 +717,9 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                 if (persistentGridObjectsList!=null) {
                     // check, if text already exits
                     if ( persistentGridObjectsList!=null) {
-                        for (int i = 0; i < persistentGridObjectsList.size(); i++) {
+                        
+                    	/*
+                    	for (int i = 0; i < persistentGridObjectsList.size(); i++) {
                             FLGSelectorElementGridObject gridObject = (FLGSelectorElementGridObject) persistentGridObjectsList.get(i);
                             if (gridObject.getType().equals(FLGSelectorElementGridObject.ELEMENT_TYPE_TEXT)) {
                                 if (gridObject.getText().equals(newText)) {
@@ -732,7 +734,7 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                                     break;
                                 }
                             }
-                        }
+                        }*/
                         // if text does not exits, insert new grid object
                         if (!textElementAlreadyExits) {
                             // if image file name does not exit insert new grid object
@@ -743,6 +745,9 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                             // store new grid object in descriptor
                             currentGridObject = newtextObject;
                             currentGridObject.setClickAllowed(true);
+                            if(selectedColor != null) {
+                            	currentGridObject.setBackgroundColor(Integer.toString(selectedColor.getRGB()));
+                            } 
                             isAllowedCheckBox.setSelected(true);
                             isAllowedCheckBox.setEnabled(true);
                             persistentGridObjectsList.add(currentGridObject);
@@ -760,7 +765,7 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
      * @param <code>int</code> selectedIndex
      * @param <code>boolean</code> clickedAllowed
      */
-    public void modifyTextElement(String newText, int selectedIndex, boolean clickedAllowed) {
+    public void modifyTextElement(String newText, int selectedIndex, boolean clickedAllowed, Color selectedColor) {
         boolean textElementAlreadyExits=false;
         if (learningUnitViewManager!=null && learningUnitViewElementsManager!=null) {
             // get active view element
@@ -785,6 +790,7 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                 if (persistentGridObjectsList!=null) {
                     // check, if text already exits
                     if ( persistentGridObjectsList!=null) {
+                    	/*
                         for (int i = 0; i < persistentGridObjectsList.size(); i++) {
                             FLGSelectorElementGridObject gridObject = (FLGSelectorElementGridObject) persistentGridObjectsList.get(i);
                             if (gridObject.getType().equals(FLGSelectorElementGridObject.ELEMENT_TYPE_TEXT)) {
@@ -801,6 +807,7 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                                 }
                             }
                         }
+                        */
                         // if text does not exits, insert new grid object
                         if (!textElementAlreadyExits) {
                             // delete old entries
@@ -819,6 +826,9 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                             } else {
                                 isAllowedCheckBox.setSelected(false);
                             }
+                            if(selectedColor != null) {
+                            	currentGridObject.setBackgroundColor(Integer.toString(selectedColor.getRGB()));
+                            } 
                             persistentGridObjectsList.add(currentGridObject);
                             isModifiedByUserInput=true;
                             // update jlist
@@ -832,11 +842,11 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
         }
     }
     
-    public void modifyImageElement(String name, Image newImage, File imageFile, int selectedIndex, boolean clickedAllowed) {
+    public void modifyImageElement(String name, Image newImage, File imageFile, int selectedIndex, boolean clickedAllowed, Color selectedColor) {
         // delete old element
         deleteElement(currentGridObject.getId(),selectedIndex);
         listModel.removeElement(currentGridObject);
-        insertNewImageElement(name, newImage, imageFile, null);
+        insertNewImageElement(name, newImage, imageFile, selectedColor);
         if (clickedAllowed) {
             isAllowedCheckBox.setSelected(true);
             isAllowedCheckBox.setEnabled(true);
@@ -1034,6 +1044,8 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
 			            }
 			            if(currentGridObject.getBackgroundColor() != null) {
 			            	imagePanel.setBackground(new Color(Integer.parseInt(currentGridObject.getBackgroundColor())));
+			            } else {
+			            	imagePanel.setBackground((Color)UIManager.get("FSLMainFrameColor1"));
 			            }
 			        }
 	    	}
@@ -1192,8 +1204,9 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                         Image newImage = newObjectDialog.getScaledImage();
                         String newText = newObjectDialog.getText();
                         File imageFile = newObjectDialog.getImageFile();
+                        Color backgroundColor = newObjectDialog.getBackgroundcolor();
                         if(imageFile != null) {
-                            insertNewImageElement(newText, newImage, imageFile, null);
+                            insertNewImageElement(newText, newImage, imageFile, backgroundColor);
                         } else {
                             // option error pane
                             FLGOptionPane.showConfirmDialog(internationalization.getString("selector.dialogs.noImageInserted.text"),
@@ -1203,7 +1216,8 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                         }
                     } else {
                         String newText = newObjectDialog.getText();
-                        insertNewTextElement(newText);
+                        Color color = newObjectDialog.getBackgroundcolor();
+                        insertNewTextElement(newText, color);
                     }
                     if (isModifiedByUserInput) {
                         // update jlist
@@ -1221,9 +1235,11 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                     // text element
                     if (currentGridObject.getType().equals(FLGSelectorElement.ELEMENT_TYPE_TEXT)) {
                         propertiesDialog.setTextElementTitle(currentGridObject.getText());
+                        propertiesDialog.setTextBackgroundColor(new Color(Integer.parseInt(currentGridObject.getBackgroundColor())));
                         propertiesDialog.showDialog();
                         if (propertiesDialog.insertNewElement()) {
-                            modifyTextElement(propertiesDialog.getText(),selectedIndex,currentGridObject.getClickAllowed());
+                            modifyTextElement(propertiesDialog.getText(),selectedIndex,currentGridObject.getClickAllowed(),
+                            		propertiesDialog.getTextBackgroundColor());
                         }
                         // image element
                     } else {
@@ -1244,6 +1260,7 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                         FLGFileUtility.copyFile(imageFile, newImageFile);
                         propertiesDialog.setImageFile(newImageFile);
                         propertiesDialog.setImageElementTitle(currentGridObject.getImageFileName());
+                        propertiesDialog.setImageBackgroundColor(new Color(Integer.parseInt(currentGridObject.getBackgroundColor())));
                         propertiesDialog.showDialog();
                         // get user decision
                         if (propertiesDialog.insertNewElement()) {
@@ -1259,7 +1276,8 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                                 int height = newImage.getHeight(observer);
                                 int width  = newImage.getWidth(observer);
                                 newImage = propertiesDialog.getScaledImage();
-                                modifyImageElement(text,newImage,imageFile,selectedIndex,currentGridObject.getClickAllowed());
+                                modifyImageElement(text, newImage, imageFile, selectedIndex, currentGridObject.getClickAllowed(), 
+                                		propertiesDialog.getImageBackgroundColor());
                             } else {
                                 // option error pane
                                 FLGOptionPane.showConfirmDialog(internationalization.getString("selector.dialogs.noImageInserted.text"),
