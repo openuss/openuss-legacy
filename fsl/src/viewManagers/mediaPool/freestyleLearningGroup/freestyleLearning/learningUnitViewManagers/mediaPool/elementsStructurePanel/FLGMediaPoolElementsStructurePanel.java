@@ -78,7 +78,6 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
         String mediaPoolElementID = mediaPoolElement.getId();
         if (!mediaPoolElement.getFolder()) {
             mediaPoolElement.setType(selectedMediaType);
-            
             if(selectedMediaType.equals("ppt")) {
             	File sourceMediaFile = learningUnitViewNewAndModifyElementDialogViewSpecificPane.getMediaFile();
             	File destinationMediaFile = null;
@@ -135,8 +134,7 @@ public class FLGMediaPoolElementsStructurePanel extends FSLAbstractLearningUnitV
         if (folder) {
             newElement.setMediaFileName("");
             newElement.setType("folder");
-        }
-        else {
+        } else {
             if (!folderImport) {
                 newElement.setType(selectedMediaType);
                 if(selectedMediaType.equals("ppt")) {
