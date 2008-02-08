@@ -151,52 +151,53 @@ abstract public class FSLAbstractLearningUnitViewElementInteractionPanel extends
 
         protected void buildDependentUI() {
             removeAll();
-            if (splitModeAllowed) {
-                add(splitModeButton);
-                add(splitModeSwitchButton);
-                splitModeSwitchButton.setEnabled(splitMode || secondaryActiveLearningUnitViewElementId != null);
-                splitModeButton.setEnabled(activeLearningUnitViewElementId != null ||
-                    secondaryActiveLearningUnitViewElementId != null);
-                if (splitMode)
-                    splitModeButton.setToolTipText(internationalization.getString("button.turnSplitModeOff.toolTipText"));
-                else
-                    splitModeButton.setToolTipText(internationalization.getString("button.turnSplitModeOn.toolTipText"));
-            }
-            if (previousElementButton != null) add(previousElementButton);
-            if (nextElementButton != null) add(nextElementButton);
-            if (learningUnitViewElementsManager != null) {
-                if (nextElementButton != null)
-                    nextElementButton.setEnabled(learningUnitViewElementsManager.getNextElementIdInDepthFirstOrder(activeLearningUnitViewElementId)
-                        != null);
-                if (previousElementButton != null)
-                    previousElementButton.setEnabled(learningUnitViewElementsManager.getPreviousElementIdInDepthFirstOrder(activeLearningUnitViewElementId)
-                        != null);
-            }
-            else {
-                if (nextElementButton != null) nextElementButton.setEnabled(false);
-                if (previousElementButton != null) previousElementButton.setEnabled(false);
-            }
-            if (learningUnitViewElementsManager != null) {
-                FSLLearningUnitViewElement learningUnitViewElement = learningUnitViewElementsManager.getLearningUnitViewElement(activeLearningUnitViewElementId, false);
-                if (learningUnitViewElement != null && !learningUnitViewElement.getFolder() && fullScreenModeAllowed) {
-                    add(fullScreenModeButton);
-                    fullScreenModeButton.setEnabled(activeLearningUnitViewElementId != null);
-                }
-            }
-            if (scaleToScreenAllowed) {
-                add(scaleToggleButton);
-                scaleToggleButton.setEnabled(activeLearningUnitViewElementId != null);
-                if (!scaleToFit) {
-                	scaleToggleButton.setToolTipText(internationalization.getString("button.toggleScale.undoScale.toolTipText"));
-                	scaleToggleButton.setImage(loadImage("buttonToggleScale.gif"));
-                } else {
-                	scaleToggleButton.setToolTipText(internationalization.getString("button.toggleScale.scale.toolTipText"));
-                    scaleToggleButton.setImage(loadImage("buttonToggleNoScale.gif"));
-                }
-            }
-            insertViewSpecificInteractionComponents();
-            revalidate();
-            repaint();
+
+	            if (splitModeAllowed) {
+	                add(splitModeButton);
+	                add(splitModeSwitchButton);
+	                splitModeSwitchButton.setEnabled(splitMode || secondaryActiveLearningUnitViewElementId != null);
+	                splitModeButton.setEnabled(activeLearningUnitViewElementId != null ||
+	                    secondaryActiveLearningUnitViewElementId != null);
+	                if (splitMode)
+	                    splitModeButton.setToolTipText(internationalization.getString("button.turnSplitModeOff.toolTipText"));
+	                else
+	                    splitModeButton.setToolTipText(internationalization.getString("button.turnSplitModeOn.toolTipText"));
+	            }
+	            if (previousElementButton != null) add(previousElementButton);
+	            if (nextElementButton != null) add(nextElementButton);
+	            if (learningUnitViewElementsManager != null) {
+	                if (nextElementButton != null)
+	                    nextElementButton.setEnabled(learningUnitViewElementsManager.getNextElementIdInDepthFirstOrder(activeLearningUnitViewElementId)
+	                        != null);
+	                if (previousElementButton != null)
+	                    previousElementButton.setEnabled(learningUnitViewElementsManager.getPreviousElementIdInDepthFirstOrder(activeLearningUnitViewElementId)
+	                        != null);
+	            }
+	            else {
+	                if (nextElementButton != null) nextElementButton.setEnabled(false);
+	                if (previousElementButton != null) previousElementButton.setEnabled(false);
+	            }
+	            if (learningUnitViewElementsManager != null) {
+	                FSLLearningUnitViewElement learningUnitViewElement = learningUnitViewElementsManager.getLearningUnitViewElement(activeLearningUnitViewElementId, false);
+	                if (learningUnitViewElement != null && !learningUnitViewElement.getFolder() && fullScreenModeAllowed) {
+	                    add(fullScreenModeButton);
+	                    fullScreenModeButton.setEnabled(activeLearningUnitViewElementId != null);
+	                }
+	            }
+	            if (scaleToScreenAllowed) {
+	                add(scaleToggleButton);
+	                scaleToggleButton.setEnabled(activeLearningUnitViewElementId != null);
+	                if (!scaleToFit) {
+	                	scaleToggleButton.setToolTipText(internationalization.getString("button.toggleScale.undoScale.toolTipText"));
+	                	scaleToggleButton.setImage(loadImage("buttonToggleScale.gif"));
+	                } else {
+	                	scaleToggleButton.setToolTipText(internationalization.getString("button.toggleScale.scale.toolTipText"));
+	                    scaleToggleButton.setImage(loadImage("buttonToggleNoScale.gif"));
+	                }
+	            }
+	            insertViewSpecificInteractionComponents();
+	            revalidate();
+	            repaint();
         }
 
         // overwrite to insert view specific buttons

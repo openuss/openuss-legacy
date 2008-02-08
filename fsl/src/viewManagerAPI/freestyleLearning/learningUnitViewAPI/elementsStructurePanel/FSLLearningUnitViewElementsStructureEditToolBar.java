@@ -694,7 +694,7 @@ public class FSLLearningUnitViewElementsStructureEditToolBar extends FLGEffectPa
             element.setModified(true);
             learningUnitViewElementsManager.setModified(true);
             FSLLearningUnitViewEvent event = FSLLearningUnitViewEvent.createElementsModifiedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
-            new String[] { selectedLearningUnitViewElementId });
+            		new String[] { selectedLearningUnitViewElementId });
             learningUnitViewManager.fireLearningUnitViewEvent(event);
         }
     }

@@ -100,7 +100,7 @@ abstract public class FSLAbstractLearningUnitViewElementsContentsPanel extends J
                     getActiveElementContentPanel().saveUserChanges();
                     FSLLearningUnitViewEvent newEvent =
                         FSLLearningUnitViewEvent.createElementsModifiedEvent(learningUnitViewManager.getLearningUnitViewManagerId(),
-                        new String[] { activeLearningUnitViewElementId });
+                        		new String[] { activeLearningUnitViewElementId });
                     learningUnitViewManager.fireLearningUnitViewEvent(newEvent);
                     learningUnitViewElement.setModified(true);
                     learningUnitViewElementsManager.setModified(true);

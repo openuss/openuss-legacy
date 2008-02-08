@@ -484,7 +484,7 @@ public class FSLLearningUnitViewElementStructureTree extends JTree {
         }
 
         public void learningUnitViewElementsModified(FSLLearningUnitViewEvent event) {
-        	if (event.getEventType()==FSLLearningUnitViewEvent.VIEW_IMPORT) {
+        	if (event.getEventType() == FSLLearningUnitViewEvent.VIEW_IMPORT) {
         		learningUnitViewManager.reloadLearningUnitViewData();
         	}
         	if (event.getLearningUnitViewManagerId().equals(learningUnitViewManager.getLearningUnitViewManagerId())) {
