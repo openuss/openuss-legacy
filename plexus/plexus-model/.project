@@ -6,6 +6,9 @@
 	</projects>
 	<buildSpec>
 		<buildCommand>
+			<name></name>
+			<arguments>
+			</arguments>
 		</buildCommand>
 	</buildSpec>
 	<natures>
