@@ -439,6 +439,20 @@ public class BreadCrumbs extends BaseBean {
 		crumbs.add(profileCrumb);
 		return crumbs;
 	}
+	
+	// OpenUSS4US Crumb Generation
+	
+	private List<BreadCrumb> getOpenuss4usCrumbs() {
+		List<BreadCrumb> crumbs = getBaseCrumbs();
+		assert crumbs != null;
+
+		BreadCrumb openuss4usCrumb = new BreadCrumb();
+		openuss4usCrumb.setName(i18n("openuss4us_navigation_header"));
+		openuss4usCrumb.setHint(i18n("openuss4us_navigation_header"));
+
+		crumbs.add(openuss4usCrumb);
+		return crumbs;
+	}	
 
 	// Extended Search Crumb Generation
 
@@ -536,6 +550,10 @@ public class BreadCrumbs extends BaseBean {
 		setCrumbs(getProfileCrumbs());
 	}
 
+	public void loadOpenuss4usCrumbs() {
+		setCrumbs(getOpenuss4usCrumbs());
+	}	
+	
 	public void loadExtendedSearchCrumbs() {
 		setCrumbs(getExtendedSearchCrumbs());
 	}

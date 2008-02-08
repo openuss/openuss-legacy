@@ -22,7 +22,7 @@ import org.openuss.web.Constants;
 
 /**
  *
- * @author Lutz D. Kramer
+ * @author Ingo Dueppe
  * 
  */
 @Bean(name = "views$secured$course$main", scope = Scope.REQUEST)

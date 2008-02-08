@@ -261,11 +261,11 @@ public class Constants {
 
 	public static final String WIKI_MAIN_PAGE = "course_wiki";
 
-	// openuss4us navigation
-	public static final String OPENUSS4US_BUDDYLIST = "openuss4us_buddylist";
+	// openuss4us navigation outcomes
 	public static final String OPENUSS4US_MESSAGECENTER = "openuss4us_messagecenter";
 	public static final String OPENUSS4US_CALENDAR = "openuss4us_calendar";
 	public static final String OPENUSS4US_GROUPS = "openuss4us_groups";	
-	public static final String USER_PROFILE_VORLAGE = "user_profile_vorlage";
+	public static final String OPENUSS4US_GROUPS_CREATE = "openuss4us_groups_create";
+
 	
 }

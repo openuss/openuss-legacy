@@ -22,15 +22,16 @@ import org.openuss.lecture.CourseApplicationException;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.CourseMemberType;
 import org.openuss.web.Constants;
-
+import org.openuss.web.BasePage;
 /**
  * 
  * @author Lutz D. Kramer
+ * @author Thomas Jansing
  *
  */
-@Bean(name = "views$secured$groups$main", scope = Scope.REQUEST)
+@Bean(name = "views$secured$groups$groups", scope = Scope.REQUEST)
 @View
-public class GroupMainPage extends AbstractGroupPage {
+public class GroupMainPage extends BasePage {
 	
 	private static final Logger logger = Logger.getLogger(GroupMainPage.class);
 
@@ -41,17 +42,23 @@ public class GroupMainPage extends AbstractGroupPage {
 
 	@Override
 	@Prerender
-	public void prerender() throws Exception {
-		super.prerender();
-		if (groupInfo != null) {
-			moderators = groupService.getModerators(groupInfo);
-		}
+/**	public void prerender() throws Exception {
+*		super.prerender();
+*		//if (groupInfo != null) {
+*		//	moderators = groupService.getModerators(groupInfo);
+*		// }
 		BreadCrumb newCrumb = new BreadCrumb();
-		newCrumb.setName(i18n("group_command_overview"));
-		newCrumb.setHint(i18n("group_command_overview"));
+		newCrumb.setLink("");
+		newCrumb.setName(i18n("openuss4us_command_groups"));
+		newCrumb.setHint(i18n("openuss4us_command_groups"));	
+		breadcrumbs.loadOpenuss4usCrumbs();
 		breadcrumbs.addCrumb(newCrumb);
 	}
-
+*/
+	public String createGroup() {
+		return Constants.OPENUSS4US_GROUPS_CREATE;
+	}
+	
 	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {
 		String password = (String) value;
 		if (!StringUtils.equalsIgnoreCase(password, groupInfo.getPassword())) {
