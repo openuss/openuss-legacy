@@ -249,8 +249,8 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -259,9 +259,23 @@
 					<workspace>${basedir}</workspace>
 					<downloadSources>true</downloadSources>
 					<downloadJavadocs>true</downloadJavadocs>
+					<wtpversion>1.5</wtpversion>
+					<additionalProjectFacets>
+						<jst.utility>1.0</jst.utility>
+					</additionalProjectFacets>
 					<additionalProjectnatures>
 						<projectnature>
 							org.springframework.ide.eclipse.core.springnature
+						</projectnature>
+					</additionalProjectnatures>
+					<additionalProjectnatures>
+						<projectnature>
+							org.eclipse.wst.common.modulecore.ModuleCoreNature
+						</projectnature>
+					</additionalProjectnatures>
+					<additionalProjectnatures>
+						<projectnature>
+							org.eclipse.wst.common.project.facet.core.nature
 						</projectnature>
 					</additionalProjectnatures>
 					<additionalBuildcommands>
