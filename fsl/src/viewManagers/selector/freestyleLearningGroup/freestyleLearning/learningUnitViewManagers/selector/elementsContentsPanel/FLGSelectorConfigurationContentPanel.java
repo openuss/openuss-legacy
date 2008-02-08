@@ -487,8 +487,8 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
         editElementItem = new JMenuItem(internationalization.getString("selector.configurationContentPanel.popup.editElement"));
         editElementItem.setFont(new Font("SansSerif", Font.PLAIN, 12));
         editElementItem.addActionListener(popupListener);
-        if (selectedGridObjects!=null) {
-	        if (selectedGridObjects.length==1) {
+        if (selectedGridObjects != null) {
+	        if (selectedGridObjects.length == 1) {
 	        	editElementItem.setEnabled(true);
 	        }
 	     else {
@@ -785,9 +785,9 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                         	activeLearningUnitViewElementId);
         		}
         	}
-            if (viewElement!=null) {
+            if (viewElement != null) {
                 persistentGridObjectsList = viewElement.getLearningUnitViewElementGridObjects();
-                if (persistentGridObjectsList!=null) {
+                if (persistentGridObjectsList != null) {
                     // check, if text already exits
                     if ( persistentGridObjectsList!=null) {
                     	/*
@@ -811,7 +811,7 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                         // if text does not exits, insert new grid object
                         if (!textElementAlreadyExits) {
                             // delete old entries
-                            deleteElement(currentGridObject.getId(),selectedIndex);
+                            deleteElement(currentGridObject.getId(), selectedIndex);
                             listModel.removeElement(currentGridObject);
                             // create new grid object
                             FLGSelectorElementGridObject newtextObject = new FLGSelectorElementGridObject();
@@ -830,7 +830,7 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                             	currentGridObject.setBackgroundColor(Integer.toString(selectedColor.getRGB()));
                             } 
                             persistentGridObjectsList.add(currentGridObject);
-                            isModifiedByUserInput=true;
+                            isModifiedByUserInput = true;
                             // update jlist
                             listModel.addElement(currentGridObject);
                             gridObjectsList.setSelectedIndex(listModel.size()-1);
@@ -1235,7 +1235,11 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                     // text element
                     if (currentGridObject.getType().equals(FLGSelectorElement.ELEMENT_TYPE_TEXT)) {
                         propertiesDialog.setTextElementTitle(currentGridObject.getText());
-                        propertiesDialog.setTextBackgroundColor(new Color(Integer.parseInt(currentGridObject.getBackgroundColor())));
+                        if(currentGridObject.getBackgroundColor() != null) {
+                        	propertiesDialog.setTextBackgroundColor(new Color(Integer.parseInt(currentGridObject.getBackgroundColor())));
+                        } else {
+                        	propertiesDialog.setTextBackgroundColor((Color)UIManager.get("FSLMainFrameColor1"));
+                        }
                         propertiesDialog.showDialog();
                         if (propertiesDialog.insertNewElement()) {
                             modifyTextElement(propertiesDialog.getText(),selectedIndex,currentGridObject.getClickAllowed(),
