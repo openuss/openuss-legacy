@@ -33,7 +33,8 @@ public class AbstractGroupPage extends BasePage {
 				redirect(Constants.OUTCOME_BACKWARD);
 				return;
 			} else {
-				breadcrumbs.loadGroupCrumbs(groupInfo);
+				// TODO - Lutz: BreadCrumbs
+//				breadcrumbs.loadGroupCrumbs(groupInfo);
 				setSessionBean(Constants.GROUP_INFO, groupInfo);
 			}
 		}

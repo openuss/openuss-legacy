@@ -46,7 +46,8 @@ public class GroupOptionsPage extends AbstractGroupPage {
 				logger.debug("---------- is not postback ---------- refreshing course");
 				super.prerender();
 			} else {
-				 breadcrumbs.loadGroupCrumbs(groupInfo);
+				// TODO - Lutz: BreadCrumbs
+//				breadcrumbs.loadGroupCrumbs(groupInfo);
 			}
 		}
 		setSessionBean(Constants.COURSE, groupInfo);

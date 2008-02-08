@@ -56,8 +56,8 @@ public class BreadCrumbs extends BaseBean {
 	@Property(value = "#{universityService}")
 	private UniversityService universityService;
 	
-	@Property(value = "#{groupService}")
-	private GroupService groupService;
+//	@Property(value = "#{groupService}")
+//	private GroupService groupService;
 
 	@Property(value = "#{organisationService}")
 	private OrganisationService organisationService;
@@ -371,45 +371,45 @@ public class BreadCrumbs extends BaseBean {
 
 	// Group Crumb Generation
 	
-	private List<BreadCrumb> getGroupCrumbs(Long groupId) {
-
-		if (groupService == null)
-			return getEmptyList();
-
-		GroupInfo info = groupService.getGroupInfo(groupId);
-		if (info == null)
-			return getEmptyList();
-
-		List<BreadCrumb> crumbs = getBaseCrumbs();
-		BreadCrumb groupCrumb = getGroupCrumb(info);
-
-		assert crumbs != null;
-		crumbs.add(groupCrumb);
-		return crumbs;
-	}
-
-	private List<BreadCrumb> getGroupCrumbs(GroupInfo info) {
-		if (info == null)
-			return getEmptyList();
-
-		List<BreadCrumb> crumbs = getBaseCrumbs();
-		BreadCrumb groupCrumb = getGroupCrumb(info);
-
-		assert crumbs != null;
-		crumbs.add(groupCrumb);
-		return crumbs;
-	}
-
-	private BreadCrumb getGroupCrumb(GroupInfo info) {
-		assert info != null;
-		BreadCrumb groupCrumb = new BreadCrumb();
-		groupCrumb.setName(info.getShortcut());
-		groupCrumb.setHint(info.getName());
-		groupCrumb.setLink(PageLinks.GROUP_PAGE);
-		groupCrumb.addParameter("group", info.getId());
-
-		return groupCrumb;
-	}
+//	private List<BreadCrumb> getGroupCrumbs(Long groupId) {
+//
+//		if (groupService == null)
+//			return getEmptyList();
+//
+//		GroupInfo info = groupService.getGroupInfo(groupId);
+//		if (info == null)
+//			return getEmptyList();
+//
+//		List<BreadCrumb> crumbs = getBaseCrumbs();
+//		BreadCrumb groupCrumb = getGroupCrumb(info);
+//
+//		assert crumbs != null;
+//		crumbs.add(groupCrumb);
+//		return crumbs;
+//	}
+//
+//	private List<BreadCrumb> getGroupCrumbs(GroupInfo info) {
+//		if (info == null)
+//			return getEmptyList();
+//
+//		List<BreadCrumb> crumbs = getBaseCrumbs();
+//		BreadCrumb groupCrumb = getGroupCrumb(info);
+//
+//		assert crumbs != null;
+//		crumbs.add(groupCrumb);
+//		return crumbs;
+//	}
+//
+//	private BreadCrumb getGroupCrumb(GroupInfo info) {
+//		assert info != null;
+//		BreadCrumb groupCrumb = new BreadCrumb();
+//		groupCrumb.setName(info.getShortcut());
+//		groupCrumb.setHint(info.getName());
+//		groupCrumb.setLink(PageLinks.GROUP_PAGE);
+//		groupCrumb.addParameter("group", info.getId());
+//
+//		return groupCrumb;
+//	}
 	
 	// MyUni Crumb Generation
 
@@ -520,13 +520,13 @@ public class BreadCrumbs extends BaseBean {
 		setCrumbs(getCourseTypeCrumbs(courseTypeInfo));
 	}
 	
-	public void loadGroupCrumbs(Long groupId) {
-		setCrumbs(getGroupCrumbs(groupId));
-	}
-
-	public void loadGroupCrumbs(GroupInfo groupInfo) {
-		setCrumbs(getGroupCrumbs(groupInfo));
-	}
+//	public void loadGroupCrumbs(Long groupId) {
+//		setCrumbs(getGroupCrumbs(groupId));
+//	}
+//
+//	public void loadGroupCrumbs(GroupInfo groupInfo) {
+//		setCrumbs(getGroupCrumbs(groupInfo));
+//	}
 
 	public void loadMyUniCrumbs() {
 		setCrumbs(getMyUniCrumbs());
