@@ -13,6 +13,7 @@ import freestyleLearning.learningUnitViewAPI.elementsStructurePanel.*;
 import freestyleLearning.learningUnitViewAPI.elementsStructurePanel.dialogs.*;
 import freestyleLearning.learningUnitViewAPI.events.learningUnitEvent.*;
 import freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.learningByDoing.data.xmlBindingSubclasses.*;
+import freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.mediaPool.data.xmlBindingSubclasses.FLGMediaPoolElement;
 import freestyleLearningGroup.independent.gui.*;
 import freestyleLearningGroup.independent.util.*;
 
@@ -43,31 +44,64 @@ public class FLGLearningByDoingElementsStructurePanel extends FSLAbstractLearnin
             learningByDoingElement.setType("application");
             File sourceExecutableFile = learningUnitViewNewAndModifyElementDialogViewSpecificPane.getExecutableFile();
             String sourceExecutableFileName = sourceExecutableFile.getName();
-            learningByDoingElement.setDirectoryContentIncluded(includeDirectoryContentCheckBox.isSelected());
-            if (!sourceExecutableFileName.equals(learningByDoingElement.getExecutableFileName())) {
-                FLGUIUtilities.startLongLastingOperation();
-                if (learningByDoingElement.getDirectoryContentIncluded()) {
-                    File destinationDirectory = learningUnitViewElementsManager.createNewDirectoryForElementsExternalData("directory",
-                        "", learningByDoingElementID);
-                    File parentDirectoryOfExecutableFile = sourceExecutableFile.getParentFile();
-                    FLGFileUtility.copyDirectoryContent(parentDirectoryOfExecutableFile, destinationDirectory);
-                    learningByDoingElement.setExecutableFileName(destinationDirectory.getName() + "//" +
-                        sourceExecutableFileName);
-                    learningByDoingElement.setProgramParameters(destinationDirectory.getAbsolutePath());
-                }
-                else {
-                    File destinationDirectory = learningUnitViewElementsManager.getLearningUnitViewDataDirectory();
-                    FLGFileUtility.copyFile(sourceExecutableFile,
-                        new File(destinationDirectory.getPath() + "//" + sourceExecutableFile.getName()));
-                    learningByDoingElement.setExecutableFileName(sourceExecutableFileName);
-                    learningByDoingElement.setProgramParameters(destinationDirectory.getAbsolutePath());
-               }
-                FLGUIUtilities.stopLongLastingOperation();
+            
+			// check file extension
+            String mediaFileName = sourceExecutableFile.getName();
+        	StringBuffer mediaFileNameBuffer = new StringBuffer(mediaFileName);
+        	StringBuffer mediaFileExtension = new StringBuffer();
+            for (int j = 3; j >= 0; j--) {
+            	mediaFileExtension.append(mediaFileNameBuffer.charAt(mediaFileName.length()-j-1));
             }
-            learningByDoingElement.setProgramParameters(learningUnitViewNewAndModifyElementDialogViewSpecificPane.getParameters());
-            learningByDoingElement.setAutoChangeWorkingDirectory(autoChangeWorkingDirectoryCheckBox.isSelected());
-        }
-        else {
+            if(mediaFileExtension.toString().equals(".pps") || mediaFileExtension.toString().equals(".ppt")) {
+	            if(learningUnitViewNewAndModifyElementDialogViewSpecificPane.getFinalizePPTFlag()) {
+	        		// convert ppt in pps file
+	        		final File sourceMediaFile = sourceExecutableFile;
+	        		String sourceMediaFileExtension = ".pps";
+	                final File destinationMediaFile = learningUnitViewElementsManager.createNewFileForElementsExternalData(selectedMediaType,
+	                        sourceMediaFileExtension, learningByDoingElement.getId());
+	                FLGUIUtilities.startLongLastingOperation();
+	                FLGFileUtility.copyFile(sourceMediaFile, destinationMediaFile);
+	                learningByDoingElement.setExecutableFileName(destinationMediaFile.getName());
+	                FLGUIUtilities.stopLongLastingOperation();
+	        	} else {
+	        		// convert pps in ppt file
+	        		final File sourceMediaFile = sourceExecutableFile;
+	        		String sourceMediaFileExtension = ".ppt";
+	                final File destinationMediaFile = learningUnitViewElementsManager.createNewFileForElementsExternalData(selectedMediaType,
+	                        sourceMediaFileExtension, learningByDoingElement.getId());
+	                FLGUIUtilities.startLongLastingOperation();
+	                FLGFileUtility.copyFile(sourceMediaFile, destinationMediaFile);
+	                learningByDoingElement.setExecutableFileName(destinationMediaFile.getName());
+	                FLGUIUtilities.stopLongLastingOperation();
+	        	} 
+            } else {
+            	
+            
+	            learningByDoingElement.setDirectoryContentIncluded(includeDirectoryContentCheckBox.isSelected());
+	            if (!sourceExecutableFileName.equals(learningByDoingElement.getExecutableFileName())) {
+	                FLGUIUtilities.startLongLastingOperation();
+	                if (learningByDoingElement.getDirectoryContentIncluded()) {
+	                    File destinationDirectory = learningUnitViewElementsManager.createNewDirectoryForElementsExternalData("directory",
+	                        "", learningByDoingElementID);
+	                    File parentDirectoryOfExecutableFile = sourceExecutableFile.getParentFile();
+	                    FLGFileUtility.copyDirectoryContent(parentDirectoryOfExecutableFile, destinationDirectory);
+	                    learningByDoingElement.setExecutableFileName(destinationDirectory.getName() + "//" +
+	                        sourceExecutableFileName);
+	                    learningByDoingElement.setProgramParameters(destinationDirectory.getAbsolutePath());
+	                }
+	                else {
+	                    File destinationDirectory = learningUnitViewElementsManager.getLearningUnitViewDataDirectory();
+	                    FLGFileUtility.copyFile(sourceExecutableFile,
+	                        new File(destinationDirectory.getPath() + "//" + sourceExecutableFile.getName()));
+	                    learningByDoingElement.setExecutableFileName(sourceExecutableFileName);
+	                    learningByDoingElement.setProgramParameters(destinationDirectory.getAbsolutePath());
+	               }
+	                FLGUIUtilities.stopLongLastingOperation();
+	            }
+	            learningByDoingElement.setProgramParameters(learningUnitViewNewAndModifyElementDialogViewSpecificPane.getParameters());
+	            learningByDoingElement.setAutoChangeWorkingDirectory(autoChangeWorkingDirectoryCheckBox.isSelected());
+            }
+        } else {
             learningByDoingElement.setType("folder");
             learningByDoingElement.setExecutableFileName("");
         }
@@ -84,32 +118,61 @@ public class FLGLearningByDoingElementsStructurePanel extends FSLAbstractLearnin
         if (folder) {
             newElement.setType("folder");
             newElement.setExecutableFileName("");
-        }
-        else {
+        } else {
             newElement.setType("application");
             File sourceExecutableFile = learningUnitViewNewAndModifyElementDialogViewSpecificPane.getExecutableFile();
             String sourceExecutableFileName = sourceExecutableFile.getName();
-            newElement.setDirectoryContentIncluded(includeDirectoryContentCheckBox.isSelected());
-            FLGUIUtilities.startLongLastingOperation();
-            if (newElement.getDirectoryContentIncluded()) {
-                File destinationDirectory = learningUnitViewElementsManager.createNewDirectoryForElementsExternalData("directory",
-                    "", id);
-                File parentDirectoryOfExecutableFile = sourceExecutableFile.getParentFile();
-                FLGFileUtility.copyDirectoryContent(parentDirectoryOfExecutableFile, destinationDirectory);
-                FLGUIUtilities.stopLongLastingOperation();
-                newElement.setExecutableFileName(destinationDirectory.getName() + "//" + sourceExecutableFileName);
-                newElement.setProgramParameters(destinationDirectory.getAbsolutePath());
+            // check file extension
+            String mediaFileName = sourceExecutableFile.getName();
+        	StringBuffer mediaFileNameBuffer = new StringBuffer(mediaFileName);
+        	StringBuffer mediaFileExtension = new StringBuffer();
+            for (int j = 3; j >= 0; j--) {
+            	mediaFileExtension.append(mediaFileNameBuffer.charAt(mediaFileName.length()-j-1));
             }
-            else {
-                File destinationDirectory = learningUnitViewElementsManager.getLearningUnitViewDataDirectory();
-                FLGFileUtility.copyFile(sourceExecutableFile,
-                    new File(destinationDirectory.getPath() + "//" + sourceExecutableFile.getName()));
-                newElement.setExecutableFileName(sourceExecutableFileName);
-                newElement.setProgramParameters(destinationDirectory.getAbsolutePath());
-            }
-            newElement.setProgramParameters(learningUnitViewNewAndModifyElementDialogViewSpecificPane.getParameters());
-           newElement.setAutoChangeWorkingDirectory(autoChangeWorkingDirectoryCheckBox.isSelected());
-            FLGUIUtilities.stopLongLastingOperation();
+            if(mediaFileExtension.toString().equals(".pps") || mediaFileExtension.toString().equals(".ppt")) {
+	            if(learningUnitViewNewAndModifyElementDialogViewSpecificPane.getFinalizePPTFlag()) {
+	        		// convert ppt in pps file
+	        		final File sourceMediaFile = sourceExecutableFile;
+	        		String sourceMediaFileExtension = ".pps";
+	                final File destinationMediaFile = learningUnitViewElementsManager.createNewFileForElementsExternalData(selectedMediaType,
+	                        sourceMediaFileExtension, id);
+	                FLGUIUtilities.startLongLastingOperation();
+	                FLGFileUtility.copyFile(sourceMediaFile, destinationMediaFile);
+	                newElement.setExecutableFileName(destinationMediaFile.getName());
+	                FLGUIUtilities.stopLongLastingOperation();
+	        	} else {
+	        		// convert pps in ppt file
+	        		final File sourceMediaFile = sourceExecutableFile;
+	        		String sourceMediaFileExtension = ".ppt";
+	                final File destinationMediaFile = learningUnitViewElementsManager.createNewFileForElementsExternalData(selectedMediaType,
+	                        sourceMediaFileExtension, id);
+	                FLGUIUtilities.startLongLastingOperation();
+	                FLGFileUtility.copyFile(sourceMediaFile, destinationMediaFile);
+	                newElement.setExecutableFileName(destinationMediaFile.getName());
+	                FLGUIUtilities.stopLongLastingOperation();
+	        	} 
+            } else {
+                newElement.setDirectoryContentIncluded(includeDirectoryContentCheckBox.isSelected());
+	            FLGUIUtilities.startLongLastingOperation();
+	            if (newElement.getDirectoryContentIncluded()) {
+	                File destinationDirectory = learningUnitViewElementsManager.createNewDirectoryForElementsExternalData("directory",
+	                    "", id);
+	                File parentDirectoryOfExecutableFile = sourceExecutableFile.getParentFile();
+	                FLGFileUtility.copyDirectoryContent(parentDirectoryOfExecutableFile, destinationDirectory);
+	                FLGUIUtilities.stopLongLastingOperation();
+	                newElement.setExecutableFileName(destinationDirectory.getName() + "//" + sourceExecutableFileName);
+	                newElement.setProgramParameters(destinationDirectory.getAbsolutePath());
+	            } else {
+	                File destinationDirectory = learningUnitViewElementsManager.getLearningUnitViewDataDirectory();
+	                FLGFileUtility.copyFile(sourceExecutableFile,
+	                    new File(destinationDirectory.getPath() + "//" + sourceExecutableFile.getName()));
+	                newElement.setExecutableFileName(sourceExecutableFileName);
+	                newElement.setProgramParameters(destinationDirectory.getAbsolutePath());
+	            }
+	            newElement.setProgramParameters(learningUnitViewNewAndModifyElementDialogViewSpecificPane.getParameters());
+	            newElement.setAutoChangeWorkingDirectory(autoChangeWorkingDirectoryCheckBox.isSelected());
+	            FLGUIUtilities.stopLongLastingOperation();
+        	}
         }
         return newElement;
     }
@@ -126,6 +189,7 @@ public class FLGLearningByDoingElementsStructurePanel extends FSLAbstractLearnin
         private JButton fileSelectButton;
         private JTextField fileSelectTextField;
         private JTextField parameterTextField;
+        private JCheckBox finalizePPT_checkBox;
         private File executableFile;
         private File lastSelectedDir;
         private String executableFileExtension;
@@ -149,6 +213,11 @@ public class FLGLearningByDoingElementsStructurePanel extends FSLAbstractLearnin
 //            add(parameterLabel, FLGColumnLayout.LEFT);
 //            add(parameterTextField, FLGColumnLayout.LEFTEND);
             // add(setProgramPathButton, FLGColumnLayout.LEFTEND);
+            finalizePPT_checkBox = new JCheckBox(internationalization.getString("label.finalizePPT_checkBox.text"));
+            finalizePPT_checkBox.setEnabled(false);
+            finalizePPT_checkBox.setSelected(false);
+            add(new JLabel(" "), FLGColumnLayout.LEFT);
+            add(finalizePPT_checkBox, FLGColumnLayout.LEFTEND);
             add(new JLabel(" "), FLGColumnLayout.LEFT);
             includeDirectoryContentCheckBox = new JCheckBox(internationalization.getString("label.includeDirectory.text"), false);
             add(includeDirectoryContentCheckBox, FLGColumnLayout.LEFTEND);
@@ -185,6 +254,7 @@ public class FLGLearningByDoingElementsStructurePanel extends FSLAbstractLearnin
         public void setInputFieldsDefaults(FSLLearningUnitViewElement learningUnitViewElement) {
             if (learningUnitViewElement != null) {
                 if (!learningUnitViewElement.getFolder()) {
+                	
                     FLGLearningByDoingElement learningByDoingElement = (FLGLearningByDoingElement)learningUnitViewElement;
                     String id = learningByDoingElement.getId();
                     fileSelectTextField.setText("" + learningUnitViewElementsManager.resolveRelativeFileName(learningByDoingElement.getExecutableFileName(),
@@ -193,12 +263,28 @@ public class FLGLearningByDoingElementsStructurePanel extends FSLAbstractLearnin
                     includeDirectoryContentCheckBox.setSelected(learningByDoingElement.getDirectoryContentIncluded());
                     if (learningByDoingElement.hasAutoChangeWorkingDirectory()) {
                         autoChangeWorkingDirectoryCheckBox.setSelected(learningByDoingElement.getAutoChangeWorkingDirectory());
-                    }                
-                }
-                else
+                    }  
+                    // check file extension and enable finalizePPT_checkBox
+                    String mediaFileName = learningByDoingElement.getExecutableFileName();
+                	StringBuffer mediaFileNameBuffer = new StringBuffer(mediaFileName);
+                	StringBuffer mediaFileExtension = new StringBuffer();
+                    for (int j = 3; j >= 0; j--) {
+                    	mediaFileExtension.append(mediaFileNameBuffer.charAt(mediaFileName.length()-j-1));
+                    }
+                    if(mediaFileExtension.toString().equals(".pps")) {
+                      	// activate finalize ppt checkbox
+                    	finalizePPT_checkBox.setSelected(true);
+                    	finalizePPT_checkBox.setEnabled(true);
+                    } else if(mediaFileExtension.toString().equals(".ppt")) {	
+                    	finalizePPT_checkBox.setSelected(false);
+                    	finalizePPT_checkBox.setEnabled(true);
+                    } else {
+                    	finalizePPT_checkBox.setSelected(false);
+                    	finalizePPT_checkBox.setEnabled(false);
+                    }
+                } else
                     setEnabled(false);
-            }
-            else {
+            } else {
                 fileSelectTextField.setText("");
                 parameterTextField.setText("");
             }
@@ -215,6 +301,10 @@ public class FLGLearningByDoingElementsStructurePanel extends FSLAbstractLearnin
         public String getParameters() {
             return parameterTextField.getText();
         }
+        
+        public boolean getFinalizePPTFlag() {
+        	return finalizePPT_checkBox.isSelected();
+        }
 
         public void showFileChooserDialog() {
             FLGSelectableFileChooser fileChooser = new FLGSelectableFileChooser(internationalization.getString("label.fileType.text"), ".*");
@@ -224,6 +314,24 @@ public class FLGLearningByDoingElementsStructurePanel extends FSLAbstractLearnin
                 if (executableFile.exists()) {
                     fileSelectTextField.setText(executableFile.getAbsolutePath());
                     executableFileExtension = fileChooser.getFileExtension();
+                    // check file extension and enable finalizePPT_checkBox
+                    String mediaFileName = executableFile.getName();
+                	StringBuffer mediaFileNameBuffer = new StringBuffer(mediaFileName);
+                	StringBuffer mediaFileExtension = new StringBuffer();
+                    for (int j = 3; j >= 0; j--) {
+                    	mediaFileExtension.append(mediaFileNameBuffer.charAt(mediaFileName.length()-j-1));
+                    }
+                    if(mediaFileExtension.toString().equals(".pps")) {
+                      	// activate finalize ppt checkbox
+                    	finalizePPT_checkBox.setSelected(true);
+                    	finalizePPT_checkBox.setEnabled(true);
+                    } else if(mediaFileExtension.toString().equals(".ppt")) {	
+                    	finalizePPT_checkBox.setSelected(false);
+                    	finalizePPT_checkBox.setEnabled(true);
+                    } else {
+                    	finalizePPT_checkBox.setSelected(false);
+                    	finalizePPT_checkBox.setEnabled(false);
+                    }
                 }
             }
         }

@@ -36,6 +36,7 @@ public class FLGLearningByDoingElementInteractionPanel extends FSLAbstractLearni
         FSLLearningUnitEventGenerator learningUnitEventGenerator, boolean editMode) {
             super.init(learningUnitViewManager, learningUnitEventGenerator, editMode);
             learningUnitViewManager.addLearningUnitViewListener(new FLGInteractionPanel_Adapter());
+            learningUnitEventGenerator.addLearningUnitListener(new FLGLearningByDoing_LearningUnitAdapter());
     }
 
     private void play() {
@@ -58,20 +59,22 @@ public class FLGLearningByDoingElementInteractionPanel extends FSLAbstractLearni
 
     protected void buildDependentUI() {
         super.buildDependentUI();
-        if (learningUnitViewElementsManager != null) {
-            FLGLearningByDoingElement learningByDoingElement =
-                (FLGLearningByDoingElement)learningUnitViewElementsManager.getLearningUnitViewElement(activeLearningUnitViewElementId, false);
-            if (learningByDoingElement != null) {
-                if (learningByDoingElement.getFolder()) {
-                    playButton.setEnabled(false);
-                }
-                else {
-                    playButton.setEnabled(true);
-                }
-            }
-        }
-        else {
-            playButton.setEnabled(false);
+        if(!editMode) {
+	        if (learningUnitViewElementsManager != null) {
+	            FLGLearningByDoingElement learningByDoingElement =
+	                (FLGLearningByDoingElement)learningUnitViewElementsManager.getLearningUnitViewElement(activeLearningUnitViewElementId, false);
+	            if (learningByDoingElement != null) {
+	                if (learningByDoingElement.getFolder()) {
+	                    playButton.setEnabled(false);
+	                } else {
+	                    playButton.setEnabled(true);
+	                }
+	            }
+	        } else {
+	            playButton.setEnabled(false);
+	        }
+        } else {
+        	playButton.setEnabled(false);
         }
     }
 
@@ -85,15 +88,24 @@ public class FLGLearningByDoingElementInteractionPanel extends FSLAbstractLearni
 
     class FLGInteractionPanel_Adapter extends FSLLearningUnitViewAdapter {
         public void learningUnitViewElementActivated(FSLLearningUnitViewEvent event) {
-            if (event.getLearningUnitViewManagerId().equals(learningUnitViewManager.getLearningUnitViewManagerId())) {
-                FLGLearningByDoingElement learningUnitViewElement =
-                    (FLGLearningByDoingElement)learningUnitViewElementsManager.getLearningUnitViewElement(event.getActiveLearningUnitViewElementId(), false);
-                if (learningUnitViewElement != null && !learningUnitViewElement.getFolder()) {
-                    playButton.setEnabled(true);
-                }
-                else
-                    playButton.setEnabled(false);
-            }
+        	if(!editMode) {
+	            if (event.getLearningUnitViewManagerId().equals(learningUnitViewManager.getLearningUnitViewManagerId())) {
+	                FLGLearningByDoingElement learningUnitViewElement =
+	                    (FLGLearningByDoingElement)learningUnitViewElementsManager.getLearningUnitViewElement(event.getActiveLearningUnitViewElementId(), false);
+
+	                if(learningUnitViewElement != null && !learningUnitViewElement.getFolder()) {
+	                    playButton.setEnabled(true);
+	                } else
+	                    playButton.setEnabled(false);
+	            }
+        	}
+        }
+    }
+    
+    class FLGLearningByDoing_LearningUnitAdapter extends FSLLearningUnitVetoableAdapter {
+        public void learningUnitEditModeChanged(FSLLearningUnitEvent event) {
+            editMode = event.isEditMode();
+            buildDependentUI();
         }
     }
 }
