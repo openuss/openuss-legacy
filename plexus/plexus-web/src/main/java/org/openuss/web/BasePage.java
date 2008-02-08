@@ -19,7 +19,8 @@ import org.openuss.security.UserPreferencesInfo;
 import org.openuss.security.UserProfileInfo;
 
 /**
- * Abstract BasePage  
+ * Abstract BasePage
+ * 
  * @author Ingo Dueppe
  * @author Kai Stettner
  */
@@ -29,46 +30,47 @@ public abstract class BasePage extends BaseBean {
 
 	@Property(value = "#{desktopInfo}")
 	protected DesktopInfo desktopInfo;
-	
+
 	@Property(value = "#{desktopService2}")
 	protected DesktopService2 desktopService2;
-	
-	@Property(value ="#{desktopDao}")
+
+	@Property(value = "#{desktopDao}")
 	protected DesktopDao desktopDao;
-	
+
 	@Property(value = "#{user}")
-	protected UserInfoDetails user;
-	
+	protected UserInfo user;
+
 	@Property(value = "#{breadcrumbs}")
 	protected BreadCrumbs breadcrumbs;
-	
+
 	/**
-	 * Refreshing organisation entity 
-	 * @throws DesktopException 
+	 * Refreshing organisation entity
+	 * 
+	 * @throws DesktopException
 	 */
 	@Preprocess
 	public void preprocess() throws Exception {
 		logger.debug("Starting method preprocess");
-		
+
 		if (desktopInfo == null) {
 			if (user != null && user.getId() != null) {
 				logger.debug("preprocess - getting desktop session object");
 				desktopInfo = desktopService2.findDesktopByUser(user.getId());
 				logger.debug(desktopInfo.getId());
 				setSessionBean(Constants.DESKTOP_INFO, desktopInfo);
-			} 
-			
+			}
+
 			if (desktopInfo != null) {
-				logger.error("could not find desktop for user "+user);
+				logger.error("could not find desktop for user " + user);
 				addError(i18n("message_error_no_desktop_found"));
 				redirect(Constants.HOME);
 			}
 		}
 	}
-	
+
 	@Prerender
 	public void prerender() throws Exception {
-		if ((user!=null)&&(user.getId()==null)){	
+		if ((user != null) && (user.getId() == null)) {
 			user = new UserInfoDetails();
 			user.setPreferences(new UserPreferencesInfo());
 			user.setProfile(new UserProfileInfo());
@@ -76,7 +78,7 @@ public abstract class BasePage extends BaseBean {
 			setSessionBean(Constants.USER, user);
 		}
 	}
-	
+
 	/**
 	 * @return ResoureBundle
 	 */
@@ -91,16 +93,15 @@ public abstract class BasePage extends BaseBean {
 			return ResourceBundle.getBundle(getBundleName(), getFacesContext().getViewRoot().getLocale());
 		}
 	}
-	
 
 	public DesktopInfo getDesktopInfo() {
 		return desktopInfo;
 	}
-	
+
 	public void setDesktopInfo(DesktopInfo desktopInfo) {
 		this.desktopInfo = desktopInfo;
 	}
-	
+
 	public DesktopService2 getDesktopService2() {
 		return desktopService2;
 	}
@@ -109,11 +110,11 @@ public abstract class BasePage extends BaseBean {
 		this.desktopService2 = desktopService2;
 	}
 
-	public UserInfoDetails getUser() {
+	public UserInfo getUser() {
 		return user;
 	}
 
-	public void setUser(UserInfoDetails user) {
+	public void setUser(UserInfo user) {
 		this.user = user;
 	}
 

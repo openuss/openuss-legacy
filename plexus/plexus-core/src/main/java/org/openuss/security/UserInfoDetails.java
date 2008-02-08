@@ -6,16 +6,13 @@ import org.apache.commons.lang.StringUtils;
 
 public class UserInfoDetails extends UserInfo implements UserDetails{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1828012593245034508L;
+	
 	private GrantedAuthority[] authorities;
 	
 	public GrantedAuthority[] getAuthorities() {
 		return this.authorities;
 	}
-
 	
 	/**
 	 * Returns equals if it is compared to a string that represents the name of
