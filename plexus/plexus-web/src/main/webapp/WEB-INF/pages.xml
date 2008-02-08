@@ -244,10 +244,6 @@
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
             OpenUSS4US
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
-
-    <page view-id="/views/secured/openuss4us/*">
-	<securityConstraint domainObject="#{userInfo}" permissions="#{ACL.READ}"/>
-	</page>
 	
     <page view-id="/views/secured/openuss4us/buddylist.xhtml">
     </page>
@@ -257,10 +253,5 @@
     </page>
     <page view-id="/views/secured/openuss4us/groups.xhtml">
     </page>
-  
-    <page view-id="/views/secured/open/search.xhtml">
-    </page>
-    <page view-id="/views/secured/open/vorlage.xhtml">
-    </page>
-    
+      
  </pages>   

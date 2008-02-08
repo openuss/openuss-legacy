@@ -1,7 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <ui:composition xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:o="http://www.openuss.org/jsfcontrols"
@@ -10,7 +9,6 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:fck="http://www.fck-faces.org/fck-faces"
 	xmlns:ts="http://myfaces.apache.org/sandbox">
-
 
 	<div class="content_box">
 		<div class="content_box">
@@ -26,137 +24,126 @@
 				</p>
 			</div>
 			
-		<div class="content_normal">
+	<div class="content_normal">
 	
-			<h:panelGrid columns="2">
+		<h:panelGrid columns="2" border="1" rendered="true">
 	
-				<h:panelGroup id="userimage">
-					<div class="userimage">
-						<c:if test="#{not empty showuser.imageId}">
-							<h:graphicImage styleClass="userphoto"
-								value="/files?fileid=#{showuser.imageId}"
-								alt="#{showuser.contact.firstName} #{showuser.contact.lastName}"
-								title="#{showuser.contact.firstName} #{showuser.contact.lastName}" />
-						</c:if>
-						<c:if test="#{empty showuser.imageId}">
-							<h:graphicImage styleClass="userphoto"
-								value="/images/icons/no_pic.gif" 
-								alt="#{msg.user_profile_no_image}"
-								title="#{msg.user_profile_no_image}" />
-						</c:if>
-					</div>
-				</h:panelGroup>
-				<h:outputText value="" />		
-
-				<c:if test="#{showuser.profile.profileContactPublic}">
-					<h:outputText styleClass="profile_header"
-						value="#{msg.profile_address_header}" />
-					<h:outputText value="" />	
-				</c:if>
-
-				<c:if test="#{showuser.profile.addressPublic}">
-					<c:if test="#{not empty showuser.contact.address}">
-						<h:outputText value="#{msg.user_contact_address}:" /> 
-						<h:outputText value="#{showuser.contact.address}" />
+			<h:panelGroup id="userimage">
+				<div class="userimage">
+					<c:if test="#{not empty showuser.imageId}">
+						<h:graphicImage styleClass="userphoto"
+							value="/files?fileid=#{showuser.imageId}"
+							alt="#{showuser.contact.firstName} #{showuser.contact.lastName}"
+							title="#{showuser.contact.firstName} #{showuser.contact.lastName}" />
 					</c:if>
-					<c:if test="#{not empty showuser.contact.postcode}">
-						<h:outputText value="#{msg.user_contact_postcode}:" />
-						<h:outputText value="#{showuser.contact.postcode}" />
+					<c:if test="#{empty showuser.imageId}">
+						<h:graphicImage styleClass="userphoto"
+							value="/images/icons/no_pic.gif" 
+							alt="#{msg.user_profile_no_image}"
+							title="#{msg.user_profile_no_image}" />
 					</c:if>
-					<c:if test="#{not empty showuser.contact.city}">
-						<h:outputText value="#{msg.user_contact_city}:" />
-						<h:outputText value="#{showuser.contact.city}" />
-					</c:if>
-					<c:if test="#{not empty showuser.contact.country}">
-						<h:outputText value="#{msg.user_contact_country}:" />
-						<h:outputText value="#{showuser.contact.country}" />
-					</c:if>
-				</c:if> 
-		
-				<c:if test="#{showuser.profile.emailPublic}">
-					<h:outputText value="#{msg.user_email}: " />
-					<h:outputLink value="mailto://#{showuser.email}" styleClass="email">
-						<h:outputText value="#{showuser.email}" />
-					</h:outputLink>
-				</c:if> 
-				
-				<c:if test="#{showuser.profile.profileContactPublic}">
-					<c:if test="#{not empty showuser.contact.skype}">
-						<h:outputText value="#{msg.user_contact_skype}: " />
-						<h:outputLink value="skype:#{showuser.contact.skype}" styleClass="email">
-							<h:graphicImage value="http://mystatus.skype.com/smallicon/#{showuser.contact.skype}" />
-							<h:outputText value=" #{showuser.contact.skype}" />
-						</h:outputLink>
-					</c:if> 
-					<c:if test="#{not empty showuser.contact.icq}">
-						<h:outputText value="#{msg.user_contact_icq}:" />
-						<h:outputText value="#{showuser.contact.icq}" />
-					</c:if> 
-					<c:if test="#{not empty showuser.contact.msn}">
-						<h:outputText value="#{msg.user_contact_msn}:" />
-						<h:outputText value="#{showuser.contact.msn}" />
-					</c:if> 
-				</c:if>
-				
-				<c:if test="#{showuser.profile.telephonePublic}">
-					<c:if test="#{not empty showuser.contact.telephone}">
-						<h:outputText value="#{msg.user_contact_telephone}:" />
-						<h:outputText value="#{showuser.contact.telephone}" />
-					</c:if>
-					<c:if test="#{not empty showuser.contact.mobile}">
-						<h:outputText value="#{msg.user_contact_mobile}:" />
-						<h:outputText value="#{showuser.contact.mobile}" />
-					</c:if>
-				</c:if>
-				
-				<c:if test="#{showuser.profile.profilePersonalPublic}">
-					<h:outputText styleClass="profile_header"
-						value="#{msg.profile_personal_header}" />
-					<h:outputText value=""/>
-					<c:if test="#{not empty showuser.contact.birthday}">
-						<h:outputText value="#{msg.user_contact_birthday}: " />
-						<h:outputText value="#{showuser.contact.birthday}">
-							<f:convertDateTime pattern="dd.MM.yyyy" />
-						</h:outputText>
-					</c:if>
-					<c:if test="#{not empty showuser.contact.searching}">
-						<h:outputText value="#{msg.user_contact_searching}:" />
-						<h:outputText value="#{showuser.contact.searching}" />
-					</c:if>
-					<c:if test="#{not empty showuser.contact.providing}">
-						<h:outputText value="#{msg.user_contact_providing}:" />
-					 	<h:outputText value="#{showuser.contact.providing}" />
-					</c:if>
-					<c:if test="#{not empty showuser.contact.interests}">
-						<h:outputText value="#{msg.user_contact_interests}:" />
-						<h:outputText value="#{showuser.contact.interests}" />
-					</c:if>
-				</c:if>
-		
-				<c:if test="#{showuser.profile.profileUniPublic}">
-					<h:outputText styleClass="profile_header"
-						value="#{msg.profile_uni_header}" />
-					<h:outputText value="" />	
-					<c:if test="#{not empty showuser.profile.studies}">
-						<h:outputText value="#{msg.user_profile_studies}:" />
-						<h:outputText value="#{showuser.profile.studies}" />
-					</c:if>
-					<c:if test="#{not empty showuser.profile.ageGroup}">
-						<h:outputText value="#{msg.user_profile_agegroup}:" />
-						<h:outputText value="#{showuser.profile.ageGroup}" />
-					</c:if>
-				</c:if>
-
-				<c:if test="#{showuser.profile.profilePersonalPublic}">
-					<h:outputText value="#{showuser.profile.portrait}" escape="false" />
-				</c:if>
+				</div>
+			</h:panelGroup>
+			<h:outputText value=""/>		
 			
-			</h:panelGrid>
+			<h:panelGroup id="usercontact">
+				<div class="usercontact">
+					<ul>
+						<c:if test="#{showuser.profile.profileContactPublic}">
+							<br/>
+							<h:outputText value="#{msg.profile_address_header}"
+								styleClass="profile_header" />
+							<br/>
+						</c:if>
 
-		</div>
+						<c:if test="#{showuser.profile.addressPublic}">
+			
+			
+			
+			<c:if test="#{not empty showuser.contact.address}">
+						#{msg.user_contact_address}: #{showuser.contact.address}<br />
+			</c:if>
+			<c:if test="#{not empty showuser.contact.postcode}">
+						#{msg.user_contact_postcode}: #{showuser.contact.postcode}<br />
+			</c:if>
+			<c:if test="#{not empty showuser.contact.city}">
+						#{msg.user_contact_city}: #{showuser.contact.city}<br />
+			</c:if>
+			<c:if test="#{not empty showuser.contact.country}">
+						#{msg.user_contact_country}: #{showuser.contact.country}<br />
+			</c:if>
+		</c:if> <c:if test="#{showuser.profile.emailPublic}">
+			<h:outputText value="#{msg.user_email}: " />
+			<h:outputLink value="mailto://#{showuser.email}" styleClass="email">#{showuser.email}</h:outputLink>
+			<br />
+		</c:if> <c:if test="#{not empty showuser.contact.skype}">
+			<h:outputText value="#{msg.user_contact_skype}: " />
+			<h:outputLink value="skype:#{showuser.contact.skype}"
+				styleClass="email">
+				<img
+					src="http://mystatus.skype.com/smallicon/#{showuser.contact.skype}" /> #{showuser.contact.skype}</h:outputLink>
+			<br />
+		</c:if> <c:if test="#{not empty showuser.contact.icq}">
+						#{msg.user_contact_icq}: #{showuser.contact.icq}<br />
+			<!-- insert image here -->
+		</c:if> <c:if test="#{not empty showuser.contact.msn}">
+						#{msg.user_contact_msn}: #{showuser.contact.msn}<br />
+		</c:if> <c:if test="#{showuser.profile.telephonePublic}">
+			<c:if test="#{not empty showuser.contact.telephone}">
+						#{msg.user_contact_telephone}: #{showuser.contact.telephone}<br />
+			</c:if>
+			<c:if test="#{not empty showuser.contact.mobile}">
+						#{msg.user_contact_mobile}: #{showuser.contact.mobile}<br />
+			</c:if>
+		</c:if>
+		<c:if test="#{showuser.profile.profilePersonalPublic}">
+			<br />
+			<h:outputText value="#{msg.profile_personal_header}"
+				styleClass="profile_header" />
+			<br />
+			<c:if test="#{not empty showuser.contact.birthday}">
+				<h:outputText value="#{msg.user_contact_birthday}: " />
+				<h:outputText value="#{showuser.contact.birthday}">
+					<f:convertDateTime pattern="dd.MM.yyyy" />
+				</h:outputText>
+				<br />
+			</c:if>
+			<c:if test="#{not empty showuser.contact.searching}">
+						#{msg.user_contact_searching}: #{showuser.contact.searching}<br />
+			</c:if>
+			<c:if test="#{not empty showuser.contact.providing}">
+						#{msg.user_contact_providing}: #{showuser.contact.providing}<br />
+			</c:if>
+			<c:if test="#{not empty showuser.contact.interests}">
+						#{msg.user_contact_interests}: #{showuser.contact.interests}<br />
+			</c:if>
+		</c:if>
+		<c:if test="#{showuser.profile.profileUniPublic}">
+			<br />
+			<h:outputText value="#{msg.profile_uni_header}"
+				styleClass="profile_header" />
+			<br />
+			<c:if test="#{not empty showuser.profile.studies}">
+						#{msg.user_profile_studies}: #{showuser.profile.studies}<br />
+			</c:if>
+			<c:if test="#{not empty showuser.profile.ageGroup}">
+						#{msg.user_profile_agegroup}: #{showuser.profile.ageGroup}<br />
+			</c:if>
+		</c:if>
+		<br />
+		<h:outputText value="#{showuser.profile.portrait}" escape="false" />
+	</ul>
+
+				</div>
+			
+			</h:panelGroup>
+			
+		</h:panelGrid>
+
+	</div>
 	
-			<div class="footer_normal_left_bg" />
-			<div class="footer_normal_right_bg" />
+	<div class="footer_normal_left_bg" />
+		<div class="footer_normal_right_bg" />
 			<div class="footer_normal">
 				<c:if test="${!empty footer}">
 					<p class="${footerClass}">${footer}</p>
