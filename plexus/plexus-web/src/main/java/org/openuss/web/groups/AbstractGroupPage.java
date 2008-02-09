@@ -10,6 +10,7 @@ import org.openuss.web.Constants;
 /**
  * 
  * @author Lutz D. Kramer
+ * @author Thomas Jansing
  *
  */
 public class AbstractGroupPage extends BasePage {
@@ -29,8 +30,8 @@ public class AbstractGroupPage extends BasePage {
 			}
 			if (groupInfo == null) {
 				// TODO - Lutz: Properties anpassen
-				addError(i18n("message_error_group_page"));
-				redirect(Constants.OUTCOME_BACKWARD);
+				// addError(i18n("message_error_group_page"));
+				// redirect(Constants.OUTCOME_BACKWARD);
 				return;
 			} else {
 				// TODO - Lutz: BreadCrumbs

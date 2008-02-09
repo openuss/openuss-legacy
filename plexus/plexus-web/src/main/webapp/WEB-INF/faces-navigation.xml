@@ -224,13 +224,24 @@
 		</navigation-case>	
 		
 		<navigation-case>
-			<from-outcome>openuss4us_groups_create</from-outcome>
+			<from-outcome>openuss4us_groups_new</from-outcome>
 			<to-view-id>/views/secured/groups/groupnew.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
-			<from-outcome>openuss4us_groups_delete</from-outcome>
-			<to-view-id>/views/secured/groups/groupdelete.xhtml</to-view-id>
+			<from-outcome>openuss4us_groups_join</from-outcome>
+			<to-view-id>/views/secured/groups/groupjoin.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_groups_leave</from-outcome>
+			<to-view-id>/views/secured/groups/groupleave.xhtml</to-view-id>
+		</navigation-case>
+		
+		<!-- TODO DUMMY LINK ENTFERNEN -->
+		<navigation-case>
+			<from-outcome>openuss4us_group_testgroup</from-outcome>
+			<to-view-id>/views/secured/groups/group.xhtml</to-view-id>
 		</navigation-case>
 		
 	</navigation-rule>
