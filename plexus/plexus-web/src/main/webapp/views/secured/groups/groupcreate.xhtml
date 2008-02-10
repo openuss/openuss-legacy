@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:fck="http://www.fck-faces.org/fck-faces">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>
+			<ui:insert name="title"/>
+		</title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>
+	
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+  		<ui:define name="title">
+			<h:outputText value="#{msg['openuss4us_groups_registration_headline']}" />
+  		</ui:define>
+  		<ui:define name="navigation">  			
+			<ui:include src="/views/commons/navigation/desktop.xhtml" />
+  		</ui:define>
+  		<ui:define name="sidebar">  			
+			<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
+			<ui:include src="/views/commons/sidebar/default.xhtml" />
+  		</ui:define>
+  		<ui:define name="content">
+			<h:form id="openuss4us_groups_create_group" enctype="multipart/form-data">
+				<o:block label="#{msg['openuss4us_groups_registration_headline']}" styleClass="form_box">
+				
+					<t:htmlTag value="br" />
+					<h:outputText value="#{msg.openuss4us_groups_options_header}" styleClass="header_font_normal"/>
+					<o:input entity="groupInfo" property="name" maxlength="100" required="true"/>
+					<o:input entity="groupInfo" property="shortcut" maxlength="30" />
+					
+					<h:outputLabel value="#{msg.groupinfo_description}" for="descriptionTextField" styleClass="field_label"/>
+					<h:inputTextarea styleClass="pulldown" value="#{groupInfo.description}" id="descriptionTextField" />
+					
+					<!-- TODO FIXME 
+					<h:outputLabel value="#{msg.groupinfo_accesstype}" for="accessTypeSelect" styleClass="field_label" />
+					<h:selectOneListbox id="accessTypeSelect" size="1" styleClass="pulldown" value="#{groupInfo.accessType}">
+					    <f:selectItems value="#{views$secured$groups$groupcreate.accessTypes}"/>
+					</h:selectOneListbox> 
+					-->
+					
+					<!--   <h:outputLabel for="accessType" value="#{msg.groupinfo_accesstype}" styleClass="field_label"/>
+					<h:selectOneMenu id="accessType" 
+						layout="pageDirection" 
+						value="#{sessionScope.courseInfo.accessType}" 
+
+						onchange="this.form.submit();"
+						immediate="true" 
+						styleClass="pulldown">
+						<f:converter converterId="accessTypeConverter" />
+						<f:selectItems value="#{views$secured$groups$groupcreate.accessTypes}"/>
+					</h:selectOneMenu>
+					<h:message for="accessType" styleClass="field_error"/>
+					<c:if test="#{sessionScope.courseInfo.accessType.value == 3}">
+		 				<o:input entity="courseInfo" property="password" required="true"/>
+	 				</c:if> 	
+	 				
+	 				-->
+					
+					<t:htmlTag value="br" />
+					<h:outputText value="#{msg.openuss4us_groups_options_features}" styleClass="header_font_normal"/>
+					<o:input entity="groupInfo" property="documents"/>
+					<o:input entity="groupInfo" property="forum"/>
+					<o:input entity="groupInfo" property="newsletter"/>
+					<o:input entity="groupInfo" property="chat"/>
+					<o:input entity="groupInfo" property="calendar"/>
+				
+				<!-- CONTENT HIER REIN -->
+   			 	</o:block>
+   			 	
+   			 	<o:block>
+			   		<h:commandButton value="#{msg.back}" action="view:backward" styleClass="button_back"/>
+					<h:commandButton value="#{msg.forward}" action="#{views$secured$groups$groupcreate.register}" styleClass="button_continue"/>
+		 		</o:block>
+	 		</h:form> 
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

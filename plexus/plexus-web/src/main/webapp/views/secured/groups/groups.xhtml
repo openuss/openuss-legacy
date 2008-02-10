@@ -35,29 +35,25 @@
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
   		</ui:define>
   		<ui:define name="content">
-			<h:form id="openuss4us_groupst" enctype="multipart/form-data">
-				<o:block label="#{msg['openuss4us_command_groups']}" styleClass="form_box">
+			<h:form id="openuss4us_groups" enctype="multipart/form-data">
+				<o:block label="#{msg['openuss4us_command_groups']}" styleClass="content_box">
 				
 				<t:htmlTag value="br" />
 				
 				<h:outputText value="#{msg['openuss4us_groups_description']}" styleClass="content_font_normal" />
 				
-				<o:flexlist binding="#{views$secured$groups$groups.groupList}" />
+
+					<o:flexlist binding="#{views$secured$groups$groups.groupList}" />
+
 				
 				<t:htmlTag value="br" />
-				
-				<h:commandLink 
-					styleClass="field_inline"
-					action="openuss4us_group_testgroup"
-					value="Socialising Muenster - (dummy link)"
-					titel="Socialising Muenster - (dummy link)" />
 				
    			 	</o:block>
    			 	<o:block>
 				
 				<h:commandButton 
 					styleClass="button"
-					action="#{views$secured$groups$groups.newGroup}"
+					action="#{views$secured$groups$groups.createGroup}"
 					value="#{msg['openuss4us_groups_button_create']}"
 					title="#{msg['openuss4us_groups_button_create']}"
 					immediate="false" />

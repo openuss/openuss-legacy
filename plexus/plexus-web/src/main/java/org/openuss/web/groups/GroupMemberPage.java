@@ -12,8 +12,8 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.groups.GroupMemberInfo;
 import org.openuss.security.User;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 
@@ -24,9 +24,9 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$course$courseparticipants", scope = Scope.REQUEST)
 @View
-public class CourseMemberPage extends AbstractGroupPage {
+public class GroupMemberPage extends AbstractGroupPage {
 	
-	private static final Logger logger = Logger.getLogger(CourseMemberPage.class);
+	private static final Logger logger = Logger.getLogger(GroupMemberPage.class);
 
 	private ParticipantDataProvider data = new ParticipantDataProvider();
 
@@ -53,17 +53,17 @@ public class CourseMemberPage extends AbstractGroupPage {
 		breadcrumbs.addCrumb(crumb);
 	}
 	
-	private class ParticipantDataProvider extends AbstractPagedTable<UserInfo> {
+	private class ParticipantDataProvider extends AbstractPagedTable<GroupMemberInfo> {
 
 		private static final long serialVersionUID = -1918372320518667092L;
 		
-		private DataPage<UserInfo> page;
+		private DataPage<GroupMemberInfo> page;
 
 		@Override
-		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
+		public DataPage<GroupMemberInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<UserInfo> member = groupService.getMembers(groupInfo);
-				page = new DataPage<UserInfo>(member.size(), 0, member);
+				List<GroupMemberInfo> member = groupService.getMember(groupInfo);
+				page = new DataPage<GroupMemberInfo>(member.size(), 0, member);
 				sort(member);
 			}
 			return page;
@@ -71,19 +71,19 @@ public class CourseMemberPage extends AbstractGroupPage {
 	}
 
 	public String showProfile() {
-		UserInfo member = data.getRowData();
+		GroupMemberInfo member = data.getRowData();
 		User user = User.Factory.newInstance();
-		user.setId(member.getId());
+		user.setId(member.getUserId());
 		setSessionBean(Constants.SHOW_USER_PROFILE, user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 
 	public String delete() {
 		logger.info("group member deleted");
-		UserInfo member = data.getRowData();
-		groupService.removeMember(groupInfo, member.getId());
+		GroupMemberInfo member = data.getRowData();
+		groupService.removeMember(member.getId());
 		// TODO - Lutz: Properties anpassen
-		addMessage(i18n("message_group_removed_participant",member.getUsername()));
+		addMessage(i18n("message_group_removed_participant",member.getUserName()));
 		return Constants.SUCCESS;
 	}
 

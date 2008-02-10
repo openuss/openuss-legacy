@@ -2,6 +2,8 @@ package org.openuss.web.groups;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Collection;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -14,6 +16,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.framework.jsfcontrols.components.flexlist.ListItemDAO;
 import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
 import org.openuss.groups.GroupApplicationException;
 import org.openuss.groups.GroupMemberType;
@@ -37,6 +40,10 @@ public class GroupMainPage extends AbstractGroupPage {
 	private User user;
 	
 	private UIFlexList groupList;
+	private boolean groupListDataLoaded = false;
+	private boolean prerenderCalled = false;
+	private Map<Long, GroupInfo> groupData;
+	private static final String groupBasePath = "/views/secured/groups/group.faces";
 	
 	private String password;
 
@@ -60,8 +67,8 @@ public class GroupMainPage extends AbstractGroupPage {
 	
 	// Navigation outcomes
 	// TODO Thomas: Implement Security - Max Groups allowed ?
-	public String newGroup() {
-		return Constants.OPENUSS4US_GROUPS_NEW;
+	public String createGroup() {
+		return Constants.OPENUSS4US_GROUPS_CREATE;
 	}
 	public String joinGroup() {
 		return Constants.OPENUSS4US_GROUPS_JOIN;
@@ -75,9 +82,6 @@ public class GroupMainPage extends AbstractGroupPage {
 		// sort(groups);
 		return groups;
 	}
-	
-	
-
 
 	// Flexlist of groups
 	public UIFlexList getGroupList() {
@@ -90,32 +94,31 @@ public class GroupMainPage extends AbstractGroupPage {
 		groupList.getAttributes().put("title", i18n("flexlist_groups"));
 		groupList.getAttributes().put("showButtonTitle", i18n("flexlist_more_groups"));
 		groupList.getAttributes().put("hideButtonTitle", i18n("flexlist_less_groups"));
-		// Needed ? Bookmarks
+		// TODO Thomas: Needed ? Bookmarks for groups ?
 		// groupList.getAttributes().put("alternateRemoveBookmarkLinkTitle", i18n("flexlist_remove_bookmark"));
 
 		// Load values into the component
-		// loadValuesForGroupList(groupList);
+		loadValuesForGroupList(groupList);
 	}
 	
 		// TODO Thomas: Convert from department/course to group -> found in MyUniPage.java
-		/**	private void loadValuesForGroupList(UIFlexList groupList) {
-
+		private void loadValuesForGroupList(UIFlexList groupList) {
 	
-		if (courseListDataLoaded == false && prerenderCalled == true && coursesList != null) {
-			logger.debug("Loading data for courses flexlist");
+		if (groupListDataLoaded == false && groupList != null) {
+			logger.debug("Loading data for group flexlist");
 			// Make sure myUni-Data is loaded
-			prepareData();
+			// prepareData();
 
-			// Get the current university id
-			Long universityId = chooseUniversity();
+			// Get the current user id
+			
+			Long userId = 1111L;
 
 			// Put data in the component's attributes
-			if (universityId != null && myUniData != null) {
-				coursesList.getAttributes().put("visibleItems", getVisibleCourseListItems(universityId));
-				coursesList.getAttributes().put("hiddenItems", getHiddenCourseListItems(universityId));
+			if (userId != null) {
+				groupList.getAttributes().put("visibleItems", getGroupListItems(userId));
 
 				// Make sure this isn't executed twice
-				courseListDataLoaded = true;
+				groupListDataLoaded = true;
 			}
 		}
 	}
@@ -123,32 +126,27 @@ public class GroupMainPage extends AbstractGroupPage {
 		// Returns a list of ListItemDAOs that contain the information to be shown
 		// by the group flexlist
 	
-		private List<ListItemDAO> getGroupListItems(Long universityId) {
+	private List<ListItemDAO> getGroupListItems(Long userId) {
 		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
 
-		if (myUniData != null) {
-			MyUniInfo myUniInfo = myUniData.get(universityId);
-			if (myUniInfo != null) {
-				ListItemDAO newItem;
-				Collection<MyUniDepartmentInfo> departmentCollection = myUniInfo.getDepartments();
+		// GroupInfo groupInfo = groupData.get(userId);
 
-				for (MyUniDepartmentInfo departmentInfo : departmentCollection) {
-					newItem = new ListItemDAO();
-					newItem.setTitle(departmentInfo.getName());
-					newItem.setUrl(contextPath()+departmentsBasePath + "?department=" + departmentInfo.getId());
-					if (departmentInfo.isBookmarked())
-						newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId
-								+ "&remove_department=" + departmentInfo.getId());
-
-					listItems.add(newItem);
-				}
-			}
-		}
-
+		ListItemDAO newItem;
+		newItem = new ListItemDAO();
+		
+		// TODO Thomas: delete dummy links
+		newItem.setTitle("Socialising Muenster");
+		newItem.setUrl(contextPath()+groupBasePath);
+		listItems.add(newItem);
+		
+		newItem = new ListItemDAO();
+		newItem.setTitle("OpenArena Test Group");
+		newItem.setUrl(contextPath()+groupBasePath);
+		listItems.add(newItem);		
 		return listItems;
 	}
 	
-	*/	
+
 	
 	// Needed ??
 	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {

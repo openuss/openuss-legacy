@@ -195,13 +195,9 @@
 			<to-view-id>/views/secured/lecture/registration/universitystart.xhtml</to-view-id>
 		</navigation-case>
 		
-
-		
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
     	O p e n U S S 4 U S - R u l e s
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
-
-
 		
 		<navigation-case>
 			<from-outcome>openuss4us_buddylist</from-outcome>
@@ -224,8 +220,8 @@
 		</navigation-case>	
 		
 		<navigation-case>
-			<from-outcome>openuss4us_groups_new</from-outcome>
-			<to-view-id>/views/secured/groups/groupnew.xhtml</to-view-id>
+			<from-outcome>openuss4us_groups_create</from-outcome>
+			<to-view-id>/views/secured/groups/groupcreate.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
@@ -245,9 +241,7 @@
 		</navigation-case>
 		
 	</navigation-rule>
-	
-	
-	
+
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
     	L o g i n / L o g o u t  - R u l e s
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
