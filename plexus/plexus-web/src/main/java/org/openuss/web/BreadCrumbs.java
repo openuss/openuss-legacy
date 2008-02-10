@@ -644,4 +644,9 @@ public class BreadCrumbs extends BaseBean {
 		}
 	}
 
+	public void loadGroupCrumbs(GroupInfo groupInfo) {
+		// TODO Thomas: Implement !
+		
+	}
+
 }

@@ -16,12 +16,16 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
+import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.groups.GroupApplicationException;
+import org.openuss.groups.GroupInfo;
 import org.openuss.groups.GroupMemberInfo;
 import org.openuss.groups.GroupMemberType;
 import org.openuss.lecture.CourseApplicationException;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.CourseMemberType;
+import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.BasePage;
 /**
@@ -36,6 +40,8 @@ public class GroupMainPage extends AbstractGroupPage {
 	
 	private static final Logger logger = Logger.getLogger(GroupMainPage.class);
 
+	private User user;
+	
 	private UIFlexList groupList;
 	
 	private String password;
@@ -59,6 +65,7 @@ public class GroupMainPage extends AbstractGroupPage {
 	}
 	
 	// Navigation outcomes
+	// TODO Thomas: Implement Security - Max Groups allowed ?
 	public String newGroup() {
 		return Constants.OPENUSS4US_GROUPS_NEW;
 	}
@@ -69,6 +76,17 @@ public class GroupMainPage extends AbstractGroupPage {
 		return Constants.OPENUSS4US_GROUPS_LEAVE;
 	}
 	
+	public List getGroups(User user) {
+		this.user = user;
+		List groupsList = user.getGroups();
+		List<GroupInfo> groups = groupService.findGroups();
+		// sort(groups);
+		return groupsList;
+	}
+	
+	
+
+
 	// Flexlist of groups
 	public UIFlexList getGroupList() {
 		return groupList;
