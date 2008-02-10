@@ -11,14 +11,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.CallbackException;
 import org.hibernate.Session;
-import org.hibernate.classic.Lifecycle;
 import org.openuss.lecture.CourseImpl;
 
 /**
- * @see org.openuss.groups.Groups
+ * @see org.openuss.groups.UserGroup
  */
-public class GroupsImpl extends GroupsBase implements Groups, Lifecycle {
-
+public class UserGroupImpl extends org.openuss.groups.UserGroupBase implements
+		org.openuss.groups.UserGroup {
 	private static final Logger logger = Logger.getLogger(CourseImpl.class);
 	/**
 	 * The serial version UID of this class. Needed for serialization.

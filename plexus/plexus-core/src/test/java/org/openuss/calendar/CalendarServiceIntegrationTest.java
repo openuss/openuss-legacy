@@ -8,17 +8,22 @@ package org.openuss.calendar;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.LinkedList;
 import java.util.List;
-import org.openuss.lecture.*;
 
 import org.openuss.TestUtility;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.foundation.DomainObject;
-import org.openuss.groups.GroupInfo;
-import org.openuss.groups.AccessType;
+import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.security.*;
+import org.openuss.lecture.CourseType;
+import org.openuss.lecture.CourseTypeDao;
+import org.openuss.lecture.Period;
+import org.openuss.lecture.PeriodDao;
+import org.openuss.security.SecurityService;
+import org.openuss.security.User;
+import org.openuss.security.UserDao;
+import org.openuss.security.UserInfo;
 
 /**
  * JUnit Test for Spring Hibernate CalendarService class.

@@ -151,7 +151,7 @@ public class GroupMainPage extends AbstractGroupPage {
 
 	public String applyWithPassword() throws GroupApplicationException {
 		logger.debug("group entry with password applied");
-		groupService.addUserByPassword(password, groupInfo, user);
+		groupService.addUserByPassword(password, groupInfo);
 		addMessage(i18n("message_course_password_accepted"));
 		return Constants.SUCCESS;
 	}

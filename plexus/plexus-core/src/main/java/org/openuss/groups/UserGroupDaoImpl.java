@@ -5,18 +5,15 @@
  */
 package org.openuss.groups;
 
-import org.openuss.lecture.Course;
-import org.openuss.lecture.CourseInfo;
-
 /**
- * @see org.openuss.groups.Groups
+ * @see org.openuss.groups.UserGroup
  */
-public class GroupsDaoImpl extends org.openuss.groups.GroupsDaoBase {
+public class UserGroupDaoImpl extends org.openuss.groups.UserGroupDaoBase {
 	/**
-	 * @see org.openuss.groups.GroupsDao#toGroupInfo(org.openuss.groups.Groups,
+	 * @see org.openuss.groups.GroupsDao#toGroupInfo(org.openuss.groups.UserGroup,
 	 *      org.openuss.groups.GroupInfo)
 	 */
-	public void toGroupInfo(Groups sourceEntity, GroupInfo targetVO) {
+	public void toGroupInfo(UserGroup sourceEntity, GroupInfo targetVO) {
 		super.toGroupInfo(sourceEntity, targetVO);
 		targetVO.setId(sourceEntity.getId());
 		targetVO.setAccessType(sourceEntity.getAccessType());
@@ -32,10 +29,10 @@ public class GroupsDaoImpl extends org.openuss.groups.GroupsDaoBase {
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupsDao#toGroupInfo(org.openuss.groups.Groups)
+	 * @see org.openuss.groups.GroupsDao#toGroupInfo(org.openuss.groups.UserGroup)
 	 */
-	public GroupInfo toGroupInfo(final Groups entity) {
-		if (entity != null) { 
+	public GroupInfo toGroupInfo(final UserGroup entity) {
+		if (entity != null) {
 			GroupInfo targetVO = new GroupInfo();
 			toGroupInfo(entity, targetVO);
 			return targetVO;
@@ -49,13 +46,13 @@ public class GroupsDaoImpl extends org.openuss.groups.GroupsDaoBase {
 	 * object from the object store. If no such entity object exists in the
 	 * object store, a new, blank entity is created
 	 */
-	private Groups loadGroupsFromGroupInfo(GroupInfo groupInfo) {
-		Groups groups = null;
+	private UserGroup loadGroupsFromGroupInfo(GroupInfo groupInfo) {
+		UserGroup groups = null;
 		if (groupInfo != null && groupInfo.getId() != null) {
 			groups = this.load(groupInfo.getId());
 		}
 		if (groups == null) {
-			groups = Groups.Factory.newInstance();
+			groups = UserGroup.Factory.newInstance();
 		}
 		return groups;
 	}
@@ -63,18 +60,18 @@ public class GroupsDaoImpl extends org.openuss.groups.GroupsDaoBase {
 	/**
 	 * @see org.openuss.groups.GroupsDao#groupInfoToEntity(org.openuss.groups.GroupInfo)
 	 */
-	public Groups groupInfoToEntity(GroupInfo groupInfo) {
-		Groups entity = this.loadGroupsFromGroupInfo(groupInfo);
+	public UserGroup groupInfoToEntity(GroupInfo groupInfo) {
+		UserGroup entity = this.loadGroupsFromGroupInfo(groupInfo);
 		this.groupInfoToEntity(groupInfo, entity, true);
 		return entity;
 	}
 
 	/**
 	 * @see org.openuss.groups.GroupsDao#groupInfoToEntity(org.openuss.groups.GroupInfo,
-	 *      org.openuss.groups.Groups)
+	 *      org.openuss.groups.UserGroup)
 	 */
-	public void groupInfoToEntity(GroupInfo sourceVO, Groups targetEntity, boolean copyIfNull) {
+	public void groupInfoToEntity(GroupInfo sourceVO, UserGroup targetEntity,
+			boolean copyIfNull) {
 		super.groupInfoToEntity(sourceVO, targetEntity, copyIfNull);
 	}
-
 }

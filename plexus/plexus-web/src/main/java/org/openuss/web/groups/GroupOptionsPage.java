@@ -15,7 +15,7 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.groups.GroupInfo;
 import org.openuss.web.Constants;
-import org.openuss.groups.AccessType;
+import org.openuss.groups.GroupAccessType;
 
 
 /**
@@ -73,7 +73,7 @@ public class GroupOptionsPage extends AbstractGroupPage {
 		
 		// TODO move to business layer
 		GroupInfo groupOld = getGroupService().getGroupInfo(groupInfo.getId());
-		if (groupOld.getAccessType() == AccessType.CLOSED && groupInfo.getAccessType() != AccessType.OPEN) {
+		if (groupOld.getAccessType() == GroupAccessType.CLOSED && groupInfo.getAccessType() != GroupAccessType.OPEN) {
 			getGroupService().removeAspirant(groupOld);
 		}
 		// XSS Filter Content
@@ -102,15 +102,15 @@ public class GroupOptionsPage extends AbstractGroupPage {
 	 */
 	public void processAccessTypeChanged(ValueChangeEvent event) {
 		Object accessType = event.getNewValue();
-		groupInfo.setAccessType((AccessType) accessType);
+		groupInfo.setAccessType((GroupAccessType) accessType);
 	}
 
 	public List<SelectItem> getAccessTypes() {
 		List<SelectItem> items = new ArrayList<SelectItem>();
 		// TODO - Lutz: Properties anpassen
-		items.add(new SelectItem(AccessType.OPEN, i18n("group_options_access_open")));
-		items.add(new SelectItem(AccessType.CLOSED, i18n("group_options_access_closed")));
-		items.add(new SelectItem(AccessType.PASSWORD, i18n("group_options_access_password")));
+		items.add(new SelectItem(GroupAccessType.OPEN, i18n("group_options_access_open")));
+		items.add(new SelectItem(GroupAccessType.CLOSED, i18n("group_options_access_closed")));
+		items.add(new SelectItem(GroupAccessType.PASSWORD, i18n("group_options_access_password")));
 		return items;
 	}
 
