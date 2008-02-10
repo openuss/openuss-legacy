@@ -13,7 +13,8 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.xss.HtmlInputFilter;
-import org.openuss.groups.GroupInfo;
+import org.openuss.groups.UserGroupInfo;
+import org.openuss.groups.UserInfo;
 import org.openuss.web.Constants;
 import org.openuss.groups.GroupAccessType;
 
@@ -35,7 +36,7 @@ public class GroupOptionsPage extends AbstractGroupPage {
 	@Override
 	public void prerender() throws Exception {
 		if (groupInfo == null) {
-			groupInfo = (GroupInfo) getSessionBean(Constants.GROUP);
+			groupInfo = (UserGroupInfo) getSessionBean(Constants.GROUP);
 		}
 		if (groupInfo == null) {
 			// TODO - Lutz: Properties anpassen
@@ -72,14 +73,17 @@ public class GroupOptionsPage extends AbstractGroupPage {
 		logger.trace("saving course options");
 		
 		// TODO move to business layer
-		GroupInfo groupOld = getGroupService().getGroupInfo(groupInfo.getId());
+		UserGroupInfo groupOld = getGroupService().getGroupInfo(groupInfo.getId());
 		if (groupOld.getAccessType() == GroupAccessType.CLOSED && groupInfo.getAccessType() != GroupAccessType.OPEN) {
-			getGroupService().removeAspirant(groupOld);
+			List<UserInfo> aspirants = groupService.getAspirants(groupInfo);
+			for(UserInfo aspirant:aspirants){
+				groupService.rejectAspirant(groupOld, aspirant.getId());
+			}
 		}
 		// XSS Filter Content
 		groupInfo.setDescription(new HtmlInputFilter().filter(groupInfo.getDescription()));
 		
-		groupService.updateGroup(groupInfo);
+		groupService.updateUserGroup(groupInfo);
 		//TODO - Lutz: Properties anpassen
 		addMessage(i18n("message_group_options_saved"));
 		return Constants.GROUP_OPTIONS_PAGE;

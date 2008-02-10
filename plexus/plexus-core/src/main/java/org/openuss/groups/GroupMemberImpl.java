@@ -7,6 +7,7 @@ package org.openuss.groups;
 
 /**
  * @see org.openuss.groups.GroupMember
+ * @author Lutz D. Kramer
  */
 public class GroupMemberImpl
     extends org.openuss.groups.GroupMemberBase
@@ -15,6 +16,6 @@ public class GroupMemberImpl
     /**
      * The serial version UID of this class. Needed for serialization.
      */
-    private static final long serialVersionUID = 3099007003548191940L;
+    private static final long serialVersionUID = 2203556782619384941L;
 
 }

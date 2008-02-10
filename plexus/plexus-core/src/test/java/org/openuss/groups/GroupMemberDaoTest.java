@@ -14,7 +14,6 @@ public class GroupMemberDaoTest extends GroupMemberDaoTestBase {
 	
 	public void testGroupMemberDaoCreate() {
 		GroupMember groupMember = GroupMember.Factory.newInstance();
-		groupMember.setMemberType(GroupMemberType.MEMBER);
 		assertNull(groupMember.getId());
 		groupMemberDao.create(groupMember);
 		assertNotNull(groupMember.getId());

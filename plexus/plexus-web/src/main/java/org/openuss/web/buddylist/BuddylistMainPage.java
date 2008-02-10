@@ -16,7 +16,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.groups.GroupApplicationException;
-import org.openuss.groups.GroupMemberInfo;
+import org.openuss.groups.UserInfo;
 import org.openuss.groups.GroupMemberType;
 import org.openuss.lecture.CourseApplicationException;
 import org.openuss.lecture.CourseMemberInfo;

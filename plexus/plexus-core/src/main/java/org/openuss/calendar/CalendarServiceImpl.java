@@ -5,15 +5,16 @@
  */
 package org.openuss.calendar;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.sql.Timestamp;
 
-import org.openuss.groups.GroupInfo;
+import org.openuss.groups.UserGroupInfo;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.security.*;
+import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 /**
  * @see org.openuss.calendar.CalendarService
  */
@@ -44,7 +45,7 @@ public class CalendarServiceImpl
     	// check calendarType
     	if (domainObject instanceof CourseInfo) {           
             calType = CalendarType.course_calendar;
-    	} else if (domainObject instanceof GroupInfo) {
+    	} else if (domainObject instanceof UserGroupInfo) {
     		calType = CalendarType.group_calendar;
     	} else if (domainObject instanceof UserInfo) {
     		calType = CalendarType.user_calendar;

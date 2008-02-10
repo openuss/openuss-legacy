@@ -7,21 +7,24 @@ package org.openuss.groups;
 
 /**
  * @see org.openuss.groups.UserGroup
+ * @author Lutz D. Kramer
  */
-public class UserGroupDaoImpl extends org.openuss.groups.UserGroupDaoBase {
+public class UserGroupDaoImpl extends UserGroupDaoBase {
+
 	/**
-	 * @see org.openuss.groups.GroupsDao#toGroupInfo(org.openuss.groups.UserGroup,
-	 *      org.openuss.groups.GroupInfo)
+	 * @see org.openuss.groups.UserGroupDao#toUserGroupInfo(org.openuss.groups.UserGroup,
+	 *      org.openuss.groups.UserGroupInfo)
 	 */
-	public void toGroupInfo(UserGroup sourceEntity, GroupInfo targetVO) {
-		super.toGroupInfo(sourceEntity, targetVO);
-		targetVO.setId(sourceEntity.getId());
+	public void toUserGroupInfo(UserGroup sourceEntity, UserGroupInfo targetVO) {
+		super.toUserGroupInfo(sourceEntity, targetVO);
 		targetVO.setAccessType(sourceEntity.getAccessType());
 		targetVO.setCalendar(sourceEntity.getCalendar());
 		targetVO.setChat(sourceEntity.getChat());
+		targetVO.setCreator(sourceEntity.getCreator().getId());
 		targetVO.setDescription(sourceEntity.getDescription());
 		targetVO.setDocuments(sourceEntity.getDocuments());
 		targetVO.setForum(sourceEntity.getForum());
+		targetVO.setId(sourceEntity.getId());
 		targetVO.setName(sourceEntity.getName());
 		targetVO.setNewsletter(sourceEntity.getNewsletter());
 		targetVO.setPassword(sourceEntity.getPassword());
@@ -29,12 +32,12 @@ public class UserGroupDaoImpl extends org.openuss.groups.UserGroupDaoBase {
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupsDao#toGroupInfo(org.openuss.groups.UserGroup)
+	 * @see org.openuss.groups.UserGroupDao#toUserGroupInfo(org.openuss.groups.UserGroup)
 	 */
-	public GroupInfo toGroupInfo(final UserGroup entity) {
+	public UserGroupInfo toUserGroupInfo(final UserGroup entity) {
 		if (entity != null) {
-			GroupInfo targetVO = new GroupInfo();
-			toGroupInfo(entity, targetVO);
+			UserGroupInfo targetVO = new UserGroupInfo();
+			toUserGroupInfo(entity, targetVO);
 			return targetVO;
 		} else {
 			return null;
@@ -46,32 +49,33 @@ public class UserGroupDaoImpl extends org.openuss.groups.UserGroupDaoBase {
 	 * object from the object store. If no such entity object exists in the
 	 * object store, a new, blank entity is created
 	 */
-	private UserGroup loadGroupsFromGroupInfo(GroupInfo groupInfo) {
-		UserGroup groups = null;
-		if (groupInfo != null && groupInfo.getId() != null) {
-			groups = this.load(groupInfo.getId());
+	private UserGroup loadUserGroupFromUserGroupInfo(UserGroupInfo userGroupInfo) {
+		UserGroup group = null;
+		if (userGroupInfo != null && userGroupInfo.getId() != null) {
+			group = this.load(userGroupInfo.getId());
 		}
-		if (groups == null) {
-			groups = UserGroup.Factory.newInstance();
+		if (group == null) {
+			group = UserGroup.Factory.newInstance();
 		}
-		return groups;
+		return group;
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupsDao#groupInfoToEntity(org.openuss.groups.GroupInfo)
+	 * @see org.openuss.groups.UserGroupDao#userGroupInfoToEntity(org.openuss.groups.UserGroupInfo)
 	 */
-	public UserGroup groupInfoToEntity(GroupInfo groupInfo) {
-		UserGroup entity = this.loadGroupsFromGroupInfo(groupInfo);
-		this.groupInfoToEntity(groupInfo, entity, true);
+	public UserGroup userGroupInfoToEntity(UserGroupInfo userGroupInfo) {
+		UserGroup entity = this.loadUserGroupFromUserGroupInfo(userGroupInfo);
+		this.userGroupInfoToEntity(userGroupInfo, entity, true);
 		return entity;
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupsDao#groupInfoToEntity(org.openuss.groups.GroupInfo,
+	 * @see org.openuss.groups.UserGroupDao#userGroupInfoToEntity(org.openuss.groups.UserGroupInfo,
 	 *      org.openuss.groups.UserGroup)
 	 */
-	public void groupInfoToEntity(GroupInfo sourceVO, UserGroup targetEntity,
-			boolean copyIfNull) {
-		super.groupInfoToEntity(sourceVO, targetEntity, copyIfNull);
+	public void userGroupInfoToEntity(UserGroupInfo sourceVO,
+			UserGroup targetEntity, boolean copyIfNull) {
+		super.userGroupInfoToEntity(sourceVO, targetEntity, copyIfNull);
 	}
+
 }

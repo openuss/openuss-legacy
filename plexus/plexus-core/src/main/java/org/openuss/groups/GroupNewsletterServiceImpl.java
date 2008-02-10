@@ -15,23 +15,24 @@ import org.openuss.security.User;
 
 /**
  * @see org.openuss.groups.GroupNewsletterService
+ * @author Lutz D. Kramer
  */
 public class GroupNewsletterServiceImpl extends GroupNewsletterServiceBase {
 
 	/**
-	 * @see org.openuss.groups.GroupNewsletterService#sendPreview(org.openuss.groups.GroupInfo,
+	 * @see org.openuss.groups.GroupNewsletterService#sendPreview(org.openuss.groups.UserGroupInfo,
 	 *      org.openuss.newsletter.MailDetail)
 	 */
-	protected void handleSendPreview(GroupInfo group, MailDetail mail)
+	protected void handleSendPreview(UserGroupInfo group, MailDetail mail)
 			throws java.lang.Exception {
 		NewsletterInfo newsletter = getNewsletter(group);
 		getNewsletterService().sendPreview(newsletter, mail);
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupNewsletterService#getMails(org.openuss.groups.GroupInfo)
+	 * @see org.openuss.groups.GroupNewsletterService#getMails(org.openuss.groups.UserGroupInfo)
 	 */
-	protected List<MailInfo> handleGetMails(GroupInfo group) throws Exception {
+	protected List<MailInfo> handleGetMails(UserGroupInfo group) throws Exception {
 		NewsletterInfo newsletter = getNewsletter(group);
 		return getNewsletterService().getMails(newsletter, false);
 	}
@@ -44,28 +45,28 @@ public class GroupNewsletterServiceImpl extends GroupNewsletterServiceBase {
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupNewsletterService#sendMail(org.openuss.groups.GroupInfo,
+	 * @see org.openuss.groups.GroupNewsletterService#sendMail(org.openuss.groups.UserGroupInfo,
 	 *      org.openuss.newsletter.MailDetail)
 	 */
-	protected void handleSendMail(GroupInfo group, MailDetail mail) throws Exception {
+	protected void handleSendMail(UserGroupInfo group, MailDetail mail) throws Exception {
 		NewsletterInfo newsletter = getNewsletter(group);
 		getNewsletterService().sendMail(newsletter, mail);
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupNewsletterService#subscribe(org.openuss.groups.GroupInfo,
+	 * @see org.openuss.groups.GroupNewsletterService#subscribe(org.openuss.groups.UserGroupInfo,
 	 *      org.openuss.security.User)
 	 */
-	protected void handleSubscribe(GroupInfo group, User user) throws Exception {
+	protected void handleSubscribe(UserGroupInfo group, User user) throws Exception {
 		NewsletterInfo newsletter = getNewsletter(group);
 		getNewsletterService().subscribe(newsletter, user);
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupNewsletterService#unsubscribe(org.openuss.groups.GroupInfo,
+	 * @see org.openuss.groups.GroupNewsletterService#unsubscribe(org.openuss.groups.UserGroupInfo,
 	 *      org.openuss.security.User)
 	 */
-	protected void handleUnsubscribe(GroupInfo group, User user) throws java.lang.Exception {
+	protected void handleUnsubscribe(UserGroupInfo group, User user) throws java.lang.Exception {
 		NewsletterInfo newsletter = getNewsletter(group);
 		if(newsletter.isSubscribed()){
 			getNewsletterService().unsubscribe(newsletter, user);
@@ -87,42 +88,42 @@ public class GroupNewsletterServiceImpl extends GroupNewsletterServiceBase {
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupNewsletterService#getSubscribers(org.openuss.groups.GroupInfo)
+	 * @see org.openuss.groups.GroupNewsletterService#getSubscribers(org.openuss.groups.UserGroupInfo)
 	 */
-	protected List<SubscriberInfo> handleGetSubscribers(GroupInfo group) throws java.lang.Exception {
+	protected List<SubscriberInfo> handleGetSubscribers(UserGroupInfo group) throws java.lang.Exception {
 		NewsletterInfo newsletter = getNewsletter(group);
 		return getNewsletterService().getSubscribers(newsletter);
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupNewsletterService#saveMail(org.openuss.groups.GroupInfo,
+	 * @see org.openuss.groups.GroupNewsletterService#saveMail(org.openuss.groups.UserGroupInfo,
 	 *      org.openuss.newsletter.MailDetail)
 	 */
-	protected void handleSaveMail(GroupInfo group, MailDetail mail) throws java.lang.Exception {
+	protected void handleSaveMail(UserGroupInfo group, MailDetail mail) throws java.lang.Exception {
 		NewsletterInfo newsletter = getNewsletter(group);
 		getNewsletterService().saveMail(newsletter, mail);
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupNewsletterService#deleteMail(org.openuss.groups.GroupInfo,
+	 * @see org.openuss.groups.GroupNewsletterService#deleteMail(org.openuss.groups.UserGroupInfo,
 	 *      org.openuss.newsletter.MailDetail)
 	 */
-	protected void handleDeleteMail(GroupInfo group,MailDetail mail) throws java.lang.Exception {
+	protected void handleDeleteMail(UserGroupInfo group,MailDetail mail) throws java.lang.Exception {
 		NewsletterInfo newsletter = getNewsletter(group);
 		getNewsletterService().deleteMail(newsletter, mail);
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupNewsletterService#addNewsletter(org.openuss.groups.GroupInfo)
+	 * @see org.openuss.groups.GroupNewsletterService#addNewsletter(org.openuss.groups.UserGroupInfo)
 	 */
-	protected void handleAddNewsletter(GroupInfo group)	throws java.lang.Exception {
+	protected void handleAddNewsletter(UserGroupInfo group)	throws java.lang.Exception {
 		getNewsletterService().addNewsletter(group, group.getName());
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupNewsletterService#getNewsletter(org.openuss.groups.GroupInfo)
+	 * @see org.openuss.groups.GroupNewsletterService#getNewsletter(org.openuss.groups.UserGroupInfo)
 	 */
-	protected NewsletterInfo handleGetNewsletter(GroupInfo group) throws java.lang.Exception {
+	protected NewsletterInfo handleGetNewsletter(UserGroupInfo group) throws java.lang.Exception {
 		NewsletterInfo newsletter = getNewsletterService().getNewsletter(group);
 		if (newsletter == null) {
 			addNewsletter(group);
@@ -143,17 +144,17 @@ public class GroupNewsletterServiceImpl extends GroupNewsletterServiceBase {
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupNewsletterService#updateMail(org.openuss.groups.GroupInfo,
+	 * @see org.openuss.groups.GroupNewsletterService#updateMail(org.openuss.groups.UserGroupInfo,
 	 *      org.openuss.newsletter.MailDetail)
 	 */
-	protected void handleUpdateMail(GroupInfo group, MailDetail mail) throws java.lang.Exception {
+	protected void handleUpdateMail(UserGroupInfo group, MailDetail mail) throws java.lang.Exception {
 		getNewsletterService().updateMail(group, mail);
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupNewsletterService#exportSubscribers(org.openuss.groups.GroupInfo)
+	 * @see org.openuss.groups.GroupNewsletterService#exportSubscribers(org.openuss.groups.UserGroupInfo)
 	 */
-	protected String handleExportSubscribers(GroupInfo group) throws java.lang.Exception {
+	protected String handleExportSubscribers(UserGroupInfo group) throws java.lang.Exception {
 		return getNewsletterService().exportSubscribers(getNewsletter(group));
 	}
 

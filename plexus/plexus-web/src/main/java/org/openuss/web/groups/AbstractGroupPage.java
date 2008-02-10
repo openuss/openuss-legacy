@@ -5,6 +5,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.groups.GroupInfo;
 import org.openuss.groups.GroupService;
+import org.openuss.groups.UserGroupInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
@@ -20,7 +21,7 @@ public class AbstractGroupPage extends BasePage {
 		private static final long serialVersionUID = 1394531398550932611L;
 		
 		@Property(value = "#{groupInfo}")
-		protected GroupInfo groupInfo;
+		protected UserGroupInfo groupInfo;
 		
 		@Property(value = "#{groupService}")
 		protected GroupService groupService;
@@ -61,11 +62,11 @@ public class AbstractGroupPage extends BasePage {
 			this.groupService = groupService;
 		}
 
-		public GroupInfo getGroupInfo() {
+		public UserGroupInfo getGroupInfo() {
 			return groupInfo;
 		}
 
-		public void setGroupInfo(GroupInfo GroupInfo) {
+		public void setGroupInfo(UserGroupInfo GroupInfo) {
 			this.groupInfo = GroupInfo;
 		}
 }

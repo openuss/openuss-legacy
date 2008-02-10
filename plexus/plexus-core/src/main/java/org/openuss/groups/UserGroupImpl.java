@@ -8,42 +8,40 @@ package org.openuss.groups;
 import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.hibernate.CallbackException;
 import org.hibernate.Session;
-import org.openuss.lecture.CourseImpl;
+import org.hibernate.classic.Lifecycle;
 
 /**
  * @see org.openuss.groups.UserGroup
+ * @author Lutz D. Kramer
  */
-public class UserGroupImpl extends org.openuss.groups.UserGroupBase implements
-		org.openuss.groups.UserGroup {
-	private static final Logger logger = Logger.getLogger(CourseImpl.class);
+public class UserGroupImpl extends UserGroupBase implements Lifecycle, UserGroup {
+	
 	/**
 	 * The serial version UID of this class. Needed for serialization.
 	 */
-	private static final long serialVersionUID = 1090396615520890497L;
+	private static final long serialVersionUID = 4662369621392780664L;
 
 	/**
-	 * @see org.openuss.groups.Groups#isPasswordCorrect(java.lang.String)
+	 * @see org.openuss.groups.UserGroup#isPasswordCorrect(java.lang.String)
 	 */
-	public java.lang.Boolean isPasswordCorrect(java.lang.String password) {
+	public Boolean isPasswordCorrect(String password) {
 		return StringUtils.equalsIgnoreCase(getPassword(), password);
 	}
 
-	public boolean onDelete(Session arg0) throws CallbackException {
+	public boolean onDelete(Session s) throws CallbackException {
 		return false;
 	}
 
-	public void onLoad(Session arg0, Serializable arg1) {
+	public void onLoad(Session s, Serializable id) {
 	}
 
-	public boolean onSave(Session arg0) throws CallbackException {
+	public boolean onSave(Session s) throws CallbackException {
 		return false;
 	}
 
-	public boolean onUpdate(Session arg0) throws CallbackException {
+	public boolean onUpdate(Session s) throws CallbackException {
 		return false;
 	}
-
 }

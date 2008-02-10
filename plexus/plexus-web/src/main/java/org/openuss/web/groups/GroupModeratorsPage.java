@@ -21,7 +21,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.groups.GroupMemberInfo;
+import org.openuss.groups.UserInfo;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserComparator;
@@ -46,13 +46,13 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 	
 	private Long userId;
 
-	List<GroupMemberInfo> moderators;
+	List<UserInfo> moderators;
 	Set<Long> moderatorsUserIds;
 	List<SelectItem> instituteMembers;
 	
 	String username;
 	
-	private DataPage<GroupMemberInfo> page;
+	private DataPage<UserInfo> page;
 
 
 	@Prerender
@@ -70,27 +70,25 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 		breadcrumbs.addCrumb(crumb);
 	}	
 	
-	private class ModeratorDataProvider extends AbstractPagedTable<GroupMemberInfo> {
+	private class ModeratorDataProvider extends AbstractPagedTable<UserInfo> {
 		
 		private static final long serialVersionUID = -5342817757466323535L;
 
 		@Override
-		public DataPage<GroupMemberInfo> getDataPage(int startRow, int pageSize) {
+		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				logger.debug("fetching group assistant list");
-				List<GroupMemberInfo> moderators = getModerators();
-				page = new DataPage<GroupMemberInfo>(moderators.size(), 0, moderators);
+				List<UserInfo> moderators = getModerators();
+				page = new DataPage<UserInfo>(moderators.size(), 0, moderators);
 				sort(moderators);
 			}
 			return page;
 		}
 	}
 
-	private List<GroupMemberInfo> getModerators() {
+	private List<UserInfo> getModerators() {
 		if (moderators == null) {
 			moderators = groupService.getModerators(groupInfo);
-			GroupMemberInfo creator = groupService.getCreater(groupInfo);
-			moderators.add(creator);
 		}
 		return moderators;
 	}
@@ -98,7 +96,7 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 	private Set<Long> getModeratorsUserIdMap() {
 		if (moderatorsUserIds == null) {
 			moderatorsUserIds = new HashSet<Long>();
-			for (GroupMemberInfo moderators : getModerators()) {
+			for (UserInfo moderators : getModerators()) {
 				moderatorsUserIds.add(moderators.getUserId());
 			}
 		}
@@ -106,7 +104,7 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 	}
 
 	public String showProfile() {
-		GroupMemberInfo memberInfo = data.getRowData();
+		UserInfo memberInfo = data.getRowData();
 		User user = User.Factory.newInstance();
 		user.setId(memberInfo.getUserId());
 		setSessionBean("showuser", user);
@@ -115,8 +113,8 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 
 	public String delete() {
 		logger.debug("course member deleted");
-		GroupMemberInfo moderator = data.getRowData();
-		groupService.removeMember(moderator.getId());
+		UserInfo moderator = data.getRowData();
+		groupService.removeModerator(groupInfo, moderator.getId());
 		// TODO - Lutz: Properties anpassen
 		addMessage(i18n("message_group_removed_assistant", moderator.getUserName()));
 		resetCachedData();
@@ -128,7 +126,7 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 		if (userId != null){
 			User user = User.Factory.newInstance();
 			user.setId(userId);
-			groupService.addModerator(groupInfo, user);
+			groupService.addModerator(groupInfo, user.getId());
 			// TODO - Lutz: Properties anpassen
 			addMessage(i18n("message_group_add_assistant"));
 			resetCachedData();
@@ -154,7 +152,7 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 			user = securityService.getUserByEmail(username);
 		}
 		try {
-			groupService.addModerator(groupInfo, user);
+			groupService.addModerator(groupInfo, user.getId());
 			// TODO - Lutz: Properties anpassen
 			addMessage(i18n("message_group_add_assistant"));
 			resetCachedData();

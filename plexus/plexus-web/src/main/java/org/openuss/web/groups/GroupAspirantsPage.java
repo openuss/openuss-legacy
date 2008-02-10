@@ -14,7 +14,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.groups.GroupMemberInfo;
+import org.openuss.groups.UserInfo;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
 
@@ -33,8 +33,8 @@ public class GroupAspirantsPage extends AbstractGroupPage {
 	
 	private AspirantDataProvider data = new AspirantDataProvider();
 	
-	private transient Set<GroupMemberInfo> acceptAspirants = new HashSet<GroupMemberInfo>();
-	private transient Set<GroupMemberInfo> rejectAspirants = new HashSet<GroupMemberInfo>();
+	private transient Set<UserInfo> acceptAspirants = new HashSet<UserInfo>();
+	private transient Set<UserInfo> rejectAspirants = new HashSet<UserInfo>();
 
 
 	@Prerender
@@ -59,9 +59,9 @@ public class GroupAspirantsPage extends AbstractGroupPage {
 	}
 
 	private void rejectAspirants() {
-		for (GroupMemberInfo aspirants: rejectAspirants) {
+		for (UserInfo aspirants: rejectAspirants) {
 			try {
-				groupService.rejectAspirant(aspirants.getId());
+				groupService.rejectAspirant(groupInfo, aspirants.getId());
 				// TODO - Lutz: Properties anpassen
 				addMessage(i18n("groups_aspirant_reject", aspirants.getUserName()));
 			} catch (Exception e) {
@@ -72,9 +72,9 @@ public class GroupAspirantsPage extends AbstractGroupPage {
 	}
 
 	private void acceptAspirants() {
-		for (GroupMemberInfo aspirants: acceptAspirants) {
+		for (UserInfo aspirants: acceptAspirants) {
 			try {
-				groupService.acceptAspirant(aspirants.getId());
+				groupService.acceptAspirant(groupInfo, aspirants.getId());
 				// TODO - Lutz: Properties anpassen
 				addMessage(i18n("groups_aspirant_accepted", aspirants.getUserName()));
 			} catch (Exception e) {
@@ -85,7 +85,7 @@ public class GroupAspirantsPage extends AbstractGroupPage {
 	}
 	
 	public String showProfile() {
-		GroupMemberInfo aspirant = data.getRowData();
+		UserInfo aspirant = data.getRowData();
 		User user = User.Factory.newInstance();
 		user.setId(aspirant.getUserId());		
 		setSessionBean(Constants.SHOW_USER_PROFILE, user);
@@ -94,7 +94,7 @@ public class GroupAspirantsPage extends AbstractGroupPage {
 	
 	public void changedAspirant(ValueChangeEvent event){
 		logger.debug("groups: changed aspirant");
-		GroupMemberInfo aspirant = data.getRowData();
+		UserInfo aspirant = data.getRowData();
 		if (logger.isDebugEnabled()) {
 			logger.debug("changed "+aspirant.getUserName()+ " from " + event.getOldValue() + " to " + event.getNewValue());
 		}
@@ -106,17 +106,17 @@ public class GroupAspirantsPage extends AbstractGroupPage {
 		}
 	}
 	
-	private class AspirantDataProvider extends AbstractPagedTable<GroupMemberInfo> {
+	private class AspirantDataProvider extends AbstractPagedTable<UserInfo> {
 
 		private static final long serialVersionUID = 2219795204824844857L;
 		
-		private DataPage<GroupMemberInfo> page; 
+		private DataPage<UserInfo> page; 
 		
 		@Override 
-		public DataPage<GroupMemberInfo> getDataPage(int startRow, int pageSize) {
+		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<GroupMemberInfo> aspirants = groupService.getAspirants(groupInfo);
-				page = new DataPage<GroupMemberInfo>(aspirants.size(),0,aspirants);
+				List<UserInfo> aspirants = groupService.getAspirants(groupInfo);
+				page = new DataPage<UserInfo>(aspirants.size(),0,aspirants);
 				sort(aspirants);
 			}
 			return page;
