@@ -10,8 +10,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.controller.BaseBean;
-import org.openuss.groups.GroupInfo;
-import org.openuss.groups.GroupService;
+import org.openuss.groups.UserGroupInfo;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseTypeInfo;
@@ -644,7 +643,7 @@ public class BreadCrumbs extends BaseBean {
 		}
 	}
 
-	public void loadGroupCrumbs(GroupInfo groupInfo) {
+	public void loadGroupCrumbs(UserGroupInfo groupInfo) {
 		// TODO Thomas: Implement !
 		
 	}

@@ -14,8 +14,8 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.groups.UserInfo;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 
@@ -63,7 +63,7 @@ public class GroupAspirantsPage extends AbstractGroupPage {
 			try {
 				groupService.rejectAspirant(groupInfo, aspirants.getId());
 				// TODO - Lutz: Properties anpassen
-				addMessage(i18n("groups_aspirant_reject", aspirants.getUserName()));
+				addMessage(i18n("groups_aspirant_reject", aspirants.getUsername()));
 			} catch (Exception e) {
 				logger.error(e);
 				addError(i18n(e.getMessage()));
@@ -76,7 +76,7 @@ public class GroupAspirantsPage extends AbstractGroupPage {
 			try {
 				groupService.acceptAspirant(groupInfo, aspirants.getId());
 				// TODO - Lutz: Properties anpassen
-				addMessage(i18n("groups_aspirant_accepted", aspirants.getUserName()));
+				addMessage(i18n("groups_aspirant_accepted", aspirants.getUsername()));
 			} catch (Exception e) {
 				logger.error(e);
 				addError(i18n(e.getMessage()));
@@ -87,7 +87,7 @@ public class GroupAspirantsPage extends AbstractGroupPage {
 	public String showProfile() {
 		UserInfo aspirant = data.getRowData();
 		User user = User.Factory.newInstance();
-		user.setId(aspirant.getUserId());		
+		user.setId(aspirant.getId());		
 		setSessionBean(Constants.SHOW_USER_PROFILE, user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
@@ -96,7 +96,7 @@ public class GroupAspirantsPage extends AbstractGroupPage {
 		logger.debug("groups: changed aspirant");
 		UserInfo aspirant = data.getRowData();
 		if (logger.isDebugEnabled()) {
-			logger.debug("changed "+aspirant.getUserName()+ " from " + event.getOldValue() + " to " + event.getNewValue());
+			logger.debug("changed "+aspirant.getUsername()+ " from " + event.getOldValue() + " to " + event.getNewValue());
 		}
 		
 		if ("accept".equals(event.getNewValue())) {

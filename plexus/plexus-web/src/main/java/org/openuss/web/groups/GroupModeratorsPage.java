@@ -1,8 +1,5 @@
 package org.openuss.web.groups;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,8 +7,6 @@ import java.util.Set;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -21,10 +16,9 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.groups.UserInfo;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
-import org.openuss.security.UserComparator;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 
@@ -97,7 +91,7 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 		if (moderatorsUserIds == null) {
 			moderatorsUserIds = new HashSet<Long>();
 			for (UserInfo moderators : getModerators()) {
-				moderatorsUserIds.add(moderators.getUserId());
+				moderatorsUserIds.add(moderators.getId());
 			}
 		}
 		return moderatorsUserIds;
@@ -106,7 +100,7 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 	public String showProfile() {
 		UserInfo memberInfo = data.getRowData();
 		User user = User.Factory.newInstance();
-		user.setId(memberInfo.getUserId());
+		user.setId(memberInfo.getId());
 		setSessionBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
@@ -116,7 +110,7 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 		UserInfo moderator = data.getRowData();
 		groupService.removeModerator(groupInfo, moderator.getId());
 		// TODO - Lutz: Properties anpassen
-		addMessage(i18n("message_group_removed_assistant", moderator.getUserName()));
+		addMessage(i18n("message_group_removed_assistant", moderator.getUsername()));
 		resetCachedData();
 		return Constants.SUCCESS;
 	}

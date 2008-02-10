@@ -13,10 +13,11 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.xss.HtmlInputFilter;
-import org.openuss.groups.UserGroupInfo;
-import org.openuss.groups.UserInfo;
-import org.openuss.web.Constants;
 import org.openuss.groups.GroupAccessType;
+import org.openuss.groups.UserGroupInfo;
+import org.openuss.lecture.LectureException;
+import org.openuss.security.UserInfo;
+import org.openuss.web.Constants;
 
 
 /**

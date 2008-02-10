@@ -13,21 +13,15 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
-import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.groups.GroupApplicationException;
-import org.openuss.groups.GroupInfo;
-import org.openuss.groups.GroupMemberInfo;
 import org.openuss.groups.GroupMemberType;
-import org.openuss.lecture.CourseApplicationException;
+import org.openuss.groups.UserGroupInfo;
 import org.openuss.lecture.CourseMemberInfo;
-import org.openuss.lecture.CourseMemberType;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
-import org.openuss.web.BasePage;
 /**
  * 
  * @author Lutz D. Kramer
@@ -76,12 +70,10 @@ public class GroupMainPage extends AbstractGroupPage {
 		return Constants.OPENUSS4US_GROUPS_LEAVE;
 	}
 	
-	public List getGroups(User user) {
-		this.user = user;
-		List groupsList = user.getGroups();
-		List<GroupInfo> groups = groupService.findGroups();
+	public List getGroups() {
+		List<UserGroupInfo> groups = groupService.getGroups();
 		// sort(groups);
-		return groupsList;
+		return groups;
 	}
 	
 	
@@ -169,21 +161,26 @@ public class GroupMainPage extends AbstractGroupPage {
 
 	public String applyWithPassword() throws GroupApplicationException {
 		logger.debug("group entry with password applied");
-		groupService.addUserByPassword(password, groupInfo);
+		groupService.addUserByPassword(groupInfo, password);
 		addMessage(i18n("message_course_password_accepted"));
 		return Constants.SUCCESS;
 	}
 
 	public String apply() throws GroupApplicationException {
 		logger.debug("course entry applied");
-		groupService.addMember(groupInfo, user);
+		groupService.addMember(groupInfo, user.getId());
 		addMessage(i18n("message_course_send_application"));
 		return Constants.SUCCESS;
 	}
 
 	public boolean isAspirant() throws GroupApplicationException {
-		GroupMemberInfo info = groupService.getMemberInfo(groupInfo, user);
-		return (info != null) && (info.getMemberType() == GroupMemberType.ASPIRANT);
+		List<UserInfo> aspirants = groupService.getAspirants(groupInfo);
+		for(UserInfo aspirant:aspirants){
+			if (aspirant.getId() == user.getId()){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public String getPassword() {

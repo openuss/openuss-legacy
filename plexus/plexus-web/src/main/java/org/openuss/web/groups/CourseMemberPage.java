@@ -12,8 +12,8 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.groups.UserInfo;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 
@@ -73,7 +73,7 @@ public class CourseMemberPage extends AbstractGroupPage {
 	public String showProfile() {
 		UserInfo member = data.getRowData();
 		User user = User.Factory.newInstance();
-		user.setId(member.getUserId());
+		user.setId(member.getId());
 		setSessionBean(Constants.SHOW_USER_PROFILE, user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
@@ -83,7 +83,7 @@ public class CourseMemberPage extends AbstractGroupPage {
 		UserInfo member = data.getRowData();
 		groupService.removeMember(groupInfo, member.getId());
 		// TODO - Lutz: Properties anpassen
-		addMessage(i18n("message_group_removed_participant",member.getUserName()));
+		addMessage(i18n("message_group_removed_participant",member.getUsername()));
 		return Constants.SUCCESS;
 	}
 
