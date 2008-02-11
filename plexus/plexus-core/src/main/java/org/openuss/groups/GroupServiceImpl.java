@@ -15,7 +15,6 @@ import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
-import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
@@ -351,7 +350,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	/**
 	 * @see org.openuss.groups.GroupService#getMembers(org.openuss.groups.UserGroupInfo)
 	 */
-	protected List<UserInfo> handleGetMembers(UserGroupInfo groupInfo)
+	protected List<UserGroupMemberInfo> handleGetMembers(UserGroupInfo groupInfo)
 			throws Exception {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
@@ -364,20 +363,15 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Load Membership
 		Membership membership = group.getMembership();
 		
-		
+		// Load Members
 		List<User> users = membership.getMembers();
-		List<UserInfo> userList = null;
-		for(User user:users){
-			userList.add(getUserDao().toUserInfo(user));
-		}
-
-		return userList;
+		return userListToUserGroupMemberInfoList(users, group, group.getMembersGroup());
 	}
 
 	/**
 	 * @see org.openuss.groups.GroupService#getModerators(org.openuss.groups.UserGroupInfo)
 	 */
-	protected List<UserInfo> handleGetModerators(UserGroupInfo groupInfo)
+	protected List<UserGroupMemberInfo> handleGetModerators(UserGroupInfo groupInfo)
 			throws Exception {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
@@ -391,18 +385,13 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Membership membership = group.getMembership();
 
 		List<User> users = membership.getMembers();
-		List<UserInfo> userList = null;
-		for(User user:users){
-			userList.add(getUserDao().toUserInfo(user));
-		}
-
-		return userList;
+		return userListToUserGroupMemberInfoList(users, group, group.getModeratorsGroup());
 	}
 
 	/**
 	 * @see org.openuss.groups.GroupService#getAspirants(org.openuss.groups.UserGroupInfo)
 	 */
-	protected List<UserInfo> handleGetAspirants(UserGroupInfo groupInfo)
+	protected List<UserGroupMemberInfo> handleGetAspirants(UserGroupInfo groupInfo)
 			throws Exception {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
@@ -415,26 +404,28 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Load Membership
 		Membership membership = group.getMembership();
 
-		List<User> users = membership.getMembers();
-		List<UserInfo> userList = null;
-		for(User user:users){
-			userList.add(getUserDao().toUserInfo(user));
-		}
-
-		return userList;
+		List<User> users = membership.getAspirants();
+		return userListToUserGroupMemberInfoList(users, group, null);
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupService#getGroups()
+	 * @see org.openuss.groups.GroupService#getAllGroups()
 	 */
-	protected List<UserGroup> handleGetGroups() throws Exception {
+	protected List<UserGroupInfo> handleGetAllGroups() throws Exception {
+		return null;
+	}
+		
+	/**
+	 * @see org.openuss.groups.GroupService#getGroupsByUser(java.lang.Long)
+	 */
+	protected List<UserGroupInfo> handleGetGroupsByUser(Long userId) throws Exception {
 
 		// Load User Entity
 		User user = getSecurityService().getCurrentUser();
 		Validate.notNull(user, "User cannot be null.");
 
 //		List<Membership> membership = getMemshipDao().findByUser(user);
-		List<UserGroup> group = null;
+		List<UserGroupInfo> group = null;
 //		for (GroupMember member : membership) {
 //			group.add(getUserGroupDao().findbyMembership(member));
 //		}
@@ -546,4 +537,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		}
 	}
 
+	private List<UserGroupMemberInfo> userListToUserGroupMemberInfoList(List<User> users, UserGroup group, Group secGroup){
+		return null;
+	}
 }
