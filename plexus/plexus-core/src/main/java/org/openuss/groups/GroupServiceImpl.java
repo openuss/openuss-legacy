@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
+import org.openuss.security.Membership;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
@@ -47,7 +48,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		groupInfo.setId(groupEntity.getId());
 
 		// Create a default Membership for the Institute
-		GroupMember membership = GroupMember.Factory.newInstance();
+		Membership membership = Membership.Factory.newInstance();
 		groupEntity.setMembership(membership);
 
 		// Create default Groups for Institute
@@ -155,7 +156,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(user, "Current user must not be null.");
 
 		// Add user to Membership
-		GroupMember membership = group.getMembership();
+		Membership membership = group.getMembership();
 		getMembershipService().addMember(membership, user);
 
 		// Add user to SecurityGroup - Moderators
@@ -215,7 +216,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(user, "Current user must not be null.");
 
 		// Add user to Membership
-		GroupMember membership = group.getMembership();
+		Membership membership = group.getMembership();
 		getMembershipService().addMember(membership, user);
 
 		// Add user to SecurityGroup - Members
@@ -268,7 +269,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(user, "User cannot be null.");
 
 		// Remove User as Aspriant from Membership
-		GroupMember membership = group.getMembership();
+		Membership membership = group.getMembership();
 		getMembershipService().removeMember(membership, user);
 	}
 
@@ -289,7 +290,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(user, "User cannot be null.");
 
 		// Add user to Membership as Aspirant
-		GroupMember membership = group.getMembership();
+		Membership membership = group.getMembership();
 		getMembershipService().addAspirant(membership, user);
 	}
 
@@ -313,7 +314,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(user, "User cannot be null.");
 
 		// Remove User as Aspriant from Membership
-		GroupMember membership = group.getMembership();
+		Membership membership = group.getMembership();
 		getMembershipService().acceptAspirant(membership, user);
 
 		// Add user to SecurityGroup - Members
@@ -343,7 +344,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(user, "User cannot be null.");
 
 		// Remove User as Aspriant from Membership
-		GroupMember membership = group.getMembership();
+		Membership membership = group.getMembership();
 		getMembershipService().rejectAspirant(membership, user);
 	}
 
@@ -361,7 +362,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(group, "Cannot transform groupInfo to entity.");
 
 		// Load Membership
-		GroupMember membership = group.getMembership();
+		Membership membership = group.getMembership();
 		
 		
 		List<User> users = membership.getMembers();
@@ -387,7 +388,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(group, "Cannot transform groupInfo to entity.");
 
 		// Load Membership
-		GroupMember membership = group.getMembership();
+		Membership membership = group.getMembership();
 
 		List<User> users = membership.getMembers();
 		List<UserInfo> userList = null;
@@ -412,7 +413,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(group, "Cannot transform groupInfo to entity.");
 
 		// Load Membership
-		GroupMember membership = group.getMembership();
+		Membership membership = group.getMembership();
 
 		List<User> users = membership.getMembers();
 		List<UserInfo> userList = null;
@@ -432,11 +433,11 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		User user = getSecurityService().getCurrentUser();
 		Validate.notNull(user, "User cannot be null.");
 
-		List<GroupMember> membership = getGroupMemberDao().findByUser(user);
+//		List<Membership> membership = getMemshipDao().findByUser(user);
 		List<UserGroup> group = null;
-		for (GroupMember member : membership) {
-			group.add(getUserGroupDao().findbyMembership(member));
-		}
+//		for (GroupMember member : membership) {
+//			group.add(getUserGroupDao().findbyMembership(member));
+//		}
 		return group;
 	}
 
@@ -468,13 +469,13 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		User user = getUserDao().load(userId);
 		Validate.notNull(user, "User cannot be null.");
 		
-		GroupMember membership = group.getMembership();
-		List<User> moderators = membership.getModerators();
-		for(User moderator:moderators){
-			if(moderator == user){
-				return true;
-			}
-		}
+		Membership membership = group.getMembership();
+//		List<User> moderators = membership.getModerators();
+//		for(User moderator:moderators){
+//			if(moderator == user){
+//				return true;
+//			}
+//		}
 		return false;
 	}
 
@@ -497,7 +498,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		User user = getUserDao().load(userId);
 		Validate.notNull(user, "User cannot be null.");
 		
-		GroupMember membership = group.getMembership();
+		Membership membership = group.getMembership();
 		List<User> members = membership.getMembers();
 		for(User member:members){
 			if(member == user){

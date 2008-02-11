@@ -19,7 +19,6 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.jsfcontrols.components.flexlist.ListItemDAO;
 import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
 import org.openuss.groups.GroupApplicationException;
-import org.openuss.groups.GroupMemberType;
 import org.openuss.groups.UserGroupInfo;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.security.User;
