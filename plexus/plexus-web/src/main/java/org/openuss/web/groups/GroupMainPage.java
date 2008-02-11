@@ -42,8 +42,8 @@ public class GroupMainPage extends AbstractGroupPage {
 	private UIFlexList groupList;
 	private boolean groupListDataLoaded = false;
 	private boolean prerenderCalled = false;
-	private Map<Long, GroupInfo> groupData;
-	private static final String groupBasePath = "/views/secured/groups/group.faces";
+	private Map<Long, UserGroupInfo> groupData;
+	private static final String userGroupBasePath = "/views/secured/groups/group.faces";
 	
 	private String password;
 
@@ -79,7 +79,7 @@ public class GroupMainPage extends AbstractGroupPage {
 	
 	public List getGroups() {
 		List<UserGroupInfo> groups = groupService.getGroups();
-		// sort(groups);
+		// sortList(groups);
 		return groups;
 	}
 
@@ -136,12 +136,12 @@ public class GroupMainPage extends AbstractGroupPage {
 		
 		// TODO Thomas: delete dummy links
 		newItem.setTitle("Socialising Muenster");
-		newItem.setUrl(contextPath()+groupBasePath);
+		newItem.setUrl(contextPath()+userGroupBasePath);
 		listItems.add(newItem);
 		
 		newItem = new ListItemDAO();
 		newItem.setTitle("OpenArena Test Group");
-		newItem.setUrl(contextPath()+groupBasePath);
+		newItem.setUrl(contextPath()+userGroupBasePath);
 		listItems.add(newItem);		
 		return listItems;
 	}

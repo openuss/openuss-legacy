@@ -117,7 +117,7 @@
  	
  	<managed-bean>
  		<managed-bean-name>groupInfo</managed-bean-name>
- 		<managed-bean-class>org.openuss.groups.GroupInfo</managed-bean-class>
+ 		<managed-bean-class>org.openuss.groups.UserGroupInfo</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
 

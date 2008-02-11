@@ -12,17 +12,17 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.groups.GroupMemberInfo;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 
 /**
  * 
  * @author Lutz D. Kramer
- *
+ * @author Thomas Jansing
  */
-@Bean(name = "views$secured$course$courseparticipants", scope = Scope.REQUEST)
+@Bean(name = "views$secured$groups$groupmembers", scope = Scope.REQUEST)
 @View
 public class GroupMemberPage extends AbstractGroupPage {
 	
@@ -53,37 +53,37 @@ public class GroupMemberPage extends AbstractGroupPage {
 		breadcrumbs.addCrumb(crumb);
 	}
 	
-	private class ParticipantDataProvider extends AbstractPagedTable<GroupMemberInfo> {
+	private class ParticipantDataProvider extends AbstractPagedTable<UserInfo> {
 
 		private static final long serialVersionUID = -1918372320518667092L;
 		
-		private DataPage<GroupMemberInfo> page;
+		private DataPage<UserInfo> memberPage;
 
 		@Override
-		public DataPage<GroupMemberInfo> getDataPage(int startRow, int pageSize) {
-			if (page == null) {
-				List<GroupMemberInfo> member = groupService.getMember(groupInfo);
-				page = new DataPage<GroupMemberInfo>(member.size(), 0, member);
+		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
+			if (memberPage == null) {
+				List<UserInfo> member = groupService.getMembers(groupInfo);
+				memberPage = new DataPage<UserInfo>(member.size(), 0, member);
 				sort(member);
 			}
-			return page;
+			return memberPage;
 		}
 	}
 
 	public String showProfile() {
-		GroupMemberInfo member = data.getRowData();
+		UserInfo member = data.getRowData();
 		User user = User.Factory.newInstance();
-		user.setId(member.getUserId());
+		user.setId(member.getId());
 		setSessionBean(Constants.SHOW_USER_PROFILE, user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 
 	public String delete() {
 		logger.info("group member deleted");
-		GroupMemberInfo member = data.getRowData();
-		groupService.removeMember(member.getId());
+		UserInfo member = data.getRowData();
+		// groupService.removeMember(member.getId());
 		// TODO - Lutz: Properties anpassen
-		addMessage(i18n("message_group_removed_participant",member.getUserName()));
+		addMessage(i18n("message_group_removed_participant",member.getUsername()));
 		return Constants.SUCCESS;
 	}
 
