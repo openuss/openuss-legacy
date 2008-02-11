@@ -1264,7 +1264,11 @@ public class FLGSelectorConfigurationContentPanel extends FSLAbstractLearningUni
                         FLGFileUtility.copyFile(imageFile, newImageFile);
                         propertiesDialog.setImageFile(newImageFile);
                         propertiesDialog.setImageElementTitle(currentGridObject.getImageFileName());
-                        propertiesDialog.setImageBackgroundColor(new Color(Integer.parseInt(currentGridObject.getBackgroundColor())));
+                        if(currentGridObject.getBackgroundColor() != null) {
+                        	propertiesDialog.setImageBackgroundColor(new Color(Integer.parseInt(currentGridObject.getBackgroundColor())));
+                        } else {
+                        	propertiesDialog.setTextBackgroundColor((Color)UIManager.get("FSLMainFrameColor1"));
+                        }
                         propertiesDialog.showDialog();
                         // get user decision
                         if (propertiesDialog.insertNewElement()) {
