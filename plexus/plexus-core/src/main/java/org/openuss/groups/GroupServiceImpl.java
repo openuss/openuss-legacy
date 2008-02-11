@@ -34,21 +34,17 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	protected Long handleCreateUserGroup(UserGroupInfo groupInfo)
 			throws Exception {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
-		Validate.notNull(groupInfo.getId(),
-				"Parameter group must contain a valid group id.");
+		Validate.isTrue(groupInfo.getId() == null, "The Group shouldn't have an ID yet");
+		
 
 		// Transform VO to entity
 		UserGroup groupEntity = this.getUserGroupDao().userGroupInfoToEntity(
 				groupInfo);
 		Validate.notNull(groupEntity, "Cannot transform groupInfo to entity.");
 
-		// FIXME - Kai, Indexing should not base on VOs!
-		// Kai: Do not delete this!!! Set id of institute VO for indexing
-		// Update input parameter for aspects to get the right domain objects.
-		groupInfo.setId(groupEntity.getId());
-
 		// Create a default Membership for the Institute
 		Membership membership = Membership.Factory.newInstance();
+		getMembershipDao().create(membership);
 		groupEntity.setMembership(membership);
 
 		// Create default Groups for Institute
@@ -60,6 +56,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		moderatorGroup = this.getMembershipService().createGroup(
 				groupEntity.getMembership(), moderatorGroup);
 		this.getGroupDao().load(moderatorGroup.getId());
+		groupEntity.setModeratorsGroup(moderatorGroup);
 
 		GroupItem members = new GroupItem();
 		members.setName("GROUP_" + groupEntity.getId() + "_MEMBERS");
@@ -69,22 +66,31 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		memberGroup = this.getMembershipService().createGroup(
 				groupEntity.getMembership(), memberGroup);
 		this.getGroupDao().load(memberGroup.getId());
+		groupEntity.setMembersGroup(memberGroup);
 
+		// Add Creator to Group and to Group of Moderator
+//		User creator = getSecurityService().getCurrentUser();
+		User creator = User.Factory.newInstance();
+		groupEntity.setCreator(creator);
+
+		
+		// Save Entity
+		this.getUserGroupDao().create(groupEntity);
+		Validate.notNull(groupEntity, "Id of course cannot be null.");
+		
+		this.addModerator(groupInfo, creator.getId());
+		
+		// FIXME - Kai, Indexing should not base on VOs!
+		// Kai: Do not delete this!!! Set id of institute VO for indexing
+		// Update input parameter for aspects to get the right domain objects.
+		groupInfo.setId(groupEntity.getId());
+		
 		// Set Security
 		this.getSecurityService().createObjectIdentity(groupEntity, null);
 		this.getSecurityService().setPermissions(moderatorGroup, groupEntity,
 				LectureAclEntry.GROUP_MODERATOR);
 		this.getSecurityService().setPermissions(memberGroup, groupEntity,
 				LectureAclEntry.GROUP_MEMBER);
-
-		// Add Creator to Group and to Group of Moderator
-		User creator = getSecurityService().getCurrentUser();
-		groupEntity.setCreator(creator);
-		this.addModerator(groupInfo, creator.getId());
-
-		// Save Entity
-		this.getUserGroupDao().create(groupEntity);
-		Validate.notNull(groupEntity, "Id of course cannot be null.");
 
 		updateAccessTypePermission(groupEntity);
 

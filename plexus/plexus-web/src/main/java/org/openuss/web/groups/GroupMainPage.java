@@ -3,13 +3,7 @@ package org.openuss.web.groups;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Collection;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -18,11 +12,11 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.jsfcontrols.components.flexlist.ListItemDAO;
 import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
-import org.openuss.groups.GroupApplicationException;
+import org.openuss.groups.GroupServiceImpl;
 import org.openuss.groups.UserGroupInfo;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.security.User;
-import org.openuss.security.UserInfo;
+import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 /**
  * 
@@ -32,7 +26,7 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$groups$groups", scope = Scope.REQUEST)
 @View
-public class GroupMainPage extends AbstractGroupPage {
+public class GroupMainPage extends BasePage {
 	
 	private static final Logger logger = Logger.getLogger(GroupMainPage.class);
 
@@ -77,7 +71,8 @@ public class GroupMainPage extends AbstractGroupPage {
 	}
 	
 	public List getGroups() {
-		List<UserGroupInfo> groups = groupService.getGroups();
+		GroupServiceImpl groupService = new GroupServiceImpl();
+		List<UserGroupInfo> groups = groupService.getAllGroups();
 		// sortList(groups);
 		return groups;
 	}
@@ -145,51 +140,5 @@ public class GroupMainPage extends AbstractGroupPage {
 		return listItems;
 	}
 	
-
-	
-	// Needed ??
-	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {
-		String password = (String) value;
-		if (!StringUtils.equalsIgnoreCase(password, groupInfo.getPassword())) {
-			((UIInput) toValidate).setValid(false);
-			addError(toValidate.getClientId(context), i18n("message_error_password_is_not_correct"), null);
-		}
-	}
-
-	public String applyWithPassword() throws GroupApplicationException {
-		logger.debug("group entry with password applied");
-		groupService.addUserByPassword(groupInfo, password);
-		addMessage(i18n("message_course_password_accepted"));
-		return Constants.SUCCESS;
-	}
-
-	public String apply() throws GroupApplicationException {
-		logger.debug("course entry applied");
-		groupService.addMember(groupInfo, user.getId());
-		addMessage(i18n("message_course_send_application"));
-		return Constants.SUCCESS;
-	}
-
-	public boolean isAspirant() throws GroupApplicationException {
-		List<UserInfo> aspirants = groupService.getAspirants(groupInfo);
-		for(UserInfo aspirant:aspirants){
-			if (aspirant.getId() == user.getId()){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public List<CourseMemberInfo> getModerators() {
-		return moderators;
-	}
 
 }
