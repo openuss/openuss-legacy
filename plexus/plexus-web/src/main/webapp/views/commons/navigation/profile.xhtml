@@ -7,32 +7,12 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<div id="navigation_box"><ui:include
-		src="/views/commons/navigation/default.xhtml" /> <s:authorize
-		ifAllGranted="ROLE_USER">
-		<h:form id="navigationDesktop">
-			<t:panelNavigation2 id="desktop" styleClass="navigation"
-				layout="list" itemClass="nav_item" openItemClass="open_item"
-				activeItemClass="active_item" separatorClass="item_separator">
-				<t:commandNavigation2 value="#{msg['desktop_navigation_header']}"
-					open="true">
-					<t:commandNavigation2 value="#{msg.mainmenu_command_home}"
-						action="home" activeOnViewIds="/views/welcome.xhtml" />
-					<s:authorize ifAllGranted="ROLE_USER">
-						<t:commandNavigation2 value="#{msg['desktop_command_myuni']}"
-							activeOnViewIds="/views/secured/myuni/myuni.xhtml"
-							action="desktop" />
-					</s:authorize>
-				</t:commandNavigation2>
-			</t:panelNavigation2>
-		</h:form>
-	</s:authorize> <s:authorize ifAllGranted="ROLE_USER">
+	<s:authorize ifAllGranted="ROLE_USER">
 		<h:form id="profileNavigationForm">
 			<t:panelNavigation2 id="profile_navigation" styleClass="navigation"
 				layout="list" itemClass="nav_item" openItemClass="open_item"
 				activeItemClass="active_item" separatorClass="item_separator">
-				<t:commandNavigation2 value="#{msg['desktop_command_userprofile']}"
-					open="true">
+				<t:commandNavigation2 value="#{msg['desktop_command_userprofile']}"	open="false">
 					<t:commandNavigation2 action="#{views$secured$user$profile.profilePage}"
 						activeOnViewIds="/views/secured/user/userprofile.xhtml">
 						<h:outputText value="#{msg['user_profile_preview']}"></h:outputText>
@@ -56,5 +36,5 @@
 				</t:commandNavigation2>
 			</t:panelNavigation2>
 		</h:form>
-	</s:authorize></div>
+	</s:authorize>
 </ui:composition>
