@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -15,31 +16,31 @@ import org.openuss.groups.GroupAccessType;
 import org.openuss.groups.GroupApplicationException;
 import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupInfo;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 
 /**
- * Backing bean for the group creation
+ * Backing bean for the group registration on the groupCreatePage
  * @author Thomas Jansing
  */
 
+@Bean(name = Constants.GROUP_REGISTRATION_CONTROLLER, scope = Scope.SESSION)
 @View
-@Bean(name = "views$secured$groups$groupcreate", scope = Scope.REQUEST)
-public class GroupCreatePage extends BasePage {
+public class GroupCreatePage extends AbstractGroupPage {
 
+	private static final Logger logger = Logger.getLogger(GroupCreatePage.class);
+	
 	private List<SelectItem> localeItems;
 	private Long newGroupId;
 	
-	@Property(value = "#{groupInfo2}")
-	protected UserGroupInfo groupInfo;
-	@Property(value = "#{groupService2}")
-	protected GroupService groupService;
+	// private UserGroupInfo groupInfo;
 	
+	// private GroupService groupService;
+
 	@Prerender
 	public void prerender() throws GroupApplicationException {
-		
-		groupInfo = new UserGroupInfo(); 
 		
 		breadcrumbs.loadOpenuss4usCrumbs();
 		
@@ -68,14 +69,36 @@ public class GroupCreatePage extends BasePage {
 	public String register() {
 		// TODO Thomas: Implement Security Tests etc.
 		
-		// UserGroupInfo groupInfo2 = new UserGroupInfo();
-		
+//		DUMMY		
 //		groupInfo2.setCreator(user.getId());
+//		groupInfo.setAccessType(GroupAccessType.OPEN);
+
+
+//		CREATE GROUP
 		groupInfo.setAccessType(GroupAccessType.OPEN);
+		logger.debug("Starting group creation");
+		logger.debug(user.getId());
+		logger.debug(groupInfo.getName());
+		logger.debug(groupInfo.getDescription());
+		logger.debug("Argumente OK!");
+		
+		newGroupId = groupService.createUserGroup(groupInfo, user.getId());
+		
+		logger.debug("DAZWISCHEN");
+		groupInfo.setId(newGroupId);
+		logger.debug("Group created?!");
+		
+		setSessionBean(Constants.GROUP_INFO, groupInfo);
 
-
-		newGroupId = groupService.createUserGroup(groupInfo);
-
-		return Constants.OPENUSS4US_GROUPS;
+		return Constants.GROUP_PAGE;
 	}
+	
+	public UserGroupInfo getGroupInfo() {
+		return groupInfo;
+	}
+	
+	public void setGroupInfo(UserGroupInfo newGroup) {
+		this.groupInfo = newGroup;
+	}
+	
 }

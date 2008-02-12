@@ -39,11 +39,10 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 				"The Group shouldn't have an ID yet");
 
 		// Transform VO to entity
-		UserGroup groupEntity = this.getUserGroupDao().userGroupInfoToEntity(
-				groupInfo);
+		UserGroup groupEntity = this.getUserGroupDao().userGroupInfoToEntity(groupInfo);
 		Validate.notNull(groupEntity, "Cannot transform groupInfo to entity.");
 
-		// Create a default Membership for the Institute
+		// Create a default Membership for the Group
 		Membership membership = Membership.Factory.newInstance();
 		getMembershipDao().create(membership);
 		groupEntity.setMembership(membership);
@@ -83,7 +82,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		// Update input parameter for aspects to get the right domain objects.
 		groupInfo.setId(groupEntity.getId());
-		logger.debug("----> Indexing <---- ");
+		logger.debug("----> Indexing <---- " + groupInfo.getId());
 		
 		// Add Creator to Group of Moderators
 //		this.addModerator(groupInfo, creator.getId());

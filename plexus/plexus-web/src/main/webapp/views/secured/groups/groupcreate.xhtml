@@ -40,11 +40,11 @@
 				
 					<t:htmlTag value="br" />
 					<h:outputText value="#{msg.openuss4us_groups_options_header}" styleClass="header_font_normal"/>
-					<o:input entity="groupInfo2" property="name" maxlength="100" required="true"/>
-					<o:input entity="groupInfo2" property="shortcut" maxlength="30" required="true" />
+					<o:input entity="groupInfo" property="name" maxlength="100" required="true"/>
+					<o:input entity="groupInfo" property="shortcut" maxlength="30" required="true" />
 					
 					<h:outputLabel value="#{msg.groupinfo_description}" for="descriptionTextField" styleClass="field_label"/>
-					<h:inputTextarea styleClass="pulldown" value="#{groupInfo2.description}" id="descriptionTextField" />
+					<h:inputTextarea styleClass="pulldown" value="#{groupInfo.description}" id="descriptionTextField" />
 					
 					
 					<!-- <h:outputLabel value="#{msg.groupinfo_accesstype}" for="accessTypeSelect" styleClass="field_label" />
@@ -58,13 +58,16 @@
 	
 					<t:htmlTag value="br" />
 					<h:outputText value="#{msg.openuss4us_groups_options_features}" styleClass="header_font_normal"/>
-					<o:input entity="groupInfo2" property="documents"/>
-					<o:input entity="groupInfo2" property="forum"/>
-					<o:input entity="groupInfo2" property="newsletter"/>
-					<o:input entity="groupInfo2" property="chat"/>
-					<o:input entity="groupInfo2" property="calendar"/>
+					<o:input entity="groupInfo" property="documents"/>
+					<o:input entity="groupInfo" property="forum"/>
+					<o:input entity="groupInfo" property="newsletter"/>
+					<o:input entity="groupInfo" property="chat"/>
+					<o:input entity="groupInfo" property="calendar"/>
 					
-					<h:outputText value="#{groupInfo2.id}" />
+					<o:input entity="groupRegistration" property="groupInfo"/>
+					
+					<h:outputText value="#{groupInfo.description}" />
+
 
 				
 				<!-- CONTENT HIER REIN -->
@@ -72,7 +75,7 @@
    			 	
    			 	<o:block>
 			   		<h:commandButton value="#{msg.back}" action="view:backward" styleClass="button_back"/>
-					<h:commandButton value="#{msg.forward}" action="#{views$secured$groups$groupcreate.register}" styleClass="button_continue"/>
+					<h:commandButton value="#{msg.forward}" action="#{groupRegistration.register}" styleClass="button_continue"/>
 		 		</o:block>
 	 		</h:form> 
   		</ui:define>

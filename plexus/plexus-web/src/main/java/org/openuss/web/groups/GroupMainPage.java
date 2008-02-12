@@ -27,7 +27,7 @@ import org.openuss.web.Constants;
  * @author Ingo Dueppe
  * 
  */
-@Bean(name = "views$secured$group$main", scope = Scope.REQUEST)
+@Bean(name = "views$secured$groups$main", scope = Scope.REQUEST)
 @View
 public class GroupMainPage extends AbstractGroupPage {
 
@@ -43,8 +43,8 @@ public class GroupMainPage extends AbstractGroupPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		if (groupInfo != null) {
-			moderators = groupService.getModerators(groupInfo);
+		if (groupInfo != null) {		
+			// moderators = groupService.getModerators(groupInfo);
 		}
 
 		BreadCrumb newCrumb = new BreadCrumb();
@@ -63,7 +63,7 @@ public class GroupMainPage extends AbstractGroupPage {
 
 	public String applyWithPassword() throws GroupApplicationException {
 		logger.debug("group entry with password applied");
-		groupService.addUserByPassword(groupInfo, password);
+		groupService.addUserByPassword(groupInfo, password, user.getId());
 		// courseService.applyUserByPassword(password, courseInfo, user);
 		addMessage(i18n("message_group_password_accepted"));
 		return Constants.SUCCESS;

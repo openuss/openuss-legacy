@@ -220,6 +220,11 @@
 		</navigation-case>	
 		
 		<navigation-case>
+			<from-outcome>group_main</from-outcome>
+			<to-view-id>/views/secured/groups/main.xhtml</to-view-id>
+		</navigation-case>
+	
+		<navigation-case>
 			<from-outcome>openuss4us_groups_create</from-outcome>
 			<to-view-id>/views/secured/groups/groupcreate.xhtml</to-view-id>
 		</navigation-case>

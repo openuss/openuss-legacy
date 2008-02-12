@@ -144,6 +144,7 @@ public class Constants {
 	// TODO - Lutz: Properties anpassen
 	public static final String GROUP_PAGE = "group_main";
 	public static final String GROUP_OPTIONS_PAGE = "group_options";
+	public static final String GROUP_REGISTRATION_CONTROLLER = "groupRegistration";
 	
 
 	// documents navigation outcomes and combobox long constants
