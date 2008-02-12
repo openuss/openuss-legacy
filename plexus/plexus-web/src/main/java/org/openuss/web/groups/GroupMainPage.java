@@ -48,8 +48,8 @@ public class GroupMainPage extends AbstractGroupPage {
 		}
 
 		BreadCrumb newCrumb = new BreadCrumb();
-		newCrumb.setName(i18n("group_command_overview"));
-		newCrumb.setHint(i18n("group_command_overview"));
+		newCrumb.setName(i18n("openuss4us_group_command_overview"));
+		newCrumb.setHint(i18n("openuss4us_group_command_overview"));
 		breadcrumbs.addCrumb(newCrumb);
 	}
 

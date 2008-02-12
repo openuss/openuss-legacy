@@ -3,6 +3,7 @@ package org.openuss.web.groups;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -16,6 +17,7 @@ import org.openuss.groups.GroupAccessType;
 import org.openuss.groups.GroupApplicationException;
 import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupInfo;
+import org.openuss.lecture.AccessType;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -91,6 +93,16 @@ public class GroupCreatePage extends AbstractGroupPage {
 		setSessionBean(Constants.GROUP_INFO, groupInfo);
 
 		return Constants.GROUP_PAGE;
+	}
+	
+	/**
+	 * Value Change Listener to switch password input text on and off.
+	 * 
+	 * @param event
+	 */
+	public void processAccessTypeChanged(ValueChangeEvent event) {
+		Object accessType = event.getNewValue();
+		groupInfo.setAccessType((GroupAccessType) accessType);
 	}
 	
 	public UserGroupInfo getGroupInfo() {

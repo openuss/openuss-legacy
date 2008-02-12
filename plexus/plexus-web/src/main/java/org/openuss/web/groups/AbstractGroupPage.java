@@ -46,7 +46,7 @@ public class AbstractGroupPage extends BasePage {
 			groupMain.setName(i18n("openuss4us_command_groups"));
 			groupMain.setHint(i18n("openuss4us_command_groups"));
 			groupMain.setLink(PageLinks.GROUPS_MAIN);
-			groupMain.addParameter("group",groupInfo.getId());
+			// groupMain.addParameter("group",groupInfo.getId());
 			// TODO: Thomas: change from openuss4us to group
 			// -> breadcrumbs.loadGroupCrumbs(groupInfo);
 			breadcrumbs.loadOpenuss4usCrumbs();
