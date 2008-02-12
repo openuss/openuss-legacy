@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.lecture.Organisation;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
@@ -25,8 +26,7 @@ import org.openuss.security.acl.LectureAclEntry;
  */
 public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
-	private static final Logger logger = Logger
-			.getLogger(GroupServiceImpl.class);
+	private static final Logger logger = Logger.getLogger(GroupServiceImpl.class);
 
 	/**
 	 * @see org.openuss.groups.GroupService#createUserGroup(org.openuss.groups.UserGroupInfo,
@@ -47,29 +47,31 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Membership membership = Membership.Factory.newInstance();
 		getMembershipDao().create(membership);
 		groupEntity.setMembership(membership);
-
-		// Create default Groups for Institute
+		
+		// Create default SecurityGroups for UserGroup
 		GroupItem moderators = new GroupItem();
 		moderators.setName("GROUP_" + groupEntity.getId() + "_MODERATORS");
-		moderators.setLabel("autogroup_administrator_label");
-		moderators.setGroupType(GroupType.ADMINISTRATOR);
+		// TODO - Lutz: Properties anpassen
+		moderators.setLabel("autogroup_moderator_label");
+		moderators.setGroupType(GroupType.MODERATOR);
 		Group moderatorGroup = this.getGroupDao().groupItemToEntity(moderators);
-		moderatorGroup = this.getMembershipService().createGroup(
-				groupEntity.getMembership(), moderatorGroup);
-		this.getGroupDao().load(moderatorGroup.getId());
+		moderatorGroup = this.getMembershipService().createGroup(groupEntity.getMembership(), moderatorGroup);
+		Validate.notNull(moderatorGroup.getId(), "MembershipService.handleCreateGroup - Group couldn't be created");
+		moderatorGroup = this.getGroupDao().load(moderatorGroup.getId());
 		groupEntity.setModeratorsGroup(moderatorGroup);
 
 		GroupItem members = new GroupItem();
 		members.setName("GROUP_" + groupEntity.getId() + "_MEMBERS");
-		members.setLabel("autogroup_assistant_label");
-		members.setGroupType(GroupType.ASSISTANT);
+		// TODO - Lutz: Properties anpassen
+		members.setLabel("autogroup_member_label");
+		members.setGroupType(GroupType.MEMBER);
 		Group memberGroup = this.getGroupDao().groupItemToEntity(moderators);
-		memberGroup = this.getMembershipService().createGroup(
-				groupEntity.getMembership(), memberGroup);
-		this.getGroupDao().load(memberGroup.getId());
+		memberGroup = this.getMembershipService().createGroup(groupEntity.getMembership(), memberGroup);
+		Validate.notNull(memberGroup.getId(), "MembershipService.handleCreateGroup - Group couldn't be created");
+		moderatorGroup = this.getGroupDao().load(moderatorGroup.getId());
 		groupEntity.setMembersGroup(memberGroup);
-
-		// Add Creator to Group and to Group of Moderator
+		
+		// Add Creator to Group
 		User creator = getUserDao().load(userId);
 		groupEntity.setCreator(creator);
 
@@ -77,21 +79,24 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		this.getUserGroupDao().create(groupEntity);
 		Validate.notNull(groupEntity, "Id of course cannot be null.");
 
-		this.addModerator(groupInfo, creator.getId());
-
 		// FIXME - Kai, Indexing should not base on VOs!
 		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		// Update input parameter for aspects to get the right domain objects.
 		groupInfo.setId(groupEntity.getId());
+		logger.debug("----> Indexing <---- ");
+		
+		// Add Creator to Group of Moderators
+//		this.addModerator(groupInfo, creator.getId());
+		logger.debug("----> Add Creator to Group of Moderators <---- ");
 
 		// Set Security
-		this.getSecurityService().createObjectIdentity(groupEntity, null);
-		this.getSecurityService().setPermissions(moderatorGroup, groupEntity,
-				LectureAclEntry.GROUP_MODERATOR);
-		this.getSecurityService().setPermissions(memberGroup, groupEntity,
-				LectureAclEntry.GROUP_MEMBER);
+//		this.getSecurityService().createObjectIdentity(groupEntity, null);
+//		this.getSecurityService().setPermissions(moderatorGroup, groupEntity, LectureAclEntry.GROUP_MODERATOR);
+//		this.getSecurityService().setPermissions(memberGroup, groupEntity, LectureAclEntry.GROUP_MEMBER);
+		logger.debug("----> Set Security <---- ");
 
-		updateAccessTypePermission(groupEntity);
+//		updateAccessTypePermission(groupEntity);
+		logger.debug("----> updateAccessTypePermission <---- ");
 
 		return groupEntity.getId();
 	}
