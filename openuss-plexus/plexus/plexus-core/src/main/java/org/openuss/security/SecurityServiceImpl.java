@@ -6,7 +6,6 @@
 package org.openuss.security;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -32,9 +31,7 @@ import org.openuss.security.acl.Permission;
  * @author Ingo Dueppe
  */
 public class SecurityServiceImpl extends SecurityServiceBase {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(SecurityServiceImpl.class);
 
 	private static final String GROUP_PREFIX = "GROUP_";
@@ -42,68 +39,54 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 
 	@Override
 	protected Collection handleGetAllUsers() throws Exception {
-		Collection<?> allUsers = getUserDao().loadAll();
-		getUserDao().toUserInfoCollection(allUsers);
-		// TODO check if profiles, preferences and contact have to be added
-		return allUsers;
+		return getUserDao().loadAll(UserDao.TRANSFORM_USERINFO);
 	}
 
 	@Override
 	protected UserInfo handleGetUser(Long userId) throws Exception {
-		User user = getUserDao().load(userId);
-		UserInfo userInfo = userToUserInfo(user);
-		return userInfo;
-	}
-
-	private UserInfo userToUserInfo(User user) {
-		if (user == null) {
-			return null;
-		}
-		UserInfo userInfo = getUserDao().toUserInfo(user);
-		userInfo.setContact(getUserContactDao().toUserContactInfo(user.getContact()));
-		userInfo.setPreferences(getUserPreferencesDao().toUserPreferencesInfo(user.getPreferences()));
-		userInfo.setProfile(getUserProfileDao().toUserProfileInfo(user.getProfile()));
-		userInfo.setImageId(user.getImageId());
-		userInfo.setDisplayName(user.getDisplayName());
-		userInfo.setSmsNotification(user.hasSmsNotification());
-		return userInfo2UserInfoDetails(userInfo);
+		return (UserInfo) getUserDao().load(UserDao.TRANSFORM_USERINFO, userId);
 	}
 
 	@Override
 	protected UserInfo handleGetUserByName(String name) throws Exception {
-		return userToUserInfo(getUserDao().findUserByUsername(name.toLowerCase()));
+		return (UserInfo) getUserDao().findUserByUsername(UserDao.TRANSFORM_USERINFO, name.toLowerCase());
 	}
 
 	@Override
 	protected UserInfo handleGetUserByEmail(String email) throws Exception {
-		return userToUserInfo(getUserDao().findUserByEmail(email));
+		return (UserInfo) getUserDao().findUserByEmail(UserDao.TRANSFORM_USERINFO, email);
 	}
 
 	@Override
-	protected UserInfo handleCreateUser(UserInfo user) throws Exception {
-		Validate.isTrue(user.getId() == null, "User must not have an identifier!");
-		if (!isValidUserName(null, user.getUsername())) {
+	protected UserInfo handleCreateUser(UserInfo userInfo) throws Exception {
+		Validate.isTrue(userInfo.getId() == null, "User must not have an identifier!");
+		
+		validateUserInfoForRegistration(userInfo);
+
+		User user = getUserDao().userInfoToEntity(userInfo);
+		encodePassword(user);
+		getUserDao().create(user);
+		userInfo.setId(user.getId());
+
+		// Define object identity security
+		createObjectIdentity(user, null);
+
+		return userInfo;
+	}
+
+	private void validateUserInfoForRegistration(UserInfo userInfo) {
+		if (!isValidUserName(null, userInfo.getUsername())) {
 			throw new SecurityServiceException("Invalid username.");
 		}
-		if (StringUtils.isBlank(user.getPassword())) {
+		if (StringUtils.isBlank(userInfo.getPassword())) {
 			throw new SecurityServiceException("Password must not be empty");
 		}
-		if (StringUtils.isBlank(user.getEmail())) {
+		if (StringUtils.isBlank(userInfo.getEmail())) {
 			throw new SecurityServiceException("Email must be defined");
 		}
-		if (isNonExistingEmailAddress(user, user.getEmail()) != null) {
-			throw new SecurityServiceException("Email adress already in use (shold not occur -> validator bypassed?) "
-					+ user.getEmail());
+		if (isNonExistingEmailAddress(userInfo, userInfo.getEmail()) != null) {
+			throw new SecurityServiceException("Email adress already in use (shold not occur -> validator bypassed?) " + userInfo.getEmail());
 		}
-
-		User userObject = getUserDao().userInfoToEntity(user);
-		encodePassword(userObject);
-		getUserDao().create(userObject);
-		user.setId(userObject.getId());
-		// define object identity
-		createObjectIdentity(userObject, null);
-
-		return user;
 	}
 
 	@Override
@@ -148,7 +131,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		} else {
 			UserProfile userProfile = user.getProfile();
 			if (profile.getProfile() != null) {
-				userProfile = getUserProfileDao().userProfileInfoToEntity(profile.getProfile());
+				getUserProfileDao().userProfileInfoToEntity(profile.getProfile(), userProfile, false);
 			}
 			getUserProfileDao().update(userProfile);
 		}
@@ -170,19 +153,19 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		} else {
 			UserContact userContact = user.getContact();
 			if (contact.getContact() != null) {
-				userContact = getUserContactDao().userContactInfoToEntity(contact.getContact());
+				getUserContactDao().userContactInfoToEntity(contact.getContact(), userContact, false);
 			}
 			getUserContactDao().update(userContact);
 		}
 	}
 
 	@Override
-	protected void handleSaveUserPreferences(UserInfo preferences) throws Exception {
-		User user = getUserDao().load(preferences.getId());
+	protected void handleSaveUserPreferences(UserInfo userInfo) throws Exception {
+		User user = getUserDao().load(userInfo.getId());
 		if (user.getPreferences() == null) {
 			UserPreferences userPreferences;
-			if (preferences.getPreferences() != null) {
-				userPreferences = getUserPreferencesDao().userPreferencesInfoToEntity(preferences.getPreferences());
+			if (userInfo.getPreferences() != null) {
+				userPreferences = getUserPreferencesDao().userPreferencesInfoToEntity(userInfo.getPreferences());
 			} else {
 				userPreferences = UserPreferences.Factory.newInstance();
 			}
@@ -191,8 +174,8 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 			getUserDao().update(user);
 		} else {
 			UserPreferences userPreferences = user.getPreferences();
-			if (preferences.getPreferences() != null) {
-				userPreferences = getUserPreferencesDao().userPreferencesInfoToEntity(preferences.getPreferences());
+			if (userInfo.getPreferences() != null) {
+				getUserPreferencesDao().userPreferencesInfoToEntity(userInfo.getPreferences(), userPreferences, false);
 			}
 			getUserPreferencesDao().update(userPreferences);
 		}
@@ -295,21 +278,21 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		if (userName == null || userName.startsWith(GROUP_PREFIX) || userName.startsWith(ROLE_PREFIX)) {
 			return false;
 		}
-		User user = getUserDao().findUserByUsername(userName);
-		if (self == null || user == null) {
-			return user == null;
+		UserInfo userInfo = (UserInfo) getUserDao().findUserByUsername(UserDao.TRANSFORM_USERINFO, userName);
+		if (self == null || userInfo == null) {
+			return userInfo == null;
 		} else {
-			return self.equals(userToUserInfo(user));
+			return self.equals(userInfo);
 		}
 	}
 
 	@Override
 	protected UserInfo handleIsNonExistingEmailAddress(UserInfo self, String email) throws Exception {
-		User found = getUserDao().findUserByEmail(email);
+		UserInfo found = (UserInfo) getUserDao().findUserByEmail(UserDao.TRANSFORM_USERINFO, email);
 		if (self == null || found == null) {
 			return null;
 		} else {
-			return (self.equals(found)) ? null : userToUserInfo(found);
+			return (self.equals(found)) ? null : found;
 		}
 	}
 
@@ -418,13 +401,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 
 	@Override
 	protected List handleGetUsers(UserCriteria criteria) throws Exception {
-		UserDao userDao = getUserDao();
-		List<User> users = userDao.findUsersByCriteria(criteria);
-		List<UserInfo> userVos = new ArrayList<UserInfo>();
-		for (User user : users) {
-			userVos.add(userToUserInfo(user));
-		}
-		return userVos;
+		return getUserDao().findUsersByCriteria(UserDao.TRANSFORM_USERINFO, criteria);
 	}
 
 	@Override
@@ -529,9 +506,18 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	}
 
 	@Override
-	protected Object handleGetUserInfoDetails(UserInfo userInfo)
-			throws Exception {
+	protected Object handleGetUserInfoDetails(UserInfo userInfo) throws Exception {
+		Validate.notNull(userInfo, "Parameter userInfo must not be empty.");
+		Validate.notNull(userInfo.getId(),"Parameter userInfo must contain a valid id.");
+		
+		User user = getUserDao().load(userInfo.getId());
+		
 		UserInfoDetails userInfoDetails = userInfo2UserInfoDetails(userInfo);
+		
+		userInfoDetails.setPreferences((UserPreferencesInfo) getUserPreferencesDao().toUserPreferencesInfo(user.getPreferences()));
+		userInfoDetails.setContact((UserContactInfo) getUserContactDao().toUserContactInfo(user.getContact()));
+		userInfoDetails.setProfile((UserProfileInfo) getUserProfileDao().toUserProfileInfo(user.getProfile()));
+		
 		return userInfoDetails;
 	}
 	
