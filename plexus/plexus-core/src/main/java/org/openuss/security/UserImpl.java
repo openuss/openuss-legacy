@@ -161,16 +161,6 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		getPreferences().setTimezone(timezone);
 	}
 
-//	@Override
-//	@SuppressWarnings("deprecation")
-//	public UserPreferences getPreferences() {
-//		if (super.getPreferences() != null) {
-//			return super.getPreferences();
-//		} else {
-//			return UserPreferences.Factory.newInstance();
-//		}
-//	}
-
 	@SuppressWarnings("deprecation")
 	@Override
 	public String getLocale() {
@@ -183,7 +173,6 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public String getSmsEmail() {
 		if (getContact() != null) {
 			return getContact().getSmsEmail();
@@ -208,7 +197,6 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		getContact().setLastName(lastName);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void setTitle(String title) {
 		getContact().setTitle(title);

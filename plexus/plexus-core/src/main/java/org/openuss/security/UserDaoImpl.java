@@ -5,19 +5,26 @@
  */
 package org.openuss.security;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
+
 
 
 /**
  * @see org.openuss.security.User
  * @author Ingo Dueppe
  */
-public class UserDaoImpl extends org.openuss.security.UserDaoBase {
+public class UserDaoImpl extends UserDaoBase {
 	
 	/**
 	 * @see org.openuss.security.UserDao#getPassword(int, java.lang.Long)
 	 */
 	@Override
-	public java.lang.Object getPassword(final int transform, final java.lang.Long id) {
+	public Object getPassword(final int transform, final Long id) {
 		return this.getPassword(transform, "select password from org.openuss.security.User as user where user.id = ?",	id);
 	}
 
@@ -26,15 +33,15 @@ public class UserDaoImpl extends org.openuss.security.UserDaoBase {
 	 *      java.lang.Long)
 	 */
 	@Override
-	public java.lang.Object getPassword(final int transform, final java.lang.String queryString, final java.lang.Long id) {
+	public Object getPassword(final int transform, final String queryString, final Long id) {
 		try {
-			org.hibernate.Query queryObject = super.getSession(false).createQuery(queryString);
+			Query queryObject = super.getSession(false).createQuery(queryString);
 			queryObject.setParameter(0, id);
-			java.util.Set results = new java.util.LinkedHashSet(queryObject.list());
-			java.lang.Object result = null;
+			Set results = new LinkedHashSet(queryObject.list());
+			Object result = null;
 			if (results != null) {
 				if (results.size() > 1) {
-					throw new org.springframework.dao.InvalidDataAccessResourceUsageException(
+					throw new InvalidDataAccessResourceUsageException(
 							"More than one instance of 'java.lang.String" + "' was found when executing query --> '"
 									+ queryString + "'");
 				} else if (results.size() == 1) {
@@ -42,7 +49,7 @@ public class UserDaoImpl extends org.openuss.security.UserDaoBase {
 				}
 			}
 			return result;
-		} catch (org.hibernate.HibernateException ex) {
+		} catch (HibernateException ex) {
 			throw super.convertHibernateAccessException(ex);
 		}
 	}
@@ -65,8 +72,9 @@ public class UserDaoImpl extends org.openuss.security.UserDaoBase {
 	}
 
 	@Override
-	public void toUserInfo(org.openuss.security.User source, org.openuss.security.UserInfo target) {
+	public void toUserInfo(User source, UserInfo target) {
 		super.toUserInfo(source, target);
+		target.setDisplayName(source.getDisplayName());
 	}
 	
 }

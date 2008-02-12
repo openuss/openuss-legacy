@@ -5,18 +5,17 @@
  */
 package org.openuss.registration;
 
-import java.util.TimeZone;
-
 import org.openuss.desktop.DesktopDao;
 import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
 import org.openuss.security.User;
-import org.openuss.security.UserContact;
 import org.openuss.security.UserContactDao;
+import org.openuss.security.UserContactInfo;
 import org.openuss.security.UserDao;
 import org.openuss.security.UserInfo;
-import org.openuss.security.UserPreferences;
+import org.openuss.security.UserInfoDetails;
 import org.openuss.security.UserPreferencesDao;
+import org.openuss.security.UserPreferencesInfo;
 
 /**
  * JUnit Test for Spring Hibernate RegistrationService class.
@@ -32,23 +31,6 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 	private User user;
 	private ActivationCodeDao activationCodeDao;
 	
-	@Override
-	protected void onSetUpInTransaction() throws Exception {
-		user = testUtility.createDefaultUser();
-		// create preferences
-		UserPreferences preferences = UserPreferences.Factory.newInstance();
-		preferences.setLocale("de");
-		preferences.setTheme("plexus");
-		preferences.setTimezone(TimeZone.getDefault().getID());
-		user.setPreferences(preferences);
-		// create person
-		UserContact contact = UserContact.Factory.newInstance();
-		contact.setFirstName("firstName");
-		contact.setLastName("lastName");
-		contact.setAddress("address");
-		user.setContact(contact);
-	}
-
 	public void testInjection() {
 		assertNotNull(userDao);
 		assertNotNull(userContactDao);
@@ -57,8 +39,30 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 		assertNotNull(desktopDao);
 	}
 	
+	public UserInfo createUserInfo() {
+		UserInfo userInfo = new UserInfoDetails();
+		userInfo.setPassword("masterkey");
+		userInfo.setEmail(testUtility.unique("openuss@openuss.org"));
+		userInfo.setUsername(testUtility.unique("username"));
+		
+		UserPreferencesInfo preferences = new UserPreferencesInfo();
+		preferences.setLocale("xyz");
+		preferences.setTimezone("Europa/Berlin+1");
+		userInfo.setPreferences(preferences);
+		
+		UserContactInfo contact = new UserContactInfo();
+		contact.setAddress("Address");
+		contact.setPostcode("postcode");
+		contact.setCity("city");
+		contact.setFirstName("firstName");
+		contact.setLastName("lastName");
+		userInfo.setContact(contact);
+		
+		return userInfo;
+	}
+	
 	public void testUserRegistration() throws RegistrationException {
-		UserInfo userInfo = userDao.toUserInfo(user);
+		UserInfo userInfo = createUserInfo();
 		registrationService.registrateUser(userInfo);
 		
 		assertNotNull(userInfo.getId());
