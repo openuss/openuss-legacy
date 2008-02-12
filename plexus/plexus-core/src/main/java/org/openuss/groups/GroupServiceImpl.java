@@ -29,13 +29,14 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 			.getLogger(GroupServiceImpl.class);
 
 	/**
-	 * @see org.openuss.groups.GroupService#createUserGroup(org.openuss.groups.UserGroupInfo)
+	 * @see org.openuss.groups.GroupService#createUserGroup(org.openuss.groups.UserGroupInfo,
+	 *      java.lang.Long)
 	 */
-	protected Long handleCreateUserGroup(UserGroupInfo groupInfo)
+	protected Long handleCreateUserGroup(UserGroupInfo groupInfo, Long userId)
 			throws Exception {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
-		Validate.isTrue(groupInfo.getId() == null, "The Group shouldn't have an ID yet");
-		
+		Validate.isTrue(groupInfo.getId() == null,
+				"The Group shouldn't have an ID yet");
 
 		// Transform VO to entity
 		UserGroup groupEntity = this.getUserGroupDao().userGroupInfoToEntity(
@@ -69,22 +70,20 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		groupEntity.setMembersGroup(memberGroup);
 
 		// Add Creator to Group and to Group of Moderator
-//		User creator = getSecurityService().getCurrentUser();
-		User creator = User.Factory.newInstance();
+		User creator = getUserDao().load(userId);
 		groupEntity.setCreator(creator);
 
-		
 		// Save Entity
 		this.getUserGroupDao().create(groupEntity);
 		Validate.notNull(groupEntity, "Id of course cannot be null.");
-		
+
 		this.addModerator(groupInfo, creator.getId());
-		
+
 		// FIXME - Kai, Indexing should not base on VOs!
 		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		// Update input parameter for aspects to get the right domain objects.
 		groupInfo.setId(groupEntity.getId());
-		
+
 		// Set Security
 		this.getSecurityService().createObjectIdentity(groupEntity, null);
 		this.getSecurityService().setPermissions(moderatorGroup, groupEntity,
@@ -157,9 +156,9 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		UserGroup group = getUserGroupDao().userGroupInfoToEntity(groupInfo);
 		Validate.notNull(group, "Cannot transform groupInfo to entity.");
 
-		// Load Current User Entity
+		// Load User Entity
 		User user = getUserDao().load(userId);
-		Validate.notNull(user, "Current user must not be null.");
+		Validate.notNull(user, "User must not be null.");
 
 		// Add user to Membership
 		Membership membership = group.getMembership();
@@ -187,9 +186,9 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		UserGroup group = getUserGroupDao().userGroupInfoToEntity(groupInfo);
 		Validate.notNull(group, "Cannot transform groupInfo to entity.");
 
-		// Load Current User Entity
+		// Load User Entity
 		User user = getUserDao().load(userId);
-		Validate.notNull(user, "Current user must not be null.");
+		Validate.notNull(user, "User must not be null.");
 
 		// Remove user from Security Group - Moderators
 		Group secGroupMod = getSecurityService().getGroupByName(
@@ -217,9 +216,9 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		UserGroup group = getUserGroupDao().userGroupInfoToEntity(groupInfo);
 		Validate.notNull(group, "Cannot transform groupInfo to entity.");
 
-		// Load Current User Entity
+		// Load User Entity
 		User user = getUserDao().load(userId);
-		Validate.notNull(user, "Current user must not be null.");
+		Validate.notNull(user, "User must not be null.");
 
 		// Add user to Membership
 		Membership membership = group.getMembership();
@@ -234,10 +233,10 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
 	/**
 	 * @see org.openuss.groups.GroupService#addUserByPassword(org.openuss.groups.UserGroupInfo,
-	 *      java.lang.String)
+	 *      java.lang.String, java.lang.Long)
 	 */
 	protected void handleAddUserByPassword(UserGroupInfo groupInfo,
-			String password) throws Exception {
+			String password, Long userId) throws Exception {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -250,7 +249,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Check password
 		if (group.isPasswordCorrect(password)) {
 			// add User
-			addMember(groupInfo, getSecurityService().getCurrentUser().getId());
+			addMember(groupInfo, userId);
 		}
 	}
 
@@ -280,9 +279,11 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	}
 
 	/**
-	 * @see org.openuss.groups.GroupService#addAspirant(org.openuss.groups.UserGroupInfo)
+	 * @see org.openuss.groups.GroupService#addAspirant(org.openuss.groups.UserGroupInfo,
+	 *      java.lang.Long)
 	 */
-	protected void handleAddAspirant(UserGroupInfo groupInfo) throws Exception {
+	protected void handleAddAspirant(UserGroupInfo groupInfo, Long userId)
+			throws Exception {
 		Validate.notNull(groupInfo, "GroupInfo cannot be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -291,8 +292,8 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		UserGroup group = getUserGroupDao().userGroupInfoToEntity(groupInfo);
 		Validate.notNull(group, "Cannot transform groupInfo to entity.");
 
-		// Load Current User Entity
-		User user = getSecurityService().getCurrentUser();
+		// Load User Entity
+		User user = getUserDao().load(userId);
 		Validate.notNull(user, "User cannot be null.");
 
 		// Add user to Membership as Aspirant
@@ -437,7 +438,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 			throws Exception {
 
 		// Load User Entity
-		User user = getSecurityService().getCurrentUser();
+		User user = getUserDao().load(userId);
 		Validate.notNull(user, "User cannot be null.");
 
 		Collection<Membership> memberships = getMembershipDao().loadAll();
@@ -566,25 +567,25 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 			List<User> users, UserGroup group, Group secGroups) {
 		List<User> users2 = null;
 		if (secGroups != null) {
-			for(User user:users){
-				for(Group secGroup:user.getGroups()){
-					if(secGroup == secGroups){
+			for (User user : users) {
+				for (Group secGroup : user.getGroups()) {
+					if (secGroup == secGroups) {
 						users2.add(user);
 					}
-					
+
 				}
 			}
 			users = users2;
 		}
 		List<UserGroupMemberInfo> groupMembers = null;
-		for(User user:users){
+		for (User user : users) {
 			UserGroupMemberInfo groupMember = new UserGroupMemberInfo();
 			groupMember.setUserId(user.getId());
 			groupMember.setUsername(user.getUsername());
 			groupMember.setFirstName(user.getFirstName());
 			groupMember.setLastName(user.getLastName());
 			groupMember.setEMail(user.getEmail());
-			if(secGroups == group.getModeratorsGroup()){
+			if (secGroups == group.getModeratorsGroup()) {
 				groupMember.setModerator(true);
 			} else {
 				groupMember.setModerator(false);
