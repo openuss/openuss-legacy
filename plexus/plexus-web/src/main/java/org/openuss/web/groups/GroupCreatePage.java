@@ -28,7 +28,7 @@ import org.openuss.web.Constants;
  * @author Thomas Jansing
  */
 
-@Bean(name = Constants.GROUP_REGISTRATION_CONTROLLER, scope = Scope.SESSION)
+@Bean(name = Constants.GROUP_REGISTRATION_CONTROLLER, scope = Scope.REQUEST)
 @View
 public class GroupCreatePage extends AbstractGroupPage {
 
@@ -91,7 +91,6 @@ public class GroupCreatePage extends AbstractGroupPage {
 		logger.debug("Group created?!");
 		
 		setSessionBean(Constants.GROUP_INFO, groupInfo);
-
 		return Constants.GROUP_PAGE;
 	}
 	
@@ -99,10 +98,10 @@ public class GroupCreatePage extends AbstractGroupPage {
 	 * Value Change Listener to switch password input text on and off.
 	 * 
 	 * @param event
-	 */
+	 */ 
 	public void processAccessTypeChanged(ValueChangeEvent event) {
-		Object accessType = event.getNewValue();
-		groupInfo.setAccessType((GroupAccessType) accessType);
+//		Object accessType = event.getNewValue();
+//		groupInfo.setAccessType((GroupAccessType) accessType);
 	}
 	
 	public UserGroupInfo getGroupInfo() {

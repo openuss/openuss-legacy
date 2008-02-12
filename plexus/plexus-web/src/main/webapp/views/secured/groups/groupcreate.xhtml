@@ -46,16 +46,27 @@
 					<h:outputLabel value="#{msg.groupinfo_description}" for="descriptionTextField" styleClass="field_label"/>
 					<h:inputTextarea styleClass="pulldown" value="#{groupInfo.description}" id="descriptionTextField" />
 					
+					<h:outputLabel value="#{msg.groupinfo_accesstype}" for="accessTypeSelect" styleClass="field_label" />
 					
-					<!-- <h:outputLabel value="#{msg.groupinfo_accesstype}" for="accessTypeSelect" styleClass="field_label" />
+					<!-- FIXME 
+					<h:selectOneMenu id="groupAccessTypeSelect" 
+						layout="pageDirection" 
+						value="#{groupRegistration.accessTypes}" 
+
+						onchange="this.form.submit();"
+						immediate="true" 
+						styleClass="pulldown">
+						<f:converter converterId="accessTypeConverter" />
+						<f:selectItems value="#{groupRegistration.accessTypes}" />
+					</h:selectOneMenu>
+
 					<h:selectOneListbox id="accessTypeSelect" size="1" styleClass="pulldown" value="#{groupInfo.accessType}">
-					    <f:selectItems value="#{views$secured$groups$groupcreate.accessTypes}"/>
+					    <f:selectItems value="#{groupRegistration.accessTypes}"/>
 					    <f:converter converterId="accessTypeConverter" />
 					</h:selectOneListbox>
-					
 					-->
 					
-	
+
 					<t:htmlTag value="br" />
 					<h:outputText value="#{msg.openuss4us_groups_options_features}" styleClass="header_font_normal"/>
 					<o:input entity="groupInfo" property="documents"/>
@@ -74,8 +85,8 @@
    			 	</o:block>
    			 	
    			 	<o:block>
-			   		<h:commandButton value="#{msg.back}" action="view:backward" styleClass="button_back"/>
-					<h:commandButton value="#{msg.forward}" action="#{groupRegistration.register}" styleClass="button_continue"/>
+			   		<h:commandButton value="#{msg.back}" action="view:backward" styleClass="button_back" immediate="true" />
+					<h:commandButton value="#{msg.forward}" action="#{groupRegistration.register}" styleClass="button_continue" />
 		 		</o:block>
 	 		</h:form> 
   		</ui:define>

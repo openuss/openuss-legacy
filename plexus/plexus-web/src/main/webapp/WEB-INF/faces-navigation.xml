@@ -230,6 +230,11 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>openuss4us_groups_create_step2</from-outcome>
+			<to-view-id>//views/secured/groups/groupjoin.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>openuss4us_groups_join</from-outcome>
 			<to-view-id>/views/secured/groups/groupjoin.xhtml</to-view-id>
 		</navigation-case>

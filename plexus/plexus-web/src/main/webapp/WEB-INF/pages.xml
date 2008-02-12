@@ -244,14 +244,7 @@
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
             OpenUSS4US
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
-	
-    <page view-id="/views/secured/openuss4us/buddylist.xhtml">
-    </page>
-    <page view-id="/views/secured/openuss4us/calendar.xhtml">
-    </page>
-    <page view-id="/views/secured/openuss4us/messagecenter.xhtml">
-    </page>
-    <page view-id="/views/secured/openuss4us/groups.xhtml">
-    </page>
+
+
       
  </pages>   
