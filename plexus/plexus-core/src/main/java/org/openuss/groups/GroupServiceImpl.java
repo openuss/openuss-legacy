@@ -50,7 +50,8 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Create default SecurityGroups for UserGroup
 		GroupItem moderators = new GroupItem();
 		logger.debug(groupEntity.getId());
-		moderators.setName("GROUP_" + groupEntity.getId() + "_MODERATORS");
+		// TODO Thomas: 8 -> unique ID
+		moderators.setName("GROUP_" + "8" + "_MODERATORS");
 		// TODO - Lutz: Properties anpassen
 		moderators.setLabel("autogroup_moderator_label");
 		moderators.setGroupType(GroupType.MODERATOR);
@@ -61,7 +62,8 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		groupEntity.setModeratorsGroup(moderatorGroup);
 
 		GroupItem members = new GroupItem();
-		members.setName("GROUP_" + groupEntity.getId() + "_MEMBERS");
+		// TODO Thomas: 9 -> unique ID
+		members.setName("GROUP_" + "9" + "_MEMBERS");
 		// TODO - Lutz: Properties anpassen
 		members.setLabel("autogroup_member_label");
 		members.setGroupType(GroupType.MEMBER);

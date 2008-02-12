@@ -71,25 +71,14 @@ public class GroupCreatePage extends AbstractGroupPage {
 	public String register() {
 		// TODO Thomas: Implement Security Tests etc.
 		
-//		DUMMY		
-//		groupInfo2.setCreator(user.getId());
-//		groupInfo.setAccessType(GroupAccessType.OPEN);
+		// FIXME ACCESS TYPE in groupcreate.xhtml 		
 
-
-//		CREATE GROUP
 		groupInfo.setAccessType(GroupAccessType.OPEN);
-		logger.debug("Starting group creation");
-		logger.debug(user.getId());
-		logger.debug(groupInfo.getName());
-		logger.debug(groupInfo.getDescription());
-		logger.debug("Argumente OK!");
-		
+
+		// CREATE GROUP
 		newGroupId = groupService.createUserGroup(groupInfo, user.getId());
-		
-		logger.debug("DAZWISCHEN");
 		groupInfo.setId(newGroupId);
-		logger.debug("Group created?!");
-		
+	
 		setSessionBean(Constants.GROUP_INFO, groupInfo);
 		return Constants.GROUP_PAGE;
 	}
