@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~ AUTHENTICATION DEFINITIONS ~~~~~~~~~~~~~~~~~~ -->
+
+	<!-- This authentication provider accepts any presented TestingAuthenticationToken -->
+	<bean id="testingAuthenticationProvider" class="org.acegisecurity.providers.TestingAuthenticationProvider"/>
+
+
+	<bean id="authenticationManager"
+		class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+			    <ref local="testingAuthenticationProvider"/>
+			    <ref local="ldapAuthProvider"/>				
+			</list>
+		</property>
+	</bean>
+
+
+
+
+<!-- LDAP Authentification -->
+
+<bean id="initialDirContextFactory" class="org.acegisecurity.ldap.DefaultInitialDirContextFactory">
+	<constructor-arg value="ldap://wwusv1.uni-muenster.de:389/"/>	
+	<property name="managerDn"><value>cn=j_debr01,ou=projekt-benutzer,dc=uni-muenster,dc=de</value></property>
+	<property name="managerPassword"><value>...</value></property>
+	<property name="authenticationType"><value>DIGEST-MD5</value></property>
+</bean>
+	
+
+<!-- <bean id="userSearch" class="org.acegisecurity.ldap.search.FilterBasedLdapUserSearch">
+	<constructor-arg index="0"><value></value></constructor-arg>
+	<constructor-arg index="1"><value>(uid={0})</value>
+	</constructor-arg>
+	<constructor-arg index="2"><ref local="initialDirContextFactory" />
+	</constructor-arg>
+	<property name="searchSubtree">
+	<value>true</value>
+	</property>
+	</bean>  -->
+
+
+<bean id="ldapAuthProvider" class="org.acegisecurity.providers.ldap.LdapAuthenticationProvider">
+	<constructor-arg>
+		<bean class="org.acegisecurity.providers.ldap.authenticator.BindAuthenticator">
+			<constructor-arg><ref local="initialDirContextFactory"/></constructor-arg>
+			<property name="userDnPatterns"><list><value>cn={0},ou=projekt-benutzer,dc=uni-muenster,dc=de</value></list></property>
+		</bean>
+	</constructor-arg>
+
+	<constructor-arg>
+		<bean class="org.acegisecurity.providers.ldap.populator.DefaultLdapAuthoritiesPopulator">
+			<constructor-arg><ref local="initialDirContextFactory"/></constructor-arg>
+			<constructor-arg><value>ou=Projekt-Gruppe</value></constructor-arg>
+			<property name="groupRoleAttribute"><value>cn</value></property>
+		</bean>
+	</constructor-arg>
+</bean>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- !!!!!!!!!!!!!!!!!!!!!				confident					!!!!!!!!!!!!!!!!!!!!!!!!!  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- STOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<bean id="ldapPswdAuthToken" class="org.acegisecurity.providers.UsernamePasswordAuthenticationToken">
+	<constructor-arg index="0"><value>j_debr01</value></constructor-arg>
+	<constructor-arg index="1"><value>...</value></constructor-arg>	
+</bean>
+
+
+
+
+
+
+
+
+
+</beans>
