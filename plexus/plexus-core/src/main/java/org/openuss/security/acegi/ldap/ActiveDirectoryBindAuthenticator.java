@@ -16,6 +16,7 @@
 package org.openuss.security.acegi.ldap;
 
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import org.acegisecurity.BadCredentialsException;
 import org.acegisecurity.ldap.InitialDirContextFactory;
@@ -70,17 +71,25 @@ public class ActiveDirectoryBindAuthenticator extends AbstractLdapAuthenticator 
            user = bindWithDn((String) dns.next(), username, password);
        }
 
+       /**
+        
        // Otherwise use the configured locator to find the user
        // and authenticate with the returned DN.
        if ((user == null) && (getUserSearch() != null)) {
            LdapUserDetails userFromSearch = getUserSearch().searchForUser(username);
            user = bindWithDn(userFromSearch.getDn(), username, password);
        }
+		
+        */
 
        if (user == null) {
            throw new BadCredentialsException(
                    messages.getMessage("BindAuthenticator.badCredentials", "Bad credentials"));
        }
+       
+       
+       logger.info("authenticate - user.getUsername(): "+user.getUsername());
+       logger.info("authenticate - user.getAttributes(): "+user.getAttributes());
 
        return user;
    }

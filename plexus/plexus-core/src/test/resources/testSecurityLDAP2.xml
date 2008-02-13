@@ -47,132 +47,15 @@
 		</bean>
 	</constructor-arg>
 
-	<constructor-arg>
+<!-- since Acegi 1.0.6 optional -->
+	
+	<!-- <constructor-arg>
 		<bean class="org.acegisecurity.providers.ldap.populator.DefaultLdapAuthoritiesPopulator">
 			<constructor-arg><ref local="initialDirContextFactory"/></constructor-arg>
 			<constructor-arg><value>ou=Projekt-Gruppe</value></constructor-arg>
 			<property name="groupRoleAttribute"><value>cn</value></property>
 		</bean>
-	</constructor-arg>
+	</constructor-arg>  -->
 </bean>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- !!!!!!!!!!!!!!!!!!!!!				confident					!!!!!!!!!!!!!!!!!!!!!!!!!  -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- STOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<bean id="ldapPswdAuthToken" class="org.acegisecurity.providers.UsernamePasswordAuthenticationToken">
-	<constructor-arg index="0"><value>j_debr01</value></constructor-arg>
-	<constructor-arg index="1"><value>...</value></constructor-arg>	
-</bean>
-
-
-
-
-
-
-
-
 
 </beans>
