@@ -1,4 +1,4 @@
-package org.openuss.security.acegi.ldap;
+package org.openuss.security.ldap;
 
 /* Beispiele aus dem Buch "LDAP fuer Java-Entwickler"
  * Software & Support Verlag, 2004

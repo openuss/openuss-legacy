@@ -3,7 +3,7 @@
  * This is only generated once! It will never be overwritten.
  * You can (and have to!) safely modify it by hand.
  */
-package org.openuss.security.acegi.ldap;
+package org.openuss.security.ldap;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.providers.ProviderManager;
@@ -14,18 +14,18 @@ import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 
 /**
- * JUnit Test for Spring Hibernate UserDao class.
+ * JUnit Test for Acegi LDAP and Active Directory.
  * @see org.openuss.security.UserDao
  */
-public class LdapTest extends AbstractDependencyInjectionSpringContextTests {
+public class ADLdapTest extends AbstractDependencyInjectionSpringContextTests {
 	
-	protected static final Logger logger = Logger.getLogger(LdapTest.class);
+	protected static final Logger logger = Logger.getLogger(ADLdapTest.class);
 
 	protected ProviderManager authManager;	
 	
 	protected UsernamePasswordAuthenticationToken ldapPswdAuthToken;
 	
-	public LdapTest() {
+	public ADLdapTest() {
 		super();
 	}
 	
@@ -38,28 +38,6 @@ public class LdapTest extends AbstractDependencyInjectionSpringContextTests {
 	}	
 	
 	
-
-	public UsernamePasswordAuthenticationToken getLdapPswdAuthToken() {
-		return ldapPswdAuthToken;
-	}
-
-	public void setLdapPswdAuthToken(UsernamePasswordAuthenticationToken ldapPswdAuthToken) {
-		this.ldapPswdAuthToken = ldapPswdAuthToken;
-	}
-
-	public void testLdapPswdAuthTokenInjection() {
-		assertNotNull(ldapPswdAuthToken);
-	}
-	
-	public void testUserNameInjection() {
-		assertEquals("j_debr01", ldapPswdAuthToken.getPrincipal().toString());
-	}
-	
-	public void testPswdInjection() {
-		assertNotSame("", ldapPswdAuthToken.getCredentials().toString());
-	}
-	
-	
 	public void testAuthManagerInjection() {
 		assertNotNull(authManager);
 	}
@@ -68,7 +46,8 @@ public class LdapTest extends AbstractDependencyInjectionSpringContextTests {
 
 	        //UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(ldapUser, ldapPswd);
 		 	//UsernamePasswordAuthenticationToken authRequest = ldapPswdAuthToken;
-		 	UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken("p_schu07", "...");
+//		 !!!!!!!!!!!!! ATTENTION: DON't commit your personal password !!!!!!!!!!!!!!!!!!!!
+		 							UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken("", "");
 		 	
 		 	Authentication authResult = authManager.authenticate(authRequest);
 		 	
@@ -77,7 +56,7 @@ public class LdapTest extends AbstractDependencyInjectionSpringContextTests {
 		 	logger.info(authResult);
 		 	/*
 		 	 
-		 	assertEquals("j_debr01", authResult.getCredentials());	        
+		 	assertEquals("", authResult.getCredentials());	        
 	        
 	        
 	        
