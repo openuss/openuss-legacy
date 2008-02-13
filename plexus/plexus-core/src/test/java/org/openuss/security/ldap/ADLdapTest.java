@@ -47,7 +47,7 @@ public class ADLdapTest extends AbstractDependencyInjectionSpringContextTests {
 	        //UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(ldapUser, ldapPswd);
 		 	//UsernamePasswordAuthenticationToken authRequest = ldapPswdAuthToken;
 //		 !!!!!!!!!!!!! ATTENTION: DON't commit your personal password !!!!!!!!!!!!!!!!!!!!
-		 							UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken("", "");
+		 							UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken("", "...");
 		 	
 		 	Authentication authResult = authManager.authenticate(authRequest);
 		 	
