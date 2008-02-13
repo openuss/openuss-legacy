@@ -715,14 +715,14 @@ public class TestUtility {
 		// Create a unique CourseType
 		UserGroup userGroup = UserGroup.Factory.newInstance();
 		userGroup.setName("UserGroup");
-		userGroup.setShortcut("group");
+		userGroup.setShortcut(unique("group"));
 		userGroup.setCreator(createUniqueUserInDB());
 		userGroup.setMembership(Membership.Factory.newInstance());
 		Group mod = Group.Factory.newInstance();
-		mod.setName("moderator");
+		mod.setName(unique("moderator"));
 		userGroup.setModeratorsGroup(mod);
 		Group mem = Group.Factory.newInstance();
-		mem.setName("member");
+		mem.setName(unique("member"));
 		userGroup.setMembersGroup(mem);
 		userGroup.setAccessType(GroupAccessType.OPEN);
 		userGroup.setForum(true);

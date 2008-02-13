@@ -5,6 +5,8 @@
  */
 package org.openuss.groups;
 
+import java.util.List;
+
 import org.openuss.TestUtility;
 import org.openuss.security.User;
 
@@ -128,30 +130,131 @@ public class GroupServiceIntegrationTest extends
 		logger.debug("----> END access to delete test <---- ");
 	}
 
-	public void testAddModerator(){
+	public void testAddAspirant(){
+		logger.debug("----> BEGIN access to AddAspirant test <---- ");
 		
+		// Create UserGroup
+		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
+		assertNotNull(userGroup);
+		
+		// Create User
+		User user = testUtility.createUniqueUserInDB();
+		assertNotNull(user);
+		
+		// Group to GroupInfo
+		UserGroupInfo groupInfo = testUtility.getUserGroupDao().toUserGroupInfo(userGroup);
+		
+		// Add User as Moderator
+		this.getGroupService().addAspirant(groupInfo, user.getId());
+		
+		// Test
+		boolean asp = false;
+		List<User> aspirants = userGroup.getMembership().getAspirants();
+		for(User aspirant:aspirants){
+			if (aspirant == user){
+				asp = true;
+			}
+		}
+		assertEquals(true, asp);
+		boolean mem = this.getGroupService().isMember(groupInfo, user.getId());
+		assertEquals(false, mem);
+			
+		logger.debug("----> END access to AddAspirant test <---- ");
+	}
+	
+	public void testAddMember(){
+		logger.debug("----> BEGIN access to AddMember test <---- ");
+		
+		// Create UserGroup
+		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
+		assertNotNull(userGroup);
+		
+		// Create User
+		User user = testUtility.createUniqueUserInDB();
+		assertNotNull(user);
+		
+		// Group to GroupInfo
+		UserGroupInfo groupInfo = testUtility.getUserGroupDao().toUserGroupInfo(userGroup);
+		
+		// Add User as Moderator
+		this.getGroupService().addMember(groupInfo, user.getId());
+		
+		// Test
+		boolean mem = this.getGroupService().isMember(groupInfo, user.getId());
+		assertEquals(true, mem);
+		boolean mod = this.getGroupService().isModerator(groupInfo, user.getId());
+		assertEquals(false, mod);		
+		
+		logger.debug("----> END access to AddMember test <---- ");
+	}
+	
+	public void testAddModerator(){
+		logger.debug("----> BEGIN access to AddModerator test <---- ");
+		
+		// Create UserGroup
+		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
+		assertNotNull(userGroup);
+		
+		// Create User
+		User user = testUtility.createUniqueUserInDB();
+		assertNotNull(user);
+		
+		// Group to GroupInfo
+		UserGroupInfo groupInfo = testUtility.getUserGroupDao().toUserGroupInfo(userGroup);
+		
+		// Add User as Moderator
+		this.getGroupService().addMember(groupInfo, user.getId());
+		this.getGroupService().addModerator(groupInfo, user.getId());
+		
+		// Test
+		boolean mod = this.getGroupService().isModerator(groupInfo, user.getId());
+		assertEquals(true, mod);
+				
+		logger.debug("----> END access to AddModerator test <---- ");
+	}
+	
+	public void testAddUserByPassword(){
+		logger.debug("----> BEGIN access to AddModerator test <---- ");
+		
+		// Create UserGroup
+		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
+		assertNotNull(userGroup);
+		
+		// Set AccessType to Password
+		userGroup.setAccessType(GroupAccessType.PASSWORD);
+		userGroup.setPassword("Password");
+		testUtility.getUserGroupDao().update(userGroup);
+		
+		// Create User
+		User user = testUtility.createUniqueUserInDB();
+		assertNotNull(user);
+		
+		// Group to GroupInfo
+		UserGroupInfo groupInfo = testUtility.getUserGroupDao().toUserGroupInfo(userGroup);
+		
+		// Add User as Moderator
+		this.getGroupService().addUserByPassword(groupInfo, "Password", user.getId());
+		
+		// Test
+		boolean mem = this.getGroupService().isMember(groupInfo, user.getId());
+		assertEquals(true, mem);
+		boolean mod = this.getGroupService().isModerator(groupInfo, user.getId());
+		assertEquals(false, mod);
+				
+		logger.debug("----> END access to AddModerator test <---- ");
 	}
 	
 	public void testRemoveModerator(){
 		
 	}
 	
-	public void testAddMember(){
-		
-	}
 	
-	public void testAssUserByPassword(){
-		
-	}
 
 	public void testRemoveMember(){
 		
 	}
 	
-	public void testAddAspirant(){
-		
-	}
-	
+
 	public void testAcceptAspirant(){
 		
 	}
@@ -182,14 +285,6 @@ public class GroupServiceIntegrationTest extends
 	
 	public void testGetGroupInfo(){
 
-	}
-	
-	public void testIsModerator(){
-		
-	}
-	
-	public void testIsMember(){
-		
 	}
 	
 	public void testIsCreator(){
