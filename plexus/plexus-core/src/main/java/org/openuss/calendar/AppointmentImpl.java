@@ -20,9 +20,9 @@ public class AppointmentImpl
     /**
      * @see org.openuss.calendar.Appointment#getCalendaType()
      */
-    public java.lang.String getCalendarType()
+    public java.lang.String getSourceCalendarType()
     {
-        return this.getAssignedCalendar().getCalendarType().getValue();
+        return this.getSourceCalendar().getCalendarType().getValue();
     }
 
 }

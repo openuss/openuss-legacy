@@ -20,29 +20,11 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 	private static final long serialVersionUID = -1219708571206341703L;
 
 	/**
-	 * @see org.openuss.calendar.Calendar#addAppointment(org.openuss.calendar.Appointment)
-	 */
-	public void addAppointment(org.openuss.calendar.Appointment appointment) {
-		super.getAppointments().add(appointment);
-		appointment.setAssignedCalendar(this);
-	}
-
-
-	/**
 	 * @see org.openuss.calendar.Calendar#deleteAppointment(org.openuss.calendar.Appointment)
 	 */
 	public void deleteAppointment(org.openuss.calendar.Appointment appointment) {
-    	this.getAppointments().remove(appointment);
+    	
 	}
-
-	/**
-	 * @see org.openuss.calendar.Calendar#addSerialAppointment(org.openuss.calendar.SerialAppointment)
-	 */
-	public void addSerialAppointment(
-			org.openuss.calendar.SerialAppointment serialAppointment) {
-		this.getAppointments().add(serialAppointment);
-	}
-
 
 	/**
 	 * @see org.openuss.calendar.Calendar#deleteSerialAppointment(org.openuss.calendar.SerialAppointment)
@@ -60,7 +42,11 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 	@Override
 	public List getNaturalSerialAppointments() {
 		ArrayList apps = new ArrayList();
-		for(Appointment app : this.getAppointments()){
+		for(Appointment app : this.getOwnAppointments()){
+			if(app instanceof SerialAppointment)
+				apps.add(app);
+		}
+		for(Appointment app : this.getLinkedAppointments()){
 			if(app instanceof SerialAppointment)
 				apps.add(app);
 		}
@@ -71,8 +57,43 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 	@Override
 	public List getNaturalSingleAppointments() {
 		ArrayList apps = new ArrayList();
-		for(Appointment app : this.getAppointments()){
+		
+		// get non-serial own appointments, which are not created by a serial appointment 
+		
+		for(Appointment app : this.getOwnAppointments()){
 			if(!app.isSerial())
+				apps.add(app);
+		}
+		
+		// get non-serial linked appointments, which are not created by a serial appointment
+		
+		for(Appointment app : this.getLinkedAppointments()){
+			if(!app.isSerial())
+				apps.add(app);
+		}
+		
+		return apps;
+	}
+
+
+	@Override
+	public List getSingleAppointments() {
+		
+		ArrayList apps = new ArrayList();
+		
+		// get own single appointments (including calculated single appointments from
+		// a serial appointment)
+		
+		for(Appointment app : this.getOwnAppointments()){
+			if(!(app instanceof SerialAppointment))
+				apps.add(app);
+		}
+		
+		// get linked single appointments (including calculated single appointments from
+		// a serial appointment)
+		
+		for(Appointment app : this.getLinkedAppointments()){
+			if(!(app instanceof SerialAppointment))
 				apps.add(app);
 		}
 		return apps;
@@ -80,13 +101,31 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 
 
 	@Override
-	public List getSingleAppointments() {
-		ArrayList apps = new ArrayList();
-		for(Appointment app : this.getAppointments()){
-			if(!(app instanceof SerialAppointment))
-				apps.add(app);
-		}
-		return apps;
+	public void addLinkedAppointment(Appointment appointment) {
+		this.getLinkedAppointments().add(appointment);
+		appointment.getAssignedCalendars().add(this);
+		
+	}
+
+
+	@Override
+	public void addLinkedSerialAppointment(SerialAppointment serialAppointment) {
+		
+	}
+
+
+	@Override
+	public void addOwnAppointment(Appointment appointment) {
+		this.getOwnAppointments().add(appointment);
+		appointment.setSourceCalendar(this);
+		
+	}
+
+
+	@Override
+	public void addOwnSerialAppointment(SerialAppointment serialAppointment) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
