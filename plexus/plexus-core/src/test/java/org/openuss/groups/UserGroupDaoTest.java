@@ -22,7 +22,7 @@ public class UserGroupDaoTest extends UserGroupDaoTestBase {
 	private TestUtility testUtility;
 	private UserDao userDao;
 
-	// evtl. noch test auf Unique Shortcut einfügen
+	// add Test for Unique Shortcut
 
 	public void testUserGroupDaoCreate() {
 		UserGroup userGroup = new UserGroupImpl();
@@ -46,21 +46,7 @@ public class UserGroupDaoTest extends UserGroupDaoTestBase {
 
 	public void testUserGroupToGroupInfo() {
 		// Create UserGroup Entity
-		UserGroup userGroup = new UserGroupImpl();
-		userGroup.setName("UserGroup");
-		userGroup.setShortcut("group");
-		userGroup.setCreator(testUtility.createUniqueUserInDB());
-		userGroup.setMembership(Membership.Factory.newInstance());
-		userGroup.setModeratorsGroup(generateGroup("moderator"));
-		userGroup.setMembersGroup(generateGroup("member"));
-		userGroup.setAccessType(GroupAccessType.OPEN);
-		userGroup.setForum(true);
-		userGroup.setNewsletter(true);
-		userGroup.setChat(false);
-		userGroup.setDescription("A UserGroup");
-		userGroup.setDocuments(true);
-		userGroup.setCalendar(true);
-		userGroupDao.create(userGroup);
+		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
 		assertNotNull(userGroup);
 		
 		// Test
@@ -107,9 +93,7 @@ public class UserGroupDaoTest extends UserGroupDaoTestBase {
 		assertEquals(groupInfo.isChat(), group.getChat().booleanValue());
 		assertEquals(groupInfo.isDocuments(), group.getDocuments().booleanValue());
 		assertEquals(groupInfo.isForum(), group.getForum().booleanValue());
-		assertEquals(groupInfo.isNewsletter(), group.getNewsletter().booleanValue());
-	
-		
+		assertEquals(groupInfo.isNewsletter(), group.getNewsletter().booleanValue());	
 	}
 
 	public UserDao getUserDao() {

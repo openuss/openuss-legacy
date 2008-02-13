@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-import org.openuss.lecture.Organisation;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
@@ -554,6 +553,18 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		return !(group.getCreator().getId() == userId);
 
 	}
+	
+	/**
+	 * @see org.openuss.groups.GroupService#isUniqueShortcut(java.lang.String)
+	 */
+	protected boolean handleIsUniqueShortcut(String shortcut) throws Exception {
+		UserGroup group = getUserGroupDao().findByShortcut(shortcut);
+		if (group == null){
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	/*------------------- private methods -------------------- */
 
@@ -605,4 +616,5 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		}
 		return groupMembers;
 	}
+
 }

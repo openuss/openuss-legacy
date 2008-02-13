@@ -9,6 +9,9 @@ import java.util.TimeZone;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
+import org.openuss.groups.GroupAccessType;
+import org.openuss.groups.UserGroup;
+import org.openuss.groups.UserGroupDao;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.Application;
 import org.openuss.lecture.ApplicationDao;
@@ -71,6 +74,8 @@ public class TestUtility {
 	private ApplicationDao applicationDao;
 
 	private PeriodDao periodDao;
+	
+	private UserGroupDao userGroupDao;
 
 	private SecurityService securityService;
 
@@ -161,7 +166,7 @@ public class TestUtility {
 		userContact.setFirstName("Unique");
 		userContact.setLastName("User");
 		userContact.setAddress("Leonardo Campus 5");
-		userContact.setCity("Münster");
+		userContact.setCity("Mï¿½nster");
 		userContact.setCountry("Germany");
 		userContact.setPostcode("48149");
 
@@ -216,7 +221,7 @@ public class TestUtility {
 		university.setMembership(Membership.Factory.newInstance());
 		university.setEnabled(true);
 		university.setAddress("Leo 18");
-		university.setCity("Münster");
+		university.setCity("Mï¿½nster");
 		university.setCountry("Germany");
 		university.setEmail("openuss@uni-muenster.de");
 		university.setLocale("de");
@@ -313,7 +318,7 @@ public class TestUtility {
 		university.setMembership(Membership.Factory.newInstance());
 		university.setEnabled(true);
 		university.setAddress("Leo 18");
-		university.setCity("Münster");
+		university.setCity("Mï¿½nster");
 		university.setCountry("Germany");
 		university.setEmail("openuss@uni-muenster.de");
 		university.setLocale("de");
@@ -365,7 +370,7 @@ public class TestUtility {
 		department.setDefaultDepartment(false);
 		department.setMembership(Membership.Factory.newInstance());
 		department.setAddress("Leo 18");
-		department.setCity("Münster");
+		department.setCity("Mï¿½nster");
 		department.setCountry("Germany");
 		department.setEmail("openuss@uni-muenster.de");
 		department.setLocale("de");
@@ -414,7 +419,7 @@ public class TestUtility {
 		institute.setEnabled(true);
 		institute.setMembership(Membership.Factory.newInstance());
 		institute.setAddress("Leo 18");
-		institute.setCity("Münster");
+		institute.setCity("Mï¿½nster");
 		institute.setCountry("Germany");
 		institute.setEmail("openuss@uni-muenster.de");
 		institute.setLocale("de");
@@ -704,6 +709,34 @@ public class TestUtility {
 		user.setAccountLocked(true);
 		return user;
 	}
+	
+	public UserGroup createUniqueUserGroupInDB() {
+
+		// Create a unique CourseType
+		UserGroup userGroup = UserGroup.Factory.newInstance();
+		userGroup.setName("UserGroup");
+		userGroup.setShortcut("group");
+		userGroup.setCreator(createUniqueUserInDB());
+		userGroup.setMembership(Membership.Factory.newInstance());
+		Group mod = Group.Factory.newInstance();
+		mod.setName("moderator");
+		userGroup.setModeratorsGroup(mod);
+		Group mem = Group.Factory.newInstance();
+		mem.setName("member");
+		userGroup.setMembersGroup(mem);
+		userGroup.setAccessType(GroupAccessType.OPEN);
+		userGroup.setForum(true);
+		userGroup.setNewsletter(true);
+		userGroup.setChat(false);
+		userGroup.setDescription("A UserGroup");
+		userGroup.setDocuments(true);
+		userGroup.setCalendar(true);
+		
+		userGroupDao.create(userGroup);
+		this.getSecurityService().createObjectIdentity(userGroup, null);
+
+		return userGroup;
+	}
 
 	public static synchronized long unique() {
 		return ++uniqueId;
@@ -823,6 +856,14 @@ public class TestUtility {
 
 	public void setOrganisationService(OrganisationService organisationService) {
 		this.organisationService = organisationService;
+	}
+
+	public UserGroupDao getUserGroupDao() {
+		return userGroupDao;
+	}
+
+	public void setUserGroupDao(UserGroupDao userGroupDao) {
+		this.userGroupDao = userGroupDao;
 	}
 
 }
