@@ -8,6 +8,7 @@ import org.openuss.groups.UserGroupInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
+import org.openuss.security.SecurityService;
 
 /**
  * 
@@ -17,7 +18,7 @@ import org.openuss.web.PageLinks;
  */
 public class AbstractGroupPage extends BasePage {
 		
-		private static final long serialVersionUID = 1394531398550932611L;
+		private static final long serialVersionUID = 2394531398550932611L;
 		
 		@Property(value = "#{groupInfo}")
 		protected UserGroupInfo groupInfo;
@@ -32,8 +33,8 @@ public class AbstractGroupPage extends BasePage {
 			}
 			if (groupInfo == null) {
 				// TODO Thomas: Anpassen
-				// addError(i18n("group_page: groupInfo == null"));
-				// redirect(Constants.OUTCOME_BACKWARD);
+				addError(i18n("group_page not found!"));
+				redirect(Constants.OUTCOME_BACKWARD);
 				return;
 			} else {
 				addGroupCrumb();

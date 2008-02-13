@@ -12,13 +12,13 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.apache.shale.tiger.view.Init;
+import org.apache.shale.tiger.view.Preprocess;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.groups.GroupAccessType;
 import org.openuss.groups.GroupApplicationException;
-import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupInfo;
-import org.openuss.lecture.AccessType;
-import org.openuss.lecture.InstituteInfo;
+
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -28,7 +28,7 @@ import org.openuss.web.Constants;
  * @author Thomas Jansing
  */
 
-@Bean(name = Constants.GROUP_REGISTRATION_CONTROLLER, scope = Scope.REQUEST)
+@Bean(name = Constants.GROUP_REGISTRATION_CONTROLLER, scope = Scope.SESSION)
 @View
 public class GroupCreatePage extends AbstractGroupPage {
 
@@ -37,20 +37,42 @@ public class GroupCreatePage extends AbstractGroupPage {
 	private List<SelectItem> localeItems;
 	private Long newGroupId;
 	
-	// private UserGroupInfo groupInfo;
-	
-	// private GroupService groupService;
+//	@Property(value = "#{groupInfo}")
+//	protected UserGroupInfo groupInfo;
+//	
+//	private GroupService groupService;
+
+//	@Preprocess
+//	public void preprocess() throws GroupApplicationException {
+//		
+//		logger.debug("@PRE");
+//		groupInfo = new UserGroupInfo();
+//		
+//		// groupInfo.setId(null);
+//	}
 
 	@Prerender
 	public void prerender() throws GroupApplicationException {
-		
-		breadcrumbs.loadOpenuss4usCrumbs();
-		
-		BreadCrumb newCrumb = new BreadCrumb();
-		newCrumb.setName(i18n("openuss4us_groups_registration_headline"));
-		newCrumb.setHint(i18n("openuss4us_groups_registration_headline"));
-		breadcrumbs.addCrumb(newCrumb);
-		
+		if (groupInfo != null && groupInfo.getId() != null) {
+			groupInfo = groupService.getGroupInfo(groupInfo.getId());
+		}
+		if (groupInfo == null) {
+			// groupInfo = new UserGroupInfo();
+			
+			// addError(i18n("group_page: groupInfo == null"));
+			// redirect(Constants.OUTCOME_BACKWARD);
+			
+		} else {
+			BreadCrumb newCrumb = new BreadCrumb();
+			newCrumb.setName(i18n("openuss4us_groups_registration_headline"));
+			newCrumb.setHint(i18n("openuss4us_groups_registration_headline"));
+			breadcrumbs.loadOpenuss4usCrumbs();
+			breadcrumbs.addCrumb(newCrumb);
+			
+			groupInfo = new UserGroupInfo();
+			
+			// setSessionBean(Constants.GROUP_INFO, groupInfo);
+		}
 	}
 	
 	public List<SelectItem> getAccessTypes() {
@@ -72,14 +94,19 @@ public class GroupCreatePage extends AbstractGroupPage {
 		// TODO Thomas: Implement Security Tests etc.
 		
 		// FIXME ACCESS TYPE in groupcreate.xhtml 		
-
+		
+		logger.debug("Starting Groupcreation...");
+		
 		groupInfo.setAccessType(GroupAccessType.OPEN);
 
 		// CREATE GROUP
 		newGroupId = groupService.createUserGroup(groupInfo, user.getId());
+		
+		logger.debug("Groupcreation finished....");
+		
 		groupInfo.setId(newGroupId);
 	
-		setSessionBean(Constants.GROUP_INFO, groupInfo);
+		// setSessionBean(Constants.GROUP_INFO, groupInfo);
 		return Constants.GROUP_PAGE;
 	}
 	

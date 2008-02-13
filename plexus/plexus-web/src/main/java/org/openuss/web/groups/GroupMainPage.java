@@ -64,7 +64,6 @@ public class GroupMainPage extends AbstractGroupPage {
 	public String applyWithPassword() throws GroupApplicationException {
 		logger.debug("group entry with password applied");
 		groupService.addUserByPassword(groupInfo, password, user.getId());
-		// courseService.applyUserByPassword(password, courseInfo, user);
 		addMessage(i18n("message_group_password_accepted"));
 		return Constants.SUCCESS;
 	}
@@ -72,7 +71,6 @@ public class GroupMainPage extends AbstractGroupPage {
 	public String apply() throws GroupApplicationException {
 		logger.debug("group entry applied");
 		groupService.addMember(groupInfo, user.getId());
-		//courseService.applyUser(courseInfo, user);
 		addMessage(i18n("message_group_send_application"));
 		return Constants.SUCCESS;
 	}

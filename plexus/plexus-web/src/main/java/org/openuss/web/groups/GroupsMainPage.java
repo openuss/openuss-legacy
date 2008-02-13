@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -14,8 +15,10 @@ import org.openuss.framework.jsfcontrols.components.flexlist.ListItemDAO;
 import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
 import org.openuss.groups.GroupServiceImpl;
 import org.openuss.groups.UserGroupInfo;
+
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.security.User;
+import org.openuss.security.SecurityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 /**
@@ -26,17 +29,16 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$groups$groups", scope = Scope.REQUEST)
 @View
-public class GroupsMainPage extends BasePage {
+public class GroupsMainPage extends AbstractGroupPage {
 	
 	private static final Logger logger = Logger.getLogger(GroupsMainPage.class);
 
-	private User user;
-	
 	private UIFlexList groupList;
+	private List userGroups;
 	private boolean groupListDataLoaded = false;
 	private boolean prerenderCalled = false;
 	private Map<Long, UserGroupInfo> groupData;
-	private static final String userGroupBasePath = "/views/secured/groups/group.faces";
+	private static final String userGroupBasePath = "/views/secured/groups/main.faces";
 	
 	private String password;
 
@@ -59,6 +61,8 @@ public class GroupsMainPage extends BasePage {
 	// Navigation outcomes
 	// TODO Thomas: Implement Security - Max Groups allowed ?
 	public String createGroup() {
+		groupInfo = new UserGroupInfo();
+		setSessionBean(Constants.GROUP_INFO, groupInfo);
 		return Constants.OPENUSS4US_GROUPS_CREATE;
 	}
 	public String joinGroup() {
@@ -103,14 +107,22 @@ public class GroupsMainPage extends BasePage {
 
 			// Get the current user id
 			
-			Long userId = 1111L;
+			logger.debug("getting user id");
+//			User user = securityService.getCurrentUser();
+			Long userId = user.getId();
+			logger.debug("Success");
+//			Long userId = 111111111L;
+			logger.debug(userId);
+			
 
 			// Put data in the component's attributes
 			if (userId != null) {
 				groupList.getAttributes().put("visibleItems", getGroupListItems(userId));
+				logger.debug("Success2");
 
 				// Make sure this isn't executed twice
 				groupListDataLoaded = true;
+				logger.debug("Success3");
 			}
 		}
 	}
@@ -119,22 +131,28 @@ public class GroupsMainPage extends BasePage {
 		// by the group flexlist
 	
 	private List<ListItemDAO> getGroupListItems(Long userId) {
+		logger.debug("Success4");
 		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
-
+		logger.debug("Success5");
 		// GroupInfo groupInfo = groupData.get(userId);
 
 		ListItemDAO newItem;
 		newItem = new ListItemDAO();
-		
+		logger.debug("Success6");
 		// TODO Thomas: delete dummy links
 		newItem.setTitle("Socialising Muenster");
-		newItem.setUrl(contextPath()+userGroupBasePath);
+		newItem.setUrl(contextPath() + userGroupBasePath + "?group=" + user.getId());
 		listItems.add(newItem);
+		
+//		userGroups = groupService.getGroupsByUser(user.getId());
+//		
+//		logger.debug(userGroups.toString());
 		
 		newItem = new ListItemDAO();
 		newItem.setTitle("OpenArena Test Group");
 		newItem.setUrl(contextPath()+userGroupBasePath);
-		listItems.add(newItem);		
+		listItems.add(newItem);
+		logger.debug("Success7");
 		return listItems;
 	}
 	

@@ -24,21 +24,20 @@
 				</p>
 			</div>
 
+
 <address class="vcard" style="display: none">
 	<span class="fn" style="display: none">
-	<span class="family-name">#{showuser.contact.lastName}</span>
-	<span class="given-name">#{showuser.contact.firstName}</span>
+		<span class="family-name">#{showuser.contact.lastName}</span>
+		<span class="given-name">#{showuser.contact.firstName}</span>
+		<span class="adr type=home" style="display: none"></span>
+		<span class="street-address">#{showuser.contact.address}</span>
+		<span class="country-name">#{showuser.contact.country}</span>
+		<span class="postal-code">#{showuser.contact.postcode}</span>
+		<div class="tel home">#{showuser.contact.telephone}</div>
+		<div class="tel cell">#{showuser.contact.mobile}</div>
+		<div class="bday">#{showuser.contact.birthday}</div>
+		<div class="email">#{showuser.email}</div>
 	</span>
-<span class="adr type=home" style="display: none">
-	<span class="street-address">#{showuser.contact.address}</span>
-	<span class="country-name">#{showuser.contact.country}</span>
-	<span class="postal-code">#{showuser.contact.postcode}</span>
-	<div class="tel home">#{showuser.contact.telephone}</div>
-	<div class="tel cell">#{showuser.contact.mobile}</div>
-	<div class="bday">#{showuser.contact.birthday}</div>
-	<div class="email">#{showuser.email}</div>
-	</span>
-		
 </address>
 			
 		<div class="content_normal">
