@@ -1879,9 +1879,10 @@ span.news_text {
 }
 
 .jscalendar-WH-title-style {
+	text-align:center;
 	padding: 2px;
 	font-family: arial;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: bold;
 	color: #000000;
 }

@@ -9,12 +9,8 @@
       xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:c="http://java.sun.com/jstl/core">
 
+	<t:inputCalendar monthYearRowClass="jscalendar-WH-title-style" weekRowClass="jscalendar-WH-end-of-weekday-style"
+    	currentDayCellClass="jscalendar-WH-selected-day-style"  dayCellClass="jscalendar-WH-normal-day-style" value="#{views$secured$calendar$usercalendar.firstDate}"/>
+	<h:outputText value="#{views$secured$calendar$usercalendar.firstDate}" />
 
-		
-	
-		<h:outputText value="CALENDAR" />
-		
-		
-
-	
 </ui:composition>
