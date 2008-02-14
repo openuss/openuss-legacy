@@ -6,15 +6,15 @@
 package org.openuss.buddylist;
 
 /**
- * @see org.openuss.buddylist.InternalMessage
+ * @see org.openuss.buddylist.BuddyList
  */
-public class InternalMessageImpl
-    extends org.openuss.buddylist.InternalMessageBase
-	implements org.openuss.buddylist.InternalMessage
+public class BuddyListImpl
+    extends org.openuss.buddylist.BuddyListBase
+	implements org.openuss.buddylist.BuddyList
 {
     /**
      * The serial version UID of this class. Needed for serialization.
      */
-    private static final long serialVersionUID = -8312132477770167834L;
+    private static final long serialVersionUID = 5896651731072914662L;
 
 }

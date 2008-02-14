@@ -4,9 +4,6 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.buddylist;
-
-import java.util.ArrayList;
-
 /**
  * @see org.openuss.buddylist.Buddy
  */
@@ -20,9 +17,9 @@ public class BuddyDaoImpl
         org.openuss.buddylist.Buddy sourceEntity,
         org.openuss.buddylist.BuddyInfo targetVO)
     {
-    	targetVO.setId(sourceEntity.getId());
-    	targetVO.setName(sourceEntity.getBuddy().getDisplayName());
-    	targetVO.setTags(sourceEntity.getallTags());
+        // @todo verify behavior of toBuddyInfo
+        super.toBuddyInfo(sourceEntity, targetVO);
+        // WARNING! No conversion for targetVO.tags (can't convert sourceEntity.getTags():org.openuss.buddylist.Tag to java.util.List
     }
 
 
@@ -43,12 +40,17 @@ public class BuddyDaoImpl
      */
     private org.openuss.buddylist.Buddy loadBuddyFromBuddyInfo(org.openuss.buddylist.BuddyInfo buddyInfo)
     {
+        // @todo implement loadBuddyFromBuddyInfo
+        throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.loadBuddyFromBuddyInfo(org.openuss.buddylist.BuddyInfo) not yet implemented.");
+
+        /* A typical implementation looks like this:
         org.openuss.buddylist.Buddy buddy = this.load(buddyInfo.getId());
         if (buddy == null)
         {
             buddy = org.openuss.buddylist.Buddy.Factory.newInstance();
         }
         return buddy;
+        */
     }
 
     
