@@ -45,6 +45,8 @@ public class CalendarServiceIntegrationTest extends
 	public CourseDao courseDao;
 
 	public PeriodDao periodDao;
+	
+	public AppointmentDao appointmentDao;
 
 	public AppointmentTypeDao appointmentTypeDao;
 
@@ -105,13 +107,7 @@ public class CalendarServiceIntegrationTest extends
 	}
 
 	public void testCalendarAdministrationSingle() {
-		/*
-		 * Complete Test 1) 1 - createCalendar for userInfo object (domain
-		 * object) 2 - createAppointment 3 - getSingleAppointments /
-		 * getAllUserAppointments -> not null 4 - updateAppointment 5 -
-		 * getAppointment 6 - deleteAppointment End :)
-		 */
-
+		
 		// create user
 		User user = userDao.create("user", "pwd", "e@ma.il", true, false,
 				false, false, new Date());
@@ -122,7 +118,7 @@ public class CalendarServiceIntegrationTest extends
 		AppointmentType standardAppointmentType = getAppointmentTypeDao()
 				.create("standard");
 
-		// create calendar
+		
 		try {
 
 			// create calendar for user
@@ -133,17 +129,15 @@ public class CalendarServiceIntegrationTest extends
 			assertNotNull(userCalInfo);
 
 			// create an single appointment for the user calendar
-
-			AppointmentInfo singleAppointment = getTestAppointmentInfo(
+			AppointmentInfo singleAppointmentInfo = getTestAppointmentInfo(
 					standardAppointmentType, user);
-			calendarService.createAppointment(singleAppointment, userCalInfo);
+			calendarService.createAppointment(singleAppointmentInfo, userCalInfo);
 
 			// get natural single appointments from calendar
-
 			List<AppointmentInfo> naturalSingleAppInfos = calendarService
 					.getNaturalSingleAppointments(userCalInfo);
 			assertEquals(1, naturalSingleAppInfos.size());
-			AppointmentInfo app1 = naturalSingleAppInfos.get(0);
+			AppointmentInfo naturalAppInfo = naturalSingleAppInfos.get(0);
 
 			// get (all) single appointments (including generated appointments
 			// from a serial appointment
@@ -151,28 +145,28 @@ public class CalendarServiceIntegrationTest extends
 			List<AppointmentInfo> singleAppInfos = calendarService
 					.getSingleAppointments(userCalInfo);
 			assertEquals(1, singleAppInfos.size());
-			AppointmentInfo app2 = singleAppInfos.get(0);
-			assertEquals(app1, app2);
+			AppointmentInfo singleAppInfo = singleAppInfos.get(0);
+			assertEquals(naturalAppInfo, singleAppInfo);
 
-			assertEquals("Description", app1.getDescription());
+			assertEquals("Description", naturalAppInfo.getDescription());
 
-			// update appointment
-
-			singleAppointment.setDescription("new Description");
-//			calendarService.updateAppointment(singleAppointment, userCalInfo);
-			// appointments = calendarService.getAllUserAppointments(userInfo);
-			// assertNotNull(appointments);
-			// assertEquals(appointments.get(0).getId(),
-			// appointmentInfos.get(0).getId());
-			// assertEquals("new Description",
-			// appointments.get(0).getDescription());
-			// //delete appointment
-			// calendarService.deleteAppointment(singleAppointment, calendar);
-			// appointments = calendarService.getAllUserAppointments(userInfo);
-			// appointmentInfos =
-			// calendarService.getNaturalSingleAppointments(calendar);
-			// assertEquals(0, appointments.size());
-			// assertEquals(0, appointmentInfos.size());
+			// test update appointment
+			
+			// test getCalendar
+			AppointmentInfo newAppointmentInfo = calendarService.getAppointment(singleAppInfo.getId());
+			
+			newAppointmentInfo.setDescription("new Description");
+			calendarService.updateAppointment(newAppointmentInfo, userCalInfo);
+			List<AppointmentInfo> updatedAppInfos = calendarService.getSingleAppointments(userCalInfo);
+			assertNotNull(updatedAppInfos);
+			assertEquals(updatedAppInfos.get(0).getId(), singleAppInfos.get(0).getId());
+			assertEquals("new Description", updatedAppInfos.get(0).getDescription());
+			
+			//test delete appointment
+			
+			calendarService.deleteAppointment(newAppointmentInfo, userCalInfo);
+			List<AppointmentInfo> appointmentInfos = calendarService.getSingleAppointments(userCalInfo);
+			assertEquals(0, appointmentInfos.size());
 		} catch (CalendarApplicationException e) {
 			fail();
 		}
@@ -187,49 +181,51 @@ public class CalendarServiceIntegrationTest extends
 		 * deleteSerialAppointment 12 - getSerialAppointments /
 		 * getAllUserAppointments -> null
 		 */
+		
 		// generate Appointment Type
 		AppointmentType standardAppointmentType = getAppointmentTypeDao()
 				.create("standard");
 		AppointmentTypeInfo appointmentTypeInfo = getAppointmentTypeDao()
 				.toAppointmentTypeInfo(standardAppointmentType);
+		
 		// create user
 		User user = userDao.create("user", "pwd", "e@ma.il", true, false,
 				false, false, new Date());
 		UserInfo userInfo = (UserInfo) userDao.load(userDao.TRANSFORM_USERINFO,
 				user.getId());
-		// create calendar
+		
+		// test create calendar
 		try {
 			calendarService.createCalendar(userInfo);
-			// CalendarInfo userCalendarInfo =
-			// calendarService.getCalendar(userInfo);
-			// //create serial appointment
-			// SerialAppointmentInfo serialAppointmentInfo = new
-			// SerialAppointmentInfo();
-			// serialAppointmentInfo.setCreator(userInfo);
-			// serialAppointmentInfo.setSubject("subject");
-			// serialAppointmentInfo.setDescription("description");
-			// GregorianCalendar gregCal = new GregorianCalendar();
-			// gregCal.set(2008, 03, 01, 17, 00);
-			// serialAppointmentInfo.setStarttime(new
-			// Timestamp(gregCal.getTime().getTime()));
-			// gregCal.add(GregorianCalendar.HOUR, 1);
-			// serialAppointmentInfo.setEndtime(new
-			// Timestamp(gregCal.getTime().getTime()));
-			// serialAppointmentInfo.setLocation("location");
-			// gregCal.add(GregorianCalendar.WEEK_OF_YEAR, 5);
-			// serialAppointmentInfo.setRecurrenceEndtime(new
-			// Timestamp(gregCal.getTime().getTime()));
-			// serialAppointmentInfo.setRecurrencePeriod(1);
-			// serialAppointmentInfo.setRecurrenceType(RecurrenceType.weekly);
-			// serialAppointmentInfo.setAppointmentType(appointmentTypeInfo);
-			// serialAppointmentInfo.setSerial(true);
-			// //create serial appointment
-			// calendarService.createSerialAppointment(serialAppointmentInfo,
-			// userCalendarInfo);
-			// List serialAppointments =
-			// calendarService.getNaturalSerialAppointments(userCalendarInfo);
-			// assertNotNull(serialAppointments);
-			// assertEquals(1, serialAppointments.size());
+			CalendarInfo userCalendarInfo = calendarService.getCalendar(userInfo);
+
+			// test create serial appointment
+			
+			SerialAppointmentInfo serialAppointmentInfo = new SerialAppointmentInfo();
+			serialAppointmentInfo.setSubject("subject");
+			serialAppointmentInfo.setDescription("description");
+			
+			GregorianCalendar gregCal = new GregorianCalendar();
+			gregCal.set(2008, 03, 01, 17, 00);
+			
+			serialAppointmentInfo.setStarttime(new Timestamp(gregCal.getTime()
+					.getTime()));
+			gregCal.add(GregorianCalendar.HOUR, 1);
+			serialAppointmentInfo.setEndtime(new Timestamp(gregCal.getTime().getTime()));
+			serialAppointmentInfo.setLocation("location");
+			gregCal.add(GregorianCalendar.WEEK_OF_YEAR, 5);
+			serialAppointmentInfo.setRecurrenceEndtime(new Timestamp(gregCal.getTime().getTime()));
+			serialAppointmentInfo.setRecurrencePeriod(1);
+			serialAppointmentInfo.setRecurrenceType(RecurrenceType.weekly);
+			serialAppointmentInfo.setAppointmentType(appointmentTypeInfo);
+			serialAppointmentInfo.setSerial(true);
+			
+			
+			calendarService.createSerialAppointment(serialAppointmentInfo, userCalendarInfo);
+			
+			List serialAppointments = calendarService.getNaturalSerialAppointments(userCalendarInfo);
+			assertNotNull(serialAppointments);
+			assertEquals(1, serialAppointments.size());
 			// List singleAppointments =
 			// calendarService.getAllUserAppointments(userInfo);
 			// assertEquals(6, singleAppointments.size());
@@ -334,5 +330,13 @@ public class CalendarServiceIntegrationTest extends
 
 	public AppointmentTypeDao getAppointmentTypeDao() {
 		return this.appointmentTypeDao;
+	}
+
+	public AppointmentDao getAppointmentDao() {
+		return appointmentDao;
+	}
+
+	public void setAppointmentDao(AppointmentDao appDao) {
+		this.appointmentDao = appDao;
 	}
 }
